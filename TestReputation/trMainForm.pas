@@ -3,9 +3,8 @@ unit trMainForm;
 interface
 
 uses
-  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ComCtrls,
-  trUser;
+  SysUtils, Classes, Forms, Controls, StdCtrls, ComCtrls,
+  trUser, XPMan;
 
 type
   TMainForm = class(TForm)
@@ -25,6 +24,7 @@ type
     Memo1: TMemo;
     Label5: TLabel;
     Edit5: TEdit;
+    XPManifest1: TXPManifest;
     procedure GenerateRandomUsers;
     procedure GenerateRandomConnections;
     procedure Iterate;
@@ -53,7 +53,8 @@ const
 var
   numUsers, maxConnections, maxRep, numIterations, numIslands,
   chanceOfDeadEnd: Integer;
-  usersList, visitedUsers: TList;
+  usersList: TList;
+  visitedUsers: array of boolean;
   bLog: boolean;
 
 function TimeDiff(start: TDateTime): Real;
@@ -69,7 +70,7 @@ var
 begin
   start := Now;
   for i := 0 to Pred(numUsers) do begin
-    aUser := TUser.Create(i + 1, random() * random() * maxRep, flowRate);
+    aUser := TUser.Create(i, random() * random() * maxRep, flowRate);
     usersList.Add(aUser);
   end;
 
@@ -132,12 +133,12 @@ begin
   for i := 0 to Pred(user.Connections.Count) do begin
     cUser := user.Connections[i];
     cUser.TempRep := cUser.TempRep + user.FlowRep;
-    if visitedUsers.IndexOf(cUser) = -1 then begin
-      visitedUsers.Add(cUser);
+    if not visitedUsers[cUser.id] then begin
+      visitedUsers[user.id] := true;
       TraverseFrom(cUser);
     end
     else
-      visitedUsers.Add(cUser);
+      visitedUsers[user.id] := true;
   end;
 end;
 
@@ -152,7 +153,7 @@ begin
   numIslands := 0;
   for i := 0 to Pred(usersList.Count) do begin
     aUser := TUser(usersList[i]);
-    if visitedUsers.IndexOf(aUser) = -1 then begin
+    if not visitedUsers[i] then begin
       Inc(numIslands);
       TraverseFrom(aUser);
     end;
@@ -165,11 +166,12 @@ begin
     aUser.FlowRep := aUser.ComputedRep * 0.05;
     aUser.TempRep := 0;
     if bDebug and bLog then
-      Memo1.Lines.Add(Format('    [%d] New rep %0.1f', [i + 1, aUser.ComputedRep]));
+      Memo1.Lines.Add(Format('    [%d] New rep %0.1f', [i, aUser.ComputedRep]));
   end;
 
   // clear visited users when done
-  visitedUsers.Clear;
+  for i := Low(visitedUsers) to High(visitedUsers) do
+    visitedUsers[i] := false;
 end;
 
 procedure TMainForm.PerformIterations();
@@ -178,6 +180,7 @@ var
   start: TDateTime;
 begin
   Memo1.Lines.Add('Performing iterations');
+  SetLength(visitedUsers, numUsers);
   for i := 1 to numIterations do begin
     start := Now;
     Memo1.Lines.Add(Format('  Iteration %d ... ', [i]));
@@ -204,7 +207,6 @@ procedure TMainForm.Run();
 begin
   // prepare
   usersList := TList.Create;
-  visitedUsers := TList.Create;
 
   // do everything
   GenerateRandomUsers;
@@ -215,7 +217,6 @@ begin
 
   // clean up
   usersList.Free;
-  visitedUsers.Free;
 end;
 
 procedure TMainForm.Button1Click(Sender: TObject);
@@ -229,7 +230,7 @@ begin
   Memo1.Lines.Add('  maxConnections = '+Edit2.Text);
   Memo1.Lines.Add('  maxRep = '+Edit3.Text);
   Memo1.Lines.Add('  numIterations = '+Edit4.Text);
-  Memo1.Lines.Add('  chanceOfDeadend = '+Edit5.Text);
+  Memo1.Lines.Add('  chanceOfDeadEnd = '+Edit5.Text);
   Memo1.Lines.Add('');
 
   // set vars

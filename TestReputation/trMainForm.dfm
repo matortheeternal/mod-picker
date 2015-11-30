@@ -25,8 +25,6 @@ object MainForm: TMainForm
     TabWidth = 100
     object Options: TTabSheet
       Caption = 'Options'
-      ExplicitLeft = 0
-      ExplicitTop = 28
       object Label1: TLabel
         Left = 8
         Top = 11
@@ -151,5 +149,9 @@ object MainForm: TMainForm
     ModalResult = 2
     TabOrder = 2
     OnClick = Button2Click
+  end
+  object XPManifest1: TXPManifest
+    Left = 376
+    Top = 8
   end
 end

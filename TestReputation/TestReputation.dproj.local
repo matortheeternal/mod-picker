@@ -1,18 +1,18 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <BorlandProject>
-  <Transactions>
-    <Transaction>2015/11/29 21:36:01.458,=F:\Users\Mator\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
-    <Transaction>2015/11/29 21:44:10.350,F:\Users\Mator\Documents\Embarcadero\Studio\Projects\TestReputation.dproj=F:\Users\Mator\Documents\Embarcadero\Studio\Projects\Project1.dproj</Transaction>
-    <Transaction>2015/11/29 21:44:15.004,F:\Users\Mator\Documents\Embarcadero\Studio\Projects\MainForm.pas=F:\Users\Mator\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
-    <Transaction>2015/11/29 21:44:15.004,F:\Users\Mator\Documents\Embarcadero\Studio\Projects\MainForm.dfm=F:\Users\Mator\Documents\Embarcadero\Studio\Projects\Unit1.dfm</Transaction>
-    <Transaction>2015/11/29 21:44:51.331,F:\Users\Mator\Documents\Embarcadero\Studio\Projects\TestReputation\MainForm.pas=F:\Users\Mator\Documents\Embarcadero\Studio\Projects\MainForm.pas</Transaction>
-    <Transaction>2015/11/29 21:44:51.331,F:\Users\Mator\Documents\Embarcadero\Studio\Projects\TestReputation\MainForm.dfm=F:\Users\Mator\Documents\Embarcadero\Studio\Projects\MainForm.dfm</Transaction>
-    <Transaction>2015/11/29 21:45:18.217,=F:\Users\Mator\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
-    <Transaction>2015/11/29 21:45:33.455,F:\Users\Mator\Documents\Embarcadero\Studio\Projects\User.pas=F:\Users\Mator\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
-    <Transaction>2015/11/29 21:46:00.624,F:\Users\Mator\Documents\Embarcadero\Studio\Projects\TestReputation\User.pas=F:\Users\Mator\Documents\Embarcadero\Studio\Projects\User.pas</Transaction>
-    <Transaction>2015/11/29 21:57:02.570,F:\Users\Mator\Documents\Embarcadero\Studio\Projects\TestReputation\trMainForm.pas=F:\Users\Mator\Documents\Embarcadero\Studio\Projects\TestReputation\MainForm.pas</Transaction>
-    <Transaction>2015/11/29 21:57:02.570,F:\Users\Mator\Documents\Embarcadero\Studio\Projects\TestReputation\trMainForm.dfm=F:\Users\Mator\Documents\Embarcadero\Studio\Projects\TestReputation\MainForm.dfm</Transaction>
-    <Transaction>2015/11/29 21:57:04.431,F:\Users\Mator\Documents\Embarcadero\Studio\Projects\TestReputation\trUser.pas=F:\Users\Mator\Documents\Embarcadero\Studio\Projects\TestReputation\User.pas</Transaction>
-    <Transaction>2015/11/29 22:57:48.082,F:\Users\Mator\Documents\Embarcadero\Studio\Projects\TestReputation\TestReputation.dproj=F:\Users\Mator\Documents\Embarcadero\Studio\Projects\TestReputation.dproj</Transaction>
+	<Transactions>
+    <Transaction>2015/11/29 21:36:01.000.458,=F:\Users\Mator\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>2015/11/29 21:44:10.000.350,F:\Users\Mator\Documents\Embarcadero\Studio\Projects\Project1.dproj=F:\Users\Mator\Documents\Embarcadero\Studio\Projects\TestReputation.dproj</Transaction>
+    <Transaction>2015/11/29 21:44:15.000.004,F:\Users\Mator\Documents\Embarcadero\Studio\Projects\Unit1.dfm=F:\Users\Mator\Documents\Embarcadero\Studio\Projects\MainForm.dfm</Transaction>
+    <Transaction>2015/11/29 21:44:15.000.004,F:\Users\Mator\Documents\Embarcadero\Studio\Projects\Unit1.pas=F:\Users\Mator\Documents\Embarcadero\Studio\Projects\MainForm.pas</Transaction>
+    <Transaction>2015/11/29 21:44:51.000.331,F:\Users\Mator\Documents\Embarcadero\Studio\Projects\MainForm.dfm=F:\Users\Mator\Documents\Embarcadero\Studio\Projects\TestReputation\MainForm.dfm</Transaction>
+    <Transaction>2015/11/29 21:44:51.000.331,F:\Users\Mator\Documents\Embarcadero\Studio\Projects\MainForm.pas=F:\Users\Mator\Documents\Embarcadero\Studio\Projects\TestReputation\MainForm.pas</Transaction>
+    <Transaction>2015/11/29 21:45:18.000.217,=F:\Users\Mator\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>2015/11/29 21:45:33.000.455,F:\Users\Mator\Documents\Embarcadero\Studio\Projects\Unit1.pas=F:\Users\Mator\Documents\Embarcadero\Studio\Projects\User.pas</Transaction>
+    <Transaction>2015/11/29 21:46:00.000.624,F:\Users\Mator\Documents\Embarcadero\Studio\Projects\User.pas=F:\Users\Mator\Documents\Embarcadero\Studio\Projects\TestReputation\User.pas</Transaction>
+    <Transaction>2015/11/29 21:57:02.000.570,F:\Users\Mator\Documents\Embarcadero\Studio\Projects\TestReputation\MainForm.dfm=F:\Users\Mator\Documents\Embarcadero\Studio\Projects\TestReputation\trMainForm.dfm</Transaction>
+    <Transaction>2015/11/29 21:57:02.000.570,F:\Users\Mator\Documents\Embarcadero\Studio\Projects\TestReputation\MainForm.pas=F:\Users\Mator\Documents\Embarcadero\Studio\Projects\TestReputation\trMainForm.pas</Transaction>
+    <Transaction>2015/11/29 21:57:04.000.431,F:\Users\Mator\Documents\Embarcadero\Studio\Projects\TestReputation\User.pas=F:\Users\Mator\Documents\Embarcadero\Studio\Projects\TestReputation\trUser.pas</Transaction>
+    <Transaction>2015/11/29 22:57:48.000.082,F:\Users\Mator\Documents\Embarcadero\Studio\Projects\TestReputation.dproj=F:\Users\Mator\Documents\Embarcadero\Studio\Projects\TestReputation\TestReputation.dproj</Transaction>
   </Transactions>
 </BorlandProject>

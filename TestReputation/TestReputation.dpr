@@ -1,7 +1,7 @@
 program TestReputation;
 
 uses
-  Vcl.Forms,
+  Forms,
   trMainForm in 'trMainForm.pas' {MainForm},
   trUser in 'trUser.pas';
 
