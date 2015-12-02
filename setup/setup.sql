@@ -1,17 +1,17 @@
 /* TEXT TYPE REFERENCE (max length)
  * ------------------------------------------------------
- * TINYTEXT		= 2^8 bytes 	= 255 char (ascii)
- * TEXT			= 2^16 bytes 	= 65,535 char (ascii)
- * MEDIUMTEXT	= 2^24 bytes 	= 16,777,215 char (ascii)
- * LONGTEXT		= 2^32 bytes 	= 4 gigabytes (wtf)
+ * TINYTEXT     = 2^8 bytes     = 255 char (ascii)
+ * TEXT         = 2^16 bytes    = 65,535 char (ascii)
+ * MEDIUMTEXT   = 2^24 bytes    = 16,777,215 char (ascii)
+ * LONGTEXT     = 2^32 bytes    = 4 gigabytes (wtf)
  *
  * NUMERIC TYPE REFERENCE
  * ------------------------------------------------------
- * TINYINT UNSIGNED MAX 	= 255
- * SMALLINT UNSIGNED MAX 	= 65,535
- * MEDIUMINT UNSIGNED MAX 	= 16,777,215
- * INT UNSIGNED MAX 		= 4,294,967,295
- * BIGINT UNSIGNED MAX 		= 18,446,744,073,709,551,615
+ * TINYINT UNSIGNED MAX     = 255
+ * SMALLINT UNSIGNED MAX    = 65,535
+ * MEDIUMINT UNSIGNED MAX   = 16,777,215
+ * INT UNSIGNED MAX         = 4,294,967,295
+ * BIGINT UNSIGNED MAX      = 18,446,744,073,709,551,615
  * ------------------------------------------------------
  */
 
@@ -125,9 +125,9 @@ FOREIGN KEY(mv_id) REFERENCES mod_versions(mv_id)
    (64 character name).  I think the average name length will be around
    30 characters, making the average record size 49 bytes.*/
 /* == SCALING NOTES ==
-   Table of 100,000 records 	= 4.67 MB 
-   Table of 1,000,000 records	= 46.73 MB
-   Table of 10,000,000 records	= 467.3 MB */
+   Table of 100,000 records     = 4.67 MB 
+   Table of 1,000,000 records   = 46.73 MB
+   Table of 10,000,000 records  = 467.3 MB */
 CREATE TABLE plugin_override_map
 (
 pl_id INT UNSIGNED, /* 4 bytes */
