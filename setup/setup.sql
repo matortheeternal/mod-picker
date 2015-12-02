@@ -1,4 +1,11 @@
-/* NUMERIC TYPE REFERENCE
+/* TEXT TYPE REFERENCE (max length)
+ * ------------------------------------------------------
+ * TINYTEXT		= 2^8 bytes 	= 255 char (ascii)
+ * TEXT			= 2^16 bytes 	= 65,535 char (ascii)
+ * MEDIUMTEXT	= 2^24 bytes 	= 16,777,215 char (ascii)
+ * LONGTEXT		= 2^32 bytes 	= 4 gigabytes (wtf)
+ *
+ * NUMERIC TYPE REFERENCE
  * ------------------------------------------------------
  * TINYINT UNSIGNED MAX 	= 255
  * SMALLINT UNSIGNED MAX 	= 65,535
@@ -15,21 +22,21 @@
 CREATE TABLE nexus_infos
 (
 nm_id INT UNSIGNED NOT NULL AUTO_INCREMENT,
-uploaded_by VARCHAR(128),
-authors VARCHAR(128),
+uploaded_by TINYTEXT,
+authors TINYTEXT,
 date_released DATE,
 date_updated DATE,
 endorsements INT UNSIGNED,
 total_downloads INT UNSIGNED,
 unique_downloads INT UNSIGNED,
-views BIGINT UNSIGNED, /* bigint because 4 billion views isn't impossible */
+views BIGINT UNSIGNED, /* bigint because 4 billion views isn't entirely implausible */
 posts_count INT UNSIGNED,
 videos_count SMALLINT UNSIGNED,
 images_count SMALLINT UNSIGNED,
 files_count SMALLINT UNSIGNED,
 articles_count SMALLINT UNSIGNED,
 nexus_category SMALLINT,
-changelog VARCHAR(8192), /* pretty big, hopefully big enough */
+changelog TEXT,
 PRIMARY KEY(nm_id)
 );
 
@@ -45,12 +52,17 @@ ll_id INT UNSIGNED NOT NULL AUTO_INCREMENT,
 PRIMARY KEY(ll_id)
 );
 
+
+/* ------------------------------------------------------ */
+/* mod tables */
+/* ------------------------------------------------------ */
+
 /* mods available on the site */
 CREATE TABLE mods 
 (
 mod_id INT UNSIGNED NOT NULL AUTO_INCREMENT, /* max ~4 billion */
-game VARCHAR(64),
-name VARCHAR(128),
+game TINYTEXT,
+name TINYTEXT,
 is_utility BOOLEAN,
 category SMALLINT,
 has_adult_content BOOLEAN,
@@ -62,6 +74,128 @@ FOREIGN KEY(nm_id) REFERENCES nexus_infos(nm_id),
 FOREIGN KEY(ws_id) REFERENCES workshop_infos(ws_id),
 FOREIGN KEY(ll_id) REFERENCES lover_infos(ll_id)
 );
+
+/* versions of mods available on the site */
+CREATE TABLE mod_versions
+(
+mv_id INT UNSIGNED NOT NULL AUTO_INCREMENT, /* max ~4 billion */
+mod_id INT UNSIGNED,
+released DATE, /* override date from site infos, may be unused */
+obsolete BOOLEAN,
+dangerous BOOLEAN,
+PRIMARY KEY(mv_id),
+FOREIGN KEY(mod_id) REFERENCES mods(mod_id)
+);
+
+/* all mod asset files we ever encounter, no duplicate file paths */
+CREATE TABLE mod_asset_files
+(
+maf_id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+filepath TINYTEXT NOT NULL UNIQUE,
+PRIMARY KEY(maf_id)
+);
+
+/* maps asset files to mod versions */
+CREATE TABLE mod_version_file_map
+(
+mv_id INT UNSIGNED,
+maf_id INT UNSIGNED,
+FOREIGN KEY(mv_id) REFERENCES mod_versions(mv_id),
+FOREIGN KEY(maf_id) REFERENCES mod_asset_files(maf_id)
+);
+
+/* plugins that we have informaton on */
+CREATE TABLE plugins
+(
+pl_id INT UNSIGNED NOT NULL AUTO_INCREMENT, /* max ~4 billion */
+mv_id INT UNSIGNED,
+filename TINYCHAR,
+author TINYCHAR,
+description TEXT,
+hash VARCHAR(8), /* crc32 hash */
+PRIMARY KEY(pl_id),
+FOREIGN KEY(mv_id) REFERENCES mod_versions(mv_id)
+);
+
+/* override records associated with a plugin */
+/* By my estimation, there will be >100,000 override records total 
+   for all skyrim plugins.  */
+/* Depending on the average name length, the size of a record in this 
+   table could be between 35 bytes (16 character name), and 83 bytes 
+   (64 character name).  I think the average name length will be around
+   30 characters, making the average record size 49 bytes.*/
+/* == SCALING NOTES ==
+   Table of 100,000 records 	= 4.67 MB 
+   Table of 1,000,000 records	= 46.73 MB
+   Table of 10,000,000 records	= 467.3 MB */
+CREATE TABLE plugin_override_map
+(
+pl_id INT UNSIGNED, /* 4 bytes */
+mst_id INT UNSIGNED, /* 4 bytes */
+form_id INT UNSIGNED, /* 4 bytes -- FormID max is 2^(32) = $FFFFFFFF */
+sig VARCHAR(4), /* 4 bytes */
+name TINYCHAR, /* UP TO 255 CHARACTERS */
+is_itm BOOLEAN, /* 1 bit */
+is_itpo BOOLEAN, /* 1 bit */
+is_udr BOOLEAN, /* 1 bit */
+FOREIGN KEY(pl_id) REFERENCES plugins(pl_id), 
+FOREIGN KEY(mst_id) REFERENCES plugins(mst_id)
+);
+
+/* mod lists created by users */
+CREATE TABLE mod_lists
+(
+ml_id INT UNSIGNED NOT NULL AUTO_INCREMENT, /* max ~4 billion */
+game TINYTEXT,
+created_by INT UNSIGNED,
+is_collection BOOLEAN,
+is_mergeable BOOLEAN, /* for collections only */
+is_public BOOLEAN,
+has_adult_content BOOLEAN,
+status ENUM('Planned', 'Under Construction', 'Testing', 'Complete'),
+created DATE,
+completed DATE,
+description TEXT, /* bbcode description */ /* frontend restriction: 0 <= length <= 20,000 */
+PRIMARY KEY(ml_id)
+);
+
+/* plugins in mod lists */
+CREATE TABLE mod_list_plugins
+(
+ml_id INT UNSIGNED,
+pl_id INT UNSIGNED,
+active BOOLEAN,
+load_order SMALLINT UNSIGNED, /* max ~65,535 */
+FOREIGN KEY(ml_id) REFERENCES mod_lists(ml_id),
+FOREIGN KEY(pl_id) REFERENCES plugins(pl_id)
+);
+
+/* custom plugins in mod lists */
+CREATE TABLE mod_list_custom_plugins
+(
+ml_id INT UNSIGNED,
+active BOOLEAN,
+load_order SMALLINT UNSIGNED, /* max ~65,535 */
+title VARCHAR(64),
+description TEXT, /* restrict user from entering more than 1,024 characters here */
+FOREIGN KEY(ml_id) REFERENCES mod_lists(ml_id)
+);
+
+/* mods in mod lists */
+CREATE TABLE mod_list_mods
+(
+ml_id INT UNSIGNED,
+mod_id INT UNSIGNED,
+active BOOLEAN,
+install_order SMALLINT UNSIGNED, /* max ~65,535 */
+FOREIGN KEY(ml_id) REFERENCES mod_lists(ml_id),
+FOREIGN KEY(mod_id) REFERENCES mods(mod_id)
+);
+
+
+/* ------------------------------------------------------ */
+/* user tables */
+/* ------------------------------------------------------ */
 
 /* user biographies - connections to other sites */
 CREATE TABLE user_bios 
@@ -117,26 +251,27 @@ FOREIGN KEY(to_rep_id) REFERENCES user_reputations(to_rep_id)
 CREATE TABLE users
 (
 user_id INT UNSIGNED NOT NULL AUTO_INCREMENT, /* max ~4 billion */
-username VARCHAR(32), /* too short? */
+username VARCHAR(32),
 email VARCHAR(64), /* this should be long enough */
 hash VARCHAR(53), /* bcrypt 22 character salt and 31 character hash */
-user_level TINYINT,
+user_level ENUM('admin', 'moderator', 'vip', 'mod author', 'user', 'banned'),
 title VARCHAR(32),
-avatar VARCHAR(32),
+avatar TINYTEXT, /* max 255 ascii characters */
 joined DATE,
 last_seen DATE,
 bio_id INT UNSIGNED,
 set_id INT UNSIGNED,
 rep_id INT UNSIGNED,
 active_ml_id INT UNSIGNED,
-active_cl_id INT UNSIGNED,
+active_mc_id INT UNSIGNED,
 FOREIGN KEY(bio_id) REFERENCES user_bios(bio_id),
 FOREIGN KEY(set_id) REFERENCES user_settings(set_id),
 FOREIGN KEY(rep_id) REFERENCES user_reputations(rep_id),
 FOREIGN KEY(active_ml_id) REFERENCES mod_lists(active_ml_id),
-FOREIGN KEY(active_cl_id) REFERENCES mod_collections(active_cl_id),
+FOREIGN KEY(active_mc_id) REFERENCES mod_lists(active_mc_id),
 PRIMARY KEY(user_id)
 );
+
 
 /* ------------------------------------------------------ */
 /* many to many mappings between users and mods */
@@ -148,15 +283,166 @@ CREATE TABLE user_mod_star_map
 mod_id INT UNSIGNED,
 user_id INT UNSIGNED,
 FOREIGN KEY(mod_id) REFERENCES mods(mod_id),
-FOREIGN KEY(user_id) REFERENCES users(user_id),
+FOREIGN KEY(user_id) REFERENCES users(user_id)
 );
 
-/* mods that users have authored */
+/* stars users have given to mod lists */ 
+CREATE TABLE user_mod_list_star_map
+(
+ml_id INT UNSIGNED,
+user_id INT UNSIGNED,
+FOREIGN KEY(ml_id) REFERENCES mod_lists(ml_id),
+FOREIGN KEY(user_id) REFERENCES users(user_id)
+);
+
+/* users that have authored mods */
 CREATE TABLE user_mod_author_map
 (
 mod_id INT UNSIGNED,
-user_id INT UNSIGNED
+user_id INT UNSIGNED,
 FOREIGN KEY(mod_id) REFERENCES mods(mod_id),
-FOREIGN KEY(user_id) REFERENCES users(user_id),
+FOREIGN KEY(user_id) REFERENCES users(user_id)
+);
+
+/* need to update mod_lists to reference users as a foreign
+   key for the created_by column */
+ALTER TABLE mod_lists 
+ADD FOREIGN KEY(created_by) REFERENCES users(created_by);
+
+
+/* ------------------------------------------------------ */
+/* user submission tables */
+/* ------------------------------------------------------ */
+
+/* comments submitted by users */
+CREATE TABLE comments
+(
+c_id INT UNSIGNED NOT NULL AUTO_INCREMENT, /* max ~4 billion */
+parent_comment INT UNSIGNED,
+submitted_by INT UNSIGNED,
+hidden BOOLEAN,
+submitted DATE,
+edited DATE,
+text_body TEXT, /* restriction 2 <= length <= 5,000 */
+PRIMARY KEY(c_id),
+FOREIGN KEY(parent_comment) REFERENCES comments(parent_comment),
+FOREIGN KEY(submitted_by) REFERENCES users(submitted_by)
+);
+
+/* mod reviews submitted by users */
+CREATE TABLE reviews
+(
+r_id INT UNSIGNED NOT NULL AUTO_INCREMENT, /* max ~4 billion */
+submitted_by INT UNSIGNED,
+mod_id INT UNSIGNED,
+hidden BOOLEAN,
+rating1 TINYINT,
+rating2 TINYINT,
+rating3 TINYINT,
+rating4 TINYINT,
+rating5 TINYINT,
+submitted DATE,
+edited DATE,
+text_body TEXT, /* frontend restriction: 150 <= length <= 10,000 */
+PRIMARY KEY(r_id),
+FOREIGN KEY(submitted_by) REFERENCES users(submitted_by),
+FOREIGN KEY(mod_id) REFERENCES mods(mod_id)
+);
+
+/* installation notes submitted by users */
+CREATE TABLE installation_notes
+(
+in_id INT UNSIGNED NOT NULL AUTO_INCREMENT, /* max ~4 billion */
+submitted_by INT UNSIGNED,
+mv_id INT UNSIGNED,
+always BOOLEAN, /* if true, this installation note will always be shown */
+note_type ENUM('Download Option', 'FOMOD Option'),
+submitted DATE,
+edited DATE,
+text_body TEXT, /* frontend restriction: 50 <= length <= 1,000 */
+PRIMARY KEY(in_id),
+FOREIGN KEY(submitted_by) REFERENCES users(submitted_by),
+FOREIGN KEY(mv_id) REFERENCES mod_versions(mv_id)
+);
+
+/* compatibility notes submitted by users */
+CREATE TABLE compatibility_notes
+(
+cn_id INT UNSIGNED NOT NULL AUTO_INCREMENT, /* max ~4 billion */
+submitted_by INT UNSIGNED,
+mod_mode ENUM('Any', 'All'),
+compatibility_patch INT UNSIGNED,
+compatibility_status ENUM('Incompatible', 'Partially Compatible', 
+	'Patch Available', 'Make Custom Patch', 
+	'Soft Incompatibility', 'Installation Note'),
+in_id INT UNSIGNED,
+submitted DATE,
+edited DATE,
+text_body TEXT, /* frontend restriction: 50 <= length <= 1,000 */
+PRIMARY KEY(cn_id),
+FOREIGN KEY(submitted_by) REFERENCES users(submitted_by),
+FOREIGN KEY(compatibility_patch) REFERENCES plugins(compatibility_patch),
+FOREIGN KEY(in_id) REFERENCES installation_notes(in_id)
+);
+
+/* comments on mods */
+CREATE TABLE mod_comments
+(
+mod_id INT UNSIGNED,
+c_id INT UNSIGNED,
+FOREIGN KEY(mod_id) REFERENCES mods(mod_id),
+FOREIGN KEY(c_id) REFERENCES comments(c_id)
+);
+
+/* comments on mod_lists */
+CREATE TABLE mod_list_comments
+(
+ml_id INT UNSIGNED,
+c_id INT UNSIGNED,
+FOREIGN KEY(ml_id) REFERENCES mod_lists(ml_id),
+FOREIGN KEY(c_id) REFERENCES comments(c_id)
+);
+
+/* comments on user profiles */
+CREATE TABLE user_comments
+(
+user_id INT UNSIGNED,
+c_id INT UNSIGNED,
+FOREIGN KEY(ml_id) REFERENCES users(user_id),
+FOREIGN KEY(c_id) REFERENCES comments(c_id)
+);
+
+/* review, compatibility note, and installation note 
+   helpful/unhelpful marks */
+/* see stackoverflow on polymorphic associations
+   http://stackoverflow.com/questions/441001/ */
+CREATE TABLE helpful_marks
+(
+r_id INT UNSIGNED,
+cn_id INT UNSIGNED,
+in_id INT UNSIGNED,
+submitted_by INT UNSIGNED,
+helpful BOOLEAN,
+FOREIGN KEY(r_id) REFERENCES reviews(r_id),
+FOREIGN KEY(cn_id) REFERENCES compatibility_notes(cn_id),
+FOREIGN KEY(in_id) REFERENCES installation_notes(in_id),
+FOREIGN KEY(submitted_by) REFERENCES users(submitted_by)
+);
+
+/* incorrect notes for reviews, compatibility notes,
+   and installation notes */
+/* see stackoverflow on polymorphic associations
+   http://stackoverflow.com/questions/441001/ */
+CREATE TABLE incorrect_notes
+(
+r_id INT UNSIGNED,
+cn_id INT UNSIGNED,
+in_id INT UNSIGNED,
+submitted_by INT UNSIGNED,
+reason TEXT, /* frontend restriction: 50 <= length <= 1,000 */
+FOREIGN KEY(r_id) REFERENCES reviews(r_id),
+FOREIGN KEY(cn_id) REFERENCES compatibility_notes(cn_id),
+FOREIGN KEY(in_id) REFERENCES installation_notes(in_id),
+FOREIGN KEY(submitted_by) REFERENCES users(submitted_by)
 );
 
