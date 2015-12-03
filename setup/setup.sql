@@ -63,6 +63,7 @@ CREATE TABLE mods
 mod_id INT UNSIGNED NOT NULL AUTO_INCREMENT, /* max ~4 billion */
 game TINYTEXT,
 name TINYTEXT,
+aliases TINYTEXT,
 is_utility BOOLEAN,
 category SMALLINT,
 has_adult_content BOOLEAN,
@@ -142,6 +143,17 @@ FOREIGN KEY(pl_id) REFERENCES plugins(pl_id),
 FOREIGN KEY(mst_id) REFERENCES plugins(mst_id)
 );
 
+/* record groups associated with a plugin */
+CREATE TABLE plugin_record_groups
+(
+pl_id INT UNSIGNED, /* 4 bytes */
+sig VARCHAR(4),
+name TINYCHAR,
+new_records INT UNSIGNED,
+override_records INT UNSIGNED,
+FOREIGN KEY(pl_id) REFERENCES plugins(pl_id)
+);
+
 /* mod lists created by users */
 CREATE TABLE mod_lists
 (
@@ -149,7 +161,6 @@ ml_id INT UNSIGNED NOT NULL AUTO_INCREMENT, /* max ~4 billion */
 game TINYTEXT,
 created_by INT UNSIGNED,
 is_collection BOOLEAN,
-is_mergeable BOOLEAN, /* for collections only */
 is_public BOOLEAN,
 has_adult_content BOOLEAN,
 status ENUM('Planned', 'Under Construction', 'Testing', 'Complete'),
@@ -456,4 +467,42 @@ submitted_by INT UNSIGNED,
 agree BOOLEAN,
 FOREIGN KEY(inc_id) REFERENCES incorrect_notes(inc_id),
 FOREIGN KEY(submitted_by) REFERENCES users(submitted_by)
+);
+
+/* installation notes that have been resolved or
+   ignored by the user for a particular mod list */
+/* Total record size: 9 bytes. */
+/* == SCALING NOTES ==
+   With 200,000 mod lists, an average of 255 mods per
+   modlist, and an average of 1 installation note per 
+   mod, all of which are resolved or ignored:
+      Number of records = 51 million
+      Table size = 437.74 MB
+ */
+CREATE TABLE mod_list_installation_notes
+(
+ml_id INT UNSIGNED, /* 4 bytes */
+in_id INT UNSIGNED, /* 4 bytes */
+status ENUM('Resolved', 'Ignored'), /* 1 byte */
+FOREIGN KEY(ml_id) REFERENCES mod_lists(ml_id),
+FOREIGN KEY(in_id) REFERENCES installation_notes(in_id)
+);
+
+/* compatibility notes that have been resolved or
+   ignored by the user for a particular mod list */
+/* Total record size: 9 bytes. */
+/* == SCALING NOTES ==
+   With 200,000 mod lists, an average of 255 mods per
+   modlist, and an average of 1 compatibility note per 
+   mod, all of which are resolved or ignored:
+      Number of records = 51 million
+      Table size = 437.74 MB
+ */
+CREATE TABLE mod_list_compatibility_notes
+(
+ml_id INT UNSIGNED, /* 4 bytes */
+cn_id INT UNSIGNED, /* 4 bytes */
+status ENUM('Resolved', 'Ignored'), /* 1 byte */
+FOREIGN KEY(ml_id) REFERENCES mod_lists(ml_id),
+FOREIGN KEY(cn_id) REFERENCES compatibility_notes(cn_id)
 );
