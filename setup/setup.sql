@@ -435,14 +435,25 @@ FOREIGN KEY(submitted_by) REFERENCES users(submitted_by)
    http://stackoverflow.com/questions/441001/ */
 CREATE TABLE incorrect_notes
 (
+inc_id INT UNSIGNED NOT NULL AUTO_INCREMENT,
 r_id INT UNSIGNED,
 cn_id INT UNSIGNED,
 in_id INT UNSIGNED,
 submitted_by INT UNSIGNED,
 reason TEXT, /* frontend restriction: 50 <= length <= 1,000 */
+PRIMARY KEY(inc_id),
 FOREIGN KEY(r_id) REFERENCES reviews(r_id),
 FOREIGN KEY(cn_id) REFERENCES compatibility_notes(cn_id),
 FOREIGN KEY(in_id) REFERENCES installation_notes(in_id),
 FOREIGN KEY(submitted_by) REFERENCES users(submitted_by)
 );
 
+/* agreement marks for incorrect notes */
+CREATE TABLE agreement_marks
+(
+inc_id INT UNSIGNED,
+submitted_by INT UNSIGNED,
+agree BOOLEAN,
+FOREIGN KEY(inc_id) REFERENCES incorrect_notes(inc_id),
+FOREIGN KEY(submitted_by) REFERENCES users(submitted_by)
+);
