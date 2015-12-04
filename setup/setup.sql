@@ -277,25 +277,19 @@ active_mc_id INT UNSIGNED,
 PRIMARY KEY(user_id),
 FOREIGN KEY(bio_id) REFERENCES user_bios(bio_id),
 FOREIGN KEY(set_id) REFERENCES user_settings(set_id),
-FOREIGN KEY(rep_id) REFERENCES user_reputations(rep_id)
-/*FOREIGN KEY(active_ml_id) REFERENCES mod_lists(active_ml_id)*/
+FOREIGN KEY(rep_id) REFERENCES user_reputations(rep_id),
+FOREIGN KEY(active_ml_id) REFERENCES mod_lists(ml_id),
+FOREIGN KEY(active_mc_id) REFERENCES mod_lists(ml_id)
 );
-
-ALTER TABLE users
-ADD FOREIGN KEY(active_mc_id) 
-REFERENCES mod_lists(active_mc_id);
 
 /* reputation that's been given  */
 CREATE TABLE reputation_map
 (
 from_rep_id INT UNSIGNED,
 to_rep_id INT UNSIGNED,
-FOREIGN KEY(from_rep_id) REFERENCES user_reputations(from_rep_id)
+FOREIGN KEY(from_rep_id) REFERENCES user_reputations(rep_id),
+FOREIGN KEY(to_rep_id) REFERENCES user_reputations(rep_id)
 );
-
-ALTER TABLE reputation_map
-ADD FOREIGN KEY(to_rep_id) 
-REFERENCES user_reputations(to_rep_id);
 
 
 /* ------------------------------------------------------ */
@@ -332,7 +326,7 @@ FOREIGN KEY(user_id) REFERENCES users(user_id)
 /* need to update mod_lists to reference users as a foreign
    key for the created_by column */
 ALTER TABLE mod_lists 
-ADD FOREIGN KEY(created_by) REFERENCES users(created_by);
+ADD FOREIGN KEY(created_by) REFERENCES users(user_id);
 
 
 /* ------------------------------------------------------ */
@@ -350,8 +344,8 @@ submitted DATE,
 edited DATE,
 text_body TEXT, /* restriction 2 <= length <= 5,000 */
 PRIMARY KEY(c_id),
-FOREIGN KEY(parent_comment) REFERENCES comments(parent_comment),
-FOREIGN KEY(submitted_by) REFERENCES users(submitted_by)
+FOREIGN KEY(parent_comment) REFERENCES comments(c_id),
+FOREIGN KEY(submitted_by) REFERENCES users(user_id)
 );
 
 /* mod reviews submitted by users */
@@ -370,7 +364,7 @@ submitted DATE,
 edited DATE,
 text_body TEXT, /* frontend restriction: 150 <= length <= 10,000 */
 PRIMARY KEY(r_id),
-FOREIGN KEY(submitted_by) REFERENCES users(submitted_by),
+FOREIGN KEY(submitted_by) REFERENCES users(user_id),
 FOREIGN KEY(mod_id) REFERENCES mods(mod_id)
 );
 
@@ -386,7 +380,7 @@ submitted DATE,
 edited DATE,
 text_body TEXT, /* frontend restriction: 50 <= length <= 1,000 */
 PRIMARY KEY(in_id),
-FOREIGN KEY(submitted_by) REFERENCES users(submitted_by),
+FOREIGN KEY(submitted_by) REFERENCES users(user_id),
 FOREIGN KEY(mv_id) REFERENCES mod_versions(mv_id)
 );
 
@@ -405,8 +399,8 @@ submitted DATE,
 edited DATE,
 text_body TEXT, /* frontend restriction: 50 <= length <= 1,000 */
 PRIMARY KEY(cn_id),
-FOREIGN KEY(submitted_by) REFERENCES users(submitted_by),
-FOREIGN KEY(compatibility_patch) REFERENCES plugins(compatibility_patch),
+FOREIGN KEY(submitted_by) REFERENCES users(user_id),
+FOREIGN KEY(compatibility_patch) REFERENCES plugins(pl_id),
 FOREIGN KEY(in_id) REFERENCES installation_notes(in_id)
 );
 
@@ -433,7 +427,7 @@ CREATE TABLE user_comments
 (
 user_id INT UNSIGNED,
 c_id INT UNSIGNED,
-FOREIGN KEY(ml_id) REFERENCES users(user_id),
+FOREIGN KEY(user_id) REFERENCES users(user_id),
 FOREIGN KEY(c_id) REFERENCES comments(c_id)
 );
 
@@ -451,7 +445,7 @@ helpful BOOLEAN,
 FOREIGN KEY(r_id) REFERENCES reviews(r_id),
 FOREIGN KEY(cn_id) REFERENCES compatibility_notes(cn_id),
 FOREIGN KEY(in_id) REFERENCES installation_notes(in_id),
-FOREIGN KEY(submitted_by) REFERENCES users(submitted_by)
+FOREIGN KEY(submitted_by) REFERENCES users(user_id)
 );
 
 /* incorrect notes for reviews, compatibility notes,
@@ -470,7 +464,7 @@ PRIMARY KEY(inc_id),
 FOREIGN KEY(r_id) REFERENCES reviews(r_id),
 FOREIGN KEY(cn_id) REFERENCES compatibility_notes(cn_id),
 FOREIGN KEY(in_id) REFERENCES installation_notes(in_id),
-FOREIGN KEY(submitted_by) REFERENCES users(submitted_by)
+FOREIGN KEY(submitted_by) REFERENCES users(user_id)
 );
 
 /* agreement marks for incorrect notes */
@@ -480,7 +474,7 @@ inc_id INT UNSIGNED,
 submitted_by INT UNSIGNED,
 agree BOOLEAN,
 FOREIGN KEY(inc_id) REFERENCES incorrect_notes(inc_id),
-FOREIGN KEY(submitted_by) REFERENCES users(submitted_by)
+FOREIGN KEY(submitted_by) REFERENCES users(user_id)
 );
 
 /* installation notes that have been resolved or
