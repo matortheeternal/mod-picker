@@ -92,7 +92,7 @@ FOREIGN KEY(mod_id) REFERENCES mods(mod_id)
 CREATE TABLE mod_asset_files
 (
 maf_id INT UNSIGNED NOT NULL AUTO_INCREMENT,
-filepath TINYTEXT NOT NULL UNIQUE,
+filepath VARCHAR(128) NOT NULL UNIQUE,
 PRIMARY KEY(maf_id)
 );
 
@@ -110,12 +110,20 @@ CREATE TABLE plugins
 (
 pl_id INT UNSIGNED NOT NULL AUTO_INCREMENT, /* max ~4 billion */
 mv_id INT UNSIGNED,
-filename TINYCHAR,
-author TINYCHAR,
+filename TINYTEXT,
+author TINYTEXT,
 description TEXT,
 hash VARCHAR(8), /* crc32 hash */
 PRIMARY KEY(pl_id),
 FOREIGN KEY(mv_id) REFERENCES mod_versions(mv_id)
+);
+
+CREATE TABLE masters
+(
+mst_id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+pl_id INT UNSIGNED, /* 4 bytes */
+PRIMARY KEY(mst_id),
+FOREIGN KEY(pl_id) REFERENCES plugins(pl_id)
 );
 
 /* override records associated with a plugin */
@@ -135,12 +143,12 @@ pl_id INT UNSIGNED, /* 4 bytes */
 mst_id INT UNSIGNED, /* 4 bytes */
 form_id INT UNSIGNED, /* 4 bytes -- FormID max is 2^(32) = $FFFFFFFF */
 sig VARCHAR(4), /* 4 bytes */
-name TINYCHAR, /* UP TO 255 CHARACTERS */
+name TINYTEXT, /* UP TO 255 CHARACTERS */
 is_itm BOOLEAN, /* 1 bit */
 is_itpo BOOLEAN, /* 1 bit */
 is_udr BOOLEAN, /* 1 bit */
 FOREIGN KEY(pl_id) REFERENCES plugins(pl_id), 
-FOREIGN KEY(mst_id) REFERENCES plugins(mst_id)
+FOREIGN KEY(mst_id) REFERENCES masters(mst_id)
 );
 
 /* record groups associated with a plugin */
@@ -148,7 +156,7 @@ CREATE TABLE plugin_record_groups
 (
 pl_id INT UNSIGNED, /* 4 bytes */
 sig VARCHAR(4),
-name TINYCHAR,
+name TINYTEXT,
 new_records INT UNSIGNED,
 override_records INT UNSIGNED,
 FOREIGN KEY(pl_id) REFERENCES plugins(pl_id)
@@ -247,16 +255,7 @@ plugin_design FLOAT,
 utilty_design FLOAT,
 script_design FLOAT,
 PRIMARY KEY(rep_id)
-)
-
-/* reputation that's been given  */
-CREATE TABLE reputation_map
-(
-from_rep_id INT UNSIGNED,
-to_rep_id INT UNSIGNED,
-FOREIGN KEY(from_rep_id) REFERENCES user_reputations(from_rep_id),
-FOREIGN KEY(to_rep_id) REFERENCES user_reputations(to_rep_id)
-)
+);
 
 /* users registered on the site */
 CREATE TABLE users
@@ -275,13 +274,28 @@ set_id INT UNSIGNED,
 rep_id INT UNSIGNED,
 active_ml_id INT UNSIGNED,
 active_mc_id INT UNSIGNED,
+PRIMARY KEY(user_id),
 FOREIGN KEY(bio_id) REFERENCES user_bios(bio_id),
 FOREIGN KEY(set_id) REFERENCES user_settings(set_id),
-FOREIGN KEY(rep_id) REFERENCES user_reputations(rep_id),
-FOREIGN KEY(active_ml_id) REFERENCES mod_lists(active_ml_id),
-FOREIGN KEY(active_mc_id) REFERENCES mod_lists(active_mc_id),
-PRIMARY KEY(user_id)
+FOREIGN KEY(rep_id) REFERENCES user_reputations(rep_id)
+/*FOREIGN KEY(active_ml_id) REFERENCES mod_lists(active_ml_id)*/
 );
+
+ALTER TABLE users
+ADD FOREIGN KEY(active_mc_id) 
+REFERENCES mod_lists(active_mc_id);
+
+/* reputation that's been given  */
+CREATE TABLE reputation_map
+(
+from_rep_id INT UNSIGNED,
+to_rep_id INT UNSIGNED,
+FOREIGN KEY(from_rep_id) REFERENCES user_reputations(from_rep_id)
+);
+
+ALTER TABLE reputation_map
+ADD FOREIGN KEY(to_rep_id) 
+REFERENCES user_reputations(to_rep_id);
 
 
 /* ------------------------------------------------------ */
