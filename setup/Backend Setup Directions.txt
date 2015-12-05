@@ -14,7 +14,6 @@ Step 4:
 Run the ruby installer and make sure to check the box to add ruby executables to your path.
 I recommend using a folder like C:\dev\lang\
 Extract the devkit in the ruby folder in a folder called devkit
-Add the Ruby bin folder to your path environmental variable.
 Follow the Quick Start instructions for setting up the devkit here:
 https://github.com/oneclick/rubyinstaller/wiki/Development-Kit
 Make sure to edit the config.yml file to add your ruby path if it wasn't found automatically.
