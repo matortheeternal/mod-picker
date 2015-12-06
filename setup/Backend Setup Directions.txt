@@ -14,7 +14,6 @@ Step 4:
 Run the ruby installer and make sure to check the box to add ruby executables to your path.
 I recommend using a folder like C:\dev\lang\
 Extract the devkit in the ruby folder in a folder called devkit
-Add the Ruby bin folder to your path environmental variable.
 Follow the Quick Start instructions for setting up the devkit here:
 https://github.com/oneclick/rubyinstaller/wiki/Development-Kit
 Make sure to edit the config.yml file to add your ruby path if it wasn't found automatically.
@@ -43,4 +42,4 @@ Step 11:
 Go to the mod-picker directory in the mod-picker repo, open a command window, and type bundle install.  This will install all gems (dependencies) that are missing.
 
 Step 12:
-In the same command window type "rails server".  You server should now be running!  :)
+In the same command window type "rails server".  Your server should now be running!  :)
