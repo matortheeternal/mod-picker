@@ -1,6 +1,7 @@
 Step 1:
 Download MySQL 5.6
 https://dev.mysql.com/downloads/mysql/
+(click the "Looking for previous GA versions?" link to get to the 5.6.27 download)
 (do the 64-bit zip)
 
 Step 2:
