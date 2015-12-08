@@ -1,7 +1,8 @@
 Step 1:
 Download MySQL 5.6
-https://dev.mysql.com/downloads/windows/installer/5.6.html
-(do the zip installer)
+https://dev.mysql.com/downloads/mysql/
+(click the "Looking for previous GA versions?" link to get to the 5.6.27 download)
+(do the 64-bit zip)
 
 Step 2:
 Extract the folder from the archive wherever you want.  I'd recommend using folder like C:\dev\db\
@@ -20,17 +21,19 @@ Make sure to edit the config.yml file to add your ruby path if it wasn't found a
 
 Step 5:
 Add the mysql bin folder to your system's %path% environment variable.
+https://dev.mysql.com/doc/mysql-windows-excerpt/5.1/en/mysql-installation-windows-path.html
+
 Run the mysqld service using Win+R.
 
 Step 6:
 Run a new cmd window (fast way is Winr+R, type cmd, and press enter) and type mysql -u root -p, and then leave the password blank.
 
 Step 7:
-Enter show databases; and press enter.  This should show you all active mysql databases.
-Enter create database mod_picker; to create a new database for our site.
+Enter "show databases;" (without the quotes) and press enter.  This should show you all active mysql databases.
+Enter "create database mod_picker;" to create a new database for our site.
 
 Step 8:
-Make a new cmd window in the directory where setup.sql is (hold shift, right click in the directory, and choose open command window here).  Then run the command:  mysql -u root -p mod_picker < setup.sql.  Leave the password blank, then close the command window.
+Make a new cmd window(DO NOT CLOSE THE ONE IN STEP 6) in the directory where setup.sql is (hold shift, right click in the directory, and choose open command window here. The directory should be under "../mod-picker/setup/").  Then run the command:  "mysql -u root -p mod_picker < setup.sql" (Without the quotes).  Leave the password blank, then close the command window.
 
 Step 9:
 In the command window still open type "use mod_picker;", press enter, and then type "show tables;".  You should see all tables in our schema there.  There should be 35 of them.  Close the command window when you're done.  Screenshot: http://puu.sh/lJmz1.png
