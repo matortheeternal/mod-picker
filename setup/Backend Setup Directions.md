@@ -10,7 +10,7 @@ Download [Ruby 2.0.0-p647 (x64) and the mingw 64-bit devkit](http://rubyinstalle
 
 ### Step 4:
 Run the ruby installer and make sure to check the box to add ruby executables to your path.  
-I recommend using a folder like `C:\dev\lang\`.  
+I recommend installing in a folder like `C:\dev\lang\`.  
 Extract the devkit in the ruby folder in a folder called devkit.  
 Follow the [Quick Start instructions for setting up the devkit](https://github.com/oneclick/rubyinstaller/wiki/Development-Kit).  
 Make sure to edit the `config.yml` file to add your ruby path if it wasn't found automatically.
@@ -23,7 +23,7 @@ Run the mysqld service using `Win+R`.
 Run a new cmd window (fast way is `Winr+R`, type `cmd`, and press `enter`) and type `mysql -u root -p`, and then leave the password blank.
 
 ### Step 7:
-Enter `show databases;` and press `enter`.  This should show you all active mysql databases.
+Enter `show databases;` and press `enter`.  This should show you all active mysql databases.  
 Enter `create database mod_picker;` to create a new database for our site.
 
 ### Step 8:
@@ -35,7 +35,7 @@ In the command window still open type `use mod_picker;`, press enter, and then t
 ![Screenshot](http://puu.sh/lJmz1.png)
 
 ### Step 10:
-Run a command window in any directory, and type "gem install rails".  You'll have to wait awhile for it to fully download and install all required packages.
+Run a command window in any directory, and type "gem install rails".  You'll have to wait a while for it to fully download and install all required packages.
 
 ### Step 11:
 Go to the mod-picker directory in the mod-picker repo, open a command window, and type `bundle install`.  This will install all gems (dependencies) that are missing.
