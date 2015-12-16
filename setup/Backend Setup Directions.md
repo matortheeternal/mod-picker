@@ -1,6 +1,6 @@
 ### Step 1:
-Download [MySQL 5.6](https://dev.mysql.com/downloads/windows/installer/5.6.html)
-(do the zip installer)
+Download [MySQL 5.6](https://dev.mysql.com/downloads/mysql/5.6.html)
+(do the x64 zip installer)
 
 ### Step 2:
 Extract the folder from the archive wherever you want. I'd recommend using folder like `C:\dev\db\`
