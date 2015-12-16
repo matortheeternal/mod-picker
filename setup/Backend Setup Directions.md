@@ -9,10 +9,10 @@ Extract the folder from the archive wherever you want. I'd recommend using folde
 Download [Ruby 2.0.0-p647 (x64) and the mingw 64-bit devkit](http://rubyinstaller.org/downloads/)
 
 ### Step 4:
-Run the ruby installer and make sure to check the box to add ruby executables to your path.
-I recommend using a folder like `C:\dev\lang\`
-Extract the devkit in the ruby folder in a folder called devkit
-Follow the [Quick Start instructions for setting up the devkit](https://github.com/oneclick/rubyinstaller/wiki/Development-Kit)
+Run the ruby installer and make sure to check the box to add ruby executables to your path.  
+I recommend using a folder like `C:\dev\lang\`.  
+Extract the devkit in the ruby folder in a folder called devkit.  
+Follow the [Quick Start instructions for setting up the devkit](https://github.com/oneclick/rubyinstaller/wiki/Development-Kit).  
 Make sure to edit the `config.yml` file to add your ruby path if it wasn't found automatically.
 
 ### Step 5:
