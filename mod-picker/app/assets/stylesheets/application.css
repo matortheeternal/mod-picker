@@ -10,6 +10,35 @@
  * defined in the other CSS/SCSS files in this directory. It is generally better to create a new
  * file per style scope.
  *
- *= require_tree .
  *= require_self
  */
+
+/* some basic css for scaffolds */
+body {
+  width: 80%;
+  margin: auto;
+  padding-top: 100px;
+}
+
+table {
+	border-collapse: collapse;
+	width: 95%;
+	font-family:Arial;
+}
+
+td, th {
+	border-left: 1px solid #CBCBCB;
+	border-width: 0px 0px 0px 1px;
+	font-size: 12px;
+	margin: 0px;
+	overflow: visible;
+	padding: 0.5em 1em;
+}
+
+tr:nth-child(odd) { 
+	background-color:#dddddd; 
+}
+
+tr:nth-child(even) { 
+	background-color:#ffffff; 
+}
