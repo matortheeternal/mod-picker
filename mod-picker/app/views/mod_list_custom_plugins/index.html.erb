@@ -1,0 +1,35 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Listing Mod List Custom Plugins</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Ml</th>
+      <th>Active</th>
+      <th>Load order</th>
+      <th>Title</th>
+      <th>Description</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @mod_list_custom_plugins.each do |mod_list_custom_plugin| %>
+      <tr>
+        <td><%= mod_list_custom_plugin.ml_id %></td>
+        <td><%= mod_list_custom_plugin.active %></td>
+        <td><%= mod_list_custom_plugin.load_order %></td>
+        <td><%= mod_list_custom_plugin.title %></td>
+        <td><%= mod_list_custom_plugin.description %></td>
+        <td><%= link_to 'Show', mod_list_custom_plugin %></td>
+        <td><%= link_to 'Edit', edit_mod_list_custom_plugin_path(mod_list_custom_plugin) %></td>
+        <td><%= link_to 'Destroy', mod_list_custom_plugin, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Mod list custom plugin', new_mod_list_custom_plugin_path %>

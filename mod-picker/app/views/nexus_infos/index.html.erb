@@ -1,0 +1,53 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Listing Nexus Infos</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Nm</th>
+      <th>Uploaded by</th>
+      <th>Authors</th>
+      <th>Endorsements</th>
+      <th>Total downloads</th>
+      <th>Unique downloads</th>
+      <th>Views</th>
+      <th>Posts count</th>
+      <th>Videos count</th>
+      <th>Images count</th>
+      <th>Files count</th>
+      <th>Articles count</th>
+      <th>Nexus category</th>
+      <th>Changelog</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @nexus_infos.each do |nexus_info| %>
+      <tr>
+        <td><%= nexus_info.nm_id %></td>
+        <td><%= nexus_info.uploaded_by %></td>
+        <td><%= nexus_info.authors %></td>
+        <td><%= nexus_info.endorsements %></td>
+        <td><%= nexus_info.total_downloads %></td>
+        <td><%= nexus_info.unique_downloads %></td>
+        <td><%= nexus_info.views %></td>
+        <td><%= nexus_info.posts_count %></td>
+        <td><%= nexus_info.videos_count %></td>
+        <td><%= nexus_info.images_count %></td>
+        <td><%= nexus_info.files_count %></td>
+        <td><%= nexus_info.articles_count %></td>
+        <td><%= nexus_info.nexus_category %></td>
+        <td><%= nexus_info.changelog %></td>
+        <td><%= link_to 'Show', nexus_info %></td>
+        <td><%= link_to 'Edit', edit_nexus_info_path(nexus_info) %></td>
+        <td><%= link_to 'Destroy', nexus_info, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Nexus info', new_nexus_info_path %>

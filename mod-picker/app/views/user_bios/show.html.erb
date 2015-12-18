@@ -1,0 +1,39 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Bio:</strong>
+  <%= @user_bio.bio_id %>
+</p>
+
+<p>
+  <strong>Nexus username:</strong>
+  <%= @user_bio.nexus_username %>
+</p>
+
+<p>
+  <strong>Nexus verified:</strong>
+  <%= @user_bio.nexus_verified %>
+</p>
+
+<p>
+  <strong>Lover username:</strong>
+  <%= @user_bio.lover_username %>
+</p>
+
+<p>
+  <strong>Lover verified:</strong>
+  <%= @user_bio.lover_verified %>
+</p>
+
+<p>
+  <strong>Steam username:</strong>
+  <%= @user_bio.steam_username %>
+</p>
+
+<p>
+  <strong>Steam verified:</strong>
+  <%= @user_bio.steam_verified %>
+</p>
+
+<%= link_to 'Edit', edit_user_bio_path(@user_bio) %> |
+<%= link_to 'Back', user_bios_path %>

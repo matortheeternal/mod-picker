@@ -1,0 +1,37 @@
+<%= form_for(@mod_list_custom_plugin) do |f| %>
+  <% if @mod_list_custom_plugin.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@mod_list_custom_plugin.errors.count, "error") %> prohibited this mod_list_custom_plugin from being saved:</h2>
+
+      <ul>
+      <% @mod_list_custom_plugin.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :ml_id %><br>
+    <%= f.number_field :ml_id %>
+  </div>
+  <div class="field">
+    <%= f.label :active %><br>
+    <%= f.check_box :active %>
+  </div>
+  <div class="field">
+    <%= f.label :load_order %><br>
+    <%= f.number_field :load_order %>
+  </div>
+  <div class="field">
+    <%= f.label :title %><br>
+    <%= f.text_field :title %>
+  </div>
+  <div class="field">
+    <%= f.label :description %><br>
+    <%= f.text_area :description %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

@@ -1,0 +1,2 @@
+module ModAssetFilesHelper
+end

@@ -1,0 +1,29 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Pl:</strong>
+  <%= @plugin_record_group.pl_id %>
+</p>
+
+<p>
+  <strong>Sig:</strong>
+  <%= @plugin_record_group.sig %>
+</p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @plugin_record_group.name %>
+</p>
+
+<p>
+  <strong>New records:</strong>
+  <%= @plugin_record_group.new_records %>
+</p>
+
+<p>
+  <strong>Override records:</strong>
+  <%= @plugin_record_group.override_records %>
+</p>
+
+<%= link_to 'Edit', edit_plugin_record_group_path(@plugin_record_group) %> |
+<%= link_to 'Back', plugin_record_groups_path %>

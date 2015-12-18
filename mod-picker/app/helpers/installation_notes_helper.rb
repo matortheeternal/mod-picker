@@ -1,0 +1,2 @@
+module InstallationNotesHelper
+end

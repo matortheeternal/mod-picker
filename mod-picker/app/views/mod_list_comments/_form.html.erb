@@ -1,0 +1,25 @@
+<%= form_for(@mod_list_comment) do |f| %>
+  <% if @mod_list_comment.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@mod_list_comment.errors.count, "error") %> prohibited this mod_list_comment from being saved:</h2>
+
+      <ul>
+      <% @mod_list_comment.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :ml_id %><br>
+    <%= f.number_field :ml_id %>
+  </div>
+  <div class="field">
+    <%= f.label :c_id %><br>
+    <%= f.number_field :c_id %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

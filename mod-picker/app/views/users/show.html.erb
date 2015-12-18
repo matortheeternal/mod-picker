@@ -1,0 +1,74 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>User:</strong>
+  <%= @user.user_id %>
+</p>
+
+<p>
+  <strong>Username:</strong>
+  <%= @user.username %>
+</p>
+
+<p>
+  <strong>Email:</strong>
+  <%= @user.email %>
+</p>
+
+<p>
+  <strong>Hash:</strong>
+  <%= @user.hash %>
+</p>
+
+<p>
+  <strong>User level:</strong>
+  <%= @user.user_level %>
+</p>
+
+<p>
+  <strong>Title:</strong>
+  <%= @user.title %>
+</p>
+
+<p>
+  <strong>Avatar:</strong>
+  <%= @user.avatar %>
+</p>
+
+<p>
+  <strong>Joined:</strong>
+  <%= @user.joined %>
+</p>
+
+<p>
+  <strong>Last seen:</strong>
+  <%= @user.last_seen %>
+</p>
+
+<p>
+  <strong>Bio:</strong>
+  <%= @user.bio_id %>
+</p>
+
+<p>
+  <strong>Set:</strong>
+  <%= @user.set_id %>
+</p>
+
+<p>
+  <strong>Rep:</strong>
+  <%= @user.rep_id %>
+</p>
+
+<p>
+  <strong>Active ml:</strong>
+  <%= @user.active_ml_id %>
+</p>
+
+<p>
+  <strong>Active mc:</strong>
+  <%= @user.active_mc_id %>
+</p>
+
+<%= link_to 'Edit', edit_user_path(@user) %> |
+<%= link_to 'Back', users_path %>

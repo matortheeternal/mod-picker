@@ -1,0 +1,57 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Listing Reviews</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>R</th>
+      <th>Submitted by</th>
+      <th>Mod</th>
+      <th>Hidden</th>
+      <th>Rating1</th>
+      <th>Tinyint</th>
+      <th>Rating2</th>
+      <th>Tinyint</th>
+      <th>Rating3</th>
+      <th>Tinyint</th>
+      <th>Rating4</th>
+      <th>Tinyint</th>
+      <th>Rating5</th>
+      <th>Tinyint</th>
+      <th>Submitted</th>
+      <th>Edited</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @reviews.each do |review| %>
+      <tr>
+        <td><%= review.r_id %></td>
+        <td><%= review.submitted_by %></td>
+        <td><%= review.mod_id %></td>
+        <td><%= review.hidden %></td>
+        <td><%= review.rating1 %></td>
+        <td><%= review.TINYINT %></td>
+        <td><%= review.rating2 %></td>
+        <td><%= review.TINYINT %></td>
+        <td><%= review.rating3 %></td>
+        <td><%= review.TINYINT %></td>
+        <td><%= review.rating4 %></td>
+        <td><%= review.TINYINT %></td>
+        <td><%= review.rating5 %></td>
+        <td><%= review.TINYINT %></td>
+        <td><%= review.submitted %></td>
+        <td><%= review.edited %></td>
+        <td><%= link_to 'Show', review %></td>
+        <td><%= link_to 'Edit', edit_review_path(review) %></td>
+        <td><%= link_to 'Destroy', review, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Review', new_review_path %>

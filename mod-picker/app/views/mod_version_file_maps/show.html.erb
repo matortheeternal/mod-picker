@@ -1,0 +1,14 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Mv:</strong>
+  <%= @mod_version_file_map.mv_id %>
+</p>
+
+<p>
+  <strong>Maf:</strong>
+  <%= @mod_version_file_map.maf_id %>
+</p>
+
+<%= link_to 'Edit', edit_mod_version_file_map_path(@mod_version_file_map) %> |
+<%= link_to 'Back', mod_version_file_maps_path %>

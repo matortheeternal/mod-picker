@@ -1,0 +1,61 @@
+<%= form_for(@user_setting) do |f| %>
+  <% if @user_setting.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@user_setting.errors.count, "error") %> prohibited this user_setting from being saved:</h2>
+
+      <ul>
+      <% @user_setting.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :set_id %><br>
+    <%= f.number_field :set_id %>
+  </div>
+  <div class="field">
+    <%= f.label :show_notifications %><br>
+    <%= f.check_box :show_notifications %>
+  </div>
+  <div class="field">
+    <%= f.label :show_tooltips %><br>
+    <%= f.check_box :show_tooltips %>
+  </div>
+  <div class="field">
+    <%= f.label :email_notifications %><br>
+    <%= f.check_box :email_notifications %>
+  </div>
+  <div class="field">
+    <%= f.label :email_public %><br>
+    <%= f.check_box :email_public %>
+  </div>
+  <div class="field">
+    <%= f.label :allow_adult_content %><br>
+    <%= f.check_box :allow_adult_content %>
+  </div>
+  <div class="field">
+    <%= f.label :allow_nexus_mods %><br>
+    <%= f.check_box :allow_nexus_mods %>
+  </div>
+  <div class="field">
+    <%= f.label :allow_lovers_lab %><br>
+    <%= f.check_box :allow_lovers_lab %>
+  </div>
+  <div class="field">
+    <%= f.label :allow_steam_workshop %><br>
+    <%= f.check_box :allow_steam_workshop %>
+  </div>
+  <div class="field">
+    <%= f.label :PRIMARY %><br>
+    <%= f.text_field :PRIMARY %>
+  </div>
+  <div class="field">
+    <%= f.label :KEY(set_id) %><br>
+    <%= f.text_field :KEY(set_id) %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

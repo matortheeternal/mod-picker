@@ -1,0 +1,39 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Listing User Bios</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Bio</th>
+      <th>Nexus username</th>
+      <th>Nexus verified</th>
+      <th>Lover username</th>
+      <th>Lover verified</th>
+      <th>Steam username</th>
+      <th>Steam verified</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @user_bios.each do |user_bio| %>
+      <tr>
+        <td><%= user_bio.bio_id %></td>
+        <td><%= user_bio.nexus_username %></td>
+        <td><%= user_bio.nexus_verified %></td>
+        <td><%= user_bio.lover_username %></td>
+        <td><%= user_bio.lover_verified %></td>
+        <td><%= user_bio.steam_username %></td>
+        <td><%= user_bio.steam_verified %></td>
+        <td><%= link_to 'Show', user_bio %></td>
+        <td><%= link_to 'Edit', edit_user_bio_path(user_bio) %></td>
+        <td><%= link_to 'Destroy', user_bio, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New User bio', new_user_bio_path %>

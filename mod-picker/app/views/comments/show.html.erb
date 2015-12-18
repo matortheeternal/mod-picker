@@ -1,0 +1,34 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>C:</strong>
+  <%= @comment.c_id %>
+</p>
+
+<p>
+  <strong>Parent comment:</strong>
+  <%= @comment.parent_comment %>
+</p>
+
+<p>
+  <strong>Submitted by:</strong>
+  <%= @comment.submitted_by %>
+</p>
+
+<p>
+  <strong>Hidden:</strong>
+  <%= @comment.hidden %>
+</p>
+
+<p>
+  <strong>Submitted:</strong>
+  <%= @comment.submitted %>
+</p>
+
+<p>
+  <strong>Edited:</strong>
+  <%= @comment.edited %>
+</p>
+
+<%= link_to 'Edit', edit_comment_path(@comment) %> |
+<%= link_to 'Back', comments_path %>

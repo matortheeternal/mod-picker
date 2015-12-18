@@ -1,0 +1,54 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Mod:</strong>
+  <%= @mod.mod_id %>
+</p>
+
+<p>
+  <strong>Game:</strong>
+  <%= @mod.game %>
+</p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @mod.name %>
+</p>
+
+<p>
+  <strong>Aliases:</strong>
+  <%= @mod.aliases %>
+</p>
+
+<p>
+  <strong>Is utility:</strong>
+  <%= @mod.is_utility %>
+</p>
+
+<p>
+  <strong>Category:</strong>
+  <%= @mod.category %>
+</p>
+
+<p>
+  <strong>Has adult content:</strong>
+  <%= @mod.has_adult_content %>
+</p>
+
+<p>
+  <strong>Nm:</strong>
+  <%= @mod.nm_id %>
+</p>
+
+<p>
+  <strong>Ws:</strong>
+  <%= @mod.ws_id %>
+</p>
+
+<p>
+  <strong>Ll:</strong>
+  <%= @mod.ll_id %>
+</p>
+
+<%= link_to 'Edit', edit_mod_path(@mod) %> |
+<%= link_to 'Back', mods_path %>

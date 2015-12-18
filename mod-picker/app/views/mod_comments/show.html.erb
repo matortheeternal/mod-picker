@@ -1,0 +1,14 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Mod:</strong>
+  <%= @mod_comment.mod_id %>
+</p>
+
+<p>
+  <strong>C:</strong>
+  <%= @mod_comment.c_id %>
+</p>
+
+<%= link_to 'Edit', edit_mod_comment_path(@mod_comment) %> |
+<%= link_to 'Back', mod_comments_path %>

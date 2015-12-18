@@ -1,0 +1,49 @@
+<%= form_for(@plugin_override_map) do |f| %>
+  <% if @plugin_override_map.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@plugin_override_map.errors.count, "error") %> prohibited this plugin_override_map from being saved:</h2>
+
+      <ul>
+      <% @plugin_override_map.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :pl_id %><br>
+    <%= f.number_field :pl_id %>
+  </div>
+  <div class="field">
+    <%= f.label :mst_id %><br>
+    <%= f.number_field :mst_id %>
+  </div>
+  <div class="field">
+    <%= f.label :form_id %><br>
+    <%= f.number_field :form_id %>
+  </div>
+  <div class="field">
+    <%= f.label :sig %><br>
+    <%= f.text_field :sig %>
+  </div>
+  <div class="field">
+    <%= f.label :name %><br>
+    <%= f.text_area :name %>
+  </div>
+  <div class="field">
+    <%= f.label :is_itm %><br>
+    <%= f.check_box :is_itm %>
+  </div>
+  <div class="field">
+    <%= f.label :is_itpo %><br>
+    <%= f.check_box :is_itpo %>
+  </div>
+  <div class="field">
+    <%= f.label :is_udr %><br>
+    <%= f.check_box :is_udr %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

@@ -1,0 +1,27 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Listing Workshop Infos</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Ws</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @workshop_infos.each do |workshop_info| %>
+      <tr>
+        <td><%= workshop_info.ws_id %></td>
+        <td><%= link_to 'Show', workshop_info %></td>
+        <td><%= link_to 'Edit', edit_workshop_info_path(workshop_info) %></td>
+        <td><%= link_to 'Destroy', workshop_info, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Workshop info', new_workshop_info_path %>

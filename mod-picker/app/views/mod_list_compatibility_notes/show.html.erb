@@ -1,0 +1,19 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Ml:</strong>
+  <%= @mod_list_compatibility_note.ml_id %>
+</p>
+
+<p>
+  <strong>Cn:</strong>
+  <%= @mod_list_compatibility_note.cn_id %>
+</p>
+
+<p>
+  <strong>Status:</strong>
+  <%= @mod_list_compatibility_note.status %>
+</p>
+
+<%= link_to 'Edit', edit_mod_list_compatibility_note_path(@mod_list_compatibility_note) %> |
+<%= link_to 'Back', mod_list_compatibility_notes_path %>

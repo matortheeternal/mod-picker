@@ -1,0 +1,2 @@
+module UserBiosHelper
+end

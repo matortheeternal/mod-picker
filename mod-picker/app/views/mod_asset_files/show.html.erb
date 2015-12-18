@@ -1,0 +1,14 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Maf:</strong>
+  <%= @mod_asset_file.maf_id %>
+</p>
+
+<p>
+  <strong>Filepath:</strong>
+  <%= @mod_asset_file.filepath %>
+</p>
+
+<%= link_to 'Edit', edit_mod_asset_file_path(@mod_asset_file) %> |
+<%= link_to 'Back', mod_asset_files_path %>

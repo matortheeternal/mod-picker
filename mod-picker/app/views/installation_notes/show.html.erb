@@ -1,0 +1,39 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>In:</strong>
+  <%= @installation_note.in_id %>
+</p>
+
+<p>
+  <strong>Submitted by:</strong>
+  <%= @installation_note.submitted_by %>
+</p>
+
+<p>
+  <strong>Mv:</strong>
+  <%= @installation_note.mv_id %>
+</p>
+
+<p>
+  <strong>Always:</strong>
+  <%= @installation_note.always %>
+</p>
+
+<p>
+  <strong>Note type:</strong>
+  <%= @installation_note.note_type %>
+</p>
+
+<p>
+  <strong>Submitted:</strong>
+  <%= @installation_note.submitted %>
+</p>
+
+<p>
+  <strong>Edited:</strong>
+  <%= @installation_note.edited %>
+</p>
+
+<%= link_to 'Edit', edit_installation_note_path(@installation_note) %> |
+<%= link_to 'Back', installation_notes_path %>

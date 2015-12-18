@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  ml_id: 1
+  mod_id: 1
+  active: false
+  install_order: 1
+
+two:
+  ml_id: 1
+  mod_id: 1
+  active: false
+  install_order: 1

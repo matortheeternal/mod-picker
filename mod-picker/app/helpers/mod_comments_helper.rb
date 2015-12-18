@@ -1,0 +1,2 @@
+module ModCommentsHelper
+end

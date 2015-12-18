@@ -1,0 +1,19 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Ml:</strong>
+  <%= @mod_list_installation_note.ml_id %>
+</p>
+
+<p>
+  <strong>In:</strong>
+  <%= @mod_list_installation_note.in_id %>
+</p>
+
+<p>
+  <strong>Status:</strong>
+  <%= @mod_list_installation_note.status %>
+</p>
+
+<%= link_to 'Edit', edit_mod_list_installation_note_path(@mod_list_installation_note) %> |
+<%= link_to 'Back', mod_list_installation_notes_path %>

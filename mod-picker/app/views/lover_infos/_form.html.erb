@@ -1,0 +1,21 @@
+<%= form_for(@lover_info) do |f| %>
+  <% if @lover_info.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@lover_info.errors.count, "error") %> prohibited this lover_info from being saved:</h2>
+
+      <ul>
+      <% @lover_info.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :ll_id %><br>
+    <%= f.number_field :ll_id %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

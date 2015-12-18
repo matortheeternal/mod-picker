@@ -1,0 +1,37 @@
+<%= form_for(@helpful_mark) do |f| %>
+  <% if @helpful_mark.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@helpful_mark.errors.count, "error") %> prohibited this helpful_mark from being saved:</h2>
+
+      <ul>
+      <% @helpful_mark.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :r_id %><br>
+    <%= f.number_field :r_id %>
+  </div>
+  <div class="field">
+    <%= f.label :cn_id %><br>
+    <%= f.number_field :cn_id %>
+  </div>
+  <div class="field">
+    <%= f.label :in_id %><br>
+    <%= f.number_field :in_id %>
+  </div>
+  <div class="field">
+    <%= f.label :submitted_by %><br>
+    <%= f.number_field :submitted_by %>
+  </div>
+  <div class="field">
+    <%= f.label :helpful %><br>
+    <%= f.check_box :helpful %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

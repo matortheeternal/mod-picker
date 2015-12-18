@@ -1,0 +1,29 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Mv:</strong>
+  <%= @mod_version.mv_id %>
+</p>
+
+<p>
+  <strong>Mod:</strong>
+  <%= @mod_version.mod_id %>
+</p>
+
+<p>
+  <strong>Released:</strong>
+  <%= @mod_version.released %>
+</p>
+
+<p>
+  <strong>Obsolete:</strong>
+  <%= @mod_version.obsolete %>
+</p>
+
+<p>
+  <strong>Dangerous:</strong>
+  <%= @mod_version.dangerous %>
+</p>
+
+<%= link_to 'Edit', edit_mod_version_path(@mod_version) %> |
+<%= link_to 'Back', mod_versions_path %>

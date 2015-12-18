@@ -1,0 +1,57 @@
+<%= form_for(@mod) do |f| %>
+  <% if @mod.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@mod.errors.count, "error") %> prohibited this mod from being saved:</h2>
+
+      <ul>
+      <% @mod.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :mod_id %><br>
+    <%= f.number_field :mod_id %>
+  </div>
+  <div class="field">
+    <%= f.label :game %><br>
+    <%= f.text_area :game %>
+  </div>
+  <div class="field">
+    <%= f.label :name %><br>
+    <%= f.text_area :name %>
+  </div>
+  <div class="field">
+    <%= f.label :aliases %><br>
+    <%= f.text_area :aliases %>
+  </div>
+  <div class="field">
+    <%= f.label :is_utility %><br>
+    <%= f.check_box :is_utility %>
+  </div>
+  <div class="field">
+    <%= f.label :category %><br>
+    <%= f.number_field :category %>
+  </div>
+  <div class="field">
+    <%= f.label :has_adult_content %><br>
+    <%= f.check_box :has_adult_content %>
+  </div>
+  <div class="field">
+    <%= f.label :nm_id %><br>
+    <%= f.number_field :nm_id %>
+  </div>
+  <div class="field">
+    <%= f.label :ws_id %><br>
+    <%= f.number_field :ws_id %>
+  </div>
+  <div class="field">
+    <%= f.label :ll_id %><br>
+    <%= f.number_field :ll_id %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

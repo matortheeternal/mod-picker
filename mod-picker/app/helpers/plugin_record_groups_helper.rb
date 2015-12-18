@@ -1,0 +1,2 @@
+module PluginRecordGroupsHelper
+end

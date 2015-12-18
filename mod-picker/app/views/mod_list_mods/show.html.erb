@@ -1,0 +1,24 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Ml:</strong>
+  <%= @mod_list_mod.ml_id %>
+</p>
+
+<p>
+  <strong>Mod:</strong>
+  <%= @mod_list_mod.mod_id %>
+</p>
+
+<p>
+  <strong>Active:</strong>
+  <%= @mod_list_mod.active %>
+</p>
+
+<p>
+  <strong>Install order:</strong>
+  <%= @mod_list_mod.install_order %>
+</p>
+
+<%= link_to 'Edit', edit_mod_list_mod_path(@mod_list_mod) %> |
+<%= link_to 'Back', mod_list_mods_path %>

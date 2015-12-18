@@ -1,0 +1,54 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Ml:</strong>
+  <%= @mod_list.ml_id %>
+</p>
+
+<p>
+  <strong>Game:</strong>
+  <%= @mod_list.game %>
+</p>
+
+<p>
+  <strong>Created by:</strong>
+  <%= @mod_list.created_by %>
+</p>
+
+<p>
+  <strong>Is collection:</strong>
+  <%= @mod_list.is_collection %>
+</p>
+
+<p>
+  <strong>Is public:</strong>
+  <%= @mod_list.is_public %>
+</p>
+
+<p>
+  <strong>Has adult content:</strong>
+  <%= @mod_list.has_adult_content %>
+</p>
+
+<p>
+  <strong>Status:</strong>
+  <%= @mod_list.status %>
+</p>
+
+<p>
+  <strong>Created:</strong>
+  <%= @mod_list.created %>
+</p>
+
+<p>
+  <strong>Completed:</strong>
+  <%= @mod_list.completed %>
+</p>
+
+<p>
+  <strong>Description:</strong>
+  <%= @mod_list.description %>
+</p>
+
+<%= link_to 'Edit', edit_mod_list_path(@mod_list) %> |
+<%= link_to 'Back', mod_lists_path %>

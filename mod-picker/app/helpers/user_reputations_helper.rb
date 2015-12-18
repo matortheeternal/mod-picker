@@ -1,0 +1,2 @@
+module UserReputationsHelper
+end

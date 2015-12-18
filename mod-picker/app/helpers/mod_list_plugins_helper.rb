@@ -1,0 +1,2 @@
+module ModListPluginsHelper
+end

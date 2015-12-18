@@ -1,0 +1,34 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Pl:</strong>
+  <%= @plugin.pl_id %>
+</p>
+
+<p>
+  <strong>Mv:</strong>
+  <%= @plugin.mv_id %>
+</p>
+
+<p>
+  <strong>Filename:</strong>
+  <%= @plugin.filename %>
+</p>
+
+<p>
+  <strong>Author:</strong>
+  <%= @plugin.author %>
+</p>
+
+<p>
+  <strong>Description:</strong>
+  <%= @plugin.description %>
+</p>
+
+<p>
+  <strong>Hash:</strong>
+  <%= @plugin.hash %>
+</p>
+
+<%= link_to 'Edit', edit_plugin_path(@plugin) %> |
+<%= link_to 'Back', plugins_path %>

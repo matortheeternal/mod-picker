@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  c_id: 1
+  parent_comment: 1
+  submitted_by: 1
+  hidden: false
+  submitted: 2015-12-18 12:14:36
+  edited: 2015-12-18 12:14:36
+
+two:
+  c_id: 1
+  parent_comment: 1
+  submitted_by: 1
+  hidden: false
+  submitted: 2015-12-18 12:14:36
+  edited: 2015-12-18 12:14:36

@@ -1,0 +1,29 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Cn:</strong>
+  <%= @compatibility_note.cn_id %>
+</p>
+
+<p>
+  <strong>Submitted by:</strong>
+  <%= @compatibility_note.submitted_by %>
+</p>
+
+<p>
+  <strong>Mod mode:</strong>
+  <%= @compatibility_note.mod_mode %>
+</p>
+
+<p>
+  <strong>Compatibility patch:</strong>
+  <%= @compatibility_note.compatibility_patch %>
+</p>
+
+<p>
+  <strong>Compatibility status:</strong>
+  <%= @compatibility_note.compatibility_status %>
+</p>
+
+<%= link_to 'Edit', edit_compatibility_note_path(@compatibility_note) %> |
+<%= link_to 'Back', compatibility_notes_path %>

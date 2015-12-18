@@ -1,0 +1,29 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Listing Mod List Comments</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Ml</th>
+      <th>C</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @mod_list_comments.each do |mod_list_comment| %>
+      <tr>
+        <td><%= mod_list_comment.ml_id %></td>
+        <td><%= mod_list_comment.c_id %></td>
+        <td><%= link_to 'Show', mod_list_comment %></td>
+        <td><%= link_to 'Edit', edit_mod_list_comment_path(mod_list_comment) %></td>
+        <td><%= link_to 'Destroy', mod_list_comment, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Mod list comment', new_mod_list_comment_path %>

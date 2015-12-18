@@ -1,0 +1,45 @@
+<%= form_for(@user_bio) do |f| %>
+  <% if @user_bio.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@user_bio.errors.count, "error") %> prohibited this user_bio from being saved:</h2>
+
+      <ul>
+      <% @user_bio.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :bio_id %><br>
+    <%= f.number_field :bio_id %>
+  </div>
+  <div class="field">
+    <%= f.label :nexus_username %><br>
+    <%= f.text_field :nexus_username %>
+  </div>
+  <div class="field">
+    <%= f.label :nexus_verified %><br>
+    <%= f.check_box :nexus_verified %>
+  </div>
+  <div class="field">
+    <%= f.label :lover_username %><br>
+    <%= f.text_field :lover_username %>
+  </div>
+  <div class="field">
+    <%= f.label :lover_verified %><br>
+    <%= f.check_box :lover_verified %>
+  </div>
+  <div class="field">
+    <%= f.label :steam_username %><br>
+    <%= f.text_field :steam_username %>
+  </div>
+  <div class="field">
+    <%= f.label :steam_verified %><br>
+    <%= f.check_box :steam_verified %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

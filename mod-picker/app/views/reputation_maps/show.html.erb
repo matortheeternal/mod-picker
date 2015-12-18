@@ -1,0 +1,14 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>From rep:</strong>
+  <%= @reputation_map.from_rep_id %>
+</p>
+
+<p>
+  <strong>To rep:</strong>
+  <%= @reputation_map.to_rep_id %>
+</p>
+
+<%= link_to 'Edit', edit_reputation_map_path(@reputation_map) %> |
+<%= link_to 'Back', reputation_maps_path %>

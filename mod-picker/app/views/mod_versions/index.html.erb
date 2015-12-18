@@ -1,0 +1,35 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Listing Mod Versions</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Mv</th>
+      <th>Mod</th>
+      <th>Released</th>
+      <th>Obsolete</th>
+      <th>Dangerous</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @mod_versions.each do |mod_version| %>
+      <tr>
+        <td><%= mod_version.mv_id %></td>
+        <td><%= mod_version.mod_id %></td>
+        <td><%= mod_version.released %></td>
+        <td><%= mod_version.obsolete %></td>
+        <td><%= mod_version.dangerous %></td>
+        <td><%= link_to 'Show', mod_version %></td>
+        <td><%= link_to 'Edit', edit_mod_version_path(mod_version) %></td>
+        <td><%= link_to 'Destroy', mod_version, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Mod version', new_mod_version_path %>
