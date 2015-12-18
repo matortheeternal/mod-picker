@@ -23,22 +23,28 @@ body {
 table {
 	border-collapse: collapse;
 	width: 95%;
-	font-family:Arial;
+	font-family: Arial;
+}
+
+thead {
+	background-color: #bbb;
+	font-color: #fff;
+	text-align: left;
 }
 
 td, th {
 	border-left: 1px solid #CBCBCB;
 	border-width: 0px 0px 0px 1px;
-	font-size: 12px;
+	font-size: 10px;
 	margin: 0px;
 	overflow: visible;
 	padding: 0.5em 1em;
 }
 
-tr:nth-child(odd) { 
-	background-color:#dddddd; 
+tbody tr:nth-child(odd) { 
+	background-color: #eee; 
 }
 
-tr:nth-child(even) { 
-	background-color:#ffffff; 
+tbody tr:nth-child(even) { 
+	background-color: #fff; 
 }
