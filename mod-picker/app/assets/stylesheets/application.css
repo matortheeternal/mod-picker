@@ -17,7 +17,8 @@
 body {
   width: 80%;
   margin: auto;
-  padding-top: 100px;
+  padding-top: 60px;
+  padding-bottom: 60px;
 }
 
 table {
