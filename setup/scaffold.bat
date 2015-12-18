@@ -57,7 +57,7 @@ call rails g scaffold mod_list_mods ml_id:integer mod_id:integer active:boolean 
 call rails g scaffold user_bios  bio_id:integer nexus_username:string nexus_verified:boolean lover_username:string lover_verified:boolean steam_username:string steam_verified:boolean
 
 :: the settings associated with a particular user
-call rails g scaffold user_settings set_id:integer show_notifications:boolean show_tooltips:boolean email_notifications:boolean email_public:boolean allow_adult_content:boolean allow_nexus_mods:boolean allow_lovers_lab:boolean allow_steam_workshop:boolean PRIMARY KEY(set_id)
+call rails g scaffold user_settings set_id:integer show_notifications:boolean show_tooltips:boolean email_notifications:boolean email_public:boolean allow_adult_content:boolean allow_nexus_mods:boolean allow_lovers_lab:boolean allow_steam_workshop:boolean
 
 :: the reputation associated with a particular user
 call rails g scaffold user_reputations rep_id:integer overall:float offset:float audiovisual_design:float plugin_design:float utilty_design:float script_design:float
