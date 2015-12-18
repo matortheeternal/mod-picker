@@ -42,3 +42,6 @@ Go to the mod-picker directory in the mod-picker repo, open a command window, an
 
 ### Step 12:
 In the same command window type `rails server`.  Your server should now be running!  :)
+
+### Step 13:
+Open your internet browser and navigate to [127.0.0.1:3000](http://127.0.0.1:3000).  You can navigate to various pages from the homepage.
