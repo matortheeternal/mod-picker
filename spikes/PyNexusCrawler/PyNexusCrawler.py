@@ -12,8 +12,8 @@ print("HTTP GET \""+url+"\"")
 page = urllib.urlopen(url).read()
 print("SUCCESS: Recieved "+str(sys.getsizeof(page))+" Bytes\n")
 
-# ANALYZE DATA
-print("PARSING DATA...")
+# PARSE PAGE
+print("PARSING STATS...")
 soup = BeautifulSoup(page, "html.parser")
 mainImage = soup.find(id="gallery-ul-0").li.a['href']
 name = soup.find("span", class_="header-name").text
@@ -27,19 +27,42 @@ uploadedBy = soup.find("div", class_="uploader").a.text
 dates = soup.find("div", class_="header-dates")
 dateAdded = dates.contents[1].text.replace("Added: ", "")
 dateUpdated = dates.contents[3].text.replace("Updated: ", "")
-numArticles = soup.find("a", class_="tab-articles").strong.text.lstrip("0")
+
+# tab stats
 numFiles = soup.find("a", class_="tab-files").strong.text.lstrip("0")
 numImages = soup.find("a", class_="tab-images").strong.text.lstrip("0")
-numPosts = soup.find("a", class_="tab-comments").strong.text.lstrip("0")
-numForums = soup.find("a", class_="tab-discussion").strong.text.lstrip("0")
-numVideos = soup.find("a", class_="tab-videos").strong.text.lstrip("0")
+
+# attempt to get numArticles
+try:
+	numArticles = soup.find("a", class_="tab-articles").strong.text.lstrip("0")
+except AttributeError:
+	numArticles = "0"
+
+# attempt to get numPosts
+try:
+	numPosts = soup.find("a", class_="tab-comments").strong.text.lstrip("0")
+except AttributeError:
+	numPosts = "0"
+
+# attempt to get numForums
+try:
+	numForums = soup.find("a", class_="tab-discussion").strong.text.lstrip("0")
+except AttributeError:
+	numForums = "0"
+
+# attempt to get numVideos
+try:
+	numVideos = soup.find("a", class_="tab-videos").strong.text.lstrip("0")
+except AttributeError:
+	numForums = "0"
+
 print("DONE.\n")
 
-# DOWNLOAD MAIN IMAGE
+# DOWNLOAD PRIMARY IMAGE
 urllib.urlretrieve(mainImage, nm_id + os.path.splitext(mainImage)[1])
 
-# PRINT DATA
-print("-- DATA -- ")
+# PRINT STATS
+print("-- STATS -- ")
 print("ID: "+nm_id)
 print("Main image: "+mainImage)
 print("Mod Name: "+name)
