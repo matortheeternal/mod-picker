@@ -3,7 +3,7 @@ unit mdConfiguration;
 interface
 
 uses
-  Classes, wbInterface,
+  SysUtils, Classes, wbInterface,
   // mte units
   mteHelpers, RttiIni;
 
@@ -17,6 +17,15 @@ type
     appIDs: string;
     abbrName: string;
   end;
+  TSettings = class(TObject)
+  public
+    [IniSection('General')]
+    emptyPluginPath: string;
+    pluginsPath: string;
+    dumpPath: string;
+    constructor Create; virtual;
+    procedure UpdateForGame;
+  end;
   TProgramStatus = class(TObject)
   public
     ProgramVersion: string;
@@ -24,10 +33,13 @@ type
   end;
 
   function SetGameMode(param: string): boolean;
+  procedure LoadSettings;
+  procedure SaveSettings;
 
 var
   ProgramStatus: TProgramStatus;
   PathList: TStringList;
+  settings: TSettings;
 
 const
   // GAME MODES
@@ -51,6 +63,37 @@ const
 
 implementation
 
+
+{ TSettings }
+constructor TSettings.Create;
+begin
+  // default settings
+  emptyPluginPath := '{{gameName}}\plugins\EmptyPlugin.esp';
+  pluginsPath := '{{gameName}}\plugins\';
+  dumpPath := '{{gameName}}\dumps\'
+end;
+
+procedure TSettings.UpdateForGame;
+var
+  slMap: TStringList;
+begin
+  slMap := TStringList.Create;
+  try
+    // load values into map
+    slMap.Values['gameName'] := ProgramStatus.GameMode.gameName;
+    slMap.Values['longName'] := ProgramStatus.GameMode.longName;
+    slMap.Values['appName'] := ProgramStatus.GameMode.appName;
+    slMap.Values['abbrName'] := ProgramStatus.GameMode.abbrName;
+
+    // apply template
+    emptyPluginPath := ApplyTemplate(emptyPluginPath, slMap);
+    pluginsPath := ApplyTemplate(pluginsPath, slMap);
+    dumpPath := ApplyTemplate(dumpPath, slMap);
+  finally
+    slMap.Free;
+  end;
+end;
+
 function SetGameMode(param: string): boolean;
 var
   abbrName: string;
@@ -64,6 +107,17 @@ begin
       Result := true;
       exit;
     end;
+end;
+
+procedure LoadSettings;
+begin
+  settings := TSettings.Create;
+  TRttiIni.Load('settings.ini', settings);
+end;
+
+procedure SaveSettings;
+begin
+  TRttiIni.Save('settings.ini', settings);
 end;
 
 initialization

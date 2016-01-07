@@ -26,6 +26,10 @@ procedure Welcome;
 begin
   ProgramStatus.ProgramVersion := GetVersionMem;
   Writeln('ModDump v', ProgramStatus.ProgramVersion);
+
+  // load and save settings
+  LoadSettings;
+  SaveSettings;
 end;
 
 procedure LoadParams;
