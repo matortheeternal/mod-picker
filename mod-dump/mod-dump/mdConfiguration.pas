@@ -19,6 +19,7 @@ type
   end;
   TProgramStatus = class(TObject)
   public
+    ProgramVersion: string;
     GameMode: TGameMode;
   end;
 
