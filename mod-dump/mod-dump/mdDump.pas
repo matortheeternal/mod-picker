@@ -3,11 +3,16 @@ unit mdDump;
 interface
 
 uses
-  SysUtils, Classes,
+  SysUtils, Classes, Windows,
+  // xedit units
+  wbInterface, wbImplementation,
   // mte units
-  mteHelpers, mteBase;
+  mteHelpers, mteBase,
+  // md units
+  mdConfiguration;
 
   function IsPlugin(filename: string): boolean;
+  procedure CreateEmptyPlugin(path: string);
   procedure DumpPlugin(filename: string);
   procedure DumpPluginsList(filename: string);
 
@@ -18,19 +23,68 @@ begin
   Result := StrEndsWith(filename, '.esp') or StrEndsWith(filename, '.esm');
 end;
 
+procedure CreateEmptyPlugin(path: string);
+begin
+  CopyFile(settings.emptyPluginPath, path, true);
+end;
+
 {
   1. Load plugin header
   2. See if masters are available
   3. If masters not available, create dummy files for them
   4. Masters that are available should cycle through 1-4
-  4. Close files with wbFileForceClosed
-  5. Load plugin and required masters, don't build references
-  6. Get information from plugin and print to log and a dump file
-  7. Terminate
+  5. Close files with wbFileForceClosed
+}
+procedure BuildLoadOrder(filename: string; var sl: TStringList);
+var
+  aFile: IwbFile;
+  plugin: TBasePlugin;
+  filePath: string;
+  slMasters: TStringList;
+  i: Integer;
+begin
+  // add file to load order if it's missing
+  if sl.IndexOf(filename) = -1 then
+    sl.Add(filename);
+  // create empty plugin if plugin doesn't exist
+  filePath := wbDataPath + filename;
+  if not FileExists(filePath) then
+    CreateEmptyPlugin(filePath);
+
+  // load the file and recurse through its masters
+  aFile := wbFile(wbDataPath + filename, -1, '', True, False);
+  slMasters := TStringList.Create;
+  try
+    GetMasters(aFile, slMasters);
+    for i := 0 to Pred(slMasters.Count) do
+      BuildLoadOrder(slMasters[i], sl);
+  finally
+    slMasters.Free;
+  end;
+end;
+
+{
+  1. Build load order
+  2. Load plugins, don't build references
+  3. Get information from plugin and print to log and a dump file
+  4. Terminate
 }
 procedure DumpPlugin(filename: string);
+var
+  slLoadOrder: TStringList;
+  i: Integer;
 begin
-  // ?
+  slLoadOrder := TStringList.Create;
+  try
+    BuildLoadOrder(filename, slLoadOrder);
+    wbFileForceClosed;
+
+    // print load order
+    for i := 0 to Pred(slLoadOrder.Count) do
+      Writeln(Format('[%s] %s', [IntToHex(i, 2), slLoadOrder[i]]));
+  finally
+    slLoadOrder.Free;
+  end;
 end;
 
 { TODO: Make it so we can process more than one plugin in a single session, so
