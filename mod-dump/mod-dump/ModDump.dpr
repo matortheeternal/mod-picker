@@ -33,9 +33,9 @@ begin
 
   // get target plugin param
   TargetPlugin := ParamStr(1);
-  Writeln('Dumping plugin: ', TargetPlugin);
   if not FileExists(TargetPlugin) then
     raise Exception.Create('Target plugin not found: "'+TargetPlugin+'"');
+  Writeln('Dumping plugin: ', TargetPlugin);
 
   // get target game param
   TargetGame := ParamStr(2);
