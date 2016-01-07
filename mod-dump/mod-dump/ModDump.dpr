@@ -24,7 +24,7 @@ var
 
 procedure Welcome;
 begin
-  ProgramStatus.ProgramVersion := GetVersionMem;
+  // print program version
   Writeln('ModDump v', ProgramStatus.ProgramVersion);
 
   // load and save settings

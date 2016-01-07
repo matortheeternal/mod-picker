@@ -5,7 +5,7 @@ interface
 uses
   SysUtils, Classes,
   // mte units
-  mteHelpers, RttiIni,
+  mteHelpers, CRC32, RttiIni,
   // xedit units
   wbInterface, wbDefinitionsFO4, wbDefinitionsTES5, wbDefinitionsTES4,
   wbDefinitionsFNV, wbDefinitionsFO3;
@@ -27,13 +27,16 @@ type
     pluginsPath: string;
     dumpPath: string;
     language: string;
+    bPrintHashes: boolean;
     constructor Create; virtual;
     procedure UpdateForGame;
   end;
   TProgramStatus = class(TObject)
   public
+    bUsedEmptyPlugins: boolean;
     ProgramVersion: string;
     GameMode: TGameMode;
+    constructor Create; virtual;
   end;
 
   function SetGameParam(param: string): boolean;
@@ -44,6 +47,7 @@ var
   ProgramStatus: TProgramStatus;
   PathList: TStringList;
   settings: TSettings;
+  emptyPluginHash: string;
 
 const
   // GAME MODES
@@ -76,6 +80,7 @@ begin
   pluginsPath := '{{gameName}}\plugins\';
   dumpPath := '{{gameName}}\dumps\';
   language := 'English';
+  bPrintHashes := false;
 end;
 
 procedure TSettings.UpdateForGame;
@@ -98,9 +103,20 @@ begin
     // force directories to exist
     ForceDirectories(pluginsPath);
     ForceDirectories(dumpPath);
+
+    // update empty plugin hash if empty plugin exists
+    if FileExists(emptyPluginPath) then
+      emptyPluginHash := GetCRC32(emptyPluginPath);
   finally
     slMap.Free;
   end;
+end;
+
+{ TProgramStatus }
+constructor TProgramStatus.Create;
+begin
+  bUsedEmptyPlugins := false;
+  ProgramVersion := GetVersionMem;
 end;
 
 { Sets the game mode in the TES5Edit API }

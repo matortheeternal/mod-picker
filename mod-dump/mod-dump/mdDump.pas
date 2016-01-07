@@ -116,6 +116,13 @@ begin
       plugin.GetData(PluginsList);
       plugin.GetHash;
       PluginsList.Add(Pointer(plugin));
+
+      // print the hash if the bPrintHashes setting is true
+      if settings.bPrintHashes then
+        Writeln('  Hash = ', plugin.hash);
+      // update bUsedEmptyPlugins
+      if plugin.hash = emptyPluginHash then
+        ProgramStatus.bUsedEmptyPlugins := true;
     except
       on x: Exception do begin
         Writeln('Exception loading '+sl[i]);
@@ -146,13 +153,12 @@ procedure WriteList(name: string; var sl: TStringList);
 var
   i: Integer;
 begin
-  // write first item as pair
-  if sl.Count > 0 then
-    WritePair(name, sl[0]);
+  // write the name
+  Writeln(name, ':');
 
-  // write the rest of the list
-  for i := 1 to Pred(sl.Count) do
-    Writeln(Format('%s  %s', [StringOfChar(' ', Length(name)), sl[i]]));
+  // write the list indented by one space
+  for i := 0 to Pred(sl.Count) do
+    Writeln(' ', sl[i]);
 end;
 
 procedure DumpInfo(plugin: TBasePlugin);
