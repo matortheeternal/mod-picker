@@ -79,8 +79,7 @@ implementation
 
 uses
   SysUtils,
-  mteHelpers,
-  mpConfiguration;
+  mteHelpers;
 
 constructor TBasePlugin.Create;
 begin
