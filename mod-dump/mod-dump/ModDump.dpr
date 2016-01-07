@@ -46,17 +46,18 @@ begin
   bIsPlugin := IsPlugin(TargetFile);
   bIsText := StrEndsWith(TargetFile, '.txt');
   if bIsPlugin then
-    Writeln('Dumping plugin: ', TargetFile)
+    Writeln('Dumping plugin: ', ExtractFileName(TargetFile))
   else if bIsText then
-    Writeln('Dumping plugins in list: ', TargetFile)
+    Writeln('Dumping plugins in list: ', ExtractFileName(TargetFile))
   else
     raise Exception.Create('Target file does not match *.esp, *.esm, or *.txt');
 
   // get target game param
   TargetGame := ParamStr(2);
-  if not SetGameMode(TargetGame) then
+  if not SetGameParam(TargetGame) then
     raise Exception.Create(Format('Invalid GameMode "%s"', [TargetGame]));
   Writeln('Game: ', ProgramStatus.GameMode.longName);
+  Writeln(' ');
 end;
 
 { MAIN PROGRAM EXECUTION }

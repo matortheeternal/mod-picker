@@ -25,7 +25,11 @@ end;
 
 procedure CreateEmptyPlugin(path: string);
 begin
-  CopyFile(settings.emptyPluginPath, path, true);
+  if not FileExists(settings.emptyPluginPath) then
+    raise Exception.Create(Format('Empty plugin not found at "%s"',
+      [settings.emptyPluginPath]));
+  Writeln('Creating empty plugin ', path);
+  CopyFile(PChar(settings.emptyPluginPath), PChar(path), true);
 end;
 
 {
@@ -35,29 +39,37 @@ end;
   4. Masters that are available should cycle through 1-4
   5. Close files with wbFileForceClosed
 }
-procedure BuildLoadOrder(filename: string; var sl: TStringList);
+procedure BuildLoadOrder(filename: string; var sl: TStringList;
+  bFirstFile: boolean = False);
 var
   aFile: IwbFile;
-  plugin: TBasePlugin;
-  filePath: string;
+  filePath, sMaster: string;
   slMasters: TStringList;
   i: Integer;
 begin
-  // add file to load order if it's missing
-  if sl.IndexOf(filename) = -1 then
-    sl.Add(filename);
+  // add qualifying path if not first file
+  if bFirstFile then
+    filePath := filename
+  else
+    filePath := settings.pluginsPath + filename;
+
   // create empty plugin if plugin doesn't exist
-  filePath := wbDataPath + filename;
   if not FileExists(filePath) then
     CreateEmptyPlugin(filePath);
 
   // load the file and recurse through its masters
-  aFile := wbFile(wbDataPath + filename, -1, '', True, False);
+  aFile := wbFile(filePath, -1, '', True, False);
   slMasters := TStringList.Create;
   try
     GetMasters(aFile, slMasters);
-    for i := 0 to Pred(slMasters.Count) do
-      BuildLoadOrder(slMasters[i], sl);
+    for i := 0 to Pred(slMasters.Count) do begin
+      sMaster := slMasters[i];
+      if sl.IndexOf(sMaster) = -1 then
+        BuildLoadOrder(sMaster, sl);
+    end;
+
+    // add file to load order
+    sl.Add(filename);
   finally
     slMasters.Free;
   end;
@@ -76,7 +88,7 @@ var
 begin
   slLoadOrder := TStringList.Create;
   try
-    BuildLoadOrder(filename, slLoadOrder);
+    BuildLoadOrder(filename, slLoadOrder, true);
     wbFileForceClosed;
 
     // print load order

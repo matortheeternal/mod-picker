@@ -3,9 +3,12 @@ unit mdConfiguration;
 interface
 
 uses
-  SysUtils, Classes, wbInterface,
+  SysUtils, Classes,
   // mte units
-  mteHelpers, RttiIni;
+  mteHelpers, RttiIni,
+  // xedit units
+  wbInterface, wbDefinitionsFO4, wbDefinitionsTES5, wbDefinitionsTES4,
+  wbDefinitionsFNV, wbDefinitionsFO3;
 
 type
   TGameMode = Record
@@ -23,6 +26,7 @@ type
     emptyPluginPath: string;
     pluginsPath: string;
     dumpPath: string;
+    language: string;
     constructor Create; virtual;
     procedure UpdateForGame;
   end;
@@ -32,7 +36,7 @@ type
     GameMode: TGameMode;
   end;
 
-  function SetGameMode(param: string): boolean;
+  function SetGameParam(param: string): boolean;
   procedure LoadSettings;
   procedure SaveSettings;
 
@@ -70,7 +74,8 @@ begin
   // default settings
   emptyPluginPath := '{{gameName}}\plugins\EmptyPlugin.esp';
   pluginsPath := '{{gameName}}\plugins\';
-  dumpPath := '{{gameName}}\dumps\'
+  dumpPath := '{{gameName}}\dumps\';
+  language := 'English';
 end;
 
 procedure TSettings.UpdateForGame;
@@ -89,12 +94,48 @@ begin
     emptyPluginPath := ApplyTemplate(emptyPluginPath, slMap);
     pluginsPath := ApplyTemplate(pluginsPath, slMap);
     dumpPath := ApplyTemplate(dumpPath, slMap);
+
+    // force directories to exist
+    ForceDirectories(pluginsPath);
+    ForceDirectories(dumpPath);
   finally
     slMap.Free;
   end;
 end;
 
-function SetGameMode(param: string): boolean;
+{ Sets the game mode in the TES5Edit API }
+procedure SetGame(id: integer);
+begin
+  // update our vars
+  ProgramStatus.GameMode := GameArray[id];
+  settings.UpdateForGame;
+
+  // update xEdit vars
+  wbGameName := ProgramStatus.GameMode.gameName;
+  wbGameMode := ProgramStatus.GameMode.gameMode;
+  wbAppName := ProgramStatus.GameMode.appName;
+  wbDataPath := settings.pluginsPath;
+  wbVWDInTemporary := wbGameMode in [gmTES5, gmFO3, gmFNV];
+  wbDisplayLoadOrderFormID := True;
+  wbSortSubRecords := True;
+  wbDisplayShorterNames := True;
+  wbHideUnused := True;
+  wbFlagsAsArray := True;
+  wbRequireLoadOrder := True;
+  wbLanguage := settings.language;
+  wbEditAllowed := True;
+
+  // load definitions
+  case wbGameMode of
+    gmFO4: DefineFO4;
+    gmTES5: DefineTES5;
+    gmFNV: DefineFNV;
+    gmTES4: DefineTES4;
+    gmFO3: DefineFO3;
+  end;
+end;
+
+function SetGameParam(param: string): boolean;
 var
   abbrName: string;
   i: Integer;
@@ -103,7 +144,7 @@ begin
   abbrName := Copy(param, 2, Length(param));
   for i := Low(GameArray) to High(GameArray) do
     if GameArray[i].abbrName = abbrName then begin
-      ProgramStatus.GameMode := GameArray[i];
+      SetGame(i);
       Result := true;
       exit;
     end;
