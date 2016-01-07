@@ -7,6 +7,14 @@ uses
   mteHelpers,
   mdConfiguration in 'mdConfiguration.pas';
 
+{$R *.res}
+{$MAXSTACKSIZE 2097152}
+
+const
+  IMAGE_FILE_LARGE_ADDRESS_AWARE = $0020;
+
+{$SetPEFlags IMAGE_FILE_LARGE_ADDRESS_AWARE}
+
 var
   ProgramPath, ProgramVersion, TargetPlugin, TargetGame: string;
 
@@ -19,9 +27,6 @@ begin
 end;
 
 procedure LoadParams;
-var
-  sParam: string;
-  i: Integer;
 begin
   // get program path
   ProgramPath := ExtractFilePath(ParamStr(0));
@@ -29,10 +34,14 @@ begin
   // get target plugin param
   TargetPlugin := ParamStr(1);
   Writeln('Dumping plugin: ', TargetPlugin);
+  if not FileExists(TargetPlugin) then
+    raise Exception.Create('Target plugin not found: "'+TargetPlugin+'"');
 
   // get target game param
   TargetGame := ParamStr(2);
-  Writeln('Game: ', TargetGame);
+  if not SetGameMode(TargetGame) then
+    raise Exception.Create('Invalid GameMode "'+TargetGame+'"');
+  Writeln('Game: ', ProgramStatus.GameMode.longName);
 end;
 
 { MAIN PROGRAM EXECUTION }
@@ -41,7 +50,7 @@ begin
   try
     Welcome;
     LoadParams;
-    RunDump;
+    //RunDump;
   except
     on E: Exception do
       Writeln(E.ClassName, ': ', E.Message);

@@ -20,8 +20,9 @@ type
   TProgramStatus = class(TObject)
   public
     GameMode: TGameMode;
-    constructor Create; virtual;
   end;
+
+  function SetGameMode(param: string): boolean;
 
 var
   ProgramStatus: TProgramStatus;
@@ -49,16 +50,19 @@ const
 
 implementation
 
-procedure SetGameMode(param: string);
+function SetGameMode(param: string): boolean;
 var
   abbrName: string;
   i: Integer;
 begin
+  Result := false;
   abbrName := Copy(param, 2, Length(param));
-  for i := Low(GameArray) to High(GameArray) do begin
-    if GameArray[i].abbrName = abbrName then
+  for i := Low(GameArray) to High(GameArray) do
+    if GameArray[i].abbrName = abbrName then begin
       ProgramStatus.GameMode := GameArray[i];
-  end;
+      Result := true;
+      exit;
+    end;
 end;
 
 initialization
