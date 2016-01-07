@@ -306,7 +306,7 @@ begin
   // we loop from the back because the formID is usually at the
   // end of the filename
   for i := Length(filename) downto 1 do begin
-    if (filename[i] in HexChars) then
+    if CharInSet(filename[i], HexChars) then
       Inc(counter)
     else
       counter := 0;
@@ -721,7 +721,7 @@ var
   container: IwbContainerElementRef;
 begin
   try
-    sig := aRecord.Signature;
+    sig := String(aRecord.Signature);
 
     // undelete
     aRecord.IsDeleted := true;
