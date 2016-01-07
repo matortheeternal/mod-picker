@@ -12,9 +12,8 @@ uses
   mdConfiguration;
 
   function IsPlugin(filename: string): boolean;
-  procedure CreateEmptyPlugin(path: string);
-  procedure DumpPlugin(filename: string);
-  procedure DumpPluginsList(filename: string);
+  procedure DumpPlugin(filePath: string);
+  procedure DumpPluginsList(filePath: string);
 
 implementation
 
@@ -37,7 +36,6 @@ end;
   2. See if masters are available
   3. If masters not available, create dummy files for them
   4. Masters that are available should cycle through 1-4
-  5. Close files with wbFileForceClosed
 }
 procedure BuildLoadOrder(filename: string; var sl: TStringList;
   bFirstFile: boolean = False);
@@ -75,33 +73,142 @@ begin
   end;
 end;
 
+procedure PrintLoadOrder(var sl: TStringList);
+var
+  i: Integer;
+begin
+  // print load order
+  Writeln(' ');
+  Writeln('== LOAD ORDER ==');
+  for i := 0 to Pred(sl.Count) do
+    Writeln(Format('[%s] %s', [IntToHex(i, 2), sl[i]]));
+end;
+
+procedure LoadPlugins(baseFilePath: string; var sl: TStringList);
+var
+  i: Integer;
+  plugin: TBasePlugin;
+  aFile: IwbFile;
+  sFilePath, sFilename: string;
+begin
+  // print log messages
+  Writeln(' ');
+  Writeln('== LOADING PLUGINS ==');
+
+  // load the plugins
+  for i := 0 to Pred(sl.Count) do begin
+    // get file path to load
+    if sl[i] = baseFilePath then
+      sFilePath := sl[i]
+    else
+      sFilePath := settings.pluginsPath + sl[i];
+
+    // print log message
+    sFilename := ExtractFilename(sFilePath);
+    Writeln('Loading ', sFilename, '...');
+
+    // load plugin
+    try
+      plugin := TBasePlugin.Create;
+      plugin.filename := sFilename;
+      plugin._File := wbFile(sFilePath, i, '', false, false);
+      plugin._File._AddRef;
+      plugin.GetData(PluginsList);
+      plugin.GetHash;
+      PluginsList.Add(Pointer(plugin));
+    except
+      on x: Exception do begin
+        Writeln('Exception loading '+sl[i]);
+        Writeln(x.Message);
+        raise x;
+      end;
+    end;
+
+    // load hardcoded dat
+    if i = 0 then try
+      aFile := wbFile(settings.pluginsPath + wbGameName + wbHardcodedDat, 0);
+      aFile._AddRef;
+    except
+      on x: Exception do begin
+        Writeln('Exception loading ', wbGameName, wbHardcodedDat);
+        raise x;
+      end;
+    end;
+  end;
+end;
+
+procedure WritePair(name, value: string);
+begin
+  Writeln(Format('%s: %s', [name, value]));
+end;
+
+procedure WriteList(name: string; var sl: TStringList);
+var
+  i: Integer;
+begin
+  // write first item as pair
+  if sl.Count > 0 then
+    WritePair(name, sl[0]);
+
+  // write the rest of the list
+  for i := 1 to Pred(sl.Count) do
+    Writeln(Format('%s  %s', [StringOfChar(' ', Length(name)), sl[i]]));
+end;
+
+procedure DumpInfo(plugin: TBasePlugin);
+begin
+  Writeln(' ');
+  Writeln('== DUMP ==');
+
+  // main attributes
+  WritePair('Filename', plugin.filename);
+  WritePair('File size', FormatByteSize(plugin.fileSize));
+  WritePair('File hash', plugin.hash);
+  WriteList('Masters', plugin.masters);
+  WriteList('Description', plugin.description);
+  WritePair('Number of records', plugin.numRecords);
+  WritePair('Number of overrides', plugin.numOverrides);
+
+  // TODO: record groups
+  // TODO: errors
+  // TODO: write to json
+end;
+
 {
   1. Build load order
   2. Load plugins, don't build references
   3. Get information from plugin and print to log and a dump file
   4. Terminate
 }
-procedure DumpPlugin(filename: string);
+procedure DumpPlugin(filePath: string);
 var
   slLoadOrder: TStringList;
-  i: Integer;
+  sFileName: string;
+  plugin: TBasePlugin;
 begin
   slLoadOrder := TStringList.Create;
   try
-    BuildLoadOrder(filename, slLoadOrder, true);
+    // build and print load order
+    BuildLoadOrder(filePath, slLoadOrder, true);
     wbFileForceClosed;
+    PrintLoadOrder(slLoadOrder);
 
-    // print load order
-    for i := 0 to Pred(slLoadOrder.Count) do
-      Writeln(Format('[%s] %s', [IntToHex(i, 2), slLoadOrder[i]]));
+    // load plugins
+    LoadPlugins(filePath, slLoadOrder);
+
+    // dump info on our plugin
+    sFileName := ExtractFilename(filePath);
+    plugin := TPluginHelpers.BasePluginByFilename(PluginsList, sFileName);
+    DumpInfo(plugin);
   finally
+    wbFileForceClosed;
     slLoadOrder.Free;
   end;
 end;
 
 { TODO: Make it so we can process more than one plugin in a single session, so
   we don't have to reload base game ESMs into memory over and over again. }
-procedure DumpPluginsList(filename: string);
+procedure DumpPluginsList(filePath: string);
 var
   sl: TStringList;
   i: Integer;
@@ -110,7 +217,7 @@ begin
   sl := TStringList.Create;
   try
     // load list of plugins to dump
-    sl.LoadFromFile(filename);
+    sl.LoadFromFile(filePath);
 
     // dump plugins in the list
     for i := 0 to Pred(sl.Count) do begin
