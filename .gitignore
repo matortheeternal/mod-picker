@@ -62,3 +62,5 @@ __history/
 *.zip
 *.txaPackage
 *.txvpck
+mod-dump/mod-dump/Skyrim/plugins/*.esp
+mod-dump/mod-dump/Skyrim/plugins/*.esm
