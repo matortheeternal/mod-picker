@@ -64,3 +64,4 @@ __history/
 *.txvpck
 mod-dump/mod-dump/Skyrim/plugins/*.esp
 mod-dump/mod-dump/Skyrim/plugins/*.esm
+mod-dump/mod-dump/*.bat

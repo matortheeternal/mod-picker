@@ -230,6 +230,16 @@ begin
   end;
 end;
 
+function CompareRecordGroups(Item1: Pointer; Item2: Pointer): Integer;
+var
+  group1, group2: TRecordGroup;
+begin
+  group1 := TRecordGroup(Item1);
+  group2 := TRecordGroup(Item2);
+
+  Result := AnsiCompareText(string(group1.signature), string(group2.signature));
+end;
+
 procedure TPlugin.GetRecords;
 var
   i: Integer;
@@ -248,6 +258,9 @@ begin
       overrides.Add(IntToHex(rec.LoadOrderFormID, 8));
     end;
   end;
+
+  // sort the groups list
+  groups.Sort(CompareRecordGroups);
 end;
 
 end.

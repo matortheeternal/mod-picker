@@ -183,9 +183,8 @@ begin
   Writeln('Record groups:');
   for i := 0 to Pred(plugin.groups.Count) do begin
     group := TRecordGroup(plugin.groups[i]);
-    Writeln(Format(' [%s]', [string(group.signature)]));
-    Writeln('  Number of records: ', group.numRecords);
-    Writeln('  Number of overrides: ', group.numOverrides);
+    Writeln(Format(' [%s]  Records:%5d, Overrides:%5d',
+      [string(group.signature), group.numRecords, group.numOverrides]));
   end;
   if plugin.groups.Count = 0 then
     Writeln(' No records');
