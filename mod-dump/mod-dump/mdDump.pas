@@ -211,7 +211,7 @@ end;
 procedure JsonDump(plugin: TPlugin);
 var
   obj, childObj: ISuperObject;
-  i: Integer;
+  i, j: Integer;
   group: TRecordGroup;
   error: TRecordError;
   sl: TStringList;
@@ -231,9 +231,12 @@ begin
 
   // dump dummy masters
   obj.O['dummyMasters'] := SA([]);
+  j := 0;
   for i := 0 to Pred(plugin.masters.Count) do begin
-    if PluginByFilename(plugin.masters[i]).hash = dummyPluginHash then
-      obj.A['dummyMasters'].S[i] := plugin.masters[i];
+    if PluginByFilename(plugin.masters[i]).hash = dummyPluginHash then begin
+      obj.A['dummyMasters'].S[j] := plugin.masters[i];
+      Inc(j);
+    end;
   end;
 
   // dump record groups
