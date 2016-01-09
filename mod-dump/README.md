@@ -24,16 +24,14 @@ A command line application to produce compatibility dumps on plugins built off o
 - Override records
   - FormID
 - Errors
-  - ITMs
-  - ITPOs
-  - UDRs
-  - Invalid/Out of order subrecords
-  - References that could not be resolved
-  - Unexpected references
+  - ITMs - Identical to Master records
+  - ITPOs - Identical to Previous Override records
+  - UDRs - Undelete and Disable References
+  - UESs - Unexpected Subrecords
+  - URRs - Unresolved References
+  - UERs - Unexpected References
 - Record counts
   - Number of records
-  - Number of new records
-  - Number of injected records
   - Number of override records
 - Record groups
   - Group signature
