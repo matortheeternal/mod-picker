@@ -134,7 +134,7 @@ begin
   if MatchesError(error, erUDR, 1, 0, &type, data)
   or MatchesError(error, erUES, 2, 0, &type, data)
   or MatchesError(error, erURR, 1, 0, &type, data)
-  or MatchesError(error, erURR, 1, 2, &type, data) then
+  or MatchesError(error, erUER, 1, 2, &type, data) then
     exit;
 
   // error unknown

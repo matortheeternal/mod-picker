@@ -114,7 +114,7 @@
 						<Excluded_Packages Name="$(BDSBIN)\dclofficexp150.bpl">Microsoft Office XP Sample Automation Server Wrapper Components</Excluded_Packages>
 					</Excluded_Packages>
 					<Parameters>
-						<Parameters Name="RunParams">Skyrim\plugins\Beards.esp -sk</Parameters>
+						<Parameters Name="RunParams">Skyrim\plugins\Mystic.esp -sk</Parameters>
 					</Parameters>
 				</Delphi.Personality>
 				<Platforms>
