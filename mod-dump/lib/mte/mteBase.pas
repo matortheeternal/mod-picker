@@ -18,8 +18,8 @@ type
     fileSize: Int64;
     dateModified: string;
     filename: string;
-    numRecords: string;
-    numOverrides: string;
+    numRecords: Integer;
+    numOverrides: Integer;
     author: string;
     dataPath: string;
     description: TStringList;
@@ -30,6 +30,7 @@ type
     procedure GetData(var lst: TList);
     procedure UpdateData; virtual;
     procedure GetHash;
+    procedure GetNumOverrides;
     function GetFormIndex: Integer;
   end;
   TPluginHelpers = class
@@ -84,6 +85,8 @@ uses
 constructor TBasePlugin.Create;
 begin
   hasData := false;
+  numRecords := 0;
+  numOverrides := 0;
   dataPath := wbDataPath;
   description := TStringList.Create;
   masters := TStringList.Create;
@@ -109,7 +112,7 @@ begin
   Container := _File as IwbContainer;
   Container := Container.Elements[0] as IwbContainer;
   author := Container.GetElementEditValue('CNAM - Author');
-  numRecords := Container.GetElementEditValue('HEDR - Header\Number of Records');
+  numRecords := Container.GetElementNativeValue('HEDR - Header\Number of Records');
 
   // get masters, required by
   GetMasters(_File, masters);
@@ -132,6 +135,11 @@ end;
 procedure TBasePlugin.GetHash;
 begin
   hash := IntToHex(wbCRC32File(wbDataPath + filename), 8);
+end;
+
+procedure TBasePlugin.GetNumOverrides;
+begin
+  numOverrides := CountOverrides(_File);
 end;
 
 function TBasePlugin.GetFormIndex: Integer;
