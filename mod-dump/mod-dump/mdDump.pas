@@ -9,7 +9,7 @@ uses
   // mte units
   mteHelpers, mteBase,
   // md units
-  mdConfiguration;
+  mdConfiguration, mdCore;
 
   function IsPlugin(filename: string): boolean;
   procedure DumpPlugin(filePath: string);
@@ -22,13 +22,13 @@ begin
   Result := StrEndsWith(filename, '.esp') or StrEndsWith(filename, '.esm');
 end;
 
-procedure CreateEmptyPlugin(path: string);
+procedure CreateDummyPlugin(path: string);
 begin
-  if not FileExists(settings.emptyPluginPath) then
+  if not FileExists(settings.dummyPluginPath) then
     raise Exception.Create(Format('Empty plugin not found at "%s"',
-      [settings.emptyPluginPath]));
+      [settings.dummyPluginPath]));
   Writeln('Creating empty plugin ', path);
-  CopyFile(PChar(settings.emptyPluginPath), PChar(path), true);
+  CopyFile(PChar(settings.dummyPluginPath), PChar(path), true);
 end;
 
 {
@@ -53,7 +53,7 @@ begin
 
   // create empty plugin if plugin doesn't exist
   if not FileExists(filePath) then
-    CreateEmptyPlugin(filePath);
+    CreateDummyPlugin(filePath);
 
   // load the file and recurse through its masters
   aFile := wbFile(filePath, -1, '', True, False);
@@ -84,10 +84,11 @@ begin
     Writeln(Format('[%s] %s', [IntToHex(i, 2), sl[i]]));
 end;
 
-procedure LoadPlugins(baseFilePath: string; var sl: TStringList);
+procedure LoadPlugins(dumpFilePath: string; var sl: TStringList);
 var
   i: Integer;
-  plugin: TBasePlugin;
+  bIsDumpFile: boolean;
+  plugin: TPlugin;
   aFile: IwbFile;
   sFilePath, sFilename: string;
 begin
@@ -95,10 +96,15 @@ begin
   Writeln(' ');
   Writeln('== LOADING PLUGINS ==');
 
+  // print empty plugin hash
+  if settings.bPrintHashes then
+    Writeln('Empty plugin hash: ', dummyPluginHash);
+
   // load the plugins
   for i := 0 to Pred(sl.Count) do begin
+    bIsDumpFile := sl[i] = dumpFilePath;
     // get file path to load
-    if sl[i] = baseFilePath then
+    if bIsDumpFile then
       sFilePath := sl[i]
     else
       sFilePath := settings.pluginsPath + sl[i];
@@ -109,20 +115,19 @@ begin
 
     // load plugin
     try
-      plugin := TBasePlugin.Create;
+      plugin := TPlugin.Create;
       plugin.filename := sFilename;
       plugin._File := wbFile(sFilePath, i, '', false, false);
       plugin._File._AddRef;
-      plugin.GetData(PluginsList);
-      plugin.GetHash;
+      plugin.GetMdData(bIsDumpFile);
       PluginsList.Add(Pointer(plugin));
 
       // print the hash if the bPrintHashes setting is true
       if settings.bPrintHashes then
         Writeln('  Hash = ', plugin.hash);
       // update bUsedEmptyPlugins
-      if plugin.hash = emptyPluginHash then
-        ProgramStatus.bUsedEmptyPlugins := true;
+      if plugin.hash = dummyPluginHash then
+        ProgramStatus.bUsedDummyPlugins := true;
     except
       on x: Exception do begin
         Writeln('Exception loading '+sl[i]);
@@ -144,11 +149,6 @@ begin
   end;
 end;
 
-procedure WritePair(name, value: string);
-begin
-  Writeln(Format('%s: %s', [name, value]));
-end;
-
 procedure WriteList(name: string; var sl: TStringList);
 var
   i: Integer;
@@ -161,23 +161,48 @@ begin
     Writeln(' ', sl[i]);
 end;
 
-procedure DumpInfo(plugin: TBasePlugin);
+procedure DumpInfo(plugin: TPlugin);
+var
+  i: Integer;
+  group: TRecordGroup;
+  error: TRecordError;
 begin
   Writeln(' ');
   Writeln('== DUMP ==');
 
   // main attributes
-  WritePair('Filename', plugin.filename);
-  WritePair('File size', FormatByteSize(plugin.fileSize));
-  WritePair('File hash', plugin.hash);
+  Writeln('Filename: ', plugin.filename);
+  Writeln('File size: ', FormatByteSize(plugin.fileSize));
+  Writeln('File hash: ', plugin.hash);
   WriteList('Masters', plugin.masters);
   WriteList('Description', plugin.description);
-  WritePair('Number of records', plugin.numRecords);
-  WritePair('Number of overrides', plugin.numOverrides);
+  Writeln('Number of records: ', plugin.numRecords);
+  Writeln('Number of overrides: ', plugin.numOverrides);
 
-  // TODO: record groups
-  // TODO: errors
-  // TODO: write to json
+  // record groups
+  Writeln('Record groups:');
+  for i := 0 to Pred(plugin.groups.Count) do begin
+    group := TRecordGroup(plugin.groups[i]);
+    Writeln(Format(' [%s]', [string(group.signature)]));
+    Writeln('  Number of records: ', group.numRecords);
+    Writeln('  Number of overrides: ', group.numOverrides);
+  end;
+  if plugin.groups.Count = 0 then
+    Writeln(' No records');
+
+  // errors
+  Writeln('Errors:');
+  for i := 0 to Pred(plugin.errors.Count) do begin
+    error := TRecordError(plugin.errors[i]);
+    Writeln(Format(' [%s:%s] %s at %s', [string(error.signature), error.formID,
+      error.&type.shortName, error.path]));
+  end;
+  if ProgramStatus.bUsedDummyPlugins then
+    Writeln(' Unknown')
+  else if (plugin.errors.Count = 0) then
+    Writeln(' No errors');
+
+  // TODO: dump to json file
 end;
 
 {
@@ -190,7 +215,7 @@ procedure DumpPlugin(filePath: string);
 var
   slLoadOrder: TStringList;
   sFileName: string;
-  plugin: TBasePlugin;
+  plugin: TPlugin;
 begin
   slLoadOrder := TStringList.Create;
   try
@@ -204,7 +229,7 @@ begin
 
     // dump info on our plugin
     sFileName := ExtractFilename(filePath);
-    plugin := TPluginHelpers.BasePluginByFilename(PluginsList, sFileName);
+    plugin := PluginByFilename(sFileName);
     DumpInfo(plugin);
   finally
     wbFileForceClosed;

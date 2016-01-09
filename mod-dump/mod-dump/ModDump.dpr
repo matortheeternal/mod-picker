@@ -6,7 +6,8 @@ uses
   SysUtils,
   mteHelpers,
   mdConfiguration in 'mdConfiguration.pas',
-  mdDump in 'mdDump.pas';
+  mdDump in 'mdDump.pas',
+  mdCore in 'mdCore.pas';
 
 {$R *.res}
 {$MAXSTACKSIZE 2097152}
