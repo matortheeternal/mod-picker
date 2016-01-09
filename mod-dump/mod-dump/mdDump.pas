@@ -229,6 +229,13 @@ begin
   for i := 0 to Pred(plugin.masters.Count) do
     obj.A['masters'].S[i] := plugin.masters[i];
 
+  // dump dummy masters
+  obj.O['dummyMasters'] := SA([]);
+  for i := 0 to Pred(plugin.masters.Count) do begin
+    if PluginByFilename(plugin.masters[i]).hash = dummyPluginHash then
+      obj.A['dummyMasters'].S[i] := plugin.masters[i];
+  end;
+
   // dump record groups
   obj.O['records'] := SO;
   for i := 0 to Pred(plugin.groups.Count) do begin
