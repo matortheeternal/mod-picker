@@ -4,8 +4,6 @@ interface
 
 uses
   Classes,
-  // third party libraries
-  superobject,
   // mte units
   mteBase,
   // xedit units
@@ -252,7 +250,7 @@ begin
     group := GetGroup(rec.Signature);
     Inc(group.numRecords);
     // the record is an override, or injected
-    if not (rec.IsMaster or rec.IsInjected) then begin
+    if (not rec.IsMaster) or rec.IsInjected then begin
       Inc(numOverrides);
       Inc(group.numOverrides);
       overrides.Add(IntToHex(rec.LoadOrderFormID, 8));

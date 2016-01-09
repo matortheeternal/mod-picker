@@ -4,6 +4,8 @@ interface
 
 uses
   SysUtils, Classes, Windows,
+  // third party libraries
+  superobject,
   // xedit units
   wbInterface, wbImplementation,
   // mte units
@@ -161,7 +163,7 @@ begin
     Writeln(' ', sl[i]);
 end;
 
-procedure DumpInfo(plugin: TPlugin);
+procedure WriteDump(plugin: TPlugin);
 var
   i: Integer;
   group: TRecordGroup;
@@ -170,16 +172,16 @@ begin
   Writeln(' ');
   Writeln('== DUMP ==');
 
-  // main attributes
+  // write main attributes
   Writeln('Filename: ', plugin.filename);
   Writeln('File size: ', FormatByteSize(plugin.fileSize));
-  Writeln('File hash: ', plugin.hash);
+  Writeln('Hash: ', plugin.hash);
   WriteList('Masters', plugin.masters);
   WriteList('Description', plugin.description);
   Writeln('Number of records: ', plugin.numRecords);
   Writeln('Number of overrides: ', plugin.numOverrides);
 
-  // record groups
+  // write record groups
   Writeln('Record groups:');
   for i := 0 to Pred(plugin.groups.Count) do begin
     group := TRecordGroup(plugin.groups[i]);
@@ -189,7 +191,7 @@ begin
   if plugin.groups.Count = 0 then
     Writeln(' No records');
 
-  // errors
+  // write errors
   Writeln('Errors:');
   for i := 0 to Pred(plugin.errors.Count) do begin
     error := TRecordError(plugin.errors[i]);
@@ -200,8 +202,66 @@ begin
     Writeln(' Unknown')
   else if (plugin.errors.Count = 0) then
     Writeln(' No errors');
+end;
 
-  // TODO: dump to json file
+procedure JsonDump(plugin: TPlugin);
+var
+  obj, childObj: ISuperObject;
+  i: Integer;
+  group: TRecordGroup;
+  error: TRecordError;
+  sl: TStringList;
+begin
+  obj := SO;
+  obj.S['filename'] := plugin.filename;
+  obj.I['fileSize'] := plugin.fileSize;
+  obj.S['hash'] := plugin.hash;
+  obj.I['numRecords'] := plugin.numRecords;
+  obj.I['numOverrides'] := plugin.numOverrides;
+  obj.S['description'] := plugin.description.Text;
+
+  // dump masters
+  obj.O['masters'] := SA([]);
+  for i := 0 to Pred(plugin.masters.Count) do
+    obj.A['masters'].S[i] := plugin.masters[i];
+
+  // dump record groups
+  obj.O['records'] := SO;
+  for i := 0 to Pred(plugin.groups.Count) do begin
+    group := TRecordGroup(plugin.groups[i]);
+    childObj := SO;
+    childObj.I['numRecords'] := group.numRecords;
+    childObj.I['numOverrides'] := group.numOverrides;
+    obj.O['records'].O[string(group.signature)] := childObj;
+  end;
+
+  // dump errors
+  obj.O['errors'] := SA([]);
+  for i := 0 to Pred(plugin.errors.Count) do begin
+    error := TRecordError(plugin.errors[i]);
+    childObj := SO;
+    childObj.I['type'] := Ord(error.&type.id);
+    childObj.S['signature'] := string(error.signature);
+    childObj.S['formID'] := error.formID;
+    childObj.S['name'] := error.name;
+    childObj.S['path'] := error.path;
+    childObj.S['data'] := error.data;
+    obj.A['errors'].Add(childObj);
+  end;
+
+  // dump overrides
+  obj.O['overrides'] := SA([]);
+  for i := 0 to Pred(plugin.overrides.Count) do
+    obj.A['overrides'].S[i] := plugin.overrides[i];
+
+  // save to disk
+  sl := TStringList.Create;
+  try
+    sl.Text := obj.AsJSon;
+    sl.SaveToFile(settings.dumpPath + plugin.filename + '.json');
+  finally
+    sl.Free;
+  end;
 end;
 
 {
@@ -229,7 +289,8 @@ begin
     // dump info on our plugin
     sFileName := ExtractFilename(filePath);
     plugin := PluginByFilename(sFileName);
-    DumpInfo(plugin);
+    WriteDump(plugin);
+    JsonDump(plugin);
   finally
     wbFileForceClosed;
     slLoadOrder.Free;
