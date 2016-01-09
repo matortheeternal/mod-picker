@@ -140,6 +140,7 @@ begin
   wbRequireLoadOrder := True;
   wbLanguage := settings.language;
   wbEditAllowed := True;
+  wbLoaderDone := True;
 
   // load definitions
   case wbGameMode of

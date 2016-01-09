@@ -5,7 +5,7 @@ interface
 uses
   Classes,
   // mte units
-  mteBase,
+  mteBase, mteConflict,
   // xedit units
   wbInterface, wbImplementation;
 
@@ -25,7 +25,9 @@ type
     name: string;
     path: string;
     data: string;
-    constructor Create(rec: IwbMainRecord; element: IwbElement; error: string);
+    constructor Create(rec: IwbMainRecord; id: TErrorTypeID); overload;
+    constructor Create(rec: IwbMainRecord; element: IwbElement;
+      error: string); overload;
   end;
   TRecordGroup = class
   public
@@ -102,6 +104,36 @@ begin
       Result := DumpErrors(Container.Elements[i], errors);
 end;
 
+procedure DumpIdenticalErrors(_File: IwbFile; var errors: TList);
+var
+  i: Integer;
+  rec: IwbMainRecord;
+  errorObj: TRecordError;
+begin
+  // loop through records in file
+  for i := 0 to Pred(_File.RecordCount) do begin
+    rec := _File.Records[i];
+
+    // skip master records
+    if rec.IsMaster then
+      continue;
+
+    // skip records that have elements in child group (WRLD, CELL, DIAL)
+    if Assigned(rec.ChildGroup) and (rec.ChildGroup.ElementCount <> 0) then
+      continue;
+
+    // is the record an ITM or an ITPO?
+    if IsITM(rec) then begin
+      errorObj := TRecordError.Create(rec, erITM);
+      errors.Add(errorObj);
+    end
+    else if IsITPO(rec) then begin
+      errorObj := TRecordError.Create(rec, erITPO);
+      errors.Add(errorObj);
+    end;
+  end;
+end;
+
 function MatchesError(error: string; errorID: TErrorTypeID;
   i1, i2: Integer; var &type: TErrorType; var data: string): boolean;
 var
@@ -143,6 +175,14 @@ begin
 end;
 
 { TRecordError }
+constructor TRecordError.Create(rec: IwbMainRecord; id: TErrorTypeID);
+begin
+  signature := rec.signature;
+  formID := IntToHex(rec.GetLoadOrderFormID, 8);
+  name := rec.Name;
+  &type := ErrorTypes[Ord(id)];
+end;
+
 constructor TRecordError.Create(rec: IwbMainRecord; element: IwbElement;
   error: string);
 begin
@@ -201,7 +241,7 @@ begin
 
   // dump errors
   DumpErrors(_File as IwbElement, errors);
-  //TODO: DumpIdenticalErrors(_File as IwbElement, errors);
+  DumpIdenticalErrors(_File, errors);
 end;
 
 function TPlugin.GetGroup(sig: TwbSignature): TRecordGroup;

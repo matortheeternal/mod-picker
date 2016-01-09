@@ -195,8 +195,12 @@ begin
   Writeln('Errors:');
   for i := 0 to Pred(plugin.errors.Count) do begin
     error := TRecordError(plugin.errors[i]);
-    Writeln(Format(' [%s:%s] %s at %s', [string(error.signature), error.formID,
-      error.&type.shortName, error.path]));
+    if error.path <> '' then
+      Writeln(Format(' [%s:%s] %s at %s', [string(error.signature),
+        error.formID, error.&type.shortName, error.path]))
+    else
+      Writeln(Format(' [%s:%s] %s', [string(error.signature),
+        error.formID, error.&type.shortName]))
   end;
   if ProgramStatus.bUsedDummyPlugins then
     Writeln(' Unknown')
@@ -244,8 +248,10 @@ begin
     childObj.S['signature'] := string(error.signature);
     childObj.S['formID'] := error.formID;
     childObj.S['name'] := error.name;
-    childObj.S['path'] := error.path;
-    childObj.S['data'] := error.data;
+    if error.path <> '' then
+      childObj.S['path'] := error.path;
+    if error.data <> '' then
+      childObj.S['data'] := error.data;
     obj.A['errors'].Add(childObj);
   end;
 
