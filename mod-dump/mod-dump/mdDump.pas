@@ -236,8 +236,6 @@ begin
   end;
 end;
 
-{ TODO: Make it so we can process more than one plugin in a single session, so
-  we don't have to reload base game ESMs into memory over and over again. }
 procedure DumpPluginsList(filePath: string);
 var
   sl: TStringList;
