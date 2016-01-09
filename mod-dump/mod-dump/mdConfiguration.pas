@@ -23,7 +23,7 @@ type
   TSettings = class(TObject)
   public
     [IniSection('General')]
-    emptyPluginPath: string;
+    dummyPluginPath: string;
     pluginsPath: string;
     dumpPath: string;
     language: string;
@@ -33,7 +33,7 @@ type
   end;
   TProgramStatus = class(TObject)
   public
-    bUsedEmptyPlugins: boolean;
+    bUsedDummyPlugins: boolean;
     ProgramVersion: string;
     GameMode: TGameMode;
     constructor Create; virtual;
@@ -47,7 +47,7 @@ var
   ProgramStatus: TProgramStatus;
   PathList: TStringList;
   settings: TSettings;
-  emptyPluginHash: string;
+  dummyPluginHash: string;
 
 const
   // GAME MODES
@@ -76,7 +76,7 @@ implementation
 constructor TSettings.Create;
 begin
   // default settings
-  emptyPluginPath := '{{gameName}}\plugins\EmptyPlugin.esp';
+  dummyPluginPath := '{{gameName}}\plugins\EmptyPlugin.esp';
   pluginsPath := '{{gameName}}\plugins\';
   dumpPath := '{{gameName}}\dumps\';
   language := 'English';
@@ -96,7 +96,7 @@ begin
     slMap.Values['abbrName'] := ProgramStatus.GameMode.abbrName;
 
     // apply template
-    emptyPluginPath := ApplyTemplate(emptyPluginPath, slMap);
+    dummyPluginPath := ApplyTemplate(dummyPluginPath, slMap);
     pluginsPath := ApplyTemplate(pluginsPath, slMap);
     dumpPath := ApplyTemplate(dumpPath, slMap);
 
@@ -105,8 +105,8 @@ begin
     ForceDirectories(dumpPath);
 
     // update empty plugin hash if empty plugin exists
-    if FileExists(emptyPluginPath) then
-      emptyPluginHash := GetCRC32(emptyPluginPath);
+    if FileExists(dummyPluginPath) then
+      dummyPluginHash := FileCRC32(dummyPluginPath);
   finally
     slMap.Free;
   end;
@@ -115,7 +115,7 @@ end;
 { TProgramStatus }
 constructor TProgramStatus.Create;
 begin
-  bUsedEmptyPlugins := false;
+  bUsedDummyPlugins := false;
   ProgramVersion := GetVersionMem;
 end;
 
