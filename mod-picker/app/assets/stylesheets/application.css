@@ -54,6 +54,10 @@ tbody tr:nth-child(even) {
   width: 200px;
 }
 
+.field input[type="email"]{
+  width: 200px;
+}
+
 .field input[type="password"]{
   width: 200px;
 }
