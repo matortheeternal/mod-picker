@@ -262,13 +262,10 @@ CREATE TABLE users
 (
 user_id INT UNSIGNED NOT NULL AUTO_INCREMENT, /* max ~4 billion */
 username VARCHAR(32),
-email VARCHAR(64), /* this should be long enough */
-hash VARCHAR(53), /* bcrypt 22 character salt and 31 character hash */
 user_level ENUM('admin', 'moderator', 'vip', 'mod author', 'user', 'banned'),
 title VARCHAR(32),
 avatar TINYTEXT, /* max 255 ascii characters */
 joined DATE,
-last_seen DATE,
 bio_id INT UNSIGNED,
 set_id INT UNSIGNED,
 rep_id INT UNSIGNED,

@@ -49,3 +49,23 @@ tbody tr:nth-child(odd) {
 tbody tr:nth-child(even) { 
 	background-color: #fff; 
 }
+
+.field input[type="text"]{
+  width: 200px;
+}
+
+.field input[type="password"]{
+  width: 200px;
+}
+
+/* css for horizontal menus */
+/* used for login and registration items */
+ul.hmenu {
+  list-style: none; 
+  margin: 0 0 2em;
+  padding: 0;
+}
+
+ul.hmenu li {
+  display: inline;  
+}

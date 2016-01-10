@@ -1,23 +1,13 @@
 <p id="notice"><%= notice %></p>
 
 <p>
-  <strong>User:</strong>
+  <strong>ID:</strong>
   <%= @user.user_id %>
 </p>
 
 <p>
   <strong>Username:</strong>
   <%= @user.username %>
-</p>
-
-<p>
-  <strong>Email:</strong>
-  <%= @user.email %>
-</p>
-
-<p>
-  <strong>Hash:</strong>
-  <%= @user.hash %>
 </p>
 
 <p>
@@ -38,11 +28,6 @@
 <p>
   <strong>Joined:</strong>
   <%= @user.joined %>
-</p>
-
-<p>
-  <strong>Last seen:</strong>
-  <%= @user.last_seen %>
 </p>
 
 <p>
@@ -68,6 +53,36 @@
 <p>
   <strong>Active mc:</strong>
   <%= @user.active_mc_id %>
+</p>
+
+<p>
+  <strong>Email:</strong>
+  <%= @user.email %>
+</p>
+
+<p>
+  <strong>Sign in count:</strong>
+  <%= @user.sign_in_count %>
+</p>
+
+<p>
+  <strong>Current sign in at:</strong>
+  <%= @user.current_sign_in_at %>
+</p>
+
+<p>
+  <strong>Last sign in at:</strong>
+  <%= @user.last_sign_in_at %>
+</p>
+
+<p>
+  <strong>Current sign in ip:</strong>
+  <%= @user.current_sign_in_ip %>
+</p>
+
+<p>
+  <strong>Last sign in ip:</strong>
+  <%= @user.last_sign_in_ip %>
 </p>
 
 <%= link_to 'Edit', edit_user_path(@user) %> |

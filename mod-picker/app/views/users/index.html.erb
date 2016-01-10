@@ -7,18 +7,21 @@
     <tr>
       <th>user_id</th>
       <th>username</th>
-      <th>email</th>
-      <th>hash</th>
       <th>user_level</th>
       <th>title</th>
       <th>avatar</th>
       <th>joined</th>
-      <th>last_seen</th>
       <th>bio_id</th>
       <th>set_id</th>
       <th>rep_id</th>
       <th>active_ml_id</th>
       <th>active_mc_id</th>
+      <th>email</th>
+      <th>sign_in_count</th>
+      <th>current_sign_in_at</th>
+      <th>last_sign_in_at</th>
+      <th>current_sign_in_ip</th>
+      <th>last_sign_in_ip</th>
       <th colspan="3">Actions</th>
     </tr>
   </thead>
@@ -28,18 +31,21 @@
       <tr>
         <td><%= user.user_id %></td>
         <td><%= user.username %></td>
-        <td><%= user.email %></td>
-        <td><%= user.hash %></td>
         <td><%= user.user_level %></td>
         <td><%= user.title %></td>
         <td><%= user.avatar %></td>
         <td><%= user.joined %></td>
-        <td><%= user.last_seen %></td>
         <td><%= user.bio_id %></td>
         <td><%= user.set_id %></td>
         <td><%= user.rep_id %></td>
         <td><%= user.active_ml_id %></td>
         <td><%= user.active_mc_id %></td>
+        <td><%= user.email %></td>
+        <td><%= user.sign_in_count %></td>
+        <td><%= user.current_sign_in_at %></td>
+        <td><%= user.last_sign_in_at %></td>
+        <td><%= user.current_sign_in_ip %></td>
+        <td><%= user.last_sign_in_ip %></td>
         <td><%= link_to 'Show', user %></td>
         <td><%= link_to 'Edit', edit_user_path(user) %></td>
         <td><%= link_to 'Destroy', user, method: :delete, data: { confirm: 'Are you sure?' } %></td>

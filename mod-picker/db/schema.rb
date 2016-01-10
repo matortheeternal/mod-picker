@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 0) do
+ActiveRecord::Schema.define(version: 20160110223210) do
 
   create_table "agreement_marks", id: false, force: :cascade do |t|
     t.integer "inc_id",       limit: 4
@@ -353,25 +353,38 @@ ActiveRecord::Schema.define(version: 0) do
   end
 
   create_table "users", primary_key: "user_id", force: :cascade do |t|
-    t.string  "username",     limit: 32
-    t.string  "email",        limit: 64
-    t.string  "hash",         limit: 53
-    t.string  "user_level",   limit: 10
-    t.string  "title",        limit: 32
-    t.text    "avatar",       limit: 255
-    t.date    "joined"
-    t.date    "last_seen"
-    t.integer "bio_id",       limit: 4
-    t.integer "set_id",       limit: 4
-    t.integer "rep_id",       limit: 4
-    t.integer "active_ml_id", limit: 4
-    t.integer "active_mc_id", limit: 4
+    t.string   "username",               limit: 32
+    t.string   "user_level",             limit: 10
+    t.string   "title",                  limit: 32
+    t.text     "avatar",                 limit: 255
+    t.date     "joined"
+    t.integer  "bio_id",                 limit: 4
+    t.integer  "set_id",                 limit: 4
+    t.integer  "rep_id",                 limit: 4
+    t.integer  "active_ml_id",           limit: 4
+    t.integer  "active_mc_id",           limit: 4
+    t.string   "email",                  limit: 255, default: "", null: false
+    t.string   "encrypted_password",     limit: 255, default: "", null: false
+    t.string   "reset_password_token",   limit: 255
+    t.datetime "reset_password_sent_at"
+    t.datetime "remember_created_at"
+    t.integer  "sign_in_count",          limit: 4,   default: 0,  null: false
+    t.datetime "current_sign_in_at"
+    t.datetime "last_sign_in_at"
+    t.string   "current_sign_in_ip",     limit: 255
+    t.string   "last_sign_in_ip",        limit: 255
+    t.string   "confirmation_token",     limit: 255
+    t.datetime "confirmed_at"
+    t.datetime "confirmation_sent_at"
   end
 
   add_index "users", ["active_mc_id"], name: "active_mc_id", using: :btree
   add_index "users", ["active_ml_id"], name: "active_ml_id", using: :btree
   add_index "users", ["bio_id"], name: "bio_id", using: :btree
+  add_index "users", ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true, using: :btree
+  add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
   add_index "users", ["rep_id"], name: "rep_id", using: :btree
+  add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
   add_index "users", ["set_id"], name: "set_id", using: :btree
 
   create_table "workshop_infos", primary_key: "ws_id", force: :cascade do |t|

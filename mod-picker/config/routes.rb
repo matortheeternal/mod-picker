@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  devise_for :users
   resources :mod_list_compatibility_notes
   resources :mod_list_installation_notes
   resources :agreement_marks
@@ -34,6 +35,7 @@ Rails.application.routes.draw do
   resources :lover_infos
   resources :workshop_infos
   resources :nexus_infos
+  
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
