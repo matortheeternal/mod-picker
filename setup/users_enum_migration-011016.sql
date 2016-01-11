@@ -1,0 +1,1 @@
+ALTER TABLE users CHANGE user_level user_level ENUM('guest', 'banned', 'user', author', 'vip', 'moderator', 'admin');

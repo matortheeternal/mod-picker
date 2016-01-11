@@ -35,6 +35,9 @@ gem 'devise'
 # use mailcatcher for development
 gem 'mailcatcher'
 
+# native-enum so schema can have enum
+gem 'native_enum'
+
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 

@@ -25,10 +25,6 @@ class UsersController < ApplicationController
   # POST /users.json
   def create
     @user = User.new(user_params)
-    @user.joined = DateTime.current
-    @user.title = 'Prisoner'
-    @user.avatar = 'NewUser.png'
-    @user.user_level = 0
 
     respond_to do |format|
       if @user.save
@@ -73,6 +69,6 @@ class UsersController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def user_params
-      params.require(:user).permit(:user_id, :username, :email, :hash, :user_level, :title, :avatar, :joined, :bio_id, :set_id, :rep_id, :active_ml_id, :active_mc_id)
+      params.require(:user).permit(:user_id, :username, :user_level, :title, :avatar, :joined, :bio_id, :set_id, :rep_id, :active_ml_id, :active_mc_id, :email)
     end
 end

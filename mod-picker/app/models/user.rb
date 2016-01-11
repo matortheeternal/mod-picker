@@ -5,6 +5,7 @@ class User < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable
   
   attr_accessor :login
+  after_initialize :init
   
   validates :username,
   :presence => true,
@@ -31,5 +32,11 @@ class User < ActiveRecord::Base
         where(username: conditions[:username]).first
       end
     end
+  end
+  
+  def init
+    self.joined     ||= DateTime.current
+    self.title      ||= 'Prisoner'
+    self.avatar     ||= 'NewUser.png'
   end
 end

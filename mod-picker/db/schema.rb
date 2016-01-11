@@ -354,7 +354,7 @@ ActiveRecord::Schema.define(version: 20160110223210) do
 
   create_table "users", primary_key: "user_id", force: :cascade do |t|
     t.string   "username",               limit: 32
-    t.string   "user_level",             limit: 10
+    t.enum     "user_level",             limit: ['guest', 'banned', 'user', 'author', 'vip', 'moderator', 'admin'], default: 'user', null: false
     t.string   "title",                  limit: 32
     t.text     "avatar",                 limit: 255
     t.date     "joined"

@@ -262,7 +262,7 @@ CREATE TABLE users
 (
 user_id INT UNSIGNED NOT NULL AUTO_INCREMENT, /* max ~4 billion */
 username VARCHAR(32),
-user_level ENUM('admin', 'moderator', 'vip', 'mod author', 'user', 'banned'),
+user_level ENUM('guest', 'banned', 'user', 'author', 'vip', 'moderator', 'admin'),
 title VARCHAR(32),
 avatar TINYTEXT, /* max 255 ascii characters */
 joined DATE,
