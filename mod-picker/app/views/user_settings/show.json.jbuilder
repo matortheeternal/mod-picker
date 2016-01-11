@@ -1,1 +1,1 @@
-json.extract! @user_setting, :id, :set_id, :show_notifications, :show_tooltips, :email_notifications, :email_public, :allow_adult_content, :allow_nexus_mods, :allow_lovers_lab, :allow_steam_workshop, :PRIMARY, :KEY(set_id), :created_at, :updated_at
+json.extract! @user_setting, :id, :set_id, :show_notifications, :show_tooltips, :email_notifications, :email_public, :allow_adult_content, :allow_nexus_mods, :allow_lovers_lab, :allow_steam_workshop, :created_at, :updated_at

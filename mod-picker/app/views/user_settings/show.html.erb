@@ -45,15 +45,5 @@
   <%= @user_setting.allow_steam_workshop %>
 </p>
 
-<p>
-  <strong>Primary:</strong>
-  <%= @user_setting.PRIMARY %>
-</p>
-
-<p>
-  <strong>Key(set id):</strong>
-  <%= @user_setting.KEY(set_id) %>
-</p>
-
 <%= link_to 'Edit', edit_user_setting_path(@user_setting) %> |
 <%= link_to 'Back', user_settings_path %>
