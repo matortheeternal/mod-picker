@@ -6,6 +6,7 @@
   <thead>
     <tr>
       <th>Set</th>
+      <th>User</th>
       <th>Show notifications</th>
       <th>Show tooltips</th>
       <th>Email notifications</th>
@@ -22,6 +23,7 @@
     <% @user_settings.each do |user_setting| %>
       <tr>
         <td><%= user_setting.set_id %></td>
+        <td><%= user_setting.user_id %></td>
         <td><%= user_setting.show_notifications %></td>
         <td><%= user_setting.show_tooltips %></td>
         <td><%= user_setting.email_notifications %></td>

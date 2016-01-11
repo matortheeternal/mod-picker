@@ -69,6 +69,6 @@ class UserBiosController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def user_bio_params
-      params.require(:user_bio).permit(:bio_id, :nexus_username, :nexus_verified, :lover_username, :lover_verified, :steam_username, :steam_verified)
+      params.require(:user_bio).permit(:bio_id, :user_id, :nexus_username, :nexus_verified, :lover_username, :lover_verified, :steam_username, :steam_verified)
     end
 end

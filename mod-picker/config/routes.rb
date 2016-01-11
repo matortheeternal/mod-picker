@@ -1,4 +1,7 @@
 Rails.application.routes.draw do
+  resources :user_reputations
+  resources :user_settings
+  resources :user_bios
   devise_for :users
   resources :mod_list_compatibility_notes
   resources :mod_list_installation_notes

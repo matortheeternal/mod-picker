@@ -11,11 +11,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160110223210) do
+ActiveRecord::Schema.define(version: 20160111214636) do
 
   create_table "agreement_marks", id: false, force: :cascade do |t|
-    t.integer "inc_id",       limit: 4
-    t.integer "submitted_by", limit: 4
+    t.integer "inc_id",       limit: 4, unsigned: true
+    t.integer "submitted_by", limit: 4, unsigned: true
     t.boolean "agree"
   end
 
@@ -23,8 +23,8 @@ ActiveRecord::Schema.define(version: 20160110223210) do
   add_index "agreement_marks", ["submitted_by"], name: "submitted_by", using: :btree
 
   create_table "comments", primary_key: "c_id", force: :cascade do |t|
-    t.integer "parent_comment", limit: 4
-    t.integer "submitted_by",   limit: 4
+    t.integer "parent_comment", limit: 4, unsigned: true
+    t.integer "submitted_by",   limit: 4, unsigned: true
     t.boolean "hidden"
     t.date    "submitted"
     t.date    "edited"
@@ -35,11 +35,11 @@ ActiveRecord::Schema.define(version: 20160110223210) do
   add_index "comments", ["submitted_by"], name: "submitted_by", using: :btree
 
   create_table "compatibility_notes", primary_key: "cn_id", force: :cascade do |t|
-    t.integer "submitted_by",         limit: 4
-    t.string  "mod_mode",             limit: 3
-    t.integer "compatibility_patch",  limit: 4
-    t.string  "compatibility_status", limit: 20
-    t.integer "in_id",                limit: 4
+    t.integer "submitted_by",         limit: 4, unsigned: true
+    t.enum    "mod_mode",             limit: ["Any", "All"]
+    t.integer "compatibility_patch",  limit: 4, unsigned: true
+    t.enum    "compatibility_status", limit: ["Incompatible", "Partially Compatible", "Patch Available", "Make Custom Patch", "Soft Incompatibility", "Installation Note"]
+    t.integer "in_id",                limit: 4, unsigned: true
     t.date    "submitted"
     t.date    "edited"
     t.text    "text_body",            limit: 65535
@@ -50,10 +50,10 @@ ActiveRecord::Schema.define(version: 20160110223210) do
   add_index "compatibility_notes", ["submitted_by"], name: "submitted_by", using: :btree
 
   create_table "helpful_marks", id: false, force: :cascade do |t|
-    t.integer "r_id",         limit: 4
-    t.integer "cn_id",        limit: 4
-    t.integer "in_id",        limit: 4
-    t.integer "submitted_by", limit: 4
+    t.integer "r_id",         limit: 4, unsigned: true
+    t.integer "cn_id",        limit: 4, unsigned: true
+    t.integer "in_id",        limit: 4, unsigned: true
+    t.integer "submitted_by", limit: 4, unsigned: true
     t.boolean "helpful"
   end
 
@@ -63,10 +63,10 @@ ActiveRecord::Schema.define(version: 20160110223210) do
   add_index "helpful_marks", ["submitted_by"], name: "submitted_by", using: :btree
 
   create_table "incorrect_notes", primary_key: "inc_id", force: :cascade do |t|
-    t.integer "r_id",         limit: 4
-    t.integer "cn_id",        limit: 4
-    t.integer "in_id",        limit: 4
-    t.integer "submitted_by", limit: 4
+    t.integer "r_id",         limit: 4, unsigned: true
+    t.integer "cn_id",        limit: 4, unsigned: true
+    t.integer "in_id",        limit: 4, unsigned: true
+    t.integer "submitted_by", limit: 4, unsigned: true
     t.text    "reason",       limit: 65535
   end
 
@@ -76,10 +76,10 @@ ActiveRecord::Schema.define(version: 20160110223210) do
   add_index "incorrect_notes", ["submitted_by"], name: "submitted_by", using: :btree
 
   create_table "installation_notes", primary_key: "in_id", force: :cascade do |t|
-    t.integer "submitted_by", limit: 4
-    t.integer "mv_id",        limit: 4
+    t.integer "submitted_by", limit: 4, unsigned: true
+    t.integer "mv_id",        limit: 4, unsigned: true
     t.boolean "always"
-    t.string  "note_type",    limit: 15
+    t.enum    "note_type",    limit: ["Download Option", "FOMOD Option"]
     t.date    "submitted"
     t.date    "edited"
     t.text    "text_body",    limit: 65535
@@ -92,7 +92,7 @@ ActiveRecord::Schema.define(version: 20160110223210) do
   end
 
   create_table "masters", primary_key: "mst_id", force: :cascade do |t|
-    t.integer "pl_id", limit: 4
+    t.integer "pl_id", limit: 4, unsigned: true
   end
 
   add_index "masters", ["pl_id"], name: "pl_id", using: :btree
@@ -104,32 +104,32 @@ ActiveRecord::Schema.define(version: 20160110223210) do
   add_index "mod_asset_files", ["filepath"], name: "filepath", unique: true, using: :btree
 
   create_table "mod_comments", id: false, force: :cascade do |t|
-    t.integer "mod_id", limit: 4
-    t.integer "c_id",   limit: 4
+    t.integer "mod_id", limit: 4, unsigned: true
+    t.integer "c_id",   limit: 4, unsigned: true
   end
 
   add_index "mod_comments", ["c_id"], name: "c_id", using: :btree
   add_index "mod_comments", ["mod_id"], name: "mod_id", using: :btree
 
   create_table "mod_list_comments", id: false, force: :cascade do |t|
-    t.integer "ml_id", limit: 4
-    t.integer "c_id",  limit: 4
+    t.integer "ml_id", limit: 4, unsigned: true
+    t.integer "c_id",  limit: 4, unsigned: true
   end
 
   add_index "mod_list_comments", ["c_id"], name: "c_id", using: :btree
   add_index "mod_list_comments", ["ml_id"], name: "ml_id", using: :btree
 
   create_table "mod_list_compatibility_notes", id: false, force: :cascade do |t|
-    t.integer "ml_id",  limit: 4
+    t.integer "ml_id",  limit: 4, unsigned: true
     t.integer "cn_id",  limit: 4
-    t.string  "status", limit: 8
+    t.enum    "status", limit: ["Resolved", "Ignored"]
   end
 
   add_index "mod_list_compatibility_notes", ["cn_id"], name: "cn_id", using: :btree
   add_index "mod_list_compatibility_notes", ["ml_id"], name: "ml_id", using: :btree
 
   create_table "mod_list_custom_plugins", id: false, force: :cascade do |t|
-    t.integer "ml_id",       limit: 4
+    t.integer "ml_id",       limit: 4, unsigned: true
     t.boolean "active"
     t.integer "load_order",  limit: 2
     t.string  "title",       limit: 64
@@ -139,17 +139,17 @@ ActiveRecord::Schema.define(version: 20160110223210) do
   add_index "mod_list_custom_plugins", ["ml_id"], name: "ml_id", using: :btree
 
   create_table "mod_list_installation_notes", id: false, force: :cascade do |t|
-    t.integer "ml_id",  limit: 4
-    t.integer "in_id",  limit: 4
-    t.string  "status", limit: 8
+    t.integer "ml_id",  limit: 4, unsigned: true
+    t.integer "in_id",  limit: 4, unsigned: true
+    t.enum    "status", limit: ["Resolved", "Ignored"]
   end
 
   add_index "mod_list_installation_notes", ["in_id"], name: "in_id", using: :btree
   add_index "mod_list_installation_notes", ["ml_id"], name: "ml_id", using: :btree
 
   create_table "mod_list_mods", id: false, force: :cascade do |t|
-    t.integer "ml_id",         limit: 4
-    t.integer "mod_id",        limit: 4
+    t.integer "ml_id",         limit: 4, unsigned: true
+    t.integer "mod_id",        limit: 4, unsigned: true
     t.boolean "active"
     t.integer "install_order", limit: 2
   end
@@ -158,8 +158,8 @@ ActiveRecord::Schema.define(version: 20160110223210) do
   add_index "mod_list_mods", ["mod_id"], name: "mod_id", using: :btree
 
   create_table "mod_list_plugins", id: false, force: :cascade do |t|
-    t.integer "ml_id",      limit: 4
-    t.integer "pl_id",      limit: 4
+    t.integer "ml_id",      limit: 4, unsigned: true
+    t.integer "pl_id",      limit: 4, unsigned: true
     t.boolean "active"
     t.integer "load_order", limit: 2
   end
@@ -169,11 +169,11 @@ ActiveRecord::Schema.define(version: 20160110223210) do
 
   create_table "mod_lists", primary_key: "ml_id", force: :cascade do |t|
     t.text    "game",              limit: 255
-    t.integer "created_by",        limit: 4
+    t.integer "created_by",        limit: 4, unsigned: true
     t.boolean "is_collection"
     t.boolean "is_public"
     t.boolean "has_adult_content"
-    t.string  "status",            limit: 18
+    t.enum    "status",            limit: ["Planned", "Under Construction", "Testing", "Complete"]
     t.date    "created"
     t.date    "completed"
     t.text    "description",       limit: 65535
@@ -182,15 +182,15 @@ ActiveRecord::Schema.define(version: 20160110223210) do
   add_index "mod_lists", ["created_by"], name: "created_by", using: :btree
 
   create_table "mod_version_file_map", id: false, force: :cascade do |t|
-    t.integer "mv_id",  limit: 4
-    t.integer "maf_id", limit: 4
+    t.integer "mv_id",  limit: 4, unsigned: true
+    t.integer "maf_id", limit: 4, unsigned: true
   end
 
   add_index "mod_version_file_map", ["maf_id"], name: "maf_id", using: :btree
   add_index "mod_version_file_map", ["mv_id"], name: "mv_id", using: :btree
 
   create_table "mod_versions", primary_key: "mv_id", force: :cascade do |t|
-    t.integer "mod_id",    limit: 4
+    t.integer "mod_id",    limit: 4, unsigned: true
     t.date    "released"
     t.boolean "obsolete"
     t.boolean "dangerous"
@@ -205,9 +205,9 @@ ActiveRecord::Schema.define(version: 20160110223210) do
     t.boolean "is_utility"
     t.integer "category",          limit: 2
     t.boolean "has_adult_content"
-    t.integer "nm_id",             limit: 4
-    t.integer "ws_id",             limit: 4
-    t.integer "ll_id",             limit: 4
+    t.integer "nm_id",             limit: 4, unsigned: true
+    t.integer "ws_id",             limit: 4, unsigned: true
+    t.integer "ll_id",             limit: 4, unsigned: true
   end
 
   add_index "mods", ["ll_id"], name: "ll_id", using: :btree
@@ -233,21 +233,18 @@ ActiveRecord::Schema.define(version: 20160110223210) do
   end
 
   create_table "plugin_override_map", id: false, force: :cascade do |t|
-    t.integer "pl_id",   limit: 4
-    t.integer "mst_id",  limit: 4
+    t.integer "pl_id",   limit: 4, unsigned: true
+    t.integer "mst_id",  limit: 4, unsigned: true
     t.integer "form_id", limit: 4
     t.string  "sig",     limit: 4
     t.text    "name",    limit: 255
-    t.boolean "is_itm"
-    t.boolean "is_itpo"
-    t.boolean "is_udr"
   end
 
   add_index "plugin_override_map", ["mst_id"], name: "mst_id", using: :btree
   add_index "plugin_override_map", ["pl_id"], name: "pl_id", using: :btree
 
   create_table "plugin_record_groups", id: false, force: :cascade do |t|
-    t.integer "pl_id",            limit: 4
+    t.integer "pl_id",            limit: 4, unsigned: true
     t.string  "sig",              limit: 4
     t.text    "name",             limit: 255
     t.integer "new_records",      limit: 4
@@ -257,7 +254,7 @@ ActiveRecord::Schema.define(version: 20160110223210) do
   add_index "plugin_record_groups", ["pl_id"], name: "pl_id", using: :btree
 
   create_table "plugins", primary_key: "pl_id", force: :cascade do |t|
-    t.integer "mv_id",       limit: 4
+    t.integer "mv_id",       limit: 4, unsigned: true
     t.text    "filename",    limit: 255
     t.text    "author",      limit: 255
     t.text    "description", limit: 65535
@@ -267,16 +264,16 @@ ActiveRecord::Schema.define(version: 20160110223210) do
   add_index "plugins", ["mv_id"], name: "mv_id", using: :btree
 
   create_table "reputation_map", id: false, force: :cascade do |t|
-    t.integer "from_rep_id", limit: 4
-    t.integer "to_rep_id",   limit: 4
+    t.integer "from_rep_id", limit: 4, unsigned: true
+    t.integer "to_rep_id",   limit: 4, unsigned: true
   end
 
   add_index "reputation_map", ["from_rep_id"], name: "from_rep_id", using: :btree
   add_index "reputation_map", ["to_rep_id"], name: "to_rep_id", using: :btree
 
   create_table "reviews", primary_key: "r_id", force: :cascade do |t|
-    t.integer "submitted_by", limit: 4
-    t.integer "mod_id",       limit: 4
+    t.integer "submitted_by", limit: 4, unsigned: true
+    t.integer "mod_id",       limit: 4, unsigned: true
     t.boolean "hidden"
     t.integer "rating1",      limit: 1
     t.integer "rating2",      limit: 1
@@ -292,6 +289,7 @@ ActiveRecord::Schema.define(version: 20160110223210) do
   add_index "reviews", ["submitted_by"], name: "submitted_by", using: :btree
 
   create_table "user_bios", primary_key: "bio_id", force: :cascade do |t|
+    t.integer "user_id",        limit: 4, unsigned: true
     t.string  "nexus_username", limit: 32
     t.boolean "nexus_verified"
     t.string  "lover_username", limit: 32
@@ -299,49 +297,55 @@ ActiveRecord::Schema.define(version: 20160110223210) do
     t.string  "steam_username", limit: 32
     t.boolean "steam_verified"
   end
+  
+  add_index "user_bios", ["user_id"], name: "user_id", using: :btree
 
   create_table "user_comments", id: false, force: :cascade do |t|
-    t.integer "user_id", limit: 4
-    t.integer "c_id",    limit: 4
+    t.integer "user_id", limit: 4, unsigned: true
+    t.integer "c_id",    limit: 4, unsigned: true
   end
 
   add_index "user_comments", ["c_id"], name: "c_id", using: :btree
   add_index "user_comments", ["user_id"], name: "user_id", using: :btree
 
   create_table "user_mod_author_map", id: false, force: :cascade do |t|
-    t.integer "mod_id",  limit: 4
-    t.integer "user_id", limit: 4
+    t.integer "mod_id",  limit: 4, unsigned: true
+    t.integer "user_id", limit: 4, unsigned: true
   end
 
   add_index "user_mod_author_map", ["mod_id"], name: "mod_id", using: :btree
   add_index "user_mod_author_map", ["user_id"], name: "user_id", using: :btree
 
   create_table "user_mod_list_star_map", id: false, force: :cascade do |t|
-    t.integer "ml_id",   limit: 4
-    t.integer "user_id", limit: 4
+    t.integer "ml_id",   limit: 4, unsigned: true
+    t.integer "user_id", limit: 4, unsigned: true
   end
 
   add_index "user_mod_list_star_map", ["ml_id"], name: "ml_id", using: :btree
   add_index "user_mod_list_star_map", ["user_id"], name: "user_id", using: :btree
 
   create_table "user_mod_star_map", id: false, force: :cascade do |t|
-    t.integer "mod_id",  limit: 4
-    t.integer "user_id", limit: 4
+    t.integer "mod_id",  limit: 4, unsigned: true
+    t.integer "user_id", limit: 4, unsigned: true
   end
 
   add_index "user_mod_star_map", ["mod_id"], name: "mod_id", using: :btree
   add_index "user_mod_star_map", ["user_id"], name: "user_id", using: :btree
 
   create_table "user_reputations", primary_key: "rep_id", force: :cascade do |t|
-    t.float "overall",            limit: 24
-    t.float "offset",             limit: 24
-    t.float "audiovisual_design", limit: 24
-    t.float "plugin_design",      limit: 24
-    t.float "utilty_design",      limit: 24
-    t.float "script_design",      limit: 24
+    t.integer "user_id",            limit: 4, unsigned: true
+    t.float   "overall",            limit: 24
+    t.float   "offset",             limit: 24
+    t.float   "audiovisual_design", limit: 24
+    t.float   "plugin_design",      limit: 24
+    t.float   "utilty_design",      limit: 24
+    t.float   "script_design",      limit: 24
   end
+  
+  add_index "user_reputations", ["user_id"], name: "user_id", using: :btree
 
   create_table "user_settings", primary_key: "set_id", force: :cascade do |t|
+    t.integer "user_id",            limit: 4, unsigned: true
     t.boolean "show_notifications"
     t.boolean "show_tooltips"
     t.boolean "email_notifications"
@@ -351,24 +355,23 @@ ActiveRecord::Schema.define(version: 20160110223210) do
     t.boolean "allow_lovers_lab"
     t.boolean "allow_steam_workshop"
   end
+  
+  add_index "user_settings", ["user_id"], name: "user_id", using: :btree
 
   create_table "users", primary_key: "user_id", force: :cascade do |t|
     t.string   "username",               limit: 32
-    t.enum     "user_level",             limit: ['guest', 'banned', 'user', 'author', 'vip', 'moderator', 'admin'], default: 'user', null: false
+    t.enum     "user_level",             limit: ["guest", "banned", "user", "author", "vip", "moderator", "admin"]
     t.string   "title",                  limit: 32
     t.text     "avatar",                 limit: 255
     t.date     "joined"
-    t.integer  "bio_id",                 limit: 4
-    t.integer  "set_id",                 limit: 4
-    t.integer  "rep_id",                 limit: 4
-    t.integer  "active_ml_id",           limit: 4
-    t.integer  "active_mc_id",           limit: 4
-    t.string   "email",                  limit: 255, default: "", null: false
-    t.string   "encrypted_password",     limit: 255, default: "", null: false
+    t.integer  "active_ml_id",           limit: 4,                                                                  unsigned: true
+    t.integer  "active_mc_id",           limit: 4,                                                                  unsigned: true
+    t.string   "email",                  limit: 255,                                                                default: "", null: false
+    t.string   "encrypted_password",     limit: 255,                                                                default: "", null: false
     t.string   "reset_password_token",   limit: 255
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
-    t.integer  "sign_in_count",          limit: 4,   default: 0,  null: false
+    t.integer  "sign_in_count",          limit: 4,                                                                  default: 0,  null: false
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
     t.string   "current_sign_in_ip",     limit: 255
@@ -380,12 +383,9 @@ ActiveRecord::Schema.define(version: 20160110223210) do
 
   add_index "users", ["active_mc_id"], name: "active_mc_id", using: :btree
   add_index "users", ["active_ml_id"], name: "active_ml_id", using: :btree
-  add_index "users", ["bio_id"], name: "bio_id", using: :btree
   add_index "users", ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true, using: :btree
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
-  add_index "users", ["rep_id"], name: "rep_id", using: :btree
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
-  add_index "users", ["set_id"], name: "set_id", using: :btree
 
   create_table "workshop_infos", primary_key: "ws_id", force: :cascade do |t|
   end
@@ -446,7 +446,7 @@ ActiveRecord::Schema.define(version: 20160110223210) do
   add_foreign_key "user_mod_star_map", "users", primary_key: "user_id", name: "user_mod_star_map_ibfk_2"
   add_foreign_key "users", "mod_lists", column: "active_mc_id", primary_key: "ml_id", name: "users_ibfk_5"
   add_foreign_key "users", "mod_lists", column: "active_ml_id", primary_key: "ml_id", name: "users_ibfk_4"
-  add_foreign_key "users", "user_bios", column: "bio_id", primary_key: "bio_id", name: "users_ibfk_1"
-  add_foreign_key "users", "user_reputations", column: "rep_id", primary_key: "rep_id", name: "users_ibfk_3"
-  add_foreign_key "users", "user_settings", column: "set_id", primary_key: "set_id", name: "users_ibfk_2"
+  add_foreign_key "user_bios", "users", column: "user_id", primary_key: "user_id", name: "user_bios_ibfk_1"
+  add_foreign_key "user_settings", "users", column: "user_id", primary_key: "user_id", name: "user_settings_ibfk_1"
+  add_foreign_key "user_reputations", "users", column: "user_id", primary_key: "user_id", name: "user_reputations_ibfk_1"
 end

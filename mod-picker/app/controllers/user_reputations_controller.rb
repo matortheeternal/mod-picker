@@ -69,6 +69,6 @@ class UserReputationsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def user_reputation_params
-      params.require(:user_reputation).permit(:rep_id, :overall, :offset, :audiovisual_design, :plugin_design, :utilty_design, :script_design)
+      params.require(:user_reputation).permit(:rep_id, :user_id, :overall, :offset, :audiovisual_design, :plugin_design, :utilty_design, :script_design)
     end
 end

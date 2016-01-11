@@ -216,47 +216,6 @@ FOREIGN KEY(mod_id) REFERENCES mods(mod_id)
 /* user tables */
 /* ------------------------------------------------------ */
 
-/* user biographies - connections to other sites */
-CREATE TABLE user_bios 
-(
-bio_id INT UNSIGNED NOT NULL AUTO_INCREMENT,
-nexus_username VARCHAR(32),
-nexus_verified BOOLEAN,
-lover_username VARCHAR(32),
-lover_verified BOOLEAN,
-steam_username VARCHAR(32),
-steam_verified BOOLEAN,
-PRIMARY KEY(bio_id)
-);
-
-/* the settings associated with a particular user */
-CREATE TABLE user_settings
-(
-set_id INT UNSIGNED NOT NULL AUTO_INCREMENT,
-show_notifications BOOLEAN,
-show_tooltips BOOLEAN,
-email_notifications BOOLEAN,
-email_public BOOLEAN,
-allow_adult_content BOOLEAN,
-allow_nexus_mods BOOLEAN,
-allow_lovers_lab BOOLEAN,
-allow_steam_workshop BOOLEAN,
-PRIMARY KEY(set_id)
-);
-
-/* the reputation associated with a particular user */
-CREATE TABLE user_reputations
-(
-rep_id INT UNSIGNED NOT NULL AUTO_INCREMENT,
-overall FLOAT,
-offset FLOAT,
-audiovisual_design FLOAT,
-plugin_design FLOAT,
-utilty_design FLOAT,
-script_design FLOAT,
-PRIMARY KEY(rep_id)
-);
-
 /* users registered on the site */
 CREATE TABLE users
 (
@@ -266,17 +225,58 @@ user_level ENUM('guest', 'banned', 'user', 'author', 'vip', 'moderator', 'admin'
 title VARCHAR(32),
 avatar TINYTEXT, /* max 255 ascii characters */
 joined DATE,
-bio_id INT UNSIGNED,
-set_id INT UNSIGNED,
-rep_id INT UNSIGNED,
 active_ml_id INT UNSIGNED,
 active_mc_id INT UNSIGNED,
 PRIMARY KEY(user_id),
-FOREIGN KEY(bio_id) REFERENCES user_bios(bio_id),
-FOREIGN KEY(set_id) REFERENCES user_settings(set_id),
-FOREIGN KEY(rep_id) REFERENCES user_reputations(rep_id),
 FOREIGN KEY(active_ml_id) REFERENCES mod_lists(ml_id),
 FOREIGN KEY(active_mc_id) REFERENCES mod_lists(ml_id)
+);
+
+/* user biographies - connections to other sites */
+CREATE TABLE user_bios 
+(
+bio_id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+user_id INT UNSIGNED,
+nexus_username VARCHAR(32),
+nexus_verified BOOLEAN,
+lover_username VARCHAR(32),
+lover_verified BOOLEAN,
+steam_username VARCHAR(32),
+steam_verified BOOLEAN,
+PRIMARY KEY(bio_id),
+FOREIGN KEY(user_id) REFERENCES users(user_id)
+);
+
+/* the settings associated with a particular user */
+CREATE TABLE user_settings
+(
+set_id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+user_id INT UNSIGNED,
+show_notifications BOOLEAN,
+show_tooltips BOOLEAN,
+email_notifications BOOLEAN,
+email_public BOOLEAN,
+allow_adult_content BOOLEAN,
+allow_nexus_mods BOOLEAN,
+allow_lovers_lab BOOLEAN,
+allow_steam_workshop BOOLEAN,
+PRIMARY KEY(set_id),
+FOREIGN KEY(user_id) REFERENCES users(user_id)
+);
+
+/* the reputation associated with a particular user */
+CREATE TABLE user_reputations
+(
+rep_id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+user_id INT UNSIGNED,
+overall FLOAT,
+offset FLOAT,
+audiovisual_design FLOAT,
+plugin_design FLOAT,
+utilty_design FLOAT,
+script_design FLOAT,
+PRIMARY KEY(rep_id),
+FOREIGN KEY(user_id) REFERENCES users(user_id)
 );
 
 /* reputation that's been given  */

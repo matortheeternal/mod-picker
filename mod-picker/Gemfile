@@ -38,8 +38,9 @@ gem 'devise'
 # use mailcatcher for development
 gem 'mailcatcher'
 
-# native-enum so schema can have enum
+# gems to enhance integration with mysql
 gem 'native_enum'
+gem 'activerecord-mysql-unsigned'
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development

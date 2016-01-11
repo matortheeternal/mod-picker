@@ -6,6 +6,7 @@
   <thead>
     <tr>
       <th>Bio</th>
+      <th>User</th>
       <th>Nexus username</th>
       <th>Nexus verified</th>
       <th>Lover username</th>
@@ -20,6 +21,7 @@
     <% @user_bios.each do |user_bio| %>
       <tr>
         <td><%= user_bio.bio_id %></td>
+        <td><%= user_bio.user_id %></td>
         <td><%= user_bio.nexus_username %></td>
         <td><%= user_bio.nexus_verified %></td>
         <td><%= user_bio.lover_username %></td>
