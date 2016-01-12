@@ -26,7 +26,9 @@
       <% end %>
       <tr>
         <td>Reputation</td>
-        <td><strong><a href="#"><%= @user.reputation.overall %></a><strong></td>
+        <td>
+          <a class="strong" href="#"><%= number_with_precision(@user.reputation.overall, precision: 2) %></a>
+        </td>
       </tr>
       <tr>
         <td>Joined</td>
@@ -41,19 +43,19 @@
     <h3>Contributions</h3>
     <div class="vcard-stats">
       <a class="vcard-stat" href="#">
-        <strong class="vcard-stat-count">0</strong>
+        <strong class="vcard-stat-count"><%= number_to_human(512) %></strong>
         <span class="text-muted">Reviews</span>
       </a>
       <a class="vcard-stat" href="#">
-        <strong class="vcard-stat-count">0</strong>
+        <strong class="vcard-stat-count"><%= number_to_human(1024) %></strong>
         <span class="text-muted">Compatibility <br/>Notes</span>
       </a>
       <a class="vcard-stat" href="#">
-        <strong class="vcard-stat-count">0</strong>
+        <strong class="vcard-stat-count"><%= number_to_human(20480) %></strong>
         <span class="text-muted">Installation <br/>Notes</span>
       </a>
       <a class="vcard-stat" href="#">
-        <strong class="vcard-stat-count">0</strong>
+        <strong class="vcard-stat-count"><%= number_to_human(432100) %></strong>
         <span class="text-muted">Comments</span>
       </a>
       <br class="clear" />

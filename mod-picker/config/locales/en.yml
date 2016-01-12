@@ -21,3 +21,14 @@
 
 en:
   hello: "Hello world"
+  number:
+    human:
+      decimal_units:
+        format: "%n%u"
+        units:
+          unit: ""
+          thousand: k
+          million: m
+          billion: b
+          trillion: t
+          quadrillion: q

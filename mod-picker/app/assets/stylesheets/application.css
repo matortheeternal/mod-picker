@@ -78,6 +78,10 @@ a {
   text-decoration: none;
 }
 
+a.strong {
+  font-weight: 600;
+}
+
 a:hover {
   color: #508BDA;
 }
