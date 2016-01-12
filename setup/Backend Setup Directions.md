@@ -47,4 +47,10 @@ In the same command window type `rake db:migrate`.  This will add the columns ne
 In the same command window type `rails server`.  Your server should now be running!  :)
 
 ### Step 14:
-Open your internet browser and navigate to [127.0.0.1:3000](http://127.0.0.1:3000).  You can navigate to various pages from the homepage.
+In a new command window type `mailcatcher`.  This will run mailcatcher so you can get your registration email.
+
+### Step 15:
+Open your internet browser and navigate to [localhost:3000](http://localhost:3000).  You can navigate to various pages from the homepage.
+
+### Step 16:
+Click register to register an account.  Once you've created the account you'll need to navigate to [localhost:1080](http://localhost:1080) to get the confirmation email and confirm your account.
