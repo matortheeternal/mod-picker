@@ -40,7 +40,6 @@ gem 'mailcatcher'
 
 # gems to enhance integration with mysql
 gem 'native_enum'
-gem 'activerecord-mysql-unsigned'
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
