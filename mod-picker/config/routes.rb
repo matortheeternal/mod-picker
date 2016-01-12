@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :plugins
   resources :user_reputations
   resources :user_reputations
   resources :user_settings
