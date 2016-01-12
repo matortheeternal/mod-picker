@@ -338,7 +338,7 @@ ActiveRecord::Schema.define(version: 20160111214636) do
     t.float   "offset",             limit: 24
     t.float   "audiovisual_design", limit: 24
     t.float   "plugin_design",      limit: 24
-    t.float   "utilty_design",      limit: 24
+    t.float   "utility_design",     limit: 24
     t.float   "script_design",      limit: 24
   end
   

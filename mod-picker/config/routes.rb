@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
   resources :user_reputations
+  resources :user_reputations
   resources :user_settings
   resources :user_bios
   devise_for :users

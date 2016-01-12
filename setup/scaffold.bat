@@ -63,7 +63,7 @@ call rails g scaffold user_bios bio_id:integer user_id:integer nexus_username:st
 call rails g scaffold user_settings set_id:integer user_id:integer show_notifications:boolean show_tooltips:boolean email_notifications:boolean email_public:boolean allow_adult_content:boolean allow_nexus_mods:boolean allow_lovers_lab:boolean allow_steam_workshop:boolean
 
 :: the reputation associated with a particular user
-call rails g scaffold user_reputations rep_id:integer user_id:integer overall:float offset:float audiovisual_design:float plugin_design:float utilty_design:float script_design:float
+call rails g scaffold user_reputations rep_id:integer user_id:integer overall:float offset:float audiovisual_design:float plugin_design:float utility_design:float script_design:float
 
 :: reputation that's been given
 call rails g scaffold reputation_map from_rep_id:integer to_rep_id:integer

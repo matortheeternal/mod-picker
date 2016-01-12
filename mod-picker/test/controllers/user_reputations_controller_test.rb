@@ -18,7 +18,7 @@ class UserReputationsControllerTest < ActionController::TestCase
 
   test "should create user_reputation" do
     assert_difference('UserReputation.count') do
-      post :create, user_reputation: { audiovisual_design: @user_reputation.audiovisual_design, offset: @user_reputation.offset, overall: @user_reputation.overall, plugin_design: @user_reputation.plugin_design, rep_id: @user_reputation.rep_id, script_design: @user_reputation.script_design, user_id: @user_reputation.user_id, utilty_design: @user_reputation.utilty_design }
+      post :create, user_reputation: { audiovisual_design: @user_reputation.audiovisual_design, offset: @user_reputation.offset, overall: @user_reputation.overall, plugin_design: @user_reputation.plugin_design, rep_id: @user_reputation.rep_id, script_design: @user_reputation.script_design, user_id: @user_reputation.user_id, utility_design: @user_reputation.utility_design }
     end
 
     assert_redirected_to user_reputation_path(assigns(:user_reputation))
@@ -35,7 +35,7 @@ class UserReputationsControllerTest < ActionController::TestCase
   end
 
   test "should update user_reputation" do
-    patch :update, id: @user_reputation, user_reputation: { audiovisual_design: @user_reputation.audiovisual_design, offset: @user_reputation.offset, overall: @user_reputation.overall, plugin_design: @user_reputation.plugin_design, rep_id: @user_reputation.rep_id, script_design: @user_reputation.script_design, user_id: @user_reputation.user_id, utilty_design: @user_reputation.utilty_design }
+    patch :update, id: @user_reputation, user_reputation: { audiovisual_design: @user_reputation.audiovisual_design, offset: @user_reputation.offset, overall: @user_reputation.overall, plugin_design: @user_reputation.plugin_design, rep_id: @user_reputation.rep_id, script_design: @user_reputation.script_design, user_id: @user_reputation.user_id, utility_design: @user_reputation.utility_design }
     assert_redirected_to user_reputation_path(assigns(:user_reputation))
   end
 

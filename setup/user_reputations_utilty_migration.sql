@@ -1,0 +1,1 @@
+ALTER TABLE user_reputations CHANGE COLUMN utilty_design utility_design float;

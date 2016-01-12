@@ -273,7 +273,7 @@ overall FLOAT,
 offset FLOAT,
 audiovisual_design FLOAT,
 plugin_design FLOAT,
-utilty_design FLOAT,
+utility_design FLOAT,
 script_design FLOAT,
 PRIMARY KEY(rep_id),
 FOREIGN KEY(user_id) REFERENCES users(user_id)
