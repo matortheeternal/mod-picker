@@ -1,0 +1,76 @@
+/*
+ * This is a manifest file that'll be compiled into application.css, which will include all the files
+ * listed below.
+ *
+ * Any CSS and SCSS file within this directory, lib/assets/stylesheets, vendor/assets/stylesheets,
+ * or any plugin's vendor/assets/stylesheets directory can be referenced here using a relative path.
+ *
+ * You're free to add application-wide styles to this file and they'll appear at the bottom of the
+ * compiled file so the styles you add here take precedence over styles defined in any styles
+ * defined in the other CSS/SCSS files in this directory. It is generally better to create a new
+ * file per style scope.
+ *
+
+ */
+
+/* some basic css for scaffolds */
+
+body {
+  width: 80%;
+  margin: auto;
+  padding-top: 60px;
+  padding-bottom: 60px;
+}
+
+table {
+	border-collapse: collapse;
+	width: 95%;
+	font-family: Arial;
+}
+
+thead {
+	background-color: #bbb;
+	font-color: #fff;
+	text-align: left;
+}
+
+td, th {
+	border-left: 1px solid #CBCBCB;
+	border-width: 0px 0px 0px 1px;
+	font-size: 10px;
+	margin: 0px;
+	overflow: visible;
+	padding: 0.5em 1em;
+}
+
+tbody tr:nth-child(odd) { 
+	background-color: #eee; 
+}
+
+tbody tr:nth-child(even) { 
+	background-color: #fff; 
+}
+
+.field input[type="text"]{
+  width: 200px;
+}
+
+.field input[type="email"]{
+  width: 200px;
+}
+
+.field input[type="password"]{
+  width: 200px;
+}
+
+/* css for horizontal menus */
+/* used for login and registration items */
+ul.hmenu {
+  list-style: none; 
+  margin: 0 0 2em;
+  padding: 0;
+}
+
+ul.hmenu li {
+  display: inline;  
+}

@@ -1,5 +1,139 @@
 <p id="notice"><%= notice %></p>
 
+<div class="column-wrapper">
+  <div class="left-column">
+    <div class="avatar-wrapper">
+      <%= image_tag("#{@user.avatar}") %>
+    </div>
+    <h2><%= @user.username %></h2>
+    <span class="user-title"><%= @user.title %></span>
+    
+    <h3>Attributes</h3>
+    <table class="attributes-table">
+      <col width="40%">
+      <col width="60%">
+      <tr>
+        <td>Group</td>
+        <td><%= @user.user_level.titleize %></td>
+      </tr>
+      <% if @user.settings.email_public? %>
+        <tr>
+          <td>Email</td>
+          <td><%= @user.email %></td>
+        </tr>
+      <% end %>
+      <tr>
+        <td>Reputation</td>
+        <td><a href="#"><%= @user.reputation.overall %></a></td>
+      </tr>
+      <tr>
+        <td>Joined</td>
+        <td><%= @user.joined.strftime("%m/%d/%Y") %></td>
+      </tr>
+      <tr>
+        <td>Last Seen</td>
+        <td><%= @user.last_sign_in_at.strftime("%m/%d/%Y %H:%M UTC") %></td>
+      </tr>
+    </table>
+    
+    <h3>Contributions</h3>
+    <div class="vcard-stats">
+      <a class="vcard-stat" href="#">
+        <strong class="vcard-stat-count">0</strong>
+        <span class="text-muted">Reviews</span>
+      </a>
+      <a class="vcard-stat" href="#">
+        <strong class="vcard-stat-count">0</strong>
+        <span class="text-muted">Compatibility <br/>Notes</span>
+      </a>
+      <a class="vcard-stat" href="#">
+        <strong class="vcard-stat-count">0</strong>
+        <span class="text-muted">Installation <br/>Notes</span>
+      </a>
+      <a class="vcard-stat" href="#">
+        <strong class="vcard-stat-count">0</strong>
+        <span class="text-muted">Comments</span>
+      </a>
+      <br class="clear" />
+    </div>
+  </div>
+  <div class="right-column">
+    <table class="expandable-table">
+      <tr>
+        <td id="_about" class="section-header">About</td>
+      </tr>
+      <tr>
+        <td class="section-contents">
+          <div id="about" class="section-visible">
+            TODO: @user.bio.about
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td id="_mods" class="section-header">Mods</td>
+      </tr>
+      <tr>
+        <td class="section-contents">
+          <div id="mods" class="section-hidden">
+            TODO: @user.mods
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td id="_modlists" class="section-header">Modlists</td>
+      </tr>
+      <tr>
+        <td class="section-contents">
+          <div id="modlists" class="section-hidden">
+            TODO: @user.modlists
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td id="_top-contributions" class="section-header">Top Contributions</td>
+      </tr>
+      <tr>
+        <td class="section-contents">
+          <div id="top-contributions" class="section-hidden">
+            TODO: @user.top_contributions
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td id="_activity" class="section-header">Activity Feed</td>
+      </tr>
+      <tr>
+        <td class="section-contents">
+          <div id="activity" class="section-hidden">
+            TODO: @user.activity_feed
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td id="_starred-mods" class="section-header">Starred Mods</td>
+      </tr>
+      <tr>
+        <td class="section-contents">
+          <div id="starred-mods" class="section-hidden">
+            TODO: @user.starred_mods
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td id="_starred-modlists" class="section-header">Starred Modlists</td>
+      </tr>
+      <tr>
+        <td class="section-contents">
+          <div id="starred-modlists" class="section-hidden">
+            TODO: @user.starred_modlists
+          </div>
+        </td>
+      </tr>
+    </table>
+  </div>
+</div>
+
+<!-- This is the old scaffold code for this page
 <p>
   <strong>ID:</strong>
   <%= @user.user_id %>
@@ -71,4 +205,4 @@
 </p>
 
 <%= link_to 'Edit', edit_user_path(@user) %> |
-<%= link_to 'Back', users_path %>
+<%= link_to 'Back', users_path  -->

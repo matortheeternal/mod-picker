@@ -12,11 +12,16 @@
  *
  *= require_self
  */
+ 
+/* box-sizing */
+* {
+ box-sizing: border-box;
+}
 
 /* some basic css for scaffolds */
 body {
-  width: 80%;
   margin: auto;
+  font-family: 'Roboto', sans-serif;
   padding-top: 60px;
   padding-bottom: 60px;
 }
@@ -29,7 +34,7 @@ table {
 
 thead {
 	background-color: #bbb;
-	font-color: #fff;
+	color: #fff;
 	text-align: left;
 }
 
@@ -62,6 +67,21 @@ tbody tr:nth-child(even) {
   width: 200px;
 }
 
+/* clear br */
+.clear {
+  clear: both; 
+}
+
+/* url styling */
+a {
+  color: #205098;
+  text-decoration: none;
+}
+
+a:hover {
+  color: #508BDA;
+}
+
 /* css for horizontal menus */
 /* used for login and registration items */
 ul.hmenu {
@@ -72,4 +92,138 @@ ul.hmenu {
 
 ul.hmenu li {
   display: inline;  
+}
+
+/* css for columns */
+/* used on user profile page */
+.column-wrapper {
+  width: 1220px;
+  margin: auto;
+}
+
+.left-column {
+  width: 393px;
+  padding-left: 10px;
+  padding-right: 10px;
+  display: table-cell;
+  vertical-align: top;
+}
+
+.right-column {
+  padding-left: 10px;
+  width: 817px;
+  display: table-cell;
+  vertical-align: top;
+}
+
+.left-column h2 {
+  padding: 0px;
+  margin: 0px;
+  font-size: 28px;
+  font-weight: 300;
+}
+
+.left-column h3 {
+  margin-top: 24px;
+  margin-bottom: 8px;
+  font-weight: 500;
+}
+
+/* css for expandable sections */
+/* used on user profile page */
+.expandable-table {
+  margin: auto;
+  width: 100%;
+  border: 1px solid #000;
+}
+
+.expandable-table td {
+  border-left: 0; /* temporary css because of global table css */
+}
+
+.section-header {
+  border-bottom: 1px solid #000;
+  border-top: 1px solid #000;
+  background-color: #555;
+  font-size: 20px;
+  color: #FFF;
+  cursor: pointer;
+  padding: 8px;
+}
+
+.section-header:hover {
+  background-color: #686868;
+}
+
+.section-hidden {
+  display: none;
+}
+
+.section-visible {
+  display: block;
+  padding: 10px;
+}
+
+.section-contents {
+  background-color: #FFF;
+  margin-bottom: 10px;
+  padding: 0;
+}
+
+/* css for user profile page */
+.user-title {
+  font-size: 12px;
+  color: #555;
+}
+
+.avatar-wrapper {
+  background-color: #FFF;
+  box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.15);
+  max-width: 200px !important;
+  max-height: 200px !important;
+  border: 1px solid #DDD;
+  padding: 3px;
+  text-align: center;
+  display: inline-block;
+}
+
+/* css for attributes tables */
+/* used on user profile page */
+.attributes-table {
+  border: 1px solid black;
+  margin: auto;
+}
+
+.attributes-table td, th {
+  border: 0px;
+  font-size: 12px;
+}
+
+/* css for vcards */
+/* used on user profile page */
+.vcard-stats {
+  margin-bottom: 10px;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  text-align: center;
+  border-top: 1px solid #EEE;
+  border-bottom: 1px solid #EEE;
+}
+
+.vcard-stat {
+  float: left;
+  width: 25%;
+  font-size: 11px;
+  text-transform: capitalize;
+}
+
+.vcard-stat-count {
+  display: block;
+  font-size: 28px;
+  font-weight: bold;
+  line-height: 1;
+}
+
+.text-muted {
+  color: #767676;
 }

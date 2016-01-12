@@ -1,0 +1,45 @@
+Two-column div
+
+Column 1:
+User avatar
+User name
+User title
+User level
+	Banned
+	User
+	Author
+	VIP
+	Moderator
+	Admin
+User email (if public)
+User reputation
+	Link to modal window to view reputation breakdown
+Give reputation
+Date joined
+Date last seen
+Contributions
+	Reviews
+	Compatibility Notes
+	Installation Notes
+	Comments
+
+
+Column 2:
+About
+	User's bio information
+Mods
+	Only displayed if user is associated with > 1 mods
+	List of mods this user has authored
+Mod lists
+	Only displayed if the user has > 1 mod lists
+	List of mod lists this user has created
+Top contributions
+	If no contributions say <This user hasn't contributed anything yet!>
+	List of the user's contributions (reviews, notes, comments)
+	"View all of this user's contributions"
+Activity feed
+	List of recent things the user has done (just contributions to start)
+Starred mods
+	List of mods the user has starred
+Starred mod lists
+	List of mod lists the user has starred
