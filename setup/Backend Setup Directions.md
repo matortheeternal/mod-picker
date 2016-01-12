@@ -41,7 +41,10 @@ Run a command window in any directory, and type "gem install rails".  You'll hav
 Go to the mod-picker directory in the mod-picker repo, open a command window, and type `bundle install`.  This will install all gems (dependencies) that are missing.
 
 ### Step 12:
-In the same command window type `rails server`.  Your server should now be running!  :)
+In the same command window type `rake db:migrate`.  This will add the columns needed by the devise authentication gem to the database.
 
 ### Step 13:
+In the same command window type `rails server`.  Your server should now be running!  :)
+
+### Step 14:
 Open your internet browser and navigate to [127.0.0.1:3000](http://127.0.0.1:3000).  You can navigate to various pages from the homepage.
