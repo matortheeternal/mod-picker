@@ -8,7 +8,7 @@ class User < ActiveRecord::Base
   has_one :settings, :foreign_key => "set_id", :class_name => "UserSetting", :dependent => :destroy
   has_one :bio, :foreign_key => "bio_id", :class_name => "UserBio", :dependent => :destroy
   has_one :reputation, :foreign_key => "rep_id", :class_name => "UserReputation", :dependent => :destroy
-  after_initialize :init
+  after_create :init
   
   validates :username,
   :presence => true,
@@ -42,5 +42,8 @@ class User < ActiveRecord::Base
     self.title      ||= 'Prisoner'
     self.avatar     ||= 'NewUser.png'
     self.user_level ||= :user
+    self.create_reputation({ user_id: self.user_id })
+    self.create_settings({ user_id: self.user_id })
+    self.create_bio({ user_id: self.user_id })
   end
 end
