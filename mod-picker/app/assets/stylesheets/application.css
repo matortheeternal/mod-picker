@@ -187,6 +187,35 @@ ul.hmenu li {
   display: inline-block;
 }
 
+.group-banned {
+  color: #999;
+}
+
+.group-user {
+  color: #080;
+  font-weight: 600;
+}
+
+.group-author {
+  color: #F70;
+  font-weight: 600;
+}
+
+.group-vip {
+  color: #508;
+  font-weight: 600;
+}
+
+.group-moderator {
+  color: #008;
+  font-weight: 600;
+}
+
+.group-admin {
+  color: #800;
+  font-weight: 600;
+}
+
 /* css for attributes tables */
 /* used on user profile page */
 .attributes-table {

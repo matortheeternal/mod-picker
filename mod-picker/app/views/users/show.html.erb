@@ -14,7 +14,9 @@
       <col width="60%">
       <tr>
         <td>Group</td>
-        <td><%= @user.user_level.titleize %></td>
+        <td>
+          <span class="group-<%= @user.user_level %>"><%= @user.user_level.titleize %></span>
+        </td>
       </tr>
       <% if @user.settings.email_public? %>
         <tr>
@@ -24,7 +26,7 @@
       <% end %>
       <tr>
         <td>Reputation</td>
-        <td><a href="#"><%= @user.reputation.overall %></a></td>
+        <td><strong><a href="#"><%= @user.reputation.overall %></a><strong></td>
       </tr>
       <tr>
         <td>Joined</td>
