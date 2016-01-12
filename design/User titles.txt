@@ -1,3 +1,7 @@
+Slaughterfish	Less than -40 reputation
+Skeever		-40 or more reputation
+Mudcrab		-20 or more reputation
+Draugr		-10 or more reputation
 Prisoner	0 or more reputation
 Milk Drinker	10 or more reputation
 Thief		20 or more reputation
