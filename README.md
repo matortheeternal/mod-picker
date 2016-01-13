@@ -37,7 +37,7 @@ How to get the clone URL for the repository.
 ### Commiting and pushing code with SourceTree
 1. Select the changes you want to commit in the File Status tab to move them to the "Staged Files" section.
 2. Enter a commit message detailing your changes.  Start with a short summary of your commit (like a title), then go into more detail on subsequent lines.
-3. Check "Push changes immediately to <branch\name>", then click Commit.
+3. Check "Push changes immediately to \<branch\\name\>", then click Commit.
 
 ## Frontend development
 
