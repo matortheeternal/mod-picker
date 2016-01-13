@@ -32,11 +32,11 @@
       </tr>
       <tr>
         <td>Joined</td>
-        <td><%= @user.joined.strftime("%m/%d/%Y") %></td>
+        <td><%= @user.joined.strftime("#{@user.settings.udate_format}") %></td>
       </tr>
       <tr>
         <td>Last Seen</td>
-        <td><%= @user.last_sign_in_at.strftime("%m/%d/%Y %H:%M UTC") %></td>
+        <td><%= @user.last_sign_in_at.in_time_zone("#{@user.settings.timezone}").strftime("#{@user.settings.udate_format} #{@user.settings.utime_format}") %></td>
       </tr>
     </table>
     

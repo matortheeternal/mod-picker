@@ -15,6 +15,9 @@
       <th>allow_nexus_mods</th>
       <th>allow_lovers_lab</th>
       <th>allow_steam_workshop</th>
+      <th>timezone</th>
+      <th>udate_format</th>
+      <th>utime_format</th>
       <th colspan="3"></th>
     </tr>
   </thead>
@@ -32,6 +35,9 @@
         <td><%= user_setting.allow_nexus_mods %></td>
         <td><%= user_setting.allow_lovers_lab %></td>
         <td><%= user_setting.allow_steam_workshop %></td>
+        <td><%= user_setting.timezone %></td>
+        <td><%= user_setting.udate_format %></td>
+        <td><%= user_setting.utime_format %></td>
         <td><%= link_to 'Show', user_setting %></td>
         <td><%= link_to 'Edit', edit_user_setting_path(user_setting) %></td>
         <td><%= link_to 'Destroy', user_setting, method: :delete, data: { confirm: 'Are you sure?' } %></td>

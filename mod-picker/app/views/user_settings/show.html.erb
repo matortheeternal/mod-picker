@@ -50,5 +50,20 @@
   <%= @user_setting.allow_steam_workshop %>
 </p>
 
+<p>
+  <strong>Timezone:</strong>
+  <%= @user_setting.timezone %>
+</p>
+
+<p>
+  <strong>Date format:</strong>
+  <%= @user_setting.udate_format %>
+</p>
+
+<p>
+  <strong>Time format:</strong>
+  <%= @user_setting.utime_format %>
+</p>
+
 <%= link_to 'Edit', edit_user_setting_path(@user_setting) %> |
 <%= link_to 'Back', user_settings_path %>

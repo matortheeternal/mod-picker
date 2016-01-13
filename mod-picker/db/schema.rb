@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160112015243) do
+ActiveRecord::Schema.define(version: 20160113214736) do
 
   create_table "agreement_marks", id: false, force: :cascade do |t|
     t.integer "inc_id",       limit: 4
@@ -191,10 +191,10 @@ ActiveRecord::Schema.define(version: 20160112015243) do
 
   create_table "mod_versions", primary_key: "mv_id", force: :cascade do |t|
     t.integer "mod_id",      limit: 4
-    t.integer "nxm_file_id", limit: 4
     t.date    "released"
     t.boolean "obsolete"
     t.boolean "dangerous"
+    t.integer "nxm_file_id", limit: 4
   end
 
   add_index "mod_versions", ["mod_id"], name: "mod_id", using: :btree
@@ -358,6 +358,9 @@ ActiveRecord::Schema.define(version: 20160112015243) do
     t.boolean "allow_lovers_lab"
     t.boolean "allow_steam_workshop"
     t.integer "user_id",              limit: 4
+    t.text    "timezone",             limit: 255
+    t.text    "udate_format",         limit: 255
+    t.text    "utime_format",         limit: 255
   end
 
   add_index "user_settings", ["user_id"], name: "user_id", using: :btree

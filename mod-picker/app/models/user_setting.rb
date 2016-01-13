@@ -10,5 +10,8 @@ class UserSetting < ActiveRecord::Base
     self.allow_nexus_mods = true
     self.allow_lovers_lab = false
     self.allow_steam_workshop = true
+    self.timezone = "Pacific Time (US & Canada)"
+    self.udate_format = "%F"
+    self.utime_format = "%I:%M%p"
   end
 end

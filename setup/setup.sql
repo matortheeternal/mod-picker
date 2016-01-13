@@ -261,6 +261,9 @@ allow_adult_content BOOLEAN,
 allow_nexus_mods BOOLEAN,
 allow_lovers_lab BOOLEAN,
 allow_steam_workshop BOOLEAN,
+timezone TINYTEXT,
+udate_format TINYTEXT,
+utime_format TINYTEXT,
 PRIMARY KEY(set_id),
 FOREIGN KEY(user_id) REFERENCES users(user_id)
 );
