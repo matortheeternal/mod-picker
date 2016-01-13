@@ -81,6 +81,7 @@ CREATE TABLE mod_versions
 (
 mv_id INT UNSIGNED NOT NULL AUTO_INCREMENT, /* max ~4 billion */
 mod_id INT UNSIGNED,
+nxm_file_id INT UNSIGNED, /* max ~4 billion, should be big enough */
 released DATE, /* override date from site infos, may be unused */
 obsolete BOOLEAN,
 dangerous BOOLEAN,

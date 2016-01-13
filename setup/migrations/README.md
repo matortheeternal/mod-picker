@@ -1,1 +1,1 @@
-You only need to run these if a migration gets created here after you've set up your MySQL database.  You can also, alternatively, `DROP ALL TABLES;` and re-run setup.sql (though you will lose any stored data with that method).
+You only need to run these if a migration gets created here after you've set up your MySQL database.  You can also, alternatively, `DROP ALL TABLES;` and re-run setup.sql (though you will lose any stored data with that method and will have to re-run the devise migrations).

@@ -1,0 +1,1 @@
+ALTER TABLE mod_versions ADD COLUMN nxm_file_id INT UNSIGNED;

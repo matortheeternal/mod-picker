@@ -190,7 +190,8 @@ ActiveRecord::Schema.define(version: 20160112015243) do
   add_index "mod_version_file_map", ["mv_id"], name: "mv_id", using: :btree
 
   create_table "mod_versions", primary_key: "mv_id", force: :cascade do |t|
-    t.integer "mod_id",    limit: 4
+    t.integer "mod_id",      limit: 4
+    t.integer "nxm_file_id", limit: 4
     t.date    "released"
     t.boolean "obsolete"
     t.boolean "dangerous"
