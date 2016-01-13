@@ -64,7 +64,7 @@ A safe place to add CSS in these early stages is the `mod-picker\app\assets\styl
 
 ### Choosing a page to work on
 
-If you're looking to do frontend development you can scope out pages to work on fairly easily in the `mod-picker\app\views\<record-name>\` folders.  These are all of the views in the application.  `<record-name>` corresponds to the name of the record the views are for, e.g. comments, plugins, mod_lists, etc.  Note that a lot of these records don't need any design to be done on their pages because they'll only ever be presented to the user in the context of other pages.  E.g. comments are only ever created in the context of a page where they can be posted, such as a mod or mod list.
+If you're looking to do frontend development you can scope out pages to work on fairly easily in the `mod-picker\app\views\<record-name>\` folders.  These are all of the views in the application.  `<record-name>` corresponds to the name of the record the views are for, e.g. comments, plugins, mod_lists, etc.  Note that a lot of these records don't need any design to be done on their pages because they'll only ever be presented to the user in the context of other pages.  E.g. comments are only ever created, edited, or viewed in the context of a page where they can be posted, such as a mod or mod list.
 
 Below is an enumeration of the different types of pages you can find scaffolded here and what they're for:
 
