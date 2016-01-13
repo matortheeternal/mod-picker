@@ -54,9 +54,6 @@ class UsersController < ApplicationController
   # DELETE /users/1
   # DELETE /users/1.json
   def destroy
-    #@user.bio.destroy
-    #@user.settings.destroy
-    #@user.reputation.destroy
     @user.destroy
     respond_to do |format|
       format.html { redirect_to users_url, notice: 'User was successfully destroyed.' }
