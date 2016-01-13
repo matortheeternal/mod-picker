@@ -1,29 +1,31 @@
-<p id="notice"><%= notice %></p>
+<div class="scaffold">
+  <p id="notice"><%= notice %></p>
 
-<h1>Listing User Comments</h1>
+  <h1>Listing user_comments</h1>
 
-<table>
-  <thead>
-    <tr>
-      <th>User</th>
-      <th>C</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @user_comments.each do |user_comment| %>
+  <table>
+    <thead>
       <tr>
-        <td><%= user_comment.user_id %></td>
-        <td><%= user_comment.c_id %></td>
-        <td><%= link_to 'Show', user_comment %></td>
-        <td><%= link_to 'Edit', edit_user_comment_path(user_comment) %></td>
-        <td><%= link_to 'Destroy', user_comment, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+          <th>#<Rails::Generators::GeneratedAttribute:0x00000007c3b700></th>
+          <th>#<Rails::Generators::GeneratedAttribute:0x00000007c3b548></th>
+          <th colspan="3"></th>
       </tr>
-    <% end %>
-  </tbody>
-</table>
+    </thead>
 
-<br>
+    <tbody>
+      <% @user_comments.each do |user_comment| %>
+        <tr>
+            <td><%= user_comment.user_id %></td>
+            <td><%= user_comment.c_id %></td>
+            <td><%= link_to 'Show', user_comment %></td>
+          <td><%= link_to 'Edit', edit_user_comment_path(user_comment) %></td>
+          <td><%= link_to 'Destroy', user_comment, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
 
-<%= link_to 'New User comment', new_user_comment_path %>
+  <br>
+
+  <%= link_to 'New user_comment', new_user_comment_path %>
+</div>

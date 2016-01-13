@@ -1,19 +1,21 @@
-<p id="notice"><%= notice %></p>
+<div class="scaffold">
+  <p id="notice"><%= notice %></p>
 
-<p>
-  <strong>Inc:</strong>
-  <%= @agreement_mark.inc_id %>
-</p>
+    <p>
+    <strong>#<Rails::Generators::GeneratedAttribute:0x00000007f69080>:</strong>
+    <%= @agreement_mark.inc_id %>
+  </p>
 
-<p>
-  <strong>Submitted by:</strong>
-  <%= @agreement_mark.submitted_by %>
-</p>
+    <p>
+    <strong>#<Rails::Generators::GeneratedAttribute:0x00000007f68e78>:</strong>
+    <%= @agreement_mark.submitted_by %>
+  </p>
 
-<p>
-  <strong>Agree:</strong>
-  <%= @agreement_mark.agree %>
-</p>
+    <p>
+    <strong>#<Rails::Generators::GeneratedAttribute:0x00000007f68a90>:</strong>
+    <%= @agreement_mark.agree %>
+  </p>
 
-<%= link_to 'Edit', edit_agreement_mark_path(@agreement_mark) %> |
-<%= link_to 'Back', agreement_marks_path %>
+    <%= link_to 'Edit', edit_agreement_mark_path(@agreement_mark) %> |
+  <%= link_to 'Back', agreement_marks_path %>
+</div>

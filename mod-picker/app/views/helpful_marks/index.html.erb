@@ -1,35 +1,37 @@
-<p id="notice"><%= notice %></p>
+<div class="scaffold">
+  <p id="notice"><%= notice %></p>
 
-<h1>Listing Helpful Marks</h1>
+  <h1>Listing helpful_marks</h1>
 
-<table>
-  <thead>
-    <tr>
-      <th>R</th>
-      <th>Cn</th>
-      <th>In</th>
-      <th>Submitted by</th>
-      <th>Helpful</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @helpful_marks.each do |helpful_mark| %>
+  <table>
+    <thead>
       <tr>
-        <td><%= helpful_mark.r_id %></td>
-        <td><%= helpful_mark.cn_id %></td>
-        <td><%= helpful_mark.in_id %></td>
-        <td><%= helpful_mark.submitted_by %></td>
-        <td><%= helpful_mark.helpful %></td>
-        <td><%= link_to 'Show', helpful_mark %></td>
-        <td><%= link_to 'Edit', edit_helpful_mark_path(helpful_mark) %></td>
-        <td><%= link_to 'Destroy', helpful_mark, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+          <th>#<Rails::Generators::GeneratedAttribute:0x00000007dae7b8></th>
+          <th>#<Rails::Generators::GeneratedAttribute:0x00000007dae538></th>
+          <th>#<Rails::Generators::GeneratedAttribute:0x00000007dae240></th>
+          <th>#<Rails::Generators::GeneratedAttribute:0x00000007dae088></th>
+          <th>#<Rails::Generators::GeneratedAttribute:0x00000007dadca0></th>
+          <th colspan="3"></th>
       </tr>
-    <% end %>
-  </tbody>
-</table>
+    </thead>
 
-<br>
+    <tbody>
+      <% @helpful_marks.each do |helpful_mark| %>
+        <tr>
+            <td><%= helpful_mark.r_id %></td>
+            <td><%= helpful_mark.cn_id %></td>
+            <td><%= helpful_mark.in_id %></td>
+            <td><%= helpful_mark.submitted_by %></td>
+            <td><%= helpful_mark.helpful %></td>
+            <td><%= link_to 'Show', helpful_mark %></td>
+          <td><%= link_to 'Edit', edit_helpful_mark_path(helpful_mark) %></td>
+          <td><%= link_to 'Destroy', helpful_mark, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
 
-<%= link_to 'New Helpful mark', new_helpful_mark_path %>
+  <br>
+
+  <%= link_to 'New helpful_mark', new_helpful_mark_path %>
+</div>

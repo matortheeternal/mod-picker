@@ -69,6 +69,6 @@ class PluginsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def plugin_params
-      params.require(:plugin).permit(:pl_id, :mv_id, :filename, :author, :description, :crc_hash)
+      params.require(:plugin).permit(:pl_id, :mv_id, :filename, :author, :description, :hash)
     end
 end

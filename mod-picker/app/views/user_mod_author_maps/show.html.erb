@@ -1,14 +1,16 @@
-<p id="notice"><%= notice %></p>
+<div class="scaffold">
+  <p id="notice"><%= notice %></p>
 
-<p>
-  <strong>Mod:</strong>
-  <%= @user_mod_author_map.mod_id %>
-</p>
+    <p>
+    <strong>#<Rails::Generators::GeneratedAttribute:0x00000007d16bc0>:</strong>
+    <%= @user_mod_author_map.mod_id %>
+  </p>
 
-<p>
-  <strong>User:</strong>
-  <%= @user_mod_author_map.user_id %>
-</p>
+    <p>
+    <strong>#<Rails::Generators::GeneratedAttribute:0x00000007d16e68>:</strong>
+    <%= @user_mod_author_map.user_id %>
+  </p>
 
-<%= link_to 'Edit', edit_user_mod_author_map_path(@user_mod_author_map) %> |
-<%= link_to 'Back', user_mod_author_maps_path %>
+    <%= link_to 'Edit', edit_user_mod_author_map_path(@user_mod_author_map) %> |
+  <%= link_to 'Back', user_mod_author_maps_path %>
+</div>

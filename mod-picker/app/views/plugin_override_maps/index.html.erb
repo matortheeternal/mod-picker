@@ -1,41 +1,33 @@
-<p id="notice"><%= notice %></p>
+<div class="scaffold">
+  <p id="notice"><%= notice %></p>
 
-<h1>Listing Plugin Override Maps</h1>
+  <h1>Listing plugin_override_maps</h1>
 
-<table>
-  <thead>
-    <tr>
-      <th>Pl</th>
-      <th>Mst</th>
-      <th>Form</th>
-      <th>Sig</th>
-      <th>Name</th>
-      <th>Is itm</th>
-      <th>Is itpo</th>
-      <th>Is udr</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @plugin_override_maps.each do |plugin_override_map| %>
+  <table>
+    <thead>
       <tr>
-        <td><%= plugin_override_map.pl_id %></td>
-        <td><%= plugin_override_map.mst_id %></td>
-        <td><%= plugin_override_map.form_id %></td>
-        <td><%= plugin_override_map.sig %></td>
-        <td><%= plugin_override_map.name %></td>
-        <td><%= plugin_override_map.is_itm %></td>
-        <td><%= plugin_override_map.is_itpo %></td>
-        <td><%= plugin_override_map.is_udr %></td>
-        <td><%= link_to 'Show', plugin_override_map %></td>
-        <td><%= link_to 'Edit', edit_plugin_override_map_path(plugin_override_map) %></td>
-        <td><%= link_to 'Destroy', plugin_override_map, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+          <th>#<Rails::Generators::GeneratedAttribute:0x00000007f0c8a8></th>
+          <th>#<Rails::Generators::GeneratedAttribute:0x00000007f0c538></th>
+          <th>#<Rails::Generators::GeneratedAttribute:0x00000007f142d8></th>
+          <th colspan="3"></th>
       </tr>
-    <% end %>
-  </tbody>
-</table>
+    </thead>
 
-<br>
+    <tbody>
+      <% @plugin_override_maps.each do |plugin_override_map| %>
+        <tr>
+            <td><%= plugin_override_map.pl_id %></td>
+            <td><%= plugin_override_map.mst_id %></td>
+            <td><%= plugin_override_map.form_id %></td>
+            <td><%= link_to 'Show', plugin_override_map %></td>
+          <td><%= link_to 'Edit', edit_plugin_override_map_path(plugin_override_map) %></td>
+          <td><%= link_to 'Destroy', plugin_override_map, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
 
-<%= link_to 'New Plugin override map', new_plugin_override_map_path %>
+  <br>
+
+  <%= link_to 'New plugin_override_map', new_plugin_override_map_path %>
+</div>

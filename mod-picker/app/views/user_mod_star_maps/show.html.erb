@@ -1,14 +1,16 @@
-<p id="notice"><%= notice %></p>
+<div class="scaffold">
+  <p id="notice"><%= notice %></p>
 
-<p>
-  <strong>Mod:</strong>
-  <%= @user_mod_star_map.mod_id %>
-</p>
+    <p>
+    <strong>#<Rails::Generators::GeneratedAttribute:0x00000007bd9a28>:</strong>
+    <%= @user_mod_star_map.mod_id %>
+  </p>
 
-<p>
-  <strong>User:</strong>
-  <%= @user_mod_star_map.user_id %>
-</p>
+    <p>
+    <strong>#<Rails::Generators::GeneratedAttribute:0x00000007bd9d70>:</strong>
+    <%= @user_mod_star_map.user_id %>
+  </p>
 
-<%= link_to 'Edit', edit_user_mod_star_map_path(@user_mod_star_map) %> |
-<%= link_to 'Back', user_mod_star_maps_path %>
+    <%= link_to 'Edit', edit_user_mod_star_map_path(@user_mod_star_map) %> |
+  <%= link_to 'Back', user_mod_star_maps_path %>
+</div>

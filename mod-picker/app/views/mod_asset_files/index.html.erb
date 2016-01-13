@@ -1,29 +1,31 @@
-<p id="notice"><%= notice %></p>
+<div class="scaffold">
+  <p id="notice"><%= notice %></p>
 
-<h1>Listing Mod Asset Files</h1>
+  <h1>Listing mod_asset_files</h1>
 
-<table>
-  <thead>
-    <tr>
-      <th>Maf</th>
-      <th>Filepath</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @mod_asset_files.each do |mod_asset_file| %>
+  <table>
+    <thead>
       <tr>
-        <td><%= mod_asset_file.maf_id %></td>
-        <td><%= mod_asset_file.filepath %></td>
-        <td><%= link_to 'Show', mod_asset_file %></td>
-        <td><%= link_to 'Edit', edit_mod_asset_file_path(mod_asset_file) %></td>
-        <td><%= link_to 'Destroy', mod_asset_file, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+          <th>#<Rails::Generators::GeneratedAttribute:0x00000007a3aa28></th>
+          <th>#<Rails::Generators::GeneratedAttribute:0x00000007a3bbf8></th>
+          <th colspan="3"></th>
       </tr>
-    <% end %>
-  </tbody>
-</table>
+    </thead>
 
-<br>
+    <tbody>
+      <% @mod_asset_files.each do |mod_asset_file| %>
+        <tr>
+            <td><%= mod_asset_file.maf_id %></td>
+            <td><%= mod_asset_file.filepath %></td>
+            <td><%= link_to 'Show', mod_asset_file %></td>
+          <td><%= link_to 'Edit', edit_mod_asset_file_path(mod_asset_file) %></td>
+          <td><%= link_to 'Destroy', mod_asset_file, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
 
-<%= link_to 'New Mod asset file', new_mod_asset_file_path %>
+  <br>
+
+  <%= link_to 'New mod_asset_file', new_mod_asset_file_path %>
+</div>

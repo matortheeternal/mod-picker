@@ -1,29 +1,31 @@
-<p id="notice"><%= notice %></p>
+<div class="scaffold">
+  <p id="notice"><%= notice %></p>
 
-<p>
-  <strong>Cn:</strong>
-  <%= @compatibility_note.cn_id %>
-</p>
+    <p>
+    <strong>#<Rails::Generators::GeneratedAttribute:0x00000007ba3810>:</strong>
+    <%= @compatibility_note.cn_id %>
+  </p>
 
-<p>
-  <strong>Submitted by:</strong>
-  <%= @compatibility_note.submitted_by %>
-</p>
+    <p>
+    <strong>#<Rails::Generators::GeneratedAttribute:0x00000007ba3428>:</strong>
+    <%= @compatibility_note.submitted_by %>
+  </p>
 
-<p>
-  <strong>Mod mode:</strong>
-  <%= @compatibility_note.mod_mode %>
-</p>
+    <p>
+    <strong>#<Rails::Generators::GeneratedAttribute:0x00000007ba3068>:</strong>
+    <%= @compatibility_note.mod_mode %>
+  </p>
 
-<p>
-  <strong>Compatibility patch:</strong>
-  <%= @compatibility_note.compatibility_patch %>
-</p>
+    <p>
+    <strong>#<Rails::Generators::GeneratedAttribute:0x00000007ba2c80>:</strong>
+    <%= @compatibility_note.compatibility_patch %>
+  </p>
 
-<p>
-  <strong>Compatibility status:</strong>
-  <%= @compatibility_note.compatibility_status %>
-</p>
+    <p>
+    <strong>#<Rails::Generators::GeneratedAttribute:0x00000007ba2690>:</strong>
+    <%= @compatibility_note.compatibility_status %>
+  </p>
 
-<%= link_to 'Edit', edit_compatibility_note_path(@compatibility_note) %> |
-<%= link_to 'Back', compatibility_notes_path %>
+    <%= link_to 'Edit', edit_compatibility_note_path(@compatibility_note) %> |
+  <%= link_to 'Back', compatibility_notes_path %>
+</div>

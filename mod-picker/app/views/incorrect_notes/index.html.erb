@@ -1,37 +1,39 @@
-<p id="notice"><%= notice %></p>
+<div class="scaffold">
+  <p id="notice"><%= notice %></p>
 
-<h1>Listing Incorrect Notes</h1>
+  <h1>Listing incorrect_notes</h1>
 
-<table>
-  <thead>
-    <tr>
-      <th>Inc</th>
-      <th>R</th>
-      <th>Cn</th>
-      <th>In</th>
-      <th>Submitted by</th>
-      <th>Reason</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @incorrect_notes.each do |incorrect_note| %>
+  <table>
+    <thead>
       <tr>
-        <td><%= incorrect_note.inc_id %></td>
-        <td><%= incorrect_note.r_id %></td>
-        <td><%= incorrect_note.cn_id %></td>
-        <td><%= incorrect_note.in_id %></td>
-        <td><%= incorrect_note.submitted_by %></td>
-        <td><%= incorrect_note.reason %></td>
-        <td><%= link_to 'Show', incorrect_note %></td>
-        <td><%= link_to 'Edit', edit_incorrect_note_path(incorrect_note) %></td>
-        <td><%= link_to 'Destroy', incorrect_note, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+          <th>#<Rails::Generators::GeneratedAttribute:0x000000080359c8></th>
+          <th>#<Rails::Generators::GeneratedAttribute:0x000000080357e8></th>
+          <th>#<Rails::Generators::GeneratedAttribute:0x00000008035180></th>
+          <th>#<Rails::Generators::GeneratedAttribute:0x00000008034e38></th>
+          <th>#<Rails::Generators::GeneratedAttribute:0x00000008034bb8></th>
+          <th>#<Rails::Generators::GeneratedAttribute:0x00000008034938></th>
+          <th colspan="3"></th>
       </tr>
-    <% end %>
-  </tbody>
-</table>
+    </thead>
 
-<br>
+    <tbody>
+      <% @incorrect_notes.each do |incorrect_note| %>
+        <tr>
+            <td><%= incorrect_note.inc_id %></td>
+            <td><%= incorrect_note.r_id %></td>
+            <td><%= incorrect_note.cn_id %></td>
+            <td><%= incorrect_note.in_id %></td>
+            <td><%= incorrect_note.submitted_by %></td>
+            <td><%= incorrect_note.reason %></td>
+            <td><%= link_to 'Show', incorrect_note %></td>
+          <td><%= link_to 'Edit', edit_incorrect_note_path(incorrect_note) %></td>
+          <td><%= link_to 'Destroy', incorrect_note, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
 
-<%= link_to 'New Incorrect note', new_incorrect_note_path %>
+  <br>
+
+  <%= link_to 'New incorrect_note', new_incorrect_note_path %>
+</div>

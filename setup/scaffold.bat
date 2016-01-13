@@ -17,7 +17,7 @@ call rails g scaffold lover_infos ll_id:integer
 call rails g scaffold mods mod_id:integer game:text name:text aliases:text is_utility:boolean category:integer has_adult_content:boolean nm_id:integer ws_id:integer ll_id:integer
 
 :: versions of mods available on the site
-call rails g scaffold mod_versions mv_id:integer mod_id:integer released:datetime obsolete:boolean dangerous:boolean
+call rails g scaffold mod_versions mv_id:integer mod_id:integer nxm_file_id:integer released:datetime obsolete:boolean dangerous:boolean
 
 :: all mod asset files we ever encounter, no duplicate file paths
 call rails g scaffold mod_asset_files maf_id:integer filepath:string
@@ -31,7 +31,7 @@ call rails g scaffold plugins pl_id:integer mv_id:integer filename:text author:t
 call rails g scaffold masters mst_id:integer pl_id:integer
 
 :: override records associated with a plugin
-call rails g scaffold plugin_override_map pl_id:integer mst_id:integer form_id:integer sig:string name:text is_itm:boolean is_itpo:boolean is_udr:boolean
+call rails g scaffold plugin_override_map pl_id:integer mst_id:integer form_id:integer
 
 :: record groups associated with a plugin
 call rails g scaffold plugin_record_groups pl_id:integer sig:string name:text new_records:integer override_records:integer
@@ -60,7 +60,7 @@ call rails g scaffold users user_id:integer username:string email:string user_le
 call rails g scaffold user_bios bio_id:integer user_id:integer nexus_username:string nexus_verified:boolean lover_username:string lover_verified:boolean steam_username:string steam_verified:boolean
 
 :: the settings associated with a particular user
-call rails g scaffold user_settings set_id:integer user_id:integer show_notifications:boolean show_tooltips:boolean email_notifications:boolean email_public:boolean allow_adult_content:boolean allow_nexus_mods:boolean allow_lovers_lab:boolean allow_steam_workshop:boolean
+call rails g scaffold user_settings set_id:integer user_id:integer show_notifications:boolean show_tooltips:boolean email_notifications:boolean email_public:boolean allow_adult_content:boolean allow_nexus_mods:boolean allow_lovers_lab:boolean allow_steam_workshop:boolean timezone:text udate_format:text utime_format:text
 
 :: the reputation associated with a particular user
 call rails g scaffold user_reputations rep_id:integer user_id:integer overall:float offset:float audiovisual_design:float plugin_design:float utility_design:float script_design:float

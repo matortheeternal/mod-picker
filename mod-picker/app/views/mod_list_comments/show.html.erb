@@ -1,14 +1,16 @@
-<p id="notice"><%= notice %></p>
+<div class="scaffold">
+  <p id="notice"><%= notice %></p>
 
-<p>
-  <strong>Ml:</strong>
-  <%= @mod_list_comment.ml_id %>
-</p>
+    <p>
+    <strong>#<Rails::Generators::GeneratedAttribute:0x00000007bed7f8>:</strong>
+    <%= @mod_list_comment.ml_id %>
+  </p>
 
-<p>
-  <strong>C:</strong>
-  <%= @mod_list_comment.c_id %>
-</p>
+    <p>
+    <strong>#<Rails::Generators::GeneratedAttribute:0x00000007bed578>:</strong>
+    <%= @mod_list_comment.c_id %>
+  </p>
 
-<%= link_to 'Edit', edit_mod_list_comment_path(@mod_list_comment) %> |
-<%= link_to 'Back', mod_list_comments_path %>
+    <%= link_to 'Edit', edit_mod_list_comment_path(@mod_list_comment) %> |
+  <%= link_to 'Back', mod_list_comments_path %>
+</div>

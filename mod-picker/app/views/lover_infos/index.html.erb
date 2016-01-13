@@ -1,27 +1,29 @@
-<p id="notice"><%= notice %></p>
+<div class="scaffold">
+  <p id="notice"><%= notice %></p>
 
-<h1>Listing Lover Infos</h1>
+  <h1>Listing lover_infos</h1>
 
-<table>
-  <thead>
-    <tr>
-      <th>Ll</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @lover_infos.each do |lover_info| %>
+  <table>
+    <thead>
       <tr>
-        <td><%= lover_info.ll_id %></td>
-        <td><%= link_to 'Show', lover_info %></td>
-        <td><%= link_to 'Edit', edit_lover_info_path(lover_info) %></td>
-        <td><%= link_to 'Destroy', lover_info, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+          <th>#<Rails::Generators::GeneratedAttribute:0x00000007964ab8></th>
+          <th colspan="3"></th>
       </tr>
-    <% end %>
-  </tbody>
-</table>
+    </thead>
 
-<br>
+    <tbody>
+      <% @lover_infos.each do |lover_info| %>
+        <tr>
+            <td><%= lover_info.ll_id %></td>
+            <td><%= link_to 'Show', lover_info %></td>
+          <td><%= link_to 'Edit', edit_lover_info_path(lover_info) %></td>
+          <td><%= link_to 'Destroy', lover_info, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
 
-<%= link_to 'New Lover info', new_lover_info_path %>
+  <br>
+
+  <%= link_to 'New lover_info', new_lover_info_path %>
+</div>

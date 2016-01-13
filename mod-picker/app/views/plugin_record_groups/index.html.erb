@@ -1,35 +1,37 @@
-<p id="notice"><%= notice %></p>
+<div class="scaffold">
+  <p id="notice"><%= notice %></p>
 
-<h1>Listing Plugin Record Groups</h1>
+  <h1>Listing plugin_record_groups</h1>
 
-<table>
-  <thead>
-    <tr>
-      <th>Pl</th>
-      <th>Sig</th>
-      <th>Name</th>
-      <th>New records</th>
-      <th>Override records</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @plugin_record_groups.each do |plugin_record_group| %>
+  <table>
+    <thead>
       <tr>
-        <td><%= plugin_record_group.pl_id %></td>
-        <td><%= plugin_record_group.sig %></td>
-        <td><%= plugin_record_group.name %></td>
-        <td><%= plugin_record_group.new_records %></td>
-        <td><%= plugin_record_group.override_records %></td>
-        <td><%= link_to 'Show', plugin_record_group %></td>
-        <td><%= link_to 'Edit', edit_plugin_record_group_path(plugin_record_group) %></td>
-        <td><%= link_to 'Destroy', plugin_record_group, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+          <th>#<Rails::Generators::GeneratedAttribute:0x00000007b09378></th>
+          <th>#<Rails::Generators::GeneratedAttribute:0x00000007b09080></th>
+          <th>#<Rails::Generators::GeneratedAttribute:0x00000007b08b58></th>
+          <th>#<Rails::Generators::GeneratedAttribute:0x00000007b088b0></th>
+          <th>#<Rails::Generators::GeneratedAttribute:0x00000007b084f0></th>
+          <th colspan="3"></th>
       </tr>
-    <% end %>
-  </tbody>
-</table>
+    </thead>
 
-<br>
+    <tbody>
+      <% @plugin_record_groups.each do |plugin_record_group| %>
+        <tr>
+            <td><%= plugin_record_group.pl_id %></td>
+            <td><%= plugin_record_group.sig %></td>
+            <td><%= plugin_record_group.name %></td>
+            <td><%= plugin_record_group.new_records %></td>
+            <td><%= plugin_record_group.override_records %></td>
+            <td><%= link_to 'Show', plugin_record_group %></td>
+          <td><%= link_to 'Edit', edit_plugin_record_group_path(plugin_record_group) %></td>
+          <td><%= link_to 'Destroy', plugin_record_group, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
 
-<%= link_to 'New Plugin record group', new_plugin_record_group_path %>
+  <br>
+
+  <%= link_to 'New plugin_record_group', new_plugin_record_group_path %>
+</div>

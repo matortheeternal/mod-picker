@@ -18,7 +18,7 @@ class PluginOverrideMapsControllerTest < ActionController::TestCase
 
   test "should create plugin_override_map" do
     assert_difference('PluginOverrideMap.count') do
-      post :create, plugin_override_map: { form_id: @plugin_override_map.form_id, is_itm: @plugin_override_map.is_itm, is_itpo: @plugin_override_map.is_itpo, is_udr: @plugin_override_map.is_udr, mst_id: @plugin_override_map.mst_id, name: @plugin_override_map.name, pl_id: @plugin_override_map.pl_id, sig: @plugin_override_map.sig }
+      post :create, plugin_override_map: { form_id: @plugin_override_map.form_id, mst_id: @plugin_override_map.mst_id, pl_id: @plugin_override_map.pl_id }
     end
 
     assert_redirected_to plugin_override_map_path(assigns(:plugin_override_map))
@@ -35,7 +35,7 @@ class PluginOverrideMapsControllerTest < ActionController::TestCase
   end
 
   test "should update plugin_override_map" do
-    patch :update, id: @plugin_override_map, plugin_override_map: { form_id: @plugin_override_map.form_id, is_itm: @plugin_override_map.is_itm, is_itpo: @plugin_override_map.is_itpo, is_udr: @plugin_override_map.is_udr, mst_id: @plugin_override_map.mst_id, name: @plugin_override_map.name, pl_id: @plugin_override_map.pl_id, sig: @plugin_override_map.sig }
+    patch :update, id: @plugin_override_map, plugin_override_map: { form_id: @plugin_override_map.form_id, mst_id: @plugin_override_map.mst_id, pl_id: @plugin_override_map.pl_id }
     assert_redirected_to plugin_override_map_path(assigns(:plugin_override_map))
   end
 

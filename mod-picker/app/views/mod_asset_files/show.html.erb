@@ -1,14 +1,16 @@
-<p id="notice"><%= notice %></p>
+<div class="scaffold">
+  <p id="notice"><%= notice %></p>
 
-<p>
-  <strong>Maf:</strong>
-  <%= @mod_asset_file.maf_id %>
-</p>
+    <p>
+    <strong>#<Rails::Generators::GeneratedAttribute:0x00000007a3aa28>:</strong>
+    <%= @mod_asset_file.maf_id %>
+  </p>
 
-<p>
-  <strong>Filepath:</strong>
-  <%= @mod_asset_file.filepath %>
-</p>
+    <p>
+    <strong>#<Rails::Generators::GeneratedAttribute:0x00000007a3bbf8>:</strong>
+    <%= @mod_asset_file.filepath %>
+  </p>
 
-<%= link_to 'Edit', edit_mod_asset_file_path(@mod_asset_file) %> |
-<%= link_to 'Back', mod_asset_files_path %>
+    <%= link_to 'Edit', edit_mod_asset_file_path(@mod_asset_file) %> |
+  <%= link_to 'Back', mod_asset_files_path %>
+</div>

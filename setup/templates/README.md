@@ -1,0 +1,1 @@
+These are ERB templates for scaffolding.  If you plan on scaffolding, make sure you add these to ruby's `lib\ruby\gems\2.0.0\gems\railties-4.2.5\lib\rails\generators\erb\scaffold\templates` folder.

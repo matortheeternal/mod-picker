@@ -69,6 +69,6 @@ class PluginOverrideMapsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def plugin_override_map_params
-      params.require(:plugin_override_map).permit(:pl_id, :mst_id, :form_id, :sig, :name, :is_itm, :is_itpo, :is_udr)
+      params.require(:plugin_override_map).permit(:pl_id, :mst_id, :form_id)
     end
 end

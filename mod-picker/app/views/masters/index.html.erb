@@ -1,29 +1,31 @@
-<p id="notice"><%= notice %></p>
+<div class="scaffold">
+  <p id="notice"><%= notice %></p>
 
-<h1>Listing Masters</h1>
+  <h1>Listing masters</h1>
 
-<table>
-  <thead>
-    <tr>
-      <th>Mst</th>
-      <th>Pl</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @masters.each do |master| %>
+  <table>
+    <thead>
       <tr>
-        <td><%= master.mst_id %></td>
-        <td><%= master.pl_id %></td>
-        <td><%= link_to 'Show', master %></td>
-        <td><%= link_to 'Edit', edit_master_path(master) %></td>
-        <td><%= link_to 'Destroy', master, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+          <th>#<Rails::Generators::GeneratedAttribute:0x00000007933850></th>
+          <th>#<Rails::Generators::GeneratedAttribute:0x00000007933558></th>
+          <th colspan="3"></th>
       </tr>
-    <% end %>
-  </tbody>
-</table>
+    </thead>
 
-<br>
+    <tbody>
+      <% @masters.each do |master| %>
+        <tr>
+            <td><%= master.mst_id %></td>
+            <td><%= master.pl_id %></td>
+            <td><%= link_to 'Show', master %></td>
+          <td><%= link_to 'Edit', edit_master_path(master) %></td>
+          <td><%= link_to 'Destroy', master, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
 
-<%= link_to 'New Master', new_master_path %>
+  <br>
+
+  <%= link_to 'New master', new_master_path %>
+</div>

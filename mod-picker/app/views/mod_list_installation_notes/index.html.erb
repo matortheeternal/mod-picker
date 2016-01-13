@@ -1,31 +1,33 @@
-<p id="notice"><%= notice %></p>
+<div class="scaffold">
+  <p id="notice"><%= notice %></p>
 
-<h1>Listing Mod List Installation Notes</h1>
+  <h1>Listing mod_list_installation_notes</h1>
 
-<table>
-  <thead>
-    <tr>
-      <th>Ml</th>
-      <th>In</th>
-      <th>Status</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @mod_list_installation_notes.each do |mod_list_installation_note| %>
+  <table>
+    <thead>
       <tr>
-        <td><%= mod_list_installation_note.ml_id %></td>
-        <td><%= mod_list_installation_note.in_id %></td>
-        <td><%= mod_list_installation_note.status %></td>
-        <td><%= link_to 'Show', mod_list_installation_note %></td>
-        <td><%= link_to 'Edit', edit_mod_list_installation_note_path(mod_list_installation_note) %></td>
-        <td><%= link_to 'Destroy', mod_list_installation_note, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+          <th>#<Rails::Generators::GeneratedAttribute:0x00000007d02030></th>
+          <th>#<Rails::Generators::GeneratedAttribute:0x00000007d01c48></th>
+          <th>#<Rails::Generators::GeneratedAttribute:0x00000007d019c8></th>
+          <th colspan="3"></th>
       </tr>
-    <% end %>
-  </tbody>
-</table>
+    </thead>
 
-<br>
+    <tbody>
+      <% @mod_list_installation_notes.each do |mod_list_installation_note| %>
+        <tr>
+            <td><%= mod_list_installation_note.ml_id %></td>
+            <td><%= mod_list_installation_note.in_id %></td>
+            <td><%= mod_list_installation_note.status %></td>
+            <td><%= link_to 'Show', mod_list_installation_note %></td>
+          <td><%= link_to 'Edit', edit_mod_list_installation_note_path(mod_list_installation_note) %></td>
+          <td><%= link_to 'Destroy', mod_list_installation_note, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
 
-<%= link_to 'New Mod list installation note', new_mod_list_installation_note_path %>
+  <br>
+
+  <%= link_to 'New mod_list_installation_note', new_mod_list_installation_note_path %>
+</div>

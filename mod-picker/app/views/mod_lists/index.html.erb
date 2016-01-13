@@ -1,45 +1,47 @@
-<p id="notice"><%= notice %></p>
+<div class="scaffold">
+  <p id="notice"><%= notice %></p>
 
-<h1>Listing Mod Lists</h1>
+  <h1>Listing mod_lists</h1>
 
-<table>
-  <thead>
-    <tr>
-      <th>Ml</th>
-      <th>Game</th>
-      <th>Created by</th>
-      <th>Is collection</th>
-      <th>Is public</th>
-      <th>Has adult content</th>
-      <th>Status</th>
-      <th>Created</th>
-      <th>Completed</th>
-      <th>Description</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @mod_lists.each do |mod_list| %>
+  <table>
+    <thead>
       <tr>
-        <td><%= mod_list.ml_id %></td>
-        <td><%= mod_list.game %></td>
-        <td><%= mod_list.created_by %></td>
-        <td><%= mod_list.is_collection %></td>
-        <td><%= mod_list.is_public %></td>
-        <td><%= mod_list.has_adult_content %></td>
-        <td><%= mod_list.status %></td>
-        <td><%= mod_list.created %></td>
-        <td><%= mod_list.completed %></td>
-        <td><%= mod_list.description %></td>
-        <td><%= link_to 'Show', mod_list %></td>
-        <td><%= link_to 'Edit', edit_mod_list_path(mod_list) %></td>
-        <td><%= link_to 'Destroy', mod_list, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+          <th>#<Rails::Generators::GeneratedAttribute:0x00000007ae0ba8></th>
+          <th>#<Rails::Generators::GeneratedAttribute:0x00000007ae2048></th>
+          <th>#<Rails::Generators::GeneratedAttribute:0x00000007ae22c8></th>
+          <th>#<Rails::Generators::GeneratedAttribute:0x00000007ae2728></th>
+          <th>#<Rails::Generators::GeneratedAttribute:0x00000007ae2c78></th>
+          <th>#<Rails::Generators::GeneratedAttribute:0x00000007ae3ad8></th>
+          <th>#<Rails::Generators::GeneratedAttribute:0x00000007ae3740></th>
+          <th>#<Rails::Generators::GeneratedAttribute:0x00000007ae2ef8></th>
+          <th>#<Rails::Generators::GeneratedAttribute:0x00000007ae2598></th>
+          <th>#<Rails::Generators::GeneratedAttribute:0x00000007ae1be8></th>
+          <th colspan="3"></th>
       </tr>
-    <% end %>
-  </tbody>
-</table>
+    </thead>
 
-<br>
+    <tbody>
+      <% @mod_lists.each do |mod_list| %>
+        <tr>
+            <td><%= mod_list.ml_id %></td>
+            <td><%= mod_list.game %></td>
+            <td><%= mod_list.created_by %></td>
+            <td><%= mod_list.is_collection %></td>
+            <td><%= mod_list.is_public %></td>
+            <td><%= mod_list.has_adult_content %></td>
+            <td><%= mod_list.status %></td>
+            <td><%= mod_list.created %></td>
+            <td><%= mod_list.completed %></td>
+            <td><%= mod_list.description %></td>
+            <td><%= link_to 'Show', mod_list %></td>
+          <td><%= link_to 'Edit', edit_mod_list_path(mod_list) %></td>
+          <td><%= link_to 'Destroy', mod_list, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
 
-<%= link_to 'New Mod list', new_mod_list_path %>
+  <br>
+
+  <%= link_to 'New mod_list', new_mod_list_path %>
+</div>

@@ -1,34 +1,36 @@
-<p id="notice"><%= notice %></p>
+<div class="scaffold">
+  <p id="notice"><%= notice %></p>
 
-<p>
-  <strong>Pl:</strong>
-  <%= @plugin.pl_id %>
-</p>
+    <p>
+    <strong>#<Rails::Generators::GeneratedAttribute:0x0000000801a790>:</strong>
+    <%= @plugin.pl_id %>
+  </p>
 
-<p>
-  <strong>Mv:</strong>
-  <%= @plugin.mv_id %>
-</p>
+    <p>
+    <strong>#<Rails::Generators::GeneratedAttribute:0x0000000801a3f8>:</strong>
+    <%= @plugin.mv_id %>
+  </p>
 
-<p>
-  <strong>Filename:</strong>
-  <%= @plugin.filename %>
-</p>
+    <p>
+    <strong>#<Rails::Generators::GeneratedAttribute:0x00000008019f70>:</strong>
+    <%= @plugin.filename %>
+  </p>
 
-<p>
-  <strong>Author:</strong>
-  <%= @plugin.author %>
-</p>
+    <p>
+    <strong>#<Rails::Generators::GeneratedAttribute:0x00000008019bd8>:</strong>
+    <%= @plugin.author %>
+  </p>
 
-<p>
-  <strong>Description:</strong>
-  <%= @plugin.description %>
-</p>
+    <p>
+    <strong>#<Rails::Generators::GeneratedAttribute:0x00000008019688>:</strong>
+    <%= @plugin.description %>
+  </p>
 
-<p>
-  <strong>Crc hash:</strong>
-  <%= @plugin.crc_hash %>
-</p>
+    <p>
+    <strong>#<Rails::Generators::GeneratedAttribute:0x00000008019408>:</strong>
+    <%= @plugin.hash %>
+  </p>
 
-<%= link_to 'Edit', edit_plugin_path(@plugin) %> |
-<%= link_to 'Back', plugins_path %>
+    <%= link_to 'Edit', edit_plugin_path(@plugin) %> |
+  <%= link_to 'Back', plugins_path %>
+</div>

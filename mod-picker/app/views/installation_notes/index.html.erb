@@ -1,39 +1,41 @@
-<p id="notice"><%= notice %></p>
+<div class="scaffold">
+  <p id="notice"><%= notice %></p>
 
-<h1>Listing Installation Notes</h1>
+  <h1>Listing installation_notes</h1>
 
-<table>
-  <thead>
-    <tr>
-      <th>In</th>
-      <th>Submitted by</th>
-      <th>Mv</th>
-      <th>Always</th>
-      <th>Note type</th>
-      <th>Submitted</th>
-      <th>Edited</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @installation_notes.each do |installation_note| %>
+  <table>
+    <thead>
       <tr>
-        <td><%= installation_note.in_id %></td>
-        <td><%= installation_note.submitted_by %></td>
-        <td><%= installation_note.mv_id %></td>
-        <td><%= installation_note.always %></td>
-        <td><%= installation_note.note_type %></td>
-        <td><%= installation_note.submitted %></td>
-        <td><%= installation_note.edited %></td>
-        <td><%= link_to 'Show', installation_note %></td>
-        <td><%= link_to 'Edit', edit_installation_note_path(installation_note) %></td>
-        <td><%= link_to 'Destroy', installation_note, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+          <th>#<Rails::Generators::GeneratedAttribute:0x00000007e13780></th>
+          <th>#<Rails::Generators::GeneratedAttribute:0x00000007e13370></th>
+          <th>#<Rails::Generators::GeneratedAttribute:0x00000007e12b78></th>
+          <th>#<Rails::Generators::GeneratedAttribute:0x00000007e129c0></th>
+          <th>#<Rails::Generators::GeneratedAttribute:0x00000007e12560></th>
+          <th>#<Rails::Generators::GeneratedAttribute:0x00000007e12128></th>
+          <th>#<Rails::Generators::GeneratedAttribute:0x00000007e11ac0></th>
+          <th colspan="3"></th>
       </tr>
-    <% end %>
-  </tbody>
-</table>
+    </thead>
 
-<br>
+    <tbody>
+      <% @installation_notes.each do |installation_note| %>
+        <tr>
+            <td><%= installation_note.in_id %></td>
+            <td><%= installation_note.submitted_by %></td>
+            <td><%= installation_note.mv_id %></td>
+            <td><%= installation_note.always %></td>
+            <td><%= installation_note.note_type %></td>
+            <td><%= installation_note.submitted %></td>
+            <td><%= installation_note.edited %></td>
+            <td><%= link_to 'Show', installation_note %></td>
+          <td><%= link_to 'Edit', edit_installation_note_path(installation_note) %></td>
+          <td><%= link_to 'Destroy', installation_note, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
 
-<%= link_to 'New Installation note', new_installation_note_path %>
+  <br>
+
+  <%= link_to 'New installation_note', new_installation_note_path %>
+</div>

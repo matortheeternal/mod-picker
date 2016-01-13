@@ -1,14 +1,16 @@
-<p id="notice"><%= notice %></p>
+<div class="scaffold">
+  <p id="notice"><%= notice %></p>
 
-<p>
-  <strong>Mst:</strong>
-  <%= @master.mst_id %>
-</p>
+    <p>
+    <strong>#<Rails::Generators::GeneratedAttribute:0x00000007933850>:</strong>
+    <%= @master.mst_id %>
+  </p>
 
-<p>
-  <strong>Pl:</strong>
-  <%= @master.pl_id %>
-</p>
+    <p>
+    <strong>#<Rails::Generators::GeneratedAttribute:0x00000007933558>:</strong>
+    <%= @master.pl_id %>
+  </p>
 
-<%= link_to 'Edit', edit_master_path(@master) %> |
-<%= link_to 'Back', masters_path %>
+    <%= link_to 'Edit', edit_master_path(@master) %> |
+  <%= link_to 'Back', masters_path %>
+</div>

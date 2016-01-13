@@ -1,33 +1,35 @@
-<p id="notice"><%= notice %></p>
+<div class="scaffold">
+  <p id="notice"><%= notice %></p>
 
-<h1>Listing Mod List Plugins</h1>
+  <h1>Listing mod_list_plugins</h1>
 
-<table>
-  <thead>
-    <tr>
-      <th>Ml</th>
-      <th>Pl</th>
-      <th>Active</th>
-      <th>Load order</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @mod_list_plugins.each do |mod_list_plugin| %>
+  <table>
+    <thead>
       <tr>
-        <td><%= mod_list_plugin.ml_id %></td>
-        <td><%= mod_list_plugin.pl_id %></td>
-        <td><%= mod_list_plugin.active %></td>
-        <td><%= mod_list_plugin.load_order %></td>
-        <td><%= link_to 'Show', mod_list_plugin %></td>
-        <td><%= link_to 'Edit', edit_mod_list_plugin_path(mod_list_plugin) %></td>
-        <td><%= link_to 'Destroy', mod_list_plugin, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+          <th>#<Rails::Generators::GeneratedAttribute:0x00000007c36b60></th>
+          <th>#<Rails::Generators::GeneratedAttribute:0x00000007c36868></th>
+          <th>#<Rails::Generators::GeneratedAttribute:0x00000007c363e0></th>
+          <th>#<Rails::Generators::GeneratedAttribute:0x00000007c35e40></th>
+          <th colspan="3"></th>
       </tr>
-    <% end %>
-  </tbody>
-</table>
+    </thead>
 
-<br>
+    <tbody>
+      <% @mod_list_plugins.each do |mod_list_plugin| %>
+        <tr>
+            <td><%= mod_list_plugin.ml_id %></td>
+            <td><%= mod_list_plugin.pl_id %></td>
+            <td><%= mod_list_plugin.active %></td>
+            <td><%= mod_list_plugin.load_order %></td>
+            <td><%= link_to 'Show', mod_list_plugin %></td>
+          <td><%= link_to 'Edit', edit_mod_list_plugin_path(mod_list_plugin) %></td>
+          <td><%= link_to 'Destroy', mod_list_plugin, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
 
-<%= link_to 'New Mod list plugin', new_mod_list_plugin_path %>
+  <br>
+
+  <%= link_to 'New mod_list_plugin', new_mod_list_plugin_path %>
+</div>

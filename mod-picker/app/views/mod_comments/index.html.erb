@@ -1,29 +1,31 @@
-<p id="notice"><%= notice %></p>
+<div class="scaffold">
+  <p id="notice"><%= notice %></p>
 
-<h1>Listing Mod Comments</h1>
+  <h1>Listing mod_comments</h1>
 
-<table>
-  <thead>
-    <tr>
-      <th>Mod</th>
-      <th>C</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @mod_comments.each do |mod_comment| %>
+  <table>
+    <thead>
       <tr>
-        <td><%= mod_comment.mod_id %></td>
-        <td><%= mod_comment.c_id %></td>
-        <td><%= link_to 'Show', mod_comment %></td>
-        <td><%= link_to 'Edit', edit_mod_comment_path(mod_comment) %></td>
-        <td><%= link_to 'Destroy', mod_comment, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+          <th>#<Rails::Generators::GeneratedAttribute:0x00000007bd4780></th>
+          <th>#<Rails::Generators::GeneratedAttribute:0x00000007bd45a0></th>
+          <th colspan="3"></th>
       </tr>
-    <% end %>
-  </tbody>
-</table>
+    </thead>
 
-<br>
+    <tbody>
+      <% @mod_comments.each do |mod_comment| %>
+        <tr>
+            <td><%= mod_comment.mod_id %></td>
+            <td><%= mod_comment.c_id %></td>
+            <td><%= link_to 'Show', mod_comment %></td>
+          <td><%= link_to 'Edit', edit_mod_comment_path(mod_comment) %></td>
+          <td><%= link_to 'Destroy', mod_comment, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
 
-<%= link_to 'New Mod comment', new_mod_comment_path %>
+  <br>
+
+  <%= link_to 'New mod_comment', new_mod_comment_path %>
+</div>

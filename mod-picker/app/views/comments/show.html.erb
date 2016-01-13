@@ -1,34 +1,36 @@
-<p id="notice"><%= notice %></p>
+<div class="scaffold">
+  <p id="notice"><%= notice %></p>
 
-<p>
-  <strong>C:</strong>
-  <%= @comment.c_id %>
-</p>
+    <p>
+    <strong>#<Rails::Generators::GeneratedAttribute:0x00000007bc99c0>:</strong>
+    <%= @comment.c_id %>
+  </p>
 
-<p>
-  <strong>Parent comment:</strong>
-  <%= @comment.parent_comment %>
-</p>
+    <p>
+    <strong>#<Rails::Generators::GeneratedAttribute:0x00000007bc9718>:</strong>
+    <%= @comment.parent_comment %>
+  </p>
 
-<p>
-  <strong>Submitted by:</strong>
-  <%= @comment.submitted_by %>
-</p>
+    <p>
+    <strong>#<Rails::Generators::GeneratedAttribute:0x00000007bc93a8>:</strong>
+    <%= @comment.submitted_by %>
+  </p>
 
-<p>
-  <strong>Hidden:</strong>
-  <%= @comment.hidden %>
-</p>
+    <p>
+    <strong>#<Rails::Generators::GeneratedAttribute:0x00000007bc87c8>:</strong>
+    <%= @comment.hidden %>
+  </p>
 
-<p>
-  <strong>Submitted:</strong>
-  <%= @comment.submitted %>
-</p>
+    <p>
+    <strong>#<Rails::Generators::GeneratedAttribute:0x00000007bc82a0>:</strong>
+    <%= @comment.submitted %>
+  </p>
 
-<p>
-  <strong>Edited:</strong>
-  <%= @comment.edited %>
-</p>
+    <p>
+    <strong>#<Rails::Generators::GeneratedAttribute:0x00000007bd0360>:</strong>
+    <%= @comment.edited %>
+  </p>
 
-<%= link_to 'Edit', edit_comment_path(@comment) %> |
-<%= link_to 'Back', comments_path %>
+    <%= link_to 'Edit', edit_comment_path(@comment) %> |
+  <%= link_to 'Back', comments_path %>
+</div>

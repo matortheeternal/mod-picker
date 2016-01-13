@@ -1,69 +1,71 @@
-<p id="notice"><%= notice %></p>
+<div class="column-wrapper">
+  <p id="notice"><%= notice %></p>
 
-<p>
-  <strong>Set:</strong>
-  <%= @user_setting.set_id %>
-</p>
+  <p>
+    <strong>Set:</strong>
+    <%= @user_setting.set_id %>
+  </p>
 
-<p>
-  <strong>User:</strong>
-  <%= @user_setting.user_id %>
-</p>
+  <p>
+    <strong>User:</strong>
+    <%= @user_setting.user_id %>
+  </p>
 
-<p>
-  <strong>Show notifications:</strong>
-  <%= @user_setting.show_notifications %>
-</p>
+  <p>
+    <strong>Show notifications:</strong>
+    <%= @user_setting.show_notifications %>
+  </p>
 
-<p>
-  <strong>Show tooltips:</strong>
-  <%= @user_setting.show_tooltips %>
-</p>
+  <p>
+    <strong>Show tooltips:</strong>
+    <%= @user_setting.show_tooltips %>
+  </p>
 
-<p>
-  <strong>Email notifications:</strong>
-  <%= @user_setting.email_notifications %>
-</p>
+  <p>
+    <strong>Email notifications:</strong>
+    <%= @user_setting.email_notifications %>
+  </p>
 
-<p>
-  <strong>Email public:</strong>
-  <%= @user_setting.email_public %>
-</p>
+  <p>
+    <strong>Email public:</strong>
+    <%= @user_setting.email_public %>
+  </p>
 
-<p>
-  <strong>Allow adult content:</strong>
-  <%= @user_setting.allow_adult_content %>
-</p>
+  <p>
+    <strong>Allow adult content:</strong>
+    <%= @user_setting.allow_adult_content %>
+  </p>
 
-<p>
-  <strong>Allow nexus mods:</strong>
-  <%= @user_setting.allow_nexus_mods %>
-</p>
+  <p>
+    <strong>Allow nexus mods:</strong>
+    <%= @user_setting.allow_nexus_mods %>
+  </p>
 
-<p>
-  <strong>Allow lovers lab:</strong>
-  <%= @user_setting.allow_lovers_lab %>
-</p>
+  <p>
+    <strong>Allow lovers lab:</strong>
+    <%= @user_setting.allow_lovers_lab %>
+  </p>
 
-<p>
-  <strong>Allow steam workshop:</strong>
-  <%= @user_setting.allow_steam_workshop %>
-</p>
+  <p>
+    <strong>Allow steam workshop:</strong>
+    <%= @user_setting.allow_steam_workshop %>
+  </p>
 
-<p>
-  <strong>Timezone:</strong>
-  <%= @user_setting.timezone %>
-</p>
+  <p>
+    <strong>Timezone:</strong>
+    <%= @user_setting.timezone %>
+  </p>
 
-<p>
-  <strong>Date format:</strong>
-  <%= @user_setting.udate_format %>
-</p>
+  <p>
+    <strong>Date format:</strong>
+    <%= @user_setting.udate_format %>
+  </p>
 
-<p>
-  <strong>Time format:</strong>
-  <%= @user_setting.utime_format %>
-</p>
+  <p>
+    <strong>Time format:</strong>
+    <%= @user_setting.utime_format %>
+  </p>
 
-<%= link_to 'Edit', edit_user_setting_path(@user_setting) %> |
-<%= link_to 'Back', user_settings_path %>
+  <%= link_to 'Edit', edit_user_setting_path(@user_setting) %> |
+  <%= link_to 'Back', user_settings_path %>
+</div>

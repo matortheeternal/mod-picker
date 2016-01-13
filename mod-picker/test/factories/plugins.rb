@@ -5,7 +5,7 @@ mv_id 1
 filename "MyText"
 author "MyText"
 description "MyText"
-crc_hash "MyString"
+hash "MyString"
   end
 
 end

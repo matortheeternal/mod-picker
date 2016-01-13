@@ -1,14 +1,16 @@
-<p id="notice"><%= notice %></p>
+<div class="scaffold">
+  <p id="notice"><%= notice %></p>
 
-<p>
-  <strong>Mv:</strong>
-  <%= @mod_version_file_map.mv_id %>
-</p>
+    <p>
+    <strong>#<Rails::Generators::GeneratedAttribute:0x00000007a71820>:</strong>
+    <%= @mod_version_file_map.mv_id %>
+  </p>
 
-<p>
-  <strong>Maf:</strong>
-  <%= @mod_version_file_map.maf_id %>
-</p>
+    <p>
+    <strong>#<Rails::Generators::GeneratedAttribute:0x00000007a7a718>:</strong>
+    <%= @mod_version_file_map.maf_id %>
+  </p>
 
-<%= link_to 'Edit', edit_mod_version_file_map_path(@mod_version_file_map) %> |
-<%= link_to 'Back', mod_version_file_maps_path %>
+    <%= link_to 'Edit', edit_mod_version_file_map_path(@mod_version_file_map) %> |
+  <%= link_to 'Back', mod_version_file_maps_path %>
+</div>

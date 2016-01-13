@@ -1,29 +1,31 @@
-<p id="notice"><%= notice %></p>
+<div class="scaffold">
+  <p id="notice"><%= notice %></p>
 
-<h1>Listing User Mod List Star Maps</h1>
+  <h1>Listing user_mod_list_star_maps</h1>
 
-<table>
-  <thead>
-    <tr>
-      <th>Ml</th>
-      <th>User</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @user_mod_list_star_maps.each do |user_mod_list_star_map| %>
+  <table>
+    <thead>
       <tr>
-        <td><%= user_mod_list_star_map.ml_id %></td>
-        <td><%= user_mod_list_star_map.user_id %></td>
-        <td><%= link_to 'Show', user_mod_list_star_map %></td>
-        <td><%= link_to 'Edit', edit_user_mod_list_star_map_path(user_mod_list_star_map) %></td>
-        <td><%= link_to 'Destroy', user_mod_list_star_map, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+          <th>#<Rails::Generators::GeneratedAttribute:0x00000007e1b458></th>
+          <th>#<Rails::Generators::GeneratedAttribute:0x00000007e1b0e8></th>
+          <th colspan="3"></th>
       </tr>
-    <% end %>
-  </tbody>
-</table>
+    </thead>
 
-<br>
+    <tbody>
+      <% @user_mod_list_star_maps.each do |user_mod_list_star_map| %>
+        <tr>
+            <td><%= user_mod_list_star_map.ml_id %></td>
+            <td><%= user_mod_list_star_map.user_id %></td>
+            <td><%= link_to 'Show', user_mod_list_star_map %></td>
+          <td><%= link_to 'Edit', edit_user_mod_list_star_map_path(user_mod_list_star_map) %></td>
+          <td><%= link_to 'Destroy', user_mod_list_star_map, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
 
-<%= link_to 'New User mod list star map', new_user_mod_list_star_map_path %>
+  <br>
+
+  <%= link_to 'New user_mod_list_star_map', new_user_mod_list_star_map_path %>
+</div>

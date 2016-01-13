@@ -1,37 +1,39 @@
-<p id="notice"><%= notice %></p>
+<div class="scaffold">
+  <p id="notice"><%= notice %></p>
 
-<h1>Listing Plugins</h1>
+  <h1>Listing plugins</h1>
 
-<table>
-  <thead>
-    <tr>
-      <th>pl_id</th>
-      <th>mv_id</th>
-      <th>filename</th>
-      <th>author</th>
-      <th>description</th>
-      <th>crc_hash</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @plugins.each do |plugin| %>
+  <table>
+    <thead>
       <tr>
-        <td><%= plugin.pl_id %></td>
-        <td><%= plugin.mv_id %></td>
-        <td><%= plugin.filename %></td>
-        <td><%= plugin.author %></td>
-        <td><%= plugin.description %></td>
-        <td><%= plugin.crc_hash %></td>
-        <td><%= link_to 'Show', plugin %></td>
-        <td><%= link_to 'Edit', edit_plugin_path(plugin) %></td>
-        <td><%= link_to 'Destroy', plugin, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+          <th>#<Rails::Generators::GeneratedAttribute:0x0000000801a790></th>
+          <th>#<Rails::Generators::GeneratedAttribute:0x0000000801a3f8></th>
+          <th>#<Rails::Generators::GeneratedAttribute:0x00000008019f70></th>
+          <th>#<Rails::Generators::GeneratedAttribute:0x00000008019bd8></th>
+          <th>#<Rails::Generators::GeneratedAttribute:0x00000008019688></th>
+          <th>#<Rails::Generators::GeneratedAttribute:0x00000008019408></th>
+          <th colspan="3"></th>
       </tr>
-    <% end %>
-  </tbody>
-</table>
+    </thead>
 
-<br>
+    <tbody>
+      <% @plugins.each do |plugin| %>
+        <tr>
+            <td><%= plugin.pl_id %></td>
+            <td><%= plugin.mv_id %></td>
+            <td><%= plugin.filename %></td>
+            <td><%= plugin.author %></td>
+            <td><%= plugin.description %></td>
+            <td><%= plugin.hash %></td>
+            <td><%= link_to 'Show', plugin %></td>
+          <td><%= link_to 'Edit', edit_plugin_path(plugin) %></td>
+          <td><%= link_to 'Destroy', plugin, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
 
-<%= link_to 'New Plugin', new_plugin_path %>
+  <br>
+
+  <%= link_to 'New plugin', new_plugin_path %>
+</div>

@@ -1,27 +1,29 @@
-<p id="notice"><%= notice %></p>
+<div class="scaffold">
+  <p id="notice"><%= notice %></p>
 
-<h1>Listing Workshop Infos</h1>
+  <h1>Listing workshop_infos</h1>
 
-<table>
-  <thead>
-    <tr>
-      <th>Ws</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @workshop_infos.each do |workshop_info| %>
+  <table>
+    <thead>
       <tr>
-        <td><%= workshop_info.ws_id %></td>
-        <td><%= link_to 'Show', workshop_info %></td>
-        <td><%= link_to 'Edit', edit_workshop_info_path(workshop_info) %></td>
-        <td><%= link_to 'Destroy', workshop_info, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+          <th>#<Rails::Generators::GeneratedAttribute:0x00000007890768></th>
+          <th colspan="3"></th>
       </tr>
-    <% end %>
-  </tbody>
-</table>
+    </thead>
 
-<br>
+    <tbody>
+      <% @workshop_infos.each do |workshop_info| %>
+        <tr>
+            <td><%= workshop_info.ws_id %></td>
+            <td><%= link_to 'Show', workshop_info %></td>
+          <td><%= link_to 'Edit', edit_workshop_info_path(workshop_info) %></td>
+          <td><%= link_to 'Destroy', workshop_info, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
 
-<%= link_to 'New Workshop info', new_workshop_info_path %>
+  <br>
+
+  <%= link_to 'New workshop_info', new_workshop_info_path %>
+</div>
