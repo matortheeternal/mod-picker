@@ -39,9 +39,9 @@ How to get the clone URL for the repository.
 2. Enter a commit message detailing your changes.  Start with a short summary of your commit (like a title), then go into more detail on subsequent lines.
 3. Check "Push changes immediately to <branch\name>", then click Commit.
 
-### Frontend development
+## Frontend development
 
-#### HTML and CSS basics
+### HTML and CSS basics
 
 The following resources are great for learning HTML and CSS:
 
@@ -49,7 +49,7 @@ The following resources are great for learning HTML and CSS:
 * [CodeAcademy HTML & CSS](https://www.codecademy.com/learn/web)
 * [MDN - Learning the Web](https://developer.mozilla.org/en-US/Learn/HTML)
 
-#### html.erb
+### html.erb
 
 `.html.erb` files are ruby-enhanced html documents.  You can do anything you can do on an HTML document on these pages, with the added benefit of inline ruby code that gets pre-processed before the page is served up to the user.  Inline ruby code will have `<%` bracket percent `%>` tags around it.
 
@@ -58,11 +58,11 @@ See the following resources information on .html.erb files:
 * [Layouts and Rendering in Rails](http://guides.rubyonrails.org/layouts_and_rendering.html)
 * [An introduction to ERB templating](http://www.stuartellis.eu/articles/erb/)
 
-#### Application-wide css
+### Application-wide css
 
 A safe place to add CSS in these early stages is the `mod-picker\app\assets\stylesheets\application.css` document.  CSS added in this file will be available to all pages on the website.  We'll be refactoring css out of this document into page-specific SCSS documents as the project progresses.
 
-#### Choosing a page to work on
+### Choosing a page to work on
 
 If you're looking to do frontend development you can scope out pages to work on fairly easily in the `mod-picker\app\views\<record-name>\` folders.  These are all of the views in the application.  `<record-name>` corresponds to the name of the record the views are for, e.g. comments, plugins, mod_lists, etc.  Note that a lot of these records don't need any design to be done on their pages because they'll only ever be presented to the user in the context of other pages.  E.g. comments are only ever created in the context of a page where they can be posted, such as a mod or mod list.
 
@@ -83,7 +83,7 @@ This page is shown when a user is viewing an individual record.
 * `show.json.jbuilder`  
 This is the json version of the show page, you don't have to worry about editing this as a frontend dev.
 
-#### Design needs
+### Design needs
 
 | Record Name                  | Description                                                                                                                                                                                                  | edit | index | new | show | partials |
 |------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|------|-------|-----|------|----------|
