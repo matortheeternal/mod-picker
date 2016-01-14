@@ -41,8 +41,8 @@ class AddDeviseToUsers < ActiveRecord::Migration
     # add_index :users, :unlock_token,         unique: true
 
     # remove redundant user columns
-    remove_column :users, :hash
-    remove_column :users, :last_seen
+    # remove_column :users, :hash
+    # remove_column :users, :last_seen
   end
 
   def self.down
