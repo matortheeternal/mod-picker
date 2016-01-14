@@ -1,25 +1,27 @@
 <div class="scaffold">
   <p id="notice"><%= notice %></p>
 
-  <h1>Listing nexus_infos</h1>
+  <h1>nexus_infos</h1>
 
   <table>
     <thead>
       <tr>
-          <th>#<Rails::Generators::GeneratedAttribute:0x000000078297c0></th>
-          <th>#<Rails::Generators::GeneratedAttribute:0x000000078294c8></th>
-          <th>#<Rails::Generators::GeneratedAttribute:0x00000007828fa0></th>
-          <th>#<Rails::Generators::GeneratedAttribute:0x00000007828ac8></th>
-          <th>#<Rails::Generators::GeneratedAttribute:0x00000007828578></th>
-          <th>#<Rails::Generators::GeneratedAttribute:0x00000007828208></th>
-          <th>#<Rails::Generators::GeneratedAttribute:0x00000007833e78></th>
-          <th>#<Rails::Generators::GeneratedAttribute:0x00000007833c70></th>
-          <th>#<Rails::Generators::GeneratedAttribute:0x000000078334f0></th>
-          <th>#<Rails::Generators::GeneratedAttribute:0x00000007832d70></th>
-          <th>#<Rails::Generators::GeneratedAttribute:0x00000007832820></th>
-          <th>#<Rails::Generators::GeneratedAttribute:0x00000007832500></th>
-          <th>#<Rails::Generators::GeneratedAttribute:0x00000007832118></th>
-          <th>#<Rails::Generators::GeneratedAttribute:0x00000007831c68></th>
+          <th>nm_id</th>
+          <th>uploaded_by</th>
+          <th>authors</th>
+          <th>datetime_released</th>
+          <th>datetime_updated</th>
+          <th>endorsements</th>
+          <th>total_downloads</th>
+          <th>unique_downloads</th>
+          <th>views</th>
+          <th>posts_count</th>
+          <th>videos_count</th>
+          <th>images_count</th>
+          <th>files_count</th>
+          <th>articles_count</th>
+          <th>nexus_category</th>
+          <th>changelog</th>
           <th colspan="3"></th>
       </tr>
     </thead>
@@ -30,6 +32,8 @@
             <td><%= nexus_info.nm_id %></td>
             <td><%= nexus_info.uploaded_by %></td>
             <td><%= nexus_info.authors %></td>
+            <td><%= nexus_info.datetime_released %></td>
+            <td><%= nexus_info.datetime_updated %></td>
             <td><%= nexus_info.endorsements %></td>
             <td><%= nexus_info.total_downloads %></td>
             <td><%= nexus_info.unique_downloads %></td>
@@ -51,5 +55,5 @@
 
   <br>
 
-  <%= link_to 'New nexus_info', new_nexus_info_path %>
+  <%= link_to 'New Nexus Info', new_nexus_info_path %>
 </div>

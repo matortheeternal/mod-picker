@@ -4,18 +4,14 @@ FactoryGirl.define do
 submitted_by 1
 mod_id 1
 hidden false
-rating1 "MyString"
+rating1 ""
+rating2 ""
+rating3 ""
+rating4 ""
 TINYINT "MyString"
-rating2 "MyString"
-TINYINT "MyString"
-rating3 "MyString"
-TINYINT "MyString"
-rating4 "MyString"
-TINYINT "MyString"
-rating5 "MyString"
-TINYINT "MyString"
-submitted "2016-01-13 14:36:11"
-edited "2016-01-13 14:36:11"
+submitted "2016-01-13 23:30:34"
+edited "2016-01-13 23:30:34"
+text_body "MyText"
   end
 
 end

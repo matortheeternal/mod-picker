@@ -1,1 +1,1 @@
-json.extract! @review, :id, :r_id, :submitted_by, :mod_id, :hidden, :rating1, :TINYINT, :rating2, :TINYINT, :rating3, :TINYINT, :rating4, :TINYINT, :rating5, :TINYINT, :submitted, :edited, :created_at, :updated_at
+json.extract! @review, :id, :r_id, :submitted_by, :mod_id, :hidden, :rating1, :rating2, :rating3, :rating4, :TINYINT, :submitted, :edited, :text_body, :created_at, :updated_at

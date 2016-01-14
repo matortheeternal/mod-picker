@@ -1,18 +1,19 @@
 <div class="scaffold">
   <p id="notice"><%= notice %></p>
 
-  <h1>Listing installation_notes</h1>
+  <h1>installation_notes</h1>
 
   <table>
     <thead>
       <tr>
-          <th>#<Rails::Generators::GeneratedAttribute:0x00000007e13780></th>
-          <th>#<Rails::Generators::GeneratedAttribute:0x00000007e13370></th>
-          <th>#<Rails::Generators::GeneratedAttribute:0x00000007e12b78></th>
-          <th>#<Rails::Generators::GeneratedAttribute:0x00000007e129c0></th>
-          <th>#<Rails::Generators::GeneratedAttribute:0x00000007e12560></th>
-          <th>#<Rails::Generators::GeneratedAttribute:0x00000007e12128></th>
-          <th>#<Rails::Generators::GeneratedAttribute:0x00000007e11ac0></th>
+          <th>in_id</th>
+          <th>submitted_by</th>
+          <th>mv_id</th>
+          <th>always</th>
+          <th>note_type</th>
+          <th>submitted</th>
+          <th>edited</th>
+          <th>text_body</th>
           <th colspan="3"></th>
       </tr>
     </thead>
@@ -27,6 +28,7 @@
             <td><%= installation_note.note_type %></td>
             <td><%= installation_note.submitted %></td>
             <td><%= installation_note.edited %></td>
+            <td><%= installation_note.text_body %></td>
             <td><%= link_to 'Show', installation_note %></td>
           <td><%= link_to 'Edit', edit_installation_note_path(installation_note) %></td>
           <td><%= link_to 'Destroy', installation_note, method: :delete, data: { confirm: 'Are you sure?' } %></td>
@@ -37,5 +39,5 @@
 
   <br>
 
-  <%= link_to 'New installation_note', new_installation_note_path %>
+  <%= link_to 'New Installation Note', new_installation_note_path %>
 </div>

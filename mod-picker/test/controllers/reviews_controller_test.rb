@@ -18,7 +18,7 @@ class ReviewsControllerTest < ActionController::TestCase
 
   test "should create review" do
     assert_difference('Review.count') do
-      post :create, review: { TINYINT: @review.TINYINT, TINYINT: @review.TINYINT, TINYINT: @review.TINYINT, TINYINT: @review.TINYINT, TINYINT: @review.TINYINT, edited: @review.edited, hidden: @review.hidden, mod_id: @review.mod_id, r_id: @review.r_id, rating1: @review.rating1, rating2: @review.rating2, rating3: @review.rating3, rating4: @review.rating4, rating5: @review.rating5, submitted: @review.submitted, submitted_by: @review.submitted_by }
+      post :create, review: { TINYINT: @review.TINYINT, edited: @review.edited, hidden: @review.hidden, mod_id: @review.mod_id, r_id: @review.r_id, rating1: @review.rating1, rating2: @review.rating2, rating3: @review.rating3, rating4: @review.rating4, submitted: @review.submitted, submitted_by: @review.submitted_by, text_body: @review.text_body }
     end
 
     assert_redirected_to review_path(assigns(:review))
@@ -35,7 +35,7 @@ class ReviewsControllerTest < ActionController::TestCase
   end
 
   test "should update review" do
-    patch :update, id: @review, review: { TINYINT: @review.TINYINT, TINYINT: @review.TINYINT, TINYINT: @review.TINYINT, TINYINT: @review.TINYINT, TINYINT: @review.TINYINT, edited: @review.edited, hidden: @review.hidden, mod_id: @review.mod_id, r_id: @review.r_id, rating1: @review.rating1, rating2: @review.rating2, rating3: @review.rating3, rating4: @review.rating4, rating5: @review.rating5, submitted: @review.submitted, submitted_by: @review.submitted_by }
+    patch :update, id: @review, review: { TINYINT: @review.TINYINT, edited: @review.edited, hidden: @review.hidden, mod_id: @review.mod_id, r_id: @review.r_id, rating1: @review.rating1, rating2: @review.rating2, rating3: @review.rating3, rating4: @review.rating4, submitted: @review.submitted, submitted_by: @review.submitted_by, text_body: @review.text_body }
     assert_redirected_to review_path(assigns(:review))
   end
 

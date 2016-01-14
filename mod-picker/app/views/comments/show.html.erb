@@ -2,33 +2,38 @@
   <p id="notice"><%= notice %></p>
 
     <p>
-    <strong>#<Rails::Generators::GeneratedAttribute:0x00000007bc99c0>:</strong>
+    <strong>c_id:</strong>
     <%= @comment.c_id %>
   </p>
 
     <p>
-    <strong>#<Rails::Generators::GeneratedAttribute:0x00000007bc9718>:</strong>
+    <strong>parent_comment:</strong>
     <%= @comment.parent_comment %>
   </p>
 
     <p>
-    <strong>#<Rails::Generators::GeneratedAttribute:0x00000007bc93a8>:</strong>
+    <strong>submitted_by:</strong>
     <%= @comment.submitted_by %>
   </p>
 
     <p>
-    <strong>#<Rails::Generators::GeneratedAttribute:0x00000007bc87c8>:</strong>
+    <strong>hidden:</strong>
     <%= @comment.hidden %>
   </p>
 
     <p>
-    <strong>#<Rails::Generators::GeneratedAttribute:0x00000007bc82a0>:</strong>
+    <strong>submitted:</strong>
     <%= @comment.submitted %>
   </p>
 
     <p>
-    <strong>#<Rails::Generators::GeneratedAttribute:0x00000007bd0360>:</strong>
+    <strong>edited:</strong>
     <%= @comment.edited %>
+  </p>
+
+    <p>
+    <strong>text_body:</strong>
+    <%= @comment.text_body %>
   </p>
 
     <%= link_to 'Edit', edit_comment_path(@comment) %> |

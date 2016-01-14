@@ -1,17 +1,18 @@
 <div class="scaffold">
   <p id="notice"><%= notice %></p>
 
-  <h1>Listing comments</h1>
+  <h1>comments</h1>
 
   <table>
     <thead>
       <tr>
-          <th>#<Rails::Generators::GeneratedAttribute:0x00000007bc99c0></th>
-          <th>#<Rails::Generators::GeneratedAttribute:0x00000007bc9718></th>
-          <th>#<Rails::Generators::GeneratedAttribute:0x00000007bc93a8></th>
-          <th>#<Rails::Generators::GeneratedAttribute:0x00000007bc87c8></th>
-          <th>#<Rails::Generators::GeneratedAttribute:0x00000007bc82a0></th>
-          <th>#<Rails::Generators::GeneratedAttribute:0x00000007bd0360></th>
+          <th>c_id</th>
+          <th>parent_comment</th>
+          <th>submitted_by</th>
+          <th>hidden</th>
+          <th>submitted</th>
+          <th>edited</th>
+          <th>text_body</th>
           <th colspan="3"></th>
       </tr>
     </thead>
@@ -25,6 +26,7 @@
             <td><%= comment.hidden %></td>
             <td><%= comment.submitted %></td>
             <td><%= comment.edited %></td>
+            <td><%= comment.text_body %></td>
             <td><%= link_to 'Show', comment %></td>
           <td><%= link_to 'Edit', edit_comment_path(comment) %></td>
           <td><%= link_to 'Destroy', comment, method: :delete, data: { confirm: 'Are you sure?' } %></td>
@@ -35,5 +37,5 @@
 
   <br>
 
-  <%= link_to 'New comment', new_comment_path %>
+  <%= link_to 'New Comment', new_comment_path %>
 </div>
