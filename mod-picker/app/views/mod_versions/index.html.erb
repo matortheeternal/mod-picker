@@ -1,37 +1,39 @@
-<p id="notice"><%= notice %></p>
+<div class="scaffold">
+  <p id="notice"><%= notice %></p>
 
-<h1>Listing Mod Versions</h1>
+  <h1>Listing mod_versions</h1>
 
-<table>
-  <thead>
-    <tr>
-      <th>Mv</th>
-      <th>Mod</th>
-      <th>Nxm_file</th>
-      <th>Released</th>
-      <th>Obsolete</th>
-      <th>Dangerous</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @mod_versions.each do |mod_version| %>
+  <table>
+    <thead>
       <tr>
-        <td><%= mod_version.mv_id %></td>
-        <td><%= mod_version.mod_id %></td>
-        <td><%= mod_version.nxm_file_id %></td>
-        <td><%= mod_version.released %></td>
-        <td><%= mod_version.obsolete %></td>
-        <td><%= mod_version.dangerous %></td>
-        <td><%= link_to 'Show', mod_version %></td>
-        <td><%= link_to 'Edit', edit_mod_version_path(mod_version) %></td>
-        <td><%= link_to 'Destroy', mod_version, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <th>mv_id</th>
+        <th>mod_id</th>
+        <th>nxm_file_id</th>
+        <th>released</th>
+        <th>obsolete</th>
+        <th>dangerous</th>
+        <th colspan="3"></th>
       </tr>
-    <% end %>
-  </tbody>
-</table>
+    </thead>
 
-<br>
+    <tbody>
+      <% @mod_versions.each do |mod_version| %>
+        <tr>
+          <td><%= mod_version.mv_id %></td>
+          <td><%= mod_version.mod_id %></td>
+          <td><%= mod_version.nxm_file_id %></td>
+          <td><%= mod_version.released %></td>
+          <td><%= mod_version.obsolete %></td>
+          <td><%= mod_version.dangerous %></td>
+          <td><%= link_to 'Show', mod_version %></td>
+          <td><%= link_to 'Edit', edit_mod_version_path(mod_version) %></td>
+          <td><%= link_to 'Destroy', mod_version, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
 
-<%= link_to 'New Mod version', new_mod_version_path %>
+  <br>
+
+  <%= link_to 'New Mod version', new_mod_version_path %>
+</div>

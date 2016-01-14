@@ -1,34 +1,36 @@
-<p id="notice"><%= notice %></p>
+<div class="scaffold">
+  <p id="notice"><%= notice %></p>
 
-<p>
-  <strong>Mv:</strong>
-  <%= @mod_version.mv_id %>
-</p>
+  <p>
+    <strong>mv_id:</strong>
+    <%= @mod_version.mv_id %>
+  </p>
 
-<p>
-  <strong>Mod:</strong>
-  <%= @mod_version.mod_id %>
-</p>
+  <p>
+    <strong>mod_id:</strong>
+    <%= @mod_version.mod_id %>
+  </p>
 
-<p>
-  <strong>Nxm file:</strong>
-  <%= @mod_version.nxm_file_id %>
-</p>
+  <p>
+    <strong>nxm_file_id:</strong>
+    <%= @mod_version.nxm_file_id %>
+  </p>
 
-<p>
-  <strong>Released:</strong>
-  <%= @mod_version.released %>
-</p>
+  <p>
+    <strong>released:</strong>
+    <%= @mod_version.released %>
+  </p>
 
-<p>
-  <strong>Obsolete:</strong>
-  <%= @mod_version.obsolete %>
-</p>
+  <p>
+    <strong>obsolete:</strong>
+    <%= @mod_version.obsolete %>
+  </p>
 
-<p>
-  <strong>Dangerous:</strong>
-  <%= @mod_version.dangerous %>
-</p>
+  <p>
+    <strong>dangerous:</strong>
+    <%= @mod_version.dangerous %>
+  </p>
 
-<%= link_to 'Edit', edit_mod_version_path(@mod_version) %> |
-<%= link_to 'Back', mod_versions_path %>
+  <%= link_to 'Edit', edit_mod_version_path(@mod_version) %> |
+  <%= link_to 'Back', mod_versions_path %>
+</div>
