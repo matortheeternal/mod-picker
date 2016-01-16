@@ -5,7 +5,7 @@ A web application which helps users to pick mods to use in Bethesda Games such a
 
 Below is a list of instructions and resources for setting up a development environment to work on the mod-picker project.  This is a great way to get started.
 
-If you have any problems following these directions feel free to contact me on the team's Slack or by my gmail.
+If you have any problems following these directions feel free to ask for help on the team's Slack.
 
 1. Clone the repository.  There are multiple ways you can do this, including [Sourcetree](https://www.sourcetreeapp.com/), [GitHub for Windows](https://desktop.github.com/), and the command line (via [git](https://git-scm.com/downloads)).  See the section "Cloning the repository with Sourcetree" for more information.
 2. Open the directory where you cloned the repository to.  You should find a copy of this `README.md` file and various folders.
