@@ -22,7 +22,7 @@ If you have any problems following these directions feel free to contact me on t
 4. Click on the Clone / New button in SourceTree (in the upper left corner).
 5. Paste the clone url for this repository into the Source Path / URL field (you can find it on the [main repository page](https://github.com/matortheeternal/mod-picker)).  Here is the url for convenience:   `https://github.com/matortheeternal/mod-picker.git`.  
 ![Screenshot](http://puu.sh/mtxD3.png)  
-**How to get the clone URL for the repository.**  
+*How to get the clone URL for the repository.*  
 6. Specify the path you want to clone to (I use `E:\dev\git\<repository-name>`).
 7. Click Clone.
 
