@@ -9,6 +9,9 @@ var app = angular.module('modPicker', [
                 templateUrl: '/resources/partials/search.html',
                 controller: 'searchController'
             })
+            .when('/', {
+                templateUrl: '/resources/partials/home.html'
+            })
             .otherwise({
                 redirectTo: '/'
             });

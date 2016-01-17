@@ -1,0 +1,37 @@
+body {
+    width: 800px;
+    padding-top: 20px;
+    margin: auto;
+    /* SWISS FONT FUCK YEEEEE */
+    /* No seriously now, this font is one of the coolest for templating. Bootcrap's using it too*/
+    font-family: Helvetica;
+}
+
+#navigation ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    height: 25px;
+    background: black;
+}
+
+#navigation li {
+    float: left;
+}
+
+#navigation li a {
+    display: block;
+    margin: 0 10px 0 10px;
+    color: #fff;
+    font-size: 30px;
+    text-decoration: none;
+}
+
+#container {
+    display: block;
+}
+
+.center {
+    margin: auto;
+    display: block;
+}
