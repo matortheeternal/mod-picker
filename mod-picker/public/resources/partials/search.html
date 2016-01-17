@@ -1,4 +1,4 @@
-<div id="search">
+<div id="search" ng-show="options">
     <label>
         Name:
         <!-- Maxlength probably can be increased. I'd like to have it at 32 at the moment just to make sure no one could overflow us there-->
@@ -11,6 +11,7 @@
         </select>
     </label>
     <button ng-click="processSearch()">Search</button>
+    <hr/>
 </div>
-<hr/>
+<loader condition="loading"></loader>
 <mod-list data="results"/>

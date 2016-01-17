@@ -34,25 +34,65 @@ var app = angular.module('modPicker', [
   }
 })
 
+.directive('loader', function() {
+        return {
+            restrict: 'E',
+            templateUrl: '/resources/directives/loader.html',
+            scope: {
+                condition: '='
+            },
+            controller: 'loaderController'
+        }
+})
+
+.controller('loaderController', function ($scope) {
+        var diameter = 100;
+        document.getElementById('loader').style.width = diameter+'px';
+        var cl = new CanvasLoader('loader');
+        cl.setColor('#56b7c4'); // default is '#000000'
+        cl.setDiameter(diameter); // default is 40
+        cl.setDensity(64); // default is 40
+        cl.setRange(0.8); // default is 1.3
+        cl.setFPS(60); // default is 24
+
+        if($scope.condition) {
+            cl.show();
+        }
+
+        $scope.$watch('condition', function(newValue) {
+            if(newValue) {
+                cl.show();
+            } else {
+                cl.hide();
+            }
+        });
+})
+
 .controller('browseController', function($scope, $q, backend) {
+        $scope.loading = true;
         backend.retrieveMods().then(function(data) {
-           $scope.mods = data;
+            $scope.mods = data;
+            $scope.loading = false;
         });
 })
 
 .controller('searchController', function($scope, $q, backend){
+        $scope.loading = true;
         backend.retrieveUpdateRanges().then(function(updateRanges) {
             $scope.options = {
                 updateRanges: updateRanges
             };
+            $scope.loading = false;
         });
 
         $scope.search = {};
 
         function processSearch() {
+            $scope.loading = true;
             console.log('searchQuery: name=\'' + $scope.search.name + '\' | range: \'' + $scope.search.lastUpdated + '\'');
             backend.retrieveMods().then(function (data) {
                 $scope.results = data;
+                $scope.loading = false;
             });
         }
         $scope.processSearch = processSearch;
