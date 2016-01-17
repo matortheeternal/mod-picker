@@ -88,11 +88,17 @@ var app = angular.module('modPicker', [
         $scope.search = {};
 
         function processSearch() {
+            delete $scope.results;
+            delete $scope.errorMessage;
             $scope.loading = true;
             console.log('searchQuery: name=\'' + $scope.search.name + '\' | range: \'' + $scope.search.lastUpdated + '\'');
-            backend.retrieveMods().then(function (data) {
-                $scope.results = data;
+            backend.search($scope.search).then(function (data) {
                 $scope.loading = false;
+                if(data.length) {
+                    $scope.results = data;
+                } else {
+                    $scope.errorMessage = "no mod found!"
+                }
             });
         }
         $scope.processSearch = processSearch;
@@ -143,15 +149,39 @@ var app = angular.module('modPicker', [
         var data = {};
 
         function retrieve(location) {
-            //here we should implement the REST-API as soon as it's working. Mind that we need to work with promises.
-            //I currently work with Timeout to give it the feel of needing to load stuff from the server
             var retrievePromise = $q.defer();
 
+            //here we should implement the REST-API as soon as it's working. Mind that we need to work with promises.
+            //location would be replaced with static locations we store in a array, at that point we might also need to
+            //add arguments.
+
+            //I currently work with Timeout to give it the feel of needing to load stuff from the server
             setTimeout(function () {
                 retrievePromise.resolve(location);
             }, 1000);
 
             return retrievePromise.promise;
+        }
+
+
+        //this is a Mock-function. As soon as the server is hooked up, we will need the regular retrieve function and
+        //let the server search through the DB.
+        function search(searchOptions) {
+            var searchPromise = $q.defer();
+            var found = [];
+            if(searchOptions && searchOptions.name) {
+                templateModData.forEach(function(mod) {
+                    if(mod.name.toLowerCase().indexOf(searchOptions.name.toLowerCase())>-1) {
+                        found.push(mod);
+                    }
+                });
+            }
+
+            setTimeout(function () {
+                searchPromise.resolve(found);
+            }, 1000);
+
+            return searchPromise.promise;
         }
 
         return {
@@ -167,6 +197,7 @@ var app = angular.module('modPicker', [
                     data.updateRanges = retrieve(templateUpdateRangesData)
                 }
                 return data.updateRanges;
-            }
+            },
+            search: search
         }
 });
