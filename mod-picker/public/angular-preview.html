@@ -6,27 +6,31 @@
     <link href="/resources/css/mod-picker.css" type="text/css" rel="stylesheet"/>
 </head>
 <body>
-<div id="navigation">
-    <ul>
-        <li><a href="#/">Home</a></li>
-        <li><a href="#/search">Search</a></li>
-        <li><a href="">Modlists</a></li>
-    </ul>
-    <ul>
-
-    </ul>
+<div id="headerImage">
+    <span class="center" id="title">Skyrim Mod Picker</span>
 </div>
-<!-- ugly br 'cause I can't CSS http://i.imgur.com/VKyzoOz.gif -->
-<br/>
+<div id="wrapper">
+    <div id="navigation">
+        <ul>
+            <li><a href="#/">Home</a></li>
+            <li><a href="#/search">Search</a></li>
+            <li><a href="">Modlists</a></li>
+        </ul>
+        <ul>
 
-<div id="container">
-    <div ng-view></div>
+        </ul>
+    </div>
+    <!-- ugly br 'cause I can't CSS http://i.imgur.com/VKyzoOz.gif -->
+    <br/>
+
+    <div id="container">
+        <div ng-view></div>
+    </div>
 </div>
 
 <!-- defered load of scripts, which is way more performant for browsers -->
 <script src="/resources/libs/angular.min.js"></script>
 <script src="/resources/libs/angular-route.min.js"></script>
 <script src="/resources/js/mod-picker.js"></script>
-
 </body>
 </html>

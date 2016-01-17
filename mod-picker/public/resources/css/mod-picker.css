@@ -1,10 +1,30 @@
 body {
-    width: 800px;
-    padding-top: 20px;
-    margin: auto;
     /* SWISS FONT FUCK YEEEEE */
     /* No seriously now, this font is one of the coolest for templating. Bootcrap's using it too*/
     font-family: Helvetica;
+    margin: 0;
+    padding: 0;
+}
+
+#headerImage {
+    background-color: #555;
+    background-image: url("/resources/img/skyrim.jpg");
+    background-position: center -190px;
+    background-repeat: no-repeat;
+    height: 200px;
+    overflow: hidden;
+}
+
+#title {
+    width: 600px;
+    font-size: 70px;
+    margin-top: 40px;
+}
+
+#wrapper {
+    width: 800px;
+    padding-top: 20px;
+    margin: auto;
 }
 
 #navigation ul {
