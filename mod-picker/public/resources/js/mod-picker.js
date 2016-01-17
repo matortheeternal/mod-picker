@@ -12,6 +12,10 @@ var app = angular.module('modPicker', [
                 templateUrl: '/resources/partials/search.html',
                 controller: 'searchController'
             })
+            .when('/browse', {
+                templateUrl: '/resources/partials/browse.html',
+                controller: 'browseController'
+            })
             .when('/', {
                 templateUrl: '/resources/partials/home.html'
             })
@@ -30,8 +34,10 @@ var app = angular.module('modPicker', [
   }
 })
 
-.controller('mainController', function($scope) {
-        $scope.testMessage = "Test works";
+.controller('browseController', function($scope, $q, backend) {
+        backend.retrieveMods().then(function(data) {
+           $scope.mods = data;
+        });
 })
 
 .controller('searchController', function($scope, $q, backend){
@@ -94,6 +100,8 @@ var app = angular.module('modPicker', [
             }
         ];
 
+        var data = {};
+
         function retrieve(location) {
             //here we should implement the REST-API as soon as it's working. Mind that we need to work with promises.
             //I currently work with Timeout to give it the feel of needing to load stuff from the server
@@ -107,11 +115,18 @@ var app = angular.module('modPicker', [
         }
 
         return {
+            //caching layer and exposure
             retrieveMods: function() {
-                return retrieve(templateModData);
+                if(!data.mods) {
+                    data.mods = retrieve(templateModData);
+                }
+                return data.mods;
             },
             retrieveUpdateRanges: function() {
-                return retrieve(templateUpdateRangesData);
+                if(!data.updateRanges) {
+                    data.updateRanges = retrieve(templateUpdateRangesData)
+                }
+                return data.updateRanges;
             }
         }
 });
