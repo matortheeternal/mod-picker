@@ -19,6 +19,9 @@ var app = angular.module('modPicker', [
             .when('/', {
                 templateUrl: '/resources/partials/home.html'
             })
+            .when('/mod/:id', {
+                templateUrl: '/resources/partials/mod.html'
+            })
             .otherwise({
                 redirectTo: '/'
             });
@@ -107,30 +110,39 @@ var app = angular.module('modPicker', [
 .factory('backend', function ($q) {
         var templateModData = [
             {
+                id: 1,
                 name: 'Skyfart: Replace Shouts with Farts'
             },
             {
+                id: 2,
                 name: 'Immersive Smells'
             },
             {
+                id: 3,
                 name: 'Neo from Matrix as Follower'
             },
             {
+                id: 4,
                 name: 'Immersive Dogs'
             },
             {
+                id: 5,
                 name: 'Become a Cow'
             },
             {
+                id: 6,
                 name: 'Furryrim: Everyone is a Khajiit'
             },
             {
+                id: 7,
                 name: 'MLP Dragon Replacement'
             },
             {
+                id: 8,
                 name: 'Breed your own Dragons!'
             },
             {
+                id: 9,
                 name: '16k Parallax Texture pack (Performance version included)'
             }
         ];
