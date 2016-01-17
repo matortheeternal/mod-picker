@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="modPicker">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<div id="navigation">
+    <ul>
+        <li><a href="#/">Home</a></li>
+        <li><a href="#/search">Search</a></li>
+        <li><a href="">Modlists</a></li>
+    </ul>
+    <ul>
+
+    </ul>
+</div>
+<div id="container">
+    <div ng-view></div>
+</div>
+
+<!-- defered load of scripts, which is way more performant for browsers -->
+<script src="/resources/libs/angular.min.js"></script>
+<script src="/resources/libs/angular-route.min.js"></script>
+<script src="/resources/js/mod-picker.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,19 @@
+<div id="search">
+    <label>
+        Name:
+        <!-- Maxlength probably can be increased. I'd like to have it at 32 at the moment just to make sure no one could overflow us there-->
+        <input type="text" name="name" ng-model="search.name" ng-minlength="3" ng-maxlength="32"/>
+    </label>
+    <label>
+        Last Updated:
+        <select name="lastUpdated" ng-model="search.lastUpdated">
+            <option ng-repeat="updateRange in options.updateRanges" value="{{updateRange.id}}">{{updateRange.text}}</option>
+        </select>
+    </label>
+    <button ng-click="processSearch()">Search</button>
+</div>
+<div ng-show="results" class="modList">
+    <div ng-repeat="result in results">
+        <span><a href="result.link">{{result.text}}</a></span>
+    </div>
+</div>
