@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160113214736) do
+ActiveRecord::Schema.define(version: 20160118215705) do
 
   create_table "agreement_marks", id: false, force: :cascade do |t|
     t.integer "inc_id",       limit: 4
@@ -21,6 +21,22 @@ ActiveRecord::Schema.define(version: 20160113214736) do
 
   add_index "agreement_marks", ["inc_id"], name: "inc_id", using: :btree
   add_index "agreement_marks", ["submitted_by"], name: "submitted_by", using: :btree
+
+  create_table "categories", force: :cascade do |t|
+    t.integer "parent_id",   limit: 4
+    t.text    "name",        limit: 255
+    t.text    "description", limit: 65535
+  end
+
+  add_index "categories", ["parent_id"], name: "fk_rails_82f48f7407", using: :btree
+
+  create_table "category_priorities", force: :cascade do |t|
+    t.integer "dominant_id",  limit: 4
+    t.integer "recessive_id", limit: 4
+  end
+
+  add_index "category_priorities", ["dominant_id"], name: "fk_rails_10799f2958", using: :btree
+  add_index "category_priorities", ["recessive_id"], name: "fk_rails_d624be02b9", using: :btree
 
   create_table "comments", primary_key: "c_id", force: :cascade do |t|
     t.integer "parent_comment", limit: 4
@@ -48,6 +64,14 @@ ActiveRecord::Schema.define(version: 20160113214736) do
   add_index "compatibility_notes", ["compatibility_patch"], name: "compatibility_patch", using: :btree
   add_index "compatibility_notes", ["in_id"], name: "in_id", using: :btree
   add_index "compatibility_notes", ["submitted_by"], name: "submitted_by", using: :btree
+
+  create_table "games", force: :cascade do |t|
+    t.text "short_name",    limit: 255
+    t.text "long_name",     limit: 255
+    t.text "abbr_name",     limit: 255
+    t.text "exe_name",      limit: 255
+    t.text "steam_app_ids", limit: 255
+  end
 
   create_table "helpful_marks", id: false, force: :cascade do |t|
     t.integer "r_id",         limit: 4
@@ -200,7 +224,6 @@ ActiveRecord::Schema.define(version: 20160113214736) do
   add_index "mod_versions", ["mod_id"], name: "mod_id", using: :btree
 
   create_table "mods", primary_key: "mod_id", force: :cascade do |t|
-    t.text    "game",              limit: 255
     t.text    "name",              limit: 255
     t.text    "aliases",           limit: 255
     t.boolean "is_utility"
@@ -209,8 +232,10 @@ ActiveRecord::Schema.define(version: 20160113214736) do
     t.integer "nm_id",             limit: 4
     t.integer "ws_id",             limit: 4
     t.integer "ll_id",             limit: 4
+    t.integer "game_id",           limit: 4
   end
 
+  add_index "mods", ["game_id"], name: "fk_rails_3ec448a848", using: :btree
   add_index "mods", ["ll_id"], name: "ll_id", using: :btree
   add_index "mods", ["nm_id"], name: "nm_id", using: :btree
   add_index "mods", ["ws_id"], name: "ws_id", using: :btree
@@ -399,6 +424,9 @@ ActiveRecord::Schema.define(version: 20160113214736) do
 
   add_foreign_key "agreement_marks", "incorrect_notes", column: "inc_id", primary_key: "inc_id", name: "agreement_marks_ibfk_1"
   add_foreign_key "agreement_marks", "users", column: "submitted_by", primary_key: "user_id", name: "agreement_marks_ibfk_2"
+  add_foreign_key "categories", "categories", column: "parent_id"
+  add_foreign_key "category_priorities", "categories", column: "dominant_id"
+  add_foreign_key "category_priorities", "categories", column: "recessive_id"
   add_foreign_key "comments", "comments", column: "parent_comment", primary_key: "c_id", name: "comments_ibfk_1"
   add_foreign_key "comments", "users", column: "submitted_by", primary_key: "user_id", name: "comments_ibfk_2"
   add_foreign_key "compatibility_notes", "installation_notes", column: "in_id", primary_key: "in_id", name: "compatibility_notes_ibfk_3"
@@ -432,6 +460,7 @@ ActiveRecord::Schema.define(version: 20160113214736) do
   add_foreign_key "mod_version_file_map", "mod_asset_files", column: "maf_id", primary_key: "maf_id", name: "mod_version_file_map_ibfk_2"
   add_foreign_key "mod_version_file_map", "mod_versions", column: "mv_id", primary_key: "mv_id", name: "mod_version_file_map_ibfk_1"
   add_foreign_key "mod_versions", "mods", primary_key: "mod_id", name: "mod_versions_ibfk_1"
+  add_foreign_key "mods", "games"
   add_foreign_key "mods", "lover_infos", column: "ll_id", primary_key: "ll_id", name: "mods_ibfk_3"
   add_foreign_key "mods", "nexus_infos", column: "nm_id", primary_key: "nm_id", name: "mods_ibfk_1"
   add_foreign_key "mods", "workshop_infos", column: "ws_id", primary_key: "ws_id", name: "mods_ibfk_2"
