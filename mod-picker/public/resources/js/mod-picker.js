@@ -19,8 +19,9 @@ var app = angular.module('modPicker', [
             .when('/', {
                 templateUrl: '/resources/partials/home.html'
             })
-            .when('/mod/:id', {
-                templateUrl: '/resources/partials/mod.html'
+            .when('/mod/:modId', {
+                templateUrl: '/resources/partials/mod.html',
+                controller: 'modController'
             })
             .otherwise({
                 redirectTo: '/'
@@ -79,6 +80,14 @@ var app = angular.module('modPicker', [
         });
 })
 
+.controller('modController', function($scope, $q, $routeParams, backend){
+        $scope.loading = true;
+        backend.retrieveMod($routeParams.modId).then(function (data) {
+            $scope.loading = false;
+            $scope.mod = data;
+        });
+})
+
 .controller('searchController', function($scope, $q, backend){
         $scope.loading = true;
         backend.retrieveUpdateRanges().then(function(updateRanges) {
@@ -108,108 +117,157 @@ var app = angular.module('modPicker', [
 })
 
 .factory('backend', function ($q) {
-        var templateModData = [
-            {
-                id: 1,
-                name: 'Skyfart: Replace Shouts with Farts'
-            },
-            {
-                id: 2,
-                name: 'Immersive Smells'
-            },
-            {
-                id: 3,
-                name: 'Neo from Matrix as Follower'
-            },
-            {
-                id: 4,
-                name: 'Immersive Dogs'
-            },
-            {
-                id: 5,
-                name: 'Become a Cow'
-            },
-            {
-                id: 6,
-                name: 'Furryrim: Everyone is a Khajiit'
-            },
-            {
-                id: 7,
-                name: 'MLP Dragon Replacement'
-            },
-            {
-                id: 8,
-                name: 'Breed your own Dragons!'
-            },
-            {
-                id: 9,
-                name: '16k Parallax Texture pack (Performance version included)'
+
+        //-------------------------------
+        //MOCK DATA
+        //-------------------------------
+
+        var templateData = {
+            mods:   [
+                {
+                    id: 1,
+                    name: 'Skyfart: Replace Shouts with Farts',
+                    authors: ['Farterarter', 'mr. shout'],
+                    versions: ["1.3", "1.2", "1.11"],
+                    shortDescription: "Replace your shouts with specialized farts. Works with all shouts. Works best in use with Immersive Smells"
+                },
+                {
+                    id: 2,
+                    name: 'Immersive Smells',
+                    authors: ['Farterarter'],
+                    versions: ["1.0"],
+                    shortDescription: "Make your Smells more immersive."
+                },
+                {
+                    id: 3,
+                    name: 'Neo from Matrix as Follower',
+                    authors: ['R79'],
+                    //this will be a tough test
+                    versions: ["0.1", "0.7", "0.6"],
+                    shortDescription: "also comes with a bluepill"
+                },
+                {
+                    id: 4,
+                    name: 'Immersive Dogs',
+                    authors: ["barker1338", "whooofie", "Furbeast"],
+                    versions: ["1.3"],
+                    shortDescription: "Whoof"
+                },
+                {
+                    id: 5,
+                    name: 'Become a Cow',
+                    authors: ['Taurenlover123', 'Cowburger'],
+                    versions: ['1.1.1','2.3'],
+                    shortDescription: "mooooo, we love Cows."
+                },
+                {
+                    id: 6,
+                    name: 'Furryrim: Everyone is a Khajiit',
+                    authors: ['R79', 'Taurenlover123', 'Furbeast'],
+                    versions: ['0.1', '0.2', '0.3'],
+                    shortDescription: "Furries fur-ever"
+                },
+                {
+                    id: 7,
+                    name: 'MLP Dragon Replacement',
+                    authors: ['Sunshine', 'clopclopper'],
+                    versions: ['1.3.2'],
+                    shortDescription: "Replaces all Dragons with My Little Pony characters."
+                },
+                {
+                    id: 8,
+                    name: 'Breed your own Dragons!',
+                    authors: ['nukelears'],
+                    versions: ['1.0'],
+                    shortDescription: "Like in How to train your dragon!"
+                },
+                {
+                    id: 9,
+                    name: '16k Parallax Texture pack (Performance version included)',
+                    authors: ['Pfuscherrrrrr'],
+                    versions: ['0.0.1'],
+                    shortDescription: "not even working on 4x TitanX PC"
+                }
+            ],
+            updateRanges: [
+                {
+                    id: 1,
+                    text: 'Skyrim'
+                },
+                {
+                    id: 2,
+                    text: 'Dawnguard'
+                }
+            ]
+        };
+
+        //simulates browsercaching
+        var promises = {};
+
+        //TODO: replace with REST Calls
+        function retrieve(location, additionalParam) {
+            if(promises[location] && !additionalParam) {
+                return promises[location].promise;
             }
-        ];
+            var currentPromise = $q.defer();
 
-        var templateUpdateRangesData = [
-            {
-                id: 1,
-                text: 'Skyrim'
-            },
-            {
-                id: 2,
-                text: 'Dawnguard'
+            if(!additionalParam) {
+                promises[location] = currentPromise;
             }
-        ];
 
-        var data = {};
+            var returnData = [];
 
-        function retrieve(location) {
-            var retrievePromise = $q.defer();
+            switch(location) {
+                case '/mods':
+                    if (additionalParam) {
+                        templateData.mods.forEach(function (mod) {
+                            if (mod.id == additionalParam) {
+                                returnData = mod;
+                            }
+                        });
+                    } else {
+                        templateData.mods.forEach(function (mod) {
+                            returnData.push({id: mod.id, name: mod.name});
+                        });
+                    }
+                    break;
 
-            //here we should implement the REST-API as soon as it's working. Mind that we need to work with promises.
-            //location would be replaced with static locations we store in a array, at that point we might also need to
-            //add arguments.
+                case '/updateRanges':
+                    returnData.push(templateData.updateRanges);
+                    break;
+
+                case '/search':
+                    if (additionalParam && additionalParam.name) {
+                        templateData.mods.forEach(function (mod) {
+                            if (mod.name.toLowerCase().indexOf(additionalParam.name.toLowerCase()) > -1) {
+                                returnData.push(mod);
+                            }
+                        });
+                    }
+                    break;
+            }
 
             //I currently work with Timeout to give it the feel of needing to load stuff from the server
             setTimeout(function () {
-                retrievePromise.resolve(location);
+                currentPromise.resolve(returnData);
             }, 1000);
 
-            return retrievePromise.promise;
-        }
-
-
-        //this is a Mock-function. As soon as the server is hooked up, we will need the regular retrieve function and
-        //let the server search through the DB.
-        function search(searchOptions) {
-            var searchPromise = $q.defer();
-            var found = [];
-            if(searchOptions && searchOptions.name) {
-                templateModData.forEach(function(mod) {
-                    if(mod.name.toLowerCase().indexOf(searchOptions.name.toLowerCase())>-1) {
-                        found.push(mod);
-                    }
-                });
-            }
-
-            setTimeout(function () {
-                searchPromise.resolve(found);
-            }, 1000);
-
-            return searchPromise.promise;
+            return currentPromise.promise;
         }
 
         return {
             //caching layer and exposure
             retrieveMods: function() {
-                if(!data.mods) {
-                    data.mods = retrieve(templateModData);
-                }
-                return data.mods;
+                return retrieve('/mods');
+            },
+            retrieveMod: function (id) {
+                return retrieve('/mods', id);
+            },
+            search: function (searchParams) {
+                return retrieve('/search', searchParams);
             },
             retrieveUpdateRanges: function() {
-                if(!data.updateRanges) {
-                    data.updateRanges = retrieve(templateUpdateRangesData)
-                }
-                return data.updateRanges;
-            },
-            search: search
+                return retrieve('/updateRanges');
+            }
         }
 });

@@ -1,28 +1,34 @@
-<h1>Mod Name here</h1>
-<hr/>
-<p>by HelloSkyrim, AuthorNumber1</p>
-<p>Versions</p>
-<p>1.3, 1.2, 1.11</p>
+<loader condition="loading"></loader>
+<div ng-show="mod">
+    <h1>{{mod.name}}</h1>
+    <hr/>
+    <!-- TODO: Commalogic -->
+    <p>by <span ng-repeat="author in mod.authors">{{author}}, </span> </p>
+    <p>Versions</p>
+    <p><span ng-repeat="version in mod.versions">{{version}}</span> </p>
 
-<p>Short description</p>
+    <p>{{mod.shortDescription}}</p>
 
-<table>
-    <tr>
-        <td>Endorsements</td>
-        <td>Unique Downloads</td>
-        <td>Endorse Rate</td>
-        <td>Release Date</td>
-        <td>Last Update</td>
-        <td>Total Downloads</td>
-    </tr>
-    <tr>
-        <td>50,000</td>
-        <td>100.000.000</td>
-        <td>0.05%</td>
-        <td>11-11-13</td>
-        <td>11-12-13</td>
-        <td>100,000,000</td>
-    </tr>
-</table>
-<hr/>
-<p>I will put this stuff into the most complicated Directive I've ever did to make it really beautiful codewise.</p>
+    <!-- TODO: use actual data as soon as it's there -->
+    <table>
+        <tr>
+            <td>Endorsements</td>
+            <td>Unique Downloads</td>
+            <td>Endorse Rate</td>
+            <td>Release Date</td>
+            <td>Last Update</td>
+            <td>Total Downloads</td>
+        </tr>
+        <tr>
+            <td>50,000</td>
+            <td>100.000.000</td>
+            <td>0.05%</td>
+            <td>11-11-13</td>
+            <td>11-12-13</td>
+            <td>100,000,000</td>
+        </tr>
+    </table>
+    <hr/>
+    <!-- TODO put this stuff into the most complicated Directive you've ever did to make it really beautiful codewise-->
+    <p>I will put this stuff into the most complicated Directive I've ever did to make it really beautiful codewise.</p>
+</div>
