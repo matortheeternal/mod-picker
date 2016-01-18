@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="modPicker">
+<head>
+    <meta charset="UTF-8">
+    <title>Mod Picker: Angular Preview</title>
+    <link href="/resources/css/mod-picker.css" type="text/css" rel="stylesheet"/>
+</head>
+<body>
+<div id="headerImage">
+    <span class="center" id="title">Skyrim Mod Picker</span>
+</div>
+<div id="wrapper">
+    <div id="navigation">
+        <ul>
+            <!-- Put it in to get back to the non-angular part, but it looks pretty poopy imo-->
+            <!--<li><a href="/">Non-Angular</a></li>-->
+            <li><a href="#/">Home</a></li>
+            <li><a href="#/browse">Browse</a></li>
+            <li><a href="#/search">Search</a></li>
+        </ul>
+    </div>
+    <!-- ugly br 'cause I can't CSS http://i.imgur.com/VKyzoOz.gif -->
+    <br/>
+
+    <div id="container">
+        <div ng-view></div>
+    </div>
+</div>
+
+<!-- defered load of scripts, which is way more performant for browsers -->
+<script src="/resources/libs/angular.min.js"></script>
+<script src="/resources/libs/angular-route.min.js"></script>
+<script src="/resources/libs/heartcode-canvasloader-min.js"></script>
+<script src="/resources/js/mod-picker.js"></script>
+</body>
+</html>
