@@ -65,3 +65,6 @@ __history/
 mod-dump/mod-dump/Skyrim/plugins/*.esp
 mod-dump/mod-dump/Skyrim/plugins/*.esm
 .idea/
+
+# OSX files to ignore
+.DS_STORE
