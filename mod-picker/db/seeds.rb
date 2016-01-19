@@ -7,6 +7,15 @@
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
 #==================================================
+# CLEAR CATEGORIES TABLE
+#==================================================
+
+connection = ActiveRecord::Base.connection()
+connection.execute("DELETE FROM categories WHERE parent_id IS NOT NULL;")
+connection.execute("DELETE FROM categories WHERE parent_id IS NULL;")
+connection.execute("ALTER TABLE categories AUTO_INCREMENT = 0;")
+
+#==================================================
 # CREATE SUPER-CATEGORIES
 #==================================================
 
@@ -194,17 +203,17 @@ Category.create(
 Category.create(
     name: "New Characters - Allies",
     parent_id: catNewChars.id,
-    description: ""
+    description: "If one or more NPCs added by the mod can be allies of the player character, the mod belongs here."
 )
 Category.create(
     name: "New Characters - Neutral",
     parent_id: catNewChars.id,
-    description: ""
+    description: "If most of the NPCs added by the mod don’t have a disposition to help or hurt the player, put it here."
 )
 Category.create(
     name: "New Characters - Enemies",
     parent_id: catNewChars.id,
-    description: ""
+    description: "Mods that add NPCs that try to bash your head in.  Whether they be dragons or flesh-eating bunnies!"
 )
 
 # Items sub-categories
