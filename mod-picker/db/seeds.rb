@@ -6,11 +6,30 @@ connection = ActiveRecord::Base.connection()
 # clear categories
 connection.execute("DELETE FROM categories WHERE parent_id IS NOT NULL;")
 connection.execute("DELETE FROM categories WHERE parent_id IS NULL;")
-connection.execute("ALTER TABLE categories AUTO_INCREMENT = 0;")
+# clear users and associated tables
+UserBio.delete_all
+UserReputation.delete_all
+UserSetting.delete_all
+User.delete_all
+# clear mods and associated tables
+NexusInfo.delete_all
+LoverInfo.delete_all
+WorkshopInfo.delete_all
+Mod.delete_all
 # clear games
-connection.execute("DELETE FROM games;")
-connection.execute("ALTER TABLE games AUTO_INCREMENT = 0;")
+Game.delete_all
 
+# reset auto increment counters
+connection.execute("ALTER TABLE categories AUTO_INCREMENT = 0;")
+connection.execute("ALTER TABLE user_bios AUTO_INCREMENT = 0;")
+connection.execute("ALTER TABLE user_reputations AUTO_INCREMENT = 0;")
+connection.execute("ALTER TABLE user_settings AUTO_INCREMENT = 0;")
+connection.execute("ALTER TABLE users AUTO_INCREMENT = 0;")
+connection.execute("ALTER TABLE nexus_infos AUTO_INCREMENT = 0;")
+connection.execute("ALTER TABLE lover_infos AUTO_INCREMENT = 0;")
+connection.execute("ALTER TABLE workshop_infos AUTO_INCREMENT = 0;")
+connection.execute("ALTER TABLE mods AUTO_INCREMENT = 0;")
+connection.execute("ALTER TABLE games AUTO_INCREMENT = 0;")
 
 #==================================================
 # CREATE GAMES
