@@ -96,7 +96,7 @@ def crawl_mod(nm_id):
 	output.write('    game_id: gameSkyrim.id\n')
 	output.write(')\n\n')
 	output.write('NexusInfo.create(\n')
-	output.write('    nm_id: '+nm_id+',\n')
+	output.write('    id: '+nm_id+',\n')
 	output.write('    mod_id: Mod.last.id,\n')
 	output.write('    uploaded_by: "'+uploadedBy+'",\n')
 	output.write('    authors: "'+author+'",\n')

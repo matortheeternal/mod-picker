@@ -6,7 +6,7 @@
   <table>
     <thead>
       <tr>
-          <th>ml_id</th>
+          <th>id</th>
           <th>game</th>
           <th>created_by</th>
           <th>is_collection</th>
@@ -23,7 +23,7 @@
     <tbody>
       <% @mod_lists.each do |mod_list| %>
         <tr>
-            <td><%= mod_list.ml_id %></td>
+            <td><%= mod_list.id %></td>
             <td><%= mod_list.game %></td>
             <td><%= mod_list.created_by %></td>
             <td><%= mod_list.is_collection %></td>

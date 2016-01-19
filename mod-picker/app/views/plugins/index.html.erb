@@ -6,7 +6,7 @@
   <table>
     <thead>
       <tr>
-          <th>pl_id</th>
+          <th>id</th>
           <th>mv_id</th>
           <th>filename</th>
           <th>author</th>
@@ -19,7 +19,7 @@
     <tbody>
       <% @plugins.each do |plugin| %>
         <tr>
-            <td><%= plugin.pl_id %></td>
+            <td><%= plugin.id %></td>
             <td><%= plugin.mv_id %></td>
             <td><%= plugin.filename %></td>
             <td><%= plugin.author %></td>

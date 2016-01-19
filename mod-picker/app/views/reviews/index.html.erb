@@ -6,7 +6,7 @@
   <table>
     <thead>
       <tr>
-          <th>r_id</th>
+          <th>id</th>
           <th>submitted_by</th>
           <th>mod_id</th>
           <th>hidden</th>
@@ -25,7 +25,7 @@
     <tbody>
       <% @reviews.each do |review| %>
         <tr>
-            <td><%= review.r_id %></td>
+            <td><%= review.id %></td>
             <td><%= review.submitted_by %></td>
             <td><%= review.mod_id %></td>
             <td><%= review.hidden %></td>

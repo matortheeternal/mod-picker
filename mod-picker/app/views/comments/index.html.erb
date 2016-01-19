@@ -6,7 +6,7 @@
   <table>
     <thead>
       <tr>
-          <th>c_id</th>
+          <th>id</th>
           <th>parent_comment</th>
           <th>submitted_by</th>
           <th>hidden</th>
@@ -20,7 +20,7 @@
     <tbody>
       <% @comments.each do |comment| %>
         <tr>
-            <td><%= comment.c_id %></td>
+            <td><%= comment.id %></td>
             <td><%= comment.parent_comment %></td>
             <td><%= comment.submitted_by %></td>
             <td><%= comment.hidden %></td>

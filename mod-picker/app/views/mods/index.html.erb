@@ -6,7 +6,7 @@
   <table>
     <thead>
       <tr>
-          <th>mod_id</th>
+          <th>id</th>
           <th>game_id</th>
           <th>name</th>
           <th>aliases</th>
@@ -21,7 +21,7 @@
     <tbody>
       <% @mods.each do |mod| %>
         <tr>
-            <td><%= mod.mod_id %></td>
+            <td><%= mod.id %></td>
             <td><%= mod.game_id %></td>
             <td><%= mod.name %></td>
             <td><%= mod.aliases %></td>

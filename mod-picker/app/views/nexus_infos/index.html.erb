@@ -6,7 +6,7 @@
   <table>
     <thead>
       <tr>
-          <th>nm_id</th>
+          <th>id</th>
           <th>mod_id</th>
           <th>uploaded_by</th>
           <th>authors</th>
@@ -28,7 +28,7 @@
     <tbody>
       <% @nexus_infos.each do |nexus_info| %>
         <tr>
-            <td><%= nexus_info.nm_id %></td>
+            <td><%= nexus_info.id %></td>
             <td><%= nexus_info.mod_id %></td>
             <td><%= nexus_info.uploaded_by %></td>
             <td><%= nexus_info.authors %></td>

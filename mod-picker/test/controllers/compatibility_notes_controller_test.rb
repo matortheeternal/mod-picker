@@ -18,7 +18,7 @@ class CompatibilityNotesControllerTest < ActionController::TestCase
 
   test "should create compatibility_note" do
     assert_difference('CompatibilityNote.count') do
-      post :create, compatibility_note: { cn_id: @compatibility_note.cn_id, compatibility_patch: @compatibility_note.compatibility_patch, compatibility_status: @compatibility_note.compatibility_status, mod_mode: @compatibility_note.mod_mode, submitted_by: @compatibility_note.submitted_by }
+      post :create, compatibility_note: { compatibility_patch: @compatibility_note.compatibility_patch, compatibility_status: @compatibility_note.compatibility_status, id: @compatibility_note.id, mod_mode: @compatibility_note.mod_mode, submitted_by: @compatibility_note.submitted_by }
     end
 
     assert_redirected_to compatibility_note_path(assigns(:compatibility_note))
@@ -35,7 +35,7 @@ class CompatibilityNotesControllerTest < ActionController::TestCase
   end
 
   test "should update compatibility_note" do
-    patch :update, id: @compatibility_note, compatibility_note: { cn_id: @compatibility_note.cn_id, compatibility_patch: @compatibility_note.compatibility_patch, compatibility_status: @compatibility_note.compatibility_status, mod_mode: @compatibility_note.mod_mode, submitted_by: @compatibility_note.submitted_by }
+    patch :update, id: @compatibility_note, compatibility_note: { compatibility_patch: @compatibility_note.compatibility_patch, compatibility_status: @compatibility_note.compatibility_status, id: @compatibility_note.id, mod_mode: @compatibility_note.mod_mode, submitted_by: @compatibility_note.submitted_by }
     assert_redirected_to compatibility_note_path(assigns(:compatibility_note))
   end
 

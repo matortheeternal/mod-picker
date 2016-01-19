@@ -6,7 +6,7 @@
   <table>
     <thead>
       <tr>
-          <th>in_id</th>
+          <th>id</th>
           <th>submitted_by</th>
           <th>mv_id</th>
           <th>always</th>
@@ -21,7 +21,7 @@
     <tbody>
       <% @installation_notes.each do |installation_note| %>
         <tr>
-            <td><%= installation_note.in_id %></td>
+            <td><%= installation_note.id %></td>
             <td><%= installation_note.submitted_by %></td>
             <td><%= installation_note.mv_id %></td>
             <td><%= installation_note.always %></td>

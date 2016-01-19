@@ -1,1 +1,1 @@
-json.extract! @incorrect_note, :id, :inc_id, :r_id, :cn_id, :in_id, :submitted_by, :reason, :created_at, :updated_at
+json.extract! @incorrect_note, :id, :r_id, :cn_id, :in_id, :submitted_by, :reason, :created_at, :updated_at

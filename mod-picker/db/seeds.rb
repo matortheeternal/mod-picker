@@ -404,7 +404,7 @@ Mod.create(
 )
 
 NexusInfo.create(
-    nm_id: 3863,
+    id: 3863,
     mod_id: Mod.last.id,
     uploaded_by: "schlangster",
     authors: "SkyUI Team",
@@ -431,7 +431,7 @@ Mod.create(
 )
 
 NexusInfo.create(
-    nm_id: 19733,
+    id: 19733,
     mod_id: Mod.last.id,
     uploaded_by: "hothtrooper44",
     authors: "Hothtrooper44",
@@ -458,7 +458,7 @@ Mod.create(
 )
 
 NexusInfo.create(
-    nm_id: 607,
+    id: 607,
     mod_id: Mod.last.id,
     uploaded_by: "NebuLa1",
     authors: "NebuLa from AHBmods",
@@ -486,7 +486,7 @@ Mod.create(
 )
 
 NexusInfo.create(
-    nm_id: 29624,
+    id: 29624,
     mod_id: Mod.last.id,
     uploaded_by: "expired6978",
     authors: "Expired",
@@ -513,7 +513,7 @@ Mod.create(
 )
 
 NexusInfo.create(
-    nm_id: 71214,
+    id: 71214,
     mod_id: Mod.last.id,
     uploaded_by: "Arthmoor",
     authors: "Unofficial Patch Project Team ",
@@ -540,7 +540,7 @@ Mod.create(
 )
 
 NexusInfo.create(
-    nm_id: 1334,
+    id: 1334,
     mod_id: Mod.last.id,
     uploaded_by: "Tannin42",
     authors: "Tannin",
@@ -567,7 +567,7 @@ Mod.create(
 )
 
 NexusInfo.create(
-    nm_id: 141,
+    id: 141,
     mod_id: Mod.last.id,
     uploaded_by: "vurt",
     authors: "vurt",
@@ -595,7 +595,7 @@ Mod.create(
 )
 
 NexusInfo.create(
-    nm_id: 25859,
+    id: 25859,
     mod_id: Mod.last.id,
     uploaded_by: "Sharlikran",
     authors: "ElminsterAU",
@@ -623,7 +623,7 @@ Mod.create(
 )
 
 NexusInfo.create(
-    nm_id: 69905,
+    id: 69905,
     mod_id: Mod.last.id,
     uploaded_by: "matortheeternal",
     authors: "Mator",
@@ -650,7 +650,7 @@ Mod.create(
 )
 
 NexusInfo.create(
-    nm_id: 71843,
+    id: 71843,
     mod_id: Mod.last.id,
     uploaded_by: "pottoply",
     authors: "pottoply",
@@ -678,7 +678,7 @@ Mod.create(
 )
 
 NexusInfo.create(
-    nm_id: 72449,
+    id: 72449,
     mod_id: Mod.last.id,
     uploaded_by: "nesbit098",
     authors: "Nesbit",
@@ -706,7 +706,7 @@ Mod.create(
 )
 
 NexusInfo.create(
-    nm_id: 72005,
+    id: 72005,
     mod_id: Mod.last.id,
     uploaded_by: "Elianora",
     authors: "Elianora",
@@ -733,7 +733,7 @@ Mod.create(
 )
 
 NexusInfo.create(
-    nm_id: 71561,
+    id: 71561,
     mod_id: Mod.last.id,
     uploaded_by: "ShinglesCat",
     authors: "ShinglesCat",
@@ -760,7 +760,7 @@ Mod.create(
 )
 
 NexusInfo.create(
-    nm_id: 71464,
+    id: 71464,
     mod_id: Mod.last.id,
     uploaded_by: "nellshini",
     authors: "Jaxonz and Nellshini",

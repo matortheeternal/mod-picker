@@ -69,6 +69,6 @@ class ModAssetFilesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def mod_asset_file_params
-      params.require(:mod_asset_file).permit(:maf_id, :filepath)
+      params.require(:mod_asset_file).permit(:id, :filepath)
     end
 end

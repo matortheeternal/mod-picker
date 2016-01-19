@@ -1,131 +1,4 @@
 Rails.application.routes.draw do
-  resources :mods
-  resources :mods
-  resources :lover_infos
-  resources :workshop_infos
-  resources :nexus_infos
-  resources :mods
-  resources :games
-  resources :category_priorities
-  resources :categories
-  resources :mod_list_compatibility_notes
-  resources :mod_list_installation_notes
-  resources :agreement_marks
-  resources :incorrect_notes
-  resources :helpful_marks
-  resources :user_comments
-  resources :mod_list_comments
-  resources :mod_comments
-  resources :compatibility_notes
-  resources :installation_notes
-  resources :reviews
-  resources :comments
-  resources :user_mod_author_maps
-  resources :user_mod_list_star_maps
-  resources :user_mod_star_maps
-  resources :mod_list_mods
-  resources :mod_list_custom_plugins
-  resources :mod_list_plugins
-  resources :mod_lists
-  resources :plugin_record_groups
-  resources :plugin_override_maps
-  resources :masters
-  resources :plugins
-  resources :mod_version_file_maps
-  resources :mod_asset_files
-  resources :mods
-  resources :lover_infos
-  resources :workshop_infos
-  resources :nexus_infos
-  resources :user_mod_author_maps
-  resources :user_mod_list_star_maps
-  resources :user_mod_star_maps
-  resources :mod_list_mods
-  resources :mod_list_custom_plugins
-  resources :mod_list_plugins
-  resources :mod_lists
-  resources :plugin_record_groups
-  resources :plugin_override_maps
-  resources :masters
-  resources :plugins
-  resources :mod_version_file_maps
-  resources :mod_asset_files
-  resources :mods
-  resources :lover_infos
-  resources :workshop_infos
-  resources :nexus_infos
-  resources :mod_list_compatibility_notes
-  resources :mod_list_installation_notes
-  resources :agreement_marks
-  resources :incorrect_notes
-  resources :helpful_marks
-  resources :user_comments
-  resources :mod_list_comments
-  resources :mod_comments
-  resources :compatibility_notes
-  resources :installation_notes
-  resources :reviews
-  resources :comments
-  resources :user_mod_author_maps
-  resources :user_mod_list_star_maps
-  resources :user_mod_star_maps
-  resources :mod_list_mods
-  resources :mod_list_custom_plugins
-  resources :mod_list_plugins
-  resources :mod_lists
-  resources :plugin_record_groups
-  resources :plugin_override_maps
-  resources :masters
-  resources :plugins
-  resources :mod_version_file_maps
-  resources :mod_asset_files
-  resources :mods
-  resources :lover_infos
-  resources :workshop_infos
-  resources :nexus_infos
-  resources :nexus_infos
-  resources :nexus_infos
-  resources :nexus_infos
-  resources :nexus_infos
-  resources :nexus_infos
-  resources :nexus_infos
-  resources :nexus_infos
-  resources :workshop_infos
-  resources :nexus_infos
-  resources :nexus_infos
-  resources :nexus_infos
-  resources :nexus_infos
-  resources :mod_list_compatibility_notes
-  resources :mod_list_installation_notes
-  resources :agreement_marks
-  resources :incorrect_notes
-  resources :helpful_marks
-  resources :user_comments
-  resources :mod_list_comments
-  resources :mod_comments
-  resources :compatibility_notes
-  resources :installation_notes
-  resources :reviews
-  resources :comments
-  resources :user_mod_author_maps
-  resources :user_mod_list_star_maps
-  resources :user_mod_star_maps
-  resources :mod_list_mods
-  resources :mod_list_custom_plugins
-  resources :mod_list_plugins
-  resources :mod_lists
-  resources :plugin_record_groups
-  resources :plugin_override_maps
-  resources :masters
-  resources :masters
-  resources :plugins
-  resources :mod_version_file_maps
-  resources :mod_asset_files
-  resources :mods
-  resources :lover_infos
-  resources :workshop_infos
-  resources :nexus_infos
-  resources :nexus_infos
   resources :mod_list_compatibility_notes
   resources :mod_list_installation_notes
   resources :agreement_marks
@@ -142,43 +15,6 @@ Rails.application.routes.draw do
   resources :user_mod_list_star_maps
   resources :user_mod_star_maps
   resources :reputation_maps
-  resources :mod_list_mods
-  resources :mod_list_custom_plugins
-  resources :mod_list_plugins
-  resources :mod_lists
-  resources :plugin_record_groups
-  resources :plugin_override_maps
-  resources :masters
-  resources :plugins
-  resources :mod_version_file_maps
-  resources :mod_asset_files
-  resources :mods
-  resources :lover_infos
-  resources :workshop_infos
-  resources :nexus_infos
-  resources :plugins
-  resources :user_reputations
-  resources :user_reputations
-  resources :user_settings
-  resources :user_bios
-  devise_for :users
-  resources :mod_list_compatibility_notes
-  resources :mod_list_installation_notes
-  resources :agreement_marks
-  resources :incorrect_notes
-  resources :helpful_marks
-  resources :user_comments
-  resources :mod_list_comments
-  resources :mod_comments
-  resources :compatibility_notes
-  resources :installation_notes
-  resources :reviews
-  resources :comments
-  resources :user_mod_author_maps
-  resources :user_mod_list_star_maps
-  resources :user_mod_star_maps
-  resources :reputation_maps
-  resources :users
   resources :user_reputations
   resources :user_settings
   resources :user_bios
@@ -197,6 +33,13 @@ Rails.application.routes.draw do
   resources :lover_infos
   resources :workshop_infos
   resources :nexus_infos
+  resources :games
+  resources :category_priorities
+  resources :categories
+  resources :nexus_infos
+  resources :workshop_infos
+  resources :nexus_infos
+  devise_for :users
   
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

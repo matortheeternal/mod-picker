@@ -1,6 +1,6 @@
 FactoryGirl.define do
   factory :incorrect_note do
-    inc_id 1
+    id 1
 r_id 1
 cn_id 1
 in_id 1

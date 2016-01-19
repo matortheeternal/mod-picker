@@ -69,6 +69,6 @@ class IncorrectNotesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def incorrect_note_params
-      params.require(:incorrect_note).permit(:inc_id, :r_id, :cn_id, :in_id, :submitted_by, :reason)
+      params.require(:incorrect_note).permit(:id, :r_id, :cn_id, :in_id, :submitted_by, :reason)
     end
 end

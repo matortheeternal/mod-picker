@@ -6,7 +6,7 @@
   <table>
     <thead>
       <tr>
-          <th>mst_id</th>
+          <th>id</th>
           <th>pl_id</th>
           <th colspan="3"></th>
       </tr>
@@ -15,7 +15,7 @@
     <tbody>
       <% @masters.each do |master| %>
         <tr>
-            <td><%= master.mst_id %></td>
+            <td><%= master.id %></td>
             <td><%= master.pl_id %></td>
             <td><%= link_to 'Show', master %></td>
           <td><%= link_to 'Edit', edit_master_path(master) %></td>
