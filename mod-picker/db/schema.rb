@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160118215705) do
+ActiveRecord::Schema.define(version: 20160119014306) do
 
   create_table "agreement_marks", id: false, force: :cascade do |t|
     t.integer "inc_id",       limit: 4
@@ -30,7 +30,7 @@ ActiveRecord::Schema.define(version: 20160118215705) do
 
   add_index "categories", ["parent_id"], name: "fk_rails_82f48f7407", using: :btree
 
-  create_table "category_priorities", force: :cascade do |t|
+  create_table "category_priorities", id: false, force: :cascade do |t|
     t.integer "dominant_id",  limit: 4
     t.integer "recessive_id", limit: 4
   end
@@ -113,6 +113,7 @@ ActiveRecord::Schema.define(version: 20160118215705) do
   add_index "installation_notes", ["submitted_by"], name: "submitted_by", using: :btree
 
   create_table "lover_infos", primary_key: "ll_id", force: :cascade do |t|
+    t.integer "mod_id", limit: 4, null: false
   end
 
   create_table "masters", primary_key: "mst_id", force: :cascade do |t|
@@ -229,16 +230,10 @@ ActiveRecord::Schema.define(version: 20160118215705) do
     t.boolean "is_utility"
     t.integer "category",          limit: 2
     t.boolean "has_adult_content"
-    t.integer "nm_id",             limit: 4
-    t.integer "ws_id",             limit: 4
-    t.integer "ll_id",             limit: 4
     t.integer "game_id",           limit: 4
   end
 
   add_index "mods", ["game_id"], name: "fk_rails_3ec448a848", using: :btree
-  add_index "mods", ["ll_id"], name: "ll_id", using: :btree
-  add_index "mods", ["nm_id"], name: "nm_id", using: :btree
-  add_index "mods", ["ws_id"], name: "ws_id", using: :btree
 
   create_table "nexus_infos", primary_key: "nm_id", force: :cascade do |t|
     t.text    "uploaded_by",      limit: 255
@@ -256,6 +251,7 @@ ActiveRecord::Schema.define(version: 20160118215705) do
     t.integer "articles_count",   limit: 2
     t.integer "nexus_category",   limit: 2
     t.text    "changelog",        limit: 65535
+    t.integer "mod_id",           limit: 4,     null: false
   end
 
   create_table "plugin_override_map", id: false, force: :cascade do |t|
@@ -420,6 +416,7 @@ ActiveRecord::Schema.define(version: 20160118215705) do
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 
   create_table "workshop_infos", primary_key: "ws_id", force: :cascade do |t|
+    t.integer "mod_id", limit: 4, null: false
   end
 
   add_foreign_key "agreement_marks", "incorrect_notes", column: "inc_id", primary_key: "inc_id", name: "agreement_marks_ibfk_1"
@@ -461,9 +458,6 @@ ActiveRecord::Schema.define(version: 20160118215705) do
   add_foreign_key "mod_version_file_map", "mod_versions", column: "mv_id", primary_key: "mv_id", name: "mod_version_file_map_ibfk_1"
   add_foreign_key "mod_versions", "mods", primary_key: "mod_id", name: "mod_versions_ibfk_1"
   add_foreign_key "mods", "games"
-  add_foreign_key "mods", "lover_infos", column: "ll_id", primary_key: "ll_id", name: "mods_ibfk_3"
-  add_foreign_key "mods", "nexus_infos", column: "nm_id", primary_key: "nm_id", name: "mods_ibfk_1"
-  add_foreign_key "mods", "workshop_infos", column: "ws_id", primary_key: "ws_id", name: "mods_ibfk_2"
   add_foreign_key "plugin_override_map", "masters", column: "mst_id", primary_key: "mst_id", name: "plugin_override_map_ibfk_2"
   add_foreign_key "plugin_override_map", "plugins", column: "pl_id", primary_key: "pl_id", name: "plugin_override_map_ibfk_1"
   add_foreign_key "plugin_record_groups", "plugins", column: "pl_id", primary_key: "pl_id", name: "plugin_record_groups_ibfk_1"
