@@ -3,6 +3,11 @@
 #==================================================
 
 connection = ActiveRecord::Base.connection()
+# clear mods and associated tables
+NexusInfo.delete_all
+LoverInfo.delete_all
+WorkshopInfo.delete_all
+Mod.delete_all
 # clear categories
 connection.execute("DELETE FROM categories WHERE parent_id IS NOT NULL;")
 connection.execute("DELETE FROM categories WHERE parent_id IS NULL;")
@@ -11,11 +16,6 @@ UserBio.delete_all
 UserReputation.delete_all
 UserSetting.delete_all
 User.delete_all
-# clear mods and associated tables
-NexusInfo.delete_all
-LoverInfo.delete_all
-WorkshopInfo.delete_all
-Mod.delete_all
 # clear games
 Game.delete_all
 
@@ -386,8 +386,8 @@ nexusDateFormat = "%k:%M, %d %b %Y"
 # Top recently endorsed mods
 Mod.create(
     name: "SkyUI",
-    primary_category: Category.find_by_Name("Gameplay - User Interface").id,
-    secondary_category: Category.find_by_Name("Resources - Framework").id,
+    primary_category: Category.where(name: "Gameplay - User Interface").first.id,
+    secondary_category: Category.where(name: "Resources - Frameworks").first.id,
     game_id: gameSkyrim.id
 )
 
