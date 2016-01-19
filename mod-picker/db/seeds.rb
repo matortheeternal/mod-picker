@@ -396,15 +396,16 @@ nexusDateFormat = "%d/%m/%Y - %I:%M%p"
 # Top recently endorsed mods
 Mod.create(
     name: "SkyUI",
-    primary_category: Category.where(name: "Gameplay - User Interface").first.id,
-    secondary_category: Category.where(name: "Resources - Frameworks").first.id,
+    primary_category_id: Category.where(name: "Gameplay - User Interface").first.id,
+    secondary_category_id: Category.where(name: "Resources - Frameworks").first.id,
     is_utility: false,
     has_adult_content: false,
     game_id: gameSkyrim.id
 )
 
 NexusInfo.create(
-    mod_id: 3863,
+    nm_id: 3863,
+    mod_id: Mod.last.id,
     uploaded_by: "schlangster",
     authors: "SkyUI Team",
     date_released: DateTime.strptime("17/12/2011 - 12:24AM", nexusDateFormat),
@@ -423,14 +424,15 @@ NexusInfo.create(
 
 Mod.create(
     name: "Immersive Armors",
-    primary_category: Category.where(name: "Items - Armor, Clothing, & Accessories").first.id,
+    primary_category_id: Category.where(name: "Items - Armor, Clothing, & Accessories").first.id,
     is_utility: false,
     has_adult_content: false,
     game_id: gameSkyrim.id
 )
 
 NexusInfo.create(
-    mod_id: 19733,
+    nm_id: 19733,
+    mod_id: Mod.last.id,
     uploaded_by: "hothtrooper44",
     authors: "Hothtrooper44",
     date_released: DateTime.strptime("01/07/2012 - 07:23PM", nexusDateFormat),
@@ -449,14 +451,15 @@ NexusInfo.create(
 
 Mod.create(
     name: "Skyrim HD - 2K Textures",
-    primary_category: Category.where(name: "Audiovisual - Models & Textures").first.id,
+    primary_category_id: Category.where(name: "Audiovisual - Models & Textures").first.id,
     is_utility: false,
     has_adult_content: false,
     game_id: gameSkyrim.id
 )
 
 NexusInfo.create(
-    mod_id: 607,
+    nm_id: 607,
+    mod_id: Mod.last.id,
     uploaded_by: "NebuLa1",
     authors: "NebuLa from AHBmods",
     date_released: DateTime.strptime("19/11/2011 - 01:03AM", nexusDateFormat),
@@ -475,15 +478,16 @@ NexusInfo.create(
 
 Mod.create(
     name: "RaceMenu",
-    primary_category: Category.where(name: "Gameplay - User Interface").first.id,
-    secondary_category: Category.where(name: "Resources - Frameworks").first.id,
+    primary_category_id: Category.where(name: "Gameplay - User Interface").first.id,
+    secondary_category_id: Category.where(name: "Resources - Frameworks").first.id,
     is_utility: false,
     has_adult_content: false,
     game_id: gameSkyrim.id
 )
 
 NexusInfo.create(
-    mod_id: 29624,
+    nm_id: 29624,
+    mod_id: Mod.last.id,
     uploaded_by: "expired6978",
     authors: "Expired",
     date_released: DateTime.strptime("08/01/2013 - 01:10AM", nexusDateFormat),
@@ -502,14 +506,15 @@ NexusInfo.create(
 
 Mod.create(
     name: "Unofficial Skyrim Legendary Edition Patch",
-    primary_category: Category.where(name: "Fixes").first.id,
+    primary_category_id: Category.where(name: "Fixes").first.id,
     is_utility: false,
     has_adult_content: false,
     game_id: gameSkyrim.id
 )
 
 NexusInfo.create(
-    mod_id: 71214,
+    nm_id: 71214,
+    mod_id: Mod.last.id,
     uploaded_by: "Arthmoor",
     authors: "Unofficial Patch Project Team ",
     date_released: DateTime.strptime("07/11/2015 - 08:41PM", nexusDateFormat),
@@ -528,14 +533,15 @@ NexusInfo.create(
 
 Mod.create(
     name: "Mod Organizer",
-    primary_category: Category.where(name: "Utilities - Tools").first.id,
+    primary_category_id: Category.where(name: "Utilities - Tools").first.id,
     is_utility: true,
     has_adult_content: false,
     game_id: gameSkyrim.id
 )
 
 NexusInfo.create(
-    mod_id: 1334,
+    nm_id: 1334,
+    mod_id: Mod.last.id,
     uploaded_by: "Tannin42",
     authors: "Tannin",
     date_released: DateTime.strptime("24/11/2011 - 03:30PM", nexusDateFormat),
@@ -554,14 +560,15 @@ NexusInfo.create(
 
 Mod.create(
     name: "Skyrim Flora Overhaul",
-    primary_category: Category.where(name: "Audiovisual - Models & Textures").first.id,
+    primary_category_id: Category.where(name: "Audiovisual - Models & Textures").first.id,
     is_utility: false,
     has_adult_content: false,
     game_id: gameSkyrim.id
 )
 
 NexusInfo.create(
-    mod_id: 141,
+    nm_id: 141,
+    mod_id: Mod.last.id,
     uploaded_by: "vurt",
     authors: "vurt",
     date_released: DateTime.strptime("13/11/2011 - 10:36PM", nexusDateFormat),
@@ -580,15 +587,16 @@ NexusInfo.create(
 
 Mod.create(
     name: "TES5Edit",
-    primary_category: Category.where(name: "Utilities - Tools").first.id,
-    secondary_category: Category.where(name: "Resources - Frameworks").first.id,
+    primary_category_id: Category.where(name: "Utilities - Tools").first.id,
+    secondary_category_id: Category.where(name: "Resources - Frameworks").first.id,
     is_utility: true,
     has_adult_content: false,
     game_id: gameSkyrim.id
 )
 
 NexusInfo.create(
-    mod_id: 25859,
+    nm_id: 25859,
+    mod_id: Mod.last.id,
     uploaded_by: "Sharlikran",
     authors: "ElminsterAU",
     date_released: DateTime.strptime("22/10/2012 - 06:22AM", nexusDateFormat),
@@ -608,14 +616,15 @@ NexusInfo.create(
 # Top mods in the last 59 days
 Mod.create(
     name: "Merge Plugins",
-    primary_category: Category.where(name: "Utilities - Tools").first.id,
+    primary_category_id: Category.where(name: "Utilities - Tools").first.id,
     is_utility: true,
     has_adult_content: false,
     game_id: gameSkyrim.id
 )
 
 NexusInfo.create(
-    mod_id: 69905,
+    nm_id: 69905,
+    mod_id: Mod.last.id,
     uploaded_by: "matortheeternal",
     authors: "Mator",
     date_released: DateTime.strptime("24/12/2015 - 01:56AM", nexusDateFormat),
@@ -634,14 +643,15 @@ NexusInfo.create(
 
 Mod.create(
     name: "The Lily - Armour Mashup",
-    primary_category: Category.where(name: "Items - Armor, Clothing, & Accessories").first.id,
+    primary_category_id: Category.where(name: "Items - Armor, Clothing, & Accessories").first.id,
     is_utility: false,
     has_adult_content: false,
     game_id: gameSkyrim.id
 )
 
 NexusInfo.create(
-    mod_id: 71843,
+    nm_id: 71843,
+    mod_id: Mod.last.id,
     uploaded_by: "pottoply",
     authors: "pottoply",
     date_released: DateTime.strptime("08/12/2015 - 09:42PM", nexusDateFormat),
@@ -660,15 +670,16 @@ NexusInfo.create(
 
 Mod.create(
     name: "THE PEOPLE OF SKYRIM ULTIMATE EDITION",
-    primary_category: Category.where(name: "Gameplay - Immersion & Role-playing").first.id,
-    secondary_category: Category.where(name: "New Characters").first.id,
+    primary_category_id: Category.where(name: "Gameplay - Immersion & Role-playing").first.id,
+    secondary_category_id: Category.where(name: "New Characters").first.id,
     is_utility: false,
     has_adult_content: false,
     game_id: gameSkyrim.id
 )
 
 NexusInfo.create(
-    mod_id: 72449,
+    nm_id: 72449,
+    mod_id: Mod.last.id,
     uploaded_by: "nesbit098",
     authors: "Nesbit",
     date_released: DateTime.strptime("05/01/2016 - 10:31AM", nexusDateFormat),
@@ -687,15 +698,16 @@ NexusInfo.create(
 
 Mod.create(
     name: "Skaal You Need - Skaal house and follower",
-    primary_category: Category.where(name: "Locations - New Player Homes").first.id,
-    secondary_category: Category.where(name: "New Characters - Allies").first.id,
+    primary_category_id: Category.where(name: "Locations - New Player Homes").first.id,
+    secondary_category_id: Category.where(name: "New Characters - Allies").first.id,
     is_utility: false,
     has_adult_content: false,
     game_id: gameSkyrim.id
 )
 
 NexusInfo.create(
-    mod_id: 72005,
+    nm_id: 72005,
+    mod_id: Mod.last.id,
     uploaded_by: "Elianora",
     authors: "Elianora",
     date_released: DateTime.strptime("17/12/2015 - 09:23PM", nexusDateFormat),
@@ -714,14 +726,15 @@ NexusInfo.create(
 
 Mod.create(
     name: "SC - Hairstyles",
-    primary_category: Category.where(name: "Character Appearance - Face Parts").first.id,
+    primary_category_id: Category.where(name: "Character Appearance - Face Parts").first.id,
     is_utility: false,
     has_adult_content: false,
     game_id: gameSkyrim.id
 )
 
 NexusInfo.create(
-    mod_id: 71561,
+    nm_id: 71561,
+    mod_id: Mod.last.id,
     uploaded_by: "ShinglesCat",
     authors: "ShinglesCat",
     date_released: DateTime.strptime("25/11/2015 - 09:21AM", nexusDateFormat),
@@ -740,14 +753,15 @@ NexusInfo.create(
 
 Mod.create(
     name: "Real Names",
-    primary_category: Category.where(name: "Gameplay - Immersion & Role-playing").first.id,
+    primary_category_id: Category.where(name: "Gameplay - Immersion & Role-playing").first.id,
     is_utility: false,
     has_adult_content: false,
     game_id: gameSkyrim.id
 )
 
 NexusInfo.create(
-    mod_id: 71464,
+    nm_id: 71464,
+    mod_id: Mod.last.id,
     uploaded_by: "nellshini",
     authors: "Jaxonz and Nellshini",
     date_released: DateTime.strptime("23/11/2015 - 02:11AM", nexusDateFormat),
@@ -763,4 +777,3 @@ NexusInfo.create(
     articles_count: 0,
     nexus_category: 78
 )
-

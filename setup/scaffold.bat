@@ -24,7 +24,7 @@ call rails g scaffold lover_infos ll_id:integer mod_id:integer
 :: ------------------------------------------------------
 
 :: mods available on the site
-call rails g scaffold mods mod_id:integer game_id:integer name:text aliases:text is_utility:boolean has_adult_content:boolean primary_category:integer secondary_category:integer
+call rails g scaffold mods mod_id:integer game_id:integer name:text aliases:text is_utility:boolean has_adult_content:boolean primary_category_id:integer secondary_category_id:integer
 
 :: versions of mods available on the site
 call rails g scaffold mod_versions mv_id:integer mod_id:integer nxm_file_id:integer released:datetime obsolete:boolean dangerous:boolean

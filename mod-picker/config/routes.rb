@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
   resources :mods
+  resources :mods
   resources :lover_infos
   resources :workshop_infos
   resources :nexus_infos

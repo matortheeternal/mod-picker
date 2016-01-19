@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160119021245) do
+ActiveRecord::Schema.define(version: 20160119063411) do
 
   create_table "agreement_marks", id: false, force: :cascade do |t|
     t.integer "inc_id",       limit: 4
@@ -225,18 +225,18 @@ ActiveRecord::Schema.define(version: 20160119021245) do
   add_index "mod_versions", ["mod_id"], name: "mod_id", using: :btree
 
   create_table "mods", primary_key: "mod_id", force: :cascade do |t|
-    t.text    "name",               limit: 255
-    t.text    "aliases",            limit: 255
+    t.text    "name",                  limit: 255
+    t.text    "aliases",               limit: 255
     t.boolean "is_utility"
     t.boolean "has_adult_content"
-    t.integer "game_id",            limit: 4
-    t.integer "primary_category",   limit: 4
-    t.integer "secondary_category", limit: 4
+    t.integer "game_id",               limit: 4
+    t.integer "primary_category_id",   limit: 4
+    t.integer "secondary_category_id", limit: 4
   end
 
   add_index "mods", ["game_id"], name: "fk_rails_3ec448a848", using: :btree
-  add_index "mods", ["primary_category"], name: "fk_rails_42759f5da5", using: :btree
-  add_index "mods", ["secondary_category"], name: "fk_rails_26f394ea9d", using: :btree
+  add_index "mods", ["primary_category_id"], name: "fk_rails_42759f5da5", using: :btree
+  add_index "mods", ["secondary_category_id"], name: "fk_rails_26f394ea9d", using: :btree
 
   create_table "nexus_infos", primary_key: "nm_id", force: :cascade do |t|
     t.text    "uploaded_by",      limit: 255
@@ -460,8 +460,8 @@ ActiveRecord::Schema.define(version: 20160119021245) do
   add_foreign_key "mod_version_file_map", "mod_asset_files", column: "maf_id", primary_key: "maf_id", name: "mod_version_file_map_ibfk_2"
   add_foreign_key "mod_version_file_map", "mod_versions", column: "mv_id", primary_key: "mv_id", name: "mod_version_file_map_ibfk_1"
   add_foreign_key "mod_versions", "mods", primary_key: "mod_id", name: "mod_versions_ibfk_1"
-  add_foreign_key "mods", "categories", column: "primary_category"
-  add_foreign_key "mods", "categories", column: "secondary_category"
+  add_foreign_key "mods", "categories", column: "primary_category_id"
+  add_foreign_key "mods", "categories", column: "secondary_category_id"
   add_foreign_key "mods", "games"
   add_foreign_key "plugin_override_map", "masters", column: "mst_id", primary_key: "mst_id", name: "plugin_override_map_ibfk_2"
   add_foreign_key "plugin_override_map", "plugins", column: "pl_id", primary_key: "pl_id", name: "plugin_override_map_ibfk_1"

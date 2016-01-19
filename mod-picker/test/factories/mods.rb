@@ -6,8 +6,8 @@ name "MyText"
 aliases "MyText"
 is_utility false
 has_adult_content false
-primary_category 1
-secondary_category 1
+primary_category_id 1
+secondary_category_id 1
   end
 
 end
