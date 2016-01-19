@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160119063411) do
+ActiveRecord::Schema.define(version: 20160119073104) do
 
   create_table "agreement_marks", id: false, force: :cascade do |t|
     t.integer "inc_id",       limit: 4
@@ -38,7 +38,7 @@ ActiveRecord::Schema.define(version: 20160119063411) do
   add_index "category_priorities", ["dominant_id"], name: "fk_rails_10799f2958", using: :btree
   add_index "category_priorities", ["recessive_id"], name: "fk_rails_d624be02b9", using: :btree
 
-  create_table "comments", primary_key: "c_id", force: :cascade do |t|
+  create_table "comments", force: :cascade do |t|
     t.integer "parent_comment", limit: 4
     t.integer "submitted_by",   limit: 4
     t.boolean "hidden"
@@ -50,7 +50,7 @@ ActiveRecord::Schema.define(version: 20160119063411) do
   add_index "comments", ["parent_comment"], name: "parent_comment", using: :btree
   add_index "comments", ["submitted_by"], name: "submitted_by", using: :btree
 
-  create_table "compatibility_notes", primary_key: "cn_id", force: :cascade do |t|
+  create_table "compatibility_notes", force: :cascade do |t|
     t.integer "submitted_by",         limit: 4
     t.enum    "mod_mode",             limit: ["Any", "All"]
     t.integer "compatibility_patch",  limit: 4
@@ -86,7 +86,7 @@ ActiveRecord::Schema.define(version: 20160119063411) do
   add_index "helpful_marks", ["r_id"], name: "r_id", using: :btree
   add_index "helpful_marks", ["submitted_by"], name: "submitted_by", using: :btree
 
-  create_table "incorrect_notes", primary_key: "inc_id", force: :cascade do |t|
+  create_table "incorrect_notes", force: :cascade do |t|
     t.integer "r_id",         limit: 4
     t.integer "cn_id",        limit: 4
     t.integer "in_id",        limit: 4
@@ -99,7 +99,7 @@ ActiveRecord::Schema.define(version: 20160119063411) do
   add_index "incorrect_notes", ["r_id"], name: "r_id", using: :btree
   add_index "incorrect_notes", ["submitted_by"], name: "submitted_by", using: :btree
 
-  create_table "installation_notes", primary_key: "in_id", force: :cascade do |t|
+  create_table "installation_notes", force: :cascade do |t|
     t.integer "submitted_by", limit: 4
     t.integer "mv_id",        limit: 4
     t.boolean "always"
@@ -112,17 +112,17 @@ ActiveRecord::Schema.define(version: 20160119063411) do
   add_index "installation_notes", ["mv_id"], name: "mv_id", using: :btree
   add_index "installation_notes", ["submitted_by"], name: "submitted_by", using: :btree
 
-  create_table "lover_infos", primary_key: "ll_id", force: :cascade do |t|
+  create_table "lover_infos", force: :cascade do |t|
     t.integer "mod_id", limit: 4, null: false
   end
 
-  create_table "masters", primary_key: "mst_id", force: :cascade do |t|
+  create_table "masters", force: :cascade do |t|
     t.integer "pl_id", limit: 4
   end
 
   add_index "masters", ["pl_id"], name: "pl_id", using: :btree
 
-  create_table "mod_asset_files", primary_key: "maf_id", force: :cascade do |t|
+  create_table "mod_asset_files", force: :cascade do |t|
     t.string "filepath", limit: 128, null: false
   end
 
@@ -192,7 +192,7 @@ ActiveRecord::Schema.define(version: 20160119063411) do
   add_index "mod_list_plugins", ["ml_id"], name: "ml_id", using: :btree
   add_index "mod_list_plugins", ["pl_id"], name: "pl_id", using: :btree
 
-  create_table "mod_lists", primary_key: "ml_id", force: :cascade do |t|
+  create_table "mod_lists", force: :cascade do |t|
     t.text    "game",              limit: 255
     t.integer "created_by",        limit: 4
     t.boolean "is_collection"
@@ -214,7 +214,7 @@ ActiveRecord::Schema.define(version: 20160119063411) do
   add_index "mod_version_file_map", ["maf_id"], name: "maf_id", using: :btree
   add_index "mod_version_file_map", ["mv_id"], name: "mv_id", using: :btree
 
-  create_table "mod_versions", primary_key: "mv_id", force: :cascade do |t|
+  create_table "mod_versions", force: :cascade do |t|
     t.integer "mod_id",      limit: 4
     t.date    "released"
     t.boolean "obsolete"
@@ -224,7 +224,7 @@ ActiveRecord::Schema.define(version: 20160119063411) do
 
   add_index "mod_versions", ["mod_id"], name: "mod_id", using: :btree
 
-  create_table "mods", primary_key: "mod_id", force: :cascade do |t|
+  create_table "mods", force: :cascade do |t|
     t.text    "name",                  limit: 255
     t.text    "aliases",               limit: 255
     t.boolean "is_utility"
@@ -238,7 +238,7 @@ ActiveRecord::Schema.define(version: 20160119063411) do
   add_index "mods", ["primary_category_id"], name: "fk_rails_42759f5da5", using: :btree
   add_index "mods", ["secondary_category_id"], name: "fk_rails_26f394ea9d", using: :btree
 
-  create_table "nexus_infos", primary_key: "nm_id", force: :cascade do |t|
+  create_table "nexus_infos", force: :cascade do |t|
     t.text    "uploaded_by",      limit: 255
     t.text    "authors",          limit: 255
     t.date    "date_released"
@@ -281,7 +281,7 @@ ActiveRecord::Schema.define(version: 20160119063411) do
 
   add_index "plugin_record_groups", ["pl_id"], name: "pl_id", using: :btree
 
-  create_table "plugins", primary_key: "pl_id", force: :cascade do |t|
+  create_table "plugins", force: :cascade do |t|
     t.integer "mv_id",       limit: 4
     t.text    "filename",    limit: 255
     t.text    "author",      limit: 255
@@ -299,7 +299,7 @@ ActiveRecord::Schema.define(version: 20160119063411) do
   add_index "reputation_map", ["from_rep_id"], name: "from_rep_id", using: :btree
   add_index "reputation_map", ["to_rep_id"], name: "to_rep_id", using: :btree
 
-  create_table "reviews", primary_key: "r_id", force: :cascade do |t|
+  create_table "reviews", force: :cascade do |t|
     t.integer "submitted_by", limit: 4
     t.integer "mod_id",       limit: 4
     t.boolean "hidden"
@@ -316,7 +316,7 @@ ActiveRecord::Schema.define(version: 20160119063411) do
   add_index "reviews", ["mod_id"], name: "mod_id", using: :btree
   add_index "reviews", ["submitted_by"], name: "submitted_by", using: :btree
 
-  create_table "user_bios", primary_key: "bio_id", force: :cascade do |t|
+  create_table "user_bios", force: :cascade do |t|
     t.string  "nexus_username", limit: 32
     t.boolean "nexus_verified"
     t.string  "lover_username", limit: 32
@@ -360,7 +360,7 @@ ActiveRecord::Schema.define(version: 20160119063411) do
   add_index "user_mod_star_map", ["mod_id"], name: "mod_id", using: :btree
   add_index "user_mod_star_map", ["user_id"], name: "user_id", using: :btree
 
-  create_table "user_reputations", primary_key: "rep_id", force: :cascade do |t|
+  create_table "user_reputations", force: :cascade do |t|
     t.float   "overall",            limit: 24
     t.float   "offset",             limit: 24
     t.float   "audiovisual_design", limit: 24
@@ -372,7 +372,7 @@ ActiveRecord::Schema.define(version: 20160119063411) do
 
   add_index "user_reputations", ["user_id"], name: "user_id", using: :btree
 
-  create_table "user_settings", primary_key: "set_id", force: :cascade do |t|
+  create_table "user_settings", force: :cascade do |t|
     t.boolean "show_notifications"
     t.boolean "show_tooltips"
     t.boolean "email_notifications"
@@ -389,7 +389,7 @@ ActiveRecord::Schema.define(version: 20160119063411) do
 
   add_index "user_settings", ["user_id"], name: "user_id", using: :btree
 
-  create_table "users", primary_key: "user_id", force: :cascade do |t|
+  create_table "users", force: :cascade do |t|
     t.string   "username",               limit: 32
     t.enum     "user_level",             limit: ["guest", "banned", "user", "author", "vip", "moderator", "admin"]
     t.string   "title",                  limit: 32
@@ -418,70 +418,70 @@ ActiveRecord::Schema.define(version: 20160119063411) do
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 
-  create_table "workshop_infos", primary_key: "ws_id", force: :cascade do |t|
+  create_table "workshop_infos", force: :cascade do |t|
     t.integer "mod_id", limit: 4, null: false
   end
 
-  add_foreign_key "agreement_marks", "incorrect_notes", column: "inc_id", primary_key: "inc_id", name: "agreement_marks_ibfk_1"
-  add_foreign_key "agreement_marks", "users", column: "submitted_by", primary_key: "user_id", name: "agreement_marks_ibfk_2"
+  add_foreign_key "agreement_marks", "incorrect_notes", column: "inc_id", name: "agreement_marks_ibfk_1"
+  add_foreign_key "agreement_marks", "users", column: "submitted_by", name: "agreement_marks_ibfk_2"
   add_foreign_key "categories", "categories", column: "parent_id"
   add_foreign_key "category_priorities", "categories", column: "dominant_id"
   add_foreign_key "category_priorities", "categories", column: "recessive_id"
-  add_foreign_key "comments", "comments", column: "parent_comment", primary_key: "c_id", name: "comments_ibfk_1"
-  add_foreign_key "comments", "users", column: "submitted_by", primary_key: "user_id", name: "comments_ibfk_2"
-  add_foreign_key "compatibility_notes", "installation_notes", column: "in_id", primary_key: "in_id", name: "compatibility_notes_ibfk_3"
-  add_foreign_key "compatibility_notes", "plugins", column: "compatibility_patch", primary_key: "pl_id", name: "compatibility_notes_ibfk_2"
-  add_foreign_key "compatibility_notes", "users", column: "submitted_by", primary_key: "user_id", name: "compatibility_notes_ibfk_1"
-  add_foreign_key "helpful_marks", "compatibility_notes", column: "cn_id", primary_key: "cn_id", name: "helpful_marks_ibfk_2"
-  add_foreign_key "helpful_marks", "installation_notes", column: "in_id", primary_key: "in_id", name: "helpful_marks_ibfk_3"
-  add_foreign_key "helpful_marks", "reviews", column: "r_id", primary_key: "r_id", name: "helpful_marks_ibfk_1"
-  add_foreign_key "helpful_marks", "users", column: "submitted_by", primary_key: "user_id", name: "helpful_marks_ibfk_4"
-  add_foreign_key "incorrect_notes", "compatibility_notes", column: "cn_id", primary_key: "cn_id", name: "incorrect_notes_ibfk_2"
-  add_foreign_key "incorrect_notes", "installation_notes", column: "in_id", primary_key: "in_id", name: "incorrect_notes_ibfk_3"
-  add_foreign_key "incorrect_notes", "reviews", column: "r_id", primary_key: "r_id", name: "incorrect_notes_ibfk_1"
-  add_foreign_key "incorrect_notes", "users", column: "submitted_by", primary_key: "user_id", name: "incorrect_notes_ibfk_4"
-  add_foreign_key "installation_notes", "mod_versions", column: "mv_id", primary_key: "mv_id", name: "installation_notes_ibfk_2"
-  add_foreign_key "installation_notes", "users", column: "submitted_by", primary_key: "user_id", name: "installation_notes_ibfk_1"
-  add_foreign_key "masters", "plugins", column: "pl_id", primary_key: "pl_id", name: "masters_ibfk_1"
-  add_foreign_key "mod_comments", "comments", column: "c_id", primary_key: "c_id", name: "mod_comments_ibfk_2"
-  add_foreign_key "mod_comments", "mods", primary_key: "mod_id", name: "mod_comments_ibfk_1"
-  add_foreign_key "mod_list_comments", "comments", column: "c_id", primary_key: "c_id", name: "mod_list_comments_ibfk_2"
-  add_foreign_key "mod_list_comments", "mod_lists", column: "ml_id", primary_key: "ml_id", name: "mod_list_comments_ibfk_1"
-  add_foreign_key "mod_list_compatibility_notes", "compatibility_notes", column: "cn_id", primary_key: "cn_id", name: "mod_list_compatibility_notes_ibfk_2"
-  add_foreign_key "mod_list_compatibility_notes", "mod_lists", column: "ml_id", primary_key: "ml_id", name: "mod_list_compatibility_notes_ibfk_1"
-  add_foreign_key "mod_list_custom_plugins", "mod_lists", column: "ml_id", primary_key: "ml_id", name: "mod_list_custom_plugins_ibfk_1"
-  add_foreign_key "mod_list_installation_notes", "installation_notes", column: "in_id", primary_key: "in_id", name: "mod_list_installation_notes_ibfk_2"
-  add_foreign_key "mod_list_installation_notes", "mod_lists", column: "ml_id", primary_key: "ml_id", name: "mod_list_installation_notes_ibfk_1"
-  add_foreign_key "mod_list_mods", "mod_lists", column: "ml_id", primary_key: "ml_id", name: "mod_list_mods_ibfk_1"
-  add_foreign_key "mod_list_mods", "mods", primary_key: "mod_id", name: "mod_list_mods_ibfk_2"
-  add_foreign_key "mod_list_plugins", "mod_lists", column: "ml_id", primary_key: "ml_id", name: "mod_list_plugins_ibfk_1"
-  add_foreign_key "mod_list_plugins", "plugins", column: "pl_id", primary_key: "pl_id", name: "mod_list_plugins_ibfk_2"
-  add_foreign_key "mod_lists", "users", column: "created_by", primary_key: "user_id", name: "mod_lists_ibfk_1"
-  add_foreign_key "mod_version_file_map", "mod_asset_files", column: "maf_id", primary_key: "maf_id", name: "mod_version_file_map_ibfk_2"
-  add_foreign_key "mod_version_file_map", "mod_versions", column: "mv_id", primary_key: "mv_id", name: "mod_version_file_map_ibfk_1"
-  add_foreign_key "mod_versions", "mods", primary_key: "mod_id", name: "mod_versions_ibfk_1"
+  add_foreign_key "comments", "comments", column: "parent_comment", name: "comments_ibfk_1"
+  add_foreign_key "comments", "users", column: "submitted_by", name: "comments_ibfk_2"
+  add_foreign_key "compatibility_notes", "installation_notes", column: "in_id", name: "compatibility_notes_ibfk_3"
+  add_foreign_key "compatibility_notes", "plugins", column: "compatibility_patch", name: "compatibility_notes_ibfk_2"
+  add_foreign_key "compatibility_notes", "users", column: "submitted_by", name: "compatibility_notes_ibfk_1"
+  add_foreign_key "helpful_marks", "compatibility_notes", column: "cn_id", name: "helpful_marks_ibfk_2"
+  add_foreign_key "helpful_marks", "installation_notes", column: "in_id", name: "helpful_marks_ibfk_3"
+  add_foreign_key "helpful_marks", "reviews", column: "r_id", name: "helpful_marks_ibfk_1"
+  add_foreign_key "helpful_marks", "users", column: "submitted_by", name: "helpful_marks_ibfk_4"
+  add_foreign_key "incorrect_notes", "compatibility_notes", column: "cn_id", name: "incorrect_notes_ibfk_2"
+  add_foreign_key "incorrect_notes", "installation_notes", column: "in_id", name: "incorrect_notes_ibfk_3"
+  add_foreign_key "incorrect_notes", "reviews", column: "r_id", name: "incorrect_notes_ibfk_1"
+  add_foreign_key "incorrect_notes", "users", column: "submitted_by", name: "incorrect_notes_ibfk_4"
+  add_foreign_key "installation_notes", "mod_versions", column: "mv_id", name: "installation_notes_ibfk_2"
+  add_foreign_key "installation_notes", "users", column: "submitted_by", name: "installation_notes_ibfk_1"
+  add_foreign_key "masters", "plugins", column: "pl_id", name: "masters_ibfk_1"
+  add_foreign_key "mod_comments", "comments", column: "c_id", name: "mod_comments_ibfk_2"
+  add_foreign_key "mod_comments", "mods", name: "mod_comments_ibfk_1"
+  add_foreign_key "mod_list_comments", "comments", column: "c_id", name: "mod_list_comments_ibfk_2"
+  add_foreign_key "mod_list_comments", "mod_lists", column: "ml_id", name: "mod_list_comments_ibfk_1"
+  add_foreign_key "mod_list_compatibility_notes", "compatibility_notes", column: "cn_id", name: "mod_list_compatibility_notes_ibfk_2"
+  add_foreign_key "mod_list_compatibility_notes", "mod_lists", column: "ml_id", name: "mod_list_compatibility_notes_ibfk_1"
+  add_foreign_key "mod_list_custom_plugins", "mod_lists", column: "ml_id", name: "mod_list_custom_plugins_ibfk_1"
+  add_foreign_key "mod_list_installation_notes", "installation_notes", column: "in_id", name: "mod_list_installation_notes_ibfk_2"
+  add_foreign_key "mod_list_installation_notes", "mod_lists", column: "ml_id", name: "mod_list_installation_notes_ibfk_1"
+  add_foreign_key "mod_list_mods", "mod_lists", column: "ml_id", name: "mod_list_mods_ibfk_1"
+  add_foreign_key "mod_list_mods", "mods", name: "mod_list_mods_ibfk_2"
+  add_foreign_key "mod_list_plugins", "mod_lists", column: "ml_id", name: "mod_list_plugins_ibfk_1"
+  add_foreign_key "mod_list_plugins", "plugins", column: "pl_id", name: "mod_list_plugins_ibfk_2"
+  add_foreign_key "mod_lists", "users", column: "created_by", name: "mod_lists_ibfk_1"
+  add_foreign_key "mod_version_file_map", "mod_asset_files", column: "maf_id", name: "mod_version_file_map_ibfk_2"
+  add_foreign_key "mod_version_file_map", "mod_versions", column: "mv_id", name: "mod_version_file_map_ibfk_1"
+  add_foreign_key "mod_versions", "mods", name: "mod_versions_ibfk_1"
   add_foreign_key "mods", "categories", column: "primary_category_id"
   add_foreign_key "mods", "categories", column: "secondary_category_id"
   add_foreign_key "mods", "games"
-  add_foreign_key "plugin_override_map", "masters", column: "mst_id", primary_key: "mst_id", name: "plugin_override_map_ibfk_2"
-  add_foreign_key "plugin_override_map", "plugins", column: "pl_id", primary_key: "pl_id", name: "plugin_override_map_ibfk_1"
-  add_foreign_key "plugin_record_groups", "plugins", column: "pl_id", primary_key: "pl_id", name: "plugin_record_groups_ibfk_1"
-  add_foreign_key "plugins", "mod_versions", column: "mv_id", primary_key: "mv_id", name: "plugins_ibfk_1"
-  add_foreign_key "reputation_map", "user_reputations", column: "from_rep_id", primary_key: "rep_id", name: "reputation_map_ibfk_1"
-  add_foreign_key "reputation_map", "user_reputations", column: "to_rep_id", primary_key: "rep_id", name: "reputation_map_ibfk_2"
-  add_foreign_key "reviews", "mods", primary_key: "mod_id", name: "reviews_ibfk_2"
-  add_foreign_key "reviews", "users", column: "submitted_by", primary_key: "user_id", name: "reviews_ibfk_1"
-  add_foreign_key "user_bios", "users", primary_key: "user_id", name: "user_bios_ibfk_1"
-  add_foreign_key "user_comments", "comments", column: "c_id", primary_key: "c_id", name: "user_comments_ibfk_2"
-  add_foreign_key "user_comments", "users", primary_key: "user_id", name: "user_comments_ibfk_1"
-  add_foreign_key "user_mod_author_map", "mods", primary_key: "mod_id", name: "user_mod_author_map_ibfk_1"
-  add_foreign_key "user_mod_author_map", "users", primary_key: "user_id", name: "user_mod_author_map_ibfk_2"
-  add_foreign_key "user_mod_list_star_map", "mod_lists", column: "ml_id", primary_key: "ml_id", name: "user_mod_list_star_map_ibfk_1"
-  add_foreign_key "user_mod_list_star_map", "users", primary_key: "user_id", name: "user_mod_list_star_map_ibfk_2"
-  add_foreign_key "user_mod_star_map", "mods", primary_key: "mod_id", name: "user_mod_star_map_ibfk_1"
-  add_foreign_key "user_mod_star_map", "users", primary_key: "user_id", name: "user_mod_star_map_ibfk_2"
-  add_foreign_key "user_reputations", "users", primary_key: "user_id", name: "user_reputations_ibfk_1"
-  add_foreign_key "user_settings", "users", primary_key: "user_id", name: "user_settings_ibfk_1"
-  add_foreign_key "users", "mod_lists", column: "active_mc_id", primary_key: "ml_id", name: "users_ibfk_5"
-  add_foreign_key "users", "mod_lists", column: "active_ml_id", primary_key: "ml_id", name: "users_ibfk_4"
+  add_foreign_key "plugin_override_map", "masters", column: "mst_id", name: "plugin_override_map_ibfk_2"
+  add_foreign_key "plugin_override_map", "plugins", column: "pl_id", name: "plugin_override_map_ibfk_1"
+  add_foreign_key "plugin_record_groups", "plugins", column: "pl_id", name: "plugin_record_groups_ibfk_1"
+  add_foreign_key "plugins", "mod_versions", column: "mv_id", name: "plugins_ibfk_1"
+  add_foreign_key "reputation_map", "user_reputations", column: "from_rep_id", name: "reputation_map_ibfk_1"
+  add_foreign_key "reputation_map", "user_reputations", column: "to_rep_id", name: "reputation_map_ibfk_2"
+  add_foreign_key "reviews", "mods", name: "reviews_ibfk_2"
+  add_foreign_key "reviews", "users", column: "submitted_by", name: "reviews_ibfk_1"
+  add_foreign_key "user_bios", "users", name: "user_bios_ibfk_1"
+  add_foreign_key "user_comments", "comments", column: "c_id", name: "user_comments_ibfk_2"
+  add_foreign_key "user_comments", "users", name: "user_comments_ibfk_1"
+  add_foreign_key "user_mod_author_map", "mods", name: "user_mod_author_map_ibfk_1"
+  add_foreign_key "user_mod_author_map", "users", name: "user_mod_author_map_ibfk_2"
+  add_foreign_key "user_mod_list_star_map", "mod_lists", column: "ml_id", name: "user_mod_list_star_map_ibfk_1"
+  add_foreign_key "user_mod_list_star_map", "users", name: "user_mod_list_star_map_ibfk_2"
+  add_foreign_key "user_mod_star_map", "mods", name: "user_mod_star_map_ibfk_1"
+  add_foreign_key "user_mod_star_map", "users", name: "user_mod_star_map_ibfk_2"
+  add_foreign_key "user_reputations", "users", name: "user_reputations_ibfk_1"
+  add_foreign_key "user_settings", "users", name: "user_settings_ibfk_1"
+  add_foreign_key "users", "mod_lists", column: "active_mc_id", name: "users_ibfk_5"
+  add_foreign_key "users", "mod_lists", column: "active_ml_id", name: "users_ibfk_4"
 end
