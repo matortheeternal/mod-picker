@@ -18,7 +18,7 @@ class ModVersionsControllerTest < ActionController::TestCase
 
   test "should create mod_version" do
     assert_difference('ModVersion.count') do
-      post :create, mod_version: { dangerous: @mod_version.dangerous, mod_id: @mod_version.mod_id, mv_id: @mod_version.mv_id, nxm_file_id: @mod_version.nxm_file_id, obsolete: @mod_version.obsolete, released: @mod_version.released }
+      post :create, mod_version: { dangerous: @mod_version.dangerous, id: @mod_version.id, mod_id: @mod_version.mod_id, nxm_file_id: @mod_version.nxm_file_id, obsolete: @mod_version.obsolete, released: @mod_version.released }
     end
 
     assert_redirected_to mod_version_path(assigns(:mod_version))
@@ -35,7 +35,7 @@ class ModVersionsControllerTest < ActionController::TestCase
   end
 
   test "should update mod_version" do
-    patch :update, id: @mod_version, mod_version: { dangerous: @mod_version.dangerous, mod_id: @mod_version.mod_id, mv_id: @mod_version.mv_id, nxm_file_id: @mod_version.nxm_file_id, obsolete: @mod_version.obsolete, released: @mod_version.released }
+    patch :update, id: @mod_version, mod_version: { dangerous: @mod_version.dangerous, id: @mod_version.id, mod_id: @mod_version.mod_id, nxm_file_id: @mod_version.nxm_file_id, obsolete: @mod_version.obsolete, released: @mod_version.released }
     assert_redirected_to mod_version_path(assigns(:mod_version))
   end
 
