@@ -18,7 +18,7 @@ class ModListCompatibilityNotesControllerTest < ActionController::TestCase
 
   test "should create mod_list_compatibility_note" do
     assert_difference('ModListCompatibilityNote.count') do
-      post :create, mod_list_compatibility_note: { cn_id: @mod_list_compatibility_note.cn_id, ml_id: @mod_list_compatibility_note.ml_id, status: @mod_list_compatibility_note.status }
+      post :create, mod_list_compatibility_note: { compatibility_note_id: @mod_list_compatibility_note.compatibility_note_id, mod_list_id: @mod_list_compatibility_note.mod_list_id, status: @mod_list_compatibility_note.status }
     end
 
     assert_redirected_to mod_list_compatibility_note_path(assigns(:mod_list_compatibility_note))
@@ -35,7 +35,7 @@ class ModListCompatibilityNotesControllerTest < ActionController::TestCase
   end
 
   test "should update mod_list_compatibility_note" do
-    patch :update, id: @mod_list_compatibility_note, mod_list_compatibility_note: { cn_id: @mod_list_compatibility_note.cn_id, ml_id: @mod_list_compatibility_note.ml_id, status: @mod_list_compatibility_note.status }
+    patch :update, id: @mod_list_compatibility_note, mod_list_compatibility_note: { compatibility_note_id: @mod_list_compatibility_note.compatibility_note_id, mod_list_id: @mod_list_compatibility_note.mod_list_id, status: @mod_list_compatibility_note.status }
     assert_redirected_to mod_list_compatibility_note_path(assigns(:mod_list_compatibility_note))
   end
 

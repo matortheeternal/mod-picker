@@ -4,8 +4,8 @@ FactoryGirl.define do
 parent_comment 1
 submitted_by 1
 hidden false
-submitted "2016-01-18 23:48:25"
-edited "2016-01-18 23:48:25"
+submitted "2016-01-19 01:14:24"
+edited "2016-01-19 01:14:24"
 text_body "MyText"
   end
 

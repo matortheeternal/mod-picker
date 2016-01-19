@@ -69,6 +69,6 @@ class MastersController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def master_params
-      params.require(:master).permit(:id, :pl_id)
+      params.require(:master).permit(:id, :plugin_id)
     end
 end

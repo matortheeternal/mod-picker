@@ -18,7 +18,7 @@ class InstallationNotesControllerTest < ActionController::TestCase
 
   test "should create installation_note" do
     assert_difference('InstallationNote.count') do
-      post :create, installation_note: { always: @installation_note.always, edited: @installation_note.edited, id: @installation_note.id, mv_id: @installation_note.mv_id, note_type: @installation_note.note_type, submitted: @installation_note.submitted, submitted_by: @installation_note.submitted_by, text_body: @installation_note.text_body }
+      post :create, installation_note: { always: @installation_note.always, edited: @installation_note.edited, id: @installation_note.id, mod_version_id: @installation_note.mod_version_id, note_type: @installation_note.note_type, submitted: @installation_note.submitted, submitted_by: @installation_note.submitted_by, text_body: @installation_note.text_body }
     end
 
     assert_redirected_to installation_note_path(assigns(:installation_note))
@@ -35,7 +35,7 @@ class InstallationNotesControllerTest < ActionController::TestCase
   end
 
   test "should update installation_note" do
-    patch :update, id: @installation_note, installation_note: { always: @installation_note.always, edited: @installation_note.edited, id: @installation_note.id, mv_id: @installation_note.mv_id, note_type: @installation_note.note_type, submitted: @installation_note.submitted, submitted_by: @installation_note.submitted_by, text_body: @installation_note.text_body }
+    patch :update, id: @installation_note, installation_note: { always: @installation_note.always, edited: @installation_note.edited, id: @installation_note.id, mod_version_id: @installation_note.mod_version_id, note_type: @installation_note.note_type, submitted: @installation_note.submitted, submitted_by: @installation_note.submitted_by, text_body: @installation_note.text_body }
     assert_redirected_to installation_note_path(assigns(:installation_note))
   end
 

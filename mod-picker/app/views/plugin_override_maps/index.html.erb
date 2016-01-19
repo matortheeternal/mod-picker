@@ -6,8 +6,8 @@
   <table>
     <thead>
       <tr>
-          <th>pl_id</th>
-          <th>mst_id</th>
+          <th>plugin_id</th>
+          <th>master_id</th>
           <th>form_id</th>
           <th colspan="3"></th>
       </tr>
@@ -16,8 +16,8 @@
     <tbody>
       <% @plugin_override_maps.each do |plugin_override_map| %>
         <tr>
-            <td><%= plugin_override_map.pl_id %></td>
-            <td><%= plugin_override_map.mst_id %></td>
+            <td><%= plugin_override_map.plugin_id %></td>
+            <td><%= plugin_override_map.master_id %></td>
             <td><%= plugin_override_map.form_id %></td>
             <td><%= link_to 'Show', plugin_override_map %></td>
           <td><%= link_to 'Edit', edit_plugin_override_map_path(plugin_override_map) %></td>

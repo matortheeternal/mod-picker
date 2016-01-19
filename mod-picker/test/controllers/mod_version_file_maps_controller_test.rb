@@ -18,7 +18,7 @@ class ModVersionFileMapsControllerTest < ActionController::TestCase
 
   test "should create mod_version_file_map" do
     assert_difference('ModVersionFileMap.count') do
-      post :create, mod_version_file_map: { maf_id: @mod_version_file_map.maf_id, mv_id: @mod_version_file_map.mv_id }
+      post :create, mod_version_file_map: { mod_asset_file_id: @mod_version_file_map.mod_asset_file_id, mod_version_id: @mod_version_file_map.mod_version_id }
     end
 
     assert_redirected_to mod_version_file_map_path(assigns(:mod_version_file_map))
@@ -35,7 +35,7 @@ class ModVersionFileMapsControllerTest < ActionController::TestCase
   end
 
   test "should update mod_version_file_map" do
-    patch :update, id: @mod_version_file_map, mod_version_file_map: { maf_id: @mod_version_file_map.maf_id, mv_id: @mod_version_file_map.mv_id }
+    patch :update, id: @mod_version_file_map, mod_version_file_map: { mod_asset_file_id: @mod_version_file_map.mod_asset_file_id, mod_version_id: @mod_version_file_map.mod_version_id }
     assert_redirected_to mod_version_file_map_path(assigns(:mod_version_file_map))
   end
 

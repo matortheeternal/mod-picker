@@ -18,7 +18,7 @@ class MastersControllerTest < ActionController::TestCase
 
   test "should create master" do
     assert_difference('Master.count') do
-      post :create, master: { id: @master.id, pl_id: @master.pl_id }
+      post :create, master: { id: @master.id, plugin_id: @master.plugin_id }
     end
 
     assert_redirected_to master_path(assigns(:master))
@@ -35,7 +35,7 @@ class MastersControllerTest < ActionController::TestCase
   end
 
   test "should update master" do
-    patch :update, id: @master, master: { id: @master.id, pl_id: @master.pl_id }
+    patch :update, id: @master, master: { id: @master.id, plugin_id: @master.plugin_id }
     assert_redirected_to master_path(assigns(:master))
   end
 

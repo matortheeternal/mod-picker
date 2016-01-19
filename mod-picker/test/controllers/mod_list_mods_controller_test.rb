@@ -18,7 +18,7 @@ class ModListModsControllerTest < ActionController::TestCase
 
   test "should create mod_list_mod" do
     assert_difference('ModListMod.count') do
-      post :create, mod_list_mod: { active: @mod_list_mod.active, install_order: @mod_list_mod.install_order, ml_id: @mod_list_mod.ml_id, mod_id: @mod_list_mod.mod_id }
+      post :create, mod_list_mod: { active: @mod_list_mod.active, install_order: @mod_list_mod.install_order, mod_id: @mod_list_mod.mod_id, mod_list_id: @mod_list_mod.mod_list_id }
     end
 
     assert_redirected_to mod_list_mod_path(assigns(:mod_list_mod))
@@ -35,7 +35,7 @@ class ModListModsControllerTest < ActionController::TestCase
   end
 
   test "should update mod_list_mod" do
-    patch :update, id: @mod_list_mod, mod_list_mod: { active: @mod_list_mod.active, install_order: @mod_list_mod.install_order, ml_id: @mod_list_mod.ml_id, mod_id: @mod_list_mod.mod_id }
+    patch :update, id: @mod_list_mod, mod_list_mod: { active: @mod_list_mod.active, install_order: @mod_list_mod.install_order, mod_id: @mod_list_mod.mod_id, mod_list_id: @mod_list_mod.mod_list_id }
     assert_redirected_to mod_list_mod_path(assigns(:mod_list_mod))
   end
 

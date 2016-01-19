@@ -6,8 +6,8 @@
   <table>
     <thead>
       <tr>
-          <th>ml_id</th>
-          <th>pl_id</th>
+          <th>mod_list_id</th>
+          <th>plugin_id</th>
           <th>active</th>
           <th>load_order</th>
           <th colspan="3"></th>
@@ -17,8 +17,8 @@
     <tbody>
       <% @mod_list_plugins.each do |mod_list_plugin| %>
         <tr>
-            <td><%= mod_list_plugin.ml_id %></td>
-            <td><%= mod_list_plugin.pl_id %></td>
+            <td><%= mod_list_plugin.mod_list_id %></td>
+            <td><%= mod_list_plugin.plugin_id %></td>
             <td><%= mod_list_plugin.active %></td>
             <td><%= mod_list_plugin.load_order %></td>
             <td><%= link_to 'Show', mod_list_plugin %></td>

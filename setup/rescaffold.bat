@@ -33,31 +33,31 @@ call rails g scaffold mod_versions id:integer mod_id:integer nxm_file_id:integer
 call rails g scaffold mod_asset_files id:integer filepath:string --force --skip-migration
 
 :: maps asset files to mod versions
-call rails g scaffold mod_version_file_map mv_id:integer maf_id:integer --force --skip-migration
+call rails g scaffold mod_version_file_map mod_version_id:integer mod_asset_file_id:integer --force --skip-migration
 
 :: plugins that we have informaton on
-call rails g scaffold plugins id:integer mv_id:integer filename:text author:text description:text hash:string --force --skip-migration
+call rails g scaffold plugins id:integer mod_version_id:integer filename:text author:text description:text hash:string --force --skip-migration
 
 :: plugins that serve as masters for other plugins
-call rails g scaffold masters id:integer pl_id:integer --force --skip-migration
+call rails g scaffold masters id:integer plugin_id:integer --force --skip-migration
 
 :: override records associated with a plugin
-call rails g scaffold plugin_override_map pl_id:integer mst_id:integer form_id:integer --force --skip-migration
+call rails g scaffold plugin_override_map plugin_id:integer master_id:integer form_id:integer --force --skip-migration
 
 :: record groups associated with a plugin
-call rails g scaffold plugin_record_groups pl_id:integer sig:string name:text new_records:integer override_records:integer --force --skip-migration
+call rails g scaffold plugin_record_groups plugin_id:integer sig:string name:text new_records:integer override_records:integer --force --skip-migration
 
 :: mod lists created by users
 call rails g scaffold mod_lists id:integer game:text created_by:integer is_collection:boolean is_public:boolean has_adult_content:boolean status:integer created:datetime completed:datetime description:text --force --skip-migration
 
 :: plugins in mod lists
-call rails g scaffold mod_list_plugins ml_id:integer pl_id:integer active:boolean load_order:integer --force --skip-migration
+call rails g scaffold mod_list_plugins mod_list_id:integer plugin_id:integer active:boolean load_order:integer --force --skip-migration
 
 :: custom plugins in mod lists
-call rails g scaffold mod_list_custom_plugins ml_id:integer active:boolean load_order:integer title:string description:text --force --skip-migration
+call rails g scaffold mod_list_custom_plugins mod_list_id:integer active:boolean load_order:integer title:string description:text --force --skip-migration
 
 :: mods in mod lists
-call rails g scaffold mod_list_mods ml_id:integer mod_id:integer active:boolean install_order:integer --force --skip-migration
+call rails g scaffold mod_list_mods mod_list_id:integer mod_id:integer active:boolean install_order:integer --force --skip-migration
 
 
 :: ------------------------------------------------------
@@ -88,7 +88,7 @@ call rails g scaffold reputation_map from_rep_id:integer to_rep_id:integer  --fo
 call rails g scaffold user_mod_star_map mod_id:integer user_id:integer --force --skip-migration
 
 :: stars users have given to mod lists
-call rails g scaffold user_mod_list_star_map ml_id:integer user_id:integer --force --skip-migration
+call rails g scaffold user_mod_list_star_map mod_list_id:integer user_id:integer --force --skip-migration
 
 :: users that have authored mods
 call rails g scaffold user_mod_author_map mod_id:integer user_id:integer --force --skip-migration
@@ -104,31 +104,31 @@ call rails g scaffold comments id:integer parent_comment:integer submitted_by:in
 call rails g scaffold reviews id:integer submitted_by:integer mod_id:integer hidden:boolean rating1:TINYINT rating2:TINYINT rating3:TINYINT rating4:TINYINT:rating5 TINYINT submitted:datetime edited:datetime text_body:text --force --skip-migration
 
 :: installation notes submitted by users
-call rails g scaffold installation_notes id:integer submitted_by:integer mv_id:integer always:boolean note_type:integer submitted:datetime edited:datetime text_body:text --force --skip-migration
+call rails g scaffold installation_notes id:integer submitted_by:integer mod_version_id:integer always:boolean note_type:integer submitted:datetime edited:datetime text_body:text --force --skip-migration
 
 :: compatibility notes submitted by users
 call rails g scaffold compatibility_notes id:integer submitted_by:integer mod_mode:integer compatibility_patch:integer compatibility_status:integer --force --skip-migration
 
 :: comments on mods
-call rails g scaffold mod_comments mod_id:integer c_id:integer --force --skip-migration
+call rails g scaffold mod_comments mod_id:integer comment_id:integer --force --skip-migration
 
 :: comments on mod_lists
-call rails g scaffold mod_list_comments ml_id:integer c_id:integer --force --skip-migration
+call rails g scaffold mod_list_comments mod_list_id:integer comment_id:integer --force --skip-migration
 
 :: comments on user profiles
-call rails g scaffold user_comments user_id:integer c_id:integer --force --skip-migration
+call rails g scaffold user_comments user_id:integer comment_id:integer --force --skip-migration
 
 :: review, compatibility note, and installation note
-call rails g scaffold helpful_marks r_id:integer cn_id:integer in_id:integer submitted_by:integer helpful:boolean --force --skip-migration
+call rails g scaffold helpful_marks review_id:integer compatibility_note_id:integer installation_note_id:integer submitted_by:integer helpful:boolean --force --skip-migration
 
 :: incorrect notes for reviews, compatibility notes, and installation notes
-call rails g scaffold incorrect_notes id:integer r_id:integer cn_id:integer in_id:integer submitted_by:integer reason:text --force --skip-migration
+call rails g scaffold incorrect_notes id:integer review_id:integer compatibility_note_id:integer installation_note_id:integer submitted_by:integer reason:text --force --skip-migration
 
 :: agreement marks for incorrect notes
-call rails g scaffold agreement_marks inc_id:integer submitted_by:integer agree:boolean --force --skip-migration
+call rails g scaffold agreement_marks incorrect_note_id:integer submitted_by:integer agree:boolean --force --skip-migration
 
 :: installation notes that have been resolved or ignored by the user for a particular mod list
-call rails g scaffold mod_list_installation_notes ml_id:integer in_id:integer status:integer --force --skip-migration
+call rails g scaffold mod_list_installation_notes mod_list_id:integer installation_note_id:integer status:integer --force --skip-migration
 
 :: compatibility notes that have been resolved or ignored by the user for a particular mod list
-call rails g scaffold mod_list_compatibility_notes ml_id:integer cn_id:integer status:integer --force --skip-migration
+call rails g scaffold mod_list_compatibility_notes mod_list_id:integer compatibility_note_id:integer status:integer --force --skip-migration

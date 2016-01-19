@@ -18,7 +18,7 @@ class PluginsControllerTest < ActionController::TestCase
 
   test "should create plugin" do
     assert_difference('Plugin.count') do
-      post :create, plugin: { author: @plugin.author, description: @plugin.description, filename: @plugin.filename, hash: @plugin.hash, id: @plugin.id, mv_id: @plugin.mv_id }
+      post :create, plugin: { author: @plugin.author, description: @plugin.description, filename: @plugin.filename, hash: @plugin.hash, id: @plugin.id, mod_version_id: @plugin.mod_version_id }
     end
 
     assert_redirected_to plugin_path(assigns(:plugin))
@@ -35,7 +35,7 @@ class PluginsControllerTest < ActionController::TestCase
   end
 
   test "should update plugin" do
-    patch :update, id: @plugin, plugin: { author: @plugin.author, description: @plugin.description, filename: @plugin.filename, hash: @plugin.hash, id: @plugin.id, mv_id: @plugin.mv_id }
+    patch :update, id: @plugin, plugin: { author: @plugin.author, description: @plugin.description, filename: @plugin.filename, hash: @plugin.hash, id: @plugin.id, mod_version_id: @plugin.mod_version_id }
     assert_redirected_to plugin_path(assigns(:plugin))
   end
 

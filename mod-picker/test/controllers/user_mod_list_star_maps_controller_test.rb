@@ -18,7 +18,7 @@ class UserModListStarMapsControllerTest < ActionController::TestCase
 
   test "should create user_mod_list_star_map" do
     assert_difference('UserModListStarMap.count') do
-      post :create, user_mod_list_star_map: { ml_id: @user_mod_list_star_map.ml_id, user_id: @user_mod_list_star_map.user_id }
+      post :create, user_mod_list_star_map: { mod_list_id: @user_mod_list_star_map.mod_list_id, user_id: @user_mod_list_star_map.user_id }
     end
 
     assert_redirected_to user_mod_list_star_map_path(assigns(:user_mod_list_star_map))
@@ -35,7 +35,7 @@ class UserModListStarMapsControllerTest < ActionController::TestCase
   end
 
   test "should update user_mod_list_star_map" do
-    patch :update, id: @user_mod_list_star_map, user_mod_list_star_map: { ml_id: @user_mod_list_star_map.ml_id, user_id: @user_mod_list_star_map.user_id }
+    patch :update, id: @user_mod_list_star_map, user_mod_list_star_map: { mod_list_id: @user_mod_list_star_map.mod_list_id, user_id: @user_mod_list_star_map.user_id }
     assert_redirected_to user_mod_list_star_map_path(assigns(:user_mod_list_star_map))
   end
 

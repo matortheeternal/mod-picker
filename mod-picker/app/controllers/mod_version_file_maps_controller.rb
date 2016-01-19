@@ -69,6 +69,6 @@ class ModVersionFileMapsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def mod_version_file_map_params
-      params.require(:mod_version_file_map).permit(:mv_id, :maf_id)
+      params.require(:mod_version_file_map).permit(:mod_version_id, :mod_asset_file_id)
     end
 end
