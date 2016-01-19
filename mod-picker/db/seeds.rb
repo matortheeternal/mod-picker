@@ -1,19 +1,57 @@
-# This file should contain all the record creation needed to seed the database with its default values.
-# The data can then be loaded with the rake db:seed (or created alongside the db with db:setup).
-#
-# Examples:
-#
-#   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
-#   Mayor.create(name: 'Emanuel', city: cities.first)
-
 #==================================================
-# CLEAR CATEGORIES TABLE
+# CLEAR TABLES
 #==================================================
 
 connection = ActiveRecord::Base.connection()
+# clear categories
 connection.execute("DELETE FROM categories WHERE parent_id IS NOT NULL;")
 connection.execute("DELETE FROM categories WHERE parent_id IS NULL;")
 connection.execute("ALTER TABLE categories AUTO_INCREMENT = 0;")
+# clear games
+connection.execute("DELETE FROM games;")
+connection.execute("ALTER TABLE games AUTO_INCREMENT = 0;")
+
+
+#==================================================
+# CREATE GAMES
+#==================================================
+
+gameSkyrim = Game.create(
+    short_name: "Skyrim",
+    long_name: "The Elder Scrolls V: Skyrim",
+    abbr_name: "sk",
+    exe_name: "TESV.exe",
+    steam_app_ids: "72850"
+)
+gameOblivion = Game.create(
+    short_name: "Oblivion",
+    long_name: "The Elder Scrolls IV: Oblivion",
+    abbr_name: "ob",
+    exe_name: "Oblivion.exe",
+    steam_app_ids: "22330,900883"
+)
+gameFallout4 = Game.create(
+    short_name: "Fallout43",
+    long_name: "Fallout 4",
+    abbr_name: "fo4",
+    exe_name: "Fallout4.exe",
+    steam_app_ids: "377160"
+)
+gameFalloutNV = Game.create(
+    short_name: "FalloutNV",
+    long_name: "Fallout: New Vegas",
+    abbr_name: "fnv",
+    exe_name: "FalloutNV.exe",
+    steam_app_ids: "22380,2028016"
+)
+gameFallout3 = Game.create(
+    short_name: "Fallout3",
+    long_name: "Fallout 3",
+    abbr_name: "fo3",
+    exe_name: "Fallout3.exe",
+    steam_app_ids: "22300,22370"
+)
+
 
 #==================================================
 # CREATE SUPER-CATEGORIES
