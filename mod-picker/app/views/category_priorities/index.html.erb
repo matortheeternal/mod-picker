@@ -1,0 +1,31 @@
+<div class="scaffold">
+  <p id="notice"><%= notice %></p>
+
+  <h1>category_priorities</h1>
+
+  <table>
+    <thead>
+      <tr>
+          <th>dominant_id</th>
+          <th>recessive_id</th>
+          <th colspan="3"></th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% @category_priorities.each do |category_priority| %>
+        <tr>
+            <td><%= category_priority.dominant_id %></td>
+            <td><%= category_priority.recessive_id %></td>
+            <td><%= link_to 'Show', category_priority %></td>
+          <td><%= link_to 'Edit', edit_category_priority_path(category_priority) %></td>
+          <td><%= link_to 'Destroy', category_priority, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+
+  <br>
+
+  <%= link_to 'New Category Priority', new_category_priority_path %>
+</div>

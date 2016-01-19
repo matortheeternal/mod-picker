@@ -1,0 +1,25 @@
+<%= form_for(@category_priority) do |f| %>
+  <% if @category_priority.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@category_priority.errors.count, "error") %> prohibited this category_priority from being saved:</h2>
+
+      <ul>
+      <% @category_priority.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :dominant_id %><br>
+    <%= f.number_field :dominant_id %>
+  </div>
+  <div class="field">
+    <%= f.label :recessive_id %><br>
+    <%= f.number_field :recessive_id %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

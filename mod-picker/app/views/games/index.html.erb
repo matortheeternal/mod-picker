@@ -1,0 +1,39 @@
+<div class="scaffold">
+  <p id="notice"><%= notice %></p>
+
+  <h1>games</h1>
+
+  <table>
+    <thead>
+      <tr>
+          <th>id</th>
+          <th>short_name</th>
+          <th>long_name</th>
+          <th>abbr_name</th>
+          <th>exe_name</th>
+          <th>steam_app_ids</th>
+          <th colspan="3"></th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% @games.each do |game| %>
+        <tr>
+            <td><%= game.id %></td>
+            <td><%= game.short_name %></td>
+            <td><%= game.long_name %></td>
+            <td><%= game.abbr_name %></td>
+            <td><%= game.exe_name %></td>
+            <td><%= game.steam_app_ids %></td>
+            <td><%= link_to 'Show', game %></td>
+          <td><%= link_to 'Edit', edit_game_path(game) %></td>
+          <td><%= link_to 'Destroy', game, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+
+  <br>
+
+  <%= link_to 'New Game', new_game_path %>
+</div>

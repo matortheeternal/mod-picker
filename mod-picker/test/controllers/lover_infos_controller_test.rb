@@ -18,7 +18,7 @@ class LoverInfosControllerTest < ActionController::TestCase
 
   test "should create lover_info" do
     assert_difference('LoverInfo.count') do
-      post :create, lover_info: { ll_id: @lover_info.ll_id }
+      post :create, lover_info: { ll_id: @lover_info.ll_id, mod_id: @lover_info.mod_id }
     end
 
     assert_redirected_to lover_info_path(assigns(:lover_info))
@@ -35,7 +35,7 @@ class LoverInfosControllerTest < ActionController::TestCase
   end
 
   test "should update lover_info" do
-    patch :update, id: @lover_info, lover_info: { ll_id: @lover_info.ll_id }
+    patch :update, id: @lover_info, lover_info: { ll_id: @lover_info.ll_id, mod_id: @lover_info.mod_id }
     assert_redirected_to lover_info_path(assigns(:lover_info))
   end
 

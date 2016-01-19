@@ -1,10 +1,9 @@
 FactoryGirl.define do
   factory :nexus_info do
     nm_id 1
+mod_id 1
 uploaded_by "MyText"
 authors "MyText"
-datetime_released "2016-01-13 23:27:55"
-datetime_updated "2016-01-13 23:27:55"
 endorsements 1
 total_downloads 1
 unique_downloads 1

@@ -1,4 +1,12 @@
 Rails.application.routes.draw do
+  resources :mods
+  resources :lover_infos
+  resources :workshop_infos
+  resources :nexus_infos
+  resources :mods
+  resources :games
+  resources :category_priorities
+  resources :categories
   resources :mod_list_compatibility_notes
   resources :mod_list_installation_notes
   resources :agreement_marks

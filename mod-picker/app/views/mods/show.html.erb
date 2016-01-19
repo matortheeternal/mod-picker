@@ -7,8 +7,8 @@
   </p>
 
     <p>
-    <strong>game:</strong>
-    <%= @mod.game %>
+    <strong>game_id:</strong>
+    <%= @mod.game_id %>
   </p>
 
     <p>
@@ -27,28 +27,18 @@
   </p>
 
     <p>
-    <strong>category:</strong>
-    <%= @mod.category %>
-  </p>
-
-    <p>
     <strong>has_adult_content:</strong>
     <%= @mod.has_adult_content %>
   </p>
 
     <p>
-    <strong>nm_id:</strong>
-    <%= @mod.nm_id %>
+    <strong>primary_category:</strong>
+    <%= @mod.primary_category %>
   </p>
 
     <p>
-    <strong>ws_id:</strong>
-    <%= @mod.ws_id %>
-  </p>
-
-    <p>
-    <strong>ll_id:</strong>
-    <%= @mod.ll_id %>
+    <strong>secondary_category:</strong>
+    <%= @mod.secondary_category %>
   </p>
 
     <%= link_to 'Edit', edit_mod_path(@mod) %> |

@@ -1,12 +1,22 @@
 :: ------------------------------------------------------
+:: static data tables
+:: ------------------------------------------------------
+
+call rails g scaffold categories id:integer parent_id:integer name:text description:text
+
+call rails g scaffold category_priorities dominant_id:integer recessive_id:integer
+
+call rails g scaffold games id:integer short_name:text long_name:text abbr_name:text exe_name:text steam_app_ids:text
+
+:: ------------------------------------------------------
 :: site mod info tables
 :: ------------------------------------------------------
 
-call rails g scaffold nexus_infos nm_id:integer uploaded_by:text authors:text:datetime_released:datetime:datetime_updated:datetime endorsements:integer total_downloads:integer unique_downloads:integer views:integer posts_count:integer videos_count:integer images_count:integer files_count:integer articles_count:integer nexus_category:integer changelog:text
+call rails g scaffold nexus_infos nm_id:integer mod_id:integer uploaded_by:text authors:text:datetime_released:datetime:datetime_updated:datetime endorsements:integer total_downloads:integer unique_downloads:integer views:integer posts_count:integer videos_count:integer images_count:integer files_count:integer articles_count:integer nexus_category:integer changelog:text
 
-call rails g scaffold workshop_infos ws_id:integer
+call rails g scaffold workshop_infos ws_id:integer mod_id:integer
 
-call rails g scaffold lover_infos ll_id:integer
+call rails g scaffold lover_infos ll_id:integer mod_id:integer
 
 
 :: ------------------------------------------------------
@@ -14,7 +24,7 @@ call rails g scaffold lover_infos ll_id:integer
 :: ------------------------------------------------------
 
 :: mods available on the site
-call rails g scaffold mods mod_id:integer game:text name:text aliases:text is_utility:boolean category:integer has_adult_content:boolean nm_id:integer ws_id:integer ll_id:integer
+call rails g scaffold mods mod_id:integer game_id:integer name:text aliases:text is_utility:boolean has_adult_content:boolean primary_category:integer secondary_category:integer
 
 :: versions of mods available on the site
 call rails g scaffold mod_versions mv_id:integer mod_id:integer nxm_file_id:integer released:datetime obsolete:boolean dangerous:boolean
