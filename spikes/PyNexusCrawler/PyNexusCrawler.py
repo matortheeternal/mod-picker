@@ -27,6 +27,7 @@ uploadedBy = soup.find("div", class_="uploader").a.text
 dates = soup.find("div", class_="header-dates")
 dateAdded = dates.contents[1].text.replace("Added: ", "")
 dateUpdated = dates.contents[3].text.replace("Updated: ", "")
+nexusCategory = soup.find("span", class_="header-cat").find_all("a")[1]['href'].split("src_cat=", 1)[1]
 
 # tab stats
 numFiles = soup.find("a", class_="tab-files").strong.text.lstrip("0")
@@ -54,7 +55,7 @@ except AttributeError:
 try:
 	numVideos = soup.find("a", class_="tab-videos").strong.text.lstrip("0")
 except AttributeError:
-	numForums = "0"
+	numVideos = "0"
 
 print("DONE.\n")
 
@@ -81,3 +82,33 @@ print("Images Count: "+numImages)
 print("Posts Count: "+numPosts)
 print("Forums Count: "+numForums)
 print("Videos Count: "+numVideos)
+print("Nexus Category: "+nexusCategory);
+
+# EXPORT STATS FOR SEEDING
+output = open('./seeds.rb', 'a')
+output.write('Mod.create(\n')
+output.write('    name: "'+name+'",\n')
+output.write('    primary_category: Category.where(name: "").first.id,\n')
+output.write('    secondary_category: Category.where(name: "").first.id,\n')
+output.write('    game_id: gameSkyrim.id\n')
+output.write(')\n\n')
+output.write('NexusInfo.create(\n')
+output.write('    mod_id: '+nm_id+',\n')
+output.write('    uploaded_by: "'+uploadedBy+'",\n')
+output.write('    authors: "'+author+'",\n')
+output.write('    date_released: DateTime.strptime("'+dateAdded+'", nexusDateFormat),\n')
+output.write('    date_updated: DateTime.strptime("'+dateUpdated+'", nexusDateFormat),\n')
+output.write('    endorsements: '+numEndorsements.replace(',', '')+',\n')
+output.write('    total_downloads: '+totalDownloads.replace(',', '')+',\n')
+output.write('    unique_downloads: '+uniqueDownloads.replace(',', '')+',\n')
+output.write('    views: '+totalViews.replace(',', '')+',\n')
+output.write('    posts_count: '+numPosts+',\n')
+output.write('    videos_count: '+numVideos+',\n')
+output.write('    images_count: '+numImages+',\n')
+output.write('    files_count: '+numFiles+',\n')
+output.write('    articles_count: '+numArticles+',\n')
+output.write('    nexus_category: '+nm_id+',\n')
+output.write(')\n\n')
+
+# close output
+output.close()
