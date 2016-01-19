@@ -309,3 +309,37 @@ Category.create(
     parent_id: catAudiovisual.id,
     description: "Any mod which alters or adds sounds or music to the game."
 )
+
+
+#==================================================
+# CREATE SAMPLE MODS
+#==================================================
+
+# Helper vars
+nexusDateFormat = "%k:%M, %d %b %Y"
+
+# Top recently endorsed mods
+modSkyUI = Mod.create(
+    name: "SkyUI",
+    primary_category: Category.find_by_Name("Gameplay - User Interface").id,
+    secondary_category: Category.find_by_Name("Resources - Framework").id,
+    game_id: gameSkyrim.id
+)
+
+NexusInfo.create(
+    mod_id: modSkyUI.id,
+    uploaded_by: "schlangster",
+    authors: "SkyUI Team",
+    date_released: DateTime.strptime(" 0:24, 17 Dec 2011", nexusDateFormat),
+    date_updated: DateTime.strptime("15:38, 24 Aug 2015", nexusDateFormat),
+    endorsements: 401363,
+    total_downloads: 11193037,
+    unique_downloads: 5677583,
+    views: 26147936,
+    posts_count: 17023,
+    videos_count: 23,
+    images_count: 23,
+    files_count: 14,
+    articles_count: 1,
+    nexus_category: 42
+)
