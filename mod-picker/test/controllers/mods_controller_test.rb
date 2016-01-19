@@ -18,7 +18,7 @@ class ModsControllerTest < ActionController::TestCase
 
   test "should create mod" do
     assert_difference('Mod.count') do
-      post :create, mod: { aliases: @mod.aliases, category: @mod.category, game: @mod.game, has_adult_content: @mod.has_adult_content, is_utility: @mod.is_utility, ll_id: @mod.ll_id, mod_id: @mod.mod_id, name: @mod.name, nm_id: @mod.nm_id, ws_id: @mod.ws_id }
+      post :create, mod: { aliases: @mod.aliases, category: @mod.category, game_id: @mod.game_id, has_adult_content: @mod.has_adult_content, is_utility: @mod.is_utility, ll_id: @mod.ll_id, mod_id: @mod.mod_id, name: @mod.name, nm_id: @mod.nm_id, ws_id: @mod.ws_id }
     end
 
     assert_redirected_to mod_path(assigns(:mod))
@@ -35,7 +35,7 @@ class ModsControllerTest < ActionController::TestCase
   end
 
   test "should update mod" do
-    patch :update, id: @mod, mod: { aliases: @mod.aliases, category: @mod.category, game: @mod.game, has_adult_content: @mod.has_adult_content, is_utility: @mod.is_utility, ll_id: @mod.ll_id, mod_id: @mod.mod_id, name: @mod.name, nm_id: @mod.nm_id, ws_id: @mod.ws_id }
+    patch :update, id: @mod, mod: { aliases: @mod.aliases, category: @mod.category, game_id: @mod.game_id, has_adult_content: @mod.has_adult_content, is_utility: @mod.is_utility, ll_id: @mod.ll_id, mod_id: @mod.mod_id, name: @mod.name, nm_id: @mod.nm_id, ws_id: @mod.ws_id }
     assert_redirected_to mod_path(assigns(:mod))
   end
 

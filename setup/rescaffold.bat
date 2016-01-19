@@ -1,4 +1,14 @@
 :: ------------------------------------------------------
+:: static data tables
+:: ------------------------------------------------------
+
+call rails g scaffold categories id:integer parent_id:integer name:text description:text --force --skip-migration
+
+call rails g scaffold category_priorities dominant_id:integer recessive_id:integer --force --skip-migration
+
+call rails g scaffold games id:integer short_name:text long_name:text abbr_name:text exe_name:text steam_app_ids:text --force --skip-migration
+
+:: ------------------------------------------------------
 :: site mod info tables
 :: ------------------------------------------------------
 
@@ -14,7 +24,7 @@ call rails g scaffold lover_infos ll_id:integer --force --skip-migration
 :: ------------------------------------------------------
 
 :: mods available on the site
-call rails g scaffold mods mod_id:integer game:text name:text aliases:text is_utility:boolean category:integer has_adult_content:boolean nm_id:integer ws_id:integer ll_id:integer --force --skip-migration
+call rails g scaffold mods mod_id:integer game_id:integer name:text aliases:text is_utility:boolean category:integer has_adult_content:boolean nm_id:integer ws_id:integer ll_id:integer --force --skip-migration
 
 :: versions of mods available on the site
 :: call rails g scaffold mod_versions mv_id:integer mod_id:integer nxm_file_id:integer released:datetime obsolete:boolean dangerous:boolean

@@ -1,7 +1,7 @@
 FactoryGirl.define do
   factory :mod do
     mod_id 1
-game "MyText"
+game_id 1
 name "MyText"
 aliases "MyText"
 is_utility false
