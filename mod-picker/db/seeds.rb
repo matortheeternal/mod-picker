@@ -319,7 +319,7 @@ Category.create(
 nexusDateFormat = "%k:%M, %d %b %Y"
 
 # Top recently endorsed mods
-modSkyUI = Mod.create(
+Mod.create(
     name: "SkyUI",
     primary_category: Category.find_by_Name("Gameplay - User Interface").id,
     secondary_category: Category.find_by_Name("Resources - Framework").id,
@@ -327,7 +327,7 @@ modSkyUI = Mod.create(
 )
 
 NexusInfo.create(
-    mod_id: modSkyUI.id,
+    mod_id: Mod.last.id,
     uploaded_by: "schlangster",
     authors: "SkyUI Team",
     date_released: DateTime.strptime(" 0:24, 17 Dec 2011", nexusDateFormat),
