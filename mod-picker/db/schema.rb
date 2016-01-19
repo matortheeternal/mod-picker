@@ -11,15 +11,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160119073104) do
+ActiveRecord::Schema.define(version: 20160119082929) do
 
   create_table "agreement_marks", id: false, force: :cascade do |t|
-    t.integer "inc_id",       limit: 4
-    t.integer "submitted_by", limit: 4
+    t.integer "incorrect_note_id", limit: 4
+    t.integer "submitted_by",      limit: 4
     t.boolean "agree"
   end
 
-  add_index "agreement_marks", ["inc_id"], name: "inc_id", using: :btree
+  add_index "agreement_marks", ["incorrect_note_id"], name: "inc_id", using: :btree
   add_index "agreement_marks", ["submitted_by"], name: "submitted_by", using: :btree
 
   create_table "categories", force: :cascade do |t|
@@ -74,42 +74,42 @@ ActiveRecord::Schema.define(version: 20160119073104) do
   end
 
   create_table "helpful_marks", id: false, force: :cascade do |t|
-    t.integer "r_id",         limit: 4
-    t.integer "cn_id",        limit: 4
-    t.integer "in_id",        limit: 4
-    t.integer "submitted_by", limit: 4
+    t.integer "review_id",             limit: 4
+    t.integer "compatibility_note_id", limit: 4
+    t.integer "installation_note_id",  limit: 4
+    t.integer "submitted_by",          limit: 4
     t.boolean "helpful"
   end
 
-  add_index "helpful_marks", ["cn_id"], name: "cn_id", using: :btree
-  add_index "helpful_marks", ["in_id"], name: "in_id", using: :btree
-  add_index "helpful_marks", ["r_id"], name: "r_id", using: :btree
+  add_index "helpful_marks", ["compatibility_note_id"], name: "cn_id", using: :btree
+  add_index "helpful_marks", ["installation_note_id"], name: "in_id", using: :btree
+  add_index "helpful_marks", ["review_id"], name: "r_id", using: :btree
   add_index "helpful_marks", ["submitted_by"], name: "submitted_by", using: :btree
 
   create_table "incorrect_notes", force: :cascade do |t|
-    t.integer "r_id",         limit: 4
-    t.integer "cn_id",        limit: 4
-    t.integer "in_id",        limit: 4
-    t.integer "submitted_by", limit: 4
-    t.text    "reason",       limit: 65535
+    t.integer "review_id",             limit: 4
+    t.integer "compatibility_note_id", limit: 4
+    t.integer "installation_note_id",  limit: 4
+    t.integer "submitted_by",          limit: 4
+    t.text    "reason",                limit: 65535
   end
 
-  add_index "incorrect_notes", ["cn_id"], name: "cn_id", using: :btree
-  add_index "incorrect_notes", ["in_id"], name: "in_id", using: :btree
-  add_index "incorrect_notes", ["r_id"], name: "r_id", using: :btree
+  add_index "incorrect_notes", ["compatibility_note_id"], name: "cn_id", using: :btree
+  add_index "incorrect_notes", ["installation_note_id"], name: "in_id", using: :btree
+  add_index "incorrect_notes", ["review_id"], name: "r_id", using: :btree
   add_index "incorrect_notes", ["submitted_by"], name: "submitted_by", using: :btree
 
   create_table "installation_notes", force: :cascade do |t|
-    t.integer "submitted_by", limit: 4
-    t.integer "mv_id",        limit: 4
+    t.integer "submitted_by",   limit: 4
+    t.integer "mod_version_id", limit: 4
     t.boolean "always"
-    t.enum    "note_type",    limit: ["Download Option", "FOMOD Option"]
+    t.enum    "note_type",      limit: ["Download Option", "FOMOD Option"]
     t.date    "submitted"
     t.date    "edited"
-    t.text    "text_body",    limit: 65535
+    t.text    "text_body",      limit: 65535
   end
 
-  add_index "installation_notes", ["mv_id"], name: "mv_id", using: :btree
+  add_index "installation_notes", ["mod_version_id"], name: "mv_id", using: :btree
   add_index "installation_notes", ["submitted_by"], name: "submitted_by", using: :btree
 
   create_table "lover_infos", force: :cascade do |t|
@@ -117,10 +117,10 @@ ActiveRecord::Schema.define(version: 20160119073104) do
   end
 
   create_table "masters", force: :cascade do |t|
-    t.integer "pl_id", limit: 4
+    t.integer "plugin_id", limit: 4
   end
 
-  add_index "masters", ["pl_id"], name: "pl_id", using: :btree
+  add_index "masters", ["plugin_id"], name: "pl_id", using: :btree
 
   create_table "mod_asset_files", force: :cascade do |t|
     t.string "filepath", limit: 128, null: false
@@ -129,68 +129,68 @@ ActiveRecord::Schema.define(version: 20160119073104) do
   add_index "mod_asset_files", ["filepath"], name: "filepath", unique: true, using: :btree
 
   create_table "mod_comments", id: false, force: :cascade do |t|
-    t.integer "mod_id", limit: 4
-    t.integer "c_id",   limit: 4
+    t.integer "mod_id",     limit: 4
+    t.integer "comment_id", limit: 4
   end
 
-  add_index "mod_comments", ["c_id"], name: "c_id", using: :btree
+  add_index "mod_comments", ["comment_id"], name: "c_id", using: :btree
   add_index "mod_comments", ["mod_id"], name: "mod_id", using: :btree
 
   create_table "mod_list_comments", id: false, force: :cascade do |t|
-    t.integer "ml_id", limit: 4
-    t.integer "c_id",  limit: 4
+    t.integer "mod_list_id", limit: 4
+    t.integer "comment_id",  limit: 4
   end
 
-  add_index "mod_list_comments", ["c_id"], name: "c_id", using: :btree
-  add_index "mod_list_comments", ["ml_id"], name: "ml_id", using: :btree
+  add_index "mod_list_comments", ["comment_id"], name: "c_id", using: :btree
+  add_index "mod_list_comments", ["mod_list_id"], name: "ml_id", using: :btree
 
   create_table "mod_list_compatibility_notes", id: false, force: :cascade do |t|
-    t.integer "ml_id",  limit: 4
-    t.integer "cn_id",  limit: 4
-    t.enum    "status", limit: ["Resolved", "Ignored"]
+    t.integer "mod_list_id",           limit: 4
+    t.integer "compatibility_note_id", limit: 4
+    t.enum    "status",                limit: ["Resolved", "Ignored"]
   end
 
-  add_index "mod_list_compatibility_notes", ["cn_id"], name: "cn_id", using: :btree
-  add_index "mod_list_compatibility_notes", ["ml_id"], name: "ml_id", using: :btree
+  add_index "mod_list_compatibility_notes", ["compatibility_note_id"], name: "cn_id", using: :btree
+  add_index "mod_list_compatibility_notes", ["mod_list_id"], name: "ml_id", using: :btree
 
   create_table "mod_list_custom_plugins", id: false, force: :cascade do |t|
-    t.integer "ml_id",       limit: 4
+    t.integer "mod_list_id", limit: 4
     t.boolean "active"
     t.integer "load_order",  limit: 2
     t.string  "title",       limit: 64
     t.text    "description", limit: 65535
   end
 
-  add_index "mod_list_custom_plugins", ["ml_id"], name: "ml_id", using: :btree
+  add_index "mod_list_custom_plugins", ["mod_list_id"], name: "ml_id", using: :btree
 
   create_table "mod_list_installation_notes", id: false, force: :cascade do |t|
-    t.integer "ml_id",  limit: 4
-    t.integer "in_id",  limit: 4
-    t.enum    "status", limit: ["Resolved", "Ignored"]
+    t.integer "mod_list_id",          limit: 4
+    t.integer "installation_note_id", limit: 4
+    t.enum    "status",               limit: ["Resolved", "Ignored"]
   end
 
-  add_index "mod_list_installation_notes", ["in_id"], name: "in_id", using: :btree
-  add_index "mod_list_installation_notes", ["ml_id"], name: "ml_id", using: :btree
+  add_index "mod_list_installation_notes", ["installation_note_id"], name: "in_id", using: :btree
+  add_index "mod_list_installation_notes", ["mod_list_id"], name: "ml_id", using: :btree
 
   create_table "mod_list_mods", id: false, force: :cascade do |t|
-    t.integer "ml_id",         limit: 4
+    t.integer "mod_list_id",   limit: 4
     t.integer "mod_id",        limit: 4
     t.boolean "active"
     t.integer "install_order", limit: 2
   end
 
-  add_index "mod_list_mods", ["ml_id"], name: "ml_id", using: :btree
   add_index "mod_list_mods", ["mod_id"], name: "mod_id", using: :btree
+  add_index "mod_list_mods", ["mod_list_id"], name: "ml_id", using: :btree
 
   create_table "mod_list_plugins", id: false, force: :cascade do |t|
-    t.integer "ml_id",      limit: 4
-    t.integer "pl_id",      limit: 4
+    t.integer "mod_list_id", limit: 4
+    t.integer "plugin_id",   limit: 4
     t.boolean "active"
-    t.integer "load_order", limit: 2
+    t.integer "load_order",  limit: 2
   end
 
-  add_index "mod_list_plugins", ["ml_id"], name: "ml_id", using: :btree
-  add_index "mod_list_plugins", ["pl_id"], name: "pl_id", using: :btree
+  add_index "mod_list_plugins", ["mod_list_id"], name: "ml_id", using: :btree
+  add_index "mod_list_plugins", ["plugin_id"], name: "pl_id", using: :btree
 
   create_table "mod_lists", force: :cascade do |t|
     t.text    "game",              limit: 255
@@ -207,12 +207,12 @@ ActiveRecord::Schema.define(version: 20160119073104) do
   add_index "mod_lists", ["created_by"], name: "created_by", using: :btree
 
   create_table "mod_version_file_map", id: false, force: :cascade do |t|
-    t.integer "mv_id",  limit: 4
-    t.integer "maf_id", limit: 4
+    t.integer "mod_version_id",    limit: 4
+    t.integer "mod_asset_file_id", limit: 4
   end
 
-  add_index "mod_version_file_map", ["maf_id"], name: "maf_id", using: :btree
-  add_index "mod_version_file_map", ["mv_id"], name: "mv_id", using: :btree
+  add_index "mod_version_file_map", ["mod_asset_file_id"], name: "maf_id", using: :btree
+  add_index "mod_version_file_map", ["mod_version_id"], name: "mv_id", using: :btree
 
   create_table "mod_versions", force: :cascade do |t|
     t.integer "mod_id",      limit: 4
@@ -258,28 +258,28 @@ ActiveRecord::Schema.define(version: 20160119073104) do
   end
 
   create_table "plugin_override_map", id: false, force: :cascade do |t|
-    t.integer "pl_id",   limit: 4
-    t.integer "mst_id",  limit: 4
-    t.integer "form_id", limit: 4
-    t.string  "sig",     limit: 4
-    t.text    "name",    limit: 255
+    t.integer "plugin_id", limit: 4
+    t.integer "master_id", limit: 4
+    t.integer "form_id",   limit: 4
+    t.string  "sig",       limit: 4
+    t.text    "name",      limit: 255
     t.boolean "is_itm"
     t.boolean "is_itpo"
     t.boolean "is_udr"
   end
 
-  add_index "plugin_override_map", ["mst_id"], name: "mst_id", using: :btree
-  add_index "plugin_override_map", ["pl_id"], name: "pl_id", using: :btree
+  add_index "plugin_override_map", ["master_id"], name: "mst_id", using: :btree
+  add_index "plugin_override_map", ["plugin_id"], name: "pl_id", using: :btree
 
   create_table "plugin_record_groups", id: false, force: :cascade do |t|
-    t.integer "pl_id",            limit: 4
+    t.integer "plugin_id",        limit: 4
     t.string  "sig",              limit: 4
     t.text    "name",             limit: 255
     t.integer "new_records",      limit: 4
     t.integer "override_records", limit: 4
   end
 
-  add_index "plugin_record_groups", ["pl_id"], name: "pl_id", using: :btree
+  add_index "plugin_record_groups", ["plugin_id"], name: "pl_id", using: :btree
 
   create_table "plugins", force: :cascade do |t|
     t.integer "mv_id",       limit: 4
@@ -329,11 +329,11 @@ ActiveRecord::Schema.define(version: 20160119073104) do
   add_index "user_bios", ["user_id"], name: "user_id", using: :btree
 
   create_table "user_comments", id: false, force: :cascade do |t|
-    t.integer "user_id", limit: 4
-    t.integer "c_id",    limit: 4
+    t.integer "user_id",    limit: 4
+    t.integer "comment_id", limit: 4
   end
 
-  add_index "user_comments", ["c_id"], name: "c_id", using: :btree
+  add_index "user_comments", ["comment_id"], name: "c_id", using: :btree
   add_index "user_comments", ["user_id"], name: "user_id", using: :btree
 
   create_table "user_mod_author_map", id: false, force: :cascade do |t|
@@ -345,11 +345,11 @@ ActiveRecord::Schema.define(version: 20160119073104) do
   add_index "user_mod_author_map", ["user_id"], name: "user_id", using: :btree
 
   create_table "user_mod_list_star_map", id: false, force: :cascade do |t|
-    t.integer "ml_id",   limit: 4
-    t.integer "user_id", limit: 4
+    t.integer "mod_list_id", limit: 4
+    t.integer "user_id",     limit: 4
   end
 
-  add_index "user_mod_list_star_map", ["ml_id"], name: "ml_id", using: :btree
+  add_index "user_mod_list_star_map", ["mod_list_id"], name: "ml_id", using: :btree
   add_index "user_mod_list_star_map", ["user_id"], name: "user_id", using: :btree
 
   create_table "user_mod_star_map", id: false, force: :cascade do |t|
@@ -422,7 +422,7 @@ ActiveRecord::Schema.define(version: 20160119073104) do
     t.integer "mod_id", limit: 4, null: false
   end
 
-  add_foreign_key "agreement_marks", "incorrect_notes", column: "inc_id", name: "agreement_marks_ibfk_1"
+  add_foreign_key "agreement_marks", "incorrect_notes", name: "agreement_marks_ibfk_1"
   add_foreign_key "agreement_marks", "users", column: "submitted_by", name: "agreement_marks_ibfk_2"
   add_foreign_key "categories", "categories", column: "parent_id"
   add_foreign_key "category_priorities", "categories", column: "dominant_id"
@@ -432,51 +432,51 @@ ActiveRecord::Schema.define(version: 20160119073104) do
   add_foreign_key "compatibility_notes", "installation_notes", column: "in_id", name: "compatibility_notes_ibfk_3"
   add_foreign_key "compatibility_notes", "plugins", column: "compatibility_patch", name: "compatibility_notes_ibfk_2"
   add_foreign_key "compatibility_notes", "users", column: "submitted_by", name: "compatibility_notes_ibfk_1"
-  add_foreign_key "helpful_marks", "compatibility_notes", column: "cn_id", name: "helpful_marks_ibfk_2"
-  add_foreign_key "helpful_marks", "installation_notes", column: "in_id", name: "helpful_marks_ibfk_3"
-  add_foreign_key "helpful_marks", "reviews", column: "r_id", name: "helpful_marks_ibfk_1"
+  add_foreign_key "helpful_marks", "compatibility_notes", name: "helpful_marks_ibfk_2"
+  add_foreign_key "helpful_marks", "installation_notes", name: "helpful_marks_ibfk_3"
+  add_foreign_key "helpful_marks", "reviews", name: "helpful_marks_ibfk_1"
   add_foreign_key "helpful_marks", "users", column: "submitted_by", name: "helpful_marks_ibfk_4"
-  add_foreign_key "incorrect_notes", "compatibility_notes", column: "cn_id", name: "incorrect_notes_ibfk_2"
-  add_foreign_key "incorrect_notes", "installation_notes", column: "in_id", name: "incorrect_notes_ibfk_3"
-  add_foreign_key "incorrect_notes", "reviews", column: "r_id", name: "incorrect_notes_ibfk_1"
+  add_foreign_key "incorrect_notes", "compatibility_notes", name: "incorrect_notes_ibfk_2"
+  add_foreign_key "incorrect_notes", "installation_notes", name: "incorrect_notes_ibfk_3"
+  add_foreign_key "incorrect_notes", "reviews", name: "incorrect_notes_ibfk_1"
   add_foreign_key "incorrect_notes", "users", column: "submitted_by", name: "incorrect_notes_ibfk_4"
-  add_foreign_key "installation_notes", "mod_versions", column: "mv_id", name: "installation_notes_ibfk_2"
+  add_foreign_key "installation_notes", "mod_versions", name: "installation_notes_ibfk_2"
   add_foreign_key "installation_notes", "users", column: "submitted_by", name: "installation_notes_ibfk_1"
-  add_foreign_key "masters", "plugins", column: "pl_id", name: "masters_ibfk_1"
-  add_foreign_key "mod_comments", "comments", column: "c_id", name: "mod_comments_ibfk_2"
+  add_foreign_key "masters", "plugins", name: "masters_ibfk_1"
+  add_foreign_key "mod_comments", "comments", name: "mod_comments_ibfk_2"
   add_foreign_key "mod_comments", "mods", name: "mod_comments_ibfk_1"
-  add_foreign_key "mod_list_comments", "comments", column: "c_id", name: "mod_list_comments_ibfk_2"
-  add_foreign_key "mod_list_comments", "mod_lists", column: "ml_id", name: "mod_list_comments_ibfk_1"
-  add_foreign_key "mod_list_compatibility_notes", "compatibility_notes", column: "cn_id", name: "mod_list_compatibility_notes_ibfk_2"
-  add_foreign_key "mod_list_compatibility_notes", "mod_lists", column: "ml_id", name: "mod_list_compatibility_notes_ibfk_1"
-  add_foreign_key "mod_list_custom_plugins", "mod_lists", column: "ml_id", name: "mod_list_custom_plugins_ibfk_1"
-  add_foreign_key "mod_list_installation_notes", "installation_notes", column: "in_id", name: "mod_list_installation_notes_ibfk_2"
-  add_foreign_key "mod_list_installation_notes", "mod_lists", column: "ml_id", name: "mod_list_installation_notes_ibfk_1"
-  add_foreign_key "mod_list_mods", "mod_lists", column: "ml_id", name: "mod_list_mods_ibfk_1"
+  add_foreign_key "mod_list_comments", "comments", name: "mod_list_comments_ibfk_2"
+  add_foreign_key "mod_list_comments", "mod_lists", name: "mod_list_comments_ibfk_1"
+  add_foreign_key "mod_list_compatibility_notes", "compatibility_notes", name: "mod_list_compatibility_notes_ibfk_2"
+  add_foreign_key "mod_list_compatibility_notes", "mod_lists", name: "mod_list_compatibility_notes_ibfk_1"
+  add_foreign_key "mod_list_custom_plugins", "mod_lists", name: "mod_list_custom_plugins_ibfk_1"
+  add_foreign_key "mod_list_installation_notes", "installation_notes", name: "mod_list_installation_notes_ibfk_2"
+  add_foreign_key "mod_list_installation_notes", "mod_lists", name: "mod_list_installation_notes_ibfk_1"
+  add_foreign_key "mod_list_mods", "mod_lists", name: "mod_list_mods_ibfk_1"
   add_foreign_key "mod_list_mods", "mods", name: "mod_list_mods_ibfk_2"
-  add_foreign_key "mod_list_plugins", "mod_lists", column: "ml_id", name: "mod_list_plugins_ibfk_1"
-  add_foreign_key "mod_list_plugins", "plugins", column: "pl_id", name: "mod_list_plugins_ibfk_2"
+  add_foreign_key "mod_list_plugins", "mod_lists", name: "mod_list_plugins_ibfk_1"
+  add_foreign_key "mod_list_plugins", "plugins", name: "mod_list_plugins_ibfk_2"
   add_foreign_key "mod_lists", "users", column: "created_by", name: "mod_lists_ibfk_1"
-  add_foreign_key "mod_version_file_map", "mod_asset_files", column: "maf_id", name: "mod_version_file_map_ibfk_2"
-  add_foreign_key "mod_version_file_map", "mod_versions", column: "mv_id", name: "mod_version_file_map_ibfk_1"
+  add_foreign_key "mod_version_file_map", "mod_asset_files", name: "mod_version_file_map_ibfk_2"
+  add_foreign_key "mod_version_file_map", "mod_versions", name: "mod_version_file_map_ibfk_1"
   add_foreign_key "mod_versions", "mods", name: "mod_versions_ibfk_1"
   add_foreign_key "mods", "categories", column: "primary_category_id"
   add_foreign_key "mods", "categories", column: "secondary_category_id"
   add_foreign_key "mods", "games"
-  add_foreign_key "plugin_override_map", "masters", column: "mst_id", name: "plugin_override_map_ibfk_2"
-  add_foreign_key "plugin_override_map", "plugins", column: "pl_id", name: "plugin_override_map_ibfk_1"
-  add_foreign_key "plugin_record_groups", "plugins", column: "pl_id", name: "plugin_record_groups_ibfk_1"
+  add_foreign_key "plugin_override_map", "masters", name: "plugin_override_map_ibfk_2"
+  add_foreign_key "plugin_override_map", "plugins", name: "plugin_override_map_ibfk_1"
+  add_foreign_key "plugin_record_groups", "plugins", name: "plugin_record_groups_ibfk_1"
   add_foreign_key "plugins", "mod_versions", column: "mv_id", name: "plugins_ibfk_1"
   add_foreign_key "reputation_map", "user_reputations", column: "from_rep_id", name: "reputation_map_ibfk_1"
   add_foreign_key "reputation_map", "user_reputations", column: "to_rep_id", name: "reputation_map_ibfk_2"
   add_foreign_key "reviews", "mods", name: "reviews_ibfk_2"
   add_foreign_key "reviews", "users", column: "submitted_by", name: "reviews_ibfk_1"
   add_foreign_key "user_bios", "users", name: "user_bios_ibfk_1"
-  add_foreign_key "user_comments", "comments", column: "c_id", name: "user_comments_ibfk_2"
+  add_foreign_key "user_comments", "comments", name: "user_comments_ibfk_2"
   add_foreign_key "user_comments", "users", name: "user_comments_ibfk_1"
   add_foreign_key "user_mod_author_map", "mods", name: "user_mod_author_map_ibfk_1"
   add_foreign_key "user_mod_author_map", "users", name: "user_mod_author_map_ibfk_2"
-  add_foreign_key "user_mod_list_star_map", "mod_lists", column: "ml_id", name: "user_mod_list_star_map_ibfk_1"
+  add_foreign_key "user_mod_list_star_map", "mod_lists", name: "user_mod_list_star_map_ibfk_1"
   add_foreign_key "user_mod_list_star_map", "users", name: "user_mod_list_star_map_ibfk_2"
   add_foreign_key "user_mod_star_map", "mods", name: "user_mod_star_map_ibfk_1"
   add_foreign_key "user_mod_star_map", "users", name: "user_mod_star_map_ibfk_2"
