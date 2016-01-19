@@ -7,10 +7,9 @@
     <thead>
       <tr>
           <th>nm_id</th>
+          <th>mod_id</th>
           <th>uploaded_by</th>
           <th>authors</th>
-          <th>datetime_released</th>
-          <th>datetime_updated</th>
           <th>endorsements</th>
           <th>total_downloads</th>
           <th>unique_downloads</th>
@@ -30,10 +29,9 @@
       <% @nexus_infos.each do |nexus_info| %>
         <tr>
             <td><%= nexus_info.nm_id %></td>
+            <td><%= nexus_info.mod_id %></td>
             <td><%= nexus_info.uploaded_by %></td>
             <td><%= nexus_info.authors %></td>
-            <td><%= nexus_info.datetime_released %></td>
-            <td><%= nexus_info.datetime_updated %></td>
             <td><%= nexus_info.endorsements %></td>
             <td><%= nexus_info.total_downloads %></td>
             <td><%= nexus_info.unique_downloads %></td>

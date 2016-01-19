@@ -32,24 +32,16 @@
     <%= f.check_box :is_utility %>
   </div>
   <div class="field">
-    <%= f.label :category %><br>
-    <%= f.number_field :category %>
-  </div>
-  <div class="field">
     <%= f.label :has_adult_content %><br>
     <%= f.check_box :has_adult_content %>
   </div>
   <div class="field">
-    <%= f.label :nm_id %><br>
-    <%= f.number_field :nm_id %>
+    <%= f.label :primary_category %><br>
+    <%= f.number_field :primary_category %>
   </div>
   <div class="field">
-    <%= f.label :ws_id %><br>
-    <%= f.number_field :ws_id %>
-  </div>
-  <div class="field">
-    <%= f.label :ll_id %><br>
-    <%= f.number_field :ll_id %>
+    <%= f.label :secondary_category %><br>
+    <%= f.number_field :secondary_category %>
   </div>
   <div class="actions">
     <%= f.submit %>
