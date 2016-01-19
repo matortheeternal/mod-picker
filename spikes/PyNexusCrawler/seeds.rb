@@ -2,6 +2,8 @@ Mod.create(
     name: "SkyUI",
     primary_category: Category.where(name: "").first.id,
     secondary_category: Category.where(name: "").first.id,
+    is_utility: false,
+    has_adult_content: false,
     game_id: gameSkyrim.id
 )
 
@@ -11,10 +13,10 @@ NexusInfo.create(
     authors: "SkyUI Team",
     date_released: DateTime.strptime("17/12/2011 - 12:24AM", nexusDateFormat),
     date_updated: DateTime.strptime("24/08/2015 - 03:38PM", nexusDateFormat),
-    endorsements: 401508,
-    total_downloads: 11195347,
-    unique_downloads: 5678813,
-    views: 26152544,
+    endorsements: 401515,
+    total_downloads: 11195444,
+    unique_downloads: 5678866,
+    views: 26152764,
     posts_count: 17023,
     videos_count: 23,
     images_count: 23,
@@ -27,6 +29,8 @@ Mod.create(
     name: "Immersive Armors",
     primary_category: Category.where(name: "").first.id,
     secondary_category: Category.where(name: "").first.id,
+    is_utility: false,
+    has_adult_content: false,
     game_id: gameSkyrim.id
 )
 
@@ -37,9 +41,9 @@ NexusInfo.create(
     date_released: DateTime.strptime("01/07/2012 - 07:23PM", nexusDateFormat),
     date_updated: DateTime.strptime("11/01/2016 - 01:51AM", nexusDateFormat),
     endorsements: 206388,
-    total_downloads: 6391968,
-    unique_downloads: 2920401,
-    views: 16141151,
+    total_downloads: 6392023,
+    unique_downloads: 2920433,
+    views: 16141264,
     posts_count: 15626,
     videos_count: 16,
     images_count: 453,
@@ -52,6 +56,8 @@ Mod.create(
     name: "Skyrim HD - 2K Textures",
     primary_category: Category.where(name: "").first.id,
     secondary_category: Category.where(name: "").first.id,
+    is_utility: false,
+    has_adult_content: false,
     game_id: gameSkyrim.id
 )
 
@@ -61,10 +67,10 @@ NexusInfo.create(
     authors: "NebuLa from AHBmods",
     date_released: DateTime.strptime("19/11/2011 - 01:03AM", nexusDateFormat),
     date_updated: DateTime.strptime("09/01/2016 - 04:57PM", nexusDateFormat),
-    endorsements: 156560,
-    total_downloads: 17683008,
-    unique_downloads: 8505558,
-    views: 20441068,
+    endorsements: 156565,
+    total_downloads: 17683064,
+    unique_downloads: 8505589,
+    views: 20441185,
     posts_count: 8472,
     videos_count: 26,
     images_count: 161,
@@ -77,6 +83,8 @@ Mod.create(
     name: "RaceMenu",
     primary_category: Category.where(name: "").first.id,
     secondary_category: Category.where(name: "").first.id,
+    is_utility: false,
+    has_adult_content: false,
     game_id: gameSkyrim.id
 )
 
@@ -86,10 +94,10 @@ NexusInfo.create(
     authors: "Expired",
     date_released: DateTime.strptime("08/01/2013 - 01:10AM", nexusDateFormat),
     date_updated: DateTime.strptime("18/01/2016 - 10:37AM", nexusDateFormat),
-    endorsements: 147456,
-    total_downloads: 4160432,
-    unique_downloads: 2874249,
-    views: 9600425,
+    endorsements: 147459,
+    total_downloads: 4160491,
+    unique_downloads: 2874281,
+    views: 9600524,
     posts_count: 9998,
     videos_count: 8,
     images_count: 258,
@@ -102,6 +110,8 @@ Mod.create(
     name: "Unofficial Skyrim Legendary Edition Patch",
     primary_category: Category.where(name: "").first.id,
     secondary_category: Category.where(name: "").first.id,
+    is_utility: false,
+    has_adult_content: false,
     game_id: gameSkyrim.id
 )
 
@@ -111,11 +121,11 @@ NexusInfo.create(
     authors: "Unofficial Patch Project Team ",
     date_released: DateTime.strptime("07/11/2015 - 08:41PM", nexusDateFormat),
     date_updated: DateTime.strptime("11/01/2016 - 07:37PM", nexusDateFormat),
-    endorsements: 13230,
-    total_downloads: 249166,
-    unique_downloads: 169050,
-    views: 681896,
-    posts_count: 1604,
+    endorsements: 13232,
+    total_downloads: 249219,
+    unique_downloads: 169082,
+    views: 682041,
+    posts_count: 1605,
     videos_count: 1,
     images_count: 15,
     files_count: 1,
@@ -127,6 +137,8 @@ Mod.create(
     name: "Mod Organizer",
     primary_category: Category.where(name: "").first.id,
     secondary_category: Category.where(name: "").first.id,
+    is_utility: true,
+    has_adult_content: false,
     game_id: gameSkyrim.id
 )
 
@@ -136,10 +148,10 @@ NexusInfo.create(
     authors: "Tannin",
     date_released: DateTime.strptime("24/11/2011 - 03:30PM", nexusDateFormat),
     date_updated: DateTime.strptime("01/12/2015 - 09:23PM", nexusDateFormat),
-    endorsements: 87752,
-    total_downloads: 2062224,
-    unique_downloads: 1496842,
-    views: 4795556,
+    endorsements: 87754,
+    total_downloads: 2062261,
+    unique_downloads: 1496867,
+    views: 4795636,
     posts_count: 12997,
     videos_count: 35,
     images_count: 4,
@@ -152,6 +164,8 @@ Mod.create(
     name: "Skyrim Flora Overhaul",
     primary_category: Category.where(name: "").first.id,
     secondary_category: Category.where(name: "").first.id,
+    is_utility: false,
+    has_adult_content: false,
     game_id: gameSkyrim.id
 )
 
@@ -162,9 +176,9 @@ NexusInfo.create(
     date_released: DateTime.strptime("13/11/2011 - 10:36PM", nexusDateFormat),
     date_updated: DateTime.strptime("16/01/2016 - 10:15PM", nexusDateFormat),
     endorsements: 98476,
-    total_downloads: 5201930,
-    unique_downloads: 3329326,
-    views: 10208635,
+    total_downloads: 5201973,
+    unique_downloads: 3329348,
+    views: 10208722,
     posts_count: 10565,
     videos_count: 47,
     images_count: 741,
@@ -177,6 +191,8 @@ Mod.create(
     name: "TES5Edit",
     primary_category: Category.where(name: "").first.id,
     secondary_category: Category.where(name: "").first.id,
+    is_utility: true,
+    has_adult_content: false,
     game_id: gameSkyrim.id
 )
 
@@ -187,9 +203,9 @@ NexusInfo.create(
     date_released: DateTime.strptime("22/10/2012 - 06:22AM", nexusDateFormat),
     date_updated: DateTime.strptime("10/11/2015 - 07:43AM", nexusDateFormat),
     endorsements: 79736,
-    total_downloads: 1587025,
-    unique_downloads: 1154611,
-    views: 4577802,
+    total_downloads: 1587046,
+    unique_downloads: 1154626,
+    views: 4577858,
     posts_count: 0,
     videos_count: 14,
     images_count: 4,
@@ -202,6 +218,8 @@ Mod.create(
     name: "Merge Plugins",
     primary_category: Category.where(name: "").first.id,
     secondary_category: Category.where(name: "").first.id,
+    is_utility: true,
+    has_adult_content: false,
     game_id: gameSkyrim.id
 )
 
@@ -211,10 +229,10 @@ NexusInfo.create(
     authors: "Mator",
     date_released: DateTime.strptime("24/12/2015 - 01:56AM", nexusDateFormat),
     date_updated: DateTime.strptime("05/01/2016 - 09:16AM", nexusDateFormat),
-    endorsements: 1024,
-    total_downloads: 11449,
-    unique_downloads: 10300,
-    views: 84445,
+    endorsements: 1025,
+    total_downloads: 11450,
+    unique_downloads: 10301,
+    views: 84459,
     posts_count: 661,
     videos_count: 0,
     images_count: 15,
@@ -227,6 +245,8 @@ Mod.create(
     name: "The Lily - Armour Mashup",
     primary_category: Category.where(name: "").first.id,
     secondary_category: Category.where(name: "").first.id,
+    is_utility: false,
+    has_adult_content: false,
     game_id: gameSkyrim.id
 )
 
@@ -237,9 +257,9 @@ NexusInfo.create(
     date_released: DateTime.strptime("08/12/2015 - 09:42PM", nexusDateFormat),
     date_updated: DateTime.strptime("01/01/2016 - 08:21PM", nexusDateFormat),
     endorsements: 882,
-    total_downloads: 22012,
+    total_downloads: 22013,
     unique_downloads: 18446,
-    views: 119170,
+    views: 119173,
     posts_count: 206,
     videos_count: 5,
     images_count: 45,
@@ -252,6 +272,8 @@ Mod.create(
     name: "THE PEOPLE OF SKYRIM ULTIMATE EDITION",
     primary_category: Category.where(name: "").first.id,
     secondary_category: Category.where(name: "").first.id,
+    is_utility: false,
+    has_adult_content: false,
     game_id: gameSkyrim.id
 )
 
@@ -262,9 +284,9 @@ NexusInfo.create(
     date_released: DateTime.strptime("05/01/2016 - 10:31AM", nexusDateFormat),
     date_updated: DateTime.strptime("19/01/2016 - 03:32AM", nexusDateFormat),
     endorsements: 741,
-    total_downloads: 48912,
-    unique_downloads: 31697,
-    views: 169244,
+    total_downloads: 48951,
+    unique_downloads: 31732,
+    views: 169304,
     posts_count: 1215,
     videos_count: 0,
     images_count: 18,
@@ -277,6 +299,8 @@ Mod.create(
     name: "Skaal You Need - Skaal house and follower",
     primary_category: Category.where(name: "").first.id,
     secondary_category: Category.where(name: "").first.id,
+    is_utility: false,
+    has_adult_content: false,
     game_id: gameSkyrim.id
 )
 
@@ -287,9 +311,9 @@ NexusInfo.create(
     date_released: DateTime.strptime("17/12/2015 - 09:23PM", nexusDateFormat),
     date_updated: DateTime.strptime("29/12/2015 - 08:16PM", nexusDateFormat),
     endorsements: 705,
-    total_downloads: 11942,
-    unique_downloads: 9776,
-    views: 94557,
+    total_downloads: 11943,
+    unique_downloads: 9777,
+    views: 94561,
     posts_count: 240,
     videos_count: 2,
     images_count: 35,
@@ -302,6 +326,8 @@ Mod.create(
     name: "SC - Hairstyles",
     primary_category: Category.where(name: "").first.id,
     secondary_category: Category.where(name: "").first.id,
+    is_utility: false,
+    has_adult_content: false,
     game_id: gameSkyrim.id
 )
 
@@ -312,9 +338,9 @@ NexusInfo.create(
     date_released: DateTime.strptime("25/11/2015 - 09:21AM", nexusDateFormat),
     date_updated: DateTime.strptime("02/01/2016 - 06:11PM", nexusDateFormat),
     endorsements: 632,
-    total_downloads: 10012,
-    unique_downloads: 8459,
-    views: 89751,
+    total_downloads: 10013,
+    unique_downloads: 8460,
+    views: 89754,
     posts_count: 98,
     videos_count: 3,
     images_count: 61,
@@ -327,6 +353,8 @@ Mod.create(
     name: "Real Names",
     primary_category: Category.where(name: "").first.id,
     secondary_category: Category.where(name: "").first.id,
+    is_utility: false,
+    has_adult_content: false,
     game_id: gameSkyrim.id
 )
 
@@ -339,7 +367,7 @@ NexusInfo.create(
     endorsements: 628,
     total_downloads: 10531,
     unique_downloads: 9122,
-    views: 45745,
+    views: 45746,
     posts_count: 163,
     videos_count: 0,
     images_count: 6,

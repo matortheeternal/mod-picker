@@ -28,6 +28,7 @@ def crawl_mod(nm_id):
 	dateAdded = dates.contents[1].text.replace("Added: ", "")
 	dateUpdated = dates.contents[3].text.replace("Updated: ", "")
 	nexusCategory = soup.find("span", class_="header-cat").find_all("a")[1]['href'].split("src_cat=", 1)[1]
+	isUtility = nexusCategory == "39"
 	
 	# tab stats
 	numFiles = soup.find("a", class_="tab-files").strong.text.lstrip("0")
@@ -90,6 +91,8 @@ def crawl_mod(nm_id):
 	output.write('    name: "'+name+'",\n')
 	output.write('    primary_category: Category.where(name: "").first.id,\n')
 	output.write('    secondary_category: Category.where(name: "").first.id,\n')
+	output.write('    is_utility: '+str(isUtility)+',\n')
+	output.write('    has_adult_content: false,\n')
 	output.write('    game_id: gameSkyrim.id\n')
 	output.write(')\n\n')
 	output.write('NexusInfo.create(\n')
