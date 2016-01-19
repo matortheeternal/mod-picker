@@ -65,7 +65,7 @@ const
       appName: 'FO3'; exeName: 'Fallout3.exe'; appIDs: '22300,22370';
       abbrName: 'fo3'; ),
     ( longName: 'Fallout 4'; gameName: 'Fallout4'; gameMode: gmFO4;
-      appName: 'FO4'; exeName: 'Fallout4.exe'; appIDs: '';
+      appName: 'FO4'; exeName: 'Fallout4.exe'; appIDs: '377160';
       abbrName: 'fo4'; )
   );
 
