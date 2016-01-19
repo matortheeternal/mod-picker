@@ -14,21 +14,13 @@ class AddCategoriesTable < ActiveRecord::Migration
     reversible do |dir|
       dir.up do
         # alter id to be unsigned
-        execute <<-SQL
-          ALTER TABLE categories MODIFY id INT UNSIGNED NOT NULL AUTO_INCREMENT;
-        SQL
+        execute("ALTER TABLE categories MODIFY id INT UNSIGNED NOT NULL AUTO_INCREMENT;")
         # alter parent_id to be unsigned
-        execute <<-SQL
-          ALTER TABLE categories MODIFY parent_id INT UNSIGNED NULL;
-        SQL
+        execute("ALTER TABLE categories MODIFY parent_id INT UNSIGNED NULL;")
         # alter dominant_id to be unsigned
-        execute <<-SQL
-          ALTER TABLE category_priorities MODIFY dominant_id INT UNSIGNED;
-        SQL
+        execute("ALTER TABLE category_priorities MODIFY dominant_id INT UNSIGNED;")
         # alter recessive_id to be unsigned
-        execute <<-SQL
-          ALTER TABLE category_priorities MODIFY recessive_id INT UNSIGNED;
-        SQL
+        execute("ALTER TABLE category_priorities MODIFY recessive_id INT UNSIGNED;")
       end
     end
 

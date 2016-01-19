@@ -11,14 +11,8 @@ class AddGamesTable < ActiveRecord::Migration
     
     reversible do |dir|
       dir.up do
-        # alter id to be unsigned
-        execute <<-SQL
-          ALTER TABLE games MODIFY id INT UNSIGNED NOT NULL AUTO_INCREMENT;
-        SQL
-        # alter game_id to be unsigned
-        execute <<-SQL
-          ALTER TABLE mods MODIFY game_id INT UNSIGNED;
-        SQL
+        execute("ALTER TABLE games MODIFY id INT UNSIGNED NOT NULL AUTO_INCREMENT;")
+        execute("ALTER TABLE mods MODIFY game_id INT UNSIGNED;")
       end
     end
     
