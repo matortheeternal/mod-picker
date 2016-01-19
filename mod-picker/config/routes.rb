@@ -1,45 +1,43 @@
 Rails.application.routes.draw do
-  resources :mod_list_compatibility_notes
-  resources :mod_list_installation_notes
-  resources :agreement_marks
+  resources :games
+  resources :categories
+  resources :category_priorities
+  resources :comments
+  resources :installation_notes
+  resources :compatibility_notes
   resources :incorrect_notes
   resources :helpful_marks
-  resources :user_comments
-  resources :mod_list_comments
-  resources :mod_comments
-  resources :compatibility_notes
-  resources :installation_notes
+  resources :agreement_marks
   resources :reviews
-  resources :comments
-  resources :user_mod_author_maps
-  resources :user_mod_list_star_maps
-  resources :user_mod_star_maps
-  resources :reputation_maps
-  resources :user_reputations
-  resources :user_settings
-  resources :user_bios
-  resources :mod_list_mods
-  resources :mod_list_custom_plugins
-  resources :mod_list_plugins
-  resources :mod_lists
+  resources :mods
+  resources :nexus_infos
+  resources :lover_infos
+  resources :workshop_infos
+  resources :mod_asset_files
+  resources :mod_comments
+  resources :mod_versions
+  resources :mod_version_file_maps
+  resources :plugins
   resources :plugin_record_groups
   resources :plugin_override_maps
   resources :masters
-  resources :plugins
-  resources :mod_version_file_maps
-  resources :mod_asset_files
-  resources :mod_versions
-  resources :mods
-  resources :lover_infos
-  resources :workshop_infos
-  resources :nexus_infos
-  resources :games
-  resources :category_priorities
-  resources :categories
-  resources :nexus_infos
-  resources :workshop_infos
-  resources :nexus_infos
+  resources :mod_lists
+  resources :mod_list_comments
+  resources :mod_list_compatibility_notes
+  resources :mod_list_custom_plugins
+  resources :mod_list_installation_notes
+  resources :mod_list_mods
+  resources :mod_list_plugins
+  resources :users
   devise_for :users
+  resources :user_bios
+  resources :user_comments
+  resources :user_mod_author_maps
+  resources :user_mod_list_star_maps
+  resources :user_mod_star_maps
+  resources :user_reputations
+  resources :user_settings
+  resources :reputation_maps
   
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
