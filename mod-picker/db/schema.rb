@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160119082929) do
+ActiveRecord::Schema.define(version: 20160119101420) do
 
   create_table "agreement_marks", id: false, force: :cascade do |t|
     t.integer "incorrect_note_id", limit: 4
@@ -55,14 +55,14 @@ ActiveRecord::Schema.define(version: 20160119082929) do
     t.enum    "mod_mode",             limit: ["Any", "All"]
     t.integer "compatibility_patch",  limit: 4
     t.enum    "compatibility_status", limit: ["Incompatible", "Partially Compatible", "Patch Available", "Make Custom Patch", "Soft Incompatibility", "Installation Note"]
-    t.integer "in_id",                limit: 4
+    t.integer "installation_note_id", limit: 4
     t.date    "submitted"
     t.date    "edited"
     t.text    "text_body",            limit: 65535
   end
 
   add_index "compatibility_notes", ["compatibility_patch"], name: "compatibility_patch", using: :btree
-  add_index "compatibility_notes", ["in_id"], name: "in_id", using: :btree
+  add_index "compatibility_notes", ["installation_note_id"], name: "in_id", using: :btree
   add_index "compatibility_notes", ["submitted_by"], name: "submitted_by", using: :btree
 
   create_table "games", force: :cascade do |t|
@@ -282,14 +282,14 @@ ActiveRecord::Schema.define(version: 20160119082929) do
   add_index "plugin_record_groups", ["plugin_id"], name: "pl_id", using: :btree
 
   create_table "plugins", force: :cascade do |t|
-    t.integer "mv_id",       limit: 4
-    t.text    "filename",    limit: 255
-    t.text    "author",      limit: 255
-    t.text    "description", limit: 65535
-    t.string  "crc_hash",    limit: 8
+    t.integer "mod_version_id", limit: 4
+    t.text    "filename",       limit: 255
+    t.text    "author",         limit: 255
+    t.text    "description",    limit: 65535
+    t.string  "crc_hash",       limit: 8
   end
 
-  add_index "plugins", ["mv_id"], name: "mv_id", using: :btree
+  add_index "plugins", ["mod_version_id"], name: "mv_id", using: :btree
 
   create_table "reputation_map", id: false, force: :cascade do |t|
     t.integer "from_rep_id", limit: 4
@@ -429,7 +429,7 @@ ActiveRecord::Schema.define(version: 20160119082929) do
   add_foreign_key "category_priorities", "categories", column: "recessive_id"
   add_foreign_key "comments", "comments", column: "parent_comment", name: "comments_ibfk_1"
   add_foreign_key "comments", "users", column: "submitted_by", name: "comments_ibfk_2"
-  add_foreign_key "compatibility_notes", "installation_notes", column: "in_id", name: "compatibility_notes_ibfk_3"
+  add_foreign_key "compatibility_notes", "installation_notes", name: "compatibility_notes_ibfk_3"
   add_foreign_key "compatibility_notes", "plugins", column: "compatibility_patch", name: "compatibility_notes_ibfk_2"
   add_foreign_key "compatibility_notes", "users", column: "submitted_by", name: "compatibility_notes_ibfk_1"
   add_foreign_key "helpful_marks", "compatibility_notes", name: "helpful_marks_ibfk_2"
@@ -466,7 +466,7 @@ ActiveRecord::Schema.define(version: 20160119082929) do
   add_foreign_key "plugin_override_map", "masters", name: "plugin_override_map_ibfk_2"
   add_foreign_key "plugin_override_map", "plugins", name: "plugin_override_map_ibfk_1"
   add_foreign_key "plugin_record_groups", "plugins", name: "plugin_record_groups_ibfk_1"
-  add_foreign_key "plugins", "mod_versions", column: "mv_id", name: "plugins_ibfk_1"
+  add_foreign_key "plugins", "mod_versions", name: "plugins_ibfk_1"
   add_foreign_key "reputation_map", "user_reputations", column: "from_rep_id", name: "reputation_map_ibfk_1"
   add_foreign_key "reputation_map", "user_reputations", column: "to_rep_id", name: "reputation_map_ibfk_2"
   add_foreign_key "reviews", "mods", name: "reviews_ibfk_2"
