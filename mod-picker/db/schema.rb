@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160119103320) do
+ActiveRecord::Schema.define(version: 20160119104044) do
 
   create_table "agreement_marks", id: false, force: :cascade do |t|
     t.integer "incorrect_note_id", limit: 4
@@ -202,9 +202,11 @@ ActiveRecord::Schema.define(version: 20160119103320) do
     t.date    "created"
     t.date    "completed"
     t.text    "description",       limit: 65535
+    t.integer "game_id",           limit: 4,                                                        null: false
   end
 
   add_index "mod_lists", ["created_by"], name: "created_by", using: :btree
+  add_index "mod_lists", ["game_id"], name: "fk_rails_f25cbc0432", using: :btree
 
   create_table "mod_version_file_map", id: false, force: :cascade do |t|
     t.integer "mod_version_id",    limit: 4
@@ -263,9 +265,6 @@ ActiveRecord::Schema.define(version: 20160119103320) do
     t.integer "form_id",   limit: 4
     t.string  "sig",       limit: 4
     t.text    "name",      limit: 255
-    t.boolean "is_itm"
-    t.boolean "is_itpo"
-    t.boolean "is_udr"
   end
 
   add_index "plugin_override_map", ["master_id"], name: "mst_id", using: :btree
@@ -456,6 +455,7 @@ ActiveRecord::Schema.define(version: 20160119103320) do
   add_foreign_key "mod_list_mods", "mods", name: "mod_list_mods_ibfk_2"
   add_foreign_key "mod_list_plugins", "mod_lists", name: "mod_list_plugins_ibfk_1"
   add_foreign_key "mod_list_plugins", "plugins", name: "mod_list_plugins_ibfk_2"
+  add_foreign_key "mod_lists", "games"
   add_foreign_key "mod_lists", "users", column: "created_by", name: "mod_lists_ibfk_1"
   add_foreign_key "mod_version_file_map", "mod_asset_files", name: "mod_version_file_map_ibfk_2"
   add_foreign_key "mod_version_file_map", "mod_versions", name: "mod_version_file_map_ibfk_1"
