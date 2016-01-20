@@ -8,7 +8,7 @@ class ModVersionFileMapsControllerTest < ActionController::TestCase
   test "should get index" do
     get :index
     assert_response :success
-    assert_not_nil assigns(:mod_version_file_maps)
+    assert_not_nil assigns(:mod_version_files)
   end
 
   test "should get new" do
@@ -17,7 +17,7 @@ class ModVersionFileMapsControllerTest < ActionController::TestCase
   end
 
   test "should create mod_version_file_map" do
-    assert_difference('ModVersionFileMap.count') do
+    assert_difference('ModVersionFile.count') do
       post :create, mod_version_file_map: { mod_asset_file_id: @mod_version_file_map.mod_asset_file_id, mod_version_id: @mod_version_file_map.mod_version_id }
     end
 
@@ -40,7 +40,7 @@ class ModVersionFileMapsControllerTest < ActionController::TestCase
   end
 
   test "should destroy mod_version_file_map" do
-    assert_difference('ModVersionFileMap.count', -1) do
+    assert_difference('ModVersionFile.count', -1) do
       delete :destroy, id: @mod_version_file_map
     end
 

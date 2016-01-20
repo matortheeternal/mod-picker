@@ -8,7 +8,7 @@ class ModVersionCompatibilityNoteMapsControllerTest < ActionController::TestCase
   test "should get index" do
     get :index
     assert_response :success
-    assert_not_nil assigns(:mod_version_compatibility_note_maps)
+    assert_not_nil assigns(:mod_version_compatibility_notes)
   end
 
   test "should get new" do
@@ -17,7 +17,7 @@ class ModVersionCompatibilityNoteMapsControllerTest < ActionController::TestCase
   end
 
   test "should create mod_version_compatibility_note_map" do
-    assert_difference('ModVersionCompatibilityNoteMap.count') do
+    assert_difference('ModVersionCompatibilityNote.count') do
       post :create, mod_version_compatibility_note_map: { compatibility_note_id: @mod_version_compatibility_note_map.compatibility_note_id, mod_version_id: @mod_version_compatibility_note_map.mod_version_id }
     end
 
@@ -40,7 +40,7 @@ class ModVersionCompatibilityNoteMapsControllerTest < ActionController::TestCase
   end
 
   test "should destroy mod_version_compatibility_note_map" do
-    assert_difference('ModVersionCompatibilityNoteMap.count', -1) do
+    assert_difference('ModVersionCompatibilityNote.count', -1) do
       delete :destroy, id: @mod_version_compatibility_note_map
     end
 

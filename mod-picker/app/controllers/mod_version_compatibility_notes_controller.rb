@@ -1,10 +1,10 @@
-class ModVersionCompatibilityNoteMapsController < ApplicationController
+class ModVersionCompatibilityNotesController < ApplicationController
   before_action :set_mod_version_compatibility_note_map, only: [:show, :edit, :update, :destroy]
 
-  # GET /mod_version_compatibility_note_maps
-  # GET /mod_version_compatibility_note_maps.json
+  # GET /mod_version_compatibility_notes
+  # GET /mod_version_compatibility_notes.json
   def index
-    @mod_version_compatibility_note_maps = ModVersionCompatibilityNoteMap.all
+    @mod_version_compatibility_note_maps = ModVersionCompatibilityNote.all
     
     respond_to do |format|
       format.html
@@ -12,8 +12,8 @@ class ModVersionCompatibilityNoteMapsController < ApplicationController
     end
   end
 
-  # GET /mod_version_compatibility_note_maps/1
-  # GET /mod_version_compatibility_note_maps/1.json
+  # GET /mod_version_compatibility_notes/1
+  # GET /mod_version_compatibility_notes/1.json
   def show
     respond_to do |format|
       format.html
@@ -21,19 +21,19 @@ class ModVersionCompatibilityNoteMapsController < ApplicationController
     end
   end
 
-  # GET /mod_version_compatibility_note_maps/new
+  # GET /mod_version_compatibility_notes/new
   def new
-    @mod_version_compatibility_note_map = ModVersionCompatibilityNoteMap.new
+    @mod_version_compatibility_note_map = ModVersionCompatibilityNote.new
   end
 
-  # GET /mod_version_compatibility_note_maps/1/edit
+  # GET /mod_version_compatibility_notes/1/edit
   def edit
   end
 
-  # POST /mod_version_compatibility_note_maps
-  # POST /mod_version_compatibility_note_maps.json
+  # POST /mod_version_compatibility_notes
+  # POST /mod_version_compatibility_notes.json
   def create
-    @mod_version_compatibility_note_map = ModVersionCompatibilityNoteMap.new(mod_version_compatibility_note_map_params)
+    @mod_version_compatibility_note_map = ModVersionCompatibilityNote.new(mod_version_compatibility_note_map_params)
 
     respond_to do |format|
       if @mod_version_compatibility_note_map.save
@@ -46,8 +46,8 @@ class ModVersionCompatibilityNoteMapsController < ApplicationController
     end
   end
 
-  # PATCH/PUT /mod_version_compatibility_note_maps/1
-  # PATCH/PUT /mod_version_compatibility_note_maps/1.json
+  # PATCH/PUT /mod_version_compatibility_notes/1
+  # PATCH/PUT /mod_version_compatibility_notes/1.json
   def update
     respond_to do |format|
       if @mod_version_compatibility_note_map.update(mod_version_compatibility_note_map_params)
@@ -60,8 +60,8 @@ class ModVersionCompatibilityNoteMapsController < ApplicationController
     end
   end
 
-  # DELETE /mod_version_compatibility_note_maps/1
-  # DELETE /mod_version_compatibility_note_maps/1.json
+  # DELETE /mod_version_compatibility_notes/1
+  # DELETE /mod_version_compatibility_notes/1.json
   def destroy
     @mod_version_compatibility_note_map.destroy
     respond_to do |format|
@@ -73,7 +73,7 @@ class ModVersionCompatibilityNoteMapsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_mod_version_compatibility_note_map
-      @mod_version_compatibility_note_map = ModVersionCompatibilityNoteMap.find(params[:id])
+      @mod_version_compatibility_note_map = ModVersionCompatibilityNote.find(params[:id])
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

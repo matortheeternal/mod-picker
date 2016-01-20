@@ -1,30 +1,30 @@
-class UserModStarMapsController < ApplicationController
+class ModStarsController < ApplicationController
   before_action :set_user_mod_star_map, only: [:show, :edit, :update, :destroy]
 
-  # GET /user_mod_star_maps
-  # GET /user_mod_star_maps.json
+  # GET /mod_stars
+  # GET /mod_stars.json
   def index
-    @user_mod_star_maps = UserModStarMap.all
+    @user_mod_star_maps = ModStar.all
   end
 
-  # GET /user_mod_star_maps/1
-  # GET /user_mod_star_maps/1.json
+  # GET /mod_stars/1
+  # GET /mod_stars/1.json
   def show
   end
 
-  # GET /user_mod_star_maps/new
+  # GET /mod_stars/new
   def new
-    @user_mod_star_map = UserModStarMap.new
+    @user_mod_star_map = ModStar.new
   end
 
-  # GET /user_mod_star_maps/1/edit
+  # GET /mod_stars/1/edit
   def edit
   end
 
-  # POST /user_mod_star_maps
-  # POST /user_mod_star_maps.json
+  # POST /mod_stars
+  # POST /mod_stars.json
   def create
-    @user_mod_star_map = UserModStarMap.new(user_mod_star_map_params)
+    @user_mod_star_map = ModStar.new(user_mod_star_map_params)
 
     respond_to do |format|
       if @user_mod_star_map.save
@@ -37,8 +37,8 @@ class UserModStarMapsController < ApplicationController
     end
   end
 
-  # PATCH/PUT /user_mod_star_maps/1
-  # PATCH/PUT /user_mod_star_maps/1.json
+  # PATCH/PUT /mod_stars/1
+  # PATCH/PUT /mod_stars/1.json
   def update
     respond_to do |format|
       if @user_mod_star_map.update(user_mod_star_map_params)
@@ -51,8 +51,8 @@ class UserModStarMapsController < ApplicationController
     end
   end
 
-  # DELETE /user_mod_star_maps/1
-  # DELETE /user_mod_star_maps/1.json
+  # DELETE /mod_stars/1
+  # DELETE /mod_stars/1.json
   def destroy
     @user_mod_star_map.destroy
     respond_to do |format|
@@ -64,7 +64,7 @@ class UserModStarMapsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_user_mod_star_map
-      @user_mod_star_map = UserModStarMap.find(params[:id])
+      @user_mod_star_map = ModStar.find(params[:id])
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

@@ -10,8 +10,8 @@ class Mod < ActiveRecord::Base
 
   has_many :mod_versions, :inverse_of => 'mod'
 
-  has_many :users_who_starred, :class_name => 'User', :through => 'user_mod_star_maps', :inverse_of => 'starred_mods'
-  has_many :authors, :class_name => 'User', :through => 'user_mod_author_maps', :inverse_of => 'mods'
+  has_many :users_who_starred, :class_name => 'User', :through => 'ModStar', :inverse_of => 'starred_mods'
+  has_many :authors, :class_name => 'User', :through => 'ModAuthor', :inverse_of => 'mods'
 
   has_many :reviews, :inverse_of => 'mod'
   has_many :comments, :as => 'commentable', :through => 'mod_comments'

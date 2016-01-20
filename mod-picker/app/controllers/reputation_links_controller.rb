@@ -1,30 +1,30 @@
-class ReputationMapsController < ApplicationController
+class ReputationLinksController < ApplicationController
   before_action :set_reputation_map, only: [:show, :edit, :update, :destroy]
 
-  # GET /reputation_maps
-  # GET /reputation_maps.json
+  # GET /reputation_links
+  # GET /reputation_links.json
   def index
-    @reputation_maps = ReputationMap.all
+    @reputation_maps = ReputationLink.all
   end
 
-  # GET /reputation_maps/1
-  # GET /reputation_maps/1.json
+  # GET /reputation_links/1
+  # GET /reputation_links/1.json
   def show
   end
 
-  # GET /reputation_maps/new
+  # GET /reputation_links/new
   def new
-    @reputation_map = ReputationMap.new
+    @reputation_map = ReputationLink.new
   end
 
-  # GET /reputation_maps/1/edit
+  # GET /reputation_links/1/edit
   def edit
   end
 
-  # POST /reputation_maps
-  # POST /reputation_maps.json
+  # POST /reputation_links
+  # POST /reputation_links.json
   def create
-    @reputation_map = ReputationMap.new(reputation_map_params)
+    @reputation_map = ReputationLink.new(reputation_map_params)
 
     respond_to do |format|
       if @reputation_map.save
@@ -37,8 +37,8 @@ class ReputationMapsController < ApplicationController
     end
   end
 
-  # PATCH/PUT /reputation_maps/1
-  # PATCH/PUT /reputation_maps/1.json
+  # PATCH/PUT /reputation_links/1
+  # PATCH/PUT /reputation_links/1.json
   def update
     respond_to do |format|
       if @reputation_map.update(reputation_map_params)
@@ -51,8 +51,8 @@ class ReputationMapsController < ApplicationController
     end
   end
 
-  # DELETE /reputation_maps/1
-  # DELETE /reputation_maps/1.json
+  # DELETE /reputation_links/1
+  # DELETE /reputation_links/1.json
   def destroy
     @reputation_map.destroy
     respond_to do |format|
@@ -64,7 +64,7 @@ class ReputationMapsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_reputation_map
-      @reputation_map = ReputationMap.find(params[:id])
+      @reputation_map = ReputationLink.find(params[:id])
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

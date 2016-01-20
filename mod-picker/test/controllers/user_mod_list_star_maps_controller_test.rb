@@ -8,7 +8,7 @@ class UserModListStarMapsControllerTest < ActionController::TestCase
   test "should get index" do
     get :index
     assert_response :success
-    assert_not_nil assigns(:user_mod_list_star_maps)
+    assert_not_nil assigns(:mod_list_stars)
   end
 
   test "should get new" do
@@ -17,7 +17,7 @@ class UserModListStarMapsControllerTest < ActionController::TestCase
   end
 
   test "should create user_mod_list_star_map" do
-    assert_difference('UserModListStarMap.count') do
+    assert_difference('ModListStar.count') do
       post :create, user_mod_list_star_map: { mod_list_id: @user_mod_list_star_map.mod_list_id, user_id: @user_mod_list_star_map.user_id }
     end
 
@@ -40,7 +40,7 @@ class UserModListStarMapsControllerTest < ActionController::TestCase
   end
 
   test "should destroy user_mod_list_star_map" do
-    assert_difference('UserModListStarMap.count', -1) do
+    assert_difference('ModListStar.count', -1) do
       delete :destroy, id: @user_mod_list_star_map
     end
 

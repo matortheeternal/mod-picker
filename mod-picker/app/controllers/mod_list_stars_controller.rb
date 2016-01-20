@@ -1,30 +1,30 @@
-class UserModListStarMapsController < ApplicationController
+class ModListStarsController < ApplicationController
   before_action :set_user_mod_list_star_map, only: [:show, :edit, :update, :destroy]
 
-  # GET /user_mod_list_star_maps
-  # GET /user_mod_list_star_maps.json
+  # GET /mod_list_stars
+  # GET /mod_list_stars.json
   def index
-    @user_mod_list_star_maps = UserModListStarMap.all
+    @user_mod_list_star_maps = ModListStar.all
   end
 
-  # GET /user_mod_list_star_maps/1
-  # GET /user_mod_list_star_maps/1.json
+  # GET /mod_list_stars/1
+  # GET /mod_list_stars/1.json
   def show
   end
 
-  # GET /user_mod_list_star_maps/new
+  # GET /mod_list_stars/new
   def new
-    @user_mod_list_star_map = UserModListStarMap.new
+    @user_mod_list_star_map = ModListStar.new
   end
 
-  # GET /user_mod_list_star_maps/1/edit
+  # GET /mod_list_stars/1/edit
   def edit
   end
 
-  # POST /user_mod_list_star_maps
-  # POST /user_mod_list_star_maps.json
+  # POST /mod_list_stars
+  # POST /mod_list_stars.json
   def create
-    @user_mod_list_star_map = UserModListStarMap.new(user_mod_list_star_map_params)
+    @user_mod_list_star_map = ModListStar.new(user_mod_list_star_map_params)
 
     respond_to do |format|
       if @user_mod_list_star_map.save
@@ -37,8 +37,8 @@ class UserModListStarMapsController < ApplicationController
     end
   end
 
-  # PATCH/PUT /user_mod_list_star_maps/1
-  # PATCH/PUT /user_mod_list_star_maps/1.json
+  # PATCH/PUT /mod_list_stars/1
+  # PATCH/PUT /mod_list_stars/1.json
   def update
     respond_to do |format|
       if @user_mod_list_star_map.update(user_mod_list_star_map_params)
@@ -51,8 +51,8 @@ class UserModListStarMapsController < ApplicationController
     end
   end
 
-  # DELETE /user_mod_list_star_maps/1
-  # DELETE /user_mod_list_star_maps/1.json
+  # DELETE /mod_list_stars/1
+  # DELETE /mod_list_stars/1.json
   def destroy
     @user_mod_list_star_map.destroy
     respond_to do |format|
@@ -64,7 +64,7 @@ class UserModListStarMapsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_user_mod_list_star_map
-      @user_mod_list_star_map = UserModListStarMap.find(params[:id])
+      @user_mod_list_star_map = ModListStar.find(params[:id])
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

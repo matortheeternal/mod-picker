@@ -1,30 +1,30 @@
-class UserModAuthorMapsController < ApplicationController
+class ModAuthorsController < ApplicationController
   before_action :set_user_mod_author_map, only: [:show, :edit, :update, :destroy]
 
-  # GET /user_mod_author_maps
-  # GET /user_mod_author_maps.json
+  # GET /mod_authors
+  # GET /mod_authors.json
   def index
-    @user_mod_author_maps = UserModAuthorMap.all
+    @user_mod_author_maps = ModAuthor.all
   end
 
-  # GET /user_mod_author_maps/1
-  # GET /user_mod_author_maps/1.json
+  # GET /mod_authors/1
+  # GET /mod_authors/1.json
   def show
   end
 
-  # GET /user_mod_author_maps/new
+  # GET /mod_authors/new
   def new
-    @user_mod_author_map = UserModAuthorMap.new
+    @user_mod_author_map = ModAuthor.new
   end
 
-  # GET /user_mod_author_maps/1/edit
+  # GET /mod_authors/1/edit
   def edit
   end
 
-  # POST /user_mod_author_maps
-  # POST /user_mod_author_maps.json
+  # POST /mod_authors
+  # POST /mod_authors.json
   def create
-    @user_mod_author_map = UserModAuthorMap.new(user_mod_author_map_params)
+    @user_mod_author_map = ModAuthor.new(user_mod_author_map_params)
 
     respond_to do |format|
       if @user_mod_author_map.save
@@ -37,8 +37,8 @@ class UserModAuthorMapsController < ApplicationController
     end
   end
 
-  # PATCH/PUT /user_mod_author_maps/1
-  # PATCH/PUT /user_mod_author_maps/1.json
+  # PATCH/PUT /mod_authors/1
+  # PATCH/PUT /mod_authors/1.json
   def update
     respond_to do |format|
       if @user_mod_author_map.update(user_mod_author_map_params)
@@ -51,8 +51,8 @@ class UserModAuthorMapsController < ApplicationController
     end
   end
 
-  # DELETE /user_mod_author_maps/1
-  # DELETE /user_mod_author_maps/1.json
+  # DELETE /mod_authors/1
+  # DELETE /mod_authors/1.json
   def destroy
     @user_mod_author_map.destroy
     respond_to do |format|
@@ -64,7 +64,7 @@ class UserModAuthorMapsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_user_mod_author_map
-      @user_mod_author_map = UserModAuthorMap.find(params[:id])
+      @user_mod_author_map = ModAuthor.find(params[:id])
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

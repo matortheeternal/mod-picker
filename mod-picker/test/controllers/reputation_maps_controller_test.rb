@@ -8,7 +8,7 @@ class ReputationMapsControllerTest < ActionController::TestCase
   test "should get index" do
     get :index
     assert_response :success
-    assert_not_nil assigns(:reputation_maps)
+    assert_not_nil assigns(:reputation_links)
   end
 
   test "should get new" do
@@ -17,7 +17,7 @@ class ReputationMapsControllerTest < ActionController::TestCase
   end
 
   test "should create reputation_map" do
-    assert_difference('ReputationMap.count') do
+    assert_difference('ReputationLink.count') do
       post :create, reputation_map: { from_rep_id: @reputation_map.from_rep_id, to_rep_id: @reputation_map.to_rep_id }
     end
 
@@ -40,7 +40,7 @@ class ReputationMapsControllerTest < ActionController::TestCase
   end
 
   test "should destroy reputation_map" do
-    assert_difference('ReputationMap.count', -1) do
+    assert_difference('ReputationLink.count', -1) do
       delete :destroy, id: @reputation_map
     end
 

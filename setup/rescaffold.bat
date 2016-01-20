@@ -33,7 +33,7 @@ call rails g scaffold mod_versions id:integer mod_id:integer nxm_file_id:integer
 call rails g scaffold mod_asset_files id:integer filepath:string --force --skip-migration
 
 :: maps asset files to mod versions
-call rails g scaffold mod_version_file_map mod_version_id:integer mod_asset_file_id:integer --force --skip-migration
+call rails g scaffold mod_version_files mod_version_id:integer mod_asset_file_id:integer --force --skip-migration
 
 :: plugins that we have informaton on
 call rails g scaffold plugins id:integer mod_version_id:integer filename:text author:text description:text hash:string --force --skip-migration
@@ -42,7 +42,7 @@ call rails g scaffold plugins id:integer mod_version_id:integer filename:text au
 call rails g scaffold masters id:integer plugin_id:integer --force --skip-migration
 
 :: override records associated with a plugin
-call rails g scaffold plugin_override_map plugin_id:integer master_id:integer form_id:integer --force --skip-migration
+call rails g scaffold plugin_overrides plugin_id:integer master_id:integer form_id:integer --force --skip-migration
 
 :: record groups associated with a plugin
 call rails g scaffold plugin_record_groups plugin_id:integer sig:string name:text new_records:integer override_records:integer --force --skip-migration
@@ -77,7 +77,7 @@ call rails g scaffold user_settings id:integer user_id:integer show_notification
 call rails g scaffold user_reputations id:integer user_id:integer overall:float offset:float audiovisual_design:float plugin_design:float utility_design:float script_design:float  --force --skip-migration
 
 :: reputation that's been given
-call rails g scaffold reputation_map from_rep_id:integer to_rep_id:integer  --force --skip-migration
+call rails g scaffold reputation_links from_rep_id:integer to_rep_id:integer  --force --skip-migration
 
 
 :: ------------------------------------------------------
@@ -85,13 +85,13 @@ call rails g scaffold reputation_map from_rep_id:integer to_rep_id:integer  --fo
 :: ------------------------------------------------------
 
 :: stars users have given to mods
-call rails g scaffold user_mod_star_map mod_id:integer user_id:integer --force --skip-migration
+call rails g scaffold mod_stars mod_id:integer user_id:integer --force --skip-migration
 
 :: stars users have given to mod lists
-call rails g scaffold user_mod_list_star_map mod_list_id:integer user_id:integer --force --skip-migration
+call rails g scaffold mod_list_stars mod_list_id:integer user_id:integer --force --skip-migration
 
 :: users that have authored mods
-call rails g scaffold user_mod_author_map mod_id:integer user_id:integer --force --skip-migration
+call rails g scaffold mod_authors mod_id:integer user_id:integer --force --skip-migration
 
 :: ------------------------------------------------------
 :: user submission tables
@@ -134,4 +134,4 @@ call rails g scaffold mod_list_installation_notes mod_list_id:integer installati
 call rails g scaffold mod_list_compatibility_notes mod_list_id:integer compatibility_note_id:integer status:integer --force --skip-migration
 
 :: compatibility notes associated with mod versions
-call rails g scaffold mod_version_compatibility_note_map mod_version_id:integer compatibility_note_id:integer --force --skip-migration
+call rails g scaffold mod_version_compatibility_notes mod_version_id:integer compatibility_note_id:integer --force --skip-migration

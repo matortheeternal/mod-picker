@@ -1,30 +1,30 @@
-class PluginOverrideMapsController < ApplicationController
+class PluginOverridesController < ApplicationController
   before_action :set_plugin_override_map, only: [:show, :edit, :update, :destroy]
 
-  # GET /plugin_override_maps
-  # GET /plugin_override_maps.json
+  # GET /plugin_overrides
+  # GET /plugin_overrides.json
   def index
-    @plugin_override_maps = PluginOverrideMap.all
+    @plugin_override_maps = PluginOverride.all
   end
 
-  # GET /plugin_override_maps/1
-  # GET /plugin_override_maps/1.json
+  # GET /plugin_overrides/1
+  # GET /plugin_overrides/1.json
   def show
   end
 
-  # GET /plugin_override_maps/new
+  # GET /plugin_overrides/new
   def new
-    @plugin_override_map = PluginOverrideMap.new
+    @plugin_override_map = PluginOverride.new
   end
 
-  # GET /plugin_override_maps/1/edit
+  # GET /plugin_overrides/1/edit
   def edit
   end
 
-  # POST /plugin_override_maps
-  # POST /plugin_override_maps.json
+  # POST /plugin_overrides
+  # POST /plugin_overrides.json
   def create
-    @plugin_override_map = PluginOverrideMap.new(plugin_override_map_params)
+    @plugin_override_map = PluginOverride.new(plugin_override_map_params)
 
     respond_to do |format|
       if @plugin_override_map.save
@@ -37,8 +37,8 @@ class PluginOverrideMapsController < ApplicationController
     end
   end
 
-  # PATCH/PUT /plugin_override_maps/1
-  # PATCH/PUT /plugin_override_maps/1.json
+  # PATCH/PUT /plugin_overrides/1
+  # PATCH/PUT /plugin_overrides/1.json
   def update
     respond_to do |format|
       if @plugin_override_map.update(plugin_override_map_params)
@@ -51,8 +51,8 @@ class PluginOverrideMapsController < ApplicationController
     end
   end
 
-  # DELETE /plugin_override_maps/1
-  # DELETE /plugin_override_maps/1.json
+  # DELETE /plugin_overrides/1
+  # DELETE /plugin_overrides/1.json
   def destroy
     @plugin_override_map.destroy
     respond_to do |format|
@@ -64,7 +64,7 @@ class PluginOverrideMapsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_plugin_override_map
-      @plugin_override_map = PluginOverrideMap.find(params[:id])
+      @plugin_override_map = PluginOverride.find(params[:id])
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
