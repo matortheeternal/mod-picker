@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :mod_version_compatibility_note_maps
   resources :mod_list_compatibility_notes
   resources :mod_list_installation_notes
   resources :agreement_marks

@@ -132,3 +132,6 @@ call rails g scaffold mod_list_installation_notes mod_list_id:integer installati
 
 :: compatibility notes that have been resolved or ignored by the user for a particular mod list
 call rails g scaffold mod_list_compatibility_notes mod_list_id:integer compatibility_note_id:integer status:integer --force --skip-migration
+
+:: compatibility notes associated with mod versions
+call rails g scaffold mod_version_compatibility_note_map mod_version_id:integer compatibility_note_id:integer --force --skip-migration
