@@ -157,7 +157,7 @@ var app = angular.module('modPicker', [
 
             switch(location) {
                 case '/updateRanges':
-                    returnData.push(templateData.updateRanges);
+                    returnData = templateData.updateRanges;
                     break;
 
                 case '/search':
