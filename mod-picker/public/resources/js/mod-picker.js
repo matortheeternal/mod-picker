@@ -89,14 +89,6 @@ var app = angular.module('modPicker', [
 })
 
 .controller('searchController', function($scope, $q, backend){
-        $scope.loading = true;
-        backend.retrieveUpdateRanges().then(function(updateRanges) {
-            $scope.options = {
-                updateRanges: updateRanges
-            };
-            $scope.loading = false;
-        });
-
         $scope.search = {};
 
         function processSearch() {
@@ -121,26 +113,6 @@ var app = angular.module('modPicker', [
         //Constant to be flexible in the future. Us as prefix for ALL requests
         var BASE_LOCATION = '';
 
-        //-------------------------------
-        //MOCK DATA
-        //-------------------------------
-
-        var templateData = {
-            updateRanges: [
-                {
-                    id: 1,
-                    text: 'Skyrim'
-                },
-                {
-                    id: 2,
-                    text: 'Dawnguard'
-                }
-            ]
-        };
-
-        //simulates browsercaching
-        var promises = {};
-
         //TODO: replace with REST Calls
         function retrieve(context) {
             var promise = $q.defer();
@@ -156,10 +128,6 @@ var app = angular.module('modPicker', [
             var returnData = [];
 
             switch(location) {
-                case '/updateRanges':
-                    returnData = templateData.updateRanges;
-                    break;
-
                 case '/search':
                     if (additionalParam && additionalParam.name) {
                         retrieve('/mods').then(function (mods) {
