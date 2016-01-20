@@ -116,79 +116,16 @@ var app = angular.module('modPicker', [
         $scope.processSearch = processSearch;
 })
 
-.factory('backend', function ($q) {
+.factory('backend', function ($q, $http) {
+
+        //Constant to be flexible in the future. Us as prefix for ALL requests
+        var BASE_LOCATION = '';
 
         //-------------------------------
         //MOCK DATA
         //-------------------------------
 
         var templateData = {
-            mods:   [
-                {
-                    id: 1,
-                    name: 'Skyfart: Replace Shouts with Farts',
-                    authors: ['Farterarter', 'mr. shout'],
-                    versions: ["1.3", "1.2", "1.11"],
-                    shortDescription: "Replace your shouts with specialized farts. Works with all shouts. Works best in use with Immersive Smells"
-                },
-                {
-                    id: 2,
-                    name: 'Immersive Smells',
-                    authors: ['Farterarter'],
-                    versions: ["1.0"],
-                    shortDescription: "Make your Smells more immersive."
-                },
-                {
-                    id: 3,
-                    name: 'Neo from Matrix as Follower',
-                    authors: ['R79'],
-                    //this will be a tough test
-                    versions: ["0.1", "0.7", "0.6"],
-                    shortDescription: "also comes with a bluepill"
-                },
-                {
-                    id: 4,
-                    name: 'Immersive Dogs',
-                    authors: ["barker1338", "whooofie", "Furbeast"],
-                    versions: ["1.3"],
-                    shortDescription: "Whoof"
-                },
-                {
-                    id: 5,
-                    name: 'Become a Cow',
-                    authors: ['Taurenlover123', 'Cowburger'],
-                    versions: ['1.1.1','2.3'],
-                    shortDescription: "mooooo, we love Cows."
-                },
-                {
-                    id: 6,
-                    name: 'Furryrim: Everyone is a Khajiit',
-                    authors: ['R79', 'Taurenlover123', 'Furbeast'],
-                    versions: ['0.1', '0.2', '0.3'],
-                    shortDescription: "Furries fur-ever"
-                },
-                {
-                    id: 7,
-                    name: 'MLP Dragon Replacement',
-                    authors: ['Sunshine', 'clopclopper'],
-                    versions: ['1.3.2'],
-                    shortDescription: "Replaces all Dragons with My Little Pony characters."
-                },
-                {
-                    id: 8,
-                    name: 'Breed your own Dragons!',
-                    authors: ['nukelears'],
-                    versions: ['1.0'],
-                    shortDescription: "Like in How to train your dragon!"
-                },
-                {
-                    id: 9,
-                    name: '16k Parallax Texture pack (Performance version included)',
-                    authors: ['Pfuscherrrrrr'],
-                    versions: ['0.0.1'],
-                    shortDescription: "not even working on 4x TitanX PC"
-                }
-            ],
             updateRanges: [
                 {
                     id: 1,
@@ -205,48 +142,36 @@ var app = angular.module('modPicker', [
         var promises = {};
 
         //TODO: replace with REST Calls
-        function retrieve(location, additionalParam) {
-            if(promises[location] && !additionalParam) {
-                return promises[location].promise;
-            }
-            var currentPromise = $q.defer();
+        function retrieve(context) {
+            var promise = $q.defer();
+            $http.get(BASE_LOCATION + context + '.json').then(function(data) {
+                promise.resolve(data.data);
+            });
+            return promise.promise;
+        }
 
-            if(!additionalParam) {
-                promises[location] = currentPromise;
-            }
+        function mockRetrieve(location, additionalParam) {
+            var currentPromise = $q.defer();
 
             var returnData = [];
 
             switch(location) {
-                case '/mods':
-                    if (additionalParam) {
-                        templateData.mods.forEach(function (mod) {
-                            if (mod.id == additionalParam) {
-                                returnData = mod;
-                            }
-                        });
-                    } else {
-                        templateData.mods.forEach(function (mod) {
-                            returnData.push({id: mod.id, name: mod.name});
-                        });
-                    }
-                    break;
-
                 case '/updateRanges':
                     returnData.push(templateData.updateRanges);
                     break;
 
                 case '/search':
                     if (additionalParam && additionalParam.name) {
-                        templateData.mods.forEach(function (mod) {
-                            if (mod.name.toLowerCase().indexOf(additionalParam.name.toLowerCase()) > -1) {
-                                returnData.push(mod);
-                            }
+                        retrieve('/mods').then(function (mods) {
+                            mods.forEach(function (mod) {
+                                if (mod.name.toLowerCase().indexOf(additionalParam.name.toLowerCase()) > -1) {
+                                    returnData.push(mod);
+                                }
+                            });
                         });
                     }
                     break;
             }
-
             //I currently work with Timeout to give it the feel of needing to load stuff from the server
             setTimeout(function () {
                 currentPromise.resolve(returnData);
@@ -261,13 +186,14 @@ var app = angular.module('modPicker', [
                 return retrieve('/mods');
             },
             retrieveMod: function (id) {
-                return retrieve('/mods', id);
+                return retrieve('/mods/' + id);
             },
             search: function (searchParams) {
-                return retrieve('/search', searchParams);
+                //not implemented in the Backend yet
+                return mockRetrieve('/search', searchParams);
             },
             retrieveUpdateRanges: function() {
-                return retrieve('/updateRanges');
+                return mockRetrieve('/updateRanges');
             }
         }
 });

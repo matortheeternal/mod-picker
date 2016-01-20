@@ -216,10 +216,10 @@ ActiveRecord::Schema.define(version: 20160119101420) do
 
   create_table "mod_versions", force: :cascade do |t|
     t.integer "mod_id",      limit: 4
+    t.integer "nxm_file_id", limit: 4
     t.date    "released"
     t.boolean "obsolete"
     t.boolean "dangerous"
-    t.integer "nxm_file_id", limit: 4
   end
 
   add_index "mod_versions", ["mod_id"], name: "mod_id", using: :btree
@@ -317,13 +317,13 @@ ActiveRecord::Schema.define(version: 20160119101420) do
   add_index "reviews", ["submitted_by"], name: "submitted_by", using: :btree
 
   create_table "user_bios", force: :cascade do |t|
+    t.integer "user_id",        limit: 4
     t.string  "nexus_username", limit: 32
     t.boolean "nexus_verified"
     t.string  "lover_username", limit: 32
     t.boolean "lover_verified"
     t.string  "steam_username", limit: 32
     t.boolean "steam_verified"
-    t.integer "user_id",        limit: 4
   end
 
   add_index "user_bios", ["user_id"], name: "user_id", using: :btree
@@ -361,18 +361,19 @@ ActiveRecord::Schema.define(version: 20160119101420) do
   add_index "user_mod_star_map", ["user_id"], name: "user_id", using: :btree
 
   create_table "user_reputations", force: :cascade do |t|
+    t.integer "user_id",            limit: 4
     t.float   "overall",            limit: 24
     t.float   "offset",             limit: 24
     t.float   "audiovisual_design", limit: 24
     t.float   "plugin_design",      limit: 24
     t.float   "utility_design",     limit: 24
     t.float   "script_design",      limit: 24
-    t.integer "user_id",            limit: 4
   end
 
   add_index "user_reputations", ["user_id"], name: "user_id", using: :btree
 
   create_table "user_settings", force: :cascade do |t|
+    t.integer "user_id",              limit: 4
     t.boolean "show_notifications"
     t.boolean "show_tooltips"
     t.boolean "email_notifications"
@@ -381,7 +382,6 @@ ActiveRecord::Schema.define(version: 20160119101420) do
     t.boolean "allow_nexus_mods"
     t.boolean "allow_lovers_lab"
     t.boolean "allow_steam_workshop"
-    t.integer "user_id",              limit: 4
     t.text    "timezone",             limit: 255
     t.text    "udate_format",         limit: 255
     t.text    "utime_format",         limit: 255
@@ -482,6 +482,6 @@ ActiveRecord::Schema.define(version: 20160119101420) do
   add_foreign_key "user_mod_star_map", "users", name: "user_mod_star_map_ibfk_2"
   add_foreign_key "user_reputations", "users", name: "user_reputations_ibfk_1"
   add_foreign_key "user_settings", "users", name: "user_settings_ibfk_1"
-  add_foreign_key "users", "mod_lists", column: "active_mc_id", name: "users_ibfk_5"
-  add_foreign_key "users", "mod_lists", column: "active_ml_id", name: "users_ibfk_4"
+  add_foreign_key "users", "mod_lists", column: "active_mc_id", name: "users_ibfk_2"
+  add_foreign_key "users", "mod_lists", column: "active_ml_id", name: "users_ibfk_1"
 end
