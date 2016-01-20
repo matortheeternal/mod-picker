@@ -5,39 +5,39 @@ Rails.application.routes.draw do
   resources :comments
   resources :installation_notes
   resources :compatibility_notes
+  resources :mod_version_compatibility_notes
+  resources :mod_list_compatibility_notes
+  resources :mod_list_installation_notes
+  resources :agreement_marks
   resources :incorrect_notes
   resources :helpful_marks
   resources :agreement_marks
   resources :reviews
-  resources :mods
-  resources :nexus_infos
-  resources :lover_infos
-  resources :workshop_infos
-  resources :mod_asset_files
-  resources :mod_comments
-  resources :mod_versions
-  resources :mod_version_file_maps
-  resources :plugins
-  resources :plugin_record_groups
-  resources :plugin_override_maps
-  resources :masters
-  resources :mod_lists
-  resources :mod_list_comments
-  resources :mod_list_compatibility_notes
-  resources :mod_list_custom_plugins
-  resources :mod_list_installation_notes
-  resources :mod_list_mods
-  resources :mod_list_plugins
-  resources :users
-  devise_for :users
-  resources :user_bios
-  resources :user_comments
-  resources :user_mod_author_maps
-  resources :user_mod_list_star_maps
-  resources :user_mod_star_maps
+  resources :comments
+  resources :mod_authors
+  resources :mod_list_stars
+  resources :mod_stars
+  resources :reputation_links
   resources :user_reputations
   resources :user_settings
-  resources :reputation_maps
+  resources :user_bios
+  resources :mod_list_mods
+  resources :mod_list_custom_plugins
+  resources :mod_list_plugins
+  resources :mod_lists
+  resources :plugin_record_groups
+  resources :plugin_overrides
+  resources :masters
+  resources :plugins
+  resources :mod_version_files
+  resources :mod_asset_files
+  resources :mod_versions
+  resources :mods
+  resources :lover_infos
+  resources :workshop_infos
+  resources :nexus_infos
+  resources :users
+  devise_for :users
   
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

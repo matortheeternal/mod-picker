@@ -5,9 +5,28 @@ class User < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable
   
   attr_accessor :login
-  has_one :settings, :class_name => "UserSetting", :dependent => :destroy
-  has_one :bio, :class_name => "UserBio", :dependent => :destroy
-  has_one :reputation, :class_name => "UserReputation", :dependent => :destroy
+
+  has_one :settings, :class_name => 'UserSetting', :dependent => :destroy
+  has_one :bio, :class_name => 'UserBio', :dependent => :destroy
+  has_one :reputation, :class_name => 'UserReputation', :dependent => :destroy
+
+  has_many :comments
+  has_many :installation_notes
+  has_many :compatibility_notes
+  has_many :reviews
+  has_many :incorrect_notes
+  has_many :agreement_marks, :foreign_key => 'submitted_by', :inverse_of => 'user'
+
+  has_many :mods, :through => 'ModAuthor', :inverse_of => 'authors'
+  has_many :mod_lists, :foreign_key => 'created_by', :inverse_of => 'user'
+
+  belongs_to :active_mod_list, :class_name => 'ModList', :foreign_key => 'active_ml_id'
+  belongs_to :active_mod_collection, :class_name => 'ModList', :foreign_key => 'active_mc_id'
+
+  has_many :starred_mods, :class_name => 'Mod', :through => 'ModStar', :inverse_of => 'users_who_starred'
+  has_many :starred_mod_lists, :class_name => 'ModList', :through => 'ModListStar', :inverse_of => 'users_who_starred'
+  has_many :profile_comments, :class_name => 'Comment', :as => 'commentable', :through => 'user_comments'
+
   after_create :create_associations
   after_initialize :init
   

@@ -1,0 +1,25 @@
+<%= form_for(@mod_version_compatibility_note_map) do |f| %>
+  <% if @mod_version_compatibility_note_map.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@mod_version_compatibility_note_map.errors.count, "error") %> prohibited this mod_version_compatibility_note_map from being saved:</h2>
+
+      <ul>
+      <% @mod_version_compatibility_note_map.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :mod_version_id %><br>
+    <%= f.number_field :mod_version_id %>
+  </div>
+  <div class="field">
+    <%= f.label :compatibility_note_id %><br>
+    <%= f.number_field :compatibility_note_id %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

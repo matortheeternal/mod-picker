@@ -1,0 +1,31 @@
+<div class="scaffold">
+  <p id="notice"><%= notice %></p>
+
+  <h1>mod_version_compatibility_note_maps</h1>
+
+  <table>
+    <thead>
+      <tr>
+          <th>mod_version_id</th>
+          <th>compatibility_note_id</th>
+          <th colspan="3"></th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% @mod_version_compatibility_note_maps.each do |mod_version_compatibility_note_map| %>
+        <tr>
+            <td><%= mod_version_compatibility_note_map.mod_version_id %></td>
+            <td><%= mod_version_compatibility_note_map.compatibility_note_id %></td>
+            <td><%= link_to 'Show', mod_version_compatibility_note_map %></td>
+          <td><%= link_to 'Edit', edit_mod_version_compatibility_note_map_path(mod_version_compatibility_note_map) %></td>
+          <td><%= link_to 'Destroy', mod_version_compatibility_note_map, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+
+  <br>
+
+  <%= link_to 'New Mod Version Compatibility Note Map', new_mod_version_compatibility_note_map_path %>
+</div>
