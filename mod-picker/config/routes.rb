@@ -34,12 +34,7 @@ Rails.application.routes.draw do
   resources :lover_infos
   resources :workshop_infos
   resources :nexus_infos
-  resources :games
-  resources :category_priorities
-  resources :categories
-  resources :nexus_infos
-  resources :workshop_infos
-  resources :nexus_infos
+  resources :users
   devise_for :users
   
   # The priority is based upon order of creation: first created -> highest priority.
