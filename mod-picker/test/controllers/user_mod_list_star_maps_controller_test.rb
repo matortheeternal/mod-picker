@@ -2,13 +2,13 @@ require 'test_helper'
 
 class UserModListStarMapsControllerTest < ActionController::TestCase
   setup do
-    @user_mod_list_star_map = user_mod_list_star_maps(:one)
+    @mod_list_star = mod_list_stars(:one)
   end
 
   test "should get index" do
     get :index
     assert_response :success
-    assert_not_nil assigns(:user_mod_list_star_maps)
+    assert_not_nil assigns(:mod_list_stars)
   end
 
   test "should get new" do
@@ -16,34 +16,34 @@ class UserModListStarMapsControllerTest < ActionController::TestCase
     assert_response :success
   end
 
-  test "should create user_mod_list_star_map" do
-    assert_difference('UserModListStarMap.count') do
-      post :create, user_mod_list_star_map: { mod_list_id: @user_mod_list_star_map.mod_list_id, user_id: @user_mod_list_star_map.user_id }
+  test "should create mod_list_star" do
+    assert_difference('ModListStar.count') do
+      post :create, mod_list_star: { mod_list_id: @mod_list_star.mod_list_id, user_id: @mod_list_star.user_id }
     end
 
-    assert_redirected_to user_mod_list_star_map_path(assigns(:user_mod_list_star_map))
+    assert_redirected_to mod_list_star_path(assigns(:mod_list_star))
   end
 
-  test "should show user_mod_list_star_map" do
-    get :show, id: @user_mod_list_star_map
+  test "should show mod_list_star" do
+    get :show, id: @mod_list_star
     assert_response :success
   end
 
   test "should get edit" do
-    get :edit, id: @user_mod_list_star_map
+    get :edit, id: @mod_list_star
     assert_response :success
   end
 
-  test "should update user_mod_list_star_map" do
-    patch :update, id: @user_mod_list_star_map, user_mod_list_star_map: { mod_list_id: @user_mod_list_star_map.mod_list_id, user_id: @user_mod_list_star_map.user_id }
-    assert_redirected_to user_mod_list_star_map_path(assigns(:user_mod_list_star_map))
+  test "should update mod_list_star" do
+    patch :update, id: @mod_list_star, mod_list_star: { mod_list_id: @mod_list_star.mod_list_id, user_id: @mod_list_star.user_id }
+    assert_redirected_to mod_list_star_path(assigns(:mod_list_star))
   end
 
-  test "should destroy user_mod_list_star_map" do
-    assert_difference('UserModListStarMap.count', -1) do
-      delete :destroy, id: @user_mod_list_star_map
+  test "should destroy mod_list_star" do
+    assert_difference('ModListStar.count', -1) do
+      delete :destroy, id: @mod_list_star
     end
 
-    assert_redirected_to user_mod_list_star_maps_path
+    assert_redirected_to mod_list_stars_path
   end
 end

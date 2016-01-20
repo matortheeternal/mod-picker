@@ -1,0 +1,29 @@
+<%= form_for(@plugin_override) do |f| %>
+  <% if @plugin_override.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@plugin_override.errors.count, "error") %> prohibited this plugin_override from being saved:</h2>
+
+      <ul>
+      <% @plugin_override.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :plugin_id %><br>
+    <%= f.number_field :plugin_id %>
+  </div>
+  <div class="field">
+    <%= f.label :master_id %><br>
+    <%= f.number_field :master_id %>
+  </div>
+  <div class="field">
+    <%= f.label :form_id %><br>
+    <%= f.number_field :form_id %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

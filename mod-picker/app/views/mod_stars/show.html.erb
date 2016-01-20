@@ -1,0 +1,16 @@
+<div class="scaffold">
+  <p id="notice"><%= notice %></p>
+
+    <p>
+    <strong>mod_id:</strong>
+    <%= @mod_star.mod_id %>
+  </p>
+
+    <p>
+    <strong>user_id:</strong>
+    <%= @mod_star.user_id %>
+  </p>
+
+    <%= link_to 'Edit', edit_mod_star_path(@mod_star) %> |
+  <%= link_to 'Back', mod_stars_path %>
+</div>

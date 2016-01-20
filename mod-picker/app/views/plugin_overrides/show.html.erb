@@ -1,0 +1,21 @@
+<div class="scaffold">
+  <p id="notice"><%= notice %></p>
+
+    <p>
+    <strong>plugin_id:</strong>
+    <%= @plugin_override.plugin_id %>
+  </p>
+
+    <p>
+    <strong>master_id:</strong>
+    <%= @plugin_override.master_id %>
+  </p>
+
+    <p>
+    <strong>form_id:</strong>
+    <%= @plugin_override.form_id %>
+  </p>
+
+    <%= link_to 'Edit', edit_plugin_override_path(@plugin_override) %> |
+  <%= link_to 'Back', plugin_overrides_path %>
+</div>

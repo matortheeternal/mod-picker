@@ -8,7 +8,7 @@ class UserModAuthorMapsControllerTest < ActionController::TestCase
   test "should get index" do
     get :index
     assert_response :success
-    assert_not_nil assigns(:user_mod_author_maps)
+    assert_not_nil assigns(:mod_authors)
   end
 
   test "should get new" do
@@ -17,7 +17,7 @@ class UserModAuthorMapsControllerTest < ActionController::TestCase
   end
 
   test "should create user_mod_author_map" do
-    assert_difference('UserModAuthorMap.count') do
+    assert_difference('ModAuthor.count') do
       post :create, user_mod_author_map: { mod_id: @user_mod_author_map.mod_id, user_id: @user_mod_author_map.user_id }
     end
 
@@ -40,7 +40,7 @@ class UserModAuthorMapsControllerTest < ActionController::TestCase
   end
 
   test "should destroy user_mod_author_map" do
-    assert_difference('UserModAuthorMap.count', -1) do
+    assert_difference('ModAuthor.count', -1) do
       delete :destroy, id: @user_mod_author_map
     end
 

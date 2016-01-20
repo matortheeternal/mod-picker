@@ -2,13 +2,13 @@ require 'test_helper'
 
 class UserModStarMapsControllerTest < ActionController::TestCase
   setup do
-    @user_mod_star_map = user_mod_star_maps(:one)
+    @mod_star = mod_stars(:one)
   end
 
   test "should get index" do
     get :index
     assert_response :success
-    assert_not_nil assigns(:user_mod_star_maps)
+    assert_not_nil assigns(:mod_stars)
   end
 
   test "should get new" do
@@ -16,34 +16,34 @@ class UserModStarMapsControllerTest < ActionController::TestCase
     assert_response :success
   end
 
-  test "should create user_mod_star_map" do
-    assert_difference('UserModStarMap.count') do
-      post :create, user_mod_star_map: { mod_id: @user_mod_star_map.mod_id, user_id: @user_mod_star_map.user_id }
+  test "should create mod_star" do
+    assert_difference('ModStar.count') do
+      post :create, mod_star: { mod_id: @mod_star.mod_id, user_id: @mod_star.user_id }
     end
 
-    assert_redirected_to user_mod_star_map_path(assigns(:user_mod_star_map))
+    assert_redirected_to mod_star_path(assigns(:mod_star))
   end
 
-  test "should show user_mod_star_map" do
-    get :show, id: @user_mod_star_map
+  test "should show mod_star" do
+    get :show, id: @mod_star
     assert_response :success
   end
 
   test "should get edit" do
-    get :edit, id: @user_mod_star_map
+    get :edit, id: @mod_star
     assert_response :success
   end
 
-  test "should update user_mod_star_map" do
-    patch :update, id: @user_mod_star_map, user_mod_star_map: { mod_id: @user_mod_star_map.mod_id, user_id: @user_mod_star_map.user_id }
-    assert_redirected_to user_mod_star_map_path(assigns(:user_mod_star_map))
+  test "should update mod_star" do
+    patch :update, id: @mod_star, mod_star: { mod_id: @mod_star.mod_id, user_id: @mod_star.user_id }
+    assert_redirected_to mod_star_path(assigns(:mod_star))
   end
 
-  test "should destroy user_mod_star_map" do
-    assert_difference('UserModStarMap.count', -1) do
-      delete :destroy, id: @user_mod_star_map
+  test "should destroy mod_star" do
+    assert_difference('ModStar.count', -1) do
+      delete :destroy, id: @mod_star
     end
 
-    assert_redirected_to user_mod_star_maps_path
+    assert_redirected_to mod_stars_path
   end
 end
