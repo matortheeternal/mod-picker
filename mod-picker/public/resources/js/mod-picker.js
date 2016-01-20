@@ -10,7 +10,8 @@ var app = angular.module('modPicker', [
         $routeProvider.
             when('/search', {
                 templateUrl: '/resources/partials/search.html',
-                controller: 'searchController'
+                controller: 'searchController',
+                reloadOnSearch: false
             })
             .when('/browse', {
                 templateUrl: '/resources/partials/browse.html',
@@ -88,14 +89,20 @@ var app = angular.module('modPicker', [
         });
 })
 
-.controller('searchController', function($scope, $q, backend){
+.controller('searchController', function($scope, $q, backend, $location){
         $scope.search = {};
+
+        //TODO: make the search parameter shorter, similar to imgur URLs. -> implement two way hashing
+        if($location.search().s) {
+            $scope.search.name = $location.search().s;
+            processSearch();
+        }
 
         function processSearch() {
             delete $scope.results;
             delete $scope.errorMessage;
+            $location.search('s', $scope.search.name);
             $scope.loading = true;
-            console.log('searchQuery: name=\'' + $scope.search.name + '\' | range: \'' + $scope.search.lastUpdated + '\'');
             backend.search($scope.search).then(function (data) {
                 $scope.loading = false;
                 if(data.length) {
