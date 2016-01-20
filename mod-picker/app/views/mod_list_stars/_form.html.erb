@@ -1,10 +1,10 @@
-<%= form_for(@user_mod_list_star_map) do |f| %>
-  <% if @user_mod_list_star_map.errors.any? %>
+<%= form_for(@mod_list_star) do |f| %>
+  <% if @mod_list_star.errors.any? %>
     <div id="error_explanation">
-      <h2><%= pluralize(@user_mod_list_star_map.errors.count, "error") %> prohibited this user_mod_list_star_map from being saved:</h2>
+      <h2><%= pluralize(@mod_list_star.errors.count, "error") %> prohibited this mod_list_star from being saved:</h2>
 
       <ul>
-      <% @user_mod_list_star_map.errors.full_messages.each do |message| %>
+      <% @mod_list_star.errors.full_messages.each do |message| %>
         <li><%= message %></li>
       <% end %>
       </ul>

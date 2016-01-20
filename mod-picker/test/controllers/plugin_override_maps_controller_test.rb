@@ -2,7 +2,7 @@ require 'test_helper'
 
 class PluginOverrideMapsControllerTest < ActionController::TestCase
   setup do
-    @plugin_override_map = plugin_override_maps(:one)
+    @plugin_override = plugin_overrides(:one)
   end
 
   test "should get index" do
@@ -16,34 +16,34 @@ class PluginOverrideMapsControllerTest < ActionController::TestCase
     assert_response :success
   end
 
-  test "should create plugin_override_map" do
+  test "should create plugin_override" do
     assert_difference('PluginOverride.count') do
-      post :create, plugin_override_map: { form_id: @plugin_override_map.form_id, master_id: @plugin_override_map.master_id, plugin_id: @plugin_override_map.plugin_id }
+      post :create, plugin_override: { form_id: @plugin_override.form_id, master_id: @plugin_override.master_id, plugin_id: @plugin_override.plugin_id }
     end
 
-    assert_redirected_to plugin_override_map_path(assigns(:plugin_override_map))
+    assert_redirected_to plugin_override_path(assigns(:plugin_override))
   end
 
-  test "should show plugin_override_map" do
-    get :show, id: @plugin_override_map
+  test "should show plugin_override" do
+    get :show, id: @plugin_override
     assert_response :success
   end
 
   test "should get edit" do
-    get :edit, id: @plugin_override_map
+    get :edit, id: @plugin_override
     assert_response :success
   end
 
-  test "should update plugin_override_map" do
-    patch :update, id: @plugin_override_map, plugin_override_map: { form_id: @plugin_override_map.form_id, master_id: @plugin_override_map.master_id, plugin_id: @plugin_override_map.plugin_id }
-    assert_redirected_to plugin_override_map_path(assigns(:plugin_override_map))
+  test "should update plugin_override" do
+    patch :update, id: @plugin_override, plugin_override: { form_id: @plugin_override.form_id, master_id: @plugin_override.master_id, plugin_id: @plugin_override.plugin_id }
+    assert_redirected_to plugin_override_path(assigns(:plugin_override))
   end
 
-  test "should destroy plugin_override_map" do
+  test "should destroy plugin_override" do
     assert_difference('PluginOverride.count', -1) do
-      delete :destroy, id: @plugin_override_map
+      delete :destroy, id: @plugin_override
     end
 
-    assert_redirected_to plugin_override_maps_path
+    assert_redirected_to plugin_overrides_path
   end
 end

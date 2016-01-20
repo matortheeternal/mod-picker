@@ -1,7 +1,7 @@
 <div class="scaffold">
   <p id="notice"><%= notice %></p>
 
-  <h1>mod_version_file_maps</h1>
+  <h1>mod_version_files</h1>
 
   <table>
     <thead>
@@ -13,13 +13,13 @@
     </thead>
 
     <tbody>
-      <% @mod_version_file_maps.each do |mod_version_file_map| %>
+      <% @mod_version_files.each do |mod_version_file| %>
         <tr>
-            <td><%= mod_version_file_map.mod_version_id %></td>
-            <td><%= mod_version_file_map.mod_asset_file_id %></td>
-            <td><%= link_to 'Show', mod_version_file_map %></td>
-          <td><%= link_to 'Edit', edit_mod_version_file_map_path(mod_version_file_map) %></td>
-          <td><%= link_to 'Destroy', mod_version_file_map, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+            <td><%= mod_version_file.mod_version_id %></td>
+            <td><%= mod_version_file.mod_asset_file_id %></td>
+            <td><%= link_to 'Show', mod_version_file %></td>
+          <td><%= link_to 'Edit', edit_mod_version_file_path(mod_version_file) %></td>
+          <td><%= link_to 'Destroy', mod_version_file, method: :delete, data: { confirm: 'Are you sure?' } %></td>
         </tr>
       <% end %>
     </tbody>
@@ -27,5 +27,5 @@
 
   <br>
 
-  <%= link_to 'New Mod Version File Map', new_mod_version_file_map_path %>
+  <%= link_to 'New Mod Version File Map', new_mod_version_file_path %>
 </div>

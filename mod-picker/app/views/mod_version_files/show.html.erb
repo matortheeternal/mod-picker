@@ -3,14 +3,14 @@
 
     <p>
     <strong>mod_version_id:</strong>
-    <%= @mod_version_file_map.mod_version_id %>
+    <%= @mod_version_file.mod_version_id %>
   </p>
 
     <p>
     <strong>mod_asset_file_id:</strong>
-    <%= @mod_version_file_map.mod_asset_file_id %>
+    <%= @mod_version_file.mod_asset_file_id %>
   </p>
 
-    <%= link_to 'Edit', edit_mod_version_file_map_path(@mod_version_file_map) %> |
-  <%= link_to 'Back', mod_version_file_maps_path %>
+    <%= link_to 'Edit', edit_mod_version_file_path(@mod_version_file) %> |
+  <%= link_to 'Back', mod_version_files_path %>
 </div>

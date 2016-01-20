@@ -1,10 +1,10 @@
-<%= form_for(@plugin_override_map) do |f| %>
-  <% if @plugin_override_map.errors.any? %>
+<%= form_for(@plugin_override) do |f| %>
+  <% if @plugin_override.errors.any? %>
     <div id="error_explanation">
-      <h2><%= pluralize(@plugin_override_map.errors.count, "error") %> prohibited this plugin_override_map from being saved:</h2>
+      <h2><%= pluralize(@plugin_override.errors.count, "error") %> prohibited this plugin_override from being saved:</h2>
 
       <ul>
-      <% @plugin_override_map.errors.full_messages.each do |message| %>
+      <% @plugin_override.errors.full_messages.each do |message| %>
         <li><%= message %></li>
       <% end %>
       </ul>

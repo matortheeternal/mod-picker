@@ -1,7 +1,7 @@
 <div class="scaffold">
   <p id="notice"><%= notice %></p>
 
-  <h1>reputation_maps</h1>
+  <h1>reputation_links</h1>
 
   <table>
     <thead>
@@ -13,13 +13,13 @@
     </thead>
 
     <tbody>
-      <% @reputation_maps.each do |reputation_map| %>
+      <% @reputation_links.each do |reputation_link| %>
         <tr>
-            <td><%= reputation_map.from_rep_id %></td>
-            <td><%= reputation_map.to_rep_id %></td>
-            <td><%= link_to 'Show', reputation_map %></td>
-          <td><%= link_to 'Edit', edit_reputation_map_path(reputation_map) %></td>
-          <td><%= link_to 'Destroy', reputation_map, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+            <td><%= reputation_link.from_rep_id %></td>
+            <td><%= reputation_link.to_rep_id %></td>
+            <td><%= link_to 'Show', reputation_link %></td>
+          <td><%= link_to 'Edit', edit_reputation_link_path(reputation_link) %></td>
+          <td><%= link_to 'Destroy', reputation_link, method: :delete, data: { confirm: 'Are you sure?' } %></td>
         </tr>
       <% end %>
     </tbody>
@@ -27,5 +27,5 @@
 
   <br>
 
-  <%= link_to 'New Reputation Map', new_reputation_map_path %>
+  <%= link_to 'New Reputation Map', new_reputation_link_path %>
 </div>

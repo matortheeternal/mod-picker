@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  resources :mod_version_compatibility_note_maps
+  resources :mod_version_compatibility_notes
   resources :mod_list_compatibility_notes
   resources :mod_list_installation_notes
   resources :agreement_marks
@@ -12,10 +12,10 @@ Rails.application.routes.draw do
   resources :installation_notes
   resources :reviews
   resources :comments
-  resources :user_mod_author_maps
-  resources :user_mod_list_star_maps
-  resources :user_mod_star_maps
-  resources :reputation_maps
+  resources :mod_authors
+  resources :mod_list_stars
+  resources :mod_stars
+  resources :reputation_links
   resources :user_reputations
   resources :user_settings
   resources :user_bios
@@ -24,10 +24,10 @@ Rails.application.routes.draw do
   resources :mod_list_plugins
   resources :mod_lists
   resources :plugin_record_groups
-  resources :plugin_override_maps
+  resources :plugin_overrides
   resources :masters
   resources :plugins
-  resources :mod_version_file_maps
+  resources :mod_version_files
   resources :mod_asset_files
   resources :mod_versions
   resources :mods

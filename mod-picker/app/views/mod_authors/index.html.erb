@@ -1,7 +1,7 @@
 <div class="scaffold">
   <p id="notice"><%= notice %></p>
 
-  <h1>user_mod_author_maps</h1>
+  <h1>mod_authors</h1>
 
   <table>
     <thead>
@@ -13,13 +13,13 @@
     </thead>
 
     <tbody>
-      <% @user_mod_author_maps.each do |user_mod_author_map| %>
+      <% @mod_authors.each do |mod_author| %>
         <tr>
-            <td><%= user_mod_author_map.mod_id %></td>
-            <td><%= user_mod_author_map.user_id %></td>
-            <td><%= link_to 'Show', user_mod_author_map %></td>
-          <td><%= link_to 'Edit', edit_user_mod_author_map_path(user_mod_author_map) %></td>
-          <td><%= link_to 'Destroy', user_mod_author_map, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+            <td><%= mod_author.mod_id %></td>
+            <td><%= mod_author.user_id %></td>
+            <td><%= link_to 'Show', mod_author %></td>
+          <td><%= link_to 'Edit', edit_mod_author_path(mod_author) %></td>
+          <td><%= link_to 'Destroy', mod_author, method: :delete, data: { confirm: 'Are you sure?' } %></td>
         </tr>
       <% end %>
     </tbody>
@@ -27,5 +27,5 @@
 
   <br>
 
-  <%= link_to 'New User Mod Author Map', new_user_mod_author_map_path %>
+  <%= link_to 'New User Mod Author Map', new_mod_author_path %>
 </div>

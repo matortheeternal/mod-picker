@@ -1,4 +1,4 @@
-json.array!(@user_mod_star_maps) do |user_mod_star_map|
-  json.extract! user_mod_star_map, :id, :mod_id, :user_id
-  json.url user_mod_star_map_url(user_mod_star_map, format: :json)
+json.array!(@mod_stars) do |mod_star|
+  json.extract! mod_star, :id, :mod_id, :user_id
+  json.url mod_star_url(mod_star, format: :json)
 end

@@ -1,10 +1,10 @@
 class ModStarsController < ApplicationController
-  before_action :set_user_mod_star_map, only: [:show, :edit, :update, :destroy]
+  before_action :set_mod_star, only: [:show, :edit, :update, :destroy]
 
   # GET /mod_stars
   # GET /mod_stars.json
   def index
-    @user_mod_star_maps = ModStar.all
+    @mod_stars = ModStar.all
   end
 
   # GET /mod_stars/1
@@ -14,7 +14,7 @@ class ModStarsController < ApplicationController
 
   # GET /mod_stars/new
   def new
-    @user_mod_star_map = ModStar.new
+    @mod_star = ModStar.new
   end
 
   # GET /mod_stars/1/edit
@@ -24,15 +24,15 @@ class ModStarsController < ApplicationController
   # POST /mod_stars
   # POST /mod_stars.json
   def create
-    @user_mod_star_map = ModStar.new(user_mod_star_map_params)
+    @mod_star = ModStar.new(mod_star_params)
 
     respond_to do |format|
-      if @user_mod_star_map.save
-        format.html { redirect_to @user_mod_star_map, notice: 'User mod star map was successfully created.' }
-        format.json { render :show, status: :created, location: @user_mod_star_map }
+      if @mod_star.save
+        format.html { redirect_to @mod_star, notice: 'User mod star map was successfully created.' }
+        format.json { render :show, status: :created, location: @mod_star }
       else
         format.html { render :new }
-        format.json { render json: @user_mod_star_map.errors, status: :unprocessable_entity }
+        format.json { render json: @mod_star.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -41,12 +41,12 @@ class ModStarsController < ApplicationController
   # PATCH/PUT /mod_stars/1.json
   def update
     respond_to do |format|
-      if @user_mod_star_map.update(user_mod_star_map_params)
-        format.html { redirect_to @user_mod_star_map, notice: 'User mod star map was successfully updated.' }
-        format.json { render :show, status: :ok, location: @user_mod_star_map }
+      if @mod_star.update(mod_star_params)
+        format.html { redirect_to @mod_star, notice: 'User mod star map was successfully updated.' }
+        format.json { render :show, status: :ok, location: @mod_star }
       else
         format.html { render :edit }
-        format.json { render json: @user_mod_star_map.errors, status: :unprocessable_entity }
+        format.json { render json: @mod_star.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -54,21 +54,21 @@ class ModStarsController < ApplicationController
   # DELETE /mod_stars/1
   # DELETE /mod_stars/1.json
   def destroy
-    @user_mod_star_map.destroy
+    @mod_star.destroy
     respond_to do |format|
-      format.html { redirect_to user_mod_star_maps_url, notice: 'User mod star map was successfully destroyed.' }
+      format.html { redirect_to mod_stars_url, notice: 'User mod star map was successfully destroyed.' }
       format.json { head :no_content }
     end
   end
 
   private
     # Use callbacks to share common setup or constraints between actions.
-    def set_user_mod_star_map
-      @user_mod_star_map = ModStar.find(params[:id])
+    def set_mod_star
+      @mod_star = ModStar.find(params[:id])
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
-    def user_mod_star_map_params
-      params.require(:user_mod_star_map).permit(:mod_id, :user_id)
+    def mod_star_params
+      params.require(:mod_star).permit(:mod_id, :user_id)
     end
 end

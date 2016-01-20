@@ -3,14 +3,14 @@
 
     <p>
     <strong>mod_id:</strong>
-    <%= @user_mod_author_map.mod_id %>
+    <%= @mod_author.mod_id %>
   </p>
 
     <p>
     <strong>user_id:</strong>
-    <%= @user_mod_author_map.user_id %>
+    <%= @mod_author.user_id %>
   </p>
 
-    <%= link_to 'Edit', edit_user_mod_author_map_path(@user_mod_author_map) %> |
-  <%= link_to 'Back', user_mod_author_maps_path %>
+    <%= link_to 'Edit', edit_mod_author_path(@mod_author) %> |
+  <%= link_to 'Back', mod_authors_path %>
 </div>

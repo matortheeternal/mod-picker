@@ -1,7 +1,7 @@
 <div class="scaffold">
   <p id="notice"><%= notice %></p>
 
-  <h1>user_mod_star_maps</h1>
+  <h1>mod_stars</h1>
 
   <table>
     <thead>
@@ -13,13 +13,13 @@
     </thead>
 
     <tbody>
-      <% @user_mod_star_maps.each do |user_mod_star_map| %>
+      <% @mod_stars.each do |mod_star| %>
         <tr>
-            <td><%= user_mod_star_map.mod_id %></td>
-            <td><%= user_mod_star_map.user_id %></td>
-            <td><%= link_to 'Show', user_mod_star_map %></td>
-          <td><%= link_to 'Edit', edit_user_mod_star_map_path(user_mod_star_map) %></td>
-          <td><%= link_to 'Destroy', user_mod_star_map, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+            <td><%= mod_star.mod_id %></td>
+            <td><%= mod_star.user_id %></td>
+            <td><%= link_to 'Show', mod_star %></td>
+          <td><%= link_to 'Edit', edit_mod_star_path(mod_star) %></td>
+          <td><%= link_to 'Destroy', mod_star, method: :delete, data: { confirm: 'Are you sure?' } %></td>
         </tr>
       <% end %>
     </tbody>
@@ -27,5 +27,5 @@
 
   <br>
 
-  <%= link_to 'New User Mod Star Map', new_user_mod_star_map_path %>
+  <%= link_to 'New User Mod Star Map', new_mod_star_path %>
 </div>

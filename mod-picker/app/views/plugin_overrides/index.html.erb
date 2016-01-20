@@ -1,7 +1,7 @@
 <div class="scaffold">
   <p id="notice"><%= notice %></p>
 
-  <h1>plugin_override_maps</h1>
+  <h1>plugin_overrides</h1>
 
   <table>
     <thead>
@@ -14,14 +14,14 @@
     </thead>
 
     <tbody>
-      <% @plugin_override_maps.each do |plugin_override_map| %>
+      <% @plugin_overrides.each do |plugin_override| %>
         <tr>
-            <td><%= plugin_override_map.plugin_id %></td>
-            <td><%= plugin_override_map.master_id %></td>
-            <td><%= plugin_override_map.form_id %></td>
-            <td><%= link_to 'Show', plugin_override_map %></td>
-          <td><%= link_to 'Edit', edit_plugin_override_map_path(plugin_override_map) %></td>
-          <td><%= link_to 'Destroy', plugin_override_map, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+            <td><%= plugin_override.plugin_id %></td>
+            <td><%= plugin_override.master_id %></td>
+            <td><%= plugin_override.form_id %></td>
+            <td><%= link_to 'Show', plugin_override %></td>
+          <td><%= link_to 'Edit', edit_plugin_override_path(plugin_override) %></td>
+          <td><%= link_to 'Destroy', plugin_override, method: :delete, data: { confirm: 'Are you sure?' } %></td>
         </tr>
       <% end %>
     </tbody>
@@ -29,5 +29,5 @@
 
   <br>
 
-  <%= link_to 'New Plugin Override Map', new_plugin_override_map_path %>
+  <%= link_to 'New Plugin Override Map', new_plugin_override_path %>
 </div>
