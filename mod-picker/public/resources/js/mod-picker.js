@@ -123,7 +123,11 @@ var app = angular.module('modPicker', [
         //TODO: replace with REST Calls
         function retrieve(context) {
             var promise = $q.defer();
-            $http.get(BASE_LOCATION + context + '.json').then(function(data) {
+            $http({
+                url: BASE_LOCATION + context + '.json',
+                method: 'GET',
+                cache: true
+            }).then(function(data) {
                 promise.resolve(data.data);
             });
             return promise.promise;
