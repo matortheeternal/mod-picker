@@ -3,9 +3,9 @@
     <h1>{{mod.name}}</h1>
     <hr/>
     <!-- TODO: Commalogic -->
-    <p>by <span ng-repeat="author in mod.authors">{{author}}, </span> </p>
+    <p>by <span ng-repeat="author in mod.authors">{{author.name}}, </span> </p>
     <p>Versions</p>
-    <p><span ng-repeat="version in mod.versions">{{version}}</span> </p>
+    <p><span ng-repeat="version in mod.versions">{{version.version}}</span> </p>
 
     <p>{{mod.shortDescription}}</p>
 
