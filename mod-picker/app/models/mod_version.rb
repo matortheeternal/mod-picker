@@ -3,6 +3,7 @@ class ModVersion < ActiveRecord::Base
   has_many :plugins, :inverse_of => 'mod_version'
 
   has_many :installation_notes, :inverse_of => 'mod_version'
+  has_many :mod_version_compatibility_note_maps, :inverse_of => 'mod_version'
   has_many :compatibility_notes, :through => 'mod_version_compatibility_note_map', :inverse_of => 'mod_versions'
 
   has_many :mod_version_file_maps, :inverse_of => 'mod_version'
