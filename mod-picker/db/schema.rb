@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160119104044) do
+ActiveRecord::Schema.define(version: 20160120044750) do
 
   create_table "agreement_marks", id: false, force: :cascade do |t|
     t.integer "incorrect_note_id", limit: 4
@@ -207,6 +207,14 @@ ActiveRecord::Schema.define(version: 20160119104044) do
 
   add_index "mod_lists", ["created_by"], name: "created_by", using: :btree
   add_index "mod_lists", ["game_id"], name: "fk_rails_f25cbc0432", using: :btree
+
+  create_table "mod_version_compatibility_note_map", id: false, force: :cascade do |t|
+    t.integer "mod_version_id",        limit: 4, null: false
+    t.integer "compatibility_note_id", limit: 4, null: false
+  end
+
+  add_index "mod_version_compatibility_note_map", ["compatibility_note_id"], name: "fk_rails_29b33b572e", using: :btree
+  add_index "mod_version_compatibility_note_map", ["mod_version_id"], name: "fk_rails_f7085a6344", using: :btree
 
   create_table "mod_version_file_map", id: false, force: :cascade do |t|
     t.integer "mod_version_id",    limit: 4
@@ -457,6 +465,8 @@ ActiveRecord::Schema.define(version: 20160119104044) do
   add_foreign_key "mod_list_plugins", "plugins", name: "mod_list_plugins_ibfk_2"
   add_foreign_key "mod_lists", "games"
   add_foreign_key "mod_lists", "users", column: "created_by", name: "mod_lists_ibfk_1"
+  add_foreign_key "mod_version_compatibility_note_map", "compatibility_notes"
+  add_foreign_key "mod_version_compatibility_note_map", "mod_versions"
   add_foreign_key "mod_version_file_map", "mod_asset_files", name: "mod_version_file_map_ibfk_2"
   add_foreign_key "mod_version_file_map", "mod_versions", name: "mod_version_file_map_ibfk_1"
   add_foreign_key "mod_versions", "mods", name: "mod_versions_ibfk_1"
