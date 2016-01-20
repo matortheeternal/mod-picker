@@ -3,13 +3,12 @@
     <h1>{{mod.name}}</h1>
     <hr/>
     <!-- TODO: Commalogic -->
-    <p>by <span ng-repeat="author in mod.authors">{{author.name}}, </span> </p>
+    <p>by {{mod.nexus_info.authors}} </p>
     <p>Versions</p>
     <p><span ng-repeat="version in mod.versions">{{version.version}}</span> </p>
 
     <p>{{mod.shortDescription}}</p>
 
-    <!-- TODO: use actual data as soon as it's there -->
     <table>
         <tr>
             <td>Endorsements</td>
@@ -20,15 +19,14 @@
             <td>Total Downloads</td>
         </tr>
         <tr>
-            <td>50,000</td>
-            <td>100.000.000</td>
-            <td>0.05%</td>
-            <td>11-11-13</td>
-            <td>11-12-13</td>
-            <td>100,000,000</td>
+            <td>{{mod.nexus_info.endorsements}}</td>
+            <td>{{mod.nexus_info.unique_downloads}}</td>
+            <td>{{mod.nexus_info.endorsements}}</td>
+            <td>{{mod.nexus_info.date_released}}</td>
+            <td>{{mod.nexus_info.date_updated}}</td>
+            <td>{{mod.nexus_info.total_downloads}}</td>
         </tr>
     </table>
     <hr/>
     <!-- TODO put this stuff into the most complicated Directive you've ever did to make it really beautiful codewise-->
-    <p>I will put this stuff into the most complicated Directive I've ever did to make it really beautiful codewise.</p>
 </div>
