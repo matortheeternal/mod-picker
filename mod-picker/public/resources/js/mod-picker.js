@@ -43,14 +43,26 @@ var app = angular.module('modPicker', [
             restrict: 'E',
             templateUrl: '/resources/directives/loader.html',
             scope: {
-                condition: '='
+                condition: '=',
+                size: '='
             },
             controller: 'loaderController'
         }
 })
 
+.controller('searchInputController', function ($scope) {
+        $scope.loading = false;
+    $scope.processSearch = function () {
+        $scope.loading = true;
+        setTimeout(function () {
+            $scope.loading = false;
+            $scope.$apply();
+        }, 1000);
+    }
+})
+
 .controller('loaderController', function ($scope) {
-        var diameter = 100;
+        var diameter = $scope.size || 100;
         document.getElementById('loader').style.width = diameter+'px';
         var cl = new CanvasLoader('loader');
         cl.setColor('#56b7c4'); // default is '#000000'

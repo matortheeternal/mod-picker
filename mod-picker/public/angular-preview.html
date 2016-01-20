@@ -30,9 +30,10 @@
                 </a>
             </div>
             <div class="secondary-nav">
-                <div class="search">
-                    <input class="search-field" type="text" value="Search...">
-                    <input class="btn" type="submit" value="Search">
+                <div class="search" ng-controller="searchInputController">
+                    <input class="search-field" type="text" autocomplete="off" ng-model="search" placeholder="Search...">
+                    <input class="btn" type="submit" value="Search" ng-click="processSearch()" ng-hide="loading">
+                    <loader condition="loading" size="40"></loader>
                 </div>
             </div>
         </div>
