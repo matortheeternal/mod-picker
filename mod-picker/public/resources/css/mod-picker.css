@@ -8,50 +8,350 @@ body {
 
 #headerImage {
     background-color: #555;
-    background-image: url("/resources/img/skyrim.jpg");
-    background-position: center -190px;
+    background-image: url("/resources/img/whiterun-1.png");
     background-repeat: no-repeat;
-    height: 200px;
+    height: 192px;
     overflow: hidden;
+
 }
 
-#title {
-    width: 600px;
-    font-size: 70px;
-    margin-top: 40px;
+
+/* box-sizing */
+
+* {
+    box-sizing: border-box;
 }
 
-#wrapper {
-    width: 800px;
-    padding-top: 20px;
+/* some basic css for scaffolds */
+body {
+    margin: auto;
+    font-family: 'Roboto', sans-serif;
+    padding-bottom: 60px;
+}
+
+.scaffold {
+    width: 1600px;
     margin: auto;
 }
 
-#navigation ul {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    height: 50px;
-    background: black;
+table {
+    border-collapse: collapse;
+    width: 95%;
+    font-family: Arial;
 }
 
-#navigation li {
-    float: left;
-}
-
-#navigation li a {
-    display: block;
-    margin: 0 10px 0 10px;
+thead {
+    background-color: #bbb;
     color: #fff;
-    font-size: 30px;
+    text-align: left;
+}
+
+td, th {
+    border-left: 1px solid #CBCBCB;
+    border-width: 0px 0px 0px 1px;
+    font-size: 10px;
+    margin: 0px;
+    overflow: visible;
+    padding: 0.5em 1em;
+}
+
+tbody tr:nth-child(odd) {
+    background-color: #eee;
+}
+
+tbody tr:nth-child(even) {
+    background-color: #fff;
+}
+
+.field input[type="text"]{
+    width: 200px;
+}
+
+.field input[type="email"]{
+    width: 200px;
+}
+
+.field input[type="password"]{
+    width: 200px;
+}
+
+/* clearfix */
+.clearfix:before,
+.clearfix:after {
+    content: " "; /* 1 */
+    display: table; /* 2 */
+}
+
+.clearfix:after {
+    clear: both;
+}
+
+/**
+ * For IE 6/7 only
+ * Include this rule to trigger hasLayout and contain floats.
+ */
+.clearfix {
+    *zoom: 1;
+}
+
+/* url styling */
+a {
+    color: #205098;
     text-decoration: none;
 }
 
-#container {
+a.strong {
+    font-weight: 600;
+}
+
+a:hover {
+    color: #508BDA;
+}
+
+/* css for navbar */
+
+nav {
+    display: block;
+    background-color: #342F2A;
+    white-space: nowrap;
+}
+
+nav a {
+    height: 60px;
+    padding: 12px 12px 16px;
+    color: #EEE;
+    display: inline-block;
+}
+
+nav span {
+    text-transform: uppercase;
+    color: #C9A9A9;
+    font-weight: 700;
+    font-size: 10px;
     display: block;
 }
 
-.center {
+.nav-wrapper {
+    border-left: 1px solid #44484A;
+    position: relative;
+}
+
+.primary-nav {
+    float: left;
+}
+
+.secondary-nav {
+    float: right;
+    height: 60px;
+}
+
+.search input {
+    height: 35px;
+    font-size: 13px;
+    margin: 10px 0 0;
+    padding: 0 8px;
+    border: 0 none;
+    -moz-appearance: none;
+    border-radius: 0;
+}
+
+/* search field */
+.search-field {
+    width: 200px;
+    height: 35px;
+    font-size: 13px;
+    margin: 10px 0 0;
+    padding: 0 8px;
+    border: 0 none;
+    -moz-appearance: none;
+    border-radius: 0;
+}
+
+.btn {
+    width: 74px;
+    display: inline;
+    padding: 0 12px;
+    padding-left: 0;
+    color: #FFF;
+    font-size: 12px;
+    text-align: center;
+    text-transform: uppercase;
+    border: 0;
+    border-radius: 0;
+    background: #C0A060 none repeat scroll 0 0;
+}
+
+/* css for horizontal menus */
+/* used for login and registration items */
+ul.hmenu {
+    list-style: none;
+    margin: 0 0 2em;
+    padding: 0;
+}
+
+ul.hmenu li {
+    display: inline;
+}
+
+/* css for columns */
+/* used on user profile page */
+.page-container {
+    width: 1220px;
     margin: auto;
+}
+
+.left-column {
+    width: 393px;
+    padding-left: 10px;
+    padding-right: 10px;
+    display: table-cell;
+    vertical-align: top;
+}
+
+.right-column {
+    padding-left: 10px;
+    width: 817px;
+    display: table-cell;
+    vertical-align: top;
+}
+
+.left-column h2 {
+    padding: 0px;
+    margin: 0px;
+    font-size: 28px;
+    font-weight: 300;
+}
+
+.left-column h3 {
+    margin-top: 24px;
+    margin-bottom: 8px;
+    font-weight: 500;
+}
+
+/* css for expandable sections */
+/* used on user profile page */
+.expandable-table {
+    margin: auto;
+    width: 100%;
+    border: 1px solid #000;
+}
+
+.expandable-table td {
+    border-left: 0; /* temporary css because of global table css */
+}
+
+.section-header {
+    border-bottom: 1px solid #000;
+    border-top: 1px solid #000;
+    background-color: #555;
+    font-size: 20px;
+    color: #FFF;
+    cursor: pointer;
+    padding: 8px;
+}
+
+.section-header:hover {
+    background-color: #686868;
+}
+
+.section-hidden {
+    display: none;
+}
+
+.section-visible {
     display: block;
+    padding: 10px;
+}
+
+.section-contents {
+    background-color: #FFF;
+    margin-bottom: 10px;
+    padding: 0;
+}
+
+/* css for user profile page */
+.user-title {
+    font-size: 12px;
+    color: #555;
+}
+
+.avatar-wrapper {
+    background-color: #FFF;
+    box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.15);
+    max-width: 200px !important;
+    max-height: 200px !important;
+    border: 1px solid #DDD;
+    padding: 3px;
+    text-align: center;
+    display: inline-block;
+}
+
+.group-banned {
+    color: #999;
+}
+
+.group-user {
+    color: #080;
+    font-weight: 600;
+}
+
+.group-author {
+    color: #F70;
+    font-weight: 600;
+}
+
+.group-vip {
+    color: #508;
+    font-weight: 600;
+}
+
+.group-moderator {
+    color: #008;
+    font-weight: 600;
+}
+
+.group-admin {
+    color: #800;
+    font-weight: 600;
+}
+
+/* css for attributes tables */
+/* used on user profile page */
+.attributes-table {
+    border: 1px solid black;
+    margin: auto;
+}
+
+.attributes-table td, th {
+    border: 0px;
+    font-size: 12px;
+}
+
+/* css for vcards */
+/* used on user profile page */
+.vcard-stats {
+    margin-bottom: 10px;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    text-align: center;
+    border-top: 1px solid #EEE;
+    border-bottom: 1px solid #EEE;
+}
+
+.vcard-stat {
+    float: left;
+    width: 25%;
+    font-size: 11px;
+    text-transform: capitalize;
+}
+
+.vcard-stat-count {
+    display: block;
+    font-size: 28px;
+    font-weight: bold;
+    line-height: 1;
+}
+
+.text-muted {
+    color: #767676;
 }
