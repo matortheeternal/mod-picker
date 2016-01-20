@@ -31,9 +31,13 @@
             </div>
             <div class="secondary-nav">
                 <div class="search" ng-controller="searchInputController">
-                    <input class="search-field" type="text" autocomplete="off" ng-model="search" placeholder="Search...">
-                    <input class="btn" type="submit" value="Search" ng-click="processSearch()" ng-hide="loading">
-                    <loader condition="loading" size="40"></loader>
+                    <form>
+                        <input class="search-field" type="text" autocomplete="off" ng-model="search" placeholder="Search...">
+                        <div class="loadingButtonContainer">
+                            <input class="btn" type="submit" value="Search" ng-click="processSearch()" ng-hide="loading"/>
+                            <loader condition="loading" size="38"></loader>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>

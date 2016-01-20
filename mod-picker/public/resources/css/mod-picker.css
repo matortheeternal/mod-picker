@@ -1,9 +1,4 @@
 body {
-    /* SWISS FONT FUCK YEEEEE */
-    /* No seriously now, this font is one of the coolest for templating. Bootcrap's using it too*/
-    font-family: Helvetica;
-    margin: 0;
-    padding: 0;
 }
 
 #headerImage {
@@ -24,9 +19,11 @@ body {
 
 /* some basic css for scaffolds */
 body {
-    margin: auto;
+    /*margin: auto;*/
     font-family: 'Roboto', sans-serif;
     padding-bottom: 60px;
+    margin: 0;
+    /*padding: 0;*/
 }
 
 .scaffold {
@@ -104,9 +101,9 @@ a.strong {
     font-weight: 600;
 }
 
-a:hover {
-    color: #508BDA;
-}
+/*a:hover {*/
+    /*color: #508BDA;*/
+/*}*/
 
 /* css for navbar */
 
@@ -117,10 +114,20 @@ nav {
 }
 
 nav a {
+    border-left: 1px solid #44484A;
     height: 60px;
     padding: 12px 12px 16px;
     color: #EEE;
-    display: inline-block;
+    display: block;
+    float: left;
+}
+
+nav a:hover {
+    background-color: #48433F;
+}
+
+nav a:last-child {
+    border-right: 1px solid #44484A;
 }
 
 nav span {
@@ -132,7 +139,6 @@ nav span {
 }
 
 .nav-wrapper {
-    border-left: 1px solid #44484A;
     position: relative;
 }
 
@@ -153,6 +159,22 @@ nav span {
     border: 0 none;
     -moz-appearance: none;
     border-radius: 0;
+    display: block;
+    float: left;
+}
+
+.loadingButtonContainer {
+    float: left;
+    width: 74px;
+}
+
+.search #loader {
+    margin-top: 10px;
+    margin-left: 20px;
+}
+
+.search {
+    float: right;
 }
 
 /* search field */
@@ -179,6 +201,7 @@ nav span {
     border: 0;
     border-radius: 0;
     background: #C0A060 none repeat scroll 0 0;
+    cursor: pointer;
 }
 
 /* css for horizontal menus */

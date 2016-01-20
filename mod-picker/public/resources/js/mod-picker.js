@@ -65,7 +65,7 @@ var app = angular.module('modPicker', [
         var diameter = $scope.size || 100;
         document.getElementById('loader').style.width = diameter+'px';
         var cl = new CanvasLoader('loader');
-        cl.setColor('#56b7c4'); // default is '#000000'
+        cl.setColor('#c0a060'); // default is '#000000'
         cl.setDiameter(diameter); // default is 40
         cl.setDensity(64); // default is 40
         cl.setRange(0.8); // default is 1.3
