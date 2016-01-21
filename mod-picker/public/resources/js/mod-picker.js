@@ -71,10 +71,11 @@ var app = angular.module('modPicker', [
 
 
 
-.controller('searchInputController', function ($scope) {
-        $scope.loading = false;
+.controller('searchInputController', function ($scope, $location) {
+    $scope.loading = false;
     $scope.processSearch = function () {
         $scope.loading = true;
+        //$location.search('s', $scope.search.name);
         setTimeout(function () {
             $scope.loading = false;
             $scope.$apply();
