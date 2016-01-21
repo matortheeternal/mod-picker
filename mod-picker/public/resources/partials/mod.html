@@ -1,5 +1,5 @@
 <loader condition="loading"></loader>
-<div ng-show="mod">
+< ng-show="mod">
     <h1>{{mod.name}}</h1>
     <hr/>
     <!-- TODO: Commalogic -->
@@ -28,5 +28,13 @@
         </tr>
     </table>
     <hr/>
-    <!-- TODO put this stuff into the most complicated Directive you've ever did to make it really beautiful codewise-->
+    <expandable expanded="false" title="'I\'m the title'">
+        <span>I'm expandable content.</span>
+    </expandable>
+    <hr/>
+    <expandable expanded="false" title="'I\'m a much bigger title'">
+        <h1>I'm another content</h1>
+        <p>I'm a bit bigger.</p>
+    </expandable>
+    <hr/>
 </div>

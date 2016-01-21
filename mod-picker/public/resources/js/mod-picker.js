@@ -49,6 +49,26 @@ var app = angular.module('modPicker', [
             controller: 'loaderController'
         }
 })
+.directive('expandable', function () {
+    return {
+        restrict: 'E',
+        templateUrl: '/resources/directives/expandable.html',
+        controller: 'expandableController',
+        scope: {
+            expanded: '=',
+            title: '='
+        },
+        transclude: true
+    }
+})
+
+.controller('expandableController', function($scope) {
+    $scope.toggle = function () {
+        $scope.expanded = !$scope.expanded;
+    }
+})
+
+
 
 .controller('loaderController', function ($scope) {
         var diameter = 100;
