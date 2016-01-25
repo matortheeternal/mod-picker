@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160122233517) do
+ActiveRecord::Schema.define(version: 20160125005941) do
 
   create_table "agreement_marks", id: false, force: :cascade do |t|
     t.integer "incorrect_note_id", limit: 4
@@ -24,7 +24,7 @@ ActiveRecord::Schema.define(version: 20160122233517) do
 
   create_table "categories", force: :cascade do |t|
     t.integer "parent_id",   limit: 4
-    t.text    "name",        limit: 255
+    t.string  "name",        limit: 64
     t.text    "description", limit: 65535
   end
 
@@ -66,11 +66,11 @@ ActiveRecord::Schema.define(version: 20160122233517) do
   add_index "compatibility_notes", ["submitted_by"], name: "submitted_by", using: :btree
 
   create_table "games", force: :cascade do |t|
-    t.text "short_name",    limit: 255
-    t.text "long_name",     limit: 255
-    t.text "abbr_name",     limit: 255
-    t.text "exe_name",      limit: 255
-    t.text "steam_app_ids", limit: 255
+    t.string "short_name",    limit: 32
+    t.string "long_name",     limit: 128
+    t.string "abbr_name",     limit: 32
+    t.string "exe_name",      limit: 32
+    t.string "steam_app_ids", limit: 64
   end
 
   create_table "helpful_marks", id: false, force: :cascade do |t|
@@ -209,7 +209,6 @@ ActiveRecord::Schema.define(version: 20160122233517) do
   add_index "mod_list_stars", ["user_id"], name: "user_id", using: :btree
 
   create_table "mod_lists", force: :cascade do |t|
-    t.text    "game",              limit: 255
     t.integer "created_by",        limit: 4
     t.boolean "is_collection"
     t.boolean "is_public"
@@ -253,13 +252,14 @@ ActiveRecord::Schema.define(version: 20160122233517) do
     t.date    "released"
     t.boolean "obsolete"
     t.boolean "dangerous"
+    t.string  "version",   limit: 16
   end
 
   add_index "mod_versions", ["mod_id"], name: "mod_id", using: :btree
 
   create_table "mods", force: :cascade do |t|
-    t.text    "name",                  limit: 255
-    t.text    "aliases",               limit: 255
+    t.string  "name",                  limit: 128
+    t.string  "aliases",               limit: 128
     t.boolean "is_utility"
     t.boolean "has_adult_content"
     t.integer "game_id",               limit: 4
@@ -272,8 +272,8 @@ ActiveRecord::Schema.define(version: 20160122233517) do
   add_index "mods", ["secondary_category_id"], name: "fk_rails_26f394ea9d", using: :btree
 
   create_table "nexus_infos", force: :cascade do |t|
-    t.text    "uploaded_by",      limit: 255
-    t.text    "authors",          limit: 255
+    t.string  "uploaded_by",      limit: 128
+    t.string  "authors",          limit: 128
     t.date    "date_released"
     t.date    "date_updated"
     t.integer "endorsements",     limit: 4
@@ -290,21 +290,19 @@ ActiveRecord::Schema.define(version: 20160122233517) do
     t.integer "mod_id",           limit: 4,     null: false
   end
 
-  create_table "plugin_overrides", id: false, force: :cascade do |t|
+  create_table "override_records", id: false, force: :cascade do |t|
     t.integer "plugin_id", limit: 4
     t.integer "master_id", limit: 4
     t.integer "form_id",   limit: 4
     t.string  "sig",       limit: 4
-    t.text    "name",      limit: 255
   end
 
-  add_index "plugin_overrides", ["master_id"], name: "mst_id", using: :btree
-  add_index "plugin_overrides", ["plugin_id"], name: "pl_id", using: :btree
+  add_index "override_records", ["master_id"], name: "mst_id", using: :btree
+  add_index "override_records", ["plugin_id"], name: "pl_id", using: :btree
 
   create_table "plugin_record_groups", id: false, force: :cascade do |t|
     t.integer "plugin_id",        limit: 4
     t.string  "sig",              limit: 4
-    t.text    "name",             limit: 255
     t.integer "new_records",      limit: 4
     t.integer "override_records", limit: 4
   end
@@ -313,13 +311,22 @@ ActiveRecord::Schema.define(version: 20160122233517) do
 
   create_table "plugins", force: :cascade do |t|
     t.integer "mod_version_id", limit: 4
-    t.text    "filename",       limit: 255
-    t.text    "author",         limit: 255
-    t.text    "description",    limit: 65535
+    t.string  "filename",       limit: 64
+    t.string  "author",         limit: 128
+    t.string  "description",    limit: 512
     t.string  "crc_hash",       limit: 8
   end
 
   add_index "plugins", ["mod_version_id"], name: "mv_id", using: :btree
+
+  create_table "record_groups", force: :cascade do |t|
+    t.integer "game_id",     limit: 4
+    t.string  "signature",   limit: 4
+    t.string  "name",        limit: 64
+    t.boolean "child_group"
+  end
+
+  add_index "record_groups", ["game_id", "signature"], name: "index_record_groups_on_game_id_and_signature", unique: true, using: :btree
 
   create_table "reputation_links", id: false, force: :cascade do |t|
     t.integer "from_rep_id", limit: 4
@@ -388,9 +395,9 @@ ActiveRecord::Schema.define(version: 20160122233517) do
     t.boolean "allow_lovers_lab"
     t.boolean "allow_steam_workshop"
     t.integer "user_id",              limit: 4
-    t.text    "timezone",             limit: 255
-    t.text    "udate_format",         limit: 255
-    t.text    "utime_format",         limit: 255
+    t.string  "timezone",             limit: 128
+    t.string  "udate_format",         limit: 128
+    t.string  "utime_format",         limit: 128
   end
 
   add_index "user_settings", ["user_id"], name: "user_id", using: :btree
@@ -399,7 +406,7 @@ ActiveRecord::Schema.define(version: 20160122233517) do
     t.string   "username",               limit: 32
     t.enum     "user_level",             limit: ["guest", "banned", "user", "author", "vip", "moderator", "admin"]
     t.string   "title",                  limit: 32
-    t.text     "avatar",                 limit: 255
+    t.string   "avatar",                 limit: 128
     t.date     "joined"
     t.integer  "active_ml_id",           limit: 4
     t.integer  "active_mc_id",           limit: 4
@@ -478,10 +485,11 @@ ActiveRecord::Schema.define(version: 20160122233517) do
   add_foreign_key "mods", "categories", column: "primary_category_id"
   add_foreign_key "mods", "categories", column: "secondary_category_id"
   add_foreign_key "mods", "games"
-  add_foreign_key "plugin_overrides", "masters", name: "plugin_overrides_ibfk_2"
-  add_foreign_key "plugin_overrides", "plugins", name: "plugin_overrides_ibfk_1"
+  add_foreign_key "override_records", "masters", name: "override_records_ibfk_2"
+  add_foreign_key "override_records", "plugins", name: "override_records_ibfk_1"
   add_foreign_key "plugin_record_groups", "plugins", name: "plugin_record_groups_ibfk_1"
   add_foreign_key "plugins", "mod_versions", name: "plugins_ibfk_1"
+  add_foreign_key "record_groups", "games"
   add_foreign_key "reputation_links", "user_reputations", column: "from_rep_id", name: "reputation_links_ibfk_1"
   add_foreign_key "reputation_links", "user_reputations", column: "to_rep_id", name: "reputation_links_ibfk_2"
   add_foreign_key "reviews", "mods", name: "reviews_ibfk_2"
