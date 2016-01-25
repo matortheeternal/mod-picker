@@ -1,1 +1,1 @@
-json.extract! @mod_version, :id, :mod_id, :nxm_file_id, :released, :obsolete, :dangerous
+json.extract! @mod_version, :id, :mod_id, :version, :released, :obsolete, :dangerous
