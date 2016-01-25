@@ -9,6 +9,7 @@
           <th>plugin_id</th>
           <th>master_id</th>
           <th>form_id</th>
+          <th>sig</th>
           <th colspan="3"></th>
       </tr>
     </thead>
@@ -19,9 +20,10 @@
             <td><%= override_record.plugin_id %></td>
             <td><%= override_record.master_id %></td>
             <td><%= override_record.form_id %></td>
+            <td><%= override_record.sig %></td>
             <td><%= link_to 'Show', override_record %></td>
-          <td><%= link_to 'Edit', edit_override_record_path(override_record) %></td>
-          <td><%= link_to 'Destroy', override_record, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+            <td><%= link_to 'Edit', edit_override_record_path(override_record) %></td>
+            <td><%= link_to 'Destroy', override_record, method: :delete, data: { confirm: 'Are you sure?' } %></td>
         </tr>
       <% end %>
     </tbody>
