@@ -42,7 +42,7 @@ call rails g scaffold plugins id:integer mod_version_id:integer filename:text au
 call rails g scaffold masters id:integer plugin_id:integer --force --skip-migration
 
 :: override records associated with a plugin
-call rails g scaffold plugin_overrides plugin_id:integer master_id:integer form_id:integer --force --skip-migration
+call rails g scaffold override_records plugin_id:integer master_id:integer form_id:integer --force --skip-migration
 
 :: record groups associated with a plugin
 call rails g scaffold plugin_record_groups plugin_id:integer sig:string name:text new_records:integer override_records:integer --force --skip-migration

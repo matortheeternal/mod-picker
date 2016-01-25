@@ -26,7 +26,7 @@ Rails.application.routes.draw do
   resources :mod_list_plugins
   resources :mod_lists
   resources :plugin_record_groups
-  resources :plugin_overrides
+  resources :override_records
   resources :masters
   resources :plugins
   resources :mod_version_files

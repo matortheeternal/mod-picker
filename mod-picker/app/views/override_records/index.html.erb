@@ -1,0 +1,33 @@
+<div class="scaffold">
+  <p id="notice"><%= notice %></p>
+
+  <h1>override_records</h1>
+
+  <table>
+    <thead>
+      <tr>
+          <th>plugin_id</th>
+          <th>master_id</th>
+          <th>form_id</th>
+          <th colspan="3"></th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% @override_records.each do |override_record| %>
+        <tr>
+            <td><%= override_record.plugin_id %></td>
+            <td><%= override_record.master_id %></td>
+            <td><%= override_record.form_id %></td>
+            <td><%= link_to 'Show', override_record %></td>
+          <td><%= link_to 'Edit', edit_override_record_path(override_record) %></td>
+          <td><%= link_to 'Destroy', override_record, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+
+  <br>
+
+  <%= link_to 'New Override Record', new_override_record_path %>
+</div>
