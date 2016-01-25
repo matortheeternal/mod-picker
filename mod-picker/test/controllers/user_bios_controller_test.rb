@@ -18,7 +18,7 @@ class UserBiosControllerTest < ActionController::TestCase
 
   test "should create user_bio" do
     assert_difference('UserBio.count') do
-      post :create, user_bio: { bio_id: @user_bio.bio_id, lover_username: @user_bio.lover_username, lover_verified: @user_bio.lover_verified, nexus_username: @user_bio.nexus_username, nexus_verified: @user_bio.nexus_verified, steam_username: @user_bio.steam_username, steam_verified: @user_bio.steam_verified, user_id: @user_bio.user_id }
+      post :create, user_bio: { id: @user_bio.id, lover_username: @user_bio.lover_username, lover_verified: @user_bio.lover_verified, nexus_username: @user_bio.nexus_username, nexus_verified: @user_bio.nexus_verified, steam_username: @user_bio.steam_username, steam_verified: @user_bio.steam_verified, user_id: @user_bio.user_id }
     end
 
     assert_redirected_to user_bio_path(assigns(:user_bio))
@@ -35,7 +35,7 @@ class UserBiosControllerTest < ActionController::TestCase
   end
 
   test "should update user_bio" do
-    patch :update, id: @user_bio, user_bio: { bio_id: @user_bio.bio_id, lover_username: @user_bio.lover_username, lover_verified: @user_bio.lover_verified, nexus_username: @user_bio.nexus_username, nexus_verified: @user_bio.nexus_verified, steam_username: @user_bio.steam_username, steam_verified: @user_bio.steam_verified, user_id: @user_bio.user_id }
+    patch :update, id: @user_bio, user_bio: { id: @user_bio.id, lover_username: @user_bio.lover_username, lover_verified: @user_bio.lover_verified, nexus_username: @user_bio.nexus_username, nexus_verified: @user_bio.nexus_verified, steam_username: @user_bio.steam_username, steam_verified: @user_bio.steam_verified, user_id: @user_bio.user_id }
     assert_redirected_to user_bio_path(assigns(:user_bio))
   end
 

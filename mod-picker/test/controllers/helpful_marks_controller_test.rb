@@ -18,7 +18,7 @@ class HelpfulMarksControllerTest < ActionController::TestCase
 
   test "should create helpful_mark" do
     assert_difference('HelpfulMark.count') do
-      post :create, helpful_mark: { cn_id: @helpful_mark.cn_id, helpful: @helpful_mark.helpful, in_id: @helpful_mark.in_id, r_id: @helpful_mark.r_id, submitted_by: @helpful_mark.submitted_by }
+      post :create, helpful_mark: { compatibility_note_id: @helpful_mark.compatibility_note_id, helpful: @helpful_mark.helpful, installation_note_id: @helpful_mark.installation_note_id, review_id: @helpful_mark.review_id, submitted_by: @helpful_mark.submitted_by }
     end
 
     assert_redirected_to helpful_mark_path(assigns(:helpful_mark))
@@ -35,7 +35,7 @@ class HelpfulMarksControllerTest < ActionController::TestCase
   end
 
   test "should update helpful_mark" do
-    patch :update, id: @helpful_mark, helpful_mark: { cn_id: @helpful_mark.cn_id, helpful: @helpful_mark.helpful, in_id: @helpful_mark.in_id, r_id: @helpful_mark.r_id, submitted_by: @helpful_mark.submitted_by }
+    patch :update, id: @helpful_mark, helpful_mark: { compatibility_note_id: @helpful_mark.compatibility_note_id, helpful: @helpful_mark.helpful, installation_note_id: @helpful_mark.installation_note_id, review_id: @helpful_mark.review_id, submitted_by: @helpful_mark.submitted_by }
     assert_redirected_to helpful_mark_path(assigns(:helpful_mark))
   end
 

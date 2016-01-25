@@ -12,8 +12,8 @@
   <% end %>
 
   <div class="field">
-    <%= f.label :set_id %><br>
-    <%= f.number_field :set_id %>
+    <%= f.label :id %><br>
+    <%= f.number_field :id %>
   </div>
   <div class="field">
     <%= f.label :user_id %><br>
@@ -53,15 +53,15 @@
   </div>
   <div class="field">
     <%= f.label :timezone %><br>
-    <%= f.text_field :timezone %>
+    <%= f.text_area :timezone %>
   </div>
   <div class="field">
     <%= f.label :udate_format %><br>
-    <%= f.text_field :udate_format %>
+    <%= f.text_area :udate_format %>
   </div>
   <div class="field">
     <%= f.label :utime_format %><br>
-    <%= f.text_field :utime_format %>
+    <%= f.text_area :utime_format %>
   </div>
   <div class="actions">
     <%= f.submit %>

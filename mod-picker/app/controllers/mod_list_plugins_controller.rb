@@ -69,6 +69,6 @@ class ModListPluginsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def mod_list_plugin_params
-      params.require(:mod_list_plugin).permit(:ml_id, :pl_id, :active, :load_order)
+      params.require(:mod_list_plugin).permit(:mod_list_id, :plugin_id, :active, :load_order)
     end
 end

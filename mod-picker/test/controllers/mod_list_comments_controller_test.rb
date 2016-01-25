@@ -18,7 +18,7 @@ class ModListCommentsControllerTest < ActionController::TestCase
 
   test "should create mod_list_comment" do
     assert_difference('ModListComment.count') do
-      post :create, mod_list_comment: { c_id: @mod_list_comment.c_id, ml_id: @mod_list_comment.ml_id }
+      post :create, mod_list_comment: { comment_id: @mod_list_comment.comment_id, mod_list_id: @mod_list_comment.mod_list_id }
     end
 
     assert_redirected_to mod_list_comment_path(assigns(:mod_list_comment))
@@ -35,7 +35,7 @@ class ModListCommentsControllerTest < ActionController::TestCase
   end
 
   test "should update mod_list_comment" do
-    patch :update, id: @mod_list_comment, mod_list_comment: { c_id: @mod_list_comment.c_id, ml_id: @mod_list_comment.ml_id }
+    patch :update, id: @mod_list_comment, mod_list_comment: { comment_id: @mod_list_comment.comment_id, mod_list_id: @mod_list_comment.mod_list_id }
     assert_redirected_to mod_list_comment_path(assigns(:mod_list_comment))
   end
 

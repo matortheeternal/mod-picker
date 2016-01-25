@@ -18,7 +18,7 @@ class ModsControllerTest < ActionController::TestCase
 
   test "should create mod" do
     assert_difference('Mod.count') do
-      post :create, mod: { aliases: @mod.aliases, game_id: @mod.game_id, has_adult_content: @mod.has_adult_content, is_utility: @mod.is_utility, mod_id: @mod.mod_id, name: @mod.name, primary_category: @mod.primary_category, secondary_category: @mod.secondary_category }
+      post :create, mod: { aliases: @mod.aliases, game_id: @mod.game_id, has_adult_content: @mod.has_adult_content, id: @mod.id, is_utility: @mod.is_utility, name: @mod.name, primary_category_id: @mod.primary_category_id, secondary_category_id: @mod.secondary_category_id }
     end
 
     assert_redirected_to mod_path(assigns(:mod))
@@ -35,7 +35,7 @@ class ModsControllerTest < ActionController::TestCase
   end
 
   test "should update mod" do
-    patch :update, id: @mod, mod: { aliases: @mod.aliases, game_id: @mod.game_id, has_adult_content: @mod.has_adult_content, is_utility: @mod.is_utility, mod_id: @mod.mod_id, name: @mod.name, primary_category: @mod.primary_category, secondary_category: @mod.secondary_category }
+    patch :update, id: @mod, mod: { aliases: @mod.aliases, game_id: @mod.game_id, has_adult_content: @mod.has_adult_content, id: @mod.id, is_utility: @mod.is_utility, name: @mod.name, primary_category_id: @mod.primary_category_id, secondary_category_id: @mod.secondary_category_id }
     assert_redirected_to mod_path(assigns(:mod))
   end
 

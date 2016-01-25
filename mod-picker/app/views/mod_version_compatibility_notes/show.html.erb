@@ -1,0 +1,16 @@
+<div class="scaffold">
+  <p id="notice"><%= notice %></p>
+
+    <p>
+    <strong>mod_version_id:</strong>
+    <%= @mod_version_compatibility_note_map.mod_version_id %>
+  </p>
+
+    <p>
+    <strong>compatibility_note_id:</strong>
+    <%= @mod_version_compatibility_note_map.compatibility_note_id %>
+  </p>
+
+    <%= link_to 'Edit', edit_mod_version_compatibility_note_map_path(@mod_version_compatibility_note_map) %> |
+  <%= link_to 'Back', mod_version_compatibility_note_maps_path %>
+</div>

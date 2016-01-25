@@ -18,7 +18,7 @@ class IncorrectNotesControllerTest < ActionController::TestCase
 
   test "should create incorrect_note" do
     assert_difference('IncorrectNote.count') do
-      post :create, incorrect_note: { cn_id: @incorrect_note.cn_id, in_id: @incorrect_note.in_id, inc_id: @incorrect_note.inc_id, r_id: @incorrect_note.r_id, reason: @incorrect_note.reason, submitted_by: @incorrect_note.submitted_by }
+      post :create, incorrect_note: { compatibility_note_id: @incorrect_note.compatibility_note_id, id: @incorrect_note.id, installation_note_id: @incorrect_note.installation_note_id, reason: @incorrect_note.reason, review_id: @incorrect_note.review_id, submitted_by: @incorrect_note.submitted_by }
     end
 
     assert_redirected_to incorrect_note_path(assigns(:incorrect_note))
@@ -35,7 +35,7 @@ class IncorrectNotesControllerTest < ActionController::TestCase
   end
 
   test "should update incorrect_note" do
-    patch :update, id: @incorrect_note, incorrect_note: { cn_id: @incorrect_note.cn_id, in_id: @incorrect_note.in_id, inc_id: @incorrect_note.inc_id, r_id: @incorrect_note.r_id, reason: @incorrect_note.reason, submitted_by: @incorrect_note.submitted_by }
+    patch :update, id: @incorrect_note, incorrect_note: { compatibility_note_id: @incorrect_note.compatibility_note_id, id: @incorrect_note.id, installation_note_id: @incorrect_note.installation_note_id, reason: @incorrect_note.reason, review_id: @incorrect_note.review_id, submitted_by: @incorrect_note.submitted_by }
     assert_redirected_to incorrect_note_path(assigns(:incorrect_note))
   end
 

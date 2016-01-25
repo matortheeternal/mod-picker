@@ -18,7 +18,7 @@ class WorkshopInfosControllerTest < ActionController::TestCase
 
   test "should create workshop_info" do
     assert_difference('WorkshopInfo.count') do
-      post :create, workshop_info: { mod_id: @workshop_info.mod_id, ws_id: @workshop_info.ws_id }
+      post :create, workshop_info: { id: @workshop_info.id, mod_id: @workshop_info.mod_id }
     end
 
     assert_redirected_to workshop_info_path(assigns(:workshop_info))
@@ -35,7 +35,7 @@ class WorkshopInfosControllerTest < ActionController::TestCase
   end
 
   test "should update workshop_info" do
-    patch :update, id: @workshop_info, workshop_info: { mod_id: @workshop_info.mod_id, ws_id: @workshop_info.ws_id }
+    patch :update, id: @workshop_info, workshop_info: { id: @workshop_info.id, mod_id: @workshop_info.mod_id }
     assert_redirected_to workshop_info_path(assigns(:workshop_info))
   end
 

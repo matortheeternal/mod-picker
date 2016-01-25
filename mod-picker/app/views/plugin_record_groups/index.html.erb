@@ -6,7 +6,7 @@
   <table>
     <thead>
       <tr>
-          <th>pl_id</th>
+          <th>plugin_id</th>
           <th>sig</th>
           <th>name</th>
           <th>new_records</th>
@@ -18,7 +18,7 @@
     <tbody>
       <% @plugin_record_groups.each do |plugin_record_group| %>
         <tr>
-            <td><%= plugin_record_group.pl_id %></td>
+            <td><%= plugin_record_group.plugin_id %></td>
             <td><%= plugin_record_group.sig %></td>
             <td><%= plugin_record_group.name %></td>
             <td><%= plugin_record_group.new_records %></td>

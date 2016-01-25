@@ -1,23 +1,24 @@
 Mod.create(
     name: "SkyUI",
-    primary_category: Category.where(name: "").first.id,
-    secondary_category: Category.where(name: "").first.id,
-    is_utility: false,
+    primary_category_id: Category.where(name: "").first.id,
+    secondary_category_id: Category.where(name: "").first.id,
+    is_utility: False,
     has_adult_content: false,
     game_id: gameSkyrim.id
 )
 
 NexusInfo.create(
-    mod_id: 3863,
+    id: 3863,
+    mod_id: Mod.last.id,
     uploaded_by: "schlangster",
     authors: "SkyUI Team",
     date_released: DateTime.strptime("17/12/2011 - 12:24AM", nexusDateFormat),
     date_updated: DateTime.strptime("24/08/2015 - 03:38PM", nexusDateFormat),
-    endorsements: 401515,
-    total_downloads: 11195444,
-    unique_downloads: 5678866,
-    views: 26152764,
-    posts_count: 17023,
+    endorsements: 404927,
+    total_downloads: 11244061,
+    unique_downloads: 5703525,
+    views: 26258557,
+    posts_count: 17040,
     videos_count: 23,
     images_count: 23,
     files_count: 14,
@@ -25,53 +26,71 @@ NexusInfo.create(
     nexus_category: 42
 )
 
+ModVersion.create(
+    mod_id: Mod.last.id,
+    version: "5.1",
+    released: DateTime.strptime("24/08/2015 - 03:38PM", nexusDateFormat),
+    obsolete: false,
+    dangerous: false,
+)
+
 Mod.create(
     name: "Immersive Armors",
-    primary_category: Category.where(name: "").first.id,
-    secondary_category: Category.where(name: "").first.id,
-    is_utility: false,
+    primary_category_id: Category.where(name: "").first.id,
+    secondary_category_id: Category.where(name: "").first.id,
+    is_utility: False,
     has_adult_content: false,
     game_id: gameSkyrim.id
 )
 
 NexusInfo.create(
-    mod_id: 19733,
+    id: 19733,
+    mod_id: Mod.last.id,
     uploaded_by: "hothtrooper44",
     authors: "Hothtrooper44",
     date_released: DateTime.strptime("01/07/2012 - 07:23PM", nexusDateFormat),
-    date_updated: DateTime.strptime("11/01/2016 - 01:51AM", nexusDateFormat),
-    endorsements: 206388,
-    total_downloads: 6392023,
-    unique_downloads: 2920433,
-    views: 16141264,
-    posts_count: 15626,
+    date_updated: DateTime.strptime("20/01/2016 - 12:16AM", nexusDateFormat),
+    endorsements: 208078,
+    total_downloads: 6423440,
+    unique_downloads: 2936645,
+    views: 16208593,
+    posts_count: 15646,
     videos_count: 16,
-    images_count: 453,
+    images_count: 454,
     files_count: 25,
     articles_count: 3,
     nexus_category: 54
 )
 
+ModVersion.create(
+    mod_id: Mod.last.id,
+    version: "8",
+    released: DateTime.strptime("20/01/2016 - 12:16AM", nexusDateFormat),
+    obsolete: false,
+    dangerous: false,
+)
+
 Mod.create(
     name: "Skyrim HD - 2K Textures",
-    primary_category: Category.where(name: "").first.id,
-    secondary_category: Category.where(name: "").first.id,
-    is_utility: false,
+    primary_category_id: Category.where(name: "").first.id,
+    secondary_category_id: Category.where(name: "").first.id,
+    is_utility: False,
     has_adult_content: false,
     game_id: gameSkyrim.id
 )
 
 NexusInfo.create(
-    mod_id: 607,
+    id: 607,
+    mod_id: Mod.last.id,
     uploaded_by: "NebuLa1",
     authors: "NebuLa from AHBmods",
     date_released: DateTime.strptime("19/11/2011 - 01:03AM", nexusDateFormat),
     date_updated: DateTime.strptime("09/01/2016 - 04:57PM", nexusDateFormat),
-    endorsements: 156565,
-    total_downloads: 17683064,
-    unique_downloads: 8505589,
-    views: 20441185,
-    posts_count: 8472,
+    endorsements: 158069,
+    total_downloads: 17720870,
+    unique_downloads: 8524444,
+    views: 20530426,
+    posts_count: 8494,
     videos_count: 26,
     images_count: 161,
     files_count: 23,
@@ -79,26 +98,35 @@ NexusInfo.create(
     nexus_category: 29
 )
 
+ModVersion.create(
+    mod_id: Mod.last.id,
+    version: "1.7",
+    released: DateTime.strptime("09/01/2016 - 04:57PM", nexusDateFormat),
+    obsolete: false,
+    dangerous: false,
+)
+
 Mod.create(
     name: "RaceMenu",
-    primary_category: Category.where(name: "").first.id,
-    secondary_category: Category.where(name: "").first.id,
-    is_utility: false,
+    primary_category_id: Category.where(name: "").first.id,
+    secondary_category_id: Category.where(name: "").first.id,
+    is_utility: False,
     has_adult_content: false,
     game_id: gameSkyrim.id
 )
 
 NexusInfo.create(
-    mod_id: 29624,
+    id: 29624,
+    mod_id: Mod.last.id,
     uploaded_by: "expired6978",
     authors: "Expired",
     date_released: DateTime.strptime("08/01/2013 - 01:10AM", nexusDateFormat),
     date_updated: DateTime.strptime("18/01/2016 - 10:37AM", nexusDateFormat),
-    endorsements: 147459,
-    total_downloads: 4160491,
-    unique_downloads: 2874281,
-    views: 9600524,
-    posts_count: 9998,
+    endorsements: 148874,
+    total_downloads: 4187681,
+    unique_downloads: 2890642,
+    views: 9661000,
+    posts_count: 10047,
     videos_count: 8,
     images_count: 258,
     files_count: 104,
@@ -106,26 +134,35 @@ NexusInfo.create(
     nexus_category: 42
 )
 
+ModVersion.create(
+    mod_id: Mod.last.id,
+    version: "3.4.5",
+    released: DateTime.strptime("18/01/2016 - 10:37AM", nexusDateFormat),
+    obsolete: false,
+    dangerous: false,
+)
+
 Mod.create(
     name: "Unofficial Skyrim Legendary Edition Patch",
-    primary_category: Category.where(name: "").first.id,
-    secondary_category: Category.where(name: "").first.id,
-    is_utility: false,
+    primary_category_id: Category.where(name: "").first.id,
+    secondary_category_id: Category.where(name: "").first.id,
+    is_utility: False,
     has_adult_content: false,
     game_id: gameSkyrim.id
 )
 
 NexusInfo.create(
-    mod_id: 71214,
+    id: 71214,
+    mod_id: Mod.last.id,
     uploaded_by: "Arthmoor",
     authors: "Unofficial Patch Project Team ",
     date_released: DateTime.strptime("07/11/2015 - 08:41PM", nexusDateFormat),
-    date_updated: DateTime.strptime("11/01/2016 - 07:37PM", nexusDateFormat),
-    endorsements: 13232,
-    total_downloads: 249219,
-    unique_downloads: 169082,
-    views: 682041,
-    posts_count: 1605,
+    date_updated: DateTime.strptime("20/01/2016 - 06:41PM", nexusDateFormat),
+    endorsements: 14628,
+    total_downloads: 272979,
+    unique_downloads: 183781,
+    views: 742126,
+    posts_count: 1703,
     videos_count: 1,
     images_count: 15,
     files_count: 1,
@@ -133,26 +170,35 @@ NexusInfo.create(
     nexus_category: 84
 )
 
+ModVersion.create(
+    mod_id: Mod.last.id,
+    version: "3.0.0",
+    released: DateTime.strptime("20/01/2016 - 06:41PM", nexusDateFormat),
+    obsolete: false,
+    dangerous: false,
+)
+
 Mod.create(
     name: "Mod Organizer",
-    primary_category: Category.where(name: "").first.id,
-    secondary_category: Category.where(name: "").first.id,
-    is_utility: true,
+    primary_category_id: Category.where(name: "").first.id,
+    secondary_category_id: Category.where(name: "").first.id,
+    is_utility: True,
     has_adult_content: false,
     game_id: gameSkyrim.id
 )
 
 NexusInfo.create(
-    mod_id: 1334,
+    id: 1334,
+    mod_id: Mod.last.id,
     uploaded_by: "Tannin42",
     authors: "Tannin",
     date_released: DateTime.strptime("24/11/2011 - 03:30PM", nexusDateFormat),
     date_updated: DateTime.strptime("01/12/2015 - 09:23PM", nexusDateFormat),
-    endorsements: 87754,
-    total_downloads: 2062261,
-    unique_downloads: 1496867,
-    views: 4795636,
-    posts_count: 12997,
+    endorsements: 88697,
+    total_downloads: 2078942,
+    unique_downloads: 1507428,
+    views: 4833168,
+    posts_count: 13016,
     videos_count: 35,
     images_count: 4,
     files_count: 27,
@@ -160,26 +206,35 @@ NexusInfo.create(
     nexus_category: 39
 )
 
+ModVersion.create(
+    mod_id: Mod.last.id,
+    version: "1.3.11",
+    released: DateTime.strptime("01/12/2015 - 09:23PM", nexusDateFormat),
+    obsolete: false,
+    dangerous: false,
+)
+
 Mod.create(
     name: "Skyrim Flora Overhaul",
-    primary_category: Category.where(name: "").first.id,
-    secondary_category: Category.where(name: "").first.id,
-    is_utility: false,
+    primary_category_id: Category.where(name: "").first.id,
+    secondary_category_id: Category.where(name: "").first.id,
+    is_utility: False,
     has_adult_content: false,
     game_id: gameSkyrim.id
 )
 
 NexusInfo.create(
-    mod_id: 141,
+    id: 141,
+    mod_id: Mod.last.id,
     uploaded_by: "vurt",
     authors: "vurt",
     date_released: DateTime.strptime("13/11/2011 - 10:36PM", nexusDateFormat),
     date_updated: DateTime.strptime("16/01/2016 - 10:15PM", nexusDateFormat),
-    endorsements: 98476,
-    total_downloads: 5201973,
-    unique_downloads: 3329348,
-    views: 10208722,
-    posts_count: 10565,
+    endorsements: 99308,
+    total_downloads: 5225456,
+    unique_downloads: 3342510,
+    views: 10248390,
+    posts_count: 10586,
     videos_count: 47,
     images_count: 741,
     files_count: 35,
@@ -187,25 +242,34 @@ NexusInfo.create(
     nexus_category: 29
 )
 
+ModVersion.create(
+    mod_id: Mod.last.id,
+    version: "2.3",
+    released: DateTime.strptime("16/01/2016 - 10:15PM", nexusDateFormat),
+    obsolete: false,
+    dangerous: false,
+)
+
 Mod.create(
     name: "TES5Edit",
-    primary_category: Category.where(name: "").first.id,
-    secondary_category: Category.where(name: "").first.id,
-    is_utility: true,
+    primary_category_id: Category.where(name: "").first.id,
+    secondary_category_id: Category.where(name: "").first.id,
+    is_utility: True,
     has_adult_content: false,
     game_id: gameSkyrim.id
 )
 
 NexusInfo.create(
-    mod_id: 25859,
+    id: 25859,
+    mod_id: Mod.last.id,
     uploaded_by: "Sharlikran",
     authors: "ElminsterAU",
     date_released: DateTime.strptime("22/10/2012 - 06:22AM", nexusDateFormat),
     date_updated: DateTime.strptime("10/11/2015 - 07:43AM", nexusDateFormat),
-    endorsements: 79736,
-    total_downloads: 1587046,
-    unique_downloads: 1154626,
-    views: 4577858,
+    endorsements: 80385,
+    total_downloads: 1597970,
+    unique_downloads: 1162331,
+    views: 4606415,
     posts_count: 0,
     videos_count: 14,
     images_count: 4,
@@ -214,26 +278,35 @@ NexusInfo.create(
     nexus_category: 39
 )
 
+ModVersion.create(
+    mod_id: Mod.last.id,
+    version: "3.1.2",
+    released: DateTime.strptime("10/11/2015 - 07:43AM", nexusDateFormat),
+    obsolete: false,
+    dangerous: false,
+)
+
 Mod.create(
     name: "Merge Plugins",
-    primary_category: Category.where(name: "").first.id,
-    secondary_category: Category.where(name: "").first.id,
-    is_utility: true,
+    primary_category_id: Category.where(name: "").first.id,
+    secondary_category_id: Category.where(name: "").first.id,
+    is_utility: True,
     has_adult_content: false,
     game_id: gameSkyrim.id
 )
 
 NexusInfo.create(
-    mod_id: 69905,
+    id: 69905,
+    mod_id: Mod.last.id,
     uploaded_by: "matortheeternal",
     authors: "Mator",
     date_released: DateTime.strptime("24/12/2015 - 01:56AM", nexusDateFormat),
     date_updated: DateTime.strptime("05/01/2016 - 09:16AM", nexusDateFormat),
-    endorsements: 1025,
-    total_downloads: 11450,
-    unique_downloads: 10301,
-    views: 84459,
-    posts_count: 661,
+    endorsements: 1099,
+    total_downloads: 12487,
+    unique_downloads: 11147,
+    views: 92672,
+    posts_count: 701,
     videos_count: 0,
     images_count: 15,
     files_count: 3,
@@ -241,80 +314,107 @@ NexusInfo.create(
     nexus_category: 39
 )
 
+ModVersion.create(
+    mod_id: Mod.last.id,
+    version: "2.1.3",
+    released: DateTime.strptime("05/01/2016 - 09:16AM", nexusDateFormat),
+    obsolete: false,
+    dangerous: false,
+)
+
 Mod.create(
     name: "The Lily - Armour Mashup",
-    primary_category: Category.where(name: "").first.id,
-    secondary_category: Category.where(name: "").first.id,
-    is_utility: false,
+    primary_category_id: Category.where(name: "").first.id,
+    secondary_category_id: Category.where(name: "").first.id,
+    is_utility: False,
     has_adult_content: false,
     game_id: gameSkyrim.id
 )
 
 NexusInfo.create(
-    mod_id: 71843,
+    id: 71843,
+    mod_id: Mod.last.id,
     uploaded_by: "pottoply",
     authors: "pottoply",
     date_released: DateTime.strptime("08/12/2015 - 09:42PM", nexusDateFormat),
-    date_updated: DateTime.strptime("01/01/2016 - 08:21PM", nexusDateFormat),
-    endorsements: 882,
-    total_downloads: 22013,
-    unique_downloads: 18446,
-    views: 119173,
-    posts_count: 206,
-    videos_count: 5,
-    images_count: 45,
+    date_updated: DateTime.strptime("19/01/2016 - 07:58PM", nexusDateFormat),
+    endorsements: 921,
+    total_downloads: 23264,
+    unique_downloads: 19418,
+    views: 122787,
+    posts_count: 207,
+    videos_count: 6,
+    images_count: 46,
     files_count: 15,
     articles_count: 0,
     nexus_category: 54
 )
 
+ModVersion.create(
+    mod_id: Mod.last.id,
+    version: "1.6",
+    released: DateTime.strptime("19/01/2016 - 07:58PM", nexusDateFormat),
+    obsolete: false,
+    dangerous: false,
+)
+
 Mod.create(
     name: "THE PEOPLE OF SKYRIM ULTIMATE EDITION",
-    primary_category: Category.where(name: "").first.id,
-    secondary_category: Category.where(name: "").first.id,
-    is_utility: false,
+    primary_category_id: Category.where(name: "").first.id,
+    secondary_category_id: Category.where(name: "").first.id,
+    is_utility: False,
     has_adult_content: false,
     game_id: gameSkyrim.id
 )
 
 NexusInfo.create(
-    mod_id: 72449,
+    id: 72449,
+    mod_id: Mod.last.id,
     uploaded_by: "nesbit098",
     authors: "Nesbit",
     date_released: DateTime.strptime("05/01/2016 - 10:31AM", nexusDateFormat),
-    date_updated: DateTime.strptime("19/01/2016 - 03:32AM", nexusDateFormat),
-    endorsements: 741,
-    total_downloads: 48951,
-    unique_downloads: 31732,
-    views: 169304,
-    posts_count: 1215,
+    date_updated: DateTime.strptime("24/01/2016 - 02:41AM", nexusDateFormat),
+    endorsements: 970,
+    total_downloads: 57197,
+    unique_downloads: 37661,
+    views: 196131,
+    posts_count: 1397,
     videos_count: 0,
-    images_count: 18,
+    images_count: 26,
     files_count: 29,
     articles_count: 3,
     nexus_category: 78
 )
 
+ModVersion.create(
+    mod_id: Mod.last.id,
+    version: "3.0.6.5",
+    released: DateTime.strptime("24/01/2016 - 02:41AM", nexusDateFormat),
+    obsolete: false,
+    dangerous: false,
+)
+
 Mod.create(
     name: "Skaal You Need - Skaal house and follower",
-    primary_category: Category.where(name: "").first.id,
-    secondary_category: Category.where(name: "").first.id,
-    is_utility: false,
+    primary_category_id: Category.where(name: "").first.id,
+    secondary_category_id: Category.where(name: "").first.id,
+    is_utility: False,
     has_adult_content: false,
     game_id: gameSkyrim.id
 )
 
 NexusInfo.create(
-    mod_id: 72005,
+    id: 72005,
+    mod_id: Mod.last.id,
     uploaded_by: "Elianora",
     authors: "Elianora",
     date_released: DateTime.strptime("17/12/2015 - 09:23PM", nexusDateFormat),
-    date_updated: DateTime.strptime("29/12/2015 - 08:16PM", nexusDateFormat),
-    endorsements: 705,
-    total_downloads: 11943,
-    unique_downloads: 9777,
-    views: 94561,
-    posts_count: 240,
+    date_updated: DateTime.strptime("20/01/2016 - 07:36PM", nexusDateFormat),
+    endorsements: 737,
+    total_downloads: 12276,
+    unique_downloads: 9996,
+    views: 96800,
+    posts_count: 242,
     videos_count: 2,
     images_count: 35,
     files_count: 4,
@@ -322,25 +422,34 @@ NexusInfo.create(
     nexus_category: 67
 )
 
+ModVersion.create(
+    mod_id: Mod.last.id,
+    version: "1.0",
+    released: DateTime.strptime("20/01/2016 - 07:36PM", nexusDateFormat),
+    obsolete: false,
+    dangerous: false,
+)
+
 Mod.create(
     name: "SC - Hairstyles",
-    primary_category: Category.where(name: "").first.id,
-    secondary_category: Category.where(name: "").first.id,
-    is_utility: false,
+    primary_category_id: Category.where(name: "").first.id,
+    secondary_category_id: Category.where(name: "").first.id,
+    is_utility: False,
     has_adult_content: false,
     game_id: gameSkyrim.id
 )
 
 NexusInfo.create(
-    mod_id: 71561,
+    id: 71561,
+    mod_id: Mod.last.id,
     uploaded_by: "ShinglesCat",
     authors: "ShinglesCat",
     date_released: DateTime.strptime("25/11/2015 - 09:21AM", nexusDateFormat),
     date_updated: DateTime.strptime("02/01/2016 - 06:11PM", nexusDateFormat),
-    endorsements: 632,
-    total_downloads: 10013,
-    unique_downloads: 8460,
-    views: 89754,
+    endorsements: 650,
+    total_downloads: 10243,
+    unique_downloads: 8640,
+    views: 90865,
     posts_count: 98,
     videos_count: 3,
     images_count: 61,
@@ -349,30 +458,47 @@ NexusInfo.create(
     nexus_category: 26
 )
 
+ModVersion.create(
+    mod_id: Mod.last.id,
+    version: "1.1",
+    released: DateTime.strptime("02/01/2016 - 06:11PM", nexusDateFormat),
+    obsolete: false,
+    dangerous: false,
+)
+
 Mod.create(
     name: "Real Names",
-    primary_category: Category.where(name: "").first.id,
-    secondary_category: Category.where(name: "").first.id,
-    is_utility: false,
+    primary_category_id: Category.where(name: "").first.id,
+    secondary_category_id: Category.where(name: "").first.id,
+    is_utility: False,
     has_adult_content: false,
     game_id: gameSkyrim.id
 )
 
 NexusInfo.create(
-    mod_id: 71464,
+    id: 71464,
+    mod_id: Mod.last.id,
     uploaded_by: "nellshini",
     authors: "Jaxonz and Nellshini",
     date_released: DateTime.strptime("23/11/2015 - 02:11AM", nexusDateFormat),
-    date_updated: DateTime.strptime("16/01/2016 - 08:36PM", nexusDateFormat),
-    endorsements: 628,
-    total_downloads: 10531,
-    unique_downloads: 9122,
-    views: 45746,
-    posts_count: 163,
+    date_updated: DateTime.strptime("21/01/2016 - 07:01AM", nexusDateFormat),
+    endorsements: 665,
+    total_downloads: 11142,
+    unique_downloads: 9654,
+    views: 47429,
+    posts_count: 166,
     videos_count: 0,
     images_count: 6,
-    files_count: 3,
+    files_count: 4,
     articles_count: 0,
     nexus_category: 78
+)
+
+ModVersion.create(
+    mod_id: Mod.last.id,
+    version: "2.25",
+    released: DateTime.strptime("21/01/2016 - 07:01AM", nexusDateFormat),
+    obsolete: false,
+    dangerous: false,
 )
 

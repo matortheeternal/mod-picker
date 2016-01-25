@@ -1,35 +1,35 @@
 <div class="scaffold">
   <p id="notice"><%= notice %></p>
 
-  <h1>Listing User Reputations</h1>
+  <h1>user_reputations</h1>
 
   <table>
     <thead>
       <tr>
-        <th>rep_id</th>
-        <th>user_id</th>
-        <th>overall</th>
-        <th>offset</th>
-        <th>audiovisual_design</th>
-        <th>plugin_design</th>
-        <th>utility_design</th>
-        <th>script_design</th>
-        <th colspan="3"></th>
+          <th>id</th>
+          <th>user_id</th>
+          <th>overall</th>
+          <th>offset</th>
+          <th>audiovisual_design</th>
+          <th>plugin_design</th>
+          <th>utility_design</th>
+          <th>script_design</th>
+          <th colspan="3"></th>
       </tr>
     </thead>
 
     <tbody>
       <% @user_reputations.each do |user_reputation| %>
         <tr>
-          <td><%= user_reputation.rep_id %></td>
-          <td><%= user_reputation.user_id %></td>
-          <td><%= user_reputation.overall %></td>
-          <td><%= user_reputation.offset %></td>
-          <td><%= user_reputation.audiovisual_design %></td>
-          <td><%= user_reputation.plugin_design %></td>
-          <td><%= user_reputation.utility_design %></td>
-          <td><%= user_reputation.script_design %></td>
-          <td><%= link_to 'Show', user_reputation %></td>
+            <td><%= user_reputation.id %></td>
+            <td><%= user_reputation.user_id %></td>
+            <td><%= user_reputation.overall %></td>
+            <td><%= user_reputation.offset %></td>
+            <td><%= user_reputation.audiovisual_design %></td>
+            <td><%= user_reputation.plugin_design %></td>
+            <td><%= user_reputation.utility_design %></td>
+            <td><%= user_reputation.script_design %></td>
+            <td><%= link_to 'Show', user_reputation %></td>
           <td><%= link_to 'Edit', edit_user_reputation_path(user_reputation) %></td>
           <td><%= link_to 'Destroy', user_reputation, method: :delete, data: { confirm: 'Are you sure?' } %></td>
         </tr>
@@ -39,5 +39,5 @@
 
   <br>
 
-  <%= link_to 'New User reputation', new_user_reputation_path %>
+  <%= link_to 'New User Reputation', new_user_reputation_path %>
 </div>

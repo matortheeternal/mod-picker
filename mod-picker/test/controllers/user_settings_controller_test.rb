@@ -18,7 +18,7 @@ class UserSettingsControllerTest < ActionController::TestCase
 
   test "should create user_setting" do
     assert_difference('UserSetting.count') do
-      post :create, user_setting: { allow_adult_content: @user_setting.allow_adult_content, allow_lovers_lab: @user_setting.allow_lovers_lab, allow_nexus_mods: @user_setting.allow_nexus_mods, allow_steam_workshop: @user_setting.allow_steam_workshop, email_notifications: @user_setting.email_notifications, email_public: @user_setting.email_public, set_id: @user_setting.set_id, show_notifications: @user_setting.show_notifications, show_tooltips: @user_setting.show_tooltips, user_id: @user_setting.user_id }
+      post :create, user_setting: { allow_adult_content: @user_setting.allow_adult_content, allow_lovers_lab: @user_setting.allow_lovers_lab, allow_nexus_mods: @user_setting.allow_nexus_mods, allow_steam_workshop: @user_setting.allow_steam_workshop, email_notifications: @user_setting.email_notifications, email_public: @user_setting.email_public, id: @user_setting.id, show_notifications: @user_setting.show_notifications, show_tooltips: @user_setting.show_tooltips, timezone: @user_setting.timezone, udate_format: @user_setting.udate_format, user_id: @user_setting.user_id, utime_format: @user_setting.utime_format }
     end
 
     assert_redirected_to user_setting_path(assigns(:user_setting))
@@ -35,7 +35,7 @@ class UserSettingsControllerTest < ActionController::TestCase
   end
 
   test "should update user_setting" do
-    patch :update, id: @user_setting, user_setting: { allow_adult_content: @user_setting.allow_adult_content, allow_lovers_lab: @user_setting.allow_lovers_lab, allow_nexus_mods: @user_setting.allow_nexus_mods, allow_steam_workshop: @user_setting.allow_steam_workshop, email_notifications: @user_setting.email_notifications, email_public: @user_setting.email_public, set_id: @user_setting.set_id, show_notifications: @user_setting.show_notifications, show_tooltips: @user_setting.show_tooltips, user_id: @user_setting.user_id }
+    patch :update, id: @user_setting, user_setting: { allow_adult_content: @user_setting.allow_adult_content, allow_lovers_lab: @user_setting.allow_lovers_lab, allow_nexus_mods: @user_setting.allow_nexus_mods, allow_steam_workshop: @user_setting.allow_steam_workshop, email_notifications: @user_setting.email_notifications, email_public: @user_setting.email_public, id: @user_setting.id, show_notifications: @user_setting.show_notifications, show_tooltips: @user_setting.show_tooltips, timezone: @user_setting.timezone, udate_format: @user_setting.udate_format, user_id: @user_setting.user_id, utime_format: @user_setting.utime_format }
     assert_redirected_to user_setting_path(assigns(:user_setting))
   end
 

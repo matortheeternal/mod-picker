@@ -86,17 +86,20 @@ def crawl_mod(nm_id):
 	print("Nexus Category: "+nexusCategory);
 
 	# EXPORT STATS FOR SEEDING
+	# EXPORT MOD
 	output = open('./seeds.rb', 'a')
 	output.write('Mod.create(\n')
 	output.write('    name: "'+name+'",\n')
-	output.write('    primary_category: Category.where(name: "").first.id,\n')
-	output.write('    secondary_category: Category.where(name: "").first.id,\n')
+	output.write('    primary_category_id: Category.where(name: "").first.id,\n')
+	output.write('    secondary_category_id: Category.where(name: "").first.id,\n')
 	output.write('    is_utility: '+str(isUtility)+',\n')
 	output.write('    has_adult_content: false,\n')
 	output.write('    game_id: gameSkyrim.id\n')
 	output.write(')\n\n')
+	# EXPORT NEXUS INFO
 	output.write('NexusInfo.create(\n')
-	output.write('    mod_id: '+nm_id+',\n')
+	output.write('    id: '+nm_id+',\n')
+	output.write('    mod_id: Mod.last.id,\n')
 	output.write('    uploaded_by: "'+uploadedBy+'",\n')
 	output.write('    authors: "'+author+'",\n')
 	output.write('    date_released: DateTime.strptime("'+dateAdded+'", nexusDateFormat),\n')
@@ -111,6 +114,14 @@ def crawl_mod(nm_id):
 	output.write('    files_count: '+numFiles+',\n')
 	output.write('    articles_count: '+numArticles+',\n')
 	output.write('    nexus_category: '+nexusCategory+'\n')
+	output.write(')\n\n')
+	# EXPORT MOD VERSION
+	output.write('ModVersion.create(\n')
+	output.write('    mod_id: Mod.last.id,\n')
+	output.write('    version: "'+version+'",\n')
+	output.write('    released: DateTime.strptime("'+dateUpdated+'", nexusDateFormat),\n')
+	output.write('    obsolete: false,\n')
+	output.write('    dangerous: false,\n')
 	output.write(')\n\n')
 
 	# close output

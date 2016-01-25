@@ -6,25 +6,45 @@
     <link href="/resources/css/mod-picker.css" type="text/css" rel="stylesheet"/>
 </head>
 <body>
-<div id="headerImage">
-    <span class="center" id="title">Skyrim Mod Picker</span>
-</div>
-<div id="wrapper">
-    <div id="navigation">
-        <ul>
-            <!-- Put it in to get back to the non-angular part, but it looks pretty poopy imo-->
-            <!--<li><a href="/">Non-Angular</a></li>-->
-            <li><a href="#/">Home</a></li>
-            <li><a href="#/browse">Browse</a></li>
-            <li><a href="#/search">Search</a></li>
-        </ul>
+<div id="headerImage"></div>
+<nav>
+    <div class="page-container">
+        <div class="nav-wrapper clearfix">
+            <div class="primary-nav">
+                <a class="nav-modlist" href="#">
+                    <span>View your</span>
+                    Mod List
+                </a>
+                <a class="nav-contributions" href="#">
+                    <span>View recent</span>
+                    Contributions
+                </a>
+                <a class="nav-browse-modlists" href="#">
+                    <span>See all</span>
+                    Complete Mod Lists
+                </a>
+                <a class="nav-browse-mods" href="#/browse">
+                    <span>Browse</span>
+                    Skyrim Mods
+                    <span class="nav-dropdown"></span>
+                </a>
+            </div>
+            <div class="secondary-nav">
+                <div class="search" ng-controller="searchInputController">
+                    <form>
+                        <input class="search-field" type="text" autocomplete="off" ng-model="search" placeholder="Search...">
+                        <div class="loadingButtonContainer">
+                            <input class="btn" type="submit" value="Search" ng-click="processSearch()" ng-hide="loading"/>
+                            <loader condition="loading" size="38"></loader>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
-    <!-- ugly br 'cause I can't CSS http://i.imgur.com/VKyzoOz.gif -->
-    <br/>
-
-    <div id="container">
-        <div ng-view></div>
-    </div>
+</nav>
+<div class="page-container">
+    <div ng-view></div>
 </div>
 
 <!-- defered load of scripts, which is way more performant for browsers -->

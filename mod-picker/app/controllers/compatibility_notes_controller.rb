@@ -69,6 +69,6 @@ class CompatibilityNotesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def compatibility_note_params
-      params.require(:compatibility_note).permit(:cn_id, :submitted_by, :mod_mode, :compatibility_patch, :compatibility_status)
+      params.require(:compatibility_note).permit(:id, :submitted_by, :mod_mode, :compatibility_patch, :compatibility_status)
     end
 end

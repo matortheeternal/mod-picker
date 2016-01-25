@@ -6,14 +6,14 @@
   <table>
     <thead>
       <tr>
-          <th>mod_id</th>
+          <th>id</th>
           <th>game_id</th>
           <th>name</th>
           <th>aliases</th>
           <th>is_utility</th>
           <th>has_adult_content</th>
-          <th>primary_category</th>
-          <th>secondary_category</th>
+          <th>primary_category_id</th>
+          <th>secondary_category_id</th>
           <th colspan="3"></th>
       </tr>
     </thead>
@@ -21,14 +21,14 @@
     <tbody>
       <% @mods.each do |mod| %>
         <tr>
-            <td><%= mod.mod_id %></td>
+            <td><%= mod.id %></td>
             <td><%= mod.game_id %></td>
             <td><%= mod.name %></td>
             <td><%= mod.aliases %></td>
             <td><%= mod.is_utility %></td>
             <td><%= mod.has_adult_content %></td>
-            <td><%= mod.primary_category %></td>
-            <td><%= mod.secondary_category %></td>
+            <td><%= mod.primary_category_id %></td>
+            <td><%= mod.secondary_category_id %></td>
             <td><%= link_to 'Show', mod %></td>
           <td><%= link_to 'Edit', edit_mod_path(mod) %></td>
           <td><%= link_to 'Destroy', mod, method: :delete, data: { confirm: 'Are you sure?' } %></td>

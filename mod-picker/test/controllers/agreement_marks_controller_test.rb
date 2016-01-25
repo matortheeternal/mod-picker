@@ -18,7 +18,7 @@ class AgreementMarksControllerTest < ActionController::TestCase
 
   test "should create agreement_mark" do
     assert_difference('AgreementMark.count') do
-      post :create, agreement_mark: { agree: @agreement_mark.agree, inc_id: @agreement_mark.inc_id, submitted_by: @agreement_mark.submitted_by }
+      post :create, agreement_mark: { agree: @agreement_mark.agree, incorrect_note_id: @agreement_mark.incorrect_note_id, submitted_by: @agreement_mark.submitted_by }
     end
 
     assert_redirected_to agreement_mark_path(assigns(:agreement_mark))
@@ -35,7 +35,7 @@ class AgreementMarksControllerTest < ActionController::TestCase
   end
 
   test "should update agreement_mark" do
-    patch :update, id: @agreement_mark, agreement_mark: { agree: @agreement_mark.agree, inc_id: @agreement_mark.inc_id, submitted_by: @agreement_mark.submitted_by }
+    patch :update, id: @agreement_mark, agreement_mark: { agree: @agreement_mark.agree, incorrect_note_id: @agreement_mark.incorrect_note_id, submitted_by: @agreement_mark.submitted_by }
     assert_redirected_to agreement_mark_path(assigns(:agreement_mark))
   end
 

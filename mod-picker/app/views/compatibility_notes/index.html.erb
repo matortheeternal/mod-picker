@@ -6,7 +6,7 @@
   <table>
     <thead>
       <tr>
-          <th>cn_id</th>
+          <th>id</th>
           <th>submitted_by</th>
           <th>mod_mode</th>
           <th>compatibility_patch</th>
@@ -18,7 +18,7 @@
     <tbody>
       <% @compatibility_notes.each do |compatibility_note| %>
         <tr>
-            <td><%= compatibility_note.cn_id %></td>
+            <td><%= compatibility_note.id %></td>
             <td><%= compatibility_note.submitted_by %></td>
             <td><%= compatibility_note.mod_mode %></td>
             <td><%= compatibility_note.compatibility_patch %></td>

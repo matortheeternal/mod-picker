@@ -6,8 +6,8 @@
   <table>
     <thead>
       <tr>
-          <th>mst_id</th>
-          <th>pl_id</th>
+          <th>id</th>
+          <th>plugin_id</th>
           <th colspan="3"></th>
       </tr>
     </thead>
@@ -15,8 +15,8 @@
     <tbody>
       <% @masters.each do |master| %>
         <tr>
-            <td><%= master.mst_id %></td>
-            <td><%= master.pl_id %></td>
+            <td><%= master.id %></td>
+            <td><%= master.plugin_id %></td>
             <td><%= link_to 'Show', master %></td>
           <td><%= link_to 'Edit', edit_master_path(master) %></td>
           <td><%= link_to 'Destroy', master, method: :delete, data: { confirm: 'Are you sure?' } %></td>

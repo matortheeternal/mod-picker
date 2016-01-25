@@ -6,7 +6,7 @@
   <table>
     <thead>
       <tr>
-          <th>ml_id</th>
+          <th>mod_list_id</th>
           <th>mod_id</th>
           <th>active</th>
           <th>install_order</th>
@@ -17,7 +17,7 @@
     <tbody>
       <% @mod_list_mods.each do |mod_list_mod| %>
         <tr>
-            <td><%= mod_list_mod.ml_id %></td>
+            <td><%= mod_list_mod.mod_list_id %></td>
             <td><%= mod_list_mod.mod_id %></td>
             <td><%= mod_list_mod.active %></td>
             <td><%= mod_list_mod.install_order %></td>

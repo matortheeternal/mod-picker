@@ -69,6 +69,6 @@ class InstallationNotesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def installation_note_params
-      params.require(:installation_note).permit(:in_id, :submitted_by, :mv_id, :always, :note_type, :submitted, :edited, :text_body)
+      params.require(:installation_note).permit(:id, :submitted_by, :mod_version_id, :always, :note_type, :submitted, :edited, :text_body)
     end
 end

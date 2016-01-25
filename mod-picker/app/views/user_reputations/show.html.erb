@@ -1,46 +1,46 @@
 <div class="scaffold">
   <p id="notice"><%= notice %></p>
 
-  <p>
-    <strong>Rep:</strong>
-    <%= @user_reputation.rep_id %>
+    <p>
+    <strong>id:</strong>
+    <%= @user_reputation.id %>
   </p>
 
-  <p>
-    <strong>User:</strong>
+    <p>
+    <strong>user_id:</strong>
     <%= @user_reputation.user_id %>
   </p>
 
-  <p>
-    <strong>Overall:</strong>
+    <p>
+    <strong>overall:</strong>
     <%= @user_reputation.overall %>
   </p>
 
-  <p>
-    <strong>Offset:</strong>
+    <p>
+    <strong>offset:</strong>
     <%= @user_reputation.offset %>
   </p>
 
-  <p>
-    <strong>Audiovisual design:</strong>
+    <p>
+    <strong>audiovisual_design:</strong>
     <%= @user_reputation.audiovisual_design %>
   </p>
 
-  <p>
-    <strong>Plugin design:</strong>
+    <p>
+    <strong>plugin_design:</strong>
     <%= @user_reputation.plugin_design %>
   </p>
 
-  <p>
-    <strong>Utility design:</strong>
+    <p>
+    <strong>utility_design:</strong>
     <%= @user_reputation.utility_design %>
   </p>
 
-  <p>
-    <strong>Script design:</strong>
+    <p>
+    <strong>script_design:</strong>
     <%= @user_reputation.script_design %>
   </p>
 
-  <%= link_to 'Edit', edit_user_reputation_path(@user_reputation) %> |
+    <%= link_to 'Edit', edit_user_reputation_path(@user_reputation) %> |
   <%= link_to 'Back', user_reputations_path %>
 </div>

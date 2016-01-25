@@ -69,6 +69,6 @@ class AgreementMarksController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def agreement_mark_params
-      params.require(:agreement_mark).permit(:inc_id, :submitted_by, :agree)
+      params.require(:agreement_mark).permit(:incorrect_note_id, :submitted_by, :agree)
     end
 end

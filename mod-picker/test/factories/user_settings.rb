@@ -1,6 +1,6 @@
 FactoryGirl.define do
   factory :user_setting do
-    set_id 1
+    id 1
 user_id 1
 show_notifications false
 show_tooltips false
@@ -10,6 +10,9 @@ allow_adult_content false
 allow_nexus_mods false
 allow_lovers_lab false
 allow_steam_workshop false
+timezone "MyText"
+udate_format "MyText"
+utime_format "MyText"
   end
 
 end

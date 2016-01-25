@@ -1,1 +1,1 @@
-json.extract! @lover_info, :id, :ll_id, :mod_id, :created_at, :updated_at
+json.extract! @lover_info, :id, :mod_id

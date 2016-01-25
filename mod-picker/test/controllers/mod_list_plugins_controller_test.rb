@@ -18,7 +18,7 @@ class ModListPluginsControllerTest < ActionController::TestCase
 
   test "should create mod_list_plugin" do
     assert_difference('ModListPlugin.count') do
-      post :create, mod_list_plugin: { active: @mod_list_plugin.active, load_order: @mod_list_plugin.load_order, ml_id: @mod_list_plugin.ml_id, pl_id: @mod_list_plugin.pl_id }
+      post :create, mod_list_plugin: { active: @mod_list_plugin.active, load_order: @mod_list_plugin.load_order, mod_list_id: @mod_list_plugin.mod_list_id, plugin_id: @mod_list_plugin.plugin_id }
     end
 
     assert_redirected_to mod_list_plugin_path(assigns(:mod_list_plugin))
@@ -35,7 +35,7 @@ class ModListPluginsControllerTest < ActionController::TestCase
   end
 
   test "should update mod_list_plugin" do
-    patch :update, id: @mod_list_plugin, mod_list_plugin: { active: @mod_list_plugin.active, load_order: @mod_list_plugin.load_order, ml_id: @mod_list_plugin.ml_id, pl_id: @mod_list_plugin.pl_id }
+    patch :update, id: @mod_list_plugin, mod_list_plugin: { active: @mod_list_plugin.active, load_order: @mod_list_plugin.load_order, mod_list_id: @mod_list_plugin.mod_list_id, plugin_id: @mod_list_plugin.plugin_id }
     assert_redirected_to mod_list_plugin_path(assigns(:mod_list_plugin))
   end
 

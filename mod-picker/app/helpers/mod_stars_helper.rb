@@ -1,0 +1,2 @@
+module ModStarsHelper
+end

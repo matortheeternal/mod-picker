@@ -69,6 +69,6 @@ class NexusInfosController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def nexus_info_params
-      params.require(:nexus_info).permit(:nm_id, :mod_id, :uploaded_by, :authors, :endorsements, :total_downloads, :unique_downloads, :views, :posts_count, :videos_count, :images_count, :files_count, :articles_count, :nexus_category, :changelog)
+      params.require(:nexus_info).permit(:id, :mod_id, :uploaded_by, :authors, :endorsements, :total_downloads, :unique_downloads, :views, :posts_count, :videos_count, :images_count, :files_count, :articles_count, :nexus_category, :changelog)
     end
 end

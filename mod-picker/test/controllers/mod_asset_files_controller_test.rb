@@ -18,7 +18,7 @@ class ModAssetFilesControllerTest < ActionController::TestCase
 
   test "should create mod_asset_file" do
     assert_difference('ModAssetFile.count') do
-      post :create, mod_asset_file: { filepath: @mod_asset_file.filepath, maf_id: @mod_asset_file.maf_id }
+      post :create, mod_asset_file: { filepath: @mod_asset_file.filepath, id: @mod_asset_file.id }
     end
 
     assert_redirected_to mod_asset_file_path(assigns(:mod_asset_file))
@@ -35,7 +35,7 @@ class ModAssetFilesControllerTest < ActionController::TestCase
   end
 
   test "should update mod_asset_file" do
-    patch :update, id: @mod_asset_file, mod_asset_file: { filepath: @mod_asset_file.filepath, maf_id: @mod_asset_file.maf_id }
+    patch :update, id: @mod_asset_file, mod_asset_file: { filepath: @mod_asset_file.filepath, id: @mod_asset_file.id }
     assert_redirected_to mod_asset_file_path(assigns(:mod_asset_file))
   end
 

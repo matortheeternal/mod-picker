@@ -18,7 +18,7 @@ class ModListCustomPluginsControllerTest < ActionController::TestCase
 
   test "should create mod_list_custom_plugin" do
     assert_difference('ModListCustomPlugin.count') do
-      post :create, mod_list_custom_plugin: { active: @mod_list_custom_plugin.active, description: @mod_list_custom_plugin.description, load_order: @mod_list_custom_plugin.load_order, ml_id: @mod_list_custom_plugin.ml_id, title: @mod_list_custom_plugin.title }
+      post :create, mod_list_custom_plugin: { active: @mod_list_custom_plugin.active, description: @mod_list_custom_plugin.description, load_order: @mod_list_custom_plugin.load_order, mod_list_id: @mod_list_custom_plugin.mod_list_id, title: @mod_list_custom_plugin.title }
     end
 
     assert_redirected_to mod_list_custom_plugin_path(assigns(:mod_list_custom_plugin))
@@ -35,7 +35,7 @@ class ModListCustomPluginsControllerTest < ActionController::TestCase
   end
 
   test "should update mod_list_custom_plugin" do
-    patch :update, id: @mod_list_custom_plugin, mod_list_custom_plugin: { active: @mod_list_custom_plugin.active, description: @mod_list_custom_plugin.description, load_order: @mod_list_custom_plugin.load_order, ml_id: @mod_list_custom_plugin.ml_id, title: @mod_list_custom_plugin.title }
+    patch :update, id: @mod_list_custom_plugin, mod_list_custom_plugin: { active: @mod_list_custom_plugin.active, description: @mod_list_custom_plugin.description, load_order: @mod_list_custom_plugin.load_order, mod_list_id: @mod_list_custom_plugin.mod_list_id, title: @mod_list_custom_plugin.title }
     assert_redirected_to mod_list_custom_plugin_path(assigns(:mod_list_custom_plugin))
   end
 

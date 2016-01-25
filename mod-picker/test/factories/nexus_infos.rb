@@ -1,6 +1,6 @@
 FactoryGirl.define do
   factory :nexus_info do
-    nm_id 1
+    id 1
 mod_id 1
 uploaded_by "MyText"
 authors "MyText"

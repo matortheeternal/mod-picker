@@ -6,7 +6,7 @@
   <table>
     <thead>
       <tr>
-          <th>inc_id</th>
+          <th>incorrect_note_id</th>
           <th>submitted_by</th>
           <th>agree</th>
           <th colspan="3"></th>
@@ -16,7 +16,7 @@
     <tbody>
       <% @agreement_marks.each do |agreement_mark| %>
         <tr>
-            <td><%= agreement_mark.inc_id %></td>
+            <td><%= agreement_mark.incorrect_note_id %></td>
             <td><%= agreement_mark.submitted_by %></td>
             <td><%= agreement_mark.agree %></td>
             <td><%= link_to 'Show', agreement_mark %></td>

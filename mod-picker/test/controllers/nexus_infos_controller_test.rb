@@ -18,7 +18,7 @@ class NexusInfosControllerTest < ActionController::TestCase
 
   test "should create nexus_info" do
     assert_difference('NexusInfo.count') do
-      post :create, nexus_info: { articles_count: @nexus_info.articles_count, authors: @nexus_info.authors, changelog: @nexus_info.changelog, endorsements: @nexus_info.endorsements, files_count: @nexus_info.files_count, images_count: @nexus_info.images_count, mod_id: @nexus_info.mod_id, nexus_category: @nexus_info.nexus_category, nm_id: @nexus_info.nm_id, posts_count: @nexus_info.posts_count, total_downloads: @nexus_info.total_downloads, unique_downloads: @nexus_info.unique_downloads, uploaded_by: @nexus_info.uploaded_by, videos_count: @nexus_info.videos_count, views: @nexus_info.views }
+      post :create, nexus_info: { articles_count: @nexus_info.articles_count, authors: @nexus_info.authors, changelog: @nexus_info.changelog, endorsements: @nexus_info.endorsements, files_count: @nexus_info.files_count, id: @nexus_info.id, images_count: @nexus_info.images_count, mod_id: @nexus_info.mod_id, nexus_category: @nexus_info.nexus_category, posts_count: @nexus_info.posts_count, total_downloads: @nexus_info.total_downloads, unique_downloads: @nexus_info.unique_downloads, uploaded_by: @nexus_info.uploaded_by, videos_count: @nexus_info.videos_count, views: @nexus_info.views }
     end
 
     assert_redirected_to nexus_info_path(assigns(:nexus_info))
@@ -35,7 +35,7 @@ class NexusInfosControllerTest < ActionController::TestCase
   end
 
   test "should update nexus_info" do
-    patch :update, id: @nexus_info, nexus_info: { articles_count: @nexus_info.articles_count, authors: @nexus_info.authors, changelog: @nexus_info.changelog, endorsements: @nexus_info.endorsements, files_count: @nexus_info.files_count, images_count: @nexus_info.images_count, mod_id: @nexus_info.mod_id, nexus_category: @nexus_info.nexus_category, nm_id: @nexus_info.nm_id, posts_count: @nexus_info.posts_count, total_downloads: @nexus_info.total_downloads, unique_downloads: @nexus_info.unique_downloads, uploaded_by: @nexus_info.uploaded_by, videos_count: @nexus_info.videos_count, views: @nexus_info.views }
+    patch :update, id: @nexus_info, nexus_info: { articles_count: @nexus_info.articles_count, authors: @nexus_info.authors, changelog: @nexus_info.changelog, endorsements: @nexus_info.endorsements, files_count: @nexus_info.files_count, id: @nexus_info.id, images_count: @nexus_info.images_count, mod_id: @nexus_info.mod_id, nexus_category: @nexus_info.nexus_category, posts_count: @nexus_info.posts_count, total_downloads: @nexus_info.total_downloads, unique_downloads: @nexus_info.unique_downloads, uploaded_by: @nexus_info.uploaded_by, videos_count: @nexus_info.videos_count, views: @nexus_info.views }
     assert_redirected_to nexus_info_path(assigns(:nexus_info))
   end
 

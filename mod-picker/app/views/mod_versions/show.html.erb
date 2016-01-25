@@ -1,36 +1,36 @@
 <div class="scaffold">
   <p id="notice"><%= notice %></p>
 
-  <p>
-    <strong>mv_id:</strong>
-    <%= @mod_version.mv_id %>
+    <p>
+    <strong>id:</strong>
+    <%= @mod_version.id %>
   </p>
 
-  <p>
+    <p>
     <strong>mod_id:</strong>
     <%= @mod_version.mod_id %>
   </p>
 
-  <p>
-    <strong>nxm_file_id:</strong>
-    <%= @mod_version.nxm_file_id %>
+    <p>
+    <strong>version:</strong>
+    <%= @mod_version.version %>
   </p>
 
-  <p>
+    <p>
     <strong>released:</strong>
     <%= @mod_version.released %>
   </p>
 
-  <p>
+    <p>
     <strong>obsolete:</strong>
     <%= @mod_version.obsolete %>
   </p>
 
-  <p>
+    <p>
     <strong>dangerous:</strong>
     <%= @mod_version.dangerous %>
   </p>
 
-  <%= link_to 'Edit', edit_mod_version_path(@mod_version) %> |
+    <%= link_to 'Edit', edit_mod_version_path(@mod_version) %> |
   <%= link_to 'Back', mod_versions_path %>
 </div>

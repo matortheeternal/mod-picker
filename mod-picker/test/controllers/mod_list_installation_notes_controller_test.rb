@@ -18,7 +18,7 @@ class ModListInstallationNotesControllerTest < ActionController::TestCase
 
   test "should create mod_list_installation_note" do
     assert_difference('ModListInstallationNote.count') do
-      post :create, mod_list_installation_note: { in_id: @mod_list_installation_note.in_id, ml_id: @mod_list_installation_note.ml_id, status: @mod_list_installation_note.status }
+      post :create, mod_list_installation_note: { installation_note_id: @mod_list_installation_note.installation_note_id, mod_list_id: @mod_list_installation_note.mod_list_id, status: @mod_list_installation_note.status }
     end
 
     assert_redirected_to mod_list_installation_note_path(assigns(:mod_list_installation_note))
@@ -35,7 +35,7 @@ class ModListInstallationNotesControllerTest < ActionController::TestCase
   end
 
   test "should update mod_list_installation_note" do
-    patch :update, id: @mod_list_installation_note, mod_list_installation_note: { in_id: @mod_list_installation_note.in_id, ml_id: @mod_list_installation_note.ml_id, status: @mod_list_installation_note.status }
+    patch :update, id: @mod_list_installation_note, mod_list_installation_note: { installation_note_id: @mod_list_installation_note.installation_note_id, mod_list_id: @mod_list_installation_note.mod_list_id, status: @mod_list_installation_note.status }
     assert_redirected_to mod_list_installation_note_path(assigns(:mod_list_installation_note))
   end
 

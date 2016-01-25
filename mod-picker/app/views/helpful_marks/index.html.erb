@@ -6,9 +6,9 @@
   <table>
     <thead>
       <tr>
-          <th>r_id</th>
-          <th>cn_id</th>
-          <th>in_id</th>
+          <th>review_id</th>
+          <th>compatibility_note_id</th>
+          <th>installation_note_id</th>
           <th>submitted_by</th>
           <th>helpful</th>
           <th colspan="3"></th>
@@ -18,9 +18,9 @@
     <tbody>
       <% @helpful_marks.each do |helpful_mark| %>
         <tr>
-            <td><%= helpful_mark.r_id %></td>
-            <td><%= helpful_mark.cn_id %></td>
-            <td><%= helpful_mark.in_id %></td>
+            <td><%= helpful_mark.review_id %></td>
+            <td><%= helpful_mark.compatibility_note_id %></td>
+            <td><%= helpful_mark.installation_note_id %></td>
             <td><%= helpful_mark.submitted_by %></td>
             <td><%= helpful_mark.helpful %></td>
             <td><%= link_to 'Show', helpful_mark %></td>

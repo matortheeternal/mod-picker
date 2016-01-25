@@ -1,9 +1,9 @@
 FactoryGirl.define do
   factory :incorrect_note do
-    inc_id 1
-r_id 1
-cn_id 1
-in_id 1
+    id 1
+review_id 1
+compatibility_note_id 1
+installation_note_id 1
 submitted_by 1
 reason "MyText"
   end

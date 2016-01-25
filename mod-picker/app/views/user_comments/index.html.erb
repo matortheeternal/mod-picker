@@ -7,7 +7,7 @@
     <thead>
       <tr>
           <th>user_id</th>
-          <th>c_id</th>
+          <th>comment_id</th>
           <th colspan="3"></th>
       </tr>
     </thead>
@@ -16,7 +16,7 @@
       <% @user_comments.each do |user_comment| %>
         <tr>
             <td><%= user_comment.user_id %></td>
-            <td><%= user_comment.c_id %></td>
+            <td><%= user_comment.comment_id %></td>
             <td><%= link_to 'Show', user_comment %></td>
           <td><%= link_to 'Edit', edit_user_comment_path(user_comment) %></td>
           <td><%= link_to 'Destroy', user_comment, method: :delete, data: { confirm: 'Are you sure?' } %></td>

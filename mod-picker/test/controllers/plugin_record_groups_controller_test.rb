@@ -18,7 +18,7 @@ class PluginRecordGroupsControllerTest < ActionController::TestCase
 
   test "should create plugin_record_group" do
     assert_difference('PluginRecordGroup.count') do
-      post :create, plugin_record_group: { name: @plugin_record_group.name, new_records: @plugin_record_group.new_records, override_records: @plugin_record_group.override_records, pl_id: @plugin_record_group.pl_id, sig: @plugin_record_group.sig }
+      post :create, plugin_record_group: { name: @plugin_record_group.name, new_records: @plugin_record_group.new_records, override_records: @plugin_record_group.override_records, plugin_id: @plugin_record_group.plugin_id, sig: @plugin_record_group.sig }
     end
 
     assert_redirected_to plugin_record_group_path(assigns(:plugin_record_group))
@@ -35,7 +35,7 @@ class PluginRecordGroupsControllerTest < ActionController::TestCase
   end
 
   test "should update plugin_record_group" do
-    patch :update, id: @plugin_record_group, plugin_record_group: { name: @plugin_record_group.name, new_records: @plugin_record_group.new_records, override_records: @plugin_record_group.override_records, pl_id: @plugin_record_group.pl_id, sig: @plugin_record_group.sig }
+    patch :update, id: @plugin_record_group, plugin_record_group: { name: @plugin_record_group.name, new_records: @plugin_record_group.new_records, override_records: @plugin_record_group.override_records, plugin_id: @plugin_record_group.plugin_id, sig: @plugin_record_group.sig }
     assert_redirected_to plugin_record_group_path(assigns(:plugin_record_group))
   end
 

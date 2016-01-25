@@ -69,6 +69,6 @@ class ModListCommentsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def mod_list_comment_params
-      params.require(:mod_list_comment).permit(:ml_id, :c_id)
+      params.require(:mod_list_comment).permit(:mod_list_id, :comment_id)
     end
 end

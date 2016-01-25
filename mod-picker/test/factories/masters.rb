@@ -1,7 +1,7 @@
 FactoryGirl.define do
   factory :master do
-    mst_id 1
-pl_id 1
+    id 1
+plugin_id 1
   end
 
 end

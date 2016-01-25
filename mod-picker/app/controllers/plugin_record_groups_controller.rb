@@ -69,6 +69,6 @@ class PluginRecordGroupsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def plugin_record_group_params
-      params.require(:plugin_record_group).permit(:pl_id, :sig, :name, :new_records, :override_records)
+      params.require(:plugin_record_group).permit(:plugin_id, :sig, :name, :new_records, :override_records)
     end
 end
