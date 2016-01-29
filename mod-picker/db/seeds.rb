@@ -2,7 +2,7 @@
 # CONFIGURATION OPTIONS
 #==================================================
 
-bSeedUsers = false
+bSeedUsers = true
 
 #==================================================
 # CLEAR TABLES
@@ -13,10 +13,13 @@ connection = ActiveRecord::Base.connection()
 NexusInfo.delete_all
 LoverInfo.delete_all
 WorkshopInfo.delete_all
+ModVersion.delete_all
 Mod.delete_all
+
 # clear categories
 connection.execute("DELETE FROM categories WHERE parent_id IS NOT NULL;")
 connection.execute("DELETE FROM categories WHERE parent_id IS NULL;")
+
 # clear users and associated tables
 if (bSeedUsers)
   UserBio.delete_all
@@ -24,6 +27,7 @@ if (bSeedUsers)
   UserSetting.delete_all
   User.delete_all
 end
+
 # clear games
 Game.delete_all
 
