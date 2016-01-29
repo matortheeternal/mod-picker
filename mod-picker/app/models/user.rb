@@ -25,7 +25,7 @@ class User < ActiveRecord::Base
 
   has_many :starred_mods, :class_name => 'Mod', :through => 'ModStar', :inverse_of => 'users_who_starred'
   has_many :starred_mod_lists, :class_name => 'ModList', :through => 'ModListStar', :inverse_of => 'users_who_starred'
-  has_many :profile_comments, :class_name => 'Comment', :as => 'commentable', :through => 'user_comments'
+  has_many :profile_comments, :class_name => 'Comment', :as => 'commentable'
 
   after_create :create_associations
   after_initialize :init
@@ -65,8 +65,8 @@ class User < ActiveRecord::Base
   end
   
   def create_associations
-    self.create_reputation({ user_id: self.user_id })
-    self.create_settings({ user_id: self.user_id })
-    self.create_bio({ user_id: self.user_id })
+    self.create_reputation({ user_id: self.id })
+    self.create_settings({ user_id: self.id })
+    self.create_bio({ user_id: self.id })
   end
 end
