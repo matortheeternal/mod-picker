@@ -10,11 +10,11 @@ class User < ActiveRecord::Base
   has_one :bio, :class_name => 'UserBio', :dependent => :destroy
   has_one :reputation, :class_name => 'UserReputation', :dependent => :destroy
 
-  has_many :comments, :inverse_of => 'user'
-  has_many :installation_notes, :inverse_of => 'user'
-  has_many :compatibility_notes, :inverse_of => 'user'
-  has_many :reviews, :inverse_of => 'user'
-  has_many :incorrect_notes, :inverse_of => 'user'
+  has_many :comments, :foreign_key => 'submitted_by', :inverse_of => 'user'
+  has_many :installation_notes, :foreign_key => 'submitted_by', :inverse_of => 'user'
+  has_many :compatibility_notes, :foreign_key => 'submitted_by', :inverse_of => 'user'
+  has_many :reviews, :foreign_key => 'submitted_by', :inverse_of => 'user'
+  has_many :incorrect_notes, :foreign_key => 'submitted_by', :inverse_of => 'user'
   has_many :agreement_marks, :foreign_key => 'submitted_by', :inverse_of => 'user'
 
   has_many :mods, :through => 'ModAuthor', :inverse_of => 'authors'
