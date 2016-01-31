@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160129055320) do
+ActiveRecord::Schema.define(version: 20160131215150) do
 
   create_table "agreement_marks", id: false, force: :cascade do |t|
     t.integer "incorrect_note_id", limit: 4
@@ -77,16 +77,13 @@ ActiveRecord::Schema.define(version: 20160129055320) do
   end
 
   create_table "helpful_marks", id: false, force: :cascade do |t|
-    t.integer "review_id",             limit: 4
-    t.integer "compatibility_note_id", limit: 4
-    t.integer "installation_note_id",  limit: 4
-    t.integer "submitted_by",          limit: 4
+    t.integer "submitted_by",     limit: 4
     t.boolean "helpful"
+    t.integer "helpfulable_id",   limit: 4
+    t.string  "helpfulable_type", limit: 255
   end
 
-  add_index "helpful_marks", ["compatibility_note_id"], name: "cn_id", using: :btree
-  add_index "helpful_marks", ["installation_note_id"], name: "in_id", using: :btree
-  add_index "helpful_marks", ["review_id"], name: "r_id", using: :btree
+  add_index "helpful_marks", ["helpfulable_type", "helpfulable_id"], name: "index_helpful_marks_on_helpfulable_type_and_helpfulable_id", using: :btree
   add_index "helpful_marks", ["submitted_by"], name: "submitted_by", using: :btree
 
   create_table "incorrect_notes", force: :cascade do |t|
@@ -424,9 +421,6 @@ ActiveRecord::Schema.define(version: 20160129055320) do
   add_foreign_key "compatibility_notes", "installation_notes", name: "compatibility_notes_ibfk_3"
   add_foreign_key "compatibility_notes", "plugins", column: "compatibility_plugin_id", name: "compatibility_notes_ibfk_2"
   add_foreign_key "compatibility_notes", "users", column: "submitted_by", name: "compatibility_notes_ibfk_1"
-  add_foreign_key "helpful_marks", "compatibility_notes", name: "helpful_marks_ibfk_2"
-  add_foreign_key "helpful_marks", "installation_notes", name: "helpful_marks_ibfk_3"
-  add_foreign_key "helpful_marks", "reviews", name: "helpful_marks_ibfk_1"
   add_foreign_key "helpful_marks", "users", column: "submitted_by", name: "helpful_marks_ibfk_4"
   add_foreign_key "incorrect_notes", "compatibility_notes", name: "incorrect_notes_ibfk_2"
   add_foreign_key "incorrect_notes", "installation_notes", name: "incorrect_notes_ibfk_3"
