@@ -3,9 +3,9 @@
 #==================================================
 
 def randpow(num, pow)
-  result = 1
+  result = 1.0
   for i in 1..pow
-    result *= rand(10000)/10000
+    result *= rand(10000)/10000.0
   end
   (num * result).floor
 end
