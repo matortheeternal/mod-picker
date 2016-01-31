@@ -16,6 +16,7 @@ end
 
 bSeedUsers = true
 bSeedComments = true
+bSeedReviews = true
 
 #==================================================
 # CLEAR TABLES
@@ -24,6 +25,7 @@ bSeedComments = true
 connection = ActiveRecord::Base.connection()
 
 # clear mods and associated tables
+Review.delete_all
 Comment.delete_all
 NexusInfo.delete_all
 LoverInfo.delete_all
@@ -58,6 +60,7 @@ connection.execute("ALTER TABLE workshop_infos AUTO_INCREMENT = 0;")
 connection.execute("ALTER TABLE mods AUTO_INCREMENT = 0;")
 connection.execute("ALTER TABLE games AUTO_INCREMENT = 0;")
 connection.execute("ALTER TABLE comments AUTO_INCREMENT = 0;")
+connection.execute("ALTER TABLE reviews AUTO_INCREMENT = 0;")
 
 #==================================================
 # CREATE GAMES
@@ -947,5 +950,32 @@ if (bSeedComments)
       ).save!
     end
   end
+end
 
+
+#==================================================
+# CREATE REVIEWS
+#==================================================
+
+if (bSeedReviews)
+  # generate reviews on mods
+  for mod in Mod.all
+    rnd = randpow(6, 2)
+    puts "Generating #{rnd} reviews for #{mod.name}"
+    rnd.times do
+      submitter = User.offset(rand(User.count)).first
+      mod.reviews.new(
+          submitted_by: submitter.id,
+          mod_id: mod.id,
+          hidden: false,
+          rating1: 100 - randpow(100, 3),
+          rating2: 100 - randpow(100, 3),
+          rating3: 100 - randpow(100, 3),
+          rating4: 100 - randpow(100, 3),
+          rating5: -1,
+          submitted: DateTime.now,
+          text_body: Faker::Lorem.paragraph(15)
+      ).save!
+    end
+  end
 end
