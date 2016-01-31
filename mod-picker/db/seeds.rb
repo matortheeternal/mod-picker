@@ -349,17 +349,17 @@ require 'securerandom'
 
 if (bSeedUsers)
   # create an admin user
+  pw = SecureRandom.urlsafe_base64
   User.create!(
       username: "admin",
       user_level: "admin",
       title: "God",
-      avatar: "",
       joined: Time.now.to_date,
       email: "admin@mail.com",
-      password: SecureRandom.urlsafe_base64,
-      encrypted_password: SecureRandom.urlsafe_base64,
-      reset_password_token: "foobarpw",
+      password: pw,
+      password_confirmation: pw,
       sign_in_count: 1,
+      confirmed_at: Time.now.to_date,
       current_sign_in_at: Time.now.to_date,
       last_sign_in_at: Time.now.to_date,
       current_sign_in_ip: Faker::Internet.public_ip_v4_address,
@@ -374,12 +374,14 @@ if (bSeedUsers)
   # create 99 random users
   99.times do |n|
     name = Faker::Internet.user_name
+    pw = SecureRandom.urlsafe_base64
     User.create!(
         username: "#{name}#{n}",
         joined: time_rand,
         email: Faker::Internet.email(name),
-        password: SecureRandom.urlsafe_base64,
-        encrypted_password: SecureRandom.urlsafe_base64,
+        password: pw,
+        password_confirmation: pw,
+        confirmed_at: Time.now.to_date,
         reset_password_token: Faker::Internet.password,
         sign_in_count: Random.rand(100).to_i + 1,
         current_sign_in_ip: Faker::Internet.public_ip_v4_address,
