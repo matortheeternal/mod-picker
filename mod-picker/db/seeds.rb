@@ -22,7 +22,9 @@ bSeedComments = true
 #==================================================
 
 connection = ActiveRecord::Base.connection()
+
 # clear mods and associated tables
+Comment.delete_all
 NexusInfo.delete_all
 LoverInfo.delete_all
 WorkshopInfo.delete_all
@@ -33,14 +35,8 @@ Mod.delete_all
 connection.execute("DELETE FROM categories WHERE parent_id IS NOT NULL;")
 connection.execute("DELETE FROM categories WHERE parent_id IS NULL;")
 
-# clear comments
-if (bSeedComments)
-  Comment.delete_all
-end
-
 # clear users and associated tables
 if (bSeedUsers)
-  Comment.where(commentable_type: 'User').delete_all
   UserBio.delete_all
   UserReputation.delete_all
   UserSetting.delete_all
@@ -939,7 +935,7 @@ if (bSeedComments)
 
   # generate comments on mods
   for mod in Mod.all
-    rnd = randpow(10, 2)
+    rnd = randpow(20, 2)
     puts "Generating #{rnd} comments for #{mod.name}"
     rnd.times do
       submitter = User.offset(rand(User.count)).first
@@ -947,7 +943,7 @@ if (bSeedComments)
           submitted_by: submitter.id,
           hidden: false,
           submitted: Faker::Date.backward(14),
-          text_body: Faker::Lorem.paragraph(1)
+          text_body: Faker::Lorem.paragraph(2)
       ).save!
     end
   end
