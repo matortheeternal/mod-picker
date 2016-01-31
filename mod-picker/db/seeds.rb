@@ -33,8 +33,14 @@ Mod.delete_all
 connection.execute("DELETE FROM categories WHERE parent_id IS NOT NULL;")
 connection.execute("DELETE FROM categories WHERE parent_id IS NULL;")
 
+# clear comments
+if (bSeedComments)
+  Comment.delete_all
+end
+
 # clear users and associated tables
 if (bSeedUsers)
+  Comment.where(commentable_type: 'User').delete_all
   UserBio.delete_all
   UserReputation.delete_all
   UserSetting.delete_all
@@ -55,6 +61,7 @@ connection.execute("ALTER TABLE lover_infos AUTO_INCREMENT = 0;")
 connection.execute("ALTER TABLE workshop_infos AUTO_INCREMENT = 0;")
 connection.execute("ALTER TABLE mods AUTO_INCREMENT = 0;")
 connection.execute("ALTER TABLE games AUTO_INCREMENT = 0;")
+connection.execute("ALTER TABLE comments AUTO_INCREMENT = 0;")
 
 #==================================================
 # CREATE GAMES
@@ -917,9 +924,10 @@ ModVersion.create(
 if (bSeedComments)
   # generate comments on user profiles
   for user in User.all
-    rnd = randpow(10, 3)
+    rnd = randpow(10, 2)
+    puts "Generating #{rnd} comments for #{user.username}"
     rnd.times do
-      submitter = User.first(:offset => rand(User.count))
+      submitter = User.offset(rand(User.count)).first
       user.profile_comments.new(
           submitted_by: submitter.id,
           hidden: false,
@@ -931,9 +939,10 @@ if (bSeedComments)
 
   # generate comments on mods
   for mod in Mod.all
-    rnd = randpow(10, 3)
+    rnd = randpow(10, 2)
+    puts "Generating #{rnd} comments for #{mod.name}"
     rnd.times do
-      submitter = User.first(:offset => rand(User.count))
+      submitter = User.offset(rand(User.count)).first
       mod.comments.new(
           submitted_by: submitter.id,
           hidden: false,
