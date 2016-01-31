@@ -25,6 +25,7 @@ bSeedReviews = true
 connection = ActiveRecord::Base.connection()
 
 # clear mods and associated tables
+HelpfulMark.delete_all
 Review.delete_all
 Comment.delete_all
 NexusInfo.delete_all
@@ -960,11 +961,11 @@ end
 if (bSeedReviews)
   # generate reviews on mods
   for mod in Mod.all
-    rnd = randpow(6, 2)
-    puts "Generating #{rnd} reviews for #{mod.name}"
-    rnd.times do
+    nReviews = rand(6)
+    puts "Generating #{nReviews} reviews for #{mod.name}"
+    nReviews.times do
       submitter = User.offset(rand(User.count)).first
-      mod.reviews.new(
+      review = mod.reviews.new(
           submitted_by: submitter.id,
           mod_id: mod.id,
           hidden: false,
@@ -975,7 +976,18 @@ if (bSeedReviews)
           rating5: -1,
           submitted: DateTime.now,
           text_body: Faker::Lorem.paragraph(15)
-      ).save!
+      )
+      review.save!
+
+      # seed helpful marks on reviews
+      nHelpfulMarks = randpow(10, 3)
+      nHelpfulMarks.times do
+        submitter = User.offset(rand(User.count)).first
+        review.helpful_marks.new(
+            submitted_by: submitter.id,
+            helpful: rand > 0.35
+        ).save!
+      end
     end
   end
 end
