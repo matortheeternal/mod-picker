@@ -1,8 +1,21 @@
 #==================================================
+# HELPER METHODS
+#==================================================
+
+def randpow(num, pow)
+  result = 1
+  for i in 1..pow
+    result *= rand(10000)/10000
+  end
+  (num * result).floor
+end
+
+#==================================================
 # CONFIGURATION OPTIONS
 #==================================================
 
 bSeedUsers = true
+bSeedComments = true
 
 #==================================================
 # CLEAR TABLES
@@ -895,3 +908,39 @@ ModVersion.create(
     obsolete: false,
     dangerous: false
 )
+
+
+#==================================================
+# CREATE COMMENTS
+#==================================================
+
+if (bSeedComments)
+  # generate comments on user profiles
+  for user in User.all
+    rnd = randpow(10, 3)
+    rnd.times do
+      submitter = User.first(:offset => rand(User.count))
+      user.profile_comments.new(
+          submitted_by: submitter.id,
+          hidden: false,
+          submitted: Faker::Date.backward(14),
+          text_body: Faker::Lorem.paragraph(1)
+      ).save!
+    end
+  end
+
+  # generate comments on mods
+  for mod in Mod.all
+    rnd = randpow(10, 3)
+    rnd.times do
+      submitter = User.first(:offset => rand(User.count))
+      mod.comments.new(
+          submitted_by: submitter.id,
+          hidden: false,
+          submitted: Faker::Date.backward(14),
+          text_body: Faker::Lorem.paragraph(1)
+      ).save!
+    end
+  end
+
+end
