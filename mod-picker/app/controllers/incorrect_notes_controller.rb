@@ -5,11 +5,20 @@ class IncorrectNotesController < ApplicationController
   # GET /incorrect_notes.json
   def index
     @incorrect_notes = IncorrectNote.all
+
+    respond_to do |format|
+      format.html
+      format.json { render :json => @incorrect_notes}
+    end
   end
 
   # GET /incorrect_notes/1
   # GET /incorrect_notes/1.json
   def show
+    respond_to do |format|
+      format.html
+      format.json { render :json => @incorrect_note}
+    end
   end
 
   # GET /incorrect_notes/new

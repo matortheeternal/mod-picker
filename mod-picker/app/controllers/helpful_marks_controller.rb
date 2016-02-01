@@ -5,11 +5,20 @@ class HelpfulMarksController < ApplicationController
   # GET /helpful_marks.json
   def index
     @helpful_marks = HelpfulMark.all
+
+    respond_to do |format|
+      format.html
+      format.json { render :json => @helpful_marks}
+    end
   end
 
   # GET /helpful_marks/1
   # GET /helpful_marks/1.json
   def show
+    respond_to do |format|
+      format.html
+      format.json { render :json => @helpful_mark}
+    end
   end
 
   # GET /helpful_marks/new

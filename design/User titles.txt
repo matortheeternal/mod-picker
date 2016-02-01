@@ -3,11 +3,11 @@ Skeever		-40 or more reputation
 Mudcrab		-20 or more reputation
 Draugr		-10 or more reputation
 Prisoner	0 or more reputation
-Milk Drinker	10 or more reputation
-Thief		20 or more reputation
-Bandit		40 or more reputation
-Soldier		80 or more reputation
-Guard		160 or more reputation
+Beggar		10 or more reputation
+Milk Drinker	20 or more reputation
+Rogue		40 or more reputation
+Bard		80 or more reputation
+Adventurer	160 or more reputation
 Thane		320 or more reputation
 Dragonborn	640 or more reputation
 Custom		1280 or more reputation

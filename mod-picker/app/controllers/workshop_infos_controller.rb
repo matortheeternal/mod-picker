@@ -5,11 +5,20 @@ class WorkshopInfosController < ApplicationController
   # GET /workshop_infos.json
   def index
     @workshop_infos = WorkshopInfo.all
+
+    respond_to do |format|
+      format.html
+      format.json { render :json => @workshop_infos}
+    end
   end
 
   # GET /workshop_infos/1
   # GET /workshop_infos/1.json
   def show
+    respond_to do |format|
+      format.html
+      format.json { render :json => @workshop_info}
+    end
   end
 
   # GET /workshop_infos/new

@@ -1,1 +1,0 @@
-json.extract! @plugin, :id, :mod_version_id, :filename, :author, :description, :hash

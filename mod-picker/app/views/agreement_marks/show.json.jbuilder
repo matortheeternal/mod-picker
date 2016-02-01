@@ -1,1 +1,0 @@
-json.extract! @agreement_mark, :id, :incorrect_note_id, :submitted_by, :agree

@@ -5,11 +5,20 @@ class ModListPluginsController < ApplicationController
   # GET /mod_list_plugins.json
   def index
     @mod_list_plugins = ModListPlugin.all
+
+    respond_to do |format|
+      format.html
+      format.json { render :json => @mod_list_plugins}
+    end
   end
 
   # GET /mod_list_plugins/1
   # GET /mod_list_plugins/1.json
   def show
+    respond_to do |format|
+      format.html
+      format.json { render :json => @mod_list_plugin}
+    end
   end
 
   # GET /mod_list_plugins/new

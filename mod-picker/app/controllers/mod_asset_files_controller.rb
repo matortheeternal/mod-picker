@@ -5,11 +5,20 @@ class ModAssetFilesController < ApplicationController
   # GET /mod_asset_files.json
   def index
     @mod_asset_files = ModAssetFile.all
+
+    respond_to do |format|
+      format.html
+      format.json { render :json => @mod_asset_files}
+    end
   end
 
   # GET /mod_asset_files/1
   # GET /mod_asset_files/1.json
   def show
+    respond_to do |format|
+      format.html
+      format.json { render :json => @mod_asset_file}
+    end
   end
 
   # GET /mod_asset_files/new

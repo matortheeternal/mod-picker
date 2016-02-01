@@ -5,11 +5,20 @@ class InstallationNotesController < ApplicationController
   # GET /installation_notes.json
   def index
     @installation_notes = InstallationNote.all
+
+    respond_to do |format|
+      format.html
+      format.json { render :json => @installation_notes}
+    end
   end
 
   # GET /installation_notes/1
   # GET /installation_notes/1.json
   def show
+    respond_to do |format|
+      format.html
+      format.json { render :json => @installation_note}
+    end
   end
 
   # GET /installation_notes/new

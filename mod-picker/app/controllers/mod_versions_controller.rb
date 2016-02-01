@@ -5,11 +5,20 @@ class ModVersionsController < ApplicationController
   # GET /mod_versions.json
   def index
     @mod_versions = ModVersion.all
+
+    respond_to do |format|
+      format.html
+      format.json { render :json => @mod_versions}
+    end
   end
 
   # GET /mod_versions/1
   # GET /mod_versions/1.json
   def show
+    respond_to do |format|
+      format.html
+      format.json { render :json => @mod_version}
+    end
   end
 
   # GET /mod_versions/new

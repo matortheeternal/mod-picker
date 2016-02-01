@@ -5,11 +5,20 @@ class ModAuthorsController < ApplicationController
   # GET /mod_authors.json
   def index
     @mod_authors = ModAuthor.all
+
+    respond_to do |format|
+      format.html
+      format.json { render :json => @mod_authors}
+    end
   end
 
   # GET /mod_authors/1
   # GET /mod_authors/1.json
   def show
+    respond_to do |format|
+      format.html
+      format.json { render :json => @mod_author}
+    end
   end
 
   # GET /mod_authors/new

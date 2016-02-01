@@ -5,11 +5,20 @@ class PluginsController < ApplicationController
   # GET /plugins.json
   def index
     @plugins = Plugin.all
+
+    respond_to do |format|
+      format.html
+      format.json { render :json => @plugins}
+    end
   end
 
   # GET /plugins/1
   # GET /plugins/1.json
   def show
+    respond_to do |format|
+      format.html
+      format.json { render :json => @plugin}
+    end
   end
 
   # GET /plugins/new

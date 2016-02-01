@@ -5,11 +5,20 @@ class ReputationLinksController < ApplicationController
   # GET /reputation_links.json
   def index
     @reputation_links = ReputationLink.all
+
+    respond_to do |format|
+      format.html
+      format.json { render :json => @reputation_links}
+    end
   end
 
   # GET /reputation_links/1
   # GET /reputation_links/1.json
   def show
+    respond_to do |format|
+      format.html
+      format.json { render :json => @reputation_link}
+    end
   end
 
   # GET /reputation_links/new

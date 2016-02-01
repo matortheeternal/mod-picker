@@ -5,11 +5,20 @@ class LoverInfosController < ApplicationController
   # GET /lover_infos.json
   def index
     @lover_infos = LoverInfo.all
+
+    respond_to do |format|
+      format.html
+      format.json { render :json => @lover_infos}
+    end
   end
 
   # GET /lover_infos/1
   # GET /lover_infos/1.json
   def show
+    respond_to do |format|
+      format.html
+      format.json { render :json => @lover_info}
+    end
   end
 
   # GET /lover_infos/new
