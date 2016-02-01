@@ -17,4 +17,12 @@ class Mod < ActiveRecord::Base
 
   has_many :reviews, :inverse_of => 'mod'
   has_many :comments, :as => 'commentable'
+
+  def as_json(options={})
+    super(:include => {
+        :nexus_info => {:except => [:mod_id, :changelog]},
+        :mod_versions => {:except => [:mod_id]},
+        :authors => {:only => [:id, :username]}
+    })
+  end
 end
