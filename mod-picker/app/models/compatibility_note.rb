@@ -7,7 +7,8 @@ class CompatibilityNote < ActiveRecord::Base
   has_many :mod_list_compatibility_notes, :inverse_of => 'compatibility_note'
   has_many :mod_lists, :through => 'mod_list_compatibility_notes', :inverse_of => 'compatibility_notes'
 
-  has_many :mod_versions, :through => 'ModVersionCompatibilityNote', :inverse_of => 'compatibility_notes'
+  has_many :mod_version_compatibility_notes, :inverse_of => 'compatibility_note'
+  has_many :mod_versions, :through => 'mod_version_compatibility_notes', :inverse_of => 'compatibility_notes'
 
   has_many :helpful_marks, :as => 'helpfulable'
 end
