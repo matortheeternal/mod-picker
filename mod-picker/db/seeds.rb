@@ -24,6 +24,7 @@ bSeedINotes = true
 # CLEAR TABLES
 #==================================================
 
+puts "\nClearing database"
 connection = ActiveRecord::Base.connection()
 
 # clear mods and associated tables
@@ -71,9 +72,13 @@ connection.execute("ALTER TABLE reviews AUTO_INCREMENT = 0;")
 connection.execute("ALTER TABLE compatibility_notes AUTO_INCREMENT = 0;")
 connection.execute("ALTER TABLE installation_notes AUTO_INCREMENT = 0;")
 
+puts "    Database cleared"
+
 #==================================================
 # CREATE GAMES
 #==================================================
+
+puts "\nSeeding games"
 
 gameSkyrim = Game.create(
     short_name: "Skyrim",
@@ -111,10 +116,14 @@ gameFallout3 = Game.create(
     steam_app_ids: "22300,22370"
 )
 
+puts "    #{Game.count} games seeded"
+
 
 #==================================================
 # CREATE SUPER-CATEGORIES
 #==================================================
+
+puts "\nSeeding categories"
 
 catUtilities = Category.create(
     name: "Utilities",
@@ -156,6 +165,9 @@ catAudiovisual = Category.create(
     name: "Audiovisual",
     description: "Audiovisual mods are mods which strictly alter the visuals/audio in the game.  So any mod that is strictly graphical or audial would belong in this category.  This category is often superseded by other categories."
 )
+
+puts "    #{Category.count} super-categories seeded"
+
 
 #==================================================
 # CREATE SUB-CATEGORIES
@@ -369,6 +381,8 @@ Category.create(
     description: "Any mod which alters or adds sounds or music to the game."
 )
 
+puts "    #{Category.where.not(parent_id: nil).count} sub-categories seeded"
+
 
 #==================================================
 # CREATE USERS
@@ -376,8 +390,9 @@ Category.create(
 require 'securerandom'
 
 if (bSeedUsers)
+  puts "\nSeeding users"
   # create an admin user
-  pw = 'divide by zer0'
+  pw = SecureRandom.urlsafe_base64
   User.create!(
       username: "admin",
       user_level: "admin",
@@ -393,6 +408,7 @@ if (bSeedUsers)
       current_sign_in_ip: Faker::Internet.public_ip_v4_address,
       last_sign_in_ip: Faker::Internet.public_ip_v4_address
   )
+  puts "    admin seeded with password: #{pw}"
 
   # generates random date between year 2000 and now.
   def time_rand from = Time.new(2000), to = Time.now
@@ -417,12 +433,15 @@ if (bSeedUsers)
         last_sign_in_ip: Faker::Internet.public_ip_v4_address
     )
   end
+  puts "    #{User.count} users seeded"
 end
 
 
 #==================================================
 # CREATE SAMPLE MODS
 #==================================================
+
+puts "\nSeeding mods, nexus infos, and mod versions"
 
 # Helper vars
 nexusDateFormat = "%d/%m/%Y - %I:%M%p"
@@ -924,6 +943,8 @@ ModVersion.create(
     dangerous: false
 )
 
+puts "    #{Mod.count} mods seeded"
+
 
 #==================================================
 # CREATE COMMENTS
@@ -931,9 +952,10 @@ ModVersion.create(
 
 if (bSeedComments)
   # generate comments on user profiles
+  puts "\nSeeding user comments"
   for user in User.all
     rnd = randpow(10, 2)
-    puts "Generating #{rnd} comments for #{user.username}"
+    puts "    Generating #{rnd} comments for #{user.username}"
     rnd.times do
       submitter = User.offset(rand(User.count)).first
       user.profile_comments.new(
@@ -946,9 +968,10 @@ if (bSeedComments)
   end
 
   # generate comments on mods
+  puts "\nSeeding mod comments"
   for mod in Mod.all
     rnd = randpow(20, 2)
-    puts "Generating #{rnd} comments for #{mod.name}"
+    puts "    Generating #{rnd} comments for #{mod.name}"
     rnd.times do
       submitter = User.offset(rand(User.count)).first
       mod.comments.new(
@@ -968,9 +991,10 @@ end
 
 if (bSeedReviews)
   # generate reviews on mods
+  puts "\nSeeding reviews"
   for mod in Mod.all
     nReviews = rand(6)
-    puts "Generating #{nReviews} reviews for #{mod.name}"
+    puts "    Generating #{nReviews} reviews for #{mod.name}"
     nReviews.times do
       submitter = User.offset(rand(User.count)).first
       review = mod.reviews.new(
@@ -1006,6 +1030,7 @@ end
 #==================================================
 
 if (bSeedCNotes)
+  puts "\nSeeding compatibility notes"
   nCNotes = Mod.count
   nCNotes.times do
     submitter = User.offset(rand(User.count)).first
@@ -1031,9 +1056,11 @@ if (bSeedCNotes)
 
     # associate the compatibility note with some mod versions
     nModVersions = 2 + randpow(3, 5)
+    puts "    Generating compatibility note associated with:"
     nModVersions.times do
-      mod = ModVersion.offset(rand(ModVersion.count)).first
-      mod.compatibility_notes << cnote
+      mod_version = ModVersion.offset(rand(ModVersion.count)).first
+      mod_version.compatibility_notes << cnote
+      puts "      - #{mod_version.mod.name} v#{mod_version.version}"
     end
   end
 end
@@ -1044,13 +1071,15 @@ end
 #==================================================
 
 if (bSeedINotes)
+  puts "\nSeeding installation notes"
   nINotes = Mod.count
   nINotes.times do
     submitter = User.offset(rand(User.count)).first
-    mod = ModVersion.offset(rand(ModVersion.count)).first
+    mod_version = ModVersion.offset(rand(ModVersion.count)).first
+    puts "    Generating installation note for #{mod_version.mod.name}"
     inote = InstallationNote.new(
         submitted_by: submitter.id,
-        mod_version_id: mod.id,
+        mod_version_id: mod_version.id,
         always: rand(2) == 1,
         note_type: ["Download Option", "FOMOD Option"].sample,
         submitted: Faker::Date.backward(14),

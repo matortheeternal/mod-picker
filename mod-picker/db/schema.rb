@@ -411,7 +411,7 @@ ActiveRecord::Schema.define(version: 20160131215150) do
     t.integer "mod_id", limit: 4, null: false
   end
   
-  # unsigned
+  # convert id columns to unsigned integers
   execute("ALTER TABLE agreement_marks MODIFY incorrect_note_id INT UNSIGNED;")
   execute("ALTER TABLE agreement_marks MODIFY submitted_by INT UNSIGNED;")
 
