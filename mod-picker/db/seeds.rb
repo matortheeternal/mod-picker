@@ -17,6 +17,7 @@ end
 bSeedUsers = true
 bSeedComments = true
 bSeedReviews = true
+bSeedCNotes = true
 
 #==================================================
 # CLEAR TABLES
@@ -25,6 +26,8 @@ bSeedReviews = true
 connection = ActiveRecord::Base.connection()
 
 # clear mods and associated tables
+ModVersionCompatibilityNote.delete_all
+CompatibilityNote.delete_all
 HelpfulMark.delete_all
 Review.delete_all
 Comment.delete_all
@@ -59,9 +62,11 @@ connection.execute("ALTER TABLE nexus_infos AUTO_INCREMENT = 0;")
 connection.execute("ALTER TABLE lover_infos AUTO_INCREMENT = 0;")
 connection.execute("ALTER TABLE workshop_infos AUTO_INCREMENT = 0;")
 connection.execute("ALTER TABLE mods AUTO_INCREMENT = 0;")
+connection.execute("ALTER TABLE mod_versions AUTO_INCREMENT = 0;")
 connection.execute("ALTER TABLE games AUTO_INCREMENT = 0;")
 connection.execute("ALTER TABLE comments AUTO_INCREMENT = 0;")
 connection.execute("ALTER TABLE reviews AUTO_INCREMENT = 0;")
+connection.execute("ALTER TABLE compatibility_notes AUTO_INCREMENT = 0;")
 
 #==================================================
 # CREATE GAMES
@@ -988,6 +993,44 @@ if (bSeedReviews)
             helpful: rand > 0.35
         ).save!
       end
+    end
+  end
+end
+
+
+#==================================================
+# CREATE COMPATIBILTIY NOTES
+#==================================================
+
+if (bSeedCNotes)
+  nCNotes = Mod.count
+  nCNotes.times do
+    submitter = User.offset(rand(User.count)).first
+    cnote = CompatibilityNote.new(
+        submitted_by: submitter.id,
+        mod_mode: ["Any", "All"].sample,
+        compatibility_status: ["Incompatible", "Partially Compatible", "Patch Available", "Make Custom Patch",
+                               "Soft Incompatibility", "Installation Note"].sample,
+        submitted: Faker::Date.backward(14),
+        text_body: Faker::Lorem.paragraph(4)
+    )
+    cnote.save!
+
+    # seed helpful marks on cnotes
+    nHelpfulMarks = randpow(10, 3)
+    nHelpfulMarks.times do
+      submitter = User.offset(rand(User.count)).first
+      cnote.helpful_marks.new(
+          submitted_by: submitter.id,
+          helpful: rand > 0.35
+      ).save!
+    end
+
+    # associate the compatibility note with some mod versions
+    nModVersions = 2 + randpow(3, 5)
+    nModVersions.times do
+      mod = ModVersion.offset(rand(ModVersion.count)).first
+      mod.compatibility_notes << cnote
     end
   end
 end
