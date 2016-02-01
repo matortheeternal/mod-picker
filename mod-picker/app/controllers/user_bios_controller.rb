@@ -5,11 +5,20 @@ class UserBiosController < ApplicationController
   # GET /user_bios.json
   def index
     @user_bios = UserBio.all
+
+    respond_to do |format|
+      format.html
+      format.json { render :json => @user_bios}
+    end
   end
 
   # GET /user_bios/1
   # GET /user_bios/1.json
   def show
+    respond_to do |format|
+      format.html
+      format.json { render :json => @user_bio}
+    end
   end
 
   # GET /user_bios/new

@@ -5,11 +5,20 @@ class CompatibilityNotesController < ApplicationController
   # GET /compatibility_notes.json
   def index
     @compatibility_notes = CompatibilityNote.all
+
+    respond_to do |format|
+      format.html
+      format.json { render :json => @compatibility_notes}
+    end
   end
 
   # GET /compatibility_notes/1
   # GET /compatibility_notes/1.json
   def show
+    respond_to do |format|
+      format.html
+      format.json { render :json => @compatibility_note}
+    end
   end
 
   # GET /compatibility_notes/new
