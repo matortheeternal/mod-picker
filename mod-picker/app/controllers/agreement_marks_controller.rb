@@ -5,11 +5,20 @@ class AgreementMarksController < ApplicationController
   # GET /agreement_marks.json
   def index
     @agreement_marks = AgreementMark.all
+
+    respond_to do |format|
+      format.html
+      format.json { render :json => @agreement_marks}
+    end
   end
 
   # GET /agreement_marks/1
   # GET /agreement_marks/1.json
   def show
+    respond_to do |format|
+      format.html
+      format.json { render :json => @agreement_mark}
+    end
   end
 
   # GET /agreement_marks/new

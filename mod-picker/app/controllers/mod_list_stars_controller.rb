@@ -5,11 +5,20 @@ class ModListStarsController < ApplicationController
   # GET /mod_list_stars.json
   def index
     @mod_list_stars = ModListStar.all
+
+    respond_to do |format|
+      format.html
+      format.json { render :json => @mod_list_stars}
+    end
   end
 
   # GET /mod_list_stars/1
   # GET /mod_list_stars/1.json
   def show
+    respond_to do |format|
+      format.html
+      format.json { render :json => @mod_list_star}
+    end
   end
 
   # GET /mod_list_stars/new

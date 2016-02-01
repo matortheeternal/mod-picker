@@ -1,1 +1,0 @@
-json.extract! @nexus_info, :id, :mod_id, :uploaded_by, :authors, :endorsements, :total_downloads, :unique_downloads, :views, :posts_count, :videos_count, :images_count, :files_count, :articles_count, :nexus_category, :changelog

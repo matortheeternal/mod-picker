@@ -5,11 +5,20 @@ class OverrideRecordsController < ApplicationController
   # GET /override_records.json
   def index
     @override_records = OverrideRecord.all
+
+    respond_to do |format|
+      format.html
+      format.json { render :json => @override_records}
+    end
   end
 
   # GET /override_records/1
   # GET /override_records/1.json
   def show
+    respond_to do |format|
+      format.html
+      format.json { render :json => @override_record}
+    end
   end
 
   # GET /override_records/new

@@ -1,1 +1,0 @@
-json.extract! @master, :id, :plugin_id

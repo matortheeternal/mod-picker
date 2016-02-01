@@ -14,5 +14,5 @@ class Mod < ActiveRecord::Base
   has_many :authors, :class_name => 'User', :through => 'ModAuthor', :inverse_of => 'mods'
 
   has_many :reviews, :inverse_of => 'mod'
-  has_many :comments, :as => 'commentable', :through => 'mod_comments'
+  has_many :comments, :as => 'commentable'
 end

@@ -1,1 +1,0 @@
-json.extract! @workshop_info, :id, :mod_id

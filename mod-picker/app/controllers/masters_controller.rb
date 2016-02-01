@@ -5,11 +5,20 @@ class MastersController < ApplicationController
   # GET /masters.json
   def index
     @masters = Master.all
+
+    respond_to do |format|
+      format.html
+      format.json { render :json => @masters}
+    end
   end
 
   # GET /masters/1
   # GET /masters/1.json
   def show
+    respond_to do |format|
+      format.html
+      format.json { render :json => @master}
+    end
   end
 
   # GET /masters/new
