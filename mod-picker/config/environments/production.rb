@@ -43,12 +43,12 @@ Rails.application.configure do
   
   # Mailer url options
   # TODO: When we host on production this should be the actual host of the application
-  config.action_mailer.default_url_options = {:host => 'ourdomain.com'}
+  config.action_mailer.default_url_options = {:host => 'modpicker.com'}
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.smtp_settings = {
     :address => "127.0.0.1",
     :port    => 25,
-    :domain  => 'ourdomain.com'
+    :domain  => 'modpicker.com'
   }
 
   # Force all access to the app over SSL, use Strict-Transport-Security, and use secure cookies.
