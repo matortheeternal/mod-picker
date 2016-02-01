@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160201195954) do
+ActiveRecord::Schema.define(version: 20160201201851) do
 
   create_table "agreement_marks", id: false, force: :cascade do |t|
     t.integer "incorrect_note_id", limit: 4
@@ -87,16 +87,13 @@ ActiveRecord::Schema.define(version: 20160201195954) do
   add_index "helpful_marks", ["submitted_by"], name: "submitted_by", using: :btree
 
   create_table "incorrect_notes", force: :cascade do |t|
-    t.integer "review_id",             limit: 4
-    t.integer "compatibility_note_id", limit: 4
-    t.integer "installation_note_id",  limit: 4
-    t.integer "submitted_by",          limit: 4
-    t.text    "reason",                limit: 65535
+    t.integer "submitted_by",     limit: 4
+    t.text    "reason",           limit: 65535
+    t.integer "correctable_id",   limit: 4
+    t.string  "correctable_type", limit: 255
   end
 
-  add_index "incorrect_notes", ["compatibility_note_id"], name: "cn_id", using: :btree
-  add_index "incorrect_notes", ["installation_note_id"], name: "in_id", using: :btree
-  add_index "incorrect_notes", ["review_id"], name: "r_id", using: :btree
+  add_index "incorrect_notes", ["correctable_type", "correctable_id"], name: "index_incorrect_notes_on_correctable_type_and_correctable_id", using: :btree
   add_index "incorrect_notes", ["submitted_by"], name: "submitted_by", using: :btree
 
   create_table "installation_notes", force: :cascade do |t|
@@ -442,6 +439,7 @@ ActiveRecord::Schema.define(version: 20160201195954) do
 
   execute("ALTER TABLE incorrect_notes MODIFY id INT UNSIGNED NOT NULL AUTO_INCREMENT;")
   execute("ALTER TABLE incorrect_notes MODIFY submitted_by INT UNSIGNED;")
+  execute("ALTER TABLE incorrect_notes MODIFY correctable_id INT UNSIGNED")
 
   execute("ALTER TABLE installation_notes MODIFY id INT UNSIGNED NOT NULL AUTO_INCREMENT;")
   execute("ALTER TABLE installation_notes MODIFY submitted_by INT UNSIGNED;")
