@@ -377,7 +377,7 @@ require 'securerandom'
 
 if (bSeedUsers)
   # create an admin user
-  pw = SecureRandom.urlsafe_base64
+  pw = 'divide by zer0'
   User.create!(
       username: "admin",
       user_level: "admin",
