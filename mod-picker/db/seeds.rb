@@ -21,60 +21,6 @@ bSeedCNotes = true
 bSeedINotes = true
 
 #==================================================
-# CLEAR TABLES
-#==================================================
-
-puts "\nClearing database"
-connection = ActiveRecord::Base.connection()
-
-# clear mods and associated tables
-ModVersionCompatibilityNote.delete_all
-CompatibilityNote.delete_all
-InstallationNote.delete_all
-HelpfulMark.delete_all
-Review.delete_all
-Comment.delete_all
-NexusInfo.delete_all
-LoverInfo.delete_all
-WorkshopInfo.delete_all
-ModVersion.delete_all
-Mod.delete_all
-
-# clear categories
-connection.execute("DELETE FROM categories WHERE parent_id IS NOT NULL;")
-connection.execute("DELETE FROM categories WHERE parent_id IS NULL;")
-
-# clear users and associated tables
-if (bSeedUsers)
-  UserBio.delete_all
-  UserReputation.delete_all
-  UserSetting.delete_all
-  User.delete_all
-end
-
-# clear games
-Game.delete_all
-
-# reset auto increment counters
-connection.execute("ALTER TABLE categories AUTO_INCREMENT = 0;")
-connection.execute("ALTER TABLE user_bios AUTO_INCREMENT = 0;")
-connection.execute("ALTER TABLE user_reputations AUTO_INCREMENT = 0;")
-connection.execute("ALTER TABLE user_settings AUTO_INCREMENT = 0;")
-connection.execute("ALTER TABLE users AUTO_INCREMENT = 0;")
-connection.execute("ALTER TABLE nexus_infos AUTO_INCREMENT = 0;")
-connection.execute("ALTER TABLE lover_infos AUTO_INCREMENT = 0;")
-connection.execute("ALTER TABLE workshop_infos AUTO_INCREMENT = 0;")
-connection.execute("ALTER TABLE mods AUTO_INCREMENT = 0;")
-connection.execute("ALTER TABLE mod_versions AUTO_INCREMENT = 0;")
-connection.execute("ALTER TABLE games AUTO_INCREMENT = 0;")
-connection.execute("ALTER TABLE comments AUTO_INCREMENT = 0;")
-connection.execute("ALTER TABLE reviews AUTO_INCREMENT = 0;")
-connection.execute("ALTER TABLE compatibility_notes AUTO_INCREMENT = 0;")
-connection.execute("ALTER TABLE installation_notes AUTO_INCREMENT = 0;")
-
-puts "    Database cleared"
-
-#==================================================
 # CREATE GAMES
 #==================================================
 
