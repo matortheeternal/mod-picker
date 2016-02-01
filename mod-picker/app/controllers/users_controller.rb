@@ -4,7 +4,7 @@ class UsersController < ApplicationController
   # GET /users
   # GET /users.json
   def index
-    @users = User.all
+    @users = User.joins(:bio, :reputation)
 
     respond_to do |format|
       format.html
@@ -73,7 +73,7 @@ class UsersController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_user
-      @user = User.find(params[:id])
+      @user = User.joins(:bio, :reputation).find(params[:id])
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

@@ -70,4 +70,13 @@ class User < ActiveRecord::Base
     self.create_settings({ user_id: self.id })
     self.create_bio({ user_id: self.id })
   end
+
+  def as_json(options={})
+    options[:except] ||= [:email, :active_ml_id, :active_mc_id]
+    options[:include] ||= {
+        :bio => {:only => [:nexus_username, :steam_username]},
+        :reputation => {:only => [:overall, :offset]}
+    }
+    super(options)
+  end
 end
