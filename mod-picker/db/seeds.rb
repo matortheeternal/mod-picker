@@ -18,6 +18,7 @@ bSeedUsers = true
 bSeedComments = true
 bSeedReviews = true
 bSeedCNotes = true
+bSeedINotes = true
 
 #==================================================
 # CLEAR TABLES
@@ -28,6 +29,7 @@ connection = ActiveRecord::Base.connection()
 # clear mods and associated tables
 ModVersionCompatibilityNote.delete_all
 CompatibilityNote.delete_all
+InstallationNote.delete_all
 HelpfulMark.delete_all
 Review.delete_all
 Comment.delete_all
@@ -67,6 +69,7 @@ connection.execute("ALTER TABLE games AUTO_INCREMENT = 0;")
 connection.execute("ALTER TABLE comments AUTO_INCREMENT = 0;")
 connection.execute("ALTER TABLE reviews AUTO_INCREMENT = 0;")
 connection.execute("ALTER TABLE compatibility_notes AUTO_INCREMENT = 0;")
+connection.execute("ALTER TABLE installation_notes AUTO_INCREMENT = 0;")
 
 #==================================================
 # CREATE GAMES
@@ -1031,6 +1034,38 @@ if (bSeedCNotes)
     nModVersions.times do
       mod = ModVersion.offset(rand(ModVersion.count)).first
       mod.compatibility_notes << cnote
+    end
+  end
+end
+
+
+#==================================================
+# CREATE INSTALLATION NOTES
+#==================================================
+
+if (bSeedINotes)
+  nINotes = Mod.count
+  nINotes.times do
+    submitter = User.offset(rand(User.count)).first
+    mod = ModVersion.offset(rand(ModVersion.count)).first
+    inote = InstallationNote.new(
+        submitted_by: submitter.id,
+        mod_version_id: mod.id,
+        always: rand(2) == 1,
+        note_type: ["Download Option", "FOMOD Option"].sample,
+        submitted: Faker::Date.backward(14),
+        text_body: Faker::Lorem.paragraph(4)
+    )
+    inote.save!
+
+    # seed helpful marks on inotes
+    nHelpfulMarks = randpow(10, 3)
+    nHelpfulMarks.times do
+      submitter = User.offset(rand(User.count)).first
+      inote.helpful_marks.new(
+          submitted_by: submitter.id,
+          helpful: rand > 0.35
+      ).save!
     end
   end
 end
