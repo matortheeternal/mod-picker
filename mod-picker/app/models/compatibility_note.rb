@@ -11,4 +11,5 @@ class CompatibilityNote < ActiveRecord::Base
   has_many :mod_versions, :through => 'mod_version_compatibility_notes', :inverse_of => 'compatibility_notes'
 
   has_many :helpful_marks, :as => 'helpfulable'
+  has_many :incorrect_notes, :as => 'correctable'
 end
