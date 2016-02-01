@@ -17,7 +17,8 @@ class User < ActiveRecord::Base
   has_many :incorrect_notes, :foreign_key => 'submitted_by', :inverse_of => 'user'
   has_many :agreement_marks, :foreign_key => 'submitted_by', :inverse_of => 'user'
 
-  has_many :mods, :through => 'ModAuthor', :inverse_of => 'authors'
+  has_many :mod_authors, :inverse_of => 'user'
+  has_many :mods, :through => 'mod_authors', :inverse_of => 'authors'
   has_many :mod_lists, :foreign_key => 'created_by', :inverse_of => 'user'
 
   belongs_to :active_mod_list, :class_name => 'ModList', :foreign_key => 'active_ml_id'
