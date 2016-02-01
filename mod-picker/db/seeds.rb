@@ -1,22 +1,48 @@
 #==================================================
+# HELPER METHODS
+#==================================================
+
+def randpow(num, pow)
+  result = 1.0
+  for i in 1..pow
+    result *= rand(10000)/10000.0
+  end
+  (num * result).floor
+end
+
+#==================================================
 # CONFIGURATION OPTIONS
 #==================================================
 
-bSeedUsers = false
+bSeedUsers = true
+bSeedComments = true
+bSeedReviews = true
+bSeedCNotes = true
+bSeedINotes = true
 
 #==================================================
 # CLEAR TABLES
 #==================================================
 
 connection = ActiveRecord::Base.connection()
+
 # clear mods and associated tables
+ModVersionCompatibilityNote.delete_all
+CompatibilityNote.delete_all
+InstallationNote.delete_all
+HelpfulMark.delete_all
+Review.delete_all
+Comment.delete_all
 NexusInfo.delete_all
 LoverInfo.delete_all
 WorkshopInfo.delete_all
+ModVersion.delete_all
 Mod.delete_all
+
 # clear categories
 connection.execute("DELETE FROM categories WHERE parent_id IS NOT NULL;")
 connection.execute("DELETE FROM categories WHERE parent_id IS NULL;")
+
 # clear users and associated tables
 if (bSeedUsers)
   UserBio.delete_all
@@ -24,6 +50,7 @@ if (bSeedUsers)
   UserSetting.delete_all
   User.delete_all
 end
+
 # clear games
 Game.delete_all
 
@@ -37,7 +64,12 @@ connection.execute("ALTER TABLE nexus_infos AUTO_INCREMENT = 0;")
 connection.execute("ALTER TABLE lover_infos AUTO_INCREMENT = 0;")
 connection.execute("ALTER TABLE workshop_infos AUTO_INCREMENT = 0;")
 connection.execute("ALTER TABLE mods AUTO_INCREMENT = 0;")
+connection.execute("ALTER TABLE mod_versions AUTO_INCREMENT = 0;")
 connection.execute("ALTER TABLE games AUTO_INCREMENT = 0;")
+connection.execute("ALTER TABLE comments AUTO_INCREMENT = 0;")
+connection.execute("ALTER TABLE reviews AUTO_INCREMENT = 0;")
+connection.execute("ALTER TABLE compatibility_notes AUTO_INCREMENT = 0;")
+connection.execute("ALTER TABLE installation_notes AUTO_INCREMENT = 0;")
 
 #==================================================
 # CREATE GAMES
@@ -345,17 +377,17 @@ require 'securerandom'
 
 if (bSeedUsers)
   # create an admin user
+  pw = 'divide by zer0'
   User.create!(
       username: "admin",
       user_level: "admin",
       title: "God",
-      avatar: "",
       joined: Time.now.to_date,
       email: "admin@mail.com",
-      password: SecureRandom.urlsafe_base64,
-      encrypted_password: SecureRandom.urlsafe_base64,
-      reset_password_token: "foobarpw",
+      password: pw,
+      password_confirmation: pw,
       sign_in_count: 1,
+      confirmed_at: Time.now.to_date,
       current_sign_in_at: Time.now.to_date,
       last_sign_in_at: Time.now.to_date,
       current_sign_in_ip: Faker::Internet.public_ip_v4_address,
@@ -370,12 +402,14 @@ if (bSeedUsers)
   # create 99 random users
   99.times do |n|
     name = Faker::Internet.user_name
+    pw = SecureRandom.urlsafe_base64
     User.create!(
         username: "#{name}#{n}",
         joined: time_rand,
         email: Faker::Internet.email(name),
-        password: SecureRandom.urlsafe_base64,
-        encrypted_password: SecureRandom.urlsafe_base64,
+        password: pw,
+        password_confirmation: pw,
+        confirmed_at: Time.now.to_date,
         reset_password_token: Faker::Internet.password,
         sign_in_count: Random.rand(100).to_i + 1,
         current_sign_in_ip: Faker::Internet.public_ip_v4_address,
@@ -427,7 +461,7 @@ ModVersion.create(
     version: "5.1",
     released: DateTime.strptime("24/08/2015 - 03:38PM", nexusDateFormat),
     obsolete: false,
-    dangerous: false,
+    dangerous: false
 )
 
 Mod.create(
@@ -462,7 +496,7 @@ ModVersion.create(
     version: "8",
     released: DateTime.strptime("20/01/2016 - 12:16AM", nexusDateFormat),
     obsolete: false,
-    dangerous: false,
+    dangerous: false
 )
 
 Mod.create(
@@ -497,7 +531,7 @@ ModVersion.create(
     version: "1.7",
     released: DateTime.strptime("09/01/2016 - 04:57PM", nexusDateFormat),
     obsolete: false,
-    dangerous: false,
+    dangerous: false
 )
 
 Mod.create(
@@ -533,7 +567,7 @@ ModVersion.create(
     version: "3.4.5",
     released: DateTime.strptime("18/01/2016 - 10:37AM", nexusDateFormat),
     obsolete: false,
-    dangerous: false,
+    dangerous: false
 )
 
 Mod.create(
@@ -568,7 +602,7 @@ ModVersion.create(
     version: "3.0.0",
     released: DateTime.strptime("20/01/2016 - 06:41PM", nexusDateFormat),
     obsolete: false,
-    dangerous: false,
+    dangerous: false
 )
 
 Mod.create(
@@ -603,7 +637,7 @@ ModVersion.create(
     version: "1.3.11",
     released: DateTime.strptime("01/12/2015 - 09:23PM", nexusDateFormat),
     obsolete: false,
-    dangerous: false,
+    dangerous: false
 )
 
 Mod.create(
@@ -638,7 +672,7 @@ ModVersion.create(
     version: "2.3",
     released: DateTime.strptime("16/01/2016 - 10:15PM", nexusDateFormat),
     obsolete: false,
-    dangerous: false,
+    dangerous: false
 )
 
 Mod.create(
@@ -674,7 +708,7 @@ ModVersion.create(
     version: "3.1.2",
     released: DateTime.strptime("10/11/2015 - 07:43AM", nexusDateFormat),
     obsolete: false,
-    dangerous: false,
+    dangerous: false
 )
 
 # Top mods in the last 59 days
@@ -710,7 +744,7 @@ ModVersion.create(
     version: "2.1.3",
     released: DateTime.strptime("05/01/2016 - 09:16AM", nexusDateFormat),
     obsolete: false,
-    dangerous: false,
+    dangerous: false
 )
 
 Mod.create(
@@ -745,7 +779,7 @@ ModVersion.create(
     version: "1.6",
     released: DateTime.strptime("19/01/2016 - 07:58PM", nexusDateFormat),
     obsolete: false,
-    dangerous: false,
+    dangerous: false
 )
 
 Mod.create(
@@ -781,7 +815,7 @@ ModVersion.create(
     version: "3.0.6.5",
     released: DateTime.strptime("24/01/2016 - 02:41AM", nexusDateFormat),
     obsolete: false,
-    dangerous: false,
+    dangerous: false
 )
 
 Mod.create(
@@ -817,7 +851,7 @@ ModVersion.create(
     version: "1.0",
     released: DateTime.strptime("20/01/2016 - 07:36PM", nexusDateFormat),
     obsolete: false,
-    dangerous: false,
+    dangerous: false
 )
 
 Mod.create(
@@ -852,7 +886,7 @@ ModVersion.create(
     version: "1.1",
     released: DateTime.strptime("02/01/2016 - 06:11PM", nexusDateFormat),
     obsolete: false,
-    dangerous: false,
+    dangerous: false
 )
 
 Mod.create(
@@ -887,5 +921,151 @@ ModVersion.create(
     version: "2.25",
     released: DateTime.strptime("21/01/2016 - 07:01AM", nexusDateFormat),
     obsolete: false,
-    dangerous: false,
+    dangerous: false
 )
+
+
+#==================================================
+# CREATE COMMENTS
+#==================================================
+
+if (bSeedComments)
+  # generate comments on user profiles
+  for user in User.all
+    rnd = randpow(10, 2)
+    puts "Generating #{rnd} comments for #{user.username}"
+    rnd.times do
+      submitter = User.offset(rand(User.count)).first
+      user.profile_comments.new(
+          submitted_by: submitter.id,
+          hidden: false,
+          submitted: Faker::Date.backward(14),
+          text_body: Faker::Lorem.paragraph(1)
+      ).save!
+    end
+  end
+
+  # generate comments on mods
+  for mod in Mod.all
+    rnd = randpow(20, 2)
+    puts "Generating #{rnd} comments for #{mod.name}"
+    rnd.times do
+      submitter = User.offset(rand(User.count)).first
+      mod.comments.new(
+          submitted_by: submitter.id,
+          hidden: false,
+          submitted: Faker::Date.backward(14),
+          text_body: Faker::Lorem.paragraph(2)
+      ).save!
+    end
+  end
+end
+
+
+#==================================================
+# CREATE REVIEWS
+#==================================================
+
+if (bSeedReviews)
+  # generate reviews on mods
+  for mod in Mod.all
+    nReviews = rand(6)
+    puts "Generating #{nReviews} reviews for #{mod.name}"
+    nReviews.times do
+      submitter = User.offset(rand(User.count)).first
+      review = mod.reviews.new(
+          submitted_by: submitter.id,
+          mod_id: mod.id,
+          hidden: false,
+          rating1: 100 - randpow(100, 3),
+          rating2: 100 - randpow(100, 3),
+          rating3: 100 - randpow(100, 3),
+          rating4: 100 - randpow(100, 3),
+          rating5: -1,
+          submitted: DateTime.now,
+          text_body: Faker::Lorem.paragraph(15)
+      )
+      review.save!
+
+      # seed helpful marks on reviews
+      nHelpfulMarks = randpow(10, 3)
+      nHelpfulMarks.times do
+        submitter = User.offset(rand(User.count)).first
+        review.helpful_marks.new(
+            submitted_by: submitter.id,
+            helpful: rand > 0.35
+        ).save!
+      end
+    end
+  end
+end
+
+
+#==================================================
+# CREATE COMPATIBILTIY NOTES
+#==================================================
+
+if (bSeedCNotes)
+  nCNotes = Mod.count
+  nCNotes.times do
+    submitter = User.offset(rand(User.count)).first
+    cnote = CompatibilityNote.new(
+        submitted_by: submitter.id,
+        mod_mode: ["Any", "All"].sample,
+        compatibility_status: ["Incompatible", "Partially Compatible", "Patch Available", "Make Custom Patch",
+                               "Soft Incompatibility", "Installation Note"].sample,
+        submitted: Faker::Date.backward(14),
+        text_body: Faker::Lorem.paragraph(4)
+    )
+    cnote.save!
+
+    # seed helpful marks on cnotes
+    nHelpfulMarks = randpow(10, 3)
+    nHelpfulMarks.times do
+      submitter = User.offset(rand(User.count)).first
+      cnote.helpful_marks.new(
+          submitted_by: submitter.id,
+          helpful: rand > 0.35
+      ).save!
+    end
+
+    # associate the compatibility note with some mod versions
+    nModVersions = 2 + randpow(3, 5)
+    nModVersions.times do
+      mod = ModVersion.offset(rand(ModVersion.count)).first
+      mod.compatibility_notes << cnote
+    end
+  end
+end
+
+
+#==================================================
+# CREATE INSTALLATION NOTES
+#==================================================
+
+if (bSeedINotes)
+  nINotes = Mod.count
+  nINotes.times do
+    submitter = User.offset(rand(User.count)).first
+    mod = ModVersion.offset(rand(ModVersion.count)).first
+    inote = InstallationNote.new(
+        submitted_by: submitter.id,
+        mod_version_id: mod.id,
+        always: rand(2) == 1,
+        note_type: ["Download Option", "FOMOD Option"].sample,
+        submitted: Faker::Date.backward(14),
+        text_body: Faker::Lorem.paragraph(4)
+    )
+    inote.save!
+
+    # seed helpful marks on inotes
+    nHelpfulMarks = randpow(10, 3)
+    nHelpfulMarks.times do
+      submitter = User.offset(rand(User.count)).first
+      inote.helpful_marks.new(
+          submitted_by: submitter.id,
+          helpful: rand > 0.35
+      ).save!
+    end
+  end
+end

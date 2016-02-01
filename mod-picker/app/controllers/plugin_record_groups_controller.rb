@@ -5,11 +5,20 @@ class PluginRecordGroupsController < ApplicationController
   # GET /plugin_record_groups.json
   def index
     @plugin_record_groups = PluginRecordGroup.all
+
+    respond_to do |format|
+      format.html
+      format.json { render :json => @plugin_record_groups}
+    end
   end
 
   # GET /plugin_record_groups/1
   # GET /plugin_record_groups/1.json
   def show
+    respond_to do |format|
+      format.html
+      format.json { render :json => @plugin_record_group}
+    end
   end
 
   # GET /plugin_record_groups/new

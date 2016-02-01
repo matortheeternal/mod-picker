@@ -5,11 +5,20 @@ class ModListInstallationNotesController < ApplicationController
   # GET /mod_list_installation_notes.json
   def index
     @mod_list_installation_notes = ModListInstallationNote.all
+
+    respond_to do |format|
+      format.html
+      format.json { render :json => @mod_list_installation_notes}
+    end
   end
 
   # GET /mod_list_installation_notes/1
   # GET /mod_list_installation_notes/1.json
   def show
+    respond_to do |format|
+      format.html
+      format.json { render :json => @mod_list_installation_note}
+    end
   end
 
   # GET /mod_list_installation_notes/new

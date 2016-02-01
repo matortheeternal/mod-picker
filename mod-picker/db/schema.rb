@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160125005941) do
+ActiveRecord::Schema.define(version: 20160131215150) do
 
   create_table "agreement_marks", id: false, force: :cascade do |t|
     t.integer "incorrect_note_id", limit: 4
@@ -39,14 +39,17 @@ ActiveRecord::Schema.define(version: 20160125005941) do
   add_index "category_priorities", ["recessive_id"], name: "fk_rails_d624be02b9", using: :btree
 
   create_table "comments", force: :cascade do |t|
-    t.integer "parent_comment", limit: 4
-    t.integer "submitted_by",   limit: 4
+    t.integer "parent_comment",   limit: 4
+    t.integer "submitted_by",     limit: 4
     t.boolean "hidden"
     t.date    "submitted"
     t.date    "edited"
-    t.text    "text_body",      limit: 65535
+    t.text    "text_body",        limit: 65535
+    t.integer "commentable_id",   limit: 4
+    t.string  "commentable_type", limit: 255
   end
 
+  add_index "comments", ["commentable_type", "commentable_id"], name: "index_comments_on_commentable_type_and_commentable_id", using: :btree
   add_index "comments", ["parent_comment"], name: "parent_comment", using: :btree
   add_index "comments", ["submitted_by"], name: "submitted_by", using: :btree
 
@@ -74,16 +77,13 @@ ActiveRecord::Schema.define(version: 20160125005941) do
   end
 
   create_table "helpful_marks", id: false, force: :cascade do |t|
-    t.integer "review_id",             limit: 4
-    t.integer "compatibility_note_id", limit: 4
-    t.integer "installation_note_id",  limit: 4
-    t.integer "submitted_by",          limit: 4
+    t.integer "submitted_by",     limit: 4
     t.boolean "helpful"
+    t.integer "helpfulable_id",   limit: 4
+    t.string  "helpfulable_type", limit: 255
   end
 
-  add_index "helpful_marks", ["compatibility_note_id"], name: "cn_id", using: :btree
-  add_index "helpful_marks", ["installation_note_id"], name: "in_id", using: :btree
-  add_index "helpful_marks", ["review_id"], name: "r_id", using: :btree
+  add_index "helpful_marks", ["helpfulable_type", "helpfulable_id"], name: "index_helpful_marks_on_helpfulable_type_and_helpfulable_id", using: :btree
   add_index "helpful_marks", ["submitted_by"], name: "submitted_by", using: :btree
 
   create_table "incorrect_notes", force: :cascade do |t|
@@ -135,22 +135,6 @@ ActiveRecord::Schema.define(version: 20160125005941) do
 
   add_index "mod_authors", ["mod_id"], name: "mod_id", using: :btree
   add_index "mod_authors", ["user_id"], name: "user_id", using: :btree
-
-  create_table "mod_comments", id: false, force: :cascade do |t|
-    t.integer "mod_id",     limit: 4
-    t.integer "comment_id", limit: 4
-  end
-
-  add_index "mod_comments", ["comment_id"], name: "c_id", using: :btree
-  add_index "mod_comments", ["mod_id"], name: "mod_id", using: :btree
-
-  create_table "mod_list_comments", id: false, force: :cascade do |t|
-    t.integer "mod_list_id", limit: 4
-    t.integer "comment_id",  limit: 4
-  end
-
-  add_index "mod_list_comments", ["comment_id"], name: "c_id", using: :btree
-  add_index "mod_list_comments", ["mod_list_id"], name: "ml_id", using: :btree
 
   create_table "mod_list_compatibility_notes", id: false, force: :cascade do |t|
     t.integer "mod_list_id",           limit: 4
@@ -365,14 +349,6 @@ ActiveRecord::Schema.define(version: 20160125005941) do
 
   add_index "user_bios", ["user_id"], name: "user_id", using: :btree
 
-  create_table "user_comments", id: false, force: :cascade do |t|
-    t.integer "user_id",    limit: 4
-    t.integer "comment_id", limit: 4
-  end
-
-  add_index "user_comments", ["comment_id"], name: "c_id", using: :btree
-  add_index "user_comments", ["user_id"], name: "user_id", using: :btree
-
   create_table "user_reputations", force: :cascade do |t|
     t.float   "overall",            limit: 24
     t.float   "offset",             limit: 24
@@ -445,9 +421,6 @@ ActiveRecord::Schema.define(version: 20160125005941) do
   add_foreign_key "compatibility_notes", "installation_notes", name: "compatibility_notes_ibfk_3"
   add_foreign_key "compatibility_notes", "plugins", column: "compatibility_plugin_id", name: "compatibility_notes_ibfk_2"
   add_foreign_key "compatibility_notes", "users", column: "submitted_by", name: "compatibility_notes_ibfk_1"
-  add_foreign_key "helpful_marks", "compatibility_notes", name: "helpful_marks_ibfk_2"
-  add_foreign_key "helpful_marks", "installation_notes", name: "helpful_marks_ibfk_3"
-  add_foreign_key "helpful_marks", "reviews", name: "helpful_marks_ibfk_1"
   add_foreign_key "helpful_marks", "users", column: "submitted_by", name: "helpful_marks_ibfk_4"
   add_foreign_key "incorrect_notes", "compatibility_notes", name: "incorrect_notes_ibfk_2"
   add_foreign_key "incorrect_notes", "installation_notes", name: "incorrect_notes_ibfk_3"
@@ -458,10 +431,6 @@ ActiveRecord::Schema.define(version: 20160125005941) do
   add_foreign_key "masters", "plugins", name: "masters_ibfk_1"
   add_foreign_key "mod_authors", "mods", name: "mod_authors_ibfk_1"
   add_foreign_key "mod_authors", "users", name: "mod_authors_ibfk_2"
-  add_foreign_key "mod_comments", "comments", name: "mod_comments_ibfk_2"
-  add_foreign_key "mod_comments", "mods", name: "mod_comments_ibfk_1"
-  add_foreign_key "mod_list_comments", "comments", name: "mod_list_comments_ibfk_2"
-  add_foreign_key "mod_list_comments", "mod_lists", name: "mod_list_comments_ibfk_1"
   add_foreign_key "mod_list_compatibility_notes", "compatibility_notes", name: "mod_list_compatibility_notes_ibfk_2"
   add_foreign_key "mod_list_compatibility_notes", "mod_lists", name: "mod_list_compatibility_notes_ibfk_1"
   add_foreign_key "mod_list_custom_plugins", "mod_lists", name: "mod_list_custom_plugins_ibfk_1"
@@ -495,8 +464,6 @@ ActiveRecord::Schema.define(version: 20160125005941) do
   add_foreign_key "reviews", "mods", name: "reviews_ibfk_2"
   add_foreign_key "reviews", "users", column: "submitted_by", name: "reviews_ibfk_1"
   add_foreign_key "user_bios", "users", name: "user_bios_ibfk_1"
-  add_foreign_key "user_comments", "comments", name: "user_comments_ibfk_2"
-  add_foreign_key "user_comments", "users", name: "user_comments_ibfk_1"
   add_foreign_key "user_reputations", "users", name: "user_reputations_ibfk_1"
   add_foreign_key "user_settings", "users", name: "user_settings_ibfk_1"
   add_foreign_key "users", "mod_lists", column: "active_mc_id", name: "users_ibfk_5"

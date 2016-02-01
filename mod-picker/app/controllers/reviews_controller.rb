@@ -5,11 +5,20 @@ class ReviewsController < ApplicationController
   # GET /reviews.json
   def index
     @reviews = Review.all
+
+    respond_to do |format|
+      format.html
+      format.json { render :json => @reviews}
+    end
   end
 
   # GET /reviews/1
   # GET /reviews/1.json
   def show
+    respond_to do |format|
+      format.html
+      format.json { render :json => @review}
+    end
   end
 
   # GET /reviews/new

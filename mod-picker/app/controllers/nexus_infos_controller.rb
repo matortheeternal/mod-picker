@@ -5,11 +5,20 @@ class NexusInfosController < ApplicationController
   # GET /nexus_infos.json
   def index
     @nexus_infos = NexusInfo.all
+
+    respond_to do |format|
+      format.html
+      format.json { render :json => @nexus_infos}
+    end
   end
 
   # GET /nexus_infos/1
   # GET /nexus_infos/1.json
   def show
+    respond_to do |format|
+      format.html
+      format.json { render :json => @nexus_info}
+    end
   end
 
   # GET /nexus_infos/new

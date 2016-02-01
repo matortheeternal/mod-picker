@@ -1,1 +1,0 @@
-json.extract! @mod_asset_file, :id, :filepath

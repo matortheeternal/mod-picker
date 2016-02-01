@@ -5,11 +5,20 @@ class UserReputationsController < ApplicationController
   # GET /user_reputations.json
   def index
     @user_reputations = UserReputation.all
+
+    respond_to do |format|
+      format.html
+      format.json { render :json => @user_reputations}
+    end
   end
 
   # GET /user_reputations/1
   # GET /user_reputations/1.json
   def show
+    respond_to do |format|
+      format.html
+      format.json { render :json => @user_reputation}
+    end
   end
 
   # GET /user_reputations/new

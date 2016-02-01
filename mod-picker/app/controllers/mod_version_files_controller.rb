@@ -5,11 +5,20 @@ class ModVersionFilesController < ApplicationController
   # GET /mod_version_files.json
   def index
     @mod_version_files = ModVersionFile.all
+
+    respond_to do |format|
+      format.html
+      format.json { render :json => @mod_version_files}
+    end
   end
 
   # GET /mod_version_files/1
   # GET /mod_version_files/1.json
   def show
+    respond_to do |format|
+      format.html
+      format.json { render :json => @mod_version_file}
+    end
   end
 
   # GET /mod_version_files/new

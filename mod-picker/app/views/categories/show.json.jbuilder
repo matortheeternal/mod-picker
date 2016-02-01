@@ -1,1 +1,0 @@
-json.extract! @category, :id, :id, :parent_id, :name, :description

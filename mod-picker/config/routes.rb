@@ -18,7 +18,6 @@ Rails.application.routes.draw do
     resources :helpful_marks
     resources :agreement_marks
     resources :reviews
-    resources :comments
     resources :mod_authors
     resources :mod_list_stars
     resources :mod_stars

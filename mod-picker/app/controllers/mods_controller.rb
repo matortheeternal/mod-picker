@@ -4,7 +4,7 @@ class ModsController < ApplicationController
   # GET /mods
   # GET /mods.json
   def index
-    @mods = Mod.joins(:nexus_info)
+    @mods = Mod.joins(:nexus_info, :mod_versions)
 
     respond_to do |format|
       format.html
@@ -17,7 +17,7 @@ class ModsController < ApplicationController
   def show
     respond_to do |format|
       format.html
-      format.json { render :json => @mod}
+      format.json { render :json => @mod }
     end
   end
 
@@ -73,7 +73,7 @@ class ModsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_mod
-      @mod = Mod.joins(:nexus_info).find(params[:id])
+      @mod = Mod.joins(:nexus_info, :mod_versions, :authors).find(params[:id])
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

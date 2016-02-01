@@ -1,29 +1,24 @@
 <div class="scaffold">
   <p id="notice"><%= notice %></p>
 
-    <p>
-    <strong>review_id:</strong>
-    <%= @helpful_mark.review_id %>
-  </p>
-
-    <p>
-    <strong>compatibility_note_id:</strong>
-    <%= @helpful_mark.compatibility_note_id %>
-  </p>
-
-    <p>
-    <strong>installation_note_id:</strong>
-    <%= @helpful_mark.installation_note_id %>
-  </p>
-
-    <p>
+  <p>
     <strong>submitted_by:</strong>
     <%= @helpful_mark.submitted_by %>
   </p>
 
-    <p>
+  <p>
     <strong>helpful:</strong>
     <%= @helpful_mark.helpful %>
+  </p>
+
+  <p>
+    <strong>helpfulable_id:</strong>
+    <%= @helpful_mark.helpfulable_id %>
+  </p>
+
+  <p>
+    <strong>helpfulable_type:</strong>
+    <%= @helpful_mark.helpfulable_type %>
   </p>
 
     <%= link_to 'Edit', edit_helpful_mark_path(@helpful_mark) %> |

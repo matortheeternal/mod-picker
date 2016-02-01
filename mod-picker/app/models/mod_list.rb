@@ -15,5 +15,5 @@ class ModList < ActiveRecord::Base
 
   has_many :users_who_starred, :class_name => 'Users', :through => 'ModListStar', :inverse_of => 'starred_mod_lists'
 
-  has_many :comments, :as => 'commentable', :through => 'mod_list_comments'
+  has_many :comments, :as => 'commentable'
 end

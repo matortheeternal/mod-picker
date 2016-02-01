@@ -5,11 +5,20 @@ class UserSettingsController < ApplicationController
   # GET /user_settings.json
   def index
     @user_settings = UserSetting.all
+
+    respond_to do |format|
+      format.html
+      format.json { render :json => @user_settings}
+    end
   end
 
   # GET /user_settings/1
   # GET /user_settings/1.json
   def show
+    respond_to do |format|
+      format.html
+      format.json { render :json => @user_setting}
+    end
   end
 
   # GET /user_settings/new
