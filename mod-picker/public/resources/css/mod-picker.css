@@ -1,6 +1,6 @@
 /* header */
 
-#headerImage {
+header {
     background-color: #555;
     background-image: url("/resources/img/whiterun.jpg");
     background-repeat: no-repeat;
@@ -9,8 +9,87 @@
     -o-background-size: cover;
     background-size: cover;
     height: 192px;
-    overflow: hidden;
+}
 
+.header-controls {
+    max-width: 1220px;
+    width: 100%;
+    margin: 0 auto;
+    height: 50px;
+    display: table;
+    font-size: 11px;
+    padding-top: 60px;
+    padding-bottom: 60px;
+    position: relative;
+}
+
+.logo {
+    color: #C0A060;
+    font-size: 36px;
+    font-weight: 600;
+}
+
+.logo:hover {
+    color: #eeeedd;
+}
+
+.user-nav {
+    width: 240px;
+    background: rgba(255, 255, 255, 0.6); /*  none repeat scroll 0 0 */
+    display: table-cell;
+    height: 44px;
+    vertical-align: middle;
+    text-align: left;
+    margin: 0;
+    padding: 0 10px 0 10px;
+}
+
+.user-nav li {
+    display: inline;
+    padding: 0 0.5em;
+    border-right: 1px solid #44484A;
+    list-style: outside none none;
+}
+
+.user-nav a {
+    color: #252835;
+    font-weight: 700;
+}
+
+#form_game_select {
+    display: inline-block;
+    width: 95px;
+    text-align: center;
+}
+
+.game-selector {
+    position: absolute;
+    opacity: 0;
+    height: 42px;
+    font-size: 12px;
+    cursor: pointer;
+}
+
+.customSelect .customSelectInner {
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-right: 5px;
+    line-height: 32px;
+    vertical-align: middle;
+    display: inline-block;
+}
+
+.customSelect {
+    display: inline-block;
+    font-weight: 700;
+    padding-left: 32px;
+    background-size: 32px 32px;
+    background-position: 0 5px;
+    background-repeat: no-repeat;
+}
+
+.icon-sk {
+    background-image: url("http://puu.sh/lyZdf.png");
 }
 
 /* box-sizing */
