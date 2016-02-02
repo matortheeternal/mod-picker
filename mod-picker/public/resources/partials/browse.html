@@ -1,2 +1,114 @@
-<mod-list data="mods"></mod-list>
+<div class="column-wrapper">
+    <div class="left-column">
+        <h2>Filters</h2>
+        <h3>Mod List</h3>
+        <div class="sidebar-box">
+            <ul class="filter-list">
+                <li>
+                    <input id="compatibility_enabled" type="checkbox">
+                    <label for="compatibility_enabled">Enable compatibility filter</label>
+                </li>
+                <li class="half-box">
+                    <h4>Mods</h4>
+                    <a href="#">123</a>
+                </li>
+                <li class="half-box">
+                    <h4>Plugins</h4>
+                    <a href="#">98</a>
+                </li>
+            </ul>
+        </div>
+        <div id="site-filters" class="filter-section">
+            <h3>Sources</h3>
+            <ul class="filter-list">
+                <li>
+                    <input id="nexus_mods" type="checkbox">
+                    <label for="nexus_mods">Nexus Mods</label>
+                </li>
+                <li>
+                    <input id="steam_workshop" type="checkbox">
+                    <label for="steam_workshop">Steam Workshop</label>
+                </li>
+                <li>
+                    <input id="lovers_lab" type="checkbox">
+                    <label for="lovers_lab">Lovers Lab</label>
+                </li>
+            </ul>
+        </div>
+        <div id="category-filters" class="filter-section">
+            <h3>Categories</h3>
+            <category-tree data="categories"></category-tree>
+        </div>
+        <div id="date-filters" class="filter-section">
+            <h3>Date Filters</h3>
+            <h4>Date Released</h4>
+            ~range-slider
+
+            <h4>Date Updated</h4>
+            ~range-slider
+        </div>
+        <div id="nexus-mods-filters" class="filter-sections">
+            <h3>Nexus Mods Filters</h3>
+            <div id="nexus-mods-stat-filters" class="filter-section">
+                <h4>Endorsements</h4>
+                ~range-slider
+
+                <h4>Unique Downloads</h4>
+                ~range-slider
+
+                <h4>Total Downloads</h4>
+                ~range-slider
+
+                <h4>Views</h4>
+                ~range-slider
+            </div>
+            <div id="nexus-mods-ext-filters" class="filter-section">
+                <h4>Posts Count</h4>
+                ~range-slider
+
+                <h4>Videos Count</h4>
+                ~range-slider
+
+                <h4>Images Count</h4>
+                ~range-slider
+
+                <h4>Files Count</h4>
+                ~range-slider
+
+                <h4>Articles Count</h4>
+                ~range-slider
+            </div>
+        </div>
+        <div id="mod-picker-filters" class="filter-section">
+            <h3>Mod Picker Filters</h3>
+            <div id="mod-picker-stat-filters" class="filter-section">
+                <h4>Reputation</h4>
+                ~range-slider
+
+                <h4>Average Rating</h4>
+                ~range-slider
+
+                <h4>Reviews Count</h4>
+                ~range-slider
+
+                <h4>Number of Stars</h4>
+                ~range-slider
+            </div>
+            <div id="mod-picker-ext-filters" class="filter-section">
+                <h4>Compatibility Note Count</h4>
+                ~range-slider
+
+                <h4>Installation Note Count</h4>
+                ~range-slider
+
+                <h4>Comments Count</h4>
+                ~range-slider
+            </div>
+        </div>
+    </div>
+    <div class="right-column">
+        <h2>Mods</h2>
+        <mod-list data="mods"></mod-list>
+    </div>
+</div>
 <loader condition="loading"></loader>
