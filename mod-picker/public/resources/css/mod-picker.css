@@ -29,35 +29,6 @@ body {
     margin: auto;
 }
 
-table {
-    border-collapse: collapse;
-    width: 100%;
-    font-family: Arial;
-}
-
-th {
-    margin: 0;
-    font-size: 10.5px;
-    padding: 0.5em 1em;
-    text-align: left;
-}
-
-td {
-    border-width: 0 0 0 1px;
-    font-size: 12px;
-    margin: 0;
-    overflow: visible;
-    padding: 0.5em 1em;
-}
-
-tbody tr:nth-child(odd) {
-    background-color: #eeeedd;
-}
-
-tbody tr:nth-child(even) {
-    background-color: #fafae8;
-}
-
 .hidden {
     display: none;
 }
@@ -131,6 +102,7 @@ nav a {
 }
 
 nav a:hover {
+    color: #EEE;
     background-color: #48433F;
 }
 
@@ -417,11 +389,37 @@ h2 {
     font-weight: 700;
     margin-bottom: 8px;
     padding: 0;
-    font-size: 15px;
+    font-size: 14px;
+    color: #665b50;/*#342f2a;*/
 }
 
-/* css for mods */
+/* css for search results */
 
-.mod-link {
-    font-weight: 600;
+.right-column table {
+    border-collapse: collapse;
+    width: 100%;
+    font-family: Arial;
+}
+
+.right-column th {
+    margin: 0;
+    font-size: 10.5px;
+    padding: 0.5em 1em;
+    text-align: left;
+}
+
+.right-column td {
+    border-width: 0 0 0 1px;
+    font-size: 12px;
+    margin: 0;
+    overflow: visible;
+    padding: 0.5em 1em;
+}
+
+.right-column tbody tr:nth-child(odd) {
+    background-color: #eeeedd;
+}
+
+.right-column tbody tr:nth-child(even) {
+    background-color: #fafae8;
 }
