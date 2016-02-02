@@ -24,7 +24,7 @@ body {
     font-family: 'Roboto', sans-serif;
     margin: 0;
     background-color: #fafae8;
-    background: linear-gradient(90deg, #eeeedd 350px, #fafae8 350px);
+    background: linear-gradient(90deg, #eeeedd 50%, #fafae8 50%);
 }
 
 .scaffold {
@@ -220,6 +220,7 @@ ul.hmenu li {
     padding: 46px 0 46px 48px;
     display: table-cell;
     vertical-align: top;
+    background-color: #fafae8;
 }
 
 h2 {
