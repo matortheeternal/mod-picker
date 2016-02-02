@@ -4,6 +4,10 @@
     background-color: #555;
     background-image: url("/resources/img/whiterun.jpg");
     background-repeat: no-repeat;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
     height: 192px;
     overflow: hidden;
 
@@ -17,7 +21,6 @@
 
 /* some basic css */
 body {
-    /*margin: auto;*/
     font-family: 'Roboto', sans-serif;
     margin: 0;
     background-color: #fafae8;
