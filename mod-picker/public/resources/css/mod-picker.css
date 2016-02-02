@@ -11,7 +11,7 @@ header {
     height: 192px;
 }
 
-.header-controls {
+.header {
     max-width: 1220px;
     width: 100%;
     margin: 0 auto;
@@ -23,35 +23,44 @@ header {
     position: relative;
 }
 
-.logo {
+h1 {
     color: #C0A060;
     font-size: 36px;
     font-weight: 600;
+    padding: 0;
+    margin: 0;
 }
 
-.logo:hover {
+h1:hover {
     color: #eeeedd;
 }
 
-.user-nav {
-    width: 240px;
-    background: rgba(255, 255, 255, 0.6); /*  none repeat scroll 0 0 */
+.nav-controls {
+    width: 75%;
     display: table-cell;
-    height: 44px;
     vertical-align: middle;
-    text-align: left;
+    height: 44px;
+    margin: 0;
+    padding: 0;
+}
+
+.logged-out-nav {
+    width: 240px;
+    background: rgba(255, 255, 255, 0.6);
+    text-align: right;
+    float: right;
     margin: 0;
     padding: 0 10px 0 10px;
 }
 
-.user-nav li {
+.logged-out-nav li {
     display: inline;
     padding: 0 0.5em;
     border-right: 1px solid #44484A;
     list-style: outside none none;
 }
 
-.user-nav a {
+.logged-out-nav a {
     color: #252835;
     font-weight: 700;
 }
