@@ -30,13 +30,13 @@ var app = angular.module('modPicker', [
 }])
 
 .directive('modList', function(){
-  return {
-      restrict: 'E',
-      templateUrl: '/resources/directives/modList.html',
-      scope: {
+    return {
+        restrict: 'E',
+        templateUrl: '/resources/directives/modList.html',
+        scope: {
           data: '='
-      }
-  }
+        }
+    }
 })
 
 .directive('loader', function() {
