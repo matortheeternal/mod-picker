@@ -1,0 +1,536 @@
+@import url(http://fonts.googleapis.com/css?family=Raleway:300,400,600,700,800,900);
+/* Reset
+=====================================================================*/
+/* line 9, E:/dev/git/mod-picker/mod-picker/app/assets/stylesheets/welcome.scss */
+* {
+  padding: 0;
+  margin: 0;
+}
+
+/* line 10, E:/dev/git/mod-picker/mod-picker/app/assets/stylesheets/welcome.scss */
+body {
+  background: #ffffff;
+  font-family: 'Raleway',sans-serif;
+  overflow-x: hidden;
+  text-rendering: optimizelegibility;
+}
+
+/* line 17, E:/dev/git/mod-picker/mod-picker/app/assets/stylesheets/welcome.scss */
+a {
+  color: #ffffff;
+  text-decoration: none;
+}
+
+/* line 20, E:/dev/git/mod-picker/mod-picker/app/assets/stylesheets/welcome.scss */
+a:hover {
+  color: #ffffff;
+  text-decoration: none;
+}
+
+/* line 23, E:/dev/git/mod-picker/mod-picker/app/assets/stylesheets/welcome.scss */
+a:focus {
+  color: #ffffff;
+  outline: medium none;
+  outline-offset: 0;
+}
+
+/* Headings */
+/* line 30, E:/dev/git/mod-picker/mod-picker/app/assets/stylesheets/welcome.scss */
+h1 {
+  font-size: 2em;
+  font-weight: normal;
+  line-height: 1.15;
+}
+
+/* line 31, E:/dev/git/mod-picker/mod-picker/app/assets/stylesheets/welcome.scss */
+h2 {
+  font-size: 1.5em;
+  line-height: 1.25;
+  margin-bottom: .45em;
+}
+
+/* line 32, E:/dev/git/mod-picker/mod-picker/app/assets/stylesheets/welcome.scss */
+h3 {
+  font-size: 1.35em;
+  line-height: 1.25;
+  margin-bottom: .45em;
+}
+
+/* line 33, E:/dev/git/mod-picker/mod-picker/app/assets/stylesheets/welcome.scss */
+h4 {
+  font-size: 1.05em;
+  line-height: 1.35;
+  margin-bottom: .45em;
+}
+
+/* line 34, E:/dev/git/mod-picker/mod-picker/app/assets/stylesheets/welcome.scss */
+h5 {
+  font-size: 1.05em;
+  line-height: 1.35;
+  margin-bottom: .45em;
+}
+
+/* line 35, E:/dev/git/mod-picker/mod-picker/app/assets/stylesheets/welcome.scss */
+h6 {
+  font-size: 1em;
+  line-height: 1.35;
+  margin-bottom: 1em;
+}
+
+/* Forms */
+/* line 38, E:/dev/git/mod-picker/mod-picker/app/assets/stylesheets/welcome.scss */
+form {
+  display: inline;
+}
+
+/* line 39, E:/dev/git/mod-picker/mod-picker/app/assets/stylesheets/welcome.scss */
+fieldset {
+  border: 0;
+}
+
+/* line 40, E:/dev/git/mod-picker/mod-picker/app/assets/stylesheets/welcome.scss */
+legend {
+  display: none;
+}
+
+/* Table */
+/* line 43, E:/dev/git/mod-picker/mod-picker/app/assets/stylesheets/welcome.scss */
+table {
+  border: 0;
+  /*border-collapse:collapse;*/
+  border-spacing: 0;
+  empty-cells: show;
+  font-size: 100%;
+}
+
+/* line 44, E:/dev/git/mod-picker/mod-picker/app/assets/stylesheets/welcome.scss */
+caption, th, td {
+  vertical-align: top;
+  text-align: left;
+  font-weight: normal;
+}
+
+/* Content */
+/* line 47, E:/dev/git/mod-picker/mod-picker/app/assets/stylesheets/welcome.scss */
+p {
+  margin: 0 0 1em;
+}
+
+/* line 48, E:/dev/git/mod-picker/mod-picker/app/assets/stylesheets/welcome.scss */
+strong {
+  font-weight: bold;
+}
+
+/* line 49, E:/dev/git/mod-picker/mod-picker/app/assets/stylesheets/welcome.scss */
+address {
+  font-style: normal;
+  line-height: 1.35;
+}
+
+/* line 50, E:/dev/git/mod-picker/mod-picker/app/assets/stylesheets/welcome.scss */
+cite {
+  font-style: normal;
+}
+
+/* line 51, E:/dev/git/mod-picker/mod-picker/app/assets/stylesheets/welcome.scss */
+q,
+blockquote {
+  quotes: none;
+}
+
+/* line 53, E:/dev/git/mod-picker/mod-picker/app/assets/stylesheets/welcome.scss */
+q:before,
+q:after {
+  content: '';
+}
+
+/* line 55, E:/dev/git/mod-picker/mod-picker/app/assets/stylesheets/welcome.scss */
+small {
+  font-size: 1em;
+}
+
+/* line 56, E:/dev/git/mod-picker/mod-picker/app/assets/stylesheets/welcome.scss */
+big {
+  font-size: 1.15em;
+}
+
+/*sup           { font-size:1em; vertical-align:top; }*/
+/* Lists */
+/* line 60, E:/dev/git/mod-picker/mod-picker/app/assets/stylesheets/welcome.scss */
+ul, ol {
+  list-style: none;
+}
+
+/* Show Messages
+=====================================================================*/
+/* line 66, E:/dev/git/mod-picker/mod-picker/app/assets/stylesheets/welcome.scss */
+.gen {
+  background: none repeat scroll 0 0 #fff;
+  color: #008900;
+  font-size: 20px;
+  margin: 15px auto;
+  padding: 5px;
+  text-align: center;
+}
+
+/* line 75, E:/dev/git/mod-picker/mod-picker/app/assets/stylesheets/welcome.scss */
+.err {
+  background: none repeat scroll 0 0 #FF0000;
+  color: #fff;
+  font-size: 20px;
+  margin: 15px auto;
+  padding: 5px;
+  text-align: center;
+}
+
+/* Section Title
+=====================================================================*/
+/* line 88, E:/dev/git/mod-picker/mod-picker/app/assets/stylesheets/welcome.scss */
+.section-title {
+  margin-bottom: 35px;
+  margin-top: 80px;
+  text-align: center;
+}
+
+/* line 93, E:/dev/git/mod-picker/mod-picker/app/assets/stylesheets/welcome.scss */
+.section-title h2 {
+  font-size: 26px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  margin: 0 0 10px;
+  padding: 0 0 15px;
+  position: relative;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+/* line 103, E:/dev/git/mod-picker/mod-picker/app/assets/stylesheets/welcome.scss */
+.section-title h2:before {
+  border: 2px solid #E3801B;
+  bottom: 0;
+  content: "";
+  left: 0;
+  margin: 0 auto;
+  position: absolute;
+  right: 0;
+  width: 100px;
+}
+
+/* line 113, E:/dev/git/mod-picker/mod-picker/app/assets/stylesheets/welcome.scss */
+.section-title p {
+  color: #7c7c7c;
+  font-size: 16px;
+  font-style: italic;
+  text-align: center;
+}
+
+/* Site Header Part
+=====================================================================*/
+/* line 123, E:/dev/git/mod-picker/mod-picker/app/assets/stylesheets/welcome.scss */
+.overlay {
+  background: none repeat scroll 0 0 rgba(0, 0, 0, 0.5);
+  height: 100%;
+  width: 100%;
+}
+
+/* line 129, E:/dev/git/mod-picker/mod-picker/app/assets/stylesheets/welcome.scss */
+.site_logo {
+  margin-top: 50px;
+  text-align: center;
+}
+
+/* line 133, E:/dev/git/mod-picker/mod-picker/app/assets/stylesheets/welcome.scss */
+.menu_area {
+  background: url("/assets/menu_bg-3341634a7726fa0295494c3bc40b39091cba5e23854b4b75d73ae0c500622481.png") repeat scroll 0 0 transparent;
+  bottom: 0;
+  height: 50px;
+  position: absolute;
+  width: 100%;
+}
+
+/* line 140, E:/dev/git/mod-picker/mod-picker/app/assets/stylesheets/welcome.scss */
+.stick_menu {
+  position: fixed;
+  top: 0;
+  z-index: 9999;
+}
+
+/* line 146, E:/dev/git/mod-picker/mod-picker/app/assets/stylesheets/welcome.scss */
+.header_part {
+  background: url("/assets/background-d9c1b581fd046c0d22a66417a6d3908e8c0b5629eb4890cb4a038e2f26eb7f6b.jpg") repeat scroll center center/cover transparent;
+  overflow: hidden;
+}
+
+/* line 150, E:/dev/git/mod-picker/mod-picker/app/assets/stylesheets/welcome.scss */
+.navbar-default {
+  background-color: transparent;
+  border-color: transparent;
+}
+
+/* line 155, E:/dev/git/mod-picker/mod-picker/app/assets/stylesheets/welcome.scss */
+.active {
+  color: #fff !important;
+}
+
+/* line 158, E:/dev/git/mod-picker/mod-picker/app/assets/stylesheets/welcome.scss */
+.logo a {
+  color: #ffffff !important;
+}
+
+/* line 161, E:/dev/git/mod-picker/mod-picker/app/assets/stylesheets/welcome.scss */
+.navbar-default .navbar-nav > li > a, .navbar-default .navbar-nav > li > a:hover, .navbar-default .navbar-nav > li > a:focus {
+  color: #fff;
+}
+
+/* line 165, E:/dev/git/mod-picker/mod-picker/app/assets/stylesheets/welcome.scss */
+.site_title h1 {
+  color: #fff;
+  font-size: 50px;
+  font-weight: 700;
+  margin: 30px auto;
+  text-align: center;
+}
+
+/* line 172, E:/dev/git/mod-picker/mod-picker/app/assets/stylesheets/welcome.scss */
+.site_title p {
+  color: #fff;
+  font-size: 18px;
+  text-align: center;
+}
+
+/* Site Countdown Part
+=====================================================================*/
+/* line 182, E:/dev/git/mod-picker/mod-picker/app/assets/stylesheets/welcome.scss */
+.countdown {
+  color: #fff;
+  margin: 40px auto 10px;
+  width: 70%;
+}
+
+/* line 187, E:/dev/git/mod-picker/mod-picker/app/assets/stylesheets/welcome.scss */
+.countdown_row {
+  display: block;
+  margin-left: 5px;
+  overflow: hidden;
+  width: 100%;
+}
+
+/* line 193, E:/dev/git/mod-picker/mod-picker/app/assets/stylesheets/welcome.scss */
+.countdown_section {
+  background: none repeat scroll 0 0 transparent;
+  border: 2px solid #ddd;
+  border-radius: 100%;
+  display: block;
+  float: left;
+  font-size: 25px;
+  margin: 15px 30px auto;
+  padding: 30px 12px;
+  text-align: center;
+  width: 140px;
+}
+
+/* line 205, E:/dev/git/mod-picker/mod-picker/app/assets/stylesheets/welcome.scss */
+.countdown_amount {
+  font-size: 25px;
+  font-weight: 800;
+}
+
+/* About Section
+=====================================================================*/
+/* line 213, E:/dev/git/mod-picker/mod-picker/app/assets/stylesheets/welcome.scss */
+.welcome_section {
+  overflow: hidden;
+}
+
+/* line 216, E:/dev/git/mod-picker/mod-picker/app/assets/stylesheets/welcome.scss */
+.about {
+  margin: 0 auto;
+  padding: 60px 20px;
+}
+
+/* line 220, E:/dev/git/mod-picker/mod-picker/app/assets/stylesheets/welcome.scss */
+.about h2 {
+  font-size: 35px;
+  font-weight: bold;
+  text-align: center;
+}
+
+/* line 225, E:/dev/git/mod-picker/mod-picker/app/assets/stylesheets/welcome.scss */
+.about p {
+  margin: 20px;
+  text-align: center;
+}
+
+/* line 229, E:/dev/git/mod-picker/mod-picker/app/assets/stylesheets/welcome.scss */
+.welcome_part {
+  margin: 50px auto 80px;
+}
+
+/* line 232, E:/dev/git/mod-picker/mod-picker/app/assets/stylesheets/welcome.scss */
+.welcome_icon {
+  background: none repeat scroll 0 0 transparent;
+  border: 2px solid #E3801B;
+  border-radius: 100%;
+  color: #E3801B;
+  margin: 0 auto;
+  padding: 35px;
+  text-align: center;
+  width: 140px;
+}
+
+/* line 242, E:/dev/git/mod-picker/mod-picker/app/assets/stylesheets/welcome.scss */
+.welcome_part h2 {
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 5px;
+  text-transform: uppercase;
+  text-align: center;
+}
+
+/* line 249, E:/dev/git/mod-picker/mod-picker/app/assets/stylesheets/welcome.scss */
+.welcome_part p {
+  color: #7c7c7c;
+  font-size: 14px;
+  text-align: center;
+}
+
+/* Email Subscribe Section
+=====================================================================*/
+/* line 257, E:/dev/git/mod-picker/mod-picker/app/assets/stylesheets/welcome.scss */
+.email_subscribe_section {
+  background: none repeat scroll 0 0 #ecf0f1;
+  color: #000;
+  height: auto;
+  overflow: hidden;
+  width: 100%;
+}
+
+/* line 264, E:/dev/git/mod-picker/mod-picker/app/assets/stylesheets/welcome.scss */
+.email_subscriber_head {
+  margin: 100px auto 30px;
+}
+
+/* line 267, E:/dev/git/mod-picker/mod-picker/app/assets/stylesheets/welcome.scss */
+.email_subscriber_head h2 {
+  font-size: 35px;
+  text-align: center;
+}
+
+/* line 271, E:/dev/git/mod-picker/mod-picker/app/assets/stylesheets/welcome.scss */
+.email_subscriber_head p {
+  text-align: center;
+}
+
+/* line 274, E:/dev/git/mod-picker/mod-picker/app/assets/stylesheets/welcome.scss */
+.email_subscribe_form_part {
+  margin-bottom: 80px;
+  text-align: center;
+}
+
+/* line 278, E:/dev/git/mod-picker/mod-picker/app/assets/stylesheets/welcome.scss */
+.email_input_box {
+  background: none repeat scroll 0 0 #fff;
+  border-radius: 30px;
+  color: #000;
+  display: inline;
+  font-size: 15px;
+  height: auto;
+  margin: 20px 30px;
+  padding: 15px;
+  width: 40%;
+}
+
+/* line 289, E:/dev/git/mod-picker/mod-picker/app/assets/stylesheets/welcome.scss */
+.email_submit_box {
+  border-radius: 30px;
+  margin-top: -5px;
+  padding: 15px 40px;
+}
+
+/* line 294, E:/dev/git/mod-picker/mod-picker/app/assets/stylesheets/welcome.scss */
+.email_submit_box:focus, .email_submit_box:active:focus, .email_submit_box.active:focus {
+  outline: medium none;
+  outline-offset: -2px;
+}
+
+/* Contact Section
+=====================================================================*/
+/* line 302, E:/dev/git/mod-picker/mod-picker/app/assets/stylesheets/welcome.scss */
+.contact_section {
+  overflow: hidden;
+  background: none repeat scroll 0 0 #18191a;
+  color: #fff;
+}
+
+/* line 307, E:/dev/git/mod-picker/mod-picker/app/assets/stylesheets/welcome.scss */
+.contact_head {
+  padding: 80px 0 30px;
+  text-align: center;
+}
+
+/* line 311, E:/dev/git/mod-picker/mod-picker/app/assets/stylesheets/welcome.scss */
+.contact_head h2 {
+  font-size: 35px;
+  font-weight: bold;
+}
+
+/* line 317, E:/dev/git/mod-picker/mod-picker/app/assets/stylesheets/welcome.scss */
+.address {
+  margin: 10px auto;
+  font-weight: 600;
+}
+
+/* line 321, E:/dev/git/mod-picker/mod-picker/app/assets/stylesheets/welcome.scss */
+.phone {
+  margin: 10px auto;
+  font-weight: 600;
+}
+
+/* line 325, E:/dev/git/mod-picker/mod-picker/app/assets/stylesheets/welcome.scss */
+.email {
+  margin: 10px auto;
+  font-weight: 600;
+}
+
+/* line 331, E:/dev/git/mod-picker/mod-picker/app/assets/stylesheets/welcome.scss */
+.social_icons ul li {
+  display: inline;
+  font-size: 20px;
+  margin-right: 10px;
+}
+
+/* line 336, E:/dev/git/mod-picker/mod-picker/app/assets/stylesheets/welcome.scss */
+.social_icons ul li a {
+  font-size: 40px;
+}
+
+/* line 339, E:/dev/git/mod-picker/mod-picker/app/assets/stylesheets/welcome.scss */
+.contact_form {
+  margin-bottom: 60px;
+}
+
+/* line 342, E:/dev/git/mod-picker/mod-picker/app/assets/stylesheets/welcome.scss */
+.contact_input_box {
+  background: none repeat scroll 0 0 transparent;
+  border: 1px solid #666;
+  border-radius: 30px;
+  color: #fff;
+  height: auto;
+  margin-bottom: 30px;
+  padding: 15px;
+  resize: none;
+}
+
+/* line 352, E:/dev/git/mod-picker/mod-picker/app/assets/stylesheets/welcome.scss */
+.contact_button {
+  border-radius: 30px;
+  font-size: 18px;
+  height: auto;
+  padding: 10px 25px;
+}
+
+/* line 358, E:/dev/git/mod-picker/mod-picker/app/assets/stylesheets/welcome.scss */
+.contact_button:focus, .contact_button:active:focus, .contact_button.active:focus {
+  outline: medium none;
+  outline-offset: -2px;
+}
