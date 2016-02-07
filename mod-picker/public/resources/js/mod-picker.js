@@ -24,6 +24,10 @@ var app = angular.module('modPicker', [
                 templateUrl: '/resources/partials/mod.html',
                 controller: 'modController'
             })
+            .when('/submitMod', {
+                templateUrl: '/resources/partials/submitMod.html',
+                controller: 'submitModController'
+            })
             .otherwise({
                 redirectTo: '/'
             });
@@ -50,6 +54,29 @@ var app = angular.module('modPicker', [
             controller: 'loaderController'
         }
 })
+.controller('loaderController', function ($scope) {
+    var diameter = $scope.size || 100;
+    document.getElementById('loader').style.width = diameter+'px';
+    var cl = new CanvasLoader('loader');
+    cl.setColor('#c0a060'); // default is '#000000'
+    cl.setDiameter(diameter); // default is 40
+    cl.setDensity(64); // default is 40
+    cl.setRange(0.8); // default is 1.3
+    cl.setFPS(60); // default is 24
+
+    if($scope.condition) {
+        cl.show();
+    }
+
+    $scope.$watch('condition', function(newValue) {
+        if(newValue) {
+            cl.show();
+        } else {
+            cl.hide();
+        }
+    });
+})
+
 .directive('expandable', function () {
     return {
         restrict: 'E',
@@ -62,13 +89,37 @@ var app = angular.module('modPicker', [
         transclude: true
     }
 })
-
 .controller('expandableController', function($scope) {
     $scope.toggle = function () {
         $scope.expanded = !$scope.expanded;
     }
 })
 
+.directive('categoryPicker', function () {
+    return {
+        retrict: 'E',
+        templateUrl: '/resources/directives/categoryPicker.html',
+        controller: 'categoryPickerController',
+        scope: {
+            model: '=',
+            required: '='
+        }
+    }
+})
+.controller('categoryPickerController', function ($scope, backend) {
+        backend.retrievePrimaryCategory().then(function (data) {
+            $scope.mainCategories = data;
+            $scope.loading = false;
+        });
+
+        $scope.$watch('model.mainCategoryId', function (mainCategoryId) {
+            if(mainCategoryId) {
+                backend.retrieveSecondaryCategory(mainCategoryId).then(function (data) {
+                    $scope.subCategories = data;
+                })
+            }
+        });
+})
 
 
 .controller('searchInputController', function ($scope, $location) {
@@ -81,29 +132,6 @@ var app = angular.module('modPicker', [
             $scope.$apply();
         }, 1000);
     }
-})
-
-.controller('loaderController', function ($scope) {
-        var diameter = $scope.size || 100;
-        document.getElementById('loader').style.width = diameter+'px';
-        var cl = new CanvasLoader('loader');
-        cl.setColor('#c0a060'); // default is '#000000'
-        cl.setDiameter(diameter); // default is 40
-        cl.setDensity(64); // default is 40
-        cl.setRange(0.8); // default is 1.3
-        cl.setFPS(60); // default is 24
-
-        if($scope.condition) {
-            cl.show();
-        }
-
-        $scope.$watch('condition', function(newValue) {
-            if(newValue) {
-                cl.show();
-            } else {
-                cl.hide();
-            }
-        });
 })
 
 .controller('browseController', function($scope, $q, backend) {
@@ -148,6 +176,22 @@ var app = angular.module('modPicker', [
         $scope.processSearch = processSearch;
 })
 
+.controller('submitModController', function ($scope, backend) {
+
+        $scope.submit = function () {
+            if($scope.submitModForm.$valid) {
+                var primaryCategoryId = $scope.primaryCategory.subCategoryId || $scope.primaryCategory.mainCategoryId;
+                var secondaryCategoryId = $scope.secondaryCategory && ($scope.secondaryCategory.subCategoryId || $scope.secondaryCategory.mainCategoryId);
+                alert('data that would be sent to the server now' +
+                    '\nUrl: ' + $scope.url +
+                    '\nName: ' + $scope.name +
+                    '\nPrimaryCategoryId: ' + primaryCategoryId +
+                    (secondaryCategoryId ? '\nSecondaryCategoryId: ' + secondaryCategoryId : ''));
+                window.location = '#/browse';
+            }
+        }
+})
+
 .factory('backend', function ($q, $http) {
 
         //Constant to be flexible in the future. Us as prefix for ALL requests
@@ -171,6 +215,8 @@ var app = angular.module('modPicker', [
 
             var returnData = [];
 
+            var async = false;
+
             switch(location) {
                 case '/search':
                     if (additionalParam && additionalParam.name) {
@@ -183,11 +229,25 @@ var app = angular.module('modPicker', [
                         });
                     }
                     break;
+
+                case '/category':
+                    async = true;
+                    retrieve('/categories').then(function (data) {
+                        data.forEach(function(category) {
+                            if(additionalParam === 'primary' ? !category.parent_id : category.parent_id == additionalParam) {
+                                returnData.push(category);
+                            }
+                        });
+                        currentPromise.resolve(returnData);
+                    });
             }
-            //I currently work with Timeout to give it the feel of needing to load stuff from the server
-            setTimeout(function () {
-                currentPromise.resolve(returnData);
-            }, 1000);
+
+            if(!async) {
+                //I currently work with Timeout to give it the feel of needing to load stuff from the server
+                setTimeout(function () {
+                    currentPromise.resolve(returnData);
+                }, 1000);
+            }
 
             return currentPromise.promise;
         }
@@ -204,8 +264,11 @@ var app = angular.module('modPicker', [
                 //not implemented in the Backend yet
                 return mockRetrieve('/search', searchParams);
             },
-            retrieveUpdateRanges: function() {
-                return mockRetrieve('/updateRanges');
+            retrievePrimaryCategory: function() {
+                return mockRetrieve('/category', 'primary');
+            },
+            retrieveSecondaryCategory: function(primaryCategoryId) {
+                return mockRetrieve('/category', primaryCategoryId);
             }
         }
 });
