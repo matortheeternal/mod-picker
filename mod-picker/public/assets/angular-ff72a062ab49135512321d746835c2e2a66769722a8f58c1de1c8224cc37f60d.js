@@ -1,45 +1,48 @@
+/**
+ * Created by Mator on 2/7/2016.
+ */
 //everything in one file currently 'cause I'm to lazy to implement a merging tool or add a script tag for each separated
 //module. Should be changed when the Filesize is way to heavy (let's say 500 lines).
 
 var app = angular.module('modPicker', [
-    'ngRoute'
-])
+        'ngRoute'
+    ])
 
-.config(['$routeProvider',
-    function($routeProvider){
-        $routeProvider.
-            when('/search', {
-                templateUrl: '/resources/partials/search.html',
-                controller: 'searchController',
-                reloadOnSearch: false
-            })
-            .when('/browse', {
-                templateUrl: '/resources/partials/browse.html',
-                controller: 'browseController'
-            })
-            .when('/', {
-                templateUrl: '/resources/partials/home.html'
-            })
-            .when('/mod/:modId', {
-                templateUrl: '/resources/partials/mod.html',
-                controller: 'modController'
-            })
-            .otherwise({
-                redirectTo: '/'
-            });
-}])
+    .config(['$routeProvider',
+        function($routeProvider){
+            $routeProvider.
+                when('/search', {
+                    templateUrl: '/resources/partials/search.html',
+                    controller: 'searchController',
+                    reloadOnSearch: false
+                })
+                .when('/browse', {
+                    templateUrl: '/resources/partials/browse.html',
+                    controller: 'browseController'
+                })
+                .when('/', {
+                    templateUrl: '/resources/partials/home.html'
+                })
+                .when('/mod/:modId', {
+                    templateUrl: '/resources/partials/mod.html',
+                    controller: 'modController'
+                })
+                .otherwise({
+                    redirectTo: '/'
+                });
+        }])
 
-.directive('modList', function(){
-    return {
-        restrict: 'E',
-        templateUrl: '/resources/directives/modList.html',
-        scope: {
-          data: '='
+    .directive('modList', function(){
+        return {
+            restrict: 'E',
+            templateUrl: '/resources/directives/modList.html',
+            scope: {
+                data: '='
+            }
         }
-    }
-})
+    })
 
-.directive('loader', function() {
+    .directive('loader', function() {
         return {
             restrict: 'E',
             templateUrl: '/resources/directives/loader.html',
@@ -49,41 +52,41 @@ var app = angular.module('modPicker', [
             },
             controller: 'loaderController'
         }
-})
-.directive('expandable', function () {
-    return {
-        restrict: 'E',
-        templateUrl: '/resources/directives/expandable.html',
-        controller: 'expandableController',
-        scope: {
-            expanded: '=',
-            title: '='
-        },
-        transclude: true
-    }
-})
+    })
+    .directive('expandable', function () {
+        return {
+            restrict: 'E',
+            templateUrl: '/resources/directives/expandable.html',
+            controller: 'expandableController',
+            scope: {
+                expanded: '=',
+                title: '='
+            },
+            transclude: true
+        }
+    })
 
-.controller('expandableController', function($scope) {
-    $scope.toggle = function () {
-        $scope.expanded = !$scope.expanded;
-    }
-})
+    .controller('expandableController', function($scope) {
+        $scope.toggle = function () {
+            $scope.expanded = !$scope.expanded;
+        }
+    })
 
 
 
-.controller('searchInputController', function ($scope, $location) {
-    $scope.loading = false;
-    $scope.processSearch = function () {
-        $scope.loading = true;
-        //$location.search('s', $scope.search.name);
-        setTimeout(function () {
-            $scope.loading = false;
-            $scope.$apply();
-        }, 1000);
-    }
-})
+    .controller('searchInputController', function ($scope, $location) {
+        $scope.loading = false;
+        $scope.processSearch = function () {
+            $scope.loading = true;
+            //$location.search('s', $scope.search.name);
+            setTimeout(function () {
+                $scope.loading = false;
+                $scope.$apply();
+            }, 1000);
+        }
+    })
 
-.controller('loaderController', function ($scope) {
+    .controller('loaderController', function ($scope) {
         var diameter = $scope.size || 100;
         document.getElementById('loader').style.width = diameter+'px';
         var cl = new CanvasLoader('loader');
@@ -104,25 +107,25 @@ var app = angular.module('modPicker', [
                 cl.hide();
             }
         });
-})
+    })
 
-.controller('browseController', function($scope, $q, backend) {
+    .controller('browseController', function($scope, $q, backend) {
         $scope.loading = true;
         backend.retrieveMods().then(function(data) {
             $scope.mods = data;
             $scope.loading = false;
         });
-})
+    })
 
-.controller('modController', function($scope, $q, $routeParams, backend){
+    .controller('modController', function($scope, $q, $routeParams, backend){
         $scope.loading = true;
         backend.retrieveMod($routeParams.modId).then(function (data) {
             $scope.loading = false;
             $scope.mod = data;
         });
-})
+    })
 
-.controller('searchController', function($scope, $q, backend, $location){
+    .controller('searchController', function($scope, $q, backend, $location){
         $scope.search = {};
 
         //TODO: make the search parameter shorter, similar to imgur URLs. -> implement two way hashing
@@ -146,9 +149,9 @@ var app = angular.module('modPicker', [
             });
         }
         $scope.processSearch = processSearch;
-})
+    })
 
-.factory('backend', function ($q, $http) {
+    .factory('backend', function ($q, $http) {
 
         //Constant to be flexible in the future. Us as prefix for ALL requests
         var BASE_LOCATION = '';
@@ -208,4 +211,4 @@ var app = angular.module('modPicker', [
                 return mockRetrieve('/updateRanges');
             }
         }
-});
+    });

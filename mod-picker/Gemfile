@@ -5,8 +5,6 @@ source 'https://rubygems.org'
 gem 'rails', '4.2.5'
 # Using mysql database for active record
 gem 'mysql2', '~> 0.3.20'
-# Use older version of sprockets because it's less buggy
-gem 'sprockets-rails', '2.3.3'
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 5.0'
 # Use Uglifier as compressor for JavaScript assets

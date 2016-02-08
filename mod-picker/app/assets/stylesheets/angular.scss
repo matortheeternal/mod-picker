@@ -2,7 +2,7 @@
 
 header {
     background-color: #555;
-    background-image: url("/resources/images/whiterun.jpg");
+    background-image: url(image_path("whiterun.jpg"));
     background-repeat: no-repeat;
     -webkit-background-size: cover;
     -moz-background-size: cover;

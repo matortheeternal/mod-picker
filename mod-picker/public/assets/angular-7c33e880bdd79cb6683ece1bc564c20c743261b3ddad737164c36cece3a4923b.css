@@ -1,0 +1,594 @@
+/* header */
+/* line 4, E:/dev/git/mod-picker/mod-picker/app/assets/stylesheets/angular.scss */
+header {
+  background-color: #555;
+  background-image: url("/assets/whiterun-d05d037f1440328daa2553dc96fba881d4b3fa2a5817c54a26c30ddc8b1afc2e.jpg");
+  background-repeat: no-repeat;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  height: 192px;
+}
+
+/* line 15, E:/dev/git/mod-picker/mod-picker/app/assets/stylesheets/angular.scss */
+.header {
+  max-width: 1220px;
+  width: 100%;
+  margin: 0 auto;
+  height: 50px;
+  display: table;
+  font-size: 11px;
+  padding-top: 60px;
+  padding-bottom: 60px;
+  position: relative;
+}
+
+/* line 27, E:/dev/git/mod-picker/mod-picker/app/assets/stylesheets/angular.scss */
+h1 {
+  color: #C0A060;
+  font-size: 36px;
+  font-weight: 600;
+  padding: 0;
+  margin: 0;
+}
+
+/* line 35, E:/dev/git/mod-picker/mod-picker/app/assets/stylesheets/angular.scss */
+h1:hover {
+  color: #DBC393;
+}
+
+/* line 39, E:/dev/git/mod-picker/mod-picker/app/assets/stylesheets/angular.scss */
+.nav-controls {
+  width: 75%;
+  display: table-cell;
+  vertical-align: middle;
+  height: 44px;
+  margin: 0;
+  padding: 0;
+}
+
+/* line 48, E:/dev/git/mod-picker/mod-picker/app/assets/stylesheets/angular.scss */
+.logged-out-nav {
+  width: 240px;
+  background: rgba(255, 255, 255, 0.6);
+  text-align: right;
+  float: right;
+  margin: 0;
+  padding: 0 10px 0 10px;
+}
+
+/* line 57, E:/dev/git/mod-picker/mod-picker/app/assets/stylesheets/angular.scss */
+.logged-out-nav li {
+  display: inline;
+  padding: 0 0.5em;
+  border-right: 1px solid #44484A;
+  list-style: outside none none;
+}
+
+/* line 64, E:/dev/git/mod-picker/mod-picker/app/assets/stylesheets/angular.scss */
+.logged-out-nav a {
+  color: #252835;
+  font-weight: 700;
+}
+
+/* line 69, E:/dev/git/mod-picker/mod-picker/app/assets/stylesheets/angular.scss */
+#form_game_select {
+  display: inline-block;
+  width: 95px;
+  text-align: center;
+}
+
+/* line 75, E:/dev/git/mod-picker/mod-picker/app/assets/stylesheets/angular.scss */
+.game-selector {
+  position: absolute;
+  opacity: 0;
+  height: 42px;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+/* line 83, E:/dev/git/mod-picker/mod-picker/app/assets/stylesheets/angular.scss */
+.customSelect .customSelectInner {
+  padding-top: 5px;
+  padding-bottom: 5px;
+  padding-right: 5px;
+  line-height: 32px;
+  vertical-align: middle;
+  display: inline-block;
+}
+
+/* line 92, E:/dev/git/mod-picker/mod-picker/app/assets/stylesheets/angular.scss */
+.customSelect {
+  display: inline-block;
+  font-weight: 700;
+  padding-left: 32px;
+  background-size: 32px 32px;
+  background-position: 0 5px;
+  background-repeat: no-repeat;
+}
+
+/* line 101, E:/dev/git/mod-picker/mod-picker/app/assets/stylesheets/angular.scss */
+.icon-sk {
+  background-image: url("http://puu.sh/lyZdf.png");
+}
+
+/* box-sizing */
+/* line 107, E:/dev/git/mod-picker/mod-picker/app/assets/stylesheets/angular.scss */
+* {
+  box-sizing: border-box;
+}
+
+/* some basic css */
+/* line 112, E:/dev/git/mod-picker/mod-picker/app/assets/stylesheets/angular.scss */
+body {
+  font-family: 'Roboto', sans-serif;
+  margin: 0;
+  background-color: #fafae8;
+  background: linear-gradient(90deg, #eeeedd 50%, #fafae8 50%);
+}
+
+/* line 119, E:/dev/git/mod-picker/mod-picker/app/assets/stylesheets/angular.scss */
+.scaffold {
+  width: 1600px;
+  margin: auto;
+}
+
+/* line 124, E:/dev/git/mod-picker/mod-picker/app/assets/stylesheets/angular.scss */
+.hidden {
+  display: none;
+}
+
+/* line 128, E:/dev/git/mod-picker/mod-picker/app/assets/stylesheets/angular.scss */
+input[type="checkbox"] {
+  margin: 0;
+  padding: 0;
+  margin-right: 4px;
+}
+
+/* line 134, E:/dev/git/mod-picker/mod-picker/app/assets/stylesheets/angular.scss */
+.field input[type="text"] {
+  width: 200px;
+}
+
+/* line 138, E:/dev/git/mod-picker/mod-picker/app/assets/stylesheets/angular.scss */
+.field input[type="email"] {
+  width: 200px;
+}
+
+/* line 142, E:/dev/git/mod-picker/mod-picker/app/assets/stylesheets/angular.scss */
+.field input[type="password"] {
+  width: 200px;
+}
+
+/* clearfix */
+/* line 147, E:/dev/git/mod-picker/mod-picker/app/assets/stylesheets/angular.scss */
+.clearfix:before,
+.clearfix:after {
+  content: " ";
+  /* 1 */
+  display: table;
+  /* 2 */
+}
+
+/* line 153, E:/dev/git/mod-picker/mod-picker/app/assets/stylesheets/angular.scss */
+.clearfix:after {
+  clear: both;
+}
+
+/**
+ * For IE 6/7 only
+ * Include this rule to trigger hasLayout and contain floats.
+ */
+/* line 161, E:/dev/git/mod-picker/mod-picker/app/assets/stylesheets/angular.scss */
+.clearfix {
+  *zoom: 1;
+}
+
+/* url styling */
+/* line 166, E:/dev/git/mod-picker/mod-picker/app/assets/stylesheets/angular.scss */
+a {
+  color: #205098;
+  text-decoration: none;
+}
+
+/* line 171, E:/dev/git/mod-picker/mod-picker/app/assets/stylesheets/angular.scss */
+a.strong {
+  font-weight: 600;
+}
+
+/* line 175, E:/dev/git/mod-picker/mod-picker/app/assets/stylesheets/angular.scss */
+a:hover {
+  color: #508BDA;
+}
+
+/* css for navbar */
+/* line 181, E:/dev/git/mod-picker/mod-picker/app/assets/stylesheets/angular.scss */
+nav {
+  display: block;
+  background-color: #342F2A;
+  white-space: nowrap;
+}
+
+/* line 187, E:/dev/git/mod-picker/mod-picker/app/assets/stylesheets/angular.scss */
+nav a {
+  border-left: 1px solid #44484A;
+  height: 60px;
+  padding: 12px 12px 16px;
+  color: #EEE;
+  display: block;
+  float: left;
+}
+
+/* line 196, E:/dev/git/mod-picker/mod-picker/app/assets/stylesheets/angular.scss */
+nav a:hover {
+  color: #EEE;
+  background-color: #48433F;
+}
+
+/* line 201, E:/dev/git/mod-picker/mod-picker/app/assets/stylesheets/angular.scss */
+nav a:last-child {
+  border-right: 1px solid #44484A;
+}
+
+/* line 205, E:/dev/git/mod-picker/mod-picker/app/assets/stylesheets/angular.scss */
+nav span {
+  text-transform: uppercase;
+  color: #C9A9A9;
+  font-weight: 700;
+  font-size: 10px;
+  display: block;
+}
+
+/* line 213, E:/dev/git/mod-picker/mod-picker/app/assets/stylesheets/angular.scss */
+.nav-wrapper {
+  position: relative;
+}
+
+/* line 217, E:/dev/git/mod-picker/mod-picker/app/assets/stylesheets/angular.scss */
+.primary-nav {
+  float: left;
+}
+
+/* line 221, E:/dev/git/mod-picker/mod-picker/app/assets/stylesheets/angular.scss */
+.secondary-nav {
+  float: right;
+  height: 60px;
+}
+
+/* line 226, E:/dev/git/mod-picker/mod-picker/app/assets/stylesheets/angular.scss */
+.search input {
+  height: 35px;
+  font-size: 13px;
+  margin: 10px 0 0;
+  padding: 0 8px;
+  border: 0 none;
+  -moz-appearance: none;
+  border-radius: 0;
+  display: block;
+  float: left;
+}
+
+/* line 238, E:/dev/git/mod-picker/mod-picker/app/assets/stylesheets/angular.scss */
+.loadingButtonContainer {
+  float: left;
+  width: 74px;
+}
+
+/* line 243, E:/dev/git/mod-picker/mod-picker/app/assets/stylesheets/angular.scss */
+.search #loader {
+  margin-top: 10px;
+  margin-left: 20px;
+}
+
+/* line 248, E:/dev/git/mod-picker/mod-picker/app/assets/stylesheets/angular.scss */
+.search {
+  float: right;
+}
+
+/* search field */
+/* line 253, E:/dev/git/mod-picker/mod-picker/app/assets/stylesheets/angular.scss */
+.search-field {
+  width: 200px;
+  height: 35px;
+  font-size: 13px;
+  margin: 10px 0 0;
+  padding: 0 8px;
+  border: 0 none;
+  -moz-appearance: none;
+  border-radius: 0;
+}
+
+/* line 264, E:/dev/git/mod-picker/mod-picker/app/assets/stylesheets/angular.scss */
+.btn {
+  width: 74px;
+  display: inline;
+  padding: 0 12px;
+  padding-left: 0;
+  color: #FFF;
+  font-size: 12px;
+  text-align: center;
+  text-transform: uppercase;
+  border: 0;
+  border-radius: 0;
+  background: #C0A060 none repeat scroll 0 0;
+  cursor: pointer;
+}
+
+/* css for horizontal menus */
+/* used for login and registration items */
+/* line 281, E:/dev/git/mod-picker/mod-picker/app/assets/stylesheets/angular.scss */
+ul.hmenu {
+  list-style: none;
+  margin: 0 0 2em;
+  padding: 0;
+}
+
+/* line 287, E:/dev/git/mod-picker/mod-picker/app/assets/stylesheets/angular.scss */
+ul.hmenu li {
+  display: inline;
+}
+
+/* css for columns */
+/* used on browse mods page */
+/* line 293, E:/dev/git/mod-picker/mod-picker/app/assets/stylesheets/angular.scss */
+.page-container {
+  width: 1220px;
+  margin: auto;
+}
+
+/* line 298, E:/dev/git/mod-picker/mod-picker/app/assets/stylesheets/angular.scss */
+.left-column {
+  width: 250px;
+  padding: 46px 48px 46px 0;
+  display: table-cell;
+  vertical-align: top;
+  background-color: #eeeedd;
+  border-right: 1px solid #DADADA;
+}
+
+/* line 307, E:/dev/git/mod-picker/mod-picker/app/assets/stylesheets/angular.scss */
+.right-column {
+  width: 970px;
+  padding: 46px 0 46px 48px;
+  display: table-cell;
+  vertical-align: top;
+  background-color: #fafae8;
+}
+
+/* line 315, E:/dev/git/mod-picker/mod-picker/app/assets/stylesheets/angular.scss */
+h2 {
+  padding: 0;
+  margin: 0;
+  font-size: 24px;
+  font-weight: 300;
+  border-bottom: 1px solid #CACACA;
+  padding-bottom: 4px;
+  margin-bottom: 18px;
+}
+
+/* css for expandable sections */
+/* used on user profile page */
+/* line 327, E:/dev/git/mod-picker/mod-picker/app/assets/stylesheets/angular.scss */
+.expandable-table {
+  margin: auto;
+  width: 100%;
+  border: 1px solid #000;
+}
+
+/* line 333, E:/dev/git/mod-picker/mod-picker/app/assets/stylesheets/angular.scss */
+.expandable-table td {
+  border-left: 0;
+  /* temporary css because of global table css */
+}
+
+/* line 337, E:/dev/git/mod-picker/mod-picker/app/assets/stylesheets/angular.scss */
+.section-header {
+  border-bottom: 1px solid #000;
+  border-top: 1px solid #000;
+  background-color: #555;
+  font-size: 20px;
+  color: #FFF;
+  cursor: pointer;
+  padding: 8px;
+}
+
+/* line 347, E:/dev/git/mod-picker/mod-picker/app/assets/stylesheets/angular.scss */
+.section-header:hover {
+  background-color: #686868;
+}
+
+/* line 351, E:/dev/git/mod-picker/mod-picker/app/assets/stylesheets/angular.scss */
+.section-hidden {
+  display: none;
+}
+
+/* line 355, E:/dev/git/mod-picker/mod-picker/app/assets/stylesheets/angular.scss */
+.section-visible {
+  display: block;
+  padding: 10px;
+}
+
+/* line 360, E:/dev/git/mod-picker/mod-picker/app/assets/stylesheets/angular.scss */
+.section-contents {
+  background-color: #FFF;
+  margin-bottom: 10px;
+  padding: 0;
+}
+
+/* css for user profile page */
+/* line 367, E:/dev/git/mod-picker/mod-picker/app/assets/stylesheets/angular.scss */
+.user-title {
+  font-size: 12px;
+  color: #555;
+}
+
+/* line 372, E:/dev/git/mod-picker/mod-picker/app/assets/stylesheets/angular.scss */
+.avatar-wrapper {
+  background-color: #FFF;
+  box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.15);
+  max-width: 200px !important;
+  max-height: 200px !important;
+  border: 1px solid #DDD;
+  padding: 3px;
+  text-align: center;
+  display: inline-block;
+}
+
+/* line 383, E:/dev/git/mod-picker/mod-picker/app/assets/stylesheets/angular.scss */
+.group-banned {
+  color: #999;
+}
+
+/* line 387, E:/dev/git/mod-picker/mod-picker/app/assets/stylesheets/angular.scss */
+.group-user {
+  color: #080;
+  font-weight: 600;
+}
+
+/* line 392, E:/dev/git/mod-picker/mod-picker/app/assets/stylesheets/angular.scss */
+.group-author {
+  color: #F70;
+  font-weight: 600;
+}
+
+/* line 397, E:/dev/git/mod-picker/mod-picker/app/assets/stylesheets/angular.scss */
+.group-vip {
+  color: #508;
+  font-weight: 600;
+}
+
+/* line 402, E:/dev/git/mod-picker/mod-picker/app/assets/stylesheets/angular.scss */
+.group-moderator {
+  color: #008;
+  font-weight: 600;
+}
+
+/* line 407, E:/dev/git/mod-picker/mod-picker/app/assets/stylesheets/angular.scss */
+.group-admin {
+  color: #800;
+  font-weight: 600;
+}
+
+/* css for attributes tables */
+/* used on user profile page */
+/* line 414, E:/dev/git/mod-picker/mod-picker/app/assets/stylesheets/angular.scss */
+.attributes-table {
+  border: 1px solid black;
+  margin: auto;
+}
+
+/* line 419, E:/dev/git/mod-picker/mod-picker/app/assets/stylesheets/angular.scss */
+.attributes-table td th {
+  border: 0px;
+  font-size: 12px;
+}
+
+/* css for vcards */
+/* used on user profile page */
+/* line 426, E:/dev/git/mod-picker/mod-picker/app/assets/stylesheets/angular.scss */
+.vcard-stats {
+  margin-bottom: 10px;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  text-align: center;
+  border-top: 1px solid #EEE;
+  border-bottom: 1px solid #EEE;
+}
+
+/* line 435, E:/dev/git/mod-picker/mod-picker/app/assets/stylesheets/angular.scss */
+.vcard-stat {
+  float: left;
+  width: 25%;
+  font-size: 11px;
+  text-transform: capitalize;
+}
+
+/* line 442, E:/dev/git/mod-picker/mod-picker/app/assets/stylesheets/angular.scss */
+.vcard-stat-count {
+  display: block;
+  font-size: 28px;
+  font-weight: bold;
+  line-height: 1;
+}
+
+/* line 449, E:/dev/git/mod-picker/mod-picker/app/assets/stylesheets/angular.scss */
+.text-muted {
+  color: #767676;
+}
+
+/* css for filters */
+/* line 455, E:/dev/git/mod-picker/mod-picker/app/assets/stylesheets/angular.scss */
+.filter-list {
+  background-color: #FCFCE2;
+  padding: 8px;
+  border: 1px solid #CACACA;
+  margin: 0;
+  font-size: 12px;
+}
+
+/* line 463, E:/dev/git/mod-picker/mod-picker/app/assets/stylesheets/angular.scss */
+.filter-list li {
+  list-style: outside none none;
+  padding: 0;
+}
+
+/* line 468, E:/dev/git/mod-picker/mod-picker/app/assets/stylesheets/angular.scss */
+.half-box {
+  width: 45%;
+  display: inline-block;
+}
+
+/* line 473, E:/dev/git/mod-picker/mod-picker/app/assets/stylesheets/angular.scss */
+.left-column h4 {
+  text-transform: uppercase;
+  color: #7D7F8E;
+  margin-bottom: 6px;
+  padding: 0;
+  font-size: 12px;
+}
+
+/* line 481, E:/dev/git/mod-picker/mod-picker/app/assets/stylesheets/angular.scss */
+.left-column h3 {
+  font-weight: 700;
+  margin-bottom: 8px;
+  padding: 0;
+  font-size: 14px;
+  color: #665b50;
+  /*#342f2a;*/
+}
+
+/* css for search results */
+/* line 491, E:/dev/git/mod-picker/mod-picker/app/assets/stylesheets/angular.scss */
+.right-column table {
+  border-collapse: collapse;
+  width: 100%;
+  font-family: Arial;
+}
+
+/* line 497, E:/dev/git/mod-picker/mod-picker/app/assets/stylesheets/angular.scss */
+.right-column th {
+  margin: 0;
+  font-size: 10.5px;
+  padding: 0.5em 1em;
+  text-align: left;
+}
+
+/* line 504, E:/dev/git/mod-picker/mod-picker/app/assets/stylesheets/angular.scss */
+.right-column td {
+  border-width: 0 0 0 1px;
+  font-size: 12px;
+  margin: 0;
+  overflow: visible;
+  padding: 0.5em 1em;
+}
+
+/* line 512, E:/dev/git/mod-picker/mod-picker/app/assets/stylesheets/angular.scss */
+.right-column tbody tr:nth-child(odd) {
+  background-color: #eeeedd;
+}
+
+/* line 516, E:/dev/git/mod-picker/mod-picker/app/assets/stylesheets/angular.scss */
+.right-column tbody tr:nth-child(even) {
+  background-color: #fafae8;
+}
