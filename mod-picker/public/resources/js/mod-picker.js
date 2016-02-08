@@ -117,6 +117,8 @@ var app = angular.module('modPicker', [
                 backend.retrieveSecondaryCategory(mainCategoryId).then(function (data) {
                     $scope.subCategories = data;
                 })
+            } else {
+                $scope.subCategories = undefined;
             }
         });
 })
