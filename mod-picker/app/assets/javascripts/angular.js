@@ -1,6 +1,3 @@
-/**
- * Created by Mator on 2/7/2016.
- */
 //everything in one file currently 'cause I'm to lazy to implement a merging tool or add a script tag for each separated
 //module. Should be changed when the Filesize is way to heavy (let's say 500 lines).
 
