@@ -63,4 +63,13 @@ describe User do
     expect(user.errors[:username]).to include("has already been taken")
   end
 
+  it "User should be created with user_level of :user by default" do
+    user = User.new(
+      username: "Shinobu",
+      email: "kissshot@mail.com",
+      password: "Thepaswordisnil",
+      )
+
+    expect(user.user_level.to_sym).to eq :user
+  end
 end
