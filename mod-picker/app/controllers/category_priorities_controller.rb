@@ -73,7 +73,7 @@ class CategoryPrioritiesController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_category_priority
-      @category_priority = CategoryPriority.find(params[:id])
+      @category_priority = CategoryPriority.find_by(dominant_id: params[:dominant_id], recessive_id: params[:recessive_id])
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

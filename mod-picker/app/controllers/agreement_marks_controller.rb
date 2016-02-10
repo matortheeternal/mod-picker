@@ -73,7 +73,7 @@ class AgreementMarksController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_agreement_mark
-      @agreement_mark = AgreementMark.find(params[:id])
+      @agreement_mark = AgreementMark.find_by(incorrect_note_id: params[:incorrect_note_id], submitted_by: params[:submitted_by])
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

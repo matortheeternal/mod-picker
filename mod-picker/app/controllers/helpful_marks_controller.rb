@@ -73,7 +73,7 @@ class HelpfulMarksController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_helpful_mark
-      @helpful_mark = HelpfulMark.find(params[:id])
+      @helpful_mark = HelpfulMark.find_by(submitted_by: params[:submitted_by], helpfulable_id: params[:helpfulable_id], helpfulable_type: params[:helpfulable_type])
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
