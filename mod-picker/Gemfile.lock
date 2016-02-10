@@ -255,6 +255,7 @@ DEPENDENCIES
   mailcatcher
   mysql2 (~> 0.3.20)
   native_enum
+  nokogiri
   rails (= 4.2.5)
   rspec-rails
   sass-rails (~> 5.0)

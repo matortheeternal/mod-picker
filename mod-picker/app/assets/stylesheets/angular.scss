@@ -515,3 +515,8 @@ h2 {
 .right-column tbody tr:nth-child(even) {
     background-color: #fafae8;
 }
+
+select.stealthy.ng-pristine {
+    opacity: 0.5;
+    filter: alpha(opacity=50);
+}

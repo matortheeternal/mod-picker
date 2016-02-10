@@ -27,38 +27,43 @@ bSeedINotes = true
 puts "\nSeeding games"
 
 gameSkyrim = Game.create(
-    short_name: "Skyrim",
+    display_name: "Skyrim",
     long_name: "The Elder Scrolls V: Skyrim",
     abbr_name: "sk",
     exe_name: "TESV.exe",
+    nexus_name: "skyrim",
     steam_app_ids: "72850"
 )
 gameOblivion = Game.create(
-    short_name: "Oblivion",
+    display_name: "Oblivion",
     long_name: "The Elder Scrolls IV: Oblivion",
     abbr_name: "ob",
     exe_name: "Oblivion.exe",
+    nexus_name: "oblivion",
     steam_app_ids: "22330,900883"
 )
 gameFallout4 = Game.create(
-    short_name: "Fallout43",
+    display_name: "Fallout 4",
     long_name: "Fallout 4",
     abbr_name: "fo4",
     exe_name: "Fallout4.exe",
+    nexus_name: "fallout4",
     steam_app_ids: "377160"
 )
 gameFalloutNV = Game.create(
-    short_name: "FalloutNV",
+    display_name: "Fallout NV",
     long_name: "Fallout: New Vegas",
     abbr_name: "fnv",
     exe_name: "FalloutNV.exe",
+    nexus_name: "newvegas",
     steam_app_ids: "22380,2028016"
 )
 gameFallout3 = Game.create(
-    short_name: "Fallout3",
+    display_name: "Fallout 3",
     long_name: "Fallout 3",
     abbr_name: "fo3",
     exe_name: "Fallout3.exe",
+    nexus_name: "fallout3",
     steam_app_ids: "22300,22370"
 )
 
