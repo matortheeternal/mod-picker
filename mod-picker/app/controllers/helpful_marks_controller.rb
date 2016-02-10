@@ -78,6 +78,6 @@ class HelpfulMarksController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def helpful_mark_params
-      params.require(:helpful_mark).permit(:review_id, :compatibility_note_id, :installation_note_id, :submitted_by, :helpful)
+      params.require(:helpful_mark).permit(:submitted_by, :helpful, :helpfulable_id, :helpfulable_type)
     end
 end
