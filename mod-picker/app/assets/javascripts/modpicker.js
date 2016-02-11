@@ -260,15 +260,6 @@ app.controller('categoryPickerController', function ($scope, backend) {
                 $scope.subCategories = undefined;
             }
         });
-})
-
-    $scope.$watch('model.mainCategoryId', function (mainCategoryId) {
-        if (mainCategoryId) {
-            backend.retrieveSecondaryCategory(mainCategoryId).then(function (data) {
-                $scope.subCategories = data;
-            })
-        }
-    });
 });
 
 
