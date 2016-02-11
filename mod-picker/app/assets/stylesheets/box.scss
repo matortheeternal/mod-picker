@@ -1,0 +1,94 @@
+html {
+  background: #342F2A;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Roboto', sans-serif;
+}
+
+.box-container {
+  text-align: center;
+}
+
+.box {
+  background-color: #eeeedd;
+  margin: 80px auto;
+  display: inline-block;
+  width: 400px;
+  box-shadow: 0px 5px 15px 8px rgba(0, 0, 0, 0.40);
+  border: 3px solid #C0A060;
+}
+
+.box-heading {
+  background-color: #fafae8;
+  font-size: 26px;
+  padding: 32px 32px 74px;
+  border-bottom: 1px solid #DADADA;
+  position: relative;
+}
+
+.box-content {
+  padding: 10px 20px 50px;
+}
+
+.padded-field {
+  padding-top: 10px;
+  margin: auto;
+  width: 85%;
+  text-align: left;
+}
+
+.note-text {
+  max-width: 350px;
+  font-size: 12.5px;
+  margin-bottom: 10px;
+}
+
+input[type=text] {
+  width: 100%;
+  margin-top: 5px;
+  font-size: 14px;
+  padding: 6px;
+}
+
+input[type=password] {
+  width: 100%;
+  margin-top: 5px;
+  font-size: 14px;
+  padding: 6px;
+}
+
+.right-span {
+  float: right;
+}
+
+input[type=submit] {
+  display: inline;
+  padding: 8px;
+  padding-right: 14px;
+  padding-left: 14px;
+  color: #FFF;
+  font-size: 14px;
+  text-align: center;
+  text-transform: uppercase;
+  border: 0;
+  border-radius: 0;
+  background-color: #C0A060;
+  cursor: pointer;
+}
+
+input[type=submit]:hover {
+  background-color: #A68A53;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.big-margin {
+  margin-top: 15px;
+}

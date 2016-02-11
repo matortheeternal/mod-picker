@@ -78,6 +78,6 @@ class LoverInfosController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def lover_info_params
-      params.require(:lover_info).permit(:id, :mod_id)
+      params.require(:lover_info).permit(:mod_id)
     end
 end
