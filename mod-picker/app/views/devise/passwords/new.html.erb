@@ -1,16 +1,22 @@
-<h2>Forgot your password?</h2>
+<div class="box-heading">
+  Forgot your password?
+</div>
 
-<%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post }) do |f| %>
-  <%= devise_error_messages! %>
+<div class="box-content">
+  <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post }) do |f| %>
+    <div class="padded-field note-text">
+      Enter the email address associated with your account and we'll send you password reset instructions.
+    </div>
 
-  <div class="field">
-    <%= f.label :username %><br />
-    <%= f.text_field :username %>
-  </div>
+    <%= devise_error_messages! %>
 
-  <div class="actions">
-    <%= f.submit "Send me reset password instructions" %>
-  </div>
-<% end %>
+    <div class="padded-field">
+      <%= f.label :email %><br />
+      <%= f.text_field :email %>
+    </div>
 
-<%= render "devise/shared/links" %>
+    <div class="padded-field text-center big-margin">
+      <%= f.submit "Reset Password" %>
+    </div>
+  <% end %>
+</div>
