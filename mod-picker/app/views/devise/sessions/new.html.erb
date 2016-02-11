@@ -10,7 +10,7 @@
     </div>
 
     <div class="padded-field">
-      <%= f.label :password %> <span class="right-span"><a href="/users/password/new">Don't remember?</a></span>
+      <%= f.label :password %> <span class="right-span"><%= link_to "Don't remember?", new_password_path(resource_name) %></span>
       <%= f.password_field :password, autocomplete: "off" %>
     </div>
 
@@ -30,6 +30,6 @@
   <% end %>
 
   <div class="padded-field text-center big-margin">
-    New here?  <a href="/users/sign_up">Register</a> an account!
+    New here?  <%= link_to 'Register', new_registration_path(resource_name) %> an account!
   </div>
 </div>
