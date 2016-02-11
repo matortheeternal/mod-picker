@@ -12,6 +12,7 @@ Rails.application.config.assets.precompile += %w(
 animate.css
 box.css
 themes/whiterun.css
+themes/darkwater.css
 bootstrap.min.css
 welcome.css
 angular.css
