@@ -1,8 +1,10 @@
+@import 'themes/whiterun.scss';
+
 /* header */
 
 header {
     background-color: #555;
-    background-image: url(image_path("whiterun.jpg"));
+    background-image: url($banner_image);
     background-repeat: no-repeat;
     -webkit-background-size: cover;
     -moz-background-size: cover;
@@ -24,7 +26,7 @@ header {
 }
 
 h1 {
-    color: #C0A060;
+    color: $action_color;
     font-size: 36px;
     font-weight: 600;
     padding: 0;
@@ -32,7 +34,7 @@ h1 {
 }
 
 h1:hover {
-    color: #DBC393;
+    color: $bright_action_color;
 }
 
 .nav-controls {
@@ -46,7 +48,7 @@ h1:hover {
 
 .logged-out-nav {
     width: 240px;
-    background: rgba(255, 255, 255, 0.6);
+    background: rgba($inverse_text_color, 0.6);
     text-align: right;
     float: right;
     margin: 0;
@@ -56,7 +58,7 @@ h1:hover {
 .logged-out-nav li {
     display: inline;
     padding: 0 0.5em;
-    border-right: 1px solid #44484A;
+    border-right: 1px solid $hard_border_color;
     list-style: outside none none;
 }
 
@@ -111,8 +113,8 @@ h1:hover {
 body {
     font-family: 'Roboto', sans-serif;
     margin: 0;
-    background-color: #fafae8;
-    background: linear-gradient(90deg, #eeeedd 50%, #fafae8 50%);
+    background-color: $primary_background;
+    background: linear-gradient(90deg, $secondary_background 50%, $primary_background 50%);
 }
 
 .scaffold {
@@ -163,7 +165,7 @@ input[type="checkbox"] {
 
 /* url styling */
 a {
-    color: #205098;
+    color: $link_color;
     text-decoration: none;
 }
 
@@ -172,19 +174,19 @@ a.strong {
 }
 
 a:hover {
-    color: #508BDA;
+    color: $link_hover_color;
 }
 
 /* css for navbar */
 
 nav {
     display: block;
-    background-color: #342F2A;
+    background-color: $bar_color;
     white-space: nowrap;
 }
 
 nav a {
-    border-left: 1px solid #44484A;
+    border-left: 1px solid $hard_border_color;
     height: 60px;
     padding: 12px 12px 16px;
     color: #EEE;
@@ -194,11 +196,11 @@ nav a {
 
 nav a:hover {
     color: #EEE;
-    background-color: #48433F;
+    background-color: $bar_highlight_color;
 }
 
 nav a:last-child {
-    border-right: 1px solid #44484A;
+    border-right: 1px solid $hard_border_color;
 }
 
 nav span {
@@ -265,13 +267,13 @@ nav span {
     display: inline;
     padding: 0 12px;
     padding-left: 0;
-    color: #FFF;
+    color: $inverse_text_color;
     font-size: 12px;
     text-align: center;
     text-transform: uppercase;
     border: 0;
     border-radius: 0;
-    background-color: #C0A060;
+    background-color: $action_color;
     cursor: pointer;
 }
 
@@ -299,8 +301,8 @@ ul.hmenu li {
     padding: 46px 48px 46px 0;
     display: table-cell;
     vertical-align: top;
-    background-color: #eeeedd;
-    border-right: 1px solid #DADADA;
+    background-color: $secondary_background;
+    border-right: 1px solid $soft_border_color;
 }
 
 .right-column {
@@ -308,7 +310,7 @@ ul.hmenu li {
     padding: 46px 0 46px 48px;
     display: table-cell;
     vertical-align: top;
-    background-color: #fafae8;
+    background-color: $primary_background;
 }
 
 h2 {
@@ -316,133 +318,9 @@ h2 {
     margin: 0;
     font-size: 24px;
     font-weight: 300;
-    border-bottom: 1px solid #CACACA;
+    border-bottom: 1px solid $border_color;
     padding-bottom: 4px;
     margin-bottom: 18px;
-}
-
-/* css for expandable sections */
-/* used on user profile page */
-.expandable-table {
-    margin: auto;
-    width: 100%;
-    border: 1px solid #000;
-}
-
-.expandable-table td {
-    border-left: 0; /* temporary css because of global table css */
-}
-
-.section-header {
-    border-bottom: 1px solid #000;
-    border-top: 1px solid #000;
-    background-color: #555;
-    font-size: 20px;
-    color: #FFF;
-    cursor: pointer;
-    padding: 8px;
-}
-
-.section-header:hover {
-    background-color: #686868;
-}
-
-.section-hidden {
-    display: none;
-}
-
-.section-visible {
-    display: block;
-    padding: 10px;
-}
-
-.section-contents {
-    background-color: #FFF;
-    margin-bottom: 10px;
-    padding: 0;
-}
-
-/* css for user profile page */
-.user-title {
-    font-size: 12px;
-    color: #555;
-}
-
-.avatar-wrapper {
-    background-color: #FFF;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
-    max-width: 200px !important;
-    max-height: 200px !important;
-    border: 1px solid #DDD;
-    padding: 3px;
-    text-align: center;
-    display: inline-block;
-}
-
-.group-banned {
-    color: #999;
-}
-
-.group-user {
-    color: #080;
-    font-weight: 600;
-}
-
-.group-author {
-    color: #F70;
-    font-weight: 600;
-}
-
-.group-vip {
-    color: #508;
-    font-weight: 600;
-}
-
-.group-moderator {
-    color: #008;
-    font-weight: 600;
-}
-
-.group-admin {
-    color: #800;
-    font-weight: 600;
-}
-
-/* css for attributes tables */
-/* used on user profile page */
-.attributes-table {
-    border: 1px solid black;
-    margin: auto;
-}
-
-.attributes-table td th {
-    border: 0;
-    font-size: 12px;
-}
-
-/* css for vcards */
-/* used on user profile page */
-.vcard-stats {
-    margin-bottom: 10px;
-    padding-top: 15px;
-    padding-bottom: 15px;
-    text-align: center;
-    border-top: 1px solid #EEE;
-    border-bottom: 1px solid #EEE;
-}
-
-.vcard-stat {
-    float: left;
-    width: 25%;
-    font-size: 11px;
-    text-transform: capitalize;
-}
-
-.vcard-stat-count {
-    display: block;
-    font-size: 28px;
-    font-weight: bold;
-    line-height: 1;
 }
 
 .text-muted {
@@ -452,9 +330,9 @@ h2 {
 /* css for filters */
 
 .filter-list {
-    background-color: #FCFCE2;
+    background-color: $background_highlight;
     padding: 8px;
-    border: 1px solid #CACACA;
+    border: 1px solid $border_color;
     margin: 0;
     font-size: 12px;
 }
@@ -469,20 +347,20 @@ h2 {
     display: inline-block;
 }
 
+.left-column h3 {
+  font-weight: 700;
+  margin-bottom: 8px;
+  padding: 0;
+  font-size: 14px;
+  color: $h3_color;
+}
+
 .left-column h4 {
     text-transform: uppercase;
-    color: #7D7F8E;
+    color: $h4_color;
     margin-bottom: 6px;
     padding: 0;
     font-size: 12px;
-}
-
-.left-column h3 {
-    font-weight: 700;
-    margin-bottom: 8px;
-    padding: 0;
-    font-size: 14px;
-    color: #665b50;/*#342f2a;*/
 }
 
 /* css for search results */
@@ -509,11 +387,11 @@ h2 {
 }
 
 .right-column tbody tr:nth-child(odd) {
-    background-color: #eeeedd;
+    background-color: $secondary_background;
 }
 
 .right-column tbody tr:nth-child(even) {
-    background-color: #fafae8;
+    background-color: $primary_background;
 }
 
 select.stealthy.ng-pristine {

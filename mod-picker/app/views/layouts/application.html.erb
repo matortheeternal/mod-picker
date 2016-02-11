@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <title>Mod Picker: Angular Preview</title>
-  <%= stylesheet_link_tag "angular" %>
+  <%= stylesheet_link_tag 'angular' %>
+  <%= stylesheet_link_tag 'themes/whiterun' %>
 </head>
 <body>
 <header>
@@ -76,9 +77,9 @@
 <%= yield %>
 
 <!-- defered load of scripts, which is way more performant for browsers -->
-<%= javascript_include_tag "angular.min" %>
-<%= javascript_include_tag "angular-route.min" %>
-<%= javascript_include_tag "heartcode-canvasloader-min" %>
-<%= javascript_include_tag "angular" %>
+<%= javascript_include_tag 'angular.min' %>
+<%= javascript_include_tag 'angular-route.min' %>
+<%= javascript_include_tag 'heartcode-canvasloader-min' %>
+<%= javascript_include_tag 'angular' %>
 </body>
 </html>
