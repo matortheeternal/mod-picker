@@ -1,11 +1,11 @@
 <div class="box-heading">
-  Login to Mod Picker
+  Sign in to Mod Picker
 </div>
 
 <div class="box-content">
   <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
     <div class="padded-field">
-      <p><%= f.label :login %><br />
+      <p><%= f.label :username %><br />
       <%= f.text_field :login %></p>
     </div>
 
