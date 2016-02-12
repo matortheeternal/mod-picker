@@ -13,6 +13,7 @@ animate.css
 box.css
 themes/whiterun.css
 themes/darkwater.css
+themes/blackreach.css
 bootstrap.min.css
 welcome.css
 angular.css
