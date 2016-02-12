@@ -1,4 +1,4 @@
-@import 'themes/whiterun.scss';
+@import 'themes/blackreach.scss';
 
 html {
   background: $bar_color;
@@ -10,6 +10,7 @@ html {
 
 body {
   font-family: 'Roboto', sans-serif;
+  color: $text_color;
 }
 
 .box-container {

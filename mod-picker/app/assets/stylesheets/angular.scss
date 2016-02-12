@@ -1,4 +1,4 @@
-@import 'themes/whiterun.scss';
+@import 'themes/blackreach.scss';
 
 /* header */
 
@@ -34,7 +34,7 @@ h1 {
 }
 
 h1:hover {
-    color: $primary_background;
+    color: $h2_color;
 }
 
 h2 {
@@ -205,13 +205,13 @@ nav a {
     border-left: 1px solid $hard_border_color;
     height: 60px;
     padding: 12px 12px 16px;
-    color: $inverse_text_color;
+    color: $bar_text_color;
     display: block;
     float: left;
 }
 
 nav a:hover {
-    color: $inverse_text_color;
+    color: $bar_text_color;
     background-color: $bar_highlight_color;
 }
 
@@ -283,7 +283,7 @@ nav span {
     display: inline;
     padding: 0 12px;
     padding-left: 0;
-    color: $inverse_text_color;
+    color: $action_text_color;
     font-size: 12px;
     text-align: center;
     text-transform: uppercase;
