@@ -11,6 +11,8 @@ Rails.application.config.assets.version = '1.0'
 Rails.application.config.assets.precompile += %w(
 animate.css
 box.css
+themes/whiterun.css
+themes/darkwater.css
 bootstrap.min.css
 welcome.css
 angular.css
