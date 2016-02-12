@@ -26,7 +26,7 @@ header {
 }
 
 h1 {
-    color: $action_color;
+    color: $h1_color;
     font-size: 36px;
     font-weight: 600;
     padding: 0;
@@ -34,7 +34,18 @@ h1 {
 }
 
 h1:hover {
-    color: $bright_action_color;
+    color: $primary_background;
+}
+
+h2 {
+  color: $h2_color;
+  padding: 0;
+  margin: 0;
+  font-size: 24px;
+  font-weight: 300;
+  border-bottom: 1px solid $border_color;
+  padding-bottom: 4px;
+  margin-bottom: 18px;
 }
 
 .nav-controls {
@@ -48,7 +59,7 @@ h1:hover {
 
 .logged-out-nav {
     width: 240px;
-    background: rgba($inverse_text_color, 0.6);
+    background: rgba($inverse_text_color, 0.7);
     text-align: right;
     float: right;
     margin: 0;
@@ -65,6 +76,10 @@ h1:hover {
 .logged-out-nav a {
     color: $text_color;
     font-weight: 700;
+}
+
+.logged-out-nav a:hover {
+  color: $link_hover_color_primary;
 }
 
 #form_game_select {
@@ -112,6 +127,7 @@ h1:hover {
 /* some basic css */
 body {
     font-family: 'Roboto', sans-serif;
+    color: $text_color;
     margin: 0;
     background-color: $primary_background;
     background: linear-gradient(90deg, $secondary_background 50%, $primary_background 50%);
@@ -174,7 +190,7 @@ a.strong {
 }
 
 a:hover {
-    color: $link_hover_color;
+    color: $link_hover_color_secondary;
 }
 
 /* css for navbar */
@@ -277,6 +293,10 @@ nav span {
     cursor: pointer;
 }
 
+.btn:hover {
+  background-color: $bright_action_color;
+}
+
 /* css for horizontal menus */
 /* used for login and registration items */
 ul.hmenu {
@@ -311,16 +331,6 @@ ul.hmenu li {
     display: table-cell;
     vertical-align: top;
     background-color: $primary_background;
-}
-
-h2 {
-    padding: 0;
-    margin: 0;
-    font-size: 24px;
-    font-weight: 300;
-    border-bottom: 1px solid $border_color;
-    padding-bottom: 4px;
-    margin-bottom: 18px;
 }
 
 .text-muted {
