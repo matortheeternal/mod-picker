@@ -38,14 +38,14 @@ h1:hover {
 }
 
 h2 {
-  color: $h2_color;
-  padding: 0;
-  margin: 0;
-  font-size: 24px;
-  font-weight: 300;
-  border-bottom: 1px solid $border_color;
-  padding-bottom: 4px;
-  margin-bottom: 18px;
+    color: $h2_color;
+    padding: 0;
+    margin: 0;
+    font-size: 24px;
+    font-weight: 300;
+    border-bottom: 1px solid $border_color;
+    padding-bottom: 4px;
+    margin-bottom: 18px;
 }
 
 .nav-controls {
@@ -79,7 +79,7 @@ h2 {
 }
 
 .logged-out-nav a:hover {
-  color: $link_hover_color_primary;
+    color: $link_hover_color_primary;
 }
 
 #form_game_select {
@@ -199,6 +199,7 @@ nav {
     display: block;
     background-color: $bar_color;
     white-space: nowrap;
+    border-bottom: 2px solid $soft_border_color;
 }
 
 nav a {
@@ -294,7 +295,7 @@ nav span {
 }
 
 .btn:hover {
-  background-color: $bright_action_color;
+    background-color: $bright_action_color;
 }
 
 /* css for horizontal menus */
@@ -358,11 +359,11 @@ ul.hmenu li {
 }
 
 .left-column h3 {
-  font-weight: 700;
-  margin-bottom: 8px;
-  padding: 0;
-  font-size: 14px;
-  color: $h3_color;
+    font-weight: 700;
+    margin-bottom: 8px;
+    padding: 0;
+    font-size: 14px;
+    color: $h3_color;
 }
 
 .left-column h4 {
