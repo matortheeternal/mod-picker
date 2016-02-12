@@ -17,7 +17,7 @@ bootstrap.min.css
 welcome.css
 angular.css
 style-responsive.css
-angular.js
+modpicker.js
 angular.min.js
 angular-route.min.js
 bootstrap.min.js

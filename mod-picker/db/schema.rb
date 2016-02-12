@@ -111,7 +111,7 @@ ActiveRecord::Schema.define(version: 20160208073835) do
   add_index "installation_notes", ["submitted_by"], name: "submitted_by", using: :btree
 
   create_table "lover_infos", force: :cascade do |t|
-    t.integer "mod_id", limit: 4
+    t.integer "mod_id", limit: 4, null: false
   end
 
   create_table "masters", force: :cascade do |t|
@@ -199,7 +199,7 @@ ActiveRecord::Schema.define(version: 20160208073835) do
     t.date    "created"
     t.date    "completed"
     t.text    "description",       limit: 65535
-    t.integer "game_id",           limit: 4
+    t.integer "game_id",           limit: 4,                                                        null: false
   end
 
   add_index "mod_lists", ["created_by"], name: "created_by", using: :btree
@@ -214,8 +214,8 @@ ActiveRecord::Schema.define(version: 20160208073835) do
   add_index "mod_stars", ["user_id"], name: "user_id", using: :btree
 
   create_table "mod_version_compatibility_notes", id: false, force: :cascade do |t|
-    t.integer "mod_version_id",        limit: 4
-    t.integer "compatibility_note_id", limit: 4
+    t.integer "mod_version_id",        limit: 4, null: false
+    t.integer "compatibility_note_id", limit: 4, null: false
   end
 
   add_index "mod_version_compatibility_notes", ["compatibility_note_id"], name: "fk_rails_29b33b572e", using: :btree
@@ -273,7 +273,7 @@ ActiveRecord::Schema.define(version: 20160208073835) do
     t.integer "articles_count",   limit: 2
     t.integer "nexus_category",   limit: 2
     t.text    "changelog",        limit: 65535
-    t.integer "mod_id",           limit: 4
+    t.integer "mod_id",           limit: 4,     null: false
     t.integer "game_id",          limit: 4
   end
 
@@ -343,30 +343,31 @@ ActiveRecord::Schema.define(version: 20160208073835) do
   add_index "reviews", ["submitted_by"], name: "submitted_by", using: :btree
 
   create_table "user_bios", force: :cascade do |t|
+    t.integer "user_id",        limit: 4
     t.string  "nexus_username", limit: 32
     t.boolean "nexus_verified"
     t.string  "lover_username", limit: 32
     t.boolean "lover_verified"
     t.string  "steam_username", limit: 32
     t.boolean "steam_verified"
-    t.integer "user_id",        limit: 4
   end
 
   add_index "user_bios", ["user_id"], name: "user_id", using: :btree
 
   create_table "user_reputations", force: :cascade do |t|
+    t.integer "user_id",            limit: 4
     t.float   "overall",            limit: 24
     t.float   "offset",             limit: 24
     t.float   "audiovisual_design", limit: 24
     t.float   "plugin_design",      limit: 24
     t.float   "utility_design",     limit: 24
     t.float   "script_design",      limit: 24
-    t.integer "user_id",            limit: 4
   end
 
   add_index "user_reputations", ["user_id"], name: "user_id", using: :btree
 
   create_table "user_settings", force: :cascade do |t|
+    t.integer "user_id",              limit: 4
     t.boolean "show_notifications"
     t.boolean "show_tooltips"
     t.boolean "email_notifications"
@@ -375,7 +376,6 @@ ActiveRecord::Schema.define(version: 20160208073835) do
     t.boolean "allow_nexus_mods"
     t.boolean "allow_lovers_lab"
     t.boolean "allow_steam_workshop"
-    t.integer "user_id",              limit: 4
     t.string  "timezone",             limit: 128
     t.string  "udate_format",         limit: 128
     t.string  "utime_format",         limit: 128
@@ -413,7 +413,7 @@ ActiveRecord::Schema.define(version: 20160208073835) do
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 
   create_table "workshop_infos", force: :cascade do |t|
-    t.integer "mod_id", limit: 4
+    t.integer "mod_id", limit: 4, null: false
   end
 
   add_foreign_key "agreement_marks", "incorrect_notes", name: "agreement_marks_ibfk_1"
@@ -469,6 +469,6 @@ ActiveRecord::Schema.define(version: 20160208073835) do
   add_foreign_key "user_bios", "users", name: "user_bios_ibfk_1"
   add_foreign_key "user_reputations", "users", name: "user_reputations_ibfk_1"
   add_foreign_key "user_settings", "users", name: "user_settings_ibfk_1"
-  add_foreign_key "users", "mod_lists", column: "active_mc_id", name: "users_ibfk_5"
-  add_foreign_key "users", "mod_lists", column: "active_ml_id", name: "users_ibfk_4"
+  add_foreign_key "users", "mod_lists", column: "active_mc_id", name: "users_ibfk_2"
+  add_foreign_key "users", "mod_lists", column: "active_ml_id", name: "users_ibfk_1"
 end
