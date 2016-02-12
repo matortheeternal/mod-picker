@@ -1,4 +1,4 @@
-@import 'themes/darkwater.scss';
+@import 'themes/whiterun.scss';
 
 html {
   background: $bar_color;
@@ -84,7 +84,7 @@ input[type=submit] {
 }
 
 input[type=submit]:hover {
-  background-color: $dark_action_color;
+  background-color: $bright_action_color;
 }
 
 .text-center {
