@@ -200,6 +200,7 @@ nav {
     background-color: $bar_color;
     white-space: nowrap;
     border-bottom: 2px solid $soft_border_color;
+    margin-bottom: 20px;
 }
 
 nav a {
@@ -408,4 +409,18 @@ ul.hmenu li {
 select.stealthy.ng-pristine {
     opacity: 0.5;
     filter: alpha(opacity=50);
+}
+
+.userGeneratedList .entry {
+    border: solid 2px #0a2439;
+    padding: 10px;
+    background-color: #1d1d20;
+}
+
+.expandableTitle {
+    font-size: 32px;
+}
+
+.expandableTitleDiv {
+    margin-bottom: 20px;
 }
