@@ -9,17 +9,17 @@ class Mod < ActiveRecord::Base
   scope :reviews, -> (reviews) { where(reviews_count: reviews) }
   scope :comments, -> (comments) { where(comments_count: comments) }
   scope :versions, -> (versions) { where(mod_versions_count: versions) }
-  scope :released, -> (released) { where(:nexus_info => {date_released: released} ) }
-  scope :updated, -> (updated) { where(:nexus_info => {date_updated: updated} ) }
-  scope :endorsements, -> (endorsements) { where(:nexus_info => {endorsements: endorsements} ) }
-  scope :tdl, -> (tdl) { where(:nexus_info => {total_downloads: tdl} ) }
-  scope :udl, -> (udl) { where(:nexus_info => {unique_downloads: udl} ) }
-  scope :views, -> (views) { where(:nexus_info => {views: views} ) }
-  scope :posts, -> (posts) { where(:nexus_info => {posts_count: posts} ) }
-  scope :videos, -> (videos) { where(:nexus_info => {videos_count: videos} ) }
-  scope :images, -> (images) { where(:nexus_info => {images_count: images} ) }
-  scope :files, -> (files) { where(:nexus_info => {files_count: files} ) }
-  scope :articles, -> (articles) { where(:nexus_info => {articles_count: articles} ) }
+  scope :released, -> (released) { where(:nexus_infos => {date_released: released} ) }
+  scope :updated, -> (updated) { where(:nexus_infos => {date_updated: updated} ) }
+  scope :endorsements, -> (endorsements) { where(:nexus_infos => {endorsements: endorsements} ) }
+  scope :tdl, -> (tdl) { where(:nexus_infos => {total_downloads: tdl} ) }
+  scope :udl, -> (udl) { where(:nexus_infos => {unique_downloads: udl} ) }
+  scope :views, -> (views) { where(:nexus_infos => {views: views} ) }
+  scope :posts, -> (posts) { where(:nexus_infos => {posts_count: posts} ) }
+  scope :videos, -> (videos) { where(:nexus_infos => {videos_count: videos} ) }
+  scope :images, -> (images) { where(:nexus_infos => {images_count: images} ) }
+  scope :files, -> (files) { where(:nexus_infos => {files_count: files} ) }
+  scope :articles, -> (articles) { where(:nexus_infos => {articles_count: articles} ) }
 
   belongs_to :game, :inverse_of => 'mods'
 
