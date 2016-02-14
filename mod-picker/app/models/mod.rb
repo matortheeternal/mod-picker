@@ -1,4 +1,26 @@
 class Mod < ActiveRecord::Base
+  include Filterable
+  
+  scope :search, -> (name) { where("name like ?", "#{search}%").or("aliases like ?", "#{search}") }
+  scope :adult, -> (has_adult_content) { where has_adult_content: adult }
+  scope :game, -> (game_id) { where game_id: game }
+  scope :category, -> { where(primary_category_id: category).or(secondary_category_id: category) }
+  scope :stars, -> { where(user_stars_count: stars) }
+  scope :reviews, -> { where(reviews_count: reviews) }
+  scope :comments, -> { where(comments_count: comments) }
+  scope :versions, -> { where(mod_versions_count: versions) }
+  scope :released, -> { where(nexus_info.date_released: released) }
+  scope :updated, -> { where(nexus_info.date_updated: updated) }
+  scope :endorsements, -> { where(nexus_info.endorsements: endorsements) }
+  scope :tdl, -> { where(nexus_info.total_downloads: tdl) }
+  scope :udl, -> { where(nexus_info.unique_downloads: udl) }
+  scope :views, -> { where(nexus_info.views: views) }
+  scope :posts, -> { where(nexus_info.posts: posts) }
+  scope :videos, -> { where(nexus_info.videos: videos) }
+  scope :images, -> { where(nexus_info.images: images) }
+  scope :files, -> { where(nexus_info.files: files) }
+  scope :articles, -> { where(nexus_info.articles: articles) }
+
   belongs_to :game, :inverse_of => 'mods'
 
   belongs_to :primary_category, :class_name => 'Category', :foreign_key => 'category_id', :inverse_of => 'primary_mods'
