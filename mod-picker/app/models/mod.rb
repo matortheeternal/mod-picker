@@ -1,25 +1,25 @@
 class Mod < ActiveRecord::Base
   include Filterable
-  
-  scope :search, -> (search) { where("name like ? OR aliases like ?", "#{search}%", "#{search}") }
-  scope :adult, -> (adult) { where has_adult_content: adult }
-  scope :game, -> (game) { where game_id: game }
-  scope :category, -> (category) { where("primary_category_id=? OR secondary_category_id=?", category, category) }
-  scope :stars, -> (stars) { where(user_stars_count: stars) }
-  scope :reviews, -> (reviews) { where(reviews_count: reviews) }
-  scope :comments, -> (comments) { where(comments_count: comments) }
-  scope :versions, -> (versions) { where(mod_versions_count: versions) }
-  scope :released, -> (released) { where(:nexus_infos => {date_released: released} ) }
-  scope :updated, -> (updated) { where(:nexus_infos => {date_updated: updated} ) }
-  scope :endorsements, -> (endorsements) { where(:nexus_infos => {endorsements: endorsements} ) }
-  scope :tdl, -> (tdl) { where(:nexus_infos => {total_downloads: tdl} ) }
-  scope :udl, -> (udl) { where(:nexus_infos => {unique_downloads: udl} ) }
-  scope :views, -> (views) { where(:nexus_infos => {views: views} ) }
-  scope :posts, -> (posts) { where(:nexus_infos => {posts_count: posts} ) }
-  scope :videos, -> (videos) { where(:nexus_infos => {videos_count: videos} ) }
-  scope :images, -> (images) { where(:nexus_infos => {images_count: images} ) }
-  scope :files, -> (files) { where(:nexus_infos => {files_count: files} ) }
-  scope :articles, -> (articles) { where(:nexus_infos => {articles_count: articles} ) }
+
+  scope :search, -> (search) { where("name like ? OR aliases like ?", "#{search}%", "#{search}%") }
+  scope :adult, -> (adult) { where(has_adult_content: adult) }
+  scope :game, -> (game) { where(game_id: game) }
+  scope :category, -> (category) { where("primary_category_id=? OR secondary_category_id=?", "#{category}%", "#{category}%") }
+  scope :stars, -> (low, high) { where(user_stars_count: (low..high)) }
+  scope :reviews, -> (low, high) { where(reviews_count: (low..high)) }
+  scope :comments, -> (low, high) { where(comments_count: (low..high)) }
+  scope :versions, -> (low, high) { where(mod_versions_count: (low..high)) }
+  scope :released, -> (low, high) { where(:nexus_infos => {date_released: (low..high)}) }
+  scope :updated, -> (low, high) { where(:nexus_infos => {date_updated: (low..high)} ) }
+  scope :endorsements, -> (low, high) { where(:nexus_infos => {endorsements: (low..high)} ) }
+  scope :tdl, -> (low, high) { where(:nexus_infos => {total_downloads: (low..high)} ) }
+  scope :udl, -> (low, high) { where(:nexus_infos => {unique_downloads: (low..high)} ) }
+  scope :views, -> (low, high) { where(:nexus_infos => {views: (low..high)} ) }
+  scope :posts, -> (low, high) { where(:nexus_infos => {posts_count: (low..high)} ) }
+  scope :videos, -> (low, high) { where(:nexus_infos => {videos_count: (low..high)} ) }
+  scope :images, -> (low, high) { where(:nexus_infos => {images_count: (low..high)} ) }
+  scope :files, -> (low, high) { where(:nexus_infos => {files_count: (low..high)} ) }
+  scope :articles, -> (low, high) { where(:nexus_infos => {articles_count: (low..high)} ) }
 
   belongs_to :game, :inverse_of => 'mods'
 
