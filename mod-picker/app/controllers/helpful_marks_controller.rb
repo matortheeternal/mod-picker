@@ -4,7 +4,7 @@ class HelpfulMarksController < ApplicationController
   # GET /helpful_marks
   # GET /helpful_marks.json
   def index
-    @helpful_marks = HelpfulMark.all
+    @helpful_marks = HelpfulMark.filter(filtering_params)
 
     respond_to do |format|
       format.html
@@ -74,6 +74,11 @@ class HelpfulMarksController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_helpful_mark
       @helpful_mark = HelpfulMark.find_by(submitted_by: params[:submitted_by], helpfulable_id: params[:helpfulable_id], helpfulable_type: params[:helpfulable_type])
+    end
+
+    # Params we allow filtering on
+    def filtering_params
+      params.slice(:by);
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

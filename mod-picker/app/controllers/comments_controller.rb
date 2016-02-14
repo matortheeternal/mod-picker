@@ -78,7 +78,7 @@ class CommentsController < ApplicationController
 
     # Params we allow filtering on
     def filtering_params
-      params.slice(:type, :target);
+      params.slice(:type, :target, :by);
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

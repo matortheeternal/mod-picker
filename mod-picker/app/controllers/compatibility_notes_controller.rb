@@ -4,7 +4,7 @@ class CompatibilityNotesController < ApplicationController
   # GET /compatibility_notes
   # GET /compatibility_notes.json
   def index
-    @compatibility_notes = CompatibilityNote.all
+    @compatibility_notes = CompatibilityNote.filter(filtering_params)
 
     respond_to do |format|
       format.html
@@ -74,6 +74,11 @@ class CompatibilityNotesController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_compatibility_note
       @compatibility_note = CompatibilityNote.find(params[:id])
+    end
+
+    # Params we allow filtering on
+    def filtering_params
+      params.slice(:by);
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

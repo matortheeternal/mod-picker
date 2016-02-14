@@ -78,7 +78,7 @@ class ReviewsController < ApplicationController
 
     # Params we allow filtering on
     def filtering_params
-      params.slice(:mod);
+      params.slice(:mod, :by);
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

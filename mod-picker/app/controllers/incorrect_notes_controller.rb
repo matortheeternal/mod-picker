@@ -4,7 +4,7 @@ class IncorrectNotesController < ApplicationController
   # GET /incorrect_notes
   # GET /incorrect_notes.json
   def index
-    @incorrect_notes = IncorrectNote.all
+    @incorrect_notes = IncorrectNote.filter(filtering_params)
 
     respond_to do |format|
       format.html
@@ -74,6 +74,11 @@ class IncorrectNotesController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_incorrect_note
       @incorrect_note = IncorrectNote.find(params[:id])
+    end
+
+    # Params we allow filtering on
+    def filtering_params
+      params.slice(:by);
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
