@@ -1,7 +1,11 @@
 class UserSetting < ActiveRecord::Base
+  include Filterable
+
   after_initialize :init
 
   belongs_to :user
+
+  scope :user, -> (id) { where(user_id: id) }
 
   def init
     self.show_notifications = true
