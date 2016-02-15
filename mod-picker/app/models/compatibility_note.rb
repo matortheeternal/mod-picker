@@ -2,6 +2,7 @@ class CompatibilityNote < ActiveRecord::Base
   include Filterable
 
   scope :by, -> (id) { where(submitted_by: id) }
+  scope :mod, -> (id) { joins(:mod_versions).where(:mod_versions => {mod_id: id}) }
 
   belongs_to :user, :foreign_key => 'submitted_by', :inverse_of => 'compatibility_notes'
 

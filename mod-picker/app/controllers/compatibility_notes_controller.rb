@@ -78,7 +78,7 @@ class CompatibilityNotesController < ApplicationController
 
     # Params we allow filtering on
     def filtering_params
-      params.slice(:by);
+      params.slice(:by, :mod);
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
