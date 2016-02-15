@@ -14,4 +14,13 @@ class InstallationNote < ActiveRecord::Base
 
   has_many :helpful_marks, :as => 'helpfulable'
   has_many :incorrect_notes, :as => 'correctable'
+
+
+  def as_json(options={})
+    super(:include => {
+        :mod_version => {
+            :except => [:id, :released, :obsolete, :dangerous]
+        }
+    })
+  end
 end
