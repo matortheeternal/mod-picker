@@ -16,4 +16,18 @@ class CompatibilityNote < ActiveRecord::Base
 
   has_many :helpful_marks, :as => 'helpfulable'
   has_many :incorrect_notes, :as => 'correctable'
+
+
+  def as_json(options={})
+    super(:include => {
+        :mod_version_compatibility_notes => {
+            :except => [:mod_version_id, :compatibility_note_id],
+            :include => {
+                :mod_version => {
+                    :except => [:released, :obsolete, :dangerous]
+                }
+            }
+        }
+    })
+  end
 end
