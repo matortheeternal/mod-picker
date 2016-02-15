@@ -4,7 +4,7 @@ class CommentsController < ApplicationController
   # GET /comments
   # GET /comments.json
   def index
-    @comments = Comment.all
+    @comments = Comment.filter(filtering_params)
 
     respond_to do |format|
       format.html
@@ -74,6 +74,11 @@ class CommentsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_comment
       @comment = Comment.find(params[:id])
+    end
+
+    # Params we allow filtering on
+    def filtering_params
+      params.slice(:type, :target, :by);
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

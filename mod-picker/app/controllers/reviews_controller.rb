@@ -4,7 +4,7 @@ class ReviewsController < ApplicationController
   # GET /reviews
   # GET /reviews.json
   def index
-    @reviews = Review.all
+    @reviews = Review.filter(filtering_params)
 
     respond_to do |format|
       format.html
@@ -74,6 +74,11 @@ class ReviewsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_review
       @review = Review.find(params[:id])
+    end
+
+    # Params we allow filtering on
+    def filtering_params
+      params.slice(:mod, :by);
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

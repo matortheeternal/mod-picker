@@ -1,4 +1,9 @@
 class InstallationNote < ActiveRecord::Base
+  include Filterable
+
+  scope :by, -> (id) { where(submitted_by: id) }
+  scope :mod, -> (id) { joins(:mod_version).where(:mod_versions => {mod_id: id}) }
+
   belongs_to :user, :foreign_key => 'submitted_by', :inverse_of => 'installation_notes'
   belongs_to :mod_version, :inverse_of => 'installation_notes'
 
@@ -9,4 +14,13 @@ class InstallationNote < ActiveRecord::Base
 
   has_many :helpful_marks, :as => 'helpfulable'
   has_many :incorrect_notes, :as => 'correctable'
+
+
+  def as_json(options={})
+    super(:include => {
+        :mod_version => {
+            :except => [:id, :released, :obsolete, :dangerous]
+        }
+    })
+  end
 end

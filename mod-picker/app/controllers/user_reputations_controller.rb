@@ -4,7 +4,7 @@ class UserReputationsController < ApplicationController
   # GET /user_reputations
   # GET /user_reputations.json
   def index
-    @user_reputations = UserReputation.all
+    @user_reputations = UserReputation.filter(filtering_params)
 
     respond_to do |format|
       format.html
@@ -74,6 +74,11 @@ class UserReputationsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_user_reputation
       @user_reputation = UserReputation.find(params[:id])
+    end
+
+    # Params we allow filtering on
+    def filtering_params
+      params.slice(:user);
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

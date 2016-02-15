@@ -4,7 +4,7 @@ class InstallationNotesController < ApplicationController
   # GET /installation_notes
   # GET /installation_notes.json
   def index
-    @installation_notes = InstallationNote.all
+    @installation_notes = InstallationNote.filter(filtering_params)
 
     respond_to do |format|
       format.html
@@ -74,6 +74,11 @@ class InstallationNotesController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_installation_note
       @installation_note = InstallationNote.find(params[:id])
+    end
+
+    # Params we allow filtering on
+    def filtering_params
+      params.slice(:by, :mod);
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
