@@ -22,10 +22,10 @@ class CompatibilityNote < ActiveRecord::Base
   def as_json(options={})
     super(:include => {
         :mod_version_compatibility_notes => {
-            :except => [:mod_version_id, :compatibility_note_id],
+            :except => [:compatibility_note_id],
             :include => {
                 :mod_version => {
-                    :except => [:released, :obsolete, :dangerous]
+                    :except => [:id, :released, :obsolete, :dangerous]
                 }
             }
         }
