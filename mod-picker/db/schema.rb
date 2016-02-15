@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160201201851) do
+ActiveRecord::Schema.define(version: 20160208073835) do
 
   create_table "agreement_marks", id: false, force: :cascade do |t|
     t.integer "incorrect_note_id", limit: 4
@@ -69,11 +69,12 @@ ActiveRecord::Schema.define(version: 20160201201851) do
   add_index "compatibility_notes", ["submitted_by"], name: "submitted_by", using: :btree
 
   create_table "games", force: :cascade do |t|
-    t.string "short_name",    limit: 32
+    t.string "display_name",  limit: 32
     t.string "long_name",     limit: 128
     t.string "abbr_name",     limit: 32
     t.string "exe_name",      limit: 32
     t.string "steam_app_ids", limit: 64
+    t.string "nexus_name",    limit: 16
   end
 
   create_table "helpful_marks", id: false, force: :cascade do |t|
@@ -273,7 +274,10 @@ ActiveRecord::Schema.define(version: 20160201201851) do
     t.integer "nexus_category",   limit: 2
     t.text    "changelog",        limit: 65535
     t.integer "mod_id",           limit: 4,     null: false
+    t.integer "game_id",          limit: 4
   end
+
+  add_index "nexus_infos", ["game_id"], name: "fk_rails_46e3032463", using: :btree
 
   create_table "override_records", id: false, force: :cascade do |t|
     t.integer "plugin_id", limit: 4
@@ -339,30 +343,31 @@ ActiveRecord::Schema.define(version: 20160201201851) do
   add_index "reviews", ["submitted_by"], name: "submitted_by", using: :btree
 
   create_table "user_bios", force: :cascade do |t|
+    t.integer "user_id",        limit: 4
     t.string  "nexus_username", limit: 32
     t.boolean "nexus_verified"
     t.string  "lover_username", limit: 32
     t.boolean "lover_verified"
     t.string  "steam_username", limit: 32
     t.boolean "steam_verified"
-    t.integer "user_id",        limit: 4
   end
 
   add_index "user_bios", ["user_id"], name: "user_id", using: :btree
 
   create_table "user_reputations", force: :cascade do |t|
+    t.integer "user_id",            limit: 4
     t.float   "overall",            limit: 24
     t.float   "offset",             limit: 24
     t.float   "audiovisual_design", limit: 24
     t.float   "plugin_design",      limit: 24
     t.float   "utility_design",     limit: 24
     t.float   "script_design",      limit: 24
-    t.integer "user_id",            limit: 4
   end
 
   add_index "user_reputations", ["user_id"], name: "user_id", using: :btree
 
   create_table "user_settings", force: :cascade do |t|
+    t.integer "user_id",              limit: 4
     t.boolean "show_notifications"
     t.boolean "show_tooltips"
     t.boolean "email_notifications"
@@ -371,7 +376,6 @@ ActiveRecord::Schema.define(version: 20160201201851) do
     t.boolean "allow_nexus_mods"
     t.boolean "allow_lovers_lab"
     t.boolean "allow_steam_workshop"
-    t.integer "user_id",              limit: 4
     t.string  "timezone",             limit: 128
     t.string  "udate_format",         limit: 128
     t.string  "utime_format",         limit: 128
@@ -411,8 +415,7 @@ ActiveRecord::Schema.define(version: 20160201201851) do
   create_table "workshop_infos", force: :cascade do |t|
     t.integer "mod_id", limit: 4, null: false
   end
-	
-  # foreign keys
+
   add_foreign_key "agreement_marks", "incorrect_notes", name: "agreement_marks_ibfk_1"
   add_foreign_key "agreement_marks", "users", column: "submitted_by", name: "agreement_marks_ibfk_2"
   add_foreign_key "categories", "categories", column: "parent_id"
@@ -453,6 +456,7 @@ ActiveRecord::Schema.define(version: 20160201201851) do
   add_foreign_key "mods", "categories", column: "primary_category_id"
   add_foreign_key "mods", "categories", column: "secondary_category_id"
   add_foreign_key "mods", "games"
+  add_foreign_key "nexus_infos", "games"
   add_foreign_key "override_records", "masters", name: "override_records_ibfk_2"
   add_foreign_key "override_records", "plugins", name: "override_records_ibfk_1"
   add_foreign_key "plugin_record_groups", "plugins", name: "plugin_record_groups_ibfk_1"
@@ -465,6 +469,6 @@ ActiveRecord::Schema.define(version: 20160201201851) do
   add_foreign_key "user_bios", "users", name: "user_bios_ibfk_1"
   add_foreign_key "user_reputations", "users", name: "user_reputations_ibfk_1"
   add_foreign_key "user_settings", "users", name: "user_settings_ibfk_1"
-  add_foreign_key "users", "mod_lists", column: "active_mc_id", name: "users_ibfk_5"
-  add_foreign_key "users", "mod_lists", column: "active_ml_id", name: "users_ibfk_4"
+  add_foreign_key "users", "mod_lists", column: "active_mc_id", name: "users_ibfk_2"
+  add_foreign_key "users", "mod_lists", column: "active_ml_id", name: "users_ibfk_1"
 end

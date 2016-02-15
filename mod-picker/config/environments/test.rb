@@ -16,6 +16,17 @@ Rails.application.configure do
   config.serve_static_files   = true
   config.static_cache_control = 'public, max-age=3600'
 
+
+
+  # Mailer options
+  # We really do care if the mailer can't send.
+  config.action_mailer.raise_delivery_errors = true
+  
+  # Make sure you run mailcatcher on port 1025 to capture emails
+  config.action_mailer.default_url_options = { :host => 'localhost:3000' }
+  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.smtp_settings = {:address => "localhost", :port => 1025}
+
   # Show full error reports and disable caching.
   config.consider_all_requests_local       = true
   config.action_controller.perform_caching = false

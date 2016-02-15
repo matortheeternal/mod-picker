@@ -73,7 +73,7 @@ class OverrideRecordsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_override_record
-      @override_record = OverrideRecord.find(params[:id])
+      @override_record = OverrideRecord.find_by(plugin_id: params[:plugin_id], form_id: params[:form_id])
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

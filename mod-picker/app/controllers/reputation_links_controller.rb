@@ -73,7 +73,7 @@ class ReputationLinksController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_reputation_link
-      @reputation_link = ReputationLink.find(params[:id])
+      @reputation_link = ReputationLink.find_by(from_rep_id: params[:from_rep_id], to_rep_id: params[:to_rep_id])
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

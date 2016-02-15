@@ -4,7 +4,7 @@ class IncorrectNotesController < ApplicationController
   # GET /incorrect_notes
   # GET /incorrect_notes.json
   def index
-    @incorrect_notes = IncorrectNote.all
+    @incorrect_notes = IncorrectNote.filter(filtering_params)
 
     respond_to do |format|
       format.html
@@ -76,8 +76,13 @@ class IncorrectNotesController < ApplicationController
       @incorrect_note = IncorrectNote.find(params[:id])
     end
 
+    # Params we allow filtering on
+    def filtering_params
+      params.slice(:by);
+    end
+
     # Never trust parameters from the scary internet, only allow the white list through.
     def incorrect_note_params
-      params.require(:incorrect_note).permit(:id, :review_id, :compatibility_note_id, :installation_note_id, :submitted_by, :reason)
+      params.require(:incorrect_note).permit(:submitted_by, :reason, :correctable_id, :correctable_type)
     end
 end

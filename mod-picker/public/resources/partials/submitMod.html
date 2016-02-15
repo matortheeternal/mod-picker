@@ -1,0 +1,26 @@
+<loader condition="loading"></loader>
+<div ng-hide="loading">
+    <h2>Submit a mod</h2>
+    <form name="submitModForm">
+        <label>
+            Url<br/>
+            <input type="text" ng-model="url" required>
+            <br/>
+
+            Name<br/>
+            <input type="text" ng-model="name" required>
+            <br/>
+
+            Primary Category<br/>
+            <category-picker model='primaryCategory' required="true"></category-picker>
+
+            <div ng-show="primaryCategory.mainCategoryId">
+                Secondary Category<br/>
+                <category-picker model='secondaryCategory'></category-picker>
+            </div>
+
+        </label>
+        <!-- new way of validation: Just don't show the submit button until everything is filled up. -->
+        <input type="submit" ng-show='submitModForm.$valid' ng-click="submit()" value="Submit"/>
+    </form>
+</div>

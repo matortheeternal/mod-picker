@@ -78,6 +78,6 @@ class ModVersionsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def mod_version_params
-      params.require(:mod_version).permit(:id, :mod_id, :nxm_file_id, :released, :obsolete, :dangerous)
+      params.require(:mod_version).permit(:mod_id, :nxm_file_id, :released, :obsolete, :dangerous, :version)
     end
 end

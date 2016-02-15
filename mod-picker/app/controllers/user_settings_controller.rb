@@ -4,7 +4,7 @@ class UserSettingsController < ApplicationController
   # GET /user_settings
   # GET /user_settings.json
   def index
-    @user_settings = UserSetting.all
+    @user_settings = UserSetting.filter(filtering_params)
 
     respond_to do |format|
       format.html
@@ -76,8 +76,13 @@ class UserSettingsController < ApplicationController
       @user_setting = UserSetting.find(params[:id])
     end
 
+    # Params we allow filtering on
+    def filtering_params
+      params.slice(:user);
+    end
+
     # Never trust parameters from the scary internet, only allow the white list through.
     def user_setting_params
-      params.require(:user_setting).permit(:id, :user_id, :show_notifications, :show_tooltips, :email_notifications, :email_public, :allow_adult_content, :allow_nexus_mods, :allow_lovers_lab, :allow_steam_workshop, :timezone, :udate_format, :utime_format)
+      params.require(:user_setting).permit(:user_id, :show_notifications, :show_tooltips, :email_notifications, :email_public, :allow_adult_content, :allow_nexus_mods, :allow_lovers_lab, :allow_steam_workshop, :timezone, :udate_format, :utime_format)
     end
 end

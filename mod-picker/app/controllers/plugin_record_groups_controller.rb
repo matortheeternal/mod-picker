@@ -73,7 +73,7 @@ class PluginRecordGroupsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_plugin_record_group
-      @plugin_record_group = PluginRecordGroup.find(params[:id])
+      @plugin_record_group = PluginRecordGroup.find_by(plugin_id: params[:plugin_id], sig: params[:sig])
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

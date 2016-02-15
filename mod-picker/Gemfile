@@ -21,14 +21,11 @@ gem 'turbolinks'
 # bundle exec rake doc:rails generates the API under doc/api.
 gem 'sdoc', '~> 0.4.0', group: :doc
 
+# use nokogiri for parsing html
+gem 'nokogiri'
+
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
-
-# factory girl for the win
-gem "factory_girl_rails", "~> 4.0"
-
-# Use Faker for generating fake data
-gem 'faker'
 
 # Use will_paginate for pagination
 gem 'will_paginate'
@@ -56,11 +53,25 @@ gem 'native_enum'
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug'
-end
 
-group :development do
+  # rspec testing framework
+  gem 'rspec-rails'
+
+  # Use Faker for generating fake data
+  gem 'faker'
+
+  # Factory girl for testing
+  gem 'factory_girl_rails', '~> 4.0'
+
   # Access an IRB console on exception pages or by using <%= console %> in views
   gem 'web-console', '~> 2.0'
+end
+
+group :test do
+  gem 'capybara'
+  gem 'database_cleaner'
+  gem 'launchy'
+  gem 'selenium-webdriver'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem

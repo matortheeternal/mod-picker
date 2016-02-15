@@ -73,7 +73,7 @@ class ModListStarsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_mod_list_star
-      @mod_list_star = ModListStar.find(params[:id])
+      @mod_list_star = ModListStar.find_by(mod_list_id: params[:mod_list_id], user_id: params[:user_id])
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

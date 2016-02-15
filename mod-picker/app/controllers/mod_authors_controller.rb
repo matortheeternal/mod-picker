@@ -73,7 +73,7 @@ class ModAuthorsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_mod_author
-      @mod_author = ModAuthor.find(params[:id])
+      @mod_author = ModAuthor.find_by(mod_id: params[:mod_id], user_id: params[:user_id])
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

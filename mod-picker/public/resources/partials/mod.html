@@ -1,40 +1,24 @@
 <loader condition="loading"></loader>
 <div ng-show="mod">
-    <h1>{{mod.name}}</h1>
+    <div class="modHeader">
+        <h1>{{mod.name}}</h1>
+        <span>implement stars here</span> <span><a ng-click="expandReviews()">{{mod.reviews.length}} reviews</a></span>
+    </div>
+
     <hr/>
     <!-- TODO: Commalogic -->
-    <p>by {{mod.nexus_info.authors}} </p>
-    <p>Versions</p>
-    <p><span ng-repeat="version in mod.versions">{{version.version}}</span> </p>
-
-    <p>{{mod.shortDescription}}</p>
-
-    <table>
-        <tr>
-            <td>Endorsements</td>
-            <td>Unique Downloads</td>
-            <td>Endorse Rate</td>
-            <td>Release Date</td>
-            <td>Last Update</td>
-            <td>Total Downloads</td>
-        </tr>
-        <tr>
-            <td>{{mod.nexus_info.endorsements}}</td>
-            <td>{{mod.nexus_info.unique_downloads}}</td>
-            <td>{{mod.nexus_info.endorsements}}</td>
-            <td>{{mod.nexus_info.date_released}}</td>
-            <td>{{mod.nexus_info.date_updated}}</td>
-            <td>{{mod.nexus_info.total_downloads}}</td>
-        </tr>
-    </table>
-    <hr/>
-    <expandable expanded="false" title="'I\'m the title'">
-        <span>I'm expandable content.</span>
-    </expandable>
-    <hr/>
-    <expandable expanded="false" title="'I\'m a much bigger title'">
-        <h1>I'm another content</h1>
-        <p>I'm a bit bigger.</p>
-    </expandable>
-    <hr/>
+    <div class="left-column"><p>by {{mod.nexus_info.authors}} </p>
+        <p>Versions</p>
+        <select ng-model="version" ng-options="version.id as version.version for version in mod.mod_versions"></select>
+        <p>{{mod.shortDescription}}</p>
+    </div>
+    <div class="right-column">
+        <expandable expanded="false" title="'Compability Notes'">
+            <span>Compability Notes will be added as soon as we get them from the backend</span>
+        </expandable>
+        <hr/>
+        <expandable expanded="false" title="'Reviews'">
+            <user-generated-list data="mod.reviews"></user-generated-list>
+        </expandable>
+    </div>
 </div>

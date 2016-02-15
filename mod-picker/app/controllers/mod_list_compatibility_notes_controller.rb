@@ -73,7 +73,7 @@ class ModListCompatibilityNotesController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_mod_list_compatibility_note
-      @mod_list_compatibility_note = ModListCompatibilityNote.find(params[:id])
+      @mod_list_compatibility_note = ModListCompatibilityNote.find_by(mod_list_id: params[:mod_list_id], compatibility_note_id: params[:compatibility_note_id])
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

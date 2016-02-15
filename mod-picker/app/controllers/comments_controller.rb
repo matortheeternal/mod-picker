@@ -4,7 +4,7 @@ class CommentsController < ApplicationController
   # GET /comments
   # GET /comments.json
   def index
-    @comments = Comment.all
+    @comments = Comment.filter(filtering_params)
 
     respond_to do |format|
       format.html
@@ -76,8 +76,13 @@ class CommentsController < ApplicationController
       @comment = Comment.find(params[:id])
     end
 
+    # Params we allow filtering on
+    def filtering_params
+      params.slice(:type, :target, :by);
+    end
+
     # Never trust parameters from the scary internet, only allow the white list through.
     def comment_params
-      params.require(:comment).permit(:id, :parent_comment, :submitted_by, :hidden, :submitted, :edited, :text_body)
+      params.require(:comment).permit(:parent_comment, :submitted_by, :hidden, :submitted, :edited, :text_body)
     end
 end

@@ -4,7 +4,7 @@ class CompatibilityNotesController < ApplicationController
   # GET /compatibility_notes
   # GET /compatibility_notes.json
   def index
-    @compatibility_notes = CompatibilityNote.all
+    @compatibility_notes = CompatibilityNote.filter(filtering_params)
 
     respond_to do |format|
       format.html
@@ -76,8 +76,13 @@ class CompatibilityNotesController < ApplicationController
       @compatibility_note = CompatibilityNote.find(params[:id])
     end
 
+    # Params we allow filtering on
+    def filtering_params
+      params.slice(:by, :mod);
+    end
+
     # Never trust parameters from the scary internet, only allow the white list through.
     def compatibility_note_params
-      params.require(:compatibility_note).permit(:id, :submitted_by, :mod_mode, :compatibility_patch, :compatibility_status)
+      params.require(:compatibility_note).permit(:submitted_by, :mod_mode, :compatibility_patch, :compatibility_status)
     end
 end
