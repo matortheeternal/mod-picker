@@ -4,7 +4,7 @@ class ModsController < ApplicationController
   # GET /mods
   # GET /mods.json
   def index
-    @mods = Mod.joins(:nexus_info, :mod_versions).filter(filtering_params)
+    @mods = Mod.filter(filtering_params)
 
     respond_to do |format|
       format.html
