@@ -14,15 +14,15 @@ app.directive('categoryPicker', function () {
     }
 });
 
-app.controller('categoryPickerController', function ($scope, backend) {
-    backend.retrievePrimaryCategory().then(function (data) {
+app.controller('categoryPickerController', function ($scope, categoryService) {
+    categoryService.retrievePrimaryCategory().then(function (data) {
         $scope.mainCategories = data;
         $scope.loading = false;
     });
 
     $scope.$watch('model.mainCategoryId', function (mainCategoryId) {
         if(mainCategoryId) {
-            backend.retrieveSecondaryCategory(mainCategoryId).then(function (data) {
+            categoryService.retrieveSecondaryCategory(mainCategoryId).then(function (data) {
                 $scope.subCategories = data;
             })
         } else {
