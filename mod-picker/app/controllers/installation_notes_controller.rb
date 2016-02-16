@@ -78,7 +78,7 @@ class InstallationNotesController < ApplicationController
 
     # Params we allow filtering on
     def filtering_params
-      params.slice(:by, :mod);
+      params.slice(:by, :mod, :mv);
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

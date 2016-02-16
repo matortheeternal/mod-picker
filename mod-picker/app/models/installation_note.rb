@@ -3,6 +3,7 @@ class InstallationNote < ActiveRecord::Base
 
   scope :by, -> (id) { where(submitted_by: id) }
   scope :mod, -> (id) { joins(:mod_version).where(:mod_versions => {mod_id: id}) }
+  scope :mv, -> (id) { where(mod_version_id: id) }
 
   belongs_to :user, :foreign_key => 'submitted_by', :inverse_of => 'installation_notes'
   belongs_to :mod_version, :inverse_of => 'installation_notes'
