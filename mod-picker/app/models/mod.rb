@@ -30,16 +30,16 @@ class Mod < ActiveRecord::Base
   has_one :lover_info
   has_one :workshop_info
 
-  has_many :mod_versions, :inverse_of => 'mod'
+  has_many :mod_versions, :inverse_of => 'mod', :counter_cache => true
 
   has_many :mod_stars, :inverse_of => 'starred_mod'
-  has_many :user_stars, :through => 'mod_stars', :inverse_of => 'starred_mods'
+  has_many :user_stars, :through => 'mod_stars', :inverse_of => 'starred_mods', :counter_cache => true
 
   has_many :mod_authors, :inverse_of => 'mod'
   has_many :authors, :through => 'mod_authors', :inverse_of => 'mods'
 
-  has_many :reviews, :inverse_of => 'mod'
-  has_many :comments, :as => 'commentable'
+  has_many :reviews, :inverse_of => 'mod', :counter_cache => true
+  has_many :comments, :as => 'commentable', :counter_cache => true
 
   def as_json(options={})
     super(:include => {
