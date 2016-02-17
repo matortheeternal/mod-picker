@@ -1,10 +1,22 @@
-app.service('modService', function (backend) {
+app.service('modService', function (backend, $q) {
     this.retrieveMod = function (modId) {
-        return backend.retrieve('/mods/' + modId);
+        var mod = $q.defer();
+        backend.retrieve('/mods/' + modId).then(function (data) {
+            setTimeout(function () {
+                mod.resolve(data);
+            }, 1000);
+        });
+        return mod.promise;
     };
 
     this.retrieveMods = function () {
-        return backend.retrieve('/mods');
+        var mods = $q.defer();
+        backend.retrieve('/mods').then(function (data) {
+            setTimeout(function () {
+                mods.resolve(data);
+            }, 1000);
+        });
+        return mods.promise;
     };
 
     this.retrieveCompabilityNotes = function (modId, versionId) {
