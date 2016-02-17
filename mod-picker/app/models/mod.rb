@@ -45,8 +45,7 @@ class Mod < ActiveRecord::Base
     super(:include => {
         :nexus_info => {:except => [:mod_id, :changelog]},
         :mod_versions => {:except => [:mod_id]},
-        :authors => {:only => [:id, :username]},
-        :reviews => {:except => :text_body}
+        :authors => {:only => [:id, :username]}
     })
   end
 end
