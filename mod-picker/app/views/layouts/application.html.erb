@@ -67,8 +67,9 @@
           <form>
             <input class="search-field" type="text" autocomplete="off" ng-model="search" placeholder="Search...">
             <div class="loadingButtonContainer">
-              <input class="btn" type="submit" value="Search" ng-click="processSearch()" ng-hide="loading"/>
-              <loader condition="loading" size="38"></loader>
+              <loader data="!loading">
+                <input class="btn" type="submit" value="Search" ng-click="processSearch()"/>
+              </loader>
             </div>
           </form>
         </div>

@@ -17,7 +17,6 @@ app.directive('categoryPicker', function () {
 app.controller('categoryPickerController', function ($scope, categoryService) {
     categoryService.retrievePrimaryCategory().then(function (data) {
         $scope.mainCategories = data;
-        $scope.loading = false;
     });
 
     $scope.$watch('model.mainCategoryId', function (mainCategoryId) {

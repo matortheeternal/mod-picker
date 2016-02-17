@@ -1,1 +1,5 @@
-<div id="loader" class="center"></div>
+<div class="center" ng-hide="data">
+    <img src="/resources/loader.gif"/>
+</div>
+<div ng-show="data" ng-transclude>
+</div>

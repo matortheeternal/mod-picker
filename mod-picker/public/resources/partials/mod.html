@@ -1,24 +1,25 @@
-<loader condition="loading"></loader>
-<div ng-show="!loading">
-    <div class="modHeader">
-        <h1>{{mod.name}}</h1>
-        <span>implement stars here</span> <span><a ng-click="showReviews()">{{mod.reviews.length}} reviews</a></span>
-    </div>
+<loader data="mod">
+    <div>
+        <div class="modHeader">
+            <h1>{{mod.name}}</h1>
+            <span>implement stars here</span> <span><a ng-click="showReviews()">{{mod.reviews.length}} reviews</a></span>
+        </div>
 
-    <hr/>
-    <!-- TODO: Commalogic -->
-    <div class="left-column"><p>by {{mod.nexus_info.authors}} </p>
-        <p>Versions</p>
-        <select ng-model="version" ng-options="version.id as version.version for version in mod.mod_versions"></select>
-        <p>{{mod.shortDescription}}</p>
-    </div>
-    <div class="right-column">
-        <expandable expanded="expandedState.compabilityNotes" title="'Compability Notes'">
-            <user-generated-list data="compatibilityNotes"></user-generated-list>
-        </expandable>
         <hr/>
-        <expandable expanded="expandedState.reviews" title="'Reviews'">
-            <user-generated-list data="mod.reviews"></user-generated-list>
-        </expandable>
+        <!-- TODO: Commalogic -->
+        <div class="left-column"><p>by {{mod.nexus_info.authors}} </p>
+            <p>Versions</p>
+            <select ng-model="version" ng-options="version.id as version.version for version in mod.mod_versions"></select>
+            <p>{{mod.shortDescription}}</p>
+        </div>
+        <div class="right-column">
+            <expandable expanded="expandedState.compabilityNotes" title="'Compability Notes'">
+                <user-generated-list data="compatibilityNotes"></user-generated-list>
+            </expandable>
+            <hr/>
+            <expandable expanded="expandedState.reviews" title="'Reviews'">
+                <user-generated-list data="mod.reviews"></user-generated-list>
+            </expandable>
+        </div>
     </div>
-</div>
+</loader>
