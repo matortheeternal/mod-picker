@@ -26,6 +26,7 @@ app.controller('categoryPickerController', function ($scope, categoryService) {
             })
         } else {
             $scope.subCategories = undefined;
+            $scope.model.subCategoryId = '';
         }
     });
 });
