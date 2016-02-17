@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160217195149) do
+ActiveRecord::Schema.define(version: 20160217195718) do
 
   create_table "agreement_marks", id: false, force: :cascade do |t|
     t.integer "incorrect_note_id", limit: 4
@@ -191,15 +191,22 @@ ActiveRecord::Schema.define(version: 20160217195149) do
   add_index "mod_list_stars", ["user_id"], name: "user_id", using: :btree
 
   create_table "mod_lists", force: :cascade do |t|
-    t.integer "created_by",        limit: 4
+    t.integer "created_by",                limit: 4
     t.boolean "is_collection"
     t.boolean "is_public"
     t.boolean "has_adult_content"
-    t.enum    "status",            limit: ["Planned", "Under Construction", "Testing", "Complete"]
+    t.enum    "status",                    limit: ["Planned", "Under Construction", "Testing", "Complete"]
     t.date    "created"
     t.date    "completed"
-    t.text    "description",       limit: 65535
-    t.integer "game_id",           limit: 4
+    t.text    "description",               limit: 65535
+    t.integer "game_id",                   limit: 4
+    t.integer "comments_count",            limit: 4
+    t.integer "mods_count",                limit: 4
+    t.integer "plugins_count",             limit: 4
+    t.integer "custom_plugins_count",      limit: 4
+    t.integer "compatibility_notes_count", limit: 4
+    t.integer "installation_notes_count",  limit: 4
+    t.integer "user_stars_count",          limit: 4
   end
 
   add_index "mod_lists", ["created_by"], name: "created_by", using: :btree
