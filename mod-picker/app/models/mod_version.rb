@@ -1,5 +1,5 @@
 class ModVersion < ActiveRecord::Base
-  belongs_to :mod, :inverse_of => 'mod_versions'
+  belongs_to :mod, :inverse_of => 'mod_versions', :counter_cache => true
   has_many :plugins, :inverse_of => 'mod_version'
 
   has_many :installation_notes, :inverse_of => 'mod_version'

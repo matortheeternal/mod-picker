@@ -25,7 +25,7 @@ class User < ActiveRecord::Base
   belongs_to :active_mod_collection, :class_name => 'ModList', :foreign_key => 'active_mc_id'
 
   has_many :mod_stars, :inverse_of => 'user_star'
-  has_many :starred_mods, :through => 'mod_stars', :inverse_of => 'user_stars'
+  has_many :starred_mods, :through => 'mod_stars', :inverse_of => 'user_stars', :counter_cache => true
 
   has_many :mod_list_stars, :inverse_of => 'user_star'
   has_many :starred_mod_lists, :through => 'mod_list_stars', :inverse_of => 'user_stars'
