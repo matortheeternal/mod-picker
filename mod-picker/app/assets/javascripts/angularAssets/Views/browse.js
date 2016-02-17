@@ -7,9 +7,9 @@ app.config(['$routeProvider', function ($routeProvider) {
     );
 }]);
 
-app.controller('browseController', function ($scope, $q, backend) {
+app.controller('browseController', function ($scope, modService) {
     $scope.loading = true;
-    backend.retrieveMods().then(function (data) {
+    modService.retrieveMods().then(function (data) {
         $scope.mods = data;
         $scope.loading = false;
     });
