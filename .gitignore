@@ -70,3 +70,4 @@ mod-dump/mod-dump/Skyrim/plugins/*.esm
 .DS_STORE
 spikes/PyNexusCrawler/*.jpg
 spikes/PyNexusCrawler/*.png
+mod-picker/.byebug_history
