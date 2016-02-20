@@ -8,10 +8,10 @@
             <th>Reputation</th>
         </tr>
         <tr ng-repeat="user in data">
-            <td><a class="strong" ng-href="#/user/{{user.id}}">{{user.name}}</a></td>
+            <td><a class="strong" ng-href="#/user/{{user.id}}">{{user.username}}</a></td>
             <td>{{user.user_level}}</td>
             <td>{{user.joined | date }}</td>
-            <td>{{user.last_sign_in_at | date }}</td>
+            <td>{{user.last_seen | date }}</td>
             <td>{{user.reputation.overall.toLocaleString()}}</td>
         </tr>
     </table>
