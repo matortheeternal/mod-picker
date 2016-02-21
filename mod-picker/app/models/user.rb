@@ -1,8 +1,23 @@
 class User < ActiveRecord::Base
+  include Filterable
+
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable, :confirmable,
          :recoverable, :rememberable, :trackable, :validatable
+
+  scope :search, -> (search) { joins(:bio).where("username like ? OR nexus_username like ? OR lover_username like ? OR steam_username like ?", "#{search}%", "#{search}%", "#{search}%", "#{search}%") }
+  scope :joined, -> (low, high) { where(joined: (low..high)) }
+  # scope :last_seen, -> (low, high) { where(last_seen: (low..high)) }
+  scope :level, -> (hash) { where(user_level: hash) }
+  scope :rep, -> (low, high) { where(:reputation => {overall: (low..high)}) }
+  scope :mods, -> (low, high) { where(mods_count: (low..high)) }
+  scope :cnotes, -> (low, high) { where(compatibility_notes_count: (low..high)) }
+  scope :inotes, -> (low, high) { where(installation_notes_count: (low..high)) }
+  scope :reviews, -> (low, high) { where(reviews_count: (low..high)) }
+  scope :nnotes, -> (low, high) { where(incorrect_notes_count: (low..high)) }
+  scope :comments, -> (low, high) { where(comments_count: (low..high)) }
+  scope :mod_lists, -> (low, high) { where(mod_lists_count: (low..high)) }
   
   attr_accessor :login
 
