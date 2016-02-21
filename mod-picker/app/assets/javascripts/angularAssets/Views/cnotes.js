@@ -33,7 +33,7 @@ app.controller('cnotesController', function ($scope, $q, backend) {
     /* helpfulness slider */
     $scope.slHelpfulness = {
         minValue: 0,
-        maxValue: 120,
+        maxValue: 60,
         options: {
             hideLimitLabels: true,
             noSwitching: true,
