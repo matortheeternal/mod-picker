@@ -28,40 +28,23 @@ app.controller('modsController', function ($scope, $q, backend) {
     };
 
     /* slider prototypes */
-    var now = new Date();
     var start = new Date(2011,10,11);
     $scope.dateSlider = {
         options: {
-            floor: start.getTime(),
-            ceil: now.getTime(),
-            step: 86400000,
             hideLimitLabels: true,
             noSwitching: true,
-            translate: function(value, sliderId, label) {
-                var d;
-                switch (label) {
-                    case 'model':
-                        d = new Date(value);
-                        return d.toLocaleDateString();
-                    case 'high':
-                        d = new Date(value);
-                        return d.toLocaleDateString();
-                    default:
-                        d = new Date(value);
-                        return d.toLocaleDateString();
-                }
-            }
+            stepsArray: generateDateSteps(start)
         }
     };
 
     /* date sliders */
     $scope.slUpdated = {
-        minValue: start.getTime(),
-        maxValue: now.getTime()
+        minValue: 0,
+        maxValue: 126
     };
     $scope.slReleased = {
-        minValue: start.getTime(),
-        maxValue: now.getTime()
+        minValue: 0,
+        maxValue: 126
     };
 
     /* nexus mods stat sliders */
@@ -213,8 +196,6 @@ app.controller('modsController', function ($scope, $q, backend) {
         }
     };
 
-
-
     /* data */
     backend.retrieveMods().then(function (data) {
         $scope.mods = data;
@@ -238,5 +219,51 @@ function generateSteps(initialSpacing, maxValue) {
         }
         array.push(c);
     }
+    return array;
+}
+
+function generateDateSteps(minDate) {
+    var c = new Date();
+    var array = ["Now"];
+    var minValue = minDate.getTime();
+
+    // hours
+    for (i = 0; (c.getTime() > minValue) && (i < 23); i++) {
+        array.unshift((i + 1) + " hours ago");
+        c.setHours(c.getHours() - 1);
+    }
+
+    // days
+    for (i = 0; (c.getTime() > minValue) && (i < 24); i++) {
+        array.unshift(c.toLocaleDateString());
+        c.setDate(c.getDate() - 1);
+    }
+
+    // weeks
+    for (i = 0; (c.getTime() > minValue) && (i < 36); i++) {
+        array.unshift(c.toLocaleDateString());
+        c.setDate(c.getDate() - 7);
+    }
+
+    // months
+    for (i = 0; (c.getTime() > minValue) && (i < 48); i++) {
+        array.unshift(c.toLocaleDateString());
+        c.setMonth(c.getMonth() - 1);
+    }
+
+    // quarters
+    for (i = 0; (c.getTime() > minValue) && (i < 24); i++) {
+        array.unshift(c.toLocaleDateString());
+        c.setMonth(c.getMonth() - 3);
+    }
+
+    // half years
+    for (i = 0; (c.getTime() > minValue) && (i < 24); i++) {
+        array.unshift(c.toLocaleDateString());
+        c.setMonth(c.getMonth() - 6);
+    }
+
+    // last date
+    array[0] = minDate.toLocaleDateString();
     return array;
 }
