@@ -9,6 +9,50 @@ app.config(['$routeProvider', function ($routeProvider) {
 
 app.controller('reviewsController', function ($scope, $q, backend) {
     $scope.loading = true;
+
+    /* slider prototypes */
+    var start = new Date(2016,0,1);
+    $scope.dateSlider = {
+        options: {
+            hideLimitLabels: true,
+            noSwitching: true,
+            stepsArray: generateDateSteps(start)
+        }
+    };
+
+    /* date sliders */
+    $scope.slSubmitted = {
+        minValue: 0,
+        maxValue: 51
+    };
+    $scope.slEdited = {
+        minValue: 0,
+        maxValue: 51
+    };
+
+    /* rating slider */
+    $scope.slRating = {
+        minValue: 0,
+        maxValue: 100,
+        option: {
+            hideLimitLabels: true,
+            noSwitching: true
+        }
+    };
+
+    /* helpfulness slider */
+    $scope.slHelpfulness = {
+        minValue: 0,
+        maxValue: 120,
+        options: {
+            hideLimitLabels: true,
+            noSwitching: true,
+            stepsArray: generateSteps(1, 500)
+        }
+    };
+
+
+    /* data */
     backend.retrieveReviews().then(function (data) {
         $scope.reviews = data;
         $scope.loading = false;
