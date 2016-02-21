@@ -379,6 +379,28 @@ ul.hmenu li {
     font-size: 12px;
 }
 
+/* custom sliders */
+
+.rz-bubble {
+  font-size: 12px !important;
+}
+
+.rz-pointer {
+  height: 20px !important;
+  width: 20px !important;
+  top: -6px !important;
+  background-color: $link_hover_color_primary !important;
+}
+
+.rz-pointer::after {
+  top: 6px !important;
+  left: 6px !important;
+}
+
+.rz-selection {
+  background-color: $link_hover_color_primary !important;
+}
+
 /* css for search results */
 
 .right-column table {

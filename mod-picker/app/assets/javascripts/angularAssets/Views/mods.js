@@ -12,27 +12,34 @@ app.controller('modsController', function ($scope, $q, backend) {
     var now = new Date();
     var start = new Date(2011,10,11);
     $scope.dateSlider = {
-        minValue: start.getTime(),
-        maxValue: now.getTime(),
         options: {
             floor: start.getTime(),
             ceil: now.getTime(),
             step: 86400000,
+            hideLimitLabels: true,
             translate: function(value, sliderId, label) {
                 var d;
                 switch (label) {
                     case 'model':
                         d = new Date(value);
-                        return '<b>From</b> ' + d.toLocaleDateString();
+                        return d.toLocaleDateString();
                     case 'high':
                         d = new Date(value);
-                        return '<b>To</b> ' + d.toLocaleDateString();
+                        return d.toLocaleDateString();
                     default:
                         d = new Date(value);
                         return d.toLocaleDateString();
                 }
             }
         }
+    };
+    $scope.slUpdated = {
+        minValue: start.getTime(),
+        maxValue: now.getTime()
+    };
+    $scope.slReleased = {
+        minValue: start.getTime(),
+        maxValue: now.getTime()
     };
     backend.retrieveMods().then(function (data) {
         $scope.mods = data;
