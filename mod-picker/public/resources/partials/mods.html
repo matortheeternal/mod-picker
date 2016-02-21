@@ -55,32 +55,50 @@
             <h3>Nexus Mods Filters</h3>
             <div id="nexus-mods-stat-filters" class="filter-section">
                 <h4>Endorsements</h4>
-                ~range-slider
+                <rzslider rz-slider-model="slEndorsements.minValue"
+                          rz-slider-high="slEndorsements.maxValue"
+                          rz-slider-options="slEndorsements.options"></rzslider>
 
                 <h4>Unique Downloads</h4>
-                ~range-slider
+                <rzslider rz-slider-model="slUniqueDownloads.minValue"
+                          rz-slider-high="slUniqueDownloads.maxValue"
+                          rz-slider-options="slUniqueDownloads.options"></rzslider>
 
                 <h4>Total Downloads</h4>
-                ~range-slider
+                <rzslider rz-slider-model="slTotalDownloads.minValue"
+                          rz-slider-high="slTotalDownloads.maxValue"
+                          rz-slider-options="slTotalDownloads.options"></rzslider>
 
                 <h4>Views</h4>
-                ~range-slider
+                <rzslider rz-slider-model="slViews.minValue"
+                          rz-slider-high="slViews.maxValue"
+                          rz-slider-options="slViews.options"></rzslider>
             </div>
             <div id="nexus-mods-ext-filters" class="filter-section">
                 <h4>Posts Count</h4>
-                ~range-slider
+                <rzslider rz-slider-model="slPosts.minValue"
+                          rz-slider-high="slPosts.maxValue"
+                          rz-slider-options="slPosts.options"></rzslider>
 
                 <h4>Videos Count</h4>
-                ~range-slider
+                <rzslider rz-slider-model="slVideos.minValue"
+                          rz-slider-high="slVideos.maxValue"
+                          rz-slider-options="slVideos.options"></rzslider>
 
                 <h4>Images Count</h4>
-                ~range-slider
+                <rzslider rz-slider-model="slImages.minValue"
+                          rz-slider-high="slImages.maxValue"
+                          rz-slider-options="slImages.options"></rzslider>
 
                 <h4>Files Count</h4>
-                ~range-slider
+                <rzslider rz-slider-model="slFiles.minValue"
+                          rz-slider-high="slFiles.maxValue"
+                          rz-slider-options="slFiles.options"></rzslider>
 
                 <h4>Articles Count</h4>
-                ~range-slider
+                <rzslider rz-slider-model="slArticles.minValue"
+                          rz-slider-high="slArticles.maxValue"
+                          rz-slider-options="slArticles.options"></rzslider>
             </div>
         </div>
         <div id="mod-picker-filters" class="filter-section">
