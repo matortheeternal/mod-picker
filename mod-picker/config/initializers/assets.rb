@@ -18,12 +18,13 @@ themes/blackreach.css
 bootstrap.min.css
 welcome.css
 angular.css
+rzslider.min.css
 style-responsive.css
 modpicker.js
 angular.min.js
 angular-route.min.js
 bootstrap.min.js
-rzslider.js
+rzslider.min.js
 heartcode-canvasloader-min.js
 jquery.countdown.min.js
 jquery.nicescroll.min.js
