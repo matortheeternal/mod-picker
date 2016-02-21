@@ -1,7 +1,7 @@
 class Mod < ActiveRecord::Base
   include Filterable
 
-  scope :search, -> (search) { where("name like ? OR aliases like ?", "#{search}%", "#{search}%") }
+  scope :search, -> (search) { where("name like ? OR aliases like ?", "%#{search}%", "%#{search}%") }
   scope :adult, -> (adult) { where(has_adult_content: adult) }
   scope :game, -> (game) { where(game_id: game) }
   scope :category, -> (category) { where("primary_category_id=? OR secondary_category_id=?", "#{category}%", "#{category}%") }
