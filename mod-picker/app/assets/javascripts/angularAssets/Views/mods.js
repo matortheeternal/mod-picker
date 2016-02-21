@@ -229,7 +229,11 @@ function generateDateSteps(minDate) {
 
     // hours
     for (i = 0; (c.getTime() > minValue) && (i < 23); i++) {
-        array.unshift((i + 1) + " hours ago");
+        if (i == 0) {
+            array.unshift("1 hour ago");
+        } else {
+            array.unshift((i + 1) + " hours ago");
+        }
         c.setHours(c.getHours() - 1);
     }
 
