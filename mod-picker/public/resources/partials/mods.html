@@ -74,7 +74,7 @@
                           rz-slider-high="slViews.maxValue"
                           rz-slider-options="slViews.options"></rzslider>
             </div>
-            <div id="nexus-mods-ext-filters" class="filter-section">
+            <div ng-show="nm_visible" id="nexus-mods-ext-filters" class="filter-section">
                 <h4>Posts Count</h4>
                 <rzslider rz-slider-model="slPosts.minValue"
                           rz-slider-high="slPosts.maxValue"
@@ -100,32 +100,43 @@
                           rz-slider-high="slArticles.maxValue"
                           rz-slider-options="slArticles.options"></rzslider>
             </div>
+            <a class="expand" ng-click="nm_toggle()">{{ nm_visible ? 'Show less' : 'Show more...' }}</a>
         </div>
         <div id="mod-picker-filters" class="filter-section">
             <h3>Mod Picker Filters</h3>
             <div id="mod-picker-stat-filters" class="filter-section">
                 <h4>Reputation</h4>
-                ~range-slider
+                <rzslider rz-slider-model="slReputation.minValue"
+                          rz-slider-high="slReputation.maxValue"
+                          rz-slider-options="slReputation.options"></rzslider>
 
                 <h4>Average Rating</h4>
-                ~range-slider
+                <rzslider rz-slider-model="slRating.minValue"
+                          rz-slider-high="slRating.maxValue"
+                          rz-slider-options="slRating.options"></rzslider>
 
                 <h4>Reviews Count</h4>
-                ~range-slider
+                <rzslider rz-slider-model="slReviews.minValue"
+                          rz-slider-high="slReviews.maxValue"
+                          rz-slider-options="slReviews.options"></rzslider>
 
                 <h4>Number of Stars</h4>
-                ~range-slider
+                <rzslider rz-slider-model="slStars.minValue"
+                          rz-slider-high="slStars.maxValue"
+                          rz-slider-options="slStars.options"></rzslider>
             </div>
-            <div id="mod-picker-ext-filters" class="filter-section">
-                <h4>Compatibility Note Count</h4>
-                ~range-slider
+            <div ng-show="mp_visible" id="mod-picker-ext-filters" class="filter-section">
+                <h4>Compatibility Notes Count</h4>
+                <rzslider rz-slider-model="slCnotes.minValue"
+                          rz-slider-high="slCnotes.maxValue"
+                          rz-slider-options="slCnotes.options"></rzslider>
 
-                <h4>Installation Note Count</h4>
-                ~range-slider
-
-                <h4>Comments Count</h4>
-                ~range-slider
+                <h4>Installation Notes Count</h4>
+                <rzslider rz-slider-model="slInotes.minValue"
+                          rz-slider-high="slInotes.maxValue"
+                          rz-slider-options="slInotes.options"></rzslider>
             </div>
+            <a class="expand" ng-click="mp_toggle()">{{ mp_visible ? 'Show less' : 'Show more...' }}</a>
         </div>
     </div>
     <div class="right-column">

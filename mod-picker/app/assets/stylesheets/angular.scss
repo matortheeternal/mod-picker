@@ -193,6 +193,13 @@ a.strong {
     font-weight: 600;
 }
 
+a.expand {
+    display: block;
+    padding-top: 16px;
+    cursor: pointer;
+    font-size: 12px;
+}
+
 a:hover {
     color: $link_hover_color_secondary;
 }
