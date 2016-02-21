@@ -6,7 +6,7 @@ class User < ActiveRecord::Base
   devise :database_authenticatable, :registerable, :confirmable,
          :recoverable, :rememberable, :trackable, :validatable
 
-  scope :search, -> (search) { where("username like ?", "%#{search}%") }
+  scope :search, -> (search) { joins(:bio).where("username like ? OR nexus_username like ? OR lover_username like ? OR steam_username like ?", "#{search}%", "#{search}%", "#{search}%", "#{search}%") }
   scope :joined, -> (low, high) { where(joined: (low..high)) }
   # scope :last_seen, -> (low, high) { where(last_seen: (low..high)) }
   scope :level, -> (hash) { where(user_level: hash) }
