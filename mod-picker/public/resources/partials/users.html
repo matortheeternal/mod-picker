@@ -11,10 +11,14 @@
         <div id="date-filters" class="filter-section">
             <h3>Date Filters</h3>
             <h4>Date Joined</h4>
-            ~range-slider
+            <rzslider rz-slider-model="slJoined.minValue"
+                      rz-slider-high="slJoined.maxValue"
+                      rz-slider-options="dateSlider.options"></rzslider>
 
             <h4>Date Last Seen</h4>
-            ~range-slider
+            <rzslider rz-slider-model="slLastSeen.minValue"
+                      rz-slider-high="slLastSeen.maxValue"
+                      rz-slider-options="dateSlider.options"></rzslider>
         </div>
         <div id="user-level-filters" class="filter-section">
             <h3>User Level</h3>
@@ -50,25 +54,39 @@
         <div id="stat-filters" class="filter-section">
             <h3>Stats</h3>
             <h4>Reputation</h4>
-            ~range-slider
+            <rzslider rz-slider-model="slReputation.minValue"
+                      rz-slider-high="slReputation.maxValue"
+                      rz-slider-options="slReputation.options"></rzslider>
 
             <h4>Authored Mods</h4>
-            ~range-slider
+            <rzslider rz-slider-model="slMods.minValue"
+                      rz-slider-high="slMods.maxValue"
+                      rz-slider-options="slMods.options"></rzslider>
 
             <h4>Compatibility Notes</h4>
-            ~range-slider
+            <rzslider rz-slider-model="slCompatibilityNotes.minValue"
+                      rz-slider-high="slCompatibilityNotes.maxValue"
+                      rz-slider-options="slCompatibilityNotes.options"></rzslider>
 
             <h4>Installation Notes</h4>
-            ~range-slider
+            <rzslider rz-slider-model="slInstallationNotes.minValue"
+                      rz-slider-high="slInstallationNotes.maxValue"
+                      rz-slider-options="slInstallationNotes.options"></rzslider>
 
             <h4>Incorrect Notes</h4>
-            ~range-slider
+            <rzslider rz-slider-model="slIncorrectNotes.minValue"
+                      rz-slider-high="slIncorrectNotes.maxValue"
+                      rz-slider-options="slIncorrectNotes.options"></rzslider>
 
             <h4>Comments</h4>
-            ~range-slider
+            <rzslider rz-slider-model="slComments.minValue"
+                      rz-slider-high="slComments.maxValue"
+                      rz-slider-options="slComments.options"></rzslider>
 
             <h4>Public Mod Lists</h4>
-            ~range-slider
+            <rzslider rz-slider-model="slModLists.minValue"
+                      rz-slider-high="slModLists.maxValue"
+                      rz-slider-options="slModLists.options"></rzslider>
         </div>
     </div>
     <div class="right-column">
