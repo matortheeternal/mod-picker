@@ -23,6 +23,7 @@ modpicker.js
 angular.min.js
 angular-route.min.js
 bootstrap.min.js
+rzslider.js
 heartcode-canvasloader-min.js
 jquery.countdown.min.js
 jquery.nicescroll.min.js
