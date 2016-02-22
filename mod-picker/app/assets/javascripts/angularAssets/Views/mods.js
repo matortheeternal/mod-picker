@@ -7,7 +7,7 @@ app.config(['$routeProvider', function ($routeProvider) {
     );
 }]);
 
-app.controller('modsController', function ($scope, $q, backend) {
+app.controller('modsController', function ($scope, $q, modService) {
     $scope.loading = true;
 
     /* visibility of extended filters */
@@ -197,7 +197,7 @@ app.controller('modsController', function ($scope, $q, backend) {
     };
 
     /* data */
-    backend.retrieveMods().then(function (data) {
+    modService.retrieveMods().then(function (data) {
         $scope.mods = data;
         $scope.loading = false;
     });

@@ -481,9 +481,9 @@ select.stealthy.ng-pristine {
 }
 
 .userGeneratedList .entry {
-    border: solid 2px #0a2439;
+    border: solid 2px $secondary_background;
     padding: 10px;
-    background-color: #1d1d20;
+    background-color: $primary_background;
 }
 
 .expandableTitle {
