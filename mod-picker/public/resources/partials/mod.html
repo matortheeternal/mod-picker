@@ -1,5 +1,4 @@
-<loader condition="loading"></loader>
-<div ng-show="!loading">
+<loader data="mod">
     <div class="modHeader">
         <h1>{{mod.name}}</h1>
         <span>implement stars here</span> <span><a ng-click="showReviews()">{{mod.reviews.length}} reviews</a></span>
@@ -21,4 +20,4 @@
             <user-generated-list data="mod.reviews"></user-generated-list>
         </expandable>
     </div>
-</div>
+</loader>

@@ -1,34 +1,40 @@
-<div ng-show="data">
-    <table>
-        <tr>
-            <th>Mod Name</th>
-            <th>Version</th>
-            <th>Authors</th>
-            <th>Endorsements</th>
-            <th>Unique DLs</th>
-            <th class="hidden">Total DLs</th>
-            <th class="hidden">Views</th>
-            <th class="hidden">Posts Count</th>
-            <th class="hidden">Videos Count</th>
-            <th class="hidden">Images Count</th>
-            <th class="hidden">Files Count</th>
-            <th class="hidden">Released</th>
-            <th>Updated</th>
-        </tr>
-        <tr ng-repeat="mod in data">
-            <td><a class="strong" ng-href="#/mod/{{mod.id}}">{{mod.name}}</a></td>
-            <td>{{mod.mod_versions[mod.mod_versions.length - 1].version}}</td>
-            <td>{{mod.nexus_info.authors}}</td>
-            <td>{{mod.nexus_info.endorsements.toLocaleString()}}</td>
-            <td>{{mod.nexus_info.unique_downloads.toLocaleString()}}</td>
-            <td class="hidden">{{mod.nexus_info.total_downloads.toLocaleString()}}</td>
-            <td class="hidden">{{mod.nexus_info.views.toLocaleString()}}</td>
-            <td class="hidden">{{mod.nexus_info.posts_count.toLocaleString()}}</td>
-            <td class="hidden">{{mod.nexus_info.videos_count.toLocaleString()}}</td>
-            <td class="hidden">{{mod.nexus_info.images_count.toLocaleString()}}</td>
-            <td class="hidden">{{mod.nexus_info.files_count.toLocaleString()}}</td>
-            <td class="hidden">{{mod.nexus_info.date_released | date }}</td>
-            <td>{{mod.nexus_info.date_updated | date }}</td>
-        </tr>
-    </table>
-</div>
+<loader data="data">
+    <div class="modlist">
+        <table>
+            <thead>
+                <tr>
+                    <th><span>Mod Name</span></th>
+                    <th><span>Version</span></th>
+                    <th><span>Authors</span></th>
+                    <th><span>Endorsements</span></th>
+                    <th><span>Unique DLs</span></th>
+                    <th class="hidden"><span>Total DLs</span></th>
+                    <th class="hidden"><span>Views</span></th>
+                    <th class="hidden"><span>Posts Count</span></th>
+                    <th class="hidden"><span>Videos Count</span></th>
+                    <th class="hidden"><span>Images Count</span></th>
+                    <th class="hidden"><span>Files Count</span></th>
+                    <th class="hidden"><span>Released</span></th>
+                    <th><span>Updated</span></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="mod in data" ng-click="navigate(mod)">
+                    <td><span class="strong modListName" >{{mod.name}}</span></td>
+                    <td><span>{{mod.mod_versions[mod.mod_versions.length - 1].version}}</span></td>
+                    <td><span>{{mod.nexus_info.authors}}</span></td>
+                    <td><span>{{mod.nexus_info.endorsements.toLocaleString()}}</span></td>
+                    <td><span>{{mod.nexus_info.unique_downloads.toLocaleString()}}</span></td>
+                    <td class="hidden"><span>{{mod.nexus_info.total_downloads.toLocaleString()}}</span></td>
+                    <td class="hidden"><span>{{mod.nexus_info.views.toLocaleString()}}</span></td>
+                    <td class="hidden"><span>{{mod.nexus_info.posts_count.toLocaleString()}}</span></td>
+                    <td class="hidden"><span>{{mod.nexus_info.videos_count.toLocaleString()}}</span></td>
+                    <td class="hidden"><span>{{mod.nexus_info.images_count.toLocaleString()}}</span></td>
+                    <td class="hidden"><span>{{mod.nexus_info.files_count.toLocaleString()}}</span></td>
+                    <td class="hidden"><span>{{mod.nexus_info.date_released | date }}</span></td>
+                    <td><span>{{mod.nexus_info.date_updated | date }}</span></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</loader>

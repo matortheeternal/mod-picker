@@ -16,7 +16,6 @@ app.controller('searchInputController', function ($scope, $location) {
     $scope.loading = false;
     $scope.processSearch = function () {
         $scope.loading = true;
-        //$location.search('s', $scope.search.name);
         setTimeout(function () {
             $scope.loading = false;
             $scope.$apply();
