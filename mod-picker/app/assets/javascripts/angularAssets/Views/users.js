@@ -7,7 +7,7 @@ app.config(['$routeProvider', function ($routeProvider) {
     );
 }]);
 
-app.controller('usersController', function ($scope, $q, backend) {
+app.controller('usersController', function ($scope, $q, backend, sliderFactory) {
     $scope.loading = true;
 
     /* slider prototypes */
@@ -16,7 +16,7 @@ app.controller('usersController', function ($scope, $q, backend) {
         options: {
             hideLimitLabels: true,
             noSwitching: true,
-            stepsArray: generateDateSteps(start)
+            stepsArray: sliderFactory.generateDateSteps(start)
         }
     };
 
@@ -37,7 +37,7 @@ app.controller('usersController', function ($scope, $q, backend) {
         options: {
             hideLimitLabels: true,
             noSwitching: true,
-            stepsArray: generateSteps(5, 5000)
+            stepsArray: sliderFactory.generateSteps(5, 5000)
         }
     };
     $scope.slMods = {
@@ -56,7 +56,7 @@ app.controller('usersController', function ($scope, $q, backend) {
         options: {
             hideLimitLabels: true,
             noSwitching: true,
-            stepsArray: generateSteps(1, 500)
+            stepsArray: sliderFactory.generateSteps(1, 500)
         }
     };
     $scope.slInstallationNotes = {
@@ -65,7 +65,7 @@ app.controller('usersController', function ($scope, $q, backend) {
         options: {
             hideLimitLabels: true,
             noSwitching: true,
-            stepsArray: generateSteps(1, 500)
+            stepsArray: sliderFactory.generateSteps(1, 500)
         }
     };
     $scope.slIncorrectNotes = {
@@ -74,7 +74,7 @@ app.controller('usersController', function ($scope, $q, backend) {
         options: {
             hideLimitLabels: true,
             noSwitching: true,
-            stepsArray: generateSteps(1, 500)
+            stepsArray: sliderFactory.generateSteps(1, 500)
         }
     };
     $scope.slComments = {
@@ -83,7 +83,7 @@ app.controller('usersController', function ($scope, $q, backend) {
         options: {
             hideLimitLabels: true,
             noSwitching: true,
-            stepsArray: generateSteps(1, 500)
+            stepsArray: sliderFactory.generateSteps(1, 500)
         }
     };
     $scope.slModLists = {

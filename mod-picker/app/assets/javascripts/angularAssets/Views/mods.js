@@ -7,7 +7,7 @@ app.config(['$routeProvider', function ($routeProvider) {
     );
 }]);
 
-app.controller('modsController', function ($scope, $q, modService) {
+app.controller('modsController', function ($scope, $q, modService, sliderFactory) {
     $scope.loading = true;
 
     /* visibility of extended filters */
@@ -33,7 +33,7 @@ app.controller('modsController', function ($scope, $q, modService) {
         options: {
             hideLimitLabels: true,
             noSwitching: true,
-            stepsArray: generateDateSteps(start)
+            stepsArray: sliderFactory.generateDateSteps(start)
         }
     };
 
@@ -54,7 +54,7 @@ app.controller('modsController', function ($scope, $q, modService) {
         options: {
             noSwitching: true,
             hideLimitLabels: true,
-            stepsArray: generateSteps(5, 500000)
+            stepsArray: sliderFactory.generateSteps(5, 500000)
         }
     };
     $scope.slUniqueDownloads = {
@@ -63,7 +63,7 @@ app.controller('modsController', function ($scope, $q, modService) {
         options: {
             noSwitching: true,
             hideLimitLabels: true,
-            stepsArray: generateSteps(50, 10000000)
+            stepsArray: sliderFactory.generateSteps(50, 10000000)
         }
     };
     $scope.slTotalDownloads = {
@@ -72,7 +72,7 @@ app.controller('modsController', function ($scope, $q, modService) {
         options: {
             noSwitching: true,
             hideLimitLabels: true,
-            stepsArray: generateSteps(100, 50000000)
+            stepsArray: sliderFactory.generateSteps(100, 50000000)
         }
     };
     $scope.slViews = {
@@ -81,7 +81,7 @@ app.controller('modsController', function ($scope, $q, modService) {
         options: {
             noSwitching: true,
             hideLimitLabels: true,
-            stepsArray: generateSteps(100, 50000000)
+            stepsArray: sliderFactory.generateSteps(100, 50000000)
         }
     };
     $scope.slPosts = {
@@ -92,7 +92,7 @@ app.controller('modsController', function ($scope, $q, modService) {
             ceil: 100,
             noSwitching: true,
             hideLimitLabels: true,
-            stepsArray: generateSteps(5, 50000)
+            stepsArray: sliderFactory.generateSteps(5, 50000)
         }
     };
     $scope.slVideos = {
@@ -111,7 +111,7 @@ app.controller('modsController', function ($scope, $q, modService) {
         options: {
             noSwitching: true,
             hideLimitLabels: true,
-            stepsArray: generateSteps(1, 1000)
+            stepsArray: sliderFactory.generateSteps(1, 1000)
         }
     };
     $scope.slFiles = {
@@ -172,7 +172,7 @@ app.controller('modsController', function ($scope, $q, modService) {
         options: {
             noSwitching: true,
             hideLimitLabels: true,
-            stepsArray: generateSteps(1, 1000)
+            stepsArray: sliderFactory.generateSteps(1, 1000)
         }
     };
     $scope.slCnotes = {

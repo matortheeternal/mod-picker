@@ -7,7 +7,7 @@ app.config(['$routeProvider', function ($routeProvider) {
     );
 }]);
 
-app.controller('reviewsController', function ($scope, $q, backend) {
+app.controller('reviewsController', function ($scope, $q, backend, sliderFactory) {
     $scope.loading = true;
 
     /* slider prototypes */
@@ -16,7 +16,7 @@ app.controller('reviewsController', function ($scope, $q, backend) {
         options: {
             hideLimitLabels: true,
             noSwitching: true,
-            stepsArray: generateDateSteps(start)
+            stepsArray: sliderFactory.generateDateSteps(start)
         }
     };
 
@@ -47,7 +47,7 @@ app.controller('reviewsController', function ($scope, $q, backend) {
         options: {
             hideLimitLabels: true,
             noSwitching: true,
-            stepsArray: generateSteps(1, 500)
+            stepsArray: sliderFactory.generateSteps(1, 500)
         }
     };
 
