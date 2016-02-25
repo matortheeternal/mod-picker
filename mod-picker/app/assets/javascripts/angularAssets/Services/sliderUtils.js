@@ -1,10 +1,10 @@
-app.factory('sliderFactory', function () {
+app.service('sliderFactory', function () {
 
     function isPowerOfTen(val) {
         return (Math.log10(val) % 1) == 0;
     }
 
-    function generateSteps(initialSpacing, maxValue) {
+    this.generateSteps = function(initialSpacing, maxValue) {
         var array = [0];
         var c = 0;
         var spacing = initialSpacing;
@@ -23,9 +23,9 @@ app.factory('sliderFactory', function () {
         // set last value to max value
         array[array.length - 1] = maxValue;
         return array;
-    }
+    };
 
-    function generateDateSteps(minDate) {
+    this.generateDateSteps = function(minDate) {
         var c = new Date();
         var array = ["Now"];
         var minValue = minDate.getTime();
@@ -73,10 +73,5 @@ app.factory('sliderFactory', function () {
         // set first date to min date
         array[0] = minDate.toLocaleDateString();
         return array;
-    }
-
-    return {
-        generateSteps: generateSteps,
-        generateDateSteps: generateDateSteps
-    }
+    };
 });
