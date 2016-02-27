@@ -8,9 +8,6 @@ app.config(['$routeProvider', function ($routeProvider) {
 }]);
 
 app.controller('usersController', function ($scope, $q, backend, sliderFactory) {
-    $scope.loading = true;
-
-
     ///* data */
     //backend.retrieveUsers().then(function (data) {
     //    $scope.users = data;

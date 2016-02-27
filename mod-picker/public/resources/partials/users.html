@@ -74,7 +74,8 @@
     </div>
     <div class="right-column">
         <h2>Users</h2>
-        <user-results data="users"></user-results>
+        <loader data="users">
+            <user-results data="users"></user-results>
+        </loader>
     </div>
 </div>
-<loader condition="loading"></loader>
