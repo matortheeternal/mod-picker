@@ -8,11 +8,5 @@ app.config(['$routeProvider', function ($routeProvider) {
 }]);
 
 app.controller('inotesController', function ($scope, $q, backend, sliderFactory) {
-    $scope.loading = true;
-
-    /* data */
-    //backend.retrieveInstallationNotes().then(function (data) {
-    //    $scope.inotes = data;
-    //    $scope.loading = false;
-    //});
+    //TODO: implement dataListLoader
 });

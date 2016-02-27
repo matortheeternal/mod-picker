@@ -22,11 +22,16 @@ app.controller('categoryPickerController', function ($scope, categoryService) {
     $scope.$watch('model.mainCategoryId', function (mainCategoryId) {
         if(mainCategoryId) {
             categoryService.retrieveSecondaryCategory(mainCategoryId).then(function (data) {
+                data.forEach(function (entry) {
+                    entry.name = entry.name.split('- ')[1];
+                });
                 $scope.subCategories = data;
             })
         } else {
             $scope.subCategories = undefined;
-            $scope.model.subCategoryId = '';
+            if($scope.model) {
+                delete $scope.model.subCategoryId;
+            }
         }
     });
 });
