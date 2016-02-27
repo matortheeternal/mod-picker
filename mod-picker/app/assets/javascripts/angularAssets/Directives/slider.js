@@ -7,16 +7,18 @@ app.directive('slider', function () {
         controller: 'sliderController',
         scope: {
             data: '=',
-            min: '=',
-            max: '=',
-            options: '='
+            type: '@',
+            attr: '@'
         }
     }
 });
 
-app.controller('sliderController', function ($scope) {
-    $scope.data = {
-        minValue: $scope.min,
-        maxValue: $scope.max
+app.controller('sliderController', function ($scope, sliderOptionsFactory, $timeout) {
+    if (typeof sliderOptionsFactory[$scope.type]=== "function") {
+        $scope.options = sliderOptionsFactory[$scope.type]($scope.attr);
     }
+    $scope.data = {
+        minValue: $scope.options.min || 0,
+        maxValue: $scope.options.max
+    };
 });

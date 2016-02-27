@@ -31,14 +31,10 @@
         <div id="date-filters" class="filter-section">
             <h3>Date Filters</h3>
             <h4>Date Submitted</h4>
-            <rzslider rz-slider-model="slSubmitted.minValue"
-                      rz-slider-high="slSubmitted.maxValue"
-                      rz-slider-options="dateSlider.options"></rzslider>
+            <slider data="data.dateSubmitted" type="UserGeneratedListDateSlider"></slider>
 
             <h4>Date Edited</h4>
-            <rzslider rz-slider-model="slEdited.minValue"
-                      rz-slider-high="slEdited.maxValue"
-                      rz-slider-options="dateSlider.options"></rzslider>
+            <slider data="data.dateEdited" type="UserGeneratedListDateSlider"></slider>
         </div>
         <div id="type-filters" class="filter-section">
             <h3>Type</h3>
@@ -88,9 +84,7 @@
         </div>
         <div id="helpfulness-filter" class="filter-section">
             <h3>Helpfulness</h3>
-            <rzslider rz-slider-model="slHelpfulness.minValue"
-                      rz-slider-high="slHelpfulness.maxValue"
-                      rz-slider-options="slHelpfulness.options"></rzslider>
+            <slider data="data.helpfulness" type="StepSlider" attr="500"></slider>
         </div>
     </div>
     <div class="right-column">

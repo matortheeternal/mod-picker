@@ -11,14 +11,10 @@
         <div id="date-filters" class="filter-section">
             <h3>Date Filters</h3>
             <h4>Date Joined</h4>
-            <rzslider rz-slider-model="slJoined.minValue"
-                      rz-slider-high="slJoined.maxValue"
-                      rz-slider-options="dateSlider.options"></rzslider>
+            <slider data="data.joined" type="UserGeneratedListDateSlider"></slider>
 
             <h4>Date Last Seen</h4>
-            <rzslider rz-slider-model="slLastSeen.minValue"
-                      rz-slider-high="slLastSeen.maxValue"
-                      rz-slider-options="dateSlider.options"></rzslider>
+            <slider data="data.lastSeen" type="UserGeneratedListDateSlider"></slider>
         </div>
         <div id="user-level-filters" class="filter-section">
             <h3>User Level</h3>
@@ -54,39 +50,26 @@
         <div id="stat-filters" class="filter-section">
             <h3>Stats</h3>
             <h4>Reputation</h4>
-            <rzslider rz-slider-model="slReputation.minValue"
-                      rz-slider-high="slReputation.maxValue"
-                      rz-slider-options="slReputation.options"></rzslider>
+            <slider data="data.reputation" type="StepSlider" attr="5000"></slider>
 
             <h4>Authored Mods</h4>
-            <rzslider rz-slider-model="slMods.minValue"
-                      rz-slider-high="slMods.maxValue"
-                      rz-slider-options="slMods.options"></rzslider>
+            <slider data="data.mods" type="CeilSlider" attr="100"></slider>
 
             <h4>Compatibility Notes</h4>
-            <rzslider rz-slider-model="slCompatibilityNotes.minValue"
-                      rz-slider-high="slCompatibilityNotes.maxValue"
-                      rz-slider-options="slCompatibilityNotes.options"></rzslider>
+            <slider data="data.compatibilityNotes" type="StepSlider" attr="500"></slider>
 
             <h4>Installation Notes</h4>
-            <rzslider rz-slider-model="slInstallationNotes.minValue"
-                      rz-slider-high="slInstallationNotes.maxValue"
-                      rz-slider-options="slInstallationNotes.options"></rzslider>
+            <slider data="data.installationNotes" type="StepSlider" attr="500"></slider>
 
             <h4>Incorrect Notes</h4>
-            <rzslider rz-slider-model="slIncorrectNotes.minValue"
-                      rz-slider-high="slIncorrectNotes.maxValue"
-                      rz-slider-options="slIncorrectNotes.options"></rzslider>
+            <slider data="data.incorrectNotes" type="StepSlider" attr="500"></slider>
 
             <h4>Comments</h4>
-            <rzslider rz-slider-model="slComments.minValue"
-                      rz-slider-high="slComments.maxValue"
-                      rz-slider-options="slComments.options"></rzslider>
+
+            <slider data="data.comments" type="StepSlider" attr="500"></slider>
 
             <h4>Public Mod Lists</h4>
-            <rzslider rz-slider-model="slModLists.minValue"
-                      rz-slider-high="slModLists.maxValue"
-                      rz-slider-options="slModLists.options"></rzslider>
+            <slider data="data.modLists" type="CeilSlider" attr="100"></slider>
         </div>
     </div>
     <div class="right-column">

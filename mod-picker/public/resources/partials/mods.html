@@ -42,101 +42,65 @@
         <div id="date-filters" class="filter-section">
             <h3>Date Filters</h3>
             <h4>Date Updated</h4>
-            <rzslider rz-slider-model="slUpdated.minValue"
-                      rz-slider-high="slUpdated.maxValue"
-                      rz-slider-options="dateSlider.options"></rzslider>
+            <slider data="data.updated" type="ModListDateSlider"></slider>
 
             <h4>Date Released</h4>
-            <rzslider rz-slider-model="slReleased.minValue"
-                      rz-slider-high="slReleased.maxValue"
-                      rz-slider-options="dateSlider.options"></rzslider>
+            <slider data="data.updated" type="ModListDateSlider"></slider>
         </div>
         <div id="mod-picker-filters" class="filter-section">
             <h3>Mod Picker Filters</h3>
             <div id="mod-picker-stat-filters" class="filter-section">
                 <h4>Reputation</h4>
-                <rzslider rz-slider-model="slReputation.minValue"
-                          rz-slider-high="slReputation.maxValue"
-                          rz-slider-options="slReputation.options"></rzslider>
+                <slider data="data.reputation" type="CeilSlider" attr="450"></slider>
 
                 <h4>Average Rating</h4>
-                <rzslider rz-slider-model="slRating.minValue"
-                          rz-slider-high="slRating.maxValue"
-                          rz-slider-options="slRating.options"></rzslider>
+                <slider data="data.rating" type="CeilSlider" attr="100"></slider>
 
                 <h4>Reviews Count</h4>
-                <rzslider rz-slider-model="slReviews.minValue"
-                          rz-slider-high="slReviews.maxValue"
-                          rz-slider-options="slReviews.options"></rzslider>
+                <slider data="data.reviews" type="CeilSlider" attr="200"></slider>
             </div>
-            <div ng-show="mp_visible" id="mod-picker-ext-filters" class="filter-section">
+            <div id="mod-picker-ext-filters" class="filter-section">
                 <h4>Number of Stars</h4>
-                <rzslider rz-slider-model="slStars.minValue"
-                          rz-slider-high="slStars.maxValue"
-                          rz-slider-options="slStars.options"></rzslider>
+                <slider data="data.stars" type="StepSlider" attr="1000"></slider>
 
                 <h4>Compatibility Notes Count</h4>
-                <rzslider rz-slider-model="slCnotes.minValue"
-                          rz-slider-high="slCnotes.maxValue"
-                          rz-slider-options="slCnotes.options"></rzslider>
+                <slider data="data.cNotes" type="CeilSlider" attr="100"></slider>
 
                 <h4>Installation Notes Count</h4>
-                <rzslider rz-slider-model="slInotes.minValue"
-                          rz-slider-high="slInotes.maxValue"
-                          rz-slider-options="slInotes.options"></rzslider>
+                <slider data="data.iNotes" type="CeilSlider" attr="100"></slider>
             </div>
-            <a class="expand" ng-click="mp_toggle()">{{ mp_visible ? 'Show less' : 'Show more...' }}</a>
         </div>
         <div id="nexus-mods-filters" class="filter-sections">
             <h3>Nexus Mods Filters</h3>
             <div id="nexus-mods-stat-filters" class="filter-section">
                 <h4>Endorsements</h4>
-                <rzslider rz-slider-model="slEndorsements.minValue"
-                          rz-slider-high="slEndorsements.maxValue"
-                          rz-slider-options="slEndorsements.options"></rzslider>
+                <slider data="data.endorsements" type="StepSlider" attr="500000"></slider>
 
                 <h4>Unique Downloads</h4>
-                <rzslider rz-slider-model="slUniqueDownloads.minValue"
-                          rz-slider-high="slUniqueDownloads.maxValue"
-                          rz-slider-options="slUniqueDownloads.options"></rzslider>
+                <slider data="data.uniqueDownloads" type="StepSlider" attr="10000000"></slider>
 
                 <h4>Total Downloads</h4>
-                <rzslider rz-slider-model="slTotalDownloads.minValue"
-                          rz-slider-high="slTotalDownloads.maxValue"
-                          rz-slider-options="slTotalDownloads.options"></rzslider>
+                <slider data="data.totalDownloads" type="StepSlider" attr="50000000"></slider>
             </div>
-            <div ng-show="nm_visible" id="nexus-mods-ext-filters" class="filter-section">
+            <div id="nexus-mods-ext-filters" class="filter-section">
                 <h4>Views</h4>
-                <rzslider rz-slider-model="slViews.minValue"
-                          rz-slider-high="slViews.maxValue"
-                          rz-slider-options="slViews.options"></rzslider>
+                <slider data="data.views" type="StepSlider" attr="50000000"></slider>
 
                 <h4>Posts Count</h4>
-                <rzslider rz-slider-model="slPosts.minValue"
-                          rz-slider-high="slPosts.maxValue"
-                          rz-slider-options="slPosts.options"></rzslider>
+                <slider data="data.posts" type="StepSlider" attr="500000"></slider>
 
                 <h4>Videos Count</h4>
-                <rzslider rz-slider-model="slVideos.minValue"
-                          rz-slider-high="slVideos.maxValue"
-                          rz-slider-options="slVideos.options"></rzslider>
+                <slider data="data.videos" type="CeilSlider" attr="50"></slider>
 
                 <h4>Images Count</h4>
-                <rzslider rz-slider-model="slImages.minValue"
-                          rz-slider-high="slImages.maxValue"
-                          rz-slider-options="slImages.options"></rzslider>
+                <slider data="data.images" type="StepSlider" attr="1000"></slider>
 
                 <h4>Files Count</h4>
-                <rzslider rz-slider-model="slFiles.minValue"
-                          rz-slider-high="slFiles.maxValue"
-                          rz-slider-options="slFiles.options"></rzslider>
+                <slider data="data.files" type="CeilSlider" attr="200"></slider>
 
                 <h4>Articles Count</h4>
-                <rzslider rz-slider-model="slArticles.minValue"
-                          rz-slider-high="slArticles.maxValue"
-                          rz-slider-options="slArticles.options"></rzslider>
+                <slider data="data.articles" type="CeilSlider" attr="50"></slider>
             </div>
-            <a class="expand" ng-click="nm_toggle()">{{ nm_visible ? 'Show less' : 'Show more...' }}</a>
         </div>
     </div>
     <div class="right-column">

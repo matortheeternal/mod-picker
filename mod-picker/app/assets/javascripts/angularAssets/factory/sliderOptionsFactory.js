@@ -10,15 +10,19 @@ app.service('sliderOptionsFactory', function (sliderFactory) {
                 noSwitching: true
             }
         };
-        extend(options);
+        if(typeof extend === 'function') {
+            extend(options);
+        }
 
         return options;
     };
 
-    this.BaseRangeSlider = function (maxValue, extend) {
+    this.BaseRangeSlider = function (max, extend) {
         return this.BaseSlider(function (options) {
-            options.maxValue = maxValue;
-            extend(options);
+            options.max = max;
+            if(typeof extend === 'function') {
+                extend(options);
+            }
         });
     };
 
@@ -26,22 +30,24 @@ app.service('sliderOptionsFactory', function (sliderFactory) {
         return this.BaseRangeSlider(ceil, function(options) {
             options.options.floor = 0;
             options.options.ceil = ceil;
-            extend(options);
+            if(typeof extend === 'function') {
+                extend(options);
+            }
         });
     };
 
     this.BaseStepsSlider = function(steps) {
-        return this.BaseRangeSlider(steps.length, function (options) {
+        return this.BaseRangeSlider(steps.length-1, function (options) {
             options.options.stepsArray = steps;
-        })
+        });
     };
 
     this.DateSlider = function(start) {
-        return this.BaseStepsSlider(sliderFactory.generateDateSteps(start))
+        return this.BaseStepsSlider(sliderFactory.generateDateSteps(start));
     };
 
-    this.StepSlider = function (from, to) {
-        return this.BaseStepsSlider(sliderFactory.generateSteps(from, to))
+    this.StepSlider = function (to) {
+        return this.BaseStepsSlider(sliderFactory.generateSteps(1, to));
     };
 
     //TODO: make those Dates a provider.value
@@ -52,6 +58,4 @@ app.service('sliderOptionsFactory', function (sliderFactory) {
     this.ModListDateSlider = function () {
         return this.DateSlider(new Date(2011,10,11));
     };
-
-
 });
