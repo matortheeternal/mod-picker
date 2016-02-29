@@ -1,0 +1,29 @@
+Sources
+Nexus Mods
+
+--
+Scraped Nexus info
+--
+
+Game: ~Combobox
+
+Name: 
+~INPUT~
+
+Aliases: 
+~INPUT~
+
+
+~CHECKBOX~ Is an external utility
+~CHECKBOX~ Has adult content
+
+
+Category selection checkbox tree
+- Show category descriptions on mouseover
+- example mods
+- category hierarchy logic
+
+
+Mod folder/archive analysis (client side)
+Plugin upload
+
