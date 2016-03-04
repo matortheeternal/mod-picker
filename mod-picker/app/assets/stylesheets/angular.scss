@@ -131,26 +131,6 @@ body {
     margin: 0;
     background-color: $primary_background;
     background: linear-gradient(90deg, $secondary_background 50%, $primary_background 50%);
-
-    //make things unselectable by default
-    -webkit-user-select: none; /* Chrome/Safari */
-    -moz-user-select: none; /* Firefox */
-    -ms-user-select: none; /* IE10+ */
-
-    /* Rules below not implemented in browsers yet */
-    -o-user-select: none;
-    user-select: none;
-}
-
-.selectable {
-    //overwrite selectable things
-    -webkit-user-select: text; /* Chrome/Safari */
-    -moz-user-select: text; /* Firefox */
-    -ms-user-select: text; /* IE10+ */
-
-    /* Rules below not implemented in browsers yet */
-    -o-user-select: text;
-    user-select: text;
 }
 
 ::-webkit-scrollbar {
@@ -461,18 +441,10 @@ ul.hmenu li {
 
 .right-column tbody tr:nth-child(odd) {
     background-color: $secondary_background;
-
-    &:hover td {
-        background-color: lighten($secondary_background, 10%);
-    }
 }
 
 .right-column tbody tr:nth-child(even) {
     background-color: $primary_background;
-
-    &:hover td {
-        background-color: lighten($primary_background, 10%);
-    }
 }
 
 select.stealthy.ng-pristine {
