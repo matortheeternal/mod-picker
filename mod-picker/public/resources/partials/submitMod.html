@@ -1,93 +1,93 @@
-<loader condition="loading"></loader>
-<div ng-hide="loading">
-    <h2>Submit Mod</h2>
-    <form name="submitModForm">
-        <h3>Sources</h3>
+<div class="column-wrapper">
+    <div class="single-column">
+        <h2>Submit Mod</h2>
+        <form name="submitModForm">
+            <h3>Sources</h3>
 
-        Nexus Mods<br/>
-        <input type="text" ng-model="nexusUrl" required>
-        <br/>
+            Nexus Mods<br/>
+            <input type="text" ng-model="nexusUrl" required>
+            <br/>
 
-        <input type="button" ng-disabled='$sourcesInvalid' ng-click="scrape()" value="Scrape">
+            <input type="button" ng-disabled='$sourcesInvalid' ng-click="scrape()" value="Scrape">
 
-        <!-- TODO: loading spinner here while scraping -->
-        <div ng-show="nexusScraped">
-            <h3>Nexus Mods Info</h3>
-            <table class="infotable">
-                <tbody>
-                    <tr>
-                        <td>Nexus ID</td>
-                        <td>{{nexus.id}}</td>
-                    </tr>
-                    <tr>
-                        <td>Mod Name</td>
-                        <td>{{nexus.modName}}</td>
-                    </tr>
-                    <tr>
-                        <td>Uploaded By</td>
-                        <td>{{nexus.uploadedBy}}</td>
-                    </tr>
-                    <tr>
-                        <td>Author</td>
-                        <td>{{nexus.author}}</td>
-                    </tr>
-                    <tr>
-                        <td>Endorsements</td>
-                        <td>{{nexus.endorsements}}</td>
-                    </tr>
-                    <tr>
-                        <td>Unique Downloads</td>
-                        <td>{{nexus.uniqueDownloads}}</td>
-                    </tr>
-                    <tr>
-                        <td>Latest Version</td>
-                        <td>{{nexus.latestVersion}}</td>
-                    </tr>
-                    <tr>
-                        <td>Date Released</td>
-                        <td>{{nexus.released}}</td>
-                    </tr>
-                    <tr>
-                        <td>Date Updated</td>
-                        <td>{{nexus.updated}}</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+            <!-- TODO: loading spinner here while scraping -->
+            <div ng-show="nexusScraped">
+                <h3>Nexus Mods Info</h3>
+                <table class="infotable">
+                    <tbody>
+                        <tr>
+                            <td>Nexus ID</td>
+                            <td>{{nexus.id}}</td>
+                        </tr>
+                        <tr>
+                            <td>Mod Name</td>
+                            <td>{{nexus.modName}}</td>
+                        </tr>
+                        <tr>
+                            <td>Uploaded By</td>
+                            <td>{{nexus.uploadedBy}}</td>
+                        </tr>
+                        <tr>
+                            <td>Author</td>
+                            <td>{{nexus.author}}</td>
+                        </tr>
+                        <tr>
+                            <td>Endorsements</td>
+                            <td>{{nexus.endorsements}}</td>
+                        </tr>
+                        <tr>
+                            <td>Unique Downloads</td>
+                            <td>{{nexus.uniqueDownloads}}</td>
+                        </tr>
+                        <tr>
+                            <td>Latest Version</td>
+                            <td>{{nexus.latestVersion}}</td>
+                        </tr>
+                        <tr>
+                            <td>Date Released</td>
+                            <td>{{nexus.released}}</td>
+                        </tr>
+                        <tr>
+                            <td>Date Updated</td>
+                            <td>{{nexus.updated}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
 
-        <h3>Categories</h3>
-        TODO: category tree
+            <h3>Categories</h3>
+            TODO: category tree
 
-        <h3>Tags</h3>
-        TODO: tag selector
+            <h3>Tags</h3>
+            TODO: tag selector
 
-        <h3>Other Options</h3>
-        <input id="kbUtility" type="checkbox" ng-model="isUtility">
-        <label for="kbUtility">Is Utility</label><br/>
+            <h3>Other Options</h3>
+            <input id="kbUtility" type="checkbox" ng-model="isUtility">
+            <label for="kbUtility">Is Utility</label><br/>
 
-        <input id="kbAdult" type="checkbox" ng-model="hasAdultContent">
-        <label for="kbAdult">Has Adult Content</label><br/>
+            <input id="kbAdult" type="checkbox" ng-model="hasAdultContent">
+            <label for="kbAdult">Has Adult Content</label><br/>
 
-        <h3>Mod Analysis</h3>
+            <h3>Mod Analysis</h3>
 
-        Archive<br/>
-        <input type="text" ng-model="archive">
-        <input type="button" ng-click="archiveBrowse()" value="Browse">
+            Archive<br/>
+            <input type="text" ng-model="archive">
+            <input type="button" ng-click="archiveBrowse()" value="Browse">
 
-        <div ng-show="archiveAnalysed">
-            <h3>Mod Asset File Analysis</h3>
-            TODO: asset file tree
-        </div>
+            <div ng-show="archiveAnalysed">
+                <h3>Mod Asset File Analysis</h3>
+                TODO: asset file tree
+            </div>
 
-        <h3>Plugins</h3>
-        TODO: plugins listing<br/>
-        <input type="button" ng-click="addPlugin()" value="Add Plugin">
+            <h3>Plugins</h3>
+            TODO: plugins listing
 
-        <span class="notice">
-            Plugin analysis will be performed by our server sometime in the next 24 hours.
-        </span>
+            <span class="notice">
+                Plugin analysis will be performed by our server sometime in the next 24 hours.
+            </span>
 
 
-        <input type="submit" ng-disabled='$invalid' ng-click="submit()" value="Submit"/>
-    </form>
+            <input type="submit" ng-disabled='$invalid' ng-click="submit()" value="Submit"/>
+        </form>
+    </div>
 </div>

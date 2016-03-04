@@ -9,4 +9,5 @@ app.config(['$routeProvider', function ($routeProvider) {
 
 app.controller('inotesController', function ($scope, $q, backend, sliderFactory) {
     //TODO: implement dataListLoader
+    useTwoColumns(true);
 });

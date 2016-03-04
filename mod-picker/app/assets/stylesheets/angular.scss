@@ -130,7 +130,6 @@ body {
     color: $text_color;
     margin: 0;
     background-color: $primary_background;
-    background: linear-gradient(90deg, $secondary_background 50%, $primary_background 50%);
 
     //make things unselectable by default
     -webkit-user-select: none; /* Chrome/Safari */
@@ -140,6 +139,10 @@ body {
     /* Rules below not implemented in browsers yet */
     -o-user-select: none;
     user-select: none;
+}
+
+.two-columns {
+  background: linear-gradient(90deg, $secondary_background 50%, $primary_background 50%);
 }
 
 .selectable {
@@ -157,31 +160,8 @@ body {
     display: none;
 }
 
-.scaffold {
-    width: 1600px;
-    margin: auto;
-}
-
 .hidden {
     display: none;
-}
-
-input[type="checkbox"] {
-    margin: 0;
-    padding: 0;
-    margin-right: 4px;
-}
-
-.field input[type="text"]{
-    width: 200px;
-}
-
-.field input[type="email"]{
-    width: 200px;
-}
-
-.field input[type="password"]{
-    width: 200px;
 }
 
 /* clearfix */
@@ -348,9 +328,15 @@ ul.hmenu li {
     margin: auto;
 }
 
+.single-column {
+  padding: 40px 0 40px 0;
+  width: 850px;
+  margin: auto;
+}
+
 .left-column {
     width: 250px;
-    padding: 46px 48px 46px 0;
+    padding: 40px 48px 40px 0;
     display: table-cell;
     vertical-align: top;
     background-color: $secondary_background;
@@ -496,4 +482,26 @@ select.stealthy.ng-pristine {
 
 .modlist tbody tr {
     cursor: pointer;
+}
+
+/* css for submit mod page */
+
+.infotable {
+  min-width: 400px;
+}
+
+input[type="checkbox"] {
+  margin: 0;
+  padding: 0;
+  margin-right: 4px;
+}
+
+input[type="text"]{
+  width: 350px;
+}
+
+.notice {
+  margin: 12px 0 12px 0;
+  display: block;
+  font-size: 14px;
 }

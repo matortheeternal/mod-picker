@@ -10,7 +10,7 @@ app.config(['$routeProvider', function ($routeProvider) {
 }]);
 
 app.controller('submitModController', function ($scope, backend) {
-
+    useTwoColumns(false);
     $scope.submit = function () {
         if ($scope.submitModForm.$valid) {
             var primaryCategoryId = $scope.primaryCategory.subCategoryId || $scope.primaryCategory.mainCategoryId;
