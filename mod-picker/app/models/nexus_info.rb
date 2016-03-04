@@ -11,10 +11,6 @@ class NexusInfo < ActiveRecord::Base
     "http://www.nexusmods.com/#{game.nexus_name}/mods/#{id}"
   end
 
-  def scrape_rate
-    1.week.to_i
-  end
-
   def nexus_date_format
     '%d/%m/%Y - %I:%M%p'
   end
@@ -47,7 +43,7 @@ class NexusInfo < ActiveRecord::Base
   end
 
   def rescrape
-    if (DateTime.now - self.last_scraped) > scrape_rate
+    if self.last_scraped < 1.week.ago
       self.scrape
     end
   end
