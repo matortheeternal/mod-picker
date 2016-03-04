@@ -30,16 +30,22 @@ class NexusInfo < ActiveRecord::Base
     self.views = doc.at_css(".file-total-views strong").text.gsub(',', '')
     self.uploaded_by = doc.at_css(".uploader a").text
 
-    # parse dates
+    # scrape dates
     dates = doc.at_css(".header-dates").css('div')
     date_added_str = dates[0].children[1].text.strip
     self.date_added = DateTime.parse(date_added_str, nexus_date_format)
     date_updated_str = dates[1].children[1].text.strip
     self.date_updated = DateTime.parse(date_updated_str, nexus_date_format)
 
-    # parse nexus category
+    # scrape nexus category
     catlink = doc.at_css(".header-cat").css('a/@href')[1].text
     self.nexus_category = /src_cat=([0-9]*)/.match(catlink).captures[0].to_i
+
+    # scrape counts
+    # TODO
+
+    # save scraped data
+    self.save!
   end
 
   def rescrape
