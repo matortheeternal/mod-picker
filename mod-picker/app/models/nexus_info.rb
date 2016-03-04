@@ -28,10 +28,10 @@ class NexusInfo < ActiveRecord::Base
     self.mod_name = doc.at_css(".header-name").text
     self.current_version = doc.at_css(".file-version strong").text
     self.authors = doc.at_css(".header-author strong").text
-    self.endorsements = doc.at_css("#span_endors_number").text
-    self.unique_downloads = doc.at_css(".file-unique-dls strong").text
-    self.total_downloads = doc.at_css(".file-total-dls strong").text
-    self.views = doc.at_css(".file-total-views strong").text
+    self.endorsements = doc.at_css("#span_endors_number").text.gsub(',', '')
+    self.unique_downloads = doc.at_css(".file-unique-dls strong").text.gsub(',', '')
+    self.total_downloads = doc.at_css(".file-total-dls strong").text.gsub(',', '')
+    self.views = doc.at_css(".file-total-views strong").text.gsub(',', '')
     self.uploaded_by = doc.at_css(".uploader a").text
 
     # parse dates
