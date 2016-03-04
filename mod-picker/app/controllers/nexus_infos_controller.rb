@@ -73,7 +73,17 @@ class NexusInfosController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_nexus_info
-      @nexus_info = NexusInfo.find(params[:id])
+      begin
+        @nexus_info = NexusInfo.find(params[:id])
+        @nexus_info.rescrape
+      rescue
+        if params.has_key?(:game_id)
+          @nexus_info = NexusInfo.create(mod_id: params[:id], game_id: params[:game_id])
+          @nexus_info.scrape
+        else
+          raise "Cannot scrape Nexus Info with no game id."
+        end
+      end
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
