@@ -1,5 +1,5 @@
 class WelcomeController < ApplicationController
   def index
-    redirect_to '/index.html'
+    render layout: "under_construction"
   end
 end

@@ -73,7 +73,7 @@ class ModVersionFilesController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_mod_version_file
-      @mod_version_file = ModVersionFile.find(params[:id])
+      @mod_version_file = ModVersionFile.find_by(mod_version_id: params[:mod_version_id], mod_asset_file_id: params[:mod_asset_file_id])
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

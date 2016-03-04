@@ -73,7 +73,7 @@ class ModListPluginsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_mod_list_plugin
-      @mod_list_plugin = ModListPlugin.find(params[:id])
+      @mod_list_plugin = ModListPlugin.find_by(mod_list_id: params[:mod_list_id], plugin_id: params[:plugin_id])
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

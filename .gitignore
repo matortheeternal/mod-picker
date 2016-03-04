@@ -71,3 +71,4 @@ mod-dump/mod-dump/Skyrim/plugins/*.esm
 spikes/PyNexusCrawler/*.jpg
 spikes/PyNexusCrawler/*.png
 mod-picker/public/assets/
+mod-picker/.byebug_history

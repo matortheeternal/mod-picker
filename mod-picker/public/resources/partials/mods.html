@@ -1,0 +1,114 @@
+<div class="column-wrapper">
+    <div class="left-column">
+        <h2>Filters</h2>
+        <h3>Category</h3>
+        <category-picker model='data.category'></category-picker>
+        <h3>Mod List</h3>
+        <div class="sidebar-box">
+            <ul class="filter-list">
+                <li>
+                    <input id="compatibility_enabled" type="checkbox">
+                    <label for="compatibility_enabled">Enable compatibility filter</label>
+                </li>
+                <li class="half-box">
+                    <h4>Mods</h4>
+                    <a href="#">123</a> <!-- PLACEHOLDER VALUE -->
+                </li>
+                <li class="half-box">
+                    <h4>Plugins</h4>
+                    <a href="#">98</a> <!-- PLACEHOLDER VALUE -->
+                </li>
+            </ul>
+        </div>
+        <div id="site-filters" class="filter-section">
+            <h3>Sources</h3>
+            <ul class="filter-list">
+                <li>
+                    <input id="nexus_mods" type="checkbox" checked="checked">
+                    <label for="nexus_mods">Nexus Mods</label>
+                </li>
+                <li>
+                    <input id="steam_workshop" type="checkbox">
+                    <label for="steam_workshop">Steam Workshop</label>
+                </li>
+                <li>
+                    <input id="lovers_lab" type="checkbox">
+                    <label for="lovers_lab">Lovers Lab</label>
+                </li>
+            </ul>
+        </div>
+        <div id="category-filters" class="filter-section">
+            <h3>Categories</h3>
+            <category-tree data="categories"></category-tree>
+        </div>
+        <div id="date-filters" class="filter-section">
+            <h3>Date Filters</h3>
+            <h4>Date Updated</h4>
+            <slider data="data.updated" type="ModListDateSlider"></slider>
+
+            <h4>Date Released</h4>
+            <slider data="data.released" type="ModListDateSlider"></slider>
+        </div>
+        <div id="mod-picker-filters" class="filter-section">
+            <h3>Mod Picker Filters</h3>
+            <div id="mod-picker-stat-filters" class="filter-section">
+                <h4>Reputation</h4>
+                <slider data="data.reputation" type="CeilSlider" attr="450"></slider>
+
+                <h4>Average Rating</h4>
+                <slider data="data.rating" type="CeilSlider" attr="100"></slider>
+
+                <h4>Reviews Count</h4>
+                <slider data="data.reviews" type="CeilSlider" attr="200"></slider>
+            </div>
+            <div id="mod-picker-ext-filters" class="filter-section">
+                <h4>Number of Stars</h4>
+                <slider data="data.stars" type="StepSlider" attr="1000"></slider>
+
+                <h4>Compatibility Notes Count</h4>
+                <slider data="data.cNotes" type="CeilSlider" attr="100"></slider>
+
+                <h4>Installation Notes Count</h4>
+                <slider data="data.iNotes" type="CeilSlider" attr="100"></slider>
+            </div>
+        </div>
+        <div id="nexus-mods-filters" class="filter-sections">
+            <h3>Nexus Mods Filters</h3>
+            <div id="nexus-mods-stat-filters" class="filter-section">
+                <h4>Endorsements</h4>
+                <slider data="data.endorsements" type="StepSlider" attr="500000"></slider>
+
+                <h4>Unique Downloads</h4>
+                <slider data="data.uniqueDownloads" type="StepSlider" attr="10000000"></slider>
+
+                <h4>Total Downloads</h4>
+                <slider data="data.totalDownloads" type="StepSlider" attr="50000000"></slider>
+            </div>
+            <div id="nexus-mods-ext-filters" class="filter-section">
+                <h4>Views</h4>
+                <slider data="data.views" type="StepSlider" attr="50000000"></slider>
+
+                <h4>Posts Count</h4>
+                <slider data="data.posts" type="StepSlider" attr="500000"></slider>
+
+                <h4>Videos Count</h4>
+                <slider data="data.videos" type="CeilSlider" attr="50"></slider>
+
+                <h4>Images Count</h4>
+                <slider data="data.images" type="StepSlider" attr="1000"></slider>
+
+                <h4>Files Count</h4>
+                <slider data="data.files" type="CeilSlider" attr="200"></slider>
+
+                <h4>Articles Count</h4>
+                <slider data="data.articles" type="CeilSlider" attr="50"></slider>
+            </div>
+        </div>
+    </div>
+    <div class="right-column">
+        <h2>Mods</h2>
+        <loader data="mods">
+            <mod-results data="mods"></mod-results>
+        </loader>
+    </div>
+</div>

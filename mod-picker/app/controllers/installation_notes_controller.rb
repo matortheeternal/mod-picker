@@ -4,7 +4,7 @@ class InstallationNotesController < ApplicationController
   # GET /installation_notes
   # GET /installation_notes.json
   def index
-    @installation_notes = InstallationNote.all
+    @installation_notes = InstallationNote.filter(filtering_params)
 
     respond_to do |format|
       format.html
@@ -76,8 +76,13 @@ class InstallationNotesController < ApplicationController
       @installation_note = InstallationNote.find(params[:id])
     end
 
+    # Params we allow filtering on
+    def filtering_params
+      params.slice(:by, :mod, :mv);
+    end
+
     # Never trust parameters from the scary internet, only allow the white list through.
     def installation_note_params
-      params.require(:installation_note).permit(:id, :submitted_by, :mod_version_id, :always, :note_type, :submitted, :edited, :text_body)
+      params.require(:installation_note).permit(:submitted_by, :mod_version_id, :always, :note_type, :submitted, :edited, :text_body)
     end
 end

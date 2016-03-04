@@ -410,6 +410,7 @@ Mod.create(
 NexusInfo.create(
     id: 3863,
     mod_id: Mod.last.id,
+    game_id: gameSkyrim.id,
     uploaded_by: "schlangster",
     authors: "SkyUI Team",
     date_released: DateTime.strptime("17/12/2011 - 12:24AM", nexusDateFormat),
@@ -445,6 +446,7 @@ Mod.create(
 NexusInfo.create(
     id: 19733,
     mod_id: Mod.last.id,
+    game_id: gameSkyrim.id,
     uploaded_by: "hothtrooper44",
     authors: "Hothtrooper44",
     date_released: DateTime.strptime("01/07/2012 - 07:23PM", nexusDateFormat),
@@ -480,6 +482,7 @@ Mod.create(
 NexusInfo.create(
     id: 607,
     mod_id: Mod.last.id,
+    game_id: gameSkyrim.id,
     uploaded_by: "NebuLa1",
     authors: "NebuLa from AHBmods",
     date_released: DateTime.strptime("19/11/2011 - 01:03AM", nexusDateFormat),
@@ -516,6 +519,7 @@ Mod.create(
 NexusInfo.create(
     id: 29624,
     mod_id: Mod.last.id,
+    game_id: gameSkyrim.id,
     uploaded_by: "expired6978",
     authors: "Expired",
     date_released: DateTime.strptime("08/01/2013 - 01:10AM", nexusDateFormat),
@@ -551,6 +555,7 @@ Mod.create(
 NexusInfo.create(
     id: 71214,
     mod_id: Mod.last.id,
+    game_id: gameSkyrim.id,
     uploaded_by: "Arthmoor",
     authors: "Unofficial Patch Project Team ",
     date_released: DateTime.strptime("07/11/2015 - 08:41PM", nexusDateFormat),
@@ -586,6 +591,7 @@ Mod.create(
 NexusInfo.create(
     id: 1334,
     mod_id: Mod.last.id,
+    game_id: gameSkyrim.id,
     uploaded_by: "Tannin42",
     authors: "Tannin",
     date_released: DateTime.strptime("24/11/2011 - 03:30PM", nexusDateFormat),
@@ -621,6 +627,7 @@ Mod.create(
 NexusInfo.create(
     id: 141,
     mod_id: Mod.last.id,
+    game_id: gameSkyrim.id,
     uploaded_by: "vurt",
     authors: "vurt",
     date_released: DateTime.strptime("13/11/2011 - 10:36PM", nexusDateFormat),
@@ -657,6 +664,7 @@ Mod.create(
 NexusInfo.create(
     id: 25859,
     mod_id: Mod.last.id,
+    game_id: gameSkyrim.id,
     uploaded_by: "Sharlikran",
     authors: "ElminsterAU",
     date_released: DateTime.strptime("22/10/2012 - 06:22AM", nexusDateFormat),
@@ -693,6 +701,7 @@ Mod.create(
 NexusInfo.create(
     id: 69905,
     mod_id: Mod.last.id,
+    game_id: gameSkyrim.id,
     uploaded_by: "matortheeternal",
     authors: "Mator",
     date_released: DateTime.strptime("24/12/2015 - 01:56AM", nexusDateFormat),
@@ -728,6 +737,7 @@ Mod.create(
 NexusInfo.create(
     id: 71843,
     mod_id: Mod.last.id,
+    game_id: gameSkyrim.id,
     uploaded_by: "pottoply",
     authors: "pottoply",
     date_released: DateTime.strptime("08/12/2015 - 09:42PM", nexusDateFormat),
@@ -764,6 +774,7 @@ Mod.create(
 NexusInfo.create(
     id: 72449,
     mod_id: Mod.last.id,
+    game_id: gameSkyrim.id,
     uploaded_by: "nesbit098",
     authors: "Nesbit",
     date_released: DateTime.strptime("05/01/2016 - 10:31AM", nexusDateFormat),
@@ -800,6 +811,7 @@ Mod.create(
 NexusInfo.create(
     id: 72005,
     mod_id: Mod.last.id,
+    game_id: gameSkyrim.id,
     uploaded_by: "Elianora",
     authors: "Elianora",
     date_released: DateTime.strptime("17/12/2015 - 09:23PM", nexusDateFormat),
@@ -835,6 +847,7 @@ Mod.create(
 NexusInfo.create(
     id: 71561,
     mod_id: Mod.last.id,
+    game_id: gameSkyrim.id,
     uploaded_by: "ShinglesCat",
     authors: "ShinglesCat",
     date_released: DateTime.strptime("25/11/2015 - 09:21AM", nexusDateFormat),
@@ -870,6 +883,7 @@ Mod.create(
 NexusInfo.create(
     id: 71464,
     mod_id: Mod.last.id,
+    game_id: gameSkyrim.id,
     uploaded_by: "nellshini",
     authors: "Jaxonz and Nellshini",
     date_released: DateTime.strptime("23/11/2015 - 02:11AM", nexusDateFormat),
@@ -895,6 +909,8 @@ ModVersion.create(
 )
 
 puts "    #{Mod.count} mods seeded"
+puts "    #{NexusInfo.count} nexus infos seeded"
+puts "    #{ModVersion.count} mod versions seeded"
 
 
 #==================================================
