@@ -13,15 +13,25 @@ class NexusInfo < ActiveRecord::Base
 
   def scrape
     doc = Nokogiri::HTML(open(nexus_mods_url))
-    modName = doc.at_css(".header-name").text
-    currentVersion = doc.at_css(".file_version").text
+    self.last_scraped = DateTime.now
+    self.modName = doc.at_css(".header-name").text
+    self.currentVersion = doc.at_css(".file_version").text
     self.authors = doc.at_css(".header-author").text
     self.endorsements = doc.at_css("#span_endors_number").text
     self.unique_downloads = doc.at_css(".file-unique-dls").text
     self.total_downloads = doc.at_css(".file-total-dls").text
     self.views = doc.at_css(".file-total-views").text
     self.uploaded_by = doc.at_css(".uploader").text
-    # TODO: Date added, date updated, nexus category, isUtility
-    # TODO: Create associated mod and mod version records
+    dates = doc.at_css(".header-dates").text
+    self.date_released = /Added:<\/strong> ([^<]*)/.match(dates).captures
+    self.date_updated = /Updated:<\/strong> ([^<]*)/.match(dates).captures
+    cat = doc.at_css(".header-cat").text
+    self.nexus_category = /src_cat=([0-9]*)/.match(cat).captures
+  end
+
+  def rescrape
+    if (DateTime.now - self.last_scraped) > 1.week.to_i
+      self.scrape
+    end
   end
 end
