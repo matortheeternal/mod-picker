@@ -6,7 +6,7 @@
 
             Nexus Mods<br/>
             <input type="text" ng-model="nexusUrl" required>
-            <input type="button" ng-disabled='$sourcesInvalid' ng-click="scrape()" value="Scrape">
+            <input type="button" ng-disabled='urlInvalid()' ng-click="scrape()" value="Scrape">
 
             <!-- TODO: loading spinner here while scraping -->
             <div ng-show="nexusScraped">
@@ -19,35 +19,35 @@
                         </tr>
                         <tr>
                             <td>Mod Name</td>
-                            <td>{{nexus.modName}}</td>
+                            <td>{{nexus.mod_name}}</td>
                         </tr>
                         <tr>
                             <td>Uploaded By</td>
-                            <td>{{nexus.uploadedBy}}</td>
+                            <td>{{nexus.uploaded_by}}</td>
                         </tr>
                         <tr>
                             <td>Author</td>
-                            <td>{{nexus.author}}</td>
+                            <td>{{nexus.authors}}</td>
                         </tr>
                         <tr>
                             <td>Endorsements</td>
-                            <td>{{nexus.endorsements}}</td>
+                            <td>{{nexus.endorsements.toLocaleString()}}</td>
                         </tr>
                         <tr>
                             <td>Unique Downloads</td>
-                            <td>{{nexus.uniqueDownloads}}</td>
+                            <td>{{nexus.unique_downloads.toLocaleString()}}</td>
                         </tr>
                         <tr>
                             <td>Latest Version</td>
-                            <td>{{nexus.latestVersion}}</td>
+                            <td>{{nexus.current_version}}</td>
                         </tr>
                         <tr>
                             <td>Date Released</td>
-                            <td>{{nexus.released}}</td>
+                            <td>{{nexus.date_added | date }}</td>
                         </tr>
                         <tr>
                             <td>Date Updated</td>
-                            <td>{{nexus.updated}}</td>
+                            <td>{{nexus.date_updated | date }}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -66,7 +66,7 @@
             <input id="kbAdult" type="checkbox" ng-model="hasAdultContent">
             <label for="kbAdult">Has Adult Content</label><br/>
 
-            <h3>Mod Analysis</h3>
+            <h3>Asset File Analysis</h3>
 
             Archive<br/>
             <input type="text" ng-model="archive">
