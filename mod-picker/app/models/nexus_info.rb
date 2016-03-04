@@ -15,6 +15,14 @@ class NexusInfo < ActiveRecord::Base
     '%d/%m/%Y - %I:%M%p'
   end
 
+  def try_parse(doc, selector, default)
+    begin
+      doc.at_css(selector).text
+    rescue
+      default
+    end
+  end
+
   def scrape
     # get the nexus mods page
     doc = Nokogiri::HTML(open(nexus_mods_url))
@@ -42,7 +50,11 @@ class NexusInfo < ActiveRecord::Base
     self.nexus_category = /src_cat=([0-9]*)/.match(catlink).captures[0].to_i
 
     # scrape counts
-    # TODO
+    self.files_count = try_parse(doc, ".tab-files strong", "0").to_i
+    self.images_count = try_parse(doc, ".tab-images strong", "0").to_i
+    self.articles_count = try_parse(doc, ".tab-articles strong", "0").to_i
+    self.posts_count = try_parse(doc, ".tab-comments strong", "0").to_i
+    self.videos_count = try_parse(doc, ".tab-videos", "0").to_i
 
     # save scraped data
     self.save!
