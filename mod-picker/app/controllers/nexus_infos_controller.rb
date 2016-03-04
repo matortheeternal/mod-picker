@@ -78,7 +78,7 @@ class NexusInfosController < ApplicationController
         @nexus_info.rescrape
       rescue
         if params.has_key?(:game_id)
-          @nexus_info = NexusInfo.create(mod_id: params[:id], game_id: params[:game_id])
+          @nexus_info = NexusInfo.create(id: params[:id], game_id: params[:game_id])
           @nexus_info.scrape
         else
           raise "Cannot scrape Nexus Info with no game id."
