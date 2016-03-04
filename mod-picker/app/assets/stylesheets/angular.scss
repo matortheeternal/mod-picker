@@ -293,8 +293,7 @@ nav span {
 .btn {
     width: 74px;
     display: inline;
-    padding: 0 12px;
-    padding-left: 0;
+    padding: 0;
     color: $action_text_color;
     font-size: 12px;
     text-align: center;
@@ -376,7 +375,7 @@ ul.hmenu li {
     display: inline-block;
 }
 
-.left-column h3 {
+h3 {
     font-weight: 700;
     margin-bottom: 8px;
     padding: 0;
@@ -384,7 +383,7 @@ ul.hmenu li {
     color: $h3_color;
 }
 
-.left-column h4 {
+h4 {
     text-transform: uppercase;
     color: $h4_color;
     margin-bottom: 6px;
@@ -496,12 +495,16 @@ input[type="checkbox"] {
   margin-right: 4px;
 }
 
-input[type="text"]{
+input[type="text"] {
   width: 350px;
+}
+
+input[type="submit"] {
+  height: 35px;
 }
 
 .notice {
   margin: 12px 0 12px 0;
   display: block;
-  font-size: 14px;
+  font-size: 13px;
 }

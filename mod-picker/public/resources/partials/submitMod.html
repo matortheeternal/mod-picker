@@ -6,8 +6,6 @@
 
             Nexus Mods<br/>
             <input type="text" ng-model="nexusUrl" required>
-            <br/>
-
             <input type="button" ng-disabled='$sourcesInvalid' ng-click="scrape()" value="Scrape">
 
             <!-- TODO: loading spinner here while scraping -->
@@ -83,11 +81,11 @@
             TODO: plugins listing
 
             <span class="notice">
-                Plugin analysis will be performed by our server sometime in the next 24 hours.
+                Plugin analysis will be performed by our servers sometime in the next 24 hours.
             </span>
 
 
-            <input type="submit" ng-disabled='$invalid' ng-click="submit()" value="Submit"/>
+            <input class="btn" type="submit" ng-disabled='$invalid' ng-click="submit()" value="Submit"/>
         </form>
     </div>
 </div>
