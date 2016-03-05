@@ -27,16 +27,11 @@ app.controller('submitModController', function ($scope, backend, submitService) 
         });
     };
 
+    $scope.modInvalid = function () {
+        return ($scope.nexus == null)
+    };
+
     $scope.submit = function () {
-        if ($scope.submitModForm.$valid) {
-            var primaryCategoryId = $scope.primaryCategory.subCategoryId || $scope.primaryCategory.mainCategoryId;
-            var secondaryCategoryId = $scope.secondaryCategory && ($scope.secondaryCategory.subCategoryId || $scope.secondaryCategory.mainCategoryId);
-            alert('data that would be sent to the server now' +
-                '\nUrl: ' + $scope.url +
-                '\nName: ' + $scope.name +
-                '\nPrimaryCategoryId: ' + primaryCategoryId +
-                (secondaryCategoryId ? '\nSecondaryCategoryId: ' + secondaryCategoryId : ''));
-            window.location = '#/mods';
-        }
+        submitService.submit($scope.nexus);
     }
 });

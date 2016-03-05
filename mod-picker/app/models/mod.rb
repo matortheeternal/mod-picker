@@ -41,6 +41,8 @@ class Mod < ActiveRecord::Base
   has_many :reviews, :inverse_of => 'mod', :counter_cache => true
   has_many :comments, :as => 'commentable', :counter_cache => true
 
+  accepts_nested_attributes_for :mod_versions
+
   def as_json(options={})
     super(:include => {
         :nexus_info => {:except => [:mod_id, :changelog]},

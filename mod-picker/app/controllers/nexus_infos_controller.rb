@@ -38,7 +38,7 @@ class NexusInfosController < ApplicationController
     respond_to do |format|
       if @nexus_info.save
         format.html { redirect_to @nexus_info, notice: 'Nexus info was successfully created.' }
-        format.json { render :show, status: :created, location: @nexus_info }
+        format.json { render :json => @nexus_info }
       else
         format.html { render :new }
         format.json { render json: @nexus_info.errors, status: :unprocessable_entity }
@@ -52,7 +52,7 @@ class NexusInfosController < ApplicationController
     respond_to do |format|
       if @nexus_info.update(nexus_info_params)
         format.html { redirect_to @nexus_info, notice: 'Nexus info was successfully updated.' }
-        format.json { render :show, status: :ok, location: @nexus_info }
+        format.json { render :json => @nexus_info }
       else
         format.html { render :edit }
         format.json { render json: @nexus_info.errors, status: :unprocessable_entity }
