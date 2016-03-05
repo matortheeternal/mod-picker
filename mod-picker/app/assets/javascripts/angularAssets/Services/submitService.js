@@ -34,7 +34,8 @@ app.service('submitService', function (backend, $q) {
                         version: nexus_info.current_version
                     }
                 };
-                backend.post('/mod_versions', modVersionData)
+                backend.post('/mod_versions', modVersionData);
+                window.location = '#/mod/'+data.id;
             }, 1000);
         });
     };
