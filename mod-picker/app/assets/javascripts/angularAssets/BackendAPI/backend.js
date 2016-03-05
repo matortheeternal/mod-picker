@@ -12,7 +12,7 @@ app.service('backend', function ($q, $http) {
         $http({
             url: BASE_LOCATION + context + '.json',
             method: 'GET',
-            params: additionalAttributes && additionalAttributes.params || undefined,
+            params: additionalAttributes,
             cache: additionalAttributes && additionalAttributes.cache || false
         }).then(function (data) {
             promise.resolve(data.data);
