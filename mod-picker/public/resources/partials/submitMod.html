@@ -8,49 +8,50 @@
             <input type="text" ng-model="nexusUrl" required>
             <input type="button" ng-disabled='urlInvalid()' ng-click="scrape()" value="Scrape">
 
-            <!-- TODO: loading spinner here while scraping -->
-            <div ng-show="nexusScraped">
+            <div ng-show="scraping">
                 <h3>Nexus Mods Info</h3>
-                <table class="infotable">
-                    <tbody>
-                        <tr>
-                            <td>Nexus ID</td>
-                            <td>{{nexus.id}}</td>
-                        </tr>
-                        <tr>
-                            <td>Mod Name</td>
-                            <td>{{nexus.mod_name}}</td>
-                        </tr>
-                        <tr>
-                            <td>Uploaded By</td>
-                            <td>{{nexus.uploaded_by}}</td>
-                        </tr>
-                        <tr>
-                            <td>Author</td>
-                            <td>{{nexus.authors}}</td>
-                        </tr>
-                        <tr>
-                            <td>Endorsements</td>
-                            <td>{{nexus.endorsements.toLocaleString()}}</td>
-                        </tr>
-                        <tr>
-                            <td>Unique Downloads</td>
-                            <td>{{nexus.unique_downloads.toLocaleString()}}</td>
-                        </tr>
-                        <tr>
-                            <td>Latest Version</td>
-                            <td>{{nexus.current_version}}</td>
-                        </tr>
-                        <tr>
-                            <td>Date Released</td>
-                            <td>{{nexus.date_added | date }}</td>
-                        </tr>
-                        <tr>
-                            <td>Date Updated</td>
-                            <td>{{nexus.date_updated | date }}</td>
-                        </tr>
-                    </tbody>
-                </table>
+                <loader data="nexus">
+                    <table class="infotable">
+                        <tbody>
+                            <tr>
+                                <td>Nexus ID</td>
+                                <td>{{nexus.id}}</td>
+                            </tr>
+                            <tr>
+                                <td>Mod Name</td>
+                                <td>{{nexus.mod_name}}</td>
+                            </tr>
+                            <tr>
+                                <td>Uploaded By</td>
+                                <td>{{nexus.uploaded_by}}</td>
+                            </tr>
+                            <tr>
+                                <td>Author</td>
+                                <td>{{nexus.authors}}</td>
+                            </tr>
+                            <tr>
+                                <td>Endorsements</td>
+                                <td>{{nexus.endorsements.toLocaleString()}}</td>
+                            </tr>
+                            <tr>
+                                <td>Unique Downloads</td>
+                                <td>{{nexus.unique_downloads.toLocaleString()}}</td>
+                            </tr>
+                            <tr>
+                                <td>Latest Version</td>
+                                <td>{{nexus.current_version}}</td>
+                            </tr>
+                            <tr>
+                                <td>Date Released</td>
+                                <td>{{nexus.date_added | date }}</td>
+                            </tr>
+                            <tr>
+                                <td>Date Updated</td>
+                                <td>{{nexus.date_updated | date }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </loader>
             </div>
 
             <h3>Categories</h3>
