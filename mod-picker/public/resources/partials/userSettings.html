@@ -1,0 +1,54 @@
+
+<div class="header-tabs">
+    <h1>User Settings</h1>
+    <div class="tabs">
+        <!-- insert links later-->
+        <a ng-click="currentTab = 'Profile'" class="tab">Profile</a>
+        <a ng-click="currentTab = 'Account'" class="tab">Account</a>
+        <a ng-click="currentTab = 'Reputation'" class="tab">Reputation</a>
+        <a ng-click="currentTab = 'Mod Lists'" class="tab">Mod Lists</a>
+        <a ng-click="currentTab = 'Authored Mods'" class="tab">Authored Mods</a>
+    </div>
+
+</div>
+
+<div class="column-wrapper">
+    <div class="single-column">
+        <div ng-show="canShowTab('Profile')">
+            <div class="padded-field">
+                <span class="field-title">Avatar</span>
+                <div class="field-value">
+                    <img src="/avatars/{{userSettings.id}}.png">
+                    <input type="button" class="btn" value="Browse" />
+                </div>
+            </div>
+
+            <div class="padded-field">
+                <span class="field-title">Title</span>
+                <div class="field-value">
+                    <input type="text" value="{{userSettings.title}}" />
+                    <span class="quote">I used to be an adventurer like you, until I took an arrow to the knee.
+                        <span class="quote-explanation">(You need more reputation to change your title)</span>
+                    </span>
+
+                </div>
+            </div>
+
+            <div class="padded-field">
+                <input type="checkbox" ng-checked="userSettings.allowComments">
+                <span class="">Allow comments to be posted on your profile</span>
+            </div>
+
+
+        </div>
+        <div ng-show="canShowTab('Account')">
+        </div>
+        <div ng-show="canShowTab('Reputation')">
+        </div>
+        <div ng-show="canShowTab('Mod Lists')">
+        </div>
+        <div ng-show="canShowTab('Authored Mods')">
+
+        </div>
+    </div>
+</div>

@@ -274,6 +274,7 @@ nav span {
     width: 74px;
     display: inline;
     padding: 0;
+    height: 35px;
     color: $action_text_color;
     font-size: 12px;
     text-align: center;
@@ -282,6 +283,7 @@ nav span {
     border-radius: 0;
     background-color: $action_color;
     cursor: pointer;
+    vertical-align: bottom;
 }
 
 .btn:hover {
@@ -483,4 +485,42 @@ input[type="submit"] {
   margin: 12px 0 12px 0;
   display: block;
   font-size: 13px;
+}
+
+.field-title {
+  display: inline-block;
+  vertical-align: top;
+  width: 200px;
+  font-size: 22px;
+  font-weight: 500;
+}
+
+.field-value {
+  display: inline-block;
+
+  input[type="text"]{
+    vertical-align: top;
+    width: 280px;
+    height: 24px;
+    font-size: 22px;
+    margin-top: 5px;
+    margin-right: 40px;
+  }
+}
+
+.quote {
+  width: 250px;
+  font-size: 14px;
+  display: inline-block;
+  font-style: italic;
+  font-weight: 500;
+}
+
+.quote-explanation {
+  font-size: 10px;
+  display: block;
+}
+
+.padded-field {
+  padding-bottom: 50px;
 }
