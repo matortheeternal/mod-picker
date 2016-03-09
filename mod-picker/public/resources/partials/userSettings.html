@@ -1,15 +1,16 @@
 
 <div class="header-tabs">
-    <h1>User Settings</h1>
-    <div class="tabs">
-        <!-- insert links later-->
-        <a ng-click="currentTab = 'Profile'" class="tab">Profile</a>
-        <a ng-click="currentTab = 'Account'" class="tab">Account</a>
-        <a ng-click="currentTab = 'Reputation'" class="tab">Reputation</a>
-        <a ng-click="currentTab = 'Mod Lists'" class="tab">Mod Lists</a>
-        <a ng-click="currentTab = 'Authored Mods'" class="tab">Authored Mods</a>
+    <div class="page-container">
+        <h1>User Settings</h1>
+        <div class="tabs">
+            <!-- insert links later-->
+            <a ng-click="currentTab = 'Profile'">Profile</a>
+            <a ng-click="currentTab = 'Account'">Account</a>
+            <a ng-click="currentTab = 'Reputation'">Reputation</a>
+            <a ng-click="currentTab = 'Mod Lists'">Mod Lists</a>
+            <a ng-click="currentTab = 'Authored Mods'">Authored Mods</a>
+        </div>
     </div>
-
 </div>
 
 <div class="column-wrapper">
@@ -18,8 +19,8 @@
             <div class="padded-field">
                 <span class="field-title">Avatar</span>
                 <div class="field-value">
-                    <img src="/avatars/{{userSettings.id}}.png">
-                    <input type="button" class="btn" value="Browse" />
+                    <img class="avatar" src="/avatars/{{userSettings.id}}.png">
+                    <input type="button" id="avatar-browse" class="btn" value="Browse" />
                 </div>
             </div>
 
@@ -35,9 +36,16 @@
             </div>
 
             <div class="padded-field">
-                <input type="checkbox" ng-checked="userSettings.allowComments">
-                <span class="">Allow comments to be posted on your profile</span>
+                <input id ="kb-allow-comments" type="checkbox" ng-checked="userSettings.allow_comments"><label for="kb-allow-comments">Allow comments to be posted on your profile</label>
             </div>
+
+            <div class="padded-field">
+                <span class="field-title">About Me</span>
+                <br/>
+                <textarea class="big-text-area"></textarea>
+            </div>
+
+            <input class="btn" type="submit" value="Save Changes" ng-click="saveChanges()"/>
 
 
         </div>
