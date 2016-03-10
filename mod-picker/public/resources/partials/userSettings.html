@@ -3,11 +3,12 @@
     <div class="page-container">
         <h1>User Settings</h1>
         <div class="tabs">
-            <a ng-click="currentTab = 'Profile'" ng-class="cssClass('Profile')">Profile</a>
-            <a ng-click="currentTab = 'Account'" ng-class="cssClass('Account')">Account</a>
-            <a ng-click="currentTab = 'Reputation'" ng-class="cssClass('Reputation')">Reputation</a>
-            <a ng-click="currentTab = 'Mod Lists'" ng-class="cssClass('Mod Lists')">Mod Lists</a>
-            <a ng-click="currentTab = 'Authored Mods'" ng-class="cssClass('Authored Mods')">Authored Mods</a>
+            <!--This weird syntax is to get rid of the spaces between the tabs-->
+            <a ng-click="currentTab = 'Profile'" ng-class="cssClass('Profile')">Profile</a
+            ><a ng-click="currentTab = 'Account'" ng-class="cssClass('Account')">Account</a
+            ><a ng-click="currentTab = 'Reputation'" ng-class="cssClass('Reputation')">Reputation</a
+            ><a ng-click="currentTab = 'Mod Lists'" ng-class="cssClass('Mod Lists')">Mod Lists</a
+            ><a ng-click="currentTab = 'Authored Mods'" ng-class="cssClass('Authored Mods')">Authored Mods</a>
         </div>
     </div>
 </div>
