@@ -12,8 +12,15 @@ app.config(['$routeProvider', function ($routeProvider) {
 app.controller('userSettingsController', function ($scope, $q, $routeParams, userSettingsService) {
     $scope.currentTab = "Profile";
 
-    $scope.canShowTab =function(tabName) {
+    $scope.isSelected = function(tabName) {
         return $scope.currentTab === tabName;
+    };
+
+    $scope.cssClass = function(tabName) {
+        if($scope.isSelected(tabName))
+            return "selected-tab";
+        else
+            return "unselected-tab";
     };
 
     userSettingsService.retrieveUserSettings($routeParams.userSettingsId).then(function (userSettings) {

@@ -3,19 +3,18 @@
     <div class="page-container">
         <h1>User Settings</h1>
         <div class="tabs">
-            <!-- insert links later-->
-            <a ng-click="currentTab = 'Profile'">Profile</a>
-            <a ng-click="currentTab = 'Account'">Account</a>
-            <a ng-click="currentTab = 'Reputation'">Reputation</a>
-            <a ng-click="currentTab = 'Mod Lists'">Mod Lists</a>
-            <a ng-click="currentTab = 'Authored Mods'">Authored Mods</a>
+            <a ng-click="currentTab = 'Profile'" ng-class="cssClass('Profile')">Profile</a>
+            <a ng-click="currentTab = 'Account'" ng-class="cssClass('Account')">Account</a>
+            <a ng-click="currentTab = 'Reputation'" ng-class="cssClass('Reputation')">Reputation</a>
+            <a ng-click="currentTab = 'Mod Lists'" ng-class="cssClass('Mod Lists')">Mod Lists</a>
+            <a ng-click="currentTab = 'Authored Mods'" ng-class="cssClass('Authored Mods')">Authored Mods</a>
         </div>
     </div>
 </div>
 
 <div class="column-wrapper">
     <div class="single-column">
-        <div ng-show="canShowTab('Profile')">
+        <div ng-show="isSelected('Profile')">
             <div class="padded-field">
                 <span class="field-title">Avatar</span>
                 <div class="field-value">
@@ -49,13 +48,22 @@
 
 
         </div>
-        <div ng-show="canShowTab('Account')">
+        <div ng-show="isSelected('Account')">
+            <div class="padded-field">
+                <span class="field-title">Linked Accounts</span>
+                <div class="field-value">
+                    <div>
+
+                    </div>
+
+                </div>
+            </div>
         </div>
-        <div ng-show="canShowTab('Reputation')">
+        <div ng-show="isSelected('Reputation')">
         </div>
-        <div ng-show="canShowTab('Mod Lists')">
+        <div ng-show="isSelected('Mod Lists')">
         </div>
-        <div ng-show="canShowTab('Authored Mods')">
+        <div ng-show="isSelected('Authored Mods')">
 
         </div>
     </div>
