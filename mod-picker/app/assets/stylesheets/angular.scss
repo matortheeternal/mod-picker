@@ -541,10 +541,10 @@ input[type="submit"] {
     height: 40px;
     font-weight: 500;
     float: left;
-    padding: 12px 16px 16px;
+    padding: 12px 16px 38px;
   }
-  a :hover {
-    background-color: $background_highlight;
+  :hover {
+    background-color: $bright_action_color;
   }
 }
 
