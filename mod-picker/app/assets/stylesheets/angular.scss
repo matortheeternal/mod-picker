@@ -268,7 +268,6 @@ nav span {
 }
 
 .btn {
-  display: inline;
   padding: 10px;
   color: $action_text_color;
   font-size: 12px;
@@ -278,6 +277,8 @@ nav span {
   border-radius: 0;
   background-color: $action_color;
   cursor: pointer;
+  display: block;
+  margin: auto;
 }
 
 .btn:hover {
@@ -287,6 +288,7 @@ nav span {
 #avatar-browse {
   margin-top: 70px;
   margin-left: 10px;
+  display: inline-block;
 }
 
 /* css for horizontal menus */
@@ -478,8 +480,6 @@ input[type="text"] {
 
 input[type="submit"] {
   height: 35px;
-  display: block;
-  margin: auto;
 }
 
 .notice {
@@ -542,6 +542,9 @@ input[type="submit"] {
     font-weight: 500;
     float: left;
     padding: 12px 16px 16px;
+  }
+  a :hover {
+    background-color: $background_highlight;
   }
 }
 
