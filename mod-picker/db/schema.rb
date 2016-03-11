@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160311050702) do
+ActiveRecord::Schema.define(version: 20160311051128) do
 
   create_table "agreement_marks", id: false, force: :cascade do |t|
     t.integer "incorrect_note_id", limit: 4
@@ -88,10 +88,12 @@ ActiveRecord::Schema.define(version: 20160311050702) do
   add_index "helpful_marks", ["submitted_by"], name: "submitted_by", using: :btree
 
   create_table "incorrect_notes", force: :cascade do |t|
-    t.integer "submitted_by",     limit: 4
-    t.text    "reason",           limit: 65535
-    t.integer "correctable_id",   limit: 4
-    t.string  "correctable_type", limit: 255
+    t.integer  "submitted_by",     limit: 4
+    t.text     "text_body",        limit: 65535
+    t.integer  "correctable_id",   limit: 4
+    t.string   "correctable_type", limit: 255
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   add_index "incorrect_notes", ["correctable_type", "correctable_id"], name: "index_incorrect_notes_on_correctable_type_and_correctable_id", using: :btree
