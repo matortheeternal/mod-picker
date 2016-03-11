@@ -9,7 +9,7 @@ app.config(['$routeProvider', function ($routeProvider) {
     );
 }]);
 
-app.controller('userSettingsController', function ($scope, $q, $routeParams, userSettingsService) {
+app.controller('userSettingsController', function ($scope, $q, $routeParams, userSettingsService, userService) {
     $scope.currentTab = "Profile";
 
     $scope.isSelected = function(tabName) {
@@ -25,6 +25,11 @@ app.controller('userSettingsController', function ($scope, $q, $routeParams, use
 
     userSettingsService.retrieveUserSettings($routeParams.userSettingsId).then(function (userSettings) {
         $scope.userSettings = userSettings;
+        userService.retrieveUser(userSettings.user_id).then(function (user) {
+            $scope.user = user;
+        });
     });
+
+
 
 });
