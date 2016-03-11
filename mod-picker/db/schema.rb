@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160311050259) do
+ActiveRecord::Schema.define(version: 20160311050702) do
 
   create_table "agreement_marks", id: false, force: :cascade do |t|
     t.integer "incorrect_note_id", limit: 4
@@ -77,10 +77,11 @@ ActiveRecord::Schema.define(version: 20160311050259) do
   end
 
   create_table "helpful_marks", id: false, force: :cascade do |t|
-    t.integer "submitted_by",     limit: 4
-    t.boolean "helpful"
-    t.integer "helpfulable_id",   limit: 4
-    t.string  "helpfulable_type", limit: 255
+    t.integer  "submitted_by",     limit: 4
+    t.boolean  "helpful"
+    t.integer  "helpfulable_id",   limit: 4
+    t.string   "helpfulable_type", limit: 255
+    t.datetime "submitted"
   end
 
   add_index "helpful_marks", ["helpfulable_type", "helpfulable_id"], name: "index_helpful_marks_on_helpfulable_type_and_helpfulable_id", using: :btree
