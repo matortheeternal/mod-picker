@@ -1228,6 +1228,22 @@ ModVersion.create(
     dangerous: false
 )
 
+ModVersion.create(
+    mod_id: Mod.last.id,
+    version: "5.0",
+    released: DateTime.strptime("14/07/2015 - 05:57AM", nexusDateFormat),
+    obsolete: false,
+    dangerous: false
+)
+
+ModVersion.create(
+    mod_id: Mod.last.id,
+    version: "4.1",
+    released: DateTime.strptime("09/06/2014 - 07:42AM", nexusDateFormat),
+    obsolete: true,
+    dangerous: false
+)
+
 Mod.create(
     name: "Immersive Armors",
     primary_category_id: Category.where(name: "Items - Armor, Clothing, & Accessories").first.id,
