@@ -336,6 +336,19 @@ puts "    #{Category.where.not(parent_id: nil).count} sub-categories seeded"
 
 
 #==================================================
+# CREATE RECORD GROUPS
+#==================================================
+
+RecordGroup.create(
+    game_id: gameSkyrim.id,
+    signature: 'ARMO',
+    name: 'Armor',
+    child_group: false
+)
+
+puts "    #{RecordGroup.count} record groups seeded"
+
+#==================================================
 # CREATE USERS
 #==================================================
 require 'securerandom'
