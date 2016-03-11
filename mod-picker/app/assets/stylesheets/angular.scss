@@ -511,11 +511,15 @@ input[type="submit"] {
   h3 {
     font-size: 16px;
     font-weight: 500;
-    color: black;
+    color: $text_color;
     margin-top: 25px;
     margin-left: 0;
     margin-bottom: 0;
   }
+}
+
+.thin_btn {
+
 }
 
 .quote {
@@ -539,7 +543,7 @@ input[type="submit"] {
   background-color: $secondary_background;
   h1 {
     font-weight: 500;
-    color: black;
+    color: $text_color;
     font-size: 36px;
     padding-top: 18px;
     padding-bottom: 18px;
