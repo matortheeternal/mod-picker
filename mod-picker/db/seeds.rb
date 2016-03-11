@@ -4,7 +4,7 @@
 
 def randpow(num, pow)
   result = 1.0
-  for i in 1..pow
+  (1..pow).each do
     result *= rand(10000)/10000.0
   end
   (num * result).floor
@@ -340,7 +340,7 @@ puts "    #{Category.where.not(parent_id: nil).count} sub-categories seeded"
 #==================================================
 require 'securerandom'
 
-if (bSeedUsers)
+if bSeedUsers
   puts "\nSeeding users"
   # create an admin user
   pw = SecureRandom.urlsafe_base64
@@ -362,7 +362,7 @@ if (bSeedUsers)
   puts "    admin seeded with password: #{pw}"
 
   # generates random date between year 2000 and now.
-  def time_rand from = Time.new(2000), to = Time.now
+  def time_rand(from = Time.new(2000), to = Time.now)
     Time.at(from + rand * (to.to_f - from.to_f)).to_date
   end
 
@@ -917,10 +917,10 @@ puts "    #{ModVersion.count} mod versions seeded"
 # CREATE COMMENTS
 #==================================================
 
-if (bSeedComments)
+if bSeedComments
   # generate comments on user profiles
   puts "\nSeeding user comments"
-  for user in User.all
+  User.all.each do |user|
     rnd = randpow(10, 2)
     puts "    Generating #{rnd} comments for #{user.username}"
     rnd.times do
@@ -936,7 +936,7 @@ if (bSeedComments)
 
   # generate comments on mods
   puts "\nSeeding mod comments"
-  for mod in Mod.all
+  Mod.all.each do |mod|
     rnd = randpow(20, 2)
     puts "    Generating #{rnd} comments for #{mod.name}"
     rnd.times do
@@ -956,10 +956,10 @@ end
 # CREATE REVIEWS
 #==================================================
 
-if (bSeedReviews)
+if bSeedReviews
   # generate reviews on mods
   puts "\nSeeding reviews"
-  for mod in Mod.all
+  Mod.all.each do |mod|
     nReviews = rand(6)
     puts "    Generating #{nReviews} reviews for #{mod.name}"
     nReviews.times do
@@ -996,14 +996,14 @@ end
 # CREATE COMPATIBILTIY NOTES
 #==================================================
 
-if (bSeedCNotes)
+if bSeedCNotes
   puts "\nSeeding compatibility notes"
   nCNotes = Mod.count
   nCNotes.times do
     submitter = User.offset(rand(User.count)).first
     cnote = CompatibilityNote.new(
         submitted_by: submitter.id,
-        mod_mode: ["Any", "All"].sample,
+        mod_mode: %w(Any All).sample,
         compatibility_status: ["Incompatible", "Partially Compatible", "Patch Available", "Make Custom Patch",
                                "Soft Incompatibility", "Installation Note"].sample,
         submitted: Faker::Date.backward(14),
@@ -1037,7 +1037,7 @@ end
 # CREATE INSTALLATION NOTES
 #==================================================
 
-if (bSeedINotes)
+if bSeedINotes
   puts "\nSeeding installation notes"
   nINotes = Mod.count
   nINotes.times do
