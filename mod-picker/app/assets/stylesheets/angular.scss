@@ -286,7 +286,6 @@ nav span {
 }
 
 #avatar-browse {
-  margin-top: 70px;
   margin-left: 10px;
   display: inline-block;
 }
@@ -569,7 +568,7 @@ input[type="submit"] {
 
 .avatar {
   border: 2px solid $border_color;
-  float: left;
+  vertical-align: bottom;
 }
 
 .big-text-area {
