@@ -42,16 +42,19 @@ Rails.application.routes.draw do
     resources :nexus_infos
     resources :users
 
+    # record groups
+    resources :record_groups, only: [:index]
+
     # angular
-    resources 'angular', only: [:index]
+    resources :angular, only: [:index]
   end
 
   # welcome page
-  resources 'welcome', only: [:index]
+  resources :welcome, only: [:index]
 
   # contact us and subscribe
   match '/contacts',     to: 'contacts#new',             via: 'get'
-  resources "contacts", only: [:new, :create]
+  resources :contacts, only: [:new, :create]
 
   
   # The priority is based upon order of creation: first created -> highest priority.
