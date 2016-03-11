@@ -1004,8 +1004,7 @@ if bSeedCNotes
     cnote = CompatibilityNote.new(
         submitted_by: submitter.id,
         mod_mode: %w(Any All).sample,
-        compatibility_status: ["Incompatible", "Partially Compatible", "Patch Available", "Make Custom Patch",
-                               "Soft Incompatibility", "Installation Note"].sample,
+        compatibility_type: ["Incompatible", "Partially Incompatible", "Compatibility Mod", "Compatibility Plugin", "Make Custom Patch"].sample,
         submitted: Faker::Date.backward(14),
         text_body: Faker::Lorem.paragraph(4)
     )
