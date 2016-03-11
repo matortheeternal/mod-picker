@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160307083324) do
+ActiveRecord::Schema.define(version: 20160311050259) do
 
   create_table "agreement_marks", id: false, force: :cascade do |t|
     t.integer "incorrect_note_id", limit: 4
@@ -55,7 +55,6 @@ ActiveRecord::Schema.define(version: 20160307083324) do
 
   create_table "compatibility_notes", force: :cascade do |t|
     t.integer "submitted_by",            limit: 4
-    t.enum    "mod_mode",                limit: ["Any", "All"]
     t.integer "compatibility_plugin_id", limit: 4
     t.enum    "compatibility_type",      limit: ["Incompatible", "Partially Incompatible", "Compatibility Mod", "Compatibility Plugin", "Make Custom Patch"]
     t.date    "submitted"
