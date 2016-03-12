@@ -490,7 +490,7 @@ input[type="submit"] {
   font-size: 13px;
 }
 
-.field-title {
+.section-title {
   display: block;
   vertical-align: top;
   width: 200px;
@@ -498,10 +498,11 @@ input[type="submit"] {
   font-weight: 500;
 }
 
-.field-value {
+.section {
   display: block;
   margin-top: 30px;
   margin-left: 30px;
+  padding-bottom: 70px;
 
   input[type="text"]{
     vertical-align: top;
@@ -519,9 +520,6 @@ input[type="submit"] {
     margin-left: 0;
     margin-bottom: 0;
   }
-}
-
-.thin_btn {
 
 }
 
@@ -538,17 +536,13 @@ input[type="submit"] {
   display: block;
 }
 
-.padded-field {
-  padding-bottom: 70px;
-}
-
 .header-tabs {
   background-color: $secondary_background;
   h1 {
     font-weight: 500;
     color: $text_color;
     font-size: 36px;
-    padding-top: 18px;
+    padding-top: 18px;//half of font size
     padding-bottom: 18px;
   }
 }
@@ -561,7 +555,7 @@ input[type="submit"] {
     font-size: 18px;
     color: $text_color;
     font-weight: 500;
-    padding: 9px 16px 9px 16px;
+    padding: 9px 16px 9px 16px;//half of font size high
   }
 }
 

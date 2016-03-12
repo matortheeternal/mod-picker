@@ -18,28 +18,32 @@
         <loader data="user">
 
 
+
             <div ng-show="isSelected('Profile')">
-
-                <div class="padded-field">
-                    <span class="field-title">Avatar</span>
-                    <div class="field-value">
-                        <img class="avatar" src="/avatars/{{user.id}}.png">
-                        <input type="button" id="avatar-browse" class="btn" value="Browse" />
-                    </div>
+                <span class="section-title">Avatar</span>
+                <div class="section">
+                    <img class="avatar" src="/avatars/{{user.id}}.png">
+                    <input type="button" id="avatar-browse" class="btn" value="Browse" />
                 </div>
 
-                <div class="padded-field">
-                    <span class="field-title">Title</span>
-                    <div class="field-value">
-                        <span class="quote-explanation">(You need more reputation to change your title)</span>
-                        <input type="text" value="{{user.title}}" />
-                        <span class="quote">I used to be an adventurer like you, until I took an arrow to the knee.</span>
-
-                    </div>
+                <span class="section-title">Title</span>
+                <div class="section">
+                    <span class="quote-explanation">(You need more reputation to change your title)</span>
+                    <input type="text" value="{{user.title}}" />
+                    <span class="quote">I used to be an adventurer like you, until I took an arrow to the knee.</span>
                 </div>
 
-                <div class="padded-field">
-                    <span class="field-title">My Profile</span>
+
+                <span class="section-title">My Profile</span>
+                <div class="section">
+                    <input id ="kb-allow-comments" type="checkbox" ng-checked="userSettings.allow_comments"><label for="kb-allow-comments">Allow comments to be posted on your profile</label>
+                    <h3>About me</h3>
+                    <textarea class="big-text-area"></textarea>
+                </div>
+
+                <input class="btn" id="save-changes" type="submit" value="Save Changes" ng-click="saveChanges()"/>
+
+            </div>
                     <div class="field-value">
                         <input id ="kb-allow-comments" type="checkbox" ng-checked="userSettings.allow_comments"><label for="kb-allow-comments">Allow comments to be posted on your profile</label>
                         <h3>About me</h3>
@@ -59,6 +63,7 @@
             </div>
             <div ng-show="isSelected('Authored Mods')">
             </div>
+
 
 
         </loader>
