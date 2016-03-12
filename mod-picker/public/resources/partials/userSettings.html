@@ -16,26 +16,28 @@
 <div class="column-wrapper">
     <div class="single-column">
         <loader data="user">
+
+
             <div ng-show="isSelected('Profile')">
-                <span class="field-title">Avatar</span>
-                <div class="field-value">
-                    <img class="avatar" src="/avatars/{{user.id}}.png">
-                    <input type="button" id="avatar-browse" class="btn" value="Browse" />
+
+                <div class="padded-field">
+                    <span class="field-title">Avatar</span>
+                    <div class="field-value">
+                        <img class="avatar" src="/avatars/{{user.id}}.png">
+                        <input type="button" id="avatar-browse" class="btn" value="Browse" />
+                    </div>
                 </div>
 
-            <div class="padded-field">
-                <span class="field-title">Title</span>
-                <div class="field-value">
-                    <span class="quote-explanation">(You need more reputation to change your title)</span>
-                    <input type="text" value="{{user.title}}" />
-                    <span class="quote">I used to be an adventurer like you, until I took an arrow to the knee.</span>
+                <div class="padded-field">
+                    <span class="field-title">Title</span>
+                    <div class="field-value">
+                        <span class="quote-explanation">(You need more reputation to change your title)</span>
+                        <input type="text" value="{{user.title}}" />
+                        <span class="quote">I used to be an adventurer like you, until I took an arrow to the knee.</span>
 
+                    </div>
                 </div>
-            </div>
 
-
-
-            <div class="padded-field">
                 <div class="padded-field">
                     <span class="field-title">My Profile</span>
                     <div class="field-value">
@@ -45,19 +47,20 @@
                     </div>
                 </div>
 
-                <input class="btn" type="submit" value="Save Changes" ng-click="saveChanges()"/>
+                    <input class="btn" type="submit" value="Save Changes" ng-click="saveChanges()"/>
+
             </div>
 
             <div ng-show="isSelected('Account')">
             </div>
-
             <div ng-show="isSelected('Reputation')">
             </div>
             <div ng-show="isSelected('Mod Lists')">
             </div>
             <div ng-show="isSelected('Authored Mods')">
-
             </div>
+
+
         </loader>
     </div>
 </div>
