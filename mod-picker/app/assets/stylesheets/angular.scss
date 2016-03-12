@@ -33,13 +33,6 @@ h1 {
   margin: 0;
 }
 
-<<<<<<< HEAD
-=======
-h1:hover {
-  color: $h2_color;
-}
->>>>>>> f30053c2f69c656123f0f61baf16a8182da3b9e2
-
 h2 {
   color: $h2_color;
   padding: 0;
@@ -274,33 +267,27 @@ nav span {
 }
 
 .btn {
-<<<<<<< HEAD
-  padding: 10px;
-=======
-  width: 74px;
-  display: inline;
-  padding: 0;
->>>>>>> f30053c2f69c656123f0f61baf16a8182da3b9e2
   color: $action_text_color;
   font-size: 12px;
-  text-align: center;
+  //text-align: center;
   text-transform: uppercase;
   border: 0;
   border-radius: 0;
   background-color: $action_color;
   cursor: pointer;
-<<<<<<< HEAD
-  display: block;
-  margin: auto;
-=======
->>>>>>> f30053c2f69c656123f0f61baf16a8182da3b9e2
 }
 
 .btn:hover {
   background-color: $bright_action_color;
 }
 
+#save-changes {
+  display: block;
+  margin: auto;
+}
+
 #avatar-browse {
+  padding: 10px;
   margin-left: 10px;
   display: inline-block;
 }
@@ -552,7 +539,7 @@ input[type="submit"] {
 }
 
 .padded-field {
-  padding-bottom: 50px;
+  padding-bottom: 70px;
 }
 
 .header-tabs {
