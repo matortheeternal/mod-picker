@@ -12,65 +12,52 @@
         </div>
     </div>
 </div>
-
+<di
 <div class="column-wrapper">
     <div class="single-column">
-        <div ng-show="isSelected('Profile')">
-            <div class="padded-field">
+        <loader data="user">
+            <div ng-show="isSelected('Profile')">
                 <span class="field-title">Avatar</span>
                 <div class="field-value">
-                    <img class="avatar" src="/avatars/{{userSettings.id}}.png">
+                    <img class="avatar" src="/avatars/{{user.id}}.png">
                     <input type="button" id="avatar-browse" class="btn" value="Browse" />
-        <loader data="user">
                 </div>
-            </div>
 
             <div class="padded-field">
                 <span class="field-title">Title</span>
                 <div class="field-value">
                     <span class="quote-explanation">(You need more reputation to change your title)</span>
-                    <input type="text" value="{{userSettings.title}}" />
+                    <input type="text" value="{{user.title}}" />
                     <span class="quote">I used to be an adventurer like you, until I took an arrow to the knee.</span>
-                        <input type="text" value="{{user.title}}" />
 
                 </div>
             </div>
 
-            <div class="padded-field">
 
-            </div>
 
             <div class="padded-field">
-                <span class="field-title">My Profile</span>
-                <div class="field-value">
-                    <input id ="kb-allow-comments" type="checkbox" ng-checked="userSettings.allow_comments"><label for="kb-allow-comments">Allow comments to be posted on your profile</label>
-                    <h3>About me</h3>
-                    <textarea class="big-text-area"></textarea>
-                </div>
-            </div>
-
-            <input class="btn" type="submit" value="Save Changes" ng-click="saveChanges()"/>
-
-
-        </div>
-        <div ng-show="isSelected('Account')">
-            <div class="padded-field">
-                <span class="field-title">Linked Accounts</span>
-                <div class="field-value">
-                    <div>
-
+                <div class="padded-field">
+                    <span class="field-title">My Profile</span>
+                    <div class="field-value">
+                        <input id ="kb-allow-comments" type="checkbox" ng-checked="userSettings.allow_comments"><label for="kb-allow-comments">Allow comments to be posted on your profile</label>
+                        <h3>About me</h3>
+                        <textarea class="big-text-area"></textarea>
                     </div>
-
                 </div>
-            </div>
-        </div>
-        <div ng-show="isSelected('Reputation')">
-        </div>
-        <div ng-show="isSelected('Mod Lists')">
-        </div>
-        <div ng-show="isSelected('Authored Mods')">
 
-        </div>
+                <input class="btn" type="submit" value="Save Changes" ng-click="saveChanges()"/>
+            </div>
+
+            <div ng-show="isSelected('Account')">
+            </div>
+
+            <div ng-show="isSelected('Reputation')">
+            </div>
+            <div ng-show="isSelected('Mod Lists')">
+            </div>
+            <div ng-show="isSelected('Authored Mods')">
+
+            </div>
         </loader>
     </div>
 </div>
