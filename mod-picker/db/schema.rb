@@ -11,7 +11,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
+<<<<<<< HEAD
 ActiveRecord::Schema.define(version: 20160309220623) do
+=======
+ActiveRecord::Schema.define(version: 20160307083324) do
+>>>>>>> f30053c2f69c656123f0f61baf16a8182da3b9e2
 
   create_table "agreement_marks", id: false, force: :cascade do |t|
     t.integer "incorrect_note_id", limit: 4
@@ -57,15 +61,18 @@ ActiveRecord::Schema.define(version: 20160309220623) do
     t.integer "submitted_by",            limit: 4
     t.enum    "mod_mode",                limit: ["Any", "All"]
     t.integer "compatibility_plugin_id", limit: 4
-    t.enum    "compatibility_status",    limit: ["Incompatible", "Partially Compatible", "Patch Available", "Make Custom Patch", "Soft Incompatibility", "Installation Note"]
-    t.integer "installation_note_id",    limit: 4
+    t.enum    "compatibility_type",      limit: ["Incompatible", "Partially Incompatible", "Compatibility Mod", "Compatibility Plugin", "Make Custom Patch"]
     t.date    "submitted"
     t.date    "edited"
     t.text    "text_body",               limit: 65535
+<<<<<<< HEAD
+=======
+    t.integer "incorrect_notes_count",   limit: 4
+    t.integer "compatibility_mod_id",    limit: 4
+>>>>>>> f30053c2f69c656123f0f61baf16a8182da3b9e2
   end
 
   add_index "compatibility_notes", ["compatibility_plugin_id"], name: "compatibility_patch", using: :btree
-  add_index "compatibility_notes", ["installation_note_id"], name: "in_id", using: :btree
   add_index "compatibility_notes", ["submitted_by"], name: "submitted_by", using: :btree
 
   create_table "games", force: :cascade do |t|
@@ -428,7 +435,6 @@ ActiveRecord::Schema.define(version: 20160309220623) do
   add_foreign_key "category_priorities", "categories", column: "recessive_id"
   add_foreign_key "comments", "comments", column: "parent_comment", name: "comments_ibfk_1"
   add_foreign_key "comments", "users", column: "submitted_by", name: "comments_ibfk_2"
-  add_foreign_key "compatibility_notes", "installation_notes", name: "compatibility_notes_ibfk_3"
   add_foreign_key "compatibility_notes", "plugins", column: "compatibility_plugin_id", name: "compatibility_notes_ibfk_2"
   add_foreign_key "compatibility_notes", "users", column: "submitted_by", name: "compatibility_notes_ibfk_1"
   add_foreign_key "helpful_marks", "users", column: "submitted_by", name: "helpful_marks_ibfk_4"
