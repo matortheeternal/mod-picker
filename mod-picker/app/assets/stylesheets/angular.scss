@@ -423,21 +423,25 @@ h4 {
   font-size: 12px;
   margin: 0;
   overflow: visible;
-  padding: 0.5em 1em;
-  cursor: pointer;
+
+  a {
+    display: block;
+    height: 100%;
+    padding: 0.5em 1em;
+  }
 }
 
 .right-column tbody tr:nth-child(odd) {
   background-color: $secondary_background;
 
-  &:hover {
+  a:hover {
     background-color: lighten($secondary_background, 50%);
   }
 }
 
 .right-column tbody tr:nth-child(even) {
   background-color: $primary_background;
-  &:hover {
+  a:hover {
     background-color: lighten($primary_background, 50%);
   }
 }

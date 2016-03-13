@@ -19,8 +19,8 @@
                 </tr>
             </thead>
             <tbody>
-                <tr ng-repeat="mod in data" ng-click="navigate(mod)">
-                    <td><a class="strong">{{mod.name}}</a></td>
+                <tr ng-repeat="mod in data">
+                    <td><a class="strong" ng-href="#/mod/{{mod.id}}">{{mod.name}}</a></td>
                     <td><span>{{mod.mod_versions[mod.mod_versions.length - 1].version}}</span></td>
                     <td><span>{{mod.nexus_info.authors}}</span></td>
                     <td><span>{{mod.nexus_info.endorsements.toLocaleString()}}</span></td>
