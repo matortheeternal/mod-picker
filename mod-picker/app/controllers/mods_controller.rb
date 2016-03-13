@@ -4,7 +4,7 @@ class ModsController < ApplicationController
   # GET /mods
   # GET /mods.json
   def index
-    @mods = Mod.joins(:nexus_info, :mod_versions)
+    @mods = Mod.filter(filtering_params)
 
     respond_to do |format|
       format.html
@@ -38,7 +38,7 @@ class ModsController < ApplicationController
     respond_to do |format|
       if @mod.save
         format.html { redirect_to @mod, notice: 'Mod was successfully created.' }
-        format.json { render :show, status: :created, location: @mod }
+        format.json { render :json => @mod  }
       else
         format.html { render :new }
         format.json { render json: @mod.errors, status: :unprocessable_entity }
@@ -75,9 +75,14 @@ class ModsController < ApplicationController
     def set_mod
       @mod = Mod.joins(:nexus_info, :mod_versions).find(params[:id])
     end
+    
+    # Params we allow filtering on
+    def filtering_params
+      params.slice(:search, :adult, :game, :category, :stars, :reviews, :comments, :versions, :released, :updated, :endorsements, :tdl, :udl, :views, :posts, :videos, :images, :files, :articles);
+    end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def mod_params
-      params.require(:mod).permit(:game_id, :name, :aliases, :is_utility, :has_adult_content, :primary_category_id, :secondary_category_id)
+      params.require(:mod).permit(:game_id, :name, :aliases, :is_utility, :has_adult_content, :primary_category_id, :secondary_category_id, mod_versions_attributes: [ :released, :obsolete, :dangerous, :version ])
     end
 end

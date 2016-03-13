@@ -1,28 +1,38 @@
 /* WHITERUN THEME */
 
-$text_color = #000;
-$inverse_text_color = #fff;
+$banner_image: image_path("whiterun.jpg");
 
-$primary_background = #fafae8;
-$secondary_background = #eeeedd;
-$background_highlight = #fcfce2;
+$text_color: #000;
+$inverse_text_color: #eee;
 
-$shadow_color = #000;
-$border_color = #cacaca;
-$soft_border_color = #dadada;
-$hard_border_color = #44484a;
+$primary_background: #fafae8;
+$secondary_background: #eeeedd;
+$background_highlight: #fcfce2;
 
-$h3_color = #665b50;
-$h4_color = #7d7f8e;
+$shadow_color: #000;
+$border_color: #cacaca;
+$soft_border_color: #dadada;
+$hard_border_color: #44484a;
 
-$action_color = #c0a060;
-$bright_action_color = #dbc393;
-$dark_action_color = #a68a53;
+$h1_color: #c0a060;
+$h2_color: #000;
+$h3_color: #665b50;
+$h4_color: #7d7f8e;
 
-$bar_color = #342f2a;
-$bar_highlight_color = #48433f;
-$bar_text_color = #eee;
-$bar_highlight_text_color = #c9a9a9;
+$action_color: #c0a060;
+$action_text_color: #eee;
+$bright_action_color: #cbae72;
+$dark_action_color: #a68a53;
 
-$link_color = #205098;
-$link_hover_color = #508bda;
+$bar_color: #342f2a;
+$bar_highlight_color: #48433f;
+$bar_text_color: #eee;
+$bar_highlight_text_color: #c9a9a9;
+
+$link_color: #205098;
+$link_hover_color_primary: #406bba;
+$link_hover_color_secondary: #508bda;
+
+$slider_bg_color: #cacaca;
+$slider_range_color: #508bda;
+$slider_circle_color_after: #205098;

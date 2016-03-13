@@ -4,7 +4,7 @@ class UserSettingsController < ApplicationController
   # GET /user_settings
   # GET /user_settings.json
   def index
-    @user_settings = UserSetting.all
+    @user_settings = UserSetting.filter(filtering_params)
 
     respond_to do |format|
       format.html
@@ -74,6 +74,11 @@ class UserSettingsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_user_setting
       @user_setting = UserSetting.find(params[:id])
+    end
+
+    # Params we allow filtering on
+    def filtering_params
+      params.slice(:user);
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

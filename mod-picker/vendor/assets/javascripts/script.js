@@ -26,21 +26,21 @@ $(document).ready( function() {
     /* ==============================================
         For Smooth Scroll.
     =====================================================================*/
-    var $div = $('<div></div>')
-    .height(1)
-    .hide()
-    .appendTo('body');
-
-    var mobileHack = function() {
-        $div.show();
-        setTimeout(function() {
-            $div.hide();
-        }, 10);
-    };
-
-    $('ul.mainnav a').smoothScroll({
-        afterScroll: mobileHack
-    });
+    //var $div = $('<div></div>')
+    //.height(1)
+    //.hide()
+    //.appendTo('body');
+    //
+    //var mobileHack = function() {
+    //    $div.show();
+    //    setTimeout(function() {
+    //        $div.hide();
+    //    }, 10);
+    //};
+    //
+    //$('ul.mainnav a').smoothScroll({
+    //    afterScroll: mobileHack
+    //});
     
     
     
@@ -116,5 +116,5 @@ $(document).ready( function() {
         For Customize Scroll Bar Part.
     =====================================================================*/
 
-    var nice = jQuery("html").niceScroll({scrollspeed:100}).hide();
+    //var nice = jQuery("html").niceScroll({scrollspeed:100}).hide();
 });
