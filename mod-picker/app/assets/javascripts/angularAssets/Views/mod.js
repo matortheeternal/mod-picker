@@ -1,6 +1,3 @@
-/**
- * Created by r79 on 2/11/2016.
- */
 app.config(['$routeProvider', function ($routeProvider) {
     $routeProvider.when('/mod/:modId', {
             templateUrl: '/resources/partials/mod.html',
@@ -9,15 +6,32 @@ app.config(['$routeProvider', function ($routeProvider) {
     );
 }]);
 
-app.controller('modController', function ($scope, $q, $routeParams, backend) {
-    $scope.loading = true;
-    backend.retrieveMod($routeParams.modId).then(function (data) {
-        $scope.mod = data;
-        $scope.version = data.mod_versions[0].id;
-        $scope.loading = false;
+app.controller('modController', function ($scope, $q, $routeParams, modService) {
+    $scope.expandedState = {
+        compabilityNotes: true,
+        reviews: false
+    };
+
+    modService.retrieveMod($routeParams.modId).then(function (mod) {
+        $scope.mod = mod;
+        $scope.changeVersion(mod.mod_versions[0].id);
+        $scope.version = mod.mod_versions[0].id;
     });
 
-    $scope.$watch('version', function (newVal, oldVal) {
-        console.log(newVal + ' ' + oldVal);
-    })
+    $scope.showReviews = function () {
+        $scope.expandedState = {
+            reviews: true
+        }
+    };
+
+    $scope.changeVersion = function(version) {
+        if(version && version !== $scope.version && $scope.mod.id) {
+            delete $scope.compabilityNotes;
+            //$scope.loading = true;
+            modService.retrieveCompabilityNotes($scope.mod.id, version).then(function (compatibilityNotes) {
+                $scope.compatibilityNotes = compatibilityNotes;
+            });
+        }
+    };
+
 });

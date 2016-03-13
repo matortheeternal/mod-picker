@@ -1,0 +1,24 @@
+20 reputation
+- Custom avatar
+
+40 reputation
+- Can report something as incorrect
+- Can give reputation to up to 5 other users
+
+80 reputation
+- Can use custom review templates
+
+160 reputation
+- Can submit mods/mod versions
+- Can give reputation to up to 10 other users
+
+320 reputation
+- Can make custom review templates
+- Can edit any user contribution
+
+640 reputation
+- Can give reputation to up to 15 other users
+- Can request mods be re-scraped
+
+1280 reputation
+- Custom user title

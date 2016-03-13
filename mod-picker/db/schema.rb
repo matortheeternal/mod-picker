@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160208073835) do
+ActiveRecord::Schema.define(version: 20160307083324) do
 
   create_table "agreement_marks", id: false, force: :cascade do |t|
     t.integer "incorrect_note_id", limit: 4
@@ -57,15 +57,14 @@ ActiveRecord::Schema.define(version: 20160208073835) do
     t.integer "submitted_by",            limit: 4
     t.enum    "mod_mode",                limit: ["Any", "All"]
     t.integer "compatibility_plugin_id", limit: 4
-    t.enum    "compatibility_status",    limit: ["Incompatible", "Partially Compatible", "Patch Available", "Make Custom Patch", "Soft Incompatibility", "Installation Note"]
-    t.integer "installation_note_id",    limit: 4
+    t.enum    "compatibility_type",      limit: ["Incompatible", "Partially Incompatible", "Compatibility Mod", "Compatibility Plugin", "Make Custom Patch"]
     t.date    "submitted"
     t.date    "edited"
     t.text    "text_body",               limit: 65535
+    t.integer "compatibility_mod_id",    limit: 4
   end
 
   add_index "compatibility_notes", ["compatibility_plugin_id"], name: "compatibility_patch", using: :btree
-  add_index "compatibility_notes", ["installation_note_id"], name: "in_id", using: :btree
   add_index "compatibility_notes", ["submitted_by"], name: "submitted_by", using: :btree
 
   create_table "games", force: :cascade do |t|
@@ -258,23 +257,26 @@ ActiveRecord::Schema.define(version: 20160208073835) do
   add_index "mods", ["secondary_category_id"], name: "fk_rails_26f394ea9d", using: :btree
 
   create_table "nexus_infos", force: :cascade do |t|
-    t.string  "uploaded_by",      limit: 128
-    t.string  "authors",          limit: 128
-    t.date    "date_released"
-    t.date    "date_updated"
-    t.integer "endorsements",     limit: 4
-    t.integer "total_downloads",  limit: 4
-    t.integer "unique_downloads", limit: 4
-    t.integer "views",            limit: 8
-    t.integer "posts_count",      limit: 4
-    t.integer "videos_count",     limit: 2
-    t.integer "images_count",     limit: 2
-    t.integer "files_count",      limit: 2
-    t.integer "articles_count",   limit: 2
-    t.integer "nexus_category",   limit: 2
-    t.text    "changelog",        limit: 65535
-    t.integer "mod_id",           limit: 4,     null: false
-    t.integer "game_id",          limit: 4
+    t.string   "uploaded_by",      limit: 128
+    t.string   "authors",          limit: 128
+    t.datetime "date_added"
+    t.datetime "date_updated"
+    t.integer  "endorsements",     limit: 4
+    t.integer  "total_downloads",  limit: 4
+    t.integer  "unique_downloads", limit: 4
+    t.integer  "views",            limit: 8
+    t.integer  "posts_count",      limit: 4
+    t.integer  "videos_count",     limit: 2
+    t.integer  "images_count",     limit: 2
+    t.integer  "files_count",      limit: 2
+    t.integer  "articles_count",   limit: 2
+    t.integer  "nexus_category",   limit: 2
+    t.text     "changelog",        limit: 65535
+    t.integer  "mod_id",           limit: 4,     null: false
+    t.integer  "game_id",          limit: 4
+    t.string   "mod_name",         limit: 255
+    t.string   "current_version",  limit: 255
+    t.datetime "last_scraped"
   end
 
   add_index "nexus_infos", ["game_id"], name: "fk_rails_46e3032463", using: :btree
@@ -423,7 +425,6 @@ ActiveRecord::Schema.define(version: 20160208073835) do
   add_foreign_key "category_priorities", "categories", column: "recessive_id"
   add_foreign_key "comments", "comments", column: "parent_comment", name: "comments_ibfk_1"
   add_foreign_key "comments", "users", column: "submitted_by", name: "comments_ibfk_2"
-  add_foreign_key "compatibility_notes", "installation_notes", name: "compatibility_notes_ibfk_3"
   add_foreign_key "compatibility_notes", "plugins", column: "compatibility_plugin_id", name: "compatibility_notes_ibfk_2"
   add_foreign_key "compatibility_notes", "users", column: "submitted_by", name: "compatibility_notes_ibfk_1"
   add_foreign_key "helpful_marks", "users", column: "submitted_by", name: "helpful_marks_ibfk_4"

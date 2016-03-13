@@ -1,7 +1,7 @@
 class Mod < ActiveRecord::Base
   include Filterable
 
-  scope :search, -> (search) { where("name like ? OR aliases like ?", "#{search}%", "#{search}%") }
+  scope :search, -> (search) { where("name like ? OR aliases like ?", "%#{search}%", "%#{search}%") }
   scope :adult, -> (adult) { where(has_adult_content: adult) }
   scope :game, -> (game) { where(game_id: game) }
   scope :category, -> (category) { where("primary_category_id=? OR secondary_category_id=?", "#{category}%", "#{category}%") }
@@ -30,23 +30,25 @@ class Mod < ActiveRecord::Base
   has_one :lover_info
   has_one :workshop_info
 
-  has_many :mod_versions, :inverse_of => 'mod'
+  has_many :mod_versions, :inverse_of => 'mod', :counter_cache => true
 
   has_many :mod_stars, :inverse_of => 'starred_mod'
-  has_many :user_stars, :through => 'mod_stars', :inverse_of => 'starred_mods'
+  has_many :user_stars, :through => 'mod_stars', :inverse_of => 'starred_mods', :counter_cache => true
 
   has_many :mod_authors, :inverse_of => 'mod'
   has_many :authors, :through => 'mod_authors', :inverse_of => 'mods'
 
-  has_many :reviews, :inverse_of => 'mod'
-  has_many :comments, :as => 'commentable'
+  has_many :reviews, :inverse_of => 'mod', :counter_cache => true
+  has_many :comments, :as => 'commentable', :counter_cache => true
+
+  accepts_nested_attributes_for :mod_versions
 
   def as_json(options={})
     super(:include => {
         :nexus_info => {:except => [:mod_id, :changelog]},
         :mod_versions => {:except => [:mod_id]},
         :authors => {:only => [:id, :username]},
-        :reviews => {:except => :id}
+        :reviews => {:except => [:mod_id, :id]}
     })
   end
 end

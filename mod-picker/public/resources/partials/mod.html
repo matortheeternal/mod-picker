@@ -1,24 +1,23 @@
-<loader condition="loading"></loader>
-<div ng-show="mod">
+<loader data="mod">
     <div class="modHeader">
         <h1>{{mod.name}}</h1>
-        <span>implement stars here</span> <span><a ng-click="expandReviews()">{{mod.reviews.length}} reviews</a></span>
+        <span>implement stars here</span> <span><a ng-click="showReviews()">{{mod.reviews.length}} reviews</a></span>
     </div>
 
     <hr/>
     <!-- TODO: Commalogic -->
     <div class="left-column"><p>by {{mod.nexus_info.authors}} </p>
         <p>Versions</p>
-        <select ng-model="version" ng-options="version.id as version.version for version in mod.mod_versions"></select>
+        <select ng-model="version" ng-change="changeVersion(version)" ng-options="version.id as version.version for version in mod.mod_versions"></select>
         <p>{{mod.shortDescription}}</p>
     </div>
     <div class="right-column">
-        <expandable expanded="false" title="'Compability Notes'">
-            <span>Compability Notes will be added as soon as we get them from the backend</span>
+        <expandable expanded="expandedState.compabilityNotes" title="'Compability Notes'">
+            <user-generated-list data="compatibilityNotes"></user-generated-list>
         </expandable>
         <hr/>
-        <expandable expanded="false" title="'Reviews'">
+        <expandable expanded="expandedState.reviews" title="'Reviews'">
             <user-generated-list data="mod.reviews"></user-generated-list>
         </expandable>
     </div>
-</div>
+</loader>

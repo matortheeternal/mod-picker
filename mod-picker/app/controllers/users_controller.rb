@@ -4,7 +4,7 @@ class UsersController < ApplicationController
   # GET /users
   # GET /users.json
   def index
-    @users = User.joins(:bio, :reputation)
+    @users = User.filter(filtering_params)
 
     respond_to do |format|
       format.html
@@ -17,7 +17,7 @@ class UsersController < ApplicationController
   def show
     respond_to do |format|
       format.html
-      format.json { render :json => user}
+      format.json { render :json => @user}
     end
   end
 
@@ -74,6 +74,11 @@ class UsersController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_user
       @user = User.joins(:bio, :reputation).find(params[:id])
+    end
+
+    # Params we allow filtering on
+    def filtering_params
+      params.slice(:search, :joined, :level, :rep, :mods, :cnotes, :inotes, :reviews, :nnotes, :comments, :mod_lists);
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
