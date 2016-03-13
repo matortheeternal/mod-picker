@@ -11,11 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-<<<<<<< HEAD
-ActiveRecord::Schema.define(version: 20160309220623) do
-=======
 ActiveRecord::Schema.define(version: 20160307083324) do
->>>>>>> f30053c2f69c656123f0f61baf16a8182da3b9e2
 
   create_table "agreement_marks", id: false, force: :cascade do |t|
     t.integer "incorrect_note_id", limit: 4
@@ -65,11 +61,7 @@ ActiveRecord::Schema.define(version: 20160307083324) do
     t.date    "submitted"
     t.date    "edited"
     t.text    "text_body",               limit: 65535
-<<<<<<< HEAD
-=======
-    t.integer "incorrect_notes_count",   limit: 4
     t.integer "compatibility_mod_id",    limit: 4
->>>>>>> f30053c2f69c656123f0f61baf16a8182da3b9e2
   end
 
   add_index "compatibility_notes", ["compatibility_plugin_id"], name: "compatibility_patch", using: :btree
