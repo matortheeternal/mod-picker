@@ -3,407 +3,373 @@
 /* header */
 
 header {
-    background-color: #555;
-    background-image: url($banner_image);
-    background-repeat: no-repeat;
-    -webkit-background-size: cover;
-    -moz-background-size: cover;
-    -o-background-size: cover;
-    background-size: cover;
-    height: 192px;
+  background-color: #555;
+  background-image: url($banner_image);
+  background-repeat: no-repeat;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  height: 192px;
 }
 
 .header {
-    max-width: 1220px;
-    width: 100%;
-    margin: 0 auto;
-    height: 50px;
-    display: table;
-    font-size: 11px;
-    padding-top: 60px;
-    padding-bottom: 60px;
-    position: relative;
+  max-width: 1220px;
+  width: 100%;
+  margin: 0 auto;
+  height: 50px;
+  display: table;
+  font-size: 11px;
+  padding-top: 60px;
+  padding-bottom: 60px;
+  position: relative;
 }
 
 h1 {
-    color: $h1_color;
-    font-size: 36px;
-    font-weight: 600;
-    padding: 0;
-    margin: 0;
+  color: $h1_color;
+  font-size: 36px;
+  font-weight: 600;
+  padding: 0;
+  margin: 0;
 }
 
 h1:hover {
-    color: $h2_color;
+  color: $h2_color;
 }
 
 h2 {
-    color: $h2_color;
-    padding: 0;
-    margin: 0;
-    font-size: 24px;
-    font-weight: 300;
-    border-bottom: 1px solid $border_color;
-    padding-bottom: 4px;
-    margin-bottom: 18px;
+  color: $h2_color;
+  padding: 0;
+  margin: 0;
+  font-size: 24px;
+  font-weight: 300;
+  border-bottom: 1px solid $border_color;
+  padding-bottom: 4px;
+  margin-bottom: 18px;
 }
 
 .nav-controls {
-    width: 75%;
-    display: table-cell;
-    vertical-align: middle;
-    height: 44px;
-    margin: 0;
-    padding: 0;
+  width: 75%;
+  display: table-cell;
+  vertical-align: middle;
+  height: 44px;
+  margin: 0;
+  padding: 0;
 }
 
 .logged-out-nav {
-    width: 240px;
-    background: rgba($inverse_text_color, 0.7);
-    text-align: right;
-    float: right;
-    margin: 0;
-    padding: 0 10px 0 10px;
+  width: 240px;
+  background: rgba($inverse_text_color, 0.7);
+  text-align: right;
+  float: right;
+  margin: 0;
+  padding: 0 10px 0 10px;
 }
 
 .logged-out-nav li {
-    display: inline;
-    padding: 0 0.5em;
-    border-right: 1px solid $hard_border_color;
-    list-style: outside none none;
+  display: inline;
+  padding: 0 0.5em;
+  border-right: 1px solid $hard_border_color;
+  list-style: outside none none;
 }
 
 .logged-out-nav a {
-    color: $text_color;
-    font-weight: 700;
+  color: $text_color;
+  font-weight: 700;
 }
 
 .logged-out-nav a:hover {
-    color: $link_hover_color_primary;
+  color: $link_hover_color_primary;
 }
 
 #form_game_select {
-    display: inline-block;
-    width: 95px;
-    text-align: center;
+  display: inline-block;
+  width: 95px;
+  text-align: center;
 }
 
 .game-selector {
-    position: absolute;
-    opacity: 0;
-    height: 42px;
-    font-size: 12px;
-    cursor: pointer;
+  position: absolute;
+  opacity: 0;
+  height: 42px;
+  font-size: 12px;
+  cursor: pointer;
 }
 
 .customSelect .customSelectInner {
-    padding-top: 5px;
-    padding-bottom: 5px;
-    padding-right: 5px;
-    line-height: 32px;
-    vertical-align: middle;
-    display: inline-block;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  padding-right: 5px;
+  line-height: 32px;
+  vertical-align: middle;
+  display: inline-block;
 }
 
 .customSelect {
-    display: inline-block;
-    font-weight: 700;
-    padding-left: 32px;
-    background-size: 32px 32px;
-    background-position: 0 5px;
-    background-repeat: no-repeat;
+  display: inline-block;
+  font-weight: 700;
+  padding-left: 32px;
+  background-size: 32px 32px;
+  background-position: 0 5px;
+  background-repeat: no-repeat;
 }
 
 .icon-sk {
-    background-image: url("http://puu.sh/lyZdf.png");
+  background-image: url("http://puu.sh/lyZdf.png");
 }
 
 /* box-sizing */
 
 * {
-    box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 /* some basic css */
 body {
-    font-family: 'Roboto', sans-serif;
-    color: $text_color;
-    margin: 0;
-    background-color: $primary_background;
-    background: linear-gradient(90deg, $secondary_background 50%, $primary_background 50%);
-
-    //make things unselectable by default
-    -webkit-user-select: none; /* Chrome/Safari */
-    -moz-user-select: none; /* Firefox */
-    -ms-user-select: none; /* IE10+ */
-
-    /* Rules below not implemented in browsers yet */
-    -o-user-select: none;
-    user-select: none;
+  font-family: 'Roboto', sans-serif;
+  color: $text_color;
+  margin: 0;
+  background-color: $primary_background;
 }
 
-.selectable {
-    //overwrite selectable things
-    -webkit-user-select: text; /* Chrome/Safari */
-    -moz-user-select: text; /* Firefox */
-    -ms-user-select: text; /* IE10+ */
-
-    /* Rules below not implemented in browsers yet */
-    -o-user-select: text;
-    user-select: text;
+.two-columns {
+background: linear-gradient(90deg, $secondary_background 50%, $primary_background 50%);
 }
 
 ::-webkit-scrollbar {
-    display: none;
-}
-
-.scaffold {
-    width: 1600px;
-    margin: auto;
+  display: none;
 }
 
 .hidden {
-    display: none;
-}
-
-input[type="checkbox"] {
-    margin: 0;
-    padding: 0;
-    margin-right: 4px;
-}
-
-.field input[type="text"]{
-    width: 200px;
-}
-
-.field input[type="email"]{
-    width: 200px;
-}
-
-.field input[type="password"]{
-    width: 200px;
+  display: none;
 }
 
 /* clearfix */
 .clearfix:before,
 .clearfix:after {
-    content: " "; /* 1 */
-    display: table; /* 2 */
+  content: " "; /* 1 */
+  display: table; /* 2 */
 }
 
 .clearfix:after {
-    clear: both;
+  clear: both;
 }
 
 /**
- * For IE 6/7 only
- * Include this rule to trigger hasLayout and contain floats.
- */
+* For IE 6/7 only
+* Include this rule to trigger hasLayout and contain floats.
+*/
 .clearfix {
-    *zoom: 1;
+  *zoom: 1;
 }
 
 /* url styling */
 a, .modListName {
-    color: $link_color;
-    text-decoration: none;
+  color: $link_color;
+  text-decoration: none;
 }
 
 a.strong, .modListName.strong {
-    font-weight: 600;
+  font-weight: 600;
 }
 
 a.expand {
-    display: block;
-    padding-top: 16px;
-    cursor: pointer;
-    font-size: 12px;
+  display: block;
+  padding-top: 16px;
+  cursor: pointer;
+  font-size: 12px;
 }
 
 a:hover {
-    color: $link_hover_color_secondary;
+  color: $link_hover_color_secondary;
 }
 
 /* css for navbar */
 
 nav {
-    display: block;
-    background-color: $bar_color;
-    white-space: nowrap;
-    border-bottom: 2px solid $soft_border_color;
+  display: block;
+  background-color: $bar_color;
+  white-space: nowrap;
+  border-bottom: 2px solid $soft_border_color;
 }
 
 nav a {
-    border-left: 1px solid $hard_border_color;
-    height: 60px;
-    padding: 12px 12px 16px;
-    color: $bar_text_color;
-    display: block;
-    float: left;
+  border-left: 1px solid $hard_border_color;
+  height: 60px;
+  padding: 12px 12px 16px;
+  color: $bar_text_color;
+  display: block;
+  float: left;
 }
 
 nav a:hover {
-    color: $bar_text_color;
-    background-color: $bar_highlight_color;
+  color: $bar_text_color;
+  background-color: $bar_highlight_color;
 }
 
 nav a:last-child {
-    border-right: 1px solid $hard_border_color;
+  border-right: 1px solid $hard_border_color;
 }
 
 nav span {
-    text-transform: uppercase;
-    color: $bar_highlight_text_color;
-    font-weight: 700;
-    font-size: 10px;
-    display: block;
+  text-transform: uppercase;
+  color: $bar_highlight_text_color;
+  font-weight: 700;
+  font-size: 10px;
+  display: block;
 }
 
 .nav-wrapper {
-    position: relative;
+  position: relative;
 }
 
 .primary-nav {
-    float: left;
+  float: left;
 }
 
 .secondary-nav {
-    float: right;
-    height: 60px;
+  float: right;
+  height: 60px;
 }
 
 .search input {
-    height: 35px;
-    font-size: 13px;
-    margin: 10px 0 0;
-    padding: 0 8px;
-    border: 0 none;
-    -moz-appearance: none;
-    border-radius: 0;
-    display: block;
-    float: left;
+  height: 35px;
+  font-size: 13px;
+  margin: 10px 0 0;
+  padding: 0 8px;
+  border: 0 none;
+  -moz-appearance: none;
+  border-radius: 0;
+  display: block;
+  float: left;
 }
 
 .loadingButtonContainer {
-    float: left;
-    width: 74px;
+  float: left;
+  width: 74px;
 }
 
 .search #loader {
-    margin-top: 10px;
-    margin-left: 20px;
+  margin-top: 10px;
+  margin-left: 20px;
 }
 
 .search {
-    float: right;
+  float: right;
 }
 
 /* search field */
 .search-field {
-    width: 200px;
-    height: 35px;
-    font-size: 13px;
-    margin: 10px 0 0;
-    padding: 0 8px;
-    border: 0 none;
-    -moz-appearance: none;
-    border-radius: 0;
+  width: 200px;
+  height: 35px;
+  font-size: 13px;
+  margin: 10px 0 0;
+  padding: 0 8px;
+  border: 0 none;
+  -moz-appearance: none;
+  border-radius: 0;
 }
 
 .btn {
-    width: 74px;
-    display: inline;
-    padding: 0 12px;
-    padding-left: 0;
-    color: $action_text_color;
-    font-size: 12px;
-    text-align: center;
-    text-transform: uppercase;
-    border: 0;
-    border-radius: 0;
-    background-color: $action_color;
-    cursor: pointer;
+  width: 74px;
+  display: inline;
+  padding: 0;
+  color: $action_text_color;
+  font-size: 12px;
+  text-align: center;
+  text-transform: uppercase;
+  border: 0;
+  border-radius: 0;
+  background-color: $action_color;
+  cursor: pointer;
 }
 
 .btn:hover {
-    background-color: $bright_action_color;
+  background-color: $bright_action_color;
 }
 
 /* css for horizontal menus */
 /* used for login and registration items */
 ul.hmenu {
-    list-style: none;
-    margin: 0 0 2em;
-    padding: 0;
+  list-style: none;
+  margin: 0 0 2em;
+  padding: 0;
 }
 
 ul.hmenu li {
-    display: inline;
+  display: inline;
 }
 
 /* css for columns */
 /* used on browse mods page */
 .page-container {
-    width: 1220px;
-    margin: auto;
+  width: 1220px;
+  margin: auto;
+}
+
+.single-column {
+  padding: 40px 0 40px 0;
+  width: 850px;
+  margin: auto;
 }
 
 .left-column {
-    width: 250px;
-    padding: 46px 48px 46px 0;
-    display: table-cell;
-    vertical-align: top;
-    background-color: $secondary_background;
-    border-right: 1px solid $soft_border_color;
+  width: 250px;
+  padding: 40px 48px 40px 0;
+  display: table-cell;
+  vertical-align: top;
+  background-color: $secondary_background;
+  border-right: 1px solid $soft_border_color;
 }
 
 .right-column {
-    width: 970px;
-    padding: 46px 0 46px 48px;
-    display: table-cell;
-    vertical-align: top;
-    background-color: $primary_background;
+  width: 970px;
+  padding: 46px 0 46px 48px;
+  display: table-cell;
+  vertical-align: top;
+  background-color: $primary_background;
 }
 
 .text-muted {
-    color: #767676;
+  color: #767676;
 }
 
 /* css for filters */
 
 .filter-list {
-    background-color: $background_highlight;
-    padding: 8px;
-    border: 1px solid $border_color;
-    margin: 0;
-    font-size: 12px;
+  background-color: $background_highlight;
+  padding: 8px;
+  border: 1px solid $border_color;
+  margin: 0;
+  font-size: 12px;
 }
 
 .filter-list li {
-    list-style: outside none none;
-    padding: 0;
-    margin-bottom: 2px;
+  list-style: outside none none;
+  padding: 0;
+  margin-bottom: 2px;
 }
 
 .half-box {
-    width: 45%;
-    display: inline-block;
+  width: 45%;
+  display: inline-block;
 }
 
-.left-column h3 {
-    font-weight: 700;
-    margin-bottom: 8px;
-    padding: 0;
-    font-size: 14px;
-    color: $h3_color;
+h3 {
+  font-weight: 700;
+  margin-top: 14px;
+  margin-bottom: 6px;
+  padding: 0;
+  font-size: 14px;
+  color: $h3_color;
 }
 
-.left-column h4 {
-    text-transform: uppercase;
-    color: $h4_color;
-    margin-bottom: 6px;
-    padding: 0;
-    font-size: 12px;
+h4 {
+  text-transform: uppercase;
+  color: $h4_color;
+  margin-bottom: 6px;
+  padding: 0;
+  font-size: 12px;
 }
 
 /* custom sliders */
@@ -417,6 +383,7 @@ ul.hmenu li {
   width: 20px !important;
   top: -6px !important;
   background-color: $slider_range_color !important;
+  outline: 0;
 }
 
 .rz-pointer::after {
@@ -439,61 +406,94 @@ ul.hmenu li {
 /* css for search results */
 
 .right-column table {
-    border-collapse: collapse;
-    width: 100%;
-    font-family: Arial;
+  border-collapse: collapse;
+  width: 100%;
+  font-family: Arial;
 }
 
 .right-column th {
-    margin: 0;
-    font-size: 10.5px;
-    padding: 0.5em 1em;
-    text-align: left;
+  margin: 0;
+  font-size: 10.5px;
+  padding: 0.5em 1em;
+  text-align: left;
 }
 
 .right-column td {
-    border-width: 0 0 0 1px;
-    font-size: 12px;
-    margin: 0;
-    overflow: visible;
+  border-width: 0 0 0 1px;
+  font-size: 12px;
+  margin: 0;
+  overflow: visible;
+
+  a {
+    display: block;
+    height: 100%;
     padding: 0.5em 1em;
+  }
 }
 
 .right-column tbody tr:nth-child(odd) {
-    background-color: $secondary_background;
+  background-color: $secondary_background;
 
-    &:hover td {
-        background-color: lighten($secondary_background, 10%);
-    }
+  a:hover {
+    background-color: lighten($secondary_background, 50%);
+  }
 }
 
 .right-column tbody tr:nth-child(even) {
-    background-color: $primary_background;
-
-    &:hover td {
-        background-color: lighten($primary_background, 10%);
-    }
+  background-color: $primary_background;
+  a:hover {
+    background-color: lighten($primary_background, 50%);
+  }
 }
 
 select.stealthy.ng-pristine {
-    opacity: 0.5;
-    filter: alpha(opacity=50);
+  opacity: 0.5;
+  filter: alpha(opacity=50);
 }
 
 .userGeneratedList .entry {
-    border: solid 2px $secondary_background;
-    padding: 10px;
-    background-color: $primary_background;
+  border: solid 2px $secondary_background;
+  padding: 10px;
+  background-color: $primary_background;
 }
 
 .expandableTitle {
-    font-size: 32px;
+  font-size: 32px;
 }
 
 .expandableTitleDiv {
-    margin-bottom: 20px;
+  margin-bottom: 20px;
 }
 
-.modlist tbody tr {
-    cursor: pointer;
+/* css for submit mod page */
+
+.infotable {
+  min-width: 400px;
+}
+
+input[type="checkbox"] {
+  margin: 0;
+  padding: 0;
+}
+
+label {
+  padding-left: 5px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+input[type="text"] {
+  width: 350px;
+}
+
+input[type="submit"] {
+  height: 35px;
+}
+
+.notice {
+  margin: 12px 0 12px 0;
+  display: block;
+  font-size: 13px;
 }

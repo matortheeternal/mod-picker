@@ -8,6 +8,7 @@ app.config(['$routeProvider', function ($routeProvider) {
 }]);
 
 app.controller('modsController', function ($scope, $q, modService, sliderFactory) {
+    useTwoColumns(true);
     $scope.loading = true;
 
     /* data */

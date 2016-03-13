@@ -8,7 +8,7 @@
     <!-- TODO: Commalogic -->
     <div class="left-column"><p>by {{mod.nexus_info.authors}} </p>
         <p>Versions</p>
-        <select ng-model="version" ng-options="version.id as version.version for version in mod.mod_versions"></select>
+        <select ng-model="version" ng-change="changeVersion(version)" ng-options="version.id as version.version for version in mod.mod_versions"></select>
         <p>{{mod.shortDescription}}</p>
     </div>
     <div class="right-column">
