@@ -520,13 +520,17 @@ category-picker-tree {
   }
 }
 
-.expanded-icon, .collapsed-icon {
-  cursor: pointer;
+.expanded-icon, .collapsed-icon, .no-icon {
   float: left;
   width: 10px;
+  min-height: 13px;
   text-align: center;
   font-size: 10px;
   margin-right: 4px;
+}
+
+.expanded-icon, .collapsed-icon  {
+  cursor: pointer;
 }
 
 .sub-category {
