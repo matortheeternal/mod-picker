@@ -1,12 +1,12 @@
 <div ng-repeat="primaryCategory in categories">
     <label>
-        <input type="checkbox" ng-model="categoryFilter[primaryCategory.id]"/>
+        <input type="checkbox" ng-model="categoryFilter[primaryCategory.id].value" ng-indeterminate="categoryFilter[primaryCategory.id].indeterminate" ng-change="updateSelection(primaryCategory.id)"/>
         <span>{{primaryCategory.name}}</span>
     </label>
     <div ng-repeat="secondaryCategory in primaryCategory.childs">
         <label>
             <span>-</span>
-            <input type="checkbox" ng-model="categoryFilter[primaryCategory.id][secondaryCategory.id]"/>
+            <input type="checkbox" ng-model="categoryFilter[primaryCategory.id].childs[secondaryCategory.id].value" ng-change="updateSelection(primaryCategory.id, secondaryCategory.id)"/>
             <span>{{secondaryCategory.name}}</span>
         </label>
     </div>
