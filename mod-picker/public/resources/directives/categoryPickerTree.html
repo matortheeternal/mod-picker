@@ -1,7 +1,7 @@
 <button ng-click="inverse()">Inverse Selection</button>
 <button ng-click="reset()">Reset selection</button>
 <div ng-repeat="primaryCategory in categories">
-    <expandable expanded="expanded[primaryCategory.id]" disable-style="true" disable-full-title-toggle="true">
+    <expandable expanded="categoryFilter[primaryCategory.id].expanded" disable-style="true" disable-full-title-toggle="true">
         <expanded-title>
             <label class="supercategory">
                 <input type="checkbox" ng-model="categoryFilter[primaryCategory.id].value" ng-indeterminate="categoryFilter[primaryCategory.id].indeterminate" ng-change="updateSelection(primaryCategory.id)"/>
