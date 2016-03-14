@@ -1,5 +1,7 @@
-<button ng-click="inverse()">Invert Selection</button>
-<button ng-click="reset()">Reset selection</button>
+<div class="tree-controls">
+    <button class="btn" ng-click="inverse()">Invert</button>
+    <button class="btn" ng-click="reset()">Reset</button>
+</div>
 <div ng-repeat="primaryCategory in categories">
     <expandable expanded="categoryFilter[primaryCategory.id].expanded" disable-style="true" disable-full-title-toggle="true">
         <expanded-title>

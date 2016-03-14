@@ -272,6 +272,7 @@ nav span {
 
 .btn {
   width: 74px;
+  height: 20px;
   display: inline;
   padding: 0;
   color: $action_text_color;
@@ -533,4 +534,9 @@ category-picker-tree {
 
 .sublabel {
   font-size: 11px;
+}
+
+.tree-controls {
+  margin-bottom: 6px;
+  text-align: center;
 }
