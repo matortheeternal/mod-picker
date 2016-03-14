@@ -12,6 +12,11 @@ app.directive('expandable', function () {
             disableStyle: '<?disableStyle',
             disableFullTitleToggle: '<?disableFullTitleToggle'
         },
+        link: function (scope, element, attrs, ctrl, transclude) {
+            transclude(scope, function (clone) {
+               scope.contentGiven = clone.length;
+            })  
+        },
         transclude: {
             title: '?expandedTitle',
             expandedIcon: '?expandedIcon',

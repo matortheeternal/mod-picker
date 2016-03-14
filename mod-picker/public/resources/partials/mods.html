@@ -3,7 +3,42 @@
         <h2>Filters</h2>
         <h3>Category</h3>
         <div class="sidebar-box">
-            <category-picker-tree></category-picker-tree>
+            <div ng-controller="categoryPickerTreeController" class="category-picker-tree">
+                <div class="tree-controls">
+                    <button class="btn" ng-click="inverse()">Invert</button>
+                    <button class="btn" ng-click="reset()">Reset</button>
+                </div>
+                <div ng-repeat="primaryCategory in categories">
+                    <expandable expanded="categoryFilter[primaryCategory.id].expanded" disable-style="true" disable-full-title-toggle="true" ng-show="primaryCategory.childs.length">
+                        <expanded-title>
+                            <label class="supercategory">
+                                <input type="checkbox" ng-model="categoryFilter[primaryCategory.id].value" ng-indeterminate="categoryFilter[primaryCategory.id].indeterminate" ng-change="updateSelection(primaryCategory.id)"/>
+                                <span>{{primaryCategory.name}}</span>
+                            </label>
+                        </expanded-title>
+                        <content>
+                            <div class="sub-category" ng-repeat="secondaryCategory in primaryCategory.childs">
+                                <label>
+                                    <input type="checkbox" ng-model="categoryFilter[primaryCategory.id].childs[secondaryCategory.id].value" ng-change="updateSelection(primaryCategory.id, secondaryCategory.id)"/>
+                                    <span>{{secondaryCategory.name}}</span>
+                                </label>
+                            </div>
+                        </content>
+                    </expandable>
+
+                    <!-- TODO: kill duplication-->
+                    <!-- not the best approach, not sure if there's a better way to do it -->
+                    <div ng-hide="primaryCategory.childs.length">
+                        <div class="expandable-title-container">
+                            <span class="no-icon"></span>
+                            <label class="supercategory">
+                                <input type="checkbox" ng-model="categoryFilter[primaryCategory.id].value" ng-indeterminate="categoryFilter[primaryCategory.id].indeterminate" ng-change="updateSelection(primaryCategory.id)"/>
+                                <span>{{primaryCategory.name}}</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
         <h3>Mod List</h3>
         <div class="sidebar-box">
