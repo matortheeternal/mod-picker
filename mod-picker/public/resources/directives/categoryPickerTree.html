@@ -1,5 +1,5 @@
 <div ng-repeat="primaryCategory in categories">
-    <expandable expanded="categoryFilter[primaryCategory.id].expanded" disable-style="true" disable-full-title-toggle="true" ng-show="primaryCategory.childs.length > 0">
+    <expandable expanded="categoryFilter[primaryCategory.id].expanded" disable-style="true" disable-full-title-toggle="true" ng-show="primaryCategory.childs.length">
         <expanded-title>
             <label class="supercategory">
                 <input type="checkbox" ng-model="categoryFilter[primaryCategory.id].value" ng-indeterminate="categoryFilter[primaryCategory.id].indeterminate" ng-change="updateSelection(primaryCategory.id)"/>
@@ -15,8 +15,10 @@
             </div>
         </content>
     </expandable>
+
+    <!-- TODO: kill duplication-->
     <!-- not the best approach, not sure if there's a better way to do it -->
-    <div ng-show="primaryCategory.childs.length == 0">
+    <div ng-hide="primaryCategory.childs.length">
         <div class="expandable-title-container">
             <span class="no-icon"></span>
             <label class="supercategory">
