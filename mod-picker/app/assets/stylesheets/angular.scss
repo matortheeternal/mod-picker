@@ -439,17 +439,10 @@ h4 {
 
 .right-column tbody tr:nth-child(odd) {
   background-color: $secondary_background;
-
-  a:hover {
-    background-color: lighten($secondary_background, 50%);
-  }
 }
 
 .right-column tbody tr:nth-child(even) {
   background-color: $primary_background;
-  a:hover {
-    background-color: lighten($primary_background, 50%);
-  }
 }
 
 select.stealthy.ng-pristine {
