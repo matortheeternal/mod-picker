@@ -1,10 +1,6 @@
 <div class="column-wrapper">
     <div class="left-column">
         <h2>Filters</h2>
-        <h3>Category</h3>
-        <div class="sidebar-box">
-            <category-picker-tree></category-picker-tree>
-        </div>
         <h3>Mod List</h3>
         <div class="sidebar-box">
             <ul class="filter-list">
@@ -40,8 +36,13 @@
             </ul>
         </div>
         <div id="category-filters" class="filter-section">
-            <h3>Categories</h3>
-            <category-tree data="categories"></category-tree>
+            <h3>Categories <span class="tree-controls">
+                <span class="fa fa-eraser"></span>
+                <span class="fa fa-minus-square"></span>
+            </span></h3>
+            <div class="sidebar-box">
+                <category-picker-tree></category-picker-tree>
+            </div>
         </div>
         <div id="date-filters" class="filter-section">
             <h3>Date Filters</h3>
