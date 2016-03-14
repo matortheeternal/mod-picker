@@ -11,7 +11,7 @@
         <select ng-model="version" ng-change="changeVersion(version)" ng-options="version.id as version.version for version in mod.mod_versions"></select>
         <p>{{mod.shortDescription}}</p>
     </div>
-    <div class="right-column">
+    <div class="right-column mod-content">
         <expandable expanded="expandedState.compabilityNotes">
             <expanded-title>Compability Notes</expanded-title>
             <content><user-generated-list data="compatibilityNotes"></user-generated-list></content>

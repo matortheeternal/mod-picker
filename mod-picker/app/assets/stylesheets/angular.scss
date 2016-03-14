@@ -272,6 +272,7 @@ nav span {
 
 .btn {
   width: 74px;
+  height: 20px;
   display: inline;
   padding: 0;
   color: $action_text_color;
@@ -336,10 +337,15 @@ ul.hmenu li {
 
 /* css for filters */
 
-.filter-list {
+.sidebar-box {
   background-color: $background_highlight;
-  padding: 8px;
   border: 1px solid $border_color;
+  padding: 8px;
+  margin: 0;
+}
+
+.filter-list {
+  padding: 0;
   margin: 0;
   font-size: 12px;
 }
@@ -433,17 +439,10 @@ h4 {
 
 .right-column tbody tr:nth-child(odd) {
   background-color: $secondary_background;
-
-  a:hover {
-    background-color: lighten($secondary_background, 50%);
-  }
 }
 
 .right-column tbody tr:nth-child(even) {
   background-color: $primary_background;
-  a:hover {
-    background-color: lighten($primary_background, 50%);
-  }
 }
 
 select.stealthy.ng-pristine {
@@ -457,11 +456,13 @@ select.stealthy.ng-pristine {
   background-color: $primary_background;
 }
 
-.expandableTitle {
+/* expandable */
+
+.mod-content .expandable-title {
   font-size: 32px;
 }
 
-.expandableTitleDiv {
+.mod-content .expandable-title-container {
   margin-bottom: 20px;
 }
 
@@ -477,7 +478,6 @@ input[type="checkbox"] {
 }
 
 label {
-  padding-left: 5px;
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
@@ -500,4 +500,59 @@ input[type="submit"] {
   margin: 12px 0 12px 0;
   display: block;
   font-size: 13px;
+}
+
+/* category-picker-tree */
+.category-picker-tree {
+  font-size: 14px;
+
+  content {
+    display: block;
+    margin-top: 2px;
+    margin-bottom: 3px;
+
+    .sub-category {
+      span {
+        display: inline-block;
+        word-wrap: break-word;
+        width: 136px;
+        margin-bottom: 3px;
+      }
+
+      input {
+        vertical-align: top;
+      }
+    }
+  }
+}
+
+.expanded-icon, .collapsed-icon, .no-icon {
+  float: left;
+  width: 10px;
+  min-height: 13px;
+  text-align: center;
+  font-size: 10px;
+  margin-right: 4px;
+}
+
+.expanded-icon, .collapsed-icon  {
+  cursor: pointer;
+}
+
+.sub-category {
+  font-size: 11px;
+  margin-left: 27px;
+}
+
+.tree-controls {
+  margin-left: 4px;
+  color: $link_color;
+
+  span {
+    cursor: pointer;
+  }
+
+  span:hover {
+    color: $link_hover_color_secondary;
+  }
 }
