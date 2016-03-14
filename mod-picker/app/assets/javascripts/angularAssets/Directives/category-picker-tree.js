@@ -13,7 +13,7 @@ app.directive('categoryPickerTree', function () {
 
 app.controller('categoryPickerTreeController', function ($scope, categoryService) {
     categoryService.retrieveNestedCategories().then(function (data) {
-        var categoryFilter = $scope.categoryFilter = {};
+        var categoryFilter = $scope.categoryFilter = [];
         data.forEach(function (superCategory) {
             categoryFilter[superCategory.id] = {childs: []};
             categoryFilter[superCategory.id].value = false;
@@ -46,5 +46,23 @@ app.controller('categoryPickerTreeController', function ($scope, categoryService
             $scope.categoryFilter[primaryCategory].indeterminate = !allChecked && !noneChecked;
             $scope.categoryFilter[primaryCategory].value = allChecked;
         }
-    }
+    };
+
+    $scope.reset = function () {
+        $scope.categoryFilter.forEach(function (superCategory) {
+            superCategory.value = false;
+            superCategory.childs.forEach(function (child) {
+                child.value = false;
+            });
+        });
+    };
+
+    $scope.inverse = function () {
+        $scope.categoryFilter.forEach(function (superCategory) {
+            superCategory.value = !superCategory.value;
+            superCategory.childs.forEach(function(child) {
+                child.value = !child.value;
+            });
+        });
+    };
 });
