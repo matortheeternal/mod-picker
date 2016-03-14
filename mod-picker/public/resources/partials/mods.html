@@ -2,12 +2,15 @@
     <div class="left-column">
         <h2>Filters</h2>
         <h3>Category</h3>
-        <category-picker-tree></category-picker-tree>
+        <div class="sidebar-box">
+            <category-picker-tree></category-picker-tree>
+        </div>
         <h3>Mod List</h3>
         <div class="sidebar-box">
             <ul class="filter-list">
                 <li>
-                    <input id="compatibility_enabled" type="checkbox"><label for="compatibility_enabled">Enable compatibility filter</label>
+                    <label><input id="compatibility_enabled" type="checkbox">
+                        Enable compatibility filter</label>
                 </li>
                 <li class="half-box">
                     <h4>Mods</h4>
@@ -23,13 +26,16 @@
             <h3>Sources</h3>
             <ul class="filter-list">
                 <li>
-                    <input id="nexus_mods" type="checkbox" checked="checked"><label for="nexus_mods">Nexus Mods</label>
+                    <label><input id="nexus_mods" type="checkbox" checked="checked">
+                        Nexus Mods</label>
                 </li>
                 <li>
-                    <input id="steam_workshop" type="checkbox"><label for="steam_workshop">Steam Workshop</label>
+                    <label><input id="steam_workshop" type="checkbox">
+                        Steam Workshop</label>
                 </li>
                 <li>
-                    <input id="lovers_lab" type="checkbox"><label for="lovers_lab">Lovers Lab</label>
+                    <label><input id="lovers_lab" type="checkbox">
+                        Lovers Lab</label>
                 </li>
             </ul>
         </div>
