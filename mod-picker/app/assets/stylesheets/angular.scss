@@ -194,7 +194,7 @@ nav {
 }
 
 nav a {
-  border-left: 1px solid $hard_border_color;
+  border-left: 1px solid $bar_highlight_color;
   height: 60px;
   padding: 12px 12px 16px;
   color: $bar_text_color;
@@ -208,7 +208,7 @@ nav a:hover {
 }
 
 nav a:last-child {
-  border-right: 1px solid $hard_border_color;
+  border-right: 1px solid $bar_highlight_color;
 }
 
 nav span {
