@@ -517,6 +517,14 @@ category-picker-tree {
     display: block;
     margin-top: 2px;
     margin-bottom: 3px;
+
+    .sub-category {
+      span {
+        display: inline-block;
+        word-wrap: break-word;
+        width: 136px;
+      }
+    }
   }
 }
 
