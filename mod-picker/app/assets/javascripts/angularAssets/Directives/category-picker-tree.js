@@ -51,6 +51,7 @@ app.controller('categoryPickerTreeController', function ($scope, categoryService
     $scope.reset = function () {
         $scope.categoryFilter.forEach(function (superCategory) {
             superCategory.value = false;
+            superCategory.indeterminate = false;
             superCategory.childs.forEach(function (child) {
                 child.value = false;
             });
