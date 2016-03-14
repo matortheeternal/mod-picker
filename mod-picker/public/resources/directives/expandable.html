@@ -1,6 +1,12 @@
 <div>
-    <div ng-click="toggle()" class="expandableTitleDiv"><span class="expandableTitle">{{expanded ? '-' : '+'}} {{title}}</span></div>
-    <div ng-show="expanded" ng-transclude>
-
+    <!-- header section with some crazy transclude logic-->
+    <div ng-click="toggle(true)" class="(!disableStyle ? 'expandableTitleDiv' : '')">
+        <div ng-class="(!disableStyle ? 'expandableTitle' : '')">
+            <span ng-transclude="expandedIcon" ng-show="expanded" ng-click="toggle(false)">-</span>
+            <span ng-transclude="collapsedIcon" ng-hide="expanded" ng-click="toggle(false)">+</span>
+            <span ng-transclude="title">Fallback Title</span>
+        </div>
     </div>
+    <!-- content section-->
+    <div ng-show="expanded" ng-transclude="content">Fallback Content</div>
 </div>

@@ -477,11 +477,14 @@ input[type="checkbox"] {
 }
 
 label {
-  padding-left: 5px;
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
+}
+
+label .sublabel {
+  padding-left: 5px;
 }
 
 input[type="text"] {
