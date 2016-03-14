@@ -2,8 +2,8 @@
     <!-- header section with some crazy transclude logic-->
     <div ng-click="toggle(true)" class="(!disableStyle ? 'expandableTitleDiv' : '')">
         <div ng-class="(!disableStyle ? 'expandableTitle' : '')">
-            <span ng-transclude="expandedIcon" ng-show="expanded" ng-click="toggle(false)">-</span>
-            <span ng-transclude="collapsedIcon" ng-hide="expanded" ng-click="toggle(false)">+</span>
+            <span ng-transclude="expandedIcon" ng-show="expanded" ng-click="toggle(false)" class="expandIcon">-</span>
+            <span ng-transclude="collapsedIcon" ng-hide="expanded" ng-click="toggle(false)" class="expandIcon">+</span>
             <span ng-transclude="title">Fallback Title</span>
         </div>
     </div>

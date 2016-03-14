@@ -23,7 +23,7 @@ app.directive('expandable', function () {
 
 app.controller('expandableController', function ($scope) {
     $scope.toggle = function (fullTitle) {
-        if(!($scope.disableFullTitleToggle && fullTitle)) {
+        if($scope.disableFullTitleToggle ? !fullTitle : fullTitle) {
             $scope.expanded = !$scope.expanded;
         }
     }
