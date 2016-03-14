@@ -281,9 +281,16 @@ nav span {
   background-color: $bright_action_color;
 }
 
+#thin-btn {
+  display: inline;
+  margin-left: 10px;
+  padding: 5px 8px 5px 8px;
+}
+
 #save-changes {
   display: block;
   margin: auto;
+  padding: 10px;
 }
 
 #avatar-browse {
@@ -496,7 +503,7 @@ input[type="text"] {
 }
 
 input[type="submit"] {
-  height: 35px;
+  //height: 35px;
 }
 
 .notice {
@@ -518,6 +525,7 @@ input[type="submit"] {
   margin-top: 30px;
   margin-left: 30px;
   padding-bottom: 70px;
+  font-weight: 500;
 
   input[type="text"]{
     vertical-align: top;
@@ -535,7 +543,11 @@ input[type="submit"] {
     margin-left: 0;
     margin-bottom: 0;
   }
+}
 
+.section-element {
+  margin-top: 15px;
+  margin-bottom: 15px;
 }
 
 .quote {
@@ -593,4 +605,9 @@ input[type="submit"] {
   margin-top: 4px;
   max-width: 100%;
   overflow-y: auto;
+}
+
+.username {
+  color: $h4_color;
+  font-style: italic;
 }

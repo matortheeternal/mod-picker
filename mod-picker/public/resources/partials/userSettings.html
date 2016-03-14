@@ -12,7 +12,7 @@
         </div>
     </div>
 </div>
-<di
+
 <div class="column-wrapper">
     <div class="single-column">
         <loader data="user">
@@ -42,10 +42,31 @@
                 </div>
 
                 <input class="btn" id="save-changes" type="submit" value="Save Changes" ng-click="saveChanges()"/>
+
             </div>
 
+
+
             <div ng-show="isSelected('Account')">
+                <span class="section-title">Linked Accounts</span>
+                <div class="section">
+                    <div class="section-element">
+                        Nexus Mods
+                        <input type="submit" class="btn" id="thin-btn" value="link" ng-click="verify()">
+                    </div>
+                    <div class="section-element">
+                        Steam Workshop
+                        <input type="submit" class="btn" id="thin-btn" value="link" ng-click="verify()">
+                    </div>
+                    <div class="section-element">
+                        Lover's Lab<span class="username">:         thesiriusadam</span>
+                        <input type="submit" class="btn" id="thin-btn" value="Change" ng-click="verify()">
+                    </div>
+                </div>
             </div>
+
+
+
             <div ng-show="isSelected('Reputation')">
             </div>
             <div ng-show="isSelected('Mod Lists')">
