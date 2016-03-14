@@ -516,6 +516,11 @@ input[type="submit"] {
         display: inline-block;
         word-wrap: break-word;
         width: 136px;
+        margin-bottom: 3px;
+      }
+
+      input {
+        vertical-align: top;
       }
     }
   }
