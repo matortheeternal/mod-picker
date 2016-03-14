@@ -57,8 +57,6 @@ app.controller('categoryPickerTreeController', function ($scope, categoryService
                 child.value = false;
             });
         });
-
-        $scope.changeAllExpandedStates(false);
     };
 
     $scope.inverse = function () {
@@ -67,12 +65,6 @@ app.controller('categoryPickerTreeController', function ($scope, categoryService
             superCategory.childs.forEach(function(child) {
                 child.value = !child.value;
             });
-        });
-    };
-
-    $scope.changeAllExpandedStates = function (expanded) {
-        $scope.categoryFilter.forEach(function (superCategory) {
-            superCategory.expanded = expanded;
         });
     };
 });
