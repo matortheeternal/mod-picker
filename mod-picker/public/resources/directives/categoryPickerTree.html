@@ -10,12 +10,9 @@
                 <span>{{primaryCategory.name}}</span>
             </label>
         </expanded-title>
-        <expanded-icon>-</expanded-icon>
-        <collapsed-icon>+</collapsed-icon>
         <content>
-            <div ng-repeat="secondaryCategory in primaryCategory.childs">
-                <label class="sublabel">
-                    <span class="tree-indent"></span>
+            <div class="sub-category" ng-repeat="secondaryCategory in primaryCategory.childs">
+                <label>
                     <input type="checkbox" ng-model="categoryFilter[primaryCategory.id].childs[secondaryCategory.id].value" ng-change="updateSelection(primaryCategory.id, secondaryCategory.id)"/>
                     <span>{{secondaryCategory.name}}</span>
                 </label>

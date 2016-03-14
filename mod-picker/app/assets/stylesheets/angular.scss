@@ -520,20 +520,18 @@ category-picker-tree {
   }
 }
 
-.tree-indent {
-  width: 25px;
-  display: inline-block;
-}
-
 .expanded-icon, .collapsed-icon {
   cursor: pointer;
+  float: left;
   width: 10px;
-  display: inline-block;
   text-align: center;
+  font-size: 10px;
+  margin-right: 4px;
 }
 
-.sublabel {
+.sub-category {
   font-size: 11px;
+  margin-left: 27px;
 }
 
 .tree-controls {
