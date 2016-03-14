@@ -9,14 +9,22 @@ app.directive('expandable', function () {
         controller: 'expandableController',
         scope: {
             expanded: '=',
-            title: '='
+            disableStyle: '<?disableStyle',
+            disableFullTitleToggle: '<?disableFullTitleToggle'
         },
-        transclude: true
+        transclude: {
+            title: '?expandedTitle',
+            expandedIcon: '?expandedIcon',
+            collapsedIcon: '?collapsedIcon',
+            content: 'content'
+        }
     }
 });
 
 app.controller('expandableController', function ($scope) {
-    $scope.toggle = function () {
-        $scope.expanded = !$scope.expanded;
+    $scope.toggle = function (fullTitle) {
+        if(!($scope.disableFullTitleToggle && fullTitle)) {
+            $scope.expanded = !$scope.expanded;
+        }
     }
 });
