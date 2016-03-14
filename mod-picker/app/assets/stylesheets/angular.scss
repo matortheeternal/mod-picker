@@ -547,6 +547,14 @@ input[type="submit"] {
 }
 
 .tree-controls {
-  margin-bottom: 6px;
-  text-align: center;
+  margin-left: 4px;
+  color: $link_color;
+
+  span {
+    cursor: pointer;
+  }
+
+  span:hover {
+    color: $link_hover_color_secondary;
+  }
 }
