@@ -10,6 +10,9 @@ app.service('categoryService', function ($q, backend) {
                     returnData.push(category);
                 }
             });
+            returnData.sort(function (a, b) {
+                return a.name.localeCompare(b.name);
+            });
             categoryPromise.resolve(returnData);
         });
 
