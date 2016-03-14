@@ -457,6 +457,8 @@ select.stealthy.ng-pristine {
   background-color: $primary_background;
 }
 
+/* expandable */
+
 .mod-content .expandable-title {
   font-size: 32px;
 }
@@ -502,9 +504,15 @@ input[type="submit"] {
   font-size: 13px;
 }
 
-/* tree */
+/* category-picker-tree */
 category-picker-tree {
   font-size: 14px;
+
+  content {
+    display: block;
+    margin-top: 2px;
+    margin-bottom: 3px;
+  }
 }
 
 .tree-indent {
