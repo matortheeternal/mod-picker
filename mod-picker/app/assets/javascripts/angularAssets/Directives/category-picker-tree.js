@@ -27,23 +27,24 @@ app.controller('categoryPickerTreeController', function ($scope, categoryService
 
     $scope.updateSelection = function (primaryCategory, secondaryCategory) {
         if(!secondaryCategory) {
+            $scope.categoryFilter[primaryCategory].indeterminate = false;
             $scope.categoryFilter[primaryCategory].childs.forEach(function (child) {
                 child.value = $scope.categoryFilter[primaryCategory].value;
             });
         } else {
             //This logic is a bit hard to read. If you iterate through different possibilities you will understand.
-            var noneChecked = true;
+            var partiallyChecked = false;
             var allChecked = true;
             $scope.categoryFilter[primaryCategory].childs.forEach(function (child) {
 
                 //a child that is selected will mark the noneChecked false
-                noneChecked = noneChecked && !child.value;
+                partiallyChecked = partiallyChecked || child.value;
 
                 //a child that is not selected will mark the allChecked false
                 allChecked = allChecked && child.value;
             });
 
-            $scope.categoryFilter[primaryCategory].indeterminate = !allChecked && !noneChecked;
+            $scope.categoryFilter[primaryCategory].indeterminate = !allChecked && partiallyChecked;
             $scope.categoryFilter[primaryCategory].value = allChecked;
         }
     };
