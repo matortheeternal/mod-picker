@@ -501,10 +501,23 @@ input[type="submit"] {
   font-size: 13px;
 }
 
-.supercategory span {
-  font-weight: bold;
+/* tree */
+category-picker-tree {
+  font-size: 14px;
 }
 
-.expandIcon {
+.tree-indent {
+  width: 25px;
+  display: inline-block;
+}
+
+.expanded-icon, .collapsed-icon {
   cursor: pointer;
+  width: 10px;
+  display: inline-block;
+  text-align: center;
+}
+
+.sublabel {
+  font-size: 11px;
 }
