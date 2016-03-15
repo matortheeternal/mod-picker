@@ -1,12 +1,16 @@
 <div class="column-wrapper">
     <div class="single-column">
         <h2>Submit Mod</h2>
-        <form id="submitModForm" name="submitModForm">
-            <h3>Sources</h3>
 
-            Nexus Mods<br/>
+
+
+        <span class="section-title">Sources</span>
+        <div class="section">
+            <form id="submitModForm" name="submitModForm">
+
+            Nexus Mods<br>
             <input type="text" ng-model="nexusUrl" required>
-            <input type="button" ng-disabled='urlInvalid()' ng-click="scrape()" value="Scrape">
+            <input type="button" class="btn-sm" ng-disabled='urlInvalid()' ng-click="scrape()" value="Scrape">
 
             <div ng-show="scraping">
                 <h3>Nexus Mods Info</h3>
@@ -57,13 +61,35 @@
                     </table>
                 </loader>
             </div>
+        </div>
 
-            <category-tree></category-tree>
 
-            <h3>Tags</h3>
+
+
+        <span class="section-title">Categories
+            <span class="filter-controls">
+                <span class="fa fa-eraser" ng-click="clearSelection()" title="Clear Selection"></span>
+                <span class="fa fa-adjust" ng-click="inverseSelection()" title="Inverse Selection"></span>
+            </span>
+        </span>
+        <div class="section">
+            <div class="section-element">
+                <category-tree></category-tree>
+                <input type="button" id="checkCategories" class="btn-sm" ng-click="checkCategories()" value="Check Categories">
+            </div>
+        </div>
+
+
+
+        <span class="section-title">Tags</span>
+        <div class="section">
             TODO: tag selector
+        </div>
 
-            <h3>Other Options</h3>
+
+
+        <span class="section-title">Other Options</span>
+        <div class="section">
             <label>
                 <input id="kbUtility" type="checkbox" ng-model="isUtility">
                 Is Utility
@@ -73,27 +99,36 @@
                 <input id="kbAdult" type="checkbox" ng-model="hasAdultContent">
                 Has Adult Content
             </label><br/>
+        </div>
 
-            <h3>Asset File Analysis</h3>
+
+        <span class="section-title">Asset File Analysis</span>
+        <div class="section">
 
             Archive<br/>
             <input type="text" ng-model="archive">
-            <input type="button" ng-click="archiveBrowse()" value="Browse">
+            <input type="button" class="btn-sm" ng-click="archiveBrowse()" value="Browse">
 
             <div ng-show="archiveAnalysed">
                 <h3>Mod Asset File Analysis</h3>
                 TODO: asset file tree
             </div>
+        </div>
 
-            <h3>Plugins</h3>
+
+
+        <span class="section-title">Plugins</span>
+        <div class="section">
             TODO: plugins listing
 
             <span class="notice">
                 Plugin analysis will be performed by our servers sometime in the next 24 hours.
             </span>
-
-
             <input class="btn" type="submit" ng-disabled='modInvalid()' ng-click="submit()" value="Submit"/>
-        </form>
+        </div>
+
+
+
+
     </div>
 </div>
