@@ -1,39 +1,43 @@
 <div class="column-wrapper">
     <div class="left-column">
         <h2>Filters</h2>
-        <h3>Mod List</h3>
-        <div class="sidebar-box">
-            <ul class="filter-list">
-                <li>
-                    <label><input id="compatibility_enabled" type="checkbox">
-                        Enable compatibility filter</label>
-                </li>
-                <li class="half-box">
-                    <h4>Mods</h4>
-                    <a href="#">123</a> <!-- PLACEHOLDER VALUE -->
-                </li>
-                <li class="half-box">
-                    <h4>Plugins</h4>
-                    <a href="#">98</a> <!-- PLACEHOLDER VALUE -->
-                </li>
-            </ul>
+        <div id="mod-list-filters" class="filter-section">
+            <h3>Mod List</h3>
+            <div class="sidebar-box">
+                <ul class="filter-list">
+                    <li>
+                        <label><input id="compatibility_enabled" type="checkbox">
+                            Enable compatibility filter</label>
+                    </li>
+                    <li class="half-box">
+                        <h4>Mods</h4>
+                        <a href="#">123</a> <!-- PLACEHOLDER VALUE -->
+                    </li>
+                    <li class="half-box">
+                        <h4>Plugins</h4>
+                        <a href="#">98</a> <!-- PLACEHOLDER VALUE -->
+                    </li>
+                </ul>
+            </div>
         </div>
         <div id="site-filters" class="filter-section">
             <h3>Sources</h3>
-            <ul class="filter-list">
-                <li>
-                    <label><input id="nexus_mods" type="checkbox" checked="checked">
-                        Nexus Mods</label>
-                </li>
-                <li>
-                    <label><input id="steam_workshop" type="checkbox">
-                        Steam Workshop</label>
-                </li>
-                <li>
-                    <label><input id="lovers_lab" type="checkbox">
-                        Lovers Lab</label>
-                </li>
-            </ul>
+            <div class="sidebar-box">
+                <ul class="filter-list">
+                    <li>
+                        <label><input id="nexus_mods" type="checkbox" checked="checked">
+                            Nexus Mods</label>
+                    </li>
+                    <li>
+                        <label><input id="steam_workshop" type="checkbox">
+                            Steam Workshop</label>
+                    </li>
+                    <li>
+                        <label><input id="lovers_lab" type="checkbox">
+                            Lovers Lab</label>
+                    </li>
+                </ul>
+            </div>
         </div>
         <div id="category-filters" class="filter-section" ng-controller="categoryPickerTreeController">
             <h3>Categories <span class="filter-controls">
