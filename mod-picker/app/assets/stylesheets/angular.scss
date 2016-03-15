@@ -522,8 +522,12 @@ category-picker-tree {
       span {
         display: inline-block;
         word-wrap: break-word;
-        width: 136px;
+        width: 80%;
       }
+    }
+    input[type="checkbox"]
+    {
+      vertical-align: top;
     }
   }
 }
