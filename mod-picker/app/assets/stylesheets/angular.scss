@@ -515,13 +515,17 @@ input[type="submit"] {
       span {
         display: inline-block;
         word-wrap: break-word;
-        width: 136px;
+        width: 80%;
         margin-bottom: 3px;
       }
 
       input {
         vertical-align: top;
       }
+    }
+    input[type="checkbox"]
+    {
+      vertical-align: top;
     }
   }
 }
