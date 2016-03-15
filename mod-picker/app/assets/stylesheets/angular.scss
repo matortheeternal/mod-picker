@@ -537,8 +537,6 @@ input[type="submit"] {
   font-size: 13px;
 }
 
-/* category-tree */
-.category-tree {
 .section-title {
   display: block;
   vertical-align: top;
@@ -638,8 +636,9 @@ input[type="submit"] {
   color: $h4_color;
   font-style: italic;
 }
-/* category-picker-tree */
-.category-picker-tree {
+
+/* category-tree */
+.category-tree {
   font-size: 14px;
 
   content {
