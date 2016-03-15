@@ -65,6 +65,22 @@ h4 {
   color: $h4_color;
 }
 
+input[type="checkbox"] {
+  margin: 0;
+  padding: 0;
+}
+
+input[type="text"] {
+  font-size: 14px;
+  vertical-align: top;
+  height: 28px;
+  width: 350px;
+}
+
+input[type="submit"] {
+  height: 35px;
+}
+
 .nav-controls {
   width: 75%;
   display: table-cell;
@@ -302,6 +318,27 @@ nav span {
   cursor: pointer;
 }
 
+.btn-sm {
+  display: inline;
+  background-color: $bar_color;
+  padding: 6px 8px;
+  border: 0;
+  border-radius: 0;
+  cursor: pointer;
+  font-size: 12px;
+  color: $bar_text_color;
+  text-align: center;
+}
+
+.btn-sm:disabled {
+  cursor: default;
+  background-color: $border_color;
+}
+
+.btn-sm:enabled:hover {
+  background-color: $bar_highlight_color;
+}
+
 .btn:hover {
   background-color: $bright_action_color;
 }
@@ -487,11 +524,6 @@ select.stealthy.ng-pristine {
   min-width: 400px;
 }
 
-input[type="checkbox"] {
-  margin: 0;
-  padding: 0;
-}
-
 label {
   -webkit-user-select: none;
   -moz-user-select: none;
@@ -501,14 +533,6 @@ label {
 
 label .sublabel {
   padding-left: 5px;
-}
-
-input[type="text"] {
-  width: 350px;
-}
-
-input[type="submit"] {
-  height: 35px;
 }
 
 .notice {

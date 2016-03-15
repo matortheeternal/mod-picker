@@ -6,7 +6,7 @@
 
             Nexus Mods<br/>
             <input type="text" ng-model="nexusUrl" required>
-            <input type="button" ng-disabled='urlInvalid()' ng-click="scrape()" value="Scrape">
+            <input type="button" class="btn-sm" ng-disabled='urlInvalid()' ng-click="scrape()" value="Scrape">
 
             <div ng-show="scraping">
                 <h3>Nexus Mods Info</h3>
@@ -59,7 +59,7 @@
             </div>
 
             <category-tree></category-tree>
-            <input id="checkCategories" type="button" ng-click="checkCategories()" value="Check Categories">
+            <input type="button" id="checkCategories" class="btn-sm" ng-click="checkCategories()" value="Check Categories">
 
             <h3>Tags</h3>
             TODO: tag selector
@@ -79,7 +79,7 @@
 
             Archive<br/>
             <input type="text" ng-model="archive">
-            <input type="button" ng-click="archiveBrowse()" value="Browse">
+            <input type="button" class="btn-sm" ng-click="archiveBrowse()" value="Browse">
 
             <div ng-show="archiveAnalysed">
                 <h3>Mod Asset File Analysis</h3>
