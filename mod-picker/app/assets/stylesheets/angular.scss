@@ -48,6 +48,23 @@ h2 {
   margin-bottom: 18px;
 }
 
+h3 {
+  font-weight: 700;
+  margin-top: 14px;
+  margin-bottom: 6px;
+  padding: 0;
+  font-size: 14px;
+  color: $h3_color;
+}
+
+h4 {
+  margin-bottom: 6px;
+  padding: 0;
+  font-size: 12px;
+  text-transform: uppercase;
+  color: $h4_color;
+}
+
 .nav-controls {
   width: 75%;
   display: table-cell;
@@ -194,7 +211,7 @@ nav {
 }
 
 nav a {
-  border-left: 1px solid $hard_border_color;
+  border-left: 1px solid $bar_highlight_color;
   height: 60px;
   padding: 12px 12px 16px;
   color: $bar_text_color;
@@ -208,7 +225,7 @@ nav a:hover {
 }
 
 nav a:last-child {
-  border-right: 1px solid $hard_border_color;
+  border-right: 1px solid $bar_highlight_color;
 }
 
 nav span {
@@ -362,21 +379,18 @@ ul.hmenu li {
   display: inline-block;
 }
 
-h3 {
-  font-weight: 700;
-  margin-top: 14px;
-  margin-bottom: 6px;
-  padding: 0;
+.filter-controls {
   font-size: 14px;
-  color: $h3_color;
-}
+  margin-left: 4px;
+  color: $link_color;
 
-h4 {
-  text-transform: uppercase;
-  color: $h4_color;
-  margin-bottom: 6px;
-  padding: 0;
-  font-size: 12px;
+  span {
+    cursor: pointer;
+  }
+
+  span:hover {
+    color: $link_hover_color_secondary;
+  }
 }
 
 /* custom sliders */
