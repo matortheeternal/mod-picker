@@ -35,10 +35,10 @@
                 </li>
             </ul>
         </div>
-        <div id="category-filters" class="filter-section">
-            <h3>Categories <span class="tree-controls">
-                <span class="fa fa-eraser" ng-click="inverse()"></span>
-                <span class="fa fa-minus-square" ng-click="reset()"></span>
+        <div id="category-filters" class="filter-section" ng-controller="categoryPickerTreeController">
+            <h3>Categories <span class="filter-controls">
+                <span class="fa fa-eraser" ng-click="clearSelection()" title="Clear Selection"></span>
+                <span class="fa fa-adjust" ng-click="inverseSelection()" title="Inverse Selection"></span>
             </span></h3>
 
             <div class="sidebar-box">
@@ -78,16 +78,22 @@
         </div>
         <div id="date-filters" class="filter-section">
             <h3>Date Filters</h3>
-            <h4>Date Updated</h4>
+            <h4>Date Updated <span class="filter-controls">
+                <span class="fa fa-calendar" ng-click="" title="Custom Date"></span>
+            </span></h4>
             <slider data="data.updated" type="ModListDateSlider"></slider>
 
-            <h4>Date Released</h4>
+            <h4>Date Released <span class="filter-controls">
+                <span class="fa fa-calendar" ng-click="" title="Custom Date"></span>
+            </span></h4>
             <slider data="data.released" type="ModListDateSlider"></slider>
         </div>
         <div id="mod-picker-filters" class="filter-section">
             <h3>Mod Picker Filters</h3>
             <div id="mod-picker-stat-filters" class="filter-section">
-                <h4>Reputation</h4>
+                <h4>Reputation <span class="filter-controls">
+                    <span class="fa fa-wrench" ng-click="" title="Custom Value"></span>
+                </span></h4>
                 <slider data="data.reputation" type="CeilSlider" attr="450"></slider>
 
                 <h4>Average Rating</h4>
@@ -97,7 +103,9 @@
                 <slider data="data.reviews" type="CeilSlider" attr="200"></slider>
             </div>
             <div id="mod-picker-ext-filters" class="filter-section">
-                <h4>Number of Stars</h4>
+                <h4>Number of Stars <span class="filter-controls">
+                    <span class="fa fa-wrench" ng-click="" title="Custom Value"></span>
+                </span></h4>
                 <slider data="data.stars" type="StepSlider" attr="1000"></slider>
 
                 <h4>Compatibility Notes Count</h4>
@@ -110,26 +118,38 @@
         <div id="nexus-mods-filters" class="filter-sections">
             <h3>Nexus Mods Filters</h3>
             <div id="nexus-mods-stat-filters" class="filter-section">
-                <h4>Endorsements</h4>
+                <h4>Endorsements <span class="filter-controls">
+                    <span class="fa fa-wrench" ng-click="" title="Custom Value"></span>
+                </span></h4>
                 <slider data="data.endorsements" type="StepSlider" attr="500000"></slider>
 
-                <h4>Unique Downloads</h4>
+                <h4>Unique Downloads <span class="filter-controls">
+                    <span class="fa fa-wrench" ng-click="" title="Custom Value"></span>
+                </span></h4>
                 <slider data="data.uniqueDownloads" type="StepSlider" attr="10000000"></slider>
 
-                <h4>Total Downloads</h4>
+                <h4>Total Downloads <span class="filter-controls">
+                    <span class="fa fa-wrench" ng-click="" title="Custom Value"></span>
+                </span></h4>
                 <slider data="data.totalDownloads" type="StepSlider" attr="50000000"></slider>
             </div>
             <div id="nexus-mods-ext-filters" class="filter-section">
-                <h4>Views</h4>
+                <h4>Views <span class="filter-controls">
+                    <span class="fa fa-wrench" ng-click="" title="Custom Value"></span>
+                </span></h4>
                 <slider data="data.views" type="StepSlider" attr="50000000"></slider>
 
-                <h4>Posts Count</h4>
+                <h4>Posts Count <span class="filter-controls">
+                    <span class="fa fa-wrench" ng-click="" title="Custom Value"></span>
+                </span></h4>
                 <slider data="data.posts" type="StepSlider" attr="500000"></slider>
 
                 <h4>Videos Count</h4>
                 <slider data="data.videos" type="CeilSlider" attr="50"></slider>
 
-                <h4>Images Count</h4>
+                <h4>Images Count <span class="filter-controls">
+                    <span class="fa fa-wrench" ng-click="" title="Custom Value"></span>
+                </span></h4>
                 <slider data="data.images" type="StepSlider" attr="1000"></slider>
 
                 <h4>Files Count</h4>
