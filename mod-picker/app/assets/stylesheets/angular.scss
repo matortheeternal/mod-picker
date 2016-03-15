@@ -44,6 +44,23 @@ h2 {
   margin-bottom: 18px;
 }
 
+h3 {
+  font-weight: 700;
+  margin-top: 14px;
+  margin-bottom: 6px;
+  padding: 0;
+  font-size: 14px;
+  color: $h3_color;
+}
+
+h4 {
+  margin-bottom: 6px;
+  padding: 0;
+  font-size: 12px;
+  text-transform: uppercase;
+  color: $h4_color;
+}
+
 .nav-controls {
   width: 75%;
   display: table-cell;
@@ -375,21 +392,18 @@ ul.hmenu li {
   display: inline-block;
 }
 
-h3 {
-  font-weight: 700;
-  margin-top: 14px;
-  margin-bottom: 6px;
-  padding: 0;
+.filter-controls {
   font-size: 14px;
-  color: $h3_color;
-}
+  margin-left: 4px;
+  color: $link_color;
 
-h4 {
-  text-transform: uppercase;
-  color: $h4_color;
-  margin-bottom: 6px;
-  padding: 0;
-  font-size: 12px;
+  span {
+    cursor: pointer;
+  }
+
+  span:hover {
+    color: $link_hover_color_secondary;
+  }
 }
 
 /* custom sliders */
@@ -627,8 +641,7 @@ input[type="submit"] {
     .sub-category {
       span {
         display: inline-block;
-        word-wrap: break-word;
-        width: 136px;
+        max-width: calc(100% - 20px);
         margin-bottom: 3px;
       }
 
