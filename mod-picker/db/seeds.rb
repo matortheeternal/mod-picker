@@ -4,7 +4,7 @@
 
 def randpow(num, pow)
   result = 1.0
-  for i in 1..pow
+  (1..pow).each do
     result *= rand(10000)/10000.0
   end
   (num * result).floor
@@ -336,11 +336,804 @@ puts "    #{Category.where.not(parent_id: nil).count} sub-categories seeded"
 
 
 #==================================================
+# CREATE RECORD GROUPS
+#==================================================
+
+RecordGroup.create(
+    game_id: gameSkyrim.id,
+    signature: 'ACHR',
+    name: 'Placed NPC',
+    child_group: true
+)
+RecordGroup.create(
+    game_id: gameSkyrim.id,
+    signature: 'ACTI',
+    name: 'Activator',
+    child_group: false
+)
+RecordGroup.create(
+    game_id: gameSkyrim.id,
+    signature: 'TACT',
+    name: 'Talking Activator',
+    child_group: false
+)
+RecordGroup.create(
+    game_id: gameSkyrim.id,
+    signature: 'ALCH',
+    name: 'Ingestible',
+    child_group: false
+)
+RecordGroup.create(
+    game_id: gameSkyrim.id,
+    signature: 'AMMO',
+    name: 'Ammunition',
+    child_group: false
+)
+RecordGroup.create(
+    game_id: gameSkyrim.id,
+    signature: 'ANIO',
+    name: 'Animated Object',
+    child_group: false
+)
+RecordGroup.create(
+    game_id: gameSkyrim.id,
+    signature: 'ARMO',
+    name: 'Armor',
+    child_group: false
+)
+RecordGroup.create(
+    game_id: gameSkyrim.id,
+    signature: 'ARMA',
+    name: 'Armor Addon',
+    child_group: false
+)
+RecordGroup.create(
+    game_id: gameSkyrim.id,
+    signature: 'BOOK',
+    name: 'Book',
+    child_group: false
+)
+RecordGroup.create(
+    game_id: gameSkyrim.id,
+    signature: 'PARW',
+    name: 'Placed Arrow',
+    child_group: true
+)
+RecordGroup.create(
+    game_id: gameSkyrim.id,
+    signature: 'PBAR',
+    name: 'Placed Barrier',
+    child_group: true
+)
+RecordGroup.create(
+    game_id: gameSkyrim.id,
+    signature: 'PBEA',
+    name: 'Placed Beam',
+    child_group: true
+)
+RecordGroup.create(
+    game_id: gameSkyrim.id,
+    signature: 'PCON',
+    name: 'Placed Cone/Voice',
+    child_group: true
+)
+RecordGroup.create(
+    game_id: gameSkyrim.id,
+    signature: 'PFLA',
+    name: 'Placed Flame',
+    child_group: true
+)
+RecordGroup.create(
+    game_id: gameSkyrim.id,
+    signature: 'PGRE',
+    name: 'Placed Projectile',
+    child_group: true
+)
+RecordGroup.create(
+    game_id: gameSkyrim.id,
+    signature: 'PHZD',
+    name: 'Placed Hazard',
+    child_group: true
+)
+RecordGroup.create(
+    game_id: gameSkyrim.id,
+    signature: 'PMIS',
+    name: 'Placed Missile',
+    child_group: true
+)
+RecordGroup.create(
+    game_id: gameSkyrim.id,
+    signature: 'CELL',
+    name: 'Cell',
+    child_group: false
+)
+RecordGroup.create(
+    game_id: gameSkyrim.id,
+    signature: 'CLAS',
+    name: 'Class',
+    child_group: false
+)
+RecordGroup.create(
+    game_id: gameSkyrim.id,
+    signature: 'CLMT',
+    name: 'Climate',
+    child_group: false
+)
+RecordGroup.create(
+    game_id: gameSkyrim.id,
+    signature: 'SPGD',
+    name: 'Shader Particle Geometry',
+    child_group: false
+)
+RecordGroup.create(
+    game_id: gameSkyrim.id,
+    signature: 'RFCT',
+    name: 'Visual Effect',
+    child_group: false
+)
+RecordGroup.create(
+    game_id: gameSkyrim.id,
+    signature: 'CONT',
+    name: 'Container',
+    child_group: false
+)
+RecordGroup.create(
+    game_id: gameSkyrim.id,
+    signature: 'CSTY',
+    name: 'Combat Style',
+    child_group: false
+)
+RecordGroup.create(
+    game_id: gameSkyrim.id,
+    signature: 'DIAL',
+    name: 'Dialog Topic',
+    child_group: false
+)
+RecordGroup.create(
+    game_id: gameSkyrim.id,
+    signature: 'DOOR',
+    name: 'Door',
+    child_group: false
+)
+RecordGroup.create(
+    game_id: gameSkyrim.id,
+    signature: 'EFSH',
+    name: 'Effect Shader',
+    child_group: false
+)
+RecordGroup.create(
+    game_id: gameSkyrim.id,
+    signature: 'ENCH',
+    name: 'Object Effect',
+    child_group: false
+)
+RecordGroup.create(
+    game_id: gameSkyrim.id,
+    signature: 'EYES',
+    name: 'Eyes',
+    child_group: false
+)
+RecordGroup.create(
+    game_id: gameSkyrim.id,
+    signature: 'FACT',
+    name: 'Faction',
+    child_group: false
+)
+RecordGroup.create(
+    game_id: gameSkyrim.id,
+    signature: 'FURN',
+    name: 'Furniture',
+    child_group: false
+)
+RecordGroup.create(
+    game_id: gameSkyrim.id,
+    signature: 'GLOB',
+    name: 'Global',
+    child_group: false
+)
+RecordGroup.create(
+    game_id: gameSkyrim.id,
+    signature: 'GMST',
+    name: 'Game Setting',
+    child_group: false
+)
+RecordGroup.create(
+    game_id: gameSkyrim.id,
+    signature: 'KYWD',
+    name: 'Keyword',
+    child_group: false
+)
+RecordGroup.create(
+    game_id: gameSkyrim.id,
+    signature: 'LCRT',
+    name: 'Location Reference Type',
+    child_group: false
+)
+RecordGroup.create(
+    game_id: gameSkyrim.id,
+    signature: 'AACT',
+    name: 'Action',
+    child_group: false
+)
+RecordGroup.create(
+    game_id: gameSkyrim.id,
+    signature: 'TXST',
+    name: 'Texture Set',
+    child_group: false
+)
+RecordGroup.create(
+    game_id: gameSkyrim.id,
+    signature: 'HDPT',
+    name: 'Head Part',
+    child_group: false
+)
+RecordGroup.create(
+    game_id: gameSkyrim.id,
+    signature: 'ASPC',
+    name: 'Acoustic Space',
+    child_group: false
+)
+RecordGroup.create(
+    game_id: gameSkyrim.id,
+    signature: 'MSTT',
+    name: 'Moveable Static',
+    child_group: false
+)
+RecordGroup.create(
+    game_id: gameSkyrim.id,
+    signature: 'IDLM',
+    name: 'Idle Marker',
+    child_group: false
+)
+RecordGroup.create(
+    game_id: gameSkyrim.id,
+    signature: 'PROJ',
+    name: 'Projectile',
+    child_group: false
+)
+RecordGroup.create(
+    game_id: gameSkyrim.id,
+    signature: 'HAZD',
+    name: 'Hazard',
+    child_group: false
+)
+RecordGroup.create(
+    game_id: gameSkyrim.id,
+    signature: 'SLGM',
+    name: 'Soul Gem',
+    child_group: false
+)
+RecordGroup.create(
+    game_id: gameSkyrim.id,
+    signature: 'NAVI',
+    name: 'Navigation Mesh Info Map',
+    child_group: false
+)
+RecordGroup.create(
+    game_id: gameSkyrim.id,
+    signature: 'NAVM',
+    name: 'Navigation Mesh',
+    child_group: true
+)
+RecordGroup.create(
+    game_id: gameSkyrim.id,
+    signature: 'EXPL',
+    name: 'Explosion',
+    child_group: false
+)
+RecordGroup.create(
+    game_id: gameSkyrim.id,
+    signature: 'DEBR',
+    name: 'Debris',
+    child_group: false
+)
+RecordGroup.create(
+    game_id: gameSkyrim.id,
+    signature: 'IMGS',
+    name: 'Image Space',
+    child_group: false
+)
+RecordGroup.create(
+    game_id: gameSkyrim.id,
+    signature: 'IMAD',
+    name: 'Image Space Adapter',
+    child_group: false
+)
+RecordGroup.create(
+    game_id: gameSkyrim.id,
+    signature: 'FLST',
+    name: 'FormID List',
+    child_group: false
+)
+RecordGroup.create(
+    game_id: gameSkyrim.id,
+    signature: 'PERK',
+    name: 'Perk',
+    child_group: false
+)
+RecordGroup.create(
+    game_id: gameSkyrim.id,
+    signature: 'BPTD',
+    name: 'Body Part Data',
+    child_group: false
+)
+RecordGroup.create(
+    game_id: gameSkyrim.id,
+    signature: 'ADDN',
+    name: 'Addon Node',
+    child_group: false
+)
+RecordGroup.create(
+    game_id: gameSkyrim.id,
+    signature: 'AVIF',
+    name: 'Actor Value Information',
+    child_group: false
+)
+RecordGroup.create(
+    game_id: gameSkyrim.id,
+    signature: 'CAMS',
+    name: 'Camera Shot',
+    child_group: false
+)
+RecordGroup.create(
+    game_id: gameSkyrim.id,
+    signature: 'CPTH',
+    name: 'Camera Path',
+    child_group: false
+)
+RecordGroup.create(
+    game_id: gameSkyrim.id,
+    signature: 'VTYP',
+    name: 'Voice Type',
+    child_group: false
+)
+RecordGroup.create(
+    game_id: gameSkyrim.id,
+    signature: 'MATT',
+    name: 'Material Type',
+    child_group: false
+)
+RecordGroup.create(
+    game_id: gameSkyrim.id,
+    signature: 'IPCT',
+    name: 'Impact',
+    child_group: false
+)
+RecordGroup.create(
+    game_id: gameSkyrim.id,
+    signature: 'IPDS',
+    name: 'Impact Data Set',
+    child_group: false
+)
+RecordGroup.create(
+    game_id: gameSkyrim.id,
+    signature: 'ECZN',
+    name: 'Encounter Zone',
+    child_group: false
+)
+RecordGroup.create(
+    game_id: gameSkyrim.id,
+    signature: 'LCTN',
+    name: 'Location',
+    child_group: false
+)
+RecordGroup.create(
+    game_id: gameSkyrim.id,
+    signature: 'MESG',
+    name: 'Message',
+    child_group: false
+)
+RecordGroup.create(
+    game_id: gameSkyrim.id,
+    signature: 'DOBJ',
+    name: 'Default Object Manager',
+    child_group: false
+)
+RecordGroup.create(
+    game_id: gameSkyrim.id,
+    signature: 'LGTM',
+    name: 'Lighting Template',
+    child_group: false
+)
+RecordGroup.create(
+    game_id: gameSkyrim.id,
+    signature: 'MUSC',
+    name: 'Music Type',
+    child_group: false
+)
+RecordGroup.create(
+    game_id: gameSkyrim.id,
+    signature: 'FSTP',
+    name: 'Footstep',
+    child_group: false
+)
+RecordGroup.create(
+    game_id: gameSkyrim.id,
+    signature: 'FSTS',
+    name: 'Footstep Set',
+    child_group: false
+)
+RecordGroup.create(
+    game_id: gameSkyrim.id,
+    signature: 'SMBN',
+    name: 'Story Manager Branch Node',
+    child_group: false
+)
+RecordGroup.create(
+    game_id: gameSkyrim.id,
+    signature: 'SMQN',
+    name: 'Story Manager Quest Node',
+    child_group: false
+)
+RecordGroup.create(
+    game_id: gameSkyrim.id,
+    signature: 'SMEN',
+    name: 'Story Manager Event Node',
+    child_group: false
+)
+RecordGroup.create(
+    game_id: gameSkyrim.id,
+    signature: 'DLBR',
+    name: 'Dialog Branch',
+    child_group: false
+)
+RecordGroup.create(
+    game_id: gameSkyrim.id,
+    signature: 'MUST',
+    name: 'Music Track',
+    child_group: false
+)
+RecordGroup.create(
+    game_id: gameSkyrim.id,
+    signature: 'DLVW',
+    name: 'Dialog View',
+    child_group: false
+)
+RecordGroup.create(
+    game_id: gameSkyrim.id,
+    signature: 'WOOP',
+    name: 'Word of Power',
+    child_group: false
+)
+RecordGroup.create(
+    game_id: gameSkyrim.id,
+    signature: 'SHOU',
+    name: 'Shout',
+    child_group: false
+)
+RecordGroup.create(
+    game_id: gameSkyrim.id,
+    signature: 'EQUP',
+    name: 'Equip Type',
+    child_group: false
+)
+RecordGroup.create(
+    game_id: gameSkyrim.id,
+    signature: 'RELA',
+    name: 'Relationship',
+    child_group: false
+)
+RecordGroup.create(
+    game_id: gameSkyrim.id,
+    signature: 'SCEN',
+    name: 'Scene',
+    child_group: false
+)
+RecordGroup.create(
+    game_id: gameSkyrim.id,
+    signature: 'ASTP',
+    name: 'Association Type',
+    child_group: false
+)
+RecordGroup.create(
+    game_id: gameSkyrim.id,
+    signature: 'OTFT',
+    name: 'Outfit',
+    child_group: false
+)
+RecordGroup.create(
+    game_id: gameSkyrim.id,
+    signature: 'ARTO',
+    name: 'Art Object',
+    child_group: false
+)
+RecordGroup.create(
+    game_id: gameSkyrim.id,
+    signature: 'MATO',
+    name: 'Material Object',
+    child_group: false
+)
+RecordGroup.create(
+    game_id: gameSkyrim.id,
+    signature: 'MOVT',
+    name: 'Movement Type',
+    child_group: false
+)
+RecordGroup.create(
+    game_id: gameSkyrim.id,
+    signature: 'SNDR',
+    name: 'Sound Descriptor',
+    child_group: false
+)
+RecordGroup.create(
+    game_id: gameSkyrim.id,
+    signature: 'DUAL',
+    name: 'Dual Cast Data',
+    child_group: false
+)
+RecordGroup.create(
+    game_id: gameSkyrim.id,
+    signature: 'SNCT',
+    name: 'Sound Category',
+    child_group: false
+)
+RecordGroup.create(
+    game_id: gameSkyrim.id,
+    signature: 'SOPM',
+    name: 'Sound Output Model',
+    child_group: false
+)
+RecordGroup.create(
+    game_id: gameSkyrim.id,
+    signature: 'COLL',
+    name: 'Collision Layer',
+    child_group: false
+)
+RecordGroup.create(
+    game_id: gameSkyrim.id,
+    signature: 'CLFM',
+    name: 'Color',
+    child_group: false
+)
+RecordGroup.create(
+    game_id: gameSkyrim.id,
+    signature: 'REVB',
+    name: 'Reverb Parameters',
+    child_group: false
+)
+RecordGroup.create(
+    game_id: gameSkyrim.id,
+    signature: 'GRAS',
+    name: 'Grass',
+    child_group: false
+)
+RecordGroup.create(
+    game_id: gameSkyrim.id,
+    signature: 'IDLE',
+    name: 'Idle Animation',
+    child_group: false
+)
+RecordGroup.create(
+    game_id: gameSkyrim.id,
+    signature: 'INFO',
+    name: 'Dialog response',
+    child_group: true
+)
+RecordGroup.create(
+    game_id: gameSkyrim.id,
+    signature: 'INGR',
+    name: 'Ingredient',
+    child_group: false
+)
+RecordGroup.create(
+    game_id: gameSkyrim.id,
+    signature: 'KEYM',
+    name: 'Key',
+    child_group: false
+)
+RecordGroup.create(
+    game_id: gameSkyrim.id,
+    signature: 'LAND',
+    name: 'Landscape',
+    child_group: true
+)
+RecordGroup.create(
+    game_id: gameSkyrim.id,
+    signature: 'LIGH',
+    name: 'Light',
+    child_group: false
+)
+RecordGroup.create(
+    game_id: gameSkyrim.id,
+    signature: 'LSCR',
+    name: 'Load Screen',
+    child_group: false
+)
+RecordGroup.create(
+    game_id: gameSkyrim.id,
+    signature: 'LTEX',
+    name: 'Landscape Texture',
+    child_group: false
+)
+RecordGroup.create(
+    game_id: gameSkyrim.id,
+    signature: 'LVLN',
+    name: 'Leveled NPC',
+    child_group: false
+)
+RecordGroup.create(
+    game_id: gameSkyrim.id,
+    signature: 'LVLI',
+    name: 'Leveled Item',
+    child_group: false
+)
+RecordGroup.create(
+    game_id: gameSkyrim.id,
+    signature: 'LVSP',
+    name: 'Leveled Spell',
+    child_group: false
+)
+RecordGroup.create(
+    game_id: gameSkyrim.id,
+    signature: 'MGEF',
+    name: 'Magic Effect',
+    child_group: false
+)
+RecordGroup.create(
+    game_id: gameSkyrim.id,
+    signature: 'MISC',
+    name: 'Misc. Item',
+    child_group: false
+)
+RecordGroup.create(
+    game_id: gameSkyrim.id,
+    signature: 'APPA',
+    name: 'Alchemical Apparatus',
+    child_group: false
+)
+RecordGroup.create(
+    game_id: gameSkyrim.id,
+    signature: 'COBJ',
+    name: 'Constructible Object',
+    child_group: false
+)
+RecordGroup.create(
+    game_id: gameSkyrim.id,
+    signature: 'NPC_',
+    name: 'Non-Player Character (Actor)',
+    child_group: false
+)
+RecordGroup.create(
+    game_id: gameSkyrim.id,
+    signature: 'PACK',
+    name: 'Package',
+    child_group: false
+)
+RecordGroup.create(
+    game_id: gameSkyrim.id,
+    signature: 'QUST',
+    name: 'Quest',
+    child_group: false
+)
+RecordGroup.create(
+    game_id: gameSkyrim.id,
+    signature: 'RACE',
+    name: 'Race',
+    child_group: false
+)
+RecordGroup.create(
+    game_id: gameSkyrim.id,
+    signature: 'REFR',
+    name: 'Placed Object',
+    child_group: true
+)
+RecordGroup.create(
+    game_id: gameSkyrim.id,
+    signature: 'REGN',
+    name: 'Region',
+    child_group: false
+)
+RecordGroup.create(
+    game_id: gameSkyrim.id,
+    signature: 'SOUN',
+    name: 'Sound Marker',
+    child_group: false
+)
+RecordGroup.create(
+    game_id: gameSkyrim.id,
+    signature: 'SPEL',
+    name: 'Spell',
+    child_group: false
+)
+RecordGroup.create(
+    game_id: gameSkyrim.id,
+    signature: 'SCRL',
+    name: 'Scroll',
+    child_group: false
+)
+RecordGroup.create(
+    game_id: gameSkyrim.id,
+    signature: 'STAT',
+    name: 'Static',
+    child_group: false
+)
+RecordGroup.create(
+    game_id: gameSkyrim.id,
+    signature: 'TES4',
+    name: 'Main File Header',
+    child_group: true
+)
+RecordGroup.create(
+    game_id: gameSkyrim.id,
+    signature: 'TREE',
+    name: 'Tree',
+    child_group: false
+)
+RecordGroup.create(
+    game_id: gameSkyrim.id,
+    signature: 'FLOR',
+    name: 'Flora',
+    child_group: false
+)
+RecordGroup.create(
+    game_id: gameSkyrim.id,
+    signature: 'WATR',
+    name: 'Water',
+    child_group: false
+)
+RecordGroup.create(
+    game_id: gameSkyrim.id,
+    signature: 'WEAP',
+    name: 'Weapon',
+    child_group: false
+)
+RecordGroup.create(
+    game_id: gameSkyrim.id,
+    signature: 'WRLD',
+    name: 'Worldspace',
+    child_group: false
+)
+RecordGroup.create(
+    game_id: gameSkyrim.id,
+    signature: 'WTHR',
+    name: 'Weather',
+    child_group: false
+)
+RecordGroup.create(
+    game_id: gameSkyrim.id,
+    signature: 'CLDC',
+    name: 'CLDC',
+    child_group: false
+)
+RecordGroup.create(
+    game_id: gameSkyrim.id,
+    signature: 'HAIR',
+    name: 'HAIR',
+    child_group: false
+)
+RecordGroup.create(
+    game_id: gameSkyrim.id,
+    signature: 'PWAT',
+    name: 'PWAT',
+    child_group: false
+)
+RecordGroup.create(
+    game_id: gameSkyrim.id,
+    signature: 'RGDL',
+    name: 'RGDL',
+    child_group: false
+)
+RecordGroup.create(
+    game_id: gameSkyrim.id,
+    signature: 'SCOL',
+    name: 'SCOL',
+    child_group: false
+)
+RecordGroup.create(
+    game_id: gameSkyrim.id,
+    signature: 'SCPT',
+    name: 'SCPT',
+    child_group: false
+)
+
+puts "    #{RecordGroup.count} record groups seeded"
+
+#==================================================
 # CREATE USERS
 #==================================================
 require 'securerandom'
 
-if (bSeedUsers)
+if bSeedUsers
   puts "\nSeeding users"
   # create an admin user
   pw = SecureRandom.urlsafe_base64
@@ -362,7 +1155,7 @@ if (bSeedUsers)
   puts "    admin seeded with password: #{pw}"
 
   # generates random date between year 2000 and now.
-  def time_rand from = Time.new(2000), to = Time.now
+  def time_rand(from = Time.new(2000), to = Time.now)
     Time.at(from + rand * (to.to_f - from.to_f)).to_date
   end
 
@@ -413,7 +1206,7 @@ NexusInfo.create(
     game_id: gameSkyrim.id,
     uploaded_by: "schlangster",
     authors: "SkyUI Team",
-    date_released: DateTime.strptime("17/12/2011 - 12:24AM", nexusDateFormat),
+    date_added: DateTime.strptime("17/12/2011 - 12:24AM", nexusDateFormat),
     date_updated: DateTime.strptime("24/08/2015 - 03:38PM", nexusDateFormat),
     endorsements: 404927,
     total_downloads: 11244061,
@@ -435,6 +1228,22 @@ ModVersion.create(
     dangerous: false
 )
 
+ModVersion.create(
+    mod_id: Mod.last.id,
+    version: "5.0",
+    released: DateTime.strptime("14/07/2015 - 05:57AM", nexusDateFormat),
+    obsolete: false,
+    dangerous: false
+)
+
+ModVersion.create(
+    mod_id: Mod.last.id,
+    version: "4.1",
+    released: DateTime.strptime("09/06/2014 - 07:42AM", nexusDateFormat),
+    obsolete: true,
+    dangerous: false
+)
+
 Mod.create(
     name: "Immersive Armors",
     primary_category_id: Category.where(name: "Items - Armor, Clothing, & Accessories").first.id,
@@ -449,7 +1258,7 @@ NexusInfo.create(
     game_id: gameSkyrim.id,
     uploaded_by: "hothtrooper44",
     authors: "Hothtrooper44",
-    date_released: DateTime.strptime("01/07/2012 - 07:23PM", nexusDateFormat),
+    date_added: DateTime.strptime("01/07/2012 - 07:23PM", nexusDateFormat),
     date_updated: DateTime.strptime("20/01/2016 - 12:16AM", nexusDateFormat),
     endorsements: 208078,
     total_downloads: 6423440,
@@ -485,7 +1294,7 @@ NexusInfo.create(
     game_id: gameSkyrim.id,
     uploaded_by: "NebuLa1",
     authors: "NebuLa from AHBmods",
-    date_released: DateTime.strptime("19/11/2011 - 01:03AM", nexusDateFormat),
+    date_added: DateTime.strptime("19/11/2011 - 01:03AM", nexusDateFormat),
     date_updated: DateTime.strptime("09/01/2016 - 04:57PM", nexusDateFormat),
     endorsements: 158069,
     total_downloads: 17720870,
@@ -522,7 +1331,7 @@ NexusInfo.create(
     game_id: gameSkyrim.id,
     uploaded_by: "expired6978",
     authors: "Expired",
-    date_released: DateTime.strptime("08/01/2013 - 01:10AM", nexusDateFormat),
+    date_added: DateTime.strptime("08/01/2013 - 01:10AM", nexusDateFormat),
     date_updated: DateTime.strptime("18/01/2016 - 10:37AM", nexusDateFormat),
     endorsements: 148874,
     total_downloads: 4187681,
@@ -558,7 +1367,7 @@ NexusInfo.create(
     game_id: gameSkyrim.id,
     uploaded_by: "Arthmoor",
     authors: "Unofficial Patch Project Team ",
-    date_released: DateTime.strptime("07/11/2015 - 08:41PM", nexusDateFormat),
+    date_added: DateTime.strptime("07/11/2015 - 08:41PM", nexusDateFormat),
     date_updated: DateTime.strptime("20/01/2016 - 06:41PM", nexusDateFormat),
     endorsements: 14628,
     total_downloads: 272979,
@@ -594,7 +1403,7 @@ NexusInfo.create(
     game_id: gameSkyrim.id,
     uploaded_by: "Tannin42",
     authors: "Tannin",
-    date_released: DateTime.strptime("24/11/2011 - 03:30PM", nexusDateFormat),
+    date_added: DateTime.strptime("24/11/2011 - 03:30PM", nexusDateFormat),
     date_updated: DateTime.strptime("01/12/2015 - 09:23PM", nexusDateFormat),
     endorsements: 88697,
     total_downloads: 2078942,
@@ -630,7 +1439,7 @@ NexusInfo.create(
     game_id: gameSkyrim.id,
     uploaded_by: "vurt",
     authors: "vurt",
-    date_released: DateTime.strptime("13/11/2011 - 10:36PM", nexusDateFormat),
+    date_added: DateTime.strptime("13/11/2011 - 10:36PM", nexusDateFormat),
     date_updated: DateTime.strptime("16/01/2016 - 10:15PM", nexusDateFormat),
     endorsements: 99308,
     total_downloads: 5225456,
@@ -667,7 +1476,7 @@ NexusInfo.create(
     game_id: gameSkyrim.id,
     uploaded_by: "Sharlikran",
     authors: "ElminsterAU",
-    date_released: DateTime.strptime("22/10/2012 - 06:22AM", nexusDateFormat),
+    date_added: DateTime.strptime("22/10/2012 - 06:22AM", nexusDateFormat),
     date_updated: DateTime.strptime("10/11/2015 - 07:43AM", nexusDateFormat),
     endorsements: 80385,
     total_downloads: 1597970,
@@ -704,7 +1513,7 @@ NexusInfo.create(
     game_id: gameSkyrim.id,
     uploaded_by: "matortheeternal",
     authors: "Mator",
-    date_released: DateTime.strptime("24/12/2015 - 01:56AM", nexusDateFormat),
+    date_added: DateTime.strptime("24/12/2015 - 01:56AM", nexusDateFormat),
     date_updated: DateTime.strptime("05/01/2016 - 09:16AM", nexusDateFormat),
     endorsements: 1099,
     total_downloads: 12487,
@@ -740,7 +1549,7 @@ NexusInfo.create(
     game_id: gameSkyrim.id,
     uploaded_by: "pottoply",
     authors: "pottoply",
-    date_released: DateTime.strptime("08/12/2015 - 09:42PM", nexusDateFormat),
+    date_added: DateTime.strptime("08/12/2015 - 09:42PM", nexusDateFormat),
     date_updated: DateTime.strptime("19/01/2016 - 07:58PM", nexusDateFormat),
     endorsements: 921,
     total_downloads: 23264,
@@ -777,7 +1586,7 @@ NexusInfo.create(
     game_id: gameSkyrim.id,
     uploaded_by: "nesbit098",
     authors: "Nesbit",
-    date_released: DateTime.strptime("05/01/2016 - 10:31AM", nexusDateFormat),
+    date_added: DateTime.strptime("05/01/2016 - 10:31AM", nexusDateFormat),
     date_updated: DateTime.strptime("24/01/2016 - 02:41AM", nexusDateFormat),
     endorsements: 970,
     total_downloads: 57197,
@@ -814,7 +1623,7 @@ NexusInfo.create(
     game_id: gameSkyrim.id,
     uploaded_by: "Elianora",
     authors: "Elianora",
-    date_released: DateTime.strptime("17/12/2015 - 09:23PM", nexusDateFormat),
+    date_added: DateTime.strptime("17/12/2015 - 09:23PM", nexusDateFormat),
     date_updated: DateTime.strptime("20/01/2016 - 07:36PM", nexusDateFormat),
     endorsements: 737,
     total_downloads: 12276,
@@ -850,7 +1659,7 @@ NexusInfo.create(
     game_id: gameSkyrim.id,
     uploaded_by: "ShinglesCat",
     authors: "ShinglesCat",
-    date_released: DateTime.strptime("25/11/2015 - 09:21AM", nexusDateFormat),
+    date_added: DateTime.strptime("25/11/2015 - 09:21AM", nexusDateFormat),
     date_updated: DateTime.strptime("02/01/2016 - 06:11PM", nexusDateFormat),
     endorsements: 650,
     total_downloads: 10243,
@@ -886,7 +1695,7 @@ NexusInfo.create(
     game_id: gameSkyrim.id,
     uploaded_by: "nellshini",
     authors: "Jaxonz and Nellshini",
-    date_released: DateTime.strptime("23/11/2015 - 02:11AM", nexusDateFormat),
+    date_added: DateTime.strptime("23/11/2015 - 02:11AM", nexusDateFormat),
     date_updated: DateTime.strptime("21/01/2016 - 07:01AM", nexusDateFormat),
     endorsements: 665,
     total_downloads: 11142,
@@ -917,10 +1726,10 @@ puts "    #{ModVersion.count} mod versions seeded"
 # CREATE COMMENTS
 #==================================================
 
-if (bSeedComments)
+if bSeedComments
   # generate comments on user profiles
   puts "\nSeeding user comments"
-  for user in User.all
+  User.all.each do |user|
     rnd = randpow(10, 2)
     puts "    Generating #{rnd} comments for #{user.username}"
     rnd.times do
@@ -936,7 +1745,7 @@ if (bSeedComments)
 
   # generate comments on mods
   puts "\nSeeding mod comments"
-  for mod in Mod.all
+  Mod.all.each do |mod|
     rnd = randpow(20, 2)
     puts "    Generating #{rnd} comments for #{mod.name}"
     rnd.times do
@@ -956,10 +1765,10 @@ end
 # CREATE REVIEWS
 #==================================================
 
-if (bSeedReviews)
+if bSeedReviews
   # generate reviews on mods
   puts "\nSeeding reviews"
-  for mod in Mod.all
+  Mod.all.each do |mod|
     nReviews = rand(6)
     puts "    Generating #{nReviews} reviews for #{mod.name}"
     nReviews.times do
@@ -996,16 +1805,15 @@ end
 # CREATE COMPATIBILTIY NOTES
 #==================================================
 
-if (bSeedCNotes)
+if bSeedCNotes
   puts "\nSeeding compatibility notes"
   nCNotes = Mod.count
   nCNotes.times do
     submitter = User.offset(rand(User.count)).first
     cnote = CompatibilityNote.new(
         submitted_by: submitter.id,
-        mod_mode: ["Any", "All"].sample,
-        compatibility_status: ["Incompatible", "Partially Compatible", "Patch Available", "Make Custom Patch",
-                               "Soft Incompatibility", "Installation Note"].sample,
+        mod_mode: %w(Any All).sample,
+        compatibility_type: ["Incompatible", "Partially Incompatible", "Compatibility Mod", "Compatibility Plugin", "Make Custom Patch"].sample,
         submitted: Faker::Date.backward(14),
         text_body: Faker::Lorem.paragraph(4)
     )
@@ -1037,7 +1845,7 @@ end
 # CREATE INSTALLATION NOTES
 #==================================================
 
-if (bSeedINotes)
+if bSeedINotes
   puts "\nSeeding installation notes"
   nINotes = Mod.count
   nINotes.times do

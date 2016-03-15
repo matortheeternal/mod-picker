@@ -18,8 +18,8 @@ app.controller('submitModController', function ($scope, backend, submitService) 
     $scope.scrape = function () {
         var match = nexusUrlPattern.exec($scope.nexusUrl);
         var id = match[2];
+        $scope.scraping = true;
         submitService.scrapeNexus(3, id).then(function (data) {
-            $scope.nexusScraped = true;
             $scope.nexus = data;
             if (data.nexus_category == 39) {
                 $scope.isUtility = true;

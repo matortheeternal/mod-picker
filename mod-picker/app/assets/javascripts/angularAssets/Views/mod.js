@@ -7,6 +7,7 @@ app.config(['$routeProvider', function ($routeProvider) {
 }]);
 
 app.controller('modController', function ($scope, $q, $routeParams, modService) {
+    useTwoColumns(true);
     $scope.expandedState = {
         compabilityNotes: true,
         reviews: false
@@ -14,6 +15,7 @@ app.controller('modController', function ($scope, $q, $routeParams, modService) 
 
     modService.retrieveMod($routeParams.modId).then(function (mod) {
         $scope.mod = mod;
+        $scope.changeVersion(mod.mod_versions[0].id);
         $scope.version = mod.mod_versions[0].id;
     });
 
@@ -23,13 +25,14 @@ app.controller('modController', function ($scope, $q, $routeParams, modService) 
         }
     };
 
-    $scope.$watch('version', function (newVal, oldVal) {
-        if(newVal && newVal !== oldVal && $scope.mod.id) {
+    $scope.changeVersion = function(version) {
+        if(version && version !== $scope.version && $scope.mod.id) {
             delete $scope.compabilityNotes;
-            $scope.loading = true;
-            modService.retrieveCompabilityNotes($scope.mod.id, newVal).then(function (compatibilityNotes) {
+            //$scope.loading = true;
+            modService.retrieveCompabilityNotes($scope.mod.id, version).then(function (compatibilityNotes) {
                 $scope.compatibilityNotes = compatibilityNotes;
             });
         }
-    });
+    };
+
 });
