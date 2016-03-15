@@ -515,7 +515,7 @@ input[type="submit"] {
       span {
         display: inline-block;
         word-wrap: break-word;
-        width: 80%;
+        max-width: calc(100% - 20px);
         margin-bottom: 3px;
       }
 
