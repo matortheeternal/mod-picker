@@ -1,23 +1,27 @@
 <div class="column-wrapper">
     <div class="left-column">
         <h2>Filters</h2>
-        <h3>Mod List</h3>
-        <div class="sidebar-box">
-            <ul class="filter-list">
-                <li>
-                    <label><input id="compatibility_enabled" type="checkbox">
-                        Enable compatibility filter</label>
-                </li>
-                <li class="half-box">
-                    <h4>Mods</h4>
-                    <a href="#">123</a> <!-- PLACEHOLDER VALUE -->
-                </li>
-                <li class="half-box">
-                    <h4>Plugins</h4>
-                    <a href="#">98</a> <!-- PLACEHOLDER VALUE -->
-                </li>
-            </ul>
+
+        <div id="mod-list-filters" class="filter-section">
+            <h3>Mod List</h3>
+            <div class="sidebar-box">
+                <ul class="filter-list">
+                    <li>
+                        <label><input id="compatibility_enabled" type="checkbox">
+                            Enable compatibility filter</label>
+                    </li>
+                    <li class="half-box">
+                        <h4>Mods</h4>
+                        <a href="#">123</a> <!-- PLACEHOLDER VALUE -->
+                    </li>
+                    <li class="half-box">
+                        <h4>Plugins</h4>
+                        <a href="#">98</a> <!-- PLACEHOLDER VALUE -->
+                    </li>
+                </ul>
+            </div>
         </div>
+
         <div id="site-filters" class="filter-section">
             <h3>Sources</h3>
             <ul class="filter-list">
@@ -35,6 +39,7 @@
                 </li>
             </ul>
         </div>
+        
         <div id="category-filters" class="filter-section" ng-controller="categoryPickerTreeController">
             <h3>Categories <span class="tree-controls">
                 <span class="fa fa-eraser" ng-click="clearSelection()" title="Clear Selection"></span>
@@ -76,6 +81,11 @@
                 </div>
             </div>
         </div>
+=======
+
+        <category-tree id="category-filters" class="filter-section"></category-tree>
+
+>>>>>>> Stashed changes
         <div id="date-filters" class="filter-section">
             <h3>Date Filters</h3>
             <h4>Date Updated</h4>
@@ -84,6 +94,7 @@
             <h4>Date Released</h4>
             <slider data="data.released" type="ModListDateSlider"></slider>
         </div>
+
         <div id="mod-picker-filters" class="filter-section">
             <h3>Mod Picker Filters</h3>
             <div id="mod-picker-stat-filters" class="filter-section">
@@ -107,6 +118,7 @@
                 <slider data="data.iNotes" type="CeilSlider" attr="100"></slider>
             </div>
         </div>
+
         <div id="nexus-mods-filters" class="filter-sections">
             <h3>Nexus Mods Filters</h3>
             <div id="nexus-mods-stat-filters" class="filter-section">

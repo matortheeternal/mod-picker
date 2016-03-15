@@ -340,6 +340,7 @@ ul.hmenu li {
 .sidebar-box {
   background-color: $background_highlight;
   border: 1px solid $border_color;
+  max-width: 240px;
   padding: 8px;
   margin: 0;
 }
@@ -502,8 +503,8 @@ input[type="submit"] {
   font-size: 13px;
 }
 
-/* category-picker-tree */
-.category-picker-tree {
+/* category-tree */
+.category-tree {
   font-size: 14px;
 
   content {
@@ -541,17 +542,4 @@ input[type="submit"] {
 .sub-category {
   font-size: 11px;
   margin-left: 27px;
-}
-
-.tree-controls {
-  margin-left: 4px;
-  color: $link_color;
-
-  span {
-    cursor: pointer;
-  }
-
-  span:hover {
-    color: $link_hover_color_secondary;
-  }
 }
