@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160307083324) do
+ActiveRecord::Schema.define(version: 20160309220623) do
 
   create_table "agreement_marks", id: false, force: :cascade do |t|
     t.integer "incorrect_note_id", limit: 4
@@ -381,6 +381,8 @@ ActiveRecord::Schema.define(version: 20160307083324) do
     t.string  "timezone",             limit: 128
     t.string  "udate_format",         limit: 128
     t.string  "utime_format",         limit: 128
+    t.boolean "allow_comments"
+    t.string  "theme",                limit: 255
   end
 
   add_index "user_settings", ["user_id"], name: "user_id", using: :btree
