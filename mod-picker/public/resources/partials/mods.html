@@ -35,14 +35,14 @@
                 </li>
             </ul>
         </div>
-        <div id="category-filters" class="filter-section">
+        <div id="category-filters" class="filter-section" ng-controller="categoryPickerTreeController">
             <h3>Categories <span class="tree-controls">
-                <span class="fa fa-eraser" ng-click="inverse()" title="Reset Selection"></span>
-                <span class="fa fa-minus-square" ng-click="reset()" title="Inverse Selection"></span>
+                <span class="fa fa-eraser" ng-click="clearSelection()" title="Clear Selection"></span>
+                <span class="fa fa-minus-square" ng-click="inverseSelection()" title="Inverse Selection"></span>
             </span></h3>
 
             <div class="sidebar-box">
-                <div ng-controller="categoryPickerTreeController" class="category-picker-tree">
+                <div class="category-picker-tree">
                     <div ng-repeat="primaryCategory in categories">
                         <expandable expanded="categoryFilter[primaryCategory.id].expanded" disable-style="true" disable-full-title-toggle="true" ng-show="primaryCategory.childs.length">
                             <expanded-title>

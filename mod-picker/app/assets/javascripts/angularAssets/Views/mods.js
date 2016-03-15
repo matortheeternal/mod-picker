@@ -58,7 +58,7 @@ app.controller('categoryPickerTreeController', function ($scope, categoryService
         }
     };
 
-    $scope.reset = function () {
+    $scope.clearSelection = function () {
         $scope.categoryFilter.forEach(function (superCategory) {
             superCategory.value = false;
             superCategory.indeterminate = false;
@@ -68,7 +68,7 @@ app.controller('categoryPickerTreeController', function ($scope, categoryService
         });
     };
 
-    $scope.inverse = function () {
+    $scope.inverseSelection = function () {
         $scope.categoryFilter.forEach(function (superCategory) {
             superCategory.value = !superCategory.value;
             superCategory.childs.forEach(function(child) {
