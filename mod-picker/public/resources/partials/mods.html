@@ -1,13 +1,12 @@
 <div class="column-wrapper">
     <div class="left-column">
         <h2>Filters</h2>
-        <h3>Category</h3>
-        <category-picker-tree></category-picker-tree>
         <h3>Mod List</h3>
         <div class="sidebar-box">
             <ul class="filter-list">
                 <li>
-                    <input id="compatibility_enabled" type="checkbox"><label for="compatibility_enabled">Enable compatibility filter</label>
+                    <label><input id="compatibility_enabled" type="checkbox">
+                        Enable compatibility filter</label>
                 </li>
                 <li class="half-box">
                     <h4>Mods</h4>
@@ -23,19 +22,59 @@
             <h3>Sources</h3>
             <ul class="filter-list">
                 <li>
-                    <input id="nexus_mods" type="checkbox" checked="checked"><label for="nexus_mods">Nexus Mods</label>
+                    <label><input id="nexus_mods" type="checkbox" checked="checked">
+                        Nexus Mods</label>
                 </li>
                 <li>
-                    <input id="steam_workshop" type="checkbox"><label for="steam_workshop">Steam Workshop</label>
+                    <label><input id="steam_workshop" type="checkbox">
+                        Steam Workshop</label>
                 </li>
                 <li>
-                    <input id="lovers_lab" type="checkbox"><label for="lovers_lab">Lovers Lab</label>
+                    <label><input id="lovers_lab" type="checkbox">
+                        Lovers Lab</label>
                 </li>
             </ul>
         </div>
         <div id="category-filters" class="filter-section">
-            <h3>Categories</h3>
-            <category-tree data="categories"></category-tree>
+            <h3>Categories <span class="tree-controls">
+                <span class="fa fa-eraser" ng-click="inverse()"></span>
+                <span class="fa fa-minus-square" ng-click="reset()"></span>
+            </span></h3>
+
+            <div class="sidebar-box">
+                <div ng-controller="categoryPickerTreeController" class="category-picker-tree">
+                    <div ng-repeat="primaryCategory in categories">
+                        <expandable expanded="categoryFilter[primaryCategory.id].expanded" disable-style="true" disable-full-title-toggle="true" ng-show="primaryCategory.childs.length">
+                            <expanded-title>
+                                <label class="supercategory">
+                                    <input type="checkbox" ng-model="categoryFilter[primaryCategory.id].value" ng-indeterminate="categoryFilter[primaryCategory.id].indeterminate" ng-change="updateSelection(primaryCategory.id)"/>
+                                    <span>{{primaryCategory.name}}</span>
+                                </label>
+                            </expanded-title>
+                            <content>
+                                <div class="sub-category" ng-repeat="secondaryCategory in primaryCategory.childs">
+                                    <label>
+                                        <input type="checkbox" ng-model="categoryFilter[primaryCategory.id].childs[secondaryCategory.id].value" ng-change="updateSelection(primaryCategory.id, secondaryCategory.id)"/>
+                                        <span>{{secondaryCategory.name}}</span>
+                                    </label>
+                                </div>
+                            </content>
+                        </expandable>
+
+                        <!-- TODO: kill duplication-->
+                        <!-- not the best approach, not sure if there's a better way to do it -->
+                        <div ng-hide="primaryCategory.childs.length">
+                            <div class="expandable-title-container">
+                                <span class="no-icon"></span>
+                                <label class="supercategory">
+                                    <input type="checkbox" ng-model="categoryFilter[primaryCategory.id].value" ng-indeterminate="categoryFilter[primaryCategory.id].indeterminate" ng-change="updateSelection(primaryCategory.id)"/>
+                                    <span>{{primaryCategory.name}}</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
         <div id="date-filters" class="filter-section">
             <h3>Date Filters</h3>
