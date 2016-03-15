@@ -102,7 +102,7 @@
                 <h4>Reviews Count</h4>
                 <slider data="data.reviews" type="CeilSlider" attr="200"></slider>
             </div>
-            <div id="mod-picker-ext-filters" class="filter-section">
+            <div id="mod-picker-ext-filters" class="filter-section" ng-if="mp_visible">
                 <h4>Number of Stars <span class="filter-controls">
                     <span class="fa fa-wrench" ng-click="" title="Custom Value"></span>
                 </span></h4>
@@ -114,6 +114,7 @@
                 <h4>Installation Notes Count</h4>
                 <slider data="data.iNotes" type="CeilSlider" attr="100"></slider>
             </div>
+            <a class="expand" ng-click="mp_toggle()">{{ mp_visible ? 'Show less' : 'Show more...' }}</a>
         </div>
         <div id="nexus-mods-filters" class="filter-sections">
             <h3>Nexus Mods Filters</h3>
@@ -133,7 +134,7 @@
                 </span></h4>
                 <slider data="data.totalDownloads" type="StepSlider" attr="50000000"></slider>
             </div>
-            <div id="nexus-mods-ext-filters" class="filter-section">
+            <div id="nexus-mods-ext-filters" class="filter-section" ng-if="nm_visible">
                 <h4>Views <span class="filter-controls">
                     <span class="fa fa-wrench" ng-click="" title="Custom Value"></span>
                 </span></h4>
@@ -158,6 +159,7 @@
                 <h4>Articles Count</h4>
                 <slider data="data.articles" type="CeilSlider" attr="50"></slider>
             </div>
+            <a class="expand" ng-click="nm_toggle()">{{ nm_visible ? 'Show less' : 'Show more...' }}</a>
         </div>
     </div>
     <div class="right-column">
