@@ -42,7 +42,7 @@
             </span></h3>
 
             <div class="sidebar-box">
-                <div ng-controller="categoryPickerTreeController" class="category-picker-tree">
+                <div class="category-picker-tree">
                     <div ng-repeat="primaryCategory in categories">
                         <expandable expanded="categoryFilter[primaryCategory.id].expanded" disable-style="true" disable-full-title-toggle="true" ng-show="primaryCategory.childs.length">
                             <expanded-title>

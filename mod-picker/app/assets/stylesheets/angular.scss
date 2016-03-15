@@ -528,8 +528,7 @@ input[type="submit"] {
     .sub-category {
       span {
         display: inline-block;
-        word-wrap: break-word;
-        width: 136px;
+        max-width: calc(100% - 20px);
         margin-bottom: 3px;
       }
 
