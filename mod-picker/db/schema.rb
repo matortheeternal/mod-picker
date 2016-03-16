@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160307083324) do
+ActiveRecord::Schema.define(version: 20160311051128) do
 
   create_table "agreement_marks", id: false, force: :cascade do |t|
     t.integer "incorrect_note_id", limit: 4
@@ -55,7 +55,6 @@ ActiveRecord::Schema.define(version: 20160307083324) do
 
   create_table "compatibility_notes", force: :cascade do |t|
     t.integer "submitted_by",            limit: 4
-    t.enum    "mod_mode",                limit: ["Any", "All"]
     t.integer "compatibility_plugin_id", limit: 4
     t.enum    "compatibility_type",      limit: ["Incompatible", "Partially Incompatible", "Compatibility Mod", "Compatibility Plugin", "Make Custom Patch"]
     t.date    "submitted"
@@ -78,20 +77,23 @@ ActiveRecord::Schema.define(version: 20160307083324) do
   end
 
   create_table "helpful_marks", id: false, force: :cascade do |t|
-    t.integer "submitted_by",     limit: 4
-    t.boolean "helpful"
-    t.integer "helpfulable_id",   limit: 4
-    t.string  "helpfulable_type", limit: 255
+    t.integer  "submitted_by",     limit: 4
+    t.boolean  "helpful"
+    t.integer  "helpfulable_id",   limit: 4
+    t.string   "helpfulable_type", limit: 255
+    t.datetime "submitted"
   end
 
   add_index "helpful_marks", ["helpfulable_type", "helpfulable_id"], name: "index_helpful_marks_on_helpfulable_type_and_helpfulable_id", using: :btree
   add_index "helpful_marks", ["submitted_by"], name: "submitted_by", using: :btree
 
   create_table "incorrect_notes", force: :cascade do |t|
-    t.integer "submitted_by",     limit: 4
-    t.text    "reason",           limit: 65535
-    t.integer "correctable_id",   limit: 4
-    t.string  "correctable_type", limit: 255
+    t.integer  "submitted_by",     limit: 4
+    t.text     "text_body",        limit: 65535
+    t.integer  "correctable_id",   limit: 4
+    t.string   "correctable_type", limit: 255
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   add_index "incorrect_notes", ["correctable_type", "correctable_id"], name: "index_incorrect_notes_on_correctable_type_and_correctable_id", using: :btree
@@ -391,6 +393,8 @@ ActiveRecord::Schema.define(version: 20160307083324) do
     t.string  "timezone",             limit: 128
     t.string  "udate_format",         limit: 128
     t.string  "utime_format",         limit: 128
+    t.boolean "allow_comments"
+    t.string  "theme",                limit: 255
   end
 
   add_index "user_settings", ["user_id"], name: "user_id", using: :btree
