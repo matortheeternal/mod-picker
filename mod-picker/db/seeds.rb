@@ -1812,7 +1812,6 @@ if bSeedCNotes
     submitter = User.offset(rand(User.count)).first
     cnote = CompatibilityNote.new(
         submitted_by: submitter.id,
-        mod_mode: %w(Any All).sample,
         compatibility_type: ["Incompatible", "Partially Incompatible", "Compatibility Mod", "Compatibility Plugin", "Make Custom Patch"].sample,
         submitted: Faker::Date.backward(14),
         text_body: Faker::Lorem.paragraph(4)
