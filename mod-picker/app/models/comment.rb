@@ -9,4 +9,6 @@ class Comment < ActiveRecord::Base
   belongs_to :parent, :class_name => 'Comment', :foreign_key => 'parent_comment', :inverse_of => 'children'
   has_many :children, :class_name => 'Comment', :foreign_key => 'parent_comment', :inverse_of => 'parent'
   belongs_to :commentable, :polymorphic => true
+
+  validates :submitted_by, :submitted, presence: true
 end

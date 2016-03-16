@@ -10,6 +10,9 @@ app.service('categoryService', function ($q, backend) {
                     returnData.push(category);
                 }
             });
+            returnData.sort(function (a, b) {
+                return a.name.localeCompare(b.name);
+            });
             categoryPromise.resolve(returnData);
         });
 
@@ -23,4 +26,22 @@ app.service('categoryService', function ($q, backend) {
     this.retrieveSecondaryCategory = function (primaryCategoryId) {
         return retrieveFilteredCategories(primaryCategoryId);
     };
+
+    this.retrieveNestedCategories = function () {
+        var nestedCategories = [];
+        var secondaryCategoryPromises = [];
+        var nestedCategoriesPromise = $q.defer();
+        retrieveFilteredCategories('primary').then(function (primaryCategories) {
+            primaryCategories.forEach(function (primaryCategory) {
+                secondaryCategoryPromises.push(retrieveFilteredCategories(primaryCategory.id).then(function (secondaryCategories) {
+                    primaryCategory.childs = secondaryCategories;
+                    nestedCategories.push(primaryCategory);
+                }));
+            });
+            $q.all(secondaryCategoryPromises).then(function () {
+                nestedCategoriesPromise.resolve(nestedCategories);
+            });
+        });
+        return nestedCategoriesPromise.promise;
+    }
 });

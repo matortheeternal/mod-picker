@@ -8,6 +8,9 @@ Rails.application.config.assets.version = '1.0'
 
 # Precompile additional assets.
 # application.js, application.css, and all non-JS/CSS in app/assets folder are already added.
+
+
+# TODO: clean this shiat
 Rails.application.config.assets.precompile += %w(
 animate.css
 box.css
@@ -21,8 +24,8 @@ angular.css
 rzslider.min.css
 style-responsive.css
 modpicker.js
-angular.min.js
-angular-route.min.js
+angular.min.1.5.1.js
+angular-route.min.1.5.1.js
 bootstrap.min.js
 rzslider.min.js
 heartcode-canvasloader-min.js
