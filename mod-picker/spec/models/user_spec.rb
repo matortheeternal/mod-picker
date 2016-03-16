@@ -5,11 +5,7 @@ require 'rails_helper'
 
 describe User do
   it "is valid with a username, email, and password" do
-    user = User.new(
-      username: "Nariyan",
-      email: "Nyanyan@mail.com",
-      password: "Thisreallyshouldbehashed"
-    )
+    user = build(:user)
     expect(user).to be_valid
   end
 

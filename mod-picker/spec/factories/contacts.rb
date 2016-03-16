@@ -1,7 +1,8 @@
 FactoryGirl.define do
-  factory :contact do
-    firstname { Faker::Name.first_name }
-    lastname { Faker::Name.last_name }
-    email   { Faker::Internet.email }
-  end
+  # factory :contact do
+  #   username { Faker::Internet.username }
+  #   user_level "user"
+  #   encrypted_passed { Faker::Internet.password }
+  #   email   { Faker::Internet.email }
+  # end
 end
