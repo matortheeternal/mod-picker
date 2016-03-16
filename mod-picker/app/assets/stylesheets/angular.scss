@@ -581,11 +581,6 @@ input[type="submit"] {
   font-weight: 500;
 }
 
-#title-with-buttons {
-  margin-left: -30px;
-  margin-bottom: 15px;
-}
-
 .section {
   display: block;
   margin-top: 15px;
@@ -605,6 +600,14 @@ input[type="submit"] {
     margin-top: 25px;
     margin-left: 0;
     margin-bottom: 0;
+  }
+
+  #title-with-buttons{
+    margin-left: -30px;
+    margin-bottom: 15px;
+    display: block;
+    font-size: 22px;
+    font-weight: 500;
   }
 }
 
