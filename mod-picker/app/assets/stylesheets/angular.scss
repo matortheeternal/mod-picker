@@ -577,20 +577,25 @@ input[type="submit"] {
 
 .section-title {
   display: block;
+  vertical-align: top;
+  width: 200px;
   font-size: 22px;
   font-weight: 500;
 }
 
 .section {
   display: inline-block;
-  margin-top: 15px;
+  margin-top: 30px;
   margin-left: 30px;
-  margin-bottom: 30px;
+  padding-bottom: 70px;
+  font-weight: 500;
 
   input[type="text"]{
     vertical-align: top;
+    width: 280px;
     font-size: 20px;
     margin-top: 5px;
+    margin-right: 40px;
   }
 
   h3 {
@@ -614,6 +619,7 @@ input[type="submit"] {
   font-size: 14px;
   display: inline-block;
   font-style: italic;
+  font-weight: 500;
 }
 
 .quote-explanation {
@@ -673,7 +679,6 @@ input[type="submit"] {
 /* category-tree */
 .category-tree {
   font-size: 14px;
-  width: 200px;
 
   content {
     display: block;
