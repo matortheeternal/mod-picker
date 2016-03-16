@@ -33,10 +33,6 @@ h1 {
   margin: 0;
 }
 
-h1:hover {
-  color: $h2_color;
-}
-
 h2 {
   color: $h2_color;
   padding: 0;
@@ -328,6 +324,8 @@ nav span {
   font-size: 12px;
   color: $bar_text_color;
   text-align: center;
+  vertical-align: bottom;
+  margin-bottom: 1px;
 }
 
 .btn-sm:disabled {
@@ -341,6 +339,30 @@ nav span {
 
 .btn:hover {
   background-color: $bright_action_color;
+}
+
+#thin-btn {
+  width: auto;
+  height: auto;
+  display: inline;
+  margin-left: 10px;
+  padding: 5px 8px 5px 8px;
+}
+
+#save-changes {
+  width: auto;
+  height: auto;
+  display: block;
+  margin: auto;
+  padding: 10px;
+}
+
+#avatar-browse {
+  width: auto;
+  height: auto;
+  padding: 10px;
+  margin-left: 10px;
+  display: inline-block;
 }
 
 /* css for horizontal menus */
@@ -418,7 +440,6 @@ ul.hmenu li {
 
 .filter-controls {
   font-size: 14px;
-  margin-left: 4px;
   color: $link_color;
 
   span {
@@ -535,6 +556,14 @@ label .sublabel {
   padding-left: 5px;
 }
 
+input[type="text"] {
+  width: 350px;
+}
+
+input[type="submit"] {
+  //height: 35px;
+}
+
 .notice {
   margin: 12px 0 12px 0;
   display: block;
@@ -543,6 +572,108 @@ label .sublabel {
 
 #checkCategories {
   margin-top: 6px;
+  width: 100%;
+}
+
+.section-title {
+  display: block;
+  vertical-align: top;
+  width: 200px;
+  font-size: 22px;
+  font-weight: 500;
+}
+
+.section {
+  display: inline-block;
+  margin-top: 30px;
+  margin-left: 30px;
+  padding-bottom: 70px;
+  font-weight: 500;
+
+  input[type="text"]{
+    vertical-align: top;
+    width: 280px;
+    font-size: 20px;
+    margin-top: 5px;
+    margin-right: 40px;
+  }
+
+  h3 {
+    font-size: 16px;
+    font-weight: 500;
+    color: $text_color;
+    margin-top: 25px;
+    margin-left: 0;
+    margin-bottom: 0;
+  }
+}
+
+.section-element {
+  display: block;
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+
+.quote {
+  width: 250px;
+  font-size: 14px;
+  display: inline-block;
+  font-style: italic;
+  font-weight: 500;
+}
+
+.quote-explanation {
+  font-size: 10px;
+  display: block;
+}
+
+.header-tabs {
+  background-color: $secondary_background;
+  h1 {
+    font-weight: 500;
+    color: $text_color;
+    font-size: 36px;
+    padding-top: 18px;//half of font size
+    padding-bottom: 18px;
+  }
+}
+
+.tabs {
+  margin-left: 46px;
+  a {
+    display: inline-block;
+    cursor: pointer;
+    font-size: 18px;
+    color: $text_color;
+    font-weight: 500;
+    padding: 9px 16px 9px 16px;//half of font size high
+  }
+}
+
+.selected-tab {
+  background-color: $action_color;
+}
+
+.unselected-tab:hover {
+  background-color: $bright_action_color;
+}
+
+.avatar {
+  border: 2px solid $border_color;
+  vertical-align: bottom;
+}
+
+.big-text-area {
+  width: 100%;
+  height: 300px;
+  margin-top: 4px;
+  max-width: 100%;
+  overflow-y: auto;
+}
+
+.username {
+  color: $h4_color;
+  font-style: italic;
 }
 
 /* category-tree */
@@ -584,4 +715,17 @@ label .sublabel {
 .sub-category {
   font-size: 11px;
   margin-left: 27px;
+}
+
+.tree-controls {
+  margin-left: 4px;
+  color: $link_color;
+
+  span {
+    cursor: pointer;
+  }
+
+  span:hover {
+    color: $link_hover_color_secondary;
+  }
 }
