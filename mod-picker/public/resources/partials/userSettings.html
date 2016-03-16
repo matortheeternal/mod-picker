@@ -1,10 +1,10 @@
 
 <div class="header-tabs">
     <div class="page-container">
-        <h1>Settings</h1>
+        <h1>User Settings</h1>
         <div class="tabs">
             <!--This weird syntax is to get rid of the spaces between the tabs-->
-            <a ng-click="currentTab = 'Profile'" ng-class="cssClass('Profile')">User</a
+            <a ng-click="currentTab = 'Profile'" ng-class="cssClass('Profile')">Profile</a
             ><a ng-click="currentTab = 'Account'" ng-class="cssClass('Account')">Account</a
             ><a ng-click="currentTab = 'Reputation'" ng-class="cssClass('Reputation')">Reputation</a
             ><a ng-click="currentTab = 'Mod Lists'" ng-class="cssClass('Mod Lists')">Mod Lists</a
@@ -34,7 +34,7 @@
                 </div>
 
 
-                <span class="section-title">Profile</span>
+                <span class="section-title">My Profile</span>
                 <div class="section">
                     <label>
                         <input type="checkbox" ng-checked="userSettings.allow_comments">
@@ -66,8 +66,6 @@
                         <input type="submit" class="btn" id="thin-btn" value="Change" ng-click="verify()">
                     </div>
                 </div>
-
-
             </div>
 
 
