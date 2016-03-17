@@ -9,21 +9,30 @@ app.service('userSettingsService', function (backend, $q) {
         return userSettings.promise;
     };
 
-    this.submit = function (user, user_settings) {
-        user.settings = user_settings;
+    this.submitUser = function (user) {
         var user_object = {
             user: user
         };
-
-        var _user = $q.defer();
+        var update = $q.defer();
     	backend.update('/users/' + user.id, user_object).then(function (data) {
             setTimeout(function () {
-                _user.resolve(data);
+                update.resolve(data);
             }, 1000);
     	});
+        return update.promise
+    };
 
-        // doesn't work yet
-        return _user.promise
+    this.submitUserSettings = function (user_settings) {
+        var user_settings_object = {
+            user_setting: user_settings
+        };
+        var update = $q.defer();
+        backend.update('/user_settings/' + user_settings.id, user_settings_object).then(function (data) {
+            setTimeout(function () {
+                update.resolve(data);
+            }, 1000);
+        });
+        return update.promise
     };
 
 });

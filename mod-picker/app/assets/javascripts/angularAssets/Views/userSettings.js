@@ -32,9 +32,14 @@ app.controller('userSettingsController', function ($scope, $q, $routeParams, use
     });
 
     $scope.submit = function() {
-        userSettingsService.submit($scope.user, $scope.userSettings).then(function (data) {
-            $scope.success = data.status === "ok";
-            $scope.errors = data.errors;
+        $scope.errors = [];
+        userSettingsService.submitUser($scope.user).then(function (data) {
+            $scope.userSuccess = data.status === "ok";
+            $scope.errors += data.errors;
+        });
+        userSettingsService.submitUserSettings($scope.userSettings).then(function (data) {
+            $scope.userSettingsSuccess = data.status === "ok";
+            $scope.errors += data.errors;
         });
     };
 });
