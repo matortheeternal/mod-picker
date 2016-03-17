@@ -47,6 +47,8 @@ class User < ActiveRecord::Base
 
   has_many :profile_comments, :class_name => 'Comment', :as => 'commentable'
 
+  accepts_nested_attributes_for :settings
+
   after_create :create_associations
   after_initialize :init
   

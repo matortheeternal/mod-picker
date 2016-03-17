@@ -10,9 +10,8 @@ app.config(['$routeProvider', function ($routeProvider) {
 }]);
 
 app.controller('userSettingsController', function ($scope, $q, $routeParams, userSettingsService, userService) {
+    useTwoColumns(false);
     $scope.currentTab = "Profile";
-    $scope.submit_success = false;
-    $scope.submit_errors = null;
 
     $scope.isSelected = function(tabName) {
         return $scope.currentTab === tabName;
@@ -33,15 +32,9 @@ app.controller('userSettingsController', function ($scope, $q, $routeParams, use
     });
 
     $scope.submit = function() {
-        var result = userSettingsService.submit($scope.user, $scope.userSettings);
-        if (result[0].status === "ok") {
-            console.log("user ok!");
-        }
-        if (result[1].status === "ok") {
-            console.log("user settings ok!");
-        }
+        userSettingsService.submit($scope.user, $scope.userSettings).then(function (data) {
+            $scope.success = data.status === "ok";
+            $scope.errors = data.errors;
+        });
     };
-
-
-
 });

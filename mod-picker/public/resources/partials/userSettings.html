@@ -19,10 +19,10 @@
 
             <form>
                 <div class="messages">
-                    <span class="success-message" ng-show="submit_success">
+                    <span class="success-message" ng-show="success">
                         User Settings saved!
                     </span>
-                    <span class="error-message" ng-repeat="error in submit_errors">
+                    <span class="error-message" ng-repeat="error in errors">
                         {{error.message}}
                     </span>
                 </div>
