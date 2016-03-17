@@ -11,6 +11,8 @@ app.config(['$routeProvider', function ($routeProvider) {
 
 app.controller('userSettingsController', function ($scope, $q, $routeParams, userSettingsService, userService) {
     $scope.currentTab = "Profile";
+    $scope.submit_success = false;
+    $scope.submit_errors = null;
 
     $scope.isSelected = function(tabName) {
         return $scope.currentTab === tabName;
@@ -31,7 +33,13 @@ app.controller('userSettingsController', function ($scope, $q, $routeParams, use
     });
 
     $scope.submit = function() {
-        userSettingsService.submit($scope.user, $scope.userSettings);
+        var result = userSettingsService.submit($scope.user, $scope.userSettings);
+        if (result[0].status === "ok") {
+            console.log("user ok!");
+        }
+        if (result[1].status === "ok") {
+            console.log("user settings ok!");
+        }
     };
 
 

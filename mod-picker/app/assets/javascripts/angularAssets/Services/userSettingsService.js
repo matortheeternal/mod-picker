@@ -9,30 +9,27 @@ app.service('userSettingsService', function (backend, $q) {
         return userSettings.promise;
     };
 
-    this.flash_errors = function(data) {
-        $scope.errors = data.errors;
-    };
-
     this.submit = function (user, user_settings) {
-        var usersSuccess = false;
-        var userSettingsSuccess = false;
+        var user_object = {
+            user: user
+        };
+        var user_setting_object = {
+            user_setting: user_settings
+        };
 
-    	backend.update('/users/' + user.id, user).then(function (data) {
-            usersSuccess = (data.status === "ok");
-            if (!usersSuccess) {
-                flash_errors(data);
-            } else if (userSettingsSuccess) {
-                $scope.success = true;
-            }
+        var _user = $q.defer();
+        var _user_settings = $q.defer();
+        backend.update('/user_settings/' + user_settings.id, user_setting_object).then(function (data2) {
+            setTimeout(function () {
+                _user_settings.resolve(data2);
+            }, 1000);
+        });
+    	backend.update('/users/' + user.id, user_object).then(function (data) {
+            setTimeout(function () {
+                _user.resolve(data);
+            }, 1000);
     	});
-    	backend.update('/user_settings/' + user_settings.id, user_settings).then(function (data) {
-            userSettingsSuccess = (data.status === "ok");
-            if (!userSettingsSuccess) {
-                flash_errors(data);
-            } else if (usersSuccess) {
-                $scope.success = true;
-            }
-	    });
+        return [_user.promise, _user_settings.promise];
     };
 
 });
