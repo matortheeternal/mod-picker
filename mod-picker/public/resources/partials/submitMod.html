@@ -7,7 +7,7 @@
 
                 <span class="section-title">Sources</span>
                 Nexus Mods<br>
-                <input type="text" ng-model="nexusUrl" required>
+                <input type="text" class="path-input" ng-model="nexusUrl" required>
                 <input type="button" class="btn-sm" ng-disabled='urlInvalid()' ng-click="scrape()" value="Scrape">
 
                 <div ng-show="scraping">
@@ -87,7 +87,7 @@
                 <div class="section">
 
                     Archive<br/>
-                    <input type="text" ng-model="archive">
+                    <input type="text" class="path-input" ng-model="archive">
                     <input type="button" class="btn-sm" ng-click="archiveBrowse()" value="Browse">
 
                     <div ng-show="archiveAnalysed">
