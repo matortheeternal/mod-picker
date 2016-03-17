@@ -30,7 +30,7 @@
                 <div ng-show="isSelected('Profile')">
                     <span class="section-title">Avatar</span>
                     <div class="section">
-                        <img class="avatar" src="/avatars/{{user.id}}.png">
+                        <img class="avatar" ng-src="{{user.avatar}}">
                         <input type="button" id="avatar-browse" class="btn" value="Browse" />
                     </div>
 

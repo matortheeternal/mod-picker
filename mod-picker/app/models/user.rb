@@ -66,6 +66,14 @@ class User < ActiveRecord::Base
     end
   end
 
+  def user_avatar
+    if File.exists?(File.join(Rails.public_path, "avatars/#{id}.png"))
+      "/avatars/#{id}.png"
+    else
+      '/avatars/Default.png'
+    end
+  end
+
   def self.find_first_by_auth_conditions(warden_conditions)
     conditions = warden_conditions.dup
     if login = conditions.delete(:login)
@@ -98,6 +106,8 @@ class User < ActiveRecord::Base
         :bio => {:only => [:nexus_username, :steam_username]},
         :reputation => {:only => [:overall, :offset]}
     }
-    super(options)
+    super(options).merge({
+        :avatar => user_avatar
+    })
   end
 end
