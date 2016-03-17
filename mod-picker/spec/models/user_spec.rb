@@ -64,7 +64,7 @@ describe User do
   context "#init" do
     it "joined should exist" do
       user = create(:user)
-      expect(user.joined).to eq DateTime.current
+      expect(user.joined.utc).to be_within(1.seconds).of DateTime.current.utc
     end
 
     it "title should be prisoner" do
