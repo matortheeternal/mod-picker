@@ -4,6 +4,9 @@
 require 'rails_helper'
 
 describe User do
+
+  # Validations ====================================================
+  
   it "is valid with a username, email, and password" do
     user = build(:user)
     expect(user).to be_valid
@@ -45,7 +48,6 @@ describe User do
     expect(user.errors[:email]).to include("has already been taken")
   end
 
-
   it "is invalid with a duplicate username" do
     create(:user,
       username: "Shinobu",
@@ -59,13 +61,25 @@ describe User do
     expect(user.errors[:username]).to include("has already been taken")
   end
 
-  it "User should be created with user_level of :user by default" do
-    user = User.new(
-      username: "Shinobu",
-      email: "kissshot@mail.com",
-      password: "Thepaswordisnil",
-      )
+  context "#init" do
+    it "joined should exist" do
+      user = create(:user)
+      expect(user.joined).to eq DateTime.current
+    end
 
-    expect(user.user_level.to_sym).to eq :user
+    it "title should be prisoner" do
+      user = create(:user)
+      expect(user.title.to_sym).to eq :Prisoner
+    end
+
+    it "avatar should be newUser.jpg" do
+      user = create(:user)
+      expect(user.avatar). to eq "NewUser.png"
+    end
+
+    it "user_level should be created with user_level of :user" do
+      user = create(:user)
+      expect(user.user_level.to_sym).to eq :user
+    end
   end
 end
