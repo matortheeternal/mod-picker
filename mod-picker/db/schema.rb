@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160317025730) do
+ActiveRecord::Schema.define(version: 20160317203418) do
 
   create_table "agreement_marks", id: false, force: :cascade do |t|
     t.integer "incorrect_note_id", limit: 4
@@ -381,14 +381,14 @@ ActiveRecord::Schema.define(version: 20160317025730) do
   add_index "user_reputations", ["user_id"], name: "user_id", using: :btree
 
   create_table "user_settings", force: :cascade do |t|
-    t.boolean "show_notifications"
-    t.boolean "show_tooltips"
-    t.boolean "email_notifications"
-    t.boolean "email_public"
-    t.boolean "allow_adult_content"
-    t.boolean "allow_nexus_mods"
-    t.boolean "allow_lovers_lab"
-    t.boolean "allow_steam_workshop"
+    t.boolean "show_notifications",               default: true
+    t.boolean "show_tooltips",                    default: true
+    t.boolean "email_notifications",              default: false
+    t.boolean "email_public",                     default: false
+    t.boolean "allow_adult_content",              default: false
+    t.boolean "allow_nexus_mods",                 default: true
+    t.boolean "allow_lovers_lab",                 default: false
+    t.boolean "allow_steam_workshop",             default: true
     t.integer "user_id",              limit: 4
     t.string  "timezone",             limit: 128
     t.string  "udate_format",         limit: 128
@@ -403,7 +403,6 @@ ActiveRecord::Schema.define(version: 20160317025730) do
     t.string   "username",                  limit: 32
     t.enum     "user_level",                limit: ["guest", "banned", "user", "author", "vip", "moderator", "admin"]
     t.string   "title",                     limit: 32
-    t.string   "avatar",                    limit: 128
     t.datetime "joined"
     t.integer  "active_ml_id",              limit: 4
     t.integer  "active_mc_id",              limit: 4
