@@ -9,4 +9,16 @@ app.service('userSettingsService', function (backend, $q) {
         return userSettings.promise;
     };
 
+    this.submit = function (user, user_settings) {
+
+    	backend.update('/users/' + user.id, user).then(function (data) {
+    		done = (data.status === "ok");
+
+    	};
+    	backend.update('/user_settings/' + user_settings.id, user_settings).then(function (data) {
+
+	    };
+
+    };
+
 });
