@@ -33,10 +33,6 @@ h1 {
   margin: 0;
 }
 
-h1:hover {
-  color: $h2_color;
-}
-
 h2 {
   color: $h2_color;
   padding: 0;
@@ -63,6 +59,22 @@ h4 {
   font-size: 12px;
   text-transform: uppercase;
   color: $h4_color;
+}
+
+input[type="checkbox"] {
+  margin: 0;
+  padding: 0;
+}
+
+input[type="text"] {
+  font-size: 14px;
+  vertical-align: top;
+  height: 28px;
+  width: 350px;
+}
+
+input[type="submit"] {
+  height: 35px;
 }
 
 .nav-controls {
@@ -288,8 +300,6 @@ nav span {
 }
 
 .btn {
-  width: 74px;
-  height: 20px;
   display: inline;
   padding: 0;
   color: $action_text_color;
@@ -300,6 +310,7 @@ nav span {
   border-radius: 0;
   background-color: $action_color;
   cursor: pointer;
+  padding: 10px;
 }
 
 .btn-sm {
@@ -312,6 +323,8 @@ nav span {
   font-size: 12px;
   color: $bar_text_color;
   text-align: center;
+  vertical-align: bottom;
+  margin-bottom: 1px;
 }
 
 .btn-sm:disabled {
@@ -325,6 +338,24 @@ nav span {
 
 .btn:hover {
   background-color: $bright_action_color;
+}
+
+#thin-btn {
+  display: inline;
+  margin-left: 10px;
+  padding: 5px 8px 5px 8px;
+}
+
+#save-changes {
+  display: block;
+  margin: auto;
+  padding: 10px;
+}
+
+#avatar-browse {
+  padding: 10px;
+  margin-left: 10px;
+  display: inline-block;
 }
 
 /* css for horizontal menus */
@@ -402,7 +433,6 @@ ul.hmenu li {
 
 .filter-controls {
   font-size: 14px;
-  margin-left: 4px;
   color: $link_color;
 
   span {
@@ -508,11 +538,6 @@ select.stealthy.ng-pristine {
   min-width: 400px;
 }
 
-input[type="checkbox"] {
-  margin: 0;
-  padding: 0;
-}
-
 label {
   -webkit-user-select: none;
   -moz-user-select: none;
@@ -522,6 +547,14 @@ label {
 
 label .sublabel {
   padding-left: 5px;
+}
+
+input[type="text"] {
+  width: 350px;
+}
+
+input[type="submit"] {
+  //height: 35px;
 }
 
 .notice {
@@ -536,25 +569,23 @@ label .sublabel {
 
 .section-title {
   display: block;
-  vertical-align: top;
-  width: 200px;
   font-size: 22px;
   font-weight: 500;
 }
 
 .section {
   display: block;
-  margin-top: 30px;
+  margin-top: 15px;
   margin-left: 30px;
-  padding-bottom: 70px;
-  font-weight: 500;
+  margin-bottom: 30px;
 
   input[type="text"]{
     vertical-align: top;
-    width: 280px;
     font-size: 20px;
-    margin-top: 5px;
-    margin-right: 40px;
+  }
+
+  input[type="text"].path-input {
+    font-size: 14px;
   }
 
   h3 {
@@ -565,11 +596,23 @@ label .sublabel {
     margin-left: 0;
     margin-bottom: 0;
   }
+
+  #title-with-buttons{
+    margin-left: -30px;
+    margin-bottom: 15px;
+    display: block;
+    font-size: 22px;
+    font-weight: 500;
+  }
 }
 
 .section-element {
+  display: block;
   margin-top: 15px;
   margin-bottom: 15px;
+  div {
+    display: inline-block;
+  }
 }
 
 .quote {
@@ -577,10 +620,9 @@ label .sublabel {
   font-size: 14px;
   display: inline-block;
   font-style: italic;
-  font-weight: 500;
 }
 
-.quote-explanation {
+.explanation {
   font-size: 10px;
   display: block;
 }
@@ -637,6 +679,7 @@ label .sublabel {
 /* category-tree */
 .category-tree {
   font-size: 14px;
+  width: 200px;
 
   content {
     display: block;
@@ -673,4 +716,17 @@ label .sublabel {
 .sub-category {
   font-size: 11px;
   margin-left: 27px;
+}
+
+.tree-controls {
+  margin-left: 4px;
+  color: $link_color;
+
+  span {
+    cursor: pointer;
+  }
+
+  span:hover {
+    color: $link_hover_color_secondary;
+  }
 }
