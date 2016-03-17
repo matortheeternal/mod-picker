@@ -83,6 +83,6 @@ class UserSettingsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def user_setting_params
-      params.require(:user_setting).permit(:user_id, :show_notifications, :show_tooltips, :email_notifications, :email_public, :allow_adult_content, :allow_nexus_mods, :allow_lovers_lab, :allow_steam_workshop, :timezone, :udate_format, :utime_format)
+      params.require(:user_setting).permit(:user_id, :show_notifications, :show_tooltips, :email_notifications, :email_public, :allow_adult_content, :allow_nexus_mods, :allow_lovers_lab, :allow_steam_workshop, :timezone, :udate_format, :utime_format, :allow_comments, :theme)
     end
 end
