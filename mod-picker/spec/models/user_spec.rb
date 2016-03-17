@@ -45,22 +45,19 @@ describe User do
     end
 
     it "is valid with a username length >= 4  and length <= 20" do
-       user = build(:user,
+      user = build(:user,
         username: "holofoam")
-      expect(user).to be_valid
+
+      valid_usernames = %w[four reDdUng TesTer TestIngmore thetwent
+                            thisnamefourFourfour]
+
+      valid_usernames.each do |valid_username| 
+        user.username = valid_username
+        expect(user).to be_valid
+      end
     end
 
-    it "is valid with a username length == 4" do
-       user = build(:user,
-        username: "holo")
-      expect(user).to be_valid
-    end
 
-    it "is valid with a username length == 20" do
-       user = build(:user,
-        username: "starkstarkstarkstark")
-      expect(user).to be_valid
-    end
   end
 
   context "email" do
@@ -74,28 +71,30 @@ describe User do
 
     it "is invalid with a email length < 7" do
       user = build(:user,
-        email: "h@m.com")
+        email: "@m.com")
       user.valid?
-      expect(user.errors[:username]).to include("is too short (minimum is 4 characters)")
+      expect(user.errors[:email]).to include("is too short (minimum is 7 characters)")
     end
 
 
-    it "is invalid with a username length > 20" do
+    it "is invalid with a email length > 100" do
+      email_name = ("a" * 92) + "@mail.com"
+
       user = build(:user,
-        username: "thetwentyusernameorange")
+        email: email_name)
+
       user.valid?
-      expect(user.errors[:username]).to include("is too long (maximum is 20 characters)")
+      expect(user.errors[:email]).to include("is too long (maximum is 100 characters)")
     end
 
     it "is valid with a username length >= 4  and length <= 20" do
-      user = build(:user,
-        username: "holofoam")
+      user = build(:user)
 
-      valid_usernames = %w[four reDdUng TesTer TestIngmore thetwent
-                            thisnamefourFourfour]
+      valid_emails = %w[tester@mail.com foobar@mail.something.com foo.bar@mail.com
+                        moo_car@mail.com red.blue@mail.com]
 
-      valid_usernames.each do |valid_username| 
-        user.username = valid_username
+      valid_emails.each do |valid_email| 
+        user.email = valid_email
         expect(user).to be_valid
       end
       

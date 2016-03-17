@@ -61,7 +61,8 @@ class User < ActiveRecord::Base
   presence: true,
   uniqueness: {
     case_sensitive: false
-  }
+  },
+  length: 7..100
   # format: {
   # with: VALID_EMAIL_REGEX,
   # message: must be a valid email address format
