@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160311051128) do
+ActiveRecord::Schema.define(version: 20160317025730) do
 
   create_table "agreement_marks", id: false, force: :cascade do |t|
     t.integer "incorrect_note_id", limit: 4
@@ -404,7 +404,7 @@ ActiveRecord::Schema.define(version: 20160311051128) do
     t.enum     "user_level",                limit: ["guest", "banned", "user", "author", "vip", "moderator", "admin"]
     t.string   "title",                     limit: 32
     t.string   "avatar",                    limit: 128
-    t.date     "joined"
+    t.datetime "joined"
     t.integer  "active_ml_id",              limit: 4
     t.integer  "active_mc_id",              limit: 4
     t.string   "email",                     limit: 255,                                                                default: "", null: false
