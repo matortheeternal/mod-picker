@@ -32,6 +32,6 @@ app.controller('submitModController', function ($scope, backend, submitService) 
     };
 
     $scope.submit = function () {
-        submitService.submit($scope.nexus);
+        submitService.submit($scope.nexus, $scope.isUtility, $scope.hasAdultContent);
     }
 });

@@ -61,6 +61,22 @@ h4 {
   color: $h4_color;
 }
 
+input[type="checkbox"] {
+  margin: 0;
+  padding: 0;
+}
+
+input[type="text"] {
+  font-size: 14px;
+  vertical-align: top;
+  height: 28px;
+  width: 350px;
+}
+
+input[type="submit"] {
+  height: 35px;
+}
+
 .nav-controls {
   width: 75%;
   display: table-cell;
@@ -284,8 +300,6 @@ nav span {
 }
 
 .btn {
-  width: 74px;
-  height: 20px;
   display: inline;
   padding: 0;
   color: $action_text_color;
@@ -296,6 +310,30 @@ nav span {
   border-radius: 0;
   background-color: $action_color;
   cursor: pointer;
+  padding: 10px;
+}
+
+.btn-sm {
+  display: inline;
+  background-color: $bar_color;
+  padding: 6px 8px;
+  border: 0;
+  border-radius: 0;
+  cursor: pointer;
+  font-size: 12px;
+  color: $bar_text_color;
+  text-align: center;
+  vertical-align: bottom;
+  margin-bottom: 1px;
+}
+
+.btn-sm:disabled {
+  cursor: default;
+  background-color: $border_color;
+}
+
+.btn-sm:enabled:hover {
+  background-color: $bar_highlight_color;
 }
 
 .btn:hover {
@@ -303,24 +341,18 @@ nav span {
 }
 
 #thin-btn {
-  width: auto;
-  height: auto;
   display: inline;
   margin-left: 10px;
   padding: 5px 8px 5px 8px;
 }
 
 #save-changes {
-  width: auto;
-  height: auto;
   display: block;
   margin: auto;
   padding: 10px;
 }
 
 #avatar-browse {
-  width: auto;
-  height: auto;
   padding: 10px;
   margin-left: 10px;
   display: inline-block;
@@ -401,7 +433,6 @@ ul.hmenu li {
 
 .filter-controls {
   font-size: 14px;
-  margin-left: 4px;
   color: $link_color;
 
   span {
@@ -449,7 +480,7 @@ ul.hmenu li {
 .right-column table {
   border-collapse: collapse;
   width: 100%;
-  font-family: Arial;
+  font-family: Arial, sans-serif;
 }
 
 .right-column th {
@@ -507,11 +538,6 @@ select.stealthy.ng-pristine {
   min-width: 400px;
 }
 
-input[type="checkbox"] {
-  margin: 0;
-  padding: 0;
-}
-
 label {
   -webkit-user-select: none;
   -moz-user-select: none;
@@ -544,25 +570,19 @@ input[type="submit"] {
 
 .section-title {
   display: block;
-  vertical-align: top;
-  width: 200px;
   font-size: 22px;
   font-weight: 500;
 }
 
 .section {
   display: block;
-  margin-top: 30px;
+  margin-top: 15px;
   margin-left: 30px;
-  padding-bottom: 70px;
-  font-weight: 500;
+  margin-bottom: 30px;
 
   input[type="text"]{
     vertical-align: top;
-    width: 280px;
     font-size: 20px;
-    margin-top: 5px;
-    margin-right: 40px;
   }
 
   h3 {
@@ -584,8 +604,12 @@ input[type="submit"] {
 }
 
 .section-element {
+  display: block;
   margin-top: 15px;
   margin-bottom: 15px;
+  div {
+    display: inline-block;
+  }
 }
 
 .quote {
@@ -593,10 +617,9 @@ input[type="submit"] {
   font-size: 14px;
   display: inline-block;
   font-style: italic;
-  font-weight: 500;
 }
 
-.quote-explanation {
+.explanation {
   font-size: 10px;
   display: block;
 }
@@ -645,14 +668,10 @@ input[type="submit"] {
   overflow-y: auto;
 }
 
-.username {
-  color: $h4_color;
-  font-style: italic;
-}
-
 /* category-tree */
 .category-tree {
   font-size: 14px;
+  width: 200px;
 
   content {
     display: block;
