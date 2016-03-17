@@ -2,10 +2,10 @@
     <div class="single-column">
         <h2>Submit Mod</h2>
 
-        <span class="section-title">Sources</span>
         <div class="section">
             <form id="submitModForm" name="submitModForm">
 
+                <span class="section-title">Sources</span>
                 Nexus Mods<br>
                 <input type="text" ng-model="nexusUrl" required>
                 <input type="button" class="btn-sm" ng-disabled='urlInvalid()' ng-click="scrape()" value="Scrape">
