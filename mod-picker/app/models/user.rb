@@ -57,6 +57,8 @@ class User < ActiveRecord::Base
   },
   length: 4..20
 
+  # TODO: add email regex
+  # basic one, minimize false negatives and confirm users via email confirmation regardless
   validates :email,
   presence: true,
   uniqueness: {
