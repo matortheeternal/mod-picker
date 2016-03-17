@@ -17,8 +17,13 @@
     <div class="single-column">
         <loader data="user">
 
-
             <form>
+                <div class="messages">
+                    <span class="error-message" ng-repeat="error in errors">
+                        {{error.message}}
+                    </span>
+                </div>
+
                 <div ng-show="isSelected('Profile')">
                     <span class="section-title">Avatar</span>
                     <div class="section">
