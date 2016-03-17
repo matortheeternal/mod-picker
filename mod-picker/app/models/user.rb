@@ -51,10 +51,23 @@ class User < ActiveRecord::Base
   after_initialize :init
   
   validates :username,
-  :presence => true,
-  :uniqueness => {
-    :case_sensitive => false
+  presence: true,
+  uniqueness: {
+    case_sensitive: false
+  },
+  length: 4..20
+
+  validates :email,
+  presence: true,
+  uniqueness: {
+    case_sensitive: false
   }
+  # format: {
+  # with: VALID_EMAIL_REGEX,
+  # message: must be a valid email address format
+  # }
+  
+
   
   validate :validate_username
 

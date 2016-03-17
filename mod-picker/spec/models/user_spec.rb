@@ -20,18 +20,95 @@ describe User do
     expect(user.errors[:password]).to include("can't be blank")
   end
 
-  it "is invalid without a username" do
-    user = build(:user,
-      username: nil,
-      )
-    user.valid?
-    expect(user.errors[:username]).to include("can't be blank")
+  context "username" do
+    it "is invalid without a username" do
+      user = build(:user,
+        username: nil,
+        )
+      user.valid?
+      expect(user.errors[:username]).to include("can't be blank")
+    end
+
+    it "is invalid with a username length < 4" do
+      user = build(:user,
+        username: "hoa")
+      user.valid?
+      expect(user.errors[:username]).to include("is too short (minimum is 4 characters)")
+    end
+
+
+    it "is invalid with a username length > 20" do
+      user = build(:user,
+        username: "thetwentyusernameorange")
+      user.valid?
+      expect(user.errors[:username]).to include("is too long (maximum is 20 characters)")
+    end
+
+    it "is valid with a username length >= 4  and length <= 20" do
+       user = build(:user,
+        username: "holofoam")
+      expect(user).to be_valid
+    end
+
+    it "is valid with a username length == 4" do
+       user = build(:user,
+        username: "holo")
+      expect(user).to be_valid
+    end
+
+    it "is valid with a username length == 20" do
+       user = build(:user,
+        username: "starkstarkstarkstark")
+      expect(user).to be_valid
+    end
   end
+
+  context "email" do
+    it "is invalid without an email" do
+      user = build(:user,
+        email: nil,
+        )
+      user.valid?
+      expect(user.errors[:email]).to include("can't be blank")
+    end
+
+    it "is invalid with a email length < 7" do
+      user = build(:user,
+        email: "h@m.com")
+      user.valid?
+      expect(user.errors[:username]).to include("is too short (minimum is 4 characters)")
+    end
+
+
+    it "is invalid with a username length > 20" do
+      user = build(:user,
+        username: "thetwentyusernameorange")
+      user.valid?
+      expect(user.errors[:username]).to include("is too long (maximum is 20 characters)")
+    end
+
+    it "is valid with a username length >= 4  and length <= 20" do
+      user = build(:user,
+        username: "holofoam")
+
+      valid_usernames = %w[four reDdUng TesTer TestIngmore thetwent
+                            thisnamefourFourfour]
+
+      valid_usernames.each do |valid_username| 
+        user.username = valid_username
+        expect(user).to be_valid
+      end
+      
+    end
+
+
+  end
+  
 
   it "is invalid without an email" do
     user = build(:user,
       email: nil,
-    )
+      )
     user.valid?
     expect(user.errors[:email]).to include("can't be blank")
   end
@@ -42,7 +119,7 @@ describe User do
 
     user = build(:user,
       email: "kissshot@mail.com",
-    )
+      )
 
     user.valid?
     expect(user.errors[:email]).to include("has already been taken")
@@ -51,11 +128,11 @@ describe User do
   it "is invalid with a duplicate username" do
     create(:user,
       username: "Shinobu",
-    )
+      )
 
     user = build(:user,
       username: "Shinobu",
-    )
+      )
 
     user.valid?
     expect(user.errors[:username]).to include("has already been taken")
@@ -64,7 +141,7 @@ describe User do
   context "#init" do
     it "joined should exist" do
       user = create(:user)
-      expect(user.joined.utc).to be_within(1.seconds).of DateTime.current.utc
+      expect(user.joined.utc).to be_within(1.minute).of DateTime.current.utc
     end
 
     it "title should be prisoner" do
