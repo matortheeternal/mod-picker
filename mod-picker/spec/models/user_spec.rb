@@ -20,6 +20,19 @@ describe User do
     expect(user.errors[:password]).to include("can't be blank")
   end
 
+  it "is invalid without an email" do
+    user = build(:user,
+      email: nil,
+      )
+    user.valid?
+    expect(user.errors[:email]).to include("can't be blank")
+  end
+
+
+  # ==================================================================
+  # Username Validations
+  # ==================================================================
+  
   context "username" do
     it "is invalid with a duplicate username" do
       create(:user,
@@ -83,9 +96,12 @@ describe User do
         end
       end
 
-
     end
 
+    # ==================================================================
+    # Email Validations
+    # ==================================================================
+    
     context "email" do
       it "is invalid without an email" do
         user = build(:user,
@@ -147,21 +163,13 @@ describe User do
             user.email = valid_email
             expect(user).to be_valid
           end
-
         end
 
-
       end
 
-
-      it "is invalid without an email" do
-        user = build(:user,
-          email: nil,
-          )
-        user.valid?
-        expect(user.errors[:email]).to include("can't be blank")
-      end
-
+      # ==================================================================
+      # #init method validations
+      # ==================================================================
       context "#init" do
         it "joined should exist" do
           user = create(:user)
