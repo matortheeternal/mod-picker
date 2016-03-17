@@ -38,7 +38,7 @@ class UserSettingsController < ApplicationController
     respond_to do |format|
       if @user_setting.save
         format.html { redirect_to @user_setting, notice: 'User setting was successfully created.' }
-        format.json { render :show, status: :created, location: @user_setting }
+        format.json { render json: {status: 'created'} }
       else
         format.html { render :new }
         format.json { render json: @user_setting.errors, status: :unprocessable_entity }
@@ -52,7 +52,7 @@ class UserSettingsController < ApplicationController
     respond_to do |format|
       if @user_setting.update(user_setting_params)
         format.html { redirect_to @user_setting, notice: 'User setting was successfully updated.' }
-        format.json { render :show, status: :ok, location: @user_setting }
+        format.json { render json: {status: 'ok'} }
       else
         format.html { render :edit }
         format.json { render json: @user_setting.errors, status: :unprocessable_entity }

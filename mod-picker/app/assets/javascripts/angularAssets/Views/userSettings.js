@@ -32,7 +32,6 @@ app.controller('userSettingsController', function ($scope, $q, $routeParams, use
 
     $scope.submit = function() {
         userSettingsService.submit($scope.user, $scope.userSettings);
-
     };
 
 
