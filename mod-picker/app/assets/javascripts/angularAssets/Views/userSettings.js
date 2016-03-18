@@ -39,6 +39,8 @@ app.controller('userSettingsController', function ($scope, $q, $routeParams, use
         userSettingsService.submitUser($scope.user).then(function (data) {
             $scope.userSuccess = data.status === "ok";
             $scope.errors += data.errors;
+            $scope.showErrors = !$scope.userSettingsSuccess || !$scope.userSuccess;
+            $scope.showSuccess = $scope.userSettingsSuccess && $scope.userSuccess;
         });
         userSettingsService.submitUserSettings($scope.userSettings).then(function (data) {
             $scope.userSettingsSuccess = data.status === "ok";
