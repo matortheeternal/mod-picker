@@ -32,7 +32,7 @@
         <loader data="user">
 
             <!--Profile Tab-->
-            <div ng-class="setClass('invisible', 'tab', currentTab === 'Profile')">
+            <div ng-class="setClass('invisible', 'tab', currentTab === 'Profile')" ng-show="currentTab === 'Profile'">
                 <span class="section-title">Avatar</span>
                 <div class="section">
                     <img class="avatar" ng-src="{{user.avatar}}">
@@ -61,7 +61,7 @@
             </div>
 
             <!--Account Tab-->
-            <div ng-class="setClass('invisible', 'tab', currentTab === 'Account')">
+            <div ng-class="setClass('invisible', 'tab', currentTab === 'Account')" ng-show="currentTab === 'Account'">
 
                 <span class="section-title">Linked Accounts</span>
                 <div class="section">
@@ -212,7 +212,7 @@
             </div>
 
             <!--Mod Lists Tab-->
-            <div ng-class="setClass('invisible', 'tab', currentTab === 'Mod Lists')">
+            <div ng-class="setClass('invisible', 'tab', currentTab === 'Mod Lists')" ng-show="currentTab === 'Mod Lists'">
                 <span class="section-title">Mod Lists</span>
                 <div class="section">
                     <thead>
@@ -271,7 +271,7 @@
             </div>
 
             <!--Authored Mods Tab-->
-            <div ng-class="setClass('invisible', 'tab', currentTab === 'Authored Mods')">
+            <div ng-class="setClass('invisible', 'tab', currentTab === 'Authored Mods')" ng-show="currentTab === 'Authored Mods'">
             </div>
         </loader>
     </div>
