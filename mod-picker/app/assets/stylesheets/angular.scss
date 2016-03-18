@@ -616,6 +616,12 @@ input[type="submit"] {
   display: block;
 }
 
+.show-more {
+  font-size: 10px;
+  display: block;
+  cursor: pointer;
+}
+
 .header-tabs {
   background-color: $secondary_background;
   h1 {
