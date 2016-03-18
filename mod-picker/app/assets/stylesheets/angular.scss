@@ -670,7 +670,17 @@ input[type="submit"] {
   overflow-y: auto;
 }
 
+.invisible{
+  opacity: 0;
+  max-height: 0;
+}
+
 .success-message {
+  overflow-y: hidden;
+  max-height: 100px;
+  transition-duration: 0.5s;
+  transition-property: max-height, opacity;
+  transition-timing-function: ease-out;
   font-weight: 500;
   font-size: 20px;
   background-color: $success_message_color;

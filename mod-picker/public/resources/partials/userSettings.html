@@ -15,7 +15,7 @@
 </div>
 
 <!--This displays a success message when changes are saved correctly-->
-<div class="success-message" ng-show="showSuccess">
+<div ng-class="setClass('invisible', 'success-message', showSuccess)">
     <div class="page-container">
         <div class="message">User Settings saved!</div>
     </div>
