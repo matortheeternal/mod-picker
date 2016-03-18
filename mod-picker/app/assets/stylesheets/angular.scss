@@ -650,6 +650,7 @@ input[type="submit"] {
 }
 
 .tab {
+  transition: opacity .5s;
 }
 
 .selected-tab {
