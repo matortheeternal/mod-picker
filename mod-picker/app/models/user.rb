@@ -96,7 +96,6 @@ class User < ActiveRecord::Base
   def init
     self.joined     ||= DateTime.current
     self.title      ||= 'Prisoner'
-    self.avatar     ||= 'NewUser.png'
     self.user_level ||= :user
   end
   
