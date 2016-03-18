@@ -12,8 +12,6 @@ app.config(['$routeProvider', function ($routeProvider) {
 app.controller('userSettingsController', function ($scope, $q, $routeParams, userSettingsService, userService) {
     useTwoColumns(false);
     $scope.currentTab = "Profile";
-    $scope.showErrors = false;
-    $scope.showSuccess = false;
 
     $scope.isSelected = function(tabName) {
         return $scope.currentTab === tabName;
@@ -36,6 +34,8 @@ app.controller('userSettingsController', function ($scope, $q, $routeParams, use
 
     $scope.submit = function() {
         $scope.errors = [];
+        $scope.showErrors = false;
+        $scope.showSuccess = false;
         userSettingsService.submitUser($scope.user).then(function (data) {
             $scope.userSuccess = data.status === "ok";
             $scope.errors += data.errors;
