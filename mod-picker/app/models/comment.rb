@@ -11,7 +11,7 @@ class Comment < ActiveRecord::Base
   belongs_to :commentable, :polymorphic => true
 
   validates :submitted_by, :submitted, :commentable_type, presence: true
-  validates_inclusion_of :hidden, in: [true, false]
+  validates :hidden, inclusion: [true, false]
 
 
   after_create :create_associations
