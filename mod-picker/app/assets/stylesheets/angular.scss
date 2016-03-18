@@ -681,10 +681,10 @@ input[type="submit"] {
 
 .success-message {
   overflow-y: hidden;
-  max-height: 100px;
-  transition-duration: 0.5s;
+  max-height: 60px;
+  transition-duration: 0.25s;
   transition-property: max-height, opacity;
-  transition-timing-function: ease-out;
+  transition-timing-function: ease-in;
   font-weight: 500;
   font-size: 20px;
   background-color: $success_message_color;
