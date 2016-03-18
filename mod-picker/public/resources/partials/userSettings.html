@@ -208,8 +208,65 @@
 
             <div ng-show="isSelected('Reputation')">
             </div>
+
             <div ng-show="isSelected('Mod Lists')">
+                <span class="section-title">Mod Lists</span>
+                <div class="section">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Mods</th>
+                            <th>Status</th>
+                            <th>Cate Created</th>
+                            <th>Last Updated</th>
+                            <th>Options</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="mod_list in mod_lists">
+                            <td>{{mod_list.name}}</td>
+                            <td>{{mod_list.mods_count}}</td>
+                            <td>{{mod_list.status}}</td>
+                            <td>{{mod_list.created}}</td>
+                            <td>{{mod_list.edited}}</td>
+                            <td>
+                                <input type="button" class="btn-table" ng-click="modListClone()" value="Clone"</a>
+                                <input type="button" class="btn-table" ng-click="modListEdit()" value="Edit"</a>
+                                <input type="button" class="btn-table" ng-click="modListDelete()" value="Delete"</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </div>
+
+                <span class="section-title">Mod Collections</span>
+                <div class="section">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Mods</th>
+                            <th>Status</th>
+                            <th>Cate Created</th>
+                            <th>Last Updated</th>
+                            <th>Options</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="mod_collections in mod_collections">
+                            <td>{{mod_list.name}}</td>
+                            <td>{{mod_list.mods_count}}</td>
+                            <td>{{mod_list.status}}</td>
+                            <td>{{mod_list.created}}</td>
+                            <td>{{mod_list.edited}}</td>
+                            <td>
+                                <input type="button" class="btn-table" ng-click="modListClone()" value="Clone"</a>
+                                <input type="button" class="btn-table" ng-click="modListEdit()" value="Edit"</a>
+                                <input type="button" class="btn-table" ng-click="modListDelete()" value="Delete"</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </div>
             </div>
+
             <div ng-show="isSelected('Authored Mods')">
             </div>
         </loader>
