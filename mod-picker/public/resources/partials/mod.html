@@ -1,25 +1,27 @@
-<loader data="mod">
-    <div class="modHeader">
-        <h1>{{mod.name}}</h1>
-        <span>implement stars here</span> <span><a ng-click="showReviews()">{{mod.reviews.length}} reviews</a></span>
-    </div>
+<div class="page-container">
+    <loader data="mod">
+        <div class="modHeader">
+            <h1>{{mod.name}}</h1>
+            <span>implement stars here</span> <span><a ng-click="showReviews()">{{mod.reviews.length}} reviews</a></span>
+        </div>
 
-    <hr/>
-    <!-- TODO: Commalogic -->
-    <div class="left-column"><p>by {{mod.nexus_info.authors}} </p>
-        <p>Versions</p>
-        <select ng-model="version" ng-change="changeVersion(version)" ng-options="version.id as version.version for version in mod.mod_versions"></select>
-        <p>{{mod.shortDescription}}</p>
-    </div>
-    <div class="right-column mod-content">
-        <expandable expanded="expandedState.compabilityNotes">
-            <expanded-title>Compability Notes</expanded-title>
-            <content><user-generated-list data="compatibilityNotes"></user-generated-list></content>
-        </expandable>
         <hr/>
-        <expandable expanded="expandedState.reviews">
-            <expanded-title>Reviews</expanded-title>
-            <content><user-generated-list data="mod.reviews"></user-generated-list></content>
-        </expandable>
-    </div>
-</loader>
+        <!-- TODO: Commalogic -->
+        <div class="left-column"><p>by {{mod.nexus_info.authors}} </p>
+            <p>Versions</p>
+            <select ng-model="version" ng-change="changeVersion(version)" ng-options="version.id as version.version for version in mod.mod_versions"></select>
+            <p>{{mod.shortDescription}}</p>
+        </div>
+        <div class="right-column mod-content">
+            <expandable expanded="expandedState.compabilityNotes">
+                <expanded-title>Compability Notes</expanded-title>
+                <content><user-generated-list data="compatibilityNotes"></user-generated-list></content>
+            </expandable>
+            <hr/>
+            <expandable expanded="expandedState.reviews">
+                <expanded-title>Reviews</expanded-title>
+                <content><user-generated-list data="mod.reviews"></user-generated-list></content>
+            </expandable>
+        </div>
+    </loader>
+</div>
