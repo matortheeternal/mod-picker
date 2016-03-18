@@ -12,6 +12,8 @@ app.config(['$routeProvider', function ($routeProvider) {
 app.controller('userSettingsController', function ($scope, $q, $routeParams, userSettingsService, userService) {
     useTwoColumns(false);
     $scope.currentTab = "Profile";
+    $scope.showErrors = false;
+    $scope.showSuccess = false;
 
     $scope.isSelected = function(tabName) {
         return $scope.currentTab === tabName;
@@ -23,6 +25,7 @@ app.controller('userSettingsController', function ($scope, $q, $routeParams, use
         else
             return "unselected-tab";
     };
+
 
     userSettingsService.retrieveUserSettings($routeParams.userSettingsId).then(function (userSettings) {
         $scope.userSettings = userSettings;
@@ -40,6 +43,11 @@ app.controller('userSettingsController', function ($scope, $q, $routeParams, use
         userSettingsService.submitUserSettings($scope.userSettings).then(function (data) {
             $scope.userSettingsSuccess = data.status === "ok";
             $scope.errors += data.errors;
+            $scope.showErrors = !$scope.userSettingsSuccess || !$scope.userSuccess;
+            $scope.showSuccess = $scope.userSettingsSuccess && $scope.userSuccess;
         });
+
+        //scrolls to the top of the page
+        window.scrollTo(0, 0);
     };
 });

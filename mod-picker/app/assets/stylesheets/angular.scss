@@ -660,6 +660,26 @@ input[type="submit"] {
   overflow-y: auto;
 }
 
+.success-message {
+  font-weight: 500;
+  font-size: 20px;
+  background-color: $success_message_color;
+  text-align: center;
+  .message {
+    padding: 14px;
+  }
+}
+
+.error-message {
+  font-weight: 500;
+  font-size: 20px;
+  background-color: $error_message_color;
+  text-align: center;
+  .message {
+    padding: 14px;
+  }
+}
+
 /* category-tree */
 .category-tree {
   font-size: 14px;
