@@ -10,5 +10,21 @@ class Comment < ActiveRecord::Base
   has_many :children, :class_name => 'Comment', :foreign_key => 'parent_comment', :inverse_of => 'parent'
   belongs_to :commentable, :polymorphic => true
 
-  validates :submitted_by, :submitted, presence: true
+  validates :submitted_by, :submitted, :commentable_type, presence: true
+  validates_inclusion_of :hidden, in: [true, false]
+
+
+  after_create :create_associations
+  after_initialize :init
+
+  def init
+    self.submitted  ||= DateTime.now.to_date
+    self.hidden     ||= false
+  end
+  
+  def create_associations
+    # TODO: Create associations for 
+    # commentable_id
+    # submitted_by(?)
+  end
 end
