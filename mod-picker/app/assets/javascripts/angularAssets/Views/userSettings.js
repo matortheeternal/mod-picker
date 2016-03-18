@@ -13,17 +13,6 @@ app.controller('userSettingsController', function ($scope, $q, $routeParams, use
     useTwoColumns(false);
     $scope.currentTab = "Profile";
 
-    $scope.isSelected = function(tabName) {
-        return $scope.currentTab === tabName;
-    };
-
-    $scope.cssClass = function(tabName) {
-        if($scope.isSelected(tabName))
-            return "selected-tab";
-        else
-            return "unselected-tab";
-    };
-
     $scope.setClass = function(startClass, endClass, bool) {
         if(bool)
             return endClass;

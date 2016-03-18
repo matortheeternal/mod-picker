@@ -640,13 +640,16 @@ input[type="submit"] {
 .tabs {
   margin-left: 46px;
   a {
-    display: inline-block;
-    cursor: pointer;
-    font-size: 18px;
-    color: $text_color;
-    font-weight: 500;
-    padding: 9px 16px 9px 16px;//half of font size high
+  display: inline-block;
+  cursor: pointer;
+  font-size: 18px;
+  color: $text_color;
+  font-weight: 500;
+  padding: 9px 16px 9px 16px;//half of font size high
   }
+}
+
+.tab {
 }
 
 .selected-tab {

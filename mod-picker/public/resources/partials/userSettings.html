@@ -5,11 +5,11 @@
         <!--Profile, Account, Mod lists... tabs-->
         <div class="tabs">
             <!--This weird syntax is to get rid of the spaces between the tabs-->
-            <a ng-click="currentTab = 'Profile'" ng-class="cssClass('Profile')">Profile</a
-            ><a ng-click="currentTab = 'Account'" ng-class="cssClass('Account')">Account</a
-            ><a ng-click="currentTab = 'Reputation'" ng-class="cssClass('Reputation')">Reputation</a
-            ><a ng-click="currentTab = 'Mod Lists'" ng-class="cssClass('Mod Lists')">Mod Lists</a
-            ><a ng-click="currentTab = 'Authored Mods'" ng-class="cssClass('Authored Mods')">Authored Mods</a>
+            <a ng-click="currentTab = 'Profile'" ng-class="setClass('unselected-tab', 'selected-tab', currentTab === 'Profile')">Profile</a
+            ><a ng-click="currentTab = 'Account'" ng-class="setClass('unselected-tab', 'selected-tab', currentTab === 'Account')">Account</a
+            ><a ng-click="currentTab = 'Reputation'" ng-class="setClass('unselected-tab', 'selected-tab', currentTab === 'Reputation')">Reputation</a
+            ><a ng-click="currentTab = 'Mod Lists'" ng-class="setClass('unselected-tab', 'selected-tab', currentTab === 'Mod Lists')">Mod Lists</a
+            ><a ng-click="currentTab = 'Authored Mods'" ng-class="setClass('unselected-tab', 'selected-tab', currentTab === 'Authored Mods')">Authored Mods</a>
         </div>
     </div>
 </div>
@@ -31,7 +31,8 @@
     <div class="single-column">
         <loader data="user">
 
-            <div ng-show="isSelected('Profile')">
+            <!--Profile Tab-->
+            <div ng-class="setClass('invisible', 'tab', currentTab === 'Profile')">
                 <span class="section-title">Avatar</span>
                 <div class="section">
                     <img class="avatar" ng-src="{{user.avatar}}">
@@ -59,7 +60,8 @@
                 <input class="btn" id="save-changes" type="submit" value="Save Changes" ng-click="submit()"/>
             </div>
 
-            <div ng-show="isSelected('Account')">
+            <!--Account Tab-->
+            <div ng-class="setClass('invisible', 'tab', currentTab === 'Account')">
 
                 <span class="section-title">Linked Accounts</span>
                 <div class="section">
@@ -205,11 +207,12 @@
                 <input class="btn" id="save-changes" type="submit" value="Save Changes" ng-click="submit()"/>
             </div>
 
-
-            <div ng-show="isSelected('Reputation')">
+            <!--Reputation Tab-->
+            <div ng-class="setClass('invisible', 'tab', currentTab === 'Reputation')">
             </div>
 
-            <div ng-show="isSelected('Mod Lists')">
+            <!--Mod Lists Tab-->
+            <div ng-class="setClass('invisible', 'tab', currentTab === 'Mod Lists')">
                 <span class="section-title">Mod Lists</span>
                 <div class="section">
                     <thead>
@@ -267,7 +270,8 @@
                 </div>
             </div>
 
-            <div ng-show="isSelected('Authored Mods')">
+            <!--Authored Mods Tab-->
+            <div ng-class="setClass('invisible', 'tab', currentTab === 'Authored Mods')">
             </div>
         </loader>
     </div>
