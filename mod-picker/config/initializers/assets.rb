@@ -24,6 +24,7 @@ angular.css
 rzslider.min.css
 style-responsive.css
 modpicker.js
+angular-animate.min.js
 angular.min.1.5.1.js
 angular-route.min.1.5.1.js
 bootstrap.min.js
