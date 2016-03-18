@@ -83,6 +83,6 @@ class UsersController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def user_params
-      params.require(:user).permit(:username, :user_level, :title, :joined, :active_ml_id, :active_mc_id, :email, :about_me, settings_attributes: [:id, :show_notifications, :show_tooltips, :email_notifications, :email_public, :allow_adult_content, :allow_nexus_mods, :allow_lovers_lab, :allow_steam_workshop, :timezone, :udate_format, :utime_format, :allow_comments, :theme ])
+      params.require(:user).permit(:username, :user_level, :title, :avatar, :joined, :active_ml_id, :active_mc_id, :email, :about_me)
     end
 end
