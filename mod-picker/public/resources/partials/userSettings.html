@@ -293,12 +293,12 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr ng-repeat="authored_mod in authored_mods">
-                                <td>{{authored_mod.name}}</td>
-                                <td>{{authored_mod.mod_stars_count}}</td>
-                                <td>{{authored_mod.reputation}}</td>
-                                <td>{{authored_mod.last_update}}</td>
-                                <td>{{authored_mod.uploaded}}</td>
+                            <tr ng-repeat="mod in mods">
+                                <td>{{mod.name}}</td>
+                                <td>{{mod.mod_stars_count}}</td>
+                                <td>{{mod.reputation}}</td>
+                                <td>{{mod.last_update}}</td>
+                                <td>{{mod.uploaded}}</td>
                                 <td>
                                     <div class="table-buttons">
                                         <input type="button" class="btn-table" ng-click="modHide(authored_mod)" value="Hide from Public"</a>
