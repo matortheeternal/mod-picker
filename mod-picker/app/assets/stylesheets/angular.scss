@@ -66,10 +66,10 @@ input[type="checkbox"] {
   padding: 0;
 }
 
-input[type="text"] {
-  font-size: 14px;
+input[type="text"], input[type="password"], input[type="email"]{
+  font-size: 20px;
+  height: 1.4em;
   vertical-align: top;
-  height: 28px;
   width: 350px;
 }
 
@@ -597,11 +597,6 @@ input[type="submit"] {
   margin-top: 15px;
   margin-left: 30px;
   margin-bottom: 30px;
-
-  input[type="text"]{
-    vertical-align: top;
-    font-size: 20px;
-  }
 
   h3 {
     font-size: 16px;
