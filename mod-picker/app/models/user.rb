@@ -8,7 +8,7 @@ class User < ActiveRecord::Base
 
   scope :search, -> (search) { joins(:bio).where("username like ? OR nexus_username like ? OR lover_username like ? OR steam_username like ?", "#{search}%", "#{search}%", "#{search}%", "#{search}%") }
   scope :joined, -> (low, high) { where(joined: (low..high)) }
-  # scope :last_seen, -> (low, high) { where(last_seen: (low..high)) }
+  scope :last_seen, -> (low, high) { where(last_sign_in_at: (low..high)) }
   scope :level, -> (hash) { where(user_level: hash) }
   scope :rep, -> (low, high) { where(:reputation => {overall: (low..high)}) }
   scope :mods, -> (low, high) { where(mods_count: (low..high)) }
