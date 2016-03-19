@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160318062917) do
+ActiveRecord::Schema.define(version: 20160319201121) do
 
   create_table "agreement_marks", id: false, force: :cascade do |t|
     t.integer "incorrect_note_id", limit: 4
@@ -25,7 +25,7 @@ ActiveRecord::Schema.define(version: 20160318062917) do
   create_table "categories", force: :cascade do |t|
     t.integer "parent_id",   limit: 4
     t.string  "name",        limit: 64
-    t.text    "description", limit: 65535
+    t.string  "description", limit: 255
   end
 
   add_index "categories", ["parent_id"], name: "fk_rails_82f48f7407", using: :btree
