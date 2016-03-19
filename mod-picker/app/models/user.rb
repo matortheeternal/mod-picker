@@ -102,8 +102,12 @@ class User < ActiveRecord::Base
   def as_json(options={})
     options[:except] ||= [:email, :active_ml_id, :active_mc_id]
     options[:include] ||= {
-        :bio => {:only => [:nexus_username, :steam_username]},
-        :reputation => {:only => [:overall, :offset]}
+        :bio => {
+            :only => [:nexus_username, :steam_username]
+        },
+        :reputation => {
+            :only => [:overall, :offset]
+        }
     }
     super(options).merge({
         :avatar => user_avatar

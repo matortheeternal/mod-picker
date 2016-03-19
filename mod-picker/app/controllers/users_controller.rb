@@ -17,7 +17,17 @@ class UsersController < ApplicationController
   def show
     respond_to do |format|
       format.html
-      format.json { render :json => @user}
+      format.json { render :json => @user.as_json(
+        { :include => {
+            :mods => {
+                :only => [:id, :name, :game_id, :mod_stars_count]
+            },
+            :mod_lists => {
+                :only => [:id, :is_collection, :is_public, :status, :mods_count, :created]
+            }
+          }
+        }
+      )}
     end
   end
 
