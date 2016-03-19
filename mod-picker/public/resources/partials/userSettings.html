@@ -215,10 +215,10 @@
             <div ng-class="setClass('invisible', 'tab', currentTab === 'Mod Lists')" ng-show="currentTab === 'Mod Lists'">
                 <span class="section-title">Mod Lists</span>
                 <div class="section">
-                    <table>
+                    <table border="1">
                         <thead>
                             <tr>
-                                <th>Name</th>
+                                <th class="name-column">Name</th>
                                 <th>Mods</th>
                                 <th>Status</th>
                                 <th>Cate Created</th>
@@ -228,15 +228,17 @@
                         </thead>
                         <tbody>
                             <tr ng-repeat="mod_list in mod_lists">
-                                <td>{{mod_list.name}}</td>
+                                <td class="name-column">{{mod_list.name}}</td>
                                 <td>{{mod_list.mods_count}}</td>
                                 <td>{{mod_list.status}}</td>
                                 <td>{{mod_list.created}}</td>
                                 <td>{{mod_list.edited}}</td>
                                 <td>
-                                    <input type="button" class="btn-table" ng-click="modListClone(mod_list)" value="Clone"</a>
-                                    <input type="button" class="btn-table" ng-click="modListEdit(mod_list)" value="Edit"</a>
-                                    <input type="button" class="btn-table" ng-click="modListDelete(mod_list)" value="Delete"</a>
+                                    <div class="table-buttons">
+                                        <input type="button" class="btn-table" ng-click="modListClone(mod_list)" value="Clone"</a>
+                                        <input type="button" class="btn-table" ng-click="modListEdit(mod_list)" value="Edit"</a>
+                                        <input type="button" class="btn-table" ng-click="modListDelete(mod_list)" value="Delete"</a>
+                                    </div>
                                 </td>
                             </tr>
                         </tbody>
@@ -245,10 +247,10 @@
 
                 <span class="section-title">Mod Collections</span>
                 <div class="section">
-                    <table>
+                    <table border="1">
                         <thead>
                             <tr>
-                                <th>Name</th>
+                                <th class="name-column">Name</th>
                                 <th>Mods</th>
                                 <th>Status</th>
                                 <th>Cate Created</th>
@@ -258,15 +260,17 @@
                         </thead>
                         <tbody>
                             <tr ng-repeat="mod_collection in mod_collections">
-                                <td>{{mod_collection.name}}</td>
+                                <td class="name-column">{{mod_collection.name}}</td>
                                 <td>{{mod_collection.mods_count}}</td>
                                 <td>{{mod_collection.status}}</td>
                                 <td>{{mod_collection.created}}</td>
                                 <td>{{mod_collection.edited}}</td>
                                 <td>
-                                    <input type="button" class="btn-table" ng-click="modListClone(mod_list)" value="Clone"</a>
-                                    <input type="button" class="btn-table" ng-click="modListEdit(mod_list)" value="Edit"</a>
-                                    <input type="button" class="btn-table" ng-click="modListDelete(mod_list)" value="Delete"</a>
+                                    <div class="table-buttons">
+                                        <input type="button" class="btn-table" ng-click="modListClone(mod_list)" value="Clone"</a>
+                                        <input type="button" class="btn-table" ng-click="modListEdit(mod_list)" value="Edit"</a>
+                                        <input type="button" class="btn-table" ng-click="modListDelete(mod_list)" value="Delete"</a>
+                                    </div>
                                 </td>
                             </tr>
                         </tbody>
@@ -277,7 +281,7 @@
             <!--Authored Mods Tab-->
             <div ng-class="setClass('invisible', 'tab', currentTab === 'Authored Mods')" ng-show="currentTab === 'Authored Mods'">
                 <div class="section">
-                    <table>
+                    <table border="1">
                         <thead>
                             <tr>
                                 <th>Name</th>
@@ -296,10 +300,12 @@
                                 <td>{{authored_mod.last_update}}</td>
                                 <td>{{authored_mod.uploaded}}</td>
                                 <td>
-                                    <input type="button" class="btn-table" ng-click="modHide(authored_mod)" value="Hide from Public"</a>
-                                    <a href="/angular#/editMod/{{authored_mod.name}}">
-                                        <input type="button" class="btn-table" value="Edit"/>
-                                    </a>
+                                    <div class="table-buttons">
+                                        <input type="button" class="btn-table" ng-click="modHide(authored_mod)" value="Hide from Public"</a>
+                                        <a href="/angular#/editMod/{{authored_mod.name}}">
+                                            <input type="button" class="btn-table" value="Edit"/>
+                                        </a>
+                                    </div>
                                 </td>
                             </tr>
                         </tbody>

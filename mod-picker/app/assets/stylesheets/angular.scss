@@ -340,6 +340,20 @@ nav span {
   background-color: $bright_action_color;
 }
 
+.btn-table {
+  //margin: 10px;
+  border: 0;
+  background-color: transparent;
+  cursor: pointer;
+  color: $text_color;
+  font-weight: 500;
+  padding: 1em 2em 1em 2em;//half of font size high
+}
+
+.btn-table:hover {
+  background-color: $bright_action_color;
+}
+
 #thin-btn {
   display: inline;
   margin-left: 10px;
@@ -639,6 +653,7 @@ input[type="submit"] {
 
 .tabs {
   margin-left: 46px;
+
   a {
   display: inline-block;
   cursor: pointer;
@@ -757,4 +772,49 @@ input[type="submit"] {
   span:hover {
     color: $link_hover_color_secondary;
   }
+}
+
+//table
+table {
+  border: 2px solid $text_color;
+  border-collapse: collapse;
+  text-align: center;
+}
+
+thead {
+  border: 2px solid $text_color;
+  background-color: $secondary_background;
+  font-size: 16px;
+}
+
+th {
+  border: 2px solid black;
+}
+
+.name-column {
+  padding-left: 20px;
+  padding-right: 50px;
+  text-align: left;
+  font-weight: 500;
+  font-size: 18px;
+  min-width: 400px;
+}
+
+.table-buttons {
+  display: flex;
+  vertical-align: middle;
+}
+
+tbody {
+  border: 0;
+  font-size: 14px;
+}
+
+tr {
+  border: 1px solid black;
+}
+
+td {
+  border: 0;
+  padding: 10px 20px 10px 20px;
 }
