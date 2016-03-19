@@ -5,23 +5,23 @@
         <!--Profile, Account, Mod lists... tabs-->
         <div class="tabs">
             <!--This weird syntax is to get rid of the spaces between the tabs-->
-            <a ng-click="currentTab = 'Profile'" ng-class="setClass('unselected-tab', 'selected-tab', currentTab === 'Profile')">Profile</a
-            ><a ng-click="currentTab = 'Account'" ng-class="setClass('unselected-tab', 'selected-tab', currentTab === 'Account')">Account</a
-            ><a ng-click="currentTab = 'Reputation'" ng-class="setClass('unselected-tab', 'selected-tab', currentTab === 'Reputation')">Reputation</a
-            ><a ng-click="currentTab = 'Mod Lists'" ng-class="setClass('unselected-tab', 'selected-tab', currentTab === 'Mod Lists')">Mod Lists</a
-            ><a ng-click="currentTab = 'Authored Mods'" ng-class="setClass('unselected-tab', 'selected-tab', currentTab === 'Authored Mods')">Authored Mods</a>
+            <a ng-click="currentTab = 'Profile'" ng-class="currentTab === 'Profile' ? 'selected-tab' : 'unselected-tab'">Profile</a
+            ><a ng-click="currentTab = 'Account'" ng-class="currentTab === 'Account' ? 'selected-tab' : 'unselected-tab'">Account</a
+            ><a ng-click="currentTab = 'Reputation'" ng-class=" currentTab === 'Reputation' ? 'selected-tab' : 'unselected-tab'">Reputation</a
+            ><a ng-click="currentTab = 'Mod Lists'" ng-class="currentTab === 'Mod Lists' ? 'selected-tab' : 'unselected-tab'">Mod Lists</a
+            ><a ng-click="currentTab = 'Authored Mods'" ng-class=" currentTab === 'Authored Mods' ? 'selected-tab' : 'unselected-tab'">Authored Mods</a>
         </div>
     </div>
 </div>
 
 <!--This displays a success message when changes are saved correctly-->
-<div ng-class="setClass('invisible', 'success-message', showSuccess)">
+<div ng-class="showSuccess ? 'success-message' : 'invisible'">
     <div class="page-container">
         <div class="message">User Settings saved!</div>
     </div>
 </div>
 <!--This displays an error message when needed-->
-<div class="error-message" ng-repeat="error in errors" ng-show="showErrors">
+<div ng-class="showErrors ? 'error-message : 'invisible'" ng-repeat="error in errors" ng-show="showErrors">
     <div class="page-container">
         {{error.message}}
     </div>
@@ -32,7 +32,7 @@
         <loader data="user">
 
             <!--Profile Tab-->
-            <div ng-class="setClass('invisible', 'tab', currentTab === 'Profile')" ng-show="currentTab === 'Profile'">
+            <div ng-class="currentTab === 'Profile' ? 'tab' : 'invisible'" ng-show="currentTab === 'Profile'">
                 <span class="section-title">Avatar</span>
                 <div class="section">
                     <img class="avatar" ng-src="{{user.avatar}}">
@@ -61,7 +61,7 @@
             </div>
 
             <!--Account Tab-->
-            <div ng-class="setClass('invisible', 'tab', currentTab === 'Account')" ng-show="currentTab === 'Account'">
+            <div ng-class="currentTab === 'Account' ? 'tab' : 'invisible'" ng-show="currentTab === 'Account'">
 
                 <span class="section-title">Linked Accounts</span>
                 <div class="section">
@@ -208,11 +208,11 @@
             </div>
 
             <!--Reputation Tab-->
-            <div ng-class="setClass('invisible', 'tab', currentTab === 'Reputation')">
+            <div ng-class="currentTab === 'Reputation' ? 'tab' : 'invisible'">
             </div>
 
             <!--Mod Lists Tab-->
-            <div ng-class="setClass('invisible', 'tab', currentTab === 'Mod Lists')" ng-show="currentTab === 'Mod Lists'">
+            <div ng-class="currentTab === 'Mod Lists' ? 'tab' : 'invisible'" ng-show="currentTab === 'Mod Lists'">
                 <span class="section-title">Mod Lists</span>
                 <div class="section">
                     <table border="1">
@@ -227,12 +227,12 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr ng-repeat="mod_list in mod_lists">
-                                <td class="name-column">{{mod_list.name}}</td>
-                                <td>{{mod_list.mods_count}}</td>
-                                <td>{{mod_list.status}}</td>
-                                <td>{{mod_list.created}}</td>
-                                <td>{{mod_list.edited}}</td>
+                            <tr ng-repeat="list in lists">
+                                <td class="name-column">{{list.name}}</td>
+                                <td>{{list.mods_count}}</td>
+                                <td>{{list.status}}</td>
+                                <td>{{list.created}}</td>
+                                <td>{{list.edited}}</td>
                                 <td>
                                     <div class="table-buttons">
                                         <input type="button" class="btn-table" ng-click="modListClone(mod_list)" value="Clone"</a>
@@ -259,12 +259,12 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr ng-repeat="mod_collection in mod_collections">
-                                <td class="name-column">{{mod_collection.name}}</td>
-                                <td>{{mod_collection.mods_count}}</td>
-                                <td>{{mod_collection.status}}</td>
-                                <td>{{mod_collection.created}}</td>
-                                <td>{{mod_collection.edited}}</td>
+                            <tr ng-repeat="collection in collections">
+                                <td class="name-column">{{collection.name}}</td>
+                                <td>{{collection.mods_count}}</td>
+                                <td>{{collection.status}}</td>
+                                <td>{{collection.created}}</td>
+                                <td>{{collection.edited}}</td>
                                 <td>
                                     <div class="table-buttons">
                                         <input type="button" class="btn-table" ng-click="modListClone(mod_list)" value="Clone"</a>
@@ -279,7 +279,7 @@
             </div>
 
             <!--Authored Mods Tab-->
-            <div ng-class="setClass('invisible', 'tab', currentTab === 'Authored Mods')" ng-show="currentTab === 'Authored Mods'">
+            <div ng-class="currentTab === 'Authored Mods' ? 'invisible' : 'tab'" ng-show="currentTab === 'Authored Mods'">
                 <div class="section">
                     <table border="1">
                         <thead>

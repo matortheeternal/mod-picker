@@ -13,13 +13,6 @@ app.controller('userSettingsController', function ($scope, $q, $routeParams, use
     useTwoColumns(false);
     $scope.currentTab = "Profile";
 
-    $scope.setClass = function(startClass, endClass, bool) {
-        if(bool)
-            return endClass;
-        else
-            return startClass;
-    };
-
 
     userSettingsService.retrieveUserSettings($routeParams.userSettingsId).then(function (userSettings) {
         $scope.userSettings = userSettings;
