@@ -626,6 +626,8 @@ def seed_fake_comments
       ).save!
     end
   end
+
+  puts "    #{Comment.count} comments seeded"
 end
 
 
@@ -662,6 +664,8 @@ def seed_fake_reviews
       end
     end
   end
+
+  puts "    #{Review.count} review seeded"
 end
 
 def seed_fake_compatibility_notes
@@ -696,6 +700,8 @@ def seed_fake_compatibility_notes
       puts "      - #{mod_version.mod.name} v#{mod_version.version}"
     end
   end
+
+  puts "    #{CompatibilityNote.count} compatibility notes seeded"
 end
 
 def seed_fake_installation_notes
@@ -725,6 +731,8 @@ def seed_fake_installation_notes
       ).save!
     end
   end
+
+  puts "    #{InstallationNote.count} installation notes seeded"
 end
 
 def seed_fake_mod_authors
@@ -755,11 +763,13 @@ def seed_fake_mod_lists
         created_by: author.id,
         is_collection: [true, false].sample,
         is_public: [true, false].sample,
-        has_adult_contet: [true, false].sample,
+        has_adult_content: [true, false].sample,
         status: ["Planned", "Under Construction", "Testing", "Complete"].sample,
         description: Faker::Lorem.paragraph(5),
         created: Faker::Date.backward(14),
         game_id: gameSkyrim.id
     ).save!
   end
+
+  puts "    #{ModList.count} mod lists seeded"
 end
