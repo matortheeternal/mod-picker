@@ -37,8 +37,5 @@ app.controller('userSettingsController', function ($scope, $q, $routeParams, use
             $scope.showErrors = !$scope.userSettingsSuccess || !$scope.userSuccess;
             $scope.showSuccess = $scope.userSettingsSuccess && $scope.userSuccess;
         });
-
-        //scrolls to the top of the page
-        window.scrollTo(0, 0);
     };
 });
