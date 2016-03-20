@@ -14,14 +14,14 @@ bSeedModLists = true
 # CREATE STATIC RECORDS
 #==================================================
 
-require 'static_seeds'
+require_relative  'static_seeds'
 seed_static_records
 
 #==================================================
 # CREATE FAKE RECORDS
 #==================================================
 
-require 'fake_seeds'
+require_relative 'fake_seeds'
 seed_fake_users if bSeedUsers
 seed_fake_comments if bSeedComments
 seed_fake_reviews if bSeedReviews
