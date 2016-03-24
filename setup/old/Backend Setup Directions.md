@@ -20,7 +20,7 @@ Add the mysql bin folder to your system's [%path% environment variable](https://
 Run the mysqld service using `Win+R`.
 
 ### Step 6:
-Run a command window in any directory, and type "gem install rails '~> 4.2.5'".  You'll have to wait a while for it to fully download and install all required packages.
+Run a command window in any directory, and type `gem install rails '~> 4.2.5'`.  You'll have to wait a while for it to fully download and install all required packages.
 
 ### Step 7:
 Go to the mod-picker directory in the mod-picker repo, open a command window, and type `bundle install`.  This will install all gems (dependencies) that are missing.
