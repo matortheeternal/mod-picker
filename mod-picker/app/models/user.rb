@@ -8,7 +8,7 @@ class User < ActiveRecord::Base
 
   scope :search, -> (search) { joins(:bio).where("username like ? OR nexus_username like ? OR lover_username like ? OR steam_username like ?", "#{search}%", "#{search}%", "#{search}%", "#{search}%") }
   scope :joined, -> (low, high) { where(joined: (low..high)) }
-  # scope :last_seen, -> (low, high) { where(last_seen: (low..high)) }
+  scope :last_seen, -> (low, high) { where(last_sign_in_at: (low..high)) }
   scope :level, -> (hash) { where(user_level: hash) }
   scope :rep, -> (low, high) { where(:reputation => {overall: (low..high)}) }
   scope :mods, -> (low, high) { where(mods_count: (low..high)) }
@@ -36,8 +36,7 @@ class User < ActiveRecord::Base
   has_many :mods, :through => 'mod_authors', :inverse_of => 'authors'
   has_many :mod_lists, :foreign_key => 'created_by', :inverse_of => 'user'
 
-  belongs_to :active_mod_list, :class_name => 'ModList', :foreign_key => 'active_ml_id'
-  belongs_to :active_mod_collection, :class_name => 'ModList', :foreign_key => 'active_mc_id'
+  belongs_to :active_mod_list, :class_name => 'ModList', :foreign_key => 'active_mod_list_id'
 
   has_many :mod_stars, :inverse_of => 'user_star'
   has_many :starred_mods, :through => 'mod_stars', :inverse_of => 'user_stars'
@@ -94,9 +93,8 @@ class User < ActiveRecord::Base
   end
   
   def init
-    self.joined     ||= DateTime.current
-    self.title      ||= 'Prisoner'
-    self.user_level ||= :user
+    self.joined ||= DateTime.current
+    self.role   ||= :user
   end
   
   def create_associations

@@ -27,7 +27,7 @@ Enter `show databases;` and press `enter`.  This should show you all active mysq
 Enter `create database mod_picker;` to create a new database for our site.
 
 ### Step 8:
-Make a new cmd window **(DO NOT CLOSE THE ONE IN STEP 6)** in the directory where `setup.sql` is (hold shift, right click in the directory, and choose open command window here. The directory should be under `../mod-picker/setup/`). Then run the command:  `mysql -u root -p mod_picker < setup.sql`. Leave the password blank, then close the command window.
+Run `setup.bat` from the mod-picker folder.
 
 ### Step 9:
 In the command window still open type `use mod_picker;`, press enter, and then type `show tables;`.  You should see all tables in our schema there.  There should be 35 of them.  Close the command window when you're done.
@@ -41,16 +41,13 @@ Run a command window in any directory, and type "gem install rails".  You'll hav
 Go to the mod-picker directory in the mod-picker repo, open a command window, and type `bundle install`.  This will install all gems (dependencies) that are missing.
 
 ### Step 12:
-In the same command window type `rake db:migrate`.  This will add the columns needed by the devise authentication gem to the database.
-
-### Step 13:
 In the same command window type `rails server`.  Your server should now be running!  :)
 
-### Step 14:
+### Step 13:
 In a new command window type `mailcatcher`.  This will run mailcatcher so you can get your registration email.
 
-### Step 15:
+### Step 14:
 Open your internet browser and navigate to [localhost:3000](http://localhost:3000).  You can navigate to various pages from the homepage.
 
-### Step 16:
+### Step 15:
 Click register to register an account.  Once you've created the account you'll need to navigate to [localhost:1080](http://localhost:1080) to get the confirmation email and confirm your account.
