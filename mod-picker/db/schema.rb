@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160325210132) do
+ActiveRecord::Schema.define(version: 20160325213623) do
 
   create_table "agreement_marks", id: false, force: :cascade do |t|
     t.integer "incorrect_note_id", limit: 4
@@ -358,13 +358,21 @@ ActiveRecord::Schema.define(version: 20160325210132) do
   add_index "reviews", ["submitted_by"], name: "submitted_by", using: :btree
 
   create_table "user_bios", force: :cascade do |t|
-    t.string  "nexus_username", limit: 32
-    t.boolean "nexus_verified"
-    t.string  "lover_username", limit: 32
-    t.boolean "lover_verified"
-    t.string  "steam_username", limit: 32
+    t.string  "nexus_username",           limit: 32
+    t.string  "nexus_verification_token", limit: 32
+    t.string  "lover_username",           limit: 32
+    t.string  "lover_verification_token", limit: 32
+    t.string  "steam_username",           limit: 32
     t.boolean "steam_verified"
-    t.integer "user_id",        limit: 4
+    t.integer "user_id",                  limit: 4
+    t.integer "nexus_user_id",            limit: 4
+    t.string  "lover_user_path",          limit: 64
+    t.date    "nexus_date_joined"
+    t.integer "nexus_posts_count",        limit: 4,  default: 0
+    t.date    "lover_date_joined"
+    t.integer "lover_posts_count",        limit: 4,  default: 0
+    t.integer "steam_submissions_count",  limit: 4,  default: 0
+    t.integer "steam_followers_count",    limit: 4,  default: 0
   end
 
   add_index "user_bios", ["user_id"], name: "user_id", using: :btree
