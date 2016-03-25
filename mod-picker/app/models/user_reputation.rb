@@ -9,10 +9,11 @@ class UserReputation < ActiveRecord::Base
   
   def init
     self.overall ||= 5.0
-    self.offset ||= 0
-    self.audiovisual_design ||= 0
-    self.plugin_design ||= 0
-    self.utility_design ||= 0
-    self.script_design ||= 0
+    self.offset ||= 5.0
+    self.site_rep ||= 0.0
+    self.contribution_rep ||= 0.0
+    self.author_rep ||= 0.0
+    self.given_rep ||= 0.0
+    self.last_computed ||= DateTime.now
   end
 end
