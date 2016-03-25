@@ -12,7 +12,7 @@ class Comment < ActiveRecord::Base
 
   validates :submitted_by, :submitted, :commentable_type, presence: true
   validates :hidden, inclusion: [true, false]
-
+  validates :commentable_type, inclusion: ["profile_comment"]
 
   after_create :create_associations
   after_initialize :init
