@@ -176,16 +176,6 @@ describe User do
           expect(user.joined.utc).to be_within(1.minute).of DateTime.current.utc
         end
 
-        it "title should be prisoner" do
-          user = create(:user)
-          expect(user.title.to_sym).to eq :Prisoner
-        end
-
-        it "avatar should be newUser.jpg" do
-          user = create(:user)
-          expect(user.avatar). to eq "NewUser.png"
-        end
-
         it "role should be created with role of :user" do
           user = create(:user)
           expect(user.role.to_sym).to eq :user
