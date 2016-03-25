@@ -77,9 +77,8 @@ class User < ActiveRecord::Base
   end
   
   def init
-    self.joined     ||= DateTime.current
-    self.title      ||= 'Prisoner'
-    self.user_level ||= :user
+    self.joined ||= DateTime.current
+    self.role   ||= :user
   end
   
   def create_associations
