@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160319201345) do
+ActiveRecord::Schema.define(version: 20160325192935) do
 
   create_table "agreement_marks", id: false, force: :cascade do |t|
     t.integer "incorrect_note_id", limit: 4
@@ -405,8 +405,7 @@ ActiveRecord::Schema.define(version: 20160319201345) do
     t.enum     "user_level",                limit: ["guest", "banned", "user", "author", "vip", "moderator", "admin"]
     t.string   "title",                     limit: 32
     t.datetime "joined"
-    t.integer  "active_ml_id",              limit: 4
-    t.integer  "active_mc_id",              limit: 4
+    t.integer  "active_mod_list_id",        limit: 4
     t.string   "email",                     limit: 255,                                                                default: "", null: false
     t.string   "encrypted_password",        limit: 255,                                                                default: "", null: false
     t.string   "reset_password_token",      limit: 255
@@ -434,8 +433,7 @@ ActiveRecord::Schema.define(version: 20160319201345) do
     t.text     "about_me",                  limit: 65535
   end
 
-  add_index "users", ["active_mc_id"], name: "active_mc_id", using: :btree
-  add_index "users", ["active_ml_id"], name: "active_ml_id", using: :btree
+  add_index "users", ["active_mod_list_id"], name: "active_ml_id", using: :btree
   add_index "users", ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true, using: :btree
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
@@ -496,6 +494,5 @@ ActiveRecord::Schema.define(version: 20160319201345) do
   add_foreign_key "user_bios", "users", name: "user_bios_ibfk_1"
   add_foreign_key "user_reputations", "users", name: "user_reputations_ibfk_1"
   add_foreign_key "user_settings", "users", name: "user_settings_ibfk_1"
-  add_foreign_key "users", "mod_lists", column: "active_mc_id", name: "users_ibfk_5"
-  add_foreign_key "users", "mod_lists", column: "active_ml_id", name: "users_ibfk_4"
+  add_foreign_key "users", "mod_lists", column: "active_mod_list_id", name: "users_ibfk_4"
 end
