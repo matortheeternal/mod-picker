@@ -14,6 +14,7 @@ class UserReputation < ActiveRecord::Base
     self.contribution_rep ||= 0.0
     self.author_rep ||= 0.0
     self.given_rep ||= 0.0
+    self.dont_compute ||= false
     self.last_computed ||= DateTime.now
   end
 end
