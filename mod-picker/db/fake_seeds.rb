@@ -14,7 +14,7 @@ def seed_fake_users
   pw = SecureRandom.urlsafe_base64
   User.create!(
       username: "admin",
-      user_level: "admin",
+      role: "admin",
       title: "God",
       joined: Time.now.to_date,
       email: "admin@mail.com",
@@ -36,7 +36,9 @@ def seed_fake_users
 
   # create 99 random users
   99.times do |n|
-    name = Faker::Internet.user_name
+    # only allow up to the first 20 characters of a username from the
+    # faker generated username
+    name = Faker::Internet.user_name[0..19]
     pw = SecureRandom.urlsafe_base64
     User.create!(
         username: "#{name}#{n}",

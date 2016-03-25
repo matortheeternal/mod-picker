@@ -78,7 +78,7 @@ describe User do
 
     it "is invalid with a username length > 20" do
       user = build(:user,
-        username: "thetwentyusernameorange")
+        username: "aaaabbbbaaaabbbbaaaabb")
       user.valid?
       expect(user.errors[:username]).to include("is too long (maximum is 20 characters)")
     end
@@ -186,9 +186,9 @@ describe User do
           expect(user.avatar). to eq "NewUser.png"
         end
 
-        it "user_level should be created with user_level of :user" do
+        it "role should be created with role of :user" do
           user = create(:user)
-          expect(user.user_level.to_sym).to eq :user
+          expect(user.role.to_sym).to eq :user
         end
       end
     end
