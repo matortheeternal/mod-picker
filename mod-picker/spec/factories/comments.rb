@@ -4,7 +4,6 @@ FactoryGirl.define do
     hidden false
     text_body { Faker::Lorem.sentence(4, false, 6) }
     association :user, factory: :user
-    commentable_type "profile_comment"
   end
 #  factory :comment do
 #    id 1
