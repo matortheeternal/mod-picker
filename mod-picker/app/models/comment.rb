@@ -30,12 +30,19 @@ class Comment < ActiveRecord::Base
     # submitted_by(?)
   end
 
+  # method used to validate text_body lengths, depending on commentable_type
   def validate_text_body_length
     case self.commentable_type
       when "User"
-        errors.add(:text_body, "length must be between 1 and 100") if !self.text_body.length.between?(1, 100) 
+        if text_body.blank?
+        elsif !self.text_body.length.between?(1, 16384)
+          errors.add(:text_body, "length must be less than 16384 characters")
+        end
       when "ModList"
-        errors.add(:text_body, "length must be between 1 and 200") if !self.text_body.length.between?(1, 200)
+        if text_body.blank?
+        elsif !self.text_body.length.between?(1, 4096)
+          errors.add(:text_body, "length must be less than 4096 characters")
+        end
     end
   end
 end
