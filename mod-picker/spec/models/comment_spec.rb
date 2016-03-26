@@ -45,10 +45,17 @@ describe Comment do
     end
 
     describe "#validate_text_body_length" do
-      it "with commentable_type: User, should only be valid with a text_body 1 <= length  <= 16384" do
+      it "with commentable_type: User, should be valid with a text_body 1 <= length  <= 16384" do
         comment = build(:comment,
           commentable_type: "User",
           text_body: "Hello how are you")
+        expect(comment).to be_valid
+      end
+
+      it "with commentable_type: User, should be valid with a text_body of length 1" do
+        comment = build(:comment,
+          commentable_type: "User",
+          text_body: "a")
         expect(comment).to be_valid
       end
 
@@ -69,10 +76,18 @@ describe Comment do
         expect(comment.errors[:text_body]).to include("body can't be empty")
       end
 
-      it "with commentable_type: ModList, should only be valid with a text_body 1 <= length <= 4096" do
+      it "with commentable_type: ModList, should be valid with a text_body 1 <= length <= 4096" do
         comment = build(:comment,
           commentable_type: "ModList",
           text_body: "Hello how are you")
+        comment.valid?
+        expect(comment).to be_valid
+      end
+
+      it "with commentable_type: ModList, should be valid with a text_body of length 1" do
+        comment = build(:comment,
+          commentable_type: "ModList",
+          text_body: "a")
         comment.valid?
         expect(comment).to be_valid
       end
