@@ -14,7 +14,7 @@ def seed_fake_users
   pw = SecureRandom.urlsafe_base64
   User.create!(
       username: "admin",
-      user_level: "admin",
+      role: "admin",
       title: "God",
       joined: Time.now.to_date,
       email: "admin@mail.com",

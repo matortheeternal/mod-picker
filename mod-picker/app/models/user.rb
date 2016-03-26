@@ -18,7 +18,7 @@ class User < ActiveRecord::Base
   scope :nnotes, -> (low, high) { where(incorrect_notes_count: (low..high)) }
   scope :comments, -> (low, high) { where(comments_count: (low..high)) }
   scope :mod_lists, -> (low, high) { where(mod_lists_count: (low..high)) }
-  
+
   attr_accessor :login
 
   has_one :settings, :class_name => 'UserSetting', :dependent => :destroy
@@ -36,8 +36,7 @@ class User < ActiveRecord::Base
   has_many :mods, :through => 'mod_authors', :inverse_of => 'authors'
   has_many :mod_lists, :foreign_key => 'created_by', :inverse_of => 'user'
 
-  belongs_to :active_mod_list, :class_name => 'ModList', :foreign_key => 'active_ml_id'
-  belongs_to :active_mod_collection, :class_name => 'ModList', :foreign_key => 'active_mc_id'
+  belongs_to :active_mod_list, :class_name => 'ModList', :foreign_key => 'active_mod_list_id'
 
   has_many :mod_stars, :inverse_of => 'user_star'
   has_many :starred_mods, :through => 'mod_stars', :inverse_of => 'user_stars'
@@ -51,13 +50,13 @@ class User < ActiveRecord::Base
 
   after_create :create_associations
   after_initialize :init
-  
+
   validates :username,
   :presence => true,
   :uniqueness => {
     :case_sensitive => false
   }
-  
+
   validate :validate_username
 
   def validate_username
@@ -86,13 +85,12 @@ class User < ActiveRecord::Base
       end
     end
   end
-  
+
   def init
-    self.joined     ||= DateTime.current
-    self.title      ||= 'Prisoner'
-    self.user_level ||= :user
+    self.joined ||= DateTime.current
+    self.role   ||= :user
   end
-  
+
   def create_associations
     self.create_reputation({ user_id: self.id })
     self.create_settings({ user_id: self.id })
@@ -102,12 +100,8 @@ class User < ActiveRecord::Base
   def as_json(options={})
     options[:except] ||= [:email, :active_ml_id, :active_mc_id]
     options[:include] ||= {
-        :bio => {
-            :only => [:nexus_username, :steam_username]
-        },
-        :reputation => {
-            :only => [:overall, :offset]
-        }
+        :bio => {:except => []},
+        :reputation => {:only => [:overall]}
     }
     super(options).merge({
         :avatar => user_avatar

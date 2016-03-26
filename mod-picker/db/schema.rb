@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160319201345) do
+ActiveRecord::Schema.define(version: 20160325213623) do
 
   create_table "agreement_marks", id: false, force: :cascade do |t|
     t.integer "incorrect_note_id", limit: 4
@@ -358,25 +358,35 @@ ActiveRecord::Schema.define(version: 20160319201345) do
   add_index "reviews", ["submitted_by"], name: "submitted_by", using: :btree
 
   create_table "user_bios", force: :cascade do |t|
-    t.string  "nexus_username", limit: 32
-    t.boolean "nexus_verified"
-    t.string  "lover_username", limit: 32
-    t.boolean "lover_verified"
-    t.string  "steam_username", limit: 32
+    t.string  "nexus_username",           limit: 32
+    t.string  "nexus_verification_token", limit: 32
+    t.string  "lover_username",           limit: 32
+    t.string  "lover_verification_token", limit: 32
+    t.string  "steam_username",           limit: 32
     t.boolean "steam_verified"
-    t.integer "user_id",        limit: 4
+    t.integer "user_id",                  limit: 4
+    t.integer "nexus_user_id",            limit: 4
+    t.string  "lover_user_path",          limit: 64
+    t.date    "nexus_date_joined"
+    t.integer "nexus_posts_count",        limit: 4,  default: 0
+    t.date    "lover_date_joined"
+    t.integer "lover_posts_count",        limit: 4,  default: 0
+    t.integer "steam_submissions_count",  limit: 4,  default: 0
+    t.integer "steam_followers_count",    limit: 4,  default: 0
   end
 
   add_index "user_bios", ["user_id"], name: "user_id", using: :btree
 
   create_table "user_reputations", force: :cascade do |t|
-    t.float   "overall",            limit: 24
-    t.float   "offset",             limit: 24
-    t.float   "audiovisual_design", limit: 24
-    t.float   "plugin_design",      limit: 24
-    t.float   "utility_design",     limit: 24
-    t.float   "script_design",      limit: 24
-    t.integer "user_id",            limit: 4
+    t.float    "overall",          limit: 24
+    t.float    "offset",           limit: 24
+    t.integer  "user_id",          limit: 4
+    t.float    "site_rep",         limit: 24
+    t.float    "contribution_rep", limit: 24
+    t.float    "author_rep",       limit: 24
+    t.float    "given_rep",        limit: 24
+    t.datetime "last_computed"
+    t.boolean  "dont_compute"
   end
 
   add_index "user_reputations", ["user_id"], name: "user_id", using: :btree
@@ -402,17 +412,16 @@ ActiveRecord::Schema.define(version: 20160319201345) do
 
   create_table "users", force: :cascade do |t|
     t.string   "username",                  limit: 32
-    t.enum     "user_level",                limit: ["guest", "banned", "user", "author", "vip", "moderator", "admin"]
+    t.string   "role",                      limit: 16
     t.string   "title",                     limit: 32
     t.datetime "joined"
-    t.integer  "active_ml_id",              limit: 4
-    t.integer  "active_mc_id",              limit: 4
-    t.string   "email",                     limit: 255,                                                                default: "", null: false
-    t.string   "encrypted_password",        limit: 255,                                                                default: "", null: false
+    t.integer  "active_mod_list_id",        limit: 4
+    t.string   "email",                     limit: 255,   default: "", null: false
+    t.string   "encrypted_password",        limit: 255,   default: "", null: false
     t.string   "reset_password_token",      limit: 255
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
-    t.integer  "sign_in_count",             limit: 4,                                                                  default: 0,  null: false
+    t.integer  "sign_in_count",             limit: 4,     default: 0,  null: false
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
     t.string   "current_sign_in_ip",        limit: 255
@@ -434,8 +443,7 @@ ActiveRecord::Schema.define(version: 20160319201345) do
     t.text     "about_me",                  limit: 65535
   end
 
-  add_index "users", ["active_mc_id"], name: "active_mc_id", using: :btree
-  add_index "users", ["active_ml_id"], name: "active_ml_id", using: :btree
+  add_index "users", ["active_mod_list_id"], name: "active_ml_id", using: :btree
   add_index "users", ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true, using: :btree
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
@@ -496,6 +504,5 @@ ActiveRecord::Schema.define(version: 20160319201345) do
   add_foreign_key "user_bios", "users", name: "user_bios_ibfk_1"
   add_foreign_key "user_reputations", "users", name: "user_reputations_ibfk_1"
   add_foreign_key "user_settings", "users", name: "user_settings_ibfk_1"
-  add_foreign_key "users", "mod_lists", column: "active_mc_id", name: "users_ibfk_5"
-  add_foreign_key "users", "mod_lists", column: "active_ml_id", name: "users_ibfk_4"
+  add_foreign_key "users", "mod_lists", column: "active_mod_list_id", name: "users_ibfk_4"
 end
