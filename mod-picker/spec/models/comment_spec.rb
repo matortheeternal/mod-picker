@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe Comment do
-  it "should be valid with parameters" do
+  it "should be valid with text_body, commentable_id, and commentable_type submitted parameters" do
     comment = build(:comment,
       commentable_type: "User")
     expect(comment).to be_valid
