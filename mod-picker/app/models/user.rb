@@ -36,8 +36,7 @@ class User < ActiveRecord::Base
   has_many :mods, :through => 'mod_authors', :inverse_of => 'authors'
   has_many :mod_lists, :foreign_key => 'created_by', :inverse_of => 'user'
 
-  belongs_to :active_mod_list, :class_name => 'ModList', :foreign_key => 'active_ml_id'
-  belongs_to :active_mod_collection, :class_name => 'ModList', :foreign_key => 'active_mc_id'
+  belongs_to :active_mod_list, :class_name => 'ModList', :foreign_key => 'active_mod_list_id'
 
   has_many :mod_stars, :inverse_of => 'user_star'
   has_many :starred_mods, :through => 'mod_stars', :inverse_of => 'user_stars'
@@ -78,9 +77,8 @@ class User < ActiveRecord::Base
   end
   
   def init
-    self.joined     ||= DateTime.current
-    self.title      ||= 'Prisoner'
-    self.user_level ||= :user
+    self.joined ||= DateTime.current
+    self.role   ||= :user
   end
   
   def create_associations
@@ -92,8 +90,8 @@ class User < ActiveRecord::Base
   def as_json(options={})
     options[:except] ||= [:email, :active_ml_id, :active_mc_id]
     options[:include] ||= {
-        :bio => {:only => [:nexus_username, :steam_username]},
-        :reputation => {:only => [:overall, :offset]}
+        :bio => {:except => []},
+        :reputation => {:only => [:overall]}
     }
     super(options)
   end
