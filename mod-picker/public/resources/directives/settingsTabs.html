@@ -1,0 +1,9 @@
+<div class="header-tabs">
+    <div class="page-container">
+        <h1>User Settings</h1>
+        <div class="tabs">
+        	<!-- right now every tab goes to id 3 settings page -->
+            <a ng-repeat="tab in tabs" ng-href="#/userSettings/3/{{tab.call}}" ng-class="tab.call === current ? 'selected-tab' : 'unselected-tab'">{{tab.name}}</a>
+        </div>
+    </div>
+</div>
