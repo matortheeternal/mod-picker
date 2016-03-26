@@ -1,11 +1,9 @@
 FactoryGirl.define do
   factory :incorrect_note do
-    id 1
-review_id 1
-compatibility_note_id 1
-installation_note_id 1
-submitted_by 1
-reason "MyText"
+    association :user, factory: :user
+    text_body { Faker::Lorem.sentence(5, false, 8) }
+    correctable_id 1
+    correctable_type "Filler"
+    created_at Date.today
   end
-
 end
