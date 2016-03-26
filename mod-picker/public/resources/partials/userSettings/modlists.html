@@ -1,0 +1,63 @@
+<span class="section-title">Mod Lists</span>
+<div class="section">
+    <table border="1">
+        <thead>
+            <tr>
+                <th class="name-column">Name</th>
+                <th>Mods</th>
+                <th>Status</th>
+                <th>Cate Created</th>
+                <th>Last Updated</th>
+                <th>Options</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="list in lists">
+                <td class="name-column">{{list.name}}</td>
+                <td>{{list.mods_count}}</td>
+                <td>{{list.status}}</td>
+                <td>{{list.created}}</td>
+                <td>{{list.edited}}</td>
+                <td>
+                    <div class="table-buttons">
+                        <input type="button" class="btn-table" ng-click="modListClone(mod_list)" value="Clone"</a>
+                        <input type="button" class="btn-table" ng-click="modListEdit(mod_list)" value="Edit"</a>
+                        <input type="button" class="btn-table" ng-click="modListDelete(mod_list)" value="Delete"</a>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<span class="section-title">Mod Collections</span>
+<div class="section">
+    <table border="1">
+        <thead>
+            <tr>
+                <th class="name-column">Name</th>
+                <th>Mods</th>
+                <th>Status</th>
+                <th>Cate Created</th>
+                <th>Last Updated</th>
+                <th>Options</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="collection in collections">
+                <td class="name-column">{{collection.name}}</td>
+                <td>{{collection.mods_count}}</td>
+                <td>{{collection.status}}</td>
+                <td>{{collection.created}}</td>
+                <td>{{collection.edited}}</td>
+                <td>
+                    <div class="table-buttons">
+                        <input type="button" class="btn-table" ng-click="modListClone(mod_list)" value="Clone"</a>
+                        <input type="button" class="btn-table" ng-click="modListEdit(mod_list)" value="Edit"</a>
+                        <input type="button" class="btn-table" ng-click="modListDelete(mod_list)" value="Delete"</a>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

@@ -1,0 +1,35 @@
+
+<div class="header-tabs">
+    <div class="page-container">
+        <h1>User Settings</h1>
+        <!--Profile, Account, Mod lists... tabs-->
+        <div class="tabs">
+            <!--This weird syntax is to get rid of the spaces between the tabs-->
+            <a ng-click="currentTab = 'Profile'" ng-class="currentTab === 'Profile' ? 'selected-tab' : 'unselected-tab'">Profile</a
+            ><a ng-click="currentTab = 'Account'" ng-class="currentTab === 'Account' ? 'selected-tab' : 'unselected-tab'">Account</a
+            ><a ng-click="currentTab = 'Reputation'" ng-class=" currentTab === 'Reputation' ? 'selected-tab' : 'unselected-tab'">Reputation</a
+            ><a ng-click="currentTab = 'Mod Lists'" ng-class="currentTab === 'Mod Lists' ? 'selected-tab' : 'unselected-tab'">Mod Lists</a
+            ><a ng-click="currentTab = 'Authored Mods'" ng-class=" currentTab === 'Authored Mods' ? 'selected-tab' : 'unselected-tab'">Authored Mods</a>
+        </div>
+    </div>
+</div>
+
+<!--This displays a success message when changes are saved correctly-->
+<div ng-class="showSuccess ? 'success-message' : 'invisible'">
+    <div class="page-container">
+        <div class="message">User Settings saved!</div>
+    </div>
+</div>
+<!--This displays an error message when needed-->
+<div ng-class="showErrors ? 'error-message : 'invisible'" ng-repeat="error in errors" ng-show="showErrors">
+    <div class="page-container">
+        {{error.message}}
+    </div>
+</div>
+
+<div class="column-wrapper">
+    <div class="single-column">
+        <loader data="user">
+        </loader>
+    </div>
+</div>

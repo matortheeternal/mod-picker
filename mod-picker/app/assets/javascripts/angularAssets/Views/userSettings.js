@@ -2,8 +2,34 @@
  * Created by Sirius on 3/9/2016.
  */
 app.config(['$routeProvider', function ($routeProvider) {
-    $routeProvider.when('/userSettings/:userSettingsId', {
-            templateUrl: '/resources/partials/userSettings.html',
+
+    $routeProvider.when('/userSettings/:userSettingsId/profile', {
+            templateUrl: '/resources/partials/userSettings/profile.html',
+            controller: 'userSettingsController'
+        }
+    );
+    $routeProvider.when('/userSettings/:userSettingsId/account', {
+            templateUrl: '/resources/partials/userSettings/account.html',
+            controller: 'userSettingsController'
+        }
+    );
+    $routeProvider.when('/userSettings/:userSettingsId/reputation', {
+            templateUrl: '/resources/partials/userSettings/reputation.html',
+            controller: 'userSettingsController'
+        }
+    );
+    $routeProvider.when('/userSettings/:userSettingsId/modlists', {
+            templateUrl: '/resources/partials/userSettings/modlists.html',
+            controller: 'userSettingsController'
+        }
+    );
+    $routeProvider.when('/userSettings/:userSettingsId/authoredMods', {
+            templateUrl: '/resources/partials/userSettings/authoredMods.html',
+            controller: 'userSettingsController'
+        }
+    );
+    $routeProvider.when('/userSettings/:userSettingsId/installation', {
+            templateUrl: '/resources/partials/userSettings/installation.html',
             controller: 'userSettingsController'
         }
     );
