@@ -1,9 +1,10 @@
 FactoryGirl.define do
   factory :comment do
     # submitted TimeDate.current; should be done in the model
-    hidden false
     text_body { Faker::Lorem.sentence(4, false, 6) }
     association :user, factory: :user
+    # TODO: Refactor commentable_id spec to check if the id of the commentable type exists
+    commentable_id 1
   end
 #  factory :comment do
 #    id 1

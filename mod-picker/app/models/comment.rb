@@ -10,7 +10,7 @@ class Comment < ActiveRecord::Base
   has_many :children, :class_name => 'Comment', :foreign_key => 'parent_comment', :inverse_of => 'parent'
   belongs_to :commentable, :polymorphic => true
 
-  validates :submitted_by, :submitted, :commentable_type, presence: true
+  validates :submitted_by, :submitted, :commentable_type, :commentable_id, presence: true
   validates :hidden, inclusion: [true, false]
   validates :commentable_type, inclusion: ["User", "ModList"]
   # validates :commentable_type, inclusion: ["profile_comment"]
@@ -20,7 +20,7 @@ class Comment < ActiveRecord::Base
   after_initialize :init
 
   def init
-    self.submitted  ||= DateTime.now.to_date
+    self.submitted  ||= Date.today
     self.hidden     ||= false
   end
   
@@ -35,11 +35,13 @@ class Comment < ActiveRecord::Base
     case self.commentable_type
       when "User"
         if text_body.blank?
+          errors.add(:text_body, "body can't be empty")
         elsif !self.text_body.length.between?(1, 16384)
           errors.add(:text_body, "length must be less than 16384 characters")
         end
       when "ModList"
         if text_body.blank?
+          errors.add(:text_body, "body can't be empty")
         elsif !self.text_body.length.between?(1, 4096)
           errors.add(:text_body, "length must be less than 4096 characters")
         end

@@ -4,9 +4,19 @@ describe Comment do
   it "should be valid with parameters" do
     comment = build(:comment,
       commentable_type: "User")
-    puts comment.commentable_type
     expect(comment).to be_valid
   end  
+
+  it "should default hidden => false" do
+    comment = build(:comment)
+    expect(comment.hidden).to eq(false)
+  end
+
+  it "should default submitted => Date.now" do
+    # submitted is a Date field
+    comment = build(:comment)
+    expect(comment.submitted).to be_within(1.minute).of Date.today
+  end
 
   describe "commentable_type" do
     it "Should be valid with commentable_type [User, ModList]" do 
@@ -35,7 +45,7 @@ describe Comment do
     end
 
     describe "#validate_text_body_length" do
-      it "with commentable_type: User, should only be valid with a text_body 1>= length <=16384" do
+      it "with commentable_type: User, should only be valid with a text_body 1 <= length  <= 16384" do
         comment = build(:comment,
           commentable_type: "User",
           text_body: "Hello how are you")
@@ -51,15 +61,15 @@ describe Comment do
         expect(comment.errors[:text_body]).to include("length must be less than 16384 characters")
       end      
 
-      it "with commentable_type: User, should be valid with text_body of nil" do
+      it "with commentable_type: User, should be invalid with text_body of nil" do
         comment = build(:comment,
           commentable_type: "User",
           text_body: nil)
         comment.valid?
-        expect(comment).to be_valid
+        expect(comment.errors[:text_body]).to include("body can't be empty")
       end
 
-      it "with commentable_type: ModList, should only be valid with a text_body 1>= length <=4096" do
+      it "with commentable_type: ModList, should only be valid with a text_body 1 <= length <= 4096" do
         comment = build(:comment,
           commentable_type: "ModList",
           text_body: "Hello how are you")
@@ -76,12 +86,12 @@ describe Comment do
         expect(comment.errors[:text_body]).to include("length must be less than 4096 characters")
       end
 
-      it "with commentable_type: ModList, should be valid with text_body of nil" do
+      it "with commentable_type: ModList, should be invalid with text_body of nil" do
         comment = build(:comment,
           commentable_type: "ModList",
           text_body: nil)
         comment.valid?
-        expect(comment).to be_valid
+        expect(comment.errors[:text_body]).to include("body can't be empty")
       end
 
     end
