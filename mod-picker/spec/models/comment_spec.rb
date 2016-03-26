@@ -35,11 +35,19 @@ describe Comment do
     end
 
     describe "#validate_text_body_length" do
-      it "when commentable_type: User, should only be valid with a text_body 1 >= length <= 100" do
+      it "when commentable_type: User, should only be valid with a text_body 1 >= length <= 16384" do
         comment = build(:comment,
           commentable_type: "User",
           text_body: "Hello how are you")
         comment.validate_text_body_length
+        expect(comment).to be_valid
+      end
+
+      it "when commentable_type: User, should only be invalid with text_body length of 16385" do
+        str = "x".times(16385)
+        comment = build(:comment,
+          commentable_type: "User",
+          text_body: str)
         expect(comment).to be_valid
       end
 
@@ -49,7 +57,7 @@ describe Comment do
           text_body: "Hello how are you")
         comment.validate_text_body_length
         expect(comment).to be_valid
-      end 
+      end
     end
   end
 end
