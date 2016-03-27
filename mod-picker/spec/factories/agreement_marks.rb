@@ -1,6 +1,6 @@
 FactoryGirl.define do
   factory :agreement_mark do
-    incorrect_note_id 1
+    association :incorrect_note, factory: :incorrect_note
     submitted_by 1
     agree false
   end
