@@ -9,6 +9,7 @@ bSeedCNotes = true
 bSeedINotes = true
 bSeedModAuthors = true
 bSeedModLists = true
+bSeedFakeMods = true
 
 #==================================================
 # CREATE STATIC RECORDS
@@ -29,3 +30,4 @@ seed_fake_compatibility_notes if bSeedCNotes
 seed_fake_installation_notes if bSeedINotes
 seed_fake_mod_authors if bSeedModAuthors
 seed_fake_mod_lists if bSeedModLists
+seed_fake_mods if bSeedFakeMods
