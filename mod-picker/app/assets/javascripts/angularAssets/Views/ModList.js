@@ -3,7 +3,12 @@
  */
 app.config(['$routeProvider', function ($routeProvider) {
     $routeProvider.when('/modlist', {
-            templateUrl: '/resources/partials/modlist_template.html'
+            templateUrl: '/resources/directives/modlist_template.html',
+            controller: 'modlistController'
         }
     );
 }]);
+
+app.controller('modlistController', function($scope) {
+    useTwoColumns(false);
+});
