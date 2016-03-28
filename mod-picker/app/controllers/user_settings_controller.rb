@@ -3,12 +3,12 @@ class UserSettingsController < ApplicationController
 
   # GET /user_settings
   # GET /user_settings.json
+  # returns the current user's settings
   def index
-    @user_settings = UserSetting.filter(filtering_params)
+    @user_setting = current_user.settings
 
     respond_to do |format|
-      format.html
-      format.json { render :json => @user_settings}
+      format.json { render :json => @user_setting}
     end
   end
 
