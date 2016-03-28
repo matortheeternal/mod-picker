@@ -37,8 +37,6 @@ app.config(['$routeProvider', function ($routeProvider) {
 
 app.controller('userSettingsController', function ($scope, $q, $routeParams, userSettingsService, userService) {
     useTwoColumns(false);
-    $scope.currentTab = "Profile";
-
 
     userSettingsService.retrieveUserSettings($routeParams.userSettingsId).then(function (userSettings) {
         $scope.userSettings = userSettings;
