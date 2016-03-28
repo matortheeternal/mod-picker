@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160328050610) do
+ActiveRecord::Schema.define(version: 20160328163111) do
 
   create_table "agreement_marks", id: false, force: :cascade do |t|
     t.integer "incorrect_note_id", limit: 4
@@ -322,6 +322,14 @@ ActiveRecord::Schema.define(version: 20160328050610) do
 
   add_index "plugins", ["mod_version_id"], name: "mv_id", using: :btree
 
+  create_table "quotes", force: :cascade do |t|
+    t.integer "game_id", limit: 4,   null: false
+    t.string  "text",    limit: 255, null: false
+    t.string  "label",   limit: 32,  null: false
+  end
+
+  add_index "quotes", ["game_id"], name: "fk_rails_273247f4b3", using: :btree
+
   create_table "record_groups", force: :cascade do |t|
     t.integer "game_id",     limit: 4
     t.string  "signature",   limit: 4
@@ -524,6 +532,7 @@ ActiveRecord::Schema.define(version: 20160328050610) do
   add_foreign_key "override_records", "plugins", name: "override_records_ibfk_1"
   add_foreign_key "plugin_record_groups", "plugins", name: "plugin_record_groups_ibfk_1"
   add_foreign_key "plugins", "mod_versions", name: "plugins_ibfk_1"
+  add_foreign_key "quotes", "games"
   add_foreign_key "record_groups", "games"
   add_foreign_key "reputation_links", "user_reputations", column: "from_rep_id", name: "reputation_links_ibfk_1"
   add_foreign_key "reputation_links", "user_reputations", column: "to_rep_id", name: "reputation_links_ibfk_2"
