@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160327061837) do
+ActiveRecord::Schema.define(version: 20160328050610) do
 
   create_table "agreement_marks", id: false, force: :cascade do |t|
     t.integer "incorrect_note_id", limit: 4
@@ -339,6 +339,20 @@ ActiveRecord::Schema.define(version: 20160327061837) do
   add_index "reputation_links", ["from_rep_id"], name: "from_rep_id", using: :btree
   add_index "reputation_links", ["to_rep_id"], name: "to_rep_id", using: :btree
 
+  create_table "review_templates", force: :cascade do |t|
+    t.string   "name",         limit: 255, null: false
+    t.integer  "submitted_by", limit: 4,   null: false
+    t.datetime "submitted"
+    t.datetime "edited"
+    t.string   "section1",     limit: 32,  null: false
+    t.string   "section2",     limit: 32
+    t.string   "section3",     limit: 32
+    t.string   "section4",     limit: 32
+    t.string   "section5",     limit: 32
+  end
+
+  add_index "review_templates", ["submitted_by"], name: "fk_rails_82a9747962", using: :btree
+
   create_table "reviews", force: :cascade do |t|
     t.integer "submitted_by",          limit: 4
     t.integer "mod_id",                limit: 4
@@ -352,9 +366,11 @@ ActiveRecord::Schema.define(version: 20160327061837) do
     t.date    "edited"
     t.text    "text_body",             limit: 65535
     t.integer "incorrect_notes_count", limit: 4
+    t.integer "review_template_id",    limit: 4
   end
 
   add_index "reviews", ["mod_id"], name: "mod_id", using: :btree
+  add_index "reviews", ["review_template_id"], name: "fk_rails_5c78eb49fd", using: :btree
   add_index "reviews", ["submitted_by"], name: "submitted_by", using: :btree
 
   create_table "tags", force: :cascade do |t|
@@ -511,7 +527,9 @@ ActiveRecord::Schema.define(version: 20160327061837) do
   add_foreign_key "record_groups", "games"
   add_foreign_key "reputation_links", "user_reputations", column: "from_rep_id", name: "reputation_links_ibfk_1"
   add_foreign_key "reputation_links", "user_reputations", column: "to_rep_id", name: "reputation_links_ibfk_2"
+  add_foreign_key "review_templates", "users", column: "submitted_by"
   add_foreign_key "reviews", "mods", name: "reviews_ibfk_2"
+  add_foreign_key "reviews", "review_templates"
   add_foreign_key "reviews", "users", column: "submitted_by", name: "reviews_ibfk_1"
   add_foreign_key "tags", "games"
   add_foreign_key "tags", "users", column: "submitted_by"
