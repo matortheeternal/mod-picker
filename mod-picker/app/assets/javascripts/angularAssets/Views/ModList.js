@@ -3,7 +3,7 @@
  */
 app.config(['$routeProvider', function ($routeProvider) {
     $routeProvider.when('/modlist', {
-            templateUrl: '/resources/directives/modlist_template.html',
+            templateUrl: '/resources/partials/modlist_template.html',
             controller: 'modlistController'
         }
     );
