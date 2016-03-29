@@ -752,6 +752,55 @@ input[type="submit"] {
   }
 }
 
+.flist {
+  list-style: none;
+  margin-bottom: 10px;
+  padding: 0;
+  text-align: left;
+  display: block;
+  li {
+    vertical-align: middle;
+    padding: 0px 5% 10px 5%;
+  }
+  textarea {
+    width:  100%;
+    height: 100px;    
+  }
+  input[type="text"] {
+    width: 60%;
+  }
+
+  select {
+    width: 10%;
+  }
+
+}
+
+.tblist {
+  list-style: none;
+  margin-bottom: 10px;
+  padding: 0;
+  text-align: left;
+  display: block;
+  li {
+    vertical-align: middle;
+    font-size: 13px;
+    font-weight: 400;
+    padding: 0% 1% 0% 1%;
+  }
+  textarea {
+    width:  100%;
+    height: 600px;    
+  }
+  input[type="text"] {
+    width: 60%;
+  }
+
+  select {
+    width: 10%;
+  }
+}
+
 .modlist-status {
   font-size: 24px;
 }
