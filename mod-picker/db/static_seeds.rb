@@ -315,8 +315,184 @@ def seed_static_records
 
 
   #==================================================
+  # CREATE QUOTES
+  #==================================================
+
+  puts "\nSeeding quotes"
+
+  Quote.create(
+    game_id: gameSkyrim.id,
+    text: "Let me guess, someone stole your sweetroll?",
+    label: "help"
+  )
+  Quote.create(
+      game_id: gameSkyrim.id,
+      text: "My cousin is out fighting dragons. And what do I get? Guard duty.",
+      label: "Help"
+  )
+  Quote.create(
+      game_id: gameSkyrim.id,
+      text: "Would you like a bow that shoots rainbows too? Or perhaps a quiver that dispenses beer?",
+      label: "Help"
+  )
+  Quote.create(
+      game_id: gameSkyrim.id,
+      text: "The butler did it! Or is it the advisor? Whoever that man behind the throne was.",
+      label: "Help"
+  )
+  Quote.create(
+      game_id: gameSkyrim.id,
+      text: "Cheese! For everyone!",
+      label: "Help"
+  )
+  Quote.create(
+      game_id: gameSkyrim.id,
+      text: "Murder, banditry, assault, theft, and lollygagging.",
+      label: "Reported"
+  )
+  Quote.create(
+      game_id: gameSkyrim.id,
+      text: "I've been hunting and fishing in these parts for years.",
+      label: "Random"
+  )
+  Quote.create(
+      game_id: gameSkyrim.id,
+      text: "My ancestors are smiling at me imperial, can you say the same?",
+      label: "Random"
+  )
+  Quote.create(
+      game_id: gameSkyrim.id,
+      text: "I sell fruits and vegetables with my mother, It's fun most days but hard work.",
+      label: "Random"
+  )
+  Quote.create(
+      game_id: gameSkyrim.id,
+      text: "I used to be an adventurer like you, then I took an arrow to the knee.",
+      label: "Random"
+  )
+  Quote.create(
+      game_id: gameSkyrim.id,
+      text: "You have come! You have come to hear the word of Talos!",
+      label: "Random"
+  )
+  Quote.create(
+      game_id: gameSkyrim.id,
+      text: "The Imperials silence us because they fear us! They are cowards! Cowards and fools who have forgotten the truth!",
+      label: "Random"
+  )
+  Quote.create(
+      game_id: gameSkyrim.id,
+      text: "The truth, child of Talos, is that the Dragon's children have come! To purge the world in fire and righteousness!",
+      label: "Random"
+  )
+  Quote.create(
+      game_id: gameSkyrim.id,
+      text: "DID YOU KNOW SOME VEGETABLES GROW FASTER IN COLD WEATHER?",
+      label: "Random"
+  )
+  Quote.create(
+      game_id: gameSkyrim.id,
+      text: "Do you see those warriors from Hammerfell? They've got curved swords. Curved. Swords.",
+      label: "Random"
+  )
+  Quote.create(
+      game_id: gameSkyrim.id,
+      text: "You are taking us somewhere warm, I trust?",
+      label: "Random"
+  )
+  Quote.create(
+      game_id: gameSkyrim.id,
+      text: "You’ll make a fine rug, cat!",
+      label: "Random"
+  )
+  Quote.create(
+      game_id: gameSkyrim.id,
+      text: "M'aiq wishes you well.",
+      label: "Random"
+  )
+  Quote.create(
+      game_id: gameSkyrim.id,
+      text: "M'aiq knows much, and tells some. M'aiq knows many things others do not.",
+      label: "Random"
+  )
+  Quote.create(
+      game_id: gameSkyrim.id,
+      text: "What does this mean, to combine magic? Magic plus magic is still magic.",
+      label: "Random"
+  )
+  Quote.create(
+      game_id: gameSkyrim.id,
+      text: "Dragons were never gone. They were just invisible and very, very quiet.",
+      label: "Random"
+  )
+  Quote.create(
+      game_id: gameSkyrim.id,
+      text: "Werebears? Where? Bears? Men that are bears?",
+      label: "Random"
+  )
+  Quote.create(
+      game_id: gameSkyrim.id,
+      text: "The people of Skyrim are more open-minded about certain things than people in other places.",
+      label: "Random"
+  )
+  Quote.create(
+      game_id: gameSkyrim.id,
+      text: "Skyrim was once the land of many butterflies. Now, not so much.",
+      label: "Random"
+  )
+  Quote.create(
+      game_id: gameSkyrim.id,
+      text: "I’ll carve you into pieces!",
+      label: "Random"
+  )
+  Quote.create(
+      game_id: gameSkyrim.id,
+      text: "You know, I was there for that whole sordid affair.  Marvelous time!  Butterflies, blood, a Fox, a severed head,  HOHO!  Oh, and the cheese!  To die for.",
+      label: "Random"
+  )
+  Quote.create(
+      game_id: gameSkyrim.id,
+      text: "Inkpot. Stone. Bucket. Book. Knife.",
+      label: "Random"
+  )
+  Quote.create(
+      game_id: gameSkyrim.id,
+      text: "I wonder what's up there.  Huu huu huu.  Big Dipper.  Little Dipper.  Atmosphere.  Black Holes.  Dragons!  No, no, no dragons.  Just space.",
+      label: "Random"
+  )
+  Quote.create(
+      game_id: gameSkyrim.id,
+      text: "Hey, hey, level up speech, talk people into going to space.  Huu huu.  Plenty of room.",
+      label: "Random"
+  )
+  Quote.create(
+      game_id: gameSkyrim.id,
+      text: "Skyrim belongs to the Nords!",
+      label: "Low Reputation"
+  )
+  Quote.create(
+      game_id: gameSkyrim.id,
+      text: "Do you get to the cloud district very often?  Oh what am I saying.  Of course you don't.",
+      label: "Low Reputation"
+  )
+  Quote.create(
+      game_id: gameSkyrim.id,
+      text: "Talos the mighty! Talos the unerring! Talos the unassailable! To you we give praise!",
+      label: "High Reputation"
+  )
+  Quote.create(
+      game_id: gameSkyrim.id,
+      text: "Do you get to the cloud district very often?  Oh what am I saying.  Of course you do.",
+      label: "High Reputation"
+  )
+
+  puts "    #{Quote.count} quotes seeded"
+
+  #==================================================
   # CREATE RECORD GROUPS
   #==================================================
+
+  puts "\nSeeding record groups"
 
   RecordGroup.create(
       game_id: gameSkyrim.id,
