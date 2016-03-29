@@ -22,19 +22,9 @@ context "fields" do
   end
 
   xdescribe "compatibility_mod_id" do
-    it "should be valid under x circumstances" do
-    end
-
-    it "should be invalid under y circumstances" do
-    end
   end
 
   xdescribe "compatibility_plugin_id" do
-    it "should be valid under x circumstances" do
-    end
-
-    it "should be invalid under y circumstances" do
-    end
   end
 
   describe "compatibility_type" do
@@ -55,10 +45,10 @@ context "fields" do
   end
 
   describe "submitted" do
-    it "should set the proper date to Date.today creation" do
+    it "should set the proper date to DateTime.now creation" do
       note = create(:compatibility_note)
-
-      expect(note.submitted).to eq(Date.today)
+      puts note.submitted
+      expect(note.submitted).to be_within(1.minute).of DateTime.now
     end
 
     it "should be valid even if nil due to default init value" do
@@ -93,20 +83,6 @@ context "fields" do
     expect(maxNote).to be_valid
   end
 
-  it "should be valid with a text_body of nil" do
-    note = build(:compatibility_note,
-      text_body: nil)
-
-    expect(note).to be_valid
-  end
-
-  it "should be valid with an empty text_body" do
-    note = build(:compatibility_note,
-      text_body: "")
-
-    expect(note).to be_valid
-  end
-
   it "should be invalid with a length < 64" do
     invalidText = "a" * 63
     note = build(:compatibility_note,
@@ -125,13 +101,18 @@ context "fields" do
     expect(note.errors[:text_body]).to include("is too long (maximum is 16384 characters)")
   end
 
-  xit "should be invalid with a length of 0" do
-    invalidText = ""
+  it "should be invalid with an empty body" do
     note = build(:compatibility_note,
-      text_body: invalidText)
+      text_body: "")
+
+    note2 = build(:compatibility_note,
+      text_body: nil)
 
     note.valid?
+    note2.valid?
+
     expect(note.errors[:text_body]).to include("is too short (minimum is 64 characters)")
+    expect(note2.errors[:text_body]).to include("is too short (minimum is 64 characters)")
   end
 end
 end

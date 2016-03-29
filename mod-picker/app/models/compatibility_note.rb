@@ -22,14 +22,14 @@ class CompatibilityNote < ActiveRecord::Base
   validates :submitted_by, presence: true
   validates :compatibility_type, inclusion: { in: ["Incompatible", "Partially Incompatible", "Compatibility Mod", "Compatibility Plugin", "Make Custom Patch"],
                                               message: "Not a valid compatibility type" }
-  validates :text_body, length: { in: 64..16384 }, allow_blank: true, allow_nil: true                                             
+  validates :text_body, length: { in: 64..16384 }                                            
   
   # validate :submitted_must_be_recent, on: :create
 
-  after_initialize :init
+  after_create :set_defaults
   
-  def init
-    self.submitted = Date.today
+  def set_defaults
+    self.submitted = DateTime.now
   end     
 
 
