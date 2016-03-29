@@ -326,19 +326,6 @@ nav span {
   display: inline-block;
 }
 
-/* css for horizontal menus */
-/* used for login and registration items */
-ul.hmenu {
-  list-style: none;
-  margin: 0 0 2em;
-  padding: 0;
-}
-
-ul.hmenu li {
-  display: inline-block;
-  padding: 10px;
-}
-
 /* css for columns */
 /* used on browse mods page */
 .page-container {
@@ -697,6 +684,7 @@ input[type="submit"] {
 /* Mod List CSS */
 .section-header-container {
   width: 100%;
+  border: 1px solid $hard_border_color;
 
 }
 
@@ -704,17 +692,32 @@ input[type="submit"] {
 .section-table {
   width: 100%;
   border-collapse: collapse;
-  thead{
+  background-color: $secondary_background;
+  border: 1px solid $hard_border_color;
+  margin-top: 55px;
+  thead {
     text-align: left;
+    vertical-align: bottom;
+    border-bottom: 1px solid $hard_border_color;
+  } 
+  th {
+    padding-left:10px;
+    padding-bottom: 4px;
+    font-size: 14px;
+    font-weight: 500;
   }
   tbody {
-    text-align: center;
     background-color: $primary_background;
   }
-  th,td {
-    border: 1px solid $hard_border_color;
+  td {
+    text-align: center;
+    background-color: $primary_background;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border-left: 1px solid $hard_border_color;
   }
 }
+
 
 .overview-total-number {
   font-size: 24px;
@@ -724,13 +727,24 @@ input[type="submit"] {
   font-style: italic;
 }
 
-.modlist-section {
-  background-color: $secondary_background;
-  border: 1px solid $hard_border_color;
-  margin-top: 55px;
+.section-title {
+  padding-top: 8px;
+  padding-bottom: 4px;
 
-  .column {
+}
+
+
+
+
+.hlist {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+
+  li {
     display: inline-block;
-    border: 1px solid $hard_border_color;
+    padding-left: 10px;
+    padding-right:10px;
   }
 }

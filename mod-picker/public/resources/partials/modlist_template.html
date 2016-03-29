@@ -21,42 +21,60 @@
 <div class="page-container">
     <div title="body">
     	<div ng-show="isSelected('details')">
-            <div title='options'>
-                
-            </div>
-            <section title='overview' class='modlist-section'>
-                <div class='section-header-container'>
-                    <span class="section-title">Overview</span>
-                    <div class="column" style="width: 25%">
-                      Totals   
-                    </div><div class="column" style="width: 55%">
-                        Tags
-                    </div><div class="column" style="width: 20%">
-                        Desktop Sync Tools
-                    </div>
-                </div>
-                <div class="section-content-container">
-                    <ul class="hmenu" style="width:25%">
-                        <li>
-                            <span class="overview-total-number">999</span> 
-                            <br>Tools
-                        </li>
-                        <li>
-                            <span class="overview-total-number">999</span> 
-                            <br>Mods
-                        </li>
-                        <li>
-                            <span class="overview-total-number">999</span> 
-                            <br>Plugins
-                        </li>
-                        <li>
-                            <span class="overview-total-number">999</span> 
-                            <br>BSAs
-                        </li>
-                    </ul>
-                </div>
-            </section>
+            <div title='options'>  
 
+            </div>
+            <table title='overview' class='section-table'>
+                <colgroup>
+                    <col style="width: 25%">
+                    <col style="width: 55%">
+                    <col style="width: 20%">
+                </colgroup>
+                <thead>
+                    <tr>
+                        <th>
+                            <span class="section-title">Overview</span>
+                            Totals   
+                        </th>
+                        <th>
+                            Tags
+                        </th>
+                        <th>
+                            Desktop Sync Tools
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <ul class="hlist">
+                                <li>
+                                    <span class="overview-total-number">999</span> 
+                                    <br>Tools
+                                </li>
+                                <li>
+                                    <span class="overview-total-number">999</span> 
+                                    <br>Mods
+                                </li>
+                                <li>
+                                    <span class="overview-total-number">999</span> 
+                                    <br>Plugins
+                                </li>
+                                <li>
+                                    <span class="overview-total-number">999</span> 
+                                    <br>BSAs
+                                </li>
+                            </ul>
+                        </td>
+                        <td>
+                            Tags here
+                        </td>
+                        <td>
+                            Desktop sync tools here
+                        </td>
+                    </tr>
+                </tbody>
+            </table>        
         </div>
 
         <div ng-show="isSelected('tools')"> 
