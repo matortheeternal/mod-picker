@@ -78,7 +78,7 @@ class ModsController < ApplicationController
     
     # Params we allow filtering on
     def filtering_params
-      params.slice(:search, :adult, :game, :category, :stars, :reviews, :comments, :versions, :released, :updated, :endorsements, :tdl, :udl, :views, :posts, :videos, :images, :files, :articles);
+      params.slice(:search, :adult, :game, :category, :stars, :reviews, :versions, :released, :updated, :endorsements, :tdl, :udl, :views, :posts, :videos, :images, :files, :articles);
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

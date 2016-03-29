@@ -610,24 +610,6 @@ def seed_fake_comments
       ).save!
     end
   end
-
-  # generate comments on mods
-  puts "\nSeeding mod comments"
-  Mod.all.each do |mod|
-    rnd = randpow(20, 2)
-    puts "    Generating #{rnd} comments for #{mod.name}"
-    rnd.times do
-      submitter = User.offset(rand(User.count)).first
-      mod.comments.new(
-          submitted_by: submitter.id,
-          hidden: false,
-          submitted: Faker::Date.backward(14),
-          text_body: Faker::Lorem.paragraph(2)
-      ).save!
-    end
-  end
-
-  puts "    #{Comment.count} comments seeded"
 end
 
 
