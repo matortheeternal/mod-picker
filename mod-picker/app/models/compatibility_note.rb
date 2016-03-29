@@ -23,12 +23,26 @@ class CompatibilityNote < ActiveRecord::Base
   validates :compatibility_type, inclusion: { in: ["Incompatible", "Partially Incompatible", "Compatibility Mod", "Compatibility Plugin", "Make Custom Patch"],
                                               message: "Not a valid compatibility type" }
   validates :text_body, length: { in: 64..16384 }, allow_blank: true, allow_nil: true                                             
+  
+  # validate :submitted_must_be_recent, on: :create
 
   after_initialize :init
   
   def init
-    self.submitted ||= Date.today
-  end                            
+    self.submitted = Date.today
+  end     
+
+
+  # alternate method to allow defining of custom submitted Date
+
+  # def submitted_must_be_recent
+  #   puts "is this even being ran?"
+  #   if submitted.present? && submitted < Date.today
+  #     errors.add(:submitted, "Date upon creation must be equal to today")
+  #   elsif !submitted.present?
+  #     self.submitted = Date.today
+  #   end
+  # end                       
 
   def as_json(options={})
     super(:include => {

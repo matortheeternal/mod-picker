@@ -55,10 +55,18 @@ context "fields" do
   end
 
   describe "submitted" do
-    it "should set the proper date upon creation" do
-      note = build(:compatibility_note)
+    it "should set the proper date to Date.today creation" do
+      note = create(:compatibility_note)
 
       expect(note.submitted).to eq(Date.today)
+    end
+
+    it "should be valid even if nil due to default init value" do
+      note = build(:compatibility_note,
+        submitted: nil)
+
+      note.valid?
+      expect(note).to be_valid
     end
   end
 
