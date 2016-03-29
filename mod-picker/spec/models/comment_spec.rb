@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe Comment do
+RSpec.describe Comment, :model do
   it "should be valid with text_body, commentable_id, and commentable_type submitted parameters" do
     comment = build(:comment,
       commentable_type: "User")
@@ -19,7 +19,7 @@ describe "#init" do
   it "should default submitted => Date.now" do
     # submitted is a Date field
     comment = build(:comment)
-    expect(comment.submitted).to be_within(1.minute).of Date.today
+    expect(comment.submitted).to eq(Date.today)
   end
 end
 
@@ -155,6 +155,6 @@ describe "#validate_text_body_length" do
       expect(comment.errors[:text_body]).to include("body can't be empty")
     end
   end
-  
+
 end
 end

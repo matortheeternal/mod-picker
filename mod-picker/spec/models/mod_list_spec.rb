@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe ModList do
+RSpec.describe ModList, :model do
   it "A Modlist should be valid without any fields" do
     # gameSkyrim = Game.create(
     #     short_name: "Skyman",

@@ -3,7 +3,7 @@
 # directory for the actual model.
 require 'rails_helper'
 
-describe User do
+RSpec.describe User, :model do
 
   # Validations ====================================================
   

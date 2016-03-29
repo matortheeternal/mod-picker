@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe AgreementMark do
+RSpec.describe AgreementMark, :model do
   it "should be valid with incorrect_note_id, submitted_by, and agree present" do
     agree = build(:agreement_mark)
 
