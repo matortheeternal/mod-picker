@@ -7,7 +7,7 @@ app.service('userSettingsService', function (backend, $q) {
                 userSettings.resolve(data);
             }, 1000);
         });
-        return userSettings.promise;
+        return userSettings.promise
     };
 
     this.submitUser = function (user) {
@@ -28,7 +28,7 @@ app.service('userSettingsService', function (backend, $q) {
             user_setting: user_settings
         };
         var update = $q.defer();
-        backend.update('/user_settings', user_settings_object).then(function (data) {
+        backend.update('/user_settings/' + user_settings.id, user_settings_object).then(function (data) {
             setTimeout(function () {
                 update.resolve(data);
             }, 1000);

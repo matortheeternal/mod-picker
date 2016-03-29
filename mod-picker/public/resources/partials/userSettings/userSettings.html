@@ -1,10 +1,8 @@
 <tabs current-tab="currentTab" tabs="tabs" title="User Settings"></tabs>
-<div style="background-color: red; height: 100px;" ng-if="{{showSuccess}}"></div>
 <div class="column-wrapper">
     <div class="single-column">
         <loader data="user">
             <ng-include src="currentTab.url"></ng-include>
-            <input class="btn" id="save-changes" type="submit" value="Save Changes" ng-click="submit()"/>
         </loader>
     </div>
 </div>
