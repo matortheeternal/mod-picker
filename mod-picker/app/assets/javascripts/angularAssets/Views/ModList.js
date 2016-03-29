@@ -10,5 +10,18 @@ app.config(['$routeProvider', function ($routeProvider) {
 }]);
 
 app.controller('modlistController', function($scope) {
+    $scope.currentTab='details';
     useTwoColumns(false);
+
+    $scope.isSelected = function(tabName) {
+    	return $scope.currentTab === tabName;
+    };
+
+    $scope.cssClass = function(tabName) {
+        if($scope.isSelected(tabName))
+            return "selected-tab";
+        else
+            return "unselected-tab";
+    };
+    
 });

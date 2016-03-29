@@ -335,7 +335,8 @@ ul.hmenu {
 }
 
 ul.hmenu li {
-  display: inline;
+  display: inline-block;
+  padding: 10px;
 }
 
 /* css for columns */
@@ -594,6 +595,8 @@ input[type="submit"] {
     font-weight: 500;
     color: $text_color;
     font-size: 36px;
+  }
+  .header-container {
     padding-top: 18px;//half of font size
     padding-bottom: 18px;
   }
@@ -688,5 +691,46 @@ input[type="submit"] {
 
   span:hover {
     color: $link_hover_color_secondary;
+  }
+}
+
+/* Mod List CSS */
+.section-header-container {
+  width: 100%;
+
+}
+
+
+.section-table {
+  width: 100%;
+  border-collapse: collapse;
+  thead{
+    text-align: left;
+  }
+  tbody {
+    text-align: center;
+    background-color: $primary_background;
+  }
+  th,td {
+    border: 1px solid $hard_border_color;
+  }
+}
+
+.overview-total-number {
+  font-size: 24px;
+}
+
+.author-line {
+  font-style: italic;
+}
+
+.modlist-section {
+  background-color: $secondary_background;
+  border: 1px solid $hard_border_color;
+  margin-top: 55px;
+
+  .column {
+    display: inline-block;
+    border: 1px solid $hard_border_color;
   }
 }

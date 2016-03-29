@@ -1,46 +1,78 @@
-<div class="page-container">
-	<div title="modlist-header">
-		<div title="modlist-title=container">
-			<h1>Mod List Title</h1>
-		</div>
-		<div title="status-bar-container">
-			[Status Bar]
-		</div>
-	</div>
-    <div title="tabs-wrapper" class="tabs">
-    	<a>Details</a>
-    	<a>Tools</a>
-    	<a>Mods</a>
-    	<a>Plugin</a>
-    	<a>Config</a>
-    	<a>Comments</a>
-    </div>
-    <div title="body">
+<div title="modlist-header" class="header-tabs">
+    <div class="page-container">
+        <div class="header-container">
+            <h1>Mod List Title</h1>
+            <span class="author-line">by ThreeTen</span>
+        </div>
+        <div title="status-bar-container">
 
-    	<div title="Object1-container">
-    		ModList Options(sometimes) | Overview | INI Files | Comments
-    	</div>
-		<p></p>
-    	<div title="Object2-container">
-    		Overview(details) | Tools(list) | Mods(List/Details) | Plugins | ENB Files
-    	</div>
-		<p></p>
-    	<div title="Object3-container">
-    		Description | Missing Requirements 
-    	</div>
-		<p></p>
-    	<div title="Object4-container">
-    		Compatibility Issues
-    	</div>
-		<p></p>
-    	<div title="Object5-container">
-    		Install Order Issues | Load Order Issues
-    	</div>
-    	<p></p>
-    	<div title="Object6-container">
-    		Asset Conflicts | Record Conflicts
-    	</div>
-		<p></p>
+        </div>
+        <div title="tabs-wrapper" class="tabs">
+            <a ng-click="currentTab ='details'" ng-class="cssClass('details')">Details</a>
+            <a ng-click="currentTab ='tools'" ng-class="cssClass('tools')">Tools</a>
+            <a ng-click="currentTab ='mods'" ng-class="cssClass('mods')">Mods</a>
+            <a ng-click="currentTab ='plugin'" ng-class="cssClass('plugin')">Plugin</a>
+            <a ng-click="currentTab ='config'" ng-class="cssClass('config')">Config</a>
+            <a ng-click="currentTab ='comments'" ng-class="cssClass('comments')">Comments</a>
+        </div>
+    </div>
+</div>
+
+<div class="page-container">
+    <div title="body">
+    	<div ng-show="isSelected('details')">
+            <div title='options'>
+                
+            </div>
+            <section title='overview' class='modlist-section'>
+                <div class='section-header-container'>
+                    <span class="section-title">Overview</span>
+                    <div class="column" style="width: 25%">
+                      Totals   
+                    </div><div class="column" style="width: 55%">
+                        Tags
+                    </div><div class="column" style="width: 20%">
+                        Desktop Sync Tools
+                    </div>
+                </div>
+                <div class="section-content-container">
+                    <ul class="hmenu" style="width:25%">
+                        <li>
+                            <span class="overview-total-number">999</span> 
+                            <br>Tools
+                        </li>
+                        <li>
+                            <span class="overview-total-number">999</span> 
+                            <br>Mods
+                        </li>
+                        <li>
+                            <span class="overview-total-number">999</span> 
+                            <br>Plugins
+                        </li>
+                        <li>
+                            <span class="overview-total-number">999</span> 
+                            <br>BSAs
+                        </li>
+                    </ul>
+                </div>
+            </section>
+
+        </div>
+
+        <div ng-show="isSelected('tools')"> 
+
+        </div>
+
+        <div ng-show="isSelected('mods')">
+
+
+        </div>
+
+        <div ng-show="isSelected('plugins')"></div>
+
+
+        <div ng-show="isSelected('config')"></div>
+        <div ng-show="isSelected('comments')"></div>
     </div>
     <div title="SaveOverlay-wrapper">
     	Edit / Save / Cancel Overlay
