@@ -203,7 +203,7 @@ nav {
   display: block;
   background-color: $bar_color;
   white-space: nowrap;
-  border-bottom: 2px solid $soft_border_color;
+  //border-bottom: 2px solid $soft_border_color;
 }
 
 nav a {
@@ -585,7 +585,7 @@ input[type="submit"] {
   }
   .header-container {
     padding-top: 18px;//half of font size
-    padding-bottom: 18px;
+    padding-bottom: 16px;
   }
 }
 
@@ -597,7 +597,9 @@ input[type="submit"] {
     font-size: 18px;
     color: $text_color;
     font-weight: 500;
-    padding: 9px 16px 9px 16px;//half of font size high
+    padding: 9px 16px 0px 16px;//half of font size high
+    position: relative;
+    top: 16px;
   }
 }
 
@@ -726,7 +728,8 @@ input[type="submit"] {
 }
 
 .author-line {
-  font-style: italic;
+  font-size: 14px;
+  font-weight: 100;
 }
 
 .section-title {
