@@ -612,7 +612,6 @@ def seed_fake_comments
   end
 end
 
-
 def seed_fake_reviews
   # generate reviews on mods
   puts "\nSeeding reviews"
