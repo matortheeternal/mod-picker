@@ -30,7 +30,7 @@ context "fields" do
   describe "compatibility_type" do
     it "should be invalid if not included within valid list of types" do
       note = build(:compatibility_note,
-        compatibility_type: "Bazinga")
+        compatibility_type: "Homura")
 
       note.valid?
       expect(note.errors[:compatibility_type]).to include("Not a valid compatibility type")
@@ -40,14 +40,20 @@ context "fields" do
       note = build(:compatibility_note,
         compatibility_type: "Make Custom Patch")
 
-      expect(note).to be_valid
+      valid_types = ["Incompatible", "Partially Incompatible", "Compatibility Mod",
+                     "Compatibility Plugin", "Make Custom Patch"]
+
+      valid_types.each do |valid_type|
+        note.compatibility_type = valid_type
+        expect(note).to be_valid
+      end
     end
   end
 
   describe "submitted" do
     it "should set the proper date to DateTime.now creation" do
       note = create(:compatibility_note)
-      puts note.submitted
+
       expect(note.submitted).to be_within(1.minute).of DateTime.now
     end
 

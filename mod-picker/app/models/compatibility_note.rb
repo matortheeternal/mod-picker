@@ -30,19 +30,7 @@ class CompatibilityNote < ActiveRecord::Base
   
   def set_defaults
     self.submitted = DateTime.now
-  end     
-
-
-  # alternate method to allow defining of custom submitted Date
-
-  # def submitted_must_be_recent
-  #   puts "is this even being ran?"
-  #   if submitted.present? && submitted < Date.today
-  #     errors.add(:submitted, "Date upon creation must be equal to today")
-  #   elsif !submitted.present?
-  #     self.submitted = Date.today
-  #   end
-  # end                       
+  end                 
 
   def as_json(options={})
     super(:include => {
