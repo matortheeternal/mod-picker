@@ -9,7 +9,7 @@ app.config(['$routeProvider', function ($routeProvider) {
 app.controller('submitModController', function ($scope, backend, submitService) {
     useTwoColumns(false);
     $scope.nexusScraped = false;
-    var nexusUrlPattern = /(http[s]:\/\/{0,1}){0,1}www.nexusmods.com\/skyrim\/mods\/([0-9]{1,9})(\/\?){0,1}/i;
+    var nexusUrlPattern = /(http[s]:\/\/?)?www.nexusmods.com\/skyrim\/mods\/([0-9]+)(\/\?)?/i;
 
     $scope.urlInvalid = function () {
         return nexusUrlPattern.exec($scope.nexusUrl) == null
