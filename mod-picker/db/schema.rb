@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160328163615) do
+ActiveRecord::Schema.define(version: 20160329040352) do
 
   create_table "agreement_marks", id: false, force: :cascade do |t|
     t.integer "incorrect_note_id", limit: 4
@@ -260,7 +260,6 @@ ActiveRecord::Schema.define(version: 20160328163615) do
     t.integer "secondary_category_id", limit: 4
     t.integer "mod_stars_count",       limit: 4
     t.integer "reviews_count",         limit: 4
-    t.integer "comments_count",        limit: 4
     t.integer "mod_versions_count",    limit: 4
   end
 
