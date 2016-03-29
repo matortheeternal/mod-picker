@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160328163111) do
+ActiveRecord::Schema.define(version: 20160328163615) do
 
   create_table "agreement_marks", id: false, force: :cascade do |t|
     t.integer "incorrect_note_id", limit: 4
@@ -283,7 +283,6 @@ ActiveRecord::Schema.define(version: 20160328163111) do
     t.integer  "files_count",      limit: 2
     t.integer  "articles_count",   limit: 2
     t.integer  "nexus_category",   limit: 2
-    t.text     "changelog",        limit: 65535
     t.integer  "mod_id",           limit: 4
     t.integer  "game_id",          limit: 4
     t.string   "mod_name",         limit: 255
