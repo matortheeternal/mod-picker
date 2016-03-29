@@ -1,0 +1,8 @@
+<div class="header-tabs">
+    <div class="page-container">
+        <h1>{{title}}</h1>
+        <div class="tabs">
+			<a ng-repeat="tab in tabs" ng-click="select(tab)" ng-class="tab == currentTab ? 'selected-tab' : 'unselected-tab'"> {{tab.name}} </a>
+        </div>
+    </div>
+</div>

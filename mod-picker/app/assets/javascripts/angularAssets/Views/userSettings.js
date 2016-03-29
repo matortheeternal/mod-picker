@@ -3,42 +3,28 @@
  */
 app.config(['$routeProvider', function ($routeProvider) {
 
-    $routeProvider.when('/userSettings/:userSettingsId/profile', {
-            templateUrl: '/resources/partials/userSettings/profile.html',
-            controller: 'userSettingsController'
-        }
-    );
-    $routeProvider.when('/userSettings/:userSettingsId/account', {
-            templateUrl: '/resources/partials/userSettings/account.html',
-            controller: 'userSettingsController'
-        }
-    );
-    $routeProvider.when('/userSettings/:userSettingsId/reputation', {
-            templateUrl: '/resources/partials/userSettings/reputation.html',
-            controller: 'userSettingsController'
-        }
-    );
-    $routeProvider.when('/userSettings/:userSettingsId/modlists', {
-            templateUrl: '/resources/partials/userSettings/modlists.html',
-            controller: 'userSettingsController'
-        }
-    );
-    $routeProvider.when('/userSettings/:userSettingsId/authoredMods', {
-            templateUrl: '/resources/partials/userSettings/authoredMods.html',
-            controller: 'userSettingsController'
-        }
-    );
-    $routeProvider.when('/userSettings/:userSettingsId/installation', {
-            templateUrl: '/resources/partials/userSettings/installation.html',
+    $routeProvider.when('/settings', {
+            templateUrl: '/resources/partials/userSettings/userSettings.html',
             controller: 'userSettingsController'
         }
     );
 }]);
 
-app.controller('userSettingsController', function ($scope, $q, $routeParams, userSettingsService, userService) {
+app.controller('userSettingsController', function ($scope, $q, userSettingsService, userService) {
     useTwoColumns(false);
 
-    userSettingsService.retrieveUserSettings($routeParams.userSettingsId).then(function (userSettings) {
+    $scope.tabs = [
+        { name: 'Profile', url: '/resources/partials/userSettings/profile.html'},
+        { name: 'Account', url: '/resources/partials/userSettings/account.html'},
+        { name: 'reputation', url: '/resources/partials/userSettings/reputation.html'},
+        { name: 'Mod Lists', url: '/resources/partials/userSettings/modlists.html'},
+        { name: 'Authored Mods', url: '/resources/partials/userSettings/modlists.html'}
+    ];
+
+    $scope.currentTab = $scope.tabs[0];
+
+
+    userSettingsService.retrieveUserSettings().then(function (userSettings) {
         $scope.userSettings = userSettings;
         userService.retrieveUser(userSettings.user_id).then(function (user) {
             $scope.user = user;

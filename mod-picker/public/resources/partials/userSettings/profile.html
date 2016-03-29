@@ -1,30 +1,25 @@
-<settings-tabs current="profile"></settings-tabs>
-<div class="single-column">
-    <loader data="user">
-        <span class="section-title">Avatar</span>
-        <div class="section">
-            <img class="avatar" ng-src="{{user.avatar}}">
-            <input type="button" id="avatar-browse" class="btn" value="Browse" />
-        </div>
-
-        <span class="section-title">Title</span>
-        <div class="section">
-            <span class="explanation">(You need more reputation to change your title)</span>
-            <input type="text" ng-model="user.title"/>
-            <span class="quote">I used to be an adventurer like you, until I took an arrow to the knee.</span>
-        </div>
-
-
-        <span class="section-title">My Profile</span>
-        <div class="section">
-            <label>
-                <input type="checkbox" ng-model="userSettings.allow_comments">
-                Allow comments to be posted on your profile
-            </label>
-            <h3>About me</h3>
-            <textarea class="big-text-area" ng-model="user.about_me">{{user.about_me}}</textarea>
-        </div>
-
-        <input class="btn" id="save-changes" type="submit" value="Save Changes" ng-click="submit()"/>
-    </loader>
+<span class="section-title">Avatar</span>
+<div class="section">
+    <img class="avatar" ng-src="{{user.avatar}}">
+    <input type="button" id="avatar-browse" class="btn" value="Browse" />
 </div>
+
+<span class="section-title">Title</span>
+<div class="section">
+    <span class="explanation">(You need more reputation to change your title)</span>
+    <input type="text" ng-model="user.title"/>
+    <span class="quote">I used to be an adventurer like you, until I took an arrow to the knee.</span>
+</div>
+
+
+<span class="section-title">My Profile</span>
+<div class="section">
+    <label>
+        <input type="checkbox" ng-model="userSettings.allow_comments">
+        Allow comments to be posted on your profile
+    </label>
+    <h3>About me</h3>
+    <textarea class="big-text-area" ng-model="user.about_me">{{user.about_me}}</textarea>
+</div>
+
+<input class="btn" id="save-changes" type="submit" value="Save Changes" ng-click="submit()"/>
