@@ -11,7 +11,7 @@
             <a ng-click="currentTab ='details'" ng-class="cssClass('details')">Details</a>
             <a ng-click="currentTab ='tools'" ng-class="cssClass('tools')">Tools</a>
             <a ng-click="currentTab ='mods'" ng-class="cssClass('mods')">Mods</a>
-            <a ng-click="currentTab ='plugin'" ng-class="cssClass('plugin')">Plugin</a>
+            <a ng-click="currentTab ='plugins'" ng-class="cssClass('plugins')">Plugins</a>
             <a ng-click="currentTab ='config'" ng-class="cssClass('config')">Config</a>
             <a ng-click="currentTab ='comments'" ng-class="cssClass('comments')">Comments</a>
         </div>
@@ -22,7 +22,6 @@
     <div title="body">
     	<div ng-show="isSelected('details')">
             <div title='options'>  
-
             </div>
             <table title='overview' class='section-table'>
                 <colgroup>
@@ -78,17 +77,126 @@
         </div>
 
         <div ng-show="isSelected('tools')"> 
-
+        Tools
         </div>
 
         <div ng-show="isSelected('mods')">
-
-
+            <table title='overview' class='section-table'>
+                <colgroup>
+                    <col style="width: 40%">
+                    <col style="width: 60%">
+                </colgroup>
+                <thead>
+                    <tr>
+                        <th>
+                            <span class="section-title">Overview</span>
+                            Stability Rating   
+                        </th>
+                        <th>
+                            Details
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <ul class="hlist">
+                                <li>
+                                    <span class="modlist-status">[_] Stable</span> 
+                                </li>
+                                <li>
+                                    <span class="overview-total-number">999</span> 
+                                    <br>Partially Incompatible
+                                </li>
+                                <li>
+                                    <span class="overview-total-number">999</span> 
+                                    <br>Incompatible
+                                </li>
+                            </ul>
+                        </td>
+                        <td>
+                            <ul class="hlist">
+                                <li>
+                                    <span class="overview-total-number">999</span> 
+                                    <br>Compatible Mods
+                                </li>
+                                <li>
+                                    <span class="overview-total-number">999</span> 
+                                    <br>Compatible With Patch
+                                </li>
+                                <li>
+                                    <span class="overview-total-number">999</span> 
+                                    <br>Partially Incompatible
+                                </li>
+                                <li>
+                                    <span class="overview-total-number">999</span> 
+                                    <br>Incompatible
+                                </li>
+                            </ul>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>  
         </div>
 
-        <div ng-show="isSelected('plugins')"></div>
-
-
+        <div ng-show="isSelected('plugins')">
+            <table title='overview' class='section-table'>
+                <colgroup>
+                    <col style="width: 40%">
+                    <col style="width: 60%">
+                </colgroup>
+                <thead>
+                    <tr>
+                        <th>
+                            <span class="section-title">Overview</span>
+                            Stability Rating   
+                        </th>
+                        <th>
+                            Details
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <ul class="hlist">
+                                <li>
+                                    <span class="modlist-status">[_] Stable</span> 
+                                </li>
+                                <li>
+                                    <span class="overview-total-number">999</span> 
+                                    <br>Partially Incompatible
+                                </li>
+                                <li>
+                                    <span class="overview-total-number">999</span> 
+                                    <br>Incompatible
+                                </li>
+                            </ul>
+                        </td>
+                        <td>
+                            <ul class="hlist">
+                                <li>
+                                    <span class="overview-total-number">999</span> 
+                                    <br>Master Plugins
+                                </li>
+                                <li>
+                                    <span class="overview-total-number">999</span> 
+                                    <br>Standard Plugins
+                                </li>
+                                <li>
+                                    <span class="overview-total-number">999</span> 
+                                    <br>Patch Plugins
+                                </li>
+                                <li>
+                                    <span class="overview-total-number">999</span> 
+                                    <br>Custom Plugins
+                                </li>
+                            </ul>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
         <div ng-show="isSelected('config')"></div>
         <div ng-show="isSelected('comments')"></div>
     </div>
