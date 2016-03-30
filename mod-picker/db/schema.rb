@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160330213643) do
+ActiveRecord::Schema.define(version: 20160330214646) do
 
   create_table "agreement_marks", id: false, force: :cascade do |t|
     t.integer "incorrect_note_id", limit: 4
@@ -303,13 +303,11 @@ ActiveRecord::Schema.define(version: 20160330213643) do
   add_index "nexus_infos", ["game_id"], name: "fk_rails_46e3032463", using: :btree
 
   create_table "override_records", id: false, force: :cascade do |t|
-    t.integer "plugin_id",    limit: 4
-    t.integer "master_index", limit: 4
-    t.integer "form_id",      limit: 4
-    t.string  "sig",          limit: 4
+    t.integer "plugin_id", limit: 4
+    t.integer "form_id",   limit: 4
+    t.string  "sig",       limit: 4
   end
 
-  add_index "override_records", ["master_index"], name: "mst_id", using: :btree
   add_index "override_records", ["plugin_id"], name: "pl_id", using: :btree
 
   create_table "plugin_record_groups", id: false, force: :cascade do |t|
