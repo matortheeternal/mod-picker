@@ -12,10 +12,11 @@ class HelpfulMark < ActiveRecord::Base
 
   validates :helpful, inclusion: {in: [true, false], 
                                   message: "must be true or false"}
-
+  validates :helpfulable_type, inclusion: { in: ["CompatibilityNote", "InstallationNote", "Review"],
+                                            message: "Not a valid record that contains helpful marks"}                                
   after_initialize :init
 
   def init
-    self.submitted ||= Date.today
+    self.submitted ||= DateTime.now
   end                                  
 end
