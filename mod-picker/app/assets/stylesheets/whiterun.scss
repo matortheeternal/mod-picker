@@ -39,8 +39,9 @@ $slider_circle_color_after: #205098;
 
 
 /* imports */
-@import 'global',
-        'header',
+@import 'general/global',
+        'general/header',
+        'general/footer',
         'components/categoryTree',
         'components/expandable',
         'pages/devise',
