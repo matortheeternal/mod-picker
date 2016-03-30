@@ -26,10 +26,10 @@ class CompatibilityNote < ActiveRecord::Base
   
   # validate :submitted_must_be_recent, on: :create
 
-  after_create :set_defaults
+  after_initialize :init
   
-  def set_defaults
-    self.submitted = DateTime.now
+  def init
+    self.submitted ||= DateTime.now
   end                 
 
   def as_json(options={})

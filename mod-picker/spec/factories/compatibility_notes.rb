@@ -4,5 +4,4 @@ FactoryGirl.define do
     compatibility_type "Incompatible"
     text_body { Faker::Lorem.sentence(20, false, 6) }
   end
-
 end

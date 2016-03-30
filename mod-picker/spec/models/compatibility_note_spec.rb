@@ -51,7 +51,7 @@ context "fields" do
   end
 
   describe "submitted" do
-    it "should set the proper date to DateTime.now creation" do
+    it "should set the proper date to DateTime.now upon creation" do
       note = create(:compatibility_note)
 
       expect(note.submitted).to be_within(1.minute).of DateTime.now
