@@ -38,13 +38,4 @@ $slider_range_color: #6e8c8e;
 $slider_circle_color_after: #2f443d;
 
 
-/* imports */
-@import 'general/global',
-        'general/header',
-        'general/footer',
-        'components/categoryTree',
-        'components/expandable',
-        'pages/devise',
-        'pages/browse',
-        'pages/submitMod',
-        'pages/userSettings';
+@import 'main';
