@@ -7,7 +7,6 @@ class Mod < ActiveRecord::Base
   scope :category, -> (category) { where("primary_category_id=? OR secondary_category_id=?", "#{category}%", "#{category}%") }
   scope :stars, -> (low, high) { where(user_stars_count: (low..high)) }
   scope :reviews, -> (low, high) { where(reviews_count: (low..high)) }
-  scope :comments, -> (low, high) { where(comments_count: (low..high)) }
   scope :versions, -> (low, high) { where(mod_versions_count: (low..high)) }
   scope :released, -> (low, high) { where(:nexus_infos => {date_released: (low..high)}) }
   scope :updated, -> (low, high) { where(:nexus_infos => {date_updated: (low..high)} ) }
@@ -39,7 +38,6 @@ class Mod < ActiveRecord::Base
   has_many :authors, :through => 'mod_authors', :inverse_of => 'mods'
 
   has_many :reviews, :inverse_of => 'mod', :counter_cache => true
-  has_many :comments, :as => 'commentable', :counter_cache => true
 
   accepts_nested_attributes_for :mod_versions
 
