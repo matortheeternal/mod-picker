@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160330230315) do
+ActiveRecord::Schema.define(version: 20160330230504) do
 
   create_table "agreement_marks", id: false, force: :cascade do |t|
     t.integer "incorrect_note_id", limit: 4
@@ -75,6 +75,13 @@ ActiveRecord::Schema.define(version: 20160330230315) do
     t.string "exe_name",      limit: 32
     t.string "steam_app_ids", limit: 64
     t.string "nexus_name",    limit: 16
+  end
+
+  create_table "help_pages", force: :cascade do |t|
+    t.string   "name",      limit: 128,   null: false
+    t.datetime "submitted"
+    t.datetime "edited"
+    t.text     "text_body", limit: 65535
   end
 
   create_table "helpful_marks", id: false, force: :cascade do |t|
