@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160330230808) do
+ActiveRecord::Schema.define(version: 20160330231514) do
 
   create_table "agreement_marks", id: false, force: :cascade do |t|
     t.integer "incorrect_note_id", limit: 4
@@ -181,15 +181,6 @@ ActiveRecord::Schema.define(version: 20160330230808) do
   add_index "mod_authors", ["mod_id"], name: "mod_id", using: :btree
   add_index "mod_authors", ["user_id"], name: "user_id", using: :btree
 
-  create_table "mod_list_compatibility_notes", id: false, force: :cascade do |t|
-    t.integer "mod_list_id",           limit: 4
-    t.integer "compatibility_note_id", limit: 4
-    t.enum    "status",                limit: ["Resolved", "Ignored"]
-  end
-
-  add_index "mod_list_compatibility_notes", ["compatibility_note_id"], name: "cn_id", using: :btree
-  add_index "mod_list_compatibility_notes", ["mod_list_id"], name: "ml_id", using: :btree
-
   create_table "mod_list_custom_plugins", id: false, force: :cascade do |t|
     t.integer "mod_list_id", limit: 4
     t.boolean "active"
@@ -218,6 +209,16 @@ ActiveRecord::Schema.define(version: 20160330230808) do
 
   add_index "mod_list_mods", ["mod_id"], name: "mod_id", using: :btree
   add_index "mod_list_mods", ["mod_list_id"], name: "ml_id", using: :btree
+
+  create_table "mod_list_notes", id: false, force: :cascade do |t|
+    t.integer "mod_list_id", limit: 4
+    t.integer "note_id",     limit: 4
+    t.enum    "status",      limit: ["Unresolved", "Resolved", "Ignored"], default: "Unresolved"
+    t.string  "note_type",   limit: 255
+  end
+
+  add_index "mod_list_notes", ["mod_list_id"], name: "ml_id", using: :btree
+  add_index "mod_list_notes", ["note_id"], name: "cn_id", using: :btree
 
   create_table "mod_list_plugins", id: false, force: :cascade do |t|
     t.integer "mod_list_id", limit: 4
@@ -572,13 +573,12 @@ ActiveRecord::Schema.define(version: 20160330230808) do
   add_foreign_key "masters", "plugins", name: "masters_ibfk_1"
   add_foreign_key "mod_authors", "mods", name: "mod_authors_ibfk_1"
   add_foreign_key "mod_authors", "users", name: "mod_authors_ibfk_2"
-  add_foreign_key "mod_list_compatibility_notes", "compatibility_notes", name: "mod_list_compatibility_notes_ibfk_2"
-  add_foreign_key "mod_list_compatibility_notes", "mod_lists", name: "mod_list_compatibility_notes_ibfk_1"
   add_foreign_key "mod_list_custom_plugins", "mod_lists", name: "mod_list_custom_plugins_ibfk_1"
   add_foreign_key "mod_list_installation_notes", "installation_notes", name: "mod_list_installation_notes_ibfk_2"
   add_foreign_key "mod_list_installation_notes", "mod_lists", name: "mod_list_installation_notes_ibfk_1"
   add_foreign_key "mod_list_mods", "mod_lists", name: "mod_list_mods_ibfk_1"
   add_foreign_key "mod_list_mods", "mods", name: "mod_list_mods_ibfk_2"
+  add_foreign_key "mod_list_notes", "mod_lists", name: "mod_list_notes_ibfk_1"
   add_foreign_key "mod_list_plugins", "mod_lists", name: "mod_list_plugins_ibfk_1"
   add_foreign_key "mod_list_plugins", "plugins", name: "mod_list_plugins_ibfk_2"
   add_foreign_key "mod_list_stars", "mod_lists", name: "mod_list_stars_ibfk_1"
