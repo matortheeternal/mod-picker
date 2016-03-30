@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160330214646) do
+ActiveRecord::Schema.define(version: 20160330221319) do
 
   create_table "agreement_marks", id: false, force: :cascade do |t|
     t.integer "incorrect_note_id", limit: 4
@@ -196,6 +196,17 @@ ActiveRecord::Schema.define(version: 20160330214646) do
   add_index "mod_list_stars", ["mod_list_id"], name: "ml_id", using: :btree
   add_index "mod_list_stars", ["user_id"], name: "user_id", using: :btree
 
+  create_table "mod_list_tags", force: :cascade do |t|
+    t.string  "tag",          limit: 255, null: false
+    t.integer "game_id",      limit: 4,   null: false
+    t.integer "mod_list_id",  limit: 4,   null: false
+    t.integer "submitted_by", limit: 4,   null: false
+  end
+
+  add_index "mod_list_tags", ["game_id"], name: "fk_rails_d66868d065", using: :btree
+  add_index "mod_list_tags", ["mod_list_id"], name: "fk_rails_7de991735e", using: :btree
+  add_index "mod_list_tags", ["submitted_by"], name: "fk_rails_4ab6737116", using: :btree
+
   create_table "mod_lists", force: :cascade do |t|
     t.integer "created_by",                limit: 4
     t.boolean "is_collection"
@@ -227,13 +238,15 @@ ActiveRecord::Schema.define(version: 20160330214646) do
   add_index "mod_stars", ["user_id"], name: "user_id", using: :btree
 
   create_table "mod_tags", id: false, force: :cascade do |t|
-    t.integer "game_id", limit: 4,   null: false
-    t.integer "mod_id",  limit: 4,   null: false
-    t.string  "tag",     limit: 255, null: false
+    t.integer "game_id",      limit: 4,   null: false
+    t.integer "mod_id",       limit: 4,   null: false
+    t.string  "tag",          limit: 255, null: false
+    t.integer "submitted_by", limit: 4
   end
 
   add_index "mod_tags", ["game_id"], name: "fk_rails_6c1757f897", using: :btree
   add_index "mod_tags", ["mod_id"], name: "fk_rails_5ab248dd85", using: :btree
+  add_index "mod_tags", ["submitted_by"], name: "fk_rails_ad8ec1982c", using: :btree
 
   create_table "mod_version_compatibility_notes", id: false, force: :cascade do |t|
     t.integer "mod_version_id",        limit: 4
@@ -522,12 +535,16 @@ ActiveRecord::Schema.define(version: 20160330214646) do
   add_foreign_key "mod_list_plugins", "plugins", name: "mod_list_plugins_ibfk_2"
   add_foreign_key "mod_list_stars", "mod_lists", name: "mod_list_stars_ibfk_1"
   add_foreign_key "mod_list_stars", "users", name: "mod_list_stars_ibfk_2"
+  add_foreign_key "mod_list_tags", "games"
+  add_foreign_key "mod_list_tags", "mod_lists"
+  add_foreign_key "mod_list_tags", "users", column: "submitted_by"
   add_foreign_key "mod_lists", "games"
   add_foreign_key "mod_lists", "users", column: "created_by", name: "mod_lists_ibfk_1"
   add_foreign_key "mod_stars", "mods", name: "mod_stars_ibfk_1"
   add_foreign_key "mod_stars", "users", name: "mod_stars_ibfk_2"
   add_foreign_key "mod_tags", "games"
   add_foreign_key "mod_tags", "mods"
+  add_foreign_key "mod_tags", "users", column: "submitted_by"
   add_foreign_key "mod_version_compatibility_notes", "compatibility_notes"
   add_foreign_key "mod_version_compatibility_notes", "mod_versions"
   add_foreign_key "mod_version_files", "mod_asset_files", name: "mod_version_files_ibfk_2"
