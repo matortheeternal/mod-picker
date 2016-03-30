@@ -10,7 +10,7 @@ require 'rails_helper'
 # end
 
 
-RSpec.describe IncorrectNote, :model, :wip do
+RSpec.describe IncorrectNote, :model do
   it "should be valid with factory parameters" do
     note = build(:incorrect_note)
     expect(note).to be_valid
@@ -96,5 +96,8 @@ RSpec.describe IncorrectNote, :model, :wip do
         expect(note.created_at).to be_within(1.minute).of DateTime.now
       end
     end
+
+    # IDEA: validate datetime type for incorrect_note?
+    # blank fields are currently valid.
   end
 end

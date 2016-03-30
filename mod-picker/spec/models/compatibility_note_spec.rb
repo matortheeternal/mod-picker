@@ -66,13 +66,15 @@ context "fields" do
     end
   end
 
-  xdescribe "edited" do
-   it "should be valid under x circumstances" do
-   end
 
-   it "should be invalid under y circumstances" do
-   end
- end
+  # TODO: add tests for compatibility notes edited field
+  #  xdescribe "edited" do
+  #   it "should be valid under x circumstances" do
+  #   end
+
+  #   it "should be invalid under y circumstances" do
+  #   end
+  # end
 
  describe "text_body" do
   it "should be valid with 64 < Length < 16384" do
