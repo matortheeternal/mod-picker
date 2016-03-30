@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe CompatibilityNote, :model, :wip do
+RSpec.describe CompatibilityNote, :model do
   it "should be valid with factory parameters" do
     note = build(:compatibility_note)
 
