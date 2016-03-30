@@ -17,6 +17,7 @@
                 <a ng-click="currentTab ='plugins'" ng-class="cssClass('plugins')">Plugins</a>
                 <a ng-click="currentTab ='config'" ng-class="cssClass('config')">Config</a>
                 <a ng-click="currentTab ='comments'" ng-class="cssClass('comments')">Comments</a>
+                <button ng-click="debugFunc()">debug</button>
             </div>
         </div>
     </div>
@@ -160,7 +161,24 @@
         </div>
 
         <div ng-show="isSelected('tools')"> 
-        Tools
+            <table title='modlist-tools' class='section-table'>
+                <colgroup>
+                    <col style="width: 25%">
+                    <col style="width: 75%">
+                </colgroup>
+                <thead>
+                    <tr>
+                        <th>
+                            <span class="section-title">Tools</span>
+                            <br>
+                        </th>
+                        <th style="text-align: right">
+                             <a ng-click="curToolsSecTab = 'list'" ng-class="cssChange('tools','list')">List</a><a ng-click="curToolsSecTab = 'tiles'" ng-class="cssChange('tools','tiles')">Tiles</a>
+                        </th>
+                    </tr>
+                </thead>
+            </table> 
+            <div> This is a Test</div>
         </div>
 
         <div ng-show="isSelected('mods')">
@@ -280,7 +298,62 @@
                 </tbody>
             </table>
         </div>
-        <div ng-show="isSelected('config')"></div>
+        <div ng-show="isSelected('config')">
+            <table title='Skyrim Configuration Files' class='section-table'>
+                <colgroup>
+                    <col style="width: 100%">
+                </colgroup>
+                <thead>
+                    <tr>
+                        <th>
+                            <span class="section-title">Custom Settings & Preferences</span>
+                            <br>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <ul class="tblist">
+                                <li ng-show='bIsEditing'>
+                                    <textarea>{{longDescTextArea}}</textarea>
+                                </li>
+                                <li ng-hide='bIsEditing'>
+                                    {{longDescTextArea}}
+                                </li>
+                            </ul>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <table title='ENB Configuration Files' class='section-table'>
+                <colgroup>
+                    <col style="width: 100%">
+                </colgroup>
+                <thead>
+                    <tr>
+                        <th>
+                            <span class="section-title">Custom ENB Settings</span>
+                            <br>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <ul class="tblist">
+                                <li ng-show='bIsEditing'>
+                                    <textarea>{{longDescTextArea}}</textarea>
+                                </li>
+                                <li ng-hide='bIsEditing'>
+                                    {{longDescTextArea}}
+                                </li>
+                            </ul>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>     
+        </div>
         <div ng-show="isSelected('comments')"></div>
     </div>
     <div title="SaveOverlay-wrapper">
