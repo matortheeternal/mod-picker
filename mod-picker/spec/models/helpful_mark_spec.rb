@@ -71,7 +71,7 @@ RSpec.describe HelpfulMark, :model, :wip do
     end
 
     describe "submitted" do
-      it "should be initialize with Date.now" do
+      it "should be initialized with DateTime.now" do
         mark = build(:helpful_mark)
 
         expect(mark).to be_valid
