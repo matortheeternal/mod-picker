@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160330225845) do
+ActiveRecord::Schema.define(version: 20160330230315) do
 
   create_table "agreement_marks", id: false, force: :cascade do |t|
     t.integer "incorrect_note_id", limit: 4
@@ -126,6 +126,19 @@ ActiveRecord::Schema.define(version: 20160330225845) do
 
   add_index "installation_notes", ["mod_version_id"], name: "mv_id", using: :btree
   add_index "installation_notes", ["submitted_by"], name: "submitted_by", using: :btree
+
+  create_table "load_order_notes", force: :cascade do |t|
+    t.integer  "submitted_by", limit: 4,     null: false
+    t.integer  "load_first",   limit: 4,     null: false
+    t.integer  "load_second",  limit: 4,     null: false
+    t.datetime "submitted"
+    t.datetime "edited"
+    t.text     "text_body",    limit: 65535
+  end
+
+  add_index "load_order_notes", ["load_first"], name: "fk_rails_d6c931c1cc", using: :btree
+  add_index "load_order_notes", ["load_second"], name: "fk_rails_af9e3c9509", using: :btree
+  add_index "load_order_notes", ["submitted_by"], name: "fk_rails_9992d700a9", using: :btree
 
   create_table "lover_infos", force: :cascade do |t|
     t.integer "mod_id", limit: 4
@@ -537,6 +550,9 @@ ActiveRecord::Schema.define(version: 20160330225845) do
   add_foreign_key "install_order_notes", "users", column: "submitted_by"
   add_foreign_key "installation_notes", "mod_versions", name: "installation_notes_ibfk_2"
   add_foreign_key "installation_notes", "users", column: "submitted_by", name: "installation_notes_ibfk_1"
+  add_foreign_key "load_order_notes", "plugins", column: "load_first"
+  add_foreign_key "load_order_notes", "plugins", column: "load_second"
+  add_foreign_key "load_order_notes", "users", column: "submitted_by"
   add_foreign_key "masters", "plugins", name: "masters_ibfk_1"
   add_foreign_key "mod_authors", "mods", name: "mod_authors_ibfk_1"
   add_foreign_key "mod_authors", "users", name: "mod_authors_ibfk_2"
