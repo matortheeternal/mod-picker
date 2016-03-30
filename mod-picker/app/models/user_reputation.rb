@@ -1,7 +1,7 @@
 class UserReputation < ActiveRecord::Base
   include Filterable
 
-  after_create :init
+  after_initialize :init
 
   belongs_to :user
 
