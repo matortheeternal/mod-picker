@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160330222644) do
+ActiveRecord::Schema.define(version: 20160330223230) do
 
   create_table "agreement_marks", id: false, force: :cascade do |t|
     t.integer "incorrect_note_id", limit: 4
@@ -152,8 +152,8 @@ ActiveRecord::Schema.define(version: 20160330222644) do
   create_table "mod_list_custom_plugins", id: false, force: :cascade do |t|
     t.integer "mod_list_id", limit: 4
     t.boolean "active"
-    t.integer "load_order",  limit: 2
-    t.string  "title",       limit: 64
+    t.integer "index",       limit: 2
+    t.string  "filename",    limit: 64
     t.text    "description", limit: 65535
   end
 
