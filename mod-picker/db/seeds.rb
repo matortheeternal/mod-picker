@@ -8,6 +8,7 @@ bSeedReviews = true
 bSeedCNotes = true
 bSeedINotes = true
 bSeedModAuthors = true
+bSeedFakeMods = false
 bSeedModLists = true
 
 #==================================================
@@ -28,4 +29,5 @@ seed_fake_reviews if bSeedReviews
 seed_fake_compatibility_notes if bSeedCNotes
 seed_fake_installation_notes if bSeedINotes
 seed_fake_mod_authors if bSeedModAuthors
+seed_fake_mods if bSeedFakeMods
 seed_fake_mod_lists if bSeedModLists
