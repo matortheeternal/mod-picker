@@ -689,6 +689,18 @@ input[type="submit"] {
 
 }
 
+.author-line {
+  font-size: 14px;
+  font-weight: 100;
+}
+
+.section-title {
+  text-align: left;
+  padding-top: 5px;
+  padding-bottom: 4px;
+
+}
+
 
 .section-table {
   width: 100%;
@@ -697,63 +709,50 @@ input[type="submit"] {
   border: 1px solid $hard_border_color;
   margin-top: 55px;
   thead {
-    text-align: left;
+    text-align: right;
     vertical-align: bottom;
     border-bottom: 1px solid $hard_border_color;
   } 
-  th {
-    padding-left:10px;
-    padding-bottom: 4px;
-    font-size: 14px;
-    font-weight: 500;
-  }
   tbody {
     background-color: $primary_background;
     font-size: 12px;
     font-weight: 500;
   }
+  th {
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-bottom: 4px;
+    font-size: 14px;
+    font-weight: 500;
+  }
+  a {
+    padding-right: 20px;
+  }
+
   td {
     text-align: center;
     background-color: $primary_background;
-    padding-top: 10px;
-    padding-bottom: 10px;
     border-left: 1px solid $hard_border_color;
-  }
-  a {
-    padding-left: 10px;
-    padding-right: 10px;
   }
 }
 
+.overview-table {
+  @extend .section-table;
+  thead {
+    text-align: left;
+    vertical-align: bottom;
+  } 
+  td {
+    padding-top: 10px;
+    padding-bottom: 10px;
+
+  }
+}
 
 .overview-total-number {
   font-size: 24px;
 }
 
-.author-line {
-  font-size: 14px;
-  font-weight: 100;
-}
-
-.section-title {
-  padding-top: 5px;
-  padding-bottom: 4px;
-
-}
-
-.hlist {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  text-align: center;
-
-  li {
-    vertical-align: middle;
-    display: inline-block;
-    padding-left:  5%;
-    padding-right: 5%;
-  }
-}
 
 
 .list {
@@ -763,6 +762,22 @@ input[type="submit"] {
   text-align: left;
   display: block;
 }
+
+
+
+.olist {
+  @extend .list;
+  margin: 0;
+  text-align: center;
+  li {
+    vertical-align: middle;
+    display: inline-block;
+    width:23%;
+    padding-left:  2%;
+    padding-right: 2%;
+  }
+}
+
 
 .flist {
   @extend .list;
@@ -808,6 +823,7 @@ input[type="submit"] {
 .modlist-status {
   font-size: 24px;
 }
+
 .section-selected-tab {
   opacity: 1;
 

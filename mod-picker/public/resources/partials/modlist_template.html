@@ -80,7 +80,7 @@
                     </tr>
                 </tbody>
             </table> 
-            <table title='overview' class='section-table'>
+            <table title='overview' class='overview-table'>
                 <colgroup>
                     <col style="width: 25%">
                     <col style="width: 55%">
@@ -103,7 +103,7 @@
                 <tbody>
                     <tr>
                         <td>
-                            <ul class="hlist">
+                            <ul class="olist">
                                 <li>
                                     <span class="overview-total-number">999</span> 
                                     <br>Tools
@@ -131,6 +131,7 @@
                     </tr>
                 </tbody>
             </table>
+
             <table title='modlist-details' class='section-table'>
                 <colgroup>
                     <col style="width: 100%">
@@ -152,6 +153,10 @@
                                 </li>
                                 <li ng-hide='bIsEditing'>
                                     {{longDescTextArea}}
+
+                                    {{longDescTextArea}}
+                                    
+                                    {{longDescTextArea}}
                                 </li>
                             </ul>
                         </td>
@@ -163,8 +168,8 @@
         <div ng-show="isSelected('tools')"> 
             <table title='modlist-tools' class='section-table'>
                 <colgroup>
-                    <col style="width: 25%">
                     <col style="width: 75%">
+                    <col style="width: 25%">
                 </colgroup>
                 <thead>
                     <tr>
@@ -182,7 +187,7 @@
         </div>
 
         <div ng-show="isSelected('mods')">
-            <table title='overview' class='section-table'>
+            <table title='overview' class='overview-table'>
                 <colgroup>
                     <col style="width: 40%">
                     <col style="width: 60%">
@@ -201,9 +206,11 @@
                 <tbody>
                     <tr>
                         <td>
-                            <ul class="hlist">
+                            <ul class="olist">
                                 <li>
                                     <span class="modlist-status">[_] Stable</span> 
+                                </li>
+                                <li>
                                 </li>
                                 <li>
                                     <span class="overview-total-number">999</span> 
@@ -216,7 +223,7 @@
                             </ul>
                         </td>
                         <td>
-                            <ul class="hlist">
+                            <ul class="olist">
                                 <li>
                                     <span class="overview-total-number">999</span> 
                                     <br>Compatible Mods
@@ -237,11 +244,28 @@
                         </td>
                     </tr>
                 </tbody>
+            </table> 
+            <table title='modlist-mods' class='section-table'>
+                <colgroup>
+                    <col style="width: 25%">
+                    <col style="width: 75%">
+                </colgroup>
+                <thead>
+                    <tr>
+                        <th>
+                            <span class="section-title">Mods</span>
+                            <br>
+                        </th>
+                        <th style="text-align: right">
+                             <a ng-click="curModsSecTab = 'list'" ng-class="cssChange('mods','list')">List</a><a ng-click="curModsSecTab = 'tiles'" ng-class="cssChange('mods','tiles')">Tiles</a>
+                        </th>
+                    </tr>
+                </thead>
             </table>  
         </div>
 
         <div ng-show="isSelected('plugins')">
-            <table title='overview' class='section-table'>
+            <table title='overview' class='overview-table'>
                 <colgroup>
                     <col style="width: 40%">
                     <col style="width: 60%">
@@ -260,9 +284,11 @@
                 <tbody>
                     <tr>
                         <td>
-                            <ul class="hlist">
+                            <ul class="olist">
                                 <li>
                                     <span class="modlist-status">[_] Stable</span> 
+                                </li>
+                                <li>
                                 </li>
                                 <li>
                                     <span class="overview-total-number">999</span> 
@@ -275,7 +301,7 @@
                             </ul>
                         </td>
                         <td>
-                            <ul class="hlist">
+                            <ul class="olist">
                                 <li>
                                     <span class="overview-total-number">999</span> 
                                     <br>Master Plugins
@@ -297,9 +323,27 @@
                     </tr>
                 </tbody>
             </table>
+            <table title='modlist-plugins' class='section-table'>
+                <colgroup>
+                    <col style="width: 25%">
+                    <col style="width: 75%">
+                </colgroup>
+                <thead>
+                    <tr>
+                        <th>
+                            <span class="section-title">Plugins</span>
+                            <br>
+                        </th>
+                        <th style="text-align: right">
+                             <a ng-click="curPluginSecTab = 'list'" ng-class="cssChange('plugins','list')">List</a><a ng-click="curPluginSecTab = 'tiles'" ng-class="cssChange('plugins','tiles')">Tiles</a>
+                        </th>
+                    </tr>
+                </thead>
+            </table>              
         </div>
+
         <div ng-show="isSelected('config')">
-            <table title='Skyrim Configuration Files' class='section-table'>
+            <table title='Skyrim Configuration Files' class='overview-table'>
                 <colgroup>
                     <col style="width: 100%">
                 </colgroup>
@@ -354,7 +398,22 @@
                 </tbody>
             </table>     
         </div>
-        <div ng-show="isSelected('comments')"></div>
+
+        <div ng-show="isSelected('comments')">
+            <table title='Comments' class='section-table'>
+                <colgroup>
+                    <col style="width: 100%">
+                </colgroup>
+                <thead>
+                    <tr>
+                        <th>
+                            <span class="section-title">Comments</span>
+                            <br>
+                        </th>
+                    </tr>
+                </thead>
+            </table>     
+        </div>
     </div>
     <div title="SaveOverlay-wrapper">
     	Edit / Save / Cancel Overlay

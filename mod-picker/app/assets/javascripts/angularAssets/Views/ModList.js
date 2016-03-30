@@ -12,6 +12,7 @@ app.config(['$routeProvider', function ($routeProvider) {
 app.controller('modlistController', function($scope, $log) {
 	/*config*/
 	useTwoColumns(false);
+	$scope.bIsEditing = false;
 	/*vars - Later down the road these will turn into GET functions*/
 	$scope.modlistTitle = "My Super Cool Mod List With All The Good Mods - With ENB";
     $scope.currentTab = 'details';
@@ -30,12 +31,11 @@ app.controller('modlistController', function($scope, $log) {
 	$scope.bIsCollection = true;
 
 	$scope.shortDescTextArea = 'Provide a short description of your mod list';
-	$scope.bIsEditing = true;
 
 	$scope.curToolsSecTab = 'list';
 	$scope.curModsSecTab = 'list';
 	$scope.curPluginSecTab = 'list';
-	$scope.curSkyConfigTab = 'Skyrim.ini';
+	$scope.curSkyConfigTab = 'skyrim.ini';
 	$scope.curENBConfigTab = 'enblocal.ini';
 
    /*functions*/
@@ -75,6 +75,7 @@ app.controller('modlistController', function($scope, $log) {
 
     $scope.debugFunc = function() {
     	$log.debug($scope.curToolsSecTab);
+    	$scope.bIsEditing = true;
     };
     
 
