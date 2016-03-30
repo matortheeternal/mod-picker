@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160330232408) do
+ActiveRecord::Schema.define(version: 20160330232704) do
 
   create_table "agreement_marks", id: false, force: :cascade do |t|
     t.integer "incorrect_note_id", limit: 4
@@ -314,6 +314,14 @@ ActiveRecord::Schema.define(version: 20160330232408) do
   add_index "mod_version_install_order_notes", ["install_order_note_id"], name: "fk_rails_2ccfdfb9a9", using: :btree
   add_index "mod_version_install_order_notes", ["mod_version_id"], name: "fk_rails_51c3a3246e", using: :btree
 
+  create_table "mod_version_load_order_notes", force: :cascade do |t|
+    t.integer "mod_version_id",     limit: 4, null: false
+    t.integer "load_order_note_id", limit: 4, null: false
+  end
+
+  add_index "mod_version_load_order_notes", ["load_order_note_id"], name: "fk_rails_3fe49e6f08", using: :btree
+  add_index "mod_version_load_order_notes", ["mod_version_id"], name: "fk_rails_a736a782a4", using: :btree
+
   create_table "mod_versions", force: :cascade do |t|
     t.integer "mod_id",    limit: 4
     t.date    "released"
@@ -607,6 +615,8 @@ ActiveRecord::Schema.define(version: 20160330232408) do
   add_foreign_key "mod_version_files", "mod_versions", name: "mod_version_files_ibfk_1"
   add_foreign_key "mod_version_install_order_notes", "install_order_notes"
   add_foreign_key "mod_version_install_order_notes", "mod_versions"
+  add_foreign_key "mod_version_load_order_notes", "load_order_notes"
+  add_foreign_key "mod_version_load_order_notes", "mod_versions"
   add_foreign_key "mod_versions", "mods", name: "mod_versions_ibfk_1"
   add_foreign_key "mods", "categories", column: "primary_category_id"
   add_foreign_key "mods", "categories", column: "secondary_category_id"
