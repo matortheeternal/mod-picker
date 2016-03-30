@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160325213623) do
+ActiveRecord::Schema.define(version: 20160330065400) do
 
   create_table "agreement_marks", id: false, force: :cascade do |t|
     t.integer "incorrect_note_id", limit: 4
@@ -224,6 +224,15 @@ ActiveRecord::Schema.define(version: 20160325213623) do
   add_index "mod_stars", ["mod_id"], name: "mod_id", using: :btree
   add_index "mod_stars", ["user_id"], name: "user_id", using: :btree
 
+  create_table "mod_tags", id: false, force: :cascade do |t|
+    t.integer "game_id", limit: 4,   null: false
+    t.integer "mod_id",  limit: 4,   null: false
+    t.string  "tag",     limit: 255, null: false
+  end
+
+  add_index "mod_tags", ["game_id"], name: "fk_rails_6c1757f897", using: :btree
+  add_index "mod_tags", ["mod_id"], name: "fk_rails_5ab248dd85", using: :btree
+
   create_table "mod_version_compatibility_notes", id: false, force: :cascade do |t|
     t.integer "mod_version_id",        limit: 4
     t.integer "compatibility_note_id", limit: 4
@@ -260,7 +269,6 @@ ActiveRecord::Schema.define(version: 20160325213623) do
     t.integer "secondary_category_id", limit: 4
     t.integer "mod_stars_count",       limit: 4
     t.integer "reviews_count",         limit: 4
-    t.integer "comments_count",        limit: 4
     t.integer "mod_versions_count",    limit: 4
   end
 
@@ -283,7 +291,6 @@ ActiveRecord::Schema.define(version: 20160325213623) do
     t.integer  "files_count",      limit: 2
     t.integer  "articles_count",   limit: 2
     t.integer  "nexus_category",   limit: 2
-    t.text     "changelog",        limit: 65535
     t.integer  "mod_id",           limit: 4
     t.integer  "game_id",          limit: 4
     t.string   "mod_name",         limit: 255
@@ -322,6 +329,14 @@ ActiveRecord::Schema.define(version: 20160325213623) do
 
   add_index "plugins", ["mod_version_id"], name: "mv_id", using: :btree
 
+  create_table "quotes", force: :cascade do |t|
+    t.integer "game_id", limit: 4,   null: false
+    t.string  "text",    limit: 255, null: false
+    t.string  "label",   limit: 32,  null: false
+  end
+
+  add_index "quotes", ["game_id"], name: "fk_rails_273247f4b3", using: :btree
+
   create_table "record_groups", force: :cascade do |t|
     t.integer "game_id",     limit: 4
     t.string  "signature",   limit: 4
@@ -339,6 +354,20 @@ ActiveRecord::Schema.define(version: 20160325213623) do
   add_index "reputation_links", ["from_rep_id"], name: "from_rep_id", using: :btree
   add_index "reputation_links", ["to_rep_id"], name: "to_rep_id", using: :btree
 
+  create_table "review_templates", force: :cascade do |t|
+    t.string   "name",         limit: 255, null: false
+    t.integer  "submitted_by", limit: 4,   null: false
+    t.datetime "submitted"
+    t.datetime "edited"
+    t.string   "section1",     limit: 32,  null: false
+    t.string   "section2",     limit: 32
+    t.string   "section3",     limit: 32
+    t.string   "section4",     limit: 32
+    t.string   "section5",     limit: 32
+  end
+
+  add_index "review_templates", ["submitted_by"], name: "fk_rails_82a9747962", using: :btree
+
   create_table "reviews", force: :cascade do |t|
     t.integer "submitted_by",          limit: 4
     t.integer "mod_id",                limit: 4
@@ -352,10 +381,24 @@ ActiveRecord::Schema.define(version: 20160325213623) do
     t.date    "edited"
     t.text    "text_body",             limit: 65535
     t.integer "incorrect_notes_count", limit: 4
+    t.integer "review_template_id",    limit: 4
   end
 
   add_index "reviews", ["mod_id"], name: "mod_id", using: :btree
+  add_index "reviews", ["review_template_id"], name: "fk_rails_5c78eb49fd", using: :btree
   add_index "reviews", ["submitted_by"], name: "submitted_by", using: :btree
+
+  create_table "tags", force: :cascade do |t|
+    t.string  "text",            limit: 255,                 null: false
+    t.integer "game_id",         limit: 4,                   null: false
+    t.integer "submitted_by",    limit: 4,                   null: false
+    t.integer "mods_count",      limit: 4
+    t.integer "mod_lists_count", limit: 4
+    t.boolean "disabled",                    default: false
+  end
+
+  add_index "tags", ["game_id"], name: "fk_rails_21222987c6", using: :btree
+  add_index "tags", ["submitted_by"], name: "fk_rails_8c7521065c", using: :btree
 
   create_table "user_bios", force: :cascade do |t|
     t.string  "nexus_username",           limit: 32
@@ -483,6 +526,8 @@ ActiveRecord::Schema.define(version: 20160325213623) do
   add_foreign_key "mod_lists", "users", column: "created_by", name: "mod_lists_ibfk_1"
   add_foreign_key "mod_stars", "mods", name: "mod_stars_ibfk_1"
   add_foreign_key "mod_stars", "users", name: "mod_stars_ibfk_2"
+  add_foreign_key "mod_tags", "games"
+  add_foreign_key "mod_tags", "mods"
   add_foreign_key "mod_version_compatibility_notes", "compatibility_notes"
   add_foreign_key "mod_version_compatibility_notes", "mod_versions"
   add_foreign_key "mod_version_files", "mod_asset_files", name: "mod_version_files_ibfk_2"
@@ -496,11 +541,16 @@ ActiveRecord::Schema.define(version: 20160325213623) do
   add_foreign_key "override_records", "plugins", name: "override_records_ibfk_1"
   add_foreign_key "plugin_record_groups", "plugins", name: "plugin_record_groups_ibfk_1"
   add_foreign_key "plugins", "mod_versions", name: "plugins_ibfk_1"
+  add_foreign_key "quotes", "games"
   add_foreign_key "record_groups", "games"
   add_foreign_key "reputation_links", "user_reputations", column: "from_rep_id", name: "reputation_links_ibfk_1"
   add_foreign_key "reputation_links", "user_reputations", column: "to_rep_id", name: "reputation_links_ibfk_2"
+  add_foreign_key "review_templates", "users", column: "submitted_by"
   add_foreign_key "reviews", "mods", name: "reviews_ibfk_2"
+  add_foreign_key "reviews", "review_templates"
   add_foreign_key "reviews", "users", column: "submitted_by", name: "reviews_ibfk_1"
+  add_foreign_key "tags", "games"
+  add_foreign_key "tags", "users", column: "submitted_by"
   add_foreign_key "user_bios", "users", name: "user_bios_ibfk_1"
   add_foreign_key "user_reputations", "users", name: "user_reputations_ibfk_1"
   add_foreign_key "user_settings", "users", name: "user_settings_ibfk_1"
