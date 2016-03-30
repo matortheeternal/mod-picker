@@ -684,44 +684,25 @@ input[type="submit"] {
   overflow-y: auto;
 }
 
-.invisible{
-  opacity: 0;
-  max-height: 0;
-}
-
 .success-message {
-  overflow-y: hidden;
-  max-height: 60px;
-  transition-duration: 0.25s;
-  transition-property: max-height, opacity;
-  transition-timing-function: ease-in;
+  background-color: $success_message_color;
+  padding: 14px;
   font-weight: 500;
   font-size: 20px;
-  background-color: $success_message_color;
   text-align: center;
 }
 
-.floating-success {
-  width: 100%;
-  overflow-y: hidden;
-  max-height: 60px;
-  font-weight: 500;
-  font-size: 20px;
-  background-color: $success_message_color;
-  text-align: center;
+.fixed-messages {
   position: fixed;
   top: 0;
   left: 0;
 }
 
-.message {
-  padding: 14px;
-}
-
 .error-message {
+  background-color: $error_message_color;
+  padding: 14px;
   font-weight: 500;
   font-size: 20px;
-  background-color: $error_message_color;
   text-align: center;
 }
 

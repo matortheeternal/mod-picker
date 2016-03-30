@@ -33,19 +33,19 @@ app.controller('userSettingsController', function ($scope, $q, userSettingsServi
 
     $scope.submit = function() {
         $scope.errors = [];
-        $scope.showErrors = false;
-        $scope.showSuccess = false;
         userSettingsService.submitUser($scope.user).then(function (data) {
-            $scope.userSuccess = data.status === "ok";
-            $scope.errors += data.errors;
-            $scope.showErrors = !$scope.userSettingsSuccess || !$scope.userSuccess;
-            $scope.showSuccess = $scope.userSettingsSuccess && $scope.userSuccess;
+            if (data.status === "ok" && !$scope.errors.length) {
+                $scope.showSuccess = true;
+            }
+            else
+                $scope.errors += data.errors;
         });
         userSettingsService.submitUserSettings($scope.userSettings).then(function (data) {
-            $scope.userSettingsSuccess = data.status === "ok";
-            $scope.errors += data.errors;
-            $scope.showErrors = !$scope.userSettingsSuccess || !$scope.userSuccess;
-            $scope.showSuccess = $scope.userSettingsSuccess && $scope.userSuccess;
+            if (data.status === "ok" && !$scope.errors.length) {
+                $scope.showSuccess = true;
+            }
+            else
+                $scope.errors += data.errors;
         });
     };
 });
