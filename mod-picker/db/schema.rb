@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160330221319) do
+ActiveRecord::Schema.define(version: 20160330222244) do
 
   create_table "agreement_marks", id: false, force: :cascade do |t|
     t.integer "incorrect_note_id", limit: 4
@@ -182,7 +182,7 @@ ActiveRecord::Schema.define(version: 20160330221319) do
     t.integer "mod_list_id", limit: 4
     t.integer "plugin_id",   limit: 4
     t.boolean "active"
-    t.integer "load_order",  limit: 2
+    t.integer "index",       limit: 4
   end
 
   add_index "mod_list_plugins", ["mod_list_id"], name: "ml_id", using: :btree
