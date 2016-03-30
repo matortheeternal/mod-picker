@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160330230504) do
+ActiveRecord::Schema.define(version: 20160330230808) do
 
   create_table "agreement_marks", id: false, force: :cascade do |t|
     t.integer "incorrect_note_id", limit: 4
@@ -67,6 +67,14 @@ ActiveRecord::Schema.define(version: 20160330230504) do
 
   add_index "compatibility_notes", ["compatibility_plugin_id"], name: "compatibility_patch", using: :btree
   add_index "compatibility_notes", ["submitted_by"], name: "submitted_by", using: :btree
+
+  create_table "config_files", force: :cascade do |t|
+    t.integer "game_id",      limit: 4,   null: false
+    t.string  "filename",     limit: 64,  null: false
+    t.string  "install_path", limit: 128, null: false
+  end
+
+  add_index "config_files", ["game_id", "filename"], name: "index_config_files_on_game_id_and_filename", using: :btree
 
   create_table "games", force: :cascade do |t|
     t.string "display_name",  limit: 32
@@ -550,6 +558,7 @@ ActiveRecord::Schema.define(version: 20160330230504) do
   add_foreign_key "comments", "users", column: "submitted_by", name: "comments_ibfk_2"
   add_foreign_key "compatibility_notes", "plugins", column: "compatibility_plugin_id", name: "compatibility_notes_ibfk_2"
   add_foreign_key "compatibility_notes", "users", column: "submitted_by", name: "compatibility_notes_ibfk_1"
+  add_foreign_key "config_files", "games"
   add_foreign_key "helpful_marks", "users", column: "submitted_by", name: "helpful_marks_ibfk_4"
   add_foreign_key "incorrect_notes", "users", column: "submitted_by", name: "incorrect_notes_ibfk_4"
   add_foreign_key "install_order_notes", "mods", column: "install_first"
