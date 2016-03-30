@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160330065400) do
+ActiveRecord::Schema.define(version: 20160330213643) do
 
   create_table "agreement_marks", id: false, force: :cascade do |t|
     t.integer "incorrect_note_id", limit: 4
@@ -118,8 +118,10 @@ ActiveRecord::Schema.define(version: 20160330065400) do
     t.integer "mod_id", limit: 4
   end
 
-  create_table "masters", force: :cascade do |t|
-    t.integer "plugin_id", limit: 4
+  create_table "masters", id: false, force: :cascade do |t|
+    t.integer "plugin_id",        limit: 4
+    t.integer "master_plugin_id", limit: 4
+    t.integer "index",            limit: 4
   end
 
   add_index "masters", ["plugin_id"], name: "pl_id", using: :btree
@@ -301,13 +303,13 @@ ActiveRecord::Schema.define(version: 20160330065400) do
   add_index "nexus_infos", ["game_id"], name: "fk_rails_46e3032463", using: :btree
 
   create_table "override_records", id: false, force: :cascade do |t|
-    t.integer "plugin_id", limit: 4
-    t.integer "master_id", limit: 4
-    t.integer "form_id",   limit: 4
-    t.string  "sig",       limit: 4
+    t.integer "plugin_id",    limit: 4
+    t.integer "master_index", limit: 4
+    t.integer "form_id",      limit: 4
+    t.string  "sig",          limit: 4
   end
 
-  add_index "override_records", ["master_id"], name: "mst_id", using: :btree
+  add_index "override_records", ["master_index"], name: "mst_id", using: :btree
   add_index "override_records", ["plugin_id"], name: "pl_id", using: :btree
 
   create_table "plugin_record_groups", id: false, force: :cascade do |t|
@@ -537,7 +539,6 @@ ActiveRecord::Schema.define(version: 20160330065400) do
   add_foreign_key "mods", "categories", column: "secondary_category_id"
   add_foreign_key "mods", "games"
   add_foreign_key "nexus_infos", "games"
-  add_foreign_key "override_records", "masters", name: "override_records_ibfk_2"
   add_foreign_key "override_records", "plugins", name: "override_records_ibfk_1"
   add_foreign_key "plugin_record_groups", "plugins", name: "plugin_record_groups_ibfk_1"
   add_foreign_key "plugins", "mod_versions", name: "plugins_ibfk_1"
