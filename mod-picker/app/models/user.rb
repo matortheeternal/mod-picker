@@ -47,6 +47,7 @@ class User < ActiveRecord::Base
   has_many :profile_comments, :class_name => 'Comment', :as => 'commentable'
 
   accepts_nested_attributes_for :settings
+  accepts_nested_attributes_for :bio
 
   after_create :create_associations
   after_initialize :init
@@ -100,7 +101,7 @@ class User < ActiveRecord::Base
   def as_json(options={})
     options[:except] ||= [:email, :active_ml_id, :active_mc_id]
     options[:include] ||= {
-        :bio => {:except => []},
+        :bio => {:only => [:nexus_username, :lover_username, :steam_username]},
         :reputation => {:only => [:overall]}
     }
     super(options).merge({

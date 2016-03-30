@@ -24,6 +24,12 @@ class UsersController < ApplicationController
             },
             :mod_lists => {
                 :only => [:id, :is_collection, :is_public, :status, :mods_count, :created]
+            },
+            :bio => {
+                :except => [:user_id]
+            },
+            :reputation => {
+                :only => [:overall]
             }
           }
         }
