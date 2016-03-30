@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160329040352) do
+ActiveRecord::Schema.define(version: 20160330062004) do
 
   create_table "agreement_marks", id: false, force: :cascade do |t|
     t.integer "incorrect_note_id", limit: 4
@@ -40,14 +40,14 @@ ActiveRecord::Schema.define(version: 20160329040352) do
   add_index "category_priorities", ["recessive_id"], name: "fk_rails_d624be02b9", using: :btree
 
   create_table "comments", force: :cascade do |t|
-    t.integer "parent_comment",   limit: 4
-    t.integer "submitted_by",     limit: 4
-    t.boolean "hidden"
-    t.date    "submitted"
-    t.date    "edited"
-    t.text    "text_body",        limit: 65535
-    t.integer "commentable_id",   limit: 4
-    t.string  "commentable_type", limit: 255
+    t.integer  "parent_comment",   limit: 4
+    t.integer  "submitted_by",     limit: 4
+    t.boolean  "hidden"
+    t.datetime "submitted"
+    t.datetime "edited"
+    t.text     "text_body",        limit: 65535
+    t.integer  "commentable_id",   limit: 4
+    t.string   "commentable_type", limit: 255
   end
 
   add_index "comments", ["commentable_type", "commentable_id"], name: "index_comments_on_commentable_type_and_commentable_id", using: :btree
@@ -55,14 +55,14 @@ ActiveRecord::Schema.define(version: 20160329040352) do
   add_index "comments", ["submitted_by"], name: "submitted_by", using: :btree
 
   create_table "compatibility_notes", force: :cascade do |t|
-    t.integer "submitted_by",            limit: 4
-    t.integer "compatibility_plugin_id", limit: 4
-    t.enum    "compatibility_type",      limit: ["Incompatible", "Partially Incompatible", "Compatibility Mod", "Compatibility Plugin", "Make Custom Patch"]
-    t.date    "submitted"
-    t.date    "edited"
-    t.text    "text_body",               limit: 65535
-    t.integer "incorrect_notes_count",   limit: 4
-    t.integer "compatibility_mod_id",    limit: 4
+    t.integer  "submitted_by",            limit: 4
+    t.integer  "compatibility_plugin_id", limit: 4
+    t.enum     "compatibility_type",      limit: ["Incompatible", "Partially Incompatible", "Compatibility Mod", "Compatibility Plugin", "Make Custom Patch"]
+    t.datetime "submitted"
+    t.datetime "edited"
+    t.text     "text_body",               limit: 65535
+    t.integer  "incorrect_notes_count",   limit: 4
+    t.integer  "compatibility_mod_id",    limit: 4
   end
 
   add_index "compatibility_notes", ["compatibility_plugin_id"], name: "compatibility_patch", using: :btree
@@ -101,14 +101,14 @@ ActiveRecord::Schema.define(version: 20160329040352) do
   add_index "incorrect_notes", ["submitted_by"], name: "submitted_by", using: :btree
 
   create_table "installation_notes", force: :cascade do |t|
-    t.integer "submitted_by",          limit: 4
-    t.integer "mod_version_id",        limit: 4
-    t.boolean "always"
-    t.enum    "note_type",             limit: ["Download Option", "FOMOD Option"]
-    t.date    "submitted"
-    t.date    "edited"
-    t.text    "text_body",             limit: 65535
-    t.integer "incorrect_notes_count", limit: 4
+    t.integer  "submitted_by",          limit: 4
+    t.integer  "mod_version_id",        limit: 4
+    t.boolean  "always"
+    t.enum     "note_type",             limit: ["Download Option", "FOMOD Option"]
+    t.datetime "submitted"
+    t.datetime "edited"
+    t.text     "text_body",             limit: 65535
+    t.integer  "incorrect_notes_count", limit: 4
   end
 
   add_index "installation_notes", ["mod_version_id"], name: "mv_id", using: :btree
@@ -360,19 +360,19 @@ ActiveRecord::Schema.define(version: 20160329040352) do
   add_index "review_templates", ["submitted_by"], name: "fk_rails_82a9747962", using: :btree
 
   create_table "reviews", force: :cascade do |t|
-    t.integer "submitted_by",          limit: 4
-    t.integer "mod_id",                limit: 4
-    t.boolean "hidden"
-    t.integer "rating1",               limit: 1
-    t.integer "rating2",               limit: 1
-    t.integer "rating3",               limit: 1
-    t.integer "rating4",               limit: 1
-    t.integer "rating5",               limit: 1
-    t.date    "submitted"
-    t.date    "edited"
-    t.text    "text_body",             limit: 65535
-    t.integer "incorrect_notes_count", limit: 4
-    t.integer "review_template_id",    limit: 4
+    t.integer  "submitted_by",          limit: 4
+    t.integer  "mod_id",                limit: 4
+    t.boolean  "hidden"
+    t.integer  "rating1",               limit: 1
+    t.integer  "rating2",               limit: 1
+    t.integer  "rating3",               limit: 1
+    t.integer  "rating4",               limit: 1
+    t.integer  "rating5",               limit: 1
+    t.datetime "submitted"
+    t.datetime "edited"
+    t.text     "text_body",             limit: 65535
+    t.integer  "incorrect_notes_count", limit: 4
+    t.integer  "review_template_id",    limit: 4
   end
 
   add_index "reviews", ["mod_id"], name: "mod_id", using: :btree
