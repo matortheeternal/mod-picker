@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe HelpfulMark, :model, :wip do
+RSpec.describe HelpfulMark, :model do
   it "should have a valid factory" do
     mark = build(:helpful_mark)
 
