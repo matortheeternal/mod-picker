@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe LoverInfo, :model, :wip do
+RSpec.describe LoverInfo, :model do
   it "should be valid with factory parameters" do
     info = build(:lover_info)
 
