@@ -233,9 +233,9 @@ form {
     margin-left: 30px;
     margin-bottom: 30px;
 
-    input[type="text"] {
+    input[type="text"], input[type="password"], input[type="email"] {
       vertical-align: top;
-      width: 280px;
+      width: 350px;
       font-size: 20px;
     }
 
@@ -248,7 +248,6 @@ form {
     h4 {
       font-size: 16px;
       font-weight: 500;
-      color: $text_color;
       margin-top: 25px;
       margin-left: 0;
       margin-bottom: 0;
@@ -258,6 +257,10 @@ form {
   .section-element {
     margin-top: 15px;
     margin-bottom: 15px;
+  }
+
+  .input-label {
+    margin-bottom: 4px;
   }
 
   input[type="submit"] {
