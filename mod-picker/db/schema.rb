@@ -40,14 +40,14 @@ ActiveRecord::Schema.define(version: 20160331040858) do
   add_index "category_priorities", ["recessive_id"], name: "fk_rails_d624be02b9", using: :btree
 
   create_table "comments", force: :cascade do |t|
-    t.integer "parent_comment",   limit: 4
-    t.integer "submitted_by",     limit: 4
-    t.boolean "hidden"
-    t.date    "submitted"
-    t.date    "edited"
-    t.text    "text_body",        limit: 65535
-    t.integer "commentable_id",   limit: 4
-    t.string  "commentable_type", limit: 255
+    t.integer  "parent_comment",   limit: 4
+    t.integer  "submitted_by",     limit: 4
+    t.boolean  "hidden"
+    t.datetime "submitted"
+    t.datetime "edited"
+    t.text     "text_body",        limit: 65535
+    t.integer  "commentable_id",   limit: 4
+    t.string   "commentable_type", limit: 255
   end
 
   add_index "comments", ["commentable_type", "commentable_id"], name: "index_comments_on_commentable_type_and_commentable_id", using: :btree
