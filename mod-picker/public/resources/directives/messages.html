@@ -1,0 +1,11 @@
+<div ng-show="successBool">
+    <div class="success-message">
+    	{{successMessage}}
+    </div>
+</div>
+
+<div ng-show="errors.length">
+	<div ng-repeat="error in errors" class="error-message">
+    	{{error.message}}
+    </div>
+</div>

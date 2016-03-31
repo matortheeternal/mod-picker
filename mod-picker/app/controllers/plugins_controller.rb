@@ -37,10 +37,8 @@ class PluginsController < ApplicationController
 
     respond_to do |format|
       if @plugin.save
-        format.html { redirect_to @plugin, notice: 'Plugin was successfully created.' }
         format.json { render :show, status: :created, location: @plugin }
       else
-        format.html { render :new }
         format.json { render json: @plugin.errors, status: :unprocessable_entity }
       end
     end
@@ -51,10 +49,8 @@ class PluginsController < ApplicationController
   def update
     respond_to do |format|
       if @plugin.update(plugin_params)
-        format.html { redirect_to @plugin, notice: 'Plugin was successfully updated.' }
         format.json { render :show, status: :ok, location: @plugin }
       else
-        format.html { render :edit }
         format.json { render json: @plugin.errors, status: :unprocessable_entity }
       end
     end
@@ -65,7 +61,6 @@ class PluginsController < ApplicationController
   def destroy
     @plugin.destroy
     respond_to do |format|
-      format.html { redirect_to plugins_url, notice: 'Plugin was successfully destroyed.' }
       format.json { head :no_content }
     end
   end

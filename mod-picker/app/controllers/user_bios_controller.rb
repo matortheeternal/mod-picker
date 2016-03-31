@@ -7,7 +7,6 @@ class UserBiosController < ApplicationController
     @user_bios = UserBio.all
 
     respond_to do |format|
-      format.html
       format.json { render :json => @user_bios}
     end
   end
@@ -16,7 +15,6 @@ class UserBiosController < ApplicationController
   # GET /user_bios/1.json
   def show
     respond_to do |format|
-      format.html
       format.json { render :json => @user_bio}
     end
   end
@@ -37,10 +35,8 @@ class UserBiosController < ApplicationController
 
     respond_to do |format|
       if @user_bio.save
-        format.html { redirect_to @user_bio, notice: 'User bio was successfully created.' }
         format.json { render :show, status: :created, location: @user_bio }
       else
-        format.html { render :new }
         format.json { render json: @user_bio.errors, status: :unprocessable_entity }
       end
     end
@@ -51,10 +47,8 @@ class UserBiosController < ApplicationController
   def update
     respond_to do |format|
       if @user_bio.update(user_bio_params)
-        format.html { redirect_to @user_bio, notice: 'User bio was successfully updated.' }
         format.json { render :show, status: :ok, location: @user_bio }
       else
-        format.html { render :edit }
         format.json { render json: @user_bio.errors, status: :unprocessable_entity }
       end
     end
@@ -65,7 +59,6 @@ class UserBiosController < ApplicationController
   def destroy
     @user_bio.destroy
     respond_to do |format|
-      format.html { redirect_to user_bios_url, notice: 'User bio was successfully destroyed.' }
       format.json { head :no_content }
     end
   end

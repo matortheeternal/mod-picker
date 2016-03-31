@@ -1,0 +1,14 @@
+<tabs current-tab="currentTab" tabs="tabs">
+    <h1>User Settings</h1>
+</tabs>
+<messages   success-bool="showSuccess"
+            errors="errors"
+            success-message="User Settings Saved!">
+</messages>
+<div class="column-wrapper">
+    <div class="single-column">
+        <loader data="user">
+            <ng-include src="currentTab.url"></ng-include>
+        </loader>
+    </div>
+</div>

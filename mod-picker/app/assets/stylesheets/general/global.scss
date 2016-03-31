@@ -1,0 +1,198 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Roboto', sans-serif;
+  color: $text_color;
+  margin: 0;
+  background-color: $primary_background;
+}
+
+::-webkit-scrollbar {
+  display: none;
+}
+
+.hidden {
+  display: none;
+}
+
+/* clearfix */
+.clearfix:before,
+.clearfix:after {
+  content: " ";
+  display: table;
+}
+
+.clearfix:after {
+  clear: both;
+}
+
+.clearfix {
+  *zoom: 1;  // For IE 6/7 only
+}
+
+
+.text-muted {
+  color: #767676;
+}
+
+/* url styling */
+a, .modListName {
+  color: $link_color;
+  text-decoration: none;
+}
+
+a.strong, .modListName.strong {
+  font-weight: 600;
+}
+
+a.expand {
+  display: block;
+  padding-top: 16px;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+a:hover {
+  color: $link_hover_color_secondary;
+}
+
+/* header styling */
+h1 {
+  color: $h1_color;
+  font-size: 36px;
+  font-weight: 600;
+  padding: 0;
+  margin: 0;
+}
+
+h2 {
+  color: $h2_color;
+  padding: 0;
+  margin: 0;
+  font-size: 24px;
+  font-weight: 300;
+  border-bottom: 1px solid $border_color;
+  padding-bottom: 4px;
+  margin-bottom: 18px;
+}
+
+h3 {
+  font-weight: 700;
+  margin-top: 14px;
+  margin-bottom: 6px;
+  padding: 0;
+  font-size: 14px;
+  color: $h3_color;
+}
+
+h4 {
+  margin-bottom: 6px;
+  padding: 0;
+  font-size: 12px;
+  text-transform: uppercase;
+  color: $h4_color;
+}
+
+/* button styling */
+.btn {
+  width: 74px;
+  height: 20px;
+  display: inline;
+  padding: 0;
+  color: $action_text_color;
+  font-size: 12px;
+  text-align: center;
+  text-transform: uppercase;
+  border: 0;
+  border-radius: 0;
+  background-color: $action_color;
+  cursor: pointer;
+}
+
+.btn:hover {
+  background-color: $bright_action_color;
+}
+
+#thin-btn {
+  width: auto;
+  height: auto;
+  display: inline;
+  margin-left: 10px;
+  padding: 5px 8px 5px 8px;
+}
+
+/* css for tabs */
+.header-tabs {
+  background-color: $secondary_background;
+  h1 {
+    font-weight: 500;
+    color: $text_color;
+    font-size: 36px;
+    padding-top: 18px;//half of font size
+    padding-bottom: 18px;
+  }
+}
+
+.tabs {
+  margin-left: 46px;
+  a {
+    display: inline-block;
+    cursor: pointer;
+    font-size: 18px;
+    color: $text_color;
+    font-weight: 500;
+    padding: 9px 16px 9px 16px;//half of font size high
+  }
+}
+
+.selected-tab {
+  background-color: $action_color;
+}
+
+.unselected-tab:hover {
+  background-color: $bright_action_color;
+}
+
+/* css for columns */
+.two-columns {
+  background: linear-gradient(90deg, $secondary_background 50%, $primary_background 50%);
+}
+
+.page-container {
+  width: 1220px;
+  margin: auto;
+}
+
+.single-column {
+  padding: 40px 0 40px 0;
+  width: 850px;
+  margin: auto;
+}
+
+.left-column {
+  width: 250px;
+  padding: 40px 48px 40px 0;
+  display: table-cell;
+  vertical-align: top;
+  background-color: $secondary_background;
+  border-right: 1px solid $soft_border_color;
+}
+
+.right-column {
+  width: 970px;
+  padding: 40px 0 40px 48px;
+  display: table-cell;
+  vertical-align: top;
+  background-color: $primary_background;
+}
+
+/* css for inputs */
+.big-text-area {
+  width: 100%;
+  height: 300px;
+  margin-top: 4px;
+  max-width: 100%;
+  overflow-y: auto;
+}
