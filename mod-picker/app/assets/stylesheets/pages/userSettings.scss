@@ -1,0 +1,39 @@
+
+#save-changes {
+  width: auto;
+  height: auto;
+  display: block;
+  margin: auto;
+  padding: 10px;
+}
+
+#avatar-browse {
+  width: auto;
+  height: auto;
+  padding: 10px;
+  margin-left: 10px;
+  display: inline-block;
+}
+
+.quote {
+  width: 250px;
+  font-size: 14px;
+  display: inline-block;
+  font-style: italic;
+  font-weight: 500;
+}
+
+.quote-explanation {
+  font-size: 10px;
+  display: block;
+}
+
+.avatar {
+  border: 2px solid $border_color;
+  vertical-align: bottom;
+}
+
+.username {
+  color: $h4_color;
+  font-style: italic;
+}

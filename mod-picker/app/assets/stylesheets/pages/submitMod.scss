@@ -1,0 +1,72 @@
+/* css for submit mod page */
+.infotable {
+  min-width: 400px;
+}
+
+input[type="checkbox"] {
+  margin: 0;
+  padding: 0;
+}
+
+label {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+label .sublabel {
+  padding-left: 5px;
+}
+
+input[type="text"] {
+  width: 350px;
+}
+
+input[type="submit"] {
+  //height: 35px;
+}
+
+.notice {
+  margin: 12px 0 12px 0;
+  display: block;
+  font-size: 13px;
+}
+
+.section-title {
+  display: block;
+  vertical-align: top;
+  width: 200px;
+  font-size: 22px;
+  font-weight: 500;
+}
+
+.section {
+  display: block;
+  margin-top: 30px;
+  margin-left: 30px;
+  padding-bottom: 70px;
+  font-weight: 500;
+
+  input[type="text"]{
+    vertical-align: top;
+    width: 280px;
+    font-size: 20px;
+    margin-top: 5px;
+    margin-right: 40px;
+  }
+
+  h3 {
+    font-size: 16px;
+    font-weight: 500;
+    color: $text_color;
+    margin-top: 25px;
+    margin-left: 0;
+    margin-bottom: 0;
+  }
+}
+
+.section-element {
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
