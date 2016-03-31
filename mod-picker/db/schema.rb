@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160331034245) do
+ActiveRecord::Schema.define(version: 20160331034800) do
 
   create_table "agreement_marks", id: false, force: :cascade do |t|
     t.integer "incorrect_note_id", limit: 4
@@ -131,6 +131,22 @@ ActiveRecord::Schema.define(version: 20160331034245) do
 
   add_index "incorrect_notes", ["correctable_type", "correctable_id"], name: "index_incorrect_notes_on_correctable_type_and_correctable_id", using: :btree
   add_index "incorrect_notes", ["submitted_by"], name: "submitted_by", using: :btree
+
+  create_table "install_order_note_history_entries", force: :cascade do |t|
+    t.integer  "install_order_note_id", limit: 4,     null: false
+    t.string   "edit_summary",          limit: 255,   null: false
+    t.integer  "submitted_by",          limit: 4,     null: false
+    t.integer  "install_first",         limit: 4
+    t.integer  "install_second",        limit: 4
+    t.datetime "submitted"
+    t.datetime "edited"
+    t.text     "text_body",             limit: 65535
+  end
+
+  add_index "install_order_note_history_entries", ["install_first"], name: "fk_rails_9b832b2662", using: :btree
+  add_index "install_order_note_history_entries", ["install_order_note_id"], name: "fk_rails_f5643ed650", using: :btree
+  add_index "install_order_note_history_entries", ["install_second"], name: "fk_rails_60cc5f24d9", using: :btree
+  add_index "install_order_note_history_entries", ["submitted_by"], name: "fk_rails_18a032d0ac", using: :btree
 
   create_table "install_order_notes", force: :cascade do |t|
     t.integer  "submitted_by",   limit: 4,     null: false
@@ -625,6 +641,10 @@ ActiveRecord::Schema.define(version: 20160331034245) do
   add_foreign_key "config_files", "games"
   add_foreign_key "helpful_marks", "users", column: "submitted_by", name: "helpful_marks_ibfk_4"
   add_foreign_key "incorrect_notes", "users", column: "submitted_by", name: "incorrect_notes_ibfk_4"
+  add_foreign_key "install_order_note_history_entries", "install_order_notes"
+  add_foreign_key "install_order_note_history_entries", "mods", column: "install_first"
+  add_foreign_key "install_order_note_history_entries", "mods", column: "install_second"
+  add_foreign_key "install_order_note_history_entries", "users", column: "submitted_by"
   add_foreign_key "install_order_notes", "mods", column: "install_first"
   add_foreign_key "install_order_notes", "mods", column: "install_second"
   add_foreign_key "install_order_notes", "users", column: "submitted_by"
