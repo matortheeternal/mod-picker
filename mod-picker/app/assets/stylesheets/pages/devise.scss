@@ -1,6 +1,10 @@
 .box-html {
   background: $bar_color;
 
+  body {
+    background: $bar_color;
+  }
+
   .box-container {
     text-align: center;
   }

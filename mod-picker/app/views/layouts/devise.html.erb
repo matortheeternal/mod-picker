@@ -3,7 +3,18 @@
 <head>
   <meta charset="UTF-8">
   <title>Mod Picker</title>
-  <%= stylesheet_link_tag "whiterun" %>
+  <% if current_user.nil? %>
+    <% current_theme = 'Whiterun' %>
+  <% else %>
+    <% current_theme = current_user.settings.theme %>
+  <% end %>
+  <% if current_theme == 'Blackreach' %>
+      <%= stylesheet_link_tag 'blackreach' %>
+  <% elsif current_theme == 'Darkwater' %>
+      <%= stylesheet_link_tag 'darkwater' %>
+  <% else %>
+      <%= stylesheet_link_tag 'whiterun' %>
+  <% end %>
 </head>
 <body>
 
