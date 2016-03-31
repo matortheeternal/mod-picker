@@ -4,12 +4,22 @@
     <input type="button" id="avatar-browse" class="btn" value="Browse" />
 </div>
 
-<span class="section-title">Title</span>
-<div class="section">
-    <span class="explanation">(You need more reputation to change your title)</span>
-    <input type="text" ng-model="user.title"/>
-    <span class="quote">I used to be an adventurer like you, until I took an arrow to the knee.</span>
-</div>
+<span ng-if="user.reputation.overall >= 1280">
+    <span class="section-title">Title</span>
+    <div class="section">
+        <input type="text" ng-model="user.title"/>
+        <span class="quote">I used to be an adventurer like you, until I took an arrow to the knee.</span>
+    </div>
+</span>
+
+<span ng-if="user.reputation.overall < 1280">
+    <span class="section-title">Title</span>
+    <div class="section">
+        <span class="explanation">(You need more reputation to change your title)</span>
+        <input type="text" placeholder="{{user.title}}"/>
+        <span class="quote">I used to be an adventurer like you, until I took an arrow to the knee.</span>
+    </div>
+</span>
 
 
 <span class="section-title">My Profile</span>
