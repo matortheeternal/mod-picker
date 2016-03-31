@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160331021949) do
+ActiveRecord::Schema.define(version: 20160331034245) do
 
   create_table "agreement_marks", id: false, force: :cascade do |t|
     t.integer "incorrect_note_id", limit: 4
@@ -53,6 +53,23 @@ ActiveRecord::Schema.define(version: 20160331021949) do
   add_index "comments", ["commentable_type", "commentable_id"], name: "index_comments_on_commentable_type_and_commentable_id", using: :btree
   add_index "comments", ["parent_comment"], name: "parent_comment", using: :btree
   add_index "comments", ["submitted_by"], name: "submitted_by", using: :btree
+
+  create_table "compatibility_note_history_entries", force: :cascade do |t|
+    t.integer  "compatibility_note_id",   limit: 4,                                                                                                            null: false
+    t.string   "edit_summary",            limit: 255,                                                                                                          null: false
+    t.integer  "submitted_by",            limit: 4,                                                                                                            null: false
+    t.integer  "compatibility_mod_id",    limit: 4
+    t.integer  "compatibility_plugin_id", limit: 4
+    t.enum     "compatibility_type",      limit: ["Incompatible", "Partially Incompatible", "Compatibility Mod", "Compatibility Plugin", "Make Custom Patch"]
+    t.datetime "submitted"
+    t.datetime "edited"
+    t.text     "text_body",               limit: 65535
+  end
+
+  add_index "compatibility_note_history_entries", ["compatibility_mod_id"], name: "fk_rails_e1c933535e", using: :btree
+  add_index "compatibility_note_history_entries", ["compatibility_note_id"], name: "fk_rails_4970df5c77", using: :btree
+  add_index "compatibility_note_history_entries", ["compatibility_plugin_id"], name: "fk_rails_6466cbf704", using: :btree
+  add_index "compatibility_note_history_entries", ["submitted_by"], name: "fk_rails_7e4343a2d1", using: :btree
 
   create_table "compatibility_notes", force: :cascade do |t|
     t.integer "submitted_by",            limit: 4
@@ -599,6 +616,10 @@ ActiveRecord::Schema.define(version: 20160331021949) do
   add_foreign_key "category_priorities", "categories", column: "recessive_id"
   add_foreign_key "comments", "comments", column: "parent_comment", name: "comments_ibfk_1"
   add_foreign_key "comments", "users", column: "submitted_by", name: "comments_ibfk_2"
+  add_foreign_key "compatibility_note_history_entries", "compatibility_notes"
+  add_foreign_key "compatibility_note_history_entries", "mods", column: "compatibility_mod_id"
+  add_foreign_key "compatibility_note_history_entries", "plugins", column: "compatibility_plugin_id"
+  add_foreign_key "compatibility_note_history_entries", "users", column: "submitted_by"
   add_foreign_key "compatibility_notes", "plugins", column: "compatibility_plugin_id", name: "compatibility_notes_ibfk_2"
   add_foreign_key "compatibility_notes", "users", column: "submitted_by", name: "compatibility_notes_ibfk_1"
   add_foreign_key "config_files", "games"
