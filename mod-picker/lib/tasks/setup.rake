@@ -156,8 +156,11 @@ namespace :setup do
       PluginRecordGroup.delete_all
       RecordGroup.delete_all
       ModVersionCompatibilityNote.delete_all
+      ModVersionLoadOrderNote.delete_all
+      ModVersionInstallOrderNote.delete_all
       CompatibilityNote.delete_all
-      InstallationNote.delete_all
+      InstallOrderNote.delete_all
+      LoadOrderNote.delete_all
       HelpfulMark.delete_all
       Review.delete_all
       Comment.delete_all
@@ -171,6 +174,7 @@ namespace :setup do
       UserSetting.delete_all
       User.delete_all
       Game.delete_all
+      CategoryPriority.delete_all
 
       # clear categories
       connection.execute("DELETE FROM categories WHERE parent_id IS NOT NULL;")
