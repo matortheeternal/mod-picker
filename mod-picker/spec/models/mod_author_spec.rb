@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe ModAuthor, :model, :wip do
+RSpec.describe ModAuthor, :model do
   it "should have a valid factory" do
     author = build(:mod_author)
 
