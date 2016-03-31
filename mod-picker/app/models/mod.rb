@@ -39,6 +39,8 @@ class Mod < ActiveRecord::Base
 
   has_many :reviews, :inverse_of => 'mod', :counter_cache => true
 
+  has_many :compatibility_note_mods, :foreign_key => 'compatibility_mod_id', :inverse_of => 'compatibility_mod'
+
   accepts_nested_attributes_for :mod_versions
 
   def as_json(options={})

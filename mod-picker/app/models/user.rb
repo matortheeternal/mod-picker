@@ -26,7 +26,8 @@ class User < ActiveRecord::Base
   has_one :reputation, :class_name => 'UserReputation', :dependent => :destroy
 
   has_many :comments, :foreign_key => 'submitted_by', :inverse_of => 'user'
-  has_many :installation_notes, :foreign_key => 'submitted_by', :inverse_of => 'user'
+  has_many :install_order_notes, :foreign_key => 'submitted_by', :inverse_of => 'user'
+  has_many :load_order_notes, :foreign_key => 'submitted_by', :inverse_of => 'user'
   has_many :compatibility_notes, :foreign_key => 'submitted_by', :inverse_of => 'user'
   has_many :reviews, :foreign_key => 'submitted_by', :inverse_of => 'user'
   has_many :incorrect_notes, :foreign_key => 'submitted_by', :inverse_of => 'user'
