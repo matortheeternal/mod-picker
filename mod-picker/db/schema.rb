@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160330233241) do
+ActiveRecord::Schema.define(version: 20160331021546) do
 
   create_table "agreement_marks", id: false, force: :cascade do |t|
     t.integer "incorrect_note_id", limit: 4
@@ -189,6 +189,15 @@ ActiveRecord::Schema.define(version: 20160330233241) do
 
   add_index "mod_list_compatibility_notes", ["compatibility_note_id"], name: "cn_id", using: :btree
   add_index "mod_list_compatibility_notes", ["mod_list_id"], name: "ml_id", using: :btree
+
+  create_table "mod_list_config_files", id: false, force: :cascade do |t|
+    t.integer "mod_list_id",    limit: 4,     null: false
+    t.integer "config_file_id", limit: 4,     null: false
+    t.text    "text_body",      limit: 65535
+  end
+
+  add_index "mod_list_config_files", ["config_file_id"], name: "fk_rails_fd08eb71ee", using: :btree
+  add_index "mod_list_config_files", ["mod_list_id"], name: "fk_rails_e706555c10", using: :btree
 
   create_table "mod_list_custom_plugins", id: false, force: :cascade do |t|
     t.integer "mod_list_id", limit: 4
@@ -599,6 +608,8 @@ ActiveRecord::Schema.define(version: 20160330233241) do
   add_foreign_key "mod_authors", "users", name: "mod_authors_ibfk_2"
   add_foreign_key "mod_list_compatibility_notes", "compatibility_notes"
   add_foreign_key "mod_list_compatibility_notes", "mod_lists", name: "mod_list_compatibility_notes_ibfk_1"
+  add_foreign_key "mod_list_config_files", "config_files"
+  add_foreign_key "mod_list_config_files", "mod_lists"
   add_foreign_key "mod_list_custom_plugins", "mod_lists", name: "mod_list_custom_plugins_ibfk_1"
   add_foreign_key "mod_list_install_order_notes", "installation_notes", column: "install_order_note_id", name: "mod_list_install_order_notes_ibfk_2"
   add_foreign_key "mod_list_install_order_notes", "mod_lists", name: "mod_list_install_order_notes_ibfk_1"
