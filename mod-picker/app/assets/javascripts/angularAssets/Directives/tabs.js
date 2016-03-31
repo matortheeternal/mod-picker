@@ -4,13 +4,13 @@
 
 app.directive('tabs', function () {
     return {
+    	transclude: true,
         restrict: 'E',
         templateUrl: '/resources/directives/tabs.html',
         controller: 'tabsController',
         scope: {
         	tabs: '=',
-        	currentTab: '=',
-        	title: '@'
+        	currentTab: '='
         }
     }
 });
