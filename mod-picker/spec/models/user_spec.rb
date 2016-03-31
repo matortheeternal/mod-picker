@@ -5,14 +5,19 @@ require 'rails_helper'
 
 RSpec.describe User, :model do
 
+  fixtures :users
   # Validations ====================================================
   
-  it "is valid with a username, email, and password" do
+  it "should be valid with a username, email, and password" do
     user = build(:user)
     expect(user).to be_valid
   end
 
-  it "is invalid without a password" do
+  it "should have a valid fixture" do
+    expect(users(:kyoko)).to be_valid
+  end
+
+  it "should be invalid without a password" do
     user = build(:user,
       password: nil
       )
@@ -20,7 +25,7 @@ RSpec.describe User, :model do
     expect(user.errors[:password]).to include("can't be blank")
   end
 
-  it "is invalid without an email" do
+  it "should be invalid without an email" do
     user = build(:user,
       email: nil,
       )
@@ -34,7 +39,7 @@ RSpec.describe User, :model do
   # ==================================================================
   
   context "username" do
-    it "is invalid with a duplicate username" do
+    it "should be invalid with a duplicate username" do
       create(:user,
         username: "Shinobu",
         )
@@ -47,7 +52,7 @@ RSpec.describe User, :model do
       expect(user.errors[:username]).to include("has already been taken")
     end
 
-    it "is invalid with a duplicate username of different case" do
+    it "should be invalid with a duplicate username of different case" do
       create(:user,
         username: "Karen",
         )
@@ -60,7 +65,7 @@ RSpec.describe User, :model do
       expect(user.errors[:username]).to include("has already been taken")
     end
 
-    it "is invalid without a username" do
+    it "should be invalid without a username" do
       user = build(:user,
         username: nil,
         )
@@ -68,7 +73,7 @@ RSpec.describe User, :model do
       expect(user.errors[:username]).to include("can't be blank")
     end
 
-    it "is invalid with a username length < 4" do
+    it "should be invalid with a username length < 4" do
       user = build(:user,
         username: "hoa")
       user.valid?
@@ -76,14 +81,14 @@ RSpec.describe User, :model do
     end
 
 
-    it "is invalid with a username length > 20" do
+    it "should be invalid with a username length > 20" do
       user = build(:user,
         username: "aaaabbbbaaaabbbbaaaabb")
       user.valid?
       expect(user.errors[:username]).to include("is too long (maximum is 20 characters)")
     end
 
-    it "is valid with a username length >= 4  and length <= 20" do
+    it "should be valid with a username length >= 4  and length <= 20" do
       user = build(:user,
         username: "holofoam")
 
@@ -103,7 +108,7 @@ RSpec.describe User, :model do
     # ==================================================================
     
     context "email" do
-      it "is invalid without an email" do
+      it "should be invalid without an email" do
         user = build(:user,
           email: nil,
           )
@@ -111,7 +116,7 @@ RSpec.describe User, :model do
         expect(user.errors[:email]).to include("can't be blank")
       end
 
-      it "is invalid with a duplicate email address" do
+      it "should be invalid with a duplicate email address" do
         create(:user,
           email: "kissshot@mail.com")
 
@@ -123,7 +128,7 @@ RSpec.describe User, :model do
         expect(user.errors[:email]).to include("has already been taken")
       end
 
-      it "is invalid with a duplicate email address of different case" do
+      it "should be invalid with a duplicate email address of different case" do
         create(:user,
           email: "kissshot@mail.com")
 
@@ -135,7 +140,7 @@ RSpec.describe User, :model do
         expect(user.errors[:email]).to include("has already been taken")
       end
 
-      it "is invalid with a email length < 7" do
+      it "should be invalid with a email length < 7" do
         user = build(:user,
           email: "@m.com")
         user.valid?
@@ -143,7 +148,7 @@ RSpec.describe User, :model do
       end
 
 
-      it "is invalid with a email length > 100" do
+      it "should be invalid with a email length > 100" do
         email_name = ("a" * 92) + "@mail.com"
 
         user = build(:user,
@@ -153,7 +158,7 @@ RSpec.describe User, :model do
         expect(user.errors[:email]).to include("is too long (maximum is 100 characters)")
       end
 
-      it "is valid with a username length >= 4  and length <= 20" do
+      it "should be valid with a username length >= 4  and length <= 20" do
         user = build(:user)
 
         valid_emails = %w[tester@mail.com foobar@mail.something.com foo.bar@mail.com
@@ -171,12 +176,12 @@ RSpec.describe User, :model do
       # #init method validations
       # ==================================================================
       context "#init" do
-        it "joined should exist" do
+        it "should initialize joined to DateTime.now" do
           user = create(:user)
           expect(user.joined.utc).to be_within(1.minute).of DateTime.current.utc
         end
 
-        it "role should be created with role of :user" do
+        it "should be created with role of :user" do
           user = create(:user)
           expect(user.role.to_sym).to eq :user
         end

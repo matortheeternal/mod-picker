@@ -1,17 +1,24 @@
 require 'rails_helper'
 
-RSpec.describe CompatibilityNote, :model do
+RSpec.describe CompatibilityNote, :model, :wip do
+  fixtures :compatibility_notes
+
   it "should be valid with factory parameters" do
     note = build(:compatibility_note)
 
     expect(note).to be_valid
   end
 
+  it "should have a valid fixture" do
+    expect(compatibility_notes(:incompatibleNote)).to be_valid
+    expect(compatibility_notes(:compatibilityPluginNote)).to be_valid
+  end
+
 # ==================================================================
 # Table Fields
 # ==================================================================
 
-context "fields" do
+context "validations" do
   describe "submitted_by" do
     it "should be invalid if submitted_by is nil" do
       note = build(:compatibility_note,
@@ -20,6 +27,7 @@ context "fields" do
       expect(note.errors[:submitted_by]).to include("can't be blank")
     end
   end
+
 
   xdescribe "compatibility_mod_id" do
   end

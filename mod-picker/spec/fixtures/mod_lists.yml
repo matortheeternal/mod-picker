@@ -17,15 +17,24 @@
 #     t.integer "user_stars_count",          limit: 4
 #   end
 
-planned-vanilla:
-  created_by:
-    is_collection: false
-    is_public: true
-    has_adult_content: false
-    status: "Planned"
-    created: 2016-02-11
-    completed: 2016-02-11
-    description: "A basic vanilla modlist"
-    game_id:
-    comments_count: 0
-    
+plannedVanilla:
+  created_by: homura
+  is_collection: false
+  is_public: true
+  has_adult_content: false
+  status: "Planned"
+  created: 2016-02-11
+  completed: 2016-02-11
+  description: "A basic vanilla modlist"
+  game_id: skyrim
+
+underConstructionVanilla:
+  created_by: kyoko
+  is_collection: false
+  is_public: true
+  has_adult_content: false
+  status: "Under Construction"
+  created: 2016-02-22
+  completed: 2016-02-25
+  description: "A mod List that is under construction by kyoko"
+  game_id: skyrim
