@@ -1,5 +1,5 @@
 FactoryGirl.define do
-  factory :installation_note do
+  factory :install_order_note do
     id 1
 submitted_by 1
 mod_version_id 1
