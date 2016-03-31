@@ -80,6 +80,7 @@
                     </tr>
                 </tbody>
             </table> 
+
             <table title='overview' class='overview-table'>
                 <colgroup>
                     <col style="width: 25%">
@@ -106,19 +107,19 @@
                             <ul class="olist">
                                 <li>
                                     <span class="overview-total-number">999</span> 
-                                    <br>Tools
+                                    Tools
                                 </li>
                                 <li>
                                     <span class="overview-total-number">999</span> 
-                                    <br>Mods
+                                    Mods
                                 </li>
                                 <li>
                                     <span class="overview-total-number">999</span> 
-                                    <br>Plugins
+                                    Plugins
                                 </li>
                                 <li>
                                     <span class="overview-total-number">999</span> 
-                                    <br>BSAs
+                                    BSAs
                                 </li>
                             </ul>
                         </td>
@@ -155,7 +156,7 @@
                                     {{longDescTextArea}}
 
                                     {{longDescTextArea}}
-                                    
+
                                     {{longDescTextArea}}
                                 </li>
                             </ul>
@@ -174,16 +175,33 @@
                 <thead>
                     <tr>
                         <th>
-                            <span class="section-title">Tools</span>
-                            <br>
+                            <span class="section-title">Tools</span><br>
                         </th>
-                        <th style="text-align: right">
+                        <th>
                              <a ng-click="curToolsSecTab = 'list'" ng-class="cssChange('tools','list')">List</a><a ng-click="curToolsSecTab = 'tiles'" ng-class="cssChange('tools','tiles')">Tiles</a>
                         </th>
                     </tr>
                 </thead>
             </table> 
-            <div> This is a Test</div>
+            <div style="border-left: 1px solid black;border-right: 1px solid black;border-bottom: 1px solid black"> This is a Test</div>
+
+            <table title='modlist-missing-requirements' class='section-table'>
+                <colgroup>
+                    <col style="width: 75%">
+                    <col style="width: 25%">
+                </colgroup>
+                <thead>
+                    <tr>
+                        <th>
+                            <span class="section-title">Missing Requirements</span>
+                            <span class="section-header-counter"># Unresolved Issues</span>
+                        </th>
+                        <th>
+                             <a ng-click="" class="section-unselected-tab">Resolve All Issues</a>
+                        </th>
+                    </tr>
+                </thead>
+            </table> 
         </div>
 
         <div ng-show="isSelected('mods')">
@@ -214,11 +232,11 @@
                                 </li>
                                 <li>
                                     <span class="overview-total-number">999</span> 
-                                    <br>Partially Incompatible
+                                    Unresolved Issues
                                 </li>
                                 <li>
                                     <span class="overview-total-number">999</span> 
-                                    <br>Incompatible
+                                    Ignored Issues
                                 </li>
                             </ul>
                         </td>
@@ -226,19 +244,19 @@
                             <ul class="olist">
                                 <li>
                                     <span class="overview-total-number">999</span> 
-                                    <br>Compatible Mods
+                                    Compatible Mods
                                 </li>
                                 <li>
                                     <span class="overview-total-number">999</span> 
-                                    <br>Compatible With Patch
+                                    Compatible With Patch
                                 </li>
                                 <li>
                                     <span class="overview-total-number">999</span> 
-                                    <br>Partially Incompatible
+                                    Partially Incompatible
                                 </li>
                                 <li>
                                     <span class="overview-total-number">999</span> 
-                                    <br>Incompatible
+                                    Incompatible
                                 </li>
                             </ul>
                         </td>
@@ -256,12 +274,84 @@
                             <span class="section-title">Mods</span>
                             <br>
                         </th>
-                        <th style="text-align: right">
+                        <th>
                              <a ng-click="curModsSecTab = 'list'" ng-class="cssChange('mods','list')">List</a><a ng-click="curModsSecTab = 'tiles'" ng-class="cssChange('mods','tiles')">Tiles</a>
                         </th>
                     </tr>
                 </thead>
-            </table>  
+            </table>
+            <table title='modlist-missing-requirements' class='section-table'>
+                <colgroup>
+                    <col style="width: 75%">
+                    <col style="width: 25%">
+                </colgroup>
+                <thead>
+                    <tr>
+                        <th>
+                            <span class="section-title">Missing Requirements</span>
+                            <span class="section-header-counter"># Unresolved Issues</span>
+                        </th>
+                        <th>
+                             <a ng-click="" class="section-unselected-tab">Resolve All Issues</a>
+                        </th>
+                    </tr>
+                </thead>
+            </table>   
+            <table title='modlist-compatibility-issues' class='section-table'>
+                <colgroup>
+                    <col style="width: 25%">
+                    <col style="width: 75%">
+                </colgroup>
+                <thead>
+                    <tr>
+                        <th>
+                            <span class="section-title">Compatibility Issues</span>
+                            <span class="section-header-counter"># Unresolved Issues</span>
+                        </th>
+                        <th>
+                             <a ng-click="" class="section-unselected-tab">Show ignored issues(#)</a><a ng-click="" class="section-unselected-tab">Show resolved issues(#)</a>
+                        </th>
+                    </tr>
+                </thead>
+            </table>
+            <table title='modlist-install-order-notes' class='section-table'>
+                <colgroup>
+                    <col style="width: 25%">
+                    <col style="width: 75%">
+                </colgroup>
+                <thead>
+                    <tr>
+                        <th>
+                            <span class="section-title">Install Order Notes</span>
+                            <span class="section-header-counter"># Unresolved Notes</span>
+                        </th>
+                        <th>
+                             <a ng-click="" class="section-unselected-tab">Show ignored notes(#)</a><a ng-click="" class="section-unselected-tab">Show resolved notes(#)</a>
+                        </th>
+                    </tr>
+                </thead>
+            </table>
+            <table title='modlist-asset-conflicts' class='overview-table'>
+                <colgroup>
+                    <col style="width: 40%">
+                    <col style="width: 30%">
+                    <col style="width: 30%">
+                </colgroup>
+                <thead>
+                    <tr>
+                        <th>
+                            <span class="section-title">Asset Conflicts</span>
+                            File
+                        </th>
+                        <th>
+                            Conflicting Mods
+                        </th>
+                        <th>
+                            Compression
+                        </th>
+                    </tr>
+                </thead>
+            </table>
         </div>
 
         <div ng-show="isSelected('plugins')">
@@ -292,11 +382,11 @@
                                 </li>
                                 <li>
                                     <span class="overview-total-number">999</span> 
-                                    <br>Partially Incompatible
+                                    Unresolved Issues
                                 </li>
                                 <li>
                                     <span class="overview-total-number">999</span> 
-                                    <br>Incompatible
+                                    Ignored Issues
                                 </li>
                             </ul>
                         </td>
@@ -304,19 +394,19 @@
                             <ul class="olist">
                                 <li>
                                     <span class="overview-total-number">999</span> 
-                                    <br>Master Plugins
+                                    Master Plugins
                                 </li>
                                 <li>
                                     <span class="overview-total-number">999</span> 
-                                    <br>Standard Plugins
+                                    Standard Plugins
                                 </li>
                                 <li>
                                     <span class="overview-total-number">999</span> 
-                                    <br>Patch Plugins
+                                    Patch Plugins
                                 </li>
                                 <li>
                                     <span class="overview-total-number">999</span> 
-                                    <br>Custom Plugins
+                                    Custom Plugins
                                 </li>
                             </ul>
                         </td>
@@ -334,16 +424,88 @@
                             <span class="section-title">Plugins</span>
                             <br>
                         </th>
-                        <th style="text-align: right">
+                        <th>
                              <a ng-click="curPluginSecTab = 'list'" ng-class="cssChange('plugins','list')">List</a><a ng-click="curPluginSecTab = 'tiles'" ng-class="cssChange('plugins','tiles')">Tiles</a>
                         </th>
                     </tr>
                 </thead>
-            </table>              
+            </table>
+            <table title='modlist-missing-requirements' class='section-table'>
+                <colgroup>
+                    <col style="width: 75%">
+                    <col style="width: 25%">
+                </colgroup>
+                <thead>
+                    <tr>
+                        <th>
+                            <span class="section-title">Missing Requirements</span>
+                            <span class="section-header-counter"># Unresolved Issues</span>
+                        </th>
+                        <th>
+                             <a ng-click="" class="section-unselected-tab">Resolve All Issues</a>
+                        </th>
+                    </tr>
+                </thead>
+            </table> 
+            <table title='modlist-compatibility-issues' class='section-table'>
+                <colgroup>
+                    <col style="width: 25%">
+                    <col style="width: 75%">
+                </colgroup>
+                <thead>
+                    <tr>
+                        <th>
+                            <span class="section-title">Compatibility Issues</span>
+                            <span class="section-header-counter"># Unresolved Issues</span>
+                        </th>
+                        <th>
+                             <a ng-click="" class="section-unselected-tab">Show ignored issues(#)</a><a ng-click="" class="section-unselected-tab">Show resolved issues(#)</a>
+                        </th>
+                    </tr>
+                </thead>
+            </table>
+            <table title='modlist-load-order-notes' class='section-table'>
+                <colgroup>
+                    <col style="width: 25%">
+                    <col style="width: 75%">
+                </colgroup>
+                <thead>
+                    <tr>
+                        <th>
+                            <span class="section-title">Load Order Notes</span>
+                            <span class="section-header-counter"># Unresolved Notes</span>
+                        </th>
+                        <th>
+                             <a ng-click="" class="section-unselected-tab">Show ignored notes(#)</a><a ng-click="" class="section-unselected-tab">Show resolved notes(#)</a>
+                        </th>
+                    </tr>
+                </thead>
+            </table>
+            <table title='modlist-asset-conflicts' class='overview-table'>
+                <colgroup>
+                    <col style="width: 40%">
+                    <col style="width: 30%">
+                    <col style="width: 30%">
+                </colgroup>
+                <thead>
+                    <tr>
+                        <th>
+                            <span class="section-title">Record Conflicts</span>
+                            <a ng-click="" class="section-selected-tab">Sort By: FormID</a>
+                        </th>
+                        <th>
+                            Conflicting Plugins
+                        </th>
+                        <th>
+                            Conflicting Mods
+                        </th>
+                    </tr>
+                </thead>
+            </table>
         </div>
 
         <div ng-show="isSelected('config')">
-            <table title='Skyrim Configuration Files' class='overview-table'>
+            <table title='Skyrim Configuration Files' class='section-table'>
                 <colgroup>
                     <col style="width: 100%">
                 </colgroup>
@@ -351,7 +513,7 @@
                     <tr>
                         <th>
                             <span class="section-title">Custom Settings & Preferences</span>
-                            <br>
+                            <a ng-click="curSkyConfigTab = 'skyrim.ini'" ng-class="cssChange('skyrimConfig','skyrim.ini')">Skyrim.ini</a><a ng-click="curSkyConfigTab = 'skyrimprefs.ini'" ng-class="cssChange('skyrimConfig','skyrimprefs.ini')">SkyrimPrefs.ini</a>
                         </th>
                     </tr>
                 </thead>
@@ -378,7 +540,7 @@
                     <tr>
                         <th>
                             <span class="section-title">Custom ENB Settings</span>
-                            <br>
+                            <a ng-click="curENBConfigTab = 'enblocal.ini'" ng-class="cssChange('enbConfig','enblocal.ini')">enblocal.ini</a><a ng-click="curENBConfigTab = 'enbseries.ini'" ng-class="cssChange('enbConfig','enbseries.ini')">enbseries.ini</a>
                         </th>
                     </tr>
                 </thead>
@@ -418,4 +580,5 @@
     <div title="SaveOverlay-wrapper">
     	Edit / Save / Cancel Overlay
     </div>
+    <div><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br></div>
 </div>
