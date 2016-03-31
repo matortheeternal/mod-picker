@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160331040030) do
+ActiveRecord::Schema.define(version: 20160331040414) do
 
   create_table "agreement_marks", id: false, force: :cascade do |t|
     t.integer "incorrect_note_id", limit: 4
@@ -160,20 +160,6 @@ ActiveRecord::Schema.define(version: 20160331040030) do
   add_index "install_order_notes", ["install_first"], name: "fk_rails_bc30c8f58f", using: :btree
   add_index "install_order_notes", ["install_second"], name: "fk_rails_b74bbcab8b", using: :btree
   add_index "install_order_notes", ["submitted_by"], name: "fk_rails_ea0bdedfde", using: :btree
-
-  create_table "installation_notes", force: :cascade do |t|
-    t.integer "submitted_by",          limit: 4
-    t.integer "mod_version_id",        limit: 4
-    t.boolean "always"
-    t.enum    "note_type",             limit: ["Download Option", "FOMOD Option"]
-    t.date    "submitted"
-    t.date    "edited"
-    t.text    "text_body",             limit: 65535
-    t.integer "incorrect_notes_count", limit: 4
-  end
-
-  add_index "installation_notes", ["mod_version_id"], name: "mv_id", using: :btree
-  add_index "installation_notes", ["submitted_by"], name: "submitted_by", using: :btree
 
   create_table "load_order_note_history_entries", force: :cascade do |t|
     t.integer  "load_order_note_id", limit: 4,     null: false
@@ -672,8 +658,6 @@ ActiveRecord::Schema.define(version: 20160331040030) do
   add_foreign_key "install_order_notes", "mods", column: "install_first"
   add_foreign_key "install_order_notes", "mods", column: "install_second"
   add_foreign_key "install_order_notes", "users", column: "submitted_by"
-  add_foreign_key "installation_notes", "mod_versions", name: "installation_notes_ibfk_2"
-  add_foreign_key "installation_notes", "users", column: "submitted_by", name: "installation_notes_ibfk_1"
   add_foreign_key "load_order_note_history_entries", "load_order_notes"
   add_foreign_key "load_order_note_history_entries", "plugins", column: "load_first"
   add_foreign_key "load_order_note_history_entries", "plugins", column: "load_second"
@@ -690,7 +674,7 @@ ActiveRecord::Schema.define(version: 20160331040030) do
   add_foreign_key "mod_list_config_files", "mod_lists"
   add_foreign_key "mod_list_custom_config_files", "mod_lists"
   add_foreign_key "mod_list_custom_plugins", "mod_lists", name: "mod_list_custom_plugins_ibfk_1"
-  add_foreign_key "mod_list_install_order_notes", "installation_notes", column: "install_order_note_id", name: "mod_list_install_order_notes_ibfk_2"
+  add_foreign_key "mod_list_install_order_notes", "install_order_notes"
   add_foreign_key "mod_list_install_order_notes", "mod_lists", name: "mod_list_install_order_notes_ibfk_1"
   add_foreign_key "mod_list_load_order_notes", "load_order_notes"
   add_foreign_key "mod_list_load_order_notes", "mod_lists"
