@@ -142,7 +142,8 @@ namespace :setup do
       connection.execute("ALTER TABLE comments AUTO_INCREMENT = 0;")
       connection.execute("ALTER TABLE reviews AUTO_INCREMENT = 0;")
       connection.execute("ALTER TABLE compatibility_notes AUTO_INCREMENT = 0;")
-      connection.execute("ALTER TABLE installation_notes AUTO_INCREMENT = 0;")
+      connection.execute("ALTER TABLE install_order_notes AUTO_INCREMENT = 0;")
+      connection.execute("ALTER TABLE load_order_notes AUTO_INCREMENT = 0;")
       puts "    IDs reset"
     end
 
