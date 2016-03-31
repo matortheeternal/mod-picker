@@ -11,8 +11,6 @@
   <% else %>
       <% current_theme = current_user.settings.theme %>
   <% end %>
-  <!-- <%= current_user.settings.to_yaml %> -->
-  <!-- <%= current_theme %> -->
   <% if current_theme == 'Blackreach' %>
     <%= stylesheet_link_tag 'blackreach' %>
   <% elsif current_theme == 'Darkwater' %>
@@ -22,6 +20,10 @@
   <% end %>
   <script>
     window._token = '<%= form_authenticity_token %>';
+    window._current_theme = '<%= current_theme %>';
+    window._stylesheets.whiterun = "<%= stylesheet_path 'whiterun' %>";
+    window._stylesheets.darkwater = "<%= stylesheet_path 'darkwater' %>";
+    window._stylesheets.blackreach = "<%= stylesheet_path 'blackreach' %>";
   </script>
 </head>
 <body>

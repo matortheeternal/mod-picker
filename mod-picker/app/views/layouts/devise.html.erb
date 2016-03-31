@@ -15,6 +15,13 @@
   <% else %>
       <%= stylesheet_link_tag 'whiterun' %>
   <% end %>
+  <script>
+    window._token = '<%= form_authenticity_token %>';
+    window._current_theme = '<%= current_theme %>';
+    window._stylesheets.whiterun = "<%= stylesheet_path 'whiterun' %>";
+    window._stylesheets.darkwater = "<%= stylesheet_path 'darkwater' %>";
+    window._stylesheets.blackreach = "<%= stylesheet_path 'blackreach' %>";
+  </script>
 </head>
 <body>
 
