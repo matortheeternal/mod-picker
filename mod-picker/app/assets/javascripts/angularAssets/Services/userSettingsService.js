@@ -35,5 +35,4 @@ app.service('userSettingsService', function (backend, $q) {
         });
         return update.promise
     };
-
 });

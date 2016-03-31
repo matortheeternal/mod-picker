@@ -2,133 +2,110 @@
     <div class="single-column">
         <h2>Submit Mod</h2>
 
-
-
-        <span class="section-title">Sources</span>
         <div class="section">
             <form id="submitModForm" name="submitModForm">
 
-            Nexus Mods<br>
-            <input type="text" ng-model="nexusUrl" required>
-            <input type="button" class="btn-sm" ng-disabled='urlInvalid()' ng-click="scrape()" value="Scrape">
+                <span class="section-title">Sources</span>
+                Nexus Mods<br>
+                <input type="text" class="path-input" ng-model="nexusUrl" required>
+                <input type="button" class="btn-sm" ng-disabled='urlInvalid()' ng-click="scrape()" value="Scrape">
+                
+                <div ng-show="scraping">
+                    <h3>Nexus Mods Info</h3>
+                    <loader data="nexus">
+                        <table class="infotable">
+                            <colgroup>
+                                <col span="1" style="width: 160px;">
+                                <col span="1">
+                            </colgroup>
+                            <tbody>
+                                <tr>
+                                    <td>Nexus ID</td>
+                                    <td>{{nexus.id}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Mod Name</td>
+                                    <td>{{nexus.mod_name}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Uploaded By</td>
+                                    <td>{{nexus.uploaded_by}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Author</td>
+                                    <td>{{nexus.authors}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Endorsements</td>
+                                    <td>{{nexus.endorsements.toLocaleString()}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Unique Downloads</td>
+                                    <td>{{nexus.unique_downloads.toLocaleString()}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Latest Version</td>
+                                    <td>{{nexus.current_version}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Date Released</td>
+                                    <td>{{nexus.date_added | date }}</td>
+                                </tr>
+                                <tr>
+                                    <td>Date Updated</td>
+                                    <td>{{nexus.date_updated | date }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </loader>
+                </div>
 
-            <div ng-show="scraping">
-                <h3>Nexus Mods Info</h3>
-                <loader data="nexus">
-                    <table class="infotable">
-                        <colgroup>
-                            <col span="1" style="width: 160px;">
-                            <col span="1">
-                        </colgroup>
-                        <tbody>
-                            <tr>
-                                <td>Nexus ID</td>
-                                <td>{{nexus.id}}</td>
-                            </tr>
-                            <tr>
-                                <td>Mod Name</td>
-                                <td>{{nexus.mod_name}}</td>
-                            </tr>
-                            <tr>
-                                <td>Uploaded By</td>
-                                <td>{{nexus.uploaded_by}}</td>
-                            </tr>
-                            <tr>
-                                <td>Author</td>
-                                <td>{{nexus.authors}}</td>
-                            </tr>
-                            <tr>
-                                <td>Endorsements</td>
-                                <td>{{nexus.endorsements.toLocaleString()}}</td>
-                            </tr>
-                            <tr>
-                                <td>Unique Downloads</td>
-                                <td>{{nexus.unique_downloads.toLocaleString()}}</td>
-                            </tr>
-                            <tr>
-                                <td>Latest Version</td>
-                                <td>{{nexus.current_version}}</td>
-                            </tr>
-                            <tr>
-                                <td>Date Released</td>
-                                <td>{{nexus.date_added | date }}</td>
-                            </tr>
-                            <tr>
-                                <td>Date Updated</td>
-                                <td>{{nexus.date_updated | date }}</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </loader>
-            </div>
+                <div class="section">
+                    <category-tree></category-tree>
+                    <input type="button" id="checkCategories" class="btn-sm" ng-click="checkCategories()" value="Check Categories">
+                </div>
+
+                <span class="section-title">Tags</span>
+                <div class="section">
+                    TODO: tag selector
+                </div>
+
+                <span class="section-title">Other Options</span>
+                <div class="section">
+                    <label>
+                        <input id="kbUtility" type="checkbox" ng-model="isUtility">
+                        Is Utility
+                    </label><br/>
+
+                    <label>
+                        <input id="kbAdult" type="checkbox" ng-model="hasAdultContent">
+                        Has Adult Content
+                    </label><br/>
+                </div>
+
+                <span class="section-title">Asset File Analysis</span>
+                <div class="section">
+
+                    Archive<br/>
+                    <input type="text" class="path-input" ng-model="archive">
+                    <input type="button" class="btn-sm" ng-click="archiveBrowse()" value="Browse">
+
+                    <div ng-show="archiveAnalysed">
+                        <h3>Mod Asset File Analysis</h3>
+                        TODO: asset file tree
+                    </div>
+                </div>
+
+                <span class="section-title">Plugins</span>
+                <div class="section">
+                    TODO: plugins listing
+
+                    <span class="notice">
+                        Plugin analysis will be performed by our servers sometime in the next 24 hours.
+                    </span>
+                    <input class="btn" type="submit" ng-disabled='modInvalid()' ng-click="submit()" value="Submit"/>
+                </div>
+            </form>
         </div>
-
-
-
-
-        <span class="section-title">Categories
-            <span class="filter-controls">
-                <span class="fa fa-eraser" ng-click="clearSelection()" title="Clear Selection"></span>
-                <span class="fa fa-adjust" ng-click="inverseSelection()" title="Inverse Selection"></span>
-            </span>
-        </span>
-        <div class="section">
-            <div class="section-element">
-                <category-tree></category-tree>
-                <input type="button" id="checkCategories" class="btn-sm" ng-click="checkCategories()" value="Check Categories">
-            </div>
-        </div>
-
-
-
-        <span class="section-title">Tags</span>
-        <div class="section">
-            TODO: tag selector
-        </div>
-
-
-
-        <span class="section-title">Other Options</span>
-        <div class="section">
-            <label>
-                <input id="kbUtility" type="checkbox" ng-model="isUtility">
-                Is Utility
-            </label><br/>
-
-            <label>
-                <input id="kbAdult" type="checkbox" ng-model="hasAdultContent">
-                Has Adult Content
-            </label><br/>
-        </div>
-
-
-        <span class="section-title">Asset File Analysis</span>
-        <div class="section">
-
-            Archive<br/>
-            <input type="text" ng-model="archive">
-            <input type="button" class="btn-sm" ng-click="archiveBrowse()" value="Browse">
-
-            <div ng-show="archiveAnalysed">
-                <h3>Mod Asset File Analysis</h3>
-                TODO: asset file tree
-            </div>
-        </div>
-
-
-
-        <span class="section-title">Plugins</span>
-        <div class="section">
-            TODO: plugins listing
-
-            <span class="notice">
-                Plugin analysis will be performed by our servers sometime in the next 24 hours.
-            </span>
-            <input class="btn" type="submit" ng-disabled='modInvalid()' ng-click="submit()" value="Submit"/>
-        </div>
-
-
-
-
     </div>
 </div>

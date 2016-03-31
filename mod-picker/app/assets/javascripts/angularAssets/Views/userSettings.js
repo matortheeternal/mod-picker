@@ -23,7 +23,6 @@ app.controller('userSettingsController', function ($scope, $q, userSettingsServi
 
     $scope.currentTab = $scope.tabs[0];
 
-
     userSettingsService.retrieveUserSettings().then(function (userSettings) {
         $scope.userSettings = userSettings;
         userService.retrieveUser(userSettings.user_id).then(function (user) {
