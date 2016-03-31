@@ -97,22 +97,27 @@ h4 {
 
 /* button styling */
 .btn {
-  width: 74px;
-  height: 20px;
   display: inline;
-  padding: 0;
+  padding: 6px;
   color: $action_text_color;
   font-size: 12px;
   text-align: center;
   text-transform: uppercase;
   border: 0;
   border-radius: 0;
-  background-color: $action_color;
+  background-color: $bar_color;
   cursor: pointer;
+  &:hover {
+    background-color: $bar_highlight_color;
+  }
 }
 
-.btn:hover {
-  background-color: $bright_action_color;
+.action-btn {
+  background-color: $action_color;
+
+  &:hover {
+    background-color: $bright_action_color
+  }
 }
 
 #thin-btn {
@@ -166,7 +171,7 @@ h4 {
 }
 
 .single-column {
-  padding: 40px 0 40px 0;
+  padding: 30px 0 40px 0;
   width: 850px;
   margin: auto;
 }
@@ -188,11 +193,76 @@ h4 {
   background-color: $primary_background;
 }
 
-/* css for inputs */
+/* css for forms, inputs, and labels */
 .big-text-area {
   width: 100%;
   height: 300px;
   margin-top: 4px;
   max-width: 100%;
   overflow-y: auto;
+}
+
+input[type="checkbox"] {
+  margin: 0;
+  padding: 0;
+}
+
+label {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+label .sublabel {
+  padding-left: 5px;
+}
+
+form {
+  .section-title {
+    display: block;
+    vertical-align: top;
+    width: 200px;
+    font-size: 22px;
+    font-weight: 500;
+  }
+
+  .section {
+    display: block;
+    margin-top: 10px;
+    margin-left: 30px;
+    margin-bottom: 30px;
+
+    input[type="text"] {
+      vertical-align: top;
+      width: 280px;
+      font-size: 20px;
+    }
+
+    input.path-input {
+      width: 350px;
+      font-size: 13px;
+      padding: 6px;
+    }
+
+    h4 {
+      font-size: 16px;
+      font-weight: 500;
+      color: $text_color;
+      margin-top: 25px;
+      margin-left: 0;
+      margin-bottom: 0;
+    }
+  }
+
+  .section-element {
+    margin-top: 15px;
+    margin-bottom: 15px;
+  }
+
+  input[type="submit"] {
+    display: block;
+    margin: auto;
+    padding: 10px;
+  }
 }
