@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160331034800) do
+ActiveRecord::Schema.define(version: 20160331035213) do
 
   create_table "agreement_marks", id: false, force: :cascade do |t|
     t.integer "incorrect_note_id", limit: 4
@@ -174,6 +174,22 @@ ActiveRecord::Schema.define(version: 20160331034800) do
 
   add_index "installation_notes", ["mod_version_id"], name: "mv_id", using: :btree
   add_index "installation_notes", ["submitted_by"], name: "submitted_by", using: :btree
+
+  create_table "load_order_note_history_entries", force: :cascade do |t|
+    t.integer  "load_order_note_id", limit: 4,     null: false
+    t.string   "edit_summary",       limit: 255,   null: false
+    t.integer  "submitted_by",       limit: 4,     null: false
+    t.integer  "load_first",         limit: 4
+    t.integer  "load_second",        limit: 4
+    t.datetime "submitted"
+    t.datetime "edited"
+    t.text     "text_body",          limit: 65535
+  end
+
+  add_index "load_order_note_history_entries", ["load_first"], name: "fk_rails_f50fec0fe1", using: :btree
+  add_index "load_order_note_history_entries", ["load_order_note_id"], name: "fk_rails_f99a4f8204", using: :btree
+  add_index "load_order_note_history_entries", ["load_second"], name: "fk_rails_c554c2b486", using: :btree
+  add_index "load_order_note_history_entries", ["submitted_by"], name: "fk_rails_478afef4a8", using: :btree
 
   create_table "load_order_notes", force: :cascade do |t|
     t.integer  "submitted_by", limit: 4,     null: false
@@ -380,6 +396,14 @@ ActiveRecord::Schema.define(version: 20160331034800) do
 
   add_index "mod_version_load_order_notes", ["load_order_note_id"], name: "fk_rails_3fe49e6f08", using: :btree
   add_index "mod_version_load_order_notes", ["mod_version_id"], name: "fk_rails_a736a782a4", using: :btree
+
+  create_table "mod_version_requirements", id: false, force: :cascade do |t|
+    t.integer "mod_version_id", limit: 4, null: false
+    t.integer "required_id",    limit: 4, null: false
+  end
+
+  add_index "mod_version_requirements", ["mod_version_id"], name: "fk_rails_5a311577a9", using: :btree
+  add_index "mod_version_requirements", ["required_id"], name: "fk_rails_05046fa6e5", using: :btree
 
   create_table "mod_versions", force: :cascade do |t|
     t.integer "mod_id",    limit: 4
@@ -650,6 +674,10 @@ ActiveRecord::Schema.define(version: 20160331034800) do
   add_foreign_key "install_order_notes", "users", column: "submitted_by"
   add_foreign_key "installation_notes", "mod_versions", name: "installation_notes_ibfk_2"
   add_foreign_key "installation_notes", "users", column: "submitted_by", name: "installation_notes_ibfk_1"
+  add_foreign_key "load_order_note_history_entries", "load_order_notes"
+  add_foreign_key "load_order_note_history_entries", "plugins", column: "load_first"
+  add_foreign_key "load_order_note_history_entries", "plugins", column: "load_second"
+  add_foreign_key "load_order_note_history_entries", "users", column: "submitted_by"
   add_foreign_key "load_order_notes", "plugins", column: "load_first"
   add_foreign_key "load_order_notes", "plugins", column: "load_second"
   add_foreign_key "load_order_notes", "users", column: "submitted_by"
@@ -690,6 +718,8 @@ ActiveRecord::Schema.define(version: 20160331034800) do
   add_foreign_key "mod_version_install_order_notes", "mod_versions"
   add_foreign_key "mod_version_load_order_notes", "load_order_notes"
   add_foreign_key "mod_version_load_order_notes", "mod_versions"
+  add_foreign_key "mod_version_requirements", "mod_versions"
+  add_foreign_key "mod_version_requirements", "mod_versions", column: "required_id"
   add_foreign_key "mod_versions", "mods", name: "mod_versions_ibfk_1"
   add_foreign_key "mods", "categories", column: "primary_category_id"
   add_foreign_key "mods", "categories", column: "secondary_category_id"
