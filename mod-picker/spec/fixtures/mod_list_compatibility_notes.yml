@@ -5,7 +5,7 @@ resolved:
   compatibility_note_id: 1
   status: "Resolved"
 
-unresolved:
+ignored:
   mod_list_id: 1
   compatibility_note_id: 1
-  status: "Unresolved"
+  status: "Ignored"
