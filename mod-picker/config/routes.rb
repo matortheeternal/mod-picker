@@ -55,7 +55,7 @@ Rails.application.routes.draw do
   resources :welcome, only: [:index]
 
   # contact us and subscribe
-  match '/contacts',     to: 'contacts#new',             via: 'get'
+  match '/contacts', to: 'contacts#new', via: 'get'
   resources :contacts, only: [:new, :create]
 
   
