@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160331035213) do
+ActiveRecord::Schema.define(version: 20160331040030) do
 
   create_table "agreement_marks", id: false, force: :cascade do |t|
     t.integer "incorrect_note_id", limit: 4
@@ -72,14 +72,14 @@ ActiveRecord::Schema.define(version: 20160331035213) do
   add_index "compatibility_note_history_entries", ["submitted_by"], name: "fk_rails_7e4343a2d1", using: :btree
 
   create_table "compatibility_notes", force: :cascade do |t|
-    t.integer "submitted_by",            limit: 4
-    t.integer "compatibility_plugin_id", limit: 4
-    t.enum    "compatibility_type",      limit: ["Incompatible", "Partially Incompatible", "Compatibility Mod", "Compatibility Plugin", "Make Custom Patch"]
-    t.date    "submitted"
-    t.date    "edited"
-    t.text    "text_body",               limit: 65535
-    t.integer "incorrect_notes_count",   limit: 4
-    t.integer "compatibility_mod_id",    limit: 4
+    t.integer  "submitted_by",            limit: 4
+    t.integer  "compatibility_plugin_id", limit: 4
+    t.enum     "compatibility_type",      limit: ["Incompatible", "Partially Incompatible", "Compatibility Mod", "Compatibility Plugin", "Make Custom Patch"]
+    t.datetime "submitted"
+    t.datetime "edited"
+    t.text     "text_body",               limit: 65535
+    t.integer  "incorrect_notes_count",   limit: 4
+    t.integer  "compatibility_mod_id",    limit: 4
   end
 
   add_index "compatibility_notes", ["compatibility_plugin_id"], name: "compatibility_patch", using: :btree
@@ -325,22 +325,22 @@ ActiveRecord::Schema.define(version: 20160331035213) do
   add_index "mod_list_tags", ["submitted_by"], name: "fk_rails_4ab6737116", using: :btree
 
   create_table "mod_lists", force: :cascade do |t|
-    t.integer "created_by",                limit: 4
-    t.boolean "is_collection"
-    t.boolean "is_public"
-    t.boolean "has_adult_content"
-    t.enum    "status",                    limit: ["Planned", "Under Construction", "Testing", "Complete"]
-    t.date    "created"
-    t.date    "completed"
-    t.text    "description",               limit: 65535
-    t.integer "game_id",                   limit: 4
-    t.integer "comments_count",            limit: 4
-    t.integer "mods_count",                limit: 4
-    t.integer "plugins_count",             limit: 4
-    t.integer "custom_plugins_count",      limit: 4
-    t.integer "compatibility_notes_count", limit: 4
-    t.integer "installation_notes_count",  limit: 4
-    t.integer "user_stars_count",          limit: 4
+    t.integer  "created_by",                limit: 4
+    t.boolean  "is_collection"
+    t.boolean  "is_public"
+    t.boolean  "has_adult_content"
+    t.enum     "status",                    limit: ["Planned", "Under Construction", "Testing", "Complete"]
+    t.datetime "created"
+    t.datetime "completed"
+    t.text     "description",               limit: 65535
+    t.integer  "game_id",                   limit: 4
+    t.integer  "comments_count",            limit: 4
+    t.integer  "mods_count",                limit: 4
+    t.integer  "plugins_count",             limit: 4
+    t.integer  "custom_plugins_count",      limit: 4
+    t.integer  "compatibility_notes_count", limit: 4
+    t.integer  "installation_notes_count",  limit: 4
+    t.integer  "user_stars_count",          limit: 4
   end
 
   add_index "mod_lists", ["created_by"], name: "created_by", using: :btree
@@ -406,11 +406,11 @@ ActiveRecord::Schema.define(version: 20160331035213) do
   add_index "mod_version_requirements", ["required_id"], name: "fk_rails_05046fa6e5", using: :btree
 
   create_table "mod_versions", force: :cascade do |t|
-    t.integer "mod_id",    limit: 4
-    t.date    "released"
-    t.boolean "obsolete"
-    t.boolean "dangerous"
-    t.string  "version",   limit: 16
+    t.integer  "mod_id",    limit: 4
+    t.datetime "released"
+    t.boolean  "obsolete"
+    t.boolean  "dangerous"
+    t.string   "version",   limit: 16
   end
 
   add_index "mod_versions", ["mod_id"], name: "mod_id", using: :btree
@@ -523,19 +523,19 @@ ActiveRecord::Schema.define(version: 20160331035213) do
   add_index "review_templates", ["submitted_by"], name: "fk_rails_82a9747962", using: :btree
 
   create_table "reviews", force: :cascade do |t|
-    t.integer "submitted_by",          limit: 4
-    t.integer "mod_id",                limit: 4
-    t.boolean "hidden"
-    t.integer "rating1",               limit: 1
-    t.integer "rating2",               limit: 1
-    t.integer "rating3",               limit: 1
-    t.integer "rating4",               limit: 1
-    t.integer "rating5",               limit: 1
-    t.date    "submitted"
-    t.date    "edited"
-    t.text    "text_body",             limit: 65535
-    t.integer "incorrect_notes_count", limit: 4
-    t.integer "review_template_id",    limit: 4
+    t.integer  "submitted_by",          limit: 4
+    t.integer  "mod_id",                limit: 4
+    t.boolean  "hidden"
+    t.integer  "rating1",               limit: 1
+    t.integer  "rating2",               limit: 1
+    t.integer  "rating3",               limit: 1
+    t.integer  "rating4",               limit: 1
+    t.integer  "rating5",               limit: 1
+    t.datetime "submitted"
+    t.datetime "edited"
+    t.text     "text_body",             limit: 65535
+    t.integer  "incorrect_notes_count", limit: 4
+    t.integer  "review_template_id",    limit: 4
   end
 
   add_index "reviews", ["mod_id"], name: "mod_id", using: :btree
