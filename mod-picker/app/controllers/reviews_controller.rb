@@ -7,7 +7,6 @@ class ReviewsController < ApplicationController
     @reviews = Review.filter(filtering_params)
 
     respond_to do |format|
-      format.html
       format.json { render :json => @reviews}
     end
   end
@@ -16,7 +15,6 @@ class ReviewsController < ApplicationController
   # GET /reviews/1.json
   def show
     respond_to do |format|
-      format.html
       format.json { render :json => @review}
     end
   end
@@ -37,10 +35,8 @@ class ReviewsController < ApplicationController
 
     respond_to do |format|
       if @review.save
-        format.html { redirect_to @review, notice: 'Review was successfully created.' }
         format.json { render :show, status: :created, location: @review }
       else
-        format.html { render :new }
         format.json { render json: @review.errors, status: :unprocessable_entity }
       end
     end
@@ -51,10 +47,8 @@ class ReviewsController < ApplicationController
   def update
     respond_to do |format|
       if @review.update(review_params)
-        format.html { redirect_to @review, notice: 'Review was successfully updated.' }
         format.json { render :show, status: :ok, location: @review }
       else
-        format.html { render :edit }
         format.json { render json: @review.errors, status: :unprocessable_entity }
       end
     end
@@ -65,7 +59,6 @@ class ReviewsController < ApplicationController
   def destroy
     @review.destroy
     respond_to do |format|
-      format.html { redirect_to reviews_url, notice: 'Review was successfully destroyed.' }
       format.json { head :no_content }
     end
   end

@@ -37,10 +37,8 @@ class InstallOrderNotesController < ApplicationController
 
     respond_to do |format|
       if install_order_note.save
-        format.html { redirect_to install_order_note, notice: 'Install order note was successfully created.' }
         format.json { render :show, status: :created, location: install_order_note }
       else
-        format.html { render :new }
         format.json { render json: install_order_note.errors, status: :unprocessable_entity }
       end
     end
@@ -51,10 +49,8 @@ class InstallOrderNotesController < ApplicationController
   def update
     respond_to do |format|
       if install_order_note.update(install_order_note_params)
-        format.html { redirect_to install_order_note, notice: 'Install order note was successfully updated.' }
         format.json { render :show, status: :ok, location: install_order_note }
       else
-        format.html { render :edit }
         format.json { render json: install_order_note.errors, status: :unprocessable_entity }
       end
     end
@@ -65,7 +61,6 @@ class InstallOrderNotesController < ApplicationController
   def destroy
     install_order_note.destroy
     respond_to do |format|
-      format.html { redirect_to install_order_notes_url, notice: 'Install order note was successfully destroyed.' }
       format.json { head :no_content }
     end
   end

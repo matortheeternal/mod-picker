@@ -37,10 +37,8 @@ class LoadOrderNotesController < ApplicationController
 
     respond_to do |format|
       if load_order_note.save
-        format.html { redirect_to load_order_note, notice: 'Load order note was successfully created.' }
         format.json { render :show, status: :created, location: load_order_note }
       else
-        format.html { render :new }
         format.json { render json: load_order_note.errors, status: :unprocessable_entity }
       end
     end
@@ -51,10 +49,8 @@ class LoadOrderNotesController < ApplicationController
   def update
     respond_to do |format|
       if load_order_note.update(load_order_note_params)
-        format.html { redirect_to load_order_note, notice: 'Load order note was successfully updated.' }
         format.json { render :show, status: :ok, location: load_order_note }
       else
-        format.html { render :edit }
         format.json { render json: load_order_note.errors, status: :unprocessable_entity }
       end
     end
@@ -65,7 +61,6 @@ class LoadOrderNotesController < ApplicationController
   def destroy
     load_order_note.destroy
     respond_to do |format|
-      format.html { redirect_to load_order_notes_url, notice: 'Load order note was successfully destroyed.' }
       format.json { head :no_content }
     end
   end

@@ -37,10 +37,8 @@ class HelpfulMarksController < ApplicationController
 
     respond_to do |format|
       if @helpful_mark.save
-        format.html { redirect_to @helpful_mark, notice: 'Helpful mark was successfully created.' }
         format.json { render :show, status: :created, location: @helpful_mark }
       else
-        format.html { render :new }
         format.json { render json: @helpful_mark.errors, status: :unprocessable_entity }
       end
     end
@@ -51,10 +49,8 @@ class HelpfulMarksController < ApplicationController
   def update
     respond_to do |format|
       if @helpful_mark.update(helpful_mark_params)
-        format.html { redirect_to @helpful_mark, notice: 'Helpful mark was successfully updated.' }
         format.json { render :show, status: :ok, location: @helpful_mark }
       else
-        format.html { render :edit }
         format.json { render json: @helpful_mark.errors, status: :unprocessable_entity }
       end
     end
@@ -65,7 +61,6 @@ class HelpfulMarksController < ApplicationController
   def destroy
     @helpful_mark.destroy
     respond_to do |format|
-      format.html { redirect_to helpful_marks_url, notice: 'Helpful mark was successfully destroyed.' }
       format.json { head :no_content }
     end
   end

@@ -7,7 +7,6 @@ class UserReputationsController < ApplicationController
     @user_reputations = UserReputation.filter(filtering_params)
 
     respond_to do |format|
-      format.html
       format.json { render :json => @user_reputations}
     end
   end
@@ -16,7 +15,6 @@ class UserReputationsController < ApplicationController
   # GET /user_reputations/1.json
   def show
     respond_to do |format|
-      format.html
       format.json { render :json => @user_reputation}
     end
   end
@@ -37,10 +35,8 @@ class UserReputationsController < ApplicationController
 
     respond_to do |format|
       if @user_reputation.save
-        format.html { redirect_to @user_reputation, notice: 'User reputation was successfully created.' }
         format.json { render :show, status: :created, location: @user_reputation }
       else
-        format.html { render :new }
         format.json { render json: @user_reputation.errors, status: :unprocessable_entity }
       end
     end
@@ -51,10 +47,8 @@ class UserReputationsController < ApplicationController
   def update
     respond_to do |format|
       if @user_reputation.update(user_reputation_params)
-        format.html { redirect_to @user_reputation, notice: 'User reputation was successfully updated.' }
         format.json { render :show, status: :ok, location: @user_reputation }
       else
-        format.html { render :edit }
         format.json { render json: @user_reputation.errors, status: :unprocessable_entity }
       end
     end
@@ -65,7 +59,6 @@ class UserReputationsController < ApplicationController
   def destroy
     @user_reputation.destroy
     respond_to do |format|
-      format.html { redirect_to user_reputations_url, notice: 'User reputation was successfully destroyed.' }
       format.json { head :no_content }
     end
   end
