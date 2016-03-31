@@ -138,12 +138,12 @@ def seed_static_records
   )
 
   # Locations sub-categories
-  Category.create(
+  catOverhauls = Category.create(
       name: "Locations - Overhauls",
       parent_id: catLocations.id,
       description: "Mods which overhaul or build off of one or more vanilla locations.  E.g. City Overhauls, Player Home Overhauls, etc."
   )
-  Category.create(
+  catNewLands = Category.create(
       name: "Locations - New Lands",
       parent_id: catLocations.id,
       description: "Mods which add completely new lands to explore."
@@ -153,19 +153,19 @@ def seed_static_records
       parent_id: catLocations.id,
       description: "Mods which add new player homes to the game.  This include all sorts of residences ranging from tree houses to castles."
   )
-  Category.create(
+  catNewDungeons = Category.create(
       name: "Locations - New Dungeons",
       parent_id: catLocations.id,
       description: "Mods which add new areas where you encounter and fight enemies."
   )
-  Category.create(
+  catNewStructuresAndLandmarks = Category.create(
       name: "Locations - New Structures & Landmarks",
       parent_id: catLocations.id,
       description: "Mods which add new structures or landmarks, e.g. Cities, Towns, Inns, Statues, etc."
   )
 
   # Gameplay sub-categories
-  Category.create(
+  catClassesAndRaces = Category.create(
       name: "Gameplay - Classes and Races",
       parent_id: catGameplay.id,
       description: "Mods that add or alter character classes or races."
@@ -185,27 +185,27 @@ def seed_static_records
       parent_id: catGameplay.id,
       description: "Mods which alter the economy of the game - viz., the acquisition of items and currency.  E.g. modifications to merchants or leveled loot.  Also includes mods which rebalance items, e.g. their weight, gold value, and armor rating/damage."
   )
-  Category.create(
+  catFactions = Category.create(
       name: "Gameplay - Factions",
       parent_id: catGameplay.id,
       description: "Mods which alter existing factions and faction quest lines or add new ones."
   )
-  Category.create(
+  catImmersionAndRolePlaying = Category.create(
       name: "Gameplay - Immersion & Role-playing",
       parent_id: catGameplay.id,
       description: "Mods which exist specifically to increase the player’s immersion in the game world, or to aid in role-playing."
   )
-  Category.create(
+  catMagic = Category.create(
       name: "Gameplay - Magic",
       parent_id: catGameplay.id,
       description: "Mods which add new spells, or magic-based mechanics to the game.  Note: Mods that only alter magic-related perk trees should go into Gameplay - Skills & Perks."
   )
-  Category.create(
+  catQuests = Category.create(
       name: "Gameplay - Quests",
       parent_id: catGameplay.id,
       description: "Mods which add or alter quests in the game."
   )
-  Category.create(
+  catSkillsAndPerks = Category.create(
       name: "Gameplay - Skills & Perks",
       parent_id: catGameplay.id,
       description: "Mods which modify skills or perks in the game, or add new ones."
@@ -295,7 +295,7 @@ def seed_static_records
       parent_id: catAudiovisual.id,
       description: "Any mod which alters lighting or weather."
   )
-  Category.create(
+  catModelsAndTextures = Category.create(
       name: "Audiovisual - Models & Textures",
       parent_id: catAudiovisual.id,
       description: "Any mod which provides modified models/textures without introducing new items, excluding character mods."
@@ -312,6 +312,99 @@ def seed_static_records
   )
 
   puts "    #{Category.where.not(parent_id: nil).count} sub-categories seeded"
+
+
+  #==================================================
+  # CREATE CATEGORY PRIORITIES
+  #==================================================
+
+  CategoryPriority.create(
+      dominant_id: catItems.id,
+      recessive_id: catModelsAndTextures.id,
+      description: 'New items often include new models & textures.'
+  )
+  CategoryPriority.create(
+      dominant_id: catCharacter.id,
+      recessive_id: catModelsAndTextures.id,
+      description: 'Character appearance mods often involve new models & textures.'
+  )
+  CategoryPriority.create(
+      dominant_id: catClassesAndRaces.id,
+      recessive_id: catCharacter.id,
+      description: 'New races often offer new character appearance options.'
+  )
+  CategoryPriority.create(
+      dominant_id: catGameplay.id,
+      recessive_id: catFixes.id,
+      description: 'Changing gameplay often involves fixing issues with the base game.'
+  )
+  CategoryPriority.create(
+      dominant_id: catFactions.id,
+      recessive_id: catNewChars.id,
+      description: 'Faction mods often involve adding new characters.'
+  )
+  CategoryPriority.create(
+      dominant_id: catFactions.id,
+      recessive_id: catQuests.id,
+      description: 'Faction mods often involve adding or altering quests.'
+  )
+  CategoryPriority.create(
+      dominant_id: catMagic.id,
+      recessive_id: catAudiovisual.id,
+      description: 'Magic mods which add new spells to the game often adds new visual effects.'
+  )
+  CategoryPriority.create(
+      dominant_id: catMagic.id,
+      recessive_id: catSkillsAndPerks.id,
+      description: 'Magic mods often modify skill and perk trees.'
+  )
+  CategoryPriority.create(
+      dominant_id: catQuests.id,
+      recessive_id: catNewChars.id,
+      description: 'New or alterred quests often involve new characters.'
+  )
+  CategoryPriority.create(
+      dominant_id: catQuests.id,
+      recessive_id: catImmersionAndRolePlaying.id,
+      description: 'New or alterred quests often increase gameplay immersion and offer new role-playing experiences.'
+  )
+  CategoryPriority.create(
+      dominant_id: catNewLands.id,
+      recessive_id: catGameplay.id,
+      description: 'New lands often offer new gameplay opportunities.'
+  )
+  CategoryPriority.create(
+      dominant_id: catNewLands.id,
+      recessive_id: catNewChars.id,
+      description: 'New lands often include new characters to interact with.'
+  )
+  CategoryPriority.create(
+      dominant_id: catNewLands.id,
+      recessive_id: catItems.id,
+      description: 'New lands often include new items.'
+  )
+  CategoryPriority.create(
+      dominant_id: catNewLands.id,
+      recessive_id: catAudiovisual.id,
+      description: 'New lands often offer new audiovisual experiences.'
+  )
+  CategoryPriority.create(
+      dominant_id: catNewDungeons.id,
+      recessive_id: catNewChars.id,
+      description: 'New dungeons often include new characters.'
+  )
+  CategoryPriority.create(
+      dominant_id: catNewStructuresAndLandmarks.id,
+      recessive_id: catNewChars.id,
+      description: 'New structures and landmarks often include new characters.'
+  )
+  CategoryPriority.create(
+      dominant_id: catOverhauls.id,
+      recessive_id: catAudiovisual.id,
+      description: 'Location overhauls often involve new models & textures.'
+  )
+
+  puts "    #{CategoryPriority.count} category priorities seeded"
 
 
   #==================================================

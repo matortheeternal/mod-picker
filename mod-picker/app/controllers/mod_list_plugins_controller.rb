@@ -37,10 +37,8 @@ class ModListPluginsController < ApplicationController
 
     respond_to do |format|
       if @mod_list_plugin.save
-        format.html { redirect_to @mod_list_plugin, notice: 'Mod list plugin was successfully created.' }
         format.json { render :show, status: :created, location: @mod_list_plugin }
       else
-        format.html { render :new }
         format.json { render json: @mod_list_plugin.errors, status: :unprocessable_entity }
       end
     end
@@ -51,10 +49,8 @@ class ModListPluginsController < ApplicationController
   def update
     respond_to do |format|
       if @mod_list_plugin.update(mod_list_plugin_params)
-        format.html { redirect_to @mod_list_plugin, notice: 'Mod list plugin was successfully updated.' }
         format.json { render :show, status: :ok, location: @mod_list_plugin }
       else
-        format.html { render :edit }
         format.json { render json: @mod_list_plugin.errors, status: :unprocessable_entity }
       end
     end
@@ -65,7 +61,6 @@ class ModListPluginsController < ApplicationController
   def destroy
     @mod_list_plugin.destroy
     respond_to do |format|
-      format.html { redirect_to mod_list_plugins_url, notice: 'Mod list plugin was successfully destroyed.' }
       format.json { head :no_content }
     end
   end

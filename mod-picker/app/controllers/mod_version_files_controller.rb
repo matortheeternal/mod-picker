@@ -37,10 +37,8 @@ class ModVersionFilesController < ApplicationController
 
     respond_to do |format|
       if @mod_version_file.save
-        format.html { redirect_to @mod_version_file, notice: 'Mod version file map was successfully created.' }
         format.json { render :show, status: :created, location: @mod_version_file }
       else
-        format.html { render :new }
         format.json { render json: @mod_version_file.errors, status: :unprocessable_entity }
       end
     end
@@ -51,10 +49,8 @@ class ModVersionFilesController < ApplicationController
   def update
     respond_to do |format|
       if @mod_version_file.update(mod_version_file_params)
-        format.html { redirect_to @mod_version_file, notice: 'Mod version file map was successfully updated.' }
         format.json { render :show, status: :ok, location: @mod_version_file }
       else
-        format.html { render :edit }
         format.json { render json: @mod_version_file.errors, status: :unprocessable_entity }
       end
     end
@@ -65,7 +61,6 @@ class ModVersionFilesController < ApplicationController
   def destroy
     @mod_version_file.destroy
     respond_to do |format|
-      format.html { redirect_to mod_version_files_url, notice: 'Mod version file map was successfully destroyed.' }
       format.json { head :no_content }
     end
   end

@@ -37,10 +37,8 @@ class ModVersionCompatibilityNotesController < ApplicationController
 
     respond_to do |format|
       if @mod_version_compatibility_note.save
-        format.html { redirect_to @mod_version_compatibility_note, notice: 'Mod version compatibility note map was successfully created.' }
         format.json { render :show, status: :created, location: @mod_version_compatibility_note }
       else
-        format.html { render :new }
         format.json { render json: @mod_version_compatibility_note.errors, status: :unprocessable_entity }
       end
     end
@@ -51,10 +49,8 @@ class ModVersionCompatibilityNotesController < ApplicationController
   def update
     respond_to do |format|
       if @mod_version_compatibility_note.update(mod_version_compatibility_note_params)
-        format.html { redirect_to @mod_version_compatibility_note, notice: 'Mod version compatibility note map was successfully updated.' }
         format.json { render :show, status: :ok, location: @mod_version_compatibility_note }
       else
-        format.html { render :edit }
         format.json { render json: @mod_version_compatibility_note.errors, status: :unprocessable_entity }
       end
     end
@@ -65,7 +61,6 @@ class ModVersionCompatibilityNotesController < ApplicationController
   def destroy
     @mod_version_compatibility_note.destroy
     respond_to do |format|
-      format.html { redirect_to mod_version_compatibility_notes_url, notice: 'Mod version compatibility note map was successfully destroyed.' }
       format.json { head :no_content }
     end
   end
