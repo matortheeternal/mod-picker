@@ -9,7 +9,7 @@ require 'rails_helper'
   # add_index "masters", ["plugin_id"], name: "pl_id", using: :btree
 
 
-RSpec.describe Master, :model, :wip do
+RSpec.describe Master, :model do
   it "should have a valid factory" do
     expect(build(:master)).to be_valid 
   end
