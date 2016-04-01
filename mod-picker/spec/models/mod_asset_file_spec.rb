@@ -6,7 +6,7 @@ require 'rails_helper'
 
 #   add_index "mod_asset_files", ["filepath"], name: "filepath", unique: true, using: :btree
 
-RSpec.describe ModAssetFile, :model, :wip do
+RSpec.describe ModAssetFile, :model do
   fixtures :mod_asset_files
 
   it "should have a valid factory" do
