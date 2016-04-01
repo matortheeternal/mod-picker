@@ -53,6 +53,18 @@ class Mod < ActiveRecord::Base
     self.mod_authors.count == 0
   end
 
+  def update_compatibility_notes_count
+    self.compatibility_notes_count = self.mod_versions.compatibility_notes.count
+  end
+
+  def update_install_order_notes_count
+    self.install_order_notes_count = self.install_before_notes.count + self.install_after_notes.count
+  end
+
+  def update_load_order_notes_count
+    self.load_order_notes_count = (self.mod_versions.plugins.load_before_notes + self.mod_versions.plugins.load_after_notes).count
+  end
+
   def as_json(options={})
     super(:include => {
         :nexus_info => {:except => [:mod_id, :changelog]},
