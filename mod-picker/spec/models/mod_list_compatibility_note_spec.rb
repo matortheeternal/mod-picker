@@ -6,7 +6,7 @@ require 'rails_helper'
 #   t.enum    "status",                limit: ["Unresolved", "Resolved", "Ignored"], default: "Unresolved"
 # end
 
-RSpec.describe ModListCompatibilityNote, :model, :wip do
+RSpec.describe ModListCompatibilityNote, :model do
   fixtures :mod_list_compatibility_notes, 
            :compatibility_notes,
            :mod_lists,
