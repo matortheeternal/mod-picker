@@ -10,12 +10,11 @@
 
 FactoryGirl.define do
   factory :plugin do
-    id 1
-mod_version_id 1
-filename "MyText"
-author "MyText"
-description "MyText"
-hash "MyString"
+    mod_version_id 1
+    filename "Skyrim.esm"
+    author "Bethesda"
+    description "The base Esm of skyrim"
+    crc_hash "a461d80f"
   end
 
 end
