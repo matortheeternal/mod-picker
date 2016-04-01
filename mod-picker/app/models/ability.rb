@@ -148,10 +148,14 @@ class Ability
       end
       if user.reputation.overall >= 320
         # can update compatibility notes, install order notes, and load order notes  when the user
-        # who created them is inactive or when the community has agreed they are incorrect
-        can :update, CompatibilityNote, { :user => { :inactive? => true } } || { :incorrect? => true }
-        can :update, InstallOrderNote, { :user => { :inactive? => true } } || { :incorrect? => true }
-        can :update, LoadOrderNote, { :user => { :inactive? => true } } || { :incorrect? => true }
+        # who created them is inactive
+        can :update, CompatibilityNote, { :user => { :inactive? => true } }
+        can :update, InstallOrderNote, { :user => { :inactive? => true } }
+        can :update, LoadOrderNote, { :user => { :inactive? => true } }
+        # or when the community has agreed they are incorrect
+        can :update, CompatibilityNote, { :incorrect? => true }
+        can :update, InstallOrderNote, { :incorrect? => true }
+        can :update, LoadOrderNote, { :incorrect? => true }
       end
       if user.reputation.overall >= 640
         can :rescrape # can request mods be re-scraped
