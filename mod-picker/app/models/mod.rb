@@ -43,6 +43,10 @@ class Mod < ActiveRecord::Base
 
   accepts_nested_attributes_for :mod_versions
 
+  def no_author?
+    self.mod_authors.count == 0
+  end
+
   def as_json(options={})
     super(:include => {
         :nexus_info => {:except => [:mod_id, :changelog]},
