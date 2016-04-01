@@ -44,17 +44,14 @@ class Mod < ActiveRecord::Base
   has_many :install_before_notes, :foreign_key => 'install_first', :class_name => 'InstallOrderNote', :inverse_of => 'install_first_mod'
   has_many :install_after_notes, :foreign_key => 'install_second', :class_name => 'InstallOrderNote', :inverse_of => 'install_second_mod'
 
-  # mod versions
+  # mod versions and associated data
   has_many :mod_versions, :inverse_of => 'mod', :counter_cache => true
+  has_many :compatibility_notes, -> { distinct }, :throguh => 'mod_versions', :inverse_of => 'mods', :counter_cache => true
 
   accepts_nested_attributes_for :mod_versions
 
   def no_author?
     self.mod_authors.count == 0
-  end
-
-  def update_compatibility_notes_count
-    self.compatibility_notes_count = self.mod_versions.compatibility_notes.count
   end
 
   def update_install_order_notes_count

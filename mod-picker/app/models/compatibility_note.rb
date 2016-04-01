@@ -1,9 +1,6 @@
 class CompatibilityNote < ActiveRecord::Base
   include Filterable
 
-  after_create update_counter_cache
-  after_update update_counter_cache
-
   scope :by, -> (id) { where(submitted_by: id) }
   scope :mod, -> (id) { joins(:mod_versions).where(:mod_versions => {mod_id: id}) }
   scope :mv, -> (id) { joins(:mod_versions).where(:mod_versions => {id: id}) }
@@ -16,7 +13,7 @@ class CompatibilityNote < ActiveRecord::Base
   # mod versions this compatibility note is associated with
   has_many :mod_version_compatibility_notes, :inverse_of => 'compatibility_note'
   has_many :mod_versions, :through => 'mod_version_compatibility_notes', :inverse_of => 'compatibility_notes'
-  has_many :mods, -> { distinct }, :through => 'mod_versions'
+  has_many :mods, -> { distinct }, :through => 'mod_versions', :inverse_of => 'compatibility_notes'
 
   # mod lists this compatibility note appears on
   has_many :mod_list_compatibility_notes, :inverse_of => 'compatibility_note'
@@ -28,12 +25,6 @@ class CompatibilityNote < ActiveRecord::Base
 
   # old versions of this compatibility note
   has_many :compatibility_note_history_entries, :inverse_of => 'compatibility_note'
-
-
-  # update mod counter cache columns
-  def update_counter_cache
-    self.mods.update_compatibility_notes_count
-  end
 
   def as_json(options={})
     super(:include => {
