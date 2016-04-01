@@ -12,7 +12,7 @@ class Plugin < ActiveRecord::Base
   validates :mod_version_id, :filename, :crc_hash, presence: true
   validates :filename, length: {in: 1..64}
   validates :author, length: {in: 0..64}
-  validates :description, length: {in: 0..512} do
-    
-  end
+  validates :description, length: {in: 0..512}
+  validates :crc_hash, length: {in: 1..8}
+  
 end

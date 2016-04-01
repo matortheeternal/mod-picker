@@ -15,6 +15,11 @@ RSpec.describe Plugin, :model, :wip do
     expect(build(:plugin)).to be_valid
   end
 
+
+# ==================================================================
+# VALIDATIONS
+# ==================================================================
+
   context "validations" do
     describe "mod_version_id" do
       it "should be invalid if blank" do
@@ -26,6 +31,10 @@ RSpec.describe Plugin, :model, :wip do
       end
     end
 
+    # ==================================================================
+    # Filename
+    # ==================================================================
+    
     describe "filename" do
       it "should be invalid if blank" do
         plugin = build(:plugin,
@@ -74,6 +83,10 @@ RSpec.describe Plugin, :model, :wip do
       end
     end
 
+    # ==================================================================
+    # Author
+    # ==================================================================
+    
     describe "author" do
       it "should default to null" do
         plugin = Plugin.new(mod_version_id: 1,
@@ -115,6 +128,10 @@ RSpec.describe Plugin, :model, :wip do
       end
     end
 
+    # ==================================================================
+    # Description
+    # ==================================================================
+    
     describe "description" do
       it "should default to null" do
         plugin = Plugin.new(mod_version_id: 1,
@@ -156,6 +173,10 @@ RSpec.describe Plugin, :model, :wip do
       end
     end
 
+    # ==================================================================
+    # CRC hash
+    # ==================================================================
+    
     describe "crc_hash" do
       it "should be invalid if blank" do
         plugin = build(:plugin,
@@ -167,6 +188,31 @@ RSpec.describe Plugin, :model, :wip do
         plugin.crc_hash = ""
         expect(plugin).to be_invalid
         expect(plugin.errors[:crc_hash]).to include("can't be blank")
+      end
+
+      it "should be invalid if length > 8" do
+        plugin = build(:plugin)
+
+        invalidLengths = [("a" * 9), ("a" * 20)]
+
+        invalidLengths.each do |hash|
+          plugin.crc_hash = hash
+
+          plugin.valid?
+          expect(plugin.errors[:crc_hash]).to include("is too long (maximum is 8 characters)")
+        end        
+      end
+
+      it "should be valid if length within 1..8" do
+        plugin = build(:plugin)
+
+        validLengths = [("A" * 8), ("a"), ("B" * 3), ("f" * 5)]
+
+        validLengths.each do |hash|
+          plugin.crc_hash = hash
+
+          expect(plugin).to be_valid
+        end
       end
     end
   end
