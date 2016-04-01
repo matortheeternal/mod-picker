@@ -126,6 +126,8 @@ GEM
       mini_portile2 (~> 2.0.0.rc2)
     orm_adapter (0.5.0)
     rack (1.6.4)
+    rack-attack (4.4.1)
+      rack
     rack-protection (1.5.3)
       rack
     rack-test (0.6.3)
@@ -257,6 +259,7 @@ DEPENDENCIES
   mysql2 (~> 0.3.20)
   native_enum
   nokogiri
+  rack-attack
   rails (= 4.2.5)
   rspec-rails
   sass-rails (~> 5.0)
