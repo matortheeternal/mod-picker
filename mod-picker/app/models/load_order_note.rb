@@ -1,9 +1,6 @@
 class LoadOrderNote < ActiveRecord::Base
   include Filterable
 
-  after_create update_counter_cache
-  after_update update_counter_cache
-
   scope :by, -> (id) { where(submitted_by: id) }
   scope :mod, -> (id) { joins(:mod_versions).where(:mod_versions => {mod_id: id}) }
   scope :mv, -> (id) { joins(:mod_versions).where(:mod_versions => {id: id}) }
@@ -25,13 +22,6 @@ class LoadOrderNote < ActiveRecord::Base
   # community feedback on this load order note
   has_many :helpful_marks, :as => 'helpfulable'
   has_many :incorrect_notes, :as => 'correctable'
-
-
-  # update mod counter cache columns
-  def update_counter_cache
-    self.load_first_plugin.mod_version.mod.update_load_order_notes_count
-    self.load_first_plugin.mod_version.mod.update_load_order_notes_count
-  end
 
   def as_json(options={})
     super(:include => {
