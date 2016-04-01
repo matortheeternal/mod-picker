@@ -7,10 +7,8 @@ class InstallOrderNote < ActiveRecord::Base
 
   belongs_to :user, :foreign_key => 'submitted_by', :inverse_of => 'InstallOrderNote'
 
-  has_many :mod_versions, :through => 'mod_version_install_order_notes'
-
-  has_many :mod_lists, :through => 'mod_list_installation_notes', :inverse_of => 'InstallOrderNote'
-  has_many :mod_list_install_order_notes, :inverse_of => 'InstallOrderNote'
+  has_many :mod_list_install_order_notes, :inverse_of => 'install_order_note'
+  has_many :mod_lists, :through => 'mod_list_installation_notes', :inverse_of => 'install_order_notes'
 
   has_many :mod_version_install_order_notes, :inverse_of => 'install_order_note'
   has_many :mod_versions, :through => 'mod_version_install_order_notes', :inverse_of => 'install_order_notes'
@@ -21,8 +19,13 @@ class InstallOrderNote < ActiveRecord::Base
 
   def as_json(options={})
     super(:include => {
-        :mod_version => {
-            :except => [:id, :released, :obsolete, :dangerous]
+        :mod_version_install_order_notes => {
+            :except => [:install_order_note_id, :mod_version_id],
+            :include => {
+                :mod_version => {
+                    :except => [:id, :released, :obsolete, :dangerous]
+                }
+            }
         }
     })
   end

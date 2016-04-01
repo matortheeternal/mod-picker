@@ -7,10 +7,8 @@ class LoadOrderNote < ActiveRecord::Base
 
   belongs_to :user, :foreign_key => 'submitted_by', :inverse_of => 'LoadOrderNote'
 
-  has_many :mod_versions, :through => 'mod_version_load_order_notes'
-
-  has_many :mod_lists, :through => 'mod_list_load_order_notes', :inverse_of => 'LoadOrderNote'
-  has_many :mod_list_installation_notes, :inverse_of => 'LoadOrderNote'
+  has_many :mod_list_installation_notes, :inverse_of => 'load_order_note'
+  has_many :mod_lists, :through => 'mod_list_load_order_notes', :inverse_of => 'load_order_notes'
 
   has_many :mod_version_load_order_notes, :inverse_of => 'load_order_note'
   has_many :mod_versions, :through => 'mod_version_load_order_notes', :inverse_of => 'load_order_notes'
@@ -21,8 +19,13 @@ class LoadOrderNote < ActiveRecord::Base
 
   def as_json(options={})
     super(:include => {
-        :mod_version => {
-            :except => [:id, :released, :obsolete, :dangerous]
+        :mod_version_load_order_notes => {
+            :except => [:load_order_note_id, :mod_version_id],
+            :include => {
+                :mod_version => {
+                    :except => [:id, :released, :obsolete, :dangerous]
+                }
+            }
         }
     })
   end
