@@ -14,8 +14,16 @@ require 'rails_helper'
   # add_index "install_order_notes", ["submitted_by"], name: "fk_rails_ea0bdedfde", using: :btree
 
 describe InstallOrderNote, :model, :wip do
+  fixtures :install_order_notes, 
+           :users
+
   it "should have a valid factory" do
     note = build(:install_order_note)
+  end
+
+  it "should have valid fixtures" do
+    expect(install_order_notes(:installOrderAlpha)).to be_valid
+    expect((install_order_notes(:installOrderBeta))).to be_valid
   end
 
   context "validations" do
