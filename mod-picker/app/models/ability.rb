@@ -7,9 +7,13 @@ class Ability
     # general read permissions
     can :read, :all
 
-    # admin and moderator permissions
     if user.admin?
+      # special admin permissions
       can :assign_roles
+      can :read_hidden
+      can :ban_users
+
+      # admins can do whatever they want
       can :manage, :all
     elsif user.moderator?
       # special moderator permissions
