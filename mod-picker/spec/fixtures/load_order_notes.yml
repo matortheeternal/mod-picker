@@ -11,3 +11,4 @@
 #   add_index "load_order_notes", ["load_second"], name: "fk_rails_af9e3c9509", using: :btree
 #   add_index "load_order_notes", ["submitted_by"], name: "fk_rails_9992d700a9", using: :btree
 
+# TODO: finish load_order_notes fixtures

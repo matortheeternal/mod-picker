@@ -13,7 +13,7 @@ require 'rails_helper'
 #   add_index "load_order_notes", ["load_second"], name: "fk_rails_af9e3c9509", using: :btree
 #   add_index "load_order_notes", ["submitted_by"], name: "fk_rails_9992d700a9", using: :btree
 
-RSpec.describe LoadOrderNote, :model, :wip do
+RSpec.describe LoadOrderNote, :model do
   fixtures :users
 
   it "should have a valid factory" do
