@@ -10,14 +10,20 @@ class CompatibilityNote < ActiveRecord::Base
   belongs_to :compatibility_plugin, :class_name => 'Plugin', :foreign_key => 'compatibility_plugin_id', :inverse_of => 'compatibility_note_plugins'
   belongs_to :compatibility_mod, :class_name => 'Mod', :foreign_key => 'compatibility_mod_id', :inverse_of => 'compatibility_note_mods'
 
-  has_many :mod_list_compatibility_notes, :inverse_of => 'compatibility_note'
-  has_many :mod_lists, :through => 'mod_list_compatibility_notes', :inverse_of => 'compatibility_notes'
-
+  # mod versions this compatibility note is associated with
   has_many :mod_version_compatibility_notes, :inverse_of => 'compatibility_note'
   has_many :mod_versions, :through => 'mod_version_compatibility_notes', :inverse_of => 'compatibility_notes'
 
+  # mod lists this compatibility note appears on
+  has_many :mod_list_compatibility_notes, :inverse_of => 'compatibility_note'
+  has_many :mod_lists, :through => 'mod_list_compatibility_notes', :inverse_of => 'compatibility_notes'
+
+  # community feedback on this compatibility note
   has_many :helpful_marks, :as => 'helpfulable'
   has_many :incorrect_notes, :as => 'correctable'
+
+  # old versions of this compatibility note
+  has_many :compatibility_note_history_entries, :inverse_of => 'compatibility_note'
 
 
   def as_json(options={})
