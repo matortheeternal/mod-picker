@@ -1,11 +1,11 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-one:
-  ml_id: 1
-  cn_id: 1
-  status: 1
+resolved:
+  mod_list_id: 1
+  compatibility_note_id: 1
+  status: "Resolved"
 
-two:
-  ml_id: 1
-  cn_id: 1
-  status: 1
+unresolved:
+  mod_list_id: 1
+  compatibility_note_id: 1
+  status: "Unresolved"

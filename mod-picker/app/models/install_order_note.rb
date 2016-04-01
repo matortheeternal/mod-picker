@@ -1,6 +1,8 @@
 class InstallOrderNote < ActiveRecord::Base
   include Filterable
 
+  after_initialize :init
+
   scope :by, -> (id) { where(submitted_by: id) }
   scope :mod, -> (id) { joins(:mod_versions).where(:mod_versions => {mod_id: id}) }
   scope :mv, -> (id) { joins(:mod_versions).where(:mod_versions => {id: id}) }
@@ -22,6 +24,16 @@ class InstallOrderNote < ActiveRecord::Base
   # community feedback on this install order note
   has_many :helpful_marks, :as => 'helpfulable'
   has_many :incorrect_notes, :as => 'correctable'
+
+  # validations
+  validates :install_first, :install_second, presence: true
+  validates :text_body, length: { in: 64..16384 }
+  
+  
+  # initialize variables if empty/nil
+  def init
+    self.submitted ||= DateTime.now
+  end
 
   def as_json(options={})
     super(:include => {
