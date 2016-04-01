@@ -46,7 +46,7 @@ class Mod < ActiveRecord::Base
 
   # mod versions and associated data
   has_many :mod_versions, :inverse_of => 'mod', :counter_cache => true
-  has_many :compatibility_notes, -> { distinct }, :throguh => 'mod_versions', :inverse_of => 'mods', :counter_cache => true
+  has_many :compatibility_notes, -> { distinct }, :through => 'mod_versions', :inverse_of => 'mods', :counter_cache => true
 
   accepts_nested_attributes_for :mod_versions
 
