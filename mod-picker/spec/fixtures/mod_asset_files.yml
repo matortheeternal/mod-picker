@@ -3,3 +3,12 @@
 #   end
 
 #   add_index "mod_asset_files", ["filepath"], name: "filepath", unique: true, using: :btree
+
+modAssetTreeTexture:
+  filepath: "data/textures/tree"
+
+modAssetRockTexture:
+  filepath: "data/textures/rock"
+
+modAssetPlantTexture:
+  filepath: "data/textures/plant"

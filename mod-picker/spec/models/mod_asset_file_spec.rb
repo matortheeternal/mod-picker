@@ -7,8 +7,14 @@ require 'rails_helper'
 #   add_index "mod_asset_files", ["filepath"], name: "filepath", unique: true, using: :btree
 
 RSpec.describe ModAssetFile, :model, :wip do
+  fixtures :mod_asset_files
+
   it "should have a valid factory" do
     expect(build(:mod_asset_file)).to be_valid
+  end
+
+  it "should have valid fixtures" do
+    expect(mod_asset_files(:modAssetTreeTexture)).to be_valid 
   end
 
   context "validations" do
