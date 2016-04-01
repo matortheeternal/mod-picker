@@ -36,9 +36,9 @@ def seed_fake_users
 
   # create 99 random users
   99.times do |n|
-    # only allow up to the first 20 characters of a username from the
+    # only allow up to the first 18 characters of a username from the
     # faker generated username
-    name = Faker::Internet.user_name[0..19]
+    name = Faker::Internet.user_name[0..17]
     pw = SecureRandom.urlsafe_base64
     User.create!(
         username: "#{name}#{n}",
