@@ -3,12 +3,12 @@ class UserSettingsController < ApplicationController
 
   # GET /user_settings
   # GET /user_settings.json
+  # returns the current user's settings
   def index
-    @user_settings = UserSetting.filter(filtering_params)
+    @user_setting = current_user.settings
 
     respond_to do |format|
-      format.html
-      format.json { render :json => @user_settings}
+      format.json { render :json => @user_setting}
     end
   end
 
@@ -16,7 +16,6 @@ class UserSettingsController < ApplicationController
   # GET /user_settings/1.json
   def show
     respond_to do |format|
-      format.html
       format.json { render :json => @user_setting}
     end
   end
@@ -37,10 +36,8 @@ class UserSettingsController < ApplicationController
 
     respond_to do |format|
       if @user_setting.save
-        format.html { redirect_to @user_setting, notice: 'User setting was successfully created.' }
-        format.json { render :show, status: :created, location: @user_setting }
+        format.json { render json: {status: 'created'} }
       else
-        format.html { render :new }
         format.json { render json: @user_setting.errors, status: :unprocessable_entity }
       end
     end
@@ -51,10 +48,8 @@ class UserSettingsController < ApplicationController
   def update
     respond_to do |format|
       if @user_setting.update(user_setting_params)
-        format.html { redirect_to @user_setting, notice: 'User setting was successfully updated.' }
-        format.json { render :show, status: :ok, location: @user_setting }
+        format.json { render json: {status: 'ok'} }
       else
-        format.html { render :edit }
         format.json { render json: @user_setting.errors, status: :unprocessable_entity }
       end
     end
@@ -65,7 +60,6 @@ class UserSettingsController < ApplicationController
   def destroy
     @user_setting.destroy
     respond_to do |format|
-      format.html { redirect_to user_settings_url, notice: 'User setting was successfully destroyed.' }
       format.json { head :no_content }
     end
   end
@@ -83,6 +77,6 @@ class UserSettingsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def user_setting_params
-      params.require(:user_setting).permit(:user_id, :show_notifications, :show_tooltips, :email_notifications, :email_public, :allow_adult_content, :allow_nexus_mods, :allow_lovers_lab, :allow_steam_workshop, :timezone, :udate_format, :utime_format)
+      params.require(:user_setting).permit(:id, :show_notifications, :show_tooltips, :email_notifications, :email_public, :allow_adult_content, :allow_nexus_mods, :allow_lovers_lab, :allow_steam_workshop, :timezone, :udate_format, :utime_format, :allow_comments, :theme)
     end
 end

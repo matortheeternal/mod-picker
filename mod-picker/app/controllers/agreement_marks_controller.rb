@@ -7,7 +7,6 @@ class AgreementMarksController < ApplicationController
     @agreement_marks = AgreementMark.all
 
     respond_to do |format|
-      format.html
       format.json { render :json => @agreement_marks}
     end
   end
@@ -16,7 +15,6 @@ class AgreementMarksController < ApplicationController
   # GET /agreement_marks/1.json
   def show
     respond_to do |format|
-      format.html
       format.json { render :json => @agreement_mark}
     end
   end
@@ -37,10 +35,8 @@ class AgreementMarksController < ApplicationController
 
     respond_to do |format|
       if @agreement_mark.save
-        format.html { redirect_to @agreement_mark, notice: 'Agreement mark was successfully created.' }
         format.json { render :show, status: :created, location: @agreement_mark }
       else
-        format.html { render :new }
         format.json { render json: @agreement_mark.errors, status: :unprocessable_entity }
       end
     end
@@ -51,10 +47,8 @@ class AgreementMarksController < ApplicationController
   def update
     respond_to do |format|
       if @agreement_mark.update(agreement_mark_params)
-        format.html { redirect_to @agreement_mark, notice: 'Agreement mark was successfully updated.' }
         format.json { render :show, status: :ok, location: @agreement_mark }
       else
-        format.html { render :edit }
         format.json { render json: @agreement_mark.errors, status: :unprocessable_entity }
       end
     end
@@ -65,7 +59,6 @@ class AgreementMarksController < ApplicationController
   def destroy
     @agreement_mark.destroy
     respond_to do |format|
-      format.html { redirect_to agreement_marks_url, notice: 'Agreement mark was successfully destroyed.' }
       format.json { head :no_content }
     end
   end

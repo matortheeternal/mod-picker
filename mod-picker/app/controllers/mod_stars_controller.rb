@@ -37,10 +37,8 @@ class ModStarsController < ApplicationController
 
     respond_to do |format|
       if @mod_star.save
-        format.html { redirect_to @mod_star, notice: 'User mod star map was successfully created.' }
         format.json { render :show, status: :created, location: @mod_star }
       else
-        format.html { render :new }
         format.json { render json: @mod_star.errors, status: :unprocessable_entity }
       end
     end
@@ -51,10 +49,8 @@ class ModStarsController < ApplicationController
   def update
     respond_to do |format|
       if @mod_star.update(mod_star_params)
-        format.html { redirect_to @mod_star, notice: 'User mod star map was successfully updated.' }
         format.json { render :show, status: :ok, location: @mod_star }
       else
-        format.html { render :edit }
         format.json { render json: @mod_star.errors, status: :unprocessable_entity }
       end
     end
@@ -65,7 +61,6 @@ class ModStarsController < ApplicationController
   def destroy
     @mod_star.destroy
     respond_to do |format|
-      format.html { redirect_to mod_stars_url, notice: 'User mod star map was successfully destroyed.' }
       format.json { head :no_content }
     end
   end

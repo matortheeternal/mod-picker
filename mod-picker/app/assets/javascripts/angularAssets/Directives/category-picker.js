@@ -17,16 +17,21 @@ app.directive('categoryPicker', function () {
 app.controller('categoryPickerController', function ($scope, categoryService) {
     categoryService.retrievePrimaryCategory().then(function (data) {
         $scope.mainCategories = data;
-        $scope.loading = false;
     });
 
     $scope.$watch('model.mainCategoryId', function (mainCategoryId) {
         if(mainCategoryId) {
             categoryService.retrieveSecondaryCategory(mainCategoryId).then(function (data) {
+                data.forEach(function (entry) {
+                    entry.name = entry.name.split('- ')[1];
+                });
                 $scope.subCategories = data;
             })
         } else {
             $scope.subCategories = undefined;
+            if($scope.model) {
+                delete $scope.model.subCategoryId;
+            }
         }
     });
 });

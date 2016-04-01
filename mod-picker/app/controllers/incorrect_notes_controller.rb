@@ -37,10 +37,8 @@ class IncorrectNotesController < ApplicationController
 
     respond_to do |format|
       if @incorrect_note.save
-        format.html { redirect_to @incorrect_note, notice: 'Incorrect note was successfully created.' }
         format.json { render :show, status: :created, location: @incorrect_note }
       else
-        format.html { render :new }
         format.json { render json: @incorrect_note.errors, status: :unprocessable_entity }
       end
     end
@@ -51,10 +49,8 @@ class IncorrectNotesController < ApplicationController
   def update
     respond_to do |format|
       if @incorrect_note.update(incorrect_note_params)
-        format.html { redirect_to @incorrect_note, notice: 'Incorrect note was successfully updated.' }
         format.json { render :show, status: :ok, location: @incorrect_note }
       else
-        format.html { render :edit }
         format.json { render json: @incorrect_note.errors, status: :unprocessable_entity }
       end
     end
@@ -65,7 +61,6 @@ class IncorrectNotesController < ApplicationController
   def destroy
     @incorrect_note.destroy
     respond_to do |format|
-      format.html { redirect_to incorrect_notes_url, notice: 'Incorrect note was successfully destroyed.' }
       format.json { head :no_content }
     end
   end

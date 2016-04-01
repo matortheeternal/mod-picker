@@ -37,10 +37,8 @@ class ModsController < ApplicationController
 
     respond_to do |format|
       if @mod.save
-        format.html { redirect_to @mod, notice: 'Mod was successfully created.' }
-        format.json { render :show, status: :created, location: @mod }
+        format.json { render :json => @mod  }
       else
-        format.html { render :new }
         format.json { render json: @mod.errors, status: :unprocessable_entity }
       end
     end
@@ -51,10 +49,8 @@ class ModsController < ApplicationController
   def update
     respond_to do |format|
       if @mod.update(mod_params)
-        format.html { redirect_to @mod, notice: 'Mod was successfully updated.' }
         format.json { render :show, status: :ok, location: @mod }
       else
-        format.html { render :edit }
         format.json { render json: @mod.errors, status: :unprocessable_entity }
       end
     end
@@ -65,7 +61,6 @@ class ModsController < ApplicationController
   def destroy
     @mod.destroy
     respond_to do |format|
-      format.html { redirect_to mods_url, notice: 'Mod was successfully destroyed.' }
       format.json { head :no_content }
     end
   end
@@ -78,11 +73,11 @@ class ModsController < ApplicationController
     
     # Params we allow filtering on
     def filtering_params
-      params.slice(:search, :adult, :game, :category, :stars, :reviews, :comments, :versions, :released, :updated, :endorsements, :tdl, :udl, :views, :posts, :videos, :images, :files, :articles);
+      params.slice(:search, :adult, :game, :category, :stars, :reviews, :versions, :released, :updated, :endorsements, :tdl, :udl, :views, :posts, :videos, :images, :files, :articles);
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def mod_params
-      params.require(:mod).permit(:game_id, :name, :aliases, :is_utility, :has_adult_content, :primary_category_id, :secondary_category_id)
+      params.require(:mod).permit(:game_id, :name, :aliases, :is_utility, :has_adult_content, :primary_category_id, :secondary_category_id, mod_versions_attributes: [ :released, :obsolete, :dangerous, :version ])
     end
 end

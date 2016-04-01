@@ -7,7 +7,6 @@ class WorkshopInfosController < ApplicationController
     @workshop_infos = WorkshopInfo.all
 
     respond_to do |format|
-      format.html
       format.json { render :json => @workshop_infos}
     end
   end
@@ -16,7 +15,6 @@ class WorkshopInfosController < ApplicationController
   # GET /workshop_infos/1.json
   def show
     respond_to do |format|
-      format.html
       format.json { render :json => @workshop_info}
     end
   end
@@ -37,10 +35,8 @@ class WorkshopInfosController < ApplicationController
 
     respond_to do |format|
       if @workshop_info.save
-        format.html { redirect_to @workshop_info, notice: 'Workshop info was successfully created.' }
         format.json { render :show, status: :created, location: @workshop_info }
       else
-        format.html { render :new }
         format.json { render json: @workshop_info.errors, status: :unprocessable_entity }
       end
     end
@@ -51,10 +47,8 @@ class WorkshopInfosController < ApplicationController
   def update
     respond_to do |format|
       if @workshop_info.update(workshop_info_params)
-        format.html { redirect_to @workshop_info, notice: 'Workshop info was successfully updated.' }
         format.json { render :show, status: :ok, location: @workshop_info }
       else
-        format.html { render :edit }
         format.json { render json: @workshop_info.errors, status: :unprocessable_entity }
       end
     end
@@ -65,7 +59,6 @@ class WorkshopInfosController < ApplicationController
   def destroy
     @workshop_info.destroy
     respond_to do |format|
-      format.html { redirect_to workshop_infos_url, notice: 'Workshop info was successfully destroyed.' }
       format.json { head :no_content }
     end
   end

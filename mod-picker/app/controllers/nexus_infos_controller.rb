@@ -37,10 +37,8 @@ class NexusInfosController < ApplicationController
 
     respond_to do |format|
       if @nexus_info.save
-        format.html { redirect_to @nexus_info, notice: 'Nexus info was successfully created.' }
-        format.json { render :show, status: :created, location: @nexus_info }
+        format.json { render :json => @nexus_info }
       else
-        format.html { render :new }
         format.json { render json: @nexus_info.errors, status: :unprocessable_entity }
       end
     end
@@ -51,10 +49,8 @@ class NexusInfosController < ApplicationController
   def update
     respond_to do |format|
       if @nexus_info.update(nexus_info_params)
-        format.html { redirect_to @nexus_info, notice: 'Nexus info was successfully updated.' }
-        format.json { render :show, status: :ok, location: @nexus_info }
+        format.json { render :json => @nexus_info }
       else
-        format.html { render :edit }
         format.json { render json: @nexus_info.errors, status: :unprocessable_entity }
       end
     end
@@ -65,7 +61,6 @@ class NexusInfosController < ApplicationController
   def destroy
     @nexus_info.destroy
     respond_to do |format|
-      format.html { redirect_to nexus_infos_url, notice: 'Nexus info was successfully destroyed.' }
       format.json { head :no_content }
     end
   end
@@ -73,11 +68,21 @@ class NexusInfosController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_nexus_info
-      @nexus_info = NexusInfo.find(params[:id])
+      begin
+        @nexus_info = NexusInfo.find(params[:id])
+        @nexus_info.rescrape
+      rescue
+        if params.has_key?(:game_id)
+          @nexus_info = NexusInfo.create(id: params[:id], game_id: params[:game_id])
+          @nexus_info.scrape
+        else
+          raise "Cannot scrape Nexus Info with no game id."
+        end
+      end
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def nexus_info_params
-      params.require(:nexus_info).permit(:mod_id, :game_id, :uploaded_by, :authors, :endorsements, :total_downloads, :unique_downloads, :views, :posts_count, :videos_count, :images_count, :files_count, :articles_count, :nexus_category, :changelog)
+      params.require(:nexus_info).permit(:mod_id, :game_id, :uploaded_by, :authors, :endorsements, :total_downloads, :unique_downloads, :views, :posts_count, :videos_count, :images_count, :files_count, :articles_count, :nexus_category)
     end
 end

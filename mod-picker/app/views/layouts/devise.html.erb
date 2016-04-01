@@ -1,9 +1,27 @@
 <!DOCTYPE html>
-<html lang="en" ng-app="modPicker">
+<html lang="en" ng-app="modPicker" class="box-html">
 <head>
   <meta charset="UTF-8">
   <title>Mod Picker</title>
-  <%= stylesheet_link_tag "box" %>
+  <% if current_user.nil? %>
+    <% current_theme = 'Whiterun' %>
+  <% else %>
+    <% current_theme = current_user.settings.theme %>
+  <% end %>
+  <% if current_theme == 'Blackreach' %>
+      <%= stylesheet_link_tag 'blackreach' %>
+  <% elsif current_theme == 'Darkwater' %>
+      <%= stylesheet_link_tag 'darkwater' %>
+  <% else %>
+      <%= stylesheet_link_tag 'whiterun' %>
+  <% end %>
+  <script>
+    window._token = '<%= form_authenticity_token %>';
+    window._current_theme = '<%= current_theme %>';
+    window._stylesheets.whiterun = "<%= stylesheet_path 'whiterun' %>";
+    window._stylesheets.darkwater = "<%= stylesheet_path 'darkwater' %>";
+    window._stylesheets.blackreach = "<%= stylesheet_path 'blackreach' %>";
+  </script>
 </head>
 <body>
 

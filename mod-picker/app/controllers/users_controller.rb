@@ -4,10 +4,9 @@ class UsersController < ApplicationController
   # GET /users
   # GET /users.json
   def index
-    @users = User.joins(:bio, :reputation)
+    @users = User.filter(filtering_params)
 
     respond_to do |format|
-      format.html
       format.json { render :json => @users}
     end
   end
@@ -16,8 +15,23 @@ class UsersController < ApplicationController
   # GET /users/1.json
   def show
     respond_to do |format|
-      format.html
-      format.json { render :json => user}
+      format.json { render :json => @user.as_json(
+        { :include => {
+            :mods => {
+                :only => [:id, :name, :game_id, :mod_stars_count]
+            },
+            :mod_lists => {
+                :only => [:id, :is_collection, :is_public, :status, :mods_count, :created]
+            },
+            :bio => {
+                :except => [:user_id]
+            },
+            :reputation => {
+                :only => [:overall]
+            }
+          }
+        }
+      )}
     end
   end
 
@@ -37,10 +51,8 @@ class UsersController < ApplicationController
 
     respond_to do |format|
       if @user.save
-        format.html { redirect_to @user, notice: 'User was successfully created.' }
-        format.json { render :show, status: :created, location: @user }
+        format.json { render json: {status: 'created'} }
       else
-        format.html { render :new }
         format.json { render json: @user.errors, status: :unprocessable_entity }
       end
     end
@@ -51,10 +63,8 @@ class UsersController < ApplicationController
   def update
     respond_to do |format|
       if @user.update(user_params)
-        format.html { redirect_to @user, notice: 'User was successfully updated.' }
-        format.json { render :show, status: :ok, location: @user }
+        format.json { render json: {status: 'ok'} }
       else
-        format.html { render :edit }
         format.json { render json: @user.errors, status: :unprocessable_entity }
       end
     end
@@ -65,7 +75,6 @@ class UsersController < ApplicationController
   def destroy
     @user.destroy
     respond_to do |format|
-      format.html { redirect_to users_url, notice: 'User was successfully destroyed.' }
       format.json { head :no_content }
     end
   end
@@ -76,8 +85,13 @@ class UsersController < ApplicationController
       @user = User.joins(:bio, :reputation).find(params[:id])
     end
 
+    # Params we allow filtering on
+    def filtering_params
+      params.slice(:search, :joined, :level, :rep, :mods, :cnotes, :inotes, :reviews, :nnotes, :comments, :mod_lists);
+    end
+
     # Never trust parameters from the scary internet, only allow the white list through.
     def user_params
-      params.require(:user).permit(:username, :user_level, :title, :avatar, :joined, :active_ml_id, :active_mc_id, :email)
+      params.require(:user).permit(:username, :role, :title, :joined, :active_mod_list_id, :email, :about_me)
     end
 end

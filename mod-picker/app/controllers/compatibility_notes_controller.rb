@@ -37,10 +37,8 @@ class CompatibilityNotesController < ApplicationController
 
     respond_to do |format|
       if @compatibility_note.save
-        format.html { redirect_to @compatibility_note, notice: 'Compatibility note was successfully created.' }
         format.json { render :show, status: :created, location: @compatibility_note }
       else
-        format.html { render :new }
         format.json { render json: @compatibility_note.errors, status: :unprocessable_entity }
       end
     end
@@ -51,10 +49,8 @@ class CompatibilityNotesController < ApplicationController
   def update
     respond_to do |format|
       if @compatibility_note.update(compatibility_note_params)
-        format.html { redirect_to @compatibility_note, notice: 'Compatibility note was successfully updated.' }
         format.json { render :show, status: :ok, location: @compatibility_note }
       else
-        format.html { render :edit }
         format.json { render json: @compatibility_note.errors, status: :unprocessable_entity }
       end
     end
@@ -65,7 +61,6 @@ class CompatibilityNotesController < ApplicationController
   def destroy
     @compatibility_note.destroy
     respond_to do |format|
-      format.html { redirect_to compatibility_notes_url, notice: 'Compatibility note was successfully destroyed.' }
       format.json { head :no_content }
     end
   end

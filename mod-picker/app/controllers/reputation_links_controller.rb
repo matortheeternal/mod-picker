@@ -37,10 +37,8 @@ class ReputationLinksController < ApplicationController
 
     respond_to do |format|
       if @reputation_link.save
-        format.html { redirect_to @reputation_link, notice: 'Reputation map was successfully created.' }
         format.json { render :show, status: :created, location: @reputation_link }
       else
-        format.html { render :new }
         format.json { render json: @reputation_link.errors, status: :unprocessable_entity }
       end
     end
@@ -51,10 +49,8 @@ class ReputationLinksController < ApplicationController
   def update
     respond_to do |format|
       if @reputation_link.update(reputation_link_params)
-        format.html { redirect_to @reputation_link, notice: 'Reputation map was successfully updated.' }
         format.json { render :show, status: :ok, location: @reputation_link }
       else
-        format.html { render :edit }
         format.json { render json: @reputation_link.errors, status: :unprocessable_entity }
       end
     end
@@ -65,7 +61,6 @@ class ReputationLinksController < ApplicationController
   def destroy
     @reputation_link.destroy
     respond_to do |format|
-      format.html { redirect_to reputation_links_url, notice: 'Reputation map was successfully destroyed.' }
       format.json { head :no_content }
     end
   end

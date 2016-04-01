@@ -142,7 +142,8 @@ namespace :setup do
       connection.execute("ALTER TABLE comments AUTO_INCREMENT = 0;")
       connection.execute("ALTER TABLE reviews AUTO_INCREMENT = 0;")
       connection.execute("ALTER TABLE compatibility_notes AUTO_INCREMENT = 0;")
-      connection.execute("ALTER TABLE installation_notes AUTO_INCREMENT = 0;")
+      connection.execute("ALTER TABLE install_order_notes AUTO_INCREMENT = 0;")
+      connection.execute("ALTER TABLE load_order_notes AUTO_INCREMENT = 0;")
       puts "    IDs reset"
     end
 
@@ -151,9 +152,17 @@ namespace :setup do
       connection = ActiveRecord::Base.connection()
 
       # tables
+      Quote.delete_all
+      ModList.delete_all
+      ModAuthor.delete_all
+      PluginRecordGroup.delete_all
+      RecordGroup.delete_all
       ModVersionCompatibilityNote.delete_all
+      ModVersionLoadOrderNote.delete_all
+      ModVersionInstallOrderNote.delete_all
       CompatibilityNote.delete_all
-      InstallationNote.delete_all
+      InstallOrderNote.delete_all
+      LoadOrderNote.delete_all
       HelpfulMark.delete_all
       Review.delete_all
       Comment.delete_all
@@ -167,6 +176,7 @@ namespace :setup do
       UserSetting.delete_all
       User.delete_all
       Game.delete_all
+      CategoryPriority.delete_all
 
       # clear categories
       connection.execute("DELETE FROM categories WHERE parent_id IS NOT NULL;")

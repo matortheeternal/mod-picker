@@ -37,10 +37,8 @@ class OverrideRecordsController < ApplicationController
 
     respond_to do |format|
       if @override_record.save
-        format.html { redirect_to @override_record, notice: 'Override record was successfully created.' }
         format.json { render :show, status: :created, location: @override_record }
       else
-        format.html { render :new }
         format.json { render json: @override_record.errors, status: :unprocessable_entity }
       end
     end
@@ -51,10 +49,8 @@ class OverrideRecordsController < ApplicationController
   def update
     respond_to do |format|
       if @override_record.update(override_record_params)
-        format.html { redirect_to @override_record, notice: 'Override record was successfully updated.' }
         format.json { render :show, status: :ok, location: @override_record }
       else
-        format.html { render :edit }
         format.json { render json: @override_record.errors, status: :unprocessable_entity }
       end
     end
@@ -65,7 +61,6 @@ class OverrideRecordsController < ApplicationController
   def destroy
     @override_record.destroy
     respond_to do |format|
-      format.html { redirect_to override_records_url, notice: 'Override record was successfully destroyed.' }
       format.json { head :no_content }
     end
   end

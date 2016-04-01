@@ -37,10 +37,8 @@ class ModAssetFilesController < ApplicationController
 
     respond_to do |format|
       if @mod_asset_file.save
-        format.html { redirect_to @mod_asset_file, notice: 'Mod asset file was successfully created.' }
         format.json { render :show, status: :created, location: @mod_asset_file }
       else
-        format.html { render :new }
         format.json { render json: @mod_asset_file.errors, status: :unprocessable_entity }
       end
     end
@@ -51,10 +49,8 @@ class ModAssetFilesController < ApplicationController
   def update
     respond_to do |format|
       if @mod_asset_file.update(mod_asset_file_params)
-        format.html { redirect_to @mod_asset_file, notice: 'Mod asset file was successfully updated.' }
         format.json { render :show, status: :ok, location: @mod_asset_file }
       else
-        format.html { render :edit }
         format.json { render json: @mod_asset_file.errors, status: :unprocessable_entity }
       end
     end
@@ -65,7 +61,6 @@ class ModAssetFilesController < ApplicationController
   def destroy
     @mod_asset_file.destroy
     respond_to do |format|
-      format.html { redirect_to mod_asset_files_url, notice: 'Mod asset file was successfully destroyed.' }
       format.json { head :no_content }
     end
   end

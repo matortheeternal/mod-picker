@@ -37,10 +37,8 @@ class ModVersionsController < ApplicationController
 
     respond_to do |format|
       if @mod_version.save
-        format.html { redirect_to @mod_version, notice: 'Mod version was successfully created.' }
-        format.json { render :show, status: :created, location: @mod_version }
+        format.json { render :json => @mod_version}
       else
-        format.html { render :new }
         format.json { render json: @mod_version.errors, status: :unprocessable_entity }
       end
     end
@@ -51,10 +49,8 @@ class ModVersionsController < ApplicationController
   def update
     respond_to do |format|
       if @mod_version.update(mod_version_params)
-        format.html { redirect_to @mod_version, notice: 'Mod version was successfully updated.' }
-        format.json { render :show, status: :ok, location: @mod_version }
+        format.json { render :json => @mod_version}
       else
-        format.html { render :edit }
         format.json { render json: @mod_version.errors, status: :unprocessable_entity }
       end
     end
@@ -65,7 +61,6 @@ class ModVersionsController < ApplicationController
   def destroy
     @mod_version.destroy
     respond_to do |format|
-      format.html { redirect_to mod_versions_url, notice: 'Mod version was successfully destroyed.' }
       format.json { head :no_content }
     end
   end

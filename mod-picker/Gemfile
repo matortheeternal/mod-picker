@@ -34,6 +34,11 @@ gem 'will_paginate'
 gem 'mail_form'
 gem 'simple_form'
 
+# use cancancan for authorization
+gem 'cancancan', '~> 1.10'
+
+# use rack-attack for throttles
+gem 'rack-attack'
 
 # Use Unicorn as the app server
 # gem 'unicorn'

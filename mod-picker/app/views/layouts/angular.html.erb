@@ -3,7 +3,28 @@
 <head>
   <meta charset="UTF-8">
   <title>Mod Picker: Angular Preview</title>
-  <%= stylesheet_link_tag 'angular' %>
+  <link href='https://fonts.googleapis.com/css?family=Roboto:400,700,500' rel='stylesheet' type='text/css'>
+  <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+  <%= stylesheet_link_tag 'rzslider.min' %>
+  <% if current_user.nil? %>
+      <% current_theme = 'Whiterun' %>
+  <% else %>
+      <% current_theme = current_user.settings.theme %>
+  <% end %>
+  <% if current_theme == 'Blackreach' %>
+    <%= stylesheet_link_tag 'blackreach' %>
+  <% elsif current_theme == 'Darkwater' %>
+    <%= stylesheet_link_tag 'darkwater' %>
+  <% else %>
+    <%= stylesheet_link_tag 'whiterun' %>
+  <% end %>
+  <script>
+    window._token = '<%= form_authenticity_token %>';
+    window._current_theme = '<%= current_theme %>';
+    window._stylesheets.whiterun = "<%= stylesheet_path 'whiterun' %>";
+    window._stylesheets.darkwater = "<%= stylesheet_path 'darkwater' %>";
+    window._stylesheets.blackreach = "<%= stylesheet_path 'blackreach' %>";
+  </script>
 </head>
 <body>
 <header>
@@ -52,7 +73,7 @@
           <span>See all</span>
           Public Mod Lists
         </a>
-        <a class="nav-browse-mods" href="#/browse">
+        <a class="nav-browse-mods" href="#/mods">
           <span>Browse</span>
           Skyrim Mods
           <span class="nav-dropdown"></span>
@@ -67,8 +88,8 @@
           <form>
             <input class="search-field" type="text" autocomplete="off" ng-model="search" placeholder="Search...">
             <div class="loadingButtonContainer">
-              <input class="btn" type="submit" value="Search" ng-click="processSearch()" ng-hide="loading"/>
-              <loader condition="loading" size="38"></loader>
+              <input class="btn action-btn" type="submit" value="Search" ng-click="processSearch()" ng-hide="loading"/>
+              <loader data="!!!loading"></loader>
             </div>
           </form>
         </div>
@@ -80,9 +101,11 @@
 <%= yield %>
 
 <!-- defered load of scripts, which is way more performant for browsers -->
-<%= javascript_include_tag 'angular.min' %>
-<%= javascript_include_tag 'angular-route.min' %>
+<%= javascript_include_tag 'angular.min.1.5.1' %>
+<%= javascript_include_tag 'angular-route.min.1.5.1' %>
 <%= javascript_include_tag 'heartcode-canvasloader-min' %>
+<%= javascript_include_tag 'rzslider.min' %>
 <%= javascript_include_tag 'modpicker' %>
+<%= javascript_include_tag 'angular-animate.min' %>
 </body>
 </html>
