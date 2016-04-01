@@ -14,7 +14,9 @@ RSpec.describe ModAssetFile, :model, :wip do
   end
 
   it "should have valid fixtures" do
-    expect(mod_asset_files(:modAssetTreeTexture)).to be_valid 
+    expect(mod_asset_files(:modAssetTreeTexture)).to be_valid
+    expect(mod_asset_files(:modAssetRockTexture)).to be_valid
+    expect(mod_asset_files(:modAssetPlantTexture)).to be_valid 
   end
 
   context "validations" do
