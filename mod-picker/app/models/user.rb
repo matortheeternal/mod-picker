@@ -25,6 +25,7 @@ class User < ActiveRecord::Base
   has_one :bio, :class_name => 'UserBio', :dependent => :destroy
   has_one :reputation, :class_name => 'UserReputation', :dependent => :destroy
 
+  has_many :help_pages, :foreign_key => 'submitted_by', :inverse_of => 'user'
   has_many :comments, :foreign_key => 'submitted_by', :inverse_of => 'user'
   has_many :install_order_notes, :foreign_key => 'submitted_by', :inverse_of => 'user'
   has_many :load_order_notes, :foreign_key => 'submitted_by', :inverse_of => 'user'
