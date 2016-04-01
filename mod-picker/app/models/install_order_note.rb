@@ -20,6 +20,7 @@ class InstallOrderNote < ActiveRecord::Base
 
   validates :install_first, :install_second, presence: true
   validates :text_body, length: { in: 64..16384 }
+  
   after_initialize :init
 
   def init

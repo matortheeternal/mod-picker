@@ -13,7 +13,7 @@ require 'rails_helper'
   # add_index "install_order_notes", ["install_second"], name: "fk_rails_b74bbcab8b", using: :btree
   # add_index "install_order_notes", ["submitted_by"], name: "fk_rails_ea0bdedfde", using: :btree
 
-describe InstallOrderNote, :model, :wip do
+RSpec.describe InstallOrderNote, :model do
   fixtures :install_order_notes, 
            :users
 
