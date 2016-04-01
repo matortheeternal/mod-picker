@@ -1,6 +1,8 @@
 class CompatibilityNote < ActiveRecord::Base
   include Filterable
 
+  after_initialize :init
+
   scope :by, -> (id) { where(submitted_by: id) }
   scope :mod, -> (id) { joins(:mod_versions).where(:mod_versions => {mod_id: id}) }
   scope :mv, -> (id) { joins(:mod_versions).where(:mod_versions => {id: id}) }
@@ -25,6 +27,16 @@ class CompatibilityNote < ActiveRecord::Base
 
   # old versions of this compatibility note
   has_many :compatibility_note_history_entries, :inverse_of => 'compatibility_note'
+
+  # validations
+  validates :submitted_by, presence: true
+  validates :compatibility_type, inclusion: { in: ["Incompatible", "Partially Incompatible", "Compatibility Mod", "Compatibility Plugin", "Make Custom Patch"],
+                                              message: "Not a valid compatibility type" }
+  validates :text_body, length: { in: 64..16384 }                                            
+  
+  def init
+    self.submitted ||= DateTime.now
+  end                 
 
   def as_json(options={})
     super(:include => {

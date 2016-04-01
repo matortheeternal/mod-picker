@@ -1,0 +1,28 @@
+  # create_table "masters", id: false, force: :cascade do |t|
+  #   t.integer "plugin_id",        limit: 4
+  #   t.integer "master_plugin_id", limit: 4
+  #   t.integer "index",            limit: 4
+  # end
+
+  # add_index "masters", ["plugin_id"], name: "pl_id", using: :btree
+
+# TODO: fill masters.yml file with references to actual plugins
+skyrimESM:
+  plugin_id: 1
+  master_plugin_id: 1
+  index: 1
+
+dawnguardESM:
+  plugin_id: 2
+  master_plugin_id: 2
+  index: 2
+
+hearthfireESM:
+  plugin_id: 3
+  master_plugin_id: 3
+  index: 3
+
+dragonbornESM:
+  plugin_id: 4
+  master_plugin_id: 4
+  index: 4

@@ -33,6 +33,7 @@ class User < ActiveRecord::Base
   has_many :reviews, :foreign_key => 'submitted_by', :inverse_of => 'user'
   has_many :incorrect_notes, :foreign_key => 'submitted_by', :inverse_of => 'user'
   has_many :agreement_marks, :foreign_key => 'submitted_by', :inverse_of => 'user'
+  has_many :helpful_marks, :foreign_key => 'submitted_by', :inverse_of => 'user'
 
   has_many :mod_authors, :inverse_of => 'user'
   has_many :mods, :through => 'mod_authors', :inverse_of => 'authors'
@@ -55,11 +56,25 @@ class User < ActiveRecord::Base
   after_initialize :init
 
   validates :username,
-  :presence => true,
-  :uniqueness => {
-    :case_sensitive => false
-  }
+  presence: true,
+  uniqueness: {
+    case_sensitive: false
+  },
+  length: 4..20
 
+  # TODO: add email regex
+  # basic one, minimize false negatives and confirm users via email confirmation regardless
+  validates :email,
+  presence: true,
+  uniqueness: {
+    case_sensitive: false
+  },
+  length: 7..100
+  # format: {
+  # with: VALID_EMAIL_REGEX,
+  # message: must be a valid email address format
+  # }
+  
   validate :validate_username
 
   def validate_username

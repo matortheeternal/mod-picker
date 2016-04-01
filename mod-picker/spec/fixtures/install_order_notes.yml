@@ -1,0 +1,37 @@
+  # create_table "install_order_notes", force: :cascade do |t|
+  #   t.integer  "submitted_by",   limit: 4,     null: false
+  #   t.integer  "install_first",  limit: 4,     null: false
+  #   t.integer  "install_second", limit: 4,     null: false
+  #   t.datetime "submitted"
+  #   t.datetime "edited"
+  #   t.text     "text_body",      limit: 65535
+  # end
+
+  # TODO: Change instlal_order_note fixtures to reference actual mods objects
+
+installOrderAlpha:
+  submitted_by: homura
+  install_first: 1
+  install_second: 2
+  text_body: >
+    Lorem ipsum dolor sit amet, consectetur adipisicing elit. 
+    Quam, totam nesciunt a incidunt, libero doloribus eos voluptas molestiae 
+    quasi ab sapiente nihil officia facere commodi odit itaque hic animi quae.
+
+installOrderBeta:
+  submitted_by: madoka
+  install_first: 1
+  install_second: 2
+  text_body: >
+    Lorem ipsum dolor sit amet, consectetur adipisicing elit. 
+    Quam, totam nesciunt a incidunt, libero doloribus eos voluptas molestiae 
+    quasi ab sapiente nihil officia facere commodi odit itaque hic animi quae.
+
+installOrderBeta:
+  submitted_by: kyoko
+  install_first: 1
+  install_second: 2
+  text_body: >
+    Lorem ipsum dolor sit amet, consectetur adipisicing elit. 
+    Quam, totam nesciunt a incidunt, libero doloribus eos voluptas molestiae 
+    quasi ab sapiente nihil officia facere commodi odit itaque hic animi quae.

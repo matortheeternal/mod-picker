@@ -1,6 +1,8 @@
 class LoadOrderNote < ActiveRecord::Base
   include Filterable
 
+  after_initialize :init
+
   scope :by, -> (id) { where(submitted_by: id) }
   scope :mod, -> (id) { joins(:mod_versions).where(:mod_versions => {mod_id: id}) }
   scope :mv, -> (id) { joins(:mod_versions).where(:mod_versions => {id: id}) }
@@ -22,6 +24,13 @@ class LoadOrderNote < ActiveRecord::Base
   # community feedback on this load order note
   has_many :helpful_marks, :as => 'helpfulable'
   has_many :incorrect_notes, :as => 'correctable'
+
+  validates :load_first, :load_second, presence: true
+  validates :text_body, length: {in: 64..16384}
+
+  def init
+    self.submitted ||= DateTime.now
+  end
 
   def as_json(options={})
     super(:include => {
