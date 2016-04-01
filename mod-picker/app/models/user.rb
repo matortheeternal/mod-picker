@@ -88,6 +88,22 @@ class User < ActiveRecord::Base
     end
   end
 
+  def admin?
+    self.role == :admin
+  end
+
+  def moderator?
+    self.role == :moderator
+  end
+
+  def banned?
+    self.role == :banned
+  end
+
+  def inactive?
+    self.last_sign_in_at < 28.days.ago
+  end
+
   def init
     self.joined ||= DateTime.current
     self.role   ||= :user
