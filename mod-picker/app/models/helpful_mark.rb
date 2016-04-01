@@ -10,10 +10,14 @@ class HelpfulMark < ActiveRecord::Base
   # :helpful's presence is not required because it will fail if :helpful == false
   validates :helpfulable_id, :helpfulable_type, presence: true
 
-  validates :helpful, inclusion: {in: [true, false], 
-                                  message: "must be true or false"}
-  validates :helpfulable_type, inclusion: { in: ["CompatibilityNote", "InstallationNote", "Review"],
-                                            message: "Not a valid record that contains helpful marks"}                                
+  validates :helpful, inclusion: {
+      in: [true, false],
+      message: "must be true or false" }
+
+  validates :helpfulable_type, inclusion: {
+      in: ["CompatibilityNote", "InstallOrderNote", "LoadOrderNote", "Review"],
+      message: "Not a valid record that contains helpful marks" }
+  
   after_initialize :init
 
   def init
