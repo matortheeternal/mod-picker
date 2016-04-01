@@ -6,7 +6,7 @@ require 'rails_helper'
 #   t.enum    "status",                limit: ["Unresolved", "Resolved", "Ignored"], default: "Unresolved"
 # end
 
-RSpec.describe ModListCompatibilityNote, :model, :wip do
+RSpec.describe ModListCompatibilityNote, :model do
   fixtures :mod_list_compatibility_notes, 
            :compatibility_notes,
            :mod_lists
@@ -25,7 +25,8 @@ RSpec.describe ModListCompatibilityNote, :model, :wip do
     expect(mod).to be_valid
   end
 
-  it "should have a valid fixture" do
+  # should be retrieved through the belongs_to relationship instead of individually.
+  xit "should have a valid fixture" do
     mod = mod_list_compatibility_notes(:resolvedCompNote)
 
     expect(mod).to be_valid

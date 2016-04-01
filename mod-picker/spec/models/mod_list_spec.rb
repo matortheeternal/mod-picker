@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe ModList, :model, :wip do
+RSpec.describe ModList, :model do
 
   fixtures :mod_lists
 

@@ -18,6 +18,13 @@ class InstallOrderNote < ActiveRecord::Base
   has_many :helpful_marks, :as => 'helpfulable'
   has_many :incorrect_notes, :as => 'correctable'
 
+  validates :install_first, :install_second, presence: true
+  validates :text_body, length: { in: 64..16384 }
+  after_initialize :init
+
+  def init
+    self.submitted ||= DateTime.now
+  end
 
   def as_json(options={})
     super(:include => {
