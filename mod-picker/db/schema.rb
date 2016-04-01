@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160331040858) do
+ActiveRecord::Schema.define(version: 20160401192259) do
 
   create_table "agreement_marks", id: false, force: :cascade do |t|
     t.integer "incorrect_note_id", limit: 4
@@ -86,9 +86,10 @@ ActiveRecord::Schema.define(version: 20160331040858) do
   add_index "compatibility_notes", ["submitted_by"], name: "submitted_by", using: :btree
 
   create_table "config_files", force: :cascade do |t|
-    t.integer "game_id",      limit: 4,   null: false
-    t.string  "filename",     limit: 64,  null: false
-    t.string  "install_path", limit: 128, null: false
+    t.integer "game_id",           limit: 4,     null: false
+    t.string  "filename",          limit: 64,    null: false
+    t.string  "install_path",      limit: 128,   null: false
+    t.text    "default_text_body", limit: 65535
   end
 
   add_index "config_files", ["game_id", "filename"], name: "index_config_files_on_game_id_and_filename", using: :btree
