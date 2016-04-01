@@ -1,8 +1,6 @@
 class InstallOrderNote < ActiveRecord::Base
   include Filterable
 
-  after_create :update_counter_cache
-  after_update :update_counter_cache
   after_initialize :init
 
   scope :by, -> (id) { where(submitted_by: id) }
@@ -35,12 +33,6 @@ class InstallOrderNote < ActiveRecord::Base
   # initialize variables if empty/nil
   def init
     self.submitted ||= DateTime.now
-  end
-
-  # update mod counter cache columns
-  def update_counter_cache
-    self.install_first_mod.update_install_order_notes_count
-    self.install_second_mod.update_install_order_notes_count
   end
 
   def as_json(options={})
