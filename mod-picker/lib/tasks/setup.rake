@@ -154,6 +154,7 @@ namespace :setup do
       # tables
       Quote.delete_all
       ModList.delete_all
+      ModAuthor.delete_all
       PluginRecordGroup.delete_all
       RecordGroup.delete_all
       ModVersionCompatibilityNote.delete_all
