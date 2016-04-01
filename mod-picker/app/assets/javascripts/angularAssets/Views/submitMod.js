@@ -1,5 +1,5 @@
 app.config(['$routeProvider', function ($routeProvider) {
-    $routeProvider.when('/submitMod', {
+    $routeProvider.when('/submit', {
             templateUrl: '/resources/partials/submitMod.html',
             controller: 'submitModController'
         }
