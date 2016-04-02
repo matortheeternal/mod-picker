@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160402185832) do
+ActiveRecord::Schema.define(version: 20160402195916) do
 
   create_table "agreement_marks", id: false, force: :cascade do |t|
     t.integer "incorrect_note_id", limit: 4
@@ -93,6 +93,14 @@ ActiveRecord::Schema.define(version: 20160402185832) do
   end
 
   add_index "config_files", ["game_id", "filename"], name: "index_config_files_on_game_id_and_filename", using: :btree
+
+  create_table "dummy_masters", id: false, force: :cascade do |t|
+    t.integer "plugin_id", limit: 4
+    t.string  "filename",  limit: 64
+    t.integer "index",     limit: 4
+  end
+
+  add_index "dummy_masters", ["plugin_id"], name: "fk_rails_2552b596d8", using: :btree
 
   create_table "games", force: :cascade do |t|
     t.string "display_name",  limit: 32
@@ -668,6 +676,7 @@ ActiveRecord::Schema.define(version: 20160402185832) do
   add_foreign_key "compatibility_notes", "plugins", column: "compatibility_plugin_id", name: "compatibility_notes_ibfk_2"
   add_foreign_key "compatibility_notes", "users", column: "submitted_by", name: "compatibility_notes_ibfk_1"
   add_foreign_key "config_files", "games"
+  add_foreign_key "dummy_masters", "plugins"
   add_foreign_key "helpful_marks", "users", column: "submitted_by", name: "helpful_marks_ibfk_4"
   add_foreign_key "incorrect_notes", "users", column: "submitted_by", name: "incorrect_notes_ibfk_4"
   add_foreign_key "install_order_note_history_entries", "install_order_notes"
