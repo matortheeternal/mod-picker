@@ -17,7 +17,7 @@ class HelpfulMark < ActiveRecord::Base
   validates :helpfulable_type, inclusion: {
       in: ["CompatibilityNote", "InstallOrderNote", "LoadOrderNote", "Review"],
       message: "Not a valid record that contains helpful marks" }
-  
+
   after_initialize :init
 
   def init
