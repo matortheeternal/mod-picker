@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160402015130) do
+ActiveRecord::Schema.define(version: 20160402024050) do
 
   create_table "agreement_marks", id: false, force: :cascade do |t|
     t.integer "incorrect_note_id", limit: 4
@@ -78,7 +78,7 @@ ActiveRecord::Schema.define(version: 20160402015130) do
     t.datetime "submitted"
     t.datetime "edited"
     t.text     "text_body",               limit: 65535
-    t.integer  "incorrect_notes_count",   limit: 4
+    t.integer  "incorrect_notes_count",   limit: 4,                                                                                                            default: 0
     t.integer  "compatibility_mod_id",    limit: 4
   end
 
@@ -320,14 +320,14 @@ ActiveRecord::Schema.define(version: 20160402015130) do
     t.datetime "completed"
     t.text     "description",               limit: 65535
     t.integer  "game_id",                   limit: 4
-    t.integer  "comments_count",            limit: 4
-    t.integer  "mods_count",                limit: 4
-    t.integer  "plugins_count",             limit: 4
-    t.integer  "custom_plugins_count",      limit: 4
-    t.integer  "compatibility_notes_count", limit: 4
-    t.integer  "install_order_notes_count", limit: 4
-    t.integer  "user_stars_count",          limit: 4
-    t.integer  "load_order_notes_count",    limit: 4
+    t.integer  "comments_count",            limit: 4,                                                        default: 0
+    t.integer  "mods_count",                limit: 4,                                                        default: 0
+    t.integer  "plugins_count",             limit: 4,                                                        default: 0
+    t.integer  "custom_plugins_count",      limit: 4,                                                        default: 0
+    t.integer  "compatibility_notes_count", limit: 4,                                                        default: 0
+    t.integer  "install_order_notes_count", limit: 4,                                                        default: 0
+    t.integer  "user_stars_count",          limit: 4,                                                        default: 0
+    t.integer  "load_order_notes_count",    limit: 4,                                                        default: 0
   end
 
   add_index "mod_lists", ["created_by"], name: "created_by", using: :btree
@@ -409,12 +409,12 @@ ActiveRecord::Schema.define(version: 20160402015130) do
     t.integer "game_id",                   limit: 4
     t.integer "primary_category_id",       limit: 4
     t.integer "secondary_category_id",     limit: 4
-    t.integer "mod_stars_count",           limit: 4
-    t.integer "reviews_count",             limit: 4
-    t.integer "mod_versions_count",        limit: 4
-    t.integer "compatibility_notes_count", limit: 4
-    t.integer "install_order_notes_count", limit: 4
-    t.integer "load_order_notes_count",    limit: 4
+    t.integer "mod_stars_count",           limit: 4,   default: 0
+    t.integer "reviews_count",             limit: 4,   default: 0
+    t.integer "mod_versions_count",        limit: 4,   default: 0
+    t.integer "compatibility_notes_count", limit: 4,   default: 0
+    t.integer "install_order_notes_count", limit: 4,   default: 0
+    t.integer "load_order_notes_count",    limit: 4,   default: 0
   end
 
   add_index "mods", ["game_id"], name: "fk_rails_3ec448a848", using: :btree
@@ -523,7 +523,7 @@ ActiveRecord::Schema.define(version: 20160402015130) do
     t.datetime "submitted"
     t.datetime "edited"
     t.text     "text_body",             limit: 65535
-    t.integer  "incorrect_notes_count", limit: 4
+    t.integer  "incorrect_notes_count", limit: 4,     default: 0
     t.integer  "review_template_id",    limit: 4
   end
 
@@ -615,19 +615,19 @@ ActiveRecord::Schema.define(version: 20160402015130) do
     t.string   "confirmation_token",        limit: 255
     t.datetime "confirmed_at"
     t.datetime "confirmation_sent_at"
-    t.integer  "comments_count",            limit: 4
-    t.integer  "reviews_count",             limit: 4
-    t.integer  "install_order_notes_count", limit: 4
-    t.integer  "compatibility_notes_count", limit: 4
-    t.integer  "incorrect_notes_count",     limit: 4
-    t.integer  "agreement_marks_count",     limit: 4
-    t.integer  "mods_count",                limit: 4
-    t.integer  "starred_mods_count",        limit: 4
-    t.integer  "starred_mod_lists_count",   limit: 4
-    t.integer  "profile_comments_count",    limit: 4
-    t.integer  "mod_stars_count",           limit: 4
+    t.integer  "comments_count",            limit: 4,     default: 0
+    t.integer  "reviews_count",             limit: 4,     default: 0
+    t.integer  "install_order_notes_count", limit: 4,     default: 0
+    t.integer  "compatibility_notes_count", limit: 4,     default: 0
+    t.integer  "incorrect_notes_count",     limit: 4,     default: 0
+    t.integer  "agreement_marks_count",     limit: 4,     default: 0
+    t.integer  "mods_count",                limit: 4,     default: 0
+    t.integer  "starred_mods_count",        limit: 4,     default: 0
+    t.integer  "starred_mod_lists_count",   limit: 4,     default: 0
+    t.integer  "profile_comments_count",    limit: 4,     default: 0
+    t.integer  "mod_stars_count",           limit: 4,     default: 0
     t.text     "about_me",                  limit: 65535
-    t.integer  "load_order_notes_count",    limit: 4
+    t.integer  "load_order_notes_count",    limit: 4,     default: 0
   end
 
   add_index "users", ["active_mod_list_id"], name: "active_ml_id", using: :btree
