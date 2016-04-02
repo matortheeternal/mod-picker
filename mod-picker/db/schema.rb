@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160402184504) do
+ActiveRecord::Schema.define(version: 20160402185832) do
 
   create_table "agreement_marks", id: false, force: :cascade do |t|
     t.integer "incorrect_note_id", limit: 4
@@ -448,14 +448,26 @@ ActiveRecord::Schema.define(version: 20160402184504) do
   create_table "override_records", id: false, force: :cascade do |t|
     t.integer "plugin_id", limit: 4
     t.integer "form_id",   limit: 4
-    t.string  "sig",       limit: 4
+    t.string  "signature", limit: 4
   end
 
   add_index "override_records", ["plugin_id"], name: "pl_id", using: :btree
 
+  create_table "plugin_errors", force: :cascade do |t|
+    t.integer "plugin_id", limit: 4,   null: false
+    t.string  "signature", limit: 4,   null: false
+    t.integer "form_id",   limit: 4,   null: false
+    t.integer "type",      limit: 1,   null: false
+    t.string  "path",      limit: 255
+    t.string  "name",      limit: 255
+    t.string  "data",      limit: 64
+  end
+
+  add_index "plugin_errors", ["plugin_id"], name: "fk_rails_21e72cc4b6", using: :btree
+
   create_table "plugin_record_groups", id: false, force: :cascade do |t|
     t.integer "plugin_id",        limit: 4
-    t.string  "sig",              limit: 4
+    t.string  "signature",        limit: 4
     t.integer "new_records",      limit: 4
     t.integer "override_records", limit: 4
   end
@@ -717,6 +729,7 @@ ActiveRecord::Schema.define(version: 20160402184504) do
   add_foreign_key "mods", "games"
   add_foreign_key "nexus_infos", "games"
   add_foreign_key "override_records", "plugins", name: "override_records_ibfk_1"
+  add_foreign_key "plugin_errors", "plugins"
   add_foreign_key "plugin_record_groups", "plugins", name: "plugin_record_groups_ibfk_1"
   add_foreign_key "plugins", "mod_versions", name: "plugins_ibfk_1"
   add_foreign_key "quotes", "games"
