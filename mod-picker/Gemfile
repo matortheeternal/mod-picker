@@ -49,8 +49,11 @@ gem 'devise'
 # use mailcatcher for development
 gem 'mailcatcher'
 
-# gems to enhance integration with mysql
+# allows for native mysql enums in rails
 gem 'native_enum'
+
+# allow for composite primary keys in rails
+gem 'composite_primary_keys', '~> 8.1'
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
