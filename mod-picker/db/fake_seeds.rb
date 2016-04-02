@@ -102,6 +102,25 @@ def seed_fake_mods
       dangerous: false
   )
 
+  Plugin.create({
+    filename: "SkyUI.esp",
+    crc_hash: "BEA2DC76",
+    file_size: 2385,
+    description: "SkyUI 5.1\r\n",
+    author: "SkyUI Team",
+    override_records: 0,
+    new_records: 8,
+    masters: [],
+    dummy_masters: [],
+    plugin_errors: [],
+    overrides: [],
+    record_groups: [PluginRecordGroup.create({
+      sig: "QUST",
+      override_records: 0,
+      new_records: 7
+    })]
+  })
+
   ModVersion.create(
       mod_id: Mod.last.id,
       version: "5.0",
