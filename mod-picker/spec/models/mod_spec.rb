@@ -74,5 +74,26 @@ RSpec.describe Mod, :model do
       end
     end
 
+    describe "install_order_notes_count" do
+      count_before = skyui.install_order_notes_count
+      mod_version1 = skyui.mod_versions.first
+      mod_version2 = tes5edit.mod_versions.first
+      install_order_note = InstallOrderNote.create!(submitted_by: 3, install_first: skyui.id, install_second: tes5edit.id, text_body: Faker::Lorem.paragraphs(3))
+      mvin1 = ModVersionInstallOrderNote.create(mod_version_id: mod_version1.id, install_order_note_id: install_order_note.id)
+      mvin2 = ModVersionInstallOrderNote.create(mod_version_id: mod_version2.id, install_order_note_id: install_order_note.id)
+
+      it "should increment when we add an install_order_note" do
+        skyui = Mod.find_by(name: 'SkyUI')
+        expect(skyui.install_order_notes_count).to eq(count_before + 1)
+      end
+
+      it "should decrement when we remove an install_order_note" do
+        mvin1.destroy
+        mvin2.destroy
+        install_order_note.destroy
+        skyui = Mod.find_by(name: 'SkyUI')
+        expect(skyui.install_order_notes_count).to eq(count_before)
+      end
+    end
   end
 end
