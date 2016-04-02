@@ -104,21 +104,22 @@ def seed_fake_mods
 
   Plugin.create({
     filename: "SkyUI.esp",
+    mod_version_id: ModVersion.last.id,
     crc_hash: "BEA2DC76",
     file_size: 2385,
     description: "SkyUI 5.1\r\n",
     author: "SkyUI Team",
     override_records: 0,
     new_records: 8,
-    masters: [],
-    dummy_masters: [],
-    plugin_errors: [],
-    overrides: [],
-    record_groups: [PluginRecordGroup.create({
+    masters_attributes: [],
+    dummy_masters_attributes: [],
+    plugin_errors_attributes: [],
+    overrides_attributes: [],
+    record_groups_attributes: [{
       sig: "QUST",
       override_records: 0,
       new_records: 7
-    })]
+    }]
   })
 
   ModVersion.create(
@@ -755,8 +756,8 @@ def seed_fake_load_order_notes
     puts "    Generating load order note associated with:"
     load_first = Plugin.offset(rand(Mod.count)).first
     load_second = Plugin.offset(rand(Mod.count)).first
-    puts "     - #{load_first.name}"
-    puts "     - #{load_second.name}"
+    puts "     - #{load_first.filename}"
+    puts "     - #{load_second.filename}"
     lnote = LoadOrderNote.new(
         submitted_by: submitter.id,
         load_first: load_first.id,

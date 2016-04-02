@@ -2,7 +2,7 @@ namespace :setup do
   desc "Tasks for setup"
 
   task unsigned: :environment do
-    connection = ActiveRecord::Base.connection()
+    connection = ActiveRecord::Base.connection
     puts "\nSetting up unsigned columns"
     connection.execute("ALTER TABLE agreement_marks MODIFY incorrect_note_id INT UNSIGNED;")
     connection.execute("ALTER TABLE agreement_marks MODIFY submitted_by INT UNSIGNED;")
@@ -127,7 +127,7 @@ namespace :setup do
   namespace :reset do
     task ids: :environment do
       puts "\nResetting IDs"
-      connection = ActiveRecord::Base.connection()
+      connection = ActiveRecord::Base.connection
       connection.execute("ALTER TABLE categories AUTO_INCREMENT = 0;")
       connection.execute("ALTER TABLE user_bios AUTO_INCREMENT = 0;")
       connection.execute("ALTER TABLE user_reputations AUTO_INCREMENT = 0;")
@@ -149,9 +149,15 @@ namespace :setup do
 
     task db: :environment do
       puts "\nResetting database"
-      connection = ActiveRecord::Base.connection()
+      connection = ActiveRecord::Base.connection
 
       # tables
+      OverrideRecord.delete_all
+      Master.delete_all
+      DummyMaster.delete_all
+      PluginRecordGroup.delete_all
+      PluginError.delete_all
+      Plugin.delete_all
       Quote.delete_all
       ModList.delete_all
       ModAuthor.delete_all

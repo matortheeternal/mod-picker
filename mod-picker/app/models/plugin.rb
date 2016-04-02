@@ -28,6 +28,6 @@ class Plugin < ActiveRecord::Base
   validates :author, length: {in: 0..64}
   validates :description, length: {in: 0..512}
   validates :crc_hash, length: {in: 1..8}
-  
- 
+
+  accepts_nested_attributes_for :dummy_masters, :masters, :record_groups, :overrides, :plugin_errors
 end
