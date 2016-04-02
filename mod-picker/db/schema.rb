@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160402012501) do
+ActiveRecord::Schema.define(version: 20160401213639) do
 
   create_table "agreement_marks", id: false, force: :cascade do |t|
     t.integer "incorrect_note_id", limit: 4
@@ -292,7 +292,7 @@ ActiveRecord::Schema.define(version: 20160402012501) do
   add_index "mod_list_plugins", ["mod_list_id"], name: "ml_id", using: :btree
   add_index "mod_list_plugins", ["plugin_id"], name: "pl_id", using: :btree
 
-  create_table "mod_list_stars", force: :cascade do |t|
+  create_table "mod_list_stars", id: false, force: :cascade do |t|
     t.integer "mod_list_id", limit: 4
     t.integer "user_id",     limit: 4
   end
@@ -334,7 +334,7 @@ ActiveRecord::Schema.define(version: 20160402012501) do
   add_index "mod_lists", ["created_by"], name: "created_by", using: :btree
   add_index "mod_lists", ["game_id"], name: "fk_rails_f25cbc0432", using: :btree
 
-  create_table "mod_stars", force: :cascade do |t|
+  create_table "mod_stars", id: false, force: :cascade do |t|
     t.integer "mod_id",  limit: 4
     t.integer "user_id", limit: 4
   end
