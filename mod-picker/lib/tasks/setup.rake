@@ -152,6 +152,8 @@ namespace :setup do
       connection = ActiveRecord::Base.connection()
 
       # tables
+      ModStar.delete_all
+      ModListStar.delete_all
       Quote.delete_all
       ModList.delete_all
       ModAuthor.delete_all
