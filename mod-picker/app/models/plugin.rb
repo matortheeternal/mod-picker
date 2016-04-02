@@ -2,6 +2,7 @@ class Plugin < ActiveRecord::Base
   belongs_to :mod_version, :inverse_of => 'plugins'
 
   # master associations
+  has_many :dummy_masters, :inverse_of => 'plugin'
   has_many :masters, :inverse_of => 'plugin'
   has_many :children, :class_name => 'Master', :inverse_of => 'master_plugin'
 
