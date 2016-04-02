@@ -40,6 +40,10 @@ class Mod < ActiveRecord::Base
   has_many :mod_stars, :inverse_of => 'mod'
   has_many :user_stars, :through => 'mod_stars', :class_name => 'User', :inverse_of => 'starred_mods'
 
+  # tags
+  has_many :mod_tags, :inverse_of => 'mod'
+  has_many :tags, :through => 'mod_tags', :inverse_of => 'mods'
+
   # install order notes
   has_many :install_before_notes, :foreign_key => 'install_first', :class_name => 'InstallOrderNote', :inverse_of => 'install_first_mod'
   has_many :install_after_notes, :foreign_key => 'install_second', :class_name => 'InstallOrderNote', :inverse_of => 'install_second_mod'

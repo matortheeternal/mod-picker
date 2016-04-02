@@ -1,6 +1,8 @@
 class HelpfulMark < ActiveRecord::Base
   include Filterable
 
+  self.primary_keys = :submitted_by, :helpfulable_id, :helpfulable_type
+
   scope :by, -> (id) { where(submitted_by: id) }
 
   belongs_to :helpfulable, :polymorphic => true
