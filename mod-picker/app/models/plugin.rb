@@ -3,6 +3,7 @@ class Plugin < ActiveRecord::Base
 
   has_many :record_groups, :class_name => 'PluginRecordGroup', :inverse_of => 'plugin'
   has_many :overrides, :class_name => 'OverrideRecord', :inverse_of => 'plugin'
+  has_many :errors, :class_name => 'PluginError', :inverse_of => 'plugin'
 
   has_many :mod_list_plugins, :inverse_of => 'plugin'
   has_many :mod_lists, :through => 'mod_list_plugins', :inverse_of => 'plugins'
