@@ -58,7 +58,7 @@ RSpec.describe Mod, :model do
       mod_version2 = tes5edit.mod_versions.first
       compatibility_note = CompatibilityNote.create!(submitted_by: 3, compatibility_type: "Incompatible", text_body: Faker::Lorem.paragraphs(3))
       mvcn1 = ModVersionCompatibilityNote.create(mod_version_id: mod_version1.id, compatibility_note_id: compatibility_note.id)
-      mvcn2 = compatibility_note.mod_version_compatibility_notes.create(mod_version_id: mod_version2.id, compatibility_note_id: compatibility_note.id)
+      mvcn2 = ModVersionCompatibilityNote.create(mod_version_id: mod_version2.id, compatibility_note_id: compatibility_note.id)
 
       it "should increment when we add a compatibility_note" do
         skyui = Mod.find_by(name: 'SkyUI')
