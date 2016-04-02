@@ -2,6 +2,7 @@ require 'rails_helper'
 
 RSpec.describe Mod, :model do
   skyui = Mod.find_by(name: 'SkyUI')
+  tes5edit = Mod.find_by(name: 'TES5Edit')
 
   it "should access the seeded mod" do
     expect(skyui).to be_truthy
@@ -53,13 +54,19 @@ RSpec.describe Mod, :model do
 
     describe "compatibility_notes_count" do
       count_before = skyui.compatibility_notes_count
-      compatibility_note = skyui.mod_versions.first.compatibility_notes.create(submitted_by: 3, compatibility_type: "Incompatible")
+      mod_version1 = skyui.mod_versions.first
+      mod_version2 = tes5edit.mod_versions.first
+      compatibility_note = CompatibilityNote.create!(submitted_by: 3, compatibility_type: "Incompatible", text_body: Faker::Lorem.paragraphs(3))
+      mvcn1 = ModVersionCompatibilityNote.create(mod_version_id: mod_version1.id, compatibility_note_id: compatibility_note.id)
+      mvcn2 = compatibility_note.mod_version_compatibility_notes.create(mod_version_id: mod_version2.id, compatibility_note_id: compatibility_note.id)
 
       it "should increment when we add a compatibility_note" do
         expect(skyui.compatibility_notes_count).to eq(count_before + 1)
       end
 
       it "should decrement when we remove a compatibility_note" do
+        mvcn1.destroy
+        mvcn2.destroy
         compatibility_note.destroy
         expect(skyui.compatibility_notes_count).to eq(count_before)
       end

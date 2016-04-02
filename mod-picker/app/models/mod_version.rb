@@ -1,5 +1,8 @@
 class ModVersion < ActiveRecord::Base
-  belongs_to :mod, :inverse_of => 'mod_versions', :counter_cache => true
+  after_create :increment_counter_caches
+  before_destroy :decrement_counter_caches
+
+  belongs_to :mod, :inverse_of => 'mod_versions'
   has_many :plugins, :inverse_of => 'mod_version'
 
   # install order, load order, and compatibility notes
@@ -17,4 +20,16 @@ class ModVersion < ActiveRecord::Base
   # requirements
   has_many :requires, :class_name => 'ModVersionRequirement', :inverse_of => 'mod_version'
   has_many :required_by, :class_name => 'ModVersionRequirement', :inverse_of => 'required_mod_version'
+
+
+  private
+    def increment_counter_caches
+      self.mod.mod_versions_count += 1
+      self.mod.save
+    end
+
+    def decrement_counter_caches
+      self.mod.mod_versions_count -= 1
+      self.mod.save
+    end
 end
