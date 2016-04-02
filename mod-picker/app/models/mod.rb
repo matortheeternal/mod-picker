@@ -36,17 +36,17 @@ class Mod < ActiveRecord::Base
   has_many :authors, :through => 'mod_authors', :inverse_of => 'mods'
 
   # community feedback on the mod
-  has_many :reviews, :inverse_of => 'mod', :counter_cache => true
-  has_many :mod_stars, :inverse_of => 'starred_mod'
-  has_many :user_stars, :through => 'mod_stars', :inverse_of => 'starred_mods'
+  has_many :reviews, :inverse_of => 'mod'
+  has_many :mod_stars, :inverse_of => 'mod'
+  has_many :user_stars, :through => 'mod_stars', :class_name => 'User', :inverse_of => 'starred_mods'
 
   # install order notes
   has_many :install_before_notes, :foreign_key => 'install_first', :class_name => 'InstallOrderNote', :inverse_of => 'install_first_mod'
   has_many :install_after_notes, :foreign_key => 'install_second', :class_name => 'InstallOrderNote', :inverse_of => 'install_second_mod'
 
   # mod versions and associated data
-  has_many :mod_versions, :inverse_of => 'mod', :counter_cache => true
-  has_many :compatibility_notes, -> { distinct }, :through => 'mod_versions', :inverse_of => 'mods', :counter_cache => true
+  has_many :mod_versions, :inverse_of => 'mod'
+  has_many :compatibility_notes, -> { distinct }, :through => 'mod_versions', :inverse_of => 'mods'
 
   accepts_nested_attributes_for :mod_versions
 
