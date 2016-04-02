@@ -1,13 +1,20 @@
 class Plugin < ActiveRecord::Base
   belongs_to :mod_version, :inverse_of => 'plugins'
 
+  # master associations
+  has_many :masters, :inverse_of => 'plugin'
+  has_many :children, :class_name => 'Master', :inverse_of => 'master_plugin'
+
+  # plugin contents
   has_many :record_groups, :class_name => 'PluginRecordGroup', :inverse_of => 'plugin'
   has_many :overrides, :class_name => 'OverrideRecord', :inverse_of => 'plugin'
   has_many :errors, :class_name => 'PluginError', :inverse_of => 'plugin'
 
+  # mod list usage
   has_many :mod_list_plugins, :inverse_of => 'plugin'
   has_many :mod_lists, :through => 'mod_list_plugins', :inverse_of => 'plugins'
 
+  # is a compatibility plugin for
   has_many :compatibility_note_plugins, :foreign_key => 'compatibility_plugin_id', :inverse_of => 'compatibility_plugin'
 
   # load order notes
