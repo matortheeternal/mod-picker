@@ -10,13 +10,11 @@ class ModVersionCompatibilityNote < ActiveRecord::Base
 
   private
     def increment_counter_caches
-      byebug
       self.mod_version.mod.compatibility_notes_count += 1
       self.mod_version.mod.save
     end
 
     def decrement_counter_caches
-      byebug
       self.mod_version.mod.compatibility_notes_count -= 1
       self.mod_version.mod.save
     end

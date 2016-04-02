@@ -61,6 +61,7 @@ RSpec.describe Mod, :model do
       mvcn2 = compatibility_note.mod_version_compatibility_notes.create(mod_version_id: mod_version2.id, compatibility_note_id: compatibility_note.id)
 
       it "should increment when we add a compatibility_note" do
+        skyui = Mod.find_by(name: 'SkyUI')
         expect(skyui.compatibility_notes_count).to eq(count_before + 1)
       end
 
@@ -68,6 +69,7 @@ RSpec.describe Mod, :model do
         mvcn1.destroy
         mvcn2.destroy
         compatibility_note.destroy
+        skyui = Mod.find_by(name: 'SkyUI')
         expect(skyui.compatibility_notes_count).to eq(count_before)
       end
     end
