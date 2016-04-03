@@ -37,10 +37,8 @@ class CategoryPrioritiesController < ApplicationController
 
     respond_to do |format|
       if @category_priority.save
-        format.html { redirect_to @category_priority, notice: 'Category priority was successfully created.' }
         format.json { render :show, status: :created, location: @category_priority }
       else
-        format.html { render :new }
         format.json { render json: @category_priority.errors, status: :unprocessable_entity }
       end
     end
@@ -51,10 +49,8 @@ class CategoryPrioritiesController < ApplicationController
   def update
     respond_to do |format|
       if @category_priority.update(category_priority_params)
-        format.html { redirect_to @category_priority, notice: 'Category priority was successfully updated.' }
         format.json { render :show, status: :ok, location: @category_priority }
       else
-        format.html { render :edit }
         format.json { render json: @category_priority.errors, status: :unprocessable_entity }
       end
     end
@@ -65,7 +61,6 @@ class CategoryPrioritiesController < ApplicationController
   def destroy
     @category_priority.destroy
     respond_to do |format|
-      format.html { redirect_to category_priorities_url, notice: 'Category priority was successfully destroyed.' }
       format.json { head :no_content }
     end
   end

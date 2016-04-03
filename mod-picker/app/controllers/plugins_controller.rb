@@ -33,16 +33,25 @@ class PluginsController < ApplicationController
   # POST /plugins
   # POST /plugins.json
   def create
-    @plugin = Plugin.new(plugin_params)
+    response = 'Invalid submission'
+    if params[:plugin].present?
+      file = params[:plugin]
+      if File.exists?(Rails.root.join('app','assets', 'plugins', file.original_filename))
+        response = 'File exists'
+      else
+        begin
+          File.open(Rails.root.join('app','assets', 'plugins', file.original_filename), 'wb') do |f|
+            f.write(file.read)
+          end
+          response = 'Success'
+        rescue
+          response = 'Unknown failure'
+        end
+      end
+    end
 
     respond_to do |format|
-      if @plugin.save
-        format.html { redirect_to @plugin, notice: 'Plugin was successfully created.' }
-        format.json { render :show, status: :created, location: @plugin }
-      else
-        format.html { render :new }
-        format.json { render json: @plugin.errors, status: :unprocessable_entity }
-      end
+     format.json { render json: {status: response} }
     end
   end
 
@@ -51,10 +60,8 @@ class PluginsController < ApplicationController
   def update
     respond_to do |format|
       if @plugin.update(plugin_params)
-        format.html { redirect_to @plugin, notice: 'Plugin was successfully updated.' }
         format.json { render :show, status: :ok, location: @plugin }
       else
-        format.html { render :edit }
         format.json { render json: @plugin.errors, status: :unprocessable_entity }
       end
     end
@@ -65,7 +72,6 @@ class PluginsController < ApplicationController
   def destroy
     @plugin.destroy
     respond_to do |format|
-      format.html { redirect_to plugins_url, notice: 'Plugin was successfully destroyed.' }
       format.json { head :no_content }
     end
   end

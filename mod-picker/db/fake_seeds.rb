@@ -36,7 +36,9 @@ def seed_fake_users
 
   # create 99 random users
   99.times do |n|
-    name = Faker::Internet.user_name
+    # only allow up to the first 18 characters of a username from the
+    # faker generated username
+    name = Faker::Internet.user_name[0..17]
     pw = SecureRandom.urlsafe_base64
     User.create!(
         username: "#{name}#{n}",
@@ -99,6 +101,26 @@ def seed_fake_mods
       obsolete: false,
       dangerous: false
   )
+
+  Plugin.create({
+    filename: "SkyUI.esp",
+    mod_version_id: ModVersion.last.id,
+    crc_hash: "BEA2DC76",
+    file_size: 2385,
+    description: "SkyUI 5.1\r\n",
+    author: "SkyUI Team",
+    override_records: 0,
+    new_records: 8,
+    masters_attributes: [],
+    dummy_masters_attributes: [],
+    plugin_errors_attributes: [],
+    overrides_attributes: [],
+    record_groups_attributes: [{
+      sig: "QUST",
+      override_records: 0,
+      new_records: 7
+    }]
+  })
 
   ModVersion.create(
       mod_id: Mod.last.id,
@@ -651,8 +673,8 @@ end
 
 def seed_fake_compatibility_notes
   puts "\nSeeding compatibility notes"
-  nCNotes = Mod.count
-  nCNotes.times do
+  nNotes = Mod.count
+  nNotes.times do
     submitter = User.offset(rand(User.count)).first
     cnote = CompatibilityNote.new(
         submitted_by: submitter.id,
@@ -685,35 +707,86 @@ def seed_fake_compatibility_notes
   puts "    #{CompatibilityNote.count} compatibility notes seeded"
 end
 
-def seed_fake_installation_notes
-  puts "\nSeeding installation notes"
-  nINotes = Mod.count
-  nINotes.times do
+def seed_fake_install_order_notes
+  puts "\nSeeding install order notes"
+  nNotes = Mod.count
+  nNotes.times do
     submitter = User.offset(rand(User.count)).first
-    mod_version = ModVersion.offset(rand(ModVersion.count)).first
-    puts "    Generating installation note for #{mod_version.mod.name}"
-    inote = InstallationNote.new(
+    puts "    Generating install order note associated with:"
+    install_first = Mod.offset(rand(Mod.count)).first
+    install_second = Mod.offset(rand(Mod.count)).first
+    puts "     - #{install_first.name}"
+    puts "     - #{install_second.name}"
+    ionote = InstallOrderNote.new(
         submitted_by: submitter.id,
-        mod_version_id: mod_version.id,
-        always: rand(2) == 1,
-        note_type: ["Download Option", "FOMOD Option"].sample,
+        install_first: install_first.id,
+        install_second: install_second.id,
         submitted: Faker::Date.backward(14),
         text_body: Faker::Lorem.paragraph(4)
     )
-    inote.save!
+    ionote.save!
 
-    # seed helpful marks on inotes
+    # seed helpful marks on ionotes
     nHelpfulMarks = randpow(10, 3)
     nHelpfulMarks.times do
       submitter = User.offset(rand(User.count)).first
-      inote.helpful_marks.new(
+      ionote.helpful_marks.new(
           submitted_by: submitter.id,
           helpful: rand > 0.35
       ).save!
     end
+
+    # associate the install order note with some mod versions
+    install_first.mod_versions.each do |mv|
+      mv.install_order_notes << ionote
+    end
+    install_second.mod_versions.each do |mv|
+      mv.install_order_notes << ionote
+    end
   end
 
-  puts "    #{InstallationNote.count} installation notes seeded"
+  puts "    #{InstallOrderNote.count} install order notes seeded"
+end
+
+def seed_fake_load_order_notes
+  puts "\nSeeding load order notes"
+  nNotes = Plugin.count
+  nNotes.times do
+    submitter = User.offset(rand(User.count)).first
+    puts "    Generating load order note associated with:"
+    load_first = Plugin.offset(rand(Mod.count)).first
+    load_second = Plugin.offset(rand(Mod.count)).first
+    puts "     - #{load_first.filename}"
+    puts "     - #{load_second.filename}"
+    lnote = LoadOrderNote.new(
+        submitted_by: submitter.id,
+        load_first: load_first.id,
+        load_second: load_second.id,
+        submitted: Faker::Date.backward(14),
+        text_body: Faker::Lorem.paragraph(4)
+    )
+    lnote.save!
+
+    # seed helpful marks on ionotes
+    nHelpfulMarks = randpow(10, 3)
+    nHelpfulMarks.times do
+      submitter = User.offset(rand(User.count)).first
+      lnote.helpful_marks.new(
+          submitted_by: submitter.id,
+          helpful: rand > 0.35
+      ).save!
+    end
+
+    # associate the install order note with some mod versions
+    load_first.mod_versions.each do |mv|
+      mv.load_order_notes << lnote
+    end
+    load_second.mod_versions.each do |mv|
+      mv.load_order_notes << lnote
+    end
+  end
+
+  puts "    #{LoadOrderNote.count} load order notes seeded"
 end
 
 def seed_fake_mod_authors
@@ -728,6 +801,8 @@ def seed_fake_mod_authors
       ).save!
     end
   end
+
+  puts "    #{ModAuthor.count} mod authors seeded"
 end
 
 def seed_fake_mod_lists

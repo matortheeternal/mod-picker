@@ -1,5 +1,5 @@
 app.config(['$routeProvider', function ($routeProvider) {
-    $routeProvider.when('/submitMod', {
+    $routeProvider.when('/submit', {
             templateUrl: '/resources/partials/submitMod.html',
             controller: 'submitModController'
         }
@@ -32,6 +32,6 @@ app.controller('submitModController', function ($scope, backend, submitService) 
     };
 
     $scope.submit = function () {
-        submitService.submit($scope.nexus);
+        submitService.submit($scope.nexus, $scope.isUtility, $scope.hasAdultContent);
     }
 });

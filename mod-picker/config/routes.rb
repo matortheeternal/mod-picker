@@ -8,11 +8,13 @@ Rails.application.routes.draw do
     resources :categories
     resources :category_priorities
     resources :comments
-    resources :installation_notes
+    resources :install_order_notes
+    resources :load_order_notes
     resources :compatibility_notes
     resources :mod_version_compatibility_notes
     resources :mod_list_compatibility_notes
-    resources :mod_list_installation_notes
+    resources :mod_list_install_order_notes
+    resources :mod_list_load_order_notes
     resources :agreement_marks
     resources :incorrect_notes
     resources :helpful_marks
@@ -53,7 +55,7 @@ Rails.application.routes.draw do
   resources :welcome, only: [:index]
 
   # contact us and subscribe
-  match '/contacts',     to: 'contacts#new',             via: 'get'
+  match '/contacts', to: 'contacts#new', via: 'get'
   resources :contacts, only: [:new, :create]
 
   

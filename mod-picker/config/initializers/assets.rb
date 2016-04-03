@@ -13,14 +13,11 @@ Rails.application.config.assets.version = '1.0'
 # TODO: clean this shiat
 Rails.application.config.assets.precompile += %w(
 animate.css
-box.css
-scaffolds.css
-themes/whiterun.css
-themes/darkwater.css
-themes/blackreach.css
+whiterun.css
+darkwater.css
+blackreach.css
 bootstrap.min.css
-welcome.css
-angular.css
+temp/welcome.css
 rzslider.min.css
 style-responsive.css
 modpicker.js

@@ -37,10 +37,8 @@ class LoverInfosController < ApplicationController
 
     respond_to do |format|
       if @lover_info.save
-        format.html { redirect_to @lover_info, notice: 'Lover info was successfully created.' }
         format.json { render :show, status: :created, location: @lover_info }
       else
-        format.html { render :new }
         format.json { render json: @lover_info.errors, status: :unprocessable_entity }
       end
     end
@@ -51,10 +49,8 @@ class LoverInfosController < ApplicationController
   def update
     respond_to do |format|
       if @lover_info.update(lover_info_params)
-        format.html { redirect_to @lover_info, notice: 'Lover info was successfully updated.' }
         format.json { render :show, status: :ok, location: @lover_info }
       else
-        format.html { render :edit }
         format.json { render json: @lover_info.errors, status: :unprocessable_entity }
       end
     end
@@ -65,7 +61,6 @@ class LoverInfosController < ApplicationController
   def destroy
     @lover_info.destroy
     respond_to do |format|
-      format.html { redirect_to lover_infos_url, notice: 'Lover info was successfully destroyed.' }
       format.json { head :no_content }
     end
   end

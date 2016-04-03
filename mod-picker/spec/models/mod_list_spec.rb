@@ -1,6 +1,9 @@
 require 'rails_helper'
 
-describe ModList do
+RSpec.describe ModList, :model do
+
+  fixtures :mod_lists
+
   it "A Modlist should be valid without any fields" do
     # gameSkyrim = Game.create(
     #     short_name: "Skyman",
@@ -12,6 +15,11 @@ describe ModList do
 
     modlist = ModList.new
     expect(modlist).to be_valid
+  end
+
+  it "should have a valid fixture" do
+    expect(mod_lists(:plannedVanilla)).to be_valid
+    expect(mod_lists(:underConstructionVanilla)).to be_valid
   end
 
 end

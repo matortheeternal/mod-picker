@@ -37,10 +37,8 @@ class PluginRecordGroupsController < ApplicationController
 
     respond_to do |format|
       if @plugin_record_group.save
-        format.html { redirect_to @plugin_record_group, notice: 'Plugin record group was successfully created.' }
         format.json { render :show, status: :created, location: @plugin_record_group }
       else
-        format.html { render :new }
         format.json { render json: @plugin_record_group.errors, status: :unprocessable_entity }
       end
     end
@@ -51,10 +49,8 @@ class PluginRecordGroupsController < ApplicationController
   def update
     respond_to do |format|
       if @plugin_record_group.update(plugin_record_group_params)
-        format.html { redirect_to @plugin_record_group, notice: 'Plugin record group was successfully updated.' }
         format.json { render :show, status: :ok, location: @plugin_record_group }
       else
-        format.html { render :edit }
         format.json { render json: @plugin_record_group.errors, status: :unprocessable_entity }
       end
     end
@@ -65,7 +61,6 @@ class PluginRecordGroupsController < ApplicationController
   def destroy
     @plugin_record_group.destroy
     respond_to do |format|
-      format.html { redirect_to plugin_record_groups_url, notice: 'Plugin record group was successfully destroyed.' }
       format.json { head :no_content }
     end
   end

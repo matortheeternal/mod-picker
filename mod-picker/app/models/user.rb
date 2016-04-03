@@ -18,19 +18,22 @@ class User < ActiveRecord::Base
   scope :nnotes, -> (low, high) { where(incorrect_notes_count: (low..high)) }
   scope :comments, -> (low, high) { where(comments_count: (low..high)) }
   scope :mod_lists, -> (low, high) { where(mod_lists_count: (low..high)) }
-  
+
   attr_accessor :login
 
   has_one :settings, :class_name => 'UserSetting', :dependent => :destroy
   has_one :bio, :class_name => 'UserBio', :dependent => :destroy
   has_one :reputation, :class_name => 'UserReputation', :dependent => :destroy
 
+  has_many :help_pages, :foreign_key => 'submitted_by', :inverse_of => 'user'
   has_many :comments, :foreign_key => 'submitted_by', :inverse_of => 'user'
-  has_many :installation_notes, :foreign_key => 'submitted_by', :inverse_of => 'user'
+  has_many :install_order_notes, :foreign_key => 'submitted_by', :inverse_of => 'user'
+  has_many :load_order_notes, :foreign_key => 'submitted_by', :inverse_of => 'user'
   has_many :compatibility_notes, :foreign_key => 'submitted_by', :inverse_of => 'user'
   has_many :reviews, :foreign_key => 'submitted_by', :inverse_of => 'user'
   has_many :incorrect_notes, :foreign_key => 'submitted_by', :inverse_of => 'user'
   has_many :agreement_marks, :foreign_key => 'submitted_by', :inverse_of => 'user'
+  has_many :helpful_marks, :foreign_key => 'submitted_by', :inverse_of => 'user'
 
   has_many :mod_authors, :inverse_of => 'user'
   has_many :mods, :through => 'mod_authors', :inverse_of => 'authors'
@@ -38,7 +41,7 @@ class User < ActiveRecord::Base
 
   belongs_to :active_mod_list, :class_name => 'ModList', :foreign_key => 'active_mod_list_id'
 
-  has_many :mod_stars, :inverse_of => 'user_star'
+  has_many :mod_stars, :inverse_of => 'user'
   has_many :starred_mods, :through => 'mod_stars', :inverse_of => 'user_stars'
 
   has_many :mod_list_stars, :inverse_of => 'user_star'
@@ -46,20 +49,45 @@ class User < ActiveRecord::Base
 
   has_many :profile_comments, :class_name => 'Comment', :as => 'commentable'
 
+  accepts_nested_attributes_for :settings
+  accepts_nested_attributes_for :bio
+
   after_create :create_associations
   after_initialize :init
-  
+
   validates :username,
-  :presence => true,
-  :uniqueness => {
-    :case_sensitive => false
-  }
+  presence: true,
+  uniqueness: {
+    case_sensitive: false
+  },
+  length: 4..20
+
+  # TODO: add email regex
+  # basic one, minimize false negatives and confirm users via email confirmation regardless
+  validates :email,
+  presence: true,
+  uniqueness: {
+    case_sensitive: false
+  },
+  length: 7..100
+  # format: {
+  # with: VALID_EMAIL_REGEX,
+  # message: must be a valid email address format
+  # }
   
   validate :validate_username
 
   def validate_username
     if User.where(email: username).exists?
       errors.add(:username, :invalid)
+    end
+  end
+
+  def user_avatar
+    if File.exists?(File.join(Rails.public_path, "avatars/#{id}.png"))
+      "/avatars/#{id}.png"
+    else
+      '/avatars/Default.png'
     end
   end
 
@@ -75,12 +103,28 @@ class User < ActiveRecord::Base
       end
     end
   end
-  
+
+  def admin?
+    self.role == :admin
+  end
+
+  def moderator?
+    self.role == :moderator
+  end
+
+  def banned?
+    self.role == :banned
+  end
+
+  def inactive?
+    self.last_sign_in_at < 28.days.ago
+  end
+
   def init
     self.joined ||= DateTime.current
     self.role   ||= :user
   end
-  
+
   def create_associations
     self.create_reputation({ user_id: self.id })
     self.create_settings({ user_id: self.id })
@@ -90,9 +134,11 @@ class User < ActiveRecord::Base
   def as_json(options={})
     options[:except] ||= [:email, :active_ml_id, :active_mc_id]
     options[:include] ||= {
-        :bio => {:except => []},
+        :bio => {:only => [:nexus_username, :lover_username, :steam_username]},
         :reputation => {:only => [:overall]}
     }
-    super(options)
+    super(options).merge({
+        :avatar => user_avatar
+    })
   end
 end

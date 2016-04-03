@@ -1,0 +1,16 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+# create_table "mod_list_compatibility_notes", id: false, force: :cascade do |t|
+#   t.integer "mod_list_id",           limit: 4
+#   t.integer "compatibility_note_id", limit: 4
+#   t.enum    "status",                limit: ["Unresolved", "Resolved", "Ignored"], default: "Unresolved"
+# end
+
+resolvedCompNote:
+  mod_list_id: plannedVanilla
+  compatibility_note_id: incompatibleNote
+  status: "Resolved"
+
+ignoredCompNote:
+  mod_list_id: underConstructionVanilla
+  compatibility_note_id: partiallyCompatibleNote
+  status: "Ignored"

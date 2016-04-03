@@ -34,6 +34,11 @@ gem 'will_paginate'
 gem 'mail_form'
 gem 'simple_form'
 
+# use cancancan for authorization
+gem 'cancancan', '~> 1.10'
+
+# use rack-attack for throttles
+gem 'rack-attack'
 
 # Use Unicorn as the app server
 # gem 'unicorn'
@@ -44,27 +49,34 @@ gem 'devise'
 # use mailcatcher for development
 gem 'mailcatcher'
 
-# gems to enhance integration with mysql
+# allows for native mysql enums in rails
 gem 'native_enum'
+
+# allow for composite primary keys in rails
+gem 'composite_primary_keys', '~> 8.1'
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
-group :development, :test do
-  # Call 'byebug' anywhere in the code to stop execution and get a debugger console
-  gem 'byebug'
-
-  # rspec testing framework
-  gem 'rspec-rails'
-
-  # Use Faker for generating fake data
-  gem 'faker'
-
-  # Factory girl for testing
-  gem 'factory_girl_rails', '~> 4.0'
+group :development do
 
   # Access an IRB console on exception pages or by using <%= console %> in views
   gem 'web-console', '~> 2.0'
+
+  group :test do
+    # Call 'byebug' anywhere in the code to stop execution and get a debugger console
+    gem 'byebug'
+
+    # rspec testing framework
+    gem 'rspec-rails'
+
+    # Use Faker for generating fake data
+    gem 'faker'
+
+    # Factory girl for testing
+    gem 'factory_girl_rails', '~> 4.0'
+  end
+  
 end
 
 group :test do

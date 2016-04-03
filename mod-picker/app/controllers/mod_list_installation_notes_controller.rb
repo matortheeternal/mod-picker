@@ -37,10 +37,8 @@ class ModListInstallationNotesController < ApplicationController
 
     respond_to do |format|
       if @mod_list_installation_note.save
-        format.html { redirect_to @mod_list_installation_note, notice: 'Mod list installation note was successfully created.' }
         format.json { render :show, status: :created, location: @mod_list_installation_note }
       else
-        format.html { render :new }
         format.json { render json: @mod_list_installation_note.errors, status: :unprocessable_entity }
       end
     end
@@ -51,10 +49,8 @@ class ModListInstallationNotesController < ApplicationController
   def update
     respond_to do |format|
       if @mod_list_installation_note.update(mod_list_installation_note_params)
-        format.html { redirect_to @mod_list_installation_note, notice: 'Mod list installation note was successfully updated.' }
         format.json { render :show, status: :ok, location: @mod_list_installation_note }
       else
-        format.html { render :edit }
         format.json { render json: @mod_list_installation_note.errors, status: :unprocessable_entity }
       end
     end
@@ -65,7 +61,6 @@ class ModListInstallationNotesController < ApplicationController
   def destroy
     @mod_list_installation_note.destroy
     respond_to do |format|
-      format.html { redirect_to mod_list_installation_notes_url, notice: 'Mod list installation note was successfully destroyed.' }
       format.json { head :no_content }
     end
   end

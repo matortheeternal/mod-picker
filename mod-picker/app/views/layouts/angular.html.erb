@@ -6,9 +6,24 @@
   <link href='https://fonts.googleapis.com/css?family=Roboto:400,700,500' rel='stylesheet' type='text/css'>
   <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
   <%= stylesheet_link_tag 'rzslider.min' %>
-  <%= stylesheet_link_tag 'angular' %>
+  <% if current_user.nil? %>
+      <% current_theme = 'Whiterun' %>
+  <% else %>
+      <% current_theme = current_user.settings.theme %>
+  <% end %>
+  <% if current_theme == 'Blackreach' %>
+    <%= stylesheet_link_tag 'blackreach' %>
+  <% elsif current_theme == 'Darkwater' %>
+    <%= stylesheet_link_tag 'darkwater' %>
+  <% else %>
+    <%= stylesheet_link_tag 'whiterun' %>
+  <% end %>
   <script>
     window._token = '<%= form_authenticity_token %>';
+    window._current_theme = '<%= current_theme %>';
+    window._stylesheets.whiterun = "<%= stylesheet_path 'whiterun' %>";
+    window._stylesheets.darkwater = "<%= stylesheet_path 'darkwater' %>";
+    window._stylesheets.blackreach = "<%= stylesheet_path 'blackreach' %>";
   </script>
 </head>
 <body>
@@ -73,7 +88,7 @@
           <form>
             <input class="search-field" type="text" autocomplete="off" ng-model="search" placeholder="Search...">
             <div class="loadingButtonContainer">
-              <input class="btn" type="submit" value="Search" ng-click="processSearch()" ng-hide="loading"/>
+              <input class="btn action-btn" type="submit" value="Search" ng-click="processSearch()" ng-hide="loading"/>
               <loader data="!!!loading"></loader>
             </div>
           </form>
