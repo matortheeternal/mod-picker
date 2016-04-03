@@ -27,6 +27,13 @@ app.controller('submitModController', function ($scope, backend, submitService) 
         });
     };
 
+    $scope.$watch("plugins", function handlePluginUpload(plugins) {
+        for (var i = 0; i < plugins.length; i++) {
+            plugin = plugins[i];
+            plugin.status = 'Uploading (0%)';
+        }
+    });
+
     $scope.modInvalid = function () {
         return ($scope.nexus == null)
     };

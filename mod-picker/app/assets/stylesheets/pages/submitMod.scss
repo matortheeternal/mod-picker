@@ -19,3 +19,62 @@ form {
     margin-top: 6px;
   }
 }
+
+.plugins-upload {
+  width: 500px;
+  height: 300px;
+  border: 1px solid $border_color;
+  background-color: $secondary_background;
+  text-align: center;
+
+  input[type="file"] {
+    display: none;
+  }
+
+  .upload-container {
+    .upload-prompt {
+      display: inline-block;
+      margin: 50px 10px;
+      cursor: pointer;
+
+      .img-upload {
+        background-image: image_path("upload-plugin.png");;
+      }
+
+      h4 {
+        color: $text_color;
+      }
+    }
+  }
+
+  .upload-results {
+    margin: 4px;
+    overflow: scroll;
+
+    table {
+      text-align: left;
+      font-size: 13px;
+      width: 100%;
+      box-sizing: border-box;
+      border-collapse: collapse;
+
+      .cancel-item {
+        color: maroon;
+        float: right;
+      }
+
+      tr:nth-child(2n) {
+        background-color: $secondary_background;
+      }
+
+      tr:nth-child(2n+1) {
+        background-color: $primary_background;
+      }
+
+      td, th {
+        padding: 2px;
+        padding-left: 6px;
+      }
+    }
+  }
+}
