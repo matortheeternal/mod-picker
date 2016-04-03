@@ -17,7 +17,7 @@ whiterun.css
 darkwater.css
 blackreach.css
 bootstrap.min.css
-welcome.css
+temp/welcome.css
 rzslider.min.css
 style-responsive.css
 modpicker.js
