@@ -9,7 +9,11 @@ app.service('submitService', function (backend, $q) {
         return nexusInfo.promise;
     };
 
-    this.submit = function (nexus_info, is_utility, has_adult_content) {
+    this.verifyPlugins = function (plugins) {
+        // TODO: Compute CRC32 of plugin files to verify the backend doesn't already have them
+    };
+
+    this.submit = function (nexus_info, is_utility, has_adult_content, plugins) {
         var modData = {
             mod: {
                 name: nexus_info.mod_name,
@@ -34,7 +38,17 @@ app.service('submitService', function (backend, $q) {
                         version: nexus_info.current_version
                     }
                 };
-                backend.post('/mod_versions', modVersionData)
+                backend.post('/mod_versions', modVersionData);
+
+                // submit plugins
+                for (var i = 0; i < plugins.length; i++) {
+                    plugin = plugins[i];
+                    backend.postFile('/plugins', 'plugin', plugin).then(function (data) {
+                        if (data.status !== 'Success') {
+                            alert('Error uploading ' + plugin.name + ': ' + data.status);
+                        }
+                    });
+                }
             }, 1000);
         });
     };
