@@ -1,5 +1,5 @@
 <h3 class="section-title">Linked Accounts</h3>
-<div class="section">
+<section>
     <div class="section-element">
         Nexus Mods
         <input type="button" class="btn" id="thin-btn" value="link" ng-click="verify()">
@@ -12,10 +12,10 @@
         Lover's Lab: <strong>{{user.username}}</strong>
         <input type="button" class="btn" id="thin-btn" value="Change" ng-click="verify()">
     </div>
-</div>
+</section>
 
 <h3 class="section-title">Email</h3>
-<div class="section">
+<section>
     <div class="section-element">
         <input type="email" name="email" ng-model="user.email" />
     </div>
@@ -25,10 +25,10 @@
             Allow other users to see my email address
         </label>
     </div>
-</div>
+</section>
 
 <h3 class="section-title">Password</h3>
-<div class="section">
+<section>
     <div class="section-element">
         <div class="input-label">New Password</div>
         <div>
@@ -40,10 +40,10 @@
         <div class="input-label">Confirm New Password</div>
         <input type="password" ng-model="user.password_confirmation">
     </div>
-</div>
+</section>
 
 <h3 class="section-title">Content shown</h3>
-<div class="section">
+<section>
     <div class="section-element">
         <label>
             <input type="checkbox" ng-model="userSettings.allow_adult_content">
@@ -68,10 +68,10 @@
             Allow mods from Lover's Lab
         </label>
     </div>
-</div>
+</section>
 
 <h3 class="section-title">Date and Time</h3>
-<div class="section">
+<section>
     <div class="section-element">
         Time Zone
         <select ng-model="userSettings.timezone">
@@ -129,7 +129,7 @@
 </div>
 
 <h3 class="section-title">Themes</h3>
-<div class="section">
+<section>
     <div class="section-element">
         Skyrim
         <select ng-model="userSettings.theme">
@@ -138,5 +138,5 @@
             <option>Darkwater</option>
         </select>
     </div>
-</div>
+</section>
 <input class="btn" id="save-changes" type="submit" value="Save Changes" ng-click="submit()"/>

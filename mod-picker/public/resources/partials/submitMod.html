@@ -5,7 +5,7 @@
         <form id="submitModForm" name="submitModForm">
 
             <h3 class="section-title">Sources</h3>
-            <div class="section">
+            <section>
                 <div class="input-label">Nexus Mods</div>
                 <input type="text" class="path-input" ng-model="nexusUrl" required>
                 <input type="button" class="btn" ng-disabled='urlInvalid()' ng-click="scrape()" value="Scrape">
@@ -59,20 +59,20 @@
                         </table>
                     </loader>
                 </div>
-            </div>
+            </section>
 
-            <div class="section">
+            <section>
                 <category-tree></category-tree>
                 <input type="button" id="check-categories-btn" class="btn" ng-click="checkCategories()" value="Check Categories">
-            </div>
+            </section>
 
             <h3 class="section-title">Tags</h3>
-            <div class="section">
+            <section>
                 TODO: tag selector
-            </div>
+            </section>
 
             <h3 class="section-title">Other Options</h3>
-            <div class="section">
+            <section>
                 <label>
                     <input id="kbUtility" type="checkbox" ng-model="isUtility">
                     Is Utility
@@ -82,10 +82,10 @@
                     <input id="kbAdult" type="checkbox" ng-model="hasAdultContent">
                     Has Adult Content
                 </label><br/>
-            </div>
+            </section>
 
             <h3 class="section-title">Asset File Analysis</h3>
-            <div class="section">
+            <section>
 
                 <div class="input-label">Archive</div>
                 <input type="text" class="path-input" ng-model="archive">
@@ -95,10 +95,10 @@
                     <h3 class="section-title">Mod Asset File Analysis</h3>
                     TODO: asset file tree
                 </div>
-            </div>
+            </section>
 
             <h3 class="section-title">Plugins</h3>
-            <div class="section">
+            <section>
                 <div class="plugins-upload">
                     <label class="plugins-input">
                         <input name="file" type="file" multiple file-model="plugins"/>
@@ -137,7 +137,7 @@
                 <span class="notice">
                     Plugin analysis will be performed by our servers sometime in the next 24 hours.
                 </span>
-            </div>
+            </section>
 
             <input class="btn" type="submit" ng-disabled='modInvalid()' ng-click="submit()" value="Submit"/>
         </form>

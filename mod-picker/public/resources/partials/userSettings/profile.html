@@ -1,34 +1,34 @@
 <h3 class="section-title">Avatar</h3>
-<div class="section">
+<section>
     <img class="avatar" ng-src="{{user.avatar}}">
     <input type="button" id="avatar-browse" class="btn" value="Browse" />
-</div>
+</section>
 
 <span ng-if="user.reputation.overall >= 1280">
     <h3 class="section-title">Title</h3>
-    <div class="section">
+    <section>
         <input type="text" ng-model="user.title"/>
         <span class="quote">I used to be an adventurer like you, until I took an arrow to the knee.</span>
-    </div>
+    </section>
 </span>
 
 <span ng-if="user.reputation.overall < 1280">
     <h3 class="section-title">Title</h3>
-    <div class="section">
+    <section>
         <span class="explanation">(You need more reputation to change your title)</span>
         <input type="text" placeholder="{{user.title}}" disabled/>
         <span class="quote">I used to be an adventurer like you, and then I took an arrow to the knee.</span>
-    </div>
+    </section>
 </span>
 
 <h3 class="section-title">Social</h3>
-<div class="section">
+<section>
     <label>
         <input type="checkbox" ng-model="userSettings.allow_comments">
         Allow comments to be posted on your profile
     </label>
     <h4>About me</h4>
     <textarea class="big-text-area" ng-model="user.about_me">{{user.about_me}}</textarea>
-</div>
+</section>
 
 <input class="btn" type="submit" value="Save Changes" ng-click="submit()"/>
