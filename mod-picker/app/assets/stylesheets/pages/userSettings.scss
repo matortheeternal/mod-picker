@@ -20,6 +20,11 @@
   display: block;
 }
 
+.show-more {
+  font-size: 11px;
+  cursor: pointer;
+}
+
 .avatar {
   border: 2px solid $border_color;
   vertical-align: bottom;
