@@ -75,7 +75,7 @@ app.controller('modlistController', function($scope, $log) {
 
     $scope.debugFunc = function() {
     	$log.debug($scope.curSkyConfigTab);
-    	//$scope.bIsEditing = true;
+    	$scope.bIsEditing = true;
     };
     
 

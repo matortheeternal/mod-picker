@@ -1,0 +1,166 @@
+.section-header-container {
+  width: 100%;
+  border: 1px solid $hard_border_color;
+
+}
+
+.author-line {
+  font-size: 14px;
+  font-weight: 100;
+}
+
+.section-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: $secondary_background;
+  border: 1px solid $hard_border_color;
+  margin-top: 55px;
+  padding: 0;
+  thead {
+    vertical-align: bottom;
+    border-bottom: 1px solid $hard_border_color;
+    height: 55px;
+  } 
+  tbody {
+    background-color: $primary_background;
+    font-size: 12px;
+    font-weight: 500;
+  }
+  th {
+    text-align: right;
+    padding-bottom: 2px;
+    padding-left: 10px;
+    font-size: 14px;
+    font-weight: 500;
+  }
+  a {
+    padding-right: 20px;
+    color: black;
+  }
+  a:hover {
+    padding-right: 20px;
+    opacity: 0.25;
+  }
+
+  td {
+    text-align: center;
+    background-color: $primary_background;
+    border-left: 1px solid $hard_border_color;
+  }
+  span {
+    display: block;
+  }
+}
+
+.overview-table {
+  @extend .section-table;
+  th {
+    text-align: left;
+    vertical-align: bottom;
+  }
+  td {
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+}
+
+.overview-total-number {
+  font-size: 24px;
+}
+
+
+
+.list {
+  list-style: none;
+  margin-bottom: 10px;
+  padding: 0;
+  text-align: left;
+  display: block;
+}
+
+
+
+.olist {
+  @extend .list;
+  margin: 0;
+  text-align: center;
+  li {
+    vertical-align: middle;
+    display: inline-block;
+    width:24%;
+    //padding-left:  2%;
+    //padding-right: 2%;
+  }
+}
+
+
+.flist {
+  @extend .list;
+  li {
+    vertical-align: middle;
+    padding: 0px 5% 10px 5%;
+  }
+  textarea {
+    width:  100%;
+    height: 100px;    
+  }
+  input[type="text"] {
+    width: 60%;
+  }
+
+  select {
+    width: 10%;
+  }
+
+}
+
+.tblist {
+  @extend .list;
+  li {
+    vertical-align: middle;
+    font-size: 13px;
+    font-weight: 400;
+    padding: 0% 1% 0% 1%;
+  }
+  textarea {
+    width:  100%;
+    height: 600px;    
+  }
+  input[type="text"] {
+    width: 60%;
+  }
+
+  select {
+    width: 10%;
+  }
+}
+
+.modlist-status {
+  font-size: 24px;
+}
+
+
+.section-title {
+  display: block;
+  vertical-align: top;
+  font-size: 22px;
+  font-weight: 500;
+
+  text-align: left;
+  vertical-align: middle;
+  //padding-bottom: 2px;
+}
+
+.section-selected-tab {
+  opacity: 1;
+}
+
+.section-unselected-tab {
+  opacity: 0.5;
+}
+
+.section-header-counter {
+ text-align: left;
+ vertical-align:bottom;
+ font-style: italic;
+}
