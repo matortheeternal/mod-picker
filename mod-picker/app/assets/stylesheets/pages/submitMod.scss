@@ -49,7 +49,7 @@ form {
 
   .upload-results {
     margin: 4px;
-    overflow: scroll;
+    overflow-y: auto;
 
     table {
       text-align: left;

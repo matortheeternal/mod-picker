@@ -32,6 +32,24 @@ app.service('backend', function ($q, $http) {
         return promise.promise;
     };
 
+    this.postFile = function (context, key, file) {
+        var promise = $q.defer();
+
+        var data = new FormData();
+        data.append(key, file);
+        data.append('authenticity_token', window._token);
+
+        $http.post(BASE_LOCATION + context, data, {
+            transformRequest: angular.identity,
+            headers: {
+                'Content-Type': undefined
+            }
+        }).then(function (result) {
+            promise.resolve(result.data);
+        });
+        return promise.promise;
+    };
+
     this.update = function (context, data) {
         var promise = $q.defer();
         data.authenticity_token = window._token;
