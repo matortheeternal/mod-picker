@@ -25,9 +25,10 @@ form {
   height: 300px;
   border: 1px solid $border_color;
   background-color: $secondary_background;
+  position: relative;
   text-align: center;
 
-  input[type="file"] {
+  #plugins-input {
     display: none;
   }
 
@@ -47,9 +48,19 @@ form {
     }
   }
 
-  .upload-results {
+  .upload-actions {
+    width: 100%;
+    height: 30px;
+    margin: 8px;
+    position: absolute;
+    bottom: 0;
+  }
+
+  .upload-queue {
     margin: 4px;
-    overflow: scroll;
+    overflow-y: auto;
+    max-height: 250px;
+    border: 1px solid $border_color;
 
     table {
       text-align: left;
@@ -59,8 +70,10 @@ form {
       border-collapse: collapse;
 
       .cancel-item {
-        color: maroon;
-        float: right;
+        cursor: pointer;
+        &:hover {
+          color: maroon;
+        }
       }
 
       tr:nth-child(2n) {

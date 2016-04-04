@@ -100,8 +100,8 @@
             <h3 class="section-title">Plugins</h3>
             <div class="section">
                 <div class="plugins-upload">
-                    <label class="plugins-input">
-                        <input name="file" type="file" multiple file-model="plugins"/>
+                    <label>
+                        <input id="plugins-input" type="file" multiple file-model="plugins"/>
                         <div class="upload-container" ng-if="!plugins">
                             <div class="upload-prompt">
                                 <span class="fa-stack fa-4x">
@@ -111,27 +111,36 @@
                                 <span>Or drag and drop</span>
                             </div>
                         </div>
-                        <div class="upload-results" ng-if="plugins">
-                            <table>
-                                <colgroup>
-                                    <col style="width:70%">
-                                    <col style="width:30%">
-                                </colgroup>
-                                <tr>
-                                    <th>Filename</th>
-                                    <th>File size</th>
-                                </tr>
-                                <tr ng-repeat="plugin in plugins" class="plugin-item">
-                                    <td>
-                                        {{plugin.name}}
-                                    </td>
-                                    <td>
-                                        {{plugin.size | bytes:2}}
-                                    </td>
-                                </tr>
-                            </table>
-                        </div>
                     </label>
+                    <div class="upload-queue" ng-if="plugins">
+                        <table>
+                            <colgroup>
+                                <col style="width:70%">
+                                <col style="width:25%">
+                                <col style="width:5%">
+                            </colgroup>
+                            <tr>
+                                <th>Filename</th>
+                                <th>File size</th>
+                                <th></th>
+                            </tr>
+                            <tr ng-repeat="plugin in plugins" class="plugin-item">
+                                <td>
+                                    {{plugin.name}}
+                                </td>
+                                <td>
+                                    {{plugin.size | bytes:2}}
+                                </td>
+                                <td>
+                                    <i class="fa fa-times cancel-item" title="Remove Plugin" ng-click="removePlugin(plugin.name)"></i>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="upload-actions" ng-if="plugins">
+                        <input class="btn" type="button" value="Clear plugins" ng-click="clearPlugins()"/>
+                        <input class="btn" type="button" value="Add plugins" ng-click="addPlugins()"/>
+                    </div>
                 </div>
 
                 <span class="notice">
