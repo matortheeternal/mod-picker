@@ -234,6 +234,12 @@ form {
     margin-left: 30px;
     margin-bottom: 30px;
 
+    .section-title {
+      font-size: 16px;
+      margin-top: 25px;
+      margin-left: 0;
+      margin-bottom: 0;
+    }
 
     section {
       margin-bottom: 15px;
@@ -255,15 +261,6 @@ form {
       font-size: 13px;
       padding: 6px;
     }
-
-    h4 {
-      font-size: 16px;
-      font-weight: 500;
-      margin-top: 25px;
-      margin-left: 0;
-      margin-bottom: 0;
-    }
-  }
   }
 
   .input-label {
