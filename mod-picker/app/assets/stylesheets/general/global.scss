@@ -234,6 +234,16 @@ form {
     margin-left: 30px;
     margin-bottom: 30px;
 
+
+    section {
+      margin-bottom: 15px;
+      margin-top: 15px;
+
+      div {
+        display: inline-block;
+      }
+    }
+
     input[type="text"], input[type="password"], input[type="email"] {
       vertical-align: top;
       width: 350px;
@@ -254,13 +264,6 @@ form {
       margin-bottom: 0;
     }
   }
-
-  .section-element {
-    margin-top: 15px;
-    margin-bottom: 15px;
-    div {
-      display: inline-block;
-    }
   }
 
   .input-label {
