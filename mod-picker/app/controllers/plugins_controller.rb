@@ -31,7 +31,6 @@ class PluginsController < ApplicationController
   end
 
   # POST /plugins
-  # POST /plugins.json
   def create
     response = 'Invalid submission'
     if params[:plugin].present?

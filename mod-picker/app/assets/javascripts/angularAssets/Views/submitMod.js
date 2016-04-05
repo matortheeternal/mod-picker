@@ -27,6 +27,27 @@ app.controller('submitModController', function ($scope, backend, submitService) 
         });
     };
 
+    $scope.clearPlugins = function() {
+        $scope.plugins = null;
+    };
+
+    $scope.addPlugins = function() {
+        document.getElementById('plugins-input').click();
+    };
+
+    $scope.removePlugin = function(filename) {
+        for (var i = 0; i < $scope.plugins.length; i++) {
+            plugin = $scope.plugins[i];
+            if (plugin.name == filename) {
+                $scope.plugins.splice(i, 1);
+                break;
+            }
+        }
+        if ($scope.plugins.length == 0) {
+            $scope.plugins = null;
+        }
+    };
+
     $scope.modInvalid = function () {
         return ($scope.nexus == null)
     };

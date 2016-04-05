@@ -7,7 +7,11 @@ app.directive('fileModel', ['$parse', function ($parse) {
 
             element.bind('change', function(){
                 scope.$apply(function() {
-                    modelSetter(scope, element[0].files);
+                    if (model(scope)) {
+                        modelSetter(scope, model(scope).concat([].slice.call(element[0].files)));
+                    } else {
+                        modelSetter(scope, [].slice.call(element[0].files));
+                    }
                 });
             });
         }
