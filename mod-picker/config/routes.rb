@@ -44,6 +44,9 @@ Rails.application.routes.draw do
     resources :nexus_infos
     resources :users
 
+    # avatars
+    match '/avatar', to: 'avatars#create', via: 'post'
+
     # record groups
     resources :record_groups, only: [:index]
 
