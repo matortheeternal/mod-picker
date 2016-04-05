@@ -109,15 +109,15 @@ class User < ActiveRecord::Base
   end
 
   def admin?
-    self.role == :admin
+    self.role.to_sym == :admin
   end
 
   def moderator?
-    self.role == :moderator
+    self.role.to_sym == :moderator
   end
 
   def banned?
-    self.role == :banned
+    self.role.to_sym == :banned
   end
 
   def inactive?
