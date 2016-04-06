@@ -18,7 +18,7 @@ app.controller('userSettingsController', function ($scope, $q, userSettingsServi
         { name: 'Account', url: '/resources/partials/userSettings/account.html'},
         { name: 'Reputation', url: '/resources/partials/userSettings/reputation.html'},
         { name: 'Mod Lists', url: '/resources/partials/userSettings/modlists.html'},
-        { name: 'Authored Mods', url: '/resources/partials/userSettings/authoredMods.html'}
+        { name: 'Mods', url: '/resources/partials/userSettings/authoredMods.html'}
     ];
 
     $scope.currentTab = $scope.tabs[0];
