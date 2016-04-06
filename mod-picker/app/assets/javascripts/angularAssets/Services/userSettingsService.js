@@ -10,6 +10,16 @@ app.service('userSettingsService', function (backend, $q) {
         return userSettings.promise
     };
 
+    this.submitAvatar = function (avatar) {
+        var post = $q.defer();
+        backend.postFile('/avatar', 'avatar', avatar).then (function (data) {
+            setTimeout(function () {
+                post.resolve(data);
+            }, 1000);
+        });
+        return post.promise;
+    };
+
     this.submitUser = function (user) {
         var user_object = {
             user: user
