@@ -35,6 +35,16 @@ app.controller('submitModController', function ($scope, backend, submitService) 
         document.getElementById('plugins-input').click();
     };
 
+    $scope.changePlugins = function(event) {
+        var files = [].slice.call(event.target.files);
+        if ($scope.plugins) {
+            $scope.plugins.concat(files);
+        } else {
+            $scope.plugins = files;
+        }
+        $scope.$apply();
+    };
+
     $scope.removePlugin = function(filename) {
         for (var i = 0; i < $scope.plugins.length; i++) {
             plugin = $scope.plugins[i];
