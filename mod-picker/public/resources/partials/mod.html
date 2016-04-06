@@ -1,11 +1,14 @@
-<div class="page-container">
-    <loader data="mod">
-        <div class="modHeader">
+
+<loader data="mod">
+    <div class="header-container" style="background-color: #4E473E">
+        <div class="modHeader page-container">
+            <br>
             <h1>{{mod.name}}</h1>
             <span>implement stars here</span> <span><a ng-click="showReviews()">{{mod.reviews.length}} reviews</a></span>
         </div>
-
         <hr/>
+    </div>
+    <div class="page-container">
         <!-- TODO: Commalogic -->
         <div class="left-column"><p>by {{mod.nexus_info.authors}} </p>
             <p>Versions</p>
@@ -16,12 +19,14 @@
             <expandable expanded="expandedState.compabilityNotes">
                 <expanded-title>Compability Notes</expanded-title>
                 <content><user-generated-list data="compatibilityNotes"></user-generated-list></content>
-            </expandable>
+            </expandable>7yu]p[
+            o19
+            0]
             <hr/>
             <expandable expanded="expandedState.reviews">
                 <expanded-title>Reviews</expanded-title>
                 <content><user-generated-list data="mod.reviews"></user-generated-list></content>
             </expandable>
         </div>
-    </loader>
-</div>
+    </div>
+</loader>

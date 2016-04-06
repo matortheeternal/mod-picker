@@ -8,6 +8,7 @@ app.config(['$routeProvider', function ($routeProvider) {
 
 app.controller('modController', function ($scope, $q, $routeParams, modService) {
     useTwoColumns(true);
+    $scope.currentTab = ''
     $scope.expandedState = {
         compabilityNotes: true,
         reviews: false
