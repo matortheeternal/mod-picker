@@ -31,7 +31,6 @@ class PluginsController < ApplicationController
   end
 
   # POST /plugins
-  # POST /plugins.json
   def create
     response = 'Invalid submission'
     if params[:plugin].present?
@@ -50,9 +49,8 @@ class PluginsController < ApplicationController
       end
     end
 
-    respond_to do |format|
-     format.json { render json: {status: response} }
-    end
+    # render json response
+    render json: {status: response}
   end
 
   # PATCH/PUT /plugins/1

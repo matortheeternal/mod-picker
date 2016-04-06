@@ -99,7 +99,49 @@
 
             <h3 class="section-title">Plugins</h3>
             <div class="section">
-                TODO: plugins listing
+                <div class="plugins-upload">
+                    <label>
+                        <input id="plugins-input" type="file" multiple file-model="plugins"/>
+                        <div class="upload-container" ng-if="!plugins">
+                            <div class="upload-prompt">
+                                <span class="fa-stack fa-4x">
+                                  <i class="fa fa-upload fa-stack-2x"></i>
+                                </span>
+                                <h4>Select plugins to upload</h4>
+                                <span>Or drag and drop</span>
+                            </div>
+                        </div>
+                    </label>
+                    <div class="upload-queue" ng-if="plugins">
+                        <table>
+                            <colgroup>
+                                <col style="width:70%">
+                                <col style="width:25%">
+                                <col style="width:5%">
+                            </colgroup>
+                            <tr>
+                                <th>Filename</th>
+                                <th>File size</th>
+                                <th></th>
+                            </tr>
+                            <tr ng-repeat="plugin in plugins" class="plugin-item">
+                                <td>
+                                    {{plugin.name}}
+                                </td>
+                                <td>
+                                    {{plugin.size | bytes:2}}
+                                </td>
+                                <td>
+                                    <i class="fa fa-times cancel-item" title="Remove Plugin" ng-click="removePlugin(plugin.name)"></i>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="upload-actions" ng-if="plugins">
+                        <input class="btn" type="button" value="Clear plugins" ng-click="clearPlugins()"/>
+                        <input class="btn" type="button" value="Add plugins" ng-click="addPlugins()"/>
+                    </div>
+                </div>
 
                 <span class="notice">
                     Plugin analysis will be performed by our servers sometime in the next 24 hours.
