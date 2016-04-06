@@ -27,6 +27,19 @@ app.controller('userSettingsController', function ($scope, $q, userSettingsServi
         $scope.userSettings = userSettings;
         userService.retrieveUser(userSettings.user_id).then(function (user) {
             $scope.user = user;
+
+            //splitting the modlists into collections and non collections
+            modlists = $scope.user.mod_lists;
+            $scope.lists = [];
+            $scope.collections = [];
+            for (var modlist in modlists){
+                if (modlists[modlist].is_collection){
+                    $scope.collections.push(modlists[modlist]);
+                }
+                else {
+                    $scope.lists.push(modlists[modlist]);
+                }
+            }
         });
     });
 
