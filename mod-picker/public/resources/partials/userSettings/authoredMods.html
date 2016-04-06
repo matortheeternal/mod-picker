@@ -1,6 +1,6 @@
 <h3 class="section-title">Authored Mods</h3>
 <section>
-    <table border="1" class="listing-table" ng-if="mods">
+    <table border="1" class="listing-table" ng-if="mods.length">
         <thead>
             <tr>
                 <th class="name-column">Name</th>
@@ -29,5 +29,5 @@
             </tr>
         </tbody>
     </table>
-    <span class="explanation" ng-if="!mods">There's nothing here...</span>
+    <span class="explanation" ng-if="!mods.length">There's nothing here...</span>
 </section>
