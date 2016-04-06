@@ -30,21 +30,36 @@ app.controller('userSettingsController', function ($scope, $q, userSettingsServi
         });
     });
 
+    $scope.browseAvatar = function() {
+        document.getElementById('avatar-input').click();
+    };
+
     $scope.submit = function() {
         $scope.errors = [];
         userSettingsService.submitUser($scope.user).then(function (data) {
             if (data.status === "ok" && !$scope.errors.length) {
                 $scope.showSuccess = true;
             }
-            else
+            else {
                 $scope.errors += data.errors;
+            }
         });
         userSettingsService.submitUserSettings($scope.userSettings).then(function (data) {
             if (data.status === "ok" && !$scope.errors.length) {
                 $scope.showSuccess = true;
             }
-            else
+            else {
                 $scope.errors += data.errors;
+            }
+        });
+        userSettingsService.submitAvatar(this.avatar[0]).then(function (data) {
+            if (data.status === "success") {
+                $scope.avatarSuccess = true;
+            }
+            else {
+                $scope.avatarSuccess = false;
+                $scope.avatarError = data.status;
+            }
         });
     };
 });
