@@ -8,6 +8,8 @@ app.config(['$routeProvider', function ($routeProvider) {
 
 app.controller('submitModController', function ($scope, backend, submitService) {
     useTwoColumns(false);
+
+    /* scraping */
     $scope.nexusScraped = false;
     var nexusUrlPattern = /(http[s]:\/\/?)?www.nexusmods.com\/skyrim\/mods\/([0-9]+)(\/\?)?/i;
 
@@ -27,6 +29,7 @@ app.controller('submitModController', function ($scope, backend, submitService) 
         });
     };
 
+    /* plugin submission */
     $scope.changePlugins = function(event) {
         var files = [].slice.call(event.target.files);
         if ($scope.plugins) {
@@ -58,6 +61,7 @@ app.controller('submitModController', function ($scope, backend, submitService) 
         $scope.plugins = null;
     };
 
+    /* mod submission */
     $scope.modInvalid = function () {
         return ($scope.nexus == null)
     };
