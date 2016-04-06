@@ -27,6 +27,9 @@ app.controller('userSettingsController', function ($scope, $q, userSettingsServi
         $scope.userSettings = userSettings;
         userService.retrieveUser(userSettings.user_id).then(function (user) {
             $scope.user = user;
+            $scope.avatar = {
+                src: $scope.user.avatar
+            };
 
             //splitting the modlists into collections and non collections
             modlists = $scope.user.mod_lists;
@@ -47,6 +50,21 @@ app.controller('userSettingsController', function ($scope, $q, userSettingsServi
         document.getElementById('avatar-input').click();
     };
 
+    $scope.changeAvatar = function(event) {
+        if (event.target.files && event.target.files[0]) {
+            $scope.avatar.file = event.target.files[0];
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                $scope.avatar.src = e.target.result;
+                $scope.$apply();
+            };
+            reader.readAsDataURL($scope.avatar.file);
+        } else if ($scope.user) {
+            $scope.avatar.src = $scope.user.avatar;
+            $scope.$apply();
+        }
+    };
+
     $scope.submit = function() {
         $scope.errors = [];
         userSettingsService.submitUser($scope.user).then(function (data) {
@@ -65,14 +83,16 @@ app.controller('userSettingsController', function ($scope, $q, userSettingsServi
                 $scope.errors += data.errors;
             }
         });
-        userSettingsService.submitAvatar(this.avatar[0]).then(function (data) {
-            if (data.status === "success") {
-                $scope.avatarSuccess = true;
-            }
-            else {
-                $scope.avatarSuccess = false;
-                $scope.avatarError = data.status;
-            }
-        });
+        if ($scope.avatar.file) {
+            userSettingsService.submitAvatar($scope.avatar.file).then(function (data) {
+                if (data.status === "success") {
+                    $scope.avatar.success = true;
+                }
+                else {
+                    $scope.avatar.success = false;
+                    $scope.avatar.error = data.status;
+                }
+            });
+        }
     };
 });
