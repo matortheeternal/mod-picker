@@ -6,8 +6,9 @@
                 <th class="name-column">Name</th>
                 <th>Mods</th>
                 <th>Status</th>
-                <th>Cate Created</th>
-                <th>Last Updated</th>
+                <th>Reputation</th>
+                <th>Stars</th>
+                <th>Comments</th>
                 <th>Options</th>
             </tr>
         </thead>
@@ -16,8 +17,9 @@
                 <td class="name-column">{{list.name}}</td>
                 <td>{{list.mods_count}}</td>
                 <td>{{list.status}}</td>
-                <td>{{list.created}}</td>
-                <td>{{list.edited}}</td>
+                <td>{{list.reputation}}</td>
+                <td>{{list.stars}}</td>
+                <td>{{list.comments_count}}</td>
                 <td>
                     <div class="table-buttons">
                         <input type="button" class="btn-table" ng-click="modListClone(mod_list)" value="Clone"</a>
@@ -38,8 +40,9 @@
                 <th class="name-column">Name</th>
                 <th>Mods</th>
                 <th>Status</th>
-                <th>Cate Created</th>
-                <th>Last Updated</th>
+                <th>Reputation</th>
+                <th>Stars</th>
+                <th>Comments</th>
                 <th>Options</th>
             </tr>
         </thead>
@@ -48,8 +51,9 @@
                 <td class="name-column">{{collection.name}}</td>
                 <td>{{collection.mods_count}}</td>
                 <td>{{collection.status}}</td>
-                <td>{{collection.created}}</td>
-                <td>{{collection.edited}}</td>
+                <td>{{collection.reputation}}</td>
+                <td>{{collection.stars}}</td>
+                <td>{{collection.comments_count}}</td>
                 <td>
                     <div class="table-buttons">
                         <input type="button" class="btn-table" ng-click="modListClone(mod_list)" value="Clone"</a>
