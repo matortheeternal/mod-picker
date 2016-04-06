@@ -85,7 +85,7 @@ app.controller('userSettingsController', function ($scope, $q, userSettingsServi
         });
         if ($scope.avatar.file) {
             userSettingsService.submitAvatar($scope.avatar.file).then(function (data) {
-                if (data.status === "success") {
+                if (data.status === "Success") {
                     $scope.avatar.success = true;
                 }
                 else {
