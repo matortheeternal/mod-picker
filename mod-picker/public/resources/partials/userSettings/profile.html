@@ -11,16 +11,16 @@
     <h3 class="section-title">Title</h3>
     <section>
         <input type="text" ng-model="user.title"/>
-        <span class="quote">I used to be an adventurer like you, until I took an arrow to the knee.</span>
+        <h3 class="quote">I used to be an adventurer like you, until I took an arrow to the knee.</h3>
     </section>
 </span>
 
 <span ng-if="user.reputation.overall < 1280">
     <h3 class="section-title">Title</h3>
     <section>
-        <span class="explanation">(You need more reputation to change your title)</span>
+        <h3 class="explanation">(You need more reputation to change your title)</h3>
         <input type="text" placeholder="{{user.title}}" disabled/>
-        <span class="quote">I used to be an adventurer like you, and then I took an arrow to the knee.</span>
+        <h3 class="quote">I used to be an adventurer like you, and then I took an arrow to the knee.</h3>
     </section>
 </span>
 
