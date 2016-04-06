@@ -27,14 +27,6 @@ app.controller('submitModController', function ($scope, backend, submitService) 
         });
     };
 
-    $scope.clearPlugins = function() {
-        $scope.plugins = null;
-    };
-
-    $scope.addPlugins = function() {
-        document.getElementById('plugins-input').click();
-    };
-
     $scope.changePlugins = function(event) {
         var files = [].slice.call(event.target.files);
         if ($scope.plugins) {
@@ -56,6 +48,14 @@ app.controller('submitModController', function ($scope, backend, submitService) 
         if ($scope.plugins.length == 0) {
             $scope.plugins = null;
         }
+    };
+
+    $scope.addPlugins = function() {
+        document.getElementById('plugins-input').click();
+    };
+
+    $scope.clearPlugins = function() {
+        $scope.plugins = null;
     };
 
     $scope.modInvalid = function () {
