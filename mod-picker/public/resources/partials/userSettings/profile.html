@@ -1,7 +1,10 @@
 <h3 class="section-title">Avatar</h3>
 <section>
     <img class="avatar" ng-src="{{user.avatar}}">
-    <input type="button" id="avatar-browse" class="btn" value="Browse" />
+    <label>
+        <input type="file" id="avatar-input" class="btn" value="Browse" accept="*.jpg,*.png" file-model="avatar" />
+        <input type="button" id="avatar-browse" class="btn" value="Browse" ng-click="browseAvatar()"/>
+    </label>
 </section>
 
 <span ng-if="user.reputation.overall >= 1280">
