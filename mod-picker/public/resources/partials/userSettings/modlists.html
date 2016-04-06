@@ -1,6 +1,6 @@
 <h3 class="section-title">Mod Lists</h3>
 <section>
-    <table border="1" class="listing-table">
+    <table border="1" class="listing-table" ng-if="lists">
         <thead>
             <tr>
                 <th class="name-column">Name</th>
@@ -30,11 +30,12 @@
             </tr>
         </tbody>
     </table>
+    <h3 class="explanation" ng-if"!lists">There's nothing here...</h3>
 </section>
 
 <h3 class="section-title">Mod Collections</h3>
 <section>
-    <table border="1" class="listing-table">
+    <table border="1" class="listing-table" ng-if="collections">
         <thead>
             <tr>
                 <th class="name-column">Name</th>
@@ -64,4 +65,6 @@
             </tr>
         </tbody>
     </table>
+    <h3 class="explanation" ng-if"!collections">There's nothing here...</h3>
 </section>
+
