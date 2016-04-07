@@ -88,8 +88,11 @@
             <div class="section">
 
                 <div class="input-label">Archive</div>
-                <input type="text" class="path-input" ng-model="archive">
-                <input type="button" class="btn" ng-click="archiveBrowse()" value="Browse">
+                <input type="text" class="path-input" ng-model="archive.file.name">
+                <label>
+                    <input id="archive-input" type="file" file-change="changeArchive" accept=".zip, .rar"/>
+                    <input type="button" class="btn" ng-click="browseArchive()" value="Browse">
+                </label>
 
                 <div ng-show="archiveAnalysed">
                     <h3 class="section-title">Mod Asset File Analysis</h3>
