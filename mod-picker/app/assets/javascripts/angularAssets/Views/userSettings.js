@@ -73,13 +73,15 @@ app.controller('userSettingsController', function ($scope, $q, userSettingsServi
     };
 
     $scope.appendModList = function(data) {
+        var modlists = $scope.user.mod_lists;
         if (data.modlist) {
-            $scope.modlists.push(data.modlist);
+            modlists.push(data.modlist);
             if (data.modlist.is_collection) {
                 $scope.collections.push(data.modlist);
             } else {
                 $scope.lists.push(data.modlist);
             }
+            $scope.$apply();
         } else {
             $scope.errors.push("Didn't receive a cloned mod list from the server");
         }
@@ -90,7 +92,7 @@ app.controller('userSettingsController', function ($scope, $q, userSettingsServi
         $scope.errors = [];
         userSettingsService.cloneModList(modlist).then(function (data) {
             if (data.status === "ok") {
-                appendModList(data);
+                $scope.appendModList(data);
             } else {
                 $scope.errors.push(data.status);
             }
@@ -98,8 +100,9 @@ app.controller('userSettingsController', function ($scope, $q, userSettingsServi
     };
 
     $scope.removeModList = function(modlist) {
-        var index = $scope.modlists.indexOf(modlist);
-        $scope.modlists.splice(index, 1);
+        var modlists = $scope.user.mod_lists;
+        var index = modlists.indexOf(modlist);
+        modlists.splice(index, 1);
         if (modlist.is_collection) {
             index = $scope.collections.indexOf(modlist);
             $scope.collections.splice(index, 1);
@@ -107,6 +110,7 @@ app.controller('userSettingsController', function ($scope, $q, userSettingsServi
             index = $scope.lists.indexOf(modlist);
             $scope.lists.splice(index, 1);
         }
+        $scope.$apply();
     };
 
     $scope.deleteModList = function(modlist) {
@@ -114,10 +118,10 @@ app.controller('userSettingsController', function ($scope, $q, userSettingsServi
         $scope.errors = [];
         userSettingsService.deleteModList(modlist).then(function (data) {
             if (data.status === "ok") {
-                removeModList(modlist);
-            } else {
+                $scope.removeModList(modlist);
+            }/* else {
                 $scope.errors.push(data.status);
-            }
+            }*/
         });
     };
 
