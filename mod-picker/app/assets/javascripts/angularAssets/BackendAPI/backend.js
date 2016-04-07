@@ -68,9 +68,9 @@ app.service('backend', function ($q, $http) {
         data = {};
         data.authenticity_token = window._token;
         $http({
-            url: BASE_LOCATION + context,
+            url: BASE_LOCATION + context + '.json',
             method: 'DELETE',
-            data: data
+            params: data
         }).then(function (result) {
             promise.resolve(result.data);
         });
