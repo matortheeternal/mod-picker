@@ -7,9 +7,28 @@ app.service('archiveService', function () {
         });
     };
 
+    this.getZipEntryFile = function(entry, callback) {
+        var writer = new zip.BlobWriter();
+        entry.getData(writer, function(blob) {
+            callback(new File([blob], getBaseName(entry.filename)));
+        });
+    };
+
     this.getRarEntries = function(file, callback) {
         RarArchive({type: RarArchive.OPEN_FILE, file: file}, function() {
             callback(this.entries);
+        });
+    };
+
+    this.getRarEntryFile = function(file, entry, callback) {
+        RarArchive({type: RarArchive.OPEN_FILE, file: file}, function() {
+            this.get(entry, function (error, blob) {
+                if (blob) {
+                    callback(new File([blob], entry.name));
+                } else {
+                    console.log('getRarEntryFile Error: ' + error);
+                }
+            });
         });
     };
 });
