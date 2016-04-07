@@ -66,6 +66,62 @@ app.controller('userSettingsController', function ($scope, $q, userSettingsServi
         }
     };
 
+    /* mod list actions */
+    $scope.editModList = function(modlist) {
+        console.log('Edit Mod List: "'+modlist.name+'"');
+        window.location = '#/modlists/' + modlist.id;
+    };
+
+    $scope.appendModList = function(data) {
+        if (data.modlist) {
+            $scope.modlists.push(data.modlist);
+            if (data.modlist.is_collection) {
+                $scope.collections.push(data.modlist);
+            } else {
+                $scope.lists.push(data.modlist);
+            }
+        } else {
+            $scope.errors.push("Didn't receive a cloned mod list from the server");
+        }
+    };
+
+    $scope.cloneModList = function(modlist) {
+        console.log('Clone Mod List: "'+modlist.name+'"');
+        $scope.errors = [];
+        backend.post('/modlists/clone/' + modlist.id, {}).then(function (data) {
+            if (data.status === "ok") {
+                appendModList(data);
+            } else {
+                $scope.errors.push(data.status);
+            }
+        });
+    };
+
+    $scope.removeModList = function(modlist) {
+        var index = $scope.modlists.indexOf(modlist);
+        $scope.modlists.splice(index, 1);
+        if (modlist.is_collection) {
+            index = $scope.collections.indexOf(modlist);
+            $scope.collections.splice(index, 1);
+        } else {
+            index = $scope.lists.indexOf(modlist);
+            $scope.lists.splice(index, 1);
+        }
+    };
+
+    $scope.deleteModList = function(modlist) {
+        console.log('Delete Mod List: "'+modlist.name+'"');
+        $scope.errors = [];
+        backend.delete('/modlists/' + modlist.id).then(function (data) {
+            if (data.status === "ok") {
+                removeModList(modlist);
+            } else {
+                $scope.errors.push(data.status);
+            }
+        });
+    };
+
+    /* settings submission */
     $scope.submit = function() {
         $scope.errors = [];
         userSettingsService.submitUser($scope.user).then(function (data) {
