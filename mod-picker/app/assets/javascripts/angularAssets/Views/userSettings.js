@@ -72,7 +72,7 @@ app.controller('userSettingsController', function ($scope, $q, userSettingsServi
                 $scope.showSuccess = true;
             }
             else {
-                $scope.errors += data.errors;
+                $scope.errors.concat(data.errors);
             }
         });
         userSettingsService.submitUserSettings($scope.userSettings).then(function (data) {
@@ -80,7 +80,7 @@ app.controller('userSettingsController', function ($scope, $q, userSettingsServi
                 $scope.showSuccess = true;
             }
             else {
-                $scope.errors += data.errors;
+                $scope.errors.concat(data.errors);
             }
         });
         if ($scope.avatar.file) {
