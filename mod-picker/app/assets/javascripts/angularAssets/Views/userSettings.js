@@ -35,17 +35,18 @@ app.controller('userSettingsController', function ($scope, $q, userSettingsServi
             modlists = $scope.user.mod_lists;
             $scope.lists = [];
             $scope.collections = [];
-            for (var modlist in modlists){
-                if (modlists[modlist].is_collection){
-                    $scope.collections.push(modlists[modlist]);
+            modlists.forEach(function(modlist) {
+                if (modlist.is_collection){
+                    $scope.collections.push(modlist);
                 }
                 else {
-                    $scope.lists.push(modlists[modlist]);
+                    $scope.lists.push(modlist);
                 }
-            }
+            });
         });
     });
 
+    /* avatar */
     $scope.browseAvatar = function() {
         document.getElementById('avatar-input').click();
     };
