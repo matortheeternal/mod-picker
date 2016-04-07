@@ -11,6 +11,7 @@ app.controller('submitModController', function ($scope, backend, submitService) 
 
     /* scraping */
     $scope.nexusScraped = false;
+    $scope.archive = {};
     var nexusUrlPattern = /(http[s]:\/\/?)?www.nexusmods.com\/skyrim\/mods\/([0-9]+)(\/\?)?/i;
 
     $scope.urlInvalid = function () {
@@ -27,6 +28,33 @@ app.controller('submitModController', function ($scope, backend, submitService) 
                 $scope.isUtility = true;
             }
         });
+    };
+
+    /* asset file analysis */
+    $scope.changeArchive = function(event) {
+        var input = event.target;
+        if (input.files && input.files[0]) {
+            $scope.archive.file = input.files[0];
+            $scope.analyzeArchive();
+            $scope.$apply();
+        }
+    };
+
+    $scope.analyzeArchive = function() {
+        $scope.archive.analyzing = true;
+        $scope.archive.tree = {};
+        var ext = getFileExtension($scope.archive.file.name);
+        if (ext === 'rar') {
+            console.log("Rar archive");
+        } else if (ext === 'zip') {
+            console.log("Zip archive");
+        } else {
+            console.log('Archive is unsupported file type ".' + ext + '", please select a .zip or .rar archive file.');
+        }
+    };
+
+    $scope.browseArchive = function() {
+        document.getElementById('archive-input').click();
     };
 
     /* plugin submission */
