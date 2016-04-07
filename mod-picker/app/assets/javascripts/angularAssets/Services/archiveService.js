@@ -31,4 +31,9 @@ app.service('archiveService', function () {
             });
         });
     };
+
+    this.getBsaEntries = function(file, callback) {
+        // TODO: BSA javascript implementation
+        callback([]);
+    };
 });
