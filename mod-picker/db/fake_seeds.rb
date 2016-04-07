@@ -816,6 +816,7 @@ def seed_fake_mod_lists
   nModLists.times do
     author = User.offset(rand(User.count)).first
     ModList.new(
+        name: Faker::Lorem.words(3),
         created_by: author.id,
         is_collection: [true, false].sample,
         is_public: [true, false].sample,
