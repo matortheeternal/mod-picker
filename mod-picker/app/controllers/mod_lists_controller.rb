@@ -61,7 +61,7 @@ class ModListsController < ApplicationController
   def destroy
     @mod_list.destroy
     respond_to do |format|
-      format.json { head :no_content }
+      format.json { render json: { status: :ok } }
     end
   end
 
