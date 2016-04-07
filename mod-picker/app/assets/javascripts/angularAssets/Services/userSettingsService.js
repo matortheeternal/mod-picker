@@ -45,4 +45,24 @@ app.service('userSettingsService', function (backend, $q) {
         });
         return update.promise
     };
+
+    this.cloneModList = function (modlist) {
+        var clone = $q.defer();
+        backend.post('/modlists/clone/' + modlist.id, {}).then(function (data) {
+            setTimeout(function () {
+                clone.resolve(data);
+            }, 1000);
+        });
+        return clone.promise
+    };
+
+    this.deleteModList = function (modlist) {
+        var remove = $q.defer();
+        backend.delete('/modlists/' + modlist.id).then(function (data) {
+            setTimeout(function () {
+                remove.resolve(data);
+            }, 1000);
+        });
+        return remove.promise
+    };
 });
