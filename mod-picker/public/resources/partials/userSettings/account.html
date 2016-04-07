@@ -33,12 +33,16 @@
         <div class="input-label">New Password</div>
         <div>
             <span class="explanation">Passwords must be at least 8 characters long</span>
-            <input type="password" ng-model="user.password">
+            <input type="password" ng-model="user.newPassword">
         </div>
     </section>
     <section>
         <div class="input-label">Confirm New Password</div>
-        <input type="password" ng-model="user.password_confirmation">
+        <input type="password" ng-model="user.newPassword_confirmation">
+    </section>
+    <section>
+        <div class="input-label">Current Password</div>
+        <input type="password" ng-model="user.password">
     </section>
 </section>
 
