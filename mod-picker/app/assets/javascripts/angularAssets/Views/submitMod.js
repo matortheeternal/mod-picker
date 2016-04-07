@@ -6,7 +6,7 @@ app.config(['$routeProvider', function ($routeProvider) {
     );
 }]);
 
-app.controller('submitModController', function ($scope, backend, submitService) {
+app.controller('submitModController', function ($scope, backend, submitService, archiveService) {
     useTwoColumns(false);
 
     /* scraping */
@@ -42,14 +42,21 @@ app.controller('submitModController', function ($scope, backend, submitService) 
 
     $scope.analyzeArchive = function() {
         $scope.archive.analyzing = true;
-        $scope.archive.tree = {};
-        var ext = getFileExtension($scope.archive.file.name);
-        if (ext === 'rar') {
-            console.log("Rar archive");
-        } else if (ext === 'zip') {
-            console.log("Zip archive");
+        $scope.archive.ext = getFileExtension($scope.archive.file.name);
+        if ($scope.archive.ext === 'rar') {
+            console.log('Rar archive: "' + $scope.archive.file.name + '"');
+        } else if ($scope.archive.ext === 'zip') {
+            console.log('Zip archive: "' + $scope.archive.file.name + '"');
+            archiveService.getEntries($scope.archive.file, function(entries) {
+                $scope.archive.rawEntries = entries;
+                $scope.archive.tree = {};
+                entries.forEach(function (entry) {
+                    console.log(entry.filename);
+                    archiveService.pathToTree($scope.archive.tree, entry.filename);
+                });
+            });
         } else {
-            console.log('Archive is unsupported file type ".' + ext + '", please select a .zip or .rar archive file.');
+            console.log('Archive is unsupported file type ".' + $scope.archive.ext + '", please select a .zip or .rar archive file.');
         }
     };
 
