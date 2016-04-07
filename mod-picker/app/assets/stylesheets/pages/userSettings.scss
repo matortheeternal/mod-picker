@@ -71,6 +71,18 @@
   .table-buttons {
     display: flex;
     vertical-align: middle;
+    border: none;
+    background-color: transparent;
+
+    input[type="button"] {
+      padding: 10px;
+      margin-right: 5px;
+      margin-left: 5px;
+      cursor: pointer;
+      &:hover {
+        background-color: $action_color;
+      }
+    }
   }
 
   tbody {
