@@ -45,14 +45,23 @@ app.controller('submitModController', function ($scope, backend, submitService, 
         $scope.archive.ext = getFileExtension($scope.archive.file.name);
         if ($scope.archive.ext === 'rar') {
             console.log('Rar archive: "' + $scope.archive.file.name + '"');
+            archiveService.getRarEntries($scope.archive.file, function(entries) {
+                $scope.archive.rawEntries = entries;
+                $scope.archive.tree = [];
+                entries.forEach(function (entry) {
+                    var fixedPath = entry.path.split('\\').join('/');
+                    console.log(fixedPath);
+                    $scope.archive.tree.push(fixedPath);
+                });
+            });
         } else if ($scope.archive.ext === 'zip') {
             console.log('Zip archive: "' + $scope.archive.file.name + '"');
-            archiveService.getEntries($scope.archive.file, function(entries) {
+            archiveService.getZipEntries($scope.archive.file, function(entries) {
                 $scope.archive.rawEntries = entries;
-                $scope.archive.tree = {};
+                $scope.archive.tree = [];
                 entries.forEach(function (entry) {
                     console.log(entry.filename);
-                    archiveService.pathToTree($scope.archive.tree, entry.filename);
+                    $scope.archive.tree.push(entry.filename);
                 });
             });
         } else {
