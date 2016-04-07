@@ -1,16 +1,16 @@
 <h3 class="section-title">Linked Accounts</h3>
 <section>
     <section>
-        Nexus Mods
-        <input type="button" class="btn" id="thin-btn" value="link" ng-click="verify()">
+        Nexus Mods {{user.bio.nexus_username}}
+        <link-nexus-button bio="user.bio"></link-nexus-button>
     </section>
     <section>
-        Steam Workshop
-        <input type="button" class="btn" id="thin-btn" value="link" ng-click="verify()">
+        Steam Workshop {{user.bio.steam_username}}
+        <link-steam-button bio="user.bio"></link-steam-button>
     </section>
     <section>
-        Lover's Lab: <strong>{{user.username}}</strong>
-        <input type="button" class="btn" id="thin-btn" value="Change" ng-click="verify()">
+        Lover's Lab {{user.bio.lover_username}}
+        <link-lover-button bio="user.bio"></link-lover-button>
     </section>
 </section>
 
@@ -74,6 +74,7 @@
     </section>
 </section>
 
+<!-- should be auto set from browser
 <h3 class="section-title">Date and Time</h3>
 <section>
     <section>
@@ -131,6 +132,7 @@
     </section>
     <a class="show-more">show advanced options</a>
 </section>
+-->
 
 <h3 class="section-title">Themes</h3>
 <section>
