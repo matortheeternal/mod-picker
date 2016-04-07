@@ -74,16 +74,6 @@
     border: none;
     background-color: transparent;
     font-size: 14px;
-
-    input[type="button"] {
-      padding: 10px;
-      margin-right: 5px;
-      margin-left: 5px;
-      cursor: pointer;
-      &:hover {
-        background-color: $action_color;
-      }
-    }
   }
 
   tbody {
