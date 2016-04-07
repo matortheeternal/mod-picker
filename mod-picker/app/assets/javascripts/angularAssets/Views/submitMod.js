@@ -40,29 +40,45 @@ app.controller('submitModController', function ($scope, backend, submitService, 
         }
     };
 
+    $scope.analyzeBSA = function(bsaFile) {
+        console.log('Analyzing BSA: "' + bsaFile.name + '"');
+        archiveService.getBsaEntries(bsaFile, function(entries) {
+            entries.forEach(function (entry) {
+                console.log(entry.path);
+                $scope.archive.tree.push(entry.path);
+            });
+        });
+    };
+
     $scope.analyzeArchive = function() {
         $scope.archive.analyzing = true;
         $scope.archive.ext = getFileExtension($scope.archive.file.name);
         if ($scope.archive.ext === 'rar') {
-            console.log('Rar archive: "' + $scope.archive.file.name + '"');
+            console.log('Analyzing RAR archive: "' + $scope.archive.file.name + '"');
             archiveService.getRarEntries($scope.archive.file, function(entries) {
-                $scope.archive.rawEntries = entries;
                 $scope.archive.tree = [];
                 entries.forEach(function (entry) {
                     var fixedPath = entry.path.split('\\').join('/');
                     console.log(fixedPath);
                     $scope.archive.tree.push(fixedPath);
+                    if (getFileExtension(fixedPath) === 'bsa') {
+                        archiveService.getRarEntryFile($scope.archive.file, entry, $scope.analyzeBSA);
+                    }
                 });
+                $scope.$apply();
             });
         } else if ($scope.archive.ext === 'zip') {
-            console.log('Zip archive: "' + $scope.archive.file.name + '"');
+            console.log('Analyzing ZIP archive: "' + $scope.archive.file.name + '"');
             archiveService.getZipEntries($scope.archive.file, function(entries) {
-                $scope.archive.rawEntries = entries;
                 $scope.archive.tree = [];
                 entries.forEach(function (entry) {
                     console.log(entry.filename);
                     $scope.archive.tree.push(entry.filename);
+                    if (getFileExtension(entry.filename) === 'bsa') {
+                        archiveService.getZipEntryFile(entry, $scope.analyzeBSA);
+                    }
                 });
+                $scope.$apply();
             });
         } else {
             console.log('Archive is unsupported file type ".' + $scope.archive.ext + '", please select a .zip or .rar archive file.');
