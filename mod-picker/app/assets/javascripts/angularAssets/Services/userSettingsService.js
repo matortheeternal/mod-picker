@@ -48,7 +48,7 @@ app.service('userSettingsService', function (backend, $q) {
 
     this.cloneModList = function (modlist) {
         var clone = $q.defer();
-        backend.post('/modlists/clone/' + modlist.id, {}).then(function (data) {
+        backend.post('/mod_lists/clone/' + modlist.id, {}).then(function (data) {
             setTimeout(function () {
                 clone.resolve(data);
             }, 1000);
@@ -58,7 +58,7 @@ app.service('userSettingsService', function (backend, $q) {
 
     this.deleteModList = function (modlist) {
         var remove = $q.defer();
-        backend.delete('/modlists/' + modlist.id).then(function (data) {
+        backend.delete('/mod_lists/' + modlist.id).then(function (data) {
             setTimeout(function () {
                 remove.resolve(data);
             }, 1000);
