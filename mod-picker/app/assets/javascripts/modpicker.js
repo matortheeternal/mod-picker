@@ -31,3 +31,7 @@ function useTwoColumns(b) {
 function getFileExtension(filename) {
     return filename.split('.').pop();
 }
+
+function getBaseName(path) {
+    return path.split(/[\\/]/).pop();
+}
