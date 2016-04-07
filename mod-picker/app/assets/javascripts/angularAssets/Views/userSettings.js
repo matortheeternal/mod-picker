@@ -31,6 +31,7 @@ app.controller('userSettingsController', function ($scope, $q, userSettingsServi
             };
 
             //splitting the modlists into collections and non collections
+            //sorry taffy, this logic should be in a service right? -Sirius
             modlists = $scope.user.mod_lists;
             $scope.lists = [];
             $scope.collections = [];
