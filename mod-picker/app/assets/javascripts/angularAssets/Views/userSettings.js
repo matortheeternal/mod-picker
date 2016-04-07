@@ -88,7 +88,7 @@ app.controller('userSettingsController', function ($scope, $q, userSettingsServi
     $scope.cloneModList = function(modlist) {
         console.log('Clone Mod List: "'+modlist.name+'"');
         $scope.errors = [];
-        backend.post('/modlists/clone/' + modlist.id, {}).then(function (data) {
+        userSettingsService.cloneModList(modlist).then(function (data) {
             if (data.status === "ok") {
                 appendModList(data);
             } else {
@@ -112,7 +112,7 @@ app.controller('userSettingsController', function ($scope, $q, userSettingsServi
     $scope.deleteModList = function(modlist) {
         console.log('Delete Mod List: "'+modlist.name+'"');
         $scope.errors = [];
-        backend.delete('/modlists/' + modlist.id).then(function (data) {
+        userSettingsService.deleteModList(modlist).then(function (data) {
             if (data.status === "ok") {
                 removeModList(modlist);
             } else {
