@@ -8,7 +8,17 @@ app.config(['$routeProvider', function ($routeProvider) {
 
 app.controller('modController', function ($scope, $q, $routeParams, modService) {
     useTwoColumns(true);
-    $scope.currentTab = ''
+
+
+    $scope.tabs = [
+        { name: 'Compatibility', url: '/resources/partials/modPage/compatibilityTab.html'},
+        { name: 'Installation', url: '/resources/partials/modPage/installationTab.html'},
+        { name: 'Reviews', url: '/resources/partials/modPage/reviewsTab.html'},
+        { name: 'Analysis', url: '/resources/partials/modPage/analysisTab.html'}
+    ];
+
+    $scope.currentTab = $scope.tabs[0];
+
     $scope.expandedState = {
         compabilityNotes: true,
         reviews: false

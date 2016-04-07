@@ -1,32 +1,33 @@
 
-<loader data="mod">
-    <div class="header-container" style="background-color: #4E473E">
-        <div class="modHeader page-container">
-            <br>
-            <h1>{{mod.name}}</h1>
-            <span>implement stars here</span> <span><a ng-click="showReviews()">{{mod.reviews.length}} reviews</a></span>
+<div class="modpage-container">
+    <loader data="mod">
+        <div class="header-container" style="background-color: #4E473E">
+            <div class="modHeader page-container">
+                <br>
+                <h1>{{mod.name}}</h1><span class="author-line">by {{mod.nexus_info.authors}}</span>
+            </div>
         </div>
-        <hr/>
-    </div>
-    <div class="page-container">
-        <!-- TODO: Commalogic -->
-        <div class="left-column"><p>by {{mod.nexus_info.authors}} </p>
-            <p>Versions</p>
-            <select ng-model="version" ng-change="changeVersion(version)" ng-options="version.id as version.version for version in mod.mod_versions"></select>
-            <p>{{mod.shortDescription}}</p>
+        <div class="header-container">
+            <div class="background-container">
+                <!-- TODO: Commalogic -->
+                <div class="left-column">
+                    Mod Versions
+                    <select ng-model="version" ng-change="changeVersion(version)" ng-options="version.id as version.version for version in mod.mod_versions"></select>
+                </div>
+                <div class="right-column">
+                    <column-tabs current-tab="currentTab" tabs="tabs">
+                    </column-tabs>
+                </div>
+            </div>
         </div>
-        <div class="right-column mod-content">
-            <expandable expanded="expandedState.compabilityNotes">
-                <expanded-title>Compability Notes</expanded-title>
-                <content><user-generated-list data="compatibilityNotes"></user-generated-list></content>
-            </expandable>7yu]p[
-            o19
-            0]
-            <hr/>
-            <expandable expanded="expandedState.reviews">
-                <expanded-title>Reviews</expanded-title>
-                <content><user-generated-list data="mod.reviews"></user-generated-list></content>
-            </expandable>
+        <div class="page-container">
+            <div class="left-column">
+                Mod Information Content Here.
+            </div>
+            <div class="right-column">
+                <ng-include src="currentTab.url"></ng-include>
+                <div style="min-height: 800px"></div>
+            </div>
         </div>
-    </div>
-</loader>
+    </loader>
+</div>

@@ -1,0 +1,56 @@
+.modHeader {
+	padding-bottom: 10px;
+}
+
+.modpage-container {
+	
+	select {
+		width: 40%;
+	}
+	.header-container {
+		background-color: $secondary_background;
+
+		.background-container {
+			width: 1220px; 
+			margin: auto;
+		}
+
+		.left-column {
+			padding-top: 0px; 
+			padding-bottom: 0px;
+			min-width: 250px; 
+			vertical-align: middle;
+		}
+
+		.right-column {
+			padding: 0;
+			background-color: $secondary_background;
+		}
+
+	}
+
+	.page-container {
+
+		.left-column {
+			min-width: 250px;
+		}
+	}	
+}
+.author-line {
+  font-size: 14px;
+  font-weight: 100;
+  color:#EEEEEE;
+}
+
+.column-tabs {
+	@extend .tabs;
+	margin-left: 0px;
+	a {
+		width: 25%;
+		text-align: center;
+	}
+}
+
+
+
+

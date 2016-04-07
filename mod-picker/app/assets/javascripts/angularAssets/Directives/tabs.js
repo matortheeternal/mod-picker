@@ -15,6 +15,20 @@ app.directive('tabs', function () {
     }
 });
 
+
+app.directive('columnTabs', function () {
+    return {
+        restrict: 'E',
+        templateUrl: '/resources/directives/columnTabs.html',
+        controller: 'tabsController',
+        scope: {
+            tabs: '=',
+            currentTab: '='
+        }
+    }
+});
+
+
 app.controller('tabsController', function ($scope) {
 
 	$scope.select = function (nextTab) {
