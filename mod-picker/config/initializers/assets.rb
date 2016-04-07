@@ -31,6 +31,7 @@ jquery.countdown.min.js
 jquery.nicescroll.min.js
 jquery.smooth-scroll.js
 script.js
+lzma.js
 rar.js
 wow.min.js
 zip.js
