@@ -63,4 +63,18 @@ app.service('backend', function ($q, $http) {
         return promise.promise;
     };
 
+    this.delete = function (context) {
+        var promise = $q.defer();
+        data = {};
+        data.authenticity_token = window._token;
+        $http({
+            url: BASE_LOCATION + context,
+            method: 'DELETE',
+            data: data
+        }).then(function (result) {
+            promise.resolve(result.data);
+        });
+        return promise.promise;
+    };
+
 });
