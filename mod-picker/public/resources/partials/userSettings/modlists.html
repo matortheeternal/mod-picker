@@ -20,11 +20,9 @@
                 <td>{{list.comments_count}}</td>
                 <td>
                     <div class="table-buttons">
-                        <input type="button" ng-click="modListClone(mod_list)" value="Clone"/>
-                        <a ng-href="#/editModList/{{list.name}}">
-                            <input type="button" ng-click="modListEdit(mod_list)" value="Edit"/>
-                        </a>
-                        <input type="button" ng-click="modListDelete(mod_list)" value="Delete"/>
+                        <input class="btn-sm" type="button" ng-click="cloneModList(list)" value="Clone"/>
+                        <input class="btn-sm" type="button" ng-click="editModList(list)" value="Edit"/>
+                        <input class="btn-sm" type="button" ng-click="deleteModList(list)" value="Delete"/>
                     </div>
                 </td>
             </tr>
@@ -55,11 +53,9 @@
                 <td>{{collection.comments_count}}</td>
                 <td>
                     <div class="table-buttons">
-                        <input type="button" ng-click="modListClone(mod_list)" value="Clone">
-                        <a ng-href="#/editModList/{{list.name}}">
-                            <input type="button" ng-click="modListEdit(mod_list)" value="Edit">
-                        </a>
-                        <input type="button" ng-click="modListDelete(mod_list)" value="Delete">
+                        <input class="btn-sm" type="button" ng-click="cloneModList(collection)" value="Clone"/>
+                        <input class="btn-sm" type="button" ng-click="editModList(collection)" value="Edit"/>
+                        <input class="btn-sm" type="button" ng-click="deleteModList(collection)" value="Delete"/>
                     </div>
                 </td>
             </tr>
