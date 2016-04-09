@@ -71,12 +71,12 @@
   .table-buttons {
     display: flex;
     vertical-align: middle;
-    border: none;
-    background-color: transparent;
     font-size: 14px;
 
     input[type="button"] {
       padding: 10px;
+      border: none;
+      background-color: transparent;
       margin-right: 5px;
       margin-left: 5px;
       cursor: pointer;
