@@ -38,7 +38,7 @@ app.controller('submitModController', function ($scope, backend, submitService) 
     $scope.changePlugins = function(event) {
         var files = [].slice.call(event.target.files);
         if ($scope.plugins) {
-            $scope.plugins.concat(files);
+            $scope.plugins = $scope.plugins.concat(files);
         } else {
             $scope.plugins = files;
         }
