@@ -17,12 +17,11 @@ header {
   margin: 0 auto;
   height: 50px;
   display: table;
-  font-size: 11px;
+  font-size: 12px;
   padding-top: 60px;
   padding-bottom: 60px;
   position: relative;
 }
-
 
 .nav-controls {
   width: 75%;
@@ -33,29 +32,28 @@ header {
   padding: 0;
 }
 
-.logged-out-nav {
-  width: 240px;
+.user-nav {
   background: rgba($inverse_text_color, 0.7);
   text-align: right;
   float: right;
   margin: 0;
   padding: 0 10px 0 10px;
-}
 
-.logged-out-nav li {
-  display: inline;
-  padding: 0 0.5em;
-  border-right: 1px solid $hard_border_color;
-  list-style: outside none none;
-}
+  li {
+    display: inline;
+    padding: 0 0.5em;
+    border-right: 1px solid $hard_border_color;
+    list-style: outside none none;
+  }
 
-.logged-out-nav a {
-  color: $text_color;
-  font-weight: 700;
-}
+  a {
+    color: $text_color;
+    font-weight: 700;
 
-.logged-out-nav a:hover {
-  color: $link_hover_color_primary;
+    &:hover {
+      color: $link_hover_color_primary;
+    }
+  }
 }
 
 #form_game_select {
