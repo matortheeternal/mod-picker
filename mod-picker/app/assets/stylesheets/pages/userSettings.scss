@@ -68,18 +68,6 @@
     display: flex;
     vertical-align: middle;
     font-size: 14px;
-
-    input[type="button"] {
-      padding: 10px;
-      border: none;
-      background-color: transparent;
-      margin-right: 5px;
-      margin-left: 5px;
-      cursor: pointer;
-      &:hover {
-        background-color: $action_color;
-      }
-    }
   }
 
   tbody {

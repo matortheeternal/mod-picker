@@ -35,12 +35,12 @@ app.controller('userSettingsController', function ($scope, $q, userSettingsServi
             modlists = $scope.user.mod_lists;
             $scope.lists = [];
             $scope.collections = [];
-            for (var modlist in modlists){
-                if (modlists[modlist].is_collection){
-                    $scope.collections.push(modlists[modlist]);
+            modlists.forEach(function(modlist) {
+                if (modlist.is_collection){
+                    $scope.collections.push(modlist);
                 }
                 else {
-                    $scope.lists.push(modlists[modlist]);
+                    $scope.lists.push(modlist);
                 }
             }
 
@@ -52,6 +52,7 @@ app.controller('userSettingsController', function ($scope, $q, userSettingsServi
         });
     });
 
+    /* avatar */
     $scope.browseAvatar = function() {
         document.getElementById('avatar-input').click();
     };
@@ -71,6 +72,66 @@ app.controller('userSettingsController', function ($scope, $q, userSettingsServi
         }
     };
 
+    /* mod list actions */
+    $scope.editModList = function(modlist) {
+        console.log('Edit Mod List: "'+modlist.name+'"');
+        window.location = '#/modlists/' + modlist.id;
+    };
+
+    $scope.appendModList = function(data) {
+        var modlists = $scope.user.mod_lists;
+        if (data.modlist) {
+            modlists.push(data.modlist);
+            if (data.modlist.is_collection) {
+                $scope.collections.push(data.modlist);
+            } else {
+                $scope.lists.push(data.modlist);
+            }
+            $scope.$apply();
+        } else {
+            $scope.errors.push("Didn't receive a cloned mod list from the server");
+        }
+    };
+
+    $scope.cloneModList = function(modlist) {
+        console.log('Clone Mod List: "'+modlist.name+'"');
+        $scope.errors = [];
+        userSettingsService.cloneModList(modlist).then(function (data) {
+            if (data.status === "ok") {
+                $scope.appendModList(data);
+            } else {
+                $scope.errors.push(data.status);
+            }
+        });
+    };
+
+    $scope.removeModList = function(modlist) {
+        var modlists = $scope.user.mod_lists;
+        var index = modlists.indexOf(modlist);
+        modlists.splice(index, 1);
+        if (modlist.is_collection) {
+            index = $scope.collections.indexOf(modlist);
+            $scope.collections.splice(index, 1);
+        } else {
+            index = $scope.lists.indexOf(modlist);
+            $scope.lists.splice(index, 1);
+        }
+        $scope.$apply();
+    };
+
+    $scope.deleteModList = function(modlist) {
+        console.log('Delete Mod List: "'+modlist.name+'"');
+        $scope.errors = [];
+        userSettingsService.deleteModList(modlist).then(function (data) {
+            if (data.status === "ok") {
+                $scope.removeModList(modlist);
+            }/* else {
+                $scope.errors.push(data.status);
+            }*/
+        });
+    };
+
+    /* settings submission */
     $scope.submit = function() {
         $scope.errors = [];
         userSettingsService.submitUser($scope.user).then(function (data) {
@@ -78,7 +139,7 @@ app.controller('userSettingsController', function ($scope, $q, userSettingsServi
                 $scope.showSuccess = true;
             }
             else {
-                $scope.errors += data.errors;
+                $scope.errors.concat(data.errors);
             }
         });
         userSettingsService.submitUserSettings($scope.userSettings).then(function (data) {
@@ -86,7 +147,7 @@ app.controller('userSettingsController', function ($scope, $q, userSettingsServi
                 $scope.showSuccess = true;
             }
             else {
-                $scope.errors += data.errors;
+                $scope.errors.concat(data.errors);
             }
         });
         if ($scope.avatar.file) {
