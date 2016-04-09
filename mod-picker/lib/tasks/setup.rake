@@ -124,6 +124,7 @@ namespace :setup do
     puts "    Unsigned columns set up"
   end
 
+<<<<<<< HEAD
   namespace :reset do
     task ids: :environment do
       puts "\nResetting IDs"
@@ -191,4 +192,6 @@ namespace :setup do
     end
   end
 
+=======
+>>>>>>> f1fbc2e3b4903c07372d1f876d6bd549096cded4
 end

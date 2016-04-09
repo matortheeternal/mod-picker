@@ -2,13 +2,14 @@ require 'rails_helper'
 
 RSpec.describe Mod, :model do
   skyui = Mod.find_by(name: 'SkyUI')
-  user = User.find_by(username: 'admin')
+  tes5edit = Mod.find_by(name: 'TES5Edit')
 
   it "should access the seeded mod" do
     expect(skyui).to be_truthy
     expect(skyui.name).to eq('SkyUI')
   end
 
+  # noinspection RubyScope
   describe "counter cache" do
     describe "mod_stars_count" do
       count_before = skyui.mod_stars_count
@@ -54,15 +55,71 @@ RSpec.describe Mod, :model do
 
     describe "compatibility_notes_count" do
       count_before = skyui.compatibility_notes_count
+<<<<<<< HEAD
       compatibility_note = skyui.mod_versions.first.compatibility_notes.create(submitted_by: user.id, compatibility_type: "Incompatible")
+=======
+      mod_version1 = skyui.mod_versions.first
+      mod_version2 = tes5edit.mod_versions.first
+      compatibility_note = CompatibilityNote.create!(submitted_by: 3, compatibility_type: "Incompatible", text_body: Faker::Lorem.paragraphs(3))
+      mvcn1 = ModVersionCompatibilityNote.create(mod_version_id: mod_version1.id, compatibility_note_id: compatibility_note.id)
+      mvcn2 = ModVersionCompatibilityNote.create(mod_version_id: mod_version2.id, compatibility_note_id: compatibility_note.id)
+>>>>>>> f1fbc2e3b4903c07372d1f876d6bd549096cded4
 
       it "should increment when we add a compatibility_note" do
+        skyui = Mod.find_by(name: 'SkyUI')
         expect(skyui.compatibility_notes_count).to eq(count_before + 1)
       end
 
       it "should decrement when we remove a compatibility_note" do
+        mvcn1.destroy
+        mvcn2.destroy
         compatibility_note.destroy
+        skyui = Mod.find_by(name: 'SkyUI')
         expect(skyui.compatibility_notes_count).to eq(count_before)
+      end
+    end
+
+    describe "install_order_notes_count" do
+      count_before = skyui.install_order_notes_count
+      mod_version1 = skyui.mod_versions.first
+      mod_version2 = tes5edit.mod_versions.first
+      install_order_note = InstallOrderNote.create!(submitted_by: 3, install_first: skyui.id, install_second: tes5edit.id, text_body: Faker::Lorem.paragraphs(3))
+      mvin1 = ModVersionInstallOrderNote.create(mod_version_id: mod_version1.id, install_order_note_id: install_order_note.id)
+      mvin2 = ModVersionInstallOrderNote.create(mod_version_id: mod_version2.id, install_order_note_id: install_order_note.id)
+
+      it "should increment when we add an install_order_note" do
+        skyui = Mod.find_by(name: 'SkyUI')
+        expect(skyui.install_order_notes_count).to eq(count_before + 1)
+      end
+
+      it "should decrement when we remove an install_order_note" do
+        mvin1.destroy
+        mvin2.destroy
+        install_order_note.destroy
+        skyui = Mod.find_by(name: 'SkyUI')
+        expect(skyui.install_order_notes_count).to eq(count_before)
+      end
+    end
+
+    describe "load_order_notes_count" do
+      count_before = skyui.load_order_notes_count
+      mod_version1 = skyui.mod_versions.first
+      mod_version2 = tes5edit.mod_versions.first
+      load_order_note = LoadOrderNote.create!(submitted_by: 3, load_first: skyui.id, load_second: tes5edit.id, text_body: Faker::Lorem.paragraphs(3))
+      mvin1 = ModVersionLoadOrderNote.create(mod_version_id: mod_version1.id, load_order_note_id: load_order_note.id)
+      mvin2 = ModVersionLoadOrderNote.create(mod_version_id: mod_version2.id, load_order_note_id: load_order_note.id)
+
+      it "should increment when we add an load_order_note" do
+        skyui = Mod.find_by(name: 'SkyUI')
+        expect(skyui.load_order_notes_count).to eq(count_before + 1)
+      end
+
+      it "should decrement when we remove an load_order_note" do
+        mvin1.destroy
+        mvin2.destroy
+        load_order_note.destroy
+        skyui = Mod.find_by(name: 'SkyUI')
+        expect(skyui.load_order_notes_count).to eq(count_before)
       end
     end
 
