@@ -56,21 +56,11 @@ RSpec.describe Mod, :model do
 
     describe "compatibility_notes_count" do
       count_before = skyui.compatibility_notes_count
-<<<<<<< HEAD
-<<<<<<< HEAD
-      compatibility_note = skyui.mod_versions.first.compatibility_notes.create(submitted_by: user.id, compatibility_type: "Incompatible")
-=======
-=======
->>>>>>> 7b7849aa49ab0ebeeb1211db9658baa99f9d7d4c
       mod_version1 = skyui.mod_versions.first
       mod_version2 = tes5edit.mod_versions.first
       compatibility_note = CompatibilityNote.create!(submitted_by: user.id, compatibility_type: "Incompatible", text_body: Faker::Lorem.paragraphs(3))
       mvcn1 = ModVersionCompatibilityNote.create(mod_version_id: mod_version1.id, compatibility_note_id: compatibility_note.id)
       mvcn2 = ModVersionCompatibilityNote.create(mod_version_id: mod_version2.id, compatibility_note_id: compatibility_note.id)
-<<<<<<< HEAD
->>>>>>> f1fbc2e3b4903c07372d1f876d6bd549096cded4
-=======
->>>>>>> 7b7849aa49ab0ebeeb1211db9658baa99f9d7d4c
 
       it "should increment when we add a compatibility_note" do
         skyui = Mod.find_by(name: 'SkyUI')
