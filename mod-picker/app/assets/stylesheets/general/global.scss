@@ -150,16 +150,16 @@ h4 {
     font-weight: 500;
     padding: 9px 16px 9px 16px;//half of font size high
   }
-}
 
-.selected-tab {
-  background-color: $action_color;
-}
+  .selected-tab {
+    background-color: $action_color;
+    color: $inverse_text_color;
+  }
 
-.unselected-tab:hover {
-  background-color: $bright_action_color;
+  .unselected-tab:hover {
+    background-color: $bright_action_color;
+  }
 }
-
 /* css for columns */
 .two-columns {
   background: linear-gradient(90deg, $secondary_background 50%, $primary_background 50%);
