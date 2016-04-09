@@ -416,7 +416,7 @@ def seed_static_records
   Quote.create(
     game_id: gameSkyrim.id,
     text: "Let me guess, someone stole your sweetroll?",
-    label: "help"
+    label: "Help"
   )
   Quote.create(
       game_id: gameSkyrim.id,
