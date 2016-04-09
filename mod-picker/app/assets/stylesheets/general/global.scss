@@ -194,6 +194,28 @@ h4 {
 }
 
 /* css for forms, inputs, and labels */
+.success-message {
+  background-color: $success_message_color;
+  padding: 14px;
+  font-weight: 500;
+  font-size: 20px;
+  text-align: center;
+}
+
+.fixed-messages {
+  position: fixed;
+  top: 0;
+  left: 0;
+}
+
+.error-message {
+  background-color: $error_message_color;
+  padding: 14px;
+  font-weight: 500;
+  font-size: 20px;
+  text-align: center;
+}
+
 .big-text-area {
   width: 100%;
   height: 300px;
