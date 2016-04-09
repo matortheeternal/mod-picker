@@ -28,6 +28,7 @@ namespace :reset do
     connection = ActiveRecord::Base.connection()
 
     # tables
+    Plugin.delete_all
     ModStar.delete_all
     ModListStar.delete_all
     Quote.delete_all

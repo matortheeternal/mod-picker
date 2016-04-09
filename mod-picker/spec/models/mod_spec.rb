@@ -108,27 +108,27 @@ RSpec.describe Mod, :model do
       end
     end
 
-    describe "load_order_notes_count" do
-      count_before = skyui.load_order_notes_count
-      mod_version1 = skyui.mod_versions.first
-      mod_version2 = tes5edit.mod_versions.first
-      load_order_note = LoadOrderNote.create!(submitted_by: user.id, load_first: skyui.id, load_second: tes5edit.id, text_body: Faker::Lorem.paragraphs(3))
-      mvin1 = ModVersionLoadOrderNote.create(mod_version_id: mod_version1.id, load_order_note_id: load_order_note.id)
-      mvin2 = ModVersionLoadOrderNote.create(mod_version_id: mod_version2.id, load_order_note_id: load_order_note.id)
-
-      it "should increment when we add an load_order_note" do
-        skyui = Mod.find_by(name: 'SkyUI')
-        expect(skyui.load_order_notes_count).to eq(count_before + 1)
-      end
-
-      it "should decrement when we remove an load_order_note" do
-        mvin1.destroy
-        mvin2.destroy
-        load_order_note.destroy
-        skyui = Mod.find_by(name: 'SkyUI')
-        expect(skyui.load_order_notes_count).to eq(count_before)
-      end
-    end
+    # describe "load_order_notes_count" do
+    #   count_before = skyui.load_order_notes_count
+    #   mod_version1 = skyui.mod_versions.first
+    #   mod_version2 = tes5edit.mod_versions.first
+    #   load_order_note = LoadOrderNote.create!(submitted_by: user.id, load_first: skyui.id, load_second: tes5edit.id, text_body: Faker::Lorem.paragraphs(3))
+    #   mvin1 = ModVersionLoadOrderNote.create(mod_version_id: mod_version1.id, load_order_note_id: load_order_note.id)
+    #   mvin2 = ModVersionLoadOrderNote.create(mod_version_id: mod_version2.id, load_order_note_id: load_order_note.id)
+    #
+    #   it "should increment when we add an load_order_note" do
+    #     skyui = Mod.find_by(name: 'SkyUI')
+    #     expect(skyui.load_order_notes_count).to eq(count_before + 1)
+    #   end
+    #
+    #   it "should decrement when we remove an load_order_note" do
+    #     mvin1.destroy
+    #     mvin2.destroy
+    #     load_order_note.destroy
+    #     skyui = Mod.find_by(name: 'SkyUI')
+    #     expect(skyui.load_order_notes_count).to eq(count_before)
+    #   end
+    # end
 
   end
 end
