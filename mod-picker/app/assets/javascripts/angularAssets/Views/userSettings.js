@@ -35,14 +35,14 @@ app.controller('userSettingsController', function ($scope, $q, userSettingsServi
             modlists = $scope.user.mod_lists;
             $scope.lists = [];
             $scope.collections = [];
-            modlists.forEach(function(modlist) {
-                if (modlist.is_collection){
+            modlists.forEach(function (modlist) {
+                if (modlist.is_collection) {
                     $scope.collections.push(modlist);
                 }
                 else {
                     $scope.lists.push(modlist);
                 }
-            }
+            });
 
             // get random quote for user title
             quoteService.retrieveQuotes().then(function (quotes) {
