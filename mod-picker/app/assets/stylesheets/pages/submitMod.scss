@@ -19,3 +19,75 @@ form {
     margin-top: 6px;
   }
 }
+
+.plugins-upload {
+  width: 500px;
+  height: 300px;
+  border: 1px solid $border_color;
+  background-color: $secondary_background;
+  position: relative;
+  text-align: center;
+
+  #plugins-input {
+    display: none;
+  }
+
+  .upload-container {
+    .upload-prompt {
+      display: inline-block;
+      margin: 50px 10px;
+      cursor: pointer;
+
+      .img-upload {
+        background-image: image_path("upload-plugin.png");;
+      }
+
+      h4 {
+        color: $text_color;
+      }
+    }
+  }
+
+  .upload-actions {
+    width: 100%;
+    height: 30px;
+    margin: 8px;
+    position: absolute;
+    bottom: 0;
+  }
+
+  .upload-queue {
+    margin: 4px;
+    overflow-y: auto;
+    max-height: 250px;
+    border: 1px solid $border_color;
+
+    table {
+      text-align: left;
+      font-size: 13px;
+      width: 100%;
+      box-sizing: border-box;
+      border-collapse: collapse;
+
+      .cancel-item {
+        cursor: pointer;
+        &:hover {
+          color: maroon;
+        }
+      }
+
+      tr:nth-child(2n) {
+        background-color: $secondary_background;
+      }
+
+      tr:nth-child(2n+1) {
+        background-color: $primary_background;
+      }
+
+      td, th {
+        padding: 2px;
+        padding-left: 6px;
+      }
+    }
+  }
+}

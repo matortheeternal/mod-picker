@@ -9,16 +9,20 @@ class Ability
 
     if user.admin?
       # special admin permissions
-      can :assign_roles
-      can :read_hidden
-      can :ban_users
+      can :assign_roles, User
+      can :read_hidden, :all
+      can :ban, User
+      can :set_avatar, User, :id => user.id
+      can :set_custom_title, User, :id => user.id
 
       # admins can do whatever they want
       can :manage, :all
     elsif user.moderator?
       # special moderator permissions
-      can :read_hidden
-      can :ban_users
+      can :read_hidden, :all
+      can :ban, User
+      can :set_avatar, User, :id => user.id
+      can :set_custom_title, User, :id => user.id
 
       # can create and update help pages
       can [:create, :update], HelpPage
@@ -45,7 +49,7 @@ class Ability
     end
 
     # signed in users who aren't banned
-    if user.signed_in? && !user.banned?
+    if  User.exists?(user.id) && !user.banned?
       # can create new contributions
       can :create, Comment
       can :create, HelpfulMark
@@ -60,7 +64,7 @@ class Ability
       can :create, ModListTag
 
       # can submit mods
-      can :scrape
+      can :create, NexusInfo
       can :create, Mod
       can :create, Plugin
       can :create, ModAssetFile
@@ -132,8 +136,8 @@ class Ability
 
       # abilities tied to reputation
       if user.reputation.overall >= 20
-        can :create, Avatar # custom avatar
-        can :create, Tag    # can create new tags
+        can :set_avatar, User, :id => user.id  # custom avatar
+        can :create, Tag # can create new tags
       end
       if user.reputation.overall >= 40
         can :create, IncorrectNote  # can report something as incorrect
@@ -158,14 +162,14 @@ class Ability
         can :update, LoadOrderNote, { :incorrect? => true }
       end
       if user.reputation.overall >= 640
-        can :rescrape # can request mods be re-scraped
+        can :rescrape, Mod # can request mods be re-scraped
         # can update mods that don't have a verified author
-        can [:update], Mod, { :no_author? => true }
-        can [:destroy], ModVersionRequirement, { :mod_version => { :mod => { :no_author? => true } } }
-        can [:destroy], ModTag, { :mod => { :no_author? => true } }
+        can :update, Mod, { :no_author? => true }
+        can :destroy, ModVersionRequirement, { :mod_version => { :mod => { :no_author? => true } } }
+        can :destroy, ModTag, { :mod => { :no_author? => true } }
       end
       if user.reputation.overall >= 1280
-        can :set_custom_title # can set a custom user title
+        can :set_custom_title, User, :id => user.id # can set a custom user title
       end
     end
   end

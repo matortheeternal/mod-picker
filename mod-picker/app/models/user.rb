@@ -84,8 +84,12 @@ class User < ActiveRecord::Base
   end
 
   def user_avatar
-    if File.exists?(File.join(Rails.public_path, "avatars/#{id}.png"))
+    png_path = File.join(Rails.public_path, "avatars/#{id}.png")
+    jpg_path = File.join(Rails.public_path, "avatars/#{id}.jpg")
+    if File.exists?(png_path)
       "/avatars/#{id}.png"
+    elsif File.exists?(jpg_path)
+      "/avatars/#{id}.jpg"
     else
       '/avatars/Default.png'
     end
@@ -105,15 +109,15 @@ class User < ActiveRecord::Base
   end
 
   def admin?
-    self.role == :admin
+    self.role.to_sym == :admin
   end
 
   def moderator?
-    self.role == :moderator
+    self.role.to_sym == :moderator
   end
 
   def banned?
-    self.role == :banned
+    self.role.to_sym == :banned
   end
 
   def inactive?

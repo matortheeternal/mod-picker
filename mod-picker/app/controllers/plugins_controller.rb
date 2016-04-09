@@ -31,17 +31,26 @@ class PluginsController < ApplicationController
   end
 
   # POST /plugins
-  # POST /plugins.json
   def create
-    @plugin = Plugin.new(plugin_params)
-
-    respond_to do |format|
-      if @plugin.save
-        format.json { render :show, status: :created, location: @plugin }
+    response = 'Invalid submission'
+    if params[:plugin].present?
+      file = params[:plugin]
+      if File.exists?(Rails.root.join('app','assets', 'plugins', file.original_filename))
+        response = 'File exists'
       else
-        format.json { render json: @plugin.errors, status: :unprocessable_entity }
+        begin
+          File.open(Rails.root.join('app','assets', 'plugins', file.original_filename), 'wb') do |f|
+            f.write(file.read)
+          end
+          response = 'Success'
+        rescue
+          response = 'Unknown failure'
+        end
       end
     end
+
+    # render json response
+    render json: {status: response}
   end
 
   # PATCH/PUT /plugins/1

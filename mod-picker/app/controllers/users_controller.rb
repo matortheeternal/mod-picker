@@ -21,7 +21,7 @@ class UsersController < ApplicationController
                 :only => [:id, :name, :game_id, :mod_stars_count]
             },
             :mod_lists => {
-                :only => [:id, :is_collection, :is_public, :status, :mods_count, :created]
+                :only => [:id, :name, :is_collection, :is_public, :status, :mods_count, :created]
             },
             :bio => {
                 :except => [:user_id]

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160402024050) do
+ActiveRecord::Schema.define(version: 20160407182509) do
 
   create_table "agreement_marks", id: false, force: :cascade do |t|
     t.integer "incorrect_note_id", limit: 4
@@ -93,6 +93,14 @@ ActiveRecord::Schema.define(version: 20160402024050) do
   end
 
   add_index "config_files", ["game_id", "filename"], name: "index_config_files_on_game_id_and_filename", using: :btree
+
+  create_table "dummy_masters", id: false, force: :cascade do |t|
+    t.integer "plugin_id", limit: 4
+    t.string  "filename",  limit: 64
+    t.integer "index",     limit: 4
+  end
+
+  add_index "dummy_masters", ["plugin_id"], name: "fk_rails_2552b596d8", using: :btree
 
   create_table "games", force: :cascade do |t|
     t.string "display_name",  limit: 32
@@ -328,6 +336,7 @@ ActiveRecord::Schema.define(version: 20160402024050) do
     t.integer  "install_order_notes_count", limit: 4,                                                        default: 0
     t.integer  "user_stars_count",          limit: 4,                                                        default: 0
     t.integer  "load_order_notes_count",    limit: 4,                                                        default: 0
+    t.string   "name",                      limit: 255
   end
 
   add_index "mod_lists", ["created_by"], name: "created_by", using: :btree
@@ -448,14 +457,26 @@ ActiveRecord::Schema.define(version: 20160402024050) do
   create_table "override_records", id: false, force: :cascade do |t|
     t.integer "plugin_id", limit: 4
     t.integer "form_id",   limit: 4
-    t.string  "sig",       limit: 4
+    t.string  "signature", limit: 4
   end
 
   add_index "override_records", ["plugin_id"], name: "pl_id", using: :btree
 
+  create_table "plugin_errors", force: :cascade do |t|
+    t.integer "plugin_id", limit: 4,   null: false
+    t.string  "signature", limit: 4,   null: false
+    t.integer "form_id",   limit: 4,   null: false
+    t.integer "type",      limit: 1,   null: false
+    t.string  "path",      limit: 255
+    t.string  "name",      limit: 255
+    t.string  "data",      limit: 64
+  end
+
+  add_index "plugin_errors", ["plugin_id"], name: "fk_rails_21e72cc4b6", using: :btree
+
   create_table "plugin_record_groups", id: false, force: :cascade do |t|
     t.integer "plugin_id",        limit: 4
-    t.string  "sig",              limit: 4
+    t.string  "signature",        limit: 4
     t.integer "new_records",      limit: 4
     t.integer "override_records", limit: 4
   end
@@ -463,11 +484,14 @@ ActiveRecord::Schema.define(version: 20160402024050) do
   add_index "plugin_record_groups", ["plugin_id"], name: "pl_id", using: :btree
 
   create_table "plugins", force: :cascade do |t|
-    t.integer "mod_version_id", limit: 4
-    t.string  "filename",       limit: 64
-    t.string  "author",         limit: 128
-    t.string  "description",    limit: 512
-    t.string  "crc_hash",       limit: 8
+    t.integer "mod_version_id",   limit: 4
+    t.string  "filename",         limit: 64
+    t.string  "author",           limit: 128
+    t.string  "description",      limit: 512
+    t.string  "crc_hash",         limit: 8
+    t.integer "new_records",      limit: 4
+    t.integer "override_records", limit: 4
+    t.integer "file_size",        limit: 4
   end
 
   add_index "plugins", ["mod_version_id"], name: "mv_id", using: :btree
@@ -653,6 +677,7 @@ ActiveRecord::Schema.define(version: 20160402024050) do
   add_foreign_key "compatibility_notes", "plugins", column: "compatibility_plugin_id", name: "compatibility_notes_ibfk_2"
   add_foreign_key "compatibility_notes", "users", column: "submitted_by", name: "compatibility_notes_ibfk_1"
   add_foreign_key "config_files", "games"
+  add_foreign_key "dummy_masters", "plugins"
   add_foreign_key "helpful_marks", "users", column: "submitted_by", name: "helpful_marks_ibfk_4"
   add_foreign_key "incorrect_notes", "users", column: "submitted_by", name: "incorrect_notes_ibfk_4"
   add_foreign_key "install_order_note_history_entries", "install_order_notes"
@@ -714,6 +739,7 @@ ActiveRecord::Schema.define(version: 20160402024050) do
   add_foreign_key "mods", "games"
   add_foreign_key "nexus_infos", "games"
   add_foreign_key "override_records", "plugins", name: "override_records_ibfk_1"
+  add_foreign_key "plugin_errors", "plugins"
   add_foreign_key "plugin_record_groups", "plugins", name: "plugin_record_groups_ibfk_1"
   add_foreign_key "plugins", "mod_versions", name: "plugins_ibfk_1"
   add_foreign_key "quotes", "games"

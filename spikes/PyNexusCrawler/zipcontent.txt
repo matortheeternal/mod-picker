@@ -1,0 +1,44 @@
+ Content
+    textures
+      armor
+        bluestripeselite
+         roche__b1_m.dds (0 kb)
+        faraam
+         fur_n.dds (2 kb)
+        iron
+          f
+            sleevesforiron
+             sleevesforironf.dds (2730 kb)
+             sleevesforironf_n.dds (5461 kb)
+          m
+            sleevesforiron
+             sleevesforironm.dds (2730 kb)
+             sleevesforironm_n.dds (5461 kb)
+      mb
+        afterglowfashion
+         verschnuerung.dds (85 kb)
+         verschnuerung_n.dds (85 kb)
+        haus2
+          door
+           mbfensteralt2_n.dds (170 kb)
+        kanone
+         black.dds (42 kb)
+        kirche
+         churchwhitewalls_n.dds (170 kb)
+        neu
+         wrcavebasewall02_n.dds (682 kb)
+        tent
+         gaze01.dds (341 kb)
+         gaze01_n.dds (341 kb)
+      rochester_individually
+       black.dds (85 kb)
+      stroti
+        KitchenTools
+         pot_n.dds (85 kb)
+        NewCastle
+          misc
+           blackshadow.dds (0 kb)
+        Resource Pack
+          Telescope
+           black.dds (2 kb)
+    textures

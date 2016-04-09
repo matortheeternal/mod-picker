@@ -58,7 +58,7 @@ app.controller('categoryTreeController', function ($scope, categoryService) {
         });
     };
 
-    $scope.inverseSelection = function () {
+    $scope.invertSelection = function () {
         $scope.categoryFilter.forEach(function (superCategory) {
             superCategory.value = !superCategory.value;
             superCategory.childs.forEach(function(child) {

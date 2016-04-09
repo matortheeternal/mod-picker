@@ -2,7 +2,7 @@ namespace :setup do
   desc "Tasks for setup"
 
   task unsigned: :environment do
-    connection = ActiveRecord::Base.connection()
+    connection = ActiveRecord::Base.connection
     puts "\nSetting up unsigned columns"
     connection.execute("ALTER TABLE agreement_marks MODIFY incorrect_note_id INT UNSIGNED;")
     connection.execute("ALTER TABLE agreement_marks MODIFY submitted_by INT UNSIGNED;")
