@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160402195916) do
+ActiveRecord::Schema.define(version: 20160407182509) do
 
   create_table "agreement_marks", id: false, force: :cascade do |t|
     t.integer "incorrect_note_id", limit: 4
@@ -336,6 +336,7 @@ ActiveRecord::Schema.define(version: 20160402195916) do
     t.integer  "install_order_notes_count", limit: 4,                                                        default: 0
     t.integer  "user_stars_count",          limit: 4,                                                        default: 0
     t.integer  "load_order_notes_count",    limit: 4,                                                        default: 0
+    t.string   "name",                      limit: 255
   end
 
   add_index "mod_lists", ["created_by"], name: "created_by", using: :btree

@@ -10,7 +10,7 @@ app.config(['$routeProvider', function ($routeProvider) {
     );
 }]);
 
-app.controller('userSettingsController', function ($scope, $q, userSettingsService, userService) {
+app.controller('userSettingsController', function ($scope, $q, userSettingsService, userService, quoteService) {
     useTwoColumns(false);
 
     $scope.tabs = [
@@ -43,6 +43,12 @@ app.controller('userSettingsController', function ($scope, $q, userSettingsServi
                     $scope.lists.push(modlists[modlist]);
                 }
             }
+
+            // get random quote for user title
+            quoteService.retrieveQuotes().then(function (quotes) {
+                var label = ($scope.user.reputation.overall < 1280) ? "Low Reputation" : "High Repution";
+                $scope.titleQuote = quoteService.getRandomQuote(quotes, label);
+            });
         });
     });
 
