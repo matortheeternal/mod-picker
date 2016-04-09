@@ -125,6 +125,7 @@ namespace :setup do
   end
 
 <<<<<<< HEAD
+<<<<<<< HEAD
   namespace :reset do
     task ids: :environment do
       puts "\nResetting IDs"
@@ -194,4 +195,6 @@ namespace :setup do
 
 =======
 >>>>>>> f1fbc2e3b4903c07372d1f876d6bd549096cded4
+=======
+>>>>>>> 7b7849aa49ab0ebeeb1211db9658baa99f9d7d4c
 end

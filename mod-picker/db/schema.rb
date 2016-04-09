@@ -11,7 +11,6 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-
 ActiveRecord::Schema.define(version: 20160407182509) do
 
   create_table "agreement_marks", id: false, force: :cascade do |t|
@@ -338,9 +337,13 @@ ActiveRecord::Schema.define(version: 20160407182509) do
     t.integer  "user_stars_count",          limit: 4,                                                        default: 0
     t.integer  "load_order_notes_count",    limit: 4,                                                        default: 0
 <<<<<<< HEAD
+<<<<<<< HEAD
     t.string   "name",                      limit: 255
 =======
 >>>>>>> f1fbc2e3b4903c07372d1f876d6bd549096cded4
+=======
+    t.string   "name",                      limit: 255
+>>>>>>> 7b7849aa49ab0ebeeb1211db9658baa99f9d7d4c
   end
 
   add_index "mod_lists", ["created_by"], name: "created_by", using: :btree
