@@ -614,6 +614,7 @@ def seed_fake_mods
   puts "    #{Mod.count} mods seeded"
   puts "    #{NexusInfo.count} nexus infos seeded"
   puts "    #{ModVersion.count} mod versions seeded"
+  puts "    #{Plugin.count} plugins seeded"
 end
 
 def seed_fake_comments
