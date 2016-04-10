@@ -157,7 +157,7 @@ app.controller('userSettingsController', function ($scope, $q, userSettingsServi
             if (data.status === "ok") {
                 $scope.removeModList(modlist);
             } else {
-                $scope.errors.push({message: data.status });
+                $scope.errors.push({message: "Delete Mod List: " + data.status });
             }
         });
     };
@@ -166,29 +166,23 @@ app.controller('userSettingsController', function ($scope, $q, userSettingsServi
     $scope.submit = function() {
         $scope.errors = [];
         userSettingsService.submitUser($scope.user).then(function (data) {
-            if (data.status === "ok" && !$scope.errors.length) {
-                $scope.showSuccess = true;
-            }
-            else {
+            if (data.status !== "ok") {
                 $scope.errors.concat(data.errors);
             }
+            $scope.showSuccess = $scope.errors.length == 0;
         });
         userSettingsService.submitUserSettings($scope.userSettings).then(function (data) {
-            if (data.status === "ok" && !$scope.errors.length) {
-                $scope.showSuccess = true;
-            }
-            else {
+            if (data.status !== "ok") {
                 $scope.errors.concat(data.errors);
             }
+            $scope.showSuccess = $scope.errors.length == 0;
         });
         if ($scope.avatar.file) {
             userSettingsService.submitAvatar($scope.avatar.file).then(function (data) {
-                if (data.status === "Success") {
-                    $scope.showSuccess = true;
+                if (data.status !== "Success") {
+                    $scope.errors.push({message: "Avatar: " + data.status});
                 }
-                else {
-                    $scope.errors.push({message: data.status});
-                }
+                $scope.showSuccess = $scope.errors.length == 0;
             });
         }
     };
