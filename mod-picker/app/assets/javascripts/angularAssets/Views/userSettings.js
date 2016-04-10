@@ -89,7 +89,7 @@ app.controller('userSettingsController', function ($scope, $q, userSettingsServi
             }
             $scope.$apply();
         } else {
-            $scope.errors.push("Didn't receive a cloned mod list from the server");
+            $scope.errors.push({message: "Didn't receive a cloned mod list from the server"});
         }
     };
 
@@ -125,9 +125,9 @@ app.controller('userSettingsController', function ($scope, $q, userSettingsServi
         userSettingsService.deleteModList(modlist).then(function (data) {
             if (data.status === "ok") {
                 $scope.removeModList(modlist);
-            }/* else {
-                $scope.errors.push(data.status);
-            }*/
+            } else {
+                $scope.errors.push({message: data.status });
+            }
         });
     };
 
@@ -153,11 +153,10 @@ app.controller('userSettingsController', function ($scope, $q, userSettingsServi
         if ($scope.avatar.file) {
             userSettingsService.submitAvatar($scope.avatar.file).then(function (data) {
                 if (data.status === "Success") {
-                    $scope.avatar.success = true;
+                    $scope.showSuccess = true;
                 }
                 else {
-                    $scope.avatar.success = false;
-                    $scope.avatar.error = data.status;
+                    $scope.errors.push({message: data.status});
                 }
             });
         }
