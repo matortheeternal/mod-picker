@@ -11,20 +11,15 @@
   <% else %>
       <% current_theme = current_user.settings.theme %>
   <% end %>
-  <% if current_theme == 'Blackreach' %>
-    <%= stylesheet_link_tag 'blackreach' %>
-  <% elsif current_theme == 'Darkwater' %>
-    <%= stylesheet_link_tag 'darkwater' %>
-  <% else %>
-    <%= stylesheet_link_tag 'whiterun' %>
-  <% end %>
+  <%= stylesheet_link_tag current_theme %>
   <script>
     window._token = '<%= form_authenticity_token %>';
     window._current_theme = '<%= current_theme %>';
     window._stylesheets = {
-      whiterun: "<%= stylesheet_path 'whiterun' %>",
-      darkwater: "<%= stylesheet_path 'darkwater' %>",
-      blackreach: "<%= stylesheet_path 'blackreach' %>"
+      whiterun: "<%= stylesheet_path 'Whiterun' %>",
+      darkwater: "<%= stylesheet_path 'Darkwater' %>",
+      blackreach: "<%= stylesheet_path 'Blackreach' %>",
+      high_hrothgar: "<%= stylesheet_path 'High Hrothgar' %>"
     }
   </script>
 </head>
@@ -34,13 +29,28 @@
     <div class="header">
       <a class="logo" href="/"><h1>Mod Picker</h1></a>
       <div class="nav-controls">
-        <ul class="logged-out-nav">
+        <ul class="user-nav">
+        <% if User.exists?(current_user.id) %>
+          <li>
+            Welcome <%= link_to current_user.username, "#/profile/#{current_user.id}" %>
+          </li>
+          <li>
+            <a href="#/settings/mod_lists">Saved Mod Lists</a>
+          </li>
+          <li>
+            <a href="#/settings">Settings</a>
+          </li>
+          <li>
+            <a href="/users/sign_out">Log Out</a>
+          </li>
+        <% else %>
           <li>
             <a href="/users/sign_in">Log In</a>
           </li>
           <li>
             <a href="/users/sign_up">Register</a>
           </li>
+        <% end %>
           <li>
             <a>
               <form method="post" action="/qapi/switch_game/" id="form_game_select">
@@ -64,25 +74,50 @@
     <div class="nav-wrapper clearfix">
       <div class="primary-nav">
         <a class="nav-modlist" href="#">
-          <span>View your</span>
-          Mod List
+          <span class="nav-icon">
+            <i class="fa fa-pencil-square-o"></i>
+          </span>
+          <span class="nav-text">
+            <b>Edit your</b>
+            Mod List
+          </span>
         </a>
         <a class="nav-contributions" href="#">
-          <span>View recent</span>
-          Contributions
+          <span class="nav-icon">
+            <i class="fa fa-comments"></i>
+          </span>
+          <span class="nav-text">
+            <b>View recent</b>
+            Contributions
+          </span>
         </a>
         <a class="nav-browse-modlists" href="#">
-          <span>See all</span>
-          Public Mod Lists
+          <span class="nav-icon">
+            <i class="fa fa-list"></i>
+          </span>
+          <span class="nav-text">
+            <b>See all</b>
+            Public Mod Lists
+          </span>
         </a>
         <a class="nav-browse-mods" href="#/mods">
-          <span>Browse</span>
-          Skyrim Mods
+          <span class="nav-icon">
+            <i class="fa fa-globe"></i>
+          </span>
+          <span class="nav-text">
+            <b>Browse</b>
+            Skyrim Mods
+          </span>
           <span class="nav-dropdown"></span>
         </a>
         <a class="nav-submit-mod" href="#/submit">
-          <span>Submit</span>
-          A Skyrim Mod
+          <span class="nav-icon">
+            <i class="fa fa-plus-square"></i>
+          </span>
+          <span class="nav-text">
+            <b>Submit</b>
+            A Skyrim Mod
+          </span>
         </a>
       </div>
       <div class="secondary-nav">

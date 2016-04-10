@@ -50,20 +50,11 @@ class Mod < ActiveRecord::Base
 
   # mod versions and associated data
   has_many :mod_versions, :inverse_of => 'mod'
-  has_many :compatibility_notes, -> { distinct }, :through => 'mod_versions', :inverse_of => 'mods'
 
   accepts_nested_attributes_for :mod_versions
 
   def no_author?
     self.mod_authors.count == 0
-  end
-
-  def update_install_order_notes_count
-    self.install_order_notes_count = self.install_before_notes.count + self.install_after_notes.count
-  end
-
-  def update_load_order_notes_count
-    self.load_order_notes_count = (self.mod_versions.plugins.load_before_notes + self.mod_versions.plugins.load_after_notes).count
   end
 
   def as_json(options={})
