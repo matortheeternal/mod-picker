@@ -10,7 +10,7 @@ class AvatarsController < ApplicationController
   # POST /avatar
   def create
     if cannot? :set_avatar, current_user
-      render nothing: true, status: :unauthorized
+      render json: {status: "Unauthorized"}
       return
     end
 
