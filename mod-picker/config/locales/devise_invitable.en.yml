@@ -3,26 +3,26 @@ en:
     failure:
       invited: "You have a pending invitation, accept it to finish creating your account."
     invitations:
-      send_instructions: "An invitation email has been sent to %{email}."
+      send_instructions: "An invitation has been sent to %{email}."
       invitation_token_invalid: "The invitation token provided is not valid!"
-      updated: "Your password was set successfully. You are now signed in."
-      updated_not_active: "Your password was set successfully."
+      updated: "Your account was created successfully. You are now signed in."
+      updated_not_active: "Your account was created successfully."
       no_invitations_remaining: "No invitations remaining"
-      invitation_removed: "Your invitation was removed."
+      invitation_removed: "Your invitation was cancelled."
       new:
         header: "Send invitation"
         submit_button: "Send an invitation"
       edit:
-        header: "Set your password"
-        submit_button: "Set my password"
+        header: "Create your account"
+        submit_button: "Create account"
     mailer:
       invitation_instructions:
-        subject: "Invitation instructions"
+        subject: "Mod Picker - Beta Invitation"
         hello: "Hello %{email}"
-        someone_invited_you: "Someone has invited you to %{url}, you can accept it through the link below."
+        someone_invited_you: "You have been invited to participate in the Mod Picker beta!  You can accept the invitation and create an account by clicking the link below:"
         accept: "Accept invitation"
-        accept_until: "This invitation will be due in %{due_date}."
-        ignore: "If you don't want to accept the invitation, please ignore this email.<br />Your account won't be created until you access the link above and set your password."
+        accept_until: "The beta will start 05/01/2016 at 12:01AM UTC and will end 05/16/2016 at 12:01PM UTC.  You can accept this invitation any time before %{due_date}."
+        ignore: "If you don't want to participate in the beta, please ignore this email.  Your account will not be created if you do not click the link above.  You will be able to freely register on the site when we officially launch 06/01/2016."
   time:
     formats:
       devise:
