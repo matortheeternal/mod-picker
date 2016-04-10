@@ -58,6 +58,7 @@ app.controller('userSettingsController', function ($scope, $q, userSettingsServi
     };
 
     $scope.resetAvatar = function() {
+        $scope.avatar.file = null;
         $scope.avatar.src = $scope.user.avatar;
         $scope.$apply();
     };
@@ -65,8 +66,17 @@ app.controller('userSettingsController', function ($scope, $q, userSettingsServi
     $scope.changeAvatar = function(event) {
         $scope.errors = [];
         if (event.target.files && event.target.files[0]) {
-            // check filesize
             var avatarFile = event.target.files[0];
+
+            // check file type
+            var ext = getFileExtension(avatarFile.name);
+            if ((ext !== 'png') && (ext !== 'jpg')) {
+                $scope.errors.push({message: "Unsupported file type.  Avatar image must be a PNG or JPG file." });
+                $scope.resetAvatar();
+                return;
+            }
+
+            // check filesize
             if (avatarFile.size > 1048576) {
                 $scope.errors.push({message: "Avatar image is too big.  Maximum file size 1.0MB." });
                 $scope.resetAvatar();
