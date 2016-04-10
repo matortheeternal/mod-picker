@@ -57,18 +57,39 @@ app.controller('userSettingsController', function ($scope, $q, userSettingsServi
         document.getElementById('avatar-input').click();
     };
 
+    $scope.resetAvatar = function() {
+        $scope.avatar.src = $scope.user.avatar;
+        $scope.$apply();
+    };
+
     $scope.changeAvatar = function(event) {
+        $scope.errors = [];
         if (event.target.files && event.target.files[0]) {
-            $scope.avatar.file = event.target.files[0];
-            var reader = new FileReader();
-            reader.onload = function (e) {
-                $scope.avatar.src = e.target.result;
-                $scope.$apply();
+            // check filesize
+            var avatarFile = event.target.files[0];
+            if (avatarFile.size > 1048576) {
+                $scope.errors.push({message: "Avatar image is too big.  Maximum file size 1.0MB." });
+                $scope.resetAvatar();
+                return;
+            }
+
+            // check dimensions
+            var img = new Image();
+            img.onload = function() {
+                //alert("Image loaded!");
+                var imageTooBig = (img.width > 250) || (img.height > 250);
+                if (imageTooBig) {
+                    $scope.errors.push({message: "Avatar image too large.  Maximum dimensions 250x250." });
+                    $scope.resetAvatar();
+                } else {
+                    $scope.avatar.file = avatarFile;
+                    $scope.avatar.src = img.src;
+                    $scope.$apply();
+                }
             };
-            reader.readAsDataURL($scope.avatar.file);
+            img.src = URL.createObjectURL(avatarFile);
         } else if ($scope.user) {
-            $scope.avatar.src = $scope.user.avatar;
-            $scope.$apply();
+            $scope.resetAvatar();
         }
     };
 
