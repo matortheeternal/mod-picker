@@ -11,25 +11,26 @@ Rails.application.config.assets.version = '1.0'
 
 
 # TODO: clean this shiat
-Rails.application.config.assets.precompile += %w(
-animate.css
-whiterun.css
-darkwater.css
-blackreach.css
-bootstrap.min.css
-temp/welcome.css
-rzslider.min.css
-style-responsive.css
-modpicker.js
-angular-animate.min.js
-angular.min.1.5.1.js
-angular-route.min.1.5.1.js
-bootstrap.min.js
-rzslider.min.js
-heartcode-canvasloader-min.js
-jquery.countdown.min.js
-jquery.nicescroll.min.js
-jquery.smooth-scroll.js
-script.js
-wow.min.js
-)
+Rails.application.config.assets.precompile += [
+'animate.css',
+'Whiterun.css',
+'Darkwater.css',
+'Blackreach.css',
+'High Hrothgar.css',
+'bootstrap.min.css',
+'temp/welcome.css',
+'rzslider.min.css',
+'style-responsive.css',
+'modpicker.js',
+'angular-animate.min.js',
+'angular.min.1.5.1.js',
+'angular-route.min.1.5.1.js',
+'bootstrap.min.js',
+'rzslider.min.js',
+'heartcode-canvasloader-min.js',
+'jquery.countdown.min.js',
+'jquery.nicescroll.min.js',
+'jquery.smooth-scroll.js',
+'script.js',
+'wow.min.js'
+]
