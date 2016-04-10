@@ -295,6 +295,10 @@ form {
       font-size: 20px;
     }
 
+    input[type="file"] {
+      display: none;
+    }
+
     input.path-input {
       width: 350px;
       font-size: 13px;

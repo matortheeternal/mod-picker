@@ -88,8 +88,11 @@
             <section>
 
                 <div class="input-label">Archive</div>
-                <input type="text" class="path-input" ng-model="archive">
-                <input type="button" class="btn" ng-click="archiveBrowse()" value="Browse">
+                <input type="text" class="path-input" ng-model="archive.file.name">
+                <label>
+                    <input id="archive-input" type="file" file-change="changeArchive" accept=".zip, .rar"/>
+                    <input type="button" class="btn" ng-click="browseArchive()" value="Browse">
+                </label>
 
                 <div ng-show="archiveAnalysed">
                     <h3 class="section-title">Mod Asset File Analysis</h3>
@@ -101,7 +104,7 @@
             <section>
                 <div class="plugins-upload">
                     <label>
-                        <input id="plugins-input" type="file" multiple file-change="changePlugins"/>
+                        <input id="plugins-input" type="file" multiple file-change="changePlugins" accept=".esp, .esm"/>
                         <div class="upload-container" ng-if="!plugins">
                             <div class="upload-prompt">
                                 <span class="fa-stack fa-4x">
