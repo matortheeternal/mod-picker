@@ -120,6 +120,23 @@ h4 {
   }
 }
 
+.btn-sm {
+  display: inline;
+  padding: 7px;
+  color: $action_text_color;
+  background-color: $action_color;
+  font-size: 12px;
+  margin-right: 4px;
+  margin-left: 4px;
+  text-align: center;
+  border: 0;
+  border-radius: 0;
+  cursor: pointer;
+  &:hover {
+    background-color: $bright_action_color;
+  }
+}
+
 #thin-btn {
   width: auto;
   height: auto;
@@ -150,16 +167,16 @@ h4 {
     font-weight: 500;
     padding: 9px 16px 9px 16px;//half of font size high
   }
-}
 
-.selected-tab {
-  background-color: $action_color;
-}
+  .selected-tab {
+    background-color: $action_color;
+    color: $inverse_text_color;
+  }
 
-.unselected-tab:hover {
-  background-color: $bright_action_color;
+  .unselected-tab:hover {
+    background-color: $bright_action_color;
+  }
 }
-
 /* css for columns */
 .two-columns {
   background: linear-gradient(90deg, $secondary_background 50%, $primary_background 50%);
@@ -194,6 +211,28 @@ h4 {
 }
 
 /* css for forms, inputs, and labels */
+.success-message {
+  background-color: $success_message_color;
+  padding: 14px;
+  font-weight: 500;
+  font-size: 20px;
+  text-align: center;
+}
+
+.fixed-messages {
+  position: fixed;
+  top: 0;
+  left: 0;
+}
+
+.error-message {
+  background-color: $error_message_color;
+  padding: 14px;
+  font-weight: 500;
+  font-size: 20px;
+  text-align: center;
+}
+
 .big-text-area {
   width: 100%;
   height: 300px;
@@ -225,13 +264,30 @@ form {
     width: 200px;
     font-size: 22px;
     font-weight: 500;
+    color: $text_color;
   }
 
-  .section {
+  section {
     display: block;
-    margin-top: 10px;
+    margin-top: 15px;
     margin-left: 30px;
     margin-bottom: 30px;
+
+    .section-title {
+      font-size: 16px;
+      margin-top: 25px;
+      margin-left: 0;
+      margin-bottom: 0;
+    }
+
+    section {
+      margin-bottom: 15px;
+      margin-top: 15px;
+
+      div {
+        display: inline-block;
+      }
+    }
 
     input[type="text"], input[type="password"], input[type="email"] {
       vertical-align: top;
@@ -239,27 +295,19 @@ form {
       font-size: 20px;
     }
 
+    input[type="file"] {
+      display: none;
+    }
+
     input.path-input {
       width: 350px;
       font-size: 13px;
       padding: 6px;
     }
-
-    h4 {
-      font-size: 16px;
-      font-weight: 500;
-      margin-top: 25px;
-      margin-left: 0;
-      margin-bottom: 0;
-    }
-  }
-
-  .section-element {
-    margin-top: 15px;
-    margin-bottom: 15px;
   }
 
   .input-label {
+    min-width: 180px;
     margin-bottom: 4px;
   }
 
@@ -268,4 +316,11 @@ form {
     margin: auto;
     padding: 10px;
   }
+}
+
+/* css for avatars */
+
+.avatar {
+  max-width: 150px;
+  max-height: 150px;
 }

@@ -10,6 +10,16 @@ app.service('userSettingsService', function (backend, $q) {
         return userSettings.promise
     };
 
+    this.submitAvatar = function (avatar) {
+        var post = $q.defer();
+        backend.postFile('/avatar', 'avatar', avatar).then (function (data) {
+            setTimeout(function () {
+                post.resolve(data);
+            }, 1000);
+        });
+        return post.promise;
+    };
+
     this.submitUser = function (user) {
         var user_object = {
             user: user
@@ -34,5 +44,25 @@ app.service('userSettingsService', function (backend, $q) {
             }, 1000);
         });
         return update.promise
+    };
+
+    this.cloneModList = function (modlist) {
+        var clone = $q.defer();
+        backend.post('/mod_lists/clone/' + modlist.id, {}).then(function (data) {
+            setTimeout(function () {
+                clone.resolve(data);
+            }, 1000);
+        });
+        return clone.promise
+    };
+
+    this.deleteModList = function (modlist) {
+        var remove = $q.defer();
+        backend.delete('/mod_lists/' + modlist.id).then(function (data) {
+            setTimeout(function () {
+                remove.resolve(data);
+            }, 1000);
+        });
+        return remove.promise
     };
 });

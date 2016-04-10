@@ -6,8 +6,12 @@
   display: inline-block;
 }
 
+#avatar-input {
+  display: none;
+}
+
 .quote {
-  width: 250px;
+  width: 300px;
   font-size: 14px;
   display: inline-block;
   font-style: italic;
@@ -15,9 +19,14 @@
 }
 
 .explanation {
-  font-size: 12px;
+  font-size: 11px;
   margin-bottom: 4px;
   display: block;
+}
+
+.show-more {
+  font-size: 11px;
+  cursor: pointer;
 }
 
 .avatar {
@@ -31,18 +40,19 @@
 }
 
 .listing-table {
-  border: 2px solid $text_color;
+  border: 2px solid $border_color;
   border-collapse: collapse;
   text-align: center;
 
   thead {
-    border: 2px solid $text_color;
+    border: 2px solid $border_color;
     background-color: $secondary_background;
     font-size: 16px;
   }
 
   th {
-    border: 2px solid black;
+    border: 2px solid $border_color;
+    padding: 5px 10px 5px 10px;
   }
 
   .name-column {
@@ -51,12 +61,13 @@
     text-align: left;
     font-weight: 500;
     font-size: 18px;
-    min-width: 400px;
+    width: 400px;
   }
 
   .table-buttons {
     display: flex;
     vertical-align: middle;
+    font-size: 14px;
   }
 
   tbody {
@@ -65,7 +76,7 @@
   }
 
   tr {
-    border: 1px solid black;
+    border: 1px solid $border_color;
   }
 
   td {
