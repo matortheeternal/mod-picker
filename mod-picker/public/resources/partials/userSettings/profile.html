@@ -2,7 +2,7 @@
 <section>
     <img class="avatar" ng-src="{{avatar.src}}" ng-class="{ 'avatar-pending': avatar.file }">
     <label>
-        <input type="file" id="avatar-input" class="btn" value="Browse" accept="*.jpg,*.png" file-change="changeAvatar" />
+        <input type="file" id="avatar-input" class="btn" value="Browse" accept=".jpg,.png" file-change="changeAvatar" />
         <input type="button" id="avatar-browse" class="btn" value="Browse" ng-click="browseAvatar()"/>
     </label>
     <span class="explanation" ng-if="avatar.file">
