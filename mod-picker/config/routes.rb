@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
   # disable registration
-  devise_for :users, :controllers => { :registrations => "registrations" }
+  devise_for :users, :controllers => { :registrations => "registrations", :invitations => "user_invitations" }
   
   # require authentication before allowing user to access any resources
   authenticate :user do
