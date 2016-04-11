@@ -21,15 +21,6 @@ class ModsController < ApplicationController
     end
   end
 
-  # GET /mods/new
-  def new
-    @mod = Mod.new
-  end
-
-  # GET /mods/1/edit
-  def edit
-  end
-
   # POST /mods
   # POST /mods.json
   def create
