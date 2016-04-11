@@ -1,7 +1,7 @@
 class UserSetting < ActiveRecord::Base
   include Filterable
 
-  after_initialize :init
+  before_create :init
 
   belongs_to :user
 
@@ -12,5 +12,6 @@ class UserSetting < ActiveRecord::Base
     self.udate_format ||= "%F"
     self.utime_format ||= "%I:%M%p"
     self.theme ||= "Whiterun"
+    self.game_mode ||= Game.find_by(:display_name => 'Skyrim').id
   end
 end
