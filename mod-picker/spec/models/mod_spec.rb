@@ -6,6 +6,7 @@ RSpec.describe Mod, :model do
   user = User.find_by(username: 'admin')
 
   it "should access the seeded mod" do
+    expect(user).to be_truthy
     expect(skyui).to be_truthy
     expect(skyui.name).to eq('SkyUI')
   end
