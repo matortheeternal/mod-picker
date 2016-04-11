@@ -8,7 +8,7 @@ app.directive('textArea', function () {
         templateUrl: '/resources/directives/textArea.html',
         controller: 'textAreaController',
         scope: {
-            textData: '='
+            data: '='
         },
         link: function(scope, element, attrs) {
             // get text area element and turn it into a markdown editor
@@ -16,11 +16,14 @@ app.directive('textArea', function () {
             var mde = new SimpleMDE({ element: textarea });
 
             // two-way data binding to and from mde
-            scope.$watch('text-data', function(value){
-                mde.value(value);
+            scope.$watch('data', function(value){
+                if (mde.value() !== value) {
+                    mde.value(value);
+                    scope.$apply();
+                }
             });
             mde.codemirror.on("change", function(){
-                scope.textData = mde.value();
+                scope.data = mde.value();
                 scope.$apply();
             });
         }
