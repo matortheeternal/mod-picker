@@ -12,9 +12,11 @@ app.controller('submitModController', function ($scope, backend, submitService, 
     /* scraping */
     $scope.nexusScraped = false;
     $scope.archive = {};
+    //TODO: I guess this static might be better in some sort of service
     var nexusUrlPattern = /(http[s]:\/\/?)?www.nexusmods.com\/skyrim\/mods\/([0-9]+)(\/\?)?/i;
 
     $scope.urlInvalid = function () {
+        //TODO: ugh... never use execs, validate this url somehow differently
         return nexusUrlPattern.exec($scope.nexusUrl) == null
     };
 

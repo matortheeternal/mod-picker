@@ -16,6 +16,7 @@ app.controller('searchInputController', function ($scope, $location) {
     $scope.loading = false;
     $scope.processSearch = function () {
         $scope.loading = true;
+        //TODO: remove mockup
         setTimeout(function () {
             $scope.loading = false;
             $scope.$apply();

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160410044224) do
+ActiveRecord::Schema.define(version: 20160411074422) do
 
   create_table "agreement_marks", id: false, force: :cascade do |t|
     t.integer "incorrect_note_id", limit: 4
@@ -616,9 +616,19 @@ ActiveRecord::Schema.define(version: 20160410044224) do
     t.string  "utime_format",         limit: 128
     t.boolean "allow_comments"
     t.string  "theme",                limit: 255
+    t.integer "game_mode",            limit: 4
   end
 
+  add_index "user_settings", ["game_mode"], name: "fk_rails_3115ec33cb", using: :btree
   add_index "user_settings", ["user_id"], name: "user_id", using: :btree
+
+  create_table "user_titles", force: :cascade do |t|
+    t.integer "game_id",      limit: 4
+    t.string  "title",        limit: 32
+    t.integer "rep_required", limit: 4
+  end
+
+  add_index "user_titles", ["game_id"], name: "fk_rails_4a6dc16a81", using: :btree
 
   create_table "users", force: :cascade do |t|
     t.string   "username",                  limit: 32
@@ -765,6 +775,8 @@ ActiveRecord::Schema.define(version: 20160410044224) do
   add_foreign_key "tags", "users", column: "submitted_by"
   add_foreign_key "user_bios", "users", name: "user_bios_ibfk_1"
   add_foreign_key "user_reputations", "users", name: "user_reputations_ibfk_1"
+  add_foreign_key "user_settings", "games", column: "game_mode"
   add_foreign_key "user_settings", "users", name: "user_settings_ibfk_1"
+  add_foreign_key "user_titles", "games"
   add_foreign_key "users", "mod_lists", column: "active_mod_list_id", name: "users_ibfk_4"
 end

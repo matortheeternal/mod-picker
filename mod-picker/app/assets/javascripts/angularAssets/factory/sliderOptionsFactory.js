@@ -1,3 +1,7 @@
+// Note: I need to write this comment now that I see this code again after some time.
+// It's kinda strange. This stuff looks kinda ugly and not like something I would write. Although, I can only fully
+// agree with the me of the past that this code is completely valid and completely correct. There is no better way
+// of coding this. I kinda hope we can all forget about this part of the code and never need to touch it.
 
 // don't get confused that I use .service here. The difference between .service and .factory are only the rules of exposing.
 // This stuff actually creates the "Objects" that are declared.

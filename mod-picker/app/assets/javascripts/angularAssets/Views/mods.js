@@ -9,7 +9,12 @@ app.config(['$routeProvider', function ($routeProvider) {
 
 app.controller('modsController', function ($scope, $q, modService, sliderFactory) {
     useTwoColumns(true);
+    //TODO: scope.loading is deprecated
     $scope.loading = true;
+
+    //TODO: everything below should be handled differently
+    // -> remove redundancy
+    // -> probably don't set visibility in the controller but in the view
 
     /* visibility of extended filters */
     $scope.nm_visible = false;
@@ -31,6 +36,7 @@ app.controller('modsController', function ($scope, $q, modService, sliderFactory
     /* data */
     modService.retrieveMods().then(function (data) {
         $scope.mods = data;
+        //TODO: scope.loading is deprecated
         $scope.loading = false;
     });
 });

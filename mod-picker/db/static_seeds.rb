@@ -582,6 +582,75 @@ def seed_static_records
   puts "    #{Quote.count} quotes seeded"
 
   #==================================================
+  # CREATE USER TITLES
+  #==================================================
+
+  puts "\nSeeding user titles"
+
+  UserTitle.create(
+       game_id: gameSkyrim.id,
+       title: "Slaughterfish",
+       rep_required: -9999999
+  )
+  UserTitle.create(
+      game_id: gameSkyrim.id,
+      title: "Skeever",
+      rep_required: -40
+  )
+  UserTitle.create(
+      game_id: gameSkyrim.id,
+      title: "Mudcrab",
+      rep_required: -20
+  )
+  UserTitle.create(
+      game_id: gameSkyrim.id,
+      title: "Draugr",
+      rep_required: -10
+  )
+  UserTitle.create(
+      game_id: gameSkyrim.id,
+      title: "Prisoner",
+      rep_required: 0
+  )
+  UserTitle.create(
+      game_id: gameSkyrim.id,
+      title: "Beggar",
+      rep_required: 10
+  )
+  UserTitle.create(
+      game_id: gameSkyrim.id,
+      title: "Milk Drinker",
+      rep_required: 20
+  )
+  UserTitle.create(
+      game_id: gameSkyrim.id,
+      title: "Rogue",
+      rep_required: 40
+  )
+  UserTitle.create(
+      game_id: gameSkyrim.id,
+      title: "Bard",
+      rep_required: 80
+  )
+  UserTitle.create(
+      game_id: gameSkyrim.id,
+      title: "Adventurer",
+      rep_required: 160
+  )
+  UserTitle.create(
+      game_id: gameSkyrim.id,
+      title: "Thane",
+      rep_required: 320
+  )
+  UserTitle.create(
+      game_id: gameSkyrim.id,
+      title: "Dragonborn",
+      rep_required: 640
+  )
+
+  puts "    #{UserTitle.count} user titles seeded"
+
+  #==================================================
   # CREATE RECORD GROUPS
   #==================================================
 
