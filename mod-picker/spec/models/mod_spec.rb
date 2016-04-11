@@ -20,38 +20,21 @@ RSpec.describe Mod, :model, :wip do
   # fixtures
   fixtures :users, :mods
 
-  # skyui = Mod.find_by(name: 'SkyUI')
-  # tes5edit = Mod.find_by(name: 'TES5Edit')
-  # # user = User.find_by(username: 'admin')
-  # user = users(:madoka)
-
   it "should access the seeded mod" do
     expect(users(:madoka)).to be_truthy
-    # expect(skyui).to be_truthy
     expect(mods(:SkyUI)).to be_truthy
     expect(mods(:SkyUI).mod_stars_count).to be_truthy
   end
 
   # noinspection RubyScope
   describe "counter cache" do
-    # before(:each) do
-    #   @skyui = mods(:SkyUI)
-    #   @user = users(:madoka)
-    #   @tes5edit = mods(:TES5Edit)
-    # end
+    
+    # instance variables 
     let(:skyui) { mods(:SkyUI) }
     let(:user) { users(:madoka) }
     let(:tes5edit) { mods(:TES5EDIT) }
 
     describe "mod_stars_count" do
-      # before do
-      #   @count_before = skyui.mod_stars_count
-      #   @mod_star = skyui.mod_stars.create(user_id: @user.id)
-      # end
-      # 
-      # count_before = @skyui.mod_stars_count
-      # mod_star = @skyui.mod_stars.create(user_id: user.id)
-
       let!(:count_before) { skyui.mod_stars_count }
 
       it "should increment when we add a star" do
@@ -67,8 +50,6 @@ RSpec.describe Mod, :model, :wip do
     end
 
     describe "reviews_count" do
-      # count_before = skyui.reviews_count
-
       let!(:count_before) { skyui.reviews_count }
 
       it "should increment when we add a review" do
@@ -86,8 +67,6 @@ RSpec.describe Mod, :model, :wip do
     end
 
     describe "mod_versions_count" do
-      # count_before = skyui.mod_versions_count
-      # mod_version = skyui.mod_versions.create(version: '1.0')
       let!(:count_before) {skyui.mod_versions_count}
       let!(:mod_version) { skyui.mod_versions.create(version: '1.0') }
 
@@ -101,27 +80,28 @@ RSpec.describe Mod, :model, :wip do
       end
     end
 
-    describe "compatibility_notes_count" do
-      let!(count_before) = skyui.compatibility_notes_count
-      let!(mod_version1) = skyui.mod_versions.first
-      let!(mod_version2) = tes5edit.mod_versions.first
-      compatibility_note = CompatibilityNote.create!(submitted_by: user.id, compatibility_type: "Incompatible", text_body: Faker::Lorem.paragraphs(3))
-      mvcn1 = ModVersionCompatibilityNote.create(mod_version_id: mod_version1.id, compatibility_note_id: compatibility_note.id)
-      mvcn2 = ModVersionCompatibilityNote.create(mod_version_id: mod_version2.id, compatibility_note_id: compatibility_note.id)
+    # xdescribe "compatibility_notes_count" do
+    #   let!(:count_before) {skyui.compatibility_notes_count}
+    #   let!(:mod_version1) {skyui.mod_versions.first}
+    #   let!(:mod_version2) {tes5edit.mod_versions.first}
+    #   # compatibility_note = CompatibilityNote.create!(submitted_by: user.id, compatibility_type: "Incompatible", text_body: Faker::Lorem.paragraphs(3))
+    #   let(:compatibility_note) { create(:compatibility_note, submitted_by: user.id)}
+    #   mvcn1 = ModVersionCompatibilityNote.create(mod_version_id: mod_version1.id, compatibility_note_id: compatibility_note.id)
+    #   mvcn2 = ModVersionCompatibilityNote.create(mod_version_id: mod_version2.id, compatibility_note_id: compatibility_note.id)
 
-      it "should increment when we add a compatibility_note" do
-        skyui = Mod.find_by(name: 'SkyUI')
-        expect(skyui.compatibility_notes_count).to eq(count_before + 1)
-      end
+    #   it "should increment when we add a compatibility_note" do
+    #     skyui = Mod.find_by(name: 'SkyUI')
+    #     expect(skyui.compatibility_notes_count).to eq(count_before + 1)
+    #   end
 
-      it "should decrement when we remove a compatibility_note" do
-        mvcn1.destroy
-        mvcn2.destroy
-        compatibility_note.destroy
-        skyui = Mod.find_by(name: 'SkyUI')
-        expect(skyui.compatibility_notes_count).to eq(count_before)
-      end
-    end
+    #   it "should decrement when we remove a compatibility_note" do
+    #     mvcn1.destroy
+    #     mvcn2.destroy
+    #     compatibility_note.destroy
+    #     skyui = Mod.find_by(name: 'SkyUI')
+    #     expect(skyui.compatibility_notes_count).to eq(count_before)
+    #   end
+    # end
 
     # describe "install_order_notes_count" do
     #   count_before = skyui.install_order_notes_count
