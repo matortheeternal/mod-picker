@@ -3,6 +3,7 @@ app.service('userSettingsService', function (backend, $q) {
     this.retrieveUserSettings = function () {
         var userSettings = $q.defer();
         backend.retrieve('/user_settings').then(function (data) {
+            //TODO: remove mocked delay
             setTimeout(function () {
                 userSettings.resolve(data);
             }, 1000);
@@ -21,11 +22,13 @@ app.service('userSettingsService', function (backend, $q) {
     };
 
     this.submitUser = function (user) {
+        //TODO: reformat this into the function directly, as the var gets used only once
         var user_object = {
             user: user
         };
         var update = $q.defer();
     	backend.update('/users/' + user.id, user_object).then(function (data) {
+            //TODO: remove mocked delay
             setTimeout(function () {
                 update.resolve(data);
             }, 1000);
@@ -34,11 +37,13 @@ app.service('userSettingsService', function (backend, $q) {
     };
 
     this.submitUserSettings = function (user_settings) {
+        //TODO: reformat this into the function directly, as the var gets used only once
         var user_settings_object = {
             user_setting: user_settings
         };
         var update = $q.defer();
         backend.update('/user_settings/' + user_settings.id, user_settings_object).then(function (data) {
+            //TODO: remove mocked delay
             setTimeout(function () {
                 update.resolve(data);
             }, 1000);

@@ -27,5 +27,6 @@ app.directive('messages', function () {
     }
 });
 
+//TODO: empty controller is probably unnecessary :P
 app.controller('messagesController', function ($scope) {
 });
