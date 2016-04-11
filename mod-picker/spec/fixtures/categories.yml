@@ -1,0 +1,310 @@
+# create_table "categories", force: :cascade do |t|
+#     t.integer "parent_id",   limit: 4
+#     t.string  "name",        limit: 64
+#     t.string  "description", limit: 255
+#   end
+
+#   add_index "categories", ["parent_id"], name: "fk_rails_82f48f7407", using: :btree
+
+ 
+#==================================================
+# CREATE SUPER-CATEGORIES
+#==================================================
+
+
+catUtilities:
+  name: "Utilities",
+  description: "These also aren’t necessarily mods, but they can be.  These are tools to aid in the creation and management of mods and mod-related assets."
+
+catResources:
+  name: "Resources",
+  description: "These aren't necessarily mods, but they can be.  These are files which are resources to be used by other modders or mod-users."
+
+catPatches:
+  name: "Patches",
+  description: "Mods that make mods compatible with each other, or carry the changes from one mod into another."
+
+catLocations:
+  name: "Locations",
+  description: "Mods which add or modify locations ingame."
+
+catGameplay:
+  name: "Gameplay",
+  description: "Mods classify as Gameplay mods if they alter any game mechanics, pardigms, balance, or events."
+
+catCharacter:
+  name: "Character Appearance",
+  description: "Mods that modify the appearance of non-player characters in the game or give you additional options for customizing the player character’s appearance."
+
+catNewChars:
+  name: "New Characters",
+  description: "Mods that add new non-playable characters to the game."
+
+catItems:
+  name: "Items",
+  description: "Mods are categorized as Item mods when they add new items to the game.  E.g. new armor, clothing, weapons, food, potions, poisons, ingredients, etc."
+
+catFixes:
+  name: "Fixes",
+  description: "Fixes are mods that fix issues (bugs) in the vanilla game without adding new content."
+
+catAudiovisual:
+  name: "Audiovisual",
+  description: "Audiovisual mods are mods which strictly alter the visuals/audio in the game.  So any mod that is strictly graphical or audial would belong in this category.  This category is often superseded by other categories."
+
+
+#==================================================
+# CREATE SUB-CATEGORIES
+#==================================================
+
+# Utilities sub-categories; utilities
+
+# super sub category
+superCatUtilities: &superUtilities
+  name: "Utilities - Super",
+  parent_id: catUtilities.id,
+  description: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. At molestiae voluptas quis delectus, accusamus officia iusto suscipit, nesciunt itaque quas vitae voluptatem voluptatum eligendi distinctio provident alias dolor quibusdam fuga?"
+
+subCatUtilitiesIngame:
+  <<: *superUtilities
+  name: "Utilities - Ingame",
+  description: "Any utility that exists ingame/has an ingame interface."
+
+subCatUtilitiesPatchers:
+  <<: *superUtilities
+  name: "Utilities - Patchers",
+  description: "A utility for generating some kind of patch or mod.  E.g. SkyProc patchers, TES5Edit patchers, etc."
+
+subCatUtiltiesTools:
+  <<: *superUtilities
+  name: "Utilities - Tools",
+  description: "A utility which allows you to create, edit, or manage mod-related files."
+
+# Resources sub-categories
+superCatResources: &superResources
+  name: "Resources - Super",
+  parent_id: catResources.id,
+  description: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Fuga dolores maiores temporibus, dolore ipsa magnam distinctio laudantium impedit ratione illo, rem officia. Quam voluptatem at autem rerum, iste optio quos."
+
+subCatResourcesAudiovisual:
+  <<: *superResources
+  name: "Resources - Audiovisual",
+  description: "Models, textures, animations, sounds, and music made available for other modders to freely use as resources for their mods."
+
+subCatResourcesFrameworks:
+  <<: *superResources
+  name: "Resources - Frameworks",
+  description: "Frameworks offer functionality for other mods or tools to build off of.  Frameworks often don’t change much in the game on their own, but enable other mods to do so.  Some frameworks do change aspects of the game."
+
+subCatResourcesGuides:
+  <<: *superResources
+  name: "Resources - Guides & Tutorials",
+  description: "Any resource that is a guide or tutorial."
+
+
+# Locations sub-categories
+superCatLocations: &superLocations
+  name: "Resources - Super",
+  parent_id: catLocations.id,
+  description: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Vero nemo exercitationem tenetur praesentium fugiat dignissimos totam libero quae suscipit at placeat dolore, vitae officiis quam, numquam a voluptatibus minus iure?"
+
+subCatLocationsOverhauls:
+  <<: *superLocations
+  name: "Locations - Overhauls",
+  description: "Mods which overhaul or build off of one or more vanilla locations.  E.g. City Overhauls, Player Home Overhauls, etc."
+
+subCatLocationNewLands:
+  <<: *superLocations
+  name: "Locations - New Lands",
+  description: "Mods which add completely new lands to explore."
+
+subCatLocationsNewPlayerHomes:
+  <<: *superLocations
+  name: "Locations - New Player Homes",
+  description: "Mods which add new player homes to the game.  This include all sorts of residences ranging from tree houses to castles."
+
+subCatLocationNewDungeons:
+  <<: *superLocations
+  name: "Locations - New Dungeons",
+  description: "Mods which add new areas where you encounter and fight enemies."
+
+subCatLocationsNewStructures:
+  <<: *superLocations
+  name: "Locations - New Structures & Landmarks",
+  description: "Mods which add new structures or landmarks, e.g. Cities, Towns, Inns, Statues, etc."
+
+
+# Gameplay sub-categories
+superCatGameplay: &superGameplay
+  name: "Gameplay - Super",
+  parent_id: catGameplay.id,
+  description: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nisi minus, corrupti eos rem officiis! Ipsam, repellat, dicta. Ipsam ab animi vero consectetur, mollitia obcaecati ad enim commodi ipsum officia vitae."
+
+subCatGameplayClassesAndRaces:
+  <<: *superGameplay
+  name: "Gameplay - Classes and Races",
+  description: "Mods that add or alter character classes or races."
+
+subCatGameplayCrafting:
+  <<: *superGameplay
+  name: "Gameplay - Crafting",
+  description: "Any mod which modifies the alchemy, enchanting, or smithing systems in the game.  Also includes mods which modify other crafting systems or add new crafting systems."
+
+subCatGameplayCombat:
+  <<: *superGameplay
+  name: "Gameplay - Combat",
+  description: "Mods which alter combat, or enemy strength in general."
+
+subCatGameplayEconomyAndBalance:
+  <<: *superGameplay
+  name: "Gameplay - Economy & Balance",
+  description: "Mods which alter the economy of the game - viz., the acquisition of items and currency.  E.g. modifications to merchants or leveled loot.  Also includes mods which rebalance items, e.g. their weight, gold value, and armor rating/damage."
+
+subCatGameplayFactions:
+  <<: *superGameplay
+  name: "Gameplay - Factions",
+  description: "Mods which alter existing factions and faction quest lines or add new ones."
+
+subCatGameplayImmersionAndRoleplaying:
+  <<: *superGameplay
+  name: "Gameplay - Immersion & Role-playing",
+  description: "Mods which exist specifically to increase the player’s immersion in the game world, or to aid in role-playing."
+
+subCatGameplayMagic:
+  <<: *superGameplay
+  name: "Gameplay - Magic",
+  description: "Mods which add new spells, or magic-based mechanics to the game.  Note: Mods that only alter magic-related perk trees should go into Gameplay - Skills & Perks."
+
+subCatGameplayQuests:
+  <<: *superGameplay
+  name: "Gameplay - Quests",
+  description: "Mods which add or alter quests in the game."
+
+subCatGameplaySkillsAndPerks:
+  <<: *superGameplay
+  name: "Gameplay - Skills & Perks",
+  description: "Mods which modify skills or perks in the game, or add new ones."
+
+subCatGameplayStealth:
+  <<: *superGameplay
+  name: "Gameplay - Stealth",
+  description: "Mods which modify the mechanics of detection, pickpocketing, or lockpicking.  Also includes mods which add new stealth-based mechanics."
+
+subCatGameplayUserInterface:
+  <<: *superGameplay
+  name: "Gameplay - User Interface",
+  description: "Mods which alter or add to the main user interface ingame."
+
+# Character Appearance sub-categories
+superCatCharacter: &superCharacter
+  name: "Character Appearance - Face Parts",
+  parent_id: catCharacter.id,
+  description: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quisquam modi labore placeat id tenetur culpa dolor asperiores facilis tempora libero ullam, aut molestias similique, consequuntur minima quos corporis perferendis. Quisquam."
+
+subCatCharacterFaceParts:
+  <<: *superCharacter
+  name: "Character Appearance - Face Parts",
+  description: "Mods that add new face parts.  E.g. Hairs, beards, brows, eyes, and noses."
+subCatCharacterOverlays:
+  <<: *superCharacter
+  name: "Character Appearance - Overlays",
+  description: "Mods that add new overlays for characters.  That is, warpaints, tattoos, freckles, tanlines, pimples, chest hair, etc."
+subCatCharacterNPCOverhauls:
+  <<: *superCharacter
+  name: "Character Appearance - NPC Overhauls",
+  description: "Mods that overhaul NPCs with different faces/outfits."
+
+# New Characters sub-categories
+superCatNewChars: &superNewChars
+  name: "New Characters - Allies",
+  parent_id: catNewChars.id,
+  description: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Itaque distinctio autem esse officiis temporibus, atque nesciunt illo nulla tenetur numquam dolor, tempore voluptas obcaecati, est sit in vero ipsam nostrum."
+
+subCatNewCharsAllies:
+  <<: *superNewChars
+  name: "New Characters - Allies",
+  description: "If one or more NPCs added by the mod can be allies of the player character, the mod belongs here."
+
+subCatNewCharsNeutral:
+  <<: *superNewChars
+  name: "New Characters - Neutral",
+  description: "If most of the NPCs added by the mod don’t have a disposition to help or hurt the player, put it here."
+
+subCatNewCharsEnemies:
+  <<: *superNewChars
+  name: "New Characters - Enemies",
+  description: "Mods that add NPCs that try to bash your head in.  Whether they be dragons or flesh-eating bunnies!"
+
+
+# Items sub-categories
+superCatItems: &superItems
+  name: "Items - Armor, Clothing, & Accessories",
+  parent_id: catItems.id,
+  description: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptas soluta consequatur enim mollitia, reiciendis quisquam nostrum doloremque blanditiis voluptatum dignissimos delectus voluptates ea ullam, placeat nisi corrupti a doloribus beatae."
+
+subCatItemsArmorClothingAccess:
+  <<: *superItems)
+  name: "Items - Armor, Clothing, & Accessories",
+  description: "Mods that add items that can be worn in the major biped slots.  This includes armor, clothing, jewelry, cloaks, bags, etc."
+
+subCatItemsIngestibles:
+  <<: *superItems)
+  name: "Items - Ingestibles",
+  description: "Mods that add items you can eat or drink.  This includes alchemical ingredients."
+
+subCatItemsToolsAndClutter:
+  <<: *superItems)
+  name: "Items - Tools & Clutter",
+  description: "Mods that add items that cannot be worn, ingested, or used as a weapon."
+
+subCatItemsWeapons:
+  <<: *superItems)
+  name: "Items - Weapons",
+  description: "Mods that that add sticks you can stab, squish, or shoot people with."
+
+
+# Fixes sub-categories
+superCatFixes: &superFixes
+  name: "Fixes - Super",
+  parent_id: catFixes.id,
+  description: "Super sub-category for fixes"
+
+subCatFixesStabilityAndPerformance:
+  <<: *superFixes
+  name: "Fixes - Stability & Performance",
+  description: "A fix that specifically increases game stability or performance."
+
+# Audiovisual sub-categories
+
+superCatAudiovisual: &superAudiovisual
+  name: "Audiovisual - Super",
+  parent_id: catAudiovisual.id,
+  description: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quae aspernatur necessitatibus, quas possimus rem sit enim. Quia ipsa maiores soluta sunt consectetur dolorum, impedit eligendi porro amet quod, doloribus doloremque?"
+
+subCatAudiovisualAnimations:
+  <<: *superAudiovisual
+  name: "Audiovisual - Animations",
+  description: "Any mod which adds or alters animations."
+
+subCatAudiovisualLightingAndWeather:
+  <<: *superAudiovisual
+  name: "Audiovisual - Lighting & Weather",
+  description: "Any mod which alters lighting or weather."
+
+subCatAudiovisualModelAndTextures:
+  <<: *superAudiovisual
+  name: "Audiovisual - Models & Textures",
+  description: "Any mod which provides modified models/textures without introducing new items, excluding character mods."
+
+subCatAudiovisualPostprocessing:
+  <<: *superAudiovisual
+  name: "Audiovisual - Post-processing",
+  description: "Any mod which provides a post-processing preset, e.g. ENB or SweetFX."
+
+subCatAudiovisualSoundsAndMusic:
+  <<: *superAudiovisual
+  name: "Audiovisual - Sounds & Music",
+  description: "Any mod which alters or adds sounds or music to the game."
+
+
+  

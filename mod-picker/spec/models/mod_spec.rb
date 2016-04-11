@@ -1,12 +1,16 @@
 require 'rails_helper'
 
 RSpec.describe Mod, :model do
+  # users fixtures
+  fixtures :users, :mods
+
   skyui = Mod.find_by(name: 'SkyUI')
   tes5edit = Mod.find_by(name: 'TES5Edit')
-  user = User.find_by(username: 'admin')
+  # user = User.find_by(username: 'admin')
+  user = fixtures(:madoka)
 
   it "should access the seeded mod" do
-    expect(user).to be_truthy
+    expect(users(:madoka)).to be_truthy
     expect(skyui).to be_truthy
     expect(skyui.name).to eq('SkyUI')
   end
