@@ -3,6 +3,7 @@
         <div class="modHeader">
             <h1>{{mod.name}}</h1>
             <span>implement stars here</span> <span><a ng-click="showReviews()">{{mod.reviews.length}} reviews</a></span>
+            <tabs current-tab="currentTab" tabs="tabs"></tabs>
         </div>
 
         <hr/>
@@ -13,15 +14,7 @@
             <p>{{mod.shortDescription}}</p>
         </div>
         <div class="right-column mod-content">
-            <expandable expanded="expandedState.compabilityNotes">
-                <expanded-title>Compability Notes</expanded-title>
-                <content><user-generated-list data="compatibilityNotes"></user-generated-list></content>
-            </expandable>
-            <hr/>
-            <expandable expanded="expandedState.reviews">
-                <expanded-title>Reviews</expanded-title>
-                <content><user-generated-list data="mod.reviews"></user-generated-list></content>
-            </expandable>
+            <ng-include src="currentTab.url"></ng-include>
         </div>
     </loader>
 </div>

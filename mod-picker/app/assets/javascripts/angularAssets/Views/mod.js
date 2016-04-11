@@ -13,6 +13,15 @@ app.controller('modController', function ($scope, $q, $routeParams, modService) 
         reviews: false
     };
 
+    $scope.tabs = [
+    { name: 'Compatibility', url: '/resources/partials/showMod/compatibility.html' },
+    { name: 'Installation', url: '/resources/partials/showMod/installation.html' },
+    { name: 'Reviews', url: '/resources/partials/showMod/reviews.html' },
+    { name: 'Analysis', url: '/resources/partials/showMod/analysis.html' }
+    ];
+
+    $scope.currentTab = $scope.tabs[0];
+
     modService.retrieveMod($routeParams.modId).then(function (mod) {
         $scope.mod = mod;
         $scope.changeVersion(mod.mod_versions[0].id);
