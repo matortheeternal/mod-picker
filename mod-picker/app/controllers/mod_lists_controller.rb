@@ -1,5 +1,5 @@
 class ModListsController < ApplicationController
-  before_action :set_mod_list, only: [:show, :edit, :update, :destroy]
+  before_action :set_mod_list, only: [:show, :update, :destroy]
 
   # GET /mod_lists
   # GET /mod_lists.json
@@ -19,15 +19,6 @@ class ModListsController < ApplicationController
       format.html
       format.json { render :json => @mod_list}
     end
-  end
-
-  # GET /mod_lists/new
-  def new
-    @mod_list = ModList.new
-  end
-
-  # GET /mod_lists/1/edit
-  def edit
   end
 
   # POST /mod_lists
