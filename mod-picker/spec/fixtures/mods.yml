@@ -25,10 +25,22 @@
 #       is_utility: false,
 #       has_adult_content: false,
 #       game_id: gameSkyrim.id
+
 SkyUI:
-  primary_category_id: 
-  secondary_category_id:
+  name: "SkyUI"
   is_utility: false
-  has_adult_content: false,
+  has_adult_content: false
   game_id: skyrim.id
+  primary_category_id: subCatGameplayUserInterface.id
+  secondary_category_id: subCatResourcesFrameworks.id
+  mod_stars_count: 0
   
+  
+TES5Edit:
+  name: "TES5Edit"
+  is_utility: true
+  has_adult_content: false
+  game_id: skyrim.id
+  primary_category_id: subCatUtilitiesTools.id
+  secondary_category_id: subCatResourcesFrameworks.id
+  mod_stars_count: 0
