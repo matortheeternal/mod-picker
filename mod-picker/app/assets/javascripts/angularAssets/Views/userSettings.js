@@ -24,6 +24,8 @@ app.controller('userSettingsController', function ($scope, $q, userSettingsServi
     $scope.currentTab = $scope.tabs[0];
 
     //TODO: put this into a service
+    // A service which calls other services and sets scope variables?
+    // seems odd to me.  -Mator
     userSettingsService.retrieveUserSettings().then(function (userSettings) {
         $scope.userSettings = userSettings;
         userService.retrieveUser(userSettings.user_id).then(function (user) {
@@ -169,6 +171,7 @@ app.controller('userSettingsController', function ($scope, $q, userSettingsServi
         $scope.errors = [];
 
         //TODO: I feel like this redundancy can be killed
+        // @R79: I was thinking the same thing earlier today. -Mator
         userSettingsService.submitUser($scope.user).then(function (data) {
             if (data.status !== "ok") {
                 $scope.errors.concat(data.errors);
