@@ -54,6 +54,7 @@ namespace :reset do
     UserBio.delete_all
     UserReputation.delete_all
     UserSetting.delete_all
+    UserTitle.delete_all
     User.delete_all
     Game.delete_all
     CategoryPriority.delete_all
