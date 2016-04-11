@@ -50,6 +50,7 @@ Rails.application.routes.draw do
     # record groups
     resources :record_groups, only: [:index]
     resources :quotes, only: [:index]
+    resources :user_titles, only: [:index]
 
     # angular
     resources :angular, only: [:index]
