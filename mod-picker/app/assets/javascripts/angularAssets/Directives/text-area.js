@@ -12,13 +12,12 @@ app.directive('textArea', function () {
         },
         link: function(scope, element, attrs) {
             // get text area element and turn it into a markdown editor
-            var data;
             var textarea = element.find("textarea")[0];
             var mde = new SimpleMDE({ element: textarea });
 
+            // bind data out of mde
             mde.codemirror.on("change", function(){
-                data = mde.value();
-                scope.data = data;
+                scope.data = mde.value();
             });
         }
     }
