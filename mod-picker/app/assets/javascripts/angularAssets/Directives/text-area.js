@@ -16,7 +16,9 @@ app.directive('textArea', function () {
             var mde = new SimpleMDE({ element: textarea });
 
             // two-way data binding to and from mde
-            mde.value(scope.textData);
+            scope.$watch('text-data', function(value){
+                mde.value(value);
+            });
             mde.codemirror.on("change", function(){
                 scope.textData = mde.value();
                 scope.$apply();
