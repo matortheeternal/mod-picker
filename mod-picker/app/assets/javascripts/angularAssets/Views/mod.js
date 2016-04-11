@@ -1,6 +1,6 @@
 app.config(['$routeProvider', function ($routeProvider) {
     $routeProvider.when('/mod/:modId', {
-            templateUrl: '/resources/partials/mod.html',
+            templateUrl: '/resources/partials/showMod/mod.html',
             controller: 'modController'
         }
     );
@@ -31,7 +31,7 @@ app.controller('modController', function ($scope, $q, $routeParams, modService) 
     $scope.showReviews = function () {
         $scope.expandedState = {
             reviews: true
-        }
+        };
     };
 
     $scope.changeVersion = function(version) {

@@ -1,0 +1,41 @@
+<div class="page-container">
+    <loader data="mod">
+        <div class="modHeader">
+            <div class="reputation-count">
+                {{mod.mod_stars_count}}
+                Stars
+            </div>
+            <h1>{{mod.name}}</h1>
+            <h3>
+                by
+                <span ng-repeat="author in mod.authors">{{author.username}} </span>
+            </h3>
+            <span>
+                <a ng-click="showReviews()">{{mod.reviews.length}} reviews</a>
+                | In {{mod.mod_modlists_count}}
+                | <a ng-href="#/editMod/{{mod.id}}">Edit</a>
+            </span>
+            <mod-actions></mod-actions>
+            <div class="mod-status-box">
+                Mod Status
+                <div class="mod-status">
+                    
+                </div>
+            </div>
+        </div>
+
+        <tabs current-tab="currentTab" tabs="tabs"></tabs>
+
+        <hr/>
+        <!-- TODO: Commalogic -->
+        <div class="left-column">
+            <p>by {{mod.nexus_info.authors}} </p>
+            <p>Mod Versions</p>
+            <select ng-model="version" ng-change="changeVersion(version)" ng-options="version.id as version.version for version in mod.mod_versions"></select>
+            <p>{{mod.shortDescription}}</p>
+        </div>
+        <div class="right-column mod-content">
+            <ng-include src="currentTab.url"></ng-include>
+        </div>
+    </loader>
+</div>
