@@ -4,7 +4,6 @@ Rails.application.routes.draw do
   
   # require authentication before allowing user to access any resources
   authenticate :user do
-    resources :games
     resources :comments
     resources :install_order_notes
     resources :load_order_notes
