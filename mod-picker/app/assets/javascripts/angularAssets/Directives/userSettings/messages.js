@@ -5,7 +5,7 @@
 app.directive('messages', function () {
     return {
         retrict: 'E',
-        templateUrl: '/resources/directives/messages.html',
+        templateUrl: '/resources/directives/userSettings/messages.html',
         controller: 'messagesController',
         scope: {
         	successMessage: '@',
