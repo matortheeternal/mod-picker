@@ -158,7 +158,6 @@ h4 {
 }
 
 .tabs {
-  margin-left: 46px;
   a {
     display: inline-block;
     cursor: pointer;
@@ -177,6 +176,7 @@ h4 {
     background-color: $bright_action_color;
   }
 }
+
 /* css for columns */
 .two-columns {
   background: linear-gradient(90deg, $secondary_background 50%, $primary_background 50%);

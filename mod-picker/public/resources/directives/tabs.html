@@ -1,8 +1,3 @@
-<div class="header-tabs">
-    <div class="page-container">
-        <ng-transclude></ng-transclude>
-        <div class="tabs">
-			<a ng-repeat="tab in tabs" ng-click="select(tab)" ng-class="tab == currentTab ? 'selected-tab' : 'unselected-tab'"> {{tab.name}} </a>
-        </div>
-    </div>
+<div class="tabs">
+	<a ng-repeat="tab in tabs" ng-click="select(tab)" ng-class="tab == currentTab ? 'selected-tab' : 'unselected-tab'"> {{tab.name}} </a>
 </div>
