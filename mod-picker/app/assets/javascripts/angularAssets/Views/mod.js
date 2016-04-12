@@ -45,7 +45,7 @@ app.controller('modController', function ($scope, $filter, $q, $routeParams, mod
     };
 
     //setting the table data for the Nexus Stats table
-    $scope.nexusRows = [
+/*    $scope.nexusRows = [
         { title: 'Unique Downloads', data: $scope.mod.nexus_info.unique_downloads},
         { title: 'Endorsements', data: $scope.mod.nexus_info.endorsements},
         { title: 'Endorse Rate', data: $scope.$filter('number')($scope.mod.nexus_info.endorsements/$scope.mod.nexus_info.unique_downloads * 100, 0) + '%'},
