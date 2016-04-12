@@ -31,9 +31,6 @@ class CompatibilityNote < ActiveRecord::Base
 
   # validations
   validates :submitted_by, presence: true
-  validates :compatibility_type, inclusion: {
-      in: ["Incompatible", "Partially Incompatible", "Compatibility Mod", "Compatibility Plugin", "Make Custom Patch"],
-      message: "Not a valid compatibility type" }
   validates :text_body, length: { in: 64..16384 }                                            
 
 
