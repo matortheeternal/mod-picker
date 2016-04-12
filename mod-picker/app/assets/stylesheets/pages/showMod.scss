@@ -1,0 +1,51 @@
+.mod-header {
+  background-color: $secondary_background;
+  border-bottom: 1px solid $soft_border_color;
+}
+
+.stars-count {
+  display: inline-block;
+  font-size: 14px;
+  text-align: center;
+}
+
+.stars-number {
+  display: block;
+  font-size: 30px;
+}
+
+.mod-info {
+  display: inline-block;
+  font-size: 14px;
+  margin-left: 10px;
+}
+
+.mod-name {
+  display: inline-block;
+  font-size: 30px;
+}
+
+.mod-authors {
+  font-size: 18px;
+}
+
+.left-mod-column {
+  width: 250px;
+  padding-right: 48px;
+  display: table-cell;
+  vertical-align: top;
+  background-color: $secondary_background;
+  border-right: 1px solid $soft_border_color;
+}
+
+.right-mod-column {
+  width: 970px;
+  display: table-cell;
+  vertical-align: top;
+  background-color: $primary_background;
+}
+
+.column-margin {
+  margin-left: 48px;
+  margin-top: 20px;
+}
