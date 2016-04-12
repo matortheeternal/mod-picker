@@ -3,10 +3,10 @@ require 'rails_helper'
 # create_table "mod_list_compatibility_notes", id: false, force: :cascade do |t|
 #   t.integer "mod_list_id",           limit: 4
 #   t.integer "compatibility_note_id", limit: 4
-#   t.enum    "status",                limit: ["Unresolved", "Resolved", "Ignored"], default: "Unresolved"
+#   t.enum    "status",                limit: ["unresolved", "resolved", "ignored"], default: "unresolved"
 # end
 
-RSpec.describe ModListCompatibilityNote, :model, :wip do
+RSpec.describe ModListCompatibilityNote, :model do
   fixtures :mod_list_compatibility_notes, 
            :compatibility_notes,
            :mod_lists,
