@@ -1,9 +1,12 @@
 class UserSettingsController < ApplicationController
-  before_action :set_user_setting, only: [:show, :update]
+  before_action :set_user_setting, only: [:update]
 
-  # GET /user_settings/1
-  # GET /user_settings/1.json
-  def show
+  # GET /user_settings
+  # GET /user_settings.json
+  # returns the current user's settings
+  def index
+    @user_setting = current_user.settings
+
     respond_to do |format|
       format.json { render :json => @user_setting}
     end

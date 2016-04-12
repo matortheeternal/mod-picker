@@ -62,7 +62,10 @@ class Mod < ActiveRecord::Base
   def as_json(options={})
     super(:include => {
         :nexus_info => {:except => [:mod_id, :changelog]},
-        :mod_versions => {:except => [:mod_id]},
+        :mod_versions => {
+            :except => [:mod_id],
+            :methods => :required_mods
+        },
         :authors => {:only => [:id, :username]},
         :reviews => {:except => [:text_body, :mod_id, :edited, :incorrect_notes_count]}
     })
