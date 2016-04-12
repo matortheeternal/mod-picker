@@ -1,6 +1,4 @@
-class ReviewsController < ApplicationController
-  include Helpfulable
-
+class ReviewsController < HelpfulableController
   before_action :set_review, only: [:show, :update, :destroy]
 
   # GET /reviews
@@ -45,11 +43,6 @@ class ReviewsController < ApplicationController
         format.json { render json: @review.errors, status: :unprocessable_entity }
       end
     end
-  end
-
-  # POST /reviews/1/helpful.json
-  def helpful
-    Helpfulable.handle(params, "Review")
   end
 
   # DELETE /reviews/1

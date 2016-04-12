@@ -1,4 +1,4 @@
-class CompatibilityNotesController < ApplicationController
+class CompatibilityNotesController < HelpfulableController
   before_action :set_compatibility_note, only: [:show, :update, :destroy]
 
   # GET /compatibility_notes
@@ -45,11 +45,6 @@ class CompatibilityNotesController < ApplicationController
         format.json { render json: @compatibility_note.errors, status: :unprocessable_entity }
       end
     end
-  end
-
-  # POST /compatibility_notes/1/helpful.json
-  def helpful
-    Helpfulable.handle(params, "CompatibilityNote")
   end
 
   # DELETE /compatibility_notes/1

@@ -1,6 +1,4 @@
-class InstallOrderNotesController < ApplicationController
-  include Helpfulable
-
+class InstallOrderNotesController < HelpfulableController
   before_action :set_install_order_note, only: [:show, :update, :destroy]
 
   # GET /install_order_notes
@@ -47,11 +45,6 @@ class InstallOrderNotesController < ApplicationController
         format.json { render json: install_order_note.errors, status: :unprocessable_entity }
       end
     end
-  end
-
-  # POST /install_order_notes/1/helpful.json
-  def helpful
-    Helpfulable.handle(params, "InstallOrderNote")
   end
 
   # DELETE /install_order_notes/1
