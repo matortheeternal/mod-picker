@@ -6,7 +6,7 @@ require 'rails_helper'
 #   t.enum    "status",                limit: ["Unresolved", "Resolved", "Ignored"], default: "Unresolved"
 # end
 
-RSpec.describe ModListCompatibilityNote, :model do
+RSpec.describe ModListCompatibilityNote, :model, :wip do
   fixtures :mod_list_compatibility_notes, 
            :compatibility_notes,
            :mod_lists,
@@ -20,13 +20,13 @@ RSpec.describe ModListCompatibilityNote, :model do
     list = ModListCompatibilityNote.create(
       mod_list_id: mod_lists(:plannedVanilla).id,
       compatibility_note_id: compatibility_notes(:incompatibleNote).id,
-      status: "Resolved"
+      status: "resolved"
       )
 
     expect(list).to be_valid
     expect(list.mod_list_id).to eq(mod_lists(:plannedVanilla).id)
     expect(list.compatibility_note_id).to eq(compatibility_notes(:incompatibleNote).id)
-    expect(list.status).to eq("Resolved") 
+    expect(list.status).to eq("resolved") 
   end
 
   # Unsure how to implement a fixture at the moment.
@@ -64,13 +64,13 @@ RSpec.describe ModListCompatibilityNote, :model do
       it "should default to Unresolved" do
         list = build(:mod_list_compatibility_note)
 
-        expect(list.status).to eq("Unresolved")
+        expect(list.status).to eq("unresolved")
       end
 
       it "should only allow valid status enums" do
         list = build(:mod_list_compatibility_note)
 
-        validStatuses = ["Unresolved", "Resolved", "Ignored"]
+        validStatuses = ["unresolved", "resolved", "ignored"]
 
         validStatuses.each do |status|
           list.status = status
@@ -79,18 +79,25 @@ RSpec.describe ModListCompatibilityNote, :model do
         end
       end
 
+      # Instead of expect(x.errors[:status]).to include("...")
+      # Modified to check for argument error instead.
       it "should NOT allow invalid status enums" do
-        list = build(:mod_list_compatibility_note)
-
-        invalidStatuses = ["Araragi", "Hatchikuji", "Shinobu", "Ononoki",
-                            "", nil]
+        invalidStatuses = ["Ararargi", "Hatchikuji", "Shinobu", "Ononoki"]
 
         invalidStatuses.each do |status|
-          list.status = status
-
-          expect(list).to be_invalid
-          expect(list.errors[:status]).to include("Not a valid compatibility note status")
+          expect{ build(:mod_list_compatibility_note,
+                        status: status)
+          }
+            .to raise_error(ArgumentError)
+            .with_message(/is not a valid status/)
         end
+      end
+
+      it "should NOT allow empty/nil status enums" do
+        expect{ create(:mod_list_compatibility_note,
+                      status: "") }
+          .to raise_error(ActiveRecord::StatementInvalid)
+
       end
     end
   end
