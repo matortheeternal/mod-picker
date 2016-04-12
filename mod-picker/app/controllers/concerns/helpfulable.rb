@@ -1,5 +1,5 @@
 module Helpfulable
-  def self.create(params, type)
+  def self.handle(params, type)
     @helpful_mark = HelpfulMark.find(current_user.id, params[:id], type)
     if @helpful_mark
       if params.has_key?(:helpful)
