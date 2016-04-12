@@ -6,16 +6,11 @@
   <link href='https://fonts.googleapis.com/css?family=Roboto:400,700,500' rel='stylesheet' type='text/css'>
   <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
   <%= stylesheet_link_tag 'rzslider.min' %>
-  <% if current_user.nil? %>
-      <% current_theme = 'Whiterun' %>
-  <% else %>
-      <% current_theme = current_user.settings.theme %>
-  <% end %>
   <%= stylesheet_link_tag @current_theme %>
   <script>
     window._token = '<%= form_authenticity_token %>';
-    window._current_theme = '<%= current_theme %>';
-    window._current_game_id = <%= @current_game_id %>;
+    window._current_theme = '<%= @current_theme %>';
+    window._current_game_id = <%= @current_game.id %>;
     window._stylesheets = {
       whiterun: "<%= stylesheet_path 'Whiterun' %>",
       darkwater: "<%= stylesheet_path 'Darkwater' %>",
