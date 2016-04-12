@@ -41,6 +41,12 @@ Rails.application.routes.draw do
     resources :nexus_infos
     resources :users
 
+    # helpful marks
+    match '/reviews/:id/helpful', to: 'reviews#helpful', via: 'post'
+    match '/compatibility_notes/:id/helpful', to: 'compatibility_notes#helpful', via: 'post'
+    match '/install_order_notes/:id/helpful', to: 'install_order_notes#helpful', via: 'post'
+    match '/load_order_notes/:id/helpful', to: 'load_order_notes#helpful', via: 'post'
+
     # avatars
     match '/avatar', to: 'avatars#create', via: 'post'
 
