@@ -55,7 +55,7 @@ class Mod < ActiveRecord::Base
 
   accepts_nested_attributes_for :mod_versions
 
-  before_create init
+  before_create :init
 
   def init
     self.status = 0
