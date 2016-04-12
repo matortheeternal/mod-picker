@@ -50,6 +50,9 @@ Rails.application.routes.draw do
     # agreement marks
     match '/incorrect_notes/:id/agreement', to: 'incorrect_notes#agreement', via: 'post'
 
+    # mod and mod list stars
+    match '/mod_lists/:id/star', to: 'mod_lists#create_star', via: 'post'
+    match '/mod_lists/:id/star', to: 'mod_lists#destroy_star', via: 'delete'
     # avatars
     match '/avatar', to: 'avatars#create', via: 'post'
 
