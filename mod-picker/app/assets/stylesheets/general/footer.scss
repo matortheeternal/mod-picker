@@ -1,5 +1,5 @@
 footer {
-  background-color: $secondary_background;
+  background-color: $background_highlight;
   border-top: 1px solid $border_color;
   height: 176px;
   width: 100%;
@@ -12,6 +12,7 @@ footer {
   .left-column {
     padding: 0;
     border: 0;
+    background-color: inherit;
   }
 
   .right-column {

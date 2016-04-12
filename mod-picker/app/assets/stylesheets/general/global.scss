@@ -7,6 +7,12 @@ body {
   color: $text_color;
   margin: 0;
   background-color: $primary_background;
+  min-height: 100vh;
+  position: relative;
+}
+
+.content {
+  padding-bottom: 176px;
 }
 
 ::-webkit-scrollbar {
