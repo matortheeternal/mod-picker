@@ -2,7 +2,7 @@
 <html lang="en" ng-app="modPicker">
 <head>
   <meta charset="UTF-8">
-  <title>Mod Picker: Angular Preview</title>
+  <title>Mod Picker: <%= @current_game.display_name %></title>
   <link href='https://fonts.googleapis.com/css?family=Roboto:400,700,500' rel='stylesheet' type='text/css'>
   <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
   <%= stylesheet_link_tag 'rzslider.min' %>
@@ -72,7 +72,7 @@
   <div class="page-container">
     <div class="nav-wrapper clearfix">
       <div class="primary-nav">
-        <a class="nav-modlist" href="#">
+        <a class="nav-modlist" href="#/mod-list">
           <span class="nav-icon">
             <i class="fa fa-pencil-square-o"></i>
           </span>
@@ -90,7 +90,7 @@
             Contributions
           </span>
         </a>
-        <a class="nav-browse-modlists" href="#">
+        <a class="nav-browse-modlists" href="#/mod-lists">
           <span class="nav-icon">
             <i class="fa fa-list"></i>
           </span>
@@ -148,8 +148,8 @@
           Browse Content
         </span>
         <ul>
-          <li><a href="#/mod_lists">Mod Lists</a></li>
           <li><a href="#/mods">Mods</a></li>
+          <li><a href="#/mod-lists">Mod Lists</a></li>
           <li><a href="#/users">Users</a></li>
           <li><a href="#/comments">Comments</a></li>
         </ul>
@@ -160,10 +160,10 @@
         </span>
         <ul>
           <li><a href="#/reviews">Reviews</a></li>
-          <li><a href="#/compatibility_notes">Compatibility Notes</a></li>
-          <li><a href="#/load_order_notes">Load Order Notes</a></li>
-          <li><a href="#/install_order_notes">Install Order Notes</a></li>
-          <li><a href="#/incorrect_notes">Incorrect Notes</a></li>
+          <li><a href="#/compatibility-notes">Compatibility Notes</a></li>
+          <li><a href="#/load-order-notes">Load Order Notes</a></li>
+          <li><a href="#/install-order-notes">Install Order Notes</a></li>
+          <li><a href="#/incorrect-notes">Incorrect Notes</a></li>
         </ul>
       </section>
       <section>
