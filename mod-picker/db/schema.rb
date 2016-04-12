@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160411074422) do
+ActiveRecord::Schema.define(version: 20160412001043) do
 
   create_table "agreement_marks", id: false, force: :cascade do |t|
     t.integer "incorrect_note_id", limit: 4
@@ -424,6 +424,7 @@ ActiveRecord::Schema.define(version: 20160411074422) do
     t.integer "compatibility_notes_count", limit: 4,   default: 0
     t.integer "install_order_notes_count", limit: 4,   default: 0
     t.integer "load_order_notes_count",    limit: 4,   default: 0
+    t.integer "status",                    limit: 1
   end
 
   add_index "mods", ["game_id"], name: "fk_rails_3ec448a848", using: :btree
