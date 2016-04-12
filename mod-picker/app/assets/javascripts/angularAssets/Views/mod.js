@@ -6,7 +6,7 @@ app.config(['$routeProvider', function ($routeProvider) {
     );
 }]);
 
-app.controller('modController', function ($scope, $q, $routeParams, modService) {
+app.controller('modController', function ($scope, $filter, $q, $routeParams, modService) {
     useTwoColumns(true);
     $scope.expandedState = {
         compabilityNotes: true,
@@ -44,4 +44,27 @@ app.controller('modController', function ($scope, $q, $routeParams, modService) 
         }
     };
 
+    //setting the table data for the Nexus Stats table
+    $scope.nexusRows = [
+        { title: 'Unique Downloads', data: $scope.mod.nexus_info.unique_downloads},
+        { title: 'Endorsements', data: $scope.mod.nexus_info.endorsements},
+        { title: 'Endorse Rate', data: $scope.$filter('number')($scope.mod.nexus_info.endorsements/$scope.mod.nexus_info.unique_downloads * 100, 0) + '%'},
+        { title: 'Release Date', data: $scope.mod.nexus_info.date_added},
+        { title: 'Last Updated', data: $scope.mod.nexus_info.date_updated},
+        { title: 'Total Downloads', data: $scope.mod.nexus_info.total_downloads},
+        { title: 'Views', data: $scope.mod.nexus_info.views},
+        { title: 'Uploaded By', data: $scope.mod.nexus_info.uploaded_by},
+        { title: 'Posts', data: $scope.mod.nexus_info.posts_count},
+        { title: 'Videos', data: $scope.mod.nexus_info.videos_count},
+        { title: 'Images', data: $scope.mod.nexus_info.images_count},
+        { title: 'Files', data: $scope.mod.nexus_info.files_count},
+        { title: 'Articles', data: $scope.mod.nexus_info.articles_count},
+        { title: 'Nexus Category', data: $scope.mod.nexus_info.nexus_category},
+    ];
+*/
+    $scope.nexusRows = [
+        { title: 'Unique Downloads', data: 1000},
+        { title: 'Endorsements', data: 100},
+        { title: 'Endorse Rate', data: $filter('number')(100/1001 * 100, 0) + '%'}
+    ];
 });
