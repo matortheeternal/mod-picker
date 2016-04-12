@@ -136,6 +136,62 @@
 
 <%= yield %>
 
+<footer>
+  <div class="page-container">
+    <div class="left-column wide-column">
+      <span class="logo"><h1>Mod Picker</h1></span>
+      &copy;2016 Mod Picker, LLC.  All rights reserved.
+    </div>
+    <div class="right-column">
+      <section>
+        <span class="section-title">
+          Browse Content
+        </span>
+        <ul>
+          <li><a href="#/mod_lists">Mod Lists</a></li>
+          <li><a href="#/mods">Mods</a></li>
+          <li><a href="#/users">Users</a></li>
+          <li><a href="#/comments">Comments</a></li>
+        </ul>
+      </section>
+      <section>
+        <span class="section-title">
+          Browse Contributions
+        </span>
+        <ul>
+          <li><a href="#/reviews">Reviews</a></li>
+          <li><a href="#/compatibility_notes">Compatibility Notes</a></li>
+          <li><a href="#/load_order_notes">Load Order Notes</a></li>
+          <li><a href="#/install_order_notes">Install Order Notes</a></li>
+          <li><a href="#/incorrect_notes">Incorrect Notes</a></li>
+        </ul>
+      </section>
+      <section>
+        <span class="section-title">
+          Mod Picker
+        </span>
+        <ul>
+          <li><a href="#">About Us</a></li>
+          <li><a href="#">Terms of Service</a></li>
+          <li><a href="#">Privacy Policy</a></li>
+          <li><a href="#">Help Center</a></li>
+          <li><a href="#">Contact</a></li>
+        </ul>
+      </section>
+      <section>
+        <span class="section-title">
+          Social Media
+        </span>
+        <ul>
+          <li><a href="https://twitter.com/Mod_Picker">Twitter</a></li>
+          <li><a href="https://www.youtube.com/channel/UCWqJeb-T5-k-AnWZTF_0ZAw">YouTube</a></li>
+          <li><a href="https://www.facebook.com/modpicker">Facebook</a></li>
+        </ul>
+      </section>
+    </div>
+  </div>
+</footer>
+
 <!-- defered load of scripts, which is way more performant for browsers -->
 <%= javascript_include_tag 'angular.min.1.5.1' %>
 <%= javascript_include_tag 'angular-route.min.1.5.1' %>
