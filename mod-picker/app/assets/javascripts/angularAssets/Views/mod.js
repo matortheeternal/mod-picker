@@ -29,9 +29,7 @@ app.controller('modController', function ($scope, $filter, $q, $routeParams, mod
     });
 
     $scope.showReviews = function () {
-        $scope.expandedState = {
-            reviews: true
-        };
+        $scope.currentTab = $scope.tabs[2];
     };
 
     $scope.changeVersion = function(version) {
