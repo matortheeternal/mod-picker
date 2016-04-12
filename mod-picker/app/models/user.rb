@@ -83,7 +83,7 @@ class User < ActiveRecord::Base
     end
   end
 
-  def user_avatar
+  def avatar
     png_path = File.join(Rails.public_path, "avatars/#{id}.png")
     jpg_path = File.join(Rails.public_path, "avatars/#{id}.jpg")
     if File.exists?(png_path)
@@ -138,7 +138,7 @@ class User < ActiveRecord::Base
   def as_json(options={})
     default_options = {
         :except => [:email, :active_mod_list_id, :invitation_token, :invitation_created_at, :invitation_sent_at, :invitation_accepted_at, :invitation_limit, :invited_by_id, :invited_by_type, :invitations_count],
-        :methods => :user_avatar,
+        :methods => :avatar,
         :include => {
             :bio => {
                 :only => [:nexus_username, :lover_username, :steam_username]
