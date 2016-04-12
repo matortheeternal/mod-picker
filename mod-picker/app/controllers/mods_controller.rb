@@ -1,5 +1,5 @@
 class ModsController < ApplicationController
-  before_action :set_mod, only: [:show, :edit, :update, :destroy]
+  before_action :set_mod, only: [:show, :update, :destroy]
 
   # GET /mods
   # GET /mods.json
@@ -19,15 +19,6 @@ class ModsController < ApplicationController
       format.html
       format.json { render :json => @mod }
     end
-  end
-
-  # GET /mods/new
-  def new
-    @mod = Mod.new
-  end
-
-  # GET /mods/1/edit
-  def edit
   end
 
   # POST /mods

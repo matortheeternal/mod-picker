@@ -10,7 +10,7 @@ app.config(['$routeProvider', function ($routeProvider) {
     );
 }]);
 
-app.controller('userSettingsController', function ($scope, $q, userSettingsService, userService, quoteService) {
+app.controller('userSettingsController', function ($scope, $q, userSettingsService, userService, quoteService, userTitleService) {
     useTwoColumns(false);
 
     //TODO: put this into the Routing logic
@@ -48,9 +48,18 @@ app.controller('userSettingsController', function ($scope, $q, userSettingsServi
                 }
             });
 
+            // get user title if not custom
+            var rep = $scope.user.reputation.overall;
+            if (!$scope.user.title) {
+                userTitleService.retrieveUserTitles().then(function (titles) {
+                    var gameTitles = userTitleService.getSortedGameTitles(titles);
+                    $scope.user.title = userTitleService.getUserTitle(gameTitles, rep);
+                });
+            }
+
             // get random quote for user title
             quoteService.retrieveQuotes().then(function (quotes) {
-                var label = ($scope.user.reputation.overall < 1280) ? "Low Reputation" : "High Repution";
+                var label = (rep < 1280) ? "Low Reputation" : "High Repution";
                 $scope.titleQuote = quoteService.getRandomQuote(quotes, label);
             });
         });

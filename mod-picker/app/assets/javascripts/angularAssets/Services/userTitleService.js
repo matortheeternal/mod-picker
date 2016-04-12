@@ -21,11 +21,12 @@ app.service('userTitleService', function (backend, $q) {
 
     this.getUserTitle = function (gameTitles, reputation) {
         var prevTitle = gameTitles[0];
-        gameTitles.forEach(function(title) {
+        for (var i = 0; i < gameTitles.length; i++) {
+            var title = gameTitles[i];
             if (reputation < title.rep_required) {
-                return prevTitle;
+                return prevTitle.title;
             }
             prevTitle = title;
-        });
+        }
     };
 });

@@ -1,45 +1,11 @@
 class UserSettingsController < ApplicationController
-  before_action :set_user_setting, only: [:show, :edit, :update, :destroy]
-
-  # GET /user_settings
-  # GET /user_settings.json
-  # returns the current user's settings
-  def index
-    @user_setting = current_user.settings
-
-    respond_to do |format|
-      format.json { render :json => @user_setting}
-    end
-  end
+  before_action :set_user_setting, only: [:show, :update]
 
   # GET /user_settings/1
   # GET /user_settings/1.json
   def show
     respond_to do |format|
       format.json { render :json => @user_setting}
-    end
-  end
-
-  # GET /user_settings/new
-  def new
-    @user_setting = UserSetting.new
-  end
-
-  # GET /user_settings/1/edit
-  def edit
-  end
-
-  # POST /user_settings
-  # POST /user_settings.json
-  def create
-    @user_setting = UserSetting.new(user_setting_params)
-
-    respond_to do |format|
-      if @user_setting.save
-        format.json { render json: {status: 'created'} }
-      else
-        format.json { render json: @user_setting.errors, status: :unprocessable_entity }
-      end
     end
   end
 
@@ -52,15 +18,6 @@ class UserSettingsController < ApplicationController
       else
         format.json { render json: @user_setting.errors, status: :unprocessable_entity }
       end
-    end
-  end
-
-  # DELETE /user_settings/1
-  # DELETE /user_settings/1.json
-  def destroy
-    @user_setting.destroy
-    respond_to do |format|
-      format.json { head :no_content }
     end
   end
 

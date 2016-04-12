@@ -2,9 +2,8 @@ class UserTitlesController < ApplicationController
   # GET /user_titles
   # GET /user_titles.json
   def index
-    @user_titles = UserTitle.filter(filtering_params)
-
-    format.json { render :json => @user_titles}
+    @user_titles = UserTitle.all
+    render :json => @user_titles
   end
 
   private

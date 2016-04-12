@@ -3,7 +3,7 @@ namespace :reset do
 
   task ids: :environment do
     puts "\nResetting IDs"
-    connection = ActiveRecord::Base.connection()
+    connection = ActiveRecord::Base.connection
     connection.execute("ALTER TABLE categories AUTO_INCREMENT = 0;")
     connection.execute("ALTER TABLE user_bios AUTO_INCREMENT = 0;")
     connection.execute("ALTER TABLE user_reputations AUTO_INCREMENT = 0;")
@@ -25,16 +25,17 @@ namespace :reset do
 
   task clear: :environment do
     puts "\nResetting database"
-    connection = ActiveRecord::Base.connection()
+    connection = ActiveRecord::Base.connection
 
     # tables
-    Plugin.delete_all
     ModStar.delete_all
     ModListStar.delete_all
     Quote.delete_all
     ModList.delete_all
     ModAuthor.delete_all
+    PluginError.delete_all
     PluginRecordGroup.delete_all
+    Plugin.delete_all
     RecordGroup.delete_all
     ModVersionCompatibilityNote.delete_all
     ModVersionLoadOrderNote.delete_all
@@ -53,6 +54,7 @@ namespace :reset do
     UserBio.delete_all
     UserReputation.delete_all
     UserSetting.delete_all
+    UserTitle.delete_all
     User.delete_all
     Game.delete_all
     CategoryPriority.delete_all
