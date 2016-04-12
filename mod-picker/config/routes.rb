@@ -53,6 +53,9 @@ Rails.application.routes.draw do
     # mod and mod list stars
     match '/mod_lists/:id/star', to: 'mod_lists#create_star', via: 'post'
     match '/mod_lists/:id/star', to: 'mod_lists#destroy_star', via: 'delete'
+    match '/mods/:id/star', to: 'mods#create_star', via: 'post'
+    match '/mods/:id/star', to: 'mods#destroy_star', via: 'delete'
+
     # avatars
     match '/avatar', to: 'avatars#create', via: 'post'
 
