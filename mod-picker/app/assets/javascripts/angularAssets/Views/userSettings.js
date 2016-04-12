@@ -28,6 +28,7 @@ app.controller('userSettingsController', function ($scope, $q, userSettingsServi
     // seems odd to me.  -Mator
     userSettingsService.retrieveUserSettings().then(function (userSettings) {
         $scope.userSettings = userSettings;
+        //TODO: I feel like this could be put inside the retrieveUserSettings() function
         userService.retrieveUser(userSettings.user_id).then(function (user) {
             $scope.user = user;
             $scope.avatar = {
@@ -116,6 +117,8 @@ app.controller('userSettingsController', function ($scope, $q, userSettingsServi
         }
     };
 
+
+    //TODO: I think we should put the modlist actions inside somewhere reusable (directive)
     /* mod list actions */
     $scope.editModList = function(modlist) {
         console.log('Edit Mod List: "'+modlist.name+'"');
