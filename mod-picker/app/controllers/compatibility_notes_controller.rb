@@ -47,6 +47,11 @@ class CompatibilityNotesController < ApplicationController
     end
   end
 
+  # POST /compatibility_notes/1/helpful.json
+  def helpful
+    Helpfulable.handle(params, "CompatibilityNote")
+  end
+
   # DELETE /compatibility_notes/1
   # DELETE /compatibility_notes/1.json
   def destroy

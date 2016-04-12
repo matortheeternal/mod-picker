@@ -1,4 +1,6 @@
 class LoadOrderNotesController < ApplicationController
+  include Helpfulable
+
   before_action :set_load_order_note, only: [:show, :update, :destroy]
 
   # GET /load_order_notes
@@ -45,6 +47,11 @@ class LoadOrderNotesController < ApplicationController
         format.json { render json: load_order_note.errors, status: :unprocessable_entity }
       end
     end
+  end
+
+  # POST /load_order_notes/1/helpful.json
+  def helpful
+    Helpfulable.handle(params, "LoadOrderNote")
   end
 
   # DELETE /load_order_notes/1
