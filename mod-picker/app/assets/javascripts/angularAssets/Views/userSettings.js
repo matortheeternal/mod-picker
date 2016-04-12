@@ -31,7 +31,7 @@ app.controller('userSettingsController', function ($scope, $q, userSettingsServi
         userService.retrieveUser(userSettings.user_id).then(function (user) {
             $scope.user = user;
             $scope.avatar = {
-                src: $scope.user.avatar
+                src: $scope.user.user_avatar
             };
 
             //splitting the modlists into collections and non collections
@@ -72,7 +72,7 @@ app.controller('userSettingsController', function ($scope, $q, userSettingsServi
 
     $scope.resetAvatar = function() {
         $scope.avatar.file = null;
-        $scope.avatar.src = $scope.user.avatar;
+        $scope.avatar.src = $scope.user.user_avatar;
         $scope.$apply();
     };
 
