@@ -1,7 +1,7 @@
 /* header */
 
 header {
-  background-color: #555;
+  background-color: $bar_color;
   background-image: url($banner_image);
   background-repeat: no-repeat;
   -webkit-background-size: cover;
@@ -56,40 +56,38 @@ header {
   }
 }
 
-#form_game_select {
+#game-select-form {
   display: inline-block;
   width: 95px;
   text-align: center;
-}
 
-.game-selector {
-  position: absolute;
-  opacity: 0;
-  height: 42px;
-  font-size: 12px;
-  cursor: pointer;
-}
+  .game-selector {
+    position: absolute;
+    opacity: 0;
+    height: 42px;
+    font-size: 12px;
+    cursor: pointer;
+  }
 
-.customSelect .customSelectInner {
-  padding-top: 5px;
-  padding-bottom: 5px;
-  padding-right: 5px;
-  line-height: 32px;
-  vertical-align: middle;
-  display: inline-block;
-}
+  .game-icon .game-label {
+    padding: 5px 5px 5px 0;
+    line-height: 32px;
+    vertical-align: middle;
+    display: inline-block;
+  }
 
-.customSelect {
-  display: inline-block;
-  font-weight: 700;
-  padding-left: 32px;
-  background-size: 32px 32px;
-  background-position: 0 5px;
-  background-repeat: no-repeat;
-}
+  .game-icon {
+    display: inline-block;
+    font-weight: 700;
+    padding-left: 32px;
+    background-size: 32px 32px;
+    background-position: 0 5px;
+    background-repeat: no-repeat;
+  }
 
-.icon-sk {
-  background-image: url("http://puu.sh/lyZdf.png");
+  .icon-sk {
+    background-image: url("http://puu.sh/lyZdf.png");
+  }
 }
 
 /* css for navbar */

@@ -3,6 +3,7 @@ class HomeController < ApplicationController
 
   def skyrim
     # set instance variables
+    @games = Game.all
     @current_game = Game.find_by(:display_name => "Skyrim")
     if current_user.present?
       @current_theme = current_user.settings.theme
@@ -16,6 +17,7 @@ class HomeController < ApplicationController
 
   def fallout4
     # set instance variables
+    @games = Game.all
     @current_game = Game.find_by(:display_name => "Fallout 4")
     if current_user.present?
       @current_theme = current_user.settings.theme
