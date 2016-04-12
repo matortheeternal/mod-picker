@@ -21,6 +21,7 @@ Rails.application.config.assets.precompile += [
 'temp/welcome.css',
 'rzslider.min.css',
 'style-responsive.css',
+'simplemde.min.css',
 'modpicker.js',
 'angular-animate.min.js',
 'angular.min.1.5.1.js',
@@ -32,5 +33,9 @@ Rails.application.config.assets.precompile += [
 'jquery.nicescroll.min.js',
 'jquery.smooth-scroll.js',
 'script.js',
-'wow.min.js'
+'simplemde.min.js',
+'lzma.js',
+'rar.js',
+'wow.min.js',
+'zip.js'
 ]

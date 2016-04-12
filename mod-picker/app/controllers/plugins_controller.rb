@@ -1,5 +1,5 @@
 class PluginsController < ApplicationController
-  before_action :set_plugin, only: [:show, :edit, :update, :destroy]
+  before_action :set_plugin, only: [:show, :destroy]
 
   # GET /plugins
   # GET /plugins.json
@@ -19,15 +19,6 @@ class PluginsController < ApplicationController
       format.html
       format.json { render :json => @plugin}
     end
-  end
-
-  # GET /plugins/new
-  def new
-    @plugin = Plugin.new
-  end
-
-  # GET /plugins/1/edit
-  def edit
   end
 
   # POST /plugins
@@ -51,18 +42,6 @@ class PluginsController < ApplicationController
 
     # render json response
     render json: {status: response}
-  end
-
-  # PATCH/PUT /plugins/1
-  # PATCH/PUT /plugins/1.json
-  def update
-    respond_to do |format|
-      if @plugin.update(plugin_params)
-        format.json { render :show, status: :ok, location: @plugin }
-      else
-        format.json { render json: @plugin.errors, status: :unprocessable_entity }
-      end
-    end
   end
 
   # DELETE /plugins/1

@@ -1,78 +1,83 @@
 <h3 class="section-title">Linked Accounts</h3>
-<div class="section">
-    <div class="section-element">
-        Nexus Mods
-        <input type="button" class="btn" id="thin-btn" value="link" ng-click="verify()">
-    </div>
-    <div class="section-element">
-        Steam Workshop
-        <input type="button" class="btn" id="thin-btn" value="link" ng-click="verify()">
-    </div>
-    <div class="section-element">
-        Lover's Lab: <strong>{{user.username}}</strong>
-        <input type="button" class="btn" id="thin-btn" value="Change" ng-click="verify()">
-    </div>
-</div>
+<section>
+    <section>
+        Nexus Mods {{user.bio.nexus_username}}
+        <link-nexus-button bio="user.bio"></link-nexus-button>
+    </section>
+    <section>
+        Steam Workshop {{user.bio.steam_username}}
+        <link-steam-button bio="user.bio"></link-steam-button>
+    </section>
+    <section>
+        Lover's Lab {{user.bio.lover_username}}
+        <link-lover-button bio="user.bio"></link-lover-button>
+    </section>
+</section>
 
 <h3 class="section-title">Email</h3>
-<div class="section">
-    <div class="section-element">
+<section>
+    <section>
         <input type="email" name="email" ng-model="user.email" />
-    </div>
-    <div class="section-element">
+    </section>
+    <section>
         <label>
             <input type="checkbox" ng-model="userSettings.email_public">
             Allow other users to see my email address
         </label>
-    </div>
-</div>
+    </section>
+</section>
 
 <h3 class="section-title">Password</h3>
-<div class="section">
-    <div class="section-element">
+<section>
+    <section>
         <div class="input-label">New Password</div>
         <div>
             <span class="explanation">Passwords must be at least 8 characters long</span>
-            <input type="password" ng-model="user.password">
+            <input type="password" ng-model="user.newPassword">
         </div>
-    </div>
-    <div class="section-element">
+    </section>
+    <section>
         <div class="input-label">Confirm New Password</div>
-        <input type="password" ng-model="user.password_confirmation">
-    </div>
-</div>
+        <input type="password" ng-model="user.newPassword_confirmation">
+    </section>
+    <section>
+        <div class="input-label">Current Password</div>
+        <input type="password" ng-model="user.password">
+    </section>
+</section>
 
 <h3 class="section-title">Content shown</h3>
-<div class="section">
-    <div class="section-element">
+<section>
+    <section>
         <label>
             <input type="checkbox" ng-model="userSettings.allow_adult_content">
             Allow adult content
         </label>
-    </div>
-    <div class="section-element">
+    </section>
+    <section>
         <label>
             <input type="checkbox" ng-model="userSettings.allow_nexus_mods">
             Allow mods from nexusMods.com
         </label>
-    </div>
-    <div class="section-element">
+    </section>
+    <section>
         <label>
             <input type="checkbox" ng-model="userSettings.allow_steam_workshop">
             Allow mods from the steam workshop
         </label>
-    </div>
-    <div class="section-element">
+    </section>
+    <section>
         <label>
             <input type="checkbox" ng-model="userSettings.allow_lovers_lab">
             Allow mods from Lover's Lab
         </label>
-    </div>
-</div>
+    </section>
+</section>
 
+<!-- should be auto set from browser
 <h3 class="section-title">Date and Time</h3>
-<div class="section">
-    <div class="section-element">
+<section>
+    <section>
         Time Zone
         <select ng-model="userSettings.timezone">
             <option>(GMT -12:00) Eniwetok, Kwajalein</option>
@@ -109,28 +114,29 @@
             <option>(GMT +11:00) Magadan, Solomon Islands, New Caledonia</option>
             <option>(GMT +12:00) Auckland, Wellington, Fiji, Kamchatka</option>
         </select>
-    </div>
-    <div class="section-element">
+    </section>
+    <section>
         Date Format
         <select ng-model="userSettings.udate_format">
             <option value="%m/%d/%Y">mm/dd/yyyy</option>
             <option value="%d/%m/%Y">dd/mm/yyyy</option>
             <option value="%F">yyyy/mm/dd</option>
         </select>
-    </div>
-    <div class="section-element">
+    </section>
+    <section>
         Time Format
         <select ng-model="userSettings.utime_format">
             <option value="%I:%M%p">12 hour time</option>
             <option value="%H:%M">24 hour time</option>
         </select>
-    </div>
+    </section>
     <a class="show-more">show advanced options</a>
-</div>
+</section>
+-->
 
 <h3 class="section-title">Themes</h3>
-<div class="section">
-    <div class="section-element">
+<section>
+    <section>
         Skyrim
         <select ng-model="userSettings.theme">
             <option>High Hrothgar</option>
@@ -138,6 +144,6 @@
             <option>Blackreach</option>
             <option>Darkwater</option>
         </select>
-    </div>
-</div>
+    </section>
+</section>
 <input class="btn" id="save-changes" type="submit" value="Save Changes" ng-click="submit()"/>

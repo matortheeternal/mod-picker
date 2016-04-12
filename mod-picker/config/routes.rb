@@ -4,9 +4,6 @@ Rails.application.routes.draw do
   
   # require authentication before allowing user to access any resources
   authenticate :user do
-    resources :games
-    resources :categories
-    resources :category_priorities
     resources :comments
     resources :install_order_notes
     resources :load_order_notes
@@ -47,9 +44,13 @@ Rails.application.routes.draw do
     # avatars
     match '/avatar', to: 'avatars#create', via: 'post'
 
-    # record groups
-    resources :record_groups, only: [:index]
+    # static data
+    resources :categories, only: [:index]
+    resources :category_priorities, only: [:index]
+    resources :games, only: [:index]
     resources :quotes, only: [:index]
+    resources :record_groups, only: [:index]
+    resources :user_titles, only: [:index]
 
     # angular
     resources :angular, only: [:index]

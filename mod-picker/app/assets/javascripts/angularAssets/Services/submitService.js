@@ -1,3 +1,4 @@
+//TODO: change naming
 app.service('submitService', function (backend, $q) {
     this.scrapeNexus = function (gameId, nexusId) {
         var nexusInfo = $q.defer();

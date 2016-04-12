@@ -8,13 +8,16 @@
   <%= stylesheet_link_tag 'rzslider.min' %>
   <% if current_user.nil? %>
       <% current_theme = 'Whiterun' %>
+      <% current_game_id = Game.find_by(:display_name => 'Skyrim') %>
   <% else %>
       <% current_theme = current_user.settings.theme %>
+      <% current_game_id = current_user.settings.game_mode %>
   <% end %>
   <%= stylesheet_link_tag current_theme %>
   <script>
     window._token = '<%= form_authenticity_token %>';
     window._current_theme = '<%= current_theme %>';
+    window._current_game_id = <%= current_game_id %>;
     window._stylesheets = {
       whiterun: "<%= stylesheet_path 'Whiterun' %>",
       darkwater: "<%= stylesheet_path 'Darkwater' %>",
@@ -144,5 +147,7 @@
 <%= javascript_include_tag 'rzslider.min' %>
 <%= javascript_include_tag 'modpicker' %>
 <%= javascript_include_tag 'angular-animate.min' %>
+<%= javascript_include_tag 'zip' %>
+<%= javascript_include_tag 'rar' %>
 </body>
 </html>

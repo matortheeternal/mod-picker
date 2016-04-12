@@ -679,7 +679,7 @@ def seed_fake_compatibility_notes
     submitter = User.offset(rand(User.count)).first
     cnote = CompatibilityNote.new(
         submitted_by: submitter.id,
-        compatibility_type: ["Incompatible", "Partially Incompatible", "Compatibility Mod", "Compatibility Plugin", "Make Custom Patch"].sample,
+        compatibility_type: CompatibilityNote.statuses.keys.sample,
         submitted: Faker::Date.backward(14),
         text_body: Faker::Lorem.paragraph(4)
     )
@@ -817,12 +817,12 @@ def seed_fake_mod_lists
   nModLists.times do
     author = User.offset(rand(User.count)).first
     ModList.new(
-        name: Faker::Lorem.words(3),
+        name: Faker::Lorem.words(3).join(' '),
         created_by: author.id,
         is_collection: [true, false].sample,
         is_public: [true, false].sample,
         has_adult_content: [true, false].sample,
-        status: ["Planned", "Under Construction", "Testing", "Complete"].sample,
+        status: ModList.statuses.keys.sample,
         description: Faker::Lorem.paragraph(5),
         created: Faker::Date.backward(14),
         game_id: gameSkyrim.id
