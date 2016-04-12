@@ -1,5 +1,5 @@
 class InstallOrderNotesController < ApplicationController
-  before_action :set_install_order_note, only: [:show, :edit, :update, :destroy]
+  before_action :set_install_order_note, only: [:show, :update, :destroy]
 
   # GET /install_order_notes
   # GET /install_order_notes.json
@@ -19,15 +19,6 @@ class InstallOrderNotesController < ApplicationController
       format.html
       format.json { render :json => install_order_note}
     end
-  end
-
-  # GET /install_order_notes/new
-  def new
-    install_order_note = InstallOrderNote.new
-  end
-
-  # GET /install_order_notes/1/edit
-  def edit
   end
 
   # POST /install_order_notes

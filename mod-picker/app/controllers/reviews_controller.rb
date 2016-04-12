@@ -1,5 +1,5 @@
 class ReviewsController < ApplicationController
-  before_action :set_review, only: [:show, :edit, :update, :destroy]
+  before_action :set_review, only: [:show, :update, :destroy]
 
   # GET /reviews
   # GET /reviews.json
@@ -17,15 +17,6 @@ class ReviewsController < ApplicationController
     respond_to do |format|
       format.json { render :json => @review}
     end
-  end
-
-  # GET /reviews/new
-  def new
-    @review = Review.new
-  end
-
-  # GET /reviews/1/edit
-  def edit
   end
 
   # POST /reviews
