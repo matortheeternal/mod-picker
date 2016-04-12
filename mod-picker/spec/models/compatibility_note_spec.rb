@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe CompatibilityNote, :model, :wip do
+RSpec.describe CompatibilityNote, :model do
   fixtures :compatibility_notes
 
   it "should be valid with factory parameters" do
@@ -37,25 +37,32 @@ context "validations" do
 
   describe "compatibility_type" do
     it "should be invalid if not included within valid list of types" do
-      note = build(:compatibility_note,
-        compatibility_type: "Homura")
-
-      note.valid?
-      # expect(note.errors[:compatibility_type]).to include("Not a valid compatibility type")
-      expect(note).to be_invalid
+      expect{build(:compatibility_note,
+              compatibility_type: "Homura")
+      }
+        .to raise_error(ArgumentError)
+        .with_message(/is not a valid compatibility_type/)
+      
     end
 
     it "should be valid if compatibility_type is included in whitelist of types" do
-      note = build(:compatibility_note,
-        compatibility_type: "Make Custom Patch")
+      note = build(:compatibility_note)
 
-      valid_types = ["Incompatible", "Partially Incompatible", "Compatibility Mod",
-                     "Compatibility Plugin", "Make Custom Patch"]
+      valid_types = ["incompatible", "partially incompatible", "compatibility mod", 
+                     "compatibility option", "make custom patch"]
 
       valid_types.each do |valid_type|
         note.compatibility_type = valid_type
         expect(note).to be_valid
       end
+    end
+
+    it "should be invalid if compatibility_type is empty" do
+
+      # TODO: refactor compatibility note spec test for empty enum value
+      expect{create(:compatibility_note,
+        compatibility_type: nil)}
+        .to raise_error(ActiveRecord::StatementInvalid)
     end
   end
 
@@ -66,8 +73,9 @@ context "validations" do
       expect(note.submitted).to be_within(1.minute).of DateTime.now
     end
 
+    # FIXME: refactor behavior/test for if submitted is empty in compatibility_note
     it "should be valid even if nil due to default init value" do
-      note = build(:compatibility_note,
+      note = create(:compatibility_note,
         submitted: nil)
 
       note.valid?
