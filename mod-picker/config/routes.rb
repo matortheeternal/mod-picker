@@ -67,8 +67,9 @@ Rails.application.routes.draw do
     resources :record_groups, only: [:index]
     resources :user_titles, only: [:index]
 
-    # angular
-    resources :angular, only: [:index]
+    # home page
+    match '/skyrim', to: 'home#skyrim', via: 'get'
+    match '/fallout4', to: 'home#fallout4', via: 'get'
   end
 
   # welcome page
