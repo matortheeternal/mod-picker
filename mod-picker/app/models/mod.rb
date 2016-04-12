@@ -20,6 +20,8 @@ class Mod < ActiveRecord::Base
   scope :files, -> (low, high) { where(:nexus_infos => {files_count: (low..high)} ) }
   scope :articles, -> (low, high) { where(:nexus_infos => {articles_count: (low..high)} ) }
 
+  enum status: [ :good, :dangerous, :obsolete ]
+
   belongs_to :game, :inverse_of => 'mods'
 
   # categories the mod belongs to
@@ -52,6 +54,12 @@ class Mod < ActiveRecord::Base
   has_many :mod_versions, :inverse_of => 'mod'
 
   accepts_nested_attributes_for :mod_versions
+
+  before_create init
+
+  def init
+    self.status = 0
+  end
 
   def no_author?
     self.mod_authors.count == 0
