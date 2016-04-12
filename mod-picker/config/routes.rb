@@ -47,6 +47,9 @@ Rails.application.routes.draw do
     match '/install_order_notes/:id/helpful', to: 'install_order_notes#helpful', via: 'post'
     match '/load_order_notes/:id/helpful', to: 'load_order_notes#helpful', via: 'post'
 
+    # agreement marks
+    match '/incorrect_notes/:id/agreement', to: 'incorrect_notes#agreement', via: 'post'
+
     # avatars
     match '/avatar', to: 'avatars#create', via: 'post'
 
