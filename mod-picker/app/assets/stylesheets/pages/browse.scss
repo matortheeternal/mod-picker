@@ -70,38 +70,67 @@
 }
 
 /* css for search results */
-.right-column table {
-  border-collapse: collapse;
-  width: 100%;
-  font-family: Arial;
-}
+.right-column {
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    font-family: 'Arial', sans-serif;
+    font-size: 12px;
 
-.right-column th {
-  margin: 0;
-  font-size: 10.5px;
-  padding: 0.5em 1em;
-  text-align: left;
-}
+    th {
+      margin: 0;
+      padding: 5px 10px;
+      text-align: left;
+      vertical-align: bottom;
+      border-right: 1px solid $border_color;
+    }
 
-.right-column td {
-  border-width: 0 0 0 1px;
-  font-size: 12px;
-  margin: 0;
-  overflow: visible;
+    .actions-header {
+      text-align: center;
+      border: 0;
+      padding: 5px 0;
+    }
 
-  a {
-    display: block;
-    height: 100%;
-    padding: 0.5em 1em;
+    td {
+      border-width: 0 0 0 1px;
+      margin: 0;
+      overflow: visible;
+      padding-left: 10px;
+
+      a {
+        display: block;
+        height: 100%;
+      }
+    }
+
+    .actions-cell {
+      text-align: center;
+      padding: 0;
+    }
+
+    i {
+      font-size: 16px;
+    }
+
+    input {
+      font-size: 12px;
+      padding: 4px;
+      margin: 4px;
+    }
+
+    thead tr {
+      background-color: $primary_background;
+      border-bottom: 1px solid $border_color;
+    }
+
+    tbody tr:nth-child(odd) {
+      background-color: $secondary_background;
+    }
+
+    tbody tr:nth-child(even) {
+      background-color: $primary_background;
+    }
   }
-}
-
-.right-column tbody tr:nth-child(odd) {
-  background-color: $secondary_background;
-}
-
-.right-column tbody tr:nth-child(even) {
-  background-color: $primary_background;
 }
 
 select.stealthy.ng-pristine {
