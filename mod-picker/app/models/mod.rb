@@ -55,12 +55,6 @@ class Mod < ActiveRecord::Base
 
   accepts_nested_attributes_for :mod_versions
 
-  before_create :init
-
-  def init
-    self.status = 0
-  end
-
   def no_author?
     self.mod_authors.count == 0
   end
