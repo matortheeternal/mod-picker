@@ -257,37 +257,39 @@ label .sublabel {
   padding-left: 5px;
 }
 
-form {
+.section-title {
+  display: block;
+  vertical-align: top;
+  width: 200px;
+  font-size: 22px;
+  font-weight: 500;
+  color: $text_color;
+}
+
+section {
+  display: block;
+  margin-top: 15px;
+  margin-left: 30px;
+  margin-bottom: 30px;
+
   .section-title {
-    display: block;
-    vertical-align: top;
-    width: 200px;
-    font-size: 22px;
-    font-weight: 500;
-    color: $text_color;
+    font-size: 16px;
+    margin-top: 25px;
+    margin-left: 0;
+    margin-bottom: 0;
   }
 
   section {
-    display: block;
+    margin-bottom: 15px;
     margin-top: 15px;
-    margin-left: 30px;
-    margin-bottom: 30px;
 
-    .section-title {
-      font-size: 16px;
-      margin-top: 25px;
-      margin-left: 0;
-      margin-bottom: 0;
+    div {
+      display: inline-block;
     }
+  }
+}
 
-    section {
-      margin-bottom: 15px;
-      margin-top: 15px;
-
-      div {
-        display: inline-block;
-      }
-    }
+form {
 
     input[type="text"], input[type="password"], input[type="email"] {
       vertical-align: top;
@@ -304,7 +306,6 @@ form {
       font-size: 13px;
       padding: 6px;
     }
-  }
 
   .input-label {
     min-width: 180px;
