@@ -1,3 +1,4 @@
+///header stuff
 .mod-header {
   background-color: $secondary_background;
   border-bottom: 1px solid $soft_border_color;
@@ -29,6 +30,7 @@
   font-size: 18px;
 }
 
+//left column
 .left-mod-column {
   width: 250px;
   padding-right: 48px;
@@ -38,11 +40,39 @@
   border-right: 1px solid $soft_border_color;
 }
 
+.mod-cat-tag {
+  background-color: $background_highlight;
+  border: 1px solid $text_color;
+  text-align: center;
+  padding: 2px 5px 2px 5px;
+  display: inline-block;
+}
+
+.stat-title {
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.version-dropdown {
+  width: 100%;
+  font-size: 16px;
+}
+
+.stat-data {
+  padding-left: 10px;
+}
+
+.source-image {
+  height: auto;
+  width: 20%;
+}
+
+//right column
 .right-mod-column {
-  width: 970px;
-  display: table-cell;
-  vertical-align: top;
   background-color: $primary_background;
+  display: table-cell;
+  width: 970px;
+  vertical-align: top;
 }
 
 .column-margin {
