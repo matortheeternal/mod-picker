@@ -4,20 +4,11 @@
 
 app.directive('tabs', function () {
     return {
-    	transclude: true,
         restrict: 'E',
         templateUrl: '/resources/directives/tabs.html',
-        controller: 'tabsController',
         scope: {
         	tabs: '=',
         	currentTab: '='
         }
-    }
-});
-
-app.controller('tabsController', function ($scope) {
-    //TODO: I feel like this logic can be done inside the scope
-	$scope.select = function (nextTab) {
-		$scope.currentTab = nextTab;
-	};
+    };
 });
