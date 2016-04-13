@@ -25,11 +25,8 @@
 FactoryGirl.define do
   factory :mod_list do
     association :created_by, factory: :user
-    # is_collection false
-    # is_public true
     has_adult_content false
     status "under construction"
-    created DateTime.now
     description { Faker::Lorem.sentence(4, false, 6) }
     association :game_id, factory: :game
   end

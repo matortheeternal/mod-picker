@@ -27,7 +27,7 @@ class ModList < ActiveRecord::Base
 
   # Validations
   
-  validates_inclusion_of :is_collection, :is_public, {in: [true, false], 
+  validates_inclusion_of :is_collection, :is_public, :has_adult_content, {in: [true, false], 
                                           message: "must be true or false"}
   
   def init
