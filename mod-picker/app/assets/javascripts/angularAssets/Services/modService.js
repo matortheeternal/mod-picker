@@ -21,7 +21,7 @@ app.service('modService', function (backend, $q) {
         return mods.promise;
     };
 
-    this.retrieveCompabilityNotes = function (modId, versionId) {
+    this.retrieveCompatibilityNotes = function (modId, versionId) {
         return backend.retrieve('/compatibility_notes', {
             params: {
                 mod: modId,
