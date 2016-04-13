@@ -17,34 +17,34 @@ app.filter('percentage', function() {
 
 app.controller('modController', function ($rootScope, $scope, $q, $routeParams, modService) {
     $rootScope.twoColumns = true;
-    $scope.expandedState = {
-        compabilityNotes: true,
-        reviews: false
-    };
 
-    $scope.tabs = [
-    { name: 'Compatibility', url: '/resources/partials/showMod/compatibility.html' },
-    { name: 'Installation', url: '/resources/partials/showMod/installation.html' },
-    { name: 'Reviews', url: '/resources/partials/showMod/reviews.html' },
-    { name: 'Analysis', url: '/resources/partials/showMod/analysis.html' }
-    ];
-
-    $scope.currentTab = $scope.tabs[0];
-
-    modService.retrieveMod($routeParams.modId).then(function (mod) {
-        $scope.mod = mod;
-        $scope.changeVersion(mod.mod_versions[0].id);
-        $scope.version = mod.mod_versions[0].id;
-    });
-
-    $scope.changeVersion = function(version) {
+    //function for changing the version data when the dropdown is used
+    $scope.updateVersion = function(version) {
         if(version && version !== $scope.version && $scope.mod.id) {
-            delete $scope.compabilityNotes;
             //$scope.loading = true;
-            modService.retrieveCompabilityNotes($scope.mod.id, version).then(function (compatibilityNotes) {
+            modService.retrieveCompatibilityNotes($scope.mod.id, version).then(function (compatibilityNotes) {
                 $scope.compatibilityNotes = compatibilityNotes;
             });
         }
     };
+
+    //initialization
+    //of the mod object
+    modService.retrieveMod($routeParams.modId).then(function (mod) {
+        $scope.mod = mod;
+        $scope.version = mod.mod_versions[0];
+        //of the version data
+        $scope.updateVersion($scope.version);
+    });
+
+    //of the tab data
+    $scope.tabs = [
+        { name: 'Compatibility', url: '/resources/partials/showMod/compatibility.html' },
+        { name: 'Installation', url: '/resources/partials/showMod/installation.html' },
+        { name: 'Reviews', url: '/resources/partials/showMod/reviews.html' },
+        { name: 'Analysis', url: '/resources/partials/showMod/analysis.html' }
+    ];
+
+    $scope.currentTab = $scope.tabs[0];
 
 });
