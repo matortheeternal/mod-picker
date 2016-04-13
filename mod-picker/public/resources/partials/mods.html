@@ -1,7 +1,7 @@
 
 <div class="page-container">
     <div class="column-wrapper">
-        <div class="left-column">
+        <div class="left-column left-mods-column">
             <h2>Filters</h2>
 
             <div id="mod-list-filters" class="filter-section">
@@ -134,7 +134,7 @@
                 <a class="expand" ng-click="nm_toggle()">{{ nm_visible ? 'Show less' : 'Show more...' }}</a>
             </div>
         </div>
-        <div class="right-column">
+        <div class="right-column right-mods-column">
             <h2>Mods</h2>
             <loader data="mods">
                 <mod-results data="mods"></mod-results>

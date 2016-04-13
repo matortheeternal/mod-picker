@@ -36,12 +36,7 @@
 
 //left column
 .left-mod-column {
-  width: 250px;
   padding-right: 48px;
-  display: table-cell;
-  vertical-align: top;
-  background-color: $secondary_background;
-  border-right: 1px solid $soft_border_color;
 }
 
 .mod-cat-tag {
@@ -73,10 +68,6 @@
 
 //right column
 .right-mod-column {
-  background-color: $primary_background;
-  display: table-cell;
-  width: 970px;
-  vertical-align: top;
 }
 
 .column-margin {
