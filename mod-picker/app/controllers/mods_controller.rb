@@ -47,6 +47,30 @@ class ModsController < ApplicationController
     end
   end
 
+  # POST /mods/1/star
+  def create_star
+    @mod_star = ModStar.find_or_initialize_by(mod_id: params[:id], user_id: current_user.id)
+    if @mod_star.save
+      render json: {status: :ok}
+    else
+      render json: @mod_star.errors, status: :unprocessable_entity
+    end
+  end
+
+  # DELETE /mods/1/star
+  def destroy_star
+    @mod_star = ModStar.find_by(mod_id: params[:id], user_id: current_user.id)
+    if @mod_star.nil?
+      render json: {status: :ok}
+    else
+      if @mod_star.delete
+        render json: {status: :ok}
+      else
+        render json: @mod_star.errors, status: :unprocessable_entity
+      end
+    end
+  end
+
   # DELETE /mods/1
   # DELETE /mods/1.json
   def destroy

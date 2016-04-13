@@ -6,8 +6,9 @@ app.config(['$routeProvider', function ($routeProvider) {
     );
 }]);
 
-app.controller('modController', function ($scope, $filter, $q, $routeParams, modService) {
-    useTwoColumns(true);
+
+app.controller('modController', function ($rootScope, $scope, $q, $routeParams, modService) {
+    $rootScope.twoColumns = true;
     $scope.expandedState = {
         compabilityNotes: true,
         reviews: false

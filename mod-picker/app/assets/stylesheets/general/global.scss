@@ -7,6 +7,12 @@ body {
   color: $text_color;
   margin: 0;
   background-color: $primary_background;
+  min-height: 100vh;
+  position: relative;
+}
+
+.content {
+  padding-bottom: 176px;
 }
 
 ::-webkit-scrollbar {
@@ -41,9 +47,13 @@ body {
 a {
   color: $link_color;
   text-decoration: none;
+  -webkit-transition: all 0.2s ease-in-out;
+  -moz-transition: all 0.2s ease-in-out;
+  -o-transition: all 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out;
 }
 
-a.strong, .modListName.strong {
+a.strong {
   font-weight: 600;
 }
 
@@ -56,6 +66,14 @@ a.expand {
 
 a:hover {
   color: $link_hover_color_secondary;
+}
+
+.inverse-link {
+  color: $text_color;
+
+  &:hover {
+    color: $link_hover_color_primary;
+  }
 }
 
 /* header styling */
@@ -95,18 +113,31 @@ h4 {
   color: $h4_color;
 }
 
+.logo {
+  h1 {
+    text-shadow: #000 1px 1px 4px;
+  }
+}
+
 /* button styling */
-.btn {
+input[type="button"], input[type="submit"] {
   display: inline;
-  padding: 6px;
-  color: $action_text_color;
-  font-size: 12px;
   text-align: center;
-  text-transform: uppercase;
+  font-size: 12px;
   border: 0;
   border-radius: 0;
-  background-color: $bar_color;
   cursor: pointer;
+  -webkit-transition: all 0.2s ease-in-out;
+  -moz-transition: all 0.2s ease-in-out;
+  -o-transition: all 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out;
+}
+
+.btn {
+  padding: 6px;
+  color: $action_text_color;
+  text-transform: uppercase;
+  background-color: $bar_color;
   &:hover {
     background-color: $bar_highlight_color;
   }
@@ -121,28 +152,14 @@ h4 {
 }
 
 .btn-sm {
-  display: inline;
   padding: 7px;
   color: $action_text_color;
   background-color: $action_color;
-  font-size: 12px;
   margin-right: 4px;
   margin-left: 4px;
-  text-align: center;
-  border: 0;
-  border-radius: 0;
-  cursor: pointer;
   &:hover {
     background-color: $bright_action_color;
   }
-}
-
-#thin-btn {
-  width: auto;
-  height: auto;
-  display: inline;
-  margin-left: 10px;
-  padding: 5px 8px 5px 8px;
 }
 
 /* css for tabs */
@@ -199,6 +216,10 @@ h4 {
   vertical-align: top;
   background-color: $secondary_background;
   border-right: 1px solid $soft_border_color;
+}
+
+.wide-column {
+  width: 360px;
 }
 
 .right-column {

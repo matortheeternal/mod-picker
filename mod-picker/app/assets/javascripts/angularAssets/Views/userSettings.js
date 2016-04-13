@@ -10,8 +10,8 @@ app.config(['$routeProvider', function ($routeProvider) {
     );
 }]);
 
-app.controller('userSettingsController', function ($scope, $q, userSettingsService, userService, quoteService, userTitleService) {
-    useTwoColumns(false);
+app.controller('userSettingsController', function ($rootScope, $scope, $q, userSettingsService, userService, quoteService, userTitleService) {
+    $rootScope.twoColumns = false;
 
     //TODO: put this into the Routing logic
     $scope.tabs = [
@@ -28,6 +28,7 @@ app.controller('userSettingsController', function ($scope, $q, userSettingsServi
     // seems odd to me.  -Mator
     userSettingsService.retrieveUserSettings().then(function (userSettings) {
         $scope.userSettings = userSettings;
+        //TODO: I feel like this could be put inside the retrieveUserSettings() function
         userService.retrieveUser(userSettings.user_id).then(function (user) {
             $scope.user = user;
             $scope.avatar = {
@@ -116,6 +117,8 @@ app.controller('userSettingsController', function ($scope, $q, userSettingsServi
         }
     };
 
+
+    //TODO: I think we should put the modlist actions inside somewhere reusable (directive)
     /* mod list actions */
     $scope.editModList = function(modlist) {
         console.log('Edit Mod List: "'+modlist.name+'"');
