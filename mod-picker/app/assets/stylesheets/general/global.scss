@@ -120,17 +120,24 @@ h4 {
 }
 
 /* button styling */
-.btn {
+input[type="button"], input[type="submit"] {
   display: inline;
-  padding: 6px;
-  color: $action_text_color;
-  font-size: 12px;
   text-align: center;
-  text-transform: uppercase;
+  font-size: 12px;
   border: 0;
   border-radius: 0;
-  background-color: $bar_color;
   cursor: pointer;
+  -webkit-transition: all 0.2s ease-in-out;
+  -moz-transition: all 0.2s ease-in-out;
+  -o-transition: all 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out;
+}
+
+.btn {
+  padding: 6px;
+  color: $action_text_color;
+  text-transform: uppercase;
+  background-color: $bar_color;
   &:hover {
     background-color: $bar_highlight_color;
   }
@@ -145,28 +152,14 @@ h4 {
 }
 
 .btn-sm {
-  display: inline;
   padding: 7px;
   color: $action_text_color;
   background-color: $action_color;
-  font-size: 12px;
   margin-right: 4px;
   margin-left: 4px;
-  text-align: center;
-  border: 0;
-  border-radius: 0;
-  cursor: pointer;
   &:hover {
     background-color: $bright_action_color;
   }
-}
-
-#thin-btn {
-  width: auto;
-  height: auto;
-  display: inline;
-  margin-left: 10px;
-  padding: 5px 8px 5px 8px;
 }
 
 /* css for tabs */
