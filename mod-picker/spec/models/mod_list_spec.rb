@@ -26,7 +26,7 @@ require 'rails_helper'
 
 RSpec.describe ModList, :model, :wip do
 
-  fixtures :mod_lists
+  fixtures :mod_lists, :users
 
   it "should have a valid factory" do
     expect( create(:mod_list) ).to be_valid
@@ -159,6 +159,31 @@ RSpec.describe ModList, :model, :wip do
 
         list.valid?
         expect(list.errors[:game_id]).to include("can't be blank")
+      end
+    end
+  end
+
+  context "counter caches" do
+    describe "comments_count" do
+      # Basic, resuable modlist fixture
+      let!(:list) {mod_lists(:plannedVanilla)}
+
+      it "should increment comment counter by 1 when new comment is made" do
+        expect { 
+          list.comments.create(attributes_for(:comment)) 
+        }.to change { list.comments_count }.by(1)
+      end
+
+      it "should decrement the comment counter by 1 if a comment is deleted" do
+        comment = list.comments.create(attributes_for(:comment, submitted_by: users(:madoka).id))
+        puts comment.errors.full_messages
+
+        expect(comment).to be_valid
+
+        # #destroy calls callbacks upon deletion, #delete does not
+        expect {
+          list.comments.delete(comment.id)
+        }.to change { list.comments_count }.by(-1)
       end
     end
   end
