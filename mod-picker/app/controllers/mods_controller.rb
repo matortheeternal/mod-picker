@@ -15,10 +15,7 @@ class ModsController < ApplicationController
   # GET /mods/1
   # GET /mods/1.json
   def show
-    respond_to do |format|
-      format.html
-      format.json { render :json => @mod }
-    end
+    render @mod.show_json
   end
 
   # POST /mods
