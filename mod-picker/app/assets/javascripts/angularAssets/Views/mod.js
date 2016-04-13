@@ -37,10 +37,6 @@ app.controller('modController', function ($rootScope, $scope, $q, $routeParams, 
         $scope.version = mod.mod_versions[0].id;
     });
 
-    $scope.showReviews = function () {
-        $scope.currentTab = $scope.tabs[2];
-    };
-
     $scope.changeVersion = function(version) {
         if(version && version !== $scope.version && $scope.mod.id) {
             delete $scope.compabilityNotes;
