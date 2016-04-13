@@ -3,7 +3,6 @@
         <thead>
             <tr>
                 <th class="name-header">Mod Name</th>
-                <th class="hidden">Version</th>
                 <th>Authors</th>
                 <th>Endorsements</th>
                 <th>Unique DLs</th>
@@ -25,7 +24,6 @@
         <tbody>
             <tr ng-repeat="mod in data">
                 <td><a class="strong" ng-href="#/mod/{{mod.id}}">{{mod.name}}</a></td>
-                <td class="hidden">{{mod.mod_versions[mod.mod_versions.length - 1].version}}</td>
                 <td>{{mod.nexus_info.authors}}</td>
                 <td>{{mod.nexus_info.endorsements.toLocaleString()}}</td>
                 <td>{{mod.nexus_info.unique_downloads.toLocaleString()}}</td>
