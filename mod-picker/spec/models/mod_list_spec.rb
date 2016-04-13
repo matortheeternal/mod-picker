@@ -169,20 +169,33 @@ RSpec.describe ModList, :model, :wip do
       let!(:list) {mod_lists(:plannedVanilla)}
 
       it "should increment comment counter by 1 when new comment is made" do
+        # c1 = list.comments.create(attributes_for(:comment, submitted_by: users(:madoka).id))
+        # expect(c1).to be_valid
+        # # puts c1.commentable.comments_count
+        # list.reload
+        # expect(list.comments_count).to eq(1)
+
         expect { 
-          list.comments.create(attributes_for(:comment)) 
+          # attributes_for only provides the attributes for a factory WITHOUT the associations.
+          list.comments.create(attributes_for(:comment, submitted_by: users(:madoka).id))
+          list.reload
         }.to change { list.comments_count }.by(1)
       end
 
       it "should decrement the comment counter by 1 if a comment is deleted" do
         comment = list.comments.create(attributes_for(:comment, submitted_by: users(:madoka).id))
-        puts comment.errors.full_messages
+        # need to reload between creation/destruction?
+        list.reload
 
-        expect(comment).to be_valid
+        # list.reload
+        # expect(list.comments_count).to eq(1)
+        # list.comments.destroy(comment.id)
+        # list.reload
+        # expect(list.comments_count).to eq(0)
 
-        # #destroy calls callbacks upon deletion, #delete does not
         expect {
-          list.comments.delete(comment.id)
+          list.comments.destroy(comment.id)
+          list.reload
         }.to change { list.comments_count }.by(-1)
       end
     end
