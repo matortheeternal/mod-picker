@@ -49,11 +49,7 @@ class Comment < ActiveRecord::Base
 
   # Private methods
   private
-
-  # ==================================================================
-  # Counter Caches, manually implemented
-  # ==================================================================
-  
+    # counter caches
     def increment_counter_caches
       self.commentable.comments_count += 1
       self.commentable.save

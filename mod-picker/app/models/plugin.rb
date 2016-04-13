@@ -1,4 +1,7 @@
 class Plugin < ActiveRecord::Base
+  after_create :increment_counter_caches
+  before_destroy :decrement_counter_caches
+
   belongs_to :mod_version, :inverse_of => 'plugins'
 
   # master associations
@@ -30,4 +33,18 @@ class Plugin < ActiveRecord::Base
   validates :crc_hash, length: {in: 1..8}
 
   accepts_nested_attributes_for :dummy_masters, :masters, :record_groups, :overrides, :plugin_errors
+
+  # Private methods
+  private
+    # counter caches
+    def increment_counter_caches
+      self.mod_lists.plugins_count += 1
+      self.mod_lists.save
+    end
+
+    def decrement_counter_caches
+      self.mod_lists.plugins_count -= 1
+      self.mod_lists.save
+    end
+
 end
