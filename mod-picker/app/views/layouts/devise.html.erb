@@ -9,16 +9,6 @@
     <% current_theme = current_user.settings.theme %>
   <% end %>
   <%= stylesheet_link_tag current_theme %>
-  <script>
-    window._token = '<%= form_authenticity_token %>';
-    window._current_theme = '<%= current_theme %>';
-    window._stylesheets = {
-      whiterun: "<%= stylesheet_path 'Whiterun' %>",
-      darkwater: "<%= stylesheet_path 'Darkwater' %>",
-      blackreach: "<%= stylesheet_path 'Blackreach' %>",
-      high_hrothgar: "<%= stylesheet_path 'High Hrothgar' %>"
-    }
-  </script>
 </head>
 <body>
 
