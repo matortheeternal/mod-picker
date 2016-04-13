@@ -57,6 +57,26 @@ RSpec.describe ModList, :model, :wip do
         expect(list.is_collection).to eq(false)
       end
     end
+
+    describe "is_public" do
+      it "should be valid if true or false" do
+        expect(build(:mod_list, is_public: true)).to be_valid
+        expect(build(:mod_list, is_public: false)).to be_valid
+      end
+
+      it "should be invalid if empty or nil" do
+        list = build(:mod_list, is_public: nil)
+
+        list.valid?
+        expect(list.errors[:is_public]).to include("must be true or false")
+      end
+
+      it "should default to false" do
+        list = create(:mod_list)
+
+        expect(list.is_public).to eq(false)
+      end
+    end
   end
 
 

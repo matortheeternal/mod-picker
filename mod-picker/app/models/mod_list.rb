@@ -27,10 +27,11 @@ class ModList < ActiveRecord::Base
 
   # Validations
   
-  validates_inclusion_of :is_collection, {in: [true, false], 
+  validates_inclusion_of :is_collection, :is_public, {in: [true, false], 
                                           message: "must be true or false"}
   
   def init
     self.is_collection ||= false
+    self.is_public ||= false
   end                                         
 end
