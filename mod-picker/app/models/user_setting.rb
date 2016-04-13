@@ -12,6 +12,5 @@ class UserSetting < ActiveRecord::Base
     self.udate_format ||= "%F"
     self.utime_format ||= "%I:%M%p"
     self.theme ||= "Whiterun"
-    self.game_mode ||= Game.find_by(:display_name => 'Skyrim').id
   end
 end
