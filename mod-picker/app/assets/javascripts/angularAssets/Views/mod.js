@@ -27,25 +27,6 @@ app.controller('modController', function ($rootScope, $scope, $q, $routeParams, 
         $scope.mod = mod;
         $scope.changeVersion(mod.mod_versions[0].id);
         $scope.version = mod.mod_versions[0].id;
-
-        //setting the table data for the Nexus Stats table
-        $scope.nexusRows = [
-            { title: 'Unique Downloads', data: $scope.mod.nexus_info.unique_downloads},
-            { title: 'Endorsements', data: $scope.mod.nexus_info.endorsements},
-            { title: 'Endorse Rate', data: Math.floor($scope.mod.nexus_info.endorsements/$scope.mod.nexus_info.unique_downloads * 100) + '%'},
-            { title: 'Release Date', data: $scope.mod.nexus_info.date_added},
-            { title: 'Last Updated', data: $scope.mod.nexus_info.date_updated},
-            { title: 'Total Downloads', data: $scope.mod.nexus_info.total_downloads},
-            { title: 'Views', data: $scope.mod.nexus_info.views},
-            { title: 'Uploaded By', data: $scope.mod.nexus_info.uploaded_by},
-            { title: 'Posts', data: $scope.mod.nexus_info.posts_count},
-            { title: 'Videos', data: $scope.mod.nexus_info.videos_count},
-            { title: 'Images', data: $scope.mod.nexus_info.images_count},
-            { title: 'Files', data: $scope.mod.nexus_info.files_count},
-            { title: 'Articles', data: $scope.mod.nexus_info.articles_count},
-            { title: 'Nexus Category', data: $scope.mod.nexus_info.nexus_category},
-        ];
-        $scope.$apply();
     });
 
     $scope.showReviews = function () {
