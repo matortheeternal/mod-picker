@@ -10,8 +10,8 @@ app.config(['$routeProvider', function ($routeProvider) {
     );
 }]);
 
-app.controller('userSettingsController', function ($scope, $q, userSettingsService, userService, quoteService, userTitleService) {
-    useTwoColumns(false);
+app.controller('userSettingsController', function ($rootScope, $scope, $q, userSettingsService, userService, quoteService, userTitleService) {
+    $rootScope.twoColumns = false;
 
     //TODO: put this into the Routing logic
     $scope.tabs = [
