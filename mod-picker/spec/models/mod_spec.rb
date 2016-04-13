@@ -16,7 +16,7 @@ require 'rails_helper'
 #   t.integer "load_order_notes_count",    limit: 4,   default: 0
 # end
 
-RSpec.describe Mod, :model, :wip do
+RSpec.describe Mod, :model do
   # fixtures
   fixtures :users, :mods
 
