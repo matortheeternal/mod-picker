@@ -68,6 +68,14 @@ a:hover {
   color: $link_hover_color_secondary;
 }
 
+.inverse-link {
+  color: $text_color;
+
+  &:hover {
+    color: $link_hover_color_primary;
+  }
+}
+
 /* header styling */
 h1 {
   color: $h1_color;
@@ -103,6 +111,12 @@ h4 {
   font-size: 12px;
   text-transform: uppercase;
   color: $h4_color;
+}
+
+.logo {
+  h1 {
+    text-shadow: #000 1px 1px 4px;
+  }
 }
 
 /* button styling */

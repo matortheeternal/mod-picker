@@ -28,23 +28,23 @@
         <ul class="user-nav">
           <% if User.exists?(current_user.id) %>
               <li>
-                Welcome <%= link_to current_user.username, "#/profile/#{current_user.id}" %>
+                Welcome <%= link_to current_user.username, "#/profile/#{current_user.id}", class: "inverse-link" %>
               </li>
               <li>
-                <a href="#/settings/mod_lists">Saved Mod Lists</a>
+                <a class="inverse-link" href="#/settings/mod_lists">Saved Mod Lists</a>
               </li>
               <li>
-                <a href="#/settings">Settings</a>
+                <a class="inverse-link" href="#/settings">Settings</a>
               </li>
               <li>
-                <a href="/users/sign_out">Log Out</a>
+                <a class="inverse-link" href="/users/sign_out">Log Out</a>
               </li>
           <% else %>
               <li>
-                <a href="/users/sign_in">Log In</a>
+                <a class="inverse-link" href="/users/sign_in">Log In</a>
               </li>
               <li>
-                <a href="/users/sign_up">Register</a>
+                <a class="inverse-link" href="/users/sign_up">Register</a>
               </li>
           <% end %>
           <li>
@@ -148,10 +148,10 @@
           Browse Content
         </span>
         <ul>
-          <li><a href="#/mods">Mods</a></li>
-          <li><a href="#/mod-lists">Mod Lists</a></li>
-          <li><a href="#/users">Users</a></li>
-          <li><a href="#/comments">Comments</a></li>
+          <li><a class="inverse-link" href="#/mods">Mods</a></li>
+          <li><a class="inverse-link" href="#/mod-lists">Mod Lists</a></li>
+          <li><a class="inverse-link" href="#/users">Users</a></li>
+          <li><a class="inverse-link" href="#/comments">Comments</a></li>
         </ul>
       </section>
       <section>
@@ -159,11 +159,11 @@
           Browse Contributions
         </span>
         <ul>
-          <li><a href="#/reviews">Reviews</a></li>
-          <li><a href="#/compatibility-notes">Compatibility Notes</a></li>
-          <li><a href="#/load-order-notes">Load Order Notes</a></li>
-          <li><a href="#/install-order-notes">Install Order Notes</a></li>
-          <li><a href="#/incorrect-notes">Incorrect Notes</a></li>
+          <li><a class="inverse-link" href="#/reviews">Reviews</a></li>
+          <li><a class="inverse-link" href="#/compatibility-notes">Compatibility Notes</a></li>
+          <li><a class="inverse-link" href="#/load-order-notes">Load Order Notes</a></li>
+          <li><a class="inverse-link" href="#/install-order-notes">Install Order Notes</a></li>
+          <li><a class="inverse-link" href="#/incorrect-notes">Incorrect Notes</a></li>
         </ul>
       </section>
       <section>
@@ -171,11 +171,11 @@
           Mod Picker
         </span>
         <ul>
-          <li><a href="#">About Us</a></li>
-          <li><a href="#">Terms of Service</a></li>
-          <li><a href="#">Privacy Policy</a></li>
-          <li><a href="#">Help Center</a></li>
-          <li><a href="#">Contact</a></li>
+          <li><a class="inverse-link" href="#">About Us</a></li>
+          <li><a class="inverse-link" href="#">Terms of Service</a></li>
+          <li><a class="inverse-link" href="#">Privacy Policy</a></li>
+          <li><a class="inverse-link" href="#">Help Center</a></li>
+          <li><a class="inverse-link" href="#">Contact</a></li>
         </ul>
       </section>
       <section>
@@ -183,9 +183,9 @@
           Social Media
         </span>
         <ul>
-          <li><a href="https://twitter.com/Mod_Picker">Twitter</a></li>
-          <li><a href="https://www.youtube.com/channel/UCWqJeb-T5-k-AnWZTF_0ZAw">YouTube</a></li>
-          <li><a href="https://www.facebook.com/modpicker">Facebook</a></li>
+          <li><a class="inverse-link" href="https://twitter.com/Mod_Picker">Twitter</a></li>
+          <li><a class="inverse-link" href="https://www.youtube.com/channel/UCWqJeb-T5-k-AnWZTF_0ZAw">YouTube</a></li>
+          <li><a class="inverse-link" href="https://www.facebook.com/modpicker">Facebook</a></li>
         </ul>
       </section>
     </div>

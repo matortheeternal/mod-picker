@@ -47,12 +47,7 @@ header {
   }
 
   a {
-    color: $text_color;
     font-weight: 700;
-
-    &:hover {
-      color: $link_hover_color_primary;
-    }
   }
 }
 
