@@ -129,10 +129,12 @@
 
     tbody tr:nth-child(odd) {
       background-color: $secondary_background;
+      border-bottom: 1px solid $border_color;
     }
 
     tbody tr:nth-child(even) {
       background-color: $primary_background;
+      border-bottom: 1px solid $border_color;
     }
   }
 }
