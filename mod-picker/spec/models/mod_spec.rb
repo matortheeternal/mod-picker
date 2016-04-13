@@ -80,28 +80,30 @@ RSpec.describe Mod, :model, :wip do
       end
     end
 
-    # xdescribe "compatibility_notes_count" do
-    #   let!(:count_before) {skyui.compatibility_notes_count}
-    #   let!(:mod_version1) {skyui.mod_versions.first}
-    #   let!(:mod_version2) {tes5edit.mod_versions.first}
-    #   # compatibility_note = CompatibilityNote.create!(submitted_by: user.id, compatibility_type: "Incompatible", text_body: Faker::Lorem.paragraphs(3))
-    #   let(:compatibility_note) { create(:compatibility_note, submitted_by: user.id)}
-    #   mvcn1 = ModVersionCompatibilityNote.create(mod_version_id: mod_version1.id, compatibility_note_id: compatibility_note.id)
-    #   mvcn2 = ModVersionCompatibilityNote.create(mod_version_id: mod_version2.id, compatibility_note_id: compatibility_note.id)
+    describe "compatibility_notes_count" do
+      # let!(:count_before) {skyui.compatibility_notes_count}
+      # let!(:mod_version1) {skyui.mod_versions.first}
+      # let!(:mod_version2) {tes5edit.mod_versions.first}
+      # compatibility_note = CompatibilityNote.create!(submitted_by: user.id, compatibility_type: "Incompatible", text_body: Faker::Lorem.paragraphs(3))
+      # let(:compatibility_note) { create(:compatibility_note, submitted_by: user.id)}
+      # mvcn1 = ModVersionCompatibilityNote.create(mod_version_id: mod_version1.id, compatibility_note_id: compatibility_note.id)
+      # mvcn2 = ModVersionCompatibilityNote.create(mod_version_id: mod_version2.id, compatibility_note_id: compatibility_note.id)
 
-    #   it "should increment when we add a compatibility_note" do
-    #     skyui = Mod.find_by(name: 'SkyUI')
-    #     expect(skyui.compatibility_notes_count).to eq(count_before + 1)
-    #   end
+      it "should increment when we add a compatibility_note" do
+        # expect {
+        #   create(:mod_version_compatibility_note,
+        #           mod_version_id: )
+        # }.to change {skyui.compatibility_notes_count}.by(1)
+      end
 
-    #   it "should decrement when we remove a compatibility_note" do
-    #     mvcn1.destroy
-    #     mvcn2.destroy
-    #     compatibility_note.destroy
-    #     skyui = Mod.find_by(name: 'SkyUI')
-    #     expect(skyui.compatibility_notes_count).to eq(count_before)
-    #   end
-    # end
+      # it "should decrement when we remove a compatibility_note" do
+      #   mvcn1.destroy
+      #   mvcn2.destroy
+      #   compatibility_note.destroy
+      #   skyui = Mod.find_by(name: 'SkyUI')
+      #   expect(skyui.compatibility_notes_count).to eq(count_before)
+      # end
+    end
 
     # describe "install_order_notes_count" do
     #   count_before = skyui.install_order_notes_count
