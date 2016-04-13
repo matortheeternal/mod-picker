@@ -1,32 +1,41 @@
-<div>
-	<li class="stat-title">Unique Downloads</li>
-	<li class="stat-title">Endorsements</li>
-	<li class="stat-title">Endorse Rate</li>
-	<li class="stat-title">Release Date</li>
-	<li class="stat-title">Last Updated</li>
-	<li class="stat-title">Total Downloads</li>
-	<li class="stat-title">Views</li>
-	<li class="stat-title">Uploaded By</li>
-	<li class="stat-title">Posts</li>
-	<li class="stat-title">Videos</li>
-	<li class="stat-title">Images</li>
-	<li class="stat-title">Files</li>
-	<li class="stat-title">Articles</li>
-	<li class="stat-title">Nexus Category</li>
-</div>
-<div>
-	<li class="stat-data">{{mod.nexus_info.unique_downloads}}</li>
-	<li class="stat-data">{{mod.nexus_info.endorsements}}</li>
-	<li class="stat-data">{{Math.floor(mod.nexus_info.endorsements/mod.nexus_info.unique_downloads * 100) + '%'}}</li>
-	<li class="stat-data">{{mod.nexus_info.date_added}}</li>
-	<li class="stat-data">{{mod.nexus_info.date_updated}}</li>
-	<li class="stat-data">{{mod.nexus_info.total_downloads}}</li>
-	<li class="stat-data">{{mod.nexus_info.views}}</li>
-	<li class="stat-data">{{mod.nexus_info.uploaded_by}}</li>
-	<li class="stat-data">{{mod.nexus_info.posts_count}}</li>
-	<li class="stat-data">{{mod.nexus_info.videos_count}}</li>
-	<li class="stat-data">{{mod.nexus_info.images_count}}</li>
-	<li class="stat-data">{{mod.nexus_info.files_count}}</li>
-	<li class="stat-data">{{mod.nexus_info.articles_count}}</li>
-	<li class="stat-data">{{mod.nexus_info.nexus_category}}</li>
-</div>
+	<dt class="stat-title">Unique Downloads</dt>
+	<dd class="stat-data">{{mod.nexus_info.unique_downloads}}</dd>
+
+	<dt class="stat-title">Endorsements</dt>
+	<dd class="stat-data">{{mod.nexus_info.endorsements}}</dd>
+
+	<dt class="stat-title">Endorse Rate</dt>
+	<dd class="stat-data">{{mod.nexus_info.endorsements / mod.nexus_info.unique_downloads | percentage}}</dd>
+
+	<dt class="stat-title">Release Date</dt>
+	<dd class="stat-data">{{mod.nexus_info.date_added | date}}</dd>
+
+	<dt class="stat-title">Last Updated</dt>
+	<dd class="stat-data">{{mod.nexus_info.date_updated | date}}</dd>
+
+	<dt class="stat-title">Total Downloads</dt>
+	<dd class="stat-data">{{mod.nexus_info.total_downloads}}</dd>
+
+	<dt class="stat-title">Views</dt>
+	<dd class="stat-data">{{mod.nexus_info.views}}</dd>
+
+	<dt class="stat-title">Uploaded By</dt>
+	<dd class="stat-data">{{mod.nexus_info.uploaded_by}}</dd>
+
+	<dt class="stat-title">Posts</dt>
+	<dd class="stat-data">{{mod.nexus_info.posts_count}}</dd>
+
+	<dt class="stat-title">Videos</dt>
+	<dd class="stat-data">{{mod.nexus_info.videos_count}}</dd>
+
+	<dt class="stat-title">Images</dt>
+	<dd class="stat-data">{{mod.nexus_info.images_count}}</dd>
+
+	<dt class="stat-title">Files</dt>
+	<dd class="stat-data">{{mod.nexus_info.files_count}}</dd>
+
+	<dt class="stat-title">Articles</dt>
+	<dd class="stat-data">{{mod.nexus_info.articles_count}}</dd>
+
+	<dt class="stat-title">Nexus Category</dt>
+	<dd class="stat-data">{{mod.nexus_info.nexus_category}}</dd>

@@ -6,6 +6,14 @@ app.config(['$routeProvider', function ($routeProvider) {
     );
 }]);
 
+app.filter('percentage', function() {
+  return function(input) {
+    if (isNaN(input)) {
+      return input;
+    }
+    return Math.floor(input * 100) + '%';
+  };
+});
 
 app.controller('modController', function ($rootScope, $scope, $q, $routeParams, modService) {
     $rootScope.twoColumns = true;

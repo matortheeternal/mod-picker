@@ -47,18 +47,25 @@
   display: inline-block;
 }
 
+//stat blocks
 .stat-title {
+  width: 100px;
   font-weight: 500;
+  font-size: 14px;
   white-space: nowrap;
+  display: inline-block;
+}
+
+.stat-data {
+  width: 100px;
+  font-size: 14px;
+  white-space: nowrap;
+  display: inline-block;
 }
 
 .version-dropdown {
   width: 100%;
   font-size: 16px;
-}
-
-.stat-data {
-  padding-left: 10px;
 }
 
 .source-image {
