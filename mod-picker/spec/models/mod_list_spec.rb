@@ -77,6 +77,13 @@ RSpec.describe ModList, :model, :wip do
         expect(list.is_public).to eq(false)
       end
     end
+
+    describe "has_adult_content" do
+      it "should be valid if true or false" do
+        expect(build(:mod_list, has_adult_content: true)).to be_valid
+        expect(build(:mod_list, has_adult_content: true)).to be_valid
+      end
+    end
   end
 
 
