@@ -104,7 +104,7 @@ RSpec.describe ModList, :model, :wip do
         end
       end
 
-      # error message is in sql and is only partial
+      # error message is in sql and only partial checking is done
       it "should be invalid if nil" do
         expect{ create(:mod_list, status: nil) }
           .to raise_error(ActiveRecord::StatementInvalid)
@@ -127,8 +127,39 @@ RSpec.describe ModList, :model, :wip do
         expect( create(:mod_list).created).to be_within(1.minute).of DateTime.now
       end
     end
+
+    describe "description" do
+      it "should be valid if 1 < Length < 65535" do
+        list = build(:mod_list)
+
+        validLengths = [("a" * 64), ("b" * 65535), ("c" * 20000), ("d" * 3400)]
+
+        validLengths.each do |text|
+          list.description = text
+          expect(list).to be_valid
+        end
+      end
+
+      it "should be valid if empty" do
+        expect(build(:mod_list, description: nil)).to be_valid
+      end
+
+      it "should be invalid if length > 65535" do
+        list = build(:mod_list,
+                     description: ("a" * 65536))
+
+        list.valid?
+        expect(list.errors[:description]).to include("is too long (maximum is 65535 characters)")
+      end
+    end
+
+    describe "game_id" do
+      it "should be invalid if empty" do
+        list = build(:mod_list, game_id: nil)
+
+        list.valid?
+        expect(list.errors[:game_id]).to include("can't be blank")
+      end
+    end
   end
-
-
-
 end

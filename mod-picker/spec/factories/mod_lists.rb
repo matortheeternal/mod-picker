@@ -24,10 +24,10 @@
 
 FactoryGirl.define do
   factory :mod_list do
-    association :created_by, factory: :user
+    association :user, factory: :user
     has_adult_content false
     status "under construction"
     description { Faker::Lorem.sentence(4, false, 6) }
-    association :game_id, factory: :game
+    association :game, factory: :game
   end
 end
