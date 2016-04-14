@@ -7,10 +7,12 @@ body {
   color: $text_color;
   margin: 0;
   background-color: $primary_background;
+  min-height: 100vh;
+  position: relative;
 }
 
-::-webkit-scrollbar {
-  display: none;
+.content {
+  padding-bottom: 176px;
 }
 
 .hidden {
@@ -38,12 +40,17 @@ body {
 }
 
 /* url styling */
-a, .modListName {
+a {
   color: $link_color;
   text-decoration: none;
+  cursor: pointer;
+  -webkit-transition: all 0.2s ease-in-out;
+  -moz-transition: all 0.2s ease-in-out;
+  -o-transition: all 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out;
 }
 
-a.strong, .modListName.strong {
+a.strong {
   font-weight: 600;
 }
 
@@ -56,6 +63,14 @@ a.expand {
 
 a:hover {
   color: $link_hover_color_secondary;
+}
+
+.inverse-link {
+  color: $text_color;
+
+  &:hover {
+    color: $link_hover_color_primary;
+  }
 }
 
 /* header styling */
@@ -95,18 +110,31 @@ h4 {
   color: $h4_color;
 }
 
+.logo {
+  h1 {
+    text-shadow: #000 1px 1px 4px;
+  }
+}
+
 /* button styling */
-.btn {
+input[type="button"], input[type="submit"] {
   display: inline;
-  padding: 6px;
-  color: $action_text_color;
-  font-size: 12px;
   text-align: center;
-  text-transform: uppercase;
+  font-size: 12px;
   border: 0;
   border-radius: 0;
-  background-color: $bar_color;
   cursor: pointer;
+  -webkit-transition: all 0.2s ease-in-out;
+  -moz-transition: all 0.2s ease-in-out;
+  -o-transition: all 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out;
+}
+
+.btn {
+  padding: 6px;
+  color: $action_text_color;
+  text-transform: uppercase;
+  background-color: $bar_color;
   &:hover {
     background-color: $bar_highlight_color;
   }
@@ -120,12 +148,15 @@ h4 {
   }
 }
 
-#thin-btn {
-  width: auto;
-  height: auto;
-  display: inline;
-  margin-left: 10px;
-  padding: 5px 8px 5px 8px;
+.btn-sm {
+  padding: 7px;
+  color: $action_text_color;
+  background-color: $action_color;
+  margin-right: 4px;
+  margin-left: 4px;
+  &:hover {
+    background-color: $bright_action_color;
+  }
 }
 
 /* css for tabs */
@@ -150,16 +181,16 @@ h4 {
     font-weight: 500;
     padding: 9px 16px 9px 16px;//half of font size high
   }
-}
 
-.selected-tab {
-  background-color: $action_color;
-}
+  .selected-tab {
+    background-color: $action_color;
+    color: $inverse_text_color;
+  }
 
-.unselected-tab:hover {
-  background-color: $bright_action_color;
+  .unselected-tab:hover {
+    background-color: $bright_action_color;
+  }
 }
-
 /* css for columns */
 .two-columns {
   background: linear-gradient(90deg, $secondary_background 50%, $primary_background 50%);
@@ -185,8 +216,13 @@ h4 {
   border-right: 1px solid $soft_border_color;
 }
 
+.wide-column {
+  width: 360px;
+}
+
 .right-column {
   width: 970px;
+  max-width: 970px;
   padding: 40px 0 40px 48px;
   display: table-cell;
   vertical-align: top;
@@ -194,6 +230,28 @@ h4 {
 }
 
 /* css for forms, inputs, and labels */
+.success-message {
+  background-color: $success_message_color;
+  padding: 14px;
+  font-weight: 500;
+  font-size: 20px;
+  text-align: center;
+}
+
+.fixed-messages {
+  position: fixed;
+  top: 0;
+  left: 0;
+}
+
+.error-message {
+  background-color: $error_message_color;
+  padding: 14px;
+  font-weight: 500;
+  font-size: 20px;
+  text-align: center;
+}
+
 .big-text-area {
   width: 100%;
   height: 300px;
@@ -205,6 +263,18 @@ h4 {
 input[type="checkbox"] {
   margin: 0;
   padding: 0;
+}
+
+.checkbox-list {
+  padding: 0;
+  margin: 0;
+  font-size: 12px;
+
+  li {
+    list-style: outside none none;
+    padding: 0;
+    margin-bottom: 2px;
+  }
 }
 
 label {
@@ -225,13 +295,30 @@ form {
     width: 200px;
     font-size: 22px;
     font-weight: 500;
+    color: $text_color;
   }
 
-  .section {
+  section {
     display: block;
-    margin-top: 10px;
+    margin-top: 15px;
     margin-left: 30px;
     margin-bottom: 30px;
+
+    .section-title {
+      font-size: 16px;
+      margin-top: 25px;
+      margin-left: 0;
+      margin-bottom: 0;
+    }
+
+    section {
+      margin-bottom: 15px;
+      margin-top: 15px;
+
+      div {
+        display: inline-block;
+      }
+    }
 
     input[type="text"], input[type="password"], input[type="email"] {
       vertical-align: top;
@@ -239,27 +326,19 @@ form {
       font-size: 20px;
     }
 
+    input[type="file"] {
+      display: none;
+    }
+
     input.path-input {
       width: 350px;
       font-size: 13px;
       padding: 6px;
     }
-
-    h4 {
-      font-size: 16px;
-      font-weight: 500;
-      margin-top: 25px;
-      margin-left: 0;
-      margin-bottom: 0;
-    }
-  }
-
-  .section-element {
-    margin-top: 15px;
-    margin-bottom: 15px;
   }
 
   .input-label {
+    min-width: 180px;
     margin-bottom: 4px;
   }
 
@@ -267,5 +346,40 @@ form {
     display: block;
     margin: auto;
     padding: 10px;
+  }
+}
+
+/* css for avatars */
+
+.avatar {
+  max-width: 150px;
+  max-height: 150px;
+}
+
+/* css for modals */
+
+.modal-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 3;
+  background-color: rgba($shadow_color, 0.4);
+
+  .modal {
+    width: 400px;
+    padding: 40px;
+    margin: 150px auto;
+    background-color: $primary_background;
+    box-shadow: 1px 1px 10px 1px rgba($shadow_color, 0.8)
+  }
+
+  .checkbox-list {
+    font-size: 14px;
+  }
+
+  .section-title {
+    margin-top: 0;
   }
 }

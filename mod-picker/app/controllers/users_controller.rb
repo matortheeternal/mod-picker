@@ -1,81 +1,37 @@
 class UsersController < ApplicationController
-  before_action :set_user, only: [:show, :edit, :update, :destroy]
+  before_action :set_user, only: [:show, :update, :destroy]
 
   # GET /users
   # GET /users.json
   def index
     @users = User.filter(filtering_params)
 
-    respond_to do |format|
-      format.json { render :json => @users}
-    end
+    render :json => @users
   end
 
   # GET /users/1
   # GET /users/1.json
   def show
-    respond_to do |format|
-      format.json { render :json => @user.as_json(
-        { :include => {
-            :mods => {
-                :only => [:id, :name, :game_id, :mod_stars_count]
-            },
-            :mod_lists => {
-                :only => [:id, :is_collection, :is_public, :status, :mods_count, :created]
-            },
-            :bio => {
-                :except => [:user_id]
-            },
-            :reputation => {
-                :only => [:overall]
-            }
-          }
-        }
-      )}
-    end
-  end
-
-  # GET /users/new
-  def new
-    @user = User.new
-  end
-
-  # GET /users/1/edit
-  def edit
-  end
-
-  # POST /users
-  # POST /users.json
-  def create
-    @user = User.new(user_params)
-
-    respond_to do |format|
-      if @user.save
-        format.json { render json: {status: 'created'} }
-      else
-        format.json { render json: @user.errors, status: :unprocessable_entity }
-      end
-    end
+    render :json => @user.show_json
   end
 
   # PATCH/PUT /users/1
   # PATCH/PUT /users/1.json
   def update
-    respond_to do |format|
-      if @user.update(user_params)
-        format.json { render json: {status: 'ok'} }
-      else
-        format.json { render json: @user.errors, status: :unprocessable_entity }
-      end
+    if @user.update(user_params)
+      render json: {status: :ok}
+    else
+      render json: @user.errors, status: :unprocessable_entity
     end
   end
 
   # DELETE /users/1
   # DELETE /users/1.json
   def destroy
-    @user.destroy
-    respond_to do |format|
-      format.json { head :no_content }
+    if @user.destroy
+      render json: {status: :ok}
+    else
+      render json: @user.errors, status: :unprocessable_entity
     end
   end
 

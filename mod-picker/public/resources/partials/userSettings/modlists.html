@@ -1,13 +1,13 @@
 <h3 class="section-title">Mod Lists</h3>
-<div class="section">
-    <table border="1" class="listing-table">
+<section>
+    <table border="1" class="listing-table" ng-if="lists.length">
         <thead>
             <tr>
                 <th class="name-column">Name</th>
                 <th>Mods</th>
                 <th>Status</th>
-                <th>Cate Created</th>
-                <th>Last Updated</th>
+                <th>Stars</th>
+                <th>Comments</th>
                 <th>Options</th>
             </tr>
         </thead>
@@ -16,30 +16,31 @@
                 <td class="name-column">{{list.name}}</td>
                 <td>{{list.mods_count}}</td>
                 <td>{{list.status}}</td>
-                <td>{{list.created}}</td>
-                <td>{{list.edited}}</td>
+                <td>{{list.mod_list_stars_count}}</td>
+                <td>{{list.comments_count}}</td>
                 <td>
                     <div class="table-buttons">
-                        <input type="button" class="btn-table" ng-click="modListClone(mod_list)" value="Clone"</a>
-                        <input type="button" class="btn-table" ng-click="modListEdit(mod_list)" value="Edit"</a>
-                        <input type="button" class="btn-table" ng-click="modListDelete(mod_list)" value="Delete"</a>
+                        <input class="btn-sm" type="button" ng-click="cloneModList(list)" value="Clone"/>
+                        <input class="btn-sm" type="button" ng-click="editModList(list)" value="Edit"/>
+                        <input class="btn-sm" type="button" ng-click="deleteModList(list)" value="Delete"/>
                     </div>
                 </td>
             </tr>
         </tbody>
     </table>
-</div>
+    <span class="explanation" ng-if="!lists.length">There's nothing here</span>
+</section>
 
 <h3 class="section-title">Mod Collections</h3>
-<div class="section">
-    <table border="1" class="listing-table">
+<section>
+    <table border="1" class="listing-table" ng-if="collections.length">
         <thead>
             <tr>
                 <th class="name-column">Name</th>
                 <th>Mods</th>
                 <th>Status</th>
-                <th>Cate Created</th>
-                <th>Last Updated</th>
+                <th>Stars</th>
+                <th>Comments</th>
                 <th>Options</th>
             </tr>
         </thead>
@@ -48,16 +49,18 @@
                 <td class="name-column">{{collection.name}}</td>
                 <td>{{collection.mods_count}}</td>
                 <td>{{collection.status}}</td>
-                <td>{{collection.created}}</td>
-                <td>{{collection.edited}}</td>
+                <td>{{collection.mod_list_stars_count}}</td>
+                <td>{{collection.comments_count}}</td>
                 <td>
                     <div class="table-buttons">
-                        <input type="button" class="btn-table" ng-click="modListClone(mod_list)" value="Clone"</a>
-                        <input type="button" class="btn-table" ng-click="modListEdit(mod_list)" value="Edit"</a>
-                        <input type="button" class="btn-table" ng-click="modListDelete(mod_list)" value="Delete"</a>
+                        <input class="btn-sm" type="button" ng-click="cloneModList(collection)" value="Clone"/>
+                        <input class="btn-sm" type="button" ng-click="editModList(collection)" value="Edit"/>
+                        <input class="btn-sm" type="button" ng-click="deleteModList(collection)" value="Delete"/>
                     </div>
                 </td>
             </tr>
         </tbody>
     </table>
-</div>
+    <span class="explanation" ng-if="!collections.length">There's nothing here...</span>
+</section>
+

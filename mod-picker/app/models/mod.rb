@@ -20,6 +20,8 @@ class Mod < ActiveRecord::Base
   scope :files, -> (low, high) { where(:nexus_infos => {files_count: (low..high)} ) }
   scope :articles, -> (low, high) { where(:nexus_infos => {articles_count: (low..high)} ) }
 
+  enum status: [ :good, :dangerous, :obsolete ]
+
   belongs_to :game, :inverse_of => 'mods'
 
   # categories the mod belongs to
@@ -50,7 +52,6 @@ class Mod < ActiveRecord::Base
 
   # mod versions and associated data
   has_many :mod_versions, :inverse_of => 'mod'
-  has_many :compatibility_notes, -> { distinct }, :through => 'mod_versions', :inverse_of => 'mods'
 
   accepts_nested_attributes_for :mod_versions
 
@@ -58,20 +59,24 @@ class Mod < ActiveRecord::Base
     self.mod_authors.count == 0
   end
 
-  def update_install_order_notes_count
-    self.install_order_notes_count = self.install_before_notes.count + self.install_after_notes.count
-  end
-
-  def update_load_order_notes_count
-    self.load_order_notes_count = (self.mod_versions.plugins.load_before_notes + self.mod_versions.plugins.load_after_notes).count
+  def show_json
+    self.as_json(:include => {
+        :mod_versions => {
+            :except => [:mod_id],
+            :methods => :required_mods
+        },
+        :reviews => {:except => [:text_body, :mod_id, :edited, :incorrect_notes_count]}
+    })
   end
 
   def as_json(options={})
-    super(:include => {
-        :nexus_info => {:except => [:mod_id, :changelog]},
-        :mod_versions => {:except => [:mod_id]},
-        :authors => {:only => [:id, :username]},
-        :reviews => {:except => [:text_body, :mod_id, :edited, :incorrect_notes_count]}
-    })
+    default_options = {
+        :include => {
+            :nexus_info => {:except => [:mod_id, :changelog]},
+            :authors => {:only => [:id, :username]}
+        }
+    }
+    options = default_options.merge(options)
+    super(options)
   end
 end

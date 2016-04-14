@@ -1,3 +1,4 @@
+//TODO: maybe we should think about splitting the logic to retrieve all the data and filtering it.
 app.service('categoryService', function ($q, backend) {
 
     function retrieveFilteredCategories(key) {
@@ -20,6 +21,7 @@ app.service('categoryService', function ($q, backend) {
     }
 
     this.retrievePrimaryCategory = function () {
+        //TODO: we shall have an empty key for the primary Category
         return retrieveFilteredCategories('primary');
     };
 

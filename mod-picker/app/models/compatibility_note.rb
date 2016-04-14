@@ -7,6 +7,8 @@ class CompatibilityNote < ActiveRecord::Base
   scope :mod, -> (id) { joins(:mod_versions).where(:mod_versions => {mod_id: id}) }
   scope :mv, -> (id) { joins(:mod_versions).where(:mod_versions => {id: id}) }
 
+  enum status: [ :incompatible, :"partially incompatible", :"compatibility mod", :"compatibility option", :"make custom patch" ]
+
   belongs_to :user, :foreign_key => 'submitted_by', :inverse_of => 'compatibility_notes'
 
   belongs_to :compatibility_plugin, :class_name => 'Plugin', :foreign_key => 'compatibility_plugin_id', :inverse_of => 'compatibility_note_plugins'
@@ -15,7 +17,6 @@ class CompatibilityNote < ActiveRecord::Base
   # mod versions this compatibility note is associated with
   has_many :mod_version_compatibility_notes, :inverse_of => 'compatibility_note'
   has_many :mod_versions, :through => 'mod_version_compatibility_notes', :inverse_of => 'compatibility_notes'
-  has_many :mods, -> { distinct }, :through => 'mod_versions', :inverse_of => 'compatibility_notes'
 
   # mod lists this compatibility note appears on
   has_many :mod_list_compatibility_notes, :inverse_of => 'compatibility_note'
@@ -30,10 +31,9 @@ class CompatibilityNote < ActiveRecord::Base
 
   # validations
   validates :submitted_by, presence: true
-  validates :compatibility_type, inclusion: { in: ["Incompatible", "Partially Incompatible", "Compatibility Mod", "Compatibility Plugin", "Make Custom Patch"],
-                                              message: "Not a valid compatibility type" }
   validates :text_body, length: { in: 64..16384 }                                            
-  
+
+
   def init
     self.submitted ||= DateTime.now
   end                 
