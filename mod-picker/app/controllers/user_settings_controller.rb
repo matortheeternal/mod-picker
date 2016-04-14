@@ -13,6 +13,7 @@ class UserSettingsController < ApplicationController
   # PATCH/PUT /user_settings/1
   # PATCH/PUT /user_settings/1.json
   def update
+    authorize! :update, @user_settings
     if @user_setting.update(user_setting_params)
       render json: {status: :ok}
     else
