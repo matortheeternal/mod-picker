@@ -17,7 +17,7 @@ require 'rails_helper'
 #   add_index "compatibility_note_history_entries", ["compatibility_plugin_id"], name: "fk_rails_6466cbf704", using: :btree
 #   add_index "compatibility_note_history_entries", ["submitted_by"], name: "fk_rails_7e4343a2d1", using: :btree
 
-RSpec.describe CompatibilityNoteHistoryEntry, :model, :wip do
+RSpec.describe CompatibilityNoteHistoryEntry, :model do
   fixtures :compatibility_note_history_entries
 
   it "should have a valid fixture" do
