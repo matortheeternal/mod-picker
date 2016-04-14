@@ -34,13 +34,13 @@ app.controller('modResultsController', function($scope) {
         },
         {
             visibility: true,
-            label: "Unique DL/s",
+            label: "Unique DLs",
             data: "unique_downloads",
             filter: "number"
         },
         {
             visibility: false,
-            label: "Total DL/s",
+            label: "Total DLs",
             data: "total_downloads",
             filter: "number"
         },
