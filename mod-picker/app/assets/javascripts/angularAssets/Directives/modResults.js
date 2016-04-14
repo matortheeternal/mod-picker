@@ -17,6 +17,12 @@ app.controller('modResultsController', function($scope) {
     $scope.columns = [
         {
             visibility: true,
+            toggleable: false,
+            label: "Mod Name",
+            data: "mod_name"
+        },
+        {
+            visibility: true,
             label: "Authors",
             data: "authors"
         },
@@ -24,57 +30,49 @@ app.controller('modResultsController', function($scope) {
             visibility: true,
             label: "Endorsements",
             data: "endorsements",
-            filter: "number",
-            filter_arg: 0
+            filter: "number"
         },
         {
             visibility: true,
             label: "Unique DL/s",
             data: "unique_downloads",
-            filter: "number",
-            filter_arg: 0
+            filter: "number"
         },
         {
             visibility: false,
             label: "Total DL/s",
             data: "total_downloads",
-            filter: "number",
-            filter_arg: 0
+            filter: "number"
         },
         {
             visibility: false,
             label: "Views",
             data: "views",
-            filter: "number",
-            filter_arg: 0
+            filter: "number"
         },
         {
             visibility: false,
             label: "Posts",
             data: "posts_count",
-            filter: "number",
-            filter_arg: 0
+            filter: "number"
         },
         {
             visibility: false,
             label: "Videos",
             data: "videos_count",
-            filter: "number",
-            filter_arg: 0
+            filter: "number"
         },
         {
             visibility: false,
             label: "Images",
             data: "images_count",
-            filter: "number",
-            filter_arg: 0
+            filter: "number"
         },
         {
             visibility: false,
             label: "Files",
             data: "files_count",
-            filter: "number",
-            filter_arg: 0
+            filter: "number"
         },
         {
             visibility: false,

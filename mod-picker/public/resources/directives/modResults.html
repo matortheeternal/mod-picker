@@ -2,7 +2,6 @@
     <table>
         <thead>
             <tr>
-                <th>Mod Name</th>
                 <th ng-repeat="column in columns" ng-class="{ 'hidden': !column.visibility }">{{column.label}}</th>
                 <th class="actions-header">
                     <a ng-click="showModal = true">
@@ -14,8 +13,8 @@
         <tbody>
             <tr ng-repeat="mod in data">
                 <td><a class="strong" ng-href="#/mod/{{mod.id}}">{{mod.name}}</a></td>
-                <td ng-repeat="column in columns" ng-class="{ 'hidden': !column.visibility }">
-                    {{ mod.nexus_info[column.data] | picker:column.filter:column.filter_arg }}
+                <td ng-repeat="column in columns" ng-class="{ 'hidden': !column.visibility }" ng-if="$index > 0">
+                    {{ mod.nexus_info[column.data] | picker:column.filter }}
                 </td>
                 <td class="actions-cell">
                     <input class="btn-sm" type="button" ng-click="addMod(mod)" value="Add" title="Add this mod to your mod list"/>
