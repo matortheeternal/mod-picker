@@ -260,6 +260,10 @@ input[type="button"], input[type="submit"] {
   overflow-y: auto;
 }
 
+.editor-toolbar, .CodeMirror {
+  border-radius: 0;
+}
+
 input[type="checkbox"] {
   margin: 0;
   padding: 0;
@@ -308,7 +312,7 @@ form {
       font-size: 16px;
       margin-top: 25px;
       margin-left: 0;
-      margin-bottom: 0;
+      margin-bottom: 6px;
     }
 
     section {
