@@ -13,11 +13,11 @@ app.directive('textArea', function () {
         link: function(scope, element, attrs) {
             // get text area element and turn it into a markdown editor
             var textarea = element.find("textarea")[0];
-            var mde = new SimpleMDE({ element: textarea });
+            var mde = new SimpleMDE({ element: textarea, spellChecker: false });
 
             // two-way data binding to and from mde
             scope.$watch('data', function(value){
-                if (mde.value() !== value) {
+                if ((typeof value === "string") && (mde.value() !== value)) {
                     mde.value(value);
                     scope.$apply();
                 }
