@@ -70,6 +70,7 @@ class Ability
       can :create, ModListTag
 
       # can submit mods
+      can :submit, :mod
       can :create, NexusInfo
       can :create, Mod
 

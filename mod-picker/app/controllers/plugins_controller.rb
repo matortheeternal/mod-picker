@@ -18,7 +18,7 @@ class PluginsController < ApplicationController
 
   # POST /plugins
   def create
-    unauthorized! if cannot? :create, Mod
+    authorize! :submit, :mod
     response = 'Invalid submission'
     if params[:plugin].present?
       file = params[:plugin]
