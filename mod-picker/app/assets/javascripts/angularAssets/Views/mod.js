@@ -6,9 +6,8 @@ app.config(['$routeProvider', function ($routeProvider) {
     );
 }]);
 
-app.controller('modController', function ($scope, $q, $routeParams, modService) {
-    useTwoColumns(true);
-
+app.controller('modController', function ($rootscope, $scope, $q, $routeParams, modService) {
+    $rootScope.twoColumns = true;;
 
     $scope.tabs = [
         { name: 'Compatibility', url: '/resources/partials/modPage/compatibilityTab.html'},
