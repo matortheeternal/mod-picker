@@ -6,9 +6,7 @@ app.config(['$routeProvider', function ($routeProvider) {
     );
 }]);
 
-app.controller('submitModController', function ($rootScope, $scope, backend, submitService, archiveService) {
-    $rootScope.twoColumns = false;
-
+app.controller('submitModController', function ($scope, backend, submitService, archiveService) {
     /* scraping */
     $scope.nexusScraped = false;
     $scope.archive = {};

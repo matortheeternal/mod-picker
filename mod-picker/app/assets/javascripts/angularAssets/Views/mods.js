@@ -7,8 +7,7 @@ app.config(['$routeProvider', function ($routeProvider) {
     );
 }]);
 
-app.controller('modsController', function ($rootScope, $scope, $q, modService, sliderFactory) {
-    $rootScope.twoColumns = true;
+app.controller('modsController', function ($scope, $q, modService, sliderFactory) {
     //TODO: scope.loading is deprecated
     $scope.loading = true;
 
