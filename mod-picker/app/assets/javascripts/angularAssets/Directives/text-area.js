@@ -17,12 +17,13 @@ app.directive('textArea', function () {
 
             // two-way data binding to and from mde
             scope.$watch('data', function(value){
-                if (typeof value === "string") {
+                if ((typeof value === "string") && (value !== mde.value())) {
                     mde.value(value);
                 }
             });
             mde.codemirror.on("change", function(){
                 scope.data = mde.value();
+                scope.$applyAsync();
             });
         }
     }
