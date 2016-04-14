@@ -2,7 +2,17 @@
     <table>
         <thead>
             <tr>
-                <th ng-repeat="column in columns" ng-class="{ 'hidden': !column.visibility }">{{column.label}}</th>
+                <th ng-repeat="column in columns" ng-class="{ 'hidden': !column.visibility }" ng-click="sort($index)">
+                    {{column.label}}
+                    <div class="sorting-options">
+                        <div class="sort-up" ng-class="{ 'active' : column.up }">
+                            <i class="fa fa-caret-up"></i>
+                        </div>
+                        <div class="sort-down" ng-class="{ 'active' : column.down }">
+                            <i class="fa fa-caret-down"></i>
+                        </div>
+                    </div>
+                </th>
                 <th class="actions-header">
                     <a ng-click="showModal = true">
                         <i class="fa fa-columns" title="Edit Columns"></i>
