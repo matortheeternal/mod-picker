@@ -7,3 +7,45 @@
 # end
 
 # add_index "mod_versions", ["mod_id"], name: "mod_id", using: :btree
+
+SkyUI_1_0:
+  mod_id: SkyUI
+  released: <%= DateTime.now %>
+  obsolete: false
+  dangerous: false
+  version: "1.0"
+
+SkyUI_2_0:
+  mod_id: SkyUI
+  released: <%= DateTime.now %>
+  obsolete: false
+  dangerous: false
+  version: "2.0"
+
+SkyUI_3_0:
+  mod_id: SkyUI
+  released: <%= DateTime.now %>
+  obsolete: false
+  dangerous: false
+  version: "3.0"
+
+TES5Edit_1_0:
+  mod_id: TES5Edit
+  released: <%= DateTime.now %>
+  obsolete: false
+  dangerous: false
+  version: "1.0"
+
+TES5Edit_2_0:
+  mod_id: TES5Edit
+  released: <%= DateTime.now %>
+  obsolete: false
+  dangerous: false
+  version: "2.0"
+
+TES5Edit_3_0:
+  mod_id: TES5Edit
+  released: <%= DateTime.now %>
+  obsolete: false
+  dangerous: false
+  version: "3.0"
