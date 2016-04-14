@@ -4,9 +4,6 @@ Rails.application.routes.draw do
   
   # require authentication before allowing user to access any resources
   authenticate :user do
-    resources :games
-    resources :categories
-    resources :category_priorities
     resources :comments
     resources :install_order_notes
     resources :load_order_notes
@@ -44,15 +41,35 @@ Rails.application.routes.draw do
     resources :nexus_infos
     resources :users
 
+    # helpful marks
+    match '/reviews/:id/helpful', to: 'reviews#helpful', via: 'post'
+    match '/compatibility_notes/:id/helpful', to: 'compatibility_notes#helpful', via: 'post'
+    match '/install_order_notes/:id/helpful', to: 'install_order_notes#helpful', via: 'post'
+    match '/load_order_notes/:id/helpful', to: 'load_order_notes#helpful', via: 'post'
+
+    # agreement marks
+    match '/incorrect_notes/:id/agreement', to: 'incorrect_notes#agreement', via: 'post'
+
+    # mod and mod list stars
+    match '/mod_lists/:id/star', to: 'mod_lists#create_star', via: 'post'
+    match '/mod_lists/:id/star', to: 'mod_lists#destroy_star', via: 'delete'
+    match '/mods/:id/star', to: 'mods#create_star', via: 'post'
+    match '/mods/:id/star', to: 'mods#destroy_star', via: 'delete'
+
     # avatars
     match '/avatar', to: 'avatars#create', via: 'post'
 
-    # record groups
-    resources :record_groups, only: [:index]
+    # static data
+    resources :categories, only: [:index]
+    resources :category_priorities, only: [:index]
+    resources :games, only: [:index]
     resources :quotes, only: [:index]
+    resources :record_groups, only: [:index]
+    resources :user_titles, only: [:index]
 
-    # angular
-    resources :angular, only: [:index]
+    # home page
+    match '/skyrim', to: 'home#skyrim', via: 'get'
+    match '/fallout4', to: 'home#fallout4', via: 'get'
   end
 
   # welcome page

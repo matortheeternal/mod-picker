@@ -10,8 +10,8 @@ app.config(['$routeProvider', function ($routeProvider) {
     );
 }]);
 
-app.controller('userSettingsController', function ($scope, $q, userSettingsService, userService, quoteService) {
-    useTwoColumns(false);
+app.controller('userSettingsController', function ($rootScope, $scope, $q, userSettingsService, userService, quoteService, userTitleService) {
+    $rootScope.twoColumns = false;
 
     //TODO: put this into the Routing logic
     $scope.tabs = [
@@ -24,13 +24,21 @@ app.controller('userSettingsController', function ($scope, $q, userSettingsServi
     $scope.currentTab = $scope.tabs[0];
 
     //TODO: put this into a service
+    // A service which calls other services and sets scope variables?
+    // seems odd to me.  -Mator
     userSettingsService.retrieveUserSettings().then(function (userSettings) {
         $scope.userSettings = userSettings;
+        //TODO: I feel like this could be put inside the retrieveUserSettings() function
         userService.retrieveUser(userSettings.user_id).then(function (user) {
             $scope.user = user;
             $scope.avatar = {
                 src: $scope.user.avatar
             };
+
+            // actions the user can or cannot perform
+            var rep = $scope.user.reputation.overall;
+            $scope.canChangeAvatar = (rep >= 10) || ($scope.user.role === 'admin');
+            $scope.canChangeTitle = (rep >= 1280) || ($scope.user.role === 'admin');
 
             //splitting the modlists into collections and non collections
             //sorry taffy, this logic should be in a service right? -Sirius
@@ -46,10 +54,19 @@ app.controller('userSettingsController', function ($scope, $q, userSettingsServi
                 }
             });
 
+            // get user title if not custom
+            if (!$scope.user.title) {
+                userTitleService.retrieveUserTitles().then(function (titles) {
+                    var gameTitles = userTitleService.getSortedGameTitles(titles);
+                    $scope.user.title = userTitleService.getUserTitle(gameTitles, rep);
+                });
+            }
+
             // get random quote for user title
             quoteService.retrieveQuotes().then(function (quotes) {
-                var label = ($scope.user.reputation.overall < 1280) ? "Low Reputation" : "High Repution";
+                var label = $scope.canChangeTitle ? "High Reputation" : "Low Reputation";
                 $scope.titleQuote = quoteService.getRandomQuote(quotes, label);
+                $scope.titleQuote.text = $scope.titleQuote.text.replace(/Talos/g, $scope.user.username.capitalize());
             });
         });
     });
@@ -105,6 +122,8 @@ app.controller('userSettingsController', function ($scope, $q, userSettingsServi
         }
     };
 
+
+    //TODO: I think we should put the modlist actions inside somewhere reusable (directive)
     /* mod list actions */
     $scope.editModList = function(modlist) {
         console.log('Edit Mod List: "'+modlist.name+'"');
@@ -169,6 +188,7 @@ app.controller('userSettingsController', function ($scope, $q, userSettingsServi
         $scope.errors = [];
 
         //TODO: I feel like this redundancy can be killed
+        // @R79: I was thinking the same thing earlier today. -Mator
         userSettingsService.submitUser($scope.user).then(function (data) {
             if (data.status !== "ok") {
                 $scope.errors.concat(data.errors);

@@ -21,6 +21,7 @@ app.service('userSettingsService', function (backend, $q) {
         return post.promise;
     };
 
+    //TODO: move this to userservice
     this.submitUser = function (user) {
         //TODO: reformat this into the function directly, as the var gets used only once
         var user_object = {

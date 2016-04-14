@@ -1,33 +1,18 @@
 class ModListsController < ApplicationController
-  before_action :set_mod_list, only: [:show, :edit, :update, :destroy]
+  before_action :set_mod_list, only: [:show, :update, :destroy]
 
   # GET /mod_lists
   # GET /mod_lists.json
   def index
     @mod_lists = ModList.all
 
-    respond_to do |format|
-      format.html
-      format.json { render :json => @mod_lists}
-    end
+    render :json => @mod_lists
   end
 
   # GET /mod_lists/1
   # GET /mod_lists/1.json
   def show
-    respond_to do |format|
-      format.html
-      format.json { render :json => @mod_list}
-    end
-  end
-
-  # GET /mod_lists/new
-  def new
-    @mod_list = ModList.new
-  end
-
-  # GET /mod_lists/1/edit
-  def edit
+    render :json => @mod_list
   end
 
   # POST /mod_lists
@@ -35,23 +20,43 @@ class ModListsController < ApplicationController
   def create
     @mod_list = ModList.new(mod_list_params)
 
-    respond_to do |format|
-      if @mod_list.save
-        format.json { render :show, status: :created, location: @mod_list }
-      else
-        format.json { render json: @mod_list.errors, status: :unprocessable_entity }
-      end
+    if @mod_list.save
+      render json: {status: :ok}
+    else
+      render json: @mod_list.errors, status: :unprocessable_entity
     end
   end
 
   # PATCH/PUT /mod_lists/1
   # PATCH/PUT /mod_lists/1.json
   def update
-    respond_to do |format|
-      if @mod_list.update(mod_list_params)
-        format.json { render :show, status: :ok, location: @mod_list }
+    if @mod_list.update(mod_list_params)
+      render json: {status: :ok}
+    else
+      render json: @mod_list.errors, status: :unprocessable_entity
+    end
+  end
+
+  # POST /mod_lists/1/star
+  def create_star
+    @mod_list_star = ModListStar.find_or_initialize_by(mod_list_id: params[:id], user_id: current_user.id)
+    if @mod_list_star.save
+      render json: {status: :ok}
+    else
+      render json: @mod_list_star.errors, status: :unprocessable_entity
+    end
+  end
+
+  # DELETE /mod_lists/1/star
+  def destroy_star
+    @mod_list_star = ModListStar.find_by(mod_list_id: params[:id], user_id: current_user.id)
+    if @mod_list_star.nil?
+      render json: {status: :ok}
+    else
+      if @mod_list_star.destroy
+        render json: {status: :ok}
       else
-        format.json { render json: @mod_list.errors, status: :unprocessable_entity }
+        render json: @mod_list_star.errors, status: :unprocessable_entity
       end
     end
   end
@@ -59,9 +64,10 @@ class ModListsController < ApplicationController
   # DELETE /mod_lists/1
   # DELETE /mod_lists/1.json
   def destroy
-    @mod_list.destroy
-    respond_to do |format|
-      format.json { render json: { status: :ok } }
+    if @mod_list.destroy
+      render json: {status: :ok}
+    else
+      render json: @mod_list.errors, status: :unprocessable_entity
     end
   end
 

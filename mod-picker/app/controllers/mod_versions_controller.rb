@@ -1,67 +1,35 @@
 class ModVersionsController < ApplicationController
-  before_action :set_mod_version, only: [:show, :edit, :update, :destroy]
-
-  # GET /mod_versions
-  # GET /mod_versions.json
-  def index
-    @mod_versions = ModVersion.all
-
-    respond_to do |format|
-      format.html
-      format.json { render :json => @mod_versions}
-    end
-  end
-
-  # GET /mod_versions/1
-  # GET /mod_versions/1.json
-  def show
-    respond_to do |format|
-      format.html
-      format.json { render :json => @mod_version}
-    end
-  end
-
-  # GET /mod_versions/new
-  def new
-    @mod_version = ModVersion.new
-  end
-
-  # GET /mod_versions/1/edit
-  def edit
-  end
+  before_action :set_mod_version, only: [:update, :destroy]
 
   # POST /mod_versions
   # POST /mod_versions.json
   def create
     @mod_version = ModVersion.new(mod_version_params)
 
-    respond_to do |format|
-      if @mod_version.save
-        format.json { render :json => @mod_version}
-      else
-        format.json { render json: @mod_version.errors, status: :unprocessable_entity }
-      end
+    if @mod_version.save
+      render json: {status: :ok}
+    else
+      render json: @mod_version.errors, status: :unprocessable_entity
     end
   end
 
   # PATCH/PUT /mod_versions/1
   # PATCH/PUT /mod_versions/1.json
   def update
-    respond_to do |format|
-      if @mod_version.update(mod_version_params)
-        format.json { render :json => @mod_version}
-      else
-        format.json { render json: @mod_version.errors, status: :unprocessable_entity }
-      end
+    if @mod_version.update(mod_version_params)
+      render json: {status: :ok}
+    else
+      render json: @mod_version.errors, status: :unprocessable_entity
     end
   end
 
   # DELETE /mod_versions/1
   # DELETE /mod_versions/1.json
   def destroy
-    @mod_version.destroy
-    respond_to do |format|
-      format.json { head :no_content }
+    if @mod_version.destroy
+      render json: {status: :ok}
+    else
+      render json: @mod_version.errors, status: :unprocessable_entity
     end
   end
 

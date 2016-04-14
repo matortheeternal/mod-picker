@@ -1,40 +1,57 @@
-<loader data="data">
-    <div class="modlist">
-        <table>
-            <thead>
-                <tr>
-                    <th><span>Mod Name</span></th>
-                    <th><span>Version</span></th>
-                    <th><span>Authors</span></th>
-                    <th><span>Endorsements</span></th>
-                    <th><span>Unique DLs</span></th>
-                    <th class="hidden"><span>Total DLs</span></th>
-                    <th class="hidden"><span>Views</span></th>
-                    <th class="hidden"><span>Posts Count</span></th>
-                    <th class="hidden"><span>Videos Count</span></th>
-                    <th class="hidden"><span>Images Count</span></th>
-                    <th class="hidden"><span>Files Count</span></th>
-                    <th class="hidden"><span>Released</span></th>
-                    <th><span>Updated</span></th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr ng-repeat="mod in data">
-                    <td><a class="strong" ng-href="#/mod/{{mod.id}}">{{mod.name}}</a></td>
-                    <td><span>{{mod.mod_versions[mod.mod_versions.length - 1].version}}</span></td>
-                    <td><span>{{mod.nexus_info.authors}}</span></td>
-                    <td><span>{{mod.nexus_info.endorsements.toLocaleString()}}</span></td>
-                    <td><span>{{mod.nexus_info.unique_downloads.toLocaleString()}}</span></td>
-                    <td class="hidden"><span>{{mod.nexus_info.total_downloads.toLocaleString()}}</span></td>
-                    <td class="hidden"><span>{{mod.nexus_info.views.toLocaleString()}}</span></td>
-                    <td class="hidden"><span>{{mod.nexus_info.posts_count.toLocaleString()}}</span></td>
-                    <td class="hidden"><span>{{mod.nexus_info.videos_count.toLocaleString()}}</span></td>
-                    <td class="hidden"><span>{{mod.nexus_info.images_count.toLocaleString()}}</span></td>
-                    <td class="hidden"><span>{{mod.nexus_info.files_count.toLocaleString()}}</span></td>
-                    <td class="hidden"><span>{{mod.nexus_info.date_released | date }}</span></td>
-                    <td><span>{{mod.nexus_info.date_updated | date }}</span></td>
-                </tr>
-            </tbody>
-        </table>
+<loader data="data" content-class="browse-results">
+    <table>
+        <thead>
+            <tr>
+                <th ng-repeat="column in columns" ng-class="{ 'hidden': !column.visibility }" ng-click="sort($index)">
+                    {{column.label}}
+                    <div class="sorting-options">
+                        <div class="sort-up" ng-class="{ 'active' : column.up }">
+                            <i class="fa fa-caret-up"></i>
+                        </div>
+                        <div class="sort-down" ng-class="{ 'active' : column.down }">
+                            <i class="fa fa-caret-down"></i>
+                        </div>
+                    </div>
+                </th>
+                <th class="actions-header">
+                    <a ng-click="showModal = true">
+                        <i class="fa fa-columns" title="Edit Columns"></i>
+                    </a>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="mod in data">
+                <td class="main-cell">
+                    <a class="strong" ng-href="#/mod/{{mod.id}}">{{mod.name}}</a>
+                </td>
+                <td ng-repeat="column in columns" ng-class="{ 'hidden': !column.visibility, 'text-cell' : !column.filter }" ng-if="$index > 0">
+                    {{ mod.nexus_info[column.data] | picker:column.filter }}
+                </td>
+                <td class="actions-cell">
+                    <input class="btn-sm" type="button" ng-click="addMod(mod)" value="Add" title="Add this mod to your mod list"/>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="modal-container" ng-show="showModal">
+        <div class="modal">
+            <form>
+                <h3 class="section-title">Edit Columns</h3>
+                <section>
+                    <ul class="checkbox-list">
+                        <li ng-repeat="column in columns">
+                            <label>
+                                <input type="checkbox" ng-model="column.visibility">
+                                {{column.label}}
+                            </label>
+                        </li>
+                    </ul>
+                </section>
+
+                <input type="submit" class="btn" value="Close" ng-click="showModal = false">
+            </form>
+        </div>
     </div>
 </loader>

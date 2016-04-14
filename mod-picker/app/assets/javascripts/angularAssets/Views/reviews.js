@@ -7,8 +7,8 @@ app.config(['$routeProvider', function ($routeProvider) {
     );
 }]);
 
-app.controller('reviewsController', function ($scope, $q, backend, sliderFactory) {
-    useTwoColumns(true);
+app.controller('reviewsController', function ($rootScope, $scope, $q, backend, sliderFactory) {
+    $rootScope.twoColumns = true;
     $scope.loading = true;
 
 

@@ -1,67 +1,13 @@
 class ModListCompatibilityNotesController < ApplicationController
-  before_action :set_mod_list_compatibility_note, only: [:show, :edit, :update, :destroy]
-
-  # GET /mod_list_compatibility_notes
-  # GET /mod_list_compatibility_notes.json
-  def index
-    @mod_list_compatibility_notes = ModListCompatibilityNote.all
-
-    respond_to do |format|
-      format.html
-      format.json { render :json => @mod_list_compatibility_notes}
-    end
-  end
-
-  # GET /mod_list_compatibility_notes/1
-  # GET /mod_list_compatibility_notes/1.json
-  def show
-    respond_to do |format|
-      format.html
-      format.json { render :json => @mod_list_compatibility_note}
-    end
-  end
-
-  # GET /mod_list_compatibility_notes/new
-  def new
-    @mod_list_compatibility_note = ModListCompatibilityNote.new
-  end
-
-  # GET /mod_list_compatibility_notes/1/edit
-  def edit
-  end
-
-  # POST /mod_list_compatibility_notes
-  # POST /mod_list_compatibility_notes.json
-  def create
-    @mod_list_compatibility_note = ModListCompatibilityNote.new(mod_list_compatibility_note_params)
-
-    respond_to do |format|
-      if @mod_list_compatibility_note.save
-        format.json { render :show, status: :created, location: @mod_list_compatibility_note }
-      else
-        format.json { render json: @mod_list_compatibility_note.errors, status: :unprocessable_entity }
-      end
-    end
-  end
+  before_action :set_mod_list_compatibility_note, only: [:update]
 
   # PATCH/PUT /mod_list_compatibility_notes/1
   # PATCH/PUT /mod_list_compatibility_notes/1.json
   def update
-    respond_to do |format|
-      if @mod_list_compatibility_note.update(mod_list_compatibility_note_params)
-        format.json { render :show, status: :ok, location: @mod_list_compatibility_note }
-      else
-        format.json { render json: @mod_list_compatibility_note.errors, status: :unprocessable_entity }
-      end
-    end
-  end
-
-  # DELETE /mod_list_compatibility_notes/1
-  # DELETE /mod_list_compatibility_notes/1.json
-  def destroy
-    @mod_list_compatibility_note.destroy
-    respond_to do |format|
-      format.json { head :no_content }
+    if @mod_list_compatibility_note.update(mod_list_compatibility_note_params)
+      render json: {status: :ok}
+    else
+      render json: @mod_list_compatibility_note.errors, status: :unprocessable_entity
     end
   end
 

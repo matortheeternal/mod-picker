@@ -20,15 +20,6 @@ app.filter('bytes', function() {
     }
 });
 
-//TODO: this definitely needs to be solved differently, even though I don't know how yet
-function useTwoColumns(b) {
-    if (b) {
-        document.body.className = "two-columns";
-    } else {
-        document.body.className = "";
-    }
-}
-
 function getFileExtension(filename) {
     return filename.split('.').pop();
 }
@@ -36,3 +27,7 @@ function getFileExtension(filename) {
 function getBaseName(path) {
     return path.split(/[\\/]/).pop();
 }
+
+String.prototype.capitalize = function() {
+    return this.charAt(0).toUpperCase() + this.slice(1);
+};

@@ -1,4 +1,6 @@
 class ModList < ActiveRecord::Base
+  enum status: [ :planned, :"under construction", :testing, :complete ]
+
   belongs_to :game, :inverse_of => 'mod_lists'
   belongs_to :user, :foreign_key => 'created_by', :inverse_of => 'mod_lists'
 
