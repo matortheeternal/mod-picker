@@ -16,40 +16,40 @@
 #   add_index "compatibility_note_history_entries", ["submitted_by"], name: "fk_rails_7e4343a2d1", using: :btree
 
 history_note_alpha:
-  compatibility_note_id:
+  compatibility_note_id: incompatibleNote
   edit_summary: "Fixed incompatibility with perma"
   submitted_by: homura
-  compatibility_mod_id:
-  compatibility_plugin_id:
+  compatibility_mod_id: SkyUI
+  compatibility_plugin_id: 
   compatibility_type:
   submitted: <%= DateTime.now %>
   text_body: "solved a problem where perma was incompatibile with apocalypse so just removed apocalypse"
 
 history_note_bravo:
-  compatibility_note_id:
+  compatibility_note_id: incompatibleNote
   edit_summary: "Fixed incompatibility with SkyRE"
   submitted_by: homura
-  compatibility_mod_id:
+  compatibility_mod_id: SkyUI
   compatibility_plugin_id:
   compatibility_type:
   submitted: <%= DateTime.now %>
   text_body: "solved a thing where SkyRE was incompatibile with apocalypse so just removed apocalypse"
 
 history_note_charlie:
-  compatibility_note_id:
+  compatibility_note_id: incompatibleNote
   edit_summary: "Fixed incompatibility with Ordinator"
   submitted_by: homura
-  compatibility_mod_id:
+  compatibility_mod_id: SkyUI
   compatibility_plugin_id:
   compatibility_type:
   submitted: <%= DateTime.now %>
   text_body: "solved a problem where Ordinator was incompatibile with apocalypse so just deleted ordinator"
 
 history_note_delta:
-  compatibility_note_id:
+  compatibility_note_id: incompatibleNote
   edit_summary: "Fixed incompatibility with requiem"
   submitted_by: homura
-  compatibility_mod_id:
+  compatibility_mod_id: SkyUI
   compatibility_plugin_id:
   compatibility_type:
   submitted: <%= DateTime.now %>

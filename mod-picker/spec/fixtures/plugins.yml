@@ -7,3 +7,10 @@
 # end
 
 # add_index "plugins", ["mod_version_id"], name: "mv_id", using: :btree
+
+SkyUI_esp:
+  mod_version_id:
+  filename:
+  author:
+  description:
+  crc_hash:

@@ -1,5 +1,9 @@
 require 'rails_helper'
 
-RSpec.describe CompatibilityNoteHistoryEntry, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+RSpec.describe CompatibilityNoteHistoryEntry, :model, :wip do
+  fixtures :compatibility_note_history_entries
+
+  it "should have a valid fixture" do
+    expect(compatibility_note_history_entries(:history_note_alpha)).to be_valid
+  end
 end
