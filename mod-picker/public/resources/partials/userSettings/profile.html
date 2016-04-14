@@ -1,34 +1,37 @@
 <h3 class="section-title">Avatar</h3>
-<div class="section">
-    <img class="avatar" ng-src="{{user.avatar}}">
-    <input type="button" id="avatar-browse" class="btn" value="Browse" />
-</div>
+<section>
+    <img class="avatar" ng-src="{{avatar.src}}" ng-class="{ 'avatar-pending': avatar.file }">
+    <label ng-if="user.reputation.overall >= 10">
+        <input type="file" id="avatar-input" class="btn" value="Browse" accept=".jpg,.png" file-change="changeAvatar" />
+        <input type="button" id="avatar-browse" class="btn" value="Browse" ng-click="browseAvatar()"/>
+    </label>
+    <span class="explanation" ng-if="user.reputation.overall < 10">
+        You need more reputation to change your avatar.
+    </span>
+    <span class="explanation" ng-if="avatar.file">
+        New avatar pending, click save changes to save it.
+    </span>
+</section>
 
-<span ng-if="user.reputation.overall >= 1280">
+<span >
     <h3 class="section-title">Title</h3>
-    <div class="section">
-        <input type="text" ng-model="user.title"/>
-        <span class="quote">I used to be an adventurer like you, until I took an arrow to the knee.</span>
-    </div>
-</span>
-
-<span ng-if="user.reputation.overall < 1280">
-    <h3 class="section-title">Title</h3>
-    <div class="section">
-        <span class="explanation">(You need more reputation to change your title)</span>
-        <input type="text" placeholder="{{user.title}}" disabled/>
-        <span class="quote">I used to be an adventurer like you, and then I took an arrow to the knee.</span>
-    </div>
+    <section>
+        <span class="explanation" ng-if="user.reputation.overall < 1280">
+            You need more reputation to change your title
+        </span>
+        <input type="text" ng-model="user.title" ng-disabled="user.reputation.overall < 1280"/>
+        <span class="quote">{{titleQuote.text}}</span>
+    </section>
 </span>
 
 <h3 class="section-title">Social</h3>
-<div class="section">
+<section>
     <label>
         <input type="checkbox" ng-model="userSettings.allow_comments">
         Allow comments to be posted on your profile
     </label>
-    <h4>About me</h4>
-    <textarea class="big-text-area" ng-model="user.about_me">{{user.about_me}}</textarea>
-</div>
+    <h3 class="section-title">About me</h3>
+    <text-area data="user.about_me"></text-area>
+</section>
 
 <input class="btn" type="submit" value="Save Changes" ng-click="submit()"/>

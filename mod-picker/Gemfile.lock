@@ -74,6 +74,9 @@ GEM
       responders
       thread_safe (~> 0.1)
       warden (~> 1.2.3)
+    devise_invitable (1.5.5)
+      actionmailer (>= 3.2.6, < 5)
+      devise (>= 3.2.0)
     diff-lcs (1.2.5)
     erubis (2.7.0)
     eventmachine (1.0.9.1)
@@ -253,6 +256,7 @@ DEPENDENCIES
   composite_primary_keys (~> 8.1)
   database_cleaner
   devise
+  devise_invitable
   factory_girl_rails (~> 4.0)
   faker
   jquery-rails

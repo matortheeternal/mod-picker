@@ -20,6 +20,8 @@ class Mod < ActiveRecord::Base
   scope :files, -> (low, high) { where(:nexus_infos => {files_count: (low..high)} ) }
   scope :articles, -> (low, high) { where(:nexus_infos => {articles_count: (low..high)} ) }
 
+  enum status: [ :good, :dangerous, :obsolete ]
+
   belongs_to :game, :inverse_of => 'mods'
 
   # categories the mod belongs to
@@ -57,12 +59,24 @@ class Mod < ActiveRecord::Base
     self.mod_authors.count == 0
   end
 
-  def as_json(options={})
-    super(:include => {
-        :nexus_info => {:except => [:mod_id, :changelog]},
-        :mod_versions => {:except => [:mod_id]},
-        :authors => {:only => [:id, :username]},
+  def show_json
+    self.as_json(:include => {
+        :mod_versions => {
+            :except => [:mod_id],
+            :methods => :required_mods
+        },
         :reviews => {:except => [:text_body, :mod_id, :edited, :incorrect_notes_count]}
     })
+  end
+
+  def as_json(options={})
+    default_options = {
+        :include => {
+            :nexus_info => {:except => [:mod_id, :changelog]},
+            :authors => {:only => [:id, :username]}
+        }
+    }
+    options = default_options.merge(options)
+    super(options)
   end
 end

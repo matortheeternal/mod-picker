@@ -3,7 +3,7 @@ class User < ActiveRecord::Base
 
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
-  devise :database_authenticatable, :registerable, :confirmable,
+  devise :invitable, :database_authenticatable, :registerable, :confirmable,
          :recoverable, :rememberable, :trackable, :validatable
 
   scope :search, -> (search) { joins(:bio).where("username like ? OR nexus_username like ? OR lover_username like ? OR steam_username like ?", "#{search}%", "#{search}%", "#{search}%", "#{search}%") }
@@ -83,7 +83,7 @@ class User < ActiveRecord::Base
     end
   end
 
-  def user_avatar
+  def avatar
     png_path = File.join(Rails.public_path, "avatars/#{id}.png")
     jpg_path = File.join(Rails.public_path, "avatars/#{id}.jpg")
     if File.exists?(png_path)
@@ -136,13 +136,19 @@ class User < ActiveRecord::Base
   end
 
   def as_json(options={})
-    options[:except] ||= [:email, :active_ml_id, :active_mc_id]
-    options[:include] ||= {
-        :bio => {:only => [:nexus_username, :lover_username, :steam_username]},
-        :reputation => {:only => [:overall]}
+    default_options = {
+        :except => [:email, :active_mod_list_id, :invitation_token, :invitation_created_at, :invitation_sent_at, :invitation_accepted_at, :invitation_limit, :invited_by_id, :invited_by_type, :invitations_count],
+        :methods => :avatar,
+        :include => {
+            :bio => {
+                :only => [:nexus_username, :lover_username, :steam_username]
+            },
+            :reputation => {
+                :only => [:overall]
+            }
+        }
     }
-    super(options).merge({
-        :avatar => user_avatar
-    })
+    options = default_options.merge(options)
+    super(options)
   end
 end

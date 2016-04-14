@@ -48,6 +48,9 @@ gem 'rack-attack'
 
 # using devise for authentication
 gem 'devise'
+# using devise_invitable for inviting users to the platform for the beta
+# may also be used later for users to invite their friends
+gem 'devise_invitable'
 
 # use mailcatcher for development
 gem 'mailcatcher'

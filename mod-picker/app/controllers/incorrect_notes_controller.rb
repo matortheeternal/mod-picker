@@ -56,6 +56,27 @@ class IncorrectNotesController < ApplicationController
     end
   end
 
+  # POST /incorrect_notes/1/agreement
+  def agreement
+    @agreement_mark = AgreementMark.find_or_create_by(
+        submitted_by: current_user.id,
+        incorrect_note_id: params[:id])
+    if params.has_key?(:agree)
+      @agreement_mark.agree = params[:agree]
+      if @agreement_mark.save
+        render json: {status: :ok}
+      else
+        render json: @agreement_mark.errors, status: :unprocessable_entity
+      end
+    else
+      if @agreement_mark.destroy
+        render json: {status: :ok}
+      else
+        render json: @agreement_mark.errors, status: :unprocessable_entity
+      end
+    end
+  end
+
   # DELETE /incorrect_notes/1
   # DELETE /incorrect_notes/1.json
   def destroy

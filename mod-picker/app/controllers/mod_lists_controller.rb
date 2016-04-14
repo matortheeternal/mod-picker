@@ -1,5 +1,5 @@
 class ModListsController < ApplicationController
-  before_action :set_mod_list, only: [:show, :edit, :update, :destroy]
+  before_action :set_mod_list, only: [:show, :update, :destroy]
 
   # GET /mod_lists
   # GET /mod_lists.json
@@ -19,15 +19,6 @@ class ModListsController < ApplicationController
       format.html
       format.json { render :json => @mod_list}
     end
-  end
-
-  # GET /mod_lists/new
-  def new
-    @mod_list = ModList.new
-  end
-
-  # GET /mod_lists/1/edit
-  def edit
   end
 
   # POST /mod_lists
@@ -56,12 +47,36 @@ class ModListsController < ApplicationController
     end
   end
 
+  # POST /mod_lists/1/star
+  def create_star
+    @mod_list_star = ModListStar.find_or_initialize_by(mod_list_id: params[:id], user_id: current_user.id)
+    if @mod_list_star.save
+      render json: {status: :ok}
+    else
+      render json: @mod_list_star.errors, status: :unprocessable_entity
+    end
+  end
+
+  # DELETE /mod_lists/1/star
+  def destroy_star
+    @mod_list_star = ModListStar.find_by(mod_list_id: params[:id], user_id: current_user.id)
+    if @mod_list_star.nil?
+      render json: {status: :ok}
+    else
+      if @mod_list_star.delete
+        render json: {status: :ok}
+      else
+        render json: @mod_list_star.errors, status: :unprocessable_entity
+      end
+    end
+  end
+
   # DELETE /mod_lists/1
   # DELETE /mod_lists/1.json
   def destroy
     @mod_list.destroy
     respond_to do |format|
-      format.json { head :no_content }
+      format.json { render json: { status: :ok } }
     end
   end
 

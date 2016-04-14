@@ -1,5 +1,5 @@
-class CompatibilityNotesController < ApplicationController
-  before_action :set_compatibility_note, only: [:show, :edit, :update, :destroy]
+class CompatibilityNotesController < HelpfulableController
+  before_action :set_compatibility_note, only: [:show, :update, :destroy]
 
   # GET /compatibility_notes
   # GET /compatibility_notes.json
@@ -19,15 +19,6 @@ class CompatibilityNotesController < ApplicationController
       format.html
       format.json { render :json => @compatibility_note}
     end
-  end
-
-  # GET /compatibility_notes/new
-  def new
-    @compatibility_note = CompatibilityNote.new
-  end
-
-  # GET /compatibility_notes/1/edit
-  def edit
   end
 
   # POST /compatibility_notes

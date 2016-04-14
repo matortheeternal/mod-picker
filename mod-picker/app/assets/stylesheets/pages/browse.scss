@@ -32,6 +32,10 @@
 
   span {
     cursor: pointer;
+    -webkit-transition: all 0.2s ease-in-out;
+    -moz-transition: all 0.2s ease-in-out;
+    -o-transition: all 0.2s ease-in-out;
+    transition: all 0.2s ease-in-out;
   }
 
   span:hover {
@@ -70,38 +74,93 @@
 }
 
 /* css for search results */
-.right-column table {
-  border-collapse: collapse;
-  width: 100%;
-  font-family: Arial;
-}
+.right-column {
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    font-family: 'Arial', sans-serif;
+    font-size: 12px;
 
-.right-column th {
-  margin: 0;
-  font-size: 10.5px;
-  padding: 0.5em 1em;
-  text-align: left;
-}
+    th {
+      margin: 0;
+      padding: 5px 10px;
+      text-align: left;
+      vertical-align: bottom;
+      cursor: pointer;
+      border-right: 1px solid $border_color;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+    }
 
-.right-column td {
-  border-width: 0 0 0 1px;
-  font-size: 12px;
-  margin: 0;
-  overflow: visible;
+    .sorting-options {
+      margin-left: 4px;
+      margin-bottom: 2px;
+      display: inline-block;
+      vertical-align: bottom;
+      div {
+        height: 10px;
+      }
+      i {
+        font-size: 12px;
+        color: $hard_border_color;
+      }
+      div.active i {
+        color: $text_color;
+      }
+    }
 
-  a {
-    display: block;
-    height: 100%;
-    padding: 0.5em 1em;
+    .actions-header {
+      text-align: center;
+      cursor: default;
+      border: 0;
+      padding: 5px 0;
+    }
+
+    td {
+      border-width: 0 0 0 1px;
+      margin: 0;
+      overflow: visible;
+      padding-left: 10px;
+
+      a {
+        display: block;
+        height: 100%;
+      }
+    }
+
+    .actions-cell {
+      text-align: center;
+      padding: 0;
+    }
+
+    i {
+      font-size: 16px;
+    }
+
+    input {
+      font-size: 12px;
+      padding: 3px;
+      margin: 4px;
+    }
+
+    thead tr {
+      background-color: $primary_background;
+      border-bottom: 1px solid $border_color;
+      border-top: 1px solid $border_color;
+    }
+
+    tbody tr:nth-child(odd) {
+      background-color: $secondary_background;
+      border-bottom: 1px solid $border_color;
+    }
+
+    tbody tr:nth-child(even) {
+      background-color: $primary_background;
+      border-bottom: 1px solid $border_color;
+    }
   }
-}
-
-.right-column tbody tr:nth-child(odd) {
-  background-color: $secondary_background;
-}
-
-.right-column tbody tr:nth-child(even) {
-  background-color: $primary_background;
 }
 
 select.stealthy.ng-pristine {

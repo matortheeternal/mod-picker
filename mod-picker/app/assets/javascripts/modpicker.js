@@ -20,10 +20,10 @@ app.filter('bytes', function() {
     }
 });
 
-function useTwoColumns(b) {
-    if (b) {
-        document.body.className = "two-columns";
-    } else {
-        document.body.className = "";
-    }
+function getFileExtension(filename) {
+    return filename.split('.').pop();
+}
+
+function getBaseName(path) {
+    return path.split(/[\\/]/).pop();
 }

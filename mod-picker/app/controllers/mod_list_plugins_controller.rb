@@ -1,34 +1,5 @@
 class ModListPluginsController < ApplicationController
-  before_action :set_mod_list_plugin, only: [:show, :edit, :update, :destroy]
-
-  # GET /mod_list_plugins
-  # GET /mod_list_plugins.json
-  def index
-    @mod_list_plugins = ModListPlugin.all
-
-    respond_to do |format|
-      format.html
-      format.json { render :json => @mod_list_plugins}
-    end
-  end
-
-  # GET /mod_list_plugins/1
-  # GET /mod_list_plugins/1.json
-  def show
-    respond_to do |format|
-      format.html
-      format.json { render :json => @mod_list_plugin}
-    end
-  end
-
-  # GET /mod_list_plugins/new
-  def new
-    @mod_list_plugin = ModListPlugin.new
-  end
-
-  # GET /mod_list_plugins/1/edit
-  def edit
-  end
+  before_action :set_mod_list_plugin, only: [:update, :destroy]
 
   # POST /mod_list_plugins
   # POST /mod_list_plugins.json

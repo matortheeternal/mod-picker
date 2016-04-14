@@ -7,8 +7,8 @@ app.config(['$routeProvider', function ($routeProvider) {
     );
 }]);
 
-app.controller('usersController', function ($scope, $q, backend, sliderFactory) {
-    useTwoColumns(true);
+app.controller('usersController', function ($rootScope, $scope, $q, backend, sliderFactory) {
+    $rootScope.twoColumns = true;
     ///* data */
     //backend.retrieveUsers().then(function (data) {
     //    $scope.users = data;

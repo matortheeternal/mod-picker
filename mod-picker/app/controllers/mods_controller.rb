@@ -1,5 +1,5 @@
 class ModsController < ApplicationController
-  before_action :set_mod, only: [:show, :edit, :update, :destroy]
+  before_action :set_mod, only: [:show, :update, :destroy]
 
   # GET /mods
   # GET /mods.json
@@ -15,19 +15,7 @@ class ModsController < ApplicationController
   # GET /mods/1
   # GET /mods/1.json
   def show
-    respond_to do |format|
-      format.html
-      format.json { render :json => @mod }
-    end
-  end
-
-  # GET /mods/new
-  def new
-    @mod = Mod.new
-  end
-
-  # GET /mods/1/edit
-  def edit
+    render @mod.show_json
   end
 
   # POST /mods
@@ -52,6 +40,30 @@ class ModsController < ApplicationController
         format.json { render :show, status: :ok, location: @mod }
       else
         format.json { render json: @mod.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  # POST /mods/1/star
+  def create_star
+    @mod_star = ModStar.find_or_initialize_by(mod_id: params[:id], user_id: current_user.id)
+    if @mod_star.save
+      render json: {status: :ok}
+    else
+      render json: @mod_star.errors, status: :unprocessable_entity
+    end
+  end
+
+  # DELETE /mods/1/star
+  def destroy_star
+    @mod_star = ModStar.find_by(mod_id: params[:id], user_id: current_user.id)
+    if @mod_star.nil?
+      render json: {status: :ok}
+    else
+      if @mod_star.delete
+        render json: {status: :ok}
+      else
+        render json: @mod_star.errors, status: :unprocessable_entity
       end
     end
   end

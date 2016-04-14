@@ -22,6 +22,7 @@ app.controller('categoryPickerController', function ($scope, categoryService) {
     $scope.$watch('model.mainCategoryId', function (mainCategoryId) {
         if(mainCategoryId) {
             categoryService.retrieveSecondaryCategory(mainCategoryId).then(function (data) {
+                //TODO: maybe put this logic into the cat service
                 data.forEach(function (entry) {
                     entry.name = entry.name.split('- ')[1];
                 });

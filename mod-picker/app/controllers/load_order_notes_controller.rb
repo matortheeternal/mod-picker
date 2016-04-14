@@ -1,5 +1,5 @@
-class LoadOrderNotesController < ApplicationController
-  before_action :set_load_order_note, only: [:show, :edit, :update, :destroy]
+class LoadOrderNotesController < HelpfulableController
+  before_action :set_load_order_note, only: [:show, :update, :destroy]
 
   # GET /load_order_notes
   # GET /load_order_notes.json
@@ -19,15 +19,6 @@ class LoadOrderNotesController < ApplicationController
       format.html
       format.json { render :json => load_order_note}
     end
-  end
-
-  # GET /load_order_notes/new
-  def new
-    load_order_note = LoadOrderNote.new
-  end
-
-  # GET /load_order_notes/1/edit
-  def edit
   end
 
   # POST /load_order_notes
