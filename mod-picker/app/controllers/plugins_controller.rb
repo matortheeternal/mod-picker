@@ -12,11 +12,13 @@ class PluginsController < ApplicationController
   # GET /plugins/1
   # GET /plugins/1.json
   def show
+    authorize! :read, @plugin
     render :json => @plugin
   end
 
   # POST /plugins
   def create
+    unauthorized! if cannot? :create, Mod
     response = 'Invalid submission'
     if params[:plugin].present?
       file = params[:plugin]
@@ -41,6 +43,7 @@ class PluginsController < ApplicationController
   # DELETE /plugins/1
   # DELETE /plugins/1.json
   def destroy
+    authorize! :destroy, @plugin
     if @plugin.destroy
       render json: {status: :ok}
     else
