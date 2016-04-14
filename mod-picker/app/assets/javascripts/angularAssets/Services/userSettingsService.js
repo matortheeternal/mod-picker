@@ -3,10 +3,7 @@ app.service('userSettingsService', function (backend, $q) {
     this.retrieveUserSettings = function () {
         var userSettings = $q.defer();
         backend.retrieve('/user_settings').then(function (data) {
-            //TODO: remove mocked delay
-            setTimeout(function () {
-                userSettings.resolve(data);
-            }, 1000);
+            userSettings.resolve(data);
         });
         return userSettings.promise
     };
@@ -14,9 +11,7 @@ app.service('userSettingsService', function (backend, $q) {
     this.submitAvatar = function (avatar) {
         var post = $q.defer();
         backend.postFile('/avatar', 'avatar', avatar).then (function (data) {
-            setTimeout(function () {
-                post.resolve(data);
-            }, 1000);
+            post.resolve(data);
         });
         return post.promise;
     };
@@ -29,10 +24,7 @@ app.service('userSettingsService', function (backend, $q) {
         };
         var update = $q.defer();
     	backend.update('/users/' + user.id, user_object).then(function (data) {
-            //TODO: remove mocked delay
-            setTimeout(function () {
-                update.resolve(data);
-            }, 1000);
+            update.resolve(data);
     	});
         return update.promise
     };
@@ -44,10 +36,7 @@ app.service('userSettingsService', function (backend, $q) {
         };
         var update = $q.defer();
         backend.update('/user_settings/' + user_settings.id, user_settings_object).then(function (data) {
-            //TODO: remove mocked delay
-            setTimeout(function () {
-                update.resolve(data);
-            }, 1000);
+            update.resolve(data);
         });
         return update.promise
     };
@@ -55,9 +44,7 @@ app.service('userSettingsService', function (backend, $q) {
     this.cloneModList = function (modlist) {
         var clone = $q.defer();
         backend.post('/mod_lists/clone/' + modlist.id, {}).then(function (data) {
-            setTimeout(function () {
-                clone.resolve(data);
-            }, 1000);
+            clone.resolve(data);
         });
         return clone.promise
     };
@@ -65,9 +52,7 @@ app.service('userSettingsService', function (backend, $q) {
     this.deleteModList = function (modlist) {
         var remove = $q.defer();
         backend.delete('/mod_lists/' + modlist.id).then(function (data) {
-            setTimeout(function () {
-                remove.resolve(data);
-            }, 1000);
+            remove.resolve(data);
         });
         return remove.promise
     };
