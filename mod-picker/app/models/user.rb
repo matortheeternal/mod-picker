@@ -34,7 +34,7 @@ class User < ActiveRecord::Base
   has_many :incorrect_notes, :foreign_key => 'submitted_by', :inverse_of => 'user'
   has_many :agreement_marks, :foreign_key => 'submitted_by', :inverse_of => 'user'
   has_many :helpful_marks, :foreign_key => 'submitted_by', :inverse_of => 'user'
-  has_many :compatibility_note_history_entries, :foreign_key => 'submitted_by', :inverse_of => 'users'
+  has_many :compatibility_note_history_entries, :foreign_key => 'submitted_by', :inverse_of => 'user'
 
   has_many :mod_authors, :inverse_of => 'user'
   has_many :mods, :through => 'mod_authors', :inverse_of => 'authors'
