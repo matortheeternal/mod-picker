@@ -16,18 +16,6 @@
   margin: 0;
 }
 
-.filter-list {
-  padding: 0;
-  margin: 0;
-  font-size: 12px;
-}
-
-.filter-list li {
-  list-style: outside none none;
-  padding: 0;
-  margin-bottom: 2px;
-}
-
 .half-box {
   width: 45%;
   display: inline-block;
@@ -93,12 +81,37 @@
       margin: 0;
       padding: 5px 10px;
       text-align: left;
+      white-space: nowrap;
       vertical-align: bottom;
+      cursor: pointer;
       border-right: 1px solid $border_color;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+    }
+
+    .sorting-options {
+      margin-left: 4px;
+      margin-bottom: 2px;
+      display: inline-block;
+      vertical-align: bottom;
+      div {
+        height: 10px;
+      }
+      i {
+        font-size: 12px;
+        color: $hard_border_color;
+      }
+      div.active i {
+        color: $text_color;
+      }
     }
 
     .actions-header {
       text-align: center;
+      min-width: 60px;
+      cursor: default;
       border: 0;
       padding: 5px 0;
     }
@@ -108,11 +121,22 @@
       margin: 0;
       overflow: visible;
       padding-left: 10px;
+      white-space: nowrap;
 
       a {
         display: block;
-        height: 100%;
+        padding: 7px 0;
       }
+    }
+
+    .main-cell {
+      min-width: 200px;
+      white-space: normal;
+    }
+
+    .text-cell {
+      min-width: 125px;
+      white-space: normal;
     }
 
     .actions-cell {
@@ -133,6 +157,7 @@
     thead tr {
       background-color: $primary_background;
       border-bottom: 1px solid $border_color;
+      border-top: 1px solid $border_color;
     }
 
     tbody tr:nth-child(odd) {
@@ -156,4 +181,8 @@ select.stealthy.ng-pristine {
   border: solid 2px $secondary_background;
   padding: 10px;
   background-color: $primary_background;
+}
+
+.browse-results {
+  overflow-x: auto;
 }

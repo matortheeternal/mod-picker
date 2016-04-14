@@ -1,9 +1,18 @@
-<loader data="data">
+<loader data="data" content-class="browse-results">
     <table>
         <thead>
             <tr>
-                <th>Mod Name</th>
-                <th ng-repeat="column in columns" ng-class="{ 'hidden': !column.visibility }">{{column.label}}</th>
+                <th ng-repeat="column in columns" ng-class="{ 'hidden': !column.visibility }" ng-click="sort($index)">
+                    {{column.label}}
+                    <div class="sorting-options">
+                        <div class="sort-up" ng-class="{ 'active' : column.up }">
+                            <i class="fa fa-caret-up"></i>
+                        </div>
+                        <div class="sort-down" ng-class="{ 'active' : column.down }">
+                            <i class="fa fa-caret-down"></i>
+                        </div>
+                    </div>
+                </th>
                 <th class="actions-header">
                     <a ng-click="showModal = true">
                         <i class="fa fa-columns" title="Edit Columns"></i>
@@ -13,9 +22,11 @@
         </thead>
         <tbody>
             <tr ng-repeat="mod in data">
-                <td><a class="strong" ng-href="#/mod/{{mod.id}}">{{mod.name}}</a></td>
-                <td ng-repeat="column in columns" ng-class="{ 'hidden': !column.visibility }">
-                    {{ mod.nexus_info[column.data] | picker:column.filter:column.filter_arg }}
+                <td class="main-cell">
+                    <a class="strong" ng-href="#/mod/{{mod.id}}">{{mod.name}}</a>
+                </td>
+                <td ng-repeat="column in columns" ng-class="{ 'hidden': !column.visibility, 'text-cell' : !column.filter }" ng-if="$index > 0">
+                    {{ mod.nexus_info[column.data] | picker:column.filter }}
                 </td>
                 <td class="actions-cell">
                     <input class="btn-sm" type="button" ng-click="addMod(mod)" value="Add" title="Add this mod to your mod list"/>
@@ -26,16 +37,21 @@
 
     <div class="modal-container" ng-show="showModal">
         <div class="modal">
-            <ul class="filter-list">
-                <li ng-repeat="column in columns">
-                    <label>
-                        <input type="checkbox" ng-model="column.visibility">
-                        {{column.label}}
-                    </label>
-                </li>
-            </ul>
+            <form>
+                <h3 class="section-title">Edit Columns</h3>
+                <section>
+                    <ul class="checkbox-list">
+                        <li ng-repeat="column in columns">
+                            <label>
+                                <input type="checkbox" ng-model="column.visibility">
+                                {{column.label}}
+                            </label>
+                        </li>
+                    </ul>
+                </section>
 
-            <input type="button" class="btn" value="Close" ng-click="showModal = false">
+                <input type="submit" class="btn" value="Close" ng-click="showModal = false">
+            </form>
         </div>
     </div>
 </loader>

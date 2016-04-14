@@ -17,6 +17,12 @@ app.controller('modResultsController', function($scope) {
     $scope.columns = [
         {
             visibility: true,
+            toggleable: false,
+            label: "Mod Name",
+            data: "mod_name"
+        },
+        {
+            visibility: true,
             label: "Authors",
             data: "authors"
         },
@@ -24,57 +30,49 @@ app.controller('modResultsController', function($scope) {
             visibility: true,
             label: "Endorsements",
             data: "endorsements",
-            filter: "number",
-            filter_arg: 0
+            filter: "number"
         },
         {
             visibility: true,
-            label: "Unique DL/s",
+            label: "Unique DLs",
             data: "unique_downloads",
-            filter: "number",
-            filter_arg: 0
+            filter: "number"
         },
         {
             visibility: false,
-            label: "Total DL/s",
+            label: "Total DLs",
             data: "total_downloads",
-            filter: "number",
-            filter_arg: 0
+            filter: "number"
         },
         {
             visibility: false,
             label: "Views",
             data: "views",
-            filter: "number",
-            filter_arg: 0
+            filter: "number"
         },
         {
             visibility: false,
             label: "Posts",
             data: "posts_count",
-            filter: "number",
-            filter_arg: 0
+            filter: "number"
         },
         {
             visibility: false,
             label: "Videos",
             data: "videos_count",
-            filter: "number",
-            filter_arg: 0
+            filter: "number"
         },
         {
             visibility: false,
             label: "Images",
             data: "images_count",
-            filter: "number",
-            filter_arg: 0
+            filter: "number"
         },
         {
             visibility: false,
             label: "Files",
             data: "files_count",
-            filter: "number",
-            filter_arg: 0
+            filter: "number"
         },
         {
             visibility: false,
@@ -89,6 +87,28 @@ app.controller('modResultsController', function($scope) {
             filter: "date"
         }
     ];
+
+    var sortedColumn;
+    $scope.sort = function(index) {
+        //TODO: rewrite this
+        var column = $scope.columns[index];
+
+        if(sortedColumn && sortedColumn !== column) {
+            sortedColumn.up = false;
+            sortedColumn.down = false;
+        }
+        sortedColumn = column;
+
+        if (column.up) {
+            column.up = false;
+            column.down = true;
+        } else if (column.down) {
+            column.down = false;
+        } else {
+            column.up = true;
+        }
+        $scope.$apply();
+    }
 });
 
 app.filter('picker', function($filter) {

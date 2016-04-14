@@ -7,7 +7,8 @@ app.directive('loader', function () {
         restrict: 'E',
         templateUrl: '/resources/directives/loader.html',
         scope: {
-            data: '='
+            data: '=',
+            contentClass: '@'
         },
         controller: 'loaderController',
         transclude: true
