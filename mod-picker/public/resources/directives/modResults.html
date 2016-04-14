@@ -35,16 +35,21 @@
 
     <div class="modal-container" ng-show="showModal">
         <div class="modal">
-            <ul class="filter-list">
-                <li ng-repeat="column in columns">
-                    <label>
-                        <input type="checkbox" ng-model="column.visibility">
-                        {{column.label}}
-                    </label>
-                </li>
-            </ul>
+            <form>
+                <h3 class="section-title">Edit Columns</h3>
+                <section>
+                    <ul class="checkbox-list">
+                        <li ng-repeat="column in columns">
+                            <label>
+                                <input type="checkbox" ng-model="column.visibility">
+                                {{column.label}}
+                            </label>
+                        </li>
+                    </ul>
+                </section>
 
-            <input type="button" class="btn" value="Close" ng-click="showModal = false">
+                <input type="submit" class="btn" value="Close" ng-click="showModal = false">
+            </form>
         </div>
     </div>
 </loader>
