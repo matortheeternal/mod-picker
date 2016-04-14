@@ -87,6 +87,28 @@ app.controller('modResultsController', function($scope) {
             filter: "date"
         }
     ];
+
+    var sortedColumn;
+    $scope.sort = function(index) {
+        //TODO: rewrite this
+        var column = $scope.columns[index];
+
+        if(sortedColumn && sortedColumn !== column) {
+            sortedColumn.up = false;
+            sortedColumn.down = false;
+        }
+        sortedColumn = column;
+
+        if (column.up) {
+            column.up = false;
+            column.down = true;
+        } else if (column.down) {
+            column.down = false;
+        } else {
+            column.up = true;
+        }
+        $scope.$apply();
+    }
 });
 
 app.filter('picker', function($filter) {
