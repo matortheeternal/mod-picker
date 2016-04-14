@@ -19,12 +19,10 @@ app.directive('textArea', function () {
             scope.$watch('data', function(value){
                 if ((typeof value === "string") && (mde.value() !== value)) {
                     mde.value(value);
-                    scope.$apply();
                 }
             });
             mde.codemirror.on("change", function(){
                 scope.data = mde.value();
-                scope.$apply();
             });
         }
     }
