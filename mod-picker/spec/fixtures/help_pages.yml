@@ -13,9 +13,9 @@ help_about_page:
 help_support_page:
   name: "Support Page"
   submitted: <%= DateTime.now %>
-  text_body: "Support page to show info when a user needs help with a problem"
+  text_body: "Support page to show info when a user needs help with a problem. More filler here!"
 
 help_contact_page:
   name: "Contact Page"
   submitted: <%= DateTime.now %>
-  text_body: "Contact info for the website and stuff. Just filling space now."
+  text_body: "Contact info for the website and stuff. Just filling space now. FILLER FILLER FILLER"
