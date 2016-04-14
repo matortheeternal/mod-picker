@@ -5,3 +5,17 @@
 #    t.text     "text_body", limit: 65535
 #  end
 
+help_about_page:
+  name: "About Page"
+  submitted: <%= DateTime.now %>
+  text_body: "A basic about page to show more info about the website. Basic basic basic."
+
+help_support_page:
+  name: "Support Page"
+  submitted: <%= DateTime.now %>
+  text_body: "Support page to show info when a user needs help with a problem"
+
+help_contact_page:
+  name: "Contact Page"
+  submitted: <%= DateTime.now %>
+  text_body: "Contact info for the website and stuff. Just filling space now."

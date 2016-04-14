@@ -8,5 +8,15 @@ require 'rails_helper'
 # end
 
 RSpec.describe HelpPage, :model, :wip do
-  
+  fixtures :help_pages
+
+  it "should have a valid factory" do
+    expect(create(:help_page)).to be_valid
+  end
+
+  it "should have valid fixtures" do
+    expect(help_pages(:help_about_page)).to be_valid
+    expect(help_pages(:help_contact_page)).to be_valid
+    expect(help_pages(:help_support_page)).to be_valid
+  end
 end
