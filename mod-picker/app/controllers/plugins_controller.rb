@@ -6,19 +6,13 @@ class PluginsController < ApplicationController
   def index
     @plugins = Plugin.all
 
-    respond_to do |format|
-      format.html
-      format.json { render :json => @plugins}
-    end
+    render :json => @plugins
   end
 
   # GET /plugins/1
   # GET /plugins/1.json
   def show
-    respond_to do |format|
-      format.html
-      format.json { render :json => @plugin}
-    end
+    render :json => @plugin
   end
 
   # POST /plugins
@@ -47,9 +41,10 @@ class PluginsController < ApplicationController
   # DELETE /plugins/1
   # DELETE /plugins/1.json
   def destroy
-    @plugin.destroy
-    respond_to do |format|
-      format.json { head :no_content }
+    if @plugin.destroy
+      render json: {status: :ok}
+    else
+      render json: @plugin.errors, status: :unprocessable_entity
     end
   end
 

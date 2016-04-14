@@ -4,12 +4,10 @@ class ModListCompatibilityNotesController < ApplicationController
   # PATCH/PUT /mod_list_compatibility_notes/1
   # PATCH/PUT /mod_list_compatibility_notes/1.json
   def update
-    respond_to do |format|
-      if @mod_list_compatibility_note.update(mod_list_compatibility_note_params)
-        format.json { render :show, status: :ok, location: @mod_list_compatibility_note }
-      else
-        format.json { render json: @mod_list_compatibility_note.errors, status: :unprocessable_entity }
-      end
+    if @mod_list_compatibility_note.update(mod_list_compatibility_note_params)
+      render json: {status: :ok}
+    else
+      render json: @mod_list_compatibility_note.errors, status: :unprocessable_entity
     end
   end
 
