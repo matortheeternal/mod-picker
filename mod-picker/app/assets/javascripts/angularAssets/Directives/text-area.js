@@ -17,7 +17,7 @@ app.directive('textArea', function () {
 
             // two-way data binding to and from mde
             scope.$watch('data', function(value){
-                if ((typeof value === "string") && (mde.value() !== value)) {
+                if (typeof value === "string") {
                     mde.value(value);
                 }
             });
