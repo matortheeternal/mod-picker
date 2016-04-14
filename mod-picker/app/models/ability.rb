@@ -10,13 +10,12 @@ class Ability
     if user.admin?
       # special admin permissions
       can :assign_roles, User
-      can :ban, User
-      can :set_avatar, User, :id => user.id
-      can :set_custom_title, User, :id => user.id
 
       # admins can do whatever they want
       can :manage, :all
-    elsif user.moderator?
+    end
+
+    if user.moderator? || user.admin?
       # special moderator permissions
       can :ban, User
       can :set_avatar, User, :id => user.id
