@@ -135,6 +135,25 @@ class User < ActiveRecord::Base
     self.create_bio({ user_id: self.id })
   end
 
+  def show_json
+    self.as_json({
+        :include => {
+            :mods => {
+                :only => [:id, :name, :game_id, :mod_stars_count]
+            },
+            :mod_lists => {
+                :only => [:id, :name, :is_collection, :is_public, :status, :mods_count, :created]
+            },
+            :bio => {
+                :except => [:user_id]
+            },
+            :reputation => {
+                :only => [:overall]
+            }
+        }
+    })
+  end
+
   def as_json(options={})
     default_options = {
         :except => [:email, :active_mod_list_id, :invitation_token, :invitation_created_at, :invitation_sent_at, :invitation_accepted_at, :invitation_limit, :invited_by_id, :invited_by_type, :invitations_count],

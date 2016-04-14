@@ -6,16 +6,13 @@ class ModsController < ApplicationController
   def index
     @mods = Mod.filter(filtering_params)
 
-    respond_to do |format|
-      format.html
-      format.json { render :json => @mods}
-    end
+    render :json => @mods
   end
 
   # GET /mods/1
   # GET /mods/1.json
   def show
-    render @mod.show_json
+    render :json => @mod.show_json
   end
 
   # POST /mods
@@ -23,24 +20,20 @@ class ModsController < ApplicationController
   def create
     @mod = Mod.new(mod_params)
 
-    respond_to do |format|
-      if @mod.save
-        format.json { render :json => @mod  }
-      else
-        format.json { render json: @mod.errors, status: :unprocessable_entity }
-      end
+    if @mod.save
+      render json: {status: :ok}
+    else
+      render json: @mod.errors, status: :unprocessable_entity
     end
   end
 
   # PATCH/PUT /mods/1
   # PATCH/PUT /mods/1.json
   def update
-    respond_to do |format|
-      if @mod.update(mod_params)
-        format.json { render :show, status: :ok, location: @mod }
-      else
-        format.json { render json: @mod.errors, status: :unprocessable_entity }
-      end
+    if @mod.update(mod_params)
+      render json: {status: :ok}
+    else
+      render json: @mod.errors, status: :unprocessable_entity
     end
   end
 
@@ -71,9 +64,10 @@ class ModsController < ApplicationController
   # DELETE /mods/1
   # DELETE /mods/1.json
   def destroy
-    @mod.destroy
-    respond_to do |format|
-      format.json { head :no_content }
+    if @mod.destroy
+      render json: {status: :ok}
+    else
+      render json: @mod.errors, status: :unprocessable_entity
     end
   end
 

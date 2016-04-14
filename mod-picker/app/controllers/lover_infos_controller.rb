@@ -4,18 +4,16 @@ class LoverInfosController < ApplicationController
   # GET /lover_infos/1
   # GET /lover_infos/1.json
   def show
-    respond_to do |format|
-      format.html
-      format.json { render :json => @lover_info}
-    end
+    render :json => @lover_info
   end
 
   # DELETE /lover_infos/1
   # DELETE /lover_infos/1.json
   def destroy
-    @lover_info.destroy
-    respond_to do |format|
-      format.json { head :no_content }
+    if @lover_info.destroy
+      render json: {status: :ok}
+    else
+      render json: @lover_info.errors, status: :unprocessable_entity
     end
   end
 

@@ -4,18 +4,16 @@ class NexusInfosController < ApplicationController
   # GET /nexus_infos/1
   # GET /nexus_infos/1.json
   def show
-    respond_to do |format|
-      format.html
-      format.json { render :json => @nexus_info}
-    end
+    render :json => @nexus_info
   end
 
   # DELETE /nexus_infos/1
   # DELETE /nexus_infos/1.json
   def destroy
-    @nexus_info.destroy
-    respond_to do |format|
-      format.json { head :no_content }
+    if @lover_info.destroy
+      render json: {status: :ok}
+    else
+      render json: @lover_info.errors, status: :unprocessable_entity
     end
   end
 

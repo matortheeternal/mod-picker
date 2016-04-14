@@ -4,62 +4,53 @@ class LoadOrderNotesController < HelpfulableController
   # GET /load_order_notes
   # GET /load_order_notes.json
   def index
-    load_order_notes = LoadOrderNote.filter(filtering_params)
+    @load_order_notes = LoadOrderNote.filter(filtering_params)
 
-    respond_to do |format|
-      format.html
-      format.json { render :json => load_order_notes}
-    end
+    render :json => @load_order_notes
   end
 
   # GET /load_order_notes/1
   # GET /load_order_notes/1.json
   def show
-    respond_to do |format|
-      format.html
-      format.json { render :json => load_order_note}
-    end
+    render :json => @load_order_note
   end
 
   # POST /load_order_notes
   # POST /load_order_notes.json
   def create
-    load_order_note = LoadOrderNote.new(load_order_note_params)
+    @load_order_note = LoadOrderNote.new(load_order_note_params)
 
-    respond_to do |format|
-      if load_order_note.save
-        format.json { render :show, status: :created, location: load_order_note }
-      else
-        format.json { render json: load_order_note.errors, status: :unprocessable_entity }
-      end
+    if load_order_note.save
+      render json: {status: :ok}
+    else
+      render json: @load_order_note.errors, status: :unprocessable_entity
     end
   end
 
   # PATCH/PUT /load_order_notes/1
   # PATCH/PUT /load_order_notes/1.json
   def update
-    respond_to do |format|
-      if load_order_note.update(load_order_note_params)
-        format.json { render :show, status: :ok, location: load_order_note }
-      else
-        format.json { render json: load_order_note.errors, status: :unprocessable_entity }
-      end
+    if @load_order_note.update(load_order_note_params)
+      render json: {status: :ok}
+    else
+      render json: @load_order_note.errors, status: :unprocessable_entity
     end
   end
 
   # DELETE /load_order_notes/1
   # DELETE /load_order_notes/1.json
   def destroy
-    load_order_note.destroy
-    respond_to do |format|
-      format.json { head :no_content }
+    if @load_order_note.destroy
+      render json: {status: :ok}
+    else
+      render json: @load_order_note.errors, status: :unprocessable_entity
     end
   end
 
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_load_order_note
-      load_order_note = LoadOrderNote.find(params[:id])
+      @load_order_note = LoadOrderNote.find(params[:id])
     end
 
     # Params we allow filtering on

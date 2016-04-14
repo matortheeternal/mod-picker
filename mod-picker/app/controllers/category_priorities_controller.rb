@@ -4,9 +4,6 @@ class CategoryPrioritiesController < ApplicationController
   def index
     @category_priorities = CategoryPriority.all
 
-    respond_to do |format|
-      format.html
-      format.json { render :json => @category_priorities}
-    end
+    render :json => @category_priorities
   end
 end

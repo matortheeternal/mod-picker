@@ -4,17 +4,16 @@ class WorkshopInfosController < ApplicationController
   # GET /workshop_infos/1
   # GET /workshop_infos/1.json
   def show
-    respond_to do |format|
-      format.json { render :json => @workshop_info}
-    end
+    render :json => @workshop_info
   end
 
   # DELETE /workshop_infos/1
   # DELETE /workshop_infos/1.json
   def destroy
-    @workshop_info.destroy
-    respond_to do |format|
-      format.json { head :no_content }
+    if @workshop_info.destroy
+      render json: {status: :ok}
+    else
+      render json: @workshop_info.errors, status: :unprocessable_entity
     end
   end
 

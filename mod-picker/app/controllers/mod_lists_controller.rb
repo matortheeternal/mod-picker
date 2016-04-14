@@ -6,19 +6,13 @@ class ModListsController < ApplicationController
   def index
     @mod_lists = ModList.all
 
-    respond_to do |format|
-      format.html
-      format.json { render :json => @mod_lists}
-    end
+    render :json => @mod_lists
   end
 
   # GET /mod_lists/1
   # GET /mod_lists/1.json
   def show
-    respond_to do |format|
-      format.html
-      format.json { render :json => @mod_list}
-    end
+    render :json => @mod_list
   end
 
   # POST /mod_lists
@@ -26,24 +20,20 @@ class ModListsController < ApplicationController
   def create
     @mod_list = ModList.new(mod_list_params)
 
-    respond_to do |format|
-      if @mod_list.save
-        format.json { render :show, status: :created, location: @mod_list }
-      else
-        format.json { render json: @mod_list.errors, status: :unprocessable_entity }
-      end
+    if @mod_list.save
+      render json: {status: :ok}
+    else
+      render json: @mod_list.errors, status: :unprocessable_entity
     end
   end
 
   # PATCH/PUT /mod_lists/1
   # PATCH/PUT /mod_lists/1.json
   def update
-    respond_to do |format|
-      if @mod_list.update(mod_list_params)
-        format.json { render :show, status: :ok, location: @mod_list }
-      else
-        format.json { render json: @mod_list.errors, status: :unprocessable_entity }
-      end
+    if @mod_list.update(mod_list_params)
+      render json: {status: :ok}
+    else
+      render json: @mod_list.errors, status: :unprocessable_entity
     end
   end
 
@@ -63,7 +53,7 @@ class ModListsController < ApplicationController
     if @mod_list_star.nil?
       render json: {status: :ok}
     else
-      if @mod_list_star.delete
+      if @mod_list_star.destroy
         render json: {status: :ok}
       else
         render json: @mod_list_star.errors, status: :unprocessable_entity
@@ -74,9 +64,10 @@ class ModListsController < ApplicationController
   # DELETE /mod_lists/1
   # DELETE /mod_lists/1.json
   def destroy
-    @mod_list.destroy
-    respond_to do |format|
-      format.json { render json: { status: :ok } }
+    if @mod_list.destroy
+      render json: {status: :ok}
+    else
+      render json: @mod_list.errors, status: :unprocessable_entity
     end
   end
 
