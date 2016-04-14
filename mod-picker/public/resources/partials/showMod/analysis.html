@@ -1,0 +1,22 @@
+﻿<div class="plugins-block">
+	<div class="plugins-title">
+		Plugins
+		<select ng-model="plugin" ng-change="updateVersion(version)" ng-options="plugin.filename for plugin in mod.plugins" class="plugin-selector"></select>
+	</div>
+	<div class="metadata-section">
+
+	</div>
+	<div class="records-section">
+
+	</div>
+	<div class="errors-section">
+
+	</div>
+	<div class="overrides-section">
+
+	</div>
+</div>
+
+<div class="assets-block">
+	<asset-tree data="mod.plugins"></asset-tree>
+</div>
