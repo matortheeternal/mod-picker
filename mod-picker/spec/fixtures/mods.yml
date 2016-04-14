@@ -44,3 +44,21 @@ TES5Edit:
   primary_category_id: subCatUtilitiesTools.id
   secondary_category_id: subCatResourcesFrameworks.id
   mod_stars_count: 0
+
+Apocalypse:
+  name: "Apocalypse Spell Package"
+  is_utility: false
+  has_adult_content: false
+  game_id: skyrim.id
+  primary_category_id: subCatUtilitiesTools.id
+  secondary_category_id: subCatResourcesFrameworks.id
+  mod_stars_count: 0
+
+SkyRE:
+  name: "Skyrim Redone"
+  is_utility: false
+  has_adult_content: false
+  game_id: skyrim.id
+  primary_category_id: subCatUtilitiesTools.id
+  secondary_category_id: subCatResourcesFrameworks.id
+  mod_stars_count: 0

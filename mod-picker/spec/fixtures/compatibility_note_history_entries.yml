@@ -15,42 +15,32 @@
 #   add_index "compatibility_note_history_entries", ["compatibility_plugin_id"], name: "fk_rails_6466cbf704", using: :btree
 #   add_index "compatibility_note_history_entries", ["submitted_by"], name: "fk_rails_7e4343a2d1", using: :btree
 
-history_note_alpha:
-  compatibility_note_id: incompatibleNote
-  edit_summary: "Fixed incompatibility with perma"
-  submitted_by: homura
-  compatibility_mod_id: SkyUI
-  compatibility_plugin_id: 
-  compatibility_type:
-  submitted: <%= DateTime.now %>
-  text_body: "solved a problem where perma was incompatibile with apocalypse so just removed apocalypse"
-
-history_note_bravo:
+history_note_skyre:
   compatibility_note_id: incompatibleNote
   edit_summary: "Fixed incompatibility with SkyRE"
   submitted_by: homura
+  compatibility_mod_id: SkyRE
+  compatibility_plugin_id: SkyRE_esp
+  compatibility_type: "incompatible"
+  submitted: <%= DateTime.now %>
+  text_body: "solved a problem where perma was incompatibile with apocalypse so just removed apocalypse"
+
+history_note_skyui:
+  compatibility_note_id: incompatibleNote
+  edit_summary: "Fixed incompatibility with SkyUI"
+  submitted_by: homura
   compatibility_mod_id: SkyUI
-  compatibility_plugin_id:
-  compatibility_type:
+  compatibility_plugin_id: SkyUI_esp
+  compatibility_type: "incompatible"
   submitted: <%= DateTime.now %>
   text_body: "solved a thing where SkyRE was incompatibile with apocalypse so just removed apocalypse"
 
-history_note_charlie:
+history_note_apocalypse:
   compatibility_note_id: incompatibleNote
-  edit_summary: "Fixed incompatibility with Ordinator"
+  edit_summary: "Fixed incompatibility with apocalypse"
   submitted_by: homura
-  compatibility_mod_id: SkyUI
-  compatibility_plugin_id:
-  compatibility_type:
+  compatibility_mod_id: Apocalypse
+  compatibility_plugin_id: Apocalypse_esp
+  compatibility_type: "incompatible"
   submitted: <%= DateTime.now %>
   text_body: "solved a problem where Ordinator was incompatibile with apocalypse so just deleted ordinator"
-
-history_note_delta:
-  compatibility_note_id: incompatibleNote
-  edit_summary: "Fixed incompatibility with requiem"
-  submitted_by: homura
-  compatibility_mod_id: SkyUI
-  compatibility_plugin_id:
-  compatibility_type:
-  submitted: <%= DateTime.now %>
-  text_body: "solved a problem where requiem was incompatibile with apocalypse so just removed USLEEP"

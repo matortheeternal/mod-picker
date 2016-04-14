@@ -9,8 +9,22 @@
 # add_index "plugins", ["mod_version_id"], name: "mv_id", using: :btree
 
 SkyUI_esp:
-  mod_version_id:
-  filename:
-  author:
-  description:
-  crc_hash:
+  mod_version_id: SkyUI_1_0
+  filename: "SkyUI.esp"
+  author: kyoko
+  description: "Skyrim UI to make it more pleasant for pc users"
+  crc_hash: "db3b4bcb"
+
+Apocalypse_esp:
+  mod_version_id: TES5Edit_1_0
+  filename: "Apocalypse.esp"
+  author: kyoko
+  description: "Classic Skyrim magic spell mod"
+  crc_hash: "212c04e3"
+
+SkyRE_esp:
+  mod_version_id: SkyRE_1_0
+  filename: "SkyRE.esp"
+  author: kyoko
+  description: "Skyre Skyrim Redone, Skyrim game overhaul"
+  crc_hash: "c5de88c9"

@@ -43,9 +43,30 @@ TES5Edit_2_0:
   dangerous: false
   version: "2.0"
 
-TES5Edit_3_0:
-  mod_id: TES5Edit
+Apocalypse_1_0:
+  mod_id: Apocalypse
+  released: <%= DateTime.now %>
+  obsolete: false
+  dangerous: false
+  version: "1.0"
+
+Apocalypse_2_0:
+  mod_id: Apocalypse
+  released: <%= DateTime.now %>
+  obsolete: false
+  dangerous: false
+  version: "2.0"
+
+Apocalypse_3_0:
+  mod_id: Apocalypse
   released: <%= DateTime.now %>
   obsolete: false
   dangerous: false
   version: "3.0"
+
+SkyRE_1_0:
+  mod_id: SkyRE
+  released: <%= DateTime.now %>
+  obsolete: false
+  dangerous: false
+  version: "1.0"
