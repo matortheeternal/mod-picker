@@ -26,7 +26,7 @@ require 'rails_helper'
 
 RSpec.describe ModList, :model, :wip do
 
-  fixtures :mod_lists, :users
+  fixtures :mod_lists, :users, :mod_versions
 
   it "should have a valid factory" do
     expect( create(:mod_list) ).to be_valid
@@ -197,6 +197,37 @@ RSpec.describe ModList, :model, :wip do
           list.comments.destroy(comment.id)
           list.reload
         }.to change { list.comments_count }.by(-1)
+      end
+    end
+
+    describe "plugins_count" do
+      # mod list fixture
+      let!(:list) {mod_lists(:plannedVanilla)}
+
+      xit "should increment comment counter by 1 when new comment is made" do
+
+        c1 = list.plugins.create(
+          attributes_for(:plugin, mod_version_id: mod_versions(:SkyUI_1_0).id))
+
+        # expect(c1).to be_valid
+        # list.reload
+        # expect(list.plugins_count).to eq(1)
+
+        # expect { 
+        #   list.plugins.create(attributes_for(:plugin))
+        #   list.reload
+        # }.to change { list.comments_count }.by(1)
+      end
+
+      xit "should decrement the comment counter by 1 if a comment is deleted" do
+        plugin = list.plugins.create(
+          attributes_for(:plugin, mod_version_id: mod_versions(:SkyUI_1_0).id))
+        list.reload
+
+        expect {
+          list.plugins.destroy(plugin.id)
+          list.reload
+        }.to change { list.plugins_count }.by(-1)
       end
     end
   end

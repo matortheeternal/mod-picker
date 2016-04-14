@@ -38,8 +38,10 @@ class Plugin < ActiveRecord::Base
   private
     # counter caches
     def increment_counter_caches
-      self.mod_lists.plugins_count += 1
-      self.mod_lists.save
+      # puts "AWEFWAFWFAWEFAEWFAW==="
+      # puts self.mod_list_plugins
+      # self.mod_lists.plugins_count += 1
+      # self.mod_lists.save
     end
 
     def decrement_counter_caches
