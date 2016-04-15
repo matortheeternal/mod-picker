@@ -1,11 +1,11 @@
-<div ng-show="successBool" sticky>
-    <div class="success-message">
+<div ng-show="successBool">
+    <div class="success-message" sticky>
     	{{successMessage}}
     </div>
 </div>
 
-<div ng-show="errors.length" sticky>
-	<div ng-repeat="error in errors" class="error-message">
+<div ng-show="errors.length">
+	<div ng-repeat="error in errors" class="error-message" sticky>
     	{{error.message}}
     </div>
 </div>

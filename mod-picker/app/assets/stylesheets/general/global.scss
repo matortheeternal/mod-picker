@@ -238,12 +238,6 @@ input[type="button"], input[type="submit"] {
   text-align: center;
 }
 
-.fixed-messages {
-  position: fixed;
-  top: 0;
-  left: 0;
-}
-
 .error-message {
   background-color: $error_message_color;
   padding: 14px;
