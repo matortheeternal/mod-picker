@@ -1,0 +1,17 @@
+.tags-container {
+  .tag-box {
+    font-size: 11px;
+    color: $action_text_color;
+    background-color: $action_color;
+    border-radius: 2px;
+    padding: 4px;
+
+    &:hover {
+      background-color: $dark_action_color;
+    }
+
+    .tag-count {
+      border-left: $border_color;
+    }
+  }
+}
