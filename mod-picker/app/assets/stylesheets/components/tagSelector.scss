@@ -1,17 +1,41 @@
 .tags-container {
-  .tag-box {
-    font-size: 11px;
+  max-width: 400px;
+  display: inline-block;
+
+  .tag-box, .edit-tag-box, .add-tag-box {
+    font-size: 12px;
     color: $action_text_color;
     background-color: $action_color;
     border-radius: 2px;
     padding: 4px;
-
-    &:hover {
-      background-color: $dark_action_color;
-    }
+    margin: 2px;
+    white-space: nowrap;
+    display: block;
+    float: left;
 
     .tag-count {
       border-left: $border_color;
+    }
+
+    input {
+      border: 0;
+      max-width: 300px;
+      font-size: 11px;
+      color: $action_text_color;
+      background-color: inherit;
+    }
+  }
+
+  .remove-tag {
+    cursor: pointer;
+  }
+
+  .add-tag-box {
+    background-color: $dark_action_color;
+    cursor: pointer;
+
+    &:hover {
+      background-color: $action_color;
     }
   }
 }
