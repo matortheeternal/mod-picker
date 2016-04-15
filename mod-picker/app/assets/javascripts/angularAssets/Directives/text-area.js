@@ -13,7 +13,7 @@ app.directive('textArea', function ($timeout) {
         },
         link: function(scope, element, attrs) {
             // get text area element and turn it into a markdown editor
-            var textarea = element.find("textarea")[0];
+            var textarea = element.children()[0];
             var mde = new SimpleMDE({ element: textarea, spellChecker: false });
 
             // two-way data binding to and from mde
