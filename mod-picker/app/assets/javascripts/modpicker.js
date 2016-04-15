@@ -2,7 +2,7 @@
 //= require_tree ./angularAssets
 
 var app = angular.module('modPicker', [
-    'ngRoute', 'rzModule', 'ngAnimate'
+    'ngRoute', 'rzModule', 'ngAnimate', 'sticky'
 ]);
 
 app.config(['$httpProvider', '$compileProvider', function ($httpProvider, $compileProvider) {
