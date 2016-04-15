@@ -34,6 +34,7 @@ Rails.application.config.assets.precompile += [
 'jquery.nicescroll.min.js',
 'jquery.smooth-scroll.js',
 'script.js',
+'spin.min.js',
 'simplemde.min.js',
 'lzma.js',
 'rar.js',
