@@ -1,0 +1,16 @@
+<div class="tags-container">
+    <span ng-repeat="tag in activeTags" class="tag-box" title="Submitted by {{tag.user.username}}">
+        <span class="tag-text">
+            {{tag.text}}
+        </span>
+        <span ng-if="showModsCount" class="tag-count">
+            {{tag.mods_count}}
+        </span>
+        <span ng-if="showModListsCount" class="tag-count">
+            {{tag.mod_lists_count}}
+        </span>
+        <span ng-if="showRemove" class="remove-tag">
+            <i class="fa fa-times"></i>
+        </span>
+    </span>
+</div>
