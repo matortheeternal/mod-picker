@@ -27,3 +27,7 @@ function getFileExtension(filename) {
 function getBaseName(path) {
     return path.split(/[\\/]/).pop();
 }
+
+String.prototype.capitalize = function() {
+    return this.charAt(0).toUpperCase() + this.slice(1);
+};
