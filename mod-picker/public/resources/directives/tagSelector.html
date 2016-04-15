@@ -4,10 +4,10 @@
             {{tag.text}}
         </span>
         <span ng-if="showModsCount" class="tag-count">
-            {{tag.mods_count}}
+            {{tag.mods_count | number}}
         </span>
         <span ng-if="showModListsCount" class="tag-count">
-            {{tag.mod_lists_count}}
+            {{tag.mod_lists_count | number}}
         </span>
         <span ng-if="showRemove" class="remove-tag" ng-click="activeTags.splice($index, 1)">
             <i class="fa fa-times"></i>
@@ -15,20 +15,20 @@
     </span>
     <span ng-repeat="tag in newTags" class="edit-tag-box">
         <span class="tag-text">
-            <input type="text" ng-model="tag.text"/>
+            <input type="text" ng-model="tag.text" pu-elastic-input/>
         </span>
         <span ng-if="showModsCount" class="tag-count">
-            {{tag.mods_count}}
+            {{tag.mods_count | number}}
         </span>
         <span ng-if="showModListsCount" class="tag-count">
-            {{tag.mod_lists_count}}
+            {{tag.mod_lists_count | number}}
         </span>
         <span class="remove-tag" ng-click="newTags.splice($index, 1)">
             <i class="fa fa-times"></i>
         </span>
     </span>
-    <span class="add-tag-box">
-        <span class="tag-text" ng-click="newTags.push({})">
+    <span class="add-tag-box" ng-show="showAdd && (activeTags.length + newTags.length < maxTags)" ng-click="addTag()">
+        <span class="tag-text">
             <i class="fa fa-plus"></i> Add a tag
         </span>
     </span>

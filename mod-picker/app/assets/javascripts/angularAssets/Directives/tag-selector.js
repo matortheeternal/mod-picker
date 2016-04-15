@@ -6,14 +6,22 @@ app.directive('tagSelector', function () {
         scope: {
         	tags: '=',
         	activeTags: '=',
-            showModsCount: '=',
-            showModListsCount: '=',
-            showAuthor: '=',
-            showRemove: '=',
-            newTags: '='
+            newTags: '=',
+            maxTags: '=?',
+            showModsCount: '=?',
+            showModListsCount: '=?',
+            showAuthor: '=?',
+            showRemove: '=?',
+            showAdd: '=?'
         }
     }
 });
 
 app.controller('tagSelectorController', function ($scope) {
+    $scope.addTag = function() {
+        $scope.newTags.push({
+            text: "Test",
+            mods_count: 0
+        });
+    }
 });
