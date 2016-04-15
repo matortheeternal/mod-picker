@@ -9,7 +9,8 @@ app.directive('tagSelector', function () {
             showModsCount: '=',
             showModListsCount: '=',
             showAuthor: '=',
-            showRemove: '='
+            showRemove: '=',
+            newTags: '='
         }
     }
 });

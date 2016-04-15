@@ -9,8 +9,27 @@
         <span ng-if="showModListsCount" class="tag-count">
             {{tag.mod_lists_count}}
         </span>
-        <span ng-if="showRemove" class="remove-tag">
+        <span ng-if="showRemove" class="remove-tag" ng-click="activeTags.splice($index, 1)">
             <i class="fa fa-times"></i>
+        </span>
+    </span>
+    <span ng-repeat="tag in newTags" class="edit-tag-box">
+        <span class="tag-text">
+            <input type="text" ng-model="tag.text"/>
+        </span>
+        <span ng-if="showModsCount" class="tag-count">
+            {{tag.mods_count}}
+        </span>
+        <span ng-if="showModListsCount" class="tag-count">
+            {{tag.mod_lists_count}}
+        </span>
+        <span class="remove-tag" ng-click="newTags.splice($index, 1)">
+            <i class="fa fa-times"></i>
+        </span>
+    </span>
+    <span class="add-tag-box">
+        <span class="tag-text" ng-click="newTags.push({})">
+            <i class="fa fa-plus"></i> Add a tag
         </span>
     </span>
 </div>
