@@ -67,6 +67,7 @@ app.controller('userSettingsController', function ($rootScope, $scope, $q, userS
                 var label = $scope.canChangeTitle ? "High Reputation" : "Low Reputation";
                 $scope.titleQuote = quoteService.getRandomQuote(quotes, label);
                 $scope.titleQuote.text = $scope.titleQuote.text.replace(/Talos/g, $scope.user.username.capitalize());
+                $scope.user.about_me = $scope.user.about_me + " ";
             });
         });
     });
