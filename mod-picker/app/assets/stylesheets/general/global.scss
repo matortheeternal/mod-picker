@@ -211,7 +211,7 @@ input[type="button"], input[type="submit"] {
 }
 
 .wide-column {
-  width: 360px;
+  min-width: 360px;
 }
 
 .right-column {
