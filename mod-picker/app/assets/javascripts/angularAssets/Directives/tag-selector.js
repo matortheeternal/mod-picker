@@ -7,7 +7,7 @@ app.directive('tagSelector', function () {
         	tags: '=',
         	activeTags: '=',
             newTags: '=',
-            maxTags: '=?',
+            maxTags: '=',
             showModsCount: '=?',
             showModListsCount: '=?',
             showAuthor: '=?',
@@ -19,10 +19,12 @@ app.directive('tagSelector', function () {
 
 app.controller('tagSelectorController', function ($scope) {
     $scope.addTag = function() {
-        $scope.newTags.push({
-            text: "Test",
-            mods_count: 0
-        });
+        if ($scope.newTags.length < $scope.maxTags) {
+            $scope.newTags.push({
+                text: "Test",
+                mods_count: 0
+            });
+        }
     };
     $scope.focusText = function ($event) {
         $event.target.select();
