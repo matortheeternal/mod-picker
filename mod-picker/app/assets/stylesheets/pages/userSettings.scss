@@ -1,5 +1,6 @@
 .header-tabs {
   background-color: $secondary_background;
+  border-bottom: 1px solid $border_color;
   h1 {
     font-weight: 500;
     color: $text_color;
@@ -11,6 +12,12 @@
 
 .settings-tabs {
   margin-left: 46px;
+
+  .selected-tab {
+    background-color: $primary_background;
+    border-bottom: 1px solid $primary_background;
+    margin-bottom: -1px;
+  }
 }
 
 #avatar-browse {

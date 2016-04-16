@@ -90,13 +90,14 @@
 
   .selected-tab {
   	background-color: $secondary_background;
+  	border-bottom: 1px solid $secondary_background;
+    margin-bottom: -1px;
   }
 }
 
 .mod-tab {
   padding: 20px;
   border: 1px solid $border_color;
-  border-top: 0;
   background-color: $secondary_background;
 }
 
