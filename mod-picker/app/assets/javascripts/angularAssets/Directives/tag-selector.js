@@ -43,13 +43,12 @@ app.controller('tagSelectorController', function ($scope) {
     };
 });
 
-app.directive('toFocus', function ($timeout) {
-    return function (scope, elem, attrs) {
-        scope.$watch(attrs.toFocus, function (newval) {
+app.directive('autoSelect', function ($timeout) {
+    return function (scope, element, attrs) {
+        scope.$watch(attrs.autoSelect, function (newval) {
             if (newval) {
                 $timeout(function () {
-                    elem[0].focus();
-                    elem[0].select();
+                    element[0].select();
                 }, 0, false);
             }
         });
