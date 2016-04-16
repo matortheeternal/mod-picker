@@ -6,33 +6,30 @@ class ModVersionsController < ApplicationController
   def create
     @mod_version = ModVersion.new(mod_version_params)
 
-    respond_to do |format|
-      if @mod_version.save
-        format.json { render :json => @mod_version}
-      else
-        format.json { render json: @mod_version.errors, status: :unprocessable_entity }
-      end
+    if @mod_version.save
+      render json: {status: :ok}
+    else
+      render json: @mod_version.errors, status: :unprocessable_entity
     end
   end
 
   # PATCH/PUT /mod_versions/1
   # PATCH/PUT /mod_versions/1.json
   def update
-    respond_to do |format|
-      if @mod_version.update(mod_version_params)
-        format.json { render :json => @mod_version}
-      else
-        format.json { render json: @mod_version.errors, status: :unprocessable_entity }
-      end
+    if @mod_version.update(mod_version_params)
+      render json: {status: :ok}
+    else
+      render json: @mod_version.errors, status: :unprocessable_entity
     end
   end
 
   # DELETE /mod_versions/1
   # DELETE /mod_versions/1.json
   def destroy
-    @mod_version.destroy
-    respond_to do |format|
-      format.json { head :no_content }
+    if @mod_version.destroy
+      render json: {status: :ok}
+    else
+      render json: @mod_version.errors, status: :unprocessable_entity
     end
   end
 

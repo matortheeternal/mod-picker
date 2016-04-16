@@ -3,6 +3,7 @@ class UserTitlesController < ApplicationController
   # GET /user_titles.json
   def index
     @user_titles = UserTitle.all
+
     render :json => @user_titles
   end
 

@@ -1,5 +1,5 @@
 <div class="center" ng-show="showSpinner">
-    <img src="/resources/loader.gif"/>
+    <div class="spinner-container"></div>
 </div>
-<div ng-show="data && !showSpinner" ng-transclude>
+<div class="{{contentClass}}" ng-show="data && !showSpinner" ng-transclude>
 </div>

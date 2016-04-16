@@ -36,6 +36,8 @@ class User < ActiveRecord::Base
   has_many :helpful_marks, :foreign_key => 'submitted_by', :inverse_of => 'user'
   has_many :compatibility_note_history_entries, :foreign_key => 'submitted_by', :inverse_of => 'user'
 
+  has_many :mod_tags, :foreign_key => 'submitted_by', :inverse_of => 'user'
+  has_many :mod_list_tags, :foreign_key => 'submitted_by', :inverse_of => 'user'
   has_many :mod_authors, :inverse_of => 'user'
   has_many :mods, :through => 'mod_authors', :inverse_of => 'authors'
   has_many :mod_lists, :foreign_key => 'created_by', :inverse_of => 'user'
@@ -134,6 +136,25 @@ class User < ActiveRecord::Base
     self.create_reputation({ user_id: self.id })
     self.create_settings({ user_id: self.id })
     self.create_bio({ user_id: self.id })
+  end
+
+  def show_json
+    self.as_json({
+        :include => {
+            :mods => {
+                :only => [:id, :name, :game_id, :mod_stars_count]
+            },
+            :mod_lists => {
+                :only => [:id, :name, :is_collection, :is_public, :status, :mods_count, :created]
+            },
+            :bio => {
+                :except => [:user_id]
+            },
+            :reputation => {
+                :only => [:overall]
+            }
+        }
+    })
   end
 
   def as_json(options={})

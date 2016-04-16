@@ -6,19 +6,13 @@ class CompatibilityNotesController < HelpfulableController
   def index
     @compatibility_notes = CompatibilityNote.filter(filtering_params)
 
-    respond_to do |format|
-      format.html
-      format.json { render :json => @compatibility_notes}
-    end
+    render :json => @compatibility_notes
   end
 
   # GET /compatibility_notes/1
   # GET /compatibility_notes/1.json
   def show
-    respond_to do |format|
-      format.html
-      format.json { render :json => @compatibility_note}
-    end
+    render :json => @compatibility_note
   end
 
   # POST /compatibility_notes
@@ -26,33 +20,30 @@ class CompatibilityNotesController < HelpfulableController
   def create
     @compatibility_note = CompatibilityNote.new(compatibility_note_params)
 
-    respond_to do |format|
-      if @compatibility_note.save
-        format.json { render :show, status: :created, location: @compatibility_note }
-      else
-        format.json { render json: @compatibility_note.errors, status: :unprocessable_entity }
-      end
+    if @compatibility_note.save
+      render json: {status: :ok}
+    else
+      render json: @compatibility_note.errors, status: :unprocessable_entity
     end
   end
 
   # PATCH/PUT /compatibility_notes/1
   # PATCH/PUT /compatibility_notes/1.json
   def update
-    respond_to do |format|
-      if @compatibility_note.update(compatibility_note_params)
-        format.json { render :show, status: :ok, location: @compatibility_note }
-      else
-        format.json { render json: @compatibility_note.errors, status: :unprocessable_entity }
-      end
+    if @compatibility_note.update(compatibility_note_params)
+      render json: {status: :ok}
+    else
+      render json: @compatibility_note.errors, status: :unprocessable_entity
     end
   end
 
   # DELETE /compatibility_notes/1
   # DELETE /compatibility_notes/1.json
   def destroy
-    @compatibility_note.destroy
-    respond_to do |format|
-      format.json { head :no_content }
+    if @compatibility_note.destroy
+      render json: {status: :ok}
+    else
+      render json: @compatibility_note.errors, status: :unprocessable_entity
     end
   end
 
