@@ -18,14 +18,20 @@
     display: block;
     float: left;
 
+    .tag-text, .tag-count, .remove-tag, .add-tag {
+      line-height: 14px;
+    }
+
     .tag-text {
       padding-right: 2px;
     }
 
     input {
       border: 0;
+      padding: 0;
       max-width: 300px;
       font-size: 11px;
+      line-height: 14px;
       color: $action_text_color;
       background-color: inherit;
 
@@ -51,7 +57,7 @@
     cursor: pointer;
 
     &:hover {
-      background-color: $action_color;
+      background-color: $bar_color;
     }
   }
 }
