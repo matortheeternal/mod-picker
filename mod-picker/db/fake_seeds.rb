@@ -6,6 +6,10 @@ def randpow(num, pow)
   (num * result).floor
 end
 
+def random_user
+  User.offset(rand(User.count)).first
+end
+
 def seed_fake_users
   require 'securerandom'
 
@@ -617,6 +621,113 @@ def seed_fake_mods
   puts "    #{Plugin.count} plugins seeded"
 end
 
+def seed_fake_tags
+  # generate tags
+  puts "\nSeeding tags"
+
+  Tag.create(
+      text: "Dwemer",
+      game_id: gameSkyrim.id,
+      submitted_by: random_user.id
+  )
+  Tag.create(
+      text: "Has MCM",
+      game_id: gameSkyrim.id,
+      submitted_by: random_user.id
+  )
+  Tag.create(
+      text: "Requires SKSE",
+      game_id: gameSkyrim.id,
+      submitted_by: random_user.id
+  )
+  Tag.create(
+      text: "Mod Management",
+      game_id: gameSkyrim.id,
+      submitted_by: random_user.id
+  )
+  Tag.create(
+      text: "Has FOMOD",
+      game_id: gameSkyrim.id,
+      submitted_by: random_user.id
+  )
+  Tag.create(
+      text: "Not Lore Friendly",
+      game_id: gameSkyrim.id,
+      submitted_by: random_user.id
+  )
+  Tag.create(
+      text: "Skimpy",
+      game_id: gameSkyrim.id,
+      submitted_by: random_user.id
+  )
+  Tag.create(
+      text: "Plants",
+      game_id: gameSkyrim.id,
+      submitted_by: random_user.id
+  )
+  Tag.create(
+      text: "AI",
+      game_id: gameSkyrim.id,
+      submitted_by: random_user.id
+  )
+  Tag.create(
+      text: "Racemenu Overlay",
+      game_id: gameSkyrim.id,
+      submitted_by: random_user.id
+  )
+  Tag.create(
+      text: "UI",
+      game_id: gameSkyrim.id,
+      submitted_by: random_user.id
+  )
+  Tag.create(
+      text: "New Mechanics",
+      game_id: gameSkyrim.id,
+      submitted_by: random_user.id
+  )
+  Tag.create(
+      text: "Sexy",
+      game_id: gameSkyrim.id,
+      submitted_by: random_user.id
+  )
+  Tag.create(
+      text: "Dragons",
+      game_id: gameSkyrim.id,
+      submitted_by: random_user.id
+  )
+  Tag.create(
+      text: "Shiny",
+      game_id: gameSkyrim.id,
+      submitted_by: random_user.id
+  )
+
+  puts "    Applying tags to mods"
+  Mod.all.each do |mod|
+    rnd = randpow(10, 2)
+    puts "      Applying #{rnd} tags to #{mod.name}"
+    rnd.times do
+      submitter = random_user
+      mod.mod_tags.new(
+        submitted_by: submitter.id,
+        tag_id: Tag.offset(rand(Tag.count)).first.id
+      ).save!
+    end
+  end
+
+  puts "    Applying tags to mod lists"
+  ModList.all.each do |modlist|
+    rnd = randpow(10, 2)
+    puts "      Applying #{rnd} tags to #{modlist.name}"
+    rnd.times do
+      submitter = random_user
+      modlist.mod_list_tags.new(
+          submitted_by: submitter.id,
+          tag_id: Tag.offset(rand(Tag.count)).first.id
+      ).save!
+    end
+  end
+end
+
 def seed_fake_comments
   # generate comments on user profiles
   puts "\nSeeding user comments"
@@ -624,7 +735,7 @@ def seed_fake_comments
     rnd = randpow(10, 2)
     puts "    Generating #{rnd} comments for #{user.username}"
     rnd.times do
-      submitter = User.offset(rand(User.count)).first
+      submitter = random_user
       user.profile_comments.new(
           submitted_by: submitter.id,
           hidden: false,
@@ -642,7 +753,7 @@ def seed_fake_reviews
     nReviews = rand(6)
     puts "    Generating #{nReviews} reviews for #{mod.name}"
     nReviews.times do
-      submitter = User.offset(rand(User.count)).first
+      submitter = random_user
       review = mod.reviews.new(
           submitted_by: submitter.id,
           mod_id: mod.id,
@@ -660,7 +771,7 @@ def seed_fake_reviews
       # seed helpful marks on reviews
       nHelpfulMarks = randpow(10, 3)
       nHelpfulMarks.times do
-        submitter = User.offset(rand(User.count)).first
+        submitter = random_user
         review.helpful_marks.new(
             submitted_by: submitter.id,
             helpful: rand > 0.35
@@ -676,7 +787,7 @@ def seed_fake_compatibility_notes
   puts "\nSeeding compatibility notes"
   nNotes = Mod.count
   nNotes.times do
-    submitter = User.offset(rand(User.count)).first
+    submitter = random_user
     cnote = CompatibilityNote.new(
         submitted_by: submitter.id,
         compatibility_type: CompatibilityNote.statuses.keys.sample,
@@ -688,7 +799,7 @@ def seed_fake_compatibility_notes
     # seed helpful marks on cnotes
     nHelpfulMarks = randpow(10, 3)
     nHelpfulMarks.times do
-      submitter = User.offset(rand(User.count)).first
+      submitter = random_user
       cnote.helpful_marks.new(
           submitted_by: submitter.id,
           helpful: rand > 0.35
@@ -712,7 +823,7 @@ def seed_fake_install_order_notes
   puts "\nSeeding install order notes"
   nNotes = Mod.count
   nNotes.times do
-    submitter = User.offset(rand(User.count)).first
+    submitter = random_user
     puts "    Generating install order note associated with:"
     install_first = Mod.offset(rand(Mod.count)).first
     install_second = Mod.offset(rand(Mod.count)).first
@@ -730,7 +841,7 @@ def seed_fake_install_order_notes
     # seed helpful marks on ionotes
     nHelpfulMarks = randpow(10, 3)
     nHelpfulMarks.times do
-      submitter = User.offset(rand(User.count)).first
+      submitter = random_user
       ionote.helpful_marks.new(
           submitted_by: submitter.id,
           helpful: rand > 0.35
@@ -753,7 +864,7 @@ def seed_fake_load_order_notes
   puts "\nSeeding load order notes"
   nNotes = Plugin.count
   nNotes.times do
-    submitter = User.offset(rand(User.count)).first
+    submitter = random_user
     puts "    Generating load order note associated with:"
     load_first = Plugin.offset(rand(Mod.count)).first
     load_second = Plugin.offset(rand(Mod.count)).first
@@ -771,7 +882,7 @@ def seed_fake_load_order_notes
     # seed helpful marks on ionotes
     nHelpfulMarks = randpow(10, 3)
     nHelpfulMarks.times do
-      submitter = User.offset(rand(User.count)).first
+      submitter = random_user
       lnote.helpful_marks.new(
           submitted_by: submitter.id,
           helpful: rand > 0.35
