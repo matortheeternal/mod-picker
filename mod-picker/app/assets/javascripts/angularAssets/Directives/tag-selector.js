@@ -39,6 +39,7 @@ app.controller('tagSelectorController', function ($scope) {
         // pressing backspace when the tag is empty also deletes the tag
         if (((key == 27) || (key == 46)) || ((key == 8) && (len == 0))) {
             $scope.newTags.splice($index, 1);
+            $event.preventDefault();
         }
     };
 });
