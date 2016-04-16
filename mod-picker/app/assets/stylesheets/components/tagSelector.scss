@@ -20,6 +20,11 @@
 
     .tag-text, .tag-count, .remove-tag, .add-tag {
       line-height: 14px;
+      float: left;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
     }
 
     .tag-text {
@@ -43,11 +48,12 @@
 
     .tag-count {
       padding-left: 6px;
+      padding-right: 2px;
       border-left: 1px solid $border_color;
+      cursor: default;
     }
 
     .remove-tag {
-      padding-left: 0;
       cursor: pointer;
     }
   }
