@@ -931,7 +931,7 @@ def seed_fake_mod_lists
         name: Faker::Lorem.words(3).join(' '),
         created_by: author.id,
         is_collection: [true, false].sample,
-        is_public: [true, false].sample,
+        hidden: [true, false].sample,
         has_adult_content: [true, false].sample,
         status: ModList.statuses.keys.sample,
         description: Faker::Lorem.paragraph(5),
