@@ -1,25 +1,32 @@
-<div class="mod-header">
-    <div class="page-container">
-        <div class="stars-count">
-                <span class="stars-number">183</span>
-                Stars
+<div class="mod-header-color">
+    <div class="page-container mod-header">
+        <div class="stars-count btn">
+            <span class="stars-number">183</span>
+            Stars
+        </div>
+            <span class="mod-name">{{mod.name}}</span>
+            <div class="mod-authors">
+                by
+                <a ng-repeat="author in mod.authors" ng-href="#/user/{{author.id}}">{{author.username}}</a>
+                <a ng-repeat="author in mod.authors" ng-href="#/user/{{author.id}}">{{author.username}}</a>
+                <a ng-repeat="author in mod.authors" ng-href="#/user/{{author.id}}">{{author.username}}</a>
+                <a ng-repeat="author in mod.authors" ng-href="#/user/{{author.id}}">{{author.username}}</a>
+                <a ng-repeat="author in mod.authors" ng-href="#/user/{{author.id}}">{{author.username}}</a>
             </div>
             <div class="mod-info">
-                <h1 class="mod-name">{{mod.name}}</h1>
-                <span class="mod-authors">
-                    by
-                    <a ng-repeat="author in mod.authors" ng-href="#/user/{{author.id}}">{{author.username}}</a>
-                    <a ng-repeat="author in mod.authors" ng-href="#/user/{{author.id}}">{{author.username}}</a>
-                    <a ng-repeat="author in mod.authors" ng-href="#/user/{{author.id}}">{{author.username}}</a>
-                    <a ng-repeat="author in mod.authors" ng-href="#/user/{{author.id}}">{{author.username}}</a>
-                    <a ng-repeat="author in mod.authors" ng-href="#/user/{{author.id}}">{{author.username}}</a>
-                </span>
-                <br>
-                <span>
                 <a ng-click="currentTab = tabs[2]">{{mod.reviews.length}} Reviews</a>
-                    | In {{mod.mod_modlists_count}}
-                    | <a ng-href="#/editMod/{{mod.id}}">Edit</a>
+                <span class="divider">
+                    |
                 </span>
+                Included in {{mod.mod_modlists_count}} modlists
+                <span class="divider">
+                    |
+                </span>
+                <strong>Aliases: </strong>{{mod.aliases}}
+                <span class="divider">
+                    |
+                </span>
+                <a ng-href="#/editMod/{{mod.id}}">Edit</a>
             </div>
             <mod-actions></mod-actions>
             <div class="mod-status-box">
@@ -41,11 +48,6 @@
             </section>
             <!--Image-->
             <img ng-src="{{mod.image}}" class="mod-image"/>
-            <!--Aliases-->
-            <h3 class="section-title">Mod Aliases</h3>
-            <section>
-                <p>{{mod.aliases}}</p>
-            </section>
             <!--Sources-->
             <h3 class="section-title">Sources</h3>
             <section>
@@ -84,9 +86,12 @@
             </section>
 
         </div>
-        <div class="right-column right-mod-column">
-            <tabs current-tab="currentTab" tabs="tabs"></tabs>
-            <div ng-include="currentTab.url" class="column-margin"></div>
+        <div class="right-column">
+            <div class="right-mod-column">
+                <tabs current-tab="currentTab" tabs="tabs"></tabs>
+                <div class="top-border"></div>
+                <div ng-include="currentTab.url" class="mod-tab"></div>
+            </div>
         </div>
     </loader>
 </div>

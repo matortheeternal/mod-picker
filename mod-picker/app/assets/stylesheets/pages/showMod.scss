@@ -1,13 +1,19 @@
 ///header stuff
 .mod-header {
-  background-color: $secondary_background;
   border-bottom: 1px solid $soft_border_color;
+  color: $inverse_text_color;
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+.mod-header-color {
+  background-color: $bar_dark_color;
 }
 
 .stars-count {
   display: inline-block;
   font-size: 14px;
-  text-align: center;
+  height: auto;
 }
 
 .stars-number {
@@ -25,8 +31,12 @@
   }
 }
 
+.divider {
+  margin-right: 8px;
+  margin-left: 8px;
+}
+
 .mod-name {
-  color: $text_color;
   display: inline-block;
   font-size: 30px;
 }
@@ -76,21 +86,36 @@
 
 //right column
 .right-mod-column {
+  margin: 20px;
+
+  .selected-tab {
+  	background-color: $secondary_background;
+  }
 }
 
-.column-margin {
-  margin-left: 48px;
-  margin-top: 20px;
+.mod-tab {
+  padding: 20px;
+  border: 1px solid $border_color;
+  border-top: 0;
+  background-color: $secondary_background;
 }
 
-//compatibility tab
 .text-centered-block {
   display: inline-block;
   text-align: center;
 }
 
 .mod-tab-action {
-  display: inline-flex;
-  vertical-align: middle;
-  margin-left: 20px;
+  display: inline-block;
+  padding: 12px;
+  border: 1px solid $border_color;
+  background-color: $primary_background;
+  height: 50px;
+}
+
+.top-border {
+  width: calc(100% - 128px);
+  height: 1px;
+  background-color: $border_color;
+  float: right;
 }

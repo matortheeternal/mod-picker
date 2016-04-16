@@ -134,7 +134,8 @@ input[type="button"], input[type="submit"] {
   padding: 6px;
   color: $action_text_color;
   text-transform: uppercase;
-  background-color: $bar_color;
+  border-radius: 3%;
+  background-color: $action_color;
   &:hover {
     background-color: $bar_highlight_color;
   }
@@ -175,15 +176,19 @@ input[type="button"], input[type="submit"] {
   a {
     display: inline-block;
     cursor: pointer;
-    font-size: 18px;
-    color: $text_color;
+    font-size: 16px;
+    color: $inverse_text_color;
     font-weight: 500;
     padding: 9px 16px 9px 16px;//half of font size high
+    border: 1px solid $border_color;
+    border-bottom: 0;
+    background-color: $action_color;
+    margin-right: 2px;
   }
 
   .selected-tab {
-    background-color: $action_color;
-    color: $inverse_text_color;
+    background-color: inherit;
+    color: $text_color;
   }
 
   .unselected-tab:hover {
