@@ -35,11 +35,15 @@ Rails.application.routes.draw do
     resources :mod_version_files
     resources :mod_asset_files
     resources :mod_versions
-    resources :mods
     resources :lover_infos
     resources :workshop_infos
     resources :nexus_infos
     resources :users
+
+    # mods
+    resources :mods, only: [:show, :update, :destroy]
+    match '/mods/submit', to: 'mods#create', via: 'post'
+    match '/mods', to: 'mods#index', via: 'post'
 
     # helpful marks
     match '/reviews/:id/helpful', to: 'reviews#helpful', via: 'post'
