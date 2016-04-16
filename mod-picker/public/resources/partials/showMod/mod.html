@@ -1,39 +1,47 @@
 <div class="mod-header-color">
     <div class="page-container mod-header">
-        <div class="stars-count btn">
-            <span class="stars-number">183</span>
-            Stars
+        <div class="stars-count action-box">
+            <span class="stars-number">{{mod.stars}}</span>
+            STARS
         </div>
-            <span class="mod-name">{{mod.name}}</span>
-            <div class="mod-authors">
-                by
-                <a ng-repeat="author in mod.authors" ng-href="#/user/{{author.id}}">{{author.username}}</a>
-                <a ng-repeat="author in mod.authors" ng-href="#/user/{{author.id}}">{{author.username}}</a>
-                <a ng-repeat="author in mod.authors" ng-href="#/user/{{author.id}}">{{author.username}}</a>
-                <a ng-repeat="author in mod.authors" ng-href="#/user/{{author.id}}">{{author.username}}</a>
-                <a ng-repeat="author in mod.authors" ng-href="#/user/{{author.id}}">{{author.username}}</a>
+
+        <div class="mod-header-box">
+            ACTIONS
+            <div class="action-box">
+                <i class="fa fa-heart" aria-hidden="true"></i>
+                Favorite
             </div>
-            <div class="mod-info">
-                <a ng-click="currentTab = tabs[2]">{{mod.reviews.length}} Reviews</a>
-                <span class="divider">
-                    |
-                </span>
-                Included in {{mod.mod_modlists_count}} modlists
-                <span class="divider">
-                    |
-                </span>
-                <strong>Aliases: </strong>{{mod.aliases}}
-                <span class="divider">
-                    |
-                </span>
-                <a ng-href="#/editMod/{{mod.id}}">Edit</a>
+            <div class="action-box">
+                <i class="fa fa-plus" aria-hidden="true"></i>
+                Add to mod list
             </div>
-            <mod-actions></mod-actions>
-            <div class="mod-status-box">
-                Mod Status
-                <div class="mod-status">
-                    {{mod.status}}
+        </div>
+
+        <div class="mod-header-box">
+            STATUS
+            <div class="green-box action-box">
+                <i class="fa fa-check" aria-hidden="true"></i>
+                {{mod.status}}
             </div>
+        </div>
+        <span class="mod-name">{{mod.name}}</span>
+        <div class="mod-info">
+            <a ng-click="currentTab = tabs[2]">{{mod.reviews.length}} reviews</a>
+            <span class="divider">
+                |
+            </span>
+
+            Included in <a ng-href="">{{mod.mod_modlists_count}} modlists</a>
+            <span class="divider">
+                |
+            </span>
+
+            <strong>Aliases: </strong>{{mod.aliases}}
+            <span class="divider">
+                |
+            </span>
+
+            <a ng-href="#/editMod/{{mod.id}}">Edit</a>
         </div>
     </div>
 </div>
@@ -42,7 +50,7 @@
     <loader data="mod">
         <div class="left-column left-mod-column wide-column">
             <!--Versions-->
-            <h3 class="section-title">Mod Versions</h3>
+            <h3>Mod Versions</h3>
             <section>
                 <div class="select">
                     <select ng-model="version" ng-change="currentVersion = version" ng-options="version.version for version in mod.mod_versions" class="version-dropdown"></select>
@@ -53,26 +61,41 @@
             <!--Sources-->
             <h3 class="section-title">Sources</h3>
             <section>
-                <img src="/assets/nexus_logo" ng-show="mod.nexus_info" class="source-image"/>
-                <img src="/assets/steam_logo" ng-show="mod.steam_info" class="source-image" />
-                <img src="/assets/lovers_logo" ng-show="mod.lovers_info" class="source-image" />
+                <div class="action-box" ng-if="mod.nexus_info">
+                    <img src="/assets/nexus_logo" class="source-image"/>
+                </div>
+                <div class="action-box" ng-if="mod.steam_info">
+                    <img src="/assets/steam_logo" class="source-image" />
+                </div>
+                <div class="action-box" ng-if="mod.lovers_info">
+                    <img src="/assets/lovers_logo" class="source-image" />
+                </div>
             </section>
             <!--Requirements-->
             <h3 class="section-title">Requirements</h3>
             <section>
-                <p>{{mod.requirements}}</p>
+                <ol>
+                    <li ng-repeat="requirement in mod.requirements">
+                        <a ng-href="#/mod/{{requirement.id}}">
+                            {{requirement.name}}({{requirement.aliases}})
+                        </a>
+                    </li>
+                </ol>
+                <span class="explanation" ng-if="mod.requirements">
+                    None
+                </span>
             </section>
             <!--Categories-->
             <h3 class="section-title">Categories</h3>
             <section>
-                <div ng-show="mod.primary_category_id" class="mod-cat-tag">{{mod.primary_category_id}}</div>
-                <div ng-show="mod.secondary_category_id" class="mod-cat-tag">{{mod.secondary_category_id}}</div>
+                <div ng-show="mod.primary_category_id" class="action-box">{{mod.primary_category_id}}</div>
+                <div ng-show="mod.secondary_category_id" class="action-box">{{mod.secondary_category_id}}</div>
             </section>
             <!--Tags-->
             <h3 class="section-title">Tags</h3>
             <section>
                 <div>
-                    <div class="mod-cat-tag" ng-repeat="tag in mod.tags">{{tag.text}}</div>
+                    <div class="action-box" ng-repeat="tag in mod.tags">{{tag.text}}</div>
                 </div>
             </section>
             <!--Nexus Stats-->

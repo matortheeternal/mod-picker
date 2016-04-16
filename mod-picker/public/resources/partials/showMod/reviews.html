@@ -1,20 +1,24 @@
-﻿<div class="mod-tab-action sort-selector">
-	Sort By:
-	<select ng-model="filter">
-		<option value="compatibility_type">Severity</option>
-		<option value="submitted">Date Submitted</option>
-		<option value="edited">Last Edited</option>
-		<option value="incorrect_notes_count">Author's Incorrect Notes</option>
-	</select>
-</div>
+﻿<div class="mod-tab-actions">
+	<div class="mod-tab-action sort-dropdown">
+		<strong style="margin-right: 10px;">Sort By: </strong>
+		<div class="select">
+			<select ng-model="filter">
+				<option value="compatibility_type" selected>Severity</option>
+				<option value="submitted">Date Submitted</option>
+				<option value="edited">Last Edited</option>
+				<option value="incorrect_notes_count">Author's Incorrect Notes</option>
+			</select>
+		</div>
+	</div
 
-<div class="mod-tab-action text-centered-block">
-	Average Rating
-	<br>
-	{{mod.average_review}}
-</div>
+	<div class="mod-tab-action text-centered-block">
+		Average Rating
+		<br>
+		{{mod.average_review}}
+	</div>
 
-<input class="mod-tab-action btn" type="submit" value="Add Note" ng-click="submit()"/>
+	<input class="mod-tab-action btn" type="submit" value="Add Note" ng-click="submit()"/>
+</div>
 
 <div ng-repeat="compatibility_note in mod.compatibility_notes" class="compatibility-notes">
 	<note note="compatibilityNote"></note>

@@ -166,9 +166,7 @@ input[type="button"], input[type="submit"] {
   a {
     display: inline-block;
     cursor: pointer;
-    font-size: 16px;
     color: $inverse_text_color;
-    font-weight: 500;
     padding: 9px 16px 9px 16px;//half of font size high
     border: 1px solid $border_color;
     border-bottom: 0;
@@ -222,6 +220,7 @@ input[type="button"], input[type="submit"] {
 }
 
 /* css for forms, inputs, and labels */
+
 .select {
   overflow: hidden;
   background: url($select_image) no-repeat right $primary_background;
