@@ -790,7 +790,7 @@ def seed_fake_compatibility_notes
     submitter = random_user
     cnote = CompatibilityNote.new(
         submitted_by: submitter.id,
-        compatibility_type: CompatibilityNote.statuses.keys.sample,
+        compatibility_type: CompatibilityNote.compatibility_types.keys.sample,
         submitted: Faker::Date.backward(14),
         text_body: Faker::Lorem.paragraph(4)
     )
