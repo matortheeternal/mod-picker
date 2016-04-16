@@ -19,6 +19,7 @@ class Mod < ActiveRecord::Base
   scope :images, -> (low, high) { where(:nexus_infos => {images_count: (low..high)} ) }
   scope :files, -> (low, high) { where(:nexus_infos => {files_count: (low..high)} ) }
   scope :articles, -> (low, high) { where(:nexus_infos => {articles_count: (low..high)} ) }
+  scope :tags, -> (array) { where(:tags => {text: array}) }
 
   enum status: [ :good, :dangerous, :obsolete ]
 
