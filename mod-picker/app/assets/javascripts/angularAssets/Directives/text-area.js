@@ -17,8 +17,8 @@ app.directive('textArea', function ($timeout) {
             var mde = new SimpleMDE({ element: textarea, spellChecker: false });
 
             // two-way data binding to and from mde
-            scope.$watch('data', function(newVal, oldVal){
-                if ((typeof newVal === "string") && (newVal !== oldVal)) {
+            scope.$watch('data', function(newVal){
+                if ((typeof newVal === "string") && (newVal !== mde.value())) {
                     mde.value(newVal);
                 }
             });
