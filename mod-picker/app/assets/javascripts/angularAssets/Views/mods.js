@@ -37,7 +37,7 @@ app.controller('modsController', function ($rootScope, $scope, $q, modService, s
     };
 
     /* data */
-    modService.retrieveMods().then(function (data) {
+    modService.retrieveMods({}).then(function (data) {
         $scope.mods = data;
         //TODO: scope.loading is deprecated
         $scope.loading = false;
