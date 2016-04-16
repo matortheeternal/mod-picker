@@ -103,9 +103,23 @@
 }
 
 .mod-tab-action {
-  display: table-cell;
   vertical-align: middle;
-  padding: 4px 16px 4px 16px;
+  align-items: center;
+  min-height: 40px;
+  padding: 5px 16px 5px 16px;
   border: 1px solid $border_color;
   background-color: $primary_background;
+  display: inline-flex;
+}
+
+.mod-tab-actions {
+  display: flex;
+}
+
+.sort-dropdown {
+  flex-grow: 1;
+
+  .select {
+    flex-grow: 1;
+  }
 }
