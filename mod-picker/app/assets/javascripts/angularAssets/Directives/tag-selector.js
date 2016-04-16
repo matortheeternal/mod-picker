@@ -27,6 +27,18 @@ app.controller('tagSelectorController', function ($scope) {
     $scope.focusText = function ($event) {
         $event.target.select();
     };
+    $scope.handleKey = function ($event, $index) {
+        var key = $event.keyCode;
+        var len = $event.target.value.length;
+        // pressing enter adds a new tag
+        if (key == 13)
+            $scope.addTag();
+        // pressing escape or delete deletes the tag
+        // pressing backspace when the tag is empty also deletes the tag
+        if (((key == 27) || (key == 46)) || ((key == 8) && (len == 0))) {
+            $scope.newTags.splice($index, 1);
+        }
+    };
 });
 
 app.directive('toFocus', function ($timeout) {
