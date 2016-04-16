@@ -15,7 +15,7 @@
     </span>
     <span ng-repeat="tag in newTags" class="edit-tag-box">
         <span class="tag-text">
-            <input type="text" ng-model="tag.text" ng-keydown="handleKey($event, $index)" ng-click="focusText($event)" auto-select="$last" pu-elastic-input/>
+            <input type="text" ng-model="tag.text" ng-keydown="handleTagKey($event, $index)" ng-click="focusText($event)" auto-select="$last" pu-elastic-input/>
         </span>
         <span ng-if="showModsCount" class="tag-count">
             {{tag.mods_count | number}}
@@ -27,7 +27,7 @@
             <i class="fa fa-times"></i>
         </span>
     </span>
-    <span class="add-tag-box" ng-show="showAdd && (activeTags.length + newTags.length < maxTags)" ng-click="addTag()">
+    <span class="add-tag-box" ng-show="showAdd && (activeTags.length + newTags.length < maxTags)" ng-click="addTag()" tabindex="0" ng-keydown="$event.keyCode == 13 && addTag()">
         <span>
             <i class="fa fa-plus"></i> Add a tag
         </span>

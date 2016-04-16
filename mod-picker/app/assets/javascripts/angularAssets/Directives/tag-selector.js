@@ -29,7 +29,7 @@ app.controller('tagSelectorController', function ($scope) {
     $scope.focusText = function ($event) {
         $event.target.select();
     };
-    $scope.handleKey = function ($event, $index) {
+    $scope.handleTagKey = function ($event, $index) {
         var key = $event.keyCode;
         var len = $event.target.value.length;
         // pressing enter adds a new tag
