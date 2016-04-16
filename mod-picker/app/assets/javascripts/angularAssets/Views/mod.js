@@ -39,7 +39,7 @@ app.controller('modController', function ($rootScope, $scope, $q, $routeParams, 
 
     //of the tab data
     $scope.tabs = [
-        { name: 'Compatibility', url: '/resources/partials/showMod/compatibility.html' },
+        { name: 'Compatibility notes', url: '/resources/partials/showMod/compatibility.html' },
         { name: 'Installation', url: '/resources/partials/showMod/installation.html' },
         { name: 'Reviews', url: '/resources/partials/showMod/reviews.html' },
         { name: 'Analysis', url: '/resources/partials/showMod/analysis.html' }
