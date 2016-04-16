@@ -12,6 +12,9 @@ app.controller('modsController', function ($rootScope, $scope, $q, modService, s
     //TODO: scope.loading is deprecated
     $scope.loading = true;
 
+    // initialize search tags to empty array
+    $scope.search_tags = [];
+
     //TODO: everything below should be handled differently
     // -> remove redundancy
     // -> probably don't set visibility in the controller but in the view
@@ -34,7 +37,7 @@ app.controller('modsController', function ($rootScope, $scope, $q, modService, s
     };
 
     /* data */
-    modService.retrieveMods().then(function (data) {
+    modService.retrieveMods({}).then(function (data) {
         $scope.mods = data;
         //TODO: scope.loading is deprecated
         $scope.loading = false;

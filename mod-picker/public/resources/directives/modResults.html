@@ -1,22 +1,20 @@
-<loader data="data">
+<loader data="data" content-class="browse-results">
     <table>
         <thead>
             <tr>
-                <th class="name-header">Mod Name</th>
-                <th class="hidden">Version</th>
-                <th>Authors</th>
-                <th>Endorsements</th>
-                <th>Unique DLs</th>
-                <th class="hidden">Total DLs</th>
-                <th class="hidden">Views</th>
-                <th class="hidden">Posts Count</th>
-                <th class="hidden">Videos Count</th>
-                <th class="hidden">Images Count</th>
-                <th class="hidden">Files Count</th>
-                <th class="hidden">Released</th>
-                <th>Updated</th>
+                <th ng-repeat="column in columns" ng-class="{ 'hidden': !column.visibility }" ng-click="sort($index)">
+                    {{column.label}}
+                    <div class="sorting-options">
+                        <div class="sort-up" ng-class="{ 'active' : column.up }">
+                            <i class="fa fa-caret-up"></i>
+                        </div>
+                        <div class="sort-down" ng-class="{ 'active' : column.down }">
+                            <i class="fa fa-caret-down"></i>
+                        </div>
+                    </div>
+                </th>
                 <th class="actions-header">
-                    <a href="">
+                    <a ng-click="showModal = true">
                         <i class="fa fa-columns" title="Edit Columns"></i>
                     </a>
                 </th>
@@ -24,23 +22,36 @@
         </thead>
         <tbody>
             <tr ng-repeat="mod in data">
-                <td><a class="strong" ng-href="#/mod/{{mod.id}}">{{mod.name}}</a></td>
-                <td class="hidden">{{mod.mod_versions[mod.mod_versions.length - 1].version}}</td>
-                <td>{{mod.nexus_info.authors}}</td>
-                <td>{{mod.nexus_info.endorsements.toLocaleString()}}</td>
-                <td>{{mod.nexus_info.unique_downloads.toLocaleString()}}</td>
-                <td class="hidden">{{mod.nexus_info.total_downloads.toLocaleString()}}</td>
-                <td class="hidden">{{mod.nexus_info.views.toLocaleString()}}</td>
-                <td class="hidden">{{mod.nexus_info.posts_count.toLocaleString()}}</td>
-                <td class="hidden">{{mod.nexus_info.videos_count.toLocaleString()}}</td>
-                <td class="hidden">{{mod.nexus_info.images_count.toLocaleString()}}</td>
-                <td class="hidden">{{mod.nexus_info.files_count.toLocaleString()}}</td>
-                <td class="hidden">{{mod.nexus_info.date_released | date }}</td>
-                <td>{{mod.nexus_info.date_updated | date }}</td>
+                <td class="main-cell">
+                    <a class="strong" ng-href="#/mod/{{mod.id}}">{{mod.name}}</a>
+                </td>
+                <td ng-repeat="column in columns" ng-class="{ 'hidden': !column.visibility, 'text-cell' : !column.filter }" ng-if="$index > 0">
+                    {{ mod.nexus_info[column.data] | picker:column.filter }}
+                </td>
                 <td class="actions-cell">
                     <input class="btn-sm" type="button" ng-click="addMod(mod)" value="Add" title="Add this mod to your mod list"/>
                 </td>
             </tr>
         </tbody>
     </table>
+
+    <div class="modal-container" ng-show="showModal">
+        <div class="modal">
+            <form>
+                <h3 class="section-title">Edit Columns</h3>
+                <section>
+                    <ul class="checkbox-list">
+                        <li ng-repeat="column in columns" ng-if="!column.required">
+                            <label>
+                                <input type="checkbox" ng-model="column.visibility">
+                                {{column.label}}
+                            </label>
+                        </li>
+                    </ul>
+                </section>
+
+                <input type="submit" class="btn" value="Close" ng-click="showModal = false">
+            </form>
+        </div>
+    </div>
 </loader>

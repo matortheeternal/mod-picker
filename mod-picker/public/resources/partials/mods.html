@@ -6,7 +6,7 @@
             <div id="mod-list-filters" class="filter-section">
                 <h3>Mod List</h3>
                 <div class="sidebar-box">
-                    <ul class="filter-list">
+                    <ul class="checkbox-list">
                         <li>
                             <label><input id="compatibility_enabled" type="checkbox">
                                 Enable compatibility filter</label>
@@ -26,7 +26,7 @@
             <div id="site-filters" class="filter-section">
                 <h3>Sources</h3>
                 <div class="sidebar-box">
-                    <ul class="filter-list">
+                    <ul class="checkbox-list">
                         <li>
                             <label><input id="nexus_mods" type="checkbox" checked="checked">
                                 Nexus Mods</label>
@@ -44,6 +44,11 @@
             </div>
 
             <category-tree id="category-filters" class="filter-section"></category-tree>
+
+            <div id="tag-filters" class="filter-section">
+                <h3>Tags</h3>
+                <tag-selector tags="tags" active-tags="[]" new-tags="search_tags" show-mods-count="true" show-add="true" max-tags="10"></tag-selector>
+            </div>
 
             <div id="date-filters" class="filter-section">
                 <h3>Date Filters</h3>

@@ -103,10 +103,14 @@ class Rack::Attack
     req.ip unless req.path.start_with?('/assets')
   end
 
-  # Whitelist requests from admin users
-  whitelist('allow from admins') do |req|
-    current_user.present? && current_user.admin?
-  end
+  # Whitelist POST requests from admin users
+  # whitelist('allow from admins') do |req|
+  #   if req.post?
+  #     user_id = req.env['rack.session']["warden.user.user.key"][0][0]
+  #     current_user = User.find(user_id)
+  #     current_user.present? && current_user.admin?
+  #   end
+  # end
 
 
   ### Custom Throttle Response ###

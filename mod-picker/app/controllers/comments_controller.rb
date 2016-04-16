@@ -1,33 +1,18 @@
 class CommentsController < ApplicationController
-  before_action :set_comment, only: [:show, :edit, :update, :destroy]
+  before_action :set_comment, only: [:show, :update, :destroy]
 
   # GET /comments
   # GET /comments.json
   def index
     @comments = Comment.filter(filtering_params)
 
-    respond_to do |format|
-      format.html
-      format.json { render :json => @comments}
-    end
+    render :json => @comments
   end
 
   # GET /comments/1
   # GET /comments/1.json
   def show
-    respond_to do |format|
-      format.html
-      format.json { render :json => @comment}
-    end
-  end
-
-  # GET /comments/new
-  def new
-    @comment = Comment.new
-  end
-
-  # GET /comments/1/edit
-  def edit
+    render :json => @comment
   end
 
   # POST /comments
@@ -35,33 +20,30 @@ class CommentsController < ApplicationController
   def create
     @comment = Comment.new(comment_params)
 
-    respond_to do |format|
-      if @comment.save
-        format.json { render :show, status: :created, location: @comment }
-      else
-        format.json { render json: @comment.errors, status: :unprocessable_entity }
-      end
+    if @comment.save
+      render :show, status: :created, location: @comment
+    else
+      render json: @comment.errors, status: :unprocessable_entity
     end
   end
 
   # PATCH/PUT /comments/1
   # PATCH/PUT /comments/1.json
   def update
-    respond_to do |format|
-      if @comment.update(comment_params)
-        format.json { render :show, status: :ok, location: @comment }
-      else
-        format.json { render json: @comment.errors, status: :unprocessable_entity }
-      end
+    if @comment.update(comment_params)
+      render :show, status: :ok, location: @comment
+    else
+      render json: @comment.errors, status: :unprocessable_entity
     end
   end
 
   # DELETE /comments/1
   # DELETE /comments/1.json
   def destroy
-    @comment.destroy
-    respond_to do |format|
-      format.json { head :no_content }
+    if @comment.destroy
+      render json: {status: :ok}
+    else
+      render json: @comment.errors, status: :unprocessable_entity
     end
   end
 

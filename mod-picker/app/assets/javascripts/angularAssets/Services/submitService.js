@@ -23,7 +23,7 @@ app.service('submitService', function (backend, $q) {
                 game_id: nexus_info.game_id
             }
         };
-        backend.post('/mods', modData).then(function (data) {
+        backend.post('/mods/submit', modData).then(function (data) {
             setTimeout(function () {
                 // update nexus info to link to the mod record
                 nexus_info.mod_id = data.id;

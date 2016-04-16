@@ -6,21 +6,20 @@ class ModAuthorsController < ApplicationController
   def create
     @mod_author = ModAuthor.new(mod_author_params)
 
-    respond_to do |format|
-      if @mod_author.save
-        format.json { render :show, status: :created, location: @mod_author }
-      else
-        format.json { render json: @mod_author.errors, status: :unprocessable_entity }
-      end
+    if @mod_author.save
+      render json: {status: :ok}
+    else
+      render json: @mod_author.errors, status: :unprocessable_entity
     end
   end
 
   # DELETE /mod_authors/1
   # DELETE /mod_authors/1.json
   def destroy
-    @mod_author.destroy
-    respond_to do |format|
-      format.json { head :no_content }
+    if @mod_author.destroy
+      render json: {status: :ok}
+    else
+      render json: @mod_author.errors, status: :unprocessable_entity
     end
   end
 
