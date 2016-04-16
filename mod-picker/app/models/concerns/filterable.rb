@@ -6,8 +6,8 @@ module Filterable
       results = self.where(nil)
       filtering_params.each do |key, value|
         if value.present?
-          if value.min.present? || value.max.present?
-            results = results.public_send(key, value.min, value.max)
+          if value.is_a?(Hash)
+            results = results.public_send(key, value[:min], value[:max])
           else
             results = results.public_send(key, value)
           end
