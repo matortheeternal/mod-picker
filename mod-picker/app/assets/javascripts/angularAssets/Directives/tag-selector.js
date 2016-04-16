@@ -23,5 +23,8 @@ app.controller('tagSelectorController', function ($scope) {
             text: "Test",
             mods_count: 0
         });
-    }
+    };
+    $scope.focusText = function ($event) {
+        $event.target.select();
+    };
 });
