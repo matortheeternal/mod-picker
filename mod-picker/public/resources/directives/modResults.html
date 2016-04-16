@@ -41,7 +41,7 @@
                 <h3 class="section-title">Edit Columns</h3>
                 <section>
                     <ul class="checkbox-list">
-                        <li ng-repeat="column in columns">
+                        <li ng-repeat="column in columns" ng-if="!column.required">
                             <label>
                                 <input type="checkbox" ng-model="column.visibility">
                                 {{column.label}}
