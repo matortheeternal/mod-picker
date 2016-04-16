@@ -161,16 +161,6 @@ input[type="button"], input[type="submit"] {
 }
 
 /* css for tabs */
-.header-tabs {
-  background-color: $secondary_background;
-  h1 {
-    font-weight: 500;
-    color: $text_color;
-    font-size: 36px;
-    padding-top: 18px;//half of font size
-    padding-bottom: 18px;
-  }
-}
 
 .tabs {
   a {
