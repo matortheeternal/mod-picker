@@ -15,7 +15,7 @@
     </span>
     <span ng-repeat="tag in newTags" class="edit-tag-box">
         <span class="tag-text">
-            <input type="text" ng-model="tag.text" ng-keyup="$event.keyCode == 13 && addTag()" ng-click="focusText($event)" pu-elastic-input/>
+            <input type="text" ng-model="tag.text" ng-keydown="handleKey($event, $index)" ng-click="focusText($event)" to-focus="$last" pu-elastic-input/>
         </span>
         <span ng-if="showModsCount" class="tag-count">
             {{tag.mods_count | number}}

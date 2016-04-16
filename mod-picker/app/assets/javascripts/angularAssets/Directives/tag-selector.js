@@ -28,3 +28,16 @@ app.controller('tagSelectorController', function ($scope) {
         $event.target.select();
     };
 });
+
+app.directive('toFocus', function ($timeout) {
+    return function (scope, elem, attrs) {
+        scope.$watch(attrs.toFocus, function (newval) {
+            if (newval) {
+                $timeout(function () {
+                    elem[0].focus();
+                    elem[0].select();
+                }, 0, false);
+            }
+        });
+    };
+});
