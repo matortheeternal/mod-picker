@@ -222,6 +222,24 @@ input[type="button"], input[type="submit"] {
 }
 
 /* css for forms, inputs, and labels */
+.select {
+  overflow: hidden;
+  background: url($select_image) no-repeat right $primary_background;
+  background-size: 2em;
+  border: 1px solid $border_color;
+
+  select {
+    background: transparent;
+    color: $text_color;
+    width: calc(100% + 28px);
+    padding: .5em;
+    line-height: 1;
+    border: 0;
+    border-radius: 0;
+    -webkit-appearance: none;
+  }
+}
+
 .big-text-area {
   width: 100%;
   height: 300px;

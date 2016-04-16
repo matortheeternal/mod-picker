@@ -44,7 +44,9 @@
             <!--Versions-->
             <h3 class="section-title">Mod Versions</h3>
             <section>
-                <select ng-model="version" ng-change="currentVersion = version" ng-options="version.version for version in mod.mod_versions" class="version-dropdown"></select>
+                <div class="select">
+                    <select ng-model="version" ng-change="currentVersion = version" ng-options="version.version for version in mod.mod_versions" class="version-dropdown"></select>
+                </div>
             </section>
             <!--Image-->
             <img ng-src="{{mod.image}}" class="mod-image"/>
