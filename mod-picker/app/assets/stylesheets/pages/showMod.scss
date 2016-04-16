@@ -102,9 +102,10 @@
 }
 
 .mod-tab-action {
-  display: inline-block;
-  padding: 12px;
+  display: table-cell;
+  vertical-align: middle;
+  padding: 4px 16px 4px 16px;
   border: 1px solid $border_color;
   background-color: $primary_background;
-  height: 50px;
+}
 }
