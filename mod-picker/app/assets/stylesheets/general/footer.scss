@@ -10,6 +10,7 @@ footer {
   font-size: 13px;
 
   .left-column {
+    padding: 0;
     border: 0;
     background-color: inherit;
   }
@@ -19,7 +20,7 @@ footer {
     background-color: inherit;
   }
 
-  .footer-section {
+  section {
     width: 200px;
     display: inline-block;
     vertical-align: top;
