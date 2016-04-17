@@ -64,11 +64,20 @@ class Mod < ActiveRecord::Base
     self.as_json(:include => {
         :mod_versions => {
             :except => [:mod_id],
+            :include => {
+                :install_order_notes => {:except => []},
+                :load_order_notes => {:except => []},
+                :compatibility_notes => {:except => []},
+            },
             :methods => :required_mods
         },
         :reviews => {:except => [:text_body, :mod_id, :edited, :incorrect_notes_count]},
-        :install_before_notes => {:except => []},
-        :install_after_notes => {:except => []}
+        :mod_tags => {
+            :only => [:submitted_by],
+            :include => {
+                :tag => {:except => [:game_id, :hidden, :mod_lists_count]}
+            }
+        }
     })
   end
 
