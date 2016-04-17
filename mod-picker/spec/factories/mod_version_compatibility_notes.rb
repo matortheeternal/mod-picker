@@ -8,7 +8,7 @@
 
 FactoryGirl.define do
   factory :mod_version_compatibility_note do
-    association :mod_version_id, factory: :mod_version_id
+    association :mod_version_id, factory: :mod_version
     association :compatibility_note_id, factory: :compatibility_note
   end
 

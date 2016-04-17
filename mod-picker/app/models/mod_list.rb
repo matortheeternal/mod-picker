@@ -30,13 +30,12 @@ class ModList < ActiveRecord::Base
 
   # Validations
   validates :game_id, presence: true 
-  validates_inclusion_of :is_collection, :is_public, :has_adult_content, {in: [true, false], 
+  validates_inclusion_of :is_collection, :hidden, :has_adult_content, {in: [true, false], 
                                           message: "must be true or false"}
   validates :description, length: { maximum: 65535 }
 
   def init
     self.is_collection ||= false
-    self.is_public ||= false
     self.created ||= DateTime.now
   end                                         
 end

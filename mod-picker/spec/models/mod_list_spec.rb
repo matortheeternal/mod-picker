@@ -3,7 +3,7 @@ require 'rails_helper'
 # create_table "mod_lists", force: :cascade do |t|
 #     t.integer  "created_by",                limit: 4
 #     t.boolean  "is_collection"
-#     t.boolean  "is_public"
+#     t.boolean  "hidden"
 #     t.boolean  "has_adult_content"
 #     t.integer  "status",                    limit: 1,     default: 0, null: false
 #     t.datetime "created"
@@ -58,23 +58,23 @@ RSpec.describe ModList, :model do
       end
     end
 
-    describe "is_public" do
+    describe "hidden" do
       it "should be valid if true or false" do
-        expect(build(:mod_list, is_public: true)).to be_valid
-        expect(build(:mod_list, is_public: false)).to be_valid
+        expect(build(:mod_list, hidden: true)).to be_valid
+        expect(build(:mod_list, hidden: false)).to be_valid
       end
 
       it "should be invalid if empty or nil" do
-        list = build(:mod_list, is_public: nil)
+        list = build(:mod_list, hidden: nil)
 
         list.valid?
-        expect(list.errors[:is_public]).to include("must be true or false")
+        expect(list.errors[:hidden]).to include("must be true or false")
       end
 
-      it "should default to false" do
+      it "should default to true" do
         list = create(:mod_list)
 
-        expect(list.is_public).to eq(false)
+        expect(list.hidden).to eq(true)
       end
     end
 
