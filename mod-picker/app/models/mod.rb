@@ -65,9 +65,36 @@ class Mod < ActiveRecord::Base
         :mod_versions => {
             :except => [:mod_id],
             :include => {
-                :install_order_notes => {:except => []},
-                :load_order_notes => {:except => []},
-                :compatibility_notes => {:except => []},
+                :install_order_notes => {
+                    :except => [],
+                    :include => {
+                        :user => {
+                            :only => [:username, :role, :title],
+                            :methods => :avatar
+                        }
+                    },
+                    :methods => :mods
+                },
+                :load_order_notes => {
+                    :except => [],
+                    :include => {
+                        :user => {
+                            :only => [:username, :role, :title],
+                            :methods => :avatar
+                        }
+                    },
+                    :methods => :mods
+                },
+                :compatibility_notes => {
+                    :except => [],
+                    :include => {
+                        :user => {
+                            :only => [:username, :role, :title],
+                            :methods => :avatar
+                        }
+                    },
+                    :methods => :mods
+                },
             },
             :methods => :required_mods
         },
