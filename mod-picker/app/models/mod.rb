@@ -66,7 +66,9 @@ class Mod < ActiveRecord::Base
             :except => [:mod_id],
             :methods => :required_mods
         },
-        :reviews => {:except => [:text_body, :mod_id, :edited, :incorrect_notes_count]}
+        :reviews => {:except => [:text_body, :mod_id, :edited, :incorrect_notes_count]},
+        :install_before_notes => {:except => []},
+        :install_after_notes => {:except => []}
     })
   end
 
@@ -77,7 +79,7 @@ class Mod < ActiveRecord::Base
             :authors => {:only => [:id, :username]}
         }
     }
-    options = default_options.merge(options)
+    options[:include] = default_options[:include].merge(options[:include])
     super(options)
   end
 end
