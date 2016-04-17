@@ -10,9 +10,9 @@ app.service('modService', function (backend, $q) {
         return mod.promise;
     };
 
-    this.retrieveMods = function () {
+    this.retrieveMods = function (filters) {
         var mods = $q.defer();
-        backend.retrieve('/mods').then(function (data) {
+        backend.post('/mods', filters).then(function (data) {
             //TODO: remove mocked delay
             setTimeout(function () {
                 mods.resolve(data);

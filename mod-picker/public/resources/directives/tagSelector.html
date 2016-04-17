@@ -3,10 +3,10 @@
         <span class="tag-text">
             {{tag.text}}
         </span>
-        <span ng-if="showModsCount" class="tag-count">
+        <span ng-if="showModsCount" class="tag-count" title="The number of mods with this tag">
             {{tag.mods_count | number}}
         </span>
-        <span ng-if="showModListsCount" class="tag-count">
+        <span ng-if="showModListsCount" class="tag-count" title="The number of mod lists with this tag">
             {{tag.mod_lists_count | number}}
         </span>
         <span ng-if="showRemove" class="remove-tag" ng-click="activeTags.splice($index, 1)">
@@ -17,10 +17,10 @@
         <span class="tag-text">
             <input type="text" ng-model="tag.text" ng-keydown="handleTagKey($event, $index)" ng-click="focusText($event)" auto-select="$last" pu-elastic-input/>
         </span>
-        <span ng-if="showModsCount" class="tag-count">
+        <span ng-if="showModsCount" class="tag-count" title="The number of mods with this tag">
             {{tag.mods_count | number}}
         </span>
-        <span ng-if="showModListsCount" class="tag-count">
+        <span ng-if="showModListsCount" class="tag-count" title="The number of mod lists with this tag">
             {{tag.mod_lists_count | number}}
         </span>
         <span class="remove-tag" ng-click="newTags.splice($index, 1)">
@@ -28,7 +28,7 @@
         </span>
     </span>
     <span class="add-tag-box" ng-show="showAdd && (activeTags.length + newTags.length < maxTags)" ng-click="addTag()" tabindex="0" ng-keydown="$event.keyCode == 13 && addTag()">
-        <span>
+        <span class="add-tag">
             <i class="fa fa-plus"></i> Add a tag
         </span>
     </span>

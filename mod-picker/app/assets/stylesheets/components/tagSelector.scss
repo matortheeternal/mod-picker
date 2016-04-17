@@ -18,14 +18,25 @@
     display: block;
     float: left;
 
+    .tag-text, .tag-count, .remove-tag, .add-tag {
+      line-height: 14px;
+      float: left;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+    }
+
     .tag-text {
       padding-right: 2px;
     }
 
     input {
       border: 0;
+      padding: 0;
       max-width: 300px;
       font-size: 11px;
+      line-height: 14px;
       color: $action_text_color;
       background-color: inherit;
 
@@ -37,11 +48,12 @@
 
     .tag-count {
       padding-left: 6px;
+      padding-right: 2px;
       border-left: 1px solid $border_color;
+      cursor: default;
     }
 
     .remove-tag {
-      padding-left: 0;
       cursor: pointer;
     }
   }
@@ -51,7 +63,7 @@
     cursor: pointer;
 
     &:hover {
-      background-color: $action_color;
+      background-color: $bar_color;
     }
   }
 }

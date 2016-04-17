@@ -17,7 +17,7 @@ app.controller('modResultsController', function($scope) {
     $scope.columns = [
         {
             visibility: true,
-            toggleable: false,
+            required: true,
             label: "Mod Name",
             data: "mod_name"
         },

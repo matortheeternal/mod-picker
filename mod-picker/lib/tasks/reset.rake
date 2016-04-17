@@ -28,6 +28,9 @@ namespace :reset do
     connection = ActiveRecord::Base.connection
 
     # tables
+    ModListTag.delete_all
+    ModTag.delete_all
+    Tag.delete_all
     ModStar.delete_all
     ModListStar.delete_all
     Quote.delete_all
@@ -37,6 +40,7 @@ namespace :reset do
     PluginRecordGroup.delete_all
     Plugin.delete_all
     RecordGroup.delete_all
+    ModVersionRequirement.delete_all
     ModVersionCompatibilityNote.delete_all
     ModVersionLoadOrderNote.delete_all
     ModVersionInstallOrderNote.delete_all
