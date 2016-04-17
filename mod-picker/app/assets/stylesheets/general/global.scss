@@ -134,8 +134,20 @@ input[type="button"], input[type="submit"] {
   padding: 8px;
   color: $action_text_color;
   text-transform: uppercase;
+  background-color: $action_color;
+  &:hover {
+    background-color: $bar_highlight_color;
+  }
+}
+
+.btn-round {
+  padding: 8px;
+  color: $action_text_color;
   border-radius: 3%;
   background-color: $action_color;
+  cursor: pointer;
+
+
   &:hover {
     background-color: $bar_highlight_color;
   }
