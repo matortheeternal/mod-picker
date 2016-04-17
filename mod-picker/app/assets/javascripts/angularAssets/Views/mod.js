@@ -18,23 +18,11 @@ app.filter('percentage', function() {
 app.controller('modController', function ($rootScope, $scope, $q, $routeParams, modService) {
     $rootScope.twoColumns = true;
 
-    //function for changing the version data when the dropdown is used
-    $scope.updateVersion = function(version) {
-        if(version && version !== $scope.version && $scope.mod.id) {
-            //$scope.loading = true;
-            modService.retrieveCompatibilityNotes($scope.mod.id, version).then(function (compatibilityNotes) {
-                $scope.compatibilityNotes = compatibilityNotes;
-            });
-        }
-    };
-
     //initialization
     //of the mod object
     modService.retrieveMod($routeParams.modId).then(function (mod) {
         $scope.mod = mod;
-        $scope.version = mod.mod_versions[0];
-        //of the version data
-        $scope.updateVersion($scope.version);
+        $scope.currentVersion = mod.mod_versions[0];
     });
 
     //of the tab data
