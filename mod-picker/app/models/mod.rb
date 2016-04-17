@@ -88,7 +88,7 @@ class Mod < ActiveRecord::Base
             :authors => {:only => [:id, :username]}
         }
     }
-    options = default_options.merge(options)
+    options[:include] ||= {}
     options[:include] = default_options[:include].merge(options[:include])
     super(options)
   end
