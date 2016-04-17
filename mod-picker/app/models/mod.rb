@@ -98,7 +98,15 @@ class Mod < ActiveRecord::Base
             },
             :methods => :required_mods
         },
-        :reviews => {:except => [:text_body, :mod_id, :edited, :incorrect_notes_count]},
+        :reviews => {
+            :except => [],
+            :include => {
+                :user => {
+                    :only => [:username, :role, :title],
+                    :methods => :avatar
+                }
+            }
+        },
         :mod_tags => {
             :only => [:submitted_by],
             :include => {
