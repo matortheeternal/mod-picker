@@ -84,11 +84,12 @@
                 <ol>
                     <li ng-repeat="requirement in mod.requirements">
                         <a ng-href="#/mod/{{requirement.id}}">
-                            {{requirement.name}}({{requirement.aliases}})
+                            <strong>{{requirement.name}}</strong>
                         </a>
+                        <span ng-if="requirement.aliases">({{requirement.aliases}})</span>
                     </li>
                 </ol>
-                <span class="explanation" ng-if="mod.requirements">
+                <span class="explanation" ng-if="!mod.requirements">
                     None
                 </span>
             </section>
