@@ -24,12 +24,21 @@ app.controller('modController', function ($rootScope, $scope, $q, $routeParams, 
         $scope.mod = mod;
         $scope.currentVersion = mod.mod_versions[0];
 
+        //getting the actual names of the categories
         categoryService.getCategoryById(mod.primary_category_id).then(function (data) {
             $scope.firstCategory = data.name;
         });
         categoryService.getCategoryById(mod.secondary_category_id).then(function (data) {
             $scope.secondCategory = data.name;
         });
+
+        //setting the name of the current game for the nexus links
+        if ($scope.mod.game_id === 1) {
+            $scope.game = "skyrim";
+        }
+        else if ($scope.mod.game_id === 2) {
+            $scope.game = "fallout4";
+        }
     });
 
     //of the tab data
