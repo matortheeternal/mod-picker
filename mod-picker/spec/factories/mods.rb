@@ -1,7 +1,7 @@
 FactoryGirl.define do
   factory :mod do
     association :game_id, factory: :game
-    name { Faker::Lorem.words(3) }
+    name { Faker::App.name }
     aliases { Faker::Lorem.characters(3) }
     is_utility false
     has_adult_content false
