@@ -131,6 +131,12 @@
   justify-content: space-between;
 }
 
+.stat-block-title:hover {
+  .stat-expander {
+    background-color: $bright_action_color;
+  }
+}
+
 .remove-caret {
   .expanded-icon {
     display: none;
