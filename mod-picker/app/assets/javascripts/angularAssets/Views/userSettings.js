@@ -34,6 +34,11 @@ app.controller('userSettingsController', function ($scope, $q, userSettingsServi
                 src: $scope.user.avatar
             };
 
+            // actions the user can or cannot perform
+            var rep = $scope.user.reputation.overall;
+            $scope.canChangeAvatar = (rep >= 10) || ($scope.user.role === 'admin');
+            $scope.canChangeTitle = (rep >= 1280) || ($scope.user.role === 'admin');
+
             //splitting the modlists into collections and non collections
             //sorry taffy, this logic should be in a service right? -Sirius
             modlists = $scope.user.mod_lists;
@@ -49,7 +54,6 @@ app.controller('userSettingsController', function ($scope, $q, userSettingsServi
             });
 
             // get user title if not custom
-            var rep = $scope.user.reputation.overall;
             if (!$scope.user.title) {
                 userTitleService.retrieveUserTitles().then(function (titles) {
                     var gameTitles = userTitleService.getSortedGameTitles(titles);
@@ -59,8 +63,10 @@ app.controller('userSettingsController', function ($scope, $q, userSettingsServi
 
             // get random quote for user title
             quoteService.retrieveQuotes().then(function (quotes) {
-                var label = (rep < 1280) ? "Low Reputation" : "High Repution";
+                var label = $scope.canChangeTitle ? "High Reputation" : "Low Reputation";
                 $scope.titleQuote = quoteService.getRandomQuote(quotes, label);
+                $scope.titleQuote.text = $scope.titleQuote.text.replace(/Talos/g, $scope.user.username.capitalize());
+                $scope.refresh = true;
             });
         });
     });

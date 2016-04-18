@@ -4,13 +4,7 @@ app.service('quoteService', function (backend, $q) {
     }
 
     this.retrieveQuotes = function () {
-        var quotes = $q.defer();
-        backend.retrieve('/quotes').then(function (data) {
-            setTimeout(function () {
-                quotes.resolve(data);
-            }, 1000);
-        });
-        return quotes.promise;
+        return backend.retrieve('/quotes');
     };
 
     this.getRandomQuote = function (quotes, label) {

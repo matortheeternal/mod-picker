@@ -6,19 +6,13 @@ class IncorrectNotesController < ApplicationController
   def index
     @incorrect_notes = IncorrectNote.filter(filtering_params)
 
-    respond_to do |format|
-      format.html
-      format.json { render :json => @incorrect_notes}
-    end
+    render :json => @incorrect_notes
   end
 
   # GET /incorrect_notes/1
   # GET /incorrect_notes/1.json
   def show
-    respond_to do |format|
-      format.html
-      format.json { render :json => @incorrect_note}
-    end
+    render :json => @incorrect_note
   end
 
   # GET /incorrect_notes/new
@@ -35,24 +29,20 @@ class IncorrectNotesController < ApplicationController
   def create
     @incorrect_note = IncorrectNote.new(incorrect_note_params)
 
-    respond_to do |format|
-      if @incorrect_note.save
-        format.json { render :show, status: :created, location: @incorrect_note }
-      else
-        format.json { render json: @incorrect_note.errors, status: :unprocessable_entity }
-      end
+    if @incorrect_note.save
+      render json: {status: :ok}
+    else
+      render json: @incorrect_note.errors, status: :unprocessable_entity
     end
   end
 
   # PATCH/PUT /incorrect_notes/1
   # PATCH/PUT /incorrect_notes/1.json
   def update
-    respond_to do |format|
-      if @incorrect_note.update(incorrect_note_params)
-        format.json { render :show, status: :ok, location: @incorrect_note }
-      else
-        format.json { render json: @incorrect_note.errors, status: :unprocessable_entity }
-      end
+    if @incorrect_note.update(incorrect_note_params)
+      render json: {status: :ok}
+    else
+      render json: @incorrect_note.errors, status: :unprocessable_entity
     end
   end
 
@@ -80,9 +70,10 @@ class IncorrectNotesController < ApplicationController
   # DELETE /incorrect_notes/1
   # DELETE /incorrect_notes/1.json
   def destroy
-    @incorrect_note.destroy
-    respond_to do |format|
-      format.json { head :no_content }
+    if @incorrect_note.destroy
+      render json: {status: :ok}
+    else
+      render json: @incorrect_note.errors, status: :unprocessable_entity
     end
   end
 

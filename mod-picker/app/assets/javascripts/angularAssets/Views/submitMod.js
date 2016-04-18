@@ -30,6 +30,9 @@ app.controller('submitModController', function ($scope, backend, submitService, 
         });
     };
 
+    /* tag selection */
+    $scope.mod_tags = [];
+
     /* asset file analysis */
     $scope.changeArchive = function(event) {
         var input = event.target;

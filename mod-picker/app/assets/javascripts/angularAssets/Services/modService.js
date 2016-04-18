@@ -1,22 +1,12 @@
 app.service('modService', function (backend, $q) {
     this.retrieveMod = function (modId) {
-        var mod = $q.defer();
-        backend.retrieve('/mods/' + modId).then(function (data) {
-            //TODO: remove mocked delay
-            setTimeout(function () {
-                mod.resolve(data);
-            }, 1000);
-        });
-        return mod.promise;
+        return backend.retrieve('/mods/' + modId);
     };
 
-    this.retrieveMods = function () {
+    this.retrieveMods = function (filters) {
         var mods = $q.defer();
-        backend.retrieve('/mods').then(function (data) {
-            //TODO: remove mocked delay
-            setTimeout(function () {
+        backend.post('/mods', filters).then(function (data) {
                 mods.resolve(data);
-            }, 1000);
         });
         return mods.promise;
     };

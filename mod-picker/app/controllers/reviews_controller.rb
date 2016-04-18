@@ -6,17 +6,13 @@ class ReviewsController < HelpfulableController
   def index
     @reviews = Review.filter(filtering_params)
 
-    respond_to do |format|
-      format.json { render :json => @reviews}
-    end
+    render :json => @reviews
   end
 
   # GET /reviews/1
   # GET /reviews/1.json
   def show
-    respond_to do |format|
-      format.json { render :json => @review}
-    end
+    render :json => @review
   end
 
   # POST /reviews
@@ -24,33 +20,30 @@ class ReviewsController < HelpfulableController
   def create
     @review = Review.new(review_params)
 
-    respond_to do |format|
-      if @review.save
-        format.json { render :show, status: :created, location: @review }
-      else
-        format.json { render json: @review.errors, status: :unprocessable_entity }
-      end
+    if @review.save
+      render json: {status: :ok}
+    else
+      render json: @review.errors, status: :unprocessable_entity
     end
   end
 
   # PATCH/PUT /reviews/1
   # PATCH/PUT /reviews/1.json
   def update
-    respond_to do |format|
-      if @review.update(review_params)
-        format.json { render :show, status: :ok, location: @review }
-      else
-        format.json { render json: @review.errors, status: :unprocessable_entity }
-      end
+    if @review.update(review_params)
+      render json: {status: :ok}
+    else
+      render json: @review.errors, status: :unprocessable_entity
     end
   end
 
   # DELETE /reviews/1
   # DELETE /reviews/1.json
   def destroy
-    @review.destroy
-    respond_to do |format|
-      format.json { head :no_content }
+    if @review.destroy
+      render json: {status: :ok}
+    else
+      render json: @review.errors, status: :unprocessable_entity
     end
   end
 

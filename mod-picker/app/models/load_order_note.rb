@@ -32,6 +32,24 @@ class LoadOrderNote < ActiveRecord::Base
     self.submitted ||= DateTime.now
   end
 
+  def mods
+    @mods = []
+    self.mod_versions.each do |mv|
+      mod = mv.mod
+      pmod = @mods.detect {|m| m[:id] == mod.id }
+      if pmod.present?
+        pmod[:mod_versions].push({id: mv.id, version: mv.version})
+      else
+        @mods.push({
+            id: mod.id,
+            name: mod.name,
+            mod_versions: [{id: mv.id, version: mv.version}]
+        })
+      end
+    end
+    @mods
+  end
+
   def as_json(options={})
     super(:include => {
         :mod_version_load_order_notes => {

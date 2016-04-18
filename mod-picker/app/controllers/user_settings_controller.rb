@@ -7,20 +7,16 @@ class UserSettingsController < ApplicationController
   def index
     @user_setting = current_user.settings
 
-    respond_to do |format|
-      format.json { render :json => @user_setting}
-    end
+    render :json => @user_setting
   end
 
   # PATCH/PUT /user_settings/1
   # PATCH/PUT /user_settings/1.json
   def update
-    respond_to do |format|
-      if @user_setting.update(user_setting_params)
-        format.json { render json: {status: 'ok'} }
-      else
-        format.json { render json: @user_setting.errors, status: :unprocessable_entity }
-      end
+    if @user_setting.update(user_setting_params)
+      render json: {status: :ok}
+    else
+      render json: @user_setting.errors, status: :unprocessable_entity
     end
   end
 

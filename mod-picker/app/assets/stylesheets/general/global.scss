@@ -15,10 +15,6 @@ body {
   padding-bottom: 176px;
 }
 
-::-webkit-scrollbar {
-  display: none;
-}
-
 .hidden {
   display: none;
 }
@@ -135,7 +131,7 @@ input[type="button"], input[type="submit"] {
 }
 
 .btn {
-  padding: 6px;
+  padding: 8px;
   color: $action_text_color;
   text-transform: uppercase;
   background-color: $bar_color;
@@ -226,6 +222,7 @@ input[type="button"], input[type="submit"] {
 
 .right-column {
   width: 970px;
+  max-width: 970px;
   padding: 40px 0 40px 48px;
   display: table-cell;
   vertical-align: top;
@@ -241,12 +238,6 @@ input[type="button"], input[type="submit"] {
   text-align: center;
 }
 
-.fixed-messages {
-  position: fixed;
-  top: 0;
-  left: 0;
-}
-
 .error-message {
   background-color: $error_message_color;
   padding: 14px;
@@ -258,9 +249,12 @@ input[type="button"], input[type="submit"] {
 .big-text-area {
   width: 100%;
   height: 300px;
-  margin-top: 4px;
   max-width: 100%;
   overflow-y: auto;
+}
+
+.editor-toolbar, .CodeMirror {
+  border-radius: 0;
 }
 
 input[type="checkbox"] {
@@ -311,7 +305,7 @@ form {
       font-size: 16px;
       margin-top: 25px;
       margin-left: 0;
-      margin-bottom: 0;
+      margin-bottom: 6px;
     }
 
     section {

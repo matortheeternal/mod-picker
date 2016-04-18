@@ -1,4 +1,4 @@
-<loader data="data">
+<loader data="data" content-class="browse-results">
     <table>
         <thead>
             <tr>
@@ -22,8 +22,10 @@
         </thead>
         <tbody>
             <tr ng-repeat="mod in data">
-                <td><a class="strong" ng-href="#/mod/{{mod.id}}">{{mod.name}}</a></td>
-                <td ng-repeat="column in columns" ng-class="{ 'hidden': !column.visibility }" ng-if="$index > 0">
+                <td class="main-cell">
+                    <a class="strong" ng-href="#/mod/{{mod.id}}">{{mod.name}}</a>
+                </td>
+                <td ng-repeat="column in columns" ng-class="{ 'hidden': !column.visibility, 'text-cell' : !column.filter }" ng-if="$index > 0">
                     {{ mod.nexus_info[column.data] | picker:column.filter }}
                 </td>
                 <td class="actions-cell">
@@ -39,7 +41,7 @@
                 <h3 class="section-title">Edit Columns</h3>
                 <section>
                     <ul class="checkbox-list">
-                        <li ng-repeat="column in columns">
+                        <li ng-repeat="column in columns" ng-if="!column.required">
                             <label>
                                 <input type="checkbox" ng-model="column.visibility">
                                 {{column.label}}
