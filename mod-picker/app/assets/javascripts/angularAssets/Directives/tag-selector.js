@@ -21,6 +21,7 @@ app.controller('tagSelectorController', function ($scope) {
     $scope.addTag = function() {
         if ($scope.newTags.length < $scope.maxTags) {
             $scope.newTags.push({
+                //TODO: replace with something else
                 text: "Test",
                 mods_count: 0
             });

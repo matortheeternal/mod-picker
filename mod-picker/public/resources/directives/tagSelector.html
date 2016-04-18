@@ -3,6 +3,7 @@
         <span class="tag-text">
             {{tag.text}}
         </span>
+        <!-- TODO: replace ng-if with ng-show / ng-hide -->
         <span ng-if="showModsCount" class="tag-count" title="The number of mods with this tag">
             {{tag.mods_count | number}}
         </span>
