@@ -18,33 +18,31 @@ app.service('submitService', function (backend, $q) {
             }
         };
         backend.post('/mods/submit', modData).then(function (data) {
-            setTimeout(function () {
-                // update nexus info to link to the mod record
-                nexus_info.mod_id = data.id;
-                backend.update('/nexus_infos/'+nexus_info.id, {nexus_info: nexus_info});
+            // update nexus info to link to the mod record
+            nexus_info.mod_id = data.id;
+            backend.update('/nexus_infos/'+nexus_info.id, {nexus_info: nexus_info});
 
-                // create mod version record linking to the mod record
-                modVersionData = {
-                    mod_version: {
-                        mod_id: data.id,
-                        released: nexus_info.date_added,
-                        obsolete: false,
-                        dangerous: false,
-                        version: nexus_info.current_version
-                    }
-                };
-                backend.post('/mod_versions', modVersionData);
-
-                // submit plugins
-                for (var i = 0; i < plugins.length; i++) {
-                    plugin = plugins[i];
-                    backend.postFile('/plugins', 'plugin', plugin).then(function (data) {
-                        if (data.status !== 'Success') {
-                            alert('Error uploading ' + plugin.name + ': ' + data.status);
-                        }
-                    });
+            // create mod version record linking to the mod record
+            modVersionData = {
+                mod_version: {
+                    mod_id: data.id,
+                    released: nexus_info.date_added,
+                    obsolete: false,
+                    dangerous: false,
+                    version: nexus_info.current_version
                 }
-            }, 1000);
+            };
+            backend.post('/mod_versions', modVersionData);
+
+            // submit plugins
+            for (var i = 0; i < plugins.length; i++) {
+                plugin = plugins[i];
+                backend.postFile('/plugins', 'plugin', plugin).then(function (data) {
+                    if (data.status !== 'Success') {
+                        alert('Error uploading ' + plugin.name + ': ' + data.status);
+                    }
+                });
+            }
         });
     };
 });
