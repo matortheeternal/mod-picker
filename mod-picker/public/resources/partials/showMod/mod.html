@@ -64,7 +64,9 @@
             </section>
 
             <!--Image-->
-            <img ng-src="{{mod.image}}" class="mod-image"/>
+            <section ng-if="mod.image">
+                <img ng-src="{{mod.image}}" class="mod-image"/>
+            </section>
 
             <!--Sources-->
             <h3 class="section-title">Sources</h3>
