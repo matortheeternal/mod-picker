@@ -9,7 +9,7 @@ class ModList < ActiveRecord::Base
 
   has_many :mods, :through => 'mod_list_mods', :inverse_of => 'mod_lists'
   has_many :mod_list_mods, :inverse_of => 'mod_list'
-  has_many :plugins, :through => 'mod_list_plugins', :inverse_of => 'mod_lists'
+  has_many :plugins, :through => 'mod_list_plugins', :inverse_of => 'mod_lists', counter_cache: :this_does_not_exist
   has_many :mod_list_plugins, :inverse_of => 'mod_list'
   has_many :custom_plugins, :class_name => 'ModListCustomPlugin', :inverse_of => 'mod_list'
 

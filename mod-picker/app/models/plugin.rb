@@ -1,6 +1,6 @@
 class Plugin < ActiveRecord::Base
-  after_create :increment_counter_caches
-  before_destroy :decrement_counter_caches
+  # after_create :increment_counter_caches
+  # before_destroy :decrement_counter_caches
 
   belongs_to :mod_version, :inverse_of => 'plugins'
 
@@ -37,16 +37,16 @@ class Plugin < ActiveRecord::Base
   # Private methods
   private
     # counter caches
-    def increment_counter_caches
-      # puts "AWEFWAFWFAWEFAEWFAW==="
-      # puts self.mod_list_plugins
-      # self.mod_lists.plugins_count += 1
-      # self.mod_lists.save
-    end
+    # def increment_counter_caches
+    #   puts "AWEFWAFWFAWEFAEWFAW==="
+    #   puts self.mod_list_plugins.mod_list
+    #   # self.mod_lists.plugins_count += 1
+    #   # self.mod_lists.save
+    # end
 
-    def decrement_counter_caches
-      self.mod_lists.plugins_count -= 1
-      self.mod_lists.save
-    end
+    # def decrement_counter_caches
+    #   self.mod_lists.plugins_count -= 1
+    #   self.mod_lists.save
+    # end
 
 end

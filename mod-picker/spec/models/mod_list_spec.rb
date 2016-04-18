@@ -24,7 +24,7 @@ require 'rails_helper'
 #   add_index "mod_lists", ["created_by"], name: "created_by", using: :btree
 #   add_index "mod_lists", ["game_id"], name: "fk_rails_f25cbc0432", using: :btree
 
-RSpec.describe ModList, :model do
+RSpec.describe ModList, :model, :wip do
 
   fixtures :mod_lists, :users, :mod_versions
 
@@ -169,6 +169,7 @@ RSpec.describe ModList, :model do
       let!(:list) {mod_lists(:plannedVanilla)}
 
       it "should increment comment counter by 1 when new comment is made" do
+        # Basic working example without the expect proc
         # c1 = list.comments.create(attributes_for(:comment, submitted_by: users(:madoka).id))
         # expect(c1).to be_valid
         # # puts c1.commentable.comments_count
@@ -204,25 +205,23 @@ RSpec.describe ModList, :model do
       # mod list fixture
       let!(:list) {mod_lists(:plannedVanilla)}
 
-      xit "should increment comment counter by 1 when new comment is made" do
+      it "should increment plugin counter by 1 when new comment is made" do
+        expect(list.plugins_count).to eq(0)
 
-        c1 = list.plugins.create(
-          attributes_for(:plugin, mod_version_id: mod_versions(:SkyUI_1_0).id))
+        # Attributes for mod version are provided because associations aren't done
+        # when using FactoryGirl's attributes_for
+        expect { 
+          list.plugins.create(
+            attributes_for(:plugin, mod_version_id: mod_versions(:SkyUI_1_0).id))
 
-        # expect(c1).to be_valid
-        # list.reload
-        # expect(list.plugins_count).to eq(1)
-
-        # expect { 
-        #   list.plugins.create(attributes_for(:plugin))
-        #   list.reload
-        # }.to change { list.comments_count }.by(1)
+          list.reload
+          expect(list.plugins_count).to eq(1)
+        }.to change { list.plugins_count }.by(1)
       end
 
-      xit "should decrement the comment counter by 1 if a comment is deleted" do
+      it "should decrement the plugin counter by 1 if a comment is deleted" do
         plugin = list.plugins.create(
           attributes_for(:plugin, mod_version_id: mod_versions(:SkyUI_1_0).id))
-        list.reload
 
         expect {
           list.plugins.destroy(plugin.id)

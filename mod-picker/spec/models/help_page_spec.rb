@@ -7,7 +7,7 @@ require 'rails_helper'
 #   t.text     "text_body", limit: 65535
 # end
 
-RSpec.describe HelpPage, :model, :wip do
+RSpec.describe HelpPage, :model do
   fixtures :help_pages
 
   it "should have a valid factory" do
