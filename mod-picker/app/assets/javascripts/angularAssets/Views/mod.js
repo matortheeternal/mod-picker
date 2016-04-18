@@ -15,12 +15,7 @@ app.filter('percentage', function() {
   };
 });
 
-app.controller('modController', function ($scope, $q, $routeParams, modService) {
-    $scope.expandedState = {
-        compabilityNotes: true,
-        reviews: false
-    };
-
+app.controller('modController', function ($scope, $q, $routeParams, modService, categoryService) {
     //initialization
     //of the mod object
     modService.retrieveMod($routeParams.modId).then(function (mod) {
