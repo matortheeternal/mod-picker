@@ -15,7 +15,7 @@ app.filter('percentage', function() {
   };
 });
 
-app.controller('modController', function ($rootScope, $scope, $q, $routeParams, modService) {
+app.controller('modController', function ($rootScope, $scope, $q, $routeParams, modService, categoryService) {
     $rootScope.twoColumns = true;
 
     //initialization
@@ -23,6 +23,13 @@ app.controller('modController', function ($rootScope, $scope, $q, $routeParams, 
     modService.retrieveMod($routeParams.modId).then(function (mod) {
         $scope.mod = mod;
         $scope.currentVersion = mod.mod_versions[0];
+
+        categoryService.getCategoryById(mod.primary_category_id).then(function (data) {
+            $scope.firstCategory = data.name;
+        });
+        categoryService.getCategoryById(mod.secondary_category_id).then(function (data) {
+            $scope.secondCategory = data.name;
+        });
     });
 
     //of the tab data
