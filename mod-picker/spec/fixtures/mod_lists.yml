@@ -20,7 +20,7 @@
 plannedVanilla:
   created_by: homura
   is_collection: false
-  is_public: true
+  hidden: false
   has_adult_content: false
   status: "Planned"
   created: 2016-02-11
@@ -31,7 +31,7 @@ plannedVanilla:
 underConstructionVanilla:
   created_by: kyoko
   is_collection: false
-  is_public: true
+  hidden: false
   has_adult_content: false
   status: "Under Construction"
   created: 2016-02-22

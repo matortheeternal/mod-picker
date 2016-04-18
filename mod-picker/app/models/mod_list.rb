@@ -1,4 +1,7 @@
 class ModList < ActiveRecord::Base
+
+  after_initialize :init
+
   enum status: [ :planned, :"under construction", :testing, :complete ]
 
   belongs_to :game, :inverse_of => 'mod_lists'
@@ -20,5 +23,19 @@ class ModList < ActiveRecord::Base
   has_many :mod_list_stars, :inverse_of => 'starred_mod_list'
   has_many :user_stars, :through => 'mod_list_stars', :inverse_of => 'starred_mod_lists'
 
+  has_many :mod_list_tags, :inverse_of => 'mod_list'
+  has_many :tags, :through => 'mod_list_tags', :inverse_of => 'mod_lists'
+
   has_many :comments, :as => 'commentable'
+
+  # Validations
+  validates :game_id, presence: true 
+  validates_inclusion_of :is_collection, :hidden, :has_adult_content, {in: [true, false], 
+                                          message: "must be true or false"}
+  validates :description, length: { maximum: 65535 }
+
+  def init
+    self.is_collection ||= false
+    self.created ||= DateTime.now
+  end                                         
 end
