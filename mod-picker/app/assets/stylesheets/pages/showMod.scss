@@ -78,6 +78,7 @@
 
   section {
     border-bottom: 1px solid $soft_border_color;
+    line-height: 1em;
   }
 }
 
@@ -120,8 +121,12 @@
   display: inline-block;
 }
 
-.stat-block {
+.stat-block-title {
+  display: flex;
+  justify-content: space-between;
+}
 
+.remove-caret {
   .expanded-icon {
     display: none;
   }
@@ -129,6 +134,14 @@
   .collapsed-icon {
     display: none;
   }
+}
+
+.stat-expander {
+  background-color: $action_color;
+  color: $action_text_color;
+  font-size: 20px;
+  padding: 8px;
+  line-height: inherit;
 }
 
 //right column
