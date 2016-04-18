@@ -261,5 +261,32 @@ RSpec.describe ModList, :model, :wip do
         }.to change { list.mods_count }.by(-1)
       end
     end
+
+    describe "custom_plugins_count" do
+      # mod list fixture
+      let!(:list) {mod_lists(:plannedVanilla)}
+
+      it "should increment custom_plugins counter by 1 when new custom plugin is made" do
+        expect(list.custom_plugins_count).to eq(0)
+
+        expect {
+          list.custom_plugins.create(attributes_for(:mod_list_custom_plugin, 
+            mod_list_id: list.id))
+
+          list.reload
+          expect(list.custom_plugins_count).to eq(1)
+        }.to change { list.custom_plugins_count }.by(1)
+      end
+
+      it "should decrement the custom_plugins counter by 1 if a custom plugin is deleted" do
+        custom = list.custom_plugins.create(attributes_for(:mod_list_custom_plugin, 
+          mod_list_id: list.id))
+
+        expect {
+          list.custom_plugins.destroy(custom.id)
+          list.reload
+        }.to change { list.custom_plugins_count }.by(-1)
+      end
+    end
   end
 end
