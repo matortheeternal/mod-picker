@@ -132,6 +132,8 @@
 }
 
 .stat-block-title:hover {
+  cursor: pointer;
+
   .stat-expander {
     background-color: $bright_action_color;
   }
@@ -150,8 +152,8 @@
 .stat-expander {
   background-color: $action_color;
   color: $action_text_color;
-  font-size: 20px;
-  padding: 8px;
+  font-size: 16px;
+  padding: 6px;
   line-height: inherit;
 }
 
