@@ -120,6 +120,17 @@
   display: inline-block;
 }
 
+.stat-block {
+
+  .expanded-icon {
+    display: none;
+  }
+
+  .collapsed-icon {
+    display: none;
+  }
+}
+
 //right column
 .right-mod-column {
   margin: 20px;

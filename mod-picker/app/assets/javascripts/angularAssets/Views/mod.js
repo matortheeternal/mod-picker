@@ -45,4 +45,9 @@ app.controller('modController', function ($rootScope, $scope, $q, $routeParams, 
     //this prevents the sort by dropdowns from displaying an undefined option
     $scope.filter = 'compatibility_type';
 
+    //variables for the stat block expandables
+    $scope.nexusExpanded = false;
+    $scope.steamExpanded = false;
+    $scope.loversExpanded = false;
+
 });

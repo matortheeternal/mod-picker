@@ -107,10 +107,36 @@
                 </div>
             </section>
             <!--Nexus Stats-->
-            <h3 class="section-title">Nexus stats</h3>
-            <section ng-show="mod.nexus_info">
-                <nexus-block></nexus-block>
-            </section>
+            <expandable expanded="nexusExpanded" ng-if="mod.nexus_info" class="stat-block">
+                    <expanded-title>
+                        <label>
+                           Nexus stats
+                        </label>
+                    </expanded-title>
+                    <content>
+                        <nexus-block></nexus-block>
+                    </content>
+            </expandable>
+            <expandable expanded="steamExpanded" ng-if="mod.workshop_infos">
+                    <expanded-title>
+                        <label>
+                           Steam stats
+                        </label>
+                    </expanded-title>
+                    <content>
+                        <steam-block></steam-block>
+                    </content>
+            </expandable>
+            <expandable expanded="loversExpanded" ng-if="mod.lovers_infos">
+                    <expanded-title>
+                        <label>
+                           Lover's Lab stats
+                        </label>
+                    </expanded-title>
+                    <content>
+                        <lovers-block></lovers-block>
+                    </content>
+            </expandable>
             <section ng-show="mod.workshop_infos">
                 <steam-block></steam-block>
             </section>
