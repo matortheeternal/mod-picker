@@ -42,4 +42,7 @@ app.controller('modController', function ($rootScope, $scope, $q, $routeParams, 
 
     $scope.currentTab = $scope.tabs[0];
 
+    //this prevents the sort by dropdowns from displaying an undefined option
+    $scope.filter = 'compatibility_type';
+
 });
