@@ -81,6 +81,29 @@
   }
 }
 
+.version-dropdown {
+  width: 100%;
+  font-size: 16px;
+}
+
+.sources {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  align-content: center;
+}
+
+.source-box {
+  font-size: 16px;
+  display: inline-flex;
+}
+
+.source-image {
+  height: 1.2em;
+  width: auto;
+  margin-right: 5px;
+}
+
 //stat blocks
 .stat-title {
   width: 100px;
@@ -95,16 +118,6 @@
   font-size: 14px;
   white-space: nowrap;
   display: inline-block;
-}
-
-.version-dropdown {
-  width: 100%;
-  font-size: 16px;
-}
-
-.source-image {
-  height: auto;
-  width: 20%;
 }
 
 //right column

@@ -65,14 +65,16 @@
             <img ng-src="{{mod.image}}" class="mod-image"/>
             <!--Sources-->
             <h3 class="section-title">Sources</h3>
-            <section>
-                <div class="action-box" ng-if="mod.nexus_info">
+            <section class="sources">
+                <div class="action-box source-box" ng-if="mod.nexus_info">
                     <img src="/assets/nexus_logo" class="source-image"/>
+                    Nexus
                 </div>
-                <div class="action-box" ng-if="mod.steam_info">
+                <div class="action-box source-box">
                     <img src="/assets/steam_logo" class="source-image" />
+                    Steam
                 </div>
-                <div class="action-box" ng-if="mod.lovers_info">
+                <div class="action-box source-box">
                     <img src="/assets/lovers_logo" class="source-image" />
                 </div>
             </section>
