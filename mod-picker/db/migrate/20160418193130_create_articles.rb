@@ -1,7 +1,7 @@
 class CreateArticles < ActiveRecord::Migration
   def change
-    create_table :articles, id: false do |t|
-      t.string :title, :primary_key
+    create_table :articles do |t|
+      t.string :title
       t.integer :submitted_by
       t.text :text_body
 
