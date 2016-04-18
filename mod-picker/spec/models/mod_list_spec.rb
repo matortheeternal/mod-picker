@@ -292,7 +292,10 @@ RSpec.describe ModList, :model, :wip do
       it "should increment compatibility_notes counter by 1 when new compatibility note is made" do
         expect(list.compatibility_notes_count).to eq(0)
 
-
+        # This implementation allows validation of BOTH mod_list_id and compatibility_note_id on
+        # the mod_list_compatibility_notes model.
+        # Unsure if the intended behavior is to invalidate creations of compatibiltiy notes
+        # through the mod_list though.
         expect{
           note = create(:compatibility_note)
 
@@ -301,45 +304,32 @@ RSpec.describe ModList, :model, :wip do
 
           expect(comp).to be_valid
 
-          puts "ID NUMBERS==="
+          # puts "ID NUMBERS==="
 
-          puts list.mod_list_compatibility_notes.last.compatibility_note_id # Equal V
-          puts note.mod_list_compatibility_notes.last.compatibility_note_id #   Equal |
-          puts note.id                                                      #   Equal ^
-          puts "==========="
-          puts list.id                                          # Equal V
-          puts note.mod_list_compatibility_notes.last.mod_list_id # Equal ^
+          # puts list.mod_list_compatibility_notes.last.compatibility_note_id # Equal V
+          # puts note.mod_list_compatibility_notes.last.compatibility_note_id #   Equal |
+          # puts note.id                                                      #   Equal ^
+          # puts "==========="
+          # puts list.id                                          # Equal V
+          # puts note.mod_list_compatibility_notes.last.mod_list_id # Equal ^
 
           expect(list.compatibility_notes_count).to eq(1)
         }.to change { list.compatibility_notes_count}.by(1)
-        
-
-        # expect {
-        #   # n1 = list.compatibility_notes.create(attributes_for(:compatibility_note, 
-        #   #   submitted_by: users(:homura).id))
-
-        #   # puts list.mod_list_compatibility_notes.last.compatibility_note_id # Equal V
-        #   # puts n1.mod_list_compatibility_notes.last.compatibility_note_id #   Equal |
-        #   # puts n1.id                                                      #   Equal ^
-        #   # puts "==========="
-        #   # puts list.id                                          # Equal V
-        #   # puts n1.mod_list_compatibility_notes.last.mod_list_id # Equal ^
-
-
-
-        #   list.reload
-        #   expect(list.compatibility_notes_count).to eq(1)
-        # }.to change { list.compatibility_notes_count }.by(1)
       end
 
-      xit "should decrement the compatibility_notes counter by 1 if a compatibility note is deleted" do
-        note = list.compatibility_notes.create(attributes_for(:compatibility_note, 
-          submitted_by: users(:homura).id))
+      it "should decrement the compatibility_notes counter by 1 if a compatibility note is deleted" do
+        note = create(:compatibility_note)
 
-        expect {
+        comp_note = list.mod_list_compatibility_notes.create(
+          mod_list_id: list.id, compatibility_note_id: note.id)
+        expect(list.compatibility_notes_count).to eq(1)
+
+        expect{
           list.compatibility_notes.destroy(note.id)
+
           list.reload
-        }.to change { list.compatibility_notes_count }.by(-1)
+          expect(list.compatibility_notes_count).to eq(0)
+        }.to change { list.compatibility_notes_count}.by(-1)
       end
     end
   end

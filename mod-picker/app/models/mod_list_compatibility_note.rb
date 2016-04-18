@@ -13,7 +13,7 @@ class ModListCompatibilityNote < ActiveRecord::Base
   
   # FIXME: Validating compatibility_note_id results in failure in ability to test counter_cache
   # Unless a manual compatabiltiy_note_id is given.
-  validates :mod_list_id, presence: true
+  validates :mod_list_id, :compatibility_note_id, presence: true
   
   # Private Methods
   private
