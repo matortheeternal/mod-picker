@@ -15,8 +15,11 @@ app.filter('percentage', function() {
   };
 });
 
-app.controller('modController', function ($rootScope, $scope, $q, $routeParams, modService, categoryService) {
-    $rootScope.twoColumns = true;
+app.controller('modController', function ($scope, $q, $routeParams, modService) {
+    $scope.expandedState = {
+        compabilityNotes: true,
+        reviews: false
+    };
 
     //initialization
     //of the mod object
