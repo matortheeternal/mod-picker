@@ -1,9 +1,9 @@
 class CreateArticles < ActiveRecord::Migration
   def change
     create_table :articles do |t|
-      t.string :title
-      t.integer :submitted_by
-      t.text :text_body
+      t.string :title, null: false
+      t.integer :submitted_by, null: false
+      t.text :text_body, null: false
 
       t.timestamps null: false
     end

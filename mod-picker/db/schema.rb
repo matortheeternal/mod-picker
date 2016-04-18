@@ -23,9 +23,9 @@ ActiveRecord::Schema.define(version: 20160418193130) do
   add_index "agreement_marks", ["submitted_by"], name: "submitted_by", using: :btree
 
   create_table "articles", force: :cascade do |t|
-    t.string   "title",        limit: 255
-    t.integer  "submitted_by", limit: 4
-    t.text     "text_body",    limit: 65535
+    t.string   "title",        limit: 255,   null: false
+    t.integer  "submitted_by", limit: 4,     null: false
+    t.text     "text_body",    limit: 65535, null: false
     t.datetime "created_at",                 null: false
     t.datetime "updated_at",                 null: false
   end
