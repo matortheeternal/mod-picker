@@ -7,9 +7,9 @@ class ModList < ActiveRecord::Base
   belongs_to :game, :inverse_of => 'mod_lists'
   belongs_to :user, :foreign_key => 'created_by', :inverse_of => 'mod_lists'
 
-  has_many :mods, :through => 'mod_list_mods', :inverse_of => 'mod_lists', counter_cache: :this_does_not_exist
+  has_many :mods, :through => 'mod_list_mods', :inverse_of => 'mod_lists', counter_cache: :this_does_not_exist_mods
   has_many :mod_list_mods, :inverse_of => 'mod_list'
-  has_many :plugins, :through => 'mod_list_plugins', :inverse_of => 'mod_lists', counter_cache: :this_does_not_exist
+  has_many :plugins, :through => 'mod_list_plugins', :inverse_of => 'mod_lists', counter_cache: :this_does_not_exist_plugins
   has_many :mod_list_plugins, :inverse_of => 'mod_list'
   has_many :custom_plugins, :class_name => 'ModListCustomPlugin', :inverse_of => 'mod_list'
 
