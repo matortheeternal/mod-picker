@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160414202618) do
+ActiveRecord::Schema.define(version: 20160418193130) do
 
   create_table "agreement_marks", id: false, force: :cascade do |t|
     t.integer "incorrect_note_id", limit: 4
@@ -21,6 +21,17 @@ ActiveRecord::Schema.define(version: 20160414202618) do
 
   add_index "agreement_marks", ["incorrect_note_id"], name: "inc_id", using: :btree
   add_index "agreement_marks", ["submitted_by"], name: "submitted_by", using: :btree
+
+  create_table "articles", id: false, force: :cascade do |t|
+    t.string   "title",        limit: 255
+    t.string   "primary_key",  limit: 255
+    t.integer  "submitted_by", limit: 4
+    t.text     "text_body",    limit: 65535
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
+  end
+
+  add_index "articles", ["submitted_by"], name: "fk_rails_ea02c233bd", using: :btree
 
   create_table "categories", force: :cascade do |t|
     t.integer "parent_id",   limit: 4
@@ -690,6 +701,7 @@ ActiveRecord::Schema.define(version: 20160414202618) do
 
   add_foreign_key "agreement_marks", "incorrect_notes", name: "agreement_marks_ibfk_1"
   add_foreign_key "agreement_marks", "users", column: "submitted_by", name: "agreement_marks_ibfk_2"
+  add_foreign_key "articles", "users", column: "submitted_by"
   add_foreign_key "categories", "categories", column: "parent_id"
   add_foreign_key "category_priorities", "categories", column: "dominant_id"
   add_foreign_key "category_priorities", "categories", column: "recessive_id"
