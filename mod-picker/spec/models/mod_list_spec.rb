@@ -26,7 +26,7 @@ require 'rails_helper'
 
 RSpec.describe ModList, :model, :wip do
 
-  fixtures :mod_lists, :users, :mod_versions
+  fixtures :mod_lists, :users, :mod_versions, :games, :categories
 
   it "should have a valid factory" do
     expect( create(:mod_list) ).to be_valid
@@ -178,14 +178,18 @@ RSpec.describe ModList, :model, :wip do
 
         expect { 
           # attributes_for only provides the attributes for a factory WITHOUT the associations.
-          list.comments.create(attributes_for(:comment, submitted_by: users(:madoka).id))
+          list.comments.create(attributes_for(:comment, 
+            submitted_by: users(:madoka).id))
+
           list.reload
         }.to change { list.comments_count }.by(1)
       end
 
       it "should decrement the comment counter by 1 if a comment is deleted" do
-        comment = list.comments.create(attributes_for(:comment, submitted_by: users(:madoka).id))
-        # need to reload between creation/destruction?
+        comment = list.comments.create(attributes_for(:comment, 
+          submitted_by: users(:madoka).id))
+
+        # need to reload between creation/destruction
         list.reload
 
         # list.reload
@@ -205,28 +209,56 @@ RSpec.describe ModList, :model, :wip do
       # mod list fixture
       let!(:list) {mod_lists(:plannedVanilla)}
 
-      it "should increment plugin counter by 1 when new comment is made" do
+      it "should increment plugin counter by 1 when new plugin is made" do
         expect(list.plugins_count).to eq(0)
 
         # Attributes for mod version are provided because associations aren't done
         # when using FactoryGirl's attributes_for
         expect { 
           list.plugins.create(
-            attributes_for(:plugin, mod_version_id: mod_versions(:SkyUI_1_0).id))
+            attributes_for(:plugin, 
+              mod_version_id: mod_versions(:SkyUI_1_0).id))
 
           list.reload
           expect(list.plugins_count).to eq(1)
         }.to change { list.plugins_count }.by(1)
       end
 
-      it "should decrement the plugin counter by 1 if a comment is deleted" do
-        plugin = list.plugins.create(
-          attributes_for(:plugin, mod_version_id: mod_versions(:SkyUI_1_0).id))
+      it "should decrement the plugin counter by 1 if a plugin is deleted" do
+        plugin = list.plugins.create(attributes_for(:plugin,
+          mod_version_id: mod_versions(:SkyUI_1_0).id))
 
         expect {
           list.plugins.destroy(plugin.id)
           list.reload
         }.to change { list.plugins_count }.by(-1)
+      end
+    end
+
+    describe "mods_count" do
+      # mod list fixture
+      let!(:list) {mod_lists(:plannedVanilla)}
+
+      it "should increment mods counter by 1 when new mod is made" do
+        expect(list.mods_count).to eq(0)
+
+        expect { 
+          list.mods.create(attributes_for(:mod, 
+              game_id: games(:skyrim).id, primary_category_id: categories(:catGameplay).id))
+
+          list.reload
+          expect(list.mods_count).to eq(1)
+        }.to change { list.mods_count }.by(1)
+      end
+
+      it "should decrement the mods counter by 1 if a mod is deleted" do
+        mod = list.mods.create(attributes_for(:mod, 
+          game_id: games(:skyrim).id, primary_category_id: categories(:catGameplay).id))
+
+        expect {
+          list.mods.destroy(mod.id)
+          list.reload
+        }.to change { list.mods_count }.by(-1)
       end
     end
   end

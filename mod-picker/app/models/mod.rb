@@ -54,6 +54,10 @@ class Mod < ActiveRecord::Base
   # mod versions and associated data
   has_many :mod_versions, :inverse_of => 'mod'
 
+  # mod list usage
+  has_many :mod_list_mods, :inverse_of => 'mod'
+  has_many :mod_lists, :through => 'mod_list_mods', :inverse_of => 'mods'
+
   accepts_nested_attributes_for :mod_versions
 
   def no_author?

@@ -9,7 +9,6 @@ FactoryGirl.define do
     association :secondary_category_id, factory: :category
     # primary_category_id { Category.offset(rand(Category.count)).first.id }
     # secondary_category_id { Category.offset(rand(Category.count)).first.id }
-    nexus_info
 
     factory :mod_with_versions do
       transient do
