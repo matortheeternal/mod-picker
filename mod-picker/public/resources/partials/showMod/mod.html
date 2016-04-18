@@ -54,6 +54,7 @@
 <div class="page-container">
     <loader data="mod">
         <div class="left-column left-mod-column wide-column">
+
             <!--Versions-->
             <h3>Mod Versions</h3>
             <section>
@@ -61,8 +62,10 @@
                     <select ng-model="currentVersion" ng-options="version as version.version for version in mod.mod_versions" class="version-dropdown"></select>
                 </div>
             </section>
+
             <!--Image-->
             <img ng-src="{{mod.image}}" class="mod-image"/>
+
             <!--Sources-->
             <h3 class="section-title">Sources</h3>
             <section class="sources">
@@ -78,6 +81,7 @@
                     <img src="/assets/lovers_logo" class="source-image" />
                 </div>
             </section>
+
             <!--Requirements-->
             <h3 class="section-title">Requirements</h3>
             <section>
@@ -93,12 +97,14 @@
                     None
                 </span>
             </section>
+
             <!--Categories-->
             <h3 class="section-title">Categories</h3>
             <section>
                 <div ng-show="mod.primary_category_id" class="action-box mod-category">{{firstCategory}}</div>
                 <div ng-show="mod.secondary_category_id" class="action-box mod-category">{{secondCategory}}</div>
             </section>
+
             <!--Tags-->
             <h3 class="section-title">Tags</h3>
             <section>
@@ -106,6 +112,7 @@
                     <div class="action-box" ng-repeat="tag in mod.tags">{{tag.text}}</div>
                 </div>
             </section>
+
             <!--Nexus Stats-->
             <expandable expanded="nexusExpanded" ng-if="mod.nexus_info" class="stat-block">
                     <expanded-title>
