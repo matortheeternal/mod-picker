@@ -87,6 +87,7 @@
   }
 
   section {
+    margin-top: 20px;
     border-bottom: 2px solid $soft_border_color;
   }
 }
@@ -146,6 +147,8 @@
 .stat-block-title {
   display: flex;
   justify-content: space-between;
+  align-content: center;
+  margin-bottom: 6px;
 }
 
 .stat-block-title:hover {
