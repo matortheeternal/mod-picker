@@ -120,9 +120,10 @@
                 <!--Tags-->
                 <h3 class="section-title">Tags</h3>
                 <section>
-                    <div>
+                    <div ng-show="mod.mod_tags.length">
                         <tag-selector tags="mod.mod_tags" active-tags="mod.mod_tags" max-tags="10"></tag-selector>
                     </div>
+                    <span ng-hide="mod.mod_tags.length" class="explanation">none</span>
                 </section>
 
                 <!--Nexus Stats-->
