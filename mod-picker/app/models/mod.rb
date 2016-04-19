@@ -2,6 +2,7 @@ class Mod < ActiveRecord::Base
   include Filterable
 
   scope :search, -> (search) { where("name like ? OR aliases like ?", "%#{search}%", "%#{search}%") }
+  scope :author, -> (author) { joins(:nexus_info).where("nexus_infos.authors like ? OR nexus_infos.uploaded_by like ?", "#{author}", "#{author}") }
   scope :adult, -> (adult) { where(has_adult_content: adult) }
   scope :game, -> (game) { where(game_id: game) }
   scope :categories, -> (categories) { where("primary_category_id IN (?) OR secondary_category_id IN (?)", categories, categories) }
