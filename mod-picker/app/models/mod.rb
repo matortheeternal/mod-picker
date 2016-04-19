@@ -70,7 +70,27 @@ class Mod < ActiveRecord::Base
             :except => [:mod_id],
             :methods => :required_mods
         },
-        :reviews => {:except => [:text_body, :mod_id, :edited, :incorrect_notes_count]}
+        :reviews => {
+            :except => [:submitted_by],
+            :include => {
+                :user => {
+                    :only => [:id, :username, :role, :title],
+                    :include => {
+                        :reputation => {:only => [:overall]}
+                    },
+                    :methods => :avatar
+                }
+            }
+        },
+        :mod_tags => {
+            :except => [:submitted_by],
+            :include => {
+                :tag => {:except => [:game_id, :hidden, :mod_lists_count]},
+                :user => {
+                    :only => [:id, :username]
+                }
+            }
+        }
     })
   end
 
@@ -81,7 +101,8 @@ class Mod < ActiveRecord::Base
             :authors => {:only => [:id, :username]}
         }
     }
-    options = default_options.merge(options)
+    options[:include] ||= {}
+    options[:include] = default_options[:include].merge(options[:include])
     super(options)
   end
 end

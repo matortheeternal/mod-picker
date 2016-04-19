@@ -1,7 +1,6 @@
 class ModVersionsController < ApplicationController
-  before_action :set_mod_version, only: [:update, :destroy]
+  before_action :set_mod_version, only: [:compatibility_notes, :load_order_notes, :install_order_notes, :update, :destroy]
 
-  # POST /mod_versions
   # POST /mod_versions.json
   def create
     @mod_version = ModVersion.new(mod_version_params)
@@ -14,7 +13,27 @@ class ModVersionsController < ApplicationController
     end
   end
 
-  # PATCH/PUT /mod_versions/1
+  # GET /mod_versions/1/compatibility_notes.json
+  def compatibility_notes
+    @compatibility_notes = @mod_version.compatibility_notes
+
+    render json: @compatibility_notes
+  end
+
+  # GET /mod_versions/1/load_order_notes.json
+  def load_order_notes
+    @load_order_notes = @mod_version.load_order_notes
+
+    render json: @load_order_notes
+  end
+
+  # GET /mod_versions/1/install_order_notes.json
+  def install_order_notes
+    @install_order_notes = @mod_version.install_order_notes
+
+    render json: @install_order_notes
+  end
+
   # PATCH/PUT /mod_versions/1.json
   def update
     authorize! :update, @mod_version
@@ -25,7 +44,6 @@ class ModVersionsController < ApplicationController
     end
   end
 
-  # DELETE /mod_versions/1
   # DELETE /mod_versions/1.json
   def destroy
     authorize! :destroy, @mod_version
