@@ -9,6 +9,7 @@ app.config(['$routeProvider', function ($routeProvider) {
 
 app.controller('modsController', function ($scope, $q, modService, sliderFactory) {
     $scope.filters = {};
+    $scope.sort = {};
 
     //TODO: everything below should be handled differently
     // -> remove redundancy
@@ -36,7 +37,7 @@ app.controller('modsController', function ($scope, $q, modService, sliderFactory
     var firstGet = false;
     $scope.getMods = function() {
         delete $scope.mods;
-        modService.retrieveMods($scope.filters).then(function (data) {
+        modService.retrieveMods($scope.filters, $scope.sort).then(function (data) {
             $scope.mods = data;
             firstGet = true;
         });
@@ -46,8 +47,8 @@ app.controller('modsController', function ($scope, $q, modService, sliderFactory
 
     // create a watch
     var getModsTimeout;
-    $scope.$watch('filters', function(filters) {
-        if(filters && firstGet) {
+    $scope.$watch('[filters, sort]', function() {
+        if($scope.filters && firstGet) {
             clearTimeout(getModsTimeout);
             getModsTimeout = setTimeout($scope.getMods, 700);
         }
