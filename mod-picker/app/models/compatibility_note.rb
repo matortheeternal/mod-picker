@@ -58,15 +58,18 @@ class CompatibilityNote < ActiveRecord::Base
   end
 
   def as_json(options={})
-    super(:include => {
-        :mod_version_compatibility_notes => {
-            :except => [:compatibility_note_id, :mod_version_id],
-            :include => {
-                :mod_version => {
-                    :except => [:id, :released, :obsolete, :dangerous]
-                }
+    super({
+        :except => [:submitted_by],
+        :include => {
+            :user => {
+                :only => [:id, :username, :role, :title],
+                :include => {
+                    :reputation => {:only => [:overall]}
+                },
+                :methods => :avatar
             }
-        }
+        },
+        :methods => :mods
     })
   end
 end

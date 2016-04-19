@@ -11,12 +11,27 @@ app.service('modService', function (backend, $q) {
         return mods.promise;
     };
 
-    this.retrieveCompabilityNotes = function (modId, versionId) {
-        return backend.retrieve('/compatibility_notes', {
-            params: {
-                mod: modId,
-                mv: versionId
-            }
+    this.retrieveCompatibilityNotes = function (modVersionId) {
+        var compatibilityNotes = $q.defer();
+        backend.retrieve('/mod_versions/' + modVersionId + '/compatibility_notes').then(function (data) {
+            compatibilityNotes.resolve(data);
         });
+        return compatibilityNotes.promise;
+    };
+
+    this.retrieveInstallOrderNotes = function (modVersionId) {
+        var installOrderNotes = $q.defer();
+        backend.retrieve('/mod_versions/' + modVersionId + '/install_order_notes').then(function (data) {
+            installOrderNotes.resolve(data);
+        });
+        return installOrderNotes.promise;
+    };
+
+    this.retrieveLoadOrderNotes = function (modVersionId) {
+        var loadOrderNotes = $q.defer();
+        backend.retrieve('/mod_versions/' + modVersionId + '/load_order_notes').then(function (data) {
+            loadOrderNotes.resolve(data);
+        });
+        return loadOrderNotes.promise;
     };
 });
