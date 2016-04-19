@@ -92,6 +92,7 @@ app.controller('categoryTreeController', function ($scope, categoryService) {
     $scope.invertSelection = function () {
         $scope.categories.forEach(function (superCategory) {
             superCategory.value = !superCategory.value;
+            $scope.handleSelection(superCategory);
             superCategory.childs.forEach(function(child) {
                 child.value = !child.value;
                 $scope.handleSelection(child);
