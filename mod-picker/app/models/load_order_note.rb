@@ -24,6 +24,7 @@ class LoadOrderNote < ActiveRecord::Base
   # community feedback on this load order note
   has_many :helpful_marks, :as => 'helpfulable'
   has_many :incorrect_notes, :as => 'correctable'
+  has_one :base_report, :as => 'reportable'
 
   validates :load_first, :load_second, presence: true
   validates :text_body, length: {in: 64..16384}

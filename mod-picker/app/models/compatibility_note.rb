@@ -26,6 +26,7 @@ class CompatibilityNote < ActiveRecord::Base
   # community feedback on this compatibility note
   has_many :helpful_marks, :as => 'helpfulable'
   has_many :incorrect_notes, :as => 'correctable'
+  has_one :base_report, :as => 'reportable'
 
   # old versions of this compatibility note
   has_many :compatibility_note_history_entries, :inverse_of => 'compatibility_note'
