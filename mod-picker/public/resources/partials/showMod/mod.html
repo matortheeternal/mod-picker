@@ -98,8 +98,8 @@
                 </section>
 
                 <!--Requirements-->
-                <h3 class="section-title">Requirements</h3>
-                <section>
+                <h3 ng-if="currentVersion.required_mods.length" class="section-title">Requirements</h3>
+                <section ng-if="currentVersion.required_mods.length">
                     <ol>
                         <li ng-repeat="requirement in mod.requirements">
                             <a ng-href="#/mod/{{requirement.id}}">
@@ -108,9 +108,6 @@
                             <span ng-if="requirement.aliases">({{requirement.aliases}})</span>
                         </li>
                     </ol>
-                    <span class="explanation" ng-if="!mod.requirements">
-                        None
-                    </span>
                 </section>
 
                 <!--Categories-->
