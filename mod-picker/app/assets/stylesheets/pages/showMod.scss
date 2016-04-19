@@ -110,6 +110,10 @@
   display: inline-flex;
 }
 
+.source-box:hover {
+  background-color: $bright_action_color;
+}
+
 .source-image {
   height: 1.5em;
   width: auto;
