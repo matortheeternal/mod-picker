@@ -5,7 +5,8 @@ app.directive('categoryTree', function () {
         controller: 'categoryTreeController',
         scope: {
             model: '=',
-            required: '='
+            required: '=',
+            toggleAll: '='
         }
     }
 });
@@ -45,8 +46,8 @@ app.controller('categoryTreeController', function ($scope, categoryService) {
         // primary category and all children are checked
         allUncheckedAfter = allUncheckedAfter || (!secondaryCategory && allChecked);
 
-        // toggle all childs
-        if (!secondaryCategory) {
+        // toggle all childs if allowed
+        if ($scope.toggleAll && !secondaryCategory) {
             // if all childs are unchecked, check all of them
             // if all childs are checked, uncheck all of them
             if (allChecked || allUnchecked) {
