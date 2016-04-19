@@ -5,7 +5,8 @@ class NexusInfo < ActiveRecord::Base
   belongs_to :mod
   belongs_to :game, :inverse_of => 'nexus_infos'
 
-  validates_presence_of :id, :game_id
+  # FIXME: decide whether validation of id is needed or not for nexus_info
+  validates_presence_of :game_id
 
   def nexus_mods_url
     "http://www.nexusmods.com/#{game.nexus_name}/mods/#{id}"

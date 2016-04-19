@@ -12,6 +12,7 @@ class ModListsController < ApplicationController
   # GET /mod_lists/1
   # GET /mod_lists/1.json
   def show
+    authorize! :read, @mod_list
     render :json => @mod_list
   end
 
@@ -19,6 +20,7 @@ class ModListsController < ApplicationController
   # POST /mod_lists.json
   def create
     @mod_list = ModList.new(mod_list_params)
+    authorize! :create, @mod_list
 
     if @mod_list.save
       render json: {status: :ok}
@@ -30,6 +32,7 @@ class ModListsController < ApplicationController
   # PATCH/PUT /mod_lists/1
   # PATCH/PUT /mod_lists/1.json
   def update
+    authorize! :update, @mod_list
     if @mod_list.update(mod_list_params)
       render json: {status: :ok}
     else
@@ -40,6 +43,7 @@ class ModListsController < ApplicationController
   # POST /mod_lists/1/star
   def create_star
     @mod_list_star = ModListStar.find_or_initialize_by(mod_list_id: params[:id], user_id: current_user.id)
+    authorize! :create, @mod_list_star
     if @mod_list_star.save
       render json: {status: :ok}
     else
@@ -50,6 +54,7 @@ class ModListsController < ApplicationController
   # DELETE /mod_lists/1/star
   def destroy_star
     @mod_list_star = ModListStar.find_by(mod_list_id: params[:id], user_id: current_user.id)
+    authorize! :destroy, @mod_list_star
     if @mod_list_star.nil?
       render json: {status: :ok}
     else
@@ -64,6 +69,7 @@ class ModListsController < ApplicationController
   # DELETE /mod_lists/1
   # DELETE /mod_lists/1.json
   def destroy
+    authorize! :destroy, @mod_list
     if @mod_list.destroy
       render json: {status: :ok}
     else

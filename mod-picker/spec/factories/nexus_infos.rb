@@ -1,7 +1,7 @@
 FactoryGirl.define do
   factory :nexus_info do
-    id 1
-    game_id 1
+    
+    association :game, factory: :game 
     uploaded_by { Faker::Internet.user_name }
     authors { Faker::Internet.user_name }
     total_downloads { Faker::Number.between(1000, 2000000) }
