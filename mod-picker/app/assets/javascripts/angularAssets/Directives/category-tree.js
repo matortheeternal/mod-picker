@@ -5,7 +5,8 @@ app.directive('categoryTree', function () {
         controller: 'categoryTreeController',
         scope: {
             model: '=',
-            required: '='
+            required: '=',
+            toggleAll: '='
         }
     }
 });
@@ -17,35 +18,48 @@ app.controller('categoryTreeController', function ($scope, categoryService) {
             categoryFilter[superCategory.id] = {childs: []};
             categoryFilter[superCategory.id].value = false;
             superCategory.childs.forEach(function (subCategory) {
-                categoryFilter[superCategory.id].childs[subCategory.id]= {value: false};
                 subCategory.name = subCategory.name.split('- ')[1];
+                categoryFilter[superCategory.id].childs[subCategory.id]= {
+                    value: false,
+                    name: subCategory.name
+                }
             });
         });
         $scope.categories = data;
     });
 
     $scope.updateSelection = function (primaryCategory, secondaryCategory) {
-        if(!secondaryCategory) {
-            $scope.categoryFilter[primaryCategory].indeterminate = false;
-            $scope.categoryFilter[primaryCategory].childs.forEach(function (child) {
-                child.value = $scope.categoryFilter[primaryCategory].value;
-            });
-        } else {
-            //This logic is a bit hard to read. If you iterate through different possibilities you will understand.
-            var partiallyChecked = false;
-            var allChecked = true;
-            $scope.categoryFilter[primaryCategory].childs.forEach(function (child) {
+        var parent = $scope.categoryFilter[primaryCategory];
+        // only allow checking of all childs if the parent is unchecked
+        var allChecked = !parent.value;
+        // only allow unchecking of all childs if the parent is checked
+        var allUnchecked = parent.value;
+        // evaluate whether or not all are unchecked in after user input
+        var allUncheckedAfter = true;
+        // evaluate if all childs are checked or unchecked
+        parent.childs.forEach(function (child) {
+            allUnchecked = allUnchecked && !child.value;
+            allUncheckedAfter = allUncheckedAfter && (!child.value || child.name === secondaryCategory);
+            allChecked = allChecked && child.value;
+        });
+        // all will be unchecked after the action if the user clicked the
+        // primary category and all children are checked
+        allUncheckedAfter = allUncheckedAfter || (!secondaryCategory && allChecked);
 
-                //a child that is selected will mark the noneChecked false
-                partiallyChecked = partiallyChecked || child.value;
-
-                //a child that is not selected will mark the allChecked false
-                allChecked = allChecked && child.value;
-            });
-
-            $scope.categoryFilter[primaryCategory].indeterminate = !allChecked && partiallyChecked;
-            $scope.categoryFilter[primaryCategory].value = allChecked;
+        // toggle all childs if allowed
+        if ($scope.toggleAll && !secondaryCategory) {
+            // if all childs are unchecked, check all of them
+            // if all childs are checked, uncheck all of them
+            if (allChecked || allUnchecked) {
+                parent.childs.forEach(function (child) {
+                    child.value = !child.value;
+                });
+            }
         }
+
+        // parent is indeterminate if some childs are checked
+        // and the parent is not checked
+        parent.indeterminate = !(allUncheckedAfter || parent.value);
     };
 
     $scope.clearSelection = function () {
