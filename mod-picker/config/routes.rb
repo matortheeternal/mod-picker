@@ -40,6 +40,9 @@ Rails.application.routes.draw do
     resources :nexus_infos
     resources :users
 
+    # current user route
+    match '/current_user', to: 'users#current', via: 'get'
+
     # mods
     resources :mods, only: [:show, :update, :destroy]
     match '/mods/submit', to: 'mods#create', via: 'post'

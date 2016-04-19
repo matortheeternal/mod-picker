@@ -1,7 +1,6 @@
 class UsersController < ApplicationController
   before_action :set_user, only: [:show, :update, :destroy]
 
-  # GET /users
   # GET /users.json
   def index
     @users = User.filter(filtering_params)
@@ -9,13 +8,16 @@ class UsersController < ApplicationController
     render :json => @users
   end
 
-  # GET /users/1
   # GET /users/1.json
   def show
     render :json => @user.show_json
   end
 
-  # PATCH/PUT /users/1
+  # GET /current_user.json
+  def current
+    render :json => current_user
+  end
+
   # PATCH/PUT /users/1.json
   def update
     if @user.update(user_params)
@@ -25,7 +27,6 @@ class UsersController < ApplicationController
     end
   end
 
-  # DELETE /users/1
   # DELETE /users/1.json
   def destroy
     if @user.destroy
