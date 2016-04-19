@@ -64,48 +64,6 @@ class Mod < ActiveRecord::Base
     self.as_json(:include => {
         :mod_versions => {
             :except => [:mod_id],
-            :include => {
-                # TODO: move to mod versions controller
-                :install_order_notes => {
-                    :except => [:submitted_by],
-                    :include => {
-                        :user => {
-                            :only => [:id, :username, :role, :title],
-                            :include => {
-                                :reputation => {:only => [:overall]}
-                            },
-                            :methods => :avatar
-                        }
-                    },
-                    :methods => :mods
-                },
-                :load_order_notes => {
-                    :except => [:submitted_by],
-                    :include => {
-                        :user => {
-                            :only => [:id, :username, :role, :title],
-                            :include => {
-                                :reputation => {:only => [:overall]}
-                            },
-                            :methods => :avatar
-                        }
-                    },
-                    :methods => :mods
-                },
-                :compatibility_notes => {
-                    :except => [:submitted_by],
-                    :include => {
-                        :user => {
-                            :only => [:id, :username, :role, :title],
-                            :include => {
-                                :reputation => {:only => [:overall]}
-                            },
-                            :methods => :avatar
-                        }
-                    },
-                    :methods => :mods
-                },
-            },
             :methods => :required_mods
         },
         :reviews => {
