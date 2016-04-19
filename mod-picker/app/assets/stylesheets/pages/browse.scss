@@ -12,25 +12,26 @@
   width: 45%;
   display: inline-block;
 }
-.left-column {
-  .filter-controls {
-    font-size: 14px;
-    margin-left: 4px;
-    color: $link_color;
 
-    span {
-      cursor: pointer;
-      -webkit-transition: all 0.2s ease-in-out;
-      -moz-transition: all 0.2s ease-in-out;
-      -o-transition: all 0.2s ease-in-out;
-      transition: all 0.2s ease-in-out;
-    }
+.filter-controls {
+  font-size: 14px;
+  margin-left: 4px;
+  color: $link_color;
 
-    span:hover {
-      color: $link_hover_color_secondary;
-    }
+  span {
+    cursor: pointer;
+    -webkit-transition: all 0.2s ease-in-out;
+    -moz-transition: all 0.2s ease-in-out;
+    -o-transition: all 0.2s ease-in-out;
+    transition: all 0.2s ease-in-out;
   }
 
+  span:hover {
+    color: $link_hover_color_secondary;
+  }
+}
+
+.left-column {
   /* custom sliders */
   .rz-bubble {
     font-size: 12px !important;
