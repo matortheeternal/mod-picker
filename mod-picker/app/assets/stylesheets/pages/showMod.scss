@@ -23,7 +23,7 @@
 
 ///header stuff
 .mod-header {
-  color: $inverse_text_color;
+  color: $bar_text_color;
   padding-top: 30px;
   padding-bottom: 30px;
   display: flex;
@@ -58,10 +58,11 @@
   a {
   	cursor: pointer;
     font-weight: 600;
+    color: $bar_highlight_text_color;
   }
 
   a:hover {
-    color: $link_hover_color_primary;
+    color: $bar_text_color;
   }
 }
 
