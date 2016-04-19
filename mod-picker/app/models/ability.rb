@@ -24,6 +24,10 @@ class Ability
       can :set_avatar, User, :id => user.id
       can :set_custom_title, User, :id => user.id
 
+      # can manage reports
+      can :manage, BaseReport
+      can :manage, Report
+
       # can create and update help pages
       can [:create, :update], HelpPage
 
@@ -62,6 +66,13 @@ class Ability
       can :create, Review
       can :create, ModTag
       can :create, ModListTag
+
+      # cannot read other user's reports
+      cannot :read, Report
+      can :read, Report, :submitted_by => user.id
+
+      # can submit reports
+      can :create, Report
 
       # can submit mods
       can :create, NexusInfo
