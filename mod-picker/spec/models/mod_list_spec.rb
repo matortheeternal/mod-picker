@@ -247,29 +247,55 @@ RSpec.describe ModList, :model, :wip do
       end
     end
 
-    xdescribe "mods_count" do
+    describe "mods_count" do
       let!(:list) {mod_lists(:plannedVanilla)}
 
       it "should increment mods counter by 1 when new mod is made" do
+        # expect(list.mods_count).to eq(0)
+
+        # expect { 
+        #   list.mods.create(attributes_for(:mod, 
+        #       game_id: games(:skyrim).id, primary_category_id: categories(:catGameplay).id))
+
+        #   list.reload
+        #   expect(list.mods_count).to eq(1)
+        # }.to change { list.mods_count }.by(1)
+
         expect(list.mods_count).to eq(0)
 
-        expect { 
-          list.mods.create(attributes_for(:mod, 
-              game_id: games(:skyrim).id, primary_category_id: categories(:catGameplay).id))
+        expect{
+          mod = create(:mod,
+          game_id: games(:skyrim).id, 
+          primary_category_id: categories(:catGameplay).id)
 
-          list.reload
+          mod_list = list.mod_list_mods.create(
+            mod_list_id: list.id,
+            mod_id: mod.id,
+            index: 1)
+
           expect(list.mods_count).to eq(1)
-        }.to change { list.mods_count }.by(1)
+        }.to change { list.mods_count}.by(1)
+
+
       end
 
       it "should decrement the mods counter by 1 if a mod is deleted" do
-        mod = list.mods.create(attributes_for(:mod, 
-          game_id: games(:skyrim).id, primary_category_id: categories(:catGameplay).id))
+        mod = create(:mod,
+          game_id: games(:skyrim).id, 
+          primary_category_id: categories(:catGameplay).id)
 
-        expect {
+        mod_list = list.mod_list_mods.create(
+            mod_list_id: list.id,
+            mod_id: mod.id,
+            index: 1)
+
+        expect(list.mods_count).to eq(1)
+
+        expect{
           list.mods.destroy(mod.id)
-          list.reload
-        }.to change { list.mods_count }.by(-1)
+
+          expect(list.mods_count).to eq(0)
+        }.to change { list.mods_count}.by(-1)
       end
     end
 
