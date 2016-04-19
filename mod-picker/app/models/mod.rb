@@ -5,8 +5,11 @@ class Mod < ActiveRecord::Base
   scope :adult, -> (adult) { where(has_adult_content: adult) }
   scope :game, -> (game) { where(game_id: game) }
   scope :categories, -> (categories) { where("primary_category_id IN (?) OR secondary_category_id IN (?)", categories, categories) }
-  scope :stars, -> (low, high) { where(user_stars_count: (low..high)) }
+  scope :stars, -> (low, high) { where(mod_stars_count: (low..high)) }
   scope :reviews, -> (low, high) { where(reviews_count: (low..high)) }
+  scope :cnotes, -> (low, high) { where(compatibility_notes_count: (low..high)) }
+  scope :ionotes, -> (low, high) { where(install_order_notes_count: (low..high)) }
+  scope :lonotes, -> (low, high) { where(load_order_notes_count: (low..high)) }
   scope :versions, -> (low, high) { where(mod_versions_count: (low..high)) }
   scope :released, -> (low, high) { joins(:nexus_info).where(:nexus_infos => {date_added: (parseDate(low)..parseDate(high))}) }
   scope :updated, -> (low, high) { joins(:nexus_info).where(:nexus_infos => {date_updated: (parseDate(low)..parseDate(high))}) }
