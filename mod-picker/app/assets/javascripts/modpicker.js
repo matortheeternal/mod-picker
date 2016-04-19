@@ -2,7 +2,7 @@
 //= require_tree ./angularAssets
 
 var app = angular.module('modPicker', [
-    'ngRoute', 'rzModule', 'ngAnimate'
+    'ngRoute', 'rzModule', 'ngAnimate', 'sticky'
 ]);
 
 app.config(['$httpProvider', '$compileProvider', function ($httpProvider, $compileProvider) {
@@ -27,3 +27,7 @@ function getFileExtension(filename) {
 function getBaseName(path) {
     return path.split(/[\\/]/).pop();
 }
+
+String.prototype.capitalize = function() {
+    return this.charAt(0).toUpperCase() + this.slice(1);
+};

@@ -6,6 +6,7 @@
   <link href='https://fonts.googleapis.com/css?family=Roboto:400,700,500' rel='stylesheet' type='text/css'>
   <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
   <%= stylesheet_link_tag 'rzslider.min' %>
+  <%= stylesheet_link_tag 'simplemde.min' %>
   <%= stylesheet_link_tag @current_theme %>
   <script>
     window._token = '<%= form_authenticity_token %>';
@@ -197,8 +198,11 @@
 <%= javascript_include_tag 'angular-route.min.1.5.1' %>
 <%= javascript_include_tag 'heartcode-canvasloader-min' %>
 <%= javascript_include_tag 'rzslider.min' %>
+<%= javascript_include_tag 'sticky.min' %>
 <%= javascript_include_tag 'modpicker' %>
 <%= javascript_include_tag 'angular-animate.min' %>
+<%= javascript_include_tag 'simplemde.min' %>
+<%= javascript_include_tag 'spin.min' %>
 <%= javascript_include_tag 'zip' %>
 <%= javascript_include_tag 'rar' %>
 </body>
