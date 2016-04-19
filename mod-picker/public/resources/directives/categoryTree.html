@@ -8,17 +8,17 @@
 <div class="sidebar-box">
     <div class="category-tree">
         <div ng-repeat="primaryCategory in categories">
-            <expandable expanded="categoryFilter[primaryCategory.id].expanded" disable-style="true" disable-full-title-toggle="true" ng-if="primaryCategory.childs.length">
+            <expandable expanded="categories[$index].expanded" disable-style="true" disable-full-title-toggle="true" ng-if="primaryCategory.childs.length">
                 <expanded-title>
                     <label class="supercategory">
-                        <input type="checkbox" ng-model="categoryFilter[primaryCategory.id].value" ng-indeterminate="categoryFilter[primaryCategory.id].indeterminate" ng-change="updateSelection(primaryCategory.id)"/>
+                        <input type="checkbox" ng-model="categories[$index].value" ng-indeterminate="categories[$index].indeterminate" ng-change="updateSelection($index)"/>
                         <span>{{primaryCategory.name}}</span>
                     </label>
                 </expanded-title>
                 <content>
                     <div class="sub-category" ng-repeat="secondaryCategory in primaryCategory.childs">
                         <label>
-                            <input type="checkbox" ng-model="categoryFilter[primaryCategory.id].childs[secondaryCategory.id].value" ng-change="updateSelection(primaryCategory.id, secondaryCategory.id)"/>
+                            <input type="checkbox" ng-model="categories[$parent.$index].childs[$index].value" ng-change="updateSelection($parent.$index, $index)"/>
                             <span>{{secondaryCategory.name}}</span>
                         </label>
                     </div>
@@ -31,7 +31,7 @@
                 <div class="expandable-title-container">
                     <span class="no-icon"></span>
                     <label class="supercategory">
-                        <input type="checkbox" ng-model="categoryFilter[primaryCategory.id].value" ng-indeterminate="categoryFilter[primaryCategory.id].indeterminate" ng-change="updateSelection(primaryCategory.id)"/>
+                        <input type="checkbox" ng-model="categories[$index].value" ng-indeterminate="categories[$index].indeterminate" ng-change="updateSelection($index)"/>
                         <span>{{primaryCategory.name}}</span>
                     </label>
                 </div>
