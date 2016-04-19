@@ -4,7 +4,7 @@ class ModsController < ApplicationController
   # GET /mods
   # GET /mods.json
   def index
-    @mods = Mod.includes(:nexus_info).filter(filtering_params).autosort(params.slice(:sort))
+    @mods = Mod.includes(:nexus_infos).filter(filtering_params).sort(params[:sort])
 
     render :json => @mods
   end
@@ -79,7 +79,7 @@ class ModsController < ApplicationController
     
     # Params we allow filtering on
     def filtering_params
-      params.slice(:search, :author, :categories, :tags, :adult, :game, :stars, :reviews, :versions, :released, :updated, :endorsements, :tdl, :udl, :views, :posts, :videos, :images, :files, :articles);
+      params[:filters].slice(:search, :author, :categories, :tags, :adult, :game, :stars, :reviews, :versions, :released, :updated, :endorsements, :tdl, :udl, :views, :posts, :videos, :images, :files, :articles);
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

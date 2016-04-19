@@ -2,12 +2,10 @@ module Sortable
   extend ActiveSupport::Concern
 
   module ClassMethods
-    def autosort(sorting_params)
-      results = self
-      if sorting_params.has_key?(:sort) &&
-          sorting_params[:sort].has_key?(:column) &&
-          sorting_params[:sort].has_key?(:direction)
-        results = results.order("#{sorting_params[:sort][:column]} #{sorting_params[:sort][:direction]}")
+    def sort(sorting_params)
+      results = self.where(nil)
+      if sorting_params.present? && sorting_params.has_key?(:column) && sorting_params.has_key?(:direction)
+        results = results.order("#{sorting_params[:column]} #{sorting_params[:direction]}")
       end
       results
     end
