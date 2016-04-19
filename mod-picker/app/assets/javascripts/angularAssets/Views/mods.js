@@ -8,8 +8,6 @@ app.config(['$routeProvider', function ($routeProvider) {
 }]);
 
 app.controller('modsController', function ($scope, $q, modService, sliderFactory) {
-    //TODO: scope.loading is deprecated
-    $scope.loading = true;
     $scope.filters = {};
 
     //TODO: everything below should be handled differently
@@ -40,8 +38,6 @@ app.controller('modsController', function ($scope, $q, modService, sliderFactory
         delete $scope.mods;
         modService.retrieveMods($scope.filters).then(function (data) {
             $scope.mods = data;
-            //TODO: scope.loading is deprecated
-            $scope.loading = false;
             firstGet = true;
         });
     };
