@@ -1,5 +1,5 @@
 class Mod < ActiveRecord::Base
-  include Filterable
+  include Filterable, Sortable
 
   scope :search, -> (search) { where("name like ? OR aliases like ?", "%#{search}%", "%#{search}%") }
   scope :author, -> (author) { joins(:nexus_info).where("nexus_infos.authors like ? OR nexus_infos.uploaded_by like ?", "#{author}", "#{author}") }

@@ -4,7 +4,7 @@ class ModsController < ApplicationController
   # GET /mods
   # GET /mods.json
   def index
-    @mods = Mod.filter(filtering_params)
+    @mods = Mod.includes(:nexus_info).filter(filtering_params).autosort(params.slice(:sort))
 
     render :json => @mods
   end
