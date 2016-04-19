@@ -48,7 +48,7 @@
 
             <div id="tag-filters" class="filter-section">
                 <h3>Tags</h3>
-                <tag-selector tags="tags" active-tags="[]" new-tags="search_tags" show-mods-count="true" show-add="true" max-tags="10"></tag-selector>
+                <tag-selector tags="tags" active-tags="[]" new-tags="filters.tags" show-mods-count="true" show-add="true" max-tags="10"></tag-selector>
             </div>
 
                 <div id="date-filters" class="filter-section">
@@ -56,12 +56,12 @@
                     <h4>Date Updated <span class="filter-controls">
                         <span class="fa fa-calendar" ng-click="" title="Custom Date"></span>
                     </span></h4>
-                    <slider data="data.updated" type="ModListDateSlider"></slider>
+                    <slider data="filters.updated" type="ModListDateSlider"></slider>
 
                     <h4>Date Released <span class="filter-controls">
                         <span class="fa fa-calendar" ng-click="" title="Custom Date"></span>
                     </span></h4>
-                    <slider data="data.released" type="ModListDateSlider"></slider>
+                    <slider data="filters.released" type="ModListDateSlider"></slider>
                 </div>
 
                 <div id="mod-picker-filters" class="filter-section">
@@ -70,25 +70,25 @@
                         <h4>Reputation <span class="filter-controls">
                             <span class="fa fa-wrench" ng-click="" title="Custom Value"></span>
                         </span></h4>
-                        <slider data="data.reputation" type="CeilSlider" attr="450"></slider>
+                        <slider data="filters.reputation" type="CeilSlider" attr="450"></slider>
 
                         <h4>Average Rating</h4>
-                        <slider data="data.rating" type="CeilSlider" attr="100"></slider>
+                        <slider data="filters.rating" type="CeilSlider" attr="100"></slider>
 
                         <h4>Reviews Count</h4>
-                        <slider data="data.reviews" type="CeilSlider" attr="200"></slider>
+                        <slider data="filters.reviews" type="CeilSlider" attr="200"></slider>
                     </div>
                     <div id="mod-picker-ext-filters" class="filter-section" ng-if="mp_visible">
                         <h4>Number of Stars <span class="filter-controls">
                             <span class="fa fa-wrench" ng-click="" title="Custom Value"></span>
                         </span></h4>
-                        <slider data="data.stars" type="StepSlider" attr="1000"></slider>
+                        <slider data="filters.stars" type="StepSlider" attr="1000"></slider>
 
                         <h4>Compatibility Notes Count</h4>
-                        <slider data="data.cNotes" type="CeilSlider" attr="100"></slider>
+                        <slider data="filters.cNotes" type="CeilSlider" attr="100"></slider>
 
                         <h4>Installation Notes Count</h4>
-                        <slider data="data.iNotes" type="CeilSlider" attr="100"></slider>
+                        <slider data="filters.iNotes" type="CeilSlider" attr="100"></slider>
                     </div>
                     <a class="expand" ng-click="mp_toggle()">{{ mp_visible ? 'Show less' : 'Show more...' }}</a>
                 </div>
@@ -99,42 +99,42 @@
                         <h4>Endorsements <span class="filter-controls">
                             <span class="fa fa-wrench" ng-click="" title="Custom Value"></span>
                         </span></h4>
-                        <slider data="data.endorsements" type="StepSlider" attr="500000"></slider>
+                        <slider data="filters.endorsements" type="StepSlider" attr="500000"></slider>
 
                         <h4>Unique Downloads <span class="filter-controls">
                             <span class="fa fa-wrench" ng-click="" title="Custom Value"></span>
                         </span></h4>
-                        <slider data="data.uniqueDownloads" type="StepSlider" attr="10000000"></slider>
+                        <slider data="filters.uniqueDownloads" type="StepSlider" attr="10000000"></slider>
 
                         <h4>Total Downloads <span class="filter-controls">
                             <span class="fa fa-wrench" ng-click="" title="Custom Value"></span>
                         </span></h4>
-                        <slider data="data.totalDownloads" type="StepSlider" attr="50000000"></slider>
+                        <slider data="filters.totalDownloads" type="StepSlider" attr="50000000"></slider>
                     </div>
                     <div id="nexus-mods-ext-filters" class="filter-section" ng-if="nm_visible">
                         <h4>Views <span class="filter-controls">
                             <span class="fa fa-wrench" ng-click="" title="Custom Value"></span>
                         </span></h4>
-                        <slider data="data.views" type="StepSlider" attr="50000000"></slider>
+                        <slider data="filters.views" type="StepSlider" attr="50000000"></slider>
 
                         <h4>Posts Count <span class="filter-controls">
                             <span class="fa fa-wrench" ng-click="" title="Custom Value"></span>
                         </span></h4>
-                        <slider data="data.posts" type="StepSlider" attr="500000"></slider>
+                        <slider data="filters.posts" type="StepSlider" attr="500000"></slider>
 
                         <h4>Videos Count</h4>
-                        <slider data="data.videos" type="CeilSlider" attr="50"></slider>
+                        <slider data="filters.videos" type="CeilSlider" attr="50"></slider>
 
                         <h4>Images Count <span class="filter-controls">
                             <span class="fa fa-wrench" ng-click="" title="Custom Value"></span>
                         </span></h4>
-                        <slider data="data.images" type="StepSlider" attr="1000"></slider>
+                        <slider data="filters.images" type="StepSlider" attr="1000"></slider>
 
                         <h4>Files Count</h4>
-                        <slider data="data.files" type="CeilSlider" attr="200"></slider>
+                        <slider data="filters.files" type="CeilSlider" attr="200"></slider>
 
                         <h4>Articles Count</h4>
-                        <slider data="data.articles" type="CeilSlider" attr="50"></slider>
+                        <slider data="filters.articles" type="CeilSlider" attr="50"></slider>
                     </div>
                     <a class="expand" ng-click="nm_toggle()">{{ nm_visible ? 'Show less' : 'Show more...' }}</a>
                 </div>
