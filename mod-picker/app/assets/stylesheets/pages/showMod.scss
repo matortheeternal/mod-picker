@@ -2,7 +2,7 @@
   color: $action_text_color;
   text-align: center;
   background-color: $action_color;
-  padding: 5px 10px 5px 10px;
+  padding: 4px 10px 4px 10px;
   display: inline-block;
   font-size: 12px;
   border-radius: 4%;
@@ -16,7 +16,6 @@
 .mod-header-box {
   background-color: $bar_color;
   border: 1px solid $bar_dark_color;
-  float: right;
   padding: 10px;
   font-size: 12px;
   font-weight: 500;
@@ -27,6 +26,14 @@
   color: $inverse_text_color;
   padding-top: 30px;
   padding-bottom: 30px;
+  display: flex;
+  justify-content: space-between;
+  align-content: center;
+
+  section {
+    display: flex;
+    align-self: center;
+  }
 }
 
 .mod-header-color {
@@ -34,26 +41,22 @@
 }
 
 .stars-count {
-  display: inline-block;
-  font-size: 12px;
-  height: 100%;
-  float: left;
-  margin-right: 16px;
+  font-size: 10px;
+  padding-top: 0px;
 }
 
 .stars-number {
   display: block;
-  font-size: 26px;
+  font-size: 24px;
 }
 
 .mod-info {
-  display: block;
-  font-size: 12px;
+  font-size: 14px;
   margin-left: 10px;
-  font-weight: 300;
 
   a {
   	cursor: pointer;
+    font-weight: 600;
   }
 }
 
@@ -64,8 +67,8 @@
 }
 
 .mod-name {
-  display: inline-block;
-  font-size: 26px;
+  font-size: 24px;
+  font-weight: 100;
 }
 
 //left column

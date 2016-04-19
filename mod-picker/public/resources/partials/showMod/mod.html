@@ -1,54 +1,60 @@
 <two-columns>
     <div class="mod-header-color">
         <div class="page-container mod-header">
-            <div class="stars-count action-box">
-                <span class="stars-number">{{mod.mod_stars_count}}</span>
-                STARS
-            </div>
-
-            <div class="mod-header-box">
-                ACTIONS
-                <div class="action-box btn-round">
-                    <i class="fa fa-heart" aria-hidden="true"></i>
-                    Favorite
-                </div>
-                <div class="action-box btn-round">
-                    <i class="fa fa-plus" aria-hidden="true"></i>
-                    Add to mod list
-                </div>
-            </div>
-
-            <div class="mod-header-box">
-                STATUS
-                <div class="green-box action-box">
-                    <i class="fa fa-check" aria-hidden="true"></i>
-                    {{mod.status}}
+            <section>
+                <div class="stars-count action-box">
+                    <span class="stars-number">{{mod.mod_stars_count}}</span>
+                    STARS
                 </div>
 
-                <div class="green-box action-box">
-                    <i class="fa fa-check" aria-hidden="true"></i>
-                    {{mod.compatibility}}
+                <div class="mod-info">
+                    <span class="mod-name">{{mod.name}}</span>
+                    <br>
+                    <a ng-click="currentTab = tabs[2]">{{mod.reviews.length}} reviews</a>
+                    <span class="divider">
+                        |
+                    </span>
+
+                    Included in <a ng-href="">{{mod.mod_modlists_count}} modlists</a>
+                    <span class="divider">
+                        |
+                    </span>
+
+                    <strong>Aliases: </strong>{{mod.aliases}}
+                    <span class="divider">
+                        |
+                    </span>
+
+                    <a ng-href="#/editMod/{{mod.id}}">Edit</a>
                 </div>
-            </div>
-            <span class="mod-name">{{mod.name}}</span>
-            <div class="mod-info">
-                <a ng-click="currentTab = tabs[2]">{{mod.reviews.length}} reviews</a>
-                <span class="divider">
-                    |
-                </span>
+            </section>
 
-                Included in <a ng-href="">{{mod.mod_modlists_count}} modlists</a>
-                <span class="divider">
-                    |
-                </span>
+            <section>
+                <div class="mod-header-box">
+                    STATUS
+                    <div class="green-box action-box">
+                        <i class="fa fa-check" aria-hidden="true"></i>
+                        {{mod.status}}
+                    </div>
 
-                <strong>Aliases: </strong>{{mod.aliases}}
-                <span class="divider">
-                    |
-                </span>
+                    <div class="green-box action-box">
+                        <i class="fa fa-check" aria-hidden="true"></i>
+                        {{mod.compatibility}}
+                    </div>
+                </div>
 
-                <a ng-href="#/editMod/{{mod.id}}">Edit</a>
-            </div>
+                <div class="mod-header-box">
+                    ACTIONS
+                    <div class="action-box btn-round">
+                        <i class="fa fa-heart" aria-hidden="true"></i>
+                        Favorite
+                    </div>
+                    <div class="action-box btn-round">
+                        <i class="fa fa-plus" aria-hidden="true"></i>
+                        Add to mod list
+                    </div>
+                </div>
+            </section>
         </div>
     </div>
 
