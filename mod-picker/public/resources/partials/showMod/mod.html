@@ -9,6 +9,9 @@
 
                 <div class="mod-info">
                     <span class="mod-name">{{mod.name}}</span>
+                    by <span ng-repeat="author in mod.authors">
+                        <a ng-href="#/user/{{author.id}}">{{author.username}}</a>
+                        </span>
                     <br>
                     <a ng-click="currentTab = tabs[2]">{{mod.reviews.length}} reviews</a>
                     <span class="divider">
