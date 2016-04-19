@@ -37,6 +37,10 @@ app.controller('modController', function ($scope, $q, $routeParams, modService, 
         else if ($scope.mod.game_id === 2) {
             $scope.game = "fallout4";
         }
+
+        //find data for the required mods
+        $scope.updateRequirements($scope.currentVersion);
+
     });
 
     //of the tab data
@@ -57,4 +61,17 @@ app.controller('modController', function ($scope, $q, $routeParams, modService, 
     $scope.steamExpanded = false;
     $scope.loversExpanded = false;
 
+    //getting the names and ids of the required mods
+    $scope.updateRequirements = function (modVersion) {
+        $scope.requirements = [];
+        modVersion.required_mods.forEach(function(requirement) {
+            modService.retrieveMod(requirement.required_id).then(function(mod) {
+                $scope.requirements.push({
+                    name: mod.name,
+                    id: mod.id,
+                    aliases: mod.aliases
+                });
+            });
+        });
+    };
 });

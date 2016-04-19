@@ -103,8 +103,8 @@
                 <!--Requirements-->
                 <h3 ng-if="currentVersion.required_mods.length" class="section-title">Requirements</h3>
                 <section ng-if="currentVersion.required_mods.length">
-                    <ol>
-                        <li ng-repeat="requirement in mod.requirements">
+                    <ol class="requirements-list">
+                        <li ng-repeat="requirement in requirements">
                             <a ng-href="#/mod/{{requirement.id}}">
                                 <strong>{{requirement.name}}</strong>
                             </a>
