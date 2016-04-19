@@ -8,8 +8,8 @@ class Mod < ActiveRecord::Base
   scope :stars, -> (low, high) { where(user_stars_count: (low..high)) }
   scope :reviews, -> (low, high) { where(reviews_count: (low..high)) }
   scope :versions, -> (low, high) { where(mod_versions_count: (low..high)) }
-  scope :released, -> (low, high) { joins(:nexus_info).where(:nexus_infos => {date_released: (low..high)}) }
-  scope :updated, -> (low, high) { joins(:nexus_info).where(:nexus_infos => {date_updated: (low..high)} ) }
+  scope :released, -> (low, high) { joins(:nexus_info).where(:nexus_infos => {date_added: (parseDate(low)..parseDate(high))}) }
+  scope :updated, -> (low, high) { joins(:nexus_info).where(:nexus_infos => {date_updated: (parseDate(low)..parseDate(high))}) }
   scope :endorsements, -> (low, high) { joins(:nexus_info).where(:nexus_infos => {endorsements: (low..high)} ) }
   scope :tdl, -> (low, high) { joins(:nexus_info).where(:nexus_infos => {total_downloads: (low..high)} ) }
   scope :udl, -> (low, high) { joins(:nexus_info).where(:nexus_infos => {unique_downloads: (low..high)} ) }
