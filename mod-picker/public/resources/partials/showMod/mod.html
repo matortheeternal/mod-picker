@@ -124,7 +124,7 @@
                 <h3 class="section-title">Tags</h3>
                 <section>
                     <div>
-                        <div class="action-box" ng-repeat="tag in mod.tags">{{tag.text}}</div>
+                        <tag-selector tags="mod.mod_tags" active-tags="mod.mod_tags" max-tags="10"></tag-selector>
                     </div>
                 </section>
 
