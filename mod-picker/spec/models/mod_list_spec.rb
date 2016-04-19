@@ -206,36 +206,48 @@ RSpec.describe ModList, :model, :wip do
       end
     end
 
+    # TODO: refactor tests in mod_list_Spec to use the other method below
     describe "plugins_count" do
       let!(:list) {mod_lists(:plannedVanilla)}
 
       it "should increment plugin counter by 1 when new plugin is made" do
         expect(list.plugins_count).to eq(0)
 
-        # Attributes for mod version are provided because associations aren't done
-        # when using FactoryGirl's attributes_for
-        expect { 
-          list.plugins.create(
-            attributes_for(:plugin, 
-              mod_version_id: mod_versions(:SkyUI_1_0).id))
+        expect{
+          plugin = create(:plugin,
+            mod_version_id: mod_versions(:SkyUI_1_0).id)
 
-          list.reload
+          expect(plugin).to be_valid
+
+          list.mod_list_plugins.create(
+            mod_list_id: list.id,
+            plugin_id: plugin.id,
+            index: 1)
+
           expect(list.plugins_count).to eq(1)
-        }.to change { list.plugins_count }.by(1)
+        }.to change { list.plugins_count}.by(1)
       end
 
       it "should decrement the plugin counter by 1 if a plugin is deleted" do
-        plugin = list.plugins.create(attributes_for(:plugin,
-          mod_version_id: mod_versions(:SkyUI_1_0).id))
+        plugin = create(:plugin,
+            mod_version_id: mod_versions(:SkyUI_1_0).id)
 
-        expect {
+        plugin_list = list.mod_list_plugins.create(
+            mod_list_id: list.id,
+            plugin_id: plugin.id,
+            index: 1)
+
+        expect(list.plugins_count).to eq(1)
+
+        expect{
           list.plugins.destroy(plugin.id)
-          list.reload
-        }.to change { list.plugins_count }.by(-1)
+
+          expect(list.plugins_count).to eq(0)
+        }.to change { list.plugins_count}.by(-1)
       end
     end
 
-    describe "mods_count" do
+    xdescribe "mods_count" do
       let!(:list) {mod_lists(:plannedVanilla)}
 
       it "should increment mods counter by 1 when new mod is made" do
