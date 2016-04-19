@@ -49,7 +49,7 @@ app.controller('modsController', function ($scope, $q, modService, sliderFactory
     $scope.$watch('filters', function(filters) {
         if(filters && firstGet) {
             clearTimeout(getModsTimeout);
-            getModsTimeout = setTimeout($scope.getMods, 500);
+            getModsTimeout = setTimeout($scope.getMods, 700);
         }
     }, true);
 });
