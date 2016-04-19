@@ -58,6 +58,10 @@
   	cursor: pointer;
     font-weight: 600;
   }
+
+  a:hover {
+    color: $link_hover_color_primary;
+  }
 }
 
 .divider {
