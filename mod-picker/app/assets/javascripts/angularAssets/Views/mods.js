@@ -15,18 +15,18 @@ app.controller('modsController', function ($scope, $q, modService, sliderFactory
     // -> probably don't set visibility in the controller but in the view
 
     /* visibility of extended filters */
-    $scope.nm_visible = false;
-    $scope.nm_toggle = function () {
-        $scope.nm_visible = !$scope.nm_visible;
-        if ($scope.nm_visbile) {
+    $scope.nmVisible = false;
+    $scope.nmToggle = function () {
+        $scope.nmVisible = !$scope.nmVisible;
+        if ($scope.nmVisbile) {
             $scope.$broadcast('refreshSlider');
         }
     };
 
-    $scope.mp_visible = false;
-    $scope.mp_toggle = function () {
-        $scope.mp_visible = !$scope.mp_visible;
-        if ($scope.mp_visbile) {
+    $scope.mpVisible = false;
+    $scope.mpToggle = function () {
+        $scope.mpVisible = !$scope.mpVisible;
+        if ($scope.mpVisbile) {
             $scope.$broadcast('refreshSlider');
         }
     };

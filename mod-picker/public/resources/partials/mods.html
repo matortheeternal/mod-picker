@@ -78,7 +78,7 @@
                         <h4>Reviews Count</h4>
                         <slider data="filters.reviews" type="CeilSlider" attr="200"></slider>
                     </div>
-                    <div id="mod-picker-ext-filters" class="filter-section" ng-if="mp_visible">
+                    <div id="mod-picker-ext-filters" class="filter-section" ng-if="mpVisible">
                         <h4>Number of Stars <span class="filter-controls">
                             <span class="fa fa-wrench" ng-click="" title="Custom Value"></span>
                         </span></h4>
@@ -90,7 +90,7 @@
                         <h4>Installation Notes Count</h4>
                         <slider data="filters.iNotes" type="CeilSlider" attr="100"></slider>
                     </div>
-                    <a class="expand" ng-click="mp_toggle()">{{ mp_visible ? 'Show less' : 'Show more...' }}</a>
+                    <a class="expand" ng-click="mpToggle()">{{ mpVisible ? 'Show less' : 'Show more...' }}</a>
                 </div>
 
                 <div id="nexus-mods-filters" class="filter-sections">
@@ -111,7 +111,7 @@
                         </span></h4>
                         <slider data="filters.totalDownloads" type="StepSlider" attr="50000000"></slider>
                     </div>
-                    <div id="nexus-mods-ext-filters" class="filter-section" ng-if="nm_visible">
+                    <div id="nexus-mods-ext-filters" class="filter-section" ng-if="nmVisible">
                         <h4>Views <span class="filter-controls">
                             <span class="fa fa-wrench" ng-click="" title="Custom Value"></span>
                         </span></h4>
@@ -136,7 +136,7 @@
                         <h4>Articles Count</h4>
                         <slider data="filters.articles" type="CeilSlider" attr="50"></slider>
                     </div>
-                    <a class="expand" ng-click="nm_toggle()">{{ nm_visible ? 'Show less' : 'Show more...' }}</a>
+                    <a class="expand" ng-click="nmToggle()">{{ nmVisible ? 'Show less' : 'Show more...' }}</a>
                 </div>
             </div>
             <div class="right-column">
