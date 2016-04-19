@@ -62,13 +62,13 @@
             </section>
 
             <section>
-                <category-tree></category-tree>
+                <category-tree selection="categories" toggle-all="false"></category-tree>
                 <input type="button" id="check-categories-btn" class="btn" ng-click="checkCategories()" value="Check Categories">
             </section>
 
             <h3 class="section-title">Tags</h3>
             <section>
-                TODO: tag selector
+                <tag-selector tags="tags" active-tags="[]" new-tags="mod_tags" show-mods-count="true" show-add="true" max-tags="10"></tag-selector>
             </section>
 
             <h3 class="section-title">Other Options</h3>

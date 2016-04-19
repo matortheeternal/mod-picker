@@ -11,6 +11,7 @@ bSeedLNotes = false
 bSeedModAuthors = true
 bSeedMods = true
 bSeedModLists = true
+bSeedTags = true
 
 #==================================================
 # CREATE STATIC RECORDS
@@ -33,3 +34,4 @@ seed_fake_install_order_notes if bSeedINotes
 seed_fake_load_order_notes if bSeedLNotes
 seed_fake_mod_authors if bSeedModAuthors
 seed_fake_mod_lists if bSeedModLists
+seed_fake_tags if bSeedTags

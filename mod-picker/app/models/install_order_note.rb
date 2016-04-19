@@ -35,16 +35,37 @@ class InstallOrderNote < ActiveRecord::Base
     self.submitted ||= DateTime.now
   end
 
+  def mods
+    @mods = []
+    self.mod_versions.each do |mv|
+      mod = mv.mod
+      pmod = @mods.detect {|m| m[:id] == mod.id }
+      if pmod.present?
+        pmod[:mod_versions].push({id: mv.id, version: mv.version})
+      else
+        @mods.push({
+            id: mod.id,
+            name: mod.name,
+            mod_versions: [{id: mv.id, version: mv.version}]
+        })
+      end
+    end
+    @mods
+  end
+
   def as_json(options={})
-    super(:include => {
-        :mod_version_install_order_notes => {
-            :except => [:install_order_note_id, :mod_version_id],
-            :include => {
-                :mod_version => {
-                    :except => [:id, :released, :obsolete, :dangerous]
-                }
+    super({
+        :except => [:submitted_by],
+        :include => {
+            :user => {
+                :only => [:id, :username, :role, :title],
+                :include => {
+                    :reputation => {:only => [:overall]}
+                },
+                :methods => :avatar
             }
-        }
+        },
+        :methods => :mods
     })
   end
 end

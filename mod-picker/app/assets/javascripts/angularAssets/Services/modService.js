@@ -1,32 +1,37 @@
 app.service('modService', function (backend, $q) {
     this.retrieveMod = function (modId) {
-        var mod = $q.defer();
-        backend.retrieve('/mods/' + modId).then(function (data) {
-            //TODO: remove mocked delay
-            setTimeout(function () {
-                mod.resolve(data);
-            }, 1000);
-        });
-        return mod.promise;
+        return backend.retrieve('/mods/' + modId);
     };
 
-    this.retrieveMods = function () {
+    this.retrieveMods = function (filters) {
         var mods = $q.defer();
-        backend.retrieve('/mods').then(function (data) {
-            //TODO: remove mocked delay
-            setTimeout(function () {
+        backend.post('/mods', filters).then(function (data) {
                 mods.resolve(data);
-            }, 1000);
         });
         return mods.promise;
     };
 
-    this.retrieveCompabilityNotes = function (modId, versionId) {
-        return backend.retrieve('/compatibility_notes', {
-            params: {
-                mod: modId,
-                mv: versionId
-            }
+    this.retrieveCompatibilityNotes = function (modVersionId) {
+        var compatibilityNotes = $q.defer();
+        backend.retrieve('/mod_versions/' + modVersionId + '/compatibility_notes').then(function (data) {
+            compatibilityNotes.resolve(data);
         });
+        return compatibilityNotes.promise;
+    };
+
+    this.retrieveInstallOrderNotes = function (modVersionId) {
+        var installOrderNotes = $q.defer();
+        backend.retrieve('/mod_versions/' + modVersionId + '/install_order_notes').then(function (data) {
+            installOrderNotes.resolve(data);
+        });
+        return installOrderNotes.promise;
+    };
+
+    this.retrieveLoadOrderNotes = function (modVersionId) {
+        var loadOrderNotes = $q.defer();
+        backend.retrieve('/mod_versions/' + modVersionId + '/load_order_notes').then(function (data) {
+            loadOrderNotes.resolve(data);
+        });
+        return loadOrderNotes.promise;
     };
 });

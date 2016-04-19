@@ -7,10 +7,12 @@ app.config(['$routeProvider', function ($routeProvider) {
     );
 }]);
 
-app.controller('modsController', function ($rootScope, $scope, $q, modService, sliderFactory) {
-    $rootScope.twoColumns = true;
+app.controller('modsController', function ($scope, $q, modService, sliderFactory) {
     //TODO: scope.loading is deprecated
     $scope.loading = true;
+
+    // initialize search tags to empty array
+    $scope.search_tags = [];
 
     //TODO: everything below should be handled differently
     // -> remove redundancy
@@ -34,7 +36,7 @@ app.controller('modsController', function ($rootScope, $scope, $q, modService, s
     };
 
     /* data */
-    modService.retrieveMods().then(function (data) {
+    modService.retrieveMods({}).then(function (data) {
         $scope.mods = data;
         //TODO: scope.loading is deprecated
         $scope.loading = false;

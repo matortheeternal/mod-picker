@@ -20,5 +20,8 @@ class ModList < ActiveRecord::Base
   has_many :mod_list_stars, :inverse_of => 'starred_mod_list'
   has_many :user_stars, :through => 'mod_list_stars', :inverse_of => 'starred_mod_lists'
 
+  has_many :mod_list_tags, :inverse_of => 'mod_list'
+  has_many :tags, :through => 'mod_list_tags', :inverse_of => 'mod_lists'
+
   has_many :comments, :as => 'commentable'
 end

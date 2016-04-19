@@ -8,17 +8,18 @@ class Mod < ActiveRecord::Base
   scope :stars, -> (low, high) { where(user_stars_count: (low..high)) }
   scope :reviews, -> (low, high) { where(reviews_count: (low..high)) }
   scope :versions, -> (low, high) { where(mod_versions_count: (low..high)) }
-  scope :released, -> (low, high) { where(:nexus_infos => {date_released: (low..high)}) }
-  scope :updated, -> (low, high) { where(:nexus_infos => {date_updated: (low..high)} ) }
-  scope :endorsements, -> (low, high) { where(:nexus_infos => {endorsements: (low..high)} ) }
-  scope :tdl, -> (low, high) { where(:nexus_infos => {total_downloads: (low..high)} ) }
-  scope :udl, -> (low, high) { where(:nexus_infos => {unique_downloads: (low..high)} ) }
-  scope :views, -> (low, high) { where(:nexus_infos => {views: (low..high)} ) }
-  scope :posts, -> (low, high) { where(:nexus_infos => {posts_count: (low..high)} ) }
-  scope :videos, -> (low, high) { where(:nexus_infos => {videos_count: (low..high)} ) }
-  scope :images, -> (low, high) { where(:nexus_infos => {images_count: (low..high)} ) }
-  scope :files, -> (low, high) { where(:nexus_infos => {files_count: (low..high)} ) }
-  scope :articles, -> (low, high) { where(:nexus_infos => {articles_count: (low..high)} ) }
+  scope :released, -> (low, high) { joins(:nexus_info).where(:nexus_infos => {date_released: (low..high)}) }
+  scope :updated, -> (low, high) { joins(:nexus_info).where(:nexus_infos => {date_updated: (low..high)} ) }
+  scope :endorsements, -> (low, high) { joins(:nexus_info).where(:nexus_infos => {endorsements: (low..high)} ) }
+  scope :tdl, -> (low, high) { joins(:nexus_info).where(:nexus_infos => {total_downloads: (low..high)} ) }
+  scope :udl, -> (low, high) { joins(:nexus_info).where(:nexus_infos => {unique_downloads: (low..high)} ) }
+  scope :views, -> (low, high) { joins(:nexus_info).where(:nexus_infos => {views: (low..high)} ) }
+  scope :posts, -> (low, high) { joins(:nexus_info).where(:nexus_infos=> {posts_count: (low..high)} ) }
+  scope :videos, -> (low, high) { joins(:nexus_info).where(:nexus_infos => {videos_count: (low..high)} ) }
+  scope :images, -> (low, high) { joins(:nexus_info).where(:nexus_infos => {images_count: (low..high)} ) }
+  scope :files, -> (low, high) { joins(:nexus_info).where(:nexus_infos => {files_count: (low..high)} ) }
+  scope :articles, -> (low, high) { joins(:nexus_info).where(:nexus_infos => {articles_count: (low..high)} ) }
+  scope :tags, -> (array) { joins(:tags).where(:tags => {text: array}) }
 
   enum status: [ :good, :dangerous, :obsolete ]
 
@@ -65,7 +66,27 @@ class Mod < ActiveRecord::Base
             :except => [:mod_id],
             :methods => :required_mods
         },
-        :reviews => {:except => [:text_body, :mod_id, :edited, :incorrect_notes_count]}
+        :reviews => {
+            :except => [:submitted_by],
+            :include => {
+                :user => {
+                    :only => [:id, :username, :role, :title],
+                    :include => {
+                        :reputation => {:only => [:overall]}
+                    },
+                    :methods => :avatar
+                }
+            }
+        },
+        :mod_tags => {
+            :except => [:submitted_by],
+            :include => {
+                :tag => {:except => [:game_id, :hidden, :mod_lists_count]},
+                :user => {
+                    :only => [:id, :username]
+                }
+            }
+        }
     })
   end
 
@@ -76,7 +97,8 @@ class Mod < ActiveRecord::Base
             :authors => {:only => [:id, :username]}
         }
     }
-    options = default_options.merge(options)
+    options[:include] ||= {}
+    options[:include] = default_options[:include].merge(options[:include])
     super(options)
   end
 end

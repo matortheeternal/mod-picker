@@ -64,6 +64,9 @@ gem 'composite_primary_keys', '~> 8.1'
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
+# Use Faker for generating fake data
+gem 'faker'
+
 group :development do
 
   # Access an IRB console on exception pages or by using <%= console %> in views
@@ -75,9 +78,6 @@ group :development do
 
     # rspec testing framework
     gem 'rspec-rails'
-
-    # Use Faker for generating fake data
-    gem 'faker'
 
     # Factory girl for testing
     gem 'factory_girl_rails', '~> 4.0'
