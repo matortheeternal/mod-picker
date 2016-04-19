@@ -7,9 +7,7 @@ app.directive('modResults', function () {
         restrict: 'E',
         templateUrl: '/resources/directives/modResults.html',
         controller: 'modResultsController',
-        scope: {
-            data: '='
-        }
+        scope: false
     }
 });
 
@@ -19,77 +17,80 @@ app.controller('modResultsController', function($scope) {
             visibility: true,
             required: true,
             label: "Mod Name",
-            data: "mod_name"
+            data: "name"
         },
         {
             visibility: true,
             label: "Authors",
-            data: "authors"
+            data: "nexus_infos.authors"
         },
         {
             visibility: true,
             label: "Endorsements",
-            data: "endorsements",
+            data: "nexus_infos.endorsements",
             filter: "number"
         },
         {
             visibility: true,
             label: "Unique DLs",
-            data: "unique_downloads",
+            data: "nexus_infos.unique_downloads",
             filter: "number"
         },
         {
             visibility: false,
             label: "Total DLs",
-            data: "total_downloads",
+            data: "nexus_infos.total_downloads",
             filter: "number"
         },
         {
             visibility: false,
             label: "Views",
-            data: "views",
+            data: "nexus_infos.views",
             filter: "number"
         },
         {
             visibility: false,
             label: "Posts",
-            data: "posts_count",
+            data: "nexus_infos.posts_count",
             filter: "number"
         },
         {
             visibility: false,
             label: "Videos",
-            data: "videos_count",
+            data: "nexus_infos.videos_count",
             filter: "number"
         },
         {
             visibility: false,
             label: "Images",
-            data: "images_count",
+            data: "nexus_infos.images_count",
             filter: "number"
         },
         {
             visibility: false,
             label: "Files",
-            data: "files_count",
+            data: "nexus_infos.files_count",
             filter: "number"
         },
         {
             visibility: false,
             label: "Released",
-            data: "date_added",
+            data: "nexus_infos.date_added",
             filter: "date"
         },
         {
             visibility: true,
             label: "Updated",
-            data: "date_updated",
+            data: "nexus_infos.date_updated",
             filter: "date"
         }
     ];
 
+    // TODO: Less ugly pleease
+    $scope.deepValue = deepValue;
+
     var sortedColumn;
-    $scope.sort = function(index) {
+    $scope.sortColumn = function(index) {
         //TODO: rewrite this
         var column = $scope.columns[index];
 
@@ -107,7 +108,15 @@ app.controller('modResultsController', function($scope) {
         } else {
             column.up = true;
         }
-        $scope.$apply();
+
+        // send data to backend
+        if (column.up || column.down) {
+            $scope.sort.column = column.data;
+            $scope.sort.direction = column.up ? "asc" : "desc";
+        } else {
+            delete $scope.sort.column;
+            delete $scope.sort.direction;
+        }
     }
 });
 

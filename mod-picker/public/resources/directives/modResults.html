@@ -1,8 +1,8 @@
-<loader data="data" content-class="browse-results">
+<loader data="mods" content-class="browse-results">
     <table>
         <thead>
             <tr>
-                <th ng-repeat="column in columns" ng-class="{ 'hidden': !column.visibility }" ng-click="sort($index)">
+                <th ng-repeat="column in columns" ng-class="{ 'hidden': !column.visibility }" ng-click="sortColumn($index)">
                     {{column.label}}
                     <div class="sorting-options">
                         <div class="sort-up" ng-class="{ 'active' : column.up }">
@@ -21,12 +21,12 @@
             </tr>
         </thead>
         <tbody>
-            <tr ng-repeat="mod in data">
+            <tr ng-repeat="mod in mods">
                 <td class="main-cell">
                     <a class="strong" ng-href="#/mod/{{mod.id}}">{{mod.name}}</a>
                 </td>
                 <td ng-repeat="column in columns" ng-class="{ 'hidden': !column.visibility, 'text-cell' : !column.filter }" ng-if="$index > 0">
-                    {{ mod.nexus_info[column.data] | picker:column.filter }}
+                    {{ deepValue(mod, column.data) | picker:column.filter }}
                 </td>
                 <td class="actions-cell">
                     <input class="btn-sm" type="button" ng-click="addMod(mod)" value="Add" title="Add this mod to your mod list"/>
