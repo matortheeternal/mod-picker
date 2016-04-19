@@ -10,6 +10,7 @@ app.config(['$routeProvider', function ($routeProvider) {
 app.controller('modsController', function ($scope, $q, modService, sliderFactory) {
     //TODO: scope.loading is deprecated
     $scope.loading = true;
+    $scope.filters = {};
 
     // initialize search tags to empty array
     $scope.search_tags = [];
@@ -36,9 +37,27 @@ app.controller('modsController', function ($scope, $q, modService, sliderFactory
     };
 
     /* data */
-    modService.retrieveMods({}).then(function (data) {
-        $scope.mods = data;
-        //TODO: scope.loading is deprecated
-        $scope.loading = false;
-    });
+    // TODO: replace firstGet with $scope.mods
+    var firstGet = false;
+    $scope.getMods = function() {
+        delete $scope.mods;
+        modService.retrieveMods($scope.filters).then(function (data) {
+            $scope.mods = data;
+            //TODO: scope.loading is deprecated
+            $scope.loading = false;
+            firstGet = true;
+        });
+    };
+
+    $scope.getMods();
+
+    // create a watch
+    var getModsTimeout;
+    $scope.$watch('filters', function(filters) {
+        if(filters && firstGet) {
+            clearTimeout(getModsTimeout);
+            getModsTimeout = setTimeout($scope.getMods, 500);
+        }
+    }, true);
 });
+
