@@ -26,7 +26,8 @@ require 'rails_helper'
 
 RSpec.describe ModList, :model, :wip do
 
-  fixtures :mod_lists, :users, :mod_versions, :games, :categories, :mods
+  fixtures :mod_lists, :users, :mod_versions, :games, :categories, :mods,
+    :plugins
 
   it "should have a valid factory" do
     expect( create(:mod_list) ).to be_valid
@@ -411,6 +412,46 @@ RSpec.describe ModList, :model, :wip do
 
           expect(list.user_stars_count).to eq(0)
         }.to change { list.user_stars_count}.by(-1)
+      end
+    end
+
+    describe "load_order_notes_count" do
+      let!(:list) {mod_lists(:plannedVanilla)}
+
+      it "should increment load_order_notes counter by 1 when new load order note is made" do
+        expect(list.load_order_notes_count).to eq(0)
+
+        expect{
+          note = create(:load_order_note,
+            load_first: plugins(:Apocalypse_esp).id,
+            load_second: plugins(:SkyRE_esp).id,
+            submitted_by: users(:homura).id)
+
+          mod_list_note = list.mod_list_load_order_notes.create(
+            mod_list_id: list.id,
+            load_order_note_id: note.id)
+
+          expect(list.load_order_notes_count).to eq(1)
+        }.to change { list.load_order_notes_count}.by(1)
+      end
+
+      it "should decrement the load_order_notes counter by 1 if a load order note is deleted" do
+        note = create(:load_order_note, 
+          submitted_by: users(:homura).id,
+          load_first: plugins(:Apocalypse_esp).id,
+          load_second: plugins(:SkyRE_esp).id)
+
+        install_note = list.mod_list_load_order_notes.create(
+          mod_list_id: list.id, 
+          load_order_note_id: note.id)
+
+        expect(list.load_order_notes_count).to eq(1)
+
+        expect{
+          list.load_order_notes.destroy(note.id)
+
+          expect(list.load_order_notes_count).to eq(0)
+        }.to change { list.load_order_notes_count}.by(-1)
       end
     end
   end

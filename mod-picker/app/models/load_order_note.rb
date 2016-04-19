@@ -14,7 +14,7 @@ class LoadOrderNote < ActiveRecord::Base
   belongs_to :load_second_plugin, :foreign_key => 'load_second', :class_name => 'Plugin', :inverse_of => 'load_after_notes'
 
   # mod versions this load order note is associated with
-  has_many :mod_list_installation_notes, :inverse_of => 'load_order_note'
+  has_many :mod_list_load_order_notes, :inverse_of => 'load_order_note'
   has_many :mod_lists, :through => 'mod_list_load_order_notes', :inverse_of => 'load_order_notes'
 
   # mod lists this load order note appears on
