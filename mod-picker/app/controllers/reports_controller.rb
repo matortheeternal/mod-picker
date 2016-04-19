@@ -1,4 +1,4 @@
-class BaseReportsController < ApplicationController
+class ReportsController < ApplicationController
   # TODO: submission logic
 
   # GET /reports.json
