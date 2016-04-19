@@ -63,7 +63,7 @@
                 <h3 class="section-title">Mod Versions</h3>
                 <section>
                     <div class="select">
-                        <select ng-model="currentVersion" ng-options="version as version.version for version in mod.mod_versions" class="version-dropdown"></select>
+                        <select ng-model="currentVersion" ng-change="updateVersion(currentVersion)" ng-options="version as version.version for version in mod.mod_versions" class="version-dropdown"></select>
                     </div>
                 </section>
 

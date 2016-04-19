@@ -39,7 +39,7 @@ app.controller('modController', function ($scope, $q, $routeParams, modService, 
         }
 
         //find data for the required mods
-        $scope.updateRequirements($scope.currentVersion);
+        $scope.updateVersion($scope.currentVersion);
 
     });
 
@@ -62,7 +62,19 @@ app.controller('modController', function ($scope, $q, $routeParams, modService, 
     $scope.loversExpanded = false;
 
     //getting the names and ids of the required mods
-    $scope.updateRequirements = function (modVersion) {
+    $scope.updateVersion = function (modVersion) {
+        //update notes
+        modService.retrieveCompatibilityNotes(modVersion.id).then(function(notes) {
+            $scope.compatibilityNotes = notes;
+        });
+        modService.retrieveInstallOrderNotes(modVersion.id).then(function(notes) {
+            $scope.installOrderNotes = notes;
+        });
+        modService.retrieveLoadOrderNotes(modVersion.id).then(function(notes) {
+            $scope.loadOrderNotes = notes;
+        });
+
+        //update requirements
         $scope.requirements = [];
         modVersion.required_mods.forEach(function(requirement) {
             modService.retrieveMod(requirement.required_id).then(function(mod) {
