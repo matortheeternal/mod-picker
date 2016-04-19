@@ -4,8 +4,7 @@ app.directive('categoryTree', function () {
         templateUrl: '/resources/directives/categoryTree.html',
         controller: 'categoryTreeController',
         scope: {
-            model: '=',
-            required: '=',
+            selection: '=',
             toggleAll: '='
         }
     }
@@ -13,23 +12,32 @@ app.directive('categoryTree', function () {
 
 app.controller('categoryTreeController', function ($scope, categoryService) {
     categoryService.retrieveNestedCategories().then(function (data) {
-        var categoryFilter = $scope.categoryFilter = [];
-        data.forEach(function (superCategory) {
-            categoryFilter[superCategory.id] = {childs: []};
-            categoryFilter[superCategory.id].value = false;
-            superCategory.childs.forEach(function (subCategory) {
+        $scope.categories = data;
+        // add checkbox values to data and fix subcategory names
+        $scope.categories.forEach(function(superCategory) {
+            superCategory.value = false;
+            superCategory.childs.forEach(function(subCategory) {
                 subCategory.name = subCategory.name.split('- ')[1];
-                categoryFilter[superCategory.id].childs[subCategory.id]= {
-                    value: false,
-                    name: subCategory.name
-                }
+                subCategory.value = false;
             });
         });
-        $scope.categories = data;
     });
 
+    $scope.handleSelection = function (target, before) {
+        if (target.value || before) {
+            // handle addition to selection
+            $scope.selection.push(target.name);
+        } else {
+            // handle removal from selection
+            var index = $scope.selection.indexOf(target.name);
+            if (index > -1) {
+                $scope.selection.splice(index, 1);
+            }
+        }
+    };
+
     $scope.updateSelection = function (primaryCategory, secondaryCategory) {
-        var parent = $scope.categoryFilter[primaryCategory];
+        var parent = $scope.categories[primaryCategory];
         // only allow checking of all childs if the parent is unchecked
         var allChecked = !parent.value;
         // only allow unchecking of all childs if the parent is checked
@@ -46,15 +54,21 @@ app.controller('categoryTreeController', function ($scope, categoryService) {
         // primary category and all children are checked
         allUncheckedAfter = allUncheckedAfter || (!secondaryCategory && allChecked);
 
-        // toggle all childs if allowed
-        if ($scope.toggleAll && !secondaryCategory) {
+        // handle selection of parent or child
+        if (!secondaryCategory) {
+            $scope.handleSelection(parent, true);
+            // toggle all childs if allowed
             // if all childs are unchecked, check all of them
             // if all childs are checked, uncheck all of them
-            if (allChecked || allUnchecked) {
+            if ($scope.toggleAll && (allChecked || allUnchecked)) {
                 parent.childs.forEach(function (child) {
                     child.value = !child.value;
+                    $scope.handleSelection(child);
                 });
             }
+        } else {
+            var child = $scope.categories[secondaryCategory];
+            $scope.handleSelection(child, true);
         }
 
         // parent is indeterminate if some childs are checked
@@ -63,20 +77,22 @@ app.controller('categoryTreeController', function ($scope, categoryService) {
     };
 
     $scope.clearSelection = function () {
-        $scope.categoryFilter.forEach(function (superCategory) {
+        $scope.categories.forEach(function (superCategory) {
             superCategory.value = false;
             superCategory.indeterminate = false;
             superCategory.childs.forEach(function (child) {
                 child.value = false;
             });
         });
+        $scope.selection = [];
     };
 
     $scope.invertSelection = function () {
-        $scope.categoryFilter.forEach(function (superCategory) {
+        $scope.categories.forEach(function (superCategory) {
             superCategory.value = !superCategory.value;
             superCategory.childs.forEach(function(child) {
                 child.value = !child.value;
+                $scope.handleSelection(child);
             });
         });
     };
