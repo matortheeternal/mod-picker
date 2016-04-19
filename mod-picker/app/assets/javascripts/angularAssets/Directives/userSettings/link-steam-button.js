@@ -6,8 +6,12 @@ app.directive('linkSteamButton', function () {
     return {
         restrict: 'E',
         templateUrl: '/resources/directives/userSettings/linkSteamButton.html',
+        controller: 'linkSteamButtonController',
         scope: {
             bio: '=',
         },
     };
+});
+
+app.controller('linkSteamButtonController', function ($scope) {
 });
