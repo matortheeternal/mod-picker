@@ -20,6 +20,9 @@ class ModList < ActiveRecord::Base
   has_many :mod_list_load_order_notes, :inverse_of => 'mod_list'
   has_many :load_order_notes, :through => 'mod_list_load_order_notes', :inverse_of => 'mod_lists'
 
+  # In the future, if conventional counter_cache naming is used then the workaround of
+  # counter_cache: :this_does_not_exit
+  # will need to be appended to user_stars
   has_many :mod_list_stars, :inverse_of => 'starred_mod_list'
   has_many :user_stars, :through => 'mod_list_stars', :inverse_of => 'starred_mod_lists'
 

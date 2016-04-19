@@ -330,7 +330,6 @@ RSpec.describe ModList, :model, :wip do
         expect{
           list.compatibility_notes.destroy(note.id)
 
-          list.reload
           expect(list.compatibility_notes_count).to eq(0)
         }.to change { list.compatibility_notes_count}.by(-1)
       end
@@ -373,9 +372,45 @@ RSpec.describe ModList, :model, :wip do
         expect{
           list.install_order_notes.destroy(note.id)
 
-          list.reload
           expect(list.install_order_notes_count).to eq(0)
         }.to change { list.install_order_notes_count}.by(-1)
+      end
+    end
+
+    describe "user_stars_count" do
+      let!(:list) {mod_lists(:plannedVanilla)}
+
+      it "should increment user_stars counter by 1 when new user star is made" do
+        expect(list.user_stars_count).to eq(0)
+
+        expect{
+          user = users(:homura)
+
+          mod_star =list.mod_list_stars.create(
+            mod_list_id: list.id,
+            user_id: user.id)
+
+          expect(mod_star).to be_valid
+
+          expect(list.user_stars_count).to eq(1)
+        }.to change { list.user_stars_count}.by(1)
+      end
+
+      it "should decrement the user_stars counter by 1 if a user star is deleted" do
+        user = users(:homura)
+
+        mod_star =list.mod_list_stars.create(
+          mod_list_id: list.id,
+          user_id: user.id)
+          
+        expect(mod_star).to be_valid
+        expect(list.user_stars_count).to eq(1)
+
+        expect{
+          list.mod_list_stars.destroy(mod_star.id)
+
+          expect(list.user_stars_count).to eq(0)
+        }.to change { list.user_stars_count}.by(-1)
       end
     end
   end
