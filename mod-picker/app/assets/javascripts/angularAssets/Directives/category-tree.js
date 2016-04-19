@@ -28,10 +28,10 @@ app.controller('categoryTreeController', function ($scope, categoryService) {
     $scope.handleSelection = function (target) {
         if (target.value) {
             // handle addition to selection
-            $scope.selection.push(target.name);
+            $scope.selection.push(target.id);
         } else {
             // handle removal from selection
-            var index = $scope.selection.indexOf(target.name);
+            var index = $scope.selection.indexOf(target.id);
             if (index > -1) {
                 $scope.selection.splice(index, 1);
             }
