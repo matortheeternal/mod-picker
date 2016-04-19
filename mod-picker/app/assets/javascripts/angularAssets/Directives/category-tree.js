@@ -11,6 +11,8 @@ app.directive('categoryTree', function () {
 });
 
 app.controller('categoryTreeController', function ($scope, categoryService) {
+    $scope.selection = [];
+
     categoryService.retrieveNestedCategories().then(function (data) {
         $scope.categories = data;
         // add checkbox values to data and fix subcategory names

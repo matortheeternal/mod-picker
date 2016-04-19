@@ -12,9 +12,6 @@ app.controller('modsController', function ($scope, $q, modService, sliderFactory
     $scope.loading = true;
     $scope.filters = {};
 
-    // initialize search tags to empty array
-    $scope.search_tags = [];
-
     //TODO: everything below should be handled differently
     // -> remove redundancy
     // -> probably don't set visibility in the controller but in the view
