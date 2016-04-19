@@ -16,7 +16,7 @@ class ModList < ActiveRecord::Base
   has_many :mod_list_compatibility_notes, :inverse_of => 'mod_list'
   has_many :compatibility_notes, :through => 'mod_list_compatibility_notes', :inverse_of => 'mod_lists', counter_cache: :this_does_not_exist_compatibility_note
   has_many :mod_list_install_order_notes, :inverse_of => 'mod_list'
-  has_many :install_order_notes, :through => 'mod_list_install_order_notes', :inverse_of => 'mod_lists'
+  has_many :install_order_notes, :through => 'mod_list_install_order_notes', :inverse_of => 'mod_lists', counter_cache: :this_does_not_exist_install_order_notes
   has_many :mod_list_load_order_notes, :inverse_of => 'mod_list'
   has_many :load_order_notes, :through => 'mod_list_load_order_notes', :inverse_of => 'mod_lists'
 

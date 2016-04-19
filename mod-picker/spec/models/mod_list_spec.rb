@@ -26,7 +26,7 @@ require 'rails_helper'
 
 RSpec.describe ModList, :model, :wip do
 
-  fixtures :mod_lists, :users, :mod_versions, :games, :categories
+  fixtures :mod_lists, :users, :mod_versions, :games, :categories, :mods
 
   it "should have a valid factory" do
     expect( create(:mod_list) ).to be_valid
@@ -300,7 +300,8 @@ RSpec.describe ModList, :model, :wip do
           note = create(:compatibility_note)
 
           comp = list.mod_list_compatibility_notes.create(
-            mod_list_id: list.id, compatibility_note_id: note.id)
+            mod_list_id: list.id, 
+            compatibility_note_id: note.id)
 
           expect(comp).to be_valid
 
@@ -321,7 +322,9 @@ RSpec.describe ModList, :model, :wip do
         note = create(:compatibility_note)
 
         comp_note = list.mod_list_compatibility_notes.create(
-          mod_list_id: list.id, compatibility_note_id: note.id)
+          mod_list_id: list.id, 
+          compatibility_note_id: note.id)
+
         expect(list.compatibility_notes_count).to eq(1)
 
         expect{
@@ -330,6 +333,49 @@ RSpec.describe ModList, :model, :wip do
           list.reload
           expect(list.compatibility_notes_count).to eq(0)
         }.to change { list.compatibility_notes_count}.by(-1)
+      end
+    end
+
+    describe "install_order_notes_count" do
+      let!(:list) {mod_lists(:plannedVanilla)}
+
+      it "should increment install_order_notes counter by 1 when new install order note is made" do
+        expect(list.install_order_notes_count).to eq(0)
+
+        expect{
+          note = create(:install_order_note,
+            submitted_by: users(:homura).id,
+            install_first: mods(:Apocalypse).id,
+            install_second: mods(:SkyRE).id)
+
+          expect(note).to be_valid
+
+          list.mod_list_install_order_notes.create(
+            mod_list_id: list.id,
+            install_order_note_id: note.id)
+
+          expect(list.install_order_notes_count).to eq(1)
+        }.to change { list.install_order_notes_count}.by(1)
+      end
+
+      it "should decrement the install_order_notes counter by 1 if a install order note is deleted" do
+        note = create(:install_order_note, 
+          submitted_by: users(:homura).id,
+          install_first: mods(:Apocalypse).id,
+          install_second: mods(:SkyRE).id)
+
+        install_note = list.mod_list_install_order_notes.create(
+          mod_list_id: list.id, 
+          install_order_note_id: note.id)
+
+        expect(list.install_order_notes_count).to eq(1)
+
+        expect{
+          list.install_order_notes.destroy(note.id)
+
+          list.reload
+          expect(list.install_order_notes_count).to eq(0)
+        }.to change { list.install_order_notes_count}.by(-1)
       end
     end
   end
