@@ -9,6 +9,7 @@ header {
   -o-background-size: cover;
   background-size: cover;
   height: 192px;
+  z-index: 4;
 }
 
 .header {
@@ -92,6 +93,7 @@ nav {
   background-color: $bar_color;
   white-space: nowrap;
   border-bottom: 2px solid $soft_border_color;
+  z-index: 5;
 
   a {
     border-left: 1px solid $bar_highlight_color;
