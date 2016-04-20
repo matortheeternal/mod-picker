@@ -7,11 +7,21 @@ app.config(['$routeProvider', function ($routeProvider) {
     );
 }]);
 
-app.controller('modsController', function ($scope, $q, modService, sliderFactory) {
+app.controller('modsController', function ($scope, $q, modService, sliderFactory, columnsFactory) {
     $scope.filters = {};
     $scope.sort = {};
+    $scope.columns = columnsFactory.modColumns();
+    $scope.actions = [
+        {
+            caption: "Add",
+            title: "Add this mod to your mod list",
+            execute: function() {
+                alert("Not functional yet.");
+            }
+        }
+    ];
 
-    //TODO: everything below should be handled differently
+    //TODO: should be handled differently
     // -> remove redundancy
     // -> probably don't set visibility in the controller but in the view
 
@@ -36,9 +46,9 @@ app.controller('modsController', function ($scope, $q, modService, sliderFactory
     // TODO: replace firstGet with $scope.mods
     var firstGet = false;
     $scope.getMods = function() {
-        delete $scope.mods;
+        delete $scope.data;
         modService.retrieveMods($scope.filters, $scope.sort).then(function (data) {
-            $scope.mods = data;
+            $scope.data = data;
             firstGet = true;
         });
     };
