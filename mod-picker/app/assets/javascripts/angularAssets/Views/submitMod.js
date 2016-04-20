@@ -6,7 +6,7 @@ app.config(['$routeProvider', function ($routeProvider) {
     );
 }]);
 
-app.controller('submitModController', function ($scope, backend, submitService, archiveService) {
+app.controller('submitModController', function ($scope, backend, submitService, categoryService) {
     // initialize variables
     $scope.mod = {};
     $scope.assetTree = [];
@@ -32,6 +32,48 @@ app.controller('submitModController', function ($scope, backend, submitService, 
             if (data.nexus_category == 39) {
                 $scope.isUtility = true;
             }
+        });
+    };
+
+    /* categories */
+    categoryService.retrieveCategoryPriorities().then(function(data) {
+        $scope.categoryPriorities = data;
+    });
+
+    $scope.getDominantIds = function(recessiveId) {
+        var dominantIds = [];
+        $scope.categoryPriorities.forEach(function(priority) {
+            if (priority.recessiveId == recessiveId) {
+                dominantIds.push(priority.dominantId);
+            }
+        });
+        return dominantIds;
+    };
+
+    $scope.getCategoryPriority = function(recessiveId, dominantId) {
+        $scope.categoryPriorities.find(function(categoryPriority) {
+            return categoryPriority.recessiveId == recessiveId &&
+                   categoryPriority.dominantId == dominantId
+        })
+    };
+
+    $scope.createPriorityMessage = function(recessiveId, dominantId) {
+        recessiveCategory = categoryService.getCategory(recessiveId);
+        dominantCategory = categoryService.getCategory(dominantId);
+        categoryPriority = $scope.getCategoryPriority(recessiveId, dominantId);
+        $scope.categoryMessages.push(dominantCategory.name + " > " + recessiveCategory.name + "\n" + categoryPriority.description);
+    };
+
+    $scope.checkCategories = function() {
+        $scope.categoryMessages = [];
+        $scope.mod.categories.forEach(function(recessiveId) {
+            dominantIds = $scope.getDominantIds(recessiveId);
+            dominantIds.forEach(function(dominantId) {
+                var index = $scope.mod.categories.indexOf(dominantId);
+                if (index > -1) {
+                    $scope.createPriorityMessage(recessiveId, dominantId);
+                }
+            });
         });
     };
 
