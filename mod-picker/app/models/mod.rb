@@ -28,6 +28,7 @@ class Mod < ActiveRecord::Base
   enum status: [ :good, :dangerous, :obsolete ]
 
   belongs_to :game, :inverse_of => 'mods'
+  belongs_to :user, :foreign_key => 'submitted_by', :inverse_of => 'submitted_mods'
 
   # categories the mod belongs to
   belongs_to :primary_category, :class_name => 'Category', :foreign_key => 'category_id', :inverse_of => 'primary_mods'
