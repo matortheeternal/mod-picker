@@ -82,7 +82,7 @@
             Mod List
           </span>
         </a>
-        <a class="nav-contributions" href="#">
+        <a class="nav-contributions" ng-click="showContributionsMenu = !showContributionsMenu">
           <span class="nav-icon">
             <i class="fa fa-comments"></i>
           </span>
@@ -90,6 +90,9 @@
             <b>View recent</b>
             Contributions
           </span>
+          <angular-dropdown activate="showContributionsMenu">
+            <!-- transcluded view here -->
+          </angular-dropdown>
         </a>
         <a class="nav-browse-modlists" href="#/mod-lists">
           <span class="nav-icon">
@@ -100,7 +103,7 @@
             Public Mod Lists
           </span>
         </a>
-        <a class="nav-browse-mods" href="#/mods">
+        <a class="nav-browse-mods" ng-click="showModsMenu = !showModsMenu">
           <span class="nav-icon">
             <i class="fa fa-globe"></i>
           </span>
@@ -108,7 +111,9 @@
             <b>Browse</b>
             Skyrim Mods
           </span>
-          <span class="nav-dropdown"></span>
+          <angular-dropdown activate="showModsMenu">
+            <!-- transcluded view here -->
+          </angular-dropdown>
         </a>
         <a class="nav-submit-mod" href="#/submit">
           <span class="nav-icon">
@@ -134,6 +139,10 @@
     </div>
   </div>
 </nav>
+
+<div id="contributions-dropdown" class="dropdown-container">
+
+</div>
 
 <%= yield %>
 
