@@ -1,8 +1,7 @@
 class ModsController < ApplicationController
   before_action :set_mod, only: [:show, :update, :destroy]
 
-  # GET /mods
-  # GET /mods.json
+  # POST /mods
   def index
     @mods = Mod.includes(:nexus_infos).filter(filtering_params).sort(params[:sort])
 
@@ -10,17 +9,17 @@ class ModsController < ApplicationController
   end
 
   # GET /mods/1
-  # GET /mods/1.json
   def show
     render :json => @mod.show_json
   end
 
-  # POST /mods
-  # POST /mods.json
+  # POST /mods/submit
   def create
     @mod = Mod.new(mod_params)
+    @mod.submitted_by = current_user.id
 
     if @mod.save
+      @mod.create_tags(params[:mod][:tags])
       render json: {status: :ok}
     else
       render json: @mod.errors, status: :unprocessable_entity
@@ -28,7 +27,6 @@ class ModsController < ApplicationController
   end
 
   # PATCH/PUT /mods/1
-  # PATCH/PUT /mods/1.json
   def update
     if @mod.update(mod_params)
       render json: {status: :ok}
@@ -62,7 +60,6 @@ class ModsController < ApplicationController
   end
 
   # DELETE /mods/1
-  # DELETE /mods/1.json
   def destroy
     if @mod.destroy
       render json: {status: :ok}

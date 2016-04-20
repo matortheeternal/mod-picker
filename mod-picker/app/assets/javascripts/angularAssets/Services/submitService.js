@@ -12,7 +12,9 @@ app.service('submitService', function (backend, $q) {
         // prepare mod record
         mod.name = nexus_info.mod_name;
         mod.game_id = nexus_info.game_id;
-        mod.mod_version = {
+        mod.primary_category_id = mod.categories[0];
+        mod.secondary_category_id = mod.categories[1];
+        mod.mod_versions = {
             mod_id: data.id,
             released: nexus_info.date_added,
             obsolete: false,
