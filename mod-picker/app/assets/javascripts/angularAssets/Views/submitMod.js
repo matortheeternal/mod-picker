@@ -9,7 +9,6 @@ app.config(['$routeProvider', function ($routeProvider) {
 app.controller('submitModController', function ($scope, backend, submitService, archiveService) {
     // initialize variables
     $scope.mod = {};
-    $scope.nexus = {};
     $scope.assetTree = [];
 
     /* scraping */
@@ -90,7 +89,10 @@ app.controller('submitModController', function ($scope, backend, submitService, 
 
     /* mod submission */
     $scope.modInvalid = function () {
-        return ($scope.nexus == null)
+        // submission isn't allowed until the user has scraped a nexus page,
+        // provided an asset tree, and provided at least one category
+        return ($scope.nexus == null || $scope.mod.assetTree == null ||
+            $scope.mod.categories == null || $scope.mod.categories.length == 0)
     };
 
     $scope.submit = function () {
