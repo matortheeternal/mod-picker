@@ -10,6 +10,7 @@ app.controller('submitModController', function ($scope, backend, submitService, 
     // initialize variables
     $scope.mod = {};
     $scope.nexus = {};
+    $scope.assetTree = [];
 
     /* scraping */
     $scope.nexusScraped = false;
@@ -93,6 +94,6 @@ app.controller('submitModController', function ($scope, backend, submitService, 
     };
 
     $scope.submit = function () {
-        submitService.submitMod($scope.mod, $scope.nexus, $scope.assetMap, $scope.plugins);
+        submitService.submitMod($scope.mod, $scope.nexus, $scope.assetTree, $scope.plugins);
     }
 });
