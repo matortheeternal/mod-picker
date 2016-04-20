@@ -61,7 +61,11 @@ app.controller('submitModController', function ($scope, backend, submitService, 
         recessiveCategory = categoryService.getCategory(recessiveId);
         dominantCategory = categoryService.getCategory(dominantId);
         categoryPriority = $scope.getCategoryPriority(recessiveId, dominantId);
-        $scope.categoryMessages.push(dominantCategory.name + " > " + recessiveCategory.name + "\n" + categoryPriority.description);
+        messageText = dominantCategory.name + " > " + recessiveCategory.name + "\n" + categoryPriority.description;
+        $scope.categoryMessages.push({
+            text: messageText,
+            klass: "priority-message"
+        });
     };
 
     $scope.checkCategories = function() {
