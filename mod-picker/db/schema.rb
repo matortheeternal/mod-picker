@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160419225524) do
+ActiveRecord::Schema.define(version: 20160420050854) do
 
   create_table "agreement_marks", id: false, force: :cascade do |t|
     t.integer "incorrect_note_id", limit: 4
@@ -447,11 +447,13 @@ ActiveRecord::Schema.define(version: 20160419225524) do
     t.integer "load_order_notes_count",    limit: 4,   default: 0
     t.integer "status",                    limit: 1,   default: 0,     null: false
     t.boolean "hidden",                                default: false, null: false
+    t.integer "submitted_by",              limit: 4,                   null: false
   end
 
   add_index "mods", ["game_id"], name: "fk_rails_3ec448a848", using: :btree
   add_index "mods", ["primary_category_id"], name: "fk_rails_42759f5da5", using: :btree
   add_index "mods", ["secondary_category_id"], name: "fk_rails_26f394ea9d", using: :btree
+  add_index "mods", ["submitted_by"], name: "fk_rails_5f28cca69a", using: :btree
 
   create_table "nexus_infos", force: :cascade do |t|
     t.string   "uploaded_by",      limit: 128
@@ -792,6 +794,7 @@ ActiveRecord::Schema.define(version: 20160419225524) do
   add_foreign_key "mods", "categories", column: "primary_category_id"
   add_foreign_key "mods", "categories", column: "secondary_category_id"
   add_foreign_key "mods", "games"
+  add_foreign_key "mods", "users", column: "submitted_by"
   add_foreign_key "nexus_infos", "games"
   add_foreign_key "override_records", "plugins", name: "override_records_ibfk_1"
   add_foreign_key "plugin_errors", "plugins"
