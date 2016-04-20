@@ -10,6 +10,7 @@ class ModsController < ApplicationController
 
   # GET /mods/1
   def show
+    authorize! :read, @mod
     render :json => @mod.show_json
   end
 
@@ -17,10 +18,28 @@ class ModsController < ApplicationController
   def create
     @mod = Mod.new(mod_params)
     @mod.submitted_by = current_user.id
+    authorize! :create, @mod
 
     if @mod.save
+      # create associated tags
       @mod.create_tags(params[:mod][:tags])
-      render json: {status: :ok}
+
+      # link nexus info to the mod
+      @nexus_info = NexusInfo.find_by(params[:mod][:nexus_info_id])
+      if @nexus_info.present? && @nexus_info.mod_id.nil?
+        @nexus_info.mod_id = @mod.id
+
+        # attempt to save updated nexus info
+        if @nexus_info.save
+          render json: {status: :ok}
+        else
+          render json: @nexus_info.errors, status: :unprocessable_entity
+        end
+
+      else
+        render json: {status: "Failure linking nexus_info record"}
+      end
+
     else
       render json: @mod.errors, status: :unprocessable_entity
     end
@@ -28,6 +47,7 @@ class ModsController < ApplicationController
 
   # PATCH/PUT /mods/1
   def update
+    authorize! :update, @mod
     if @mod.update(mod_params)
       render json: {status: :ok}
     else
@@ -61,6 +81,7 @@ class ModsController < ApplicationController
 
   # DELETE /mods/1
   def destroy
+    authorize! :destroy, @mod
     if @mod.destroy
       render json: {status: :ok}
     else
