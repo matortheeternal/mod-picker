@@ -30,6 +30,16 @@ app.service('categoryService', function ($q, backend) {
         return categoryPriorities.promise;
     };
 
+    this.getCategoryById = function(id) {
+        var categoryPromise = $q.defer();
+        backend.retrieve('/categories', {cache: true}).then(function (categories) {
+             categoryPromise.resolve(categories.find(function (category) {
+                 return category.id === id;
+             }));
+        });
+        return categoryPromise.promise;
+    };
+
     this.retrievePrimaryCategory = function () {
         //TODO: we shall have an empty key for the primary Category
         return retrieveFilteredCategories('primary');
