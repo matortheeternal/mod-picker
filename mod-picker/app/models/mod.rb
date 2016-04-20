@@ -78,6 +78,10 @@ class Mod < ActiveRecord::Base
     end
   end
 
+  def create_asset_files(asset_file_tree)
+    # TODO
+  end
+
   def show_json
     self.as_json(:include => {
         :mod_versions => {

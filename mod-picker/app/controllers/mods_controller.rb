@@ -23,6 +23,8 @@ class ModsController < ApplicationController
     if @mod.save
       # create associated tags
       @mod.create_tags(params[:mod][:tags])
+      # create associated asset files
+      @mod.create_asset_files(params[:mod][:asset_file_tree])
 
       # link nexus info to the mod
       @nexus_info = NexusInfo.find_by(params[:mod][:nexus_info_id])
