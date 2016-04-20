@@ -1,0 +1,52 @@
+﻿<div class="mod-tab-actions">
+    <div class="mod-tab-action sort-dropdown">
+		<strong style="margin-right: 10px;">Sort By: </strong>
+		<div class="select">
+			<select ng-model="filter">
+				<option value="compatibility_type" selected>Severity</option>
+				<option value="submitted">Date Submitted</option>
+				<option value="edited">Last Edited</option>
+				<option value="incorrect_notes_count">Author's Incorrect Notes</option>
+			</select>
+		</div>
+	</div
+   ><div class="mod-tab-action">
+		<input class="btn mod-page-btn" type="submit" value="Add Install Order Note" ng-click="submit()"/>
+	</div>
+	<div class="mod-tab-action">
+		<input class="btn mod-page-btn" type="submit" value="Add Load Order Note" ng-click="submit()"/>
+	</div>
+</div>
+
+<div class="add-note-box">
+	<h3 class="section-title">Add Install Order Note</h3>
+	<section>
+		<div>
+			Install First:
+		</div>
+		<input type="text" placeholder="Enter Mod Name" ng-model="newInstallData.firstModName" ng-change="newInstallData.firstMod = getModByName(newInstallOrderNote.firstModName)">
+		<div>
+			Install Second:
+		</div>
+		<input type="text" placeholder="Enter Mod Name" ng-model="newInstallData.secondModName" ng-change="newInstallData.secondMod = getModByName(newInstallOrderNote.secondModName)">
+		<div>
+			Mod not listed?
+			<input class="btn mod-page-btn" type="submit" value="Add Mod" ng-click="addMod()"/>
+		</div>
+	</section>
+	<section class="version-checkboxes">
+		<div>
+			<version-selector versions="" selectedVersions=""></version-selector>
+		</div>
+		<div>
+			<version-selector versions="" selectedVersions=""></version-selector>
+		</div>
+	</section>
+    <text-area data="newInstallOrderNote.text_body" ng-refresh="true"></text-area>
+
+	<input class="btn mod-page-btn" type="submit" value="Submit" ng-click="createInstallNote()"/>
+</div>
+
+<div ng-repeat="compatibilityNote in compatibilityNotes" class="notes">
+	<note note="compatibilityNote"></note>
+</div>

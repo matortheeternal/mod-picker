@@ -40,7 +40,7 @@
 			<option value="compatibility option">requires a plugin patch for</option>
 			<option value="make custom patch">needs a custom patch made for</option>
 		</select>
-		<input type="text" placeholder="Enter Mod Name" ng-model="newCompatibilityNote.otherModName" ng-change="updateOtherMod(newCompatibilityNote.otherModName)">
+		<input type="text" placeholder="Enter Mod Name" ng-model="newCompatibilityNote.otherModName" ng-change="newCompatibilityNote.otherMod = getModByName(newCompatibilityNote.otherModName)">
 		<div>
 			Mod not listed?
 			<input class="btn mod-page-btn" type="submit" value="Add Mod" ng-click="addMod()"/>
@@ -48,24 +48,10 @@
 	</section>
 	<section class="version-checkboxes">
 		<div>
-			<label>
-				<input type="checkbox">
-				All Versions
-			</label>
-			<label ng-repeat="version in mod.mod_versions">
-				<input type="checkbox">
-				{{version.version}}
-			</label>
+			<version-selector versions="" selectedVersions=""></version-selector>
 		</div>
 		<div>
-			<label>
-				<input type="checkbox">
-				All Versions
-			</label>
-			<label ng-repeat="version in otherMod.mod_versions">
-				<input type="checkbox">
-				{{version.version}}
-			</label>
+			<version-selector versions="" selectedVersions=""></version-selector>
 		</div>
 	</section>
 	<section>
