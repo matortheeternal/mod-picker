@@ -1,14 +1,128 @@
-.cnoteHeader {
-	padding-bottom: 10px;
+	
+.modpage-view {
+		width: 922px;
+		white-space: nowrap;
+		min-height:255px;
+
+	br {
+		padding: 0;
+		margin: 0;
+		border: 0;
+	}
+
+	.cnote-container {
+		display: inline-block;
+		//border: 1px solid black;
+		padding: 0;
+
+	}
+
+	.author-block {
+		display: table-cell;
+		border: 1px solid black;
+		width: 164px;
+		min-height: 100%;
+		padding-top: 30px;
+		text-align: center;
+	}
+
+	.author-image {
+		margin-left: 30%;
+		width: 64px;
+		height: 64px;
+		background-color: $secondary_background;
+	}
+
+	.author-name {
+		font-size: 13px;
+		font-weight: 500;
+	}
+
+	.note-title {
+		vertical-align: top;
+		display: inline-block;
+		border-top: 1px solid black;
+		height: 45px;
+		width: 756px;
+		background-color: $secondary_background;
+		margin: 0;
+	}
+
+	.mod-block {
+		display: inline-block;
+		border: 1px solid black;
+		border-left: 0px;
+		border-right: 0px;
+		text-align: center;
+		padding: 0;
+		margin: 0;
+		height: 45px;
+	}
+	.mod-block-one {
+		@extend .mod-block;
+		width: 50%;
+		border-right: 1px solid black;
+	}
+	.mod-block-two {
+		@extend .mod-block;
+		width: 50%;
+		border-right: 0px;
+	}
+
+	.mod-block-full {
+		@extend .mod-block;
+		width: 100%;
+		border-right: 0px;
+	}
+
+
+	.cnote-block {
+		vertical-align: top;
+		display: table-cell;
+		border-collapse:collapse;
+		border-right: 1px solid black;
+		border-bottom: 1px solid black;
+	}
+
+	.detail-block {
+		display: inline-block;
+		min-height:255px-45px-45px;
+		width: 100%;
+	}
+
+	.letter-box {
+		//box-sizing: border-box;
+		position: relative;
+		left: -1px;
+		text-align: center;
+		width: 24px;
+		height: 24px;
+		border-right: 1px solid black;
+		border-bottom: 1px solid black;
+		vertical-align: top;
+	}
+
+	ul {
+		list-style-type:none;
+		border: 1px solid black;
+		border-left: 0px;
+		border-right: 0px;
+		text-align: center;
+		padding: 0;
+		margin: 0;
+		li {
+			height:45px;
+			width: 50%;
+			border-right: 1px solid black;
+			display: inline-block;
+			vertical-align: middle;
+			list-style: outside none none;
+			
+		}
+	}
+
 }
 
-.cnote-container {
-
-}
-
-.author-line {
-
-}
 
 
 
