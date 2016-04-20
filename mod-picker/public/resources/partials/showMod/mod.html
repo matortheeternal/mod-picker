@@ -76,8 +76,8 @@
                     <!--Sources-->
                     <h3 class="section-title">Sources</h3>
                     <section class="sources">
-                        <a ng-href="http://www.nexusmods.com/{{game}}/mods/{{mod.nexus_info.id}}">
-                            <div class="action-box source-box" ng-if="mod.nexus_info">
+                        <a ng-href="http://www.nexusmods.com/{{game}}/mods/{{mod.nexus_infos.id}}">
+                            <div class="action-box source-box" ng-if="mod.nexus_infos">
                                 <img src="/assets/nexus_logo" class="source-image"/>
                                 Nexus
                             </div>
@@ -125,7 +125,7 @@
                     </section>
 
                     <!--Nexus Stats-->
-                    <section ng-if="mod.nexus_info" class="stat-block">
+                    <section ng-if="mod.nexus_infos" class="stat-block">
                         <expandable expanded="nexusExpanded" class="remove-caret">
                                 <expanded-title>
                                     <div class="stat-block-title">
