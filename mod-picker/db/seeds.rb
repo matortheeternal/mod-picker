@@ -25,8 +25,8 @@ seed_static_records
 #==================================================
 
 require_relative 'fake_seeds'
-seed_fake_mods if bSeedMods
 seed_fake_users if bSeedUsers
+seed_fake_mods if bSeedMods
 seed_fake_comments if bSeedComments
 seed_fake_reviews if bSeedReviews
 seed_fake_compatibility_notes if bSeedCNotes
