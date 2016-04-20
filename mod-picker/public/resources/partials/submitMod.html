@@ -62,42 +62,39 @@
             </section>
 
             <section>
-                <category-tree selection="categories" toggle-all="false"></category-tree>
+                <category-tree selection="mod.categories" toggle-all="false"></category-tree>
                 <input type="button" id="check-categories-btn" class="btn" ng-click="checkCategories()" value="Check Categories">
             </section>
 
             <h3 class="section-title">Tags</h3>
             <section>
-                <tag-selector tags="tags" active-tags="[]" new-tags="mod_tags" show-mods-count="true" show-add="true" max-tags="10"></tag-selector>
+                <tag-selector tags="tags" active-tags="[]" new-tags="mod.tags" show-mods-count="true" show-add="true" max-tags="10"></tag-selector>
             </section>
 
             <h3 class="section-title">Other Options</h3>
             <section>
                 <label>
-                    <input id="kbUtility" type="checkbox" ng-model="isUtility">
+                    <input type="checkbox" ng-model="mod.isUtility">
                     Is Utility
                 </label><br/>
 
                 <label>
-                    <input id="kbAdult" type="checkbox" ng-model="hasAdultContent">
+                    <input type="checkbox" ng-model="mod.hasAdultContent">
                     Has Adult Content
                 </label><br/>
             </section>
 
-            <h3 class="section-title">Asset File Analysis</h3>
+            <h3 class="section-title">Asset File Map</h3>
             <section>
-
-                <div class="input-label">Archive</div>
-                <input type="text" class="path-input" ng-model="archive.file.name">
-                <label>
-                    <input id="archive-input" type="file" file-change="changeArchive" accept=".zip, .rar"/>
-                    <input type="button" class="btn" ng-click="browseArchive()" value="Browse">
-                </label>
-
-                <div ng-show="archiveAnalysed">
-                    <h3 class="section-title">Mod Asset File Analysis</h3>
-                    TODO: asset file tree
+                <div ng-show="assetMap">
+                    <h4 class="section-title">File Tree</h4>
+                    <asset-file-tree data="assetMap"></asset-file-tree>
                 </div>
+
+                <label>
+                    <input id="archive-input" type="file" file-change="changeAssetTree" accept=".json">
+                    <input type="button" class="btn" ng-click="browseAssetTree()" value="Browse">
+                </label>
             </section>
 
             <h3 class="section-title">Plugins</h3>

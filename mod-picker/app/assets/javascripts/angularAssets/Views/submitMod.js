@@ -7,19 +7,24 @@ app.config(['$routeProvider', function ($routeProvider) {
 }]);
 
 app.controller('submitModController', function ($scope, backend, submitService, archiveService) {
+    // initialize variables
+    $scope.mod = {};
+    $scope.nexus = {};
+
     /* scraping */
     $scope.nexusScraped = false;
-    $scope.archive = {};
     //TODO: I guess this static might be better in some sort of service
     var nexusUrlPattern = /(http[s]:\/\/?)?www.nexusmods.com\/skyrim\/mods\/([0-9]+)(\/\?)?/i;
 
     $scope.urlInvalid = function () {
-        //TODO: ugh... never use execs, validate this url somehow differently
-        return nexusUrlPattern.exec($scope.nexusUrl) == null
+        return !$scope.nexusUrl || $scope.nexusUrl.match(nexusUrlPattern) == null
     };
 
     $scope.scrape = function () {
-        var match = nexusUrlPattern.exec($scope.nexusUrl);
+        var match = $scope.nexusUrl.match(nexusUrlPattern);
+        if (!match) {
+            return;
+        }
         var id = match[2];
         $scope.scraping = true;
         submitService.scrapeNexus(3, id).then(function (data) {
@@ -30,66 +35,24 @@ app.controller('submitModController', function ($scope, backend, submitService, 
         });
     };
 
-    /* tag selection */
-    $scope.mod_tags = [];
-
-    /* asset file analysis */
-    $scope.changeArchive = function(event) {
+    /* asset file tree */
+    $scope.changeAssetTree = function(event) {
         var input = event.target;
         if (input.files && input.files[0]) {
-            $scope.archive.file = input.files[0];
-            $scope.analyzeArchive();
-            $scope.$apply();
+            $scope.loadAssetTree(input.files[0]);
         }
     };
 
-    $scope.analyzeBSA = function(bsaFile) {
-        console.log('Analyzing BSA: "' + bsaFile.name + '"');
-        archiveService.getBsaEntries(bsaFile, function(entries) {
-            entries.forEach(function (entry) {
-                console.log(entry.path);
-                $scope.archive.tree.push(entry.path);
-            });
-        });
-    };
-
-    $scope.analyzeArchive = function() {
-        $scope.archive.analyzing = true;
-        $scope.archive.ext = getFileExtension($scope.archive.file.name);
-        if ($scope.archive.ext === 'rar') {
-            console.log('Analyzing RAR archive: "' + $scope.archive.file.name + '"');
-            archiveService.getRarEntries($scope.archive.file, function(entries) {
-                $scope.archive.tree = [];
-                entries.forEach(function (entry) {
-                    var fixedPath = entry.path.split('\\').join('/');
-                    console.log(fixedPath);
-                    $scope.archive.tree.push(fixedPath);
-                    if (getFileExtension(fixedPath) === 'bsa') {
-                        archiveService.getRarEntryFile($scope.archive.file, entry, $scope.analyzeBSA);
-                    }
-                });
-                $scope.$apply();
-            });
-        } else if ($scope.archive.ext === 'zip') {
-            console.log('Analyzing ZIP archive: "' + $scope.archive.file.name + '"');
-            archiveService.getZipEntries($scope.archive.file, function(entries) {
-                $scope.archive.tree = [];
-                entries.forEach(function (entry) {
-                    console.log(entry.filename);
-                    $scope.archive.tree.push(entry.filename);
-                    if (getFileExtension(entry.filename) === 'bsa') {
-                        archiveService.getZipEntryFile(entry, $scope.analyzeBSA);
-                    }
-                });
-                $scope.$apply();
-            });
-        } else {
-            console.log('Archive is unsupported file type ".' + $scope.archive.ext + '", please select a .zip or .rar archive file.');
-        }
-    };
-
-    $scope.browseArchive = function() {
+    $scope.browseAssetTree = function() {
         document.getElementById('archive-input').click();
+    };
+
+    $scope.loadAssetTree = function(file) {
+        var fileReader = new FileReader();
+        fileReader.onload = function (event) {
+            $scope.assetTree = JSON.parse(event.target.result);
+        };
+        fileReader.readAsText(file);
     };
 
     /* plugin submission */
@@ -130,6 +93,6 @@ app.controller('submitModController', function ($scope, backend, submitService, 
     };
 
     $scope.submit = function () {
-        submitService.submit($scope.nexus, $scope.isUtility, $scope.hasAdultContent, $scope.plugins);
+        submitService.submitMod($scope.mod, $scope.nexus, $scope.assetMap, $scope.plugins);
     }
 });
