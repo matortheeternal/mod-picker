@@ -74,7 +74,7 @@ class ModsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_mod
-      @mod = Mod.joins(:nexus_info, :mod_versions).find(params[:id])
+      @mod = Mod.joins(:nexus_infos, :mod_versions).find(params[:id])
     end
     
     # Params we allow filtering on
