@@ -31,11 +31,12 @@ app.service('backend', function ($q, $http) {
 
     this.post = function (context, data) {
         var promise = $q.defer();
-        data.authenticity_token = window._token;
+        var reqData = shallowCopy(data);
+        reqData.authenticity_token = window._token;
         $http({
             url: BASE_LOCATION + context + '.json',
             method: 'POST',
-            data: data
+            data: reqData
         }).then(function(result) {
             resolver(promise, result);
         });
@@ -62,11 +63,12 @@ app.service('backend', function ($q, $http) {
 
     this.update = function (context, data) {
         var promise = $q.defer();
-        data.authenticity_token = window._token;
+        var reqData = shallowCopy(data);
+        reqData.authenticity_token = window._token;
         $http({
             url: BASE_LOCATION + context + '.json',
             method: 'PATCH',
-            data: data
+            data: reqData
         }).then(function(result) {
             resolver(promise, result);
         });
@@ -75,12 +77,12 @@ app.service('backend', function ($q, $http) {
 
     this.delete = function (context) {
         var promise = $q.defer();
-        data = {};
-        data.authenticity_token = window._token;
+        var reqData = {};
+        reqData.authenticity_token = window._token;
         $http({
             url: BASE_LOCATION + context + '.json',
             method: 'DELETE',
-            params: data
+            params: reqData
         }).then(function(result) {
             resolver(promise, result);
         });
