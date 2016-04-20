@@ -2,7 +2,7 @@
     <table>
         <thead>
             <tr>
-                <th ng-repeat="column in columns" ng-class="{ 'hidden': !column.visibility }" ng-click="sort($index)">
+                <th ng-repeat="column in columns" ng-class="{ 'hidden': !column.visibility }" ng-click="sortColumn($index)">
                     {{column.label}}
                     <div class="sorting-options">
                         <div class="sort-up" ng-class="{ 'active' : column.up }">
@@ -21,15 +21,17 @@
             </tr>
         </thead>
         <tbody>
-            <tr ng-repeat="mod in data">
-                <td class="main-cell">
-                    <a class="strong" ng-href="#/mod/{{mod.id}}">{{mod.name}}</a>
-                </td>
-                <td ng-repeat="column in columns" ng-class="{ 'hidden': !column.visibility, 'text-cell' : !column.filter }" ng-if="$index > 0">
-                    {{ mod.nexus_info[column.data] | picker:column.filter }}
+            <tr ng-repeat="item in data">
+                <td ng-repeat="column in columns" ng-class="{ 'hidden': !column.visibility, 'text-cell' : !column.filter, 'main-cell' : $index == 0 }">
+                    <a ng-if="column.link" class="strong" ng-href="{{column.link(item)}}">
+                        {{ deepValue(item, column.data) | picker:column.filter }}
+                    </a>
+                    <span ng-if="!column.link">
+                        {{ deepValue(item, column.data) | picker:column.filter }}
+                    </span>
                 </td>
                 <td class="actions-cell">
-                    <input class="btn-sm" type="button" ng-click="addMod(mod)" value="Add" title="Add this mod to your mod list"/>
+                    <input ng-repeat="action in actions" class="btn-sm" type="button" ng-click="action.execute(item)" value="{{action.caption}}" title="{{action.title}}"/>
                 </td>
             </tr>
         </tbody>
