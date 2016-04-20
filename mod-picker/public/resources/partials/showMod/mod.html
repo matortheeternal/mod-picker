@@ -1,179 +1,181 @@
 <two-columns>
-    <div class="mod-header-color">
-        <div class="page-container mod-header">
-            <section>
-                <div class="stars-count action-box">
-                    <span class="stars-number">{{mod.mod_stars_count}}</span>
-                    STARS
-                </div>
+    <loader data="mod">
+        <div class="mod-header-color">
+            <div class="page-container mod-header">
+                <section>
+                    <div class="stars-count action-box">
+                        <span class="stars-number">{{mod.mod_stars_count}}</span>
+                        STARS
+                    </div>
 
-                <div class="mod-info">
-                    <span class="mod-name">{{mod.name}}</span>
-                    by <span ng-repeat="author in mod.authors">
-                        <a ng-href="#/user/{{author.id}}">{{author.username}}</a>
+                    <div class="mod-info">
+                        <span class="mod-name">{{mod.name}}</span>
+                        by <span ng-repeat="author in mod.authors">
+                            <a ng-href="#/user/{{author.id}}">{{author.username}}</a>
+                            </span>
+                        <br>
+                        <a ng-click="currentTab = tabs[2]">{{mod.reviews.length}} reviews</a>
+                        <span class="divider">
+                            |
                         </span>
-                    <br>
-                    <a ng-click="currentTab = tabs[2]">{{mod.reviews.length}} reviews</a>
-                    <span class="divider">
-                        |
-                    </span>
 
-                    Included in <a ng-href="#/modlists/includingMod/{{mod.id}}">{{mod.mod_modlists_count}} modlists</a>
-                    <span class="divider">
-                        |
-                    </span>
+                        Included in <a ng-href="#/modlists/includingMod/{{mod.id}}">{{mod.mod_modlists_count}} modlists</a>
+                        <span class="divider">
+                            |
+                        </span>
 
-                    <strong>Aliases: </strong>{{mod.aliases}}
-                    <span class="divider">
-                        |
-                    </span>
+                        <strong>Aliases: </strong>{{mod.aliases}}
+                        <span class="divider">
+                            |
+                        </span>
 
-                    <a ng-href="#/editMod/{{mod.id}}">Edit</a>
-                </div>
-            </section>
-
-            <section>
-                <div class="mod-header-box">
-                    ACTIONS
-                    <div class="action-box btn-round">
-                        <i class="fa fa-heart" aria-hidden="true"></i>
-                        Favorite
+                        <a ng-href="#/editMod/{{mod.id}}">Edit</a>
                     </div>
-                    <div class="action-box btn-round">
-                        <i class="fa fa-plus" aria-hidden="true"></i>
-                        Add to mod list
-                    </div>
-                </div>
+                </section>
 
-                <div class="mod-header-box">
-                    STATUS
-                    <div class="action-box">
-                        {{mod.status}}
+                <section>
+                    <div class="mod-header-box">
+                        ACTIONS
+                        <div class="action-box btn-round">
+                            <i class="fa fa-heart" aria-hidden="true"></i>
+                            Favorite
+                        </div>
+                        <div class="action-box btn-round">
+                            <i class="fa fa-plus" aria-hidden="true"></i>
+                            Add to mod list
+                        </div>
                     </div>
-                </div>
-            </section>
+
+                    <div class="mod-header-box">
+                        STATUS
+                        <div class="action-box">
+                            {{mod.status}}
+                        </div>
+                    </div>
+                </section>
+            </div>
         </div>
-    </div>
 
-    <div class="page-container">
-        <loader data="mod">
-            <div class="left-column left-mod-column wide-column">
+        <div class="page-container">
+            <loader data="mod">
+                <div class="left-column left-mod-column wide-column">
 
-                <!--Versions-->
-                <h3 class="section-title">Mod Versions</h3>
-                <section>
-                    <div class="select">
-                        <select ng-model="currentVersion" ng-change="updateVersion(currentVersion)" ng-options="version as version.version for version in mod.mod_versions" class="version-dropdown"></select>
-                    </div>
-                </section>
-
-                <!--Image-->
-                <section ng-if="mod.image">
-                    <img ng-src="{{mod.image}}" class="mod-image"/>
-                </section>
-
-                <!--Sources-->
-                <h3 class="section-title">Sources</h3>
-                <section class="sources">
-                    <a ng-href="http://www.nexusmods.com/{{game}}/mods/{{mod.nexus_info.id}}">
-                        <div class="action-box source-box" ng-if="mod.nexus_info">
-                            <img src="/assets/nexus_logo" class="source-image"/>
-                            Nexus
+                    <!--Versions-->
+                    <h3 class="section-title">Mod Versions</h3>
+                    <section>
+                        <div class="select">
+                            <select ng-model="currentVersion" ng-change="updateVersion(currentVersion)" ng-options="version as version.version for version in mod.mod_versions" class="version-dropdown"></select>
                         </div>
-                    </a>
-                    <a ng-href="">
-                        <div class="action-box source-box" ng-if="mod.steam_info">
-                            <img src="/assets/steam_logo" class="source-image" />
-                            Steam
+                    </section>
+
+                    <!--Image-->
+                    <section ng-if="mod.image">
+                        <img ng-src="{{mod.image}}" class="mod-image"/>
+                    </section>
+
+                    <!--Sources-->
+                    <h3 class="section-title">Sources</h3>
+                    <section class="sources">
+                        <a ng-href="http://www.nexusmods.com/{{game}}/mods/{{mod.nexus_info.id}}">
+                            <div class="action-box source-box" ng-if="mod.nexus_info">
+                                <img src="/assets/nexus_logo" class="source-image"/>
+                                Nexus
+                            </div>
+                        </a>
+                        <a ng-href="">
+                            <div class="action-box source-box" ng-if="mod.steam_info">
+                                <img src="/assets/steam_logo" class="source-image" />
+                                Steam
+                            </div>
+                        </a>
+                        <a ng-href="">
+                            <div class="action-box source-box" ng-if="mod.lovers_info">
+                                <img src="/assets/lovers_logo" class="source-image" />
+                            </div>
+                        </a>
+                    </section>
+
+                    <!--Requirements-->
+                    <h3 ng-if="currentVersion.required_mods.length" class="section-title">Requirements</h3>
+                    <section ng-if="currentVersion.required_mods.length">
+                        <ol class="requirements-list">
+                            <li ng-repeat="requirement in requirements">
+                                <a ng-href="#/mod/{{requirement.id}}">
+                                    <strong>{{requirement.name}}</strong>
+                                </a>
+                                <span ng-if="requirement.aliases">({{requirement.aliases}})</span>
+                            </li>
+                        </ol>
+                    </section>
+
+                    <!--Categories-->
+                    <h3 class="section-title">Categor<span ng-hide="secondCategory">y</span><span ng-show="secondCategory">ies</span></h3>
+                    <section>
+                        <div ng-show="mod.primary_category_id" class="action-box">{{firstCategory}}</div>
+                        <div ng-show="mod.secondary_category_id" class="action-box">{{secondCategory}}</div>
+                    </section>
+
+                    <!--Tags-->
+                    <h3 class="section-title">Tags</h3>
+                    <section>
+                        <div ng-show="mod.mod_tags.length">
+                            <tag-selector tags="mod.mod_tags" active-tags="mod.mod_tags" max-tags="10"></tag-selector>
                         </div>
-                    </a>
-                    <a ng-href="">
-                        <div class="action-box source-box" ng-if="mod.lovers_info">
-                            <img src="/assets/lovers_logo" class="source-image" />
-                        </div>
-                    </a>
-                </section>
+                        <span ng-hide="mod.mod_tags.length" class="explanation">none</span>
+                    </section>
 
-                <!--Requirements-->
-                <h3 ng-if="currentVersion.required_mods.length" class="section-title">Requirements</h3>
-                <section ng-if="currentVersion.required_mods.length">
-                    <ol class="requirements-list">
-                        <li ng-repeat="requirement in requirements">
-                            <a ng-href="#/mod/{{requirement.id}}">
-                                <strong>{{requirement.name}}</strong>
-                            </a>
-                            <span ng-if="requirement.aliases">({{requirement.aliases}})</span>
-                        </li>
-                    </ol>
-                </section>
+                    <!--Nexus Stats-->
+                    <section ng-if="mod.nexus_info" class="stat-block">
+                        <expandable expanded="nexusExpanded" class="remove-caret">
+                                <expanded-title>
+                                    <div class="stat-block-title">
+                                       <span class="section-title">Nexus stats</span>
+                                       <i class="fa fa-plus stat-expander" aria-hidden="true" ng-hide="nexusExpanded"></i>
+                                       <i class="fa fa-minus stat-expander" aria-hidden="true" ng-show="nexusExpanded"></i>
+                                    </div>
+                                </expanded-title>
+                                <content>
+                                    <nexus-block></nexus-block>
+                                </content>
+                        </expandable>
+                    </section>
+                    <section ng-if="mod.workshop_infos" class="stat-block">
+                        <expandable expanded="steamExpanded">
+                                <expanded-title>
+                                    <div class="stat-block-title">
+                                       <span class="section-title">Steam stats</span>
+                                       <i class="fa fa-plus stat-expander" aria-hidden="true" ng-hide="steamExpanded"></i>
+                                       <i class="fa fa-minus stat-expander" aria-hidden="true" ng-show="steamExpanded"></i>
+                                    </div>
+                                </expanded-title>
+                                <content>
+                                    <steam-block></steam-block>
+                                </content>
+                        </expandable>
+                    </section>
+                    <section ng-if="mod.lovers_infos" class="stat-block">
+                        <expandable expanded="loversExpanded">
+                                <expanded-title>
+                                    <div class="stat-block-title">
+                                       <span class="section-title">Lover's Lab stats</span>
+                                       <i class="fa fa-plus stat-expander" aria-hidden="true" ng-hide="loversExpanded"></i>
+                                       <i class="fa fa-minus stat-expander" aria-hidden="true" ng-show="loversExpanded"></i>
+                                    </div>
+                                </expanded-title>
+                                <content>
+                                    <lovers-block></lovers-block>
+                                </content>
+                        </expandable>
+                    </section>
 
-                <!--Categories-->
-                <h3 class="section-title">Categor<span ng-hide="secondCategory">y</span><span ng-show="secondCategory">ies</span></h3>
-                <section>
-                    <div ng-show="mod.primary_category_id" class="action-box">{{firstCategory}}</div>
-                    <div ng-show="mod.secondary_category_id" class="action-box">{{secondCategory}}</div>
-                </section>
-
-                <!--Tags-->
-                <h3 class="section-title">Tags</h3>
-                <section>
-                    <div ng-show="mod.mod_tags.length">
-                        <tag-selector tags="mod.mod_tags" active-tags="mod.mod_tags" max-tags="10"></tag-selector>
-                    </div>
-                    <span ng-hide="mod.mod_tags.length" class="explanation">none</span>
-                </section>
-
-                <!--Nexus Stats-->
-                <section ng-if="mod.nexus_info" class="stat-block">
-                    <expandable expanded="nexusExpanded" class="remove-caret">
-                            <expanded-title>
-                                <div class="stat-block-title">
-                                   <span class="section-title">Nexus stats</span>
-                                   <i class="fa fa-plus stat-expander" aria-hidden="true" ng-hide="nexusExpanded"></i>
-                                   <i class="fa fa-minus stat-expander" aria-hidden="true" ng-show="nexusExpanded"></i>
-                                </div>
-                            </expanded-title>
-                            <content>
-                                <nexus-block></nexus-block>
-                            </content>
-                    </expandable>
-                </section>
-                <section ng-if="mod.workshop_infos" class="stat-block">
-                    <expandable expanded="steamExpanded">
-                            <expanded-title>
-                                <div class="stat-block-title">
-                                   <span class="section-title">Steam stats</span>
-                                   <i class="fa fa-plus stat-expander" aria-hidden="true" ng-hide="steamExpanded"></i>
-                                   <i class="fa fa-minus stat-expander" aria-hidden="true" ng-show="steamExpanded"></i>
-                                </div>
-                            </expanded-title>
-                            <content>
-                                <steam-block></steam-block>
-                            </content>
-                    </expandable>
-                </section>
-                <section ng-if="mod.lovers_infos" class="stat-block">
-                    <expandable expanded="loversExpanded">
-                            <expanded-title>
-                                <div class="stat-block-title">
-                                   <span class="section-title">Lover's Lab stats</span>
-                                   <i class="fa fa-plus stat-expander" aria-hidden="true" ng-hide="loversExpanded"></i>
-                                   <i class="fa fa-minus stat-expander" aria-hidden="true" ng-show="loversExpanded"></i>
-                                </div>
-                            </expanded-title>
-                            <content>
-                                <lovers-block></lovers-block>
-                            </content>
-                    </expandable>
-                </section>
-
-            </div>
-            <div class="right-column">
-                <div class="right-mod-column">
-                    <tabs current-tab="currentTab" tabs="tabs"></tabs>
-                    <div ng-include="currentTab.url" class="mod-tab"></div>
                 </div>
-            </div>
-        </loader>
-    </div>
+                <div class="right-column">
+                    <div class="right-mod-column">
+                    <tabs current-tab="currentTab" tabs="tabs"></tabs>
+                        <div ng-include="currentTab.url" class="mod-tab"></div>
+                    </div>
+                </div>
+            </loader>
+        </div>
+    </loader>
 </two-columns>
