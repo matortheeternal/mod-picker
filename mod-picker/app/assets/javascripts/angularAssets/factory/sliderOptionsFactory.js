@@ -23,7 +23,7 @@ app.service('sliderOptionsFactory', function (sliderFactory) {
 
     this.BaseRangeSlider = function (max, extend) {
         return this.BaseSlider(function (options) {
-            options.max = max;
+            options.max = parseInt(max);
             if(typeof extend === 'function') {
                 extend(options);
             }
@@ -33,7 +33,7 @@ app.service('sliderOptionsFactory', function (sliderFactory) {
     this.CeilSlider = function (ceil, extend) {
         return this.BaseRangeSlider(ceil, function(options) {
             options.options.floor = 0;
-            options.options.ceil = ceil;
+            options.options.ceil = parseInt(ceil);
             if(typeof extend === 'function') {
                 extend(options);
             }
@@ -50,8 +50,8 @@ app.service('sliderOptionsFactory', function (sliderFactory) {
         return this.BaseStepsSlider(sliderFactory.generateDateSteps(start));
     };
 
-    this.StepSlider = function (to) {
-        return this.BaseStepsSlider(sliderFactory.generateSteps(1, to));
+    this.StepSlider = function (max) {
+        return this.BaseStepsSlider(sliderFactory.generateSteps(1, parseInt(max)));
     };
 
     //TODO: make those Dates a provider.value

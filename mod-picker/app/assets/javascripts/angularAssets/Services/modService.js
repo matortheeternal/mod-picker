@@ -3,9 +3,13 @@ app.service('modService', function (backend, $q) {
         return backend.retrieve('/mods/' + modId);
     };
 
-    this.retrieveMods = function (filters) {
+    this.retrieveMods = function (filters, sort) {
         var mods = $q.defer();
-        backend.post('/mods', filters).then(function (data) {
+        var postData =  {
+            filters: filters,
+            sort: sort
+        };
+        backend.post('/mods', postData).then(function (data) {
                 mods.resolve(data);
         });
         return mods.promise;

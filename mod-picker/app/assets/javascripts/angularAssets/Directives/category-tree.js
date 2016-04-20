@@ -11,6 +11,8 @@ app.directive('categoryTree', function () {
 });
 
 app.controller('categoryTreeController', function ($scope, categoryService) {
+    $scope.selection = [];
+
     categoryService.retrieveNestedCategories().then(function (data) {
         $scope.categories = data;
         // add checkbox values to data and fix subcategory names
@@ -23,13 +25,13 @@ app.controller('categoryTreeController', function ($scope, categoryService) {
         });
     });
 
-    $scope.handleSelection = function (target, before) {
-        if (target.value || before) {
+    $scope.handleSelection = function (target) {
+        if (target.value) {
             // handle addition to selection
-            $scope.selection.push(target.name);
+            $scope.selection.push(target.id);
         } else {
             // handle removal from selection
-            var index = $scope.selection.indexOf(target.name);
+            var index = $scope.selection.indexOf(target.id);
             if (index > -1) {
                 $scope.selection.splice(index, 1);
             }
@@ -52,11 +54,11 @@ app.controller('categoryTreeController', function ($scope, categoryService) {
         });
         // all will be unchecked after the action if the user clicked the
         // primary category and all children are checked
-        allUncheckedAfter = allUncheckedAfter || (!secondaryCategory && allChecked);
+        allUncheckedAfter = allUncheckedAfter || (allChecked && secondaryCategory == null);
 
         // handle selection of parent or child
-        if (!secondaryCategory) {
-            $scope.handleSelection(parent, true);
+        if (secondaryCategory == null) {
+            $scope.handleSelection(parent);
             // toggle all childs if allowed
             // if all childs are unchecked, check all of them
             // if all childs are checked, uncheck all of them
@@ -67,8 +69,8 @@ app.controller('categoryTreeController', function ($scope, categoryService) {
                 });
             }
         } else {
-            var child = $scope.categories[secondaryCategory];
-            $scope.handleSelection(child, true);
+            var child = parent.childs[secondaryCategory];
+            $scope.handleSelection(child);
         }
 
         // parent is indeterminate if some childs are checked
@@ -90,6 +92,7 @@ app.controller('categoryTreeController', function ($scope, categoryService) {
     $scope.invertSelection = function () {
         $scope.categories.forEach(function (superCategory) {
             superCategory.value = !superCategory.value;
+            $scope.handleSelection(superCategory);
             superCategory.childs.forEach(function(child) {
                 child.value = !child.value;
                 $scope.handleSelection(child);
