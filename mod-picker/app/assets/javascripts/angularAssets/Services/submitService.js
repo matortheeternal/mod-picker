@@ -8,12 +8,14 @@ app.service('submitService', function (backend, $q) {
         // TODO: Compute CRC32 of plugin files to verify the backend doesn't already have them
     };
 
-    this.submitMod = function (mod, nexus_info, assets, plugins) {
+    this.submitMod = function (mod, nexus_info, asset_file_tree, plugins) {
         // prepare mod record
         mod.name = nexus_info.mod_name;
         mod.game_id = nexus_info.game_id;
         mod.primary_category_id = mod.categories[0];
         mod.secondary_category_id = mod.categories[1];
+        mod.asset_file_tree = asset_file_tree;
+        mod.nexus_info_id = nexus_info.id;
         mod.mod_versions = {
             mod_id: data.id,
             released: nexus_info.date_added,
@@ -27,12 +29,6 @@ app.service('submitService', function (backend, $q) {
 
         // submit mod
         backend.post('/mods/submit', modData).then(function (data) {
-            // update nexus info to link to the mod record
-            nexus_info.mod_id = data.id;
-            backend.update('/nexus_infos/'+nexus_info.id, {nexus_info: nexus_info});
-
-            // TODO: Submit asset file maps
-
             // submit plugins
             for (var i = 0; i < plugins.length; i++) {
                 plugin = plugins[i];
