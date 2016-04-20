@@ -24,4 +24,5 @@ class ModList < ActiveRecord::Base
   has_many :tags, :through => 'mod_list_tags', :inverse_of => 'mod_lists'
 
   has_many :comments, :as => 'commentable'
+  has_one :base_report, :as => 'reportable'
 end
