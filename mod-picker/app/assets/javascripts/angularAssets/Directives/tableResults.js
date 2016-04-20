@@ -8,7 +8,6 @@ app.directive('tableResults', function () {
 });
 
 app.controller('tableResultsController', function($scope) {
-
     // TODO: Less ugly pleease
     $scope.deepValue = deepValue;
 
