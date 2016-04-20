@@ -78,8 +78,20 @@ class Mod < ActiveRecord::Base
     end
   end
 
-  def create_asset_files(asset_file_tree)
-    # TODO
+  def create_asset_files(asset_file_tree, mod_version_id=nil)
+    asset_file_tree.each do |path|
+      asset_file = ModAssetFile.find_or_create_by(filepath: path)
+
+      # find mod version to associate asset files with
+      if mod_version_id.present?
+        mv = self.mod_versions.find_by(mod_version_id)
+      else
+        mv = self.mod_versions.first
+      end
+
+      # associate asset files with mod version
+      mv.asset_files.create(mod_asset_file_id: asset_file.id)
+    end
   end
 
   def show_json
