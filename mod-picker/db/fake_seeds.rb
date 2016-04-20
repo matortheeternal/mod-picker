@@ -67,6 +67,7 @@ def seed_fake_mods
   # Helper vars
   nexusDateFormat = "%d/%m/%Y - %I:%M%p"
   gameSkyrim = Game.where({display_name: "Skyrim"}).first
+  adminUser = User.find_by(:username => 'admin')
 
   # Top recently endorsed mods
   Mod.create(
@@ -75,7 +76,8 @@ def seed_fake_mods
       secondary_category_id: Category.where(name: "Resources - Frameworks").first.id,
       is_utility: false,
       has_adult_content: false,
-      game_id: gameSkyrim.id
+      game_id: gameSkyrim.id,
+      submitted_by: adminUser.id
   )
 
   NexusInfo.create(
@@ -147,7 +149,8 @@ def seed_fake_mods
       primary_category_id: Category.where(name: "Items - Armor, Clothing, & Accessories").first.id,
       is_utility: false,
       has_adult_content: false,
-      game_id: gameSkyrim.id
+      game_id: gameSkyrim.id,
+      submitted_by: adminUser.id
   )
 
   NexusInfo.create(
@@ -183,7 +186,8 @@ def seed_fake_mods
       primary_category_id: Category.where(name: "Audiovisual - Models & Textures").first.id,
       is_utility: false,
       has_adult_content: false,
-      game_id: gameSkyrim.id
+      game_id: gameSkyrim.id,
+      submitted_by: adminUser.id
   )
 
   NexusInfo.create(
@@ -220,7 +224,8 @@ def seed_fake_mods
       secondary_category_id: Category.where(name: "Resources - Frameworks").first.id,
       is_utility: false,
       has_adult_content: false,
-      game_id: gameSkyrim.id
+      game_id: gameSkyrim.id,
+      submitted_by: adminUser.id
   )
 
   NexusInfo.create(
@@ -256,7 +261,8 @@ def seed_fake_mods
       primary_category_id: Category.where(name: "Fixes").first.id,
       is_utility: false,
       has_adult_content: false,
-      game_id: gameSkyrim.id
+      game_id: gameSkyrim.id,
+      submitted_by: adminUser.id
   )
 
   NexusInfo.create(
@@ -292,7 +298,8 @@ def seed_fake_mods
       primary_category_id: Category.where(name: "Utilities - Tools").first.id,
       is_utility: true,
       has_adult_content: false,
-      game_id: gameSkyrim.id
+      game_id: gameSkyrim.id,
+      submitted_by: adminUser.id
   )
 
   NexusInfo.create(
@@ -328,7 +335,8 @@ def seed_fake_mods
       primary_category_id: Category.where(name: "Audiovisual - Models & Textures").first.id,
       is_utility: false,
       has_adult_content: false,
-      game_id: gameSkyrim.id
+      game_id: gameSkyrim.id,
+      submitted_by: adminUser.id
   )
 
   NexusInfo.create(
@@ -365,7 +373,8 @@ def seed_fake_mods
       secondary_category_id: Category.where(name: "Resources - Frameworks").first.id,
       is_utility: true,
       has_adult_content: false,
-      game_id: gameSkyrim.id
+      game_id: gameSkyrim.id,
+      submitted_by: adminUser.id
   )
 
   NexusInfo.create(
@@ -402,7 +411,8 @@ def seed_fake_mods
       primary_category_id: Category.where(name: "Utilities - Tools").first.id,
       is_utility: true,
       has_adult_content: false,
-      game_id: gameSkyrim.id
+      game_id: gameSkyrim.id,
+      submitted_by: adminUser.id
   )
 
   NexusInfo.create(
@@ -438,7 +448,8 @@ def seed_fake_mods
       primary_category_id: Category.where(name: "Items - Armor, Clothing, & Accessories").first.id,
       is_utility: false,
       has_adult_content: false,
-      game_id: gameSkyrim.id
+      game_id: gameSkyrim.id,
+      submitted_by: adminUser.id
   )
 
   NexusInfo.create(
@@ -475,7 +486,8 @@ def seed_fake_mods
       secondary_category_id: Category.where(name: "New Characters").first.id,
       is_utility: false,
       has_adult_content: false,
-      game_id: gameSkyrim.id
+      game_id: gameSkyrim.id,
+      submitted_by: adminUser.id
   )
 
   NexusInfo.create(
@@ -512,7 +524,8 @@ def seed_fake_mods
       secondary_category_id: Category.where(name: "New Characters - Allies").first.id,
       is_utility: false,
       has_adult_content: false,
-      game_id: gameSkyrim.id
+      game_id: gameSkyrim.id,
+      submitted_by: adminUser.id
   )
 
   NexusInfo.create(
@@ -548,7 +561,8 @@ def seed_fake_mods
       primary_category_id: Category.where(name: "Character Appearance - Face Parts").first.id,
       is_utility: false,
       has_adult_content: false,
-      game_id: gameSkyrim.id
+      game_id: gameSkyrim.id,
+      submitted_by: adminUser.id
   )
 
   NexusInfo.create(
@@ -584,7 +598,8 @@ def seed_fake_mods
       primary_category_id: Category.where(name: "Gameplay - Immersion & Role-playing").first.id,
       is_utility: false,
       has_adult_content: false,
-      game_id: gameSkyrim.id
+      game_id: gameSkyrim.id,
+      submitted_by: adminUser.id
   )
 
   NexusInfo.create(
