@@ -63,6 +63,11 @@
 
             <section>
                 <category-tree selection="mod.categories" toggle-all="false"></category-tree>
+                <div id="category-messages">
+                    <span ng-repeat="message in categoryMessages" class="category-message" ng-class="{{message.class}}">
+                        {{message.text}}
+                    </span>
+                </div>
                 <input type="button" id="check-categories-btn" class="btn" ng-click="checkCategories()" value="Check Categories">
             </section>
 

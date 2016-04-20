@@ -16,73 +16,87 @@ form {
   }
 
   #check-categories-btn {
+    display: block;
     margin-top: 6px;
   }
-}
 
-.plugins-upload {
-  width: 500px;
-  height: 300px;
-  border: 1px solid $border_color;
-  background-color: $secondary_background;
-  position: relative;
-  text-align: center;
-
-  .upload-container {
-    .upload-prompt {
+  section {
+    category-tree {
       display: inline-block;
-      margin: 50px 10px;
-      cursor: pointer;
-
-      .img-upload {
-        background-image: image_path("upload-plugin.png");;
-      }
-
-      h4 {
-        color: $text_color;
-      }
     }
   }
 
-  .upload-actions {
-    width: 100%;
-    height: 30px;
-    margin: 8px;
-    position: absolute;
-    bottom: 0;
+  #category-messages {
+    display: inline-block;
+    vertical-align: top;
+    margin-top: 50px;
+    margin-left: 30px;
   }
 
-  .upload-queue {
-    margin: 4px;
-    overflow-y: auto;
-    max-height: 250px;
+  .plugins-upload {
+    width: 500px;
+    height: 300px;
     border: 1px solid $border_color;
+    background-color: $secondary_background;
+    position: relative;
+    text-align: center;
 
-    table {
-      text-align: left;
-      font-size: 13px;
-      width: 100%;
-      box-sizing: border-box;
-      border-collapse: collapse;
-
-      .cancel-item {
+    .upload-container {
+      .upload-prompt {
+        display: inline-block;
+        margin: 50px 10px;
         cursor: pointer;
-        &:hover {
-          color: maroon;
+
+        .img-upload {
+          background-image: image_path("upload-plugin.png");;
+        }
+
+        h4 {
+          color: $text_color;
         }
       }
+    }
 
-      tr:nth-child(2n) {
-        background-color: $secondary_background;
-      }
+    .upload-actions {
+      width: 100%;
+      height: 30px;
+      margin: 8px;
+      position: absolute;
+      bottom: 0;
+    }
 
-      tr:nth-child(2n+1) {
-        background-color: $primary_background;
-      }
+    .upload-queue {
+      margin: 4px;
+      overflow-y: auto;
+      max-height: 250px;
+      border: 1px solid $border_color;
 
-      td, th {
-        padding: 2px;
-        padding-left: 6px;
+      table {
+        text-align: left;
+        font-size: 13px;
+        width: 100%;
+        box-sizing: border-box;
+        border-collapse: collapse;
+
+        .cancel-item {
+          cursor: pointer;
+          &:hover {
+            color: maroon;
+          }
+        }
+
+        tr:nth-child(2n) {
+          background-color: $secondary_background;
+        }
+
+        tr:nth-child(2n+1) {
+          background-color: $primary_background;
+        }
+
+        td, th {
+          padding: 2px;
+          padding-left: 6px;
+        }
       }
     }
   }
