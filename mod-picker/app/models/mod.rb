@@ -65,6 +65,19 @@ class Mod < ActiveRecord::Base
     self.mod_authors.count == 0
   end
 
+  def create_tags(tags)
+    tags.each do |text|
+      tag = Tag.find_by(text: text, game_id: self.game_id)
+      # create tag if we couldn't find it
+      if tag.nil?
+        tag = Tag.create(text: text, game_id: self.game_id, submitted_by: self.submitted_by)
+      end
+
+      # associate tag with mod
+      self.mod_tags.create(tag_id: tag.id, submitted_by: self.submitted_by)
+    end
+  end
+
   def show_json
     self.as_json(:include => {
         :mod_versions => {
