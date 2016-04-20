@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160418193130) do
+ActiveRecord::Schema.define(version: 20160419225524) do
 
   create_table "agreement_marks", id: false, force: :cascade do |t|
     t.integer "incorrect_note_id", limit: 4
@@ -31,6 +31,13 @@ ActiveRecord::Schema.define(version: 20160418193130) do
   end
 
   add_index "articles", ["submitted_by"], name: "fk_rails_ea02c233bd", using: :btree
+
+  create_table "base_reports", force: :cascade do |t|
+    t.integer  "reportable_id",   limit: 4,   null: false
+    t.string   "reportable_type", limit: 255, null: false
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
+  end
 
   create_table "categories", force: :cascade do |t|
     t.integer "parent_id",   limit: 4
@@ -529,6 +536,18 @@ ActiveRecord::Schema.define(version: 20160418193130) do
 
   add_index "record_groups", ["game_id", "signature"], name: "index_record_groups_on_game_id_and_signature", unique: true, using: :btree
 
+  create_table "reports", force: :cascade do |t|
+    t.integer  "base_report_id", limit: 4,   null: false
+    t.integer  "submitted_by",   limit: 4,   null: false
+    t.integer  "type",           limit: 1,   null: false
+    t.string   "note",           limit: 128
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
+  end
+
+  add_index "reports", ["base_report_id"], name: "fk_rails_619eb511d7", using: :btree
+  add_index "reports", ["submitted_by"], name: "fk_rails_41fbf0e712", using: :btree
+
   create_table "reputation_links", id: false, force: :cascade do |t|
     t.integer "from_rep_id", limit: 4
     t.integer "to_rep_id",   limit: 4
@@ -780,6 +799,8 @@ ActiveRecord::Schema.define(version: 20160418193130) do
   add_foreign_key "plugins", "mod_versions", name: "plugins_ibfk_1"
   add_foreign_key "quotes", "games"
   add_foreign_key "record_groups", "games"
+  add_foreign_key "reports", "base_reports"
+  add_foreign_key "reports", "users", column: "submitted_by"
   add_foreign_key "reputation_links", "user_reputations", column: "from_rep_id", name: "reputation_links_ibfk_1"
   add_foreign_key "reputation_links", "user_reputations", column: "to_rep_id", name: "reputation_links_ibfk_2"
   add_foreign_key "review_templates", "users", column: "submitted_by"

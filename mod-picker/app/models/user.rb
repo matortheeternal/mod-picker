@@ -51,6 +51,8 @@ class User < ActiveRecord::Base
   has_many :starred_mod_lists, :through => 'mod_list_stars', :inverse_of => 'user_stars'
 
   has_many :profile_comments, :class_name => 'Comment', :as => 'commentable'
+  has_many :reports, :inverse_of => 'user'
+  has_one :base_report, :as => 'reportable'
 
   accepts_nested_attributes_for :settings
   accepts_nested_attributes_for :bio
