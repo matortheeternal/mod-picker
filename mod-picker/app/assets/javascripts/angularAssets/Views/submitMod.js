@@ -39,26 +39,33 @@ app.controller('submitModController', function ($scope, backend, submitService, 
         $scope.categoryPriorities = data;
     });
 
+    categoryService.retrieveCategories().then(function (data) {
+        $scope.categories = data;
+    });
+
     $scope.getDominantIds = function(recessiveId) {
         var dominantIds = [];
-        $scope.categoryPriorities.forEach(function(priority) {
-            if (priority.recessiveId == recessiveId) {
-                dominantIds.push(priority.dominantId);
+        for (var i = 0; i < $scope.categoryPriorities.length; i++) {
+            var priority = $scope.categoryPriorities[i];
+            if (priority.recessive_id == recessiveId) {
+                dominantIds.push(priority.dominant_id);
             }
-        });
+        }
         return dominantIds;
     };
 
     $scope.getCategoryPriority = function(recessiveId, dominantId) {
-        $scope.categoryPriorities.find(function(categoryPriority) {
-            return categoryPriority.recessiveId == recessiveId &&
-                   categoryPriority.dominantId == dominantId
-        })
+        for (var i = 0; i < $scope.categoryPriorities.length; i++) {
+            var priority = $scope.categoryPriorities[i];
+            if (priority.recessive_id == recessiveId &&
+                priority.dominant_id == dominantId)
+                return priority;
+        }
     };
 
     $scope.createPriorityMessage = function(recessiveId, dominantId) {
-        recessiveCategory = categoryService.getCategory(recessiveId);
-        dominantCategory = categoryService.getCategory(dominantId);
+        recessiveCategory = categoryService.getCategoryById($scope.categories, recessiveId);
+        dominantCategory = categoryService.getCategoryById($scope.categories, dominantId);
         categoryPriority = $scope.getCategoryPriority(recessiveId, dominantId);
         messageText = dominantCategory.name + " > " + recessiveCategory.name + "\n" + categoryPriority.description;
         $scope.categoryMessages.push({
@@ -78,7 +85,33 @@ app.controller('submitModController', function ($scope, backend, submitService, 
                 }
             });
         });
+        if ($scope.mod.categories.length > 2) {
+            $scope.categoryMessages.push({
+                text: "You have too many categories selected. \nThe maximum number of categories allowed is 2.",
+                klass: "cat-error-message"
+            });
+        } else if ($scope.mod.categories.length == 0) {
+            $scope.categoryMessages.push({
+                text: "You must select at least one category.",
+                klass: "cat-error-message"
+            });
+        } else if ($scope.categoryMessages.length == 0) {
+            $scope.categoryMessages.push({
+                text: "Categories look good!",
+                klass: "cat-success-message"
+            });
+        }
     };
+
+    // clear messages when user changes the category
+    $scope.$watch('mod.categories', function() {
+        if ($scope.categoryMessages && $scope.categoryMessages.length == 1) {
+            if ($scope.categoryMessages[0].klass == "cat-error-message" ||
+                $scope.categoryMessages[0].klass == "cat-success-message") {
+                $scope.categoryMessages = [];
+            }
+        }
+    }, true);
 
     /* asset file tree */
     $scope.changeAssetTree = function(event) {
