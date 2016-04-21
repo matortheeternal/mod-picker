@@ -17,7 +17,51 @@
 		{{mod.average_review}}
 	</div>
 
-	<input class="mod-tab-action btn" type="submit" value="Add Note" ng-click="submit()"/>
+	<div class="mod-tab-action">
+		<input class="btn mod-page-btn" type="submit" value="Add Load Order Note" ng-click="submit()"/>
+	</div>
+</div>
+
+<div class="add-note-box">
+	<h3 class="section-title">Add Review</h3>
+	<section>
+		<div>
+			Review Template:
+		</div>
+		<div>
+	        <select ng-model="currentTemplate" ng-change="updateReviewTemplate(currentTemplate)" ng-options="review_template as review_template.name for review_template in review_templates" class="review-template-dropdown"></select>
+        </div>
+	</section>
+	<section>
+		<div>
+			{{currentTemplate.section1}}
+			<input type="text" placeholder="8.5" ng-model="newReview.rating1">
+		</div>
+		<div ng-if="currentTemplate.section2">
+			{{currentTemplate.section2}}
+			<input type="text" placeholder="8.5" ng-model="newReview.rating2">
+		</div>
+		<div ng-if="currentTemplate.section3">
+			{{currentTemplate.section3}}
+			<input type="text" placeholder="8.5" ng-model="newReview.rating3">
+		</div>
+		<div ng-if="currentTemplate.section4">
+			{{currentTemplate.section4}}
+			<input type="text" placeholder="8.5" ng-model="newReview.rating4">
+		</div>
+		<div ng-if="currentTemplate.section5">
+			{{currentTemplate.section5}}
+			<input type="text" placeholder="8.5" ng-model="newReview.rating5">
+		</div>
+	</section>
+	<section>
+		Overall:
+		{{findAverageRating([newReview.rating1, newReview.rating2, newReview.rating3, newReview.rating4, newReview.rating5])}}
+	</section>
+
+	<text-area data="newReview.text_body"></text-area>
+
+	<input class="btn mod-page-btn" type="submit" value="Submit" ng-click="createCompatibilityNote()"/>
 </div>
 
 <div ng-repeat="compatibility_note in mod.compatibility_notes" class="compatibility-notes">
