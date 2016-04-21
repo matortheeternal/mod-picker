@@ -33,6 +33,17 @@ form {
     margin-left: 30px;
   }
 
+  .file-tree-container {
+    max-height: 300px;
+    max-width: 600px;
+    overflow-y: auto;
+    margin-bottom: 10px;
+    ul {
+      list-style: none;
+      padding-left: 10px;
+    }
+  }
+
   .plugins-upload {
     width: 500px;
     height: 300px;

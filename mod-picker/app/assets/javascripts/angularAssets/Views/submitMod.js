@@ -9,7 +9,6 @@ app.config(['$routeProvider', function ($routeProvider) {
 app.controller('submitModController', function ($scope, backend, submitService, categoryService) {
     // initialize variables
     $scope.mod = {};
-    $scope.assetTree = [];
 
     /* scraping */
     $scope.nexusScraped = false;
@@ -90,13 +89,14 @@ app.controller('submitModController', function ($scope, backend, submitService, 
     };
 
     $scope.browseAssetTree = function() {
-        document.getElementById('archive-input').click();
+        document.getElementById('assets-input').click();
     };
 
     $scope.loadAssetTree = function(file) {
         var fileReader = new FileReader();
         fileReader.onload = function (event) {
-            $scope.assetTree = JSON.parse(event.target.result);
+            $scope.assets = JSON.parse(event.target.result).assets;
+            $scope.$apply();
         };
         fileReader.readAsText(file);
     };

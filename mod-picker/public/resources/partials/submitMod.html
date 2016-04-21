@@ -93,13 +93,18 @@
 
             <h3 class="section-title">Asset File Map</h3>
             <section>
-                <div ng-show="assetMap">
-                    <h4 class="section-title">File Tree</h4>
-                    <asset-file-tree data="assetTree"></asset-file-tree>
+                <div ng-show="assets">
+                    <h4 class="subtitle">File Tree</h4>
+                    <div class="file-tree-container">
+                        <ul>
+                            <li ng-repeat="asset in assets">{{asset}}</li>
+                        </ul>
+                    </div>
+                    <asset-file-tree data="assets"></asset-file-tree>
                 </div>
 
                 <label>
-                    <input id="archive-input" type="file" file-change="changeAssetTree" accept=".json">
+                    <input id="assets-input" type="file" file-change="changeAssetTree" accept=".json">
                     <input type="button" class="btn" ng-click="browseAssetTree()" value="Browse">
                 </label>
             </section>
