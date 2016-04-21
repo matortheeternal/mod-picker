@@ -64,9 +64,8 @@
             <section>
                 <category-tree selection="mod.categories" toggle-all="false"></category-tree>
                 <div id="category-messages">
-                    <span ng-repeat="message in categoryMessages" class="category-message" ng-class="{{message.klass}}">
-                        {{message.text}}
-                    </span>
+                    <div ng-repeat="message in categoryMessages" class="category-message"
+                         ng-class="message.klass">{{message.text}}</div>
                 </div>
                 <input type="button" id="check-categories-btn" class="btn" ng-click="checkCategories()" value="Check Categories">
             </section>
@@ -91,7 +90,13 @@
                 <span class="help-tooltip" title="In this context, adult content is classified as nudity or &#13;depictions of sexual acts.">?</span>
             </section>
 
-            <h3 class="section-title">Asset File Map</h3>
+            <h3 class="section-title">
+                Asset Files
+                <!-- temporary github link, should link to a help page -->
+                <a href="http://github.com/matortheeternal/mod-asset-mapper">
+                    <span class="help-tooltip" title="Submitting a mod requires uploading an asset file tree which &#13;allows Mod Picker to detect asset conflicts between mods.  An &#13;asset file tree can be generated with the Mod Asset Mapper.  You &#13;can click here for more information and download links.">?</span>
+                </a>
+            </h3>
             <section>
                 <div ng-show="assets">
                     <h4 class="subtitle">File Tree</h4>
