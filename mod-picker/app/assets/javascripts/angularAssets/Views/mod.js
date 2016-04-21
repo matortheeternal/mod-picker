@@ -38,7 +38,7 @@ app.controller('modController', function ($scope, $q, $routeParams, modService, 
             $scope.game = "fallout4";
         }
 
-        //find data for the required mods
+        //set initial data specific to the version
         $scope.updateVersion($scope.currentVersion);
 
     });
