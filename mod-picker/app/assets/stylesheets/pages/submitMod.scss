@@ -31,6 +31,23 @@ form {
     vertical-align: top;
     margin-top: 50px;
     margin-left: 30px;
+    width: 500px;
+    text-align: center;
+
+    .category-message {
+      padding: 4px;
+      width: 100%;
+      white-space: pre-line;
+    }
+    .priority-message {
+      background-color: $warning_message_color;
+    }
+    .cat-error-message {
+      background-color: $error_message_color;
+    }
+    .cat-success-message {
+      background-color: $success_message_color;
+    }
   }
 
   .file-tree-container {
