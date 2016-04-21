@@ -1,6 +1,16 @@
 //TODO: maybe we should think about splitting the logic to retrieve all the data and filtering it.
 app.service('categoryService', function ($q, backend) {
 
+    this.retrieveCategories = function() {
+        var categories = $q.defer();
+
+        backend.retrieve('/categories', {cache: true}).then(function (data) {
+            categories.resolve(data);
+        });
+
+        return categories.promise;
+    };
+
     function retrieveFilteredCategories(key) {
         var categories = $q.defer();
 
@@ -30,14 +40,13 @@ app.service('categoryService', function ($q, backend) {
         return categoryPriorities.promise;
     };
 
-    this.getCategoryById = function(id) {
-        var categoryPromise = $q.defer();
-        backend.retrieve('/categories', {cache: true}).then(function (categories) {
-             categoryPromise.resolve(categories.find(function (category) {
-                 return category.id === id;
-             }));
-        });
-        return categoryPromise.promise;
+    this.getCategoryById = function(categories, id) {
+        for (var i = 0; i < categories.length; i++) {
+            var category = categories[i];
+            if (category.id == id) {
+                return category;
+            }
+        }
     };
 
     this.retrievePrimaryCategory = function () {
