@@ -86,4 +86,17 @@ app.controller('modController', function ($scope, $q, $routeParams, modService, 
             });
         });
     };
+
+    //finding the average without counting null values
+    $scope.findAverageRating = function(ratings) {
+        ratings.filter(function(rating) {
+            return rating !== null;
+        });
+
+        var sum = 0;
+        ratings.forEach(function(rating) {
+            sum += rating;
+        });
+        return sum/ratings.length;
+    };
 });
