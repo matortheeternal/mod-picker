@@ -2,12 +2,12 @@
  * Created by Sirius on 3/25/2016.
  */
 
-app.directive('versionSelector', function () {
+app.directive('versionBoxes', function () {
     return {
     	transclude: true,
         restrict: 'E',
-        templateUrl: '/resources/directives/versionSelector.html',
-        controller: 'versionSelectorController',
+        templateUrl: '/resources/directives/versionBoxes.html',
+        controller: 'versionBoxesController',
         scope: {
         	versions: '=',
             selectedVersions: '='
@@ -15,7 +15,7 @@ app.directive('versionSelector', function () {
     }
 });
 
-app.controller('versionSelectorController', function ($scope) {
+app.controller('versionBoxesController', function ($scope) {
     $scope.selectedVersions = [];
     $scope.addToSelected = function(version, checked) {
         if (checked) {
