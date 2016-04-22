@@ -12,6 +12,7 @@ class ReviewsController < HelpfulableController
   # GET /reviews/1
   # GET /reviews/1.json
   def show
+    authorize! :read, @review
     render :json => @review
   end
 
@@ -19,6 +20,7 @@ class ReviewsController < HelpfulableController
   # POST /reviews.json
   def create
     @review = Review.new(review_params)
+    authorize! :create, @review
 
     if @review.save
       render json: {status: :ok}
@@ -30,6 +32,7 @@ class ReviewsController < HelpfulableController
   # PATCH/PUT /reviews/1
   # PATCH/PUT /reviews/1.json
   def update
+    authorize! :update, @review
     if @review.update(review_params)
       render json: {status: :ok}
     else
@@ -40,6 +43,7 @@ class ReviewsController < HelpfulableController
   # DELETE /reviews/1
   # DELETE /reviews/1.json
   def destroy
+    authorize! :destroy, @review
     if @review.destroy
       render json: {status: :ok}
     else

@@ -3,7 +3,7 @@ require 'rails_helper'
 # create_table "mod_lists", force: :cascade do |t|
 #     t.integer  "created_by",                limit: 4
 #     t.boolean  "is_collection"
-#     t.boolean  "is_public"
+#     t.boolean  "hidden"
 #     t.boolean  "has_adult_content"
 #     t.integer  "status",                    limit: 1,     default: 0, null: false
 #     t.datetime "created"
@@ -26,7 +26,7 @@ require 'rails_helper'
 
 RSpec.describe ModList, :model, :wip do
 
-  fixtures :mod_lists, :users, :mod_versions
+  fixtures :mod_lists, :users, :mod_versions, :games, :categories, :mods
 
   it "should have a valid factory" do
     expect( create(:mod_list) ).to be_valid
@@ -58,23 +58,23 @@ RSpec.describe ModList, :model, :wip do
       end
     end
 
-    describe "is_public" do
+    describe "hidden" do
       it "should be valid if true or false" do
-        expect(build(:mod_list, is_public: true)).to be_valid
-        expect(build(:mod_list, is_public: false)).to be_valid
+        expect(build(:mod_list, hidden: true)).to be_valid
+        expect(build(:mod_list, hidden: false)).to be_valid
       end
 
       it "should be invalid if empty or nil" do
-        list = build(:mod_list, is_public: nil)
+        list = build(:mod_list, hidden: nil)
 
         list.valid?
-        expect(list.errors[:is_public]).to include("must be true or false")
+        expect(list.errors[:hidden]).to include("must be true or false")
       end
 
-      it "should default to false" do
+      it "should default to true" do
         list = create(:mod_list)
 
-        expect(list.is_public).to eq(false)
+        expect(list.hidden).to eq(true)
       end
     end
 
@@ -169,6 +169,7 @@ RSpec.describe ModList, :model, :wip do
       let!(:list) {mod_lists(:plannedVanilla)}
 
       it "should increment comment counter by 1 when new comment is made" do
+        # Basic working example without the expect proc
         # c1 = list.comments.create(attributes_for(:comment, submitted_by: users(:madoka).id))
         # expect(c1).to be_valid
         # # puts c1.commentable.comments_count
@@ -177,14 +178,18 @@ RSpec.describe ModList, :model, :wip do
 
         expect { 
           # attributes_for only provides the attributes for a factory WITHOUT the associations.
-          list.comments.create(attributes_for(:comment, submitted_by: users(:madoka).id))
+          list.comments.create(attributes_for(:comment, 
+            submitted_by: users(:madoka).id))
+
           list.reload
         }.to change { list.comments_count }.by(1)
       end
 
       it "should decrement the comment counter by 1 if a comment is deleted" do
-        comment = list.comments.create(attributes_for(:comment, submitted_by: users(:madoka).id))
-        # need to reload between creation/destruction?
+        comment = list.comments.create(attributes_for(:comment, 
+          submitted_by: users(:madoka).id))
+
+        # need to reload between creation/destruction
         list.reload
 
         # list.reload
@@ -201,33 +206,176 @@ RSpec.describe ModList, :model, :wip do
     end
 
     describe "plugins_count" do
-      # mod list fixture
       let!(:list) {mod_lists(:plannedVanilla)}
 
-      xit "should increment comment counter by 1 when new comment is made" do
+      it "should increment plugin counter by 1 when new plugin is made" do
+        expect(list.plugins_count).to eq(0)
 
-        c1 = list.plugins.create(
-          attributes_for(:plugin, mod_version_id: mod_versions(:SkyUI_1_0).id))
+        # Attributes for mod version are provided because associations aren't done
+        # when using FactoryGirl's attributes_for
+        expect { 
+          list.plugins.create(
+            attributes_for(:plugin, 
+              mod_version_id: mod_versions(:SkyUI_1_0).id))
 
-        # expect(c1).to be_valid
-        # list.reload
-        # expect(list.plugins_count).to eq(1)
-
-        # expect { 
-        #   list.plugins.create(attributes_for(:plugin))
-        #   list.reload
-        # }.to change { list.comments_count }.by(1)
+          list.reload
+          expect(list.plugins_count).to eq(1)
+        }.to change { list.plugins_count }.by(1)
       end
 
-      xit "should decrement the comment counter by 1 if a comment is deleted" do
-        plugin = list.plugins.create(
-          attributes_for(:plugin, mod_version_id: mod_versions(:SkyUI_1_0).id))
-        list.reload
+      it "should decrement the plugin counter by 1 if a plugin is deleted" do
+        plugin = list.plugins.create(attributes_for(:plugin,
+          mod_version_id: mod_versions(:SkyUI_1_0).id))
 
         expect {
           list.plugins.destroy(plugin.id)
           list.reload
         }.to change { list.plugins_count }.by(-1)
+      end
+    end
+
+    describe "mods_count" do
+      let!(:list) {mod_lists(:plannedVanilla)}
+
+      it "should increment mods counter by 1 when new mod is made" do
+        expect(list.mods_count).to eq(0)
+
+        expect { 
+          list.mods.create(attributes_for(:mod, 
+              game_id: games(:skyrim).id, primary_category_id: categories(:catGameplay).id))
+
+          list.reload
+          expect(list.mods_count).to eq(1)
+        }.to change { list.mods_count }.by(1)
+      end
+
+      it "should decrement the mods counter by 1 if a mod is deleted" do
+        mod = list.mods.create(attributes_for(:mod, 
+          game_id: games(:skyrim).id, primary_category_id: categories(:catGameplay).id))
+
+        expect {
+          list.mods.destroy(mod.id)
+          list.reload
+        }.to change { list.mods_count }.by(-1)
+      end
+    end
+
+    describe "custom_plugins_count" do
+      let!(:list) {mod_lists(:plannedVanilla)}
+
+      it "should increment custom_plugins counter by 1 when new custom plugin is made" do
+        expect(list.custom_plugins_count).to eq(0)
+
+        expect {
+          list.custom_plugins.create(attributes_for(:mod_list_custom_plugin, 
+            mod_list_id: list.id))
+
+          list.reload
+          expect(list.custom_plugins_count).to eq(1)
+        }.to change { list.custom_plugins_count }.by(1)
+      end
+
+      it "should decrement the custom_plugins counter by 1 if a custom plugin is deleted" do
+        custom = list.custom_plugins.create(attributes_for(:mod_list_custom_plugin, 
+          mod_list_id: list.id))
+
+        expect {
+          list.custom_plugins.destroy(custom.id)
+          list.reload
+        }.to change { list.custom_plugins_count }.by(-1)
+      end
+    end
+
+    describe "compatibility_notes_count" do
+      let!(:list) {mod_lists(:plannedVanilla)}
+
+      it "should increment compatibility_notes counter by 1 when new compatibility note is made" do
+        expect(list.compatibility_notes_count).to eq(0)
+
+        # This implementation allows validation of BOTH mod_list_id and compatibility_note_id on
+        # the mod_list_compatibility_notes model.
+        # Unsure if the intended behavior is to invalidate creations of compatibiltiy notes
+        # through the mod_list though.
+        expect{
+          note = create(:compatibility_note)
+
+          comp = list.mod_list_compatibility_notes.create(
+            mod_list_id: list.id, 
+            compatibility_note_id: note.id)
+
+          expect(comp).to be_valid
+
+          # puts "ID NUMBERS==="
+
+          # puts list.mod_list_compatibility_notes.last.compatibility_note_id # Equal V
+          # puts note.mod_list_compatibility_notes.last.compatibility_note_id #   Equal |
+          # puts note.id                                                      #   Equal ^
+          # puts "==========="
+          # puts list.id                                          # Equal V
+          # puts note.mod_list_compatibility_notes.last.mod_list_id # Equal ^
+
+          expect(list.compatibility_notes_count).to eq(1)
+        }.to change { list.compatibility_notes_count}.by(1)
+      end
+
+      it "should decrement the compatibility_notes counter by 1 if a compatibility note is deleted" do
+        note = create(:compatibility_note)
+
+        comp_note = list.mod_list_compatibility_notes.create(
+          mod_list_id: list.id, 
+          compatibility_note_id: note.id)
+
+        expect(list.compatibility_notes_count).to eq(1)
+
+        expect{
+          list.compatibility_notes.destroy(note.id)
+
+          list.reload
+          expect(list.compatibility_notes_count).to eq(0)
+        }.to change { list.compatibility_notes_count}.by(-1)
+      end
+    end
+
+    describe "install_order_notes_count" do
+      let!(:list) {mod_lists(:plannedVanilla)}
+
+      it "should increment install_order_notes counter by 1 when new install order note is made" do
+        expect(list.install_order_notes_count).to eq(0)
+
+        expect{
+          note = create(:install_order_note,
+            submitted_by: users(:homura).id,
+            install_first: mods(:Apocalypse).id,
+            install_second: mods(:SkyRE).id)
+
+          expect(note).to be_valid
+
+          list.mod_list_install_order_notes.create(
+            mod_list_id: list.id,
+            install_order_note_id: note.id)
+
+          expect(list.install_order_notes_count).to eq(1)
+        }.to change { list.install_order_notes_count}.by(1)
+      end
+
+      it "should decrement the install_order_notes counter by 1 if a install order note is deleted" do
+        note = create(:install_order_note, 
+          submitted_by: users(:homura).id,
+          install_first: mods(:Apocalypse).id,
+          install_second: mods(:SkyRE).id)
+
+        install_note = list.mod_list_install_order_notes.create(
+          mod_list_id: list.id, 
+          install_order_note_id: note.id)
+
+        expect(list.install_order_notes_count).to eq(1)
+
+        expect{
+          list.install_order_notes.destroy(note.id)
+
+          list.reload
+          expect(list.install_order_notes_count).to eq(0)
+        }.to change { list.install_order_notes_count}.by(-1)
       end
     end
   end

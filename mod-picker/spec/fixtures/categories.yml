@@ -243,22 +243,22 @@ superCatItems: &superItems
   description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptas soluta consequatur enim mollitia reiciendis quisquam nostrum doloremque blanditiis voluptatum dignissimos delectus voluptates ea ullam placeat nisi corrupti a doloribus beatae."
 
 subCatItemsArmorClothingAccess:
-  <<: *superItems)
+  <<: *superItems
   name: "Items - Armor Clothing & Accessories"
   description: "Mods that add items that can be worn in the major biped slots.  This includes armor clothing jewelry cloaks bags etc."
 
 subCatItemsIngestibles:
-  <<: *superItems)
+  <<: *superItems
   name: "Items - Ingestibles"
   description: "Mods that add items you can eat or drink.  This includes alchemical ingredients."
 
 subCatItemsToolsAndClutter:
-  <<: *superItems)
+  <<: *superItems
   name: "Items - Tools & Clutter"
   description: "Mods that add items that cannot be worn ingested or used as a weapon."
 
 subCatItemsWeapons:
-  <<: *superItems)
+  <<: *superItems
   name: "Items - Weapons"
   description: "Mods that that add sticks you can stab squish or shoot people with."
 
