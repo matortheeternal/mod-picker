@@ -1,4 +1,48 @@
-	
+@mixin flexbox() {
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+}
+
+@mixin flex($values) {
+  -webkit-box-flex: $values;
+  -moz-box-flex:  $values;
+  -webkit-flex:  $values;
+  -ms-flex:  $values;
+  flex:  $values;
+}
+
+@mixin order($val) {
+  -webkit-box-ordinal-group: $val;  
+  -moz-box-ordinal-group: $val;     
+  -ms-flex-order: $val;     
+  -webkit-order: $val;  
+  order: $val;
+}
+
+
+
+.author-block {
+	display: table-cell;
+	border: 1px solid black;
+	width: 164px;
+	min-height: 100%;
+	padding-top: 30px;
+	text-align: center;
+}
+.author-image {
+	margin-left: 30%;
+	width: 64px;
+	height: 64px;
+	background-color: $secondary_background;
+}
+.author-name {
+	font-size: 13px;
+	font-weight: 500;
+}
+
 .modpage-view {
 		width: 922px;
 		white-space: nowrap;
@@ -132,11 +176,11 @@
 	.detail-link-block {
 		width: 50%;
 		display: inline-block;
+		padding-top:10px;
+		padding-bottom:5px;
 	}
 
 	.detail-links {
-		padding-top:10px;
-		padding-bottom:5px;
 		display: inline-block;
 		vertical-align: bottom;
 	}
@@ -166,6 +210,89 @@
 	}
 
 }
+
+
+.modpage-view-2
+{
+	
+	.right-container {
+		display:table-cell;
+		vertical-align: top;
+	}
+
+	.inote-block {
+		margin: 0;
+		padding: 0;
+	  @include flexbox();
+	  
+	  webkit-flex-direction: row;
+	  flex-direction: row;
+	  flex-wrap: wrap;
+	  justify-content: center;
+	  align-items: center;
+	  align-content: center;
+	  width: 757px;
+	  border: 1px solid black;
+	  border-left: 0;
+	  border-right: 0;
+	  .item {
+	  	@include flex(1);
+	  	@include order(2);
+	  	border: 1px solid black;
+	  	min-height: 45px;
+	  	flex-basis: auto;
+	  	border-bottom: 0;
+	  	border-left: 0;
+		}
+
+		.note-title-block {
+			@extend .item;
+			background-color: $secondary_background;
+			border-top: 0;
+			width: 100%;
+		}
+
+		.mod-title-block {
+			@extend .item;
+			width: 50%
+		}
+
+		.note-details-block {
+			@extend .item;
+			width: 100%;
+			padding: 20px;
+		}
+
+		.detail-options-block {
+			@extend .item;
+			width: 25%;
+			border-right:0;
+			border-top: 0;
+			padding-top: 10px;
+			text-align: center;
+			a {
+				display: inline-block;
+			}
+		}
+
+		.detail-helpful-block {
+			@extend .item;
+			width: 50%;
+			border-top: 0;
+			padding-top: 10px;
+			text-align: center;
+
+			span {
+				display: inline-block;
+				padding-left: 20px;
+				padding-right: 20px;
+			}
+		}
+
+
+	}
+}
+
 
 
 
