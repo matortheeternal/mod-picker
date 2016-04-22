@@ -14,6 +14,7 @@ class Review < ActiveRecord::Base
   
   has_many :helpful_marks, :as => 'helpfulable'
   has_many :incorrect_notes, :as => 'correctable'
+  has_one :base_report, :as => 'reportable'
 
   private
     def increment_counter_caches

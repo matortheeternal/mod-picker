@@ -18,16 +18,23 @@ app.directive('tagSelector', function () {
 });
 
 app.controller('tagSelectorController', function ($scope) {
+    $scope.rawNewTags = [];
+
     $scope.addTag = function() {
-        if ($scope.newTags.length < $scope.maxTags) {
-            $scope.newTags.push({
-                text: "Test",
-                mods_count: 0
+        if ($scope.rawNewTags.length < $scope.maxTags) {
+            $scope.rawNewTags.push({
+                text: "Test", //TODO: replace with something else
+                mods_count: 0,
+                mod_lists_count: 0
             });
         }
     };
     $scope.focusText = function ($event) {
         $event.target.select();
+    };
+    $scope.removeTag = function($index) {
+        $scope.rawNewTags.splice($index, 1);
+        $scope.storeTags();
     };
     $scope.handleTagKey = function ($event, $index) {
         var key = $event.keyCode;
@@ -38,8 +45,15 @@ app.controller('tagSelectorController', function ($scope) {
         // pressing escape or delete deletes the tag
         // pressing backspace when the tag is empty also deletes the tag
         if (((key == 27) || (key == 46)) || ((key == 8) && (len == 0))) {
-            $scope.newTags.splice($index, 1);
+            $scope.removeTag($index);
             $event.preventDefault();
+        }
+    };
+    $scope.storeTags = function() {
+        $scope.newTags = [];
+        for (var i = 0; i < $scope.rawNewTags.length; i++) {
+            rawTag = $scope.rawNewTags[i];
+            $scope.newTags.push(rawTag.text);
         }
     };
 });

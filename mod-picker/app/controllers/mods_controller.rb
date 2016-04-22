@@ -4,7 +4,7 @@ class ModsController < ApplicationController
   # GET /mods
   # GET /mods.json
   def index
-    @mods = Mod.filter(filtering_params)
+    @mods = Mod.includes(:nexus_infos).filter(filtering_params).sort(params[:sort])
 
     render :json => @mods
   end
@@ -80,12 +80,12 @@ class ModsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_mod
-      @mod = Mod.joins(:nexus_info, :mod_versions).find(params[:id])
+      @mod = Mod.joins(:nexus_infos, :mod_versions).find(params[:id])
     end
     
     # Params we allow filtering on
     def filtering_params
-      params.slice(:search, :tags, :adult, :game, :category, :stars, :reviews, :versions, :released, :updated, :endorsements, :tdl, :udl, :views, :posts, :videos, :images, :files, :articles);
+      params[:filters].slice(:search, :author, :categories, :tags, :adult, :game, :stars, :reviews, :versions, :released, :updated, :endorsements, :tdl, :udl, :views, :posts, :videos, :images, :files, :articles);
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

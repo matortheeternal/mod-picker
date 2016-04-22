@@ -10,7 +10,9 @@ class Comment < ActiveRecord::Base
   scope :by, -> (id) { where(submitted_by: id) }
 
   belongs_to :user, :foreign_key => 'submitted_by', :inverse_of => 'comments'
+
   belongs_to :commentable, :polymorphic => true #,:counter_cache => true
+  has_one :base_report, :as => 'reportable'
 
   # parent/child comment association
   belongs_to :parent, :class_name => 'Comment', :foreign_key => 'parent_comment', :inverse_of => 'children'

@@ -3,6 +3,7 @@
         <span class="tag-text">
             {{tag.text}}
         </span>
+        <!-- TODO: replace ng-if with ng-show / ng-hide -->
         <span ng-if="showModsCount" class="tag-count" title="The number of mods with this tag">
             {{tag.mods_count | number}}
         </span>
@@ -13,9 +14,9 @@
             <i class="fa fa-times"></i>
         </span>
     </span>
-    <span ng-repeat="tag in newTags" class="edit-tag-box">
+    <span ng-repeat="tag in rawNewTags" class="edit-tag-box">
         <span class="tag-text">
-            <input type="text" ng-model="tag.text" ng-keydown="handleTagKey($event, $index)" ng-click="focusText($event)" auto-select="$last" pu-elastic-input/>
+            <input type="text" ng-model="tag.text" ng-keydown="handleTagKey($event, $index)" ng-click="focusText($event)" ng-blur="storeTags()" auto-select="$last" pu-elastic-input/>
         </span>
         <span ng-if="showModsCount" class="tag-count" title="The number of mods with this tag">
             {{tag.mods_count | number}}
@@ -23,7 +24,7 @@
         <span ng-if="showModListsCount" class="tag-count" title="The number of mod lists with this tag">
             {{tag.mod_lists_count | number}}
         </span>
-        <span class="remove-tag" ng-click="newTags.splice($index, 1)">
+        <span class="remove-tag" ng-click="removeTag($index)">
             <i class="fa fa-times"></i>
         </span>
     </span>

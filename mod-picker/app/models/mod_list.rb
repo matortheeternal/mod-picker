@@ -27,6 +27,7 @@ class ModList < ActiveRecord::Base
   has_many :tags, :through => 'mod_list_tags', :inverse_of => 'mod_lists'
 
   has_many :comments, :as => 'commentable'
+  has_one :base_report, :as => 'reportable'
 
   # Validations
   validates :game_id, presence: true 
@@ -37,5 +38,5 @@ class ModList < ActiveRecord::Base
   def init
     self.is_collection ||= false
     self.created ||= DateTime.now
-  end                                         
+  end
 end

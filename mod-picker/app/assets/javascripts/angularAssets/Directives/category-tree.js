@@ -4,65 +4,98 @@ app.directive('categoryTree', function () {
         templateUrl: '/resources/directives/categoryTree.html',
         controller: 'categoryTreeController',
         scope: {
-            model: '=',
-            required: '='
+            selection: '=',
+            toggleAll: '='
         }
     }
 });
 
 app.controller('categoryTreeController', function ($scope, categoryService) {
+    $scope.selection = [];
+
     categoryService.retrieveNestedCategories().then(function (data) {
-        var categoryFilter = $scope.categoryFilter = [];
-        data.forEach(function (superCategory) {
-            categoryFilter[superCategory.id] = {childs: []};
-            categoryFilter[superCategory.id].value = false;
-            superCategory.childs.forEach(function (subCategory) {
-                categoryFilter[superCategory.id].childs[subCategory.id]= {value: false};
+        $scope.categories = data;
+        // add checkbox values to data and fix subcategory names
+        $scope.categories.forEach(function(superCategory) {
+            superCategory.value = false;
+            superCategory.childs.forEach(function(subCategory) {
                 subCategory.name = subCategory.name.split('- ')[1];
+                subCategory.value = false;
             });
         });
-        $scope.categories = data;
     });
 
-    $scope.updateSelection = function (primaryCategory, secondaryCategory) {
-        if(!secondaryCategory) {
-            $scope.categoryFilter[primaryCategory].indeterminate = false;
-            $scope.categoryFilter[primaryCategory].childs.forEach(function (child) {
-                child.value = $scope.categoryFilter[primaryCategory].value;
-            });
+    $scope.handleSelection = function (target) {
+        if (target.value) {
+            // handle addition to selection
+            $scope.selection.push(target.id);
         } else {
-            //This logic is a bit hard to read. If you iterate through different possibilities you will understand.
-            var partiallyChecked = false;
-            var allChecked = true;
-            $scope.categoryFilter[primaryCategory].childs.forEach(function (child) {
-
-                //a child that is selected will mark the noneChecked false
-                partiallyChecked = partiallyChecked || child.value;
-
-                //a child that is not selected will mark the allChecked false
-                allChecked = allChecked && child.value;
-            });
-
-            $scope.categoryFilter[primaryCategory].indeterminate = !allChecked && partiallyChecked;
-            $scope.categoryFilter[primaryCategory].value = allChecked;
+            // handle removal from selection
+            var index = $scope.selection.indexOf(target.id);
+            if (index > -1) {
+                $scope.selection.splice(index, 1);
+            }
         }
     };
 
+    $scope.updateSelection = function (primaryCategory, secondaryCategory) {
+        var parent = $scope.categories[primaryCategory];
+        // only allow checking of all childs if the parent is unchecked
+        var allChecked = !parent.value;
+        // only allow unchecking of all childs if the parent is checked
+        var allUnchecked = parent.value;
+        // evaluate whether or not all are unchecked in after user input
+        var allUncheckedAfter = true;
+        // evaluate if all childs are checked or unchecked
+        parent.childs.forEach(function (child) {
+            allUnchecked = allUnchecked && !child.value;
+            allUncheckedAfter = allUncheckedAfter && (!child.value || child.name === secondaryCategory);
+            allChecked = allChecked && child.value;
+        });
+        // all will be unchecked after the action if the user clicked the
+        // primary category and all children are checked
+        allUncheckedAfter = allUncheckedAfter || (allChecked && secondaryCategory == null);
+
+        // handle selection of parent or child
+        if (secondaryCategory == null) {
+            $scope.handleSelection(parent);
+            // toggle all childs if allowed
+            // if all childs are unchecked, check all of them
+            // if all childs are checked, uncheck all of them
+            if ($scope.toggleAll && (allChecked || allUnchecked)) {
+                parent.childs.forEach(function (child) {
+                    child.value = !child.value;
+                    $scope.handleSelection(child);
+                });
+            }
+        } else {
+            var child = parent.childs[secondaryCategory];
+            $scope.handleSelection(child);
+        }
+
+        // parent is indeterminate if some childs are checked
+        // and the parent is not checked
+        parent.indeterminate = !(allUncheckedAfter || parent.value);
+    };
+
     $scope.clearSelection = function () {
-        $scope.categoryFilter.forEach(function (superCategory) {
+        $scope.categories.forEach(function (superCategory) {
             superCategory.value = false;
             superCategory.indeterminate = false;
             superCategory.childs.forEach(function (child) {
                 child.value = false;
             });
         });
+        $scope.selection = [];
     };
 
     $scope.invertSelection = function () {
-        $scope.categoryFilter.forEach(function (superCategory) {
+        $scope.categories.forEach(function (superCategory) {
             superCategory.value = !superCategory.value;
+            $scope.handleSelection(superCategory);
             superCategory.childs.forEach(function(child) {
                 child.value = !child.value;
+                $scope.handleSelection(child);
             });
         });
     };

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160414202618) do
+ActiveRecord::Schema.define(version: 20160420050854) do
 
   create_table "agreement_marks", id: false, force: :cascade do |t|
     t.integer "incorrect_note_id", limit: 4
@@ -21,6 +21,23 @@ ActiveRecord::Schema.define(version: 20160414202618) do
 
   add_index "agreement_marks", ["incorrect_note_id"], name: "inc_id", using: :btree
   add_index "agreement_marks", ["submitted_by"], name: "submitted_by", using: :btree
+
+  create_table "articles", force: :cascade do |t|
+    t.string   "title",        limit: 255,   null: false
+    t.integer  "submitted_by", limit: 4,     null: false
+    t.text     "text_body",    limit: 65535, null: false
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
+  end
+
+  add_index "articles", ["submitted_by"], name: "fk_rails_ea02c233bd", using: :btree
+
+  create_table "base_reports", force: :cascade do |t|
+    t.integer  "reportable_id",   limit: 4,   null: false
+    t.string   "reportable_type", limit: 255, null: false
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
+  end
 
   create_table "categories", force: :cascade do |t|
     t.integer "parent_id",   limit: 4
@@ -430,11 +447,13 @@ ActiveRecord::Schema.define(version: 20160414202618) do
     t.integer "load_order_notes_count",    limit: 4,   default: 0
     t.integer "status",                    limit: 1,   default: 0,     null: false
     t.boolean "hidden",                                default: false, null: false
+    t.integer "submitted_by",              limit: 4,                   null: false
   end
 
   add_index "mods", ["game_id"], name: "fk_rails_3ec448a848", using: :btree
   add_index "mods", ["primary_category_id"], name: "fk_rails_42759f5da5", using: :btree
   add_index "mods", ["secondary_category_id"], name: "fk_rails_26f394ea9d", using: :btree
+  add_index "mods", ["submitted_by"], name: "fk_rails_5f28cca69a", using: :btree
 
   create_table "nexus_infos", force: :cascade do |t|
     t.string   "uploaded_by",      limit: 128
@@ -518,6 +537,18 @@ ActiveRecord::Schema.define(version: 20160414202618) do
   end
 
   add_index "record_groups", ["game_id", "signature"], name: "index_record_groups_on_game_id_and_signature", unique: true, using: :btree
+
+  create_table "reports", force: :cascade do |t|
+    t.integer  "base_report_id", limit: 4,   null: false
+    t.integer  "submitted_by",   limit: 4,   null: false
+    t.integer  "type",           limit: 1,   null: false
+    t.string   "note",           limit: 128
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
+  end
+
+  add_index "reports", ["base_report_id"], name: "fk_rails_619eb511d7", using: :btree
+  add_index "reports", ["submitted_by"], name: "fk_rails_41fbf0e712", using: :btree
 
   create_table "reputation_links", id: false, force: :cascade do |t|
     t.integer "from_rep_id", limit: 4
@@ -690,6 +721,7 @@ ActiveRecord::Schema.define(version: 20160414202618) do
 
   add_foreign_key "agreement_marks", "incorrect_notes", name: "agreement_marks_ibfk_1"
   add_foreign_key "agreement_marks", "users", column: "submitted_by", name: "agreement_marks_ibfk_2"
+  add_foreign_key "articles", "users", column: "submitted_by"
   add_foreign_key "categories", "categories", column: "parent_id"
   add_foreign_key "category_priorities", "categories", column: "dominant_id"
   add_foreign_key "category_priorities", "categories", column: "recessive_id"
@@ -762,6 +794,7 @@ ActiveRecord::Schema.define(version: 20160414202618) do
   add_foreign_key "mods", "categories", column: "primary_category_id"
   add_foreign_key "mods", "categories", column: "secondary_category_id"
   add_foreign_key "mods", "games"
+  add_foreign_key "mods", "users", column: "submitted_by"
   add_foreign_key "nexus_infos", "games"
   add_foreign_key "override_records", "plugins", name: "override_records_ibfk_1"
   add_foreign_key "plugin_errors", "plugins"
@@ -769,6 +802,8 @@ ActiveRecord::Schema.define(version: 20160414202618) do
   add_foreign_key "plugins", "mod_versions", name: "plugins_ibfk_1"
   add_foreign_key "quotes", "games"
   add_foreign_key "record_groups", "games"
+  add_foreign_key "reports", "base_reports"
+  add_foreign_key "reports", "users", column: "submitted_by"
   add_foreign_key "reputation_links", "user_reputations", column: "from_rep_id", name: "reputation_links_ibfk_1"
   add_foreign_key "reputation_links", "user_reputations", column: "to_rep_id", name: "reputation_links_ibfk_2"
   add_foreign_key "review_templates", "users", column: "submitted_by"

@@ -1,12 +1,6 @@
 app.service('userTitleService', function (backend, $q) {
     this.retrieveUserTitles = function () {
-        var titles = $q.defer();
-        backend.retrieve('/user_titles').then(function (data) {
-            setTimeout(function () {
-                titles.resolve(data);
-            }, 1000);
-        });
-        return titles.promise;
+        return backend.retrieve('/user_titles');
     };
 
     this.getSortedGameTitles = function(titles) {
