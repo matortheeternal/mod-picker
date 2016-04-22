@@ -14,11 +14,11 @@
    ><div class="mod-tab-action sort-dropdown">
 		<strong style="margin-right: 10px;">Sort By: </strong>
 		<div class="select">
-			<select ng-model="filter">
-				<option value="compatibility_type" selected>Severity</option>
-				<option value="submitted">Date Submitted</option>
-				<option value="edited">Last Edited</option>
-				<option value="incorrect_notes_count">Author's Incorrect Notes</option>
+			<select ng-model="compatibilityNotesFilter">
+				<option value="-sortBySeverity" selected>Severity</option>
+				<option value="-submitted">Date Submitted</option>
+				<option value="-edited">Last Edited</option>
+				<option value="+incorrect_notes_count">Author's Incorrect Notes</option>
 			</select>
 		</div>
 	</div
@@ -71,6 +71,6 @@
 	<input class="btn mod-page-btn" type="submit" value="Submit" ng-click="createCompatibilityNote()"/>
 </div>
 
-<div ng-repeat="compatibilityNote in compatibilityNotes" class="notes">
+<div ng-repeat="compatibilityNote in compatibilityNotes | orderBy : compatibilityNotesFilter" class="notes">
 	<compatibilityNote compatibilityNote="compatibilityNote"></compatibilityNote>
 </div>

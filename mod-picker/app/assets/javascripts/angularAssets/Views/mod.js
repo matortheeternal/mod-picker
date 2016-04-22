@@ -99,4 +99,33 @@ app.controller('modController', function ($scope, $q, $routeParams, modService, 
         });
         return sum/ratings.length;
     };
+
+    //function to order by severity strings
+    $scope.sortBySeverity = function(severity) {
+        switch (severity) {
+            case "Incompatible":
+                return 5;
+                break;
+
+            case "Partially Incompatible":
+                return 4;
+                break;
+
+            case "Make Custom Patch":
+                return 3;
+                break;
+
+            case "Compatibility Mod":
+                return 2;
+                break;
+
+            case "Compatibility Option":
+                return 1;
+                break;
+
+            default:
+                return 0;
+                break;
+        }
+    };
 });
