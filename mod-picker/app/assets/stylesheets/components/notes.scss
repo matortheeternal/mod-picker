@@ -43,122 +43,17 @@
 	font-weight: 500;
 }
 
-.modpage-view {
-		width: 922px;
-		white-space: nowrap;
-		min-height:255px;
 
-	br {
-		padding: 0;
-		margin: 0;
-		border: 0;
-	}
-
-	.cnote-container {
-		display: inline-block;
-		//border: 1px solid black;
-		padding: 0;
-
-	}
-
-	.author-block {
-		display: table-cell;
-		border: 1px solid black;
-		width: 164px;
-		min-height: 100%;
-		padding-top: 30px;
-		text-align: center;
-	}
-
-	.author-image {
-		margin-left: 30%;
-		width: 64px;
-		height: 64px;
-		background-color: $secondary_background;
-	}
-
-	.author-name {
-		font-size: 13px;
-		font-weight: 500;
-	}
-
-	.note-title-block {
-		display: inline-block;
-		border-top: 1px solid black;
-		height: 45px;
-		width: 756px;
-		background-color: $secondary_background;
-		margin: 0;
-	}
-
-	.note-title {
-		display: inline-block;
-		padding-top: 13px;
-		padding-left: 10px;
-		font-size: 16px;
-		font-weight: 700;
-		width: 50%
-	}
-
-	.note-status {
-		width:50%;
-		display: inline-block;
-		text-align: right;
-		padding-top: 13px;
-		padding-right: 10px;
-		font-size: 14px;
-		font-weight: 100;
-		font-style: italic;
-	}
-
-	.mod-block {
-		display: inline-block;
-		border: 1px solid black;
-		border-left: 0px;
-		border-right: 0px;
-		text-align: center;
-		padding: 0;
-		margin: 0;
-		height: 45px;
-	}
-	.mod-block-one {
-		@extend .mod-block;
-		width: 50%;
-		border-right: 1px solid black;
-	}
-	.mod-block-two {
-		@extend .mod-block;
-		width: 50%;
-		border-right: 0px;
-	}
-
-	.mod-block-full {
-		@extend .mod-block;
-		width: 100%;
-		border-right: 0px;
-	}
-
-
-	.cnote-block {
+.modpage-view
+{
+	
+	.right-container {
+		display:table-cell;
 		vertical-align: top;
-		display: table-cell;
-		border-collapse:collapse;
-		border-right: 1px solid black;
-		border-bottom: 1px solid black;
-	}
-
-	.detail-block {
-		white-space: normal;
-		display: inline-block;
-		min-height:255px-45px-45px;
-		margin-left: 30px;
-		margin-right: 30px;
-		margin-top: 24px;
 	}
 
 	.letter-box {
-		position: relative;
-		left: -1px;
+		position: inline-block;
 		text-align: center;
 		width: 24px;
 		height: 24px;
@@ -167,60 +62,7 @@
 		vertical-align: top;
 	}
 
-	.mod-title {
-		display: inline-block;
-		position:relative;
-		top:-10px;
-	}
-
-	.detail-link-block {
-		width: 50%;
-		display: inline-block;
-		padding-top:10px;
-		padding-bottom:5px;
-	}
-
-	.detail-links {
-		display: inline-block;
-		vertical-align: bottom;
-	}
-
-	.tab {
-		display: inline-block; 
-		padding-left: 10px;
-	}
-
-	ul {
-		list-style-type:none;
-		border: 1px solid black;
-		border-left: 0px;
-		border-right: 0px;
-		text-align: center;
-		padding: 0;
-		margin: 0;
-		li {
-			height:45px;
-			width: 50%;
-			border-right: 1px solid black;
-			display: inline-block;
-			vertical-align: middle;
-			list-style: outside none none;
-			
-		}
-	}
-
-}
-
-
-.modpage-view-2
-{
-	
-	.right-container {
-		display:table-cell;
-		vertical-align: top;
-	}
-
-	.inote-block {
+	.cnote-block {
 		margin: 0;
 		padding: 0;
 	  @include flexbox();
@@ -228,13 +70,14 @@
 	  webkit-flex-direction: row;
 	  flex-direction: row;
 	  flex-wrap: wrap;
-	  justify-content: center;
+	  justify-content: flex-start;
 	  align-items: center;
 	  align-content: center;
 	  width: 757px;
 	  border: 1px solid black;
 	  border-left: 0;
 	  border-right: 0;
+
 	  .item {
 	  	@include flex(1);
 	  	@include order(2);
@@ -243,13 +86,34 @@
 	  	flex-basis: auto;
 	  	border-bottom: 0;
 	  	border-left: 0;
-		}
-
+		}		
+	
 		.note-title-block {
 			@extend .item;
 			background-color: $secondary_background;
 			border-top: 0;
 			width: 100%;
+			ul {
+				padding: 0;
+				margin-top: 20px;
+				margin-bottom: 5px;
+				list-style: none;
+			}
+			li {
+				display: inline-block;
+				padding-left: 24px;
+				width: 49%;
+				font-size: 16px;
+				font-weight: 700;
+			}
+			li:last-of-type {
+				text-align: right;
+				
+				padding-right: 24px;
+				font-size: 14px;
+				font-weight: 100;
+				font-style: italic;
+			}
 		}
 
 		.mod-title-block {
@@ -269,7 +133,8 @@
 			border-right:0;
 			border-top: 0;
 			padding-top: 10px;
-			text-align: center;
+			text-align: left;
+			padding-left: 20px;
 			a {
 				display: inline-block;
 			}
@@ -281,17 +146,16 @@
 			border-top: 0;
 			padding-top: 10px;
 			text-align: center;
-
 			span {
 				display: inline-block;
-				padding-left: 20px;
-				padding-right: 20px;
+				padding-left: 5px;
+				padding-right: 5px;
 			}
 		}
 
-
 	}
 }
+
 
 
 
