@@ -1,7 +1,7 @@
 app.directive('compatibilityNote', function () {
     return {
         restrict: 'E',
-        templateUrl: '/resources/directives/compatibilityNote.html',
+        templateUrl: '/resources/directives/notePartials/compatibilityNote.html',
         controller: 'compatibilityNoteController',
         scope: {
             compatibilityNote: '='
