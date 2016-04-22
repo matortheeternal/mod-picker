@@ -4,12 +4,14 @@ class WorkshopInfosController < ApplicationController
   # GET /workshop_infos/1
   # GET /workshop_infos/1.json
   def show
+    authorize! :read, @workshop_info
     render :json => @workshop_info
   end
 
   # DELETE /workshop_infos/1
   # DELETE /workshop_infos/1.json
   def destroy
+    authorize! :destroy, @workshop_info
     if @workshop_info.destroy
       render json: {status: :ok}
     else

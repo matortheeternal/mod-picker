@@ -10,16 +10,13 @@ class Ability
     if user.admin?
       # special admin permissions
       can :assign_roles, User
-      can :read_hidden, :all
-      can :ban, User
-      can :set_avatar, User, :id => user.id
-      can :set_custom_title, User, :id => user.id
 
       # admins can do whatever they want
       can :manage, :all
-    elsif user.moderator?
+    end
+
+    if user.moderator? || user.admin?
       # special moderator permissions
-      can :read_hidden, :all
       can :ban, User
       can :set_avatar, User, :id => user.id
       can :set_custom_title, User, :id => user.id
@@ -41,7 +38,8 @@ class Ability
       can [:update, :hide], IncorrectNote
       can [:update, :hide], InstallOrderNote
       can [:update, :hide], LoadOrderNote
-      can :hide, Tag
+      can [:update, :hide], Review
+      can [:update, :hide], Tag
 
       # can delete tags
       can :destroy, ModTag
@@ -50,27 +48,30 @@ class Ability
 
     # signed in users who aren't banned
     if  User.exists?(user.id) && !user.banned?
+      # cannot read hidden content
+      cannot :read, Comment, :hidden => true
+      cannot :read, CompatibilityNote, :hidden => true
+      cannot :read, InstallOrderNote, :hidden => true
+      cannot :read, LoadOrderNote, :hidden => true
+      cannot :read, Review, :hidden => true
+      cannot :read, ModTag, :hidden => true
+      cannot :read, ModListTag, :hidden => true
+      cannot :read, Mod, :hidden => true
+
       # can create new contributions
       can :create, Comment
       can :create, HelpfulMark
       can :create, CompatibilityNote
-      can :create, ModVersionCompatibilityNote
       can :create, InstallOrderNote
-      can :create, ModVersionInstallOrderNote
       can :create, LoadOrderNote
-      can :create, ModVersionLoadOrderNote
       can :create, Review
       can :create, ModTag
       can :create, ModListTag
 
       # can submit mods
+      can :submit, :mod
       can :create, NexusInfo
       can :create, Mod
-      can :create, Plugin
-      can :create, ModAssetFile
-      can :create, ModVersion
-      can :create, ModVersionFile
-      can :create, ModVersionRequirement
 
       # can update their contributions
       can :update, Comment, :submitted_by => user.id

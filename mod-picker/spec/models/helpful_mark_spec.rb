@@ -42,7 +42,7 @@ RSpec.describe HelpfulMark, :model do
 
     describe "helpfulable_type" do
       it "should be valid when given valid types" do
-        valid_types = ["CompatibilityNote", "InstallationNote", "Review"]
+        valid_types = ["CompatibilityNote", "InstallOrderNote", "LoadOrderNote", "Review"]
 
         mark = build(:helpful_mark)
 

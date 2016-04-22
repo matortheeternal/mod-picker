@@ -5,6 +5,7 @@ class ModListModsController < ApplicationController
   # POST /mod_list_mods.json
   def create
     @mod_list_mod = ModListMod.new(mod_list_mod_params)
+    authorize! :create, @mod_list_mod
 
     if @mod_list_mod.save
       render json: {status: :ok}
@@ -16,6 +17,7 @@ class ModListModsController < ApplicationController
   # PATCH/PUT /mod_list_mods/1
   # PATCH/PUT /mod_list_mods/1.json
   def update
+    authorize! :update, @mod_list_mod
     if @mod_list_mod.update(mod_list_mod_params)
       render json: {status: :ok}
     else
@@ -26,6 +28,7 @@ class ModListModsController < ApplicationController
   # DELETE /mod_list_mods/1
   # DELETE /mod_list_mods/1.json
   def destroy
+    authorize! :destroy, @mod_list_mod
     if @mod_list_mod.destroy
       render json: {status: :ok}
     else

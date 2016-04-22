@@ -60,6 +60,7 @@ class ModsController < ApplicationController
   # POST /mods/1/star
   def create_star
     @mod_star = ModStar.find_or_initialize_by(mod_id: params[:id], user_id: current_user.id)
+    authorize! :create, @mod_star
     if @mod_star.save
       render json: {status: :ok}
     else
@@ -70,6 +71,7 @@ class ModsController < ApplicationController
   # DELETE /mods/1/star
   def destroy_star
     @mod_star = ModStar.find_by(mod_id: params[:id], user_id: current_user.id)
+    authorize! :destroy, @mod_star
     if @mod_star.nil?
       render json: {status: :ok}
     else

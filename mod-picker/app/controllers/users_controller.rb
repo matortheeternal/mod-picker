@@ -12,12 +12,14 @@ class UsersController < ApplicationController
   # GET /users/1
   # GET /users/1.json
   def show
+    authorize! :read, @user
     render :json => @user.show_json
   end
 
   # PATCH/PUT /users/1
   # PATCH/PUT /users/1.json
   def update
+    authorize! :update, @user
     if @user.update(user_params)
       render json: {status: :ok}
     else
@@ -28,6 +30,7 @@ class UsersController < ApplicationController
   # DELETE /users/1
   # DELETE /users/1.json
   def destroy
+    authorize! :destroy, @user
     if @user.destroy
       render json: {status: :ok}
     else

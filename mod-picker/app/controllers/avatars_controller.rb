@@ -9,10 +9,7 @@ class AvatarsController < ApplicationController
 
   # POST /avatar
   def create
-    if cannot? :set_avatar, current_user
-      render json: {status: "Unauthorized"}
-      return
-    end
+    authorize! :set_avatar, current_user
 
     response = 'Invalid submission'
     if params[:avatar].present?
