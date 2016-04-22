@@ -90,7 +90,7 @@ class Mod < ActiveRecord::Base
       end
 
       # associate asset files with mod version
-      mv.asset_files.create(mod_asset_file_id: asset_file.id)
+      mv.mod_version_files.create(mod_asset_file_id: asset_file.id)
     end
   end
 
