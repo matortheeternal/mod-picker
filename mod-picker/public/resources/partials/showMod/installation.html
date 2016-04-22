@@ -47,6 +47,9 @@
 	<input class="btn mod-page-btn" type="submit" value="Submit" ng-click="createInstallNote()"/>
 </div>
 
-<div ng-repeat="installationNote in installationNote" class="notes">
-	<installationNote note="installationNote"></installationNote>
+<div ng-repeat="installOrderNote in installOrderNotes" class="notes">
+	<installOrderNote installOrderNote="installOrderNote"></installOrderNote>
+</div>
+<div ng-repeat="loadOrderNote in loadOrderNotes" class="notes">
+	<loadOrderNote loadOrderNote="loadOrderNote"></loadOrderNote>
 </div>
