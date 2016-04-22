@@ -43,12 +43,21 @@ app.service('backend', function ($q, $http) {
         return promise.promise;
     };
 
-    this.postFile = function (context, key, file) {
+    this.postFile = function (context, key, file, params) {
         var promise = $q.defer();
 
         var data = new FormData();
         data.append(key, file);
         data.append('authenticity_token', window._token);
+
+        // apply additional params
+        if (params !== undefined) {
+            for (var k in params) {
+                if (params.hasOwnProperty(k)) {
+                    data.append(k, params[k]);
+                }
+            }
+        }
 
         $http.post(BASE_LOCATION + context, data, {
             transformRequest: angular.identity,
