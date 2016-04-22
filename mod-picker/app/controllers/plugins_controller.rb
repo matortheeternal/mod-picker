@@ -19,23 +19,26 @@ class PluginsController < ApplicationController
   def create
     response = 'Invalid submission'
     if params[:plugin].present?
-      file = params[:plugin]
-      if File.exists?(Rails.root.join('app','assets', 'plugins', file.original_filename))
-        response = 'File exists'
+      @file = params[:plugin]
+      @game = Game.find(params[:game_id])
+      if File.exists?(Rails.root.join('app','assets', 'plugins', "#{@game.display_name}",@file.original_filename))
+        @response = 'File exists'
       else
         begin
-          File.open(Rails.root.join('app','assets', 'plugins', file.original_filename), 'wb') do |f|
-            f.write(file.read)
+          File.open(Rails.root.join('app','assets', 'plugins', "#{@game.display_name}", @file.original_filename), 'wb') do |f|
+            f.write(@file.read)
           end
-          response = 'Success'
+          # AnalyzePluginJob.perform_in(4, "iHUD.esp", "Skyrim", "sk")
+          AnalyzePluginJob.perform_async(@file.original_filename, @game.display_name, @game.game_abbr)
+          @response = 'Success'
         rescue
-          response = 'Unknown failure'
+          @response = 'Unknown failure'
         end
       end
     end
 
     # render json response
-    render json: {status: response}
+    render json: {status: @response}
   end
 
   # DELETE /plugins/1
