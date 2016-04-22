@@ -24,8 +24,8 @@ gem 'turbolinks'
 # bundle exec rake doc:rails generates the API under doc/api.
 gem 'sdoc', '~> 0.4.0', group: :doc
 
-# use sidekiq for background jobs
-gem 'sidekiq'
+# use sucker punch for background jobs
+gem 'sucker_punch', '~> 2.0'
 
 # use nokogiri for parsing html
 gem 'nokogiri'
