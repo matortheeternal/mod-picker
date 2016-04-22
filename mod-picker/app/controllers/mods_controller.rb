@@ -24,10 +24,10 @@ class ModsController < ApplicationController
       # create associated tags
       @mod.create_tags(params[:mod][:tags])
       # create associated asset files
-      @mod.create_asset_files(params[:mod][:asset_file_tree])
+      @mod.create_asset_files(params[:mod][:assets])
 
       # link nexus info to the mod
-      @nexus_info = NexusInfo.find_by(params[:mod][:nexus_info_id])
+      @nexus_info = NexusInfo.find(params[:mod][:nexus_info_id])
       if @nexus_info.present? && @nexus_info.mod_id.nil?
         @nexus_info.mod_id = @mod.id
 
@@ -104,6 +104,6 @@ class ModsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def mod_params
-      params.require(:mod).permit(:game_id, :name, :aliases, :is_utility, :has_adult_content, :primary_category_id, :secondary_category_id, mod_versions_attributes: [ :released, :obsolete, :dangerous, :version ])
+      params.require(:mod).permit(:game_id, :name, :aliases, :is_utility, :has_adult_content, :primary_category_id, :secondary_category_id, mod_versions_attributes: [ :released, :version ])
     end
 end
