@@ -1,0 +1,15 @@
+#  create_table "user_reputations", force: :cascade do |t|
+#    t.float    "overall",          limit: 24
+#    t.float    "offset",           limit: 24
+#    t.integer  "user_id",          limit: 4
+#    t.float    "site_rep",         limit: 24
+#    t.float    "contribution_rep", limit: 24
+#    t.float    "author_rep",       limit: 24
+#    t.float    "given_rep",        limit: 24
+#    t.datetime "last_computed"
+#    t.boolean  "dont_compute"
+#  end
+
+default_rep:
+  overall: 5.0
+  offset: 0

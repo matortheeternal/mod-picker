@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe PluginsController, :controller do
   describe 'Submit Mod' do
-    fixtures :users, :games
+    fixtures :users, :games, :user_reputations
 
     file_name = 'iHUD.esp'
     # path to where file is saved in dev
@@ -28,7 +28,13 @@ RSpec.describe PluginsController, :controller do
           game_id: game.id
       }
 
+      @request.env["devise.mapping"] = Devise.mappings[:user]
+      users(:madoka).confirm
+      users(:madoka).reputation = user_reputations(:default_rep)
+        users(:madoka).save
       sign_in users(:madoka)
+
+      expect(subject.current_user).to be_truthy
 
       post :create, params
 
