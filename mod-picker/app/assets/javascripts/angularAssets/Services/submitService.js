@@ -29,7 +29,7 @@ app.service('submitService', function (backend, $q) {
             // submit plugins
             for (var i = 0; i < plugins.length; i++) {
                 plugin = plugins[i];
-                backend.postFile('/plugins', 'plugin', plugin).then(function (data) {
+                backend.postFile('/plugins', 'plugin', plugin, { game_id: nexus_info.game_id }).then(function (data) {
                     if (data.status !== 'Success') {
                         alert('Error uploading ' + plugin.name + ': ' + data.status);
                     }

@@ -29,7 +29,7 @@ class PluginsController < ApplicationController
             f.write(@file.read)
           end
           # AnalyzePluginJob.perform_in(4, "iHUD.esp", "Skyrim", "sk")
-          AnalyzePluginJob.perform_async(@file.original_filename, @game.display_name, @game.game_abbr)
+          AnalyzePluginJob.perform_async("#{@file.original_filename}", "#{@game.display_name}", "#{@game.game_abbr}")
           @response = 'Success'
         rescue
           @response = 'Unknown failure'
