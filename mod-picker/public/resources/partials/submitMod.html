@@ -8,10 +8,10 @@
             <section>
                 <div class="input-label">Nexus Mods</div>
                 <input type="text" class="path-input" ng-model="nexusUrl" required>
-                <input type="button" class="btn" ng-disabled='urlInvalid()' ng-click="scrape()" value="Scrape">
+                <input type="button" class="btn" ng-disabled='cantScrape()' ng-click="scrape()" value="Scrape">
 
                 <div ng-show="scraping">
-                    <h3 class="section-title">Nexus Mods Info</h3>
+                    <h3 class="subtitle">Nexus Mods Info</h3>
                     <loader data="nexus">
                         <table class="infotable">
                             <colgroup>

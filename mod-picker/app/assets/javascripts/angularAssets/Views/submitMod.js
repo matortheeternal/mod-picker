@@ -15,8 +15,8 @@ app.controller('submitModController', function ($scope, backend, submitService, 
     //TODO: I guess this static might be better in some sort of service
     var nexusUrlPattern = /(http[s]:\/\/?)?www.nexusmods.com\/skyrim\/mods\/([0-9]+)(\/\?)?/i;
 
-    $scope.urlInvalid = function () {
-        return !$scope.nexusUrl || $scope.nexusUrl.match(nexusUrlPattern) == null
+    $scope.cantScrape = function () {
+        return $scope.scraping || !$scope.nexusUrl || $scope.nexusUrl.match(nexusUrlPattern) == null
     };
 
     $scope.scrape = function () {
@@ -170,11 +170,11 @@ app.controller('submitModController', function ($scope, backend, submitService, 
     $scope.modInvalid = function () {
         // submission isn't allowed until the user has scraped a nexus page,
         // provided an asset tree, and provided at least one category
-        return ($scope.nexus == null || $scope.mod.assetTree == null ||
+        return ($scope.nexus == null || $scope.assets == null ||
             $scope.mod.categories == null || $scope.mod.categories.length == 0)
     };
 
     $scope.submit = function () {
-        submitService.submitMod($scope.mod, $scope.nexus, $scope.assetTree, $scope.plugins);
+        submitService.submitMod($scope.mod, $scope.nexus, $scope.assets, $scope.plugins);
     }
 });
