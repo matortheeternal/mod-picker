@@ -20,19 +20,11 @@ module ModPicker
     # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
     # config.i18n.default_locale = :de
 
+    # use Rack Attack
     config.middleware.use Rack::Attack
 
-    config.generators do |g|
-      g.test_framework :rspec,
-        fixtures: true,
-        view_specs: false,
-        helper_specs: false,
-        routing_specs: true,
-        controller_specs: true,
-        request_specs: true
-      g.fixture_replacement :factory_girl, dir: "spec/factories"
-  end
-
+    # sucker punch logger
+    SuckerPunch.logger = Logger.new("#{Rails.root}/log/sucker_punch.log")
 
     # Do not swallow errors in after_commit/after_rollback callbacks.
     config.active_record.raise_in_transactional_callbacks = true
