@@ -5,6 +5,7 @@ class ModListCustomPluginsController < ApplicationController
   # POST /mod_list_custom_plugins.json
   def create
     @mod_list_custom_plugin = ModListCustomPlugin.new(mod_list_custom_plugin_params)
+    authorize! :create, @mod_list_custom_plugin
 
     if @mod_list_custom_plugin.save
       render json: {status: :ok}
@@ -16,6 +17,7 @@ class ModListCustomPluginsController < ApplicationController
   # PATCH/PUT /mod_list_custom_plugins/1
   # PATCH/PUT /mod_list_custom_plugins/1.json
   def update
+    authorize! :update, @mod_list_custom_plugin
     if @mod_list_custom_plugin.update(mod_list_custom_plugin_params)
       render json: {status: :ok}
     else
@@ -26,6 +28,7 @@ class ModListCustomPluginsController < ApplicationController
   # DELETE /mod_list_custom_plugins/1
   # DELETE /mod_list_custom_plugins/1.json
   def destroy
+    authorize! :destroy, @mod_list_custom_plugin
     if @mod_list_custom_plugin.destroy
       render json: {status: :ok}
     else

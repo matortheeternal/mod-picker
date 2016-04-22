@@ -2,13 +2,16 @@ class Comment < ActiveRecord::Base
   include Filterable
 
   after_initialize :init
+  after_create :increment_counter_caches
+  before_destroy :decrement_counter_caches
 
   scope :type, -> (type) { where(commentable_type: type) }
   scope :target, -> (id) { where(commentable_id: id) }
   scope :by, -> (id) { where(submitted_by: id) }
 
   belongs_to :user, :foreign_key => 'submitted_by', :inverse_of => 'comments'
-  belongs_to :commentable, :polymorphic => true, :counter_cache => true
+
+  belongs_to :commentable, :polymorphic => true #,:counter_cache => true
   has_one :base_report, :as => 'reportable'
 
   # parent/child comment association
@@ -45,4 +48,18 @@ class Comment < ActiveRecord::Base
         end
     end
   end
+
+  # Private methods
+  private
+    # counter caches
+    def increment_counter_caches
+      self.commentable.comments_count += 1
+      self.commentable.save
+    end
+
+    def decrement_counter_caches
+      self.commentable.comments_count -= 1
+      self.commentable.save
+    end
+
 end

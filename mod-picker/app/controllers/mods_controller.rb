@@ -12,6 +12,7 @@ class ModsController < ApplicationController
   # GET /mods/1
   # GET /mods/1.json
   def show
+    authorize! :read, @mod
     render :json => @mod.show_json
   end
 
@@ -19,6 +20,7 @@ class ModsController < ApplicationController
   # POST /mods.json
   def create
     @mod = Mod.new(mod_params)
+    authorize! :create, @mod
 
     if @mod.save
       render json: {status: :ok}
@@ -30,6 +32,7 @@ class ModsController < ApplicationController
   # PATCH/PUT /mods/1
   # PATCH/PUT /mods/1.json
   def update
+    authorize! :update, @mod
     if @mod.update(mod_params)
       render json: {status: :ok}
     else
@@ -40,6 +43,7 @@ class ModsController < ApplicationController
   # POST /mods/1/star
   def create_star
     @mod_star = ModStar.find_or_initialize_by(mod_id: params[:id], user_id: current_user.id)
+    authorize! :create, @mod_star
     if @mod_star.save
       render json: {status: :ok}
     else
@@ -50,6 +54,7 @@ class ModsController < ApplicationController
   # DELETE /mods/1/star
   def destroy_star
     @mod_star = ModStar.find_by(mod_id: params[:id], user_id: current_user.id)
+    authorize! :destroy, @mod_star
     if @mod_star.nil?
       render json: {status: :ok}
     else
@@ -64,6 +69,7 @@ class ModsController < ApplicationController
   # DELETE /mods/1
   # DELETE /mods/1.json
   def destroy
+    authorize! :destroy, @mod
     if @mod.destroy
       render json: {status: :ok}
     else
