@@ -2,7 +2,7 @@
  * Created by r79 on 2/11/2016.
  */
 //TODO: this whole service feels like there is some redundancy to kill ;)
-app.service('backend', function ($q, $http) {
+app.service('backend', function ($q, $http, objectUtils) {
     //Constant to be flexible in the future. Us as prefix for ALL requests
     var BASE_LOCATION = '';
 
@@ -31,7 +31,7 @@ app.service('backend', function ($q, $http) {
 
     this.post = function (context, data) {
         var promise = $q.defer();
-        var reqData = shallowCopy(data);
+        var reqData = objectUtils.shallowCopy(data);
         reqData.authenticity_token = window._token;
         $http({
             url: BASE_LOCATION + context + '.json',
@@ -63,7 +63,7 @@ app.service('backend', function ($q, $http) {
 
     this.update = function (context, data) {
         var promise = $q.defer();
-        var reqData = shallowCopy(data);
+        var reqData = objectUtils.shallowCopy(data);
         reqData.authenticity_token = window._token;
         $http({
             url: BASE_LOCATION + context + '.json',
