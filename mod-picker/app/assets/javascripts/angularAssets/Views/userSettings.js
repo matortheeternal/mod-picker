@@ -1,11 +1,12 @@
 /**
  * Created by Sirius on 3/9/2016.
  */
-app.config(['$routeProvider', function ($routeProvider) {
+app.config(['$stateProvider', function ($stateProvider) {
 
-    $routeProvider.when('/settings', {
+    $stateProvider.state('settings', {
             templateUrl: '/resources/partials/userSettings/userSettings.html',
-            controller: 'userSettingsController'
+            controller: 'userSettingsController',
+            url: '/settings'
         }
     );
 }]);

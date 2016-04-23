@@ -1,8 +1,9 @@
 
-app.config(['$routeProvider', function ($routeProvider) {
-    $routeProvider.when('/mods', {
+app.config(['$stateProvider', function ($stateProvider) {
+    $stateProvider.state('mods', {
             templateUrl: '/resources/partials/mods.html',
-            controller: 'modsController'
+            controller: 'modsController',
+            url: '/mods'
         }
     );
 }]);
