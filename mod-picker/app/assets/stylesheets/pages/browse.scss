@@ -127,13 +127,14 @@
       }
     }
 
-    .main-cell {
-      min-width: 200px;
+    .text-cell {
+      min-width: 125px;
       white-space: normal;
     }
 
-    .text-cell {
-      min-width: 125px;
+    .main-cell {
+      min-width: 200px;
+      max-width: 250px;
       white-space: normal;
     }
 
