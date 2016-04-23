@@ -25,9 +25,13 @@ app.controller('modController', function ($scope, $q, $routeParams, modService, 
         //getting the actual names of the categories
         categoryService.getCategoryById(mod.primary_category_id).then(function (data) {
             $scope.firstCategory = data.name;
+            //set initial data specific to the version
+            $scope.updateVersion($scope.currentVersion);
         });
         categoryService.getCategoryById(mod.secondary_category_id).then(function (data) {
             $scope.secondCategory = data.name;
+            //set initial data specific to the version
+            $scope.updateVersion($scope.currentVersion);
         });
 
         //setting the name of the current game for the nexus links
@@ -37,9 +41,6 @@ app.controller('modController', function ($scope, $q, $routeParams, modService, 
         else if ($scope.mod.game_id === 2) {
             $scope.game = "fallout4";
         }
-
-        //set initial data specific to the version
-        $scope.updateVersion($scope.currentVersion);
 
     });
 
