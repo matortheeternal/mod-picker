@@ -54,7 +54,7 @@ app.controller('modController', function ($scope, $q, $routeParams, modService, 
     $scope.currentTab = $scope.tabs[0];
 
     //this prevents the sort by dropdowns from displaying an undefined option
-    $scope.filter = 'compatibility_type';
+    $scope.compatibilityNotesFilter = '-sortBySeverity';
 
     //variables for the stat block expandables
     $scope.nexusExpanded = false;
