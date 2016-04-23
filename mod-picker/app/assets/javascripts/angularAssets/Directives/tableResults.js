@@ -7,9 +7,9 @@ app.directive('tableResults', function () {
     }
 });
 
-app.controller('tableResultsController', function($scope) {
+app.controller('tableResultsController', function($scope, objectUtils) {
     // TODO: Less ugly pleease
-    $scope.deepValue = deepValue;
+    $scope.deepValue = objectUtils.deepValue;
 
     var sortedColumn;
     $scope.sortColumn = function(index) {
@@ -38,18 +38,6 @@ app.controller('tableResultsController', function($scope) {
         } else {
             delete $scope.sort.column;
             delete $scope.sort.direction;
-        }
-    }
-});
-
-app.filter('picker', function($filter) {
-    return function() {
-        var filterName = [].splice.call(arguments, 1, 1)[0];
-        if (!filterName) {
-            return arguments[0];
-        }
-        else {
-            return $filter(filterName).apply(null, arguments);
         }
     };
 });
