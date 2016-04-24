@@ -42,25 +42,39 @@ app.controller('modsController', function ($scope, $q, modService, sliderFactory
         }
     };
 
+    var pageInformation;
+
     /* data */
     // TODO: replace firstGet with $scope.mods
     var firstGet = false;
-    $scope.getMods = function() {
+    var getMods = function() {
         delete $scope.data;
         modService.retrieveMods($scope.filters, $scope.sort).then(function (data) {
-            $scope.data = data;
+            $scope.data = data.mods;
+            pageInformation = data.pageInformation;
             firstGet = true;
         });
     };
 
-    $scope.getMods();
+    $scope.getPage = function (page) {
+        page = page || pageInformation.current + 1;
+
+        modService.retrieveMods($scope.filters, $scope.sort, page).then(function (data) {
+            $scope.data = $scope.data.concat(data.mods);
+            pageInformation = data.pageInformation;
+            firstGet = true;
+        });
+    };
+
+    getMods();
 
     // create a watch
     var getModsTimeout;
     $scope.$watch('[filters, sort]', function() {
         if($scope.filters && firstGet) {
             clearTimeout(getModsTimeout);
-            getModsTimeout = setTimeout($scope.getMods, 700);
+            pageInformation.current = 1;
+            getModsTimeout = setTimeout(getMods, 700);
         }
     }, true);
 });
