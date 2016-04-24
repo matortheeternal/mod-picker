@@ -2,26 +2,24 @@
  * Created by r79 on 2/11/2016.
  */
 
+//CAREFUL: The scope of the transclude is the one of this directive, not the usual one (the one of its parent)
 app.directive('expandable', function () {
     return {
         restrict: 'E',
         templateUrl: '/resources/directives/expandable.html',
         controller: 'expandableController',
         scope: {
-            expanded: '=',
-            disableStyle: '<?disableStyle',
-            disableFullTitleToggle: '<?disableFullTitleToggle'
+            expanded: '='
         },
         link: function (scope, element, attrs, ctrl, transclude) {
-            transclude(scope, function (clone) {
-               scope.contentGiven = clone.length;
-            })  
+            transclude(scope, function(clone) {
+                element.append(clone);
+            });
         },
         transclude: {
-            title: '?expandedTitle',
-            expandedIcon: '?expandedIcon',
-            collapsedIcon: '?collapsedIcon',
-            content: 'content'
+            above: '?above',
+            content: 'content',
+            below: '?below'
         }
     }
 });
