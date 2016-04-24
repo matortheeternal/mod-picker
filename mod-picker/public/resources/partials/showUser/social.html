@@ -1,1 +1,9 @@
-<p>nothing here yet..</p>
+<h3 class="section-title">About Me</h3>
+<section>
+	{{user.about_me}}
+</section>
+
+<h3 class="section-title">Comments</h3>
+<section>
+	<comment ng-repeat="comment in comments" comment="comment"></comment> <!-- comments need to be retrieved -->
+</section>
