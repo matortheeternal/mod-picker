@@ -36,9 +36,31 @@
                         <dd>{{user.joined | date}}</dd>
                     <dt>Contact Info</dt>
                         <dd></dd> <!-- data needed for email, but only if they have the public email setting-->
-                        <dd ng-if="user.bio.nexus_username"><a ng-href="http://www.nexusmods.com/games/users/{{user.bio.nexus_user_id}}">Nexus Profile</a></dd>
-                        <dd ng-if="user.bio.steam_username"><a ng-href="http://steamcommunity.com/id/{{user.bio.steam_username}}">Nexus Profile</a></dd>
-                        <dd ng-if="user.bio.lover_username"><a ng-href="http://www.loverslab.com/user/148698-milzschnitte/{{user.bio.lover_user_path}}">Nexus Profile</a></dd>
+                    <dt>Other Profiles</dt>
+                        <dd ng-if="user.bio.nexus_username">
+                            <a ng-href="http://www.nexusmods.com/games/users/{{user.bio.nexus_user_id}}">
+                                <div class="action-box source-box">
+                                    <img src="/assets/nexus_logo" class="source-image"/>
+                                    Nexus
+                                </div>
+                            </a>
+                        </dd>
+                        <dd ng-if="user.bio.steam_username">
+                            <a ng-href="http://steamcommunity.com/id/{{user.bio.steam_username}}">
+                                <div class="action-box source-box">
+                                    <img src="/assets/steam_logo" class="source-image" />
+                                    Steam
+                                </div>
+                            </a>
+                        </dd>
+                        <dd ng-if="user.bio.lover_username">
+                            <a ng-href="http://www.loverslab.com/user/148698-milzschnitte/{{user.bio.lover_user_path}}">
+                                <div class="action-box source-box">
+                                    <img src="/assets/lovers_logo" class="source-image" />
+                                    Lover's Lab
+                                </div>
+                            </a>
+                        </dd>
 
                 </dl>
             </div>
