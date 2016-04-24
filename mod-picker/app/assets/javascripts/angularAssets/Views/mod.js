@@ -88,7 +88,7 @@ app.controller('modController', function ($scope, $q, $routeParams, modService, 
         });
     };
 
-    //finding the average without counting null values
+    //finding the average rating of a review without counting null values
     $scope.findAverageRating = function(ratings) {
         ratings.filter(function(rating) {
             return rating !== null;
