@@ -1,5 +1,5 @@
 <two-columns>
-    <loader data="mod">
+    <loader data="user">
         <div class="mod-header-color">
             <div class="page-container mod-header">
                 <section>
@@ -19,17 +19,15 @@
             success-message="{{submitMessage}}"></messages>
 
         <div class="page-container">
-            <loader data="mod">
-                <div class="left-column left-mod-column wide-column">
+            <div class="left-column left-mod-column wide-column">
 
+            </div>
+            <div class="right-column">
+                <div class="right-mod-column">
+                <tabs current-tab="currentTab" tabs="tabs"></tabs>
+                    <div ng-include="currentTab.url" class="mod-tab"></div>
                 </div>
-                <div class="right-column">
-                    <div class="right-mod-column">
-                    <tabs current-tab="currentTab" tabs="tabs"></tabs>
-                        <div ng-include="currentTab.url" class="mod-tab"></div>
-                    </div>
-                </div>
-            </loader>
+            </div>
         </div>
     </loader>
 </two-columns>
