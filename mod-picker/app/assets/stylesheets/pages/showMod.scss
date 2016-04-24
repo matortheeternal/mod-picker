@@ -239,15 +239,36 @@
   }
 }
 
-.sort-dropdown {
+.mod-tab-dropdown {
   flex-grow: 1;
 
   .select {
     flex-grow: 1;
+    margin-left: 10px;
+    margin-right: 10px;
   }
 }
 
 .notes {
   margin-top: 20px;
   margin-bottom: 20px;
+}
+
+//add compatibility note box
+.add-note-box {
+  border: 1px solid $border_color;
+  background-color: $primary_background;
+  margin-top: 20px;
+  padding-left: 20px;
+  padding-right: 20px;
+
+  .section-title {
+    font-size: 16px;
+    font-weight: 500;
+    color: $h4_color;
+  }
+
+  section {
+    margin-left: 10px;
+  }
 }
