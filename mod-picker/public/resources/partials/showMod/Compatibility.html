@@ -43,7 +43,7 @@
 					</select>
 				</div>
 				<div>
-					<input type="text" placeholder="Enter Mod Name" ng-model="newCompatibilityNote.otherModName" ng-change="newCompatibilityNote.otherMod = getModByName(newCompatibilityNote.otherModName)">
+					<input type="text" placeholder="Enter Mod Name" ng-model="otherModName" ng-change="newCompatibilityNote.otherMod = getModByName(newCompatibilityNote.otherModName)">
 				</div>
 			</div>
 		</div>
@@ -54,13 +54,9 @@
 			</div>
 		</div>
 	</section>
-	<div class="mod-tab-actions">
-	</div>
 	<section class="version-checkboxes">
-		<div>
-			<version-boxes versions="" selectedVersions=""></version-selector>
-			<version-boxes versions="" selectedVersions=""></version-selector>
-		</div>
+		<version-boxes versions="mod.mod_versions" selectedVersions="newCompatibilityNote.mods[0].mod_versions"></version-boxes>
+		<version-boxes versions="newCompatibilityNote.otherMod.mod_versions" selectedVersions="newCompatibilityNote.mods[1].mod_versions"></version-boxes>
 	</section>
 	<section>
 		<div ng-if="newCompatibilityNote.compatibility_type === 'compatibility mod'">

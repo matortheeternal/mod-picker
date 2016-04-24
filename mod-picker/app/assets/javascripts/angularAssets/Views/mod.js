@@ -42,6 +42,9 @@ app.controller('modController', function ($scope, $q, $routeParams, modService, 
             $scope.game = "fallout4";
         }
 
+        //initializing the newCompatibilityNote object
+        $scope.newCompatibilityNote.mods.push($scope.mod);
+
     });
 
     //of the tab data
