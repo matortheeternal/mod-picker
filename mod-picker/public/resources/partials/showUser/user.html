@@ -16,7 +16,31 @@
 
         <div class="page-container">
             <div class="left-column left-mod-column wide-column">
+                <img ng-src="{{user.avatar}}">
 
+                <dl>
+                    <dt class="big-username">{{user.username}}</dt>
+                        <dd>{{user.title}}</dd>
+                        <dd>{{user.role}}</dd>
+                    <dt>User Reputation</dt>
+                        <dd>{{user.reputation.overall | number}}</dd>
+                        <input type="submit" class="btn" value="Give Reputation" ng-if="" ng-click="toggleRep">
+                        <input type="submit" class="btn" value="Un-Give Reputation" ng-if="" ng-click="toggleRep">
+                    <dt>Contributions</dt>
+                        <dd>{{user.reviews_count | number}} Reviews</dd>
+                        <dd>{{user.compatibility_notes_count | number}} Compatibility Notes</dd>
+                        <dd>{{user.install_order_notes_count + user.load_order_notes_count | number}} Installation Notes</dd>
+                    <dt>Last Seen</dt>
+                        <dd></dd> <!-- data needed for last date online-->
+                    <dt>Date Joined</dt>
+                        <dd>{{user.joined | date}}</dd>
+                    <dt>Contact Info</dt>
+                        <dd></dd> <!-- data needed for email, but only if they have the public email setting-->
+                        <dd ng-if="user.bio.nexus_username"><a ng-href="http://www.nexusmods.com/games/users/{{user.bio.nexus_user_id}}">Nexus Profile</a></dd>
+                        <dd ng-if="user.bio.steam_username"><a ng-href="http://steamcommunity.com/id/{{user.bio.steam_username}}">Nexus Profile</a></dd>
+                        <dd ng-if="user.bio.lover_username"><a ng-href="http://www.loverslab.com/user/148698-milzschnitte/{{user.bio.lover_user_path}}">Nexus Profile</a></dd>
+
+                </dl>
             </div>
             <div class="right-column">
                 <div class="right-mod-column">
