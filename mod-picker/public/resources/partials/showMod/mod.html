@@ -130,48 +130,48 @@
                     </section>
 
                     <!--Nexus Stats-->
-                    <section ng-if="mod.nexus_infos" class="stat-block">
-                        <expandable expanded="nexusExpanded" class="remove-caret">
-                                <expanded-title>
-                                    <div class="stat-block-title">
-                                       <span class="section-title">Nexus stats</span>
-                                       <i class="fa fa-plus stat-expander" aria-hidden="true" ng-hide="nexusExpanded"></i>
-                                       <i class="fa fa-minus stat-expander" aria-hidden="true" ng-show="nexusExpanded"></i>
-                                    </div>
-                                </expanded-title>
-                                <content>
+                    <expandable expanded="nexusExpanded" class="remove-caret" ng-if="mod.nexus_infos" class="stat-block">
+                            <expanded-title>
+                                <div class="stat-block-title">
+                                   <h3 class="section-title">Nexus stats</h3>
+                                   <i class="fa fa-plus stat-expander" aria-hidden="true" ng-hide="nexusExpanded"></i>
+                                   <i class="fa fa-minus stat-expander" aria-hidden="true" ng-show="nexusExpanded"></i>
+                                </div>
+                            </expanded-title>
+                            <content>
+                                <section>
                                     <nexus-block></nexus-block>
-                                </content>
-                        </expandable>
-                    </section>
-                    <section ng-if="mod.workshop_infos" class="stat-block">
-                        <expandable expanded="steamExpanded">
-                                <expanded-title>
-                                    <div class="stat-block-title">
-                                       <span class="section-title">Steam stats</span>
-                                       <i class="fa fa-plus stat-expander" aria-hidden="true" ng-hide="steamExpanded"></i>
-                                       <i class="fa fa-minus stat-expander" aria-hidden="true" ng-show="steamExpanded"></i>
-                                    </div>
-                                </expanded-title>
-                                <content>
+                                </section>
+                            </content>
+                    </expandable>
+                    <expandable expanded="steamExpanded" ng-if="mod.workshop_infos" class="stat-block">
+                            <expanded-title>
+                                <div class="stat-block-title">
+                                   <span class="section-title">Steam stats</span>
+                                   <i class="fa fa-plus stat-expander" aria-hidden="true" ng-hide="steamExpanded"></i>
+                                   <i class="fa fa-minus stat-expander" aria-hidden="true" ng-show="steamExpanded"></i>
+                                </div>
+                            </expanded-title>
+                            <content>
+                                <section>
                                     <steam-block></steam-block>
-                                </content>
-                        </expandable>
-                    </section>
-                    <section ng-if="mod.lovers_infos" class="stat-block">
-                        <expandable expanded="loversExpanded">
-                                <expanded-title>
-                                    <div class="stat-block-title">
-                                       <span class="section-title">Lover's Lab stats</span>
-                                       <i class="fa fa-plus stat-expander" aria-hidden="true" ng-hide="loversExpanded"></i>
-                                       <i class="fa fa-minus stat-expander" aria-hidden="true" ng-show="loversExpanded"></i>
-                                    </div>
-                                </expanded-title>
-                                <content>
+                                </section>
+                            </content>
+                    </expandable>
+                    <expandable expanded="loversExpanded" ng-if="mod.lovers_infos" class="stat-block">
+                            <expanded-title>
+                                <div class="stat-block-title">
+                                   <span class="section-title">Lover's Lab stats</span>
+                                   <i class="fa fa-plus stat-expander" aria-hidden="true" ng-hide="loversExpanded"></i>
+                                   <i class="fa fa-minus stat-expander" aria-hidden="true" ng-show="loversExpanded"></i>
+                                </div>
+                            </expanded-title>
+                            <content>
+                                <section>
                                     <lovers-block></lovers-block>
-                                </content>
-                        </expandable>
-                    </section>
+                                </section>
+                            </content>
+                    </expandable>
 
                 </div>
                 <div class="right-column">
