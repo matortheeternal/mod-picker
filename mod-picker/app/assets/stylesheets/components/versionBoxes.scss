@@ -1,0 +1,14 @@
+.version-box {
+  margin: 1px 10px 2px 10px;
+}
+
+.all-versions-box {
+  flex-basis: 100%;
+  justify-content: center;
+}
+
+.version-boxes {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+}

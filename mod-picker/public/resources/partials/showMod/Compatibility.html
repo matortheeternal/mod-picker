@@ -30,31 +30,27 @@
 <div class="add-note-box">
 	<h3 class="section-title">Add Compatibility Note</h3>
 	<section>
-		<div class="mod-tab-actions">
-			<div class="mod-tab-action mod-tab-dropdown">
-				<strong>{{mod.name}}</strong>
-				<div class="select">
-					<select ng-model="newCompatibilityNote.compatibility_type">
-						<option value="incompatible">is incompatible with</option>
-						<option value="partially incompatible">is partially incompatible with</option>
-						<option value="compatibility mod">requires an assets patch for</option>
-						<option value="compatibility option">requires a plug-in patch for</option>
-						<option value="make custom patch">needs a custom patch made for</option>
-					</select>
-				</div>
-				<div>
-					<input type="text" placeholder="Enter Mod Name" ng-model="otherModName" ng-change="newCompatibilityNote.otherMod = getModByName(newCompatibilityNote.otherModName)">
-				</div>
+		<div class="add-note-actions">
+			<strong>{{mod.name}}</strong>
+			<div class="select">
+				<select ng-model="newCompatibilityNote.compatibility_type">
+					<option value="incompatible">is incompatible with</option>
+					<option value="partially incompatible">is partially incompatible with</option>
+					<option value="compatibility mod">requires an assets patch for</option>
+					<option value="compatibility option">requires a plug-in patch for</option>
+					<option value="make custom patch">needs a custom patch made for</option>
+				</select>
+			</div>
+			<input type="text" placeholder="Enter Mod Name" ng-model="otherModName" ng-change="newCompatibilityNote.otherMod = getModByName(newCompatibilityNote.otherModName)">
+			<div>
+				Mod not listed?
+				<input class="btn mod-page-btn" type="submit" value="Add Mod" ng-click="addMod()"/>
 			</div>
 		</div>
-		<div class="mod-tab-action add-mod-action">
-			Mod not listed?
-			<input class="btn mod-page-btn" type="submit" value="Add Mod" ng-click="addMod()"/>
-		</div>
 	</section>
-	<section class="version-checkboxes">
+	<section class="version-boxes-section">
 		<version-boxes versions="mod.mod_versions" selectedVersions="newCompatibilityNote.mods[0].mod_versions"></version-boxes>
-		<version-boxes versions="newCompatibilityNote.otherMod.mod_versions" selectedVersions="newCompatibilityNote.mods[1].mod_versions"></version-boxes>
+		<version-boxes ng-if="newCompatibilityNote.otherMod.mod_versions" versions="newCompatibilityNote.otherMod.mod_versions" selectedVersions="newCompatibilityNote.mods[1].mod_versions"></version-boxes>
 	</section>
 	<section>
 		<div ng-if="newCompatibilityNote.compatibility_type === 'compatibility mod'">
@@ -68,9 +64,11 @@
 			</select>
 		</div>
 	</section>
-    <text-area data="newCompatibilityNote.text_body" ng-refresh="true"></text-area>
+    <text-area data="newCompatibilityNote.text_body" ng-refresh="true" class="note-text-area"></text-area>
 
-	<input class="btn mod-page-btn" type="submit" value="Submit" ng-click="createCompatibilityNote()"/>
+	<div class="submit-note">
+		<input class="btn" type="submit" value="Submit" ng-click="createCompatibilityNote()"/>
+	</div>
 </div>
 
 <div ng-repeat="compatibilityNote in compatibilityNotes | orderBy : compatibilityNotesFilter" class="notes">

@@ -1,8 +1,10 @@
-<label>
-	<input type="checkbox" ng-model="allChecked" ng-change="applyToAll()">
-	All Versions
-</label>
-<label ng-repeat="version in versions">
-	<input type="checkbox" ng-model="checked" ng-change="addToSelected(version, checked)">
-	{{version.version}}
-</label>
+<div class="version-boxes">
+	<label class="all-versions-box version-box">
+		<input type="checkbox" ng-model="allChecked" ng-change="applyToAll()">
+		All Versions
+	</label>
+	<label ng-repeat="version in versions" class="version-box">
+		<input type="checkbox" ng-model="checked" ng-change="addToSelected(version, checked)">
+		{{version.version}}
+	</label>
+</div>
