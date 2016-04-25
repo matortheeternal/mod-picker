@@ -16,7 +16,7 @@ app.filter('percentage', function() {
   };
 });
 
-app.controller('modController', function ($scope, $q, $stateParams, modService, categoryService, assetUtils) {
+app.controller('modController', function ($scope, $q, $stateParams, modService, categoryService, assetUtils, userService) {
     //initialization
     //of the mod object
     modService.retrieveMod($stateParams.modId).then(function (mod) {
@@ -48,6 +48,16 @@ app.controller('modController', function ($scope, $q, $stateParams, modService, 
 
     });
 
+    //get current user
+    userService.retrieveThisUser().then(function (user) {
+        $scope.user = user;
+
+        //actions the user can perform
+        var rep = $scope.user.reputation.overall;
+        $scope.userCanAddMod = (rep >= 160) || ($scope.user.role === 'admin');
+        $scope.userCanAddTags = (rep >= 20) || ($scope.user.role === 'admin');
+    });
+
     //of the tab data
     $scope.tabs = [
         { name: 'Compatibility notes', url: '/resources/partials/showMod/compatibility.html' },
@@ -56,7 +66,7 @@ app.controller('modController', function ($scope, $q, $stateParams, modService, 
         { name: 'Analysis', url: '/resources/partials/showMod/analysis.html' }
     ];
 
-    $scope.currentTab = $scope.tabs[0];
+    $scope.currentTab = $scope.tabs[1];
 
     //this prevents the sort by dropdowns from displaying an undefined option
     $scope.compatibilityNotesFilter = '-sortBySeverity';

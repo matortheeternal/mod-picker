@@ -29,9 +29,9 @@
 			Install Second:
 		</div>
 		<input type="text" placeholder="Enter Mod Name" ng-model="newInstallData.secondModName" ng-change="newInstallData.secondMod = getModByName(newInstallOrderNote.secondModName)">
-		<div>
-			Mod not listed?
-			<input class="btn mod-page-btn" type="submit" value="Add Mod" ng-click="addMod()"/>
+			<div ng-if="userCanAddMod">
+				Mod not listed?
+				<input class="btn mod-page-btn" type="submit" value="Add Mod" ng-click="addMod()"/>
 		</div>
 	</section>
 	<section class="version-checkboxes">

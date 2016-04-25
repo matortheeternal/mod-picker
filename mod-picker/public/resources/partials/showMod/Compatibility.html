@@ -42,7 +42,7 @@
 				</select>
 			</div>
 			<input type="text" placeholder="Enter Mod Name" ng-model="otherModName" ng-change="newCompatibilityNote.otherMod = getModByName(newCompatibilityNote.otherModName)">
-			<div>
+			<div ng-if="userCanAddMod">
 				Mod not listed?
 				<input class="btn mod-page-btn" type="submit" value="Add Mod" ng-click="addMod()"/>
 			</div>
