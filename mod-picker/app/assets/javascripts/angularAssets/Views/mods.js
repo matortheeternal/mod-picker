@@ -32,9 +32,9 @@ app.controller('modsController', function ($scope, $q, modService, sliderFactory
 
     $scope.toggleExtendedFilterVisibility = function (filterId) {
         var extendedFilter = $scope.extendedFilterVisibility[filterId] = !$scope.extendedFilterVisibility[filterId];
-        //if(extendedFilter) {
-        //    $scope.$broadcast('refreshSlider');
-        //}
+        if(extendedFilter) {
+            $scope.$broadcast('rerenderSliders');
+        }
     };
 
     /* data */
