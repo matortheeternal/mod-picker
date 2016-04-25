@@ -1,7 +1,8 @@
-app.config(['$routeProvider', function ($routeProvider) {
-    $routeProvider.when('/submit', {
+app.config(['$stateProvider', function ($stateProvider) {
+    $stateProvider.state('submit', {
             templateUrl: '/resources/partials/submitMod.html',
-            controller: 'submitModController'
+            controller: 'submitModController',
+            url: '/submit'
         }
     );
 }]);

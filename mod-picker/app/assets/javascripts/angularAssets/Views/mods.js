@@ -1,8 +1,9 @@
 
-app.config(['$routeProvider', function ($routeProvider) {
-    $routeProvider.when('/mods', {
+app.config(['$stateProvider', function ($stateProvider) {
+    $stateProvider.state('mods', {
             templateUrl: '/resources/partials/mods.html',
-            controller: 'modsController'
+            controller: 'modsController',
+            url: '/mods'
         }
     );
 }]);
@@ -25,20 +26,15 @@ app.controller('modsController', function ($scope, $q, modService, sliderFactory
     // -> remove redundancy
     // -> probably don't set visibility in the controller but in the view
 
-    /* visibility of extended filters */
-    $scope.nmVisible = false;
-    $scope.nmToggle = function () {
-        $scope.nmVisible = !$scope.nmVisible;
-        if ($scope.nmVisbile) {
-            $scope.$broadcast('refreshSlider');
-        }
+    $scope.extendedFilterVisibility = {
+        nexusMods: false,
+        modPicker: false
     };
 
-    $scope.mpVisible = false;
-    $scope.mpToggle = function () {
-        $scope.mpVisible = !$scope.mpVisible;
-        if ($scope.mpVisbile) {
-            $scope.$broadcast('refreshSlider');
+    $scope.toggleExtendedFilterVisibility = function (filterId) {
+        var extendedFilter = $scope.extendedFilterVisibility[filterId] = !$scope.extendedFilterVisibility[filterId];
+        if(extendedFilter) {
+            $scope.$broadcast('rerenderSliders');
         }
     };
 
