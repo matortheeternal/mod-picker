@@ -1,4 +1,4 @@
-<div>
+<div ng-if="data.title">
     <span ng-if="data.childs" ng-click="toggle()" >
         <span ng-show="expanded" class="expanded-icon">
             <i class="fa fa-chevron-down"></i>
@@ -13,7 +13,7 @@
     </span>
     <span>{{data.title}}</span>
 </div>
-<div ng-show="expanded" ng-if="data.childs">
+<div ng-show="expanded || !data.title" ng-if="data.childs">
     <ul class="assetTreeList">
         <li><asset-tree ng-repeat="child in data.childs" data="child"></asset-tree></li>
     </ul>
