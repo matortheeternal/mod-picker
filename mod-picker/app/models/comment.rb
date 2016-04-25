@@ -11,7 +11,7 @@ class Comment < ActiveRecord::Base
 
   belongs_to :user, :foreign_key => 'submitted_by', :inverse_of => 'comments'
   belongs_to :commentable, :polymorphic => true
-
+  
   has_one :base_report, :as => 'reportable'
 
   # parent/child comment association

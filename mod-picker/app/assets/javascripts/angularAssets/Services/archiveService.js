@@ -1,4 +1,4 @@
-app.service('archiveService', function () {
+app.service('archiveService', function (fileUtils) {
     zip.workerScriptsPath = './assets/zip/';
 
     this.getZipEntries = function(file, callback) {
@@ -10,7 +10,7 @@ app.service('archiveService', function () {
     this.getZipEntryFile = function(entry, callback) {
         var writer = new zip.BlobWriter();
         entry.getData(writer, function(blob) {
-            callback(new File([blob], getBaseName(entry.filename)));
+            callback(new File([blob], fileUtils.getBaseName(entry.filename)));
         });
     };
 

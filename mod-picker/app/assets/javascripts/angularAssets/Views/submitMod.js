@@ -6,7 +6,7 @@ app.config(['$routeProvider', function ($routeProvider) {
     );
 }]);
 
-app.controller('submitModController', function ($scope, backend, submitService, archiveService) {
+app.controller('submitModController', function ($scope, backend, submitService, archiveService, fileUtils) {
     /* scraping */
     $scope.nexusScraped = false;
     $scope.archive = {};
@@ -55,7 +55,7 @@ app.controller('submitModController', function ($scope, backend, submitService, 
 
     $scope.analyzeArchive = function() {
         $scope.archive.analyzing = true;
-        $scope.archive.ext = getFileExtension($scope.archive.file.name);
+        $scope.archive.ext = fileUtils.getFileExtension($scope.archive.file.name);
         if ($scope.archive.ext === 'rar') {
             console.log('Analyzing RAR archive: "' + $scope.archive.file.name + '"');
             archiveService.getRarEntries($scope.archive.file, function(entries) {
@@ -64,7 +64,7 @@ app.controller('submitModController', function ($scope, backend, submitService, 
                     var fixedPath = entry.path.split('\\').join('/');
                     console.log(fixedPath);
                     $scope.archive.tree.push(fixedPath);
-                    if (getFileExtension(fixedPath) === 'bsa') {
+                    if (fileUtils.getFileExtension(fixedPath) === 'bsa') {
                         archiveService.getRarEntryFile($scope.archive.file, entry, $scope.analyzeBSA);
                     }
                 });
@@ -77,7 +77,7 @@ app.controller('submitModController', function ($scope, backend, submitService, 
                 entries.forEach(function (entry) {
                     console.log(entry.filename);
                     $scope.archive.tree.push(entry.filename);
-                    if (getFileExtension(entry.filename) === 'bsa') {
+                    if (fileUtils.getFileExtension(entry.filename) === 'bsa') {
                         archiveService.getZipEntryFile(entry, $scope.analyzeBSA);
                     }
                 });

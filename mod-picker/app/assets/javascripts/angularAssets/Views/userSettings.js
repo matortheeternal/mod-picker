@@ -10,7 +10,7 @@ app.config(['$routeProvider', function ($routeProvider) {
     );
 }]);
 
-app.controller('userSettingsController', function ($scope, $q, userSettingsService, userService, quoteService, userTitleService) {
+app.controller('userSettingsController', function ($scope, $q, userSettingsService, userService, quoteService, userTitleService, fileUtils) {
 
     //TODO: put this into the Routing logic
     $scope.tabs = [
@@ -88,7 +88,7 @@ app.controller('userSettingsController', function ($scope, $q, userSettingsServi
             var avatarFile = event.target.files[0];
 
             // check file type
-            var ext = getFileExtension(avatarFile.name);
+            var ext = fileUtils.getFileExtension(avatarFile.name);
             if ((ext !== 'png') && (ext !== 'jpg')) {
                 $scope.errors.push({message: "Unsupported file type.  Avatar image must be a PNG or JPG file." });
                 $scope.resetAvatar();
