@@ -87,7 +87,7 @@
                         <h4>Reviews Count</h4>
                         <slider data="filters.reviews" type="CeilSlider" attr="200"></slider>
                     </div>
-                    <div id="mod-picker-ext-filters" class="filter-section" ng-if="extendedFilterVisibility.modPicker">
+                    <div id="mod-picker-ext-filters" class="filter-section" ng-show="extendedFilterVisibility.modPicker">
                         <h4>Number of Stars <span class="filter-controls">
                             <span class="fa fa-wrench" ng-click="" title="Custom Value"></span>
                         </span></h4>
@@ -123,7 +123,7 @@
                         </span></h4>
                         <slider data="filters.totalDownloads" type="StepSlider" attr="50000000"></slider>
                     </div>
-                    <div id="nexus-mods-ext-filters" class="filter-section" ng-if="extendedFilterVisibility.nexusMods">
+                    <div id="nexus-mods-ext-filters" class="filter-section" ng-show="extendedFilterVisibility.nexusMods">
                         <h4>Views <span class="filter-controls">
                             <span class="fa fa-wrench" ng-click="" title="Custom Value"></span>
                         </span></h4>
