@@ -1,12 +1,12 @@
 ﻿<div class="mod-tab-actions">
-	<div class="mod-tab-action sort-dropdown">
-		<strong style="margin-right: 10px;">Sort By: </strong>
+	<div class="mod-tab-action sort-by-dropdown">
+		<strong>Sort By: </strong>
 		<div class="select">
-			<select ng-model="filter">
-				<option value="compatibility_type" selected>Severity</option>
-				<option value="submitted">Date Submitted</option>
-				<option value="edited">Last Edited</option>
-				<option value="incorrect_notes_count">Author's Incorrect Notes</option>
+			<select ng-model="reviewsFilter">
+				<option value="-sortBySeverity">Severity</option>
+				<option value="-submitted">Date Submitted</option>
+				<option value="-edited">Last Edited</option>
+				<option value="+incorrect_notes_count">Author's Incorrect Notes</option>
 			</select>
 		</div>
 	</div>

@@ -239,7 +239,7 @@
   }
 }
 
-.mod-tab-dropdown {
+.sort-by-dropdown {
   flex-grow: 1;
 
   .select {
@@ -273,14 +273,18 @@
     display: flex;
     justify-content: space-around;
     align-items: center;
+    width: 745px;
 
-    .select {
+    .compatibility-dropdown {
       min-width: 236px;
+    }
+
+    .install-order-dropdown {
+      min-width: 85px;
     }
 
     > div {
       display: flex;
-      flex-basis: 150px;
       align-items: center;
       text-align: center;
     }
@@ -314,4 +318,8 @@
 .submit-note {
   display: flex;
   justify-content: flex-end;
+}
+
+.mod-page-btn {
+  margin: 5px;
 }

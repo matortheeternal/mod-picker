@@ -11,10 +11,10 @@
 		</label>
 	</div
 
-   ><div class="mod-tab-action mod-tab-dropdown">
+   ><div class="mod-tab-action sort-by-dropdown">
 		<strong>Sort By: </strong>
 		<div class="select">
-			<select ng-model="compatibilityNotesFilter">
+			<select ng-model="cNotesFilter">
 				<option value="-sortBySeverity">Severity</option>
 				<option value="-submitted">Date Submitted</option>
 				<option value="-edited">Last Edited</option>
@@ -32,7 +32,7 @@
 	<section>
 		<div class="add-note-actions">
 			<strong>{{mod.name}}</strong>
-			<div class="select">
+			<div class="select compatibility-dropdown">
 				<select ng-model="newCompatibilityNote.compatibility_type">
 					<option value="incompatible">is incompatible with</option>
 					<option value="partially incompatible">is partially incompatible with</option>
