@@ -8,6 +8,9 @@
         </span>
     </span>
     <span ng-if="!data.childs" class="no-icon"></span>
+    <span class="file-icon">
+        <i class="fa {{data.iconClass}}"></i>
+    </span>
     <span>{{data.title}}</span>
 </div>
 <div ng-show="expanded" ng-if="data.childs">
