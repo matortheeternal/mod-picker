@@ -3,4 +3,7 @@ class Game < ActiveRecord::Base
   has_many :nexus_infos, :inverse_of => 'game'
   has_many :mod_lists, :inverse_of => 'game'
   has_many :config_files, :inverse_of => 'game'
+
+  # Validations
+  # Validations not needed due to static data table
 end
