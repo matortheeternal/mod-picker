@@ -8,7 +8,7 @@ class InstallOrderNoteHistoryEntry < ActiveRecord::Base
 
   # Validations
   validates :edit_summary, :install_first, :install_second, :submitted, presence: true
-  validates :text_body, length: { 64..16384 }
+  validates :text_body, length: { in: 64..16384 }
 
   def init 
     self.submitted  ||= DateTime.now
