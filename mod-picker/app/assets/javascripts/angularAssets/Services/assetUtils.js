@@ -1,7 +1,7 @@
 app.service('assetUtils', function () {
-    this.convertDataStringToNestedObject = function(assets) {
+    this.convertDataStringToNestedObject = function(title, assets) {
         var nestedData = {
-            title: 'Footprints',
+            title: title,
             childs: {}
         };
 
