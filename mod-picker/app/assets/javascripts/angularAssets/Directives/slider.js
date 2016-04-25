@@ -32,4 +32,10 @@ app.controller('sliderController', function ($scope, sliderOptionsFactory, $time
             $scope.data.max = rawData.max;
         }
     }, true);
+
+    $scope.$parent.$on('rerenderSliders', function () {
+        $timeout(function () {
+            $scope.$broadcast('rzSliderForceRender');
+        });
+    });
 });
