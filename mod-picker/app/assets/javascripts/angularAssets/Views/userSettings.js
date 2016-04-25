@@ -10,7 +10,7 @@ app.config(['$routeProvider', function ($routeProvider) {
     );
 }]);
 
-app.controller('userSettingsController', function ($scope, $q, userSettingsService, userService, quoteService, userTitleService, fileUtils) {
+app.controller('userSettingsController', function ($scope, $q, userSettingsService, userService, quoteService, userTitleService, fileUtils, themesService) {
 
     //TODO: put this into the Routing logic
     $scope.tabs = [
@@ -27,6 +27,9 @@ app.controller('userSettingsController', function ($scope, $q, userSettingsServi
     // seems odd to me.  -Mator
     userSettingsService.retrieveUserSettings().then(function (userSettings) {
         $scope.userSettings = userSettings;
+        //Don't trust the server! (actually, this is just to make sure that caching usersettings doesn't screws us over)
+        //this obviously belongs into a service, do note that todo above this
+        $scope.userSettings.theme = themesService.getTheme();
         //TODO: I feel like this could be put inside the retrieveUserSettings() function
         userService.retrieveUser(userSettings.user_id).then(function (user) {
             $scope.user = user;
@@ -198,8 +201,10 @@ app.controller('userSettingsController', function ($scope, $q, userSettingsServi
         userSettingsService.submitUserSettings($scope.userSettings).then(function (data) {
             if (data.status !== "ok") {
                 $scope.errors.concat(data.errors);
+            } else {
+                $scope.showSuccess = $scope.errors.length == 0;
+                themesService.changeTheme($scope.userSettings.theme);
             }
-            $scope.showSuccess = $scope.errors.length == 0;
         });
         if ($scope.avatar.file) {
             userSettingsService.submitAvatar($scope.avatar.file).then(function (data) {
