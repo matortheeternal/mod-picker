@@ -1,0 +1,21 @@
+ul.asset-tree-list {
+  margin: 0;
+
+  li {
+    list-style: none;
+  }
+}
+
+.asset-tree-title {
+  cursor: default;
+}
+
+.asset-tree-expandable {
+  cursor: pointer;
+}
+
+.file-icon {
+  float: left;
+  text-align: center;
+  margin-right: 4px;
+}

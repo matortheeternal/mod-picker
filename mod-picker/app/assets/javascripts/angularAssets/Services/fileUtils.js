@@ -1,6 +1,7 @@
 app.service('fileUtils', function() {
     this.getFileExtension = function(filename) {
-        return filename.split('.').pop();
+        var ary = filename.split('.');
+        return ary.length == 1 ? "" : ary.pop();
     };
 
     this.getBaseName = function(path) {
