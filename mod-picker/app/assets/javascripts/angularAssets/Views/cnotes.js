@@ -1,7 +1,8 @@
 
-app.config(['$routeProvider', function ($routeProvider) {
-    $routeProvider.when('/compatibility_notes', {
+app.config(['$stateProvider', function ($stateProvider) {
+    $stateProvider.state('compatibility_notes', {
             templateUrl: '/resources/partials/compatibility_notes.html',
+            url: '/compatibility_notes',
             controller: 'cnotesController'
         }
     );

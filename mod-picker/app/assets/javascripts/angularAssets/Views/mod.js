@@ -1,18 +1,19 @@
-app.config(['$routeProvider', function ($routeProvider) {
-    $routeProvider.when('/mod/:modId', {
+app.config(['$stateProvider', function ($stateProvider) {
+    $stateProvider.state('mod', {
             templateUrl: '/resources/partials/mod.html',
-            controller: 'modController'
+            controller: 'modController',
+            url: '/mod/:modId'
         }
     );
 }]);
 
-app.controller('modController', function ($scope, $q, $routeParams, modService, assetUtils) {
+app.controller('modController', function ($scope, $q, $stateParams, modService, assetUtils) {
     $scope.expandedState = {
         compabilityNotes: true,
         reviews: false
     };
 
-    modService.retrieveMod($routeParams.modId).then(function (mod) {
+    modService.retrieveMod($stateParams.modId).then(function (mod) {
         $scope.mod = mod;
         $scope.changeVersion(mod.mod_versions[0].id);
         $scope.version = mod.mod_versions[0].id;

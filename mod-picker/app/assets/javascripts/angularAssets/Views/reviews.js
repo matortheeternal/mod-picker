@@ -1,8 +1,9 @@
 
-app.config(['$routeProvider', function ($routeProvider) {
-    $routeProvider.when('/reviews', {
+app.config(['$stateProvider', function ($stateProvider) {
+    $stateProvider.state('reviews', {
             templateUrl: '/resources/partials/reviews.html',
-            controller: 'reviewsController'
+            controller: 'reviewsController',
+            url: '/reviews'
         }
     );
 }]);
