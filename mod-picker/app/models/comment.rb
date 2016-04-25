@@ -19,7 +19,7 @@ class Comment < ActiveRecord::Base
   has_many :children, :class_name => 'Comment', :foreign_key => 'parent_comment', :inverse_of => 'parent'
 
   # validation
-  validates :submitted_by, :submitted, :commentable_type, :commentable_id, presence: true
+  validates :submitted_by, :commentable_type, :commentable_id, presence: true
   validates :hidden, inclusion: [true, false]
   validates :commentable_type, inclusion: ["User", "ModList"]
 

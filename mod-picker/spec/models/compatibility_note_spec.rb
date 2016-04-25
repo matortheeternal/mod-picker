@@ -9,6 +9,10 @@ RSpec.describe CompatibilityNote, :model do
     expect(note).to be_valid
   end
 
+  it "should have a valid factory" do
+    expect(create(:compatibility_note)).to be_valid
+  end
+
   it "should have a valid fixture" do
     expect(compatibility_notes(:incompatibleNote)).to be_valid
     expect(compatibility_notes(:compatibilityPluginNote)).to be_valid

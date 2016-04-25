@@ -24,7 +24,7 @@ require 'rails_helper'
 #   add_index "mod_lists", ["created_by"], name: "created_by", using: :btree
 #   add_index "mod_lists", ["game_id"], name: "fk_rails_f25cbc0432", using: :btree
 
-RSpec.describe ModList, :model, :wip do
+RSpec.describe ModList, :model, :fail do
 
   fixtures :mod_lists, :users, :mod_versions, :games, :categories, :mods,
     :plugins
