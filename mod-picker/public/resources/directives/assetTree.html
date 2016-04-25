@@ -1,14 +1,17 @@
 <div>
-    <span ng-if="data.childs">
-        <span ng-show="expanded" ng-click="expanded = !expanded" class="expanded-icon">
+    <span ng-if="data.childs" ng-click="toggle()" >
+        <span ng-show="expanded" class="expanded-icon">
             <i class="fa fa-chevron-down"></i>
         </span>
-        <span ng-hide="expanded" ng-click="expanded = !expanded" class="collapsed-icon">
+        <span ng-hide="expanded" class="collapsed-icon">
             <i class="fa fa-chevron-right"></i>
         </span>
     </span>
-    {{data.title}}
+    <span ng-if="!data.childs" class="no-icon"></span>
+    <span>{{data.title}}</span>
 </div>
-<div ng-hide="expanded" ng-if="data.childs">
-    <assert-tree ng-repeat="child in data.childs" data="child"></assert-tree>
+<div ng-show="expanded" ng-if="data.childs">
+    <ul class="assetTreeList">
+        <li><asset-tree ng-repeat="child in data.childs" data="child"></asset-tree></li>
+    </ul>
 </div>

@@ -1,9 +1,15 @@
-app.directive('assetTree', function () {
+app.directive('assetTree', function (RecursionHelper) {
     return {
         retrict: 'E',
         templateUrl: '/resources/directives/assetTree.html',
         scope: {
-            'data': '='
+            data: '='
+        },
+        link: function(scope) {
+            scope.expanded = false;
+            scope.toggle = function () {
+                scope.expanded = !scope.expanded;
+            }
         }
     }
 });
