@@ -1,4 +1,4 @@
-ul.assetTreeList {
+ul.asset-tree-list {
   margin: 0;
 
   li {
@@ -6,6 +6,16 @@ ul.assetTreeList {
   }
 }
 
-.assetTreeTitle {
+.asset-tree-title {
+  cursor: default;
+}
+
+.asset-tree-expandable {
   cursor: pointer;
+}
+
+.file-icon {
+  float: left;
+  text-align: center;
+  margin-right: 4px;
 }

@@ -1,7 +1,8 @@
-app.config(['$routeProvider', function ($routeProvider) {
-    $routeProvider.when('/mod/:modId', {
+app.config(['$stateProvider', function ($stateProvider) {
+    $stateProvider.state('mod', {
             templateUrl: '/resources/partials/showMod/mod.html',
-            controller: 'modController'
+            controller: 'modController',
+            url: '/mod/:modId'
         }
     );
 }]);
@@ -15,10 +16,10 @@ app.filter('percentage', function() {
   };
 });
 
-app.controller('modController', function ($scope, $q, $routeParams, modService, categoryService, assetUtils) {
+app.controller('modController', function ($scope, $q, $stateParams, modService, categoryService, assetUtils) {
     //initialization
     //of the mod object
-    modService.retrieveMod($routeParams.modId).then(function (mod) {
+    modService.retrieveMod($stateParams.modId).then(function (mod) {
         $scope.mod = mod;
         $scope.currentVersion = mod.mod_versions[0];
 
