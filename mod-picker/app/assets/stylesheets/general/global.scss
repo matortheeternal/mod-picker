@@ -387,3 +387,20 @@ form {
     margin-top: 0;
   }
 }
+
+/* css for pagination */
+
+.page-results-container {
+  margin: auto;
+  padding: 14px;
+  text-align: center;
+  background-color: $background-highlight;
+  .page-item {
+    border: 1px solid $border_color;
+    padding: 4px;
+  }
+  .page-ellipsis {
+    margin-left: 3px;
+    margin-right: 3px;
+  }
+}

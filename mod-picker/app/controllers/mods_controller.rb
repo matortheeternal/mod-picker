@@ -4,9 +4,14 @@ class ModsController < ApplicationController
   # GET /mods
   # GET /mods.json
   def index
-    @mods = Mod.includes(:nexus_infos).filter(filtering_params).sort(params[:sort])
+    @mods = Mod.includes(:nexus_infos).filter(filtering_params).sort(params[:sort]).paginate(:page => params[:page])
+    @count =  Mod.includes(:nexus_infos).filter(filtering_params).sort(params[:sort]).count
 
-    render :json => @mods
+    render :json => {
+      mods: @mods,
+      max_entries: @count,
+      entries_per_page: Mod.per_page
+    }
   end
 
   # GET /mods/1

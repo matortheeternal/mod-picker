@@ -11,15 +11,34 @@ app.service('modService', function (backend, $q) {
         return update.promise;
     };
 
-    this.retrieveMods = function (filters, sort) {
+    var pages = {
+        current: 1
+    };
+
+    this.retrieveMods = function (filters, sort, newPage) {
         var mods = $q.defer();
+
+        if(newPage && newPage > pages.max) {
+            mods.reject();
+            return mods.promise;
+        }
+
+        pages.current = newPage || pages.current;
+
         var postData =  {
             filters: filters,
-            sort: sort
+            sort: sort,
+            page: pages.current
         };
+
         backend.post('/mods', postData).then(function (data) {
-                mods.resolve(data);
+            pages.max = Math.ceil(data.max_entries / data.entries_per_page);
+            mods.resolve({
+                mods: data.mods,
+                pageInformation: pages
+            });
         });
+
         return mods.promise;
     };
 
