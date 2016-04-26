@@ -214,6 +214,7 @@ input[type="button"], input[type="submit"] {
 
 .left-column {
   width: 250px;
+  padding: 40px 48px 40px 0;
   display: table-cell;
   vertical-align: top;
   background-color: $secondary_background;
@@ -225,10 +226,15 @@ input[type="button"], input[type="submit"] {
 }
 
 .right-column {
-  max-width: 970px;
+  width: 970px;
+  padding: 40px 0 40px 48px;
   display: table-cell;
   vertical-align: top;
   background-color: $primary_background;
+}
+
+.tabs-column {
+  padding: 20px 0 20px 20px;
 }
 
 /* css for forms, inputs, and labels */
