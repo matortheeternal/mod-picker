@@ -1,5 +1,5 @@
 ﻿<div class="mod-tab-actions">
-	<div class="centered-mod-tab-action">
+	<!--<div class="centered-mod-tab-action">
 		<strong>Compatible</strong>
 		<br>
 		with modlist
@@ -9,20 +9,19 @@
 			<strong>Enable Modlist Filter</strong>
 			<input type="checkbox" checked>
 		</label>
-	</div
+	</div>--><!--
 
-   ><div class="mod-tab-action sort-by-dropdown">
+	--><div class="mod-tab-action sort-by-dropdown">
 		<strong>Sort By: </strong>
 		<div class="select">
-			<select ng-model="cNotesFilter">
-				<option value="-sortBySeverity">Severity</option>
+			<select ng-model="cNotesSort">
+				<option value="-sortBySeverity" default>Reputation</option>
 				<option value="-submitted">Date Submitted</option>
 				<option value="-edited">Last Edited</option>
-				<option value="+incorrect_notes_count">Author's Incorrect Notes</option>
 			</select>
 		</div>
-	</div
-   ><div class="mod-tab-action">
+	</div><!--
+	--><div class="mod-tab-action">
 		<input class="btn mod-page-btn" type="submit" value="Add Note" ng-click="submit()"/>
 	</div>
 </div>
@@ -42,10 +41,6 @@
 				</select>
 			</div>
 			<input type="text" placeholder="Enter Mod Name" ng-model="otherModName" ng-change="newCompatibilityNote.otherMod = getModByName(newCompatibilityNote.otherModName)">
-			<div ng-if="userCanAddMod">
-				Mod not listed?
-				<input class="btn mod-page-btn" type="submit" value="Add Mod" ng-click="addMod()"/>
-			</div>
 		</div>
 	</section>
 	<section class="version-boxes-section">

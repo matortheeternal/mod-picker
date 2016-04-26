@@ -17,8 +17,8 @@ app.filter('percentage', function() {
 });
 
 app.controller('modController', function ($scope, $q, $stateParams, modService, categoryService, assetUtils, userService) {
-    //initialization
-    //of the mod object
+
+    //initialization /of the mod object
     modService.retrieveMod($stateParams.modId).then(function (mod) {
         $scope.mod = mod;
         $scope.currentVersion = mod.mod_versions[0];
@@ -44,8 +44,8 @@ app.controller('modController', function ($scope, $q, $stateParams, modService, 
         }
 
         //initializing the newCompatibilityNote object
-        $scope.newCompatibilityNote.mods.push($scope.mod);
-
+        $scope.newCompatibilityNote = {};
+        $scope.newCompatibilityNote.firstMod = $scope.mod;
     });
 
     //get current user
@@ -60,13 +60,13 @@ app.controller('modController', function ($scope, $q, $stateParams, modService, 
 
     //of the tab data
     $scope.tabs = [
-        { name: 'Compatibility notes', url: '/resources/partials/showMod/compatibility.html' },
-        { name: 'Installation', url: '/resources/partials/showMod/installation.html' },
         { name: 'Reviews', url: '/resources/partials/showMod/reviews.html' },
+        { name: 'Compatibility', url: '/resources/partials/showMod/compatibility.html' },
+        { name: 'Order', url: '/resources/partials/showMod/installation.html' },
         { name: 'Analysis', url: '/resources/partials/showMod/analysis.html' }
     ];
 
-    $scope.currentTab = $scope.tabs[1];
+    $scope.currentTab = $scope.tabs[0];
 
     //this prevents the sort by dropdowns from displaying an undefined option
     $scope.compatibilityNotesFilter = '-sortBySeverity';
