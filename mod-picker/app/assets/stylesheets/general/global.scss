@@ -220,6 +220,13 @@ input[type="button"], input[type="submit"] {
   width: 360px;
 }
 
+.medium-column {
+  width: 300px;
+  .section-title {
+    font-size: 16px;
+  }
+}
+
 .right-column {
   width: 970px;
   max-width: 970px;
