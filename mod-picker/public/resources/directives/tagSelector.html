@@ -4,10 +4,11 @@
             {{tag.text}}
         </span>
         <!-- TODO: replace ng-if with ng-show / ng-hide -->
-        <span ng-if="showModsCount" class="tag-count" title="The number of mods with this tag">
+        <span ng-if="showModsCount" class="tag-count" ng-class="{ 'last-child' : !(showRemove || showModListsCount) }" title="The number of mods with this tag">
             {{tag.mods_count | number}}
         </span>
-        <span ng-if="showModListsCount" class="tag-count" title="The number of mod lists with this tag">
+        <span ng-if="showModListsCount" class="tag-count" ng-class="{ 'last-child' : !showRemove }"
+              title="The number of mod lists with this tag">
             {{tag.mod_lists_count | number}}
         </span>
         <span ng-if="showRemove" class="remove-tag" ng-click="activeTags.splice($index, 1)">
@@ -21,7 +22,8 @@
         <span ng-if="showModsCount" class="tag-count" title="The number of mods with this tag">
             {{tag.mods_count | number}}
         </span>
-        <span ng-if="showModListsCount" class="tag-count" title="The number of mod lists with this tag">
+        <span ng-if="showModListsCount" class="tag-count"
+              title="The number of mod lists with this tag">
             {{tag.mod_lists_count | number}}
         </span>
         <span class="remove-tag" ng-click="removeTag($index)">

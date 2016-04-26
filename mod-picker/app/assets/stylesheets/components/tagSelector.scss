@@ -28,7 +28,7 @@
     }
 
     .tag-text {
-      padding-right: 2px;
+      cursor: default;
     }
 
     input {
@@ -47,14 +47,17 @@
     }
 
     .tag-count {
-      padding-left: 6px;
-      padding-right: 2px;
       border-left: 1px solid $border_color;
       cursor: default;
     }
 
     .remove-tag {
       cursor: pointer;
+    }
+
+    .last-child {
+      padding: 4px;
+      margin-right: 2px;
     }
   }
 
