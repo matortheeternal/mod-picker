@@ -36,10 +36,14 @@ class ModsController < ApplicationController
       if @nexus_info.present? && @nexus_info.mod_id.nil?
         @nexus_info.mod_id = @mod.id
 
-        # attempt to save updated nexus info
+        # save updated nexus info
         if @nexus_info.save
+          # compute metrics and initial mod reputation
           @mod.compute_extra_metrics
           @mod.compute_reputation
+          @mod.save
+
+          # render json to the user
           render json: {status: :ok}
         else
           render json: @nexus_info.errors, status: :unprocessable_entity
