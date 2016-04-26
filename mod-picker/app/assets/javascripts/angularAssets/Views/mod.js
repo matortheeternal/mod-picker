@@ -16,7 +16,7 @@ app.filter('percentage', function() {
   };
 });
 
-app.controller('modController', function ($scope, $q, $stateParams, modService, categoryService, assetUtils, userService) {
+app.controller('modController', function ($scope, $q, $stateParams, modService, pluginService, categoryService, assetUtils, userService) {
     $scope.tags = [];
     $scope.newTags = [];
 
@@ -146,6 +146,10 @@ app.controller('modController', function ($scope, $q, $stateParams, modService, 
                 return 0;
                 break;
         }
+    };
+
+    $scope.getPlugin = function() {
+        alert($scope.currentPlugin.id);
     };
 
     //formatting the data for the assetTree, as the recursive directive assetTree cannot do it in its controller
