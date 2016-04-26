@@ -100,6 +100,51 @@ class Mod < ActiveRecord::Base
     end
   end
 
+  def compute_extra_metrics
+    days_since_release = DateTime.now - self.released
+
+    # compute extra nexus metrics
+    nex = self.nexus_infos
+    if nex.present?
+      nex.endorsement_rate = nex.endorsements / days_since_release
+      nex.dl_rate = nex.unique_downloads / days_since_release
+      nex.udl_to_endorsements = nex.unique_downloads / nex.endorsements
+      nex.udl_to_posts = nex.unique_downloads / nex.posts_count
+      nex.tdl_to_udl = nex.total_downloads / nex.unique_downloads
+      nex.views_to_tdl = nex.views / nex.total_downloads
+      nex.save!
+    end
+
+    # compute average review rating
+    if self.reviews_count > 0
+      total = 0
+      count = 0
+      self.reviews.each do |r|
+        total += r.overall_rating
+        count += 1
+      end
+      self.average_rating = total.to_f / count
+    end
+
+    # compute update rate
+    self.update_rate = self.mod_versions_count / days_since_release
+    self.save!
+  end
+
+  def compute_reputation
+    if self.reviews_count < 5
+      if self.nexus_infos.present?
+        endorsement_reputation = 100.0 / (1.0 + Math::exp(-0.15 * (self.endorsement_rate - 25)))
+        self.reputation = endorsement_reputation
+        self.save!
+      end
+    else
+      review_reputation = (self.average_rating / 10.0)^3 * (510.0 / (1 + Math::exp(-0.2 * (self.review_count - 10))) - 60)
+      self.reputation = review_reputation
+      self.save!
+    end
+  end
+
   def show_json
     self.as_json(:include => {
         :mod_versions => {
