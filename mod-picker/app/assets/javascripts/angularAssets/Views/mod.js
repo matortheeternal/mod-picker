@@ -65,8 +65,8 @@ app.controller('modController', function ($scope, $q, $stateParams, modService, 
     //of the tab data
     $scope.tabs = [
         { name: 'Compatibility', url: '/resources/partials/showMod/compatibility.html' },
-        { name: 'Reviews', url: '/resources/partials/showMod/reviews.html' },
         { name: 'Installation and Load Orders', url: '/resources/partials/showMod/installation.html' },
+        { name: 'Reviews', url: '/resources/partials/showMod/reviews.html' },
         { name: 'Analysis', url: '/resources/partials/showMod/analysis.html' }
     ];
 
