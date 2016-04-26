@@ -17,6 +17,8 @@ app.filter('percentage', function() {
 });
 
 app.controller('modController', function ($scope, $q, $stateParams, modService, categoryService, assetUtils, userService) {
+    $scope.tags = [];
+    $scope.newTags = [];
 
     //initialization /of the mod object
     modService.retrieveMod($stateParams.modId).then(function (mod) {
@@ -24,8 +26,6 @@ app.controller('modController', function ($scope, $q, $stateParams, modService, 
         $scope.currentVersion = mod.mod_versions[0];
         $scope.statusClass = "status-" + $scope.mod.status;
         $scope.mod.status = $scope.mod.status.capitalize();
-        $scope.tags = [];
-        $scope.newTags = [];
 
         //getting the actual names of the categories
         categoryService.getCategoryById(mod.primary_category_id).then(function (data) {
