@@ -50,6 +50,9 @@ app.controller('modController', function ($scope, $q, $stateParams, modService, 
         //initializing the newCompatibilityNote object
         $scope.newCompatibilityNote = {};
         $scope.newCompatibilityNote.firstMod = $scope.mod;
+        //initializing the newReview object
+        $scope.newReview = {ratings: [8.5]};
+        $scope.updateOverallRating();
     });
 
     //get current user
@@ -106,17 +109,14 @@ app.controller('modController', function ($scope, $q, $stateParams, modService, 
         });
     };
 
-    //finding the average rating of a review without counting null values
-    $scope.findAverageRating = function(ratings) {
-        ratings.filter(function(rating) {
-            return rating !== null;
-        });
-
+    //update the average rating of the new review
+    $scope.updateOverallRating = function() {
         var sum = 0;
-        ratings.forEach(function(rating) {
-            sum += rating;
-        });
-        return sum/ratings.length;
+        for (var i = 0; i<$scope.newReview.ratings.length; i++) {
+            sum += $scope.newReview.ratings[i];
+        }
+
+        $scope.newReview.overallRating = sum/$scope.newReview.ratings.length;
     };
 
     //function to order by severity strings

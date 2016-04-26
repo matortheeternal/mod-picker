@@ -321,3 +321,17 @@
 .mod-page-btn {
   margin: 5px;
 }
+
+//add reviews
+.ratings {
+  display: flex;
+
+  div {
+    margin-right: 20px;
+  }
+
+  input {
+    width: 50px;
+    display: inline;
+  }
+}
