@@ -3,9 +3,9 @@
         <div class="mod-header-color">
             <div class="page-container mod-header">
                 <section>
-                    <div class="stars-count action-box">
-                        <span class="stars-number">{{mod.mod_stars_count}}</span>
-                        STARS
+                    <div class="quality-value action-box">
+                        <span class="reputation-number">{{mod.reputation}}</span>
+                        REPUTATION
                     </div>
 
                     <div class="mod-info">
@@ -129,8 +129,8 @@
                     </section>
 
                     <!--Nexus Stats-->
-                    <div class="stat-block" ng-if="mod.nexus_infos" ng-click="nexusExpanded = !nexusExpanded">
-                        <div class="stat-block-title">
+                    <div class="stat-block" ng-if="mod.nexus_infos">
+                        <div class="stat-block-title" ng-click="nexusExpanded = !nexusExpanded">
                            <h3 class="section-title">Nexus stats</h3>
                            <i class="fa fa-plus stat-expander" aria-hidden="true" ng-hide="nexusExpanded"></i>
                            <i class="fa fa-minus stat-expander" aria-hidden="true" ng-show="nexusExpanded"></i>

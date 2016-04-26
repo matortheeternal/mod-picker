@@ -40,12 +40,13 @@
   background-color: $bar_dark_color;
 }
 
-.stars-count {
+.quality-value {
   font-size: 10px;
-  padding-top: 0px;
+  font-weight: 700;
+  padding-top: 0;
 }
 
-.stars-number {
+.reputation-number {
   display: block;
   font-size: 24px;
 }
