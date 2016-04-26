@@ -224,6 +224,7 @@ RSpec.describe ModList, :model, :fail do
             plugin_id: plugin.id,
             index: 1)
 
+
           expect(list.plugins_count).to eq(1)
         }.to change { list.plugins_count}.by(1)
       end

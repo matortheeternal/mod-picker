@@ -1,4 +1,7 @@
 class ModListPlugin < ActiveRecord::Base
+
+  after_initialize :init
+
   after_create :increment_counter_caches
   before_destroy :decrement_counter_caches
 
@@ -10,6 +13,10 @@ class ModListPlugin < ActiveRecord::Base
   # Validations
   validates :mod_list_id, :plugin_id, :index, presence: true
   validates :active, inclusion: [true, false]
+
+  def init
+    self.active ||= true
+  end
 
   private
     # counter caches
