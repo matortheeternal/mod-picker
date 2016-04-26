@@ -7,7 +7,9 @@ class ModVersionCompatibilityNote < ActiveRecord::Base
   belongs_to :mod_version, :inverse_of => 'mod_version_compatibility_notes'
   belongs_to :compatibility_note, :inverse_of => 'mod_version_compatibility_notes'
 
-
+  # Validations
+  validates :mod_version_id, :compatibility_note_id, presence: true
+  
   private
     def increment_counter_caches
       self.mod_version.mod.compatibility_notes_count += 1
