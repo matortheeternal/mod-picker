@@ -24,10 +24,10 @@ class Plugin < ActiveRecord::Base
 
   # validations
   validates :mod_version_id, :filename, :crc_hash, presence: true
-  validates :filename, length: {in: 1..64}
-  validates :author, length: {in: 0..64}
-  validates :description, length: {in: 0..512}
-  validates :crc_hash, length: {in: 1..8}
+  validates :filename, length: {maximum: 64}
+  validates :author, length: {maximum: 64}
+  validates :description, length: {maximum: 512}
+  validates :crc_hash, length: {maximum: 8}
 
   accepts_nested_attributes_for :dummy_masters, :masters, :record_groups, :overrides, :plugin_errors
 end
