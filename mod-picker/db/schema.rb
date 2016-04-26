@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160426213845) do
+ActiveRecord::Schema.define(version: 20160426221507) do
 
   create_table "agreement_marks", id: false, force: :cascade do |t|
     t.integer "incorrect_note_id", limit: 4
@@ -448,8 +448,8 @@ ActiveRecord::Schema.define(version: 20160426213845) do
     t.integer  "status",                    limit: 1,   default: 0,     null: false
     t.boolean  "hidden",                                default: false, null: false
     t.integer  "submitted_by",              limit: 4,                   null: false
-    t.float    "reputation",                limit: 24
-    t.float    "average_rating",            limit: 24
+    t.float    "reputation",                limit: 24,  default: 0.0
+    t.float    "average_rating",            limit: 24,  default: 0.0
     t.datetime "released"
     t.float    "update_rate",               limit: 24,  default: 0.0
   end
