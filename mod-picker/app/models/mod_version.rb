@@ -2,6 +2,8 @@ class ModVersion < ActiveRecord::Base
   after_create :increment_counter_caches
   before_destroy :decrement_counter_caches
 
+  after_initialize :init
+
   belongs_to :mod, :inverse_of => 'mod_versions'
   has_many :plugins, :inverse_of => 'mod_version'
 
@@ -20,6 +22,16 @@ class ModVersion < ActiveRecord::Base
   # requirements
   has_many :requires, :class_name => 'ModVersionRequirement', :inverse_of => 'mod_version'
   has_many :required_by, :class_name => 'ModVersionRequirement', :inverse_of => 'required_mod_version', :foreign_key => 'required_id'
+
+  # Validations
+  validates :mod_id, :released, :version, presence: true
+  validates :version, length: {maximum: 16}
+  
+  # set field values after initialization
+  def init
+    self.obsolete   ||= false
+    self.dangerous  ||= false
+  end
 
   def required_mods
     @mods = []
