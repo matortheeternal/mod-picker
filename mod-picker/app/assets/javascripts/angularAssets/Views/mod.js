@@ -7,6 +7,7 @@ app.config(['$stateProvider', function ($stateProvider) {
     );
 }]);
 
+//TODO: belongs in its own filter
 app.filter('percentage', function() {
   return function(input) {
     if (isNaN(input)) {
@@ -39,6 +40,7 @@ app.controller('modController', function ($scope, $q, $stateParams, modService, 
             $scope.updateVersion($scope.currentVersion);
         });
 
+        //TODO: I don't like it as its static stuff in the frontend. Looks a bit dirty to me.
         //setting the name of the current game for the nexus links
         if ($scope.mod.game_id === 1) {
             $scope.game = "skyrim";
@@ -49,6 +51,7 @@ app.controller('modController', function ($scope, $q, $stateParams, modService, 
 
         //initializing the newCompatibilityNote object
         $scope.newCompatibilityNote = {};
+        //TODO: I personally feel like this is not necessary
         $scope.newCompatibilityNote.firstMod = $scope.mod;
         //initializing the newReview object
         $scope.newReview = {ratings: [8.5]};
@@ -66,6 +69,7 @@ app.controller('modController', function ($scope, $q, $stateParams, modService, 
     });
 
     //of the tab data
+    //TODO use the cool ui-router here :D
     $scope.tabs = [
         { name: 'Reviews', url: '/resources/partials/showMod/reviews.html' },
         { name: 'Compatibility', url: '/resources/partials/showMod/compatibility.html' },
@@ -86,6 +90,7 @@ app.controller('modController', function ($scope, $q, $stateParams, modService, 
     //getting the names and ids of the required mods
     $scope.updateVersion = function (modVersion) {
         //update notes
+        //TODO: we either should separate those (only load the current tab) or merge them into one request-function
         modService.retrieveCompatibilityNotes(modVersion.id).then(function(notes) {
             $scope.compatibilityNotes = notes;
         });
@@ -97,6 +102,8 @@ app.controller('modController', function ($scope, $q, $stateParams, modService, 
         });
 
         //update requirements
+
+        //TODO: this seems dangerous as it might kill our server by firing many expensive requests. I don't have a solution yet though.
         $scope.requirements = [];
         modVersion.required_mods.forEach(function(requirement) {
             modService.retrieveMod(requirement.required_id).then(function(mod) {
@@ -111,6 +118,8 @@ app.controller('modController', function ($scope, $q, $stateParams, modService, 
 
     //update the average rating of the new review
     $scope.updateOverallRating = function() {
+        //TODO: this might become ressource heavy on mods with many ratings.
+        // possible solution: (overallRating * number of ratings + newRating) / number of ratings + 1
         var sum = 0;
         for (var i = 0; i<$scope.newReview.ratings.length; i++) {
             sum += $scope.newReview.ratings[i];
@@ -120,6 +129,8 @@ app.controller('modController', function ($scope, $q, $stateParams, modService, 
     };
 
     //function to order by severity strings
+    //TODO: I feel like this should either be provided by the server on in some static.js / utils (?)
+    //Also, it probably should work with severityIds (if that's a thing, if not, it should be, as filtering by language keys is freaking dangerous
     $scope.sortBySeverity = function(severity) {
         switch (severity) {
             case "Incompatible":
