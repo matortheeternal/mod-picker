@@ -9,6 +9,7 @@ class ModListPlugin < ActiveRecord::Base
 
   # Validations
   validates :mod_list_id, :plugin_id, :index, presence: true
+  validates :active, inclusion: [true, false]
 
   private
     # counter caches
