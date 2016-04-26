@@ -2,6 +2,7 @@ class Comment < ActiveRecord::Base
   include Filterable
 
   after_initialize :init
+  
   after_create :increment_counter_caches
   before_destroy :decrement_counter_caches
 

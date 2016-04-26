@@ -1,6 +1,8 @@
 class Mod < ActiveRecord::Base
   include Filterable, Sortable
 
+  after_initialize :init
+
   scope :search, -> (search) { where("name like ? OR aliases like ?", "%#{search}%", "%#{search}%") }
   scope :author, -> (author) { joins(:nexus_infos).where("nexus_infos.authors like ? OR nexus_infos.uploaded_by like ?", "#{author}", "#{author}") }
   scope :adult, -> (adult) { where(has_adult_content: adult) }
@@ -64,6 +66,18 @@ class Mod < ActiveRecord::Base
   has_many :mod_lists, :through => 'mod_list_mods', :inverse_of => 'mods'
 
   accepts_nested_attributes_for :mod_versions
+
+  # Validations
+  validates :name, :status, :game_id, :primary_category_id, presence: true
+  validates :name, :aliases, length: {maximum: 128}
+
+  # Set default values after initialization
+  def init
+    self.aliases               ||= nil
+    self.is_utility            ||= false
+    self.has_adult_content     ||= false
+    self.secondary_category_id ||= nil
+  end
 
   def no_author?
     self.mod_authors.count == 0
