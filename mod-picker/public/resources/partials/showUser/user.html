@@ -15,7 +15,7 @@
         </div>
 
         <div class="page-container">
-            <div class="left-column medium-column">
+            <div class="left-column left-user-column medium-column">
                 <img class="avatar avatar-full" ng-src="{{user.avatar}}">
 
                 <h3 class="big-username">{{user.username}}</h3>
@@ -26,7 +26,7 @@
 
                 <h3 class="section-title">Reputation</h3>
                 <section>
-                    <div class="stat-item">{{user.reputation.overall | number}}</div>
+                    <div class="stat-item reputation">{{user.reputation.overall | number}}</div>
                     <input type="button" class="btn" value="Endorse" ng-if="" ng-click="toggleRep">
                     <input type="button" class="btn" value="Unendorse" ng-if="" ng-click="toggleRep">
                 </section>
@@ -73,9 +73,9 @@
                     </div>
                 </section>
             </div>
-            <div class="right-column tabs-column">
+            <div class="right-column tabs-column right-user-column">
                 <tabs current-tab="currentTab" tabs="tabs" container-class="''"></tabs>
-                <div ng-include="currentTab.url" class="mod-tab"></div>
+                <div ng-include="currentTab.url" class="tab"></div>
             </div>
         </div>
     </loader>
