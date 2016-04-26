@@ -8,6 +8,7 @@ class ModListMod < ActiveRecord::Base
   belongs_to :mod, :inverse_of => 'mod_list_mods'
 
   validates :mod_list_id, :mod_id, :index, presence: true
+  validates :active, inclusion: [true, false]
   private
     # counter caches
     def increment_counter_caches
