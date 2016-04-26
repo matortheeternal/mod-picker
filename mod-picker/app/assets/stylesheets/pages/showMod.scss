@@ -253,7 +253,7 @@
   margin-bottom: 20px;
 }
 
-//add compatibility note box
+//add note box
 .add-note-box {
   border: 1px solid $border_color;
   background-color: $primary_background;
@@ -305,7 +305,7 @@
     max-width: 45%;
   }
 }
-//making the text-area
+//making the text-area scroll
 .note-text-area {
   .CodeMirror, .CodeMirror-scroll {
     max-height: 200px;
@@ -320,4 +320,18 @@
 
 .mod-page-btn {
   margin: 5px;
+}
+
+//add reviews
+.ratings {
+  display: flex;
+
+  div {
+    margin-right: 20px;
+  }
+
+  input {
+    width: 50px;
+    display: inline;
+  }
 }

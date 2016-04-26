@@ -3,6 +3,7 @@ app.service('userService', function (backend, $q, userSettingsService) {
         return backend.retrieve('/users/' + userId);
     };
 
+    //TODO: there has to be a better way to do this right? -Sirius
     this.retrieveThisUser = function () {
         var user = $q.defer();
     	userSettingsService.retrieveUserSettings().then(function (user_settings) {
