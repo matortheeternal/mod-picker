@@ -10,6 +10,7 @@ app.config(['$routeProvider', function ($routeProvider) {
 app.controller('modsController', function ($scope, $q, modService, sliderFactory, columnsFactory) {
     $scope.filters = {};
     $scope.sort = {};
+    $scope.pages = {};
     $scope.columns = columnsFactory.modColumns();
     $scope.actions = [
         {
@@ -42,39 +43,27 @@ app.controller('modsController', function ($scope, $q, modService, sliderFactory
         }
     };
 
-    var pageInformation;
-
     /* data */
     // TODO: replace firstGet with $scope.mods
     var firstGet = false;
-    var getMods = function() {
+    $scope.getMods = function(page) {
         delete $scope.data;
-        modService.retrieveMods($scope.filters, $scope.sort).then(function (data) {
-            $scope.data = data.mods;
-            pageInformation = data.pageInformation;
-            firstGet = true;
-        });
-    };
-
-    $scope.getPage = function (page) {
-        page = page || pageInformation.current + 1;
-
         modService.retrieveMods($scope.filters, $scope.sort, page).then(function (data) {
-            $scope.data = $scope.data.concat(data.mods);
-            pageInformation = data.pageInformation;
+            $scope.pages = data.pageInformation;
+            $scope.data = data.mods;
             firstGet = true;
         });
     };
 
-    getMods();
+    $scope.getMods();
 
     // create a watch
     var getModsTimeout;
     $scope.$watch('[filters, sort]', function() {
         if($scope.filters && firstGet) {
             clearTimeout(getModsTimeout);
-            pageInformation.current = 1;
-            getModsTimeout = setTimeout(getMods, 700);
+            $scope.pages.current = 1;
+            getModsTimeout = setTimeout($scope.getMods, 700);
         }
     }, true);
 });
