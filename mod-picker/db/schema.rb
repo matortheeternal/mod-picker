@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160426203420) do
+ActiveRecord::Schema.define(version: 20160426213845) do
 
   create_table "agreement_marks", id: false, force: :cascade do |t|
     t.integer "incorrect_note_id", limit: 4
@@ -451,7 +451,7 @@ ActiveRecord::Schema.define(version: 20160426203420) do
     t.float    "reputation",                limit: 24
     t.float    "average_rating",            limit: 24
     t.datetime "released"
-    t.float    "update_rate",               limit: 24
+    t.float    "update_rate",               limit: 24,  default: 0.0
   end
 
   add_index "mods", ["game_id"], name: "fk_rails_3ec448a848", using: :btree
@@ -479,12 +479,12 @@ ActiveRecord::Schema.define(version: 20160426203420) do
     t.string   "mod_name",            limit: 255
     t.string   "current_version",     limit: 255
     t.datetime "last_scraped"
-    t.float    "endorsement_rate",    limit: 24
-    t.float    "dl_rate",             limit: 24
-    t.float    "udl_to_endorsements", limit: 24
-    t.float    "udl_to_posts",        limit: 24
-    t.float    "tdl_to_udl",          limit: 24
-    t.float    "views_to_tdl",        limit: 24
+    t.float    "endorsement_rate",    limit: 24,  default: 0.0
+    t.float    "dl_rate",             limit: 24,  default: 0.0
+    t.float    "udl_to_endorsements", limit: 24,  default: 0.0
+    t.float    "udl_to_posts",        limit: 24,  default: 0.0
+    t.float    "tdl_to_udl",          limit: 24,  default: 0.0
+    t.float    "views_to_tdl",        limit: 24,  default: 0.0
   end
 
   add_index "nexus_infos", ["game_id"], name: "fk_rails_46e3032463", using: :btree
