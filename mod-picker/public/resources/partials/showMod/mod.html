@@ -24,9 +24,11 @@
                             |
                         </span>-->
 
-                        <strong>Aliases: </strong>{{mod.aliases}}
-                        <span class="divider">
-                            |
+                        <span ng-if="mod.aliases">
+                            <strong>Aliases: </strong>{{mod.aliases}}
+                            <span class="divider">
+                                |
+                            </span>
                         </span>
 
                         <a ng-href="#/editMod/{{mod.id}}">Edit</a>
