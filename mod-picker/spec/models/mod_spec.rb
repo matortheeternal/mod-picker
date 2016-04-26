@@ -16,7 +16,7 @@ require 'rails_helper'
 #   t.integer "load_order_notes_count",    limit: 4,   default: 0
 # end
 
-RSpec.describe Mod, :model do
+RSpec.describe Mod, :model, :fail do
   # fixtures
   fixtures :users, :mods
 
@@ -54,6 +54,16 @@ RSpec.describe Mod, :model do
 
       it "should increment when we add a review" do
         review = skyui.reviews.create(submitted_by: user.id, rating1: 10)
+
+        # Review template can't be blank, 
+        # Text body can't be blank, 
+        # Text body is too short (minimum is 255 characters)
+
+        # Create review template factory, review template fixtures, review factory, review fixtures
+        # Use review factory + fixtures for this one
+
+        expect(review).to be_valid
+
         expect(skyui.reviews_count).to eq(count_before + 1)
       end
 

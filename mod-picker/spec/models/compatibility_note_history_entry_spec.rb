@@ -25,6 +25,10 @@ RSpec.describe CompatibilityNoteHistoryEntry, :model do
   end
 
   it "should have valid factory parameters" do
+    note = build(:compatibility_note_history_entry)
+
+    note.valid?
+    expect(note).to be_valid
     expect(build(:compatibility_note_history_entry)).to be_valid
   end
 

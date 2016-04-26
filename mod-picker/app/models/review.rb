@@ -32,7 +32,7 @@ class Review < ActiveRecord::Base
     self.rating3 ||= 0
     self.rating4 ||= 0
     self.rating5 ||= 0
-    self.submited ||= DateTime.now
+    self.submitted ||= DateTime.now
   end
 
   private
