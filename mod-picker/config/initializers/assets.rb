@@ -22,6 +22,7 @@ Rails.application.config.assets.precompile += [
 'rzslider.min.css',
 'style-responsive.css',
 'simplemde.min.css',
+'marked.min.js',
 'modpicker.js',
 'angular-animate.min.js',
 'angular.min.1.5.1.js',
