@@ -63,6 +63,8 @@ class Mod < ActiveRecord::Base
   has_many :mod_list_mods, :inverse_of => 'mod'
   has_many :mod_lists, :through => 'mod_list_mods', :inverse_of => 'mods'
 
+  self.per_page = 5
+
   accepts_nested_attributes_for :mod_versions
 
   def no_author?
