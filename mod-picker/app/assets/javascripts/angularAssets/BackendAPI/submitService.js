@@ -14,7 +14,8 @@ app.service('submitService', function (backend, $q) {
                 name: nexus_info.mod_name,
                 is_utility: is_utility,
                 has_adult_content: has_adult_content,
-                game_id: nexus_info.game_id
+                game_id: nexus_info.game_id,
+                released: nexus_info.date_added
             }
         };
         backend.post('/mods/submit', modData).then(function (data) {
