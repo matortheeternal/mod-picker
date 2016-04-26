@@ -9,6 +9,21 @@ app.config(['$routeProvider', function ($routeProvider) {
 app.controller('userController', function ($scope, $q, $routeParams, userService) {
     userService.retrieveUser($routeParams.userId).then(function (user) {
         $scope.user = user;
+        $scope.roleClass = "user-role-" + $scope.user.role;
+        switch($scope.user.role) {
+            case "admin":
+                $scope.user.role = "Administrator";
+                break;
+            case "moderator":
+                $scope.user.role = "Moderator";
+                break;
+            case "author":
+                $scope.user.role = "Mod Author";
+                break;
+            case "user":
+                $scope.user.role = "User";
+                break;
+        }
     });
 
     //of the tab data
