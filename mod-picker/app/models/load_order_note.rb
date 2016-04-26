@@ -26,6 +26,7 @@ class LoadOrderNote < ActiveRecord::Base
   has_many :incorrect_notes, :as => 'correctable'
   has_one :base_report, :as => 'reportable'
 
+  # validations
   validates :load_first, :load_second, presence: true
   validates :text_body, length: {in: 64..16384}
 
