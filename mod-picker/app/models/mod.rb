@@ -71,6 +71,77 @@ class Mod < ActiveRecord::Base
     self.mod_authors.count == 0
   end
 
+  def create_tags(tags)
+    tags.each do |text|
+      tag = Tag.find_by(text: text, game_id: self.game_id)
+      # create tag if we couldn't find it
+      if tag.nil?
+        tag = Tag.create(text: text, game_id: self.game_id, submitted_by: self.submitted_by)
+      end
+
+      # associate tag with mod
+      self.mod_tags.create(tag_id: tag.id, submitted_by: self.submitted_by)
+    end
+  end
+
+  def create_asset_files(asset_file_tree, mod_version_id=nil)
+    asset_file_tree.each do |path|
+      asset_file = ModAssetFile.find_or_create_by(filepath: path)
+
+      # find mod version to associate asset files with
+      if mod_version_id.present?
+        mv = self.mod_versions.find_by(mod_version_id)
+      else
+        mv = self.mod_versions.first
+      end
+
+      # associate asset files with mod version
+      mv.mod_version_files.create(mod_asset_file_id: asset_file.id)
+    end
+  end
+
+  def compute_extra_metrics
+    days_since_release = DateTime.now - self.released
+
+    # compute extra nexus metrics
+    nex = self.nexus_infos
+    if nex.present?
+      nex.endorsement_rate = nex.endorsements / days_since_release
+      nex.dl_rate = nex.unique_downloads / days_since_release
+      nex.udl_to_endorsements = nex.unique_downloads / nex.endorsements
+      nex.udl_to_posts = nex.unique_downloads / nex.posts_count
+      nex.tdl_to_udl = nex.total_downloads / nex.unique_downloads
+      nex.views_to_tdl = nex.views / nex.total_downloads
+      nex.save!
+    end
+
+    # compute update rate
+    self.update_rate = self.mod_versions_count / days_since_release
+  end
+
+  def compute_average_rating
+    total = 0
+    count = 0
+    self.reviews.each do |r|
+      total += r.overall_rating
+      count += 1
+    end
+    self.average_rating = total.to_f / count
+  end
+
+  def compute_reputation
+    if self.reviews_count < 5
+      if self.nexus_infos.present?
+        endorsement_reputation = 100.0 / (1.0 + Math::exp(-0.15 * (self.endorsement_rate - 25)))
+        self.reputation = endorsement_reputation
+      end
+    else
+      compute_average_rating
+      review_reputation = (self.average_rating / 10.0)^3 * (510.0 / (1 + Math::exp(-0.2 * (self.review_count - 10))) - 60)
+      self.reputation = review_reputation
+    end
+  end
+
   def show_json
     self.as_json(:include => {
         :mod_versions => {

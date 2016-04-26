@@ -64,6 +64,10 @@
   .add-tag-box {
     background-color: $dark_action_color;
     cursor: pointer;
+    -webkit-transition: all 0.2s ease-in-out;
+    -moz-transition: all 0.2s ease-in-out;
+    -o-transition: all 0.2s ease-in-out;
+    transition: all 0.2s ease-in-out;
 
     &:hover {
       background-color: $bar_color;
