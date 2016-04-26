@@ -7,6 +7,9 @@ class UserReputation < ActiveRecord::Base
 
   scope :user, -> (id) { where(user_id: id) }
   
+  # Validations
+  validates :user_id, :overall, :offset, presence: true
+
   def init
     self.overall ||= 5.0
     self.offset ||= 5.0
