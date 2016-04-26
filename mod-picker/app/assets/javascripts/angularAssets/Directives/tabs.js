@@ -10,7 +10,8 @@ app.directive('tabs', function () {
         controller: 'tabsController',
         scope: {
         	tabs: '=',
-        	currentTab: '='
+        	currentTab: '=',
+            containerClass: '='
         }
     }
 });
