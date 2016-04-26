@@ -247,7 +247,8 @@ input[type="button"], input[type="submit"] {
 
   select {
     color: $text_color;
-    padding: .5em;
+    padding-left: .5em;
+    height: 28px;
     line-height: 1;
     border: 0;
     border-radius: 0;
