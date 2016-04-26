@@ -5,7 +5,9 @@ class ModListCustomPlugin < ActiveRecord::Base
   belongs_to :mod_list, :inverse_of => 'custom_plugins'
 
   # Validations
-  validates :mod_list_id, presence: true
+  validates :mod_list_id, :index, :filename, presence: true
+  validates :active, inclusion: [true, false]
+  validates :description, length: {maximum: 4096}
 
   private
     # counter caches
