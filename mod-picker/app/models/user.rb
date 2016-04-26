@@ -165,7 +165,7 @@ class User < ActiveRecord::Base
   def as_json(options={})
     default_options = {
         :except => [:email, :active_mod_list_id, :invitation_token, :invitation_created_at, :invitation_sent_at, :invitation_accepted_at, :invitation_limit, :invited_by_id, :invited_by_type, :invitations_count],
-        :methods => :avatar,
+        :methods => [:avatar, :last_sign_in_at, :current_sign_in_at],
         :include => {
             :bio => {
                 :only => [:nexus_username, :lover_username, :steam_username]
