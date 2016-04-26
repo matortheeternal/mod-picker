@@ -1,12 +1,16 @@
-/* imports */
+// imports
 @import 'general/global',
         'general/header',
         'general/footer',
+        'components/assetTree',
         'components/categoryTree',
         'components/expandable',
         'components/tagSelector',
+        'components/versionBoxes',
+        'components/textArea',
         'pages/devise',
         'pages/browse',
         'pages/submitMod',
         'pages/userSettings',
-        'pages/user';
+        'pages/user',
+        'pages/showMod';

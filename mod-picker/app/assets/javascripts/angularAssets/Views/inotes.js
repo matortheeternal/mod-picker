@@ -1,8 +1,9 @@
 
-app.config(['$routeProvider', function ($routeProvider) {
-    $routeProvider.when('/installation_notes', {
+app.config(['$stateProvider', function ($stateProvider) {
+    $stateProvider.state('installation_notes', {
             templateUrl: '/resources/partials/installation_notes.html',
-            controller: 'inotesController'
+            controller: 'inotesController',
+            url: '/installation_notes'
         }
     );
 }]);

@@ -4,10 +4,11 @@
             {{tag.text}}
         </span>
         <!-- TODO: replace ng-if with ng-show / ng-hide -->
-        <span ng-if="showModsCount" class="tag-count" title="The number of mods with this tag">
+        <span ng-if="showModsCount" class="tag-count" ng-class="{ 'last-child' : !(showRemove || showModListsCount) }" title="The number of mods with this tag">
             {{tag.mods_count | number}}
         </span>
-        <span ng-if="showModListsCount" class="tag-count" title="The number of mod lists with this tag">
+        <span ng-if="showModListsCount" class="tag-count" ng-class="{ 'last-child' : !showRemove }"
+              title="The number of mod lists with this tag">
             {{tag.mod_lists_count | number}}
         </span>
         <span ng-if="showRemove" class="remove-tag" ng-click="activeTags.splice($index, 1)">
@@ -21,14 +22,15 @@
         <span ng-if="showModsCount" class="tag-count" title="The number of mods with this tag">
             {{tag.mods_count | number}}
         </span>
-        <span ng-if="showModListsCount" class="tag-count" title="The number of mod lists with this tag">
+        <span ng-if="showModListsCount" class="tag-count"
+              title="The number of mod lists with this tag">
             {{tag.mod_lists_count | number}}
         </span>
         <span class="remove-tag" ng-click="removeTag($index)">
             <i class="fa fa-times"></i>
         </span>
     </span>
-    <span class="add-tag-box" ng-show="showAdd && (activeTags.length + newTags.length < maxTags)" ng-click="addTag()" tabindex="0" ng-keydown="$event.keyCode == 13 && addTag()">
+    <span class="add-tag-box" ng-show="showAdd && (activeTags.length + rawNewTags.length < maxTags)" ng-click="addTag()" tabindex="0" ng-keydown="$event.keyCode == 13 && addTag()">
         <span class="add-tag">
             <i class="fa fa-plus"></i> Add a tag
         </span>

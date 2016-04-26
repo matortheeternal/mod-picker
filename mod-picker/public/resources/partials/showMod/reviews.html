@@ -1,0 +1,67 @@
+﻿<div class="mod-tab-actions">
+	<div class="mod-tab-action sort-by-dropdown">
+		<strong>Sort By: </strong>
+		<div class="select">
+			<select ng-model="reviewsFilter">
+				<option value="-sortBySeverity">Severity</option>
+				<option value="-submitted">Date Submitted</option>
+				<option value="-edited">Last Edited</option>
+				<option value="+incorrect_notes_count">Author's Incorrect Notes</option>
+			</select>
+		</div>
+	</div>
+
+	<div class="mod-tab-action text-centered-block">
+		Average Rating
+		<br>
+		{{mod.average_review}}
+	</div>
+
+	<div class="mod-tab-action">
+		<input class="btn mod-page-btn" type="submit" value="Add Review" ng-click="submit()"/>
+	</div>
+</div>
+
+<div class="add-note-box">
+	<h3 class="section-title">Add Review</h3>
+	<section>
+		<div>
+			Review Template:
+	        <select ng-model="currentTemplate" ng-change="updateReviewTemplate(currentTemplate)" ng-options="review_template as review_template.name for review_template in review_templates" class="review-template-dropdown"></select>
+        </div>
+	</section>
+	<section class="ratings">
+		<div>
+			{{currentTemplate.section1}}
+			<input type="number" step="0.1" max="10" min="0" placeholder="8.5" ng-model="newReview.ratings[0]" ng-change="updateOverallRating()">
+		</div>
+		<div ng-if="currentTemplate.section2">
+			{{currentTemplate.section2}}
+			<input type="number" step="0.1" max="10" min="0" placeholder="8.5" ng-model="newReview.ratings[1]" ng-change="updateOverallRating()">
+		</div>
+		<div ng-if="currentTemplate.section3">
+			{{currentTemplate.section3}}
+			<input type="number" step="0.1" max="10" min="0" placeholder="8.5" ng-model="newReview.ratings[2]" ng-change="updateOverallRating()">
+		</div>
+		<div ng-if="currentTemplate.section4">
+			{{currentTemplate.section4}}
+			<input type="number" step="0.1" max="10" min="0" placeholder="8.5" ng-model="newReview.ratings[3]" ng-change="updateOverallRating()">
+		</div>
+		<div ng-if="currentTemplate.section5">
+			{{currentTemplate.section5}}
+			<input type="number" step="0.1" max="10" min="0" placeholder="8.5" ng-model="newReview.ratings[4]" ng-change="updateOverallRating()">
+		</div>
+	</section>
+	<section>
+		Overall:
+		{{newReview.overallRating}}
+	</section>
+
+    <text-area data="newReview.text_body" ng-refresh="true" class="note-text-area"></text-area>
+
+	<input class="btn mod-page-btn" type="submit" value="Submit" ng-click="createCompatibilityNote()"/>
+</div>
+
+<div ng-repeat="review in mod.reviews" class="reviews">
+	<review review="review"></review>
+</div>

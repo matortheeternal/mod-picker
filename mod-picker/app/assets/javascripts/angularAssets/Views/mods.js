@@ -1,8 +1,9 @@
 
-app.config(['$routeProvider', function ($routeProvider) {
-    $routeProvider.when('/mods', {
+app.config(['$stateProvider', function ($stateProvider) {
+    $stateProvider.state('mods', {
             templateUrl: '/resources/partials/mods.html',
-            controller: 'modsController'
+            controller: 'modsController',
+            url: '/mods'
         }
     );
 }]);
@@ -10,6 +11,7 @@ app.config(['$routeProvider', function ($routeProvider) {
 app.controller('modsController', function ($scope, $q, modService, sliderFactory, columnsFactory) {
     $scope.filters = {};
     $scope.sort = {};
+    $scope.pages = {};
     $scope.columns = columnsFactory.modColumns();
     $scope.actions = [
         {
@@ -25,30 +27,26 @@ app.controller('modsController', function ($scope, $q, modService, sliderFactory
     // -> remove redundancy
     // -> probably don't set visibility in the controller but in the view
 
-    /* visibility of extended filters */
-    $scope.nmVisible = false;
-    $scope.nmToggle = function () {
-        $scope.nmVisible = !$scope.nmVisible;
-        if ($scope.nmVisbile) {
-            $scope.$broadcast('refreshSlider');
-        }
+    $scope.extendedFilterVisibility = {
+        nexusMods: false,
+        modPicker: false
     };
 
-    $scope.mpVisible = false;
-    $scope.mpToggle = function () {
-        $scope.mpVisible = !$scope.mpVisible;
-        if ($scope.mpVisbile) {
-            $scope.$broadcast('refreshSlider');
+    $scope.toggleExtendedFilterVisibility = function (filterId) {
+        var extendedFilter = $scope.extendedFilterVisibility[filterId] = !$scope.extendedFilterVisibility[filterId];
+        if(extendedFilter) {
+            $scope.$broadcast('rerenderSliders');
         }
     };
 
     /* data */
     // TODO: replace firstGet with $scope.mods
     var firstGet = false;
-    $scope.getMods = function() {
+    $scope.getMods = function(page) {
         delete $scope.data;
-        modService.retrieveMods($scope.filters, $scope.sort).then(function (data) {
-            $scope.data = data;
+        modService.retrieveMods($scope.filters, $scope.sort, page).then(function (data) {
+            $scope.pages = data.pageInformation;
+            $scope.data = data.mods;
             firstGet = true;
         });
     };
@@ -60,6 +58,7 @@ app.controller('modsController', function ($scope, $q, modService, sliderFactory
     $scope.$watch('[filters, sort]', function() {
         if($scope.filters && firstGet) {
             clearTimeout(getModsTimeout);
+            $scope.pages.current = 1;
             getModsTimeout = setTimeout($scope.getMods, 700);
         }
     }, true);

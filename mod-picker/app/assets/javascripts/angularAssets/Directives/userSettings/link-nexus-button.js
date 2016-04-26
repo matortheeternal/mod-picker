@@ -5,7 +5,7 @@
 app.directive('linkNexusButton', function () {
     return {
         restrict: 'E',
-        templateUrl: '/resources/directives/linkNexusButton.html',
+        templateUrl: '/resources/directives/userSettings/linkNexusButton.html',
         controller: 'linkNexusButtonController',
         scope: {
             bio: '=',
