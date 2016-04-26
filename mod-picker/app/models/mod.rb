@@ -89,13 +89,10 @@ class Mod < ActiveRecord::Base
                 }
             }
         },
-        :mod_tags => {
-            :except => [:submitted_by],
-            :include => {
-                :tag => {:except => [:game_id, :hidden, :mod_lists_count]},
-                :user => {
-                    :only => [:id, :username]
-                }
+        :tags => {
+            :except => [:game_id, :hidden, :mod_lists_count],
+            :user => {
+                :only => [:id, :username]
             }
         }
     })

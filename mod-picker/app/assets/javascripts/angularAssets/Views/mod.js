@@ -24,6 +24,8 @@ app.controller('modController', function ($scope, $q, $stateParams, modService, 
         $scope.currentVersion = mod.mod_versions[0];
         $scope.statusClass = "status-" + $scope.mod.status;
         $scope.mod.status = $scope.mod.status.capitalize();
+        $scope.tags = [];
+        $scope.newTags = [];
 
         //getting the actual names of the categories
         categoryService.getCategoryById(mod.primary_category_id).then(function (data) {
