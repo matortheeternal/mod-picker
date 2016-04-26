@@ -1,6 +1,8 @@
 class Review < ActiveRecord::Base
   include Filterable
 
+  after_initialize :init
+
   after_create :increment_counter_caches
   before_destroy :decrement_counter_caches
 
@@ -15,6 +17,23 @@ class Review < ActiveRecord::Base
   has_many :helpful_marks, :as => 'helpfulable'
   has_many :incorrect_notes, :as => 'correctable'
   has_one :base_report, :as => 'reportable'
+
+  # Validations
+  validates :review_template_id, :mod_id, :rating1, :text_body, presence: true
+  validates :hidden, inclusion: [true, false]
+  validates :rating1, :rating2, :rating3, :rating4, :rating5, length: {in: 0..100}
+  validates :text_body, length: {in: 255..32768}
+
+  # set values after being initialized
+  def init
+    self.hidden  ||= false
+    self.rating1 ||= 0
+    self.rating2 ||= 0
+    self.rating3 ||= 0
+    self.rating4 ||= 0
+    self.rating5 ||= 0
+    self.submited ||= DateTime.now
+  end
 
   private
     def increment_counter_caches
