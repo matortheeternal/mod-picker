@@ -349,8 +349,23 @@ form {
 /* css for avatars */
 
 .avatar {
+  border: 2px solid $border_color;
+  vertical-align: bottom;
+}
+
+.avatar-small {
+  max-width: 50px;
+  max-height: 50px;
+}
+
+.avatar-medium {
   max-width: 150px;
   max-height: 150px;
+}
+
+.avatar-full {
+  max-width: 250px;
+  max-height: 250px;
 }
 
 /* css for modals */
