@@ -236,6 +236,13 @@ input[type="button"], input[type="submit"] {
   background-color: $primary_background;
 }
 
+.tabs-column {
+  padding: 20px 0 20px 20px;
+  .section-title {
+    font-size: 20px;
+  }
+}
+
 /* css for forms, inputs, and labels */
 .success-message {
   background-color: $success_message_color;

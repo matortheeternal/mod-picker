@@ -73,11 +73,9 @@
                     </div>
                 </section>
             </div>
-            <div class="right-column">
-                <div class="right-mod-column">
-                    <tabs current-tab="currentTab" tabs="tabs" container-class="''"></tabs>
-                    <div ng-include="currentTab.url" class="mod-tab"></div>
-                </div>
+            <div class="right-column tabs-column">
+                <tabs current-tab="currentTab" tabs="tabs" container-class="''"></tabs>
+                <div ng-include="currentTab.url" class="mod-tab"></div>
             </div>
         </div>
     </loader>
