@@ -19,10 +19,10 @@
                             |
                         </span>
 
-                        Included in <a ng-href="#/modlists/includingMod/{{mod.id}}">{{mod.mod_modlists_count}} modlists</a>
+                        <!--Included in <a ng-href="#/modlists/includingMod/{{mod.id}}">{{mod.mod_modlists_count}} modlists</a>
                         <span class="divider">
                             |
-                        </span>
+                        </span>-->
 
                         <strong>Aliases: </strong>{{mod.aliases}}
                         <span class="divider">
@@ -48,7 +48,7 @@
 
                     <div class="mod-header-box">
                         STATUS
-                        <div class="action-box">
+                        <div class="action-box {{statusClass}}">
                             {{mod.status}}
                         </div>
                     </div>
@@ -123,10 +123,7 @@
                     <!--Tags-->
                     <h3 class="section-title">Tags</h3>
                     <section>
-                        <div ng-show="mod.mod_tags.length">
-                            <tag-selector tags="mod.mod_tags" active-tags="mod.mod_tags" max-tags="10"></tag-selector>
-                        </div>
-                        <span ng-hide="mod.mod_tags.length" class="explanation">none</span>
+                        <tag-selector tags="tags" active-tags="mod.tags" newTags="newTags" max-tags="10" show-mods-count="true" show-add="true" ></tag-selector>
                     </section>
 
                     <!--Nexus Stats-->
