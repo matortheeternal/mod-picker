@@ -146,7 +146,12 @@ class Mod < ActiveRecord::Base
     self.as_json(:include => {
         :mod_versions => {
             :except => [:mod_id],
-            :methods => :required_mods
+            :methods => :required_mods,
+            :include => {
+                :plugins => {
+                    :only => [:id, :filename]
+                }
+            }
         },
         :reviews => {
             :except => [:submitted_by],
