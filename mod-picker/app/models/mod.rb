@@ -71,6 +71,35 @@ class Mod < ActiveRecord::Base
     self.mod_authors.count == 0
   end
 
+  def create_tags(tags)
+    tags.each do |text|
+      tag = Tag.find_by(text: text, game_id: self.game_id)
+      # create tag if we couldn't find it
+      if tag.nil?
+        tag = Tag.create(text: text, game_id: self.game_id, submitted_by: self.submitted_by)
+      end
+
+      # associate tag with mod
+      self.mod_tags.create(tag_id: tag.id, submitted_by: self.submitted_by)
+    end
+  end
+
+  def create_asset_files(asset_file_tree, mod_version_id=nil)
+    asset_file_tree.each do |path|
+      asset_file = ModAssetFile.find_or_create_by(filepath: path)
+
+      # find mod version to associate asset files with
+      if mod_version_id.present?
+        mv = self.mod_versions.find_by(mod_version_id)
+      else
+        mv = self.mod_versions.first
+      end
+
+      # associate asset files with mod version
+      mv.mod_version_files.create(mod_asset_file_id: asset_file.id)
+    end
+  end
+
   def show_json
     self.as_json(:include => {
         :mod_versions => {

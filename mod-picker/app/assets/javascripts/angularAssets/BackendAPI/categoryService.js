@@ -1,8 +1,18 @@
 //TODO: maybe we should think about splitting the logic to retrieve all the data and filtering it.
 app.service('categoryService', function ($q, backend) {
 
+    this.retrieveCategories = function() {
+        var categories = $q.defer();
+
+        backend.retrieve('/categories', {cache: true}).then(function (data) {
+            categories.resolve(data);
+        });
+
+        return categories.promise;
+    };
+
     function retrieveFilteredCategories(key) {
-        var categoryPromise = $q.defer();
+        var categories = $q.defer();
 
         backend.retrieve('/categories', {cache: true}).then(function (data) {
             var returnData = [];
@@ -14,11 +24,30 @@ app.service('categoryService', function ($q, backend) {
             returnData.sort(function (a, b) {
                 return a.name.localeCompare(b.name);
             });
-            categoryPromise.resolve(returnData);
+            categories.resolve(returnData);
         });
 
-        return categoryPromise.promise;
+        return categories.promise;
     }
+
+    this.retrieveCategoryPriorities = function() {
+        var categoryPriorities = $q.defer();
+
+        backend.retrieve('/category_priorities').then(function (data) {
+            categoryPriorities.resolve(data);
+        });
+
+        return categoryPriorities.promise;
+    };
+
+    this.getCategoryById = function(categories, id) {
+        for (var i = 0; i < categories.length; i++) {
+            var category = categories[i];
+            if (category.id == id) {
+                return category;
+            }
+        }
+    };
 
     this.retrievePrimaryCategory = function () {
         //TODO: we shall have an empty key for the primary Category
