@@ -7,6 +7,8 @@ class ModStar < ActiveRecord::Base
   belongs_to :user, :inverse_of => 'mod_stars'
   belongs_to :mod, :inverse_of => 'mod_stars'
 
+  # Validations
+  validates :mod_id, presence: true
   private
     def increment_counter_caches
       self.mod.mod_stars_count += 1
