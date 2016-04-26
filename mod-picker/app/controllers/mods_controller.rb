@@ -38,6 +38,8 @@ class ModsController < ApplicationController
 
         # attempt to save updated nexus info
         if @nexus_info.save
+          @mod.compute_extra_metrics
+          @mod.compute_reputation
           render json: {status: :ok}
         else
           render json: @nexus_info.errors, status: :unprocessable_entity
