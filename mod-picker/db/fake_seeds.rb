@@ -77,7 +77,8 @@ def seed_fake_mods
       is_utility: false,
       has_adult_content: false,
       game_id: gameSkyrim.id,
-      submitted_by: adminUser.id
+      submitted_by: adminUser.id,
+      released: DateTime.strptime("17/12/2011 - 12:24AM", nexusDateFormat)
   )
 
   NexusInfo.create(
@@ -150,7 +151,8 @@ def seed_fake_mods
       is_utility: false,
       has_adult_content: false,
       game_id: gameSkyrim.id,
-      submitted_by: adminUser.id
+      submitted_by: adminUser.id,
+      released: DateTime.strptime("01/07/2012 - 07:23PM", nexusDateFormat)
   )
 
   NexusInfo.create(
@@ -187,7 +189,8 @@ def seed_fake_mods
       is_utility: false,
       has_adult_content: false,
       game_id: gameSkyrim.id,
-      submitted_by: adminUser.id
+      submitted_by: adminUser.id,
+      released: DateTime.strptime("19/11/2011 - 01:03AM", nexusDateFormat)
   )
 
   NexusInfo.create(
@@ -225,7 +228,8 @@ def seed_fake_mods
       is_utility: false,
       has_adult_content: false,
       game_id: gameSkyrim.id,
-      submitted_by: adminUser.id
+      submitted_by: adminUser.id,
+      released: DateTime.strptime("08/01/2013 - 01:10AM", nexusDateFormat)
   )
 
   NexusInfo.create(
@@ -262,7 +266,8 @@ def seed_fake_mods
       is_utility: false,
       has_adult_content: false,
       game_id: gameSkyrim.id,
-      submitted_by: adminUser.id
+      submitted_by: adminUser.id,
+      released: DateTime.strptime("07/11/2015 - 08:41PM", nexusDateFormat)
   )
 
   NexusInfo.create(
@@ -299,7 +304,8 @@ def seed_fake_mods
       is_utility: true,
       has_adult_content: false,
       game_id: gameSkyrim.id,
-      submitted_by: adminUser.id
+      submitted_by: adminUser.id,
+      released: DateTime.strptime("24/11/2011 - 03:30PM", nexusDateFormat)
   )
 
   NexusInfo.create(
@@ -336,7 +342,8 @@ def seed_fake_mods
       is_utility: false,
       has_adult_content: false,
       game_id: gameSkyrim.id,
-      submitted_by: adminUser.id
+      submitted_by: adminUser.id,
+      released: DateTime.strptime("13/11/2011 - 10:36PM", nexusDateFormat)
   )
 
   NexusInfo.create(
@@ -374,7 +381,8 @@ def seed_fake_mods
       is_utility: true,
       has_adult_content: false,
       game_id: gameSkyrim.id,
-      submitted_by: adminUser.id
+      submitted_by: adminUser.id,
+      released: DateTime.strptime("22/10/2012 - 06:22AM", nexusDateFormat)
   )
 
   NexusInfo.create(
@@ -412,7 +420,8 @@ def seed_fake_mods
       is_utility: true,
       has_adult_content: false,
       game_id: gameSkyrim.id,
-      submitted_by: adminUser.id
+      submitted_by: adminUser.id,
+      released: DateTime.strptime("24/12/2015 - 01:56AM", nexusDateFormat)
   )
 
   NexusInfo.create(
@@ -449,7 +458,8 @@ def seed_fake_mods
       is_utility: false,
       has_adult_content: false,
       game_id: gameSkyrim.id,
-      submitted_by: adminUser.id
+      submitted_by: adminUser.id,
+      released: DateTime.strptime("08/12/2015 - 09:42PM", nexusDateFormat)
   )
 
   NexusInfo.create(
@@ -487,7 +497,8 @@ def seed_fake_mods
       is_utility: false,
       has_adult_content: false,
       game_id: gameSkyrim.id,
-      submitted_by: adminUser.id
+      submitted_by: adminUser.id,
+      released: DateTime.strptime("05/01/2016 - 10:31AM", nexusDateFormat)
   )
 
   NexusInfo.create(
@@ -525,7 +536,8 @@ def seed_fake_mods
       is_utility: false,
       has_adult_content: false,
       game_id: gameSkyrim.id,
-      submitted_by: adminUser.id
+      submitted_by: adminUser.id,
+      released: DateTime.strptime("17/12/2015 - 09:23PM", nexusDateFormat)
   )
 
   NexusInfo.create(
@@ -562,7 +574,8 @@ def seed_fake_mods
       is_utility: false,
       has_adult_content: false,
       game_id: gameSkyrim.id,
-      submitted_by: adminUser.id
+      submitted_by: adminUser.id,
+      released: DateTime.strptime("25/11/2015 - 09:21AM", nexusDateFormat)
   )
 
   NexusInfo.create(
@@ -599,7 +612,8 @@ def seed_fake_mods
       is_utility: false,
       has_adult_content: false,
       game_id: gameSkyrim.id,
-      submitted_by: adminUser.id
+      submitted_by: adminUser.id,
+      released: DateTime.strptime("23/11/2015 - 02:11AM", nexusDateFormat)
   )
 
   NexusInfo.create(
