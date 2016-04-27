@@ -20,6 +20,12 @@ Rails.application.routes.draw do
     resources :nexus_infos
     resources :users
 
+    # tags
+    match '/tags', to: 'tags#index', via: 'post'
+    match '/tags/:id', to: 'tags#destroy', via: 'delete'
+    match '/mods/:id/tag', to: 'mods#tag', via: 'post'
+    match '/mod_lists/:id/tag', to: 'mod_lists#tag', via: 'post'
+
     # mods
     resources :mods, only: [:show, :update, :destroy]
     match '/mods/submit', to: 'mods#create', via: 'post'
