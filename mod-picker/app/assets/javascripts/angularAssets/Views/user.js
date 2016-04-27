@@ -11,6 +11,7 @@ app.controller('userController', function ($scope, $q, $stateParams, userService
     userService.retrieveUser($stateParams.userId).then(function (user) {
         $scope.user = user;
         $scope.roleClass = "user-role-" + $scope.user.role;
+        //formatting the role displayed on the site
         switch($scope.user.role) {
             case "admin":
                 $scope.user.role = "Administrator";
@@ -21,8 +22,9 @@ app.controller('userController', function ($scope, $q, $stateParams, userService
             case "author":
                 $scope.user.role = "Mod Author";
                 break;
-            case "user":
-                $scope.user.role = "User";
+            default:
+                //shows nothing if they have no notable role
+                $scope.user.role = "";
                 break;
         }
     });
