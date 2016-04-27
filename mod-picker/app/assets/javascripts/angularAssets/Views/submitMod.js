@@ -34,6 +34,10 @@ app.controller('submitModController', function ($scope, backend, submitService, 
             }
         });
     };
+    /* tags */
+    tagService.retrieveTags().then(function(data) {
+        $scope.tags = data;
+    });
 
     /* categories */
     categoryService.retrieveCategoryPriorities().then(function(data) {
