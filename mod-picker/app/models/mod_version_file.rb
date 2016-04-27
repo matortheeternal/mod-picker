@@ -6,5 +6,5 @@ class ModVersionFile < ActiveRecord::Base
 
   # Validations
   validates :mod_version_id, :mod_asset_file_id, presence: true
-
+  
 end
