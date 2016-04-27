@@ -2,63 +2,26 @@
     <div class="single-column">
         <h2>Submit Mod</h2>
 
-        <form id="submitModForm" name="submitModForm">
+        <form id="submitModForm" name="submitModForm" spellcheck="false">
 
             <h3 class="section-title">Sources</h3>
             <section>
-                <div class="input-label">Nexus Mods</div>
-                <input type="text" class="path-input" ng-model="nexusUrl" required>
-                <input type="button" class="btn" ng-disabled='cantScrape()' ng-click="scrape()" value="Scrape">
-
-                <div ng-show="scraping">
-                    <h3 class="subtitle">Nexus Mods Info</h3>
-                    <loader data="nexus">
-                        <table class="infotable">
-                            <colgroup>
-                                <col span="1" style="width: 160px;">
-                                <col span="1">
-                            </colgroup>
-                            <tbody>
-                                <tr>
-                                    <td>Nexus ID</td>
-                                    <td>{{nexus.id}}</td>
-                                </tr>
-                                <tr>
-                                    <td>Mod Name</td>
-                                    <td>{{nexus.mod_name}}</td>
-                                </tr>
-                                <tr>
-                                    <td>Uploaded By</td>
-                                    <td>{{nexus.uploaded_by}}</td>
-                                </tr>
-                                <tr>
-                                    <td>Author</td>
-                                    <td>{{nexus.authors}}</td>
-                                </tr>
-                                <tr>
-                                    <td>Endorsements</td>
-                                    <td>{{nexus.endorsements.toLocaleString()}}</td>
-                                </tr>
-                                <tr>
-                                    <td>Unique Downloads</td>
-                                    <td>{{nexus.unique_downloads.toLocaleString()}}</td>
-                                </tr>
-                                <tr>
-                                    <td>Latest Version</td>
-                                    <td>{{nexus.current_version}}</td>
-                                </tr>
-                                <tr>
-                                    <td>Date Released</td>
-                                    <td>{{nexus.date_added | date }}</td>
-                                </tr>
-                                <tr>
-                                    <td>Date Updated</td>
-                                    <td>{{nexus.date_updated | date }}</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </loader>
+                <div class="sources-container" ng-repeat="source in mod.sources">
+                    <label>
+                        <select ng-model="source.label" ng-change="validateURL(source)">
+                            <option ng-repeat="site in sites">{{site.label}}</option>
+                        </select>
+                        <input type="text" class="path-input" ng-model="source.url" ng-change="validateURL(source)">
+                        <span class="remove-source" ng-click="removeSource(source)" ng-if="$index > 0">
+                            <i class="fa fa-times"></i>
+                        </span>
+                        <span class="source-valid">
+                            <i class="fa fa-thumbs-o-up" ng-show="source.valid" title="Source URL valid"></i>
+                            <i class="fa fa-thumbs-o-down" ng-show="!source.valid" title="Source URL invalid"></i>
+                        </span>
+                    </label>
                 </div>
+                <input type="button" class="btn" value="Add Source" ng-click="addSource()">
             </section>
 
             <section>
