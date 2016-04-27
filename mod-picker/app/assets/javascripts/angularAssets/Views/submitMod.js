@@ -114,68 +114,37 @@ app.controller('submitModController', function ($scope, backend, submitService, 
         }
     }, true);
 
-    /* asset file tree */
-    $scope.changeAssetTree = function(event) {
+    /* analysis */
+    $scope.changeAnalysisFile = function(event) {
         var input = event.target;
         if (input.files && input.files[0]) {
-            $scope.loadAssetTree(input.files[0]);
+            $scope.loadAnalysisFile(input.files[0]);
         }
     };
 
-    $scope.browseAssetTree = function() {
+    $scope.browseAnalysisFile = function() {
         document.getElementById('assets-input').click();
     };
 
-    $scope.loadAssetTree = function(file) {
+    $scope.loadAnalysisFile = function(file) {
         var fileReader = new FileReader();
         fileReader.onload = function (event) {
-            $scope.assets = JSON.parse(event.target.result).assets;
+            $scope.analysis = JSON.parse(event.target.result);
             $scope.$apply();
         };
         fileReader.readAsText(file);
     };
 
-    /* plugin submission */
-    $scope.changePlugins = function(event) {
-        var files = [].slice.call(event.target.files);
-        if ($scope.plugins) {
-            $scope.plugins = $scope.plugins.concat(files);
-        } else {
-            $scope.plugins = files;
-        }
-        $scope.$apply();
-    };
-
-    $scope.removePlugin = function(filename) {
-        for (var i = 0; i < $scope.plugins.length; i++) {
-            plugin = $scope.plugins[i];
-            if (plugin.name == filename) {
-                $scope.plugins.splice(i, 1);
-                break;
-            }
-        }
-        if ($scope.plugins.length == 0) {
-            $scope.plugins = null;
-        }
-    };
-
-    $scope.addPlugins = function() {
-        document.getElementById('plugins-input').click();
-    };
-
-    $scope.clearPlugins = function() {
-        $scope.plugins = null;
-    };
-
     /* mod submission */
     $scope.modInvalid = function () {
         // submission isn't allowed until the user has scraped a nexus page,
-        // provided an asset tree, and provided at least one category
-        return ($scope.nexus == null || $scope.assets == null ||
-            $scope.mod.categories == null || $scope.mod.categories.length == 0)
+        // provided a mod analysis, and provided at least one category
+        return ($scope.nexus == null || $scope.analysis == null ||
+            $scope.mod.categories == null || $scope.mod.categories.length == 0 ||
+            $scope.mod.categories.length > 2)
     };
 
     $scope.submit = function () {
-        submitService.submitMod($scope.mod, $scope.nexus, $scope.assets, $scope.plugins);
+        submitService.submitMod($scope.mod, $scope.nexus, $scope.analysis);
     }
 });

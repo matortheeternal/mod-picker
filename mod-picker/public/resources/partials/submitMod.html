@@ -91,14 +91,24 @@
             </section>
 
             <h3 class="section-title">
-                Asset Files
+                Mod Analysis
                 <!-- temporary github link, should link to a help page -->
                 <a href="http://github.com/matortheeternal/mod-asset-mapper">
-                    <span class="help-tooltip" title="Submitting a mod requires uploading an asset file tree which &#13;allows Mod Picker to detect asset conflicts between mods.  An &#13;asset file tree can be generated with the Mod Asset Mapper.  You &#13;can click here for more information and download links.">?</span>
+                    <span class="help-tooltip" title="Submitting a mod requires uploading an analysis file which &#13; includes an asset file tree and one or more plugin dumps. &#13;You can generate a mod analysis file using the Mod Analysis utility.  &#13;Click here for more information and download links.">?</span>
                 </a>
             </h3>
             <section>
-                <div ng-show="assets">
+                <div ng-show="analysis.assets">
+                    <h4 class="subtitle">File Tree</h4>
+                    <div class="file-tree-container">
+                        <ul>
+                            <li ng-repeat="asset in assets">{{asset}}</li>
+                        </ul>
+                    </div>
+                    <asset-file-tree data="assets"></asset-file-tree>
+                </div>
+
+                <div ng-show="analysis.assets">
                     <h4 class="subtitle">File Tree</h4>
                     <div class="file-tree-container">
                         <ul>
@@ -109,60 +119,9 @@
                 </div>
 
                 <label>
-                    <input id="assets-input" type="file" file-change="changeAssetTree" accept=".json">
-                    <input type="button" class="btn" ng-click="browseAssetTree()" value="Browse">
+                    <input id="analysis-input" type="file" file-change="changeAnalysisFile" accept=".json">
+                    <input type="button" class="btn" ng-click="browseAnalysisFile()" value="Browse">
                 </label>
-            </section>
-
-            <h3 class="section-title">Plugins</h3>
-            <section>
-                <div class="plugins-upload">
-                    <label>
-                        <input id="plugins-input" type="file" multiple file-change="changePlugins" accept=".esp, .esm"/>
-                        <div class="upload-container" ng-if="!plugins">
-                            <div class="upload-prompt">
-                                <span class="fa-stack fa-4x">
-                                  <i class="fa fa-upload fa-stack-2x"></i>
-                                </span>
-                                <h4>Select plugins to analyze</h4>
-                                <span>Or drag and drop</span>
-                            </div>
-                        </div>
-                    </label>
-                    <div class="upload-queue" ng-if="plugins">
-                        <table>
-                            <colgroup>
-                                <col style="width:70%">
-                                <col style="width:25%">
-                                <col style="width:5%">
-                            </colgroup>
-                            <tr>
-                                <th>Filename</th>
-                                <th>File size</th>
-                                <th></th>
-                            </tr>
-                            <tr ng-repeat="plugin in plugins" class="plugin-item">
-                                <td>
-                                    {{plugin.name}}
-                                </td>
-                                <td>
-                                    {{plugin.size | bytes:2}}
-                                </td>
-                                <td>
-                                    <i class="fa fa-times cancel-item" title="Remove Plugin" ng-click="removePlugin(plugin.name)"></i>
-                                </td>
-                            </tr>
-                        </table>
-                    </div>
-                    <div class="upload-actions" ng-if="plugins">
-                        <input class="btn" type="button" value="Clear plugins" ng-click="clearPlugins()"/>
-                        <input class="btn" type="button" value="Add plugins" ng-click="addPlugins()"/>
-                    </div>
-                </div>
-
-                <span class="notice">
-                    Plugin analysis will be performed by our servers in the next 24 hours.
-                </span>
             </section>
 
             <input class="btn" type="submit" ng-disabled='modInvalid()' ng-click="submit()" value="Submit"/>
