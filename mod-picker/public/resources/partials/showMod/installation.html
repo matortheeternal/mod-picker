@@ -9,8 +9,9 @@
 				<option value="+incorrect_notes_count">Author's Incorrect Notes</option>
 			</select>
 		</div>
-	</div
-   ><div class="mod-tab-action">
+	</div>
+	<!-- TODO: replace both inputs with buttons that have inline value -->
+	<div class="mod-tab-action">
 		<input class="btn mod-page-btn" type="submit" value="Add Install Order Note" ng-click="submit()"/>
 	</div>
 	<div class="mod-tab-action">
@@ -23,6 +24,7 @@
 	<section>
 		<div class="add-note-actions">
 			<div>
+				<!-- TODO: this seems a bit out of place -->
 				Install
 			</div>
 			<div>
@@ -42,6 +44,7 @@
 		</div>
 	</section>
 	<section class="version-boxes-section">
+		<!-- TODO: kill redundancy -->
 		<version-boxes versions="mod.mod_versions" selectedVersions="newCompatibilityNote.mods[0].mod_versions"></version-boxes>
 		<version-boxes ng-if="newCompatibilityNote.otherMod.mod_versions" versions="newCompatibilityNote.otherMod.mod_versions" selectedVersions="newCompatibilityNote.mods[1].mod_versions"></version-boxes>
 	</section>
