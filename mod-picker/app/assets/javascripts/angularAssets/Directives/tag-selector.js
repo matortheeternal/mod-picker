@@ -7,6 +7,7 @@ app.directive('tagSelector', function () {
         	activeTags: '=',
             newTags: '=',
             maxTags: '=',
+            canCreate: '=',
             showModsCount: '=?',
             showModListsCount: '=?',
             showAuthor: '=?',
@@ -32,43 +33,22 @@ app.controller('tagSelectorController', function ($scope, tagService) {
             });
         }
     };
-    $scope.focusText = function ($event) {
-        $event.target.select();
-    };
+
     $scope.removeTag = function($index) {
         $scope.rawNewTags.splice($index, 1);
         $scope.storeTags();
     };
-    $scope.handleTagKey = function ($event, $index) {
-        var key = $event.keyCode;
-        var len = $event.target.value.length;
-        // pressing enter adds a new tag
-        if (key == 13)
-            $scope.addTag();
-        // pressing escape or delete deletes the tag
-        // pressing backspace when the tag is empty also deletes the tag
-        if (((key == 27) || (key == 46)) || ((key == 8) && (len == 0))) {
-            $scope.removeTag($index);
-            $event.preventDefault();
-        }
+
+    $scope.applyTag = function(index, tag) {
+        $scope.rawNewTags[index] = tag;
+        $scope.storeTags();
     };
+
     $scope.storeTags = function() {
         $scope.newTags = [];
         for (var i = 0; i < $scope.rawNewTags.length; i++) {
             rawTag = $scope.rawNewTags[i];
             $scope.newTags.push(rawTag.text);
         }
-    };
-});
-
-app.directive('autoSelect', function ($timeout) {
-    return function (scope, element, attrs) {
-        scope.$watch(attrs.autoSelect, function (newval) {
-            if (newval) {
-                $timeout(function () {
-                    element[0].select();
-                }, 0, false);
-            }
-        });
     };
 });
