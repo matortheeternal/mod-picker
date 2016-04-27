@@ -1,4 +1,8 @@
 class Tag < ActiveRecord::Base
+  include Filterable
+
+  scope :game, -> (game) { where(game_id: game) }
+
   has_many :mod_tags, :inverse_of => 'tag'
   has_many :mods, :through => 'mod_tags', :inverse_of => 'tags'
 

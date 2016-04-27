@@ -1,3 +1,25 @@
+.header-tabs {
+  background-color: $secondary_background;
+  border-bottom: 1px solid $border_color;
+  h1 {
+    font-weight: 500;
+    color: $text_color;
+    font-size: 36px;
+    padding-top: 18px;//half of font size
+    padding-bottom: 18px;
+  }
+}
+
+.settings-tabs {
+  margin-left: 46px;
+
+  .selected-tab {
+    background-color: $primary_background;
+    border-bottom: 1px solid $primary_background;
+    margin-bottom: -1px;
+  }
+}
+
 #avatar-browse {
   width: auto;
   height: auto;
@@ -88,4 +110,21 @@
     border: 0;
     padding: 10px 20px 10px 20px;
   }
+}
+
+//error/success messages
+.success-message {
+  background-color: $success_message_color;
+  padding: 14px;
+  font-weight: 500;
+  font-size: 20px;
+  text-align: center;
+}
+
+.error-message {
+  background-color: $error_message_color;
+  padding: 14px;
+  font-weight: 500;
+  font-size: 20px;
+  text-align: center;
 }

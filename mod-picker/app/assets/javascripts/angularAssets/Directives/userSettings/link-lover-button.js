@@ -5,7 +5,7 @@
 app.directive('linkLoverButton', function () {
     return {
         restrict: 'E',
-        templateUrl: '/resources/directives/linkLoverButton.html',
+        templateUrl: '/resources/directives/userSettings/linkLoverButton.html',
         controller: 'linkLoverButtonController',
         scope: {
             bio: '=',

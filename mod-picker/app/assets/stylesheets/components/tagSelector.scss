@@ -28,7 +28,7 @@
     }
 
     .tag-text {
-      padding-right: 2px;
+      cursor: default;
     }
 
     input {
@@ -47,8 +47,6 @@
     }
 
     .tag-count {
-      padding-left: 6px;
-      padding-right: 2px;
       border-left: 1px solid $border_color;
       cursor: default;
     }
@@ -56,14 +54,45 @@
     .remove-tag {
       cursor: pointer;
     }
+
+    .last-child {
+      padding: 4px;
+      margin-right: 2px;
+    }
   }
 
   .add-tag-box {
     background-color: $dark_action_color;
     cursor: pointer;
+    -webkit-transition: all 0.2s ease-in-out;
+    -moz-transition: all 0.2s ease-in-out;
+    -o-transition: all 0.2s ease-in-out;
+    transition: all 0.2s ease-in-out;
 
     &:hover {
       background-color: $bar_color;
     }
+  }
+
+  .autocomplete-results {
+    color: black;
+    background-color: $primary_background;
+    position: absolute;
+    margin-left: -4px;
+    margin-top: 6px;
+    width: 120px;
+    border: 1px solid #888;
+    padding: 6px;
+    cursor: pointer;
+  }
+
+  .autocomplete-row {
+    padding: 5px;
+    margin-bottom: 4px;
+  }
+
+  .autocomplete-selected-row, .autocomplete-row:hover {
+    background-color: $action_color;
+    color: $action_text_color;
   }
 }

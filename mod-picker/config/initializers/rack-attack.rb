@@ -92,11 +92,11 @@ class Rack::Attack
   end
 
   # Throttle tags index by IP
-  throttle("tags_index", :limit => 1, :period => 4.minutes) do |req|
-    if req.get? && req.path == '/tags'
-      req.ip
-    end
-  end
+  # throttle("tags_index", :limit => 1, :period => 4.minutes) do |req|
+  #   if req.get? && req.path == '/tags'
+  #     req.ip
+  #   end
+  # end
 
   # Throttle all requests by IP (60rpm) excluding assets
   throttle('req/ip', :limit => 300, :period => 5.minutes) do |req|
@@ -116,10 +116,10 @@ class Rack::Attack
   ### Custom Throttle Response ###
   self.throttled_response = lambda do |env|
     # respond 304 not modified for throttles where we want to force caching
-    if env['rack.attack.matched'] == 'tags_index'
-      status = 304
+    # if env['rack.attack.matched'] == 'tags_index'
+    #   status = 304
     # respond 503 service unavailable if it looks like a DDOS attack
-    elsif env['rack.attack.matched'] == 'req/ip'
+    if env['rack.attack.matched'] == 'req/ip'
       status = 503
     else
       status = 429
