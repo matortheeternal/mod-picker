@@ -1,7 +1,7 @@
 <two-columns>
     <div class="page-container">
         <div class="column-wrapper">
-            <div class="left-column">
+            <div class="left-column left-browse-column">
                 <h2>Filters</h2>
 
                 <div id="search-filters" class="filter-section">
@@ -57,7 +57,7 @@
 
                 <div id="tag-filters" class="filter-section">
                     <h3>Tags</h3>
-                    <tag-selector tags="tags" active-tags="[]" new-tags="filters.tags" show-mods-count="true" show-add="true" max-tags="10"></tag-selector>
+                    <tag-selector active-tags="[]" new-tags="filters.tags" show-mods-count="true" can-create="false" show-add="true" max-tags="10"></tag-selector>
                 </div>
 
                 <div id="date-filters" class="filter-section">
@@ -151,9 +151,10 @@
                     <a class="expand" ng-click="toggleExtendedFilterVisibility('nexusMods')">{{ extendedFilterVisibility.nexusMods ? 'Show less' : 'Show more...' }}</a>
                 </div>
             </div>
-            <div class="right-column">
+            <div class="right-column right-browse-column">
                 <h2>Mods</h2>
                 <table-results></table-results>
+                <page-results></page-results>
             </div>
         </div>
     </div>

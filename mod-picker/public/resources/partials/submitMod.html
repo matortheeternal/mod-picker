@@ -8,10 +8,10 @@
             <section>
                 <div class="input-label">Nexus Mods</div>
                 <input type="text" class="path-input" ng-model="nexusUrl" required>
-                <input type="button" class="btn" ng-disabled='urlInvalid()' ng-click="scrape()" value="Scrape">
+                <input type="button" class="btn" ng-disabled='cantScrape()' ng-click="scrape()" value="Scrape">
 
                 <div ng-show="scraping">
-                    <h3 class="section-title">Nexus Mods Info</h3>
+                    <h3 class="subtitle">Nexus Mods Info</h3>
                     <loader data="nexus">
                         <table class="infotable">
                             <colgroup>
@@ -62,42 +62,56 @@
             </section>
 
             <section>
-                <category-tree selection="categories" toggle-all="false"></category-tree>
+                <category-tree selection="mod.categories" toggle-all="false"></category-tree>
+                <div id="category-messages">
+                    <div ng-repeat="message in categoryMessages" class="category-message"
+                         ng-class="message.klass">{{message.text}}</div>
+                </div>
                 <input type="button" id="check-categories-btn" class="btn" ng-click="checkCategories()" value="Check Categories">
             </section>
 
             <h3 class="section-title">Tags</h3>
             <section>
-                <tag-selector tags="tags" active-tags="[]" new-tags="mod_tags" show-mods-count="true" show-add="true" max-tags="10"></tag-selector>
+                <tag-selector active-tags="[]" new-tags="mod.tags" show-mods-count="true" show-add="true" max-tags="10" can-create="true"></tag-selector>
             </section>
 
             <h3 class="section-title">Other Options</h3>
             <section>
-                <label>
-                    <input id="kbUtility" type="checkbox" ng-model="isUtility">
-                    Is Utility
-                </label><br/>
+                <label class="checkbox-option">
+                    <input type="checkbox" ng-model="mod.isUtility">
+                    External Utility
+                </label>
+                <span class="help-tooltip" title="A mod is classified as an external utility if it installs files &#13;outside of the user's data directory.  This includes &#13;mod managers, patchers, and script extenders.">?</span><br/>
 
-                <label>
-                    <input id="kbAdult" type="checkbox" ng-model="hasAdultContent">
+                <label class="checkbox-option">
+                    <input type="checkbox" ng-model="mod.hasAdultContent">
                     Has Adult Content
-                </label><br/>
+                </label>
+                <span class="help-tooltip" title="In this context, adult content is classified as nudity or &#13;depictions of sexual acts.">?</span>
             </section>
 
-            <h3 class="section-title">Asset File Analysis</h3>
+            <h3 class="section-title">
+                Asset Files
+                <!-- temporary github link, should link to a help page -->
+                <a href="http://github.com/matortheeternal/mod-asset-mapper">
+                    <span class="help-tooltip" title="Submitting a mod requires uploading an asset file tree which &#13;allows Mod Picker to detect asset conflicts between mods.  An &#13;asset file tree can be generated with the Mod Asset Mapper.  You &#13;can click here for more information and download links.">?</span>
+                </a>
+            </h3>
             <section>
-
-                <div class="input-label">Archive</div>
-                <input type="text" class="path-input" ng-model="archive.file.name">
-                <label>
-                    <input id="archive-input" type="file" file-change="changeArchive" accept=".zip, .rar"/>
-                    <input type="button" class="btn" ng-click="browseArchive()" value="Browse">
-                </label>
-
-                <div ng-show="archiveAnalysed">
-                    <h3 class="section-title">Mod Asset File Analysis</h3>
-                    TODO: asset file tree
+                <div ng-show="assets">
+                    <h4 class="subtitle">File Tree</h4>
+                    <div class="file-tree-container">
+                        <ul>
+                            <li ng-repeat="asset in assets">{{asset}}</li>
+                        </ul>
+                    </div>
+                    <asset-file-tree data="assets"></asset-file-tree>
                 </div>
+
+                <label>
+                    <input id="assets-input" type="file" file-change="changeAssetTree" accept=".json">
+                    <input type="button" class="btn" ng-click="browseAssetTree()" value="Browse">
+                </label>
             </section>
 
             <h3 class="section-title">Plugins</h3>
@@ -147,7 +161,7 @@
                 </div>
 
                 <span class="notice">
-                    Plugin analysis will be performed by our servers sometime in the next 24 hours.
+                    Plugin analysis will be performed by our servers in the next 24 hours.
                 </span>
             </section>
 

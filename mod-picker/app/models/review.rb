@@ -38,6 +38,11 @@ class Review < ActiveRecord::Base
   private
     def increment_counter_caches
       self.mod.reviews_count += 1
+      # we also take this chance to recompute the mod's reputation
+      # if there are enough reviews to do so
+      if self.mod.reviews_count >= 5
+        self.mod.compute_reputation
+      end
       self.mod.save
     end
 

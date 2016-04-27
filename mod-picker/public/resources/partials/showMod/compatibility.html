@@ -1,0 +1,73 @@
+﻿<div class="mod-tab-actions">
+	<!--<div class="centered-mod-tab-action">
+		<strong>Compatible</strong>
+		<br>
+		with modlist
+	</div>
+	<div class="mod-tab-action filter-checkbox">
+		<label class="checkbox">
+			<strong>Enable Modlist Filter</strong>
+			<input type="checkbox" checked>
+		</label>
+	</div>--><!--
+
+	--><div class="mod-tab-action sort-by-dropdown">
+		<strong>Sort By: </strong>
+		<div class="select">
+			<select ng-model="cNotesSort">
+				<option value="-sortBySeverity" default>Reputation</option>
+				<option value="-submitted">Date Submitted</option>
+				<option value="-edited">Last Edited</option>
+			</select>
+		</div>
+	</div><!--
+	--><div class="mod-tab-action">
+		<input class="btn mod-page-btn" type="submit" value="Add Note" ng-click="submit()"/>
+	</div>
+</div>
+
+<div class="add-note-box">
+	<h3 class="section-title">Add Compatibility Note</h3>
+	<section>
+		<div class="add-note-actions">
+			<strong>{{mod.name}}</strong>
+			<div class="select compatibility-dropdown">
+				<select ng-model="newCompatibilityNote.compatibility_type">
+					<!-- TODO: put to server or static.js, set default value (so it's not empty on first drop down) -->
+					<option value="incompatible">is incompatible with</option>
+					<option value="partially incompatible">is partially incompatible with</option>
+					<option value="compatibility mod">requires an assets patch for</option>
+					<option value="compatibility option">requires a plug-in patch for</option>
+					<option value="make custom patch">needs a custom patch made for</option>
+				</select>
+			</div>
+			<input type="text" placeholder="Enter Mod Name" ng-model="otherModName" ng-change="newCompatibilityNote.otherMod = getModByName(newCompatibilityNote.otherModName)">
+		</div>
+	</section>
+	<section class="version-boxes-section">
+		<!-- TODO: probably should work with ng-repeats -->
+		<version-boxes versions="mod.mod_versions" selectedVersions="newCompatibilityNote.mods[0].mod_versions"></version-boxes>
+		<version-boxes ng-if="newCompatibilityNote.otherMod.mod_versions" versions="newCompatibilityNote.otherMod.mod_versions" selectedVersions="newCompatibilityNote.mods[1].mod_versions"></version-boxes>
+	</section>
+	<section>
+		<div ng-if="newCompatibilityNote.compatibility_type === 'compatibility mod'">
+			Compatibility Mod
+			<input type="text" placeholder="Enter Mod Name" ng-model="newCompatibilityNote.compatibilityModName" ng-change="newCompatibilityNote.compatibility_mod = getModByName(newCompatibilityNote.compatibilityModName)">
+		</div>
+		<div ng-if="newCompatibilityNote.compatibility_type === 'compatibility option'">
+			Compatibility Plug-in
+			<select ng-model="newCompatibilityNote.compatibility_type">
+				<option ng-repeat="" value=""></option>
+			</select>
+		</div>
+	</section>
+    <text-area data="newCompatibilityNote.text_body" ng-refresh="true" class="note-text-area"></text-area>
+
+	<div class="submit-note">
+		<input class="btn" type="submit" value="Submit" ng-click="createCompatibilityNote()"/>
+	</div>
+</div>
+
+<div ng-repeat="compatibilityNote in compatibilityNotes | orderBy : compatibilityNotesFilter" class="notes">
+	<c-note note="compatibilityNote"></c-note>
+</div>
