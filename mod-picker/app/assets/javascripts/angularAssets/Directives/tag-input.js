@@ -30,12 +30,13 @@ app.controller('tagInputController', function($scope, $timeout) {
 
     $scope.searchTags = function(str) {
         // Begin the search
+        str = str.toLowerCase();
         if (str.length > 0) {
             var matches = [];
 
             for (var i = 0; i < $scope.tags.length; i++) {
                 var tag = $scope.tags[i];
-                var match = tag.text.startsWith(str);
+                var match = tag.text.toLowerCase().startsWith(str);
 
                 if (match) {
                     matches[matches.length] = tag;
@@ -125,10 +126,6 @@ app.controller('tagInputController', function($scope, $timeout) {
             $scope.$applyAsync();
             $scope.removeTag($scope.index);
             $event.preventDefault();
-        }
-        else if ($scope.tag.text.length == 0) {
-            $scope.showDropdown = false;
-            $scope.$applyAsync();
         }
         else {
             $scope.showDropdown = true;
