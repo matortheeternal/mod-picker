@@ -1,4 +1,4 @@
-app.directive('tagInput', function ($timeout) {
+app.directive('tagInput', function () {
     return {
         restrict: 'E',
         templateUrl: '/resources/directives/tagInput.html',
@@ -16,7 +16,7 @@ app.directive('tagInput', function ($timeout) {
     }
 });
 
-app.controller('tagInputController', function($scope) {
+app.controller('tagInputController', function($scope, $timeout) {
     // set some constants
     var pause = 200;
 
@@ -57,9 +57,16 @@ app.controller('tagInputController', function($scope) {
     };
 
     $scope.blurTag = function() {
-        if ($scope.tags.indexOf($scope.tag) == -1) {
+        var isValidTag = $scope.tags.indexOf($scope.tag) > -1;
+        if (!(isValidTag || $scope.canCreate) || $scope.tag.text == "") {
             $scope.removeTag($scope.index)
         }
+        // we have to use a timeout for hiding the dropdown because
+        // otherwise we would hide it before the click event on a result
+        // went through
+        $timeout(function() {
+            $scope.showDropdown = false;
+        }, 100);
     };
 
     $scope.handleTagKey = function ($event) {
@@ -97,7 +104,7 @@ app.controller('tagInputController', function($scope) {
             }
         }
         // pressing up moves up the dropdown list
-        else if(event.which == 38) {
+        else if(key == 38) {
             if ($scope.currentIndex >= 1) {
                 $scope.currentIndex--;
                 $scope.$applyAsync();
@@ -128,12 +135,13 @@ app.controller('tagInputController', function($scope) {
             $scope.currentIndex = -1;
             $scope.results = [];
 
+            // restart search timer
             if ($scope.searchTimer) {
                 clearTimeout($scope.searchTimer);
             }
 
+            // search for matching tags
             $scope.searching = true;
-
             $scope.searchTimer = setTimeout(function () {
                 $scope.searchTags($scope.tag.text);
             }, pause);
