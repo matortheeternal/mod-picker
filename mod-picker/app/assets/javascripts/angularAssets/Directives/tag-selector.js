@@ -4,7 +4,6 @@ app.directive('tagSelector', function () {
         templateUrl: '/resources/directives/tagSelector.html',
         controller: 'tagSelectorController',
         scope: {
-        	tags: '=',
         	activeTags: '=',
             newTags: '=',
             maxTags: '=',
@@ -17,8 +16,12 @@ app.directive('tagSelector', function () {
     }
 });
 
-app.controller('tagSelectorController', function ($scope) {
+app.controller('tagSelectorController', function ($scope, tagService) {
     $scope.rawNewTags = [];
+
+    tagService.retrieveTags().then(function(data) {
+        $scope.tags = data;
+    });
 
     $scope.addTag = function() {
         if ($scope.rawNewTags.length + $scope.activeTags.length < $scope.maxTags) {
