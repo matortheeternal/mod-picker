@@ -18,7 +18,6 @@ app.filter('percentage', function() {
 });
 
 app.controller('modController', function ($scope, $q, $stateParams, modService, categoryService, assetUtils, userService) {
-    $scope.tags = [];
     $scope.newTags = [];
 
     //initialization /of the mod object
