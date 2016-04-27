@@ -123,7 +123,7 @@ app.controller('submitModController', function ($scope, backend, submitService, 
     };
 
     $scope.browseAnalysisFile = function() {
-        document.getElementById('assets-input').click();
+        document.getElementById('analysis-input').click();
     };
 
     $scope.loadAnalysisFile = function(file) {
