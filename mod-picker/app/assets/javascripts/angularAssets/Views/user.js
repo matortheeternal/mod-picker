@@ -1,13 +1,14 @@
-app.config(['$routeProvider', function ($routeProvider) {
-    $routeProvider.when('/user/:userId', {
+app.config(['$stateProvider', function ($stateProvider) {
+    $stateProvider.state('user', {
             templateUrl: '/resources/partials/showUser/user.html',
-            controller: 'userController'
+            controller: 'userController',
+            url: '/user/:userId'
         }
     );
 }]);
 
-app.controller('userController', function ($scope, $q, $routeParams, userService) {
-    userService.retrieveUser($routeParams.userId).then(function (user) {
+app.controller('userController', function ($scope, $q, $stateParams, userService) {
+    userService.retrieveUser($stateParams.userId).then(function (user) {
         $scope.user = user;
         $scope.roleClass = "user-role-" + $scope.user.role;
         switch($scope.user.role) {
