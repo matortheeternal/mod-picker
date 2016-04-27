@@ -73,4 +73,26 @@
       background-color: $bar_color;
     }
   }
+
+  .autocomplete-results {
+    color: black;
+    background-color: $primary_background;
+    position: absolute;
+    margin-left: -4px;
+    margin-top: 6px;
+    width: 120px;
+    border: 1px solid #888;
+    padding: 6px;
+    cursor: pointer;
+  }
+
+  .autocomplete-row {
+    padding: 5px;
+    margin-bottom: 4px;
+  }
+
+  .autocomplete-selected-row, .autocomplete-row:hover {
+    background-color: $action_color;
+    color: $action_text_color;
+  }
 }
