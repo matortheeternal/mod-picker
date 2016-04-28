@@ -338,6 +338,11 @@ form {
       }
     }
 
+    select {
+      font-size: 13px;
+      height: 32px;
+    }
+
     input[type="text"], input[type="password"], input[type="email"] {
       vertical-align: top;
       width: 350px;
@@ -354,7 +359,7 @@ form {
     }
 
     input.path-input {
-      width: 350px;
+      width: 400px;
       font-size: 13px;
       padding: 6px;
       height: 32px;
