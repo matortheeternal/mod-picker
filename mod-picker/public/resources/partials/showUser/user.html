@@ -30,9 +30,9 @@
                     <div class="stat-item">Last Seen: {{user.last_sign_in_at | date}}</div>
                 </section>
 
-                <h3 class="section-title">Contact</h3>
-                <section>
-                    <div class="stat-item" ng-if="user.email">Email: {{user.email}}</div>
+                <h3 class="section-title" ng-if="user['email_public?']">Contact</h3>
+                <section ng-if="user['email_public?']">
+                    <div class="stat-item">Email: {{user.email}}</div>
                     <div ng-if="user.bio.nexus_username">
                         <a ng-href="http://www.nexusmods.com/games/users/{{user.bio.nexus_user_id}}">
                             <div class="action-box source-box">
