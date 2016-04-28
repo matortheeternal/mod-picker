@@ -202,6 +202,26 @@ input[type="button"], input[type="submit"] {
   }
 }
 
+.tab {
+  .tab-section {
+    margin-left: 0;
+    h3 {
+      margin: 0;
+      background-color: $bar_dark_color;
+      padding: 12px;
+      font-size: 16px;
+      color: $inverse_text_color;
+    }
+    section {
+      margin: 0;
+      padding: 12px;
+      background-color: $primary_background;
+      border: 1px solid $border_color;
+      border-top: 0;
+    }
+  }
+}
+
 /* css for columns */
 .two-columns {
   background: linear-gradient(90deg, $secondary_background 50%, $primary_background 50%);
