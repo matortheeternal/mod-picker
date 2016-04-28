@@ -2,7 +2,7 @@ app.config(['$stateProvider', function ($stateProvider) {
     $stateProvider.state('user', {
             templateUrl: '/resources/partials/showUser/user.html',
             controller: 'userController',
-            url: '/user/:userId'
+            url: '/profile/:userId'
         }
     );
 }]);
