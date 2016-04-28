@@ -21,7 +21,8 @@
                         </span>
                     </label>
                 </div>
-                <input type="button" class="btn" value="Add Source" ng-click="addSource()">
+                <!-- TODO: Fix this not hiding immediately -->
+                <input type="button" class="btn" value="Add Source" ng-click="addSource()" ng-show="mod.sources.length < sites.length">
             </section>
 
             <section>

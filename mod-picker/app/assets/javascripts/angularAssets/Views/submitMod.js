@@ -18,6 +18,8 @@ app.controller('submitModController', function ($scope, backend, submitService, 
 
     /* sources */
     $scope.addSource = function() {
+        if ($scope.mod.sources.length == $scope.sites.length)
+            return;
         $scope.mod.sources.push({
             label: "Nexus Mods",
             url: ""
