@@ -4,7 +4,32 @@
 
         <form id="submitModForm" name="submitModForm" spellcheck="false">
 
-            <h3 class="section-title">Sources</h3>
+            <h3 class="section-title">General</h3>
+            <section>
+                <section>
+                    <div class="input-label">Mod Name</div>
+                    <input type="text" ng-model="mod.name">
+                </section>
+
+                <section>
+                    <div class="input-label">Released</div>
+                    <input type="date" ng-model="mod.released">
+                </section>
+
+                <section>
+                    <div class="input-label">Last Updated</div>
+                    <input type="date" ng-model="mod.updated">
+                </section>
+
+                <section>
+                    <div class="input-label">Current Version</div>
+                    <input type="text" class="small-input" ng-model="mod.version">
+                </section>
+            </section>
+
+            <h3 class="section-title">Sources
+                <span class="help-tooltip" title="Locations where an author has officially uploaded a Mod. &#13;You can only enter one valid location for each supported site.">?</span>
+            </h3>
             <section>
                 <div class="sources-container" ng-repeat="source in mod.sources">
                     <label>
