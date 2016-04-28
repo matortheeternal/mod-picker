@@ -1,6 +1,10 @@
 class IncorrectNote < ActiveRecord::Base
   include Filterable
 
+  # Before/after actions for counter_caches
+  after_create :increment_counter_caches
+  before_destroy :decrement_counter_caches
+
   after_initialize :init   
 
   scope :by, -> (id) { where(submitted_by: id) }
@@ -23,4 +27,21 @@ class IncorrectNote < ActiveRecord::Base
   def init
     self.created_at ||= DateTime.now
   end
+
+  # Private Methods
+  private
+    # counter caches
+    def increment_counter_caches
+      if(self.correctable_type == "CompatibilityNote")
+        self.correctable.incorrect_notes_count += 1
+        self.correctable.save
+      end
+    end
+
+    def decrement_counter_caches
+      if(self.correctable_type == "CompatibilityNote")
+        self.correctable.incorrect_notes_count -= 1
+        self.correctable.save
+      end
+    end 
 end

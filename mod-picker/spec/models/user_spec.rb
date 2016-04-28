@@ -80,7 +80,7 @@
 
 require 'rails_helper'
 
-RSpec.describe User, :model, :fail do
+RSpec.describe User, :model do
 
   fixtures :users
   # Validations ====================================================
