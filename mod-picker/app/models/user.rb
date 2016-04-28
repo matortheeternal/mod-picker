@@ -132,6 +132,10 @@ class User < ActiveRecord::Base
     self.last_sign_in_at < 28.days.ago
   end
 
+  def email_public?
+    self.settings.email_public
+  end
+
   def init
     self.joined ||= DateTime.current
     self.role   ||= :user
@@ -144,6 +148,12 @@ class User < ActiveRecord::Base
   end
 
   def show_json
+    # email handling
+    methods = [:avatar, :last_sign_in_at, :current_sign_in_at, :email_public?]
+    if self.email_public? || current_user.id == self.id
+      methods.push(:email)
+    end
+
     self.as_json({
         :include => {
             :mods => {
@@ -158,13 +168,14 @@ class User < ActiveRecord::Base
             :reputation => {
                 :only => [:overall]
             }
-        }
+        },
+        :methods => methods
     })
   end
 
   def as_json(options={})
     default_options = {
-        :except => [:email, :active_mod_list_id, :invitation_token, :invitation_created_at, :invitation_sent_at, :invitation_accepted_at, :invitation_limit, :invited_by_id, :invited_by_type, :invitations_count],
+        :except => [:active_mod_list_id, :invitation_token, :invitation_created_at, :invitation_sent_at, :invitation_accepted_at, :invitation_limit, :invited_by_id, :invited_by_type, :invitations_count],
         :methods => [:avatar, :last_sign_in_at, :current_sign_in_at],
         :include => {
             :bio => {
@@ -175,6 +186,7 @@ class User < ActiveRecord::Base
             }
         }
     }
+
     options = default_options.merge(options)
     super(options)
   end
