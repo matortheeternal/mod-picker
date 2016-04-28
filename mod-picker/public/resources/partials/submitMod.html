@@ -8,7 +8,7 @@
             <section>
                 <section>
                     <div class="input-label">Mod Name</div>
-                    <input type="text" ng-model="mod.name">
+                    <input type="text" class="long-input" ng-model="mod.name">
                 </section>
 
                 <section>
@@ -23,7 +23,7 @@
 
                 <section>
                     <div class="input-label">Current Version</div>
-                    <input type="text" class="small-input" ng-model="mod.version">
+                    <input type="text" class="short-input" ng-model="mod.version">
                 </section>
             </section>
 
@@ -36,7 +36,7 @@
                         <select ng-model="source.label" ng-change="validateSource(source)">
                             <option ng-repeat="site in sites">{{site.label}}</option>
                         </select>
-                        <input type="text" class="path-input" ng-model="source.url" ng-change="validateSource(source)">
+                        <input type="text" class="long-input" ng-model="source.url" ng-change="validateSource(source)">
                         <span class="source-valid">
                             <i class="fa fa-thumbs-o-up" ng-show="source.valid" title="Source URL valid"></i>
                             <i class="fa fa-thumbs-o-down" ng-show="!source.valid" title="Source URL invalid"></i>
