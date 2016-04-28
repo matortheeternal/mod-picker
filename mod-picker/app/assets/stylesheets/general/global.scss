@@ -346,7 +346,7 @@ form {
     input[type="text"], input[type="password"], input[type="email"] {
       vertical-align: top;
       width: 350px;
-      font-size: 13px;
+      font-size: 20px;
       height: 32px;
       padding: 4px;
     }
@@ -358,30 +358,27 @@ form {
       height: 32px;
     }
 
-    input[type="file"] {
-      display: none;
-    }
-
     .checkbox-option {
       display: inline-block;
       margin-top: 4px;
     }
 
-    input.path-input {
+    input.long-input {
       width: 400px;
       font-size: 13px;
       padding: 6px;
       height: 32px;
     }
 
-    input[type="text"].small-input {
+    input.short-input {
       width: 150px;
     }
   }
 
   .input-label {
     min-width: 180px;
-    margin-bottom: 4px;
+    margin-bottom: 5px;
+    margin-top: 5px;
   }
 
   input[type="submit"] {
