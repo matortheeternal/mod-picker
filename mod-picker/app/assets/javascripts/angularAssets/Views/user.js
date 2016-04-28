@@ -39,8 +39,8 @@ app.controller('userController', function ($scope, $q, $stateParams, userService
     //of the tab data
     $scope.tabs = [
         { name: 'Social', url: '/resources/partials/showUser/social.html' },
-        { name: 'Mod Lists and Collections', url: '/resources/partials/showUser/lists.html' },
-        { name: 'Authored Mods', url: '/resources/partials/showUser/mods.html' },
+        { name: 'Mod Lists', url: '/resources/partials/showUser/lists.html' },
+        { name: 'Mods', url: '/resources/partials/showUser/mods.html' },
         { name: 'Contributions', url: '/resources/partials/showUser/contributions.html' }
     ];
 
