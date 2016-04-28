@@ -8,16 +8,16 @@
             <section>
                 <div class="sources-container" ng-repeat="source in mod.sources">
                     <label>
-                        <select ng-model="source.label" ng-change="validateURL(source)">
+                        <select ng-model="source.label" ng-change="validateSource(source)">
                             <option ng-repeat="site in sites">{{site.label}}</option>
                         </select>
-                        <input type="text" class="path-input" ng-model="source.url" ng-change="validateURL(source)">
-                        <span class="remove-source" ng-click="removeSource(source)" ng-if="$index > 0">
-                            <i class="fa fa-times"></i>
-                        </span>
+                        <input type="text" class="path-input" ng-model="source.url" ng-change="validateSource(source)">
                         <span class="source-valid">
                             <i class="fa fa-thumbs-o-up" ng-show="source.valid" title="Source URL valid"></i>
                             <i class="fa fa-thumbs-o-down" ng-show="!source.valid" title="Source URL invalid"></i>
+                        </span>
+                        <span class="remove-source" ng-click="removeSource(source)" ng-if="$index > 0">
+                            <i class="fa fa-times"></i>
                         </span>
                     </label>
                 </div>
