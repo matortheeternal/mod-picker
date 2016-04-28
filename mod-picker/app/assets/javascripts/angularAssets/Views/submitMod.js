@@ -7,32 +7,37 @@ app.config(['$stateProvider', function ($stateProvider) {
     );
 }]);
 
-app.controller('submitModController', function ($scope, backend, submitService, categoryService) {
+app.controller('submitModController', function ($scope, backend, submitService, categoryService, sitesFactory) {
     // initialize variables
+    $scope.sites = sitesFactory.sites();
     $scope.mod = {};
+    $scope.mod.sources = [{
+        label: "Nexus Mods",
+        url: ""
+    }];
 
-    /* scraping */
-    $scope.nexusScraped = false;
-    //TODO: I guess this static might be better in some sort of service
-    var nexusUrlPattern = /(http[s]:\/\/?)?www.nexusmods.com\/skyrim\/mods\/([0-9]+)(\/\?)?/i;
-
-    $scope.cantScrape = function () {
-        return $scope.scraping || !$scope.nexusUrl || $scope.nexusUrl.match(nexusUrlPattern) == null
+    /* sources */
+    $scope.addSource = function() {
+        $scope.mod.sources.push({
+            label: "Nexus Mods",
+            url: ""
+        });
     };
 
-    $scope.scrape = function () {
-        var match = $scope.nexusUrl.match(nexusUrlPattern);
-        if (!match) {
-            return;
-        }
-        var id = match[2];
-        $scope.scraping = true;
-        submitService.scrapeNexus(3, id).then(function (data) {
-            $scope.nexus = data;
-            if (data.nexus_category == 39) {
-                $scope.isUtility = true;
-            }
+    $scope.removeSource = function(source) {
+        var index = $scope.mod.sources.indexOf(source);
+        $scope.mod.sources.splice(index, 1);
+    };
+
+    $scope.validateSource = function (source) {
+        var site = $scope.sites.find(function(item) {
+            return item.label === source.label
         });
+        var sourceIndex = $scope.mod.sources.indexOf(source);
+        var sourceUsed = $scope.mod.sources.find(function(item, index) {
+            return index != sourceIndex && item.label === source.label
+        });
+        source.valid = !sourceUsed && source.url.match(site.expr) != null;
     };
 
     /* categories */
@@ -139,12 +144,15 @@ app.controller('submitModController', function ($scope, backend, submitService, 
     $scope.modInvalid = function () {
         // submission isn't allowed until the user has scraped a nexus page,
         // provided a mod analysis, and provided at least one category
-        return ($scope.nexus == null || $scope.analysis == null ||
-            $scope.mod.categories == null || $scope.mod.categories.length == 0 ||
-            $scope.mod.categories.length > 2)
+        var sourcesValid;
+        $scope.mod.sources.forEach(function(source) {
+            sourcesValid = sourcesValid && source.valid;
+        });
+        return (!sourcesValid || $scope.analysis == null || $scope.mod.categories == null ||
+            $scope.mod.categories.length == 0 || $scope.mod.categories.length > 2)
     };
 
     $scope.submit = function () {
-        submitService.submitMod($scope.mod, $scope.nexus, $scope.analysis);
+        submitService.submitMod($scope.mod, $scope.analysis);
     }
 });
