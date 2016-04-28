@@ -31,6 +31,7 @@
         </div>
 	</section>
 	<section class="ratings">
+		<!-- TODO: kill redundancy-->
 		<div>
 			{{currentTemplate.section1}}
 			<input type="number" step="0.1" max="10" min="0" placeholder="8.5" ng-model="newReview.ratings[0]" ng-change="updateOverallRating()">

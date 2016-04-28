@@ -33,6 +33,7 @@
 			<strong>{{mod.name}}</strong>
 			<div class="select compatibility-dropdown">
 				<select ng-model="newCompatibilityNote.compatibility_type">
+					<!-- TODO: put to server or static.js, set default value (so it's not empty on first drop down) -->
 					<option value="incompatible">is incompatible with</option>
 					<option value="partially incompatible">is partially incompatible with</option>
 					<option value="compatibility mod">requires an assets patch for</option>
@@ -44,6 +45,7 @@
 		</div>
 	</section>
 	<section class="version-boxes-section">
+		<!-- TODO: probably should work with ng-repeats -->
 		<version-boxes versions="mod.mod_versions" selectedVersions="newCompatibilityNote.mods[0].mod_versions"></version-boxes>
 		<version-boxes ng-if="newCompatibilityNote.otherMod.mod_versions" versions="newCompatibilityNote.otherMod.mod_versions" selectedVersions="newCompatibilityNote.mods[1].mod_versions"></version-boxes>
 	</section>
