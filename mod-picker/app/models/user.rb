@@ -147,7 +147,7 @@ class User < ActiveRecord::Base
     self.create_bio({ user_id: self.id })
   end
 
-  def show_json
+  def show_json(current_user)
     # email handling
     methods = [:avatar, :last_sign_in_at, :current_sign_in_at, :email_public?]
     if self.email_public? || current_user.id == self.id
