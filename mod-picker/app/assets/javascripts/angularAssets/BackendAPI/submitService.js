@@ -1,7 +1,13 @@
 //TODO: change naming
 app.service('submitService', function (backend, $q) {
-    this.scrapeNexus = function (gameId, nexusId) {
-        return backend.retrieve('/nexus_infos/' + nexusId, {game_id: gameId});
+    this.scrapeNexus = function (gameId, modId) {
+        return backend.retrieve('/nexus_infos/' + modId, {game_id: gameId});
+    };
+    this.scrapeLab = function (gameId, modId) {
+        return backend.retrieve('/lover_infos/' + modId, {game_id: gameId});
+    };
+    this.scrapeWorkshop = function (gameId, modId) {
+        return backend.retrieve('/workshop_infos/' + modId, {game_id: gameId});
     };
 
     this.verifyPlugins = function (plugins) {
