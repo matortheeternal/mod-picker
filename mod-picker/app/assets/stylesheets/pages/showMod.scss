@@ -40,12 +40,14 @@
   background-color: $bar_dark_color;
 }
 
-.stars-count {
+.quality-value {
   font-size: 10px;
-  padding-top: 0px;
+  font-weight: 700;
+  padding-top: 2px;
+  height: 50px;
 }
 
-.stars-number {
+.reputation-number {
   display: block;
   font-size: 24px;
 }
@@ -75,6 +77,14 @@
 .mod-name {
   font-size: 24px;
   font-weight: 100;
+}
+
+.mod-authors-container {
+  margin-left: 6px;
+  .mod-authors {
+    font-weight: 600;
+    color: $bright_action_color;
+  }
 }
 
 //left column
@@ -130,12 +140,12 @@
 .source-image {
   height: 1.5em;
   width: auto;
-  margin-right: 5px;
+  margin: 3px;
 }
 
 //stat blocks
 .stat-title {
-  width: 100px;
+  width: 120px;
   font-weight: 500;
   font-size: 14px;
   white-space: nowrap;
@@ -183,6 +193,8 @@
   font-size: 16px;
   padding: 6px;
   line-height: inherit;
+  text-align: center;
+  width: 28px;
 }
 
 //right column
