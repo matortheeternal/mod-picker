@@ -12,12 +12,12 @@ class ModVersionLoadOrderNote < ActiveRecord::Base
   
   private
     def increment_counter_caches
-      self.mod_version.mod.install_order_notes_count += 1
+      self.mod_version.mod.load_order_notes_count += 1
       self.mod_version.mod.save
     end
 
     def decrement_counter_caches
-      self.mod_version.mod.install_order_notes_count -= 1
+      self.mod_version.mod.load_order_notes_count -= 1
       self.mod_version.mod.save
     end
 end

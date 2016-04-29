@@ -18,7 +18,8 @@ require 'rails_helper'
 
 RSpec.describe Mod, :model, :cc do
   # fixtures
-  fixtures :users, :mods, :review_templates, :mod_versions
+  fixtures :users, :mods, :review_templates, :mod_versions,
+    :plugins
 
   it "should have valid fixtures" do
     expect(users(:madoka)).to be_truthy
@@ -212,27 +213,53 @@ RSpec.describe Mod, :model, :cc do
       end
     end
 
-    # describe "load_order_notes_count" do
-    #   count_before = skyui.load_order_notes_count
-    #   mod_version1 = skyui.mod_versions.first
-    #   mod_version2 = tes5edit.mod_versions.first
-    #   load_order_note = LoadOrderNote.create!(submitted_by: user.id, load_first: skyui.id, load_second: tes5edit.id, text_body: Faker::Lorem.paragraphs(3))
-    #   mvin1 = ModVersionLoadOrderNote.create(mod_version_id: mod_version1.id, load_order_note_id: load_order_note.id)
-    #   mvin2 = ModVersionLoadOrderNote.create(mod_version_id: mod_version2.id, load_order_note_id: load_order_note.id)
+    describe "load_order_notes_count" do
+      it "should increment when we add an load_order_note" do
+        mod_version.mod_id = mod.id
+        mod_version.save
+
+        load_order_note = create(:load_order_note,
+          submitted_by: user.id,
+          load_first: plugins(:Apocalypse_esp).id,
+          load_second: plugins(:SkyRE_esp).id)
+
+        expect(load_order_note).to be_valid
+
+        expect {
+          mod_version.mod_version_load_order_notes.create(
+            load_order_note_id: load_order_note.id)
+          mod.reload
+
+          expect(mod.load_order_notes_count).to eq(1)
+        }.to change {mod.load_order_notes_count}.by(1)
+      end
     
-    #   it "should increment when we add an load_order_note" do
-    #     skyui = Mod.find_by(name: 'SkyUI')
-    #     expect(skyui.load_order_notes_count).to eq(count_before + 1)
-    #   end
-    
-    #   it "should decrement when we remove an load_order_note" do
-    #     mvin1.destroy
-    #     mvin2.destroy
-    #     load_order_note.destroy
-    #     skyui = Mod.find_by(name: 'SkyUI')
-    #     expect(skyui.load_order_notes_count).to eq(count_before)
-    #   end
-    # end
+      it "should decrement when we remove an load_order_note" do
+        mod_version.mod_id = mod.id
+        mod_version.save
+
+        load_order_note = create(:load_order_note,
+          submitted_by: user.id,
+          load_first: plugins(:Apocalypse_esp).id,
+          load_second: plugins(:SkyRE_esp).id)
+
+        expect(load_order_note).to be_valid
+
+        mv_lo = mod_version.mod_version_load_order_notes.create(
+            load_order_note_id: load_order_note.id)
+        mod.reload
+
+        expect(mod.load_order_notes_count).to eq(1)
+
+        expect {
+          mv_lo.destroy
+          load_order_note.destroy
+          mod.reload
+
+          expect(mod.load_order_notes_count).to eq(0)
+        }.to change {mod.load_order_notes_count}.by(-1)
+      end
+    end
 
   end 
 end
