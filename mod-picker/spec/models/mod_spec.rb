@@ -16,36 +16,45 @@ require 'rails_helper'
 #   t.integer "load_order_notes_count",    limit: 4,   default: 0
 # end
 
-RSpec.describe Mod, :model do
+RSpec.describe Mod, :model, :cc do
   # fixtures
   fixtures :users, :mods, :review_templates
 
-  it "should access the seeded mod" do
+  it "should have valid fixtures" do
     expect(users(:madoka)).to be_truthy
     expect(mods(:SkyUI)).to be_truthy
     expect(mods(:SkyUI).mod_stars_count).to be_truthy
   end
 
+  it "should have a valid factory" do
+    expect(build(:mod)).to be_valid
+  end
+
   # noinspection RubyScope
-  describe "counter cache" do
+  context "counter cache" do
     
     # instance variables 
     let(:skyui) { mods(:SkyUI) }
     let(:user) { users(:madoka) }
-    let(:tes5edit) { mods(:TES5EDIT) }
+    let(:mod) { mods(:TES5Edit) }
 
     describe "mod_stars_count" do
-      let!(:count_before) { skyui.mod_stars_count }
-
+      # create a mod star using a mod fixture as a base and a user fixture as the user
       it "should increment when we add a star" do
-        skyui.mod_stars.create(user_id: user.id)
-        expect(skyui.mod_stars_count).to eq(count_before + 1)
+        expect { 
+          mod.mod_stars.create(user_id: user.id)
+        }.to change { mod.mod_stars_count }.by(1)
       end
 
+      # create a mod_star then destroy the same one later while keeping track of the mod's mod_stars_count
       it "should decrement when we remove a star" do
-        mod_star = skyui.mod_stars.create(user_id: user.id)
-        mod_star.destroy
-        expect(skyui.mod_stars_count).to eq(count_before)
+        star = mod.mod_stars.create(user_id: user.id)
+        expect(mod.mod_stars_count).to eq(1)
+
+        expect {
+          mod.mod_stars.destroy(star.id)
+          expect(mod.mod_stars_count).to eq(0)
+        }.to change { mod.mod_stars_count }.by(-1)
       end
     end
 
