@@ -20,6 +20,6 @@ FactoryGirl.define do
   factory :review_template do
     association :user, factory: :user
     name { Faker::Company.name }
-    section1 { Faker::Lorem.sentence(2) }
+    section1 { Faker::Lorem.sentence(1)[1..32] }
   end
 end

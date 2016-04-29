@@ -5,5 +5,5 @@ class ReviewTemplate < ActiveRecord::Base
   # Validations
   validates :name, :section1, presence: true
   validates :name, length: {in: 4..32}
-  validates :section1, :section2, :section3, :section4, :section5, length: {in: 2..32}
+  validates :section1, :section2, :section3, :section4, :section5, length: {in: 2..32}, allow_blank: true
 end

@@ -30,18 +30,30 @@ class IncorrectNote < ActiveRecord::Base
 
   # Private Methods
   private
+    # list of correctable_Types that have incorrect_notes_count counter cache
+    COUNTER_CACHE_LIST = ["CompatibilityNote", "Review"]
+
     # counter caches
+    # both iterate through the counter_cache list then break out of the loop
+    # if a match is found after incrementing the incorrect_notes_count field of their 
+    # correctable type
     def increment_counter_caches
-      if(self.correctable_type == "CompatibilityNote")
-        self.correctable.incorrect_notes_count += 1
-        self.correctable.save
+      COUNTER_CACHE_LIST.each do |correct_type|
+        if(self.correctable_type == correct_type)
+          self.correctable.incorrect_notes_count += 1
+          self.correctable.save
+          break
+        end
       end
     end
 
     def decrement_counter_caches
-      if(self.correctable_type == "CompatibilityNote")
-        self.correctable.incorrect_notes_count -= 1
-        self.correctable.save
+      COUNTER_CACHE_LIST.each do |correct_type|
+        if(self.correctable_type == correct_type)
+          self.correctable.incorrect_notes_count -= 1
+          self.correctable.save
+          break
+        end
       end
     end 
 end
