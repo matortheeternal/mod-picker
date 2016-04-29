@@ -51,7 +51,7 @@ class Mod < ActiveRecord::Base
   has_many :user_stars, :through => 'mod_stars', :class_name => 'User', :inverse_of => 'starred_mods'
 
   # tags
-  has_many :mod_tags, :inverse_of => 'mod'
+  has_many :mod_tags, :inverse_of => 'mod', dependent: :destroy
   has_many :tags, :through => 'mod_tags', :inverse_of => 'mods'
 
   # install order notes

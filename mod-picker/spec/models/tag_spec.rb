@@ -16,10 +16,11 @@ RSpec.describe Tag, :model, :cc do
   end
 
   context "counter_caches" do
+      let(:mod) {mods(:Apocalypse)}
+      let(:game) {games(:skyrim)}
+      let(:tag) {tags(:tag_quest)}
     describe "mods_count" do
-        let(:mod) {mods(:Apocalypse)}
-        let(:game) {games(:skyrim)}
-        let(:tag) {tags(:tag_quest)}
+        
 
       it "should be incremented by one when creating a mod for the tag" do
         expect {
@@ -44,12 +45,16 @@ RSpec.describe Tag, :model, :cc do
         expect(tag.mods_count).to eq(1)
 
         expect {
-          mod_tag.destroy
+          mod.destroy
           tag.reload
 
           expect(tag.mods_count).to eq(0)
         }.to change {tag.mods_count}.by(-1) 
       end
+    end
+
+    describe "mod_lists_count" do
+      
     end
   end
 end
