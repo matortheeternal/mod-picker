@@ -112,15 +112,11 @@ RSpec.describe Mod, :model, :cc do
     end
 
     describe "compatibility_notes_count" do
-      # let!(:count_before) {skyui.compatibility_notes_count}
-      # let!(:mod_version1) {skyui.mod_versions.first}
-      # let!(:mod_version2) {tes5edit.mod_versions.first}
-      # compatibility_note = CompatibilityNote.create!(submitted_by: user.id, compatibility_type: "Incompatible", text_body: Faker::Lorem.paragraphs(3))
-      # let(:compatibility_note) { create(:compatibility_note, submitted_by: user.id)}
-      # mvcn1 = ModVersionCompatibilityNote.create(mod_version_id: mod_version1.id, compatibility_note_id: compatibility_note.id)
-      # mvcn2 = ModVersionCompatibilityNote.create(mod_version_id: mod_version2.id, compatibility_note_id: compatibility_note.id)
 
-      # create a mod version, 
+      # Association mod_version fixture with mod_fixture(Maybe associate them in the fixtures themselves)
+      # create a compatibility note,
+      # then create an association between the compatibility note and mod_version
+      # check for increment in mod's compatibility_notes_count
       it "should increment when we add a compatibility_note" do
         # Associates mod_version with mod
         mod_version.mod_id = mod.id
@@ -139,6 +135,7 @@ RSpec.describe Mod, :model, :cc do
         }.to change {mod.compatibility_notes_count}.by(1)
       end
 
+      # same as above process for incrementing a compatibility_note_count but then delete the association.
       it "should decrement when we remove a compatibility_note" do
         # associate mod with mod_version
         mod_version.mod_id = mod.id
@@ -166,27 +163,54 @@ RSpec.describe Mod, :model, :cc do
       end
     end
 
-    # describe "install_order_notes_count" do
-    #   count_before = skyui.install_order_notes_count
-    #   mod_version1 = skyui.mod_versions.first
-    #   mod_version2 = tes5edit.mod_versions.first
-    #   install_order_note = InstallOrderNote.create!(submitted_by: user.id, install_first: skyui.id, install_second: tes5edit.id, text_body: Faker::Lorem.paragraphs(3))
-    #   mvin1 = ModVersionInstallOrderNote.create(mod_version_id: mod_version1.id, install_order_note_id: install_order_note.id)
-    #   mvin2 = ModVersionInstallOrderNote.create(mod_version_id: mod_version2.id, install_order_note_id: install_order_note.id)
+    describe "install_order_notes_count" do
+      it "should increment when we add an install_order_note" do
+        mod_version.mod_id = mod.id
+        mod_version.save
 
-    #   it "should increment when we add an install_order_note" do
-    #     skyui = Mod.find_by(name: 'SkyUI')
-    #     expect(skyui.install_order_notes_count).to eq(count_before + 1)
-    #   end
+        install_note = create(:install_order_note,
+          submitted_by: user.id,
+          install_first: mod.id,
+          install_second: mods(:Apocalypse).id)
 
-    #   it "should decrement when we remove an install_order_note" do
-    #     mvin1.destroy
-    #     mvin2.destroy
-    #     install_order_note.destroy
-    #     skyui = Mod.find_by(name: 'SkyUI')
-    #     expect(skyui.install_order_notes_count).to eq(count_before)
-    #   end
-    # end
+        expect(install_note).to be_valid
+
+        expect {
+          mod_version.mod_version_install_order_notes.create(
+            install_order_note_id: install_note.id)
+          mod.reload
+
+          expect(mod.install_order_notes_count).to eq(1)
+        }.to change {mod.install_order_notes_count}.by(1)
+      end
+
+      it "should decrement when we remove an install_order_note" do
+        mod_version.mod_id = mod.id
+        mod_version.save
+
+        install_note = create(:install_order_note,
+          submitted_by: user.id,
+          install_first: mod.id,
+          install_second: mods(:Apocalypse).id)
+
+        expect(install_note).to be_valid
+
+        mv_in = mod_version.mod_version_install_order_notes.create(
+            install_order_note_id: install_note.id)
+        mod.reload
+
+        expect(mod.install_order_notes_count).to eq(1)
+          
+        expect {
+          mv_in.destroy
+          install_note.destroy
+          mod.reload
+
+          expect(mod.install_order_notes_count).to eq(0)
+
+        }.to change {mod.install_order_notes_count}.by(-1)
+      end
+    end
 
     # describe "load_order_notes_count" do
     #   count_before = skyui.load_order_notes_count
