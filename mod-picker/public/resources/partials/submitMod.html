@@ -4,50 +4,144 @@
 
         <form id="submitModForm" name="submitModForm" spellcheck="false">
 
-            <h3 class="section-title">General</h3>
-            <section>
-                <section>
-                    <div class="input-label">Mod Name</div>
-                    <input type="text" class="long-input" ng-model="mod.name">
-                </section>
-
-                <section>
-                    <div class="input-label">Released</div>
-                    <input type="date" ng-model="mod.released">
-                </section>
-
-                <section>
-                    <div class="input-label">Last Updated</div>
-                    <input type="date" ng-model="mod.updated">
-                </section>
-
-                <section>
-                    <div class="input-label">Current Version</div>
-                    <input type="text" class="short-input" ng-model="mod.version">
-                </section>
-            </section>
-
             <h3 class="section-title">Sources
                 <span class="help-tooltip" title="Locations where an author has officially uploaded a Mod. &#13;You can only enter one valid location for each supported site.">?</span>
             </h3>
             <section>
                 <div class="sources-container" ng-repeat="source in mod.sources">
                     <label>
-                        <select ng-model="source.label" ng-change="validateSource(source)">
+                        <select ng-model="source.label" ng-change="validateSource(source)" ng-disabled="source.scraped">
                             <option ng-repeat="site in sites">{{site.label}}</option>
                         </select>
-                        <input type="text" class="long-input" ng-model="source.url" ng-change="validateSource(source)">
-                        <span class="source-valid">
-                            <i class="fa fa-thumbs-o-up" ng-show="source.valid" title="Source URL valid"></i>
-                            <i class="fa fa-thumbs-o-down" ng-show="!source.valid" title="Source URL invalid"></i>
-                        </span>
-                        <span class="remove-source" ng-click="removeSource(source)" ng-if="$index > 0">
+                        <input type="text" class="long-input" ng-model="source.url" ng-change="validateSource(source)" ng-disabled="source.scraped">
+                        <input type="button" class="btn scrape-button" value="Scrape" ng-click="scrapeSource(source)" ng-show="!source.scraped" ng-disabled="!source.valid">
+                        <span class="remove-source" ng-click="removeSource(source)" ng-if="$index > 0 && !source.scraped" title="Remove source">
                             <i class="fa fa-times"></i>
                         </span>
                     </label>
                 </div>
                 <!-- TODO: Fix this not hiding immediately -->
                 <input type="button" class="btn" value="Add Source" ng-click="addSource()" ng-show="mod.sources.length < sites.length">
+
+                <div class="scraped-data-container" ng-if="nexus || lab || workshop">
+                    <div class="scraped-data" ng-if="nexus">
+                        <h4>Nexus Mods Data</h4>
+                        <loader data="nexus.id">
+                            <table class="infotable">
+                                <colgroup>
+                                    <col span="1" style="width: 160px;">
+                                    <col span="1">
+                                </colgroup>
+                                <tbody>
+                                <tr>
+                                    <td>Mod ID</td>
+                                    <td>{{nexus.id}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Mod Name</td>
+                                    <td>{{nexus.mod_name}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Uploaded By</td>
+                                    <td>{{nexus.uploaded_by}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Authors</td>
+                                    <td>{{nexus.authors}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Latest Version</td>
+                                    <td>{{nexus.current_version}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Date Submitted</td>
+                                    <td>{{nexus.date_added | date }}</td>
+                                </tr>
+                                <tr>
+                                    <td>Date Updated</td>
+                                    <td>{{nexus.date_updated | date }}</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </loader>
+                    </div>
+
+                    <div class="scraped-data" ng-if="workshop">
+                        <h4>Steam Workshop Data</h4>
+                        <loader data="workshop.id">
+                            <table class="infotable">
+                                <colgroup>
+                                    <col span="1" style="width: 160px;">
+                                    <col span="1">
+                                </colgroup>
+                                <tbody>
+                                <tr>
+                                    <td>Mod ID</td>
+                                    <td>{{workshop.id}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Mod Name</td>
+                                    <td>{{workshop.mod_name}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Uploaded By</td>
+                                    <td>{{workshop.uploaded_by}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Latest Version</td>
+                                    <td>{{workshop.current_version}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Date Submitted</td>
+                                    <td>{{workshop.date_submitted | date }}</td>
+                                </tr>
+                                <tr>
+                                    <td>Date Updated</td>
+                                    <td>{{workshop.date_updated | date }}</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </loader>
+                    </div>
+
+                    <div class="scraped-data" ng-if="lab">
+                        <h4>Lover's Lab Data</h4>
+                        <loader data="lab.id">
+                            <table class="infotable">
+                                <colgroup>
+                                    <col span="1" style="width: 160px;">
+                                    <col span="1">
+                                </colgroup>
+                                <tbody>
+                                <tr>
+                                    <td>Mod ID</td>
+                                    <td>{{lab.id}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Mod Name</td>
+                                    <td>{{lab.mod_name}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Uploaded By</td>
+                                    <td>{{lab.uploaded_by}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Latest Version</td>
+                                    <td>{{lab.current_version}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Date Submitted</td>
+                                    <td>{{lab.date_submitted | date }}</td>
+                                </tr>
+                                <tr>
+                                    <td>Date Updated</td>
+                                    <td>{{lab.date_updated | date }}</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </loader>
+                    </div>
+                </div>
             </section>
 
             <section>
