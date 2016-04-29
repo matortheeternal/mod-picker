@@ -104,8 +104,8 @@ class Mod < ActiveRecord::Base
     days_since_release = DateTime.now - self.released.to_date
 
     # compute extra nexus metrics
-    nex = self.nexus_infos && Rails.application.config.scrape_nexus_statistics
-    if nex.present?
+    nex = self.nexus_infos
+    if nex.present? && Rails.application.config.scrape_nexus_statistics
       nex.endorsement_rate = (nex.endorsements / days_since_release) if days_since_release > 0
       nex.dl_rate = (nex.unique_downloads / days_since_release) if days_since_release > 0
       nex.udl_to_endorsements = (nex.unique_downloads / nex.endorsements) if nex.endorsements > 0
