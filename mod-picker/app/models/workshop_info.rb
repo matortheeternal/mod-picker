@@ -40,6 +40,10 @@ class WorkshopInfo < ActiveRecord::Base
       self.views = statsTableRows[0].css("td")[0].text.gsub(',', '').to_i
       self.subscribers = statsTableRows[1].css("td")[0].text.gsub(',', '').to_i
       self.favorites = statsTableRows[2].css("td")[0].text.gsub(',', '').to_i
+      # <#highlight_strip_scroll>
+      highlightStrip = doc.at_css("#highlight_strip_scroll")
+      self.images_count = highlightStrip.css(".highlight_strip_screenshot").length
+      self.videos_count = highlightStrip.css(".highlight_strip_movie").length
     end
 
     # save scraped data
