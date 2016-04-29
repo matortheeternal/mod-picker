@@ -16,6 +16,28 @@ class Review < ActiveRecord::Base
   has_many :incorrect_notes, :as => 'correctable'
   has_one :base_report, :as => 'reportable'
 
+  def overall_rating
+    total = self.rating1
+    count = 1
+    if self.rating2.present?
+      total += self.rating2
+      count += 1
+    end
+    if self.rating3.present?
+      total += self.rating3
+      count += 1
+    end
+    if self.rating4.present?
+      total += self.rating4
+      count += 1
+    end
+    if self.rating5.present?
+      total += self.rating5
+      count += 1
+    end
+    total / count
+  end
+
   private
     def increment_counter_caches
       self.mod.reviews_count += 1
