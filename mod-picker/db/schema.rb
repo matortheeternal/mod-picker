@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160426221507) do
+ActiveRecord::Schema.define(version: 20160429182304) do
 
   create_table "agreement_marks", id: false, force: :cascade do |t|
     t.integer "incorrect_note_id", limit: 4
@@ -464,15 +464,15 @@ ActiveRecord::Schema.define(version: 20160426221507) do
     t.string   "authors",             limit: 128
     t.datetime "date_added"
     t.datetime "date_updated"
-    t.integer  "endorsements",        limit: 4
-    t.integer  "total_downloads",     limit: 4
-    t.integer  "unique_downloads",    limit: 4
-    t.integer  "views",               limit: 8
-    t.integer  "posts_count",         limit: 4
-    t.integer  "videos_count",        limit: 2
-    t.integer  "images_count",        limit: 2
-    t.integer  "files_count",         limit: 2
-    t.integer  "articles_count",      limit: 2
+    t.integer  "endorsements",        limit: 4,   default: 0
+    t.integer  "total_downloads",     limit: 4,   default: 0
+    t.integer  "unique_downloads",    limit: 4,   default: 0
+    t.integer  "views",               limit: 4,   default: 0
+    t.integer  "posts_count",         limit: 4,   default: 0
+    t.integer  "videos_count",        limit: 4,   default: 0
+    t.integer  "images_count",        limit: 4,   default: 0
+    t.integer  "files_count",         limit: 4,   default: 0
+    t.integer  "articles_count",      limit: 4,   default: 0
     t.integer  "nexus_category",      limit: 2
     t.integer  "mod_id",              limit: 4
     t.integer  "game_id",             limit: 4
