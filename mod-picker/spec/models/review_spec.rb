@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe Review, :model, :cc do
+RSpec.describe Review, :model do
   fixtures :reviews
 
   it "should have a valid factory" do

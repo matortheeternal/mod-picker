@@ -1,9 +1,9 @@
 require 'rails_helper'
 
-RSpec.describe AgreementMark, :model do
+RSpec.describe AgreementMark, :model, :fail do
   it "should be valid with factory parameters" do
     agree = build(:agreement_mark)
-
+    
     expect(agree).to be_valid
   end
 
