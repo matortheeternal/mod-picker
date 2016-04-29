@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160426221507) do
+ActiveRecord::Schema.define(version: 20160429215259) do
 
   create_table "agreement_marks", id: false, force: :cascade do |t|
     t.integer "incorrect_note_id", limit: 4
@@ -464,15 +464,15 @@ ActiveRecord::Schema.define(version: 20160426221507) do
     t.string   "authors",             limit: 128
     t.datetime "date_added"
     t.datetime "date_updated"
-    t.integer  "endorsements",        limit: 4
-    t.integer  "total_downloads",     limit: 4
-    t.integer  "unique_downloads",    limit: 4
-    t.integer  "views",               limit: 8
-    t.integer  "posts_count",         limit: 4
-    t.integer  "videos_count",        limit: 2
-    t.integer  "images_count",        limit: 2
-    t.integer  "files_count",         limit: 2
-    t.integer  "articles_count",      limit: 2
+    t.integer  "endorsements",        limit: 4,   default: 0
+    t.integer  "total_downloads",     limit: 4,   default: 0
+    t.integer  "unique_downloads",    limit: 4,   default: 0
+    t.integer  "views",               limit: 4,   default: 0
+    t.integer  "posts_count",         limit: 4,   default: 0
+    t.integer  "videos_count",        limit: 4,   default: 0
+    t.integer  "images_count",        limit: 4,   default: 0
+    t.integer  "files_count",         limit: 4,   default: 0
+    t.integer  "articles_count",      limit: 4,   default: 0
     t.integer  "nexus_category",      limit: 2
     t.integer  "mod_id",              limit: 4
     t.integer  "game_id",             limit: 4
@@ -726,8 +726,26 @@ ActiveRecord::Schema.define(version: 20160426221507) do
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 
   create_table "workshop_infos", force: :cascade do |t|
-    t.integer "mod_id", limit: 4
+    t.integer  "mod_id",            limit: 4
+    t.string   "mod_name",          limit: 255
+    t.string   "uploaded_by",       limit: 128
+    t.string   "date_submitted",    limit: 255
+    t.string   "date_updated",      limit: 255
+    t.string   "current_version",   limit: 32
+    t.datetime "last_scraped"
+    t.integer  "discussions_count", limit: 4,   default: 0
+    t.integer  "comments_count",    limit: 4,   default: 0
+    t.integer  "ratings_count",     limit: 4,   default: 0
+    t.integer  "average_rating",    limit: 1,   default: 0
+    t.integer  "views",             limit: 4,   default: 0
+    t.integer  "subscribers",       limit: 4,   default: 0
+    t.integer  "favorites",         limit: 4,   default: 0
+    t.integer  "file_size",         limit: 4,   default: 0
+    t.integer  "images_count",      limit: 4,   default: 0
+    t.integer  "videos_count",      limit: 4,   default: 0
   end
+
+  add_index "workshop_infos", ["mod_id"], name: "fk_rails_8707144ad7", using: :btree
 
   add_foreign_key "agreement_marks", "incorrect_notes", name: "agreement_marks_ibfk_1"
   add_foreign_key "agreement_marks", "users", column: "submitted_by", name: "agreement_marks_ibfk_2"
@@ -827,4 +845,5 @@ ActiveRecord::Schema.define(version: 20160426221507) do
   add_foreign_key "user_settings", "users", name: "user_settings_ibfk_1"
   add_foreign_key "user_titles", "games"
   add_foreign_key "users", "mod_lists", column: "active_mod_list_id", name: "users_ibfk_4"
+  add_foreign_key "workshop_infos", "mods"
 end
