@@ -18,7 +18,7 @@ require 'rails_helper'
 
 RSpec.describe Mod, :model, :cc do
   # fixtures
-  fixtures :users, :mods, :review_templates
+  fixtures :users, :mods, :review_templates, :mod_versions
 
   it "should have valid fixtures" do
     expect(users(:madoka)).to be_truthy
@@ -37,6 +37,7 @@ RSpec.describe Mod, :model, :cc do
     let(:skyui) { mods(:SkyUI) }
     let(:user) { users(:madoka) }
     let(:mod) { mods(:TES5Edit) }
+    let(:mod_version) {mod_versions(:SkyUI_1_0)}
 
     describe "mod_stars_count" do
       # create a mod star using a mod fixture as a base and a user fixture as the user
@@ -119,19 +120,49 @@ RSpec.describe Mod, :model, :cc do
       # mvcn1 = ModVersionCompatibilityNote.create(mod_version_id: mod_version1.id, compatibility_note_id: compatibility_note.id)
       # mvcn2 = ModVersionCompatibilityNote.create(mod_version_id: mod_version2.id, compatibility_note_id: compatibility_note.id)
 
+      # create a mod version, 
       it "should increment when we add a compatibility_note" do
-        # expect {
-        #   create(:mod_version_compatibility_note,
-        #           mod_version_id: )
-        # }.to change {skyui.compatibility_notes_count}.by(1)
+        # Associates mod_version with mod
+        mod_version.mod_id = mod.id
+        mod_version.save
+
+        comp_note = create(:compatibility_note,
+            submitted_by: user.id)
+        expect(comp_note).to be_valid
+
+        expect {
+          mod_version.mod_version_compatibility_notes.create(
+            compatibility_note_id: comp_note.id)
+          mod.reload
+
+          expect(mod.compatibility_notes_count).to eq(1)
+        }.to change {mod.compatibility_notes_count}.by(1)
       end
 
-      xit "should decrement when we remove a compatibility_note" do
-        mvcn1.destroy
-        mvcn2.destroy
-        compatibility_note.destroy
-        skyui = Mod.find_by(name: 'SkyUI')
-        expect(skyui.compatibility_notes_count).to eq(count_before)
+      it "should decrement when we remove a compatibility_note" do
+        # associate mod with mod_version
+        mod_version.mod_id = mod.id
+        mod_version.save
+
+        # Create compatibility note
+        comp_note = create(:compatibility_note,
+            submitted_by: user.id)
+        expect(comp_note).to be_valid
+
+        # create association between mod_version and compatibility note created above
+        mv_cn = mod_version.mod_version_compatibility_notes.create(
+            compatibility_note_id: comp_note.id)
+        mod.reload
+        expect(mod.compatibility_notes_count).to eq(1)
+
+        # destroy association(and compatibility_note) to see counter decrement
+        expect {
+          mv_cn.destroy
+          comp_note.destroy
+          mod.reload
+
+          expect(mod.compatibility_notes_count).to eq(0)
+        }.to change {mod.compatibility_notes_count}.by(-1)
       end
     end
 
