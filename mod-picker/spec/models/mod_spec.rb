@@ -59,47 +59,54 @@ RSpec.describe Mod, :model, :cc do
     end
 
     describe "reviews_count" do
-      let!(:count_before) { skyui.reviews_count }
-
+      # Should create a review and confirm the reviews_count is increased by 1
       it "should increment when we add a review" do
-        review = skyui.reviews.create(attributes_for(:review,
-                                      submitted_by: user.id,
-                                      review_template_id: review_templates(:r_template_basic).id))
+        expect {
+          review = mod.reviews.create(attributes_for(:review,
+            submitted_by: user.id,
+            review_template_id: review_templates(:r_template_basic).id))
 
-        # Review template can't be blank, 
-        # Text body can't be blank, 
-        # Text body is too short (minimum is 255 characters)
-
-        # Create review template factory, review template fixtures, review factory, review fixtures
-        # Use review factory + fixtures for this one
-
-        expect(review).to be_valid
-
-        expect(skyui.reviews_count).to eq(count_before + 1)
+          expect(mod.reviews_count).to eq(1)
+        }.to change { mod.reviews_count }.by(1)
       end
 
+      # Should create a review, then destroy it. changing the reviews_count to 1 then back to 0
       it "should decrement when we remove a review" do
-        review = skyui.reviews.create(attributes_for(:review,
-                                      submitted_by: user.id,
-                                      review_template_id: review_templates(:r_template_basic).id))
-        expect(skyui.reviews_count).to eq(count_before + 1)
+        review = mod.reviews.create(attributes_for(:review,
+            submitted_by: user.id,
+            review_template_id: review_templates(:r_template_basic).id))
 
-        review.destroy
-        expect(skyui.reviews_count).to eq(count_before)
+        expect(mod.reviews_count).to eq(1)
+
+        expect {
+          mod.reviews.destroy(review.id)
+          expect(mod.reviews_count).to eq(0)
+        }.to change {mod.reviews_count}.by(-1)
       end
     end
 
-    xdescribe "mod_versions_count" do
-      let!(:count_before) {skyui.mod_versions_count}
-      let!(:mod_version) { skyui.mod_versions.create(version: '1.0') }
+    describe "mod_versions_count" do
 
+      # Creates a mod_version and expects mod_versions_count to increment by 1
       it "should increment when we add a mod_version" do
-        expect(skyui.mod_versions_count).to eq(count_before + 1)
+        # expect(skyui.mod_versions_count).to eq(count_before + 1)
+
+        expect {
+          mod.mod_versions.create(attributes_for(:mod_version))
+          expect(mod.mod_versions_count).to eq(1)
+        }.to change { mod.mod_versions_count }.by(1)
       end
 
+      # Creates a mod_version and expects mod_versions_count to increment by 1 then decrement by 1
+      # once the mod_version is destroyed
       it "should decrement when we remove a mod_version" do
-        mod_version.destroy
-        expect(skyui.mod_versions_count).to eq(count_before)
+          m_version = mod.mod_versions.create(attributes_for(:mod_version))
+          expect(mod.mod_versions_count).to eq(1)
+
+        expect {
+          mod.mod_versions.destroy(m_version.id)
+          expect(mod.mod_versions_count).to eq(0)
+        }.to change { mod.mod_versions_count }.by(-1)
       end
     end
 

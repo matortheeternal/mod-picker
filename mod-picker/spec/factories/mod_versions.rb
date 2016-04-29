@@ -8,6 +8,10 @@
 
 # add_index "mod_versions", ["mod_id"], name: "mod_id", using: :btree
 
+# Validations
+#   validates :mod_id, :released, :version, presence: true
+#   validates :version, length: {maximum: 16}
+
 
 FactoryGirl.define do
   factory :mod_version do
