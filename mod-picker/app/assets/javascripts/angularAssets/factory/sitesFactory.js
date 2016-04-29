@@ -10,7 +10,7 @@ app.service('sitesFactory', function () {
                 expr: /(http[s]:\/\/?)?steamcommunity.com\/sharedfiles\/filedetails\/\?id=([0-9]+)(\&)?.*/i
             },
             {
-                label: "Lovers Lab",
+                label: "Lover's Lab",
                 expr: /(http[s]:\/\/?)?www.loverslab.com\/files\/file\/([0-9a-z\-]+)(\/)?/i
             }
         ];
