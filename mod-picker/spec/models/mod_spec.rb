@@ -126,13 +126,13 @@ RSpec.describe Mod, :model, :cc do
         # }.to change {skyui.compatibility_notes_count}.by(1)
       end
 
-      # it "should decrement when we remove a compatibility_note" do
-      #   mvcn1.destroy
-      #   mvcn2.destroy
-      #   compatibility_note.destroy
-      #   skyui = Mod.find_by(name: 'SkyUI')
-      #   expect(skyui.compatibility_notes_count).to eq(count_before)
-      # end
+      xit "should decrement when we remove a compatibility_note" do
+        mvcn1.destroy
+        mvcn2.destroy
+        compatibility_note.destroy
+        skyui = Mod.find_by(name: 'SkyUI')
+        expect(skyui.compatibility_notes_count).to eq(count_before)
+      end
     end
 
     # describe "install_order_notes_count" do
