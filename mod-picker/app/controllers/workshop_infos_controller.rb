@@ -4,7 +4,6 @@ class WorkshopInfosController < ApplicationController
   # GET /workshop_infos/1
   # GET /workshop_infos/1.json
   def show
-    authorize! :read, @workshop_info
     render :json => @workshop_info
   end
 
@@ -22,11 +21,14 @@ class WorkshopInfosController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_workshop_info
-      @workshop_info = WorkshopInfo.find(params[:id])
-    end
-
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def workshop_info_params
-      params.require(:workshop_info).permit(:mod_id)
+      authorize! :submit, :mod
+      begin
+        @workshop_info = WorkshopInfo.find(params[:id])
+        @workshop_info.rescrape
+      rescue
+        @workshop_info = WorkshopInfo.new(id: params[:id])
+        @workshop_info.scrape
+        @workshop_info.save
+      end
     end
 end
