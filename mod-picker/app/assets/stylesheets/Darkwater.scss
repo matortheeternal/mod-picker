@@ -24,10 +24,11 @@ $action_text_color: #aeb5b6;
 $bright_action_color: #4c5854;
 $dark_action_color: #172224;
 
-$bar_color: #222;
-$bar_highlight_color: #333;
+$bar_color: #202424;
+$bar_dark_color: #2F3737;
+$bar_highlight_color: #303434;
 $bar_text_color: #8a8e8f;
-$bar_highlight_text_color: #a6ceda;
+$bar_highlight_text_color: #88a9b3;
 
 $link_color: #205098;
 $link_hover_color_primary: #a6ceda;
@@ -39,6 +40,8 @@ $slider_circle_color_after: #2f443d;
 
 $success_message_color: #526A52;
 $error_message_color: #743E45;
+$warning_message_color: #74743E;
 
+$select_image: image_path("Darkwater_select_arrow.png");
 
 @import 'main';

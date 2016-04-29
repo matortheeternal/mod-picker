@@ -5,6 +5,7 @@ class ModListPluginsController < ApplicationController
   # POST /mod_list_plugins.json
   def create
     @mod_list_plugin = ModListPlugin.new(mod_list_plugin_params)
+    authorize! :create, @mod_list_plugin
 
     if @mod_list_plugin.save
       render json: {status: :ok}
@@ -16,6 +17,7 @@ class ModListPluginsController < ApplicationController
   # PATCH/PUT /mod_list_plugins/1
   # PATCH/PUT /mod_list_plugins/1.json
   def update
+    authorize! :update, @mod_list_plugin
     if @mod_list_plugin.update(mod_list_plugin_params)
       render json: {status: :ok}
     else
@@ -26,6 +28,7 @@ class ModListPluginsController < ApplicationController
   # DELETE /mod_list_plugins/1
   # DELETE /mod_list_plugins/1.json
   def destroy
+    authorize! :destroy, @mod_list_plugin
     if @mod_list_plugin.destroy
       render json: {status: :ok}
     else

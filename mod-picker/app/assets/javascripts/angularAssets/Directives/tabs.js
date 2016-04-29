@@ -15,20 +15,6 @@ app.directive('tabs', function () {
     }
 });
 
-
-app.directive('columnTabs', function () {
-    return {
-        restrict: 'E',
-        templateUrl: '/resources/directives/columnTabs.html',
-        controller: 'tabsController',
-        scope: {
-            tabs: '=',
-            currentTab: '='
-        }
-    }
-});
-
-
 app.controller('tabsController', function ($scope) {
     //TODO: I feel like this logic can be done inside the scope
     //this can't happen unless we stop using ng-include

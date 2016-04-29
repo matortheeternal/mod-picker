@@ -9,10 +9,9 @@
 
 FactoryGirl.define do
   factory :install_order_note do
-    # submitted TimeDate.current; should be done in the model
     association :submitted_by, factory: :user
-    install_first 1
-    install_second 2
+    association :install_first, factory: :mod
+    association :install_second, factory: :mod
     # submitted DateTime.now
     text_body { Faker::Lorem.sentence(30, false, 6) }
   end

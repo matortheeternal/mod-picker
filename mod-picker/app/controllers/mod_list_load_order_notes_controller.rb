@@ -4,6 +4,7 @@ class ModListLoadOrderNotesController < ApplicationController
   # PATCH/PUT /mod_list_load_order_notes/1
   # PATCH/PUT /mod_list_load_order_notes/1.json
   def update
+    authorize! :update, @mod_list_load_order_note
     if @mod_list_load_order_note.update(mod_list_load_order_note_params)
       render json: {status: :ok}
     else

@@ -4,6 +4,7 @@ class ModVersionsController < ApplicationController
   # POST /mod_versions.json
   def create
     @mod_version = ModVersion.new(mod_version_params)
+    authorize! :create, @mod_version
 
     if @mod_version.save
       render json: {status: :ok}
@@ -35,6 +36,7 @@ class ModVersionsController < ApplicationController
 
   # PATCH/PUT /mod_versions/1.json
   def update
+    authorize! :update, @mod_version
     if @mod_version.update(mod_version_params)
       render json: {status: :ok}
     else
@@ -44,6 +46,7 @@ class ModVersionsController < ApplicationController
 
   # DELETE /mod_versions/1.json
   def destroy
+    authorize! :destroy, @mod_version
     if @mod_version.destroy
       render json: {status: :ok}
     else

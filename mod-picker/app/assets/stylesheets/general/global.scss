@@ -121,6 +121,7 @@ input[type="button"], input[type="submit"] {
   display: inline;
   text-align: center;
   font-size: 12px;
+  line-height: 18px;
   border: 0;
   border-radius: 0;
   cursor: pointer;
@@ -128,13 +129,31 @@ input[type="button"], input[type="submit"] {
   -moz-transition: all 0.2s ease-in-out;
   -o-transition: all 0.2s ease-in-out;
   transition: all 0.2s ease-in-out;
+  &:disabled {
+    cursor: default;
+    background-color: $hard_border_color;
+  }
 }
 
 .btn {
-  padding: 8px;
+  padding: 7px;
+  height: 32px;
   color: $action_text_color;
   text-transform: uppercase;
-  background-color: $bar_color;
+  background-color: $action_color;
+  &:hover {
+    background-color: $bar_highlight_color;
+  }
+}
+
+.btn-round {
+  padding: 8px;
+  color: $action_text_color;
+  border-radius: 3%;
+  background-color: $action_color;
+  cursor: pointer;
+
+
   &:hover {
     background-color: $bar_highlight_color;
   }
@@ -160,37 +179,29 @@ input[type="button"], input[type="submit"] {
 }
 
 /* css for tabs */
-.header-tabs {
-  background-color: $secondary_background;
-  h1 {
-    font-weight: 500;
-    color: $text_color;
-    font-size: 36px;
-    padding-top: 18px;//half of font size
-    padding-bottom: 18px;
-  }
-}
 
 .tabs {
-  margin-left: 46px;
   a {
     display: inline-block;
     cursor: pointer;
-    font-size: 18px;
-    color: $text_color;
-    font-weight: 500;
+    color: $inverse_text_color;
     padding: 9px 16px 9px 16px;//half of font size high
+    border: 1px solid $border_color;
+    border-bottom: 0;
+    background-color: $action_color;
+    margin-right: 2px;
   }
 
   .selected-tab {
-    background-color: $action_color;
-    color: $inverse_text_color;
+    background-color: inherit;
+    color: $text_color;
   }
 
   .unselected-tab:hover {
     background-color: $bright_action_color;
   }
 }
+
 /* css for columns */
 .two-columns {
   background: linear-gradient(90deg, $secondary_background 50%, $primary_background 50%);
@@ -217,33 +228,43 @@ input[type="button"], input[type="submit"] {
 }
 
 .wide-column {
-  width: 360px;
+  min-width: 360px;
 }
 
 .right-column {
   width: 970px;
-  max-width: 970px;
   padding: 40px 0 40px 48px;
   display: table-cell;
   vertical-align: top;
   background-color: $primary_background;
 }
 
-/* css for forms, inputs, and labels */
-.success-message {
-  background-color: $success_message_color;
-  padding: 14px;
-  font-weight: 500;
-  font-size: 20px;
-  text-align: center;
+.tabs-column {
+  padding: 20px 0 20px 20px;
 }
 
-.error-message {
-  background-color: $error_message_color;
-  padding: 14px;
-  font-weight: 500;
-  font-size: 20px;
-  text-align: center;
+/* css for forms, inputs, and labels */
+
+.select {
+  background: url($select_image) no-repeat right $primary_background;
+  background-size: 2em;
+  border: 1px solid $border_color;
+  text-align: start;
+
+  select {
+    color: $text_color;
+    padding-left: .5em;
+    height: 28px;
+    line-height: 1;
+    border: 0;
+    border-radius: 0;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    font-family: 'Roboto', sans-serif;
+    overflow: inherit;
+    width: 100%;
+    background: transparent;
+  }
 }
 
 .big-text-area {
@@ -301,11 +322,11 @@ form {
     margin-left: 30px;
     margin-bottom: 30px;
 
-    .section-title {
+    .subtitle {
       font-size: 16px;
       margin-top: 25px;
       margin-left: 0;
-      margin-bottom: 6px;
+      margin-bottom: 0;
     }
 
     section {
@@ -327,10 +348,16 @@ form {
       display: none;
     }
 
+    .checkbox-option {
+      display: inline-block;
+      margin-top: 4px;
+    }
+
     input.path-input {
       width: 350px;
       font-size: 13px;
       padding: 6px;
+      height: 32px;
     }
   }
 
@@ -343,7 +370,23 @@ form {
     display: block;
     margin: auto;
     padding: 10px;
+    height: 38px;
   }
+}
+
+/* css for help tooltips */
+.help-tooltip {
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  cursor: default;
+  display: inline-block;
+  margin-left: 8px;
+  border-bottom: dotted 1px $text_color;
+  line-height: 15px;
+}
+a .help-tooltip {
+  cursor: pointer;
 }
 
 /* css for avatars */
@@ -378,5 +421,22 @@ form {
 
   .section-title {
     margin-top: 0;
+  }
+}
+
+/* css for pagination */
+
+.page-results-container {
+  margin: auto;
+  padding: 14px;
+  text-align: center;
+  background-color: $background-highlight;
+  .page-item {
+    border: 1px solid $border_color;
+    padding: 4px;
+  }
+  .page-ellipsis {
+    margin-left: 3px;
+    margin-right: 3px;
   }
 }

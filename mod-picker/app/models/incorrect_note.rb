@@ -5,8 +5,10 @@ class IncorrectNote < ActiveRecord::Base
 
   belongs_to :user, :foreign_key => 'submitted_by', :inverse_of => 'incorrect_notes'
   has_many :agreement_marks, :inverse_of => 'incorrect_note'
+  has_many :comments, :as => 'commentable'
   
   belongs_to :correctable, :polymorphic => true
+  has_one :base_report, :as => 'reportable'
 
   validates :text_body, length: { in: 64..16384 }
   validates :correctable_id, :correctable_type, presence: true

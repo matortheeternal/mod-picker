@@ -7,20 +7,20 @@
   <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
   <%= stylesheet_link_tag 'rzslider.min' %>
   <%= stylesheet_link_tag 'simplemde.min' %>
-  <%= stylesheet_link_tag @current_theme %>
   <script>
     window._token = '<%= form_authenticity_token %>';
     window._current_theme = '<%= @current_theme %>';
     window._current_game_id = <%= @current_game.id %>;
     window._stylesheets = {
-      whiterun: "<%= stylesheet_path 'Whiterun' %>",
-      darkwater: "<%= stylesheet_path 'Darkwater' %>",
-      blackreach: "<%= stylesheet_path 'Blackreach' %>",
-      high_hrothgar: "<%= stylesheet_path 'High Hrothgar' %>"
+      Whiterun: "<%= stylesheet_path 'Whiterun' %>",
+      Darkwater: "<%= stylesheet_path 'Darkwater' %>",
+      Blackreach: "<%= stylesheet_path 'Blackreach' %>",
+      'High Hrothgar': "<%= stylesheet_path 'High Hrothgar' %>"
     }
   </script>
+    <link ng-controller="themesController" rel="stylesheet" ng-href="{{currentTheme}}" />
 </head>
-<body ng-class="{ 'two-columns': twoColumns }">
+<body ng-class="{ 'two-columns': twoColumns }" ng-cloak>
 <header>
   <div class="page-container">
     <div class="header">
@@ -35,7 +35,7 @@
                 <a class="inverse-link" href="#/settings/mod_lists">Saved Mod Lists</a>
               </li>
               <li>
-                <a class="inverse-link" href="#/settings">Settings</a>
+                <a class="inverse-link" ui-sref="settings">Settings</a>
               </li>
               <li>
                 <a class="inverse-link" href="/users/sign_out">Log Out</a>
@@ -73,7 +73,7 @@
   <div class="page-container">
     <div class="nav-wrapper clearfix">
       <div class="primary-nav">
-        <a class="nav-modlist" href="#/mod-list">
+        <a class="nav-modlist" ui-sref="mod-list">
           <span class="nav-icon">
             <i class="fa fa-pencil-square-o"></i>
           </span>
@@ -82,7 +82,7 @@
             Mod List
           </span>
         </a>
-        <a class="nav-contributions" href="#">
+        <a class="nav-contributions" ui-sref="home">
           <span class="nav-icon">
             <i class="fa fa-comments"></i>
           </span>
@@ -91,7 +91,7 @@
             Contributions
           </span>
         </a>
-        <a class="nav-browse-modlists" href="#/mod-lists">
+        <a class="nav-browse-modlists" ui-sref="mod-lists">
           <span class="nav-icon">
             <i class="fa fa-list-ul"></i>
           </span>
@@ -100,7 +100,7 @@
             Public Mod Lists
           </span>
         </a>
-        <a class="nav-browse-mods" href="#/mods">
+        <a class="nav-browse-mods" ui-sref="mods">
           <span class="nav-icon">
             <i class="fa fa-globe"></i>
           </span>
@@ -110,7 +110,7 @@
           </span>
           <span class="nav-dropdown"></span>
         </a>
-        <a class="nav-submit-mod" href="#/submit">
+        <a class="nav-submit-mod" ui-sref="submit">
           <span class="nav-icon">
             <i class="fa fa-plus-square"></i>
           </span>
@@ -149,10 +149,10 @@
           Browse Content
         </span>
         <ul>
-          <li><a class="inverse-link" href="#/mods">Mods</a></li>
-          <li><a class="inverse-link" href="#/mod-lists">Mod Lists</a></li>
-          <li><a class="inverse-link" href="#/users">Users</a></li>
-          <li><a class="inverse-link" href="#/comments">Comments</a></li>
+          <li><a class="inverse-link" ui-sref="mods">Mods</a></li>
+          <li><a class="inverse-link" ui-sref="mod-lists">Mod Lists</a></li>
+          <li><a class="inverse-link" ui-sref="users">Users</a></li>
+          <li><a class="inverse-link" ui-sref="comments">Comments</a></li>
         </ul>
       </section>
       <section>
@@ -160,11 +160,11 @@
           Browse Contributions
         </span>
         <ul>
-          <li><a class="inverse-link" href="#/reviews">Reviews</a></li>
-          <li><a class="inverse-link" href="#/compatibility-notes">Compatibility Notes</a></li>
-          <li><a class="inverse-link" href="#/load-order-notes">Load Order Notes</a></li>
-          <li><a class="inverse-link" href="#/install-order-notes">Install Order Notes</a></li>
-          <li><a class="inverse-link" href="#/incorrect-notes">Incorrect Notes</a></li>
+          <li><a class="inverse-link" ui-sref="reviews">Reviews</a></li>
+          <li><a class="inverse-link" ui-sref="compatibility-notes">Compatibility Notes</a></li>
+          <li><a class="inverse-link" ui-sref="load-order-notes">Load Order Notes</a></li>
+          <li><a class="inverse-link" ui-sref="install-order-notes">Install Order Notes</a></li>
+          <li><a class="inverse-link" ui-sref="incorrect-notes">Incorrect Notes</a></li>
         </ul>
       </section>
       <section>
@@ -172,11 +172,11 @@
           Mod Picker
         </span>
         <ul>
-          <li><a class="inverse-link" href="#">About Us</a></li>
-          <li><a class="inverse-link" href="#">Terms of Service</a></li>
-          <li><a class="inverse-link" href="#">Privacy Policy</a></li>
-          <li><a class="inverse-link" href="#">Help Center</a></li>
-          <li><a class="inverse-link" href="#">Contact</a></li>
+          <li><a class="inverse-link" ui-sref="home">About Us</a></li>
+          <li><a class="inverse-link" ui-sref="home">Terms of Service</a></li>
+          <li><a class="inverse-link" ui-sref="home">Privacy Policy</a></li>
+          <li><a class="inverse-link" ui-sref="home">Help Center</a></li>
+          <li><a class="inverse-link" ui-sref="home">Contact</a></li>
         </ul>
       </section>
       <section>
@@ -195,7 +195,7 @@
 
 <!-- defered load of scripts, which is way more performant for browsers -->
 <%= javascript_include_tag 'angular.min.1.5.1' %>
-<%= javascript_include_tag 'angular-route.min.1.5.1' %>
+<%= javascript_include_tag 'angular-ui-router.min' %>
 <%= javascript_include_tag 'heartcode-canvasloader-min' %>
 <%= javascript_include_tag 'rzslider.min' %>
 <%= javascript_include_tag 'sticky.min' %>

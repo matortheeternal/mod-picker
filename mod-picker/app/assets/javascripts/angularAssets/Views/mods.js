@@ -1,44 +1,66 @@
 
-app.config(['$routeProvider', function ($routeProvider) {
-    $routeProvider.when('/mods', {
+app.config(['$stateProvider', function ($stateProvider) {
+    $stateProvider.state('mods', {
             templateUrl: '/resources/partials/mods.html',
-            controller: 'modsController'
+            controller: 'modsController',
+            url: '/mods'
         }
     );
 }]);
 
-app.controller('modsController', function ($scope, $q, modService, sliderFactory) {
-    //TODO: scope.loading is deprecated
-    $scope.loading = true;
+app.controller('modsController', function ($scope, $q, modService, sliderFactory, columnsFactory) {
+    $scope.filters = {};
+    $scope.sort = {};
+    $scope.pages = {};
+    $scope.columns = columnsFactory.modColumns();
+    $scope.actions = [
+        {
+            caption: "Add",
+            title: "Add this mod to your mod list",
+            execute: function() {
+                alert("Not functional yet.");
+            }
+        }
+    ];
 
-    // initialize search tags to empty array
-    $scope.search_tags = [];
-
-    //TODO: everything below should be handled differently
+    //TODO: should be handled differently
     // -> remove redundancy
     // -> probably don't set visibility in the controller but in the view
 
-    /* visibility of extended filters */
-    $scope.nm_visible = false;
-    $scope.nm_toggle = function () {
-        $scope.nm_visible = !$scope.nm_visible;
-        if ($scope.nm_visbile) {
-            $scope.$broadcast('refreshSlider');
-        }
+    $scope.extendedFilterVisibility = {
+        nexusMods: false,
+        modPicker: false
     };
 
-    $scope.mp_visible = false;
-    $scope.mp_toggle = function () {
-        $scope.mp_visible = !$scope.mp_visible;
-        if ($scope.mp_visbile) {
-            $scope.$broadcast('refreshSlider');
+    $scope.toggleExtendedFilterVisibility = function (filterId) {
+        var extendedFilter = $scope.extendedFilterVisibility[filterId] = !$scope.extendedFilterVisibility[filterId];
+        if(extendedFilter) {
+            $scope.$broadcast('rerenderSliders');
         }
     };
 
     /* data */
-    modService.retrieveMods({}).then(function (data) {
-        $scope.mods = data;
-        //TODO: scope.loading is deprecated
-        $scope.loading = false;
-    });
+    // TODO: replace firstGet with $scope.mods
+    var firstGet = false;
+    $scope.getMods = function(page) {
+        delete $scope.data;
+        modService.retrieveMods($scope.filters, $scope.sort, page).then(function (data) {
+            $scope.pages = data.pageInformation;
+            $scope.data = data.mods;
+            firstGet = true;
+        });
+    };
+
+    $scope.getMods();
+
+    // create a watch
+    var getModsTimeout;
+    $scope.$watch('[filters, sort]', function() {
+        if($scope.filters && firstGet) {
+            clearTimeout(getModsTimeout);
+            $scope.pages.current = 1;
+            getModsTimeout = setTimeout($scope.getMods, 700);
+        }
+    }, true);
 });
+

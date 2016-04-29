@@ -8,6 +8,7 @@ class CompatibilityNote < ActiveRecord::Base
   scope :mv, -> (id) { joins(:mod_versions).where(:mod_versions => {id: id}) }
   scope :type, -> (array) { where(compatibility_type: array) }
 
+  # FIXME: change this back to status: once the schema has been updated.
   enum compatibility_type: [ :incompatible, :"partially incompatible", :"compatibility mod", :"compatibility option", :"make custom patch" ]
 
   belongs_to :user, :foreign_key => 'submitted_by', :inverse_of => 'compatibility_notes'
@@ -26,6 +27,7 @@ class CompatibilityNote < ActiveRecord::Base
   # community feedback on this compatibility note
   has_many :helpful_marks, :as => 'helpfulable'
   has_many :incorrect_notes, :as => 'correctable'
+  has_one :base_report, :as => 'reportable'
 
   # old versions of this compatibility note
   has_many :compatibility_note_history_entries, :inverse_of => 'compatibility_note'

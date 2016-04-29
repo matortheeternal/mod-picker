@@ -25,7 +25,7 @@ Rails.application.config.assets.precompile += [
 'modpicker.js',
 'angular-animate.min.js',
 'angular.min.1.5.1.js',
-'angular-route.min.1.5.1.js',
+'angular-ui-router.min.js',
 'angular-elastic-input.min.js',
 'sticky.min.js',
 'bootstrap.min.js',

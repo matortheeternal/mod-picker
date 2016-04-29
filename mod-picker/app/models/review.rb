@@ -14,10 +14,16 @@ class Review < ActiveRecord::Base
   
   has_many :helpful_marks, :as => 'helpfulable'
   has_many :incorrect_notes, :as => 'correctable'
+  has_one :base_report, :as => 'reportable'
 
   private
     def increment_counter_caches
       self.mod.reviews_count += 1
+      # we also take this chance to recompute the mod's reputation
+      # if there are enough reviews to do so
+      if self.mod.reviews_count >= 5
+        self.mod.compute_reputation
+      end
       self.mod.save
     end
 

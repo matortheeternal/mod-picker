@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160418193130) do
+ActiveRecord::Schema.define(version: 20160426221507) do
 
   create_table "agreement_marks", id: false, force: :cascade do |t|
     t.integer "incorrect_note_id", limit: 4
@@ -31,6 +31,13 @@ ActiveRecord::Schema.define(version: 20160418193130) do
   end
 
   add_index "articles", ["submitted_by"], name: "fk_rails_ea02c233bd", using: :btree
+
+  create_table "base_reports", force: :cascade do |t|
+    t.integer  "reportable_id",   limit: 4,   null: false
+    t.string   "reportable_type", limit: 255, null: false
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
+  end
 
   create_table "categories", force: :cascade do |t|
     t.integer "parent_id",   limit: 4
@@ -425,47 +432,59 @@ ActiveRecord::Schema.define(version: 20160418193130) do
   add_index "mod_versions", ["mod_id"], name: "mod_id", using: :btree
 
   create_table "mods", force: :cascade do |t|
-    t.string  "name",                      limit: 128
-    t.string  "aliases",                   limit: 128
-    t.boolean "is_utility"
-    t.boolean "has_adult_content"
-    t.integer "game_id",                   limit: 4
-    t.integer "primary_category_id",       limit: 4
-    t.integer "secondary_category_id",     limit: 4
-    t.integer "mod_stars_count",           limit: 4,   default: 0
-    t.integer "reviews_count",             limit: 4,   default: 0
-    t.integer "mod_versions_count",        limit: 4,   default: 0
-    t.integer "compatibility_notes_count", limit: 4,   default: 0
-    t.integer "install_order_notes_count", limit: 4,   default: 0
-    t.integer "load_order_notes_count",    limit: 4,   default: 0
-    t.integer "status",                    limit: 1,   default: 0,     null: false
-    t.boolean "hidden",                                default: false, null: false
+    t.string   "name",                      limit: 128
+    t.string   "aliases",                   limit: 128
+    t.boolean  "is_utility"
+    t.boolean  "has_adult_content"
+    t.integer  "game_id",                   limit: 4
+    t.integer  "primary_category_id",       limit: 4
+    t.integer  "secondary_category_id",     limit: 4
+    t.integer  "mod_stars_count",           limit: 4,   default: 0
+    t.integer  "reviews_count",             limit: 4,   default: 0
+    t.integer  "mod_versions_count",        limit: 4,   default: 0
+    t.integer  "compatibility_notes_count", limit: 4,   default: 0
+    t.integer  "install_order_notes_count", limit: 4,   default: 0
+    t.integer  "load_order_notes_count",    limit: 4,   default: 0
+    t.integer  "status",                    limit: 1,   default: 0,     null: false
+    t.boolean  "hidden",                                default: false, null: false
+    t.integer  "submitted_by",              limit: 4,                   null: false
+    t.float    "reputation",                limit: 24,  default: 0.0
+    t.float    "average_rating",            limit: 24,  default: 0.0
+    t.datetime "released"
+    t.float    "update_rate",               limit: 24,  default: 0.0
   end
 
   add_index "mods", ["game_id"], name: "fk_rails_3ec448a848", using: :btree
   add_index "mods", ["primary_category_id"], name: "fk_rails_42759f5da5", using: :btree
   add_index "mods", ["secondary_category_id"], name: "fk_rails_26f394ea9d", using: :btree
+  add_index "mods", ["submitted_by"], name: "fk_rails_5f28cca69a", using: :btree
 
   create_table "nexus_infos", force: :cascade do |t|
-    t.string   "uploaded_by",      limit: 128
-    t.string   "authors",          limit: 128
+    t.string   "uploaded_by",         limit: 128
+    t.string   "authors",             limit: 128
     t.datetime "date_added"
     t.datetime "date_updated"
-    t.integer  "endorsements",     limit: 4
-    t.integer  "total_downloads",  limit: 4
-    t.integer  "unique_downloads", limit: 4
-    t.integer  "views",            limit: 8
-    t.integer  "posts_count",      limit: 4
-    t.integer  "videos_count",     limit: 2
-    t.integer  "images_count",     limit: 2
-    t.integer  "files_count",      limit: 2
-    t.integer  "articles_count",   limit: 2
-    t.integer  "nexus_category",   limit: 2
-    t.integer  "mod_id",           limit: 4
-    t.integer  "game_id",          limit: 4
-    t.string   "mod_name",         limit: 255
-    t.string   "current_version",  limit: 255
+    t.integer  "endorsements",        limit: 4
+    t.integer  "total_downloads",     limit: 4
+    t.integer  "unique_downloads",    limit: 4
+    t.integer  "views",               limit: 8
+    t.integer  "posts_count",         limit: 4
+    t.integer  "videos_count",        limit: 2
+    t.integer  "images_count",        limit: 2
+    t.integer  "files_count",         limit: 2
+    t.integer  "articles_count",      limit: 2
+    t.integer  "nexus_category",      limit: 2
+    t.integer  "mod_id",              limit: 4
+    t.integer  "game_id",             limit: 4
+    t.string   "mod_name",            limit: 255
+    t.string   "current_version",     limit: 255
     t.datetime "last_scraped"
+    t.float    "endorsement_rate",    limit: 24,  default: 0.0
+    t.float    "dl_rate",             limit: 24,  default: 0.0
+    t.float    "udl_to_endorsements", limit: 24,  default: 0.0
+    t.float    "udl_to_posts",        limit: 24,  default: 0.0
+    t.float    "tdl_to_udl",          limit: 24,  default: 0.0
+    t.float    "views_to_tdl",        limit: 24,  default: 0.0
   end
 
   add_index "nexus_infos", ["game_id"], name: "fk_rails_46e3032463", using: :btree
@@ -528,6 +547,18 @@ ActiveRecord::Schema.define(version: 20160418193130) do
   end
 
   add_index "record_groups", ["game_id", "signature"], name: "index_record_groups_on_game_id_and_signature", unique: true, using: :btree
+
+  create_table "reports", force: :cascade do |t|
+    t.integer  "base_report_id", limit: 4,   null: false
+    t.integer  "submitted_by",   limit: 4,   null: false
+    t.integer  "type",           limit: 1,   null: false
+    t.string   "note",           limit: 128
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
+  end
+
+  add_index "reports", ["base_report_id"], name: "fk_rails_619eb511d7", using: :btree
+  add_index "reports", ["submitted_by"], name: "fk_rails_41fbf0e712", using: :btree
 
   create_table "reputation_links", id: false, force: :cascade do |t|
     t.integer "from_rep_id", limit: 4
@@ -773,6 +804,7 @@ ActiveRecord::Schema.define(version: 20160418193130) do
   add_foreign_key "mods", "categories", column: "primary_category_id"
   add_foreign_key "mods", "categories", column: "secondary_category_id"
   add_foreign_key "mods", "games"
+  add_foreign_key "mods", "users", column: "submitted_by"
   add_foreign_key "nexus_infos", "games"
   add_foreign_key "override_records", "plugins", name: "override_records_ibfk_1"
   add_foreign_key "plugin_errors", "plugins"
@@ -780,6 +812,8 @@ ActiveRecord::Schema.define(version: 20160418193130) do
   add_foreign_key "plugins", "mod_versions", name: "plugins_ibfk_1"
   add_foreign_key "quotes", "games"
   add_foreign_key "record_groups", "games"
+  add_foreign_key "reports", "base_reports"
+  add_foreign_key "reports", "users", column: "submitted_by"
   add_foreign_key "reputation_links", "user_reputations", column: "from_rep_id", name: "reputation_links_ibfk_1"
   add_foreign_key "reputation_links", "user_reputations", column: "to_rep_id", name: "reputation_links_ibfk_2"
   add_foreign_key "review_templates", "users", column: "submitted_by"

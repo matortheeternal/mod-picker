@@ -34,8 +34,12 @@ class User < ActiveRecord::Base
   has_many :incorrect_notes, :foreign_key => 'submitted_by', :inverse_of => 'user'
   has_many :agreement_marks, :foreign_key => 'submitted_by', :inverse_of => 'user'
   has_many :helpful_marks, :foreign_key => 'submitted_by', :inverse_of => 'user'
+  has_many :compatibility_note_history_entries, :foreign_key => 'submitted_by', :inverse_of => 'user'
+
   has_many :mod_tags, :foreign_key => 'submitted_by', :inverse_of => 'user'
   has_many :mod_list_tags, :foreign_key => 'submitted_by', :inverse_of => 'user'
+
+  has_many :submitted_mods, :class_name => 'Mod', :foreign_key => 'submitted_by', :inverse_of => 'user'
 
   has_many :mod_authors, :inverse_of => 'user'
   has_many :mods, :through => 'mod_authors', :inverse_of => 'authors'
@@ -50,6 +54,8 @@ class User < ActiveRecord::Base
   has_many :starred_mod_lists, :through => 'mod_list_stars', :inverse_of => 'user_stars'
 
   has_many :profile_comments, :class_name => 'Comment', :as => 'commentable'
+  has_many :reports, :inverse_of => 'user'
+  has_one :base_report, :as => 'reportable'
 
   accepts_nested_attributes_for :settings
   accepts_nested_attributes_for :bio

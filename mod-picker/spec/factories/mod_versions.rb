@@ -11,7 +11,8 @@
 
 FactoryGirl.define do
   factory :mod_version do
-    released "2016-01-19 01:11:38"
+    association :mod, factory: :mod
+    released DateTime.now
     obsolete false
     dangerous false
     version { Faker::Number.decimal(1,1) }
