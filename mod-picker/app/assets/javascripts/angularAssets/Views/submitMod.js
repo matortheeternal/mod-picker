@@ -31,15 +31,52 @@ app.controller('submitModController', function ($scope, backend, submitService, 
         $scope.mod.sources.splice(index, 1);
     };
 
-    $scope.validateSource = function (source) {
-        var site = $scope.sites.find(function(item) {
+    function getSite(source) {
+        return $scope.sites.find(function(item) {
             return item.label === source.label
         });
+    }
+
+    $scope.validateSource = function(source) {
+        var site = getSite(source);
         var sourceIndex = $scope.mod.sources.indexOf(source);
         var sourceUsed = $scope.mod.sources.find(function(item, index) {
             return index != sourceIndex && item.label === source.label
         });
-        source.valid = !sourceUsed && source.url.match(site.expr) != null;
+        var match = source.url.match(site.expr);
+        source.valid = !sourceUsed && match != null;
+    };
+
+    $scope.scrapeSource = function(source) {
+        // validate the source and get the id from it
+        var site = getSite(source);
+        var match = source.url.match(site.expr);
+
+        var gameId = window._current_game_id;
+        var modId = match[2];
+        switch(source.label) {
+            case "Nexus Mods":
+                $scope.nexus = {};
+                $scope.nexus.scraping = true;
+                submitService.scrapeNexus(gameId, modId).then(function (data) {
+                    $scope.nexus = data;
+                });
+                break;
+            case "Lover's Lab":
+                $scope.lab = {};
+                $scope.lab.scraping = true;
+                submitService.scrapeLab(gameId, modId).then(function (data) {
+                    $scope.lab = data;
+                });
+                break;
+            case "Steam Workshop":
+                $scope.workshop = {};
+                $scope.workshop.scraping = true;
+                submitService.scrapeWorkshop(gameId, modId).then(function (data) {
+                    $scope.workshop = data;
+                });
+                break;
+        }
     };
 
     /* categories */
