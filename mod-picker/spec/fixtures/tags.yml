@@ -11,10 +11,22 @@
 # validates :text, length: {in: 2..32}
 # validates :hidden, inclusion: [true, false]
 
-FactoryGirl.define do
-  factory :tag do
-    text { Faker::Commerce.product_name[1..32] }
-    game_id { FactoryGirl.create(:game).id }
-    submitted_by { FactoryGirl.create(:user).id }
-  end
-end
+tag_quest:
+  text: "quest"
+  game_id: skyrim
+  submitted_by: homura
+
+tag_gameplay:
+  text: "gameplay"
+  game_id: skyrim
+  submitted_by: homura
+
+tag_immersion:
+  text: "immersion"
+  game_id: skyrim
+  submitted_by: homura
+
+tag_magic:
+  text: "magic"
+  game_id: skyrim
+  submitted_by: homura

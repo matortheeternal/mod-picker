@@ -1,6 +1,8 @@
 class Tag < ActiveRecord::Base
   include Filterable
 
+  after_initialize :init
+
   scope :game, -> (game) { where(game_id: game) }
 
   has_many :mod_tags, :inverse_of => 'tag'
@@ -14,5 +16,10 @@ class Tag < ActiveRecord::Base
   # Validations
   validates :text, :game_id, :submitted_by, presence: true
   validates :text, length: {in: 2..32}
-  validates :disabled, inclusion: [true, false]
+  validates :hidden, inclusion: [true, false]
+
+  def init
+    self.mods_count ||= 0
+  end
+
 end
