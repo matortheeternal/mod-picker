@@ -68,6 +68,6 @@
 	</div>
 </div>
 
-<div ng-repeat="compatibilityNote in compatibilityNotes | orderBy : compatibilityNotesFilter" class="notes">
-	<c-note note="compatibilityNote"></c-note>
+<div ng-repeat="cnote in compatibilityNotes" class="notes">
+	<compatibility-note cnote="cnote" show-author-column="true"></compatibility-note>
 </div>
