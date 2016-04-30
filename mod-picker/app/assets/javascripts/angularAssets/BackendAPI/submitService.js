@@ -17,7 +17,6 @@ app.service('submitService', function (backend, $q) {
     this.submitMod = function (mod, analysis, sources) {
         // select primary source
         var primarySource = sources.nexus || sources.workshop || sources.lab;
-        var currentVersion = primarySource.current_version || 'LATEST';
 
         // prepare mod record
         var modData = {
