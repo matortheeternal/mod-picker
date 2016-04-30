@@ -4,7 +4,8 @@ app.directive('lNote', function () {
         templateUrl: '/resources/directives/notePartials/lNote.html',
         controller: 'lNoteController',
         scope: {
-            note: '='
+        	note: '=',
+            showAuthorColumn: '='
         }
     };
 });
