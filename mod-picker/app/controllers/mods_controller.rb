@@ -94,6 +94,24 @@ class ModsController < ApplicationController
     end
   end
 
+  # GET /mods/1/compatibility_notes
+  def compatibility_notes
+    @compatibility_notes = @mod.compatibility_notes.paginate(:page => params[:page])
+    render :json => @compatibility_notes
+  end
+
+  # GET /mods/1/install_order_notes
+  def install_order_notes
+    @install_order_notes = @mod.install_order_notes.paginate(:page => params[:page])
+    render :json => @install_order_notes
+  end
+
+  # GET /mods/1/load_order_notes
+  def load_order_notes
+    @load_order_notes = @mod.load_order_notes.paginate(:page => params[:page])
+    render :json => @load_order_notes
+  end
+
   # DELETE /mods/1
   def destroy
     authorize! :destroy, @mod
@@ -117,6 +135,6 @@ class ModsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def mod_params
-      params.require(:mod).permit(:game_id, :name, :aliases, :is_utility, :has_adult_content, :primary_category_id, :secondary_category_id, :released, mod_versions_attributes: [ :released, :version ])
+      params.require(:mod).permit(:game_id, :name, :aliases, :is_utility, :has_adult_content, :primary_category_id, :secondary_category_id, :released)
     end
 end

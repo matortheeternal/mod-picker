@@ -13,7 +13,6 @@ namespace :reset do
     connection.execute("ALTER TABLE lover_infos AUTO_INCREMENT = 0;")
     connection.execute("ALTER TABLE workshop_infos AUTO_INCREMENT = 0;")
     connection.execute("ALTER TABLE mods AUTO_INCREMENT = 0;")
-    connection.execute("ALTER TABLE mod_versions AUTO_INCREMENT = 0;")
     connection.execute("ALTER TABLE games AUTO_INCREMENT = 0;")
     connection.execute("ALTER TABLE comments AUTO_INCREMENT = 0;")
     connection.execute("ALTER TABLE reviews AUTO_INCREMENT = 0;")
@@ -40,10 +39,7 @@ namespace :reset do
     PluginRecordGroup.delete_all
     Plugin.delete_all
     RecordGroup.delete_all
-    ModVersionRequirement.delete_all
-    ModVersionCompatibilityNote.delete_all
-    ModVersionLoadOrderNote.delete_all
-    ModVersionInstallOrderNote.delete_all
+    ModRequirement.delete_all
     CompatibilityNote.delete_all
     InstallOrderNote.delete_all
     LoadOrderNote.delete_all
@@ -53,7 +49,6 @@ namespace :reset do
     NexusInfo.delete_all
     LoverInfo.delete_all
     WorkshopInfo.delete_all
-    ModVersion.delete_all
     Mod.delete_all
     UserBio.delete_all
     UserReputation.delete_all

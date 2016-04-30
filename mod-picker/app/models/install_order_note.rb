@@ -13,13 +13,9 @@ class InstallOrderNote < ActiveRecord::Base
   belongs_to :install_first_mod, :foreign_key => 'install_first', :class_name => 'Mod', :inverse_of => 'install_before_notes'
   belongs_to :install_second_mod, :foreign_key => 'install_second', :class_name => 'Mod', :inverse_of => 'install_after_notes'
 
-  # mod versions this install order note is associated with
+  # mod lists this install order note appears on
   has_many :mod_list_install_order_notes, :inverse_of => 'install_order_note'
   has_many :mod_lists, :through => 'mod_list_install_order_notes', :inverse_of => 'install_order_notes'
-
-  # mod lists this install order note appears on
-  has_many :mod_version_install_order_notes, :inverse_of => 'install_order_note'
-  has_many :mod_versions, :through => 'mod_version_install_order_notes', :inverse_of => 'install_order_notes'
 
   # community feedback on this install order note
   has_many :helpful_marks, :as => 'helpfulable'
@@ -36,21 +32,7 @@ class InstallOrderNote < ActiveRecord::Base
   end
 
   def mods
-    @mods = []
-    self.mod_versions.each do |mv|
-      mod = mv.mod
-      pmod = @mods.detect {|m| m[:id] == mod.id }
-      if pmod.present?
-        pmod[:mod_versions].push({id: mv.id, version: mv.version})
-      else
-        @mods.push({
-            id: mod.id,
-            name: mod.name,
-            mod_versions: [{id: mv.id, version: mv.version}]
-        })
-      end
-    end
-    @mods
+    [install_first_mod, install_second_mod]
   end
 
   def as_json(options={})

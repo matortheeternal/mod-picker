@@ -29,8 +29,7 @@ class Ability
 
       # can update or hide any mod
       can [:update, :hide], Mod
-      can :hide, ModVersion
-      can :destroy, ModVersionRequirement
+      can :destroy, ModRequirement
 
       # can update or hide any contribution
       can [:update, :hide], Comment
@@ -132,7 +131,7 @@ class Ability
 
       # abilities for mod authors
       can [:update, :hide], Mod, { :mod_authors => { :user_id => user.id } }
-      can :destroy, ModVersionRequirement, { :mod_version => { :mod => { :mod_authors => { :user_id => user.id } } } }
+      can :destroy, ModRequirement, {:mod_version => {:mod => {:mod_authors => {:user_id => user.id } } } }
       can :destroy, ModTag, { :mod => { :mod_authors => { :user_id => user.id } } }
 
       # abilities tied to reputation
@@ -166,7 +165,7 @@ class Ability
         can :rescrape, Mod # can request mods be re-scraped
         # can update mods that don't have a verified author
         can :update, Mod, { :no_author? => true }
-        can :destroy, ModVersionRequirement, { :mod_version => { :mod => { :no_author? => true } } }
+        can :destroy, ModRequirement, {:mod_version => {:mod => {:no_author? => true } } }
         can :destroy, ModTag, { :mod => { :no_author? => true } }
       end
       if user.reputation.overall >= 1280

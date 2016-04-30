@@ -16,7 +16,6 @@ Rails.application.routes.draw do
     resources :mod_lists
     resources :plugins
     resources :mod_asset_files
-    resources :mod_versions
     resources :users
 
     # scraping
@@ -35,10 +34,10 @@ Rails.application.routes.draw do
     match '/mods/submit', to: 'mods#create', via: 'post'
     match '/mods', to: 'mods#index', via: 'post'
 
-    # mod version notes
-    match '/mod_versions/:id/compatibility_notes', to: 'mod_versions#compatibility_notes', via: 'get'
-    match '/mod_versions/:id/install_order_notes', to: 'mod_versions#install_order_notes', via: 'get'
-    match '/mod_versions/:id/load_order_notes', to: 'mod_versions#load_order_notes', via: 'get'
+    # mod notes
+    match '/mods/:id/compatibility_notes', to: 'mods#compatibility_notes', via: 'get'
+    match '/mods/:id/install_order_notes', to: 'mods#install_order_notes', via: 'get'
+    match '/mods/:id/load_order_notes', to: 'mods#load_order_notes', via: 'get'
 
     # helpful marks
     match '/reviews/:id/helpful', to: 'reviews#helpful', via: 'post'
