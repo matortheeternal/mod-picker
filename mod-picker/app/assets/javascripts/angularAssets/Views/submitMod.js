@@ -7,7 +7,7 @@ app.config(['$stateProvider', function ($stateProvider) {
     );
 }]);
 
-app.controller('submitModController', function ($scope, backend, submitService, categoryService, sitesFactory) {
+app.controller('submitModController', function ($scope, backend, submitService, categoryService, sitesFactory, assetUtils) {
     // initialize variables
     $scope.sites = sitesFactory.sites();
     $scope.mod = { game_id: window._current_game_id };
@@ -178,6 +178,7 @@ app.controller('submitModController', function ($scope, backend, submitService, 
         var fileReader = new FileReader();
         fileReader.onload = function (event) {
             $scope.analysis = JSON.parse(event.target.result);
+            $scope.analysis.nestedAssets = assetUtils.convertDataStringToNestedObject($scope.analysis.assets);
             $scope.$apply();
         };
         fileReader.readAsText(file);
