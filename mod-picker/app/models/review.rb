@@ -28,7 +28,7 @@ class Review < ActiveRecord::Base
       count += 1
     end
     if self.rating4.present?
-      total += self.rating4d
+      total += self.rating4
       count += 1
     end
     if self.rating5.present?

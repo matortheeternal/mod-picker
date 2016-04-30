@@ -704,8 +704,8 @@ def seed_fake_compatibility_notes
         compatibility_type: CompatibilityNote.compatibility_types.keys.sample,
         submitted: Faker::Date.backward(14),
         text_body: Faker::Lorem.paragraph(4),
-        first_mod: random_mod.id,
-        second_mod: random_mod.id
+        first_mod_id: random_mod.id,
+        second_mod_id: random_mod.id
     )
     cnote.save!
 
@@ -731,8 +731,8 @@ def seed_fake_install_order_notes
     puts "    Generating install order note"
     ionote = InstallOrderNote.new(
         submitted_by: submitter.id,
-        install_first: random_mod.id,
-        install_second: random_mod.id,
+        first_mod_id: random_mod.id,
+        second_mod_id: random_mod.id,
         submitted: Faker::Date.backward(14),
         text_body: Faker::Lorem.paragraph(4)
     )
@@ -760,8 +760,8 @@ def seed_fake_load_order_notes
     puts "    Generating load order"
     lnote = LoadOrderNote.new(
         submitted_by: submitter.id,
-        load_first: random_plugin.id,
-        load_second: random_plugin.id,
+        first_plugin_id: random_plugin.id,
+        second_plugin_id: random_plugin.id,
         submitted: Faker::Date.backward(14),
         text_body: Faker::Lorem.paragraph(4)
     )

@@ -22,7 +22,7 @@ class InstallOrderNote < ActiveRecord::Base
   has_many :incorrect_notes, :as => 'correctable'
 
   # validations
-  validates :install_first, :install_second, presence: true
+  validates :first_mod_id, :second_mod_id, presence: true
   validates :text_body, length: { in: 64..16384 }
   
   
