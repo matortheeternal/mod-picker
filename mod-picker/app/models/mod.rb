@@ -150,6 +150,18 @@ class Mod < ActiveRecord::Base
     end
   end
 
+  def compatibility_notes
+    CompatibilityNote.where('first_mod = ? OR second_mod = ?', self.id, self.id)
+  end
+
+  def install_order_notes
+    InstallOrderNote.where('install_first = ? OR install_second = ?', self.id, self.id)
+  end
+
+  def load_order_notes
+    load_after_notes.all + load_before_notes.all
+  end
+
   def show_json
     self.as_json(:include => {
         :mod_versions => {
