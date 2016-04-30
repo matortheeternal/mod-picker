@@ -31,6 +31,7 @@ class NexusInfo < ActiveRecord::Base
     self.last_scraped = DateTime.now
     self.mod_name = doc.at_css(".header-name").text
     self.current_version = doc.at_css(".file-version strong").text
+    self.uploaded_by = doc.at_css(".uploader a").text
     self.authors = doc.at_css(".header-author strong").text
 
     # scrape dates
@@ -46,7 +47,6 @@ class NexusInfo < ActiveRecord::Base
       self.unique_downloads = doc.at_css(".file-unique-dls strong").text.gsub(',', '')
       self.total_downloads = doc.at_css(".file-total-dls strong").text.gsub(',', '')
       self.views = doc.at_css(".file-total-views strong").text.gsub(',', '')
-      self.uploaded_by = doc.at_css(".uploader a").text
 
       # scrape nexus category
       catlink = doc.at_css(".header-cat").css('a/@href')[1].text
