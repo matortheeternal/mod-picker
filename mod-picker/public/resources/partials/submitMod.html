@@ -8,7 +8,7 @@
                 <span class="help-tooltip" title="Locations where an author has officially uploaded a Mod. &#13;You can only enter one valid location for each supported site.">?</span>
             </h3>
             <section>
-                <div class="sources-container" ng-repeat="source in mod.sources">
+                <div class="sources-container" ng-repeat="source in sources">
                     <label>
                         <select ng-model="source.label" ng-change="validateSource(source)" ng-disabled="source.scraped">
                             <option ng-repeat="site in sites">{{site.label}}</option>
@@ -21,7 +21,7 @@
                     </label>
                 </div>
                 <!-- TODO: Fix this not hiding immediately -->
-                <input type="button" class="btn" value="Add Source" ng-click="addSource()" ng-show="mod.sources.length < sites.length">
+                <input type="button" class="btn" value="Add Source" ng-click="addSource()" ng-show="sources.length < sites.length">
 
                 <div class="scraped-data-container" ng-if="nexus || lab || workshop">
                     <div class="scraped-data" ng-if="nexus">

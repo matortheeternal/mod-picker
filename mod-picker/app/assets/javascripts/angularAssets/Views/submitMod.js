@@ -7,28 +7,28 @@ app.config(['$stateProvider', function ($stateProvider) {
     );
 }]);
 
-app.controller('submitModController', function ($scope, backend, submitService, categoryService, sitesFactory) {
+app.controller('submitModController', function ($scope, backend, submitService, categoryService, sitesFactory, assetUtils) {
     // initialize variables
     $scope.sites = sitesFactory.sites();
-    $scope.mod = {};
-    $scope.mod.sources = [{
+    $scope.mod = { game_id: window._current_game_id };
+    $scope.sources = [{
         label: "Nexus Mods",
         url: ""
     }];
 
     /* sources */
     $scope.addSource = function() {
-        if ($scope.mod.sources.length == $scope.sites.length)
+        if ($scope.sources.length == $scope.sites.length)
             return;
-        $scope.mod.sources.push({
+        $scope.sources.push({
             label: "Nexus Mods",
             url: ""
         });
     };
 
     $scope.removeSource = function(source) {
-        var index = $scope.mod.sources.indexOf(source);
-        $scope.mod.sources.splice(index, 1);
+        var index = $scope.sources.indexOf(source);
+        $scope.sources.splice(index, 1);
     };
 
     function getSite(source) {
@@ -39,8 +39,8 @@ app.controller('submitModController', function ($scope, backend, submitService, 
 
     $scope.validateSource = function(source) {
         var site = getSite(source);
-        var sourceIndex = $scope.mod.sources.indexOf(source);
-        var sourceUsed = $scope.mod.sources.find(function(item, index) {
+        var sourceIndex = $scope.sources.indexOf(source);
+        var sourceUsed = $scope.sources.find(function(item, index) {
             return index != sourceIndex && item.label === source.label
         });
         var match = source.url.match(site.expr);
@@ -69,14 +69,14 @@ app.controller('submitModController', function ($scope, backend, submitService, 
             case "Lover's Lab":
                 $scope.lab = {};
                 $scope.lab.scraping = true;
-                submitService.scrapeLab(gameId, modId).then(function (data) {
+                submitService.scrapeLab(modId).then(function (data) {
                     $scope.lab = data;
                 });
                 break;
             case "Steam Workshop":
                 $scope.workshop = {};
                 $scope.workshop.scraping = true;
-                submitService.scrapeWorkshop(gameId, modId).then(function (data) {
+                submitService.scrapeWorkshop(modId).then(function (data) {
                     $scope.workshop = data;
                 });
                 break;
@@ -178,6 +178,7 @@ app.controller('submitModController', function ($scope, backend, submitService, 
         var fileReader = new FileReader();
         fileReader.onload = function (event) {
             $scope.analysis = JSON.parse(event.target.result);
+            $scope.analysis.nestedAssets = assetUtils.convertDataStringToNestedObject($scope.analysis.assets);
             $scope.$apply();
         };
         fileReader.readAsText(file);
@@ -188,7 +189,7 @@ app.controller('submitModController', function ($scope, backend, submitService, 
         // submission isn't allowed until the user has scraped a nexus page,
         // provided a mod analysis, and provided at least one category
         var sourcesValid;
-        $scope.mod.sources.forEach(function(source) {
+        $scope.sources.forEach(function(source) {
             sourcesValid = sourcesValid && source.valid;
         });
         return (!sourcesValid || $scope.analysis == null || $scope.mod.categories == null ||
@@ -196,6 +197,11 @@ app.controller('submitModController', function ($scope, backend, submitService, 
     };
 
     $scope.submit = function () {
-        submitService.submitMod($scope.mod, $scope.analysis);
+        var sources = {
+            nexus: $scope.nexus,
+            workshop: $scope.workshop,
+            lab: $scope.lab
+        };
+        submitService.submitMod($scope.mod, $scope.analysis, sources);
     }
 });
