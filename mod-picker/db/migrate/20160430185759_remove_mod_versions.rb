@@ -59,7 +59,5 @@ class RemoveModVersions < ActiveRecord::Migration
     ### mod_versions ###
     # drop unneeded table
     drop_table :mod_versions
-
-
   end
 end
