@@ -22,6 +22,7 @@ Rails.application.routes.draw do
     # scraping
     resources :nexus_infos, only: [:create, :destroy]
     resources :workshop_infos, only: [:create, :destroy]
+    resources :lover_infos, only: [:create, :destroy]
 
     # tags
     match '/tags', to: 'tags#index', via: 'post'

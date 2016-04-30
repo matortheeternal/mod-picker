@@ -10,6 +10,7 @@ class LoverInfosController < ApplicationController
   # DELETE /lover_infos/1
   # DELETE /lover_infos/1.json
   def destroy
+    authorize! :destroy, @lover_info
     if @lover_info.destroy
       render json: {status: :ok}
     else
@@ -20,6 +21,14 @@ class LoverInfosController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_lover_info
-      @lover_info = LoverInfo.find(params[:id])
+      authorize! :submit, :mod
+      begin
+        @lover_info = LoverInfo.find(params[:id])
+        @lover_info.rescrape
+      rescue
+        @lover_info = LoverInfo.new(id: params[:id])
+        @lover_info.scrape
+        @lover_info.save
+      end
     end
 end
