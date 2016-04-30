@@ -58,16 +58,16 @@ class Mod < ActiveRecord::Base
   has_many :tags, :through => 'mod_tags', :inverse_of => 'mods'
 
   # compatibility notes
-  has_many :first_compatibility_notes, :foreign_key => 'first_mod', :class_name => 'CompatibilityNote', :inverse_of => 'first_mod'
-  has_many :second_compatibility_notes, :foreign_key => 'second_mod', :class_name => 'CompatibilityNote', :inverse_of => 'second_mod'
+  has_many :first_compatibility_notes, :foreign_key => 'first_mod_id', :class_name => 'CompatibilityNote', :inverse_of => 'first_mod'
+  has_many :second_compatibility_notes, :foreign_key => 'second_mod_id', :class_name => 'CompatibilityNote', :inverse_of => 'second_mod'
 
   # install order notes
-  has_many :install_before_notes, :foreign_key => 'install_first', :class_name => 'InstallOrderNote', :inverse_of => 'install_first_mod'
-  has_many :install_after_notes, :foreign_key => 'install_second', :class_name => 'InstallOrderNote', :inverse_of => 'install_second_mod'
+  has_many :first_install_order_notes, :foreign_key => 'first_mod_id', :class_name => 'InstallOrderNote', :inverse_of => 'first_mod'
+  has_many :second_install_order_notes, :foreign_key => 'second_mod_id', :class_name => 'InstallOrderNote', :inverse_of => 'second_mod'
 
   # load order notes
-  has_many :load_before_notes, :foreign_key => 'load_first', :class_name => 'LoadOrderNote', :inverse_of => 'first_mod'
-  has_many :load_after_notes, :foreign_key => 'load_second', :class_name => 'LoadOrderNote', :inverse_of => 'second_mod'
+  has_many :first_load_order_notes, :through => 'plugins', :class_name => 'LoadOrderNote', :inverse_of => 'first_mod'
+  has_many :second_load_order_notes, :through => 'plugins', :class_name => 'LoadOrderNote', :inverse_of => 'second_mod'
 
   # mod list usage
   has_many :mod_list_mods, :inverse_of => 'mod'
@@ -184,15 +184,15 @@ class Mod < ActiveRecord::Base
   end
 
   def compatibility_notes
-    CompatibilityNote.where('first_mod = ? OR second_mod = ?', self.id, self.id)
+    CompatibilityNote.where('first_mod_id = ? OR second_mod_id = ?', self.id, self.id)
   end
 
   def install_order_notes
-    InstallOrderNote.where('install_first = ? OR install_second = ?', self.id, self.id)
+    InstallOrderNote.where('first_mod_id = ? OR second_mod_id = ?', self.id, self.id)
   end
 
   def load_order_notes
-    load_after_notes.all + load_before_notes.all
+    LoadOrderNote.where('first_plugin_id in ? OR second_plugin_id in ?', self.plugins.ids, self.plugins.ids)
   end
 
   def show_json

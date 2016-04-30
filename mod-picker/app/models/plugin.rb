@@ -19,8 +19,8 @@ class Plugin < ActiveRecord::Base
   has_many :compatibility_note_plugins, :foreign_key => 'compatibility_plugin_id', :inverse_of => 'compatibility_plugin'
 
   # load order notes
-  has_many :load_before_notes, :foreign_key => 'load_first', :class_name => 'LoadOrderNote', :inverse_of => 'load_second_plugin'
-  has_many :load_after_notes, :foreign_key => 'load_second', :class_name => 'LoadOrderNote', :inverse_of => 'load_second_plugin'
+  has_many :first_load_order_notes, :foreign_key => 'first_plugin_id', :class_name => 'LoadOrderNote', :inverse_of => 'load_second_plugin'
+  has_many :second_load_order_notes, :foreign_key => 'second_plugin_id', :class_name => 'LoadOrderNote', :inverse_of => 'load_second_plugin'
 
   # validations
   validates :mod_id, :filename, :crc_hash, presence: true
