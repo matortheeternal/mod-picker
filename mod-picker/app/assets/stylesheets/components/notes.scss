@@ -62,16 +62,6 @@
 		vertical-align: top;
 	}
 
-	.letter-box {
-		display: inline-block;
-		text-align: center;
-		width: 24px;
-		height: 24px;
-		border-right: 1px solid black;
-		border-bottom: 1px solid black;
-		vertical-align: top;
-	}
-
 	.cnote-block {
 		margin: 0;
 		padding: 0;
@@ -101,7 +91,7 @@
 		.note-title-block {
 			@extend .item;
 			background-color: $secondary_background;
-			color: $action_text_color;
+			color: $bar_text_color;
 			background-color: $dark_action_color;
 			border-top: 0;
 			width: 100%;
@@ -131,8 +121,20 @@
 			}
 		}
 
+		.letter-box {
+			background-color: $primary_background;
+			display: inline-block;
+			text-align: center;
+			width: 24px;
+			height: 24px;
+			border-right: 1px solid black;
+			border-bottom: 1px solid black;
+			vertical-align: top;
+		}
+
 		.mod-title-block {
 			@extend .item;
+			background-color: $secondary_background;
 			width: 50%;
 			span {
 				position:relative;
@@ -141,6 +143,15 @@
 				width:92%;
 				padding-left: 24px;
 				text-align: left;
+			}
+			a {
+				display: inline-block;
+				padding-top:10px;
+				font-weight: 500;
+				//color: $bar_text_color;
+			}
+			a:hover {
+				//color: $bar_text_color;
 			}
 		}
 
