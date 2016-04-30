@@ -173,24 +173,18 @@
                 </a>
             </h3>
             <section>
-                <div ng-show="analysis.assets">
-                    <h4 class="subtitle">File Tree</h4>
-                    <div class="file-tree-container">
-                        <ul>
-                            <li ng-repeat="asset in assets">{{asset}}</li>
-                        </ul>
+                <div class="analysis-results" ng-show="analysis">
+                    <h4 class="subtitle" ng-show="analysis.nestedAssets">Asset File Tree</h4>
+                    <div class="subsection analysis-container" ng-show="analysis.nestedAssets">
+                        <asset-tree data="analysis.nestedAssets"></asset-tree>
                     </div>
-                    <asset-file-tree data="assets"></asset-file-tree>
-                </div>
 
-                <div ng-show="analysis.assets">
-                    <h4 class="subtitle">File Tree</h4>
-                    <div class="file-tree-container">
-                        <ul>
-                            <li ng-repeat="asset in assets">{{asset}}</li>
-                        </ul>
+                    <h4 class="subtitle" ng-show="analysis.plugins.length > 0">Plugin Analysis</h4>
+                    <div class="subsection analysis-container" ng-show="analysis.plugins.length > 0">
+                        <div ng-repeat="plugin in analysis.plugins">
+                            <plugin-analysis data="plugin"></plugin-analysis>
+                        </div>
                     </div>
-                    <asset-file-tree data="assets"></asset-file-tree>
                 </div>
 
                 <label>
