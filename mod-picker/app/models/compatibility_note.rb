@@ -43,7 +43,7 @@ class CompatibilityNote < ActiveRecord::Base
   end
 
   def mods
-    @mods = [first_mod, second_mod]
+    [first_mod, second_mod]
   end
 
   def as_json(options={})

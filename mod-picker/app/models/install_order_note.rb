@@ -32,7 +32,7 @@ class InstallOrderNote < ActiveRecord::Base
   end
 
   def mods
-    @mods = [install_first_mod, install_second_mod]
+    [install_first_mod, install_second_mod]
   end
 
   def as_json(options={})
