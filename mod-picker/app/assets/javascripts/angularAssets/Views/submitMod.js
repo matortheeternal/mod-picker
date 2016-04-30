@@ -69,14 +69,14 @@ app.controller('submitModController', function ($scope, backend, submitService, 
             case "Lover's Lab":
                 $scope.lab = {};
                 $scope.lab.scraping = true;
-                submitService.scrapeLab(gameId, modId).then(function (data) {
+                submitService.scrapeLab(modId).then(function (data) {
                     $scope.lab = data;
                 });
                 break;
             case "Steam Workshop":
                 $scope.workshop = {};
                 $scope.workshop.scraping = true;
-                submitService.scrapeWorkshop(gameId, modId).then(function (data) {
+                submitService.scrapeWorkshop(modId).then(function (data) {
                     $scope.workshop = data;
                 });
                 break;
