@@ -38,6 +38,9 @@ class Mod < ActiveRecord::Base
   has_one :nexus_infos, :class_name => 'NexusInfo'
   has_one :lover_infos, :class_name => 'NexusInfo'
   has_one :workshop_infos, :class_name => 'NexusInfo'
+
+  # plugins associated with the mod
+  has_many :plugins, :inverse_of => 'mod'
   
   # users who can edit the mod
   has_many :mod_authors, :inverse_of => 'mod'
@@ -52,18 +55,23 @@ class Mod < ActiveRecord::Base
   has_many :mod_tags, :inverse_of => 'mod'
   has_many :tags, :through => 'mod_tags', :inverse_of => 'mods'
 
+  # compatibility notes
+  has_many :first_compatibility_notes, :foreign_key => 'first_mod', :class_name => 'CompatibilityNote', :inverse_of => 'first_mod'
+  has_many :second_compatibility_notes, :foreign_key => 'second_mod', :class_name => 'CompatibilityNote', :inverse_of => 'second_mod'
+
   # install order notes
   has_many :install_before_notes, :foreign_key => 'install_first', :class_name => 'InstallOrderNote', :inverse_of => 'install_first_mod'
   has_many :install_after_notes, :foreign_key => 'install_second', :class_name => 'InstallOrderNote', :inverse_of => 'install_second_mod'
 
-  # mod versions and associated data
-  has_many :mod_versions, :inverse_of => 'mod'
+  # load order notes
+  has_many :load_before_notes, :foreign_key => 'load_first', :class_name => 'LoadOrderNote', :inverse_of => 'first_mod'
+  has_many :load_after_notes, :foreign_key => 'load_second', :class_name => 'LoadOrderNote', :inverse_of => 'second_mod'
 
   # mod list usage
   has_many :mod_list_mods, :inverse_of => 'mod'
   has_many :mod_lists, :through => 'mod_list_mods', :inverse_of => 'mods'
 
-  self.per_page = 5
+  self.per_page = 100
 
   accepts_nested_attributes_for :mod_versions
 
@@ -86,7 +94,7 @@ class Mod < ActiveRecord::Base
 
   def create_asset_files(asset_file_tree, mod_version_id=nil)
     asset_file_tree.each do |path|
-      asset_file = ModAssetFile.find_or_create_by(filepath: path)
+      asset_file = AssetFile.find_or_create_by(filepath: path)
 
       # find mod version to associate asset files with
       if mod_version_id.present?
