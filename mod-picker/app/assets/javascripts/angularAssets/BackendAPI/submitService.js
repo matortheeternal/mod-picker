@@ -29,9 +29,9 @@ app.service('submitService', function (backend, $q) {
                 released: primarySource.date_submitted,
                 primary_category_id: mod.categories[0],
                 secondary_category_id: mod.categories[1],
-                nexus_info_id: sources.nexus.id,
-                workshop_info_id: sources.workshop.id,
-                lover_info_id: sources.lab.id,
+                nexus_info_id: sources.nexus && sources.nexus.id,
+                workshop_info_id: sources.workshop && sources.workshop.id,
+                lover_info_id: sources.lab && sources.lab.id,
                 assets: analysis.assets,
                 plugins: analysis.plugins,
                 mod_versions_attributes: [{
