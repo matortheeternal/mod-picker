@@ -74,14 +74,6 @@
             <loader data="mod">
                 <div class="left-column left-mod-column wide-column">
 
-                    <!--Versions-->
-                    <h3 class="section-title">Mod Versions</h3>
-                    <section>
-                        <div class="select">
-                            <select ng-model="currentVersion" ng-change="updateVersion(currentVersion)" ng-options="version as version.version for version in mod.mod_versions" class="version-dropdown"></select>
-                        </div>
-                    </section>
-
                     <!--Image-->
                     <section ng-if="mod.image">
                         <img ng-src="{{mod.image}}" class="mod-image"/>
