@@ -24,7 +24,7 @@ class NexusInfo < ActiveRecord::Base
   end
 
   def scrape
-    # get the nexus mods page
+    # get the mod page
     doc = Nokogiri::HTML(open(nexus_mods_url))
 
     # scrape basic data

@@ -9,11 +9,11 @@ class WorkshopInfo < ActiveRecord::Base
   end
 
   def workshop_date_format
-    '%M %d, %Y @ %I:%M%p'
+    '%b %d, %Y @ %I:%M%p'
   end
 
   def scrape
-    # get the workshop page
+    # get the mod page
     doc = Nokogiri::HTML(open(steam_workshop_url))
 
     # scrape basic data
@@ -31,7 +31,7 @@ class WorkshopInfo < ActiveRecord::Base
 
     # scrape statistics
     if Rails.application.config.scrape_workshop_statistics
-      self.file_size = stats[0].text.gsub(' MB', '').to_i * 1024 * 1024
+      self.file_size = stats[0].text.gsub(' MB', '').to_f * 1024 * 1024
       # <.sectionTabs>
       sectionTabs = doc.at_css(".sectionTabs").css(".sectionTab")
       self.discussions_count = sectionTabs[1].css(".tabCount").text.to_i
