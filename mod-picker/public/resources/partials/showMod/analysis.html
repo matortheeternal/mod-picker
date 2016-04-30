@@ -1,9 +1,8 @@
-﻿<!--TODO: maybe ng-if some stuff here -->
-
-<div class="plugins-block">
+<!--TODO: maybe ng-if some stuff here -->
+﻿<div class="plugins-block" ng-if="currentVersion.plugins.length > 0">
 	<div class="plugins-title">
 		Plugins
-		<select ng-model="currentPlugin" ng-options="plugin as plugin.filename for plugin in plugins" class="plugin-selector"></select>
+		<select ng-model="currentPlugin" ng-options="plugin as plugin.filename for plugin in currentVersion.plugins" class="plugin-selector" ng-change="getPlugin()"></select>
 	</div>
 	<div class="metadata-section">
 		<h3 class="section-title">Metadata</h3>

@@ -3,16 +3,19 @@
         <div class="mod-header-color">
             <div class="page-container mod-header">
                 <section>
-                    <div class="stars-count action-box">
-                        <span class="stars-number">{{mod.mod_stars_count}}</span>
-                        STARS
+                    <div class="quality-value action-box">
+                        <span class="reputation-number">{{mod.reputation}}</span>
+                        REPUTATION
                     </div>
 
                     <div class="mod-info">
                         <span class="mod-name">{{mod.name}}</span>
-                        by <span ng-repeat="author in mod.authors">
+                        <span class="mod-authors-container">by
+                            <span class="mod-authors">{{mod.nexus_infos.authors}}</span>
+                        </span>
+                        <!--<span ng-repeat="author in mod.authors">
                             <a ng-href="#/user/{{author.id}}">{{author.username}}</a>
-                            </span>
+                        </span>-->
                         <br>
                         <!-- TODO: reviews currently are on tab 1 -> should be dynamic anyway -> ui-router :D -->
                         <a ng-click="currentTab = tabs[2]">{{mod.reviews.length}} reviews</a>
@@ -91,13 +94,11 @@
                         <a ng-href="http://www.nexusmods.com/{{game}}/mods/{{mod.nexus_infos.id}}">
                             <div class="action-box source-box" ng-if="mod.nexus_infos">
                                 <img src="/assets/nexus_logo" class="source-image"/>
-                                Nexus
                             </div>
                         </a>
                         <a ng-href="">
                             <div class="action-box source-box" ng-if="mod.steam_info">
                                 <img src="/assets/steam_logo" class="source-image" />
-                                Steam
                             </div>
                         </a>
                         <a ng-href="">
@@ -136,8 +137,8 @@
 
                     <!--Nexus Stats-->
                     <!-- TODO: kill redundancy-->
-                    <div class="stat-block" ng-if="mod.nexus_infos" ng-click="nexusExpanded = !nexusExpanded">
-                        <div class="stat-block-title">
+                    <div class="stat-block" ng-if="mod.nexus_infos">
+                        <div class="stat-block-title" ng-click="nexusExpanded = !nexusExpanded">
                            <h3 class="section-title">Nexus stats</h3>
                            <i class="fa fa-plus stat-expander" aria-hidden="true" ng-hide="nexusExpanded"></i>
                            <i class="fa fa-minus stat-expander" aria-hidden="true" ng-show="nexusExpanded"></i>

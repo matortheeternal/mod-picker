@@ -101,22 +101,22 @@ class Mod < ActiveRecord::Base
   end
 
   def compute_extra_metrics
-    days_since_release = DateTime.now - self.released
+    days_since_release = DateTime.now - self.released.to_date
 
     # compute extra nexus metrics
     nex = self.nexus_infos
-    if nex.present?
-      nex.endorsement_rate = nex.endorsements / days_since_release
-      nex.dl_rate = nex.unique_downloads / days_since_release
-      nex.udl_to_endorsements = nex.unique_downloads / nex.endorsements
-      nex.udl_to_posts = nex.unique_downloads / nex.posts_count
-      nex.tdl_to_udl = nex.total_downloads / nex.unique_downloads
-      nex.views_to_tdl = nex.views / nex.total_downloads
+    if nex.present? && Rails.application.config.scrape_nexus_statistics
+      nex.endorsement_rate = (nex.endorsements / days_since_release) if days_since_release > 0
+      nex.dl_rate = (nex.unique_downloads / days_since_release) if days_since_release > 0
+      nex.udl_to_endorsements = (nex.unique_downloads / nex.endorsements) if nex.endorsements > 0
+      nex.udl_to_posts = (nex.unique_downloads / nex.posts_count) if nex.posts_count > 0
+      nex.tdl_to_udl = (nex.total_downloads / nex.unique_downloads) if nex.unique_downloads > 0
+      nex.views_to_tdl = (nex.views / nex.total_downloads) if nex.total_downloads > 0
       nex.save!
     end
 
     # compute update rate
-    self.update_rate = self.mod_versions_count / days_since_release
+    self.update_rate = days_since_release / self.mod_versions_count
   end
 
   def compute_average_rating
@@ -126,18 +126,18 @@ class Mod < ActiveRecord::Base
       total += r.overall_rating
       count += 1
     end
-    self.average_rating = total.to_f / count
+    self.average_rating = (total.to_f / count) if count > 0
   end
 
   def compute_reputation
-    if self.reviews_count < 5
+    if self.reviews_count < 5 && Rails.application.config.scrape_nexus_statistics
       if self.nexus_infos.present?
         endorsement_reputation = 100.0 / (1.0 + Math::exp(-0.15 * (self.endorsement_rate - 25)))
         self.reputation = endorsement_reputation
       end
     else
       compute_average_rating
-      review_reputation = (self.average_rating / 10.0)^3 * (510.0 / (1 + Math::exp(-0.2 * (self.review_count - 10))) - 60)
+      review_reputation = (self.average_rating / 10.0)**3 * (510.0 / (1 + Math::exp(-0.2 * (self.reviews_count - 10))) - 60)
       self.reputation = review_reputation
     end
   end
@@ -146,7 +146,12 @@ class Mod < ActiveRecord::Base
     self.as_json(:include => {
         :mod_versions => {
             :except => [:mod_id],
-            :methods => :required_mods
+            :methods => :required_mods,
+            :include => {
+                :plugins => {
+                    :only => [:id, :filename]
+                }
+            }
         },
         :reviews => {
             :except => [:submitted_by],

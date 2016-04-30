@@ -17,8 +17,12 @@ Rails.application.routes.draw do
     resources :plugins
     resources :mod_asset_files
     resources :mod_versions
-    resources :nexus_infos
     resources :users
+
+    # scraping
+    resources :nexus_infos, only: [:show, :destroy]
+    resources :workshop_infos, only: [:show, :destroy]
+    resources :lover_infos, only: [:show, :destroy]
 
     # tags
     match '/tags', to: 'tags#index', via: 'post'
