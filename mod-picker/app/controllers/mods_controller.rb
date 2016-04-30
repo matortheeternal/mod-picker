@@ -26,33 +26,7 @@ class ModsController < ApplicationController
     authorize! :create, @mod
 
     if @mod.save
-      # create associated tags
-      @mod.create_tags(params[:mod][:tags])
-      # create associated asset files
-      @mod.create_asset_files(params[:mod][:assets])
-
-      # link nexus info to the mod
-      @nexus_info = NexusInfo.find(params[:mod][:nexus_info_id])
-      if @nexus_info.present? && @nexus_info.mod_id.nil?
-        @nexus_info.mod_id = @mod.id
-
-        # save updated nexus info
-        if @nexus_info.save
-          # compute metrics and initial mod reputation
-          @mod.compute_extra_metrics
-          @mod.compute_reputation
-          @mod.save
-
-          # render json to the user
-          render json: {status: :ok}
-        else
-          render json: @nexus_info.errors, status: :unprocessable_entity
-        end
-
-      else
-        render json: {status: "Failure linking nexus_info record"}
-      end
-
+      render json: {status: :ok}
     else
       render json: @mod.errors, status: :unprocessable_entity
     end
@@ -135,6 +109,6 @@ class ModsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def mod_params
-      params.require(:mod).permit(:game_id, :name, :aliases, :is_utility, :has_adult_content, :primary_category_id, :secondary_category_id, :released)
+      params.require(:mod).permit(:game_id, :name, :aliases, :is_utility, :has_adult_content, :primary_category_id, :secondary_category_id, :released, :tags, :assets, :plugins, :nexus_info_id, :lovers_info_id, :workshop_info_id)
     end
 end

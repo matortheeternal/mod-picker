@@ -1,6 +1,8 @@
 class Mod < ActiveRecord::Base
   include Filterable, Sortable
 
+  attr_writer :tag_names, :asset_paths, :plugin_dumps, :nexus_info_id, :lover_info_id, :workshop_info_id
+
   scope :search, -> (search) { where("name like ? OR aliases like ?", "%#{search}%", "%#{search}%") }
   scope :author, -> (author) { joins(:nexus_infos).where("nexus_infos.authors like ? OR nexus_infos.uploaded_by like ?", "#{author}", "#{author}") }
   scope :adult, -> (adult) { where(has_adult_content: adult) }
@@ -73,38 +75,62 @@ class Mod < ActiveRecord::Base
 
   self.per_page = 100
 
-  accepts_nested_attributes_for :mod_versions
+  after_create :create_associations
 
   def no_author?
     self.mod_authors.count == 0
   end
 
-  def create_tags(tags)
-    tags.each do |text|
-      tag = Tag.find_by(text: text, game_id: self.game_id)
-      # create tag if we couldn't find it
-      if tag.nil?
-        tag = Tag.create(text: text, game_id: self.game_id, submitted_by: self.submitted_by)
-      end
+  def create_tags
+    if @tag_names
+      @tag_names.each do |text|
+        tag = Tag.find_by(text: text, game_id: self.game_id)
 
-      # associate tag with mod
-      self.mod_tags.create(tag_id: tag.id, submitted_by: self.submitted_by)
+        # create tag if we couldn't find it
+        if tag.nil?
+          tag = Tag.create(text: text, game_id: self.game_id, submitted_by: self.submitted_by)
+        end
+
+        # associate tag with mod
+        self.mod_tags.create(tag_id: tag.id, submitted_by: self.submitted_by)
+      end
     end
   end
 
-  def create_asset_files(asset_file_tree, mod_version_id=nil)
-    asset_file_tree.each do |path|
-      asset_file = AssetFile.find_or_create_by(filepath: path)
-
-      # find mod version to associate asset files with
-      if mod_version_id.present?
-        mv = self.mod_versions.find_by(mod_version_id)
-      else
-        mv = self.mod_versions.first
+  def create_asset_files
+    if @asset_paths
+      @asset_paths.each do |path|
+        asset_file = AssetFile.find_or_create_by(filepath: path)
+        self.assets.create(asset_file_id: asset_file.id)
       end
+    end
+  end
 
-      # associate asset files with mod version
-      mv.mod_version_files.create(mod_asset_file_id: asset_file.id)
+  def create_plugins
+    if @plugin_dumps
+      @plugin_dumps.each do |dump|
+        if Plugin.find_by(filename: dump.filename, crc_hash: dump.crc_hash).nil?
+          self.plugins.create(dump)
+        end
+      end
+    end
+  end
+
+  def link_sources
+    if @nexus_info_id
+      @nexus_info = NexusInfo.find(@nexus_info_id)
+      @nexus_info.mod_id = self.id
+      @nexus_info.save!
+    end
+    if @lover_info_id
+      @lover_info = LoverInfo.find(@lover_info_id)
+      @lover_info.mod_id = self.id
+      @lover_info.save!
+    end
+    if @workshop_info_id
+      @workshop_info = WorkshopInfo.find(@workshop_info_id)
+      @workshop_info.mod_id = self.id
+      @workshop_info.save!
     end
   end
 
@@ -122,9 +148,6 @@ class Mod < ActiveRecord::Base
       nex.views_to_tdl = (nex.views / nex.total_downloads) if nex.total_downloads > 0
       nex.save!
     end
-
-    # compute update rate
-    self.update_rate = days_since_release / self.mod_versions_count
   end
 
   def compute_average_rating
@@ -148,6 +171,16 @@ class Mod < ActiveRecord::Base
       review_reputation = (self.average_rating / 10.0)**3 * (510.0 / (1 + Math::exp(-0.2 * (self.reviews_count - 10))) - 60)
       self.reputation = review_reputation
     end
+  end
+
+  def create_associations
+    self.create_tags
+    self.create_asset_files
+    self.create_plugins
+    self.link_sources
+    self.compute_extra_metrics
+    self.compute_reputation
+    self.save!
   end
 
   def compatibility_notes
