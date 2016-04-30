@@ -48,12 +48,16 @@ app.controller('submitModController', function ($scope, backend, submitService, 
     };
 
     $scope.scrapeSource = function(source) {
-        // validate the source and get the id from it
+        // exit if the source is invalid
         var site = getSite(source);
         var match = source.url.match(site.expr);
+        if (!match) {
+            return;
+        }
 
         var gameId = window._current_game_id;
         var modId = match[2];
+        source.scraped = true;
         switch(source.label) {
             case "Nexus Mods":
                 $scope.nexus = {};
