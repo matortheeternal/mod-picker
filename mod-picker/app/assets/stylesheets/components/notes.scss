@@ -25,6 +25,7 @@
 
 
 .author-block {
+	//background-color: $secondary_background;
 	display: table-cell;
 	border: 1px solid black;
 	width: 164px;
@@ -46,7 +47,6 @@
 	margin-left: 30%;
 	width: 64px;
 	height: 64px;
-	background-color: $secondary_background;
 }
 .author-name {
 	font-size: 13px;
@@ -101,6 +101,8 @@
 		.note-title-block {
 			@extend .item;
 			background-color: $secondary_background;
+			color: $action_text_color;
+			background-color: $dark_action_color;
 			border-top: 0;
 			width: 100%;
 			ul {
