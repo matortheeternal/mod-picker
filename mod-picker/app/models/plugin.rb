@@ -23,7 +23,7 @@ class Plugin < ActiveRecord::Base
   has_many :load_after_notes, :foreign_key => 'load_second', :class_name => 'LoadOrderNote', :inverse_of => 'load_second_plugin'
 
   # validations
-  validates :mod_version_id, :filename, :crc_hash, presence: true
+  validates :mod_id, :filename, :crc_hash, presence: true
   validates :filename, length: {in: 1..64}
   validates :author, length: {in: 0..64}
   validates :description, length: {in: 0..512}
