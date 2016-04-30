@@ -31,6 +31,16 @@
 	min-height: 100%;
 	padding-top: 30px;
 	text-align: center;
+
+	img {
+		length: 64px;
+		width: 64px;
+	}
+
+	span {
+		display: block;
+	}
+
 }
 .author-image {
 	margin-left: 30%;
@@ -46,7 +56,7 @@
 
 .compatibility-note
 {
-	
+	background-color: $primary_background;
 	.right-container {
 		display:table-cell;
 		vertical-align: top;
@@ -73,7 +83,7 @@
 	  justify-content: flex-start;
 	  align-items: center;
 	  align-content: center;
-	  width: 757px;
+	  width: 700px;
 	  border: 1px solid black;
 	  border-left: 0;
 	  border-right: 0;
