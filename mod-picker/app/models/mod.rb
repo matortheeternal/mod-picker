@@ -164,15 +164,6 @@ class Mod < ActiveRecord::Base
 
   def show_json
     self.as_json(:include => {
-        :mod_versions => {
-            :except => [:mod_id],
-            :methods => :required_mods,
-            :include => {
-                :plugins => {
-                    :only => [:id, :filename]
-                }
-            }
-        },
         :reviews => {
             :except => [:submitted_by],
             :include => {
