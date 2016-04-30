@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160429215259) do
+ActiveRecord::Schema.define(version: 20160430003205) do
 
   create_table "agreement_marks", id: false, force: :cascade do |t|
     t.integer "incorrect_note_id", limit: 4
@@ -221,8 +221,20 @@ ActiveRecord::Schema.define(version: 20160429215259) do
   add_index "load_order_notes", ["submitted_by"], name: "fk_rails_9992d700a9", using: :btree
 
   create_table "lover_infos", force: :cascade do |t|
-    t.integer "mod_id", limit: 4
+    t.integer  "mod_id",          limit: 4
+    t.string   "mod_name",        limit: 255
+    t.string   "uploaded_by",     limit: 128
+    t.string   "date_submitted",  limit: 255
+    t.string   "date_updated",    limit: 255
+    t.string   "current_version", limit: 32
+    t.datetime "last_scraped"
+    t.integer  "followers_count", limit: 4,   default: 0
+    t.integer  "file_size",       limit: 4,   default: 0
+    t.integer  "views",           limit: 4,   default: 0
+    t.integer  "downloads",       limit: 4,   default: 0
   end
+
+  add_index "lover_infos", ["mod_id"], name: "fk_rails_614a886dc0", using: :btree
 
   create_table "masters", id: false, force: :cascade do |t|
     t.integer "plugin_id",        limit: 4
@@ -779,6 +791,7 @@ ActiveRecord::Schema.define(version: 20160429215259) do
   add_foreign_key "load_order_notes", "plugins", column: "load_first"
   add_foreign_key "load_order_notes", "plugins", column: "load_second"
   add_foreign_key "load_order_notes", "users", column: "submitted_by"
+  add_foreign_key "lover_infos", "mods"
   add_foreign_key "masters", "plugins", name: "masters_ibfk_1"
   add_foreign_key "mod_authors", "mods", name: "mod_authors_ibfk_1"
   add_foreign_key "mod_authors", "users", name: "mod_authors_ibfk_2"
