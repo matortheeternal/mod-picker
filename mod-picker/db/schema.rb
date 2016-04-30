@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160430003205) do
+ActiveRecord::Schema.define(version: 20160430005325) do
 
   create_table "agreement_marks", id: false, force: :cascade do |t|
     t.integer "incorrect_note_id", limit: 4
@@ -226,7 +226,6 @@ ActiveRecord::Schema.define(version: 20160430003205) do
     t.string   "uploaded_by",     limit: 128
     t.string   "date_submitted",  limit: 255
     t.string   "date_updated",    limit: 255
-    t.string   "current_version", limit: 32
     t.datetime "last_scraped"
     t.integer  "followers_count", limit: 4,   default: 0
     t.integer  "file_size",       limit: 4,   default: 0
@@ -743,7 +742,6 @@ ActiveRecord::Schema.define(version: 20160430003205) do
     t.string   "uploaded_by",       limit: 128
     t.string   "date_submitted",    limit: 255
     t.string   "date_updated",      limit: 255
-    t.string   "current_version",   limit: 32
     t.datetime "last_scraped"
     t.integer  "discussions_count", limit: 4,   default: 0
     t.integer  "comments_count",    limit: 4,   default: 0
