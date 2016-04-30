@@ -33,11 +33,7 @@ app.service('submitService', function (backend, $q) {
                 workshop_info_id: sources.workshop && sources.workshop.id,
                 lover_info_id: sources.lab && sources.lab.id,
                 assets: analysis.assets,
-                plugins: analysis.plugins,
-                mod_versions_attributes: [{
-                    released: primarySource.date_updated,
-                    version: currentVersion
-                }]
+                plugins: analysis.plugins
             }
         };
 
