@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe Tag, :model, :cc do
-  fixtures :tags, :games, :mods
+  fixtures :tags, :games, :mods, :mod_lists, :users
 
   it "should have a valid factory" do
     expect(build(:tag)).to be_valid
@@ -19,9 +19,9 @@ RSpec.describe Tag, :model, :cc do
       let(:mod) {mods(:Apocalypse)}
       let(:game) {games(:skyrim)}
       let(:tag) {tags(:tag_quest)}
+      let(:mod_list) {mod_lists(:plannedVanilla)}
+      let(:user) {users(:homura)}
     describe "mods_count" do
-        
-
       it "should be incremented by one when creating a mod for the tag" do
         expect {
           mod_tag = tag.mod_tags.create(
@@ -54,7 +54,17 @@ RSpec.describe Tag, :model, :cc do
     end
 
     describe "mod_lists_count" do
-      
+      it "should be incremented by one when creating a mod_list for the tag" do
+        expect {
+          mod_list_tag = tag.mod_list_tags.create(
+            submitted_by: user.id,
+            tag_id: tag.id,
+            mod_list_id: mod_list.id)
+
+          expect(mod_list_tag).to be_valid
+          expect(tag.mod_lists_count).to eq(1)
+        }.to change {tag.mod_lists_count}.by(1)
+      end
     end
   end
 end
