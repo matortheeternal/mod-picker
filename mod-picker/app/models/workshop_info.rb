@@ -12,7 +12,6 @@ class WorkshopInfo < ActiveRecord::Base
     '%M %d, %Y @ %I:%M%p'
   end
 
-
   def scrape
     # get the workshop page
     doc = Nokogiri::HTML(open(steam_workshop_url))
