@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160430005325) do
+ActiveRecord::Schema.define(version: 20160430185759) do
 
   create_table "agreement_marks", id: false, force: :cascade do |t|
     t.integer "incorrect_note_id", limit: 4
@@ -31,6 +31,12 @@ ActiveRecord::Schema.define(version: 20160430005325) do
   end
 
   add_index "articles", ["submitted_by"], name: "fk_rails_ea02c233bd", using: :btree
+
+  create_table "asset_files", force: :cascade do |t|
+    t.string "filepath", limit: 128, null: false
+  end
+
+  add_index "asset_files", ["filepath"], name: "filepath", unique: true, using: :btree
 
   create_table "base_reports", force: :cascade do |t|
     t.integer  "reportable_id",   limit: 4,   null: false
@@ -98,9 +104,13 @@ ActiveRecord::Schema.define(version: 20160430005325) do
     t.integer  "incorrect_notes_count",   limit: 4,     default: 0
     t.integer  "compatibility_mod_id",    limit: 4
     t.boolean  "hidden",                                default: false, null: false
+    t.integer  "first_mod",               limit: 4
+    t.integer  "second_mod",              limit: 4
   end
 
   add_index "compatibility_notes", ["compatibility_plugin_id"], name: "compatibility_patch", using: :btree
+  add_index "compatibility_notes", ["first_mod"], name: "fk_rails_3524228f07", using: :btree
+  add_index "compatibility_notes", ["second_mod"], name: "fk_rails_10dd0a50f6", using: :btree
   add_index "compatibility_notes", ["submitted_by"], name: "submitted_by", using: :btree
 
   create_table "config_files", force: :cascade do |t|
@@ -243,11 +253,13 @@ ActiveRecord::Schema.define(version: 20160430005325) do
 
   add_index "masters", ["plugin_id"], name: "pl_id", using: :btree
 
-  create_table "mod_asset_files", force: :cascade do |t|
-    t.string "filepath", limit: 128, null: false
+  create_table "mod_asset_files", id: false, force: :cascade do |t|
+    t.integer "mod_id",        limit: 4
+    t.integer "asset_file_id", limit: 4
   end
 
-  add_index "mod_asset_files", ["filepath"], name: "filepath", unique: true, using: :btree
+  add_index "mod_asset_files", ["asset_file_id"], name: "maf_id", using: :btree
+  add_index "mod_asset_files", ["mod_id"], name: "mv_id", using: :btree
 
   create_table "mod_authors", id: false, force: :cascade do |t|
     t.integer "mod_id",  limit: 4
@@ -374,6 +386,14 @@ ActiveRecord::Schema.define(version: 20160430005325) do
   add_index "mod_lists", ["created_by"], name: "created_by", using: :btree
   add_index "mod_lists", ["game_id"], name: "fk_rails_f25cbc0432", using: :btree
 
+  create_table "mod_requirements", id: false, force: :cascade do |t|
+    t.integer "mod_id",      limit: 4, null: false
+    t.integer "required_id", limit: 4, null: false
+  end
+
+  add_index "mod_requirements", ["mod_id"], name: "fk_rails_5a311577a9", using: :btree
+  add_index "mod_requirements", ["required_id"], name: "fk_rails_05046fa6e5", using: :btree
+
   create_table "mod_stars", id: false, force: :cascade do |t|
     t.integer "mod_id",  limit: 4
     t.integer "user_id", limit: 4
@@ -392,56 +412,6 @@ ActiveRecord::Schema.define(version: 20160430005325) do
   add_index "mod_tags", ["submitted_by"], name: "fk_rails_ad8ec1982c", using: :btree
   add_index "mod_tags", ["tag_id"], name: "fk_rails_ffd7f5019d", using: :btree
 
-  create_table "mod_version_compatibility_notes", id: false, force: :cascade do |t|
-    t.integer "mod_version_id",        limit: 4
-    t.integer "compatibility_note_id", limit: 4
-  end
-
-  add_index "mod_version_compatibility_notes", ["compatibility_note_id"], name: "fk_rails_29b33b572e", using: :btree
-  add_index "mod_version_compatibility_notes", ["mod_version_id"], name: "fk_rails_f7085a6344", using: :btree
-
-  create_table "mod_version_files", id: false, force: :cascade do |t|
-    t.integer "mod_version_id",    limit: 4
-    t.integer "mod_asset_file_id", limit: 4
-  end
-
-  add_index "mod_version_files", ["mod_asset_file_id"], name: "maf_id", using: :btree
-  add_index "mod_version_files", ["mod_version_id"], name: "mv_id", using: :btree
-
-  create_table "mod_version_install_order_notes", force: :cascade do |t|
-    t.integer "mod_version_id",        limit: 4, null: false
-    t.integer "install_order_note_id", limit: 4, null: false
-  end
-
-  add_index "mod_version_install_order_notes", ["install_order_note_id"], name: "fk_rails_2ccfdfb9a9", using: :btree
-  add_index "mod_version_install_order_notes", ["mod_version_id"], name: "fk_rails_51c3a3246e", using: :btree
-
-  create_table "mod_version_load_order_notes", force: :cascade do |t|
-    t.integer "mod_version_id",     limit: 4, null: false
-    t.integer "load_order_note_id", limit: 4, null: false
-  end
-
-  add_index "mod_version_load_order_notes", ["load_order_note_id"], name: "fk_rails_3fe49e6f08", using: :btree
-  add_index "mod_version_load_order_notes", ["mod_version_id"], name: "fk_rails_a736a782a4", using: :btree
-
-  create_table "mod_version_requirements", id: false, force: :cascade do |t|
-    t.integer "mod_version_id", limit: 4, null: false
-    t.integer "required_id",    limit: 4, null: false
-  end
-
-  add_index "mod_version_requirements", ["mod_version_id"], name: "fk_rails_5a311577a9", using: :btree
-  add_index "mod_version_requirements", ["required_id"], name: "fk_rails_05046fa6e5", using: :btree
-
-  create_table "mod_versions", force: :cascade do |t|
-    t.integer  "mod_id",    limit: 4
-    t.datetime "released"
-    t.boolean  "obsolete"
-    t.boolean  "dangerous"
-    t.string   "version",   limit: 16
-  end
-
-  add_index "mod_versions", ["mod_id"], name: "mod_id", using: :btree
-
   create_table "mods", force: :cascade do |t|
     t.string   "name",                      limit: 128
     t.string   "aliases",                   limit: 128
@@ -452,7 +422,6 @@ ActiveRecord::Schema.define(version: 20160430005325) do
     t.integer  "secondary_category_id",     limit: 4
     t.integer  "mod_stars_count",           limit: 4,   default: 0
     t.integer  "reviews_count",             limit: 4,   default: 0
-    t.integer  "mod_versions_count",        limit: 4,   default: 0
     t.integer  "compatibility_notes_count", limit: 4,   default: 0
     t.integer  "install_order_notes_count", limit: 4,   default: 0
     t.integer  "load_order_notes_count",    limit: 4,   default: 0
@@ -530,7 +499,7 @@ ActiveRecord::Schema.define(version: 20160430005325) do
   add_index "plugin_record_groups", ["plugin_id"], name: "pl_id", using: :btree
 
   create_table "plugins", force: :cascade do |t|
-    t.integer "mod_version_id",   limit: 4
+    t.integer "mod_id",           limit: 4
     t.string  "filename",         limit: 64
     t.string  "author",           limit: 128
     t.string  "description",      limit: 512
@@ -540,7 +509,7 @@ ActiveRecord::Schema.define(version: 20160430005325) do
     t.integer "file_size",        limit: 4
   end
 
-  add_index "plugins", ["mod_version_id"], name: "mv_id", using: :btree
+  add_index "plugins", ["mod_id"], name: "mv_id", using: :btree
 
   create_table "quotes", force: :cascade do |t|
     t.integer "game_id", limit: 4,   null: false
@@ -769,6 +738,8 @@ ActiveRecord::Schema.define(version: 20160430005325) do
   add_foreign_key "compatibility_note_history_entries", "mods", column: "compatibility_mod_id"
   add_foreign_key "compatibility_note_history_entries", "plugins", column: "compatibility_plugin_id"
   add_foreign_key "compatibility_note_history_entries", "users", column: "submitted_by"
+  add_foreign_key "compatibility_notes", "mods", column: "first_mod"
+  add_foreign_key "compatibility_notes", "mods", column: "second_mod"
   add_foreign_key "compatibility_notes", "plugins", column: "compatibility_plugin_id", name: "compatibility_notes_ibfk_2"
   add_foreign_key "compatibility_notes", "users", column: "submitted_by", name: "compatibility_notes_ibfk_1"
   add_foreign_key "config_files", "games"
@@ -791,6 +762,8 @@ ActiveRecord::Schema.define(version: 20160430005325) do
   add_foreign_key "load_order_notes", "users", column: "submitted_by"
   add_foreign_key "lover_infos", "mods"
   add_foreign_key "masters", "plugins", name: "masters_ibfk_1"
+  add_foreign_key "mod_asset_files", "asset_files"
+  add_foreign_key "mod_asset_files", "mods"
   add_foreign_key "mod_authors", "mods", name: "mod_authors_ibfk_1"
   add_foreign_key "mod_authors", "users", name: "mod_authors_ibfk_2"
   add_foreign_key "mod_list_compatibility_notes", "compatibility_notes"
@@ -814,22 +787,13 @@ ActiveRecord::Schema.define(version: 20160430005325) do
   add_foreign_key "mod_list_tags", "users", column: "submitted_by"
   add_foreign_key "mod_lists", "games"
   add_foreign_key "mod_lists", "users", column: "created_by", name: "mod_lists_ibfk_1"
+  add_foreign_key "mod_requirements", "mods"
+  add_foreign_key "mod_requirements", "mods", column: "required_id"
   add_foreign_key "mod_stars", "mods", name: "mod_stars_ibfk_1"
   add_foreign_key "mod_stars", "users", name: "mod_stars_ibfk_2"
   add_foreign_key "mod_tags", "mods"
   add_foreign_key "mod_tags", "tags"
   add_foreign_key "mod_tags", "users", column: "submitted_by"
-  add_foreign_key "mod_version_compatibility_notes", "compatibility_notes"
-  add_foreign_key "mod_version_compatibility_notes", "mod_versions"
-  add_foreign_key "mod_version_files", "mod_asset_files", name: "mod_version_files_ibfk_2"
-  add_foreign_key "mod_version_files", "mod_versions", name: "mod_version_files_ibfk_1"
-  add_foreign_key "mod_version_install_order_notes", "install_order_notes"
-  add_foreign_key "mod_version_install_order_notes", "mod_versions"
-  add_foreign_key "mod_version_load_order_notes", "load_order_notes"
-  add_foreign_key "mod_version_load_order_notes", "mod_versions"
-  add_foreign_key "mod_version_requirements", "mod_versions"
-  add_foreign_key "mod_version_requirements", "mod_versions", column: "required_id"
-  add_foreign_key "mod_versions", "mods", name: "mod_versions_ibfk_1"
   add_foreign_key "mods", "categories", column: "primary_category_id"
   add_foreign_key "mods", "categories", column: "secondary_category_id"
   add_foreign_key "mods", "games"
@@ -838,7 +802,7 @@ ActiveRecord::Schema.define(version: 20160430005325) do
   add_foreign_key "override_records", "plugins", name: "override_records_ibfk_1"
   add_foreign_key "plugin_errors", "plugins"
   add_foreign_key "plugin_record_groups", "plugins", name: "plugin_record_groups_ibfk_1"
-  add_foreign_key "plugins", "mod_versions", name: "plugins_ibfk_1"
+  add_foreign_key "plugins", "mods"
   add_foreign_key "quotes", "games"
   add_foreign_key "record_groups", "games"
   add_foreign_key "reports", "base_reports"
