@@ -10,10 +10,6 @@ app.service('submitService', function (backend, $q) {
         return backend.retrieve('/workshop_infos/' + modId);
     };
 
-    this.verifyPlugins = function (plugins) {
-        // TODO: Compute CRC32 of plugin files to verify the backend doesn't already have them
-    };
-
     this.submitMod = function (mod, analysis, sources) {
         // select primary source
         var primarySource = sources.nexus || sources.workshop || sources.lab;
