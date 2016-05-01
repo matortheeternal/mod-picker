@@ -137,7 +137,7 @@ app.controller('submitModController', function ($scope, backend, submitService, 
     $scope.checkCategories = function() {
         $scope.categoryMessages = [];
         var selectedCategories = Array.prototype.concat($scope.getSuperCategories(), $scope.mod.categories);
-        selectedCategories.forEach(function(recessiveId, recessiveIndex) {
+        selectedCategories.forEach(function(recessiveId) {
             dominantIds = $scope.getDominantIds(recessiveId);
             dominantIds.forEach(function(dominantId) {
                 var index = selectedCategories.indexOf(dominantId);
@@ -189,7 +189,8 @@ app.controller('submitModController', function ($scope, backend, submitService, 
     $scope.loadAnalysisFile = function(file) {
         var fileReader = new FileReader();
         fileReader.onload = function (event) {
-            $scope.analysis = JSON.parse(event.target.result);
+            var fixedJson = event.target.result.replace('"plugin_record_groups"', '"plugin_record_groups_attributes"').replace('"plugin_errors"', '"plugin_errors_attributes"').replace('"overrides"', '"overrides_attributes"');
+            $scope.analysis = JSON.parse(fixedJson);
             $scope.analysis.nestedAssets = assetUtils.convertDataStringToNestedObject($scope.analysis.assets);
             $scope.$apply();
         };

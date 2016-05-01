@@ -46,7 +46,7 @@
 <div class="stat-item">
     <dt class="stat-title">Record Groups</dt>
     <dd class="stat-data">
-        <span class="stat-data-item" ng-repeat="group in plugin.plugin_record_groups">
+        <span class="stat-data-item" ng-repeat="group in plugin.plugin_record_groups_attributes">
             {{group.sig}}: {{group.record_count}} records, {{group.override_count}} overrides
             <br ng-if="!$last"/>
         </span>
