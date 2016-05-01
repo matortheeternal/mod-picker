@@ -21,7 +21,7 @@ app.service('submitService', function (backend, $q) {
                 is_utility: mod.is_utility,
                 has_adult_content: mod.has_adult_content,
                 game_id: mod.game_id,
-                released: primarySource.date_submitted,
+                released: primarySource.date_submitted || primarySource.date_added,
                 primary_category_id: mod.categories[0],
                 secondary_category_id: mod.categories[1],
                 nexus_info_id: sources.nexus && sources.nexus.id,

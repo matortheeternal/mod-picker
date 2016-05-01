@@ -200,7 +200,7 @@ app.controller('submitModController', function ($scope, backend, submitService, 
     $scope.modInvalid = function () {
         // submission isn't allowed until the user has scraped a nexus page,
         // provided a mod analysis, and provided at least one category
-        var sourcesValid;
+        var sourcesValid = true;
         $scope.sources.forEach(function(source) {
             sourcesValid = sourcesValid && source.valid;
         });
