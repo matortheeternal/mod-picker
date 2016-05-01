@@ -75,20 +75,4 @@ app.service('categoryService', function ($q, backend) {
         });
         return nestedCategoriesPromise.promise;
     };
-
-    this.getCategoryById = function(inputId) {
-        var categoryPromise = $q.defer();
-
-        backend.retrieve('/categories', {cache: true}).then(function (data) {
-            var returnData = [];
-            data.forEach(function (category) {
-                if (inputId === category.id) {
-                    returnData = category;
-                }
-            });
-            categoryPromise.resolve(returnData);
-        });
-
-        return categoryPromise.promise;
-    };
 });

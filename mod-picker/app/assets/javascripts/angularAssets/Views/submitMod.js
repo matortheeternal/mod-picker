@@ -113,22 +113,34 @@ app.controller('submitModController', function ($scope, backend, submitService, 
     };
 
     $scope.createPriorityMessage = function(recessiveId, dominantId) {
-        recessiveCategory = categoryService.getCategoryById($scope.categories, recessiveId);
-        dominantCategory = categoryService.getCategoryById($scope.categories, dominantId);
-        categoryPriority = $scope.getCategoryPriority(recessiveId, dominantId);
-        messageText = dominantCategory.name + " > " + recessiveCategory.name + "\n" + categoryPriority.description;
+        var recessiveCategory = categoryService.getCategoryById($scope.categories, recessiveId);
+        var dominantCategory = categoryService.getCategoryById($scope.categories, dominantId);
+        var categoryPriority = $scope.getCategoryPriority(recessiveId, dominantId);
+        var messageText = dominantCategory.name + " > " + recessiveCategory.name + "\n" + categoryPriority.description;
         $scope.categoryMessages.push({
             text: messageText,
             klass: "priority-message"
         });
     };
 
+    $scope.getSuperCategories = function() {
+        var superCategories = [];
+        $scope.mod.categories.forEach(function (id) {
+            var superCategory = categoryService.getCategoryById($scope.categories, id).parent_id;
+            if (superCategory && superCategories.indexOf(superCategory) == -1) {
+                superCategories.push(superCategory);
+            }
+        });
+        return superCategories;
+    };
+
     $scope.checkCategories = function() {
         $scope.categoryMessages = [];
-        $scope.mod.categories.forEach(function(recessiveId) {
+        var selectedCategories = Array.prototype.concat($scope.getSuperCategories(), $scope.mod.categories);
+        selectedCategories.forEach(function(recessiveId, recessiveIndex) {
             dominantIds = $scope.getDominantIds(recessiveId);
             dominantIds.forEach(function(dominantId) {
-                var index = $scope.mod.categories.indexOf(dominantId);
+                var index = selectedCategories.indexOf(dominantId);
                 if (index > -1) {
                     $scope.createPriorityMessage(recessiveId, dominantId);
                 }
