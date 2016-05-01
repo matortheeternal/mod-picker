@@ -7,18 +7,23 @@ class ModList < ActiveRecord::Base
   belongs_to :game, :inverse_of => 'mod_lists'
   belongs_to :user, :foreign_key => 'created_by', :inverse_of => 'mod_lists'
 
+  # INSTALL ORDER
   has_many :mod_list_mods, :inverse_of => 'mod_list'
-  has_many :mods, :through => 'mod_list_mods', :inverse_of => 'mod_lists', counter_cache: false
+  has_many :mods, :through => 'mod_list_mods', :inverse_of => 'mod_lists'
+
+  # LOAD ORDER
+  has_many :plugins, :through => 'mods'
   has_many :mod_list_plugins, :inverse_of => 'mod_list'
-  has_many :plugins, :through => 'mod_list_plugins', :inverse_of => 'mod_lists', counter_cache: false
+  has_many :active_plugins, :class_name => 'Plugin', :through => 'mod_list_plugins', :source => :plugins
   has_many :custom_plugins, :class_name => 'ModListCustomPlugin', :inverse_of => 'mod_list'
 
+  # ASSOCIATED NOTES
   has_many :mod_list_compatibility_notes, :inverse_of => 'mod_list'
-  has_many :compatibility_notes, :through => 'mod_list_compatibility_notes', :inverse_of => 'mod_lists', counter_cache: :this_does_not_exist_compatibility_note
+  #has_many :compatibility_notes, :through => 'mod_list_compatibility_notes', :inverse_of => 'mod_lists', counter_cache: false
   has_many :mod_list_install_order_notes, :inverse_of => 'mod_list'
-  has_many :install_order_notes, :through => 'mod_list_install_order_notes', :inverse_of => 'mod_lists', counter_cache: :this_does_not_exist_install_order_notes
+  #has_many :install_order_notes, :through => 'mod_list_install_order_notes', :inverse_of => 'mod_lists', counter_cache: false
   has_many :mod_list_load_order_notes, :inverse_of => 'mod_list'
-  has_many :load_order_notes, :through => 'mod_list_load_order_notes', :inverse_of => 'mod_lists'
+  #has_many :load_order_notes, :through => 'mod_list_load_order_notes', :inverse_of => 'mod_lists'
 
   has_many :mod_list_stars, :inverse_of => 'starred_mod_list'
   has_many :user_stars, :through => 'mod_list_stars', :inverse_of => 'starred_mod_lists'
@@ -74,6 +79,25 @@ class ModList < ActiveRecord::Base
     inote_ids.each do |id|
       if current_inote_ids.exclude?(id)
         self.mod_list_install_order_notes.create(install_order_note_id: id)
+      end
+    end
+  end
+
+  def refresh_load_order_notes
+    plugin_ids = plugins.all.ids
+    lnote_ids = LoadOrderNote.where("first_plugin_id in ? AND second_plugin_id in ?", plugin_ids, plugin_ids).ids
+    # delete load order notes that are no longer relevant
+    lnotes = self.mod_list_load_order_notes.all
+    lnotes.each do |n|
+      if lnote_ids.exclude?(n.load_order_note_id)
+        n.delete
+      end
+    end
+    # add new load order notes
+    current_lnote_ids = lnotes.ids
+    lnote_ids.each do |id|
+      if current_lnote_ids.exclude?(id)
+        self.mod_list_load_order_notes.create(load_order_note_id: id)
       end
     end
   end
