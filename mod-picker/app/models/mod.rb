@@ -38,8 +38,8 @@ class Mod < ActiveRecord::Base
 
   # site statistics associated with the mod
   has_one :nexus_infos, :class_name => 'NexusInfo'
-  has_one :lover_infos, :class_name => 'NexusInfo'
-  has_one :workshop_infos, :class_name => 'NexusInfo'
+  has_one :lover_infos, :class_name => 'LoverInfo'
+  has_one :workshop_infos, :class_name => 'WorkshopInfo'
 
   # plugins associated with the mod
   has_many :plugins, :inverse_of => 'mod'
