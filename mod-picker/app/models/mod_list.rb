@@ -7,10 +7,10 @@ class ModList < ActiveRecord::Base
   belongs_to :game, :inverse_of => 'mod_lists'
   belongs_to :user, :foreign_key => 'created_by', :inverse_of => 'mod_lists'
 
-  has_many :mods, :through => 'mod_list_mods', :inverse_of => 'mod_lists', counter_cache: :this_does_not_exist_mods
   has_many :mod_list_mods, :inverse_of => 'mod_list'
-  has_many :plugins, :through => 'mod_list_plugins', :inverse_of => 'mod_lists', counter_cache: :this_does_not_exist_plugins
+  has_many :mods, :through => 'mod_list_mods', :inverse_of => 'mod_lists', counter_cache: false
   has_many :mod_list_plugins, :inverse_of => 'mod_list'
+  has_many :plugins, :through => 'mod_list_plugins', :inverse_of => 'mod_lists', counter_cache: false
   has_many :custom_plugins, :class_name => 'ModListCustomPlugin', :inverse_of => 'mod_list'
 
   has_many :mod_list_compatibility_notes, :inverse_of => 'mod_list'
@@ -38,5 +38,56 @@ class ModList < ActiveRecord::Base
   def init
     self.is_collection ||= false
     self.created ||= DateTime.now
+  end
+
+  def refresh_compatibility_notes
+    mod_ids = mod_list_mods.all.ids
+    cnote_ids = CompatibilityNote.where("first_mod_id in ? AND second_mod_id in ?", mod_ids, mod_ids).ids
+    # delete compatibility notes that are no longer relevant
+    cnotes = self.mod_list_compatibility_notes.all
+    cnotes.each do |c|
+      if cnote_ids.exclude?(c.compatibility_note_id)
+        c.delete
+      end
+    end
+    # add new compatibility notes
+    current_cnote_ids = cnotes.ids
+    cnote_ids.each do |id|
+      if current_cnote_ids.exclude?(id)
+        self.mod_list_compatibility_notes.create(compatibility_note_id: id)
+      end
+    end
+  end
+
+  def refresh_install_order_notes
+    mod_ids = mod_list_mods.all.ids
+    inote_ids = InstallOrderNote.where("first_mod_id in ? AND second_mod_id in ?", mod_ids, mod_ids).ids
+    # delete install order notes that are no longer relevant
+    inotes = self.mod_list_install_order_notes.all
+    inotes.each do |n|
+      if inote_ids.exclude?(n.install_order_note_id)
+        n.delete
+      end
+    end
+    # add new install order notes
+    current_inote_ids = inotes.ids
+    inote_ids.each do |id|
+      if current_inote_ids.exclude?(id)
+        self.mod_list_install_order_notes.create(install_order_note_id: id)
+      end
+    end
+  end
+
+  def incompatible_mods
+    mod_ids = mod_list_mods.all.ids
+    incompatible_notes = CompatibilityNote.where("compatibility_type in ? AND (first_mod_id in ? OR second_mod_id in ?)", [1, 2], mod_ids, mod_ids)
+    incompatible_mod_ids = []
+    incompatible_notes.each do |n|
+      first_id = n.first_mod_id
+      second_id = n.second_mod_id
+      incompatible_mod_ids.push(first_id) if mod_ids.exclude?(first_id)
+      incompatible_mod_ids.push(second_id) if mod_ids.exclude?(second_id)
+    end
+    incompatible_mod_ids.uniq
   end
 end
