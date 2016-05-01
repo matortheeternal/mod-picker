@@ -26,7 +26,7 @@
                 <div class="scraped-data-container" ng-if="nexus || lab || workshop">
                     <div class="scraped-data" ng-if="nexus">
                         <h4>Nexus Mods Data</h4>
-                        <loader data="nexus.id">
+                        <loader data="nexus.id" spinner-class="medium-spinner">
                             <table class="infotable">
                                 <colgroup>
                                     <col span="1" style="width: 160px;">
@@ -68,7 +68,7 @@
 
                     <div class="scraped-data" ng-if="workshop">
                         <h4>Steam Workshop Data</h4>
-                        <loader data="workshop.id">
+                        <loader data="workshop.id" spinner-class="medium-spinner">
                             <table class="infotable">
                                 <colgroup>
                                     <col span="1" style="width: 160px;">
@@ -102,7 +102,7 @@
 
                     <div class="scraped-data" ng-if="lab">
                         <h4>Lover's Lab Data</h4>
-                        <loader data="lab.id">
+                        <loader data="lab.id" spinner-class="medium-spinner">
                             <table class="infotable">
                                 <colgroup>
                                     <col span="1" style="width: 160px;">
