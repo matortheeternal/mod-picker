@@ -109,6 +109,6 @@ class ModsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def mod_params
-      params.require(:mod).permit(:game_id, :name, :aliases, :is_utility, :has_adult_content, :primary_category_id, :secondary_category_id, :released, :tag_names, :asset_paths, :nexus_info_id, :lovers_info_id, :workshop_info_id, :plugin_dumps => [:filename, :author, :description, :crc_hash, :record_count, :override_count, :file_size, :plugin_record_groups => [:sig, :record_count, :override_count], :plugin_errors => [:signature, :form_id, :type, :path, :name, :data], :overrides => [:fid, :sig]])
+      params.require(:mod).permit(:game_id, :name, :aliases, :is_utility, :has_adult_content, :primary_category_id, :secondary_category_id, :released, :nexus_info_id, :lovers_info_id, :workshop_info_id, :tag_names => [], :asset_paths => [], :plugin_dumps => [:filename, :author, :description, :crc_hash, :record_count, :override_count, :file_size, :plugin_record_groups => [:sig, :record_count, :override_count], :plugin_errors => [:signature, :form_id, :type, :path, :name, :data], :overrides => [:fid, :sig]])
     end
 end

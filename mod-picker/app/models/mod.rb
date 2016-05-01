@@ -43,6 +43,9 @@ class Mod < ActiveRecord::Base
 
   # plugins associated with the mod
   has_many :plugins, :inverse_of => 'mod'
+  # assets associated with the mod
+  has_many :mod_asset_files, :inverse_of => 'mod'
+  has_many :asset_files, :through => :mod_asset_files, :inverse_of => 'mods'
   
   # users who can edit the mod
   has_many :mod_authors, :inverse_of => 'mod'
@@ -101,7 +104,7 @@ class Mod < ActiveRecord::Base
     if @asset_paths
       @asset_paths.each do |path|
         asset_file = AssetFile.find_or_create_by(filepath: path)
-        self.assets.create(asset_file_id: asset_file.id)
+        self.mod_asset_files.create(asset_file_id: asset_file.id)
       end
     end
   end
@@ -109,7 +112,7 @@ class Mod < ActiveRecord::Base
   def create_plugins
     if @plugin_dumps
       @plugin_dumps.each do |dump|
-        if Plugin.find_by(filename: dump.filename, crc_hash: dump.crc_hash).nil?
+        if Plugin.find_by(filename: dump[:filename], crc_hash: dump[:crc_hash]).nil?
           self.plugins.create(dump)
         end
       end
@@ -174,6 +177,7 @@ class Mod < ActiveRecord::Base
   end
 
   def create_associations
+    byebug
     self.create_tags
     self.create_asset_files
     self.create_plugins
