@@ -27,6 +27,7 @@ app.service('submitService', function (backend, $q) {
                 nexus_info_id: sources.nexus && sources.nexus.id,
                 workshop_info_id: sources.workshop && sources.workshop.id,
                 lover_info_id: sources.lab && sources.lab.id,
+                tag_names: mod.tags,
                 asset_paths: analysis.assets,
                 plugin_dumps: analysis.plugins
             }
