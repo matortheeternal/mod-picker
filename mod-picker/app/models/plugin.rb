@@ -7,7 +7,7 @@ class Plugin < ActiveRecord::Base
   has_many :children, :class_name => 'Master', :inverse_of => 'master_plugin'
 
   # plugin contents
-  has_many :record_groups, :class_name => 'PluginRecordGroup', :inverse_of => 'plugin'
+  has_many :plugin_record_groups, :inverse_of => 'plugin'
   has_many :overrides, :class_name => 'OverrideRecord', :inverse_of => 'plugin'
   has_many :plugin_errors, :inverse_of => 'plugin'
 
@@ -29,5 +29,5 @@ class Plugin < ActiveRecord::Base
   validates :description, length: {in: 0..512}
   validates :crc_hash, length: {in: 1..8}
 
-  accepts_nested_attributes_for :dummy_masters, :masters, :record_groups, :overrides, :plugin_errors
+  accepts_nested_attributes_for :dummy_masters, :masters, :plugin_record_groups, :overrides, :plugin_errors
 end
