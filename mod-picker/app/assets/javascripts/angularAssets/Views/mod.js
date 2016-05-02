@@ -20,7 +20,6 @@ app.filter('percentage', function() {
 app.controller('modController', function ($scope, $q, $stateParams, modService, pluginService, categoryService, gameService, assetUtils, userService) {
     $scope.tags = [];
     $scope.newTags = [];
-    $scope.reviewsFilter = 'reputation';
 
     //initialization /of the mod object
     modService.retrieveMod($stateParams.modId).then(function (mod) {
@@ -37,6 +36,18 @@ app.controller('modController', function ($scope, $q, $stateParams, modService, 
         // getting games
         gameService.retrieveGames().then(function (data) {
             $scope.game = gameService.getGameById(data, mod.game_id);
+        });
+
+        // retrieve notes
+        //TODO: This should happen when we switch tabs
+        modService.retrieveCompatibilityNotes(mod.id).then(function(notes) {
+            $scope.compatibilityNotes = notes;
+        });
+        modService.retrieveInstallOrderNotes(mod.id).then(function(notes) {
+            $scope.installOrderNotes = notes;
+        });
+        modService.retrieveLoadOrderNotes(mod.id).then(function(notes) {
+            $scope.loadOrderNotes = notes;
         });
 
         //initializing the newCompatibilityNote object
@@ -63,48 +74,12 @@ app.controller('modController', function ($scope, $q, $stateParams, modService, 
     $scope.tabs = [
         { name: 'Reviews', url: '/resources/partials/showMod/reviews.html' },
         { name: 'Compatibility', url: '/resources/partials/showMod/compatibility.html' },
-        { name: 'Install & Load Order', url: '/resources/partials/showMod/installation.html' },
+        { name: 'Install Order', url: '/resources/partials/showMod/installOrder.html' },
+        { name: 'Load Order', url: '/resources/partials/showMod/loadOrder.html' },
         { name: 'Analysis', url: '/resources/partials/showMod/analysis.html' }
     ];
 
     $scope.currentTab = $scope.tabs[0];
-
-    //this prevents the sort by dropdowns from displaying an undefined option
-    $scope.compatibilityNotesFilter = '-sortBySeverity';
-
-    //variables for the stat block expandables
-    $scope.nexusExpanded = false;
-    $scope.steamExpanded = false;
-    $scope.loversExpanded = false;
-
-    //getting the names and ids of the required mods
-    $scope.updateVersion = function (modVersion) {
-        //update notes
-        //TODO: we either should separate those (only load the current tab) or merge them into one request-function
-        modService.retrieveCompatibilityNotes(modVersion.id).then(function(notes) {
-            $scope.compatibilityNotes = notes;
-        });
-        modService.retrieveInstallOrderNotes(modVersion.id).then(function(notes) {
-            $scope.installOrderNotes = notes;
-        });
-        modService.retrieveLoadOrderNotes(modVersion.id).then(function(notes) {
-            $scope.loadOrderNotes = notes;
-        });
-
-        //update requirements
-
-        //TODO: this seems dangerous as it might kill our server by firing many expensive requests. I don't have a solution yet though.
-        $scope.requirements = [];
-        modVersion.required_mods.forEach(function(requirement) {
-            modService.retrieveMod(requirement.required_id).then(function(mod) {
-                $scope.requirements.push({
-                    name: mod.name,
-                    id: mod.id,
-                    aliases: mod.aliases
-                });
-            });
-        });
-    };
 
     //update the average rating of the new review
     $scope.updateOverallRating = function() {
