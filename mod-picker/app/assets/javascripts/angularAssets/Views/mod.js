@@ -24,7 +24,6 @@ app.controller('modController', function ($scope, $q, $stateParams, modService, 
     //initialization /of the mod object
     modService.retrieveMod($stateParams.modId).then(function (mod) {
         $scope.mod = mod;
-        $scope.currentVersion = mod.mod_versions[0];
         $scope.statusClass = "status-" + $scope.mod.status;
         $scope.mod.status = $scope.mod.status.capitalize();
 
