@@ -83,20 +83,20 @@
                     <h3 class="section-title">Sources</h3>
                     <section class="sources">
                         <!-- TODO: I feel like this redundancy here can be killed with a directive -->
-                        <a ng-href="http://www.nexusmods.com/{{game}}/mods/{{mod.nexus_infos.id}}">
-                            <div class="action-box source-box" ng-if="mod.nexus_infos">
+                        <a ng-if="mod.nexus_infos" ng-href="http://www.nexusmods.com/{{game.nexus_name}}/mods/{{mod.nexus_infos.id}}">
+                            <div class="action-box source-box">
                                 <img src="/assets/nexus_logo" class="source-image"/>
                                 <span class="source-label">Nexus</span>
                             </div>
                         </a>
-                        <a ng-href="">
-                            <div class="action-box source-box" ng-if="mod.workshop_infos">
+                        <a ng-if="mod.workshop_infos" ng-href="http://steamcommunity.com/sharedfiles/filedetails/{{mod.workshop_infos.id}}">
+                            <div class="action-box source-box">
                                 <img src="/assets/workshop_logo" class="source-image" />
                                 <span class="source-label">Steam</span>
                             </div>
                         </a>
-                        <a ng-href="">
-                            <div class="action-box source-box" ng-if="true">
+                        <a ng-if="mod.lover_infos" ng-href="http://www.loverslab.com/files/file/{{mod.lover_infos.id}}">
+                            <div class="action-box source-box">
                                 <img src="/assets/lab_logo" class="source-image" />
                                 <span class="source-label">Lab</span>
                             </div>
