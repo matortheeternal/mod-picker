@@ -132,7 +132,7 @@
 
                     <!--Site Stats-->
                     <!-- TODO: kill redundancy-->
-                    <div class="stat-block" ng-if="mod.nexus_infos">
+                    <div class="stat-block" ng-if="mod.nexus_infos && mod.nexus_infos.has_stats">
                         <div class="stat-block-title" ng-click="nexusExpanded = !nexusExpanded">
                            <h3 class="section-title">Nexus Mods stats</h3>
                            <i class="fa fa-plus stat-expander" aria-hidden="true" ng-hide="nexusExpanded"></i>
@@ -142,7 +142,7 @@
                             <nexus-stats></nexus-stats>
                         </section>
                     </div>
-                    <div class="stat-block" ng-if="mod.workshop_infos">
+                    <div class="stat-block" ng-if="mod.workshop_infos && mod.workshop_infos.has_stats">
                         <div class="stat-block-title" ng-click="workshopExpanded = !workshopExpanded">
                            <h3 class="section-title">Steam Workshop stats</h3>
                            <i class="fa fa-plus stat-expander" aria-hidden="true" ng-hide="workshopExpanded"></i>
@@ -152,7 +152,7 @@
                             <workshop-stats></workshop-stats>
                         </section>
                     </div>
-                    <div class="stat-block" ng-if="mod.lovers_info">
+                    <div class="stat-block" ng-if="mod.lover_infos && mod.lover_infos.has_stats">
                         <div class="stat-block-title" ng-click="labExpanded = !labExpanded">
                            <h3 class="section-title">Lover's Lab stats</h3>
                            <i class="fa fa-plus stat-expander" aria-hidden="true" ng-hide="labExpanded"></i>
