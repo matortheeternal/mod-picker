@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160501052340) do
+ActiveRecord::Schema.define(version: 20160502200624) do
 
   create_table "agreement_marks", id: false, force: :cascade do |t|
     t.integer "incorrect_note_id", limit: 4
@@ -233,6 +233,7 @@ ActiveRecord::Schema.define(version: 20160501052340) do
     t.integer  "file_size",       limit: 4,   default: 0
     t.integer  "views",           limit: 4,   default: 0
     t.integer  "downloads",       limit: 4,   default: 0
+    t.boolean  "has_stats",                   default: false
   end
 
   add_index "lover_infos", ["mod_id"], name: "fk_rails_614a886dc0", using: :btree
@@ -457,6 +458,7 @@ ActiveRecord::Schema.define(version: 20160501052340) do
     t.float    "udl_to_posts",        limit: 24,  default: 0.0
     t.float    "tdl_to_udl",          limit: 24,  default: 0.0
     t.float    "views_to_tdl",        limit: 24,  default: 0.0
+    t.boolean  "has_stats",                       default: false
   end
 
   add_index "nexus_infos", ["game_id"], name: "fk_rails_46e3032463", using: :btree
@@ -714,6 +716,7 @@ ActiveRecord::Schema.define(version: 20160501052340) do
     t.integer  "file_size",         limit: 4,   default: 0
     t.integer  "images_count",      limit: 4,   default: 0
     t.integer  "videos_count",      limit: 4,   default: 0
+    t.boolean  "has_stats",                     default: false
   end
 
   add_index "workshop_infos", ["mod_id"], name: "fk_rails_8707144ad7", using: :btree
