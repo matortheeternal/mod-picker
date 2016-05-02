@@ -86,16 +86,19 @@
                         <a ng-href="http://www.nexusmods.com/{{game}}/mods/{{mod.nexus_infos.id}}">
                             <div class="action-box source-box" ng-if="mod.nexus_infos">
                                 <img src="/assets/nexus_logo" class="source-image"/>
+                                <span class="source-label">Nexus</span>
                             </div>
                         </a>
                         <a ng-href="">
-                            <div class="action-box source-box" ng-if="mod.steam_info">
-                                <img src="/assets/steam_logo" class="source-image" />
+                            <div class="action-box source-box" ng-if="mod.workshop_infos">
+                                <img src="/assets/workshop_logo" class="source-image" />
+                                <span class="source-label">Steam</span>
                             </div>
                         </a>
                         <a ng-href="">
-                            <div class="action-box source-box" ng-if="mod.lovers_info">
-                                <img src="/assets/lovers_logo" class="source-image" />
+                            <div class="action-box source-box" ng-if="true">
+                                <img src="/assets/lab_logo" class="source-image" />
+                                <span class="source-label">Lab</span>
                             </div>
                         </a>
                     </section>
@@ -117,8 +120,8 @@
                     <!-- TODO: one line if for readability (even though I like the idea of this ;3 )-->
                     <h3 class="section-title">Categor<span ng-hide="secondCategory">y</span><span ng-show="secondCategory">ies</span></h3>
                     <section>
-                        <div ng-show="mod.primary_category_id" class="action-box">{{firstCategory}}</div>
-                        <div ng-show="mod.secondary_category_id" class="action-box">{{secondCategory}}</div>
+                        <div ng-show="mod.primary_category_id" class="action-box">{{primaryCategory.name}}</div>
+                        <div ng-show="mod.secondary_category_id" class="action-box">{{secondaryCategory.name}}</div>
                     </section>
 
                     <!--Tags-->

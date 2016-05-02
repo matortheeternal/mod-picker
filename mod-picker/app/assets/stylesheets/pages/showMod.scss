@@ -2,7 +2,7 @@
   color: $action_text_color;
   text-align: center;
   background-color: $action_color;
-  padding: 4px 10px 4px 10px;
+  padding: 4px 8px;
   display: inline-block;
   font-size: 12px;
   border-radius: 4%;
@@ -131,6 +131,9 @@
 .source-box {
   font-size: 16px;
   display: inline-flex;
+  .source-label {
+    padding: 5px 2px;
+  }
 }
 
 .source-box:hover {
