@@ -225,7 +225,9 @@ class Mod < ActiveRecord::Base
   def as_json(options={})
     default_options = {
         :include => {
-            :nexus_infos => {:except => [:mod_id, :changelog]},
+            :nexus_infos => {:except => [:mod_id]},
+            :workshop_infos => {:except => [:mod_id]},
+            :lover_infos => {:except => [:mod_id]},
             :authors => {:only => [:id, :username]}
         }
     }
