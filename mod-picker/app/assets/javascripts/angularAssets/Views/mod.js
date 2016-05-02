@@ -29,7 +29,6 @@ app.controller('modController', function ($scope, $q, $stateParams, modService, 
 
         // getting categories
         categoryService.retrieveCategories().then(function (data) {
-            $scope.categories = data;
             $scope.primaryCategory = categoryService.getCategoryById(data, mod.primary_category_id);
             $scope.secondaryCategory = categoryService.getCategoryById(data, mod.secondary_category_id);
         });
