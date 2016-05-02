@@ -17,31 +17,27 @@ app.filter('percentage', function() {
   };
 });
 
-app.controller('modController', function ($scope, $q, $stateParams, modService, pluginService, categoryService, assetUtils, userService) {
+app.controller('modController', function ($scope, $q, $stateParams, modService, pluginService, categoryService, gameService, assetUtils, userService) {
     $scope.tags = [];
     $scope.newTags = [];
 
     //initialization /of the mod object
     modService.retrieveMod($stateParams.modId).then(function (mod) {
         $scope.mod = mod;
-        $scope.statusClass = "status-" + $scope.mod.status;
-        $scope.mod.status = $scope.mod.status.capitalize();
+        $scope.statusClass = "status-" + mod.status;
+        $scope.mod.status = mod.status.capitalize();
 
-        //getting the actual names of the categories
+        // getting categories
         categoryService.retrieveCategories().then(function (data) {
             $scope.categories = data;
             $scope.primaryCategory = categoryService.getCategoryById(data, mod.primary_category_id);
             $scope.secondaryCategory = categoryService.getCategoryById(data, mod.secondary_category_id);
         });
 
-        //TODO: I don't like it as its static stuff in the frontend. Looks a bit dirty to me.
-        //setting the name of the current game for the nexus links
-        if ($scope.mod.game_id === 1) {
-            $scope.game = "skyrim";
-        }
-        else if ($scope.mod.game_id === 2) {
-            $scope.game = "fallout4";
-        }
+        // getting games
+        gameService.retrieveGames().then(function (data) {
+            $scope.game = gameService.getGameById(data, mod.game_id);
+        });
 
         //initializing the newCompatibilityNote object
         $scope.newCompatibilityNote = {};
