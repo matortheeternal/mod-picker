@@ -2,7 +2,7 @@
 	<div class="mod-tab-action sort-by-dropdown">
 		<strong>Sort By: </strong>
 		<div class="select">
-			<select ng-model="reviewsFilter">
+			<select ng-model="reviewsFilter" ng-init="reviewsFilter = 'reputation'">
 				<option value="reputation">Reputation</option>
 				<option value="severity">Severity</option>
 				<option value="submitted">Date Submitted</option>
