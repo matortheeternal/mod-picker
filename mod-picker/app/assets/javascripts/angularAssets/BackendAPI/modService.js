@@ -42,25 +42,25 @@ app.service('modService', function (backend, $q) {
         return mods.promise;
     };
 
-    this.retrieveCompatibilityNotes = function (modVersionId) {
+    this.retrieveCompatibilityNotes = function (modId) {
         var compatibilityNotes = $q.defer();
-        backend.retrieve('/mod_versions/' + modVersionId + '/compatibility_notes').then(function (data) {
+        backend.retrieve('/mods/' + modId + '/compatibility_notes').then(function (data) {
             compatibilityNotes.resolve(data);
         });
         return compatibilityNotes.promise;
     };
 
-    this.retrieveInstallOrderNotes = function (modVersionId) {
+    this.retrieveInstallOrderNotes = function (modId) {
         var installOrderNotes = $q.defer();
-        backend.retrieve('/mod_versions/' + modVersionId + '/install_order_notes').then(function (data) {
+        backend.retrieve('/mods/' + modId + '/install_order_notes').then(function (data) {
             installOrderNotes.resolve(data);
         });
         return installOrderNotes.promise;
     };
 
-    this.retrieveLoadOrderNotes = function (modVersionId) {
+    this.retrieveLoadOrderNotes = function (modId) {
         var loadOrderNotes = $q.defer();
-        backend.retrieve('/mod_versions/' + modVersionId + '/load_order_notes').then(function (data) {
+        backend.retrieve('/mods/' + modId + '/load_order_notes').then(function (data) {
             loadOrderNotes.resolve(data);
         });
         return loadOrderNotes.promise;
