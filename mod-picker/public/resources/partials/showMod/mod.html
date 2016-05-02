@@ -130,36 +130,36 @@
                         <tag-selector active-tags="mod.tags" new-tags="newTags" max-tags="10" show-mods-count="true" show-add="userCanAddTags" ></tag-selector>
                     </section>
 
-                    <!--Nexus Stats-->
+                    <!--Site Stats-->
                     <!-- TODO: kill redundancy-->
                     <div class="stat-block" ng-if="mod.nexus_infos">
                         <div class="stat-block-title" ng-click="nexusExpanded = !nexusExpanded">
-                           <h3 class="section-title">Nexus stats</h3>
+                           <h3 class="section-title">Nexus Mods stats</h3>
                            <i class="fa fa-plus stat-expander" aria-hidden="true" ng-hide="nexusExpanded"></i>
                            <i class="fa fa-minus stat-expander" aria-hidden="true" ng-show="nexusExpanded"></i>
                         </div>
                         <section ng-show="nexusExpanded">
-                            <nexus-block></nexus-block>
+                            <nexus-stats></nexus-stats>
                         </section>
                     </div>
-                    <div class="stat-block" ng-if="mod.workshop_infos" ng-click="steamExpanded = !steamExpanded">
-                        <div class="stat-block-title">
-                           <h3 class="section-title">Steam stats</h3>
-                           <i class="fa fa-plus stat-expander" aria-hidden="true" ng-hide="nexusExpanded"></i>
-                           <i class="fa fa-minus stat-expander" aria-hidden="true" ng-show="nexusExpanded"></i>
+                    <div class="stat-block" ng-if="mod.workshop_infos">
+                        <div class="stat-block-title" ng-click="workshopExpanded = !workshopExpanded">
+                           <h3 class="section-title">Steam Workshop stats</h3>
+                           <i class="fa fa-plus stat-expander" aria-hidden="true" ng-hide="workshopExpanded"></i>
+                           <i class="fa fa-minus stat-expander" aria-hidden="true" ng-show="workshopExpanded"></i>
                         </div>
-                        <section ng-show="steamExpanded">
-                            <steam-block></steam-block>
+                        <section ng-show="workshopExpanded">
+                            <workshop-stats></workshop-stats>
                         </section>
                     </div>
-                    <div class="stat-block" ng-if="mod.lovers_info" ng-click="loversExpanded = !loversExpanded">
-                        <div class="stat-block-title">
+                    <div class="stat-block" ng-if="mod.lovers_info">
+                        <div class="stat-block-title" ng-click="labExpanded = !labExpanded">
                            <h3 class="section-title">Lover's Lab stats</h3>
-                           <i class="fa fa-plus stat-expander" aria-hidden="true" ng-hide="nexusExpanded"></i>
-                           <i class="fa fa-minus stat-expander" aria-hidden="true" ng-show="nexusExpanded"></i>
+                           <i class="fa fa-plus stat-expander" aria-hidden="true" ng-hide="labExpanded"></i>
+                           <i class="fa fa-minus stat-expander" aria-hidden="true" ng-show="labExpanded"></i>
                         </div>
-                        <section ng-show="loversExpanded">
-                            <lovers-block></lovers-block>
+                        <section ng-show="labExpanded">
+                            <lab-stats></lab-stats>
                         </section>
                     </div>
 
