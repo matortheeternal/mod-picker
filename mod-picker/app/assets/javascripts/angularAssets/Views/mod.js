@@ -20,6 +20,7 @@ app.filter('percentage', function() {
 app.controller('modController', function ($scope, $q, $stateParams, modService, pluginService, categoryService, gameService, assetUtils, userService) {
     $scope.tags = [];
     $scope.newTags = [];
+    $scope.reviewsFilter = 'reputation';
 
     //initialization /of the mod object
     modService.retrieveMod($stateParams.modId).then(function (mod) {
