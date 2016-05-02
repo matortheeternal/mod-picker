@@ -30,6 +30,7 @@ class WorkshopInfo < ActiveRecord::Base
     self.date_updated = DateTime.parse(date_updated_str, workshop_date_format)
 
     # scrape statistics
+    self.has_stats = Rails.application.config.scrape_workshop_statistics
     if Rails.application.config.scrape_workshop_statistics
       self.file_size = stats[0].text.gsub(' MB', '').to_f * 1024 * 1024
       # <.sectionTabs>
