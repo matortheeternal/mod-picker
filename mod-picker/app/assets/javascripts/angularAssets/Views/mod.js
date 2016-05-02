@@ -28,15 +28,10 @@ app.controller('modController', function ($scope, $q, $stateParams, modService, 
         $scope.mod.status = $scope.mod.status.capitalize();
 
         //getting the actual names of the categories
-        categoryService.getCategoryById(mod.primary_category_id).then(function (data) {
-            $scope.firstCategory = data.name;
-            //set initial data specific to the version
-            $scope.updateVersion($scope.currentVersion);
-        });
-        categoryService.getCategoryById(mod.secondary_category_id).then(function (data) {
-            $scope.secondCategory = data.name;
-            //set initial data specific to the version
-            $scope.updateVersion($scope.currentVersion);
+        categoryService.retrieveCategories().then(function (data) {
+            $scope.categories = data;
+            $scope.primaryCategory = categoryService.getCategoryById(data, mod.primary_category_id);
+            $scope.secondaryCategory = categoryService.getCategoryById(data, mod.secondary_category_id);
         });
 
         //TODO: I don't like it as its static stuff in the frontend. Looks a bit dirty to me.
