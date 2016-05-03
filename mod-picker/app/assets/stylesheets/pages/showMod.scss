@@ -120,9 +120,10 @@
 }
 
 .mod-image {
-  width: 100%;
+  display: block;
+  margin: auto;
+  margin-bottom: 20px;
   border: 2px solid $border_color;
-  margin-top: 20px;
 }
 
 .sources {
