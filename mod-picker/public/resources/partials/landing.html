@@ -36,8 +36,7 @@
 		<div class="news-box" ng-repeat="newsPost in newsPosts"> <!-- TODO: needs data for 4 or 5 most recent news posts -->
 			<h3 class="section-title">{{newsPost.title}}</h3>
 			by {{newsPost.author}} {{newsPost.posted | date}}
-			<section ng-class="newsPost.expanded ? 'short-news' : ''">
-				{{newsPost.text_body}}
+			<section marked="newsPost.text_body" ng-class="newsPost.expanded ? 'short-news' : ''">
 			</section>
 			<a ng-click="newsPost.expanded = !newsPost.expanded">Show {{newsPost.expanded ? 'Less' : 'More'}}</a>
 		</div>
