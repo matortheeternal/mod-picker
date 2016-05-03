@@ -41,13 +41,13 @@ form {
       white-space: pre-line;
     }
     .priority-message {
-      background-color: $warning_message_color;
+      background-color: $warning_primary;
     }
     .cat-error-message {
-      background-color: $error_message_color;
+      background-color: $error_primary;
     }
     .cat-success-message {
-      background-color: $success_message_color;
+      background-color: $success_primary;
     }
   }
 
