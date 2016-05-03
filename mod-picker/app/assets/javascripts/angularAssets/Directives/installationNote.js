@@ -1,4 +1,4 @@
-app.directive('iNote', function () {
+app.directive('installationNote', function () {
     return {
         restrict: 'E',
         templateUrl: '/resources/directives/notePartials/installationNote.html',
