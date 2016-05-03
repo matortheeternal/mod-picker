@@ -1,0 +1,35 @@
+<two-columns>
+	<div class="left-column">
+		<div class="recent-box">
+			<h3 class="section-title">Recent Modlists</h3>
+			<section ng-repeat="modlist in modlists"> <!--TODO: needs data for 5 recent modlists -->
+				<h3 class="section-title">{{modlist.name}}</h3>
+				<section>
+					{{modlist.status}} by {{modlist.created_by}} <!--TODO: needs to find the authors username instead of id -->
+					<br>
+					{{modlist.mods_count}} mods, {{modlist.plugins_count}} plugins
+					<br>
+					Last Updated {{modlist.updated}} <!--TODO: needs data for last update date -->
+				</section>
+			</section>
+			<a href="#/modlists">Browse All</a> <!--TODO: link to search sorting by recent using params -->
+		</div>
+
+		<div class="recent-box">
+			<h3 class="section-title">Recent Mods</h3>
+			<section ng-repeat="mod in mods"> <!--TODO: needs data for 5 recent mods -->
+				<img ng-src="{{mod.image}}">
+				<h3 class="section-title">{{mod.name}}</h3>
+				<section>
+					{{mod.status}} by {{mod.submitted_by}} <!--TODO: needs to find the authors username instead of id -->
+					<br>
+					{{modlist.average_rating}} ({{modlist.reviews_count}} Reviews)
+					<br>
+					In {{modlist.modlists_count}} <!-- TODO: needs data for how many modlists the mod is in -->
+				</section>
+			</section>
+			<a href="#/mods">Browse All</a> <!--TODO: link to search sorting by recent using params -->
+		</div>
+
+	</div>
+</two-columns>
