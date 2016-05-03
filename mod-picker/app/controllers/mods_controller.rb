@@ -7,7 +7,14 @@ class ModsController < ApplicationController
     @count =  Mod.includes(:nexus_infos).filter(filtering_params).sort(params[:sort]).count
 
     render :json => {
-      mods: @mods,
+      mods: @mods.as_json({
+          :include => {
+              :nexus_infos => {:except => [:mod_id]},
+              :workshop_infos => {:except => [:mod_id]},
+              :lover_infos => {:except => [:mod_id]},
+              :authors => {:only => [:id, :username]}
+          }
+      }),
       max_entries: @count,
       entries_per_page: Mod.per_page
     }
