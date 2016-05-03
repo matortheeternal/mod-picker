@@ -231,22 +231,23 @@ class Mod < ActiveRecord::Base
               :user => {
                   :only => [:id, :username]
               }
-          }
+          },
+          :nexus_infos => {:except => [:mod_id]},
+          :workshop_infos => {:except => [:mod_id]},
+          :lover_infos => {:except => [:mod_id]},
+          :authors => {:only => [:id, :username]}
       },
-      :methods => :image })
+      :methods => :image
+    })
   end
 
   def as_json(options={})
-    default_options = {
-        :include => {
-            :nexus_infos => {:except => [:mod_id]},
-            :workshop_infos => {:except => [:mod_id]},
-            :lover_infos => {:except => [:mod_id]},
-            :authors => {:only => [:id, :username]}
-        }
-    }
-    options[:include] ||= {}
-    options[:include] = default_options[:include].merge(options[:include])
-    super(options)
+    if options == {}
+      super({
+          :only => [:id, :name]
+      })
+    else
+      super(options)
+    end
   end
 end
