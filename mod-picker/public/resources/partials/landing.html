@@ -7,7 +7,7 @@
 				<section>
 					{{modlist.status}} by {{modlist.created_by}} <!--TODO: needs to find the authors username instead of id -->
 					<br>
-					{{modlist.mods_count}} mods, {{modlist.plugins_count}} plugins
+					{{modlist.mods_count | number}} mods, {{modlist.plugins_count | number}} plugins
 					<br>
 					Last Updated {{modlist.updated}} <!--TODO: needs data for last update date -->
 				</section>
@@ -23,7 +23,7 @@
 				<section>
 					{{mod.status}} by {{mod.submitted_by}} <!--TODO: needs to find the authors username instead of id -->
 					<br>
-					{{modlist.average_rating}} ({{modlist.reviews_count}} Reviews)
+					{{modlist.average_rating | number}} ({{modlist.reviews_count | number}} Reviews)
 					<br>
 					In {{modlist.modlists_count}} <!-- TODO: needs data for how many modlists the mod is in -->
 				</section>
