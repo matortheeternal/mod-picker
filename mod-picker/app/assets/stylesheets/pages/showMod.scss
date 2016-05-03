@@ -68,6 +68,10 @@
   font-weight: 700;
   padding-top: 2px;
   height: 50px;
+  cursor: default;
+  &:hover {
+    background-color: $action_color;
+  }
 }
 
 .reputation-number {
