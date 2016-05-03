@@ -63,10 +63,6 @@ def seed_static_records
       name: "Resources",
       description: "These aren't necessarily mods, but they can be.  These are files which are resources to be used by other modders or mod-users."
   )
-  catPatches = Category.create(
-      name: "Patches",
-      description: "Mods that make mods compatible with each other, or carry the changes from one mod into another."
-  )
   catLocations = Category.create(
       name: "Locations",
       description: "Mods which add or modify locations ingame."
@@ -89,11 +85,11 @@ def seed_static_records
   )
   catFixes = Category.create(
       name: "Fixes",
-      description: "Fixes are mods that fix issues (bugs) in the vanilla game without adding new content."
+      description: "Fixes are mods that fix issues (bugs) in mods or the vanilla game without adding new content."
   )
   catAudiovisual = Category.create(
       name: "Audiovisual",
-      description: "Audiovisual mods are mods which strictly alter the visuals/audio in the game.  So any mod that is strictly graphical or audial would belong in this category.  This category is often superseded by other categories."
+      description: "Audiovisual mods are mods which strictly alter the visuals/audio in the game.  This category is often superseded by other categories."
   )
 
   puts "    #{Category.count} super-categories seeded"
@@ -282,6 +278,10 @@ def seed_static_records
       name: "Fixes - Stability & Performance",
       parent_id: catFixes.id,
       description: "A fix that specifically increases game stability or performance."
+  )
+  Category.create(
+      name: "Fixes - Patches",
+      description: "A fix to make mods compatible with each other, or to carry the changes from one mod into another."
   )
 
   # Audiovisual sub-categories
