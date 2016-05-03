@@ -7,10 +7,15 @@
   font-size: 12px;
   border-radius: 4%;
   margin: 2px;
-}
+  cursor: pointer;
+  -webkit-transition: all 0.2s ease-in-out;
+  -moz-transition: all 0.2s ease-in-out;
+  -o-transition: all 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out;
 
-.green-box {
-  background-color: $success_primary;
+  &:hover {
+    background-color: $bright_action_color;
+  }
 }
 
 .mod-header-box {
@@ -21,12 +26,21 @@
   font-weight: 500;
   .status-good {
     background-color: $success_secondary;
+    &:hover {
+      background-color: $success_primary;
+    }
   }
   .status-dangerous {
     background-color: $error_secondary;
+    &:hover {
+      background-color: $error_primary;
+    }
   }
   .status-outdated {
     background-color: $warning_secondary;
+    &:hover {
+      background-color: $warning_primary;
+    }
   }
 }
 
@@ -144,10 +158,6 @@
   .source-label {
     padding: 5px 2px;
   }
-}
-
-.source-box:hover {
-  background-color: $bright_action_color;
 }
 
 .source-image {
