@@ -8,10 +8,9 @@ class Review < ActiveRecord::Base
   scope :by, -> (id) { where(submitted_by: id) }
 
   belongs_to :user, :foreign_key => 'submitted_by', :inverse_of => 'reviews'
-  
   belongs_to :mod, :inverse_of => 'reviews'
-  belongs_to :review_template, :inverse_of => 'reviews'
-  
+  has_many :review_ratings, :inverse_of => 'review'
+
   has_many :helpful_marks, :as => 'helpfulable'
   has_many :incorrect_notes, :as => 'correctable'
   has_one :base_report, :as => 'reportable'
