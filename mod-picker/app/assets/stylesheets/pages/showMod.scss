@@ -10,7 +10,7 @@
 }
 
 .green-box {
-  background-color: $success_message_color;
+  background-color: $success_primary;
 }
 
 .mod-header-box {
@@ -19,6 +19,15 @@
   padding: 10px;
   font-size: 12px;
   font-weight: 500;
+  .status-good {
+    background-color: $success_secondary;
+  }
+  .status-dangerous {
+    background-color: $error_secondary;
+  }
+  .status-outdated {
+    background-color: $warning_secondary;
+  }
 }
 
 ///header stuff
