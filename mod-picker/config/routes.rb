@@ -63,6 +63,7 @@ Rails.application.routes.draw do
     resources :games, only: [:index]
     resources :quotes, only: [:index]
     resources :record_groups, only: [:index]
+    resources :review_sections, only: [:index]
     resources :user_titles, only: [:index]
 
     # home page
