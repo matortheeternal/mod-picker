@@ -17,7 +17,7 @@ app.filter('percentage', function() {
   };
 });
 
-app.controller('modController', function ($scope, $q, $stateParams, modService, pluginService, categoryService, gameService, assetUtils, userService) {
+app.controller('modController', function ($scope, $q, $stateParams, modService, pluginService, categoryService, gameService, assetUtils, reviewSectionService, userService) {
     $scope.tags = [];
     $scope.newTags = [];
 
@@ -28,9 +28,14 @@ app.controller('modController', function ($scope, $q, $stateParams, modService, 
         $scope.mod.status = mod.status.capitalize();
 
         // getting categories
-        categoryService.retrieveCategories().then(function (data) {
-            $scope.primaryCategory = categoryService.getCategoryById(data, mod.primary_category_id);
-            $scope.secondaryCategory = categoryService.getCategoryById(data, mod.secondary_category_id);
+        categoryService.retrieveCategories().then(function (categories) {
+            $scope.primaryCategory = categoryService.getCategoryById(categories, mod.primary_category_id);
+            $scope.secondaryCategory = categoryService.getCategoryById(categories, mod.secondary_category_id);
+
+            // getting review sections
+            reviewSectionService.retrieveReviewSections().then(function (reviewSections) {
+                $scope.reviewSections = reviewSectionService.getSectionsForCategory(reviewSections, $scope.primaryCategory);
+            });
         });
 
         // getting games
