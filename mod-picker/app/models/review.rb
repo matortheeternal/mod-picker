@@ -16,22 +16,10 @@ class Review < ActiveRecord::Base
   has_one :base_report, :as => 'reportable'
 
   def overall_rating
-    total = self.rating1
-    count = 1
-    if self.rating2.present?
-      total += self.rating2
-      count += 1
-    end
-    if self.rating3.present?
-      total += self.rating3
-      count += 1
-    end
-    if self.rating4.present?
-      total += self.rating4
-      count += 1
-    end
-    if self.rating5.present?
-      total += self.rating5
+    total = 0
+    count = 0
+    self.review_ratings.each do |r|
+      total += r.rating
       count += 1
     end
     total / count
