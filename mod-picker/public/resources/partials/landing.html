@@ -33,12 +33,12 @@
 	</div>
 	<div class="right-column">
 		<h3 class="section-title">Site News</h3>
-		<div class="news-box" ng-repeat="newsPost in newsPosts"> <!-- TODO: needs data for 4 or 5 most recent news posts which include author, posted (date), title, and text_body columns-->
-			<h3 class="section-title">{{newsPost.title}}</h3>
-			by {{newsPost.author}} {{newsPost.posted | date}}
-			<section marked="newsPost.text_body" ng-class="newsPost.expanded ? 'short-news' : ''">
+		<div class="news-box" ng-repeat="article in articles"> <!-- TODO: needs data for 4 or 5 most recent articles -->
+			<h3 class="section-title">{{article.title}}</h3>
+			by {{article.submitted_by}} {{article.created_at | date}}
+			<section marked="article.text_body" ng-class="article.expanded ? 'short-news' : ''">
 			</section>
-			<a ng-click="newsPost.expanded = !newsPost.expanded">Show {{newsPost.expanded ? 'Less' : 'More'}}</a>
+			<a ng-click="article.expanded = !article.expanded">Show {{article.expanded ? 'Less' : 'More'}}</a>
 		</div>
 	</div>
 </two-columns>
