@@ -22,17 +22,13 @@
 	</div>
 </div>
 
-<div class="add-note-title" ng-show="newReview"> Add Review </div>
+<div class="add-note-title" ng-show="newReview">Add Review ({{newReview.overallRating}}/100)</div>
 <div class="add-note-box" ng-show="newReview">
 	<section class="ratings-container">
 		<div class="rating-item" ng-repeat="rating in newReview.ratings">
 			<select class="select" ng-options="section as section.name for section in reviewSections track by section.id" ng-model="rating.section"></select>
 			<input ng-change="rating.rating = formatScore(rating.rating); updateOverallRating()" ng-model="rating.rating">
 		</div>
-	</section>
-	<section>
-		Overall:
-		{{newReview.overallRating}} / 100
 	</section>
 
     <text-area data="newReview.text_body" ng-refresh="true" class="note-text-area"></text-area>
