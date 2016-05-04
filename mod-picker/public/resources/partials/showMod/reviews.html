@@ -27,7 +27,7 @@
 		Add Review
 		({{newReview.overallRating}}/100)
 	</div>
-	<i class="fa fa-times" aria-hidden="true" ng-click="discardNewReview()"></i>
+	<i class="fa fa-times" aria-hidden="true" ng-click="discardReview()"></i>
 </div>
 <div class="add-note-box" ng-show="newReview">
 	<section class="ratings-container">
@@ -39,9 +39,12 @@
 
     <text-area data="newReview.text_body" ng-refresh="true" class="note-text-area"></text-area>
 
-	<input class="btn mod-page-btn" type="submit" value="Submit" ng-click="createCompatibilityNote()"/>
+	<div class="action-button-container">
+		<input class="btn action-btn" type="submit" value="Submit" ng-click="submitReview()"/>
+		<input class="btn action-btn" type="button" value="Discard" ng-click="discardReview()">
+	</div>
 </div>
 
 <div ng-repeat="review in mod.reviews" class="reviews">
 	<review review="review"></review>
-
+</div>

@@ -196,7 +196,7 @@ app.controller('modController', function ($scope, $q, $stateParams, modService, 
     };
 
     // discard a new review object
-    $scope.discardNewReview = function() {
+    $scope.discardReview = function() {
         delete $scope.newReview;
     };
 
