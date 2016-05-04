@@ -159,11 +159,19 @@ input[type="button"], input[type="submit"] {
   }
 }
 
+.action-button-container {
+  text-align: center;
+}
+
 .action-btn {
-  background-color: $action_color;
+  background-color: $bar_color;
+  display: block;
+  margin: 4px;
+  padding: 10px;
+  height: 38px;
 
   &:hover {
-    background-color: $bright_action_color
+    background-color: $bar_highlight_color
   }
 }
 
@@ -389,13 +397,6 @@ form {
     min-width: 180px;
     margin-bottom: 5px;
     margin-top: 5px;
-  }
-
-  input[type="submit"] {
-    display: block;
-    margin: auto;
-    padding: 10px;
-    height: 38px;
   }
 }
 
