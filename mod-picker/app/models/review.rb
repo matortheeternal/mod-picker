@@ -22,7 +22,11 @@ class Review < ActiveRecord::Base
       total += r.rating
       count += 1
     end
-    total / count
+    if count > 0
+      (total.to_f / count)
+    else
+      100.0
+    end
   end
 
   private
