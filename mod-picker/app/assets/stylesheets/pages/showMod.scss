@@ -302,6 +302,14 @@
   margin-top: 20px;
   border: 1px solid $bar_dark_color;
   padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  i {
+    cursor: pointer;
+    margin-right: .5em;
+  }
 }
 
 //add note box

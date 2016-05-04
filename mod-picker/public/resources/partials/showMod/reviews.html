@@ -22,7 +22,13 @@
 	</div>
 </div>
 
-<div class="add-note-title" ng-show="newReview">Add Review ({{newReview.overallRating}}/100)</div>
+<div class="add-note-title" ng-show="newReview">
+	<div>
+		Add Review
+		({{newReview.overallRating}}/100)
+	</div>
+	<i class="fa fa-times" aria-hidden="true" ng-click="discardNewReview()"></i>
+</div>
 <div class="add-note-box" ng-show="newReview">
 	<section class="ratings-container">
 		<div class="rating-item" ng-repeat="rating in newReview.ratings">
