@@ -131,6 +131,53 @@ app.controller('modController', function ($scope, $q, $stateParams, modService, 
                 break;
         }
     };
+
+    // DO NOT DELETE - MAY BE USED AT A FUTURE DATE
+    /*$scope.retrieveReviews = function() {
+        var options = {
+            sort: $scope.sort.reviews || 'reputation'
+        };
+        modService.retrieveReviews($scope.mod.id, options).then(function(reviews) {
+            $scope.mod.reviews = reviews;
+        });
+    };*/
+
+    $scope.retrieveCompatibilityNotes = function() {
+        var options = {
+            sort: $scope.sort.compatibility_notes || 'reputation',
+            filters: {
+                mod_list: $scope.filters.compatibility_notes || true
+            }
+        };
+        modService.retrieveCompatibilityNotes($scope.mod.id, options).then(function(compatibility_notes) {
+            $scope.mod.compatibility_notes = compatibility_notes;
+        });
+    };
+
+    $scope.retrieveInstallOrderNotes = function() {
+        var options = {
+            sort: $scope.sort.compatibility_notes || 'reputation',
+            filters: {
+                mod_list: $scope.filters.install_order_notes
+            }
+        };
+        modService.retrieveInstallOrderNotes($scope.mod.id, options).then(function(install_order_notes) {
+            $scope.mod.install_order_notes = install_order_notes;
+        });
+    };
+
+    $scope.retrieveLoadOrderNotes = function() {
+        var options = {
+            sort: $scope.sort.compatibility_notes || 'reputation',
+            filters: {
+                mod_list: $scope.filters.load_order_notes
+            }
+        };
+        modService.retrieveLoadOrderNotes($scope.mod.id, options).then(function(load_order_notes) {
+            $scope.mod.load_order_notes = load_order_notes;
+        });
+    };
+
     // REVIEW RELATED LOGIC
     // instantiate a new review object
     $scope.startNewReview = function() {
