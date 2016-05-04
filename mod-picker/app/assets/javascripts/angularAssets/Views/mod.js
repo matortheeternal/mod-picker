@@ -134,37 +134,6 @@ app.controller('modController', function ($scope, $q, $stateParams, modService, 
         $scope.newReview.overallRating = sum/$scope.newReview.ratings.length;
     };
 
-    //function to order by severity strings
-    //TODO: I feel like this should either be provided by the server on in some static.js / utils (?)
-    //Also, it probably should work with severityIds (if that's a thing, if not, it should be, as filtering by language keys is freaking dangerous
-    $scope.sortBySeverity = function(severity) {
-        switch (severity) {
-            case "Incompatible":
-                return 5;
-                break;
-
-            case "Partially Incompatible":
-                return 4;
-                break;
-
-            case "Make Custom Patch":
-                return 3;
-                break;
-
-            case "Compatibility Mod":
-                return 2;
-                break;
-
-            case "Compatibility Option":
-                return 1;
-                break;
-
-            default:
-                return 0;
-                break;
-        }
-    };
-
     $scope.getPlugin = function() {
         alert($scope.currentPlugin.id);
     };
