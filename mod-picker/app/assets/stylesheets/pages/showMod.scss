@@ -280,10 +280,11 @@
 .sort-by-dropdown {
   flex-grow: 1;
 
-  .select {
+  select {
     margin-left: 10px;
     margin-right: 10px;
     min-width: 190px;
+    display: inline-block;
   }
 }
 
