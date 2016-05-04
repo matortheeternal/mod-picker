@@ -20,6 +20,12 @@ app.filter('percentage', function() {
 app.controller('modController', function ($scope, $q, $stateParams, modService, pluginService, categoryService, gameService, assetUtils, reviewSectionService, userService) {
     $scope.tags = [];
     $scope.newTags = [];
+    $scope.sort = {};
+    $scope.filters = {
+        compatibility_notes: true,
+        install_order_notes: true,
+        load_order_notes: true
+    };
 
     // SETUP AND DATA RETRIEVAL LOGIC
     //initialization of the mod object
