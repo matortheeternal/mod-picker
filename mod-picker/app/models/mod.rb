@@ -154,13 +154,13 @@ class Mod < ActiveRecord::Base
   end
 
   def compute_average_rating
-    total = 0
+    total = 0.0
     count = 0
     self.reviews.each do |r|
       total += r.overall_rating
       count += 1
     end
-    self.average_rating = (total.to_f / count) if count > 0
+    self.average_rating = (total / count) if count > 0
   end
 
   def compute_reputation
@@ -177,7 +177,6 @@ class Mod < ActiveRecord::Base
   end
 
   def create_associations
-    byebug
     self.create_tags
     self.create_asset_files
     self.create_plugins

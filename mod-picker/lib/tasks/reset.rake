@@ -29,6 +29,8 @@ namespace :reset do
     # tables
     ModListTag.delete_all
     ModTag.delete_all
+    ModAssetFile.delete_all
+    AssetFile.delete_all
     Tag.delete_all
     ModStar.delete_all
     ModListStar.delete_all
@@ -44,7 +46,9 @@ namespace :reset do
     InstallOrderNote.delete_all
     LoadOrderNote.delete_all
     HelpfulMark.delete_all
+    ReviewRating.delete_all
     Review.delete_all
+    ReviewSection.delete_all
     Comment.delete_all
     NexusInfo.delete_all
     LoverInfo.delete_all
