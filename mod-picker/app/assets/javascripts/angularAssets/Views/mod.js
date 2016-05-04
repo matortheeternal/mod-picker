@@ -82,6 +82,7 @@ app.controller('modController', function ($scope, $q, $stateParams, modService, 
         $scope.userCanAddTags = (rep >= 20) || ($scope.user.role === 'admin');
     });
 
+    // TAB RELATED LOGIC
     //set up tab data
     //TODO use the cool ui-router here :D
     $scope.tabs = [
@@ -94,6 +95,42 @@ app.controller('modController', function ($scope, $q, $stateParams, modService, 
 
     $scope.currentTab = $scope.tabs[0];
 
+    $scope.switchTab = function(targetTab) {
+        switch (targetTab.name) {
+            // DO NOT DELETE - MAY BE USED AT A FUTURE DATE
+            /*case 'Reviews':
+                if ($scope.mod.reviews == null) {
+                    $scope.retrieveReviews();
+                }
+                break;*/
+            case 'Compatibility':
+                if ($scope.mod.compatibility_notes == null) {
+                    $scope.retrieveCompatibilityNotes();
+                }
+                break;
+            case 'Install Order':
+                if ($scope.mod.install_order_notes == null) {
+                    modService.retrieveInstallOrderNotes($scope.mod.id).then(function(ionotes) {
+                        $scope.mod.install_order_notes = ionotes;
+                    });
+                }
+                break;
+            case 'Load Order':
+                if ($scope.mod.load_order_notes == null) {
+                    modService.retrieveLoadOrderNotes($scope.mod.id).then(function(lonotes) {
+                        $scope.mod.load_order_notes = lonotes;
+                    });
+                }
+                break;
+            case 'Analysis':
+                if ($scope.mod.analysis == null) {
+                    modService.retrieveAnalysis($scope.mod.id).then(function(analysis) {
+                        $scope.mod.analysis = analysis;
+                    });
+                }
+                break;
+        }
+    };
     // REVIEW RELATED LOGIC
     // instantiate a new review object
     $scope.startNewReview = function() {
