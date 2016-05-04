@@ -42,6 +42,7 @@ class NexusInfo < ActiveRecord::Base
     self.date_updated = DateTime.parse(date_updated_str, nexus_date_format)
 
     # scrape statistics
+    self.has_stats = Rails.application.config.scrape_nexus_statistics
     if Rails.application.config.scrape_nexus_statistics
       self.endorsements = doc.at_css("#span_endors_number").text.gsub(',', '')
       self.unique_downloads = doc.at_css(".file-unique-dls strong").text.gsub(',', '')

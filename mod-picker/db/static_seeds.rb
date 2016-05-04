@@ -63,10 +63,6 @@ def seed_static_records
       name: "Resources",
       description: "These aren't necessarily mods, but they can be.  These are files which are resources to be used by other modders or mod-users."
   )
-  catPatches = Category.create(
-      name: "Patches",
-      description: "Mods that make mods compatible with each other, or carry the changes from one mod into another."
-  )
   catLocations = Category.create(
       name: "Locations",
       description: "Mods which add or modify locations ingame."
@@ -89,11 +85,11 @@ def seed_static_records
   )
   catFixes = Category.create(
       name: "Fixes",
-      description: "Fixes are mods that fix issues (bugs) in the vanilla game without adding new content."
+      description: "Fixes are mods that fix issues (bugs) in mods or the vanilla game without adding new content."
   )
   catAudiovisual = Category.create(
       name: "Audiovisual",
-      description: "Audiovisual mods are mods which strictly alter the visuals/audio in the game.  So any mod that is strictly graphical or audial would belong in this category.  This category is often superseded by other categories."
+      description: "Audiovisual mods are mods which strictly alter the visuals/audio in the game.  This category is often superseded by other categories."
   )
 
   puts "    #{Category.count} super-categories seeded"
@@ -148,7 +144,7 @@ def seed_static_records
       parent_id: catLocations.id,
       description: "Mods which add completely new lands to explore."
   )
-  Category.create(
+  catNewPlayerHomes = Category.create(
       name: "Locations - New Player Homes",
       parent_id: catLocations.id,
       description: "Mods which add new player homes to the game.  This include all sorts of residences ranging from tree houses to castles."
@@ -283,6 +279,10 @@ def seed_static_records
       parent_id: catFixes.id,
       description: "A fix that specifically increases game stability or performance."
   )
+  Category.create(
+      name: "Fixes - Patches",
+      description: "A fix to make mods compatible with each other, or to carry the changes from one mod into another."
+  )
 
   # Audiovisual sub-categories
   Category.create(
@@ -405,6 +405,271 @@ def seed_static_records
   )
 
   puts "    #{CategoryPriority.count} category priorities seeded"
+
+
+  #==================================================
+  # CREATE REVIEW SECTIONS
+  #==================================================
+
+  puts "\nSeeding review sections"
+
+  ### Audiovisual ###
+  ReviewSection.create(
+      category_id: catAudiovisual.id,
+      name: "Aesthetics",
+      prompt: "Does the mod look/sound good?  Are the assets high quality?",
+      default: true
+  )
+  ReviewSection.create(
+      category_id: catAudiovisual.id,
+      name: "Consistency",
+      prompt: "Does the mod fit in your game?  Does it improve your gameplay experience?",
+      default: true
+  )
+  ReviewSection.create(
+      category_id: catAudiovisual.id,
+      name: "Performance",
+      prompt: "Does the mod cause stuttering or a large reduction in average FPS?  Keep the performance of other mods which do similar things in mind.",
+      default: true
+  )
+  ReviewSection.create(
+      category_id: catAudiovisual.id,
+      name: "Enjoyment",
+      prompt: "Do you enjoy using the mod?  What do you enjoy about it?",
+      default: true
+  )
+  ### Character Appearance ###
+  ReviewSection.create(
+      category_id: catCharacter.id,
+      name: "Aesthetics",
+      prompt: "Does the mod look good?  Are the textures and models high quality?",
+      default: true
+  )
+  ReviewSection.create(
+      category_id: catCharacter.id,
+      name: "Consistency",
+      prompt: "Does the mod fit in your game?  Does it improve your gameplay experience?",
+      default: true
+  )
+  ReviewSection.create(
+      category_id: catCharacter.id,
+      name: "Performance",
+      prompt: "Does the mod cause stuttering or a large reduction in average FPS?  Keep the performance of other mods which do similar things in mind."
+  )
+  ReviewSection.create(
+      category_id: catCharacter.id,
+      name: "Enjoyment",
+      prompt: "Do you enjoy using the mod?  What do you enjoy about it?",
+      default: true
+  )
+  ### Fixes ###
+  ReviewSection.create(
+      category_id: catFixes.id,
+      name: "Consistency",
+      prompt: "Does the fix retain the spirit and features of the content it targets?",
+      default: true
+  )
+  ReviewSection.create(
+      category_id: catFixes.id,
+      name: "Functionality",
+      prompt: "Does the fix resolve all of the issues with the content it targets, and does it work?",
+      default: true
+  )
+  ### Gameplay ###
+  ReviewSection.create(
+      category_id: catGameplay.id,
+      name: "Aesthetics",
+      prompt: "Does the mod look/sound good?  Are the assets high quality?"
+  )
+  ReviewSection.create(
+      category_id: catGameplay.id,
+      name: "Consistency",
+      prompt: "Does the mod fit in your game?  Does the mod improve your gameplay experience?  Is the mod balanced?",
+      default: true
+  )
+  ReviewSection.create(
+      category_id: catGameplay.id,
+      name: "Concept",
+      prompt: "Do you like the idea behind the mod?  Is the idea original or unique?"
+  )
+  ReviewSection.create(
+      category_id: catGameplay.id,
+      name: "Functionality",
+      prompt: "Does the mod provide valuable or unique functionality?  Does it do what it’s supposed to do, and does it do it well?",
+      default: true
+  )
+  ReviewSection.create(
+      category_id: catGameplay.id,
+      name: "Enjoyment",
+      prompt: "Do you enjoy using the mod?  What do you enjoy about it?",
+      default: true
+  )
+  # FOR QUEST MODS
+  ReviewSection.create(
+      category_id: catQuests.id,
+      name: "Writing",
+      prompt: "Is the story interesting and engaging? Does the dialogue fit the characters? Are the characters interesting?",
+      default: true
+  )
+  ### Items ###
+  ReviewSection.create(
+      category_id: catItems.id,
+      name: "Aesthetics",
+      prompt: "Does the mod look/sound good?  Are the assets high quality?",
+      default: true
+  )
+  ReviewSection.create(
+      category_id: catItems.id,
+      name: "Consistency",
+      prompt: "Do the items fit in your game?  Are they balanced?  Is acquiring the items too easy or too difficult?",
+      default: true
+  )
+  ReviewSection.create(
+      category_id: catItems.id,
+      name: "Concept",
+      prompt: "Do you like the idea behind the mod?  Is the idea original or unique?"
+  )
+  ReviewSection.create(
+      category_id: catItems.id,
+      name: "Enjoyment",
+      prompt: "Do you enjoy using the mod?  What do you enjoy about it?",
+      default: true
+  )
+  ### Locations ###
+  ReviewSection.create(
+      category_id: catLocations.id,
+      name: "Aesthetics",
+      prompt: "Does the Location look good?  Is it designed well and are the textures/models high quality?  Does the interior design look good?  Are there unique/custom visuals which make it stand out?",
+      default: true
+  )
+  ReviewSection.create(
+      category_id: catLocations.id,
+      name: "Performance",
+      prompt: "Does the mod cause stuttering or a large reduction in average FPS?  Keep the performance of other mods which do similar things in mind."
+  )
+  ReviewSection.create(
+      category_id: catLocations.id,
+      name: "Consistency",
+      prompt: "Does the location fit in your game?  Does it improve your gameplay experience?",
+      default: true
+  )
+  ReviewSection.create(
+      category_id: catLocations.id,
+      name: "Concept",
+      prompt: "Do you like the idea behind the mod?  Is the idea original or unique?"
+  )
+  ReviewSection.create(
+      category_id: catLocations.id,
+      name: "Writing",
+      prompt: "Is the story interesting and engaging? Does the dialogue fit the characters? Are the characters interesting?",
+      default: true
+  )
+  ReviewSection.create(
+      category_id: catLocations.id,
+      name: "Voice Acting",
+      prompt: "Is the recording decent quality? Do the voice actors do a good job of embodying their characters?"
+  )
+  ReviewSection.create(
+      category_id: catLocations.id,
+      name: "Character Behavior",
+      prompt: "Do the characters interact with their environment?  Is their behavior realistic?"
+  )
+  ReviewSection.create(
+      category_id: catLocations.id,
+      name: "Enjoyment",
+      prompt: "Do you enjoy using the mod?  What do you enjoy about it?",
+      default: true
+  )
+  # FOR NEW LANDS MODS
+  ReviewSection.create(
+      category_id: catNewLands.id,
+      name: "New Content",
+      prompt: "What is the quality of new content added by the mod, such as new items, spells or skills?",
+      default: true
+  )
+  # FOR PLAYER HOME MODS
+  ReviewSection.create(
+      category_id: catNewPlayerHomes.id,
+      name: "Features",
+      prompt: "Does the player home fit your character’s needs?  Are you happy with what it offers?",
+      default: true
+  )
+  ### New Characters ###
+  ReviewSection.create(
+      category_id: catNewChars.id,
+      name: "Aesthetics",
+      prompt: "Do the characters look good?  Do they offer unique aesthetics which help them stand out?",
+      default: true
+  )
+  ReviewSection.create(
+      category_id: catNewChars.id,
+      name: "Character Behavior",
+      prompt: "Do the characters interact with their environment?  Is their behavior realistic?",
+      default: true
+  )
+  ReviewSection.create(
+      category_id: catNewChars.id,
+      name: "Consistency",
+      prompt: "Do the characters fit in your game?  Do they improve your gameplay experience?",
+      default: true
+  )
+  ReviewSection.create(
+      category_id: catNewChars.id,
+      name: "Concept",
+      prompt: "Do you like the idea behind the mod?  Is the idea original or unique?"
+  )
+  ReviewSection.create(
+      category_id: catNewChars.id,
+      name: "Enjoyment",
+      prompt: "Do you enjoy using the mod?  What do you enjoy about it?",
+      default: true
+  )
+  ReviewSection.create(
+      category_id: catNewChars.id,
+      name: "Voice Acting",
+      prompt: "Is the recording decent quality? Do the voice actors do a good job of embodying their characters?"
+  )
+  ReviewSection.create(
+      category_id: catNewChars.id,
+      name: "Writing",
+      prompt: "Does the dialogue fit the characters? Are the characters interesting?  Do the characters have a good backstory?",
+      default: true
+  )
+  ### Resources ###
+  ReviewSection.create(
+      category_id: catResources.id,
+      name: "Aesthetics",
+      prompt: "Are any provided textures/audio files/models high quality and appealing?  If a GUI is provided, is it intuitive and clean?",
+      default: true
+  )
+  ReviewSection.create(
+      category_id: catResources.id,
+      name: "Functionality",
+      prompt: "Does the resource provide valuable functionality, or save you time?",
+      default: true
+  )
+  ReviewSection.create(
+      category_id: catResources.id,
+      name: "Usability",
+      prompt: "Is it easy to use the resource?  Is the provided documentation sufficient?",
+      default: true
+  )
+  ### Utilities ###
+  ReviewSection.create(
+      category_id: catUtilities.id,
+      name: "Functionality",
+      prompt: "Does the utility provide valuable or unique functionality?  Does it do what it’s supposed to do, and does it do it well?",
+      default: true
+  )
+  ReviewSection.create(
+      category_id: catUtilities.id,
+      name: "Usability",
+      prompt: "Is the utility intuitive and easy to use?  Are the learning resources sufficient?  Does using the utility get easier once you’ve learned the basics?",
+      default: true
+  )
+
+
+  puts "    #{ReviewSection.count} review sections seeded"
 
 
   #==================================================

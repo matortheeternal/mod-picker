@@ -29,6 +29,7 @@ class LoverInfo < ActiveRecord::Base
     self.date_updated = DateTime.parse(date_updated_str, lab_date_format)
 
     # scrape statistics
+    self.has_stats = Rails.application.config.scrape_lab_statistics
     if Rails.application.config.scrape_lab_statistics
       self.file_size = file_information_items[2].children[2].text.gsub('MB', '').to_f * 1024 * 1024
       self.views = file_information_items[3].children[2].text.to_i
