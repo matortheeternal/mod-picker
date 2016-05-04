@@ -215,7 +215,7 @@ app.controller('modController', function ($scope, $q, $stateParams, modService, 
             sum += $scope.newReview.ratings[i].rating;
         }
 
-        $scope.newReview.overallRating = sum/$scope.newReview.ratings.length;
+        $scope.newReview.overallRating = Math.round(sum/$scope.newReview.ratings.length);
     };
 
     //removes all non numbers and rounds to the nearest int and doesn't go above 100 or below 0
