@@ -4,7 +4,7 @@
             <div class="page-container mod-header">
                 <section>
                     <div class="quality-value action-box">
-                        <span class="reputation-number">{{mod.reputation}}</span>
+                        <span class="reputation-number">{{mod.reputation | number}}</span>
                         REPUTATION
                     </div>
 
@@ -18,7 +18,7 @@
                         </span>-->
                         <br>
                         <!-- TODO: reviews currently are on tab 1 -> should be dynamic anyway -> ui-router :D -->
-                        <a ng-click="currentTab = tabs[2]">{{mod.reviews.length}} reviews</a>
+                        <a ng-click="currentTab = tabs[2]">{{mod.reviews.length | number}} reviews</a>
                         <!-- TODO: add this with css :after content -->
                         <span class="divider">
                             |
