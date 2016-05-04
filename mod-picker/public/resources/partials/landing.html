@@ -1,44 +1,51 @@
 <two-columns>
-	<div class="left-column">
-		<div class="recent-box">
-			<h3 class="section-title">Recent Modlists</h3>
-			<section ng-repeat="modlist in modlists"> <!--TODO: needs data for 5 recent modlists -->
-				<h3 class="section-title">{{modlist.name}}</h3>
-				<section>
-					{{modlist.status}} by {{modlist.created_by}} <!--TODO: needs to find the authors username instead of id -->
-					<br>
-					{{modlist.mods_count | number}} mods, {{modlist.plugins_count | number}} plugins
-					<br>
-					Last Updated {{modlist.updated}} <!--TODO: needs data for last update date -->
+	<div class="page-container">
+		<div class="left-column">
+			<div class="recent-box">
+				<h3 class="section-title">Recent Modlists</h3>
+				<section ng-repeat="modlist in modlists"> <!--TODO: needs data for 5 recent modlists -->
+					<h3 class="section-title">{{modlist.name}}</h3>
+					<section>
+						{{modlist.status}} by {{modlist.created_by}} <!--TODO: needs to find the authors username instead of id -->
+						<br>
+						{{modlist.mods_count | number}} mods, {{modlist.plugins_count | number}} plugins
+						<br>
+						Last Updated {{modlist.updated}} <!--TODO: needs data for last update date -->
+					</section>
 				</section>
-			</section>
-			<a href="#/modlists">Browse All</a> <!--TODO: link to search sorting by recent using params -->
-		</div>
+				<a href="#/modlists">Browse All</a> <!--TODO: link to search sorting by recent using params -->
+			</div>
 
-		<div class="recent-box">
-			<h3 class="section-title">Recent Mods</h3>
-			<section ng-repeat="mod in mods"> <!--TODO: needs data for 5 recent mods -->
-				<img ng-src="{{mod.image}}">
-				<h3 class="section-title">{{mod.name}}</h3>
-				<section>
-					{{mod.status}} by {{mod.submitted_by}} <!--TODO: needs to find the authors username instead of id -->
-					<br>
-					{{modlist.average_rating | number}} ({{modlist.reviews_count | number}} Reviews)
-					<br>
-					In {{modlist.modlists_count}} <!-- TODO: needs data for how many modlists the mod is in -->
+			<div class="recent-box">
+				<h3 class="section-title">Recent Mods</h3>
+				<section ng-repeat="mod in mods"> <!--TODO: needs data for 5 recent mods -->
+					<img ng-src="{{mod.image}}">
+					<h3 class="section-title">{{mod.name}}</h3>
+					<section>
+						{{mod.status}} by {{mod.submitted_by}} <!--TODO: needs to find the authors username instead of id -->
+						<br>
+						{{modlist.average_rating | number}} ({{modlist.reviews_count | number}} Reviews)
+						<br>
+						In {{modlist.modlists_count}} <!-- TODO: needs data for how many modlists the mod is in -->
+					</section>
 				</section>
-			</section>
-			<a href="#/mods">Browse All</a> <!--TODO: link to search sorting by recent using params -->
+				<a href="#/mods">Browse All</a> <!--TODO: link to search sorting by recent using params -->
+			</div>
 		</div>
-	</div>
-	<div class="right-column">
-		<h3 class="section-title">Site News</h3>
-		<div class="news-box" ng-repeat="article in articles"> <!-- TODO: needs data for 4 or 5 most recent articles -->
-			<h3 class="section-title">{{article.title}}</h3>
-			by {{article.submitted_by}} {{article.created_at | date}}
-			<section marked="article.text_body" ng-class="article.expanded ? 'short-news' : ''">
-			</section>
-			<a ng-click="article.expanded = !article.expanded">Show {{article.expanded ? 'Less' : 'More'}}</a>
+		<div class="right-column">
+			<h3 class="section-title">Site News</h3>
+			<div class="news-box" ng-repeat="article in articles"> <!-- TODO: needs data for 4 or 5 most recent articles -->
+				<h3 class="section-title">{{article.title}}</h3>
+				by {{article.submitted_by}} {{article.created_at | date}}
+				<section marked="article.text_body" ng-class="article.expanded ? 'short-news' : ''">
+				</section>
+				<a ng-click="article.expanded = !article.expanded">Show {{article.expanded ? 'Less' : 'More'}}</a>
+			</div>
+			<a ng-click="loadMoreNews()" class="load-older-posts">Load Older Posts</a>
+
+			<div class="recent-box">
+		        <tabs current-tab="currentTab" tabs="tabs"></tabs>
+				<ng-include src="currentTab.url"></ng-include></div>
 		</div>
 	</div>
 </two-columns>

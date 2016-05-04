@@ -21,4 +21,12 @@ app.controller('searchInputController', function ($scope, $location) {
 
 app.controller('landingController', function ($scope, $q, modService) {
 
+    //TODO: put this into the Routing logic
+    $scope.tabs = [
+        { name: 'Recent Reviews', url: '/resources/partials/landingPage/reviews.html'},
+        { name: 'Recent Compatibility Notes', url: '/resources/partials/landingPage/compatibilityNotes.html'},
+        { name: 'Recent Comments', url: '/resources/partials/landingPage/comments.html'}
+    ];
+
+    $scope.currentTab = $scope.tabs[0];
 });
