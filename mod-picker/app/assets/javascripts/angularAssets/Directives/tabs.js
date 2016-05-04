@@ -10,7 +10,8 @@ app.directive('tabs', function () {
         controller: 'tabsController',
         scope: {
         	tabs: '=',
-        	currentTab: '='
+        	currentTab: '=',
+            onChange: '=?'
         }
     }
 });
@@ -22,5 +23,8 @@ app.controller('tabsController', function ($scope) {
     //if we use routing instead it will work fine
 	$scope.select = function (nextTab) {
 		$scope.currentTab = nextTab;
+        if ($scope.onChange !== null) {
+            $scope.onChange(nextTab);
+        }
 	};
 });
