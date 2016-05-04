@@ -21,7 +21,8 @@ app.controller('modController', function ($scope, $q, $stateParams, modService, 
     $scope.tags = [];
     $scope.newTags = [];
 
-    //initialization /of the mod object
+    // SETUP AND DATA RETRIEVAL LOGIC
+    //initialization of the mod object
     modService.retrieveMod($stateParams.modId).then(function (mod) {
         $scope.mod = mod;
         $scope.statusClass = "status-" + mod.status;
@@ -75,7 +76,7 @@ app.controller('modController', function ($scope, $q, $stateParams, modService, 
         $scope.userCanAddTags = (rep >= 20) || ($scope.user.role === 'admin');
     });
 
-    //of the tab data
+    //set up tab data
     //TODO use the cool ui-router here :D
     $scope.tabs = [
         { name: 'Reviews', url: '/resources/partials/showMod/reviews.html' },
