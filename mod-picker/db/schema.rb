@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160503201325) do
+ActiveRecord::Schema.define(version: 20160504053212) do
 
   create_table "agreement_marks", id: false, force: :cascade do |t|
     t.integer "incorrect_note_id", limit: 4
@@ -542,14 +542,14 @@ ActiveRecord::Schema.define(version: 20160503201325) do
   add_index "reputation_links", ["from_rep_id"], name: "from_rep_id", using: :btree
   add_index "reputation_links", ["to_rep_id"], name: "to_rep_id", using: :btree
 
-  create_table "review_rating", id: false, force: :cascade do |t|
+  create_table "review_ratings", id: false, force: :cascade do |t|
     t.integer "review_id",         limit: 4
     t.integer "review_section_id", limit: 4
     t.integer "rating",            limit: 1
   end
 
-  add_index "review_rating", ["review_id"], name: "fk_rails_9b82eee8c2", using: :btree
-  add_index "review_rating", ["review_section_id"], name: "fk_rails_60e75c535e", using: :btree
+  add_index "review_ratings", ["review_id"], name: "fk_rails_9b82eee8c2", using: :btree
+  add_index "review_ratings", ["review_section_id"], name: "fk_rails_60e75c535e", using: :btree
 
   create_table "review_sections", force: :cascade do |t|
     t.integer "category_id", limit: 4
@@ -797,8 +797,8 @@ ActiveRecord::Schema.define(version: 20160503201325) do
   add_foreign_key "reports", "users", column: "submitted_by"
   add_foreign_key "reputation_links", "user_reputations", column: "from_rep_id", name: "reputation_links_ibfk_1"
   add_foreign_key "reputation_links", "user_reputations", column: "to_rep_id", name: "reputation_links_ibfk_2"
-  add_foreign_key "review_rating", "review_sections"
-  add_foreign_key "review_rating", "reviews"
+  add_foreign_key "review_ratings", "review_sections"
+  add_foreign_key "review_ratings", "reviews"
   add_foreign_key "review_sections", "categories"
   add_foreign_key "reviews", "mods", name: "reviews_ibfk_2"
   add_foreign_key "reviews", "users", column: "submitted_by", name: "reviews_ibfk_1"
