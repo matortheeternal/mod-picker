@@ -299,18 +299,20 @@
   background-color: $primary_background;
   margin-top: 20px;
   padding: 20px;
+  color: $h4_color;
 
   .section-title {
     margin-top: 0;
     font-size: 16px;
     font-weight: 500;
-    color: $h4_color;
+    color: $text_color;
   }
 
   .add-note-actions {
     display: flex;
     justify-content: space-around;
     align-items: center;
+    font-size: 14px;
     width: 745px;
 
     .compatibility-dropdown {
@@ -373,5 +375,23 @@
   input {
     width: 50px;
     display: inline;
+  }
+}
+
+.ratings-container {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  font-size: 14px;
+
+  input {
+    width: 2.5em;
+    height: 2.5em;
+    font: inherit;
+    text-align: center;
+    margin-left: .5em;
+    border: 1px solid $border_color;
+    color: $text_color;
+    background-color: $primary_background;
   }
 }
