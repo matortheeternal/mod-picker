@@ -19,7 +19,7 @@
 	</div>
 
 	<div class="mod-tab-action">
-		<input class="btn mod-page-btn" type="submit" value="Add Review" ng-click="submit()"/>
+		<input class="btn mod-page-btn" type="submit" value="Add Review" ng-click="startNewReview()"/>
 	</div>
 </div>
 
@@ -27,9 +27,7 @@
 	<h3 class="section-title">Add Review</h3>
 	<section class="ratings-container">
 		<div class="rating-item" ng-repeat="rating in newReview.ratings">
-			<select class="select" ng-model="rating.id">
-				<option ng-repeat="section in reviewSections" value="{{section.id}}">{{section.name}}</option>
-			</select>
+			<select class="select" ng-options="section as section.name for section in reviewSections track by section.id" ng-model="rating.section"></select>
 			<input type="number" step="0.1" max="10" min="0" ng-model="rating.rating">
 		</div>
 	</section>

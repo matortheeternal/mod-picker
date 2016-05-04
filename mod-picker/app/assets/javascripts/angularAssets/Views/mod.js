@@ -183,7 +183,7 @@ app.controller('modController', function ($scope, $q, $stateParams, modService, 
         $scope.reviewSections.forEach(function(section) {
             if (section.default) {
                 var ratingObj = {
-                    id: section.id,
+                    section: section,
                     rating: 50
                 };
                 $scope.newReview.ratings.push(ratingObj);
