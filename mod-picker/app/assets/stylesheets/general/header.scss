@@ -161,9 +161,14 @@ nav {
     float: left;
   }
 
-  .loadingButtonContainer {
+  .search-container {
     float: left;
     width: 74px;
+
+    #search-btn {
+      padding: 8px;
+      height: 35px;
+    }
   }
 
   #loader {
