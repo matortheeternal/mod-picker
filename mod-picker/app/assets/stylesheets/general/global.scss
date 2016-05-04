@@ -245,27 +245,37 @@ input[type="button"], input[type="submit"] {
 
 /* css for forms, inputs, and labels */
 
-.select {
-  background: url($select_image) no-repeat right $primary_background;
-  background-size: 2em;
-  border: 1px solid $border_color;
-  text-align: start;
-
   select {
-    color: $text_color;
-    padding-left: .5em;
-    height: 28px;
-    line-height: 1;
-    border: 0;
-    border-radius: 0;
+        /* styling */
+    background-color: $primary_background;
+    border: 1px solid $border_color;
+    border-radius: 4%;
+    color: inherit;
+    font: inherit;
+    padding: 0.5em 3em 0.5em 1em;
+
+    /* reset */
+
+    margin: 0;
     -webkit-appearance: none;
     -moz-appearance: none;
-    font-family: 'Roboto', sans-serif;
-    overflow: inherit;
-    width: 100%;
-    background: transparent;
+
+
+    background-image:
+      linear-gradient(45deg, transparent 49%, $primary_background 50%),
+      linear-gradient(135deg, $primary_background 50%, transparent 51%),
+      linear-gradient(to right, $action_color, $action_color);
+    background-position:
+      calc(100% - 1em) 50%,
+      calc(100% - .5em) 50%,
+      100% 0;
+    background-size:
+      //these are slightly wider than their actual size to stop rounding from leaving a space in between the two triangles
+      .54em .5em,
+      .54em .5em,
+      2em 100%;
+    background-repeat: no-repeat;
   }
-}
 
 .big-text-area {
   width: 100%;

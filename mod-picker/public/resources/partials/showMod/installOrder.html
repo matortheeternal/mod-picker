@@ -1,12 +1,12 @@
 ﻿<div class="mod-tab-actions">
     <div class="mod-tab-action sort-by-dropdown">
 		<strong>Sort By: </strong>
-		<div class="select">
-			<select ng-model="installOrderFilter" ng-init="installOrderFilter = 'reputation'">
-				<option value="reputation">Reputation</option>
-				<option value="submitted">Date Submitted</option>
-				<option value="edited">Last Edited</option>
-			</select>
+
+		<select ng-model="installOrderFilter" ng-init="installOrderFilter = 'reputation'">
+			<option value="reputation">Reputation</option>
+			<option value="submitted">Date Submitted</option>
+			<option value="edited">Last Edited</option>
+		</select>
 		</div>
 	</div>
 	<!-- TODO: replace input with button that has an inline value -->
@@ -44,4 +44,3 @@
 
 <div ng-repeat="note in installOrderNotes" class="notes">
 	<install-order-note note="note"></install-order-note>
-</div>

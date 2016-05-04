@@ -1,14 +1,14 @@
 ﻿<div class="mod-tab-actions">
 	<div class="mod-tab-action sort-by-dropdown">
 		<strong>Sort By: </strong>
-		<div class="select">
-			<select ng-model="reviewsFilter" ng-init="reviewsFilter = 'reputation'">
-				<option value="reputation">Reputation</option>
-				<option value="helpfulness">Helpfulness</option>
-				<option value="overallRating">Overall Rating</option>
-				<option value="submitted">Date Submitted</option>
-				<option value="edited">Last Edited</option>
-			</select>
+
+		<select ng-model="reviewsFilter" ng-init="reviewsFilter = 'reputation'">
+			<option value="reputation">Reputation</option>
+			<option value="helpfulness">Helpfulness</option>
+			<option value="overallRating">Overall Rating</option>
+			<option value="submitted">Date Submitted</option>
+			<option value="edited">Last Edited</option>
+		</select>
 		</div>
 	</div>
 
@@ -45,4 +45,4 @@
 
 <div ng-repeat="review in mod.reviews" class="reviews">
 	<review review="review"></review>
-</div>
+

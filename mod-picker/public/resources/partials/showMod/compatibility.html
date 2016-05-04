@@ -13,13 +13,13 @@
 
 	--><div class="mod-tab-action sort-by-dropdown">
 		<strong>Sort By: </strong>
-		<div class="select">
-			<select ng-model="compatibilitySort" ng-init="'reputation">
-				<option value="reputation">Reputation</option>
-				<option value="severity">Severity</option>
-				<option value="submitted">Date Submitted</option>
-				<option value="edited">Last Edited</option>
-			</select>
+
+		<select ng-model="compatibilitySort" ng-init="'reputation">
+			<option value="reputation">Reputation</option>
+			<option value="severity">Severity</option>
+			<option value="submitted">Date Submitted</option>
+			<option value="edited">Last Edited</option>
+		</select>
 		</div>
 	</div><!--
 	--><div class="mod-tab-action">
@@ -66,4 +66,4 @@
 
 <div ng-repeat="cnote in compatibilityNotes" class="notes">
 	<compatibility-note cnote="cnote" show-author-column="true"></compatibility-note>
-</div>
+
