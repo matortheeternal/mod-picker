@@ -10,6 +10,10 @@ def random_user
   User.offset(rand(User.count)).first
 end
 
+def random_review_section
+  ReviewSection.offset(rand(ReviewSection.count)).first
+end
+
 def random_mod
   Mod.offset(rand(Mod.count)).first
 end
@@ -116,16 +120,16 @@ def seed_fake_mods
     file_size: 2385,
     description: "SkyUI 5.1\r\n",
     author: "SkyUI Team",
-    override_records: 0,
-    new_records: 8,
+    override_count: 0,
+    record_count: 8,
     masters_attributes: [],
     dummy_masters_attributes: [],
     plugin_errors_attributes: [],
     overrides_attributes: [],
-    record_groups_attributes: [{
+    plugin_record_groups_attributes: [{
       sig: "QUST",
-      override_records: 0,
-      new_records: 7
+      override_count: 0,
+      record_count: 7
     }]
   })
 
@@ -669,15 +673,17 @@ def seed_fake_reviews
           submitted_by: submitter.id,
           mod_id: mod.id,
           hidden: false,
-          rating1: 100 - randpow(100, 3),
-          rating2: 100 - randpow(100, 3),
-          rating3: 100 - randpow(100, 3),
-          rating4: 100 - randpow(100, 3),
-          rating5: -1,
           submitted: DateTime.now,
           text_body: Faker::Lorem.paragraph(15)
       )
       review.save!
+
+      # seed ratings on reviews
+      nRatings = rand(2..5)
+      nRatings.times do
+        section = random_review_section
+        review.review_ratings.create(rating: rand(100), review_section_id: section.id)
+      end
 
       # seed helpful marks on reviews
       nHelpfulMarks = randpow(10, 3)
