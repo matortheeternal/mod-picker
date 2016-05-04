@@ -23,35 +23,14 @@
 	</div>
 </div>
 
-<div class="add-note-box">
+<div class="add-note-box" ng-show="newReview">
 	<h3 class="section-title">Add Review</h3>
-	<section>
-		<div>
-			Review Template:
-	        <select ng-model="currentTemplate" ng-change="updateReviewTemplate(currentTemplate)" ng-options="review_template as review_template.name for review_template in review_templates" class="review-template-dropdown"></select>
-        </div>
-	</section>
-	<section class="ratings">
-		<!-- TODO: kill redundancy-->
-		<div>
-			{{currentTemplate.section1}}
-			<input type="number" step="0.1" max="10" min="0" placeholder="8.5" ng-model="newReview.ratings[0]" ng-change="updateOverallRating()">
-		</div>
-		<div ng-if="currentTemplate.section2">
-			{{currentTemplate.section2}}
-			<input type="number" step="0.1" max="10" min="0" placeholder="8.5" ng-model="newReview.ratings[1]" ng-change="updateOverallRating()">
-		</div>
-		<div ng-if="currentTemplate.section3">
-			{{currentTemplate.section3}}
-			<input type="number" step="0.1" max="10" min="0" placeholder="8.5" ng-model="newReview.ratings[2]" ng-change="updateOverallRating()">
-		</div>
-		<div ng-if="currentTemplate.section4">
-			{{currentTemplate.section4}}
-			<input type="number" step="0.1" max="10" min="0" placeholder="8.5" ng-model="newReview.ratings[3]" ng-change="updateOverallRating()">
-		</div>
-		<div ng-if="currentTemplate.section5">
-			{{currentTemplate.section5}}
-			<input type="number" step="0.1" max="10" min="0" placeholder="8.5" ng-model="newReview.ratings[4]" ng-change="updateOverallRating()">
+	<section class="ratings-container">
+		<div class="rating-item" ng-repeat="rating in newReview.ratings">
+			<select class="select" ng-model="rating.id">
+				<option ng-repeat="section in reviewSections" value="{{section.id}}">{{section.name}}</option>
+			</select>
+			<input type="number" step="0.1" max="10" min="0" ng-model="rating.rating">
 		</div>
 	</section>
 	<section>
