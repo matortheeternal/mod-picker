@@ -191,6 +191,8 @@ app.controller('modController', function ($scope, $q, $stateParams, modService, 
                 $scope.newReview.text_body += "*" + section.prompt + "*\n\n";
             }
         });
+
+        $scope.updateOverallRating();
     };
 
     // discard a new review object
