@@ -29,7 +29,7 @@
 			<div class="select">
 				<select class="select" ng-options="section as section.name for section in reviewSections track by section.id" ng-model="rating.section"></select>
 			</div>
-			<input type="number" step="0.1" max="10" min="0" ng-model="rating.rating">
+			<input ng-change="rating.rating = formatScore(rating.rating)" ng-model="rating.rating">
 		</div>
 	</section>
 	<section>

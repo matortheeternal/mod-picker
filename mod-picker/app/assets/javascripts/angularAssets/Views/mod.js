@@ -215,4 +215,18 @@ app.controller('modController', function ($scope, $q, $stateParams, modService, 
 
         $scope.newReview.overallRating = sum/$scope.newReview.ratings.length;
     };
+
+    //removes all non numbers and rounds to the nearest int and doesn't go above 100 or below 0
+    $scope.formatScore = function(input) {
+        var output = input;
+        output = output.replace(/[^\d\.]/g, '');
+        output = Math.round(output);
+        if (output > 100) {
+            output = 100;
+        }
+        else if (output < 0) {
+            output = 0;
+        }
+        return output;
+    };
 });
