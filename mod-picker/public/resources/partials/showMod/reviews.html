@@ -22,8 +22,8 @@
 	</div>
 </div>
 
+<div class="add-note-title" ng-show="newReview"> Add Review </div>
 <div class="add-note-box" ng-show="newReview">
-	<h3 class="section-title">Add Review</h3>
 	<section class="ratings-container">
 		<div class="rating-item" ng-repeat="rating in newReview.ratings">
 			<select class="select" ng-options="section as section.name for section in reviewSections track by section.id" ng-model="rating.section"></select>

@@ -293,20 +293,24 @@
   margin-bottom: 20px;
 }
 
+.add-note-title {
+  margin-top: 0;
+  font-size: 16px;
+  font-weight: 500;
+  color: $inverse_text_color;
+  background-color: $bar_color;
+  margin-top: 20px;
+  border: 1px solid $bar_dark_color;
+  padding: 10px;
+}
+
 //add note box
 .add-note-box {
-  border: 1px solid $border_color;
+  border: 1px solid $bar_dark_color;
+  border-top: none;
   background-color: $primary_background;
-  margin-top: 20px;
   padding: 20px;
   color: $h4_color;
-
-  .section-title {
-    margin-top: 0;
-    font-size: 16px;
-    font-weight: 500;
-    color: $text_color;
-  }
 
   .add-note-actions {
     display: flex;
@@ -395,3 +399,4 @@
     background-color: $primary_background;
   }
 }
+
