@@ -88,13 +88,47 @@ app.controller('modController', function ($scope, $q, $stateParams, modService, 
 
     $scope.currentTab = $scope.tabs[0];
 
+    // REVIEW RELATED LOGIC
+    // instantiate a new review object
+    $scope.startNewReview = function() {
+        // set up newReview object
+        $scope.newReview = {
+            ratings: [],
+            text_body: ""
+        };
+        // set up default review sections
+        // and default text body with prompts
+        $scope.reviewSections.forEach(function(section) {
+            if (section.default) {
+                var ratingObj = {
+                    review_section_id: section.id,
+                    rating: 50
+                };
+                $scope.newReview.ratings.push(ratingObj);
+                $scope.newReview.text_body += "## " + section.name + "\n";
+                $scope.newReview.text_body += "*" + section.prompt + "*\n\n";
+            }
+        });
+    };
+
+    // discard a new review object
+    $scope.discardNewReview = function() {
+        delete $scope.newReview;
+    };
+
+    // submit a review
+    $scope.submitReview = function() {
+        // TODO: Unimplemented
+    };
+
     //update the average rating of the new review
     $scope.updateOverallRating = function() {
         //TODO: this might become ressource heavy on mods with many ratings.
+        //TODO: Reply - this isn't looping through all the reviews, it's looping through the sections of a single review.  It's still not necessary though because we can do the math in the view model I think.  -Mator
         // possible solution: (overallRating * number of ratings + newRating) / number of ratings + 1
         var sum = 0;
         for (var i = 0; i<$scope.newReview.ratings.length; i++) {
-            sum += $scope.newReview.ratings[i];
+            sum += $scope.newReview.ratings[i].rating;
         }
 
         $scope.newReview.overallRating = sum/$scope.newReview.ratings.length;
