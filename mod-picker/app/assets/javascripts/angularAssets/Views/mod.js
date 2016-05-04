@@ -61,15 +61,6 @@ app.controller('modController', function ($scope, $q, $stateParams, modService, 
         modService.retrieveLoadOrderNotes(mod.id).then(function(notes) {
             $scope.loadOrderNotes = notes;
         });
-
-        //TODO: This should be happening in functions that are fired when the user clicks the "Add Review" / "Add Compatibility Note" / ... etc. buttons
-        //TODO: The new content submission form should only be visible once the user has clicked the button stating their intent to add something
-        //initializing the newCompatibilityNote object
-        $scope.newCompatibilityNote = {};
-        $scope.newCompatibilityNote.firstMod = $scope.mod;
-        //initializing the newReview object
-        $scope.newReview = {ratings: [8.5]};
-        $scope.updateOverallRating();
     });
 
     //get current user
