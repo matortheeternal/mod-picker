@@ -468,20 +468,29 @@
     position: absolute;
     right: 0;
     top: 0;
-    padding: 12px;
+    padding: 10px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     font-size: 18px;
 
-    .fa-plus {
-      color: $success_secondary;
+    i {
+      padding: 2px;
       cursor: pointer;
     }
 
+    .fa-plus {
+      color: $success_primary;
+      &:hover {
+        color: $success_secondary;
+      }
+    }
+
     .fa-minus {
-      color: $error_secondary;
-      cursor: pointer;
+      color: $error_primary;
+      &:hover {
+        color: $error_secondary;
+      }
     }
   }
 }
