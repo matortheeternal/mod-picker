@@ -37,13 +37,14 @@
 			<input ng-change="rating.rating = formatScore(rating.rating); updateOverallRating()" ng-model="rating.rating" ng-click="focusText($event)" pu-elastic-input>
 		</div>
 	</section>
+    <section class="note-content-container">
+        <text-area data="newReview.text_body" ng-refresh="true" class="note-text-area"></text-area>
 
-    <text-area data="newReview.text_body" ng-refresh="true" class="note-text-area"></text-area>
-
-	<div class="action-button-container">
-		<input class="btn action-btn" type="submit" value="Submit" ng-click="submitReview()"/>
-		<input class="btn action-btn" type="button" value="Discard" ng-click="discardReview()">
-	</div>
+        <div class="action-button-container">
+            <input class="btn action-btn" type="submit" value="Submit" ng-click="submitReview()"/>
+            <input class="btn action-btn" type="button" value="Discard" ng-click="discardReview()">
+        </div>
+    </section>
 </div>
 
 <div ng-repeat="review in mod.reviews" class="reviews">

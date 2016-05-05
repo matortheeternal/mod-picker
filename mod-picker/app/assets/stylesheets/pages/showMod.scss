@@ -339,6 +339,10 @@
       text-align: center;
     }
   }
+
+  .note-content-container {
+    margin: 20px;
+  }
 }
 
 .version-boxes-section {
@@ -354,8 +358,6 @@
 }
 //making the text-area scroll
 .note-text-area {
-  margin: 20px;
-
   .CodeMirror, .CodeMirror-scroll {
     max-height: 400px;
     min-height: 400px;
