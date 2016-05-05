@@ -1,6 +1,8 @@
 class Mod < ActiveRecord::Base
   include Filterable, Sortable
 
+  attr_writer :tag_names, :asset_paths, :plugin_dumps, :nexus_info_id, :lover_info_id, :workshop_info_id
+
   scope :search, -> (search) { where("name like ? OR aliases like ?", "%#{search}%", "%#{search}%") }
   scope :author, -> (author) { joins(:nexus_infos).where("nexus_infos.authors like ? OR nexus_infos.uploaded_by like ?", "#{author}", "#{author}") }
   scope :adult, -> (adult) { where(has_adult_content: adult) }
@@ -36,8 +38,14 @@ class Mod < ActiveRecord::Base
 
   # site statistics associated with the mod
   has_one :nexus_infos, :class_name => 'NexusInfo'
-  has_one :lover_infos, :class_name => 'NexusInfo'
-  has_one :workshop_infos, :class_name => 'NexusInfo'
+  has_one :lover_infos, :class_name => 'LoverInfo'
+  has_one :workshop_infos, :class_name => 'WorkshopInfo'
+
+  # plugins associated with the mod
+  has_many :plugins, :inverse_of => 'mod'
+  # assets associated with the mod
+  has_many :mod_asset_files, :inverse_of => 'mod'
+  has_many :asset_files, :through => :mod_asset_files, :inverse_of => 'mods'
   
   # users who can edit the mod
   has_many :mod_authors, :inverse_of => 'mod'
@@ -52,51 +60,80 @@ class Mod < ActiveRecord::Base
   has_many :mod_tags, :inverse_of => 'mod'
   has_many :tags, :through => 'mod_tags', :inverse_of => 'mods'
 
-  # install order notes
-  has_many :install_before_notes, :foreign_key => 'install_first', :class_name => 'InstallOrderNote', :inverse_of => 'install_first_mod'
-  has_many :install_after_notes, :foreign_key => 'install_second', :class_name => 'InstallOrderNote', :inverse_of => 'install_second_mod'
+  # compatibility notes
+  has_many :first_compatibility_notes, :foreign_key => 'first_mod_id', :class_name => 'CompatibilityNote', :inverse_of => 'first_mod'
+  has_many :second_compatibility_notes, :foreign_key => 'second_mod_id', :class_name => 'CompatibilityNote', :inverse_of => 'second_mod'
 
-  # mod versions and associated data
-  has_many :mod_versions, :inverse_of => 'mod'
+  # install order notes
+  has_many :first_install_order_notes, :foreign_key => 'first_mod_id', :class_name => 'InstallOrderNote', :inverse_of => 'first_mod'
+  has_many :second_install_order_notes, :foreign_key => 'second_mod_id', :class_name => 'InstallOrderNote', :inverse_of => 'second_mod'
+
+  # load order notes
+  has_many :first_load_order_notes, :through => 'plugins', :class_name => 'LoadOrderNote', :inverse_of => 'first_mod'
+  has_many :second_load_order_notes, :through => 'plugins', :class_name => 'LoadOrderNote', :inverse_of => 'second_mod'
 
   # mod list usage
   has_many :mod_list_mods, :inverse_of => 'mod'
   has_many :mod_lists, :through => 'mod_list_mods', :inverse_of => 'mods'
 
-  self.per_page = 5
+  self.per_page = 100
 
-  accepts_nested_attributes_for :mod_versions
+  after_create :create_associations
 
   def no_author?
     self.mod_authors.count == 0
   end
 
-  def create_tags(tags)
-    tags.each do |text|
-      tag = Tag.find_by(text: text, game_id: self.game_id)
-      # create tag if we couldn't find it
-      if tag.nil?
-        tag = Tag.create(text: text, game_id: self.game_id, submitted_by: self.submitted_by)
-      end
+  def create_tags
+    if @tag_names
+      @tag_names.each do |text|
+        tag = Tag.find_by(text: text, game_id: self.game_id)
 
-      # associate tag with mod
-      self.mod_tags.create(tag_id: tag.id, submitted_by: self.submitted_by)
+        # create tag if we couldn't find it
+        if tag.nil?
+          tag = Tag.create(text: text, game_id: self.game_id, submitted_by: self.submitted_by)
+        end
+
+        # associate tag with mod
+        self.mod_tags.create(tag_id: tag.id, submitted_by: self.submitted_by)
+      end
     end
   end
 
-  def create_asset_files(asset_file_tree, mod_version_id=nil)
-    asset_file_tree.each do |path|
-      asset_file = ModAssetFile.find_or_create_by(filepath: path)
-
-      # find mod version to associate asset files with
-      if mod_version_id.present?
-        mv = self.mod_versions.find_by(mod_version_id)
-      else
-        mv = self.mod_versions.first
+  def create_asset_files
+    if @asset_paths
+      @asset_paths.each do |path|
+        asset_file = AssetFile.find_or_create_by(filepath: path)
+        self.mod_asset_files.create(asset_file_id: asset_file.id)
       end
+    end
+  end
 
-      # associate asset files with mod version
-      mv.mod_version_files.create(mod_asset_file_id: asset_file.id)
+  def create_plugins
+    if @plugin_dumps
+      @plugin_dumps.each do |dump|
+        if Plugin.find_by(filename: dump[:filename], crc_hash: dump[:crc_hash]).nil?
+          self.plugins.create(dump)
+        end
+      end
+    end
+  end
+
+  def link_sources
+    if @nexus_info_id
+      @nexus_info = NexusInfo.find(@nexus_info_id)
+      @nexus_info.mod_id = self.id
+      @nexus_info.save!
+    end
+    if @lover_info_id
+      @lover_info = LoverInfo.find(@lover_info_id)
+      @lover_info.mod_id = self.id
+      @lover_info.save!
+    end
+    if @workshop_info_id
+      @workshop_info = WorkshopInfo.find(@workshop_info_id)
+      @workshop_info.mod_id = self.id
+      @workshop_info.save!
     end
   end
 
@@ -114,19 +151,16 @@ class Mod < ActiveRecord::Base
       nex.views_to_tdl = (nex.views / nex.total_downloads) if nex.total_downloads > 0
       nex.save!
     end
-
-    # compute update rate
-    self.update_rate = days_since_release / self.mod_versions_count
   end
 
   def compute_average_rating
-    total = 0
+    total = 0.0
     count = 0
     self.reviews.each do |r|
       total += r.overall_rating
       count += 1
     end
-    self.average_rating = (total.to_f / count) if count > 0
+    self.average_rating = (total / count) if count > 0
   end
 
   def compute_reputation
@@ -142,17 +176,30 @@ class Mod < ActiveRecord::Base
     end
   end
 
+  def create_associations
+    self.create_tags
+    self.create_asset_files
+    self.create_plugins
+    self.link_sources
+    self.compute_extra_metrics
+    self.compute_reputation
+    self.save!
+  end
+
+  def compatibility_notes
+    CompatibilityNote.where('first_mod_id = ? OR second_mod_id = ?', self.id, self.id)
+  end
+
+  def install_order_notes
+    InstallOrderNote.where('first_mod_id = ? OR second_mod_id = ?', self.id, self.id)
+  end
+
+  def load_order_notes
+    LoadOrderNote.where('first_plugin_id in ? OR second_plugin_id in ?', self.plugins.ids, self.plugins.ids)
+  end
+
   def show_json
     self.as_json(:include => {
-        :mod_versions => {
-            :except => [:mod_id],
-            :methods => :required_mods,
-            :include => {
-                :plugins => {
-                    :only => [:id, :filename]
-                }
-            }
-        },
         :reviews => {
             :except => [:submitted_by],
             :include => {
@@ -170,19 +217,21 @@ class Mod < ActiveRecord::Base
             :user => {
                 :only => [:id, :username]
             }
-        }
+        },
+        :nexus_infos => {:except => [:mod_id]},
+        :workshop_infos => {:except => [:mod_id]},
+        :lover_infos => {:except => [:mod_id]},
+        :authors => {:only => [:id, :username]}
     })
   end
 
   def as_json(options={})
-    default_options = {
-        :include => {
-            :nexus_infos => {:except => [:mod_id, :changelog]},
-            :authors => {:only => [:id, :username]}
-        }
-    }
-    options[:include] ||= {}
-    options[:include] = default_options[:include].merge(options[:include])
-    super(options)
+    if options == {}
+      super({
+          :only => [:id, :name]
+      })
+    else
+      super(options)
+    end
   end
 end

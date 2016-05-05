@@ -10,6 +10,18 @@ def random_user
   User.offset(rand(User.count)).first
 end
 
+def random_review_section
+  ReviewSection.offset(rand(ReviewSection.count)).first
+end
+
+def random_mod
+  Mod.offset(rand(Mod.count)).first
+end
+
+def random_plugin
+  Plugin.offset(rand(Plugin.count)).first
+end
+
 def seed_fake_users
   require 'securerandom'
 
@@ -62,7 +74,7 @@ def seed_fake_users
 end
 
 def seed_fake_mods
-  puts "\nSeeding mods, nexus infos, and mod versions"
+  puts "\nSeeding mods and nexus infos"
 
   # Helper vars
   nexusDateFormat = "%d/%m/%Y - %I:%M%p"
@@ -101,49 +113,25 @@ def seed_fake_mods
       nexus_category: 42
   )
 
-  ModVersion.create(
-      mod_id: Mod.last.id,
-      version: "5.1",
-      released: DateTime.strptime("24/08/2015 - 03:38PM", nexusDateFormat),
-      obsolete: false,
-      dangerous: false
-  )
-
   Plugin.create({
     filename: "SkyUI.esp",
-    mod_version_id: ModVersion.last.id,
+    mod_id: Mod.last.id,
     crc_hash: "BEA2DC76",
     file_size: 2385,
     description: "SkyUI 5.1\r\n",
     author: "SkyUI Team",
-    override_records: 0,
-    new_records: 8,
+    override_count: 0,
+    record_count: 8,
     masters_attributes: [],
     dummy_masters_attributes: [],
     plugin_errors_attributes: [],
     overrides_attributes: [],
-    record_groups_attributes: [{
+    plugin_record_groups_attributes: [{
       sig: "QUST",
-      override_records: 0,
-      new_records: 7
+      override_count: 0,
+      record_count: 7
     }]
   })
-
-  ModVersion.create(
-      mod_id: Mod.last.id,
-      version: "5.0",
-      released: DateTime.strptime("14/07/2015 - 05:57AM", nexusDateFormat),
-      obsolete: false,
-      dangerous: false
-  )
-
-  ModVersion.create(
-      mod_id: Mod.last.id,
-      version: "4.1",
-      released: DateTime.strptime("09/06/2014 - 07:42AM", nexusDateFormat),
-      obsolete: true,
-      dangerous: false
-  )
 
   Mod.create(
       name: "Immersive Armors",
@@ -175,14 +163,6 @@ def seed_fake_mods
       nexus_category: 54
   )
 
-  ModVersion.create(
-      mod_id: Mod.last.id,
-      version: "8",
-      released: DateTime.strptime("20/01/2016 - 12:16AM", nexusDateFormat),
-      obsolete: false,
-      dangerous: false
-  )
-
   Mod.create(
       name: "Skyrim HD - 2K Textures",
       primary_category_id: Category.where(name: "Audiovisual - Models & Textures").first.id,
@@ -211,14 +191,6 @@ def seed_fake_mods
       files_count: 23,
       articles_count: 0,
       nexus_category: 29
-  )
-
-  ModVersion.create(
-      mod_id: Mod.last.id,
-      version: "1.7",
-      released: DateTime.strptime("09/01/2016 - 04:57PM", nexusDateFormat),
-      obsolete: false,
-      dangerous: false
   )
 
   Mod.create(
@@ -252,14 +224,6 @@ def seed_fake_mods
       nexus_category: 42
   )
 
-  ModVersion.create(
-      mod_id: Mod.last.id,
-      version: "3.4.5",
-      released: DateTime.strptime("18/01/2016 - 10:37AM", nexusDateFormat),
-      obsolete: false,
-      dangerous: false
-  )
-
   Mod.create(
       name: "Unofficial Skyrim Legendary Edition Patch",
       primary_category_id: Category.where(name: "Fixes").first.id,
@@ -288,14 +252,6 @@ def seed_fake_mods
       files_count: 1,
       articles_count: 0,
       nexus_category: 84
-  )
-
-  ModVersion.create(
-      mod_id: Mod.last.id,
-      version: "3.0.0",
-      released: DateTime.strptime("20/01/2016 - 06:41PM", nexusDateFormat),
-      obsolete: false,
-      dangerous: false
   )
 
   Mod.create(
@@ -328,14 +284,6 @@ def seed_fake_mods
       nexus_category: 39
   )
 
-  ModVersion.create(
-      mod_id: Mod.last.id,
-      version: "1.3.11",
-      released: DateTime.strptime("01/12/2015 - 09:23PM", nexusDateFormat),
-      obsolete: false,
-      dangerous: false
-  )
-
   Mod.create(
       name: "Skyrim Flora Overhaul",
       primary_category_id: Category.where(name: "Audiovisual - Models & Textures").first.id,
@@ -364,14 +312,6 @@ def seed_fake_mods
       files_count: 35,
       articles_count: 0,
       nexus_category: 29
-  )
-
-  ModVersion.create(
-      mod_id: Mod.last.id,
-      version: "2.3",
-      released: DateTime.strptime("16/01/2016 - 10:15PM", nexusDateFormat),
-      obsolete: false,
-      dangerous: false
   )
 
   Mod.create(
@@ -405,14 +345,6 @@ def seed_fake_mods
       nexus_category: 39
   )
 
-  ModVersion.create(
-      mod_id: Mod.last.id,
-      version: "3.1.2",
-      released: DateTime.strptime("10/11/2015 - 07:43AM", nexusDateFormat),
-      obsolete: false,
-      dangerous: false
-  )
-
 # Top mods in the last 59 days
   Mod.create(
       name: "Merge Plugins",
@@ -444,14 +376,6 @@ def seed_fake_mods
       nexus_category: 39
   )
 
-  ModVersion.create(
-      mod_id: Mod.last.id,
-      version: "2.1.3",
-      released: DateTime.strptime("05/01/2016 - 09:16AM", nexusDateFormat),
-      obsolete: false,
-      dangerous: false
-  )
-
   Mod.create(
       name: "The Lily - Armour Mashup",
       primary_category_id: Category.where(name: "Items - Armor, Clothing, & Accessories").first.id,
@@ -480,14 +404,6 @@ def seed_fake_mods
       files_count: 15,
       articles_count: 0,
       nexus_category: 54
-  )
-
-  ModVersion.create(
-      mod_id: Mod.last.id,
-      version: "1.6",
-      released: DateTime.strptime("19/01/2016 - 07:58PM", nexusDateFormat),
-      obsolete: false,
-      dangerous: false
   )
 
   Mod.create(
@@ -521,14 +437,6 @@ def seed_fake_mods
       nexus_category: 78
   )
 
-  ModVersion.create(
-      mod_id: Mod.last.id,
-      version: "3.0.6.5",
-      released: DateTime.strptime("24/01/2016 - 02:41AM", nexusDateFormat),
-      obsolete: false,
-      dangerous: false
-  )
-
   Mod.create(
       name: "Skaal You Need - Skaal house and follower",
       primary_category_id: Category.where(name: "Locations - New Player Homes").first.id,
@@ -558,14 +466,6 @@ def seed_fake_mods
       files_count: 4,
       articles_count: 0,
       nexus_category: 67
-  )
-
-  ModVersion.create(
-      mod_id: Mod.last.id,
-      version: "1.0",
-      released: DateTime.strptime("20/01/2016 - 07:36PM", nexusDateFormat),
-      obsolete: false,
-      dangerous: false
   )
 
   Mod.create(
@@ -598,14 +498,6 @@ def seed_fake_mods
       nexus_category: 26
   )
 
-  ModVersion.create(
-      mod_id: Mod.last.id,
-      version: "1.1",
-      released: DateTime.strptime("02/01/2016 - 06:11PM", nexusDateFormat),
-      obsolete: false,
-      dangerous: false
-  )
-
   Mod.create(
       name: "Real Names",
       primary_category_id: Category.where(name: "Gameplay - Immersion & Role-playing").first.id,
@@ -636,17 +528,8 @@ def seed_fake_mods
       nexus_category: 78
   )
 
-  ModVersion.create(
-      mod_id: Mod.last.id,
-      version: "2.25",
-      released: DateTime.strptime("21/01/2016 - 07:01AM", nexusDateFormat),
-      obsolete: false,
-      dangerous: false
-  )
-
   puts "    #{Mod.count} mods seeded"
   puts "    #{NexusInfo.count} nexus infos seeded"
-  puts "    #{ModVersion.count} mod versions seeded"
   puts "    #{Plugin.count} plugins seeded"
 end
 
@@ -790,15 +673,17 @@ def seed_fake_reviews
           submitted_by: submitter.id,
           mod_id: mod.id,
           hidden: false,
-          rating1: 100 - randpow(100, 3),
-          rating2: 100 - randpow(100, 3),
-          rating3: 100 - randpow(100, 3),
-          rating4: 100 - randpow(100, 3),
-          rating5: -1,
           submitted: DateTime.now,
           text_body: Faker::Lorem.paragraph(15)
       )
       review.save!
+
+      # seed ratings on reviews
+      nRatings = rand(2..5)
+      nRatings.times do
+        section = random_review_section
+        review.review_ratings.create(rating: rand(100), review_section_id: section.id)
+      end
 
       # seed helpful marks on reviews
       nHelpfulMarks = randpow(10, 3)
@@ -824,7 +709,9 @@ def seed_fake_compatibility_notes
         submitted_by: submitter.id,
         compatibility_type: CompatibilityNote.compatibility_types.keys.sample,
         submitted: Faker::Date.backward(14),
-        text_body: Faker::Lorem.paragraph(4)
+        text_body: Faker::Lorem.paragraph(4),
+        first_mod_id: random_mod.id,
+        second_mod_id: random_mod.id
     )
     cnote.save!
 
@@ -837,15 +724,6 @@ def seed_fake_compatibility_notes
           helpful: rand > 0.35
       ).save!
     end
-
-    # associate the compatibility note with some mod versions
-    nModVersions = 2 + randpow(3, 5)
-    puts "    Generating compatibility note associated with:"
-    nModVersions.times do
-      mod_version = ModVersion.offset(rand(ModVersion.count)).first
-      mod_version.compatibility_notes << cnote
-      puts "      - #{mod_version.mod.name} v#{mod_version.version}"
-    end
   end
 
   puts "    #{CompatibilityNote.count} compatibility notes seeded"
@@ -856,15 +734,11 @@ def seed_fake_install_order_notes
   nNotes = Mod.count
   nNotes.times do
     submitter = random_user
-    puts "    Generating install order note associated with:"
-    install_first = Mod.offset(rand(Mod.count)).first
-    install_second = Mod.offset(rand(Mod.count)).first
-    puts "     - #{install_first.name}"
-    puts "     - #{install_second.name}"
+    puts "    Generating install order note"
     ionote = InstallOrderNote.new(
         submitted_by: submitter.id,
-        install_first: install_first.id,
-        install_second: install_second.id,
+        first_mod_id: random_mod.id,
+        second_mod_id: random_mod.id,
         submitted: Faker::Date.backward(14),
         text_body: Faker::Lorem.paragraph(4)
     )
@@ -879,14 +753,6 @@ def seed_fake_install_order_notes
           helpful: rand > 0.35
       ).save!
     end
-
-    # associate the install order note with some mod versions
-    install_first.mod_versions.each do |mv|
-      mv.install_order_notes << ionote
-    end
-    install_second.mod_versions.each do |mv|
-      mv.install_order_notes << ionote
-    end
   end
 
   puts "    #{InstallOrderNote.count} install order notes seeded"
@@ -897,15 +763,11 @@ def seed_fake_load_order_notes
   nNotes = Plugin.count
   nNotes.times do
     submitter = random_user
-    puts "    Generating load order note associated with:"
-    load_first = Plugin.offset(rand(Mod.count)).first
-    load_second = Plugin.offset(rand(Mod.count)).first
-    puts "     - #{load_first.filename}"
-    puts "     - #{load_second.filename}"
+    puts "    Generating load order"
     lnote = LoadOrderNote.new(
         submitted_by: submitter.id,
-        load_first: load_first.id,
-        load_second: load_second.id,
+        first_plugin_id: random_plugin.id,
+        second_plugin_id: random_plugin.id,
         submitted: Faker::Date.backward(14),
         text_body: Faker::Lorem.paragraph(4)
     )
@@ -919,14 +781,6 @@ def seed_fake_load_order_notes
           submitted_by: submitter.id,
           helpful: rand > 0.35
       ).save!
-    end
-
-    # associate the install order note with some mod versions
-    load_first.mod_versions.each do |mv|
-      mv.load_order_notes << lnote
-    end
-    load_second.mod_versions.each do |mv|
-      mv.load_order_notes << lnote
     end
   end
 

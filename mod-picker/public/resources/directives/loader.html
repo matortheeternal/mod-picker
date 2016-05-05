@@ -1,5 +1,5 @@
 <div class="center" ng-show="showSpinner">
-    <div class="spinner-container"></div>
+    <div class="{{spinnerClass}}"></div>
 </div>
 <div class="{{contentClass}}" ng-show="data && !showSpinner" ng-transclude>
 </div>

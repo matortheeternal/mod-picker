@@ -338,14 +338,24 @@ form {
       }
     }
 
+    select {
+      font-size: 13px;
+      height: 32px;
+    }
+
     input[type="text"], input[type="password"], input[type="email"] {
       vertical-align: top;
       width: 350px;
       font-size: 20px;
+      height: 32px;
+      padding: 4px;
     }
 
-    input[type="file"] {
-      display: none;
+    input[type="date"] {
+      width: 150px;
+      font-family: inherit;
+      font-size: 13px;
+      height: 32px;
     }
 
     .checkbox-option {
@@ -353,17 +363,22 @@ form {
       margin-top: 4px;
     }
 
-    input.path-input {
-      width: 350px;
+    input.long-input {
+      width: 400px;
       font-size: 13px;
       padding: 6px;
       height: 32px;
+    }
+
+    input.short-input {
+      width: 150px;
     }
   }
 
   .input-label {
     min-width: 180px;
-    margin-bottom: 4px;
+    margin-bottom: 5px;
+    margin-top: 5px;
   }
 
   input[type="submit"] {
@@ -439,4 +454,18 @@ a .help-tooltip {
     margin-left: 3px;
     margin-right: 3px;
   }
+}
+
+/* css for spinner */
+
+.big-spinner {
+  height: 300px;
+}
+
+.medium-spinner {
+  height: 150px;
+}
+
+.small-spinner {
+  height: 60px;
 }

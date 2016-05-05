@@ -1,8 +1,8 @@
-<!--TODO: maybe ng-if some stuff here -->
-﻿<div class="plugins-block" ng-if="currentVersion.plugins.length > 0">
+﻿<!--TODO: maybe ng-if some stuff here -->
+﻿<div class="plugins-block" ng-if="plugins.length > 0">
 	<div class="plugins-title">
 		Plugins
-		<select ng-model="currentPlugin" ng-options="plugin as plugin.filename for plugin in currentVersion.plugins" class="plugin-selector" ng-change="getPlugin()"></select>
+		<select ng-model="currentPlugin" ng-options="plugin as plugin.filename for plugin in plugins" class="plugin-selector" ng-change="getPlugin()"></select>
 	</div>
 	<div class="metadata-section">
 		<h3 class="section-title">Metadata</h3>
@@ -41,7 +41,7 @@
 					</tr>
 				</thead>
 				<tbody>
-					<tr ng-repeat="plugin_record_group in plugin_record_groups">
+					<tr ng-repeat="plugin_record_group in currentPlugin.plugin_record_groups">
 						<td>{{plugin_record_group.signature}}</td>
 						<td>{{plugin_record_group.new_records}}</td>
 						<td>{{plugin_record_group.override_records}}</td>
@@ -63,7 +63,7 @@
 					</tr>
 				</thead>
 				<tbody>
-					<tr ng-repeat="plugin_error in plugin_errors">
+					<tr ng-repeat="plugin_error in currentPlugin.plugin_errors">
 						<td>{{plugin_error.signature}}</td>
 						<td>{{plugin_error.form_id}}</td>
 						<td>{{plugin_error.type}}</td>
@@ -79,7 +79,7 @@
 			<div ng-repeat="override_record in override_records">
 				<em>plugin name</em>
 				-
-				[{{override_record.signature}}:{{override_record.form_id}}]
+				[{{override_record.sig}}:{{override_record.fid}}]
 			</div>
 		</section>
 	</div>

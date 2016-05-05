@@ -8,34 +8,44 @@ class Review < ActiveRecord::Base
   scope :by, -> (id) { where(submitted_by: id) }
 
   belongs_to :user, :foreign_key => 'submitted_by', :inverse_of => 'reviews'
-  
   belongs_to :mod, :inverse_of => 'reviews'
-  belongs_to :review_template, :inverse_of => 'reviews'
-  
+  has_many :review_ratings, :inverse_of => 'review'
+
   has_many :helpful_marks, :as => 'helpfulable'
   has_many :incorrect_notes, :as => 'correctable'
   has_one :base_report, :as => 'reportable'
 
   def overall_rating
-    total = self.rating1
-    count = 1
-    if self.rating2.present?
-      total += self.rating2
+    total = 0
+    count = 0
+    self.review_ratings.each do |r|
+      total += r.rating
       count += 1
     end
-    if self.rating3.present?
-      total += self.rating3
-      count += 1
+    if count > 0
+      (total.to_f / count)
+    else
+      100.0
     end
-    if self.rating4.present?
-      total += self.rating4
-      count += 1
-    end
-    if self.rating5.present?
-      total += self.rating5
-      count += 1
-    end
-    total / count
+  end
+
+  def as_json(options={})
+    default_options = {
+        :include => {
+            :review_ratings => {
+                :except => [:review_id]
+            },
+            :user => {
+                :only => [:id, :username, :role, :title],
+                :include => {
+                    :reputation => {:only => [:overall]}
+                },
+                :methods => :avatar
+            }
+        }
+    }
+    options[:include] = default_options[:include]
+    super(options)
   end
 
   private
