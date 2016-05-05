@@ -404,6 +404,10 @@
     color: inherit;
     font-weight: 500;
 
+    option {
+      background-color: $bar_highlight_color;
+    }
+
     &:hover {
 
       background-image:
