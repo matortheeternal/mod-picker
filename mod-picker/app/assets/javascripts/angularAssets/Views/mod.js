@@ -182,17 +182,43 @@ app.controller('modController', function ($scope, $q, $stateParams, modService, 
         // and default text body with prompts
         $scope.reviewSections.forEach(function(section) {
             if (section.default) {
-                var ratingObj = {
-                    section: section,
-                    rating: 100
-                };
-                $scope.newReview.ratings.push(ratingObj);
+                $scope.addNewRating(section);
                 $scope.newReview.text_body += "## " + section.name + "\n";
                 $scope.newReview.text_body += "*" + section.prompt + "*\n\n";
             }
         });
 
         $scope.updateOverallRating();
+    };
+
+    // Add a new rating section to the newReview
+    $scope.addNewRating = function(section) {
+        // remove the section from reviewSections to prevent duplicate sections
+        $scope.useSection(section);
+
+        var ratingObj = {
+            section: section,
+            rating: 100
+        };
+        $scope.newReview.ratings.push(ratingObj);
+    };
+
+    //remove the section from reviewSections
+    $scope.useSection = function(section) {
+        $scope.reviewSections.filter(function(reviewSection) {
+            return section.id !== reviewSection.id;
+        });
+    };
+
+    // remove a rating section from newReview
+    $scope.removeRating = function(section) {
+        // add the removed section back to the available list
+        $scope.reviewSections.push(section);
+
+        // remove the rating with the section parameter from the ratings array
+        $scope.newReview.ratings.filter(function(rating) {
+            return rating.section.id !== section.id;
+        });
     };
 
     // discard a new review object
