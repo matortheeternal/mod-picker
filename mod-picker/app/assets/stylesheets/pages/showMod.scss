@@ -452,4 +452,24 @@
       }
     }
   }
+
+  .section-tools {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-right: 6px;
+    margin-left: 6px;
+    font-size: 18px;
+
+
+    .fa-plus {
+      color: $success_secondary;
+      cursor: pointer;
+    }
+
+    .fa-minus {
+      color: $error_secondary;
+      cursor: pointer;
+    }
+  }
 }
