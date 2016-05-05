@@ -424,6 +424,10 @@
           5px 4px;
         background-repeat: no-repeat;
       }
+
+      &:focus {
+        outline: none;
+      }
     }
 
     input {
@@ -439,8 +443,12 @@
       background-color: inherit;
 
       &:hover {
-        border: 1px solid $border_color;
-        background-color: $bar_dark_color;
+        box-shadow: 0 0 3px 0 rgba($border_color, 0.5);
+      }
+
+      &:focus {
+        box-shadow: 0 0 3px 0 $border_color;
+        outline: none;
       }
     }
   }
