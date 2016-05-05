@@ -200,6 +200,11 @@ app.controller('modController', function ($scope, $q, $stateParams, modService, 
         delete $scope.newReview;
     };
 
+    // focus text in rating input
+    $scope.focusText = function ($event) {
+        $event.target.select();
+    };
+
     // submit a review
     $scope.submitReview = function() {
         // TODO: Unimplemented
