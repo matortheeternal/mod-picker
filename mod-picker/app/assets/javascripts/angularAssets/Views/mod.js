@@ -193,8 +193,14 @@ app.controller('modController', function ($scope, $q, $stateParams, modService, 
 
     // Add a new rating section to the newReview
     $scope.addNewRating = function(section) {
-        // remove the section from reviewSections to prevent duplicate sections
-        $scope.useSection(section);
+        // return if we're at the maximum number of ratings
+        if ($scope.newReview.ratings.length >= 5 || $scope.newReview.ratings.length >= $scope.reviewSections.length) {
+            return;
+        }
+
+        // get the next available section if we weren't passed a
+        // specific section to add
+        section = section || $scope.getNextAvailableSection();
 
         var ratingObj = {
             section: section,
@@ -204,10 +210,8 @@ app.controller('modController', function ($scope, $q, $stateParams, modService, 
     };
 
     //remove the section from reviewSections
-    $scope.useSection = function(section) {
-        $scope.reviewSections.filter(function(reviewSection) {
-            return section.id !== reviewSection.id;
-        });
+    $scope.getNextAvailableSection = function() {
+        return $scope.reviewSections[0];
     };
 
     // remove a rating section from newReview
