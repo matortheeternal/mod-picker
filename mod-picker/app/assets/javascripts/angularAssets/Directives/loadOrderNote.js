@@ -1,15 +1,15 @@
-app.directive('loadOrderNote', function () {
+app.directive('installOrderNote', function () {
     return {
         restrict: 'E',
-        templateUrl: '/resources/directives/notePartials/loadOrderNote.html',
-        controller: 'lNoteController',
+        templateUrl: '/resources/directives/notePartials/installOrderNote.html',
+        controller: 'iNoteController',
         scope: {
-        	lnote: '=',
+        	inote: '=',
             showAuthorColumn: '='
         }
     };
 });
 
-app.controller('lNoteController', function ($scope) {
+app.controller('iNoteController', function ($scope) {
 //leaving this here in case it is needed when the directive is actually made
 });
