@@ -171,7 +171,7 @@ input[type="button"], input[type="submit"] {
   height: 38px;
 
   &:hover {
-    background-color: $bar_highlight_color
+    background-color: $bright_action_color
   }
 }
 
@@ -182,7 +182,7 @@ input[type="button"], input[type="submit"] {
   margin-right: 4px;
   margin-left: 4px;
   &:hover {
-    background-color: $bright_action_color;
+    background-color: $bar_highlight_color;
   }
 }
 
@@ -206,7 +206,7 @@ input[type="button"], input[type="submit"] {
   }
 
   .unselected-tab:hover {
-    background-color: $bright_action_color;
+    background-color: $bar_highlight_color;
   }
 }
 

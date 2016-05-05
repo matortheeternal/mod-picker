@@ -14,7 +14,7 @@
   transition: all 0.2s ease-in-out;
 
   &:hover {
-    background-color: $bright_action_color;
+    background-color: $bar_highlight_color;
   }
 }
 
@@ -294,7 +294,6 @@
 }
 
 .add-note-title {
-  margin-top: 0;
   font-size: 16px;
   font-weight: 500;
   color: $inverse_text_color;
