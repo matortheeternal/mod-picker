@@ -497,7 +497,7 @@
       transition: color 0.2s ease-in-out;
     }
     i.disabled {
-      color: $border_color !important;
+      color: $hard_border_color !important;
       cursor: default;
     }
 
