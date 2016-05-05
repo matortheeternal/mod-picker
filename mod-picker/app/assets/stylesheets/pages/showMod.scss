@@ -389,10 +389,12 @@
 
 .ratings-container {
   display: flex;
+  position: relative;
   justify-content: center;
   flex-wrap: wrap;
   align-items: center;
   font-size: 24px;
+  padding-right: 60px; // This makes certain the ratings don't go over the section-tools
   background-color: $bar_highlight_color;
   color: $bright_action_color;
 
@@ -463,13 +465,14 @@
   }
 
   .section-tools {
+    position: absolute;
+    right: 0;
+    top: 0;
+    padding: 12px;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    margin-right: 6px;
-    margin-left: 6px;
     font-size: 18px;
-
 
     .fa-plus {
       color: $success_secondary;
