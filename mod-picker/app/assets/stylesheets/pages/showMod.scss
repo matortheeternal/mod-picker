@@ -427,7 +427,9 @@
     }
 
     input {
-      width: 2em;
+      min-width: 1em;
+      max-width: 2em;
+      padding: 0 4px;
       font: inherit;
       font-size: 30px;
       text-align: center;
