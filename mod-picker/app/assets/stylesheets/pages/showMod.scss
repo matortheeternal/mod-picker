@@ -7,10 +7,15 @@
   font-size: 12px;
   border-radius: 4%;
   margin: 2px;
-}
+  cursor: pointer;
+  -webkit-transition: all 0.2s ease-in-out;
+  -moz-transition: all 0.2s ease-in-out;
+  -o-transition: all 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out;
 
-.green-box {
-  background-color: $success_message_color;
+  &:hover {
+    background-color: $bar_highlight_color;
+  }
 }
 
 .mod-header-box {
@@ -19,6 +24,24 @@
   padding: 10px;
   font-size: 12px;
   font-weight: 500;
+  .status-good {
+    background-color: $success_secondary;
+    &:hover {
+      background-color: $success_primary;
+    }
+  }
+  .status-dangerous {
+    background-color: $error_secondary;
+    &:hover {
+      background-color: $error_primary;
+    }
+  }
+  .status-outdated {
+    background-color: $warning_secondary;
+    &:hover {
+      background-color: $warning_primary;
+    }
+  }
 }
 
 ///header stuff
@@ -45,6 +68,10 @@
   font-weight: 700;
   padding-top: 2px;
   height: 50px;
+  cursor: default;
+  &:hover {
+    background-color: $action_color;
+  }
 }
 
 .reputation-number {
@@ -111,9 +138,10 @@
 }
 
 .mod-image {
-  width: 100%;
+  display: block;
+  margin: auto;
+  margin-bottom: 20px;
   border: 2px solid $border_color;
-  margin-top: 20px;
 }
 
 .sources {
@@ -134,10 +162,6 @@
   .source-label {
     padding: 5px 2px;
   }
-}
-
-.source-box:hover {
-  background-color: $bright_action_color;
 }
 
 .source-image {
@@ -256,11 +280,11 @@
 .sort-by-dropdown {
   flex-grow: 1;
 
-  .select {
-    flex-grow: 1;
+  select {
     margin-left: 10px;
     margin-right: 10px;
     min-width: 190px;
+    display: inline-block;
   }
 }
 
@@ -269,31 +293,43 @@
   margin-bottom: 20px;
 }
 
+.add-note-title {
+  font-size: 16px;
+  font-weight: 500;
+  color: $bar_text_color;
+  background-color: $bar_color;
+  margin-top: 20px;
+  border: 1px solid $bar_dark_color;
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  i {
+    cursor: pointer;
+    margin-right: .5em;
+  }
+}
+
 //add note box
 .add-note-box {
-  border: 1px solid $border_color;
+  border: 1px solid $bar_dark_color;
+  border-top: none;
   background-color: $primary_background;
-  margin-top: 20px;
-  padding: 20px;
-
-  .section-title {
-    margin-top: 0;
-    font-size: 16px;
-    font-weight: 500;
-    color: $h4_color;
-  }
+  color: $h4_color;
 
   .add-note-actions {
     display: flex;
     justify-content: space-around;
     align-items: center;
+    font-size: 14px;
     width: 745px;
 
     .compatibility-dropdown {
       min-width: 236px;
     }
 
-    .install-order-dropdown {
+    .order-dropdown {
       min-width: 85px;
     }
 
@@ -302,11 +338,6 @@
       align-items: center;
       text-align: center;
     }
-  }
-
-  section {
-    margin-left: 10px;
-    margin-bottom: 10px;
   }
 }
 
@@ -323,9 +354,11 @@
 }
 //making the text-area scroll
 .note-text-area {
+  margin: 20px;
+
   .CodeMirror, .CodeMirror-scroll {
-    max-height: 200px;
-    min-height: 200px;
+    max-height: 400px;
+    min-height: 400px;
   }
 }
 
@@ -349,5 +382,66 @@
   input {
     width: 50px;
     display: inline;
+  }
+}
+
+.ratings-container {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  align-items: center;
+  font-size: 24px;
+  background-color: $bar_highlight_color;
+  color: $bright_action_color;
+
+  .rating-item {
+    font-weight: 500;
+
+    select {
+      border: none;
+      background: transparent;
+      font-size: 24px;
+      padding-left: 1.5em;
+      padding-right: 0;
+      direction: rtl;
+      color: inherit;
+
+      option {
+        background-color: $bar_highlight_color;
+      }
+
+      &:hover {
+        background-image:
+          linear-gradient(45deg, transparent 48%, $bright_action_color 50%),
+          linear-gradient(135deg, $bright_action_color 50%, transparent 52%);
+        background-position:
+          18px 55%,
+          22px 55%;
+        // these are slightly wider than their actual size to stop rounding from
+        // leaving a space in between the two triangles
+        background-size:
+          5px 4px,
+          5px 4px;
+        background-repeat: no-repeat;
+      }
+    }
+
+    input {
+      min-width: 1em;
+      max-width: 2em;
+      padding: 0 4px;
+      font: inherit;
+      font-size: 30px;
+      text-align: center;
+      color: $bar_text_color;
+      border: none;
+      margin: 0;
+      background-color: inherit;
+
+      &:hover {
+        border: 1px solid $border_color;
+        background-color: $bar_dark_color;
+      }
+    }
   }
 }

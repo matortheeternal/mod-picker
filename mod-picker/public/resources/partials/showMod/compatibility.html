@@ -13,13 +13,13 @@
 
 	--><div class="mod-tab-action sort-by-dropdown">
 		<strong>Sort By: </strong>
-		<div class="select">
-			<select ng-model="cNotesSort">
-				<option value="-sortBySeverity" default>Reputation</option>
-				<option value="-submitted">Date Submitted</option>
-				<option value="-edited">Last Edited</option>
-			</select>
-		</div>
+
+		<select ng-model="compatibilitySort" ng-init="'reputation">
+			<option value="reputation">Reputation</option>
+			<option value="severity">Severity</option>
+			<option value="submitted">Date Submitted</option>
+			<option value="edited">Last Edited</option>
+		</select>
 	</div><!--
 	--><div class="mod-tab-action">
 		<input class="btn mod-page-btn" type="submit" value="Add Note" ng-click="submit()"/>
@@ -44,11 +44,6 @@
 			<input type="text" placeholder="Enter Mod Name" ng-model="otherModName" ng-change="newCompatibilityNote.otherMod = getModByName(newCompatibilityNote.otherModName)">
 		</div>
 	</section>
-	<section class="version-boxes-section">
-		<!-- TODO: probably should work with ng-repeats -->
-		<version-boxes versions="mod.mod_versions" selectedVersions="newCompatibilityNote.mods[0].mod_versions"></version-boxes>
-		<version-boxes ng-if="newCompatibilityNote.otherMod.mod_versions" versions="newCompatibilityNote.otherMod.mod_versions" selectedVersions="newCompatibilityNote.mods[1].mod_versions"></version-boxes>
-	</section>
 	<section>
 		<div ng-if="newCompatibilityNote.compatibility_type === 'compatibility mod'">
 			Compatibility Mod
@@ -70,4 +65,4 @@
 
 <div ng-repeat="cnote in compatibilityNotes" class="notes">
 	<compatibility-note cnote="cnote" show-author-column="true"></compatibility-note>
-</div>
+

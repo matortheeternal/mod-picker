@@ -1,14 +1,14 @@
 ﻿<div class="mod-tab-actions">
 	<div class="mod-tab-action sort-by-dropdown">
 		<strong>Sort By: </strong>
-		<div class="select">
-			<select ng-model="reviewsFilter">
-				<option value="-sortBySeverity">Severity</option>
-				<option value="-submitted">Date Submitted</option>
-				<option value="-edited">Last Edited</option>
-				<option value="+incorrect_notes_count">Author's Incorrect Notes</option>
-			</select>
-		</div>
+
+		<select ng-model="reviewsFilter" ng-init="reviewsFilter = 'reputation'">
+			<option value="reputation">Reputation</option>
+			<option value="helpfulness">Helpfulness</option>
+			<option value="overallRating">Overall Rating</option>
+			<option value="submitted">Date Submitted</option>
+			<option value="edited">Last Edited</option>
+		</select>
 	</div>
 
 	<div class="mod-tab-action text-centered-block">
@@ -18,49 +18,33 @@
 	</div>
 
 	<div class="mod-tab-action">
-		<input class="btn mod-page-btn" type="submit" value="Add Review" ng-click="submit()"/>
+		<input class="btn mod-page-btn" type="submit" value="Add Review" ng-click="startNewReview()"/>
 	</div>
 </div>
 
-<div class="add-note-box">
-	<h3 class="section-title">Add Review</h3>
-	<section>
+<div class="add-note-box" ng-show="newReview">
+	<div class="add-note-title" ng-show="newReview">
 		<div>
-			Review Template:
-	        <select ng-model="currentTemplate" ng-change="updateReviewTemplate(currentTemplate)" ng-options="review_template as review_template.name for review_template in review_templates" class="review-template-dropdown"></select>
-        </div>
-	</section>
-	<section class="ratings">
-		<!-- TODO: kill redundancy-->
-		<div>
-			{{currentTemplate.section1}}
-			<input type="number" step="0.1" max="10" min="0" placeholder="8.5" ng-model="newReview.ratings[0]" ng-change="updateOverallRating()">
+			Add Review
+			({{newReview.overallRating}}/100)
 		</div>
-		<div ng-if="currentTemplate.section2">
-			{{currentTemplate.section2}}
-			<input type="number" step="0.1" max="10" min="0" placeholder="8.5" ng-model="newReview.ratings[1]" ng-change="updateOverallRating()">
+		<i class="fa fa-times" aria-hidden="true" ng-click="discardReview()"></i>
+	</div>
+	<section class="ratings-container">
+		<div class="rating-item" ng-repeat="rating in newReview.ratings">
+			<select class="select" ng-options="section as section.name for section in reviewSections track by section.id" ng-model="rating.section">
+				<i class="fa fa-caret-down" aria-hidden="true"></i>
+			</select>:
+			<input ng-change="rating.rating = formatScore(rating.rating); updateOverallRating()" ng-model="rating.rating" pu-elastic-input>
 		</div>
-		<div ng-if="currentTemplate.section3">
-			{{currentTemplate.section3}}
-			<input type="number" step="0.1" max="10" min="0" placeholder="8.5" ng-model="newReview.ratings[2]" ng-change="updateOverallRating()">
-		</div>
-		<div ng-if="currentTemplate.section4">
-			{{currentTemplate.section4}}
-			<input type="number" step="0.1" max="10" min="0" placeholder="8.5" ng-model="newReview.ratings[3]" ng-change="updateOverallRating()">
-		</div>
-		<div ng-if="currentTemplate.section5">
-			{{currentTemplate.section5}}
-			<input type="number" step="0.1" max="10" min="0" placeholder="8.5" ng-model="newReview.ratings[4]" ng-change="updateOverallRating()">
-		</div>
-	</section>
-	<section>
-		Overall:
-		{{newReview.overallRating}}
 	</section>
 
     <text-area data="newReview.text_body" ng-refresh="true" class="note-text-area"></text-area>
 
-	<input class="btn mod-page-btn" type="submit" value="Submit" ng-click="createCompatibilityNote()"/>
+	<div class="action-button-container">
+		<input class="btn action-btn" type="submit" value="Submit" ng-click="submitReview()"/>
+		<input class="btn action-btn" type="button" value="Discard" ng-click="discardReview()">
+	</div>
 </div>
 
 <div ng-repeat="review in mod.reviews" class="reviews">

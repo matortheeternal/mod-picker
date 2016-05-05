@@ -198,30 +198,45 @@ class Mod < ActiveRecord::Base
     LoadOrderNote.where('first_plugin_id in ? OR second_plugin_id in ?', self.plugins.ids, self.plugins.ids)
   end
 
+  def image
+    png_path = File.join(Rails.public_path, "mods/#{id}.png")
+    jpg_path = File.join(Rails.public_path, "mods/#{id}.jpg")
+    if File.exists?(png_path)
+      "/mods/#{id}.png"
+    elsif File.exists?(jpg_path)
+      "/mods/#{id}.jpg"
+    else
+      '/mods/Default.png'
+    end
+  end
+
   def show_json
-    self.as_json(:include => {
-        :reviews => {
-            :except => [:submitted_by],
-            :include => {
-                :user => {
-                    :only => [:id, :username, :role, :title],
-                    :include => {
-                        :reputation => {:only => [:overall]}
-                    },
-                    :methods => :avatar
-                }
-            }
-        },
-        :tags => {
-            :except => [:game_id, :hidden, :mod_lists_count],
-            :user => {
-                :only => [:id, :username]
-            }
-        },
-        :nexus_infos => {:except => [:mod_id]},
-        :workshop_infos => {:except => [:mod_id]},
-        :lover_infos => {:except => [:mod_id]},
-        :authors => {:only => [:id, :username]}
+    self.as_json({
+      :include => {
+          :reviews => {
+              :except => [:submitted_by],
+              :include => {
+                  :user => {
+                      :only => [:id, :username, :role, :title],
+                      :include => {
+                          :reputation => {:only => [:overall]}
+                      },
+                      :methods => :avatar
+                  }
+              }
+          },
+          :tags => {
+              :except => [:game_id, :hidden, :mod_lists_count],
+              :user => {
+                  :only => [:id, :username]
+              }
+          },
+          :nexus_infos => {:except => [:mod_id]},
+          :workshop_infos => {:except => [:mod_id]},
+          :lover_infos => {:except => [:mod_id]},
+          :authors => {:only => [:id, :username]}
+      },
+      :methods => :image
     })
   end
 
