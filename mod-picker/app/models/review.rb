@@ -29,6 +29,25 @@ class Review < ActiveRecord::Base
     end
   end
 
+  def as_json(options={})
+    default_options = {
+        :include => {
+            :review_ratings => {
+                :except => [:review_id]
+            },
+            :user => {
+                :only => [:id, :username, :role, :title],
+                :include => {
+                    :reputation => {:only => [:overall]}
+                },
+                :methods => :avatar
+            }
+        }
+    }
+    options[:include] = default_options[:include]
+    super(options)
+  end
+
   private
     def increment_counter_caches
       self.mod.reviews_count += 1
