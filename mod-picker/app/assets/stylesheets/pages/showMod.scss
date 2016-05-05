@@ -429,16 +429,26 @@
         cursor: pointer;
 
         & + .fa-caret-down {
-          display: inherit;
-          position: absolute;
-          left: calc(50% - 10px);
-          bottom: -4px;
+          opacity: 1;
         }
       }
 
       &:focus {
         outline: none;
       }
+    }
+
+    .fa-caret-down {
+      opacity: 0;
+      pointer-events: none;
+      display: inherit;
+      position: absolute;
+      left: calc(50% - 10px);
+      bottom: -4px;
+      -webkit-transition: all 0.2s ease-in-out;
+      -moz-transition: all 0.2s ease-in-out;
+      -o-transition: all 0.2s ease-in-out;
+      transition: all 0.2s ease-in-out;
     }
 
     input {
@@ -452,6 +462,10 @@
       border: none;
       margin: 0;
       background-color: inherit;
+      -webkit-transition: all 0.2s ease-in-out;
+      -moz-transition: all 0.2s ease-in-out;
+      -o-transition: all 0.2s ease-in-out;
+      transition: all 0.2s ease-in-out;
 
       &:hover {
         box-shadow: 0 0 3px 0 $border_color;
@@ -477,6 +491,10 @@
     i {
       padding: 2px;
       cursor: pointer;
+      -webkit-transition: all 0.2s ease-in-out;
+      -moz-transition: all 0.2s ease-in-out;
+      -o-transition: all 0.2s ease-in-out;
+      transition: all 0.2s ease-in-out;
     }
 
     .fa-plus {
