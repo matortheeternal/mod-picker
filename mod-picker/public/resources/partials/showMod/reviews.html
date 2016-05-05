@@ -18,7 +18,7 @@
 	</div>
 
 	<div class="mod-tab-action">
-		<input class="btn mod-page-btn" type="submit" value="Add Review" ng-click="startNewReview()"/>
+		<input class="btn mod-page-btn" type="submit" value="Add Review" ng-click="startNewReview()" ng-disabled="newReview"/>
 	</div>
 </div>
 
@@ -32,8 +32,7 @@
 	</div>
 	<section class="ratings-container">
 		<div class="rating-item" ng-repeat="rating in newReview.ratings">
-			<select class="select" ng-options="section as section.name for section in reviewSections track by section.id" ng-model="rating.section">
-				<i class="fa fa-caret-down" aria-hidden="true"></i>
+			<select class="select" ng-options="section as section.name for section in reviewSections track by section.id" ng-model="rating.section" pu-elastic-input>
 			</select>:
 			<input ng-change="rating.rating = formatScore(rating.rating); updateOverallRating()" ng-model="rating.rating" ng-click="focusText($event)" pu-elastic-input>
 		</div>
