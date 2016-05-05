@@ -316,7 +316,6 @@
   border: 1px solid $bar_dark_color;
   border-top: none;
   background-color: $primary_background;
-  padding: 20px;
   color: $h4_color;
 
   .add-note-actions {
@@ -340,11 +339,6 @@
       text-align: center;
     }
   }
-
-  section {
-    margin-left: 10px;
-    margin-bottom: 10px;
-  }
 }
 
 .version-boxes-section {
@@ -360,6 +354,8 @@
 }
 //making the text-area scroll
 .note-text-area {
+  margin: 20px;
+
   .CodeMirror, .CodeMirror-scroll {
     max-height: 400px;
     min-height: 400px;
@@ -393,17 +389,32 @@
   display: flex;
   justify-content: space-around;
   flex-wrap: wrap;
-  font-size: 14px;
+  align-items: center;
+  font-size: 24px;
+  background-color: $bar_highlight_color;
+  color: $bright_action_color;
+
+  select {
+    background: transparent;
+    border: none;
+    font-size: 24px;
+    padding-left: 1.5em;
+    padding-right: 0;
+    direction: rtl;
+    color: inherit;
+    font-weight: 500;
+  }
 
   input {
-    width: 2.5em;
-    height: 2.5em;
+    width: 2em;
     font: inherit;
+    font-size: 30px;
     text-align: center;
-    margin-left: .5em;
-    border: 1px solid $border_color;
-    color: $text_color;
-    background-color: $primary_background;
+    color: $bar_text_color;
+    border: none;
+    margin: 0;
+    background-color: inherit;
+    text-align: left;
+    align-self: center;
   }
 }
-

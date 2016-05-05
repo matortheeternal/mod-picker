@@ -22,17 +22,18 @@
 	</div>
 </div>
 
-<div class="add-note-title" ng-show="newReview">
-	<div>
-		Add Review
-		({{newReview.overallRating}}/100)
-	</div>
-	<i class="fa fa-times" aria-hidden="true" ng-click="discardReview()"></i>
-</div>
 <div class="add-note-box" ng-show="newReview">
+	<div class="add-note-title" ng-show="newReview">
+		<div>
+			Add Review
+			({{newReview.overallRating}}/100)
+		</div>
+		<i class="fa fa-times" aria-hidden="true" ng-click="discardReview()"></i>
+	</div>
 	<section class="ratings-container">
 		<div class="rating-item" ng-repeat="rating in newReview.ratings">
 			<select class="select" ng-options="section as section.name for section in reviewSections track by section.id" ng-model="rating.section"></select>
+			:
 			<input ng-change="rating.rating = formatScore(rating.rating); updateOverallRating()" ng-model="rating.rating">
 		</div>
 	</section>
