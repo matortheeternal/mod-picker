@@ -401,28 +401,15 @@
       border: none;
       background: transparent;
       font-size: 24px;
-      padding-left: 1.5em;
+      min-width: 100px;
+      max-width: 600px;
+      padding-left: 0;
       padding-right: 0;
       direction: rtl;
       color: inherit;
 
       option {
         background-color: $bar_highlight_color;
-      }
-
-      &:hover {
-        background-image:
-          linear-gradient(45deg, transparent 48%, $bright_action_color 50%),
-          linear-gradient(135deg, $bright_action_color 50%, transparent 52%);
-        background-position:
-          18px 55%,
-          22px 55%;
-        // these are slightly wider than their actual size to stop rounding from
-        // leaving a space in between the two triangles
-        background-size:
-          5px 4px,
-          5px 4px;
-        background-repeat: no-repeat;
       }
 
       &:focus {
@@ -443,7 +430,7 @@
       background-color: inherit;
 
       &:hover {
-        box-shadow: 0 0 3px 0 rgba($border_color, 0.5);
+        box-shadow: 0 0 3px 0 $border_color;
       }
 
       &:focus {
