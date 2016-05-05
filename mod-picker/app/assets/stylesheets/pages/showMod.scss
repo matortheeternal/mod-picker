@@ -395,14 +395,29 @@
   color: $bright_action_color;
 
   select {
-    background: transparent;
     border: none;
+    background: transparent;
     font-size: 24px;
     padding-left: 1.5em;
     padding-right: 0;
     direction: rtl;
     color: inherit;
     font-weight: 500;
+
+    &:hover {
+
+      background-image:
+        linear-gradient(45deg, transparent 48%, $bright_action_color 50%),
+        linear-gradient(135deg, $bright_action_color 50%, transparent 52%);
+      background-position:
+        18px 55%,
+        22px 55%;
+      background-size:
+        //these are slightly wider than their actual size to stop rounding from leaving a space in between the two triangles
+        5px 4px,
+        5px 4px;
+      background-repeat: no-repeat;
+    }
   }
 
   input {
@@ -414,7 +429,12 @@
     border: none;
     margin: 0;
     background-color: inherit;
-    text-align: left;
-    align-self: center;
+  }
+
+  .rating-item:hover {
+    input {
+      border: 1px solid $border_color;
+      background-color: $bar_dark_color;
+    }
   }
 }
