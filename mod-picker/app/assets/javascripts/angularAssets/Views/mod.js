@@ -224,6 +224,11 @@ app.controller('modController', function ($scope, $q, $stateParams, modService, 
 
     // remove a rating section from newReview
     $scope.removeRating = function() {
+        // return if we there's only one rating left
+        if ($scope.newReview.ratings.length == 1) {
+            return;
+        }
+
         // pop the last rating off of the ratings array
         var rating = $scope.newReview.ratings.pop();
         // add the removed section back to the available list
