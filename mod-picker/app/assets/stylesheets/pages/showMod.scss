@@ -389,7 +389,7 @@
 
 .ratings-container {
   display: flex;
-  justify-content: space-around;
+  justify-content: center;
   flex-wrap: wrap;
   align-items: center;
   font-size: 24px;
@@ -398,6 +398,7 @@
 
   .rating-item {
     font-weight: 500;
+    padding: 0 8px;
 
     .fa-caret-down {
       display: none;
