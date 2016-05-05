@@ -34,8 +34,7 @@
 		<div class="rating-item" ng-repeat="rating in newReview.ratings">
 			<select class="select" ng-options="section as section.name for section in reviewSections track by section.id" ng-model="rating.section">
 				<i class="fa fa-caret-down" aria-hidden="true"></i>
-			</select>
-			:
+			</select>:
 			<input ng-change="rating.rating = formatScore(rating.rating); updateOverallRating()" ng-model="rating.rating" pu-elastic-input>
 		</div>
 	</section>
