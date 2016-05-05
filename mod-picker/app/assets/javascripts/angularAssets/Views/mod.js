@@ -178,6 +178,10 @@ app.controller('modController', function ($scope, $q, $stateParams, modService, 
             ratings: [],
             text_body: ""
         };
+
+        // set up availableSections array
+        $scope.availableSections = $scope.reviewSections.slice(0);
+
         // set up default review sections
         // and default text body with prompts
         $scope.reviewSections.forEach(function(section) {
@@ -194,14 +198,18 @@ app.controller('modController', function ($scope, $q, $stateParams, modService, 
     // Add a new rating section to the newReview
     $scope.addNewRating = function(section) {
         // return if we're at the maximum number of ratings
-        if ($scope.newReview.ratings.length >= 5 || $scope.newReview.ratings.length >= $scope.reviewSections.length) {
+        if ($scope.newReview.ratings.length >= 5 || $scope.availableSections.length == 0) {
             return;
         }
 
-        // get the next available section if we weren't passed a
-        // specific section to add
+        // get the next available section if necessary
         section = section || $scope.getNextAvailableSection();
+        // and remove it from the availableSections array
+        $scope.availableSections = $scope.availableSections.filter(function(availableSection) {
+            return availableSection.id !== section.id;
+        });
 
+        // build the rating object and append it to the ratings array
         var ratingObj = {
             section: section,
             rating: 100
@@ -211,18 +219,15 @@ app.controller('modController', function ($scope, $q, $stateParams, modService, 
 
     //remove the section from reviewSections
     $scope.getNextAvailableSection = function() {
-        return $scope.reviewSections[0];
+        return $scope.availableSections[0];
     };
 
     // remove a rating section from newReview
-    $scope.removeRating = function(section) {
+    $scope.removeRating = function() {
+        // pop the last rating off of the ratings array
+        var rating = $scope.newReview.ratings.pop();
         // add the removed section back to the available list
-        $scope.reviewSections.push(section);
-
-        // remove the rating with the section parameter from the ratings array
-        $scope.newReview.ratings.filter(function(rating) {
-            return rating.section.id !== section.id;
-        });
+        $scope.availableSections.push(rating.section);
     };
 
     // discard a new review object

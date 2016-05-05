@@ -32,7 +32,7 @@
 	<section class="ratings-container">
 		<div class="rating-item" ng-repeat="rating in newReview.ratings">
 			<div>
-				<select class="select" ng-options="section as section.name for section in reviewSections track by section.id" ng-model="rating.section" pu-elastic-input>
+				<select class="select" ng-options="section as section.name for section in availableSections.concat([rating.section]) track by section.id" ng-model="rating.section" pu-elastic-input>
 				</select>:
 				<i class="fa fa-caret-down" aria-hidden="true"></i>
 			</div>
@@ -40,7 +40,7 @@
 		</div>
 		<div class="section-tools">
 			<i class="fa fa-plus" aria-hidden="true" ng-class="{ 'disabled' : newReview.ratings.length >= 5 || newReview.ratings.length >= reviewSections.length }" ng-click="addNewRating()" title="Add review section"></i>
-			<i class="fa fa-minus" aria-hidden="true" ng-class="{ 'disabled' : newReview.ratings.length <= 1}" ng-click="newReview.ratings.splice(newReview.ratings.length-1,1)" title="Remove review section"></i>
+			<i class="fa fa-minus" aria-hidden="true" ng-class="{ 'disabled' : newReview.ratings.length <= 1}" ng-click="removeRating()" title="Remove review section"></i>
 		</div>
 	</section>
     <section class="note-content-container">
