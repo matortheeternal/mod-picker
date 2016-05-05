@@ -184,7 +184,7 @@ app.controller('modController', function ($scope, $q, $stateParams, modService, 
             if (section.default) {
                 var ratingObj = {
                     section: section,
-                    rating: 50
+                    rating: 100
                 };
                 $scope.newReview.ratings.push(ratingObj);
                 $scope.newReview.text_body += "## " + section.name + "\n";
