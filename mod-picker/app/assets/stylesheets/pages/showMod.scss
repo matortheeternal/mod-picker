@@ -414,6 +414,10 @@
         background-color: $bar_highlight_color;
       }
 
+      &:hover {
+        cursor: pointer;
+      }
+
       &:focus {
         outline: none;
       }
