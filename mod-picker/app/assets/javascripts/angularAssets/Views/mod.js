@@ -193,6 +193,8 @@ app.controller('modController', function ($scope, $q, $stateParams, modService, 
         });
 
         $scope.updateOverallRating();
+
+        // update the markdown editor
         $scope.updateMDE = true;
         $scope.updateMDE = false;
     };
