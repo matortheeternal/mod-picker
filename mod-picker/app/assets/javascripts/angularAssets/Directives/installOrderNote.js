@@ -2,7 +2,7 @@ app.directive('installOrderNote', function () {
     return {
         restrict: 'E',
         templateUrl: '/resources/directives/notePartials/installOrderNote.html',
-        controller: 'iNoteController',
+        controller: 'installOrderNoteController',
         scope: {
         	inote: '=',
             showAuthorColumn: '='
@@ -10,6 +10,6 @@ app.directive('installOrderNote', function () {
     };
 });
 
-app.controller('iNoteController', function ($scope) {
+app.controller('installOrderNoteController', function ($scope) {
 //leaving this here in case it is needed when the directive is actually made
 });

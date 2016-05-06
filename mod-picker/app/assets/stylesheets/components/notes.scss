@@ -95,6 +95,13 @@
 			background-color: $dark_action_color;
 			border-top: 0;
 			width: 100%;
+			span {
+				display: inline-block;
+				font-size: 14px;
+				font-weight: 100;
+				font-style: italic;
+				vertical-align: top;
+			}
 			ul {
 				padding: 0;
 				margin-top: 20px;
@@ -104,20 +111,9 @@
 			li {
 				display: inline-block;
 				padding-left: 24px;
-				width: 32%;
 				font-size: 16px;
 				font-weight: 700;
-			}
-			li:nth-child(2) {
-				padding-left:160px;
-			}
-			li:last-of-type {
-				text-align: right;
-				
-				font-size: 14px;
-				font-weight: 100;
-				font-style: italic;
-				vertical-align: top;
+				width: 49%;
 			}
 		}
 
@@ -193,16 +189,22 @@
 		@extend .cnote-block;
 		.note-title-block {
 			min-height: 60px;
-
+			text-align: right;
+			ul {
+				width: 80%;
+			}
+			li {
+				text-align: left;
+				width: auto;
+			}
 			li > span {
+				text-align: left;
 				display: inline-block;
 				font-size: 16px;
 				font-weight: 400;
+				font-style: normal;
 			}
 
-			li:nth-child(2) {
-				padding-left:0;
-			}
 		}
 	}
 }
