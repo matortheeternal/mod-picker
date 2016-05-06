@@ -170,6 +170,15 @@ app.controller('modController', function ($scope, $q, $stateParams, modService, 
         });
     };
 
+    // HEADER RELATED LOGIC
+    $scope.starMod = function() {
+        modService.starMod($scope.mod.id, $scope.modStarred).then(function(data) {
+            if (data.status == 'ok') {
+                $scope.modStarred = $scope.modStarred ? false : true;
+            }
+        });
+    };
+
     // REVIEW RELATED LOGIC
     // instantiate a new review object
     $scope.startNewReview = function() {
@@ -178,26 +187,91 @@ app.controller('modController', function ($scope, $q, $stateParams, modService, 
             ratings: [],
             text_body: ""
         };
+
+        // set up availableSections array
+        $scope.availableSections = $scope.reviewSections.slice(0);
+
         // set up default review sections
         // and default text body with prompts
         $scope.reviewSections.forEach(function(section) {
             if (section.default) {
-                var ratingObj = {
-                    section: section,
-                    rating: 50
-                };
-                $scope.newReview.ratings.push(ratingObj);
+                $scope.addNewRating(section);
                 $scope.newReview.text_body += "## " + section.name + "\n";
                 $scope.newReview.text_body += "*" + section.prompt + "*\n\n";
             }
         });
 
         $scope.updateOverallRating();
+
+        // update the markdown editor
+        $scope.updateMDE = true;
+        $scope.updateMDE = false;
+    };
+
+    // Add a new rating section to the newReview
+    $scope.addNewRating = function(section) {
+        // return if we're at the maximum number of ratings
+        if ($scope.newReview.ratings.length >= 5 || $scope.availableSections.length == 0) {
+            return;
+        }
+
+        // get the next available section if necessary
+        section = section || $scope.getNextAvailableSection();
+        // and remove it from the availableSections array
+        $scope.availableSections = $scope.availableSections.filter(function(availableSection) {
+            return availableSection.id !== section.id;
+        });
+
+        // build the rating object and append it to the ratings array
+        var ratingObj = {
+            section: section,
+            rating: 100
+        };
+        $scope.newReview.ratings.push(ratingObj);
+    };
+
+    //remove the section from reviewSections
+    $scope.getNextAvailableSection = function() {
+        return $scope.availableSections[0];
+    };
+
+    $scope.changeSection = function(newSection, oldSectionId) {
+        if (newSection.id == oldSectionId) {
+            return;
+        }
+        // psuh the oldSection onto the availableSections array
+        var oldSection = $scope.reviewSections.find(function(section) {
+            return section.id == oldSectionId;
+        });
+        $scope.availableSections.push(oldSection);
+        // remove the new section from the availableSections array
+        $scope.availableSections = $scope.availableSections.filter(function(availableSection) {
+            return availableSection.id !== newSection.id;
+        });
+
+    };
+
+    // remove a rating section from newReview
+    $scope.removeRating = function() {
+        // return if we there's only one rating left
+        if ($scope.newReview.ratings.length == 1) {
+            return;
+        }
+
+        // pop the last rating off of the ratings array
+        var rating = $scope.newReview.ratings.pop();
+        // add the removed section back to the available list
+        $scope.availableSections.push(rating.section);
     };
 
     // discard a new review object
     $scope.discardReview = function() {
         delete $scope.newReview;
+    };
+
+    // focus text in rating input
+    $scope.focusText = function ($event) {
+        $event.target.select();
     };
 
     // submit a review

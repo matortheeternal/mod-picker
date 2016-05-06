@@ -1,5 +1,5 @@
 class ModsController < ApplicationController
-  before_action :set_mod, only: [:show, :update, :compatibility_notes, :install_order_notes, :load_order_notes, :destroy]
+  before_action :set_mod, only: [:show, :update, :reviews, :compatibility_notes, :install_order_notes, :load_order_notes, :analysis, :destroy]
 
   # POST /mods
   def index
@@ -75,20 +75,30 @@ class ModsController < ApplicationController
     end
   end
 
+  # GET /mods/1/reviews
+  def reviews
+    authorize! :read, @mod
+    @reviews = @mod.reviews.paginate(:page => params[:page])
+    render :json => @reviews
+  end
+
   # GET /mods/1/compatibility_notes
   def compatibility_notes
+    authorize! :read, @mod
     @compatibility_notes = @mod.compatibility_notes.paginate(:page => params[:page])
     render :json => @compatibility_notes
   end
 
   # GET /mods/1/install_order_notes
   def install_order_notes
+    authorize! :read, @mod
     @install_order_notes = @mod.install_order_notes.paginate(:page => params[:page])
     render :json => @install_order_notes
   end
 
   # GET /mods/1/load_order_notes
   def load_order_notes
+    authorize! :read, @mod
     if @mod.plugins.length > 0
       @load_order_notes = @mod.load_order_notes.paginate(:page => params[:page])
       render :json => @load_order_notes
@@ -96,6 +106,15 @@ class ModsController < ApplicationController
       @mod.errors.add(:load_order_notes, "Mod has no plugins")
       render json: @mod.errors, status: :unprocessable_entity
     end
+  end
+
+  # GET /mods/1/analysis
+  def analysis
+    authorize! :read, @mod
+    render json: {
+        plugins: @mod.plugins,
+        assets: @mod.asset_files
+    }
   end
 
   # DELETE /mods/1

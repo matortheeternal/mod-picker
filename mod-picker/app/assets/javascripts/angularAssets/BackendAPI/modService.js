@@ -34,6 +34,20 @@ app.service('modService', function (backend, $q) {
         return mods.promise;
     };
 
+    this.starMod = function(modId, starred) {
+        var star = $q.defer();
+        if (starred) {
+            backend.delete('/mods/' + modId + '/star').then(function (data) {
+                star.resolve(data);
+            });
+        } else {
+            backend.post('/mods/' + modId + '/star', {}).then(function (data) {
+                star.resolve(data);
+            });
+        }
+        return star.promise;
+    };
+
     this.retrieveCompatibilityNotes = function (modId, options) {
         var compatibilityNotes = $q.defer();
         backend.retrieve('/mods/' + modId + '/compatibility_notes', options).then(function (data) {

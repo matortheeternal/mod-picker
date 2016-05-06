@@ -339,6 +339,10 @@
       text-align: center;
     }
   }
+
+  .note-content-container {
+    margin: 20px;
+  }
 }
 
 .version-boxes-section {
@@ -354,8 +358,6 @@
 }
 //making the text-area scroll
 .note-text-area {
-  margin: 20px;
-
   .CodeMirror, .CodeMirror-scroll {
     max-height: 400px;
     min-height: 400px;
@@ -387,23 +389,36 @@
 
 .ratings-container {
   display: flex;
-  justify-content: space-around;
+  position: relative;
+  justify-content: center;
   flex-wrap: wrap;
   align-items: center;
   font-size: 24px;
+  padding-right: 60px; // This makes certain the ratings don't go over the section-tools
   background-color: $bar_highlight_color;
   color: $bright_action_color;
 
   .rating-item {
     font-weight: 500;
+    padding: 0 8px;
+
+    .fa-caret-down {
+      display: none;
+    }
+
+    div {
+      display: inline-block;
+      position: relative;
+    }
 
     select {
       border: none;
       background: transparent;
       font-size: 24px;
-      padding-left: 1.5em;
+      min-width: 100px;
+      max-width: 600px;
+      padding-left: 0;
       padding-right: 0;
-      direction: rtl;
       color: inherit;
 
       option {
@@ -411,19 +426,29 @@
       }
 
       &:hover {
-        background-image:
-          linear-gradient(45deg, transparent 48%, $bright_action_color 50%),
-          linear-gradient(135deg, $bright_action_color 50%, transparent 52%);
-        background-position:
-          18px 55%,
-          22px 55%;
-        // these are slightly wider than their actual size to stop rounding from
-        // leaving a space in between the two triangles
-        background-size:
-          5px 4px,
-          5px 4px;
-        background-repeat: no-repeat;
+        cursor: pointer;
+
+        & + .fa-caret-down {
+          opacity: 1;
+        }
       }
+
+      &:focus {
+        outline: none;
+      }
+    }
+
+    .fa-caret-down {
+      opacity: 0;
+      pointer-events: none;
+      display: inherit;
+      position: absolute;
+      left: calc(50% - 10px);
+      bottom: -4px;
+      -webkit-transition: opacity 0.3s ease-in-out;
+      -moz-transition: opacity 0.3s ease-in-out;
+      -o-transition: opacity 0.3s ease-in-out;
+      transition: opacity 0.3s ease-in-out;
     }
 
     input {
@@ -437,10 +462,56 @@
       border: none;
       margin: 0;
       background-color: inherit;
+      -webkit-transition: box-shadow 0.2s ease-in-out;
+      -moz-transition: box-shadow 0.2s ease-in-out;
+      -o-transition: box-shadow 0.2s ease-in-out;
+      transition: box-shadow 0.2s ease-in-out;
 
       &:hover {
-        border: 1px solid $border_color;
-        background-color: $bar_dark_color;
+        box-shadow: 0 0 3px 0 $border_color;
+      }
+
+      &:focus {
+        box-shadow: 0 0 3px 0 $border_color;
+        outline: none;
+      }
+    }
+  }
+
+  .section-tools {
+    position: absolute;
+    right: 0;
+    top: 0;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    font-size: 18px;
+
+    i {
+      padding: 2px;
+      cursor: pointer;
+      -webkit-transition: color 0.2s ease-in-out;
+      -moz-transition: color 0.2s ease-in-out;
+      -o-transition: color 0.2s ease-in-out;
+      transition: color 0.2s ease-in-out;
+    }
+    i.disabled {
+      color: $hard_border_color !important;
+      cursor: default;
+    }
+
+    .fa-plus {
+      color: $success_primary;
+      &:hover {
+        color: $success_secondary;
+      }
+    }
+
+    .fa-minus {
+      color: $error_primary;
+      &:hover {
+        color: $error_secondary;
       }
     }
   }

@@ -4,7 +4,7 @@
             <div class="page-container mod-header">
                 <section>
                     <div class="quality-value action-box">
-                        <span class="reputation-number">{{mod.reputation | number}}</span>
+                        <span class="reputation-number">{{mod.reputation | number:0}}</span>
                         REPUTATION
                     </div>
 
@@ -18,7 +18,7 @@
                         </span>-->
                         <br>
                         <!-- TODO: reviews currently are on tab 1 -> should be dynamic anyway -> ui-router :D -->
-                        <a ng-click="currentTab = tabs[2]">{{mod.reviews.length | number}} reviews</a>
+                        {{mod.reviews.length | number}} reviews
                         <!-- TODO: add this with css :after content -->
                         <span class="divider">
                             |
@@ -45,9 +45,9 @@
                     <div class="mod-header-box">
                         <!-- TODO: I feel like using some spans here would be wiser -->
                         ACTIONS
-                        <div class="action-box">
-                            <i class="fa fa-heart" aria-hidden="true"></i>
-                            Favorite
+                        <div class="action-box" ng-click="starMod()">
+                            <i class="fa {{modStarred ? 'fa-star' : 'fa-star-o'}}" aria-hidden="true"></i>
+                            {{modStarred ? 'Unfavorite' : 'Favorite'}}
                         </div>
                         <div class="action-box">
                             <i class="fa fa-plus" aria-hidden="true"></i>

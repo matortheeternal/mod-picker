@@ -171,7 +171,7 @@ class Mod < ActiveRecord::Base
       end
     else
       compute_average_rating
-      review_reputation = (self.average_rating / 10.0)**3 * (510.0 / (1 + Math::exp(-0.2 * (self.reviews_count - 10))) - 60)
+      review_reputation = (self.average_rating / 100)**3 * (510.0 / (1 + Math::exp(-0.2 * (self.reviews_count - 10))) - 60)
       self.reputation = review_reputation
     end
   end
