@@ -34,10 +34,12 @@ Rails.application.routes.draw do
     match '/mods/submit', to: 'mods#create', via: 'post'
     match '/mods', to: 'mods#index', via: 'post'
 
-    # mod notes
+    # content associated with mods
+    match '/mods/:id/reviews', to: 'mods#reviews', via: 'get'
     match '/mods/:id/compatibility_notes', to: 'mods#compatibility_notes', via: 'get'
     match '/mods/:id/install_order_notes', to: 'mods#install_order_notes', via: 'get'
     match '/mods/:id/load_order_notes', to: 'mods#load_order_notes', via: 'get'
+    match '/mods/:id/analysis', to: 'mods#analysis', via: 'get'
 
     # helpful marks
     match '/reviews/:id/helpful', to: 'reviews#helpful', via: 'post'
