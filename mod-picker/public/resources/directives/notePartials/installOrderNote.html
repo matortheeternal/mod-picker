@@ -15,14 +15,7 @@
             <span class="standing">Good Standing</span>
         </span>
 	</div>
-    <div class='author-column' ng-if='showAuthorColumn'>
-		<img class='avatar-small' ng-src='{{note.user.avatar}}'/>
-		<br>
-		<span class='author-name'><a ng-href="/profile/{{inote.user.id}}">{{note.user.username}}</a></span>
-		<span class='author-title'>{{note.user.title}}</span>
-		<span class='author-role'>{{note.user.role}}</span>
-		<span class='author-reputation'>{{note.user.reputation.overall}}</span>
-	</div>
+    <author-column user="note.user" ng-if='showAuthorColumn' class="author-column"></author-column>
 	<div class='content-column'>
         <div class='text-container' marked="note.text_body"></div>
         <div class='actions-container'>

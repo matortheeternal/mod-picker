@@ -1,12 +1,5 @@
 <div class='compatibility-note'>
-    <div class='author-block' ng-if='showAuthorColumn'>
-			<img class='avatar-small' ng-src='{{lnote.user.avatar}}'/>
-			<br>
-			<span class='author-name'><a ng-href="/profile/{{lnote.user.id}}">{{lnote.user.username}}</a></span>
-			<span class='author-title'>{{lnote.user.title}}</span>
-			<span class='author-role'>{{lnote.user.role}}</span>
-			<span class='author-reputation'>{{lnote.user.reputation.overall}}</span>
-	</div>
+	<author-column user="note.user" ng-if='showAuthorColumn' class="author-column"></author-column>
 	<div class='right-container'>
 		<div class='inote-block'>
 			<div class='note-title-block'>
