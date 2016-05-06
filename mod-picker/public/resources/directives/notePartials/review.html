@@ -2,12 +2,6 @@
     <div class="note-title">
         {{review.user.username}}'s Review ({{review.overall_rating | number:0}}/100)
     </div>
-    <div class="ratings-container">
-        <div class="rating-item" ng-repeat="rating in review.ratings">
-            <span class="section-name">{{rating.section.name}}:</span>
-            <span class="rating-value">{{rating.rating}}</span>
-        </div>
-    </div>
     <div class='author-column' ng-if='showAuthorColumn'>
         <img class='avatar-small' ng-src='{{review.user.avatar}}'/>
         <br>
@@ -17,6 +11,12 @@
         <span class='author-reputation'>{{review.user.reputation.overall}}</span>
     </div>
     <div class='content-column'>
+        <div class="ratings-container">
+            <div class="rating-item" ng-repeat="rating in review.review_ratings">
+                <span class="section-name">{{rating.section.name}}:</span>
+                <span class="rating-value">{{rating.rating}}</span>
+            </div>
+        </div>
         <div class='text-container' marked="review.text_body"></div>
         <div class='actions-container'>
             <a class='action-link'>Make A Suggestion</a>
