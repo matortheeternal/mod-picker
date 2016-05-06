@@ -103,10 +103,11 @@
 				vertical-align: top;
 			}
 			ul {
+				width: 100%;
+				display: inline-block;
 				padding: 0;
 				margin-top: 20px;
 				margin-bottom: 5px;
-				list-style: none;
 			}
 			li {
 				display: inline-block;
@@ -189,7 +190,9 @@
 		@extend .cnote-block;
 		.note-title-block {
 			min-height: 60px;
-			text-align: right;
+			span {
+				margin-top: 20px;
+			}
 			ul {
 				width: 80%;
 			}
@@ -198,6 +201,7 @@
 				width: auto;
 			}
 			li > span {
+				margin-top: 0px;
 				text-align: left;
 				display: inline-block;
 				font-size: 16px;
