@@ -32,7 +32,7 @@
 	<section class="ratings-container">
 		<div class="rating-item" ng-repeat="rating in newReview.ratings">
 			<div>
-				<select class="select" ng-options="section as section.name for section in availableSections.concat([rating.section]) track by section.id" ng-model="rating.section" pu-elastic-input>
+				<select class="select" ng-options="section as section.name for section in availableSections.concat([rating.section]) track by section.id" ng-model="rating.section" ng-change="changeSection(rating.section, '{{rating.section.id}}')" pu-elastic-input>
 				</select>:
 				<i class="fa fa-caret-down" aria-hidden="true"></i>
 			</div>

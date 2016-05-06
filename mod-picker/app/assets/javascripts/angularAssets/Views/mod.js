@@ -222,6 +222,22 @@ app.controller('modController', function ($scope, $q, $stateParams, modService, 
         return $scope.availableSections[0];
     };
 
+    $scope.changeSection = function(newSection, oldSectionId) {
+        if (newSection.id == oldSectionId) {
+            return;
+        }
+        // psuh the oldSection onto the availableSections array
+        var oldSection = $scope.reviewSections.find(function(section) {
+            return section.id == oldSectionId;
+        });
+        $scope.availableSections.push(oldSection);
+        // remove the new section from the availableSections array
+        $scope.availableSections = $scope.availableSections.filter(function(availableSection) {
+            return availableSection.id !== newSection.id;
+        });
+
+    };
+
     // remove a rating section from newReview
     $scope.removeRating = function() {
         // return if we there's only one rating left
