@@ -1,4 +1,14 @@
-<div class='compatibility-note'>
+<div class='note-container'>
+	<div class='note-title-block'>
+		<ul>
+			<li>
+				{{cnote.compatibility_type.capitalize()}}
+			</li>
+			<li style="text-align: right;">
+				<span>Good Standing</span>
+			</li>
+		</ul>
+	</div>
     <div class='author-block' ng-if='showAuthorColumn'>
 			<img class='avatar-small' ng-src='{{cnote.user.avatar}}'/>
 			<br>
@@ -9,16 +19,6 @@
 	</div>
 	<div class='right-container'>
 		<div class='cnote-block'>
-			<div class='note-title-block'>
-				<ul>
-					<li>
-						{{cnote.compatibility_type.capitalize()}}
-					</li>
-					<li style="text-align: right;">
-						<span>Good Standing</span>
-					</li>
-				</ul>
-			</div>
 			<div class='mod-title-block'>
 				<div class='letter-box'>A</div>
 				<a ng-href='#/mod/{{cnote.first_mod_id}}'>{{cnote.mods[0].name}}</a>
