@@ -216,6 +216,9 @@ class Mod < ActiveRecord::Base
           :reviews => {
               :except => [:submitted_by],
               :include => {
+                  :review_ratings => {
+                      :except => [:review_id]
+                  },
                   :user => {
                       :only => [:id, :username, :role, :title],
                       :include => {
@@ -223,7 +226,8 @@ class Mod < ActiveRecord::Base
                       },
                       :methods => :avatar
                   }
-              }
+              },
+              :methods => :overall_rating
           },
           :tags => {
               :except => [:game_id, :hidden, :mod_lists_count],
