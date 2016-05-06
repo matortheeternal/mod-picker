@@ -4,8 +4,9 @@ app.directive('installOrderNote', function () {
         templateUrl: '/resources/directives/notePartials/installOrderNote.html',
         controller: 'installOrderNoteController',
         scope: {
-            showAuthorColumn: '='
         	note: '=',
+            showAuthorColumn: '=',
+            modId: '=?'
         }
     };
 });

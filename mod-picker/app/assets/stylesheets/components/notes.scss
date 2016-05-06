@@ -23,34 +23,9 @@
 }
 
 
-
-.author-column {
-  //background-color: $secondary_background;
-  display: table-cell;
-  border-right: 1px solid $bar_dark_color;
-  width: 164px;
-  padding-top: 20px;
-  text-align: center;
-
-  span {
-    display: block;
-  }
-
-  .author-name {
-    font-size: 13px;
-    font-weight: 500;
-  }
-}
-
-
 .note-container {
   background-color: $primary_background;
   border: 1px solid $bar_dark_color;
-
-  .right-container {
-    display:table-cell;
-    vertical-align: top;
-  }
 
   .note-title {
     background-color: $bar_highlight_color;
@@ -62,134 +37,111 @@
     font-size: 16px;
     font-weight: 500;
 
+    .right-item {
+      float: right;
+      .standing {
+        font-size: 14px;
+        font-weight: 100;
+        font-style: italic;
+        vertical-align: top;
+      }
+    }
+    a {
+      color: $bright_action_color;
+      &:hover {
+        color: $bar_text_color;
+      }
+    }
+  }
+
+  .author-column {
+    //background-color: $secondary_background;
+    border-right: 1px solid $bar_dark_color;
+    display: table-cell;
+    min-width: 150px;
+    padding: 20px 10px;
+    text-align: center;
+
     span {
-      display: inline-block;
-      font-size: 14px;
-      font-weight: 100;
-      font-style: italic;
-      vertical-align: top;
+      display: block;
     }
-    ul {
-      width: 100%;
-      display: inline-block;
-      margin: 0;
-      padding: 0;
-    }
-    li {
-      display: inline-block;
-      padding: 0;
-      width: 49%;
+
+    .author-name {
+      font-size: 13px;
+      font-weight: 500;
     }
   }
 
-  .cnote-block {
-    margin: 0;
-    padding: 0;
-    @include flexbox();
+  .content-column {
+    display:table-cell;
+    vertical-align: top;
+    position: relative;
 
-    -webkit-flex-direction: row;
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: flex-start;
-    align-items: center;
-    align-content: center;
-    width: 700px;
+    .mods-container {
+      @include flexbox();
+      -webkit-flex-direction: row;
+      flex-direction: row;
+      flex-wrap: wrap;
+      justify-content: flex-start;
+      align-items: center;
+      align-content: center;
 
-    .item {
-      @include flex(1);
-      @include order(2);
-      min-height: 45px;
-      flex-basis: auto;
-    }
+      .mod-title {
+        background-color: $secondary_background;
+        border-bottom: 1px solid $bar_dark_color;
+        width: 50%;
 
-    .letter-box {
-      background-color: $primary_background;
-      border-bottom: 1px solid $bar_dark_color;
-      border-right: 1px solid $bar_dark_color;
-      display: inline-block;
-      text-align: center;
-      width: 24px;
-      height: 24px;
-      vertical-align: top;
-    }
+        &:nth-child(even) {
+          border-left: 1px solid $bar_dark_color;
+        }
 
-    .mod-title {
-      background-color: $secondary_background;
-      border-bottom: 1px solid $bar_dark_color;
-      width: 50%;
+        .letter-box {
+          background-color: $primary_background;
+          border-bottom: 1px solid $bar_dark_color;
+          border-right: 1px solid $bar_dark_color;
+          display: inline-block;
+          text-align: center;
+          width: 24px;
+          height: 24px;
+          vertical-align: top;
+        }
 
-      &:nth-child(even) {
-        border-left: 1px solid $bar_dark_color;
-      }
+        span {
+          position: relative;
+          top: 12px;
+          display: inline-block;
+          width:92%;
+          padding-left: 24px;
+          text-align: left;
+        }
 
-      span {
-        position: relative;
-        top: 12px;
-        display: inline-block;
-        width:92%;
-        padding-left: 24px;
-        text-align: left;
-      }
-
-      a {
-        display: inline-block;
-        padding-top: 6px;
-        padding-bottom: 4px;
-        padding-left: 4px;
-        font-weight: 500;
+        a {
+          display: inline-block;
+          padding-top: 6px;
+          padding-bottom: 4px;
+          padding-left: 4px;
+          font-weight: 500;
+        }
       }
     }
 
-    .note-details {
+    .text-container {
       width: 100%;
-      padding: 20px;
+      padding: 0 20px;
     }
 
-    .detail-options {
-      width: 25%;
-      border-right:0;
-      border-top: 0;
-      padding-top: 10px;
-      text-align: left;
-      padding-left: 20px;
-      a {
-        display: inline-block;
-      }
-    }
+    .actions-container {
+      width: 100%;
+      padding: 8px 16px;
+      position: absolute;
+      bottom: 0;
 
-    .detail-helpful {
-      width: 50%;
-      border-top: 0;
-      padding-top: 10px;
-      text-align: center;
-      span {
-        display: inline-block;
-        padding-left: 5px;
-        padding-right: 5px;
+      .action-link {
+        padding-right: 16px;
       }
-    }
-  }
 
-  .inote-block {
-    .note-title {
-      min-height: 60px;
-      span {
-        margin-top: 20px;
-      }
-      ul {
-        width: 80%;
-      }
-      li {
-        text-align: left;
-        width: auto;
-      }
-      li > span {
-        margin-top: 0;
-        text-align: left;
-        display: inline-block;
-        font-size: 16px;
-        font-weight: 400;
-        font-style: normal;
+      .helpfulness {
+        float: right;
       }
     }
   }
