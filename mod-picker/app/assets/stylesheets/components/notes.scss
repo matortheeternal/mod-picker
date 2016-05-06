@@ -31,7 +31,6 @@
     background-color: $bar_color;
     color: $bar_text_color;
     border-bottom: 1px solid $bar_dark_color;
-    text-transform: capitalize;
     width: 100%;
     padding: 10px;
     font-size: 16px;
@@ -61,12 +60,14 @@
     min-width: 150px;
     padding: 20px 10px;
     text-align: center;
+    text-transform: capitalize;
 
     span {
       display: block;
     }
 
     .author-name {
+      text-transform: none;
       font-size: 13px;
       font-weight: 500;
     }

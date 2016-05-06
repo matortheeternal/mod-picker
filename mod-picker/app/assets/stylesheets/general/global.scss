@@ -35,8 +35,9 @@ body {
 }
 
 
-.text-muted {
-  color: #767676;
+/* utility classes */
+.capitalize {
+  text-transform: capitalize;
 }
 
 /* url styling */
