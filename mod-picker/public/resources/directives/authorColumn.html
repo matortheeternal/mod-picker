@@ -1,6 +1,17 @@
-<img class='avatar-medium' ng-src='{{user.avatar}}'/>
-<br>
-<span class='author-name'><a ng-href="/profile/{{user.id}}">{{user.username}}</a></span>
-<span class='author-title'>{{user.title}}</span>
-<span class='author-role'>{{user.role}}</span>
-<span class='author-reputation'>{{user.reputation.overall}} rep</span>
+<ul>
+    <li class='user-name'>
+        <a ng-href="/profile/{{user.id}}">{{user.username}}</a>
+    </li>
+    <li class='user-title'>
+        {{user.title}}
+    </li>
+    <li>
+        <img class='avatar avatar-medium' ng-src='{{user.avatar}}'/>
+    </li>
+    <li class='user-role'>
+        {{user.role}}
+    </li>
+    <li class='user-reputation'>
+        {{user.reputation.overall}} rep
+    </li>
+</ul>
