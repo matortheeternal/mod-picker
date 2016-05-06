@@ -28,7 +28,7 @@
   border: 1px solid $bar_dark_color;
 
   .note-title {
-    background-color: $bar_highlight_color;
+    background-color: $bar_color;
     color: $bar_text_color;
     border-bottom: 1px solid $bar_dark_color;
     text-transform: capitalize;
@@ -76,6 +76,15 @@
     display:table-cell;
     vertical-align: top;
     position: relative;
+
+    .ratings-container {
+      padding: 8px;
+      .rating-item {
+        .rating-value {
+          color: $bar_text_color;
+        }
+      }
+    }
 
     .mods-container {
       @include flexbox();
