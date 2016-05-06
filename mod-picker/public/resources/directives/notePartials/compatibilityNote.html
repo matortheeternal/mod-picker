@@ -1,5 +1,5 @@
 <div class='note-container'>
-	<div class='note-title-block'>
+	<div class='note-title'>
 		<ul>
 			<li>
 				{{cnote.compatibility_type.capitalize()}}
@@ -9,34 +9,34 @@
 			</li>
 		</ul>
 	</div>
-    <div class='author-block' ng-if='showAuthorColumn'>
-			<img class='avatar-small' ng-src='{{cnote.user.avatar}}'/>
-			<br>
-			<span class='author-name'><a ng-href="/profile/{{cnote.user.id}}">{{cnote.user.username}}</a></span>
-			<span class='author-title'>{{cnote.user.title}}</span>
-			<span class='author-role'>{{cnote.user.role}}</span>
-			<span class='author-reputation'>{{cnote.user.reputation.overall}}</span>
+    <div class='author-column' ng-if='showAuthorColumn'>
+		<img class='avatar-small' ng-src='{{cnote.user.avatar}}'/>
+		<br>
+		<span class='author-name'><a ng-href="/profile/{{cnote.user.id}}">{{cnote.user.username}}</a></span>
+		<span class='author-title'>{{cnote.user.title}}</span>
+		<span class='author-role'>{{cnote.user.role}}</span>
+		<span class='author-reputation'>{{cnote.user.reputation.overall}}</span>
 	</div>
 	<div class='right-container'>
 		<div class='cnote-block'>
-			<div class='mod-title-block'>
+			<div class='mod-title'>
 				<div class='letter-box'>A</div>
 				<a ng-href='#/mod/{{cnote.first_mod_id}}'>{{cnote.mods[0].name}}</a>
 			</div>
-			<div class='mod-title-block'>
+			<div class='mod-title'>
 				<div class='letter-box'>B</div>
 				<a ng-href='#/mod/{{cnote.second_mod_id}}'>{{cnote.mods[1].name}}</a>
 			</div>
-			<div class='note-details-block'>
+			<div class='note-details'>
 				{{cnote.text_body}}
 			</div>
-			<div class='detail-options-block'>
+			<div class='detail-options'>
 					<a class='detail-links'>Make A Suggestion</a>
 				</div>
-				<div class='detail-options-block'>
+				<div class='detail-options'>
 					<a class='detail-links'>More <span class='fa fa-angle-right'></span></a>
 				</div>
-				<div class='detail-helpful-block'>
+				<div class='detail-helpful'>
 					<a class='fa fa-thumbs-o-up'></a>
 				<span></span>
 				<a class='fa fa-thumbs-o-down'></a>

@@ -24,7 +24,7 @@
 
 
 
-.author-block {
+.author-column {
   //background-color: $secondary_background;
   display: table-cell;
   border-right: 1px solid $bar_dark_color;
@@ -52,7 +52,7 @@
     vertical-align: top;
   }
 
-  .note-title-block {
+  .note-title {
     background-color: $bar_highlight_color;
     color: $bar_text_color;
     border-bottom: 1px solid $bar_dark_color;
@@ -113,7 +113,7 @@
       vertical-align: top;
     }
 
-    .mod-title-block {
+    .mod-title {
       background-color: $secondary_background;
       border-bottom: 1px solid $bar_dark_color;
       width: 50%;
@@ -140,12 +140,12 @@
       }
     }
 
-    .note-details-block {
+    .note-details {
       width: 100%;
       padding: 20px;
     }
 
-    .detail-options-block {
+    .detail-options {
       width: 25%;
       border-right:0;
       border-top: 0;
@@ -157,7 +157,7 @@
       }
     }
 
-    .detail-helpful-block {
+    .detail-helpful {
       width: 50%;
       border-top: 0;
       padding-top: 10px;
@@ -171,7 +171,7 @@
   }
 
   .inote-block {
-    .note-title-block {
+    .note-title {
       min-height: 60px;
       span {
         margin-top: 20px;
