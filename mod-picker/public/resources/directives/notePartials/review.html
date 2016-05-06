@@ -1,1 +1,30 @@
-<p>Review directive not created yet...</p>
+<div class='note-container'>
+    <div class="note-title">
+        {{review.user.username}}'s Review ({{review.overall_rating}}/100)
+    </div>
+    <div class="ratings-container">
+        <div class="rating-item" ng-repeat="rating in review.ratings">
+            <span class="section-name">{{rating.section.name}}:</span>
+            <span class="rating-value">{{rating.rating}}</span>
+        </div>
+    </div>
+    <div class='author-column' ng-if='showAuthorColumn'>
+        <img class='avatar-small' ng-src='{{review.user.avatar}}'/>
+        <br>
+        <span class='author-name'><a ng-href="/profile/{{review.user.id}}">{{review.user.username}}</a></span>
+        <span class='author-title'>{{review.user.title}}</span>
+        <span class='author-role'>{{review.user.role}}</span>
+        <span class='author-reputation'>{{review.user.reputation.overall}}</span>
+    </div>
+    <div class='content-column'>
+        <div class='text-container' marked="review.text_body"></div>
+        <div class='actions-container'>
+            <a class='action-link'>Make A Suggestion</a>
+            <a class='action-link'>More <span class='fa fa-angle-right'></span></a>
+			<span class='helpfulness'>
+				<a class='fa fa-thumbs-o-up'></a>
+                <a class='fa fa-thumbs-o-down'></a>
+            </span>
+        </div>
+    </div>
+</div>
