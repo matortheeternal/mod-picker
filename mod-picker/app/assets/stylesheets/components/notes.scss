@@ -25,12 +25,12 @@
 
 .note-container {
   background-color: $primary_background;
-  border: 1px solid $bar_dark_color;
+  border: 1px solid $border_color;
 
   .note-title {
     background-color: $bar_color;
     color: $bar_text_color;
-    border-bottom: 1px solid $bar_dark_color;
+    //border-bottom: 1px solid $bar_dark_color;
     width: 100%;
     padding: 10px;
     font-size: 16px;
@@ -55,7 +55,7 @@
 
   .author-column {
     //background-color: $secondary_background;
-    border-right: 1px solid $bar_dark_color;
+    border-right: 1px solid $border_color;
     display: table-cell;
     min-width: 150px;
     padding: 20px 10px;
@@ -123,17 +123,17 @@
 
       .mod-title {
         background-color: $secondary_background;
-        border-bottom: 1px solid $bar_dark_color;
+        border-bottom: 1px solid $border_color;
         width: 50%;
 
         &:nth-child(even) {
-          border-left: 1px solid $bar_dark_color;
+          border-left: 1px solid $border_color;
         }
 
         .letter-box {
           background-color: $primary_background;
-          border-bottom: 1px solid $bar_dark_color;
-          border-right: 1px solid $bar_dark_color;
+          border-bottom: 1px solid $border_color;
+          border-right: 1px solid $border_color;
           display: inline-block;
           text-align: center;
           width: 24px;
