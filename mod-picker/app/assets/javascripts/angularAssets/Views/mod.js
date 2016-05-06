@@ -193,6 +193,8 @@ app.controller('modController', function ($scope, $q, $stateParams, modService, 
         });
 
         $scope.updateOverallRating();
+        $scope.updateMDE = true;
+        $scope.updateMDE = false;
     };
 
     // Add a new rating section to the newReview
