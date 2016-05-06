@@ -170,6 +170,15 @@ app.controller('modController', function ($scope, $q, $stateParams, modService, 
         });
     };
 
+    // HEADER RELATED LOGIC
+    $scope.starMod = function() {
+        modService.starMod($scope.mod.id, $scope.modStarred).then(function(data) {
+            if (data.status == 'ok') {
+                $scope.modStarred = $scope.modStarred ? false : true;
+            }
+        });
+    };
+
     // REVIEW RELATED LOGIC
     // instantiate a new review object
     $scope.startNewReview = function() {
