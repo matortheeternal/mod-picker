@@ -1,46 +1,37 @@
-<div class='compatibility-note'>
-    <div class='author-block' ng-if='showAuthorColumn'>
-			<img class='avatar-small' ng-src='{{cnote.user.avatar}}'/>
-			<br>
-			<span class='author-name'><a ng-href="/profile/{{cnote.user.id}}">{{cnote.user.username}}</a></span>
-			<span class='author-title'>{{cnote.user.title}}</span>
-			<span class='author-role'>{{cnote.user.role}}</span>
-			<span class='author-reputation'>{{cnote.user.reputation.overall}}</span>
+<div class='note-container'>
+	<div class='note-title'>
+		{{note.compatibility_type}}
+		<span class="right-item">
+			<span class="standing">Good Standing</span>
+		</span>
 	</div>
-	<div class='right-container'>
-		<div class='cnote-block'>
-			<div class='note-title-block'>
-				<ul>
-					<li>
-						{{cnote.compatibility_type.capitalize()}}
-					</li>
-					<li style="text-align: right;">
-						<span>Good Standing</span>
-					</li>
-				</ul>
-			</div>
-			<div class='mod-title-block'>
+    <div class='author-column' ng-if='showAuthorColumn'>
+		<img class='avatar-small' ng-src='{{note.user.avatar}}'/>
+		<br>
+		<span class='author-name'><a ng-href="/profile/{{note.user.id}}">{{note.user.username}}</a></span>
+		<span class='author-title'>{{note.user.title}}</span>
+		<span class='author-role'>{{note.user.role}}</span>
+		<span class='author-reputation'>{{note.user.reputation.overall}}</span>
+	</div>
+	<div class='content-column'>
+		<div class="mods-container">
+			<div class='mod-title'>
 				<div class='letter-box'>A</div>
-				<a ng-href='#/mod/{{cnote.first_mod_id}}'>{{cnote.mods[0].name}}</a>
+				<a ng-href='#/mod/{{note.first_mod_id}}'>{{note.mods[0].name}}</a>
 			</div>
-			<div class='mod-title-block'>
+			<div class='mod-title'>
 				<div class='letter-box'>B</div>
-				<a ng-href='#/mod/{{cnote.second_mod_id}}'>{{cnote.mods[1].name}}</a>
+				<a ng-href='#/mod/{{note.second_mod_id}}'>{{note.mods[1].name}}</a>
 			</div>
-			<div class='note-details-block'>
-				{{cnote.text_body}}
-			</div>
-			<div class='detail-options-block'>
-					<a class='detail-links'>Make A Suggestion</a>
-				</div>
-				<div class='detail-options-block'>
-					<a class='detail-links'>More <span class='fa fa-angle-right'></span></a>
-				</div>
-				<div class='detail-helpful-block'>
-					<a class='fa fa-thumbs-o-up'></a>
-				<span></span>
-				<a class='fa fa-thumbs-o-down'></a>
-			</div>
+		</div>
+		<div class='text-container' marked="note.text_body"></div>
+		<div class='actions-container'>
+            <a class='action-link'>Make A Suggestion</a>
+            <a class='action-link'>More <span class='fa fa-angle-right'></span></a>
+			<span class='helpfulness'>
+				<a class='fa fa-thumbs-o-up'></a>
+                <a class='fa fa-thumbs-o-down'></a>
+            </span>
 		</div>
 	</div>
 </div>
