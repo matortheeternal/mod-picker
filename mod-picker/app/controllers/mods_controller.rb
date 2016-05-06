@@ -77,24 +77,28 @@ class ModsController < ApplicationController
 
   # GET /mods/1/reviews
   def reviews
+    authorize! :read, @mod
     @reviews = @mod.reviews.paginate(:page => params[:page])
     render :json => @reviews
   end
 
   # GET /mods/1/compatibility_notes
   def compatibility_notes
+    authorize! :read, @mod
     @compatibility_notes = @mod.compatibility_notes.paginate(:page => params[:page])
     render :json => @compatibility_notes
   end
 
   # GET /mods/1/install_order_notes
   def install_order_notes
+    authorize! :read, @mod
     @install_order_notes = @mod.install_order_notes.paginate(:page => params[:page])
     render :json => @install_order_notes
   end
 
   # GET /mods/1/load_order_notes
   def load_order_notes
+    authorize! :read, @mod
     if @mod.plugins.length > 0
       @load_order_notes = @mod.load_order_notes.paginate(:page => params[:page])
       render :json => @load_order_notes
@@ -106,6 +110,7 @@ class ModsController < ApplicationController
 
   # GET /mods/1/analysis
   def analysis
+    authorize! :read, @mod
     render json: {
         plugins: @mod.plugins,
         assets: @mod.asset_files
