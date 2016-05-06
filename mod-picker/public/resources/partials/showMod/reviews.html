@@ -39,8 +39,8 @@
 			<input ng-change="rating.rating = formatScore(rating.rating); updateOverallRating()" ng-model="rating.rating" ng-click="focusText($event)" pu-elastic-input>
 		</div>
 		<div class="section-tools">
-			<i class="fa fa-plus" aria-hidden="true" ng-class="{ 'disabled' : newReview.ratings.length >= 5 || availableSections.length == 0 }" ng-click="addNewRating()" title="Add review section"></i>
-			<i class="fa fa-minus" aria-hidden="true" ng-class="{ 'disabled' : newReview.ratings.length <= 1}" ng-click="removeRating()" title="Remove review section"></i>
+			<i class="fa fa-plus" aria-hidden="true" ng-class="{ 'disabled' : newReview.ratings.length >= 5 || availableSections.length == 0 }" ng-click="addNewRating()" title="{{ newReview.ratings.length >= 5 || availableSections.length == 0 ? 'Maximum review sections reached.  You can\'t add any more!' : 'Add review section' }}"></i>
+			<i class="fa fa-minus" aria-hidden="true" ng-class="{ 'disabled' : newReview.ratings.length <= 1}" ng-click="removeRating()" title="{{newReview.ratings.length <= 1 ? 'Minimum review sections reached.  You can\'t remove any more!' : 'Remove review section'}}"></i>
 		</div>
 	</section>
     <section class="note-content-container">
