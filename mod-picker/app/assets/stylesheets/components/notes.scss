@@ -29,8 +29,7 @@
   display: table-cell;
   border-right: 1px solid $bar_dark_color;
   width: 164px;
-  min-height: 100%;
-  padding-top: 30px;
+  padding-top: 20px;
   text-align: center;
 
   img {
@@ -41,15 +40,11 @@
   span {
     display: block;
   }
-}
-.author-image {
-  margin-left: 30%;
-  width: 64px;
-  height: 64px;
-}
-.author-name {
-  font-size: 13px;
-  font-weight: 500;
+
+  .author-name {
+    font-size: 13px;
+    font-weight: 500;
+  }
 }
 
 
@@ -127,25 +122,26 @@
       background-color: $secondary_background;
       border-bottom: 1px solid $bar_dark_color;
       width: 50%;
-      span {
-          position:relative;
-          top: 12px;
-          display: inline-block;
-          width:92%;
-          padding-left: 24px;
-          text-align: left;
-      }
-      a {
-          display: inline-block;
-          padding-top:10px;
-          font-weight: 500;
-          //color: $bar_text_color;
-      }
-      a:hover {
-          //color: $bar_text_color;
-      }
+
       &:nth-child(even) {
         border-left: 1px solid $bar_dark_color;
+      }
+
+      span {
+        position: relative;
+        top: 12px;
+        display: inline-block;
+        width:92%;
+        padding-left: 24px;
+        text-align: left;
+      }
+
+      a {
+        display: inline-block;
+        padding-top: 6px;
+        padding-bottom: 4px;
+        padding-left: 4px;
+        font-weight: 500;
       }
     }
 
