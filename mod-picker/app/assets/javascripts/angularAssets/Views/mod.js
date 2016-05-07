@@ -2,9 +2,24 @@ app.config(['$stateProvider', function ($stateProvider) {
     $stateProvider.state('mod', {
             templateUrl: '/resources/partials/showMod/mod.html',
             controller: 'modController',
-            url: '/mod/:modId'
-        }
-    );
+            url: '/mod/:modId',
+            redirectTo: '/mod/:modId/reviews'
+        }).state('mod.tab1', {
+            templateUrl: '/resources/partials/showMod/reviews.html',
+            url: '/reviews'
+        }).state('mod.tab2', {
+            templateUrl: '/resources/partials/showMod/compatibility.html',
+            url: '/compatibility'
+        }).state('mod.tab3', {
+            templateUrl: '/resources/partials/showMod/installOrder.html',
+            url: '/install-order'
+        }).state('mod.tab4', {
+            templateUrl: '/resources/partials/showMod/loadOrder.html',
+            url: '/load-order'
+        }).state('mod.tab5', {
+            templateUrl: '/resources/partials/showMod/analysis.html',
+            url: '/analysis'
+        });
 }]);
 
 //TODO: belongs in its own filter
@@ -72,19 +87,6 @@ app.controller('modController', function ($scope, $q, $stateParams, modService, 
         $scope.userCanAddMod = (rep >= 160) || ($scope.user.role === 'admin');
         $scope.userCanAddTags = (rep >= 20) || ($scope.user.role === 'admin');
     });
-
-    // TAB RELATED LOGIC
-    //set up tab data
-    //TODO use the cool ui-router here :D
-    $scope.tabs = [
-        { name: 'Reviews', url: '/resources/partials/showMod/reviews.html' },
-        { name: 'Compatibility', url: '/resources/partials/showMod/compatibility.html' },
-        { name: 'Install Order', url: '/resources/partials/showMod/installOrder.html' },
-        { name: 'Load Order', url: '/resources/partials/showMod/loadOrder.html' },
-        { name: 'Analysis', url: '/resources/partials/showMod/analysis.html' }
-    ];
-
-    $scope.currentTab = $scope.tabs[0];
 
     $scope.switchTab = function(targetTab) {
         switch (targetTab.name) {

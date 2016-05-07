@@ -163,8 +163,8 @@
 
                 </div>
                 <div class="right-column tabs-column">
-                    <tabs current-tab="currentTab" on-change="switchTab" tabs="tabs"></tabs>
-                    <div ng-include="currentTab.url" class="mod-tab"></div>
+                    <tabs tabs="['Reviews', 'Compatibility', 'Install Order', 'Load Order', 'Analysis']"></tabs>
+                    <div ui-view class="mod-tab"></div>
                 </div>
             </loader>
         </div>
