@@ -98,6 +98,8 @@ class User < ActiveRecord::Base
       "/avatars/#{id}.png"
     elsif File.exists?(jpg_path)
       "/avatars/#{id}.jpg"
+    elsif self.title.nil?
+      nil
     else
       '/avatars/Default.png'
     end
