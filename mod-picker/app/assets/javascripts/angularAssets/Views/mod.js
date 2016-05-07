@@ -17,7 +17,7 @@ app.filter('percentage', function() {
   };
 });
 
-app.controller('modController', function ($scope, $q, $stateParams, modService, pluginService, categoryService, gameService, assetUtils, reviewSectionService, userService) {
+app.controller('modController', function ($scope, $q, $stateParams, $timeout, modService, pluginService, categoryService, gameService, userTitleService, assetUtils, reviewSectionService, userService) {
     $scope.tags = [];
     $scope.newTags = [];
     $scope.sort = {};
@@ -28,7 +28,6 @@ app.controller('modController', function ($scope, $q, $stateParams, modService, 
     };
 
     // SETUP AND DATA RETRIEVAL LOGIC
-
     //initialization of the mod object
     modService.retrieveMod($stateParams.modId).then(function (mod) {
         $scope.mod = mod;
@@ -54,6 +53,11 @@ app.controller('modController', function ($scope, $q, $stateParams, modService, 
         });
     });
 
+    //get user titles
+    userTitleService.retrieveUserTitles().then(function(userTitles) {
+        $scope.userTitles = userTitleService.getSortedGameTitles(userTitles);
+    });
+
     //get current user
     userService.retrieveThisUser().then(function (user) {
         $scope.user = user;
@@ -63,6 +67,24 @@ app.controller('modController', function ($scope, $q, $stateParams, modService, 
         $scope.userCanAddMod = (rep >= 160) || ($scope.user.role === 'admin');
         $scope.userCanAddTags = (rep >= 20) || ($scope.user.role === 'admin');
     });
+
+    //associate user titles with content
+    $scope.associateUserTitles = function(data) {
+        // if we don't have userTitles yet, try again in 100ms
+        if (!$scope.userTitles) {
+            $timeout(function() {
+                $scope.associateUserTitles(data);
+            }, 100);
+            return;
+        }
+        // loop through data
+        data.forEach(function(item) {
+            if (item.user && !item.user.title) {
+                item.user.title = userTitleService.getUserTitle($scope.userTitles, item.user.reputation.overall);
+            }
+        });
+        return data;
+    };
 
     // TAB RELATED LOGIC
     //set up tab data
@@ -112,7 +134,7 @@ app.controller('modController', function ($scope, $q, $stateParams, modService, 
             sort: $scope.sort.reviews || 'reputation'
         };
         modService.retrieveReviews($stateParams.modId, options).then(function(reviews) {
-            $scope.mod.reviews = reviews;
+            $scope.mod.reviews = $scope.associateUserTitles(reviews);
             $scope.associateReviewSections();
         });
     };
@@ -125,7 +147,7 @@ app.controller('modController', function ($scope, $q, $stateParams, modService, 
             }
         };
         modService.retrieveCompatibilityNotes($stateParams.modId, options).then(function(compatibility_notes) {
-            $scope.mod.compatibility_notes = compatibility_notes;
+            $scope.mod.compatibility_notes = $scope.associateUserTitles(compatibility_notes);
         });
     };
 
@@ -137,7 +159,7 @@ app.controller('modController', function ($scope, $q, $stateParams, modService, 
             }
         };
         modService.retrieveInstallOrderNotes($stateParams.modId, options).then(function(install_order_notes) {
-            $scope.mod.install_order_notes = install_order_notes;
+            $scope.mod.install_order_notes = $scope.associateUserTitles(install_order_notes);
         });
     };
 
@@ -149,7 +171,7 @@ app.controller('modController', function ($scope, $q, $stateParams, modService, 
             }
         };
         modService.retrieveLoadOrderNotes($stateParams.modId, options).then(function(load_order_notes) {
-            $scope.mod.load_order_notes = load_order_notes;
+            $scope.mod.load_order_notes = $scope.associateUserTitles(load_order_notes);
         });
     };
 
