@@ -2,7 +2,7 @@
     <div class="page-container">
         <h1>User Settings</h1>
         <div class="settings-tabs">
-            <tabs current-tab="currentTab" tabs="tabs"></tabs>
+            <tabs tabs="['Profile', 'Account', 'Mod Lists', 'Authored Mods']"></tabs>
         </div>
     </div>
 </div>
@@ -16,7 +16,7 @@
     <div class="single-column">
         <form>
             <loader data="titleQuote" spinner-class="big-spinner">
-                <ng-include src="currentTab.url"></ng-include>
+                <ui-view></ui-view>
             </loader>
         </form>
     </div>

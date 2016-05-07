@@ -7,22 +7,22 @@ app.config(['$stateProvider', function ($stateProvider) {
             templateUrl: '/resources/partials/userSettings/userSettings.html',
             controller: 'userSettingsController',
             url: '/settings'
-        }
-    );
+        }).state('settings.tab1', {
+            templateUrl: '/resources/partials/userSettings/profile.html',
+            url: '/profile'
+        }).state('settings.tab2', {
+            templateUrl: '/resources/partials/userSettings/account.html',
+            url: '/account'
+        }).state('settings.tab3', {
+            templateUrl: '/resources/partials/userSettings/modlists.html',
+            url: '/mod-lists'
+        }).state('settings.tab4', {
+            templateUrl: '/resources/partials/userSettings/authoredMods.html',
+            url: '/authored-mods'
+        });
 }]);
 
 app.controller('userSettingsController', function ($scope, $q, userSettingsService, userService, quoteService, userTitleService, fileUtils, themesService) {
-
-    //TODO: put this into the Routing logic
-    $scope.tabs = [
-        { name: 'Profile', url: '/resources/partials/userSettings/profile.html'},
-        { name: 'Account', url: '/resources/partials/userSettings/account.html'},
-        { name: 'Mod Lists', url: '/resources/partials/userSettings/modlists.html'},
-        { name: 'Authored Mods', url: '/resources/partials/userSettings/authoredMods.html'}
-    ];
-
-    $scope.currentTab = $scope.tabs[0];
-
     //TODO: put this into a service
     // A service which calls other services and sets scope variables?
     // seems odd to me.  -Mator
