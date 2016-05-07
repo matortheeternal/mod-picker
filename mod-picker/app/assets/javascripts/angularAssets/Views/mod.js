@@ -369,4 +369,23 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
     $scope.discardInstallOrderNote = function() {
         delete $scope.newInstallOrderNote;
     };
+
+    // LOAD ORDER NOTE RELATED LOGIC
+    // instantiate a new load order note object
+    $scope.startNewLoadOrderNote = function() {
+        // set up newReview object
+        $scope.newLoadOrderNote = {
+            order: "before",
+            text_body: ""
+        };
+
+        // update the markdown editor
+        $scope.updateMDE = true;
+        $scope.updateMDE = false;
+    };
+
+    // discard the load order note object
+    $scope.discardLoadOrderNote = function() {
+        delete $scope.newLoadOrderNote;
+    };
 });
