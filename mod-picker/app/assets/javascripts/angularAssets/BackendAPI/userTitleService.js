@@ -22,5 +22,6 @@ app.service('userTitleService', function (backend, $q) {
             }
             prevTitle = title;
         }
+        return prevTitle.title;
     };
 });
