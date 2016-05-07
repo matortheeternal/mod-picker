@@ -10,16 +10,13 @@ class Ability
     if user.admin?
       # special admin permissions
       can :assign_roles, User
-      can :read_hidden, :all
-      can :ban, User
-      can :set_avatar, User, :id => user.id
-      can :set_custom_title, User, :id => user.id
 
       # admins can do whatever they want
       can :manage, :all
-    elsif user.moderator?
+    end
+
+    if user.moderator? || user.admin?
       # special moderator permissions
-      can :read_hidden, :all
       can :ban, User
       can :set_avatar, User, :id => user.id
       can :set_custom_title, User, :id => user.id
@@ -32,8 +29,7 @@ class Ability
 
       # can update or hide any mod
       can [:update, :hide], Mod
-      can :hide, ModVersion
-      can :destroy, ModVersionRequirement
+      can :destroy, ModRequirement
 
       # can update or hide any contribution
       can [:update, :hide], Comment
@@ -41,7 +37,8 @@ class Ability
       can [:update, :hide], IncorrectNote
       can [:update, :hide], InstallOrderNote
       can [:update, :hide], LoadOrderNote
-      can :hide, Tag
+      can [:update, :hide], Review
+      can [:update, :hide], Tag
 
       # can delete tags
       can :destroy, ModTag
@@ -50,27 +47,30 @@ class Ability
 
     # signed in users who aren't banned
     if  User.exists?(user.id) && !user.banned?
+      # cannot read hidden content
+      cannot :read, Comment, :hidden => true
+      cannot :read, CompatibilityNote, :hidden => true
+      cannot :read, InstallOrderNote, :hidden => true
+      cannot :read, LoadOrderNote, :hidden => true
+      cannot :read, Review, :hidden => true
+      cannot :read, ModTag, :hidden => true
+      cannot :read, ModListTag, :hidden => true
+      cannot :read, Mod, :hidden => true
+
       # can create new contributions
       can :create, Comment
       can :create, HelpfulMark
       can :create, CompatibilityNote
-      can :create, ModVersionCompatibilityNote
       can :create, InstallOrderNote
-      can :create, ModVersionInstallOrderNote
       can :create, LoadOrderNote
-      can :create, ModVersionLoadOrderNote
       can :create, Review
       can :create, ModTag
       can :create, ModListTag
 
       # can submit mods
+      can :submit, :mod
       can :create, NexusInfo
       can :create, Mod
-      can :create, Plugin
-      can :create, ModAssetFile
-      can :create, ModVersion
-      can :create, ModVersionFile
-      can :create, ModVersionRequirement
 
       # can update their contributions
       can :update, Comment, :submitted_by => user.id
@@ -79,7 +79,6 @@ class Ability
       can :update, LoadOrderNote, :submitted_by => user.id
       can :update, InstallOrderNote, :submitted_by => user.id
       can :update, Review, :submitted_by => user.id
-      can :update, ReviewTemplate, :submitted_by => user.id
 
       # can update or remove their helpful/agreement marks
       can [:update, :destroy], AgreementMark, :submitted_by => user.id
@@ -131,7 +130,7 @@ class Ability
 
       # abilities for mod authors
       can [:update, :hide], Mod, { :mod_authors => { :user_id => user.id } }
-      can :destroy, ModVersionRequirement, { :mod_version => { :mod => { :mod_authors => { :user_id => user.id } } } }
+      can :destroy, ModRequirement, {:mod_version => {:mod => {:mod_authors => {:user_id => user.id } } } }
       can :destroy, ModTag, { :mod => { :mod_authors => { :user_id => user.id } } }
 
       # abilities tied to reputation
@@ -143,9 +142,6 @@ class Ability
         can :create, IncorrectNote  # can report something as incorrect
         can :create, AgreementMark  # can agree/disagree with other users
         can :create, ReputationLink # can give reputation other users
-      end
-      if user.reputation.overall >= 80
-        can :create, ReviewTemplate # can create custom review templates
       end
       if user.reputation.overall >= 160
         # TODO: mod submission here after the beta
@@ -165,7 +161,7 @@ class Ability
         can :rescrape, Mod # can request mods be re-scraped
         # can update mods that don't have a verified author
         can :update, Mod, { :no_author? => true }
-        can :destroy, ModVersionRequirement, { :mod_version => { :mod => { :no_author? => true } } }
+        can :destroy, ModRequirement, {:mod_version => {:mod => {:no_author? => true } } }
         can :destroy, ModTag, { :mod => { :no_author? => true } }
       end
       if user.reputation.overall >= 1280

@@ -10,11 +10,11 @@
 
 FactoryGirl.define do
   factory :plugin do
-    mod_version_id 1
-    filename "Skyrim.esm"
-    author "Bethesda"
-    description "The base Esm of skyrim"
-    crc_hash "a461d80f"
+    association :mod_version, factory: :mod_version
+    filename { Faker::Internet.user_name[1..64] }
+    author { Faker::Internet.user_name[1..128] }
+    description { Faker::Lorem.sentence(3, false, 4)[1..512] }
+    crc_hash { Faker::Lorem.sentence(2)[1..8] }
   end
 
 end

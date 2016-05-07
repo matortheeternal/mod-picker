@@ -1,13 +1,14 @@
 FactoryGirl.define do
   factory :mod do
-    game_id 1
-    name { Faker::Lorem.words(3) }
+    association :game_id, factory: :game
+    name { Faker::App.name }
     aliases { Faker::Lorem.characters(3) }
     is_utility false
     has_adult_content false
-    primary_category_id { Category.offset(rand(Category.count)).first.id }
-    secondary_category_id { Category.offset(rand(Category.count)).first.id }
-    nexus_info
+    association :primary_category_id, factory: :category
+    association :secondary_category_id, factory: :category
+    # primary_category_id { Category.offset(rand(Category.count)).first.id }
+    # secondary_category_id { Category.offset(rand(Category.count)).first.id }
 
     factory :mod_with_versions do
       transient do

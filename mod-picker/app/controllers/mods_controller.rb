@@ -1,83 +1,145 @@
 class ModsController < ApplicationController
-  before_action :set_mod, only: [:show, :edit, :update, :destroy]
+  before_action :set_mod, only: [:show, :update, :reviews, :compatibility_notes, :install_order_notes, :load_order_notes, :analysis, :destroy]
 
-  # GET /mods
-  # GET /mods.json
+  # POST /mods
   def index
-    @mods = Mod.filter(filtering_params)
+    @mods = Mod.includes(:nexus_infos).filter(filtering_params).sort(params[:sort]).paginate(:page => params[:page])
+    @count =  Mod.includes(:nexus_infos).filter(filtering_params).sort(params[:sort]).count
 
-    respond_to do |format|
-      format.html
-      format.json { render :json => @mods}
-    end
+    render :json => {
+      mods: @mods.as_json({
+          :include => {
+              :nexus_infos => {:except => [:mod_id]},
+              :workshop_infos => {:except => [:mod_id]},
+              :lover_infos => {:except => [:mod_id]},
+              :authors => {:only => [:id, :username]}
+          }
+      }),
+      max_entries: @count,
+      entries_per_page: Mod.per_page
+    }
   end
 
   # GET /mods/1
-  # GET /mods/1.json
   def show
-    respond_to do |format|
-      format.html
-      format.json { render :json => @mod }
-    end
+    authorize! :read, @mod
+    render :json => @mod.show_json
   end
 
-  # GET /mods/new
-  def new
-    @mod = Mod.new
-  end
-
-  # GET /mods/1/edit
-  def edit
-  end
-
-  # POST /mods
-  # POST /mods.json
+  # POST /mods/submit
   def create
     @mod = Mod.new(mod_params)
+    @mod.submitted_by = current_user.id
+    authorize! :create, @mod
 
-    respond_to do |format|
-      if @mod.save
-        format.json { render :json => @mod  }
-      else
-        format.json { render json: @mod.errors, status: :unprocessable_entity }
-      end
+    if @mod.save
+      render json: {status: :ok}
+    else
+      render json: @mod.errors, status: :unprocessable_entity
     end
   end
 
   # PATCH/PUT /mods/1
-  # PATCH/PUT /mods/1.json
   def update
-    respond_to do |format|
-      if @mod.update(mod_params)
-        format.json { render :show, status: :ok, location: @mod }
+    authorize! :update, @mod
+    if @mod.update(mod_params)
+      render json: {status: :ok}
+    else
+      render json: @mod.errors, status: :unprocessable_entity
+    end
+  end
+
+  # POST /mods/1/star
+  def create_star
+    @mod_star = ModStar.find_or_initialize_by(mod_id: params[:id], user_id: current_user.id)
+    authorize! :create, @mod_star
+    if @mod_star.save
+      render json: {status: :ok}
+    else
+      render json: @mod_star.errors, status: :unprocessable_entity
+    end
+  end
+
+  # DELETE /mods/1/star
+  def destroy_star
+    @mod_star = ModStar.find_by(mod_id: params[:id], user_id: current_user.id)
+    authorize! :destroy, @mod_star
+    if @mod_star.nil?
+      render json: {status: :ok}
+    else
+      if @mod_star.delete
+        render json: {status: :ok}
       else
-        format.json { render json: @mod.errors, status: :unprocessable_entity }
+        render json: @mod_star.errors, status: :unprocessable_entity
       end
     end
   end
 
+  # GET /mods/1/reviews
+  def reviews
+    authorize! :read, @mod
+    @reviews = @mod.reviews.paginate(:page => params[:page])
+    render :json => @reviews
+  end
+
+  # GET /mods/1/compatibility_notes
+  def compatibility_notes
+    authorize! :read, @mod
+    @compatibility_notes = @mod.compatibility_notes.paginate(:page => params[:page])
+    render :json => @compatibility_notes
+  end
+
+  # GET /mods/1/install_order_notes
+  def install_order_notes
+    authorize! :read, @mod
+    @install_order_notes = @mod.install_order_notes.paginate(:page => params[:page])
+    render :json => @install_order_notes
+  end
+
+  # GET /mods/1/load_order_notes
+  def load_order_notes
+    authorize! :read, @mod
+    if @mod.plugins.length > 0
+      @load_order_notes = @mod.load_order_notes.paginate(:page => params[:page])
+      render :json => @load_order_notes
+    else
+      @mod.errors.add(:load_order_notes, "Mod has no plugins")
+      render json: @mod.errors, status: :unprocessable_entity
+    end
+  end
+
+  # GET /mods/1/analysis
+  def analysis
+    authorize! :read, @mod
+    render json: {
+        plugins: @mod.plugins,
+        assets: @mod.asset_files
+    }
+  end
+
   # DELETE /mods/1
-  # DELETE /mods/1.json
   def destroy
-    @mod.destroy
-    respond_to do |format|
-      format.json { head :no_content }
+    authorize! :destroy, @mod
+    if @mod.destroy
+      render json: {status: :ok}
+    else
+      render json: @mod.errors, status: :unprocessable_entity
     end
   end
 
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_mod
-      @mod = Mod.joins(:nexus_info, :mod_versions).find(params[:id])
+      @mod = Mod.includes(:nexus_infos, :workshop_infos, :lover_infos).find(params[:id])
     end
     
     # Params we allow filtering on
     def filtering_params
-      params.slice(:search, :adult, :game, :category, :stars, :reviews, :versions, :released, :updated, :endorsements, :tdl, :udl, :views, :posts, :videos, :images, :files, :articles);
+      params[:filters].slice(:search, :author, :categories, :tags, :adult, :game, :stars, :reviews, :versions, :released, :updated, :endorsements, :tdl, :udl, :views, :posts, :videos, :images, :files, :articles);
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def mod_params
-      params.require(:mod).permit(:game_id, :name, :aliases, :is_utility, :has_adult_content, :primary_category_id, :secondary_category_id, mod_versions_attributes: [ :released, :obsolete, :dangerous, :version ])
+      params.require(:mod).permit(:game_id, :name, :aliases, :is_utility, :has_adult_content, :primary_category_id, :secondary_category_id, :released, :nexus_info_id, :lovers_info_id, :workshop_info_id, :tag_names => [], :asset_paths => [], :plugin_dumps => [:filename, :author, :description, :crc_hash, :record_count, :override_count, :file_size, :plugin_record_groups_attributes => [:sig, :record_count, :override_count], :plugin_errors_attributes => [:signature, :form_id, :type, :path, :name, :data], :overrides_attributes => [:fid, :sig]])
     end
 end

@@ -68,7 +68,22 @@ mod-dump/mod-dump/Skyrim/plugins/*.esm
 
 # OSX files to ignore
 .DS_STORE
+
+# Ignore spikes
 spikes/PyNexusCrawler/*.jpg
 spikes/PyNexusCrawler/*.png
-mod-picker/public/assets/
+
+# Ignore bundler config
+/.bundle
+
+# Ignore all logfiles nad tempfiles
+mod-picker/log/*
+!mod-picker/log/.keep
+mod-picker/tmp
+
+# Ignore build system files
+mod-picker/public/assets/*
+!mod-picker/public/assets/zip
 mod-picker/.byebug_history
+mod-picker/app/assets/plugins/
+mod-picker/public/avatars/

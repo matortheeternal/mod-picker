@@ -1,6 +1,6 @@
 class ModAssetFile < ActiveRecord::Base
-  has_many :mod_version_files, :inverse_of => 'mod_asset_file'
-  has_many :mod_versions, :through => 'mod_version_files', :inverse_of => 'asset_files'
+  self.primary_keys = :mod_id, :asset_file_id
 
-  validates :filepath, presence: true
+  belongs_to :mod, :inverse_of => 'mod_asset_files'
+  belongs_to :asset_file, :inverse_of => 'mod_asset_files'
 end

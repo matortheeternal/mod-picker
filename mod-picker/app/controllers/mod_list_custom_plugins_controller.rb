@@ -1,67 +1,38 @@
 class ModListCustomPluginsController < ApplicationController
-  before_action :set_mod_list_custom_plugin, only: [:show, :edit, :update, :destroy]
-
-  # GET /mod_list_custom_plugins
-  # GET /mod_list_custom_plugins.json
-  def index
-    @mod_list_custom_plugins = ModListCustomPlugin.all
-
-    respond_to do |format|
-      format.html
-      format.json { render :json => @mod_list_custom_plugins}
-    end
-  end
-
-  # GET /mod_list_custom_plugins/1
-  # GET /mod_list_custom_plugins/1.json
-  def show
-    respond_to do |format|
-      format.html
-      format.json { render :json => @mod_list_custom_plugin}
-    end
-  end
-
-  # GET /mod_list_custom_plugins/new
-  def new
-    @mod_list_custom_plugin = ModListCustomPlugin.new
-  end
-
-  # GET /mod_list_custom_plugins/1/edit
-  def edit
-  end
+  before_action :set_mod_list_custom_plugin, only: [:update, :destroy]
 
   # POST /mod_list_custom_plugins
   # POST /mod_list_custom_plugins.json
   def create
     @mod_list_custom_plugin = ModListCustomPlugin.new(mod_list_custom_plugin_params)
+    authorize! :create, @mod_list_custom_plugin
 
-    respond_to do |format|
-      if @mod_list_custom_plugin.save
-        format.json { render :show, status: :created, location: @mod_list_custom_plugin }
-      else
-        format.json { render json: @mod_list_custom_plugin.errors, status: :unprocessable_entity }
-      end
+    if @mod_list_custom_plugin.save
+      render json: {status: :ok}
+    else
+      render json: @mod_list_custom_plugin.errors, status: :unprocessable_entity
     end
   end
 
   # PATCH/PUT /mod_list_custom_plugins/1
   # PATCH/PUT /mod_list_custom_plugins/1.json
   def update
-    respond_to do |format|
-      if @mod_list_custom_plugin.update(mod_list_custom_plugin_params)
-        format.json { render :show, status: :ok, location: @mod_list_custom_plugin }
-      else
-        format.json { render json: @mod_list_custom_plugin.errors, status: :unprocessable_entity }
-      end
+    authorize! :update, @mod_list_custom_plugin
+    if @mod_list_custom_plugin.update(mod_list_custom_plugin_params)
+      render json: {status: :ok}
+    else
+      render json: @mod_list_custom_plugin.errors, status: :unprocessable_entity
     end
   end
 
   # DELETE /mod_list_custom_plugins/1
   # DELETE /mod_list_custom_plugins/1.json
   def destroy
-    @mod_list_custom_plugin.destroy
-    respond_to do |format|
-      format.json { head :no_content }
+    authorize! :destroy, @mod_list_custom_plugin
+    if @mod_list_custom_plugin.destroy
+      render json: {status: :ok}
+    else
+      render json: @mod_list_custom_plugin.errors, status: :unprocessable_entity
     end
   end
 

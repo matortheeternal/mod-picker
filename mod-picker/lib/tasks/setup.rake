@@ -71,15 +71,6 @@ namespace :setup do
     connection.execute("ALTER TABLE mod_stars MODIFY mod_id INT UNSIGNED;")
     connection.execute("ALTER TABLE mod_stars MODIFY user_id INT UNSIGNED;")
 
-    connection.execute("ALTER TABLE mod_version_compatibility_notes MODIFY mod_version_id INT UNSIGNED;")
-    connection.execute("ALTER TABLE mod_version_compatibility_notes MODIFY compatibility_note_id INT UNSIGNED;")
-
-    connection.execute("ALTER TABLE mod_version_files MODIFY mod_version_id INT UNSIGNED;")
-    connection.execute("ALTER TABLE mod_version_files MODIFY mod_asset_file_id INT UNSIGNED;")
-
-    connection.execute("ALTER TABLE mod_versions MODIFY id INT UNSIGNED NOT NULL AUTO_INCREMENT;")
-    connection.execute("ALTER TABLE mod_versions MODIFY mod_id INT UNSIGNED;")
-
     connection.execute("ALTER TABLE mods MODIFY id INT UNSIGNED NOT NULL AUTO_INCREMENT;")
     connection.execute("ALTER TABLE mods MODIFY game_id INT UNSIGNED;")
     connection.execute("ALTER TABLE mods MODIFY primary_category_id INT UNSIGNED;")
@@ -122,73 +113,6 @@ namespace :setup do
     connection.execute("ALTER TABLE workshop_infos MODIFY id INT UNSIGNED NOT NULL AUTO_INCREMENT;")
     connection.execute("ALTER TABLE workshop_infos MODIFY mod_id INT UNSIGNED;")
     puts "    Unsigned columns set up"
-  end
-
-  namespace :reset do
-    task ids: :environment do
-      puts "\nResetting IDs"
-      connection = ActiveRecord::Base.connection
-      connection.execute("ALTER TABLE categories AUTO_INCREMENT = 0;")
-      connection.execute("ALTER TABLE user_bios AUTO_INCREMENT = 0;")
-      connection.execute("ALTER TABLE user_reputations AUTO_INCREMENT = 0;")
-      connection.execute("ALTER TABLE user_settings AUTO_INCREMENT = 0;")
-      connection.execute("ALTER TABLE users AUTO_INCREMENT = 0;")
-      connection.execute("ALTER TABLE nexus_infos AUTO_INCREMENT = 0;")
-      connection.execute("ALTER TABLE lover_infos AUTO_INCREMENT = 0;")
-      connection.execute("ALTER TABLE workshop_infos AUTO_INCREMENT = 0;")
-      connection.execute("ALTER TABLE mods AUTO_INCREMENT = 0;")
-      connection.execute("ALTER TABLE mod_versions AUTO_INCREMENT = 0;")
-      connection.execute("ALTER TABLE games AUTO_INCREMENT = 0;")
-      connection.execute("ALTER TABLE comments AUTO_INCREMENT = 0;")
-      connection.execute("ALTER TABLE reviews AUTO_INCREMENT = 0;")
-      connection.execute("ALTER TABLE compatibility_notes AUTO_INCREMENT = 0;")
-      connection.execute("ALTER TABLE install_order_notes AUTO_INCREMENT = 0;")
-      connection.execute("ALTER TABLE load_order_notes AUTO_INCREMENT = 0;")
-      puts "    IDs reset"
-    end
-
-    task db: :environment do
-      puts "\nResetting database"
-      connection = ActiveRecord::Base.connection
-
-      # tables
-      OverrideRecord.delete_all
-      Master.delete_all
-      DummyMaster.delete_all
-      PluginRecordGroup.delete_all
-      PluginError.delete_all
-      Plugin.delete_all
-      Quote.delete_all
-      ModList.delete_all
-      ModAuthor.delete_all
-      PluginRecordGroup.delete_all
-      RecordGroup.delete_all
-      ModVersionCompatibilityNote.delete_all
-      ModVersionLoadOrderNote.delete_all
-      ModVersionInstallOrderNote.delete_all
-      CompatibilityNote.delete_all
-      InstallOrderNote.delete_all
-      LoadOrderNote.delete_all
-      HelpfulMark.delete_all
-      Review.delete_all
-      Comment.delete_all
-      NexusInfo.delete_all
-      LoverInfo.delete_all
-      WorkshopInfo.delete_all
-      ModVersion.delete_all
-      Mod.delete_all
-      UserBio.delete_all
-      UserReputation.delete_all
-      UserSetting.delete_all
-      User.delete_all
-      Game.delete_all
-      CategoryPriority.delete_all
-
-      # clear categories
-      connection.execute("DELETE FROM categories WHERE parent_id IS NOT NULL;")
-      connection.execute("DELETE FROM categories WHERE parent_id IS NULL;")
-      puts "    Database reset"
-    end
   end
 
 end

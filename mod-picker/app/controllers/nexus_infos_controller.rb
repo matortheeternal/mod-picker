@@ -1,88 +1,38 @@
 class NexusInfosController < ApplicationController
-  before_action :set_nexus_info, only: [:show, :edit, :update, :destroy]
-
-  # GET /nexus_infos
-  # GET /nexus_infos.json
-  def index
-    @nexus_infos = NexusInfo.all
-
-    respond_to do |format|
-      format.html
-      format.json { render :json => @nexus_infos}
-    end
-  end
+  before_action :set_nexus_info, only: [:show, :destroy]
 
   # GET /nexus_infos/1
   # GET /nexus_infos/1.json
   def show
-    respond_to do |format|
-      format.html
-      format.json { render :json => @nexus_info}
-    end
-  end
-
-  # GET /nexus_infos/new
-  def new
-    @nexus_info = NexusInfo.new
-  end
-
-  # GET /nexus_infos/1/edit
-  def edit
-  end
-
-  # POST /nexus_infos
-  # POST /nexus_infos.json
-  def create
-    @nexus_info = NexusInfo.new(nexus_info_params)
-
-    respond_to do |format|
-      if @nexus_info.save
-        format.json { render :json => @nexus_info }
-      else
-        format.json { render json: @nexus_info.errors, status: :unprocessable_entity }
-      end
-    end
-  end
-
-  # PATCH/PUT /nexus_infos/1
-  # PATCH/PUT /nexus_infos/1.json
-  def update
-    respond_to do |format|
-      if @nexus_info.update(nexus_info_params)
-        format.json { render :json => @nexus_info }
-      else
-        format.json { render json: @nexus_info.errors, status: :unprocessable_entity }
-      end
-    end
+    render :json => @nexus_info
   end
 
   # DELETE /nexus_infos/1
   # DELETE /nexus_infos/1.json
   def destroy
-    @nexus_info.destroy
-    respond_to do |format|
-      format.json { head :no_content }
+    authorize! :destroy, @nexus_info
+    if @nexus_info.destroy
+      render json: {status: :ok}
+    else
+      render json: @nexus_info.errors, status: :unprocessable_entity
     end
   end
 
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_nexus_info
+      authorize! :submit, :mod
       begin
         @nexus_info = NexusInfo.find(params[:id])
         @nexus_info.rescrape
       rescue
         if params.has_key?(:game_id)
-          @nexus_info = NexusInfo.create(id: params[:id], game_id: params[:game_id])
+          @nexus_info = NexusInfo.new(id: params[:id], game_id: params[:game_id])
           @nexus_info.scrape
+          @nexus_info.save
         else
           raise "Cannot scrape Nexus Info with no game id."
         end
       end
-    end
-
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def nexus_info_params
-      params.require(:nexus_info).permit(:mod_id, :game_id, :uploaded_by, :authors, :endorsements, :total_downloads, :unique_downloads, :views, :posts_count, :videos_count, :images_count, :files_count, :articles_count, :nexus_category)
     end
 end

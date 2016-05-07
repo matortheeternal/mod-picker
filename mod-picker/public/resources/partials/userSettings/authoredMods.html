@@ -1,31 +1,31 @@
-<div class="section">
-    <table border="1" class="listing-table">
+<h3 class="section-title">Authored Mods</h3>
+<section>
+    <table border="1" class="listing-table" ng-if="mods.length">
         <thead>
             <tr>
-                <th>Name</th>
+                <th class="name-column">Name</th>
                 <th>Stars</th>
                 <th>Reputation</th>
-                <th>Last Update</th>
-                <th>Date Uploaded</th>
+                <th>Reviews</th>
                 <th>Options</th>
             </tr>
         </thead>
         <tbody>
             <tr ng-repeat="mod in mods">
-                <td>{{mod.name}}</td>
+                <td class="name-column">{{mod.name}}</td>
                 <td>{{mod.mod_stars_count}}</td>
                 <td>{{mod.reputation}}</td>
-                <td>{{mod.last_update}}</td>
-                <td>{{mod.uploaded}}</td>
+                <td>{{mod.reviews_count}}</td>
                 <td>
                     <div class="table-buttons">
-                        <input type="button" class="btn-table" ng-click="modHide(authored_mod)" value="Hide from Public"</a>
+                        <input type="button" ng-click="modHide(authored_mod)" value="Hide from Public">
                         <a href="/angular#/editMod/{{authored_mod.name}}">
-                            <input type="button" class="btn-table" value="Edit"/>
+                            <input type="button" value="Edit"/>
                         </a>
                     </div>
                 </td>
             </tr>
         </tbody>
     </table>
-</div>
+    <span class="explanation" ng-if="!mods.length">There's nothing here...</span>
+</section>

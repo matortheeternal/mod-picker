@@ -1,3 +1,25 @@
+.header-tabs {
+  background-color: $secondary_background;
+  border-bottom: 1px solid $border_color;
+  h1 {
+    font-weight: 500;
+    color: $text_color;
+    font-size: 36px;
+    padding-top: 18px;//half of font size
+    padding-bottom: 18px;
+  }
+}
+
+.settings-tabs {
+  margin-left: 46px;
+
+  .selected-tab {
+    background-color: $primary_background;
+    border-bottom: 1px solid $primary_background;
+    margin-bottom: -1px;
+  }
+}
+
 #avatar-browse {
   width: auto;
   height: auto;
@@ -6,8 +28,12 @@
   display: inline-block;
 }
 
+#avatar-input {
+  display: none;
+}
+
 .quote {
-  width: 250px;
+  width: 300px;
   font-size: 14px;
   display: inline-block;
   font-style: italic;
@@ -17,12 +43,22 @@
 .explanation {
   font-size: 12px;
   margin-bottom: 4px;
+  margin-top: 10px;
   display: block;
+}
+
+.show-more {
+  font-size: 11px;
+  cursor: pointer;
 }
 
 .avatar {
   border: 2px solid $border_color;
   vertical-align: bottom;
+}
+
+.avatar-pending {
+  border: 2px solid #9c9;
 }
 
 .username {
@@ -31,18 +67,19 @@
 }
 
 .listing-table {
-  border: 2px solid $text_color;
+  border: 2px solid $border_color;
   border-collapse: collapse;
   text-align: center;
 
   thead {
-    border: 2px solid $text_color;
+    border: 2px solid $border_color;
     background-color: $secondary_background;
     font-size: 16px;
   }
 
   th {
-    border: 2px solid black;
+    border: 2px solid $border_color;
+    padding: 5px 10px 5px 10px;
   }
 
   .name-column {
@@ -51,12 +88,13 @@
     text-align: left;
     font-weight: 500;
     font-size: 18px;
-    min-width: 400px;
+    width: 400px;
   }
 
   .table-buttons {
     display: flex;
     vertical-align: middle;
+    font-size: 14px;
   }
 
   tbody {
@@ -65,11 +103,28 @@
   }
 
   tr {
-    border: 1px solid black;
+    border: 1px solid $border_color;
   }
 
   td {
     border: 0;
     padding: 10px 20px 10px 20px;
   }
+}
+
+//error/success messages
+.success-message {
+  background-color: $success_primary;
+  padding: 14px;
+  font-weight: 500;
+  font-size: 20px;
+  text-align: center;
+}
+
+.error-message {
+  background-color: $error_primary;
+  padding: 14px;
+  font-weight: 500;
+  font-size: 20px;
+  text-align: center;
 }

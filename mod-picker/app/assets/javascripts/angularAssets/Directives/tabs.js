@@ -10,14 +10,21 @@ app.directive('tabs', function () {
         controller: 'tabsController',
         scope: {
         	tabs: '=',
-        	currentTab: '='
+        	currentTab: '=',
+            onChange: '=?'
         }
     }
 });
 
 app.controller('tabsController', function ($scope) {
-
+    //TODO: I feel like this logic can be done inside the scope
+    //this can't happen unless we stop using ng-include
+    //(it creates an isolate scope that breaks the binding of currentTab)
+    //if we use routing instead it will work fine
 	$scope.select = function (nextTab) {
 		$scope.currentTab = nextTab;
+        if ($scope.onChange !== null) {
+            $scope.onChange(nextTab);
+        }
 	};
 });

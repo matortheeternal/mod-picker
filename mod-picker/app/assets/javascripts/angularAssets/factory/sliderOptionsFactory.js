@@ -1,3 +1,7 @@
+// Note: I need to write this comment now that I see this code again after some time.
+// It's kinda strange. This stuff looks kinda ugly and not like something I would write. Although, I can only fully
+// agree with the me of the past that this code is completely valid and completely correct. There is no better way
+// of coding this. I kinda hope we can all forget about this part of the code and never need to touch it.
 
 // don't get confused that I use .service here. The difference between .service and .factory are only the rules of exposing.
 // This stuff actually creates the "Objects" that are declared.
@@ -19,7 +23,7 @@ app.service('sliderOptionsFactory', function (sliderFactory) {
 
     this.BaseRangeSlider = function (max, extend) {
         return this.BaseSlider(function (options) {
-            options.max = max;
+            options.max = parseInt(max);
             if(typeof extend === 'function') {
                 extend(options);
             }
@@ -29,7 +33,7 @@ app.service('sliderOptionsFactory', function (sliderFactory) {
     this.CeilSlider = function (ceil, extend) {
         return this.BaseRangeSlider(ceil, function(options) {
             options.options.floor = 0;
-            options.options.ceil = ceil;
+            options.options.ceil = parseInt(ceil);
             if(typeof extend === 'function') {
                 extend(options);
             }
@@ -46,8 +50,8 @@ app.service('sliderOptionsFactory', function (sliderFactory) {
         return this.BaseStepsSlider(sliderFactory.generateDateSteps(start));
     };
 
-    this.StepSlider = function (to) {
-        return this.BaseStepsSlider(sliderFactory.generateSteps(1, to));
+    this.StepSlider = function (max) {
+        return this.BaseStepsSlider(sliderFactory.generateSteps(1, parseInt(max)));
     };
 
     //TODO: make those Dates a provider.value

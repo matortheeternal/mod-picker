@@ -1,65 +1,53 @@
-class ReviewsController < ApplicationController
-  before_action :set_review, only: [:show, :edit, :update, :destroy]
+class ReviewsController < HelpfulableController
+  before_action :set_review, only: [:show, :update, :destroy]
 
   # GET /reviews
   # GET /reviews.json
   def index
     @reviews = Review.filter(filtering_params)
 
-    respond_to do |format|
-      format.json { render :json => @reviews}
-    end
+    render :json => @reviews
   end
 
   # GET /reviews/1
   # GET /reviews/1.json
   def show
-    respond_to do |format|
-      format.json { render :json => @review}
-    end
-  end
-
-  # GET /reviews/new
-  def new
-    @review = Review.new
-  end
-
-  # GET /reviews/1/edit
-  def edit
+    authorize! :read, @review
+    render :json => @review
   end
 
   # POST /reviews
   # POST /reviews.json
   def create
     @review = Review.new(review_params)
+    authorize! :create, @review
 
-    respond_to do |format|
-      if @review.save
-        format.json { render :show, status: :created, location: @review }
-      else
-        format.json { render json: @review.errors, status: :unprocessable_entity }
-      end
+    if @review.save
+      render json: {status: :ok}
+    else
+      render json: @review.errors, status: :unprocessable_entity
     end
   end
 
   # PATCH/PUT /reviews/1
   # PATCH/PUT /reviews/1.json
   def update
-    respond_to do |format|
-      if @review.update(review_params)
-        format.json { render :show, status: :ok, location: @review }
-      else
-        format.json { render json: @review.errors, status: :unprocessable_entity }
-      end
+    authorize! :update, @review
+    if @review.update(review_params)
+      render json: {status: :ok}
+    else
+      render json: @review.errors, status: :unprocessable_entity
     end
   end
 
   # DELETE /reviews/1
   # DELETE /reviews/1.json
   def destroy
-    @review.destroy
-    respond_to do |format|
-      format.json { head :no_content }
+    authorize! :destroy, @review
+    if @review.destroy
+      render json: {status: :ok}
+    else
+      render json: @review.errors, status: :unprocessable_entity
     end
   end
 

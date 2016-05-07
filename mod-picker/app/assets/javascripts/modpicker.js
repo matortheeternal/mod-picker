@@ -1,8 +1,9 @@
 //= require_self
+//= require ./polyfills.js
 //= require_tree ./angularAssets
 
 var app = angular.module('modPicker', [
-    'ngRoute', 'rzModule', 'ngAnimate'
+    'ui.router', 'rzModule', 'ngAnimate', 'sticky', 'puElasticInput'
 ]);
 
 app.config(['$httpProvider', '$compileProvider', function ($httpProvider, $compileProvider) {
@@ -10,20 +11,6 @@ app.config(['$httpProvider', '$compileProvider', function ($httpProvider, $compi
     $compileProvider.debugInfoEnabled(false);
 }]);
 
-app.filter('bytes', function() {
-    return function(bytes, precision) {
-        if (isNaN(parseFloat(bytes)) || !isFinite(bytes)) return '-';
-        if (typeof precision === 'undefined') precision = 1;
-        var units = ['bytes', 'kB', 'MB', 'GB', 'TB', 'PB'],
-            number = Math.floor(Math.log(bytes) / Math.log(1024));
-        return (bytes / Math.pow(1024, Math.floor(number))).toFixed(precision) +  ' ' + units[number];
-    }
+app.config(function ($urlRouterProvider) {
+    $urlRouterProvider.otherwise('/');
 });
-
-function useTwoColumns(b) {
-    if (b) {
-        document.body.className = "two-columns";
-    } else {
-        document.body.className = "";
-    }
-}

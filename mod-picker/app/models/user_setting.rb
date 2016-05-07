@@ -1,7 +1,7 @@
 class UserSetting < ActiveRecord::Base
   include Filterable
 
-  after_initialize :init
+  before_create :init
 
   belongs_to :user
 

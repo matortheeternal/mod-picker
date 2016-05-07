@@ -1,37 +1,24 @@
 class PluginsController < ApplicationController
-  before_action :set_plugin, only: [:show, :edit, :update, :destroy]
+  before_action :set_plugin, only: [:show, :destroy]
 
   # GET /plugins
   # GET /plugins.json
   def index
     @plugins = Plugin.all
 
-    respond_to do |format|
-      format.html
-      format.json { render :json => @plugins}
-    end
+    render :json => @plugins
   end
 
   # GET /plugins/1
   # GET /plugins/1.json
   def show
-    respond_to do |format|
-      format.html
-      format.json { render :json => @plugin}
-    end
-  end
-
-  # GET /plugins/new
-  def new
-    @plugin = Plugin.new
-  end
-
-  # GET /plugins/1/edit
-  def edit
+    authorize! :read, @plugin
+    render :json => @plugin
   end
 
   # POST /plugins
   def create
+    authorize! :submit, :mod
     response = 'Invalid submission'
     if params[:plugin].present?
       file = params[:plugin]
@@ -53,24 +40,14 @@ class PluginsController < ApplicationController
     render json: {status: response}
   end
 
-  # PATCH/PUT /plugins/1
-  # PATCH/PUT /plugins/1.json
-  def update
-    respond_to do |format|
-      if @plugin.update(plugin_params)
-        format.json { render :show, status: :ok, location: @plugin }
-      else
-        format.json { render json: @plugin.errors, status: :unprocessable_entity }
-      end
-    end
-  end
-
   # DELETE /plugins/1
   # DELETE /plugins/1.json
   def destroy
-    @plugin.destroy
-    respond_to do |format|
-      format.json { head :no_content }
+    authorize! :destroy, @plugin
+    if @plugin.destroy
+      render json: {status: :ok}
+    else
+      render json: @plugin.errors, status: :unprocessable_entity
     end
   end
 

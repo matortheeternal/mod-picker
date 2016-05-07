@@ -9,10 +9,7 @@ class AvatarsController < ApplicationController
 
   # POST /avatar
   def create
-    if cannot? :set_avatar, current_user
-      render nothing: true, status: :unauthorized
-      return
-    end
+    authorize! :set_avatar, current_user
 
     response = 'Invalid submission'
     if params[:avatar].present?
@@ -20,7 +17,6 @@ class AvatarsController < ApplicationController
       # check image file type
       ext = File.extname(file.original_filename)
       local_filename = Rails.root.join('public', 'avatars', current_user.id.to_s + ext)
-      byebug
       if (ext != '.png') && (ext != '.jpg')
         response = 'Invalid image type, must be PNG or JPG'
       elsif file.size > 1048576 # 1 megabyte max file size
