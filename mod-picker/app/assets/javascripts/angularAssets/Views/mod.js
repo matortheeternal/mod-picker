@@ -3,7 +3,6 @@ app.config(['$stateProvider', function ($stateProvider) {
             templateUrl: '/resources/partials/showMod/mod.html',
             controller: 'modController',
             url: '/mod/:modId',
-            redirectTo: '/mod/:modId/reviews'
         }).state('mod.tab1', {
             templateUrl: '/resources/partials/showMod/reviews.html',
             url: '/reviews'
