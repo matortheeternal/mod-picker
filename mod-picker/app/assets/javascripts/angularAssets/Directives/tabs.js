@@ -16,5 +16,5 @@ app.directive('tabs', function () {
 
 app.controller('tabsController', function ($scope, $state) {
     $scope.state = {selected: 0};
-    $state.go('mod.tab1');
+    $state.go('^.tab1');
 });
