@@ -331,4 +331,23 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
         }
         return output;
     };
+
+    // COMPATIBILITY NOTE RELATED LOGIC
+    // instantiate a new compatibility note object
+    $scope.startNewCompatibilityNote = function() {
+        // set up newReview object
+        $scope.newCompatibilityNote = {
+            compatibility_type: "incompatible",
+            text_body: ""
+        };
+
+        // update the markdown editor
+        $scope.updateMDE = true;
+        $scope.updateMDE = false;
+    };
+
+    // discard a new compatibility note object
+    $scope.discardCompatibilityNote = function() {
+        delete $scope.newCompatibilityNote;
+    };
 });
