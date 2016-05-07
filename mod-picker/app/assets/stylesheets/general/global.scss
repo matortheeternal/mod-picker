@@ -35,8 +35,9 @@ body {
 }
 
 
-.text-muted {
-  color: #767676;
+/* utility classes */
+.capitalize {
+  text-transform: capitalize;
 }
 
 /* url styling */
@@ -71,6 +72,19 @@ a:hover {
   &:hover {
     color: $link_hover_color_primary;
   }
+}
+
+/* user roles */
+.user-role-admin {
+  color: $admin_color;
+}
+
+.user-role-moderator {
+  color: $moderator_color;
+}
+
+.user-role-mod-author {
+  color: $mod_author_color;
 }
 
 /* header styling */
@@ -462,13 +476,13 @@ a .help-tooltip {
 }
 
 .avatar-small {
-  max-width: 50px;
-  max-height: 50px;
+  max-width: 48px;
+  max-height: 48px;
 }
 
 .avatar-medium {
-  max-width: 150px;
-  max-height: 150px;
+  max-width: 96px;
+  max-height: 96px;
 }
 
 .avatar-full {

@@ -25,13 +25,12 @@
 
 .note-container {
   background-color: $primary_background;
-  border: 1px solid $bar_dark_color;
+  border: 1px solid $border_color;
 
   .note-title {
-    background-color: $bar_highlight_color;
+    background-color: $bar_color;
     color: $bar_text_color;
-    border-bottom: 1px solid $bar_dark_color;
-    text-transform: capitalize;
+    //border-bottom: 1px solid $bar_dark_color;
     width: 100%;
     padding: 10px;
     font-size: 16px;
@@ -56,19 +55,46 @@
 
   .author-column {
     //background-color: $secondary_background;
-    border-right: 1px solid $bar_dark_color;
+    border-right: 1px solid $border_color;
     display: table-cell;
     min-width: 150px;
     padding: 20px 10px;
     text-align: center;
+    font-size: 13px;
 
-    span {
-      display: block;
-    }
+    ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
 
-    .author-name {
-      font-size: 13px;
-      font-weight: 500;
+      .user-name {
+        font-weight: 600;
+      }
+
+      .user-title {
+        font-style: italic;
+      }
+
+      .user-avatar {
+        margin: 4px;
+      }
+
+      .user-role {
+        text-transform: capitalize;
+      }
+
+      .user-reputation {
+        font-size: 16px;
+        font-weight: 500;
+
+        span {
+          padding: 3px;
+          vertical-align: middle;
+          font-weight: 100;
+          font-size: 10px;
+          text-transform: uppercase;
+        }
+      }
     }
   }
 
@@ -76,6 +102,19 @@
     display:table-cell;
     vertical-align: top;
     position: relative;
+
+    .ratings-container {
+      padding: 6px;
+      font-size: 20px;
+      .rating-item {
+        padding-top: 3px;
+        padding-bottom: 3px;
+
+        .rating-value {
+          color: $bar_text_color;
+        }
+      }
+    }
 
     .mods-container {
       @include flexbox();
@@ -88,17 +127,18 @@
 
       .mod-title {
         background-color: $secondary_background;
-        border-bottom: 1px solid $bar_dark_color;
+        border-bottom: 1px solid $border_color;
+        height: 30px;
         width: 50%;
 
         &:nth-child(even) {
-          border-left: 1px solid $bar_dark_color;
+          border-left: 1px solid $border_color;
         }
 
         .letter-box {
           background-color: $primary_background;
-          border-bottom: 1px solid $bar_dark_color;
-          border-right: 1px solid $bar_dark_color;
+          border-bottom: 1px solid $border_color;
+          border-right: 1px solid $border_color;
           display: inline-block;
           text-align: center;
           width: 24px;
@@ -110,16 +150,21 @@
           position: relative;
           top: 12px;
           display: inline-block;
-          width:92%;
+          width: 92%;
           padding-left: 24px;
           text-align: left;
         }
 
         a {
           display: inline-block;
+          text-overflow: ellipsis;
+          max-width: calc(100% - 32px);
+          white-space: nowrap;
+          overflow: hidden;
           padding-top: 6px;
           padding-bottom: 4px;
           padding-left: 4px;
+          font-size: 14px;
           font-weight: 500;
         }
       }
