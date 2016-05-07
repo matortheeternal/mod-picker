@@ -107,6 +107,7 @@
       padding: 8px;
       font-size: 20px;
       .rating-item {
+        padding-bottom: 6px;
         .rating-value {
           color: $bar_text_color;
         }
@@ -125,6 +126,7 @@
       .mod-title {
         background-color: $secondary_background;
         border-bottom: 1px solid $border_color;
+        height: 30px;
         width: 50%;
 
         &:nth-child(even) {
@@ -146,16 +148,21 @@
           position: relative;
           top: 12px;
           display: inline-block;
-          width:92%;
+          width: 92%;
           padding-left: 24px;
           text-align: left;
         }
 
         a {
           display: inline-block;
+          text-overflow: ellipsis;
+          max-width: calc(100% - 32px);
+          white-space: nowrap;
+          overflow: hidden;
           padding-top: 6px;
           padding-bottom: 4px;
           padding-left: 4px;
+          font-size: 14px;
           font-weight: 500;
         }
       }
