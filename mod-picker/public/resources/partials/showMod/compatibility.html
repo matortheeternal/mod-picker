@@ -38,10 +38,10 @@
                 <option value="partially incompatible">is partially incompatible with</option>
                 <option value="compatibility mod">requires an assets patch for</option>
                 <option value="compatibility option">requires a plug-in patch for</option>
-                <option value="make custom patch">needs a custom patch made for</option>
+                <option value="make custom patch">needs a custom patch for</option>
             </select>
         </div>
-        <input type="text" placeholder="Enter Mod Name" ng-model="otherModName" ng-change="newCompatibilityNote.otherMod = getModByName(newCompatibilityNote.otherModName)">
+        <input type="text" class="mod-input" placeholder="Enter Mod Name" ng-model="newCompatibilityNote.second_mod_id">
 
         <div ng-if="newCompatibilityNote.compatibility_type === 'compatibility mod'">
             Compatibility Mod

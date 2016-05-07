@@ -335,7 +335,7 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
     // COMPATIBILITY NOTE RELATED LOGIC
     // instantiate a new compatibility note object
     $scope.startNewCompatibilityNote = function() {
-        // set up newReview object
+        // set up newCompatibilityNote object
         $scope.newCompatibilityNote = {
             compatibility_type: "incompatible",
             text_body: ""
@@ -346,7 +346,7 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
         $scope.updateMDE = false;
     };
 
-    // discard a new compatibility note object
+    // discard the compatibility note object
     $scope.discardCompatibilityNote = function() {
         delete $scope.newCompatibilityNote;
     };
