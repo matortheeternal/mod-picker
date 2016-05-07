@@ -104,10 +104,12 @@
     position: relative;
 
     .ratings-container {
-      padding: 8px;
+      padding: 6px;
       font-size: 20px;
       .rating-item {
-        padding-bottom: 6px;
+        padding-top: 3px;
+        padding-bottom: 3px;
+
         .rating-value {
           color: $bar_text_color;
         }
