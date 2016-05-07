@@ -2,7 +2,7 @@
     <div class="mod-tab-action sort-by-dropdown">
 		<strong>Sort By: </strong>
 
-		<select ng-model="installOrderFilter" ng-init="installOrderFilter = 'reputation'">
+		<select ng-model="sort.install_order_note" ng-init="sort.install_order_note = 'reputation'">
 			<option value="reputation">Reputation</option>
 			<option value="submitted">Date Submitted</option>
 			<option value="edited">Last Edited</option>
@@ -10,34 +10,36 @@
 	</div>
 	<!-- TODO: replace input with button that has an inline value -->
 	<div class="mod-tab-action">
-		<input class="btn mod-page-btn" type="submit" value="Add Install Order Note" ng-click="submit()"/>
+		<input class="btn mod-page-btn" type="submit" value="Add Install Order Note" ng-click="startNewInstallOrderNote()"/>
 	</div>
 </div>
 
-<div class="add-note-box">
-	<h3 class="section-title">Add Install Order Note</h3>
-	<section>
-		<div class="add-note-actions">
-			<div>
-				<!-- TODO: this seems a bit out of place -->
-				Install
-			</div>
-			<div>
-				<strong>{{mod.name}}</strong>
-			</div>
-			<div class="select order-dropdown">
-				<select ng-model="newInstallData.before" ng-init="newInstallData.before = true">
-					<option value="true">Before</option>
-					<option value="false">After</option>
-				</select>
-			</div>
-			<input type="text" placeholder="Enter Mod Name" ng-model="newInstallData.firstModName" ng-change="newInstallData.firstMod = getModByName(newInstallOrderNote.firstModName)">
+<div class="add-note-box" ng-show="newInstallOrderNote">
+	<div class="add-note-title">
+		Add Install Order Note
+	</div>
+	<div class="add-note-actions">
+		<div>
+			Install
 		</div>
-	</section>
-    <text-area data="newInstallOrderNote.text_body" ng-refresh="true" class="note-text-area"></text-area>
+		<div>
+			<strong>{{mod.name}}</strong>
+		</div>
+		<div class="select order-dropdown">
+			<select ng-model="newInstallOrderNote.order">
+				<option value="before">Before</option>
+				<option value="after">After</option>
+			</select>
+		</div>
+		<input type="text" class="mod-input" placeholder="Enter Mod Name" ng-model="newInstallOrderNote.mod_id">
+	</div>
+	<div class="note-content-container">
+		<text-area data="newInstallOrderNote.text_body" ng-refresh="updateMDE" class="note-text-area"></text-area>
 
-	<div class="submit-note">
-		<input class="btn" type="submit" value="Submit" ng-click="createInstallOrderNote()"/>
+		<div class="action-button-container">
+			<input class="btn action-btn" type="submit" value="Submit" ng-click="submitInstallOrderNote()"/>
+			<input class="btn action-btn" type="button" value="Discard" ng-click="discardInstallOrderNote()">
+		</div>
 	</div>
 </div>
 

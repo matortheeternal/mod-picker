@@ -350,4 +350,23 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
     $scope.discardCompatibilityNote = function() {
         delete $scope.newCompatibilityNote;
     };
+
+    // INSTALL ORDER NOTE RELATED LOGIC
+    // instantiate a new install order note object
+    $scope.startNewInstallOrderNote = function() {
+        // set up newReview object
+        $scope.newInstallOrderNote = {
+            order: "before",
+            text_body: ""
+        };
+
+        // update the markdown editor
+        $scope.updateMDE = true;
+        $scope.updateMDE = false;
+    };
+
+    // discard the install order note object
+    $scope.discardInstallOrderNote = function() {
+        delete $scope.newInstallOrderNote;
+    };
 });
