@@ -85,7 +85,7 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
 
         // set up permissions
         $scope.permissions = {
-            canAddTags: (rep >= 20) || isAdmin || isModerator,
+            canCreateTags: (rep >= 20) || isAdmin || isModerator,
             canManage: isAuthor || isModerator || isAdmin,
             canSuggest: (rep >= 40),
             canModerate: isModerator || isAdmin
