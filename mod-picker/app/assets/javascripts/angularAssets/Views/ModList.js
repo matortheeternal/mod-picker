@@ -5,12 +5,16 @@ app.config(['$stateProvider', function ($stateProvider) {
     $stateProvider.state('modlist', {
             templateUrl: '/resources/partials/modlist_template.html',
             controller: 'modlistController',
-            url: '/modlist'
+            url: '/modlist/:modListId'
         }
     );
 }]);
 
-app.controller('modlistController', function($scope, $log) {
+app.controller('modlistController', function($scope, $log, $stateParams, modListService) {
+
+    modListService.retrieveModList($stateParams.modListId).then(function(modList) {
+       $scope.modlist = modList;
+    });
 	/*config*/
 	$scope.bIsEditing = false;
 	/*vars - Later down the road these will turn into GET functions*/

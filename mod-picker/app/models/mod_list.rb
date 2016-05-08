@@ -35,8 +35,8 @@ class ModList < ActiveRecord::Base
   has_one :base_report, :as => 'reportable'
 
   # Validations
-  validates :game_id, presence: true 
-  validates_inclusion_of :is_collection, :hidden, :has_adult_content, {in: [true, false], 
+  validates :game_id, presence: true
+  validates_inclusion_of :is_collection, :hidden, :has_adult_content, {in: [true, false],
                                           message: "must be true or false"}
   validates :description, length: { maximum: 65535 }
 
@@ -113,5 +113,13 @@ class ModList < ActiveRecord::Base
       incompatible_mod_ids.push(second_id) if mod_ids.exclude?(second_id)
     end
     incompatible_mod_ids.uniq
+  end
+
+  def show_json
+    self.as_json({})
+  end
+
+  def as_json(options={})
+      super(options)
   end
 end
