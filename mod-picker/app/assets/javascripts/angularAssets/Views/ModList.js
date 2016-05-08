@@ -89,7 +89,7 @@ app.controller('modlistController', function($scope, $log) {
 			return $scope.curSkyConfigTab;
 		else if(secName === 'enbConfig')
 			return $scope.curENBConfigTab;
-    }
+    };
 
 
     $scope.cssChange = function(sectionName, secTab) {
