@@ -213,22 +213,6 @@ class Mod < ActiveRecord::Base
   def show_json
     self.as_json({
       :include => {
-          :reviews => {
-              :except => [:submitted_by],
-              :include => {
-                  :review_ratings => {
-                      :except => [:review_id]
-                  },
-                  :user => {
-                      :only => [:id, :username, :role, :title],
-                      :include => {
-                          :reputation => {:only => [:overall]}
-                      },
-                      :methods => :avatar
-                  }
-              },
-              :methods => :overall_rating
-          },
           :tags => {
               :except => [:game_id, :hidden, :mod_lists_count],
               :user => {
