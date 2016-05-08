@@ -28,7 +28,7 @@ Rails.application.config.assets.precompile += [
 'angular-ui-router.min.js',
 'angular-elastic-input.min.js',
 'sticky.min.js',
-'plupload-angular-directive.min.js',
+'plupload.full.min.js',
 'bootstrap.min.js',
 'rzslider.min.js',
 'heartcode-canvasloader-min.js',
