@@ -74,7 +74,7 @@
             <tbody>
                 <tr>
                     <td>
-                        <ul class="flist">
+                        <ul class="list flist">
                             <li>
                                <h3>Status</h3>
                                 <select ng-model="statusSelect" ng-init="statusSelect = 'underConstruction'">
@@ -114,7 +114,7 @@
             </tbody>
         </table> 
 
-        <table title='overview' class='overview-table'>
+        <table title='overview' class='overview-table section-table'>
             <colgroup>
                 <col style="width: 25%">
                 <col style="width: 55%">
@@ -137,7 +137,7 @@
             <tbody>
                 <tr>
                     <td>
-                        <ul class="olist">
+                        <ul class="list olist">
                             <li>
                                 <span class="overview-total-number">999</span> 
                                 Tools
@@ -181,7 +181,7 @@
             <tbody>
                 <tr>
                     <td>
-                        <ul class="tblist">
+                        <ul class="list tblist">
                             <li ng-show='bIsEditing'>
                                 <textarea>{{longDescTextArea}}</textarea>
                             </li>
@@ -238,7 +238,7 @@
     </div>
 
     <div ng-show="isSelected('mods')">
-        <table title='overview' class='overview-table'>
+        <table title='overview' class='overview-table section-table'>
             <colgroup>
                 <col style="width: 40%">
                 <col style="width: 60%">
@@ -257,7 +257,7 @@
             <tbody>
                 <tr>
                     <td>
-                        <ul class="olist">
+                        <ul class="list olist">
                             <li>
                                 <span class="modlist-status">[_] Stable</span> 
                             </li>
@@ -274,7 +274,7 @@
                         </ul>
                     </td>
                     <td>
-                        <ul class="olist">
+                        <ul class="list olist">
                             <li>
                                 <span class="overview-total-number">999</span> 
                                 Compatible Mods
@@ -388,7 +388,7 @@
     </div>
 
     <div ng-show="isSelected('plugins')">
-        <table title='overview' class='overview-table'>
+        <table title='overview' class='overview-table section-table'>
             <colgroup>
                 <col style="width: 40%">
                 <col style="width: 60%">
@@ -407,7 +407,7 @@
             <tbody>
                 <tr>
                     <td>
-                        <ul class="olist">
+                        <ul class="list olist">
                             <li>
                                 <span class="modlist-status">[_] Stable</span> 
                             </li>
@@ -424,7 +424,7 @@
                         </ul>
                     </td>
                     <td>
-                        <ul class="olist">
+                        <ul class="list olist">
                             <li>
                                 <span class="overview-total-number">999</span> 
                                 Master Plugins
@@ -553,7 +553,7 @@
             <tbody>
                 <tr>
                     <td>
-                        <ul class="tblist">
+                        <ul class="list tblist">
                             <li ng-show='bIsEditing'>
                                 <textarea>{{longDescTextArea}}</textarea>
                             </li>
@@ -580,7 +580,7 @@
             <tbody>
                 <tr>
                     <td>
-                        <ul class="tblist">
+                        <ul class="list tblist">
                             <li ng-show='bIsEditing'>
                                 <textarea>{{longDescTextArea}}</textarea>
                             </li>

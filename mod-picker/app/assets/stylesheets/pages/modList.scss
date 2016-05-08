@@ -60,7 +60,6 @@
 }
 
 .overview-table {
-  @extend .section-table;
   th {
     text-align: left;
     vertical-align: bottom;
@@ -83,33 +82,30 @@
   padding: 0;
   text-align: left;
   display: block;
+
+  textarea {
+    width:  100%;
+    height: 100px;    
+  }
 }
 
 
 
 .olist {
-  @extend .list;
   margin: 0;
   text-align: center;
   li {
     vertical-align: middle;
     display: inline-block;
     width:24%;
-    //padding-left:  2%;
-    //padding-right: 2%;
   }
 }
 
 
 .flist {
-  @extend .list;
   li {
     vertical-align: middle;
     padding: 0px 5% 10px 5%;
-  }
-  textarea {
-    width:  100%;
-    height: 100px;    
   }
   input[type="text"] {
     width: 60%;
@@ -118,11 +114,9 @@
   select {
     width: 20%;
   }
-
 }
 
 .tblist {
-  @extend .list;
   li {
     vertical-align: middle;
     font-size: 13px;
@@ -150,10 +144,9 @@
 .section-title {
   display: block;
   vertical-align: top;
-  font-size: 22px;
+  font-size: 18px;
   font-weight: 500;
   color: $bar_text_color;
-  margin: 10px 0 5px 5px;
 
   text-align: left;
   vertical-align: middle;
