@@ -32,7 +32,7 @@
                             {{modlist.status}}status
                         </div>
                         <div class="action-box {{mlVisibilityClass}}">
-                        	<!--HIDDEN UNTIL VARIABLE AVAILABLE <i class="fa {{hidden ? 'fa-eye' : 'fa-eye-slash}}" aria-hidden="true"></i> -->
+                        	<!--HIDDEN UNTIL VARIABLE AVAILABLE <i class="fa {{modlist.hidden ? 'fa-eye' : 'fa-eye-slash}}" aria-hidden="true"></i> -->
                         	<!--demo-->
                         	<i class="fa fa-eye-slash" aria-hidden="true"></i>
                             {{modlist.hidden}}hidden
@@ -51,7 +51,7 @@
                 <a ng-click="currentTab ='plugins'" ng-class="cssClass('plugins')">Plugins</a>
                 <a ng-click="currentTab ='config'" ng-class="cssClass('config')">Config</a>
                 <a ng-click="currentTab ='comments'" ng-class="cssClass('comments')">Comments</a>
-                <button ng-click="debugFunc()">debug</button>
+                <button ng-click="debugFunc()">toggle editmode</button>
             </div>
         </div>
     </div>
@@ -78,11 +78,11 @@
                             <ul class="flist">
                                 <li>
                                    <h3>Status</h3>
-                                    <select>
-                                        <option>{{planningOpt}}</option>
-                                        <option>{{underContructionOpt}}</option>
-                                        <option>{{testingOpt}}</option>
-                                        <option>{{completeOpt}}</option>
+                                    <select ng-model="statusSelect" ng-init="statusSelect = 'underConstruction'">
+                                        <option value="planned">Planned</option>
+                                        <option value="underConstruction">Under Construction</option>
+                                        <option value="testing">Testing</option>
+                                        <option value="complete">Complete</option>
                                     </select>
                                 </li>
                                 <li>
@@ -95,13 +95,13 @@
                                     <textarea>{{shortDescTextArea}}</textarea>
                                 </li>
                                 <li>
-                                   <h3>Visibility</h3>
-                                    <select>
-                                        <option>{{publicOpt}}</option>
-                                        <option>{{unlistedOpt}}</option>
-                                        <option>{{privateOpt}}</option>
+                                   <h3>Modlist Visibility</h3>
+                                    <select ng-model="visibilitySelect" ng-init="visibilitySelect = 'visible'">
+                                        <option value="visible">Visible</option>
+                                        <option value="hidden">Hidden</option>
                                     </select>
-                                    <br><br>   
+                                    <br><br>
+                                    <h3>Public Display Options</h3>   
                                     <input type="checkbox" name="mlCatNotesCB" ng-checked="bHideCatNotes"> Do not display mod category notes.<br><br>
                                     <input type="checkbox" name="mlModGrpNotesCB" ng-checked="bHideModGrpNotes"> Do not display plugin group notes.
                                 </li>
