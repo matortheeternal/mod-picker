@@ -3,7 +3,7 @@
 //= require_tree ./angularAssets
 
 var app = angular.module('modPicker', [
-    'ui.router', 'rzModule', 'ngAnimate', 'sticky', 'puElasticInput'
+    'ui.router', 'rzModule', 'ngAnimate', 'sticky', 'puElasticInput', 'plupload.directive'
 ]);
 
 app.config(['$httpProvider', '$compileProvider', function ($httpProvider, $compileProvider) {
