@@ -4,10 +4,10 @@
 	        <section>
 	        	<div class="mod-info">
 	            <br/>
-	            <span class="mod-name">{{modlistTitle}}</span>
+	            <span class="mod-name">{{modlist.title}}{{modlistTitle}}</span>
 	            <br/>
 	            <span class="mod-authors-container">by 
-	            	<span class="mod-authors">{{modlistAuthor}}ThreeTen</span>
+	            	<span class="mod-authors">{{modlist.created_by}}ThreeTen</span>
 	            </span>
 	        </section>
 	        <section>
@@ -29,13 +29,13 @@
                         <div class="action-box {{mlStatusClass}}">
                         	<!--todo: make function to get status icon index-->
                         	 <i class="fa {{curStatusIcon.name}}" aria-hidden="true"></i>
-                            {{status}}status
+                            {{modlist.status}}status
                         </div>
                         <div class="action-box {{mlVisibilityClass}}">
                         	<!--HIDDEN UNTIL VARIABLE AVAILABLE <i class="fa {{hidden ? 'fa-eye' : 'fa-eye-slash}}" aria-hidden="true"></i> -->
                         	<!--demo-->
                         	<i class="fa fa-eye-slash" aria-hidden="true"></i>
-                            {{hidden}}hidden
+                            {{modlist.hidden}}hidden
                         </div>
 
                     </div>
