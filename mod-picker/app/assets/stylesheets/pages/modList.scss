@@ -24,6 +24,7 @@
   thead {
     vertical-align: bottom;
     border-bottom: 1px solid $hard_border_color;
+    background-color: $bar_color;
     height: 55px;
   } 
   tbody {
@@ -37,10 +38,11 @@
     padding-left: 10px;
     font-size: 14px;
     font-weight: 500;
+    color: $bright_action_color;
   }
   a {
     padding-right: 20px;
-    color: black;
+    color: $bar_text_color;
   }
   a:hover {
     padding-right: 20px;
@@ -150,6 +152,7 @@
   vertical-align: top;
   font-size: 22px;
   font-weight: 500;
+  color: $bar_text_color;
 
   text-align: left;
   vertical-align: middle;
