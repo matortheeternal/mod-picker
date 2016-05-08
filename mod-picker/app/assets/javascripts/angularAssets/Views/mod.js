@@ -61,12 +61,36 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
     //get current user
     userService.retrieveThisUser().then(function (user) {
         $scope.user = user;
-
-        //actions the user can perform
-        var rep = $scope.user.reputation.overall;
-        $scope.userCanAddMod = (rep >= 160) || ($scope.user.role === 'admin');
-        $scope.userCanAddTags = (rep >= 20) || ($scope.user.role === 'admin');
+        $scope.getPermissions();
     });
+
+    //get user permissions
+    $scope.getPermissions = function() {
+        // if we don't have mod yet, try again in 100ms
+        if (!$scope.mod) {
+            $timeout(function() {
+                $scope.getPermissions();
+            }, 100);
+            return;
+        }
+
+        // set up helper variables
+        var author = $scope.mod.authors.find(function(author) {
+            return author.id == $scope.user.id;
+        });
+        var rep = $scope.user.reputation.overall;
+        var isAdmin = $scope.user.role === 'admin';
+        var isModerator = $scope.user.role === 'moderator';
+        var isAuthor = author !== null;
+
+        // set up permissions
+        $scope.permissions = {
+            canAddTags: (rep >= 20) || isAdmin || isModerator,
+            canManage: isAuthor || isModerator || isAdmin,
+            canSuggest: (rep >= 40),
+            canModerate: isModerator || isAdmin
+        }
+    };
 
     //associate user titles with content
     $scope.associateUserTitles = function(data) {
