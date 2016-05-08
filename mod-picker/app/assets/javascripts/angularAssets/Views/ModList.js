@@ -12,24 +12,15 @@ app.config(['$stateProvider', function ($stateProvider) {
 
 app.controller('modlistController', function($scope, $log) {
 	/*config*/
-	useTwoColumns(false);
 	$scope.bIsEditing = false;
 	/*vars - Later down the road these will turn into GET functions*/
 	$scope.modlistTitle = "My Super Cool Mod List With All The Good Mods - With ENB";
     $scope.currentTab = 'details';
 
-	$scope.planningOpt = 'Planning';
-	$scope.underContructionOpt = 'Under Construction';
-	$scope.testingOpt ='Testing';
-	$scope.completeOpt = 'Complete';
-
-	$scope.publicOpt = 'Public';
-	$scope.unlistedOpt = 'Unlisted';
-	$scope.privateOpt	= 'Private';
-
 	$scope.bHideCatNotes = false;
 	$scope.bHideModGrpNotes = true;
 	$scope.bIsCollection = true;
+
 
 	$scope.shortDescTextArea = 'Provide a short description of your mod list';
 
@@ -39,7 +30,42 @@ app.controller('modlistController', function($scope, $log) {
 	$scope.curSkyConfigTab = 'skyrim.ini';
 	$scope.curENBConfigTab = 'enblocal.ini';
 
-   /*functions*/
+    $scope.statusIcons = [
+                            {name: 'fa-pencil-square-o'}, //planned
+                            {name: 'fa-wrench'}, //under construction
+                            {name: 'fa-cogs'},  //testing
+                            {name: 'fa-check'} //complete
+    ];
+
+    $scope.curStatusIcon = $scope.statusIcons[1];
+    /*functions*/
+
+    /* TODO: Make starModList function available
+    $scope.starModlist = function() {
+        modlistService.starModlist($scope.modlist.id, $scope.modlistStarred).then(function(data) {
+            if (data.status == 'ok') {
+                $scope.modlistStarred = $scope.modlistStarred ? false : true;
+            }
+        });
+    };
+    */
+
+    /*
+    Function To Return Modlist Status as Index for statusIcons
+    $scope.mlStatus() = function() {
+        if (modlist.status == 'planned') {
+            $scope.curStatusIcon = $scope.statusIcons[0];
+        } elseif (modlist.status == 'under construction') {
+            $scope.curStatusIcon = $scope.statusIcons[1];
+        } elseif (modlist.status == 'testing') {
+            $scope.curStatusIcon = $scope.statusIcons[2];
+        } else {
+            $scope.curStatusIcon = $scope.statusIcons[3];
+        };
+    }
+    */
+    //TEMP 
+   
     $scope.isSelected = function(tabName) {
     	return $scope.currentTab === tabName;
     };
