@@ -9,15 +9,19 @@ app.config(['$stateProvider', function ($stateProvider) {
             url: '/settings'
         }).state('settings.tab1', {
             templateUrl: '/resources/partials/userSettings/profile.html',
+            controller: 'userSettingsController',
             url: '/profile'
         }).state('settings.tab2', {
             templateUrl: '/resources/partials/userSettings/account.html',
+            controller: 'userSettingsController',
             url: '/account'
         }).state('settings.tab3', {
             templateUrl: '/resources/partials/userSettings/modlists.html',
+            controller: 'userSettingsController',
             url: '/mod-lists'
         }).state('settings.tab4', {
             templateUrl: '/resources/partials/userSettings/authoredMods.html',
+            controller: 'userSettingsController',
             url: '/authored-mods'
         });
 }]);

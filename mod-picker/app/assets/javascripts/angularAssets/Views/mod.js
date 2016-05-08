@@ -5,18 +5,23 @@ app.config(['$stateProvider', function ($stateProvider) {
             url: '/mod/:modId',
         }).state('mod.tab1', {
             templateUrl: '/resources/partials/showMod/reviews.html',
+            controller: 'modController',
             url: '/reviews'
         }).state('mod.tab2', {
             templateUrl: '/resources/partials/showMod/compatibility.html',
+            controller: 'modController',
             url: '/compatibility'
         }).state('mod.tab3', {
             templateUrl: '/resources/partials/showMod/installOrder.html',
+            controller: 'modController',
             url: '/install-order'
         }).state('mod.tab4', {
             templateUrl: '/resources/partials/showMod/loadOrder.html',
+            controller: 'modController',
             url: '/load-order'
         }).state('mod.tab5', {
             templateUrl: '/resources/partials/showMod/analysis.html',
+            controller: 'modController',
             url: '/analysis'
         });
 }]);
