@@ -31,7 +31,7 @@
                         	 <i class="fa {{curStatusIcon.name}}" aria-hidden="true"></i>
                             {{modlist.status}}Under Construction
                         </div>
-                        <div class="action-box {{mlVisibilityClass}}">
+                        <div class="action-box {{mlVisibilityClass}}" ng-show="bIsEditing">
                         	<!--HIDDEN UNTIL VARIABLE AVAILABLE <i class="fa {{modlist.hidden ? 'fa-eye' : 'fa-eye-slash}}" aria-hidden="true"></i> -->
                         	<!--demo-->
                         	<i class="fa fa-eye-slash" aria-hidden="true"></i>
@@ -44,7 +44,7 @@
     </div>
     <div class="header-container" style="padding-top: 8px;">    
         <div class="page-container">
-            <div title="tabs-wrapper" class="tabs" style="">
+            <div title="tabs-wrapper" class="tabs">
                 <a ng-click="currentTab ='details'" ng-class="cssClass('details')">Details</a>
                 <a ng-click="currentTab ='tools'" ng-class="cssClass('tools')">Tools</a>
                 <a ng-click="currentTab ='mods'" ng-class="cssClass('mods')">Mods</a>
