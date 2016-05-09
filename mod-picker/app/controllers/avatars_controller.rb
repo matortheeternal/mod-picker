@@ -20,7 +20,8 @@ class AvatarsController < ApplicationController
     authorize! :set_avatar, current_user
 
     response = 'Invalid submission'
-    if params[:avatar].present?
+    if params.has_key?(:avatar) && params[:avatar].has_key?(:big) &&
+        params[:avatar].has_key?(:medium) && params[:avatar].has_key?(:small)
       avatar = params[:avatar]
       # check image file type
       ext = File.extname(avatar[:big].original_filename)
