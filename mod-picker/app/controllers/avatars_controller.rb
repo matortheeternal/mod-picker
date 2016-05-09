@@ -1,10 +1,18 @@
 class AvatarsController < ApplicationController
   def delete_old_avatars
     jpg_path = Rails.root.join('public', 'avatars', current_user.id.to_s + '.jpg')
+    jpg_medium_path = Rails.root.join('public', 'avatars', current_user.id.to_s + '-m.jpg')
+    jpg_small_path = Rails.root.join('public', 'avatars', current_user.id.to_s + '-s.jpg')
     png_path = Rails.root.join('public', 'avatars', current_user.id.to_s + '.png')
+    png_medium_path = Rails.root.join('public', 'avatars', current_user.id.to_s + '-m.png')
+    png_small_path = Rails.root.join('public', 'avatars', current_user.id.to_s + '-s.png')
 
     File.delete(jpg_path) if File.exist?(jpg_path)
+    File.delete(jpg_medium_path) if File.exist?(jpg_medium_path)
+    File.delete(jpg_small_path) if File.exist?(jpg_small_path)
     File.delete(png_path) if File.exist?(png_path)
+    File.delete(png_medium_path) if File.exist?(png_medium_path)
+    File.delete(png_small_path) if File.exist?(png_small_path)
   end
 
   # POST /avatar
