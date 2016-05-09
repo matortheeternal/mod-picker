@@ -21,20 +21,31 @@ class AvatarsController < ApplicationController
 
     response = 'Invalid submission'
     if params[:avatar].present?
-      file = params[:avatar]
+      avatar = params[:avatar]
       # check image file type
-      ext = File.extname(file.original_filename)
-      local_filename = Rails.root.join('public', 'avatars', current_user.id.to_s + ext)
+      ext = File.extname(avatar[:big].original_filename)
+      local_filename = Rails.root.join('public', 'avatars', current_user.id.to_s)
       if (ext != '.png') && (ext != '.jpg')
         response = 'Invalid image type, must be PNG or JPG'
-      elsif file.size > 1048576 # 1 megabyte max file size
+      elsif avatar[:big].size > 262144 # 0.25 MB max file size
         response = 'Image is too big'
       else
         begin
           delete_old_avatars
-          File.open(local_filename, 'wb') do |f|
-            f.write(file.read)
+
+          # write big avatar
+          File.open(local_filename + ext, 'wb') do |f|
+            f.write(avatar[:big].read)
           end
+          # write medium avatar
+          File.open(local_filename + '-m' + ext, 'wb') do |f|
+            f.write(avatar[:medium].read)
+          end
+          # write small avatar
+          File.open(local_filename + '-s' + ext, 'wb') do |f|
+            f.write(avatar[:small].read)
+          end
+
           response = 'Success'
         rescue
           response = 'Unknown failure'
