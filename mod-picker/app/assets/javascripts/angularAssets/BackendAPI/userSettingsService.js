@@ -8,9 +8,9 @@ app.service('userSettingsService', function (backend, $q) {
         return userSettings.promise
     };
 
-    this.submitAvatar = function (avatar) {
+    this.submitAvatar = function (avatarObject) {
         var post = $q.defer();
-        backend.postFile('/avatar', 'avatar', avatar).then (function (data) {
+        backend.postFile('/avatar', 'avatar', avatarObject).then(function (data) {
             post.resolve(data);
         });
         return post.promise;

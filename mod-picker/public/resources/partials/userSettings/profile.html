@@ -1,14 +1,11 @@
 <h3 class="section-title">Avatar</h3>
 <section>
-    <img class="avatar avatar-medium" ng-src="{{avatar.src}}" ng-class="{ 'avatar-pending': avatar.file }">
-    <label ng-if="canChangeAvatar">
-        <input type="file" id="avatar-input" class="btn" value="Browse" accept=".jpg,.png" file-change="changeAvatar" />
-        <input type="button" id="avatar-browse" class="btn" value="Browse" ng-click="browseAvatar()"/>
-    </label>
+    <img class="avatar avatar-medium" ng-src="{{avatar.src}}" ng-class="{ 'avatar-pending': avatar.small }">
+    <image-uploader ng-if="canChangeAvatar" image-src="avatar.src" image-small="avatar.small" image-medium="avatar.medium" image-big="avatar.big"></image-uploader>
     <span class="explanation" ng-if="!canChangeAvatar">
         You need more reputation to change your avatar.
     </span>
-    <span class="explanation" ng-if="avatar.file">
+    <span class="explanation" ng-if="avatar.small">
         New avatar pending, click save changes to save it.
     </span>
 </section>
