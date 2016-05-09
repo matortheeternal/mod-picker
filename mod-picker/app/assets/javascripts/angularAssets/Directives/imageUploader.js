@@ -28,12 +28,19 @@ app.controller('imageUploaderController', function ($scope, sliderOptionsFactory
             // check dimensions
             var img = new Image();
             img.onload = function() {
-                resizedBig = scaleImage(img, 250, 250);
-                resizedMedium = scaleImage(img, 100, 100);
-                resizedSmall = scaleImage(img, 50, 50);
-                $scope.imageBig = resizedBig;
-                $scope.imageMedium = resizedMedium;
-                $scope.imageSmall = resizedSmall;
+                scaleImage(img, 250, 250, function(blob) {
+                    $scope.imageBig = new File([blob], "bigAvatar");
+                    $scope.$apply();
+                });
+                scaleImage(img, 100, 100, function(blob) {
+                    $scope.imageMedium = new File([blob], "mediumAvatar");
+                    $scope.$apply();
+                });
+                scaleImage(img, 50, 50, function(blob) {
+                    $scope.imageSmall = new File([blob], "smallAvatar");
+                    $scope.$apply();
+                });
+
                 $scope.imageSrc = img.src;
                 $scope.$apply();
             };
@@ -49,8 +56,8 @@ app.controller('imageUploaderController', function ($scope, sliderOptionsFactory
         $scope.$apply();
     };
 
-    //returns the src of the scaled img
-    scaleImage = function(img, maxWidth, maxHeight) {
+    //a blob of the scaled img
+    scaleImage = function(img, maxWidth, maxHeight, callback) {
         var canvas = document.createElement('canvas');
         canvas.width = img.width;
         canvas.height = img.height;
@@ -78,7 +85,7 @@ app.controller('imageUploaderController', function ($scope, sliderOptionsFactory
             canvas = scaleCanvasWithAlgorithm(canvas, heightScale);
         }
 
-        return imageData = canvas.toDataURL('image/jpeg');
+        canvas.toBlob(callback);
     };
 
     //scale the canvas by .5
