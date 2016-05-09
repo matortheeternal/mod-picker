@@ -8,9 +8,25 @@ app.service('userSettingsService', function (backend, $q) {
         return userSettings.promise
     };
 
-    this.submitAvatar = function (avatar) {
+    this.submitBigAvatar = function (bigAvatar) {
         var post = $q.defer();
-        backend.postFile('/avatar', 'avatar', avatar).then (function (data) {
+        backend.postFile('/avatars', 'avatar:big', bigAvatar).then (function (data) {
+            post.resolve(data);
+        });
+        return post.promise;
+    };
+
+    this.submitMediumAvatar = function (mediumAvatar) {
+        var post = $q.defer();
+        backend.postFile('/avatars', 'avatar:medium', mediumAvatar).then (function (data) {
+            post.resolve(data);
+        });
+        return post.promise;
+    };
+
+    this.submitSmallAvatar = function (smallAvatar) {
+        var post = $q.defer();
+        backend.postFile('/avatars', 'avatar:small', smallAvatar).then (function (data) {
             post.resolve(data);
         });
         return post.promise;

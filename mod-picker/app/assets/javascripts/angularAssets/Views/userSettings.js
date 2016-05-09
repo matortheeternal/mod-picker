@@ -155,8 +155,21 @@ app.controller('userSettingsController', function ($scope, $q, userSettingsServi
                 themesService.changeTheme($scope.userSettings.theme);
             }
         });
-        if ($scope.avatar.file) {
-            userSettingsService.submitAvatar($scope.avatar.file).then(function (data) {
+        //submitting the avatar files
+        if ($scope.avatar.small) {
+            userSettingsService.submitBigAvatar($scope.avatar.big).then(function (data) {
+                if (data.status !== "Success") {
+                    $scope.errors.push({message: "Avatar: " + data.status});
+                }
+                $scope.showSuccess = $scope.errors.length == 0;
+            });
+            userSettingsService.submitMediumAvatar($scope.avatar.medium).then(function (data) {
+                if (data.status !== "Success") {
+                    $scope.errors.push({message: "Avatar: " + data.status});
+                }
+                $scope.showSuccess = $scope.errors.length == 0;
+            });
+            userSettingsService.submitSmallAvatar($scope.avatar.small).then(function (data) {
                 if (data.status !== "Success") {
                     $scope.errors.push({message: "Avatar: " + data.status});
                 }
