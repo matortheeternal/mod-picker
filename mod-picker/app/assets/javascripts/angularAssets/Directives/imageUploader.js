@@ -17,6 +17,10 @@ app.directive('imageUploader', function () {
 
 app.controller('imageUploaderController', function ($scope, sliderOptionsFactory, $timeout) {
     var originalSrc = $scope.imageSrc;
+    $scope.clickAvatarBrowse = function() {
+        document.getElementById('avatar-input').click();
+    };
+
     $scope.changeAvatar = function(event) {
         if (event.target.files && event.target.files[0]) {
             var avatarFile = event.target.files[0];
