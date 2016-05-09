@@ -8,7 +8,7 @@ app.directive('compatibilityNote', function () {
         templateUrl: '/resources/directives/notePartials/compatibilityNote.html',
         controller: 'compatibilityNoteController',
         scope: {
-        	cnote: '=',
+        	note: '=',
             showAuthorColumn: '='
         }
     }

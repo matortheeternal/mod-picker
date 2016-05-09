@@ -13,7 +13,7 @@ class UsersController < ApplicationController
   # GET /users/1.json
   def show
     authorize! :read, @user
-    render :json => @user.show_json
+    render :json => @user.show_json(current_user)
   end
 
   # PATCH/PUT /users/1

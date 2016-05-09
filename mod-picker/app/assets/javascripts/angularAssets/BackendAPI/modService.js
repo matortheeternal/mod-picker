@@ -48,6 +48,14 @@ app.service('modService', function (backend, $q) {
         return star.promise;
     };
 
+    this.retrieveReviews = function (modId, options) {
+        var reviews = $q.defer();
+        backend.retrieve('/mods/' + modId + '/reviews', options).then(function (data) {
+            reviews.resolve(data);
+        });
+        return reviews.promise;
+    };
+
     this.retrieveCompatibilityNotes = function (modId, options) {
         var compatibilityNotes = $q.defer();
         backend.retrieve('/mods/' + modId + '/compatibility_notes', options).then(function (data) {
