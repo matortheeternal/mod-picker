@@ -28,17 +28,21 @@ app.controller('imageUploaderController', function ($scope, sliderOptionsFactory
             // check dimensions
             var img = new Image();
             img.onload = function() {
+                var number = 0;
                 scaleImage(img, 250, 250, function(blob) {
                     $scope.imageBig = new File([blob], "bigAvatar");
-                    $scope.$apply();
+                    number++;
+                    apply(number);
                 });
                 scaleImage(img, 100, 100, function(blob) {
                     $scope.imageMedium = new File([blob], "mediumAvatar");
-                    $scope.$apply();
+                    number++;
+                    apply(number);
                 });
                 scaleImage(img, 50, 50, function(blob) {
                     $scope.imageSmall = new File([blob], "smallAvatar");
-                    $scope.$apply();
+                    number++;
+                    apply(number);
                 });
 
                 $scope.imageSrc = img.src;
@@ -47,6 +51,12 @@ app.controller('imageUploaderController', function ($scope, sliderOptionsFactory
             img.src = URL.createObjectURL(avatarFile);
         } else if ($scope.user) {
             $scope.resetAvatar();
+        }
+    };
+
+    apply = function(number) {
+        if(number>2) {
+            $scope.$apply();
         }
     };
 
