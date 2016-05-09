@@ -27,7 +27,9 @@ class AvatarsController < ApplicationController
       local_filename = Rails.root.join('public', 'avatars', current_user.id.to_s)
       if (ext != '.png') && (ext != '.jpg')
         response = 'Invalid image type, must be PNG or JPG'
-      elsif avatar[:big].size > 262144 # 0.25 MB max file size
+      elsif avatar[:big].size > 262144 || # 256KB
+          avatar[:medium].size > 131072 || # 128KB
+          avatar[:small].size > 65536 # 64KB
         response = 'Image is too big'
       else
         begin
