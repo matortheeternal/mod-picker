@@ -114,4 +114,19 @@ class ModList < ActiveRecord::Base
     end
     incompatible_mod_ids.uniq
   end
+
+  def as_json(options={})
+    super({
+        :only => [:id, :name, :is_collection, :created, :completed, :mods_count, :plugins_count, :user_stars_count],
+        :include => {
+            :user => {
+                :only => [:id, :username, :role, :title],
+                :include => {
+                    :reputation => {:only => [:overall]}
+                },
+                :methods => :avatar
+            }
+        }
+    })
+  end
 end
