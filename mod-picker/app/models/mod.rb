@@ -154,13 +154,13 @@ class Mod < ActiveRecord::Base
   end
 
   def compute_average_rating
-    total = 0
+    total = 0.0
     count = 0
     self.reviews.each do |r|
       total += r.overall_rating
       count += 1
     end
-    self.average_rating = (total.to_f / count) if count > 0
+    self.average_rating = (total / count) if count > 0
   end
 
   def compute_reputation
@@ -171,13 +171,12 @@ class Mod < ActiveRecord::Base
       end
     else
       compute_average_rating
-      review_reputation = (self.average_rating / 10.0)**3 * (510.0 / (1 + Math::exp(-0.2 * (self.reviews_count - 10))) - 60)
+      review_reputation = (self.average_rating / 100)**3 * (510.0 / (1 + Math::exp(-0.2 * (self.reviews_count - 10))) - 60)
       self.reputation = review_reputation
     end
   end
 
   def create_associations
-    byebug
     self.create_tags
     self.create_asset_files
     self.create_plugins
@@ -199,30 +198,47 @@ class Mod < ActiveRecord::Base
     LoadOrderNote.where('first_plugin_id in ? OR second_plugin_id in ?', self.plugins.ids, self.plugins.ids)
   end
 
+  def image
+    png_path = File.join(Rails.public_path, "mods/#{id}.png")
+    jpg_path = File.join(Rails.public_path, "mods/#{id}.jpg")
+    if File.exists?(png_path)
+      "/mods/#{id}.png"
+    elsif File.exists?(jpg_path)
+      "/mods/#{id}.jpg"
+    else
+      '/mods/Default.png'
+    end
+  end
+
   def show_json
-    self.as_json(:include => {
-        :reviews => {
-            :except => [:submitted_by],
-            :include => {
-                :user => {
-                    :only => [:id, :username, :role, :title],
-                    :include => {
-                        :reputation => {:only => [:overall]}
-                    },
-                    :methods => :avatar
-                }
-            }
-        },
-        :tags => {
-            :except => [:game_id, :hidden, :mod_lists_count],
-            :user => {
-                :only => [:id, :username]
-            }
-        },
-        :nexus_infos => {:except => [:mod_id]},
-        :workshop_infos => {:except => [:mod_id]},
-        :lover_infos => {:except => [:mod_id]},
-        :authors => {:only => [:id, :username]}
+    self.as_json({
+      :include => {
+          :reviews => {
+              :except => [:submitted_by],
+              :include => {
+                  :user => {
+                      :only => [:id, :username, :role, :title],
+                      :include => {
+                          :reputation => {:only => [:overall]}
+                      },
+                      :methods => :avatar
+                  }
+              }
+          },
+          :tags => {
+              :except => [:game_id, :hidden, :mod_lists_count],
+              :include => {
+                  :user => {
+                      :only => [:id, :username]
+                  }
+              }
+          },
+          :nexus_infos => {:except => [:mod_id]},
+          :workshop_infos => {:except => [:mod_id]},
+          :lover_infos => {:except => [:mod_id]},
+          :authors => {:only => [:id, :username]}
+      },
+      :methods => :image
     })
   end
 

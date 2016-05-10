@@ -7,10 +7,15 @@
   font-size: 12px;
   border-radius: 4%;
   margin: 2px;
-}
+  cursor: pointer;
+  -webkit-transition: all 0.2s ease-in-out;
+  -moz-transition: all 0.2s ease-in-out;
+  -o-transition: all 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out;
 
-.green-box {
-  background-color: $success_message_color;
+  &:hover {
+    background-color: $bar_highlight_color;
+  }
 }
 
 .mod-header-box {
@@ -19,6 +24,24 @@
   padding: 10px;
   font-size: 12px;
   font-weight: 500;
+  .status-good {
+    background-color: $success_secondary;
+    &:hover {
+      background-color: $success_primary;
+    }
+  }
+  .status-dangerous {
+    background-color: $error_secondary;
+    &:hover {
+      background-color: $error_primary;
+    }
+  }
+  .status-outdated {
+    background-color: $warning_secondary;
+    &:hover {
+      background-color: $warning_primary;
+    }
+  }
 }
 
 ///header stuff
@@ -45,6 +68,10 @@
   font-weight: 700;
   padding-top: 2px;
   height: 50px;
+  cursor: default;
+  &:hover {
+    background-color: $action_color;
+  }
 }
 
 .reputation-number {
@@ -111,9 +138,10 @@
 }
 
 .mod-image {
-  width: 100%;
+  display: block;
+  margin: auto;
+  margin-bottom: 20px;
   border: 2px solid $border_color;
-  margin-top: 20px;
 }
 
 .sources {
@@ -134,10 +162,6 @@
   .source-label {
     padding: 5px 2px;
   }
-}
-
-.source-box:hover {
-  background-color: $bright_action_color;
 }
 
 .source-image {
@@ -256,11 +280,11 @@
 .sort-by-dropdown {
   flex-grow: 1;
 
-  .select {
-    flex-grow: 1;
+  select {
     margin-left: 10px;
     margin-right: 10px;
     min-width: 190px;
+    display: inline-block;
   }
 }
 
@@ -269,31 +293,43 @@
   margin-bottom: 20px;
 }
 
+.add-note-title {
+  font-size: 16px;
+  font-weight: 500;
+  color: $bar_text_color;
+  background-color: $bar_color;
+  margin-top: 20px;
+  border: 1px solid $bar_dark_color;
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  i {
+    cursor: pointer;
+    margin-right: .5em;
+  }
+}
+
 //add note box
 .add-note-box {
-  border: 1px solid $border_color;
+  border: 1px solid $bar_dark_color;
+  border-top: none;
   background-color: $primary_background;
-  margin-top: 20px;
-  padding: 20px;
-
-  .section-title {
-    margin-top: 0;
-    font-size: 16px;
-    font-weight: 500;
-    color: $h4_color;
-  }
+  color: $h4_color;
 
   .add-note-actions {
     display: flex;
     justify-content: space-around;
     align-items: center;
+    font-size: 14px;
     width: 745px;
 
     .compatibility-dropdown {
       min-width: 236px;
     }
 
-    .install-order-dropdown {
+    .order-dropdown {
       min-width: 85px;
     }
 
@@ -304,9 +340,8 @@
     }
   }
 
-  section {
-    margin-left: 10px;
-    margin-bottom: 10px;
+  .note-content-container {
+    margin: 20px;
   }
 }
 
@@ -324,8 +359,8 @@
 //making the text-area scroll
 .note-text-area {
   .CodeMirror, .CodeMirror-scroll {
-    max-height: 200px;
-    min-height: 200px;
+    max-height: 400px;
+    min-height: 400px;
   }
 }
 
@@ -349,5 +384,135 @@
   input {
     width: 50px;
     display: inline;
+  }
+}
+
+.ratings-container {
+  display: flex;
+  position: relative;
+  justify-content: center;
+  flex-wrap: wrap;
+  align-items: center;
+  font-size: 24px;
+  padding-right: 60px; // This makes certain the ratings don't go over the section-tools
+  background-color: $bar_highlight_color;
+  color: $bright_action_color;
+
+  .rating-item {
+    font-weight: 500;
+    padding: 0 8px;
+
+    .fa-caret-down {
+      display: none;
+    }
+
+    div {
+      display: inline-block;
+      position: relative;
+    }
+
+    select {
+      border: none;
+      background: transparent;
+      font-size: 24px;
+      min-width: 100px;
+      max-width: 600px;
+      padding-left: 0;
+      padding-right: 0;
+      color: inherit;
+
+      option {
+        background-color: $bar_highlight_color;
+      }
+
+      &:hover {
+        cursor: pointer;
+
+        & + .fa-caret-down {
+          opacity: 1;
+        }
+      }
+
+      &:focus {
+        outline: none;
+      }
+    }
+
+    .fa-caret-down {
+      opacity: 0;
+      pointer-events: none;
+      display: inherit;
+      position: absolute;
+      left: calc(50% - 10px);
+      bottom: -4px;
+      -webkit-transition: opacity 0.3s ease-in-out;
+      -moz-transition: opacity 0.3s ease-in-out;
+      -o-transition: opacity 0.3s ease-in-out;
+      transition: opacity 0.3s ease-in-out;
+    }
+
+    input {
+      min-width: 1em;
+      max-width: 2em;
+      padding: 0 4px;
+      font: inherit;
+      font-size: 30px;
+      text-align: center;
+      color: $bar_text_color;
+      border: none;
+      margin: 0;
+      background-color: inherit;
+      -webkit-transition: box-shadow 0.2s ease-in-out;
+      -moz-transition: box-shadow 0.2s ease-in-out;
+      -o-transition: box-shadow 0.2s ease-in-out;
+      transition: box-shadow 0.2s ease-in-out;
+
+      &:hover {
+        box-shadow: 0 0 3px 0 $border_color;
+      }
+
+      &:focus {
+        box-shadow: 0 0 3px 0 $border_color;
+        outline: none;
+      }
+    }
+  }
+
+  .section-tools {
+    position: absolute;
+    right: 0;
+    top: 0;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    font-size: 18px;
+
+    i {
+      padding: 2px;
+      cursor: pointer;
+      -webkit-transition: color 0.2s ease-in-out;
+      -moz-transition: color 0.2s ease-in-out;
+      -o-transition: color 0.2s ease-in-out;
+      transition: color 0.2s ease-in-out;
+    }
+    i.disabled {
+      color: $hard_border_color !important;
+      cursor: default;
+    }
+
+    .fa-plus {
+      color: $success_primary;
+      &:hover {
+        color: $success_secondary;
+      }
+    }
+
+    .fa-minus {
+      color: $error_primary;
+      &:hover {
+        color: $error_secondary;
+      }
+    }
   }
 }

@@ -8,4 +8,10 @@ app.service('reviewSectionService', function (backend, $q) {
 
         return reviewSections.promise;
     };
+
+    this.getSectionsForCategory = function(reviewSections, category) {
+        return reviewSections.filter(function(section) {
+            return (section.category_id == category.id) || (section.category_id == category.parent_id);
+        });
+    };
 });

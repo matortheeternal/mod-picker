@@ -25,18 +25,28 @@
 
 
 .author-block {
+	//background-color: $secondary_background;
 	display: table-cell;
 	border: 1px solid black;
 	width: 164px;
 	min-height: 100%;
 	padding-top: 30px;
 	text-align: center;
+
+	img {
+		length: 64px;
+		width: 64px;
+	}
+
+	span {
+		display: block;
+	}
+
 }
 .author-image {
 	margin-left: 30%;
 	width: 64px;
 	height: 64px;
-	background-color: $secondary_background;
 }
 .author-name {
 	font-size: 13px;
@@ -46,19 +56,9 @@
 
 .compatibility-note
 {
-	
+	background-color: $primary_background;
 	.right-container {
 		display:table-cell;
-		vertical-align: top;
-	}
-
-	.letter-box {
-		display: inline-block;
-		text-align: center;
-		width: 24px;
-		height: 24px;
-		border-right: 1px solid black;
-		border-bottom: 1px solid black;
 		vertical-align: top;
 	}
 
@@ -73,7 +73,7 @@
 	  justify-content: flex-start;
 	  align-items: center;
 	  align-content: center;
-	  width: 757px;
+	  width: 700px;
 	  border: 1px solid black;
 	  border-left: 0;
 	  border-right: 0;
@@ -91,36 +91,47 @@
 		.note-title-block {
 			@extend .item;
 			background-color: $secondary_background;
+			color: $bar_text_color;
+			background-color: $dark_action_color;
 			border-top: 0;
 			width: 100%;
-			ul {
-				padding: 0;
-				margin-top: 20px;
-				margin-bottom: 5px;
-				list-style: none;
-			}
-			li {
+			span {
 				display: inline-block;
-				padding-left: 24px;
-				width: 32%;
-				font-size: 16px;
-				font-weight: 700;
-			}
-			li:nth-child(2) {
-				padding-left:160px;
-			}
-			li:last-of-type {
-				text-align: right;
-				
 				font-size: 14px;
 				font-weight: 100;
 				font-style: italic;
 				vertical-align: top;
 			}
+			ul {
+				width: 100%;
+				display: inline-block;
+				padding: 0;
+				margin-top: 20px;
+				margin-bottom: 5px;
+			}
+			li {
+				display: inline-block;
+				padding-left: 24px;
+				font-size: 16px;
+				font-weight: 700;
+				width: 49%;
+			}
+		}
+
+		.letter-box {
+			background-color: $primary_background;
+			display: inline-block;
+			text-align: center;
+			width: 24px;
+			height: 24px;
+			border-right: 1px solid black;
+			border-bottom: 1px solid black;
+			vertical-align: top;
 		}
 
 		.mod-title-block {
 			@extend .item;
+			background-color: $secondary_background;
 			width: 50%;
 			span {
 				position:relative;
@@ -129,6 +140,15 @@
 				width:92%;
 				padding-left: 24px;
 				text-align: left;
+			}
+			a {
+				display: inline-block;
+				padding-top:10px;
+				font-weight: 500;
+				//color: $bar_text_color;
+			}
+			a:hover {
+				//color: $bar_text_color;
 			}
 		}
 
@@ -170,16 +190,25 @@
 		@extend .cnote-block;
 		.note-title-block {
 			min-height: 60px;
-
+			span {
+				margin-top: 20px;
+			}
+			ul {
+				width: 80%;
+			}
+			li {
+				text-align: left;
+				width: auto;
+			}
 			li > span {
+				margin-top: 0px;
+				text-align: left;
 				display: inline-block;
 				font-size: 16px;
 				font-weight: 400;
+				font-style: normal;
 			}
 
-			li:nth-child(2) {
-				padding-left:0;
-			}
 		}
 	}
 }

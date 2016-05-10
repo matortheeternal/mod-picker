@@ -79,7 +79,6 @@ class Ability
       can :update, LoadOrderNote, :submitted_by => user.id
       can :update, InstallOrderNote, :submitted_by => user.id
       can :update, Review, :submitted_by => user.id
-      can :update, ReviewTemplate, :submitted_by => user.id
 
       # can update or remove their helpful/agreement marks
       can [:update, :destroy], AgreementMark, :submitted_by => user.id
@@ -143,9 +142,6 @@ class Ability
         can :create, IncorrectNote  # can report something as incorrect
         can :create, AgreementMark  # can agree/disagree with other users
         can :create, ReputationLink # can give reputation other users
-      end
-      if user.reputation.overall >= 80
-        can :create, ReviewTemplate # can create custom review templates
       end
       if user.reputation.overall >= 160
         # TODO: mod submission here after the beta

@@ -11,11 +11,12 @@ class CompatibilityNote < ActiveRecord::Base
   # FIXME: change this back to status: once the schema has been updated.
   enum compatibility_type: [ :incompatible, :"partially incompatible", :"compatibility mod", :"compatibility option", :"make custom patch" ]
 
+  belongs_to :game, :inverse_of => 'compatibility_notes'
   belongs_to :user, :foreign_key => 'submitted_by', :inverse_of => 'compatibility_notes'
 
   # associated mods
-  belongs_to :first_mod, :class_name => 'Mod', :foreign_key => 'first_mod'
-  belongs_to :second_mod, :class_name => 'Mod', :foreign_key => 'second_mod'
+  belongs_to :first_mod, :class_name => 'Mod', :foreign_key => 'first_mod_id'
+  belongs_to :second_mod, :class_name => 'Mod', :foreign_key => 'second_mod_id'
 
   # associated compatibility plugin/compatibilty mod for automatic resolution purposes
   belongs_to :compatibility_plugin, :class_name => 'Plugin', :foreign_key => 'compatibility_plugin_id', :inverse_of => 'compatibility_note_plugins'

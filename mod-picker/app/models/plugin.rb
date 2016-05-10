@@ -1,4 +1,5 @@
 class Plugin < ActiveRecord::Base
+  belongs_to :game, :inverse_of => 'plugins'
   belongs_to :mod, :inverse_of => 'plugins'
 
   # master associations

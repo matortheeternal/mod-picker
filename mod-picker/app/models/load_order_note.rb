@@ -7,6 +7,7 @@ class LoadOrderNote < ActiveRecord::Base
   scope :mod, -> (id) { joins(:mod_versions).where(:mod_versions => {mod_id: id}) }
   scope :mv, -> (id) { joins(:mod_versions).where(:mod_versions => {id: id}) }
 
+  belongs_to :game, :inverse_of => 'load_order_notes'
   belongs_to :user, :foreign_key => 'submitted_by', :inverse_of => 'load_order_notes'
 
   # plugins associatied with this load order note

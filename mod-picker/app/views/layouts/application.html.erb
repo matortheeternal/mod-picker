@@ -124,8 +124,8 @@
         <div class="search" ng-controller="searchInputController">
           <form>
             <input class="search-field" type="text" autocomplete="off" ng-model="search" placeholder="Search...">
-            <div class="loadingButtonContainer">
-              <input class="btn action-btn" type="submit" value="Search" ng-click="processSearch()" ng-hide="loading"/>
+            <div class="search-container">
+              <input id="search-btn" class="btn" type="submit" value="Search" ng-click="processSearch()" ng-hide="loading"/>
               <loader data="!loading" spinner-class="small-spinner"></loader>
             </div>
           </form>

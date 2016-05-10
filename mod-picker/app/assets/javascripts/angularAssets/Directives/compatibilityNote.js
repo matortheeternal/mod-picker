@@ -5,8 +5,8 @@
 app.directive('compatibilityNote', function () {
     return {
         retrict: 'E',
-        templateUrl: '/resources/directives/compatibilityNote.html',
-        controller: 'cNoteController',
+        templateUrl: '/resources/directives/notePartials/compatibilityNote.html',
+        controller: 'compatibilityNoteController',
         scope: {
         	cnote: '=',
             showAuthorColumn: '='
@@ -15,5 +15,5 @@ app.directive('compatibilityNote', function () {
 });
 
 //TODO: empty controller is probably unnecessary :P
-app.controller('cNoteController', function ($scope) {
+app.controller('compatibilityNoteController', function ($scope) {
 });

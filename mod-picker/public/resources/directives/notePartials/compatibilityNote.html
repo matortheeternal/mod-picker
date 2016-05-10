@@ -14,19 +14,18 @@
 					<li>
 						{{cnote.compatibility_type.capitalize()}}
 					</li>
-					<li></li>						
-					<li>
-						Good Standing
+					<li style="text-align: right;">
+						<span>Good Standing</span>
 					</li>
 				</ul>
 			</div>
 			<div class='mod-title-block'>
 				<div class='letter-box'>A</div>
-				<a ng-href='/mod/{{cnote.mods[0].id}}'>{{cnote.mods[0].name}}</a>
+				<a ng-href='#/mod/{{cnote.first_mod_id}}'>{{cnote.mods[0].name}}</a>
 			</div>
 			<div class='mod-title-block'>
 				<div class='letter-box'>B</div>
-				<a ng-href='/mod/{{cnote.mods[1].id}}'>{{cnote.mods[1].name}}</a>
+				<a ng-href='#/mod/{{cnote.second_mod_id}}'>{{cnote.mods[1].name}}</a>
 			</div>
 			<div class='note-details-block'>
 				{{cnote.text_body}}
