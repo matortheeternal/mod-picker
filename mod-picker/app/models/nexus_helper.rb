@@ -2,7 +2,14 @@ require 'nokogiri'
 require 'rest-client'
 
 class NexusHelper
-  attr_accessor :cookies
+  attr_accessor :cookies, :last_request, :last_login
+
+  def self.login_if_necessary
+    if @last_login.nil? || @last_login < 1.week.ago ||
+       @last_request.nil? || @last_request < 4.hours.ago
+      self.login
+    end
+  end
 
   def self.login
     # construct index url
@@ -36,6 +43,8 @@ class NexusHelper
 
     # submit login to the server, the server will return a 302 so we use the block to
     # grab the cookies from the 302 response directly
+    @last_request = DateTime.now
+    @last_login = DateTime.now
     RestClient.post(login_url, multipart_data, headers) do |response|
       @cookies = response.cookies
     end
@@ -46,6 +55,8 @@ class NexusHelper
   end
 
   def self.scrape_user(id)
+    login_if_necessary
+
     # construct user url
     user_url = 'https://forums.nexusmods.com/index.php?/user/' + id
 
@@ -57,6 +68,7 @@ class NexusHelper
 
     # get the user page
     response = RestClient.get(user_url, headers)
+    @last_request = DateTime.now
 
     # parse needed data from user page
     doc = Nokogiri::HTML(response.body)
@@ -86,6 +98,8 @@ class NexusHelper
   end
 
   def self.scrape_mod(game_name, id)
+    login_if_necessary
+
     # construct mod url
     mod_url = "http://www.nexusmods.com/#{game_name}/mods/#{id}"
 
@@ -97,6 +111,7 @@ class NexusHelper
 
     # get the mod page
     response = RestClient.get(mod_url, headers)
+    @last_request = DateTime.now
 
     # parse needed data from the mod page
     doc = Nokogiri::HTML(response.body)
