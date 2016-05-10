@@ -5,7 +5,7 @@ class NexusHelper
   attr_accessor :cookies
 
   def self.login
-    # construct url
+    # construct index url
     base_url = 'https://forums.nexusmods.com/'
     index_url = base_url + 'index.php'
 
@@ -30,7 +30,8 @@ class NexusHelper
 
     # prepare headers
     headers = {
-        :cookies => response.cookies
+        :cookies => response.cookies,
+        :"user-agent" => Rails.application.config.user_agent
     }
 
     # submit login to the server, the server will return a 302 so we use the block to
@@ -45,13 +46,13 @@ class NexusHelper
   end
 
   def self.scrape_user(id)
-    # construct url
-    base_url = 'https://forums.nexusmods.com/'
+    # construct user url
     user_url = 'https://forums.nexusmods.com/index.php?/user/' + id
 
     # prepare headers
     headers = {
-        :cookies =>  @cookies
+        :cookies =>  @cookies,
+        :"user-agent" => Rails.application.config.user_agent
     }
 
     # get the user page
@@ -69,5 +70,73 @@ class NexusHelper
 
     # return user data
     user_data
+  end
+
+  def self.nexus_date_format
+    '%d/%m/%Y - %I:%M%p'
+  end
+
+  # use this method if the data is sometimes not present on the page
+  def self.try_parse(doc, selector, default)
+    begin
+      doc.at_css(selector).text
+    rescue
+      default
+    end
+  end
+
+  def self.scrape_mod(game_name, id)
+    # construct mod url
+    mod_url = "http://www.nexusmods.com/#{game_name}/mods/#{id}"
+
+    # prepare headers
+    headers = {
+        :cookies =>  @cookies,
+        :"user-agent" => Rails.application.config.user_agent
+    }
+
+    # get the mod page
+    response = RestClient.get(mod_url, headers)
+
+    # parse needed data from the mod page
+    doc = Nokogiri::HTML(response.body)
+    mod_data = {}
+
+    # scrape basic data
+    mod_data[:last_scraped] = DateTime.now
+    mod_data[:mod_name] = doc.at_css(".header-name").text
+    mod_data[:current_version] = doc.at_css(".file-version strong").text
+    mod_data[:uploaded_by] = doc.at_css(".uploader a").text
+    mod_data[:authors] = doc.at_css(".header-author strong").text
+
+    # scrape dates
+    dates = doc.at_css(".header-dates").css('div')
+    date_added_str = dates[0].children[1].text.strip
+    mod_data[:date_added] = DateTime.parse(date_added_str, nexus_date_format)
+    date_updated_str = dates[1].children[1].text.strip
+    mod_data[:date_updated] = DateTime.parse(date_updated_str, nexus_date_format)
+
+    # scrape statistics
+    mod_data[:has_stats] = Rails.application.config.scrape_nexus_statistics
+    if Rails.application.config.scrape_nexus_statistics
+      mod_data[:endorsements] = doc.at_css("#span_endors_number").text.gsub(',', '')
+      mod_data[:unique_downloads] = doc.at_css(".file-unique-dls strong").text.gsub(',', '')
+      mod_data[:total_downloads] = doc.at_css(".file-total-dls strong").text.gsub(',', '')
+      mod_data[:views] = doc.at_css(".file-total-views strong").text.gsub(',', '')
+
+      # scrape nexus category
+      catlink = doc.at_css(".header-cat").css('a/@href')[1].text
+      mod_data[:nexus_category] = /src_cat=([0-9]*)/.match(catlink).captures[0].to_i
+
+      # scrape counts
+      mod_data[:files_count] = try_parse(doc, ".tab-files strong", "0").to_i
+      mod_data[:images_count] = try_parse(doc, ".tab-images strong", "0").to_i
+      mod_data[:articles_count] = try_parse(doc, ".tab-articles strong", "0").to_i
+      mod_data[:posts_count] = try_parse(doc, ".tab-comments strong", "0").to_i
+      mod_data[:videos_count] = try_parse(doc, ".tab-videos", "0").to_i
+    end
+
+    # return the mod data
+    mod_data
   end
 end
