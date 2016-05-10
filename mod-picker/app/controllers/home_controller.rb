@@ -29,6 +29,24 @@ class HomeController < ApplicationController
     render 'angular/index', layout: "application"
   end
 
+  def index
+    @articles = Article.order(:created_at => :DESC).limit(5)
+    @mod_lists = ModList.where("status = 3 AND hidden = false AND completed NOT NULL").order(:completed => :DESC).limit(10)
+    render :json => {
+        articles: @articles.as_json,
+        recent_stuff: {
+            mod_lists: @mod_lists.as_json,
+            mods: {},
+            comments: {},
+            reviews: {},
+            corrections: {},
+            compatibility_notes: {},
+            install_order_notes: {},
+            load_order_notes: {},
+        }
+    }
+  end
+
   private
     def authorize
       unless current_user.present?
