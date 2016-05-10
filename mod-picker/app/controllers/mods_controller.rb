@@ -20,6 +20,17 @@ class ModsController < ApplicationController
     }
   end
 
+  # POST /mods/search
+  def search
+    @mods = Mod.filter(search_params).sort({ column: "name", direction: "ASC" }).limit(10)
+
+    render :json => {
+        mods: @mods.as_json({
+            :only => [:id, :name]
+        })
+    }
+  end
+
   # GET /mods/1
   def show
     authorize! :read, @mod
@@ -131,6 +142,11 @@ class ModsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_mod
       @mod = Mod.includes(:nexus_infos, :workshop_infos, :lover_infos).find(params[:id])
+    end
+
+    # Params we allow searching on
+    def search_params
+      params[:filters].slice(:search, :game)
     end
     
     # Params we allow filtering on
