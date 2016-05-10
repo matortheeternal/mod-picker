@@ -115,6 +115,7 @@ def seed_fake_mods
 
   Plugin.create({
     filename: "SkyUI.esp",
+    game_id: gameSkyrim.id,
     mod_id: Mod.last.id,
     crc_hash: "BEA2DC76",
     file_size: 2385,
