@@ -54,20 +54,20 @@ app.controller('imageUploaderController', function ($scope, sliderOptionsFactory
         }
     };
 
-    apply = function(number) {
+    var apply = function(number) {
         if(number>2) {
             $scope.$apply();
         }
     };
 
-    resetAvatar = function() {
+    $scope.resetAvatar = function() {
         $scope.image = null;
         $scope.imageSrc = originalSrc;
         $scope.$apply();
     };
 
     //a blob of the scaled img
-    scaleImage = function(img, maxWidth, maxHeight, callback) {
+    var scaleImage = function(img, maxWidth, maxHeight, callback) {
         var canvas = document.createElement('canvas');
         canvas.width = img.width;
         canvas.height = img.height;
@@ -99,7 +99,7 @@ app.controller('imageUploaderController', function ($scope, sliderOptionsFactory
     };
 
     //scale the canvas by .5
-    getHalfScaleCanvas = function(canvas) {
+    var getHalfScaleCanvas = function(canvas) {
         var halfCanvas = document.createElement('canvas');
         halfCanvas.width = canvas.width / 2;
         halfCanvas.height = canvas.height / 2;
@@ -110,7 +110,7 @@ app.controller('imageUploaderController', function ($scope, sliderOptionsFactory
     };
 
     //scale the canvas by [scale] using bilinearInterpolation
-    scaleCanvasWithAlgorithm = function(canvas, scale) {
+    var scaleCanvasWithAlgorithm = function(canvas, scale) {
         var scaledCanvas = document.createElement('canvas');
 
         scaledCanvas.width = canvas.width * scale;
@@ -126,7 +126,7 @@ app.controller('imageUploaderController', function ($scope, sliderOptionsFactory
         return scaledCanvas;
     };
 
-    applyBilinearInterpolation = function(srcCanvasData, destCanvasData, scale) {
+    var applyBilinearInterpolation = function(srcCanvasData, destCanvasData, scale) {
         function inner(f00, f10, f01, f11, x, y) {
             var un_x = 1.0 - x;
             var un_y = 1.0 - y;
