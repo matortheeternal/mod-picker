@@ -33,6 +33,7 @@ Rails.application.routes.draw do
     resources :mods, only: [:show, :update, :destroy]
     match '/mods/submit', to: 'mods#create', via: 'post'
     match '/mods', to: 'mods#index', via: 'post'
+    match '/mods/search', to: 'mods#search', via: 'post'
 
     # content associated with mods
     match '/mods/:id/reviews', to: 'mods#reviews', via: 'get'
