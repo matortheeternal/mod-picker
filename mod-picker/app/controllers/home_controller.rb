@@ -35,7 +35,7 @@ class HomeController < ApplicationController
     @mod_lists = ModList.where("game_id = ? AND status = 3 AND hidden = false", params[:game]).order(:completed => :DESC).limit(10)
     @mods = Mod.where("game_id = ? AND hidden = false", params[:game]).order(:id => :ASC).limit(10)
     @reviews = Review.where("game_id = ? AND hidden = false", params[:game]).order(:submitted => :DESC).limit(10)
-    @corrections = IncorrectNote.joins(:correctable).where(:correctable => { :game_id => params[:game], :hidden => false}).order(:submitted => :DESC).limit(10)
+    @corrections = IncorrectNote.where("game_id = ? AND hidden = false", params[:game]).order(:created_at => :DESC).limit(10)
     @compatibility_notes = CompatibilityNote.where("game_id = ? AND hidden = false", params[:game]).order(:submitted => :DESC).limit(10)
     @install_order_notes = InstallOrderNote.where("game_id = ? AND hidden = false", params[:game]).order(:submitted => :DESC).limit(10)
     @load_order_notes = LoadOrderNote.where("game_id = ? AND hidden = false", params[:game]).order(:submitted => :DESC).limit(10)
