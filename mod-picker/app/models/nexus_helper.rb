@@ -82,7 +82,7 @@ class NexusHelper
     date_joined_str = userInfoCell.children[2].text.strip
     user_data[:date_joined] = DateTime.parse(date_joined_str, date_joined_format)
     communityStats = doc.at_css(".general_box ul")
-    user_data[:posts_count] = communityStats.css("li")[1].css(".row_data").text.gsub(',', '').strip
+    user_data[:posts_count] = communityStats.css("li")[1].css(".row_data").text.gsub(',', '').to_i
     user_data[:last_status] = doc.at_css("#user_latest_status").css("div")[0].children[0].text.strip
 
     # return user data
