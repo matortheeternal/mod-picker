@@ -662,14 +662,19 @@ def seed_fake_comments
 end
 
 def seed_fake_reviews
-  # generate reviews on mods
   puts "\nSeeding reviews"
+
+  # helper variables
+  gameSkyrim = Game.where({display_name: "Skyrim"}).first
+
+  # generate reviews on mods
   Mod.all.each do |mod|
     nReviews = rand(6)
     puts "    Generating #{nReviews} reviews for #{mod.name}"
     nReviews.times do
       submitter = random_user
       review = mod.reviews.new(
+          game_id: gameSkyrim.id,
           submitted_by: submitter.id,
           mod_id: mod.id,
           hidden: false,
@@ -702,10 +707,15 @@ end
 
 def seed_fake_compatibility_notes
   puts "\nSeeding compatibility notes"
+
+  # helper variables
+  gameSkyrim = Game.where({display_name: "Skyrim"}).first
+
   nNotes = Mod.count
   nNotes.times do
     submitter = random_user
     cnote = CompatibilityNote.new(
+        game_id: gameSkyrim.id,
         submitted_by: submitter.id,
         compatibility_type: CompatibilityNote.compatibility_types.keys.sample,
         submitted: Faker::Date.backward(14),
@@ -731,11 +741,16 @@ end
 
 def seed_fake_install_order_notes
   puts "\nSeeding install order notes"
+
+  # helper variables
+  gameSkyrim = Game.where({display_name: "Skyrim"}).first
+
   nNotes = Mod.count
   nNotes.times do
     submitter = random_user
     puts "    Generating install order note"
     ionote = InstallOrderNote.new(
+        game_id: gameSkyrim.id,
         submitted_by: submitter.id,
         first_mod_id: random_mod.id,
         second_mod_id: random_mod.id,
@@ -760,11 +775,16 @@ end
 
 def seed_fake_load_order_notes
   puts "\nSeeding load order notes"
+
+  # helper variables
+  gameSkyrim = Game.where({display_name: "Skyrim"}).first
+
   nNotes = Plugin.count
   nNotes.times do
     submitter = random_user
     puts "    Generating load order"
     lnote = LoadOrderNote.new(
+        game_id: gameSkyrim.id,
         submitted_by: submitter.id,
         first_plugin_id: random_plugin.id,
         second_plugin_id: random_plugin.id,
