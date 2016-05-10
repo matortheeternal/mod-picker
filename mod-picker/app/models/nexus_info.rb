@@ -19,7 +19,7 @@ class NexusInfo < ActiveRecord::Base
   end
 
   def rescrape
-    if self.last_scraped < 1.week.ago
+    if self.last_scraped.nil? || self.last_scraped < 1.week.ago
       self.scrape
       self.mod.compute_extra_metrics
       if self.mod.reviews_count < 5
