@@ -7,8 +7,10 @@ class Review < ActiveRecord::Base
   scope :mod, -> (mod) { where(mod_id: mod) }
   scope :by, -> (id) { where(submitted_by: id) }
 
+  belongs_to :game, :inverse_of => 'reviews'
   belongs_to :user, :foreign_key => 'submitted_by', :inverse_of => 'reviews'
   belongs_to :mod, :inverse_of => 'reviews'
+
   has_many :review_ratings, :inverse_of => 'review'
 
   has_many :helpful_marks, :as => 'helpfulable'
