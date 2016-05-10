@@ -54,6 +54,10 @@ class NexusHelper
     @cookies
   end
 
+  def self.date_joined_format
+    'Member Since %d %B %Y - %I:%M %p'
+  end
+
   def self.scrape_user(id)
     login_if_necessary
 
@@ -72,19 +76,20 @@ class NexusHelper
 
     # parse needed data from user page
     doc = Nokogiri::HTML(response.body)
-    user_data = {id: id}
+    user_data = {}
     userInfoCell = doc.at_css("#user_info_cell")
     user_data[:username] = userInfoCell.css("h1 span").text.strip
-    user_data[:date_joined] = userInfoCell.children[2].text.strip
+    date_joined_str = userInfoCell.children[2].text.strip
+    user_data[:date_joined] = DateTime.parse(date_joined_str, date_joined_format)
     communityStats = doc.at_css(".general_box ul")
-    user_data[:posts_count] = communityStats.css("li")[1].css(".row_data").text.strip
+    user_data[:posts_count] = communityStats.css("li")[1].css(".row_data").text.gsub(',', '').strip
     user_data[:last_status] = doc.at_css("#user_latest_status").css("div")[0].children[0].text.strip
 
     # return user data
     user_data
   end
 
-  def self.nexus_date_format
+  def self.date_format
     '%d/%m/%Y - %I:%M%p'
   end
 
@@ -127,9 +132,9 @@ class NexusHelper
     # scrape dates
     dates = doc.at_css(".header-dates").css('div')
     date_added_str = dates[0].children[1].text.strip
-    mod_data[:date_added] = DateTime.parse(date_added_str, nexus_date_format)
+    mod_data[:date_added] = DateTime.parse(date_added_str, date_format)
     date_updated_str = dates[1].children[1].text.strip
-    mod_data[:date_updated] = DateTime.parse(date_updated_str, nexus_date_format)
+    mod_data[:date_updated] = DateTime.parse(date_updated_str, date_format)
 
     # scrape statistics
     mod_data[:has_stats] = Rails.application.config.scrape_nexus_statistics
