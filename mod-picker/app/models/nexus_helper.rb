@@ -5,14 +5,20 @@ class NexusHelper
   attr_accessor :cookies
 
   def self.login
+    # construct url
     base_url = 'https://forums.nexusmods.com/'
     index_url = base_url + 'index.php'
+
+    # get the index to get auth key for login
     response = RestClient.get(index_url)
     doc = Nokogiri::HTML(response.body)
     auth_key = doc.xpath('//form[@id="login"]/input/@value').first.value
 
+    # prepare login url
     login_params = '?app=core&module=global&section=login&do=process'
     login_url = index_url + login_params
+
+    # prepare multipart form data
     multipart_data = {
         :auth_key => auth_key,
         :referer => base_url,
@@ -21,26 +27,17 @@ class NexusHelper
         :rememberMe => "1",
         :multipart => true
     }
+
+    # prepare headers
     headers = {
-        :'Accept' => "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
-        :'Accept-Language' => "en-US,en;q=0.8",
-        :'Cache-Control' => "max-age=0",
-        :'Connection' => "keep-alive",
-        :cookies => {
-            :session_id => response.cookies['session_id'],
-            :_ga => "GA1.2.1455726809.1462910178",
-            :_gat => "1"
-        },
-        :'Host' => "forums.nexusmods.com",
-        :'Origin' => "https://forums.nexusmods.com",
-        :'Referer' => base_url,
-        :'Upgrade-Insecure-Requests' => "1",
-        :'User-Agent' => 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/47.0.2526.73 Safari/537.36'
+        :cookies => response.cookies
     }
-    login_response = RestClient.post(login_url, multipart_data, headers) { |response, request, result|
-      response
-    }
-    @cookies = login_response.cookies
+
+    # submit login to the server, the server will return a 302 so we use the block to
+    # grab the cookies from the 302 response directly
+    RestClient.post(login_url, multipart_data, headers) do |response|
+      @cookies = response.cookies
+    end
   end
 
   def self.cookies
@@ -48,35 +45,29 @@ class NexusHelper
   end
 
   def self.scrape_user(id)
+    # construct url
     base_url = 'https://forums.nexusmods.com/'
     user_url = 'https://forums.nexusmods.com/index.php?/user/' + id
+
+    # prepare headers
     headers = {
-        :'Accept' => "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
-        :'Accept-Language' => "en-US,en;q=0.8",
-        :'Connection' => "keep-alive",
-        :cookies =>  @cookies.merge({
-            :_ga => "GA1.2.1455726809.1462910178",
-            :_gat => "1"
-        }),
-        :'Host' => "forums.nexusmods.com",
-        :'Referer' => base_url,
-        :'Upgrade-Insecure-Requests' => "1",
-        :'User-Agent' => 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/47.0.2526.73 Safari/537.36'
+        :cookies =>  @cookies
     }
-    byebug
-    response = RestClient.get(user_url, headers) { |response, request, result| response}
 
-    # parse the stuff
+    # get the user page
+    response = RestClient.get(user_url, headers)
+
+    # parse needed data from user page
     doc = Nokogiri::HTML(response.body)
-    user_stuff = {id: id}
+    user_data = {id: id}
     userInfoCell = doc.at_css("#user_info_cell")
-    user_stuff[:username] = userInfoCell.css("h1 span").text.strip
-    user_stuff[:date_joined] = userInfoCell.children[2].text.strip
+    user_data[:username] = userInfoCell.css("h1 span").text.strip
+    user_data[:date_joined] = userInfoCell.children[2].text.strip
     communityStats = doc.at_css(".general_box ul")
-    user_stuff[:activePosts] = communityStats.css("li")[1].css(".row_data").text.strip
-    user_stuff[:lastStatus] = doc.at_css("#user_latest_status").css("div")[0].children[0].text.strip
+    user_data[:posts_count] = communityStats.css("li")[1].css(".row_data").text.strip
+    user_data[:last_status] = doc.at_css("#user_latest_status").css("div")[0].children[0].text.strip
 
-    # return user stuff
-    user_stuff
+    # return user data
+    user_data
   end
 end
