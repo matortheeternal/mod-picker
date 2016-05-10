@@ -30,24 +30,26 @@ class HomeController < ApplicationController
   end
 
   def index
-    # load recent data
-    @articles = Article.order(:created_at => :DESC).limit(5)
-    @mod_lists = ModList.where("game_id = ? AND status = 3 AND hidden = false", params[:game]).includes(:user => :reputation).order(:completed => :DESC).limit(10)
-    @mods = Mod.where("game_id = ? AND hidden = false", params[:game]).order(:id => :ASC).limit(10)
-    @reviews = Review.where("game_id = ? AND hidden = false", params[:game]).includes(:mod, :user => :reputation).order(:submitted => :DESC).limit(10)
-    @corrections = IncorrectNote.where("game_id = ? AND hidden = false", params[:game]).includes(:user => :reputation).order(:created_at => :DESC).limit(10)
-    @compatibility_notes = CompatibilityNote.where("game_id = ? AND hidden = false", params[:game]).includes(:first_mod, :second_mod, :user => :reputation).order(:submitted => :DESC).limit(10)
-    @install_order_notes = InstallOrderNote.where("game_id = ? AND hidden = false", params[:game]).includes(:first_mod, :second_mod, :user => :reputation).order(:submitted => :DESC).limit(10)
-    @load_order_notes = LoadOrderNote.where("game_id = ? AND hidden = false", params[:game]).includes(:first_plugin, :second_plugin, :user => :reputation).order(:submitted => :DESC).limit(10)
+    # we first get news articles
+    articles = Article.order(:created_at => :DESC).limit(5)
+
+    # we include associated data we know we'll need because it increases the speed of the query
+    mod_lists = ModList.where("game_id = ? AND status = 3 AND hidden = false", params[:game]).includes(:user => :reputation).order(:completed => :DESC).limit(10)
+    mods = Mod.where("game_id = ? AND hidden = false", params[:game]).order(:id => :ASC).limit(10)
+    reviews = Review.where("game_id = ? AND hidden = false", params[:game]).includes(:mod, :user => :reputation).order(:submitted => :DESC).limit(10)
+    corrections = IncorrectNote.where("game_id = ? AND hidden = false", params[:game]).includes(:user => :reputation).order(:created_at => :DESC).limit(10)
+    compatibility_notes = CompatibilityNote.where("game_id = ? AND hidden = false", params[:game]).includes(:first_mod, :second_mod, :user => :reputation).order(:submitted => :DESC).limit(10)
+    install_order_notes = InstallOrderNote.where("game_id = ? AND hidden = false", params[:game]).includes(:first_mod, :second_mod, :user => :reputation).order(:submitted => :DESC).limit(10)
+    load_order_notes = LoadOrderNote.where("game_id = ? AND hidden = false", params[:game]).includes(:first_plugin, :second_plugin, :user => :reputation).order(:submitted => :DESC).limit(10)
 
     render :json => {
-        articles: @articles.as_json,
+        articles: articles.as_json,
         recent: {
-            mod_lists: @mod_lists.as_json,
-            mods: @mods.as_json({
+            mod_lists: mod_lists.as_json,
+            mods: mods.as_json({
                 :only => [:id, :name, :primary_category_id, :secondary_category_id, :mod_stars_count, :status, :reputation, :average_rating, :released]
             }),
-            reviews: @reviews.as_json({
+            reviews: reviews.as_json({
                 :only => [:id, :submitted, :edited, :incorrect_notes_count],
                 :include => {
                     :user => {
@@ -62,8 +64,8 @@ class HomeController < ApplicationController
                     }
                 }
             }),
-            corrections: @corrections.as_json,
-            compatibility_notes: @compatibility_notes.as_json({
+            corrections: corrections.as_json,
+            compatibility_notes: compatibility_notes.as_json({
                 :only => [:id, :compatibility_type, :submitted, :edited, :text_body, :incorrect_notes_count],
                 :include => {
                     :first_mod => {
@@ -81,7 +83,7 @@ class HomeController < ApplicationController
                     }
                 }
             }),
-            install_order_notes: @install_order_notes.as_json({
+            install_order_notes: install_order_notes.as_json({
                 :only => [:id, :submitted, :edited, :text_body],
                 :include => {
                     :first_mod => {
@@ -99,7 +101,7 @@ class HomeController < ApplicationController
                     }
                 }
             }),
-            load_order_notes: @load_order_notes.as_json
+            load_order_notes: load_order_notes.as_json
         }
     }
   end
