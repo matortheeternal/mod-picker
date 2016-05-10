@@ -227,8 +227,10 @@ class Mod < ActiveRecord::Base
           },
           :tags => {
               :except => [:game_id, :hidden, :mod_lists_count],
-              :user => {
-                  :only => [:id, :username]
+              :include => {
+                  :user => {
+                      :only => [:id, :username]
+                  }
               }
           },
           :nexus_infos => {:except => [:mod_id]},
