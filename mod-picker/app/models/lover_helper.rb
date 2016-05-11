@@ -113,6 +113,32 @@ class LoverHelper
     mod_data = JSON.parse(response.body)
     mod_data["submitted"] = DateTime.strptime(mod_data["submitted"].to_s, '%s')
     mod_data["updated"] = DateTime.strptime(mod_data["updated"].to_s, '%s')
+    
+    # remap the json
+    mappings = { 
+      "name" => "mod_name",
+      "author" => "uploaded_by",
+      "submitted" => "date_submitted",
+      "updated" => "date_updated",
+      "followers" => "followers_count",
+      "size" => "file_size",
+      "version" => "current_version",
+      "is_adult" => "has_adult_content",
+      "screenshot" => nil,
+      "author_id" => nil
+    }
+    mod_data.keys.each do |k|
+      if mappings.has_key(k)
+        if mappings[k].nil?
+          mod_data.delete(k) 
+        else
+          mod_data[mappings[k]] = mod_data.delete(k)
+        end
+      end
+    end
+
+    # make a game_id field from the game field
+    mod_data["game_id"] = Game.find_by(nexus_name: mod_data.delete("game")).id
 
     # return mod data
     mod_data
