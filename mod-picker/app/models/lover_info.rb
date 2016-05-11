@@ -1,5 +1,6 @@
 class LoverInfo < ActiveRecord::Base
   belongs_to :mod
+  belongs_to :game
 
   def scrape
     # retrieve using the Lover Helper
@@ -7,6 +8,7 @@ class LoverInfo < ActiveRecord::Base
 
     # remove screenshot field
     screenshot = mod_data.delete("screenshot")
+    mod_data["game_id"] = Game.find_by(nexus_name: mod_data.delete("game")).id
 
     # write the results to the lover info record
     self.assign_attributes(mod_data)
