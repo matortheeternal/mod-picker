@@ -16,10 +16,10 @@ app.controller('searchInputController', function ($scope, $location) {
             $scope.loading = false;
             $scope.$apply();
         }, 1000);
-    }
+    };
 });
 
-app.controller('landingController', function ($scope, $q, modService) {
+app.controller('landingController', function ($scope, $q, landingService) {
 
     //TODO: put this into the Routing logic
     $scope.tabs = [
@@ -29,4 +29,9 @@ app.controller('landingController', function ($scope, $q, modService) {
     ];
 
     $scope.currentTab = $scope.tabs[0];
+
+
+    landingService.retrieveLanding().then(function(data) {
+        $scope.landingData = data;
+    });
 });
