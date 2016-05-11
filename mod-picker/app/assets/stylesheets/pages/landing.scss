@@ -52,20 +52,38 @@
 
 //articles
 .articles {
-  padding: 0 10px 10px 10px;
   margin: 10px;
   border: 1px solid $border_color;
 
 	.section-title {
 		font-size: 26px;
 		font-weight: 500;
+    margin-left: 10px;
 	}
 
 	.news-box {
+    padding-left: 10px;
+    font-size: 14px;
+    border-bottom: 1px solid $border_color;
 
   	.section-title {
   		font-size: 20px;
-  		margin-left: 10px;
+      display: inline;
   	}
+
+    .news {
+      margin: 20px 0 0 10px;
+
+    }
+
+    .show-less {
+      max-height: 150px;
+      overflow-y: hidden;
+    }
 	}
+
+
+  .load-older-posts {
+    text-align: center;
+  }
 }

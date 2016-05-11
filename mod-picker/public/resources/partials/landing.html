@@ -47,11 +47,13 @@
 				<div class="news-box" ng-repeat="article in landingData.articles">
 					<h3 class="section-title">{{article.title}}</h3>
 					by {{article.submitted_by}} {{article.created_at | date}}
-					<section marked="article.text_body" ng-class="article.expanded ? 'short-news' : ''">
+					<section marked="article.text_body" ng-class="article.expanded ? 'news' : 'news show-less'">
 					</section>
 					<a ng-click="article.expanded = !article.expanded">Show {{article.expanded ? 'Less' : 'More'}}</a>
 				</div>
-				<a ng-click="loadMoreNews()" class="load-older-posts">Load Older Posts</a>
+				<div class="load-older-posts">
+					<a href="#/news/">See All News Posts</a>
+				</div>
 			</div>
 
 			<div class="recent-box">
