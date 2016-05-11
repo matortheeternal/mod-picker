@@ -1,16 +1,18 @@
+<loader data="modlist" spinner-class="big-spinner">
 <div title="modlist-header" class="header-tabs">
     <div class="modlist-header-color">
         <div class="page-container mod-header">
-	        <section>
-	        	<div class="mod-info">
-	            <br/>
-	            <span class="mod-name">{{modlist.title}}{{modlistTitle}}</span>
-	            <br/>
-	            <span class="mod-authors-container">by 
-	            	<span class="mod-authors">{{modlist.created_by}}ThreeTen</span>
-	            </span>
-	        </section>
-	        <section>
+            <section>
+            <div class="mod-info">
+                <br/>
+                <span class="mod-name">{{modlist.title}}{{modlistTitle}}</span>
+                <br/>
+                <span class="mod-authors-container">by 
+                    <span class="mod-authors">{{modlist.created_by}}</span>
+                </span>
+            </div>
+            </section>
+            <section>
                     <div class="mod-header-box">
                         <!-- TODO: I feel like using some spans here would be wiser -->
                         ACTIONS
@@ -27,19 +29,19 @@
                     <div class="mod-header-box">
                         STATUS
                         <div class="action-box {{mlStatusClass}}">
-                        	<!--todo: make function to get status icon index-->
-                        	 <i class="fa {{curStatusIcon.name}}" aria-hidden="true"></i>
-                            {{modlist.status}}Under Construction
+                            <!--todo: make function to get status icon index-->
+                             <i class="fa {{curStatusIcon.name}}" aria-hidden="true"></i>
+                            {{modlist.status}}
                         </div>
                         <div class="action-box {{mlVisibilityClass}}" ng-show="bIsEditing">
-                        	<!--HIDDEN UNTIL VARIABLE AVAILABLE <i class="fa {{modlist.hidden ? 'fa-eye' : 'fa-eye-slash}}" aria-hidden="true"></i> -->
-                        	<!--demo-->
-                        	<i class="fa fa-eye-slash" aria-hidden="true"></i>
-                            {{modlist.hidden}}hidden
+                            <!--HIDDEN UNTIL VARIABLE AVAILABLE <i class="fa {{modlist.hidden ? 'fa-eye' : 'fa-eye-slash}}" aria-hidden="true"></i> -->
+                            <!--demo-->
+                            <i class="fa fa-eye-slash" aria-hidden="true"></i>
+                            {{modlist.hidden}}
                         </div>
 
                     </div>
-	        </section>
+            </section>
         </div>
     </div>
     <div class="header-container" style="padding-top: 8px;">    
@@ -58,7 +60,7 @@
 </div>
 
 <div class="page-container">
-	<div ng-show="isSelected('details')">
+    <div ng-show="isSelected('details')">
         <table ng-show="bIsEditing" title='modlist-options' class='section-table'>
             <colgroup>
                 <col style="width: 100%">
@@ -610,7 +612,8 @@
         </table>     
     </div>
     <div title="SaveOverlay-wrapper">
-    	Edit / Save / Cancel Overlay
+        Edit / Save / Cancel Overlay
     </div>
-    <div><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br></div>
+    <div style='height: 500px'></div>
 </div>
+</loader>

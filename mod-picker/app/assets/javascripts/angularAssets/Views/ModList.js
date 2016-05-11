@@ -40,36 +40,21 @@ app.controller('modlistController', function($scope, $log, $stateParams, modList
                             {name: 'fa-cogs'},  //testing
                             {name: 'fa-check'} //complete
     ];
-
-    $scope.curStatusIcon = $scope.statusIcons[1];
-    /*functions*/
-
-    /* TODO: Make starModList function available
-    $scope.starModlist = function() {
-        modlistService.starModlist($scope.modlist.id, $scope.modlistStarred).then(function(data) {
-            if (data.status == 'ok') {
-                $scope.modlistStarred = $scope.modlistStarred ? false : true;
-            }
-        });
-    };
-    */
-
-    /*
-    Function To Return Modlist Status as Index for statusIcons
-    $scope.mlStatus() = function() {
-        if (modlist.status == 'planned') {
+    $scope.curStatusIcon = $scope.statusIcons[2];
+    //Function To Return Modlist Status as Index for statusIcons
+    $scope.mlStatus = function() {
+        var modList = $scope.modlist;
+        if (modList.status == 'planned') {
             $scope.curStatusIcon = $scope.statusIcons[0];
-        } elseif (modlist.status == 'under construction') {
+        } else if (modList.status == 'under construction') {
             $scope.curStatusIcon = $scope.statusIcons[1];
-        } elseif (modlist.status == 'testing') {
+        } else if (modListt.status == 'testing') {
             $scope.curStatusIcon = $scope.statusIcons[2];
         } else {
             $scope.curStatusIcon = $scope.statusIcons[3];
         };
-    }
-    */
-    //TEMP 
-   
+    } 
+
     $scope.isSelected = function(tabName) {
     	return $scope.currentTab === tabName;
     };
