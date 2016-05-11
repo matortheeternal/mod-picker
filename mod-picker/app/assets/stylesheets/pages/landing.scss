@@ -1,10 +1,12 @@
+//left column's recent mods and modlists
 .recent-box {
 	border: 1px solid $border_color;
 	margin: 10px;
 
 	.section-title {
 		font-size: 26px;
-		margin-left: 20px;
+		margin-left: 10px;
+		font-weight: 500;
 	}
 
 	.recent-thing {
@@ -45,5 +47,25 @@
 
 	.explanation {
 		margin-left: 15px;
+	}
+}
+
+//articles
+.articles {
+  padding: 0 10px 10px 10px;
+  margin: 10px;
+  border: 1px solid $border_color;
+
+	.section-title {
+		font-size: 26px;
+		font-weight: 500;
+	}
+
+	.news-box {
+
+  	.section-title {
+  		font-size: 20px;
+  		margin-left: 10px;
+  	}
 	}
 }
