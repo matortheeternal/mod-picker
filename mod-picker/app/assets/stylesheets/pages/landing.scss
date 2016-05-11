@@ -1,5 +1,6 @@
 .recent-box {
 	border: 1px solid $border_color;
+	margin: 10px;
 
 	.section-title {
 		font-size: 26px;
@@ -7,24 +8,40 @@
 	}
 
 	.recent-thing {
-		padding-bottom: 10px;
 		border: 1px solid transparent;
+		display: flex;
+		color: $text_color;
+		align-items: center;
+		font-size: 12px;
+		padding: 10px;
 
-	  .section-title {
-			font-size: 18px;
-			color: $h4_color;
-			margin-left: 30px;
-	  }
+		div {
+			display: inline-flex;
+			flex-direction: column;
+			max-width: 50%;
+			margin: 4px;
+		}
 
-	  section {
+		img {
+			max-width: 100%;
+			height: auto;
+		}
+
+	  .recent-title {
 			font-size: 14px;
-			margin-left: 40px;
+			font-weight: 500;
+			color: inherit;
 	  }
 
 	  &:hover {
 	  	background-color: $background_highlight;
 	  	border-top: 1px solid $border_color;
 	  	border-bottom: 1px solid $border_color;
+	  	cursor: pointer;
 	  }
+	}
+
+	.explanation {
+		margin-left: 15px;
 	}
 }
