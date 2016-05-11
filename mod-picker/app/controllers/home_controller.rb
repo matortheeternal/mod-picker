@@ -38,9 +38,9 @@ class HomeController < ApplicationController
     mods = Mod.where("game_id = ? AND hidden = false", params[:game]).order(:id => :ASC).limit(5)
     reviews = Review.where("game_id = ? AND hidden = false", params[:game]).includes(:mod, :user => :reputation).order(:submitted => :DESC).limit(4)
     corrections = IncorrectNote.where("game_id = ? AND hidden = false", params[:game]).includes(:user => :reputation).order(:created_at => :DESC).limit(4)
-    compatibility_notes = CompatibilityNote.where("game_id = ? AND hidden = false", params[:game]).includes(:first_mod, :second_mod, :user => :reputation).order(:submitted => :DESC).limit(10)
-    install_order_notes = InstallOrderNote.where("game_id = ? AND hidden = false", params[:game]).includes(:first_mod, :second_mod, :user => :reputation).order(:submitted => :DESC).limit(10)
-    load_order_notes = LoadOrderNote.where("game_id = ? AND hidden = false", params[:game]).includes(:first_plugin, :second_plugin, :user => :reputation).order(:submitted => :DESC).limit(10)
+    compatibility_notes = CompatibilityNote.where("game_id = ? AND hidden = false", params[:game]).includes(:first_mod, :second_mod, :user => :reputation).order(:submitted => :DESC).limit(4)
+    install_order_notes = InstallOrderNote.where("game_id = ? AND hidden = false", params[:game]).includes(:first_mod, :second_mod, :user => :reputation).order(:submitted => :DESC).limit(4)
+    load_order_notes = LoadOrderNote.where("game_id = ? AND hidden = false", params[:game]).includes(:first_plugin, :second_plugin, :user => :reputation).order(:submitted => :DESC).limit(4)
 
     render :json => {
         articles: articles.as_json,
