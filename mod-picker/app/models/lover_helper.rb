@@ -128,7 +128,7 @@ class LoverHelper
       "author_id" => nil
     }
     mod_data.keys.each do |k|
-      if mappings.has_key(k)
+      if mappings.has_key?(k)
         if mappings[k].nil?
           mod_data.delete(k) 
         else
