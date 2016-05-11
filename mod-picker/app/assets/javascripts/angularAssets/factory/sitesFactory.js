@@ -11,7 +11,7 @@ app.service('sitesFactory', function () {
             },
             {
                 label: "Lover's Lab",
-                expr: /(http[s]:\/\/?)?www.loverslab.com\/files\/file\/([0-9a-z\-]+)(\/)?/i
+                expr: /(http[s]:\/\/?)?www.loverslab.com\/files\/file\/([0-9]+)\-([0-9a-z\-]+)(\/)?/i
             }
         ];
     }
