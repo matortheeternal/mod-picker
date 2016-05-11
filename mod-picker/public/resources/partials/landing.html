@@ -49,7 +49,7 @@
 					by {{article.submitted_by}} {{article.created_at | date}}
 					<section marked="article.text_body" ng-class="article.expanded ? 'news' : 'news show-less'">
 					</section>
-					<a ng-click="article.expanded = !article.expanded">Show {{article.expanded ? 'Less' : 'More'}}</a>
+					<a ng-if="article.text_body.length > 700" ng-click="article.expanded = !article.expanded">Show {{article.expanded ? 'Less' : 'More'}}</a>
 				</div>
 				<div class="load-older-posts">
 					<a href="#/news/">See All News Posts</a>
