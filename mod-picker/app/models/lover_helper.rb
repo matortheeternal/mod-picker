@@ -111,7 +111,10 @@ class LoverHelper
 
     # parse the json
     mod_data = JSON.parse(response.body)
-    mod_data[:submitted] = DateTime.strptime(mod_data[:submitted], '%s')
-    mod_data[:updated] = DateTime.strptime(mod_data[:updated], '%s')
+    mod_data["submitted"] = DateTime.strptime(mod_data["submitted"].to_s, '%s')
+    mod_data["updated"] = DateTime.strptime(mod_data["updated"].to_s, '%s')
+
+    # return mod data
+    mod_data
   end
 end
