@@ -537,7 +537,7 @@ end
 def seed_fake_tags
   # helper variables
   gameSkyrim = Game.where({display_name: "Skyrim"}).first
-  
+
   # generate tags
   puts "\nSeeding tags"
 
@@ -860,7 +860,7 @@ def seed_fake_articles
     Article.new(
         title: Faker::Lorem.words(3).join(' '),
         submitted_by: author.id,
-        text_body: Faker::Lorem.words(400).join(' '),
+        text_body: Faker::Lorem.words(rand(500)).join(' '),
         created_at: Faker::Date.backward(14),
         updated_at: Faker::Date.backward(13),
         game_id: gameSkyrim.id
