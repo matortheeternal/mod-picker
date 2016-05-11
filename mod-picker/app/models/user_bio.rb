@@ -1,13 +1,11 @@
-require 'securerandomext'
-
 class UserBio < ActiveRecord::Base
   belongs_to :user
 
   after_create :generate_verification_tokens
 
   def generate_verification_tokens
-    self.nexus_verification_token = "ModPicker:#{SecureRandomExt.base58(16)}"
-    self.lover_verification_token = "ModPicker:#{SecureRandomExt.base58(16)}"
+    self.nexus_verification_token = "ModPicker:#{SecureRandom.hex(4).to_s.upcase}"
+    self.lover_verification_token = "ModPicker:#{SecureRandom.hex(4).to_s.upcase}"
     self.save
   end
 
