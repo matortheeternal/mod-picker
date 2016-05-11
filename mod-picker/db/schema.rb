@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160510222905) do
+ActiveRecord::Schema.define(version: 20160511002340) do
 
   create_table "agreement_marks", id: false, force: :cascade do |t|
     t.integer "incorrect_note_id", limit: 4
@@ -235,16 +235,17 @@ ActiveRecord::Schema.define(version: 20160510222905) do
 
   create_table "lover_infos", force: :cascade do |t|
     t.integer  "mod_id",          limit: 4
-    t.string   "mod_name",        limit: 255
+    t.string   "name",            limit: 255
     t.string   "uploaded_by",     limit: 128
-    t.string   "date_submitted",  limit: 255
-    t.string   "date_updated",    limit: 255
+    t.string   "submitted",       limit: 255
+    t.string   "updated",         limit: 255
     t.datetime "last_scraped"
     t.integer  "followers_count", limit: 4,   default: 0
-    t.integer  "file_size",       limit: 4,   default: 0
+    t.integer  "size",            limit: 4,   default: 0
     t.integer  "views",           limit: 4,   default: 0
     t.integer  "downloads",       limit: 4,   default: 0
     t.boolean  "has_stats",                   default: false
+    t.string   "version",         limit: 32
   end
 
   add_index "lover_infos", ["mod_id"], name: "fk_rails_614a886dc0", using: :btree
