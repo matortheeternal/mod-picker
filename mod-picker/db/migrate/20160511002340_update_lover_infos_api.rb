@@ -6,5 +6,8 @@ class UpdateLoverInfosApi < ActiveRecord::Migration
     add_column :lover_infos, :version, :string, limit: 32
     rename_column :lover_infos, :file_size, :size
     add_column :lover_infos, :is_adult, :boolean
+    add_column :lover_infos, :game_id, :integer
+
+    add_foreign_key :lover_infos, :games
   end
 end

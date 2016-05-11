@@ -247,8 +247,10 @@ ActiveRecord::Schema.define(version: 20160511002340) do
     t.boolean  "has_stats",                   default: false
     t.string   "version",         limit: 32
     t.boolean  "is_adult"
+    t.integer  "game_id",         limit: 4
   end
 
+  add_index "lover_infos", ["game_id"], name: "fk_rails_0c0c747a5a", using: :btree
   add_index "lover_infos", ["mod_id"], name: "fk_rails_614a886dc0", using: :btree
 
   create_table "masters", id: false, force: :cascade do |t|
@@ -770,6 +772,7 @@ ActiveRecord::Schema.define(version: 20160511002340) do
   add_foreign_key "load_order_notes", "plugins", column: "first_plugin_id"
   add_foreign_key "load_order_notes", "plugins", column: "second_plugin_id"
   add_foreign_key "load_order_notes", "users", column: "submitted_by"
+  add_foreign_key "lover_infos", "games"
   add_foreign_key "lover_infos", "mods"
   add_foreign_key "masters", "plugins", name: "masters_ibfk_1"
   add_foreign_key "mod_asset_files", "asset_files"
