@@ -246,6 +246,7 @@ ActiveRecord::Schema.define(version: 20160511002340) do
     t.integer  "downloads",       limit: 4,   default: 0
     t.boolean  "has_stats",                   default: false
     t.string   "version",         limit: 32
+    t.boolean  "is_adult"
   end
 
   add_index "lover_infos", ["mod_id"], name: "fk_rails_614a886dc0", using: :btree
