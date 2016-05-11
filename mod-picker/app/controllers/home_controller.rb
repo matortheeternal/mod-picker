@@ -34,8 +34,8 @@ class HomeController < ApplicationController
     articles = Article.order(:created_at => :DESC).limit(5)
 
     # we include associated data we know we'll need because it increases the speed of the query
-    mod_lists = ModList.where("game_id = ? AND status = 3 AND hidden = false", params[:game]).includes(:user => :reputation).order(:completed => :DESC).limit(5)
-    mods = Mod.where("game_id = ? AND hidden = false", params[:game]).order(:id => :ASC).limit(5)
+    mod_lists = ModList.where("game_id = ? AND status = 3 AND hidden = false", params[:game]).includes(:user => :reputation).order(:completed => :DESC).limit(4)
+    mods = Mod.where("game_id = ? AND hidden = false", params[:game]).order(:id => :ASC).limit(4)
     reviews = Review.where("game_id = ? AND hidden = false", params[:game]).includes(:mod, :user => :reputation).order(:submitted => :DESC).limit(4)
     corrections = IncorrectNote.where("game_id = ? AND hidden = false", params[:game]).includes(:user => :reputation).order(:created_at => :DESC).limit(4)
     compatibility_notes = CompatibilityNote.where("game_id = ? AND hidden = false", params[:game]).includes(:first_mod, :second_mod, :user => :reputation).order(:submitted => :DESC).limit(4)
