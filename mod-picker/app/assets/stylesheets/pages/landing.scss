@@ -1,0 +1,29 @@
+.recent-box {
+	border: 1px solid $border_color;
+
+	.section-title {
+		font-size: 26px;
+		margin-left: 20px;
+	}
+
+	.recent-modlist {
+		padding-bottom: 10px;
+
+	  .section-title {
+			font-size: 18px;
+			color: $h4_color;
+			margin-left: 30px;
+	  }
+
+	  section {
+			font-size: 14px;
+			margin-left: 40px;
+	  }
+
+	  &:hover {
+	  	background-color: $background_highlight;
+	  	border-top: 1px solid $border_color;
+	  	border-bottom: 1px solid $border_color;
+	  }
+	}
+}
