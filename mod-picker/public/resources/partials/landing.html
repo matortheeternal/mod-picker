@@ -3,7 +3,7 @@
 		<div class="left-column wide-column">
 			<div class="recent-box">
 				<h3 class="section-title">Recent Modlists</h3>
-				<section class="recent-modlist" ng-repeat="modlist in landingData.recent.mod_lists">
+				<section class="recent-thing" ng-repeat="modlist in landingData.recent.mod_lists">
 					<a ng-href="#/modlist/{{modlist.id}}">
 						<span class="section-title">{{modlist.name}}</span>
 						<section>
@@ -20,7 +20,7 @@
 
 			<div class="recent-box">
 				<h3 class="section-title">Recent Mods</h3>
-				<section ng-repeat="mod in landingData.recent.mods">
+				<section class="recent-thing" ng-repeat="mod in landingData.recent.mods">
 					<img ng-src="{{mod.image}}">
 					<h3 class="section-title">{{mod.name}}</h3>
 					<section>
