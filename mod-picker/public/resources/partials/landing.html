@@ -3,7 +3,7 @@
 		<div class="left-column">
 			<div class="recent-box">
 				<h3 class="section-title">Recent Modlists</h3>
-				<section ng-repeat="modlist in modlists"> <!--TODO: needs data for 5 recent modlists -->
+				<section ng-repeat="modlist in landingData.recent.mod_lists">
 					<h3 class="section-title">{{modlist.name}}</h3>
 					<section>
 						{{modlist.status}} by {{modlist.created_by}} <!--TODO: needs to find the authors username instead of id -->
@@ -18,13 +18,13 @@
 
 			<div class="recent-box">
 				<h3 class="section-title">Recent Mods</h3>
-				<section ng-repeat="mod in mods"> <!--TODO: needs data for 5 recent mods -->
+				<section ng-repeat="mod in landingData.recent.mods">
 					<img ng-src="{{mod.image}}">
 					<h3 class="section-title">{{mod.name}}</h3>
 					<section>
 						{{mod.status}} by {{mod.submitted_by}} <!--TODO: needs to find the authors username instead of id -->
 						<br>
-						{{modlist.average_rating | number}} ({{modlist.reviews_count | number}} Reviews)
+						{{mod.average_rating | number}} ({{mod.reviews_count | number}} Reviews)
 						<br>
 						In {{modlist.modlists_count}} <!-- TODO: needs data for how many modlists the mod is in -->
 					</section>
@@ -34,7 +34,7 @@
 		</div>
 		<div class="right-column">
 			<h3 class="section-title">Site News</h3>
-			<div class="news-box" ng-repeat="article in articles"> <!-- TODO: needs data for 4 or 5 most recent articles -->
+			<div class="news-box" ng-repeat="article in landingData.articles">
 				<h3 class="section-title">{{article.title}}</h3>
 				by {{article.submitted_by}} {{article.created_at | date}}
 				<section marked="article.text_body" ng-class="article.expanded ? 'short-news' : ''">
