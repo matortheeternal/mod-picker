@@ -1,7 +1,7 @@
 require 'nokogiri'
 require 'rest-client'
 
-class SteamHelper
+class WorkshopHelper
   attr_accessor :cookies, :last_request, :last_login
 
   def self.login_if_necessary
