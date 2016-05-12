@@ -18,18 +18,19 @@ class UserBio < ActiveRecord::Base
     self.save
   end
 
-  def verify_nexus_account
+  def verify_nexus_account(user_path)
     # exit if we don't have a nexus_user_path
-    if self.nexus_user_path.nil?
+    if user_path.nil?
       return false
     end
 
     # scrape using the Nexus Helper
-    user_data = NexusHelper.scrape_user(self.nexus_user_path)
+    user_data = NexusHelper.scrape_user(user_path)
 
     # verify the token
     if user_data[:last_status] == self.nexus_verification_token
       # write fields to bio
+      self.nexus_user_path = user_path
       self.nexus_username = user_data[:username]
       self.nexus_date_joined = user_data[:date_joined]
       self.nexus_posts_count = user_data[:posts_count]
@@ -42,18 +43,19 @@ class UserBio < ActiveRecord::Base
     end
   end
 
-  def verify_lover_account
-    # exit if we don't have a lover_user_path
-    if self.lover_user_path.nil?
+  def verify_lover_account(user_path)
+    # exit if we don't have an account_path
+    if user_path.nil?
       return false
     end
 
     # scrape using the Lover Helper
-    user_data = LoverHelper.scrape_user(self.lover_user_path)
+    user_data = LoverHelper.scrape_user(user_path)
 
     # verify the token
     if user_data[:last_status] == self.lover_verification_token
       # write fields to bio
+      self.lover_user_path = user_path
       self.lover_username = user_data[:username]
       self.lover_date_joined = user_data[:date_joined]
       self.lover_posts_count = user_data[:posts_count]
@@ -66,21 +68,22 @@ class UserBio < ActiveRecord::Base
     end
   end
 
-  def verify_workshop_account
+  def verify_workshop_account(user_path)
     # exit if we don't have a steam_username
-    if self.workshop_username.nil?
+    if user_path.nil?
       return
     end
 
     # scrape using the workshop helper
-    user_data = WorkshopHelper.scrape_user(self.workshop_username)
+    user_data = WorkshopHelper.scrape_user(user_path)
 
     # verify the token
     if user_data[:matched_comment] == self.workshop_verification_token
       # scrape user's workshop stats
-      workshop_stats = WorkshopHelper.scrape_workshop_stats(self.workshop_username)
+      workshop_stats = WorkshopHelper.scrape_workshop_stats(user_path)
 
       # write fields to bio
+      self.workshop_user_username = user_path
       self.workshop_submissions_count = workshop_stats[:submissions_count]
       self.workshop_followers_count = workshop_stats[:followers_count]
       self.workshop_verified = true
