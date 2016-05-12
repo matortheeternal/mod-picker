@@ -16,9 +16,9 @@ app.service('userSettingsService', function (backend, $q) {
         return post.promise;
     };
 
-    this.verifyAccount = function (site) {
+    this.verifyAccount = function (site, user_path) {
         var verified = $q.defer();
-        backend.retrieve('/link_account', { site: site }).then(function (data) {
+        backend.retrieve('/link_account', { site: site, user_path: user_path }).then(function (data) {
             verified.resolve(data);
         });
         return verified.promise;
