@@ -29,7 +29,7 @@
 		div {
 			display: inline-flex;
 			flex-direction: column;
-			margin: 4px;
+			margin-left: 10px;
 		}
 
 		img {
@@ -87,11 +87,6 @@
 
     .news {
       display: inline-block;
-    }
-
-    .show-less {
-      max-height: 150px;
-      overflow-y: hidden;
     }
 	}
 

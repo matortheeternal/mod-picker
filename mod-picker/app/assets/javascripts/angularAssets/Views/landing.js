@@ -36,4 +36,14 @@ app.controller('landingController', function ($scope, $q, landingService) {
     landingService.retrieveLanding().then(function(data) {
         $scope.landingData = data;
     });
+
+    $scope.wordCount = function(string) {
+        return string.match(/(\S+)/g).length;
+    };
+
+    //returns just the first 50 words of a string
+    $scope.reduceText = function(string) {
+        words = string.split(' ', 50);
+        return words.join(' ');
+    };
 });
