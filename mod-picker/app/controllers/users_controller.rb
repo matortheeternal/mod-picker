@@ -17,12 +17,12 @@ class UsersController < ApplicationController
   # GET /link_account
   def link_account
     case params[:site]
-      when "nexus"
-        verified = current_user.bio.verify_nexus_account
-      when "lab"
-        verified = current_user.bio.verify_lover_account
-      when "workshop"
-        verified = current_user.bio.verify_workshop_account
+      when "Nexus Mods"
+        verified = current_user.bio.verify_nexus_account(params[:user_path])
+      when "Lover's Lab"
+        verified = current_user.bio.verify_lover_account(params[:user_path])
+      when "Steam Workshop"
+        verified = current_user.bio.verify_workshop_account(params[:user_path])
       else
         verified = false
     end
