@@ -23,7 +23,7 @@ class UserBio < ActiveRecord::Base
       self.nexus_username = user_data[:username]
       self.nexus_date_joined = user_data[:date_joined]
       self.nexus_posts_count = user_data[:posts_count]
-      true
+      self.save
     end
   end
 
@@ -41,7 +41,7 @@ class UserBio < ActiveRecord::Base
       self.lover_username = user_data[:username]
       self.lover_date_joined = user_data[:date_joined]
       self.lover_posts_count = user_data[:posts_count]
-      true
+      self.save
     end
   end
 
@@ -60,6 +60,7 @@ class UserBio < ActiveRecord::Base
       self.workshop_submissions_count = workshop_stats[:submissions_count]
       self.workshop_followers_count = workshop_stats[:followers_count]
       self.workshop_verified = true
+      self.save
     end
   end
 end
