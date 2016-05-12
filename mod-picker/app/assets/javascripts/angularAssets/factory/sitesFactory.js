@@ -14,5 +14,11 @@ app.service('sitesFactory', function () {
                 expr: /(http[s]:\/\/?)?www.loverslab.com\/files\/file\/([0-9]+)\-([0-9a-z\-]+)(\/)?/i
             }
         ];
-    }
+    };
+
+    this.getSite = function(sites, label) {
+        return sites.find(function(site) {
+            return site.label === label;
+        });
+    };
 });
