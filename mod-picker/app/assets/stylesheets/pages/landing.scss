@@ -91,6 +91,12 @@
 .recent-notes-tabs {
   margin: 10px;
 
+  .section-title {
+    font-size: 26px;
+    margin-left: 10px;
+    font-weight: 500;
+  }
+
   .selected-tab {
     background-color: $primary_background;
     border-bottom: 1px solid $primary_background;
