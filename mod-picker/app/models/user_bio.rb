@@ -3,14 +3,6 @@ class UserBio < ActiveRecord::Base
 
   after_create :generate_verification_tokens
 
-  def self.link_author(model, user_id, username)
-    infos = model.where(uploaded_by: username)
-
-    infos.each do |info|
-      ModAuthor.create(mod_id: info.mod_id, user_id: user_id) if info.mod_id.present?
-    end
-  end
-
   def generate_verification_tokens
     self.nexus_verification_token = "ModPicker:#{SecureRandom.hex(4).to_s.upcase}"
     self.lover_verification_token = "ModPicker:#{SecureRandom.hex(4).to_s.upcase}"
@@ -36,7 +28,7 @@ class UserBio < ActiveRecord::Base
       self.nexus_posts_count = user_data[:posts_count]
 
       # populate mod author records
-      link_author(NexusInfo, self.user_id, self.nexus_username)
+      ModAuthor.link_author(NexusInfo, self.user_id, self.nexus_username)
 
       # save bio
       self.save
@@ -61,7 +53,7 @@ class UserBio < ActiveRecord::Base
       self.lover_posts_count = user_data[:posts_count]
 
       # populate mod author records
-      link_author(LoverInfo, self.user_id, self.lover_username)
+      ModAuthor.link_author(LoverInfo, self.user_id, self.lover_username)
 
       # save bio
       self.save
@@ -89,7 +81,7 @@ class UserBio < ActiveRecord::Base
       self.workshop_verified = true
 
       # populate mod author records
-      link_author(WorkshopInfo, self.user_id, self.workshop_username)
+      ModAuthor.link_author(WorkshopInfo, self.user_id, self.workshop_username)
 
       # save bio
       self.save
