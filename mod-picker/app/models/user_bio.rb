@@ -3,6 +3,15 @@ class UserBio < ActiveRecord::Base
 
   after_create :generate_verification_tokens
 
+  def self.link_author(model, user_id, username)
+    byebug
+    infos = model.where(uploaded_by: username)
+
+    infos.each do |info|
+      ModAuthor.create(mod_id: info.mod_id, user_id: user_id) if info.mod_id.present?
+    end
+  end
+
   def generate_verification_tokens
     self.nexus_verification_token = "ModPicker:#{SecureRandom.hex(4).to_s.upcase}"
     self.lover_verification_token = "ModPicker:#{SecureRandom.hex(4).to_s.upcase}"
@@ -21,9 +30,15 @@ class UserBio < ActiveRecord::Base
 
     # verify the token
     if user_data[:last_status] == self.nexus_verification_token
+      # write fields to bio
       self.nexus_username = user_data[:username]
       self.nexus_date_joined = user_data[:date_joined]
       self.nexus_posts_count = user_data[:posts_count]
+
+      # populate mod author records
+      link_author(NexusInfo, self.user_id, self.nexus_username)
+
+      # save bio
       self.save
     end
   end
@@ -39,9 +54,15 @@ class UserBio < ActiveRecord::Base
 
     # verify the token
     if user_data[:last_status] == self.lover_verification_token
+      # write fields to bio
       self.lover_username = user_data[:username]
       self.lover_date_joined = user_data[:date_joined]
       self.lover_posts_count = user_data[:posts_count]
+
+      # populate mod author records
+      link_author(LoverInfo, self.user_id, self.lover_username)
+
+      # save bio
       self.save
     end
   end
@@ -57,10 +78,18 @@ class UserBio < ActiveRecord::Base
 
     # verify the token
     if user_data[:last_comment] == self.workshop_verification_token
+      # scrape user's workshop stats
       workshop_stats = WorkshopHelper.scrape_workshop_stats(self.workshop_username)
+
+      # write fields to bio
       self.workshop_submissions_count = workshop_stats[:submissions_count]
       self.workshop_followers_count = workshop_stats[:followers_count]
       self.workshop_verified = true
+
+      # populate mod author records
+      link_author(WorkshopInfo, self.user_id, self.workshop_username)
+
+      # save bio
       self.save
     end
   end
