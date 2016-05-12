@@ -76,7 +76,7 @@ class UserBio < ActiveRecord::Base
     user_data = WorkshopHelper.scrape_user(self.workshop_username)
 
     # verify the token
-    if user_data[:last_comment] == self.workshop_verification_token
+    if user_data[:matched_comment] == self.workshop_verification_token
       # scrape user's workshop stats
       workshop_stats = WorkshopHelper.scrape_workshop_stats(self.workshop_username)
 
