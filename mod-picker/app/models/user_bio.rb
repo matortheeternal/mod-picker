@@ -4,7 +4,6 @@ class UserBio < ActiveRecord::Base
   after_create :generate_verification_tokens
 
   def self.link_author(model, user_id, username)
-    byebug
     infos = model.where(uploaded_by: username)
 
     infos.each do |info|
