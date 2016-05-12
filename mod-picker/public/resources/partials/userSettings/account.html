@@ -1,3 +1,13 @@
+<h3 class="section-title">Linked Accounts</h3>
+<section ng-if="user.bio">
+    <section>
+        <link-generic-account site-label="'Nexus Mods'" site-username="user.bio.nexus_username" site-posts-count="user.bio.nexus_posts_count" site-date-joined="user.bio.nexus_date_joined" site-verification-token="user.bio.nexus_verification_token"></link-generic-account>
+    </section>
+    <section>
+        <link-generic-account site-label="'Lover\'s Lab'" site-username="user.bio.lover_username" site-posts="user.bio.lover_posts_count" site-date-joined="user.bio.lover_date_joined" site-verification-token="user.bio.lover_verification_token"></link-generic-account>
+    </section>
+</section>
+
 <h3 class="section-title">Email</h3>
 <section>
     <section>
