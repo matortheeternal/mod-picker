@@ -1,0 +1,43 @@
+<span ng-if="!bio.lover_username">
+    <input type="button" class="btn" value="link" ng-click="showModal = true">
+</span>
+<div ng-if="bio.lover_username">
+	Lover's Lab Account: {{bio.lover_username}}
+	Date Joined: {{bio.lover_date_joined | date}}
+	Posts Count: {{bio.lover_posts_count | number}}
+</div>
+<div  class="modal-container" ng-show="showModal">
+	<div class="modal big-modal">
+		<form>
+			<h3 class="section-title">Link Lover's Lab Account</h3>
+			<messages success-bool="verified" errors="errors" success-message="Account verified!"></messages>
+
+			<section>
+				<p>Linking your Lover's Lab account will give you reputation for
+				your Lover's Lab community participation and mods.  Linking
+				your account will also give you authorship over any mods you
+				have submitted to Lover's Lab which are listed on Mod Picker.</p>
+
+				<h4>Directions to link your account</h4>
+				<!-- todo: add screenshots -->
+				<ol>
+					<li>Login to <a href="https://www.loverslab.com">Lover's Lab</a></li>
+					<li>Navigate to your public forum profile page.</li>
+					<li>Post a status update with the verification key provided below.</li>
+					<li>Copy the web address of your profile page into the Profile URL
+						input below.</li>
+					<li>Click the Verifiy button.</li>
+				</ol>
+
+				<label>
+					<div class="input-label">Profile URL</div>
+					<input type="text" class="long-input" ng-model="userUrl" ng-change="validateUrl()" ng-disabled="verified">
+				</label>
+
+				<input type="button" class="btn verify-button" value="Verify" ng-click="verifyUser()" ng-disabled="!urlValid || waiting || verified">
+			</section>
+
+			<input type="submit" class="btn" value="Close" ng-click="showModal = false">
+		</form>
+	</div>
+</div>
