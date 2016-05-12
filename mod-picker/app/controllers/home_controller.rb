@@ -47,7 +47,7 @@ class HomeController < ApplicationController
         recent: {
             mod_lists: mod_lists.as_json,
             mods: mods.as_json({
-                :only => [:id, :name, :primary_category_id, :secondary_category_id, :mod_stars_count, :status, :reputation, :average_rating, :released],
+                :only => [:id, :name, :primary_category_id, :secondary_category_id, :mod_stars_count, :status, :reputation, :average_rating, :released, :reviews_count],
                 :include => {:authors => {:only => [:id, :username]}},
                 :methods => :image
             }),
