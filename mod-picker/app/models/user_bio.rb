@@ -6,6 +6,7 @@ class UserBio < ActiveRecord::Base
   def generate_verification_tokens
     self.nexus_verification_token = "ModPicker:#{SecureRandom.hex(4).to_s.upcase}"
     self.lover_verification_token = "ModPicker:#{SecureRandom.hex(4).to_s.upcase}"
+    self.workshop_verification_token = "ModPicker:#{SecureRandom.hex(4).to_s.upcase}"
     self.save
   end
 
