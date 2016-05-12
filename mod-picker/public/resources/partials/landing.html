@@ -6,9 +6,7 @@
 					<section ng-repeat="modlist in landingData.recent.mod_lists">
 						<a ng-href="#/modlist/{{modlist.id}}">
 							<div class="recent-thing">
-								<div>
-									<img ng-src="{{modlist.user.avatar}}">
-								</div>
+								<img ng-src="{{modlist.user.avatar}}">
 								<div>
 									<span class="recent-title">{{modlist.name}}</span>
 									<span> by {{modlist.user.username}}</span>
@@ -26,9 +24,7 @@
 					<section ng-repeat="mod in landingData.recent.mods">
 						<a ng-href="#/mod/{{mod.id}}">
 							<div class="recent-thing">
-								<div>
-									<img ng-src="{{mod.image}}">
-								</div>
+								<img ng-src="{{mod.image}}">
 								<div>
 									<span class="recent-title">{{mod.name}}</span>
 									<span> by {{mod.user.username}}</span>
