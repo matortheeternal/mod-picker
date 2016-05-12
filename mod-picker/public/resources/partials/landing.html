@@ -55,10 +55,12 @@
 					<a href="#/news/">See All News Posts</a>
 				</div>
 			</div>
-
-			<div class="recent-box">
+			<div class="recent-notes-tabs">
 		        <tabs current-tab="currentTab" tabs="tabs"></tabs>
-				<ng-include src="currentTab.url"></ng-include></div>
+		        <div class="recent-notes-tab">
+					<ng-include src="currentTab.url"></ng-include>
+		        </div>
+	        </div>
 		</div>
 	</div>
 </two-columns>

@@ -87,3 +87,18 @@
     text-align: center;
   }
 }
+
+.recent-notes-tabs {
+  margin: 10px;
+
+  .selected-tab {
+    background-color: $primary_background;
+    border-bottom: 1px solid $primary_background;
+    margin-bottom: -1px;
+  }
+
+  .recent-notes-tab {
+    border: 1px solid $border_color;
+    padding-top: 10px;
+  }
+}
