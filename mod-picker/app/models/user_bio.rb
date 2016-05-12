@@ -44,4 +44,22 @@ class UserBio < ActiveRecord::Base
       self.lover_posts_count = user_data[:posts_count]
     end
   end
+
+  def verify_workshop_account
+    # exit if we don't have a steam_username
+    if self.workshop_username.nil?
+      return
+    end
+
+    # scrape using the workshop helper
+    user_data = WorkshopHelper.scrape_user(self.workshop_username)
+
+    # verify the token
+    if user_data[:last_comment] == self.workshop_verification_token
+      workshop_stats = WorkshopHelper.scrape_workshop_stats(self.workshop_username)
+      self.workshop_submissions_count = workshop_stats[:submissions_count]
+      self.workshop_followers_count = workshop_stats[:followers_count]
+      self.workshop_verified = true
+    end
+  end
 end
