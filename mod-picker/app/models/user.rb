@@ -168,7 +168,7 @@ class User < ActiveRecord::Base
         :methods => :avatar,
         :include => {
             :bio => {
-                :only => [:nexus_username, :lover_username, :steam_username]
+                :except => [:user_id]
             },
             :reputation => {
                 :only => [:overall]
