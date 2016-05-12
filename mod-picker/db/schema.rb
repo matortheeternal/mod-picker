@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160511002340) do
+ActiveRecord::Schema.define(version: 20160511164429) do
 
   create_table "agreement_marks", id: false, force: :cascade do |t|
     t.integer "incorrect_note_id", limit: 4
@@ -234,20 +234,20 @@ ActiveRecord::Schema.define(version: 20160511002340) do
   add_index "load_order_notes", ["submitted_by"], name: "fk_rails_9992d700a9", using: :btree
 
   create_table "lover_infos", force: :cascade do |t|
-    t.integer  "mod_id",          limit: 4
-    t.string   "name",            limit: 255
-    t.string   "uploaded_by",     limit: 128
-    t.string   "submitted",       limit: 255
-    t.string   "updated",         limit: 255
+    t.integer  "mod_id",            limit: 4
+    t.string   "mod_name",          limit: 255
+    t.string   "uploaded_by",       limit: 128
+    t.string   "date_submitted",    limit: 255
+    t.string   "date_updated",      limit: 255
     t.datetime "last_scraped"
-    t.integer  "followers_count", limit: 4,   default: 0
-    t.integer  "size",            limit: 4,   default: 0
-    t.integer  "views",           limit: 4,   default: 0
-    t.integer  "downloads",       limit: 4,   default: 0
-    t.boolean  "has_stats",                   default: false
-    t.string   "version",         limit: 32
-    t.boolean  "is_adult"
-    t.integer  "game_id",         limit: 4
+    t.integer  "followers_count",   limit: 4,   default: 0
+    t.integer  "file_size",         limit: 4,   default: 0
+    t.integer  "views",             limit: 4,   default: 0
+    t.integer  "downloads",         limit: 4,   default: 0
+    t.boolean  "has_stats",                     default: false
+    t.string   "current_version",   limit: 32
+    t.boolean  "has_adult_content"
+    t.integer  "game_id",           limit: 4
   end
 
   add_index "lover_infos", ["game_id"], name: "fk_rails_0c0c747a5a", using: :btree
