@@ -14,6 +14,22 @@ class UsersController < ApplicationController
     render :json => @user.show_json
   end
 
+  # GET /link_account
+  def link_account
+    case params[:site]
+      when "nexus"
+        verified = current_user.bio.verify_nexus_account
+      when "lab"
+        verified = current_user.bio.verify_lover_account
+      when "workshop"
+        verified = current_user.bio.verify_workshop_account
+      else
+        verified = false
+    end
+
+    render json: {status: :ok, verified: verified}
+  end
+
   # PATCH/PUT /users/1
   def update
     authorize! :update, @user
