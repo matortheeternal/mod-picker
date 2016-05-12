@@ -23,9 +23,11 @@ app.controller('landingController', function ($scope, $q, landingService) {
 
     //TODO: put this into the Routing logic
     $scope.tabs = [
-        { name: 'Recent Reviews', url: '/resources/partials/landingPage/reviews.html'},
-        { name: 'Recent Compatibility Notes', url: '/resources/partials/landingPage/compatibilityNotes.html'},
-        { name: 'Recent Comments', url: '/resources/partials/landingPage/comments.html'}
+        { name: 'Reviews', url: '/resources/partials/landingPage/reviews.html'},
+        { name: 'Compatibility Notes', url: '/resources/partials/landingPage/compatibilityNotes.html'},
+        { name: 'Load Order Notes', url: '/resources/partials/landingPage/loadOrderNotes.html'},
+        { name: 'Install Order Notes', url: '/resources/partials/landingPage/installOrderNotes.html'},
+        { name: 'Corrections', url: '/resources/partials/landingPage/corrections.html'}
     ];
 
     $scope.currentTab = $scope.tabs[0];
