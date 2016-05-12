@@ -55,6 +55,7 @@
 .articles {
   margin: 10px;
   border: 1px solid $border_color;
+  background-color: $secondary_background;
 
 	.section-title {
 		font-size: 26px;
@@ -101,13 +102,14 @@
   }
 
   .selected-tab {
-    background-color: $primary_background;
     border-bottom: 1px solid $primary_background;
+    background-color: $secondary_background;
     margin-bottom: -1px;
   }
 
   .recent-notes-tab {
     border: 1px solid $border_color;
     padding-top: 10px;
+    background-color: $secondary_background;
   }
 }
