@@ -32,7 +32,7 @@
 								<div>
 									<span class="recent-title">{{mod.name}}</span>
 									<span> by {{mod.user.username}}</span>
-									<span> {{mod.average_rating | number}} /100 ({{mod.reviews_count | number}} Reviews)</span>
+									<span> {{mod.average_rating | number: 0}} /100 ({{mod.reviews_count | number}} Reviews)</span>
 									<span> In {{modlist.modlists_count}} mod lists</span><!-- TODO: needs data for how many modlists the mod is in -->
 								</div>
 							</div>
