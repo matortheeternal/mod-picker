@@ -10,7 +10,7 @@
             <div class="dropdown-separator" ng-if="canEdit || canApprove || canHide"></div>
             <div class="dropdown-item" ng-if="canEdit">Edit</div>
             <div class="dropdown-item" ng-if="canApprove && !target.approved">Approve</div>
-            <div class="dropdown-item" ng-if="canApprove && target.approved">Disapprove</div>
+            <div class="dropdown-item" ng-if="canApprove && target.approved">Unapprove</div>
             <div class="dropdown-item" ng-if="canHide && !target.hidden">Hide</div>
             <div class="dropdown-item" ng-if="canHide && target.hidden">Unhide</div>
         </div>
