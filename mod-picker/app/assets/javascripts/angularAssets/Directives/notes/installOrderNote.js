@@ -11,6 +11,20 @@ app.directive('installOrderNote', function () {
     };
 });
 
-app.controller('installOrderNoteController', function ($scope) {
-//leaving this here in case it is needed when the directive is actually made
+app.controller('installOrderNoteController', function ($scope, modService) {
+    $scope.helpfulMark = function(helpful) {
+        if ($scope.note.helpful == helpful) {
+            modService.helpfulMark("install_order_notes", $scope.note.id).then(function (data) {
+                if (data.status == "ok") {
+                    delete $scope.note.helpful;
+                }
+            });
+        } else {
+            modService.helpfulMark("install_order_notes", $scope.note.id, helpful).then(function (data) {
+                if (data.status == "ok") {
+                    $scope.note.helpful = helpful;
+                }
+            });
+        }
+    };
 });
