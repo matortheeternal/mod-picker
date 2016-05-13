@@ -14,12 +14,20 @@ app.directive('review', function () {
     };
 });
 
-app.controller('reviewController', function ($scope) {
+app.controller('reviewController', function ($scope, modService) {
     $scope.helpfulMark = function(helpful) {
         if ($scope.review.helpful == helpful) {
-            delete $scope.review.helpful;
+            modService.helpfulMark("reviews", $scope.review.id).then(function (data) {
+                if (data.status == "ok") {
+                    delete $scope.review.helpful;
+                }
+            });
         } else {
-            $scope.review.helpful = helpful;
+            modService.helpfulMark("reviews", $scope.review.id, helpful).then(function (data) {
+                if (data.status == "ok") {
+                    $scope.review.helpful = helpful;
+                }
+            });
         }
     };
 });
