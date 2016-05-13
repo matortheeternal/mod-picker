@@ -115,7 +115,7 @@ class ModsController < ApplicationController
   # GET /mods/1/install_order_notes
   def install_order_notes
     authorize! :read, @mod
-    install_order_notes = mod.install_order_notes.paginate(:page => params[:page])
+    install_order_notes = @mod.install_order_notes.paginate(:page => params[:page])
     helpful_marks = HelpfulMark.where(submitted_by: current_user.id, helpfulable_type: "InstallOrderNote", helpfulable_id: install_order_notes.ids)
     render :json => {
         install_order_notes: install_order_notes,
