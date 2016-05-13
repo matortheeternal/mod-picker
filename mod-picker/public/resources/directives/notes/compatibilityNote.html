@@ -17,7 +17,7 @@
                 <a ng-href="#/mod/{{note.second_mod_id}}">{{note.mods[1].name}}</a>
             </div>
         </div>
-        <div class="submitted-line">Submitted {{review.submitted | date : 'longDate'}} - {{review.submitted | date : 'shortTime'}}</div>
+        <div class="submitted-line no-bg">Submitted {{note.submitted | date : 'longDate'}} - {{note.submitted | date : 'shortTime'}}</div>
         <div class="text-container" marked="note.text_body"></div>
         <div class="actions-container">
             <span class="action-box">Make A Correction</span>
