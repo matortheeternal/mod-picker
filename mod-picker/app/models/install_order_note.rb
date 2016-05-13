@@ -37,18 +37,23 @@ class InstallOrderNote < ActiveRecord::Base
   end
 
   def as_json(options={})
-    super({
-        :except => [:submitted_by],
-        :include => {
-            :user => {
-                :only => [:id, :username, :role, :title],
-                :include => {
-                    :reputation => {:only => [:overall]}
-                },
-                :methods => :avatar
-            }
-        },
-        :methods => :mods
-    })
+    if JsonHelpers.json_options_empty(options)
+      default_options = {
+          :except => [:submitted_by],
+          :include => {
+              :user => {
+                  :only => [:id, :username, :role, :title],
+                  :include => {
+                      :reputation => {:only => [:overall]}
+                  },
+                  :methods => :avatar
+              }
+          },
+          :methods => :mods
+      }
+      super(options.merge(default_options))
+    else
+      super(options)
+    end
   end
 end
