@@ -1,7 +1,7 @@
 app.directive('loadOrderNote', function () {
     return {
         restrict: 'E',
-        templateUrl: '/resources/directives/notes/loadOrderNote.html',
+        templateUrl: '/resources/directives/posts/loadOrderNote.html',
         scope: {
         	note: '=',
             showAuthorColumn: '=?'

@@ -1,7 +1,7 @@
 app.directive('authorColumn', function() {
     return {
         restrict: 'E',
-        templateUrl: '/resources/directives/notes/authorColumn.html',
+        templateUrl: '/resources/directives/posts/authorColumn.html',
         scope: {
             user: '='
         }

@@ -1,7 +1,7 @@
 app.directive('postActions', function () {
     return {
         restrict: 'E',
-        templateUrl: '/resources/directives/notes/postActions.html',
+        templateUrl: '/resources/directives/posts/postActions.html',
         controller: 'postActionsController',
         scope: {
             target: '=',

@@ -5,7 +5,7 @@
 app.directive('compatibilityNote', function () {
     return {
         retrict: 'E',
-        templateUrl: '/resources/directives/notes/compatibilityNote.html',
+        templateUrl: '/resources/directives/posts/compatibilityNote.html',
         controller: 'compatibilityNoteController',
         scope: {
         	note: '=',

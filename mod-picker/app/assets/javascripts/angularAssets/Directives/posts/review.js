@@ -5,7 +5,7 @@
 app.directive('review', function () {
     return {
         restrict: 'E',
-        templateUrl: '/resources/directives/notes/review.html',
+        templateUrl: '/resources/directives/posts/review.html',
         scope: {
             review: '=',
             showAuthorColumn: '=?'
