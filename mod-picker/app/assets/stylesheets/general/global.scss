@@ -304,6 +304,7 @@ input[type="button"], input[type="submit"] {
   color: $text_color;
   background-color: $primary_background;
   position: absolute;
+  z-index: 2;
   margin-left: -4px;
   margin-top: 6px;
   width: 120px;
