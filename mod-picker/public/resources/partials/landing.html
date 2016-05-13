@@ -8,10 +8,10 @@
 							<div class="recent-thing">
 								<img ng-src="{{modlist.user.avatar}}">
 								<div>
-									<span class="recent-title">{{modlist.name}}</span>
-									<span> by {{modlist.user.username}}</span>
-									<span> {{modlist.mods_count | number}} mods, {{modlist.plugins_count | number}} plugins</span>
-									<span> Completed on {{modlist.completed | date}}</span> <!--TODO: needs data for last update date -->
+									<div class="recent-title">{{modlist.name}}</div>
+									<div> by {{modlist.user.username}}</div>
+									<div> {{modlist.mods_count | number}} mods, {{modlist.plugins_count | number}} plugins</div>
+									<div> Completed on {{modlist.completed | date}}</div> <!--TODO: needs data for last update date -->
 								</div>
 							</div>
 						</a>
@@ -26,10 +26,10 @@
 							<div class="recent-thing">
 								<img ng-src="{{mod.image}}">
 								<div>
-									<span class="recent-title">{{mod.name}}</span>
-									<span> by {{mod.user.username}}</span>
-									<span> {{mod.average_rating | number: 0}} /100 ({{mod.reviews_count | number}} Reviews)</span>
-									<span> In {{modlist.modlists_count}} mod lists</span><!-- TODO: needs data for how many modlists the mod is in -->
+									<div class="recent-title">{{mod.name}}</div>
+									<div> by {{mod.user.username}}</div>
+									<div> {{mod.average_rating | number: 0}} /100 ({{mod.reviews_count | number}} Reviews)</div>
+									<div> In {{modlist.modlists_count}} mod lists</div><!-- TODO: needs data for how many modlists the mod is in -->
 								</div>
 							</div>
 						</a>
