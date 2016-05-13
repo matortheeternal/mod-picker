@@ -2,6 +2,18 @@
     <span class="action-box" ng-if="correctable" tabindex="{{index}}">Make A Correction</span>
     <span class="action-box actions-dropdown-container" ng-focus="showDropdown = true" ng-blur="blurDropdown()" tabindex="{{index}}">
         Actions <i class="fa fa-caret-down"></i>
+        <div class="dropdown" ng-show="showDropdown">
+            <div class="dropdown-item">View History</div>
+            <div class="dropdown-item">View Corrections</div>
+            <div class="dropdown-item">Get Link</div>
+            <div class="dropdown-item" ng-if="canReport">Report</div>
+            <div class="dropdown-separator" ng-if="canEdit || canApprove || canHide"></div>
+            <div class="dropdown-item" ng-if="canEdit">Edit</div>
+            <div class="dropdown-item" ng-if="canApprove && !target.approved">Approve</div>
+            <div class="dropdown-item" ng-if="canApprove && target.approved">Disapprove</div>
+            <div class="dropdown-item" ng-if="canHide && !target.hidden">Hide</div>
+            <div class="dropdown-item" ng-if="canHide && target.hidden">Unhide</div>
+        </div>
     </span>
     <span class="helpfulness">
         <div class="action-box" ng-class="{ 'marked-helpful' : target.helpful }" ng-click="helpfulMark(true)" tabindex="{{index}}">Helpful</div>

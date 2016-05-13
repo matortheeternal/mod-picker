@@ -12,7 +12,7 @@ app.directive('postActions', function () {
     };
 });
 
-app.controller('postActionsController', function ($scope, modService) {
+app.controller('postActionsController', function ($scope, $timeout, modService) {
     $scope.helpfulMark = function(helpful) {
         if ($scope.target.helpful == helpful) {
             modService.helpfulMark($scope.route, $scope.target.id).then(function (data) {
@@ -27,5 +27,14 @@ app.controller('postActionsController', function ($scope, modService) {
                 }
             });
         }
+    };
+
+    $scope.blurDropdown = function() {
+        // we have to use a timeout for hiding the dropdown because
+        // otherwise we would hide it before the click event on a result
+        // went through
+        $timeout(function() {
+            $scope.showDropdown = false;
+        }, 100);
     };
 });
