@@ -34,7 +34,11 @@ class ModsController < ApplicationController
   # GET /mods/1
   def show
     authorize! :read, @mod
-    render :json => @mod.show_json
+    star = ModStar.exists?(:mod_id => @mod.id, :user_id => current_user.id)
+    render :json => {
+        mod: @mod.show_json,
+        star: star
+    }
   end
 
   # POST /mods/submit

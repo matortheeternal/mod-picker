@@ -29,8 +29,10 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
 
     // SETUP AND DATA RETRIEVAL LOGIC
     //initialization of the mod object
-    modService.retrieveMod($stateParams.modId).then(function (mod) {
+    modService.retrieveMod($stateParams.modId).then(function (data) {
+        var mod = data.mod;
         $scope.mod = mod;
+        $scope.modStarred = data.star;
         $scope.statusClass = "status-" + mod.status;
         $scope.mod.status = mod.status.capitalize();
 
