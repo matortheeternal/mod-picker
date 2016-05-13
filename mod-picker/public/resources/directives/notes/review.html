@@ -10,6 +10,7 @@
                 <span class="rating-value">{{rating.rating}}</span>
             </div>
         </div>
+        <div class="submitted-line">Submitted {{review.submitted | date : 'longDate'}} - {{review.submitted | date : 'shortTime'}}</div>
         <div class="text-container" marked="review.text_body"></div>
         <div class="actions-container">
             <span class="action-box">Actions <i class="fa fa-caret-down"></i></span>
