@@ -211,6 +211,10 @@ class Mod < ActiveRecord::Base
     end
   end
 
+  def mod_lists_count
+    self.mod_lists.count
+  end
+
   def show_json
     self.as_json({
       :include => {

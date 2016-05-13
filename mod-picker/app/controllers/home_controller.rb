@@ -49,7 +49,7 @@ class HomeController < ApplicationController
             mods: mods.as_json({
                 :only => [:id, :name, :primary_category_id, :secondary_category_id, :mod_stars_count, :status, :reputation, :average_rating, :released, :reviews_count],
                 :include => {:authors => {:only => [:id, :username]}},
-                :methods => :image
+                :methods => [:image, :mod_lists_count]
             }),
             reviews: reviews.as_json({
                 :only => [:id, :submitted, :edited, :incorrect_notes_count],
