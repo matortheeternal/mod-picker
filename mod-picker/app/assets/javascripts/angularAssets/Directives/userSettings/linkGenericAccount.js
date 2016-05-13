@@ -4,6 +4,7 @@ app.directive('linkGenericAccount', function () {
         templateUrl: '/resources/directives/userSettings/linkGenericAccount.html',
         controller: 'linkGenericAccountController',
         scope: {
+            bio: '=',
             siteLabel: '=',
             siteUsername: '=',
             sitePostsCount: '=',
@@ -51,6 +52,8 @@ app.controller('linkGenericAccountController', function ($scope, $timeout, userS
             $scope.verified = data.verified;
             if (!data.verified) {
                 $scope.errors.push({ message: "Failed to verify account. You can try again in 30 seconds." });
+            } else {
+                $scope.bio = data.bio;
             }
         });
         $timeout(function() {
