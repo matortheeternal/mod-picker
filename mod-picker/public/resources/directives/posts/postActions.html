@@ -4,7 +4,7 @@
         Actions <i class="fa fa-caret-down"></i>
         <div class="dropdown" ng-show="showDropdown">
             <div class="dropdown-item">View History</div>
-            <div class="dropdown-item">View Corrections</div>
+            <div class="dropdown-item" ng-if="correctable">View Corrections</div>
             <div class="dropdown-item">Get Link</div>
             <div class="dropdown-item" ng-if="canReport">Report</div>
             <div class="dropdown-separator" ng-if="canEdit || canApprove || canHide"></div>
