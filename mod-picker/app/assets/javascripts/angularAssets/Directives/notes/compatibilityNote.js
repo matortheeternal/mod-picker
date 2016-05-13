@@ -21,7 +21,7 @@ app.controller('compatibilityNoteController', function ($scope, modService) {
         switch ($scope.note.compatibility_type) {
             case "incompatible":
                 return "with";
-            case "partially compatible":
+            case "partially incompatible":
                 return "with";
             default:
                 return "for";
