@@ -29,8 +29,10 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
 
     // SETUP AND DATA RETRIEVAL LOGIC
     //initialization of the mod object
-    modService.retrieveMod($stateParams.modId).then(function (mod) {
+    modService.retrieveMod($stateParams.modId).then(function (data) {
+        var mod = data.mod;
         $scope.mod = mod;
+        $scope.modStarred = data.star;
         $scope.statusClass = "status-" + mod.status;
         $scope.mod.status = mod.status.capitalize();
 
@@ -103,11 +105,29 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
         }
         // loop through data
         data.forEach(function(item) {
+            // if user is defined and they don't have a custom title
             if (item.user && !item.user.title) {
+                // get their default title
                 item.user.title = userTitleService.getUserTitle($scope.userTitles, item.user.reputation.overall);
             }
         });
+        // return modified data
         return data;
+    };
+
+    //associate helpful marks with content
+    $scope.associateHelpfulMarks = function(data, helpfulMarks) {
+        // loop through data
+        data.forEach(function(item) {
+            // see if we have a matching helpful mark
+            var helpfulMark = helpfulMarks.find(function(mark) {
+                return mark.helpfulable_id == item.id;
+            });
+            // if we have a matching helpful mark, assign it to the item
+            if (helpfulMark) {
+                item.helpful = helpfulMark.helpful;
+            }
+        });
     };
 
     // TAB RELATED LOGIC
@@ -157,8 +177,9 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
         var options = {
             sort: $scope.sort.reviews || 'reputation'
         };
-        modService.retrieveReviews($stateParams.modId, options).then(function(reviews) {
-            $scope.mod.reviews = $scope.associateUserTitles(reviews);
+        modService.retrieveReviews($stateParams.modId, options).then(function(data) {
+            $scope.associateHelpfulMarks(data.reviews, data.helpful_marks);
+            $scope.mod.reviews = $scope.associateUserTitles(data.reviews);
             $scope.associateReviewSections();
         });
     };
@@ -170,8 +191,9 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
                 mod_list: $scope.filters.compatibility_notes || true
             }
         };
-        modService.retrieveCompatibilityNotes($stateParams.modId, options).then(function(compatibility_notes) {
-            $scope.mod.compatibility_notes = $scope.associateUserTitles(compatibility_notes);
+        modService.retrieveCompatibilityNotes($stateParams.modId, options).then(function(data) {
+            $scope.associateHelpfulMarks(data.compatibility_notes, data.helpful_marks);
+            $scope.mod.compatibility_notes = $scope.associateUserTitles(data.compatibility_notes);
         });
     };
 
@@ -182,8 +204,9 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
                 mod_list: $scope.filters.install_order_notes
             }
         };
-        modService.retrieveInstallOrderNotes($stateParams.modId, options).then(function(install_order_notes) {
-            $scope.mod.install_order_notes = $scope.associateUserTitles(install_order_notes);
+        modService.retrieveInstallOrderNotes($stateParams.modId, options).then(function(data) {
+            $scope.associateHelpfulMarks(data.install_order_notes, data.helpful_marks);
+            $scope.mod.install_order_notes = $scope.associateUserTitles(data.install_order_notes);
         });
     };
 
@@ -194,8 +217,9 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
                 mod_list: $scope.filters.load_order_notes
             }
         };
-        modService.retrieveLoadOrderNotes($stateParams.modId, options).then(function(load_order_notes) {
-            $scope.mod.load_order_notes = $scope.associateUserTitles(load_order_notes);
+        modService.retrieveLoadOrderNotes($stateParams.modId, options).then(function(data) {
+            $scope.associateHelpfulMarks(data.load_order_notes, data.helpful_marks);
+            $scope.mod.load_order_notes = $scope.associateUserTitles(data.load_order_notes);
         });
     };
 

@@ -190,6 +190,14 @@
       .helpfulness {
         float: right;
       }
+
+      .marked-not-helpful {
+        background-color: $error_secondary;
+      }
+
+      .marked-helpful {
+        background-color: $success_secondary;
+      }
     }
   }
 }

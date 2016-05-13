@@ -34,7 +34,11 @@ class ModsController < ApplicationController
   # GET /mods/1
   def show
     authorize! :read, @mod
-    render :json => @mod.show_json
+    star = ModStar.exists?(:mod_id => @mod.id, :user_id => current_user.id)
+    render :json => {
+        mod: @mod.show_json,
+        star: star
+    }
   end
 
   # POST /mods/submit
@@ -89,30 +93,46 @@ class ModsController < ApplicationController
   # GET /mods/1/reviews
   def reviews
     authorize! :read, @mod
-    @reviews = @mod.reviews.paginate(:page => params[:page])
-    render :json => @reviews
+    reviews = @mod.reviews.paginate(:page => params[:page])
+    helpful_marks = HelpfulMark.where(submitted_by: current_user.id, helpfulable_type: "Review", helpfulable_id: reviews.ids)
+    render :json => {
+        reviews: reviews,
+        helpful_marks: helpful_marks.as_json({:only => [:helpfulable_id, :helpful]})
+    }
   end
 
   # GET /mods/1/compatibility_notes
   def compatibility_notes
     authorize! :read, @mod
-    @compatibility_notes = @mod.compatibility_notes.paginate(:page => params[:page])
-    render :json => @compatibility_notes
+    compatibility_notes = @mod.compatibility_notes.paginate(:page => params[:page])
+    helpful_marks = HelpfulMark.where(submitted_by: current_user.id, helpfulable_type: "CompatibilityNote", helpfulable_id: compatibility_notes.ids)
+    render :json => {
+        compatibility_notes: compatibility_notes,
+        helpful_marks: helpful_marks.as_json({:only => [:helpfulable_id, :helpful]})
+    }
   end
 
   # GET /mods/1/install_order_notes
   def install_order_notes
     authorize! :read, @mod
-    @install_order_notes = @mod.install_order_notes.paginate(:page => params[:page])
-    render :json => @install_order_notes
+    install_order_notes = @mod.install_order_notes.paginate(:page => params[:page])
+    helpful_marks = HelpfulMark.where(submitted_by: current_user.id, helpfulable_type: "InstallOrderNote", helpfulable_id: install_order_notes.ids)
+    render :json => {
+        install_order_notes: install_order_notes,
+        helpful_marks: helpful_marks.as_json({:only => [:helpfulable_id, :helpful]})
+    }
   end
 
   # GET /mods/1/load_order_notes
   def load_order_notes
     authorize! :read, @mod
     if @mod.plugins.length > 0
-      @load_order_notes = @mod.load_order_notes.paginate(:page => params[:page])
-      render :json => @load_order_notes
+      load_order_notes = @mod.load_order_notes.paginate(:page => params[:page])
+      helpful_marks = HelpfulMark.where(submitted_by: current_user.id, helpfulable_type: "LoadOrderNote", helpfulable_id: load_order_notes.ids)
+      render :json => {
+          load_order_notes: load_order_notes,
+          helpful_marks: helpful_marks.as_json({:only => [:helpfulable_id, :helpful]})
+      }
     else
       @mod.errors.add(:load_order_notes, "Mod has no plugins")
       render json: @mod.errors, status: :unprocessable_entity

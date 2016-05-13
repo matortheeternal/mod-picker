@@ -10,7 +10,7 @@ class ModAuthor < ActiveRecord::Base
     infos = model.where(uploaded_by: username)
 
     infos.each do |info|
-      ModAuthor.create(mod_id: info.mod_id, user_id: user_id) if info.mod_id.present?
+      ModAuthor.find_or_create_by(mod_id: info.mod_id, user_id: user_id) if info.mod_id.present?
     end
   end
 end

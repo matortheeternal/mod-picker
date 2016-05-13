@@ -24,5 +24,5 @@ class HelpfulMark < ActiveRecord::Base
 
   def init
     self.submitted ||= DateTime.now
-  end                                  
+  end
 end
