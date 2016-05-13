@@ -103,14 +103,10 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
             }, 100);
             return;
         }
-        // loop through data
-        data.forEach(function(item) {
-            // if user is defined and they don't have a custom title
-            if (item.user && !item.user.title) {
-                // get their default title
-                item.user.title = userTitleService.getUserTitle($scope.userTitles, item.user.reputation.overall);
-            }
-        });
+
+        // associate titles with the data
+        userTitleService.associateTitles($scope.userTitles, data);
+
         // return modified data
         return data;
     };
