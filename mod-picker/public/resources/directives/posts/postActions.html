@@ -1,8 +1,10 @@
 <div class="actions-container">
-    <span class="action-box" ng-if="correctable">Make A Correction</span>
-    <span class="action-box">Actions <i class="fa fa-caret-down"></i></span>
+    <span class="action-box" ng-if="correctable" tabindex="{{index}}">Make A Correction</span>
+    <span class="action-box actions-dropdown-container" ng-focus="showDropdown = true" ng-blur="blurDropdown()" tabindex="{{index}}">
+        Actions <i class="fa fa-caret-down"></i>
+    </span>
     <span class="helpfulness">
-        <div class="action-box" ng-class="{ 'marked-helpful' : target.helpful }" ng-click="helpfulMark(true)">Helpful</div>
-        <div class="action-box" ng-class="{ 'marked-not-helpful' : target.helpful !== undefined && !target.helpful }" ng-click="helpfulMark(false)">Not Helpful</div>
+        <div class="action-box" ng-class="{ 'marked-helpful' : target.helpful }" ng-click="helpfulMark(true)" tabindex="{{index}}">Helpful</div>
+        <div class="action-box" ng-class="{ 'marked-not-helpful' : target.helpful !== undefined && !target.helpful }" ng-click="helpfulMark(false)" tabindex="{{index}}">Not Helpful</div>
     </span>
 </div>

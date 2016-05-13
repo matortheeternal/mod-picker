@@ -190,6 +190,15 @@
       bottom: 0;
       cursor: default;
 
+      .actions-dropdown-container {
+        position: relative;
+        outline: none;
+
+        &:focus {
+          background-color: $bar_highlight_color;
+        }
+      }
+
       .action-link {
         padding-right: 16px;
       }
