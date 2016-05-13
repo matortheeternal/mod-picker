@@ -31,26 +31,20 @@ app.controller('submitModController', function ($scope, backend, submitService, 
         $scope.sources.splice(index, 1);
     };
 
-    function getSite(source) {
-        return $scope.sites.find(function(item) {
-            return item.label === source.label
-        });
-    }
-
     $scope.validateSource = function(source) {
-        var site = getSite(source);
+        var site = sitesFactory.getSite($scope.sites, source.label);
         var sourceIndex = $scope.sources.indexOf(source);
         var sourceUsed = $scope.sources.find(function(item, index) {
             return index != sourceIndex && item.label === source.label
         });
-        var match = source.url.match(site.expr);
+        var match = source.url.match(site.modUrlFormat);
         source.valid = !sourceUsed && match != null;
     };
 
     $scope.scrapeSource = function(source) {
         // exit if the source is invalid
-        var site = getSite(source);
-        var match = source.url.match(site.expr);
+        var site = sitesFactory.getSite($scope.sites, source.label);
+        var match = source.url.match(site.modUrlFormat);
         if (!match) {
             return;
         }

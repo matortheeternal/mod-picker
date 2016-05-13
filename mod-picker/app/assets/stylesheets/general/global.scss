@@ -328,7 +328,6 @@ form {
   .section-title {
     display: block;
     vertical-align: top;
-    width: 200px;
     font-size: 22px;
     font-weight: 500;
     color: $text_color;
@@ -350,10 +349,6 @@ form {
     section {
       margin-bottom: 15px;
       margin-top: 15px;
-
-      div {
-        display: inline-block;
-      }
     }
 
     select {
@@ -394,9 +389,14 @@ form {
   }
 
   .input-label {
+    display: inline-block;
     min-width: 180px;
     margin-bottom: 5px;
     margin-top: 5px;
+  }
+
+  .input-block {
+    display: inline-block;
   }
 }
 
@@ -441,12 +441,26 @@ a .help-tooltip {
     box-shadow: 1px 1px 10px 1px rgba($shadow_color, 0.8)
   }
 
+  .error-message, .success-message {
+    font-size: 18px;
+  }
+
+  .big-modal {
+    width: 600px;
+  }
+
   .checkbox-list {
     font-size: 14px;
   }
 
   .section-title {
     margin-top: 0;
+  }
+
+  form {
+    section {
+      margin: 15px;
+    }
   }
 }
 
