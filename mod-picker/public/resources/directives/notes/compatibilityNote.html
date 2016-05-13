@@ -22,8 +22,8 @@
             <span class='action-box'>Make A Correction</span>
             <span class='action-box'>Actions <i class='fa fa-caret-down'></i></span>
             <span class='helpfulness'>
-                <div class="action-box">Helpful</div>
-                <div class="action-box">Not Helpful</div>
+                <div class="action-box" ng-class="{ 'marked-helpful' : review.helpful }" ng-click="helpfulMark(true)">Helpful</div>
+                <div class="action-box" ng-class="{ 'marked-not-helpful' : review.helpful !== undefined && !review.helpful }" ng-click="helpfulMark(false)">Not Helpful</div>
             </span>
 		</div>
 	</div>
