@@ -38,4 +38,14 @@ app.controller('postActionsController', function ($scope, $timeout, modService) 
             $scope.showDropdown = false;
         }, 100);
     };
+
+    // permissions helper variables
+    var isAdmin = $scope.user && $scope.user.role === 'admin';
+    var isModerator = $scope.user && $scope.user.role === 'moderator';
+    var isSubmitter = $scope.user && $scope.user.id === $scope.target.user.id;
+    // set up permissions
+    $scope.canReport = $scope.user || false;
+    $scope.canEdit = isAdmin || isModerator || isSubmitter;
+    $scope.canApprove = isAdmin || isModerator;
+    $scope.canHide = isAdmin || isModerator;
 });
