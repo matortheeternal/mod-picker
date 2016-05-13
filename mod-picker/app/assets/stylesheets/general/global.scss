@@ -299,6 +299,29 @@ input[type="button"], input[type="submit"] {
   }
 }
 
+/* css for dropdowns */
+.dropdown {
+  color: $text_color;
+  background-color: $primary_background;
+  position: absolute;
+  margin-left: -4px;
+  margin-top: 6px;
+  width: 120px;
+  border: 1px solid $hard_border_color;
+  padding: 6px;
+  cursor: pointer;
+
+  .dropdown-item {
+    padding: 5px;
+    margin-bottom: 4px;
+  }
+
+  .dropdown-selected-item, .dropdown-item:hover {
+    background-color: $action_color;
+    color: $action_text_color;
+  }
+}
+
 /* css for forms, inputs, and labels */
 .success-message {
   background-color: $success_primary;
