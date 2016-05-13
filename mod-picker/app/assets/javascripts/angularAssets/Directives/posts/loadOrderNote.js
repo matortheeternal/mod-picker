@@ -5,7 +5,8 @@ app.directive('loadOrderNote', function () {
         scope: {
         	note: '=',
             index: '=',
-            showAuthorColumn: '=?'
+            user: '=',
+            showAuthorColumn: '='
         }
     };
 });

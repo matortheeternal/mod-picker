@@ -7,7 +7,8 @@ app.directive('postActions', function () {
             target: '=',
             index: '=',
             route: '=',
-            correctable: '='
+            correctable: '=',
+            user: '='
         }
     };
 });

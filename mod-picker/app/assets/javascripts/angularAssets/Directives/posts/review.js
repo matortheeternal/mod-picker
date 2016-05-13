@@ -9,6 +9,7 @@ app.directive('review', function () {
         scope: {
             review: '=',
             index: '=',
+            user: '=',
             showAuthorColumn: '=?'
         }
     };

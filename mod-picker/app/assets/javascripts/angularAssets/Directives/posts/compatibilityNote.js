@@ -10,8 +10,9 @@ app.directive('compatibilityNote', function () {
         scope: {
         	note: '=',
             index: '=',
-            modId: '=?',
-            showAuthorColumn: '='
+            user: '=',
+            showAuthorColumn: '=',
+            modId: '=?'
         }
     }
 });
