@@ -1,12 +1,26 @@
 <span ng-if="!siteUsername">
-    <span class="input-label">{{siteLabel}}</span>
+    <h4 class="input-label subtitle">{{siteLabel}}</h4>
     <input type="button" class="btn" value="link" ng-click="toggleModal()">
 </span>
 <div ng-if="siteUsername">
-    <h4>{{siteLabel}}</h4>
-    {{siteLabel}} Account: {{siteUsername}}
-    Date Joined: {{siteDateJoined | date}}
-    Posts Count: {{sitePostsCount | number}}
+    <h4 class="subtitle">{{siteLabel}}</h4>
+
+    <section>
+        <div class="stat-item">
+            <dt class="stat-title">Username:</dt>
+            <dd class="stat-data">{{siteUsername}}</dd>
+        </div>
+
+        <div class="stat-item">
+            <dt class="stat-title">Date Joined:</dt>
+            <dd class="stat-data">{{siteDateJoined | date}}</dd>
+        </div>
+
+        <div class="stat-item">
+            <dt class="stat-title">Posts Count:</dt>
+            <dd class="stat-data">{{sitePostsCount | number}}</dd>
+        </div>
+    </section>
 </div>
 <div class="modal-container" ng-show="showModal">
     <div class="modal big-modal">
