@@ -16,18 +16,23 @@ class UsersController < ApplicationController
 
   # GET /link_account
   def link_account
+    bio = current_user.bio
     case params[:site]
       when "Nexus Mods"
-        verified = current_user.bio.verify_nexus_account(params[:user_path])
+        verified = bio.verify_nexus_account(params[:user_path])
       when "Lover's Lab"
-        verified = current_user.bio.verify_lover_account(params[:user_path])
+        verified = bio.verify_lover_account(params[:user_path])
       when "Steam Workshop"
-        verified = current_user.bio.verify_workshop_account(params[:user_path])
+        verified = bio.verify_workshop_account(params[:user_path])
       else
         verified = false
     end
 
-    render json: {status: :ok, verified: verified}
+    if verified
+      render json: {status: :ok, verified: true, bio: bio}
+    else
+      render json: {status: :ok, verified: false}
+    end
   end
 
   # PATCH/PUT /users/1
