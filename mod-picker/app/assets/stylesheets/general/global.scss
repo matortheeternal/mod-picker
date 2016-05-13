@@ -318,6 +318,11 @@ input[type="button"], input[type="submit"] {
     text-align: left;
   }
 
+  .dropdown-separator {
+    border-bottom: 1px solid $hard_border_color;
+    margin: 8px 4px;
+  }
+
   .dropdown-selected-item, .dropdown-item:hover {
     background-color: $action_color;
     color: $action_text_color;
