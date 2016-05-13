@@ -171,6 +171,13 @@
       }
     }
 
+    .submitted-line {
+      background-color: $secondary_background;
+      color: $h4_color;
+      font-size: 11px;
+      padding: 4px 6px;
+    }
+
     .text-container {
       width: 100%;
       padding: 0 20px 35px 20px;
