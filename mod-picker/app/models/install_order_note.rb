@@ -37,22 +37,18 @@ class InstallOrderNote < ActiveRecord::Base
   end
 
   def as_json(options={})
-    if options == {}
-      super({
-          :except => [:submitted_by],
-          :include => {
-              :user => {
-                  :only => [:id, :username, :role, :title],
-                  :include => {
-                      :reputation => {:only => [:overall]}
-                  },
-                  :methods => :avatar
-              }
-          },
-          :methods => :mods
-      })
-    else
-      super(options)
-    end
+    super({
+        :except => [:submitted_by],
+        :include => {
+            :user => {
+                :only => [:id, :username, :role, :title],
+                :include => {
+                    :reputation => {:only => [:overall]}
+                },
+                :methods => :avatar
+            }
+        },
+        :methods => :mods
+    })
   end
 end
