@@ -52,7 +52,7 @@ class HomeController < ApplicationController
                 :methods => [:image, :mod_lists_count]
             }),
             reviews: reviews.as_json({
-                :only => [:id, :submitted, :edited, :incorrect_notes_count],
+                :only => [:id, :submitted, :edited, :incorrect_notes_count, :text_body],
                 :include => {
                     :user => {
                         :only => [:id, :username, :role, :title],

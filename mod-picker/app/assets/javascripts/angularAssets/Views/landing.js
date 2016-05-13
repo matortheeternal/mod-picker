@@ -19,7 +19,7 @@ app.controller('searchInputController', function ($scope, $location) {
     };
 });
 
-app.controller('landingController', function ($scope, $q, landingService) {
+app.controller('landingController', function ($scope, $q, landingService, reviewSectionService) {
 
     //TODO: put this into the Routing logic
     $scope.tabs = [
@@ -35,6 +35,14 @@ app.controller('landingController', function ($scope, $q, landingService) {
 
     landingService.retrieveLanding().then(function(data) {
         $scope.landingData = data;
+
+        reviewSectionService.retrieveReviewSections().then(function (reviewSections) {
+            $scope.landingData.recent.reviews.forEach(function(review) {
+                review.review_ratings.forEach(function(rating) {
+                    rating.section = reviewSectionService.getSectionById(reviewSections, rating.review_section_id);
+                });
+            });
+        });
     });
 
     $scope.wordCount = function(string) {
