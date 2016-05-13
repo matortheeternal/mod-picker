@@ -37,7 +37,11 @@ body {
 
 /* utility classes */
 .capitalize {
-  text-transform: capitalize;
+  text-transform: capitalize !important;
+}
+
+.no-bg {
+  background-color: inherit !important;
 }
 
 /* url styling */
