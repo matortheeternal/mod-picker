@@ -15,5 +15,11 @@ app.directive('review', function () {
 });
 
 app.controller('reviewController', function ($scope) {
-//leaving this here in case it is needed when the directive is actually made
+    $scope.helpfulMark = function(helpful) {
+        if ($scope.review.helpful == helpful) {
+            delete $scope.review.helpful;
+        } else {
+            $scope.review.helpful = helpful;
+        }
+    };
 });
