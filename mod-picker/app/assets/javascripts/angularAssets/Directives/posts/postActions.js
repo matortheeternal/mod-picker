@@ -5,6 +5,7 @@ app.directive('postActions', function () {
         controller: 'postActionsController',
         scope: {
             target: '=',
+            index: '=',
             route: '=',
             correctable: '='
         }

@@ -3,7 +3,8 @@ app.directive('authorColumn', function() {
         restrict: 'E',
         templateUrl: '/resources/directives/posts/authorColumn.html',
         scope: {
-            user: '='
+            user: '=',
+            index: '='
         }
     };
 });

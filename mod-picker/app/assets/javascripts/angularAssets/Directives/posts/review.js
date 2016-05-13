@@ -8,6 +8,7 @@ app.directive('review', function () {
         templateUrl: '/resources/directives/posts/review.html',
         scope: {
             review: '=',
+            index: '=',
             showAuthorColumn: '=?'
         }
     };

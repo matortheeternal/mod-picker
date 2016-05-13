@@ -4,6 +4,7 @@ app.directive('loadOrderNote', function () {
         templateUrl: '/resources/directives/posts/loadOrderNote.html',
         scope: {
         	note: '=',
+            index: '=',
             showAuthorColumn: '=?'
         }
     };

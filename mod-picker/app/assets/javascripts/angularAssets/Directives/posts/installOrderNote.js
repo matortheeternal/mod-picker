@@ -4,6 +4,7 @@ app.directive('installOrderNote', function () {
         templateUrl: '/resources/directives/posts/installOrderNote.html',
         scope: {
         	note: '=',
+            index: '=',
             showAuthorColumn: '=',
             modId: '=?'
         }

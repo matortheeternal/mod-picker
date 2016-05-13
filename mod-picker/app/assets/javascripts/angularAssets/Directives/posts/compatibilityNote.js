@@ -9,6 +9,7 @@ app.directive('compatibilityNote', function () {
         controller: 'compatibilityNoteController',
         scope: {
         	note: '=',
+            index: '=',
             modId: '=?',
             showAuthorColumn: '='
         }

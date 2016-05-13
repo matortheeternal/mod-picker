@@ -14,9 +14,9 @@
             <span class="standing">Good Standing</span>
         </span>
     </div>
-    <author-column user="note.user" ng-if="showAuthorColumn" class="author-column"></author-column>
+    <author-column user="note.user" ng-if="showAuthorColumn" class="author-column" index="index"></author-column>
     <div class="content-column">
         <post-text target="note"></post-text>
-        <post-actions target="note" route="'compatibility_notes'" correctable="true"></post-actions>
+        <post-actions target="note" route="'compatibility_notes'" correctable="true" index="index"></post-actions>
     </div>
 </div>
