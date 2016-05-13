@@ -4,10 +4,10 @@
             <span class="capitalize">{{note.compatibility_type}}</span>
             {{note.compatibility_verb}}
             <span ng-if="note.mods[0].id == modId">
-                <a ng-href="#/mod/{{note.mods[1].id}}">{{note.mods[1].name}}</a>
+                <a ng-href="#/mod/{{note.mods[1].id}}" target="_blank">{{note.mods[1].name}}</a>
             </span>
             <span ng-if="note.mods[1].id == modId">
-                <a ng-href="#/mod/{{note.mods[0].id}}">{{note.mods[0].name}}</a>
+                <a ng-href="#/mod/{{note.mods[0].id}}" target="_blank">{{note.mods[0].name}}</a>
             </span>
         </span>
         <span class="right-item">
