@@ -15,7 +15,7 @@ app.directive('compatibilityNote', function () {
     }
 });
 
-app.controller('compatibilityNoteController', function ($scope, modService) {
+app.controller('compatibilityNoteController', function ($scope) {
     // TODO: Should probably be moved into some kind of service
     function getVerb() {
         switch ($scope.note.compatibility_type) {
@@ -30,20 +30,4 @@ app.controller('compatibilityNoteController', function ($scope, modService) {
 
     // set compatibility_verb
     $scope.note.compatibility_verb = getVerb();
-
-    $scope.helpfulMark = function(helpful) {
-        if ($scope.note.helpful == helpful) {
-            modService.helpfulMark("compatibility_notes", $scope.note.id).then(function (data) {
-                if (data.status == "ok") {
-                    delete $scope.note.helpful;
-                }
-            });
-        } else {
-            modService.helpfulMark("compatibility_notes", $scope.note.id, helpful).then(function (data) {
-                if (data.status == "ok") {
-                    $scope.note.helpful = helpful;
-                }
-            });
-        }
-    };
 });
