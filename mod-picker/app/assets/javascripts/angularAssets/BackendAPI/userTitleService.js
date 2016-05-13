@@ -24,4 +24,15 @@ app.service('userTitleService', function (backend, $q) {
         }
         return prevTitle.title;
     };
+
+    this.associateTitles = function(gameTitles, data) {
+        var service = this;
+        data.forEach(function(item) {
+            // if user is defined and they don't have a custom title
+            if (item.user && !item.user.title) {
+                // get their default title
+                item.user.title = service.getUserTitle(gameTitles, item.user.reputation.overall);
+            }
+        });
+    }
 });

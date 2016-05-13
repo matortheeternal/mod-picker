@@ -236,10 +236,11 @@ class Mod < ActiveRecord::Base
   end
 
   def as_json(options={})
-    if options == {}
-      super({
+    if JsonHelpers.json_options_empty(options)
+      default_options = {
           :only => [:id, :name]
-      })
+      }
+      super(options.merge(default_options))
     else
       super(options)
     end

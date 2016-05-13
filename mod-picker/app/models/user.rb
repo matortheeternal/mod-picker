@@ -158,6 +158,7 @@ class User < ActiveRecord::Base
     end
 
     self.as_json({
+        :except => [:active_mod_list_id, :invitation_token, :invitation_created_at, :invitation_sent_at, :invitation_accepted_at, :invitation_limit, :invited_by_id, :invited_by_type, :invitations_count],
         :include => {
             :mods => {
                 :only => [:id, :name, :game_id, :mod_stars_count]
@@ -177,20 +178,22 @@ class User < ActiveRecord::Base
   end
 
   def as_json(options={})
-    default_options = {
-        :except => [:active_mod_list_id, :invitation_token, :invitation_created_at, :invitation_sent_at, :invitation_accepted_at, :invitation_limit, :invited_by_id, :invited_by_type, :invitations_count],
-        :methods => [:avatar, :last_sign_in_at, :current_sign_in_at],
-        :include => {
-            :bio => {
-                :only => [:nexus_username, :lover_username, :steam_username]
-            },
-            :reputation => {
-                :only => [:overall]
-            }
-        }
-    }
-
-    options = default_options.merge(options)
-    super(options)
+    if JsonHelpers.json_options_empty(options)
+      default_options = {
+          :except => [:active_mod_list_id, :invitation_token, :invitation_created_at, :invitation_sent_at, :invitation_accepted_at, :invitation_limit, :invited_by_id, :invited_by_type, :invitations_count],
+          :methods => [:avatar, :last_sign_in_at, :current_sign_in_at],
+          :include => {
+              :bio => {
+                  :only => [:nexus_username, :lover_username, :steam_username]
+              },
+              :reputation => {
+                  :only => [:overall]
+              }
+          }
+      }
+      super(options.merge(default_options))
+    else
+      super(options)
+    end
   end
 end
