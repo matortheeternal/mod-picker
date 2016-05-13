@@ -20,6 +20,9 @@ module ModPicker
     # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
     # config.i18n.default_locale = :de
 
+    # SET THE USER AGENT FOR SCRAPING
+    config.user_agent = "Mod Picker Scraper"
+
     # DO NOT SCRAPE NEXUS STATISTICS UNLESS ROBIN CHANGES HIS MIND
     config.scrape_nexus_statistics = false
     # DO NOT SCRAPE WORKSHOP STATISTICS UNTIL WE HAVE PERMISSION

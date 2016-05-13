@@ -1,40 +1,34 @@
-<div class='compatibility-note'>
-    <div class='author-block' ng-if='showAuthorColumn'>
-			<img class='avatar-small' ng-src='{{lnote.user.avatar}}'/>
-			<br>
-			<span class='author-name'><a ng-href="/profile/{{lnote.user.id}}">{{lnote.user.username}}</a></span>
-			<span class='author-title'>{{lnote.user.title}}</span>
-			<span class='author-role'>{{lnote.user.role}}</span>
-			<span class='author-reputation'>{{lnote.user.reputation.overall}}</span>
+<div class='note-container'>
+	<div class='note-title'>
+		<span ng-if="modId">
+            Load
+            <span>
+                <a ng-href='#/mod/{{note.plugins[0].id}}'>{{note.plugins[0].filename}}</a>
+                Before
+                <a ng-href='#/mod/{{note.plugins[1].id}}'>{{note.plugins[1].filename}}</a>
+            </span>
+        </span>
+        <span class="right-item">
+            <span class="standing">Good Standing</span>
+        </span>
 	</div>
-	<div class='right-container'>
-		<div class='inote-block'>
-			<div class='note-title-block'>
-				<ul>
-					<li>
-						Load:<br>
-						<span><a ng-href='/mod/{{lnote.mods[0].id}}'>{{lnote.mods[0].name}}</a></span>
-					</li>
-					<li>After:<br>
-						<span><a ng-href='/mod/{{lnote.mods[1].id}}'>{{lnote.mods[1].name}}</a></span>
-					</li>
-				
-			</ul>Good Standing
-			</div>
-			<div class='note-details-block'>
-				{{lnote.text_body}}
-			</div>
-			<div class='detail-options-block'>
-				<a class='detail-links'>Make A Suggestion</a>
-			</div>
-			<div class='detail-options-block'>
-				<a class='detail-links'>More <span class='fa fa-angle-right'></span></a>
-			</div>
-			<div class='detail-helpful-block'>
+	<div class='author-column' ng-if='showAuthorColumn'>
+		<img class='avatar-small' ng-src='{{note.user.avatar}}'/>
+		<br>
+		<span class='author-name'><a ng-href="/profile/{{inote.user.id}}">{{note.user.username}}</a></span>
+		<span class='author-title'>{{note.user.title}}</span>
+		<span class='author-role'>{{note.user.role}}</span>
+		<span class='author-reputation'>{{note.user.reputation.overall}}</span>
+	</div>
+	<div class='content-column'>
+		<div class='text-container' marked="note.text_body"></div>
+		<div class='actions-container'>
+			<a class='action-link'>Make A Suggestion</a>
+			<a class='action-link'>More <span class='fa fa-angle-right'></span></a>
+			<span class='helpfulness'>
 				<a class='fa fa-thumbs-o-up'></a>
-				<span></span>
-				<a class='fa fa-thumbs-o-down'></a>
-			</div>
+                <a class='fa fa-thumbs-o-down'></a>
+            </span>
 		</div>
 	</div>
 </div>

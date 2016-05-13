@@ -11,12 +11,15 @@ Rails.application.routes.draw do
     resources :incorrect_notes
     resources :reviews
     resources :mod_authors
-    resources :user_settings
     resources :user_bios
     resources :mod_lists
     resources :plugins
     resources :mod_asset_files
-    resources :users
+
+    # users and user settings
+    resources :users, only: [:index, :show, :update, :destroy]
+    resources :user_settings, only: [:index, :update]
+    match '/link_account', to: 'users#link_account', via: 'get'
 
     # scraping
     resources :nexus_infos, only: [:show, :destroy]

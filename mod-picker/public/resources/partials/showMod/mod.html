@@ -20,7 +20,7 @@
                         <!-- TODO: reviews currently are on tab 1 -> should be dynamic anyway -> ui-router :D -->
                         {{mod.reviews.length | number}} reviews
                         <!-- TODO: add this with css :after content -->
-                        <span class="divider">
+                        <span class="divider" ng-if="mod.aliases || permissions.canManage">
                             |
                         </span>
 
@@ -31,13 +31,12 @@
 
                         <span ng-if="mod.aliases">
                             <strong>Aliases: </strong>{{mod.aliases}}
-                            <span class="divider">
+                            <span class="divider" ng-if="permissions.canManage">
                                 |
                             </span>
                         </span>
 
-                        <!-- TODO: should probably only be visible to the MA / scraper dude-->
-                        <a ng-href="#/editMod/{{mod.id}}">Edit</a>
+                        <a ng-href="#/mod/{{mod.id}}/edit" ng-if="permissions.canManage">Edit</a>
                     </div>
                 </section>
 
@@ -125,7 +124,7 @@
                     <!--Tags-->
                     <h3 class="section-title">Tags</h3>
                     <section>
-                        <tag-selector active-tags="mod.tags" new-tags="newTags" max-tags="10" show-mods-count="true" show-add="userCanAddTags" ></tag-selector>
+                        <tag-selector active-tags="mod.tags" new-tags="newTags" max-tags="10" show-mods-count="true" show-add="true" can-create="permissions.canCreateTags" show-remove="permissions.canManage"></tag-selector>
                     </section>
 
                     <!--Site Stats-->

@@ -11,7 +11,8 @@ app.directive('tabs', function () {
         scope: {
         	tabs: '=',
         	currentTab: '=',
-            onChange: '=?'
+            onChange: '=?',
+            containerClass: '='
         }
     }
 });
@@ -23,7 +24,7 @@ app.controller('tabsController', function ($scope) {
     //if we use routing instead it will work fine
 	$scope.select = function (nextTab) {
 		$scope.currentTab = nextTab;
-        if ($scope.onChange !== null) {
+        if ($scope.onChange) {
             $scope.onChange(nextTab);
         }
 	};

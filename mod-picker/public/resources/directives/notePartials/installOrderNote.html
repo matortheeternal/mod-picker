@@ -1,41 +1,30 @@
-<div class='compatibility-note'>
-    <div class='author-block' ng-if='showAuthorColumn'>
-			<img class='avatar-small' ng-src='{{inote.user.avatar}}'/>
-			<br>
-			<span class='author-name'><a ng-href="/profile/{{inote.user.id}}">{{inote.user.username}}</a></span>
-			<span class='author-title'>{{inote.user.title}}</span>
-			<span class='author-role'>{{inote.user.role}}</span>
-			<span class='author-reputation'>{{inote.user.reputation.overall}}</span>
+<div class='note-container'>
+	<div class='note-title'>
+		<span ng-if="modId">
+            Install
+            <span ng-if="note.mods[0].id == modId">
+                Before
+                <a ng-href='#/mod/{{note.mods[1].id}}'>{{note.mods[1].name}}</a>
+            </span>
+            <span ng-if="note.mods[1].id == modId">
+                After
+                <a ng-href='#/mod/{{note.mods[0].id}}'>{{note.mods[0].name}}</a>
+            </span>
+        </span>
+        <span class="right-item">
+            <span class="standing">Good Standing</span>
+        </span>
 	</div>
-	<div class='right-container'>
-		<div class='inote-block'>
-			<div class='note-title-block'>
-				<ul>
-					<li>
-						Install:<br>
-						<span><a ng-href='#/mod/{{inote.mods[0].id}}'>{{inote.mods[0].name}}</a></span>
-					</li>
-
-					<li>After:<br>
-						<span><a ng-href='#/mod/{{inote.mods[1].id}}'>{{inote.mods[1].name}}</a></span>
-					</li>
-					
-				</ul><span>Good Standing</span>
-			</div>
-			<div class='note-details-block'>
-				{{inote.text_body}}
-			</div>
-			<div class='detail-options-block'>
-				<a class='detail-links'>Make A Suggestion</a>
-			</div>
-			<div class='detail-options-block'>
-				<a class='detail-links'>More <span class='fa fa-angle-right'></span></a>
-			</div>
-			<div class='detail-helpful-block'>
-				<a class='fa fa-thumbs-o-up'></a>
-				<span></span>
-				<a class='fa fa-thumbs-o-down'></a>
-			</div>
-		</div>
-	</div>
+    <author-column user="note.user" ng-if='showAuthorColumn' class="author-column"></author-column>
+	<div class='content-column'>
+        <div class='text-container' marked="note.text_body"></div>
+        <div class='actions-container'>
+            <span class='action-box'>Make A Correction</span>
+            <span class='action-box'>Actions <i class='fa fa-caret-down'></i></span>
+            <span class='helpfulness'>
+                <div class="action-box">Helpful</div>
+                <div class="action-box">Not Helpful</div>
+            </span>
+        </div>
+    </div>
 </div>

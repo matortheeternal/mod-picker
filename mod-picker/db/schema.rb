@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160510035416) do
+ActiveRecord::Schema.define(version: 20160512034616) do
 
   create_table "agreement_marks", id: false, force: :cascade do |t|
     t.integer "incorrect_note_id", limit: 4
@@ -234,19 +234,23 @@ ActiveRecord::Schema.define(version: 20160510035416) do
   add_index "load_order_notes", ["submitted_by"], name: "fk_rails_9992d700a9", using: :btree
 
   create_table "lover_infos", force: :cascade do |t|
-    t.integer  "mod_id",          limit: 4
-    t.string   "mod_name",        limit: 255
-    t.string   "uploaded_by",     limit: 128
-    t.string   "date_submitted",  limit: 255
-    t.string   "date_updated",    limit: 255
+    t.integer  "mod_id",            limit: 4
+    t.string   "mod_name",          limit: 255
+    t.string   "uploaded_by",       limit: 128
+    t.string   "date_submitted",    limit: 255
+    t.string   "date_updated",      limit: 255
     t.datetime "last_scraped"
-    t.integer  "followers_count", limit: 4,   default: 0
-    t.integer  "file_size",       limit: 4,   default: 0
-    t.integer  "views",           limit: 4,   default: 0
-    t.integer  "downloads",       limit: 4,   default: 0
-    t.boolean  "has_stats",                   default: false
+    t.integer  "followers_count",   limit: 4,   default: 0
+    t.integer  "file_size",         limit: 4,   default: 0
+    t.integer  "views",             limit: 4,   default: 0
+    t.integer  "downloads",         limit: 4,   default: 0
+    t.boolean  "has_stats",                     default: false
+    t.string   "current_version",   limit: 32
+    t.boolean  "has_adult_content"
+    t.integer  "game_id",           limit: 4
   end
 
+  add_index "lover_infos", ["game_id"], name: "fk_rails_0c0c747a5a", using: :btree
   add_index "lover_infos", ["mod_id"], name: "fk_rails_614a886dc0", using: :btree
 
   create_table "masters", id: false, force: :cascade do |t|
@@ -601,21 +605,22 @@ ActiveRecord::Schema.define(version: 20160510035416) do
   add_index "tags", ["submitted_by"], name: "fk_rails_8c7521065c", using: :btree
 
   create_table "user_bios", force: :cascade do |t|
-    t.string  "nexus_username",           limit: 32
-    t.string  "nexus_verification_token", limit: 32
-    t.string  "lover_username",           limit: 32
-    t.string  "lover_verification_token", limit: 32
-    t.string  "steam_username",           limit: 32
-    t.boolean "steam_verified"
-    t.integer "user_id",                  limit: 4
-    t.integer "nexus_user_id",            limit: 4
-    t.string  "lover_user_path",          limit: 64
+    t.integer "user_id",                     limit: 4
+    t.string  "nexus_user_path",             limit: 64
+    t.string  "nexus_verification_token",    limit: 32
+    t.string  "nexus_username",              limit: 32
     t.date    "nexus_date_joined"
-    t.integer "nexus_posts_count",        limit: 4,  default: 0
+    t.integer "nexus_posts_count",           limit: 4,  default: 0
+    t.string  "lover_user_path",             limit: 64
+    t.string  "lover_verification_token",    limit: 32
+    t.string  "lover_username",              limit: 32
     t.date    "lover_date_joined"
-    t.integer "lover_posts_count",        limit: 4,  default: 0
-    t.integer "steam_submissions_count",  limit: 4,  default: 0
-    t.integer "steam_followers_count",    limit: 4,  default: 0
+    t.integer "lover_posts_count",           limit: 4,  default: 0
+    t.string  "workshop_username",           limit: 32
+    t.boolean "workshop_verified"
+    t.integer "workshop_submissions_count",  limit: 4,  default: 0
+    t.integer "workshop_followers_count",    limit: 4,  default: 0
+    t.string  "workshop_verification_token", limit: 32
   end
 
   add_index "user_bios", ["user_id"], name: "user_id", using: :btree
@@ -768,6 +773,7 @@ ActiveRecord::Schema.define(version: 20160510035416) do
   add_foreign_key "load_order_notes", "plugins", column: "first_plugin_id"
   add_foreign_key "load_order_notes", "plugins", column: "second_plugin_id"
   add_foreign_key "load_order_notes", "users", column: "submitted_by"
+  add_foreign_key "lover_infos", "games"
   add_foreign_key "lover_infos", "mods"
   add_foreign_key "masters", "plugins", name: "masters_ibfk_1"
   add_foreign_key "mod_asset_files", "asset_files"

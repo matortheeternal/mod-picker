@@ -32,24 +32,24 @@ class Review < ActiveRecord::Base
   end
 
   def as_json(options={})
-    if options == {}
-      super({
-          :include => {
-              :review_ratings => {
-                  :except => [:review_id]
-              },
-              :user => {
-                  :only => [:id, :username, :role, :title],
-                  :include => {
-                      :reputation => {:only => [:overall]}
-                  },
-                  :methods => :avatar
-              }
-          }
-      })
-    else
-      super(options)
-    end
+    default_options = {
+        :include => {
+            :review_ratings => {
+                :except => [:review_id]
+            },
+            :user => {
+                :only => [:id, :username, :role, :title],
+                :include => {
+                    :reputation => {:only => [:overall]}
+                },
+                :methods => :avatar
+            }
+        },
+        :methods => :overall_rating
+    }
+    options[:include] = default_options[:include]
+    options[:methods] = default_options[:methods]
+    super(options)
   end
 
   private
