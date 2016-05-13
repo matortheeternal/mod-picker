@@ -39,13 +39,19 @@ app.controller('postActionsController', function ($scope, $timeout, modService) 
         }, 100);
     };
 
-    // permissions helper variables
-    var isAdmin = $scope.user && $scope.user.role === 'admin';
-    var isModerator = $scope.user && $scope.user.role === 'moderator';
-    var isSubmitter = $scope.user && $scope.user.id === $scope.target.user.id;
-    // set up permissions
-    $scope.canReport = $scope.user || false;
-    $scope.canEdit = isAdmin || isModerator || isSubmitter;
-    $scope.canApprove = isAdmin || isModerator;
-    $scope.canHide = isAdmin || isModerator;
+    $scope.setPermissions = function() {
+        // permissions helper variables
+        var isAdmin = $scope.user && $scope.user.role === 'admin';
+        var isModerator = $scope.user && $scope.user.role === 'moderator';
+        var isSubmitter = $scope.user && $scope.user.id === $scope.target.user.id;
+        // set up permissions
+        $scope.canReport = $scope.user || false;
+        $scope.canEdit = isAdmin || isModerator || isSubmitter;
+        $scope.canApprove = isAdmin || isModerator;
+        $scope.canHide = isAdmin || isModerator;
+    };
+
+    // watch user so if we get the user object after rendering actions
+    // we can re-render them correctly per the user's permissions
+    $scope.$watch('user', $scope.setPermissions, true);
 });
