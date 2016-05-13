@@ -1,7 +1,7 @@
 app.directive('installOrderNote', function () {
     return {
         restrict: 'E',
-        templateUrl: '/resources/directives/notePartials/installOrderNote.html',
+        templateUrl: '/resources/directives/notes/installOrderNote.html',
         controller: 'installOrderNoteController',
         scope: {
         	note: '=',
