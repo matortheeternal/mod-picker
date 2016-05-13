@@ -25,10 +25,4 @@ class HelpfulMark < ActiveRecord::Base
   def init
     self.submitted ||= DateTime.now
   end
-
-  def self.as_json(options={})
-    super({
-      only: [:helpful, :helpfulable_id]
-    })
-  end
 end

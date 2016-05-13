@@ -97,7 +97,7 @@ class ModsController < ApplicationController
     helpful_marks = HelpfulMark.where(submitted_by: current_user.id, helpfulable_type: "Review", helpfulable_id: reviews.ids)
     render :json => {
         reviews: reviews,
-        helpful_marks: helpful_marks
+        helpful_marks: helpful_marks.as_json({:only => [:helpfulable_id, :helpful]})
     }
   end
 
@@ -108,7 +108,7 @@ class ModsController < ApplicationController
     helpful_marks = HelpfulMark.where(submitted_by: current_user.id, helpfulable_type: "CompatibilityNote", helpfulable_id: compatibility_notes.ids)
     render :json => {
         compatibility_notes: compatibility_notes,
-        helpful_marks: helpful_marks
+        helpful_marks: helpful_marks.as_json({:only => [:helpfulable_id, :helpful]})
     }
   end
 
@@ -119,7 +119,7 @@ class ModsController < ApplicationController
     helpful_marks = HelpfulMark.where(submitted_by: current_user.id, helpfulable_type: "InstallOrderNote", helpfulable_id: install_order_notes.ids)
     render :json => {
         install_order_notes: install_order_notes,
-        helpful_marks: helpful_marks
+        helpful_marks: helpful_marks.as_json({:only => [:helpfulable_id, :helpful]})
     }
   end
 
@@ -131,7 +131,7 @@ class ModsController < ApplicationController
       helpful_marks = HelpfulMark.where(submitted_by: current_user.id, helpfulable_type: "LoadOrderNote", helpfulable_id: load_order_notes.ids)
       render :json => {
           load_order_notes: load_order_notes,
-          helpful_marks: helpful_marks
+          helpful_marks: helpful_marks.as_json({:only => [:helpfulable_id, :helpful]})
       }
     else
       @mod.errors.add(:load_order_notes, "Mod has no plugins")
