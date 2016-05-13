@@ -54,6 +54,9 @@ class HomeController < ApplicationController
             reviews: reviews.as_json({
                 :only => [:id, :submitted, :edited, :incorrect_notes_count, :text_body],
                 :include => {
+                    :review_ratings => {
+                        :except => [:review_id]
+                    },
                     :user => {
                         :only => [:id, :username, :role, :title],
                         :include => {
