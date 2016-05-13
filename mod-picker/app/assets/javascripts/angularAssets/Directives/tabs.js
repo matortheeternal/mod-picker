@@ -11,7 +11,8 @@ app.directive('tabs', function () {
         scope: {
         	tabs: '=',
         	currentTab: '=',
-            onChange: '=?'
+            onChange: '=?',
+            containerClass: '='
         }
     }
 });

@@ -8,7 +8,8 @@ app.directive('review', function () {
         templateUrl: '/resources/directives/notePartials/review.html',
         controller: 'reviewController',
         scope: {
-            review: '='
+            review: '=',
+            showAuthorColumn: '=?'
         }
     };
 });

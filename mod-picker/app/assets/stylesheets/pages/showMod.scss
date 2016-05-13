@@ -288,7 +288,7 @@
   }
 }
 
-.notes {
+.post {
   margin-top: 20px;
   margin-bottom: 20px;
 }
@@ -319,11 +319,18 @@
   color: $h4_color;
 
   .add-note-actions {
+    margin: 12px;
     display: flex;
     justify-content: space-around;
     align-items: center;
     font-size: 14px;
     width: 745px;
+
+    .mod-input {
+      padding: 8px;
+      width: 200px;
+      height: 30px;
+    }
 
     .compatibility-dropdown {
       min-width: 236px;
@@ -417,8 +424,8 @@
       font-size: 24px;
       min-width: 100px;
       max-width: 600px;
-      padding-left: 0;
-      padding-right: 0;
+      padding: 12px 0;
+      margin-right: -4px;
       color: inherit;
 
       option {

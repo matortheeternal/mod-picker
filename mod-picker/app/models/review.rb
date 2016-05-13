@@ -44,9 +44,11 @@ class Review < ActiveRecord::Base
                 },
                 :methods => :avatar
             }
-        }
+        },
+        :methods => :overall_rating
     }
     options[:include] = default_options[:include]
+    options[:methods] = default_options[:methods]
     super(options)
   end
 

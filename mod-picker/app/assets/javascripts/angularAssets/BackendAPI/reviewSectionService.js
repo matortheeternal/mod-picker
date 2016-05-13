@@ -14,4 +14,10 @@ app.service('reviewSectionService', function (backend, $q) {
             return (section.category_id == category.id) || (section.category_id == category.parent_id);
         });
     };
+
+    this.getSectionById = function(reviewSections, id) {
+        return reviewSections.find(function(section) {
+            return (section.id == id);
+        });
+    };
 });

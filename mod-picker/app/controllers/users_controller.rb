@@ -11,7 +11,7 @@ class UsersController < ApplicationController
   # GET /users/1
   def show
     authorize! :read, @user
-    render :json => @user.show_json
+    render :json => @user.show_json(current_user)
   end
 
   # GET /link_account

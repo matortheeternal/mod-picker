@@ -4,8 +4,8 @@ app.directive('loadOrderNote', function () {
         templateUrl: '/resources/directives/notePartials/loadOrderNote.html',
         controller: 'loadOrderNoteController',
         scope: {
-        	lnote: '=',
-            showAuthorColumn: '='
+        	note: '=',
+            showAuthorColumn: '=?'
         }
     };
 });
