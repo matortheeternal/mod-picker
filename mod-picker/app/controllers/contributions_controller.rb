@@ -52,7 +52,7 @@ class ContributionsController < ApplicationController
     authorize! :hide, @contribution
     @contribution.hidden = params[:hidden]
     if @contribution.save
-      render json: {status: ok}
+      render json: {status: :ok}
     else
       render json: @contribution.errors, status: :unprocessable_entity
     end
@@ -63,7 +63,7 @@ class ContributionsController < ApplicationController
     authorize! :approve, @contribution
     @contribution.approved = params[:approved]
     if @contribution.save
-      render json: {status: ok}
+      render json: {status: :ok}
     else
       render json: @contribution.errors, status: :unprocessable_entity
     end
