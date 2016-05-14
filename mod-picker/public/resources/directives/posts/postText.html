@@ -1,2 +1,3 @@
 <div class="submitted-line">Submitted {{target.submitted | date : 'longDate'}} - {{target.submitted | date : 'shortTime'}}</div>
 <div class="text-container" ng-class="{ 'half-opacity' : target.hidden }" marked="target.text_body"></div>
+<div class="moderator-note" marked="target.moderator_message" ng-if="target.moderator_message"></div>
