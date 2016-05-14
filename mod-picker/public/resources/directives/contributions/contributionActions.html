@@ -7,7 +7,7 @@
         <div class="dropdown" ng-show="showDropdown">
             <div class="dropdown-item">View History</div>
             <div class="dropdown-item" ng-click="showLinkModal = true">Get Link</div>
-            <div class="dropdown-item" ng-if="canReport">Report</div>
+            <div class="dropdown-item" ng-if="canReport" ng-click="showReportModal = true">Report</div>
             <div class="dropdown-separator" ng-if="canEdit || canApprove || canHide"></div>
             <div class="dropdown-item" ng-if="canEdit">Edit</div>
             <div class="dropdown-item" ng-if="canApprove && !target.approved" ng-click="approve(true)">Approve</div>
@@ -35,9 +35,43 @@
 
             <h3 class="section-title">
                 Share {{target.user.username}}'s
-                <span class="capitalize">{{route.split('_').join(' ').slice(0, -1)}}</span>
+                <span class="capitalize">{{label}}</span>
             </h3>
             <input type="text" class="max-input" ng-model="shareLink" title="Link" spellcheck="false">
+        </form>
+    </div>
+</div>
+
+<div class="modal-container" ng-show="showReportModal">
+    <div class="modal">
+        <form>
+            <h3 class="section-title">
+                Report {{target.user.username}}'s
+                <span class="capitalize">{{label}}</span>
+            </h3>
+            <section>
+                <div>What rule or community guideline does this submission violate?</div>
+                <select ng-model="report.type" ng-init="report.type = 'Respect'">
+                    <option value="respect">Respect</option>
+                    <option value="trust">Trust</option>
+                    <option value="collaboration">Collaboration</option>
+                    <option value="piracy">Piracy</option>
+                    <option value="spam">Spam</option>
+                    <option value="other">Other</option>
+                </select>
+            </section>
+            
+            <section>
+                <label>
+                    <div>Notes</div>
+                    <textarea ng-model="report.note"></textarea>
+                </label>
+            </section>
+
+            <div class="action-button-container">
+                <input type="submit" class="btn" value="Report" ng-click="submitReport()">
+                <input type="submit" class="btn" value="Cancel" ng-click="showReportModal = false">
+            </div>
         </form>
     </div>
 </div>

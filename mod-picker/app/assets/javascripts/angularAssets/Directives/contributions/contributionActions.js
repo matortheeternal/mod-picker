@@ -16,6 +16,10 @@ app.directive('contributionActions', function () {
 app.controller('contributionActionsController', function ($scope, $timeout, contributionService) {
     // this is a direct link to the contribution to be displayed in the get link modal
     $scope.shareLink = window.location.href + '/' + $scope.route + '/' + $scope.target.id;
+    // this is a computed label for the contribution (we may want to use a switch in the future)
+    $scope.label = $scope.route.split('_').join(' ').slice(0, -1);
+    // this is the report object
+    $scope.report = {};
 
     $scope.helpfulMark = function(helpful) {
         if ($scope.target.helpful == helpful) {
