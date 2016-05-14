@@ -1,4 +1,30 @@
 class ContributionsController < ApplicationController
+  # GET /contribution/1
+  def show
+    authorize! :read, @contribution
+    render :json => @contribution
+  end
+
+  # PATCH/PUT /contribution/1
+  def update
+    authorize! :update, @contribution
+    if @contribution.update(contribution_params)
+      render json: {status: :ok}
+    else
+      render json: @contribution.errors, status: :unprocessable_entity
+    end
+  end
+
+  # DELETE /contribution/1
+  def destroy
+    authorize! :destroy, @contribution
+    if @contribution.destroy
+      render json: {status: :ok}
+    else
+      render json: @contribution.errors, status: :unprocessable_entity
+    end
+  end
+
   # POST /contribution/1/helpful
   def helpful
     helpful_mark = HelpfulMark.find_or_create_by(
