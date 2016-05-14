@@ -44,6 +44,10 @@ body {
   background-color: inherit !important;
 }
 
+.no-action {
+  cursor: default !important;
+}
+
 .half-opacity {
   opacity: 0.50;
 }
@@ -307,6 +311,7 @@ input[type="button"], input[type="submit"] {
 .dropdown {
   color: $text_color;
   background-color: $primary_background;
+  opacity: 1.0;
   position: absolute;
   top: 20px;
   left: -4px;
