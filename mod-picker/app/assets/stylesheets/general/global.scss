@@ -307,9 +307,10 @@ input[type="button"], input[type="submit"] {
   z-index: 2;
   margin-left: -4px;
   margin-top: 6px;
-  width: 120px;
-  border: 1px solid $hard_border_color;
   padding: 6px;
+  width: 120px;
+  font-size: 12px;
+  border: 1px solid $hard_border_color;
   cursor: pointer;
 
   .dropdown-item {

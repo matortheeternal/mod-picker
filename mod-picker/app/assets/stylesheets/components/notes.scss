@@ -194,8 +194,9 @@
         position: relative;
         outline: none;
 
-        &:focus {
-          background-color: $bar_highlight_color;
+        .dropdown {
+          margin-top: 1px;
+          margin-left: 1px;
         }
       }
 
