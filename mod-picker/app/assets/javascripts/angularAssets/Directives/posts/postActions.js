@@ -30,6 +30,22 @@ app.controller('postActionsController', function ($scope, $timeout, contribution
         }
     };
 
+    $scope.approve = function(approved) {
+        contributionService.approve($scope.route, $scope.target.id, approved).then(function (data) {
+            if (data.status == "ok") {
+                $scope.target.approved = approved;
+            }
+        });
+    };
+
+    $scope.hide = function(hidden) {
+        contributionService.approve($scope.route, $scope.target.id, hidden).then(function (data) {
+            if (data.status == "ok") {
+                $scope.target.hidden = hidden;
+            }
+        });
+    };
+
     $scope.blurDropdown = function() {
         // we have to use a timeout for hiding the dropdown because
         // otherwise we would hide it before the click event on a result
