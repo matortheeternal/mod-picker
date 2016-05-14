@@ -74,7 +74,10 @@ class WorkshopHelper
     # .at_css searches for the first occurence
 
     # Checks if page returned an OK response code
-    if response.code == 200
+    
+    puts "nil? " + doc.at_css("div#message").nil?.to_s
+
+    if response.code == 200 && (doc.at_css("div#message")).nil?
       numOfEntriesText = doc.at_css("div.workshopBrowsePagingInfo")
 
       # Checks if number of workshop items div is empty or not
