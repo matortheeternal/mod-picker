@@ -44,6 +44,10 @@ body {
   background-color: inherit !important;
 }
 
+.half-opacity {
+  opacity: 0.50;
+}
+
 /* url styling */
 a {
   color: $link_color;
