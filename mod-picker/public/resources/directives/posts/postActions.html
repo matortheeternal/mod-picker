@@ -31,9 +31,9 @@
 
             <h3 class="section-title">
                 Share {{target.user.username}}'s
-                <span class="capitalize">{{route.replace('_', ' ').slice(0, -1)}}</span>
+                <span class="capitalize">{{route.split('_').join(' ').slice(0, -1)}}</span>
             </h3>
-            <input type="text" class="max-input" ng-model="shareLink" title="Link">
+            <input type="text" class="max-input" ng-model="shareLink" title="Link" spellcheck="false">
         </form>
     </div>
 </div>
