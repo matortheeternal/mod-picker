@@ -32,14 +32,67 @@ class WorkshopHelper
       author_url = comment.at_css("div.commentthread_comment_author a")["href"]
       comment_body = comment.at_css("div.commentthread_comment_text").text.strip
 
-      puts "Author url ==" + author_url
-      puts "Comment body ==" + comment_body
-
       # Case insensitive comparison of comment author's profile urls
       if author_url.casecmp(user_url) == 0
         user_data[:matched_comment] = comment_body
       end
     end
+
+    # return user data
+    user_data
+  end
+
+  def self.scrape_workshop_stats(id)
+    # vanityURL:        https://steamcommunity.com/id/Naricissu/myworkshopfiles
+    # Steam base64 id:  https://steamcommunity.com/profiles/76561197996859192/myworkshopfiles
+    
+    # Convert to string if not already a string
+    id = id.to_s unless id.is_a?(String)
+
+    # Check if id is vanityURL or steam base64 id
+    if id =~ /^7656119[0-9]{10}$/i
+      user_url = "https://steamcommunity.com/profiles/" + id + "/myworkshopfiles"
+    else
+      user_url = "https://steamcommunity.com/id/" + id + "/myworkshopfiles"
+    end
+    
+
+    # prepare headers
+    headers = {
+        :"user-agent" => Rails.application.config.user_agent
+    }
+
+    # get the user page
+    response = RestClient.get(user_url, headers)
+    @last_request = DateTime.now
+
+    # parse needed data from user page
+    doc = Nokogiri::HTML(response.body)
+    user_data = {}
+
+    # .css searches for every occurence of the accessor
+    # .at_css searches for the first occurence
+
+    # Checks if page returned an OK response code
+    if response.code == 200
+      numOfEntriesText = doc.at_css("div.workshopBrowsePagingInfo")
+
+      # Checks if number of workshop items div is empty or not
+      # If blank that means the user has no items uploaded
+      if numOfEntriesText.blank?
+        puts "No workshop items found"
+      else
+        numOfEntries = numOfEntriesText.text =~ /(?<=[0-9] of ).[0-9]+(?= entries)/
+        puts "num of entries = " + numOfEntries.inspect
+      end
+
+      numOfFollowers = doc.at_css("div.followStat").text
+      puts "num of followers = " + numOfFollowers
+    else
+      puts "Error getting user stats"
+    end
+
+    
 
     # return user data
     user_data
