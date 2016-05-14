@@ -6,8 +6,8 @@
     <span class="actions-dropdown-container">
         <div class="dropdown" ng-show="showDropdown">
             <div class="dropdown-item">View History</div>
-            <div class="dropdown-item" ng-click="showLinkModal = true">Get Link</div>
-            <div class="dropdown-item" ng-if="canReport" ng-click="showReportModal = true">Report</div>
+            <div class="dropdown-item" ng-click="toggleLinkModal(true)">Get Link</div>
+            <div class="dropdown-item" ng-click="toggleReportModal(true)" ng-if="canReport">Report</div>
             <div class="dropdown-separator" ng-if="canEdit || canApprove || canHide"></div>
             <div class="dropdown-item" ng-if="canEdit">Edit</div>
             <div class="dropdown-item" ng-if="canApprove && !target.approved" ng-click="approve(true)">Approve</div>
@@ -26,11 +26,11 @@
     </span>
 </div>
 
-<div class="modal-container" ng-show="showLinkModal">
+<div class="modal-container" ng-if="showLinkModal">
     <div class="modal skinny-modal">
         <form>
             <div class="close-modal">
-                <span class="fa fa-times" ng-click="showLinkModal = false"></span>
+                <span class="fa fa-times" ng-click="toggleLinkModal(false)"></span>
             </div>
 
             <h3 class="section-title">
@@ -42,8 +42,8 @@
     </div>
 </div>
 
-<div class="modal-container" ng-show="showReportModal">
-    <div class="modal">
+<div class="modal-container" ng-if="showReportModal">
+    <div class="modal big-modal">
         <form>
             <h3 class="section-title">
                 Report {{target.user.username}}'s
@@ -69,8 +69,8 @@
             </section>
 
             <div class="action-button-container">
-                <input type="submit" class="btn" value="Report" ng-click="submitReport()">
-                <input type="submit" class="btn" value="Cancel" ng-click="showReportModal = false">
+                <input type="submit" class="btn action-btn" value="Report" ng-click="submitReport()">
+                <input type="button" class="btn action-btn" value="Cancel" ng-click="toggleReportModal(false)">
             </div>
         </form>
     </div>

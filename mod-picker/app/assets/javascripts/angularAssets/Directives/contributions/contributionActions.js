@@ -21,6 +21,15 @@ app.controller('contributionActionsController', function ($scope, $timeout, cont
     // this is the report object
     $scope.report = {};
 
+    $scope.toggleLinkModal = function(visible) {
+        $scope.showLinkModal = visible;
+    };
+
+    $scope.toggleReportModal = function(visible) {
+        $scope.showReportModal = visible;
+    };
+
+
     $scope.helpfulMark = function(helpful) {
         if ($scope.target.helpful == helpful) {
             contributionService.helpfulMark($scope.route, $scope.target.id).then(function (data) {
