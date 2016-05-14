@@ -180,7 +180,26 @@
 
     .text-container {
       width: 100%;
-      padding: 0 20px 35px 20px;
+      padding: 0 20px;
+    }
+
+    .moderator-message {
+      border: 1px solid $error_secondary;
+      margin: 10px 30px;
+      background-color: $secondary_background;
+
+      .message-title {
+        background-color: $error_primary;
+        font-weight: 500;
+        padding: 5px;
+      }
+
+      .text-container {
+        padding: 10px;
+        p {
+          margin: 0 2px;
+        }
+      }
     }
 
     .actions-container {
