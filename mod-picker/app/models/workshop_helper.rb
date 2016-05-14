@@ -84,16 +84,22 @@ class WorkshopHelper
 
       # Checks if number of workshop items div is empty or not
       # If blank that means the user has no items uploaded
+      # workshop items count
       if numOfEntriesText.blank?
-        puts "No workshop items found"
+        user_data[:submissions_count] = 0
       else
         numOfEntries = numOfEntriesText.text =~ /(?<=[0-9] of ).[0-9]+(?= entries)/
-        puts "num of entries = " + numOfEntries.inspect
+        # puts "num of entries = " + numOfEntries.inspect
+        user_data[:submissions_count] = numOfEntries.inspect
       end
 
+      # username
+      user_data[:username] = doc.at_css("span#HeaderUserInfoName a").text
+
       # follower stats are always available even if 0
-      numOfFollowers = doc.at_css("div.followStat").text
-      puts "num of followers = " + numOfFollowers
+      # Follower count
+      user_data[:followers_count] = doc.at_css("div.followStat").text
+      # puts "num of followers = " + numOfFollowers
     elsif !user_found 
       puts "Error finding user profile"
     elsif response.code != 200
