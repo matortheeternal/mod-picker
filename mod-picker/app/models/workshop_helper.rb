@@ -72,12 +72,14 @@ class WorkshopHelper
 
     # .css searches for every occurence of the accessor
     # .at_css searches for the first occurence
-
-    # Checks if page returned an OK response code
     
-    puts "nil? " + doc.at_css("div#message").nil?.to_s
+    # Checks if an error message from steam indicating the user profile was found or not
+    # If error is missing, user is found
+    # If error is present, user is not found
+    user_found = doc.at_css("div#message").blank?
 
-    if response.code == 200 && (doc.at_css("div#message")).nil?
+    # Checks if response code is good and user is found before scraping for stats
+    if response.code == 200 && user_found
       numOfEntriesText = doc.at_css("div.workshopBrowsePagingInfo")
 
       # Checks if number of workshop items div is empty or not
@@ -89,10 +91,13 @@ class WorkshopHelper
         puts "num of entries = " + numOfEntries.inspect
       end
 
+      # follower stats are always available even if 0
       numOfFollowers = doc.at_css("div.followStat").text
       puts "num of followers = " + numOfFollowers
-    else
-      puts "Error getting user stats"
+    elsif !user_found 
+      puts "Error finding user profile"
+    elsif response.code != 200
+      puts "Error fetching user stats"
     end
 
     
