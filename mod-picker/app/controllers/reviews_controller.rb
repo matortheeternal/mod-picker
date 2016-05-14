@@ -1,5 +1,5 @@
-class ReviewsController < HelpfulableController
-  before_action :set_review, only: [:show, :update, :destroy]
+class ReviewsController < ContributionsController
+  before_action :set_review, only: [:show, :update, :approve, :hide, :destroy]
 
   # GET /reviews
   # GET /reviews.json

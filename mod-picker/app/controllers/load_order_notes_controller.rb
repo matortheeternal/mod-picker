@@ -1,5 +1,5 @@
-class LoadOrderNotesController < HelpfulableController
-  before_action :set_load_order_note, only: [:show, :update, :destroy]
+class LoadOrderNotesController < ContributionsController
+  before_action :set_load_order_note, only: [:show, :update, :approve, :hide, :destroy]
 
   # GET /load_order_notes
   # GET /load_order_notes.json

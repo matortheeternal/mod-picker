@@ -1,5 +1,5 @@
-class InstallOrderNotesController < HelpfulableController
-  before_action :set_install_order_note, only: [:show, :update, :destroy]
+class InstallOrderNotesController < ContributionsController
+  before_action :set_install_order_note, only: [:show, :update, :approve, :hide, :destroy]
 
   # GET /install_order_notes
   # GET /install_order_notes.json

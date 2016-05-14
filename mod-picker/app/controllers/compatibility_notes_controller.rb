@@ -1,5 +1,5 @@
-class CompatibilityNotesController < HelpfulableController
-  before_action :set_compatibility_note, only: [:show, :update, :destroy]
+class CompatibilityNotesController < ContributionsController
+  before_action :set_compatibility_note, only: [:show, :update, :destroy, :approve, :hide]
 
   # GET /compatibility_notes
   # GET /compatibility_notes.json
