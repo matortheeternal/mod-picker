@@ -42,7 +42,7 @@ app.controller('postActionsController', function ($scope, $timeout, contribution
     };
 
     $scope.hide = function(hidden) {
-        contributionService.approve($scope.route, $scope.target.id, hidden).then(function (data) {
+        contributionService.hide($scope.route, $scope.target.id, hidden).then(function (data) {
             if (data.status == "ok") {
                 $scope.target.hidden = hidden;
             }
