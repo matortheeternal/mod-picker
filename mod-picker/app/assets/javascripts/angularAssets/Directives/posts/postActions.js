@@ -14,6 +14,9 @@ app.directive('postActions', function () {
 });
 
 app.controller('postActionsController', function ($scope, $timeout, contributionService) {
+    // this is a direct link to the contribution to be displayed in the get link modal
+    $scope.shareLink = window.location.href + '/' + $scope.route + '/' + $scope.target.id;
+
     $scope.helpfulMark = function(helpful) {
         if ($scope.target.helpful == helpful) {
             contributionService.helpfulMark($scope.route, $scope.target.id).then(function (data) {

@@ -6,7 +6,7 @@
     <span class="actions-dropdown-container">
         <div class="dropdown" ng-show="showDropdown">
             <div class="dropdown-item">View History</div>
-            <div class="dropdown-item">Get Link</div>
+            <div class="dropdown-item" ng-click="showLinkModal = true">Get Link</div>
             <div class="dropdown-item" ng-if="canReport">Report</div>
             <div class="dropdown-separator" ng-if="canEdit || canApprove || canHide"></div>
             <div class="dropdown-item" ng-if="canEdit">Edit</div>
