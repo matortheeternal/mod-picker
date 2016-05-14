@@ -389,6 +389,13 @@ input[type="checkbox"] {
   padding: 0;
 }
 
+.max-input {
+  width: 100% !important;
+  font-size: 13px !important;
+  padding: 6px !important;
+  height: 32px !important;
+}
+
 .checkbox-list {
   padding: 0;
   margin: 0;
@@ -537,11 +544,27 @@ a .help-tooltip {
   background-color: rgba($shadow_color, 0.4);
 
   .modal {
+    position: relative;
     width: 400px;
     padding: 40px;
     margin: 150px auto;
     background-color: $primary_background;
     box-shadow: 1px 1px 10px 1px rgba($shadow_color, 0.8)
+  }
+
+  .skinny-modal {
+    width: 500px !important;
+    padding: 20px !important;
+    margin: 300px auto !important;
+  }
+
+  .close-modal {
+    position: absolute;
+    right: 0;
+    top: 0;
+    padding-right: 3px;
+    font-size: 20px;
+    cursor: pointer;
   }
 
   .error-message, .success-message {
