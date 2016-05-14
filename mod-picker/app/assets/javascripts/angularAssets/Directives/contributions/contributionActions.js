@@ -29,18 +29,31 @@ app.controller('contributionActionsController', function ($scope, $timeout, cont
         $scope.showReportModal = visible;
     };
 
+    $scope.updateHelpfulCounter = function(helpful, increment) {
+        var value = increment ? 1 : -1;
+        if (helpful) {
+            $scope.target.helpful_count += value;
+        } else {
+            $scope.target.not_helpful_count += value;
+        }
+    };
 
     $scope.helpfulMark = function(helpful) {
         if ($scope.target.helpful == helpful) {
             contributionService.helpfulMark($scope.route, $scope.target.id).then(function (data) {
                 if (data.status == "ok") {
                     delete $scope.target.helpful;
+                    $scope.updateHelpfulCounter(helpful, false);
                 }
             });
         } else {
             contributionService.helpfulMark($scope.route, $scope.target.id, helpful).then(function (data) {
                 if (data.status == "ok") {
+                    if ($scope.target.helpful == !helpful) {
+                        $scope.updateHelpfulCounter(!helpful, false);
+                    }
                     $scope.target.helpful = helpful;
+                    $scope.updateHelpfulCounter(helpful, true);
                 }
             });
         }
