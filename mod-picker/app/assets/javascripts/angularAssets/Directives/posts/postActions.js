@@ -13,16 +13,16 @@ app.directive('postActions', function () {
     };
 });
 
-app.controller('postActionsController', function ($scope, $timeout, modService) {
+app.controller('postActionsController', function ($scope, $timeout, contributionService) {
     $scope.helpfulMark = function(helpful) {
         if ($scope.target.helpful == helpful) {
-            modService.helpfulMark($scope.route, $scope.target.id).then(function (data) {
+            contributionService.helpfulMark($scope.route, $scope.target.id).then(function (data) {
                 if (data.status == "ok") {
                     delete $scope.target.helpful;
                 }
             });
         } else {
-            modService.helpfulMark($scope.route, $scope.target.id, helpful).then(function (data) {
+            contributionService.helpfulMark($scope.route, $scope.target.id, helpful).then(function (data) {
                 if (data.status == "ok") {
                     $scope.target.helpful = helpful;
                 }
