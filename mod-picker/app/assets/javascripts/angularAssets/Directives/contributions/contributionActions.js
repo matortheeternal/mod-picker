@@ -2,7 +2,7 @@ app.directive('contributionActions', function () {
     return {
         restrict: 'E',
         templateUrl: '/resources/directives/contributions/contributionActions.html',
-        controller: 'postActionsController',
+        controller: 'contributionActionsController',
         scope: {
             target: '=',
             index: '=',
@@ -13,7 +13,7 @@ app.directive('contributionActions', function () {
     };
 });
 
-app.controller('postActionsController', function ($scope, $timeout, contributionService) {
+app.controller('contributionActionsController', function ($scope, $timeout, contributionService) {
     // this is a direct link to the contribution to be displayed in the get link modal
     $scope.shareLink = window.location.href + '/' + $scope.route + '/' + $scope.target.id;
 
