@@ -50,15 +50,33 @@
                 <span class="capitalize">{{label}}</span>
             </h3>
             <section>
-                <div>What rule or community guideline does this submission violate?</div>
-                <select ng-model="report.type" ng-init="report.type = 'Respect'">
-                    <option value="respect">Respect</option>
-                    <option value="trust">Trust</option>
-                    <option value="collaboration">Collaboration</option>
-                    <option value="piracy">Piracy</option>
-                    <option value="spam">Spam</option>
-                    <option value="other">Other</option>
-                </select>
+                <div class="line-label">What rule or community guideline does this submission violate?</div>
+                <div class="report-reason-list" ng-init="report.type = 'respect'">
+                    <label>
+                        <input type="radio" name="reason" ng-model="report.type" value="respect">
+                        <span class="report-reason">Be Respectful</span>
+                    </label>
+                    <label>
+                        <input type="radio" name="reason" ng-model="report.type" value="trust">
+                        <span class="report-reason">Be Trustworthy</span>
+                    </label>
+                    <label>
+                        <input type="radio" name="reason" ng-model="report.type" value="collaboration">
+                        <span class="report-reason">Be Constructive</span>
+                    </label>
+                    <label>
+                        <input type="radio" name="reason" ng-model="report.type" value="spam">
+                        <span class="report-reason">No Spam, Advertising, or Solicitation</span>
+                    </label>
+                    <label>
+                        <input type="radio" name="reason" ng-model="report.type" value="piracy">
+                        <span class="report-reason">No Piracy</span>
+                    </label>
+                    <label>
+                        <input type="radio" name="reason" ng-model="report.type" value="other">
+                        <span class="report-reason">Other</span>
+                    </label>
+                </div>
             </section>
             
             <section>
