@@ -21,8 +21,31 @@ class HelpfulMark < ActiveRecord::Base
       message: "Not a valid record that contains helpful marks" }
 
   after_initialize :init
+  before_destroy :decrement_counters
+  after_create :increment_counters
 
   def init
     self.submitted ||= DateTime.now
   end
+
+  private
+    def decrement_counters
+      if self.helpful
+        self.helpfulable.helpful_count -= 1
+        self.helpfulable.save
+      else
+        self.helpfulable.not_helpful_count -= 1
+        self.helpfulable.save
+      end
+    end
+
+    def increment_counters
+      if self.helpful
+        self.helpfulable.helpful_count += 1
+        self.helpfulable.save
+      else
+        self.helpfulable.not_helpful_count += 1
+        self.helpfulable.save
+      end
+    end
 end
