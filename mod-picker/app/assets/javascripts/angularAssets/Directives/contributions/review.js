@@ -5,7 +5,7 @@
 app.directive('review', function () {
     return {
         restrict: 'E',
-        templateUrl: '/resources/directives/posts/review.html',
+        templateUrl: '/resources/directives/contributions/review.html',
         scope: {
             review: '=',
             index: '=',
