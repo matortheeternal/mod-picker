@@ -21,3 +21,19 @@
         <div class="action-box" ng-class="{ 'marked-not-helpful' : target.helpful !== undefined && !target.helpful }" ng-click="helpfulMark(false)" tabindex="{{index}}">Not Helpful</div>
     </span>
 </div>
+
+<div class="modal-container" ng-show="showLinkModal">
+    <div class="modal skinny-modal">
+        <form>
+            <div class="close-modal">
+                <span class="fa fa-times" ng-click="showLinkModal = false"></span>
+            </div>
+
+            <h3 class="section-title">
+                Share {{target.user.username}}'s
+                <span class="capitalize">{{route.replace('_', ' ').slice(0, -1)}}</span>
+            </h3>
+            <input type="text" class="max-input" ng-model="shareLink" title="Link">
+        </form>
+    </div>
+</div>
