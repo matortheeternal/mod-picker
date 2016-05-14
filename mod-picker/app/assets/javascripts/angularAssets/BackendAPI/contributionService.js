@@ -7,4 +7,20 @@ app.service('contributionService', function (backend, $q) {
         });
         return mark.promise;
     };
+
+    this.hide = function(type, id, hidden) {
+        var action = $q.defer();
+        backend.post('/' + type + '/' + id + '/hide', {hidden: hidden}).then(function (data) {
+            action.resolve(data);
+        });
+        return action.promise;
+    };
+
+    this.approve = function(type, id, approved) {
+        var action = $q.defer();
+        backend.post('/' + type + '/' + id + '/approve', {approved: approved}).then(function (data) {
+            action.resolve(data);
+        });
+        return action.promise;
+    };
 });
