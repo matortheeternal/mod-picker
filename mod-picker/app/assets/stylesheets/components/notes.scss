@@ -200,20 +200,20 @@
         }
       }
 
-      .action-link {
-        padding-right: 16px;
-      }
-
-      .helpfulness {
+      .right-item {
         float: right;
       }
 
-      .marked-not-helpful {
+      .red-box {
         background-color: $error_secondary;
       }
 
-      .marked-helpful {
+      .green-box {
         background-color: $success_secondary;
+      }
+
+      .yellow-box {
+        background-color: $warning_secondary;
       }
     }
   }
