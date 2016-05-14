@@ -31,13 +31,13 @@ class Ability
       can [:update, :hide], Mod
       can :destroy, ModRequirement
 
-      # can update or hide any contribution
+      # can update, approve, or hide any contribution
       can [:update, :hide], Comment
-      can [:update, :hide], CompatibilityNote
-      can [:update, :hide], IncorrectNote
-      can [:update, :hide], InstallOrderNote
-      can [:update, :hide], LoadOrderNote
-      can [:update, :hide], Review
+      can [:update, :approve, :hide], CompatibilityNote
+      can [:update, :approve, :hide], IncorrectNote
+      can [:update, :approve, :hide], InstallOrderNote
+      can [:update, :approve, :hide], LoadOrderNote
+      can [:update, :approve, :hide], Review
       can [:update, :hide], Tag
 
       # can delete tags
@@ -129,7 +129,7 @@ class Ability
       can :update, UserBio, { :user_id => user.id }
 
       # abilities for mod authors
-      can [:update, :hide], Mod, { :mod_authors => { :user_id => user.id } }
+      can :update, Mod, { :mod_authors => { :user_id => user.id } }
       can :destroy, ModRequirement, {:mod_version => {:mod => {:mod_authors => {:user_id => user.id } } } }
       can :destroy, ModTag, { :mod => { :mod_authors => { :user_id => user.id } } }
 

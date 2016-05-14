@@ -2,7 +2,7 @@
 	<div class="mod-tab-action sort-by-dropdown">
 		<strong>Sort By: </strong>
 
-		<select ng-model="reviewsFilter" ng-init="reviewsFilter = 'reputation'">
+		<select ng-model="sort.reviews" ng-init="sort.reviews = 'reputation'">
 			<option value="reputation">Reputation</option>
 			<option value="helpfulness">Helpfulness</option>
 			<option value="overallRating">Overall Rating</option>
@@ -18,7 +18,7 @@
 	</div>
 
 	<div class="mod-tab-action">
-		<input class="btn mod-page-btn" type="submit" value="Add Review" ng-click="startNewReview()" ng-disabled="newReview"/>
+		<input class="btn mod-page-btn" type="button" value="Add Review" ng-click="startNewReview()" ng-disabled="newReview"/>
 	</div>
 </div>
 
@@ -53,6 +53,6 @@
     </section>
 </div>
 
-<div ng-repeat="review in mod.reviews" class="reviews">
-	<review review="review"></review>
+<div ng-repeat="review in mod.reviews" class="post">
+	<review review="review" show-author-column="true"></review>
 </div>

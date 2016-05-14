@@ -11,12 +11,15 @@ Rails.application.routes.draw do
     resources :incorrect_notes
     resources :reviews
     resources :mod_authors
-    resources :user_settings
     resources :user_bios
     resources :mod_lists
     resources :plugins
     resources :mod_asset_files
-    resources :users
+
+    # users and user settings
+    resources :users, only: [:index, :show, :update, :destroy]
+    resources :user_settings, only: [:index, :update]
+    match '/link_account', to: 'users#link_account', via: 'get'
 
     # scraping
     resources :nexus_infos, only: [:show, :destroy]
@@ -47,6 +50,18 @@ Rails.application.routes.draw do
     match '/compatibility_notes/:id/helpful', to: 'compatibility_notes#helpful', via: 'post'
     match '/install_order_notes/:id/helpful', to: 'install_order_notes#helpful', via: 'post'
     match '/load_order_notes/:id/helpful', to: 'load_order_notes#helpful', via: 'post'
+
+    # hiding content
+    match '/reviews/:id/hide', to: 'reviews#hide', via: 'post'
+    match '/compatibility_notes/:id/hide', to: 'compatibility_notes#hide', via: 'post'
+    match '/install_order_notes/:id/hide', to: 'install_order_notes#hide', via: 'post'
+    match '/load_order_notes/:id/hide', to: 'load_order_notes#hide', via: 'post'
+
+    # approving content
+    match '/reviews/:id/approve', to: 'reviews#approve', via: 'post'
+    match '/compatibility_notes/:id/approve', to: 'compatibility_notes#approve', via: 'post'
+    match '/install_order_notes/:id/approve', to: 'install_order_notes#approve', via: 'post'
+    match '/load_order_notes/:id/approve', to: 'load_order_notes#approve', via: 'post'
 
     # agreement marks
     match '/incorrect_notes/:id/agreement', to: 'incorrect_notes#agreement', via: 'post'

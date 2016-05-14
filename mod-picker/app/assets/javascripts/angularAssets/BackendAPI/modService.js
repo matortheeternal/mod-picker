@@ -48,6 +48,23 @@ app.service('modService', function (backend, $q) {
         return star.promise;
     };
 
+    this.helpfulMark = function(type, id, helpful) {
+        var mark = $q.defer();
+        var helpfulObj = helpful == undefined ? {} : {helpful: helpful};
+        backend.post('/' + type + '/' + id + '/helpful', helpfulObj).then(function (data) {
+            mark.resolve(data);
+        });
+        return mark.promise;
+    };
+
+    this.retrieveReviews = function (modId, options) {
+        var reviews = $q.defer();
+        backend.retrieve('/mods/' + modId + '/reviews', options).then(function (data) {
+            reviews.resolve(data);
+        });
+        return reviews.promise;
+    };
+
     this.retrieveCompatibilityNotes = function (modId, options) {
         var compatibilityNotes = $q.defer();
         backend.retrieve('/mods/' + modId + '/compatibility_notes', options).then(function (data) {

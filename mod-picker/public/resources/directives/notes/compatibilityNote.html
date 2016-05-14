@@ -1,0 +1,30 @@
+<div class="note-container">
+    <div class="note-title">
+		<span ng-if="modId">
+            <span class="capitalize">{{note.compatibility_type}}</span>
+            {{note.compatibility_verb}}
+            <span ng-if="note.mods[0].id == modId">
+                <a ng-href="#/mod/{{note.mods[1].id}}" target="_blank">{{note.mods[1].name}}</a>
+            </span>
+            <span ng-if="note.mods[1].id == modId">
+                <a ng-href="#/mod/{{note.mods[0].id}}" target="_blank">{{note.mods[0].name}}</a>
+            </span>
+        </span>
+        <span class="right-item">
+            <span class="standing">Good Standing</span>
+        </span>
+    </div>
+    <author-column user="note.user" ng-if="showAuthorColumn" class="author-column"></author-column>
+    <div class="content-column">
+        <div class="submitted-line">Submitted {{note.submitted | date : 'longDate'}} - {{note.submitted | date : 'shortTime'}}</div>
+        <div class="text-container" marked="note.text_body"></div>
+        <div class="actions-container">
+            <span class="action-box">Make A Correction</span>
+            <span class="action-box">Actions <i class="fa fa-caret-down"></i></span>
+            <span class="helpfulness">
+                <div class="action-box" ng-class="{ 'marked-helpful' : note.helpful }" ng-click="helpfulMark(true)">Helpful</div>
+                <div class="action-box" ng-class="{ 'marked-not-helpful' : note.helpful !== undefined && !note.helpful }" ng-click="helpfulMark(false)">Not Helpful</div>
+            </span>
+        </div>
+    </div>
+</div>

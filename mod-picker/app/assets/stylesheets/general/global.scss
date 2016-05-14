@@ -35,8 +35,13 @@ body {
 }
 
 
-.text-muted {
-  color: #767676;
+/* utility classes */
+.capitalize {
+  text-transform: capitalize !important;
+}
+
+.no-bg {
+  background-color: inherit !important;
 }
 
 /* url styling */
@@ -71,6 +76,19 @@ a:hover {
   &:hover {
     color: $link_hover_color_primary;
   }
+}
+
+/* user roles */
+.user-role-admin {
+  color: $admin_color;
+}
+
+.user-role-moderator {
+  color: $moderator_color;
+}
+
+.user-role-mod-author {
+  color: $mod_author_color;
 }
 
 /* header styling */
@@ -210,6 +228,26 @@ input[type="button"], input[type="submit"] {
   }
 }
 
+.tab {
+  .tab-section {
+    margin-left: 0;
+    h3 {
+      margin: 0;
+      background-color: $bar_dark_color;
+      padding: 14px;
+      font-size: 16px;
+      color: $inverse_text_color;
+    }
+    section {
+      margin: 0;
+      padding: 14px;
+      background-color: $primary_background;
+      border: 1px solid $border_color;
+      border-top: 0;
+    }
+  }
+}
+
 /* css for columns */
 .two-columns {
   background: linear-gradient(90deg, $secondary_background 50%, $primary_background 50%);
@@ -239,6 +277,13 @@ input[type="button"], input[type="submit"] {
   min-width: 360px;
 }
 
+.medium-column {
+  width: 300px;
+  .section-title {
+    font-size: 16px;
+  }
+}
+
 .right-column {
   width: 970px;
   padding: 40px 0 40px 48px;
@@ -249,6 +294,18 @@ input[type="button"], input[type="submit"] {
 
 .tabs-column {
   padding: 20px 0 20px 20px;
+  .section-title {
+    font-size: 20px;
+  }
+}
+
+/* css for forms, inputs, and labels */
+.success-message {
+  background-color: $success_primary;
+  padding: 14px;
+  font-weight: 500;
+  font-size: 20px;
+  text-align: center;
 }
 
 /* css for forms, inputs, and labels */
@@ -328,7 +385,6 @@ form {
   .section-title {
     display: block;
     vertical-align: top;
-    width: 200px;
     font-size: 22px;
     font-weight: 500;
     color: $text_color;
@@ -350,10 +406,6 @@ form {
     section {
       margin-bottom: 15px;
       margin-top: 15px;
-
-      div {
-        display: inline-block;
-      }
     }
 
     select {
@@ -394,9 +446,14 @@ form {
   }
 
   .input-label {
+    display: inline-block;
     min-width: 180px;
     margin-bottom: 5px;
     margin-top: 5px;
+  }
+
+  .input-block {
+    display: inline-block;
   }
 }
 
@@ -418,8 +475,23 @@ a .help-tooltip {
 /* css for avatars */
 
 .avatar {
-  max-width: 150px;
-  max-height: 150px;
+  border: 2px solid $border_color;
+  vertical-align: bottom;
+}
+
+.avatar-small {
+  max-width: 48px;
+  max-height: 48px;
+}
+
+.avatar-medium {
+  max-width: 96px;
+  max-height: 96px;
+}
+
+.avatar-full {
+  max-width: 250px;
+  max-height: 250px;
 }
 
 /* css for modals */
@@ -441,12 +513,26 @@ a .help-tooltip {
     box-shadow: 1px 1px 10px 1px rgba($shadow_color, 0.8)
   }
 
+  .error-message, .success-message {
+    font-size: 18px;
+  }
+
+  .big-modal {
+    width: 600px;
+  }
+
   .checkbox-list {
     font-size: 14px;
   }
 
   .section-title {
     margin-top: 0;
+  }
+
+  form {
+    section {
+      margin: 15px;
+    }
   }
 }
 

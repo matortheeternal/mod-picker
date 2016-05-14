@@ -10,23 +10,23 @@ $secondary_background: #1d1d20;
 $background_highlight: #1e2028;
 
 $shadow_color: #000;
-$border_color: #0c3235;
-$soft_border_color: #0a2439;
-$hard_border_color: #0b476b;
+$border_color: #162729;
+$soft_border_color: #151f29;
+$hard_border_color: #2e414d;
 
 $h1_color: #bbb;
 $h2_color: #ccc;
-$h3_color: #576d7d;
-$h4_color: #485d86;
+$h3_color: #678a99;
+$h4_color: #6b7b99;
 
 $action_color: #2b7377;
 $action_text_color: #bbb;
-$bright_action_color: #1b5a8f;
+$bright_action_color: #267fc9;
 $dark_action_color: #165c5e;
 
 $bar_color: #0a2030;
 $bar_dark_color: #11334B;
-$bar_highlight_color: #0b476b;
+$bar_highlight_color: #263e4d;
 $bar_text_color: #aaa;
 $bar_highlight_text_color: #7eaac7;
 
@@ -39,11 +39,15 @@ $slider_range_color: #21a6c9;
 $slider_circle_color_after: #0a2439;
 
 $success_primary: #415741;
-$success_secondary: #22D522;
+$success_secondary: #4d994d;
 $error_primary: #5A1A23;
-$error_secondary: #F52222;
+$error_secondary: #994d4d;
 $warning_primary: #5A5A1A;
-$warning_secondary: #F5D718;
+$warning_secondary: #998e4d;
+
+$admin_color: #800000;
+$moderator_color: #8000b0;
+$mod_author_color: #008000;
 
 $select_image: image_path("Blackreach_select_arrow.png");
 
