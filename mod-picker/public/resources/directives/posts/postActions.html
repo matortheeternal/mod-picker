@@ -20,6 +20,10 @@
         <div class="action-box" ng-class="{ 'green-box' : target.helpful }" ng-click="helpfulMark(true)" tabindex="{{index}}">Helpful</div>
         <div class="action-box" ng-class="{ 'red-box' : target.helpful !== undefined && !target.helpful }" ng-click="helpfulMark(false)" tabindex="{{index}}">Not Helpful</div>
     </span>
+    <span class="right-item" ng-if="target.hidden || !target.approved">
+        <div class="action-box yellow-box no-action" ng-if="target.hidden">Hidden</div>
+        <div class="action-box red-box no-action" ng-if="!(target.hidden || target.approved)">Not Approved</div>
+    </span>
 </div>
 
 <div class="modal-container" ng-show="showLinkModal">
