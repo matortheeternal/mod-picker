@@ -54,6 +54,11 @@ class Review < ActiveRecord::Base
     end
   end
 
+  def recompute_helpful_counts
+    self.helpful_count = HelpfulMark.where(helpfulable_id: self.id, helpfulable_type: "Review", helpful: true).count
+    self.not_helpful_count = HelpfulMark.where(helpfulable_id: self.id, helpfulable_type: "Review", helpful: false).count
+  end
+
   private
     def increment_counter_caches
       self.mod.reviews_count += 1
