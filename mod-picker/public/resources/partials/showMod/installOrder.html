@@ -1,5 +1,5 @@
-﻿<div class="mod-tab-actions">
-    <div class="mod-tab-action sort-by-dropdown">
+﻿<div class="mod-tab-items">
+    <div class="mod-tab-item sort-by-dropdown">
 		<strong>Sort By: </strong>
 
 		<select ng-model="sort.install_order_note" ng-init="sort.install_order_note = 'reputation'">
@@ -9,8 +9,8 @@
 		</select>
 	</div>
 	<!-- TODO: replace input with button that has an inline value -->
-	<div class="mod-tab-action">
-		<input class="btn mod-page-btn" type="submit" value="Add Note" ng-click="startNewInstallOrderNote()" ng-disabled="newInstallOrderNote"/>
+	<div class="mod-tab-item">
+		<input class="btn" type="submit" value="Add Install Order Note" ng-click="startNewInstallOrderNote()" ng-disabled="newInstallOrderNote"/>
 	</div>
 </div>
 

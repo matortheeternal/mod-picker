@@ -1,4 +1,4 @@
-﻿<div class="mod-tab-actions">
+﻿<div class="mod-tab-items">
 	<!--<div class="centered-mod-tab-action">
 		<strong>Compatible</strong>
 		<br>
@@ -11,7 +11,7 @@
 		</label>
 	</div>--><!--
 
-	--><div class="mod-tab-action sort-by-dropdown">
+	--><div class="mod-tab-item sort-by-dropdown">
 		<strong>Sort By: </strong>
 
 		<select ng-model="sort.compatibility_notes" ng-init="sort.compatibility_notes = 'reputation'">
@@ -21,8 +21,8 @@
 			<option value="edited">Last Edited</option>
 		</select>
 	</div>
-	<div class="mod-tab-action">
-		<input class="btn mod-page-btn" type="button" value="Add Note" ng-click="startNewCompatibilityNote()" ng-disabled="newCompatibilityNote"/>
+	<div class="mod-tab-item">
+		<input class="btn" type="button" value="Add Compatibility Note" ng-click="startNewCompatibilityNote()" ng-disabled="newCompatibilityNote"/>
 	</div>
 </div>
 
