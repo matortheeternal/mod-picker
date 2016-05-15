@@ -1,7 +1,9 @@
 class Review < ActiveRecord::Base
   include Filterable
 
-  after_create :increment_counter_caches
+  attr_writer :ratings
+
+  after_create :increment_counter_caches, :create_associations
   before_destroy :decrement_counter_caches
 
   scope :mod, -> (mod) { where(mod_id: mod) }
@@ -57,6 +59,19 @@ class Review < ActiveRecord::Base
   def recompute_helpful_counts
     self.helpful_count = HelpfulMark.where(helpfulable_id: self.id, helpfulable_type: "Review", helpful: true).count
     self.not_helpful_count = HelpfulMark.where(helpfulable_id: self.id, helpfulable_type: "Review", helpful: false).count
+  end
+
+  def create_ratings
+    if @ratings
+      @ratings.each do |rating|
+        self.review_ratings.create(rating)
+      end
+    end
+  end
+
+  def create_associations
+    self.create_ratings
+    self.save!
   end
 
   private
