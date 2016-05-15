@@ -34,6 +34,6 @@ class ReviewsController < ContributionsController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def contribution_params
-      params.require(:review).permit(:mod_id, :hidden, :text_body, :ratings)
+      params.require(:review).permit(:mod_id, :game_id, :text_body, review_ratings_attributes: [:rating, :review_section_id])
     end
 end
