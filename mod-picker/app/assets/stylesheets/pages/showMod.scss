@@ -8,14 +8,8 @@
   border-radius: 4%;
   margin: 2px;
   cursor: pointer;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-  -webkit-transition: all 0.2s ease-in-out;
-  -moz-transition: all 0.2s ease-in-out;
-  -o-transition: all 0.2s ease-in-out;
-  transition: all 0.2s ease-in-out;
+  @include user-select(none);
+  @include transition(all 0.2s ease-in-out);
 
   &:focus, &:hover {
     background-color: $bar_highlight_color;
@@ -436,6 +430,8 @@
   .rating-item {
     font-weight: 500;
     padding: 0 8px;
+    cursor: default;
+    @include user-select(none);
 
     .fa-caret-down {
       display: none;
@@ -480,10 +476,7 @@
       position: absolute;
       left: calc(50% - 10px);
       bottom: -4px;
-      -webkit-transition: opacity 0.3s ease-in-out;
-      -moz-transition: opacity 0.3s ease-in-out;
-      -o-transition: opacity 0.3s ease-in-out;
-      transition: opacity 0.3s ease-in-out;
+      @include transition(opacity 0.3s ease-in-out);
     }
 
     input {
@@ -497,10 +490,7 @@
       border: none;
       margin: 0;
       background-color: inherit;
-      -webkit-transition: box-shadow 0.2s ease-in-out;
-      -moz-transition: box-shadow 0.2s ease-in-out;
-      -o-transition: box-shadow 0.2s ease-in-out;
-      transition: box-shadow 0.2s ease-in-out;
+      @include transition(box-shadow 0.2s ease-in-out);
 
       &:hover {
         box-shadow: 0 0 3px 0 $border_color;
@@ -526,10 +516,7 @@
     i {
       padding: 2px;
       cursor: pointer;
-      -webkit-transition: color 0.2s ease-in-out;
-      -moz-transition: color 0.2s ease-in-out;
-      -o-transition: color 0.2s ease-in-out;
-      transition: color 0.2s ease-in-out;
+      @include transition(color 0.2s ease-in-out);
     }
     i.disabled {
       color: $hard_border_color !important;

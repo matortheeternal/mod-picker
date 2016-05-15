@@ -96,10 +96,7 @@ a {
   color: $link_color;
   text-decoration: none;
   cursor: pointer;
-  -webkit-transition: all 0.2s ease-in-out;
-  -moz-transition: all 0.2s ease-in-out;
-  -o-transition: all 0.2s ease-in-out;
-  transition: all 0.2s ease-in-out;
+  @include transition(all 0.2s ease-in-out);
 }
 
 a.strong {
@@ -190,10 +187,8 @@ input[type="button"], input[type="submit"] {
   border: 0;
   border-radius: 0;
   cursor: pointer;
-  -webkit-transition: all 0.2s ease-in-out;
-  -moz-transition: all 0.2s ease-in-out;
-  -o-transition: all 0.2s ease-in-out;
-  transition: all 0.2s ease-in-out;
+  @include transition(all 0.2s ease-in-out);
+
   &:disabled {
     cursor: default;
     background-color: $hard_border_color;
@@ -467,10 +462,7 @@ input[type="checkbox"] {
 }
 
 label {
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
+  @include user-select(none);
 }
 
 label .sublabel {

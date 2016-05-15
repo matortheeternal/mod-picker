@@ -19,10 +19,7 @@
 
   span {
     cursor: pointer;
-    -webkit-transition: all 0.2s ease-in-out;
-    -moz-transition: all 0.2s ease-in-out;
-    -o-transition: all 0.2s ease-in-out;
-    transition: all 0.2s ease-in-out;
+    @include transition(all 0.2s ease-in-out);
   }
 
   span:hover {
@@ -86,10 +83,7 @@
       vertical-align: bottom;
       cursor: pointer;
       border-right: 1px solid $border_color;
-      -webkit-user-select: none;
-      -moz-user-select: none;
-      -ms-user-select: none;
-      user-select: none;
+      @include user-select(none);
     }
 
     .sorting-options {

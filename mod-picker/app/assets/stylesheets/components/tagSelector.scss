@@ -21,10 +21,7 @@
     .tag-text, .tag-count, .remove-tag, .add-tag {
       line-height: 14px;
       float: left;
-      -webkit-user-select: none;
-      -moz-user-select: none;
-      -ms-user-select: none;
-      user-select: none;
+      @include user-select(none);
     }
 
     .tag-text {
@@ -69,10 +66,7 @@
   .add-tag-box {
     background-color: $dark_action_color;
     cursor: pointer;
-    -webkit-transition: all 0.2s ease-in-out;
-    -moz-transition: all 0.2s ease-in-out;
-    -o-transition: all 0.2s ease-in-out;
-    transition: all 0.2s ease-in-out;
+    @include transition(all 0.2s ease-in-out);
 
     &:hover {
       background-color: $bar_color;
