@@ -2,6 +2,7 @@ class Review < ActiveRecord::Base
   include Filterable
 
   after_create :increment_counter_caches
+  before_save :set_dates
   before_destroy :decrement_counter_caches
 
   scope :mod, -> (mod) { where(mod_id: mod) }
@@ -62,6 +63,14 @@ class Review < ActiveRecord::Base
   end
 
   private
+    def set_dates
+      if self.submitted.nil?
+        self.submitted = DateTime.now
+      else
+        self.edited = DateTime.now
+      end
+    end
+
     def increment_counter_caches
       self.mod.reviews_count += 1
       # we also take this chance to recompute the mod's reputation
