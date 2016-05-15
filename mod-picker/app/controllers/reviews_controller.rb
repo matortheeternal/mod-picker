@@ -11,12 +11,13 @@ class ReviewsController < ContributionsController
   # POST /reviews
   def create
     @review = Review.new(contribution_params)
+    @review.submitted_by = current_user.id
     authorize! :create, @review
 
     if @review.save
       render json: {status: :ok}
     else
-      render json: @contribution.errors, status: :unprocessable_entity
+      render json: @review.errors, status: :unprocessable_entity
     end
   end
 
@@ -33,6 +34,6 @@ class ReviewsController < ContributionsController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def contribution_params
-      params.require(:review).permit(:submitted_by, :mod_id, :hidden, :submitted, :edited, :text_body)
+      params.require(:review).permit(:mod_id, :hidden, :text_body, :ratings)
     end
 end
