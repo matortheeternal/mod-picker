@@ -53,6 +53,12 @@
     </section>
 </div>
 
-<div ng-repeat="review in mod.reviews" class="post">
-	<review review="review" show-author-column="true" index="100 + $index" user="user"></review>
-</div>
+<loader data="mod.reviews" content-class="" spinner-class="big-spinner">
+    <div ng-repeat="review in mod.reviews" class="post">
+        <review review="review" show-author-column="true" index="100 + $index" user="user"></review>
+    </div>
+
+    <div class="no-content-message" ng-if="mod.reviews.length == 0">
+        There are no reviews for this mod yet.
+    </div>
+</loader>
