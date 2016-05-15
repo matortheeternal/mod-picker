@@ -8,7 +8,6 @@
   border-radius: 4%;
   margin: 2px;
   cursor: pointer;
-  outline: none;
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
@@ -26,24 +25,36 @@
 .red-box {
   background-color: $error_secondary;
 
-  &:focus, &:hover {
-    background-color: $bar_highlight_color;
+  &:focus {
+    background-color: $error_secondary;
+  }
+
+  &:hover {
+    background-color: $action_color;
   }
 }
 
 .green-box {
   background-color: $success_secondary;
 
-  &:focus, &:hover {
-    background-color: $bar_highlight_color;
+  &:focus {
+    background-color: $success_secondary;
+  }
+
+  &:hover {
+    background-color: $action_color;
   }
 }
 
 .yellow-box {
   background-color: $warning_secondary;
 
-  &:focus, &:hover {
-    background-color: $bar_highlight_color;
+  &:focus {
+    background-color: $warning_secondary;
+  }
+
+  &:hover {
+    background-color: $action_color;
   }
 }
 
@@ -297,6 +308,12 @@
     min-width: 190px;
     display: inline-block;
   }
+}
+
+.no-content-message {
+  margin: 40px 0 20px;
+  text-align: center;
+  font-size: 20px;
 }
 
 .post {
