@@ -23,4 +23,12 @@ app.service('contributionService', function (backend, $q) {
         });
         return action.promise;
     };
+
+    this.submitContribution = function(type, contribution) {
+        var action = $q.defer();
+        backend.post('/' + type, contribution).then(function (data) {
+            action.resolve(data);
+        });
+        return action.promise;
+    };
 });
