@@ -343,6 +343,10 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
         $scope.availableSections.push(rating.section);
     };
 
+    $scope.validateReview = function() {
+        $scope.newReview.valid = $scope.newReview.text_body.length > 512;
+    };
+
     // discard a new review object
     $scope.discardReview = function() {
         delete $scope.newReview;
