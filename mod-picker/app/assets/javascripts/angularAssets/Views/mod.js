@@ -365,11 +365,20 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
         }
 
         // submit the review
+        var review_ratings = [];
+        $scope.newReview.ratings.forEach(function(item) {
+            review_ratings.push({
+                review_section_id: item.section.id,
+                rating: item.rating
+            });
+        });
         var reviewObj = {
-            game_id: $scope.mod.game_id,
-            mod_id: $scope.mod.id,
-            text_body: $scope.newReview.text_body,
-            ratings: $scope.newReview.ratings
+            review: {
+                game_id: $scope.mod.game_id,
+                mod_id: $scope.mod.id,
+                text_body: $scope.newReview.text_body,
+                review_ratings_attributes: review_ratings
+            }
         };
         $scope.newReview.submitting = true;
         contributionService.submitContribution("reviews", reviewObj).then(function(data) {
