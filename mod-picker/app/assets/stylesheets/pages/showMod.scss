@@ -79,7 +79,7 @@
   background-color: $bar_dark_color;
 }
 
-.quality-value {
+.quality-item {
   font-size: 10px;
   font-weight: 700;
   padding-top: 2px;
@@ -89,11 +89,11 @@
   &:hover {
     background-color: $action_color;
   }
-}
 
-.reputation-number {
-  display: block;
-  font-size: 24px;
+  .quality-number {
+    display: block;
+    font-size: 24px;
+  }
 }
 
 .mod-info {
@@ -273,7 +273,7 @@
     font-size: 14px;
   }
 
-  .quality-value {
+  .quality-item {
     height: auto;
     padding: 5px 16px 5px 16px;
     border: 1px solid $border_color;
