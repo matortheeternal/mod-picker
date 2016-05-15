@@ -380,7 +380,13 @@
 
 //making the text-area scroll
 .note-text-area {
-  .CodeMirror, .CodeMirror-scroll {
+  .CodeMirror {
+    // this needs to be 20px higher than the scroll section height due to padding
+    max-height: 420px;
+    min-height: 420px;
+  }
+
+  .CodeMirror-scroll {
     max-height: 400px;
     min-height: 400px;
   }
