@@ -1,0 +1,20 @@
+<div class="note-container">
+	<div class="note-title">
+		<span>
+            Load
+            <span>
+                <a ng-href="#/mod/{{note.plugins[0].mod_id}}/analysis" target="_blank">{{note.plugins[0].filename}}</a>
+                Before
+                <a ng-href="#/mod/{{note.plugins[1].mod_id}}/analysis" target="_blank">{{note.plugins[1].filename}}</a>
+            </span>
+        </span>
+        <span class="right-item">
+            <span class="standing">Good Standing</span>
+        </span>
+	</div>
+	<author-column user="note.user" ng-if="showAuthorColumn" class="author-column" index="index"></author-column>
+    <div class="content-column">
+        <contribution-text target="note"></contribution-text>
+        <contribution-actions target="note" route="'load_order_notes'" correctable="true" index="index" user="user"></contribution-actions>
+    </div>
+</div>

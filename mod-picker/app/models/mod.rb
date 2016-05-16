@@ -103,8 +103,8 @@ class Mod < ActiveRecord::Base
   def create_asset_files
     if @asset_paths
       @asset_paths.each do |path|
-        asset_file = AssetFile.find_or_create_by(filepath: path)
-        self.mod_asset_files.create(asset_file_id: asset_file.id)
+        asset_file = AssetFile.find_or_create_by(game_id: self.game_id, filepath: path)
+        self.mod_asset_files.create(game_id: self.game_id, asset_file_id: asset_file.id)
       end
     end
   end
@@ -112,6 +112,7 @@ class Mod < ActiveRecord::Base
   def create_plugins
     if @plugin_dumps
       @plugin_dumps.each do |dump|
+        dump[:game_id] = self.game_id
         if Plugin.find_by(filename: dump[:filename], crc_hash: dump[:crc_hash]).nil?
           self.plugins.create(dump)
         end
@@ -213,22 +214,12 @@ class Mod < ActiveRecord::Base
   def show_json
     self.as_json({
       :include => {
-          :reviews => {
-              :except => [:submitted_by],
-              :include => {
-                  :user => {
-                      :only => [:id, :username, :role, :title],
-                      :include => {
-                          :reputation => {:only => [:overall]}
-                      },
-                      :methods => :avatar
-                  }
-              }
-          },
           :tags => {
               :except => [:game_id, :hidden, :mod_lists_count],
-              :user => {
-                  :only => [:id, :username]
+              :include => {
+                  :user => {
+                      :only => [:id, :username]
+                  }
               }
           },
           :nexus_infos => {:except => [:mod_id]},
@@ -241,10 +232,11 @@ class Mod < ActiveRecord::Base
   end
 
   def as_json(options={})
-    if options == {}
-      super({
+    if JsonHelpers.json_options_empty(options)
+      default_options = {
           :only => [:id, :name]
-      })
+      }
+      super(options.merge(default_options))
     else
       super(options)
     end

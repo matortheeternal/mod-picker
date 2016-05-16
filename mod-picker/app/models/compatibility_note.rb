@@ -11,6 +11,7 @@ class CompatibilityNote < ActiveRecord::Base
   # FIXME: change this back to status: once the schema has been updated.
   enum compatibility_type: [ :incompatible, :"partially incompatible", :"compatibility mod", :"compatibility option", :"make custom patch" ]
 
+  belongs_to :game, :inverse_of => 'compatibility_notes'
   belongs_to :user, :foreign_key => 'submitted_by', :inverse_of => 'compatibility_notes'
 
   # associated mods
@@ -46,19 +47,29 @@ class CompatibilityNote < ActiveRecord::Base
     [first_mod, second_mod]
   end
 
+  def recompute_helpful_counts
+    self.helpful_count = HelpfulMark.where(helpfulable_id: self.id, helpfulable_type: "CompatibilityNote", helpful: true).count
+    self.not_helpful_count = HelpfulMark.where(helpfulable_id: self.id, helpfulable_type: "CompatibilityNote", helpful: false).count
+  end
+
   def as_json(options={})
-    super({
-        :except => [:submitted_by],
-        :include => {
-            :user => {
-                :only => [:id, :username, :role, :title],
-                :include => {
-                    :reputation => {:only => [:overall]}
-                },
-                :methods => :avatar
-            }
-        },
-        :methods => :mods
-    })
+    if JsonHelpers.json_options_empty(options)
+      default_options = {
+          :except => [:submitted_by],
+          :include => {
+              :user => {
+                  :only => [:id, :username, :role, :title],
+                  :include => {
+                      :reputation => {:only => [:overall]}
+                  },
+                  :methods => :avatar
+              }
+          },
+          :methods => :mods
+      }
+      super(options.merge(default_options))
+    else
+      super(options)
+    end
   end
 end
