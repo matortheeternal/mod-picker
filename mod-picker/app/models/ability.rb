@@ -61,9 +61,6 @@ class Ability
       cannot :read, InstallOrderNote, :approved => false
       cannot :read, LoadOrderNote, :approved => false
       cannot :read, Review, :approved => false
-      cannot :read, ModTag, :approved => false
-      cannot :read, ModListTag, :approved => false
-      cannot :read, Mod, :approved => false
     end
 
     # signed in users who aren't banned
