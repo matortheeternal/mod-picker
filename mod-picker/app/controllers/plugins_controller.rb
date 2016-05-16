@@ -2,7 +2,6 @@ class PluginsController < ApplicationController
   before_action :set_plugin, only: [:show, :destroy]
 
   # GET /plugins
-  # GET /plugins.json
   def index
     @plugins = Plugin.all
 
@@ -10,14 +9,12 @@ class PluginsController < ApplicationController
   end
 
   # GET /plugins/1
-  # GET /plugins/1.json
   def show
     authorize! :read, @plugin
     render :json => @plugin
   end
 
   # DELETE /plugins/1
-  # DELETE /plugins/1.json
   def destroy
     authorize! :destroy, @plugin
     if @plugin.destroy
