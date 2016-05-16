@@ -48,15 +48,6 @@ app.service('modService', function (backend, $q) {
         return star.promise;
     };
 
-    this.helpfulMark = function(type, id, helpful) {
-        var mark = $q.defer();
-        var helpfulObj = helpful == undefined ? {} : {helpful: helpful};
-        backend.post('/' + type + '/' + id + '/helpful', helpfulObj).then(function (data) {
-            mark.resolve(data);
-        });
-        return mark.promise;
-    };
-
     this.retrieveReviews = function (modId, options) {
         var reviews = $q.defer();
         backend.retrieve('/mods/' + modId + '/reviews', options).then(function (data) {

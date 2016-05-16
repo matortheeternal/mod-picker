@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160512034616) do
+ActiveRecord::Schema.define(version: 20160514183916) do
 
   create_table "agreement_marks", id: false, force: :cascade do |t|
     t.integer "incorrect_note_id", limit: 4
@@ -110,6 +110,10 @@ ActiveRecord::Schema.define(version: 20160512034616) do
     t.integer  "first_mod_id",            limit: 4
     t.integer  "second_mod_id",           limit: 4
     t.integer  "game_id",                 limit: 4,                     null: false
+    t.boolean  "approved",                              default: false
+    t.string   "moderator_message",       limit: 255
+    t.integer  "helpful_count",           limit: 4,     default: 0
+    t.integer  "not_helpful_count",       limit: 4,     default: 0
   end
 
   add_index "compatibility_notes", ["compatibility_plugin_id"], name: "compatibility_patch", using: :btree
@@ -190,14 +194,18 @@ ActiveRecord::Schema.define(version: 20160512034616) do
   add_index "install_order_note_history_entries", ["submitted_by"], name: "fk_rails_18a032d0ac", using: :btree
 
   create_table "install_order_notes", force: :cascade do |t|
-    t.integer  "submitted_by",  limit: 4,                     null: false
-    t.integer  "first_mod_id",  limit: 4,                     null: false
-    t.integer  "second_mod_id", limit: 4,                     null: false
+    t.integer  "submitted_by",      limit: 4,                     null: false
+    t.integer  "first_mod_id",      limit: 4,                     null: false
+    t.integer  "second_mod_id",     limit: 4,                     null: false
     t.datetime "submitted"
     t.datetime "edited"
-    t.text     "text_body",     limit: 65535
-    t.boolean  "hidden",                      default: false, null: false
-    t.integer  "game_id",       limit: 4,                     null: false
+    t.text     "text_body",         limit: 65535
+    t.boolean  "hidden",                          default: false, null: false
+    t.integer  "game_id",           limit: 4,                     null: false
+    t.boolean  "approved",                        default: false
+    t.string   "moderator_message", limit: 255
+    t.integer  "helpful_count",     limit: 4,     default: 0
+    t.integer  "not_helpful_count", limit: 4,     default: 0
   end
 
   add_index "install_order_notes", ["first_mod_id"], name: "fk_rails_bc30c8f58f", using: :btree
@@ -218,14 +226,18 @@ ActiveRecord::Schema.define(version: 20160512034616) do
   add_index "load_order_note_history_entries", ["submitted_by"], name: "fk_rails_478afef4a8", using: :btree
 
   create_table "load_order_notes", force: :cascade do |t|
-    t.integer  "submitted_by",     limit: 4,                     null: false
-    t.integer  "first_plugin_id",  limit: 4,                     null: false
-    t.integer  "second_plugin_id", limit: 4,                     null: false
+    t.integer  "submitted_by",      limit: 4,                     null: false
+    t.integer  "first_plugin_id",   limit: 4,                     null: false
+    t.integer  "second_plugin_id",  limit: 4,                     null: false
     t.datetime "submitted"
     t.datetime "edited"
-    t.text     "text_body",        limit: 65535
-    t.boolean  "hidden",                         default: false, null: false
-    t.integer  "game_id",          limit: 4,                     null: false
+    t.text     "text_body",         limit: 65535
+    t.boolean  "hidden",                          default: false, null: false
+    t.integer  "game_id",           limit: 4,                     null: false
+    t.boolean  "approved",                        default: false
+    t.string   "moderator_message", limit: 255
+    t.integer  "helpful_count",     limit: 4,     default: 0
+    t.integer  "not_helpful_count", limit: 4,     default: 0
   end
 
   add_index "load_order_notes", ["first_plugin_id"], name: "fk_rails_d6c931c1cc", using: :btree
@@ -585,7 +597,11 @@ ActiveRecord::Schema.define(version: 20160512034616) do
     t.datetime "edited"
     t.text     "text_body",             limit: 65535
     t.integer  "incorrect_notes_count", limit: 4,     default: 0
-    t.integer  "game_id",               limit: 4,                 null: false
+    t.integer  "game_id",               limit: 4,                     null: false
+    t.boolean  "approved",                            default: false
+    t.string   "moderator_message",     limit: 255
+    t.integer  "helpful_count",         limit: 4,     default: 0
+    t.integer  "not_helpful_count",     limit: 4,     default: 0
   end
 
   add_index "reviews", ["game_id"], name: "fk_rails_dfb9dc48b4", using: :btree

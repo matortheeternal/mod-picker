@@ -51,6 +51,18 @@ Rails.application.routes.draw do
     match '/install_order_notes/:id/helpful', to: 'install_order_notes#helpful', via: 'post'
     match '/load_order_notes/:id/helpful', to: 'load_order_notes#helpful', via: 'post'
 
+    # hiding content
+    match '/reviews/:id/hide', to: 'reviews#hide', via: 'post'
+    match '/compatibility_notes/:id/hide', to: 'compatibility_notes#hide', via: 'post'
+    match '/install_order_notes/:id/hide', to: 'install_order_notes#hide', via: 'post'
+    match '/load_order_notes/:id/hide', to: 'load_order_notes#hide', via: 'post'
+
+    # approving content
+    match '/reviews/:id/approve', to: 'reviews#approve', via: 'post'
+    match '/compatibility_notes/:id/approve', to: 'compatibility_notes#approve', via: 'post'
+    match '/install_order_notes/:id/approve', to: 'install_order_notes#approve', via: 'post'
+    match '/load_order_notes/:id/approve', to: 'load_order_notes#approve', via: 'post'
+
     # agreement marks
     match '/incorrect_notes/:id/agreement', to: 'incorrect_notes#agreement', via: 'post'
 

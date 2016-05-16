@@ -33,8 +33,17 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
         var mod = data.mod;
         $scope.mod = mod;
         $scope.modStarred = data.star;
-        $scope.statusClass = "status-" + mod.status;
-        $scope.mod.status = mod.status.capitalize();
+        switch (mod.status) {
+            case "good":
+                $scope.statusClass = "green-box";
+                break;
+            case "outdated":
+                $scope.statusClass = "yellow-box";
+                break;
+            case "dangerous":
+                $scope.statusClass = "red-box";
+                break;
+        }
 
         // getting categories
         categoryService.retrieveCategories().then(function (categories) {
