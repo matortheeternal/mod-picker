@@ -44,11 +44,11 @@
     <div class="add-note-options" ng-show="['compatibility mod', 'compatibility option'].indexOf(newCompatibilityNote.compatibility_type) > -1">
         <span ng-if="newCompatibilityNote.compatibility_type === 'compatibility mod'">
             <strong>Compatibility Mod</strong>
-            <mod-input result-id="newCompatibilityNote.compatibility_mod" excluded-id="mod.id" on-change="validateCompatibilityNote"></mod-input>
+            <mod-input result-id="newCompatibilityNote.compatibility_mod_id" excluded-id="mod.id" on-change="validateCompatibilityNote"></mod-input>
         </span>
         <span ng-if="newCompatibilityNote.compatibility_type === 'compatibility option'">
             <strong>Compatibility Plugin</strong>
-            <mod-input result-id="newCompatibilityNote.compatibility_plugin" search-plugins="true" on-change="validateCompatibilityNote"></mod-input>
+            <mod-input result-id="newCompatibilityNote.compatibility_plugin_id" search-plugins="true" on-change="validateCompatibilityNote"></mod-input>
         </span>
     </div>
 	<div class="note-content-container">
