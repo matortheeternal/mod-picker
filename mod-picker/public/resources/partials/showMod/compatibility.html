@@ -55,7 +55,7 @@
 		<text-area data="newCompatibilityNote.text_body" ng-refresh="updateMDE" class="note-text-area"></text-area>
 
 		<div class="action-button-container">
-			<input class="btn action-btn" type="submit" value="Submit" ng-click="submitCompatibilityNote()"/>
+			<input class="btn action-btn" type="submit" value="Submit" ng-click="submitCompatibilityNote()" ng-disabled="!newCompatibilityNote.valid" title="{{newCompatibilityNote.valid ? 'Submit your compatibility note' : 'Your compatibility note is either too short or incomplete.'}}"/>
 			<input class="btn action-btn" type="button" value="Discard" ng-click="discardCompatibilityNote()">
 		</div>
 	</div>

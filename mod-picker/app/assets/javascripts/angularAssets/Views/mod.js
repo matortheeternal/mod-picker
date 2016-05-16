@@ -432,6 +432,13 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
         $scope.updateMDE = false;
     };
 
+    $scope.validateCompatibilityNote = function() {
+        $scope.newCompatibilityNote.valid = $scope.newCompatibilityNote.text_body.length > 512 &&
+            ($scope.newCompatibilityNote.second_mod_id !== undefined) &&
+            ($scope.newCompatibilityNote.compatibility_type === "compatibility mod") ==
+            ($scope.newCompatibilityNote.compatibility_mod !== undefined);
+    };
+
     // discard the compatibility note object
     $scope.discardCompatibilityNote = function() {
         delete $scope.newCompatibilityNote;
