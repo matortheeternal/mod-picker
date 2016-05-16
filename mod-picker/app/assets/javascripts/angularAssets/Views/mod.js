@@ -444,6 +444,36 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
         delete $scope.newCompatibilityNote;
     };
 
+    // submit a compatibility note
+    $scope.submitCompatibilityNote = function() {
+        // return if the compatibility note is invalid
+        if (!$scope.newCompatibilityNote.valid) {
+            return;
+        }
+
+        // submit the compatibility note
+        var noteObj = {
+            compatibility_note: {
+                game_id: $scope.mod.game_id,
+                compatibility_type: $scope.newCompatibilityNote.compatibility_type,
+                first_mod_id: $scope.mod.id,
+                second_mod_id: $scope.newCompatibilityNote.second_mod_id,
+                text_body: $scope.newCompatibilityNote.text_body,
+                compatibility_plugin_id: $scope.newCompatibilityNote.compatibility_plugin_id,
+                compatibility_mod_id: $scope.newCompatibilityNote.compatibility_mod_id
+            }
+        };
+        $scope.newCompatibilityNote.submitting = true;
+        contributionService.submitContribution("compatibility_notes", noteObj).then(function(data) {
+            if (data.status == "ok") {
+                $scope.submitMessage = "Compatibility Note submitted successfully!";
+                $scope.showSuccess = true;
+                // TODO: push the compatibility note onto the $scope.mod.compatibility_notes array
+                delete $scope.newCompatibilityNote;
+            }
+        });
+    };
+
     // INSTALL ORDER NOTE RELATED LOGIC
     // instantiate a new install order note object
     $scope.startNewInstallOrderNote = function() {
