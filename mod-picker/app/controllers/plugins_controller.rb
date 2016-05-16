@@ -8,6 +8,15 @@ class PluginsController < ApplicationController
     render :json => @plugins
   end
 
+  # POST /plugins/search
+  def search
+    @plugins = Plugin.filter(search_params).sort({ column: "filename", direction: "DESC" }).limit(10)
+
+    render :json => @plugins.as_json({
+        :only => [:id, :filename]
+    })
+  end
+
   # GET /plugins/1
   def show
     authorize! :read, @plugin
@@ -28,6 +37,11 @@ class PluginsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_plugin
       @plugin = Plugin.find(params[:id])
+    end
+
+    # Params we allow searching on
+    def search_params
+      params[:filters].slice(:search, :game)
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
