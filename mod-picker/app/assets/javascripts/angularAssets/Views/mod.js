@@ -231,7 +231,8 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
     $scope.retrieveAnalysis = function() {
         modService.retrieveAnalysis($stateParams.modId).then(function(analysis) {
             analysis.nestedAssets = assetUtils.convertDataStringToNestedObject(analysis.assets);
-            $scope.mod.analysis = analysis;
+            $scope.mod.assets = analysis.assets;
+            $scope.mod.plugins = analysis.plugins;
         });
     };
 
