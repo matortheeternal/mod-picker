@@ -3,8 +3,8 @@ class ModsController < ApplicationController
 
   # POST /mods
   def index
-    @mods = Mod.includes(:nexus_infos).filter(filtering_params).sort(params[:sort]).paginate(:page => params[:page])
-    @count =  Mod.includes(:nexus_infos).filter(filtering_params).sort(params[:sort]).count
+    @mods = Mod.includes(:nexus_infos).accessible_by(current_ability).filter(filtering_params).sort(params[:sort]).paginate(:page => params[:page])
+    @count =  Mod.includes(:nexus_infos).accessible_by(current_ability).filter(filtering_params).sort(params[:sort]).count
 
     render :json => {
       mods: @mods.as_json({
@@ -91,7 +91,7 @@ class ModsController < ApplicationController
   # GET /mods/1/reviews
   def reviews
     authorize! :read, @mod
-    reviews = @mod.reviews.paginate(:page => params[:page])
+    reviews = @mod.reviews.accessible_by(current_ability).paginate(:page => params[:page])
     helpful_marks = HelpfulMark.where(submitted_by: current_user.id, helpfulable_type: "Review", helpfulable_id: reviews.ids)
     render :json => {
         reviews: reviews,
@@ -102,7 +102,7 @@ class ModsController < ApplicationController
   # GET /mods/1/compatibility_notes
   def compatibility_notes
     authorize! :read, @mod
-    compatibility_notes = @mod.compatibility_notes.paginate(:page => params[:page])
+    compatibility_notes = @mod.compatibility_notes.accessible_by(current_ability).paginate(:page => params[:page])
     helpful_marks = HelpfulMark.where(submitted_by: current_user.id, helpfulable_type: "CompatibilityNote", helpfulable_id: compatibility_notes.ids)
     render :json => {
         compatibility_notes: compatibility_notes,
@@ -113,7 +113,7 @@ class ModsController < ApplicationController
   # GET /mods/1/install_order_notes
   def install_order_notes
     authorize! :read, @mod
-    install_order_notes = @mod.install_order_notes.paginate(:page => params[:page])
+    install_order_notes = @mod.install_order_notes.accessible_by(current_ability).paginate(:page => params[:page])
     helpful_marks = HelpfulMark.where(submitted_by: current_user.id, helpfulable_type: "InstallOrderNote", helpfulable_id: install_order_notes.ids)
     render :json => {
         install_order_notes: install_order_notes,
@@ -125,7 +125,7 @@ class ModsController < ApplicationController
   def load_order_notes
     authorize! :read, @mod
     if @mod.plugins.length > 0
-      load_order_notes = @mod.load_order_notes.paginate(:page => params[:page])
+      load_order_notes = @mod.load_order_notes.accessible_by(current_ability).paginate(:page => params[:page])
       helpful_marks = HelpfulMark.where(submitted_by: current_user.id, helpfulable_type: "LoadOrderNote", helpfulable_id: load_order_notes.ids)
       render :json => {
           load_order_notes: load_order_notes,
