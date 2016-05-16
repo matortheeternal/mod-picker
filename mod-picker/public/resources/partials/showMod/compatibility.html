@@ -40,16 +40,16 @@
                 <option value="make custom patch">Make Custom Patch for</option>
             </select>
         </span>
-        <mod-input mod-id="newCompatibilityNote.second_mod_id" excluded-id="mod.id" valid="newCompatibiltiyNote.mod_valid"></mod-input>
+        <mod-input result-id="newCompatibilityNote.second_mod_id" excluded-id="mod.id"></mod-input>
     </div>
     <div class="add-note-options" ng-show="['compatibility mod', 'compatibility option'].indexOf(newCompatibilityNote.compatibility_type) > -1">
         <span ng-if="newCompatibilityNote.compatibility_type === 'compatibility mod'">
             <strong>Compatibility Mod</strong>
-            <mod-input mod-id="newCompatibilityNote.compatibility_mod" excluded-id="mod.id" valid="newCompatibiltiyNote.compatibility_mod_valid"></mod-input>
+            <mod-input result-id="newCompatibilityNote.compatibility_mod" excluded-id="mod.id"></mod-input>
         </span>
         <span ng-if="newCompatibilityNote.compatibility_type === 'compatibility option'">
             <strong>Compatibility Plugin</strong>
-            <mod-input mod-id="newCompatibilityNote.compatibility_plugin" search-plugins="true" valid="newCompatibiltiyNote.compatibility_plugin_valid"></mod-input>
+            <mod-input result-id="newCompatibilityNote.compatibility_plugin" search-plugins="true"></mod-input>
         </span>
     </div>
 	<div class="note-content-container">

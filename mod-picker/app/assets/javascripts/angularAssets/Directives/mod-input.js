@@ -6,7 +6,6 @@ app.directive('modInput', function () {
         scope: {
             modId: '=',
             excludedId: '=',
-            valid: '=',
             searchPlugins: '=?'
         }
     }
