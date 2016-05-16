@@ -430,10 +430,10 @@ select {
   font-family: inherit;
 }
 
-input, textarea, .CodeMirror {
+input, textarea {
   background-color: $input_background;
   color: $text_color;
-  border: 1px solid $text_color;
+  border: 1px solid $hard_border_color;
 
   &:disabled {
     border: 2px inset;
@@ -441,6 +441,8 @@ input, textarea, .CodeMirror {
 }
 
 .CodeMirror {
+  background-color: $input_background;
+  color: $text_color;
   border-radius: 0;
 
   div.CodeMirror-cursor {
@@ -449,11 +451,8 @@ input, textarea, .CodeMirror {
 }
 
 .editor-toolbar {
+  cursor: default;
   border-radius: 0;
-
-  a.active, a:hover {
-    background-color: $action_color;
-  }
 }
 
 input[type="checkbox"] {
