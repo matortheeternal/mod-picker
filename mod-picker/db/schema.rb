@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160514183916) do
+ActiveRecord::Schema.define(version: 20160516234909) do
 
   create_table "agreement_marks", id: false, force: :cascade do |t|
     t.integer "incorrect_note_id", limit: 4
@@ -452,6 +452,10 @@ ActiveRecord::Schema.define(version: 20160514183916) do
     t.float    "average_rating",            limit: 24,  default: 0.0
     t.datetime "released"
     t.float    "update_rate",               limit: 24,  default: 0.0
+    t.integer  "plugins_count",             limit: 4,   default: 0
+    t.integer  "requirements_count",        limit: 4,   default: 0
+    t.integer  "mod_lists_count",           limit: 4,   default: 0
+    t.integer  "asset_files_count",         limit: 4,   default: 0
   end
 
   add_index "mods", ["game_id"], name: "fk_rails_3ec448a848", using: :btree
