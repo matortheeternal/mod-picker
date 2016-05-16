@@ -17,7 +17,7 @@ app.filter('percentage', function() {
   };
 });
 
-app.controller('modController', function ($scope, $q, $stateParams, $timeout, modService, pluginService, categoryService, gameService, userTitleService, assetUtils, reviewSectionService, userService, contributionService) {
+app.controller('modController', function ($scope, $q, $stateParams, $timeout, modService, pluginService, categoryService, gameService, userTitleService, assetUtils, reviewSectionService, userService, contributionService, contributionFactory) {
     $scope.tags = [];
     $scope.newTags = [];
     $scope.sort = {};
@@ -424,7 +424,7 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
         // set up newCompatibilityNote object
         $scope.newCompatibilityNote = {
             compatibility_type: "incompatible",
-            text_body: ""
+            text_body: contributionFactory.getDefaultTextBody("CompatibilityNote")
         };
 
         // update the markdown editor
