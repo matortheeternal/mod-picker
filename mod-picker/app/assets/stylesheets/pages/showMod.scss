@@ -344,18 +344,32 @@
     @include user-select(none);
   }
 
-  .add-note-actions {
-    margin: 12px;
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    font-size: 14px;
-    width: 745px;
+  .add-note-options {
+    margin: 20px;
 
     .mod-input {
+      max-width: 450px;
       padding: 8px;
-      width: 200px;
       height: 30px;
+      border: 0;
+      margin-left: 20px;
+      font-size: 16px;
+      @include transition(box-shadow 0.2s ease-in-out);
+
+      &:hover {
+        box-shadow: 0 0 3px 0 $border_color;
+      }
+
+      &:focus {
+        box-shadow: 0 0 3px 0 $border_color;
+        outline: none;
+      }
+    }
+
+    strong {
+      min-width: 263px;
+      text-align: center;
+      display: inline-block;
     }
 
     .compatibility-dropdown {

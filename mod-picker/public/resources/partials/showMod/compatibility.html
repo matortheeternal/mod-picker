@@ -30,29 +30,27 @@
 	<div class="add-note-title">
 		Add Compatibility Note
 	</div>
-    <div class="add-note-actions">
-        <strong>{{mod.name}}</strong>
-        <div class="select compatibility-dropdown">
+    <div class="add-note-options">
+        <span class="select compatibility-dropdown">
             <select ng-model="newCompatibilityNote.compatibility_type">
-                <option value="incompatible">is incompatible with</option>
-                <option value="partially incompatible">is partially incompatible with</option>
-                <option value="compatibility mod">requires an assets patch for</option>
-                <option value="compatibility option">requires a plug-in patch for</option>
-                <option value="make custom patch">needs a custom patch for</option>
+                <option value="incompatible">Incompatible with</option>
+                <option value="partially incompatible">Partially Incompatible with</option>
+                <option value="compatibility mod">Compatibility Mod for</option>
+                <option value="compatibility option">Compatibility Option for</option>
+                <option value="make custom patch">Make Custom Patch for</option>
             </select>
-        </div>
-        <input type="text" class="mod-input" placeholder="Enter Mod Name" ng-model="newCompatibilityNote.second_mod_id">
-
-        <div ng-if="newCompatibilityNote.compatibility_type === 'compatibility mod'">
-            Compatibility Mod
-            <input type="text" placeholder="Enter Mod Name" ng-model="newCompatibilityNote.compatibilityModName" ng-change="newCompatibilityNote.compatibility_mod = getModByName(newCompatibilityNote.compatibilityModName)">
-        </div>
-        <div ng-if="newCompatibilityNote.compatibility_type === 'compatibility option'">
-            Compatibility Plug-in
-            <select ng-model="newCompatibilityNote.compatibility_type">
-                <option ng-repeat="" value=""></option>
-            </select>
-        </div>
+        </span>
+        <input type="text" class="mod-input" placeholder="Enter Mod Name" ng-model="newCompatibilityNote.second_mod_id" pu-elastic-input>
+    </div>
+    <div class="add-note-options" ng-show="['compatibility mod', 'compatibility option'].indexOf(newCompatibilityNote.compatibility_type) > -1">
+        <span ng-if="newCompatibilityNote.compatibility_type === 'compatibility mod'">
+            <strong>Compatibility Mod</strong>
+            <input type="text" class="mod-input" placeholder="Enter Mod Name" ng-model="newCompatibilityNote.compatibility_mod"  pu-elastic-input>
+        </span>
+        <span ng-if="newCompatibilityNote.compatibility_type === 'compatibility option'">
+            <strong>Compatibility Plugin</strong>
+            <input type="text" class="mod-input" placeholder="Enter Plugin Name" ng-model="newCompatibilityNote.compatibility_plugin" pu-elastic-input>
+        </span>
     </div>
 	<div class="note-content-container">
 		<text-area data="newCompatibilityNote.text_body" ng-refresh="updateMDE" class="note-text-area"></text-area>
