@@ -13,8 +13,8 @@ app.directive('modInput', function () {
 
 app.controller('modInputController', function($scope, $timeout, modService, pluginService) {
     // set some constants
-    var pause = 600;
-    var minLength = 1;
+    var pause = 500;
+    var minLength = 2;
 
     $scope.hoverRow = function(index) {
         $scope.currentIndex = index;
@@ -23,20 +23,26 @@ app.controller('modInputController', function($scope, $timeout, modService, plug
     $scope.searchMods = function(str) {
         // Begin the search
         str = str.toLowerCase();
-        var searchCallback = function(data) {
-            $scope.searching = false;
-            if ($scope.excludedId) {
-                data = data.filter(function(mod) {
-                    return mod.id !== $scope.excludedId;
-                });
+        if (str.length >= minLength) {
+            var searchCallback = function(data) {
+                $scope.searching = false;
+                if ($scope.excludedId) {
+                    data = data.filter(function(mod) {
+                        return mod.id !== $scope.excludedId;
+                    });
+                }
+                $scope.results = data;
+                $scope.$applyAsync();
+            };
+            if ($scope.searchPlugins) {
+                pluginService.searchPlugins(str).then(searchCallback);
+            } else {
+                modService.searchMods(str).then(searchCallback);
             }
-            $scope.results = data;
-            $scope.$applyAsync();
-        };
-        if ($scope.searchPlugins) {
-            pluginService.searchPlugins(str).then(searchCallback);
         } else {
-            modService.searchMods(str).then(searchCallback);
+            $scope.searching = false;
+            $scope.showDropdown = false;
+            $scope.$applyAsync();
         }
     };
 
@@ -57,7 +63,7 @@ app.controller('modInputController', function($scope, $timeout, modService, plug
         }, 100);
     };
 
-    $scope.handleTagKey = function ($event) {
+    $scope.keyDown = function ($event) {
         var key = $event.keyCode;
 
         // pressing enter applies dropdown selection
@@ -88,8 +94,13 @@ app.controller('modInputController', function($scope, $timeout, modService, plug
                 $event.stopPropagation();
             }
         }
+    };
+
+    $scope.keyUp = function($event) {
+        var key = $event.keyCode;
+
         // keys that don't change the value of the input should be ignored
-        else if ([9, 16, 17, 18, 20, 37, 39, 91].indexOf(key) > -1) {
+        if ([9, 13, 16, 17, 18, 20, 37, 38, 39, 40, 91].indexOf(key) > -1) {
             // do nothing
         }
         // pressing escape, backspace, or delete clears the dropdown
@@ -104,13 +115,13 @@ app.controller('modInputController', function($scope, $timeout, modService, plug
             $scope.currentIndex = -1;
             $scope.results = [];
 
-            // restart search timer
+            // clear the search timer
             if ($scope.searchTimer) {
                 clearTimeout($scope.searchTimer);
             }
 
             // search if we have more than minLength characters
-            if ($scope.searchText.length > minLength) {
+            if ($scope.searchText.length >= minLength) {
                 $scope.showDropdown = true;
 
                 // search for matching tags
@@ -120,5 +131,5 @@ app.controller('modInputController', function($scope, $timeout, modService, plug
                 }, pause);
             }
         }
-    };
+    }
 });
