@@ -25,6 +25,11 @@ app.controller('modInputController', function($scope, $timeout, modService, plug
         if (str.length > 3) {
             var searchCallback = function(data) {
                 $scope.searching = false;
+                if ($scope.excludedId) {
+                    data = data.filter(function(mod) {
+                        return mod.id !== $scope.excludedId;
+                    });
+                }
                 $scope.results = data;
                 $scope.$applyAsync();
             };
@@ -84,8 +89,8 @@ app.controller('modInputController', function($scope, $timeout, modService, plug
                 $event.stopPropagation();
             }
         }
-        // pressing escape clears the dropdown
-        else if (key == 27) {
+        // pressing escape, backspace, or delete clears the dropdown
+        else if ((key == 27) || (key == 46) || (key == 8)) {
             $scope.results = [];
             $scope.showDropdown = false;
             $scope.$applyAsync();
