@@ -5,6 +5,7 @@ app.directive('modInput', function () {
         controller: 'modInputController',
         scope: {
             resultId: '=',
+            onChange: '=?',
             excludedId: '=?',
             searchPlugins: '=?'
         }
@@ -131,5 +132,11 @@ app.controller('modInputController', function($scope, $timeout, modService, plug
                 }, pause);
             }
         }
-    }
+    };
+
+    $scope.$watch('resultId', function() {
+        if ($scope.onChange) {
+            $scope.onChange();
+        }
+    }, true);
 });
