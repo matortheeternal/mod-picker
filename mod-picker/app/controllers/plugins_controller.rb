@@ -16,30 +16,6 @@ class PluginsController < ApplicationController
     render :json => @plugin
   end
 
-  # POST /plugins
-  def create
-    authorize! :submit, :mod
-    response = 'Invalid submission'
-    if params[:plugin].present?
-      file = params[:plugin]
-      if File.exists?(Rails.root.join('app','assets', 'plugins', file.original_filename))
-        response = 'File exists'
-      else
-        begin
-          File.open(Rails.root.join('app','assets', 'plugins', file.original_filename), 'wb') do |f|
-            f.write(file.read)
-          end
-          response = 'Success'
-        rescue
-          response = 'Unknown failure'
-        end
-      end
-    end
-
-    # render json response
-    render json: {status: response}
-  end
-
   # DELETE /plugins/1
   # DELETE /plugins/1.json
   def destroy

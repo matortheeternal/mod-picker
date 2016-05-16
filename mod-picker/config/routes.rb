@@ -13,7 +13,6 @@ Rails.application.routes.draw do
     resources :mod_authors
     resources :user_bios
     resources :mod_lists
-    resources :plugins
     resources :mod_asset_files
 
     # users and user settings
@@ -38,6 +37,9 @@ Rails.application.routes.draw do
     match '/mods', to: 'mods#index', via: 'post'
     match '/mods/search', to: 'mods#search', via: 'post'
 
+    # plugins
+    resources :plugins, only: [:show, :destroy]
+    match '/plugins', to: 'plugins#index', via: 'post'
     # content associated with mods
     match '/mods/:id/reviews', to: 'mods#reviews', via: 'get'
     match '/mods/:id/compatibility_notes', to: 'mods#compatibility_notes', via: 'get'
