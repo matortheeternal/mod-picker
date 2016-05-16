@@ -113,6 +113,10 @@ app.controller('tagInputController', function($scope, $timeout) {
                 $event.stopPropagation();
             }
         }
+        // keys that don't change the value of the input should be ignored
+        else if ([9, 16, 17, 18, 20, 37, 39, 91].indexOf(key) > -1) {
+            // do nothing
+        }
         // pressing backspace when the field has one character hides the dropdown
         else if ((key == 8) && (len == 1)) {
             $scope.results = [];

@@ -89,6 +89,10 @@ app.controller('modInputController', function($scope, $timeout, modService, plug
                 $event.stopPropagation();
             }
         }
+        // keys that don't change the value of the input should be ignored
+        else if ([9, 16, 17, 18, 20, 37, 39, 91].indexOf(key) > -1) {
+            // do nothing
+        }
         // pressing escape, backspace, or delete clears the dropdown
         else if ((key == 27) || (key == 46) || (key == 8)) {
             $scope.results = [];
