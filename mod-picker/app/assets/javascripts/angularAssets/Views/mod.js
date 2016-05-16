@@ -433,6 +433,11 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
     };
 
     $scope.validateCompatibilityNote = function() {
+        // exit if we don't have a newCompatibilityNote yet
+        if (!$scope.newCompatibilityNote) {
+            return;
+        }
+
         $scope.newCompatibilityNote.valid = $scope.newCompatibilityNote.text_body.length > 512 &&
             ($scope.newCompatibilityNote.second_mod_id !== undefined) &&
             ($scope.newCompatibilityNote.compatibility_type === "compatibility mod") ==
