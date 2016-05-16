@@ -25,8 +25,8 @@
 	</div>
 </div>
 
-<div class="add-note-box" ng-show="newCompatibilityNote">
-	<div class="add-note-title">
+<div class="content-block add-note-box" ng-show="newCompatibilityNote">
+	<div class="content-title">
 		Add Compatibility Note
 	</div>
     <div class="add-note-options">
@@ -62,7 +62,7 @@
 </div>
 
 <loader data="mod.compatibility_notes" content-class="" spinner-class="big-spinner">
-    <div ng-repeat="note in mod.compatibility_notes" class="post">
+    <div ng-repeat="note in mod.compatibility_notes" class="content-block">
         <compatibility-note note="note" mod-id="mod.id" show-author-column="true" index="100 + $index" user="user"></compatibility-note>
     </div>
 

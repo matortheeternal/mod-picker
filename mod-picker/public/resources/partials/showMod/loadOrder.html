@@ -14,8 +14,8 @@
 	</div>
 </div>
 
-<div class="add-note-box" ng-show="newLoadOrderNote">
-	<div class="add-note-title">
+<div class="content-block add-note-box" ng-show="newLoadOrderNote">
+	<div class="content-title">
 		Add Load Order Note
 	</div>
 	<div class="add-note-actions">
@@ -46,7 +46,7 @@
 </div>
 
 <loader data="mod.load_order_notes" content-class="" spinner-class="big-spinner">
-	<div ng-repeat="note in mod.load_order_notes" class="post">
+	<div ng-repeat="note in mod.load_order_notes" class="content-block">
 		<load-order-note note="note" show-author-column="true" index="100 + $index" user="user"></load-order-note>
 	</div>
 

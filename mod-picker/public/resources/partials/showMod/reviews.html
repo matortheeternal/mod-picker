@@ -21,8 +21,8 @@
 	</div>
 </div>
 
-<div class="add-note-box" ng-show="newReview">
-	<div class="add-note-title">
+<div class="content-block add-note-box" ng-show="newReview">
+	<div class="content-title">
 		<div>
 			Add Review
 			({{newReview.overallRating}}/100)
@@ -53,7 +53,7 @@
 </div>
 
 <loader data="mod.reviews" content-class="" spinner-class="big-spinner">
-    <div ng-repeat="review in mod.reviews" class="post">
+    <div ng-repeat="review in mod.reviews" class="content-block">
         <review review="review" show-author-column="true" index="100 + $index" user="user"></review>
     </div>
 
