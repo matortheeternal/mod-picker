@@ -13,7 +13,8 @@ app.directive('modInput', function () {
 
 app.controller('modInputController', function($scope, $timeout, modService, pluginService) {
     // set some constants
-    var pause = 400;
+    var pause = 600;
+    var minLength = 1;
 
     $scope.hoverRow = function(index) {
         $scope.currentIndex = index;
@@ -22,22 +23,20 @@ app.controller('modInputController', function($scope, $timeout, modService, plug
     $scope.searchMods = function(str) {
         // Begin the search
         str = str.toLowerCase();
-        if (str.length > 3) {
-            var searchCallback = function(data) {
-                $scope.searching = false;
-                if ($scope.excludedId) {
-                    data = data.filter(function(mod) {
-                        return mod.id !== $scope.excludedId;
-                    });
-                }
-                $scope.results = data;
-                $scope.$applyAsync();
-            };
-            if ($scope.searchPlugins) {
-                pluginService.searchPlugins(str).then(searchCallback);
-            } else {
-                modService.searchMods(str).then(searchCallback);
+        var searchCallback = function(data) {
+            $scope.searching = false;
+            if ($scope.excludedId) {
+                data = data.filter(function(mod) {
+                    return mod.id !== $scope.excludedId;
+                });
             }
+            $scope.results = data;
+            $scope.$applyAsync();
+        };
+        if ($scope.searchPlugins) {
+            pluginService.searchPlugins(str).then(searchCallback);
+        } else {
+            modService.searchMods(str).then(searchCallback);
         }
     };
 
@@ -95,13 +94,13 @@ app.controller('modInputController', function($scope, $timeout, modService, plug
         }
         // pressing escape, backspace, or delete clears the dropdown
         else if ((key == 27) || (key == 46) || (key == 8)) {
+            delete $scope.resultId;
             $scope.results = [];
             $scope.showDropdown = false;
             $scope.$applyAsync();
-            $event.preventDefault();
         }
         else {
-            $scope.showDropdown = true;
+            delete $scope.resultId;
             $scope.currentIndex = -1;
             $scope.results = [];
 
@@ -110,11 +109,16 @@ app.controller('modInputController', function($scope, $timeout, modService, plug
                 clearTimeout($scope.searchTimer);
             }
 
-            // search for matching tags
-            $scope.searching = true;
-            $scope.searchTimer = setTimeout(function () {
-                $scope.searchMods($scope.searchText);
-            }, pause);
+            // search if we have more than minLength characters
+            if ($scope.searchText.length > minLength) {
+                $scope.showDropdown = true;
+
+                // search for matching tags
+                $scope.searching = true;
+                $scope.searchTimer = setTimeout(function () {
+                    $scope.searchMods($scope.searchText);
+                }, pause);
+            }
         }
     };
 });
