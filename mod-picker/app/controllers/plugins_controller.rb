@@ -10,7 +10,7 @@ class PluginsController < ApplicationController
 
   # POST /plugins/search
   def search
-    @plugins = Plugin.filter(search_params).sort({ column: "filename", direction: "DESC" }).limit(10)
+    @plugins = Plugin.filter(search_params).sort({ column: "filename", direction: "ASC" }).limit(10)
 
     render :json => @plugins.as_json({
         :only => [:id, :filename]

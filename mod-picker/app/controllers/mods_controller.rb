@@ -24,11 +24,9 @@ class ModsController < ApplicationController
   def search
     @mods = Mod.filter(search_params).sort({ column: "name", direction: "ASC" }).limit(10)
 
-    render :json => {
-        mods: @mods.as_json({
-            :only => [:id, :name]
-        })
-    }
+    render :json => @mods.as_json({
+        :only => [:id, :name]
+    })
   end
 
   # GET /mods/1
