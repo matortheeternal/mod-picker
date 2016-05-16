@@ -11,6 +11,8 @@ class CompatibilityNotesController < ContributionsController
   # POST /compatibility_notes
   def create
     @compatibility_note = CompatibilityNote.new(contribution_params)
+    @compatibility_note.submitted_by = current_user.id
+    authorize! :create, @compatibility_note
 
     if @compatibility_note.save
       render json: {status: :ok}
