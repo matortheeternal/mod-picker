@@ -4,8 +4,8 @@ app.directive('modInput', function () {
         templateUrl: '/resources/directives/modInput.html',
         controller: 'modInputController',
         scope: {
-            modId: '=',
-            excludedId: '=',
+            resultId: '=',
+            excludedId: '=?',
             searchPlugins: '=?'
         }
     }
@@ -37,7 +37,7 @@ app.controller('modInputController', function($scope, $timeout, modService, plug
     };
 
     $scope.selectResult = function(result) {
-        $scope.modId = result.id;
+        $scope.resultId = result.id;
         $scope.searchText = result.name;
         $scope.showDropdown = false;
         $scope.results = [];
@@ -45,9 +45,6 @@ app.controller('modInputController', function($scope, $timeout, modService, plug
     };
 
     $scope.blurMod = function() {
-        $scope.valid = $scope.results.find(function(mod) {
-            return mod.name === $scope.searchText;
-        }) !== undefined;
         // we have to use a timeout for hiding the dropdown because
         // otherwise we would hide it before the click event on a result
         // went through
@@ -79,7 +76,7 @@ app.controller('modInputController', function($scope, $timeout, modService, plug
             }
         }
         // pressing up moves up the dropdown list
-        else if(key == 38) {
+        else if (key == 38) {
             if ($scope.currentIndex >= 1) {
                 $scope.currentIndex--;
                 $scope.$applyAsync();
