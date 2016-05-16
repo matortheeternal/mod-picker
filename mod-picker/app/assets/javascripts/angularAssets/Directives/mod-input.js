@@ -13,7 +13,7 @@ app.directive('modInput', function () {
 
 app.controller('modInputController', function($scope, $timeout, modService, pluginService) {
     // set some constants
-    var pause = 500;
+    var pause = 700;
     var minLength = 2;
 
     $scope.hoverRow = function(index) {
