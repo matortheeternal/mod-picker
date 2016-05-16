@@ -1,4 +1,9 @@
 class Plugin < ActiveRecord::Base
+  include Filterable, Sortable
+
+  scope :search, -> (search) { where("filename like ?", "%#{search}%") }
+  scope :game, -> (game) { where(game_id: game) }
+
   belongs_to :game, :inverse_of => 'plugins'
   belongs_to :mod, :inverse_of => 'plugins'
 
