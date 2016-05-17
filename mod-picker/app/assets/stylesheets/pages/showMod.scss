@@ -312,6 +312,8 @@
 .content-block {
   margin-top: 20px;
   margin-bottom: 20px;
+  background-color: $primary_background;
+  border: 1px solid $border_color;
 
   .content-title {
     font-size: 16px;
@@ -320,13 +322,16 @@
     background-color: $bar_color;
     padding: 10px;
   }
+
+  .content-container {
+    margin: 20px;
+  }
 }
 
 //add note box
 .add-note-box {
   border: 1px solid $bar_dark_color;
   border-top: none;
-  background-color: $primary_background;
   color: $h4_color;
 
   .ratings-container {
@@ -390,10 +395,6 @@
       align-items: center;
       text-align: center;
     }
-  }
-
-  .note-content-container {
-    margin: 20px;
   }
 }
 
