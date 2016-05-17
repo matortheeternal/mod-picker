@@ -5,4 +5,15 @@ class AssetFile < ActiveRecord::Base
   has_many :mods, :through => 'mod_asset_files', :inverse_of => 'asset_files'
 
   validates :filepath, presence: true
+
+  def self.as_json(options={})
+    if JsonHelpers.json_options_empty(options)
+      default_options = {
+          :only => [:filepath]
+      }
+      super(options.merge(default_options))
+    else
+      super(options)
+    end
+  end
 end
