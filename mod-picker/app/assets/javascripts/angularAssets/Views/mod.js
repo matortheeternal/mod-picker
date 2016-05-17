@@ -541,7 +541,7 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
                 game_id: $scope.mod.game_id,
                 first_mod_id: first_mod_id,
                 second_mod_id: second_mod_id,
-                text_body: $scope.newInstallOrderNote.text_body,
+                text_body: $scope.newInstallOrderNote.text_body
             }
         };
         $scope.newInstallOrderNote.submitting = true;
