@@ -27,16 +27,16 @@
             <table class="analysis-table">
                 <thead>
                 <tr>
-                    <th>Record Type</th>
-                    <th>Number of Records</th>
-                    <th>Number of Overrides</th>
+                    <th>Group</th>
+                    <th>Record Count</th>
+                    <th>Override Count</th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr ng-repeat="group in currentPlugin.plugin_record_groups">
-                    <td>{{group.signature}}</td>
-                    <td>{{group.new_records}}</td>
-                    <td>{{group.override_records}}</td>
+                    <td>{{group.sig}}</td>
+                    <td>{{group.record_count}}</td>
+                    <td>{{group.override_count}}</td>
                 </tr>
                 </tbody>
             </table>
