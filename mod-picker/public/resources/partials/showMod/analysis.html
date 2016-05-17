@@ -20,7 +20,7 @@
 
     <div class="content-block" ng-if="currentPlugin && currentPlugin.plugin_record_groups.length > 0">
         <div class="content-title">
-            Plugin Record Groups
+            Plugin Record Composition
         </div>
 
         <div class="content-container">
@@ -77,7 +77,7 @@
 
         <div class="content-container">
             <div ng-repeat="override in currentPlugin.overrides">
-                <em>plugin name</em> - [{{override.sig}}:{{override.fid}}]
+                <em>plugin name</em> - [{{override.sig}}:{{override.fid | hex:8}}]
             </div>
         </div>
     </div>
