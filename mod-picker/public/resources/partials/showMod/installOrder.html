@@ -24,7 +24,7 @@
 				<option value="after">Install After</option>
 			</select>
 		</div>
-		<input type="text" class="mod-input" placeholder="Enter Mod Name" ng-model="newInstallOrderNote.mod_id">
+		<mod-input result-id="newInstallOrderNote.mod_id" excluded-id="mod.id" on-change="validateInstallOrderNote"></mod-input>
 	</div>
 	<div class="note-content-container">
 		<text-area data="newInstallOrderNote.text_body" ng-refresh="updateMDE" class="note-text-area"></text-area>
