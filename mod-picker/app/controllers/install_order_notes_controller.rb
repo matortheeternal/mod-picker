@@ -32,6 +32,6 @@ class InstallOrderNotesController < ContributionsController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def contribution_params
-      params.require(:install_order_note).permit(:install_first, :install_second, :text_body)
+      params.require(:install_order_note).permit(:game_id, :first_mod_id, :second_mod_id, :text_body)
     end
 end
