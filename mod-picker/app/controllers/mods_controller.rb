@@ -140,8 +140,23 @@ class ModsController < ApplicationController
   def analysis
     authorize! :read, @mod
     render json: {
-        plugins: @mod.plugins,
-        assets: @mod.asset_files
+        plugins: @mod.plugins.as_json({
+            :include => {
+                :masters => {
+                    :except => [:plugin_id]
+                },
+                :overrides => {
+                    :except => [:plugin_id]
+                },
+                :plugin_errors => {
+                    :except => [:plugin_id]
+                },
+                :plugin_record_groups => {
+                    :except => [:plugin_id]
+                }
+            }
+        }),
+        assets: @mod.asset_files.as_json({:only => [:filepath]})
     }
   end
 
