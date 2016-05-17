@@ -11,6 +11,8 @@ class InstallOrderNotesController < ContributionsController
   # POST /install_order_notes
   def create
     @install_order_note = InstallOrderNote.new(contribution_params)
+    @install_order_note.submitted_by = current_user.id
+    authorize! :create, @install_order_note
 
     if @install_order_note.save
       render json: {status: :ok}
