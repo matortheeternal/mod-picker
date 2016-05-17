@@ -238,6 +238,10 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
             analysis.nestedAssets = assetUtils.convertDataStringToNestedObject(analysis.assets);
             $scope.mod.assets = analysis.assets;
             $scope.mod.plugins = analysis.plugins;
+            if ($scope.mod.plugins.length > 0) {
+                $scope.currentPlugin = analysis.plugins[0];
+                $scope.currentPluginFilename = analysis.plugins[0].filename;
+            }
         });
     };
 
@@ -521,5 +525,13 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
     // discard the load order note object
     $scope.discardLoadOrderNote = function() {
         delete $scope.newLoadOrderNote;
+    };
+
+    // ANALYSIS RELATED LOGIC
+    // select the plugin the user selected
+    $scope.selectPlugin = function() {
+        $scope.currentPlugin = $scope.mod.plugins.find(function(plugin) {
+            return plugin.filename == $scope.currentPluginFilename;
+        });
     };
 });
