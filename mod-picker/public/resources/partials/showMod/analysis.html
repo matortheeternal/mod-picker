@@ -20,23 +20,23 @@
 
     <div class="content-block" ng-if="currentPlugin && currentPlugin.plugin_record_groups.length > 0">
         <div class="content-title">
-            Plugin Record Groups
+            Plugin Record Composition
         </div>
 
         <div class="content-container">
             <table class="analysis-table">
                 <thead>
                 <tr>
-                    <th>Record Type</th>
-                    <th>Number of Records</th>
-                    <th>Number of Overrides</th>
+                    <th>Group</th>
+                    <th>Record Count</th>
+                    <th>Override Count</th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr ng-repeat="group in currentPlugin.plugin_record_groups">
-                    <td>{{group.signature}}</td>
-                    <td>{{group.new_records}}</td>
-                    <td>{{group.override_records}}</td>
+                    <td>{{group.sig}}</td>
+                    <td>{{group.record_count}}</td>
+                    <td>{{group.override_count}}</td>
                 </tr>
                 </tbody>
             </table>
@@ -77,7 +77,7 @@
 
         <div class="content-container">
             <div ng-repeat="override in currentPlugin.overrides">
-                <em>plugin name</em> - [{{override.sig}}:{{override.fid}}]
+                <em>plugin name</em> - [{{override.sig}}:{{override.fid | hex:8}}]
             </div>
         </div>
     </div>
