@@ -8,7 +8,6 @@
 			<option value="edited">Last Edited</option>
 		</select>
 	</div>
-	<!-- TODO: replace input with button that has an inline value -->
 	<div class="mod-tab-item">
 		<input class="btn" type="submit" value="Add Install Order Note" ng-click="startNewInstallOrderNote()" ng-disabled="newInstallOrderNote"/>
 	</div>
@@ -19,16 +18,10 @@
 		Add Install Order Note
 	</div>
 	<div class="add-note-actions">
-		<div>
-			Install
-		</div>
-		<div>
-			<strong>{{mod.name}}</strong>
-		</div>
 		<div class="select order-dropdown">
 			<select ng-model="newInstallOrderNote.order">
-				<option value="before">Before</option>
-				<option value="after">After</option>
+				<option value="before">Install Before</option>
+				<option value="after">Install After</option>
 			</select>
 		</div>
 		<input type="text" class="mod-input" placeholder="Enter Mod Name" ng-model="newInstallOrderNote.mod_id">
