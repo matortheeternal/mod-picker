@@ -11,73 +11,77 @@
         </div>
     </div>
 
-    <div class="content-block plugins-block" ng-if="mod.plugins.length > 0">
+    <div class="content-block" ng-if="currentPlugin">
         <div class="content-title">
-            {{currentPluginFilename}}
+            Plugin Metadata
         </div>
 
         <div class="content-container">
-            <h3 class="section-title">Metadata</h3>
-            <section>
-                <plugin-metadata plugin="currentPlugin"></plugin-metadata>
-            </section>
+            <plugin-metadata plugin="currentPlugin"></plugin-metadata>
+        </div>
+    </div>
+
+    <div class="content-block" ng-if="currentPlugin && currentPlugin.plugin_record_groups.length > 0">
+        <div class="content-title">
+            Plugin Record Groups
         </div>
 
-        <div class="content-container" ng-if="currentPlugin.plugin_record_groups.length > 0">
-            <h3 class="section-title">Record Groups</h3>
-            <section>
-                <table class="analysis-table">
-                    <thead>
-                    <tr>
-                        <th>Record Type</th>
-                        <th>Number of Records</th>
-                        <th>Number of Overrides</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr ng-repeat="plugin_record_group in currentPlugin.plugin_record_groups">
-                        <td>{{plugin_record_group.signature}}</td>
-                        <td>{{plugin_record_group.new_records}}</td>
-                        <td>{{plugin_record_group.override_records}}</td>
-                    </tr>
-                    </tbody>
-                </table>
-            </section>
+        <div class="content-container">
+            <table class="analysis-table">
+                <thead>
+                <tr>
+                    <th>Record Type</th>
+                    <th>Number of Records</th>
+                    <th>Number of Overrides</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="plugin_record_group in currentPlugin.plugin_record_groups">
+                    <td>{{plugin_record_group.signature}}</td>
+                    <td>{{plugin_record_group.new_records}}</td>
+                    <td>{{plugin_record_group.override_records}}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="content-block" ng-if="currentPlugin && currentPlugin.plugin_errors.length > 0">
+        <div class="content-title">
+            Plugin Errors
         </div>
 
-        <div class="content-container" ng-if="currentPlugin.plugin_errors.length > 0">
-            <h3 class="section-title">Errors</h3>
-            <section>
-                <table class="analysis-table">
-                    <thead>
-                    <tr>
-                        <th>Signature</th>
-                        <th>FormID</th>
-                        <th>Type</th>
-                        <th>Name</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr ng-repeat="plugin_error in currentPlugin.plugin_errors">
-                        <td>{{plugin_error.signature}}</td>
-                        <td>{{plugin_error.form_id}}</td>
-                        <td>{{plugin_error.type}}</td>
-                        <td>{{plugin_error.name}}</td>
-                    </tr>
-                    </tbody>
-                </table>
-            </section>
+        <div class="content-container">
+            <table class="analysis-table">
+                <thead>
+                <tr>
+                    <th>Signature</th>
+                    <th>FormID</th>
+                    <th>Type</th>
+                    <th>Name</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="plugin_error in currentPlugin.plugin_errors">
+                    <td>{{plugin_error.signature}}</td>
+                    <td>{{plugin_error.form_id}}</td>
+                    <td>{{plugin_error.type}}</td>
+                    <td>{{plugin_error.name}}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="content-block" ng-if="currentPlugin && currentPlugin.overrides.length > 0">
+        <div class="content-title">
+            Plugin Override Records
         </div>
 
-        <div class="content-container" ng-if="currentPlugin.overrides.length > 0">
-            <h3 class="section-title">Overrides</h3>
-            <section>
-                <div ng-repeat="override_record in override_records">
-                    <em>plugin name</em>
-                    -
-                    [{{override_record.sig}}:{{override_record.fid}}]
-                </div>
-            </section>
+        <div class="content-container">
+            <div ng-repeat="override_record in override_records">
+                <em>plugin name</em> - [{{override_record.sig}}:{{override_record.fid}}]
+            </div>
         </div>
     </div>
 
