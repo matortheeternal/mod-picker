@@ -3,45 +3,28 @@
 
 <loader data="mod.plugins" content-class="" spinner-class="big-spinner">
     <div class="mod-tab-items" ng-if="mod.plugins.length > 0">
-        <span class="mod-tab-item">
-            Plugins
-            <select ng-model="currentPlugin" ng-options="plugin as plugin.filename for plugin in plugins" class="plugin-selector" ng-change="getPlugin()"></select>
-        </span>
+        <div class="mod-tab-item primary-item">
+            <strong>Select Plugin:</strong>
+            <select ng-model="currentPluginFilename" class="plugin-selector" ng-change="selectPlugin()">
+                <option ng-repeat="plugin in mod.plugins">{{plugin.filename}}</option>
+            </select>
+        </div>
     </div>
 
     <div class="content-block plugins-block" ng-if="mod.plugins.length > 0">
         <div class="content-title">
-            Plugins
+            {{currentPluginFilename}}
         </div>
 
-        <div class="metadata-section">
+        <div class="content-container">
             <h3 class="section-title">Metadata</h3>
             <section>
-                <dt class="metadata-title">Plugin Author</dt>
-                <dd class="metadata-data">{{currentPlugin.author}}</dd>
-
-                <dt class="metadata-title">Plugin Version</dt>
-                <dd class="metadata-data"><em>no data here</em></dd>
-
-                <dt class="metadata-title">Masters</dt>
-                <dd class="metadata-data"><em>no data here</em></dd>
-
-                <dt class="metadata-title">Plugin Description</dt>
-                <dd class="metadata-data">{{currentPlugin.description}}</dd>
-
-                <dt class="metadata-title">Filesize</dt>
-                <dd class="metadata-data"><em>no data here</em></dd>
-
-                <dt class="metadata-title">File Hash</dt>
-                <dd class="metadata-data">{{currentPlugin.crc_hash}}</dd>
-
-                <dt class="metadata-title">Number of Overrides</dt>
-                <dd class="metadata-data"><em>no data here</em></dd>
+                <plugin-metadata plugin="currentPlugin"></plugin-metadata>
             </section>
         </div>
 
-        <div class="records-section">
-            <h3 class="section-title">Records</h3>
+        <div class="content-container" ng-if="currentPlugin.plugin_record_groups.length > 0">
+            <h3 class="section-title">Record Groups</h3>
             <section>
                 <table class="analysis-table">
                     <thead>
@@ -62,8 +45,8 @@
             </section>
         </div>
 
-        <div class="errors-section">
-            <h3 class="section-title"></h3>
+        <div class="content-container" ng-if="currentPlugin.plugin_errors.length > 0">
+            <h3 class="section-title">Errors</h3>
             <section>
                 <table class="analysis-table">
                     <thead>
@@ -86,7 +69,7 @@
             </section>
         </div>
 
-        <div class="overrides-section">
+        <div class="content-container" ng-if="currentPlugin.overrides.length > 0">
             <h3 class="section-title">Overrides</h3>
             <section>
                 <div ng-repeat="override_record in override_records">
@@ -103,7 +86,7 @@
             Assets
         </div>
 
-        <div class="assets-block">
+        <div class="content-container assets-block">
             <asset-tree data="treeData"></asset-tree>
         </div>
     </div>
