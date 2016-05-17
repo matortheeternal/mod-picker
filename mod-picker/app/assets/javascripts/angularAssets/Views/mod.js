@@ -505,6 +505,16 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
         $scope.updateMDE = false;
     };
 
+    $scope.validateInstallOrderNote = function() {
+        // exit if we don't have a newInstallOrderNote yet
+        if (!$scope.newInstallOrderNote) {
+            return;
+        }
+
+        $scope.newInstallOrderNote.valid = $scope.newInstallOrderNote.text_body.length > 512 &&
+            ($scope.newInstallOrderNote.mod_id !== undefined);
+    };
+
     // discard the install order note object
     $scope.discardInstallOrderNote = function() {
         delete $scope.newInstallOrderNote;

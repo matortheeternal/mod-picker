@@ -27,10 +27,10 @@
 		<mod-input result-id="newInstallOrderNote.mod_id" excluded-id="mod.id" on-change="validateInstallOrderNote"></mod-input>
 	</div>
 	<div class="note-content-container">
-		<text-area data="newInstallOrderNote.text_body" ng-refresh="updateMDE" class="note-text-area"></text-area>
+		<text-area data="newInstallOrderNote.text_body" ng-refresh="updateMDE" class="note-text-area" on-change="validateCompatibilityNote"></text-area>
 
 		<div class="action-button-container">
-			<input class="btn action-btn" type="submit" value="Submit" ng-click="submitInstallOrderNote()"/>
+			<input class="btn action-btn" type="submit" value="Submit" ng-click="submitInstallOrderNote()" ng-disabled="!newInstallOrderNote.valid" title="{{newInstallOrderNote.valid ? 'Submit your install order note' : 'Your install order note is either too short or incomplete.'}}"/>
 			<input class="btn action-btn" type="button" value="Discard" ng-click="discardInstallOrderNote()">
 		</div>
 	</div>
