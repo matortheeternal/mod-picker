@@ -43,10 +43,8 @@ class Ability
       # can delete tags
       can :destroy, ModTag
       can :destroy, ModListTag
-    end
-
-    # signed in users who aren't banned
-    if  User.exists?(user.id) && !user.banned?
+    else
+      # users that are not admins or moderators
       # cannot read hidden content
       cannot :read, Comment, :hidden => true
       cannot :read, CompatibilityNote, :hidden => true
@@ -57,6 +55,16 @@ class Ability
       cannot :read, ModListTag, :hidden => true
       cannot :read, Mod, :hidden => true
 
+      # cannot read unapproved content
+      cannot :read, Comment, :approved => false
+      cannot :read, CompatibilityNote, :approved => false
+      cannot :read, InstallOrderNote, :approved => false
+      cannot :read, LoadOrderNote, :approved => false
+      cannot :read, Review, :approved => false
+    end
+
+    # signed in users who aren't banned
+    if  User.exists?(user.id) && !user.banned?
       # can create new contributions
       can :create, Comment
       can :create, HelpfulMark

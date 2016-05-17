@@ -19,6 +19,7 @@ app.directive('tagInput', function () {
 app.controller('tagInputController', function($scope, $timeout) {
     // set some constants
     var pause = 200;
+    var minLength = 1;
 
     $scope.focusText = function ($event) {
         $event.target.select();
@@ -70,7 +71,7 @@ app.controller('tagInputController', function($scope, $timeout) {
         }, 100);
     };
 
-    $scope.handleTagKey = function ($event) {
+    $scope.keyDown = function ($event) {
         var key = $event.keyCode;
         var len = $event.target.value.length;
 
@@ -113,19 +114,29 @@ app.controller('tagInputController', function($scope, $timeout) {
                 $event.stopPropagation();
             }
         }
-        // pressing backspace when the field has one character hides the dropdown
-        else if ((key == 8) && (len == 1)) {
-            $scope.results = [];
-            $scope.showDropdown = false;
-        }
         // pressing escape or delete deletes the tag
-        // pressing backspace when the tag is empty also deletes the tag
-        else if (((key == 27) || (key == 46)) || ((key == 8) && (len == 0))) {
+        // pressing backspace when the tag is empty deletes the tag
+        else if ((key == 27) || (key == 46) || ((key == 8) && (len == 0))) {
             $scope.results = [];
             $scope.showDropdown = false;
             $scope.$applyAsync();
             $scope.removeTag($scope.index);
             $event.preventDefault();
+        }
+    };
+
+    $scope.keyUp = function ($event) {
+        var key = $event.keyCode;
+        var len = $event.target.value.length;
+
+        // keys that don't change the value of the input should be ignored
+        if ([9, 13, 16, 17, 18, 20, 37, 38, 39, 40, 91].indexOf(key) > -1) {
+            // do nothing
+        }
+        // if field length is less than minimum, hide dropdwon
+        else if (len < minLength) {
+            $scope.results = [];
+            $scope.showDropdown = false;
         }
         else {
             $scope.showDropdown = true;
@@ -143,7 +154,7 @@ app.controller('tagInputController', function($scope, $timeout) {
                 $scope.searchTags($scope.tag.text);
             }, pause);
         }
-    };
+    }
 });
 
 app.directive('autoSelect', function ($timeout) {

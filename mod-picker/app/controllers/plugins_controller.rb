@@ -2,46 +2,28 @@ class PluginsController < ApplicationController
   before_action :set_plugin, only: [:show, :destroy]
 
   # GET /plugins
-  # GET /plugins.json
   def index
     @plugins = Plugin.all
 
     render :json => @plugins
   end
 
+  # POST /plugins/search
+  def search
+    @plugins = Plugin.filter(search_params).sort({ column: "filename", direction: "ASC" }).limit(10)
+
+    render :json => @plugins.as_json({
+        :only => [:id, :filename]
+    })
+  end
+
   # GET /plugins/1
-  # GET /plugins/1.json
   def show
     authorize! :read, @plugin
     render :json => @plugin
   end
 
-  # POST /plugins
-  def create
-    authorize! :submit, :mod
-    response = 'Invalid submission'
-    if params[:plugin].present?
-      file = params[:plugin]
-      if File.exists?(Rails.root.join('app','assets', 'plugins', file.original_filename))
-        response = 'File exists'
-      else
-        begin
-          File.open(Rails.root.join('app','assets', 'plugins', file.original_filename), 'wb') do |f|
-            f.write(file.read)
-          end
-          response = 'Success'
-        rescue
-          response = 'Unknown failure'
-        end
-      end
-    end
-
-    # render json response
-    render json: {status: response}
-  end
-
   # DELETE /plugins/1
-  # DELETE /plugins/1.json
   def destroy
     authorize! :destroy, @plugin
     if @plugin.destroy
@@ -55,6 +37,11 @@ class PluginsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_plugin
       @plugin = Plugin.find(params[:id])
+    end
+
+    # Params we allow searching on
+    def search_params
+      params[:filters].slice(:search, :game)
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

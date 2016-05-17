@@ -9,6 +9,7 @@ app.directive('textArea', function ($timeout) {
         controller: 'textAreaController',
         scope: {
             data: '=',
+            onChange: '=?',
             refresh: '=ngRefresh'
         },
         link: function(scope, element, attrs) {
@@ -25,6 +26,11 @@ app.directive('textArea', function ($timeout) {
             mde.codemirror.on("change", function(){
                 scope.data = mde.value();
                 scope.$applyAsync();
+                if (scope.onChange) {
+                    $timeout(function() {
+                        scope.onChange();
+                    }, 50);
+                }
             });
 
             scope.$watch('refresh', function(newVal, oldVal) {

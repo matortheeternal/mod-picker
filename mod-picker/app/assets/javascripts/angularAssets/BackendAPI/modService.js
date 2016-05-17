@@ -34,6 +34,22 @@ app.service('modService', function (backend, $q) {
         return mods.promise;
     };
 
+    this.searchMods = function (name) {
+        var mods = $q.defer();
+
+        var postData =  {
+            filters: {
+                search: name
+            }
+        };
+
+        backend.post('/mods/search', postData).then(function (data) {
+            mods.resolve(data);
+        });
+
+        return mods.promise;
+    };
+
     this.starMod = function(modId, starred) {
         var star = $q.defer();
         if (starred) {

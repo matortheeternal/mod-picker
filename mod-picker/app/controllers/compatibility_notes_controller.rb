@@ -11,6 +11,8 @@ class CompatibilityNotesController < ContributionsController
   # POST /compatibility_notes
   def create
     @compatibility_note = CompatibilityNote.new(contribution_params)
+    @compatibility_note.submitted_by = current_user.id
+    authorize! :create, @compatibility_note
 
     if @compatibility_note.save
       render json: {status: :ok}
@@ -32,6 +34,6 @@ class CompatibilityNotesController < ContributionsController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def contribution_params
-      params.require(:compatibility_note).permit(:submitted_by, :mod_mode, :compatibility_patch, :compatibility_status)
+      params.require(:compatibility_note).permit(:game_id, :compatibility_type, :first_mod_id, :second_mod_id, :text_body, :compatibility_plugin_id, :compatibility_mod_id)
     end
 end

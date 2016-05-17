@@ -1,4 +1,9 @@
 class Plugin < ActiveRecord::Base
+  include Filterable, Sortable
+
+  scope :search, -> (search) { where("filename like ?", "%#{search}%") }
+  scope :game, -> (game) { where(game_id: game) }
+
   belongs_to :game, :inverse_of => 'plugins'
   belongs_to :mod, :inverse_of => 'plugins'
 
@@ -31,4 +36,28 @@ class Plugin < ActiveRecord::Base
   validates :crc_hash, length: {in: 1..8}
 
   accepts_nested_attributes_for :dummy_masters, :masters, :plugin_record_groups, :overrides, :plugin_errors
+
+  def self.as_json(options={})
+    if JsonHelpers.json_options_empty(options)
+      default_options = {
+          :include => {
+              :masters => {
+                  :except => [:plugin_id]
+              },
+              :overrides => {
+                  :except => [:plugin_id]
+              },
+              :plugin_errors => {
+                  :except => [:plugin_id]
+              },
+              :plugin_record_groups => {
+                  :except => [:plugin_id]
+              }
+          }
+      }
+      super(options.merge(default_options))
+    else
+      super(options)
+    end
+  end
 end
