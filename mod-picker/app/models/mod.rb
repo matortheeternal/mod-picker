@@ -104,7 +104,7 @@ class Mod < ActiveRecord::Base
     if @asset_paths
       @asset_paths.each do |path|
         asset_file = AssetFile.find_or_create_by(game_id: self.game_id, filepath: path)
-        self.mod_asset_files.create(game_id: self.game_id, asset_file_id: asset_file.id)
+        self.mod_asset_files.create(asset_file_id: asset_file.id)
       end
     end
   end
