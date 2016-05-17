@@ -36,10 +36,10 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr ng-repeat="plugin_record_group in currentPlugin.plugin_record_groups">
-                    <td>{{plugin_record_group.signature}}</td>
-                    <td>{{plugin_record_group.new_records}}</td>
-                    <td>{{plugin_record_group.override_records}}</td>
+                <tr ng-repeat="group in currentPlugin.plugin_record_groups">
+                    <td>{{group.signature}}</td>
+                    <td>{{group.new_records}}</td>
+                    <td>{{group.override_records}}</td>
                 </tr>
                 </tbody>
             </table>
@@ -62,11 +62,11 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr ng-repeat="plugin_error in currentPlugin.plugin_errors">
-                    <td>{{plugin_error.signature}}</td>
-                    <td>{{plugin_error.form_id}}</td>
-                    <td>{{plugin_error.type}}</td>
-                    <td>{{plugin_error.name}}</td>
+                <tr ng-repeat="error in currentPlugin.plugin_errors">
+                    <td>{{error.signature}}</td>
+                    <td>{{error.form_id}}</td>
+                    <td>{{error.type}}</td>
+                    <td>{{error.name}}</td>
                 </tr>
                 </tbody>
             </table>
@@ -79,8 +79,8 @@
         </div>
 
         <div class="content-container">
-            <div ng-repeat="override_record in override_records">
-                <em>plugin name</em> - [{{override_record.sig}}:{{override_record.fid}}]
+            <div ng-repeat="override in currentPlugin.overrides">
+                <em>plugin name</em> - [{{override.sig}}:{{override.fid}}]
             </div>
         </div>
     </div>
