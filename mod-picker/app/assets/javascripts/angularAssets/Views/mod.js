@@ -27,6 +27,16 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
         load_order_notes: true
     };
 
+    // SETUP TABS
+    //TODO use the cool ui-router here :D
+    $scope.tabs = [
+        { name: 'Reviews', url: '/resources/partials/showMod/reviews.html' },
+        { name: 'Compatibility', url: '/resources/partials/showMod/compatibility.html' },
+        { name: 'Install Order', url: '/resources/partials/showMod/installOrder.html' },
+        { name: 'Load Order', url: '/resources/partials/showMod/loadOrder.html' },
+        { name: 'Analysis', url: '/resources/partials/showMod/analysis.html' }
+    ];
+
     // SETUP AND DATA RETRIEVAL LOGIC
     //initialization of the mod object
     modService.retrieveMod($stateParams.modId).then(function (data) {
@@ -62,6 +72,11 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
         gameService.retrieveGames().then(function (data) {
             $scope.game = gameService.getGameById(data, mod.game_id);
         });
+
+        // remove Load Order tab if mod has no plugins
+        if ($scope.mod.plugins_count == 0) {
+            $scope.tabs.splice(3, 1);
+        }
     });
 
     //get user titles
@@ -136,16 +151,6 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
     };
 
     // TAB RELATED LOGIC
-    //set up tab data
-    //TODO use the cool ui-router here :D
-    $scope.tabs = [
-        { name: 'Reviews', url: '/resources/partials/showMod/reviews.html' },
-        { name: 'Compatibility', url: '/resources/partials/showMod/compatibility.html' },
-        { name: 'Install Order', url: '/resources/partials/showMod/installOrder.html' },
-        { name: 'Load Order', url: '/resources/partials/showMod/loadOrder.html' },
-        { name: 'Analysis', url: '/resources/partials/showMod/analysis.html' }
-    ];
-
     $scope.currentTab = $scope.tabs[0];
 
     $scope.switchTab = function(targetTab) {
