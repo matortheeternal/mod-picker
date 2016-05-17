@@ -124,7 +124,7 @@ class ModsController < ApplicationController
   # GET /mods/1/load_order_notes
   def load_order_notes
     authorize! :read, @mod
-    if @mod.plugins.length > 0
+    if @mod.plugins_count > 0
       load_order_notes = @mod.load_order_notes.accessible_by(current_ability).paginate(:page => params[:page])
       helpful_marks = HelpfulMark.where(submitted_by: current_user.id, helpfulable_type: "LoadOrderNote", helpfulable_id: load_order_notes.ids)
       render :json => {
@@ -132,8 +132,7 @@ class ModsController < ApplicationController
           helpful_marks: helpful_marks.as_json({:only => [:helpfulable_id, :helpful]})
       }
     else
-      @mod.errors.add(:load_order_notes, "Mod has no plugins")
-      render json: @mod.errors, status: :unprocessable_entity
+      render json: { load_order_notes: [] }
     end
   end
 
