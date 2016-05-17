@@ -64,7 +64,6 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
             reviewSectionService.retrieveReviewSections().then(function (reviewSections) {
                 $scope.allReviewSections = reviewSections;
                 $scope.reviewSections = reviewSectionService.getSectionsForCategory(reviewSections, $scope.primaryCategory);
-                $scope.associateReviewSections();
             });
         });
 
@@ -130,9 +129,6 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
 
         // associate titles with the data
         userTitleService.associateTitles($scope.userTitles, data);
-
-        // return modified data
-        return data;
     };
 
     //associate helpful marks with content
@@ -189,8 +185,9 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
         };
         modService.retrieveReviews($stateParams.modId, options).then(function(data) {
             $scope.associateHelpfulMarks(data.reviews, data.helpful_marks);
-            $scope.mod.reviews = $scope.associateUserTitles(data.reviews);
-            $scope.associateReviewSections();
+            $scope.associateUserTitles(data.reviews);
+            $scope.associateReviewSections(data.reviews);
+            $scope.mod.reviews = data.reviews;
         });
     };
 
@@ -203,7 +200,8 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
         };
         modService.retrieveCompatibilityNotes($stateParams.modId, options).then(function(data) {
             $scope.associateHelpfulMarks(data.compatibility_notes, data.helpful_marks);
-            $scope.mod.compatibility_notes = $scope.associateUserTitles(data.compatibility_notes);
+            $scope.associateUserTitles(data.compatibility_notes);
+            $scope.mod.compatibility_notes = data.compatibility_notes;
         });
     };
 
@@ -216,7 +214,8 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
         };
         modService.retrieveInstallOrderNotes($stateParams.modId, options).then(function(data) {
             $scope.associateHelpfulMarks(data.install_order_notes, data.helpful_marks);
-            $scope.mod.install_order_notes = $scope.associateUserTitles(data.install_order_notes);
+            $scope.associateUserTitles(data.install_order_notes);
+            $scope.mod.install_order_notes = data.install_order_notes;
         });
     };
 
@@ -229,7 +228,8 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
         };
         modService.retrieveLoadOrderNotes($stateParams.modId, options).then(function(data) {
             $scope.associateHelpfulMarks(data.load_order_notes, data.helpful_marks);
-            $scope.mod.load_order_notes = $scope.associateUserTitles(data.load_order_notes);
+            $scope.associateUserTitles(data.load_order_notes);
+            $scope.mod.load_order_notes = data.load_order_notes;
         });
     };
 
@@ -261,14 +261,20 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
     $scope.retrieveReviews();
 
     // associate reviews with review sections
-    $scope.associateReviewSections = function() {
-        if ($scope.mod.reviews && $scope.reviewSections) {
-            $scope.mod.reviews.forEach(function(review) {
-                review.review_ratings.forEach(function(rating) {
-                    rating.section = reviewSectionService.getSectionById($scope.allReviewSections, rating.review_section_id);
-                });
-            });
+    $scope.associateReviewSections = function(reviews) {
+        // if we don't have recordGroups yet, try again in 100ms
+        if (!$scope.reviewSections) {
+            $timeout(function() {
+                $scope.associateReviewSections(reviews);
+            }, 100);
+            return;
         }
+        // loop through the reviews
+        reviews.forEach(function(review) {
+            review.review_ratings.forEach(function(rating) {
+                rating.section = reviewSectionService.getSectionById($scope.allReviewSections, rating.review_section_id);
+            });
+        });
     };
 
     // instantiate a new review object
