@@ -530,11 +530,11 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
         // submit the install order note
         var first_mod_id, second_mod_id;
         if ($scope.newInstallOrderNote.order === 'before') {
-            first_mod_id = $scope.newInstallOrderNote.mod_id;
-            second_mod_id = $scope.mod.id;
-        } else {
             first_mod_id = $scope.mod.id;
             second_mod_id = $scope.newInstallOrderNote.mod_id;
+        } else {
+            first_mod_id = $scope.newInstallOrderNote.mod_id;
+            second_mod_id = $scope.mod.id;
         }
         var noteObj = {
             install_order_note: {
