@@ -5,7 +5,7 @@ app.service('recordGroupService', function (backend, $q) {
 
     this.getGroupFromSignature = function (recordGroups, sig) {
         return recordGroups.find(function(group) {
-            return group.sig === sig;
+            return group.signature === sig;
         });
     };
 });
