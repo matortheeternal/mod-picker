@@ -577,7 +577,7 @@
   border: 1px solid $border_color;
 
   tbody {
-    font-family: Consolas, Menlo, Monaco, 'Lucida Console', 'Courier New', monospace, sans-serif;
+    font-family: Consolas, monospace, sans-serif;
   }
 
   th {
@@ -616,5 +616,6 @@
 
 .overrides-list {
   list-style: none;
-  font-family: Consolas, Menlo, Monaco, 'Lucida Console', 'Courier New', monospace, sans-serif;
+  font-family: Consolas, monospace, sans-serif;
+  margin: 0;
 }
