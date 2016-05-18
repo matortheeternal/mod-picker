@@ -27,14 +27,14 @@
             <table class="analysis-table">
                 <thead>
                 <tr>
-                    <th>Group</th>
+                    <th>Name</th>
                     <th>Record Count</th>
                     <th>Override Count</th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr ng-repeat="group in currentPlugin.plugin_record_groups">
-                    <td>{{group.sig}}</td>
+                    <td>{{group.sig}} - {{group.name}}</td>
                     <td>{{group.record_count}}</td>
                     <td>{{group.override_count}}</td>
                 </tr>
