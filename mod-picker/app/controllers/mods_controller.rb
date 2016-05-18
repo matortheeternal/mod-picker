@@ -145,6 +145,9 @@ class ModsController < ApplicationController
                 :masters => {
                     :except => [:plugin_id]
                 },
+                :dummy_masters => {
+                    :except => [:plugin_id]
+                },
                 :overrides => {
                     :except => [:plugin_id]
                 },
