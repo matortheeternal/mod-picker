@@ -1,619 +1,619 @@
 <loader data="modlist" spinner-class="big-spinner">
-    <div title="modlist-header" class="header-tabs">
-        <div class="modlist-header-color">
-            <div class="page-container mod-header">
-                <section>
-                <div class="mod-info">
-                    <br/>
-                    <span class="mod-name">{{modlist.title}}{{modlistTitle}}</span>
-                    <br/>
-                    <span class="mod-authors-container">by 
-                        <span class="mod-authors">{{modlist.created_by}}</span>
-                    </span>
-                </div>
-                </section>
-                <section>
-                        <div class="mod-header-box">
-                            <!-- TODO: I feel like using some spans here would be wiser -->
-                            ACTIONS
-                            <div class="action-box" ng-click="starMod()">
-                                <i class="fa {{modlistStarred ? 'fa-star' : 'fa-star-o'}}" aria-hidden="true"></i>
-                                {{modlistStarred ? 'Unfavorite' : 'Favorite'}}
-                            </div>
-                            <div class="action-box">
-                                <i class="fa fa-plus" aria-hidden="true"></i>
-                                Dupicate Modlist
-                            </div>
-                        </div>
-
-                        <div class="mod-header-box">
-                            STATUS
-                            <div class="action-box {{mlStatusClass}}">
-                                <!--todo: make function to get status icon index-->
-                                 <i class="fa {{curStatusIcon.name}}" aria-hidden="true"></i>
-                                {{modlist.status}}
-                            </div>
-                            <div class="action-box {{mlVisibilityClass}}" ng-show="bIsEditing">
-                                <!--HIDDEN UNTIL VARIABLE AVAILABLE <i class="fa {{modlist.hidden ? 'fa-eye' : 'fa-eye-slash}}" aria-hidden="true"></i> -->
-                                <!--demo-->
-                                <i class="fa fa-eye-slash" aria-hidden="true"></i>
-                                {{modlist.hidden}}
-                            </div>
-
-                        </div>
-                </section>
-            </div>
-        </div>
-        <div class="header-container" style="padding-top: 8px;">    
-            <div class="page-container">
-                <div title="tabs-wrapper" class="tabs">
-                    <a ng-click="currentTab ='details'" ng-class="cssClass('details')">Details</a>
-                    <a ng-click="currentTab ='tools'" ng-class="cssClass('tools')">Tools</a>
-                    <a ng-click="currentTab ='mods'" ng-class="cssClass('mods')">Mods</a>
-                    <a ng-click="currentTab ='plugins'" ng-class="cssClass('plugins')">Plugins</a>
-                    <a ng-click="currentTab ='config'" ng-class="cssClass('config')">Config</a>
-                    <a ng-click="currentTab ='comments'" ng-class="cssClass('comments')">Comments</a>
-                    <button ng-click="debugFunc()">toggle editmode</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="page-container">
-        <div ng-show="isSelected('details')">
-            <table ng-show="bIsEditing" title='modlist-options' class='section-table'>
-                <colgroup>
-                    <col style="width: 100%">
-                </colgroup>
-                <thead>
-                    <tr>
-                        <th>
-                            <span class="section-title">Mod List Options</span>
-                            <br>
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>
-                            <ul class="list flist">
-                                <li>
-                                   <h3>Status</h3>
-                                    <select ng-model="statusSelect" ng-init="statusSelect = 'underConstruction'">
-                                        <option value="planned">Planned</option>
-                                        <option value="underConstruction">Under Construction</option>
-                                        <option value="testing">Testing</option>
-                                        <option value="complete">Complete</option>
-                                    </select>
-                                </li>
-                                <li>
-                                    <label>
-                                    <h3>Title</h3><input type="text" name="mlTitleInput" ng-value="modlistTitle">
-                                    </label>
-                                </li>
-                                <li>
-                                    <h3>Short Description</h3>
-                                    <textarea>{{shortDescTextArea}}</textarea>
-                                </li>
-                                <li>
-                                   <h3>Modlist Visibility</h3>
-                                    <select ng-model="visibilitySelect" ng-init="visibilitySelect = 'visible'">
-                                        <option value="visible">Visible</option>
-                                        <option value="hidden">Hidden</option>
-                                    </select>
-                                    <br><br>
-                                    <h3>Public Display Options</h3>   
-                                    <input type="checkbox" name="mlCatNotesCB" ng-checked="bHideCatNotes"> Do not display mod category notes.<br><br>
-                                    <input type="checkbox" name="mlModGrpNotesCB" ng-checked="bHideModGrpNotes"> Do not display plugin group notes.
-                                </li>
-                                <li>
-                                    <h3>Collection</h3>
-                                    <input type="checkbox" name="mlIsCollection" ng-checked="bIsCollection"> Mod List is a collection
-                                </li>
-                            </ul>
-                        </td>
-                    </tr>
-                </tbody>
-            </table> 
-
-            <table title='overview' class='overview-table section-table'>
-                <colgroup>
-                    <col style="width: 25%">
-                    <col style="width: 55%">
-                    <col style="width: 20%">
-                </colgroup>
-                <thead>
-                    <tr>
-                        <th>
-                            <span class="section-title">Overview</span>
-                            Totals   
-                        </th>
-                        <th>
-                            Tags
-                        </th>
-                        <th>
-                            Desktop Sync Tools
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>
-                            <ul class="list olist">
-                                <li>
-                                    <span class="overview-total-number">999</span> 
-                                    Tools
-                                </li>
-                                <li>
-                                    <span class="overview-total-number">999</span> 
-                                    Mods
-                                </li>
-                                <li>
-                                    <span class="overview-total-number">999</span> 
-                                    Plugins
-                                </li>
-                                <li>
-                                    <span class="overview-total-number">999</span> 
-                                    BSAs
-                                </li>
-                            </ul>
-                        </td>
-                        <td>
-                            Tags here
-                        </td>
-                        <td>
-                            Desktop sync tools here
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-
-            <table title='modlist-details' class='section-table'>
-                <colgroup>
-                    <col style="width: 100%">
-                </colgroup>
-                <thead>
-                    <tr>
-                        <th>
-                            <span class="section-title">Details</span>
-                            <br>
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>
-                            <ul class="list tblist">
-                                <li ng-show='bIsEditing'>
-                                    <textarea>{{longDescTextArea}}</textarea>
-                                </li>
-                                <li ng-hide='bIsEditing'>
-                                    {{longDescTextArea}}
-
-                                    {{longDescTextArea}}
-
-                                    {{longDescTextArea}}
-                                </li>
-                            </ul>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>     
-        </div>
-
-        <div ng-show="isSelected('tools')"> 
-            <table title='modlist-tools' class='section-table'>
-                <colgroup>
-                    <col style="width: 75%">
-                    <col style="width: 25%">
-                </colgroup>
-                <thead>
-                    <tr>
-                        <th>
-                            <span class="section-title">Tools</span><br>
-                        </th>
-                        <th>
-                             <a ng-click="curToolsSecTab = 'list'" ng-class="cssChange('tools','list')">List</a><a ng-click="curToolsSecTab = 'tiles'" ng-class="cssChange('tools','tiles')">Tiles</a>
-                        </th>
-                    </tr>
-                </thead>
-            </table> 
-            <div style="border-left: 1px solid black;border-right: 1px solid black;border-bottom: 1px solid black"> This is a Test</div>
-
-            <table title='modlist-missing-requirements' class='section-table'>
-                <colgroup>
-                    <col style="width: 75%">
-                    <col style="width: 25%">
-                </colgroup>
-                <thead>
-                    <tr>
-                        <th>
-                            <span class="section-title">Missing Requirements</span>
-                            <span class="section-header-counter"># Unresolved Issues</span>
-                        </th>
-                        <th>
-                             <a ng-click="" class="section-unselected-tab">Resolve All Issues</a>
-                        </th>
-                    </tr>
-                </thead>
-            </table> 
-        </div>
-
-        <div ng-show="isSelected('mods')">
-            <table title='overview' class='overview-table section-table'>
-                <colgroup>
-                    <col style="width: 40%">
-                    <col style="width: 60%">
-                </colgroup>
-                <thead>
-                    <tr>
-                        <th>
-                            <span class="section-title">Overview</span>
-                            Stability Rating   
-                        </th>
-                        <th>
-                            Details
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>
-                            <ul class="list olist">
-                                <li>
-                                    <span class="modlist-status">[_] Stable</span> 
-                                </li>
-                                <li>
-                                </li>
-                                <li>
-                                    <span class="overview-total-number">999</span> 
-                                    Unresolved Issues
-                                </li>
-                                <li>
-                                    <span class="overview-total-number">999</span> 
-                                    Ignored Issues
-                                </li>
-                            </ul>
-                        </td>
-                        <td>
-                            <ul class="list olist">
-                                <li>
-                                    <span class="overview-total-number">999</span> 
-                                    Compatible Mods
-                                </li>
-                                <li>
-                                    <span class="overview-total-number">999</span> 
-                                    Compatible With Patch
-                                </li>
-                                <li>
-                                    <span class="overview-total-number">999</span> 
-                                    Partially Incompatible
-                                </li>
-                                <li>
-                                    <span class="overview-total-number">999</span> 
-                                    Incompatible
-                                </li>
-                            </ul>
-                        </td>
-                    </tr>
-                </tbody>
-            </table> 
-            <table title='modlist-mods' class='section-table'>
-                <colgroup>
-                    <col style="width: 25%">
-                    <col style="width: 75%">
-                </colgroup>
-                <thead>
-                    <tr>
-                        <th>
-                            <span class="section-title">Mods</span>
-                            <br>
-                        </th>
-                        <th>
-                             <a ng-click="curModsSecTab = 'list'" ng-class="cssChange('mods','list')">List</a><a ng-click="curModsSecTab = 'tiles'" ng-class="cssChange('mods','tiles')">Tiles</a>
-                        </th>
-                    </tr>
-                </thead>
-            </table>
-            <table title='modlist-missing-requirements' class='section-table'>
-                <colgroup>
-                    <col style="width: 75%">
-                    <col style="width: 25%">
-                </colgroup>
-                <thead>
-                    <tr>
-                        <th>
-                            <span class="section-title">Missing Requirements</span>
-                            <span class="section-header-counter"># Unresolved Issues</span>
-                        </th>
-                        <th>
-                             <a ng-click="" class="section-unselected-tab">Resolve All Issues</a>
-                        </th>
-                    </tr>
-                </thead>
-            </table>   
-            <table title='modlist-compatibility-issues' class='section-table'>
-                <colgroup>
-                    <col style="width: 25%">
-                    <col style="width: 75%">
-                </colgroup>
-                <thead>
-                    <tr>
-                        <th>
-                            <span class="section-title">Compatibility Issues</span>
-                            <span class="section-header-counter"># Unresolved Issues</span>
-                        </th>
-                        <th>
-                             <a ng-click="" class="section-unselected-tab">Show ignored issues(#)</a><a ng-click="" class="section-unselected-tab">Show resolved issues(#)</a>
-                        </th>
-                    </tr>
-                </thead>
-            </table>
-            <table title='modlist-install-order-notes' class='section-table'>
-                <colgroup>
-                    <col style="width: 25%">
-                    <col style="width: 75%">
-                </colgroup>
-                <thead>
-                    <tr>
-                        <th>
-                            <span class="section-title">Install Order Notes</span>
-                            <span class="section-header-counter"># Unresolved Notes</span>
-                        </th>
-                        <th>
-                             <a ng-click="" class="section-unselected-tab">Show ignored notes(#)</a><a ng-click="" class="section-unselected-tab">Show resolved notes(#)</a>
-                        </th>
-                    </tr>
-                </thead>
-            </table>
-            <table title='modlist-asset-conflicts' class='overview-table'>
-                <colgroup>
-                    <col style="width: 40%">
-                    <col style="width: 30%">
-                    <col style="width: 30%">
-                </colgroup>
-                <thead>
-                    <tr>
-                        <th>
-                            <span class="section-title">Asset Conflicts</span>
-                            File
-                        </th>
-                        <th>
-                            Conflicting Mods
-                        </th>
-                        <th>
-                            Compression
-                        </th>
-                    </tr>
-                </thead>
-            </table>
-        </div>
-
-        <div ng-show="isSelected('plugins')">
-            <table title='overview' class='overview-table section-table'>
-                <colgroup>
-                    <col style="width: 40%">
-                    <col style="width: 60%">
-                </colgroup>
-                <thead>
-                    <tr>
-                        <th>
-                            <span class="section-title">Overview</span>
-                            Stability Rating   
-                        </th>
-                        <th>
-                            Details
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>
-                            <ul class="list olist">
-                                <li>
-                                    <span class="modlist-status">[_] Stable</span> 
-                                </li>
-                                <li>
-                                </li>
-                                <li>
-                                    <span class="overview-total-number">999</span> 
-                                    Unresolved Issues
-                                </li>
-                                <li>
-                                    <span class="overview-total-number">999</span> 
-                                    Ignored Issues
-                                </li>
-                            </ul>
-                        </td>
-                        <td>
-                            <ul class="list olist">
-                                <li>
-                                    <span class="overview-total-number">999</span> 
-                                    Master Plugins
-                                </li>
-                                <li>
-                                    <span class="overview-total-number">999</span> 
-                                    Standard Plugins
-                                </li>
-                                <li>
-                                    <span class="overview-total-number">999</span> 
-                                    Patch Plugins
-                                </li>
-                                <li>
-                                    <span class="overview-total-number">999</span> 
-                                    Custom Plugins
-                                </li>
-                            </ul>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-            <table title='modlist-plugins' class='section-table'>
-                <colgroup>
-                    <col style="width: 25%">
-                    <col style="width: 75%">
-                </colgroup>
-                <thead>
-                    <tr>
-                        <th>
-                            <span class="section-title">Plugins</span>
-                            <br>
-                        </th>
-                        <th>
-                             <a ng-click="curPluginSecTab = 'list'" ng-class="cssChange('plugins','list')">List</a><a ng-click="curPluginSecTab = 'tiles'" ng-class="cssChange('plugins','tiles')">Tiles</a>
-                        </th>
-                    </tr>
-                </thead>
-            </table>
-            <table title='modlist-missing-requirements' class='section-table'>
-                <colgroup>
-                    <col style="width: 75%">
-                    <col style="width: 25%">
-                </colgroup>
-                <thead>
-                    <tr>
-                        <th>
-                            <span class="section-title">Missing Requirements</span>
-                            <span class="section-header-counter"># Unresolved Issues</span>
-                        </th>
-                        <th>
-                             <a ng-click="" class="section-unselected-tab">Resolve All Issues</a>
-                        </th>
-                    </tr>
-                </thead>
-            </table> 
-            <table title='modlist-compatibility-issues' class='section-table'>
-                <colgroup>
-                    <col style="width: 25%">
-                    <col style="width: 75%">
-                </colgroup>
-                <thead>
-                    <tr>
-                        <th>
-                            <span class="section-title">Compatibility Issues</span>
-                            <span class="section-header-counter"># Unresolved Issues</span>
-                        </th>
-                        <th>
-                             <a ng-click="" class="section-unselected-tab">Show ignored issues(#)</a><a ng-click="" class="section-unselected-tab">Show resolved issues(#)</a>
-                        </th>
-                    </tr>
-                </thead>
-            </table>
-            <table title='modlist-load-order-notes' class='section-table'>
-                <colgroup>
-                    <col style="width: 25%">
-                    <col style="width: 75%">
-                </colgroup>
-                <thead>
-                    <tr>
-                        <th>
-                            <span class="section-title">Load Order Notes</span>
-                            <span class="section-header-counter"># Unresolved Notes</span>
-                        </th>
-                        <th>
-                             <a ng-click="" class="section-unselected-tab">Show ignored notes(#)</a><a ng-click="" class="section-unselected-tab">Show resolved notes(#)</a>
-                        </th>
-                    </tr>
-                </thead>
-            </table>
-            <table title='modlist-asset-conflicts' class='overview-table'>
-                <colgroup>
-                    <col style="width: 40%">
-                    <col style="width: 30%">
-                    <col style="width: 30%">
-                </colgroup>
-                <thead>
-                    <tr>
-                        <th>
-                            <span class="section-title">Record Conflicts</span>
-                            <a ng-click="" class="section-selected-tab">Sort By: FormID</a>
-                        </th>
-                        <th>
-                            Conflicting Plugins
-                        </th>
-                        <th>
-                            Conflicting Mods
-                        </th>
-                    </tr>
-                </thead>
-            </table>
-        </div>
-
-        <div ng-show="isSelected('config')">
-            <table title='Skyrim Configuration Files' class='section-table'>
-                <colgroup>
-                    <col style="width: 100%">
-                </colgroup>
-                <thead>
-                    <tr>
-                        <th>
-                            <span class="section-title">Custom Settings & Preferences</span>
-                            <a ng-click="curSkyConfigTab = 'skyrim.ini'" ng-class="cssChange('skyrimConfig','skyrim.ini')">Skyrim.ini</a><a ng-click="curSkyConfigTab = 'skyrimprefs.ini'" ng-class="cssChange('skyrimConfig','skyrimprefs.ini')">SkyrimPrefs.ini</a>
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>
-                            <ul class="list tblist">
-                                <li ng-show='bIsEditing'>
-                                    <textarea>{{longDescTextArea}}</textarea>
-                                </li>
-                                <li ng-hide='bIsEditing'>
-                                    {{longDescTextArea}}
-                                </li>
-                            </ul>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-            <table title='ENB Configuration Files' class='section-table'>
-                <colgroup>
-                    <col style="width: 100%">
-                </colgroup>
-                <thead>
-                    <tr>
-                        <th>
-                            <span class="section-title">Custom ENB Settings</span>
-                            <a ng-click="curENBConfigTab = 'enblocal.ini'" ng-class="cssChange('enbConfig','enblocal.ini')">enblocal.ini</a><a ng-click="curENBConfigTab = 'enbseries.ini'" ng-class="cssChange('enbConfig','enbseries.ini')">enbseries.ini</a>
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>
-                            <ul class="list tblist">
-                                <li ng-show='bIsEditing'>
-                                    <textarea>{{longDescTextArea}}</textarea>
-                                </li>
-                                <li ng-hide='bIsEditing'>
-                                    {{longDescTextArea}}
-                                </li>
-                            </ul>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>     
-        </div>
-
-        <div ng-show="isSelected('comments')">
-            <table title='Comments' class='section-table'>
-                <colgroup>
-                    <col style="width: 100%">
-                </colgroup>
-                <thead>
-                    <tr>
-                        <th>
-                            <span class="section-title">Comments</span>
-                            <br>
-                        </th>
-                    </tr>
-                </thead>
-            </table>     
-        </div>
-        <div title="SaveOverlay-wrapper">
-            Edit / Save / Cancel Overlay
-        </div>
-        <div style='height: 500px'></div>
-    </div>
 </loader>
+<div title="modlist-header" class="header-tabs">
+    <div class="modlist-header-color">
+        <div class="page-container mod-header">
+            <section>
+            <div class="mod-info">
+                <br/>
+                <span class="mod-name">{{modlist.title}}{{modlistTitle}}</span>
+                <br/>
+                <span class="mod-authors-container">by 
+                    <span class="mod-authors">{{modlist.created_by}}</span>
+                </span>
+            </div>
+            </section>
+            <section>
+                    <div class="mod-header-box">
+                        <!-- TODO: I feel like using some spans here would be wiser -->
+                        ACTIONS
+                        <div class="action-box" ng-click="starMod()">
+                            <i class="fa {{modlistStarred ? 'fa-star' : 'fa-star-o'}}" aria-hidden="true"></i>
+                            {{modlistStarred ? 'Unfavorite' : 'Favorite'}}
+                        </div>
+                        <div class="action-box">
+                            <i class="fa fa-plus" aria-hidden="true"></i>
+                            Dupicate Modlist
+                        </div>
+                    </div>
+
+                    <div class="mod-header-box">
+                        STATUS
+                        <div class="action-box {{mlStatusClass}}">
+                            <!--todo: make function to get status icon index-->
+                             <i class="fa {{curStatusIcon.name}}" aria-hidden="true"></i>
+                            {{modlist.status}}
+                        </div>
+                        <div class="action-box {{mlVisibilityClass}}" ng-show="bIsEditing">
+                            <!--HIDDEN UNTIL VARIABLE AVAILABLE <i class="fa {{modlist.hidden ? 'fa-eye' : 'fa-eye-slash}}" aria-hidden="true"></i> -->
+                            <!--demo-->
+                            <i class="fa fa-eye-slash" aria-hidden="true"></i>
+                            {{modlist.hidden}}
+                        </div>
+
+                    </div>
+            </section>
+        </div>
+    </div>
+    <div class="header-container" style="padding-top: 8px;">
+        <div class="page-container">
+            <div title="tabs-wrapper" class="tabs">
+                <a ng-click="currentTab ='details'" ng-class="cssClass('details')">Details</a>
+                <a ng-click="currentTab ='tools'" ng-class="cssClass('tools')">Tools</a>
+                <a ng-click="currentTab ='mods'" ng-class="cssClass('mods')">Mods</a>
+                <a ng-click="currentTab ='plugins'" ng-class="cssClass('plugins')">Plugins</a>
+                <a ng-click="currentTab ='config'" ng-class="cssClass('config')">Config</a>
+                <a ng-click="currentTab ='comments'" ng-class="cssClass('comments')">Comments</a>
+                <button ng-click="debugFunc()">toggle editmode</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="page-container">
+    <div ng-show="isSelected('details')">
+        <table ng-show="bIsEditing" title='modlist-options' class='section-table'>
+            <colgroup>
+                <col style="width: 100%">
+            </colgroup>
+            <thead>
+                <tr>
+                    <th>
+                        <span class="section-title">Mod List Options</span>
+                        <br>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <ul class="list flist">
+                            <li>
+                               <h3>Status</h3>
+                                <select ng-model="statusSelect" ng-init="statusSelect = 'underConstruction'">
+                                    <option value="planned">Planned</option>
+                                    <option value="underConstruction">Under Construction</option>
+                                    <option value="testing">Testing</option>
+                                    <option value="complete">Complete</option>
+                                </select>
+                            </li>
+                            <li>
+                                <label>
+                                <h3>Title</h3><input type="text" name="mlTitleInput" ng-value="modlistTitle">
+                                </label>
+                            </li>
+                            <li>
+                                <h3>Short Description</h3>
+                                <textarea>{{shortDescTextArea}}</textarea>
+                            </li>
+                            <li>
+                               <h3>Modlist Visibility</h3>
+                                <select ng-model="visibilitySelect" ng-init="visibilitySelect = 'visible'">
+                                    <option value="visible">Visible</option>
+                                    <option value="hidden">Hidden</option>
+                                </select>
+                                <br><br>
+                                <h3>Public Display Options</h3>   
+                                <input type="checkbox" name="mlCatNotesCB" ng-checked="bHideCatNotes"> Do not display mod category notes.<br><br>
+                                <input type="checkbox" name="mlModGrpNotesCB" ng-checked="bHideModGrpNotes"> Do not display plugin group notes.
+                            </li>
+                            <li>
+                                <h3>Collection</h3>
+                                <input type="checkbox" name="mlIsCollection" ng-checked="bIsCollection"> Mod List is a collection
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+            </tbody>
+        </table> 
+
+        <table title='overview' class='overview-table section-table'>
+            <colgroup>
+                <col style="width: 25%">
+                <col style="width: 55%">
+                <col style="width: 20%">
+            </colgroup>
+            <thead>
+                <tr>
+                    <th>
+                        <span class="section-title">Overview</span>
+                        Totals   
+                    </th>
+                    <th>
+                        Tags
+                    </th>
+                    <th>
+                        Desktop Sync Tools
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <ul class="list olist">
+                            <li>
+                                <span class="overview-total-number">999</span> 
+                                Tools
+                            </li>
+                            <li>
+                                <span class="overview-total-number">999</span> 
+                                Mods
+                            </li>
+                            <li>
+                                <span class="overview-total-number">999</span> 
+                                Plugins
+                            </li>
+                            <li>
+                                <span class="overview-total-number">999</span> 
+                                BSAs
+                            </li>
+                        </ul>
+                    </td>
+                    <td>
+                        Tags here
+                    </td>
+                    <td>
+                        Desktop sync tools here
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <table title='modlist-details' class='section-table'>
+            <colgroup>
+                <col style="width: 100%">
+            </colgroup>
+            <thead>
+                <tr>
+                    <th>
+                        <span class="section-title">Details</span>
+                        <br>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <ul class="list tblist">
+                            <li ng-show='bIsEditing'>
+                                <textarea>{{longDescTextArea}}</textarea>
+                            </li>
+                            <li ng-hide='bIsEditing'>
+                                {{longDescTextArea}}
+
+                                {{longDescTextArea}}
+
+                                {{longDescTextArea}}
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+            </tbody>
+        </table>     
+    </div>
+
+    <div ng-show="isSelected('tools')"> 
+        <table title='modlist-tools' class='section-table'>
+            <colgroup>
+                <col style="width: 75%">
+                <col style="width: 25%">
+            </colgroup>
+            <thead>
+                <tr>
+                    <th>
+                        <span class="section-title">Tools</span><br>
+                    </th>
+                    <th>
+                         <a ng-click="curToolsSecTab = 'list'" ng-class="cssChange('tools','list')">List</a><a ng-click="curToolsSecTab = 'tiles'" ng-class="cssChange('tools','tiles')">Tiles</a>
+                    </th>
+                </tr>
+            </thead>
+        </table> 
+        <div style="border-left: 1px solid black;border-right: 1px solid black;border-bottom: 1px solid black"> This is a Test</div>
+
+        <table title='modlist-missing-requirements' class='section-table'>
+            <colgroup>
+                <col style="width: 75%">
+                <col style="width: 25%">
+            </colgroup>
+            <thead>
+                <tr>
+                    <th>
+                        <span class="section-title">Missing Requirements</span>
+                        <span class="section-header-counter"># Unresolved Issues</span>
+                    </th>
+                    <th>
+                         <a ng-click="" class="section-unselected-tab">Resolve All Issues</a>
+                    </th>
+                </tr>
+            </thead>
+        </table> 
+    </div>
+
+    <div ng-show="isSelected('mods')">
+        <table title='overview' class='overview-table section-table'>
+            <colgroup>
+                <col style="width: 40%">
+                <col style="width: 60%">
+            </colgroup>
+            <thead>
+                <tr>
+                    <th>
+                        <span class="section-title">Overview</span>
+                        Stability Rating   
+                    </th>
+                    <th>
+                        Details
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <ul class="list olist">
+                            <li>
+                                <span class="modlist-status">[_] Stable</span> 
+                            </li>
+                            <li>
+                            </li>
+                            <li>
+                                <span class="overview-total-number">999</span> 
+                                Unresolved Issues
+                            </li>
+                            <li>
+                                <span class="overview-total-number">999</span> 
+                                Ignored Issues
+                            </li>
+                        </ul>
+                    </td>
+                    <td>
+                        <ul class="list olist">
+                            <li>
+                                <span class="overview-total-number">999</span> 
+                                Compatible Mods
+                            </li>
+                            <li>
+                                <span class="overview-total-number">999</span> 
+                                Compatible With Patch
+                            </li>
+                            <li>
+                                <span class="overview-total-number">999</span> 
+                                Partially Incompatible
+                            </li>
+                            <li>
+                                <span class="overview-total-number">999</span> 
+                                Incompatible
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+            </tbody>
+        </table> 
+        <table title='modlist-mods' class='section-table'>
+            <colgroup>
+                <col style="width: 25%">
+                <col style="width: 75%">
+            </colgroup>
+            <thead>
+                <tr>
+                    <th>
+                        <span class="section-title">Mods</span>
+                        <br>
+                    </th>
+                    <th>
+                         <a ng-click="curModsSecTab = 'list'" ng-class="cssChange('mods','list')">List</a><a ng-click="curModsSecTab = 'tiles'" ng-class="cssChange('mods','tiles')">Tiles</a>
+                    </th>
+                </tr>
+            </thead>
+        </table>
+        <table title='modlist-missing-requirements' class='section-table'>
+            <colgroup>
+                <col style="width: 75%">
+                <col style="width: 25%">
+            </colgroup>
+            <thead>
+                <tr>
+                    <th>
+                        <span class="section-title">Missing Requirements</span>
+                        <span class="section-header-counter"># Unresolved Issues</span>
+                    </th>
+                    <th>
+                         <a ng-click="" class="section-unselected-tab">Resolve All Issues</a>
+                    </th>
+                </tr>
+            </thead>
+        </table>   
+        <table title='modlist-compatibility-issues' class='section-table'>
+            <colgroup>
+                <col style="width: 25%">
+                <col style="width: 75%">
+            </colgroup>
+            <thead>
+                <tr>
+                    <th>
+                        <span class="section-title">Compatibility Issues</span>
+                        <span class="section-header-counter"># Unresolved Issues</span>
+                    </th>
+                    <th>
+                         <a ng-click="" class="section-unselected-tab">Show ignored issues(#)</a><a ng-click="" class="section-unselected-tab">Show resolved issues(#)</a>
+                    </th>
+                </tr>
+            </thead>
+        </table>
+        <table title='modlist-install-order-notes' class='section-table'>
+            <colgroup>
+                <col style="width: 25%">
+                <col style="width: 75%">
+            </colgroup>
+            <thead>
+                <tr>
+                    <th>
+                        <span class="section-title">Install Order Notes</span>
+                        <span class="section-header-counter"># Unresolved Notes</span>
+                    </th>
+                    <th>
+                         <a ng-click="" class="section-unselected-tab">Show ignored notes(#)</a><a ng-click="" class="section-unselected-tab">Show resolved notes(#)</a>
+                    </th>
+                </tr>
+            </thead>
+        </table>
+        <table title='modlist-asset-conflicts' class='overview-table'>
+            <colgroup>
+                <col style="width: 40%">
+                <col style="width: 30%">
+                <col style="width: 30%">
+            </colgroup>
+            <thead>
+                <tr>
+                    <th>
+                        <span class="section-title">Asset Conflicts</span>
+                        File
+                    </th>
+                    <th>
+                        Conflicting Mods
+                    </th>
+                    <th>
+                        Compression
+                    </th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+
+    <div ng-show="isSelected('plugins')">
+        <table title='overview' class='overview-table section-table'>
+            <colgroup>
+                <col style="width: 40%">
+                <col style="width: 60%">
+            </colgroup>
+            <thead>
+                <tr>
+                    <th>
+                        <span class="section-title">Overview</span>
+                        Stability Rating   
+                    </th>
+                    <th>
+                        Details
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <ul class="list olist">
+                            <li>
+                                <span class="modlist-status">[_] Stable</span> 
+                            </li>
+                            <li>
+                            </li>
+                            <li>
+                                <span class="overview-total-number">999</span> 
+                                Unresolved Issues
+                            </li>
+                            <li>
+                                <span class="overview-total-number">999</span> 
+                                Ignored Issues
+                            </li>
+                        </ul>
+                    </td>
+                    <td>
+                        <ul class="list olist">
+                            <li>
+                                <span class="overview-total-number">999</span> 
+                                Master Plugins
+                            </li>
+                            <li>
+                                <span class="overview-total-number">999</span> 
+                                Standard Plugins
+                            </li>
+                            <li>
+                                <span class="overview-total-number">999</span> 
+                                Patch Plugins
+                            </li>
+                            <li>
+                                <span class="overview-total-number">999</span> 
+                                Custom Plugins
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table title='modlist-plugins' class='section-table'>
+            <colgroup>
+                <col style="width: 25%">
+                <col style="width: 75%">
+            </colgroup>
+            <thead>
+                <tr>
+                    <th>
+                        <span class="section-title">Plugins</span>
+                        <br>
+                    </th>
+                    <th>
+                         <a ng-click="curPluginSecTab = 'list'" ng-class="cssChange('plugins','list')">List</a><a ng-click="curPluginSecTab = 'tiles'" ng-class="cssChange('plugins','tiles')">Tiles</a>
+                    </th>
+                </tr>
+            </thead>
+        </table>
+        <table title='modlist-missing-requirements' class='section-table'>
+            <colgroup>
+                <col style="width: 75%">
+                <col style="width: 25%">
+            </colgroup>
+            <thead>
+                <tr>
+                    <th>
+                        <span class="section-title">Missing Requirements</span>
+                        <span class="section-header-counter"># Unresolved Issues</span>
+                    </th>
+                    <th>
+                         <a ng-click="" class="section-unselected-tab">Resolve All Issues</a>
+                    </th>
+                </tr>
+            </thead>
+        </table> 
+        <table title='modlist-compatibility-issues' class='section-table'>
+            <colgroup>
+                <col style="width: 25%">
+                <col style="width: 75%">
+            </colgroup>
+            <thead>
+                <tr>
+                    <th>
+                        <span class="section-title">Compatibility Issues</span>
+                        <span class="section-header-counter"># Unresolved Issues</span>
+                    </th>
+                    <th>
+                         <a ng-click="" class="section-unselected-tab">Show ignored issues(#)</a><a ng-click="" class="section-unselected-tab">Show resolved issues(#)</a>
+                    </th>
+                </tr>
+            </thead>
+        </table>
+        <table title='modlist-load-order-notes' class='section-table'>
+            <colgroup>
+                <col style="width: 25%">
+                <col style="width: 75%">
+            </colgroup>
+            <thead>
+                <tr>
+                    <th>
+                        <span class="section-title">Load Order Notes</span>
+                        <span class="section-header-counter"># Unresolved Notes</span>
+                    </th>
+                    <th>
+                         <a ng-click="" class="section-unselected-tab">Show ignored notes(#)</a><a ng-click="" class="section-unselected-tab">Show resolved notes(#)</a>
+                    </th>
+                </tr>
+            </thead>
+        </table>
+        <table title='modlist-asset-conflicts' class='overview-table'>
+            <colgroup>
+                <col style="width: 40%">
+                <col style="width: 30%">
+                <col style="width: 30%">
+            </colgroup>
+            <thead>
+                <tr>
+                    <th>
+                        <span class="section-title">Record Conflicts</span>
+                        <a ng-click="" class="section-selected-tab">Sort By: FormID</a>
+                    </th>
+                    <th>
+                        Conflicting Plugins
+                    </th>
+                    <th>
+                        Conflicting Mods
+                    </th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+
+    <div ng-show="isSelected('config')">
+        <table title='Skyrim Configuration Files' class='section-table'>
+            <colgroup>
+                <col style="width: 100%">
+            </colgroup>
+            <thead>
+                <tr>
+                    <th>
+                        <span class="section-title">Custom Settings & Preferences</span>
+                        <a ng-click="curSkyConfigTab = 'skyrim.ini'" ng-class="cssChange('skyrimConfig','skyrim.ini')">Skyrim.ini</a><a ng-click="curSkyConfigTab = 'skyrimprefs.ini'" ng-class="cssChange('skyrimConfig','skyrimprefs.ini')">SkyrimPrefs.ini</a>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <ul class="list tblist">
+                            <li ng-show='bIsEditing'>
+                                <textarea>{{longDescTextArea}}</textarea>
+                            </li>
+                            <li ng-hide='bIsEditing'>
+                                {{longDescTextArea}}
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table title='ENB Configuration Files' class='section-table'>
+            <colgroup>
+                <col style="width: 100%">
+            </colgroup>
+            <thead>
+                <tr>
+                    <th>
+                        <span class="section-title">Custom ENB Settings</span>
+                        <a ng-click="curENBConfigTab = 'enblocal.ini'" ng-class="cssChange('enbConfig','enblocal.ini')">enblocal.ini</a><a ng-click="curENBConfigTab = 'enbseries.ini'" ng-class="cssChange('enbConfig','enbseries.ini')">enbseries.ini</a>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <ul class="list tblist">
+                            <li ng-show='bIsEditing'>
+                                <textarea>{{longDescTextArea}}</textarea>
+                            </li>
+                            <li ng-hide='bIsEditing'>
+                                {{longDescTextArea}}
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+            </tbody>
+        </table>     
+    </div>
+
+    <div ng-show="isSelected('comments')">
+        <table title='Comments' class='section-table'>
+            <colgroup>
+                <col style="width: 100%">
+            </colgroup>
+            <thead>
+                <tr>
+                    <th>
+                        <span class="section-title">Comments</span>
+                        <br>
+                    </th>
+                </tr>
+            </thead>
+        </table>     
+    </div>
+    <div title="SaveOverlay-wrapper">
+        Edit / Save / Cancel Overlay
+    </div>
+    <div style='height: 500px'></div>
+</div>
