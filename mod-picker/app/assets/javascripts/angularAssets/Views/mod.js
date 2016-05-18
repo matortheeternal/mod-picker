@@ -3,23 +3,23 @@ app.config(['$stateProvider', function ($stateProvider) {
             templateUrl: '/resources/partials/showMod/mod.html',
             controller: 'modController',
             url: '/mod/:modId',
-        }).state('mod.tab1', {
+        }).state('mod.Reviews', {
             templateUrl: '/resources/partials/showMod/reviews.html',
             controller: 'modController',
             url: '/reviews'
-        }).state('mod.tab2', {
+        }).state('mod.Compatibility', {
             templateUrl: '/resources/partials/showMod/compatibility.html',
             controller: 'modController',
             url: '/compatibility'
-        }).state('mod.tab3', {
+        }).state('mod.Install Order', {
             templateUrl: '/resources/partials/showMod/installOrder.html',
             controller: 'modController',
             url: '/install-order'
-        }).state('mod.tab4', {
+        }).state('mod.Load Order', {
             templateUrl: '/resources/partials/showMod/loadOrder.html',
             controller: 'modController',
             url: '/load-order'
-        }).state('mod.tab5', {
+        }).state('mod.Analysis', {
             templateUrl: '/resources/partials/showMod/analysis.html',
             controller: 'modController',
             url: '/analysis'

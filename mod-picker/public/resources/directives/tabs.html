@@ -1,5 +1,5 @@
 <div class="tabs">
-	<a ui-sref=".tab{{$index + 1}}" ng-repeat="tab in tabs"
+	<a ui-sref=".{{tab}}" ng-repeat="tab in tabs"
 	   ng-click="state.selected = $index" ng-class="state.selected == $index ? 'selected-tab' : 'unselected-tab'">
 		{{tab}}
 	</a>
