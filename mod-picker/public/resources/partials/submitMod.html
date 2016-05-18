@@ -8,17 +8,15 @@
                 <span class="help-tooltip" title="Locations where an author has officially uploaded a Mod. &#13;You can only enter one valid location for each supported site.">?</span>
             </h3>
             <section>
-                <div class="sources-container" ng-repeat="source in sources">
-                    <label>
-                        <select ng-model="source.label" ng-change="validateSource(source)" ng-disabled="source.scraped">
-                            <option ng-repeat="site in sites">{{site.label}}</option>
-                        </select>
-                        <input type="text" class="long-input" ng-model="source.url" ng-change="validateSource(source)" ng-disabled="source.scraped">
-                        <input type="button" class="btn scrape-button" value="Scrape" ng-click="scrapeSource(source)" ng-disabled="!source.valid || source.scraped">
-                        <span class="remove-source" ng-click="removeSource(source)" ng-if="$index > 0 && !source.scraped" title="Remove source">
-                            <i class="fa fa-times"></i>
-                        </span>
-                    </label>
+                <div class="dynamic-item" ng-repeat="source in sources">
+                    <select ng-model="source.label" ng-change="validateSource(source)" ng-disabled="source.scraped">
+                        <option ng-repeat="site in sites">{{site.label}}</option>
+                    </select>
+                    <input type="text" class="long-input" ng-model="source.url" ng-change="validateSource(source)" ng-disabled="source.scraped">
+                    <input type="button" class="btn scrape-button" value="Scrape" ng-click="scrapeSource(source)" ng-disabled="!source.valid || source.scraped">
+                    <span class="remove-item" ng-click="removeSource(source)" ng-if="$index > 0 && !source.scraped" title="Remove source">
+                        <i class="fa fa-times"></i>
+                    </span>
                 </div>
                 <!-- TODO: Fix this not hiding immediately -->
                 <input type="button" class="btn" value="Add Source" ng-click="addSource()" ng-show="sources.length < sites.length">

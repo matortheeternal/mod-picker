@@ -73,10 +73,17 @@ form {
     margin-bottom: 20px;
   }
 
-  .sources-container {
+  .dynamic-item {
     margin-bottom: 6px;
-    .remove-source {
+    display: block;
+    line-height: 32px;
+
+    .remove-item {
       cursor: pointer;
+    }
+
+    input {
+      vertical-align: top;
     }
   }
 }
