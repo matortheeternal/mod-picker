@@ -3,10 +3,22 @@
   background-color: $bar_dark_color;
 }
 
+.modlist-header-color-2 {
+  background-color: $bar_color;
+}
+
 .section-header-container {
   width: 100%;
   border: 1px solid $hard_border_color;
 
+}
+
+.modlist-header-box {
+  background-color: $bar_color;
+  
+  padding: 10px;
+  font-size: 12px;
+  font-weight: 500;
 }
 
 .author-line {
@@ -140,6 +152,15 @@
   font-size: 24px;
 }
 
+
+.modlist-header-title {
+  color: $bar_text_color;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  display: flex;
+  justify-content: flex-start;
+  align-content: center;
+}
 
 .section-title {
   display: block;
