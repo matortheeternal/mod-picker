@@ -172,6 +172,17 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
         });
     };
 
+    //combine dummy_masters array with masters array and sorts the masters array
+    $scope.combineAndSortMasters = function(plugins) {
+        // loop through plugins
+        plugins.forEach(function(plugin) {
+            plugin.masters = plugin.masters.concat(plugin.dummy_masters);
+            plugin.masters.sort(function(first_master, second_master) {
+                return first_master.index - second_master.index;
+            });
+        });
+    };
+
     // TAB RELATED LOGIC
     $scope.currentTab = $scope.tabs[0];
 
@@ -270,6 +281,7 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
 
             // associate record groups for plugins
             $scope.associateRecordGroups(analysis.plugins);
+            $scope.combineAndSortMasters(analysis.plugins);
             $scope.mod.plugins = analysis.plugins;
             if ($scope.mod.plugins.length > 0) {
                 $scope.currentPlugin = analysis.plugins[0];
