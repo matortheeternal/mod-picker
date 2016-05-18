@@ -76,8 +76,13 @@
         </div>
 
         <div class="content-container">
-            <div ng-repeat="override in currentPlugin.overrides">
-                <em>plugin name</em> - [{{override.sig}}:{{override.fid | hex:8}}]
+            <div ng-repeat="master in currentPlugin.masters" ng-if="master.overrides.length > 0">
+                <h3>{{master.filename}}</h3>
+                <ul class="overrides-list">
+                    <li ng-repeat="override in master.overrides">
+                        [{{override.sig}}:{{override.fid | hex:8}}]
+                    </li>
+                </ul>
             </div>
         </div>
     </div>

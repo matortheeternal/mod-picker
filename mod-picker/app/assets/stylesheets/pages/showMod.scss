@@ -613,3 +613,8 @@
     border-bottom: 1px solid $border_color;
   }
 }
+
+.overrides-list {
+  list-style: none;
+  font-family: Consolas, Menlo, Monaco, 'Lucida Console', 'Courier New', monospace, sans-serif;
+}

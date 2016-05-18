@@ -112,9 +112,11 @@ class Mod < ActiveRecord::Base
   def create_plugins
     if @plugin_dumps
       @plugin_dumps.each do |dump|
+        # create plugin from dump
         dump[:game_id] = self.game_id
-        if Plugin.find_by(filename: dump[:filename], crc_hash: dump[:crc_hash]).nil?
-          self.plugins.create(dump)
+        plugin = Plugin.find_by(filename: dump[:filename], crc_hash: dump[:crc_hash])
+        if plugin.nil?
+          plugin = self.plugins.create(dump)
         end
       end
     end
