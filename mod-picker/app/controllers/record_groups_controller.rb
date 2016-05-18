@@ -7,6 +7,8 @@ class RecordGroupsController < ApplicationController
       @record_groups = RecordGroup.all
     end
 
-    render :json => @record_groups
+    render :json => @record_groups.as_json({
+        :except => [:id, :game_id]
+    })
   end
 end
