@@ -8,15 +8,13 @@
     <dd class="stat-data" ng-if="plugin.master_filenames">
         <span ng-if="plugin.master_filenames.length == 0">-</span>
         <span class="stat-data-item" ng-repeat="master in plugin.master_filenames">
-            {{master}}
-            <span ng-if="!$last">, </span>
+            {{master}}<span ng-show="!$last">, </span>
         </span>
     </dd>
     <dd class="stat-data" ng-if="plugin.masters">
         <span ng-if="plugin.masters.length == 0">-</span>
         <span class="stat-data-item" ng-repeat="master in plugin.masters">
-            {{master.filename}}
-            <span ng-if="!$last">, </span>
+            {{master.filename}}<span ng-show="!$last">, </span>
         </span>
     </dd>
 </div>
