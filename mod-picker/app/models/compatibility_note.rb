@@ -1,7 +1,7 @@
 class CompatibilityNote < ActiveRecord::Base
   include Filterable
 
-  after_initialize :init
+  before_save :set_dates
 
   scope :by, -> (id) { where(submitted_by: id) }
   scope :mod, -> (id) { joins(:mod_versions).where(:mod_versions => {mod_id: id}) }
@@ -11,6 +11,7 @@ class CompatibilityNote < ActiveRecord::Base
   # FIXME: change this back to status: once the schema has been updated.
   enum compatibility_type: [ :incompatible, :"partially incompatible", :"compatibility mod", :"compatibility option", :"make custom patch" ]
 
+  belongs_to :game, :inverse_of => 'compatibility_notes'
   belongs_to :user, :foreign_key => 'submitted_by', :inverse_of => 'compatibility_notes'
 
   # associated mods
@@ -35,30 +36,44 @@ class CompatibilityNote < ActiveRecord::Base
 
   # validations
   validates :submitted_by, presence: true
-  validates :text_body, length: { in: 64..16384 }                                            
-
-
-  def init
-    self.submitted ||= DateTime.now
-  end
+  validates :text_body, length: { in: 64..16384 }
 
   def mods
     [first_mod, second_mod]
   end
 
-  def as_json(options={})
-    super({
-        :except => [:submitted_by],
-        :include => {
-            :user => {
-                :only => [:id, :username, :role, :title],
-                :include => {
-                    :reputation => {:only => [:overall]}
-                },
-                :methods => :avatar
-            }
-        },
-        :methods => :mods
-    })
+  def recompute_helpful_counts
+    self.helpful_count = HelpfulMark.where(helpfulable_id: self.id, helpfulable_type: "CompatibilityNote", helpful: true).count
+    self.not_helpful_count = HelpfulMark.where(helpfulable_id: self.id, helpfulable_type: "CompatibilityNote", helpful: false).count
   end
+
+  def as_json(options={})
+    if JsonHelpers.json_options_empty(options)
+      default_options = {
+          :except => [:submitted_by],
+          :include => {
+              :user => {
+                  :only => [:id, :username, :role, :title],
+                  :include => {
+                      :reputation => {:only => [:overall]}
+                  },
+                  :methods => :avatar
+              }
+          },
+          :methods => :mods
+      }
+      super(options.merge(default_options))
+    else
+      super(options)
+    end
+  end
+
+  private
+    def set_dates
+      if self.submitted.nil?
+        self.submitted = DateTime.now
+      else
+        self.edited = DateTime.now
+      end
+    end
 end

@@ -34,6 +34,22 @@ app.service('modService', function (backend, $q) {
         return mods.promise;
     };
 
+    this.searchMods = function (name) {
+        var mods = $q.defer();
+
+        var postData =  {
+            filters: {
+                search: name
+            }
+        };
+
+        backend.post('/mods/search', postData).then(function (data) {
+            mods.resolve(data);
+        });
+
+        return mods.promise;
+    };
+
     this.starMod = function(modId, starred) {
         var star = $q.defer();
         if (starred) {
@@ -46,6 +62,14 @@ app.service('modService', function (backend, $q) {
             });
         }
         return star.promise;
+    };
+
+    this.retrieveReviews = function (modId, options) {
+        var reviews = $q.defer();
+        backend.retrieve('/mods/' + modId + '/reviews', options).then(function (data) {
+            reviews.resolve(data);
+        });
+        return reviews.promise;
     };
 
     this.retrieveCompatibilityNotes = function (modId, options) {

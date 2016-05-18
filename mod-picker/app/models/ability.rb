@@ -31,22 +31,20 @@ class Ability
       can [:update, :hide], Mod
       can :destroy, ModRequirement
 
-      # can update or hide any contribution
+      # can update, approve, or hide any contribution
       can [:update, :hide], Comment
-      can [:update, :hide], CompatibilityNote
-      can [:update, :hide], IncorrectNote
-      can [:update, :hide], InstallOrderNote
-      can [:update, :hide], LoadOrderNote
-      can [:update, :hide], Review
+      can [:update, :approve, :hide], CompatibilityNote
+      can [:update, :approve, :hide], IncorrectNote
+      can [:update, :approve, :hide], InstallOrderNote
+      can [:update, :approve, :hide], LoadOrderNote
+      can [:update, :approve, :hide], Review
       can [:update, :hide], Tag
 
       # can delete tags
       can :destroy, ModTag
       can :destroy, ModListTag
-    end
-
-    # signed in users who aren't banned
-    if  User.exists?(user.id) && !user.banned?
+    else
+      # users that are not admins or moderators
       # cannot read hidden content
       cannot :read, Comment, :hidden => true
       cannot :read, CompatibilityNote, :hidden => true
@@ -57,6 +55,16 @@ class Ability
       cannot :read, ModListTag, :hidden => true
       cannot :read, Mod, :hidden => true
 
+      # cannot read unapproved content
+      cannot :read, Comment, :approved => false
+      cannot :read, CompatibilityNote, :approved => false
+      cannot :read, InstallOrderNote, :approved => false
+      cannot :read, LoadOrderNote, :approved => false
+      cannot :read, Review, :approved => false
+    end
+
+    # signed in users who aren't banned
+    if  User.exists?(user.id) && !user.banned?
       # can create new contributions
       can :create, Comment
       can :create, HelpfulMark
@@ -129,7 +137,7 @@ class Ability
       can :update, UserBio, { :user_id => user.id }
 
       # abilities for mod authors
-      can [:update, :hide], Mod, { :mod_authors => { :user_id => user.id } }
+      can :update, Mod, { :mod_authors => { :user_id => user.id } }
       can :destroy, ModRequirement, {:mod_version => {:mod => {:mod_authors => {:user_id => user.id } } } }
       can :destroy, ModTag, { :mod => { :mod_authors => { :user_id => user.id } } }
 

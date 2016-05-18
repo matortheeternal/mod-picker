@@ -10,10 +10,18 @@ app.service('userSettingsService', function (backend, $q) {
 
     this.submitAvatar = function (avatar) {
         var post = $q.defer();
-        backend.postFile('/avatar', 'avatar', avatar).then (function (data) {
+        backend.postFile('/avatar', 'avatar', avatar).then(function (data) {
             post.resolve(data);
         });
         return post.promise;
+    };
+
+    this.verifyAccount = function (site, user_path) {
+        var verified = $q.defer();
+        backend.retrieve('/link_account', { site: site, user_path: user_path }).then(function (data) {
+            verified.resolve(data);
+        });
+        return verified.promise;
     };
 
     //TODO: move this to userservice

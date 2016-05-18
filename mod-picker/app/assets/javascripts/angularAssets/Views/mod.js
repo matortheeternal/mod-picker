@@ -17,7 +17,7 @@ app.filter('percentage', function() {
   };
 });
 
-app.controller('modController', function ($scope, $q, $stateParams, modService, pluginService, categoryService, gameService, assetUtils, reviewSectionService, userService) {
+app.controller('modController', function ($scope, $q, $stateParams, $timeout, modService, pluginService, categoryService, gameService, recordGroupService, userTitleService, assetUtils, reviewSectionService, userService, contributionService, contributionFactory) {
     $scope.tags = [];
     $scope.newTags = [];
     $scope.sort = {};
@@ -27,54 +27,7 @@ app.controller('modController', function ($scope, $q, $stateParams, modService, 
         load_order_notes: true
     };
 
-    // SETUP AND DATA RETRIEVAL LOGIC
-    //initialization of the mod object
-    modService.retrieveMod($stateParams.modId).then(function (mod) {
-        $scope.mod = mod;
-        $scope.statusClass = "status-" + mod.status;
-        $scope.mod.status = mod.status.capitalize();
-
-        // getting categories
-        categoryService.retrieveCategories().then(function (categories) {
-            $scope.primaryCategory = categoryService.getCategoryById(categories, mod.primary_category_id);
-            $scope.secondaryCategory = categoryService.getCategoryById(categories, mod.secondary_category_id);
-
-            // getting review sections
-            reviewSectionService.retrieveReviewSections().then(function (reviewSections) {
-                $scope.reviewSections = reviewSectionService.getSectionsForCategory(reviewSections, $scope.primaryCategory);
-            });
-        });
-
-        // getting games
-        gameService.retrieveGames().then(function (data) {
-            $scope.game = gameService.getGameById(data, mod.game_id);
-        });
-
-        // retrieve notes
-        //TODO: This should happen when we switch tabs
-        modService.retrieveCompatibilityNotes(mod.id).then(function(notes) {
-            $scope.compatibilityNotes = notes;
-        });
-        modService.retrieveInstallOrderNotes(mod.id).then(function(notes) {
-            $scope.installOrderNotes = notes;
-        });
-        modService.retrieveLoadOrderNotes(mod.id).then(function(notes) {
-            $scope.loadOrderNotes = notes;
-        });
-    });
-
-    //get current user
-    userService.retrieveThisUser().then(function (user) {
-        $scope.user = user;
-
-        //actions the user can perform
-        var rep = $scope.user.reputation.overall;
-        $scope.userCanAddMod = (rep >= 160) || ($scope.user.role === 'admin');
-        $scope.userCanAddTags = (rep >= 20) || ($scope.user.role === 'admin');
-    });
-
-    // TAB RELATED LOGIC
-    //set up tab data
+    // SETUP TABS
     //TODO use the cool ui-router here :D
     $scope.tabs = [
         { name: 'Reviews', url: '/resources/partials/showMod/reviews.html' },
@@ -84,16 +37,151 @@ app.controller('modController', function ($scope, $q, $stateParams, modService, 
         { name: 'Analysis', url: '/resources/partials/showMod/analysis.html' }
     ];
 
+    // SETUP AND DATA RETRIEVAL LOGIC
+    //initialization of the mod object
+    modService.retrieveMod($stateParams.modId).then(function (data) {
+        var mod = data.mod;
+        $scope.mod = mod;
+        $scope.modStarred = data.star;
+        switch (mod.status) {
+            case "good":
+                $scope.statusClass = "green-box";
+                break;
+            case "outdated":
+                $scope.statusClass = "yellow-box";
+                break;
+            case "dangerous":
+                $scope.statusClass = "red-box";
+                break;
+        }
+
+        // getting categories
+        categoryService.retrieveCategories().then(function (categories) {
+            $scope.primaryCategory = categoryService.getCategoryById(categories, mod.primary_category_id);
+            $scope.secondaryCategory = categoryService.getCategoryById(categories, mod.secondary_category_id);
+
+            // getting review sections
+            reviewSectionService.retrieveReviewSections().then(function (reviewSections) {
+                $scope.allReviewSections = reviewSections;
+                $scope.reviewSections = reviewSectionService.getSectionsForCategory(reviewSections, $scope.primaryCategory);
+            });
+        });
+
+        // getting games
+        gameService.retrieveGames().then(function (data) {
+            $scope.game = gameService.getGameById(data, mod.game_id);
+        });
+
+        // remove Load Order tab if mod has no plugins
+        if ($scope.mod.plugins_count == 0) {
+            $scope.tabs.splice(3, 1);
+        }
+    });
+
+    //get user titles
+    userTitleService.retrieveUserTitles().then(function(userTitles) {
+        $scope.userTitles = userTitleService.getSortedGameTitles(userTitles);
+    });
+
+    //get record groups
+    recordGroupService.retrieveRecordGroups(window._current_game_id).then(function(recordGroups) {
+        $scope.recordGroups = recordGroups;
+    });
+
+    //get current user
+    userService.retrieveThisUser().then(function (user) {
+        $scope.user = user;
+        $scope.getPermissions();
+    });
+
+    //get user permissions
+    $scope.getPermissions = function() {
+        // if we don't have mod yet, try again in 100ms
+        if (!$scope.mod) {
+            $timeout(function() {
+                $scope.getPermissions();
+            }, 100);
+            return;
+        }
+
+        // set up helper variables
+        var author = $scope.mod.authors.find(function(author) {
+            return author.id == $scope.user.id;
+        });
+        var rep = $scope.user.reputation.overall;
+        var isAdmin = $scope.user.role === 'admin';
+        var isModerator = $scope.user.role === 'moderator';
+        var isAuthor = author !== null;
+
+        // set up permissions
+        $scope.permissions = {
+            canCreateTags: (rep >= 20) || isAdmin || isModerator,
+            canManage: isAuthor || isModerator || isAdmin,
+            canSuggest: (rep >= 40),
+            canModerate: isModerator || isAdmin
+        }
+    };
+
+    //associate user titles with content
+    $scope.associateUserTitles = function(data) {
+        // if we don't have userTitles yet, try again in 100ms
+        if (!$scope.userTitles) {
+            $timeout(function() {
+                $scope.associateUserTitles(data);
+            }, 100);
+            return;
+        }
+
+        // associate titles with the data
+        userTitleService.associateTitles($scope.userTitles, data);
+    };
+
+    //associate helpful marks with content
+    $scope.associateHelpfulMarks = function(data, helpfulMarks) {
+        // loop through data
+        data.forEach(function(item) {
+            // see if we have a matching helpful mark
+            var helpfulMark = helpfulMarks.find(function(mark) {
+                return mark.helpfulable_id == item.id;
+            });
+            // if we have a matching helpful mark, assign it to the item
+            if (helpfulMark) {
+                item.helpful = helpfulMark.helpful;
+            }
+        });
+    };
+
+    //associate record groups with plugins
+    $scope.associateRecordGroups = function(plugins) {
+        // if we don't have recordGroups yet, try again in 100ms
+        if (!$scope.recordGroups) {
+            $timeout(function() {
+                $scope.associateRecordGroups(plugins);
+            }, 100);
+            return;
+        }
+        // loop through plugins
+        plugins.forEach(function(plugin) {
+            if (plugin.plugin_record_groups) {
+                plugin.plugin_record_groups.forEach(function(group) {
+                    var record_group = recordGroupService.getGroupFromSignature($scope.recordGroups, group.sig);
+                    group.name = record_group.name;
+                    group.child_group = record_group.child_group;
+                });
+            }
+        });
+    };
+
+    // TAB RELATED LOGIC
     $scope.currentTab = $scope.tabs[0];
 
     $scope.switchTab = function(targetTab) {
         switch (targetTab.name) {
-            // DO NOT DELETE - MAY BE USED AT A FUTURE DATE
-            /*case 'Reviews':
+            case 'Reviews':
                 if ($scope.mod.reviews == null) {
                     $scope.retrieveReviews();
                 }
-                break;*/
+                break;
             case 'Compatibility':
                 if ($scope.mod.compatibility_notes == null) {
                     $scope.retrieveCompatibilityNotes();
@@ -117,15 +205,17 @@ app.controller('modController', function ($scope, $q, $stateParams, modService, 
         }
     };
 
-    // DO NOT DELETE - MAY BE USED AT A FUTURE DATE
-    /*$scope.retrieveReviews = function() {
+    $scope.retrieveReviews = function() {
         var options = {
             sort: $scope.sort.reviews || 'reputation'
         };
-        modService.retrieveReviews($scope.mod.id, options).then(function(reviews) {
-            $scope.mod.reviews = reviews;
+        modService.retrieveReviews($stateParams.modId, options).then(function(data) {
+            $scope.associateHelpfulMarks(data.reviews, data.helpful_marks);
+            $scope.associateUserTitles(data.reviews);
+            $scope.associateReviewSections(data.reviews);
+            $scope.mod.reviews = data.reviews;
         });
-    };*/
+    };
 
     $scope.retrieveCompatibilityNotes = function() {
         var options = {
@@ -134,8 +224,10 @@ app.controller('modController', function ($scope, $q, $stateParams, modService, 
                 mod_list: $scope.filters.compatibility_notes || true
             }
         };
-        modService.retrieveCompatibilityNotes($scope.mod.id, options).then(function(compatibility_notes) {
-            $scope.mod.compatibility_notes = compatibility_notes;
+        modService.retrieveCompatibilityNotes($stateParams.modId, options).then(function(data) {
+            $scope.associateHelpfulMarks(data.compatibility_notes, data.helpful_marks);
+            $scope.associateUserTitles(data.compatibility_notes);
+            $scope.mod.compatibility_notes = data.compatibility_notes;
         });
     };
 
@@ -146,8 +238,10 @@ app.controller('modController', function ($scope, $q, $stateParams, modService, 
                 mod_list: $scope.filters.install_order_notes
             }
         };
-        modService.retrieveInstallOrderNotes($scope.mod.id, options).then(function(install_order_notes) {
-            $scope.mod.install_order_notes = install_order_notes;
+        modService.retrieveInstallOrderNotes($stateParams.modId, options).then(function(data) {
+            $scope.associateHelpfulMarks(data.install_order_notes, data.helpful_marks);
+            $scope.associateUserTitles(data.install_order_notes);
+            $scope.mod.install_order_notes = data.install_order_notes;
         });
     };
 
@@ -158,15 +252,29 @@ app.controller('modController', function ($scope, $q, $stateParams, modService, 
                 mod_list: $scope.filters.load_order_notes
             }
         };
-        modService.retrieveLoadOrderNotes($scope.mod.id, options).then(function(load_order_notes) {
-            $scope.mod.load_order_notes = load_order_notes;
+        modService.retrieveLoadOrderNotes($stateParams.modId, options).then(function(data) {
+            $scope.associateHelpfulMarks(data.load_order_notes, data.helpful_marks);
+            $scope.associateUserTitles(data.load_order_notes);
+            $scope.mod.load_order_notes = data.load_order_notes;
         });
     };
 
     $scope.retrieveAnalysis = function() {
-        modService.retrieveAnalysis($scope.mod.id).then(function(analysis) {
-            analysis.nestedAssets = assetUtils.convertDataStringToNestedObject(analysis.assets);
-            $scope.mod.analysis = analysis;
+        modService.retrieveAnalysis($stateParams.modId).then(function(analysis) {
+            // turn assets into an array of string
+            $scope.mod.assets = analysis.assets.map(function(asset) {
+                return asset.filepath;
+            });
+            // create nestedAssets tree
+            $scope.mod.nestedAssets = assetUtils.convertDataStringToNestedObject($scope.mod.assets);
+
+            // associate record groups for plugins
+            $scope.associateRecordGroups(analysis.plugins);
+            $scope.mod.plugins = analysis.plugins;
+            if ($scope.mod.plugins.length > 0) {
+                $scope.currentPlugin = analysis.plugins[0];
+                $scope.currentPluginFilename = analysis.plugins[0].filename;
+            }
         });
     };
 
@@ -180,6 +288,26 @@ app.controller('modController', function ($scope, $q, $stateParams, modService, 
     };
 
     // REVIEW RELATED LOGIC
+    // retrieve reviews initially because they're the default tab currently
+    $scope.retrieveReviews();
+
+    // associate reviews with review sections
+    $scope.associateReviewSections = function(reviews) {
+        // if we don't have recordGroups yet, try again in 100ms
+        if (!$scope.reviewSections) {
+            $timeout(function() {
+                $scope.associateReviewSections(reviews);
+            }, 100);
+            return;
+        }
+        // loop through the reviews
+        reviews.forEach(function(review) {
+            review.review_ratings.forEach(function(rating) {
+                rating.section = reviewSectionService.getSectionById($scope.allReviewSections, rating.review_section_id);
+            });
+        });
+    };
+
     // instantiate a new review object
     $scope.startNewReview = function() {
         // set up newReview object
@@ -264,6 +392,10 @@ app.controller('modController', function ($scope, $q, $stateParams, modService, 
         $scope.availableSections.push(rating.section);
     };
 
+    $scope.validateReview = function() {
+        $scope.newReview.valid = $scope.newReview.text_body.length > 512;
+    };
+
     // discard a new review object
     $scope.discardReview = function() {
         delete $scope.newReview;
@@ -276,7 +408,36 @@ app.controller('modController', function ($scope, $q, $stateParams, modService, 
 
     // submit a review
     $scope.submitReview = function() {
-        // TODO: Unimplemented
+        // return if the review is invalid
+        if (!$scope.newReview.valid) {
+            return;
+        }
+
+        // submit the review
+        var review_ratings = [];
+        $scope.newReview.ratings.forEach(function(item) {
+            review_ratings.push({
+                review_section_id: item.section.id,
+                rating: item.rating
+            });
+        });
+        var reviewObj = {
+            review: {
+                game_id: $scope.mod.game_id,
+                mod_id: $scope.mod.id,
+                text_body: $scope.newReview.text_body,
+                review_ratings_attributes: review_ratings
+            }
+        };
+        $scope.newReview.submitting = true;
+        contributionService.submitContribution("reviews", reviewObj).then(function(data) {
+            if (data.status == "ok") {
+                $scope.submitMessage = "Review submitted successfully!";
+                $scope.showSuccess = true;
+                // TODO: push the review onto the $scope.mod.reviews array
+                delete $scope.newReview;
+            }
+        });
     };
 
     //update the average rating of the new review
@@ -304,5 +465,112 @@ app.controller('modController', function ($scope, $q, $stateParams, modService, 
             output = 0;
         }
         return output;
+    };
+
+    // COMPATIBILITY NOTE RELATED LOGIC
+    // instantiate a new compatibility note object
+    $scope.startNewCompatibilityNote = function() {
+        // set up newCompatibilityNote object
+        $scope.newCompatibilityNote = {
+            compatibility_type: "incompatible",
+            text_body: contributionFactory.getDefaultTextBody("CompatibilityNote")
+        };
+
+        // update the markdown editor
+        $scope.updateMDE = true;
+        $scope.updateMDE = false;
+    };
+
+    $scope.validateCompatibilityNote = function() {
+        // exit if we don't have a newCompatibilityNote yet
+        if (!$scope.newCompatibilityNote) {
+            return;
+        }
+
+        $scope.newCompatibilityNote.valid = $scope.newCompatibilityNote.text_body.length > 512 &&
+            ($scope.newCompatibilityNote.second_mod_id !== undefined) &&
+            ($scope.newCompatibilityNote.compatibility_type === "compatibility mod") ==
+            ($scope.newCompatibilityNote.compatibility_mod !== undefined);
+    };
+
+    // discard the compatibility note object
+    $scope.discardCompatibilityNote = function() {
+        delete $scope.newCompatibilityNote;
+    };
+
+    // submit a compatibility note
+    $scope.submitCompatibilityNote = function() {
+        // return if the compatibility note is invalid
+        if (!$scope.newCompatibilityNote.valid) {
+            return;
+        }
+
+        // submit the compatibility note
+        var noteObj = {
+            compatibility_note: {
+                game_id: $scope.mod.game_id,
+                compatibility_type: $scope.newCompatibilityNote.compatibility_type,
+                first_mod_id: $scope.mod.id,
+                second_mod_id: $scope.newCompatibilityNote.second_mod_id,
+                text_body: $scope.newCompatibilityNote.text_body,
+                compatibility_plugin_id: $scope.newCompatibilityNote.compatibility_plugin_id,
+                compatibility_mod_id: $scope.newCompatibilityNote.compatibility_mod_id
+            }
+        };
+        $scope.newCompatibilityNote.submitting = true;
+        contributionService.submitContribution("compatibility_notes", noteObj).then(function(data) {
+            if (data.status == "ok") {
+                $scope.submitMessage = "Compatibility Note submitted successfully!";
+                $scope.showSuccess = true;
+                // TODO: push the compatibility note onto the $scope.mod.compatibility_notes array
+                delete $scope.newCompatibilityNote;
+            }
+        });
+    };
+
+    // INSTALL ORDER NOTE RELATED LOGIC
+    // instantiate a new install order note object
+    $scope.startNewInstallOrderNote = function() {
+        // set up newReview object
+        $scope.newInstallOrderNote = {
+            order: "before",
+            text_body: ""
+        };
+
+        // update the markdown editor
+        $scope.updateMDE = true;
+        $scope.updateMDE = false;
+    };
+
+    // discard the install order note object
+    $scope.discardInstallOrderNote = function() {
+        delete $scope.newInstallOrderNote;
+    };
+
+    // LOAD ORDER NOTE RELATED LOGIC
+    // instantiate a new load order note object
+    $scope.startNewLoadOrderNote = function() {
+        // set up newReview object
+        $scope.newLoadOrderNote = {
+            order: "before",
+            text_body: ""
+        };
+
+        // update the markdown editor
+        $scope.updateMDE = true;
+        $scope.updateMDE = false;
+    };
+
+    // discard the load order note object
+    $scope.discardLoadOrderNote = function() {
+        delete $scope.newLoadOrderNote;
+    };
+
+    // ANALYSIS RELATED LOGIC
+    // select the plugin the user selected
+    $scope.selectPlugin = function() {
+        $scope.currentPlugin = $scope.mod.plugins.find(function(plugin) {
+            return plugin.filename == $scope.currentPluginFilename;
+        });
     };
 });

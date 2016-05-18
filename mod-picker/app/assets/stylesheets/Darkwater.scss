@@ -8,6 +8,7 @@ $inverse_text_color: #aeb5b6;
 $primary_background: #ddd;
 $secondary_background: #ced0cf;
 $background_highlight: #b5beb7;
+$input_background: #fff;
 
 $shadow_color: #000;
 $border_color: #6e8c8e;
@@ -20,14 +21,14 @@ $h3_color: #2e2c1d;
 $h4_color: #313d31;
 
 $action_color: #2f443d;
-$action_text_color: #aeb5b6;
-$bright_action_color: #4c5854;
+$action_text_color: #bcc3c4;
+$bright_action_color: #6b8078;
 $dark_action_color: #172224;
 
 $bar_color: #202424;
 $bar_dark_color: #2F3737;
 $bar_highlight_color: #303434;
-$bar_text_color: #8a8e8f;
+$bar_text_color: #a0a5a6;
 $bar_highlight_text_color: #88a9b3;
 
 $link_color: #205098;
@@ -39,12 +40,14 @@ $slider_range_color: #6e8c8e;
 $slider_circle_color_after: #2f443d;
 
 $success_primary: #526A52;
-$success_secondary: #22D522;
+$success_secondary: #4d994d;
 $error_primary: #743E45;
-$error_secondary: #F52222;
+$error_secondary: #994d4d;
 $warning_primary: #74743E;
-$warning_secondary: #F5D718;
+$warning_secondary: #998e4d;
 
-$select_image: image_path("Darkwater_select_arrow.png");
+$admin_color: #800000;
+$moderator_color: #8000b0;
+$mod_author_color: #008000;
 
 @import 'main';
