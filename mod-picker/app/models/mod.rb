@@ -118,16 +118,6 @@ class Mod < ActiveRecord::Base
         if plugin.nil?
           plugin = self.plugins.create(dump)
         end
-
-        # create master associations
-        dump[:masters].each_with_index do |master_filename, index|
-          master_plugin = Plugin.find_by(filename: master_filename)
-          if master_plugin.nil?
-            plugin.dummy_masters.create(filename: master_filename, index: index)
-          else
-            plugin.masters.create(master_plugin_id: master_plugin.id, index: index)
-          end
-        end
       end
     end
   end
