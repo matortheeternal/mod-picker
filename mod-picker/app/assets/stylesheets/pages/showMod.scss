@@ -335,12 +335,6 @@
   }
 }
 
-// analysis tab
-.assets-block {
-  max-height: 500px;
-  overflow-y: auto;
-}
-
 //add note box
 .add-note-box {
   border: 1px solid $bar_dark_color;
@@ -568,6 +562,12 @@
   label {
     display: block;
   }
+}
+
+// analysis tab
+.analysis-container {
+  max-height: 500px;
+  overflow-y: auto;
 }
 
 .analysis-table {
