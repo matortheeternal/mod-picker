@@ -220,6 +220,6 @@ app.controller('submitModController', function ($scope, backend, submitService, 
             workshop: $scope.workshop,
             lab: $scope.lab
         };
-        submitService.submitMod($scope.mod, $scope.analysis, sources);
+        submitService.submitMod($scope.mod, $scope.analysis, sources, $scope.requirements);
     }
 });

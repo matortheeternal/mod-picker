@@ -10,7 +10,7 @@ app.service('submitService', function (backend, $q) {
         return backend.retrieve('/workshop_infos/' + modId);
     };
 
-    this.submitMod = function (mod, analysis, sources) {
+    this.submitMod = function (mod, analysis, sources, requirements) {
         // select primary source
         var primarySource = sources.nexus || sources.workshop || sources.lab;
 
@@ -29,7 +29,8 @@ app.service('submitService', function (backend, $q) {
                 lover_info_id: sources.lab && sources.lab.id,
                 tag_names: mod.tags,
                 asset_paths: analysis.assets,
-                plugin_dumps: analysis.plugins
+                plugin_dumps: analysis.plugins,
+                required_mods_attributes: requirements
             }
         };
 
