@@ -1,6 +1,6 @@
 <loader data="modlist" spinner-class="big-spinner">
 </loader>
-<div title="modlist-header" class="header-tabs">
+<div title="modlist-header">
     <div class="modlist-header-color">
         <div class="page-container mod-header">
             <section>
@@ -91,7 +91,7 @@
     </div>
 </div>
 
-<div class="page-container">
+<div class="page-container mod-tab">
     <div ng-show="isSelected('details')">
         <table ng-show="bIsEditing" title='modlist-options' class='section-table'>
             <colgroup>
@@ -148,7 +148,7 @@
             </tbody>
         </table> 
 
-        <table title='overview' class='overview-table section-table'>
+        <table title='overview' class='overview-table section-table' style='display: none;'>
             <colgroup>
                 <col style="width: 25%">
                 <col style="width: 55%">
