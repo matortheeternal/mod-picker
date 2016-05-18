@@ -152,6 +152,13 @@
   font-size: 24px;
 }
 
+.modlist-authors-container {
+  margin-left: 0px;
+  .mod-authors {
+    font-weight: 600;
+    color: $bright_action_color;
+  }
+}
 
 .modlist-header-title {
   color: $bar_text_color;
