@@ -37,27 +37,27 @@ class Mod < ActiveRecord::Base
   belongs_to :secondary_category, :class_name => 'Category', :foreign_key => 'category_id', :inverse_of => 'secondary_mods'
 
   # site statistics associated with the mod
-  has_one :nexus_infos, :class_name => 'NexusInfo'
-  has_one :lover_infos, :class_name => 'LoverInfo'
-  has_one :workshop_infos, :class_name => 'WorkshopInfo'
+  has_one :nexus_infos, :class_name => 'NexusInfo', :dependent => :nullify
+  has_one :lover_infos, :class_name => 'LoverInfo', :dependent => :nullify
+  has_one :workshop_infos, :class_name => 'WorkshopInfo', :dependent => :nullify
 
   # plugins associated with the mod
-  has_many :plugins, :inverse_of => 'mod'
+  has_many :plugins, :inverse_of => 'mod', :dependent => :destroy
   # assets associated with the mod
-  has_many :mod_asset_files, :inverse_of => 'mod'
+  has_many :mod_asset_files, :inverse_of => 'mod', :dependent => :destroy
   has_many :asset_files, :through => :mod_asset_files, :inverse_of => 'mods'
   
   # users who can edit the mod
-  has_many :mod_authors, :inverse_of => 'mod'
+  has_many :mod_authors, :inverse_of => 'mod', :dependent => :destroy
   has_many :authors, :through => 'mod_authors', :inverse_of => 'mods'
 
   # community feedback on the mod
-  has_many :reviews, :inverse_of => 'mod'
-  has_many :mod_stars, :inverse_of => 'mod'
+  has_many :reviews, :inverse_of => 'mod', :dependent => :destroy
+  has_many :mod_stars, :inverse_of => 'mod', :dependent => :destroy
   has_many :user_stars, :through => 'mod_stars', :class_name => 'User', :inverse_of => 'starred_mods'
 
   # tags
-  has_many :mod_tags, :inverse_of => 'mod'
+  has_many :mod_tags, :inverse_of => 'mod', :dependent => :destroy
   has_many :tags, :through => 'mod_tags', :inverse_of => 'mods'
 
   # compatibility notes
@@ -73,7 +73,7 @@ class Mod < ActiveRecord::Base
   has_many :second_load_order_notes, :through => 'plugins', :class_name => 'LoadOrderNote', :inverse_of => 'second_mod'
 
   # mod list usage
-  has_many :mod_list_mods, :inverse_of => 'mod'
+  has_many :mod_list_mods, :inverse_of => 'mod', :dependent => :destroy
   has_many :mod_lists, :through => 'mod_list_mods', :inverse_of => 'mods'
 
   self.per_page = 100
@@ -104,7 +104,7 @@ class Mod < ActiveRecord::Base
     if @asset_paths
       @asset_paths.each do |path|
         asset_file = AssetFile.find_or_create_by(game_id: self.game_id, filepath: path)
-        self.mod_asset_files.create(game_id: self.game_id, asset_file_id: asset_file.id)
+        self.mod_asset_files.create(asset_file_id: asset_file.id)
       end
     end
   end

@@ -281,6 +281,7 @@ def seed_static_records
   )
   Category.create(
       name: "Fixes - Patches",
+      parent_id: catFixes.id,
       description: "A fix to make mods compatible with each other, or to carry the changes from one mod into another."
   )
 

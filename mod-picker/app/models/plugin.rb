@@ -8,17 +8,17 @@ class Plugin < ActiveRecord::Base
   belongs_to :mod, :inverse_of => 'plugins'
 
   # master associations
-  has_many :dummy_masters, :inverse_of => 'plugin'
-  has_many :masters, :inverse_of => 'plugin'
+  has_many :dummy_masters, :inverse_of => 'plugin', :dependent => :destroy
+  has_many :masters, :inverse_of => 'plugin', :dependent => :destroy
   has_many :children, :class_name => 'Master', :inverse_of => 'master_plugin'
 
   # plugin contents
-  has_many :plugin_record_groups, :inverse_of => 'plugin'
-  has_many :overrides, :class_name => 'OverrideRecord', :inverse_of => 'plugin'
-  has_many :plugin_errors, :inverse_of => 'plugin'
+  has_many :plugin_record_groups, :inverse_of => 'plugin', :dependent => :destroy
+  has_many :overrides, :class_name => 'OverrideRecord', :inverse_of => 'plugin', :dependent => :destroy
+  has_many :plugin_errors, :inverse_of => 'plugin', :dependent => :destroy
 
   # mod list usage
-  has_many :mod_list_plugins, :inverse_of => 'plugin'
+  has_many :mod_list_plugins, :inverse_of => 'plugin', :dependent => :destroy
   has_many :mod_lists, :through => 'mod_list_plugins', :inverse_of => 'plugins'
 
   # is a compatibility plugin for
