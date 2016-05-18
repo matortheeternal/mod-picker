@@ -112,9 +112,21 @@ class Mod < ActiveRecord::Base
   def create_plugins
     if @plugin_dumps
       @plugin_dumps.each do |dump|
+        # create plugin from dump
         dump[:game_id] = self.game_id
-        if Plugin.find_by(filename: dump[:filename], crc_hash: dump[:crc_hash]).nil?
-          self.plugins.create(dump)
+        plugin = Plugin.find_by(filename: dump[:filename], crc_hash: dump[:crc_hash])
+        if plugin.nil?
+          plugin = self.plugins.create(dump)
+        end
+
+        # create master associations
+        dump[:masters].each_with_index do |master_filename, index|
+          master_plugin = Plugin.find_by(filename: master_filename)
+          if master_plugin.nil?
+            plugin.dummy_masters.create(filename: master_filename, index: index)
+          else
+            plugin.masters.create(master_plugin_id: master_plugin.id, index: index)
+          end
         end
       end
     end
