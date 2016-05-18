@@ -18,24 +18,22 @@
 	<div class="content-title">
 		Add Load Order Note
 	</div>
-	<div class="add-note-actions">
+	<div class="add-note-options">
 		<div>
 			Load
 		</div>
 		<div>
 			<input type="text" class="mod-input" placeholder="Enter Plugin Filename" ng-model="newLoadOrderNote.first_plugin_id">
 		</div>
-		<div class="select order-dropdown">
+		<span class="select order-dropdown">
 			<select ng-model="newLoadOrderNote.order">
 				<option value="before">Before</option>
 				<option value="after">After</option>
 			</select>
-		</div>
-		<div>
-			<input type="text" class="mod-input" placeholder="Enter Plugin Filename" ng-model="newLoadOrderNote.second_plugin_id">
-		</div>
+		</span>
+    <input type="text" class="mod-input" placeholder="Enter Plugin Filename" ng-model="newLoadOrderNote.second_plugin_id">
 	</div>
-	<div class="note-content-container">
+	<div class="content-container">
 		<text-area data="newLoadOrderNote.text_body" ng-refresh="updateMDE" class="note-text-area"></text-area>
 
 		<div class="action-button-container">

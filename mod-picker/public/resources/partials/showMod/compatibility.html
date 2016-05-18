@@ -1,34 +1,34 @@
 ﻿<div class="mod-tab-items">
-	<!--<div class="centered-mod-tab-action">
-		<strong>Compatible</strong>
-		<br>
-		with modlist
-	</div>
-	<div class="mod-tab-action filter-checkbox">
-		<label class="checkbox">
-			<strong>Enable Modlist Filter</strong>
-			<input type="checkbox" checked>
-		</label>
-	</div>-->
-	<div class="mod-tab-item primary-item">
-		<strong>Sort By: </strong>
+    <!--<div class="centered-mod-tab-action">
+        <strong>Compatible</strong>
+        <br>
+        with modlist
+    </div>
+    <div class="mod-tab-action filter-checkbox">
+        <label class="checkbox">
+            <strong>Enable Modlist Filter</strong>
+            <input type="checkbox" checked>
+        </label>
+    </div>-->
+    <div class="mod-tab-item primary-item">
+        <strong>Sort By: </strong>
 
-		<select ng-model="sort.compatibility_notes" ng-init="sort.compatibility_notes = 'reputation'">
-			<option value="reputation">Reputation</option>
-			<option value="severity">Severity</option>
-			<option value="submitted">Date Submitted</option>
-			<option value="edited">Last Edited</option>
-		</select>
-	</div>
-	<div class="mod-tab-item">
-		<input class="btn" type="button" value="Add Compatibility Note" ng-click="startNewCompatibilityNote()" ng-disabled="newCompatibilityNote"/>
-	</div>
+        <select ng-model="sort.compatibility_notes" ng-init="sort.compatibility_notes = 'reputation'">
+            <option value="reputation">Reputation</option>
+            <option value="severity">Severity</option>
+            <option value="submitted">Date Submitted</option>
+            <option value="edited">Last Edited</option>
+        </select>
+    </div>
+    <div class="mod-tab-item">
+        <input class="btn" type="button" value="Add Compatibility Note" ng-click="startNewCompatibilityNote()" ng-disabled="newCompatibilityNote"/>
+    </div>
 </div>
 
 <div class="content-block add-note-box" ng-show="newCompatibilityNote">
-	<div class="content-title">
-		Add Compatibility Note
-	</div>
+    <div class="content-title">
+        Add Compatibility Note
+    </div>
     <div class="add-note-options">
         <span class="select compatibility-dropdown">
             <select ng-model="newCompatibilityNote.compatibility_type">
@@ -51,14 +51,14 @@
             <mod-input result-id="newCompatibilityNote.compatibility_plugin_id" search-plugins="true" on-change="validateCompatibilityNote"></mod-input>
         </span>
     </div>
-	<div class="note-content-container">
-		<text-area data="newCompatibilityNote.text_body" ng-refresh="updateMDE" class="note-text-area" on-change="validateCompatibilityNote"></text-area>
+    <div class="content-container">
+        <text-area data="newCompatibilityNote.text_body" ng-refresh="updateMDE" class="note-text-area" on-change="validateCompatibilityNote"></text-area>
 
-		<div class="action-button-container">
-			<input class="btn action-btn" type="submit" value="Submit" ng-click="submitCompatibilityNote()" ng-disabled="!newCompatibilityNote.valid" title="{{newCompatibilityNote.valid ? 'Submit your compatibility note' : 'Your compatibility note is either too short or incomplete.'}}"/>
-			<input class="btn action-btn" type="button" value="Discard" ng-click="discardCompatibilityNote()">
-		</div>
-	</div>
+        <div class="action-button-container">
+            <input class="btn action-btn" type="submit" value="Submit" ng-click="submitCompatibilityNote()" ng-disabled="!newCompatibilityNote.valid" title="{{newCompatibilityNote.valid ? 'Submit your compatibility note' : 'Your compatibility note is either too short or incomplete.'}}"/>
+            <input class="btn action-btn" type="button" value="Discard" ng-click="discardCompatibilityNote()">
+        </div>
+    </div>
 </div>
 
 <loader data="mod.compatibility_notes" content-class="" spinner-class="big-spinner">
