@@ -23,7 +23,7 @@
             Plugin Record Composition
         </div>
 
-        <div class="content-container">
+        <div class="content-container analysis-container">
             <table class="analysis-table">
                 <thead>
                 <tr>
@@ -48,7 +48,7 @@
             Plugin Errors
         </div>
 
-        <div class="content-container">
+        <div class="content-container analysis-container">
             <table class="analysis-table">
                 <thead>
                 <tr>
@@ -75,9 +75,9 @@
             Plugin Override Records
         </div>
 
-        <div class="content-container">
+        <div class="content-container analysis-container">
             <div ng-repeat="master in currentPlugin.masters" ng-if="master.overrides.length > 0">
-                <h3>{{master.filename}}</h3>
+                <h3 class="section-title">{{master.filename}}</h3>
                 <ul class="overrides-list">
                     <li ng-repeat="override in master.overrides">
                         [{{override.sig}}:{{override.fid | hex:8}}]
@@ -92,7 +92,7 @@
             Assets
         </div>
 
-        <div class="content-container assets-block">
+        <div class="content-container analysis-container">
             <asset-tree data="mod.nestedAssets"></asset-tree>
         </div>
     </div>
