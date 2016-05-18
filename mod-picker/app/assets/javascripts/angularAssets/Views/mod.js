@@ -17,7 +17,7 @@ app.filter('percentage', function() {
   };
 });
 
-app.controller('modController', function ($scope, $q, $stateParams, $timeout, modService, pluginService, categoryService, gameService, userTitleService, assetUtils, reviewSectionService, userService, contributionService, contributionFactory) {
+app.controller('modController', function ($scope, $q, $stateParams, $timeout, modService, pluginService, categoryService, gameService, recordGroupService, userTitleService, assetUtils, reviewSectionService, userService, contributionService, contributionFactory) {
     $scope.tags = [];
     $scope.newTags = [];
     $scope.sort = {};
@@ -83,6 +83,11 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
         $scope.userTitles = userTitleService.getSortedGameTitles(userTitles);
     });
 
+    //get record groups
+    recordGroupService.retrieveRecordGroups(window._current_game_id).then(function(recordGroups) {
+        $scope.recordGroups = recordGroups;
+    });
+
     //get current user
     userService.retrieveThisUser().then(function (user) {
         $scope.user = user;
@@ -142,6 +147,27 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
             // if we have a matching helpful mark, assign it to the item
             if (helpfulMark) {
                 item.helpful = helpfulMark.helpful;
+            }
+        });
+    };
+
+    //associate record groups with plugins
+    $scope.associateRecordGroups = function(plugins) {
+        // if we don't have recordGroups yet, try again in 100ms
+        if (!$scope.recordGroups) {
+            $timeout(function() {
+                $scope.associateRecordGroups(plugins);
+            }, 100);
+            return;
+        }
+        // loop through plugins
+        plugins.forEach(function(plugin) {
+            if (plugin.plugin_record_groups) {
+                plugin.plugin_record_groups.forEach(function(group) {
+                    var record_group = recordGroupService.getGroupFromSignature($scope.recordGroups, group.sig);
+                    group.name = record_group.name;
+                    group.child_group = record_group.child_group;
+                });
             }
         });
     };
@@ -235,10 +261,15 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
 
     $scope.retrieveAnalysis = function() {
         modService.retrieveAnalysis($stateParams.modId).then(function(analysis) {
+            // turn assets into an array of string
             $scope.mod.assets = analysis.assets.map(function(asset) {
                 return asset.filepath;
             });
+            // create nestedAssets tree
             $scope.mod.nestedAssets = assetUtils.convertDataStringToNestedObject($scope.mod.assets);
+
+            // associate record groups for plugins
+            $scope.associateRecordGroups(analysis.plugins);
             $scope.mod.plugins = analysis.plugins;
             if ($scope.mod.plugins.length > 0) {
                 $scope.currentPlugin = analysis.plugins[0];
