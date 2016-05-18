@@ -11,6 +11,7 @@ app.controller('submitModController', function ($scope, backend, submitService, 
     // initialize variables
     $scope.sites = sitesFactory.sites();
     $scope.mod = { game_id: window._current_game_id };
+    $scope.requirements = [];
     $scope.sources = [{
         label: "Nexus Mods",
         url: ""
@@ -75,6 +76,16 @@ app.controller('submitModController', function ($scope, backend, submitService, 
                 });
                 break;
         }
+    };
+
+    /* requirements */
+    $scope.addRequirement = function() {
+        $scope.requirements.push({});
+    };
+
+    $scope.removeRequirement = function(requirement) {
+        var index = $scope.requirements.indexOf(requirement);
+        $scope.requirements.splice(index, 1);
     };
 
     /* categories */
