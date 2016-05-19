@@ -1,5 +1,5 @@
-app.service('modService', function (backend, $q) {
-    this.retrieveMod = function (modId) {
+app.service('modService', function(backend, $q) {
+    this.retrieveMod = function(modId) {
         return backend.retrieve('/mods/' + modId);
     };
 
@@ -7,7 +7,7 @@ app.service('modService', function (backend, $q) {
         current: 1
     };
 
-    this.retrieveMods = function (filters, sort, newPage) {
+    this.retrieveMods = function(filters, sort, newPage) {
         var mods = $q.defer();
 
         if(newPage && newPage > pages.max) {
@@ -34,7 +34,7 @@ app.service('modService', function (backend, $q) {
         return mods.promise;
     };
 
-    this.searchMods = function (name) {
+    this.searchMods = function(name) {
         var mods = $q.defer();
 
         var postData =  {
@@ -64,7 +64,7 @@ app.service('modService', function (backend, $q) {
         return star.promise;
     };
 
-    this.retrieveReviews = function (modId, options) {
+    this.retrieveReviews = function(modId, options) {
         var reviews = $q.defer();
         backend.retrieve('/mods/' + modId + '/reviews', options).then(function (data) {
             reviews.resolve(data);
@@ -72,7 +72,7 @@ app.service('modService', function (backend, $q) {
         return reviews.promise;
     };
 
-    this.retrieveCompatibilityNotes = function (modId, options) {
+    this.retrieveCompatibilityNotes = function(modId, options) {
         var compatibilityNotes = $q.defer();
         backend.retrieve('/mods/' + modId + '/compatibility_notes', options).then(function (data) {
             compatibilityNotes.resolve(data);
@@ -80,7 +80,7 @@ app.service('modService', function (backend, $q) {
         return compatibilityNotes.promise;
     };
 
-    this.retrieveInstallOrderNotes = function (modId, options) {
+    this.retrieveInstallOrderNotes = function(modId, options) {
         var installOrderNotes = $q.defer();
         backend.retrieve('/mods/' + modId + '/install_order_notes', options).then(function (data) {
             installOrderNotes.resolve(data);
@@ -88,7 +88,7 @@ app.service('modService', function (backend, $q) {
         return installOrderNotes.promise;
     };
 
-    this.retrieveLoadOrderNotes = function (modId, options) {
+    this.retrieveLoadOrderNotes = function(modId, options) {
         var loadOrderNotes = $q.defer();
         backend.retrieve('/mods/' + modId + '/load_order_notes', options).then(function (data) {
             loadOrderNotes.resolve(data);
@@ -96,7 +96,7 @@ app.service('modService', function (backend, $q) {
         return loadOrderNotes.promise;
     };
 
-    this.retrieveAnalysis = function (modId, options) {
+    this.retrieveAnalysis = function(modId, options) {
         var analysis = $q.defer();
         backend.retrieve('/mods/' + modId + '/analysis', options).then(function (data) {
             analysis.resolve(data);
