@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160519053752) do
+ActiveRecord::Schema.define(version: 20160519221434) do
 
   create_table "agreement_marks", id: false, force: :cascade do |t|
     t.integer "incorrect_note_id", limit: 4
@@ -636,8 +636,8 @@ ActiveRecord::Schema.define(version: 20160519053752) do
     t.string  "lover_username",              limit: 32
     t.date    "lover_date_joined"
     t.integer "lover_posts_count",           limit: 4,  default: 0
+    t.string  "workshop_user_path",          limit: 64
     t.string  "workshop_username",           limit: 32
-    t.boolean "workshop_verified"
     t.integer "workshop_submissions_count",  limit: 4,  default: 0
     t.integer "workshop_followers_count",    limit: 4,  default: 0
     t.string  "workshop_verification_token", limit: 32
