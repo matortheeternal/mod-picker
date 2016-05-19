@@ -12,26 +12,30 @@
         </div>
         
         <!-- Steam Workshop Stats -->
-          <div class="stat-item" ng-if="siteSubmissionsCount">
+        <div ng-if="siteLabel == 'Steam Workshop'">
+          <div class="stat-item">
             <dt class="stat-title">Submissions Count:</dt>
             <dd class="stat-data">{{siteSubmissionsCount | number}}</dd>
           </div>
 
-          <div class="stat-item" ng-if="siteFollowersCount">
+          <div class="stat-item">
               <dt class="stat-title">Followers Count:</dt>
               <dd class="stat-data">{{siteFollowersCount | number}}</dd>
           </div>
+        </div>
         
         <!-- LL/Nexus Stats -->
-          <div class="stat-item" ng-if="siteDateJoined">
+        <div ng-if="siteLabel != 'Steam Workshop'">
+          <div class="stat-item">
               <dt class="stat-title">Date Joined:</dt>
               <dd class="stat-data">{{siteDateJoined | date}}</dd>
           </div>
 
-          <div class="stat-item" ng-if="sitePostsCount">
+          <div class="stat-item">
               <dt class="stat-title">Posts Count:</dt>
               <dd class="stat-data">{{sitePostsCount | number}}</dd>
           </div>
+        </div>
     </section>
 </div>
 <div class="modal-container" ng-show="showModal">
@@ -63,7 +67,7 @@
                     <li>Click the Verify button.</li>
                   </ol>
                 </div>
-                
+
                 <!-- else show generic instructions -->
                 <div ng-if="siteLabel != 'Steam Workshop'">
                   <ol>
