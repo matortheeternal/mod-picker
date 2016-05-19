@@ -11,9 +11,9 @@ class WorkshopHelper
 
     # Check if id is vanityURL or steam base64 id
     if id =~ /^7656119[0-9]{10}$/i
-      user_url = "https://steamcommunity.com/profiles/" + id + "/myworkshopfiles"
+      user_url = "https://steamcommunity.com/profiles/" + id
     else
-      user_url = "https://steamcommunity.com/id/" + id + "/myworkshopfiles"
+      user_url = "https://steamcommunity.com/id/" + id
     end
 
     # prepare headers
@@ -44,11 +44,14 @@ class WorkshopHelper
       # Case insensitive comparison of comment author's profile urls
       if author_url.casecmp(user_url) == 0
         user_data[:matched_comment] = comment_body
+
+        # return user data
+        # user_data is returned here so first comment who's author
+        # matches the given url is returned for comparison to the verification key
+        return user_data
       end
     end
 
-    # return user data
-    user_data
   end
 
   def self.scrape_workshop_stats(id)
