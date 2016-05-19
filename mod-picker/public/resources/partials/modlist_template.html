@@ -90,10 +90,16 @@
         </div>
     </div>
 </div>
-
+<div title="SaveOverlay-wrapper">
+        Edit / Save / Cancel Overlay
+</div>
 <div class="page-container mod-tab">
     <div class="modlist-tab-items" ng-show="isSelected('details')">
-        <div class="content-block modlist-tab-item">
+        <div class="content-block modlist-tab-item" ng-if="bIsEditing == false">
+            {{modlist.description}}
+        </div>
+        <!-- Mod List Description: Edii Mode -->
+        <div class="content-block modlist-tab-item" ng-if="bIsEditing == true">
             <div class="content-title">
                 <div>
                     Modlist Description
@@ -105,7 +111,7 @@
         </div>
     </div>
     <div ng-show="isSelected('details')" class="mod-tab-items">
-        <table ng-show="bIsEditing" title='modlist-options' class='section-table'>
+        <table ng-if="bIsEditing == true" title='modlist-options' class='section-table'>
             <colgroup>
                 <col style="width: 100%">
             </colgroup>
@@ -573,9 +579,6 @@
                 </tr>
             </thead>
         </table>     
-    </div>
-    <div title="SaveOverlay-wrapper">
-        Edit / Save / Cancel Overlay
     </div>
     <div style='height: 500px'></div>
 </div>
