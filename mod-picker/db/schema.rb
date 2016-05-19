@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160518233955) do
+ActiveRecord::Schema.define(version: 20160518235440) do
 
   create_table "agreement_marks", id: false, force: :cascade do |t|
     t.integer "incorrect_note_id", limit: 4
@@ -507,9 +507,9 @@ ActiveRecord::Schema.define(version: 20160518233955) do
     t.string  "signature", limit: 4,   null: false
     t.integer "form_id",   limit: 4,   null: false
     t.integer "type",      limit: 1,   null: false
-    t.string  "path",      limit: 255
-    t.string  "name",      limit: 255
-    t.string  "data",      limit: 64
+    t.string  "path",      limit: 400
+    t.string  "name",      limit: 400
+    t.string  "data",      limit: 255
   end
 
   add_index "plugin_errors", ["plugin_id"], name: "fk_rails_21e72cc4b6", using: :btree
