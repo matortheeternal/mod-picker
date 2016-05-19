@@ -73,6 +73,12 @@ body {
   transition: $values;
 }
 
+@mixin column-count($val) {
+  -webkit-column-count: $val;
+  -moz-column-count: $val;
+  column-count: $val;
+}
+
 
 /* utility classes */
 .capitalize {
@@ -522,6 +528,7 @@ form {
 
     select {
       font-size: 13px;
+      line-height: normal;
       height: 32px;
     }
 
@@ -693,4 +700,18 @@ a .help-tooltip {
 
 .small-spinner {
   height: 60px;
+}
+
+/* css for plugin-metadata  */
+
+plugin-metadata {
+  .stat-data {
+    width: calc(100% - 170px);
+    white-space: normal;
+  }
+
+  .plugin-description {
+    white-space: pre-line;
+    word-wrap: break-word;
+  }
 }

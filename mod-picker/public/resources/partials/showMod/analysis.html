@@ -61,8 +61,8 @@
                 <tbody>
                 <tr ng-repeat="error in currentPlugin.plugin_errors">
                     <td>{{error.signature}}</td>
-                    <td>{{error.form_id}}</td>
-                    <td>{{error.type}}</td>
+                    <td>{{error.form_id | hex:8}}</td>
+                    <td>{{error.group}}</td>
                     <td>{{error.name}}</td>
                 </tr>
                 </tbody>

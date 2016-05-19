@@ -12,7 +12,7 @@ class Plugin < ActiveRecord::Base
   # master associations
   has_many :dummy_masters, :inverse_of => 'plugin', :dependent => :destroy
   has_many :masters, :inverse_of => 'plugin', :dependent => :destroy
-  has_many :children, :class_name => 'Master', :inverse_of => 'master_plugin'
+  has_many :children, :class_name => 'Master', :inverse_of => 'master_plugin', :dependent => :destroy
 
   # plugin contents
   has_many :plugin_record_groups, :inverse_of => 'plugin', :dependent => :destroy

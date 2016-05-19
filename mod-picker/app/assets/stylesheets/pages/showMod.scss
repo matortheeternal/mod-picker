@@ -349,40 +349,6 @@
   .add-note-options {
     margin: 20px;
 
-    mod-input {
-      position: relative;
-
-      input[type="text"] {
-        max-width: 450px;
-        min-width: 140px;
-        padding: 8px;
-        height: 30px;
-        border: 0;
-        margin-left: 20px;
-        font-size: 16px;
-        box-shadow: 0 0 3px 1px $border_color;
-        @include transition(box-shadow 0.2s ease-in-out);
-
-        &.valid {
-          box-shadow: 0 0 3px 1px $success_secondary;
-        }
-
-        &:hover {
-          box-shadow: 0 0 3px 1px $action_color;
-        }
-
-        &:focus {
-          box-shadow: 0;
-        }
-      }
-
-      .dropdown {
-        top: 28px;
-        left: 19px;
-        width: 250px;
-      }
-    }
-
     strong {
       min-width: 263px;
       text-align: center;
@@ -565,12 +531,16 @@
 }
 
 // analysis tab
-.analysis-container {
-  max-height: 500px;
-  overflow-y: auto;
+.content-block {
+  .analysis-container {
+    max-height: 500px;
+    overflow-y: auto;
+    margin: 0;
+    padding: 20px;
 
-  .section-title {
-    margin-top: 0;
+    .section-title {
+      margin-top: 0;
+    }
   }
 }
 
@@ -598,7 +568,7 @@
     margin: 0;
     overflow: visible;
     padding-left: 10px;
-    white-space: nowrap;
+    white-space: normal;
   }
 
   thead tr {
@@ -622,4 +592,5 @@
   list-style: none;
   font-family: Consolas, monospace, sans-serif;
   margin: 0 0 20px;
+  @include column-count(3);
 }

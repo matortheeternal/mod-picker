@@ -5,6 +5,7 @@ app.directive('modInput', function () {
         controller: 'modInputController',
         scope: {
             resultId: '=',
+            searchText: '=?',
             onChange: '=?',
             excludedId: '=?',
             searchPlugins: '=?'

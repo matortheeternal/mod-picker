@@ -46,6 +46,10 @@ class Mod < ActiveRecord::Base
   # assets associated with the mod
   has_many :mod_asset_files, :inverse_of => 'mod', :dependent => :destroy
   has_many :asset_files, :through => :mod_asset_files, :inverse_of => 'mods'
+
+  # requirements associated with the mod
+  has_many :required_mods, :class_name => 'ModRequirement', :inverse_of => 'mod', :dependent => :destroy
+  has_many :required_by, :class_name => 'ModRequirement', :inverse_of => 'required_mod', :dependent => :destroy
   
   # users who can edit the mod
   has_many :mod_authors, :inverse_of => 'mod', :dependent => :destroy
@@ -75,6 +79,8 @@ class Mod < ActiveRecord::Base
   # mod list usage
   has_many :mod_list_mods, :inverse_of => 'mod', :dependent => :destroy
   has_many :mod_lists, :through => 'mod_list_mods', :inverse_of => 'mods'
+
+  accepts_nested_attributes_for :required_mods
 
   self.per_page = 100
 
