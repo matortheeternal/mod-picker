@@ -30,6 +30,7 @@ class WorkshopHelper
 
     allComments.each do |comment| 
       author_url = comment.at_css("div.commentthread_comment_author a")["href"]
+      author_display_name = comment.at_css("div.commentthread_comment_author a bdi").text.strip
       comment_body = comment.at_css("div.commentthread_comment_text").text.strip
 
       puts "Author url ==" + author_url
@@ -38,6 +39,7 @@ class WorkshopHelper
       # Case insensitive comparison of comment author's profile urls
       if author_url.casecmp(user_url) == 0
         user_data[:matched_comment] = comment_body
+        user_data[:username] = author_display_name
       end
     end
 
