@@ -34,6 +34,22 @@ app.service('modService', function (backend, $q) {
         return mods.promise;
     };
 
+    this.searchMods = function (name) {
+        var mods = $q.defer();
+
+        var postData =  {
+            filters: {
+                search: name
+            }
+        };
+
+        backend.post('/mods/search', postData).then(function (data) {
+            mods.resolve(data);
+        });
+
+        return mods.promise;
+    };
+
     this.starMod = function(modId, starred) {
         var star = $q.defer();
         if (starred) {
@@ -46,15 +62,6 @@ app.service('modService', function (backend, $q) {
             });
         }
         return star.promise;
-    };
-
-    this.helpfulMark = function(type, id, helpful) {
-        var mark = $q.defer();
-        var helpfulObj = helpful == undefined ? {} : {helpful: helpful};
-        backend.post('/' + type + '/' + id + '/helpful', helpfulObj).then(function (data) {
-            mark.resolve(data);
-        });
-        return mark.promise;
     };
 
     this.retrieveReviews = function (modId, options) {

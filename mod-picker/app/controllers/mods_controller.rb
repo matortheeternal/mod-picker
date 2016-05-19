@@ -3,8 +3,8 @@ class ModsController < ApplicationController
 
   # POST /mods
   def index
-    @mods = Mod.includes(:nexus_infos).filter(filtering_params).sort(params[:sort]).paginate(:page => params[:page])
-    @count =  Mod.includes(:nexus_infos).filter(filtering_params).sort(params[:sort]).count
+    @mods = Mod.includes(:nexus_infos).accessible_by(current_ability).filter(filtering_params).sort(params[:sort]).paginate(:page => params[:page])
+    @count =  Mod.includes(:nexus_infos).accessible_by(current_ability).filter(filtering_params).sort(params[:sort]).count
 
     render :json => {
       mods: @mods.as_json({
@@ -22,13 +22,11 @@ class ModsController < ApplicationController
 
   # POST /mods/search
   def search
-    @mods = Mod.filter(search_params).sort({ column: "name", direction: "ASC" }).limit(10)
+    @mods = Mod.where(hidden: false).filter(search_params).sort({ column: "name", direction: "ASC" }).limit(10)
 
-    render :json => {
-        mods: @mods.as_json({
-            :only => [:id, :name]
-        })
-    }
+    render :json => @mods.as_json({
+        :only => [:id, :name]
+    })
   end
 
   # GET /mods/1
@@ -93,7 +91,7 @@ class ModsController < ApplicationController
   # GET /mods/1/reviews
   def reviews
     authorize! :read, @mod
-    reviews = @mod.reviews.paginate(:page => params[:page])
+    reviews = @mod.reviews.accessible_by(current_ability).paginate(:page => params[:page])
     helpful_marks = HelpfulMark.where(submitted_by: current_user.id, helpfulable_type: "Review", helpfulable_id: reviews.ids)
     render :json => {
         reviews: reviews,
@@ -104,7 +102,7 @@ class ModsController < ApplicationController
   # GET /mods/1/compatibility_notes
   def compatibility_notes
     authorize! :read, @mod
-    compatibility_notes = @mod.compatibility_notes.paginate(:page => params[:page])
+    compatibility_notes = @mod.compatibility_notes.accessible_by(current_ability).paginate(:page => params[:page])
     helpful_marks = HelpfulMark.where(submitted_by: current_user.id, helpfulable_type: "CompatibilityNote", helpfulable_id: compatibility_notes.ids)
     render :json => {
         compatibility_notes: compatibility_notes,
@@ -115,7 +113,7 @@ class ModsController < ApplicationController
   # GET /mods/1/install_order_notes
   def install_order_notes
     authorize! :read, @mod
-    install_order_notes = @mod.install_order_notes.paginate(:page => params[:page])
+    install_order_notes = @mod.install_order_notes.accessible_by(current_ability).paginate(:page => params[:page])
     helpful_marks = HelpfulMark.where(submitted_by: current_user.id, helpfulable_type: "InstallOrderNote", helpfulable_id: install_order_notes.ids)
     render :json => {
         install_order_notes: install_order_notes,
@@ -126,16 +124,15 @@ class ModsController < ApplicationController
   # GET /mods/1/load_order_notes
   def load_order_notes
     authorize! :read, @mod
-    if @mod.plugins.length > 0
-      load_order_notes = @mod.load_order_notes.paginate(:page => params[:page])
+    if @mod.plugins_count > 0
+      load_order_notes = @mod.load_order_notes.accessible_by(current_ability).paginate(:page => params[:page])
       helpful_marks = HelpfulMark.where(submitted_by: current_user.id, helpfulable_type: "LoadOrderNote", helpfulable_id: load_order_notes.ids)
       render :json => {
           load_order_notes: load_order_notes,
           helpful_marks: helpful_marks.as_json({:only => [:helpfulable_id, :helpful]})
       }
     else
-      @mod.errors.add(:load_order_notes, "Mod has no plugins")
-      render json: @mod.errors, status: :unprocessable_entity
+      render json: { load_order_notes: [] }
     end
   end
 
@@ -143,8 +140,26 @@ class ModsController < ApplicationController
   def analysis
     authorize! :read, @mod
     render json: {
-        plugins: @mod.plugins,
-        assets: @mod.asset_files
+        plugins: @mod.plugins.as_json({
+            :include => {
+                :masters => {
+                    :except => [:plugin_id]
+                },
+                :dummy_masters => {
+                    :except => [:plugin_id]
+                },
+                :overrides => {
+                    :except => [:plugin_id]
+                },
+                :plugin_errors => {
+                    :except => [:plugin_id]
+                },
+                :plugin_record_groups => {
+                    :except => [:plugin_id]
+                }
+            }
+        }),
+        assets: @mod.asset_files.as_json({:only => [:filepath]})
     }
   end
 
@@ -176,6 +191,13 @@ class ModsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def mod_params
-      params.require(:mod).permit(:game_id, :name, :aliases, :is_utility, :has_adult_content, :primary_category_id, :secondary_category_id, :released, :nexus_info_id, :lovers_info_id, :workshop_info_id, :tag_names => [], :asset_paths => [], :plugin_dumps => [:filename, :author, :description, :crc_hash, :record_count, :override_count, :file_size, :plugin_record_groups_attributes => [:sig, :record_count, :override_count], :plugin_errors_attributes => [:signature, :form_id, :type, :path, :name, :data], :overrides_attributes => [:fid, :sig]])
+      params.require(:mod).permit(:game_id, :name, :aliases, :is_utility, :has_adult_content, :primary_category_id, :secondary_category_id, :released, :nexus_info_id, :lovers_info_id, :workshop_info_id,
+         :tag_names => [],
+         :asset_paths => [],
+         :plugin_dumps => [:filename, :author, :description, :crc_hash, :record_count, :override_count, :file_size,
+           :master_filenames => [],
+           :plugin_record_groups_attributes => [:sig, :record_count, :override_count],
+           :plugin_errors_attributes => [:signature, :form_id, :type, :path, :name, :data],
+           :overrides_attributes => [:fid, :sig]])
     end
 end

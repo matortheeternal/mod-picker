@@ -36,6 +36,11 @@ class InstallOrderNote < ActiveRecord::Base
     [first_mod, second_mod]
   end
 
+  def recompute_helpful_counts
+    self.helpful_count = HelpfulMark.where(helpfulable_id: self.id, helpfulable_type: "InstallOrderNote", helpful: true).count
+    self.not_helpful_count = HelpfulMark.where(helpfulable_id: self.id, helpfulable_type: "InstallOrderNote", helpful: false).count
+  end
+
   def as_json(options={})
     if JsonHelpers.json_options_empty(options)
       default_options = {

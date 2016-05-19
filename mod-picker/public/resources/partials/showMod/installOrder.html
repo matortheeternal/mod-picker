@@ -1,5 +1,5 @@
-﻿<div class="mod-tab-actions">
-    <div class="mod-tab-action sort-by-dropdown">
+﻿<div class="mod-tab-items">
+    <div class="mod-tab-item primary-item">
 		<strong>Sort By: </strong>
 
 		<select ng-model="sort.install_order_note" ng-init="sort.install_order_note = 'reputation'">
@@ -9,13 +9,13 @@
 		</select>
 	</div>
 	<!-- TODO: replace input with button that has an inline value -->
-	<div class="mod-tab-action">
-		<input class="btn mod-page-btn" type="submit" value="Add Note" ng-click="startNewInstallOrderNote()" ng-disabled="newInstallOrderNote"/>
+	<div class="mod-tab-item">
+		<input class="btn" type="submit" value="Add Install Order Note" ng-click="startNewInstallOrderNote()" ng-disabled="newInstallOrderNote"/>
 	</div>
 </div>
 
-<div class="add-note-box" ng-show="newInstallOrderNote">
-	<div class="add-note-title">
+<div class="content-block add-note-box" ng-show="newInstallOrderNote">
+	<div class="content-title">
 		Add Install Order Note
 	</div>
 	<div class="add-note-actions">
@@ -43,6 +43,12 @@
 	</div>
 </div>
 
-<div ng-repeat="note in mod.install_order_notes" class="post">
-	<install-order-note note="note" show-author-column="true" mod-id="mod.id"></install-order-note>
-</div>
+<loader data="mod.install_order_notes" content-class="" spinner-class="big-spinner">
+	<div ng-repeat="note in mod.install_order_notes" class="content-block">
+		<install-order-note note="note" show-author-column="true" mod-id="mod.id" index="100 + $index" user="user"></install-order-note>
+	</div>
+
+	<div class="no-content-message" ng-if="mod.install_order_notes.length == 0">
+		There are no Install Order Notes for this mod yet.
+	</div>
+</loader>

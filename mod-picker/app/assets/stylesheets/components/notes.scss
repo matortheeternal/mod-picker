@@ -1,33 +1,5 @@
-@mixin flexbox() {
-  display: -webkit-box;
-  display: -moz-box;
-  display: -ms-flexbox;
-  display: -webkit-flex;
-  display: flex;
-}
-
-@mixin flex($values) {
-  -webkit-box-flex: $values;
-  -moz-box-flex:  $values;
-  -webkit-flex:  $values;
-  -ms-flex:  $values;
-  flex:  $values;
-}
-
-@mixin order($val) {
-  -webkit-box-ordinal-group: $val;  
-  -moz-box-ordinal-group: $val;     
-  -ms-flex-order: $val;     
-  -webkit-order: $val;  
-  order: $val;
-}
-
-
 .note-container {
-  background-color: $primary_background;
-  border: 1px solid $border_color;
-
-  .note-title {
+  .content-title {
     background-color: $bar_color;
     color: $bar_text_color;
     //border-bottom: 1px solid $bar_dark_color;
@@ -103,6 +75,7 @@
     display:table-cell;
     vertical-align: top;
     position: relative;
+    padding-bottom: 35px;
 
     .ratings-container {
       padding: 6px;
@@ -180,7 +153,27 @@
 
     .text-container {
       width: 100%;
-      padding: 0 20px 35px 20px;
+      margin: 10px 0;
+      padding: 0 20px;
+    }
+
+    .moderator-message {
+      border: 1px solid $error_secondary;
+      margin: 10px 30px;
+      background-color: $secondary_background;
+
+      .message-title {
+        background-color: $error_primary;
+        font-weight: 500;
+        padding: 5px;
+      }
+
+      .text-container {
+        padding: 10px;
+        p {
+          margin: 0 2px;
+        }
+      }
     }
 
     .actions-container {
@@ -190,20 +183,18 @@
       bottom: 0;
       cursor: default;
 
-      .action-link {
-        padding-right: 16px;
+      .actions-dropdown-container {
+        position: relative;
+        outline: none;
+
+        .dropdown {
+          top: 25px;
+          left: -69px;
+        }
       }
 
-      .helpfulness {
+      .right-item {
         float: right;
-      }
-
-      .marked-not-helpful {
-        background-color: $error_secondary;
-      }
-
-      .marked-helpful {
-        background-color: $success_secondary;
       }
     }
   }

@@ -27,22 +27,30 @@ class ContributionsController < ApplicationController
 
   # POST /contribution/1/helpful
   def helpful
-    helpful_mark = HelpfulMark.find_or_create_by(
+    # get old helpful marks
+    old_helpful_marks = HelpfulMark.where(
         submitted_by: current_user.id,
         helpfulable_id: params[:id],
         helpfulable_type: controller_name.classify)
+
     if params.has_key?(:helpful)
-      helpful_mark.helpful = params[:helpful]
-      if helpful_mark.save
+      # create new helpful mark
+      helpful_mark = HelpfulMark.new(
+          submitted_by: current_user.id,
+          helpfulable_id: params[:id],
+          helpfulable_type: controller_name.classify,
+          helpful: params[:helpful])
+
+      if old_helpful_marks.destroy_all && helpful_mark.save
         render json: {status: :ok}
       else
-        render json: helpful_mark.errors, status: :unprocessable_entity
+        render json: (helpful_mark.errors + old_helpful_marks.errors), status: :unprocessable_entity
       end
     else
-      if helpful_mark.destroy
+      if old_helpful_marks.destroy_all
         render json: {status: :ok}
       else
-        render json: helpful_mark.errors, status: :unprocessable_entity
+        render json: old_helpful_marks.errors, status: :unprocessable_entity
       end
     end
   end
@@ -52,7 +60,7 @@ class ContributionsController < ApplicationController
     authorize! :hide, @contribution
     @contribution.hidden = params[:hidden]
     if @contribution.save
-      render json: {status: ok}
+      render json: {status: :ok}
     else
       render json: @contribution.errors, status: :unprocessable_entity
     end
@@ -63,7 +71,7 @@ class ContributionsController < ApplicationController
     authorize! :approve, @contribution
     @contribution.approved = params[:approved]
     if @contribution.save
-      render json: {status: ok}
+      render json: {status: :ok}
     else
       render json: @contribution.errors, status: :unprocessable_entity
     end
