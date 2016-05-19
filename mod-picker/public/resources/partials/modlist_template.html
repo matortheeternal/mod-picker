@@ -92,7 +92,19 @@
 </div>
 
 <div class="page-container mod-tab">
-    <div ng-show="isSelected('details')">
+    <div class="modlist-tab-items" ng-show="isSelected('details')">
+        <div class="content-block modlist-tab-item">
+            <div class="content-title">
+                <div>
+                    Modlist Description
+                </div>
+            </div>
+            <section class="note-content-container">
+                <text-area class="note-text-area" data="modlist.description" ng-refresh="updateMDE"></text-area>
+            </section>
+        </div>
+    </div>
+    <div ng-show="isSelected('details')" class="mod-tab-items">
         <table ng-show="bIsEditing" title='modlist-options' class='section-table'>
             <colgroup>
                 <col style="width: 100%">
@@ -148,58 +160,8 @@
             </tbody>
         </table> 
 
-        <table title='overview' class='overview-table section-table' style='display: none;'>
-            <colgroup>
-                <col style="width: 25%">
-                <col style="width: 55%">
-                <col style="width: 20%">
-            </colgroup>
-            <thead>
-                <tr>
-                    <th>
-                        <span class="section-title">Overview</span>
-                        Totals   
-                    </th>
-                    <th>
-                        Tags
-                    </th>
-                    <th>
-                        Desktop Sync Tools
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>
-                        <ul class="list olist">
-                            <li>
-                                <span class="overview-total-number">999</span> 
-                                Tools
-                            </li>
-                            <li>
-                                <span class="overview-total-number">999</span> 
-                                Mods
-                            </li>
-                            <li>
-                                <span class="overview-total-number">999</span> 
-                                Plugins
-                            </li>
-                            <li>
-                                <span class="overview-total-number">999</span> 
-                                BSAs
-                            </li>
-                        </ul>
-                    </td>
-                    <td>
-                        Tags here
-                    </td>
-                    <td>
-                        Desktop sync tools here
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-
+        <div class"mod-tab-item primary-item">
+        </div>
         <table title='modlist-details' class='section-table'>
             <colgroup>
                 <col style="width: 100%">

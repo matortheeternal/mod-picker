@@ -180,7 +180,6 @@
   font-weight: 500;
   color: $bar_text_color;
   margin: 10px 0 5px 5px;
-
   text-align: left;
   vertical-align: middle;
   //padding-bottom: 2px;
@@ -198,4 +197,12 @@
  text-align: left;
  vertical-align:bottom;
  font-style: italic;
+}
+
+.modlist-tab-items {
+
+  .modlist-tab-item {
+    border: 1px solid $border_color;
+    border-top: none;
+  }
 }
