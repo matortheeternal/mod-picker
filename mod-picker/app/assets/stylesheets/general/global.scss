@@ -73,6 +73,12 @@ body {
   transition: $values;
 }
 
+@mixin column-count($val) {
+  -webkit-column-count: $val;
+  -moz-column-count: $val;
+  column-count: $val;
+}
+
 
 /* utility classes */
 .capitalize {

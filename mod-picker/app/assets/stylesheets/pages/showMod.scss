@@ -592,4 +592,5 @@
   list-style: none;
   font-family: Consolas, monospace, sans-serif;
   margin: 0 0 20px;
+  @include column-count(3);
 }
