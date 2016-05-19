@@ -3,9 +3,18 @@ require 'rest-client'
 
 class WorkshopHelper
   def self.scrape_user(id)
-    # construct user url
-    # ex. http://steamcommunity.com/id/Naricissu/
-    user_url = 'http://steamcommunity.com/id/' + id
+    # vanityURL:        https://steamcommunity.com/id/Naricissu/myworkshopfiles
+    # Steam base64 id:  https://steamcommunity.com/profiles/76561197996859192/myworkshopfiles
+    
+    # Convert to string if not already a string
+    id = id.to_s unless id.is_a?(String)
+
+    # Check if id is vanityURL or steam base64 id
+    if id =~ /^7656119[0-9]{10}$/i
+      user_url = "https://steamcommunity.com/profiles/" + id + "/myworkshopfiles"
+    else
+      user_url = "https://steamcommunity.com/id/" + id + "/myworkshopfiles"
+    end
 
     # prepare headers
     headers = {
@@ -99,7 +108,7 @@ class WorkshopHelper
       # follower stats are always available even if 0
       # Follower count
       user_data[:followers_count] = doc.at_css("div.followStat").text
-      # puts "num of followers = " + numOfFollowers
+
     elsif !user_found 
       puts "Error finding user profile"
     elsif response.code != 200
