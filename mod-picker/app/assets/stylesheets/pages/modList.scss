@@ -99,6 +99,9 @@
     width:  100%;
     height: 100px;    
   }
+  strong {
+    display: block;
+  }
 }
 
 
@@ -120,11 +123,15 @@
     padding: 0px 5% 10px 5%;
   }
   input[type="text"] {
+    display: block;
     width: 60%;
   }
-
+  
   select {
-    width: 20%;
+    min-width: 190px;
+    display: block;
+    max-height: 32px;
+    font-size: 14px;
   }
 }
 
@@ -204,5 +211,16 @@
   .modlist-tab-item {
     border: 1px solid $border_color;
     border-top: none;
+  }
+}
+
+.large-note-text-area {
+  .CodeMirror {
+    // this needs to be 20px higher than the scroll section height due to padding
+    min-height: 420px;
+  }
+
+  .CodeMirror-scroll {
+    min-height: 400px;
   }
 }
