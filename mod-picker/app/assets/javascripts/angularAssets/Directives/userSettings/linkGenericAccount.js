@@ -9,6 +9,8 @@ app.directive('linkGenericAccount', function () {
             siteUsername: '=',
             sitePostsCount: '=',
             siteDateJoined: '=',
+            siteSubmissionsCount: '=',
+            siteFollowersCount: '=',
             siteVerificationToken: '='
         }
     }
