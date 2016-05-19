@@ -198,7 +198,7 @@ class ModsController < ApplicationController
          :plugin_dumps => [:filename, :author, :description, :crc_hash, :record_count, :override_count, :file_size,
            :master_filenames => [],
            :plugin_record_groups_attributes => [:sig, :record_count, :override_count],
-           :plugin_errors_attributes => [:signature, :form_id, :type, :path, :name, :data],
+           :plugin_errors_attributes => [:signature, :form_id, :group, :path, :name, :data],
            :overrides_attributes => [:fid, :sig]])
     end
 end
