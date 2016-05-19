@@ -32,7 +32,7 @@
                          <i class="fa {{curStatusIcon.name}}" aria-hidden="true"></i>
                         {{modlist.status}}
                     </div>
-                    <div class="action-box {{mlVisibilityClass}}" ng-show="bIsEditing">
+                    <div class="action-box {{mlVisibilityClass}}" ng-if="hasPermissions()">
                         <i class="fa fa-eye-slash" aria-hidden="true"></i>
                         {{modlist.hidden}}
                     </div>
@@ -95,11 +95,11 @@
 </div>
 <div class="page-container mod-tab">
     <div class="modlist-tab-items" ng-show="isSelected('details')">
-        <div class="content-block modlist-tab-item" ng-if="bIsEditing == false">
+        <div class="content-block modlist-tab-item" ng-if="isEditing(false)">
             {{modlist.description}}
         </div>
-        <!-- Mod List Description: Edii Mode -->
-        <div class="content-block modlist-tab-item" ng-if="bIsEditing == true">
+        <!-- Mod List Description: Edit Mode -->
+        <div class="content-block modlist-tab-item" ng-if="isEditing(true)">
             <div class="content-title">
                 <div>
                     Modlist Description
@@ -111,7 +111,7 @@
         </div>
     </div>
     <div ng-show="isSelected('details')" class="mod-tab-items">
-        <table ng-if="bIsEditing == true" title='modlist-options' class='section-table'>
+        <table ng-if="isEditing(true)" title='modlist-options' class='section-table'>
             <colgroup>
                 <col style="width: 100%">
             </colgroup>
