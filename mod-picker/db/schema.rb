@@ -625,17 +625,15 @@ ActiveRecord::Schema.define(version: 20160519221434) do
   add_index "tags", ["submitted_by"], name: "fk_rails_8c7521065c", using: :btree
 
   create_table "user_bios", force: :cascade do |t|
-    t.string  "nexus_username",              limit: 32
-    t.string  "nexus_verification_token",    limit: 32
-    t.string  "lover_username",              limit: 32
-    t.string  "lover_verification_token",    limit: 32
-    t.string  "workshop_username",           limit: 32
-    t.boolean "workshop_verified"
     t.integer "user_id",                     limit: 4
     t.string  "nexus_user_path",             limit: 64
-    t.string  "lover_user_path",             limit: 64
+    t.string  "nexus_verification_token",    limit: 32
+    t.string  "nexus_username",              limit: 32
     t.date    "nexus_date_joined"
     t.integer "nexus_posts_count",           limit: 4,  default: 0
+    t.string  "lover_user_path",             limit: 64
+    t.string  "lover_verification_token",    limit: 32
+    t.string  "lover_username",              limit: 32
     t.date    "lover_date_joined"
     t.integer "lover_posts_count",           limit: 4,  default: 0
     t.string  "workshop_user_path",          limit: 64
