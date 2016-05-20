@@ -28,7 +28,7 @@ Compatibility Note:
 
 Config File:
   - Has many mod_lists
-    ? Counter Cache on mod_lists_count
+    + Counter Cache on mod_lists_count
 
 Game:
   > USE LAZY CACHING - update counter cache columns once per day
