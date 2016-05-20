@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160519221434) do
+ActiveRecord::Schema.define(version: 20160520204410) do
 
   create_table "agreement_marks", id: false, force: :cascade do |t|
     t.integer "incorrect_note_id", limit: 4
@@ -26,8 +26,8 @@ ActiveRecord::Schema.define(version: 20160519221434) do
     t.string   "title",        limit: 255,   null: false
     t.integer  "submitted_by", limit: 4,     null: false
     t.text     "text_body",    limit: 65535, null: false
-    t.datetime "created_at",                 null: false
-    t.datetime "updated_at",                 null: false
+    t.datetime "submitted",                  null: false
+    t.datetime "edited",                     null: false
     t.integer  "game_id",      limit: 4
   end
 
@@ -44,8 +44,8 @@ ActiveRecord::Schema.define(version: 20160519221434) do
   create_table "base_reports", force: :cascade do |t|
     t.integer  "reportable_id",   limit: 4,   null: false
     t.string   "reportable_type", limit: 255, null: false
-    t.datetime "created_at",                  null: false
-    t.datetime "updated_at",                  null: false
+    t.datetime "submitted",                   null: false
+    t.datetime "edited",                      null: false
   end
 
   create_table "categories", force: :cascade do |t|
@@ -171,8 +171,8 @@ ActiveRecord::Schema.define(version: 20160519221434) do
     t.text     "text_body",        limit: 65535
     t.integer  "correctable_id",   limit: 4
     t.string   "correctable_type", limit: 255
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "submitted"
+    t.datetime "edited"
     t.boolean  "hidden",                         default: false, null: false
     t.integer  "game_id",          limit: 4,                     null: false
   end
@@ -388,8 +388,8 @@ ActiveRecord::Schema.define(version: 20160519221434) do
     t.boolean  "hidden",                                  default: true, null: false
     t.boolean  "has_adult_content"
     t.integer  "status",                    limit: 1,     default: 0,    null: false
-    t.datetime "created"
-    t.datetime "completed"
+    t.datetime "submitted"
+    t.datetime "edited"
     t.text     "description",               limit: 65535
     t.integer  "game_id",                   limit: 4
     t.integer  "comments_count",            limit: 4,     default: 0
@@ -560,8 +560,8 @@ ActiveRecord::Schema.define(version: 20160519221434) do
     t.integer  "submitted_by",   limit: 4,   null: false
     t.integer  "type",           limit: 1,   null: false
     t.string   "note",           limit: 128
-    t.datetime "created_at",                 null: false
-    t.datetime "updated_at",                 null: false
+    t.datetime "submitted",                  null: false
+    t.datetime "edited",                     null: false
   end
 
   add_index "reports", ["base_report_id"], name: "fk_rails_619eb511d7", using: :btree
