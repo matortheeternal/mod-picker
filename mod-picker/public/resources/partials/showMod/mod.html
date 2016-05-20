@@ -3,8 +3,8 @@
         <div class="mod-header-color">
             <div class="page-container mod-header">
                 <section>
-                    <div class="quality-value action-box">
-                        <span class="reputation-number">{{mod.reputation | number:0}}</span>
+                    <div class="quality-item action-box">
+                        <span class="quality-number">{{mod.reputation | number:0}}</span>
                         REPUTATION
                     </div>
 
@@ -64,9 +64,7 @@
             </div>
         </div>
 
-        <messages   success-bool="showSuccess"
-            errors="errors"
-            success-message="{{submitMessage}}">
+        <messages success-bool="showSuccess" errors="errors" success-message="{{submitMessage}}">
         </messages>
 
         <div class="page-container">

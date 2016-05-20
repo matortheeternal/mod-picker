@@ -3,9 +3,18 @@ require 'rest-client'
 
 class WorkshopHelper
   def self.scrape_user(id)
-    # construct user url
-    # ex. http://steamcommunity.com/id/Naricissu/
-    user_url = 'http://steamcommunity.com/id/' + id
+    # vanityURL:        https://steamcommunity.com/id/Naricissu/myworkshopfiles
+    # Steam base64 id:  https://steamcommunity.com/profiles/76561197996859192/myworkshopfiles
+    
+    # Convert to string if not already a string
+    id = id.to_s unless id.is_a?(String)
+
+    # Check if id is vanityURL or steam base64 id
+    if id =~ /^7656119[0-9]{10}$/i
+      user_url = "https://steamcommunity.com/profiles/" + id
+    else
+      user_url = "https://steamcommunity.com/id/" + id
+    end
 
     # prepare headers
     headers = {
@@ -30,16 +39,88 @@ class WorkshopHelper
 
     allComments.each do |comment| 
       author_url = comment.at_css("div.commentthread_comment_author a")["href"]
+      author_display_name = comment.at_css("div.commentthread_comment_author a bdi").text.strip
       comment_body = comment.at_css("div.commentthread_comment_text").text.strip
-
-      puts "Author url ==" + author_url
-      puts "Comment body ==" + comment_body
 
       # Case insensitive comparison of comment author's profile urls
       if author_url.casecmp(user_url) == 0
         user_data[:matched_comment] = comment_body
+        user_data[:username] = author_display_name
+
+        # return user data
+        # user_data is returned here so first comment who's author
+        # matches the given url is returned for comparison to the verification key
+        return user_data
       end
     end
+
+  end
+
+  def self.scrape_workshop_stats(id)
+    # vanityURL:        https://steamcommunity.com/id/Naricissu/myworkshopfiles
+    # Steam base64 id:  https://steamcommunity.com/profiles/76561197996859192/myworkshopfiles
+    
+    # Convert to string if not already a string
+    id = id.to_s unless id.is_a?(String)
+
+    # Check if id is vanityURL or steam base64 id
+    if id =~ /^7656119[0-9]{10}$/i
+      user_url = "https://steamcommunity.com/profiles/" + id + "/myworkshopfiles"
+    else
+      user_url = "https://steamcommunity.com/id/" + id + "/myworkshopfiles"
+    end
+    
+
+    # prepare headers
+    headers = {
+        :"user-agent" => Rails.application.config.user_agent
+    }
+
+    # get the user page
+    response = RestClient.get(user_url, headers)
+    @last_request = DateTime.now
+
+    # parse needed data from user page
+    doc = Nokogiri::HTML(response.body)
+    user_data = {}
+
+    # .css searches for every occurence of the accessor
+    # .at_css searches for the first occurence
+    
+    # Checks if an error message from steam indicating the user profile was found or not
+    # If error is missing, user is found
+    # If error is present, user is not found
+    user_found = doc.at_css("div#message").blank?
+
+    # Checks if response code is good and user is found before scraping for stats
+    if response.code == 200 && user_found
+      numOfEntriesText = doc.at_css("div.workshopBrowsePagingInfo")
+
+      # Checks if number of workshop items div is empty or not
+      # If blank that means the user has no items uploaded
+      # workshop items count
+      if numOfEntriesText.blank?
+        user_data[:submissions_count] = 0
+      else
+        numOfEntries = numOfEntriesText.text =~ /(?<=[0-9] of ).[0-9]+(?= entries)/
+        # puts "num of entries = " + numOfEntries.inspect
+        user_data[:submissions_count] = numOfEntries.inspect
+      end
+
+      # username
+      user_data[:username] = doc.at_css("span#HeaderUserInfoName a").text
+
+      # follower stats are always available even if 0
+      # Follower count
+      user_data[:followers_count] = doc.at_css("div.followStat").text
+
+    elsif !user_found 
+      puts "Error finding user profile"
+    elsif response.code != 200
+      puts "Error fetching user stats"
+    end
+
+    
 
     # return user data
     user_data

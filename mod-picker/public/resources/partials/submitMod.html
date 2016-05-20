@@ -8,17 +8,15 @@
                 <span class="help-tooltip" title="Locations where an author has officially uploaded a Mod. &#13;You can only enter one valid location for each supported site.">?</span>
             </h3>
             <section>
-                <div class="sources-container" ng-repeat="source in sources">
-                    <label>
-                        <select ng-model="source.label" ng-change="validateSource(source)" ng-disabled="source.scraped">
-                            <option ng-repeat="site in sites">{{site.label}}</option>
-                        </select>
-                        <input type="text" class="long-input" ng-model="source.url" ng-change="validateSource(source)" ng-disabled="source.scraped">
-                        <input type="button" class="btn scrape-button" value="Scrape" ng-click="scrapeSource(source)" ng-disabled="!source.valid || source.scraped">
-                        <span class="remove-source" ng-click="removeSource(source)" ng-if="$index > 0 && !source.scraped" title="Remove source">
-                            <i class="fa fa-times"></i>
-                        </span>
-                    </label>
+                <div class="dynamic-item" ng-repeat="source in sources">
+                    <select ng-model="source.label" ng-change="validateSource(source)" ng-disabled="source.scraped">
+                        <option ng-repeat="site in sites">{{site.label}}</option>
+                    </select>
+                    <input type="text" class="long-input" ng-model="source.url" ng-change="validateSource(source)" ng-disabled="source.scraped">
+                    <input type="button" class="btn scrape-button" value="Scrape" ng-click="scrapeSource(source)" ng-disabled="!source.valid || source.scraped">
+                    <span class="remove-item" ng-click="removeSource(source)" ng-if="$index > 0 && !source.scraped" title="Remove source">
+                        <i class="fa fa-times"></i>
+                    </span>
                 </div>
                 <!-- TODO: Fix this not hiding immediately -->
                 <input type="button" class="btn" value="Add Source" ng-click="addSource()" ng-show="sources.length < sites.length">
@@ -136,6 +134,48 @@
                 </div>
             </section>
 
+            <h3 class="section-title">
+                Mod Analysis
+                <!-- temporary github link, should link to a help page -->
+                <a href="http://github.com/matortheeternal/mod-asset-mapper">
+                    <span class="help-tooltip" title="Submitting a mod requires uploading an analysis file which &#13; includes an asset file tree and one or more plugin dumps. &#13;You can generate a mod analysis file using Mod Analyzer.  &#13;Click here for more information and download links.">?</span>
+                </a>
+            </h3>
+            <section>
+                <div class="analysis-results" ng-show="analysis">
+                    <h4 class="subtitle" ng-show="analysis.nestedAssets">Asset File Tree</h4>
+                    <div class="subsection analysis-container" ng-show="analysis.nestedAssets">
+                        <asset-tree data="analysis.nestedAssets"></asset-tree>
+                    </div>
+
+                    <h4 class="subtitle" ng-show="analysis.plugins.length > 0">Plugin Analysis</h4>
+                    <div class="subsection analysis-container" ng-show="analysis.plugins.length > 0">
+                        <div class="plugin-analysis-item" ng-repeat="plugin in analysis.plugins">
+                            <plugin-metadata plugin="plugin" show-record-groups="true"></plugin-metadata>
+                        </div>
+                    </div>
+                </div>
+
+                <label>
+                    <input id="analysis-input" type="file" file-change="changeAnalysisFile" accept=".json">
+                    <input type="button" class="btn" ng-click="browseAnalysisFile()" value="Browse">
+                </label>
+            </section>
+
+
+            <h3 class="section-title">Requirements
+                <span class="help-tooltip" title="Mods that are required for this mod to function.">?</span>
+            </h3>
+            <section>
+                <div class="dynamic-item" ng-repeat="requirement in requirements">
+                    <mod-input result-id="requirement.required_id" search-text="requirement.name" class="long-mod-input"></mod-input>
+                    <span class="remove-item" ng-click="removeRequirement(requirement)" title="Remove requirement">
+                        <i class="fa fa-times"></i>
+                    </span>
+                </div>
+                <input type="button" class="btn" value="Add Requirement" ng-click="addRequirement()">
+            </section>
+
             <section>
                 <category-tree selection="mod.categories" toggle-all="false"></category-tree>
                 <div id="category-messages">
@@ -163,34 +203,6 @@
                     Has Adult Content
                 </label>
                 <span class="help-tooltip" title="In this context, adult content is classified as nudity or &#13;depictions of sexual acts.">?</span>
-            </section>
-
-            <h3 class="section-title">
-                Mod Analysis
-                <!-- temporary github link, should link to a help page -->
-                <a href="http://github.com/matortheeternal/mod-asset-mapper">
-                    <span class="help-tooltip" title="Submitting a mod requires uploading an analysis file which &#13; includes an asset file tree and one or more plugin dumps. &#13;You can generate a mod analysis file using Mod Analyzer.  &#13;Click here for more information and download links.">?</span>
-                </a>
-            </h3>
-            <section>
-                <div class="analysis-results" ng-show="analysis">
-                    <h4 class="subtitle" ng-show="analysis.nestedAssets">Asset File Tree</h4>
-                    <div class="subsection analysis-container" ng-show="analysis.nestedAssets">
-                        <asset-tree data="analysis.nestedAssets"></asset-tree>
-                    </div>
-
-                    <h4 class="subtitle" ng-show="analysis.plugins.length > 0">Plugin Analysis</h4>
-                    <div class="subsection analysis-container" ng-show="analysis.plugins.length > 0">
-                        <div class="plugin-analysis-item" ng-repeat="plugin in analysis.plugins">
-                            <plugin-analysis plugin="plugin"></plugin-analysis>
-                        </div>
-                    </div>
-                </div>
-
-                <label>
-                    <input id="analysis-input" type="file" file-change="changeAnalysisFile" accept=".json">
-                    <input type="button" class="btn" ng-click="browseAnalysisFile()" value="Browse">
-                </label>
             </section>
 
             <div class="action-button-container">

@@ -1,5 +1,5 @@
 ﻿<div class="mod-tab-items">
-    <div class="mod-tab-item sort-by-dropdown">
+    <div class="mod-tab-item primary-item">
 		<strong>Sort By: </strong>
 
 		<select ng-model="loadOrderFilter" ng-init="loadOrderFilter = 'reputation'">
@@ -14,28 +14,26 @@
 	</div>
 </div>
 
-<div class="add-note-box" ng-show="newLoadOrderNote">
-	<div class="add-note-title">
+<div class="content-block add-note-box" ng-show="newLoadOrderNote">
+	<div class="content-title">
 		Add Load Order Note
 	</div>
-	<div class="add-note-actions">
+	<div class="add-note-options">
 		<div>
 			Load
 		</div>
 		<div>
 			<input type="text" class="mod-input" placeholder="Enter Plugin Filename" ng-model="newLoadOrderNote.first_plugin_id">
 		</div>
-		<div class="select order-dropdown">
+		<span class="select order-dropdown">
 			<select ng-model="newLoadOrderNote.order">
 				<option value="before">Before</option>
 				<option value="after">After</option>
 			</select>
-		</div>
-		<div>
-			<input type="text" class="mod-input" placeholder="Enter Plugin Filename" ng-model="newLoadOrderNote.second_plugin_id">
-		</div>
+		</span>
+    <input type="text" class="mod-input" placeholder="Enter Plugin Filename" ng-model="newLoadOrderNote.second_plugin_id">
 	</div>
-	<div class="note-content-container">
+	<div class="content-container">
 		<text-area data="newLoadOrderNote.text_body" ng-refresh="updateMDE" class="note-text-area"></text-area>
 
 		<div class="action-button-container">
@@ -46,7 +44,7 @@
 </div>
 
 <loader data="mod.load_order_notes" content-class="" spinner-class="big-spinner">
-	<div ng-repeat="note in mod.load_order_notes" class="post">
+	<div ng-repeat="note in mod.load_order_notes" class="content-block">
 		<load-order-note note="note" show-author-column="true" index="100 + $index" user="user"></load-order-note>
 	</div>
 

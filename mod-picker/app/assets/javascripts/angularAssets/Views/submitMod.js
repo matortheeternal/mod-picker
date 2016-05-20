@@ -7,10 +7,11 @@ app.config(['$stateProvider', function ($stateProvider) {
     );
 }]);
 
-app.controller('submitModController', function ($scope, backend, submitService, categoryService, sitesFactory, assetUtils) {
+app.controller('submitModController', function ($scope, backend, submitService, pluginService, categoryService, sitesFactory, assetUtils) {
     // initialize variables
     $scope.sites = sitesFactory.sites();
     $scope.mod = { game_id: window._current_game_id };
+    $scope.requirements = [];
     $scope.sources = [{
         label: "Nexus Mods",
         url: ""
@@ -75,6 +76,32 @@ app.controller('submitModController', function ($scope, backend, submitService, 
                 });
                 break;
         }
+    };
+
+    /* requirements */
+    $scope.addRequirement = function() {
+        $scope.requirements.push({});
+    };
+
+    $scope.addRequirementFromPlugin = function(filename) {
+        pluginService.searchPlugins(filename).then(function(plugins) {
+            var plugin = plugins.find(function(plugin) {
+                return plugin.filename === filename;
+            });
+            if (plugin) {
+                var match = $scope.requirements.find(function(requirement) {
+                    return requirement.required_id == plugin.mod_id;
+                });
+                if (!match) {
+                    $scope.requirements.push({required_id: plugin.mod_id, name: plugin.mod.name});
+                }
+            }
+        });
+    };
+
+    $scope.removeRequirement = function(requirement) {
+        var index = $scope.requirements.indexOf(requirement);
+        $scope.requirements.splice(index, 1);
     };
 
     /* categories */
@@ -180,12 +207,29 @@ app.controller('submitModController', function ($scope, backend, submitService, 
         document.getElementById('analysis-input').click();
     };
 
+    $scope.getRequirementsFromAnalysis = function() {
+        // build list of masters
+        var masters = [];
+        $scope.analysis.plugins.forEach(function(plugin) {
+            plugin.master_filenames.forEach(function(filename) {
+                if (masters.indexOf(filename) == -1) {
+                    masters.push(filename);
+                }
+            });
+        });
+        // load requirements from masters
+        masters.forEach(function(filename) {
+            $scope.addRequirementFromPlugin(filename);
+        });
+    };
+
     $scope.loadAnalysisFile = function(file) {
         var fileReader = new FileReader();
         fileReader.onload = function (event) {
             var fixedJson = event.target.result.replace('"plugin_record_groups"', '"plugin_record_groups_attributes"').replace('"plugin_errors"', '"plugin_errors_attributes"').replace('"overrides"', '"overrides_attributes"');
             $scope.analysis = JSON.parse(fixedJson);
             $scope.analysis.nestedAssets = assetUtils.convertDataStringToNestedObject($scope.analysis.assets);
+            $scope.getRequirementsFromAnalysis();
             $scope.$apply();
         };
         fileReader.readAsText(file);
@@ -209,6 +253,6 @@ app.controller('submitModController', function ($scope, backend, submitService, 
             workshop: $scope.workshop,
             lab: $scope.lab
         };
-        submitService.submitMod($scope.mod, $scope.analysis, sources);
+        submitService.submitMod($scope.mod, $scope.analysis, sources, $scope.requirements);
     }
 });

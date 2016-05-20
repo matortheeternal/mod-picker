@@ -73,6 +73,12 @@ body {
   transition: $values;
 }
 
+@mixin column-count($val) {
+  -webkit-column-count: $val;
+  -moz-column-count: $val;
+  column-count: $val;
+}
+
 
 /* utility classes */
 .capitalize {
@@ -382,39 +388,36 @@ input[type="button"], input[type="submit"] {
   text-align: center;
 }
 
-/* css for forms, inputs, and labels */
+select {
+  background-color: $input_background;
+  border: 1px solid $border_color;
+  border-radius: 4%;
+  color: $h4_color;
+  font: inherit;
+  padding: 0.5em 3em 0.5em 1em;
 
-  select {
-        /* styling */
-    background-color: $primary_background;
-    border: 1px solid $border_color;
-    border-radius: 4%;
-    color: $h4_color;
-    font: inherit;
-    padding: 0.5em 3em 0.5em 1em;
+  // reset browser style
+  margin: 0;
+  -webkit-appearance: none;
+  -moz-appearance: none;
 
-    /* reset */
-
-    margin: 0;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-
-
-    background-image:
-      linear-gradient(45deg, transparent 49%, $primary_background 50%),
-      linear-gradient(135deg, $primary_background 50%, transparent 51%),
-      linear-gradient(to right, $action_color, $action_color);
-    background-position:
-      calc(100% - 1em) 50%,
-      calc(100% - .5em) 50%,
-      100% 0;
-    background-size:
-      //these are slightly wider than their actual size to stop rounding from leaving a space in between the two triangles
-      .54em .5em,
-      .54em .5em,
-      2em 100%;
-    background-repeat: no-repeat;
-  }
+  // background
+  background-image:
+    linear-gradient(45deg, transparent 49%, $input_background 50%),
+    linear-gradient(135deg, $input_background 50%, transparent 51%),
+    linear-gradient(to right, $action_color, $action_color);
+  background-position:
+    calc(100% - 1em) 50%,
+    calc(100% - .5em) 50%,
+    100% 0;
+  background-size:
+    //these are slightly wider than their actual size to stop rounding
+    //from leaving a space in between the two triangles
+    .54em .5em,
+    .54em .5em,
+    2em 100%;
+  background-repeat: no-repeat;
+}
 
 .big-text-area {
   width: 100%;
@@ -433,7 +436,30 @@ input[type="button"], input[type="submit"] {
   font-family: inherit;
 }
 
-.editor-toolbar, .CodeMirror {
+input, textarea {
+  background-color: $input_background;
+  color: $text_color;
+  border: 1px solid $hard_border_color;
+}
+
+input[type="text"], input[type="email"], input[type="password"] {
+  &:disabled {
+    border: 2px inset;
+  }
+}
+
+.CodeMirror {
+  background-color: $input_background;
+  color: $text_color;
+  border-radius: 0;
+
+  div.CodeMirror-cursor {
+    border-left: 1px solid $text_color;
+  }
+}
+
+.editor-toolbar {
+  cursor: default;
   border-radius: 0;
 }
 
@@ -502,6 +528,7 @@ form {
 
     select {
       font-size: 13px;
+      line-height: normal;
       height: 32px;
     }
 
@@ -673,4 +700,18 @@ a .help-tooltip {
 
 .small-spinner {
   height: 60px;
+}
+
+/* css for plugin-metadata  */
+
+plugin-metadata {
+  .stat-data {
+    width: calc(100% - 170px);
+    white-space: normal;
+  }
+
+  .plugin-description {
+    white-space: pre-line;
+    word-wrap: break-word;
+  }
 }

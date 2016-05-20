@@ -9,6 +9,8 @@ app.directive('linkGenericAccount', function () {
             siteUsername: '=',
             sitePostsCount: '=',
             siteDateJoined: '=',
+            siteSubmissionsCount: '=',
+            siteFollowersCount: '=',
             siteVerificationToken: '='
         }
     }
@@ -47,7 +49,7 @@ app.controller('linkGenericAccountController', function ($scope, $timeout, userS
 
         $scope.errors = [];
         $scope.waiting = true;
-        var user_path = match[2];
+        var user_path = match[$scope.site.userIndex];
         userSettingsService.verifyAccount($scope.siteLabel, user_path).then(function(data) {
             $scope.verified = data.verified;
             if (!data.verified) {

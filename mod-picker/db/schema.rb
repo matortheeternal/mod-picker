@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160514183916) do
+ActiveRecord::Schema.define(version: 20160520204410) do
 
   create_table "agreement_marks", id: false, force: :cascade do |t|
     t.integer "incorrect_note_id", limit: 4
@@ -26,15 +26,15 @@ ActiveRecord::Schema.define(version: 20160514183916) do
     t.string   "title",        limit: 255,   null: false
     t.integer  "submitted_by", limit: 4,     null: false
     t.text     "text_body",    limit: 65535, null: false
-    t.datetime "created_at",                 null: false
-    t.datetime "updated_at",                 null: false
+    t.datetime "submitted",                  null: false
+    t.datetime "edited",                     null: false
     t.integer  "game_id",      limit: 4
   end
 
   add_index "articles", ["submitted_by"], name: "fk_rails_ea02c233bd", using: :btree
 
   create_table "asset_files", force: :cascade do |t|
-    t.string  "filepath", limit: 128, null: false
+    t.string  "filepath", limit: 255, null: false
     t.integer "game_id",  limit: 4,   null: false
   end
 
@@ -44,8 +44,8 @@ ActiveRecord::Schema.define(version: 20160514183916) do
   create_table "base_reports", force: :cascade do |t|
     t.integer  "reportable_id",   limit: 4,   null: false
     t.string   "reportable_type", limit: 255, null: false
-    t.datetime "created_at",                  null: false
-    t.datetime "updated_at",                  null: false
+    t.datetime "submitted",                   null: false
+    t.datetime "edited",                      null: false
   end
 
   create_table "categories", force: :cascade do |t|
@@ -171,8 +171,8 @@ ActiveRecord::Schema.define(version: 20160514183916) do
     t.text     "text_body",        limit: 65535
     t.integer  "correctable_id",   limit: 4
     t.string   "correctable_type", limit: 255
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "submitted"
+    t.datetime "edited"
     t.boolean  "hidden",                         default: false, null: false
     t.integer  "game_id",          limit: 4,                     null: false
   end
@@ -388,8 +388,8 @@ ActiveRecord::Schema.define(version: 20160514183916) do
     t.boolean  "hidden",                                  default: true, null: false
     t.boolean  "has_adult_content"
     t.integer  "status",                    limit: 1,     default: 0,    null: false
-    t.datetime "created"
-    t.datetime "completed"
+    t.datetime "submitted"
+    t.datetime "edited"
     t.text     "description",               limit: 65535
     t.integer  "game_id",                   limit: 4
     t.integer  "comments_count",            limit: 4,     default: 0
@@ -451,7 +451,11 @@ ActiveRecord::Schema.define(version: 20160514183916) do
     t.float    "reputation",                limit: 24,  default: 0.0
     t.float    "average_rating",            limit: 24,  default: 0.0
     t.datetime "released"
-    t.float    "update_rate",               limit: 24,  default: 0.0
+    t.datetime "updated"
+    t.integer  "plugins_count",             limit: 4,   default: 0
+    t.integer  "requirements_count",        limit: 4,   default: 0
+    t.integer  "mod_lists_count",           limit: 4,   default: 0
+    t.integer  "asset_files_count",         limit: 4,   default: 0
   end
 
   add_index "mods", ["game_id"], name: "fk_rails_3ec448a848", using: :btree
@@ -502,10 +506,10 @@ ActiveRecord::Schema.define(version: 20160514183916) do
     t.integer "plugin_id", limit: 4,   null: false
     t.string  "signature", limit: 4,   null: false
     t.integer "form_id",   limit: 4,   null: false
-    t.integer "type",      limit: 1,   null: false
-    t.string  "path",      limit: 255
-    t.string  "name",      limit: 255
-    t.string  "data",      limit: 64
+    t.integer "group",     limit: 1,   null: false
+    t.string  "path",      limit: 400
+    t.string  "name",      limit: 400
+    t.string  "data",      limit: 255
   end
 
   add_index "plugin_errors", ["plugin_id"], name: "fk_rails_21e72cc4b6", using: :btree
@@ -556,8 +560,8 @@ ActiveRecord::Schema.define(version: 20160514183916) do
     t.integer  "submitted_by",   limit: 4,   null: false
     t.integer  "type",           limit: 1,   null: false
     t.string   "note",           limit: 128
-    t.datetime "created_at",                 null: false
-    t.datetime "updated_at",                 null: false
+    t.datetime "submitted",                  null: false
+    t.datetime "edited",                     null: false
   end
 
   add_index "reports", ["base_report_id"], name: "fk_rails_619eb511d7", using: :btree
@@ -632,8 +636,8 @@ ActiveRecord::Schema.define(version: 20160514183916) do
     t.string  "lover_username",              limit: 32
     t.date    "lover_date_joined"
     t.integer "lover_posts_count",           limit: 4,  default: 0
+    t.string  "workshop_user_path",          limit: 64
     t.string  "workshop_username",           limit: 32
-    t.boolean "workshop_verified"
     t.integer "workshop_submissions_count",  limit: 4,  default: 0
     t.integer "workshop_followers_count",    limit: 4,  default: 0
     t.string  "workshop_verification_token", limit: 32
