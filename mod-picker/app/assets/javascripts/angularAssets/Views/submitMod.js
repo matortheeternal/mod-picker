@@ -7,32 +7,101 @@ app.config(['$stateProvider', function ($stateProvider) {
     );
 }]);
 
-app.controller('submitModController', function ($scope, backend, submitService, categoryService) {
+app.controller('submitModController', function ($scope, backend, submitService, pluginService, categoryService, sitesFactory, assetUtils) {
     // initialize variables
-    $scope.mod = {};
+    $scope.sites = sitesFactory.sites();
+    $scope.mod = { game_id: window._current_game_id };
+    $scope.requirements = [];
+    $scope.sources = [{
+        label: "Nexus Mods",
+        url: ""
+    }];
 
-    /* scraping */
-    $scope.nexusScraped = false;
-    //TODO: I guess this static might be better in some sort of service
-    var nexusUrlPattern = /(http[s]:\/\/?)?www.nexusmods.com\/skyrim\/mods\/([0-9]+)(\/\?)?/i;
-
-    $scope.cantScrape = function () {
-        return $scope.scraping || !$scope.nexusUrl || $scope.nexusUrl.match(nexusUrlPattern) == null
+    /* sources */
+    $scope.addSource = function() {
+        if ($scope.sources.length == $scope.sites.length)
+            return;
+        $scope.sources.push({
+            label: "Nexus Mods",
+            url: ""
+        });
     };
 
-    $scope.scrape = function () {
-        var match = $scope.nexusUrl.match(nexusUrlPattern);
+    $scope.removeSource = function(source) {
+        var index = $scope.sources.indexOf(source);
+        $scope.sources.splice(index, 1);
+    };
+
+    $scope.validateSource = function(source) {
+        var site = sitesFactory.getSite($scope.sites, source.label);
+        var sourceIndex = $scope.sources.indexOf(source);
+        var sourceUsed = $scope.sources.find(function(item, index) {
+            return index != sourceIndex && item.label === source.label
+        });
+        var match = source.url.match(site.modUrlFormat);
+        source.valid = !sourceUsed && match != null;
+    };
+
+    $scope.scrapeSource = function(source) {
+        // exit if the source is invalid
+        var site = sitesFactory.getSite($scope.sites, source.label);
+        var match = source.url.match(site.modUrlFormat);
         if (!match) {
             return;
         }
-        var id = match[2];
-        $scope.scraping = true;
-        submitService.scrapeNexus(3, id).then(function (data) {
-            $scope.nexus = data;
-            if (data.nexus_category == 39) {
-                $scope.isUtility = true;
+
+        var gameId = window._current_game_id;
+        var modId = match[2];
+        source.scraped = true;
+        switch(source.label) {
+            case "Nexus Mods":
+                $scope.nexus = {};
+                $scope.nexus.scraping = true;
+                submitService.scrapeNexus(gameId, modId).then(function (data) {
+                    $scope.nexus = data;
+                });
+                break;
+            case "Lover's Lab":
+                $scope.lab = {};
+                $scope.lab.scraping = true;
+                submitService.scrapeLab(modId).then(function (data) {
+                    $scope.lab = data;
+                });
+                break;
+            case "Steam Workshop":
+                $scope.workshop = {};
+                $scope.workshop.scraping = true;
+                submitService.scrapeWorkshop(modId).then(function (data) {
+                    $scope.workshop = data;
+                });
+                break;
+        }
+    };
+
+    /* requirements */
+    $scope.addRequirement = function() {
+        $scope.requirements.push({});
+    };
+
+    $scope.addRequirementFromPlugin = function(filename) {
+        pluginService.searchPlugins(filename).then(function(plugins) {
+            var plugin = plugins.find(function(plugin) {
+                return plugin.filename === filename;
+            });
+            if (plugin) {
+                var match = $scope.requirements.find(function(requirement) {
+                    return requirement.required_id == plugin.mod_id;
+                });
+                if (!match) {
+                    $scope.requirements.push({required_id: plugin.mod_id, name: plugin.mod.name});
+                }
             }
         });
+    };
+
+    $scope.removeRequirement = function(requirement) {
+        var index = $scope.requirements.indexOf(requirement);
+        $scope.requirements.splice(index, 1);
     };
 
     /* categories */
@@ -65,22 +134,34 @@ app.controller('submitModController', function ($scope, backend, submitService, 
     };
 
     $scope.createPriorityMessage = function(recessiveId, dominantId) {
-        recessiveCategory = categoryService.getCategoryById($scope.categories, recessiveId);
-        dominantCategory = categoryService.getCategoryById($scope.categories, dominantId);
-        categoryPriority = $scope.getCategoryPriority(recessiveId, dominantId);
-        messageText = dominantCategory.name + " > " + recessiveCategory.name + "\n" + categoryPriority.description;
+        var recessiveCategory = categoryService.getCategoryById($scope.categories, recessiveId);
+        var dominantCategory = categoryService.getCategoryById($scope.categories, dominantId);
+        var categoryPriority = $scope.getCategoryPriority(recessiveId, dominantId);
+        var messageText = dominantCategory.name + " > " + recessiveCategory.name + "\n" + categoryPriority.description;
         $scope.categoryMessages.push({
             text: messageText,
             klass: "priority-message"
         });
     };
 
+    $scope.getSuperCategories = function() {
+        var superCategories = [];
+        $scope.mod.categories.forEach(function (id) {
+            var superCategory = categoryService.getCategoryById($scope.categories, id).parent_id;
+            if (superCategory && superCategories.indexOf(superCategory) == -1) {
+                superCategories.push(superCategory);
+            }
+        });
+        return superCategories;
+    };
+
     $scope.checkCategories = function() {
         $scope.categoryMessages = [];
-        $scope.mod.categories.forEach(function(recessiveId) {
+        var selectedCategories = Array.prototype.concat($scope.getSuperCategories(), $scope.mod.categories);
+        selectedCategories.forEach(function(recessiveId) {
             dominantIds = $scope.getDominantIds(recessiveId);
             dominantIds.forEach(function(dominantId) {
-                var index = $scope.mod.categories.indexOf(dominantId);
+                var index = selectedCategories.indexOf(dominantId);
                 if (index > -1) {
                     $scope.createPriorityMessage(recessiveId, dominantId);
                 }
@@ -114,68 +195,64 @@ app.controller('submitModController', function ($scope, backend, submitService, 
         }
     }, true);
 
-    /* asset file tree */
-    $scope.changeAssetTree = function(event) {
+    /* analysis */
+    $scope.changeAnalysisFile = function(event) {
         var input = event.target;
         if (input.files && input.files[0]) {
-            $scope.loadAssetTree(input.files[0]);
+            $scope.loadAnalysisFile(input.files[0]);
         }
     };
 
-    $scope.browseAssetTree = function() {
-        document.getElementById('assets-input').click();
+    $scope.browseAnalysisFile = function() {
+        document.getElementById('analysis-input').click();
     };
 
-    $scope.loadAssetTree = function(file) {
+    $scope.getRequirementsFromAnalysis = function() {
+        // build list of masters
+        var masters = [];
+        $scope.analysis.plugins.forEach(function(plugin) {
+            plugin.master_filenames.forEach(function(filename) {
+                if (masters.indexOf(filename) == -1) {
+                    masters.push(filename);
+                }
+            });
+        });
+        // load requirements from masters
+        masters.forEach(function(filename) {
+            $scope.addRequirementFromPlugin(filename);
+        });
+    };
+
+    $scope.loadAnalysisFile = function(file) {
         var fileReader = new FileReader();
         fileReader.onload = function (event) {
-            $scope.assets = JSON.parse(event.target.result).assets;
+            var fixedJson = event.target.result.replace('"plugin_record_groups"', '"plugin_record_groups_attributes"').replace('"plugin_errors"', '"plugin_errors_attributes"').replace('"overrides"', '"overrides_attributes"');
+            $scope.analysis = JSON.parse(fixedJson);
+            $scope.analysis.nestedAssets = assetUtils.convertDataStringToNestedObject($scope.analysis.assets);
+            $scope.getRequirementsFromAnalysis();
             $scope.$apply();
         };
         fileReader.readAsText(file);
     };
 
-    /* plugin submission */
-    $scope.changePlugins = function(event) {
-        var files = [].slice.call(event.target.files);
-        if ($scope.plugins) {
-            $scope.plugins = $scope.plugins.concat(files);
-        } else {
-            $scope.plugins = files;
-        }
-        $scope.$apply();
-    };
-
-    $scope.removePlugin = function(filename) {
-        for (var i = 0; i < $scope.plugins.length; i++) {
-            plugin = $scope.plugins[i];
-            if (plugin.name == filename) {
-                $scope.plugins.splice(i, 1);
-                break;
-            }
-        }
-        if ($scope.plugins.length == 0) {
-            $scope.plugins = null;
-        }
-    };
-
-    $scope.addPlugins = function() {
-        document.getElementById('plugins-input').click();
-    };
-
-    $scope.clearPlugins = function() {
-        $scope.plugins = null;
-    };
-
     /* mod submission */
     $scope.modInvalid = function () {
         // submission isn't allowed until the user has scraped a nexus page,
-        // provided an asset tree, and provided at least one category
-        return ($scope.nexus == null || $scope.assets == null ||
-            $scope.mod.categories == null || $scope.mod.categories.length == 0)
+        // provided a mod analysis, and provided at least one category
+        var sourcesValid = true;
+        $scope.sources.forEach(function(source) {
+            sourcesValid = sourcesValid && source.valid;
+        });
+        return (!sourcesValid || $scope.analysis == null || $scope.mod.categories == null ||
+            $scope.mod.categories.length == 0 || $scope.mod.categories.length > 2)
     };
 
     $scope.submit = function () {
-        submitService.submitMod($scope.mod, $scope.nexus, $scope.assets, $scope.plugins);
+        var sources = {
+            nexus: $scope.nexus,
+            workshop: $scope.workshop,
+            lab: $scope.lab
+        };
+        submitService.submitMod($scope.mod, $scope.analysis, sources, $scope.requirements);
     }
 });

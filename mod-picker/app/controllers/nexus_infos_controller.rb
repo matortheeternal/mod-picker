@@ -1,5 +1,5 @@
 class NexusInfosController < ApplicationController
-  before_action :set_nexus_info, only: [:show]
+  before_action :set_nexus_info, only: [:show, :destroy]
 
   # GET /nexus_infos/1
   # GET /nexus_infos/1.json
@@ -11,10 +11,10 @@ class NexusInfosController < ApplicationController
   # DELETE /nexus_infos/1.json
   def destroy
     authorize! :destroy, @nexus_info
-    if @lover_info.destroy
+    if @nexus_info.destroy
       render json: {status: :ok}
     else
-      render json: @lover_info.errors, status: :unprocessable_entity
+      render json: @nexus_info.errors, status: :unprocessable_entity
     end
   end
 

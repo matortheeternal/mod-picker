@@ -1,4 +1,4 @@
-<loader data="data" content-class="browse-results">
+<loader data="data" content-class="browse-results" spinner-class="big-spinner">
     <table>
         <thead>
             <tr>
@@ -53,7 +53,9 @@
                     </ul>
                 </section>
 
-                <input type="submit" class="btn" value="Close" ng-click="showModal = false">
+                <div class="action-button-container">
+                    <input type="submit" class="btn" value="Close" ng-click="showModal = false">
+                </div>
             </form>
         </div>
     </div>

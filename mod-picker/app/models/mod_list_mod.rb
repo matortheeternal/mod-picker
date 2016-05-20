@@ -1,20 +1,17 @@
 class ModListMod < ActiveRecord::Base
-  after_create :increment_counter_caches
-  before_destroy :decrement_counter_caches
-
-  after_initialize :init
-
   self.primary_keys = :mod_list_id, :mod_id
 
   belongs_to :mod_list, :inverse_of => 'mod_list_mods'
   belongs_to :mod, :inverse_of => 'mod_list_mods'
 
+  # Validations
   validates :mod_list_id, :mod_id, :index, presence: true
   validates :active, inclusion: [true, false]
+  validates :mod_list_id, presence: true
 
-  def init
-    self.active ||= true
-  end
+  # Callbacks
+  after_create :increment_counter_caches
+  before_destroy :decrement_counter_caches
 
   private
     # counter caches

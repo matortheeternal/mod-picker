@@ -1,23 +1,26 @@
 <two-columns>
-    <loader data="mod">
+    <loader data="mod" spinner-class="big-spinner">
         <div class="mod-header-color">
             <div class="page-container mod-header">
                 <section>
-                    <div class="stars-count action-box">
-                        <span class="stars-number">{{mod.mod_stars_count}}</span>
-                        STARS
+                    <div class="quality-item action-box">
+                        <span class="quality-number">{{mod.reputation | number:0}}</span>
+                        REPUTATION
                     </div>
 
                     <div class="mod-info">
                         <span class="mod-name">{{mod.name}}</span>
-                        by <span ng-repeat="author in mod.authors">
+                        <span class="mod-authors-container">by
+                            <span class="mod-authors">{{mod.nexus_infos.authors}}</span>
+                        </span>
+                        <!--<span ng-repeat="author in mod.authors">
                             <a ng-href="#/user/{{author.id}}">{{author.username}}</a>
-                            </span>
+                        </span>-->
                         <br>
                         <!-- TODO: reviews currently are on tab 1 -> should be dynamic anyway -> ui-router :D -->
-                        <a ng-click="currentTab = tabs[2]">{{mod.reviews.length}} reviews</a>
+                        {{mod.reviews.length | number}} reviews
                         <!-- TODO: add this with css :after content -->
-                        <span class="divider">
+                        <span class="divider" ng-if="mod.aliases || permissions.canManage">
                             |
                         </span>
 
@@ -28,13 +31,12 @@
 
                         <span ng-if="mod.aliases">
                             <strong>Aliases: </strong>{{mod.aliases}}
-                            <span class="divider">
+                            <span class="divider" ng-if="permissions.canManage">
                                 |
                             </span>
                         </span>
 
-                        <!-- TODO: should probably only be visible to the MA / scraper dude-->
-                        <a ng-href="#/editMod/{{mod.id}}">Edit</a>
+                        <a ng-href="#/mod/{{mod.id}}/edit" ng-if="permissions.canManage">Edit</a>
                     </div>
                 </section>
 
@@ -42,11 +44,11 @@
                     <div class="mod-header-box">
                         <!-- TODO: I feel like using some spans here would be wiser -->
                         ACTIONS
-                        <div class="action-box btn-round">
-                            <i class="fa fa-heart" aria-hidden="true"></i>
-                            Favorite
+                        <div class="action-box" ng-click="starMod()">
+                            <i class="fa {{modStarred ? 'fa-star' : 'fa-star-o'}}" aria-hidden="true"></i>
+                            {{modStarred ? 'Unfavorite' : 'Favorite'}}
                         </div>
-                        <div class="action-box btn-round">
+                        <div class="action-box">
                             <i class="fa fa-plus" aria-hidden="true"></i>
                             Add to mod list
                         </div>
@@ -54,7 +56,7 @@
 
                     <div class="mod-header-box">
                         STATUS
-                        <div class="action-box {{statusClass}}">
+                        <div class="action-box {{statusClass}} capitalize">
                             {{mod.status}}
                         </div>
                     </div>
@@ -62,47 +64,36 @@
             </div>
         </div>
 
-        <messages   success-bool="showSuccess"
-            errors="errors"
-            success-message="{{submitMessage}}">
+        <messages success-bool="showSuccess" errors="errors" success-message="{{submitMessage}}">
         </messages>
 
         <div class="page-container">
-            <loader data="mod">
+            <loader data="mod" spinner-class="big-spinner">
                 <div class="left-column left-mod-column wide-column">
 
-                    <!--Versions-->
-                    <h3 class="section-title">Mod Versions</h3>
-                    <section>
-                        <div class="select">
-                            <select ng-model="currentVersion" ng-change="updateVersion(currentVersion)" ng-options="version as version.version for version in mod.mod_versions" class="version-dropdown"></select>
-                        </div>
-                    </section>
-
                     <!--Image-->
-                    <section ng-if="mod.image">
-                        <img ng-src="{{mod.image}}" class="mod-image"/>
-                    </section>
+                    <img ng-src="{{mod.image}}" class="mod-image"/>
 
                     <!--Sources-->
                     <h3 class="section-title">Sources</h3>
                     <section class="sources">
                         <!-- TODO: I feel like this redundancy here can be killed with a directive -->
-                        <a ng-href="http://www.nexusmods.com/{{game}}/mods/{{mod.nexus_infos.id}}">
-                            <div class="action-box source-box" ng-if="mod.nexus_infos">
+                        <a ng-if="mod.nexus_infos" ng-href="http://www.nexusmods.com/{{game.nexus_name}}/mods/{{mod.nexus_infos.id}}">
+                            <div class="action-box source-box">
                                 <img src="/assets/nexus_logo" class="source-image"/>
-                                Nexus
+                                <span class="source-label">Nexus</span>
                             </div>
                         </a>
-                        <a ng-href="">
-                            <div class="action-box source-box" ng-if="mod.steam_info">
-                                <img src="/assets/steam_logo" class="source-image" />
-                                Steam
+                        <a ng-if="mod.workshop_infos" ng-href="http://steamcommunity.com/sharedfiles/filedetails/{{mod.workshop_infos.id}}">
+                            <div class="action-box source-box">
+                                <img src="/assets/workshop_logo" class="source-image" />
+                                <span class="source-label">Steam</span>
                             </div>
                         </a>
-                        <a ng-href="">
-                            <div class="action-box source-box" ng-if="mod.lovers_info">
-                                <img src="/assets/lovers_logo" class="source-image" />
+                        <a ng-if="mod.lover_infos" ng-href="http://www.loverslab.com/files/file/{{mod.lover_infos.id}}">
+                            <div class="action-box source-box">
+                                <img src="/assets/lab_logo" class="source-image" />
+                                <span class="source-label">Lab</span>
                             </div>
                         </a>
                     </section>
@@ -124,52 +115,52 @@
                     <!-- TODO: one line if for readability (even though I like the idea of this ;3 )-->
                     <h3 class="section-title">Categor<span ng-hide="secondCategory">y</span><span ng-show="secondCategory">ies</span></h3>
                     <section>
-                        <div ng-show="mod.primary_category_id" class="action-box">{{firstCategory}}</div>
-                        <div ng-show="mod.secondary_category_id" class="action-box">{{secondCategory}}</div>
+                        <div ng-show="mod.primary_category_id" class="action-box">{{primaryCategory.name}}</div>
+                        <div ng-show="mod.secondary_category_id" class="action-box">{{secondaryCategory.name}}</div>
                     </section>
 
                     <!--Tags-->
                     <h3 class="section-title">Tags</h3>
                     <section>
-                        <tag-selector active-tags="mod.tags" new-tags="newTags" max-tags="10" show-mods-count="true" show-add="userCanAddTags" ></tag-selector>
+                        <tag-selector active-tags="mod.tags" new-tags="newTags" max-tags="10" show-mods-count="true" show-add="true" can-create="permissions.canCreateTags" show-remove="permissions.canManage"></tag-selector>
                     </section>
 
-                    <!--Nexus Stats-->
+                    <!--Site Stats-->
                     <!-- TODO: kill redundancy-->
-                    <div class="stat-block" ng-if="mod.nexus_infos" ng-click="nexusExpanded = !nexusExpanded">
-                        <div class="stat-block-title">
-                           <h3 class="section-title">Nexus stats</h3>
+                    <div class="stat-block" ng-if="mod.nexus_infos && mod.nexus_infos.has_stats">
+                        <div class="stat-block-title" ng-click="nexusExpanded = !nexusExpanded">
+                           <h3 class="section-title">Nexus Mods stats</h3>
                            <i class="fa fa-plus stat-expander" aria-hidden="true" ng-hide="nexusExpanded"></i>
                            <i class="fa fa-minus stat-expander" aria-hidden="true" ng-show="nexusExpanded"></i>
                         </div>
                         <section ng-show="nexusExpanded">
-                            <nexus-block></nexus-block>
+                            <nexus-stats></nexus-stats>
                         </section>
                     </div>
-                    <div class="stat-block" ng-if="mod.workshop_infos" ng-click="steamExpanded = !steamExpanded">
-                        <div class="stat-block-title">
-                           <h3 class="section-title">Steam stats</h3>
-                           <i class="fa fa-plus stat-expander" aria-hidden="true" ng-hide="nexusExpanded"></i>
-                           <i class="fa fa-minus stat-expander" aria-hidden="true" ng-show="nexusExpanded"></i>
+                    <div class="stat-block" ng-if="mod.workshop_infos && mod.workshop_infos.has_stats">
+                        <div class="stat-block-title" ng-click="workshopExpanded = !workshopExpanded">
+                           <h3 class="section-title">Steam Workshop stats</h3>
+                           <i class="fa fa-plus stat-expander" aria-hidden="true" ng-hide="workshopExpanded"></i>
+                           <i class="fa fa-minus stat-expander" aria-hidden="true" ng-show="workshopExpanded"></i>
                         </div>
-                        <section ng-show="steamExpanded">
-                            <steam-block></steam-block>
+                        <section ng-show="workshopExpanded">
+                            <workshop-stats></workshop-stats>
                         </section>
                     </div>
-                    <div class="stat-block" ng-if="mod.lovers_info" ng-click="loversExpanded = !loversExpanded">
-                        <div class="stat-block-title">
+                    <div class="stat-block" ng-if="mod.lover_infos && mod.lover_infos.has_stats">
+                        <div class="stat-block-title" ng-click="labExpanded = !labExpanded">
                            <h3 class="section-title">Lover's Lab stats</h3>
-                           <i class="fa fa-plus stat-expander" aria-hidden="true" ng-hide="nexusExpanded"></i>
-                           <i class="fa fa-minus stat-expander" aria-hidden="true" ng-show="nexusExpanded"></i>
+                           <i class="fa fa-plus stat-expander" aria-hidden="true" ng-hide="labExpanded"></i>
+                           <i class="fa fa-minus stat-expander" aria-hidden="true" ng-show="labExpanded"></i>
                         </div>
-                        <section ng-show="loversExpanded">
-                            <lovers-block></lovers-block>
+                        <section ng-show="labExpanded">
+                            <lab-stats></lab-stats>
                         </section>
                     </div>
 
                 </div>
                 <div class="right-column tabs-column">
-                    <tabs current-tab="currentTab" tabs="tabs"></tabs>
+                    <tabs current-tab="currentTab" on-change="switchTab" tabs="tabs"></tabs>
                     <div ng-include="currentTab.url" class="mod-tab"></div>
                 </div>
             </loader>

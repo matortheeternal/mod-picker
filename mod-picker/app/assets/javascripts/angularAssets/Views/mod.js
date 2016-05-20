@@ -17,150 +17,633 @@ app.filter('percentage', function() {
   };
 });
 
-app.controller('modController', function ($scope, $q, $stateParams, modService, categoryService, assetUtils, userService) {
+app.controller('modController', function ($scope, $q, $stateParams, $timeout, modService, pluginService, categoryService, gameService, recordGroupService, userTitleService, assetUtils, reviewSectionService, userService, contributionService, contributionFactory) {
+    $scope.tags = [];
     $scope.newTags = [];
+    $scope.sort = {};
+    $scope.filters = {
+        compatibility_notes: true,
+        install_order_notes: true,
+        load_order_notes: true
+    };
 
-    //initialization /of the mod object
-    modService.retrieveMod($stateParams.modId).then(function (mod) {
+    // SETUP TABS
+    //TODO use the cool ui-router here :D
+    $scope.tabs = [
+        { name: 'Reviews', url: '/resources/partials/showMod/reviews.html' },
+        { name: 'Compatibility', url: '/resources/partials/showMod/compatibility.html' },
+        { name: 'Install Order', url: '/resources/partials/showMod/installOrder.html' },
+        { name: 'Load Order', url: '/resources/partials/showMod/loadOrder.html' },
+        { name: 'Analysis', url: '/resources/partials/showMod/analysis.html' }
+    ];
+
+    // SETUP AND DATA RETRIEVAL LOGIC
+    //initialization of the mod object
+    modService.retrieveMod($stateParams.modId).then(function (data) {
+        var mod = data.mod;
         $scope.mod = mod;
-        $scope.currentVersion = mod.mod_versions[0];
-        $scope.statusClass = "status-" + $scope.mod.status;
-        $scope.mod.status = $scope.mod.status.capitalize();
-
-        //getting the actual names of the categories
-        categoryService.getCategoryById(mod.primary_category_id).then(function (data) {
-            $scope.firstCategory = data.name;
-            //set initial data specific to the version
-            $scope.updateVersion($scope.currentVersion);
-        });
-        categoryService.getCategoryById(mod.secondary_category_id).then(function (data) {
-            $scope.secondCategory = data.name;
-            //set initial data specific to the version
-            $scope.updateVersion($scope.currentVersion);
-        });
-
-        //TODO: I don't like it as its static stuff in the frontend. Looks a bit dirty to me.
-        //setting the name of the current game for the nexus links
-        if ($scope.mod.game_id === 1) {
-            $scope.game = "skyrim";
-        }
-        else if ($scope.mod.game_id === 2) {
-            $scope.game = "fallout4";
+        $scope.modStarred = data.star;
+        switch (mod.status) {
+            case "good":
+                $scope.statusClass = "green-box";
+                break;
+            case "outdated":
+                $scope.statusClass = "yellow-box";
+                break;
+            case "dangerous":
+                $scope.statusClass = "red-box";
+                break;
         }
 
-        //initializing the newCompatibilityNote object
-        $scope.newCompatibilityNote = {};
-        //TODO: I personally feel like this is not necessary
-        $scope.newCompatibilityNote.firstMod = $scope.mod;
-        //initializing the newReview object
-        $scope.newReview = {ratings: [8.5]};
-        $scope.updateOverallRating();
+        // getting categories
+        categoryService.retrieveCategories().then(function (categories) {
+            $scope.primaryCategory = categoryService.getCategoryById(categories, mod.primary_category_id);
+            $scope.secondaryCategory = categoryService.getCategoryById(categories, mod.secondary_category_id);
+
+            // getting review sections
+            reviewSectionService.retrieveReviewSections().then(function (reviewSections) {
+                $scope.allReviewSections = reviewSections;
+                $scope.reviewSections = reviewSectionService.getSectionsForCategory(reviewSections, $scope.primaryCategory);
+            });
+        });
+
+        // getting games
+        gameService.retrieveGames().then(function (data) {
+            $scope.game = gameService.getGameById(data, mod.game_id);
+        });
+
+        // remove Load Order tab if mod has no plugins
+        if ($scope.mod.plugins_count == 0) {
+            $scope.tabs.splice(3, 1);
+        }
+    });
+
+    //get user titles
+    userTitleService.retrieveUserTitles().then(function(userTitles) {
+        $scope.userTitles = userTitleService.getSortedGameTitles(userTitles);
+    });
+
+    //get record groups
+    recordGroupService.retrieveRecordGroups(window._current_game_id).then(function(recordGroups) {
+        $scope.recordGroups = recordGroups;
     });
 
     //get current user
     userService.retrieveThisUser().then(function (user) {
         $scope.user = user;
-
-        //actions the user can perform
-        var rep = $scope.user.reputation.overall;
-        $scope.userCanAddMod = (rep >= 160) || ($scope.user.role === 'admin');
-        $scope.userCanAddTags = (rep >= 20) || ($scope.user.role === 'admin');
+        $scope.getPermissions();
     });
 
-    //of the tab data
-    //TODO use the cool ui-router here :D
-    $scope.tabs = [
-        { name: 'Reviews', url: '/resources/partials/showMod/reviews.html' },
-        { name: 'Compatibility', url: '/resources/partials/showMod/compatibility.html' },
-        { name: 'Install & Load Order', url: '/resources/partials/showMod/installation.html' },
-        { name: 'Analysis', url: '/resources/partials/showMod/analysis.html' }
-    ];
+    //get user permissions
+    $scope.getPermissions = function() {
+        // if we don't have mod yet, try again in 100ms
+        if (!$scope.mod) {
+            $timeout(function() {
+                $scope.getPermissions();
+            }, 100);
+            return;
+        }
 
-    $scope.currentTab = $scope.tabs[0];
-
-    //this prevents the sort by dropdowns from displaying an undefined option
-    $scope.compatibilityNotesFilter = '-sortBySeverity';
-
-    //variables for the stat block expandables
-    $scope.nexusExpanded = false;
-    $scope.steamExpanded = false;
-    $scope.loversExpanded = false;
-
-    //getting the names and ids of the required mods
-    $scope.updateVersion = function (modVersion) {
-        //update notes
-        //TODO: we either should separate those (only load the current tab) or merge them into one request-function
-        modService.retrieveCompatibilityNotes(modVersion.id).then(function(notes) {
-            $scope.compatibilityNotes = notes;
+        // set up helper variables
+        var author = $scope.mod.authors.find(function(author) {
+            return author.id == $scope.user.id;
         });
-        modService.retrieveInstallOrderNotes(modVersion.id).then(function(notes) {
-            $scope.installOrderNotes = notes;
-        });
-        modService.retrieveLoadOrderNotes(modVersion.id).then(function(notes) {
-            $scope.loadOrderNotes = notes;
-        });
+        var rep = $scope.user.reputation.overall;
+        var isAdmin = $scope.user.role === 'admin';
+        var isModerator = $scope.user.role === 'moderator';
+        var isAuthor = author !== null;
 
-        //update requirements
+        // set up permissions
+        $scope.permissions = {
+            canCreateTags: (rep >= 20) || isAdmin || isModerator,
+            canManage: isAuthor || isModerator || isAdmin,
+            canSuggest: (rep >= 40),
+            canModerate: isModerator || isAdmin
+        }
+    };
 
-        //TODO: this seems dangerous as it might kill our server by firing many expensive requests. I don't have a solution yet though.
-        $scope.requirements = [];
-        modVersion.required_mods.forEach(function(requirement) {
-            modService.retrieveMod(requirement.required_id).then(function(mod) {
-                $scope.requirements.push({
-                    name: mod.name,
-                    id: mod.id,
-                    aliases: mod.aliases
+    //associate user titles with content
+    $scope.associateUserTitles = function(data) {
+        // if we don't have userTitles yet, try again in 100ms
+        if (!$scope.userTitles) {
+            $timeout(function() {
+                $scope.associateUserTitles(data);
+            }, 100);
+            return;
+        }
+
+        // associate titles with the data
+        userTitleService.associateTitles($scope.userTitles, data);
+    };
+
+    //associate helpful marks with content
+    $scope.associateHelpfulMarks = function(data, helpfulMarks) {
+        // loop through data
+        data.forEach(function(item) {
+            // see if we have a matching helpful mark
+            var helpfulMark = helpfulMarks.find(function(mark) {
+                return mark.helpfulable_id == item.id;
+            });
+            // if we have a matching helpful mark, assign it to the item
+            if (helpfulMark) {
+                item.helpful = helpfulMark.helpful;
+            }
+        });
+    };
+
+    //associate record groups with plugins
+    $scope.associateRecordGroups = function(plugins) {
+        // if we don't have recordGroups yet, try again in 100ms
+        if (!$scope.recordGroups) {
+            $timeout(function() {
+                $scope.associateRecordGroups(plugins);
+            }, 100);
+            return;
+        }
+        // loop through plugins
+        plugins.forEach(function(plugin) {
+            if (plugin.plugin_record_groups) {
+                plugin.plugin_record_groups.forEach(function(group) {
+                    var record_group = recordGroupService.getGroupFromSignature($scope.recordGroups, group.sig);
+                    group.name = record_group.name;
+                    group.child_group = record_group.child_group;
+                });
+            }
+        });
+    };
+
+    //combine dummy_masters array with masters array and sorts the masters array
+    $scope.combineAndSortMasters = function(plugins) {
+        // loop through plugins
+        plugins.forEach(function(plugin) {
+            plugin.masters = plugin.masters.concat(plugin.dummy_masters);
+            plugin.masters.sort(function(first_master, second_master) {
+                return first_master.index - second_master.index;
+            });
+        });
+    };
+
+    //associate overrides with their master file
+    $scope.associateOverrides = function(plugins) {
+        // loop through plugins
+        plugins.forEach(function(plugin) {
+            plugin.masters.forEach(function(master) {
+                master.overrides = [];
+                plugin.overrides.forEach(function(override) {
+                    if (override.fid >= master.index * 0x01000000) {
+                        master.overrides.push(override);
+                    }
                 });
             });
+        });
+    };
+
+    // TAB RELATED LOGIC
+    $scope.currentTab = $scope.tabs[0];
+
+    $scope.switchTab = function(targetTab) {
+        switch (targetTab.name) {
+            case 'Reviews':
+                if ($scope.mod.reviews == null) {
+                    $scope.retrieveReviews();
+                }
+                break;
+            case 'Compatibility':
+                if ($scope.mod.compatibility_notes == null) {
+                    $scope.retrieveCompatibilityNotes();
+                }
+                break;
+            case 'Install Order':
+                if ($scope.mod.install_order_notes == null) {
+                    $scope.retrieveInstallOrderNotes();
+                }
+                break;
+            case 'Load Order':
+                if ($scope.mod.load_order_notes == null) {
+                    $scope.retrieveLoadOrderNotes();
+                }
+                break;
+            case 'Analysis':
+                if ($scope.mod.analysis == null) {
+                    $scope.retrieveAnalysis();
+                }
+                break;
+        }
+    };
+
+    $scope.retrieveReviews = function() {
+        var options = {
+            sort: $scope.sort.reviews || 'reputation'
+        };
+        modService.retrieveReviews($stateParams.modId, options).then(function(data) {
+            $scope.associateHelpfulMarks(data.reviews, data.helpful_marks);
+            $scope.associateUserTitles(data.reviews);
+            $scope.associateReviewSections(data.reviews);
+            $scope.mod.reviews = data.reviews;
+        });
+    };
+
+    $scope.retrieveCompatibilityNotes = function() {
+        var options = {
+            sort: $scope.sort.compatibility_notes || 'reputation',
+            filters: {
+                mod_list: $scope.filters.compatibility_notes || true
+            }
+        };
+        modService.retrieveCompatibilityNotes($stateParams.modId, options).then(function(data) {
+            $scope.associateHelpfulMarks(data.compatibility_notes, data.helpful_marks);
+            $scope.associateUserTitles(data.compatibility_notes);
+            $scope.mod.compatibility_notes = data.compatibility_notes;
+        });
+    };
+
+    $scope.retrieveInstallOrderNotes = function() {
+        var options = {
+            sort: $scope.sort.compatibility_notes || 'reputation',
+            filters: {
+                mod_list: $scope.filters.install_order_notes
+            }
+        };
+        modService.retrieveInstallOrderNotes($stateParams.modId, options).then(function(data) {
+            $scope.associateHelpfulMarks(data.install_order_notes, data.helpful_marks);
+            $scope.associateUserTitles(data.install_order_notes);
+            $scope.mod.install_order_notes = data.install_order_notes;
+        });
+    };
+
+    $scope.retrieveLoadOrderNotes = function() {
+        var options = {
+            sort: $scope.sort.compatibility_notes || 'reputation',
+            filters: {
+                mod_list: $scope.filters.load_order_notes
+            }
+        };
+        modService.retrieveLoadOrderNotes($stateParams.modId, options).then(function(data) {
+            $scope.associateHelpfulMarks(data.load_order_notes, data.helpful_marks);
+            $scope.associateUserTitles(data.load_order_notes);
+            $scope.mod.load_order_notes = data.load_order_notes;
+        });
+    };
+
+    $scope.retrieveAnalysis = function() {
+        modService.retrieveAnalysis($stateParams.modId).then(function(analysis) {
+            // turn assets into an array of string
+            $scope.mod.assets = analysis.assets.map(function(asset) {
+                return asset.filepath;
+            });
+            // create nestedAssets tree
+            $scope.mod.nestedAssets = assetUtils.convertDataStringToNestedObject($scope.mod.assets);
+
+            // associate record groups for plugins
+            $scope.associateRecordGroups(analysis.plugins);
+            $scope.combineAndSortMasters(analysis.plugins);
+            $scope.associateOverrides(analysis.plugins);
+            $scope.mod.plugins = analysis.plugins;
+            if ($scope.mod.plugins.length > 0) {
+                $scope.currentPlugin = analysis.plugins[0];
+                $scope.currentPluginFilename = analysis.plugins[0].filename;
+            }
+        });
+    };
+
+    // HEADER RELATED LOGIC
+    $scope.starMod = function() {
+        modService.starMod($scope.mod.id, $scope.modStarred).then(function(data) {
+            if (data.status == 'ok') {
+                $scope.modStarred = $scope.modStarred ? false : true;
+            }
+        });
+    };
+
+    // REVIEW RELATED LOGIC
+    // retrieve reviews initially because they're the default tab currently
+    $scope.retrieveReviews();
+
+    // associate reviews with review sections
+    $scope.associateReviewSections = function(reviews) {
+        // if we don't have recordGroups yet, try again in 100ms
+        if (!$scope.reviewSections) {
+            $timeout(function() {
+                $scope.associateReviewSections(reviews);
+            }, 100);
+            return;
+        }
+        // loop through the reviews
+        reviews.forEach(function(review) {
+            review.review_ratings.forEach(function(rating) {
+                rating.section = reviewSectionService.getSectionById($scope.allReviewSections, rating.review_section_id);
+            });
+        });
+    };
+
+    // instantiate a new review object
+    $scope.startNewReview = function() {
+        // set up newReview object
+        $scope.newReview = {
+            ratings: [],
+            text_body: ""
+        };
+
+        // set up availableSections array
+        $scope.availableSections = $scope.reviewSections.slice(0);
+
+        // set up default review sections
+        // and default text body with prompts
+        $scope.reviewSections.forEach(function(section) {
+            if (section.default) {
+                $scope.addNewRating(section);
+                $scope.newReview.text_body += "## " + section.name + "\n";
+                $scope.newReview.text_body += "*" + section.prompt + "*\n\n";
+            }
+        });
+
+        $scope.updateOverallRating();
+
+        // update the markdown editor
+        $scope.updateMDE = true;
+        $scope.updateMDE = false;
+    };
+
+    // Add a new rating section to the newReview
+    $scope.addNewRating = function(section) {
+        // return if we're at the maximum number of ratings
+        if ($scope.newReview.ratings.length >= 5 || $scope.availableSections.length == 0) {
+            return;
+        }
+
+        // get the next available section if necessary
+        section = section || $scope.getNextAvailableSection();
+        // and remove it from the availableSections array
+        $scope.availableSections = $scope.availableSections.filter(function(availableSection) {
+            return availableSection.id !== section.id;
+        });
+
+        // build the rating object and append it to the ratings array
+        var ratingObj = {
+            section: section,
+            rating: 100
+        };
+        $scope.newReview.ratings.push(ratingObj);
+    };
+
+    //remove the section from reviewSections
+    $scope.getNextAvailableSection = function() {
+        return $scope.availableSections[0];
+    };
+
+    $scope.changeSection = function(newSection, oldSectionId) {
+        if (newSection.id == oldSectionId) {
+            return;
+        }
+        // psuh the oldSection onto the availableSections array
+        var oldSection = $scope.reviewSections.find(function(section) {
+            return section.id == oldSectionId;
+        });
+        $scope.availableSections.push(oldSection);
+        // remove the new section from the availableSections array
+        $scope.availableSections = $scope.availableSections.filter(function(availableSection) {
+            return availableSection.id !== newSection.id;
+        });
+
+    };
+
+    // remove a rating section from newReview
+    $scope.removeRating = function() {
+        // return if we there's only one rating left
+        if ($scope.newReview.ratings.length == 1) {
+            return;
+        }
+
+        // pop the last rating off of the ratings array
+        var rating = $scope.newReview.ratings.pop();
+        // add the removed section back to the available list
+        $scope.availableSections.push(rating.section);
+    };
+
+    $scope.validateReview = function() {
+        $scope.newReview.valid = $scope.newReview.text_body.length > 512;
+    };
+
+    // discard a new review object
+    $scope.discardReview = function() {
+        delete $scope.newReview;
+    };
+
+    // focus text in rating input
+    $scope.focusText = function ($event) {
+        $event.target.select();
+    };
+
+    // submit a review
+    $scope.submitReview = function() {
+        // return if the review is invalid
+        if (!$scope.newReview.valid) {
+            return;
+        }
+
+        // submit the review
+        var review_ratings = [];
+        $scope.newReview.ratings.forEach(function(item) {
+            review_ratings.push({
+                review_section_id: item.section.id,
+                rating: item.rating
+            });
+        });
+        var reviewObj = {
+            review: {
+                game_id: $scope.mod.game_id,
+                mod_id: $scope.mod.id,
+                text_body: $scope.newReview.text_body,
+                review_ratings_attributes: review_ratings
+            }
+        };
+        $scope.newReview.submitting = true;
+        contributionService.submitContribution("reviews", reviewObj).then(function(data) {
+            if (data.status == "ok") {
+                $scope.submitMessage = "Review submitted successfully!";
+                $scope.showSuccess = true;
+                // TODO: push the review onto the $scope.mod.reviews array
+                delete $scope.newReview;
+            }
         });
     };
 
     //update the average rating of the new review
     $scope.updateOverallRating = function() {
         //TODO: this might become ressource heavy on mods with many ratings.
+        //TODO: Reply - this isn't looping through all the reviews, it's looping through the sections of a single review.  It's still not necessary though because we can do the math in the view model I think.  -Mator
         // possible solution: (overallRating * number of ratings + newRating) / number of ratings + 1
         var sum = 0;
         for (var i = 0; i<$scope.newReview.ratings.length; i++) {
-            sum += $scope.newReview.ratings[i];
+            sum += $scope.newReview.ratings[i].rating;
         }
 
-        $scope.newReview.overallRating = sum/$scope.newReview.ratings.length;
+        $scope.newReview.overallRating = Math.round(sum/$scope.newReview.ratings.length);
     };
 
-    //function to order by severity strings
-    //TODO: I feel like this should either be provided by the server on in some static.js / utils (?)
-    //Also, it probably should work with severityIds (if that's a thing, if not, it should be, as filtering by language keys is freaking dangerous
-    $scope.sortBySeverity = function(severity) {
-        switch (severity) {
-            case "Incompatible":
-                return 5;
-                break;
-
-            case "Partially Incompatible":
-                return 4;
-                break;
-
-            case "Make Custom Patch":
-                return 3;
-                break;
-
-            case "Compatibility Mod":
-                return 2;
-                break;
-
-            case "Compatibility Option":
-                return 1;
-                break;
-
-            default:
-                return 0;
-                break;
+    //removes all non numbers and rounds to the nearest int and doesn't go above 100 or below 0
+    $scope.formatScore = function(input) {
+        var output = input;
+        output = output.replace(/[^\d\.]/g, '');
+        output = Math.round(output);
+        if (output > 100) {
+            output = 100;
         }
+        else if (output < 0) {
+            output = 0;
+        }
+        return output;
     };
 
-    //formatting the data for the assetTree, as the recursive directive assetTree cannot do it in its controller
-    var rawAssetData = [
-        "Footprints.txt","Footprints.bsa","Footprints.bsa\\scripts\\source\\footprintsfootstepsscriptwerecreature.psc","Footprints.bsa\\scripts\\source\\footprintsdefaults.psc","Footprints.bsa\\scripts\\source\\footprintsplayerscript.psc","Footprints.bsa\\scripts\\source\\footprintsfootstepsscriptvampirelord.psc","Footprints.bsa\\scripts\\source\\footprintsfootstepsscriptmammoth.psc","Footprints.bsa\\scripts\\source\\footprintsrefcountscript.psc","Footprints.bsa\\scripts\\source\\qf_footprintsquest_02001dfb.psc","Footprints.bsa\\scripts\\source\\qf__04080094.psc","Footprints.bsa\\scripts\\source\\footprintsvcscript.psc","Footprints.bsa\\scripts\\source\\footprintsfootstepsscriptbiped.psc","Footprints.bsa\\scripts\\source\\footprintsfootstepsscripthorse.psc","Footprints.bsa\\scripts\\source\\footprintsfootstepsscripthuman.psc","Footprints.bsa\\scripts\\source\\footprintsfootstepsscriptquadruped.psc","Footprints.bsa\\scripts\\source\\qf_footprintsvcquest_02007490.psc","Footprints.bsa\\scripts\\source\\footprintsaddfootstepsscript.psc","Footprints.bsa\\scripts\\source\\footprintsconfigmenu.psc","Footprints.bsa\\scripts\\source\\footprintsfootstepsscriptquadrupedfx.psc","Footprints.bsa\\scripts\\source\\footprintsfootstepsscriptbipedfx.psc","Footprints.bsa\\scripts\\source\\footprintsdlc2defaults.psc","Footprints.bsa\\scripts\\source\\footprintsfootstepsscriptplayer.psc","Footprints.bsa\\scripts\\source\\footprintsdlc1defaults.psc","Footprints.bsa\\meshes\\footprints\\watersplashphys.nif","Footprints.bsa\\meshes\\footprints\\footprintshorsesnowrun.nif","Footprints.bsa\\meshes\\footprints\\footprintshumansnowwalk.nif","Footprints.bsa\\meshes\\footprints\\footprintsarvakpurple.nif","Footprints.bsa\\meshes\\footprints\\footprintshorsesnowsprint.nif","Footprints.bsa\\meshes\\footprints\\footprintshumansnowstraferunl.nif","Footprints.bsa\\meshes\\footprints\\footprintshumansnowstraferunr.nif","Footprints.bsa\\meshes\\footprints\\footprintshumansnowrun.nif","Footprints.bsa\\meshes\\footprints\\footprintshumansnowsprint.nif","Footprints.bsa\\meshes\\footprints\\footprintsgiantsnowrun.nif","Footprints.bsa\\scripts\\footprintsfootstepsscriptwerecreature.pex","Footprints.bsa\\scripts\\footprintsfootstepsscriptwerebear.pex","Footprints.bsa\\scripts\\footprintsfootstepsscriptwerewolf.pex","Footprints.bsa\\scripts\\footprintsdefaults.pex","Footprints.bsa\\scripts\\footprintsfootstepsscriptcow.pex","Footprints.bsa\\scripts\\footprintsfootstepsscriptlurker.pex","Footprints.bsa\\scripts\\footprintsplayerscript.pex","Footprints.bsa\\scripts\\footprintsfootstepsscriptgoblin.pex","Footprints.bsa\\scripts\\footprintsfootstepsscriptvampirelord.pex","Footprints.bsa\\scripts\\footprintsfootstepsscriptmammoth.pex","Footprints.bsa\\scripts\\footprintsrefcountscript.pex","Footprints.bsa\\scripts\\footprintsfootstepsscriptatronachflame.pex","Footprints.bsa\\scripts\\footprintsfootstepsscriptatronachfrost.pex","Footprints.bsa\\scripts\\footprintsfootstepsscriptatronachstorm.pex","Footprints.bsa\\scripts\\footprintsfootstepsscriptbear.pex","Footprints.bsa\\scripts\\footprintsfootstepsscriptboar.pex","Footprints.bsa\\scripts\\footprintsfootstepsscriptdeer.pex","Footprints.bsa\\scripts\\footprintsfootstepsscriptgoat.pex","Footprints.bsa\\scripts\\footprintsfootstepsscriptwolf.pex","Footprints.bsa\\scripts\\footprintsfootstepsscriptdeathhound.pex","Footprints.bsa\\scripts\\qf_footprintsquest_02001dfb.pex","Footprints.bsa\\scripts\\qf__04080094.pex","Footprints.bsa\\scripts\\footprintsvcscript.pex","Footprints.bsa\\scripts\\footprintsfootstepsscriptarvak.pex","Footprints.bsa\\scripts\\footprintsfootstepsscriptbiped.pex","Footprints.bsa\\scripts\\footprintsfootstepsscriptgiant.pex","Footprints.bsa\\scripts\\footprintsfootstepsscripthorse.pex","Footprints.bsa\\scripts\\footprintsfootstepsscripthuman.pex","Footprints.bsa\\scripts\\footprintsfootstepsscriptquadruped.pex","Footprints.bsa\\scripts\\footprintsfootstepsscripttroll.pex","Footprints.bsa\\scripts\\qf_footprintsvcquest_02007490.pex","Footprints.bsa\\scripts\\footprintsaddfootstepsscript.pex","Footprints.bsa\\scripts\\footprintsconfigmenu.pex","Footprints.bsa\\scripts\\footprintsfootstepsscriptgargoyle.pex","Footprints.bsa\\scripts\\footprintsfootstepsscriptskeever.pex","Footprints.bsa\\scripts\\footprintsfootstepsscriptspriggan.pex","Footprints.bsa\\scripts\\footprintsfootstepsscriptdraugr.pex","Footprints.bsa\\scripts\\footprintsfootstepsscriptquadrupedfx.pex","Footprints.bsa\\scripts\\footprintsfootstepsscripthagraven.pex","Footprints.bsa\\scripts\\footprintsfootstepsscriptbipedfx.pex","Footprints.bsa\\scripts\\footprintsfootstepsscriptsabrecat.pex","Footprints.bsa\\scripts\\footprintsdlc2defaults.pex","Footprints.bsa\\scripts\\footprintsfootstepsscriptplayer.pex","Footprints.bsa\\scripts\\footprintsfootstepsscriptskeleton.pex","Footprints.bsa\\scripts\\footprintsdlc1defaults.pex","Footprints.bsa\\scripts\\footprintsfootstepsscriptfalmer.pex","Footprints.bsa\\meshes\\footprints\\ash\\footprintshorseashrun.nif","Footprints.bsa\\meshes\\footprints\\ash\\footprintshumanashsprint.nif","Footprints.bsa\\meshes\\footprints\\ash\\footprintshumanashstraferunl.nif","Footprints.bsa\\meshes\\footprints\\ash\\footprintshumanashstraferunr.nif","Footprints.bsa\\meshes\\footprints\\ash\\footprintshorseashsprint.nif","Footprints.bsa\\meshes\\footprints\\ash\\footprintshumanashrun.nif","Footprints.bsa\\meshes\\footprints\\ash\\footprintshumanashwalk.nif","Footprints.bsa\\textures\\actors\\footprints\\ash\\footprintsashgiantl.dds","Footprints.bsa\\textures\\actors\\footprints\\ash\\footprintsashgiantr.dds","Footprints.bsa\\textures\\actors\\footprints\\ash\\footprintsashsprigganl.dds","Footprints.bsa\\textures\\actors\\footprints\\ash\\footprintsashsprigganr.dds","Footprints.bsa\\textures\\actors\\footprints\\ash\\footprintsashwerebearrstrafel.dds","Footprints.bsa\\textures\\actors\\footprints\\ash\\footprintsashwerebearrstrafer.dds","Footprints.bsa\\textures\\actors\\footprints\\ash\\footprintsashbearbl.dds","Footprints.bsa\\textures\\actors\\footprints\\ash\\footprintsashbearbr.dds","Footprints.bsa\\textures\\actors\\footprints\\ash\\footprintsashbearfl.dds","Footprints.bsa\\textures\\actors\\footprints\\ash\\footprintsashbearfr.dds","Footprints.bsa\\textures\\actors\\footprints\\ash\\footprintsashatronachfrostl.dds","Footprints.bsa\\textures\\actors\\footprints\\ash\\footprintsashatronachfrostr.dds","Footprints.bsa\\textures\\actors\\footprints\\ash\\footprintsashbarefootrstrafel.dds","Footprints.bsa\\textures\\actors\\footprints\\ash\\footprintsashbarefootrstrafer.dds","Footprints.bsa\\textures\\actors\\footprints\\ash\\footprintsashcowl.dds","Footprints.bsa\\textures\\actors\\footprints\\ash\\footprintsashcowr.dds","Footprints.bsa\\textures\\actors\\footprints\\ash\\footprintsashelkl.dds","Footprints.bsa\\textures\\actors\\footprints\\ash\\footprintsashelkr.dds","Footprints.bsa\\textures\\actors\\footprints\\ash\\footprintsashdraugrl.dds","Footprints.bsa\\textures\\actors\\footprints\\ash\\footprintsashdraugrr.dds","Footprints.bsa\\textures\\actors\\footprints\\ash\\footprintsashhorsel.dds","Footprints.bsa\\textures\\actors\\footprints\\ash\\footprintsashhorser.dds","Footprints.bsa\\textures\\actors\\footprints\\ash\\footprintsashmammothl.dds","Footprints.bsa\\textures\\actors\\footprints\\ash\\footprintsashmammothr.dds","Footprints.bsa\\textures\\actors\\footprints\\ash\\footprintsashhumanl.dds","Footprints.bsa\\textures\\actors\\footprints\\ash\\footprintsashhumanr.dds","Footprints.bsa\\textures\\actors\\footprints\\ash\\footprintsashvampirelordrstrafel.dds","Footprints.bsa\\textures\\actors\\footprints\\ash\\footprintsashvampirelordrstrafer.dds","Footprints.bsa\\textures\\actors\\footprints\\ash\\footprintsashhagravenl.dds","Footprints.bsa\\textures\\actors\\footprints\\ash\\footprintsashhagravenr.dds","Footprints.bsa\\textures\\actors\\footprints\\ash\\footprintsashwerewolflstrafel.dds","Footprints.bsa\\textures\\actors\\footprints\\ash\\footprintsashwerewolflstrafer.dds","Footprints.bsa\\textures\\actors\\footprints\\ash\\footprintsashhumanlstrafel.dds","Footprints.bsa\\textures\\actors\\footprints\\ash\\footprintsashhumanlstrafer.dds","Footprints.bsa\\textures\\actors\\footprints\\ash\\footprintsashvampirelordl.dds","Footprints.bsa\\textures\\actors\\footprints\\ash\\footprintsashvampirelordr.dds","Footprints.bsa\\textures\\actors\\footprints\\ash\\footprintsashsabrecatbl.dds","Footprints.bsa\\textures\\actors\\footprints\\ash\\footprintsashsabrecatbr.dds","Footprints.bsa\\textures\\actors\\footprints\\ash\\footprintsashsabrecatfl.dds","Footprints.bsa\\textures\\actors\\footprints\\ash\\footprintsashsabrecatfr.dds","Footprints.bsa\\textures\\actors\\footprints\\ash\\footprintsashtrolll.dds","Footprints.bsa\\textures\\actors\\footprints\\ash\\footprintsashtrollr.dds","Footprints.bsa\\textures\\actors\\footprints\\ash\\footprintsashgargoylel.dds","Footprints.bsa\\textures\\actors\\footprints\\ash\\footprintsashgargoyler.dds","Footprints.bsa\\textures\\actors\\footprints\\ash\\footprintsashdeathhoundl.dds","Footprints.bsa\\textures\\actors\\footprints\\ash\\footprintsashdeathhoundr.dds","Footprints.bsa\\textures\\actors\\footprints\\ash\\footprintsashskeeverbl.dds","Footprints.bsa\\textures\\actors\\footprints\\ash\\footprintsashskeeverbr.dds","Footprints.bsa\\textures\\actors\\footprints\\ash\\footprintsashskeeverfl.dds","Footprints.bsa\\textures\\actors\\footprints\\ash\\footprintsashskeeverfr.dds","Footprints.bsa\\textures\\actors\\footprints\\ash\\footprintsashwerewolfbl.dds","Footprints.bsa\\textures\\actors\\footprints\\ash\\footprintsashwerewolfbr.dds","Footprints.bsa\\textures\\actors\\footprints\\ash\\footprintsashwerewolffl.dds","Footprints.bsa\\textures\\actors\\footprints\\ash\\footprintsashwerewolffr.dds","Footprints.bsa\\textures\\actors\\footprints\\ash\\footprintsashwerebearlstrafel.dds","Footprints.bsa\\textures\\actors\\footprints\\ash\\footprintsashwerebearlstrafer.dds","Footprints.bsa\\textures\\actors\\footprints\\ash\\footprintsashbarefootlstrafel.dds","Footprints.bsa\\textures\\actors\\footprints\\ash\\footprintsashbarefootlstrafer.dds","Footprints.bsa\\textures\\actors\\footprints\\ash\\footprintsashfalmerl.dds","Footprints.bsa\\textures\\actors\\footprints\\ash\\footprintsashfalmerr.dds","Footprints.bsa\\textures\\actors\\footprints\\ash\\footprintsashwerebearbl.dds","Footprints.bsa\\textures\\actors\\footprints\\ash\\footprintsashwerebearbr.dds","Footprints.bsa\\textures\\actors\\footprints\\ash\\footprintsashwerebearfl.dds","Footprints.bsa\\textures\\actors\\footprints\\ash\\footprintsashwerebearfr.dds","Footprints.bsa\\textures\\actors\\footprints\\ash\\footprintsashhumanlsneak.dds","Footprints.bsa\\textures\\actors\\footprints\\ash\\footprintsashvampirelordlstrafel.dds","Footprints.bsa\\textures\\actors\\footprints\\ash\\footprintsashvampirelordlstrafer.dds","Footprints.bsa\\textures\\actors\\footprints\\ash\\footprintsashskeletonl.dds","Footprints.bsa\\textures\\actors\\footprints\\ash\\footprintsashskeletonr.dds","Footprints.bsa\\textures\\actors\\footprints\\ash\\footprintsashhumanrsneak.dds","Footprints.bsa\\textures\\actors\\footprints\\ash\\footprintsashbarefootl.dds","Footprints.bsa\\textures\\actors\\footprints\\ash\\footprintsashbarefootr.dds","Footprints.bsa\\textures\\actors\\footprints\\ash\\footprintsashcaninel.dds","Footprints.bsa\\textures\\actors\\footprints\\ash\\footprintsashcaniner.dds","Footprints.bsa\\textures\\actors\\footprints\\ash\\footprintsashwerewolfrstrafel.dds","Footprints.bsa\\textures\\actors\\footprints\\ash\\footprintsashwerewolfrstrafer.dds","Footprints.bsa\\textures\\actors\\footprints\\ash\\footprintsashhumanrstrafel.dds","Footprints.bsa\\textures\\actors\\footprints\\ash\\footprintsashhumanrstrafer.dds","Footprints.bsa\\textures\\actors\\footprints\\ash\\footprintsashlurkerl.dds","Footprints.bsa\\textures\\actors\\footprints\\ash\\footprintsashlurkerr.dds","Footprints.bsa\\textures\\actors\\footprints\\dummyprint.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintsbearbl_h.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintsbearbl_n.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintsbearbr_h.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintsbearbr_n.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintsbearfl_h.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintsbearfl_n.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintsbearfr_h.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintsbearfr_n.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintshagravenl.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintshagravenr.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintsvampirelordlstrafel.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintsvampirelordlstrafer.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintswerewolflstrafel_h.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintswerewolflstrafel_n.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintswerewolflstrafer_h.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintswerewolflstrafer_n.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintswerebearrstrafel_h.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintswerebearrstrafel_n.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintswerebearrstrafer_h.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintswerebearrstrafer_n.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintsmammothl.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintsmammothr.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintsmammothl_h.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintsmammothl_n.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintsmammothr_h.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintsmammothr_n.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintscaninel_h.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintscaninel_n.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintscaniner_h.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintscaniner_n.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintsdraugrl_h.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintsdraugrl_n.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintsdraugrr_h.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintsdraugrr_n.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintsgargoylel.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintsgargoyler.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintsvampirelordl.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintsvampirelordr.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintshumanrstrafel_h.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintshumanrstrafel_n.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintshumanrstrafer_h.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintshumanrstrafer_n.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintswerewolfrstrafel.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintswerewolfrstrafer.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintsvampirelordrstrafel_h.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintsvampirelordrstrafel_n.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintsvampirelordrstrafer_h.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintsvampirelordrstrafer_n.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintssabrecatl_n.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintssabrecatr_n.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintsfalmerl.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintsfalmerr.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintswerebearlstrafel_h.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintswerebearlstrafel_n.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintswerebearlstrafer_h.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintswerebearlstrafer_n.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintsskeeverbl.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintsskeeverbr.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintsskeeverfl.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintsskeeverfr.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintsdeathhoundl_h.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintsdeathhoundl_n.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintsdeathhoundr_h.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintsdeathhoundr_n.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintshorsel_h.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintshorsel_n.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintshorser_h.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintshorser_n.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintsatronachfrostl_h.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintsatronachfrostl_n.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintsatronachfrostr_h.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintsatronachfrostr_n.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintselk_h.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintselk_n.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintshumanlstrafel_h.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintshumanlstrafel_n.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintshumanlstrafer_h.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintshumanlstrafer_n.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintswerebearbl_h.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintswerebearbl_n.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintswerebearbr_h.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintswerebearbr_n.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintswerebearfl_h.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintswerebearfl_n.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintswerebearfr_h.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintswerebearfr_n.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintsgiantl.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintsgiantr.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintshumanrsneak_h.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintshumanrsneak_n.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintsvampirelordlstrafel_h.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintsvampirelordlstrafel_n.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintsvampirelordlstrafer_h.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintsvampirelordlstrafer_n.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintswerebearrstrafel.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintswerebearrstrafer.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintssabrecatbl.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintssabrecatbr.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintssabrecatfl.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintssabrecatfr.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintsgargoylel_h.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintsgargoylel_n.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintsgargoyler_h.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintsgargoyler_n.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintsbarefootrstrafel.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintsbarefootrstrafer.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintscaninel.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintscaniner.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintsdeathhoundl.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintsdeathhoundr.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintsbearbl.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintsbearbr.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintsbearfl.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintsbearfr.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintslurkerl.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintslurkerr.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintsskeletonl.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintsskeletonr.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintsgiantl_h.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintsgiantl_n.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintsgiantr_h.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintsgiantr_n.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintsvampirelordl_h.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintsvampirelordl_n.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintsvampirelordr_h.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintsvampirelordr_n.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintshumanrstrafel.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintshumanrstrafer.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintselk.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintstrolll_h.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintstrolll_n.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintstrollr_h.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintstrollr_n.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintswerewolfbl.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintswerewolfbr.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintswerewolffl.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintswerewolffr.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintsvampirelordrstrafel.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintsvampirelordrstrafer.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintsbarefootl.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintsbarefootr.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintshorsel.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintshorser.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintshumanl.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintshumanr.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintssprigganl_h.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintssprigganl_n.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintssprigganr_h.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintssprigganr_n.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintswerewolflstrafel.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintswerewolflstrafer.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintscowl_h.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintscowl_n.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintscowr_h.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintscowr_n.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintshumanlsneak.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintssabrecatbl_h.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintssabrecatbl_n.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintssabrecatbr_h.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintssabrecatbr_n.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintssabrecatfl_h.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintssabrecatfl_n.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintssabrecatfr_h.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintssabrecatfr_n.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintsskeletonl_h.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintsskeletonl_n.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintsskeletonr_h.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintsskeletonr_n.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintswerebearbl.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintswerebearbr.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintswerebearfl.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintswerebearfr.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintshagravenl_h.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintshagravenl_n.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintshagravenr_h.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintshagravenr_n.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintsbarefootrstrafel_h.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintsbarefootrstrafel_n.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintsbarefootrstrafer_h.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintsbarefootrstrafer_n.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintslurkerl_h.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintslurkerl_n.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintslurkerr_h.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintslurkerr_n.dds","Footprints.bsa\\textures\\actors\\footprints\\dummyprint_n.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintstrolll.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintstrollr.dds","Footprints.bsa\\textures\\actors\\footprints\\fluidsubsplatfilm.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintsatronachfrostl.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintsatronachfrostr.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintshumanrsneak.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintsdraugrl.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintsdraugrr.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintsfalmerl_h.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintsfalmerl_n.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintsfalmerr_h.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintsfalmerr_n.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintswerewolfbl_h.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintswerewolfbl_n.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintswerewolfbr_h.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintswerewolfbr_n.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintswerewolffl_h.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintswerewolffl_n.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintswerewolffr_h.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintswerewolffr_n.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintssprigganl.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintssprigganr.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintswerewolfrstrafel_h.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintswerewolfrstrafel_n.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintswerewolfrstrafer_h.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintswerewolfrstrafer_n.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintshumanlsneak_h.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintshumanlsneak_n.dds","Footprints.bsa\\textures\\actors\\footprints\\gradsteamthick_brown.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintscowl.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintscowr.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintsskeeverbl_h.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintsskeeverbl_n.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintsskeeverbr_h.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintsskeeverbr_n.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintsskeeverfl_h.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintsskeeverfl_n.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintsskeeverfr_h.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintsskeeverfr_n.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintswerebearlstrafel.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintswerebearlstrafer.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintssabrecatl.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintssabrecatr.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintshumanl_h.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintshumanl_n.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintshumanr_h.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintshumanr_n.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintsbarefootlstrafel_h.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintsbarefootlstrafel_n.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintsbarefootlstrafer_h.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintsbarefootlstrafer_n.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintsbarefootlstrafel.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintsbarefootlstrafer.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintsbarefootl_h.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintsbarefootl_n.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintsbarefootr_h.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintsbarefootr_n.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintshumanlstrafel.dds","Footprints.bsa\\textures\\actors\\footprints\\footprintshumanlstrafer.dds","Footprints.bsl","Footprints.esp"];
-    $scope.treeData = assetUtils.convertDataStringToNestedObject('Footprints', rawAssetData);
+    // COMPATIBILITY NOTE RELATED LOGIC
+    // instantiate a new compatibility note object
+    $scope.startNewCompatibilityNote = function() {
+        // set up newCompatibilityNote object
+        $scope.newCompatibilityNote = {
+            compatibility_type: "incompatible",
+            text_body: contributionFactory.getDefaultTextBody("CompatibilityNote")
+        };
 
+        // update the markdown editor
+        $scope.updateMDE = true;
+        $scope.updateMDE = false;
+    };
+
+    $scope.validateCompatibilityNote = function() {
+        // exit if we don't have a newCompatibilityNote yet
+        if (!$scope.newCompatibilityNote) {
+            return;
+        }
+
+        $scope.newCompatibilityNote.valid = $scope.newCompatibilityNote.text_body.length > 512 &&
+            ($scope.newCompatibilityNote.second_mod_id !== undefined) &&
+            ($scope.newCompatibilityNote.compatibility_type === "compatibility mod") ==
+            ($scope.newCompatibilityNote.compatibility_mod !== undefined);
+    };
+
+    // discard the compatibility note object
+    $scope.discardCompatibilityNote = function() {
+        delete $scope.newCompatibilityNote;
+    };
+
+    // submit a compatibility note
+    $scope.submitCompatibilityNote = function() {
+        // return if the compatibility note is invalid
+        if (!$scope.newCompatibilityNote.valid) {
+            return;
+        }
+
+        // submit the compatibility note
+        var noteObj = {
+            compatibility_note: {
+                game_id: $scope.mod.game_id,
+                compatibility_type: $scope.newCompatibilityNote.compatibility_type,
+                first_mod_id: $scope.mod.id,
+                second_mod_id: $scope.newCompatibilityNote.second_mod_id,
+                text_body: $scope.newCompatibilityNote.text_body,
+                compatibility_plugin_id: $scope.newCompatibilityNote.compatibility_plugin_id,
+                compatibility_mod_id: $scope.newCompatibilityNote.compatibility_mod_id
+            }
+        };
+        $scope.newCompatibilityNote.submitting = true;
+        contributionService.submitContribution("compatibility_notes", noteObj).then(function(data) {
+            if (data.status == "ok") {
+                $scope.submitMessage = "Compatibility Note submitted successfully!";
+                $scope.showSuccess = true;
+                // TODO: push the compatibility note onto the $scope.mod.compatibility_notes array
+                delete $scope.newCompatibilityNote;
+            }
+        });
+    };
+
+    // INSTALL ORDER NOTE RELATED LOGIC
+    // instantiate a new install order note object
+    $scope.startNewInstallOrderNote = function() {
+        // set up newReview object
+        $scope.newInstallOrderNote = {
+            order: "before",
+            text_body: ""
+        };
+
+        // update the markdown editor
+        $scope.updateMDE = true;
+        $scope.updateMDE = false;
+    };
+
+    $scope.validateInstallOrderNote = function() {
+        // exit if we don't have a newInstallOrderNote yet
+        if (!$scope.newInstallOrderNote) {
+            return;
+        }
+
+        $scope.newInstallOrderNote.valid = $scope.newInstallOrderNote.text_body.length > 512 &&
+            ($scope.newInstallOrderNote.mod_id !== undefined);
+    };
+
+    // discard the install order note object
+    $scope.discardInstallOrderNote = function() {
+        delete $scope.newInstallOrderNote;
+    };
+    
+    // submit an install order note
+    $scope.submitInstallOrderNote = function() {
+        // return if the install order note is invalid
+        if (!$scope.newInstallOrderNote.valid) {
+            return;
+        }
+
+        // submit the install order note
+        var first_mod_id, second_mod_id;
+        if ($scope.newInstallOrderNote.order === 'before') {
+            first_mod_id = $scope.mod.id;
+            second_mod_id = $scope.newInstallOrderNote.mod_id;
+        } else {
+            first_mod_id = $scope.newInstallOrderNote.mod_id;
+            second_mod_id = $scope.mod.id;
+        }
+        var noteObj = {
+            install_order_note: {
+                game_id: $scope.mod.game_id,
+                first_mod_id: first_mod_id,
+                second_mod_id: second_mod_id,
+                text_body: $scope.newInstallOrderNote.text_body
+            }
+        };
+        $scope.newInstallOrderNote.submitting = true;
+        contributionService.submitContribution("install_order_notes", noteObj).then(function(data) {
+            if (data.status == "ok") {
+                $scope.submitMessage = "Install Order Note submitted successfully!";
+                $scope.showSuccess = true;
+                // TODO: push the Install Order note onto the $scope.mod.install_order_notes array
+                delete $scope.newInstallOrderNote;
+            }
+        });
+    };
+
+    // LOAD ORDER NOTE RELATED LOGIC
+    // instantiate a new load order note object
+    $scope.startNewLoadOrderNote = function() {
+        // set up newReview object
+        $scope.newLoadOrderNote = {
+            order: "before",
+            text_body: ""
+        };
+
+        // update the markdown editor
+        $scope.updateMDE = true;
+        $scope.updateMDE = false;
+    };
+
+    // discard the load order note object
+    $scope.discardLoadOrderNote = function() {
+        delete $scope.newLoadOrderNote;
+    };
+
+    // ANALYSIS RELATED LOGIC
+    // select the plugin the user selected
+    $scope.selectPlugin = function() {
+        $scope.currentPlugin = $scope.mod.plugins.find(function(plugin) {
+            return plugin.filename == $scope.currentPluginFilename;
+        });
+    };
 });

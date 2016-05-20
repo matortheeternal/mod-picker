@@ -86,3 +86,4 @@ mod-picker/public/assets/*
 !mod-picker/public/assets/zip
 mod-picker/.byebug_history
 mod-picker/app/assets/plugins/
+mod-picker/public/avatars/3.png

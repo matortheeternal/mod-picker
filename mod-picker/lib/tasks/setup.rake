@@ -71,15 +71,6 @@ namespace :setup do
     connection.execute("ALTER TABLE mod_stars MODIFY mod_id INT UNSIGNED;")
     connection.execute("ALTER TABLE mod_stars MODIFY user_id INT UNSIGNED;")
 
-    connection.execute("ALTER TABLE mod_version_compatibility_notes MODIFY mod_version_id INT UNSIGNED;")
-    connection.execute("ALTER TABLE mod_version_compatibility_notes MODIFY compatibility_note_id INT UNSIGNED;")
-
-    connection.execute("ALTER TABLE mod_version_files MODIFY mod_version_id INT UNSIGNED;")
-    connection.execute("ALTER TABLE mod_version_files MODIFY mod_asset_file_id INT UNSIGNED;")
-
-    connection.execute("ALTER TABLE mod_versions MODIFY id INT UNSIGNED NOT NULL AUTO_INCREMENT;")
-    connection.execute("ALTER TABLE mod_versions MODIFY mod_id INT UNSIGNED;")
-
     connection.execute("ALTER TABLE mods MODIFY id INT UNSIGNED NOT NULL AUTO_INCREMENT;")
     connection.execute("ALTER TABLE mods MODIFY game_id INT UNSIGNED;")
     connection.execute("ALTER TABLE mods MODIFY primary_category_id INT UNSIGNED;")

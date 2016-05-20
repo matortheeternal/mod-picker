@@ -91,7 +91,8 @@ nav {
   display: block;
   background-color: $bar_color;
   white-space: nowrap;
-  border-bottom: 2px solid $soft_border_color;
+  //border-bottom: 2px solid $soft_border_color;
+
 
   a {
     border-left: 1px solid $bar_highlight_color;
@@ -160,9 +161,14 @@ nav {
     float: left;
   }
 
-  .loadingButtonContainer {
+  .search-container {
     float: left;
     width: 74px;
+
+    #search-btn {
+      padding: 8px;
+      height: 35px;
+    }
   }
 
   #loader {

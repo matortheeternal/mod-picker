@@ -1,0 +1,201 @@
+.note-container {
+  .content-title {
+    background-color: $bar_color;
+    color: $bar_text_color;
+    //border-bottom: 1px solid $bar_dark_color;
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    font-weight: 500;
+
+    .right-item {
+      float: right;
+      .standing {
+        font-size: 14px;
+        font-weight: 100;
+        font-style: italic;
+        vertical-align: top;
+      }
+    }
+    a {
+      color: $bright_action_color;
+      &:hover {
+        color: $bar_text_color;
+      }
+    }
+  }
+
+  .author-column {
+    //background-color: $secondary_background;
+    border-right: 1px solid $border_color;
+    display: table-cell;
+    min-width: 150px;
+    padding: 20px 10px;
+    text-align: center;
+    font-size: 13px;
+
+    ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+
+      .user-name {
+        font-weight: 600;
+      }
+
+      .user-title {
+        font-style: italic;
+        font-size: 12px;
+      }
+
+      .user-avatar {
+        margin: 4px;
+      }
+
+      .user-role {
+        text-transform: capitalize;
+      }
+
+      .user-reputation {
+        font-size: 16px;
+        font-weight: 500;
+
+        span {
+          padding: 3px;
+          vertical-align: middle;
+          font-weight: 100;
+          font-size: 10px;
+          text-transform: uppercase;
+        }
+      }
+    }
+  }
+
+  .content-column {
+    display:table-cell;
+    vertical-align: top;
+    position: relative;
+    padding-bottom: 35px;
+
+    .ratings-container {
+      padding: 6px;
+      font-size: 20px;
+      .rating-item {
+        padding-top: 3px;
+        padding-bottom: 3px;
+
+        .rating-value {
+          color: $bar_text_color;
+        }
+      }
+    }
+
+    .mods-container {
+      @include flexbox();
+      -webkit-flex-direction: row;
+      flex-direction: row;
+      flex-wrap: wrap;
+      justify-content: flex-start;
+      align-items: center;
+      align-content: center;
+
+      .mod-title {
+        background-color: $secondary_background;
+        border-bottom: 1px solid $border_color;
+        height: 30px;
+        width: 50%;
+
+        &:nth-child(even) {
+          border-left: 1px solid $border_color;
+        }
+
+        .letter-box {
+          background-color: $primary_background;
+          border-bottom: 1px solid $border_color;
+          border-right: 1px solid $border_color;
+          display: inline-block;
+          text-align: center;
+          width: 24px;
+          height: 24px;
+          vertical-align: top;
+        }
+
+        span {
+          position: relative;
+          top: 12px;
+          display: inline-block;
+          width: 92%;
+          padding-left: 24px;
+          text-align: left;
+        }
+
+        a {
+          display: inline-block;
+          text-overflow: ellipsis;
+          max-width: calc(100% - 32px);
+          white-space: nowrap;
+          overflow: hidden;
+          padding-top: 8px;
+          padding-bottom: 4px;
+          padding-left: 4px;
+          font-size: 14px;
+          font-weight: 500;
+        }
+      }
+    }
+
+    .submitted-line {
+      background-color: $secondary_background;
+      color: $h4_color;
+      font-size: 11px;
+      padding: 4px 6px;
+    }
+
+    .text-container {
+      width: 100%;
+      margin: 10px 0;
+      padding: 0 20px;
+    }
+
+    .moderator-message {
+      border: 1px solid $error_secondary;
+      margin: 10px 30px;
+      background-color: $secondary_background;
+
+      .message-title {
+        background-color: $error_primary;
+        font-weight: 500;
+        padding: 5px;
+      }
+
+      .text-container {
+        padding: 10px;
+        p {
+          margin: 0 2px;
+        }
+      }
+    }
+
+    .actions-container {
+      width: 100%;
+      padding: 8px 16px;
+      position: absolute;
+      bottom: 0;
+      cursor: default;
+
+      .actions-dropdown-container {
+        position: relative;
+        outline: none;
+
+        .dropdown {
+          top: 25px;
+          left: -69px;
+        }
+      }
+
+      .right-item {
+        float: right;
+      }
+    }
+  }
+}

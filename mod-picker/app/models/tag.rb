@@ -5,6 +5,8 @@ class Tag < ActiveRecord::Base
 
   scope :game, -> (game) { where(game_id: game) }
 
+  belongs_to :user, :foreign_key => :submitted_by, :inverse_of => 'tags'
+
   has_many :mod_tags, :inverse_of => 'tag'
   has_many :mods, :through => 'mod_tags', :inverse_of => 'tags'
 

@@ -1,5 +1,5 @@
 app.service('assetUtils', function (fileUtils) {
-    this.convertDataStringToNestedObject = function(title, assets) {
+    this.convertDataStringToNestedObject = function(assets) {
         var nestedData = {
             childs: {}
         };
@@ -14,7 +14,7 @@ app.service('assetUtils', function (fileUtils) {
                 currentLayer.childs = {};
             }
             if(!currentLayer.childs[current]) {
-                var ext = fileUtils.getFileExtension(current);
+                var ext = fileUtils.getFileExtension(current).toLowerCase();
                 var iconClass = "fa-file-o";
                 switch(ext) {
                     case "": iconClass = "fa-folder-o"; break;
@@ -28,6 +28,7 @@ app.service('assetUtils', function (fileUtils) {
                     case "txt": iconClass = "fa-file-text-o"; break;
                     case "xml": iconClass = "fa-file-text-o"; break;
                     case "fuz": iconClass = "fa-file-sound-o"; break;
+                    case "tri": iconClass = "fa-location-arrow"; break;
                     case "nif": iconClass = "fa-cube"; break;
                     case "dds": iconClass = "fa-image"; break;
                 }
