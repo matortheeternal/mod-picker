@@ -15,7 +15,7 @@ Base Report:
 
 Comment:
   - Has many children comments
-    ? Counter Cache on children_count
+    + Counter Cache on children_count
 
 Compatibility Note:
   - Has many helpful_marks
