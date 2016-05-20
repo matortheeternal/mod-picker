@@ -17,7 +17,7 @@ app.filter('percentage', function() {
   };
 });
 
-app.controller('modController', function ($scope, $q, $stateParams, $timeout, modService, pluginService, categoryService, gameService, recordGroupService, userTitleService, assetUtils, reviewSectionService, userService, contributionService, contributionFactory) {
+app.controller('modController', function ($scope, $q, $stateParams, $timeout, modService, pluginService, categoryService, gameService, recordGroupService, userTitleService, assetUtils, reviewSectionService, userService, contributionService, contributionFactory, errorsFactory) {
     $scope.tags = [];
     $scope.newTags = [];
     $scope.sort = {};
@@ -198,6 +198,20 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
         });
     };
 
+    //sort plugin errors
+    $scope.sortErrors = function() {
+        $scope.sortedErrors = errorsFactory.errorTypes();
+        // return if we don't have a current plugin to sort errors for
+        if (!$scope.currentPlugin) {
+            return;
+        }
+
+        // loop through current plugin's errors, sorting them
+        $scope.currentPlugin.plugin_errors.forEach(function(error) {
+            $scope.sortedErrors[error.group].errors.push(error);
+        });
+    };
+
     // TAB RELATED LOGIC
     $scope.currentTab = $scope.tabs[0];
 
@@ -302,6 +316,7 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
             if ($scope.mod.plugins.length > 0) {
                 $scope.currentPlugin = analysis.plugins[0];
                 $scope.currentPluginFilename = analysis.plugins[0].filename;
+                $scope.sortErrors();
             }
         });
     };
@@ -645,5 +660,6 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
         $scope.currentPlugin = $scope.mod.plugins.find(function(plugin) {
             return plugin.filename == $scope.currentPluginFilename;
         });
+        $scope.sortErrors();
     };
 });
