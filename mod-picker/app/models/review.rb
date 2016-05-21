@@ -16,10 +16,8 @@ class Review < ActiveRecord::Base
   accepts_nested_attributes_for :review_ratings
 
   # Validations
-  validates :review_template_id, :mod_id, :rating1, :text_body, presence: true
-  validates :hidden, inclusion: [true, false]
-  validates :rating1, :rating2, :rating3, :rating4, :rating5, length: {in: 0..100}
-  validates :text_body, length: {in: 255..32768}
+  validates :mod_id, :text_body, presence: true
+  validates :text_body, length: {in: 512..32768}
 
   # Callbacks
   after_create :increment_counters
