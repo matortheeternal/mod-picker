@@ -32,9 +32,9 @@ app.service('contributionService', function (backend, $q) {
         return action.promise;
     };
 
-    this.updateContribution = function(type, contribution) {
+    this.updateContribution = function(type, id, contribution) {
         var action = $q.defer();
-        backend.update('/' + type + '/' + contribution.id, contribution).then(function (data) {
+        backend.update('/' + type + '/' + id, contribution).then(function (data) {
             action.resolve(data);
         });
         return action.promise;

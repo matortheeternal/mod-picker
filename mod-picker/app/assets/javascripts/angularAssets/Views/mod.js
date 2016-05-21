@@ -491,7 +491,8 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
 
         // use update or submit contribution
         if ($scope.activeReview.original) {
-            contributionService.updateContribution("reviews", reviewObj).then(function(data) {
+            var reviewId = $scope.activeReview.original.id;
+            contributionService.updateContribution("reviews", reviewId, reviewObj).then(function(data) {
                 if (data.status == "ok") {
                     $scope.submitMessage = "Review updated successfully!";
                     $scope.showSuccess = true;
