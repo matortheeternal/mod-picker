@@ -1,4 +1,4 @@
-class ModStar < ActiveRecord::Base
+class ModStar < EnhancedRecord::Base
   self.primary_keys = :mod_id, :user_id
 
   after_create :increment_counter_caches

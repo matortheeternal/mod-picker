@@ -1,4 +1,4 @@
-class Mod < ActiveRecord::Base
+class Mod < EnhancedRecord::Base
   include Filterable, Sortable
 
   attr_writer :tag_names, :asset_paths, :plugin_dumps, :nexus_info_id, :lover_info_id, :workshop_info_id

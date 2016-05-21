@@ -1,4 +1,4 @@
-class User < ActiveRecord::Base
+class User < EnhancedRecord::Base
   include Filterable
 
   # Include default devise modules. Others available are:

@@ -1,4 +1,4 @@
-class DummyMaster < ActiveRecord::Base
+class DummyMaster < EnhancedRecord::Base
   belongs_to :plugin, :inverse_of => 'dummy_masters'
 
   # Validations

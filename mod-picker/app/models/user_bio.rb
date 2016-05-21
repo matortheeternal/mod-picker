@@ -1,4 +1,4 @@
-class UserBio < ActiveRecord::Base
+class UserBio < EnhancedRecord::Base
   belongs_to :user
 
   # Validations

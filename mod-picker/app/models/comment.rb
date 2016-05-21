@@ -1,4 +1,4 @@
-class Comment < ActiveRecord::Base
+class Comment < EnhancedRecord::Base
   include Filterable
 
   after_initialize :init

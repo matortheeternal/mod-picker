@@ -1,4 +1,4 @@
-class ModListTag < ActiveRecord::Base
+class ModListTag < EnhancedRecord::Base
   self.primary_keys = :mod_list_id, :tag_id
 
   belongs_to :mod_list, :inverse_of => 'mod_list_tags'

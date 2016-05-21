@@ -1,7 +1,7 @@
 require 'nokogiri'
 require 'open-uri'
 
-class WorkshopInfo < ActiveRecord::Base
+class WorkshopInfo < EnhancedRecord::Base
   belongs_to :mod
 
   # Validations

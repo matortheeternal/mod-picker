@@ -1,4 +1,4 @@
-class Game < ActiveRecord::Base
+class Game < EnhancedRecord::Base
   has_many :mods, :inverse_of => 'game'
   has_many :nexus_infos, :inverse_of => 'game'
   has_many :mod_lists, :inverse_of => 'game'

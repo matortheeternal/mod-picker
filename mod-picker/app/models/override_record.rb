@@ -1,4 +1,4 @@
-class OverrideRecord < ActiveRecord::Base
+class OverrideRecord < EnhancedRecord::Base
   self.primary_keys = :plugin_id, :fid
 
   belongs_to :plugin, :inverse_of => 'overrides'

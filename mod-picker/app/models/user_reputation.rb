@@ -1,4 +1,4 @@
-class UserReputation < ActiveRecord::Base
+class UserReputation < EnhancedRecord::Base
   include Filterable
 
   before_validation :init

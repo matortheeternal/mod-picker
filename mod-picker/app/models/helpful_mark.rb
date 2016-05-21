@@ -1,4 +1,4 @@
-class HelpfulMark < ActiveRecord::Base
+class HelpfulMark < EnhancedRecord::Base
   include Filterable
   
   self.primary_keys = :submitted_by, :helpfulable_id, :helpfulable_type

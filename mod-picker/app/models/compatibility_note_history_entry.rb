@@ -1,4 +1,4 @@
-class CompatibilityNoteHistoryEntry < ActiveRecord::Base
+class CompatibilityNoteHistoryEntry < EnhancedRecord::Base
   after_initialize :init
 
   belongs_to :compatibility_note, :inverse_of => 'compatibility_note_history_entries'

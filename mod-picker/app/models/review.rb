@@ -1,4 +1,4 @@
-class Review < ActiveRecord::Base
+class Review < EnhancedRecord::Base
   include Filterable
 
   scope :mod, -> (mod) { where(mod_id: mod) }

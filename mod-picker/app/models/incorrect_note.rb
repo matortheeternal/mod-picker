@@ -1,4 +1,4 @@
-class IncorrectNote < ActiveRecord::Base
+class IncorrectNote < EnhancedRecord::Base
   include Filterable
 
   # Before/after actions for counter_caches

@@ -1,4 +1,4 @@
-class UserSetting < ActiveRecord::Base
+class UserSetting < EnhancedRecord::Base
   include Filterable
 
   before_create :init

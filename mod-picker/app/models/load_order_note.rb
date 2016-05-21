@@ -1,4 +1,4 @@
-class LoadOrderNote < ActiveRecord::Base
+class LoadOrderNote < EnhancedRecord::Base
   include Filterable
 
   after_initialize :init

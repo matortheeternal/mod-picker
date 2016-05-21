@@ -1,4 +1,4 @@
-class CompatibilityNote < ActiveRecord::Base
+class CompatibilityNote < EnhancedRecord::Base
   include Filterable
 
   before_save :set_dates

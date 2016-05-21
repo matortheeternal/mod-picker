@@ -1,4 +1,4 @@
-class Tag < ActiveRecord::Base
+class Tag < EnhancedRecord::Base
   include Filterable
 
   after_initialize :init

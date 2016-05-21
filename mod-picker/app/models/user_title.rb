@@ -1,4 +1,4 @@
-class UserTitle < ActiveRecord::Base
+class UserTitle < EnhancedRecord::Base
   include Filterable
 
   scope :game, -> (game) { where(game_id: game) }

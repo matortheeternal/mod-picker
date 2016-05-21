@@ -1,3 +1,3 @@
-class Quote < ActiveRecord::Base
+class Quote < EnhancedRecord::Base
   belongs_to :game
 end

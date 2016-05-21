@@ -1,6 +1,6 @@
-class HelpPage < ActiveRecord::Base
   after_initialize :init
 
+class HelpPage < EnhancedRecord::Base
   belongs_to :user, :foreign_key => 'submitted_by', :inverse_of => 'help_pages'
 
   # validations

@@ -1,4 +1,4 @@
-class InstallOrderNoteHistoryEntry < ActiveRecord::Base
+class InstallOrderNoteHistoryEntry < EnhancedRecord::Base
   after_initialize :init
 
   belongs_to :install_order_note, :inverse_of => 'install_order_note_history_entries'

@@ -1,4 +1,4 @@
-class PluginError < ActiveRecord::Base
+class PluginError < EnhancedRecord::Base
   belongs_to :plugin, :inverse_of => 'errors'
 
   # Validations

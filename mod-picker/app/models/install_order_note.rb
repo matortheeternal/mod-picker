@@ -1,4 +1,4 @@
-class InstallOrderNote < ActiveRecord::Base
+class InstallOrderNote < EnhancedRecord::Base
   include Filterable
 
   scope :by, -> (id) { where(submitted_by: id) }

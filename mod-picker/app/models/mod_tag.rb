@@ -1,4 +1,4 @@
-class ModTag < ActiveRecord::Base
+class ModTag < EnhancedRecord::Base
   self.primary_keys = :mod_id, :tag_id
 
   after_create :increment_counter_caches

@@ -1,4 +1,4 @@
-class ModList < ActiveRecord::Base
+class ModList < EnhancedRecord::Base
   include Filterable, Sortable
 
   enum status: [ :planned, :"under construction", :testing, :complete ]

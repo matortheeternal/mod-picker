@@ -1,4 +1,4 @@
-class RecordGroup < ActiveRecord::Base
+class RecordGroup < EnhancedRecord::Base
   belongs_to :game, :inverse_of => 'record_groups'
 
   def self.as_json(options={})

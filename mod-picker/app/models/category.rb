@@ -1,4 +1,4 @@
-class Category < ActiveRecord::Base
+class Category < EnhancedRecord::Base
   # super/sub category associations
   belongs_to :parent, :class_name => 'Category', :foreign_key => 'parent_id', :inverse_of => 'sub_categories'
   has_many :sub_categories, :class_name => 'Category', :foreign_key => 'parent_id', :inverse_of => 'parent'
