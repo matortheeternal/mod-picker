@@ -338,8 +338,8 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
 
     // instantiate a new review object
     $scope.startNewReview = function() {
-        // set up newReview object
-        $scope.newReview = {
+        // set up activeReview object
+        $scope.activeReview = {
             ratings: [],
             text_body: ""
         };
@@ -352,8 +352,8 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
         $scope.reviewSections.forEach(function(section) {
             if (section.default) {
                 $scope.addNewRating(section);
-                $scope.newReview.text_body += "## " + section.name + "\n";
-                $scope.newReview.text_body += "*" + section.prompt + "*\n\n";
+                $scope.activeReview.text_body += "## " + section.name + "\n";
+                $scope.activeReview.text_body += "*" + section.prompt + "*\n\n";
             }
         });
 
@@ -367,7 +367,7 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
     // Add a new rating section to the newReview
     $scope.addNewRating = function(section) {
         // return if we're at the maximum number of ratings
-        if ($scope.newReview.ratings.length >= 5 || $scope.availableSections.length == 0) {
+        if ($scope.activeReview.ratings.length >= 5 || $scope.availableSections.length == 0) {
             return;
         }
 
@@ -383,7 +383,7 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
             section: section,
             rating: 100
         };
-        $scope.newReview.ratings.push(ratingObj);
+        $scope.activeReview.ratings.push(ratingObj);
     };
 
     //remove the section from reviewSections
@@ -407,26 +407,26 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
 
     };
 
-    // remove a rating section from newReview
+    // remove a rating section from activeReview
     $scope.removeRating = function() {
         // return if we there's only one rating left
-        if ($scope.newReview.ratings.length == 1) {
+        if ($scope.activeReview.ratings.length == 1) {
             return;
         }
 
         // pop the last rating off of the ratings array
-        var rating = $scope.newReview.ratings.pop();
+        var rating = $scope.activeReview.ratings.pop();
         // add the removed section back to the available list
         $scope.availableSections.push(rating.section);
     };
 
     $scope.validateReview = function() {
-        $scope.newReview.valid = $scope.newReview.text_body.length > 512;
+        $scope.activeReview.valid = $scope.activeReview.text_body.length > 512;
     };
 
     // discard a new review object
     $scope.discardReview = function() {
-        delete $scope.newReview;
+            delete $scope.activeReview;
     };
 
     // focus text in rating input
@@ -437,13 +437,13 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
     // submit a review
     $scope.submitReview = function() {
         // return if the review is invalid
-        if (!$scope.newReview.valid) {
+        if (!$scope.activeReview.valid) {
             return;
         }
 
         // submit the review
         var review_ratings = [];
-        $scope.newReview.ratings.forEach(function(item) {
+        $scope.activeReview.ratings.forEach(function(item) {
             review_ratings.push({
                 review_section_id: item.section.id,
                 rating: item.rating
@@ -453,17 +453,17 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
             review: {
                 game_id: $scope.mod.game_id,
                 mod_id: $scope.mod.id,
-                text_body: $scope.newReview.text_body,
+                text_body: $scope.activeReview.text_body,
                 review_ratings_attributes: review_ratings
             }
         };
-        $scope.newReview.submitting = true;
+        $scope.activeReview.submitting = true;
         contributionService.submitContribution("reviews", reviewObj).then(function(data) {
             if (data.status == "ok") {
                 $scope.submitMessage = "Review submitted successfully!";
                 $scope.showSuccess = true;
                 // TODO: push the review onto the $scope.mod.reviews array
-                delete $scope.newReview;
+                delete $scope.activeReview;
             }
         });
     };
@@ -474,11 +474,11 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
         //TODO: Reply - this isn't looping through all the reviews, it's looping through the sections of a single review.  It's still not necessary though because we can do the math in the view model I think.  -Mator
         // possible solution: (overallRating * number of ratings + newRating) / number of ratings + 1
         var sum = 0;
-        for (var i = 0; i<$scope.newReview.ratings.length; i++) {
-            sum += $scope.newReview.ratings[i].rating;
+        for (var i = 0; i<$scope.activeReview.ratings.length; i++) {
+            sum += $scope.activeReview.ratings[i].rating;
         }
 
-        $scope.newReview.overallRating = Math.round(sum/$scope.newReview.ratings.length);
+        $scope.activeReview.overallRating = Math.round(sum / $scope.activeReview.ratings.length);
     };
 
     //removes all non numbers and rounds to the nearest int and doesn't go above 100 or below 0
