@@ -10,18 +10,17 @@ class ModListPlugin < ActiveRecord::Base
   validates :active, inclusion: [true, false]
 
   # Callbacks
-  after_create :increment_counter_caches
-  before_destroy :decrement_counter_caches
+  after_create :increment_counters
+  before_destroy :decrement_counters
 
   private
-    # counter caches
-    def increment_counter_caches
-      self.mod_list.plugins_count += 1
-      self.mod_list.save
+    def increment_counters
+      self.mod_list.update_counter(:plugins_count, 1)
+      self.plugin.update_counter(:mod_lists_count, 1)
     end
 
-    def decrement_counter_caches
-      self.mod_list.plugins_count -= 1
-      self.mod_list.save
+    def decrement_counters
+      self.mod_list.update_counter(:plugins_count, -1)
+      self.plugin.update_counter(:mod_lists_count, -1)
     end
 end
