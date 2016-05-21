@@ -29,21 +29,17 @@ class HelpfulMark < EnhancedRecord::Base
   private
     def decrement_counters
       if self.helpful
-        self.helpfulable.helpful_count -= 1
-        self.helpfulable.save
+        self.helpfulable.update_counter(:helpful_count, -1)
       else
-        self.helpfulable.not_helpful_count -= 1
-        self.helpfulable.save
+        self.helpfulable.update_counter(:not_helpful_count, -1)
       end
     end
 
     def increment_counters
       if self.helpful
-        self.helpfulable.helpful_count += 1
-        self.helpfulable.save
+        self.helpfulable.update_counter(:helpful_count, 1)
       else
-        self.helpfulable.not_helpful_count += 1
-        self.helpfulable.save
+        self.helpfulable.update_counter(:not_helpful_count, 1)
       end
     end
 end
