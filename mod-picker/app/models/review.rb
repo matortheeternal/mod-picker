@@ -11,7 +11,6 @@ class Review < EnhancedRecord::Base
   has_many :review_ratings, :inverse_of => 'review'
 
   has_many :helpful_marks, :as => 'helpfulable'
-  has_many :incorrect_notes, :as => 'correctable'
   has_one :base_report, :as => 'reportable'
 
   accepts_nested_attributes_for :review_ratings
