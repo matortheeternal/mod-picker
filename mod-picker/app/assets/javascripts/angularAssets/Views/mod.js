@@ -198,6 +198,11 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
         });
     };
 
+    // update the markdown editor
+    $scope.updateEditor = function() {
+        $scope.updateMDE = ($scope.updateMDE || 0) + 1;
+    };
+
     // TAB RELATED LOGIC
     $scope.currentTab = $scope.tabs[0];
 
@@ -360,8 +365,7 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
         $scope.updateOverallRating();
 
         // update the markdown editor
-        $scope.updateMDE = true;
-        $scope.updateMDE = false;
+        $scope.updateEditor();
     };
 
     // edit an existing review
@@ -382,8 +386,7 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
         });
 
         // update the markdown editor
-        $scope.updateMDE = true;
-        $scope.updateMDE = false;
+        $scope.updateEditor();
     };
 
     // Add a new rating section to the activeReview
@@ -541,8 +544,7 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
         };
 
         // update the markdown editor
-        $scope.updateMDE = true;
-        $scope.updateMDE = false;
+        $scope.updateEditor();
     };
 
     // edit an existing compatibility note
@@ -562,8 +564,7 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
         };
 
         // update the markdown editor
-        $scope.updateMDE = true;
-        $scope.updateMDE = false;
+        $scope.updateEditor();
     };
 
     $scope.validateCompatibilityNote = function() {
@@ -628,8 +629,7 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
         };
 
         // update the markdown editor
-        $scope.updateMDE = true;
-        $scope.updateMDE = false;
+        $scope.updateEditor();
     };
 
     // edit an existing install order note
@@ -638,8 +638,7 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
         $scope.activeInstallOrderNote = install_order_note;
 
         // update the markdown editor
-        $scope.updateMDE = true;
-        $scope.updateMDE = false;
+        $scope.updateEditor();
     };
 
     $scope.validateInstallOrderNote = function() {
@@ -707,8 +706,7 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
         };
 
         // update the markdown editor
-        $scope.updateMDE = true;
-        $scope.updateMDE = false;
+        $scope.updateEditor();
     };
 
     // edit an existing load order note
@@ -717,8 +715,7 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
         $scope.activeLoadOrderNote = load_order_note;
 
         // update the markdown editor
-        $scope.updateMDE = true;
-        $scope.updateMDE = false;
+        $scope.updateEditor();
     };
 
     // discard the load order note object
