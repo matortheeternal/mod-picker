@@ -1,8 +1,9 @@
 require 'nokogiri'
 require 'open-uri'
 
-class WorkshopInfo < EnhancedRecord::Base
+class WorkshopInfo < ActiveRecord::Base
   belongs_to :mod
+  belongs_to :game, :inverse_of => 'workshop_infos'
 
   # Validations
   # TODO: Validations
