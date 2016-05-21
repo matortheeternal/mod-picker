@@ -54,13 +54,11 @@ class Comment < EnhancedRecord::Base
   private
     # counter caches
     def increment_counter_caches
-      self.commentable.comments_count += 1
-      self.commentable.save
+      self.commentable.update_counter(:comments_count, 1)
     end
 
     def decrement_counter_caches
-      self.commentable.comments_count -= 1
-      self.commentable.save
+      self.commentable.update_counter(:comments_count, -1)
     end
 
 end
