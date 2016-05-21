@@ -1,4 +1,4 @@
-app.service('modService', function(backend, $q, helpfulMarkService) {
+app.service('modService', function(backend, $q, helpfulMarkService, userTitleService) {
     this.retrieveMod = function(modId) {
         return backend.retrieve('/mods/' + modId);
     };
@@ -68,6 +68,7 @@ app.service('modService', function(backend, $q, helpfulMarkService) {
         var reviews = $q.defer();
         backend.retrieve('/mods/' + modId + '/reviews', options).then(function (data) {
             helpfulMarkService.associateHelpfulMarks(data.reviews, data.helpful_marks);
+            userTitleService.associateTitles(data.reviews);
             reviews.resolve(data.reviews);
         });
         return reviews.promise;
@@ -77,6 +78,7 @@ app.service('modService', function(backend, $q, helpfulMarkService) {
         var compatibilityNotes = $q.defer();
         backend.retrieve('/mods/' + modId + '/compatibility_notes', options).then(function (data) {
             helpfulMarkService.associateHelpfulMarks(data.compatibility_notes, data.helpful_marks);
+            userTitleService.associateTitles(data.compatibitiliy_notes);
             compatibilityNotes.resolve(data.compatibility_notes);
         });
         return compatibilityNotes.promise;
@@ -86,6 +88,7 @@ app.service('modService', function(backend, $q, helpfulMarkService) {
         var installOrderNotes = $q.defer();
         backend.retrieve('/mods/' + modId + '/install_order_notes', options).then(function (data) {
             helpfulMarkService.associateHelpfulMarks(data.install_order_notes, data.helpful_marks);
+            userTitleService.associateTitles(data.install_order_note);
             installOrderNotes.resolve(data.install_order_notes);
         });
         return installOrderNotes.promise;
@@ -95,6 +98,7 @@ app.service('modService', function(backend, $q, helpfulMarkService) {
         var loadOrderNotes = $q.defer();
         backend.retrieve('/mods/' + modId + '/load_order_notes', options).then(function (data) {
             helpfulMarkService.associateHelpfulMarks(data.load_order_notes, data.helpful_marks);
+            userTitleService.associateTitles(data.load_order_notes);
             loadOrderNotes.resolve(data.load_order_notes);
         });
         return loadOrderNotes.promise;
