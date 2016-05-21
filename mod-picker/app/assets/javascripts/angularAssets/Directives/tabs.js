@@ -10,8 +10,11 @@ app.directive('tabs', function () {
         	tabs: '='
         },
         link: function(scope) {
-            scope.state = {selected: 0};
-            state.go('.' + scope.tabs[0]);
         }
     };
+});
+
+app.controller('tabsController', function($scope, $state) {
+    $scope.state = {selected: 0};
+    $state.go('.' + $scope.tabs[0]);
 });
