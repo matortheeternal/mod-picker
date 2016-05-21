@@ -91,11 +91,12 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
             $scope.game = gameService.getGameById(data, mod.game_id);
         });
 
-        // remove Load Order tab if mod has no plugins
-        if ($scope.mod.plugins_count == 0) {
-            $scope.tabs.splice(3, 1);
-        }
     });
+
+    // // remove Load Order tab if mod has no plugins
+    // if ($scope.mod.plugins_count == 0) {
+    //     $scope.tabs.splice(3, 1);
+    // }
 
     //get record groups
     recordGroupService.retrieveRecordGroups(window._current_game_id).then(function(recordGroups) {
@@ -183,38 +184,38 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
         });
     };
 
-    // TAB RELATED LOGIC
-    $scope.currentTab = $scope.tabs[0];
+    // // TAB RELATED LOGIC
+    // $scope.currentTab = $scope.tabs[0];
 
-    $scope.switchTab = function(targetTab) {
-        switch (targetTab.name) {
-            case 'Reviews':
-                if ($scope.mod.reviews == null) {
-                    $scope.retrieveReviews();
-                }
-                break;
-            case 'Compatibility':
-                if ($scope.mod.compatibility_notes == null) {
-                    $scope.retrieveCompatibilityNotes();
-                }
-                break;
-            case 'Install Order':
-                if ($scope.mod.install_order_notes == null) {
-                    $scope.retrieveInstallOrderNotes();
-                }
-                break;
-            case 'Load Order':
-                if ($scope.mod.load_order_notes == null) {
-                    $scope.retrieveLoadOrderNotes();
-                }
-                break;
-            case 'Analysis':
-                if ($scope.mod.analysis == null) {
-                    $scope.retrieveAnalysis();
-                }
-                break;
-        }
-    };
+    // $scope.switchTab = function(targetTab) {
+    //     switch (targetTab.name) {
+    //         case 'Reviews':
+    //             if ($scope.mod.reviews == null) {
+    //                 $scope.retrieveReviews();
+    //             }
+    //             break;
+    //         case 'Compatibility':
+    //             if ($scope.mod.compatibility_notes == null) {
+    //                 $scope.retrieveCompatibilityNotes();
+    //             }
+    //             break;
+    //         case 'Install Order':
+    //             if ($scope.mod.install_order_notes == null) {
+    //                 $scope.retrieveInstallOrderNotes();
+    //             }
+    //             break;
+    //         case 'Load Order':
+    //             if ($scope.mod.load_order_notes == null) {
+    //                 $scope.retrieveLoadOrderNotes();
+    //             }
+    //             break;
+    //         case 'Analysis':
+    //             if ($scope.mod.analysis == null) {
+    //                 $scope.retrieveAnalysis();
+    //             }
+    //             break;
+    //     }
+    // };
 
     $scope.retrieveReviews = function() {
         var options = {
