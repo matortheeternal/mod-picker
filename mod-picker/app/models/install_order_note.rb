@@ -23,9 +23,12 @@ class InstallOrderNote < EnhancedRecord::Base
   # old versions of this install order note
   has_many :install_order_note_history_entries, :inverse_of => 'install_order_note'
 
-  # validations
+  # Validations
   validates :first_mod_id, :second_mod_id, presence: true
   validates :text_body, length: { in: 256..16384 }
+
+  # Callbacks
+  before_save :set_dates
 
   def mods
     [first_mod, second_mod]
@@ -56,4 +59,13 @@ class InstallOrderNote < EnhancedRecord::Base
       super(options)
     end
   end
+
+  private
+    def set_dates
+      if self.submitted.nil?
+        self.submitted = DateTime.now
+      else
+        self.edited = DateTime.now
+      end
+    end
 end
