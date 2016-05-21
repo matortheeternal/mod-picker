@@ -18,21 +18,16 @@ class ModList < EnhancedRecord::Base
 
   # ASSOCIATED NOTES
   has_many :mod_list_compatibility_notes, :inverse_of => 'mod_list'
-  #has_many :compatibility_notes, :through => 'mod_list_compatibility_notes', :inverse_of => 'mod_lists', counter_cache: false
   has_many :mod_list_install_order_notes, :inverse_of => 'mod_list'
-  #has_many :install_order_notes, :through => 'mod_list_install_order_notes', :inverse_of => 'mod_lists', counter_cache: false
   has_many :mod_list_load_order_notes, :inverse_of => 'mod_list'
-  #has_many :load_order_notes, :through => 'mod_list_load_order_notes', :inverse_of => 'mod_lists'
 
-  # In the future, if conventional counter_cache naming is used then the workaround of
-  # counter_cache: :this_does_not_exit
-  # will need to be appended to user_stars
+  # CONFIG FILES
+  has_many :mod_list_config_files, :inverse_of => 'mod_list'
+  has_many :mod_list_custom_config_files, :inverse_of => 'mod_list'
+
+  # ASSOCIATIONS FROM OTHER USERS
   has_many :mod_list_stars, :inverse_of => 'starred_mod_list'
-  has_many :user_stars, :through => 'mod_list_stars', :inverse_of => 'starred_mod_lists'
-
   has_many :mod_list_tags, :inverse_of => 'mod_list'
-  has_many :tags, :through => 'mod_list_tags', :inverse_of => 'mod_lists'
-
   has_many :comments, :as => 'commentable'
   has_one :base_report, :as => 'reportable'
 
