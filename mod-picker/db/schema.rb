@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160521030049) do
+ActiveRecord::Schema.define(version: 20160521033630) do
 
   create_table "agreement_marks", id: false, force: :cascade do |t|
     t.integer "incorrect_note_id", limit: 4
@@ -164,6 +164,7 @@ ActiveRecord::Schema.define(version: 20160521030049) do
     t.integer "load_order_notes_count",    limit: 4,   default: 0
     t.integer "reviews_count",             limit: 4,   default: 0
     t.integer "plugins_count",             limit: 4,   default: 0
+    t.integer "incorrect_notes_count",     limit: 4,   default: 0
   end
 
   create_table "help_pages", force: :cascade do |t|
@@ -555,15 +556,18 @@ ActiveRecord::Schema.define(version: 20160521030049) do
   add_index "plugin_record_groups", ["plugin_id"], name: "pl_id", using: :btree
 
   create_table "plugins", force: :cascade do |t|
-    t.integer "mod_id",         limit: 4
-    t.string  "filename",       limit: 64
-    t.string  "author",         limit: 128
-    t.string  "description",    limit: 512
-    t.string  "crc_hash",       limit: 8
-    t.integer "record_count",   limit: 4
-    t.integer "override_count", limit: 4
-    t.integer "file_size",      limit: 4
-    t.integer "game_id",        limit: 4,   null: false
+    t.integer "mod_id",                 limit: 4
+    t.string  "filename",               limit: 64
+    t.string  "author",                 limit: 128
+    t.string  "description",            limit: 512
+    t.string  "crc_hash",               limit: 8
+    t.integer "record_count",           limit: 4
+    t.integer "override_count",         limit: 4
+    t.integer "file_size",              limit: 4
+    t.integer "game_id",                limit: 4,               null: false
+    t.integer "errors_count",           limit: 4,   default: 0
+    t.integer "mod_lists_count",        limit: 4,   default: 0
+    t.integer "load_order_notes_count", limit: 4,   default: 0
   end
 
   add_index "plugins", ["game_id"], name: "fk_rails_5a7ba47709", using: :btree
