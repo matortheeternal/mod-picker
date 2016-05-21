@@ -46,7 +46,7 @@
         <text-area class="note-text-area" data="activeReview.text_body" ng-refresh="updateMDE" on-change="validateReview"></text-area>
 
         <div class="action-button-container">
-            <input class="btn action-btn" type="submit" value="Submit" ng-click="submitReview()" ng-disabled="!activeReview.valid" title="{{activeReview.valid ? 'Submit your Review' : 'Your review is too short.'}}"/>
+            <input class="btn action-btn" type="submit" value="Submit" ng-click="saveReview()" ng-disabled="!activeReview.valid" title="{{activeReview.valid ? 'Submit your Review' : 'Your review is too short.'}}"/>
             <input class="btn action-btn" type="button" value="Discard" ng-click="discardReview()">
         </div>
     </div>

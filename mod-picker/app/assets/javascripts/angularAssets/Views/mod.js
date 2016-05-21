@@ -461,8 +461,8 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
         $event.target.select();
     };
 
-    // submit a review
-    $scope.submitReview = function() {
+    // save a review
+    $scope.saveReview = function() {
         // return if the review is invalid
         if (!$scope.activeReview.valid) {
             return;
@@ -485,14 +485,27 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
             }
         };
         $scope.activeReview.submitting = true;
-        contributionService.submitContribution("reviews", reviewObj).then(function(data) {
-            if (data.status == "ok") {
-                $scope.submitMessage = "Review submitted successfully!";
-                $scope.showSuccess = true;
-                // TODO: push the review onto the $scope.mod.reviews array
-                delete $scope.activeReview;
-            }
-        });
+
+        // use update or submit contribution
+        if ($scope.activeReview.original) {
+            contributionService.updateContribution("reviews", reviewObj).then(function(data) {
+                if (data.status == "ok") {
+                    $scope.submitMessage = "Review updated successfully!";
+                    $scope.showSuccess = true;
+                    // TODO: do we need to update the original review object after this?
+                    $scope.discardReview();
+                }
+            });
+        } else {
+            contributionService.submitContribution("reviews", reviewObj).then(function(data) {
+                if (data.status == "ok") {
+                    $scope.submitMessage = "Review submitted successfully!";
+                    $scope.showSuccess = true;
+                    // TODO: push the review onto the $scope.mod.reviews array
+                    $scope.discardReview();
+                }
+            });
+        }
     };
 
     //update the average rating of the new review
