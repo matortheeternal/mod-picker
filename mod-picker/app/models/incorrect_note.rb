@@ -32,30 +32,12 @@ class IncorrectNote < EnhancedRecord::Base
 
   # Private Methods
   private
-    # list of correctable_Types that have incorrect_notes_count counter cache
-    COUNTER_CACHE_LIST = ["CompatibilityNote", "Review"]
 
-    # counter caches
-    # both iterate through the counter_cache list then break out of the loop
-    # if a match is found after incrementing the incorrect_notes_count field of their 
-    # correctable type
     def increment_counter_caches
-      COUNTER_CACHE_LIST.each do |correct_type|
-        if(self.correctable_type == correct_type)
-          self.correctable.incorrect_notes_count += 1
-          self.correctable.save
-          break
-        end
-      end
+      self.correctable.update_column(:incorrect_notes_count, self.correctable.incorrect_notes_count + 1)
     end
 
     def decrement_counter_caches
-      COUNTER_CACHE_LIST.each do |correct_type|
-        if(self.correctable_type == correct_type)
-          self.correctable.incorrect_notes_count -= 1
-          self.correctable.save
-          break
-        end
-      end
+      self.correctable.update_column(:incorrect_notes_count, self.correctable.incorrect_notes_count - 1)
     end 
 end
