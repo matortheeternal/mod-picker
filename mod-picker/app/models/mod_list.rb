@@ -44,6 +44,15 @@ class ModList < EnhancedRecord::Base
   before_save :set_dates
   before_destroy :decrement_counters
 
+  def update_lazy_counters
+    mod_ids = mod_list_mods.all.ids
+    self.plugins_count = Plugin.where(mod_id: mod_ids).count
+    self.active_plugins_count = active_plugins.all.count
+    self.compatibility_notes_count = mod_list_compatibility_notes.all.count
+    self.install_order_notes_count = mod_list_install_order_notes.all.count
+    self.load_order_notes_count = mod_list_load_order_notes.all.count
+  end
+
   def refresh_compatibility_notes
     mod_ids = mod_list_mods.all.ids
     cnote_ids = CompatibilityNote.where("first_mod_id in ? AND second_mod_id in ?", mod_ids, mod_ids).ids
