@@ -32,9 +32,11 @@ class IncorrectNote < EnhancedRecord::Base
 
     def increment_counters
       self.correctable.update_counter(:incorrect_notes_count, 1)
+      self.user.update_counter(:incorrect_notes_count, 1)
     end
 
     def decrement_counters
       self.correctable.update_counter(:incorrect_notes_count, -1)
+      self.user.update_counter(:incorrect_notes_count, -1)
     end 
 end
