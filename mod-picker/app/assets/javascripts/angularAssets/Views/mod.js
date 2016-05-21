@@ -155,21 +155,6 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
         userTitleService.associateTitles($scope.userTitles, data);
     };
 
-    //associate helpful marks with content
-    $scope.associateHelpfulMarks = function(data, helpfulMarks) {
-        // loop through data
-        data.forEach(function(item) {
-            // see if we have a matching helpful mark
-            var helpfulMark = helpfulMarks.find(function(mark) {
-                return mark.helpfulable_id == item.id;
-            });
-            // if we have a matching helpful mark, assign it to the item
-            if (helpfulMark) {
-                item.helpful = helpfulMark.helpful;
-            }
-        });
-    };
-
     //associate record groups with plugins
     $scope.associateRecordGroups = function(plugins) {
         // if we don't have recordGroups yet, try again in 100ms
@@ -255,10 +240,9 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
             sort: $scope.sort.reviews || 'reputation'
         };
         modService.retrieveReviews($stateParams.modId, options).then(function(data) {
-            $scope.associateHelpfulMarks(data.reviews, data.helpful_marks);
-            $scope.associateUserTitles(data.reviews);
-            $scope.associateReviewSections(data.reviews);
-            $scope.mod.reviews = data.reviews;
+            $scope.associateUserTitles(data);
+            $scope.associateReviewSections(data);
+            $scope.mod.reviews = data;
         });
     };
 
@@ -270,9 +254,8 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
             }
         };
         modService.retrieveCompatibilityNotes($stateParams.modId, options).then(function(data) {
-            $scope.associateHelpfulMarks(data.compatibility_notes, data.helpful_marks);
-            $scope.associateUserTitles(data.compatibility_notes);
-            $scope.mod.compatibility_notes = data.compatibility_notes;
+            $scope.associateUserTitles(data);
+            $scope.mod.compatibility_notes = data;
         });
     };
 
@@ -284,9 +267,8 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
             }
         };
         modService.retrieveInstallOrderNotes($stateParams.modId, options).then(function(data) {
-            $scope.associateHelpfulMarks(data.install_order_notes, data.helpful_marks);
-            $scope.associateUserTitles(data.install_order_notes);
-            $scope.mod.install_order_notes = data.install_order_notes;
+            $scope.associateUserTitles(data);
+            $scope.mod.install_order_notes = data;
         });
     };
 
@@ -298,9 +280,8 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
             }
         };
         modService.retrieveLoadOrderNotes($stateParams.modId, options).then(function(data) {
-            $scope.associateHelpfulMarks(data.load_order_notes, data.helpful_marks);
-            $scope.associateUserTitles(data.load_order_notes);
-            $scope.mod.load_order_notes = data.load_order_notes;
+            $scope.associateUserTitles(data);
+            $scope.mod.load_order_notes = data;
         });
     };
 
