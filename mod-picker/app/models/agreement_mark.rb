@@ -14,6 +14,7 @@ class AgreementMark < EnhancedRecord::Base
 
   private
     def decrement_counters
+      self.user.update_counter(:agreement_marks_count, -1)
       if self.agree
         self.incorrect_note.update_counter(:agree_count, -1)
       else
@@ -22,6 +23,7 @@ class AgreementMark < EnhancedRecord::Base
     end
 
     def increment_counters
+      self.user.update_counter(:agreement_marks_count, 1)
       if self.agree
         self.incorrect_note.update_counter(:agree_count, 1)
       else
