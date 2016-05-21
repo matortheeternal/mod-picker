@@ -34,6 +34,9 @@ class LoadOrderNote < EnhancedRecord::Base
   validates :first_plugin_id, :second_plugin_id, presence: true
   validates :text_body, length: {in: 256..16384}
 
+  # Callbacks
+  before_save :set_dates
+
   def init
     self.submitted ||= DateTime.now
   end
@@ -67,4 +70,13 @@ class LoadOrderNote < EnhancedRecord::Base
       super(options)
     end
   end
+
+  private
+    def set_dates
+      if self.submitted.nil?
+        self.submitted = DateTime.now
+      else
+        self.edited = DateTime.now
+      end
+    end
 end
