@@ -623,8 +623,8 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
     // LOAD ORDER NOTE RELATED LOGIC
     // instantiate a new load order note object
     $scope.startNewLoadOrderNote = function() {
-        // set up newReview object
-        $scope.newLoadOrderNote = {
+        // set up activeLoadOrderNote object
+        $scope.activeLoadOrderNote = {
             order: "before",
             text_body: ""
         };
@@ -636,7 +636,7 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
 
     // discard the load order note object
     $scope.discardLoadOrderNote = function() {
-        delete $scope.newLoadOrderNote;
+            delete $scope.activeLoadOrderNote;
     };
 
     // ANALYSIS RELATED LOGIC
