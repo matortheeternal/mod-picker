@@ -28,7 +28,9 @@ class InstallOrderNote < EnhancedRecord::Base
   validates :text_body, length: { in: 256..16384 }
 
   # Callbacks
+  after_create :increment_counters
   before_save :set_dates
+  before_destroy :decrement_counters
 
   def mods
     [first_mod, second_mod]
@@ -67,5 +69,13 @@ class InstallOrderNote < EnhancedRecord::Base
       else
         self.edited = DateTime.now
       end
+    end
+
+    def increment_counters
+      self.mod.update_counter(:install_order_notes_count, 1)
+    end
+
+    def decrement_counters
+      self.mod.update_counter(:install_order_notes_count, -1)
     end
 end
