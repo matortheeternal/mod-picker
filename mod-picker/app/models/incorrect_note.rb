@@ -1,12 +1,6 @@
 class IncorrectNote < EnhancedRecord::Base
   include Filterable
 
-  # Before/after actions for counter_caches
-  after_create :increment_counter_caches
-  before_destroy :decrement_counter_caches
-
-  after_initialize :init   
-
   scope :by, -> (id) { where(submitted_by: id) }
 
   belongs_to :game, :inverse_of => 'incorrect_notes'
@@ -21,17 +15,20 @@ class IncorrectNote < EnhancedRecord::Base
   # Validations
   validates :text_body, length: { in: 64..16384 }
   validates :correctable_id, :correctable_type, presence: true
-  validates :correctable_type, inclusion: { in: ["CompatibilityNote", "InstallOrderNote", "InstallationNote", "Review"],
-                                            message: "Not a valid record type that can contain incorrect notes"}
 
+  # Callbacks
+  after_create :increment_counter_caches
+  before_save :set_dates
+  before_destroy :decrement_counter_caches
 
-
-  def init
-    self.created_at ||= DateTime.now
-  end
-
-  # Private Methods
   private
+    def set_dates
+      if self.submitted.nil?
+        self.submitted = DateTime.now
+      else
+        self.edited = DateTime.now
+      end
+    end
 
     def increment_counter_caches
       self.correctable.update_column(:incorrect_notes_count, self.correctable.incorrect_notes_count + 1)
