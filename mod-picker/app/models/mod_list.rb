@@ -42,7 +42,7 @@ class ModList < ActiveRecord::Base
 
   def init
     self.is_collection ||= false
-    self.created ||= DateTime.now
+    self.submitted ||= DateTime.now
   end
 
   def refresh_compatibility_notes

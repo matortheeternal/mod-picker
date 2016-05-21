@@ -536,7 +536,7 @@ end
 def seed_fake_tags
   # helper variables
   gameSkyrim = Game.where({display_name: "Skyrim"}).first
-  
+
   # generate tags
   puts "\nSeeding tags"
 
@@ -841,7 +841,7 @@ def seed_fake_mod_lists
         has_adult_content: [true, false].sample,
         status: ModList.statuses.keys.sample,
         description: Faker::Lorem.paragraph(5),
-        created: Faker::Date.backward(14),
+        submitted: Faker::Date.backward(14),
         game_id: gameSkyrim.id
     ).save!
   end
