@@ -20,6 +20,9 @@ class InstallOrderNote < EnhancedRecord::Base
   has_many :helpful_marks, :as => 'helpfulable'
   has_many :incorrect_notes, :as => 'correctable'
 
+  # old versions of this install order note
+  has_many :install_order_note_history_entries, :inverse_of => 'install_order_note'
+
   # validations
   validates :first_mod_id, :second_mod_id, presence: true
   validates :text_body, length: { in: 256..16384 }

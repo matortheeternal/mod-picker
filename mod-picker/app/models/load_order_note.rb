@@ -27,6 +27,9 @@ class LoadOrderNote < EnhancedRecord::Base
   has_many :incorrect_notes, :as => 'correctable'
   has_one :base_report, :as => 'reportable'
 
+  # old versions of this load order note
+  has_many :load_order_note_history_entries, :inverse_of => 'load_order_note'
+
   # validations
   validates :first_plugin_id, :second_plugin_id, presence: true
   validates :text_body, length: {in: 256..16384}
