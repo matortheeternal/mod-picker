@@ -15,7 +15,9 @@
 
 <div class="content-block add-note-box" ng-show="activeInstallOrderNote">
     <div class="content-title">
-        Add Install Order Note
+        <span ng-if="activeInstallOrderNote.original">Edit</span>
+        <span ng-if="!activeInstallOrderNote.original">Add</span>
+        Install Order Note
     </div>
     <div class="add-note-options">
         <span class="select order-dropdown">

@@ -27,7 +27,9 @@
 
 <div class="content-block add-note-box" ng-show="activeCompatibilityNote">
     <div class="content-title">
-        Add Compatibility Note
+        <span ng-if="activeCompatibilityNote.original">Edit</span>
+        <span ng-if="!activeCompatibilityNote.original">Add</span>
+        Compatibility Note
     </div>
     <div class="add-note-options">
         <span class="select compatibility-dropdown">

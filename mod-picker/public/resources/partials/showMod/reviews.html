@@ -23,7 +23,9 @@
 
 <div class="content-block add-note-box" ng-show="activeReview">
     <div class="content-title">
-        Add Review
+        <span ng-if="activeReview.original">Edit</span>
+        <span ng-if="!activeReview.original">Add</span>
+        Review
         ({{activeReview.overallRating | number:0}}/100)
     </div>
     <div class="ratings-container">
