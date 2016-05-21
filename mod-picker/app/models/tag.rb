@@ -1,8 +1,6 @@
 class Tag < EnhancedRecord::Base
   include Filterable
 
-  after_initialize :init
-
   scope :game, -> (game) { where(game_id: game) }
 
   belongs_to :user, :foreign_key => :submitted_by, :inverse_of => 'tags'
@@ -19,9 +17,4 @@ class Tag < EnhancedRecord::Base
   validates :text, :game_id, :submitted_by, presence: true
   validates :text, length: {in: 2..32}
   validates :hidden, inclusion: [true, false]
-
-  def init
-    self.mods_count ||= 0
-  end
-
 end
