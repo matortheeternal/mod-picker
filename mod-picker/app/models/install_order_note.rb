@@ -73,9 +73,11 @@ class InstallOrderNote < EnhancedRecord::Base
 
     def increment_counters
       self.mod.update_counter(:install_order_notes_count, 1)
+      self.user.update_counter(:install_order_notes_count, 1)
     end
 
     def decrement_counters
       self.mod.update_counter(:install_order_notes_count, -1)
+      self.user.update_counter(:install_order_notes_count, -1)
     end
 end
