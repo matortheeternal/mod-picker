@@ -82,9 +82,11 @@ class CompatibilityNote < EnhancedRecord::Base
 
     def increment_counters
       self.mod.update_counter(:compatibility_notes_count, 1)
+      self.user.update_counter(:compatibility_notes_count, 1)
     end
 
     def decrement_counters
       self.mod.update_counter(:compatibility_notes_count, -1)
+      self.user.update_counter(:compatibility_notes_count, -1)
     end
 end
