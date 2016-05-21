@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160520232847) do
+ActiveRecord::Schema.define(version: 20160521003451) do
 
   create_table "agreement_marks", id: false, force: :cascade do |t|
     t.integer "incorrect_note_id", limit: 4
@@ -194,6 +194,9 @@ ActiveRecord::Schema.define(version: 20160520232847) do
     t.datetime "edited"
     t.boolean  "hidden",                         default: false, null: false
     t.integer  "game_id",          limit: 4,                     null: false
+    t.integer  "comments_count",   limit: 4,     default: 0
+    t.integer  "agree_count",      limit: 4,     default: 0
+    t.integer  "disagree_count",   limit: 4,     default: 0
   end
 
   add_index "incorrect_notes", ["correctable_type", "correctable_id"], name: "index_incorrect_notes_on_correctable_type_and_correctable_id", using: :btree
