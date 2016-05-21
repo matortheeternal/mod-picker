@@ -512,15 +512,21 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
     $scope.updateOverallRating = function() {
         var sum = 0;
         for (var i = 0; i < $scope.activeReview.ratings.length; i++) {
-            sum += $scope.activeReview.ratings[i].rating || 0;
+            sum += $scope.activeReview.ratings[i].rating;
         }
 
         $scope.activeReview.overallRating = Math.round(sum / $scope.activeReview.ratings.length);
     };
 
-    //removes all non numbers and rounds to the nearest int and doesn't go above 100 or below 0
+    // functions for keeping rating inputs numerical and in the range 0->100
+    $scope.keyPress = function($event) {
+        var key = $event.keyCode;
+        if (!(key >= 48 && key <= 57)) {
+            $event.preventDefault();
+        }
+    };
     $scope.keyUp = function(review_rating) {
-        var output = parseInt(review_rating.rating);
+        var output = parseInt(review_rating.rating) || 0;
         review_rating.rating = output > 100 ? 100 : (output < 0 ? 0 : output);
         $scope.updateOverallRating();
     };
