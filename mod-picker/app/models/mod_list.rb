@@ -38,9 +38,14 @@ class ModList < EnhancedRecord::Base
 
   # Validations
   validates :game_id, presence: true 
-  validates_inclusion_of :is_collection, :hidden, :has_adult_content, {in: [true, false], 
-                                          message: "must be true or false"}
+  validates_inclusion_of :is_collection, :hidden, :has_adult_content, {
+    in: [true, false],
+    message: "must be true or false"
+  }
   validates :description, length: { maximum: 65535 }
+
+  # Callbacks
+  before_save :set_dates
 
   def refresh_compatibility_notes
     mod_ids = mod_list_mods.all.ids
@@ -111,4 +116,13 @@ class ModList < EnhancedRecord::Base
     end
     incompatible_mod_ids.uniq
   end
+
+  private
+    def set_dates
+      if self.submitted.nil?
+        self.submitted = DateTime.now
+      else
+        self.edited = DateTime.now
+      end
+    end
 end
