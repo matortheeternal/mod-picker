@@ -28,6 +28,7 @@ class HelpfulMark < EnhancedRecord::Base
 
   private
     def decrement_counters
+      self.user.update_counter(:helpful_marks_count, -1)
       if self.helpful
         self.helpfulable.update_counter(:helpful_count, -1)
       else
@@ -36,6 +37,7 @@ class HelpfulMark < EnhancedRecord::Base
     end
 
     def increment_counters
+      self.user.update_counter(:helpful_marks_count, 1)
       if self.helpful
         self.helpfulable.update_counter(:helpful_count, 1)
       else
