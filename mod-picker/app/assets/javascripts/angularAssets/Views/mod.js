@@ -364,7 +364,29 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
         $scope.updateMDE = false;
     };
 
-    // Add a new rating section to the newReview
+    // edit an existing review
+    $scope.editReview = function(review) {
+        review.editing = true;
+        $scope.activeReview = {
+            text_body: review.text_body,
+            ratings: review.review_ratings,
+            overallRating: review.overall_rating,
+            original: review
+        };
+
+        // set up availableSections array
+        $scope.availableSections = $scope.reviewSections.filter(function(section) {
+            return $scope.activeReview.ratings.find(function(rating) {
+                return rating.section == section;
+            }) == undefined;
+        });
+
+        // update the markdown editor
+        $scope.updateMDE = true;
+        $scope.updateMDE = false;
+    };
+
+    // Add a new rating section to the activeReview
     $scope.addNewRating = function(section) {
         // return if we're at the maximum number of ratings
         if ($scope.activeReview.ratings.length >= 5 || $scope.availableSections.length == 0) {
@@ -426,7 +448,12 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
 
     // discard a new review object
     $scope.discardReview = function() {
+        if ($scope.activeReview.original) {
+            $scope.activeReview.original.editing = false;
+            $scope.activeReview = null;
+        } else {
             delete $scope.activeReview;
+        }
     };
 
     // focus text in rating input
