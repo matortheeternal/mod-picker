@@ -23,7 +23,7 @@ class Review < ActiveRecord::Base
   after_create :increment_counters
   before_save :set_dates
   before_update :clear_ratings
-  after_update :update_lazy_counters
+  after_update :update_metrics
   after_save :update_mod_metrics
   before_destroy :decrement_counters
 
@@ -31,8 +31,12 @@ class Review < ActiveRecord::Base
     ReviewRating.where(review_id: self.id).delete_all
   end
 
-  def update_lazy_counters
-    self.update_column(:ratings_count, self.review_ratings.count)
+  def update_metrics
+    compute_overall_rating
+    self.update_columns({
+      ratings_count: self.review_ratings.count,
+      overall_rating: self.overall_rating
+    })
   end
 
   def update_mod_metrics
@@ -41,18 +45,16 @@ class Review < ActiveRecord::Base
     self.mod.save
   end
 
-  def overall_rating
+  def compute_overall_rating
     total = 0
     count = 0
+
     self.review_ratings.each do |r|
       total += r.rating
       count += 1
     end
-    if count > 0
-      (total.to_f / count)
-    else
-      100.0
-    end
+
+    self.overall_rating = (total.to_f / count) if count > 0
   end
 
   def as_json(options={})
