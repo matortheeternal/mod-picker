@@ -99,6 +99,7 @@ class Mod < EnhancedRecord::Base
   def update_lazy_counters
     self.asset_files_count = ModAssetFile.where(mod_id: self.id).count
     self.mod_lists_count = ModListMod.where(mod_id: self.id).count
+    self.plugins_count = Plugin.where(mod_id: self.id).count
   end
 
   def create_tags

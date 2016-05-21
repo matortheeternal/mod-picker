@@ -40,8 +40,7 @@ class Plugin < EnhancedRecord::Base
   validates :crc_hash, length: {in: 1..8}
 
   # callbacks
-  after_create :create_associations, :increment_counters
-  before_destroy :decrement_counters
+  after_create :create_associations
 
   def create_masters
     @master_filenames.each_with_index do |master_filename, index|
@@ -82,13 +81,4 @@ class Plugin < EnhancedRecord::Base
       super(options)
     end
   end
-
-  private
-    def decrement_counters
-      self.mod.update_counter(:plugins_count, -1)
-    end
-
-    def increment_counters
-      self.mod.update_counter(:plugins_count, 1)
-    end
 end
