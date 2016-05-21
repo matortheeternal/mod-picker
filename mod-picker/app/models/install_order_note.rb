@@ -1,5 +1,5 @@
-class InstallOrderNote < EnhancedRecord::Base
-  include Filterable
+class InstallOrderNote < ActiveRecord::Base
+  include Filterable, CounterCacheEnhancements
 
   scope :by, -> (id) { where(submitted_by: id) }
   scope :mod, -> (id) { joins(:mod_versions).where(:mod_versions => {mod_id: id}) }

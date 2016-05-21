@@ -1,4 +1,6 @@
-class AssetFile < EnhancedRecord::Base
+class AssetFile < ActiveRecord::Base
+  include CounterCacheEnhancements
+
   belongs_to :game, :inverse_of => 'asset_files'
 
   has_many :mod_asset_files, :inverse_of => 'asset_file', :dependent => :destroy

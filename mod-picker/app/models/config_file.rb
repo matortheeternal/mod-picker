@@ -1,4 +1,6 @@
-class ConfigFile < EnhancedRecord::Base
+class ConfigFile < ActiveRecord::Base
+  include CounterCacheEnhancements
+
   belongs_to :game, :inverse_of => 'config_files'
 
   # Validations

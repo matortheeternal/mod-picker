@@ -1,4 +1,6 @@
-class HelpPage < EnhancedRecord::Base
+class HelpPage < ActiveRecord::Base
+  include CounterCacheEnhancements
+
   belongs_to :user, :foreign_key => 'submitted_by', :inverse_of => 'help_pages'
 
   has_many :comments, :as => 'commentable'

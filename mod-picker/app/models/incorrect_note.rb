@@ -1,5 +1,5 @@
-class IncorrectNote < EnhancedRecord::Base
-  include Filterable
+class IncorrectNote < ActiveRecord::Base
+  include Filterable, CounterCacheEnhancements
 
   scope :by, -> (id) { where(submitted_by: id) }
 

@@ -1,4 +1,4 @@
-class NexusInfo < EnhancedRecord::Base
+class NexusInfo < ActiveRecord::Base
   belongs_to :mod
   belongs_to :game, :inverse_of => 'nexus_infos'
 

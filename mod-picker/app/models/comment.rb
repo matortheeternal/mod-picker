@@ -1,5 +1,5 @@
-class Comment < EnhancedRecord::Base
-  include Filterable
+class Comment < ActiveRecord::Base
+  include Filterable, CounterCacheEnhancements
 
   scope :type, -> (type) { where(commentable_type: type) }
   scope :target, -> (id) { where(commentable_id: id) }

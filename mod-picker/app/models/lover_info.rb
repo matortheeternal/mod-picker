@@ -1,4 +1,4 @@
-class LoverInfo < EnhancedRecord::Base
+class LoverInfo < ActiveRecord::Base
   belongs_to :mod
   belongs_to :game
 

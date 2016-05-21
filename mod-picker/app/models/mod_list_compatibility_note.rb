@@ -1,4 +1,4 @@
-class ModListCompatibilityNote < EnhancedRecord::Base
+class ModListCompatibilityNote < ActiveRecord::Base
   after_create :increment_counter_caches
   before_destroy :decrement_counter_caches
 

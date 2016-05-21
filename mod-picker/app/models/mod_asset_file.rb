@@ -1,4 +1,4 @@
-class ModAssetFile < EnhancedRecord::Base
+class ModAssetFile < ActiveRecord::Base
   self.primary_keys = :mod_id, :asset_file_id
 
   belongs_to :mod, :inverse_of => 'mod_asset_files'

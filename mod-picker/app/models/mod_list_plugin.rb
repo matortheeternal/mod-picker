@@ -1,4 +1,4 @@
-class ModListPlugin < EnhancedRecord::Base
+class ModListPlugin < ActiveRecord::Base
 
   after_initialize :init
 

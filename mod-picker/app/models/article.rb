@@ -1,4 +1,4 @@
-class Article < EnhancedRecord::Base
+class Article < ActiveRecord::Base
   belongs_to :user, :foreign_key => 'submitted_by', :inverse_of => 'articles'
 
   # Callbacks

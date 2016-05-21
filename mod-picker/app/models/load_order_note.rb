@@ -1,5 +1,5 @@
-class LoadOrderNote < EnhancedRecord::Base
-  include Filterable
+class LoadOrderNote < ActiveRecord::Base
+  include Filterable, CounterCacheEnhancements
 
   after_initialize :init
 

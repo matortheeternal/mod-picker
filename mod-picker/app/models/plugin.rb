@@ -1,5 +1,5 @@
-class Plugin < EnhancedRecord::Base
-  include Filterable, Sortable
+class Plugin < ActiveRecord::Base
+  include Filterable, Sortable, CounterCacheEnhancements
 
   attr_writer :master_filenames
 

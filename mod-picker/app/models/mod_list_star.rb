@@ -1,4 +1,4 @@
-class ModListStar < EnhancedRecord::Base
+class ModListStar < ActiveRecord::Base
   self.primary_keys = :mod_list_id, :user_id
 
   belongs_to :user, :inverse_of => 'mod_list_stars'

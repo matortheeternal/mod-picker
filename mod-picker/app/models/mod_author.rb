@@ -1,4 +1,4 @@
-class ModAuthor < EnhancedRecord::Base
+class ModAuthor < ActiveRecord::Base
   self.primary_keys = :mod_id, :user_id
 
   belongs_to :mod, :inverse_of => 'mod_authors'

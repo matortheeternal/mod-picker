@@ -1,4 +1,4 @@
-class ModRequirement < EnhancedRecord::Base
+class ModRequirement < ActiveRecord::Base
   self.primary_keys = :mod_id, :required_id
 
   belongs_to :mod, :inverse_of => 'required_mods'

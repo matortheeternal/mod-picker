@@ -1,5 +1,5 @@
-class Review < EnhancedRecord::Base
-  include Filterable
+class Review < ActiveRecord::Base
+  include Filterable, CounterCacheEnhancements
 
   scope :mod, -> (mod) { where(mod_id: mod) }
   scope :by, -> (id) { where(submitted_by: id) }

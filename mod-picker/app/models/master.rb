@@ -1,4 +1,4 @@
-class Master < EnhancedRecord::Base
+class Master < ActiveRecord::Base
   self.primary_keys = :plugin_id, :master_plugin_id
 
   belongs_to :plugin, :inverse_of => 'masters'
