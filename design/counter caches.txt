@@ -49,6 +49,8 @@ Game:
     + Counter Cache on install_order_notes_count
   - Has many load_order_notes
     + Counter Cache on load_order_notes_count
+  - Has many incorrect_notes
+    + Counter Cache on incorrect_notes_count
   - Has many reviews
     + Counter Cache on reviews_count
   - Has many plugins
