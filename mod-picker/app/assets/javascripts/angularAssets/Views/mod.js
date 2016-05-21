@@ -497,29 +497,19 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
 
     //update the average rating of the new review
     $scope.updateOverallRating = function() {
-        //TODO: this might become ressource heavy on mods with many ratings.
-        //TODO: Reply - this isn't looping through all the reviews, it's looping through the sections of a single review.  It's still not necessary though because we can do the math in the view model I think.  -Mator
-        // possible solution: (overallRating * number of ratings + newRating) / number of ratings + 1
         var sum = 0;
-        for (var i = 0; i<$scope.activeReview.ratings.length; i++) {
-            sum += $scope.activeReview.ratings[i].rating;
+        for (var i = 0; i < $scope.activeReview.ratings.length; i++) {
+            sum += $scope.activeReview.ratings[i].rating || 0;
         }
 
         $scope.activeReview.overallRating = Math.round(sum / $scope.activeReview.ratings.length);
     };
 
     //removes all non numbers and rounds to the nearest int and doesn't go above 100 or below 0
-    $scope.formatScore = function(input) {
-        var output = input;
-        output = output.replace(/[^\d\.]/g, '');
-        output = Math.round(output);
-        if (output > 100) {
-            output = 100;
-        }
-        else if (output < 0) {
-            output = 0;
-        }
-        return output;
+    $scope.keyUp = function(review_rating) {
+        var output = parseInt(review_rating.rating);
+        review_rating.rating = output > 100 ? 100 : (output < 0 ? 0 : output);
+        $scope.updateOverallRating();
     };
 
     // COMPATIBILITY NOTE RELATED LOGIC
