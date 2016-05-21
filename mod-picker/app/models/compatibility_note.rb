@@ -1,8 +1,6 @@
 class CompatibilityNote < EnhancedRecord::Base
   include Filterable
 
-  before_save :set_dates
-
   scope :by, -> (id) { where(submitted_by: id) }
   scope :mod, -> (id) { joins(:mod_versions).where(:mod_versions => {mod_id: id}) }
   scope :mv, -> (id) { joins(:mod_versions).where(:mod_versions => {id: id}) }
@@ -34,9 +32,12 @@ class CompatibilityNote < EnhancedRecord::Base
   # old versions of this compatibility note
   has_many :compatibility_note_history_entries, :inverse_of => 'compatibility_note'
 
-  # validations
-  validates :submitted_by, presence: true
-  validates :text_body, length: { in: 64..16384 }
+  # Validations
+  validates :submitted_by, :compatibility_type, :text_body, :first_mod_id, :second_mod_id, :game_id, presence: true
+  validates :text_body, length: { in: 256..16384 }
+
+  # Callbacks
+  before_save :set_dates
 
   def mods
     [first_mod, second_mod]
