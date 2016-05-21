@@ -85,10 +85,14 @@ class LoadOrderNote < ActiveRecord::Base
     def increment_counters
       self.mod.update_counter(:load_order_notes_count, 1)
       self.user.update_counter(:load_order_notes_count, 1)
+      self.first_plugin.update_counter(:load_order_notes_count, 1)
+      self.second_plugin.update_counter(:load_order_notes_count, 1)
     end
 
     def decrement_counters
       self.mod.update_counter(:load_order_notes_count, -1)
       self.user.update_counter(:load_order_notes_count, -1)
+      self.first_plugin.update_counter(:load_order_notes_count, -1)
+      self.second_plugin.update_counter(:load_order_notes_count, -1)
     end
 end
