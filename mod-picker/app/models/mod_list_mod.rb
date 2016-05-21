@@ -16,12 +16,12 @@ class ModListMod < EnhancedRecord::Base
   private
     # counter caches
     def increment_counter_caches
-      self.mod_list.mods_count += 1
-      self.mod_list.save
+      self.mod_list.update_counter(:mods_count, 1)
+      self.mod.update_counter(:mod_lists_count, 1)
     end
 
     def decrement_counter_caches
-      self.mod_list.mods_count -= 1
-      self.mod_list.save
+      self.mod_list.update_counter(:mods_count, -1)
+      self.mod.update_counter(:mod_lists_count, -1)
     end
 end
