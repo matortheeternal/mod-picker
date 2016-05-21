@@ -1,5 +1,5 @@
 class Review < ActiveRecord::Base
-  include Filterable, CounterCacheEnhancements
+  include Filterable, RecordEnhancements
 
   scope :mod, -> (mod) { where(mod_id: mod) }
   scope :by, -> (id) { where(submitted_by: id) }
@@ -22,16 +22,23 @@ class Review < ActiveRecord::Base
   # Callbacks
   after_create :increment_counters
   before_save :set_dates
-  before_update :clear_associated
+  before_update :clear_ratings
   after_update :update_lazy_counters
+  after_save :update_mod_metrics
   before_destroy :decrement_counters
 
-  def clear_associated
+  def clear_ratings
     ReviewRating.where(review_id: self.id).delete_all
   end
 
   def update_lazy_counters
-    self.ratings_count = self.review_ratings.count
+    self.update_column(:ratings_count, self.review_ratings.count)
+  end
+
+  def update_mod_metrics
+    self.mod.compute_average_rating
+    self.mod.compute_reputation
+    self.mod.save
   end
 
   def overall_rating
