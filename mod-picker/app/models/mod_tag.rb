@@ -1,9 +1,6 @@
 class ModTag < EnhancedRecord::Base
   self.primary_keys = :mod_id, :tag_id
 
-  after_create :increment_counter_caches
-  before_destroy :decrement_counter_caches
-
   belongs_to :mod, :inverse_of => 'mod_tags'
   belongs_to :tag, :inverse_of => 'mod_tags'
   belongs_to :user, :inverse_of => 'mod_tags'
@@ -11,15 +8,18 @@ class ModTag < EnhancedRecord::Base
   # Validations
   validates :tag, :mod_id, :submitted_by, presence: true
 
+  # Callbacks
+  after_create :increment_counters
+  before_destroy :decrement_counters
+
   private
-    def increment_counter_caches
-      self.tag.mods_count += 1
-      self.tag.save
+    def increment_counters
+      self.mod.update_counter(:tags_count, 1)
+      self.tag.update_counter(:mods_count, 1)
     end
 
-    def decrement_counter_caches
-      self.tag.mods_count -= 1
-      self.tag.save
+    def decrement_counters
+      self.mod.update_counter(:tags_count, -1)
+      self.tag.update_counter(:mods_count, -1)
     end
-
 end
