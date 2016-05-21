@@ -22,7 +22,7 @@ class Game < ActiveRecord::Base
     self.config_files_count = self.config_files.count
     self.asset_files_count = self.asset_files.count
     self.compatibility_notes_count = self.compatibility_notes.count
-    #self.incorrect_notes_count = self.incorrect_notes.count
+    self.incorrect_notes_count = self.incorrect_notes.count
     self.install_order_notes_count = self.install_order_notes.count
     self.load_order_notes_count = self.load_order_notes.count
     self.reviews_count = self.reviews.count
