@@ -22,9 +22,9 @@ class Review < EnhancedRecord::Base
   validates :text_body, length: {in: 255..32768}
 
   # Callbacks
-  after_create :increment_counter_caches
+  after_create :increment_counters
   before_save :set_dates
-  before_destroy :decrement_counter_caches
+  before_destroy :decrement_counters
 
   def overall_rating
     total = 0
@@ -77,7 +77,7 @@ class Review < EnhancedRecord::Base
       end
     end
 
-    def increment_counter_caches
+    def increment_counters
       self.mod.reviews_count += 1
       # we also take this chance to recompute the mod's reputation
       # if there are enough reviews to do so
@@ -87,8 +87,9 @@ class Review < EnhancedRecord::Base
       self.mod.save
     end
 
-    def decrement_counter_caches
+    def decrement_counters
       self.mod.reviews_count -= 1
+      self.mod.compute_reputation
       self.mod.save
     end
 end
