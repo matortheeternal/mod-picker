@@ -623,6 +623,16 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
         $scope.updateMDE = false;
     };
 
+    // edit an existing install order note
+    $scope.editInstallOrderNote = function(install_order_note) {
+        install_order_note.editing = true;
+        $scope.activeInstallOrderNote = install_order_note;
+
+        // update the markdown editor
+        $scope.updateMDE = true;
+        $scope.updateMDE = false;
+    };
+
     $scope.validateInstallOrderNote = function() {
         // exit if we don't have a activeInstallOrderNote yet
         if (!$scope.activeInstallOrderNote) {
@@ -635,7 +645,12 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
 
     // discard the install order note object
     $scope.discardInstallOrderNote = function() {
+        if ($scope.activeInstallOrderNote.editing) {
+            $scope.activeInstallOrderNote.editing = false;
+            $scope.activeInstallOrderNote = null;
+        } else {
             delete $scope.activeInstallOrderNote;
+        }
     };
     
     // submit an install order note
@@ -687,9 +702,24 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
         $scope.updateMDE = false;
     };
 
+    // edit an existing load order note
+    $scope.editLoadOrderNote = function(load_order_note) {
+        load_order_note.editing = true;
+        $scope.activeLoadOrderNote = load_order_note;
+
+        // update the markdown editor
+        $scope.updateMDE = true;
+        $scope.updateMDE = false;
+    };
+
     // discard the load order note object
     $scope.discardLoadOrderNote = function() {
+        if ($scope.activeLoadOrderNote.editing) {
+            $scope.activeLoadOrderNote.editing = false;
+            $scope.activeLoadOrderNote = null;
+        } else {
             delete $scope.activeLoadOrderNote;
+        }
     };
 
     // ANALYSIS RELATED LOGIC
