@@ -22,7 +22,12 @@ class Review < ActiveRecord::Base
   # Callbacks
   after_create :increment_counters
   before_save :set_dates
+  after_update :update_lazy_counters
   before_destroy :decrement_counters
+
+  def update_lazy_counters
+    self.ratings_count = self.review_ratings.count
+  end
 
   def overall_rating
     total = 0
