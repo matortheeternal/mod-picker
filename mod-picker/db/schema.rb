@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160521003451) do
+ActiveRecord::Schema.define(version: 20160521030049) do
 
   create_table "agreement_marks", id: false, force: :cascade do |t|
     t.integer "incorrect_note_id", limit: 4
@@ -795,6 +795,7 @@ ActiveRecord::Schema.define(version: 20160521003451) do
     t.integer  "images_count",      limit: 4,   default: 0
     t.integer  "videos_count",      limit: 4,   default: 0
     t.boolean  "has_stats",                     default: false
+    t.integer  "game_id",           limit: 4,                   null: false
   end
 
   add_index "workshop_infos", ["mod_id"], name: "fk_rails_8707144ad7", using: :btree
