@@ -71,8 +71,7 @@ class Review < ActiveRecord::Base
                   },
                   :methods => :avatar
               }
-          },
-          :methods => :overall_rating
+          }
       }
       super(options.merge(default_options))
     else
