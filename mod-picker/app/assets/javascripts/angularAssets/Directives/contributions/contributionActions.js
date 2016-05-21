@@ -8,7 +8,8 @@ app.directive('contributionActions', function () {
             index: '=',
             route: '=',
             correctable: '=',
-            user: '='
+            user: '=',
+            edit: '=?'
         }
     };
 });
