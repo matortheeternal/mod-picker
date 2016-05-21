@@ -3,6 +3,11 @@ app.config(['$stateProvider', function ($stateProvider) {
             templateUrl: '/resources/partials/showMod/mod.html',
             controller: 'modController',
             url: '/mod/:modId',
+            resolve: {
+                mod: function(modService, $stateParams) {
+                    return modService.retrieveMod($stateParams.modId);
+                },
+            }
         }).state('mod.Reviews', {
             templateUrl: '/resources/partials/showMod/reviews.html',
             controller: 'modController',
@@ -36,7 +41,9 @@ app.filter('percentage', function() {
   };
 });
 
-app.controller('modController', function ($scope, $q, $stateParams, $timeout, modService, pluginService, categoryService, gameService, recordGroupService, userTitleService, assetUtils, reviewSectionService, userService, contributionService, contributionFactory) {
+app.controller('modController', function ($scope, $q, $stateParams, $timeout, mod, modService, pluginService, categoryService, gameService, recordGroupService, userTitleService, assetUtils, reviewSectionService, userService, contributionService, contributionFactory) {
+    $scope.mod = mod.mod;
+
     $scope.tags = [];
     $scope.newTags = [];
     $scope.sort = {};
@@ -45,34 +52,6 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
         install_order_notes: true,
         load_order_notes: true
     };
-
-    // SETUP TABS
-    //TODO use the cool ui-router here :D
-    $scope.tabs = [
-        { name: 'Reviews', url: '/resources/partials/showMod/reviews.html' },
-        { name: 'Compatibility', url: '/resources/partials/showMod/compatibility.html' },
-        { name: 'Install Order', url: '/resources/partials/showMod/installOrder.html' },
-        { name: 'Load Order', url: '/resources/partials/showMod/loadOrder.html' },
-        { name: 'Analysis', url: '/resources/partials/showMod/analysis.html' }
-    ];
-
-    // SETUP AND DATA RETRIEVAL LOGIC
-    //initialization of the mod object
-    modService.retrieveMod($stateParams.modId).then(function (data) {
-        var mod = data.mod;
-        $scope.mod = mod;
-        $scope.modStarred = data.star;
-        switch (mod.status) {
-            case "good":
-                $scope.statusClass = "green-box";
-                break;
-            case "outdated":
-                $scope.statusClass = "yellow-box";
-                break;
-            case "dangerous":
-                $scope.statusClass = "red-box";
-                break;
-        }
 
         // getting categories
         categoryService.retrieveCategories().then(function (categories) {
@@ -85,12 +64,27 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
                 $scope.reviewSections = reviewSectionService.getSectionsForCategory(reviewSections, $scope.primaryCategory);
             });
         });
+    switch (mod.status) {
+        case "good":
+            $scope.statusClass = "green-box";
+            break;
+        case "outdated":
+            $scope.statusClass = "yellow-box";
+            break;
+        case "dangerous":
+            $scope.statusClass = "red-box";
+            break;
+    }
 
-        // getting games
-        gameService.retrieveGames().then(function (data) {
-            $scope.game = gameService.getGameById(data, mod.game_id);
-        });
+    // getting review sections
+    reviewSectionService.retrieveReviewSections().then(function (reviewSections) {
+        $scope.allReviewSections = reviewSections;
+        $scope.reviewSections = reviewSectionService.getSectionsForCategory(reviewSections, $scope.primaryCategory);
+    });
 
+    // getting games
+    gameService.retrieveGames().then(function (data) {
+        $scope.game = gameService.getGameById(data, mod.game_id);
     });
 
     // // remove Load Order tab if mod has no plugins
