@@ -36,6 +36,7 @@ class Comment < EnhancedRecord::Base
     end
 
     def increment_counter_caches
+      self.user.update_counter(:submitted_comments_count, 1)
       self.commentable.update_counter(:comments_count, 1)
       if self.parent_id.present?
         self.parent.update_counter(:children_count, 1)
@@ -43,6 +44,7 @@ class Comment < EnhancedRecord::Base
     end
 
     def decrement_counter_caches
+      self.user.update_counter(:submitted_comments_count, -1)
       self.commentable.update_counter(:comments_count, -1)
       if self.parent_id.present?
         self.parent.update_counter(:children_count, -1)
