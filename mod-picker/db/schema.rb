@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160521033630) do
+ActiveRecord::Schema.define(version: 20160521225129) do
 
   create_table "agreement_marks", id: false, force: :cascade do |t|
     t.integer "incorrect_note_id", limit: 4
@@ -642,6 +642,7 @@ ActiveRecord::Schema.define(version: 20160521033630) do
     t.integer  "helpful_count",         limit: 4,     default: 0
     t.integer  "not_helpful_count",     limit: 4,     default: 0
     t.integer  "ratings_count",         limit: 4,     default: 0
+    t.float    "overall_rating",        limit: 24,    default: 0.0
   end
 
   add_index "reviews", ["game_id"], name: "fk_rails_dfb9dc48b4", using: :btree
