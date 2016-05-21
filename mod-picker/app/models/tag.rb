@@ -17,4 +17,18 @@ class Tag < EnhancedRecord::Base
   validates :text, :game_id, :submitted_by, presence: true
   validates :text, length: {in: 2..32}
   validates :hidden, inclusion: [true, false]
+
+  # Callbacks
+  after_create :increment_counter_caches
+  before_destroy :decrement_counter_caches
+
+  # Private methods
+  private
+    def increment_counter_caches
+      self.user.update_counter(:tags_count, 1)
+    end
+
+    def decrement_counter_caches
+      self.user.update_counter(:tags_count, -1)
+    end
 end
