@@ -34,6 +34,7 @@ class User < EnhancedRecord::Base
   has_many :incorrect_notes, :foreign_key => 'submitted_by', :inverse_of => 'user'
   has_many :agreement_marks, :foreign_key => 'submitted_by', :inverse_of => 'user'
   has_many :helpful_marks, :foreign_key => 'submitted_by', :inverse_of => 'user'
+
   has_many :compatibility_note_history_entries, :foreign_key => 'submitted_by', :inverse_of => 'user'
 
   has_many :tags, :foreign_key => 'submitted_by', :inverse_of => 'user'
