@@ -1,8 +1,6 @@
 class LoadOrderNote < ActiveRecord::Base
   include Filterable, CounterCacheEnhancements
 
-  after_initialize :init
-
   scope :by, -> (id) { where(submitted_by: id) }
   scope :mod, -> (id) { joins(:mod_versions).where(:mod_versions => {mod_id: id}) }
   scope :mv, -> (id) { joins(:mod_versions).where(:mod_versions => {id: id}) }
@@ -38,10 +36,6 @@ class LoadOrderNote < ActiveRecord::Base
   after_create :increment_counters
   before_save :set_dates
   before_destroy :decrement_counters
-
-  def init
-    self.submitted ||= DateTime.now
-  end
 
   def mods
     [first_mod, second_mod]
