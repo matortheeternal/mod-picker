@@ -23,13 +23,8 @@ class HelpfulMark < EnhancedRecord::Base
   }
 
   # Callbacks
-  after_initialize :init
-  before_destroy :decrement_counters
   after_create :increment_counters
-
-  def init
-    self.submitted ||= DateTime.now
-  end
+  before_destroy :decrement_counters
 
   private
     def decrement_counters
