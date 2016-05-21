@@ -17,9 +17,9 @@ class IncorrectNote < EnhancedRecord::Base
   validates :correctable_id, :correctable_type, presence: true
 
   # Callbacks
-  after_create :increment_counter_caches
+  after_create :increment_counters
   before_save :set_dates
-  before_destroy :decrement_counter_caches
+  before_destroy :decrement_counters
 
   private
     def set_dates
@@ -30,11 +30,11 @@ class IncorrectNote < EnhancedRecord::Base
       end
     end
 
-    def increment_counter_caches
+    def increment_counters
       self.correctable.update_counter(:incorrect_notes_count, 1)
     end
 
-    def decrement_counter_caches
+    def decrement_counters
       self.correctable.update_counter(:incorrect_notes_count, -1)
     end 
 end
