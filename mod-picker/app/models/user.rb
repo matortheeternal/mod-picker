@@ -1,5 +1,5 @@
 class User < ActiveRecord::Base
-  include Filterable, CounterCacheEnhancements
+  include Filterable, RecordEnhancements
 
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable

@@ -1,5 +1,5 @@
 class Tag < ActiveRecord::Base
-  include Filterable, CounterCacheEnhancements
+  include Filterable, RecordEnhancements
 
   scope :game, -> (game) { where(game_id: game) }
 

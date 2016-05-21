@@ -1,5 +1,5 @@
 class HelpPage < ActiveRecord::Base
-  include CounterCacheEnhancements
+  include RecordEnhancements
 
   belongs_to :user, :foreign_key => 'submitted_by', :inverse_of => 'help_pages'
 
