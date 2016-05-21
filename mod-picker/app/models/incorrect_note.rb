@@ -31,10 +31,10 @@ class IncorrectNote < EnhancedRecord::Base
     end
 
     def increment_counter_caches
-      self.correctable.update_column(:incorrect_notes_count, self.correctable.incorrect_notes_count + 1)
+      self.correctable.update_counter(:incorrect_notes_count, 1)
     end
 
     def decrement_counter_caches
-      self.correctable.update_column(:incorrect_notes_count, self.correctable.incorrect_notes_count - 1)
+      self.correctable.update_counter(:incorrect_notes_count, -1)
     end 
 end
