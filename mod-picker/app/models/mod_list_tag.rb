@@ -6,6 +6,5 @@ class ModListTag < EnhancedRecord::Base
   belongs_to :user, :inverse_of => 'mod_list_tags'
 
   # Validations
-  validates :tag, :mod_list_id, presence: true
-  validates :tag, length: {in: 2..32}
+  validates :tag, :mod_list_id, :submitted_by, presence: true
 end
