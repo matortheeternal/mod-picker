@@ -89,7 +89,8 @@ class Mod < EnhancedRecord::Base
   validates :name, :aliases, length: {maximum: 128}
 
   # callbacks
-  after_create :create_associations
+  after_create :create_associations, :increment_counters
+  before_destroy :decrement_counters
 
   def no_author?
     self.mod_authors.count == 0
@@ -259,4 +260,13 @@ class Mod < EnhancedRecord::Base
       super(options)
     end
   end
+
+  private
+    def decrement_counters
+      self.user.update_counter(:submitted_mods_count, -1)
+    end
+
+    def increment_counters
+      self.user.update_counter(:submitted_mods_count, 1)
+    end
 end
