@@ -536,6 +536,27 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
         $scope.updateMDE = false;
     };
 
+    // edit an existing compatibility note
+    $scope.editCompatibilityNote = function(compatibility_note) {
+        compatibility_note.editing = true;
+        var secondMod = compatibility_note.mods.find(function(mod) {
+            return mod.id !== $scope.mod.id;
+        });
+        $scope.activeCompatibilityNote = {
+            compatibility_type: compatibility_note.compatibility_type,
+            mod_id: secondMod.id,
+            mod_name: secondMod.name,
+            compatibility_mod_id: compatibility_note.compatibility_mod_id,
+            compatibility_plugin_id: compatibility_note.compatibility_plugin_id,
+            text_body: compatibility_note.text_body,
+            original: compatibility_note
+        };
+
+        // update the markdown editor
+        $scope.updateMDE = true;
+        $scope.updateMDE = false;
+    };
+
     $scope.validateCompatibilityNote = function() {
         // exit if we don't have a activeCompatibilityNote yet
         if (!$scope.activeCompatibilityNote) {
@@ -550,7 +571,12 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
 
     // discard the compatibility note object
     $scope.discardCompatibilityNote = function() {
+        if ($scope.activeCompatibilityNote.original) {
+            $scope.activeCompatibilityNote.original.editing = false;
+            $scope.activeCompatibilityNote = null;
+        } else {
             delete $scope.activeCompatibilityNote;
+        }
     };
 
     // submit a compatibility note
