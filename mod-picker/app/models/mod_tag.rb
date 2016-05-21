@@ -8,8 +8,8 @@ class ModTag < EnhancedRecord::Base
   belongs_to :tag, :inverse_of => 'mod_tags'
   belongs_to :user, :inverse_of => 'mod_tags'
 
-  validates :mod_id, :tag, presence: true
-  validates :tag, length: {in: 2..32}
+  # Validations
+  validates :tag, :mod_id, :submitted_by, presence: true
 
   private
     def increment_counter_caches
