@@ -136,20 +136,6 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
         }
     };
 
-    //associate user titles with content
-    $scope.associateUserTitles = function(data) {
-        // if we don't have userTitles yet, try again in 100ms
-        if (!$scope.userTitles) {
-            $timeout(function() {
-                $scope.associateUserTitles(data);
-            }, 100);
-            return;
-        }
-
-        // associate titles with the data
-        userTitleService.associateTitles(data);
-    };
-
     //associate record groups with plugins
     $scope.associateRecordGroups = function(plugins) {
         // if we don't have recordGroups yet, try again in 100ms
@@ -575,7 +561,7 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
     $scope.discardInstallOrderNote = function() {
         delete $scope.newInstallOrderNote;
     };
-    
+
     // submit an install order note
     $scope.submitInstallOrderNote = function() {
         // return if the install order note is invalid
