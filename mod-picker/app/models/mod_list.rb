@@ -40,7 +40,9 @@ class ModList < EnhancedRecord::Base
   validates :description, length: { maximum: 65535 }
 
   # Callbacks
+  after_create :increment_counters
   before_save :set_dates
+  before_destroy :decrement_counters
 
   def refresh_compatibility_notes
     mod_ids = mod_list_mods.all.ids
@@ -119,5 +121,13 @@ class ModList < EnhancedRecord::Base
       else
         self.edited = DateTime.now
       end
+    end
+
+    def increment_counters
+      self.user.update_counter(:mod_lists_count, 1)
+    end
+
+    def decrement_counters
+      self.user.update_counter(:mod_lists_count, -1)
     end
 end
