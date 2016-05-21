@@ -8,7 +8,7 @@ class ModListStar < EnhancedRecord::Base
   belongs_to :mod_list, :inverse_of => 'mod_list_stars'
 
   # Validations
-  validates :mod_list_id, presence: true
+  validates :mod_list_id, :user_id, presence: true
 
   # Private Methods
   private
