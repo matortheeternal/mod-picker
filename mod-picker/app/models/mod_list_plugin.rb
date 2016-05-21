@@ -1,10 +1,5 @@
 class ModListPlugin < ActiveRecord::Base
 
-  after_initialize :init
-
-  after_create :increment_counter_caches
-  before_destroy :decrement_counter_caches
-
   self.primary_keys = :mod_list_id, :plugin_id
 
   belongs_to :mod_list, :inverse_of => 'mod_list_plugins'
@@ -14,9 +9,9 @@ class ModListPlugin < ActiveRecord::Base
   validates :mod_list_id, :plugin_id, :index, presence: true
   validates :active, inclusion: [true, false]
 
-  def init
-    self.active ||= true
-  end
+  # Callbacks
+  after_create :increment_counter_caches
+  before_destroy :decrement_counter_caches
 
   private
     # counter caches
