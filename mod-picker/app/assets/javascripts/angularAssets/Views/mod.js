@@ -525,8 +525,8 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
     // COMPATIBILITY NOTE RELATED LOGIC
     // instantiate a new compatibility note object
     $scope.startNewCompatibilityNote = function() {
-        // set up newCompatibilityNote object
-        $scope.newCompatibilityNote = {
+        // set up activeCompatibilityNote object
+        $scope.activeCompatibilityNote = {
             compatibility_type: "incompatible",
             text_body: contributionFactory.getDefaultTextBody("CompatibilityNote")
         };
@@ -537,26 +537,26 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
     };
 
     $scope.validateCompatibilityNote = function() {
-        // exit if we don't have a newCompatibilityNote yet
-        if (!$scope.newCompatibilityNote) {
+        // exit if we don't have a activeCompatibilityNote yet
+        if (!$scope.activeCompatibilityNote) {
             return;
         }
 
-        $scope.newCompatibilityNote.valid = $scope.newCompatibilityNote.text_body.length > 512 &&
-            ($scope.newCompatibilityNote.second_mod_id !== undefined) &&
-            ($scope.newCompatibilityNote.compatibility_type === "compatibility mod") ==
-            ($scope.newCompatibilityNote.compatibility_mod !== undefined);
+        $scope.activeCompatibilityNote.valid = $scope.activeCompatibilityNote.text_body.length > 512 &&
+            ($scope.activeCompatibilityNote.second_mod_id !== undefined) &&
+            ($scope.activeCompatibilityNote.compatibility_type === "compatibility mod") ==
+            ($scope.activeCompatibilityNote.compatibility_mod !== undefined);
     };
 
     // discard the compatibility note object
     $scope.discardCompatibilityNote = function() {
-        delete $scope.newCompatibilityNote;
+            delete $scope.activeCompatibilityNote;
     };
 
     // submit a compatibility note
     $scope.submitCompatibilityNote = function() {
         // return if the compatibility note is invalid
-        if (!$scope.newCompatibilityNote.valid) {
+        if (!$scope.activeCompatibilityNote.valid) {
             return;
         }
 
@@ -564,21 +564,21 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
         var noteObj = {
             compatibility_note: {
                 game_id: $scope.mod.game_id,
-                compatibility_type: $scope.newCompatibilityNote.compatibility_type,
+                compatibility_type: $scope.activeCompatibilityNote.compatibility_type,
                 first_mod_id: $scope.mod.id,
-                second_mod_id: $scope.newCompatibilityNote.second_mod_id,
-                text_body: $scope.newCompatibilityNote.text_body,
-                compatibility_plugin_id: $scope.newCompatibilityNote.compatibility_plugin_id,
-                compatibility_mod_id: $scope.newCompatibilityNote.compatibility_mod_id
+                second_mod_id: $scope.activeCompatibilityNote.mod_id,
+                text_body: $scope.activeCompatibilityNote.text_body,
+                compatibility_plugin_id: $scope.activeCompatibilityNote.compatibility_plugin_id,
+                compatibility_mod_id: $scope.activeCompatibilityNote.compatibility_mod_id
             }
         };
-        $scope.newCompatibilityNote.submitting = true;
+        $scope.activeCompatibilityNote.submitting = true;
         contributionService.submitContribution("compatibility_notes", noteObj).then(function(data) {
             if (data.status == "ok") {
                 $scope.submitMessage = "Compatibility Note submitted successfully!";
                 $scope.showSuccess = true;
                 // TODO: push the compatibility note onto the $scope.mod.compatibility_notes array
-                delete $scope.newCompatibilityNote;
+                delete $scope.activeCompatibilityNote;
             }
         });
     };
