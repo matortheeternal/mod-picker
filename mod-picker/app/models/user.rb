@@ -52,8 +52,8 @@ class User < EnhancedRecord::Base
   has_many :mod_stars, :inverse_of => 'user'
   has_many :starred_mods, :through => 'mod_stars', :inverse_of => 'user_stars'
 
-  has_many :mod_list_stars, :inverse_of => 'user_star'
-  has_many :starred_mod_lists, :through => 'mod_list_stars', :inverse_of => 'user_stars'
+  has_many :mod_list_stars, :inverse_of => 'user'
+  has_many :starred_mod_lists, :through => 'mod_list_stars'
 
   has_many :profile_comments, :class_name => 'Comment', :as => 'commentable'
   has_many :reports, :inverse_of => 'user'

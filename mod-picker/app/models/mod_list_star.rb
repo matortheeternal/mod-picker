@@ -4,8 +4,8 @@ class ModListStar < EnhancedRecord::Base
 
   self.primary_keys = :mod_list_id, :user_id
 
-  belongs_to :user_star, :class_name => 'User', :inverse_of => 'mod_list_stars'
-  belongs_to :starred_mod_list, :class_name => 'ModList', :inverse_of => 'mod_list_stars'
+  belongs_to :user, :inverse_of => 'mod_list_stars'
+  belongs_to :mod_list, :inverse_of => 'mod_list_stars'
 
   # Validations
   validates :mod_list_id, presence: true

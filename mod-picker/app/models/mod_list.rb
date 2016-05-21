@@ -26,7 +26,7 @@ class ModList < EnhancedRecord::Base
   has_many :mod_list_custom_config_files, :inverse_of => 'mod_list'
 
   # ASSOCIATIONS FROM OTHER USERS
-  has_many :mod_list_stars, :inverse_of => 'starred_mod_list'
+  has_many :mod_list_stars, :inverse_of => 'mod_list'
   has_many :mod_list_tags, :inverse_of => 'mod_list'
   has_many :comments, :as => 'commentable'
   has_one :base_report, :as => 'reportable'
