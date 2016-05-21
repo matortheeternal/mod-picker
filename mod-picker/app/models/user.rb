@@ -50,7 +50,7 @@ class User < EnhancedRecord::Base
   belongs_to :active_mod_list, :class_name => 'ModList', :foreign_key => 'active_mod_list_id'
 
   has_many :mod_stars, :inverse_of => 'user'
-  has_many :starred_mods, :through => 'mod_stars', :inverse_of => 'user_stars'
+  has_many :starred_mods, :through => 'mod_stars'
 
   has_many :mod_list_stars, :inverse_of => 'user'
   has_many :starred_mod_lists, :through => 'mod_list_stars'
