@@ -22,8 +22,13 @@ class Review < ActiveRecord::Base
   # Callbacks
   after_create :increment_counters
   before_save :set_dates
+  before_update :clear_associated
   after_update :update_lazy_counters
   before_destroy :decrement_counters
+
+  def clear_associated
+    ReviewRating.where(review_id: self.id).delete_all
+  end
 
   def update_lazy_counters
     self.ratings_count = self.review_ratings.count
