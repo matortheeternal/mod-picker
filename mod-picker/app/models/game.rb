@@ -12,7 +12,7 @@ class Game < EnhancedRecord::Base
   has_many :reviews, :inverse_of => 'game'
   has_many :plugins, :inverse_of => 'game'
 
-  def update_counters
+  def update_lazy_counters
     self.mods_count = Mod.where(game_id: self.id).count
     self.nexus_infos_count = NexusInfo.where(game_id: self.id).count
     self.lover_infos_count = LoverInfo.where(game_id: self.id).count

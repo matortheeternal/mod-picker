@@ -95,6 +95,11 @@ class Mod < EnhancedRecord::Base
     self.mod_authors.count == 0
   end
 
+  def update_lazy_counters
+    self.asset_files_count = ModAssetFile.where(mod_id: self.id).count
+    self.mod_lists_count = ModListMod.where(mod_id: self.id).count
+  end
+
   def create_tags
     if @tag_names
       @tag_names.each do |text|
