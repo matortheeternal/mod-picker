@@ -85,11 +85,13 @@ class Review < EnhancedRecord::Base
         self.mod.compute_reputation
       end
       self.mod.save
+      self.user.update_counter(:reviews_count, 1)
     end
 
     def decrement_counters
       self.mod.reviews_count -= 1
       self.mod.compute_reputation
       self.mod.save
+      self.user.update_counter(:reviews_count, -1)
     end
 end
