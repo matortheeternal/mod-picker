@@ -190,7 +190,6 @@ class Mod < ActiveRecord::Base
         self.reputation = endorsement_reputation
       end
     else
-      compute_average_rating
       review_reputation = (self.average_rating / 100)**3 * (510.0 / (1 + Math::exp(-0.2 * (self.reviews_count - 10))) - 60)
       self.reputation = review_reputation
     end
@@ -202,6 +201,7 @@ class Mod < ActiveRecord::Base
     self.create_plugins
     self.link_sources
     self.compute_extra_metrics
+    self.compute_average_rating
     self.compute_reputation
     self.save!
   end
