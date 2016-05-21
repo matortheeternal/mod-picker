@@ -1,6 +1,8 @@
 class HelpPage < EnhancedRecord::Base
   belongs_to :user, :foreign_key => 'submitted_by', :inverse_of => 'help_pages'
 
+  has_many :comments, :as => 'commentable'
+
   # validations
   validates :name, :text_body, presence: true
   validates :name, length: {in: 4..128}
