@@ -374,7 +374,7 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
         $scope.activeReview = {
             text_body: review.text_body,
             ratings: review.review_ratings,
-            overallRating: review.overall_rating,
+            overall_rating: review.overall_rating,
             original: review
         };
 
@@ -496,7 +496,11 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
                 if (data.status == "ok") {
                     $scope.submitMessage = "Review updated successfully!";
                     $scope.showSuccess = true;
-                    // TODO: do we need to update the original review object after this?
+
+                    // update original review object
+                    $scope.activeReview.original.overall_rating = $scope.activeReview.overall_rating;
+                    // TODO: more updates?
+
                     $scope.discardReview();
                 }
             });
@@ -519,7 +523,7 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
             sum += $scope.activeReview.ratings[i].rating;
         }
 
-        $scope.activeReview.overallRating = Math.round(sum / $scope.activeReview.ratings.length);
+        $scope.activeReview.overall_rating = Math.round(sum / $scope.activeReview.ratings.length);
     };
 
     // functions for keeping rating inputs numerical and in the range 0->100

@@ -26,7 +26,7 @@
         <span ng-if="activeReview.original">Edit</span>
         <span ng-if="!activeReview.original">Add</span>
         Review
-        ({{activeReview.overallRating | number:0}}/100)
+        ({{activeReview.overall_rating | number:0}}/100)
     </div>
     <div class="ratings-container">
         <div class="rating-item" ng-repeat="rating in activeReview.ratings">
