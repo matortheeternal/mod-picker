@@ -2,32 +2,41 @@ class Mod < ActiveRecord::Base
   include Filterable, Sortable, RecordEnhancements
 
   attr_writer :tag_names, :asset_paths, :plugin_dumps, :nexus_info_id, :lover_info_id, :workshop_info_id
-
-  scope :search, -> (search) { where("name like ? OR aliases like ?", "%#{search}%", "%#{search}%") }
-  scope :author, -> (author) { joins(:nexus_infos).where("nexus_infos.authors like ? OR nexus_infos.uploaded_by like ?", "#{author}", "#{author}") }
-  scope :adult, -> (adult) { where(has_adult_content: adult) }
-  scope :game, -> (game) { where(game_id: game) }
-  scope :categories, -> (categories) { where("primary_category_id IN (?) OR secondary_category_id IN (?)", categories, categories) }
-  scope :stars, -> (low, high) { where(mod_stars_count: (low..high)) }
-  scope :reviews, -> (low, high) { where(reviews_count: (low..high)) }
-  scope :cnotes, -> (low, high) { where(compatibility_notes_count: (low..high)) }
-  scope :ionotes, -> (low, high) { where(install_order_notes_count: (low..high)) }
-  scope :lonotes, -> (low, high) { where(load_order_notes_count: (low..high)) }
-  scope :versions, -> (low, high) { where(mod_versions_count: (low..high)) }
-  scope :released, -> (low, high) { joins(:nexus_infos).where(:nexus_infos => {date_added: (parseDate(low)..parseDate(high))}) }
-  scope :updated, -> (low, high) { joins(:nexus_infos).where(:nexus_infos => {date_updated: (parseDate(low)..parseDate(high))}) }
-  scope :endorsements, -> (low, high) { joins(:nexus_infos).where(:nexus_infos => {endorsements: (low..high)} ) }
-  scope :tdl, -> (low, high) { joins(:nexus_infos).where(:nexus_infos => {total_downloads: (low..high)} ) }
-  scope :udl, -> (low, high) { joins(:nexus_infos).where(:nexus_infos => {unique_downloads: (low..high)} ) }
-  scope :views, -> (low, high) { joins(:nexus_infos).where(:nexus_infos => {views: (low..high)} ) }
-  scope :posts, -> (low, high) { joins(:nexus_infos).where(:nexus_infos=> {posts_count: (low..high)} ) }
-  scope :videos, -> (low, high) { joins(:nexus_infos).where(:nexus_infos => {videos_count: (low..high)} ) }
-  scope :images, -> (low, high) { joins(:nexus_infos).where(:nexus_infos => {images_count: (low..high)} ) }
-  scope :files, -> (low, high) { joins(:nexus_infos).where(:nexus_infos => {files_count: (low..high)} ) }
-  scope :articles, -> (low, high) { joins(:nexus_infos).where(:nexus_infos => {articles_count: (low..high)} ) }
-  scope :tags, -> (array) { joins(:tags).where(:tags => {text: array}) }
-
   enum status: [ :good, :dangerous, :obsolete ]
+
+  # GENERAL SCOPES
+  scope :search, -> (search) { where("name like ? OR aliases like ?", "%#{search}%", "%#{search}%") }
+  scope :game, -> (game) { where(game_id: game) }
+  scope :released, -> (low, high) { where(released: parseDate(low)..parseDate(high)) }
+  scope :updated, -> (low, high) { where(updated: parseDate(low)..parseDate(high)) }
+  scope :adult, -> (bool) { where(has_adult_content: bool) }
+  scope :utility, -> (bool) { where(is_utility: bool) }
+  scope :author, -> (author) { includes(:nexus_infos, :lover_infos, :workshop_infos).where("nexus_infos.authors like ? OR nexus_infos.uploaded_by like ? OR lover_infos.uploaded_by like ? OR workshop_infos.uploaded_by like ?", author, author, author, author) }
+  scope :categories, -> (categories) { where("primary_category_id IN (?) OR secondary_category_id IN (?)", categories, categories) }
+  scope :tags, -> (array) { joins(:tags).where(:tags => {text: array}) }
+  # MOD PICKER SCOPES
+  scope :stars, -> (low, high) { where(stars_count: (low..high)) }
+  scope :reviews, -> (low, high) { where(reviews_count: (low..high)) }
+  scope :compatibility_notes, -> (low, high) { where(compatibility_notes_count: (low..high)) }
+  scope :install_order_notes, -> (low, high) { where(install_order_notes_count: (low..high)) }
+  scope :load_order_notes, -> (low, high) { where(load_order_notes_count: (low..high)) }
+  # SHARED SCOPES (ALL)
+  scope :views, -> (low, high) { includes(:nexus_infos, :lover_infos, :workshop_infos).where("nexus_infos.views BETWEEN ? and ? OR workshop_infos.views BETWEEN ? and ? OR lover_infos.views BETWEEN ? and ?", low, high, low, high, low, high)}
+  # SHARED SCOPES (SOME)
+  scope :downloads, -> (low, high) { includes(:lover_infos, :nexus_infos).where("nexus_infos.total_downloads BETWEEN ? and ? OR lover_infos.downloads BETWEEN ? and ?", low, high, low, high) }
+  scope :file_size, -> (low, high) { includes(:lover_infos, :workshop_infos).where("lover_infos.file_size BETWEEN ? and ? OR workshop_infos.file_size BETWEEN ? and ?", low, high, low, high) }
+  scope :posts, -> (low, high) { includes(:nexus_infos, :workshop_infos).where("nexus_infos.posts_count BETWEEN ? and ? OR workshop_infos.comments_count BETWEEN ? and ?", low, high, low, high) }
+  scope :videos, -> (low, high) { includes(:nexus_infos, :workshop_infos).where("nexus_infos.videos_count BETWEEN ? and ? OR workshop_infos.videos_count BETWEEN ? and ?", low, high, low, high) }
+  scope :images, -> (low, high) { includes(:nexus_infos, :workshop_infos).where("nexus_infos.images_count BETWEEN ? and ? OR workshop_infos.images_count BETWEEN ? and ?", low, high, low, high) }
+  scope :favorites, -> (low, high) { includes(:lover_infos, :workshop_infos).where("lover_infos.followers_count BETWEEN ? and ? OR workshop_infos.favorites BETWEEN ? and ?", low, high, low, high) }
+  scope :discussions, -> (low, high) { includes(:nexus_infos, :workshop_infos).where("nexus_infos.discussions_count BETWEEN ? and ? OR workshop_infos.discussions_count BETWEEN ? and ?", low, high, low, high) }
+  # UNIQUE SCOPES
+  scope :endorsements, -> (low, high) { includes(:nexus_infos).where(:nexus_infos => { endorsements: low..high }) }
+  scope :unique_downloads, -> (low, high) { includes(:nexus_infos).where(:nexus_infos => { unique_downloads: low..high }) }
+  scope :files, -> (low, high) { includes(:nexus_infos).where(:nexus_infos => { files_count: low..high }) }
+  scope :bugs, -> (low, high) { includes(:nexus_infos).where(:nexus_infos => { bugs_count: low..high }) }
+  scope :articles, -> (low, high) { includes(:nexus_infos).where(:nexus_infos => { articles_count: low..high }) }
+  scope :subscribers, -> (low, high) { includes(:workshop_infos).where(:workshop_infos => { subscribers: low..high }) }
 
   belongs_to :game, :inverse_of => 'mods'
   belongs_to :user, :foreign_key => 'submitted_by', :inverse_of => 'submitted_mods'
