@@ -9,42 +9,108 @@ class Mod < ActiveRecord::Base
   scope :game, -> (game) { where(game_id: game) }
   scope :sources, -> (sources) {
     results = self.where(nil)
-    results = results.joins('LEFT OUTER JOIN nexus_infos ON nexus_infos.mod_id = mods.id') if sources[:nexus]
-    results = results.joins('LEFT OUTER JOIN lover_infos ON lover_infos.mod_id = mods.id') if sources[:lab]
-    results = results.joins('LEFT OUTER JOIN workshop_infos ON workshop_infos.mod_id = mods.id') if sources[:workshop]
+    results = results.includes(:nexus_infos).references(:nexus_infos) if sources[:nexus]
+    results = results.includes(:lover_infos).references(:lover_infos) if sources[:lab]
+    results = results.includes(:workshop_infos).references(:workshop_infos) if sources[:workshop]
     results
   }
-  scope :released, -> (low, high) { where(released: parseDate(low)..parseDate(high)) }
-  scope :updated, -> (low, high) { where(updated: parseDate(low)..parseDate(high)) }
+  scope :released, -> (range) { where(released: parseDate(range[:min])..parseDate(range[:max])) }
+  scope :updated, -> (range) { where(updated: parseDate(range[:min])..parseDate(range[:max])) }
   scope :adult, -> (bool) { where(has_adult_content: bool) }
   scope :utility, -> (bool) { where(is_utility: bool) }
-  scope :author, -> (author) { where("nexus_infos.authors like ? OR nexus_infos.uploaded_by like ? OR lover_infos.uploaded_by like ? OR workshop_infos.uploaded_by like ?", author, author, author, author) }
   scope :categories, -> (categories) { where("primary_category_id IN (?) OR secondary_category_id IN (?)", categories, categories) }
   scope :tags, -> (array) { joins(:tags).where(:tags => {text: array}) }
   # MOD PICKER SCOPES
-  scope :stars, -> (low, high) { where(stars_count: (low..high)) }
-  scope :reviews, -> (low, high) { where(reviews_count: (low..high)) }
-  scope :rating, -> (low, high) { where(average_rating: (low..high)) }
-  scope :compatibility_notes, -> (low, high) { where(compatibility_notes_count: (low..high)) }
-  scope :install_order_notes, -> (low, high) { where(install_order_notes_count: (low..high)) }
-  scope :load_order_notes, -> (low, high) { where(load_order_notes_count: (low..high)) }
+  scope :stars, -> (range) { where(stars_count: (range[:min]..range[:max])) }
+  scope :reviews, -> (range) { where(reviews_count: (range[:min]..range[:max])) }
+  scope :rating, -> (range) { where(average_rating: (range[:min]..range[:max])) }
+  scope :compatibility_notes, -> (range) { where(compatibility_notes_count: (range[:min]..range[:max])) }
+  scope :install_order_notes, -> (range) { where(install_order_notes_count: (range[:min]..range[:max])) }
+  scope :load_order_notes, -> (range) { where(load_order_notes_count: (range[:min]..range[:max])) }
   # SHARED SCOPES (ALL)
-  scope :views, -> (low, high) { where("nexus_infos.views BETWEEN ? and ? OR workshop_infos.views BETWEEN ? and ? OR lover_infos.views BETWEEN ? and ?", low, high, low, high, low, high)}
+  scope :author, -> (hash) {
+    author = hash[:author]
+    sources = hash[:sources]
+
+    results = self.where(nil)
+    results = results.where("nexus_infos.authors like ? OR nexus_infos.uploaded_by like ?", author, author) if sources[:nexus]
+    results = results.where("lover_infos.uploaded_by like ?", author) if sources[:lab]
+    results = results.where("workshop_infos.uploaded_by like ?", author) if sources[:workshop]
+    results
+  }
+  scope :views, -> (range) {
+    sources = range[:sources]
+
+    results = self.where(nil)
+    results = results.where(:nexus_infos => {:views => range[:min]..range[:max]}) if sources[:nexus]
+    results = results.where(:lover_infos => {:views => range[:min]..range[:max]}) if sources[:lab]
+    results = results.where(:workshop_infos => {:views => range[:min]..range[:max]}) if sources[:workshop]
+    results
+  }
   # SHARED SCOPES (SOME)
-  scope :downloads, -> (low, high) { where("nexus_infos.total_downloads BETWEEN ? and ? OR lover_infos.downloads BETWEEN ? and ?", low, high, low, high) }
-  scope :file_size, -> (low, high) { where("lover_infos.file_size BETWEEN ? and ? OR workshop_infos.file_size BETWEEN ? and ?", low, high, low, high) }
-  scope :posts, -> (low, high) { where("nexus_infos.posts_count BETWEEN ? and ? OR workshop_infos.comments_count BETWEEN ? and ?", low, high, low, high) }
-  scope :videos, -> (low, high) { where("nexus_infos.videos_count BETWEEN ? and ? OR workshop_infos.videos_count BETWEEN ? and ?", low, high, low, high) }
-  scope :images, -> (low, high) { where("nexus_infos.images_count BETWEEN ? and ? OR workshop_infos.images_count BETWEEN ? and ?", low, high, low, high) }
-  scope :favorites, -> (low, high) { where("lover_infos.followers_count BETWEEN ? and ? OR workshop_infos.favorites BETWEEN ? and ?", low, high, low, high) }
-  scope :discussions, -> (low, high) { where("nexus_infos.discussions_count BETWEEN ? and ? OR workshop_infos.discussions_count BETWEEN ? and ?", low, high, low, high) }
+  scope :downloads, -> (range) {
+    sources = range[:sources]
+
+    results = self.where(nil)
+    results = results.where(:nexus_infos => {:total_downloads => range[:min]..range[:max]}) if sources[:nexus]
+    results = results.where(:lover_infos => {:downloads => range[:min]..range[:max]}) if sources[:lab]
+    results
+  }
+  scope :file_size, -> (range) {
+    sources = range[:sources]
+
+    results = self.where(nil)
+    results = results.where(:lover_infos => {:file_size => range[:min]..range[:max]}) if sources[:lab]
+    results = results.where(:workshop_infos => {:file_size => range[:min]..range[:max]}) if sources[:workshop]
+    results
+  }
+  scope :posts, -> (range) {
+    sources = range[:sources]
+
+    results = self.where(nil)
+    results = results.where(:nexus_infos => {:posts_count => range[:min]..range[:max]}) if sources[:nexus]
+    results = results.where(:workshop_infos => {:comments_count => range[:min]..range[:max]}) if sources[:workshop]
+    results
+  }
+  scope :videos, -> (range) {
+    sources = range[:sources]
+
+    results = self.where(nil)
+    results = results.where(:nexus_infos => {:videos_count => range[:min]..range[:max]}) if sources[:nexus]
+    results = results.where(:workshop_infos => {:videos_count => range[:min]..range[:max]}) if sources[:workshop]
+    results
+  }
+  scope :images, -> (range) {
+    sources = range[:sources]
+
+    results = self.where(nil)
+    results = results.where(:nexus_infos => {:images_count => range[:min]..range[:max]}) if sources[:nexus]
+    results = results.where(:workshop_infos => {:images_count => range[:min]..range[:max]}) if sources[:workshop]
+    results
+  }
+  scope :favorites, -> (range)  {
+    sources = range[:sources]
+
+    results = self.where(nil)
+    results = results.where(:lover_infos => {:followers_count => range[:min]..range[:max]}) if sources[:lab]
+    results = results.where(:workshop_infos => {:favorites => range[:min]..range[:max]}) if sources[:workshop]
+    results
+  }
+  scope :discussions, -> (range) {
+    sources = range[:sources]
+
+    results = self.where(nil)
+    results = results.where(:nexus_infos => {:discussions_count => range[:min]..range[:max]}) if sources[:nexus]
+    results = results.where(:workshop_infos => {:discussions_count => range[:min]..range[:max]}) if sources[:workshop]
+    results
+  }
   # UNIQUE SCOPES
-  scope :endorsements, -> (low, high) { where(:nexus_infos => { endorsements: low..high }) }
-  scope :unique_downloads, -> (low, high) { where(:nexus_infos => { unique_downloads: low..high }) }
-  scope :files, -> (low, high) { where(:nexus_infos => { files_count: low..high }) }
-  scope :bugs, -> (low, high) { where(:nexus_infos => { bugs_count: low..high }) }
-  scope :articles, -> (low, high) { where(:nexus_infos => { articles_count: low..high }) }
-  scope :subscribers, -> (low, high) { where(:workshop_infos => { subscribers: low..high }) }
+  scope :endorsements, -> (range) { where(:nexus_infos => { endorsements: range[:min]..range[:max] }) }
+  scope :unique_downloads, -> (range) { where(:nexus_infos => { unique_downloads: range[:min]..range[:max] }) }
+  scope :files, -> (range) { where(:nexus_infos => { files_count: range[:min]..range[:max] }) }
+  scope :bugs, -> (range) { where(:nexus_infos => { bugs_count: range[:min]..range[:max] }) }
+  scope :articles, -> (range) { where(:nexus_infos => { articles_count: range[:min]..range[:max] }) }
+  scope :subscribers, -> (range) { where(:workshop_infos => { subscribers: range[:min]..range[:max] }) }
 
   belongs_to :game, :inverse_of => 'mods'
   belongs_to :user, :foreign_key => 'submitted_by', :inverse_of => 'submitted_mods'
