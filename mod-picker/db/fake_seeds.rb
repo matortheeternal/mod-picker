@@ -719,7 +719,7 @@ def seed_fake_compatibility_notes
         submitted_by: submitter.id,
         compatibility_type: CompatibilityNote.compatibility_types.keys.sample,
         submitted: Faker::Date.backward(14),
-        text_body: Faker::Lorem.paragraph(8),
+        text_body: Faker::Lorem.paragraph(10),
         first_mod_id: random_mod.id,
         second_mod_id: random_mod.id
     )
@@ -755,7 +755,7 @@ def seed_fake_install_order_notes
         first_mod_id: random_mod.id,
         second_mod_id: random_mod.id,
         submitted: Faker::Date.backward(14),
-        text_body: Faker::Lorem.paragraph(8)
+        text_body: Faker::Lorem.paragraph(10)
     )
     ionote.save!
 
@@ -789,7 +789,7 @@ def seed_fake_load_order_notes
         first_plugin_id: random_plugin.id,
         second_plugin_id: random_plugin.id,
         submitted: Faker::Date.backward(14),
-        text_body: Faker::Lorem.paragraph(8)
+        text_body: Faker::Lorem.paragraph(10)
     )
     lnote.save!
 
