@@ -28,6 +28,10 @@ app.controller('modsController', function ($scope, $q, modService, sliderFactory
             }
         }
     ];
+
+    // load filter prototypes
+    $scope.dateFilters = filtersFactory.modDateFilters();
+    $scope.modPickerFilters = filtersFactory.modPickerFilters();
     $scope.statFilters = filtersFactory.modStatisticFilters();
 
     //TODO: should be handled differently
