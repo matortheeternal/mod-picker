@@ -5,6 +5,23 @@ class NexusInfo < ActiveRecord::Base
   # Validations
   validates_presence_of :game_id
 
+  # Callbacks
+  after_save :update_mod_dates
+
+  def update_mod_dates
+    if self.mod_id.blank?
+      return
+    end
+    
+    hash = Hash.new
+    hash[:updated] = self.date_updated if self.mod.updated < self.date_updated
+    hash[:released] = self.date_added if self.mod.released > self.date_added
+
+    if hash.any?
+      self.mod.update_columns(hash)
+    end
+  end
+
   def scrape
     # scrape using the Nexus Helper
     mod_data = NexusHelper.scrape_mod(game.nexus_name, id)
