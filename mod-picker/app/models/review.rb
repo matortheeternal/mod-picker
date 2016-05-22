@@ -1,8 +1,17 @@
 class Review < ActiveRecord::Base
   include Filterable, RecordEnhancements
 
+  scope :game, -> (id) { where(game_id: id) }
+  scope :user, -> (id) { where(submitted_by: id) }
   scope :mod, -> (mod) { where(mod_id: mod) }
-  scope :by, -> (id) { where(submitted_by: id) }
+  scope :submitted, -> (low, high) { where(submitted: parseDate(low)..parseDate(high)) }
+  scope :edited, -> (low, high) { where(edited: parseDate(low)..parseDate(high)) }
+  scope :hidden, -> (bool) { where(hidden: bool) }
+  scope :approved, -> (bool) { where(approved: bool) }
+  scope :helpful_count, -> (low, high) { where(helpful_count: low..high) }
+  scope :not_helpful_count, -> (low, high) { where(not_helpful_count: low..high) }
+  scope :ratings_count, -> (low, high) { where(ratings_count: low..high) }
+  scope :overall_rating, -> (low, high) { where(overall_rating: low..high) }
 
   belongs_to :game, :inverse_of => 'reviews'
   belongs_to :user, :foreign_key => 'submitted_by', :inverse_of => 'reviews'
