@@ -200,6 +200,10 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
 
     // update the markdown editor
     $scope.updateEditor = function() {
+        $timeout(function() {
+            var editorBox = document.getElementsByClassName("add-note-box")[0];
+            editorBox.scrollIntoView(); // TODO: animate this
+        });
         $scope.updateMDE = ($scope.updateMDE || 0) + 1;
     };
 
