@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160521225129) do
+ActiveRecord::Schema.define(version: 20160522220904) do
 
   create_table "agreement_marks", id: false, force: :cascade do |t|
     t.integer "incorrect_note_id", limit: 4
@@ -69,7 +69,7 @@ ActiveRecord::Schema.define(version: 20160521225129) do
   add_index "category_priorities", ["recessive_id"], name: "fk_rails_d624be02b9", using: :btree
 
   create_table "comments", force: :cascade do |t|
-    t.integer "parent_comment",   limit: 4
+    t.integer "parent_id",        limit: 4
     t.integer "submitted_by",     limit: 4
     t.boolean "hidden"
     t.date    "submitted"
@@ -81,7 +81,7 @@ ActiveRecord::Schema.define(version: 20160521225129) do
   end
 
   add_index "comments", ["commentable_type", "commentable_id"], name: "index_comments_on_commentable_type_and_commentable_id", using: :btree
-  add_index "comments", ["parent_comment"], name: "parent_comment", using: :btree
+  add_index "comments", ["parent_id"], name: "parent_comment", using: :btree
   add_index "comments", ["submitted_by"], name: "submitted_by", using: :btree
 
   create_table "compatibility_note_history_entries", force: :cascade do |t|
@@ -812,7 +812,7 @@ ActiveRecord::Schema.define(version: 20160521225129) do
   add_foreign_key "categories", "categories", column: "parent_id"
   add_foreign_key "category_priorities", "categories", column: "dominant_id"
   add_foreign_key "category_priorities", "categories", column: "recessive_id"
-  add_foreign_key "comments", "comments", column: "parent_comment", name: "comments_ibfk_1"
+  add_foreign_key "comments", "comments", column: "parent_id", name: "comments_ibfk_1"
   add_foreign_key "comments", "users", column: "submitted_by", name: "comments_ibfk_2"
   add_foreign_key "compatibility_note_history_entries", "compatibility_notes"
   add_foreign_key "compatibility_note_history_entries", "mods", column: "compatibility_mod_id"
