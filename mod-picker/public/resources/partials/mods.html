@@ -75,7 +75,7 @@
 
                 <div id="mod-picker-filters" class="filter-section">
                     <h3>Mod Picker Filters</h3>
-                    <div id="mod-picker-stat-filters" class="filter-section">
+                    <div class="filter-section">
                         <h4>Reputation <span class="filter-controls">
                             <span class="fa fa-wrench" ng-click="" title="Custom Value"></span>
                         </span></h4>
@@ -87,21 +87,23 @@
                         <h4>Reviews Count</h4>
                         <slider data="filters.reviews" type="CeilSlider" attr="200"></slider>
                     </div>
-                    <div id="mod-picker-ext-filters" class="filter-section" ng-show="extendedFilterVisibility.modPicker">
+
+                    <div class="filter-section" ng-show="extendedFilterVisibility.modPicker">
                         <h4>Number of Stars <span class="filter-controls">
                             <span class="fa fa-wrench" ng-click="" title="Custom Value"></span>
                         </span></h4>
                         <slider data="filters.stars" type="StepSlider" attr="1000"></slider>
 
                         <h4>Compatibility Notes Count</h4>
-                        <slider data="filters.cnotes" type="CeilSlider" attr="100"></slider>
+                        <slider data="filters.compatibility_notes" type="CeilSlider" attr="100"></slider>
 
                         <h4>Install Order Notes Count</h4>
-                        <slider data="filters.ionotes" type="CeilSlider" attr="100"></slider>
+                        <slider data="filters.install_order_notes" type="CeilSlider" attr="100"></slider>
 
                         <h4>Load Order Notes Count</h4>
-                        <slider data="filters.lonotes" type="CeilSlider" attr="100"></slider>
+                        <slider data="filters.load_order_notes" type="CeilSlider" attr="100"></slider>
                     </div>
+
                     <a class="expand" ng-click="toggleExtendedFilterVisibility('modPicker')">{{ extendedFilterVisibility.modPicker ? 'Show less' : 'Show more...' }}</a>
                 </div>
 
