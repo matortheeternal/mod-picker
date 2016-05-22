@@ -10,8 +10,16 @@ app.config(['$stateProvider', function ($stateProvider) {
             }
         }).state('mod.Reviews', {
             templateUrl: '/resources/partials/showMod/reviews.html',
-            controller: 'modController',
-            url: '/reviews'
+            controller: 'modReviewsController',
+            url: '/reviews',
+            params: {
+                sort: 'reputation'
+            },
+            resolve: {
+                reviews: function($stateParams, mod, modService) {
+                    return modService.retrieveReviews(mod.mod.id, {sort: $stateParams.sort});
+                }
+            }
         }).state('mod.Compatibility', {
             templateUrl: '/resources/partials/showMod/compatibility.html',
             controller: 'modController',
@@ -76,12 +84,6 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
             $scope.statusClass = "red-box";
             break;
     }
-
-    // getting review sections
-    reviewSectionService.retrieveReviewSections().then(function (reviewSections) {
-        $scope.allReviewSections = reviewSections;
-        $scope.reviewSections = reviewSectionService.getSectionsForCategory(reviewSections, $scope.primaryCategory);
-    });
 
     // getting games
     gameService.retrieveGames().then(function (data) {
@@ -619,4 +621,15 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
             return plugin.filename == $scope.currentPluginFilename;
         });
     };
+});
+
+app.controller('modReviewsController', function ($scope, $q, reviews, mod, reviewSectionService) {
+    $scope.reviews = reviews;
+    $scope.mod = mod;
+
+    // getting review sections
+    reviewSectionService.retrieveReviewSections().then(function (reviewSections) {
+        $scope.allReviewSections = reviewSections;
+        $scope.reviewSections = reviewSectionService.getSectionsForCategory(reviewSections, $scope.primaryCategory);
+    })
 });
