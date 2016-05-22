@@ -3,7 +3,7 @@ class ModTag < ActiveRecord::Base
 
   belongs_to :mod, :inverse_of => 'mod_tags'
   belongs_to :tag, :inverse_of => 'mod_tags'
-  belongs_to :user, :inverse_of => 'mod_tags'
+  belongs_to :user, :inverse_of => 'mod_tags', :foreign_key => 'submitted_by'
 
   # Validations
   validates :tag, :mod_id, :submitted_by, presence: true
