@@ -107,50 +107,20 @@
                     <a class="expand" ng-click="toggleExtendedFilterVisibility('modPicker')">{{ extendedFilterVisibility.modPicker ? 'Show less' : 'Show more...' }}</a>
                 </div>
 
-                <div id="nexus-mods-filters" class="filter-sections">
-                    <h3>Nexus Mods Filters</h3>
-                    <div id="nexus-mods-stat-filters" class="filter-section">
-                        <h4>Endorsements <span class="filter-controls">
-                            <span class="fa fa-wrench" ng-click="" title="Custom Value"></span>
-                        </span></h4>
-                        <slider data="filters.endorsements" type="StepSlider" attr="500000"></slider>
-
-                        <h4>Unique Downloads <span class="filter-controls">
-                            <span class="fa fa-wrench" ng-click="" title="Custom Value"></span>
-                        </span></h4>
-                        <slider data="filters.uniqueDownloads" type="StepSlider" attr="10000000"></slider>
-
-                        <h4>Total Downloads <span class="filter-controls">
-                            <span class="fa fa-wrench" ng-click="" title="Custom Value"></span>
-                        </span></h4>
-                        <slider data="filters.totalDownloads" type="StepSlider" attr="50000000"></slider>
+                <div id="stat-filters" class="filter-sections">
+                    <h3>Statistic Filters</h3>
+                    <div class="filter-section">
+                        <div ng-repeat="filter in statFilters" ng-if="filterAvailable(filter)" ng-show="filter.common || extendedFilterVisibility.stat">
+                            <h4>{{filter.label}}
+                                <span class="filter-controls" ng-if="filter.max > 500">
+                                    <span class="fa fa-wrench" ng-click="" title="Custom Value"></span>
+                                </span>
+                            </h4>
+                            <slider data="filters['{{filter.data}}']" type="{{filter.max > 500 ? 'StepSlider' : 'CeilSlider'}}" attr="{{filter.max}}"></slider>
+                        </div>
                     </div>
-                    <div id="nexus-mods-ext-filters" class="filter-section" ng-show="extendedFilterVisibility.nexusMods">
-                        <h4>Views <span class="filter-controls">
-                            <span class="fa fa-wrench" ng-click="" title="Custom Value"></span>
-                        </span></h4>
-                        <slider data="filters.views" type="StepSlider" attr="50000000"></slider>
 
-                        <h4>Posts Count <span class="filter-controls">
-                            <span class="fa fa-wrench" ng-click="" title="Custom Value"></span>
-                        </span></h4>
-                        <slider data="filters.posts" type="StepSlider" attr="500000"></slider>
-
-                        <h4>Videos Count</h4>
-                        <slider data="filters.videos" type="CeilSlider" attr="50"></slider>
-
-                        <h4>Images Count <span class="filter-controls">
-                            <span class="fa fa-wrench" ng-click="" title="Custom Value"></span>
-                        </span></h4>
-                        <slider data="filters.images" type="StepSlider" attr="1000"></slider>
-
-                        <h4>Files Count</h4>
-                        <slider data="filters.files" type="CeilSlider" attr="200"></slider>
-
-                        <h4>Articles Count</h4>
-                        <slider data="filters.articles" type="CeilSlider" attr="50"></slider>
-                    </div>
-                    <a class="expand" ng-click="toggleExtendedFilterVisibility('nexusMods')">{{ extendedFilterVisibility.nexusMods ? 'Show less' : 'Show more...' }}</a>
+                    <a class="expand" ng-click="toggleExtendedFilterVisibility('stat')">{{ extendedFilterVisibility.stat ? 'Show less' : 'Show more...' }}</a>
                 </div>
             </div>
             <div class="right-column right-browse-column">
