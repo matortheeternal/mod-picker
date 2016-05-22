@@ -3,17 +3,12 @@ class ModsController < ApplicationController
 
   # POST /mods
   def index
-    @mods = Mod.includes(:nexus_infos).accessible_by(current_ability).filter(filtering_params).sort(params[:sort]).paginate(:page => params[:page])
-    @count =  Mod.includes(:nexus_infos).accessible_by(current_ability).filter(filtering_params).sort(params[:sort]).count
+    @mods = Mod.includes(:nexus_infos, :authors).accessible_by(current_ability).filter(filtering_params).sort(params[:sort]).paginate(:page => params[:page])
+    @count =  Mod.accessible_by(current_ability).filter(filtering_params).sort(params[:sort]).count
 
     render :json => {
       mods: @mods.as_json({
-          :include => {
-              :nexus_infos => {:except => [:mod_id]},
-              :workshop_infos => {:except => [:mod_id]},
-              :lover_infos => {:except => [:mod_id]},
-              :authors => {:only => [:id, :username]}
-          }
+          :include => mods_include_hash
       }),
       max_entries: @count,
       entries_per_page: Mod.per_page
@@ -182,6 +177,16 @@ class ModsController < ApplicationController
     # Params we allow searching on
     def search_params
       params[:filters].slice(:search, :game)
+    end
+
+    # Includes hash for mods index query
+    def mods_include_hash
+      hash = { :authors => { :only => [:id, :username] } }
+      sources = params[:filters][:sources]
+      hash[:nexus_infos] = {:except => [:mod_id]} if sources[:nexus]
+      hash[:lover_infos] = {:except => [:mod_id]} if sources[:lab]
+      hash[:workshop_infos] = {:except => [:mod_id]} if sources[:workshop]
+      hash
     end
     
     # Params we allow filtering on
