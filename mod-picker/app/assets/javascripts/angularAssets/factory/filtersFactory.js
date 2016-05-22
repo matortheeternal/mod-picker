@@ -30,6 +30,13 @@ app.service('filtersFactory', function () {
                 max: 20000
             },
             {
+                label: "Downloads",
+                common: true,
+                sites: {nexus: true, lab: true},
+                data: "downloads",
+                max: 50000000
+            },
+            {
                 label: "Views",
                 common: true,
                 sites: {nexus: true, workshop: true, lab: true},
