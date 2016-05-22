@@ -6,10 +6,9 @@ app.directive('tabs', function () {
     return {
         restrict: 'E',
         templateUrl: '/resources/directives/tabs.html',
+        controller: 'tabsController',
         scope: {
         	tabs: '='
-        },
-        link: function(scope) {
         }
     };
 });
