@@ -3,7 +3,7 @@ class ModsController < ApplicationController
 
   # POST /mods
   def index
-    @mods = Mod.includes(:nexus_infos, :authors).accessible_by(current_ability).filter(filtering_params).sort(params[:sort]).paginate(:page => params[:page])
+    @mods = Mod.includes(:authors).accessible_by(current_ability).filter(filtering_params).sort(params[:sort]).paginate(:page => params[:page])
     @count =  Mod.accessible_by(current_ability).filter(filtering_params).sort(params[:sort]).count
 
     render :json => {
@@ -193,7 +193,8 @@ class ModsController < ApplicationController
     def filtering_params
       # construct valid filters array
       # TODO: add :updated back
-      valid_filters = [:search, :game, :released, :adult, :utility, :author, :categories, :tags, :stars, :reviews, :rating, :compatibility_notes, :install_order_notes, :load_order_notes, :views, :sources]
+      valid_filters = [:sources, :search, :game, :released, :adult, :utility, :categories, :tags, :stars, :reviews, :rating, :compatibility_notes, :install_order_notes, :load_order_notes, :views, :author]
+      source_filters = [:views, :author, :posts, :videos, :images, :discussions, :downloads, :favorites, :subscribers, :endorsements, :unique_downloads, :files, :bugs, :articles]
       sources = params[:filters][:sources]
 
       # filters available for nexus and workshop
@@ -208,7 +209,17 @@ class ModsController < ApplicationController
       # filters available for nexus only
       valid_filters.push(:endorsements, :unique_downloads, :files, :bugs, :articles) if sources[:nexus] && !sources[:lab] && !sources[:workshop]
 
-      params[:filters].slice(*valid_filters)
+      # get hash of permitted filters
+      permitted_filters = params[:filters].slice(*valid_filters)
+
+      # pad filters with sources
+      permitted_filters.each do |key, value|
+        if source_filters.include?(key.to_sym)
+          permitted_filters[key][:sources] = sources
+        end
+      end
+
+      permitted_filters
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
