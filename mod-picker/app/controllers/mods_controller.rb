@@ -186,7 +186,23 @@ class ModsController < ApplicationController
     
     # Params we allow filtering on
     def filtering_params
-      params[:filters].slice(:search, :game, :released, :updated, :adult, :utility, :author, :categories, :tags, :stars, :reviews, :rating, :compatibility_notes, :install_order_notes, :load_order_notes, :views, :downloads, :file_size, :posts, :videos, :images, :favorites, :discussions, :endorsements, :unique_downloads, :files, :bugs, :articles, :subscribers);
+      # construct valid filters array
+      valid_filters = [:search, :game, :released, :updated, :adult, :utility, :author, :categories, :tags, :stars, :reviews, :rating, :compatibility_notes, :install_order_notes, :load_order_notes, :views, :sources => [:nexus, :lab, :workshop]]
+      sources = params[:filters][:sources]
+
+      # filters available for nexus and workshop
+      valid_filters.push(:posts, :videos, :images, :discussions) if sources[:nexus] || sources[:workshop] && !sources[:lab]
+      # filters available for nexus and lab
+      valid_filters.push(:downloads) if sources[:nexus] || sources[:lab] && !sources[:workshop]
+      # filters available for lab or workshop
+      # TODO: file_size
+      valid_filters.push(:favorites) if sources[:lab] || sources[:workshop] && !sources[:nexus]
+      # filters available for workshop only
+      valid_filters.push(:subscribers) if sources[:workshop] && !sources[:lab] && !sources[:nexus]
+      # filters available for nexus only
+      valid_filters.push(:endorsements, :unique_downloads, :files, :bugs, :articles) if sources[:nexus] && !sources[:lab] && !sources[:workshop]
+
+      params[:filters].slice(valid_filters)
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
