@@ -86,5 +86,65 @@ app.service('filtersFactory', function () {
                 max: 50
             }
         ];
+    };
+
+    this.modPickerFilters = function() {
+        return [
+            {
+                label: "Reputation",
+                common: true,
+                data: "reputation",
+                max: 450
+            },
+            {
+                label: "Average Rating",
+                common: true,
+                data: "rating",
+                max: 100
+            },
+            {
+                label: "Reviews Count",
+                common: true,
+                data: "reviews",
+                max: 200
+            },
+            {
+                label: "Number of Stars",
+                common: false,
+                data: "stars",
+                max: 1000
+            },
+            {
+                label: "Compatibility Notes Count",
+                common: false,
+                data: "compatibility_notes",
+                max: 100
+            },
+            {
+                label: "Install Order Notes Count",
+                common: false,
+                data: "install_order_notes",
+                max: 100
+            },
+            {
+                label: "Load Order Notes Count",
+                common: false,
+                data: "load_order_notes",
+                max: 100
+            }
+        ]
+    };
+
+    this.modDateFilters = function() {
+        return [
+            {
+                label: "Date Updated",
+                data: "updated"
+            },
+            {
+                label: "Date Released",
+                data: "released"
+            }
+        ]
     }
 });
