@@ -18,7 +18,7 @@
                         </span>-->
                         <br>
                         <!-- TODO: reviews currently are on tab 1 -> should be dynamic anyway -> ui-router :D -->
-                        {{mod.reviews.length | number}} reviews
+                        {{mod.reviews_count | number}} reviews
                         <!-- TODO: add this with css :after content -->
                         <span class="divider" ng-if="mod.aliases || permissions.canManage">
                             |
