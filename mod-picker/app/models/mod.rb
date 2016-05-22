@@ -17,6 +17,7 @@ class Mod < ActiveRecord::Base
   # MOD PICKER SCOPES
   scope :stars, -> (low, high) { where(stars_count: (low..high)) }
   scope :reviews, -> (low, high) { where(reviews_count: (low..high)) }
+  scope :rating, -> (low, high) { where(average_rating: (low..high)) }
   scope :compatibility_notes, -> (low, high) { where(compatibility_notes_count: (low..high)) }
   scope :install_order_notes, -> (low, high) { where(install_order_notes_count: (low..high)) }
   scope :load_order_notes, -> (low, high) { where(load_order_notes_count: (low..high)) }
