@@ -17,7 +17,7 @@ app.filter('percentage', function() {
   };
 });
 
-app.controller('modController', function ($scope, $q, $stateParams, $timeout, modService, pluginService, categoryService, gameService, recordGroupService, userTitleService, assetUtils, reviewSectionService, userService, contributionService, contributionFactory) {
+app.controller('modController', function ($scope, $q, $stateParams, $timeout, modService, pluginService, categoryService, gameService, recordGroupService, userTitleService, assetUtils, reviewSectionService, userService, contributionService, contributionFactory, smoothScroll) {
     $scope.tags = [];
     $scope.newTags = [];
     $scope.sort = {};
@@ -202,7 +202,7 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
     $scope.updateEditor = function() {
         $timeout(function() {
             var editorBox = document.getElementsByClassName("add-note-box")[0];
-            editorBox.scrollIntoView(); // TODO: animate this
+            smoothScroll(editorBox, {offset: 20});
         });
         $scope.updateMDE = ($scope.updateMDE || 0) + 1;
     };
