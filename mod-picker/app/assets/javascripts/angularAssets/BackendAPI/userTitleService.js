@@ -1,5 +1,5 @@
 app.service('userTitleService', function (backend, $q) {
-    service = this;
+    var service = this;
 
     this.retrieveUserTitles = function () {
         var userTitles = $q.defer();
