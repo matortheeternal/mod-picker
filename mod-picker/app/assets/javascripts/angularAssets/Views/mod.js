@@ -43,6 +43,7 @@ app.filter('percentage', function() {
 
 app.controller('modController', function ($scope, $q, $stateParams, $timeout, mod, modService, pluginService, categoryService, gameService, recordGroupService, userTitleService, assetUtils, reviewSectionService, userService, contributionService, contributionFactory) {
     $scope.mod = mod.mod;
+    $scope.modStarred = mod.star;
 
     $scope.tags = [];
     $scope.newTags = [];
