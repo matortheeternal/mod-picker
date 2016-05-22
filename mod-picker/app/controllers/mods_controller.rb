@@ -187,7 +187,8 @@ class ModsController < ApplicationController
     # Params we allow filtering on
     def filtering_params
       # construct valid filters array
-      valid_filters = [:search, :game, :released, :updated, :adult, :utility, :author, :categories, :tags, :stars, :reviews, :rating, :compatibility_notes, :install_order_notes, :load_order_notes, :views, :sources => [:nexus, :lab, :workshop]]
+      # TODO: add :updated back
+      valid_filters = [:search, :game, :released, :adult, :utility, :author, :categories, :tags, :stars, :reviews, :rating, :compatibility_notes, :install_order_notes, :load_order_notes, :views, :sources]
       sources = params[:filters][:sources]
 
       # filters available for nexus and workshop
@@ -202,7 +203,7 @@ class ModsController < ApplicationController
       # filters available for nexus only
       valid_filters.push(:endorsements, :unique_downloads, :files, :bugs, :articles) if sources[:nexus] && !sources[:lab] && !sources[:workshop]
 
-      params[:filters].slice(valid_filters)
+      params[:filters].slice(*valid_filters)
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
