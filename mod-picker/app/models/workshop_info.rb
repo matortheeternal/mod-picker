@@ -17,8 +17,8 @@ class WorkshopInfo < ActiveRecord::Base
     end
 
     hash = Hash.new
-    hash[:updated] = self.date_updated if self.mod.updated < self.date_updated
-    hash[:released] = self.date_submitted if self.mod.released > self.date_submitted
+    hash[:updated] = self.date_updated if self.mod.updated.nil? || self.mod.updated < self.date_updated
+    hash[:released] = self.date_submitted if self.mod.released.nil? || self.mod.released > self.date_submitted
 
     if hash.any?
       self.mod.update_columns(hash)

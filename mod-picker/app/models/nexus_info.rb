@@ -12,10 +12,10 @@ class NexusInfo < ActiveRecord::Base
     if self.mod_id.blank?
       return
     end
-    
+
     hash = Hash.new
-    hash[:updated] = self.date_updated if self.mod.updated < self.date_updated
-    hash[:released] = self.date_added if self.mod.released > self.date_added
+    hash[:updated] = self.date_updated if self.mod.updated.nil? || self.mod.updated < self.date_updated
+    hash[:released] = self.date_added if self.mod.released.nil? || self.mod.released > self.date_added
 
     if hash.any?
       self.mod.update_columns(hash)
