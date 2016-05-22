@@ -376,8 +376,8 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
     $scope.editReview = function(review) {
         review.editing = true;
         $scope.activeReview = {
-            text_body: review.text_body,
-            ratings: review.review_ratings,
+            text_body: review.text_body.slice(0),
+            ratings: review.review_ratings.slice(0),
             overall_rating: review.overall_rating,
             original: review
         };
@@ -468,6 +468,16 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
         $event.target.select();
     };
 
+    // update a review locally
+    $scope.updateReview = function() {
+        var originalReview = $scope.activeReview.original;
+        var updatedReview = $scope.activeReview;
+        // update the values on the original review
+        originalReview.text_body = updatedReview.text_body.slice(0);
+        originalReview.review_ratings = updatedReview.ratings.slice(0);
+        originalReview.overall_rating = updatedReview.overall_rating;
+    };
+
     // save a review
     $scope.saveReview = function() {
         // return if the review is invalid
@@ -501,10 +511,8 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
                     $scope.submitMessage = "Review updated successfully!";
                     $scope.showSuccess = true;
 
-                    // update original review object
-                    $scope.activeReview.original.overall_rating = $scope.activeReview.overall_rating;
-                    // TODO: more updates?
-
+                    // update original review object and discard copy
+                    $scope.updateReview();
                     $scope.discardReview();
                 }
             });
