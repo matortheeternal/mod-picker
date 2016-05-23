@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160522220904) do
+ActiveRecord::Schema.define(version: 20160523000837) do
 
   create_table "agreement_marks", id: false, force: :cascade do |t|
     t.integer "incorrect_note_id", limit: 4
@@ -683,8 +683,8 @@ ActiveRecord::Schema.define(version: 20160522220904) do
   add_index "user_bios", ["user_id"], name: "user_id", using: :btree
 
   create_table "user_reputations", force: :cascade do |t|
-    t.float    "overall",          limit: 24
-    t.float    "offset",           limit: 24
+    t.float    "overall",          limit: 24, default: 0.0
+    t.float    "offset",           limit: 24, default: 0.0
     t.integer  "user_id",          limit: 4
     t.float    "site_rep",         limit: 24
     t.float    "contribution_rep", limit: 24
@@ -711,7 +711,7 @@ ActiveRecord::Schema.define(version: 20160522220904) do
     t.string  "timezone",             limit: 128
     t.string  "udate_format",         limit: 128
     t.string  "utime_format",         limit: 128
-    t.boolean "allow_comments"
+    t.boolean "allow_comments",                   default: true
     t.string  "theme",                limit: 255
   end
 
