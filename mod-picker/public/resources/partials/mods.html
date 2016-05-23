@@ -61,7 +61,7 @@
                 </div>
 
                 <div id="date-filters" class="filter-section">
-                    <h3>Date Filters</h3>
+                    <h2>Date Filters</h2>
                     <div ng-repeat="filter in dateFilters">
                         <h4>{{filter.label}}
                             <span class="filter-controls">
@@ -73,7 +73,7 @@
                 </div>
 
                 <div id="mod-picker-filters" class="filter-section">
-                    <h3>Mod Picker Filters</h3>
+                    <h2>Mod Picker Filters</h2>
                     <div ng-repeat="filter in modPickerFilters" ng-show="filter.common || extendedFilterVisibility.modPicker">
                         <h4>{{filter.label}}
                             <span class="filter-controls" ng-if="filter.max > 500">
@@ -87,7 +87,7 @@
                 </div>
 
                 <div id="stat-filters" class="filter-sections">
-                    <h3>Statistic Filters</h3>
+                    <h2>Statistic Filters</h2>
                     <div class="filter-section">
                         <div ng-repeat="filter in statFilters" ng-if="filterAvailable(filter)" ng-show="filter.common || extendedFilterVisibility.stat">
                             <h4>{{filter.label}}
