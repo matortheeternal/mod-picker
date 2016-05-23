@@ -16,7 +16,7 @@ app.controller('modlistController', function($scope, $log, $stateParams, modList
 	$scope.bIsEditing = true;
 	/*vars - Later down the road these will turn into GET functions*/
 	$scope.modlistTitle = "My Super Cool Mod List With All The Good Mods - With ENB";
-    $scope.currentTab = 'tools';
+    $scope.currentTab = 'mods';
 
 	$scope.bHideCatNotes = false;
 	$scope.bHideModGrpNotes = true;

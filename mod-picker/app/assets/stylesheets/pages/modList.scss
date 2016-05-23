@@ -10,7 +10,6 @@
 .section-header-container {
   width: 100%;
   border: 1px solid $hard_border_color;
-
 }
 
 .modlist-header-box {
@@ -86,7 +85,33 @@
   font-size: 24px;
 }
 
-
+.overview-content-container {
+  display: inline-flex;
+  justify-content: flex-start;
+  width: 100%;
+  ul {
+    list-style: none;
+    margin-bottom: 10px;
+    padding: 0;
+    text-align: center;
+    display: flex;
+    justify-content: space-around;
+  }
+  li {
+    display: inline-block;
+  }
+  div:nth-child(1) {
+    flex-grow: 2;
+  }
+  div:nth-child(2) {
+    flex-grow: 3;
+    border-left: 1px solid $hard_border_color;
+  }
+  span {
+    font-size: 24px;
+    display: block;
+  }
+}
 
 .list {
   list-style: none;
@@ -109,10 +134,12 @@
 .olist {
   margin: 0;
   text-align: center;
+  display: inline-block !important;
+
   li {
     vertical-align: middle;
     display: inline-block;
-    width:24%;
+    font-size: 12px;
   }
 }
 
