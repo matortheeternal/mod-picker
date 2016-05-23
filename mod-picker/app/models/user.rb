@@ -62,25 +62,12 @@ class User < ActiveRecord::Base
   accepts_nested_attributes_for :settings
   accepts_nested_attributes_for :bio
 
-  after_create :create_associations
-  after_initialize :init
-
   # Validations
-  validates :username,
-  presence: true,
-  uniqueness: {
-    case_sensitive: false
-  },
-  length: {in: 4..20 }
+  validates :username, presence: true, uniqueness: { case_sensitive: false }, length: {in: 4..20 }
 
   # TODO: add email regex
   # basic one, minimize false negatives and confirm users via email confirmation regardless
-  validates :email,
-  presence: true,
-  uniqueness: {
-    case_sensitive: false
-  },
-  length: {in: 7..254}
+  validates :email, presence: true, uniqueness: { case_sensitive: false }, length: {in: 7..254}
   # format: {
   # with: VALID_EMAIL_REGEX,
   # message: must be a valid email address format
@@ -88,9 +75,11 @@ class User < ActiveRecord::Base
   
   validates :role, presence: true
   validates :about_me, length: {maximum: 16384}
-
-  
   validate :validate_username
+
+  # Callbacks
+  after_create :create_associations
+  after_initialize :init
 
   def validate_username
     if User.where(email: username).exists?
