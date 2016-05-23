@@ -182,3 +182,21 @@ select.stealthy.ng-pristine {
 .browse-results {
   overflow-x: auto;
 }
+
+.mods-filter{
+  h2 {
+    margin-top: 40px;
+    margin-bottom: 4px;
+    font-size: larger;
+    font-weight: 400;
+    opacity: 0.75;
+  }
+
+  strong {
+    display: inline-block;
+    margin-top: 15px;
+    margin-bottom: 4px;
+    font-size: 13px;
+  }
+}
+
