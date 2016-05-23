@@ -156,23 +156,19 @@
     </div>
 
     <div ng-show="isSelected('tools')"> 
-        <table title='modlist-tools' class='section-table'>
-            <colgroup>
-                <col style="width: 75%">
-                <col style="width: 25%">
-            </colgroup>
-            <thead>
-                <tr>
-                    <th>
-                        <span class="section-title">Tools</span><br>
-                    </th>
-                    <th>
-                         <a ng-click="curToolsSecTab = 'list'" ng-class="cssChange('tools','list')">List</a><a ng-click="curToolsSecTab = 'tiles'" ng-class="cssChange('tools','tiles')">Tiles</a>
-                    </th>
-                </tr>
-            </thead>
-        </table> 
-        <div style="border-left: 1px solid black;border-right: 1px solid black;border-bottom: 1px solid black"> This is a Test</div>
+    <div class="modlist-content-block modlist-tab-item" ng-if="isEditing(true)">
+            <div class="content-title"> 
+                    <div>
+                        Tools
+                    </div>
+                    <div>
+                        <a ng-click="curToolsSecTab = 'list'" ng-class="cssChange('tools','list')">List</a> | <a ng-click="curToolsSecTab = 'tiles'" ng-class="cssChange('tools','tiles')">Tiles</a>
+                    </div>
+            </div>
+            <section class="note-content-container">
+                Show Tools
+            </section>
+    </div>
 
         <table title='modlist-missing-requirements' class='section-table'>
             <colgroup>

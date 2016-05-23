@@ -207,7 +207,6 @@
 }
 
 .modlist-tab-items {
-
   .modlist-tab-item {
     border: 1px solid $border_color;
     border-top: none;
@@ -222,5 +221,27 @@
 
   .CodeMirror-scroll {
     min-height: 400px;
+  }
+}
+
+.modlist-content-block {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    background-color: $primary_background;
+    border: 1px solid $border_color;
+
+ .content-title {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    font-size: 16px;
+    font-weight: 500;
+    color: $bar_text_color;
+    background-color: $bar_color;
+    padding: 10px;
+
+    div {
+      display: inline-block;
+    }
   }
 }
