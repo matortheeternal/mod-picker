@@ -1,5 +1,5 @@
 class IncorrectNote < ActiveRecord::Base
-  include Filterable
+  include Filterable, RecordEnhancements
 
   scope :by, -> (id) { where(submitted_by: id) }
 
@@ -12,14 +12,31 @@ class IncorrectNote < ActiveRecord::Base
   belongs_to :correctable, :polymorphic => true
   has_one :base_report, :as => 'reportable'
 
+  # Validations
   validates :text_body, length: { in: 64..16384 }
   validates :correctable_id, :correctable_type, presence: true
-  validates :correctable_type, inclusion: { in: ["CompatibilityNote", "InstallationNote", "Review"],
-                                            message: "Not a valid record type that can contain incorrect notes"}
 
-  after_initialize :init                                            
+  # Callbacks
+  after_create :increment_counters
+  before_save :set_dates
+  before_destroy :decrement_counters
 
-  def init
-    self.created_at ||= DateTime.now
-  end
+  private
+    def set_dates
+      if self.submitted.nil?
+        self.submitted = DateTime.now
+      else
+        self.edited = DateTime.now
+      end
+    end
+
+    def increment_counters
+      self.correctable.update_counter(:incorrect_notes_count, 1)
+      self.user.update_counter(:incorrect_notes_count, 1)
+    end
+
+    def decrement_counters
+      self.correctable.update_counter(:incorrect_notes_count, -1)
+      self.user.update_counter(:incorrect_notes_count, -1)
+    end 
 end

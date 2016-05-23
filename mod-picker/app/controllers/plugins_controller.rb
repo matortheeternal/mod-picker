@@ -13,7 +13,12 @@ class PluginsController < ApplicationController
     @plugins = Plugin.filter(search_params).sort({ column: "filename", direction: "ASC" }).limit(10)
 
     render :json => @plugins.as_json({
-        :only => [:id, :filename]
+        :only => [:mod_id, :id, :filename],
+        :include => {
+            :mod => {
+                :only => [:name]
+            }
+        }
     })
   end
 

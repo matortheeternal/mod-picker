@@ -1,5 +1,5 @@
 class Plugin < ActiveRecord::Base
-  include Filterable, Sortable
+  include Filterable, Sortable, RecordEnhancements
 
   attr_writer :master_filenames
 
@@ -12,7 +12,7 @@ class Plugin < ActiveRecord::Base
   # master associations
   has_many :dummy_masters, :inverse_of => 'plugin', :dependent => :destroy
   has_many :masters, :inverse_of => 'plugin', :dependent => :destroy
-  has_many :children, :class_name => 'Master', :inverse_of => 'master_plugin'
+  has_many :children, :class_name => 'Master', :inverse_of => 'master_plugin', :dependent => :destroy
 
   # plugin contents
   has_many :plugin_record_groups, :inverse_of => 'plugin', :dependent => :destroy
@@ -41,6 +41,10 @@ class Plugin < ActiveRecord::Base
 
   # callbacks
   after_create :create_associations
+
+  def update_lazy_counters
+    self.errors_count = self.plugin_errors.count
+  end
 
   def create_masters
     @master_filenames.each_with_index do |master_filename, index|

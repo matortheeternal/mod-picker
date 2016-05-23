@@ -1,5 +1,5 @@
 class User < ActiveRecord::Base
-  include Filterable
+  include Filterable, RecordEnhancements
 
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
@@ -34,6 +34,7 @@ class User < ActiveRecord::Base
   has_many :incorrect_notes, :foreign_key => 'submitted_by', :inverse_of => 'user'
   has_many :agreement_marks, :foreign_key => 'submitted_by', :inverse_of => 'user'
   has_many :helpful_marks, :foreign_key => 'submitted_by', :inverse_of => 'user'
+
   has_many :compatibility_note_history_entries, :foreign_key => 'submitted_by', :inverse_of => 'user'
 
   has_many :tags, :foreign_key => 'submitted_by', :inverse_of => 'user'
@@ -49,10 +50,10 @@ class User < ActiveRecord::Base
   belongs_to :active_mod_list, :class_name => 'ModList', :foreign_key => 'active_mod_list_id'
 
   has_many :mod_stars, :inverse_of => 'user'
-  has_many :starred_mods, :through => 'mod_stars', :inverse_of => 'user_stars'
+  has_many :starred_mods, :through => 'mod_stars'
 
-  has_many :mod_list_stars, :inverse_of => 'user_star'
-  has_many :starred_mod_lists, :through => 'mod_list_stars', :inverse_of => 'user_stars'
+  has_many :mod_list_stars, :inverse_of => 'user'
+  has_many :starred_mod_lists, :through => 'mod_list_stars'
 
   has_many :profile_comments, :class_name => 'Comment', :as => 'commentable'
   has_many :reports, :inverse_of => 'user'
@@ -61,30 +62,24 @@ class User < ActiveRecord::Base
   accepts_nested_attributes_for :settings
   accepts_nested_attributes_for :bio
 
-  after_create :create_associations
-  after_initialize :init
-
-  validates :username,
-  presence: true,
-  uniqueness: {
-    case_sensitive: false
-  },
-  length: 4..20
+  # Validations
+  validates :username, presence: true, uniqueness: { case_sensitive: false }, length: {in: 4..20 }
 
   # TODO: add email regex
   # basic one, minimize false negatives and confirm users via email confirmation regardless
-  validates :email,
-  presence: true,
-  uniqueness: {
-    case_sensitive: false
-  },
-  length: 7..100
+  validates :email, presence: true, uniqueness: { case_sensitive: false }, length: {in: 7..254}
   # format: {
   # with: VALID_EMAIL_REGEX,
   # message: must be a valid email address format
   # }
   
+  validates :role, presence: true
+  validates :about_me, length: {maximum: 16384}
   validate :validate_username
+
+  # Callbacks
+  after_create :create_associations
+  after_initialize :init
 
   def validate_username
     if User.where(email: username).exists?

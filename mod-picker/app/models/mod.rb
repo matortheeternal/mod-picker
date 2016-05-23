@@ -1,33 +1,116 @@
 class Mod < ActiveRecord::Base
-  include Filterable, Sortable
+  include Filterable, Sortable, RecordEnhancements
 
   attr_writer :tag_names, :asset_paths, :plugin_dumps, :nexus_info_id, :lover_info_id, :workshop_info_id
-
-  scope :search, -> (search) { where("name like ? OR aliases like ?", "%#{search}%", "%#{search}%") }
-  scope :author, -> (author) { joins(:nexus_infos).where("nexus_infos.authors like ? OR nexus_infos.uploaded_by like ?", "#{author}", "#{author}") }
-  scope :adult, -> (adult) { where(has_adult_content: adult) }
-  scope :game, -> (game) { where(game_id: game) }
-  scope :categories, -> (categories) { where("primary_category_id IN (?) OR secondary_category_id IN (?)", categories, categories) }
-  scope :stars, -> (low, high) { where(mod_stars_count: (low..high)) }
-  scope :reviews, -> (low, high) { where(reviews_count: (low..high)) }
-  scope :cnotes, -> (low, high) { where(compatibility_notes_count: (low..high)) }
-  scope :ionotes, -> (low, high) { where(install_order_notes_count: (low..high)) }
-  scope :lonotes, -> (low, high) { where(load_order_notes_count: (low..high)) }
-  scope :versions, -> (low, high) { where(mod_versions_count: (low..high)) }
-  scope :released, -> (low, high) { joins(:nexus_infos).where(:nexus_infos => {date_added: (parseDate(low)..parseDate(high))}) }
-  scope :updated, -> (low, high) { joins(:nexus_infos).where(:nexus_infos => {date_updated: (parseDate(low)..parseDate(high))}) }
-  scope :endorsements, -> (low, high) { joins(:nexus_infos).where(:nexus_infos => {endorsements: (low..high)} ) }
-  scope :tdl, -> (low, high) { joins(:nexus_infos).where(:nexus_infos => {total_downloads: (low..high)} ) }
-  scope :udl, -> (low, high) { joins(:nexus_infos).where(:nexus_infos => {unique_downloads: (low..high)} ) }
-  scope :views, -> (low, high) { joins(:nexus_infos).where(:nexus_infos => {views: (low..high)} ) }
-  scope :posts, -> (low, high) { joins(:nexus_infos).where(:nexus_infos=> {posts_count: (low..high)} ) }
-  scope :videos, -> (low, high) { joins(:nexus_infos).where(:nexus_infos => {videos_count: (low..high)} ) }
-  scope :images, -> (low, high) { joins(:nexus_infos).where(:nexus_infos => {images_count: (low..high)} ) }
-  scope :files, -> (low, high) { joins(:nexus_infos).where(:nexus_infos => {files_count: (low..high)} ) }
-  scope :articles, -> (low, high) { joins(:nexus_infos).where(:nexus_infos => {articles_count: (low..high)} ) }
-  scope :tags, -> (array) { joins(:tags).where(:tags => {text: array}) }
-
   enum status: [ :good, :dangerous, :obsolete ]
+
+  # GENERAL SCOPES
+  scope :search, -> (search) { where("name like ? OR aliases like ?", "%#{search}%", "%#{search}%") }
+  scope :game, -> (game) { where(game_id: game) }
+  scope :sources, -> (sources) {
+    results = self.where(nil)
+    results = results.includes(:nexus_infos).references(:nexus_infos) if sources[:nexus]
+    results = results.includes(:lover_infos).references(:lover_infos) if sources[:lab]
+    results = results.includes(:workshop_infos).references(:workshop_infos) if sources[:workshop]
+    results
+  }
+  scope :released, -> (range) { where(released: parseDate(range[:min])..parseDate(range[:max])) }
+  scope :updated, -> (range) { where(updated: parseDate(range[:min])..parseDate(range[:max])) }
+  scope :adult, -> (bool) { where(has_adult_content: bool) }
+  scope :utility, -> (bool) { where(is_utility: bool) }
+  scope :categories, -> (categories) { where("primary_category_id IN (?) OR secondary_category_id IN (?)", categories, categories) }
+  scope :tags, -> (array) { joins(:tags).where(:tags => {text: array}) }
+  # MOD PICKER SCOPES
+  scope :stars, -> (range) { where(stars_count: (range[:min]..range[:max])) }
+  scope :reviews, -> (range) { where(reviews_count: (range[:min]..range[:max])) }
+  scope :rating, -> (range) { where(average_rating: (range[:min]..range[:max])) }
+  scope :compatibility_notes, -> (range) { where(compatibility_notes_count: (range[:min]..range[:max])) }
+  scope :install_order_notes, -> (range) { where(install_order_notes_count: (range[:min]..range[:max])) }
+  scope :load_order_notes, -> (range) { where(load_order_notes_count: (range[:min]..range[:max])) }
+  # SHARED SCOPES (ALL)
+  scope :author, -> (hash) {
+    author = hash[:author]
+    sources = hash[:sources]
+
+    results = self.where(nil)
+    results = results.where("nexus_infos.authors like ? OR nexus_infos.uploaded_by like ?", author, author) if sources[:nexus]
+    results = results.where("lover_infos.uploaded_by like ?", author) if sources[:lab]
+    results = results.where("workshop_infos.uploaded_by like ?", author) if sources[:workshop]
+    results
+  }
+  scope :views, -> (range) {
+    sources = range[:sources]
+
+    results = self.where(nil)
+    results = results.where(:nexus_infos => {:views => range[:min]..range[:max]}) if sources[:nexus]
+    results = results.where(:lover_infos => {:views => range[:min]..range[:max]}) if sources[:lab]
+    results = results.where(:workshop_infos => {:views => range[:min]..range[:max]}) if sources[:workshop]
+    results
+  }
+  # SHARED SCOPES (SOME)
+  scope :downloads, -> (range) {
+    sources = range[:sources]
+
+    results = self.where(nil)
+    results = results.where(:nexus_infos => {:total_downloads => range[:min]..range[:max]}) if sources[:nexus]
+    results = results.where(:lover_infos => {:downloads => range[:min]..range[:max]}) if sources[:lab]
+    results
+  }
+  scope :file_size, -> (range) {
+    sources = range[:sources]
+
+    results = self.where(nil)
+    results = results.where(:lover_infos => {:file_size => range[:min]..range[:max]}) if sources[:lab]
+    results = results.where(:workshop_infos => {:file_size => range[:min]..range[:max]}) if sources[:workshop]
+    results
+  }
+  scope :posts, -> (range) {
+    sources = range[:sources]
+
+    results = self.where(nil)
+    results = results.where(:nexus_infos => {:posts_count => range[:min]..range[:max]}) if sources[:nexus]
+    results = results.where(:workshop_infos => {:comments_count => range[:min]..range[:max]}) if sources[:workshop]
+    results
+  }
+  scope :videos, -> (range) {
+    sources = range[:sources]
+
+    results = self.where(nil)
+    results = results.where(:nexus_infos => {:videos_count => range[:min]..range[:max]}) if sources[:nexus]
+    results = results.where(:workshop_infos => {:videos_count => range[:min]..range[:max]}) if sources[:workshop]
+    results
+  }
+  scope :images, -> (range) {
+    sources = range[:sources]
+
+    results = self.where(nil)
+    results = results.where(:nexus_infos => {:images_count => range[:min]..range[:max]}) if sources[:nexus]
+    results = results.where(:workshop_infos => {:images_count => range[:min]..range[:max]}) if sources[:workshop]
+    results
+  }
+  scope :favorites, -> (range)  {
+    sources = range[:sources]
+
+    results = self.where(nil)
+    results = results.where(:lover_infos => {:followers_count => range[:min]..range[:max]}) if sources[:lab]
+    results = results.where(:workshop_infos => {:favorites => range[:min]..range[:max]}) if sources[:workshop]
+    results
+  }
+  scope :discussions, -> (range) {
+    sources = range[:sources]
+
+    results = self.where(nil)
+    results = results.where(:nexus_infos => {:discussions_count => range[:min]..range[:max]}) if sources[:nexus]
+    results = results.where(:workshop_infos => {:discussions_count => range[:min]..range[:max]}) if sources[:workshop]
+    results
+  }
+  # UNIQUE SCOPES
+  scope :endorsements, -> (range) { where(:nexus_infos => { endorsements: range[:min]..range[:max] }) }
+  scope :unique_downloads, -> (range) { where(:nexus_infos => { unique_downloads: range[:min]..range[:max] }) }
+  scope :files, -> (range) { where(:nexus_infos => { files_count: range[:min]..range[:max] }) }
+  scope :bugs, -> (range) { where(:nexus_infos => { bugs_count: range[:min]..range[:max] }) }
+  scope :articles, -> (range) { where(:nexus_infos => { articles_count: range[:min]..range[:max] }) }
+  scope :subscribers, -> (range) { where(:workshop_infos => { subscribers: range[:min]..range[:max] }) }
 
   belongs_to :game, :inverse_of => 'mods'
   belongs_to :user, :foreign_key => 'submitted_by', :inverse_of => 'submitted_mods'
@@ -46,6 +129,10 @@ class Mod < ActiveRecord::Base
   # assets associated with the mod
   has_many :mod_asset_files, :inverse_of => 'mod', :dependent => :destroy
   has_many :asset_files, :through => :mod_asset_files, :inverse_of => 'mods'
+
+  # requirements associated with the mod
+  has_many :required_mods, :class_name => 'ModRequirement', :inverse_of => 'mod', :dependent => :destroy
+  has_many :required_by, :class_name => 'ModRequirement', :inverse_of => 'required_mod', :dependent => :destroy
   
   # users who can edit the mod
   has_many :mod_authors, :inverse_of => 'mod', :dependent => :destroy
@@ -76,12 +163,25 @@ class Mod < ActiveRecord::Base
   has_many :mod_list_mods, :inverse_of => 'mod', :dependent => :destroy
   has_many :mod_lists, :through => 'mod_list_mods', :inverse_of => 'mods'
 
+  accepts_nested_attributes_for :required_mods
+
   self.per_page = 100
 
-  after_create :create_associations
+  # Validations
+  validates :name, :status, :game_id, :primary_category_id, presence: true
+  validates :name, :aliases, length: {maximum: 128}
+
+  # callbacks
+  after_create :create_associations, :increment_counters
+  before_destroy :decrement_counters
 
   def no_author?
     self.mod_authors.count == 0
+  end
+
+  def update_lazy_counters
+    self.asset_files_count = ModAssetFile.where(mod_id: self.id).count
+    self.plugins_count = Plugin.where(mod_id: self.id).count
   end
 
   def create_tags
@@ -173,7 +273,6 @@ class Mod < ActiveRecord::Base
         self.reputation = endorsement_reputation
       end
     else
-      compute_average_rating
       review_reputation = (self.average_rating / 100)**3 * (510.0 / (1 + Math::exp(-0.2 * (self.reviews_count - 10))) - 60)
       self.reputation = review_reputation
     end
@@ -185,6 +284,7 @@ class Mod < ActiveRecord::Base
     self.create_plugins
     self.link_sources
     self.compute_extra_metrics
+    self.compute_average_rating
     self.compute_reputation
     self.save!
   end
@@ -243,4 +343,13 @@ class Mod < ActiveRecord::Base
       super(options)
     end
   end
+
+  private
+    def decrement_counters
+      self.user.update_counter(:submitted_mods_count, -1)
+    end
+
+    def increment_counters
+      self.user.update_counter(:submitted_mods_count, 1)
+    end
 end

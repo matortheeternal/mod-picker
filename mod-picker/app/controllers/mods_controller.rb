@@ -3,17 +3,12 @@ class ModsController < ApplicationController
 
   # POST /mods
   def index
-    @mods = Mod.includes(:nexus_infos).accessible_by(current_ability).filter(filtering_params).sort(params[:sort]).paginate(:page => params[:page])
-    @count =  Mod.includes(:nexus_infos).accessible_by(current_ability).filter(filtering_params).sort(params[:sort]).count
+    @mods = Mod.includes(:authors).accessible_by(current_ability).filter(filtering_params).sort(params[:sort]).paginate(:page => params[:page])
+    @count =  Mod.accessible_by(current_ability).filter(filtering_params).sort(params[:sort]).count
 
     render :json => {
       mods: @mods.as_json({
-          :include => {
-              :nexus_infos => {:except => [:mod_id]},
-              :workshop_infos => {:except => [:mod_id]},
-              :lover_infos => {:except => [:mod_id]},
-              :authors => {:only => [:id, :username]}
-          }
+          :include => mods_include_hash
       }),
       max_entries: @count,
       entries_per_page: Mod.per_page
@@ -183,21 +178,59 @@ class ModsController < ApplicationController
     def search_params
       params[:filters].slice(:search, :game)
     end
+
+    # Includes hash for mods index query
+    def mods_include_hash
+      hash = { :authors => { :only => [:id, :username] } }
+      sources = params[:filters][:sources]
+      hash[:nexus_infos] = {:except => [:mod_id]} if sources[:nexus]
+      hash[:lover_infos] = {:except => [:mod_id]} if sources[:lab]
+      hash[:workshop_infos] = {:except => [:mod_id]} if sources[:workshop]
+      hash
+    end
     
     # Params we allow filtering on
     def filtering_params
-      params[:filters].slice(:search, :author, :categories, :tags, :adult, :game, :stars, :reviews, :versions, :released, :updated, :endorsements, :tdl, :udl, :views, :posts, :videos, :images, :files, :articles);
+      # construct valid filters array
+      valid_filters = [:sources, :search, :game, :released, :updated, :adult, :utility, :categories, :tags, :stars, :reviews, :rating, :compatibility_notes, :install_order_notes, :load_order_notes, :views, :author]
+      source_filters = [:views, :author, :posts, :videos, :images, :discussions, :downloads, :favorites, :subscribers, :endorsements, :unique_downloads, :files, :bugs, :articles]
+      sources = params[:filters][:sources]
+
+      # filters available for nexus and workshop
+      valid_filters.push(:posts, :videos, :images, :discussions) if sources[:nexus] || sources[:workshop] && !sources[:lab]
+      # filters available for nexus and lab
+      valid_filters.push(:downloads) if sources[:nexus] || sources[:lab] && !sources[:workshop]
+      # filters available for lab or workshop
+      # TODO: file_size
+      valid_filters.push(:favorites) if sources[:lab] || sources[:workshop] && !sources[:nexus]
+      # filters available for workshop only
+      valid_filters.push(:subscribers) if sources[:workshop] && !sources[:lab] && !sources[:nexus]
+      # filters available for nexus only
+      valid_filters.push(:endorsements, :unique_downloads, :files, :bugs, :articles) if sources[:nexus] && !sources[:lab] && !sources[:workshop]
+
+      # get hash of permitted filters
+      permitted_filters = params[:filters].slice(*valid_filters)
+
+      # pad filters with sources
+      permitted_filters.each do |key, value|
+        if source_filters.include?(key.to_sym)
+          permitted_filters[key][:sources] = sources
+        end
+      end
+
+      permitted_filters
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def mod_params
       params.require(:mod).permit(:game_id, :name, :aliases, :is_utility, :has_adult_content, :primary_category_id, :secondary_category_id, :released, :nexus_info_id, :lovers_info_id, :workshop_info_id,
+         :required_mods_attributes => [:required_id],
          :tag_names => [],
          :asset_paths => [],
          :plugin_dumps => [:filename, :author, :description, :crc_hash, :record_count, :override_count, :file_size,
            :master_filenames => [],
            :plugin_record_groups_attributes => [:sig, :record_count, :override_count],
-           :plugin_errors_attributes => [:signature, :form_id, :type, :path, :name, :data],
+           :plugin_errors_attributes => [:signature, :form_id, :group, :path, :name, :data],
            :overrides_attributes => [:fid, :sig]])
     end
 end

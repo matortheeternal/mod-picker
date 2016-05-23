@@ -17,7 +17,7 @@ app.filter('percentage', function() {
   };
 });
 
-app.controller('modController', function ($scope, $q, $stateParams, $timeout, modService, pluginService, categoryService, gameService, recordGroupService, userTitleService, assetUtils, reviewSectionService, userService, contributionService, contributionFactory) {
+app.controller('modController', function ($scope, $q, $stateParams, $timeout, modService, pluginService, categoryService, gameService, recordGroupService, userTitleService, assetUtils, reviewSectionService, userService, contributionService, contributionFactory, smoothScroll) {
     $scope.tags = [];
     $scope.newTags = [];
     $scope.sort = {};
@@ -198,6 +198,15 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
         });
     };
 
+    // update the markdown editor
+    $scope.updateEditor = function() {
+        $timeout(function() {
+            var editorBox = document.getElementsByClassName("add-note-box")[0];
+            smoothScroll(editorBox, {offset: 20});
+        });
+        $scope.updateMDE = ($scope.updateMDE || 0) + 1;
+    };
+
     // TAB RELATED LOGIC
     $scope.currentTab = $scope.tabs[0];
 
@@ -338,8 +347,8 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
 
     // instantiate a new review object
     $scope.startNewReview = function() {
-        // set up newReview object
-        $scope.newReview = {
+        // set up activeReview object
+        $scope.activeReview = {
             ratings: [],
             text_body: ""
         };
@@ -352,22 +361,42 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
         $scope.reviewSections.forEach(function(section) {
             if (section.default) {
                 $scope.addNewRating(section);
-                $scope.newReview.text_body += "## " + section.name + "\n";
-                $scope.newReview.text_body += "*" + section.prompt + "*\n\n";
+                $scope.activeReview.text_body += "## " + section.name + "\n";
+                $scope.activeReview.text_body += "*" + section.prompt + "*\n\n";
             }
         });
 
         $scope.updateOverallRating();
 
         // update the markdown editor
-        $scope.updateMDE = true;
-        $scope.updateMDE = false;
+        $scope.updateEditor();
     };
 
-    // Add a new rating section to the newReview
+    // edit an existing review
+    $scope.editReview = function(review) {
+        review.editing = true;
+        $scope.activeReview = {
+            text_body: review.text_body.slice(0),
+            ratings: review.review_ratings.slice(0),
+            overall_rating: review.overall_rating,
+            original: review
+        };
+
+        // set up availableSections array
+        $scope.availableSections = $scope.reviewSections.filter(function(section) {
+            return $scope.activeReview.ratings.find(function(rating) {
+                return rating.section == section;
+            }) == undefined;
+        });
+
+        // update the markdown editor
+        $scope.updateEditor();
+    };
+
+    // Add a new rating section to the activeReview
     $scope.addNewRating = function(section) {
         // return if we're at the maximum number of ratings
-        if ($scope.newReview.ratings.length >= 5 || $scope.availableSections.length == 0) {
+        if ($scope.activeReview.ratings.length >= 5 || $scope.availableSections.length == 0) {
             return;
         }
 
@@ -383,7 +412,7 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
             section: section,
             rating: 100
         };
-        $scope.newReview.ratings.push(ratingObj);
+        $scope.activeReview.ratings.push(ratingObj);
     };
 
     //remove the section from reviewSections
@@ -407,26 +436,31 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
 
     };
 
-    // remove a rating section from newReview
+    // remove a rating section from activeReview
     $scope.removeRating = function() {
         // return if we there's only one rating left
-        if ($scope.newReview.ratings.length == 1) {
+        if ($scope.activeReview.ratings.length == 1) {
             return;
         }
 
         // pop the last rating off of the ratings array
-        var rating = $scope.newReview.ratings.pop();
+        var rating = $scope.activeReview.ratings.pop();
         // add the removed section back to the available list
         $scope.availableSections.push(rating.section);
     };
 
     $scope.validateReview = function() {
-        $scope.newReview.valid = $scope.newReview.text_body.length > 512;
+        $scope.activeReview.valid = $scope.activeReview.text_body.length > 512;
     };
 
     // discard a new review object
     $scope.discardReview = function() {
-        delete $scope.newReview;
+        if ($scope.activeReview.original) {
+            $scope.activeReview.original.editing = false;
+            $scope.activeReview = null;
+        } else {
+            delete $scope.activeReview;
+        }
     };
 
     // focus text in rating input
@@ -434,16 +468,26 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
         $event.target.select();
     };
 
-    // submit a review
-    $scope.submitReview = function() {
+    // update a review locally
+    $scope.updateReview = function() {
+        var originalReview = $scope.activeReview.original;
+        var updatedReview = $scope.activeReview;
+        // update the values on the original review
+        originalReview.text_body = updatedReview.text_body.slice(0);
+        originalReview.review_ratings = updatedReview.ratings.slice(0);
+        originalReview.overall_rating = updatedReview.overall_rating;
+    };
+
+    // save a review
+    $scope.saveReview = function() {
         // return if the review is invalid
-        if (!$scope.newReview.valid) {
+        if (!$scope.activeReview.valid) {
             return;
         }
 
         // submit the review
         var review_ratings = [];
-        $scope.newReview.ratings.forEach(function(item) {
+        $scope.activeReview.ratings.forEach(function(item) {
             review_ratings.push({
                 review_section_id: item.section.id,
                 rating: item.rating
@@ -453,83 +497,119 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
             review: {
                 game_id: $scope.mod.game_id,
                 mod_id: $scope.mod.id,
-                text_body: $scope.newReview.text_body,
+                text_body: $scope.activeReview.text_body,
                 review_ratings_attributes: review_ratings
             }
         };
-        $scope.newReview.submitting = true;
-        contributionService.submitContribution("reviews", reviewObj).then(function(data) {
-            if (data.status == "ok") {
-                $scope.submitMessage = "Review submitted successfully!";
-                $scope.showSuccess = true;
-                // TODO: push the review onto the $scope.mod.reviews array
-                delete $scope.newReview;
-            }
-        });
+        $scope.activeReview.submitting = true;
+
+        // use update or submit contribution
+        if ($scope.activeReview.original) {
+            var reviewId = $scope.activeReview.original.id;
+            contributionService.updateContribution("reviews", reviewId, reviewObj).then(function(data) {
+                if (data.status == "ok") {
+                    $scope.submitMessage = "Review updated successfully!";
+                    $scope.showSuccess = true;
+
+                    // update original review object and discard copy
+                    $scope.updateReview();
+                    $scope.discardReview();
+                }
+            });
+        } else {
+            contributionService.submitContribution("reviews", reviewObj).then(function(data) {
+                if (data.status == "ok") {
+                    $scope.submitMessage = "Review submitted successfully!";
+                    $scope.showSuccess = true;
+                    // TODO: push the review onto the $scope.mod.reviews array
+                    $scope.discardReview();
+                }
+            });
+        }
     };
 
     //update the average rating of the new review
     $scope.updateOverallRating = function() {
-        //TODO: this might become ressource heavy on mods with many ratings.
-        //TODO: Reply - this isn't looping through all the reviews, it's looping through the sections of a single review.  It's still not necessary though because we can do the math in the view model I think.  -Mator
-        // possible solution: (overallRating * number of ratings + newRating) / number of ratings + 1
         var sum = 0;
-        for (var i = 0; i<$scope.newReview.ratings.length; i++) {
-            sum += $scope.newReview.ratings[i].rating;
+        for (var i = 0; i < $scope.activeReview.ratings.length; i++) {
+            sum += $scope.activeReview.ratings[i].rating;
         }
 
-        $scope.newReview.overallRating = Math.round(sum/$scope.newReview.ratings.length);
+        $scope.activeReview.overall_rating = Math.round(sum / $scope.activeReview.ratings.length);
     };
 
-    //removes all non numbers and rounds to the nearest int and doesn't go above 100 or below 0
-    $scope.formatScore = function(input) {
-        var output = input;
-        output = output.replace(/[^\d\.]/g, '');
-        output = Math.round(output);
-        if (output > 100) {
-            output = 100;
+    // functions for keeping rating inputs numerical and in the range 0->100
+    $scope.keyPress = function($event) {
+        var key = $event.keyCode;
+        if (!(key >= 48 && key <= 57)) {
+            $event.preventDefault();
         }
-        else if (output < 0) {
-            output = 0;
-        }
-        return output;
+    };
+    $scope.keyUp = function(review_rating) {
+        var output = parseInt(review_rating.rating) || 0;
+        review_rating.rating = output > 100 ? 100 : (output < 0 ? 0 : output);
+        $scope.updateOverallRating();
     };
 
     // COMPATIBILITY NOTE RELATED LOGIC
     // instantiate a new compatibility note object
     $scope.startNewCompatibilityNote = function() {
-        // set up newCompatibilityNote object
-        $scope.newCompatibilityNote = {
+        // set up activeCompatibilityNote object
+        $scope.activeCompatibilityNote = {
             compatibility_type: "incompatible",
             text_body: contributionFactory.getDefaultTextBody("CompatibilityNote")
         };
 
         // update the markdown editor
-        $scope.updateMDE = true;
-        $scope.updateMDE = false;
+        $scope.updateEditor();
+    };
+
+    // edit an existing compatibility note
+    $scope.editCompatibilityNote = function(compatibility_note) {
+        compatibility_note.editing = true;
+        var secondMod = compatibility_note.mods.find(function(mod) {
+            return mod.id !== $scope.mod.id;
+        });
+        $scope.activeCompatibilityNote = {
+            compatibility_type: compatibility_note.compatibility_type,
+            mod_id: secondMod.id,
+            mod_name: secondMod.name,
+            compatibility_mod_id: compatibility_note.compatibility_mod_id,
+            compatibility_plugin_id: compatibility_note.compatibility_plugin_id,
+            text_body: compatibility_note.text_body,
+            original: compatibility_note
+        };
+
+        // update the markdown editor
+        $scope.updateEditor();
     };
 
     $scope.validateCompatibilityNote = function() {
-        // exit if we don't have a newCompatibilityNote yet
-        if (!$scope.newCompatibilityNote) {
+        // exit if we don't have a activeCompatibilityNote yet
+        if (!$scope.activeCompatibilityNote) {
             return;
         }
 
-        $scope.newCompatibilityNote.valid = $scope.newCompatibilityNote.text_body.length > 512 &&
-            ($scope.newCompatibilityNote.second_mod_id !== undefined) &&
-            ($scope.newCompatibilityNote.compatibility_type === "compatibility mod") ==
-            ($scope.newCompatibilityNote.compatibility_mod !== undefined);
+        $scope.activeCompatibilityNote.valid = $scope.activeCompatibilityNote.text_body.length > 512 &&
+            ($scope.activeCompatibilityNote.second_mod_id !== undefined) &&
+            ($scope.activeCompatibilityNote.compatibility_type === "compatibility mod") ==
+            ($scope.activeCompatibilityNote.compatibility_mod !== undefined);
     };
 
     // discard the compatibility note object
     $scope.discardCompatibilityNote = function() {
-        delete $scope.newCompatibilityNote;
+        if ($scope.activeCompatibilityNote.original) {
+            $scope.activeCompatibilityNote.original.editing = false;
+            $scope.activeCompatibilityNote = null;
+        } else {
+            delete $scope.activeCompatibilityNote;
+        }
     };
 
     // submit a compatibility note
     $scope.submitCompatibilityNote = function() {
         // return if the compatibility note is invalid
-        if (!$scope.newCompatibilityNote.valid) {
+        if (!$scope.activeCompatibilityNote.valid) {
             return;
         }
 
@@ -537,21 +617,21 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
         var noteObj = {
             compatibility_note: {
                 game_id: $scope.mod.game_id,
-                compatibility_type: $scope.newCompatibilityNote.compatibility_type,
+                compatibility_type: $scope.activeCompatibilityNote.compatibility_type,
                 first_mod_id: $scope.mod.id,
-                second_mod_id: $scope.newCompatibilityNote.second_mod_id,
-                text_body: $scope.newCompatibilityNote.text_body,
-                compatibility_plugin_id: $scope.newCompatibilityNote.compatibility_plugin_id,
-                compatibility_mod_id: $scope.newCompatibilityNote.compatibility_mod_id
+                second_mod_id: $scope.activeCompatibilityNote.mod_id,
+                text_body: $scope.activeCompatibilityNote.text_body,
+                compatibility_plugin_id: $scope.activeCompatibilityNote.compatibility_plugin_id,
+                compatibility_mod_id: $scope.activeCompatibilityNote.compatibility_mod_id
             }
         };
-        $scope.newCompatibilityNote.submitting = true;
+        $scope.activeCompatibilityNote.submitting = true;
         contributionService.submitContribution("compatibility_notes", noteObj).then(function(data) {
             if (data.status == "ok") {
                 $scope.submitMessage = "Compatibility Note submitted successfully!";
                 $scope.showSuccess = true;
                 // TODO: push the compatibility note onto the $scope.mod.compatibility_notes array
-                delete $scope.newCompatibilityNote;
+                delete $scope.activeCompatibilityNote;
             }
         });
     };
@@ -559,39 +639,110 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
     // INSTALL ORDER NOTE RELATED LOGIC
     // instantiate a new install order note object
     $scope.startNewInstallOrderNote = function() {
-        // set up newReview object
-        $scope.newInstallOrderNote = {
+        // set up activeInstallOrderNote object
+        $scope.activeInstallOrderNote = {
             order: "before",
             text_body: ""
         };
 
         // update the markdown editor
-        $scope.updateMDE = true;
-        $scope.updateMDE = false;
+        $scope.updateEditor();
+    };
+
+    // edit an existing install order note
+    $scope.editInstallOrderNote = function(install_order_note) {
+        install_order_note.editing = true;
+        $scope.activeInstallOrderNote = install_order_note;
+
+        // update the markdown editor
+        $scope.updateEditor();
+    };
+
+    $scope.validateInstallOrderNote = function() {
+        // exit if we don't have a activeInstallOrderNote yet
+        if (!$scope.activeInstallOrderNote) {
+            return;
+        }
+
+        $scope.activeInstallOrderNote.valid = $scope.activeInstallOrderNote.text_body.length > 512 &&
+            ($scope.activeInstallOrderNote.mod_id !== undefined);
     };
 
     // discard the install order note object
     $scope.discardInstallOrderNote = function() {
-        delete $scope.newInstallOrderNote;
+        if ($scope.activeInstallOrderNote.editing) {
+            $scope.activeInstallOrderNote.editing = false;
+            $scope.activeInstallOrderNote = null;
+        } else {
+            delete $scope.activeInstallOrderNote;
+        }
+    };
+    
+    // submit an install order note
+    $scope.submitInstallOrderNote = function() {
+        // return if the install order note is invalid
+        if (!$scope.activeInstallOrderNote.valid) {
+            return;
+        }
+
+        // submit the install order note
+        var first_mod_id, second_mod_id;
+        if ($scope.activeInstallOrderNote.order === 'before') {
+            first_mod_id = $scope.mod.id;
+            second_mod_id = $scope.activeInstallOrderNote.mod_id;
+        } else {
+            first_mod_id = $scope.activeInstallOrderNote.mod_id;
+            second_mod_id = $scope.mod.id;
+        }
+        var noteObj = {
+            install_order_note: {
+                game_id: $scope.mod.game_id,
+                first_mod_id: first_mod_id,
+                second_mod_id: second_mod_id,
+                text_body: $scope.activeInstallOrderNote.text_body
+            }
+        };
+        $scope.activeInstallOrderNote.submitting = true;
+        contributionService.submitContribution("install_order_notes", noteObj).then(function(data) {
+            if (data.status == "ok") {
+                $scope.submitMessage = "Install Order Note submitted successfully!";
+                $scope.showSuccess = true;
+                // TODO: push the Install Order note onto the $scope.mod.install_order_notes array
+                delete $scope.activeInstallOrderNote;
+            }
+        });
     };
 
     // LOAD ORDER NOTE RELATED LOGIC
     // instantiate a new load order note object
     $scope.startNewLoadOrderNote = function() {
-        // set up newReview object
-        $scope.newLoadOrderNote = {
+        // set up activeLoadOrderNote object
+        $scope.activeLoadOrderNote = {
             order: "before",
             text_body: ""
         };
 
         // update the markdown editor
-        $scope.updateMDE = true;
-        $scope.updateMDE = false;
+        $scope.updateEditor();
+    };
+
+    // edit an existing load order note
+    $scope.editLoadOrderNote = function(load_order_note) {
+        load_order_note.editing = true;
+        $scope.activeLoadOrderNote = load_order_note;
+
+        // update the markdown editor
+        $scope.updateEditor();
     };
 
     // discard the load order note object
     $scope.discardLoadOrderNote = function() {
-        delete $scope.newLoadOrderNote;
+        if ($scope.activeLoadOrderNote.editing) {
+            $scope.activeLoadOrderNote.editing = false;
+            $scope.activeLoadOrderNote = null;
+        } else {
+            delete $scope.activeLoadOrderNote;
+        }
     };
 
     // ANALYSIS RELATED LOGIC

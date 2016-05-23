@@ -1,6 +1,10 @@
 class UserBio < ActiveRecord::Base
   belongs_to :user
 
+  # Validations
+  # TODO: Validations
+
+  # Callbacks
   after_create :generate_verification_tokens
 
   def generate_verification_tokens
@@ -75,10 +79,10 @@ class UserBio < ActiveRecord::Base
       workshop_stats = WorkshopHelper.scrape_workshop_stats(user_path)
 
       # write fields to bio
-      self.workshop_user_username = user_path
+      self.workshop_user_path = user_path
+      self.workshop_username = user_data[:username]
       self.workshop_submissions_count = workshop_stats[:submissions_count]
       self.workshop_followers_count = workshop_stats[:followers_count]
-      self.workshop_verified = true
 
       # populate mod author records
       ModAuthor.link_author(WorkshopInfo, self.user_id, self.workshop_username)

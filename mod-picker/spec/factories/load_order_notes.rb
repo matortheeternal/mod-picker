@@ -13,11 +13,15 @@
 
 FactoryGirl.define do
   factory :load_order_note do
-    # submitted TimeDate.current; should be done in the model
+    # FIXME: I feel like there should be a better way to do this association in load_order_notes
     association :submitted_by, factory: :user
-    load_first 1
-    load_second 2
+    load_first  { FactoryGirl.create(:plugin).id }
+    load_second { FactoryGirl.create(:plugin).id }
     # submitted DateTime.now
     text_body { Faker::Lorem.sentence(30, false, 6) }
+
+    # after(:build) do |load_order_note, evaluator|
+
+    # end
   end
 end

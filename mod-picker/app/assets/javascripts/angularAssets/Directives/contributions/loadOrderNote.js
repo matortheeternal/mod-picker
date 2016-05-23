@@ -6,6 +6,7 @@ app.directive('loadOrderNote', function () {
         	note: '=',
             index: '=',
             user: '=',
+            edit: '=?',
             showAuthorColumn: '='
         }
     };
