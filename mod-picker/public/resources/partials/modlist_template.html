@@ -158,12 +158,12 @@
     <div ng-show="isSelected('tools')"> 
         <div class="modlist-content-block modlist-tab-item">
             <div class="content-title"> 
-                    <div>
-                        Tools
-                    </div>
-                    <div>
-                        <a ng-click="curToolsSecTab = 'list'" ng-class="cssChange('tools','list')">List</a> | <a ng-click="curToolsSecTab = 'tiles'" ng-class="cssChange('tools','tiles')">Tiles</a>
-                    </div>
+                <div>
+                    Tools
+                </div>
+                <div>
+                    <a ng-click="curToolsSecTab = 'list'" ng-class="cssChange('tools','list')">List</a><a ng-click="curToolsSecTab = 'tiles'" ng-class="cssChange('tools','tiles')">Tiles</a>
+                </div>
             </div>
             <section class="note-content-container">
                 Show Tools Service
@@ -172,13 +172,13 @@
 
         <div class="modlist-content-block modlist-tab-item">
             <div class="content-title"> 
-                    <div>
-                        Missing Requirements
-                        <span class="section-header-counter"># Unresolved Issues</span>
-                    </div>
-                    <div>
-                        <a ng-click="" class="section-unselected-tab">Resolve All Issues</a>
-                    </div>
+                <div>
+                    Missing Requirements
+                    <span class="section-header-counter"># Unresolved Issues</span>
+                </div>
+                <div>
+                    <a ng-click="" class="section-unselected-tab">Resolve All Issues</a>
+                </div>
             </div>
             <section class="note-content-container">
                 Show Missing Requirements Service
@@ -231,7 +231,19 @@
                 </div>
             </section>
         </div> 
-        
+        <div class="modlist-content-block modlist-tab-item">
+            <div class="content-title"> 
+                <div>
+                    Mods
+                </div>
+                <div>
+                    <a ng-click="curModsSecTab = 'list'" ng-class="cssChange('mods','list')">List</a><a ng-click="curModsSecTab = 'tiles'" ng-class="cssChange('mods','tiles')">Tiles</a>
+                </div>
+            </div>
+            <section class="note-content-container">
+                Show Mods Service
+            </section>
+        </div> 
         <table title='modlist-mods' class='section-table'>
             <colgroup>
                 <col style="width: 25%">
