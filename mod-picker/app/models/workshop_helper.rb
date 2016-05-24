@@ -130,6 +130,14 @@ class WorkshopHelper
     '%b %d, %Y @ %I:%M%p'
   end
 
+  def self.game_id_from_app_id(app_id)
+    Game.pluck(:id, :steam_app_ids).each do |id, app_ids|
+      if app_ids.split(',').include?(app_id)
+        return id
+      end
+    end
+  end
+
   def self.scrape_mod(id)
     # construct mod url
     mod_url = "http://steamcommunity.com/sharedfiles/filedetails/#{id}"
@@ -150,6 +158,8 @@ class WorkshopHelper
     mod_data[:last_scraped] = DateTime.now
     mod_data[:mod_name] = doc.at_css(".workshopItemTitle").text
     mod_data[:uploaded_by] = doc.at_css(".creatorsBlock .friendBlockContent").children[0].text.strip
+    app_id = doc.at_css("#ig_bottom .breadcrumbs").css('a/@href')[0].text.split('/').last
+    mod_data[:game_id] = game_id_from_app_id(app_id)
 
     # scrape dates
     # <.detailsStatsContainerRight>

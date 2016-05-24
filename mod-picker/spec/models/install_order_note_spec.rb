@@ -55,9 +55,10 @@ RSpec.describe InstallOrderNote, :model do
       end
     end
 
+    # Used fixtures here because these validations don't rely on a newly created object
     describe "text_body" do
       it "should be valid with a 64 < length < 16384" do
-        note = build(:install_order_note)
+        note = install_order_notes(:installOrderAlpha)
 
         valid_bodies = [("a" * 64), ("a" * 16384), ("a" * 222), ("a" * 10000)]
 
@@ -69,7 +70,7 @@ RSpec.describe InstallOrderNote, :model do
       end
 
       it "should be invalid if blank/empty" do
-        note = build(:install_order_note)
+        note = install_order_notes(:installOrderAlpha)
 
         invalid_bodies = [nil, ""]
 

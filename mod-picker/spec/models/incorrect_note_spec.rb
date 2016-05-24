@@ -78,7 +78,7 @@ RSpec.describe IncorrectNote, :model do
       it "should be valid correctable_type is a valid type" do
         note = build(:incorrect_note)
 
-        valid_types = ["CompatibilityNote", "InstallationNote", "Review"]
+        valid_types = ["CompatibilityNote", "InstallOrderNote", "InstallationNote", "Review"]
 
         valid_types.each do |note_type|
           note.correctable_type = note_type

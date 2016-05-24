@@ -1,5 +1,5 @@
 class Plugin < ActiveRecord::Base
-  include Filterable, Sortable
+  include Filterable, Sortable, RecordEnhancements
 
   attr_writer :master_filenames
 
@@ -41,6 +41,10 @@ class Plugin < ActiveRecord::Base
 
   # callbacks
   after_create :create_associations
+
+  def update_lazy_counters
+    self.errors_count = self.plugin_errors.count
+  end
 
   def create_masters
     @master_filenames.each_with_index do |master_filename, index|

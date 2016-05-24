@@ -18,10 +18,18 @@ require 'rails_helper'
 #   add_index "compatibility_note_history_entries", ["submitted_by"], name: "fk_rails_7e4343a2d1", using: :btree
 
 RSpec.describe CompatibilityNoteHistoryEntry, :model do
-  fixtures :compatibility_note_history_entries
+  fixtures :compatibility_note_history_entries, :users
 
   it "should have a valid fixture" do
     expect(compatibility_note_history_entries(:history_note_apocalypse)).to be_valid
+  end
+
+  it "should have valid factory parameters" do
+    note = build(:compatibility_note_history_entry)
+
+    note.valid?
+    expect(note).to be_valid
+    expect(build(:compatibility_note_history_entry)).to be_valid
   end
 
   it "should have a valid factory" do
@@ -78,9 +86,12 @@ RSpec.describe CompatibilityNoteHistoryEntry, :model do
 
     describe "compatibility_type" do
       let(:valid_list){ [:incompatible, :"partially incompatible", :"compatibility mod", :"compatibility option", :"make custom patch"] }
+      let(:valid_note){compatibility_note_history_entries(:history_note_skyre)}
       it "should be valid if using valid compatibility_type enum" do
         valid_list.each_with_index do |item, index|
-          expect(create(:compatibility_note_history_entry, compatibility_type: index)).to be_valid
+          valid_note.compatibility_type = index
+          expect(valid_note.compatibility_type).to eq(index)
+          expect(valid_note).to be_valid
         end
       end
 
