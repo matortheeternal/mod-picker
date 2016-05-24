@@ -52,8 +52,8 @@
     </div>
 </div>
 
-<loader data="reviews" content-class="" spinner-class="big-spinner">
-    <div ng-repeat="review in reviews" class="content-block" ng-if="!review.editing">
+<loader data="mod.reviews" content-class="" spinner-class="big-spinner">
+    <div ng-repeat="review in mod.reviews" class="content-block" ng-if="!review.editing">
         <review review="review" show-author-column="true" index="100 + $index" user="user" edit="editReview"></review>
     </div>
 

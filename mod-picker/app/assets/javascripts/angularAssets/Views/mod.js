@@ -189,9 +189,9 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
         $scope.updateMDE = ($scope.updateMDE || 0) + 1;
     };
 
-    // // TAB RELATED LOGIC
+    // TAB RELATED LOGIC
     // $scope.currentTab = $scope.tabs[0];
-
+    //
     // $scope.switchTab = function(targetTab) {
     //     switch (targetTab.name) {
     //         case 'Reviews':
