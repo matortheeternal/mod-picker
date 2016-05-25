@@ -1,5 +1,5 @@
 class CompatibilityNote < ActiveRecord::Base
-  include Filterable, CounterCacheEnhancements
+  include Filterable, RecordEnhancements
 
   scope :by, -> (id) { where(submitted_by: id) }
   scope :mod, -> (id) { joins(:mod_versions).where(:mod_versions => {mod_id: id}) }
@@ -81,12 +81,14 @@ class CompatibilityNote < ActiveRecord::Base
     end
 
     def increment_counters
-      self.mod.update_counter(:compatibility_notes_count, 1)
+      self.first_mod.update_counter(:compatibility_notes_count, 1)
+      self.second_mod.update_counter(:compatibility_notes_count, 1)
       self.user.update_counter(:compatibility_notes_count, 1)
     end
 
     def decrement_counters
-      self.mod.update_counter(:compatibility_notes_count, -1)
+      self.first_mod.update_counter(:compatibility_notes_count, -1)
+      self.second_mod.update_counter(:compatibility_notes_count, -1)
       self.user.update_counter(:compatibility_notes_count, -1)
     end
 end

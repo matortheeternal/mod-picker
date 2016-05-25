@@ -1,5 +1,5 @@
 class BaseReport < ActiveRecord::Base
-  include CounterCacheEnhancements
+  include RecordEnhancements
 
   belongs_to :reportable, :polymorphic => true
   has_many :reports, :inverse_of => 'base_report'

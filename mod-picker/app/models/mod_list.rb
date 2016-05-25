@@ -1,5 +1,5 @@
 class ModList < ActiveRecord::Base
-  include Filterable, Sortable, CounterCacheEnhancements
+  include Filterable, Sortable, RecordEnhancements
 
   enum status: [ :planned, :"under construction", :testing, :complete ]
 

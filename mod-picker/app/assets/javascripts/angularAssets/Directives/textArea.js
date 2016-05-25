@@ -33,9 +33,9 @@ app.directive('textArea', function ($timeout) {
                 }
             });
 
-            scope.$watch('refresh', function(newVal, oldVal) {
-                // Skip the initial watch firing
-                if (newVal !== oldVal) {
+            scope.$watch('refresh', function(newVal) {
+                // Skip undefined or false variables
+                if (newVal) {
                     $timeout(function() {
                         mde.codemirror.refresh();
                     });

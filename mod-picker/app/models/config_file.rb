@@ -1,5 +1,5 @@
 class ConfigFile < ActiveRecord::Base
-  include CounterCacheEnhancements
+  include RecordEnhancements
 
   belongs_to :game, :inverse_of => 'config_files'
 

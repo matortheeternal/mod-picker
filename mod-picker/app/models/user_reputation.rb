@@ -1,5 +1,5 @@
 class UserReputation < ActiveRecord::Base
-  include Filterable, CounterCacheEnhancements
+  include Filterable, RecordEnhancements
 
   scope :user, -> (id) { where(user_id: id) }
 
