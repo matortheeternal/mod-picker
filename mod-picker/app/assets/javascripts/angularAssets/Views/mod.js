@@ -20,7 +20,11 @@ app.config(['$stateProvider', function ($stateProvider) {
             },
             resolve: {
                 reviews: function($stateParams, modId, modService) {
+                  //only resolve if the data will be different than what is already in $scope
+                  if (this.lastReviewSort !== $stateParams.sort) {
+                    this.lastReviewSort = $stateParams.sort;
                     return modService.retrieveReviews(modId, {sort: $stateParams.sort});
+                  }
                 }
             }
         }).state('mod.Compatibility', {
@@ -32,7 +36,11 @@ app.config(['$stateProvider', function ($stateProvider) {
             },
             resolve: {
                 compatibilityNotes: function($stateParams, modId, modService) {
+                  //only resolve if the data will be different than what is already in $scope
+                  if (this.lastCompatibilitySort !== $stateParams.sort) {
+                    this.lastCompatibilitySort = $stateParams.sort;
                     return modService.retrieveCompatibilityNotes(modId, {sort: $stateParams.sort});
+                  }
                 }
             }
         }).state('mod.Install Order', {
@@ -44,7 +52,11 @@ app.config(['$stateProvider', function ($stateProvider) {
             },
             resolve: {
                 installOrderNotes: function($stateParams, modId, modService) {
+                  //only resolve if the data will be different than what is already in $scope
+                  if (this.lastInstallOrderSort !== $stateParams.sort) {
+                    this.lastInstallOrderSort = $stateParams.sort;
                     return modService.retrieveInstallOrderNotes(modId, {sort: $stateParams.sort});
+                  }
                 }
             }
         }).state('mod.Load Order', {
@@ -56,7 +68,11 @@ app.config(['$stateProvider', function ($stateProvider) {
             },
             resolve: {
                 loadOrderNotes: function($stateParams, modId, modService) {
+                  //only resolve if the data will be different than what is already in $scope
+                  if (this.lastLoadOrderSort !== $stateParams.sort) {
+                    this.lastLoadOrderSort = $stateParams.sort;
                     return modService.retrieveLoadOrderNotes(modId, {sort: $stateParams.sort});
+                  }
                 }
             }
         }).state('mod.Analysis', {
@@ -437,7 +453,9 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
 });
 
 app.controller('modReviewsController', function ($scope, reviews, reviewSectionService) {
-  $scope.mod.reviews = reviews;
+  if(reviews) {
+    $scope.mod.reviews = reviews;
+  }
 
   //set review sections on mod
   $scope.mod.reviewSections = reviewSectionService.getSectionsForCategory($scope.mod.primary_category);
@@ -650,17 +668,21 @@ app.controller('modReviewsController', function ($scope, reviews, reviewSectionS
 });
 
 app.controller('modCompatibilityController', function ($scope, compatibilityNotes) {
-  $scope.mod.compatibility_notes = compatibilityNotes;
-
+  if(compatibilityNotes) {
+    $scope.mod.compatibility_notes = compatibilityNotes;
+  }
 });
 
 app.controller('modInstallOrderController', function ($scope, installOrderNotes) {
-  $scope.mod.install_order_notes = installOrderNotes;
-
+  if(installOrderNotes) {
+    $scope.mod.install_order_notes = installOrderNotes;
+  }
 });
 
 app.controller('modLoadOrderController', function ($scope, loadOrderNotes) {
-  $scope.mod.load_order_notes = loadOrderNotes;
+  if(loadOrderNotes) {
+    $scope.mod.load_order_notes = loadOrderNotes;
+  }
 
 });
 
