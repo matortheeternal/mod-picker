@@ -28,8 +28,8 @@ Rails.application.routes.draw do
     # tags
     match '/tags', to: 'tags#index', via: 'post'
     match '/tags/:id', to: 'tags#destroy', via: 'delete'
-    match '/mods/:id/tag', to: 'mods#tag', via: 'post'
-    match '/mod_lists/:id/tag', to: 'mod_lists#tag', via: 'post'
+    match '/mods/:id/tags', to: 'mods#update_tags', via: 'put'
+    match '/mod_lists/:id/tags', to: 'mod_lists#update_tags', via: 'put'
 
     # mods
     resources :mods, only: [:show, :update, :destroy]
