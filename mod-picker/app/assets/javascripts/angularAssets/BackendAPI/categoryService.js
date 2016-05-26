@@ -37,17 +37,13 @@ app.service('categoryService', function ($q, backend) {
     //storing all categories in a variable
     var allCategories = this.retrieveCategories();
 
-    this.getCategoryById = function(id) {
-      output = $q.defer();
+    this.getCategoryById = function (id) {
+      var output = $q.defer();
 
-      allCategories.then(function(categories) {
-        for (var i = 0; i < categories.length; i++) {
-            var category = categories[i];
-            if (category.id == id) {
-              output.resolve(category);
-              return;
-            }
-        }
+      allCategories.then(function (categories) {
+        output.resolve(categories.find(function (category) {
+          return category.id === id;
+        }));
       });
       return output.promise;
     };
