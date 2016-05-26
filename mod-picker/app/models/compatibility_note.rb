@@ -1,7 +1,5 @@
 class CompatibilityNote < ActiveRecord::Base
-  include Filterable
-
-  before_save :set_dates
+  include Filterable, RecordEnhancements
 
   scope :by, -> (id) { where(submitted_by: id) }
   scope :mod, -> (id) { joins(:mod_versions).where(:mod_versions => {mod_id: id}) }
@@ -34,9 +32,14 @@ class CompatibilityNote < ActiveRecord::Base
   # old versions of this compatibility note
   has_many :compatibility_note_history_entries, :inverse_of => 'compatibility_note'
 
-  # validations
-  validates :submitted_by, presence: true
-  validates :text_body, length: { in: 64..16384 }
+  # Validations
+  validates :submitted_by, :compatibility_type, :text_body, :first_mod_id, :second_mod_id, :game_id, presence: true
+  validates :text_body, length: { in: 256..16384 }
+
+  # Callbacks
+  after_create :increment_counters
+  before_save :set_dates
+  before_destroy :decrement_counters
 
   def mods
     [first_mod, second_mod]
@@ -75,5 +78,17 @@ class CompatibilityNote < ActiveRecord::Base
       else
         self.edited = DateTime.now
       end
+    end
+
+    def increment_counters
+      self.first_mod.update_counter(:compatibility_notes_count, 1)
+      self.second_mod.update_counter(:compatibility_notes_count, 1)
+      self.user.update_counter(:compatibility_notes_count, 1)
+    end
+
+    def decrement_counters
+      self.first_mod.update_counter(:compatibility_notes_count, -1)
+      self.second_mod.update_counter(:compatibility_notes_count, -1)
+      self.user.update_counter(:compatibility_notes_count, -1)
     end
 end

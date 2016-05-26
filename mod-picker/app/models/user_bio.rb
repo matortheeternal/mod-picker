@@ -1,6 +1,10 @@
 class UserBio < ActiveRecord::Base
   belongs_to :user
 
+  # Validations
+  # TODO: Validations
+
+  # Callbacks
   after_create :generate_verification_tokens
 
   def generate_verification_tokens

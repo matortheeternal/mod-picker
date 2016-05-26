@@ -1,7 +1,7 @@
 class Plugin < ActiveRecord::Base
-  include Filterable, Sortable
+  include Filterable, Sortable, RecordEnhancements
 
-  attr_writer :master_filenames
+  attr_writer :master_plugins
 
   scope :search, -> (search) { where("filename like ?", "%#{search}%") }
   scope :game, -> (game) { where(game_id: game) }
@@ -42,11 +42,16 @@ class Plugin < ActiveRecord::Base
   # callbacks
   after_create :create_associations
 
+  def update_lazy_counters
+    self.errors_count = self.plugin_errors.count
+  end
+
   def create_masters
-    @master_filenames.each_with_index do |master_filename, index|
-      master_plugin = Plugin.find_by(filename: master_filename)
+    @master_plugins.each_with_index do |master, index|
+      master_plugin = Plugin.find_by(filename: master.filename, crc_hash: master.crc_hash)
+      master_plugin = Plugin.find_by(filename: master.filename) if master_plugin.nil?
       if master_plugin.nil?
-        self.dummy_masters.create(filename: master_filename, index: index)
+        self.dummy_masters.create(filename: master.filename, index: index)
       else
         self.masters.create(master_plugin_id: master_plugin.id, index: index)
       end

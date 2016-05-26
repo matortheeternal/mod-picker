@@ -37,8 +37,11 @@ namespace :reset do
     Quote.delete_all
     ModList.delete_all
     ModAuthor.delete_all
+    OverrideRecord.delete_all
     PluginError.delete_all
     PluginRecordGroup.delete_all
+    DummyMaster.delete_all
+    Master.delete_all
     Plugin.delete_all
     RecordGroup.delete_all
     ModRequirement.delete_all

@@ -11,6 +11,7 @@ app.directive('compatibilityNote', function () {
         	note: '=',
             index: '=',
             user: '=',
+            edit: '=?',
             showAuthorColumn: '=',
             modId: '=?'
         }

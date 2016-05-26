@@ -1,7 +1,5 @@
 class LoadOrderNote < ActiveRecord::Base
-  include Filterable
-
-  after_initialize :init
+  include Filterable, RecordEnhancements
 
   scope :by, -> (id) { where(submitted_by: id) }
   scope :mod, -> (id) { joins(:mod_versions).where(:mod_versions => {mod_id: id}) }
@@ -27,12 +25,17 @@ class LoadOrderNote < ActiveRecord::Base
   has_many :incorrect_notes, :as => 'correctable'
   has_one :base_report, :as => 'reportable'
 
-  validates :first_plugin_id, :second_plugin_id, presence: true
-  validates :text_body, length: {in: 64..16384}
+  # old versions of this load order note
+  has_many :load_order_note_history_entries, :inverse_of => 'load_order_note'
 
-  def init
-    self.submitted ||= DateTime.now
-  end
+  # validations
+  validates :first_plugin_id, :second_plugin_id, presence: true
+  validates :text_body, length: {in: 256..16384}
+
+  # Callbacks
+  after_create :increment_counters
+  before_save :set_dates
+  before_destroy :decrement_counters
 
   def mods
     [first_mod, second_mod]
@@ -63,4 +66,27 @@ class LoadOrderNote < ActiveRecord::Base
       super(options)
     end
   end
+
+  private
+    def set_dates
+      if self.submitted.nil?
+        self.submitted = DateTime.now
+      else
+        self.edited = DateTime.now
+      end
+    end
+
+    def increment_counters
+      self.mod.update_counter(:load_order_notes_count, 1)
+      self.user.update_counter(:load_order_notes_count, 1)
+      self.first_plugin.update_counter(:load_order_notes_count, 1)
+      self.second_plugin.update_counter(:load_order_notes_count, 1)
+    end
+
+    def decrement_counters
+      self.mod.update_counter(:load_order_notes_count, -1)
+      self.user.update_counter(:load_order_notes_count, -1)
+      self.first_plugin.update_counter(:load_order_notes_count, -1)
+      self.second_plugin.update_counter(:load_order_notes_count, -1)
+    end
 end
