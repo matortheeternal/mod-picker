@@ -25,19 +25,43 @@ app.config(['$stateProvider', function ($stateProvider) {
             }
         }).state('mod.Compatibility', {
             templateUrl: '/resources/partials/showMod/compatibility.html',
-            controller: 'modController',
-            url: '/compatibility'
+            controller: 'modCompatibilityController',
+            url: '/compatibility',
+            params: {
+                sort: 'reputation'
+            },
+            resolve: {
+                compatibilityNotes: function($stateParams, modId, modService) {
+                    return modService.retrieveCompatibilityNotes(modId, {sort: $stateParams.sort});
+                }
+            }
         }).state('mod.Install Order', {
             templateUrl: '/resources/partials/showMod/installOrder.html',
-            controller: 'modController',
-            url: '/install-order'
+            controller: 'modInstallOrderController',
+            url: '/install-order',
+            params: {
+                sort: 'reputation'
+            },
+            resolve: {
+                installOrderNotes: function($stateParams, modId, modService) {
+                    return modService.retrieveInstallOrderNotes(modId, {sort: $stateParams.sort});
+                }
+            }
         }).state('mod.Load Order', {
             templateUrl: '/resources/partials/showMod/loadOrder.html',
-            controller: 'modController',
-            url: '/load-order'
+            controller: 'modLoadOrderController',
+            url: '/load-order',
+            params: {
+                sort: 'reputation'
+            },
+            resolve: {
+                loadOrderNotes: function($stateParams, modId, modService) {
+                    return modService.retrieveLoadOrderNotes(modId, {sort: $stateParams.sort});
+                }
+            }
         }).state('mod.Analysis', {
             templateUrl: '/resources/partials/showMod/analysis.html',
-            controller: 'modController',
+            controller: 'modAnalysisController',
             url: '/analysis'
         });
 }]);
