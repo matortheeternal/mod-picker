@@ -14,5 +14,5 @@ app.directive('tabs', function () {
 });
 
 app.controller('tabsController', function($scope, $state) {
-    $state.go('.' + $scope.tabs[0]);
+    // $state.go('.' + $scope.tabs[0]);
 });
