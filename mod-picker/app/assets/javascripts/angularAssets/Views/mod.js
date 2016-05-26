@@ -106,16 +106,6 @@ app.config(['$stateProvider', function ($stateProvider) {
         });
 }]);
 
-//TODO: belongs in its own filter
-app.filter('percentage', function() {
-  return function(input) {
-    if (isNaN(input)) {
-      return input;
-    }
-    return Math.floor(input * 100) + '%';
-  };
-});
-
 app.controller('modController', function ($scope, $q, $stateParams, $timeout, modObject, modService, pluginService, categoryService, gameService, recordGroupService, userTitleService, assetUtils, reviewSectionService, userService, contributionService, contributionFactory, smoothScroll){
     $scope.mod = modObject.mod;
     $scope.mod.star = modObject.star;
