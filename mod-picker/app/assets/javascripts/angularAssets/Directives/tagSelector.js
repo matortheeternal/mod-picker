@@ -12,13 +12,15 @@ app.directive('tagSelector', function () {
             showModListsCount: '=?',
             showAuthor: '=?',
             showRemove: '=?',
-            showAdd: '=?'
+            showAdd: '=?',
+            saveCallback: '=?'
         }
     }
 });
 
 app.controller('tagSelectorController', function ($scope, tagService) {
     $scope.rawNewTags = [];
+    $scope.removedTags = [];
 
     tagService.retrieveTags().then(function(data) {
         $scope.tags = data;
@@ -37,6 +39,26 @@ app.controller('tagSelectorController', function ($scope, tagService) {
     $scope.removeTag = function($index) {
         $scope.rawNewTags.splice($index, 1);
         $scope.storeTags();
+    };
+
+    $scope.removeActiveTag = function ($index) {
+        var removedTag = $scope.activeTags.splice($index, 1);
+        $scope.removedTags.push(removedTag);
+    };
+
+    $scope.resetTags = function () {
+        $scope.activeTags = $scope.activeTags.concat($scope.removedTags);
+        $scope.rawNewTags = [];
+        $scope.storeTags();
+        $scope.$applyAsync();
+    };
+
+    $scope.saveTags = function() {
+        var updatedTags = $scope.newTags.slice(0);
+        $scope.activeTags.forEach(function(tag) {
+            updatedTags.push(tag.text);
+        });
+        $scope.saveCallback(updatedTags);
     };
 
     $scope.applyTag = function(index, tag) {
