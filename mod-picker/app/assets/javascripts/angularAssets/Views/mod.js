@@ -176,42 +176,6 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
         $scope.updateMDE = ($scope.updateMDE || 0) + 1;
     };
 
-    $scope.retrieveCompatibilityNotes = function() {
-        var options = {
-            sort: $scope.sort.compatibility_notes || 'reputation',
-            filters: {
-                mod_list: $scope.filters.compatibility_notes || true
-            }
-        };
-        modService.retrieveCompatibilityNotes($stateParams.modId, options).then(function(data) {
-            $scope.mod.compatibility_notes = data;
-        });
-    };
-
-    $scope.retrieveInstallOrderNotes = function() {
-        var options = {
-            sort: $scope.sort.compatibility_notes || 'reputation',
-            filters: {
-                mod_list: $scope.filters.install_order_notes
-            }
-        };
-        modService.retrieveInstallOrderNotes($stateParams.modId, options).then(function(data) {
-            $scope.mod.install_order_notes = data;
-        });
-    };
-
-    $scope.retrieveLoadOrderNotes = function() {
-        var options = {
-            sort: $scope.sort.compatibility_notes || 'reputation',
-            filters: {
-                mod_list: $scope.filters.load_order_notes
-            }
-        };
-        modService.retrieveLoadOrderNotes($stateParams.modId, options).then(function(data) {
-            $scope.mod.load_order_notes = data;
-        });
-    };
-
     // HEADER RELATED LOGIC
     $scope.starMod = function() {
         modService.starMod($scope.mod.id, $scope.modStarred).then(function(data) {
