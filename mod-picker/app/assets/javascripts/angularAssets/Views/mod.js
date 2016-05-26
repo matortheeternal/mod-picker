@@ -147,7 +147,7 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
             canManage: isAuthor || isModerator || isAdmin,
             canSuggest: (rep >= 40),
             canModerate: isModerator || isAdmin
-        }
+        };
     };
 
     //associate record groups with plugins
