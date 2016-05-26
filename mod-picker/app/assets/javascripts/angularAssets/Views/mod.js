@@ -4,7 +4,7 @@ app.config(['$stateProvider', function ($stateProvider) {
             controller: 'modController',
             url: '/mod/:modId',
             resolve: {
-                mod: function(modService, $stateParams) {
+                modObject: function(modService, $stateParams) {
                     return modService.retrieveMod($stateParams.modId);
                 },
             }
@@ -49,9 +49,9 @@ app.filter('percentage', function() {
   };
 });
 
-app.controller('modController', function ($scope, $q, $stateParams, $timeout, mod, modService, pluginService, categoryService, gameService, recordGroupService, userTitleService, assetUtils, reviewSectionService, userService, contributionService, contributionFactory, smoothScroll){
-    $scope.mod = mod.mod;
-    $scope.modStarred = mod.star;
+app.controller('modController', function ($scope, $q, $stateParams, $timeout, modObject, modService, pluginService, categoryService, gameService, recordGroupService, userTitleService, assetUtils, reviewSectionService, userService, contributionService, contributionFactory, smoothScroll){
+    $scope.mod = modObject.mod;
+    $scope.mod.star = modObject.star;
     $scope.tags = [];
     $scope.newTags = [];
     $scope.sort = {};
