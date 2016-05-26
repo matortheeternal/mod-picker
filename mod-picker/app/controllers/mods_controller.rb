@@ -57,6 +57,40 @@ class ModsController < ApplicationController
     end
   end
 
+  # PATCH/PUT /mods/1/tags
+  def update_tags
+    # build array of ids for updated tags
+    # create new tags
+    mod_tags = []
+    params[:tags].each do |tag_text|
+      tag = Tag.find(game_id: params[:game_id], text: tag_text)
+      if tag.nil?
+        tag = Tag.new(game_id: params[:game_id], text: tag_text, submitted_by: current_user.id)
+        authorize! :create, @new_tag
+        if tag.save
+          mod_tags.push(tag.id)
+        end
+      else
+        mod_tags.push(tag.id)
+      end
+    end
+
+    # authorize tag deletions
+    @mod.mod_tags.each do |mod_tag|
+      if mod_tags.exclude?(mod_tag.tag_id)
+        authorize! :destroy, mod_tag
+      end
+    end
+
+    # update tags
+    @mod.tags.destroy_all
+    mod_tags.each do |tag_id|
+      mod_tag = @mod.mod_tags.new(tag_id: tag_id)
+      authorize! :create, mod_tag
+      mod_tag.save
+    end
+  end
+
   # POST /mods/1/star
   def create_star
     @mod_star = ModStar.find_or_initialize_by(mod_id: params[:id], user_id: current_user.id)
