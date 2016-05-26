@@ -40,13 +40,22 @@ app.service('categoryService', function ($q, backend) {
         return categoryPriorities.promise;
     };
 
-    this.getCategoryById = function(categories, id) {
+    //storing all categories in a variable
+    var allCategories = this.retrieveCategories();
+
+    this.getCategoryById = function(id) {
+      output = $q.defer();
+
+      allCategories.then(function(categories) {
         for (var i = 0; i < categories.length; i++) {
             var category = categories[i];
             if (category.id == id) {
-                return category;
+              output.resolve(category);
+              return;
             }
         }
+      });
+      return output.promise;
     };
 
     this.retrievePrimaryCategory = function () {
