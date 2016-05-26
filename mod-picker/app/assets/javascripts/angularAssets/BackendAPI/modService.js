@@ -95,7 +95,7 @@ app.service('modService', function(backend, $q, helpfulMarkService, userTitleSer
         var output = $q.defer();
         backend.retrieve('/mods/' + modId + '/compatibility_notes', options).then(function (data) {
             helpfulMarkService.associateHelpfulMarks(data.compatibility_notes, data.helpful_marks);
-            userTitleService.associateTitles(data.compatibitiliy_notes);
+            userTitleService.associateTitles(data.compatibility_notes);
             output.resolve(data.compatibility_notes);
         });
         return output.promise;
@@ -105,7 +105,7 @@ app.service('modService', function(backend, $q, helpfulMarkService, userTitleSer
         var installOrderNotes = $q.defer();
         backend.retrieve('/mods/' + modId + '/install_order_notes', options).then(function (data) {
             helpfulMarkService.associateHelpfulMarks(data.install_order_notes, data.helpful_marks);
-            userTitleService.associateTitles(data.install_order_note);
+            userTitleService.associateTitles(data.install_order_notes);
             installOrderNotes.resolve(data.install_order_notes);
         });
         return installOrderNotes.promise;
