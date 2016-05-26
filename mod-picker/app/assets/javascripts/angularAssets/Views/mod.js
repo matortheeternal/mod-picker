@@ -176,39 +176,6 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
         $scope.updateMDE = ($scope.updateMDE || 0) + 1;
     };
 
-    // TAB RELATED LOGIC
-    // $scope.currentTab = $scope.tabs[0];
-    //
-    // $scope.switchTab = function(targetTab) {
-    //     switch (targetTab.name) {
-    //         case 'Reviews':
-    //             if ($scope.mod.reviews == null) {
-    //                 $scope.retrieveReviews();
-    //             }
-    //             break;
-    //         case 'Compatibility':
-    //             if ($scope.mod.compatibility_notes == null) {
-    //                 $scope.retrieveCompatibilityNotes();
-    //             }
-    //             break;
-    //         case 'Install Order':
-    //             if ($scope.mod.install_order_notes == null) {
-    //                 $scope.retrieveInstallOrderNotes();
-    //             }
-    //             break;
-    //         case 'Load Order':
-    //             if ($scope.mod.load_order_notes == null) {
-    //                 $scope.retrieveLoadOrderNotes();
-    //             }
-    //             break;
-    //         case 'Analysis':
-    //             if ($scope.mod.analysis == null) {
-    //                 $scope.retrieveAnalysis();
-    //             }
-    //             break;
-    //     }
-    // };
-
     $scope.retrieveCompatibilityNotes = function() {
         var options = {
             sort: $scope.sort.compatibility_notes || 'reputation',
