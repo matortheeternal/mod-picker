@@ -32,14 +32,22 @@ app.config(['$stateProvider', function ($stateProvider) {
             controller: 'modCompatibilityController',
             url: '/compatibility',
             params: {
-                sort: 'reputation'
+                sort: 'reputation',
+                filters: {
+                  mod_list: true
+                }
             },
             resolve: {
                 compatibilityNotes: function($stateParams, modId, modService) {
                   //only resolve if the data will be different than what is already in $scope
                   if (this.lastCompatibilitySort !== $stateParams.sort) {
                     this.lastCompatibilitySort = $stateParams.sort;
-                    return modService.retrieveCompatibilityNotes(modId, {sort: $stateParams.sort});
+
+                    options = {
+                      sort: $stateParams.sort,
+                      filters: $stateParams.filters
+                    };
+                    return modService.retrieveCompatibilityNotes(modId, options);
                   }
                 }
             }
@@ -48,14 +56,22 @@ app.config(['$stateProvider', function ($stateProvider) {
             controller: 'modInstallOrderController',
             url: '/install-order',
             params: {
-                sort: 'reputation'
+                sort: 'reputation',
+                filters: {
+                  mod_list: true
+                }
             },
             resolve: {
                 installOrderNotes: function($stateParams, modId, modService) {
                   //only resolve if the data will be different than what is already in $scope
                   if (this.lastInstallOrderSort !== $stateParams.sort) {
                     this.lastInstallOrderSort = $stateParams.sort;
-                    return modService.retrieveInstallOrderNotes(modId, {sort: $stateParams.sort});
+
+                    options = {
+                      sort: $stateParams.sort,
+                      filters: $stateParams.filters
+                    };
+                    return modService.retrieveInstallOrderNotes(modId, options);
                   }
                 }
             }
@@ -64,14 +80,22 @@ app.config(['$stateProvider', function ($stateProvider) {
             controller: 'modLoadOrderController',
             url: '/load-order',
             params: {
-                sort: 'reputation'
+                sort: 'reputation',
+                filters: {
+                  mod_list: true
+                }
             },
             resolve: {
                 loadOrderNotes: function($stateParams, modId, modService) {
                   //only resolve if the data will be different than what is already in $scope
                   if (this.lastLoadOrderSort !== $stateParams.sort) {
                     this.lastLoadOrderSort = $stateParams.sort;
-                    return modService.retrieveLoadOrderNotes(modId, {sort: $stateParams.sort});
+
+                    options = {
+                      sort: $stateParams.sort,
+                      filters: $stateParams.filters
+                    };
+                    return modService.retrieveLoadOrderNotes(modId, options);
                   }
                 }
             }
