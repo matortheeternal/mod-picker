@@ -64,17 +64,6 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
         load_order_notes: true
     };
 
-        // getting categories
-        categoryService.retrieveCategories().then(function (categories) {
-            $scope.primaryCategory = categoryService.getCategoryById(categories, mod.primary_category_id);
-            $scope.secondaryCategory = categoryService.getCategoryById(categories, mod.secondary_category_id);
-
-            // getting review sections
-            reviewSectionService.retrieveReviewSections().then(function (reviewSections) {
-                $scope.allReviewSections = reviewSections;
-                $scope.reviewSections = reviewSectionService.getSectionsForCategory(reviewSections, $scope.primaryCategory);
-            });
-        });
     switch (mod.status) {
         case "good":
             $scope.statusClass = "green-box";
