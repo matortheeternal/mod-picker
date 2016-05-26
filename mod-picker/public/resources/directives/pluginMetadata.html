@@ -5,10 +5,10 @@
 
 <div class="stat-item">
     <dt class="stat-title">Masters</dt>
-    <dd class="stat-data" ng-if="plugin.master_filenames">
-        <span ng-if="plugin.master_filenames.length == 0">-</span>
-        <span class="stat-data-item" ng-repeat="master in plugin.master_filenames">
-            {{master}}<span ng-show="!$last">, </span>
+    <dd class="stat-data" ng-if="plugin.master_plugins">
+        <span ng-if="plugin.master_plugins.length == 0">-</span>
+        <span class="stat-data-item" ng-repeat="master in plugin.master_plugins">
+            {{master.filename}}<span ng-show="!$last">, </span>
         </span>
     </dd>
     <dd class="stat-data" ng-if="plugin.masters">
