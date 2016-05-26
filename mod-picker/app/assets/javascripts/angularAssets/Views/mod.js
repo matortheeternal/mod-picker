@@ -88,7 +88,7 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
         load_order_notes: true
     };
 
-    switch (mod.status) {
+    switch ($scope.mod.status) {
         case "good":
             $scope.statusClass = "green-box";
             break;
@@ -102,7 +102,7 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
 
     // getting games
     gameService.retrieveGames().then(function (data) {
-        $scope.game = gameService.getGameById(data, mod.game_id);
+        $scope.game = gameService.getGameById(data, $scope.mod.game_id);
     });
 
     // // remove Load Order tab if mod has no plugins
