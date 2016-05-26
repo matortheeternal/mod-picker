@@ -17,7 +17,7 @@ app.filter('percentage', function() {
   };
 });
 
-app.controller('modController', function ($scope, $q, $stateParams, $timeout, modService, pluginService, categoryService, gameService, recordGroupService, userTitleService, assetUtils, reviewSectionService, userService, contributionService, contributionFactory, errorsFactory, smoothScroll) {
+app.controller('modController', function ($scope, $q, $stateParams, $timeout, modService, pluginService, categoryService, gameService, recordGroupService, userTitleService, assetUtils, reviewSectionService, userService, contributionService, contributionFactory, errorsFactory, tagService, smoothScroll) {
     $scope.tags = [];
     $scope.newTags = [];
     $scope.sort = {};
@@ -337,6 +337,11 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
                 $scope.modStarred = $scope.modStarred ? false : true;
             }
         });
+    };
+
+    // TAG RELATED LOGIC
+    $scope.saveTags = function(updatedTags) {
+        tagService.updateModTags($scope.mod, updatedTags);
     };
 
     // REVIEW RELATED LOGIC
