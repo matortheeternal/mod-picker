@@ -2,13 +2,7 @@
 app.service('categoryService', function ($q, backend) {
 
     this.retrieveCategories = function() {
-        var categories = $q.defer();
-
-        backend.retrieve('/categories', {cache: true}).then(function (data) {
-            categories.resolve(data);
-        });
-
-        return categories.promise;
+        return backend.retrieve('/categories', {cache: true});
     };
 
     function retrieveFilteredCategories(key) {
