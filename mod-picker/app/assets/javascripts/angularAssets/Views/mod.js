@@ -7,6 +7,9 @@ app.config(['$stateProvider', function ($stateProvider) {
                 modObject: function(modService, $stateParams) {
                     return modService.retrieveMod($stateParams.modId);
                 },
+                modId: function($stateParams) {
+                  return $stateParams.modId;
+                }
             }
         }).state('mod.Reviews', {
             templateUrl: '/resources/partials/showMod/reviews.html',
@@ -16,8 +19,8 @@ app.config(['$stateProvider', function ($stateProvider) {
                 sort: 'reputation'
             },
             resolve: {
-                reviews: function($stateParams, mod, modService) {
-                    return modService.retrieveReviews(mod.mod.id, {sort: $stateParams.sort});
+                reviews: function($stateParams, modId, modService) {
+                    return modService.retrieveReviews(modId, {sort: $stateParams.sort});
                 }
             }
         }).state('mod.Compatibility', {
