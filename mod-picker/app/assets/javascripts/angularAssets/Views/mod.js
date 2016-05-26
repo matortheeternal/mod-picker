@@ -123,12 +123,6 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
     $scope.tags = [];
     $scope.newTags = [];
 
-    $scope.filters = {
-        compatibility_notes: true,
-        install_order_notes: true,
-        load_order_notes: true
-    };
-
     switch ($scope.mod.status) {
         case "good":
             $scope.statusClass = "green-box";
