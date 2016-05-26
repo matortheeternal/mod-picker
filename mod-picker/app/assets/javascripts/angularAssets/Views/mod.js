@@ -150,52 +150,6 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
         };
     };
 
-    //associate record groups with plugins
-    $scope.associateRecordGroups = function(plugins) {
-        // if we don't have recordGroups yet, try again in 100ms
-        if (!$scope.recordGroups) {
-            $timeout(function() {
-                $scope.associateRecordGroups(plugins);
-            }, 100);
-            return;
-        }
-        // loop through plugins
-        plugins.forEach(function(plugin) {
-            if (plugin.plugin_record_groups) {
-                plugin.plugin_record_groups.forEach(function(group) {
-                    var record_group = recordGroupService.getGroupFromSignature($scope.recordGroups, group.sig);
-                    group.name = record_group.name;
-                    group.child_group = record_group.child_group;
-                });
-            }
-        });
-    };
-
-    //combine dummy_masters array with masters array and sorts the masters array
-    $scope.combineAndSortMasters = function(plugins) {
-        // loop through plugins
-        plugins.forEach(function(plugin) {
-            plugin.masters = plugin.masters.concat(plugin.dummy_masters);
-            plugin.masters.sort(function(first_master, second_master) {
-                return first_master.index - second_master.index;
-            });
-        });
-    };
-
-    //associate overrides with their master file
-    $scope.associateOverrides = function(plugins) {
-        // loop through plugins
-        plugins.forEach(function(plugin) {
-            plugin.masters.forEach(function(master) {
-                master.overrides = [];
-                plugin.overrides.forEach(function(override) {
-                    if (override.fid >= master.index * 0x01000000) {
-                        master.overrides.push(override);
-                    }
-                });
-            });
-        });
-    };
 
     // update the markdown editor
     $scope.updateEditor = function() {
@@ -272,27 +226,6 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
         };
         modService.retrieveLoadOrderNotes($stateParams.modId, options).then(function(data) {
             $scope.mod.load_order_notes = data;
-        });
-    };
-
-    $scope.retrieveAnalysis = function() {
-        modService.retrieveAnalysis($stateParams.modId).then(function(analysis) {
-            // turn assets into an array of string
-            $scope.mod.assets = analysis.assets.map(function(asset) {
-                return asset.filepath;
-            });
-            // create nestedAssets tree
-            $scope.mod.nestedAssets = assetUtils.convertDataStringToNestedObject($scope.mod.assets);
-
-            // associate record groups for plugins
-            $scope.associateRecordGroups(analysis.plugins);
-            $scope.combineAndSortMasters(analysis.plugins);
-            $scope.associateOverrides(analysis.plugins);
-            $scope.mod.plugins = analysis.plugins;
-            if ($scope.mod.plugins.length > 0) {
-                $scope.currentPlugin = analysis.plugins[0];
-                $scope.currentPluginFilename = analysis.plugins[0].filename;
-            }
         });
     };
 
@@ -500,12 +433,7 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
     };
 
     // ANALYSIS RELATED LOGIC
-    // select the plugin the user selected
-    $scope.selectPlugin = function() {
-        $scope.currentPlugin = $scope.mod.plugins.find(function(plugin) {
-            return plugin.filename == $scope.currentPluginFilename;
-        });
-    };
+
 });
 
 app.controller('modReviewsController', function ($scope, reviews, reviewSectionService) {
@@ -737,5 +665,77 @@ app.controller('modLoadOrderController', function ($scope, loadOrderNotes) {
 });
 
 app.controller('modAnalysisController', function ($scope) {
+    $scope.retrieveAnalysis = function() {
+        modService.retrieveAnalysis($stateParams.modId).then(function(analysis) {
+            // turn assets into an array of string
+            $scope.mod.assets = analysis.assets.map(function(asset) {
+                return asset.filepath;
+            });
+            // create nestedAssets tree
+            $scope.mod.nestedAssets = assetUtils.convertDataStringToNestedObject($scope.mod.assets);
 
+            // associate record groups for plugins
+            $scope.associateRecordGroups(analysis.plugins);
+            $scope.combineAndSortMasters(analysis.plugins);
+            $scope.associateOverrides(analysis.plugins);
+            $scope.mod.plugins = analysis.plugins;
+            if ($scope.mod.plugins.length > 0) {
+                $scope.currentPlugin = analysis.plugins[0];
+                $scope.currentPluginFilename = analysis.plugins[0].filename;
+            }
+        });
+    };
+
+    //associate record groups with plugins
+    $scope.associateRecordGroups = function(plugins) {
+        // if we don't have recordGroups yet, try again in 100ms
+        if (!$scope.recordGroups) {
+            $timeout(function() {
+                $scope.associateRecordGroups(plugins);
+            }, 100);
+            return;
+        }
+        // loop through plugins
+        plugins.forEach(function(plugin) {
+            if (plugin.plugin_record_groups) {
+                plugin.plugin_record_groups.forEach(function(group) {
+                    var record_group = recordGroupService.getGroupFromSignature($scope.recordGroups, group.sig);
+                    group.name = record_group.name;
+                    group.child_group = record_group.child_group;
+                });
+            }
+        });
+    };
+
+    //combine dummy_masters array with masters array and sorts the masters array
+    $scope.combineAndSortMasters = function(plugins) {
+        // loop through plugins
+        plugins.forEach(function(plugin) {
+            plugin.masters = plugin.masters.concat(plugin.dummy_masters);
+            plugin.masters.sort(function(first_master, second_master) {
+                return first_master.index - second_master.index;
+            });
+        });
+    };
+
+    //associate overrides with their master file
+    $scope.associateOverrides = function(plugins) {
+        // loop through plugins
+        plugins.forEach(function(plugin) {
+            plugin.masters.forEach(function(master) {
+                master.overrides = [];
+                plugin.overrides.forEach(function(override) {
+                    if (override.fid >= master.index * 0x01000000) {
+                        master.overrides.push(override);
+                    }
+                });
+            });
+        });
+    };
+    // select the plugin the user selected
+    $scope.selectPlugin = function() {
+        $scope.currentPlugin = $scope.mod.plugins.find(function(plugin) {
+            return plugin.filename == $scope.currentPluginFilename;
+        });
+    };
 });
