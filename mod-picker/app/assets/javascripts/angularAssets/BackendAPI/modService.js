@@ -69,6 +69,7 @@ app.service('modService', function(backend, $q, helpfulMarkService, userTitleSer
         backend.retrieve('/mods/' + modId + '/reviews', options).then(function (data) {
             helpfulMarkService.associateHelpfulMarks(data.reviews, data.helpful_marks);
             userTitleService.associateTitles(data.reviews);
+            reviewSectionService.associateReviewSections(data.reviews);
             reviews.resolve(data.reviews);
         });
         return reviews.promise;
