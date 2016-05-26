@@ -4,11 +4,13 @@
 
 #  add_index "asset_files", ["filepath"], name: "filepath", unique: true, using: :btree
 
-AssetTreeTexture:
+assetTreeTexture:
   filepath: "data/textures/tree"
+  game_id: skyrim
 
-AssetRockTexture:
+assetRockTexture:
   filepath: "data/textures/rock"
-
-AssetPlantTexture:
+  game_id: skyrim 
+assetPlantTexture:
   filepath: "data/textures/plant"
+  game_id: skyrim

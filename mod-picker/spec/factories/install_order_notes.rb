@@ -9,10 +9,10 @@
 
 FactoryGirl.define do
   factory :install_order_note do
-    association :submitted_by, factory: :user
-    association :install_first, factory: :mod
-    association :install_second, factory: :mod
-    # submitted DateTime.now
-    text_body { Faker::Lorem.sentence(30, false, 6) }
+    submitted_by { FactoryGirl.create(:user).id }
+    first_mod_id { FactoryGirl.create(:mod).id }
+    second_mod_id { FactoryGirl.create(:mod).id }
+    text_body { Faker::Lorem.sentence(60, false, 6) }
+    game_id {FactoryGirl.create(:game).id }
   end
 end
