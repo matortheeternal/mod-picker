@@ -81,7 +81,7 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
     $scope.mod.star = modObject.star;
     $scope.tags = [];
     $scope.newTags = [];
-    $scope.sort = {};
+
     $scope.filters = {
         compatibility_notes: true,
         install_order_notes: true,
