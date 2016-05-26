@@ -81,24 +81,24 @@ app.service('modService', function(backend, $q, helpfulMarkService, userTitleSer
     };
 
     this.retrieveReviews = function(modId, options) {
-        var reviews = $q.defer();
+        var output = $q.defer();
         backend.retrieve('/mods/' + modId + '/reviews', options).then(function (data) {
             helpfulMarkService.associateHelpfulMarks(data.reviews, data.helpful_marks);
             userTitleService.associateTitles(data.reviews);
             reviewSectionService.associateReviewSections(data.reviews);
-            reviews.resolve(data.reviews);
+            output.resolve(data.reviews);
         });
-        return reviews.promise;
+        return output.promise;
     };
 
     this.retrieveCompatibilityNotes = function(modId, options) {
-        var compatibilityNotes = $q.defer();
+        var output = $q.defer();
         backend.retrieve('/mods/' + modId + '/compatibility_notes', options).then(function (data) {
             helpfulMarkService.associateHelpfulMarks(data.compatibility_notes, data.helpful_marks);
             userTitleService.associateTitles(data.compatibitiliy_notes);
-            compatibilityNotes.resolve(data.compatibility_notes);
+            output.resolve(data.compatibility_notes);
         });
-        return compatibilityNotes.promise;
+        return output.promise;
     };
 
     this.retrieveInstallOrderNotes = function(modId, options) {
@@ -112,20 +112,20 @@ app.service('modService', function(backend, $q, helpfulMarkService, userTitleSer
     };
 
     this.retrieveLoadOrderNotes = function(modId, options) {
-        var loadOrderNotes = $q.defer();
+        var output = $q.defer();
         backend.retrieve('/mods/' + modId + '/load_order_notes', options).then(function (data) {
             helpfulMarkService.associateHelpfulMarks(data.load_order_notes, data.helpful_marks);
             userTitleService.associateTitles(data.load_order_notes);
-            loadOrderNotes.resolve(data.load_order_notes);
+            output.resolve(data.load_order_notes);
         });
-        return loadOrderNotes.promise;
+        return output.promise;
     };
 
     this.retrieveAnalysis = function(modId, options) {
-        var analysis = $q.defer();
+        var output = $q.defer();
         backend.retrieve('/mods/' + modId + '/analysis', options).then(function (data) {
-            analysis.resolve(data);
+            output.resolve(data);
         });
-        return analysis.promise;
+        return output.promise;
     };
 });
