@@ -225,16 +225,6 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
     //     }
     // };
 
-    $scope.retrieveReviews = function() {
-        var options = {
-            sort: $scope.sort.reviews || 'reputation'
-        };
-        modService.retrieveReviews($stateParams.modId, options).then(function(data) {
-            $scope.associateReviewSections(data);
-            $scope.mod.reviews = data;
-        });
-    };
-
     $scope.retrieveCompatibilityNotes = function() {
         var options = {
             sort: $scope.sort.compatibility_notes || 'reputation',
@@ -299,233 +289,6 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
                 $scope.modStarred = $scope.modStarred ? false : true;
             }
         });
-    };
-
-    // REVIEW RELATED LOGIC
-    // retrieve reviews initially because they're the default tab currently
-    $scope.retrieveReviews();
-
-    // associate reviews with review sections
-    $scope.associateReviewSections = function(reviews) {
-        // if we don't have recordGroups yet, try again in 100ms
-        if (!$scope.reviewSections) {
-            $timeout(function() {
-                $scope.associateReviewSections(reviews);
-            }, 100);
-            return;
-        }
-        // loop through the reviews
-        reviews.forEach(function(review) {
-            review.review_ratings.forEach(function(rating) {
-                rating.section = reviewSectionService.getSectionById($scope.allReviewSections, rating.review_section_id);
-            });
-        });
-    };
-
-    // instantiate a new review object
-    $scope.startNewReview = function() {
-        // set up activeReview object
-        $scope.activeReview = {
-            ratings: [],
-            text_body: ""
-        };
-
-        // set up availableSections array
-        $scope.availableSections = $scope.reviewSections.slice(0);
-
-        // set up default review sections
-        // and default text body with prompts
-        $scope.reviewSections.forEach(function(section) {
-            if (section.default) {
-                $scope.addNewRating(section);
-                $scope.activeReview.text_body += "## " + section.name + "\n";
-                $scope.activeReview.text_body += "*" + section.prompt + "*\n\n";
-            }
-        });
-
-        $scope.updateOverallRating();
-
-        // update the markdown editor
-        $scope.updateEditor();
-    };
-
-    // edit an existing review
-    $scope.editReview = function(review) {
-        review.editing = true;
-        $scope.activeReview = {
-            text_body: review.text_body.slice(0),
-            ratings: review.review_ratings.slice(0),
-            overall_rating: review.overall_rating,
-            original: review
-        };
-
-        // set up availableSections array
-        $scope.availableSections = $scope.reviewSections.filter(function(section) {
-            return $scope.activeReview.ratings.find(function(rating) {
-                return rating.section == section;
-            }) == undefined;
-        });
-
-        // update the markdown editor
-        $scope.updateEditor();
-    };
-
-    // Add a new rating section to the activeReview
-    $scope.addNewRating = function(section) {
-        // return if we're at the maximum number of ratings
-        if ($scope.activeReview.ratings.length >= 5 || $scope.availableSections.length == 0) {
-            return;
-        }
-
-        // get the next available section if necessary
-        section = section || $scope.getNextAvailableSection();
-        // and remove it from the availableSections array
-        $scope.availableSections = $scope.availableSections.filter(function(availableSection) {
-            return availableSection.id !== section.id;
-        });
-
-        // build the rating object and append it to the ratings array
-        var ratingObj = {
-            section: section,
-            rating: 100
-        };
-        $scope.activeReview.ratings.push(ratingObj);
-    };
-
-    //remove the section from reviewSections
-    $scope.getNextAvailableSection = function() {
-        return $scope.availableSections[0];
-    };
-
-    $scope.changeSection = function(newSection, oldSectionId) {
-        if (newSection.id == oldSectionId) {
-            return;
-        }
-        // psuh the oldSection onto the availableSections array
-        var oldSection = $scope.reviewSections.find(function(section) {
-            return section.id == oldSectionId;
-        });
-        $scope.availableSections.push(oldSection);
-        // remove the new section from the availableSections array
-        $scope.availableSections = $scope.availableSections.filter(function(availableSection) {
-            return availableSection.id !== newSection.id;
-        });
-
-    };
-
-    // remove a rating section from activeReview
-    $scope.removeRating = function() {
-        // return if we there's only one rating left
-        if ($scope.activeReview.ratings.length == 1) {
-            return;
-        }
-
-        // pop the last rating off of the ratings array
-        var rating = $scope.activeReview.ratings.pop();
-        // add the removed section back to the available list
-        $scope.availableSections.push(rating.section);
-    };
-
-    $scope.validateReview = function() {
-        $scope.activeReview.valid = $scope.activeReview.text_body.length > 512;
-    };
-
-    // discard a new review object
-    $scope.discardReview = function() {
-        if ($scope.activeReview.original) {
-            $scope.activeReview.original.editing = false;
-            $scope.activeReview = null;
-        } else {
-            delete $scope.activeReview;
-        }
-    };
-
-    // focus text in rating input
-    $scope.focusText = function ($event) {
-        $event.target.select();
-    };
-
-    // update a review locally
-    $scope.updateReview = function() {
-        var originalReview = $scope.activeReview.original;
-        var updatedReview = $scope.activeReview;
-        // update the values on the original review
-        originalReview.text_body = updatedReview.text_body.slice(0);
-        originalReview.review_ratings = updatedReview.ratings.slice(0);
-        originalReview.overall_rating = updatedReview.overall_rating;
-    };
-
-    // save a review
-    $scope.saveReview = function() {
-        // return if the review is invalid
-        if (!$scope.activeReview.valid) {
-            return;
-        }
-
-        // submit the review
-        var review_ratings = [];
-        $scope.activeReview.ratings.forEach(function(item) {
-            review_ratings.push({
-                review_section_id: item.section.id,
-                rating: item.rating
-            });
-        });
-        var reviewObj = {
-            review: {
-                game_id: $scope.mod.game_id,
-                mod_id: $scope.mod.id,
-                text_body: $scope.activeReview.text_body,
-                review_ratings_attributes: review_ratings
-            }
-        };
-        $scope.activeReview.submitting = true;
-
-        // use update or submit contribution
-        if ($scope.activeReview.original) {
-            var reviewId = $scope.activeReview.original.id;
-            contributionService.updateContribution("reviews", reviewId, reviewObj).then(function(data) {
-                if (data.status == "ok") {
-                    $scope.submitMessage = "Review updated successfully!";
-                    $scope.showSuccess = true;
-
-                    // update original review object and discard copy
-                    $scope.updateReview();
-                    $scope.discardReview();
-                }
-            });
-        } else {
-            contributionService.submitContribution("reviews", reviewObj).then(function(data) {
-                if (data.status == "ok") {
-                    $scope.submitMessage = "Review submitted successfully!";
-                    $scope.showSuccess = true;
-                    // TODO: push the review onto the $scope.mod.reviews array
-                    $scope.discardReview();
-                }
-            });
-        }
-    };
-
-    //update the average rating of the new review
-    $scope.updateOverallRating = function() {
-        var sum = 0;
-        for (var i = 0; i < $scope.activeReview.ratings.length; i++) {
-            sum += $scope.activeReview.ratings[i].rating;
-        }
-
-        $scope.activeReview.overall_rating = Math.round(sum / $scope.activeReview.ratings.length);
-    };
-
-    // functions for keeping rating inputs numerical and in the range 0->100
-    $scope.keyPress = function($event) {
-        var key = $event.keyCode;
-        if (!(key >= 48 && key <= 57)) {
-            $event.preventDefault();
-        }
-    };
-    $scope.keyUp = function(review_rating) {
-        var output = parseInt(review_rating.rating) || 0;
-        review_rating.rating = output > 100 ? 100 : (output < 0 ? 0 : output);
-        $scope.updateOverallRating();
     };
 
     // COMPATIBILITY NOTE RELATED LOGIC
@@ -731,13 +494,234 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
     };
 });
 
-app.controller('modReviewsController', function ($scope, $q, reviews, mod, reviewSectionService) {
-    $scope.reviews = reviews;
-    $scope.mod = mod;
+app.controller('modReviewsController', function ($scope, reviews, reviewSectionService) {
+  $scope.mod.reviews = reviews;
 
-    // getting review sections
-    reviewSectionService.retrieveReviewSections().then(function (reviewSections) {
-        $scope.allReviewSections = reviewSections;
-        $scope.reviewSections = reviewSectionService.getSectionsForCategory(reviewSections, $scope.primaryCategory);
-    })
+  //set review sections on mod
+  $scope.mod.reviewSections = reviewSectionService.getSectionsForCategory($scope.mod.primary_category);
+
+  // instantiate a new review object
+  $scope.startNewReview = function() {
+      // set up activeReview object
+      $scope.activeReview = {
+          ratings: [],
+          text_body: ""
+      };
+
+      // set up availableSections array
+      $scope.availableSections = $scope.reviewSections.slice(0);
+
+      // set up default review sections
+      // and default text body with prompts
+      $scope.reviewSections.forEach(function(section) {
+          if (section.default) {
+              $scope.addNewRating(section);
+              $scope.activeReview.text_body += "## " + section.name + "\n";
+              $scope.activeReview.text_body += "*" + section.prompt + "*\n\n";
+          }
+      });
+
+      $scope.updateOverallRating();
+
+      // update the markdown editor
+      $scope.updateEditor();
+  };
+
+  // edit an existing review
+  $scope.editReview = function(review) {
+      review.editing = true;
+      $scope.activeReview = {
+          text_body: review.text_body.slice(0),
+          ratings: review.review_ratings.slice(0),
+          overall_rating: review.overall_rating,
+          original: review
+      };
+
+      // set up availableSections array
+      $scope.availableSections = $scope.reviewSections.filter(function(section) {
+          return $scope.activeReview.ratings.find(function(rating) {
+              return rating.section == section;
+          }) === undefined;
+      });
+
+      // update the markdown editor
+      $scope.updateEditor();
+  };
+
+  // Add a new rating section to the activeReview
+  $scope.addNewRating = function(section) {
+      // return if we're at the maximum number of ratings
+      if ($scope.activeReview.ratings.length >= 5 || $scope.availableSections.length === 0) {
+          return;
+      }
+
+      // get the next available section if necessary
+      section = section || $scope.getNextAvailableSection();
+      // and remove it from the availableSections array
+      $scope.availableSections = $scope.availableSections.filter(function(availableSection) {
+          return availableSection.id !== section.id;
+      });
+
+      // build the rating object and append it to the ratings array
+      var ratingObj = {
+          section: section,
+          rating: 100
+      };
+      $scope.activeReview.ratings.push(ratingObj);
+  };
+
+  //remove the section from reviewSections
+  $scope.getNextAvailableSection = function() {
+      return $scope.availableSections[0];
+  };
+
+  $scope.changeSection = function(newSection, oldSectionId) {
+      if (newSection.id == oldSectionId) {
+          return;
+      }
+      // psuh the oldSection onto the availableSections array
+      var oldSection = $scope.reviewSections.find(function(section) {
+          return section.id == oldSectionId;
+      });
+      $scope.availableSections.push(oldSection);
+      // remove the new section from the availableSections array
+      $scope.availableSections = $scope.availableSections.filter(function(availableSection) {
+          return availableSection.id !== newSection.id;
+      });
+
+  };
+
+  // remove a rating section from activeReview
+  $scope.removeRating = function() {
+      // return if we there's only one rating left
+      if ($scope.activeReview.ratings.length == 1) {
+          return;
+      }
+
+      // pop the last rating off of the ratings array
+      var rating = $scope.activeReview.ratings.pop();
+      // add the removed section back to the available list
+      $scope.availableSections.push(rating.section);
+  };
+
+  $scope.validateReview = function() {
+      $scope.activeReview.valid = $scope.activeReview.text_body.length > 512;
+  };
+
+  // discard a new review object
+  $scope.discardReview = function() {
+      if ($scope.activeReview.original) {
+          $scope.activeReview.original.editing = false;
+          $scope.activeReview = null;
+      } else {
+          delete $scope.activeReview;
+      }
+  };
+
+  // focus text in rating input
+  $scope.focusText = function ($event) {
+      $event.target.select();
+  };
+
+  // update a review locally
+  $scope.updateReview = function() {
+      var originalReview = $scope.activeReview.original;
+      var updatedReview = $scope.activeReview;
+      // update the values on the original review
+      originalReview.text_body = updatedReview.text_body.slice(0);
+      originalReview.review_ratings = updatedReview.ratings.slice(0);
+      originalReview.overall_rating = updatedReview.overall_rating;
+  };
+
+  // save a review
+  $scope.saveReview = function() {
+      // return if the review is invalid
+      if (!$scope.activeReview.valid) {
+          return;
+      }
+
+      // submit the review
+      var review_ratings = [];
+      $scope.activeReview.ratings.forEach(function(item) {
+          review_ratings.push({
+              review_section_id: item.section.id,
+              rating: item.rating
+          });
+      });
+      var reviewObj = {
+          review: {
+              game_id: $scope.mod.game_id,
+              mod_id: $scope.mod.id,
+              text_body: $scope.activeReview.text_body,
+              review_ratings_attributes: review_ratings
+          }
+      };
+      $scope.activeReview.submitting = true;
+
+      // use update or submit contribution
+      if ($scope.activeReview.original) {
+          var reviewId = $scope.activeReview.original.id;
+          contributionService.updateContribution("reviews", reviewId, reviewObj).then(function(data) {
+              if (data.status == "ok") {
+                  $scope.submitMessage = "Review updated successfully!";
+                  $scope.showSuccess = true;
+
+                  // update original review object and discard copy
+                  $scope.updateReview();
+                  $scope.discardReview();
+              }
+          });
+      } else {
+          contributionService.submitContribution("reviews", reviewObj).then(function(data) {
+              if (data.status == "ok") {
+                  $scope.submitMessage = "Review submitted successfully!";
+                  $scope.showSuccess = true;
+                  // TODO: push the review onto the $scope.mod.reviews array
+                  $scope.discardReview();
+              }
+          });
+      }
+  };
+
+  //update the average rating of the new review
+  $scope.updateOverallRating = function() {
+      var sum = 0;
+      for (var i = 0; i < $scope.activeReview.ratings.length; i++) {
+          sum += $scope.activeReview.ratings[i].rating;
+      }
+
+      $scope.activeReview.overall_rating = Math.round(sum / $scope.activeReview.ratings.length);
+  };
+
+  // functions for keeping rating inputs numerical and in the range 0->100
+  $scope.keyPress = function($event) {
+      var key = $event.keyCode;
+      if (!(key >= 48 && key <= 57)) {
+          $event.preventDefault();
+      }
+  };
+  $scope.keyUp = function(review_rating) {
+      var output = parseInt(review_rating.rating) || 0;
+      review_rating.rating = output > 100 ? 100 : (output < 0 ? 0 : output);
+      $scope.updateOverallRating();
+  };
+});
+
+app.controller('modCompatibilityController', function ($scope, compatibilityNotes) {
+  $scope.mod.compatibility_notes = compatibilityNotes;
+
+});
+
+app.controller('modInstallOrderController', function ($scope, installOrderNotes) {
+  $scope.mod.install_order_notes = installOrderNotes;
+
+});
+
+app.controller('modLoadOrderController', function ($scope, loadOrderNotes) {
+  $scope.mod.load_order_notes = loadOrderNotes;
+
+});
+
+app.controller('modAnalysisController', function ($scope) {
+
 });
