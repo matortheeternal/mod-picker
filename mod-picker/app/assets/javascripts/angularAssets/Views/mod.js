@@ -102,7 +102,12 @@ app.config(['$stateProvider', function ($stateProvider) {
         }).state('mod.Analysis', {
             templateUrl: '/resources/partials/showMod/analysis.html',
             controller: 'modAnalysisController',
-            url: '/analysis'
+            url: '/analysis',
+            resolve: {
+                analysis: function(modId, modService) {
+                    return modService.retrieveAnalysis(modId);
+                }
+            }
         });
 }]);
 
