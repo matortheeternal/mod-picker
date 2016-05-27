@@ -254,6 +254,14 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
         }
     };
 
+    $scope.retrieveCorrections = function() {
+        modService.retrieveAssociation($stateParams.modId, 'corrections').then(function(data) {
+            $scope.associateAgreementMarks(data.corrections, data.agreement_marks);
+            $scope.associateUserTitles(data.corrections);
+            $scope.mod.corrections = data.corrections;
+        });
+    };
+
     $scope.retrieveReviews = function() {
         var options = {
             sort: $scope.sort.reviews || 'reputation'
