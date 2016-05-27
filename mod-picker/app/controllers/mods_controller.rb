@@ -1,5 +1,5 @@
 class ModsController < ApplicationController
-  before_action :set_mod, only: [:show, :update, :update_tags, :reviews, :compatibility_notes, :install_order_notes, :load_order_notes, :analysis, :destroy]
+  before_action :set_mod, only: [:show, :update, :update_tags, :corrections, :reviews, :compatibility_notes, :install_order_notes, :load_order_notes, :analysis, :destroy]
 
   # POST /mods
   def index
@@ -126,6 +126,17 @@ class ModsController < ApplicationController
         render json: @mod_star.errors, status: :unprocessable_entity
       end
     end
+  end
+
+  # GET /mods/1/corrections
+  def corrections
+    authorize! :read, @mod
+    corrections = @mod.corrections.accessible_by(current_ability).paginate(:page => params[:page])
+    agreement_marks = AgreementMark.where(submitted_by: current_user.id, correction_id: corrections.ids)
+    render :json => {
+        corrections: corrections,
+        agreement_marks: agreement_marks.as_json({:only => [:correction_id, :agree]})
+    }
   end
 
   # GET /mods/1/reviews
