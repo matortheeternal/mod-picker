@@ -1,12 +1,12 @@
-class IncorrectNote < ActiveRecord::Base
+class Correction < ActiveRecord::Base
   include Filterable, RecordEnhancements
 
   scope :by, -> (id) { where(submitted_by: id) }
 
-  belongs_to :game, :inverse_of => 'incorrect_notes'
-  belongs_to :user, :foreign_key => 'submitted_by', :inverse_of => 'incorrect_notes'
+  belongs_to :game, :inverse_of => 'corrections'
+  belongs_to :user, :foreign_key => 'submitted_by', :inverse_of => 'corrections'
 
-  has_many :agreement_marks, :inverse_of => 'incorrect_note'
+  has_many :agreement_marks, :inverse_of => 'correction'
   has_many :comments, :as => 'commentable'
   
   belongs_to :correctable, :polymorphic => true
@@ -31,12 +31,12 @@ class IncorrectNote < ActiveRecord::Base
     end
 
     def increment_counters
-      self.correctable.update_counter(:incorrect_notes_count, 1)
-      self.user.update_counter(:incorrect_notes_count, 1)
+      self.correctable.update_counter(:corrections_count, 1)
+      self.user.update_counter(:corrections_count, 1)
     end
 
     def decrement_counters
-      self.correctable.update_counter(:incorrect_notes_count, -1)
-      self.user.update_counter(:incorrect_notes_count, -1)
+      self.correctable.update_counter(:corrections_count, -1)
+      self.user.update_counter(:corrections_count, -1)
     end 
 end

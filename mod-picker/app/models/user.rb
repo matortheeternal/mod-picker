@@ -15,7 +15,7 @@ class User < ActiveRecord::Base
   scope :cnotes, -> (low, high) { where(compatibility_notes_count: (low..high)) }
   scope :inotes, -> (low, high) { where(installation_notes_count: (low..high)) }
   scope :reviews, -> (low, high) { where(reviews_count: (low..high)) }
-  scope :nnotes, -> (low, high) { where(incorrect_notes_count: (low..high)) }
+  scope :nnotes, -> (low, high) { where(corrections_count: (low..high)) }
   scope :comments, -> (low, high) { where(comments_count: (low..high)) }
   scope :mod_lists, -> (low, high) { where(mod_lists_count: (low..high)) }
 
@@ -31,7 +31,7 @@ class User < ActiveRecord::Base
   has_many :load_order_notes, :foreign_key => 'submitted_by', :inverse_of => 'user'
   has_many :compatibility_notes, :foreign_key => 'submitted_by', :inverse_of => 'user'
   has_many :reviews, :foreign_key => 'submitted_by', :inverse_of => 'user'
-  has_many :incorrect_notes, :foreign_key => 'submitted_by', :inverse_of => 'user'
+  has_many :corrections, :foreign_key => 'submitted_by', :inverse_of => 'user'
   has_many :agreement_marks, :foreign_key => 'submitted_by', :inverse_of => 'user'
   has_many :helpful_marks, :foreign_key => 'submitted_by', :inverse_of => 'user'
 

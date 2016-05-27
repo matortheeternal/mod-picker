@@ -111,7 +111,7 @@ app.config(['$stateProvider', function ($stateProvider) {
         });
 }]);
 
-app.controller('modController', function ($scope, $q, $stateParams, $timeout, modObject, modService, pluginService, categoryService, gameService, recordGroupService, userTitleService, assetUtils, reviewSectionService, userService, contributionService, contributionFactory, smoothScroll){
+app.controller('modController', function ($scope, $q, $stateParams, $timeout, modObject, modService, pluginService, categoryService, gameService, recordGroupService, userTitleService, assetUtils, reviewSectionService, userService, contributionService, contributionFactory, errorsFactory, tagService, smoothScroll){
     $scope.mod = modObject.mod;
     $scope.mod.star = modObject.star;
 
@@ -180,6 +180,20 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
     };
 
 
+    //sort plugin errors
+    $scope.sortErrors = function() {
+        $scope.sortedErrors = errorsFactory.errorTypes();
+        // return if we don't have a current plugin to sort errors for
+        if (!$scope.currentPlugin) {
+            return;
+        }
+
+        // loop through current plugin's errors, sorting them
+        $scope.currentPlugin.plugin_errors.forEach(function(error) {
+            $scope.sortedErrors[error.group].errors.push(error);
+        });
+    };
+
     // update the markdown editor
     $scope.updateEditor = function() {
         $timeout(function() {
@@ -196,6 +210,21 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
                 $scope.modStarred = $scope.modStarred ? false : true;
             }
         });
+    };
+
+    // TAG RELATED LOGIC
+    $scope.saveTags = function(updatedTags) {
+        var response = $q.defer();
+        tagService.updateModTags($scope.mod, updatedTags).then(function(data) {
+            if (data.status == "ok") {
+                $scope.submitMessage = "Tags submitted successfully.";
+                $scope.showSuccess = true;
+            } else {
+                $scope.errors = data.errors;
+            }
+            response.resolve(data);
+        });
+        return response.promise;
     };
 
     // COMPATIBILITY NOTE RELATED LOGIC
@@ -647,5 +676,6 @@ app.controller('modAnalysisController', function ($scope, modService) {
         $scope.currentPlugin = $scope.mod.plugins.find(function(plugin) {
             return plugin.filename == $scope.currentPluginFilename;
         });
+        $scope.sortErrors();
     };
 });

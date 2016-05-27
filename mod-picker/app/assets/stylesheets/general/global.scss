@@ -241,6 +241,17 @@ input[type="button"], input[type="submit"] {
   }
 }
 
+.small-action-btn {
+  background-color: $bar_highlight_color;
+  display: block;
+  padding: 4px 8px;
+  height: 26px;
+
+  &:hover {
+    background-color: $shadow_color
+  }
+}
+
 .btn-sm {
   padding: 7px;
   color: $action_text_color;

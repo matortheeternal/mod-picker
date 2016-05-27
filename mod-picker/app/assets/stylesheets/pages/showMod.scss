@@ -594,3 +594,12 @@
   margin: 0 0 20px;
   @include column-count(3);
 }
+
+.errors-list {
+  font-family: Consolas, monospace, sans-serif;
+  font-size: 14px;
+
+  li {
+    margin-bottom: 4px;
+  }
+}

@@ -3,7 +3,7 @@ class AddGameAssociations < ActiveRecord::Migration
     add_column :articles, :game_id, :integer
     add_column :asset_files, :game_id, :integer, null: false
     add_column :compatibility_notes, :game_id, :integer, null: false
-    add_column :incorrect_notes, :game_id, :integer, null: false
+    add_column :corrections, :game_id, :integer, null: false
     add_column :install_order_notes, :game_id, :integer, null: false
     add_column :load_order_notes, :game_id, :integer, null: false
     add_column :reviews, :game_id, :integer, null: false
@@ -11,7 +11,7 @@ class AddGameAssociations < ActiveRecord::Migration
 
     add_foreign_key :asset_files, :games
     add_foreign_key :compatibility_notes, :games
-    add_foreign_key :incorrect_notes, :games
+    add_foreign_key :corrections, :games
     add_foreign_key :install_order_notes, :games
     add_foreign_key :load_order_notes, :games
     add_foreign_key :reviews, :games

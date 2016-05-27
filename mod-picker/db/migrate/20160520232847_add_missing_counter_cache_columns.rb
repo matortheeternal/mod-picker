@@ -30,7 +30,7 @@ class AddMissingCounterCacheColumns < ActiveRecord::Migration
     # Install Order Note
     add_column :install_order_notes, :history_entries_count, :integer, default: 0
     add_column :install_order_notes, :comments_count, :integer, default: 0
-    add_column :install_order_notes, :incorrect_notes_count, :integer, default: 0
+    add_column :install_order_notes, :corrections_count, :integer, default: 0
     # Mod
     rename_column :mods, :requirements_count, :required_mods_count
     add_column :mods, :required_by_count, :integer, default: 0

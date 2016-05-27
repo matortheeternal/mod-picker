@@ -1,5 +1,5 @@
 class ModsController < ApplicationController
-  before_action :set_mod, only: [:show, :update, :reviews, :compatibility_notes, :install_order_notes, :load_order_notes, :analysis, :destroy]
+  before_action :set_mod, only: [:show, :update, :update_tags, :reviews, :compatibility_notes, :install_order_notes, :load_order_notes, :analysis, :destroy]
 
   # POST /mods
   def index
@@ -54,6 +54,51 @@ class ModsController < ApplicationController
       render json: {status: :ok}
     else
       render json: @mod.errors, status: :unprocessable_entity
+    end
+  end
+
+  # PATCH/PUT /mods/1/tags
+  def update_tags
+    # errors array to return to user
+    errors = ActiveModel::Errors.new(self)
+    current_user_id = current_user.id
+
+    # perform tag deletions
+    existing_mod_tags = @mod.mod_tags
+    existing_tags_text = @mod.tags.pluck(:text)
+    @mod.mod_tags.each_with_index do |mod_tag, index|
+      if params[:tags].exclude?(existing_tags_text[index])
+        authorize! :destroy, mod_tag
+        mod_tag.destroy
+      end
+    end
+
+    # update tags
+    params[:tags].each do |tag_text|
+      if existing_tags_text.exclude?(tag_text)
+        # find or create tag
+        tag = Tag.where(game_id: params[:game_id], text: tag_text).first
+        if tag.nil?
+          tag = Tag.new(game_id: params[:game_id], text: tag_text, submitted_by: current_user_id)
+          authorize! :create, tag
+          if !tag.save
+            tag.errors.full_messages.each {|msg| errors[:base] << msg}
+            next
+          end
+        end
+
+        # create mod tag
+        mod_tag = @mod.mod_tags.new(tag_id: tag.id, submitted_by: current_user_id)
+        authorize! :create, mod_tag
+        next if mod_tag.save
+        mod_tag.errors.full_messages.each {|msg| errors[:base] << msg}
+      end
+    end
+
+    if errors.empty?
+      render json: {status: :ok, tags: @mod.tags}
+    else
+      render json: {errors: errors, status: :unprocessable_entity, tags: @mod.tags}
     end
   end
 

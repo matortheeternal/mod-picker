@@ -5,7 +5,7 @@ class SetCounterCacheDefaults < ActiveRecord::Migration
     change_column :users, :reviews_count, :integer, default: 0
     change_column :users, :install_order_notes_count, :integer, default: 0
     change_column :users, :compatibility_notes_count, :integer, default: 0
-    change_column :users, :incorrect_notes_count, :integer, default: 0
+    change_column :users, :corrections_count, :integer, default: 0
     change_column :users, :agreement_marks_count, :integer, default: 0
     change_column :users, :mods_count, :integer, default: 0
     change_column :users, :starred_mods_count, :integer, default: 0
@@ -15,7 +15,7 @@ class SetCounterCacheDefaults < ActiveRecord::Migration
     change_column :users, :load_order_notes_count, :integer, default: 0
 
     # reviews
-    change_column :reviews, :incorrect_notes_count, :integer, default: 0
+    change_column :reviews, :corrections_count, :integer, default: 0
 
     # mods
     change_column :mods, :mod_stars_count, :integer, default: 0
@@ -36,6 +36,6 @@ class SetCounterCacheDefaults < ActiveRecord::Migration
     change_column :mod_lists, :load_order_notes_count, :integer, default: 0
 
     # compatibility notes
-    change_column :compatibility_notes, :incorrect_notes_count, :integer, default: 0
+    change_column :compatibility_notes, :corrections_count, :integer, default: 0
   end
 end

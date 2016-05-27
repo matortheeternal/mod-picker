@@ -31,9 +31,7 @@ class Review < ActiveRecord::Base
   # Callbacks
   after_create :increment_counters
   before_save :set_dates
-  before_update :clear_ratings
-  after_update :update_metrics
-  after_save :update_mod_metrics
+  after_save :update_mod_metrics, :update_metrics
   before_destroy :decrement_counters
 
   def clear_ratings
