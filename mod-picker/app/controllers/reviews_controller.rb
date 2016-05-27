@@ -8,6 +8,17 @@ class ReviewsController < ContributionsController
     render :json => @reviews
   end
 
+  # PATCH/PUT /reviews/1
+  def update
+    authorize! :update, @contribution
+    @contribution.clear_ratings
+    if @contribution.update(contribution_params)
+      render json: {status: :ok}
+    else
+      render json: @contribution.errors, status: :unprocessable_entity
+    end
+  end
+
   # POST /reviews
   def create
     @review = Review.new(contribution_params)
