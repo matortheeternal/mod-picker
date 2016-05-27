@@ -11,15 +11,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160523020071) do
+ActiveRecord::Schema.define(version: 20160527192637) do
 
   create_table "agreement_marks", id: false, force: :cascade do |t|
-    t.integer "correction_id", limit: 4
+    t.integer "incorrect_note_id", limit: 4
     t.integer "submitted_by",      limit: 4
     t.boolean "agree"
   end
 
-  add_index "agreement_marks", ["correction_id"], name: "inc_id", using: :btree
+  add_index "agreement_marks", ["incorrect_note_id"], name: "inc_id", using: :btree
   add_index "agreement_marks", ["submitted_by"], name: "submitted_by", using: :btree
 
   create_table "articles", force: :cascade do |t|
@@ -108,7 +108,7 @@ ActiveRecord::Schema.define(version: 20160523020071) do
     t.datetime "submitted"
     t.datetime "edited"
     t.text     "text_body",               limit: 65535
-    t.integer  "corrections_count",   limit: 4,     default: 0
+    t.integer  "incorrect_notes_count",   limit: 4,     default: 0
     t.integer  "compatibility_mod_id",    limit: 4
     t.boolean  "hidden",                                default: false, null: false
     t.integer  "first_mod_id",            limit: 4
@@ -137,6 +137,24 @@ ActiveRecord::Schema.define(version: 20160523020071) do
 
   add_index "config_files", ["game_id", "filename"], name: "index_config_files_on_game_id_and_filename", using: :btree
 
+  create_table "corrections", force: :cascade do |t|
+    t.integer  "submitted_by",     limit: 4
+    t.text     "text_body",        limit: 65535
+    t.integer  "correctable_id",   limit: 4
+    t.string   "correctable_type", limit: 255
+    t.datetime "submitted"
+    t.datetime "edited"
+    t.boolean  "hidden",                         default: false, null: false
+    t.integer  "game_id",          limit: 4,                     null: false
+    t.integer  "comments_count",   limit: 4,     default: 0
+    t.integer  "agree_count",      limit: 4,     default: 0
+    t.integer  "disagree_count",   limit: 4,     default: 0
+  end
+
+  add_index "corrections", ["correctable_type", "correctable_id"], name: "index_corrections_on_correctable_type_and_correctable_id", using: :btree
+  add_index "corrections", ["game_id"], name: "fk_rails_6d40e5f2cc", using: :btree
+  add_index "corrections", ["submitted_by"], name: "submitted_by", using: :btree
+
   create_table "dummy_masters", id: false, force: :cascade do |t|
     t.integer "plugin_id", limit: 4
     t.string  "filename",  limit: 64
@@ -164,7 +182,7 @@ ActiveRecord::Schema.define(version: 20160523020071) do
     t.integer "load_order_notes_count",    limit: 4,   default: 0
     t.integer "reviews_count",             limit: 4,   default: 0
     t.integer "plugins_count",             limit: 4,   default: 0
-    t.integer "corrections_count",     limit: 4,   default: 0
+    t.integer "incorrect_notes_count",     limit: 4,   default: 0
   end
 
   create_table "help_pages", force: :cascade do |t|
@@ -185,24 +203,6 @@ ActiveRecord::Schema.define(version: 20160523020071) do
 
   add_index "helpful_marks", ["helpfulable_type", "helpfulable_id"], name: "index_helpful_marks_on_helpfulable_type_and_helpfulable_id", using: :btree
   add_index "helpful_marks", ["submitted_by"], name: "submitted_by", using: :btree
-
-  create_table "corrections", force: :cascade do |t|
-    t.integer  "submitted_by",     limit: 4
-    t.text     "text_body",        limit: 65535
-    t.integer  "correctable_id",   limit: 4
-    t.string   "correctable_type", limit: 255
-    t.datetime "submitted"
-    t.datetime "edited"
-    t.boolean  "hidden",                         default: false, null: false
-    t.integer  "game_id",          limit: 4,                     null: false
-    t.integer  "comments_count",   limit: 4,     default: 0
-    t.integer  "agree_count",      limit: 4,     default: 0
-    t.integer  "disagree_count",   limit: 4,     default: 0
-  end
-
-  add_index "corrections", ["correctable_type", "correctable_id"], name: "index_corrections_on_correctable_type_and_correctable_id", using: :btree
-  add_index "corrections", ["game_id"], name: "fk_rails_6d40e5f2cc", using: :btree
-  add_index "corrections", ["submitted_by"], name: "submitted_by", using: :btree
 
   create_table "install_order_note_history_entries", force: :cascade do |t|
     t.integer  "install_order_note_id", limit: 4,     null: false
@@ -231,7 +231,7 @@ ActiveRecord::Schema.define(version: 20160523020071) do
     t.integer  "not_helpful_count",     limit: 4,     default: 0
     t.integer  "history_entries_count", limit: 4,     default: 0
     t.integer  "comments_count",        limit: 4,     default: 0
-    t.integer  "corrections_count", limit: 4,     default: 0
+    t.integer  "incorrect_notes_count", limit: 4,     default: 0
   end
 
   add_index "install_order_notes", ["first_mod_id"], name: "fk_rails_bc30c8f58f", using: :btree
@@ -635,7 +635,7 @@ ActiveRecord::Schema.define(version: 20160523020071) do
     t.datetime "submitted"
     t.datetime "edited"
     t.text     "text_body",             limit: 65535
-    t.integer  "corrections_count", limit: 4,     default: 0
+    t.integer  "incorrect_notes_count", limit: 4,     default: 0
     t.integer  "game_id",               limit: 4,                     null: false
     t.boolean  "approved",                            default: false
     t.string   "moderator_message",     limit: 255
@@ -748,7 +748,7 @@ ActiveRecord::Schema.define(version: 20160523020071) do
     t.integer  "reviews_count",             limit: 4,     default: 0
     t.integer  "install_order_notes_count", limit: 4,     default: 0
     t.integer  "compatibility_notes_count", limit: 4,     default: 0
-    t.integer  "corrections_count",     limit: 4,     default: 0
+    t.integer  "incorrect_notes_count",     limit: 4,     default: 0
     t.integer  "agreement_marks_count",     limit: 4,     default: 0
     t.integer  "submitted_mods_count",      limit: 4,     default: 0
     t.integer  "starred_mods_count",        limit: 4,     default: 0
@@ -805,7 +805,7 @@ ActiveRecord::Schema.define(version: 20160523020071) do
 
   add_index "workshop_infos", ["mod_id"], name: "fk_rails_8707144ad7", using: :btree
 
-  add_foreign_key "agreement_marks", "corrections", name: "agreement_marks_ibfk_1"
+  add_foreign_key "agreement_marks", "corrections", column: "incorrect_note_id", name: "agreement_marks_ibfk_1"
   add_foreign_key "agreement_marks", "users", column: "submitted_by", name: "agreement_marks_ibfk_2"
   add_foreign_key "articles", "users", column: "submitted_by"
   add_foreign_key "asset_files", "games"
@@ -824,10 +824,10 @@ ActiveRecord::Schema.define(version: 20160523020071) do
   add_foreign_key "compatibility_notes", "plugins", column: "compatibility_plugin_id", name: "compatibility_notes_ibfk_2"
   add_foreign_key "compatibility_notes", "users", column: "submitted_by", name: "compatibility_notes_ibfk_1"
   add_foreign_key "config_files", "games"
-  add_foreign_key "dummy_masters", "plugins"
-  add_foreign_key "helpful_marks", "users", column: "submitted_by", name: "helpful_marks_ibfk_4"
   add_foreign_key "corrections", "games"
   add_foreign_key "corrections", "users", column: "submitted_by", name: "corrections_ibfk_4"
+  add_foreign_key "dummy_masters", "plugins"
+  add_foreign_key "helpful_marks", "users", column: "submitted_by", name: "helpful_marks_ibfk_4"
   add_foreign_key "install_order_note_history_entries", "install_order_notes"
   add_foreign_key "install_order_note_history_entries", "users", column: "submitted_by"
   add_foreign_key "install_order_notes", "games"
