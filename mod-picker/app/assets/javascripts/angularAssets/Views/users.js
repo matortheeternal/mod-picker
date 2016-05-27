@@ -1,14 +1,14 @@
 
-app.config(['$routeProvider', function ($routeProvider) {
-    $routeProvider.when('/users', {
+app.config(['$stateProvider', function ($stateProvider) {
+    $stateProvider.state('users', {
             templateUrl: '/resources/partials/users.html',
-            controller: 'usersController'
+            controller: 'usersController',
+            url: '/users'
         }
     );
 }]);
 
 app.controller('usersController', function ($scope, $q, backend, sliderFactory) {
-    useTwoColumns(true);
     ///* data */
     //backend.retrieveUsers().then(function (data) {
     //    $scope.users = data;

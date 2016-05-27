@@ -1,4 +1,24 @@
 class ModStar < ActiveRecord::Base
-  belongs_to :user_star, :class_name => 'User', :inverse_of => 'mod_stars'
-  belongs_to :starred_mod, :class_name => 'Mod', :inverse_of => 'mod_stars'
+  self.primary_keys = :mod_id, :user_id
+
+  belongs_to :user, :inverse_of => 'mod_stars'
+  belongs_to :mod, :inverse_of => 'mod_stars'
+
+  # Validations
+  validates :mod_id, :user_id, presence: true
+
+  # Callbacks
+  after_create :increment_counters
+  before_destroy :decrement_counters
+
+  private
+    def increment_counters
+      self.user.update_counter(:starred_mod_lists_count, 1)
+      self.mod.update_counter(:stars_count, 1)
+    end
+
+    def decrement_counters
+      self.user.update_counter(:starred_mod_lists_count, -1)
+      self.mod.update_counter(:stars_count, -1)
+    end
 end

@@ -1,0 +1,52 @@
+.category-tree {
+  font-size: 14px;
+
+  content {
+    display: block;
+    margin-top: 2px;
+    margin-bottom: 3px;
+
+    .sub-category {
+      span {
+        display: inline-block;
+        max-width: calc(100% - 20px);
+        margin-bottom: 3px;
+      }
+
+      input {
+        vertical-align: top;
+      }
+    }
+  }
+}
+
+.expanded-icon, .collapsed-icon, .no-icon {
+  float: left;
+  width: 10px;
+  min-height: 13px;
+  text-align: center;
+  font-size: 10px;
+  margin-right: 4px;
+}
+
+.expanded-icon, .collapsed-icon  {
+  cursor: pointer;
+}
+
+.sub-category {
+  font-size: 11px;
+  margin-left: 27px;
+}
+
+.tree-controls {
+  margin-left: 4px;
+  color: $link_color;
+
+  span {
+    cursor: pointer;
+  }
+
+  span:hover {
+    color: $link_hover_color_secondary;
+  }
+}

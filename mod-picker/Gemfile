@@ -14,6 +14,9 @@ gem 'coffee-script-source', '1.8.0'
 # See https://github.com/rails/execjs#readme for more supported runtimes
 # gem 'therubyracer', platforms: :ruby
 
+# Rack-attack middleware for throttles and restrictions
+gem 'rack-attack'
+
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
 # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
@@ -23,6 +26,8 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 
 # use nokogiri for parsing html
 gem 'nokogiri'
+# use rest-client for rest actions
+gem 'rest-client'
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
@@ -34,37 +39,49 @@ gem 'will_paginate'
 gem 'mail_form'
 gem 'simple_form'
 
+# use cancancan for authorization
+gem 'cancancan', '~> 1.10'
 
 # Use Unicorn as the app server
 # gem 'unicorn'
 
 # using devise for authentication
 gem 'devise'
+# using devise_invitable for inviting users to the platform for the beta
+# may also be used later for users to invite their friends
+gem 'devise_invitable'
 
 # use mailcatcher for development
 gem 'mailcatcher'
 
-# gems to enhance integration with mysql
+# allows for native mysql enums in rails
 gem 'native_enum'
+
+# allow for composite primary keys in rails
+gem 'composite_primary_keys', '~> 8.1'
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
-group :development, :test do
-  # Call 'byebug' anywhere in the code to stop execution and get a debugger console
-  gem 'byebug'
+# Use Faker for generating fake data
+gem 'faker'
 
-  # rspec testing framework
-  gem 'rspec-rails'
-
-  # Use Faker for generating fake data
-  gem 'faker'
-
-  # Factory girl for testing
-  gem 'factory_girl_rails', '~> 4.0'
+group :development do
 
   # Access an IRB console on exception pages or by using <%= console %> in views
   gem 'web-console', '~> 2.0'
+
+  group :test do
+    # Call 'byebug' anywhere in the code to stop execution and get a debugger console
+    gem 'byebug'
+
+    # rspec testing framework
+    gem 'rspec-rails'
+
+    # Factory girl for testing
+    gem 'factory_girl_rails', '~> 4.0'
+  end
+  
 end
 
 group :test do

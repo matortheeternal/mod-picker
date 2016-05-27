@@ -1,8 +1,9 @@
 //= require_self
+//= require ./polyfills.js
 //= require_tree ./angularAssets
 
 var app = angular.module('modPicker', [
-    'ngRoute', 'rzModule'
+    'ui.router', 'rzModule', 'ngAnimate', 'sticky', 'puElasticInput', 'hc.marked', 'smoothScroll'
 ]);
 
 app.config(['$httpProvider', '$compileProvider', function ($httpProvider, $compileProvider) {
@@ -10,10 +11,6 @@ app.config(['$httpProvider', '$compileProvider', function ($httpProvider, $compi
     $compileProvider.debugInfoEnabled(false);
 }]);
 
-function useTwoColumns(b) {
-    if (b) {
-        document.body.className = "two-columns";
-    } else {
-        document.body.className = "";
-    }
-}
+app.config(function ($urlRouterProvider) {
+    $urlRouterProvider.otherwise('/');
+});

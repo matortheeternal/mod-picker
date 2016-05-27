@@ -1,0 +1,92 @@
+/* css for submit mod page */
+.infotable {
+  min-width: 400px;
+}
+
+.notice {
+  margin: 12px 0 12px 0;
+  display: block;
+  font-size: 13px;
+}
+
+form {
+  #categories-section-title {
+    margin-left: -30px;
+    margin-bottom: 10px;
+  }
+
+  #check-categories-btn {
+    display: block;
+    margin-top: 6px;
+  }
+
+  section {
+    category-tree {
+      display: inline-block;
+      width: 240px;
+    }
+  }
+
+  #category-messages {
+    display: inline-block;
+    vertical-align: top;
+    margin-top: 50px;
+    margin-left: 30px;
+    width: 500px;
+    text-align: center;
+
+    .category-message {
+      padding: 4px;
+      width: 100%;
+      white-space: pre-line;
+    }
+    .priority-message {
+      background-color: $warning_primary;
+    }
+    .cat-error-message {
+      background-color: $error_primary;
+    }
+    .cat-success-message {
+      background-color: $success_primary;
+    }
+  }
+
+  #analysis-input {
+    display: none;
+  }
+
+  .analysis-container {
+    max-height: 400px;
+    max-width: 750px;
+    overflow-y: auto;
+
+    .plugin-analysis-item {
+      margin-bottom: 8px;
+
+      .stat-item {
+        padding-left: 30px;
+        margin-bottom: 4px;
+        max-width: 730px;
+      }
+    }
+  }
+
+  .subsection {
+    margin-top: 10px;
+    margin-bottom: 20px;
+  }
+
+  .dynamic-item {
+    margin-bottom: 6px;
+    display: block;
+    line-height: 32px;
+
+    .remove-item {
+      cursor: pointer;
+    }
+
+    input {
+      vertical-align: top;
+    }
+  }
+}

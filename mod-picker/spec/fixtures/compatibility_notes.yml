@@ -1,0 +1,55 @@
+  # create_table "compatibility_notes", force: :cascade do |t|
+  #   t.integer  "submitted_by",            limit: 4
+  #   t.integer  "compatibility_plugin_id", limit: 4
+  #   t.enum     "compatibility_type",      limit: ["Incompatible", "Partially Incompatible", "Compatibility Mod", "Compatibility Plugin", "Make Custom Patch"]
+  #   t.datetime "submitted"
+  #   t.datetime "edited"
+  #   t.text     "text_body",               limit: 65535
+  #   t.integer  "incorrect_notes_count",   limit: 4
+  #   t.integer  "compatibility_mod_id",    limit: 4
+  # end
+
+incompatibleNote:
+  submitted_by: homura
+  compatibility_type: "Incompatible"
+  submitted: 2016-02-15 11:02:57
+  text_body: >
+    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Fugit veniam, 
+    cumque quasi aut ullam id esse, nemo repellendus nam temporibus corrupti ut 
+    harum cum nostrum dicta est eos. In, facilis.
+
+partiallyCompatibleNote:
+  submitted_by: homura
+  compatibility_type: "Partially Incompatible"
+  submitted: 2016-02-15 11:02:57
+  text_body: >
+    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Fugit veniam, 
+    cumque quasi aut ullam id esse, nemo repellendus nam temporibus corrupti ut 
+    harum cum nostrum dicta est eos. In, facilis.
+
+compatibilityModNote:
+  submitted_by: kyoko
+  compatibility_type: "Compatibility Mod"
+  submitted: 2016-02-15 11:02:57
+  text_body: >
+    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Fugit veniam, 
+    cumque quasi aut ullam id esse, nemo repellendus nam temporibus corrupti ut 
+    harum cum nostrum dicta est eos. In, facilis.
+
+compatibilityPluginNote:
+  submitted_by: madoka
+  compatibility_type: "Compatibility Plugin"
+  submitted: 2016-02-15 11:02:57
+  text_body: >
+    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Fugit veniam, 
+    cumque quasi aut ullam id esse, nemo repellendus nam temporibus corrupti ut 
+    harum cum nostrum dicta est eos. In, facilis.
+
+makeCustomPatchNote:
+  submitted_by: homura
+  compatibility_type: "Make Custom Patch"
+  submitted: 2016-02-15 11:02:57
+  text_body: >
+    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Fugit veniam, 
+    cumque quasi aut ullam id esse, nemo repellendus nam temporibus corrupti ut 
+    harum cum nostrum dicta est eos. In, facilis.

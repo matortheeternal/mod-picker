@@ -1,18 +1,13 @@
 class UserReputation < ActiveRecord::Base
-  include Filterable
+  include Filterable, RecordEnhancements
 
-  after_initialize :init
+  scope :user, -> (id) { where(user_id: id) }
 
   belongs_to :user
 
-  scope :user, -> (id) { where(user_id: id) }
+  has_many :from_links, :class_name => 'ReputationLink', :inverse_of => 'from_rep'
+  has_many :to_links, :class_name => 'ReputationLink', :inverse_of => 'to_rep'
   
-  def init
-    self.overall ||= 5.0
-    self.offset ||= 0
-    self.audiovisual_design ||= 0
-    self.plugin_design ||= 0
-    self.utility_design ||= 0
-    self.script_design ||= 0
-  end
+  # Validations
+  validates :user_id, :overall, :offset, presence: true
 end

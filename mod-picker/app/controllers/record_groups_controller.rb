@@ -1,11 +1,14 @@
 class RecordGroupsController < ApplicationController
-  # GET /plugin_record_groups
-  # GET /plugin_record_groups.json
+  # GET /record_groups
   def index
-    @plugin_record_groups = PluginRecordGroup.all
-
-    respond_to do |format|
-      format.json { render :json => @plugin_record_groups}
+    if params.has_key?(:game_id)
+      @record_groups = RecordGroup.where(game_id: params[:game_id])
+    else
+      @record_groups = RecordGroup.all
     end
+
+    render :json => @record_groups.as_json({
+        :except => [:id, :game_id]
+    })
   end
 end

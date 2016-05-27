@@ -1,114 +1,105 @@
 Rails.application.routes.draw do
   # disable registration
-  devise_for :users, :controllers => { :registrations => "registrations" }
+  devise_for :users, :controllers => { :registrations => "registrations", :invitations => "user_invitations" }
   
   # require authentication before allowing user to access any resources
   authenticate :user do
-    resources :games
-    resources :categories
-    resources :category_priorities
     resources :comments
-    resources :installation_notes
+    resources :install_order_notes
+    resources :load_order_notes
     resources :compatibility_notes
-    resources :mod_version_compatibility_notes
-    resources :mod_list_compatibility_notes
-    resources :mod_list_installation_notes
-    resources :agreement_marks
     resources :incorrect_notes
-    resources :helpful_marks
-    resources :agreement_marks
     resources :reviews
     resources :mod_authors
-    resources :mod_list_stars
-    resources :mod_stars
-    resources :reputation_links
-    resources :user_reputations
-    resources :user_settings
     resources :user_bios
-    resources :mod_list_mods
-    resources :mod_list_custom_plugins
-    resources :mod_list_plugins
     resources :mod_lists
-    resources :plugin_record_groups
-    resources :override_records
-    resources :masters
-    resources :plugins
-    resources :mod_version_files
     resources :mod_asset_files
-    resources :mod_versions
-    resources :mods
-    resources :lover_infos
-    resources :workshop_infos
-    resources :nexus_infos
-    resources :users
 
-    # record groups
+    # users and user settings
+    resources :users, only: [:index, :show, :update, :destroy]
+    resources :user_settings, only: [:index, :update]
+    match '/link_account', to: 'users#link_account', via: 'get'
+
+    # scraping
+    resources :nexus_infos, only: [:show, :destroy]
+    resources :workshop_infos, only: [:show, :destroy]
+    resources :lover_infos, only: [:show, :destroy]
+
+    # tags
+    match '/tags', to: 'tags#index', via: 'post'
+    match '/tags/:id', to: 'tags#destroy', via: 'delete'
+    match '/mods/:id/tag', to: 'mods#tag', via: 'post'
+    match '/mod_lists/:id/tag', to: 'mod_lists#tag', via: 'post'
+
+    # mods
+    resources :mods, only: [:show, :update, :destroy]
+    match '/mods/submit', to: 'mods#create', via: 'post'
+    match '/mods', to: 'mods#index', via: 'post'
+    match '/mods/search', to: 'mods#search', via: 'post'
+
+    # plugins
+    resources :plugins, only: [:show, :destroy]
+    match '/plugins', to: 'plugins#index', via: 'post'
+    match '/plugins/search', to: 'plugins#search', via: 'post'
+
+    # content associated with mods
+    match '/mods/:id/reviews', to: 'mods#reviews', via: 'get'
+    match '/mods/:id/compatibility_notes', to: 'mods#compatibility_notes', via: 'get'
+    match '/mods/:id/install_order_notes', to: 'mods#install_order_notes', via: 'get'
+    match '/mods/:id/load_order_notes', to: 'mods#load_order_notes', via: 'get'
+    match '/mods/:id/analysis', to: 'mods#analysis', via: 'get'
+
+    # helpful marks
+    match '/reviews/:id/helpful', to: 'reviews#helpful', via: 'post'
+    match '/compatibility_notes/:id/helpful', to: 'compatibility_notes#helpful', via: 'post'
+    match '/install_order_notes/:id/helpful', to: 'install_order_notes#helpful', via: 'post'
+    match '/load_order_notes/:id/helpful', to: 'load_order_notes#helpful', via: 'post'
+
+    # hiding content
+    match '/reviews/:id/hide', to: 'reviews#hide', via: 'post'
+    match '/compatibility_notes/:id/hide', to: 'compatibility_notes#hide', via: 'post'
+    match '/install_order_notes/:id/hide', to: 'install_order_notes#hide', via: 'post'
+    match '/load_order_notes/:id/hide', to: 'load_order_notes#hide', via: 'post'
+
+    # approving content
+    match '/reviews/:id/approve', to: 'reviews#approve', via: 'post'
+    match '/compatibility_notes/:id/approve', to: 'compatibility_notes#approve', via: 'post'
+    match '/install_order_notes/:id/approve', to: 'install_order_notes#approve', via: 'post'
+    match '/load_order_notes/:id/approve', to: 'load_order_notes#approve', via: 'post'
+
+    # agreement marks
+    match '/incorrect_notes/:id/agreement', to: 'incorrect_notes#agreement', via: 'post'
+
+    # mod and mod list stars
+    match '/mod_lists/:id/star', to: 'mod_lists#create_star', via: 'post'
+    match '/mod_lists/:id/star', to: 'mod_lists#destroy_star', via: 'delete'
+    match '/mods/:id/star', to: 'mods#create_star', via: 'post'
+    match '/mods/:id/star', to: 'mods#destroy_star', via: 'delete'
+
+    # avatars
+    match '/avatar', to: 'avatars#create', via: 'post'
+
+    # static data
+    resources :categories, only: [:index]
+    resources :category_priorities, only: [:index]
+    resources :games, only: [:index]
+    resources :quotes, only: [:index]
     resources :record_groups, only: [:index]
+    resources :review_sections, only: [:index]
+    resources :user_titles, only: [:index]
 
-    # angular
-    resources :angular, only: [:index]
+    # home page
+    match '/skyrim', to: 'home#skyrim', via: 'get'
+    match '/fallout4', to: 'home#fallout4', via: 'get'
   end
 
   # welcome page
   resources :welcome, only: [:index]
 
   # contact us and subscribe
-  match '/contacts',     to: 'contacts#new',             via: 'get'
+  match '/contacts', to: 'contacts#new', via: 'get'
   resources :contacts, only: [:new, :create]
-
-  
-  # The priority is based upon order of creation: first created -> highest priority.
-  # See how all your routes lay out with "rake routes".
 
   # You can have the root of your site routed with "root"
   root 'welcome#index'
-
-  # Example of regular route:
-  #   get 'products/:id' => 'catalog#view'
-
-  # Example of named route that can be invoked with purchase_url(id: product.id)
-  #   get 'products/:id/purchase' => 'catalog#purchase', as: :purchase
-
-  # Example resource route (maps HTTP verbs to controller actions automatically):
-  #   resources :products
-
-  # Example resource route with options:
-  #   resources :products do
-  #     member do
-  #       get 'short'
-  #       post 'toggle'
-  #     end
-  #
-  #     collection do
-  #       get 'sold'
-  #     end
-  #   end
-
-  # Example resource route with sub-resources:
-  #   resources :products do
-  #     resources :comments, :sales
-  #     resource :seller
-  #   end
-
-  # Example resource route with more complex sub-resources:
-  #   resources :products do
-  #     resources :comments
-  #     resources :sales do
-  #       get 'recent', on: :collection
-  #     end
-  #   end
-
-  # Example resource route with concerns:
-  #   concern :toggleable do
-  #     post 'toggle'
-  #   end
-  #   resources :posts, concerns: :toggleable
-  #   resources :photos, concerns: :toggleable
-
-  # Example resource route within a namespace:
-  #   namespace :admin do
-  #     # Directs /admin/products/* to Admin::ProductsController
-  #     # (app/controllers/admin/products_controller.rb)
-  #     resources :products
-  #   end
 end

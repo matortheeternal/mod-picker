@@ -1,72 +1,57 @@
 class UsersController < ApplicationController
-  before_action :set_user, only: [:show, :edit, :update, :destroy]
+  before_action :set_user, only: [:show, :update, :destroy]
 
   # GET /users
-  # GET /users.json
   def index
     @users = User.filter(filtering_params)
 
-    respond_to do |format|
-      format.html
-      format.json { render :json => @users}
-    end
+    render :json => @users
   end
 
   # GET /users/1
-  # GET /users/1.json
   def show
-    respond_to do |format|
-      format.html
-      format.json { render :json => @user}
-    end
+    authorize! :read, @user
+    render :json => @user.show_json(current_user)
   end
 
-  # GET /users/new
-  def new
-    @user = User.new
-  end
-
-  # GET /users/1/edit
-  def edit
-  end
-
-  # POST /users
-  # POST /users.json
-  def create
-    @user = User.new(user_params)
-
-    respond_to do |format|
-      if @user.save
-        format.html { redirect_to @user, notice: 'User was successfully created.' }
-        format.json { render :show, status: :created, location: @user }
+  # GET /link_account
+  def link_account
+    bio = current_user.bio
+    case params[:site]
+      when "Nexus Mods"
+        verified = bio.verify_nexus_account(params[:user_path])
+      when "Lover's Lab"
+        verified = bio.verify_lover_account(params[:user_path])
+      when "Steam Workshop"
+        verified = bio.verify_workshop_account(params[:user_path])
       else
-        format.html { render :new }
-        format.json { render json: @user.errors, status: :unprocessable_entity }
-      end
+        verified = false
+    end
+
+    if verified
+      render json: {status: :ok, verified: true, bio: bio}
+    else
+      render json: {status: :ok, verified: false}
     end
   end
 
   # PATCH/PUT /users/1
-  # PATCH/PUT /users/1.json
   def update
-    respond_to do |format|
-      if @user.update(user_params)
-        format.html { redirect_to @user, notice: 'User was successfully updated.' }
-        format.json { render :show, status: :ok, location: @user }
-      else
-        format.html { render :edit }
-        format.json { render json: @user.errors, status: :unprocessable_entity }
-      end
+    authorize! :update, @user
+    if @user.update(user_params)
+      render json: {status: :ok}
+    else
+      render json: @user.errors, status: :unprocessable_entity
     end
   end
 
   # DELETE /users/1
-  # DELETE /users/1.json
   def destroy
-    @user.destroy
-    respond_to do |format|
-      format.html { redirect_to users_url, notice: 'User was successfully destroyed.' }
-      format.json { head :no_content }
+    authorize! :destroy, @user
+    if @user.destroy
+      render json: {status: :ok}
+    else
+      render json: @user.errors, status: :unprocessable_entity
     end
   end
 
@@ -83,6 +68,6 @@ class UsersController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def user_params
-      params.require(:user).permit(:username, :user_level, :title, :avatar, :joined, :active_ml_id, :active_mc_id, :email)
+      params.require(:user).permit(:username, :role, :title, :joined, :active_mod_list_id, :email, :about_me)
     end
 end

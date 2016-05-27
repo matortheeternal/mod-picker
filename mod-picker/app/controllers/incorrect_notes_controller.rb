@@ -6,19 +6,13 @@ class IncorrectNotesController < ApplicationController
   def index
     @incorrect_notes = IncorrectNote.filter(filtering_params)
 
-    respond_to do |format|
-      format.html
-      format.json { render :json => @incorrect_notes}
-    end
+    render :json => @incorrect_notes
   end
 
   # GET /incorrect_notes/1
   # GET /incorrect_notes/1.json
   def show
-    respond_to do |format|
-      format.html
-      format.json { render :json => @incorrect_note}
-    end
+    render :json => @incorrect_note
   end
 
   # GET /incorrect_notes/new
@@ -35,27 +29,40 @@ class IncorrectNotesController < ApplicationController
   def create
     @incorrect_note = IncorrectNote.new(incorrect_note_params)
 
-    respond_to do |format|
-      if @incorrect_note.save
-        format.html { redirect_to @incorrect_note, notice: 'Incorrect note was successfully created.' }
-        format.json { render :show, status: :created, location: @incorrect_note }
-      else
-        format.html { render :new }
-        format.json { render json: @incorrect_note.errors, status: :unprocessable_entity }
-      end
+    if @incorrect_note.save
+      render json: {status: :ok}
+    else
+      render json: @incorrect_note.errors, status: :unprocessable_entity
     end
   end
 
   # PATCH/PUT /incorrect_notes/1
   # PATCH/PUT /incorrect_notes/1.json
   def update
-    respond_to do |format|
-      if @incorrect_note.update(incorrect_note_params)
-        format.html { redirect_to @incorrect_note, notice: 'Incorrect note was successfully updated.' }
-        format.json { render :show, status: :ok, location: @incorrect_note }
+    if @incorrect_note.update(incorrect_note_params)
+      render json: {status: :ok}
+    else
+      render json: @incorrect_note.errors, status: :unprocessable_entity
+    end
+  end
+
+  # POST /incorrect_notes/1/agreement
+  def agreement
+    @agreement_mark = AgreementMark.find_or_create_by(
+        submitted_by: current_user.id,
+        incorrect_note_id: params[:id])
+    if params.has_key?(:agree)
+      @agreement_mark.agree = params[:agree]
+      if @agreement_mark.save
+        render json: {status: :ok}
       else
-        format.html { render :edit }
-        format.json { render json: @incorrect_note.errors, status: :unprocessable_entity }
+        render json: @agreement_mark.errors, status: :unprocessable_entity
+      end
+    else
+      if @agreement_mark.destroy
+        render json: {status: :ok}
+      else
+        render json: @agreement_mark.errors, status: :unprocessable_entity
       end
     end
   end
@@ -63,10 +70,10 @@ class IncorrectNotesController < ApplicationController
   # DELETE /incorrect_notes/1
   # DELETE /incorrect_notes/1.json
   def destroy
-    @incorrect_note.destroy
-    respond_to do |format|
-      format.html { redirect_to incorrect_notes_url, notice: 'Incorrect note was successfully destroyed.' }
-      format.json { head :no_content }
+    if @incorrect_note.destroy
+      render json: {status: :ok}
+    else
+      render json: @incorrect_note.errors, status: :unprocessable_entity
     end
   end
 

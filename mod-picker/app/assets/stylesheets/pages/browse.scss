@@ -1,0 +1,184 @@
+/* css for filters */
+.sidebar-box {
+  background-color: $background_highlight;
+  border: 1px solid $border_color;
+  max-width: 240px;
+  padding: 8px;
+  margin: 0;
+}
+
+.half-box {
+  width: 45%;
+  display: inline-block;
+}
+
+.filter-controls {
+  font-size: 14px;
+  margin-left: 4px;
+  color: $link_color;
+
+  span {
+    cursor: pointer;
+    @include transition(all 0.2s ease-in-out);
+  }
+
+  span:hover {
+    color: $link_hover_color_secondary;
+  }
+}
+
+.left-browse-column {
+  min-width: 250px;
+
+  /* custom sliders */
+  .rz-bubble {
+    font-size: 12px !important;
+  }
+
+  .rz-pointer {
+    height: 20px !important;
+    width: 20px !important;
+    top: -6px !important;
+    background-color: $slider_range_color !important;
+    outline: 0;
+  }
+
+  .rz-pointer::after {
+    top: 6px !important;
+    left: 6px !important;
+  }
+
+  .rz-active::after {
+    background-color: $slider_circle_color_after !important;
+  }
+
+  .rz-bar {
+    background-color: $slider_bg_color !important;
+  }
+
+  .rz-bar.rz-selection {
+    background-color: $slider_range_color !important;
+  }
+
+  input[type="text"] {
+    width: 100%;
+  }
+}
+
+/* css for search results */
+.right-browse-column {
+  max-width: 970px;
+
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    font-family: 'Arial', sans-serif;
+    font-size: 12px;
+
+    th {
+      margin: 0;
+      padding: 5px 10px;
+      text-align: left;
+      white-space: nowrap;
+      vertical-align: bottom;
+      cursor: pointer;
+      border-right: 1px solid $border_color;
+      @include user-select(none);
+    }
+
+    .sorting-options {
+      margin-left: 4px;
+      margin-bottom: 2px;
+      display: inline-block;
+      vertical-align: bottom;
+      div {
+        height: 10px;
+      }
+      i {
+        font-size: 12px;
+        color: $hard_border_color;
+      }
+      div.active i {
+        color: $text_color;
+      }
+    }
+
+    .actions-header {
+      text-align: center;
+      min-width: 60px;
+      cursor: default;
+      border: 0;
+      padding: 5px 0;
+    }
+
+    td {
+      border-width: 0 0 0 1px;
+      margin: 0;
+      overflow: visible;
+      padding-left: 10px;
+      white-space: nowrap;
+
+      a {
+        display: block;
+        padding: 7px 0;
+      }
+    }
+
+    .text-cell {
+      min-width: 125px;
+      white-space: normal;
+    }
+
+    .main-cell {
+      min-width: 200px;
+      max-width: 250px;
+      white-space: normal;
+    }
+
+    .actions-cell {
+      text-align: center;
+      padding: 0;
+    }
+
+    i {
+      font-size: 16px;
+    }
+
+    input {
+      font-size: 12px;
+      padding: 3px;
+      margin: 4px;
+    }
+
+    thead tr {
+      background-color: $primary_background;
+      border-bottom: 1px solid $border_color;
+      border-top: 1px solid $border_color;
+    }
+
+    tbody tr:nth-child(odd) {
+      background-color: $secondary_background;
+      border-bottom: 1px solid $border_color;
+    }
+
+    tbody tr:nth-child(even) {
+      background-color: $primary_background;
+      border-bottom: 1px solid $border_color;
+    }
+  }
+}
+
+select.stealthy.ng-pristine {
+  opacity: 0.5;
+  filter: alpha(opacity=50);
+}
+
+.userGeneratedList .entry {
+  border: solid 2px $secondary_background;
+  padding: 10px;
+  background-color: $primary_background;
+}
+
+.browse-results {
+  overflow-x: auto;
+}

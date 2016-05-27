@@ -1,16 +1,19 @@
-/**
- * Created by r79 on 2/11/2016.
- */
-
-app.directive('loader', function () {
+app.directive('loader', function (spinnerFactory) {
     return {
         restrict: 'E',
         templateUrl: '/resources/directives/loader.html',
         scope: {
-            data: '='
+            data: '=',
+            spinnerClass: '@',
+            contentClass: '@'
         },
         controller: 'loaderController',
-        transclude: true
+        transclude: true,
+        link: function(scope, element, attrs) {
+            var opts = spinnerFactory.getOpts(scope.spinnerClass);
+            var target = element.children()[0].firstElementChild;
+            var spinner = new Spinner(opts).spin(target);
+        }
     }
 });
 
