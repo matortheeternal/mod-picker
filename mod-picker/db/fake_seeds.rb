@@ -123,9 +123,6 @@ def seed_fake_mods
     author: "SkyUI Team",
     override_count: 0,
     record_count: 8,
-    master_filenames: [],
-    plugin_errors_attributes: [],
-    overrides_attributes: [],
     plugin_record_groups_attributes: [{
       sig: "QUST",
       override_count: 0,
