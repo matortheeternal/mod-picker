@@ -341,7 +341,15 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
 
     // TAG RELATED LOGIC
     $scope.saveTags = function(updatedTags) {
-        tagService.updateModTags($scope.mod, updatedTags);
+        tagService.updateModTags($scope.mod, updatedTags).then(function(data) {
+            if (data.status == "ok") {
+                $scope.submitMessage = "Tags submitted successfully.";
+                $scope.showSuccess = true;
+            } else {
+                $scope.errors = data.errors;
+            }
+            return data;
+        });
     };
 
     // REVIEW RELATED LOGIC
