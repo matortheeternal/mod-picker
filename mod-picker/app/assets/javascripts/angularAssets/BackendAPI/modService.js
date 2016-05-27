@@ -131,7 +131,7 @@ app.service('modService', function(backend, $q, helpfulMarkService, userTitleSer
             // create nestedAssets tree
             analysis.nestedAssets = assetUtils.convertDataStringToNestedObject(analysis.assets);
             //associate groups with plugins
-            recordGroupService.associateGroups(analysis.plugins, gameId)
+            recordGroupService.associateGroups(analysis.plugins, gameId);
 
             output.resolve(data);
         });

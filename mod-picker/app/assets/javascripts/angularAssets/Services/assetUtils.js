@@ -35,7 +35,7 @@ app.service('assetUtils', function (fileUtils) {
                 currentLayer.childs[current] = {
                     title: current,
                     iconClass: iconClass
-                }
+                };
             }
             return nestObject(nestingArray, currentLayer.childs[current]);
         }
