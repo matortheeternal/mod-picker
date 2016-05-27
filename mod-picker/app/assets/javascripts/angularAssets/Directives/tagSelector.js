@@ -61,7 +61,14 @@ app.controller('tagSelectorController', function ($scope, tagService) {
         $scope.rawNewTags.forEach(function(tag) {
             updatedTags.push(tag.text);
         });
-        $scope.saveCallback(updatedTags);
+        $scope.saveCallback(updatedTags).then(function(data) {
+            if (data.status == "ok") {
+                $scope.activeTags = data.tags;
+                $scope.rawNewTags = [];
+                $scope.removedTags = [];
+                $scope.storeTags();
+            }
+        });
     };
 
     $scope.applyTag = function(index, tag) {
