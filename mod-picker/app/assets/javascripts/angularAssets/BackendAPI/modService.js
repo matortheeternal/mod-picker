@@ -14,7 +14,6 @@ app.service('modService', function(backend, $q) {
             mods.reject();
             return mods.promise;
         }
-
         pages.current = newPage || pages.current;
 
         var postData =  {
@@ -22,7 +21,6 @@ app.service('modService', function(backend, $q) {
             sort: sort,
             page: pages.current
         };
-
         backend.post('/mods', postData).then(function (data) {
             pages.max = Math.ceil(data.max_entries / data.entries_per_page);
             mods.resolve({
@@ -30,23 +28,19 @@ app.service('modService', function(backend, $q) {
                 pageInformation: pages
             });
         });
-
         return mods.promise;
     };
 
     this.searchMods = function(name) {
         var mods = $q.defer();
-
         var postData =  {
             filters: {
                 search: name
             }
         };
-
         backend.post('/mods/search', postData).then(function (data) {
             mods.resolve(data);
         });
-
         return mods.promise;
     };
 
@@ -62,6 +56,14 @@ app.service('modService', function(backend, $q) {
             });
         }
         return star.promise;
+    };
+
+    this.retrieveCorrections = function(modId, options) {
+        var corrections = $q.defer();
+        backend.retrieve('/mods/' + modId + '/corrections', options).then(function (data) {
+            corrections.resolve(data);
+        });
+        return corrections.promise;
     };
 
     this.retrieveReviews = function(modId, options) {
