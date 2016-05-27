@@ -4,7 +4,7 @@ app.service('assetUtils', function (fileUtils) {
             childs: {}
         };
 
-        <!-- TODO: don't use recursive function here, as a simple loop would work as good if not better -->
+        // TODO: don't use recursive function here, as a simple loop would work as good if not better
         function nestObject(nestingArray, currentLayer) {
             var current = nestingArray.shift();
             if(!current) {
