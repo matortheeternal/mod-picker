@@ -43,12 +43,13 @@ app.controller('tagSelectorController', function ($scope, tagService) {
 
     $scope.removeActiveTag = function ($index) {
         var removedTag = $scope.activeTags.splice($index, 1);
-        $scope.removedTags.push(removedTag);
+        $scope.removedTags.push(removedTag[0]);
     };
 
     $scope.resetTags = function () {
         $scope.activeTags = $scope.activeTags.concat($scope.removedTags);
         $scope.rawNewTags = [];
+        $scope.removedTags = [];
         $scope.storeTags();
         $scope.$applyAsync();
     };
