@@ -218,6 +218,9 @@ class Mod < ActiveRecord::Base
         plugin = Plugin.find_by(filename: dump[:filename], crc_hash: dump[:crc_hash])
         if plugin.nil?
           plugin = self.plugins.create(dump)
+        else
+          plugin.mod_id = self.id
+          plugin.save
         end
       end
     end
