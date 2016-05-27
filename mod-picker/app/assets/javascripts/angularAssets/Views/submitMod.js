@@ -253,6 +253,13 @@ app.controller('submitModController', function ($scope, backend, submitService, 
             workshop: $scope.workshop,
             lab: $scope.lab
         };
-        submitService.submitMod($scope.mod, $scope.analysis, sources, $scope.requirements);
+        submitService.submitMod($scope.mod, $scope.analysis, sources, $scope.requirements).then(function(data) {
+            if (data.status == "ok") {
+                $scope.successMessage = "Mod submitted!";
+                $scope.showSuccess = true;
+            } else {
+                $scope.errors = data.errors;
+            }
+        });
     }
 });
