@@ -211,9 +211,9 @@ app.controller('submitModController', function ($scope, backend, submitService, 
         // build list of masters
         var masters = [];
         $scope.analysis.plugins.forEach(function(plugin) {
-            plugin.master_filenames.forEach(function(filename) {
-                if (masters.indexOf(filename) == -1) {
-                    masters.push(filename);
+            plugin.master_plugins.forEach(function(master) {
+                if (masters.indexOf(master.filename) == -1) {
+                    masters.push(master.filename);
                 }
             });
         });
