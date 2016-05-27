@@ -167,7 +167,7 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
     $scope.retrieveCorrections = function() {
         modService.retrieveAssociation($stateParams.modId, 'corrections').then(function(data) {
             contributionService.associateAgreementMarks(data.corrections, data.agreement_marks);
-            $scope.associateUserTitles(data.corrections);
+            userTitleService.associateTitles(data.corrections, $scope.userTitles);
             $scope.mod.corrections = data.corrections;
         });
     };
@@ -178,8 +178,8 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
         };
         modService.retrieveAssociation($stateParams.modId, 'reviews', options).then(function(data) {
             contributionService.associateHelpfulMarks(data.reviews, data.helpful_marks);
-            $scope.associateUserTitles(data.reviews);
-            $scope.associateReviewSections(data.reviews);
+            userTitleService.associateTitles(data.reviews, $scope.userTitles);
+            reviewSectionService.associateReviewSections(data.reviews, $scope.reviewSections, $scope.allReviewSections);
             $scope.mod.reviews = data.reviews;
         });
     };
@@ -207,7 +207,7 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
         };
         modService.retrieveAssociation($stateParams.modId, 'install_order_notes', options).then(function(data) {
             contributionService.associateHelpfulMarks(data.install_order_notes, data.helpful_marks);
-            $scope.associateUserTitles(data.install_order_notes);
+            userTitleService.associateTitles(data.install_order_notes, $scope.userTitles);
             $scope.mod.install_order_notes = data.install_order_notes;
         });
     };
@@ -221,7 +221,7 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
         };
         modService.retrieveAssociation($stateParams.modId, 'load_order_notes', options).then(function(data) {
             contributionService.associateHelpfulMarks(data.load_order_notes, data.helpful_marks);
-            $scope.associateUserTitles(data.load_order_notes);
+            userTitleService.associateTitles(data.load_order_notes, $scope.userTitles);
             $scope.mod.load_order_notes = data.load_order_notes;
         });
     };
@@ -275,23 +275,6 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
     // REVIEW RELATED LOGIC
     // retrieve reviews initially because they're the default tab currently
     $scope.retrieveReviews();
-
-    // associate reviews with review sections
-    $scope.associateReviewSections = function(reviews) {
-        // if we don't have recordGroups yet, try again in 100ms
-        if (!$scope.reviewSections) {
-            $timeout(function() {
-                $scope.associateReviewSections(reviews);
-            }, 100);
-            return;
-        }
-        // loop through the reviews
-        reviews.forEach(function(review) {
-            review.review_ratings.forEach(function(rating) {
-                rating.section = reviewSectionService.getSectionById($scope.allReviewSections, rating.review_section_id);
-            });
-        });
-    };
 
     // instantiate a new review object
     $scope.startNewReview = function() {
