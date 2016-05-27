@@ -1,5 +1,5 @@
 class ModsController < ApplicationController
-  before_action :set_mod, only: [:show, :update, :update_tags, :corrections, :reviews, :compatibility_notes, :install_order_notes, :load_order_notes, :analysis, :destroy]
+  before_action :set_mod, only: [:update, :update_tags, :corrections, :reviews, :compatibility_notes, :install_order_notes, :load_order_notes, :analysis, :destroy]
 
   # POST /mods
   def index
@@ -18,7 +18,6 @@ class ModsController < ApplicationController
   # POST /mods/search
   def search
     @mods = Mod.where(hidden: false).filter(search_params).sort({ column: "name", direction: "ASC" }).limit(10)
-
     render :json => @mods.as_json({
         :only => [:id, :name]
     })
@@ -26,6 +25,7 @@ class ModsController < ApplicationController
 
   # GET /mods/1
   def show
+    @mod = Mod.includes(:nexus_infos, :workshop_infos, :lover_infos).find(params[:id])
     authorize! :read, @mod
     star = ModStar.exists?(:mod_id => @mod.id, :user_id => current_user.id)
     render :json => {
@@ -227,7 +227,7 @@ class ModsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_mod
-      @mod = Mod.includes(:nexus_infos, :workshop_infos, :lover_infos).find(params[:id])
+      @mod = Mod.find(params[:id])
     end
 
     # Params we allow searching on
