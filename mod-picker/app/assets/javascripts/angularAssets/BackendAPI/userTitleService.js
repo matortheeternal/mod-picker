@@ -4,7 +4,7 @@ app.service('userTitleService', function (backend, $q, $timeout) {
         backend.retrieve('/user_titles').then(function(data) {
             titles.resolve(data);
         });
-        return titles;
+        return titles.promise;
     };
 
     this.getSortedGameTitles = function(titles) {
@@ -31,7 +31,7 @@ app.service('userTitleService', function (backend, $q, $timeout) {
 
     this.associateTitles = function(data, userTitles) {
         var service = this;
-        if (!userTitles) {
+        if (userTitles.length == 0) {
             $timeout(function() {
                 service.associateTitles(data, userTitles);
             }, 100);

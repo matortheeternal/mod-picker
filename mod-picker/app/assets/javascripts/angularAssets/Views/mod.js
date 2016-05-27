@@ -21,6 +21,9 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
     $scope.tags = [];
     $scope.newTags = [];
     $scope.sort = {};
+    $scope.userTitles = [];
+    $scope.reviewSections = [];
+    $scope.allReviewSections = [];
     $scope.filters = {
         compatibility_notes: true,
         install_order_notes: true,
@@ -62,8 +65,9 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
 
             // getting review sections
             reviewSectionService.retrieveReviewSections().then(function (reviewSections) {
-                $scope.allReviewSections = reviewSections;
-                $scope.reviewSections = reviewSectionService.getSectionsForCategory(reviewSections, $scope.primaryCategory);
+                Array.prototype.push.apply($scope.allReviewSections, reviewSections);
+                var filteredSections = reviewSectionService.getSectionsForCategory(reviewSections, $scope.primaryCategory);
+                Array.prototype.push.apply($scope.reviewSections, filteredSections);
             });
         });
 
@@ -80,7 +84,8 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
 
     //get user titles
     userTitleService.retrieveUserTitles().then(function(userTitles) {
-        $scope.userTitles = userTitleService.getSortedGameTitles(userTitles);
+        var gameTitles = userTitleService.getSortedGameTitles(userTitles);
+        Array.prototype.push.apply($scope.userTitles, gameTitles);
     });
 
     //get record groups

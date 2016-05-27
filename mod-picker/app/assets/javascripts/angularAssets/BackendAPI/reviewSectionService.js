@@ -1,11 +1,9 @@
 app.service('reviewSectionService', function (backend, $q, $timeout) {
     this.retrieveReviewSections = function () {
         var reviewSections = $q.defer();
-
         backend.retrieve('/review_sections').then(function (data) {
             reviewSections.resolve(data);
         });
-
         return reviewSections.promise;
     };
 
@@ -25,9 +23,9 @@ app.service('reviewSectionService', function (backend, $q, $timeout) {
     this.associateReviewSections = function(reviews, reviewSections, allReviewSections) {
         var service = this;
         // if we don't have review sections yet, try again in 100ms
-        if (!reviewSections) {
+        if (reviewSections.length == 0 || allReviewSections.length == 0) {
             $timeout(function() {
-                service.associateReviewSections(reviews);
+                service.associateReviewSections(reviews, reviewSections, allReviewSections);
             }, 100);
             return;
         }
