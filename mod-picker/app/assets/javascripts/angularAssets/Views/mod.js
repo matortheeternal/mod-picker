@@ -258,7 +258,7 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
         var options = {
             sort: $scope.sort.reviews || 'reputation'
         };
-        modService.retrieveReviews($stateParams.modId, options).then(function(data) {
+        modService.retrieveAssociation($stateParams.modId, 'reviews', options).then(function(data) {
             $scope.associateHelpfulMarks(data.reviews, data.helpful_marks);
             $scope.associateUserTitles(data.reviews);
             $scope.associateReviewSections(data.reviews);
@@ -273,7 +273,7 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
                 mod_list: $scope.filters.compatibility_notes || true
             }
         };
-        modService.retrieveCompatibilityNotes($stateParams.modId, options).then(function(data) {
+        modService.retrieveAssociation($stateParams.modId, 'compatibility_notes', options).then(function(data) {
             $scope.associateHelpfulMarks(data.compatibility_notes, data.helpful_marks);
             $scope.associateUserTitles(data.compatibility_notes);
             $scope.mod.compatibility_notes = data.compatibility_notes;
@@ -287,7 +287,7 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
                 mod_list: $scope.filters.install_order_notes
             }
         };
-        modService.retrieveInstallOrderNotes($stateParams.modId, options).then(function(data) {
+        modService.retrieveAssociation($stateParams.modId, 'install_order_notes', options).then(function(data) {
             $scope.associateHelpfulMarks(data.install_order_notes, data.helpful_marks);
             $scope.associateUserTitles(data.install_order_notes);
             $scope.mod.install_order_notes = data.install_order_notes;
@@ -301,7 +301,7 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
                 mod_list: $scope.filters.load_order_notes
             }
         };
-        modService.retrieveLoadOrderNotes($stateParams.modId, options).then(function(data) {
+        modService.retrieveAssociation($stateParams.modId, 'load_order_notes', options).then(function(data) {
             $scope.associateHelpfulMarks(data.load_order_notes, data.helpful_marks);
             $scope.associateUserTitles(data.load_order_notes);
             $scope.mod.load_order_notes = data.load_order_notes;
@@ -309,7 +309,7 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
     };
 
     $scope.retrieveAnalysis = function() {
-        modService.retrieveAnalysis($stateParams.modId).then(function(analysis) {
+        modService.retrieveAssociation($stateParams.modId, 'analysis').then(function(analysis) {
             // turn assets into an array of string
             $scope.mod.assets = analysis.assets.map(function(asset) {
                 return asset.filepath;

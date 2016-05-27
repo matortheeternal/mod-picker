@@ -58,51 +58,11 @@ app.service('modService', function(backend, $q) {
         return star.promise;
     };
 
-    this.retrieveCorrections = function(modId, options) {
-        var corrections = $q.defer();
-        backend.retrieve('/mods/' + modId + '/corrections', options).then(function (data) {
-            corrections.resolve(data);
+    this.retrieveAssociation = function(modId, name, options) {
+        var action = $q.defer();
+        backend.retrieve('/mods/' + modId + '/' + name, options).then(function (data) {
+            action.resolve(data);
         });
-        return corrections.promise;
-    };
-
-    this.retrieveReviews = function(modId, options) {
-        var reviews = $q.defer();
-        backend.retrieve('/mods/' + modId + '/reviews', options).then(function (data) {
-            reviews.resolve(data);
-        });
-        return reviews.promise;
-    };
-
-    this.retrieveCompatibilityNotes = function(modId, options) {
-        var compatibilityNotes = $q.defer();
-        backend.retrieve('/mods/' + modId + '/compatibility_notes', options).then(function (data) {
-            compatibilityNotes.resolve(data);
-        });
-        return compatibilityNotes.promise;
-    };
-
-    this.retrieveInstallOrderNotes = function(modId, options) {
-        var installOrderNotes = $q.defer();
-        backend.retrieve('/mods/' + modId + '/install_order_notes', options).then(function (data) {
-            installOrderNotes.resolve(data);
-        });
-        return installOrderNotes.promise;
-    };
-
-    this.retrieveLoadOrderNotes = function(modId, options) {
-        var loadOrderNotes = $q.defer();
-        backend.retrieve('/mods/' + modId + '/load_order_notes', options).then(function (data) {
-            loadOrderNotes.resolve(data);
-        });
-        return loadOrderNotes.promise;
-    };
-
-    this.retrieveAnalysis = function(modId, options) {
-        var analysis = $q.defer();
-        backend.retrieve('/mods/' + modId + '/analysis', options).then(function (data) {
-            analysis.resolve(data);
-        });
-        return analysis.promise;
+        return action.promise;
     };
 });
