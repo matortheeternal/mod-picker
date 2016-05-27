@@ -136,6 +136,21 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
         userTitleService.associateTitles($scope.userTitles, data);
     };
 
+    //associate agreement marks with content
+    $scope.associateAgreementMarks = function(data, agreementMarks) {
+        // loop through data
+        data.forEach(function(item) {
+            // see if we have a matching agreement mark
+            var agreementMark = agreementMarks.find(function(mark) {
+                return mark.correction_id == item.id;
+            });
+            // if we have a matching agreement mark, assign it to the item
+            if (agreementMark) {
+                item.agree = agreementMark.agree;
+            }
+        });
+    };
+
     //associate helpful marks with content
     $scope.associateHelpfulMarks = function(data, helpfulMarks) {
         // loop through data
