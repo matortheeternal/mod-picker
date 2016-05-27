@@ -1,4 +1,4 @@
-app.service('modService', function(backend, $q, helpfulMarkService, userTitleService, categoryService, reviewSectionService) {
+app.service('modService', function(backend, $q, helpfulMarkService, userTitleService, categoryService, reviewSectionService, recordGroupService, assetUtils) {
     this.retrieveMod = function(modId) {
       output = $q.defer();
       backend.retrieve('/mods/' + modId).then(function(modObject) {
@@ -121,9 +121,18 @@ app.service('modService', function(backend, $q, helpfulMarkService, userTitleSer
         return output.promise;
     };
 
-    this.retrieveAnalysis = function(modId, options) {
+    this.retrieveAnalysis = function(modId, gameId, options) {
         var output = $q.defer();
-        backend.retrieve('/mods/' + modId + '/analysis', options).then(function (data) {
+        backend.retrieve('/mods/' + modId + '/analysis', options).then(function (analysis) {
+            // turn assets into an array of string
+            analysis.assets = analysis.assets.map(function(asset) {
+                return asset.filepath;
+            });
+            // create nestedAssets tree
+            analysis.nestedAssets = assetUtils.convertDataStringToNestedObject(analysis.assets);
+            //associate groups with plugins
+            recordGroupService.associateGroups(analysis.plugins, gameId)
+
             output.resolve(data);
         });
         return output.promise;

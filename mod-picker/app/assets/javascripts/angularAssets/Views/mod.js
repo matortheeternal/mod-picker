@@ -625,45 +625,17 @@ app.controller('modLoadOrderController', function ($scope, loadOrderNotes) {
 
 });
 
-app.controller('modAnalysisController', function ($scope) {
+app.controller('modAnalysisController', function ($scope, modService) {
     $scope.retrieveAnalysis = function() {
         modService.retrieveAnalysis($stateParams.modId).then(function(analysis) {
-            // turn assets into an array of string
-            $scope.mod.assets = analysis.assets.map(function(asset) {
-                return asset.filepath;
-            });
-            // create nestedAssets tree
-            $scope.mod.nestedAssets = assetUtils.convertDataStringToNestedObject($scope.mod.assets);
 
-            // associate record groups for plugins
-            $scope.associateRecordGroups(analysis.plugins);
+
             $scope.combineAndSortMasters(analysis.plugins);
             $scope.associateOverrides(analysis.plugins);
             $scope.mod.plugins = analysis.plugins;
             if ($scope.mod.plugins.length > 0) {
                 $scope.currentPlugin = analysis.plugins[0];
                 $scope.currentPluginFilename = analysis.plugins[0].filename;
-            }
-        });
-    };
-
-    //associate record groups with plugins
-    $scope.associateRecordGroups = function(plugins) {
-        // if we don't have recordGroups yet, try again in 100ms
-        if (!$scope.recordGroups) {
-            $timeout(function() {
-                $scope.associateRecordGroups(plugins);
-            }, 100);
-            return;
-        }
-        // loop through plugins
-        plugins.forEach(function(plugin) {
-            if (plugin.plugin_record_groups) {
-                plugin.plugin_record_groups.forEach(function(group) {
-                    var record_group = recordGroupService.getGroupFromSignature($scope.recordGroups, group.sig);
-                    group.name = record_group.name;
-                    group.child_group = record_group.child_group;
-                });
             }
         });
     };
