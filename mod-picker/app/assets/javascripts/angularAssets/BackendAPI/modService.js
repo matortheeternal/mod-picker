@@ -130,8 +130,26 @@ app.service('modService', function(backend, $q, helpfulMarkService, userTitleSer
             });
             // create nestedAssets tree
             analysis.nestedAssets = assetUtils.convertDataStringToNestedObject(analysis.assets);
+
             //associate groups with plugins
             recordGroupService.associateGroups(analysis.plugins, gameId);
+
+            //combine dummy_masters array with masters array and sort the masters array
+            plugins.forEach(function(plugin) {
+                plugin.masters = plugin.masters.concat(plugin.dummy_masters);
+                plugin.masters.sort(function(first_master, second_master) {
+                    return first_master.index - second_master.index;
+                });
+                //associate overrides with their master file
+                plugin.masters.forEach(function(master) {
+                    master.overrides = [];
+                    plugin.overrides.forEach(function(override) {
+                        if (override.fid >= master.index * 0x01000000) {
+                            master.overrides.push(override);
+                        }
+                    });
+                });
+            });
 
             output.resolve(data);
         });
