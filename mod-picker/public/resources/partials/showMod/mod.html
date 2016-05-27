@@ -64,6 +64,22 @@
             </div>
         </div>
 
+        <div class="modal-container" ng-if="showStatusModal">
+            <div class="modal big-modal">
+                <form>
+                    <div class="close-modal">
+                        <span class="fa fa-times" ng-click="toggleStatusModal(false)"></span>
+                    </div>
+
+                    <h3 class="section-title">
+                        Share {{target.user.username}}'s
+                        <span class="capitalize">{{label}}</span>
+                    </h3>
+                    <input type="text" class="max-input" ng-model="shareLink" title="Link" spellcheck="false">
+                </form>
+            </div>
+        </div>
+
         <messages success-bool="showSuccess" errors="errors" success-message="{{submitMessage}}">
         </messages>
 

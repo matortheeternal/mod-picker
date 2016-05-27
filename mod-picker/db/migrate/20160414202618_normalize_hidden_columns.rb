@@ -4,7 +4,7 @@ class NormalizeHiddenColumns < ActiveRecord::Migration
     rename_column :tags, :disabled, :hidden
     change_column :mod_lists, :hidden, :boolean, :null => false, :default => true
     change_column :tags, :hidden, :boolean, :null => false, :default => false
-    add_column :incorrect_notes, :hidden, :boolean, :null => false, :default => false
+    add_column :corrections, :hidden, :boolean, :null => false, :default => false
     add_column :compatibility_notes, :hidden, :boolean, :null => false, :default => false
     add_column :install_order_notes, :hidden, :boolean, :null => false, :default => false
     add_column :load_order_notes, :hidden, :boolean, :null => false, :default => false

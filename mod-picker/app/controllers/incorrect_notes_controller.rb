@@ -1,56 +1,56 @@
-class IncorrectNotesController < ApplicationController
-  before_action :set_incorrect_note, only: [:show, :edit, :update, :destroy]
+class CorrectionsController < ApplicationController
+  before_action :set_correction, only: [:show, :edit, :update, :destroy]
 
-  # GET /incorrect_notes
-  # GET /incorrect_notes.json
+  # GET /corrections
+  # GET /corrections.json
   def index
-    @incorrect_notes = IncorrectNote.filter(filtering_params)
+    @corrections = Correction.filter(filtering_params)
 
-    render :json => @incorrect_notes
+    render :json => @corrections
   end
 
-  # GET /incorrect_notes/1
-  # GET /incorrect_notes/1.json
+  # GET /corrections/1
+  # GET /corrections/1.json
   def show
-    render :json => @incorrect_note
+    render :json => @correction
   end
 
-  # GET /incorrect_notes/new
+  # GET /corrections/new
   def new
-    @incorrect_note = IncorrectNote.new
+    @correction = Correction.new
   end
 
-  # GET /incorrect_notes/1/edit
+  # GET /corrections/1/edit
   def edit
   end
 
-  # POST /incorrect_notes
-  # POST /incorrect_notes.json
+  # POST /corrections
+  # POST /corrections.json
   def create
-    @incorrect_note = IncorrectNote.new(incorrect_note_params)
+    @correction = Correction.new(correction_params)
 
-    if @incorrect_note.save
+    if @correction.save
       render json: {status: :ok}
     else
-      render json: @incorrect_note.errors, status: :unprocessable_entity
+      render json: @correction.errors, status: :unprocessable_entity
     end
   end
 
-  # PATCH/PUT /incorrect_notes/1
-  # PATCH/PUT /incorrect_notes/1.json
+  # PATCH/PUT /corrections/1
+  # PATCH/PUT /corrections/1.json
   def update
-    if @incorrect_note.update(incorrect_note_params)
+    if @correction.update(correction_params)
       render json: {status: :ok}
     else
-      render json: @incorrect_note.errors, status: :unprocessable_entity
+      render json: @correction.errors, status: :unprocessable_entity
     end
   end
 
-  # POST /incorrect_notes/1/agreement
+  # POST /corrections/1/agreement
   def agreement
     @agreement_mark = AgreementMark.find_or_create_by(
         submitted_by: current_user.id,
-        incorrect_note_id: params[:id])
+        correction_id: params[:id])
     if params.has_key?(:agree)
       @agreement_mark.agree = params[:agree]
       if @agreement_mark.save
@@ -67,20 +67,20 @@ class IncorrectNotesController < ApplicationController
     end
   end
 
-  # DELETE /incorrect_notes/1
-  # DELETE /incorrect_notes/1.json
+  # DELETE /corrections/1
+  # DELETE /corrections/1.json
   def destroy
-    if @incorrect_note.destroy
+    if @correction.destroy
       render json: {status: :ok}
     else
-      render json: @incorrect_note.errors, status: :unprocessable_entity
+      render json: @correction.errors, status: :unprocessable_entity
     end
   end
 
   private
     # Use callbacks to share common setup or constraints between actions.
-    def set_incorrect_note
-      @incorrect_note = IncorrectNote.find(params[:id])
+    def set_correction
+      @correction = Correction.find(params[:id])
     end
 
     # Params we allow filtering on
@@ -89,7 +89,7 @@ class IncorrectNotesController < ApplicationController
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
-    def incorrect_note_params
-      params.require(:incorrect_note).permit(:submitted_by, :reason, :correctable_id, :correctable_type)
+    def correction_params
+      params.require(:correction).permit(:submitted_by, :reason, :correctable_id, :correctable_type)
     end
 end

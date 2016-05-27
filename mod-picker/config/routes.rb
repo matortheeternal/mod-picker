@@ -8,7 +8,7 @@ Rails.application.routes.draw do
     resources :install_order_notes
     resources :load_order_notes
     resources :compatibility_notes
-    resources :incorrect_notes
+    resources :corrections
     resources :reviews
     resources :mod_authors
     resources :user_bios
@@ -68,7 +68,7 @@ Rails.application.routes.draw do
     match '/load_order_notes/:id/approve', to: 'load_order_notes#approve', via: 'post'
 
     # agreement marks
-    match '/incorrect_notes/:id/agreement', to: 'incorrect_notes#agreement', via: 'post'
+    match '/corrections/:id/agreement', to: 'corrections#agreement', via: 'post'
 
     # mod and mod list stars
     match '/mod_lists/:id/star', to: 'mod_lists#create_star', via: 'post'

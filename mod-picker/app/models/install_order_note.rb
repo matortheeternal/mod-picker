@@ -18,7 +18,7 @@ class InstallOrderNote < ActiveRecord::Base
 
   # community feedback on this install order note
   has_many :helpful_marks, :as => 'helpfulable'
-  has_many :incorrect_notes, :as => 'correctable'
+  has_many :corrections, :as => 'correctable'
 
   # old versions of this install order note
   has_many :install_order_note_history_entries, :inverse_of => 'install_order_note'
