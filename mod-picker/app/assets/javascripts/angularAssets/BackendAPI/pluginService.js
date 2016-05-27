@@ -5,25 +5,23 @@ app.service('pluginService', function (backend, $q, $timeout, recordGroupService
 
     this.searchPlugins = function (filename) {
         var plugins = $q.defer();
-
         var postData =  {
             filters: {
                 search: filename
             }
         };
-
         backend.post('/plugins/search', postData).then(function (data) {
             plugins.resolve(data);
         });
-
         return plugins.promise;
     };
 
     this.associateRecordGroups = function(plugins, recordGroups) {
         // if we don't have recordGroups yet, try again in 100ms
+        var service = this;
         if (!recordGroups) {
             $timeout(function() {
-                associateRecordGroups(plugins, recordGroups);
+                service.associateRecordGroups(plugins, recordGroups);
             }, 100);
             return;
         }

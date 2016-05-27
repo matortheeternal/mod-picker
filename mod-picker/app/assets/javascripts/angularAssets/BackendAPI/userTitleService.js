@@ -30,14 +30,14 @@ app.service('userTitleService', function (backend, $q, $timeout) {
     };
 
     this.associateTitles = function(data, userTitles) {
+        var service = this;
         if (!userTitles) {
             $timeout(function() {
-                associateTitles(data, userTitles);
+                service.associateTitles(data, userTitles);
             }, 100);
             return;
         }
 
-        var service = this;
         data.forEach(function(item) {
             // if user is defined and they don't have a custom title
             if (item.user && !item.user.title) {
