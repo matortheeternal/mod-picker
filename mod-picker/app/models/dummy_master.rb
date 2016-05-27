@@ -1,5 +1,5 @@
 class DummyMaster < ActiveRecord::Base
-  belongs_to :plugin, :inverse_of => 'dummy_masters'
+  belongs_to :plugin, :inverse_of => 'dummy_masters', :dependent => :destroy
 
   # Validations
   validates :filename, :plugin_id, :index, presence: true
