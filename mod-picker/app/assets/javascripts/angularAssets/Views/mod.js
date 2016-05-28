@@ -3,6 +3,7 @@ app.config(['$stateProvider', function ($stateProvider) {
             templateUrl: '/resources/partials/showMod/mod.html',
             controller: 'modController',
             url: '/mod/:modId',
+            redirectTo: 'mod.Reviews',
             resolve: {
                 modObject: function(modService, $stateParams) {
                     return modService.retrieveMod($stateParams.modId);
