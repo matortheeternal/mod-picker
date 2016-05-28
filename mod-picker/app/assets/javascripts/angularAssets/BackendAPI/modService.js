@@ -150,6 +150,12 @@ app.service('modService', function(backend, $q, helpfulMarkService, userTitleSer
                         }
                     });
                 });
+
+                //sort plugin errors
+                plugin.sortedErrors = errorsFactory.errorTypes();
+                plugin.plugin_errors.forEach(function(error) {
+                    plugin.sortedErrors[error.group].errors.push(error);
+                });
             });
 
             output.resolve(analysis);

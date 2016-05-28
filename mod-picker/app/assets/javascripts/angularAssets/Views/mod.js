@@ -179,21 +179,6 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
         };
     };
 
-
-    //sort plugin errors
-    $scope.sortErrors = function() {
-        $scope.sortedErrors = errorsFactory.errorTypes();
-        // return if we don't have a current plugin to sort errors for
-        if (!$scope.currentPlugin) {
-            return;
-        }
-
-        // loop through current plugin's errors, sorting them
-        $scope.currentPlugin.plugin_errors.forEach(function(error) {
-            $scope.sortedErrors[error.group].errors.push(error);
-        });
-    };
-
     // update the markdown editor
     $scope.updateEditor = function() {
         $timeout(function() {
