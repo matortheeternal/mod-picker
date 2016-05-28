@@ -16,8 +16,8 @@ app.service('reviewSectionService', function (backend, $q) {
     this.getSectionsForCategory = function(category) {
         var output = $q.defer();
         allReviewSections.then(function(sections) {
-          output.resolve(sections.filter(function(section, category) {
-              return (section.category_id === category.id) || (section.category_id == category.parent_id);
+          output.resolve(sections.filter(function(section) {
+              return (section.category_id === category.id) || (section.category_id === category.parent_id);
           }));
         });
         return output.promise;
