@@ -130,7 +130,7 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
         $scope.permissions = {
             canCreateTags: (rep >= 20) || isAdmin || isModerator,
             canManage: isAuthor || isModerator || isAdmin,
-            canAppeal: (rep >= 40),
+            canAppeal: (rep >= 40) || isModerator || isAdmin,
             canModerate: isModerator || isAdmin
         }
     };
@@ -285,13 +285,10 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
     };
 
     $scope.getAppealStatus = function() {
-        if (!$scope.corrections) {
-            return;
-        }
-        var openAppeals = $scope.corrections.filter(function(correction) {
+        var openAppeals = $scope.mod.corrections.filter(function(correction) {
             return !correction.hidden && (correction.status == "open");
         });
-        $scope.appealStatus = !$scope.permissions.canAppeal || openAppeals.length < 2;
+        $scope.appealStatus = $scope.permissions.canAppeal && openAppeals.length < 2;
     };
 
     // TAG RELATED LOGIC
