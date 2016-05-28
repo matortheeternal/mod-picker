@@ -56,7 +56,7 @@
 
                     <div class="mod-header-box">
                         STATUS
-                        <div class="action-box {{statusClass}} capitalize">
+                        <div class="action-box {{statusClass}} capitalize" ng-click="toggleStatusModal(true)">
                             {{mod.status}}
                         </div>
                     </div>
@@ -65,22 +65,22 @@
         </div>
 
         <div class="modal-container" ng-if="showStatusModal">
-            <div class="modal big-modal">
+            <div class="modal huge-modal">
                 <div class="close-modal">
                     <span class="fa fa-times" ng-click="toggleStatusModal(false)"></span>
                 </div>
 
-                <h2 class="section-title">
+                <h2>
                     {{mod.name}}
-                    <span class="big-box {{statusClass}} capitalize">
+                    <span class="static-box {{statusClass}} capitalize">
                         {{mod.status}}
                     </span>
                 </h2>
                 <p ng-show="permissions.canAppeal">
                     If you'd like to contest this mod's status you can submit an appeal to change it
                     which will then be reviewed by the community over one week.  If enough users agree
-                    with your appeal, the mod's status will be changed automatically.  You can also vote
-                    on and participate in discussion on any currently open appeals.
+                    with your appeal, the mod's status will be changed.  You can vote on and participate
+                    in discussion on any currently open appeals.
                 </p>
                 <p ng-hide="permissions.canAppeal">
                     You don't have enough reputation to submit an appeal to change this mod's status.
@@ -91,7 +91,7 @@
                     <a href="/help/Appeals_Process">Click here</a> for more information.
                 </p>
 
-                <h3>Appeals</h3>
+                <h3 class="section-title">Appeals</h3>
                 <loader data="mod.corrections" content-class="appeals-container" spinner-class="big-spinner">
                     <table ng-if="mod.corrections.length > 0">
                         <thead>
@@ -126,14 +126,14 @@
                         </tr>
                         </tbody>
                     </table>
-                    <span ng-if="mod.corrections.length == 0" class="no-content-message">
+                    <span ng-if="mod.corrections.length == 0">
                         There have been no appeals on this mod's status.
                     </span>
-
-                    <div class="action-button-container" ng-if="appealStatus">
-                        <input class="btn action-btn" type="submit" ng-click="startNewAppeal()" value="New Appeal">
-                    </div>
                 </loader>
+
+                <div class="action-button-container" ng-if="appealStatus">
+                    <input class="btn action-btn" type="submit" ng-click="startNewAppeal()" value="New Appeal">
+                </div>
             </div>
         </div>
 
