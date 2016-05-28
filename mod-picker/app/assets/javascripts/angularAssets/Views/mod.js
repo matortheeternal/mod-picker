@@ -247,40 +247,6 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
         return response.promise;
     };
 
-
-
-    // LOAD ORDER NOTE RELATED LOGIC
-    // instantiate a new load order note object
-    $scope.startNewLoadOrderNote = function() {
-        // set up activeLoadOrderNote object
-        $scope.activeLoadOrderNote = {
-            order: "before",
-            text_body: ""
-        };
-
-        // update the markdown editor
-        $scope.updateEditor();
-    };
-
-    // edit an existing load order note
-    $scope.editLoadOrderNote = function(load_order_note) {
-        load_order_note.editing = true;
-        $scope.activeLoadOrderNote = load_order_note;
-
-        // update the markdown editor
-        $scope.updateEditor();
-    };
-
-    // discard the load order note object
-    $scope.discardLoadOrderNote = function() {
-        if ($scope.activeLoadOrderNote.editing) {
-            $scope.activeLoadOrderNote.editing = false;
-            $scope.activeLoadOrderNote = null;
-        } else {
-            delete $scope.activeLoadOrderNote;
-        }
-    };
-
     // ANALYSIS RELATED LOGIC
 
 });
@@ -695,9 +661,41 @@ app.controller('modLoadOrderController', function ($scope, loadOrderNotes, $stat
   }
 
   $scope.loadOrderSort = $stateParams.sort;
-  $scope.reSortLoadOrder = function() {
-    $state.go("mod.Load Order", {sort: $scope.loadOrderSort});
-  };
+    $scope.reSortLoadOrder = function() {
+      $state.go("mod.Load Order", {sort: $scope.loadOrderSort});
+    };
+
+    // LOAD ORDER NOTE RELATED LOGIC
+    // instantiate a new load order note object
+    $scope.startNewLoadOrderNote = function() {
+        // set up activeLoadOrderNote object
+        $scope.activeLoadOrderNote = {
+            order: "before",
+            text_body: ""
+        };
+
+        // update the markdown editor
+        $scope.updateEditor();
+    };
+
+    // edit an existing load order note
+    $scope.editLoadOrderNote = function(load_order_note) {
+        load_order_note.editing = true;
+        $scope.activeLoadOrderNote = load_order_note;
+
+        // update the markdown editor
+        $scope.updateEditor();
+    };
+
+    // discard the load order note object
+    $scope.discardLoadOrderNote = function() {
+        if ($scope.activeLoadOrderNote.editing) {
+            $scope.activeLoadOrderNote.editing = false;
+            $scope.activeLoadOrderNote = null;
+        } else {
+            delete $scope.activeLoadOrderNote;
+        }
+    };
 });
 
 app.controller('modAnalysisController', function ($scope, analysis) {
