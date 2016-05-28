@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160527192801) do
+ActiveRecord::Schema.define(version: 20160528030431) do
 
   create_table "agreement_marks", id: false, force: :cascade do |t|
     t.integer "correction_id", limit: 4
@@ -138,10 +138,10 @@ ActiveRecord::Schema.define(version: 20160527192801) do
   add_index "config_files", ["game_id", "filename"], name: "index_config_files_on_game_id_and_filename", using: :btree
 
   create_table "corrections", force: :cascade do |t|
-    t.integer  "submitted_by",     limit: 4
-    t.text     "text_body",        limit: 65535
-    t.integer  "correctable_id",   limit: 4
-    t.string   "correctable_type", limit: 255
+    t.integer  "submitted_by",     limit: 4,                     null: false
+    t.text     "text_body",        limit: 65535,                 null: false
+    t.integer  "correctable_id",   limit: 4,                     null: false
+    t.string   "correctable_type", limit: 255,                   null: false
     t.datetime "submitted"
     t.datetime "edited"
     t.boolean  "hidden",                         default: false, null: false
@@ -149,6 +149,8 @@ ActiveRecord::Schema.define(version: 20160527192801) do
     t.integer  "comments_count",   limit: 4,     default: 0
     t.integer  "agree_count",      limit: 4,     default: 0
     t.integer  "disagree_count",   limit: 4,     default: 0
+    t.integer  "status",           limit: 1,     default: 0
+    t.string   "title",            limit: 64,                    null: false
   end
 
   add_index "corrections", ["correctable_type", "correctable_id"], name: "index_corrections_on_correctable_type_and_correctable_id", using: :btree
