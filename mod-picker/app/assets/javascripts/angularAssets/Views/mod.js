@@ -406,10 +406,15 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
 
 });
 
-app.controller('modReviewsController', function ($scope, reviews, reviewSectionService) {
+app.controller('modReviewsController', function ($scope, $stateParams, $state, reviews, reviewSectionService) {
   if(reviews) {
     $scope.mod.reviews = reviews;
   }
+
+  $scope.reviewSort = $stateParams.sort;
+  $scope.reSortReviews = function() {
+    $state.go("mod.Reviews", {sort: $scope.reviewSort});
+  };
 
   //set review sections on mod
   $scope.mod.reviewSections = reviewSectionService.getSectionsForCategory($scope.mod.primary_category);
@@ -621,22 +626,37 @@ app.controller('modReviewsController', function ($scope, reviews, reviewSectionS
   };
 });
 
-app.controller('modCompatibilityController', function ($scope, compatibilityNotes) {
+app.controller('modCompatibilityController', function ($scope, compatibilityNotes, $stateParams, $state) {
   if(compatibilityNotes) {
     $scope.mod.compatibility_notes = compatibilityNotes;
   }
+
+  $scope.compatibilitySort = $stateParams.sort;
+  $scope.reSortCompatibility = function() {
+    $state.go("mod.Compatibility", {sort: $scope.compatibilitySort});
+  };
 });
 
-app.controller('modInstallOrderController', function ($scope, installOrderNotes) {
+app.controller('modInstallOrderController', function ($scope, installOrderNotes, $state, $stateParams) {
   if(installOrderNotes) {
     $scope.mod.install_order_notes = installOrderNotes;
   }
+
+  $scope.installOrderSort = $stateParams.sort;
+  $scope.reSortInstallOrder = function() {
+    $state.go("mod.Install Order", {sort: $scope.installOrderSort});
+  };
 });
 
-app.controller('modLoadOrderController', function ($scope, loadOrderNotes) {
+app.controller('modLoadOrderController', function ($scope, loadOrderNotes, $state, $stateParams) {
   if(loadOrderNotes) {
     $scope.mod.load_order_notes = loadOrderNotes;
   }
+
+  $scope.loadOrderSort = $stateParams.sort;
+  $scope.reSortLoadOrder = function() {
+    $state.go("mod.Load Order", {sort: $scope.loadOrderSort});
+  };
 });
 
 app.controller('modAnalysisController', function ($scope, analysis) {
