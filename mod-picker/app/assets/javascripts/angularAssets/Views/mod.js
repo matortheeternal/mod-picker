@@ -247,90 +247,6 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
         return response.promise;
     };
 
-    // COMPATIBILITY NOTE RELATED LOGIC
-    // instantiate a new compatibility note object
-    $scope.startNewCompatibilityNote = function() {
-        // set up activeCompatibilityNote object
-        $scope.activeCompatibilityNote = {
-            compatibility_type: "incompatible",
-            text_body: contributionFactory.getDefaultTextBody("CompatibilityNote")
-        };
-
-        // update the markdown editor
-        $scope.updateEditor();
-    };
-
-    // edit an existing compatibility note
-    $scope.editCompatibilityNote = function(compatibility_note) {
-        compatibility_note.editing = true;
-        var secondMod = compatibility_note.mods.find(function(mod) {
-            return mod.id !== $scope.mod.id;
-        });
-        $scope.activeCompatibilityNote = {
-            compatibility_type: compatibility_note.compatibility_type,
-            mod_id: secondMod.id,
-            mod_name: secondMod.name,
-            compatibility_mod_id: compatibility_note.compatibility_mod_id,
-            compatibility_plugin_id: compatibility_note.compatibility_plugin_id,
-            text_body: compatibility_note.text_body,
-            original: compatibility_note
-        };
-
-        // update the markdown editor
-        $scope.updateEditor();
-    };
-
-    $scope.validateCompatibilityNote = function() {
-        // exit if we don't have a activeCompatibilityNote yet
-        if (!$scope.activeCompatibilityNote) {
-            return;
-        }
-
-        $scope.activeCompatibilityNote.valid = $scope.activeCompatibilityNote.text_body.length > 512 &&
-            ($scope.activeCompatibilityNote.second_mod_id !== undefined) &&
-            ($scope.activeCompatibilityNote.compatibility_type === "compatibility mod") ==
-            ($scope.activeCompatibilityNote.compatibility_mod !== undefined);
-    };
-
-    // discard the compatibility note object
-    $scope.discardCompatibilityNote = function() {
-        if ($scope.activeCompatibilityNote.original) {
-            $scope.activeCompatibilityNote.original.editing = false;
-            $scope.activeCompatibilityNote = null;
-        } else {
-            delete $scope.activeCompatibilityNote;
-        }
-    };
-
-    // submit a compatibility note
-    $scope.submitCompatibilityNote = function() {
-        // return if the compatibility note is invalid
-        if (!$scope.activeCompatibilityNote.valid) {
-            return;
-        }
-
-        // submit the compatibility note
-        var noteObj = {
-            compatibility_note: {
-                game_id: $scope.mod.game_id,
-                compatibility_type: $scope.activeCompatibilityNote.compatibility_type,
-                first_mod_id: $scope.mod.id,
-                second_mod_id: $scope.activeCompatibilityNote.mod_id,
-                text_body: $scope.activeCompatibilityNote.text_body,
-                compatibility_plugin_id: $scope.activeCompatibilityNote.compatibility_plugin_id,
-                compatibility_mod_id: $scope.activeCompatibilityNote.compatibility_mod_id
-            }
-        };
-        $scope.activeCompatibilityNote.submitting = true;
-        contributionService.submitContribution("compatibility_notes", noteObj).then(function(data) {
-            if (data.status == "ok") {
-                $scope.submitMessage = "Compatibility Note submitted successfully!";
-                $scope.showSuccess = true;
-                // TODO: push the compatibility note onto the $scope.mod.compatibility_notes array
-                delete $scope.activeCompatibilityNote;
-            }
-        });
-    };
 
     // INSTALL ORDER NOTE RELATED LOGIC
     // instantiate a new install order note object
@@ -671,9 +587,94 @@ app.controller('modCompatibilityController', function ($scope, compatibilityNote
   }
 
   $scope.compatibilitySort = $stateParams.sort;
-  $scope.reSortCompatibility = function() {
-    $state.go("mod.Compatibility", {sort: $scope.compatibilitySort});
-  };
+    $scope.reSortCompatibility = function() {
+      $state.go("mod.Compatibility", {sort: $scope.compatibilitySort});
+    };
+
+    // COMPATIBILITY NOTE RELATED LOGIC
+    // instantiate a new compatibility note object
+    $scope.startNewCompatibilityNote = function() {
+        // set up activeCompatibilityNote object
+        $scope.activeCompatibilityNote = {
+            compatibility_type: "incompatible",
+            text_body: contributionFactory.getDefaultTextBody("CompatibilityNote")
+        };
+
+        // update the markdown editor
+        $scope.updateEditor();
+    };
+
+    // edit an existing compatibility note
+    $scope.editCompatibilityNote = function(compatibility_note) {
+        compatibility_note.editing = true;
+        var secondMod = compatibility_note.mods.find(function(mod) {
+            return mod.id !== $scope.mod.id;
+        });
+        $scope.activeCompatibilityNote = {
+            compatibility_type: compatibility_note.compatibility_type,
+            mod_id: secondMod.id,
+            mod_name: secondMod.name,
+            compatibility_mod_id: compatibility_note.compatibility_mod_id,
+            compatibility_plugin_id: compatibility_note.compatibility_plugin_id,
+            text_body: compatibility_note.text_body,
+            original: compatibility_note
+        };
+
+        // update the markdown editor
+        $scope.updateEditor();
+    };
+
+    $scope.validateCompatibilityNote = function() {
+        // exit if we don't have a activeCompatibilityNote yet
+        if (!$scope.activeCompatibilityNote) {
+            return;
+        }
+
+        $scope.activeCompatibilityNote.valid = $scope.activeCompatibilityNote.text_body.length > 512 &&
+            ($scope.activeCompatibilityNote.second_mod_id !== undefined) &&
+            ($scope.activeCompatibilityNote.compatibility_type === "compatibility mod") ==
+            ($scope.activeCompatibilityNote.compatibility_mod !== undefined);
+    };
+
+    // discard the compatibility note object
+    $scope.discardCompatibilityNote = function() {
+        if ($scope.activeCompatibilityNote.original) {
+            $scope.activeCompatibilityNote.original.editing = false;
+            $scope.activeCompatibilityNote = null;
+        } else {
+            delete $scope.activeCompatibilityNote;
+        }
+    };
+
+    // submit a compatibility note
+    $scope.submitCompatibilityNote = function() {
+        // return if the compatibility note is invalid
+        if (!$scope.activeCompatibilityNote.valid) {
+            return;
+        }
+
+        // submit the compatibility note
+        var noteObj = {
+            compatibility_note: {
+                game_id: $scope.mod.game_id,
+                compatibility_type: $scope.activeCompatibilityNote.compatibility_type,
+                first_mod_id: $scope.mod.id,
+                second_mod_id: $scope.activeCompatibilityNote.mod_id,
+                text_body: $scope.activeCompatibilityNote.text_body,
+                compatibility_plugin_id: $scope.activeCompatibilityNote.compatibility_plugin_id,
+                compatibility_mod_id: $scope.activeCompatibilityNote.compatibility_mod_id
+            }
+        };
+        $scope.activeCompatibilityNote.submitting = true;
+        contributionService.submitContribution("compatibility_notes", noteObj).then(function(data) {
+            if (data.status == "ok") {
+                $scope.submitMessage = "Compatibility Note submitted successfully!";
+                $scope.showSuccess = true;
+                // TODO: push the compatibility note onto the $scope.mod.compatibility_notes array
+                delete $scope.activeCompatibilityNote;
+            }
+        });
+    };
 });
 
 app.controller('modInstallOrderController', function ($scope, installOrderNotes, $state, $stateParams) {
