@@ -226,6 +226,7 @@ input[type="button"], input[type="submit"] {
 }
 
 .action-button-container {
+  margin-top: 16px;
   text-align: center;
 }
 
@@ -641,7 +642,15 @@ a .help-tooltip {
     padding: 40px;
     margin: 150px auto;
     background-color: $primary_background;
-    box-shadow: 1px 1px 10px 1px rgba($shadow_color, 0.8)
+    box-shadow: 1px 1px 10px 1px rgba($shadow_color, 0.8);
+
+    .section-title {
+      display: block;
+      vertical-align: top;
+      font-size: 20px;
+      font-weight: 500;
+      color: $text_color;
+    }
   }
 
   .skinny-modal {
@@ -665,6 +674,13 @@ a .help-tooltip {
 
   .big-modal {
     width: 600px;
+  }
+
+  .huge-modal {
+    width: 800px;
+    margin: 100px auto;
+    max-height: calc(100vh - 200px);
+    overflow-y: auto;
   }
 
   .checkbox-list {
