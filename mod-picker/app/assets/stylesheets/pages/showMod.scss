@@ -16,6 +16,21 @@
   }
 }
 
+.static-box {
+  display: inline-block;
+  float: right;
+  color: $action_text_color;
+  text-align: center;
+  background-color: $action_color;
+  padding: 4px 8px;
+  font-size: 18px;
+  border-radius: 4%;
+  margin-bottom: 4px;
+  cursor: default;
+  pointer-events: none;
+  @include user-select(none);
+}
+
 .red-box {
   background-color: $error_secondary;
 
@@ -129,12 +144,6 @@
     font-weight: 600;
     color: $bright_action_color;
   }
-}
-
-//mod status modal
-.appeals-container {
-  max-height: 400px;
-  overflow-y: auto;
 }
 
 //left column
