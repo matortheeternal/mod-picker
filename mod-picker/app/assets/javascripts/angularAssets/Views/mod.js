@@ -656,26 +656,10 @@ app.controller('modLoadOrderController', function ($scope, loadOrderNotes) {
   if(loadOrderNotes) {
     $scope.mod.load_order_notes = loadOrderNotes;
   }
-
 });
 
-app.controller('modAnalysisController', function ($scope, modService) {
-    $scope.retrieveAnalysis = function() {
-        modService.retrieveAnalysis($stateParams.modId).then(function(analysis) {
-
-
-            $scope.mod.plugins = analysis.plugins;
-            if ($scope.mod.plugins.length > 0) {
-                $scope.currentPlugin = analysis.plugins[0];
-                $scope.currentPluginFilename = analysis.plugins[0].filename;
-            }
-        });
-    };
-    // select the plugin the user selected
-    $scope.selectPlugin = function() {
-        $scope.currentPlugin = $scope.mod.plugins.find(function(plugin) {
-            return plugin.filename == $scope.currentPluginFilename;
-        });
-        $scope.sortErrors();
-    };
+app.controller('modAnalysisController', function ($scope, analysis) {
+    $scope.mod.plugins = analysis.plugins;
+    $scope.mod.assets = analysis.assets;
+    $scope.currentPlugin = analysis.plugins[0];
 });
