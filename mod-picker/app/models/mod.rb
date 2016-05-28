@@ -307,7 +307,7 @@ class Mod < ActiveRecord::Base
   end
 
   def load_order_notes
-    LoadOrderNote.where('first_plugin_id in ? OR second_plugin_id in ?', self.plugins.ids, self.plugins.ids)
+    LoadOrderNote.where('first_plugin_id in (?) OR second_plugin_id in (?)', self.plugins.ids, self.plugins.ids)
   end
 
   def image
