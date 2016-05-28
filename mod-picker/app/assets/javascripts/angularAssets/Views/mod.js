@@ -140,11 +140,6 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
     //     $scope.tabs.splice(3, 1);
     // }
 
-    //get record groups
-    recordGroupService.retrieveRecordGroups(window._current_game_id).then(function(recordGroups) {
-        $scope.recordGroups = recordGroups;
-    });
-
     //get current user
     userService.retrieveThisUser().then(function (user) {
         $scope.user = user;
