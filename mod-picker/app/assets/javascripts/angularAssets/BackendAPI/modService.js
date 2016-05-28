@@ -1,6 +1,22 @@
-app.service('modService', function(backend, $q) {
+app.service('modService', function(backend, $q, helpfulMarkService, userTitleService, categoryService, reviewSectionService, recordGroupService, assetUtils) {
     this.retrieveMod = function(modId) {
-        return backend.retrieve('/mods/' + modId);
+      output = $q.defer();
+      backend.retrieve('/mods/' + modId).then(function(modObject) {
+        //get category objects with ids
+        categoryService.getCategoryById(modObject.mod.primary_category_id).then(function(primaryCategory) {
+          //set primary category on mod
+          modObject.mod.primary_category = primaryCategory;
+
+          categoryService.getCategoryById(modObject.mod.secondary_category_id).then(function(secondaryCategory) {
+            //set secondary category on mod
+            modObject.mod.secondary_category = secondaryCategory;
+
+            //resolve output after both categories are set
+            output.resolve(modObject);
+          });
+        });
+      });
+      return output.promise;
     };
 
     var pages = {
@@ -65,42 +81,85 @@ app.service('modService', function(backend, $q) {
     };
 
     this.retrieveReviews = function(modId, options) {
-        var reviews = $q.defer();
+        var output = $q.defer();
         backend.retrieve('/mods/' + modId + '/reviews', options).then(function (data) {
-            reviews.resolve(data);
+            helpfulMarkService.associateHelpfulMarks(data.reviews, data.helpful_marks);
+            userTitleService.associateTitles(data.reviews);
+            reviewSectionService.associateReviewSections(data.reviews);
+            output.resolve(data.reviews);
         });
-        return reviews.promise;
+        return output.promise;
     };
 
     this.retrieveCompatibilityNotes = function(modId, options) {
-        var compatibilityNotes = $q.defer();
+        var output = $q.defer();
         backend.retrieve('/mods/' + modId + '/compatibility_notes', options).then(function (data) {
-            compatibilityNotes.resolve(data);
+            helpfulMarkService.associateHelpfulMarks(data.compatibility_notes, data.helpful_marks);
+            userTitleService.associateTitles(data.compatibility_notes);
+            output.resolve(data.compatibility_notes);
         });
-        return compatibilityNotes.promise;
+        return output.promise;
     };
 
     this.retrieveInstallOrderNotes = function(modId, options) {
         var installOrderNotes = $q.defer();
         backend.retrieve('/mods/' + modId + '/install_order_notes', options).then(function (data) {
-            installOrderNotes.resolve(data);
+            helpfulMarkService.associateHelpfulMarks(data.install_order_notes, data.helpful_marks);
+            userTitleService.associateTitles(data.install_order_notes);
+            installOrderNotes.resolve(data.install_order_notes);
         });
         return installOrderNotes.promise;
     };
 
     this.retrieveLoadOrderNotes = function(modId, options) {
-        var loadOrderNotes = $q.defer();
+        var output = $q.defer();
         backend.retrieve('/mods/' + modId + '/load_order_notes', options).then(function (data) {
-            loadOrderNotes.resolve(data);
+            helpfulMarkService.associateHelpfulMarks(data.load_order_notes, data.helpful_marks);
+            userTitleService.associateTitles(data.load_order_notes);
+            output.resolve(data.load_order_notes);
         });
-        return loadOrderNotes.promise;
+        return output.promise;
     };
 
-    this.retrieveAnalysis = function(modId, options) {
-        var analysis = $q.defer();
-        backend.retrieve('/mods/' + modId + '/analysis', options).then(function (data) {
-            analysis.resolve(data);
+    this.retrieveAnalysis = function(modId, gameId, options) {
+        var output = $q.defer();
+        backend.retrieve('/mods/' + modId + '/analysis', options).then(function (analysis) {
+            // turn assets into an array of string
+            analysis.assets = analysis.assets.map(function(asset) {
+                return asset.filepath;
+            });
+            // create nestedAssets tree
+            analysis.nestedAssets = assetUtils.convertDataStringToNestedObject(analysis.assets);
+
+            //associate groups with plugins
+            recordGroupService.associateGroups(analysis.plugins, gameId);
+
+            //combine dummy_masters array with masters array and sort the masters array
+            analysis.plugins.forEach(function(plugin) {
+                plugin.masters = plugin.masters.concat(plugin.dummy_masters);
+                plugin.masters.sort(function(first_master, second_master) {
+                    return first_master.index - second_master.index;
+                });
+
+                //associate overrides with their master file
+                plugin.masters.forEach(function(master) {
+                    master.overrides = [];
+                    plugin.overrides.forEach(function(override) {
+                        if (override.fid >= master.index * 0x01000000) {
+                            master.overrides.push(override);
+                        }
+                    });
+                });
+
+                //sort plugin errors
+                plugin.sortedErrors = errorsFactory.errorTypes();
+                plugin.plugin_errors.forEach(function(error) {
+                    plugin.sortedErrors[error.group].errors.push(error);
+                });
+            });
+
+            output.resolve(analysis);
         });
-        return analysis.promise;
+        return output.promise;
     };
 });

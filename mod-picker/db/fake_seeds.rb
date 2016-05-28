@@ -533,7 +533,7 @@ end
 def seed_fake_tags
   # helper variables
   gameSkyrim = Game.where({display_name: "Skyrim"}).first
-  
+
   # generate tags
   puts "\nSeeding tags"
 

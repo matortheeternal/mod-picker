@@ -1,3 +1,5 @@
 <div class="tabs">
-	<a ng-repeat="tab in tabs" ng-click="select(tab)" ng-class="tab == currentTab ? 'selected-tab' : 'unselected-tab'"> {{tab.name}} </a>
+	<a ui-sref=".{{tab}}" ng-repeat="tab in tabs" ui-sref-active="selected-tab">
+		{{tab}}
+	</a>
 </div>

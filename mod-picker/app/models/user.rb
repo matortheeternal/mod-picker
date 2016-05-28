@@ -72,7 +72,7 @@ class User < ActiveRecord::Base
   # with: VALID_EMAIL_REGEX,
   # message: must be a valid email address format
   # }
-  
+
   validates :role, presence: true
   validates :about_me, length: {maximum: 16384}
   validate :validate_username
