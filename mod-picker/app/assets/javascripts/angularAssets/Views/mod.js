@@ -29,6 +29,14 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
         install_order_notes: true,
         load_order_notes: true
     };
+    $scope.retrieving = {
+        corrections: false,
+        reviews: false,
+        compatibility_notes: false,
+        install_order_notes: false,
+        load_order_notes: false,
+        analysis: false
+    };
 
     // SETUP TABS
     //TODO use the cool ui-router here :D
@@ -142,27 +150,27 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
     $scope.switchTab = function(targetTab) {
         switch (targetTab.name) {
             case 'Reviews':
-                if ($scope.mod.reviews == null) {
+                if (!$scope.mod.reviews && !$scope.retrieving.reviews) {
                     $scope.retrieveReviews();
                 }
                 break;
             case 'Compatibility':
-                if ($scope.mod.compatibility_notes == null) {
+                if (!$scope.mod.compatibility_notes && !$scope.retrieving.compatibility_notes) {
                     $scope.retrieveCompatibilityNotes();
                 }
                 break;
             case 'Install Order':
-                if ($scope.mod.install_order_notes == null) {
+                if (!$scope.mod.install_order_notes && !$scope.retrieving.install_order_notes) {
                     $scope.retrieveInstallOrderNotes();
                 }
                 break;
             case 'Load Order':
-                if ($scope.mod.load_order_notes == null) {
+                if (!$scope.mod.load_order_notes && !$scope.retrieving.load_order_notes) {
                     $scope.retrieveLoadOrderNotes();
                 }
                 break;
             case 'Analysis':
-                if ($scope.mod.analysis == null) {
+                if (!$scope.mod.analysis && !$scope.retrieving.analysis) {
                     $scope.retrieveAnalysis();
                 }
                 break;
@@ -170,6 +178,7 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
     };
 
     $scope.retrieveCorrections = function() {
+        $scope.retrieving.corrections = true;
         modService.retrieveAssociation($stateParams.modId, 'corrections').then(function(data) {
             contributionService.associateAgreementMarks(data.corrections, data.agreement_marks);
             userTitleService.associateTitles(data.corrections, $scope.userTitles);
@@ -178,6 +187,7 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
     };
 
     $scope.retrieveReviews = function() {
+        $scope.retrieving.reviews = true;
         var options = {
             sort: $scope.sort.reviews || 'reputation'
         };
@@ -190,6 +200,7 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
     };
 
     $scope.retrieveCompatibilityNotes = function() {
+        $scope.retrieving.compatibility_notes = true;
         var options = {
             sort: $scope.sort.compatibility_notes || 'reputation',
             filters: {
@@ -204,8 +215,9 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
     };
 
     $scope.retrieveInstallOrderNotes = function() {
+        $scope.retrieving.install_order_notes = true;
         var options = {
-            sort: $scope.sort.compatibility_notes || 'reputation',
+            sort: $scope.sort.install_order_notes || 'reputation',
             filters: {
                 mod_list: $scope.filters.install_order_notes
             }
@@ -218,8 +230,9 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
     };
 
     $scope.retrieveLoadOrderNotes = function() {
+        $scope.retrieving.load_order_notes = true;
         var options = {
-            sort: $scope.sort.compatibility_notes || 'reputation',
+            sort: $scope.sort.load_order_notes || 'reputation',
             filters: {
                 mod_list: $scope.filters.load_order_notes
             }
@@ -232,6 +245,7 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
     };
 
     $scope.retrieveAnalysis = function() {
+        $scope.retrieving.analysis = true;
         modService.retrieveAssociation($stateParams.modId, 'analysis').then(function(analysis) {
             // turn assets into an array of string
             $scope.mod.assets = analysis.assets.map(function(asset) {
