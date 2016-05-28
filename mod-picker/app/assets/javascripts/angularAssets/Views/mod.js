@@ -248,82 +248,6 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
     };
 
 
-    // INSTALL ORDER NOTE RELATED LOGIC
-    // instantiate a new install order note object
-    $scope.startNewInstallOrderNote = function() {
-        // set up activeInstallOrderNote object
-        $scope.activeInstallOrderNote = {
-            order: "before",
-            text_body: ""
-        };
-
-        // update the markdown editor
-        $scope.updateEditor();
-    };
-
-    // edit an existing install order note
-    $scope.editInstallOrderNote = function(install_order_note) {
-        install_order_note.editing = true;
-        $scope.activeInstallOrderNote = install_order_note;
-
-        // update the markdown editor
-        $scope.updateEditor();
-    };
-
-    $scope.validateInstallOrderNote = function() {
-        // exit if we don't have a activeInstallOrderNote yet
-        if (!$scope.activeInstallOrderNote) {
-            return;
-        }
-
-        $scope.activeInstallOrderNote.valid = $scope.activeInstallOrderNote.text_body.length > 512 &&
-            ($scope.activeInstallOrderNote.mod_id !== undefined);
-    };
-
-    // discard the install order note object
-    $scope.discardInstallOrderNote = function() {
-        if ($scope.activeInstallOrderNote.editing) {
-            $scope.activeInstallOrderNote.editing = false;
-            $scope.activeInstallOrderNote = null;
-        } else {
-            delete $scope.activeInstallOrderNote;
-        }
-    };
-
-    // submit an install order note
-    $scope.submitInstallOrderNote = function() {
-        // return if the install order note is invalid
-        if (!$scope.activeInstallOrderNote.valid) {
-            return;
-        }
-
-        // submit the install order note
-        var first_mod_id, second_mod_id;
-        if ($scope.activeInstallOrderNote.order === 'before') {
-            first_mod_id = $scope.mod.id;
-            second_mod_id = $scope.activeInstallOrderNote.mod_id;
-        } else {
-            first_mod_id = $scope.activeInstallOrderNote.mod_id;
-            second_mod_id = $scope.mod.id;
-        }
-        var noteObj = {
-            install_order_note: {
-                game_id: $scope.mod.game_id,
-                first_mod_id: first_mod_id,
-                second_mod_id: second_mod_id,
-                text_body: $scope.activeInstallOrderNote.text_body
-            }
-        };
-        $scope.activeInstallOrderNote.submitting = true;
-        contributionService.submitContribution("install_order_notes", noteObj).then(function(data) {
-            if (data.status == "ok") {
-                $scope.submitMessage = "Install Order Note submitted successfully!";
-                $scope.showSuccess = true;
-                // TODO: push the Install Order note onto the $scope.mod.install_order_notes array
-                delete $scope.activeInstallOrderNote;
-            }
-        });
-    };
 
     // LOAD ORDER NOTE RELATED LOGIC
     // instantiate a new load order note object
@@ -683,9 +607,86 @@ app.controller('modInstallOrderController', function ($scope, installOrderNotes,
   }
 
   $scope.installOrderSort = $stateParams.sort;
-  $scope.reSortInstallOrder = function() {
-    $state.go("mod.Install Order", {sort: $scope.installOrderSort});
-  };
+    $scope.reSortInstallOrder = function() {
+      $state.go("mod.Install Order", {sort: $scope.installOrderSort});
+    };
+
+    // INSTALL ORDER NOTE RELATED LOGIC
+    // instantiate a new install order note object
+    $scope.startNewInstallOrderNote = function() {
+        // set up activeInstallOrderNote object
+        $scope.activeInstallOrderNote = {
+            order: "before",
+            text_body: ""
+        };
+
+        // update the markdown editor
+        $scope.updateEditor();
+    };
+
+    // edit an existing install order note
+    $scope.editInstallOrderNote = function(install_order_note) {
+        install_order_note.editing = true;
+        $scope.activeInstallOrderNote = install_order_note;
+
+        // update the markdown editor
+        $scope.updateEditor();
+    };
+
+    $scope.validateInstallOrderNote = function() {
+        // exit if we don't have a activeInstallOrderNote yet
+        if (!$scope.activeInstallOrderNote) {
+            return;
+        }
+
+        $scope.activeInstallOrderNote.valid = $scope.activeInstallOrderNote.text_body.length > 512 &&
+            ($scope.activeInstallOrderNote.mod_id !== undefined);
+    };
+
+    // discard the install order note object
+    $scope.discardInstallOrderNote = function() {
+        if ($scope.activeInstallOrderNote.editing) {
+            $scope.activeInstallOrderNote.editing = false;
+            $scope.activeInstallOrderNote = null;
+        } else {
+            delete $scope.activeInstallOrderNote;
+        }
+    };
+
+    // submit an install order note
+    $scope.submitInstallOrderNote = function() {
+        // return if the install order note is invalid
+        if (!$scope.activeInstallOrderNote.valid) {
+            return;
+        }
+
+        // submit the install order note
+        var first_mod_id, second_mod_id;
+        if ($scope.activeInstallOrderNote.order === 'before') {
+            first_mod_id = $scope.mod.id;
+            second_mod_id = $scope.activeInstallOrderNote.mod_id;
+        } else {
+            first_mod_id = $scope.activeInstallOrderNote.mod_id;
+            second_mod_id = $scope.mod.id;
+        }
+        var noteObj = {
+            install_order_note: {
+                game_id: $scope.mod.game_id,
+                first_mod_id: first_mod_id,
+                second_mod_id: second_mod_id,
+                text_body: $scope.activeInstallOrderNote.text_body
+            }
+        };
+        $scope.activeInstallOrderNote.submitting = true;
+        contributionService.submitContribution("install_order_notes", noteObj).then(function(data) {
+            if (data.status == "ok") {
+                $scope.submitMessage = "Install Order Note submitted successfully!";
+                $scope.showSuccess = true;
+                // TODO: push the Install Order note onto the $scope.mod.install_order_notes array
+                delete $scope.activeInstallOrderNote;
+            }
+        });
+    };
 });
 
 app.controller('modLoadOrderController', function ($scope, loadOrderNotes, $state, $stateParams) {
