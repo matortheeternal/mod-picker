@@ -35,7 +35,10 @@ app.config(['$stateProvider', function ($stateProvider) {
                     this.parent.lastReviewSort = $stateParams.sort;
                     return modService.retrieveReviews(modId, {sort: $stateParams.sort});
                   }
-                }
+              },
+              reviewSections: function(modObject, reviewSectionService) {
+                  return reviewSectionService.getSectionsForCategory(modObject.mod.primary_category);
+              }
             }
         }).state('mod.Compatibility', {
             templateUrl: '/resources/partials/showMod/compatibility.html',
@@ -246,7 +249,7 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
 
 });
 
-app.controller('modReviewsController', function ($scope, $stateParams, $state, reviews, reviewSectionService) {
+app.controller('modReviewsController', function ($scope, $stateParams, $state, reviews, reviewSections) {
   if(reviews) {
     $scope.mod.reviews = reviews;
   }
@@ -255,9 +258,6 @@ app.controller('modReviewsController', function ($scope, $stateParams, $state, r
   $scope.reSortReviews = function() {
     $state.go("mod.Reviews", {sort: $scope.reviewSort});
   };
-
-  //set review sections on mod
-  $scope.mod.reviewSections = reviewSectionService.getSectionsForCategory($scope.mod.primary_category);
 
   // instantiate a new review object
   $scope.startNewReview = function() {
@@ -268,11 +268,11 @@ app.controller('modReviewsController', function ($scope, $stateParams, $state, r
       };
 
       // set up availableSections array
-      $scope.availableSections = $scope.reviewSections.slice(0);
+      $scope.availableSections = reviewSections;
 
       // set up default review sections
       // and default text body with prompts
-      $scope.reviewSections.forEach(function(section) {
+      reviewSections.forEach(function(section) {
           if (section.default) {
               $scope.addNewRating(section);
               $scope.activeReview.text_body += "## " + section.name + "\n";
@@ -297,7 +297,7 @@ app.controller('modReviewsController', function ($scope, $stateParams, $state, r
       };
 
       // set up availableSections array
-      $scope.availableSections = $scope.reviewSections.filter(function(section) {
+      $scope.availableSections = reviewSections.filter(function(section) {
           return $scope.activeReview.ratings.find(function(rating) {
               return rating.section == section;
           }) === undefined;
