@@ -682,6 +682,24 @@ a .help-tooltip {
   }
 }
 
+.fullscreen-modal-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 3;
+  background-color: $primary_background;
+
+  .modal {
+    position: relative;
+    width: 600px;
+    padding: 40px;
+    margin: 150px auto;
+    text-align: center;
+  }
+}
+
 /* css for pagination */
 
 .page-results-container {
@@ -702,7 +720,7 @@ a .help-tooltip {
 /* css for spinner */
 
 .big-spinner {
-  height: 300px;
+  height: 200px;
 }
 
 .medium-spinner {
