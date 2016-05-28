@@ -131,6 +131,12 @@
   }
 }
 
+//mod status modal
+.appeals-container {
+  max-height: 400px;
+  overflow-y: auto;
+}
+
 //left column
 .left-mod-column {
   padding-right: 20px;
