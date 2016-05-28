@@ -466,7 +466,7 @@ app.controller('modReviewsController', function ($scope, $stateParams, $state, r
   };
 });
 
-app.controller('modCompatibilityController', function ($scope, compatibilityNotes, $stateParams, $state) {
+app.controller('modCompatibilityController', function ($scope, compatibilityNotes, $stateParams, $state, contributionFactory) {
   if(compatibilityNotes) {
     $scope.mod.compatibility_notes = compatibilityNotes;
   }
