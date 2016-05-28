@@ -173,7 +173,7 @@ class Mod < ActiveRecord::Base
   validates :name, :aliases, length: {maximum: 128}
 
   # callbacks
-  after_create :create_associations, :increment_counters
+  after_create :create_associations, :update_metrics, :increment_counters
   before_destroy :decrement_counters
 
   def no_author?
@@ -183,6 +183,7 @@ class Mod < ActiveRecord::Base
   def update_lazy_counters
     self.asset_files_count = ModAssetFile.where(mod_id: self.id).count
     self.plugins_count = Plugin.where(mod_id: self.id).count
+    self.save!
   end
 
   def create_tags
@@ -287,9 +288,13 @@ class Mod < ActiveRecord::Base
     self.create_asset_files
     self.create_plugins
     self.link_sources
+  end
+
+  def update_metrics
     self.compute_extra_metrics
     self.compute_average_rating
     self.compute_reputation
+    self.update_lazy_counters
     self.save!
   end
 
