@@ -52,7 +52,7 @@
     </div>
 </div>
 
-<loader data="mod.reviews" content-class="" spinner-class="big-spinner">
+<state-loader spinner-class="big-spinner">
     <div ng-repeat="review in mod.reviews" class="content-block" ng-if="!review.editing">
         <review review="review" show-author-column="true" index="100 + $index" user="user" edit="editReview"></review>
     </div>
@@ -60,4 +60,4 @@
     <div class="no-content-message" ng-if="reviews.length == 0">
         There are no reviews for this mod yet.
     </div>
-</loader>
+</state-loader>
