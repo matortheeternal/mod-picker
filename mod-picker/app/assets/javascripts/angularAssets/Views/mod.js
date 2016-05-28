@@ -170,11 +170,6 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
             break;
     }
 
-    // getting games
-    gameService.retrieveGames().then(function (data) {
-        $scope.game = gameService.getGameById(data, $scope.mod.game_id);
-    });
-
     // // remove Load Order tab if mod has no plugins
     // if ($scope.mod.plugins_count == 0) {
     //     $scope.tabs.splice(3, 1);
