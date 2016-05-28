@@ -131,7 +131,7 @@ class ModsController < ApplicationController
   # GET /mods/1/corrections
   def corrections
     authorize! :read, @mod
-    corrections = @mod.corrections.accessible_by(current_ability).paginate(:page => params[:page])
+    corrections = @mod.corrections.accessible_by(current_ability)
     agreement_marks = AgreementMark.where(submitted_by: current_user.id, correction_id: corrections.ids)
     render :json => {
         corrections: corrections,
