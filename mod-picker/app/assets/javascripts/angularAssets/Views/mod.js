@@ -17,13 +17,22 @@ app.config(['$stateProvider', function ($stateProvider) {
             controller: 'modReviewsController',
             url: '/reviews',
             params: {
-                sort: 'reputation'
+                //if reviews were retrieved and then the tab was changed, the sort from that retrieval is used
+                sort: function($state) {
+                  var parentState = $state.$current.parent;
+                  if (parentState && parentState.lastReviewSort){
+                    return parentState.lastReviewSort;
+                  }
+                  else {
+                    return 'reputation';
+                  }
+                }
             },
             resolve: {
                 reviews: function($stateParams, modId, modService) {
                   //only resolve if the data will be different than what is already in $scope
-                  if (this.lastReviewSort !== $stateParams.sort) {
-                    this.lastReviewSort = $stateParams.sort;
+                  if (this.parent.lastReviewSort !== $stateParams.sort) {
+                    this.parent.lastReviewSort = $stateParams.sort;
                     return modService.retrieveReviews(modId, {sort: $stateParams.sort});
                   }
                 }
@@ -33,7 +42,17 @@ app.config(['$stateProvider', function ($stateProvider) {
             controller: 'modCompatibilityController',
             url: '/compatibility',
             params: {
-                sort: 'reputation',
+                //if notes were retrieved and then the tab was changed, the sorting from that retrieval is used
+                sort: function($state) {
+                  var parentState = $state.$current.parent;
+                  if (parentState && parentState.lastCompatibilitySort){
+                    return parentState.lastCompatibilitySort;
+                  }
+                  else {
+                    //if this is the first retrieval default to sorting by reputation
+                    return 'reputation';
+                  }
+                },
                 filters: {
                   mod_list: true
                 }
@@ -41,8 +60,8 @@ app.config(['$stateProvider', function ($stateProvider) {
             resolve: {
                 compatibilityNotes: function($stateParams, modId, modService) {
                   //only resolve if the data will be different than what is already in $scope
-                  if (this.lastCompatibilitySort !== $stateParams.sort) {
-                    this.lastCompatibilitySort = $stateParams.sort;
+                  if (this.parent.lastCompatibilitySort !== $stateParams.sort) {
+                    this.parent.lastCompatibilitySort = $stateParams.sort;
 
                     options = {
                       sort: $stateParams.sort,
@@ -57,7 +76,17 @@ app.config(['$stateProvider', function ($stateProvider) {
             controller: 'modInstallOrderController',
             url: '/install-order',
             params: {
-                sort: 'reputation',
+                //if notes were retrieved and then the tab was changed, the sorting from that retrieval is used
+                sort: function($state) {
+                  var parentState = $state.$current.parent;
+                  if (parentState && parentState.lastInstallOrderSort){
+                    return parentState.lastInstallOrderSort;
+                  }
+                  else {
+                    //if this is the first retrieval default to sorting by reputation
+                    return 'reputation';
+                  }
+                },
                 filters: {
                   mod_list: true
                 }
@@ -65,8 +94,8 @@ app.config(['$stateProvider', function ($stateProvider) {
             resolve: {
                 installOrderNotes: function($stateParams, modId, modService) {
                   //only resolve if the data will be different than what is already in $scope
-                  if (this.lastInstallOrderSort !== $stateParams.sort) {
-                    this.lastInstallOrderSort = $stateParams.sort;
+                  if (this.parent.lastInstallOrderSort !== $stateParams.sort) {
+                    this.parent.lastInstallOrderSort = $stateParams.sort;
 
                     options = {
                       sort: $stateParams.sort,
@@ -81,7 +110,17 @@ app.config(['$stateProvider', function ($stateProvider) {
             controller: 'modLoadOrderController',
             url: '/load-order',
             params: {
-                sort: 'reputation',
+                //if notes were retrieved and then the tab was changed, the sorting from that retrieval is used
+                sort: function($state) {
+                  var parentState = $state.$current.parent;
+                  if (parentState && parentState.lastLoadOrderSort){
+                    return parentState.lastLoadOrderSort;
+                  }
+                  else {
+                    //if this is the first retrieval default to sorting by reputation
+                    return 'reputation';
+                  }
+                },
                 filters: {
                   mod_list: true
                 }
@@ -89,8 +128,8 @@ app.config(['$stateProvider', function ($stateProvider) {
             resolve: {
                 loadOrderNotes: function($stateParams, modId, modService) {
                   //only resolve if the data will be different than what is already in $scope
-                  if (this.lastLoadOrderSort !== $stateParams.sort) {
-                    this.lastLoadOrderSort = $stateParams.sort;
+                  if (this.parent.lastLoadOrderSort !== $stateParams.sort) {
+                    this.parent.lastLoadOrderSort = $stateParams.sort;
 
                     options = {
                       sort: $stateParams.sort,
