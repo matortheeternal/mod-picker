@@ -130,7 +130,7 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
         $scope.permissions = {
             canCreateTags: (rep >= 20) || isAdmin || isModerator,
             canManage: isAuthor || isModerator || isAdmin,
-            canSuggest: (rep >= 40),
+            canAppeal: (rep >= 40),
             canModerate: isModerator || isAdmin
         }
     };
@@ -183,6 +183,7 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
             contributionService.associateAgreementMarks(data.corrections, data.agreement_marks);
             userTitleService.associateTitles(data.corrections, $scope.userTitles);
             $scope.mod.corrections = data.corrections;
+            $scope.getAppealStatus();
         });
     };
 
@@ -274,6 +275,23 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
                 $scope.modStarred = $scope.modStarred ? false : true;
             }
         });
+    };
+
+    $scope.toggleStatusModal = function(visible) {
+        $scope.showStatusModal = visible;
+        if (!$scope.mod.corrections && !$scope.retrieving.corrections) {
+            $scope.retrieveCorrections();
+        }
+    };
+
+    $scope.getAppealStatus = function() {
+        if (!$scope.corrections) {
+            return;
+        }
+        var openAppeals = $scope.corrections.filter(function(correction) {
+            return !correction.hidden && (correction.status == "open");
+        });
+        $scope.appealStatus = !$scope.permissions.canAppeal || openAppeals.length < 2;
     };
 
     // TAG RELATED LOGIC
