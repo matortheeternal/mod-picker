@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160528030431) do
+ActiveRecord::Schema.define(version: 20160529043011) do
 
   create_table "agreement_marks", id: false, force: :cascade do |t|
     t.integer "correction_id", limit: 4
@@ -491,6 +491,7 @@ ActiveRecord::Schema.define(version: 20160528030431) do
     t.integer  "asset_files_count",         limit: 4,   default: 0
     t.integer  "required_by_count",         limit: 4,   default: 0
     t.integer  "tags_count",                limit: 4,   default: 0
+    t.boolean  "is_dlc",                                default: false
   end
 
   add_index "mods", ["game_id"], name: "fk_rails_3ec448a848", using: :btree
