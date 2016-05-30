@@ -745,7 +745,6 @@ def seed_fake_install_order_notes
   nNotes = Mod.count
   nNotes.times do
     submitter = random_user
-    puts "    Generating install order note"
     ionote = InstallOrderNote.new(
         game_id: gameSkyrim.id,
         submitted_by: submitter.id,
