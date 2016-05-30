@@ -3,9 +3,9 @@
 ## CentOS 7x Deployment
 1. Set up non-root user
 
-  useradd admin
-  passwd admin
-  usermod -aG wheel admin
+    useradd admin
+    passwd admin
+    usermod -aG wheel admin
 
 See [this article](https://access.redhat.com/documentation/en-
 
@@ -16,36 +16,36 @@ US/Red_Hat_Enterprise_Linux_OpenStack_Platform/2/html/Getting_Started_Guide/ch02
 
 3. Set up Windows X Desktop Environment and VNC
 
-  yum check-update
-  yum groupinstall "X Window System"
-  yum install gnome-classic-session gnome-terminal nautilus-open-terminal control-center liberation-mono-fonts
-  unlink /etc/systemd/system/default.target
-  ln -sf /lib/systemd/system/graphical.target /etc/systemd/system/default.target
-  reboot
-
-  yum install tigervnc-server -y
-  cp /lib/systemd/system/vncserver@.service /etc/systemd/system/vncserver@:1.service
-
-  ExecStart=/sbin/runuser -l mator -c "/usr/bin/vncserver %i"
-  PIDFile=/home/mator/.vnc/%H%i.pid
-
-  systemctl daemon-reload
-  vncpasswd
-
-  systemctl enable vncserver@:1.service
-  systemctl start vncserver@:1.service
-
-  systemctl start firewalld.service
-  firewall-cmd --permanent --add-service vnc-server
-  systemctl restart firewalld.service
+    yum check-update
+    yum groupinstall "X Window System"
+    yum install gnome-classic-session gnome-terminal nautilus-open-terminal control-center liberation-mono-fonts
+    unlink /etc/systemd/system/default.target
+    ln -sf /lib/systemd/system/graphical.target /etc/systemd/system/default.target
+    reboot
+  
+    yum install tigervnc-server -y
+    cp /lib/systemd/system/vncserver@.service /etc/systemd/system/vncserver@:1.service
+  
+    ExecStart=/sbin/runuser -l mator -c "/usr/bin/vncserver %i"
+    PIDFile=/home/mator/.vnc/%H%i.pid
+  
+    systemctl daemon-reload
+    vncpasswd
+  
+    systemctl enable vncserver@:1.service
+    systemctl start vncserver@:1.service
+  
+    systemctl start firewalld.service
+    firewall-cmd --permanent --add-service vnc-server
+    systemctl restart firewalld.service
 
 See [this article](http://www.krizna.com/centos/install-vnc-server-centos-7/) for more information.
 
 4. Set up .bashrc aliases and exports
 
-  vi ~/.bashrc
-  exports DB_PW=...
-  exports SECRET_KEY_BASE=...
+    vi ~/.bashrc
+    exports DB_PW=...
+    exports SECRET_KEY_BASE=...
 
 ... other exports?
 
@@ -114,16 +114,16 @@ directory.
 
 6. Configure `app/controllers/application_controller.rb` to force_ssl if not in a development environment.
 
-  # Force application to use ssl if configured
-  force_ssl if: :ssl_configured?
-
-  def ssl_configured?
-    !Rails.env.development?
-    # alternatively you could check if the env is production
-    #Rails.env.production?
-    # or return the force_ssl configuration value
-    #Rails.application.config.force_ssl
-  end
+    # Force application to use ssl if configured
+    force_ssl if: :ssl_configured?
+  
+    def ssl_configured?
+      !Rails.env.development?
+      # alternatively you could check if the env is production
+      #Rails.env.production?
+      # or return the force_ssl configuration value
+      #Rails.application.config.force_ssl
+    end
 
 7. Start Thin with SSL.
 `RAILS_ENV=production thin start -a <YourIP> -p 3000 --ssl --ssl-key-file ssl/<server>.key --ssl-cert-file ssl/<server>.crt`
