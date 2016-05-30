@@ -17,6 +17,7 @@ class Mod < ActiveRecord::Base
   scope :released, -> (range) { where(released: parseDate(range[:min])..parseDate(range[:max])) }
   scope :updated, -> (range) { where(updated: parseDate(range[:min])..parseDate(range[:max])) }
   scope :adult, -> (bool) { where(has_adult_content: bool) }
+  scope :official, -> (bool) { where(is_official: bool) }
   scope :utility, -> (bool) { where(is_utility: bool) }
   scope :categories, -> (categories) { where("primary_category_id IN (?) OR secondary_category_id IN (?)", categories, categories) }
   scope :tags, -> (array) { joins(:tags).where(:tags => {text: array}) }
