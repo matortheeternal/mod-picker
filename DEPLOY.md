@@ -8,7 +8,8 @@
   See [this article](https://access.redhat.com/documentation/en-US/Red_Hat_Enterprise_Linux_OpenStack_Platform/2/html/Getting_Started_Guide/ch02s03.html) for more information.
 
 2. Install C++, wget, net-tools, nmap
-`yum install gcc-c++ wget net-tools nmap`
+
+  `yum install gcc-c++ wget net-tools nmap`
 
 3. Set up Windows X Desktop Environment and VNC
 
@@ -52,9 +53,11 @@
   `alias cls='clear'`
 
 5. Install ruby, mysql, and development packages
+
   `yum install ruby ruby-devel mariadb-server mariadb`
 
 6. Configuring mysql (all commands with sudo)
+
   `systemctl start mariadb.service`
   `systemctl enable mariadb.service`
   `/usr/bin/mysql_secure_installation`
@@ -93,6 +96,7 @@ If you run into errors with building native extensions it usually happens becaus
   Google around and pay special attention to suggestions involving installing packages.  Oftentimes things won't work because you're missing dependencies.
 
 9. Create the database and load the schema
+
   `RAILS_ENV=production rake db:create db:schema:load`
 
 10. Load static seeds with `rake db:seed`.  (NOTE: You need to have seeding properly configured for this step.)
@@ -113,18 +117,19 @@ If you run into errors with building native extensions it usually happens becaus
 
 6. Configure `app/controllers/application_controller.rb` to force_ssl if not in a development environment.
 
-```
-# Force application to use ssl if configured
-force_ssl if: :ssl_configured?
-
-def ssl_configured?
-  !Rails.env.development?
-  # alternatively you could check if the env is production
-  #Rails.env.production?
-  # or return the force_ssl configuration value
-  #Rails.application.config.force_ssl
-  end
-```
+        ```
+        # Force application to use ssl if configured
+        force_ssl if: :ssl_configured?
+        
+        def ssl_configured?
+          !Rails.env.development?
+          # alternatively you could check if the env is production
+          #Rails.env.production?
+          # or return the force_ssl configuration value
+          #Rails.application.config.force_ssl
+          end
+        ```
 
 7. Start Thin with SSL.
-`RAILS_ENV=production thin start -a <YourIP> -p 3000 --ssl --ssl-key-file ssl/<server>.key --ssl-cert-file ssl/<server>.crt`
+
+  `RAILS_ENV=production thin start -a <YourIP> -p 3000 --ssl --ssl-key-file ssl/<server>.key --ssl-cert-file ssl/<server>.crt`
