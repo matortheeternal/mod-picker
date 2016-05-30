@@ -168,7 +168,7 @@ class Mod < ActiveRecord::Base
   self.per_page = 100
 
   # Validations
-  validates :name, :status, :game_id, :primary_category_id, presence: true
+  validates :name, :game_id, :released, presence: true
   validates :name, :aliases, length: {maximum: 128}
 
   # callbacks
