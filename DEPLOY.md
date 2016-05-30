@@ -69,24 +69,29 @@ See [this article](https://support.rackspace.com/how-to/installing-mysql-server-
 If you run into errors with building native extensions it usually happens because you aren't linking system libraries properly, or are missing a dependency.  Below are some of the bundler problems I've run into, and their resolutions:
 
 **Nokogiri** (Failed to build gem native extension, extconf.rb failed)
+
 Install libxml2-dev nd libxslt-dev
 `yum install libxml2-dev libxslt-dev`
 and install the gem with the use-system-libraries option
 `gem install nokogiri -- --use-system-libraries=true`
 
 **Event Machine** (Failed to build gem native extension, g++ not found)
+
 You need to install gcc-c++ with yum, per step 2.
 `yum install gcc-c++`
 
 **therubyracer**
+
 Make sure you have gcc-c++.  
 `gem install libv8 --version=3.11.8.3`
 `gem install therubyracer --version=0.10.2`
 
 **execjs**
+
 Make sure you have a javascript runtime.  Therubyracer is the default runtime ruby will have you use.
 
 **others**
+
 Google around and may special attention to suggestions involving installing packages.  Oftentimes things won't work because you're missing dependencies.
 
 9. Create the database and load the schema
