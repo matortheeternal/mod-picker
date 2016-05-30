@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160529043011) do
+ActiveRecord::Schema.define(version: 20160530225311) do
 
   create_table "agreement_marks", id: false, force: :cascade do |t|
     t.integer "correction_id", limit: 4
@@ -466,11 +466,11 @@ ActiveRecord::Schema.define(version: 20160529043011) do
   add_index "mod_tags", ["tag_id"], name: "fk_rails_ffd7f5019d", using: :btree
 
   create_table "mods", force: :cascade do |t|
-    t.string   "name",                      limit: 128
+    t.string   "name",                      limit: 128,                 null: false
     t.string   "aliases",                   limit: 128
-    t.boolean  "is_utility"
-    t.boolean  "has_adult_content"
-    t.integer  "game_id",                   limit: 4
+    t.boolean  "is_utility",                            default: false
+    t.boolean  "has_adult_content",                     default: false
+    t.integer  "game_id",                   limit: 4,                   null: false
     t.integer  "primary_category_id",       limit: 4
     t.integer  "secondary_category_id",     limit: 4
     t.integer  "stars_count",               limit: 4,   default: 0
@@ -480,10 +480,10 @@ ActiveRecord::Schema.define(version: 20160529043011) do
     t.integer  "load_order_notes_count",    limit: 4,   default: 0
     t.integer  "status",                    limit: 1,   default: 0,     null: false
     t.boolean  "hidden",                                default: false, null: false
-    t.integer  "submitted_by",              limit: 4,                   null: false
+    t.integer  "submitted_by",              limit: 4
     t.float    "reputation",                limit: 24,  default: 0.0
     t.float    "average_rating",            limit: 24,  default: 0.0
-    t.datetime "released"
+    t.datetime "released",                                              null: false
     t.datetime "updated"
     t.integer  "plugins_count",             limit: 4,   default: 0
     t.integer  "required_mods_count",       limit: 4,   default: 0
