@@ -23,8 +23,8 @@
         yum install tigervnc-server -y
         cp /lib/systemd/system/vncserver@.service /etc/systemd/system/vncserver@:1.service
         
-        ExecStart=/sbin/runuser -l mator -c "/usr/bin/vncserver %i"
-        PIDFile=/home/mator/.vnc/%H%i.pid
+        ExecStart=/sbin/runuser -l admin -c "/usr/bin/vncserver %i"
+        PIDFile=/home/admin/.vnc/%H%i.pid
         
         systemctl daemon-reload
         vncpasswd
