@@ -54,9 +54,9 @@
 
 6. Configuring mysql (all commands with sudo)
 
-  `systemctl start mariadb.service`
-  `systemctl enable mariadb.service`
-  `/usr/bin/mysql_secure_installation`
+        systemctl start mariadb.service
+        systemctl enable mariadb.service
+        /usr/bin/mysql_secure_installation
 
   See [this article](https://support.rackspace.com/how-to/installing-mysql-server-on-centos/) for more information.
 
@@ -67,20 +67,20 @@ If you run into errors with building native extensions it usually happens becaus
 
   **Nokogiri** (Failed to build gem native extension, extconf.rb failed)
   
-  Install libxml2-dev nd libxslt-dev
-  `yum install libxml2-dev libxslt-dev`
-  and install the gem with the use-system-libraries option
+  Install libxml2-dev nd libxslt-dev  
+  `yum install libxml2-dev libxslt-dev`  
+  and install the gem with the use-system-libraries option  
   `gem install nokogiri -- --use-system-libraries=true`
   
   **Event Machine** (Failed to build gem native extension, g++ not found)
   
-  You need to install gcc-c++ with yum, per step 2.
+  You need to install gcc-c++ with yum, per step 2.  
   `yum install gcc-c++`
   
   **therubyracer**
   
   Make sure you have gcc-c++.  
-  `gem install libv8 --version=3.11.8.3`
+  `gem install libv8 --version=3.11.8.3`  
   `gem install therubyracer --version=0.10.2`
   
   **execjs**
