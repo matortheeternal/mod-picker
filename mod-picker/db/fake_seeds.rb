@@ -84,6 +84,7 @@ def seed_fake_mods
   # Top recently endorsed mods
   Mod.create(
       name: "SkyUI",
+      authors: "SkyUI Team",
       primary_category_id: Category.where(name: "Gameplay - User Interface").first.id,
       secondary_category_id: Category.where(name: "Resources - Frameworks").first.id,
       is_utility: false,
@@ -132,6 +133,7 @@ def seed_fake_mods
 
   Mod.create(
       name: "Immersive Armors",
+      authors: "Hothtrooper44",
       primary_category_id: Category.where(name: "Items - Armor, Clothing, & Accessories").first.id,
       is_utility: false,
       has_adult_content: false,
@@ -162,6 +164,7 @@ def seed_fake_mods
 
   Mod.create(
       name: "Skyrim HD - 2K Textures",
+      authors: "NebuLa from AHBmods",
       primary_category_id: Category.where(name: "Audiovisual - Models & Textures").first.id,
       is_utility: false,
       has_adult_content: false,
@@ -192,6 +195,7 @@ def seed_fake_mods
 
   Mod.create(
       name: "RaceMenu",
+      authors: "Expired",
       primary_category_id: Category.where(name: "Gameplay - User Interface").first.id,
       secondary_category_id: Category.where(name: "Resources - Frameworks").first.id,
       is_utility: false,
@@ -223,6 +227,7 @@ def seed_fake_mods
 
   Mod.create(
       name: "Unofficial Skyrim Legendary Edition Patch",
+      authors: "Unofficial Patch Project Team ",
       primary_category_id: Category.where(name: "Fixes").first.id,
       is_utility: false,
       has_adult_content: false,
@@ -253,6 +258,7 @@ def seed_fake_mods
 
   Mod.create(
       name: "Mod Organizer",
+      authors: "Tannin",
       primary_category_id: Category.where(name: "Utilities - Tools").first.id,
       is_utility: true,
       has_adult_content: false,
@@ -283,6 +289,7 @@ def seed_fake_mods
 
   Mod.create(
       name: "Skyrim Flora Overhaul",
+      authors: "vurt",
       primary_category_id: Category.where(name: "Audiovisual - Models & Textures").first.id,
       is_utility: false,
       has_adult_content: false,
@@ -313,6 +320,7 @@ def seed_fake_mods
 
   Mod.create(
       name: "TES5Edit",
+      authors: "ElminsterAU",
       primary_category_id: Category.where(name: "Utilities - Tools").first.id,
       secondary_category_id: Category.where(name: "Resources - Frameworks").first.id,
       is_utility: true,
@@ -345,6 +353,7 @@ def seed_fake_mods
 # Top mods in the last 59 days
   Mod.create(
       name: "Merge Plugins",
+      authors: "Mator",
       primary_category_id: Category.where(name: "Utilities - Tools").first.id,
       is_utility: true,
       has_adult_content: false,
@@ -375,6 +384,7 @@ def seed_fake_mods
 
   Mod.create(
       name: "The Lily - Armour Mashup",
+      authors: "pottoply",
       primary_category_id: Category.where(name: "Items - Armor, Clothing, & Accessories").first.id,
       is_utility: false,
       has_adult_content: false,
@@ -405,6 +415,7 @@ def seed_fake_mods
 
   Mod.create(
       name: "THE PEOPLE OF SKYRIM ULTIMATE EDITION",
+      authors: "Nesbit",
       primary_category_id: Category.where(name: "Gameplay - Immersion & Role-playing").first.id,
       secondary_category_id: Category.where(name: "New Characters").first.id,
       is_utility: false,
@@ -436,6 +447,7 @@ def seed_fake_mods
 
   Mod.create(
       name: "Skaal You Need - Skaal house and follower",
+      authors: "Elianora",
       primary_category_id: Category.where(name: "Locations - New Player Homes").first.id,
       secondary_category_id: Category.where(name: "New Characters - Allies").first.id,
       is_utility: false,
@@ -467,6 +479,7 @@ def seed_fake_mods
 
   Mod.create(
       name: "SC - Hairstyles",
+      authors: "ShinglesCat",
       primary_category_id: Category.where(name: "Character Appearance - Face Parts").first.id,
       is_utility: false,
       has_adult_content: false,
@@ -497,6 +510,7 @@ def seed_fake_mods
 
   Mod.create(
       name: "Real Names",
+      authors: "Jaxonz and Nellshini",
       primary_category_id: Category.where(name: "Gameplay - Immersion & Role-playing").first.id,
       is_utility: false,
       has_adult_content: false,

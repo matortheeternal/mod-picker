@@ -1727,6 +1727,7 @@ def seed_static_records
 
   modSkyrim = Mod.create(
       name: "Skyrim",
+      authors: "Bethesda",
       is_official: true,
       game_id: gameSkyrim.id,
       released: DateTime.new(2011, 11, 11),
@@ -1739,6 +1740,7 @@ def seed_static_records
 
   modDawnguard = Mod.create(
       name: "Dawnguard",
+      authors: "Bethesda",
       is_official: true,
       game_id: gameSkyrim.id,
       released: DateTime.new(2012, 8, 2)
@@ -1749,6 +1751,7 @@ def seed_static_records
 
   modHearthfire = Mod.create(
       name: "Hearthfire",
+      authors: "Bethesda",
       is_official: true,
       game_id: gameSkyrim.id,
       released: DateTime.new(2012, 10, 4),
@@ -1759,6 +1762,7 @@ def seed_static_records
 
   modDragonborn = Mod.create(
       name: "Dragonborn",
+      authors: "Bethesda",
       is_official: true,
       game_id: gameSkyrim.id,
       released: DateTime.new(2013, 2, 5)
