@@ -1,10 +1,10 @@
 ## CentOS 7x Deployment
 1. Set up non-root user
-        ```
+
         useradd admin
         passwd admin
         usermod -aG wheel admin
-        ```
+
   See [this article](https://access.redhat.com/documentation/en-US/Red_Hat_Enterprise_Linux_OpenStack_Platform/2/html/Getting_Started_Guide/ch02s03.html) for more information.
 
 2. Install C++, wget, net-tools, nmap
@@ -13,7 +13,6 @@
 
 3. Set up Windows X Desktop Environment and VNC
 
-        ```
         yum check-update
         yum groupinstall "X Window System"
         yum install gnome-classic-session gnome-terminal nautilus-open-terminal control-center liberation-mono-fonts
@@ -36,17 +35,14 @@
         systemctl start firewalld.service
         firewall-cmd --permanent --add-service vnc-server
         systemctl restart firewalld.service
-        ```
 
   See [this article](http://www.krizna.com/centos/install-vnc-server-centos-7/) for more information.
 
 4. Set up .bashrc aliases and exports
 
-        ```
         vi ~/.bashrc
         exports DB_PW=...
         exports SECRET_KEY_BASE=...
-        ```
 
   ... other exports?
 
@@ -117,7 +113,6 @@ If you run into errors with building native extensions it usually happens becaus
 
 6. Configure `app/controllers/application_controller.rb` to force_ssl if not in a development environment.
 
-        ```
         # Force application to use ssl if configured
         force_ssl if: :ssl_configured?
         
@@ -127,8 +122,7 @@ If you run into errors with building native extensions it usually happens becaus
           #Rails.env.production?
           # or return the force_ssl configuration value
           #Rails.application.config.force_ssl
-          end
-        ```
+        end
 
 7. Start Thin with SSL.
 
