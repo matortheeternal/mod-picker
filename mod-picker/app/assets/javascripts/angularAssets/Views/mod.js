@@ -310,6 +310,9 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
 
     $scope.retrieveAnalysis = function() {
         modService.retrieveAnalysis($stateParams.modId).then(function(analysis) {
+            // set analysis to true
+            $scope.mod.analysis = true;
+          
             // turn assets into an array of string
             $scope.mod.assets = analysis.assets.map(function(asset) {
                 return asset.filepath;
