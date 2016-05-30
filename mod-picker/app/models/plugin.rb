@@ -10,17 +10,17 @@ class Plugin < ActiveRecord::Base
   belongs_to :mod, :inverse_of => 'plugins'
 
   # master associations
-  has_many :dummy_masters, :inverse_of => 'plugin', :dependent => :destroy
-  has_many :masters, :inverse_of => 'plugin', :dependent => :destroy
-  has_many :children, :class_name => 'Master', :inverse_of => 'master_plugin', :dependent => :destroy
+  has_many :dummy_masters, :inverse_of => 'plugin'
+  has_many :masters, :inverse_of => 'plugin'
+  has_many :children, :class_name => 'Master', :inverse_of => 'master_plugin'
 
   # plugin contents
-  has_many :plugin_record_groups, :inverse_of => 'plugin', :dependent => :destroy
-  has_many :overrides, :class_name => 'OverrideRecord', :inverse_of => 'plugin', :dependent => :destroy
-  has_many :plugin_errors, :inverse_of => 'plugin', :dependent => :destroy
+  has_many :plugin_record_groups, :inverse_of => 'plugin'
+  has_many :overrides, :class_name => 'OverrideRecord', :inverse_of => 'plugin'
+  has_many :plugin_errors, :inverse_of => 'plugin'
 
   # mod list usage
-  has_many :mod_list_plugins, :inverse_of => 'plugin', :dependent => :destroy
+  has_many :mod_list_plugins, :inverse_of => 'plugin'
   has_many :mod_lists, :through => 'mod_list_plugins', :inverse_of => 'plugins'
 
   # is a compatibility plugin for
@@ -41,6 +41,7 @@ class Plugin < ActiveRecord::Base
 
   # callbacks
   after_create :create_associations
+  before_destroy :delete_associations
 
   def update_lazy_counters
     self.errors_count = self.plugin_errors.count
@@ -48,10 +49,10 @@ class Plugin < ActiveRecord::Base
 
   def create_masters
     @master_plugins.each_with_index do |master, index|
-      master_plugin = Plugin.find_by(filename: master.filename, crc_hash: master.crc_hash)
-      master_plugin = Plugin.find_by(filename: master.filename) if master_plugin.nil?
+      master_plugin = Plugin.find_by(filename: master[:filename], crc_hash: master[:crc_hash])
+      master_plugin = Plugin.find_by(filename: master[:filename]) if master_plugin.nil?
       if master_plugin.nil?
-        self.dummy_masters.create(filename: master.filename, index: index)
+        self.dummy_masters.create(filename: master[:filename], index: index)
       else
         self.masters.create(master_plugin_id: master_plugin.id, index: index)
       end
@@ -63,11 +64,25 @@ class Plugin < ActiveRecord::Base
     self.save!
   end
 
+  def delete_associations
+    OverrideRecord.where(plugin_id: self.id).delete_all
+    PluginError.where(plugin_id: self.id).delete_all
+    PluginRecordGroup.where(plugin_id: self.id).delete_all
+    DummyMaster.where(plugin_id: self.id).delete_all
+    Master.where(plugin_id: self.id).delete_all
+    LoadOrderNote.where("first_plugin_id = ? OR second_plugin_id = ?", self.id, self.id).delete_all
+    CompatibilityNote.where(compatibility_plugin_id: self.id).delete_all
+    ModListPlugin.where(plugin_id: self.id).delete_all
+  end
+
   def self.as_json(options={})
     if JsonHelpers.json_options_empty(options)
       default_options = {
           :include => {
               :masters => {
+                  :except => [:plugin_id]
+              },
+              :dummy_masters => {
                   :except => [:plugin_id]
               },
               :overrides => {

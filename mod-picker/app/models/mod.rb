@@ -139,6 +139,7 @@ class Mod < ActiveRecord::Base
   has_many :authors, :through => 'mod_authors', :inverse_of => 'mods'
 
   # community feedback on the mod
+  has_many :corrections, :as => 'correctable'
   has_many :reviews, :inverse_of => 'mod', :dependent => :destroy
   has_many :mod_stars, :inverse_of => 'mod', :dependent => :destroy
   has_many :user_stars, :through => 'mod_stars', :class_name => 'User', :inverse_of => 'starred_mods'
@@ -172,7 +173,7 @@ class Mod < ActiveRecord::Base
   validates :name, :aliases, length: {maximum: 128}
 
   # callbacks
-  after_create :create_associations, :increment_counters
+  after_create :create_associations, :update_metrics, :increment_counters
   before_destroy :decrement_counters
 
   def no_author?
@@ -182,6 +183,7 @@ class Mod < ActiveRecord::Base
   def update_lazy_counters
     self.asset_files_count = ModAssetFile.where(mod_id: self.id).count
     self.plugins_count = Plugin.where(mod_id: self.id).count
+    self.save!
   end
 
   def create_tags
@@ -217,6 +219,9 @@ class Mod < ActiveRecord::Base
         plugin = Plugin.find_by(filename: dump[:filename], crc_hash: dump[:crc_hash])
         if plugin.nil?
           plugin = self.plugins.create(dump)
+        else
+          plugin.mod_id = self.id
+          plugin.save
         end
       end
     end
@@ -283,9 +288,13 @@ class Mod < ActiveRecord::Base
     self.create_asset_files
     self.create_plugins
     self.link_sources
+  end
+
+  def update_metrics
     self.compute_extra_metrics
     self.compute_average_rating
     self.compute_reputation
+    self.update_lazy_counters
     self.save!
   end
 
@@ -298,7 +307,7 @@ class Mod < ActiveRecord::Base
   end
 
   def load_order_notes
-    LoadOrderNote.where('first_plugin_id in ? OR second_plugin_id in ?', self.plugins.ids, self.plugins.ids)
+    LoadOrderNote.where('first_plugin_id in (?) OR second_plugin_id in (?)', self.plugins.ids, self.plugins.ids)
   end
 
   def image

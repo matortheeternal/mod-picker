@@ -17,14 +17,25 @@ app.filter('percentage', function() {
   };
 });
 
-app.controller('modController', function ($scope, $q, $stateParams, $timeout, modService, pluginService, categoryService, gameService, recordGroupService, userTitleService, assetUtils, reviewSectionService, userService, contributionService, contributionFactory, errorsFactory, tagService, smoothScroll) {
+app.controller('modController', function ($scope, $q, $stateParams, $timeout, modService, pluginService, categoryService, gameService, recordGroupService, userTitleService, assetUtils, reviewSectionService, userService, contributionService, contributionFactory, tagService, smoothScroll) {
     $scope.tags = [];
     $scope.newTags = [];
     $scope.sort = {};
+    $scope.userTitles = [];
+    $scope.reviewSections = [];
+    $scope.allReviewSections = [];
     $scope.filters = {
         compatibility_notes: true,
         install_order_notes: true,
         load_order_notes: true
+    };
+    $scope.retrieving = {
+        corrections: false,
+        reviews: false,
+        compatibility_notes: false,
+        install_order_notes: false,
+        load_order_notes: false,
+        analysis: false
     };
 
     // SETUP TABS
@@ -62,8 +73,9 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
 
             // getting review sections
             reviewSectionService.retrieveReviewSections().then(function (reviewSections) {
-                $scope.allReviewSections = reviewSections;
-                $scope.reviewSections = reviewSectionService.getSectionsForCategory(reviewSections, $scope.primaryCategory);
+                Array.prototype.push.apply($scope.allReviewSections, reviewSections);
+                var filteredSections = reviewSectionService.getSectionsForCategory(reviewSections, $scope.primaryCategory);
+                Array.prototype.push.apply($scope.reviewSections, filteredSections);
             });
         });
 
@@ -80,7 +92,8 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
 
     //get user titles
     userTitleService.retrieveUserTitles().then(function(userTitles) {
-        $scope.userTitles = userTitleService.getSortedGameTitles(userTitles);
+        var gameTitles = userTitleService.getSortedGameTitles(userTitles);
+        Array.prototype.push.apply($scope.userTitles, gameTitles);
     });
 
     //get record groups
@@ -117,99 +130,9 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
         $scope.permissions = {
             canCreateTags: (rep >= 20) || isAdmin || isModerator,
             canManage: isAuthor || isModerator || isAdmin,
-            canSuggest: (rep >= 40),
+            canAppeal: (rep >= 40) || isModerator || isAdmin,
             canModerate: isModerator || isAdmin
         }
-    };
-
-    //associate user titles with content
-    $scope.associateUserTitles = function(data) {
-        // if we don't have userTitles yet, try again in 100ms
-        if (!$scope.userTitles) {
-            $timeout(function() {
-                $scope.associateUserTitles(data);
-            }, 100);
-            return;
-        }
-
-        // associate titles with the data
-        userTitleService.associateTitles($scope.userTitles, data);
-    };
-
-    //associate helpful marks with content
-    $scope.associateHelpfulMarks = function(data, helpfulMarks) {
-        // loop through data
-        data.forEach(function(item) {
-            // see if we have a matching helpful mark
-            var helpfulMark = helpfulMarks.find(function(mark) {
-                return mark.helpfulable_id == item.id;
-            });
-            // if we have a matching helpful mark, assign it to the item
-            if (helpfulMark) {
-                item.helpful = helpfulMark.helpful;
-            }
-        });
-    };
-
-    //associate record groups with plugins
-    $scope.associateRecordGroups = function(plugins) {
-        // if we don't have recordGroups yet, try again in 100ms
-        if (!$scope.recordGroups) {
-            $timeout(function() {
-                $scope.associateRecordGroups(plugins);
-            }, 100);
-            return;
-        }
-        // loop through plugins
-        plugins.forEach(function(plugin) {
-            if (plugin.plugin_record_groups) {
-                plugin.plugin_record_groups.forEach(function(group) {
-                    var record_group = recordGroupService.getGroupFromSignature($scope.recordGroups, group.sig);
-                    group.name = record_group.name;
-                    group.child_group = record_group.child_group;
-                });
-            }
-        });
-    };
-
-    //combine dummy_masters array with masters array and sorts the masters array
-    $scope.combineAndSortMasters = function(plugins) {
-        // loop through plugins
-        plugins.forEach(function(plugin) {
-            plugin.masters = plugin.masters.concat(plugin.dummy_masters);
-            plugin.masters.sort(function(first_master, second_master) {
-                return first_master.index - second_master.index;
-            });
-        });
-    };
-
-    //associate overrides with their master file
-    $scope.associateOverrides = function(plugins) {
-        // loop through plugins
-        plugins.forEach(function(plugin) {
-            plugin.masters.forEach(function(master) {
-                master.overrides = [];
-                plugin.overrides.forEach(function(override) {
-                    if (override.fid >= master.index * 0x01000000) {
-                        master.overrides.push(override);
-                    }
-                });
-            });
-        });
-    };
-
-    //sort plugin errors
-    $scope.sortErrors = function() {
-        $scope.sortedErrors = errorsFactory.errorTypes();
-        // return if we don't have a current plugin to sort errors for
-        if (!$scope.currentPlugin) {
-            return;
-        }
-
-        // loop through current plugin's errors, sorting them
-        $scope.currentPlugin.plugin_errors.forEach(function(error) {
-            $scope.sortedErrors[error.group].errors.push(error);
-        });
     };
 
     // update the markdown editor
@@ -227,89 +150,104 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
     $scope.switchTab = function(targetTab) {
         switch (targetTab.name) {
             case 'Reviews':
-                if ($scope.mod.reviews == null) {
+                if (!$scope.mod.reviews && !$scope.retrieving.reviews) {
                     $scope.retrieveReviews();
                 }
                 break;
             case 'Compatibility':
-                if ($scope.mod.compatibility_notes == null) {
+                if (!$scope.mod.compatibility_notes && !$scope.retrieving.compatibility_notes) {
                     $scope.retrieveCompatibilityNotes();
                 }
                 break;
             case 'Install Order':
-                if ($scope.mod.install_order_notes == null) {
+                if (!$scope.mod.install_order_notes && !$scope.retrieving.install_order_notes) {
                     $scope.retrieveInstallOrderNotes();
                 }
                 break;
             case 'Load Order':
-                if ($scope.mod.load_order_notes == null) {
+                if (!$scope.mod.load_order_notes && !$scope.retrieving.load_order_notes) {
                     $scope.retrieveLoadOrderNotes();
                 }
                 break;
             case 'Analysis':
-                if ($scope.mod.analysis == null) {
+                if (!$scope.mod.analysis && !$scope.retrieving.analysis) {
                     $scope.retrieveAnalysis();
                 }
                 break;
         }
     };
 
+    $scope.retrieveCorrections = function() {
+        $scope.retrieving.corrections = true;
+        modService.retrieveAssociation($stateParams.modId, 'corrections').then(function(data) {
+            contributionService.associateAgreementMarks(data.corrections, data.agreement_marks);
+            userTitleService.associateTitles(data.corrections, $scope.userTitles);
+            $scope.mod.corrections = data.corrections;
+            $scope.getAppealStatus();
+        });
+    };
+
     $scope.retrieveReviews = function() {
+        $scope.retrieving.reviews = true;
         var options = {
             sort: $scope.sort.reviews || 'reputation'
         };
-        modService.retrieveReviews($stateParams.modId, options).then(function(data) {
-            $scope.associateHelpfulMarks(data.reviews, data.helpful_marks);
-            $scope.associateUserTitles(data.reviews);
-            $scope.associateReviewSections(data.reviews);
+        modService.retrieveAssociation($stateParams.modId, 'reviews', options).then(function(data) {
+            contributionService.associateHelpfulMarks(data.reviews, data.helpful_marks);
+            userTitleService.associateTitles(data.reviews, $scope.userTitles);
+            reviewSectionService.associateReviewSections(data.reviews, $scope.reviewSections, $scope.allReviewSections);
             $scope.mod.reviews = data.reviews;
         });
     };
 
     $scope.retrieveCompatibilityNotes = function() {
+        $scope.retrieving.compatibility_notes = true;
         var options = {
             sort: $scope.sort.compatibility_notes || 'reputation',
             filters: {
                 mod_list: $scope.filters.compatibility_notes || true
             }
         };
-        modService.retrieveCompatibilityNotes($stateParams.modId, options).then(function(data) {
-            $scope.associateHelpfulMarks(data.compatibility_notes, data.helpful_marks);
-            $scope.associateUserTitles(data.compatibility_notes);
+        modService.retrieveAssociation($stateParams.modId, 'compatibility_notes', options).then(function(data) {
+            contributionService.associateHelpfulMarks(data.compatibility_notes, data.helpful_marks);
+            userTitleService.associateTitles(data.compatibility_notes, $scope.userTitles);
             $scope.mod.compatibility_notes = data.compatibility_notes;
         });
     };
 
     $scope.retrieveInstallOrderNotes = function() {
+        $scope.retrieving.install_order_notes = true;
         var options = {
-            sort: $scope.sort.compatibility_notes || 'reputation',
+            sort: $scope.sort.install_order_notes || 'reputation',
             filters: {
                 mod_list: $scope.filters.install_order_notes
             }
         };
-        modService.retrieveInstallOrderNotes($stateParams.modId, options).then(function(data) {
-            $scope.associateHelpfulMarks(data.install_order_notes, data.helpful_marks);
-            $scope.associateUserTitles(data.install_order_notes);
+        modService.retrieveAssociation($stateParams.modId, 'install_order_notes', options).then(function(data) {
+            contributionService.associateHelpfulMarks(data.install_order_notes, data.helpful_marks);
+            userTitleService.associateTitles(data.install_order_notes, $scope.userTitles);
             $scope.mod.install_order_notes = data.install_order_notes;
         });
     };
 
     $scope.retrieveLoadOrderNotes = function() {
+        $scope.retrieving.load_order_notes = true;
         var options = {
-            sort: $scope.sort.compatibility_notes || 'reputation',
+            sort: $scope.sort.load_order_notes || 'reputation',
             filters: {
                 mod_list: $scope.filters.load_order_notes
             }
         };
-        modService.retrieveLoadOrderNotes($stateParams.modId, options).then(function(data) {
-            $scope.associateHelpfulMarks(data.load_order_notes, data.helpful_marks);
-            $scope.associateUserTitles(data.load_order_notes);
+        modService.retrieveAssociation($stateParams.modId, 'load_order_notes', options).then(function(data) {
+            contributionService.associateHelpfulMarks(data.load_order_notes, data.helpful_marks);
+            userTitleService.associateTitles(data.load_order_notes, $scope.userTitles);
             $scope.mod.load_order_notes = data.load_order_notes;
         });
     };
 
     $scope.retrieveAnalysis = function() {
-        modService.retrieveAnalysis($stateParams.modId).then(function(analysis) {
+        $scope.retrieving.analysis = true;
+        modService.retrieveAssociation($stateParams.modId, 'analysis').then(function(analysis) {
             // turn assets into an array of string
             $scope.mod.assets = analysis.assets.map(function(asset) {
                 return asset.filepath;
@@ -318,14 +256,14 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
             $scope.mod.nestedAssets = assetUtils.convertDataStringToNestedObject($scope.mod.assets);
 
             // associate record groups for plugins
-            $scope.associateRecordGroups(analysis.plugins);
-            $scope.combineAndSortMasters(analysis.plugins);
-            $scope.associateOverrides(analysis.plugins);
+            pluginService.associateRecordGroups(analysis.plugins, $scope.recordGroups);
+            pluginService.combineAndSortMasters(analysis.plugins);
+            pluginService.associateOverrides(analysis.plugins);
             $scope.mod.plugins = analysis.plugins;
             if ($scope.mod.plugins.length > 0) {
                 $scope.currentPlugin = analysis.plugins[0];
                 $scope.currentPluginFilename = analysis.plugins[0].filename;
-                $scope.sortErrors();
+                $scope.sortedErrors = pluginService.sortErrors($scope.currentPlugin);
             }
         });
     };
@@ -337,6 +275,20 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
                 $scope.modStarred = $scope.modStarred ? false : true;
             }
         });
+    };
+
+    $scope.toggleStatusModal = function(visible) {
+        $scope.showStatusModal = visible;
+        if (!$scope.mod.corrections && !$scope.retrieving.corrections) {
+            $scope.retrieveCorrections();
+        }
+    };
+
+    $scope.getAppealStatus = function() {
+        var openAppeals = $scope.mod.corrections.filter(function(correction) {
+            return !correction.hidden && (correction.status == "open");
+        });
+        $scope.appealStatus = $scope.permissions.canAppeal && openAppeals.length < 2;
     };
 
     // TAG RELATED LOGIC
@@ -357,23 +309,6 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
     // REVIEW RELATED LOGIC
     // retrieve reviews initially because they're the default tab currently
     $scope.retrieveReviews();
-
-    // associate reviews with review sections
-    $scope.associateReviewSections = function(reviews) {
-        // if we don't have recordGroups yet, try again in 100ms
-        if (!$scope.reviewSections) {
-            $timeout(function() {
-                $scope.associateReviewSections(reviews);
-            }, 100);
-            return;
-        }
-        // loop through the reviews
-        reviews.forEach(function(review) {
-            review.review_ratings.forEach(function(rating) {
-                rating.section = reviewSectionService.getSectionById($scope.allReviewSections, rating.review_section_id);
-            });
-        });
-    };
 
     // instantiate a new review object
     $scope.startNewReview = function() {

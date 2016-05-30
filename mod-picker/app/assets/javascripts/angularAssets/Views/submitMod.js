@@ -211,9 +211,9 @@ app.controller('submitModController', function ($scope, backend, submitService, 
         // build list of masters
         var masters = [];
         $scope.analysis.plugins.forEach(function(plugin) {
-            plugin.master_filenames.forEach(function(filename) {
-                if (masters.indexOf(filename) == -1) {
-                    masters.push(filename);
+            plugin.master_plugins.forEach(function(master) {
+                if (masters.indexOf(master.filename) == -1) {
+                    masters.push(master.filename);
                 }
             });
         });
@@ -253,13 +253,22 @@ app.controller('submitModController', function ($scope, backend, submitService, 
             workshop: $scope.workshop,
             lab: $scope.lab
         };
+        $scope.submitting = true;
+        $scope.submittingStatus = "Submitting Mod...";
         submitService.submitMod($scope.mod, $scope.analysis, sources, $scope.requirements).then(function(data) {
             if (data.status == "ok") {
-                $scope.successMessage = "Mod submitted!";
-                $scope.showSuccess = true;
+                $scope.submittingStatus = "Mod Submitted Successfully!";
+                $scope.success = true;
             } else {
+                $scope.submittingStatus = "There were errors submitting your mod.";
                 $scope.errors = data.errors;
             }
         });
-    }
+    };
+
+    $scope.closeModal = function() {
+        delete $scope.success;
+        delete $scope.submitting;
+        delete $scope.errors;
+    };
 });
