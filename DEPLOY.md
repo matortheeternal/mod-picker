@@ -90,7 +90,7 @@ If you run into errors with building native extensions it usually happens becaus
   
   **others**
   
-  Google around and may special attention to suggestions involving installing packages.  Oftentimes things won't work because you're missing dependencies.
+  Google around and pay special attention to suggestions involving installing packages.  Oftentimes things won't work because you're missing dependencies.
 
 9. Create the database and load the schema
   `RAILS_ENV=production rake db:create db:schema:load`
