@@ -327,7 +327,8 @@ class Mod < ActiveRecord::Base
           :nexus_infos => {:except => [:mod_id]},
           :workshop_infos => {:except => [:mod_id]},
           :lover_infos => {:except => [:mod_id]},
-          :authors => {:only => [:id, :username]}
+          :authors => {:only => [:id, :username]},
+          :plugins => {:only => [:id, :filename]}
       },
       :methods => :image
     })
