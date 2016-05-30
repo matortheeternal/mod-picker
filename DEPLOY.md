@@ -1,5 +1,3 @@
-# DEPLOYMENT INSTRUCTIONS
-
 ## CentOS 7x Deployment
 1. Set up non-root user
 
@@ -9,9 +7,7 @@ passwd admin
 usermod -aG wheel admin
 ```
 
-See [this article](https://access.redhat.com/documentation/en-
-
-US/Red_Hat_Enterprise_Linux_OpenStack_Platform/2/html/Getting_Started_Guide/ch02s03.html) for more information.
+See [this article](https://access.redhat.com/documentation/en-US/Red_Hat_Enterprise_Linux_OpenStack_Platform/2/html/Getting_Started_Guide/ch02s03.html) for more information.
 
 2. Install C++, wget, net-tools, nmap
 `yum install gcc-c++ wget net-tools nmap`
@@ -47,9 +43,11 @@ See [this article](http://www.krizna.com/centos/install-vnc-server-centos-7/) fo
 
 4. Set up .bashrc aliases and exports
 
-```vi ~/.bashrc
+```
+vi ~/.bashrc
 exports DB_PW=...
-exports SECRET_KEY_BASE=...```
+exports SECRET_KEY_BASE=...
+```
 
 ... other exports?
 
@@ -68,9 +66,7 @@ See [this article](https://support.rackspace.com/how-to/installing-mysql-server-
 7. Download the application files.  This can be done by issuing a wget on the GitHub repository release.
 
 8. cd into the application directory and run `bundle install`.  Make sure you don't have sudo when you run bundle install.
-If you run into errors with building native extensions it usually happens because you aren't linking system libraries properly, 
-
-or are missing a dependency.  Below are some of the bundler problems I've run into, and their resolutions:
+If you run into errors with building native extensions it usually happens because you aren't linking system libraries properly, or are missing a dependency.  Below are some of the bundler problems I've run into, and their resolutions:
 
 **Nokogiri** (Failed to build gem native extension, extconf.rb failed)
 Install libxml2-dev nd libxslt-dev
@@ -91,9 +87,7 @@ Make sure you have gcc-c++.
 Make sure you have a javascript runtime.  Therubyracer is the default runtime ruby will have you use.
 
 **others**
-Google around and may special attention to suggestions involving installing packages.  Oftentimes things won't work because 
-
-you're missing dependencies.
+Google around and may special attention to suggestions involving installing packages.  Oftentimes things won't work because you're missing dependencies.
 
 9. Create the database and load the schema
 `RAILS_ENV=production rake db:create db:schema:load`
@@ -110,9 +104,7 @@ you're missing dependencies.
 
 3. Configure your certificate and submit the CSR to generate the needed files.
 
-4. Deploy the certificate and private key to your server.  I recommend putting them in a folder "ssl" in your application's 
-
-directory.
+4. Deploy the certificate and private key to your server.  I recommend putting them in a folder "ssl" in your application's directory.
 
 5. Change any absolute routes in your application to relative routes, if necessary (you should always use relative routes)
 
@@ -128,7 +120,7 @@ def ssl_configured?
   #Rails.env.production?
   # or return the force_ssl configuration value
   #Rails.application.config.force_ssl
-end
+  end
 ```
 
 7. Start Thin with SSL.
