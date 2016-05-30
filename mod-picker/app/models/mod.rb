@@ -346,10 +346,10 @@ class Mod < ActiveRecord::Base
 
   private
     def decrement_counters
-      self.user.update_counter(:submitted_mods_count, -1)
+      self.user.update_counter(:submitted_mods_count, -1) if self.submitted_by.present?
     end
 
     def increment_counters
-      self.user.update_counter(:submitted_mods_count, 1)
+      self.user.update_counter(:submitted_mods_count, 1) if self.submitted_by.present?
     end
 end
