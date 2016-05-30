@@ -3,9 +3,11 @@
 ## CentOS 7x Deployment
 1. Set up non-root user
 
-```useradd admin
+```
+useradd admin
 passwd admin
-usermod -aG wheel admin```
+usermod -aG wheel admin
+```
 
 See [this article](https://access.redhat.com/documentation/en-
 
@@ -16,7 +18,8 @@ US/Red_Hat_Enterprise_Linux_OpenStack_Platform/2/html/Getting_Started_Guide/ch02
 
 3. Set up Windows X Desktop Environment and VNC
 
-```yum check-update
+```
+yum check-update
 yum groupinstall "X Window System"
 yum install gnome-classic-session gnome-terminal nautilus-open-terminal control-center liberation-mono-fonts
 unlink /etc/systemd/system/default.target
@@ -37,7 +40,8 @@ systemctl start vncserver@:1.service
 
 systemctl start firewalld.service
 firewall-cmd --permanent --add-service vnc-server
-systemctl restart firewalld.service```
+systemctl restart firewalld.service
+```
 
 See [this article](http://www.krizna.com/centos/install-vnc-server-centos-7/) for more information.
 
@@ -114,7 +118,8 @@ directory.
 
 6. Configure `app/controllers/application_controller.rb` to force_ssl if not in a development environment.
 
-```# Force application to use ssl if configured
+```
+# Force application to use ssl if configured
 force_ssl if: :ssl_configured?
 
 def ssl_configured?
@@ -123,7 +128,8 @@ def ssl_configured?
   #Rails.env.production?
   # or return the force_ssl configuration value
   #Rails.application.config.force_ssl
-end```
+end
+```
 
 7. Start Thin with SSL.
 `RAILS_ENV=production thin start -a <YourIP> -p 3000 --ssl --ssl-key-file ssl/<server>.key --ssl-cert-file ssl/<server>.crt`
