@@ -123,7 +123,14 @@ If you run into errors with building native extensions it usually happens becaus
           # or return the force_ssl configuration value
           #Rails.application.config.force_ssl
         end
+        
+7. Add iptables prerouting to redirect traffic on port 80/443 to port 3000.
 
-7. Start Thin with SSL.
+ `iptables -t nat -A PREROUTING -i eth0 -p tcp --dport 80 -j REDIRECT --to-port 3000`  
+ `iptables -t nat -A PREROUTING -i eth0 -p tcp --dport 443 -j REDIRECT --to-port 3000`
+
+  See [this article](http://www.cyberciti.biz/faq/linux-port-redirection-with-iptables/) for more information.
+
+8. Start Thin with SSL.
 
   `RAILS_ENV=production thin start -a <YourIP> -p 3000 --ssl --ssl-key-file ssl/<server>.key --ssl-cert-file ssl/<server>.crt`
