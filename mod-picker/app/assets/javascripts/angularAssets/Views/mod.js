@@ -29,7 +29,7 @@ app.config(['$stateProvider', function ($stateProvider) {
                 }
             },
             resolve: {
-                reviews: function($q, $stateParams, modId, modService) {
+                reviews: function($q, $stateParams, modId, modService, reviewSectionService) {
                   //only resolve if the data will be different than what is already in $scope
                   if (this.parent.lastReviewSort !== $stateParams.sort) {
                     this.parent.lastReviewSort = $stateParams.sort;
