@@ -148,6 +148,18 @@
                     <!--Image-->
                     <img ng-src="{{mod.image}}" class="mod-image"/>
 
+                    <!-- General -->
+                    <h3 class="section-title">General</h3>
+                    <div class="stat-block">
+                        <section>
+                            <dt class="stat-title">Date Released</dt>
+                            <dd class="stat-data">{{mod.released | date}}</dd>
+
+                            <dt class="stat-title">Date Updated</dt>
+                            <dd class="stat-data">{{mod.updated | date}}</dd>
+                        </section>
+                    </div>
+
                     <!--Sources-->
                     <h3 class="section-title">Sources</h3>
                     <section class="sources">
@@ -178,7 +190,7 @@
                             <div class="action-box">{{primaryCategory.name}}</div>
                             <div ng-show="mod.secondary_category_id" class="action-box">{{secondaryCategory.name}}</div>
                         </section>
-                        
+
                         <!--Tags-->
                         <h3 class="section-title">Tags</h3>
                         <section>
