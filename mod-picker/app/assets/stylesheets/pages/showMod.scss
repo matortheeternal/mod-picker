@@ -223,18 +223,27 @@
   display: inline-block;
 }
 
-.stat-block-title {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 6px;
-}
+.stat-block {
+  margin-top: 6px;
 
-.stat-block-title:hover {
-  cursor: pointer;
+  .stat-block-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 6px;
 
-  .stat-expander {
-    background-color: $bright_action_color;
+    &:hover {
+      cursor: pointer;
+
+      .stat-expander {
+        background-color: $bright_action_color;
+      }
+    }
+  }
+
+  section {
+    margin-top: 8px;
+    padding-bottom: 8px;
   }
 }
 
