@@ -26,24 +26,6 @@ def seed_fake_users
   require 'securerandom'
 
   puts "\nSeeding users"
-  # create an admin user
-  pw = SecureRandom.urlsafe_base64
-  User.create!(
-      username: "admin",
-      role: "admin",
-      title: "God",
-      joined: Time.now.to_date,
-      email: "admin@mail.com",
-      password: pw,
-      password_confirmation: pw,
-      sign_in_count: 1,
-      confirmed_at: Time.now.to_date,
-      current_sign_in_at: Time.now.to_date,
-      last_sign_in_at: Time.now.to_date,
-      current_sign_in_ip: Faker::Internet.public_ip_v4_address,
-      last_sign_in_ip: Faker::Internet.public_ip_v4_address
-  )
-  puts "    admin seeded with password: #{pw}"
 
   # generates random date between year 2000 and now.
   def time_rand(from = Time.new(2000), to = Time.now)
@@ -79,7 +61,7 @@ def seed_fake_mods
   # Helper vars
   nexusDateFormat = "%d/%m/%Y - %I:%M%p"
   gameSkyrim = Game.where({display_name: "Skyrim"}).first
-  adminUser = User.find_by(:username => 'admin')
+  adminUser = User.find_by(:role => "admin")
 
   # Top recently endorsed mods
   Mod.create(
@@ -130,6 +112,8 @@ def seed_fake_mods
       record_count: 7
     }]
   })
+  
+  Mod.last.update_lazy_counters
 
   Mod.create(
       name: "Immersive Armors",
