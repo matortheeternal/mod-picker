@@ -66,28 +66,38 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
                 break;
         }
 
-        // getting categories
-        categoryService.retrieveCategories().then(function (categories) {
-            $scope.primaryCategory = categoryService.getCategoryById(categories, mod.primary_category_id);
-            $scope.secondaryCategory = categoryService.getCategoryById(categories, mod.secondary_category_id);
+        if (mod.primary_category_id) {
+            // getting categories
+            categoryService.retrieveCategories().then(function (categories) {
+                $scope.primaryCategory = categoryService.getCategoryById(categories, mod.primary_category_id);
+                $scope.secondaryCategory = categoryService.getCategoryById(categories, mod.secondary_category_id);
 
-            // getting review sections
-            reviewSectionService.retrieveReviewSections().then(function (reviewSections) {
-                Array.prototype.push.apply($scope.allReviewSections, reviewSections);
-                var filteredSections = reviewSectionService.getSectionsForCategory(reviewSections, $scope.primaryCategory);
-                Array.prototype.push.apply($scope.reviewSections, filteredSections);
+                // getting review sections
+                reviewSectionService.retrieveReviewSections().then(function (reviewSections) {
+                    Array.prototype.push.apply($scope.allReviewSections, reviewSections);
+                    var filteredSections = reviewSectionService.getSectionsForCategory(reviewSections, $scope.primaryCategory);
+                    Array.prototype.push.apply($scope.reviewSections, filteredSections);
+                });
             });
-        });
+        }
 
         // getting games
         gameService.retrieveGames().then(function (data) {
             $scope.game = gameService.getGameById(data, mod.game_id);
         });
 
+        // only display analysis tab if mod doesn't have a primary category
+        if (!$scope.mod.primary_category_id) {
+            $scope.tabs = [{ name: 'Analysis', url: '/resources/partials/showMod/analysis.html' }];
+        }
         // remove Load Order tab if mod has no plugins
-        if ($scope.mod.plugins_count == 0) {
+        else if ($scope.mod.plugins_count == 0) {
             $scope.tabs.splice(3, 1);
         }
+
+        // initialize first tab
+        $scope.currentTab = $scope.tabs[0];
+        $scope.switchTab($scope.currentTab);
     });
 
     //get user titles
@@ -145,8 +155,6 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
     };
 
     // TAB RELATED LOGIC
-    $scope.currentTab = $scope.tabs[0];
-
     $scope.switchTab = function(targetTab) {
         switch (targetTab.name) {
             case 'Reviews':
@@ -307,9 +315,6 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
     };
 
     // REVIEW RELATED LOGIC
-    // retrieve reviews initially because they're the default tab currently
-    $scope.retrieveReviews();
-
     // instantiate a new review object
     $scope.startNewReview = function() {
         // set up activeReview object
