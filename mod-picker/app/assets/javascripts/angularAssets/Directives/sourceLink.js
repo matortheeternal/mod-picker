@@ -12,6 +12,5 @@ app.directive('sourceLink', function () {
 });
 
 app.controller('sourceLinkController', function ($scope, sitesFactory) {
-    var sites = sitesFactory.sites();
-    $scope.site = sitesFactory.getSite(sites, $scope.label);
+    $scope.site = sitesFactory.getSite($scope.label);
 });

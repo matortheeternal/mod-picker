@@ -3,7 +3,7 @@
         <div class="mod-header-color">
             <div class="page-container mod-header">
                 <section>
-                    <div class="quality-item action-box">
+                    <div class="quality-item action-box" ng-if="mod.primary_category_id">
                         <span class="quality-number">{{mod.reputation | number:0}}</span>
                         REPUTATION
                     </div>
@@ -17,9 +17,11 @@
                             <a ng-href="#/user/{{author.id}}">{{author.username}}</a>
                         </span>-->
                         <br>
-                        {{mod.reviews_count | number}} reviews
+                        <span ng-if="mod.primary_category_id">
+                            {{mod.reviews_count | number}} reviews
+                        </span>
                         <!-- TODO: add this with css :after content -->
-                        <span class="divider" ng-if="mod.aliases || permissions.canManage">
+                        <span class="divider" ng-if="mod.primary_category_id && (mod.aliases || permissions.canManage)">
                             |
                         </span>
 
@@ -53,7 +55,7 @@
                         </div>
                     </div>
 
-                    <div class="mod-header-box">
+                    <div class="mod-header-box" ng-if="mod.primary_category_id">
                         STATUS
                         <div class="action-box {{statusClass}} capitalize" ng-click="toggleStatusModal(true)">
                             {{mod.status}}
@@ -152,6 +154,7 @@
                         <source-link source="mod.nexus_infos" label="Nexus Mods" link="http://www.nexusmods.com/{{game.nexus_name}}/mods/{{mod.nexus_infos.id}}"></source-link>
                         <source-link source="mod.workshop_infos" label="Steam Workshop" link="http://steamcommunity.com/sharedfiles/filedetails/{{mod.workshop_infos.id}}"></source-link>
                         <source-link source="mod.lover_infos" label="Lover's Lab" link="http://www.loverslab.com/files/file/{{mod.lover_infos.id}}"></source-link>
+                        <source-link ng-repeat="source in mod.custom_sources" source="source" label="{{source.label}}" link="{{source.url}}"></source-link>
                     </section>
 
                     <!--Requirements-->
@@ -167,15 +170,18 @@
                         </ol>
                     </section>
 
-                    <!-- We hide categories and tags when viewing official content -->
-                    <div ng-if="mod && (mod.is_official === false)">
+                    <!-- We hide categories when viewing a mod with no primary category -->
+                    <div ng-if="mod.primary_category_id">
                         <!--Categories-->
                         <h3 class="section-title">Categories</h3>
                         <section>
                             <div class="action-box">{{primaryCategory.name}}</div>
                             <div ng-show="mod.secondary_category_id" class="action-box">{{secondaryCategory.name}}</div>
                         </section>
+                    </div>
 
+                    <!-- We hide tags when viewing official content -->
+                    <div ng-if="mod.is_official === false">
                         <!--Tags-->
                         <h3 class="section-title">Tags</h3>
                         <section>

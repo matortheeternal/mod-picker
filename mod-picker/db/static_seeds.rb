@@ -1747,6 +1747,8 @@ def seed_static_records
       authors: "Bethesda",
       is_official: true,
       game_id: gameSkyrim.id,
+      primary_category_id: catLocations.id,
+      secondary_category_id: catQuests.id,
       released: DateTime.new(2012, 8, 2),
       custom_sources_attributes: [{
           label: "Steam Store",
@@ -1762,6 +1764,8 @@ def seed_static_records
       authors: "Bethesda",
       is_official: true,
       game_id: gameSkyrim.id,
+      primary_category_id: catNewPlayerHomes.id,
+      secondary_category_id: catImmersionAndRolePlaying.id,
       released: DateTime.new(2012, 10, 4),
       custom_sources_attributes: [{
           label: "Steam Store",
@@ -1777,6 +1781,7 @@ def seed_static_records
       authors: "Bethesda",
       is_official: true,
       game_id: gameSkyrim.id,
+      primary_category_id: catNewLands.id,
       released: DateTime.new(2013, 2, 5),
       custom_sources_attributes: [{
           label: "Steam Store",
@@ -1792,6 +1797,7 @@ def seed_static_records
       authors: "Bethesda",
       is_official: true,
       game_id: gameSkyrim.id,
+      primary_category_id: catAudiovisual.id,
       released: DateTime.new(2012, 2, 7),
       custom_sources_attributes: [{
           label: "Steam Store",
