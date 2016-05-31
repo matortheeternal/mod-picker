@@ -14,7 +14,7 @@
     <dd class="stat-data" ng-if="plugin.masters">
         <span ng-if="plugin.masters.length == 0">-</span>
         <span class="stat-data-item" ng-repeat="master in plugin.masters">
-            {{master.filename}}<span ng-show="!$last">, </span>
+            {{master.master_plugin.filename}}<span ng-show="!$last">, </span>
         </span>
     </dd>
 </div>

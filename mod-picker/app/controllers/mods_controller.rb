@@ -194,7 +194,12 @@ class ModsController < ApplicationController
         plugins: @mod.plugins.as_json({
             :include => {
                 :masters => {
-                    :except => [:plugin_id]
+                    :except => [:plugin_id],
+                    :include => {
+                        :master_plugin => {
+                            :only => [:filename]
+                        }
+                    }
                 },
                 :dummy_masters => {
                     :except => [:plugin_id]
