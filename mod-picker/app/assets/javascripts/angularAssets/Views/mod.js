@@ -181,7 +181,7 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
         $scope.tabs = ['Analysis'];
     }
     // remove Load Order tab if mod has no plugins
-    else if ($scope.mod.plugins_count == 0) {
+    else if ($scope.mod.plugins_count === 0) {
         $scope.tabs.splice(3, 1);
     }
 
