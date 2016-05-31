@@ -137,7 +137,6 @@ class Mod < ActiveRecord::Base
   
   # users who can edit the mod
   has_many :mod_authors, :inverse_of => 'mod', :dependent => :destroy
-  has_many :authors, :through => 'mod_authors', :inverse_of => 'mods'
 
   # community feedback on the mod
   has_many :corrections, :as => 'correctable'
