@@ -18,7 +18,7 @@
                         </span>-->
                         <br>
                         <!-- TODO: reviews currently are on tab 1 -> should be dynamic anyway -> ui-router :D -->
-                        {{mod.reviews.length | number}} reviews
+                        {{mod.reviews_count | number}} reviews
                         <!-- TODO: add this with css :after content -->
                         <span class="divider" ng-if="mod.aliases || permissions.canManage">
                             |
@@ -186,10 +186,10 @@
 
                     <!--Categories-->
                     <!-- TODO: one line if for readability (even though I like the idea of this ;3 )-->
-                    <h3 class="section-title">Categor<span ng-hide="secondCategory">y</span><span ng-show="secondCategory">ies</span></h3>
+                    <h3 class="section-title">Categor<span ng-hide="mod.secondary_category">y</span><span ng-show="mod.secondary_category">ies</span></h3>
                     <section>
-                        <div ng-show="mod.primary_category_id" class="action-box">{{primaryCategory.name}}</div>
-                        <div ng-show="mod.secondary_category_id" class="action-box">{{secondaryCategory.name}}</div>
+                        <div ng-show="mod.primary_category_id" class="action-box">{{mod.primary_category.name}}</div>
+                        <div ng-show="mod.secondary_category_id" class="action-box">{{mod.secondary_category.name}}</div>
                     </section>
 
                     <!--Tags-->
@@ -233,8 +233,8 @@
 
                 </div>
                 <div class="right-column tabs-column">
-                    <tabs current-tab="currentTab" on-change="switchTab" tabs="tabs"></tabs>
-                    <div ng-include="currentTab.url" class="mod-tab"></div>
+                    <tabs tabs="['Reviews', 'Compatibility', 'Install Order', 'Load Order', 'Analysis']"></tabs>
+                        <div ui-view class="mod-tab"></div>
                 </div>
             </loader>
         </div>

@@ -13,7 +13,7 @@
     <div class="mod-tab-item primary-item">
         <strong>Sort By: </strong>
 
-        <select ng-model="sort.compatibility_notes" ng-init="sort.compatibility_notes = 'reputation'">
+        <select ng-model="compatibilitySort" ng-change="reSortCompatibility()">
             <option value="reputation">Reputation</option>
             <option value="severity">Severity</option>
             <option value="submitted">Date Submitted</option>
@@ -63,7 +63,7 @@
     </div>
 </div>
 
-<loader data="mod.compatibility_notes" content-class="" spinner-class="big-spinner">
+<state-loader spinner-class="big-spinner">
     <div ng-repeat="note in mod.compatibility_notes" class="content-block" ng-if="!note.editing">
         <compatibility-note note="note" mod-id="mod.id" show-author-column="true" index="100 + $index" user="user" edit="editCompatibilityNote"></compatibility-note>
     </div>
@@ -71,4 +71,4 @@
     <div class="no-content-message" ng-if="mod.compatibility_notes.length == 0">
         There are no Compatibility Notes for this mod yet.
     </div>
-</loader>
+</state-loader>
