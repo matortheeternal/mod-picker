@@ -118,7 +118,7 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
         }
 
         // set up helper variables
-        var author = $scope.mod.authors.find(function(author) {
+        var author = $scope.mod.author_users.find(function(author) {
             return author.id == $scope.user.id;
         });
         var rep = $scope.user.reputation.overall;
