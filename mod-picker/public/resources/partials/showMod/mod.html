@@ -170,14 +170,13 @@
                     </section>
 
                     <!--Requirements-->
-                    <h3 ng-if="currentVersion.required_mods.length" class="section-title">Requirements</h3>
-                    <section ng-if="currentVersion.required_mods.length">
+                    <h3 ng-if="mod.required_mods.length > 0" class="section-title">Requirements</h3>
+                    <section ng-if="mod.required_mods.length > 0">
                         <ol class="requirements-list">
-                            <li ng-repeat="requirement in requirements">
-                                <a ng-href="#/mod/{{requirement.id}}">
-                                    <strong>{{requirement.name}}</strong>
+                            <li ng-repeat="req in mod.required_mods">
+                                <a ng-href="#/mod/{{req.required_mod.id}}">
+                                    {{req.required_mod.name}}
                                 </a>
-                                <span ng-if="requirement.aliases">({{requirement.aliases}})</span>
                             </li>
                         </ol>
                     </section>

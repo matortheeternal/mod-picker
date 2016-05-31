@@ -233,7 +233,14 @@ def seed_fake_mods
       has_adult_content: false,
       game_id: gameSkyrim.id,
       submitted_by: adminUser.id,
-      released: DateTime.strptime("07/11/2015 - 08:41PM", nexusDateFormat)
+      released: DateTime.strptime("07/11/2015 - 08:41PM", nexusDateFormat),
+      required_mods_attributes: [{
+          required_id: Mod.find_by(name: "Dawnguard").id
+      }, {
+          required_id: Mod.find_by(name: "Hearthfire").id
+      }, {
+          required_id: Mod.find_by(name: "Dragonborn").id
+      }]
   )
 
   NexusInfo.create(
