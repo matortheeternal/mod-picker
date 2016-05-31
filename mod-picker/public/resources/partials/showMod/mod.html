@@ -155,8 +155,8 @@
                             <dt class="stat-title">Date Released</dt>
                             <dd class="stat-data">{{mod.released | date}}</dd>
 
-                            <dt class="stat-title">Date Updated</dt>
-                            <dd class="stat-data">{{mod.updated | date}}</dd>
+                            <dt class="stat-title" ng-if="mod.updated">Date Updated</dt>
+                            <dd class="stat-data" ng-if="mod.updated">{{mod.updated | date}}</dd>
                         </section>
                     </div>
 
