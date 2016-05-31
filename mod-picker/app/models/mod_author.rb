@@ -21,10 +21,10 @@ class ModAuthor < ActiveRecord::Base
 
   private
     def decrement_counters
-      self.user.update_counter(:authored_mods_count, -1)
+      self.author_user.update_counter(:authored_mods_count, -1)
     end
 
     def increment_counters
-      self.user.update_counter(:authored_mods_count, 1)
+      self.author_user.update_counter(:authored_mods_count, 1)
     end
 end
