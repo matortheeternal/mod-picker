@@ -1764,12 +1764,13 @@ def seed_static_records
       is_official: true,
       game_id: gameSkyrim.id,
       primary_category_id: catLocations.id,
-      secondary_category_id: catQuests.id,
+      secondary_category_id: catFactions.id,
       released: DateTime.new(2012, 8, 2),
       custom_sources_attributes: [{
           label: "Steam Store",
           url: "http://store.steampowered.com/app/211720/"
-      }]
+      }],
+      tag_names: ["Vampires", "Dawnguard", "Werewolves", "Soul Cairn", "Dragonbone"]
   )
   modDawnguard.save!
   # Create plugins
@@ -1787,7 +1788,8 @@ def seed_static_records
       custom_sources_attributes: [{
           label: "Steam Store",
           url: "http://store.steampowered.com/app/220760/"
-      }]
+      }],
+      tag_names: ["Building", "Family", "Marriage", "Adoption"]
   )
   modHearthfire.save!
   # Create plugins
@@ -1804,7 +1806,8 @@ def seed_static_records
       custom_sources_attributes: [{
           label: "Steam Store",
           url: "http://store.steampowered.com/app/211720/"
-      }]
+      }],
+      tag_names: ["Solstheim", "Apocrypha", "Hermaeus Mora", "Shouts", "Stahlrim", "Nordic", "Bonemold", "Chitin"]
   )
   modDragonborn.save!
   # Create plugins
@@ -1821,7 +1824,8 @@ def seed_static_records
       custom_sources_attributes: [{
           label: "Steam Store",
           url: "http://store.steampowered.com/app/202485/"
-      }]
+      }],
+      tag_names: ["1K", "Armor", "Weapons", "Architecture", "Actors", "Dungeons", "Terrain", "Clutter"]
   )
   modHighRes.save!
   # Create plugins
