@@ -1787,6 +1787,23 @@ def seed_static_records
   # Create plugins
   create_plugin(modDragonborn, "Dawnguard.esm.json")
 
+  modHighRes = Mod.create(
+      name: "High Resolution Texture Pack",
+      authors: "Bethesda",
+      is_official: true,
+      game_id: gameSkyrim.id,
+      released: DateTime.new(2012, 2, 7),
+      custom_sources_attributes: [{
+          label: "Steam Store",
+          url: "http://store.steampowered.com/app/202485/"
+      }]
+  )
+  modHighRes.save!
+  # Create plugins
+  create_plugin(modHighRes, "HighResTexturePack01.esp.json")
+  create_plugin(modHighRes, "HighResTexturePack02.esp.json")
+  create_plugin(modHighRes, "HighResTexturePack03.esp.json")
+
   puts "    #{Mod.count} official mods seeded"
   puts "    #{Plugin.count} official plugins seeded"
 end
