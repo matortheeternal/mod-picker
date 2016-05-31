@@ -33,7 +33,7 @@ app.controller('submitModController', function ($scope, backend, submitService, 
     };
 
     $scope.validateSource = function(source) {
-        var site = sitesFactory.getSite($scope.sites, source.label);
+        var site = sitesFactory.getSite(source.label);
         var sourceIndex = $scope.sources.indexOf(source);
         var sourceUsed = $scope.sources.find(function(item, index) {
             return index != sourceIndex && item.label === source.label
@@ -44,7 +44,7 @@ app.controller('submitModController', function ($scope, backend, submitService, 
 
     $scope.scrapeSource = function(source) {
         // exit if the source is invalid
-        var site = sitesFactory.getSite($scope.sites, source.label);
+        var site = sitesFactory.getSite(source.label);
         var match = source.url.match(site.modUrlFormat);
         if (!match) {
             return;

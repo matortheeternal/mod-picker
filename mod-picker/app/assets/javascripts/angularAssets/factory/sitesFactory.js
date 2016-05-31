@@ -31,14 +31,29 @@ app.service('sitesFactory', function () {
                 userUrlFormat: /(http[s]:\/\/?)?www.loverslab.com\/index.php\?\/user\/([A-Za-z0-9\-]+)(\/)?/i,
                 userIndex: 2,
                 loginUrl: "https://www.loverslab.com/",
-                logoPath: "/assets/lab_logo",
+                logoPath: "/assets/lab_logo"
+            },
+            {
+                hidden: true,
+                label: "Steam Store",
+                shortLabel: "Steam",
+                logoPath: "/assets/workshop_logo"
             }
         ];
     };
 
-    this.getSite = function(sites, label) {
+    this.customSite = function() {
+        return {
+            label: "",
+            shortLabel: "Custom",
+            logoPath: "/assets/custom_logo"
+        };
+    };
+
+    this.getSite = function(label) {
+        var sites = this.sites();
         return sites.find(function(site) {
             return site.label === label;
-        });
+        }) || this.customSite();
     };
 });
