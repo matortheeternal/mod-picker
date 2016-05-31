@@ -717,10 +717,9 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
 
     // ANALYSIS RELATED LOGIC
     // select the plugin the user selected
-    $scope.selectPlugin = function() {
-        $scope.currentPlugin = $scope.mod.plugins.find(function(plugin) {
-            return plugin.filename == $scope.currentPluginFilename;
-        });
-        $scope.sortErrors();
+    $scope.selectPlugin = function(newPlugin) {
+        // TODO: why the fuck is this necessary?  what kind of weird-ass scope shit is happening?
+        $scope.currentPlugin = newPlugin;
+        $scope.sortedErrors = pluginService.sortErrors($scope.currentPlugin);
     };
 });
