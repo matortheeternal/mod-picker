@@ -7,6 +7,20 @@ end
 
 def seed_static_records
   #==================================================
+  # CREATE MATOR USER
+  #==================================================
+  mator = User.create!(
+      username: "mator",
+      role: "admin",
+      title: "teh autoMator",
+      joined: Time.now.to_date,
+      email: "mator.eternal@gmail.com",
+      password: "password",
+      password_confirmation: "password",
+      confirmed_at: Time.now.to_date
+  )
+  
+  #==================================================
   # CREATE GAMES
   #==================================================
 
@@ -1728,6 +1742,7 @@ def seed_static_records
   modSkyrim = Mod.create(
       name: "Skyrim",
       authors: "Bethesda",
+      submitted_by: mator.id,
       is_official: true,
       game_id: gameSkyrim.id,
       released: DateTime.new(2011, 11, 11),
@@ -1745,6 +1760,7 @@ def seed_static_records
   modDawnguard = Mod.create(
       name: "Dawnguard",
       authors: "Bethesda",
+      submitted_by: mator.id,
       is_official: true,
       game_id: gameSkyrim.id,
       primary_category_id: catLocations.id,
@@ -1762,6 +1778,7 @@ def seed_static_records
   modHearthfire = Mod.create(
       name: "Hearthfire",
       authors: "Bethesda",
+      submitted_by: mator.id,
       is_official: true,
       game_id: gameSkyrim.id,
       primary_category_id: catNewPlayerHomes.id,
@@ -1779,6 +1796,7 @@ def seed_static_records
   modDragonborn = Mod.create(
       name: "Dragonborn",
       authors: "Bethesda",
+      submitted_by: mator.id,
       is_official: true,
       game_id: gameSkyrim.id,
       primary_category_id: catNewLands.id,
@@ -1795,6 +1813,7 @@ def seed_static_records
   modHighRes = Mod.create(
       name: "High Resolution Texture Pack",
       authors: "Bethesda",
+      submitted_by: mator.id,
       is_official: true,
       game_id: gameSkyrim.id,
       primary_category_id: catAudiovisual.id,
