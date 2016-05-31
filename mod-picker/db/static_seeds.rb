@@ -1,3 +1,10 @@
+def create_plugin(mod, dump_filename)
+  file = File.read(Rails.root.join("db", "dumps", dump_filename))
+  hash = JSON.parse(file).with_indifferent_access
+  hash[:game_id] = mod.game_id
+  mod.plugins.create(hash).save!
+end
+
 def seed_static_records
   #==================================================
   # CREATE GAMES
@@ -1710,4 +1717,60 @@ def seed_static_records
   )
 
   puts "    #{RecordGroup.count} record groups seeded"
+
+
+  #==================================================
+  # CREATE OFFICIAL CONTENT
+  #==================================================
+
+  puts "\nSeeding official content"
+
+  modSkyrim = Mod.create(
+      name: "Skyrim",
+      authors: "Bethesda",
+      is_official: true,
+      game_id: gameSkyrim.id,
+      released: DateTime.new(2011, 11, 11),
+      updated: DateTime.new(2013, 3, 20)
+  )
+  modSkyrim.save!
+  # Create plugins
+  create_plugin(modSkyrim, "Skyrim.esm.json")
+  create_plugin(modSkyrim, "Update.esm.json")
+
+  modDawnguard = Mod.create(
+      name: "Dawnguard",
+      authors: "Bethesda",
+      is_official: true,
+      game_id: gameSkyrim.id,
+      released: DateTime.new(2012, 8, 2)
+  )
+  modDawnguard.save!
+  # Create plugins
+  create_plugin(modDawnguard, "Dawnguard.esm.json")
+
+  modHearthfire = Mod.create(
+      name: "Hearthfire",
+      authors: "Bethesda",
+      is_official: true,
+      game_id: gameSkyrim.id,
+      released: DateTime.new(2012, 10, 4),
+  )
+  modHearthfire.save!
+  # Create plugins
+  create_plugin(modHearthfire, "HearthFires.esm.json")
+
+  modDragonborn = Mod.create(
+      name: "Dragonborn",
+      authors: "Bethesda",
+      is_official: true,
+      game_id: gameSkyrim.id,
+      released: DateTime.new(2013, 2, 5)
+  )
+  modDragonborn.save!
+  # Create plugins
+  create_plugin(modDragonborn, "Dawnguard.esm.json")
+
+  puts "    #{Mod.count} official mods seeded"
+  puts "    #{Plugin.count} official plugins seeded"
 end

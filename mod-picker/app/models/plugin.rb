@@ -40,28 +40,25 @@ class Plugin < ActiveRecord::Base
   validates :crc_hash, length: {in: 1..8}
 
   # callbacks
-  after_create :create_associations
+  after_create :create_associations, :update_lazy_counters
   before_destroy :delete_associations
 
   def update_lazy_counters
     self.errors_count = self.plugin_errors.count
   end
 
-  def create_masters
-    @master_plugins.each_with_index do |master, index|
-      master_plugin = Plugin.find_by(filename: master[:filename], crc_hash: master[:crc_hash])
-      master_plugin = Plugin.find_by(filename: master[:filename]) if master_plugin.nil?
-      if master_plugin.nil?
-        self.dummy_masters.create(filename: master[:filename], index: index)
-      else
-        self.masters.create(master_plugin_id: master_plugin.id, index: index)
+  def create_associations
+    if @master_plugins
+      @master_plugins.each_with_index do |master, index|
+        master_plugin = Plugin.find_by(filename: master[:filename], crc_hash: master[:crc_hash])
+        master_plugin = Plugin.find_by(filename: master[:filename]) if master_plugin.nil?
+        if master_plugin.nil?
+          self.dummy_masters.create(filename: master[:filename], index: index)
+        else
+          self.masters.create(master_plugin_id: master_plugin.id, index: index)
+        end
       end
     end
-  end
-
-  def create_associations
-    self.create_masters
-    self.save!
   end
 
   def delete_associations

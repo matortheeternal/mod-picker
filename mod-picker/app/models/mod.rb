@@ -17,6 +17,7 @@ class Mod < ActiveRecord::Base
   scope :released, -> (range) { where(released: parseDate(range[:min])..parseDate(range[:max])) }
   scope :updated, -> (range) { where(updated: parseDate(range[:min])..parseDate(range[:max])) }
   scope :adult, -> (bool) { where(has_adult_content: bool) }
+  scope :official, -> (bool) { where(is_official: bool) }
   scope :utility, -> (bool) { where(is_utility: bool) }
   scope :categories, -> (categories) { where("primary_category_id IN (?) OR secondary_category_id IN (?)", categories, categories) }
   scope :tags, -> (array) { joins(:tags).where(:tags => {text: array}) }
@@ -136,7 +137,6 @@ class Mod < ActiveRecord::Base
   
   # users who can edit the mod
   has_many :mod_authors, :inverse_of => 'mod', :dependent => :destroy
-  has_many :authors, :through => 'mod_authors', :inverse_of => 'mods'
 
   # community feedback on the mod
   has_many :corrections, :as => 'correctable'
@@ -169,7 +169,7 @@ class Mod < ActiveRecord::Base
   self.per_page = 100
 
   # Validations
-  validates :name, :status, :game_id, :primary_category_id, presence: true
+  validates :name, :game_id, :released, presence: true
   validates :name, :aliases, length: {maximum: 128}
 
   # callbacks
@@ -355,10 +355,10 @@ class Mod < ActiveRecord::Base
 
   private
     def decrement_counters
-      self.user.update_counter(:submitted_mods_count, -1)
+      self.user.update_counter(:submitted_mods_count, -1) if self.submitted_by.present?
     end
 
     def increment_counters
-      self.user.update_counter(:submitted_mods_count, 1)
+      self.user.update_counter(:submitted_mods_count, 1) if self.submitted_by.present?
     end
 end
