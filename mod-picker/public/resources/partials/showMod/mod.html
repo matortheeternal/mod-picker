@@ -215,6 +215,17 @@
                         </section>
                     </div>
 
+                    <!--Site Stats-->
+                    <stat-expander info="mod.nexus_infos" expanded="nexusExpanded" label="Nexus Mods">
+                        <nexus-stats></nexus-stats>
+                    </stat-expander>
+                    <stat-expander info="mod.workshop_infos" expanded="workshopExpanded" label="Steam Workshop">
+                        <workshop-stats></workshop-stats>
+                    </stat-expander>
+                    <stat-expander info="mod.lover_infos" expanded="labExpanded" label="Lover's Lab">
+                        <lab-stats></lab-stats>
+                    </stat-expander>
+
                 </div>
                 <div class="right-column tabs-column">
                     <tabs current-tab="currentTab" on-change="switchTab" tabs="tabs"></tabs>
