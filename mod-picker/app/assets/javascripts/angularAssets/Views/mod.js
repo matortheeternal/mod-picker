@@ -255,7 +255,7 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
     $scope.starMod = function() {
         modService.starMod($scope.mod.id, $scope.modStarred).then(function(data) {
             if (data.status == 'ok') {
-                $scope.modStarred = $scope.modStarred ? false : true;
+                $scope.modStarred = !$scope.modStarred;
             }
         });
     };
