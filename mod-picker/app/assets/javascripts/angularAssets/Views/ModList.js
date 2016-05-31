@@ -3,11 +3,35 @@
  */
 app.config(['$stateProvider', function ($stateProvider) {
     $stateProvider.state('modlist', {
-            templateUrl: '/resources/partials/modlist_template.html',
-            controller: 'modlistController',
-            url: '/modlist/:modListId'
-        }
-    );
+        templateUrl: '/resources/partials/modList/modlist_template.html',
+        controller: 'modlistController',
+        url: '/modlist/:modListId',
+        redirectTo: 'modlist.Details'
+    }).state('modlist.Details', {
+        templateUrl: '/resources/partials/modList/details.html',
+        controller: 'modlistDetailsController',
+        url: '/details'
+    }).state('modlist.Tools', {
+        templateUrl: '/resources/partials/modList/tools.html',
+        controller: 'modlistToolsController',
+        url: '/tools'
+    }).state('modlist.Mods', {
+        templateUrl: '/resources/partials/modList/mods.html',
+        controller: 'modlistModsController',
+        url: '/mods'
+    }).state('modlist.Plugins', {
+        templateUrl: '/resources/partials/modList/plugins.html',
+        controller: 'modlistPluginsController',
+        url: '/plugins'
+    }).state('modlist.Config', {
+        templateUrl: '/resources/partials/modList/config.html',
+        controller: 'modlistConfigController',
+        url: '/config'
+    }).state('modlist.Comments', {
+        templateUrl: '/resources/partials/modList/comments.html',
+        controller: 'modlistCommentsController',
+        url: '/comments'
+    })
 }]);
 
 app.controller('modlistController', function($scope, $log, $stateParams, modListService) {
@@ -30,7 +54,14 @@ app.controller('modlistController', function($scope, $log, $stateParams, modList
 	$scope.curPluginSecTab = 'list';
 	$scope.curSkyConfigTab = 'skyrim.ini';
 	$scope.curENBConfigTab = 'enblocal.ini';
-
+    $scope.tabs = [
+        {name: 'Details'},
+        {name: 'Tools'},
+        {name: 'Mods'},
+        {name: 'Plugins'},
+        {name: 'Config'},
+        {name: 'Comments'}
+    ];
     $scope.statusIcons = [
                             {name: 'fa-pencil-square-o'}, //planned
                             {name: 'fa-wrench'}, //under construction
@@ -100,12 +131,14 @@ app.controller('modlistController', function($scope, $log, $stateParams, modList
     };
 
     $scope.isEditing = function(cond) {
-        if ($scope.bIsEditing == true && cond == true && $scope.hasPermissions())
+        if ($scope.bIsEditing == true && cond == true && $scope.hasPermissions()) {
             return true;
+        }
         else if ($scope.bIsEditing == false && cond == false) {
             return true;
         } 
-        else
+        else {
             return false;
+        }
     };
 });

@@ -1,0 +1,85 @@
+<loader data="modlist" spinner-class="big-spinner">
+</loader>
+<div title="modlist-header">
+    <div class="modlist-header-color">
+        <div class="page-container mod-header">
+            <section>
+                <div class="mod-info">
+                    <span class="mod-name">{{modlist.name}}</span>
+                    <br>
+                    <span class="modlist-authors-container">by 
+                        <span class="mod-authors">{{modlist.created_by}}</span>
+                    </span>
+                </div>
+            </section>
+
+            <section>
+                <div class="mod-header-box">
+                    <!-- TODO: I feel like using some spans here would be wiser -->
+                    ACTIONS
+                    <div class="action-box" ng-click="starMod()">
+                        <i class="fa {{modlistStarred ? 'fa-star' : 'fa-star-o'}}" aria-hidden="true"></i>
+                        {{modlistStarred ? 'Unfavorite' : 'Favorite'}}
+                    </div>
+                    <div class="action-box">
+                        <i class="fa fa-plus" aria-hidden="true"></i>
+                        Dupicate Modlist
+                    </div>
+                </div>
+                <div class="mod-header-box">
+                    STATUS
+                    <div class="action-box {{mlStatusClass}}">
+                         <i class="fa {{curStatusIcon.name}}" aria-hidden="true"></i>
+                        {{modlist.status}}
+                    </div>
+                    <div class="action-box {{mlVisibilityClass}}" ng-if="hasPermissions()">
+                        <i class="fa fa-eye-slash" aria-hidden="true"></i>
+                        {{modlist.hidden}}
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+    <div class="modlist-header-color-2">
+        <div class="page-container modlist-header-title">
+            <section>
+              <div class="modlist-header-box">
+                CONTENTS  
+                    <div class="action-box">
+                        999
+                        Tools
+                    </div>
+                    <div class="action-box">
+                        999
+                        Mods
+                    </div>
+                    <div class="action-box">
+                        999
+                        Plugins
+                    </div>
+                    <div class="action-box">
+                        999
+                        BSAs
+                    </div>
+                </div>
+            </section>
+            <section>
+            <div class="modlist-header-box">
+            TAGS
+                <div class="action-box">
+                   <span class="add-tag">
+                        <i class="fa fa-plus"></i>
+                        Add A Tag
+                    </span>
+                </div>
+            </div>
+            </section>
+        </div>
+    </div>
+</div>
+<div class="page-container mod-tab">
+    <tabs tabs='tabs'>
+    </tabs>
+    <div ui-view class="modlist-tab-items"></div>
+    <div style='height: 500px'></div>
+</div>
