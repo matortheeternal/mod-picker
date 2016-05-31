@@ -11,13 +11,12 @@
                     <div class="mod-info">
                         <span class="mod-name">{{mod.name}}</span>
                         <span class="mod-authors-container">by
-                            <span class="mod-authors">{{mod.nexus_infos.authors}}</span>
+                            <span class="mod-authors">{{mod.authors}}</span>
                         </span>
                         <!--<span ng-repeat="author in mod.authors">
                             <a ng-href="#/user/{{author.id}}">{{author.username}}</a>
                         </span>-->
                         <br>
-                        <!-- TODO: reviews currently are on tab 1 -> should be dynamic anyway -> ui-router :D -->
                         {{mod.reviews_count | number}} reviews
                         <!-- TODO: add this with css :after content -->
                         <span class="divider" ng-if="mod.aliases || permissions.canManage">
@@ -150,25 +149,9 @@
                     <!--Sources-->
                     <h3 class="section-title">Sources</h3>
                     <section class="sources">
-                        <!-- TODO: I feel like this redundancy here can be killed with a directive -->
-                        <a ng-if="mod.nexus_infos" ng-href="http://www.nexusmods.com/{{game.nexus_name}}/mods/{{mod.nexus_infos.id}}">
-                            <div class="action-box source-box">
-                                <img src="/assets/nexus_logo" class="source-image"/>
-                                <span class="source-label">Nexus</span>
-                            </div>
-                        </a>
-                        <a ng-if="mod.workshop_infos" ng-href="http://steamcommunity.com/sharedfiles/filedetails/{{mod.workshop_infos.id}}">
-                            <div class="action-box source-box">
-                                <img src="/assets/workshop_logo" class="source-image" />
-                                <span class="source-label">Steam</span>
-                            </div>
-                        </a>
-                        <a ng-if="mod.lover_infos" ng-href="http://www.loverslab.com/files/file/{{mod.lover_infos.id}}">
-                            <div class="action-box source-box">
-                                <img src="/assets/lab_logo" class="source-image" />
-                                <span class="source-label">Lab</span>
-                            </div>
-                        </a>
+                        <source-link source="mod.nexus_infos" label="Nexus Mods" link="http://www.nexusmods.com/{{game.nexus_name}}/mods/{{mod.nexus_infos.id}}"></source-link>
+                        <source-link source="mod.workshop_infos" label="Steam Workshop" link="http://steamcommunity.com/sharedfiles/filedetails/{{mod.workshop_infos.id}}"></source-link>
+                        <source-link source="mod.lover_infos" label="Lover's Lab" link="http://www.loverslab.com/files/file/{{mod.lover_infos.id}}"></source-link>
                     </section>
 
                     <!--Requirements-->
@@ -184,52 +167,32 @@
                         </ol>
                     </section>
 
-                    <!--Categories-->
-                    <!-- TODO: one line if for readability (even though I like the idea of this ;3 )-->
-                    <h3 class="section-title">Categor<span ng-hide="mod.secondary_category">y</span><span ng-show="mod.secondary_category">ies</span></h3>
-                    <section>
-                        <div ng-show="mod.primary_category_id" class="action-box">{{mod.primary_category.name}}</div>
-                        <div ng-show="mod.secondary_category_id" class="action-box">{{mod.secondary_category.name}}</div>
-                    </section>
+                    <!-- We hide categories and tags when viewing official content -->
+                    <div ng-if="mod && (mod.is_official === false)">
+                        <!--Categories-->
+                        <h3 class="section-title">Categories</h3>
+                        <section>
+                            <div class="action-box">{{primaryCategory.name}}</div>
+                            <div ng-show="mod.secondary_category_id" class="action-box">{{secondaryCategory.name}}</div>
+                        </section>
 
-                    <!--Tags-->
-                    <h3 class="section-title">Tags</h3>
-                    <section>
-                        <tag-selector active-tags="mod.tags" new-tags="newTags" max-tags="10" show-mods-count="true" show-add="true" can-create="permissions.canCreateTags" show-remove="permissions.canManage" save-callback="saveTags"></tag-selector>
-                    </section>
+                        <!--Tags-->
+                        <h3 class="section-title">Tags</h3>
+                        <section>
+                            <tag-selector active-tags="mod.tags" new-tags="newTags" max-tags="10" show-mods-count="true" show-add="true" can-create="permissions.canCreateTags" show-remove="permissions.canManage" save-callback="saveTags"></tag-selector>
+                        </section>
+                    </div>
 
                     <!--Site Stats-->
-                    <!-- TODO: kill redundancy-->
-                    <div class="stat-block" ng-if="mod.nexus_infos && mod.nexus_infos.has_stats">
-                        <div class="stat-block-title" ng-click="nexusExpanded = !nexusExpanded">
-                           <h3 class="section-title">Nexus Mods stats</h3>
-                           <i class="fa fa-plus stat-expander" aria-hidden="true" ng-hide="nexusExpanded"></i>
-                           <i class="fa fa-minus stat-expander" aria-hidden="true" ng-show="nexusExpanded"></i>
-                        </div>
-                        <section ng-show="nexusExpanded">
-                            <nexus-stats></nexus-stats>
-                        </section>
-                    </div>
-                    <div class="stat-block" ng-if="mod.workshop_infos && mod.workshop_infos.has_stats">
-                        <div class="stat-block-title" ng-click="workshopExpanded = !workshopExpanded">
-                           <h3 class="section-title">Steam Workshop stats</h3>
-                           <i class="fa fa-plus stat-expander" aria-hidden="true" ng-hide="workshopExpanded"></i>
-                           <i class="fa fa-minus stat-expander" aria-hidden="true" ng-show="workshopExpanded"></i>
-                        </div>
-                        <section ng-show="workshopExpanded">
-                            <workshop-stats></workshop-stats>
-                        </section>
-                    </div>
-                    <div class="stat-block" ng-if="mod.lover_infos && mod.lover_infos.has_stats">
-                        <div class="stat-block-title" ng-click="labExpanded = !labExpanded">
-                           <h3 class="section-title">Lover's Lab stats</h3>
-                           <i class="fa fa-plus stat-expander" aria-hidden="true" ng-hide="labExpanded"></i>
-                           <i class="fa fa-minus stat-expander" aria-hidden="true" ng-show="labExpanded"></i>
-                        </div>
-                        <section ng-show="labExpanded">
-                            <lab-stats></lab-stats>
-                        </section>
-                    </div>
+                    <stat-expander info="mod.nexus_infos" expanded="nexusExpanded" label="Nexus Mods">
+                        <nexus-stats></nexus-stats>
+                    </stat-expander>
+                    <stat-expander info="mod.workshop_infos" expanded="workshopExpanded" label="Steam Workshop">
+                        <workshop-stats></workshop-stats>
+                    </stat-expander>
+                    <stat-expander info="mod.lover_infos" expanded="labExpanded" label="Lover's Lab">
+                        <lab-stats></lab-stats>
+                    </stat-expander>
 
                 </div>
                 <div class="right-column tabs-column">
