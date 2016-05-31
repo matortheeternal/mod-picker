@@ -9,8 +9,8 @@ bSeedCNotes = true
 bSeedINotes = true
 bSeedLNotes = false
 bSeedModAuthors = false
-bSeedMods = false
-bSeedModLists = false
+bSeedMods = true
+bSeedModLists = true
 bSeedTags = false
 
 #==================================================
