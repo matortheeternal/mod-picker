@@ -1,4 +1,4 @@
-app.service('modService', function(backend, $q, helpfulMarkService, userTitleService, categoryService, reviewSectionService, recordGroupService, assetUtils) {
+app.service('modService', function(backend, $q, helpfulMarkService, userTitleService, categoryService, recordGroupService, assetUtils, errorsFactory) {
     this.retrieveMod = function(modId) {
       output = $q.defer();
       backend.retrieve('/mods/' + modId).then(function(modObject) {
