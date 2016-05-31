@@ -737,5 +737,5 @@ app.controller('modLoadOrderController', function ($scope, loadOrderNotes, $stat
 app.controller('modAnalysisController', function ($scope, analysis) {
     $scope.mod.plugins = analysis.plugins;
     $scope.mod.assets = analysis.assets;
-    $scope.currentPlugin = analysis.plugins[0];
+    $scope.mod.currentPlugin = analysis.plugins[0];
 });
