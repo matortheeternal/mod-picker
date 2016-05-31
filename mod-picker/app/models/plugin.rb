@@ -77,7 +77,12 @@ class Plugin < ActiveRecord::Base
       default_options = {
           :include => {
               :masters => {
-                  :except => [:plugin_id]
+                  :except => [:plugin_id],
+                  :include => {
+                      :master_plugin => {
+                          :only => [:mod_id, :filename]
+                      }
+                  }
               },
               :dummy_masters => {
                   :except => [:plugin_id]

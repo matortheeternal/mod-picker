@@ -148,6 +148,18 @@
                     <!--Image-->
                     <img ng-src="{{mod.image}}" class="mod-image"/>
 
+                    <!-- General -->
+                    <h3 class="section-title">General</h3>
+                    <div class="stat-block">
+                        <section>
+                            <dt class="stat-title">Date Released</dt>
+                            <dd class="stat-data">{{mod.released | date}}</dd>
+
+                            <dt class="stat-title" ng-if="mod.updated">Date Updated</dt>
+                            <dd class="stat-data" ng-if="mod.updated">{{mod.updated | date}}</dd>
+                        </section>
+                    </div>
+
                     <!--Sources-->
                     <h3 class="section-title">Sources</h3>
                     <section class="sources">
@@ -170,7 +182,7 @@
                         </ol>
                     </section>
 
-                    <!-- We hide categories when viewing a mod with no primary category -->
+                    <!-- We hide categories and tags when viewing a mod with no primary category -->
                     <div ng-if="mod.primary_category_id">
                         <!--Categories-->
                         <h3 class="section-title">Categories</h3>
@@ -178,10 +190,7 @@
                             <div class="action-box">{{mod.primary_category.name}}</div>
                             <div ng-show="mod.secondary_category_id" class="action-box">{{mod.secondary_category.name}}</div>
                         </section>
-                    </div>
 
-                    <!-- We hide tags when viewing official content -->
-                    <div ng-if="mod.is_official === false">
                         <!--Tags-->
                         <h3 class="section-title">Tags</h3>
                         <section>
