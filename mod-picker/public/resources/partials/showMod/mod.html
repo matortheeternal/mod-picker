@@ -170,7 +170,7 @@
                         </ol>
                     </section>
 
-                    <!-- We hide categories when viewing a mod with no primary category -->
+                    <!-- We hide categories and tags when viewing a mod with no primary category -->
                     <div ng-if="mod.primary_category_id">
                         <!--Categories-->
                         <h3 class="section-title">Categories</h3>
@@ -178,10 +178,7 @@
                             <div class="action-box">{{primaryCategory.name}}</div>
                             <div ng-show="mod.secondary_category_id" class="action-box">{{secondaryCategory.name}}</div>
                         </section>
-                    </div>
-
-                    <!-- We hide tags when viewing official content -->
-                    <div ng-if="mod.is_official === false">
+                        
                         <!--Tags-->
                         <h3 class="section-title">Tags</h3>
                         <section>
