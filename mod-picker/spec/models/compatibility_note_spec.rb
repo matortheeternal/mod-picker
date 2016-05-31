@@ -147,31 +147,31 @@ RSpec.describe CompatibilityNote, :model do
   end
 
   context "counter_caches" do
-    describe "incorrect_notes_count" do
+    describe "corrections_count" do
       # Reusable compatibilitiy note object from fixtures
       let(:note) {compatibility_notes(:incompatibleNote)}
 
-      it "should increment by 1 when creating an incorrect_note" do
+      it "should increment by 1 when creating an correction" do
         expect { 
-          inote = note.incorrect_notes.create(
+          inote = note.corrections.create(
             text_body: Faker::Lorem.sentence(20, false, 20),
             correctable_type: "CompatibilityNote",
             correctable_id: note.id)
 
 
-        }.to change { note.incorrect_notes.count }.by(1)
+        }.to change { note.corrections.count }.by(1)
       end
 
-      it "should decrement by 1 when deleting an incorrect_note" do
-        inote = note.incorrect_notes.create(
+      it "should decrement by 1 when deleting an correction" do
+        inote = note.corrections.create(
             text_body: Faker::Lorem.sentence(20, false, 20),
             correctable_type: "CompatibilityNote",
             correctable_id: note.id)
 
         expect { 
-          note.incorrect_notes.destroy(inote.id)
+          note.corrections.destroy(inote.id)
 
-        }.to change { note.incorrect_notes.count }.by(-1)
+        }.to change { note.corrections.count }.by(-1)
       end
     end
   end

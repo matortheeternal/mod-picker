@@ -15,7 +15,7 @@ class User < ActiveRecord::Base
   scope :cnotes, -> (low, high) { where(compatibility_notes_count: (low..high)) }
   scope :inotes, -> (low, high) { where(installation_notes_count: (low..high)) }
   scope :reviews, -> (low, high) { where(reviews_count: (low..high)) }
-  scope :nnotes, -> (low, high) { where(incorrect_notes_count: (low..high)) }
+  scope :nnotes, -> (low, high) { where(corrections_count: (low..high)) }
   scope :comments, -> (low, high) { where(comments_count: (low..high)) }
   scope :mod_lists, -> (low, high) { where(mod_lists_count: (low..high)) }
 
@@ -31,7 +31,7 @@ class User < ActiveRecord::Base
   has_many :load_order_notes, :foreign_key => 'submitted_by', :inverse_of => 'user'
   has_many :compatibility_notes, :foreign_key => 'submitted_by', :inverse_of => 'user'
   has_many :reviews, :foreign_key => 'submitted_by', :inverse_of => 'user'
-  has_many :incorrect_notes, :foreign_key => 'submitted_by', :inverse_of => 'user'
+  has_many :corrections, :foreign_key => 'submitted_by', :inverse_of => 'user'
   has_many :agreement_marks, :foreign_key => 'submitted_by', :inverse_of => 'user'
   has_many :helpful_marks, :foreign_key => 'submitted_by', :inverse_of => 'user'
 
@@ -44,7 +44,7 @@ class User < ActiveRecord::Base
   has_many :submitted_mods, :class_name => 'Mod', :foreign_key => 'submitted_by', :inverse_of => 'user'
 
   has_many :mod_authors, :inverse_of => 'user'
-  has_many :mods, :through => 'mod_authors', :inverse_of => 'authors'
+  has_many :mods, :through => 'mod_authors', :inverse_of => 'author_users'
   has_many :mod_lists, :foreign_key => 'created_by', :inverse_of => 'user'
 
   belongs_to :active_mod_list, :class_name => 'ModList', :foreign_key => 'active_mod_list_id'

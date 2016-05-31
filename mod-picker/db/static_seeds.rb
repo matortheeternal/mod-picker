@@ -1,4 +1,25 @@
+def create_plugin(mod, dump_filename)
+  file = File.read(Rails.root.join("db", "dumps", dump_filename))
+  hash = JSON.parse(file).with_indifferent_access
+  hash[:game_id] = mod.game_id
+  mod.plugins.create(hash).save!
+end
+
 def seed_static_records
+  #==================================================
+  # CREATE MATOR USER
+  #==================================================
+  mator = User.create!(
+      username: "mator",
+      role: "admin",
+      title: "teh autoMator",
+      joined: Time.now.to_date,
+      email: "mator.eternal@gmail.com",
+      password: "password",
+      password_confirmation: "password",
+      confirmed_at: Time.now.to_date
+  )
+  
   #==================================================
   # CREATE GAMES
   #==================================================
@@ -1710,4 +1731,108 @@ def seed_static_records
   )
 
   puts "    #{RecordGroup.count} record groups seeded"
+
+
+  #==================================================
+  # CREATE OFFICIAL CONTENT
+  #==================================================
+
+  puts "\nSeeding official content"
+
+  modSkyrim = Mod.create!(
+      name: "Skyrim",
+      authors: "Bethesda",
+      submitted_by: mator.id,
+      is_official: true,
+      game_id: gameSkyrim.id,
+      released: DateTime.new(2011, 11, 11),
+      updated: DateTime.new(2013, 3, 20),
+      custom_sources_attributes: [{
+          label: "Steam Store",
+          url: "http://store.steampowered.com/app/72850/"
+      }]
+  )
+  # Create plugins
+  create_plugin(modSkyrim, "Skyrim.esm.json")
+  create_plugin(modSkyrim, "Update.esm.json")
+  modSkyrim.update_lazy_counters
+
+  modDawnguard = Mod.create!(
+      name: "Dawnguard",
+      authors: "Bethesda",
+      submitted_by: mator.id,
+      is_official: true,
+      game_id: gameSkyrim.id,
+      primary_category_id: catLocations.id,
+      secondary_category_id: catFactions.id,
+      released: DateTime.new(2012, 8, 2),
+      custom_sources_attributes: [{
+          label: "Steam Store",
+          url: "http://store.steampowered.com/app/211720/"
+      }],
+      tag_names: ["Vampires", "Dawnguard", "Werewolves", "Soul Cairn", "Dragonbone"]
+  )
+  # Create plugins
+  create_plugin(modDawnguard, "Dawnguard.esm.json")
+  modDawnguard.update_lazy_counters
+
+  modHearthfire = Mod.create!(
+      name: "Hearthfire",
+      authors: "Bethesda",
+      submitted_by: mator.id,
+      is_official: true,
+      game_id: gameSkyrim.id,
+      primary_category_id: catNewPlayerHomes.id,
+      secondary_category_id: catImmersionAndRolePlaying.id,
+      released: DateTime.new(2012, 10, 4),
+      custom_sources_attributes: [{
+          label: "Steam Store",
+          url: "http://store.steampowered.com/app/220760/"
+      }],
+      tag_names: ["Building", "Family", "Marriage", "Adoption"]
+  )
+  # Create plugins
+  create_plugin(modHearthfire, "HearthFires.esm.json")
+  modHearthfire.update_lazy_counters
+
+  modDragonborn = Mod.create!(
+      name: "Dragonborn",
+      authors: "Bethesda",
+      submitted_by: mator.id,
+      is_official: true,
+      game_id: gameSkyrim.id,
+      primary_category_id: catNewLands.id,
+      released: DateTime.new(2013, 2, 5),
+      custom_sources_attributes: [{
+          label: "Steam Store",
+          url: "http://store.steampowered.com/app/211720/"
+      }],
+      tag_names: ["Solstheim", "Apocrypha", "Hermaeus Mora", "Shouts", "Stahlrim", "Nordic", "Bonemold", "Chitin"]
+  )
+  # Create plugins
+  create_plugin(modDragonborn, "Dawnguard.esm.json")
+  modDragonborn.update_lazy_counters
+
+  modHighRes = Mod.create!(
+      name: "High Resolution Texture Pack",
+      authors: "Bethesda",
+      submitted_by: mator.id,
+      is_official: true,
+      game_id: gameSkyrim.id,
+      primary_category_id: catAudiovisual.id,
+      released: DateTime.new(2012, 2, 7),
+      custom_sources_attributes: [{
+          label: "Steam Store",
+          url: "http://store.steampowered.com/app/202485/"
+      }],
+      tag_names: ["1K", "Armor", "Weapons", "Architecture", "Actors", "Dungeons", "Terrain", "Clutter"]
+  )
+  # Create plugins
+  create_plugin(modHighRes, "HighResTexturePack01.esp.json")
+  create_plugin(modHighRes, "HighResTexturePack02.esp.json")
+  create_plugin(modHighRes, "HighResTexturePack03.esp.json")
+  modHighRes.update_lazy_counters
+
+  puts "    #{Mod.count} official mods seeded"
+  puts "    #{Plugin.count} official plugins seeded"
 end

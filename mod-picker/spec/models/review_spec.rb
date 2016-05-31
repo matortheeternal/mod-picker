@@ -17,39 +17,39 @@ RSpec.describe Review, :model do
   context "counter_caches" do
     let(:review) {reviews(:review_intermediate)}
 
-    # Create an incorrect note through the review fixture and check for increment of 
-    # incorrect_notes_count
-    # For decrement test, delete the created incorrect note
-    describe "incorrect_notes_count" do
-      it "should increment the incorrect_notes_count when creating an incorrect note" do
+    # Create a correction through the review fixture and check for increment of
+    # corrections_count
+    # For decrement test, delete the created correction
+    describe "corrections_count" do
+      it "should increment the corrections_count when creating a correction" do
         expect {
-          note = review.incorrect_notes.create(attributes_for(:incorrect_note,
+          note = review.corrections.create(attributes_for(:correction,
           correctable_id: review.id,
           correctable_type: "Review"))
 
           expect(note).to be_valid
           review.reload
 
-          expect(review.incorrect_notes_count).to eq(1)
+          expect(review.corrections_count).to eq(1)
 
-        }.to change {review.incorrect_notes_count}.by(1)
+        }.to change {review.corrections_count}.by(1)
       end
 
-      it "should decrement the incorrect_notes_count when deleting an incorrect note" do
-        note = review.incorrect_notes.create(attributes_for(:incorrect_note,
+      it "should decrement the corrections_count when deleting a correction" do
+        note = review.corrections.create(attributes_for(:correction,
           correctable_id: review.id,
           correctable_type: "Review"))
 
         expect(note).to be_valid
         review.reload
 
-        expect(review.incorrect_notes_count).to eq(1)
+        expect(review.corrections_count).to eq(1)
 
         expect {
-          review.incorrect_notes.destroy(note.id)
+          review.corrections.destroy(note.id)
           review.reload
-          expect(review.incorrect_notes_count).to eq(0)
-        }.to change {review.incorrect_notes_count}.by(-1)
+          expect(review.corrections_count).to eq(0)
+        }.to change {review.corrections_count}.by(-1)
       end
     end
   end

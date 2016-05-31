@@ -33,7 +33,7 @@ app.controller('submitModController', function ($scope, backend, submitService, 
     };
 
     $scope.validateSource = function(source) {
-        var site = sitesFactory.getSite($scope.sites, source.label);
+        var site = sitesFactory.getSite(source.label);
         var sourceIndex = $scope.sources.indexOf(source);
         var sourceUsed = $scope.sources.find(function(item, index) {
             return index != sourceIndex && item.label === source.label
@@ -44,7 +44,7 @@ app.controller('submitModController', function ($scope, backend, submitService, 
 
     $scope.scrapeSource = function(source) {
         // exit if the source is invalid
-        var site = sitesFactory.getSite($scope.sites, source.label);
+        var site = sitesFactory.getSite(source.label);
         var match = source.url.match(site.modUrlFormat);
         if (!match) {
             return;
@@ -211,9 +211,9 @@ app.controller('submitModController', function ($scope, backend, submitService, 
         // build list of masters
         var masters = [];
         $scope.analysis.plugins.forEach(function(plugin) {
-            plugin.master_filenames.forEach(function(filename) {
-                if (masters.indexOf(filename) == -1) {
-                    masters.push(filename);
+            plugin.master_plugins.forEach(function(master) {
+                if (masters.indexOf(master.filename) == -1) {
+                    masters.push(master.filename);
                 }
             });
         });
@@ -253,6 +253,22 @@ app.controller('submitModController', function ($scope, backend, submitService, 
             workshop: $scope.workshop,
             lab: $scope.lab
         };
-        submitService.submitMod($scope.mod, $scope.analysis, sources, $scope.requirements);
-    }
+        $scope.submitting = true;
+        $scope.submittingStatus = "Submitting Mod...";
+        submitService.submitMod($scope.mod, $scope.analysis, sources, $scope.requirements).then(function(data) {
+            if (data.status == "ok") {
+                $scope.submittingStatus = "Mod Submitted Successfully!";
+                $scope.success = true;
+            } else {
+                $scope.submittingStatus = "There were errors submitting your mod.";
+                $scope.errors = data.errors;
+            }
+        });
+    };
+
+    $scope.closeModal = function() {
+        delete $scope.success;
+        delete $scope.submitting;
+        delete $scope.errors;
+    };
 });

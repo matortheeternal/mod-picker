@@ -1,6 +1,10 @@
-app.service('userTitleService', function (backend, $q) {
+app.service('userTitleService', function (backend, $q, $timeout) {
     this.retrieveUserTitles = function () {
-        return backend.retrieve('/user_titles');
+        var titles = $q.defer();
+        backend.retrieve('/user_titles').then(function(data) {
+            titles.resolve(data);
+        });
+        return titles.promise;
     };
 
     this.getSortedGameTitles = function(titles) {
@@ -25,13 +29,20 @@ app.service('userTitleService', function (backend, $q) {
         return prevTitle.title;
     };
 
-    this.associateTitles = function(gameTitles, data) {
+    this.associateTitles = function(data, userTitles) {
         var service = this;
+        if (userTitles.length == 0) {
+            $timeout(function() {
+                service.associateTitles(data, userTitles);
+            }, 100);
+            return;
+        }
+
         data.forEach(function(item) {
             // if user is defined and they don't have a custom title
             if (item.user && !item.user.title) {
                 // get their default title
-                item.user.title = service.getUserTitle(gameTitles, item.user.reputation.overall);
+                item.user.title = service.getUserTitle(userTitles, item.user.reputation.overall);
             }
         });
     }
