@@ -14,3 +14,14 @@ app.config(['$httpProvider', '$compileProvider', function ($httpProvider, $compi
 app.config(function ($urlRouterProvider) {
     $urlRouterProvider.otherwise('/');
 });
+
+//this adds a redirectTo option into ui router, which makes default tabs much nicer
+app.run(['$rootScope', '$state', function($rootScope, $state) {
+
+    $rootScope.$on('$stateChangeStart', function(evt, to, params) {
+      if (to.redirectTo) {
+        evt.preventDefault();
+        $state.go(to.redirectTo, params, {location: 'replace'});
+      }
+    });
+}]);

@@ -2,13 +2,7 @@
 app.service('categoryService', function ($q, backend) {
 
     this.retrieveCategories = function() {
-        var categories = $q.defer();
-
-        backend.retrieve('/categories', {cache: true}).then(function (data) {
-            categories.resolve(data);
-        });
-
-        return categories.promise;
+        return backend.retrieve('/categories', {cache: true});
     };
 
     function retrieveFilteredCategories(key) {
@@ -40,13 +34,18 @@ app.service('categoryService', function ($q, backend) {
         return categoryPriorities.promise;
     };
 
-    this.getCategoryById = function(categories, id) {
-        for (var i = 0; i < categories.length; i++) {
-            var category = categories[i];
-            if (category.id == id) {
-                return category;
-            }
-        }
+    //storing all categories in a variable
+    var allCategories = this.retrieveCategories();
+
+    this.getCategoryById = function (id) {
+      var output = $q.defer();
+
+      allCategories.then(function (categories) {
+        output.resolve(categories.find(function (category) {
+          return category.id === id;
+        }));
+      });
+      return output.promise;
     };
 
     this.retrievePrimaryCategory = function () {

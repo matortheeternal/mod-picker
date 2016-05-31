@@ -186,8 +186,8 @@
                         <!--Categories-->
                         <h3 class="section-title">Categories</h3>
                         <section>
-                            <div class="action-box">{{primaryCategory.name}}</div>
-                            <div ng-show="mod.secondary_category_id" class="action-box">{{secondaryCategory.name}}</div>
+                            <div class="action-box">{{mod.primary_category.name}}</div>
+                            <div ng-show="mod.secondary_category_id" class="action-box">{{mod.secondary_category.name}}</div>
                         </section>
 
                         <!--Tags-->
@@ -210,8 +210,8 @@
 
                 </div>
                 <div class="right-column tabs-column">
-                    <tabs current-tab="currentTab" on-change="switchTab" tabs="tabs"></tabs>
-                    <div ng-include="currentTab.url" class="mod-tab"></div>
+                    <tabs tabs="tabs"></tabs>
+                    <div ui-view class="mod-tab"></div>
                 </div>
             </loader>
         </div>

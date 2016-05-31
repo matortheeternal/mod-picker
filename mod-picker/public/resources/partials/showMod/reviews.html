@@ -2,7 +2,7 @@
     <div class="mod-tab-item primary-item">
         <strong>Sort By: </strong>
 
-        <select ng-model="sort.reviews" ng-init="sort.reviews = 'reputation'">
+        <select ng-model="reviewSort" ng-change="reSortReviews()">
             <option value="reputation">Reputation</option>
             <option value="helpfulness">Helpfulness</option>
             <option value="overallRating">Overall Rating</option>
@@ -52,12 +52,12 @@
     </div>
 </div>
 
-<loader data="mod.reviews" content-class="" spinner-class="big-spinner">
+<state-loader spinner-class="big-spinner">
     <div ng-repeat="review in mod.reviews" class="content-block" ng-if="!review.editing">
         <review review="review" show-author-column="true" index="100 + $index" user="user" edit="editReview"></review>
     </div>
 
-    <div class="no-content-message" ng-if="mod.reviews.length == 0">
+    <div class="no-content-message" ng-if="reviews.length == 0">
         There are no reviews for this mod yet.
     </div>
-</loader>
+</state-loader>
