@@ -3,7 +3,7 @@ class ModsController < ApplicationController
 
   # POST /mods
   def index
-    @mods = Mod.includes(:authors).accessible_by(current_ability).filter(filtering_params).sort(params[:sort]).paginate(:page => params[:page])
+    @mods = Mod.includes(:author_users).accessible_by(current_ability).filter(filtering_params).sort(params[:sort]).paginate(:page => params[:page])
     @count =  Mod.accessible_by(current_ability).filter(filtering_params).sort(params[:sort]).count
 
     render :json => {
@@ -237,7 +237,7 @@ class ModsController < ApplicationController
 
     # Includes hash for mods index query
     def mods_include_hash
-      hash = { :authors => { :only => [:id, :username] } }
+      hash = { :author_users => { :only => [:id, :username] } }
       sources = params[:filters][:sources]
       hash[:nexus_infos] = {:except => [:mod_id]} if sources[:nexus]
       hash[:lover_infos] = {:except => [:mod_id]} if sources[:lab]
