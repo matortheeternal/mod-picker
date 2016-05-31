@@ -125,6 +125,9 @@ class Mod < ActiveRecord::Base
   has_one :lover_infos, :class_name => 'LoverInfo', :dependent => :nullify
   has_one :workshop_infos, :class_name => 'WorkshopInfo', :dependent => :nullify
 
+  # custom sources
+  has_many :custom_sources, :inverse_of => 'mod', :dependent => :destroy
+
   # plugins associated with the mod
   has_many :plugins, :inverse_of => 'mod', :dependent => :destroy
   # assets associated with the mod
@@ -165,7 +168,7 @@ class Mod < ActiveRecord::Base
   has_many :mod_list_mods, :inverse_of => 'mod', :dependent => :destroy
   has_many :mod_lists, :through => 'mod_list_mods', :inverse_of => 'mods'
 
-  accepts_nested_attributes_for :required_mods
+  accepts_nested_attributes_for :required_mods, :custom_sources
 
   self.per_page = 100
 
@@ -337,6 +340,7 @@ class Mod < ActiveRecord::Base
           :nexus_infos => {:except => [:mod_id]},
           :workshop_infos => {:except => [:mod_id]},
           :lover_infos => {:except => [:mod_id]},
+          :custom_sources => {:except => [:mod_id]},
           :author_users => {:only => [:id, :username]}
       },
       :methods => :image

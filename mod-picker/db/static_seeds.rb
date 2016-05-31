@@ -1731,7 +1731,11 @@ def seed_static_records
       is_official: true,
       game_id: gameSkyrim.id,
       released: DateTime.new(2011, 11, 11),
-      updated: DateTime.new(2013, 3, 20)
+      updated: DateTime.new(2013, 3, 20),
+      custom_sources_attributes: [{
+          label: "Steam Store",
+          url: "http://store.steampowered.com/app/72850/"
+      }]
   )
   modSkyrim.save!
   # Create plugins
@@ -1743,7 +1747,11 @@ def seed_static_records
       authors: "Bethesda",
       is_official: true,
       game_id: gameSkyrim.id,
-      released: DateTime.new(2012, 8, 2)
+      released: DateTime.new(2012, 8, 2),
+      custom_sources_attributes: [{
+          label: "Steam Store",
+          url: "http://store.steampowered.com/app/211720/"
+      }]
   )
   modDawnguard.save!
   # Create plugins
@@ -1755,6 +1763,10 @@ def seed_static_records
       is_official: true,
       game_id: gameSkyrim.id,
       released: DateTime.new(2012, 10, 4),
+      custom_sources_attributes: [{
+          label: "Steam Store",
+          url: "http://store.steampowered.com/app/220760/"
+      }]
   )
   modHearthfire.save!
   # Create plugins
@@ -1765,11 +1777,32 @@ def seed_static_records
       authors: "Bethesda",
       is_official: true,
       game_id: gameSkyrim.id,
-      released: DateTime.new(2013, 2, 5)
+      released: DateTime.new(2013, 2, 5),
+      custom_sources_attributes: [{
+          label: "Steam Store",
+          url: "http://store.steampowered.com/app/211720/"
+      }]
   )
   modDragonborn.save!
   # Create plugins
   create_plugin(modDragonborn, "Dawnguard.esm.json")
+
+  modHighRes = Mod.create(
+      name: "High Resolution Texture Pack",
+      authors: "Bethesda",
+      is_official: true,
+      game_id: gameSkyrim.id,
+      released: DateTime.new(2012, 2, 7),
+      custom_sources_attributes: [{
+          label: "Steam Store",
+          url: "http://store.steampowered.com/app/202485/"
+      }]
+  )
+  modHighRes.save!
+  # Create plugins
+  create_plugin(modHighRes, "HighResTexturePack01.esp.json")
+  create_plugin(modHighRes, "HighResTexturePack02.esp.json")
+  create_plugin(modHighRes, "HighResTexturePack03.esp.json")
 
   puts "    #{Mod.count} official mods seeded"
   puts "    #{Plugin.count} official plugins seeded"
