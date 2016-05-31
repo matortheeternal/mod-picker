@@ -28,7 +28,7 @@ app.service('reviewSectionService', function (backend, $q) {
     };
 
     this.associateReviewSections = function(reviews) {
-        allReviewSections.then(function(sections) {
+        return allReviewSections.then(function(sections) {
           reviews.forEach(function(review) {
             //set the category using the categoryId
             review.review_ratings.forEach(function(rating) {

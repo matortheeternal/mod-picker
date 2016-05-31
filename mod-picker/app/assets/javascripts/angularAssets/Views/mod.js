@@ -35,8 +35,9 @@ app.config(['$stateProvider', function ($stateProvider) {
                     this.parent.lastReviewSort = $stateParams.sort;
                     var output = $q.defer();
                     modService.retrieveAssociation(modId, 'reviews', {sort: $stateParams.sort}).then(function(reviews) {
-                      reviewSectionService.associateReviewSections(reviews);
-                      output.resolve(reviews);
+                      reviewSectionService.associateReviewSections(reviews).then(function() {
+                        output.resolve(reviews);
+                      });
                     });
                     return output.promise;
                   }
