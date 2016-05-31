@@ -112,6 +112,8 @@ def seed_fake_mods
       record_count: 7
     }]
   })
+  
+  Mod.last.update_lazy_counters
 
   Mod.create(
       name: "Immersive Armors",
