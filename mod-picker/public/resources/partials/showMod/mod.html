@@ -17,8 +17,7 @@
                             <a ng-href="#/user/{{author.id}}">{{author.username}}</a>
                         </span>-->
                         <br>
-                        <!-- TODO: reviews currently are on tab 1 -> should be dynamic anyway -> ui-router :D -->
-                        {{mod.reviews.length | number}} reviews
+                        {{mod.reviews_count | number}} reviews
                         <!-- TODO: add this with css :after content -->
                         <span class="divider" ng-if="mod.aliases || permissions.canManage">
                             |
@@ -168,50 +167,19 @@
                         </ol>
                     </section>
 
-                    <!--Categories-->
-                    <!-- TODO: one line if for readability (even though I like the idea of this ;3 )-->
-                    <h3 class="section-title">Categor<span ng-hide="secondCategory">y</span><span ng-show="secondCategory">ies</span></h3>
-                    <section>
-                        <div ng-show="mod.primary_category_id" class="action-box">{{primaryCategory.name}}</div>
-                        <div ng-show="mod.secondary_category_id" class="action-box">{{secondaryCategory.name}}</div>
-                    </section>
-
-                    <!--Tags-->
-                    <h3 class="section-title">Tags</h3>
-                    <section>
-                        <tag-selector active-tags="mod.tags" new-tags="newTags" max-tags="10" show-mods-count="true" show-add="true" can-create="permissions.canCreateTags" show-remove="permissions.canManage" save-callback="saveTags"></tag-selector>
-                    </section>
-
-                    <!--Site Stats-->
-                    <!-- TODO: kill redundancy-->
-                    <div class="stat-block" ng-if="mod.nexus_infos && mod.nexus_infos.has_stats">
-                        <div class="stat-block-title" ng-click="nexusExpanded = !nexusExpanded">
-                           <h3 class="section-title">Nexus Mods stats</h3>
-                           <i class="fa fa-plus stat-expander" aria-hidden="true" ng-hide="nexusExpanded"></i>
-                           <i class="fa fa-minus stat-expander" aria-hidden="true" ng-show="nexusExpanded"></i>
-                        </div>
-                        <section ng-show="nexusExpanded">
-                            <nexus-stats></nexus-stats>
+                    <!-- We hide categories and tags when viewing official content -->
+                    <div ng-if="mod && (mod.is_official === false)">
+                        <!--Categories-->
+                        <h3 class="section-title">Categories</h3>
+                        <section>
+                            <div class="action-box">{{primaryCategory.name}}</div>
+                            <div ng-show="mod.secondary_category_id" class="action-box">{{secondaryCategory.name}}</div>
                         </section>
-                    </div>
-                    <div class="stat-block" ng-if="mod.workshop_infos && mod.workshop_infos.has_stats">
-                        <div class="stat-block-title" ng-click="workshopExpanded = !workshopExpanded">
-                           <h3 class="section-title">Steam Workshop stats</h3>
-                           <i class="fa fa-plus stat-expander" aria-hidden="true" ng-hide="workshopExpanded"></i>
-                           <i class="fa fa-minus stat-expander" aria-hidden="true" ng-show="workshopExpanded"></i>
-                        </div>
-                        <section ng-show="workshopExpanded">
-                            <workshop-stats></workshop-stats>
-                        </section>
-                    </div>
-                    <div class="stat-block" ng-if="mod.lover_infos && mod.lover_infos.has_stats">
-                        <div class="stat-block-title" ng-click="labExpanded = !labExpanded">
-                           <h3 class="section-title">Lover's Lab stats</h3>
-                           <i class="fa fa-plus stat-expander" aria-hidden="true" ng-hide="labExpanded"></i>
-                           <i class="fa fa-minus stat-expander" aria-hidden="true" ng-show="labExpanded"></i>
-                        </div>
-                        <section ng-show="labExpanded">
-                            <lab-stats></lab-stats>
+
+                        <!--Tags-->
+                        <h3 class="section-title">Tags</h3>
+                        <section>
+                            <tag-selector active-tags="mod.tags" new-tags="newTags" max-tags="10" show-mods-count="true" show-add="true" can-create="permissions.canCreateTags" show-remove="permissions.canManage" save-callback="saveTags"></tag-selector>
                         </section>
                     </div>
 
