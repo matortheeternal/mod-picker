@@ -13,6 +13,7 @@ namespace :reset do
     connection.execute("ALTER TABLE lover_infos AUTO_INCREMENT = 0;")
     connection.execute("ALTER TABLE workshop_infos AUTO_INCREMENT = 0;")
     connection.execute("ALTER TABLE mods AUTO_INCREMENT = 0;")
+    connection.execute("ALTER TABLE mod_lists AUTO_INCREMENT = 0;")
     connection.execute("ALTER TABLE games AUTO_INCREMENT = 0;")
     connection.execute("ALTER TABLE comments AUTO_INCREMENT = 0;")
     connection.execute("ALTER TABLE reviews AUTO_INCREMENT = 0;")
