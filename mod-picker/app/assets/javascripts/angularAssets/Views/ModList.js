@@ -160,3 +160,27 @@ app.controller('modlistController', function($scope, $log, $stateParams, $timeou
     	$scope.bIsEditing = $scope.bIsEditing ? false: true;
     };
 });
+
+app.controller('modlistDetailsController', function($scope) {
+
+});
+
+app.controller('modlistToolsController', function($scope) {
+
+});
+
+app.controller('modlistModsController', function($scope) {
+
+});
+
+app.controller('modlistPluginsController', function($scope) {
+
+});
+
+app.controller('modlistConfigController', function($scope) {
+
+});
+
+app.controller('modlistCommentsController', function($scope) {
+
+});
