@@ -32,13 +32,6 @@ RSpec.describe CompatibilityNote, :model do
       end
     end
 
-
-    xdescribe "compatibility_mod_id" do
-    end
-
-    xdescribe "compatibility_plugin_id" do
-    end
-
     describe "compatibility_type" do
       it "should be invalid if not included within valid list of types" do
         expect{build(:compatibility_note,

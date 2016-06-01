@@ -13,6 +13,7 @@ incompatibleNote:
   submitted_by: homura
   compatibility_type: "Incompatible"
   submitted: 2016-02-15 11:02:57
+  game_id: skyrim
   text_body: >
     Lorem ipsum dolor sit amet, consectetur adipisicing elit. Fugit veniam, 
     cumque quasi aut ullam id esse, nemo repellendus nam temporibus corrupti ut 
@@ -22,6 +23,7 @@ partiallyCompatibleNote:
   submitted_by: homura
   compatibility_type: "Partially Incompatible"
   submitted: 2016-02-15 11:02:57
+  game_id: skyrim
   text_body: >
     Lorem ipsum dolor sit amet, consectetur adipisicing elit. Fugit veniam, 
     cumque quasi aut ullam id esse, nemo repellendus nam temporibus corrupti ut 
@@ -31,6 +33,7 @@ compatibilityModNote:
   submitted_by: kyoko
   compatibility_type: "Compatibility Mod"
   submitted: 2016-02-15 11:02:57
+  game_id: skyrim
   text_body: >
     Lorem ipsum dolor sit amet, consectetur adipisicing elit. Fugit veniam, 
     cumque quasi aut ullam id esse, nemo repellendus nam temporibus corrupti ut 
@@ -40,6 +43,7 @@ compatibilityPluginNote:
   submitted_by: madoka
   compatibility_type: "Compatibility Plugin"
   submitted: 2016-02-15 11:02:57
+  game_id: skyrim
   text_body: >
     Lorem ipsum dolor sit amet, consectetur adipisicing elit. Fugit veniam, 
     cumque quasi aut ullam id esse, nemo repellendus nam temporibus corrupti ut 
@@ -49,6 +53,7 @@ makeCustomPatchNote:
   submitted_by: homura
   compatibility_type: "Make Custom Patch"
   submitted: 2016-02-15 11:02:57
+  game_id: skyrim
   text_body: >
     Lorem ipsum dolor sit amet, consectetur adipisicing elit. Fugit veniam, 
     cumque quasi aut ullam id esse, nemo repellendus nam temporibus corrupti ut 
