@@ -1,5 +1,8 @@
 require 'rails_helper'
 
+# if CREATING comments(and saving to database) comments must be made through its commentable type
+# This is because a comment will try to update its commentable's counter_cache upon saving to the database
+# and will throw an error if it can't find its commentable.
 RSpec.describe Comment, :model do
   it "should be valid with text_body, commentable_id, and commentable_type submitted parameters" do
     comment = build(:comment,
@@ -12,14 +15,16 @@ RSpec.describe Comment, :model do
 # ==================================================================
 describe "#init" do
   it "should default hidden => false" do
-    comment = build(:comment)
+    comment = build(:comment_nil_hidden)
+    expect(comment.commentable).to eq(1)
+
     expect(comment.hidden).to eq(false)
   end
 
   it "should default submitted => Date.now" do
     # submitted is a Date field
-    comment = build(:comment)
-    expect(comment.submitted).to eq(Date.today)
+    comment = create(:comment)
+    expect(comment.submitted).to be_within(1.minute).of DateTime.now
   end
 end
 

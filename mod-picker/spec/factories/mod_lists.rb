@@ -29,5 +29,6 @@ FactoryGirl.define do
     status "under construction"
     description { Faker::Lorem.sentence(4, false, 6) }
     association :game, factory: :game
+    is_collection false
   end
 end
