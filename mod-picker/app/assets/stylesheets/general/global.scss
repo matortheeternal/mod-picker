@@ -296,11 +296,13 @@ input[type="button"], input[type="submit"] {
   .tab-section {
     margin-left: 0;
     h3 {
+      background-color: $bar_color;
+      color: $bar_text_color;
+      width: 100%;
+      padding: 10px;
       margin: 0;
-      background-color: $bar_dark_color;
-      padding: 14px;
       font-size: 16px;
-      color: $inverse_text_color;
+      font-weight: 500;
     }
     section {
       margin: 0;
@@ -308,6 +310,10 @@ input[type="button"], input[type="submit"] {
       background-color: $primary_background;
       border: 1px solid $border_color;
       border-top: 0;
+    }
+    .text-container {
+      margin-top: -0.5em;
+      margin-bottom: -0.5em;
     }
   }
 }
