@@ -12,7 +12,7 @@ FactoryGirl.define do
     submitted_by { FactoryGirl.create(:user).id }
     first_mod_id { FactoryGirl.create(:mod).id }
     second_mod_id { FactoryGirl.create(:mod).id }
-    text_body { Faker::Lorem.sentence(60, false, 6) }
+    text_body { Faker::Lorem.sentence(70, false, 6) }
     game_id {FactoryGirl.create(:game).id }
   end
 end
