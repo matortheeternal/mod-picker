@@ -91,8 +91,36 @@ app.controller('modlistController', function($scope, $log, $stateParams, $timeou
             $scope.curStatusIcon = $scope.statusIcons[2];
         } else {
             $scope.curStatusIcon = $scope.statusIcons[3];
+        }
+    };
+
+    $scope.startEditing = function() {
+        $scope.bIsEditing = true;
+    };
+
+    //get user permissions
+    $scope.getPermissions = function() {
+        // if we don't have mod yet, try again in 100ms
+        if (!$scope.modlist) {
+            $timeout(function() {
+                $scope.getPermissions();
+            }, 100);
+            return;
+        }
+
+        // set up helper variables
+        var rep = $scope.user.reputation.overall;
+        var isAdmin = $scope.user.role === 'admin';
+        var isModerator = $scope.user.role === 'moderator';
+        var isAuthor = $scope.modlist.created_by === $scope.user.id;
+
+        // set up permissions
+        $scope.permissions = {
+            canCreateTags: (rep >= 20) || isAuthor || isAdmin || isModerator,
+            canManage: isAuthor || isModerator || isAdmin,
+            canModerate: isModerator || isAdmin
         };
-    } 
+    };
 
     $scope.isSelected = function(tabName) {
     	return $scope.currentTab === tabName;
@@ -130,22 +158,5 @@ app.controller('modlistController', function($scope, $log, $stateParams, $timeou
 
     $scope.debugFunc = function() {
     	$scope.bIsEditing = $scope.bIsEditing ? false: true;
-    };
-
-    $scope.hasPermissions = function() {
-        //REPLACE WHEN I ACTUALLY KNOW HOW TO GET THE CURRENT USER
-        return true;
-    };
-
-    $scope.isEditing = function(cond) {
-        if ($scope.bIsEditing == true && cond == true && $scope.hasPermissions()) {
-            return true;
-        }
-        else if ($scope.bIsEditing == false && cond == false) {
-            return true;
-        } 
-        else {
-            return false;
-        }
     };
 });

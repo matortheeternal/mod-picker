@@ -1,8 +1,8 @@
-<div class="content-block modlist-tab-item" ng-if="isEditing(false)" >
     {{modlist.description}}
+<div class="content-block modlist-tab-item" ng-if="!bIsEditing" >
 </div>
 <!-- Mod List Description: Edit Mode -->
-<div class="content-block modlist-tab-item" ng-if="isEditing(true)">
+<div class="content-block modlist-tab-item" ng-if="bIsEditing">
     <div class="content-title">
         <div>
             Modlist Description
@@ -12,7 +12,7 @@
         <text-area class="large-note-text-area" data="modlist.description" ng-refresh="updateMDE"></text-area>
     </section>
 </div>
-<div class="content-block modlist-tab-item" ng-if="isEditing(true)">
+<div class="content-block modlist-tab-item" ng-if="bIsEditing">
     <div class="content-title">
         <div>
             Modlist Options
