@@ -16,7 +16,7 @@ class Correction < ActiveRecord::Base
 
   # Validations
   validates :text_body, length: { in: 64..16384 }
-  validates :correctable_id, :correctable_type, presence: true
+  validates :correctable_id, :correctable_type, :title, presence: true
 
   # Callbacks
   after_create :increment_counters

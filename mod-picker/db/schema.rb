@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160601192655) do
+ActiveRecord::Schema.define(version: 20160601211222) do
 
   create_table "agreement_marks", id: false, force: :cascade do |t|
     t.integer "correction_id", limit: 4
@@ -150,7 +150,7 @@ ActiveRecord::Schema.define(version: 20160601192655) do
     t.integer  "agree_count",      limit: 4,     default: 0
     t.integer  "disagree_count",   limit: 4,     default: 0
     t.integer  "status",           limit: 1,     default: 0
-    t.string   "title",            limit: 64,    default: "",    null: false
+    t.string   "title",            limit: 64,                    null: false
   end
 
   add_index "corrections", ["correctable_type", "correctable_id"], name: "index_corrections_on_correctable_type_and_correctable_id", using: :btree

@@ -7,5 +7,6 @@ FactoryGirl.define do
     text_body { Faker::Lorem.sentence(20, false, 20) }
     correctable_id { FactoryGirl.create(:install_order_note).id }
     correctable_type "InstallOrderNote"
+    title { Faker::Lorem.word }
   end
 end
