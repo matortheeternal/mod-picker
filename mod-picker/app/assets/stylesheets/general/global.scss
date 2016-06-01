@@ -276,15 +276,19 @@ input[type="button"], input[type="submit"] {
     border-bottom: 0;
     background-color: $action_color;
     margin-right: 2px;
+
+    &:hover {
+      background-color: $bar_highlight_color;
+    }
   }
 
-  .selected-tab {
+  a.selected-tab {
     background-color: inherit;
     color: $text_color;
-  }
 
-  .unselected-tab:hover {
-    background-color: $bar_highlight_color;
+    &:hover {
+      background-color: inherit;
+    }
   }
 }
 
