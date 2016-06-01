@@ -21,7 +21,6 @@ class Comment < ActiveRecord::Base
   validates :text_body, length: {in: 1..8192}
 
   # Callbacks
-  after_initialize :init
   before_save :set_dates
   after_create :increment_counter_caches
   before_destroy :decrement_counter_caches
@@ -35,13 +34,6 @@ class Comment < ActiveRecord::Base
         self.edited = DateTime.now
       end
     end
-
-    def init
-      if self.hidden.nil?
-        self.hidden = false
-      end
-    end
-
 
     def increment_counter_caches
       self.user.update_counter(:submitted_comments_count, 1)

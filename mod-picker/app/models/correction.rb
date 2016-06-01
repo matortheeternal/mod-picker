@@ -19,7 +19,6 @@ class Correction < ActiveRecord::Base
   validates :correctable_id, :correctable_type, presence: true
 
   # Callbacks
-  after_initialize :init
   after_create :increment_counters
   before_save :set_dates
   before_destroy :decrement_counters
@@ -44,11 +43,6 @@ class Correction < ActiveRecord::Base
   end
 
   private
-    # Set default values after initialization
-    def init
-      self.title ||= ""
-    end
-
     def set_dates
       if self.submitted.nil?
         self.submitted = DateTime.now
