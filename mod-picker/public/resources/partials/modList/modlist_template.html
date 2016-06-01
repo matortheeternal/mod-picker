@@ -34,7 +34,7 @@
                          <i class="fa {{curStatusIcon.name}}" aria-hidden="true"></i>
                         {{modlist.status}}
                     </div>
-                    <div class="action-box {{mlVisibilityClass}} capitalize" ng-if="hasPermissions()">
+                    <div class="action-box {{mlVisibilityClass}} capitalize" ng-if="bIsEditing">
                         <i class="fa fa-eye-slash" aria-hidden="true"></i>
                         {{modlist.hidden}}
                     </div>
