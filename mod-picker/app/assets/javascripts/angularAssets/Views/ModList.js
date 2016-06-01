@@ -73,6 +73,13 @@ app.controller('modlistController', function($scope, $log, $stateParams, modList
     modListService.retrieveModList($stateParams.modListId).then(function(modList) {
        $scope.modlist = modList;
     });
+
+    //get current user
+    userService.retrieveThisUser().then(function (user) {
+        $scope.user = user;
+        $scope.getPermissions();
+    });
+
     //Function To Return Modlist Status as Index for statusIcons
     $scope.mlStatus = function() {
         var modList = $scope.modlist;
