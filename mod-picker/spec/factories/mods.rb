@@ -8,15 +8,5 @@ FactoryGirl.define do
     primary_category_id { FactoryGirl::create(:category).id }
     game_id { FactoryGirl::create(:game).id }
     released { DateTime.now }
-
-    factory :mod_with_versions do
-      transient do
-        mod_versions_count 1
-      end
-
-      after(:create) do |mod, evaluator|
-        create_list(:mod_versions, evaluator.mod_versions_count, mod: mod)
-      end
-    end
   end
 end
