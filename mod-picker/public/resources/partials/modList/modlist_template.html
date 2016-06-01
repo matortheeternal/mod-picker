@@ -11,6 +11,8 @@
                         <span class="mod-authors">{{modlist.created_by}}</span>
                     </span>
                 </div>
+
+                <a ng-if="permissions.canManage && !bIsEditing" ng-click="startEditing()">Edit</a>
             </section>
 
             <section>
