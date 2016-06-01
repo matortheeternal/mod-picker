@@ -13,7 +13,8 @@ app.controller('modsController', function ($scope, $q, modService, sliderFactory
         sources: {
             nexus: true,
             lab: false,
-            workshop: false
+            workshop: false,
+            other: false
         }
     };
     $scope.sort = {};
@@ -84,4 +85,3 @@ app.controller('modsController', function ($scope, $q, modService, sliderFactory
         }
     }, true);
 });
-

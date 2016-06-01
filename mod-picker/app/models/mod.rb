@@ -9,9 +9,31 @@ class Mod < ActiveRecord::Base
   scope :game, -> (game) { where(game_id: game) }
   scope :sources, -> (sources) {
     results = self.where(nil)
-    results = results.includes(:nexus_infos).references(:nexus_infos) if sources[:nexus]
-    results = results.includes(:lover_infos).references(:lover_infos) if sources[:lab]
-    results = results.includes(:workshop_infos).references(:workshop_infos) if sources[:workshop]
+    whereClause = []
+    
+    # nexus mods
+    if sources[:nexus]
+      results = results.includes(:nexus_infos).references(:nexus_infos)
+      whereClause.push("nexus_infos.id IS NOT NULL")
+    end
+    # lover's lab  
+    if sources[:lab]
+      results = results.includes(:lover_infos).references(:lover_infos)
+      whereClause.push("lover_infos.id IS NOT NULL")
+    end
+    # steam workshop
+    if sources[:workshop]
+      results = results.includes(:workshop_infos).references(:workshop_infos)
+      whereClause.push("workshop_infos.id IS NOT NULL")
+    end
+    # other sources
+    if sources[:other]
+      results = results.includes(:custom_sources).references(:custom_sources)
+      whereClause.push("custom_sources.id IS NOT NULL")
+    end
+    
+    # require one selected source to be present
+    results = results.where(whereClause.join(" OR "))
     results
   }
   scope :released, -> (range) { where(released: parseDate(range[:min])..parseDate(range[:max])) }

@@ -834,7 +834,7 @@ def seed_fake_mod_lists
   nModLists = User.count / 2
   nModLists.times do
     author = User.offset(rand(User.count)).first
-    ModList.new(
+    mod_list = ModList.create!(
         name: Faker::Lorem.words(3).join(' '),
         created_by: author.id,
         is_collection: [true, false].sample,
@@ -844,7 +844,14 @@ def seed_fake_mod_lists
         description: Faker::Lorem.paragraph(5),
         submitted: Faker::Date.backward(14),
         game_id: gameSkyrim.id
-    ).save!
+    )
+    Mod.all.each_with_index do |mod, index|
+      mod_list.mod_list_mods.create!(
+        mod_id: mod.id,
+        active: true,
+        index: index
+      )
+    end
   end
 
   puts "    #{ModList.count} mod lists seeded"
