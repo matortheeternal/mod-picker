@@ -8,6 +8,7 @@ $inverse_text_color: #ffffff;
 $primary_background: #ffffff;
 $secondary_background: #f5f5f5;
 $background_highlight: #ffffff;
+$input_background: #fff;
 
 $shadow_color: #000;
 $border_color: #e6e6e6;
@@ -43,5 +44,9 @@ $error_primary: #F5D0D5;
 $error_secondary: #C74A5B;
 $warning_primary: #F5F0D0;
 $warning_secondary: #C7B64A;
+
+$admin_color: #800000;
+$moderator_color: #8000b0;
+$mod_author_color: #008000;
 
 @import 'main';

@@ -8,15 +8,17 @@ Rails.application.routes.draw do
     resources :install_order_notes
     resources :load_order_notes
     resources :compatibility_notes
-    resources :incorrect_notes
+    resources :corrections
     resources :reviews
     resources :mod_authors
-    resources :user_settings
     resources :user_bios
     resources :mod_lists
-    resources :plugins
     resources :mod_asset_files
-    resources :users
+
+    # users and user settings
+    resources :users, only: [:index, :show, :update, :destroy]
+    resources :user_settings, only: [:index, :update]
+    match '/link_account', to: 'users#link_account', via: 'get'
 
     # scraping
     resources :nexus_infos, only: [:show, :destroy]
@@ -26,8 +28,8 @@ Rails.application.routes.draw do
     # tags
     match '/tags', to: 'tags#index', via: 'post'
     match '/tags/:id', to: 'tags#destroy', via: 'delete'
-    match '/mods/:id/tag', to: 'mods#tag', via: 'post'
-    match '/mod_lists/:id/tag', to: 'mod_lists#tag', via: 'post'
+    match '/mods/:id/tags', to: 'mods#update_tags', via: [:patch, :put]
+    match '/mod_lists/:id/tags', to: 'mod_lists#update_tags', via: [:patch, :put]
 
     # mods
     resources :mods, only: [:show, :update, :destroy]
@@ -35,7 +37,13 @@ Rails.application.routes.draw do
     match '/mods', to: 'mods#index', via: 'post'
     match '/mods/search', to: 'mods#search', via: 'post'
 
+    # plugins
+    resources :plugins, only: [:show, :destroy]
+    match '/plugins', to: 'plugins#index', via: 'post'
+    match '/plugins/search', to: 'plugins#search', via: 'post'
+
     # content associated with mods
+    match '/mods/:id/corrections', to: 'mods#corrections', via: 'get'
     match '/mods/:id/reviews', to: 'mods#reviews', via: 'get'
     match '/mods/:id/compatibility_notes', to: 'mods#compatibility_notes', via: 'get'
     match '/mods/:id/install_order_notes', to: 'mods#install_order_notes', via: 'get'
@@ -48,8 +56,20 @@ Rails.application.routes.draw do
     match '/install_order_notes/:id/helpful', to: 'install_order_notes#helpful', via: 'post'
     match '/load_order_notes/:id/helpful', to: 'load_order_notes#helpful', via: 'post'
 
+    # hiding content
+    match '/reviews/:id/hide', to: 'reviews#hide', via: 'post'
+    match '/compatibility_notes/:id/hide', to: 'compatibility_notes#hide', via: 'post'
+    match '/install_order_notes/:id/hide', to: 'install_order_notes#hide', via: 'post'
+    match '/load_order_notes/:id/hide', to: 'load_order_notes#hide', via: 'post'
+
+    # approving content
+    match '/reviews/:id/approve', to: 'reviews#approve', via: 'post'
+    match '/compatibility_notes/:id/approve', to: 'compatibility_notes#approve', via: 'post'
+    match '/install_order_notes/:id/approve', to: 'install_order_notes#approve', via: 'post'
+    match '/load_order_notes/:id/approve', to: 'load_order_notes#approve', via: 'post'
+
     # agreement marks
-    match '/incorrect_notes/:id/agreement', to: 'incorrect_notes#agreement', via: 'post'
+    match '/corrections/:id/agreement', to: 'corrections#agreement', via: 'post'
 
     # mod and mod list stars
     match '/mod_lists/:id/star', to: 'mod_lists#create_star', via: 'post'

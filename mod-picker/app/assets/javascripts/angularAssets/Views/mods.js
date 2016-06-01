@@ -8,8 +8,15 @@ app.config(['$stateProvider', function ($stateProvider) {
     );
 }]);
 
-app.controller('modsController', function ($scope, $q, modService, sliderFactory, columnsFactory) {
-    $scope.filters = {};
+app.controller('modsController', function ($scope, $q, modService, sliderFactory, columnsFactory, filtersFactory) {
+    $scope.filters = {
+        sources: {
+            nexus: true,
+            lab: false,
+            workshop: false,
+            other: false
+        }
+    };
     $scope.sort = {};
     $scope.pages = {};
     $scope.columns = columnsFactory.modColumns();
@@ -22,6 +29,11 @@ app.controller('modsController', function ($scope, $q, modService, sliderFactory
             }
         }
     ];
+
+    // load filter prototypes
+    $scope.dateFilters = filtersFactory.modDateFilters();
+    $scope.modPickerFilters = filtersFactory.modPickerFilters();
+    $scope.statFilters = filtersFactory.modStatisticFilters();
 
     //TODO: should be handled differently
     // -> remove redundancy
@@ -37,6 +49,16 @@ app.controller('modsController', function ($scope, $q, modService, sliderFactory
         if(extendedFilter) {
             $scope.$broadcast('rerenderSliders');
         }
+    };
+
+    $scope.filterAvailable = function(filter) {
+        var result = true;
+        Object.keys($scope.filters.sources).forEach(function(key) {
+            if ($scope.filters.sources[key] && !filter.sites[key]) {
+                result = false;
+            }
+        });
+        return result;
     };
 
     /* data */
@@ -63,4 +85,3 @@ app.controller('modsController', function ($scope, $q, modService, sliderFactory
         }
     }, true);
 });
-

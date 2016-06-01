@@ -5,7 +5,7 @@
 #     t.datetime "submitted"
 #     t.datetime "edited"
 #     t.text     "text_body",               limit: 65535
-#     t.integer  "incorrect_notes_count",   limit: 4,     default: 0
+#     t.integer  "corrections_count",   limit: 4,     default: 0
 #     t.integer  "compatibility_mod_id",    limit: 4
 #     t.boolean  "hidden",                                default: false, null: false
 #   end

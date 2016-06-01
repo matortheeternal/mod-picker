@@ -1,17 +1,19 @@
 class CompatibilityNoteHistoryEntry < ActiveRecord::Base
-  after_initialize :init
-
   belongs_to :compatibility_note, :inverse_of => 'compatibility_note_history_entries'
   belongs_to :user, :foreign_key => 'submitted_by', :inverse_of => 'compatibility_note_history_entries'
 
   enum status: [ :incompatible, :"partially incompatible", :"compatibility mod", :"compatibility option", :"make custom patch" ]
 
-  # validations
-  validates :compatibility_note_id, :edit_summary, :submitted_by, :submitted, presence: true
-  validates :edit_summary, length: {in: 0..255}
-  validates :text_body, length: {in: 64..16384}
+  # Callbacks
+  after_create :increment_counters
+  before_destroy :decrement_counters
 
-  def init
-    self.submitted  ||= DateTime.now
-  end
+  private
+    def increment_counters
+      self.compatibility_note.update_counter(:history_entries_count, 1)
+    end
+
+    def decrement_counters
+      self.compatibility_note.update_counter(:history_entries_count, -1)
+    end
 end

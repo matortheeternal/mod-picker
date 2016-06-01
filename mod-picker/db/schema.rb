@@ -11,41 +11,44 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160511002340) do
+ActiveRecord::Schema.define(version: 20160531011818) do
 
   create_table "agreement_marks", id: false, force: :cascade do |t|
-    t.integer "incorrect_note_id", limit: 4
-    t.integer "submitted_by",      limit: 4
+    t.integer "correction_id", limit: 4
+    t.integer "submitted_by",  limit: 4
     t.boolean "agree"
   end
 
-  add_index "agreement_marks", ["incorrect_note_id"], name: "inc_id", using: :btree
+  add_index "agreement_marks", ["correction_id"], name: "inc_id", using: :btree
   add_index "agreement_marks", ["submitted_by"], name: "submitted_by", using: :btree
 
   create_table "articles", force: :cascade do |t|
-    t.string   "title",        limit: 255,   null: false
-    t.integer  "submitted_by", limit: 4,     null: false
-    t.text     "text_body",    limit: 65535, null: false
-    t.datetime "created_at",                 null: false
-    t.datetime "updated_at",                 null: false
-    t.integer  "game_id",      limit: 4
+    t.string   "title",          limit: 255,               null: false
+    t.integer  "submitted_by",   limit: 4,                 null: false
+    t.text     "text_body",      limit: 65535,             null: false
+    t.datetime "submitted",                                null: false
+    t.datetime "edited",                                   null: false
+    t.integer  "game_id",        limit: 4
+    t.integer  "comments_count", limit: 4,     default: 0
   end
 
   add_index "articles", ["submitted_by"], name: "fk_rails_ea02c233bd", using: :btree
 
   create_table "asset_files", force: :cascade do |t|
-    t.string  "filepath", limit: 128, null: false
-    t.integer "game_id",  limit: 4,   null: false
+    t.string  "filepath",              limit: 255,             null: false
+    t.integer "game_id",               limit: 4,               null: false
+    t.integer "mod_asset_files_count", limit: 4,   default: 0
   end
 
   add_index "asset_files", ["filepath"], name: "filepath", unique: true, using: :btree
   add_index "asset_files", ["game_id"], name: "fk_rails_2e8fb86f89", using: :btree
 
   create_table "base_reports", force: :cascade do |t|
-    t.integer  "reportable_id",   limit: 4,   null: false
-    t.string   "reportable_type", limit: 255, null: false
-    t.datetime "created_at",                  null: false
-    t.datetime "updated_at",                  null: false
+    t.integer  "reportable_id",   limit: 4,               null: false
+    t.string   "reportable_type", limit: 255,             null: false
+    t.datetime "submitted",                               null: false
+    t.datetime "edited",                                  null: false
+    t.integer  "reports_count",   limit: 4,   default: 0
   end
 
   create_table "categories", force: :cascade do |t|
@@ -66,7 +69,7 @@ ActiveRecord::Schema.define(version: 20160511002340) do
   add_index "category_priorities", ["recessive_id"], name: "fk_rails_d624be02b9", using: :btree
 
   create_table "comments", force: :cascade do |t|
-    t.integer "parent_comment",   limit: 4
+    t.integer "parent_id",        limit: 4
     t.integer "submitted_by",     limit: 4
     t.boolean "hidden"
     t.date    "submitted"
@@ -74,10 +77,11 @@ ActiveRecord::Schema.define(version: 20160511002340) do
     t.text    "text_body",        limit: 65535
     t.integer "commentable_id",   limit: 4
     t.string  "commentable_type", limit: 255
+    t.integer "children_count",   limit: 4,     default: 0
   end
 
   add_index "comments", ["commentable_type", "commentable_id"], name: "index_comments_on_commentable_type_and_commentable_id", using: :btree
-  add_index "comments", ["parent_comment"], name: "parent_comment", using: :btree
+  add_index "comments", ["parent_id"], name: "parent_comment", using: :btree
   add_index "comments", ["submitted_by"], name: "submitted_by", using: :btree
 
   create_table "compatibility_note_history_entries", force: :cascade do |t|
@@ -104,12 +108,17 @@ ActiveRecord::Schema.define(version: 20160511002340) do
     t.datetime "submitted"
     t.datetime "edited"
     t.text     "text_body",               limit: 65535
-    t.integer  "incorrect_notes_count",   limit: 4,     default: 0
+    t.integer  "corrections_count",       limit: 4,     default: 0
     t.integer  "compatibility_mod_id",    limit: 4
     t.boolean  "hidden",                                default: false, null: false
     t.integer  "first_mod_id",            limit: 4
     t.integer  "second_mod_id",           limit: 4
     t.integer  "game_id",                 limit: 4,                     null: false
+    t.boolean  "approved",                              default: false
+    t.string   "moderator_message",       limit: 255
+    t.integer  "helpful_count",           limit: 4,     default: 0
+    t.integer  "not_helpful_count",       limit: 4,     default: 0
+    t.integer  "history_entries_count",   limit: 4,     default: 0
   end
 
   add_index "compatibility_notes", ["compatibility_plugin_id"], name: "compatibility_patch", using: :btree
@@ -119,13 +128,42 @@ ActiveRecord::Schema.define(version: 20160511002340) do
   add_index "compatibility_notes", ["submitted_by"], name: "submitted_by", using: :btree
 
   create_table "config_files", force: :cascade do |t|
-    t.integer "game_id",           limit: 4,     null: false
-    t.string  "filename",          limit: 64,    null: false
-    t.string  "install_path",      limit: 128,   null: false
+    t.integer "game_id",           limit: 4,                 null: false
+    t.string  "filename",          limit: 64,                null: false
+    t.string  "install_path",      limit: 128,               null: false
     t.text    "default_text_body", limit: 65535
+    t.integer "mod_lists_count",   limit: 4,     default: 0
   end
 
   add_index "config_files", ["game_id", "filename"], name: "index_config_files_on_game_id_and_filename", using: :btree
+
+  create_table "corrections", force: :cascade do |t|
+    t.integer  "submitted_by",     limit: 4,                     null: false
+    t.text     "text_body",        limit: 65535,                 null: false
+    t.integer  "correctable_id",   limit: 4,                     null: false
+    t.string   "correctable_type", limit: 255,                   null: false
+    t.datetime "submitted"
+    t.datetime "edited"
+    t.boolean  "hidden",                         default: false, null: false
+    t.integer  "game_id",          limit: 4,                     null: false
+    t.integer  "comments_count",   limit: 4,     default: 0
+    t.integer  "agree_count",      limit: 4,     default: 0
+    t.integer  "disagree_count",   limit: 4,     default: 0
+    t.integer  "status",           limit: 1,     default: 0
+    t.string   "title",            limit: 64,                    null: false
+  end
+
+  add_index "corrections", ["correctable_type", "correctable_id"], name: "index_corrections_on_correctable_type_and_correctable_id", using: :btree
+  add_index "corrections", ["game_id"], name: "fk_rails_6d40e5f2cc", using: :btree
+  add_index "corrections", ["submitted_by"], name: "submitted_by", using: :btree
+
+  create_table "custom_sources", force: :cascade do |t|
+    t.integer "mod_id", limit: 4,   null: false
+    t.string  "label",  limit: 255
+    t.string  "url",    limit: 255, null: false
+  end
+
+  add_index "custom_sources", ["mod_id"], name: "fk_rails_4da082b3d0", using: :btree
 
   create_table "dummy_masters", id: false, force: :cascade do |t|
     t.integer "plugin_id", limit: 4
@@ -136,19 +174,33 @@ ActiveRecord::Schema.define(version: 20160511002340) do
   add_index "dummy_masters", ["plugin_id"], name: "fk_rails_2552b596d8", using: :btree
 
   create_table "games", force: :cascade do |t|
-    t.string "display_name",  limit: 32
-    t.string "long_name",     limit: 128
-    t.string "abbr_name",     limit: 32
-    t.string "exe_name",      limit: 32
-    t.string "steam_app_ids", limit: 64
-    t.string "nexus_name",    limit: 16
+    t.string  "display_name",              limit: 32
+    t.string  "long_name",                 limit: 128
+    t.string  "abbr_name",                 limit: 32
+    t.string  "exe_name",                  limit: 32
+    t.string  "steam_app_ids",             limit: 64
+    t.string  "nexus_name",                limit: 16
+    t.integer "asset_files_count",         limit: 4,   default: 0
+    t.integer "mods_count",                limit: 4,   default: 0
+    t.integer "nexus_infos_count",         limit: 4,   default: 0
+    t.integer "lover_infos_count",         limit: 4,   default: 0
+    t.integer "workshop_infos_count",      limit: 4,   default: 0
+    t.integer "mod_lists_count",           limit: 4,   default: 0
+    t.integer "config_files_count",        limit: 4,   default: 0
+    t.integer "compatibility_notes_count", limit: 4,   default: 0
+    t.integer "install_order_notes_count", limit: 4,   default: 0
+    t.integer "load_order_notes_count",    limit: 4,   default: 0
+    t.integer "reviews_count",             limit: 4,   default: 0
+    t.integer "plugins_count",             limit: 4,   default: 0
+    t.integer "corrections_count",         limit: 4,   default: 0
   end
 
   create_table "help_pages", force: :cascade do |t|
-    t.string   "name",      limit: 128,   null: false
+    t.string   "name",           limit: 128,               null: false
     t.datetime "submitted"
     t.datetime "edited"
-    t.text     "text_body", limit: 65535
+    t.text     "text_body",      limit: 65535
+    t.integer  "comments_count", limit: 4,     default: 0
   end
 
   create_table "helpful_marks", id: false, force: :cascade do |t|
@@ -161,21 +213,6 @@ ActiveRecord::Schema.define(version: 20160511002340) do
 
   add_index "helpful_marks", ["helpfulable_type", "helpfulable_id"], name: "index_helpful_marks_on_helpfulable_type_and_helpfulable_id", using: :btree
   add_index "helpful_marks", ["submitted_by"], name: "submitted_by", using: :btree
-
-  create_table "incorrect_notes", force: :cascade do |t|
-    t.integer  "submitted_by",     limit: 4
-    t.text     "text_body",        limit: 65535
-    t.integer  "correctable_id",   limit: 4
-    t.string   "correctable_type", limit: 255
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.boolean  "hidden",                         default: false, null: false
-    t.integer  "game_id",          limit: 4,                     null: false
-  end
-
-  add_index "incorrect_notes", ["correctable_type", "correctable_id"], name: "index_incorrect_notes_on_correctable_type_and_correctable_id", using: :btree
-  add_index "incorrect_notes", ["game_id"], name: "fk_rails_6d40e5f2cc", using: :btree
-  add_index "incorrect_notes", ["submitted_by"], name: "submitted_by", using: :btree
 
   create_table "install_order_note_history_entries", force: :cascade do |t|
     t.integer  "install_order_note_id", limit: 4,     null: false
@@ -190,14 +227,21 @@ ActiveRecord::Schema.define(version: 20160511002340) do
   add_index "install_order_note_history_entries", ["submitted_by"], name: "fk_rails_18a032d0ac", using: :btree
 
   create_table "install_order_notes", force: :cascade do |t|
-    t.integer  "submitted_by",  limit: 4,                     null: false
-    t.integer  "first_mod_id",  limit: 4,                     null: false
-    t.integer  "second_mod_id", limit: 4,                     null: false
+    t.integer  "submitted_by",          limit: 4,                     null: false
+    t.integer  "first_mod_id",          limit: 4,                     null: false
+    t.integer  "second_mod_id",         limit: 4,                     null: false
     t.datetime "submitted"
     t.datetime "edited"
-    t.text     "text_body",     limit: 65535
-    t.boolean  "hidden",                      default: false, null: false
-    t.integer  "game_id",       limit: 4,                     null: false
+    t.text     "text_body",             limit: 65535
+    t.boolean  "hidden",                              default: false, null: false
+    t.integer  "game_id",               limit: 4,                     null: false
+    t.boolean  "approved",                            default: false
+    t.string   "moderator_message",     limit: 255
+    t.integer  "helpful_count",         limit: 4,     default: 0
+    t.integer  "not_helpful_count",     limit: 4,     default: 0
+    t.integer  "history_entries_count", limit: 4,     default: 0
+    t.integer  "comments_count",        limit: 4,     default: 0
+    t.integer  "corrections_count",     limit: 4,     default: 0
   end
 
   add_index "install_order_notes", ["first_mod_id"], name: "fk_rails_bc30c8f58f", using: :btree
@@ -218,14 +262,19 @@ ActiveRecord::Schema.define(version: 20160511002340) do
   add_index "load_order_note_history_entries", ["submitted_by"], name: "fk_rails_478afef4a8", using: :btree
 
   create_table "load_order_notes", force: :cascade do |t|
-    t.integer  "submitted_by",     limit: 4,                     null: false
-    t.integer  "first_plugin_id",  limit: 4,                     null: false
-    t.integer  "second_plugin_id", limit: 4,                     null: false
+    t.integer  "submitted_by",      limit: 4,                     null: false
+    t.integer  "first_plugin_id",   limit: 4,                     null: false
+    t.integer  "second_plugin_id",  limit: 4,                     null: false
     t.datetime "submitted"
     t.datetime "edited"
-    t.text     "text_body",        limit: 65535
-    t.boolean  "hidden",                         default: false, null: false
-    t.integer  "game_id",          limit: 4,                     null: false
+    t.text     "text_body",         limit: 65535
+    t.boolean  "hidden",                          default: false, null: false
+    t.integer  "game_id",           limit: 4,                     null: false
+    t.boolean  "approved",                        default: false
+    t.string   "moderator_message", limit: 255
+    t.integer  "helpful_count",     limit: 4,     default: 0
+    t.integer  "not_helpful_count", limit: 4,     default: 0
+    t.integer  "corrections_count", limit: 4,     default: 0
   end
 
   add_index "load_order_notes", ["first_plugin_id"], name: "fk_rails_d6c931c1cc", using: :btree
@@ -234,20 +283,20 @@ ActiveRecord::Schema.define(version: 20160511002340) do
   add_index "load_order_notes", ["submitted_by"], name: "fk_rails_9992d700a9", using: :btree
 
   create_table "lover_infos", force: :cascade do |t|
-    t.integer  "mod_id",          limit: 4
-    t.string   "name",            limit: 255
-    t.string   "uploaded_by",     limit: 128
-    t.string   "submitted",       limit: 255
-    t.string   "updated",         limit: 255
+    t.integer  "mod_id",            limit: 4
+    t.string   "mod_name",          limit: 255
+    t.string   "uploaded_by",       limit: 128
+    t.string   "date_submitted",    limit: 255
+    t.string   "date_updated",      limit: 255
     t.datetime "last_scraped"
-    t.integer  "followers_count", limit: 4,   default: 0
-    t.integer  "size",            limit: 4,   default: 0
-    t.integer  "views",           limit: 4,   default: 0
-    t.integer  "downloads",       limit: 4,   default: 0
-    t.boolean  "has_stats",                   default: false
-    t.string   "version",         limit: 32
-    t.boolean  "is_adult"
-    t.integer  "game_id",         limit: 4
+    t.integer  "followers_count",   limit: 4,   default: 0
+    t.integer  "file_size",         limit: 4,   default: 0
+    t.integer  "views",             limit: 4,   default: 0
+    t.integer  "downloads",         limit: 4,   default: 0
+    t.boolean  "has_stats",                     default: false
+    t.string   "current_version",   limit: 32
+    t.boolean  "has_adult_content"
+    t.integer  "game_id",           limit: 4
   end
 
   add_index "lover_infos", ["game_id"], name: "fk_rails_0c0c747a5a", using: :btree
@@ -376,8 +425,8 @@ ActiveRecord::Schema.define(version: 20160511002340) do
     t.boolean  "hidden",                                  default: true, null: false
     t.boolean  "has_adult_content"
     t.integer  "status",                    limit: 1,     default: 0,    null: false
-    t.datetime "created"
-    t.datetime "completed"
+    t.datetime "submitted"
+    t.datetime "edited"
     t.text     "description",               limit: 65535
     t.integer  "game_id",                   limit: 4
     t.integer  "comments_count",            limit: 4,     default: 0
@@ -386,9 +435,13 @@ ActiveRecord::Schema.define(version: 20160511002340) do
     t.integer  "custom_plugins_count",      limit: 4,     default: 0
     t.integer  "compatibility_notes_count", limit: 4,     default: 0
     t.integer  "install_order_notes_count", limit: 4,     default: 0
-    t.integer  "user_stars_count",          limit: 4,     default: 0
+    t.integer  "stars_count",               limit: 4,     default: 0
     t.integer  "load_order_notes_count",    limit: 4,     default: 0
     t.string   "name",                      limit: 255
+    t.integer  "active_plugins_count",      limit: 4,     default: 0
+    t.integer  "tags_count",                limit: 4,     default: 0
+    t.integer  "config_files_count",        limit: 4,     default: 0
+    t.integer  "custom_config_files_count", limit: 4,     default: 0
   end
 
   add_index "mod_lists", ["created_by"], name: "created_by", using: :btree
@@ -421,25 +474,33 @@ ActiveRecord::Schema.define(version: 20160511002340) do
   add_index "mod_tags", ["tag_id"], name: "fk_rails_ffd7f5019d", using: :btree
 
   create_table "mods", force: :cascade do |t|
-    t.string   "name",                      limit: 128
+    t.string   "name",                      limit: 128,                 null: false
     t.string   "aliases",                   limit: 128
-    t.boolean  "is_utility"
-    t.boolean  "has_adult_content"
-    t.integer  "game_id",                   limit: 4
+    t.boolean  "is_utility",                            default: false
+    t.boolean  "has_adult_content",                     default: false
+    t.integer  "game_id",                   limit: 4,                   null: false
     t.integer  "primary_category_id",       limit: 4
     t.integer  "secondary_category_id",     limit: 4
-    t.integer  "mod_stars_count",           limit: 4,   default: 0
+    t.integer  "stars_count",               limit: 4,   default: 0
     t.integer  "reviews_count",             limit: 4,   default: 0
     t.integer  "compatibility_notes_count", limit: 4,   default: 0
     t.integer  "install_order_notes_count", limit: 4,   default: 0
     t.integer  "load_order_notes_count",    limit: 4,   default: 0
     t.integer  "status",                    limit: 1,   default: 0,     null: false
     t.boolean  "hidden",                                default: false, null: false
-    t.integer  "submitted_by",              limit: 4,                   null: false
+    t.integer  "submitted_by",              limit: 4
     t.float    "reputation",                limit: 24,  default: 0.0
     t.float    "average_rating",            limit: 24,  default: 0.0
-    t.datetime "released"
-    t.float    "update_rate",               limit: 24,  default: 0.0
+    t.datetime "released",                                              null: false
+    t.datetime "updated"
+    t.integer  "plugins_count",             limit: 4,   default: 0
+    t.integer  "required_mods_count",       limit: 4,   default: 0
+    t.integer  "mod_lists_count",           limit: 4,   default: 0
+    t.integer  "asset_files_count",         limit: 4,   default: 0
+    t.integer  "required_by_count",         limit: 4,   default: 0
+    t.integer  "tags_count",                limit: 4,   default: 0
+    t.boolean  "is_official",                           default: false
+    t.string   "authors",                   limit: 128,                 null: false
   end
 
   add_index "mods", ["game_id"], name: "fk_rails_3ec448a848", using: :btree
@@ -490,10 +551,10 @@ ActiveRecord::Schema.define(version: 20160511002340) do
     t.integer "plugin_id", limit: 4,   null: false
     t.string  "signature", limit: 4,   null: false
     t.integer "form_id",   limit: 4,   null: false
-    t.integer "type",      limit: 1,   null: false
-    t.string  "path",      limit: 255
-    t.string  "name",      limit: 255
-    t.string  "data",      limit: 64
+    t.integer "group",     limit: 1,   null: false
+    t.string  "path",      limit: 400
+    t.string  "name",      limit: 400
+    t.string  "data",      limit: 255
   end
 
   add_index "plugin_errors", ["plugin_id"], name: "fk_rails_21e72cc4b6", using: :btree
@@ -508,15 +569,18 @@ ActiveRecord::Schema.define(version: 20160511002340) do
   add_index "plugin_record_groups", ["plugin_id"], name: "pl_id", using: :btree
 
   create_table "plugins", force: :cascade do |t|
-    t.integer "mod_id",         limit: 4
-    t.string  "filename",       limit: 64
-    t.string  "author",         limit: 128
-    t.string  "description",    limit: 512
-    t.string  "crc_hash",       limit: 8
-    t.integer "record_count",   limit: 4
-    t.integer "override_count", limit: 4
-    t.integer "file_size",      limit: 4
-    t.integer "game_id",        limit: 4,   null: false
+    t.integer "mod_id",                 limit: 4
+    t.string  "filename",               limit: 64
+    t.string  "author",                 limit: 128
+    t.string  "description",            limit: 512
+    t.string  "crc_hash",               limit: 8
+    t.integer "record_count",           limit: 4
+    t.integer "override_count",         limit: 4
+    t.integer "file_size",              limit: 4
+    t.integer "game_id",                limit: 4,               null: false
+    t.integer "errors_count",           limit: 4,   default: 0
+    t.integer "mod_lists_count",        limit: 4,   default: 0
+    t.integer "load_order_notes_count", limit: 4,   default: 0
   end
 
   add_index "plugins", ["game_id"], name: "fk_rails_5a7ba47709", using: :btree
@@ -544,8 +608,8 @@ ActiveRecord::Schema.define(version: 20160511002340) do
     t.integer  "submitted_by",   limit: 4,   null: false
     t.integer  "type",           limit: 1,   null: false
     t.string   "note",           limit: 128
-    t.datetime "created_at",                 null: false
-    t.datetime "updated_at",                 null: false
+    t.datetime "submitted",                  null: false
+    t.datetime "edited",                     null: false
   end
 
   add_index "reports", ["base_report_id"], name: "fk_rails_619eb511d7", using: :btree
@@ -578,14 +642,20 @@ ActiveRecord::Schema.define(version: 20160511002340) do
   add_index "review_sections", ["category_id"], name: "fk_rails_82a032f049", using: :btree
 
   create_table "reviews", force: :cascade do |t|
-    t.integer  "submitted_by",          limit: 4
-    t.integer  "mod_id",                limit: 4
+    t.integer  "submitted_by",      limit: 4
+    t.integer  "mod_id",            limit: 4
     t.boolean  "hidden"
     t.datetime "submitted"
     t.datetime "edited"
-    t.text     "text_body",             limit: 65535
-    t.integer  "incorrect_notes_count", limit: 4,     default: 0
-    t.integer  "game_id",               limit: 4,                 null: false
+    t.text     "text_body",         limit: 65535
+    t.integer  "corrections_count", limit: 4,     default: 0
+    t.integer  "game_id",           limit: 4,                     null: false
+    t.boolean  "approved",                        default: false
+    t.string   "moderator_message", limit: 255
+    t.integer  "helpful_count",     limit: 4,     default: 0
+    t.integer  "not_helpful_count", limit: 4,     default: 0
+    t.integer  "ratings_count",     limit: 4,     default: 0
+    t.float    "overall_rating",    limit: 24,    default: 0.0
   end
 
   add_index "reviews", ["game_id"], name: "fk_rails_dfb9dc48b4", using: :btree
@@ -605,28 +675,29 @@ ActiveRecord::Schema.define(version: 20160511002340) do
   add_index "tags", ["submitted_by"], name: "fk_rails_8c7521065c", using: :btree
 
   create_table "user_bios", force: :cascade do |t|
-    t.string  "nexus_username",           limit: 32
-    t.string  "nexus_verification_token", limit: 32
-    t.string  "lover_username",           limit: 32
-    t.string  "lover_verification_token", limit: 32
-    t.string  "steam_username",           limit: 32
-    t.boolean "steam_verified"
-    t.integer "user_id",                  limit: 4
-    t.string  "nexus_user_path",          limit: 64
-    t.string  "lover_user_path",          limit: 64
+    t.string  "nexus_username",              limit: 32
+    t.string  "nexus_verification_token",    limit: 32
+    t.string  "lover_username",              limit: 32
+    t.string  "lover_verification_token",    limit: 32
+    t.string  "workshop_user_path",          limit: 64
+    t.string  "workshop_username",           limit: 32
+    t.integer "user_id",                     limit: 4
+    t.string  "nexus_user_path",             limit: 64
+    t.string  "lover_user_path",             limit: 64
     t.date    "nexus_date_joined"
-    t.integer "nexus_posts_count",        limit: 4,  default: 0
+    t.integer "nexus_posts_count",           limit: 4,  default: 0
     t.date    "lover_date_joined"
-    t.integer "lover_posts_count",        limit: 4,  default: 0
-    t.integer "steam_submissions_count",  limit: 4,  default: 0
-    t.integer "steam_followers_count",    limit: 4,  default: 0
+    t.integer "lover_posts_count",           limit: 4,  default: 0
+    t.integer "workshop_submissions_count",  limit: 4,  default: 0
+    t.integer "workshop_followers_count",    limit: 4,  default: 0
+    t.string  "workshop_verification_token", limit: 32
   end
 
   add_index "user_bios", ["user_id"], name: "user_id", using: :btree
 
   create_table "user_reputations", force: :cascade do |t|
-    t.float    "overall",          limit: 24
-    t.float    "offset",           limit: 24
+    t.float    "overall",          limit: 24, default: 5.0
+    t.float    "offset",           limit: 24, default: 5.0
     t.integer  "user_id",          limit: 4
     t.float    "site_rep",         limit: 24
     t.float    "contribution_rep", limit: 24
@@ -634,6 +705,8 @@ ActiveRecord::Schema.define(version: 20160511002340) do
     t.float    "given_rep",        limit: 24
     t.datetime "last_computed"
     t.boolean  "dont_compute"
+    t.integer  "rep_from_count",   limit: 4,  default: 0
+    t.integer  "rep_to_count",     limit: 4,  default: 0
   end
 
   add_index "user_reputations", ["user_id"], name: "user_id", using: :btree
@@ -651,7 +724,7 @@ ActiveRecord::Schema.define(version: 20160511002340) do
     t.string  "timezone",             limit: 128
     t.string  "udate_format",         limit: 128
     t.string  "utime_format",         limit: 128
-    t.boolean "allow_comments"
+    t.boolean "allow_comments",                   default: true
     t.string  "theme",                limit: 255
   end
 
@@ -688,12 +761,12 @@ ActiveRecord::Schema.define(version: 20160511002340) do
     t.integer  "reviews_count",             limit: 4,     default: 0
     t.integer  "install_order_notes_count", limit: 4,     default: 0
     t.integer  "compatibility_notes_count", limit: 4,     default: 0
-    t.integer  "incorrect_notes_count",     limit: 4,     default: 0
+    t.integer  "corrections_count",         limit: 4,     default: 0
     t.integer  "agreement_marks_count",     limit: 4,     default: 0
-    t.integer  "mods_count",                limit: 4,     default: 0
+    t.integer  "submitted_mods_count",      limit: 4,     default: 0
     t.integer  "starred_mods_count",        limit: 4,     default: 0
     t.integer  "starred_mod_lists_count",   limit: 4,     default: 0
-    t.integer  "profile_comments_count",    limit: 4,     default: 0
+    t.integer  "submitted_comments_count",  limit: 4,     default: 0
     t.integer  "mod_stars_count",           limit: 4,     default: 0
     t.text     "about_me",                  limit: 65535
     t.integer  "load_order_notes_count",    limit: 4,     default: 0
@@ -705,6 +778,13 @@ ActiveRecord::Schema.define(version: 20160511002340) do
     t.integer  "invited_by_id",             limit: 4
     t.string   "invited_by_type",           limit: 255
     t.integer  "invitations_count",         limit: 4,     default: 0
+    t.integer  "mod_lists_count",           limit: 4,     default: 0
+    t.integer  "mod_collections_count",     limit: 4,     default: 0
+    t.integer  "helpful_marks_count",       limit: 4,     default: 0
+    t.integer  "tags_count",                limit: 4,     default: 0
+    t.integer  "mod_tags_count",            limit: 4,     default: 0
+    t.integer  "mod_list_tags_count",       limit: 4,     default: 0
+    t.integer  "authored_mods_count",       limit: 4,     default: 0
   end
 
   add_index "users", ["active_mod_list_id"], name: "active_ml_id", using: :btree
@@ -733,18 +813,19 @@ ActiveRecord::Schema.define(version: 20160511002340) do
     t.integer  "images_count",      limit: 4,   default: 0
     t.integer  "videos_count",      limit: 4,   default: 0
     t.boolean  "has_stats",                     default: false
+    t.integer  "game_id",           limit: 4,                   null: false
   end
 
   add_index "workshop_infos", ["mod_id"], name: "fk_rails_8707144ad7", using: :btree
 
-  add_foreign_key "agreement_marks", "incorrect_notes", name: "agreement_marks_ibfk_1"
+  add_foreign_key "agreement_marks", "corrections"
   add_foreign_key "agreement_marks", "users", column: "submitted_by", name: "agreement_marks_ibfk_2"
   add_foreign_key "articles", "users", column: "submitted_by"
   add_foreign_key "asset_files", "games"
   add_foreign_key "categories", "categories", column: "parent_id"
   add_foreign_key "category_priorities", "categories", column: "dominant_id"
   add_foreign_key "category_priorities", "categories", column: "recessive_id"
-  add_foreign_key "comments", "comments", column: "parent_comment", name: "comments_ibfk_1"
+  add_foreign_key "comments", "comments", column: "parent_id", name: "comments_ibfk_1"
   add_foreign_key "comments", "users", column: "submitted_by", name: "comments_ibfk_2"
   add_foreign_key "compatibility_note_history_entries", "compatibility_notes"
   add_foreign_key "compatibility_note_history_entries", "mods", column: "compatibility_mod_id"
@@ -756,10 +837,11 @@ ActiveRecord::Schema.define(version: 20160511002340) do
   add_foreign_key "compatibility_notes", "plugins", column: "compatibility_plugin_id", name: "compatibility_notes_ibfk_2"
   add_foreign_key "compatibility_notes", "users", column: "submitted_by", name: "compatibility_notes_ibfk_1"
   add_foreign_key "config_files", "games"
+  add_foreign_key "corrections", "games"
+  add_foreign_key "corrections", "users", column: "submitted_by", name: "corrections_ibfk_4"
+  add_foreign_key "custom_sources", "mods"
   add_foreign_key "dummy_masters", "plugins"
   add_foreign_key "helpful_marks", "users", column: "submitted_by", name: "helpful_marks_ibfk_4"
-  add_foreign_key "incorrect_notes", "games"
-  add_foreign_key "incorrect_notes", "users", column: "submitted_by", name: "incorrect_notes_ibfk_4"
   add_foreign_key "install_order_note_history_entries", "install_order_notes"
   add_foreign_key "install_order_note_history_entries", "users", column: "submitted_by"
   add_foreign_key "install_order_notes", "games"

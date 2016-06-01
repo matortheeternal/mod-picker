@@ -1,0 +1,200 @@
+Article:
+  - Has many comments
+    + Counter Cache on comments_count
+  
+Asset File:
+  - Has many mod_asset_files
+    + Counter Cache on mod_asset_files_count
+
+Base Report:
+  - Has many reports
+    + Counter Cache on reports_count
+
+Comment:
+  - Has many children comments
+    + Counter Cache on children_count
+
+Compatibility Note:
+  - Has many helpful_marks
+    + Counter Cache Helpful = True on helpful_count
+    + Counter Cache Helpful = False on not_helpful_count
+  - Has many compatibility_note_history_entries
+    + Counter Cache on history_entries_count
+  - Has many incorrect_notes
+    + Counter Cache on incorrect_notes_count
+
+Config File:
+  - Has many mod_lists
+    + Counter Cache on mod_lists_count
+
+Game:
+  > USE LAZY CACHING - update counter cache columns once per day
+  - Has many asset_files
+    + Counter Cache on asset_files_count
+  - Has many mods
+    + Counter Cache on mods_count
+  - Has many nexus_infos
+    + Counter Cache on nexus_infos_count
+  - Has many lover_infos
+    + Counter Cache on lover_infos_count
+  - Has many workshop_infos
+    + Counter Cache on workshop_infos_count
+  - Has many mod_lists
+    + Counter Cache on mod_lists_count
+  - Has many config_files
+    + Counter Cache on config_files_count
+  - Has many compatibility_notes
+    + Counter Cache on compatibility_notes_count
+  - Has many install_order_notes
+    + Counter Cache on install_order_notes_count
+  - Has many load_order_notes
+    + Counter Cache on load_order_notes_count
+  - Has many incorrect_notes
+    + Counter Cache on incorrect_notes_count
+  - Has many reviews
+    + Counter Cache on reviews_count
+  - Has many plugins
+    + Counter Cache on plugins_count
+
+Help Page:
+  - Has many comments
+    + Counter Cache on comments_count
+
+Incorrect Note:
+  - Has many agreement_marks
+    + Counter Cache Agree = True on agree_count
+    + Counter Cache Agree = False on disagree_count
+  - Has many comments
+    + Counter Cache on comments_count
+
+Install Order Note:
+  - Has many helpful_marks
+    + Counter Cache Helpful = True on helpful_count
+    + Counter Cache Helpful = False on not_helpful_count
+  - Has many install_order_note_history_entries
+    + Counter Cache on history_entries_count
+  - Has many incorrect_notes
+    + Counter Cache on incorrect_notes_count
+
+Load Order Note:
+  - Has many helpful_marks
+    + Counter Cache Helpful = True on helpful_count
+    + Counter Cache Helpful = False on not_helpful_count
+  - Has many load_order_note_history_entries
+    + Counter Cache on history_entries_count
+  - Has many incorrect_notes
+    + Counter Cache on incorrect_notes_count
+
+Mod:
+  - Has many mod_asset_files
+    + Counter Cache on asset_files_count
+  - Has many plugins
+    + Counter Cache on plugins_count
+  - Has many required_mods
+    + Counter Cache on required_mods_count
+  - Has many required_by
+    + Counter Cache on required_by_count
+  - Has many mod_stars
+    + Counter Cache on stars_count
+  - Has many mod_tags
+    + Counter Cache on tags_count
+  - Has many reviews
+    + Counter Cache on reviews_count
+  - Has many compatibility_notes
+    + Counter Cache on compatibility_notes_count
+  - Has many install_order_notes
+    + Counter Cache on install_order_notes_count
+  - Has many load_order_notes
+    + Counter Cache on load_order_notes_count
+  - Has many mod_list_mods
+    + Counter Cache on mod_lists_count
+
+Mod List:
+  - Has many mod_list_mods
+    + Counter Cache on mods_count
+  - Has many mod_list_plugins
+    + Counter Cache on plugins_count
+  - Has many active_plugins
+    + Counter Cache on active_plugins_count
+  - Has many custom_plugins
+    + Counter Cache on custom_plugins_count
+  - Has many compatibility_notes
+    + Counter Cache on compatibility_notes_count
+  - Has many install_order_notes
+    + Counter Cache on install_order_notes_count
+  - Has many load_order_notes
+    + Counter Cache on load_order_notes_count
+  - Has many mod_list_stars
+    + Counter Cache on stars_count
+  - Has many mod_list_tags
+    + Counter Cache on tags_count
+  - Has many comments
+    + Counter Cache on comments_count
+  - Has many mod_list_config_files
+    + Counter Cache on config_files_count
+  - Has many mod_list_custom_config_files
+    + Counter Cache on custom_config_files_count
+
+Plugin:
+  - Has many plugin_errors
+    + Counter Cache on errors_count
+  - Has many mod_lists
+    + Counter Cache on mod_lists_count
+  - Has many load_order_notes
+    + Counter Cache on load_order_notes_count
+
+Review:
+  - Has many review_ratings
+    + Counter Cache on ratings_count
+  - Has many helpful_marks
+    + Counter Cache Helpful = True on helpful_count
+    + Counter Cache Helpful = False on not_helpful_count
+
+Tag:
+  - Has many mod_tags
+    + Counter Cache on mods_count
+  - Has many mod_list_tags
+    + Counter Cache on mod_lists_count
+
+User:
+  - Has many comments
+    + Counter Cache on submitted_comments_count
+  - Has many reviews
+    + Counter Cache on reviews_count
+  - Has many compatibility_notes
+    + Counter Cache on compatibility_notes_count
+  - Has many load_order_notes
+    + Counter Cache on load_order_notes_count
+  - Has many install_order_notes
+    + Counter Cache on install_order_notes_count
+  - Has many incorrect_notes
+    + Counter Cache on incorrect_notes_count
+  - Has many agreement_marks
+    + Counter Cache on agreement_marks_count
+  - Has many helpful_marks
+    + Counter Cache on helpful_marks_count
+  - Has many tags
+    + Counter Cache on tags_count
+  - Has many mod_tags
+    + Counter Cache on mod_tags_count
+  - Has many mod_list_tags
+    + Counter Cache on mod_list_tags_count
+  - Has many authored_mods
+    + Counter Cache on authored_mods_count
+  - Has many submitted_mods
+    + Counter Cache on submitted_mods_count
+  - Has many mod_lists
+    + Counter Cache IsCollection = True on mod_collections_count
+    + Counter Cache IsCollection = False on mod_lists_count
+  - Has many starred_mods
+    + Counter Cache on starred_mods_count
+  - Has many starred_mod_lists
+    + Counter Cache on starred_mod_lists_count
+  - Has many profile_comments
+    + Counter Cache on comments_count
+
+User Reputation:
+  - Has many from_links
+    + Counter Cache on rep_from_count
+  - Has many to_links
+    + Counter Cache on rep_to_count

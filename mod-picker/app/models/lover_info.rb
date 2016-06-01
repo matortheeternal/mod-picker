@@ -2,13 +2,26 @@ class LoverInfo < ActiveRecord::Base
   belongs_to :mod
   belongs_to :game
 
+  # Callbacks
+  after_save :update_mod_dates
+
+  def update_mod_dates
+    if self.mod_id.blank?
+      return
+    end
+
+    hash = Hash.new
+    hash[:updated] = self.date_updated if self.mod.updated.nil? || self.mod.updated < self.date_updated
+    hash[:released] = self.date_submitted if self.mod.released.nil? || self.mod.released > self.date_submitted
+
+    if hash.any?
+      self.mod.update_columns(hash)
+    end
+  end
+
   def scrape
     # retrieve using the Lover Helper
     mod_data = LoverHelper.retrieve_mod(id)
-
-    # remove screenshot field
-    screenshot = mod_data.delete("screenshot")
-    mod_data["game_id"] = Game.find_by(nexus_name: mod_data.delete("game")).id
 
     # write the results to the lover info record
     self.assign_attributes(mod_data)

@@ -1,7 +1,5 @@
 class InstallOrderNote < ActiveRecord::Base
-  include Filterable
-
-  after_initialize :init
+  include Filterable, RecordEnhancements
 
   scope :by, -> (id) { where(submitted_by: id) }
   scope :mod, -> (id) { joins(:mod_versions).where(:mod_versions => {mod_id: id}) }
@@ -20,35 +18,68 @@ class InstallOrderNote < ActiveRecord::Base
 
   # community feedback on this install order note
   has_many :helpful_marks, :as => 'helpfulable'
-  has_many :incorrect_notes, :as => 'correctable'
+  has_many :corrections, :as => 'correctable'
 
-  # validations
+  # old versions of this install order note
+  has_many :install_order_note_history_entries, :inverse_of => 'install_order_note'
+
+  # Validations
   validates :first_mod_id, :second_mod_id, presence: true
-  validates :text_body, length: { in: 64..16384 }
-  
-  
-  # initialize variables if empty/nil
-  def init
-    self.submitted ||= DateTime.now
-  end
+  validates :text_body, length: { in: 256..16384 }
+
+  # Callbacks
+  after_create :increment_counters
+  before_save :set_dates
+  before_destroy :decrement_counters
 
   def mods
     [first_mod, second_mod]
   end
 
-  def as_json(options={})
-    super({
-        :except => [:submitted_by],
-        :include => {
-            :user => {
-                :only => [:id, :username, :role, :title],
-                :include => {
-                    :reputation => {:only => [:overall]}
-                },
-                :methods => :avatar
-            }
-        },
-        :methods => :mods
-    })
+  def recompute_helpful_counts
+    self.helpful_count = HelpfulMark.where(helpfulable_id: self.id, helpfulable_type: "InstallOrderNote", helpful: true).count
+    self.not_helpful_count = HelpfulMark.where(helpfulable_id: self.id, helpfulable_type: "InstallOrderNote", helpful: false).count
   end
+
+  def as_json(options={})
+    if JsonHelpers.json_options_empty(options)
+      default_options = {
+          :except => [:submitted_by],
+          :include => {
+              :user => {
+                  :only => [:id, :username, :role, :title],
+                  :include => {
+                      :reputation => {:only => [:overall]}
+                  },
+                  :methods => :avatar
+              }
+          },
+          :methods => :mods
+      }
+      super(options.merge(default_options))
+    else
+      super(options)
+    end
+  end
+
+  private
+    def set_dates
+      if self.submitted.nil?
+        self.submitted = DateTime.now
+      else
+        self.edited = DateTime.now
+      end
+    end
+
+    def increment_counters
+      self.first_mod.update_counter(:install_order_notes_count, 1)
+      self.second_mod.update_counter(:install_order_notes_count, 1)
+      self.user.update_counter(:install_order_notes_count, 1)
+    end
+
+    def decrement_counters
+      self.first_mod.update_counter(:install_order_notes_count, -1)
+      self.second_mod.update_counter(:install_order_notes_count, -1)
+      self.user.update_counter(:install_order_notes_count, -1)
+    end
 end

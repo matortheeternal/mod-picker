@@ -20,6 +20,9 @@ module ModPicker
     # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
     # config.i18n.default_locale = :de
 
+    # AUTOLOAD LIB
+    config.autoload_paths += %W(#{config.root}/lib)
+
     # SET THE USER AGENT FOR SCRAPING
     config.user_agent = "Mod Picker Scraper"
 

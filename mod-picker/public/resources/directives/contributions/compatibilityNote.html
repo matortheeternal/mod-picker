@@ -1,0 +1,22 @@
+<div class="note-container">
+    <div class="content-title">
+		<span ng-if="modId">
+            <span class="capitalize">{{note.compatibility_type}}</span>
+            {{note.compatibility_verb}}
+            <span ng-if="note.mods[0].id == modId">
+                <a ng-href="#/mod/{{note.mods[1].id}}" target="_blank">{{note.mods[1].name}}</a>
+            </span>
+            <span ng-if="note.mods[1].id == modId">
+                <a ng-href="#/mod/{{note.mods[0].id}}" target="_blank">{{note.mods[0].name}}</a>
+            </span>
+        </span>
+        <span class="right-item">
+            <span class="standing">Good Standing</span>
+        </span>
+    </div>
+    <author-column user="note.user" ng-if="showAuthorColumn" class="author-column" index="index"></author-column>
+    <div class="content-column">
+        <contribution-text target="note"></contribution-text>
+        <contribution-actions target="note" route="'compatibility_notes'" correctable="true" index="index" user="user" edit="edit"></contribution-actions>
+    </div>
+</div>

@@ -3,24 +3,25 @@
         <div class="mod-header-color">
             <div class="page-container mod-header">
                 <section>
-                    <div class="quality-value action-box">
-                        <span class="reputation-number">{{mod.reputation | number:0}}</span>
+                    <div class="quality-item action-box" ng-if="mod.primary_category_id">
+                        <span class="quality-number">{{mod.reputation | number:0}}</span>
                         REPUTATION
                     </div>
 
                     <div class="mod-info">
                         <span class="mod-name">{{mod.name}}</span>
                         <span class="mod-authors-container">by
-                            <span class="mod-authors">{{mod.nexus_infos.authors}}</span>
+                            <span class="mod-authors">{{mod.authors}}</span>
                         </span>
                         <!--<span ng-repeat="author in mod.authors">
                             <a ng-href="#/user/{{author.id}}">{{author.username}}</a>
                         </span>-->
                         <br>
-                        <!-- TODO: reviews currently are on tab 1 -> should be dynamic anyway -> ui-router :D -->
-                        {{mod.reviews.length | number}} reviews
+                        <span ng-if="mod.primary_category_id">
+                            {{mod.reviews_count | number}} reviews
+                        </span>
                         <!-- TODO: add this with css :after content -->
-                        <span class="divider">
+                        <span class="divider" ng-if="mod.primary_category_id && (mod.aliases || permissions.canManage)">
                             |
                         </span>
 
@@ -31,13 +32,12 @@
 
                         <span ng-if="mod.aliases">
                             <strong>Aliases: </strong>{{mod.aliases}}
-                            <span class="divider">
+                            <span class="divider" ng-if="permissions.canManage">
                                 |
                             </span>
                         </span>
 
-                        <!-- TODO: should probably only be visible to the MA / scraper dude-->
-                        <a ng-href="#/editMod/{{mod.id}}">Edit</a>
+                        <a ng-href="#/mod/{{mod.id}}/edit" ng-if="permissions.canManage">Edit</a>
                     </div>
                 </section>
 
@@ -55,9 +55,9 @@
                         </div>
                     </div>
 
-                    <div class="mod-header-box">
+                    <div class="mod-header-box" ng-if="mod.primary_category_id">
                         STATUS
-                        <div class="action-box {{statusClass}}">
+                        <div class="action-box {{statusClass}} capitalize" ng-click="toggleStatusModal(true)">
                             {{mod.status}}
                         </div>
                     </div>
@@ -65,9 +65,80 @@
             </div>
         </div>
 
-        <messages   success-bool="showSuccess"
-            errors="errors"
-            success-message="{{submitMessage}}">
+        <div class="modal-container" ng-if="showStatusModal">
+            <div class="modal huge-modal">
+                <div class="close-modal">
+                    <span class="fa fa-times" ng-click="toggleStatusModal(false)"></span>
+                </div>
+
+                <h2>
+                    {{mod.name}}
+                    <span class="static-box {{statusClass}} capitalize">
+                        {{mod.status}}
+                    </span>
+                </h2>
+                <p ng-show="permissions.canAppeal">
+                    If you'd like to contest this mod's status you can submit an appeal to change it
+                    which will then be reviewed by the community over one week.  If enough users agree
+                    with your appeal, the mod's status will be changed.  You can vote on and participate
+                    in discussion on any currently open appeals.
+                </p>
+                <p ng-hide="permissions.canAppeal">
+                    You don't have enough reputation to submit an appeal to change this mod's status.
+                    You can view past appeals and discussions, but will not be able to vote on them or
+                    participate in discussion until you have gained more reputation.
+                </p>
+                <p>
+                    <a href="/help/Appeals_Process">Click here</a> for more information.
+                </p>
+
+                <h3 class="section-title">Appeals</h3>
+                <loader data="mod.corrections" content-class="appeals-container" spinner-class="big-spinner">
+                    <table ng-if="mod.corrections.length > 0">
+                        <thead>
+                        <tr>
+                            <td>Title</td>
+                            <td>Date Submitted</td>
+                            <td>Submitted by</td>
+                            <td>Comments</td>
+                            <td>Status</td>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="appeal in mod.corrections" ng-class="{ 'appeal-hidden' : appeal.hidden }">
+                            <td class="main-cell">
+                                <a ng-click="showAppeal(appeal.id)">
+                                    {{appeal.title}}
+                                </a>
+                            </td>
+                            <td>{{appeal.submitted | date}}</td>
+                            <td>
+                                <a ng-href="#/profile/{{appeal.submitted_by}}">
+                                    {{appeal.user.username}}
+                                </a>
+                            </td>
+                            <td>{{appeal.comments_count}}</td>
+                            <td>
+                                <span ng-if="appeal.status === 'open'">{{appeal.agree_count / (appeal.agree_count + appeal.disagree_count) | number:0}}% Agree</span>
+                                <div ng-if="appeal.status !== 'open'" class="action-box appeal-{{appeal.status}} capitalize">
+                                    {{appeal.status}}
+                                </div>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <span ng-if="mod.corrections.length == 0">
+                        There have been no appeals on this mod's status.
+                    </span>
+                </loader>
+
+                <div class="action-button-container" ng-if="appealStatus">
+                    <input class="btn action-btn" type="submit" ng-click="startNewAppeal()" value="New Appeal">
+                </div>
+            </div>
+        </div>
+
+        <messages success-bool="showSuccess" errors="errors" success-message="{{submitMessage}}">
         </messages>
 
         <div class="page-container">
@@ -77,89 +148,65 @@
                     <!--Image-->
                     <img ng-src="{{mod.image}}" class="mod-image"/>
 
+                    <!-- General -->
+                    <h3 class="section-title">General</h3>
+                    <div class="stat-block">
+                        <section>
+                            <dt class="stat-title">Date Released</dt>
+                            <dd class="stat-data">{{mod.released | date}}</dd>
+
+                            <dt class="stat-title" ng-if="mod.updated">Date Updated</dt>
+                            <dd class="stat-data" ng-if="mod.updated">{{mod.updated | date}}</dd>
+                        </section>
+                    </div>
+
                     <!--Sources-->
                     <h3 class="section-title">Sources</h3>
                     <section class="sources">
-                        <!-- TODO: I feel like this redundancy here can be killed with a directive -->
-                        <a ng-if="mod.nexus_infos" ng-href="http://www.nexusmods.com/{{game.nexus_name}}/mods/{{mod.nexus_infos.id}}">
-                            <div class="action-box source-box">
-                                <img src="/assets/nexus_logo" class="source-image"/>
-                                <span class="source-label">Nexus</span>
-                            </div>
-                        </a>
-                        <a ng-if="mod.workshop_infos" ng-href="http://steamcommunity.com/sharedfiles/filedetails/{{mod.workshop_infos.id}}">
-                            <div class="action-box source-box">
-                                <img src="/assets/workshop_logo" class="source-image" />
-                                <span class="source-label">Steam</span>
-                            </div>
-                        </a>
-                        <a ng-if="mod.lover_infos" ng-href="http://www.loverslab.com/files/file/{{mod.lover_infos.id}}">
-                            <div class="action-box source-box">
-                                <img src="/assets/lab_logo" class="source-image" />
-                                <span class="source-label">Lab</span>
-                            </div>
-                        </a>
+                        <source-link source="mod.nexus_infos" label="Nexus Mods" link="http://www.nexusmods.com/{{game.nexus_name}}/mods/{{mod.nexus_infos.id}}"></source-link>
+                        <source-link source="mod.workshop_infos" label="Steam Workshop" link="http://steamcommunity.com/sharedfiles/filedetails/{{mod.workshop_infos.id}}"></source-link>
+                        <source-link source="mod.lover_infos" label="Lover's Lab" link="http://www.loverslab.com/files/file/{{mod.lover_infos.id}}"></source-link>
+                        <source-link ng-repeat="source in mod.custom_sources" source="source" label="{{source.label}}" link="{{source.url}}"></source-link>
                     </section>
 
                     <!--Requirements-->
-                    <h3 ng-if="currentVersion.required_mods.length" class="section-title">Requirements</h3>
-                    <section ng-if="currentVersion.required_mods.length">
+                    <h3 ng-if="mod.required_mods.length > 0" class="section-title">Requirements</h3>
+                    <section ng-if="mod.required_mods.length > 0">
                         <ol class="requirements-list">
-                            <li ng-repeat="requirement in requirements">
-                                <a ng-href="#/mod/{{requirement.id}}">
-                                    <strong>{{requirement.name}}</strong>
+                            <li ng-repeat="req in mod.required_mods">
+                                <a ng-href="#/mod/{{req.required_mod.id}}">
+                                    {{req.required_mod.name}}
                                 </a>
-                                <span ng-if="requirement.aliases">({{requirement.aliases}})</span>
                             </li>
                         </ol>
                     </section>
 
-                    <!--Categories-->
-                    <!-- TODO: one line if for readability (even though I like the idea of this ;3 )-->
-                    <h3 class="section-title">Categor<span ng-hide="secondCategory">y</span><span ng-show="secondCategory">ies</span></h3>
-                    <section>
-                        <div ng-show="mod.primary_category_id" class="action-box">{{primaryCategory.name}}</div>
-                        <div ng-show="mod.secondary_category_id" class="action-box">{{secondaryCategory.name}}</div>
-                    </section>
+                    <!-- We hide categories and tags when viewing a mod with no primary category -->
+                    <div ng-if="mod.primary_category_id">
+                        <!--Categories-->
+                        <h3 class="section-title">Categories</h3>
+                        <section>
+                            <div class="action-box">{{primaryCategory.name}}</div>
+                            <div ng-show="mod.secondary_category_id" class="action-box">{{secondaryCategory.name}}</div>
+                        </section>
 
-                    <!--Tags-->
-                    <h3 class="section-title">Tags</h3>
-                    <section>
-                        <tag-selector active-tags="mod.tags" new-tags="newTags" max-tags="10" show-mods-count="true" show-add="userCanAddTags" ></tag-selector>
-                    </section>
+                        <!--Tags-->
+                        <h3 class="section-title">Tags</h3>
+                        <section>
+                            <tag-selector active-tags="mod.tags" new-tags="newTags" max-tags="10" show-mods-count="true" show-add="true" can-create="permissions.canCreateTags" show-remove="permissions.canManage" save-callback="saveTags"></tag-selector>
+                        </section>
+                    </div>
 
                     <!--Site Stats-->
-                    <!-- TODO: kill redundancy-->
-                    <div class="stat-block" ng-if="mod.nexus_infos && mod.nexus_infos.has_stats">
-                        <div class="stat-block-title" ng-click="nexusExpanded = !nexusExpanded">
-                           <h3 class="section-title">Nexus Mods stats</h3>
-                           <i class="fa fa-plus stat-expander" aria-hidden="true" ng-hide="nexusExpanded"></i>
-                           <i class="fa fa-minus stat-expander" aria-hidden="true" ng-show="nexusExpanded"></i>
-                        </div>
-                        <section ng-show="nexusExpanded">
-                            <nexus-stats></nexus-stats>
-                        </section>
-                    </div>
-                    <div class="stat-block" ng-if="mod.workshop_infos && mod.workshop_infos.has_stats">
-                        <div class="stat-block-title" ng-click="workshopExpanded = !workshopExpanded">
-                           <h3 class="section-title">Steam Workshop stats</h3>
-                           <i class="fa fa-plus stat-expander" aria-hidden="true" ng-hide="workshopExpanded"></i>
-                           <i class="fa fa-minus stat-expander" aria-hidden="true" ng-show="workshopExpanded"></i>
-                        </div>
-                        <section ng-show="workshopExpanded">
-                            <workshop-stats></workshop-stats>
-                        </section>
-                    </div>
-                    <div class="stat-block" ng-if="mod.lover_infos && mod.lover_infos.has_stats">
-                        <div class="stat-block-title" ng-click="labExpanded = !labExpanded">
-                           <h3 class="section-title">Lover's Lab stats</h3>
-                           <i class="fa fa-plus stat-expander" aria-hidden="true" ng-hide="labExpanded"></i>
-                           <i class="fa fa-minus stat-expander" aria-hidden="true" ng-show="labExpanded"></i>
-                        </div>
-                        <section ng-show="labExpanded">
-                            <lab-stats></lab-stats>
-                        </section>
-                    </div>
+                    <stat-expander info="mod.nexus_infos" expanded="nexusExpanded" label="Nexus Mods">
+                        <nexus-stats></nexus-stats>
+                    </stat-expander>
+                    <stat-expander info="mod.workshop_infos" expanded="workshopExpanded" label="Steam Workshop">
+                        <workshop-stats></workshop-stats>
+                    </stat-expander>
+                    <stat-expander info="mod.lover_infos" expanded="labExpanded" label="Lover's Lab">
+                        <lab-stats></lab-stats>
+                    </stat-expander>
 
                 </div>
                 <div class="right-column tabs-column">

@@ -26,24 +26,6 @@ def seed_fake_users
   require 'securerandom'
 
   puts "\nSeeding users"
-  # create an admin user
-  pw = SecureRandom.urlsafe_base64
-  User.create!(
-      username: "admin",
-      role: "admin",
-      title: "God",
-      joined: Time.now.to_date,
-      email: "admin@mail.com",
-      password: pw,
-      password_confirmation: pw,
-      sign_in_count: 1,
-      confirmed_at: Time.now.to_date,
-      current_sign_in_at: Time.now.to_date,
-      last_sign_in_at: Time.now.to_date,
-      current_sign_in_ip: Faker::Internet.public_ip_v4_address,
-      last_sign_in_ip: Faker::Internet.public_ip_v4_address
-  )
-  puts "    admin seeded with password: #{pw}"
 
   # generates random date between year 2000 and now.
   def time_rand(from = Time.new(2000), to = Time.now)
@@ -79,11 +61,12 @@ def seed_fake_mods
   # Helper vars
   nexusDateFormat = "%d/%m/%Y - %I:%M%p"
   gameSkyrim = Game.where({display_name: "Skyrim"}).first
-  adminUser = User.find_by(:username => 'admin')
+  adminUser = User.find_by(:role => "admin")
 
   # Top recently endorsed mods
   Mod.create(
       name: "SkyUI",
+      authors: "SkyUI Team",
       primary_category_id: Category.where(name: "Gameplay - User Interface").first.id,
       secondary_category_id: Category.where(name: "Resources - Frameworks").first.id,
       is_utility: false,
@@ -123,19 +106,18 @@ def seed_fake_mods
     author: "SkyUI Team",
     override_count: 0,
     record_count: 8,
-    masters_attributes: [],
-    dummy_masters_attributes: [],
-    plugin_errors_attributes: [],
-    overrides_attributes: [],
     plugin_record_groups_attributes: [{
       sig: "QUST",
       override_count: 0,
       record_count: 7
     }]
   })
+  
+  Mod.last.update_lazy_counters
 
   Mod.create(
       name: "Immersive Armors",
+      authors: "Hothtrooper44",
       primary_category_id: Category.where(name: "Items - Armor, Clothing, & Accessories").first.id,
       is_utility: false,
       has_adult_content: false,
@@ -166,6 +148,7 @@ def seed_fake_mods
 
   Mod.create(
       name: "Skyrim HD - 2K Textures",
+      authors: "NebuLa from AHBmods",
       primary_category_id: Category.where(name: "Audiovisual - Models & Textures").first.id,
       is_utility: false,
       has_adult_content: false,
@@ -196,6 +179,7 @@ def seed_fake_mods
 
   Mod.create(
       name: "RaceMenu",
+      authors: "Expired",
       primary_category_id: Category.where(name: "Gameplay - User Interface").first.id,
       secondary_category_id: Category.where(name: "Resources - Frameworks").first.id,
       is_utility: false,
@@ -227,12 +211,20 @@ def seed_fake_mods
 
   Mod.create(
       name: "Unofficial Skyrim Legendary Edition Patch",
+      authors: "Unofficial Patch Project Team ",
       primary_category_id: Category.where(name: "Fixes").first.id,
       is_utility: false,
       has_adult_content: false,
       game_id: gameSkyrim.id,
       submitted_by: adminUser.id,
-      released: DateTime.strptime("07/11/2015 - 08:41PM", nexusDateFormat)
+      released: DateTime.strptime("07/11/2015 - 08:41PM", nexusDateFormat),
+      required_mods_attributes: [{
+          required_id: Mod.find_by(name: "Dawnguard").id
+      }, {
+          required_id: Mod.find_by(name: "Hearthfire").id
+      }, {
+          required_id: Mod.find_by(name: "Dragonborn").id
+      }]
   )
 
   NexusInfo.create(
@@ -257,6 +249,7 @@ def seed_fake_mods
 
   Mod.create(
       name: "Mod Organizer",
+      authors: "Tannin",
       primary_category_id: Category.where(name: "Utilities - Tools").first.id,
       is_utility: true,
       has_adult_content: false,
@@ -287,6 +280,7 @@ def seed_fake_mods
 
   Mod.create(
       name: "Skyrim Flora Overhaul",
+      authors: "vurt",
       primary_category_id: Category.where(name: "Audiovisual - Models & Textures").first.id,
       is_utility: false,
       has_adult_content: false,
@@ -317,6 +311,7 @@ def seed_fake_mods
 
   Mod.create(
       name: "TES5Edit",
+      authors: "ElminsterAU",
       primary_category_id: Category.where(name: "Utilities - Tools").first.id,
       secondary_category_id: Category.where(name: "Resources - Frameworks").first.id,
       is_utility: true,
@@ -349,6 +344,7 @@ def seed_fake_mods
 # Top mods in the last 59 days
   Mod.create(
       name: "Merge Plugins",
+      authors: "Mator",
       primary_category_id: Category.where(name: "Utilities - Tools").first.id,
       is_utility: true,
       has_adult_content: false,
@@ -379,6 +375,7 @@ def seed_fake_mods
 
   Mod.create(
       name: "The Lily - Armour Mashup",
+      authors: "pottoply",
       primary_category_id: Category.where(name: "Items - Armor, Clothing, & Accessories").first.id,
       is_utility: false,
       has_adult_content: false,
@@ -409,6 +406,7 @@ def seed_fake_mods
 
   Mod.create(
       name: "THE PEOPLE OF SKYRIM ULTIMATE EDITION",
+      authors: "Nesbit",
       primary_category_id: Category.where(name: "Gameplay - Immersion & Role-playing").first.id,
       secondary_category_id: Category.where(name: "New Characters").first.id,
       is_utility: false,
@@ -440,6 +438,7 @@ def seed_fake_mods
 
   Mod.create(
       name: "Skaal You Need - Skaal house and follower",
+      authors: "Elianora",
       primary_category_id: Category.where(name: "Locations - New Player Homes").first.id,
       secondary_category_id: Category.where(name: "New Characters - Allies").first.id,
       is_utility: false,
@@ -471,6 +470,7 @@ def seed_fake_mods
 
   Mod.create(
       name: "SC - Hairstyles",
+      authors: "ShinglesCat",
       primary_category_id: Category.where(name: "Character Appearance - Face Parts").first.id,
       is_utility: false,
       has_adult_content: false,
@@ -501,6 +501,7 @@ def seed_fake_mods
 
   Mod.create(
       name: "Real Names",
+      authors: "Jaxonz and Nellshini",
       primary_category_id: Category.where(name: "Gameplay - Immersion & Role-playing").first.id,
       is_utility: false,
       has_adult_content: false,
@@ -680,7 +681,7 @@ def seed_fake_reviews
           mod_id: mod.id,
           hidden: false,
           submitted: DateTime.now,
-          text_body: Faker::Lorem.paragraph(15)
+          text_body: Faker::Lorem.paragraph(18)
       )
       review.save!
 
@@ -720,7 +721,7 @@ def seed_fake_compatibility_notes
         submitted_by: submitter.id,
         compatibility_type: CompatibilityNote.compatibility_types.keys.sample,
         submitted: Faker::Date.backward(14),
-        text_body: Faker::Lorem.paragraph(4),
+        text_body: Faker::Lorem.paragraph(10),
         first_mod_id: random_mod.id,
         second_mod_id: random_mod.id
     )
@@ -749,14 +750,13 @@ def seed_fake_install_order_notes
   nNotes = Mod.count
   nNotes.times do
     submitter = random_user
-    puts "    Generating install order note"
     ionote = InstallOrderNote.new(
         game_id: gameSkyrim.id,
         submitted_by: submitter.id,
         first_mod_id: random_mod.id,
         second_mod_id: random_mod.id,
         submitted: Faker::Date.backward(14),
-        text_body: Faker::Lorem.paragraph(4)
+        text_body: Faker::Lorem.paragraph(10)
     )
     ionote.save!
 
@@ -790,7 +790,7 @@ def seed_fake_load_order_notes
         first_plugin_id: random_plugin.id,
         second_plugin_id: random_plugin.id,
         submitted: Faker::Date.backward(14),
-        text_body: Faker::Lorem.paragraph(4)
+        text_body: Faker::Lorem.paragraph(10)
     )
     lnote.save!
 
@@ -834,7 +834,7 @@ def seed_fake_mod_lists
   nModLists = User.count / 2
   nModLists.times do
     author = User.offset(rand(User.count)).first
-    ModList.new(
+    mod_list = ModList.create!(
         name: Faker::Lorem.words(3).join(' '),
         created_by: author.id,
         is_collection: [true, false].sample,
@@ -842,9 +842,16 @@ def seed_fake_mod_lists
         has_adult_content: [true, false].sample,
         status: ModList.statuses.keys.sample,
         description: Faker::Lorem.paragraph(5),
-        created: Faker::Date.backward(14),
+        submitted: Faker::Date.backward(14),
         game_id: gameSkyrim.id
-    ).save!
+    )
+    Mod.all.each_with_index do |mod, index|
+      mod_list.mod_list_mods.create!(
+        mod_id: mod.id,
+        active: true,
+        index: index
+      )
+    end
   end
 
   puts "    #{ModList.count} mod lists seeded"

@@ -1,6 +1,6 @@
 <h3 class="section-title">Avatar</h3>
 <section>
-    <img class="avatar" ng-src="{{avatar.src}}" ng-class="{ 'avatar-pending': avatar.file }">
+    <img class="avatar avatar-medium" ng-src="{{avatar.src}}" ng-class="{ 'avatar-pending': avatar.file }">
     <label ng-if="canChangeAvatar">
         <input type="file" id="avatar-input" class="btn" value="Browse" accept=".jpg,.png" file-change="changeAvatar" />
         <input type="button" id="avatar-browse" class="btn" value="Browse" ng-click="browseAvatar()"/>
@@ -13,7 +13,7 @@
     </span>
 </section>
 
-<span >
+<span>
     <h3 class="section-title">Title</h3>
     <section>
         <span class="explanation" ng-if="!canChangeTitle">
@@ -34,4 +34,6 @@
     <text-area data="user.about_me" ng-refresh="refresh"></text-area>
 </section>
 
-<input class="btn" type="submit" value="Save Changes" ng-click="submit()"/>
+<div class="action-button-container">
+    <input class="btn action-btn" type="submit" value="Save Changes" ng-click="submit()"/>
+</div>

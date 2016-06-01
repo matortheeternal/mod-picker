@@ -8,10 +8,10 @@ bSeedReviews = true
 bSeedCNotes = true
 bSeedINotes = true
 bSeedLNotes = false
-bSeedModAuthors = true
-bSeedMods = true
-bSeedModLists = true
-bSeedTags = true
+bSeedModAuthors = false
+bSeedMods = false
+bSeedModLists = false
+bSeedTags = false
 
 #==================================================
 # CREATE STATIC RECORDS

@@ -1,6 +1,6 @@
 class HelpfulMark < ActiveRecord::Base
   include Filterable
-
+  
   self.primary_keys = :submitted_by, :helpfulable_id, :helpfulable_type
 
   scope :by, -> (id) { where(submitted_by: id) }
@@ -13,16 +13,35 @@ class HelpfulMark < ActiveRecord::Base
   validates :helpfulable_id, :helpfulable_type, presence: true
 
   validates :helpful, inclusion: {
-      in: [true, false],
-      message: "must be true or false" }
+    in: [true, false],
+    message: "must be true or false"
+  }
 
   validates :helpfulable_type, inclusion: {
-      in: ["CompatibilityNote", "InstallOrderNote", "LoadOrderNote", "Review"],
-      message: "Not a valid record that contains helpful marks" }
+    in: ["CompatibilityNote", "InstallOrderNote", "LoadOrderNote", "Review"],
+    message: "Not a valid record that contains helpful marks"
+  }
 
-  after_initialize :init
+  # Callbacks
+  after_create :increment_counters
+  before_destroy :decrement_counters
 
-  def init
-    self.submitted ||= DateTime.now
-  end                                  
+  private
+    def decrement_counters
+      self.user.update_counter(:helpful_marks_count, -1)
+      if self.helpful
+        self.helpfulable.update_counter(:helpful_count, -1)
+      else
+        self.helpfulable.update_counter(:not_helpful_count, -1)
+      end
+    end
+
+    def increment_counters
+      self.user.update_counter(:helpful_marks_count, 1)
+      if self.helpful
+        self.helpfulable.update_counter(:helpful_count, 1)
+      else
+        self.helpfulable.update_counter(:not_helpful_count, 1)
+      end
+    end
 end

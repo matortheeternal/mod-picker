@@ -1,5 +1,5 @@
-app.service('modService', function (backend, $q) {
-    this.retrieveMod = function (modId) {
+app.service('modService', function(backend, $q) {
+    this.retrieveMod = function(modId) {
         return backend.retrieve('/mods/' + modId);
     };
 
@@ -7,14 +7,13 @@ app.service('modService', function (backend, $q) {
         current: 1
     };
 
-    this.retrieveMods = function (filters, sort, newPage) {
+    this.retrieveMods = function(filters, sort, newPage) {
         var mods = $q.defer();
 
         if(newPage && newPage > pages.max) {
             mods.reject();
             return mods.promise;
         }
-
         pages.current = newPage || pages.current;
 
         var postData =  {
@@ -22,7 +21,6 @@ app.service('modService', function (backend, $q) {
             sort: sort,
             page: pages.current
         };
-
         backend.post('/mods', postData).then(function (data) {
             pages.max = Math.ceil(data.max_entries / data.entries_per_page);
             mods.resolve({
@@ -30,7 +28,19 @@ app.service('modService', function (backend, $q) {
                 pageInformation: pages
             });
         });
+        return mods.promise;
+    };
 
+    this.searchMods = function(name) {
+        var mods = $q.defer();
+        var postData =  {
+            filters: {
+                search: name
+            }
+        };
+        backend.post('/mods/search', postData).then(function (data) {
+            mods.resolve(data);
+        });
         return mods.promise;
     };
 
@@ -48,35 +58,11 @@ app.service('modService', function (backend, $q) {
         return star.promise;
     };
 
-    this.retrieveCompatibilityNotes = function (modId, options) {
-        var compatibilityNotes = $q.defer();
-        backend.retrieve('/mods/' + modId + '/compatibility_notes', options).then(function (data) {
-            compatibilityNotes.resolve(data);
+    this.retrieveAssociation = function(modId, name, options) {
+        var action = $q.defer();
+        backend.retrieve('/mods/' + modId + '/' + name, options).then(function (data) {
+            action.resolve(data);
         });
-        return compatibilityNotes.promise;
-    };
-
-    this.retrieveInstallOrderNotes = function (modId, options) {
-        var installOrderNotes = $q.defer();
-        backend.retrieve('/mods/' + modId + '/install_order_notes', options).then(function (data) {
-            installOrderNotes.resolve(data);
-        });
-        return installOrderNotes.promise;
-    };
-
-    this.retrieveLoadOrderNotes = function (modId, options) {
-        var loadOrderNotes = $q.defer();
-        backend.retrieve('/mods/' + modId + '/load_order_notes', options).then(function (data) {
-            loadOrderNotes.resolve(data);
-        });
-        return loadOrderNotes.promise;
-    };
-
-    this.retrieveAnalysis = function (modId, options) {
-        var analysis = $q.defer();
-        backend.retrieve('/mods/' + modId + '/analysis', options).then(function (data) {
-            analysis.resolve(data);
-        });
-        return analysis.promise;
+        return action.promise;
     };
 });
