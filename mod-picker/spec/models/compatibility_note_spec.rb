@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe CompatibilityNote, :model do
-  fixtures :compatibility_notes
+  fixtures :compatibility_notes, :users, :games
 
   it "should be valid with factory parameters" do
     note = build(:compatibility_note)
@@ -56,10 +56,15 @@ RSpec.describe CompatibilityNote, :model do
 
     it "should be invalid if compatibility_type is empty" do
 
-        # TODO: refactor compatibility note spec test for empty enum value
-        expect{create(:compatibility_note,
-          compatibility_type: nil)}
-        .to raise_error(ActiveRecord::StatementInvalid)
+        # Old method, that used SQL validation rather than rails validation for model
+        # expect{create(:compatibility_note,
+        #   compatibility_type: nil)}
+        # .to raise_error(ActiveRecord::StatementInvalid)
+        note = build(:compatibility_note,
+          compatibility_type: nil)
+
+        note.valid?
+        expect(note.errors[:compatibility_type]).to include("can't be blank")
       end
     end
 
@@ -91,8 +96,8 @@ RSpec.describe CompatibilityNote, :model do
     # end
 
     describe "text_body" do
-      it "should be valid with 64 < Length < 16384" do
-        minText = "a" * 64
+      it "should be valid with 256 < Length < 16384" do
+        minText = "a" * 256
         maxText = "a" * 16384
 
         minNote = build(:compatibility_note,
@@ -105,13 +110,13 @@ RSpec.describe CompatibilityNote, :model do
         expect(maxNote).to be_valid
       end
 
-      it "should be invalid with a length < 64" do
-        invalidText = "a" * 63
+      it "should be invalid with a length < 256" do
+        invalidText = "a" * 255
         note = build(:compatibility_note,
           text_body: invalidText)
 
         note.valid?
-        expect(note.errors[:text_body]).to include("is too short (minimum is 64 characters)")
+        expect(note.errors[:text_body]).to include("is too short (minimum is 256 characters)")
       end
 
       it "should be invalid with a length of > 16384" do
@@ -133,8 +138,8 @@ RSpec.describe CompatibilityNote, :model do
         note.valid?
         note2.valid?
 
-        expect(note.errors[:text_body]).to include("is too short (minimum is 64 characters)")
-        expect(note2.errors[:text_body]).to include("is too short (minimum is 64 characters)")
+        expect(note.errors[:text_body]).to include("is too short (minimum is 256 characters)")
+        expect(note2.errors[:text_body]).to include("is too short (minimum is 256 characters)")
       end
     end
   end
@@ -147,6 +152,8 @@ RSpec.describe CompatibilityNote, :model do
       it "should increment by 1 when creating an correction" do
         expect { 
           inote = note.corrections.create(
+            submitted_by: users(:homura).id,
+            game_id: games(:skyrim).id,
             text_body: Faker::Lorem.sentence(20, false, 20),
             correctable_type: "CompatibilityNote",
             correctable_id: note.id)
@@ -157,6 +164,8 @@ RSpec.describe CompatibilityNote, :model do
 
       it "should decrement by 1 when deleting an correction" do
         inote = note.corrections.create(
+            submitted_by: users(:homura).id,
+            game_id: games(:skyrim).id,
             text_body: Faker::Lorem.sentence(20, false, 20),
             correctable_type: "CompatibilityNote",
             correctable_id: note.id)
