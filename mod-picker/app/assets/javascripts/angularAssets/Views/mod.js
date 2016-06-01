@@ -169,11 +169,11 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
 
     //tabs array
     $scope.tabs = [
-        { name: 'Reviews', params: {retrieve: true} },
-        { name: 'Compatibility', params: {retrieve: true} },
-        { name: 'Install Order', params: {retrieve: true} },
-        { name: 'Load Order', params: {retrieve: true} },
-        { name: 'Analysis', params: {retrieve: true} }
+        { name: 'Reviews'},
+        { name: 'Compatibility'},
+        { name: 'Install Order'},
+        { name: 'Load Order'},
+        { name: 'Analysis',}
     ];
 
     // only display analysis tab if mod doesn't have a primary category
