@@ -34,10 +34,10 @@ app.config(['$stateProvider', function ($stateProvider) {
     })
 }]);
 
-app.controller('modlistController', function($scope, $log, $stateParams, modListService) {
+app.controller('modlistController', function($scope, $log, $stateParams, $timeout, modListService, userService) {
 
 	/*config*/
-	$scope.bIsEditing = true;
+	$scope.bIsEditing = false;
 	/*vars - Later down the road these will turn into GET functions*/
 	$scope.modlistTitle = "My Super Cool Mod List With All The Good Mods - With ENB";
     $scope.currentTab = 'plugins';
