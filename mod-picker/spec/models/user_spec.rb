@@ -25,7 +25,7 @@
 #     t.integer  "reviews_count",             limit: 4,     default: 0
 #     t.integer  "install_order_notes_count", limit: 4,     default: 0
 #     t.integer  "compatibility_notes_count", limit: 4,     default: 0
-#     t.integer  "incorrect_notes_count",     limit: 4,     default: 0
+#     t.integer  "corrections_count",     limit: 4,     default: 0
 #     t.integer  "agreement_marks_count",     limit: 4,     default: 0
 #     t.integer  "mods_count",                limit: 4,     default: 0
 #     t.integer  "starred_mods_count",        limit: 4,     default: 0

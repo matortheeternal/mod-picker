@@ -34,7 +34,7 @@ class Ability
       # can update, approve, or hide any contribution
       can [:update, :hide], Comment
       can [:update, :approve, :hide], CompatibilityNote
-      can [:update, :approve, :hide], IncorrectNote
+      can [:update, :approve, :hide], Correction
       can [:update, :approve, :hide], InstallOrderNote
       can [:update, :approve, :hide], LoadOrderNote
       can [:update, :approve, :hide], Review
@@ -83,7 +83,7 @@ class Ability
       # can update their contributions
       can :update, Comment, :submitted_by => user.id
       can :update, CompatibilityNote, :submitted_by => user.id
-      can :update, IncorrectNote, :submitted_by => user.id
+      can :update, Correction, :submitted_by => user.id
       can :update, LoadOrderNote, :submitted_by => user.id
       can :update, InstallOrderNote, :submitted_by => user.id
       can :update, Review, :submitted_by => user.id
@@ -147,7 +147,7 @@ class Ability
         can :create, Tag # can create new tags
       end
       if user.reputation.overall >= 40
-        can :create, IncorrectNote  # can report something as incorrect
+        can :create, Correction  # can report something as incorrect
         can :create, AgreementMark  # can agree/disagree with other users
         can :create, ReputationLink # can give reputation other users
       end

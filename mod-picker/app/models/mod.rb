@@ -9,14 +9,37 @@ class Mod < ActiveRecord::Base
   scope :game, -> (game) { where(game_id: game) }
   scope :sources, -> (sources) {
     results = self.where(nil)
-    results = results.includes(:nexus_infos).references(:nexus_infos) if sources[:nexus]
-    results = results.includes(:lover_infos).references(:lover_infos) if sources[:lab]
-    results = results.includes(:workshop_infos).references(:workshop_infos) if sources[:workshop]
+    whereClause = []
+    
+    # nexus mods
+    if sources[:nexus]
+      results = results.includes(:nexus_infos).references(:nexus_infos)
+      whereClause.push("nexus_infos.id IS NOT NULL")
+    end
+    # lover's lab  
+    if sources[:lab]
+      results = results.includes(:lover_infos).references(:lover_infos)
+      whereClause.push("lover_infos.id IS NOT NULL")
+    end
+    # steam workshop
+    if sources[:workshop]
+      results = results.includes(:workshop_infos).references(:workshop_infos)
+      whereClause.push("workshop_infos.id IS NOT NULL")
+    end
+    # other sources
+    if sources[:other]
+      results = results.includes(:custom_sources).references(:custom_sources)
+      whereClause.push("custom_sources.id IS NOT NULL")
+    end
+    
+    # require one selected source to be present
+    results = results.where(whereClause.join(" OR "))
     results
   }
   scope :released, -> (range) { where(released: parseDate(range[:min])..parseDate(range[:max])) }
   scope :updated, -> (range) { where(updated: parseDate(range[:min])..parseDate(range[:max])) }
   scope :adult, -> (bool) { where(has_adult_content: bool) }
+  scope :official, -> (bool) { where(is_official: bool) }
   scope :utility, -> (bool) { where(is_utility: bool) }
   scope :categories, -> (categories) { where("primary_category_id IN (?) OR secondary_category_id IN (?)", categories, categories) }
   scope :tags, -> (array) { joins(:tags).where(:tags => {text: array}) }
@@ -124,6 +147,9 @@ class Mod < ActiveRecord::Base
   has_one :lover_infos, :class_name => 'LoverInfo', :dependent => :nullify
   has_one :workshop_infos, :class_name => 'WorkshopInfo', :dependent => :nullify
 
+  # custom sources
+  has_many :custom_sources, :inverse_of => 'mod', :dependent => :destroy
+
   # plugins associated with the mod
   has_many :plugins, :inverse_of => 'mod', :dependent => :destroy
   # assets associated with the mod
@@ -136,9 +162,10 @@ class Mod < ActiveRecord::Base
   
   # users who can edit the mod
   has_many :mod_authors, :inverse_of => 'mod', :dependent => :destroy
-  has_many :authors, :through => 'mod_authors', :inverse_of => 'mods'
+  has_many :author_users, :through => 'mod_authors', :inverse_of => 'mods'
 
   # community feedback on the mod
+  has_many :corrections, :as => 'correctable'
   has_many :reviews, :inverse_of => 'mod', :dependent => :destroy
   has_many :mod_stars, :inverse_of => 'mod', :dependent => :destroy
   has_many :user_stars, :through => 'mod_stars', :class_name => 'User', :inverse_of => 'starred_mods'
@@ -163,16 +190,16 @@ class Mod < ActiveRecord::Base
   has_many :mod_list_mods, :inverse_of => 'mod', :dependent => :destroy
   has_many :mod_lists, :through => 'mod_list_mods', :inverse_of => 'mods'
 
-  accepts_nested_attributes_for :required_mods
+  accepts_nested_attributes_for :required_mods, :custom_sources
 
   self.per_page = 100
 
   # Validations
-  validates :name, :status, :game_id, :primary_category_id, presence: true
+  validates :name, :game_id, :released, presence: true
   validates :name, :aliases, length: {maximum: 128}
 
   # callbacks
-  after_create :create_associations, :increment_counters
+  after_create :create_associations, :update_metrics, :increment_counters
   before_destroy :decrement_counters
 
   def no_author?
@@ -182,6 +209,7 @@ class Mod < ActiveRecord::Base
   def update_lazy_counters
     self.asset_files_count = ModAssetFile.where(mod_id: self.id).count
     self.plugins_count = Plugin.where(mod_id: self.id).count
+    self.save!
   end
 
   def create_tags
@@ -217,6 +245,9 @@ class Mod < ActiveRecord::Base
         plugin = Plugin.find_by(filename: dump[:filename], crc_hash: dump[:crc_hash])
         if plugin.nil?
           plugin = self.plugins.create(dump)
+        else
+          plugin.mod_id = self.id
+          plugin.save
         end
       end
     end
@@ -283,9 +314,13 @@ class Mod < ActiveRecord::Base
     self.create_asset_files
     self.create_plugins
     self.link_sources
+  end
+
+  def update_metrics
     self.compute_extra_metrics
     self.compute_average_rating
     self.compute_reputation
+    self.update_lazy_counters
     self.save!
   end
 
@@ -298,7 +333,7 @@ class Mod < ActiveRecord::Base
   end
 
   def load_order_notes
-    LoadOrderNote.where('first_plugin_id in ? OR second_plugin_id in ?', self.plugins.ids, self.plugins.ids)
+    LoadOrderNote.where('first_plugin_id in (?) OR second_plugin_id in (?)', self.plugins.ids, self.plugins.ids)
   end
 
   def image
@@ -327,7 +362,16 @@ class Mod < ActiveRecord::Base
           :nexus_infos => {:except => [:mod_id]},
           :workshop_infos => {:except => [:mod_id]},
           :lover_infos => {:except => [:mod_id]},
-          :authors => {:only => [:id, :username]}
+          :custom_sources => {:except => [:mod_id]},
+          :author_users => {:only => [:id, :username]},
+          :required_mods => {
+              :only => [],
+              :include => {
+                  :required_mod => {
+                      :only => [:id, :name]
+                  }
+              }
+          }
       },
       :methods => :image
     })
@@ -346,10 +390,10 @@ class Mod < ActiveRecord::Base
 
   private
     def decrement_counters
-      self.user.update_counter(:submitted_mods_count, -1)
+      self.user.update_counter(:submitted_mods_count, -1) if self.submitted_by.present?
     end
 
     def increment_counters
-      self.user.update_counter(:submitted_mods_count, 1)
+      self.user.update_counter(:submitted_mods_count, 1) if self.submitted_by.present?
     end
 end

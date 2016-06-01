@@ -56,6 +56,7 @@ namespace :reset do
     NexusInfo.delete_all
     LoverInfo.delete_all
     WorkshopInfo.delete_all
+    CustomSource.delete_all
     Mod.delete_all
     UserBio.delete_all
     UserReputation.delete_all

@@ -1,9 +1,9 @@
 class ModsController < ApplicationController
-  before_action :set_mod, only: [:show, :update, :reviews, :compatibility_notes, :install_order_notes, :load_order_notes, :analysis, :destroy]
+  before_action :set_mod, only: [:update, :update_tags, :corrections, :reviews, :compatibility_notes, :install_order_notes, :load_order_notes, :analysis, :destroy]
 
   # POST /mods
   def index
-    @mods = Mod.includes(:authors).accessible_by(current_ability).filter(filtering_params).sort(params[:sort]).paginate(:page => params[:page])
+    @mods = Mod.includes(:author_users).accessible_by(current_ability).filter(filtering_params).sort(params[:sort]).paginate(:page => params[:page])
     @count =  Mod.accessible_by(current_ability).filter(filtering_params).sort(params[:sort]).count
 
     render :json => {
@@ -18,7 +18,6 @@ class ModsController < ApplicationController
   # POST /mods/search
   def search
     @mods = Mod.where(hidden: false).filter(search_params).sort({ column: "name", direction: "ASC" }).limit(10)
-
     render :json => @mods.as_json({
         :only => [:id, :name]
     })
@@ -26,6 +25,7 @@ class ModsController < ApplicationController
 
   # GET /mods/1
   def show
+    @mod = Mod.includes(:nexus_infos, :workshop_infos, :lover_infos).find(params[:id])
     authorize! :read, @mod
     star = ModStar.exists?(:mod_id => @mod.id, :user_id => current_user.id)
     render :json => {
@@ -57,6 +57,51 @@ class ModsController < ApplicationController
     end
   end
 
+  # PATCH/PUT /mods/1/tags
+  def update_tags
+    # errors array to return to user
+    errors = ActiveModel::Errors.new(self)
+    current_user_id = current_user.id
+
+    # perform tag deletions
+    existing_mod_tags = @mod.mod_tags
+    existing_tags_text = @mod.tags.pluck(:text)
+    @mod.mod_tags.each_with_index do |mod_tag, index|
+      if params[:tags].exclude?(existing_tags_text[index])
+        authorize! :destroy, mod_tag
+        mod_tag.destroy
+      end
+    end
+
+    # update tags
+    params[:tags].each do |tag_text|
+      if existing_tags_text.exclude?(tag_text)
+        # find or create tag
+        tag = Tag.where(game_id: params[:game_id], text: tag_text).first
+        if tag.nil?
+          tag = Tag.new(game_id: params[:game_id], text: tag_text, submitted_by: current_user_id)
+          authorize! :create, tag
+          if !tag.save
+            tag.errors.full_messages.each {|msg| errors[:base] << msg}
+            next
+          end
+        end
+
+        # create mod tag
+        mod_tag = @mod.mod_tags.new(tag_id: tag.id, submitted_by: current_user_id)
+        authorize! :create, mod_tag
+        next if mod_tag.save
+        mod_tag.errors.full_messages.each {|msg| errors[:base] << msg}
+      end
+    end
+
+    if errors.empty?
+      render json: {status: :ok, tags: @mod.tags}
+    else
+      render json: {errors: errors, status: :unprocessable_entity, tags: @mod.tags}
+    end
+  end
+
   # POST /mods/1/star
   def create_star
     @mod_star = ModStar.find_or_initialize_by(mod_id: params[:id], user_id: current_user.id)
@@ -81,6 +126,17 @@ class ModsController < ApplicationController
         render json: @mod_star.errors, status: :unprocessable_entity
       end
     end
+  end
+
+  # GET /mods/1/corrections
+  def corrections
+    authorize! :read, @mod
+    corrections = @mod.corrections.accessible_by(current_ability)
+    agreement_marks = AgreementMark.where(submitted_by: current_user.id, correction_id: corrections.ids)
+    render :json => {
+        corrections: corrections,
+        agreement_marks: agreement_marks.as_json({:only => [:correction_id, :agree]})
+    }
   end
 
   # GET /mods/1/reviews
@@ -138,7 +194,12 @@ class ModsController < ApplicationController
         plugins: @mod.plugins.as_json({
             :include => {
                 :masters => {
-                    :except => [:plugin_id]
+                    :except => [:plugin_id],
+                    :include => {
+                        :master_plugin => {
+                            :only => [:filename]
+                        }
+                    }
                 },
                 :dummy_masters => {
                     :except => [:plugin_id]
@@ -171,7 +232,7 @@ class ModsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_mod
-      @mod = Mod.includes(:nexus_infos, :workshop_infos, :lover_infos).find(params[:id])
+      @mod = Mod.find(params[:id])
     end
 
     # Params we allow searching on
@@ -181,7 +242,7 @@ class ModsController < ApplicationController
 
     # Includes hash for mods index query
     def mods_include_hash
-      hash = { :authors => { :only => [:id, :username] } }
+      hash = { :author_users => { :only => [:id, :username] } }
       sources = params[:filters][:sources]
       hash[:nexus_infos] = {:except => [:mod_id]} if sources[:nexus]
       hash[:lover_infos] = {:except => [:mod_id]} if sources[:lab]
@@ -224,11 +285,12 @@ class ModsController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def mod_params
       params.require(:mod).permit(:game_id, :name, :aliases, :is_utility, :has_adult_content, :primary_category_id, :secondary_category_id, :released, :nexus_info_id, :lovers_info_id, :workshop_info_id,
+         :custom_sources_attributes => [:label, :url],
          :required_mods_attributes => [:required_id],
          :tag_names => [],
          :asset_paths => [],
          :plugin_dumps => [:filename, :author, :description, :crc_hash, :record_count, :override_count, :file_size,
-           :master_filenames => [],
+           :master_plugins => [:filename, :crc_hash],
            :plugin_record_groups_attributes => [:sig, :record_count, :override_count],
            :plugin_errors_attributes => [:signature, :form_id, :group, :path, :name, :data],
            :overrides_attributes => [:fid, :sig]])

@@ -1,5 +1,5 @@
 FactoryGirl.define do
-  factory :incorrect_note do
+  factory :correction do
     association :user, factory: :user
     # For future reference, if a field is set to default none, null: false
     # that means that field is validated to need to existence in sql

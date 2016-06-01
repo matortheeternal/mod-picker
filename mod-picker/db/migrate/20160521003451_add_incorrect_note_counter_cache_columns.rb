@@ -1,7 +1,7 @@
-class AddIncorrectNoteCounterCacheColumns < ActiveRecord::Migration
+class AddCorrectionCounterCacheColumns < ActiveRecord::Migration
   def change
-    add_column :incorrect_notes, :comments_count, :integer, default: 0
-    add_column :incorrect_notes, :agree_count, :integer, default: 0
-    add_column :incorrect_notes, :disagree_count, :integer, default: 0
+    add_column :corrections, :comments_count, :integer, default: 0
+    add_column :corrections, :agree_count, :integer, default: 0
+    add_column :corrections, :disagree_count, :integer, default: 0
   end
 end
