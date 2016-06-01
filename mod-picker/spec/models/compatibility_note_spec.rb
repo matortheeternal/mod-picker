@@ -1,7 +1,7 @@
 require 'rails_helper'
 require 'pp'
 
-RSpec.describe CompatibilityNote, :model, :xxx do
+RSpec.describe CompatibilityNote, :model do
   fixtures :compatibility_notes, :users, :games
 
   it "should be valid with factory parameters" do
@@ -52,7 +52,7 @@ RSpec.describe CompatibilityNote, :model, :xxx do
        valid_types.each do |valid_type|
         note.compatibility_type = valid_type
         expect(note).to be_valid
-      end
+       end
     end
 
     it "should be invalid if compatibility_type is empty" do

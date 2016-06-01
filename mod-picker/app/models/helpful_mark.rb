@@ -9,7 +9,6 @@ class HelpfulMark < ActiveRecord::Base
   belongs_to :user, :foreign_key => 'submitted_by', :inverse_of => 'helpful_marks'
 
   # Validation
-  # :helpful's presence is not required because it will fail if :helpful == false
   validates :helpfulable_id, :helpfulable_type, presence: true
 
   validates :helpful, inclusion: {
@@ -19,14 +18,18 @@ class HelpfulMark < ActiveRecord::Base
 
   validates :helpfulable_type, inclusion: {
     in: ["CompatibilityNote", "InstallOrderNote", "LoadOrderNote", "Review"],
-    message: "Not a valid record that contains helpful marks"
+    message: "Not a valid record type that can contain helpful marks"
   }
 
   # Callbacks
+  after_initialize :init
   after_create :increment_counters
   before_destroy :decrement_counters
 
   private
+    def init
+      self.submitted ||= DateTime.now
+    end
     def decrement_counters
       self.user.update_counter(:helpful_marks_count, -1)
       if self.helpful
