@@ -199,12 +199,9 @@ class Mod < ActiveRecord::Base
   validates :name, :aliases, length: {maximum: 128}
 
   # callbacks
+  after_initialize :init
   after_create :create_associations, :update_metrics, :increment_counters
   before_destroy :decrement_counters
-
-  def no_author?
-    self.mod_authors.count == 0
-  end
 
   def update_lazy_counters
     self.asset_files_count = ModAssetFile.where(mod_id: self.id).count
@@ -389,6 +386,10 @@ class Mod < ActiveRecord::Base
   end
 
   private
+    def init
+      self.authors ||= ""
+    end
+    
     def decrement_counters
       self.user.update_counter(:submitted_mods_count, -1) if self.submitted_by.present?
     end

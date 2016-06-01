@@ -23,8 +23,7 @@ plannedVanilla:
   hidden: false
   has_adult_content: false
   status: "Planned"
-  created: 2016-02-11
-  completed: 2016-02-11
+  submitted: 2016-02-11
   description: "A basic vanilla modlist"
   game_id: skyrim
 
@@ -34,7 +33,6 @@ underConstructionVanilla:
   hidden: false
   has_adult_content: false
   status: "Under Construction"
-  created: 2016-02-22
-  completed: 2016-02-25
+  submitted: 2016-02-22
   description: "A mod List that is under construction by kyoko"
   game_id: skyrim

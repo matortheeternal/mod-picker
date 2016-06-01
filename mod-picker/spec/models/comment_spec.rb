@@ -4,6 +4,9 @@ require 'rails_helper'
 # This is because a comment will try to update its commentable's counter_cache upon saving to the database
 # and will throw an error if it can't find its commentable.
 RSpec.describe Comment, :model do
+  # fixtures
+  fixtures :users, :mod_lists
+
   it "should be valid with text_body, commentable_id, and commentable_type submitted parameters" do
     comment = build(:comment,
       commentable_type: "User")
@@ -15,8 +18,15 @@ RSpec.describe Comment, :model do
 # ==================================================================
 describe "#init" do
   it "should default hidden => false" do
-    comment = build(:comment_nil_hidden)
-    expect(comment.commentable).to eq(1)
+    comment = Comment.create(
+                text_body: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. 
+                Ex ducimus dolore voluptatem animi error, natus aperiam rerum nisi doloremque, 
+                temporibus deserunt dolores molestiae eligendi suscipit numquam ipsam, cumque 
+                similique! Asperiores.",
+                submitted_by: users(:homura).id,
+                commentable_type: "ModList",
+                commentable_id: mod_lists(:plannedVanilla).id,
+                )
 
     expect(comment.hidden).to eq(false)
   end
@@ -46,10 +56,45 @@ describe "commentable_id" do
   it "should be invalid without an id" do
     comment = build(:comment,
       commentable_id: nil)
+
     comment.valid?
-    expect(comment.errors[:commentable_id]). to include("can't be blank")
+    expect(comment).to_not be_valid
+    expect(comment.errors[:commentable_id]).to include("can't be blank")
   end
 end
+
+describe "text_body" do
+  it "should be valid if 1 < Length < 8192" do
+    comment = build(:comment)
+
+    validLengths = [("a" * 1), ("b" * 8192), ("c" * 4023), ("d" * 234)]
+
+    validLengths.each do |text|
+      comment.text_body = text
+      expect(comment).to be_valid
+    end
+  end
+
+  # testing short/nil/blank lengths separate from longer ones to test for individual error messages
+  it "should be invalid if length < 1" do
+    comment = build(:comment)
+
+    invalidShortLengths = [("b" * 0), nil]
+
+    invalidShortLengths.each do |text|
+      comment.text_body = text
+      expect(comment).to be_invalid
+      expect(comment.errors[:text_body]).to include("is too short (minimum is 1 character)")
+    end
+  end
+
+  it "should be invalid if length > 16384" do
+    comment = build(:comment,
+                 text_body: ("a" * 8193))
+    expect(comment).to be_invalid
+    expect(comment.errors[:text_body]).to include("is too long (maximum is 8192 characters)")
+  end
+  end
 
 
 # ==================================================================
@@ -69,15 +114,18 @@ describe "commentable_type" do
   end
 
   it "should invalid with commentable_type of nil" do
-    comment = build(:comment,
-      commentable_type: nil)
+    comment = build(:comment)
+    comment.commentable_type = nil
+
     comment.valid?
+    expect(comment).to_not be_valid
     expect(comment.errors[:commentable_type]).to include("can't be blank")
   end
 
   it "should invalid with commentable_type not on the valid list of types" do
-    comment = build(:comment,
-      commentable_type: "Redding")
+    comment = build(:comment)
+    comment.commentable_type = nil
+
     comment.valid?
     expect(comment.errors[:commentable_type]).to include("is not included in the list")
   end
@@ -86,7 +134,9 @@ describe "commentable_type" do
 # text_body length validations for specific commentable_types
 # ==================================================================
 
-describe "#validate_text_body_length" do
+
+
+xdescribe "#validate_text_body_length" do
 
     # ==================================================================
     # commentable_type: User validations
@@ -106,13 +156,13 @@ describe "#validate_text_body_length" do
       expect(comment).to be_valid
     end
 
-    it "with commentable_type: User, should be invalid with text_body length of  >16384" do
+    it "with commentable_type: User, should be invalid with text_body length of  >4096" do
       str = "x" * 16385
       comment = build(:comment,
         commentable_type: "User",
         text_body: str)
       comment.valid?
-      expect(comment.errors[:text_body]).to include("length must be less than 16384 characters")
+      expect(comment.errors[:text_body]).to include("length must be less than 4096 characters")
     end      
 
     it "with commentable_type: User, should be invalid with text_body of nil" do
