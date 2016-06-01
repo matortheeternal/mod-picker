@@ -30,11 +30,11 @@
                 </div>
                 <div class="mod-header-box">
                     STATUS
-                    <div class="action-box {{mlStatusClass}}">
+                    <div class="action-box {{mlStatusClass}} capitalize">
                          <i class="fa {{curStatusIcon.name}}" aria-hidden="true"></i>
                         {{modlist.status}}
                     </div>
-                    <div class="action-box {{mlVisibilityClass}}" ng-if="hasPermissions()">
+                    <div class="action-box {{mlVisibilityClass}} capitalize" ng-if="hasPermissions()">
                         <i class="fa fa-eye-slash" aria-hidden="true"></i>
                         {{modlist.hidden}}
                     </div>
