@@ -34,6 +34,6 @@ class CompatibilityNotesController < ContributionsController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def contribution_params
-      params.require(:compatibility_note).permit(:game_id, :compatibility_type, :first_mod_id, :second_mod_id, :text_body, :compatibility_plugin_id, :compatibility_mod_id)
+      params.require(:compatibility_note).permit(:game_id, :status, :first_mod_id, :second_mod_id, :text_body, :edit_summary, :compatibility_plugin_id, :compatibility_mod_id)
     end
 end

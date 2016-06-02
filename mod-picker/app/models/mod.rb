@@ -75,7 +75,7 @@ class Mod < ActiveRecord::Base
     sources = range[:sources]
 
     results = self.where(nil)
-    results = results.where(:nexus_infos => {:total_downloads => range[:min]..range[:max]}) if sources[:nexus]
+    results = results.where(:nexus_infos => {:downloads => range[:min]..range[:max]}) if sources[:nexus]
     results = results.where(:lover_infos => {:downloads => range[:min]..range[:max]}) if sources[:lab]
     results
   }

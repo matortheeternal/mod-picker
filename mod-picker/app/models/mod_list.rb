@@ -2,9 +2,10 @@ class ModList < ActiveRecord::Base
   include Filterable, Sortable, RecordEnhancements
 
   enum status: [ :planned, :"under construction", :testing, :complete ]
+  enum visibility: [ :private, :unlisted, :public ]
 
   belongs_to :game, :inverse_of => 'mod_lists'
-  belongs_to :user, :foreign_key => 'created_by', :inverse_of => 'mod_lists'
+  belongs_to :user, :foreign_key => 'submitted_by', :inverse_of => 'mod_lists'
 
   # INSTALL ORDER
   has_many :mod_list_mods, :inverse_of => 'mod_list'
