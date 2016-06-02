@@ -21,7 +21,12 @@ app.config(['$stateProvider', function ($stateProvider) {
                 retrieve: true
             },
             resolve: {
-                reviews: function($q, $stateParams, modId, modService, reviewSectionService) {
+                reviews: function($q, $state, $stateParams, modId, modObject, modService, reviewSectionService) {
+                  //hardcoded redirect to the analysis tab when it's the base game
+                  if (!modObject.mod.primary_category_id) {
+                    $state.go('mod.Analysis', {modId: modId});
+                  }
+
                   //only resolve if the retrieve param is true
                   if ($stateParams.retrieve) {
                     var output = $q.defer();
