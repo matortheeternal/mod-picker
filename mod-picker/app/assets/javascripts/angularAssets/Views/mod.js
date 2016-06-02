@@ -147,7 +147,7 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
         { name: 'Compatibility', params: {sort: 'reputation'} },
         { name: 'Install Order', params: {sort: 'reputation'} },
         { name: 'Load Order', params: {sort: 'reputation'} },
-        { name: 'Analysis'}
+        { name: 'Analysis', params: {}}
     ];
 
     // only display analysis tab if mod doesn't have a primary category
