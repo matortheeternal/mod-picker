@@ -720,9 +720,11 @@ app.controller('modLoadOrderController', function ($scope, $stateParams, loadOrd
 });
 
 app.controller('modAnalysisController', function ($scope, $stateParams, analysis) {
-    $scope.mod.plugins = analysis.plugins;
-    $scope.mod.assets = analysis.assets;
-    $scope.mod.currentPlugin = analysis.plugins[0];
+    if (analysis) {
+      $scope.mod.plugins = analysis.plugins;
+      $scope.mod.assets = analysis.assets;
+      $scope.mod.currentPlugin = analysis.plugins[0];
+    }
 
     $scope.tabs[$scope.findTabIndex('Analysis')].params.retrieve = false;
 });
