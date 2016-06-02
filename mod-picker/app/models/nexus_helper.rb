@@ -107,6 +107,7 @@ class NexusHelper
     end
   end
 
+  # TODO: Scraping logic for bugs_count, discussions_count, and has_adult_content columns
   def self.scrape_mod(game_name, id)
     login_if_necessary
 
@@ -137,16 +138,16 @@ class NexusHelper
     # scrape dates
     dates = doc.at_css(".header-dates").css('div')
     date_added_str = dates[0].children[1].text.strip
-    mod_data[:date_added] = DateTime.parse(date_added_str, date_format)
+    mod_data[:released] = DateTime.parse(date_added_str, date_format)
     date_updated_str = dates[1].children[1].text.strip
-    mod_data[:date_updated] = DateTime.parse(date_updated_str, date_format)
+    mod_data[:updated] = DateTime.parse(date_updated_str, date_format)
 
     # scrape statistics
     mod_data[:has_stats] = Rails.application.config.scrape_nexus_statistics
     if Rails.application.config.scrape_nexus_statistics
       mod_data[:endorsements] = doc.at_css("#span_endors_number").text.gsub(',', '')
       mod_data[:unique_downloads] = doc.at_css(".file-unique-dls strong").text.gsub(',', '')
-      mod_data[:total_downloads] = doc.at_css(".file-total-dls strong").text.gsub(',', '')
+      mod_data[:downloads] = doc.at_css(".file-total-dls strong").text.gsub(',', '')
       mod_data[:views] = doc.at_css(".file-total-views strong").text.gsub(',', '')
 
       # scrape nexus category
