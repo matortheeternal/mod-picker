@@ -46,11 +46,14 @@
                     <section ng-repeat="group in columnGroups">
                         <h3>{{group}}</h3>
                         <ul class="checkbox-list">
-                            <li ng-repeat="column in groupColumns(columns, group)" ng-if="columnAvailable(column) && !column.required">
+                            <li ng-repeat="column in groupColumns(columns, group) as groupedColumns">
                                 <label>
                                     <input type="checkbox" ng-model="column.visibility">
                                     {{column.label}}
                                 </label>
+                            </li>
+                            <li ng-hide="groupedColumns.length">
+                                No columns available.
                             </li>
                         </ul>
                     </section>

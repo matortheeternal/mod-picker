@@ -41,12 +41,15 @@ app.controller('tableResultsController', function($scope, objectUtils) {
         }
     };
 
-    // this function returns a subset of @columns with group
-    // properties matching @groupName
+    // this function returns a subset of @columns with group properties
+    // matching @groupName.  Also excludes columns that are not available
+    // or are required
     $scope.groupColumns = function(columns, groupName) {
         return columns.filter(function(column) {
-            return column.group === groupName;
+            return (column.group === groupName) && !column.required &&
+                $scope.columnAvailable(column);
         });
+
     };
 
     // this function uses objectUtils.deppValue to retrieve the value
