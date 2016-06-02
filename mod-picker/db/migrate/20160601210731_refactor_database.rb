@@ -57,7 +57,6 @@ class RefactorDatabase < ActiveRecord::Migration
     end
 
     # compatibility_note_history_entries
-    # TODO: Set up status enum on model
     change_table "compatibility_note_history_entries" do |t|
       t.change :submitted_by, :integer, null: false, after: :compatibility_note_id
       t.rename :compatibility_type, :status
@@ -69,8 +68,6 @@ class RefactorDatabase < ActiveRecord::Migration
     end
 
     # compatibility_notes
-    # TODO: Set up status enum on model
-    # TODO: Strong parameters for status, edit_summary
     change_table "compatibility_notes" do |t|
       t.change :game_id, :integer, null: false, after: :id
       t.change :submitted_by, :integer, null: false, after: :game_id
@@ -94,7 +91,6 @@ class RefactorDatabase < ActiveRecord::Migration
     end
 
     # config_files
-    # TODO: Strong parameters for text_body
     change_table "config_files" do |t|
       t.rename :default_text_body, :text_body
       t.change :mod_lists_count, :integer, default: 0, null: false
@@ -175,7 +171,6 @@ class RefactorDatabase < ActiveRecord::Migration
     end
 
     # install order notes
-    # TODO: Strong parameters for edit_summary
     change_table "install_order_notes" do |t|
       t.change :game_id, :integer, null: false, after: :id
       t.change :submitted_by, :integer, null: false, after: :game_id
@@ -226,7 +221,6 @@ class RefactorDatabase < ActiveRecord::Migration
     end
 
     # lover infos
-    # TODO: Scraping logic for released and updated columns
     change_table "lover_infos" do |t|
       t.change :game_id, :integer, null: false, after: :id
       t.change :has_stats, :boolean, default: false, null: false, after: :game_id
@@ -324,9 +318,6 @@ class RefactorDatabase < ActiveRecord::Migration
     end
 
     # mod lists
-    # TODO: Correct association on submitted_by
-    # TODO: Enum for visibility
-    # TODO: Strong parameters for submitted_by, visibility
     remove_foreign_key :mod_lists, column: :created_by
     change_table "mod_lists" do |t|
       t.change :game_id, :integer, null: false, after: :id
@@ -402,8 +393,6 @@ class RefactorDatabase < ActiveRecord::Migration
     end
 
     # nexus infos
-    # TODO: Scraping logic for released, updated, bugs_count, discussions_count, downloads, and has_adult_content columns
-    # TODO: Filtering logic for updated columns (downloads specifically)
     NexusInfo.where(mod_name: nil).update_all(:mod_name => 'Test')
     change_table "nexus_infos" do |t|
       t.change :game_id, :integer, null: false, after: :id
@@ -499,7 +488,6 @@ class RefactorDatabase < ActiveRecord::Migration
     end
 
     # reviews
-    # TODO: Strong parameters for edit_summary
     change_table "reviews" do |t|
       t.change :game_id, :integer, null: false, after: :id
       t.change :submitted_by, :integer, null: false, after: :game_id
@@ -551,7 +539,6 @@ class RefactorDatabase < ActiveRecord::Migration
     end
 
     # user settings
-    # TODO: Update strong parameters
     change_table "user_settings" do |t|
       t.change :user_id, :integer, null: false, after: :id
       t.change :theme, :string, limit: 64, after: :user_id
@@ -606,7 +593,6 @@ class RefactorDatabase < ActiveRecord::Migration
     end
 
     # workshop infos
-    # TODO: Scraping logic for updated, released, and posts_count columns
     change_table "workshop_infos" do |t|
       t.change :game_id, :integer, null: false, after: :id
       t.change :has_stats, :boolean, default: false, null: false, after: :game_id
