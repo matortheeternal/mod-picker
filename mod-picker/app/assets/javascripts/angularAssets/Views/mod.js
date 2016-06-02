@@ -150,6 +150,13 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
         { name: 'Analysis', params: {}}
     ];
 
+    //returns the index of the tab with tabName
+    $scope.findTabIndex = function(tabName) {
+      return $scope.tabs.findIndex(function(tab) {
+        return tab.name === tabName;
+      })
+    };
+
     // only display analysis tab if mod doesn't have a primary category
     if (!$scope.mod.primary_category_id) {
         $scope.tabs = { name: 'Analysis', params: {} };
@@ -269,10 +276,10 @@ app.controller('modReviewsController', function ($scope, $stateParams, $state, r
     $scope.mod.reviews = reviews;
   }
 
-  $scope.tabs[0].params.retrieve = false;
+  $scope.tabs[$scope.findTabIndex('Reviews')].params.retrieve = false;
 
   $scope.reSortReviews = function() {
-    $state.go("mod.Reviews", {sort: $scope.tabs[0].params.sort, retrieve: true});
+    $state.go("mod.Reviews", {sort: $scope.tabs[$scope.findTabIndex('Reviews')].params.sort, retrieve: true});
   };
 
   // instantiate a new review object
@@ -487,10 +494,10 @@ app.controller('modCompatibilityController', function ($scope, $stateParams, com
     $scope.mod.compatibility_notes = compatibilityNotes;
   }
 
-  $scope.tabs[1].params.retrieve = false;
+  $scope.tabs[$scope.findTabIndex('Compatibility')].params.retrieve = false;
 
     $scope.reSortCompatibility = function() {
-      $state.go("mod.Compatibility", {sort: $scope.tabs[1].params.sort, retrieve: true});
+      $state.go("mod.Compatibility", {sort: $scope.tabs[$scope.findTabIndex('Compatibility')].params.sort, retrieve: true});
     };
 
     // COMPATIBILITY NOTE RELATED LOGIC
@@ -584,10 +591,10 @@ app.controller('modInstallOrderController', function ($scope, $stateParams, inst
     $scope.mod.install_order_notes = installOrderNotes;
   }
 
-  $scope.tabs[2].params.retrieve = false;
+  $scope.tabs[$scope.findTabIndex('Install Order')].params.retrieve = false;
 
     $scope.reSortInstallOrder = function() {
-      $state.go("mod.Install Order", {sort: $scope.tabs[2].params.sort, retrieve: true});
+      $state.go("mod.Install Order", {sort: $scope.tabs[$scope.findTabIndex('Install Order')].params.sort, retrieve: true});
     };
 
     // INSTALL ORDER NOTE RELATED LOGIC
@@ -673,10 +680,10 @@ app.controller('modLoadOrderController', function ($scope, $stateParams, loadOrd
     $scope.mod.load_order_notes = loadOrderNotes;
   }
 
-  $scope.tabs[3].params.retrieve = false;
+  $scope.tabs[$scope.findTabIndex('Load Order')].params.retrieve = false;
 
     $scope.reSortLoadOrder = function() {
-      $state.go("mod.Load Order", {sort: $scope.tabs[3].params.sort, retrieve: true});
+      $state.go("mod.Load Order", {sort: $scope.tabs[$scope.findTabIndex('Load Order')].params.sort, retrieve: true});
     };
 
     // LOAD ORDER NOTE RELATED LOGIC
@@ -717,5 +724,5 @@ app.controller('modAnalysisController', function ($scope, $stateParams, analysis
     $scope.mod.assets = analysis.assets;
     $scope.mod.currentPlugin = analysis.plugins[0];
 
-    $scope.tabs[4].params.retrieve = false;
+    $scope.tabs[$scope.findTabIndex('Analysis')].params.retrieve = false;
 });
