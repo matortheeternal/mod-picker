@@ -12,9 +12,6 @@ app.controller('pageResultsController', function($scope) {
     $scope.range = [];
 
     $scope.pageRange = function() {
-        if (!$scope.pages.max) {
-            return;
-        }
         $scope.range = [];
         for (var i = 1; i <= $scope.pages.max; i++) {
             if ((i === 1) || (i == $scope.pages.max) ||
