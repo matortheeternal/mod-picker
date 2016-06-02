@@ -17,9 +17,11 @@ app.controller('modsController', function ($scope, $q, modService, sliderFactory
             other: false
         }
     };
+    $scope.availableColumnData = ["nexus"];
     $scope.sort = {};
     $scope.pages = {};
     $scope.columns = columnsFactory.modColumns();
+    $scope.columnGroups = columnsFactory.modColumnGroups();
     $scope.actions = [
         {
             caption: "Add",
@@ -78,6 +80,15 @@ app.controller('modsController', function ($scope, $q, modService, sliderFactory
     // create a watch
     var getModsTimeout;
     $scope.$watch('[filters, sort]', function() {
+        // build availableColumnData string array
+        $scope.availableColumnData = [];
+        for (var property in $scope.filters.sources) {
+            if ($scope.filters.sources.hasOwnProperty(property) && $scope.filters.sources[property]) {
+                $scope.availableColumnData.push(property);
+            }
+        }
+
+        // get mods
         if($scope.filters && firstGet) {
             clearTimeout(getModsTimeout);
             $scope.pages.current = 1;
