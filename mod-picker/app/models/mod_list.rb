@@ -2,7 +2,7 @@ class ModList < ActiveRecord::Base
   include Filterable, Sortable, RecordEnhancements
 
   enum status: [ :planned, :"under construction", :testing, :complete ]
-  enum visibility: [ :private, :unlisted, :public ]
+  enum visibility: [ :visibility_private, :visibility_unlisted, :visibility_public ]
 
   belongs_to :game, :inverse_of => 'mod_lists'
   belongs_to :user, :foreign_key => 'submitted_by', :inverse_of => 'mod_lists'
