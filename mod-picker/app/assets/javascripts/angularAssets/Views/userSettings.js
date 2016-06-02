@@ -77,6 +77,13 @@ app.controller('userSettingsController', function ($scope, $q, userSettingsServi
                 $scope.refresh = true;
             });
         });
+    $scope.tabs = [
+        {name: 'Profile'},
+        {name: 'Account'},
+        {name: 'Mod Lists'},
+        {name: 'Authored Mods'},
+    ];
+
     });
 
     /* avatar */
