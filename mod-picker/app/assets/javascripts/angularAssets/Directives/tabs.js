@@ -14,5 +14,13 @@ app.directive('tabs', function () {
 });
 
 app.controller('tabsController', function($scope, $state) {
-    // $state.go('.' + $scope.tabs[0]);
+    $scope.isCurrentTab = function(tabName) {
+        if ($state.includes('*.' + tabName)) {
+            return 'selected-tab';
+        }
+    };
+
+    $scope.goToState = function(stateName, params) {
+        $state.go(stateName, params);
+    };
 });
