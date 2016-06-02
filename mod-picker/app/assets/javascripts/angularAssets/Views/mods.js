@@ -88,6 +88,15 @@ app.controller('modsController', function ($scope, $q, modService, sliderFactory
             }
         }
 
+        // make columns that are no longer available no longer visible
+        $scope.columns.forEach(function(column) {
+            if (column.visibility && typeof column.data === 'object') {
+                column.visibility = Object.keys(column.data).some(function(key) {
+                    return $scope.availableColumnData.indexOf(key) > -1;
+                });
+            }
+        });
+
         // get mods
         if($scope.filters && firstGet) {
             clearTimeout(getModsTimeout);
