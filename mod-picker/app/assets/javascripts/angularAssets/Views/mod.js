@@ -159,7 +159,7 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
 
     // only display analysis tab if mod doesn't have a primary category
     if (!$scope.mod.primary_category_id) {
-        $scope.tabs = { name: 'Analysis', params: {} };
+        $scope.tabs.splice(0,4);
     }
     // remove Load Order tab if mod has no plugins
     else if ($scope.mod.plugins_count === 0) {
