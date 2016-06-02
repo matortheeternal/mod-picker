@@ -117,7 +117,7 @@ app.config(['$stateProvider', function ($stateProvider) {
               retrieve: true
             },
             resolve: {
-                analysis: function(modObject, modService) {
+                analysis: function($stateParams, modObject, modService) {
                   //only resolve if the retrieve param is true
                   if ($stateParams.retrieve) {
                     return modService.retrieveAnalysis(modObject.mod.id, modObject.mod.game_id);
