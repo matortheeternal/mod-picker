@@ -10,18 +10,7 @@ class UsersController < ApplicationController
 
   # GET /current_user
   def current
-    render :json => current_user.as_json({
-        :only => [:id, :username, :role, :title, :active_mod_list_id],
-        :include => {
-            :reputation => {
-                :only => [:overall]
-            },
-            :settings => {
-                :except => [:user_id]
-            }
-        },
-        :methods => :avatar
-    })
+    render :json => current_user.current_json
   end
 
   # GET /users/1

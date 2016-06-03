@@ -7,6 +7,7 @@ class Mod < ActiveRecord::Base
   # GENERAL SCOPES
   scope :search, -> (search) { where("name like ? OR aliases like ?", "%#{search}%", "%#{search}%") }
   scope :game, -> (game) { where(game_id: game) }
+  scope :exclude, -> (excluded_mod_ids) { where.not(id: excluded_mod_ids) }
   scope :sources, -> (sources) {
     results = self.where(nil)
     whereClause = []
