@@ -107,6 +107,7 @@ class NexusHelper
     end
   end
 
+  # TODO: Scraping logic for has_adult_content
   def self.scrape_mod(game_name, id)
     login_if_necessary
 
@@ -137,16 +138,16 @@ class NexusHelper
     # scrape dates
     dates = doc.at_css(".header-dates").css('div')
     date_added_str = dates[0].children[1].text.strip
-    mod_data[:date_added] = DateTime.parse(date_added_str, date_format)
+    mod_data[:released] = DateTime.parse(date_added_str, date_format)
     date_updated_str = dates[1].children[1].text.strip
-    mod_data[:date_updated] = DateTime.parse(date_updated_str, date_format)
+    mod_data[:updated] = DateTime.parse(date_updated_str, date_format)
 
     # scrape statistics
     mod_data[:has_stats] = Rails.application.config.scrape_nexus_statistics
     if Rails.application.config.scrape_nexus_statistics
       mod_data[:endorsements] = doc.at_css("#span_endors_number").text.gsub(',', '')
       mod_data[:unique_downloads] = doc.at_css(".file-unique-dls strong").text.gsub(',', '')
-      mod_data[:total_downloads] = doc.at_css(".file-total-dls strong").text.gsub(',', '')
+      mod_data[:downloads] = doc.at_css(".file-total-dls strong").text.gsub(',', '')
       mod_data[:views] = doc.at_css(".file-total-views strong").text.gsub(',', '')
 
       # scrape nexus category
@@ -156,6 +157,8 @@ class NexusHelper
       # scrape counts
       mod_data[:files_count] = try_parse(doc, ".tab-files strong", "0").to_i
       mod_data[:images_count] = try_parse(doc, ".tab-images strong", "0").to_i
+      mod_date[:bugs_count] = try_parse(doc, ".tab-bugs strong", "0").to_i
+      mod_data[:discussions_count] = try_parse(doc, ".tab-discussion strong", "0").to_i
       mod_data[:articles_count] = try_parse(doc, ".tab-articles strong", "0").to_i
       mod_data[:posts_count] = try_parse(doc, ".tab-comments strong", "0").to_i
       mod_data[:videos_count] = try_parse(doc, ".tab-videos", "0").to_i

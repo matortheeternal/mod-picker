@@ -8,6 +8,22 @@ class UsersController < ApplicationController
     render :json => @users
   end
 
+  # GET /current_user
+  def current
+    render :json => current_user.as_json({
+        :only => [:id, :username, :role, :title, :active_mod_list_id],
+        :include => {
+            :reputation => {
+                :only => [:overall]
+            },
+            :settings => {
+                :except => [:user_id]
+            }
+        },
+        :methods => :avatar
+    })
+  end
+
   # GET /users/1
   def show
     authorize! :read, @user

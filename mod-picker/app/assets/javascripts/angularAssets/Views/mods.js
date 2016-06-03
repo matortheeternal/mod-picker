@@ -17,9 +17,11 @@ app.controller('modsController', function ($scope, $q, modService, sliderFactory
             other: false
         }
     };
+    $scope.availableColumnData = ["nexus"];
     $scope.sort = {};
     $scope.pages = {};
     $scope.columns = columnsFactory.modColumns();
+    $scope.columnGroups = columnsFactory.modColumnGroups();
     $scope.actions = [
         {
             caption: "Add",
@@ -51,6 +53,12 @@ app.controller('modsController', function ($scope, $q, modService, sliderFactory
         }
     };
 
+    $scope.availableFilters = function(filters) {
+        return filters.filter(function(item) {
+            return $scope.filterAvailable(item);
+        });
+    };
+
     $scope.filterAvailable = function(filter) {
         var result = true;
         Object.keys($scope.filters.sources).forEach(function(key) {
@@ -73,11 +81,35 @@ app.controller('modsController', function ($scope, $q, modService, sliderFactory
         });
     };
 
+    // fetch mods when we load the page
     $scope.getMods();
+    // laod available stat filters
+    $scope.availableStatFilters = $scope.availableFilters($scope.statFilters);
 
     // create a watch
     var getModsTimeout;
     $scope.$watch('[filters, sort]', function() {
+        // build availableColumnData string array
+        $scope.availableColumnData = [];
+        for (var property in $scope.filters.sources) {
+            if ($scope.filters.sources.hasOwnProperty(property) && $scope.filters.sources[property]) {
+                $scope.availableColumnData.push(property);
+            }
+        }
+
+        // make columns that are no longer available no longer visible
+        $scope.columns.forEach(function(column) {
+            if (column.visibility && typeof column.data === 'object') {
+                column.visibility = Object.keys(column.data).some(function(key) {
+                    return $scope.availableColumnData.indexOf(key) > -1;
+                });
+            }
+        });
+
+        // hide statistic filters that no longer apply
+        $scope.availableStatFilters = $scope.availableFilters($scope.statFilters);
+
+        // get mods
         if($scope.filters && firstGet) {
             clearTimeout(getModsTimeout);
             $scope.pages.current = 1;

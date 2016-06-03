@@ -32,6 +32,6 @@ class LoadOrderNotesController < ContributionsController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def contribution_params
-      params.require(:load_order_note).permit(:load_first, :load_second, :text_body)
+      params.require(:load_order_note).permit(:load_first, :load_second, :text_body, :edit_summary)
     end
 end

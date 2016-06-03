@@ -185,7 +185,7 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
     }
 
     //get current user
-    userService.retrieveThisUser().then(function (user) {
+    userService.retrieveCurrentUser().then(function (user) {
         $scope.user = user;
         $scope.getPermissions();
     });
