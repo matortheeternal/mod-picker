@@ -89,17 +89,11 @@ class ModListsController < ApplicationController
         if current_user.active_mod_list_id
           @mod_list = current_user.active_mod_list
         else
-          @mod_list = ModList.where(submitted_by: current_user.id).first
-          if @mod_list.present?
-            current_user.active_mod_list_id = @mod_list.id
-            current_user.save!
-          else
-            @mod_list = current_user.mod_lists.create(
-                submitted_by: current_user.id,
-                game_id: params[:game_id] || Game.first.id,
-                name: current_user.username + "'s Mod List'"
-            )
-          end
+          @mod_list = current_user.mod_lists.create(
+              submitted_by: current_user.id,
+              game_id: params[:game_id] || Game.first.id,
+              name: current_user.username + "'s Mod List'"
+          )
         end
       end
     end
