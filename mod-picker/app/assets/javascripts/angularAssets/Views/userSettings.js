@@ -2,37 +2,29 @@
  * Created by Sirius on 3/9/2016.
  */
 app.config(['$stateProvider', function ($stateProvider) {
-    $stateProvider.state('settings', {
+    $stateProvider.state('base.settings', {
             templateUrl: '/resources/partials/userSettings/userSettings.html',
             controller: 'userSettingsController',
             url: '/settings',
-            redirectTo: 'settings.Profile',
-            resolve: {
-                settings: function(currentUserService) {
-                    return currentUserService.settings;
-                },
-                user: function(currentUserService) {
-                    return currentUserService.user.promise;
-                }
-            }
-        }).state('settings.Profile', {
+            redirectTo: 'base.settings.Profile',
+        }).state('base.settings.Profile', {
             templateUrl: '/resources/partials/userSettings/profile.html',
             url: '/profile'
-        }).state('settings.Account', {
+        }).state('base.settings.Account', {
             templateUrl: '/resources/partials/userSettings/account.html',
             url: '/account'
-        }).state('settings.Mod Lists', {
+        }).state('base.settings.Mod Lists', {
             templateUrl: '/resources/partials/userSettings/modlists.html',
             url: '/mod-lists'
-        }).state('settings.Authored Mods', {
+        }).state('base.settings.Authored Mods', {
             templateUrl: '/resources/partials/userSettings/authoredMods.html',
             url: '/authored-mods'
         });
 }]);
 
-app.controller('userSettingsController', function ($scope, $q, settings, user, userSettingsService, quoteService, fileUtils, themesService) {
-    $scope.userSettings = settings;
-    $scope.user = user;
+app.controller('userSettingsController', function ($scope, $q, currentUser, userSettingsService, quoteService, fileUtils, themesService) {
+    $scope.userSettings = currentUser.settings;
+    $scope.user = currentUser;
     $scope.avatar = {
         src: $scope.user.avatar
     };
