@@ -1,9 +1,9 @@
 app.config(['$stateProvider', function ($stateProvider) {
-    $stateProvider.state('mod', {
+    $stateProvider.state('base.mod', {
             templateUrl: '/resources/partials/showMod/mod.html',
             controller: 'modController',
             url: '/mod/:modId',
-            redirectTo: 'mod.Reviews',
+            redirectTo: 'base.mod.Reviews',
             resolve: {
                 modObject: function(modService, $stateParams) {
                     return modService.retrieveMod($stateParams.modId);
@@ -12,7 +12,7 @@ app.config(['$stateProvider', function ($stateProvider) {
                   return $stateParams.modId;
                 }
             }
-        }).state('mod.Reviews', {
+        }).state('base.mod.Reviews', {
             templateUrl: '/resources/partials/showMod/reviews.html',
             controller: 'modReviewsController',
             url: '/reviews',
@@ -42,7 +42,7 @@ app.config(['$stateProvider', function ($stateProvider) {
                     return reviewSectionService.getSectionsForCategory(modObject.mod.primary_category);
                 }
             }
-        }).state('mod.Compatibility', {
+        }).state('base.mod.Compatibility', {
             templateUrl: '/resources/partials/showMod/compatibility.html',
             controller: 'modCompatibilityController',
             url: '/compatibility',
@@ -66,7 +66,7 @@ app.config(['$stateProvider', function ($stateProvider) {
                   }
                 }
             }
-        }).state('mod.Install Order', {
+        }).state('base.mod.Install Order', {
             templateUrl: '/resources/partials/showMod/installOrder.html',
             controller: 'modInstallOrderController',
             url: '/install-order',
@@ -90,7 +90,7 @@ app.config(['$stateProvider', function ($stateProvider) {
                   }
                 }
             }
-        }).state('mod.Load Order', {
+        }).state('base.mod.Load Order', {
             templateUrl: '/resources/partials/showMod/loadOrder.html',
             controller: 'modLoadOrderController',
             url: '/load-order',
@@ -114,7 +114,7 @@ app.config(['$stateProvider', function ($stateProvider) {
                   }
                 }
             }
-        }).state('mod.Analysis', {
+        }).state('base.mod.Analysis', {
             templateUrl: '/resources/partials/showMod/analysis.html',
             controller: 'modAnalysisController',
             url: '/analysis',
