@@ -46,8 +46,8 @@ app.controller('userSettingsController', function ($scope, $q, settings, user, u
 
     // actions the user can or cannot perform
     var rep = $scope.user.reputation.overall;
-    $scope.canChangeAvatar = (rep >= 10) || ($scope.user.role === 'admin');
-    $scope.canChangeTitle = (rep >= 1280) || ($scope.user.role === 'admin');
+    $scope.canChangeAvatar = (rep >= 10) || ($scope.user.permissions.isAdmin);
+    $scope.canChangeTitle = (rep >= 1280) || ($scope.user.permissions.isAdmin);
 
     // get random quote for user title
     quoteService.retrieveQuotes().then(function (quotes) {
