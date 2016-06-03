@@ -22,6 +22,17 @@ def random_plugin
   Plugin.offset(rand(Plugin.count)).first
 end
 
+def get_unique_username
+  name = Faker::Internet.user_name(4..20)
+  username = name
+  count = 1
+  while User.find_by(username: username).present?
+    username = name + count.to_s
+    count += 1
+  end
+  username
+end
+
 def seed_fake_users
   require 'securerandom'
 
@@ -34,22 +45,15 @@ def seed_fake_users
 
   # create 99 random users
   99.times do |n|
-    # only allow up to the first 18 characters of a username from the
-    # faker generated username
-    name = Faker::Internet.user_name[0..17]
+    username = get_unique_username
     pw = SecureRandom.urlsafe_base64
     User.create!(
-        username: "#{name}#{n}",
+        username: username,
         joined: time_rand,
-        email: Faker::Internet.email(name),
+        email: Faker::Internet.email(username),
         password: pw,
         password_confirmation: pw,
         confirmed_at: Time.now.to_date,
-        reset_password_token: Faker::Internet.password,
-        sign_in_count: Random.rand(100).to_i + 1,
-        current_sign_in_ip: Faker::Internet.public_ip_v4_address,
-        last_sign_in_at: Time.now.to_date,
-        last_sign_in_ip: Faker::Internet.public_ip_v4_address
     )
   end
   puts "    #{User.count} users seeded"
