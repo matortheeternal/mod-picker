@@ -11,4 +11,13 @@ app.service('userService', function (backend, $q) {
         return user.promise;
     };
 
+    this.getPermissions = function(user) {
+        var permissions = {};
+        permissions.isAdmin = user.role === 'admin';
+        permissions.isModerator = user.role === 'moderator';
+        // TODO: Remove this when beta is over
+        permissions.canSubmitMod = true;
+        //permissions.canSubmitMod = permissions.isAdmin || permissions.isModerator || user.reputation.overall > 160;
+        return permissions;
+    }
 });

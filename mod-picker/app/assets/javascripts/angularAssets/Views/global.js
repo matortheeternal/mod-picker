@@ -7,14 +7,8 @@ app.controller('globalController', function($scope, $rootScope, userService, the
 
     userService.retrieveCurrentUser().then(function(user) {
         $scope.currentUser = user;
+        $scope.permissions = userService.getPermissions(user);
         themesService.changeTheme(user.settings.theme);
-        // figure out user permissions
-        var permissions = $scope.permissions;
-        permissions.isAdmin = user.role === 'admin';
-        permissions.isModerator = user.role === 'moderator';
-        // TODO: Remove this when beta is over
-        permissions.canSubmitMod = true;
-        //permissions.canSubmitMod = permissions.isAdmin || permissions.isModerator || user.reputation.overall > 160;
     });
 
     gameService.retrieveGames().then(function(data) {
