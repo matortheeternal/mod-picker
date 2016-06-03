@@ -6,7 +6,8 @@ app.config(['$stateProvider', function ($stateProvider) {
     $stateProvider.state('settings', {
             templateUrl: '/resources/partials/userSettings/userSettings.html',
             controller: 'userSettingsController',
-            url: '/settings'
+            url: '/settings',
+            redirectTo: 'settings.Profile'
         }).state('settings.Profile', {
             templateUrl: '/resources/partials/userSettings/profile.html',
             controller: 'userSettingsController',
@@ -77,6 +78,13 @@ app.controller('userSettingsController', function ($scope, $q, userSettingsServi
                 $scope.refresh = true;
             });
         });
+    $scope.tabs = [
+        {name: 'Profile'},
+        {name: 'Account'},
+        {name: 'Mod Lists'},
+        {name: 'Authored Mods'},
+    ];
+
     });
 
     /* avatar */

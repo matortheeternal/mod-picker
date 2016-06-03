@@ -17,22 +17,18 @@ app.config(['$stateProvider', function ($stateProvider) {
             controller: 'modReviewsController',
             url: '/reviews',
             params: {
-                //if reviews were retrieved and then the tab was changed, the sort from that retrieval is used
-                sort: function($state) {
-                  var parentState = $state.$current.parent;
-                  if (parentState && parentState.lastReviewSort){
-                    return parentState.lastReviewSort;
-                  }
-                  else {
-                    return 'reputation';
-                  }
-                }
+                sort: 'reputation',
+                retrieve: true
             },
             resolve: {
-                reviews: function($q, $stateParams, modId, modService, reviewSectionService) {
-                  //only resolve if the data will be different than what is already in $scope
-                  if (this.parent.lastReviewSort !== $stateParams.sort) {
-                    this.parent.lastReviewSort = $stateParams.sort;
+                reviews: function($q, $state, $stateParams, modId, modObject, modService, reviewSectionService) {
+                  //hardcoded redirect to the analysis tab when it's the base game
+                  if (!modObject.mod.primary_category_id) {
+                    $state.go('mod.Analysis', {modId: modId});
+                  }
+
+                  //only resolve if the retrieve param is true
+                  if ($stateParams.retrieve) {
                     var output = $q.defer();
                     modService.retrieveAssociation(modId, 'reviews', {sort: $stateParams.sort}).then(function(reviews) {
                       reviewSectionService.associateReviewSections(reviews).then(function() {
@@ -51,26 +47,16 @@ app.config(['$stateProvider', function ($stateProvider) {
             controller: 'modCompatibilityController',
             url: '/compatibility',
             params: {
-                //if notes were retrieved and then the tab was changed, the sorting from that retrieval is used
-                sort: function($state) {
-                  var parentState = $state.$current.parent;
-                  if (parentState && parentState.lastCompatibilitySort){
-                    return parentState.lastCompatibilitySort;
-                  }
-                  else {
-                    //if this is the first retrieval default to sorting by reputation
-                    return 'reputation';
-                  }
-                },
+                sort: 'reputation',
+                retrieve: true,
                 filters: {
                   mod_list: true
                 }
             },
             resolve: {
                 compatibilityNotes: function($stateParams, modId, modService) {
-                  //only resolve if the data will be different than what is already in $scope
-                  if (this.parent.lastCompatibilitySort !== $stateParams.sort) {
-                    this.parent.lastCompatibilitySort = $stateParams.sort;
+                  //only resolve if the retrieve param is true
+                  if ($stateParams.retrieve) {
 
                     options = {
                       sort: $stateParams.sort,
@@ -85,26 +71,16 @@ app.config(['$stateProvider', function ($stateProvider) {
             controller: 'modInstallOrderController',
             url: '/install-order',
             params: {
-                //if notes were retrieved and then the tab was changed, the sorting from that retrieval is used
-                sort: function($state) {
-                  var parentState = $state.$current.parent;
-                  if (parentState && parentState.lastInstallOrderSort){
-                    return parentState.lastInstallOrderSort;
-                  }
-                  else {
-                    //if this is the first retrieval default to sorting by reputation
-                    return 'reputation';
-                  }
-                },
+                sort: 'reputation',
+                retrieve: true,
                 filters: {
                   mod_list: true
                 }
             },
             resolve: {
                 installOrderNotes: function($stateParams, modId, modService) {
-                  //only resolve if the data will be different than what is already in $scope
-                  if (this.parent.lastInstallOrderSort !== $stateParams.sort) {
-                    this.parent.lastInstallOrderSort = $stateParams.sort;
+                  //only resolve if the retrieve param is true
+                  if ($stateParams.retrieve) {
 
                     options = {
                       sort: $stateParams.sort,
@@ -119,26 +95,16 @@ app.config(['$stateProvider', function ($stateProvider) {
             controller: 'modLoadOrderController',
             url: '/load-order',
             params: {
-                //if notes were retrieved and then the tab was changed, the sorting from that retrieval is used
-                sort: function($state) {
-                  var parentState = $state.$current.parent;
-                  if (parentState && parentState.lastLoadOrderSort){
-                    return parentState.lastLoadOrderSort;
-                  }
-                  else {
-                    //if this is the first retrieval default to sorting by reputation
-                    return 'reputation';
-                  }
-                },
+                sort: 'reputation',
+                retrieve: true,
                 filters: {
                   mod_list: true
                 }
             },
             resolve: {
                 loadOrderNotes: function($stateParams, modId, modService) {
-                  //only resolve if the data will be different than what is already in $scope
-                  if (this.parent.lastLoadOrderSort !== $stateParams.sort) {
-                    this.parent.lastLoadOrderSort = $stateParams.sort;
+                  //only resolve if the retrieve param is true
+                  if ($stateParams.retrieve) {
 
                     options = {
                       sort: $stateParams.sort,
@@ -152,9 +118,15 @@ app.config(['$stateProvider', function ($stateProvider) {
             templateUrl: '/resources/partials/showMod/analysis.html',
             controller: 'modAnalysisController',
             url: '/analysis',
+            params: {
+              retrieve: true
+            },
             resolve: {
-                analysis: function(modObject, modService) {
+                analysis: function($stateParams, modObject, modService) {
+                  //only resolve if the retrieve param is true
+                  if ($stateParams.retrieve) {
                     return modService.retrieveAnalysis(modObject.mod.id, modObject.mod.game_id);
+                  }
                 }
             }
         });
@@ -163,22 +135,36 @@ app.config(['$stateProvider', function ($stateProvider) {
 app.controller('modController', function ($scope, $q, $stateParams, $timeout, modObject, modService, pluginService, categoryService, gameService, recordGroupService, userTitleService, assetUtils, reviewSectionService, userService, contributionService, contributionFactory, errorsFactory, tagService, smoothScroll){
     $scope.mod = modObject.mod;
     $scope.mod.star = modObject.star;
+    //
+    $scope.sort = {
+    //     reviews: 'reputation',
+    //     compatibility: 'reputation',
+    //     installOrder: 'reputation',
+    //     loadOrder: 'reputation'
+    };
 
     $scope.tags = [];
     $scope.newTags = [];
 
     //tabs array
     $scope.tabs = [
-        'Reviews',
-        'Compatibility',
-        'Install Order',
-        'Load Order',
-        'Analysis'
+        { name: 'Reviews', params: {sort: 'reputation'} },
+        { name: 'Compatibility', params: {sort: 'reputation'} },
+        { name: 'Install Order', params: {sort: 'reputation'} },
+        { name: 'Load Order', params: {sort: 'reputation'} },
+        { name: 'Analysis', params: {}}
     ];
+
+    //returns the index of the tab with tabName
+    $scope.findTabIndex = function(tabName) {
+      return $scope.tabs.findIndex(function(tab) {
+        return tab.name === tabName;
+      })
+    };
 
     // only display analysis tab if mod doesn't have a primary category
     if (!$scope.mod.primary_category_id) {
-        $scope.tabs = ['Analysis'];
+        $scope.tabs.splice(0,4);
     }
     // remove Load Order tab if mod has no plugins
     else if ($scope.mod.plugins_count === 0) {
@@ -295,9 +281,10 @@ app.controller('modReviewsController', function ($scope, $stateParams, $state, r
     $scope.mod.reviews = reviews;
   }
 
-  $scope.reviewSort = $stateParams.sort;
+  $scope.tabs[$scope.findTabIndex('Reviews')].params.retrieve = false;
+
   $scope.reSortReviews = function() {
-    $state.go("mod.Reviews", {sort: $scope.reviewSort});
+    $state.go("mod.Reviews", {sort: $scope.tabs[$scope.findTabIndex('Reviews')].params.sort, retrieve: true});
   };
 
   // instantiate a new review object
@@ -507,14 +494,15 @@ app.controller('modReviewsController', function ($scope, $stateParams, $state, r
   };
 });
 
-app.controller('modCompatibilityController', function ($scope, compatibilityNotes, $stateParams, $state, contributionFactory) {
+app.controller('modCompatibilityController', function ($scope, $stateParams, compatibilityNotes, $stateParams, $state, contributionFactory) {
   if(compatibilityNotes) {
     $scope.mod.compatibility_notes = compatibilityNotes;
   }
 
-  $scope.compatibilitySort = $stateParams.sort;
+  $scope.tabs[$scope.findTabIndex('Compatibility')].params.retrieve = false;
+
     $scope.reSortCompatibility = function() {
-      $state.go("mod.Compatibility", {sort: $scope.compatibilitySort});
+      $state.go("mod.Compatibility", {sort: $scope.tabs[$scope.findTabIndex('Compatibility')].params.sort, retrieve: true});
     };
 
     // COMPATIBILITY NOTE RELATED LOGIC
@@ -603,14 +591,15 @@ app.controller('modCompatibilityController', function ($scope, compatibilityNote
     };
 });
 
-app.controller('modInstallOrderController', function ($scope, installOrderNotes, $state, $stateParams) {
+app.controller('modInstallOrderController', function ($scope, $stateParams, installOrderNotes, $state, $stateParams) {
   if(installOrderNotes) {
     $scope.mod.install_order_notes = installOrderNotes;
   }
 
-  $scope.installOrderSort = $stateParams.sort;
+  $scope.tabs[$scope.findTabIndex('Install Order')].params.retrieve = false;
+
     $scope.reSortInstallOrder = function() {
-      $state.go("mod.Install Order", {sort: $scope.installOrderSort});
+      $state.go("mod.Install Order", {sort: $scope.tabs[$scope.findTabIndex('Install Order')].params.sort, retrieve: true});
     };
 
     // INSTALL ORDER NOTE RELATED LOGIC
@@ -691,14 +680,15 @@ app.controller('modInstallOrderController', function ($scope, installOrderNotes,
     };
 });
 
-app.controller('modLoadOrderController', function ($scope, loadOrderNotes, $state, $stateParams) {
+app.controller('modLoadOrderController', function ($scope, $stateParams, loadOrderNotes, $state, $stateParams) {
   if(loadOrderNotes) {
     $scope.mod.load_order_notes = loadOrderNotes;
   }
 
-  $scope.loadOrderSort = $stateParams.sort;
+  $scope.tabs[$scope.findTabIndex('Load Order')].params.retrieve = false;
+
     $scope.reSortLoadOrder = function() {
-      $state.go("mod.Load Order", {sort: $scope.loadOrderSort});
+      $state.go("mod.Load Order", {sort: $scope.tabs[$scope.findTabIndex('Load Order')].params.sort, retrieve: true});
     };
 
     // LOAD ORDER NOTE RELATED LOGIC
@@ -734,8 +724,12 @@ app.controller('modLoadOrderController', function ($scope, loadOrderNotes, $stat
     };
 });
 
-app.controller('modAnalysisController', function ($scope, analysis) {
-    $scope.mod.plugins = analysis.plugins;
-    $scope.mod.assets = analysis.assets;
-    $scope.mod.currentPlugin = analysis.plugins[0];
+app.controller('modAnalysisController', function ($scope, $stateParams, analysis) {
+    if (analysis) {
+      $scope.mod.plugins = analysis.plugins;
+      $scope.mod.assets = analysis.assets;
+      $scope.mod.currentPlugin = analysis.plugins[0];
+    }
+
+    $scope.tabs[$scope.findTabIndex('Analysis')].params.retrieve = false;
 });

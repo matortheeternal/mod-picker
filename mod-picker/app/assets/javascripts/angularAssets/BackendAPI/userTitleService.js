@@ -1,5 +1,5 @@
 app.service('userTitleService', function (backend, $q) {
-    var service = this;
+    var thisService = this;
 
     this.retrieveUserTitles = function () {
         var userTitles = $q.defer();
@@ -24,31 +24,33 @@ app.service('userTitleService', function (backend, $q) {
     allTitles = this.retrieveUserTitles();
 
     gameTitles = allTitles.then(function(titles) {
-        return service.getSortedGameTitles(titles);
+        return thisService.getSortedGameTitles(titles);
     });
 
 
-    this.getUserTitle = function (gameTitles, reputation) {
-        var prevTitle = gameTitles[0];
-        for (var i = 0; i < gameTitles.length; i++) {
-            var title = gameTitles[i];
-            if (reputation < title.rep_required) {
-                return prevTitle.title;
+    this.getUserTitle = function (reputation) {
+        var output = $q.defer();
+        gameTitles.then(function(titles) {
+            var prevTitle = titles[0];
+            for (var i = 0; i < titles.length; i++) {
+                var title = titles[i];
+                if (reputation < title.rep_required) {
+                    return prevTitle.title;
+                }
+                prevTitle = title;
             }
-            prevTitle = title;
-        }
-        return prevTitle.title;
+            output.resolve(prevTitle.title);
+        });
+        return output.promise;
     };
 
     this.associateTitles = function(data) {
-        gameTitles.then(function(gameTitles) {
-            data.forEach(function(item) {
-                // if user is defined and they don't have a custom title
-                if (item.user && !item.user.title) {
-                    // get their default title
-                    item.user.title = service.getUserTitle(gameTitles, item.user.reputation.overall);
-                }
-            });
+        data.forEach(function(item) {
+            // if user is defined and they don't have a custom title
+            if (item.user && !item.user.title) {
+                // get their default title
+                item.user.title = thisService.getUserTitle(item.user.reputation.overall);
+            }
         });
-    }
+    };
 });

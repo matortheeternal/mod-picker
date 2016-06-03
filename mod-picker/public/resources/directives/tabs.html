@@ -1,5 +1,5 @@
 <div class="tabs">
-	<a ui-sref=".{{tab.name}}({{tab.params}})" ng-repeat="tab in tabs" ui-sref-active="selected-tab">
+	<a ng-repeat="tab in tabs" ng-class="isCurrentTab(tab.name)" ng-click="goToState('^.' + tab.name, tab.params)">
 		{{tab.name}}
 	</a>
 </div>
