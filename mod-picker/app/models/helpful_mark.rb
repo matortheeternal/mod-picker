@@ -23,10 +23,15 @@ class HelpfulMark < ActiveRecord::Base
   }
 
   # Callbacks
+  before_save :set_dates
   after_create :increment_counters
   before_destroy :decrement_counters
 
   private
+    def set_dates
+      self.submitted = DateTime.now
+    end
+
     def decrement_counters
       self.user.update_counter(:helpful_marks_count, -1)
       if self.helpful
