@@ -41,9 +41,9 @@ class ModList < ActiveRecord::Base
   validates :description, length: { maximum: 65535 }
 
   # Callbacks
-  after_create :increment_counters
+  after_create :increment_counters, :set_active
   before_save :set_dates
-  before_destroy :decrement_counters
+  before_destroy :decrement_counters, :unset_active
 
   def update_lazy_counters
     mod_ids = mod_list_mods.all.ids
@@ -139,5 +139,17 @@ class ModList < ActiveRecord::Base
 
     def decrement_counters
       self.user.update_counter(:mod_lists_count, -1)
+    end
+
+    def set_active
+      self.user.active_mod_list_id = self.id
+      self.user.save
+    end
+
+    def unset_active
+      if self.user.active_mod_list_id == self.id
+        self.user.active_mod_list_id = nil
+        self.user.save
+      end
     end
 end
