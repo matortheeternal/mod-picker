@@ -22,10 +22,10 @@ app.service('userService', function (backend, $q, userSettingsService, userTitle
                 });
             }
 
-            user.permissions = this.getPermissions(user);
+            user.permissions = thisService.getPermissions(user);
 
             output.resolve(user);
-        };
+        });
         return output.promise;
     };
 
