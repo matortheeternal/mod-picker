@@ -1,4 +1,5 @@
 app.service('userService', function (backend, $q, userSettingsService, userTitleService) {
+    var thisService = this;
     this.retrieveUser = function (userId) {
         return backend.retrieve('/users/' + userId);
     };
@@ -21,7 +22,9 @@ app.service('userService', function (backend, $q, userSettingsService, userTitle
                 });
             }
 
-            output.resolve(data);
+            user.permissions = this.getPermissions(user);
+
+            output.resolve(user);
         };
         return output.promise;
     };
