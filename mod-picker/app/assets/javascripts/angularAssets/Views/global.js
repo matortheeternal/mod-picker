@@ -13,6 +13,7 @@ app.controller('globalController', function($scope, $rootScope, userService, the
 
     gameService.retrieveGames().then(function(data) {
         $scope.games = data;
+        $scope.availableGames = gameService.getAvailableGames(data);
         $scope.currentGame = $scope.games.find(function(game) {
             return game.id == window._current_game_id;
         });
