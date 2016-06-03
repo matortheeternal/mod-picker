@@ -31,11 +31,15 @@ app.service('userService', function (backend, $q, userSettingsService, userTitle
 
     this.getPermissions = function(user) {
         var permissions = {};
+        var rep = user.reputation.overall;
         permissions.isAdmin = user.role === 'admin';
         permissions.isModerator = user.role === 'moderator';
         // TODO: Remove this when beta is over
         permissions.canSubmitMod = true;
         //permissions.canSubmitMod = permissions.isAdmin || permissions.isModerator || user.reputation.overall > 160;
+        permissions.canChangeAvatar = (rep >= 10) || ($scope.user.permissions.isAdmin);
+        permissions.canChangeTitle = (rep >= 1280) || ($scope.user.permissions.isAdmin);
+
         return permissions;
     }
 });

@@ -28,6 +28,7 @@ app.controller('userSettingsController', function ($scope, $q, currentUser, user
     $scope.avatar = {
         src: $scope.user.avatar
     };
+    $scope.permissions = user.permissions;
 
     $scope.tabs = [
         {name: 'Profile'},
@@ -35,11 +36,6 @@ app.controller('userSettingsController', function ($scope, $q, currentUser, user
         {name: 'Mod Lists'},
         {name: 'Authored Mods'},
     ];
-
-    // actions the user can or cannot perform
-    var rep = $scope.user.reputation.overall;
-    $scope.canChangeAvatar = (rep >= 10) || ($scope.user.permissions.isAdmin);
-    $scope.canChangeTitle = (rep >= 1280) || ($scope.user.permissions.isAdmin);
 
     // get random quote for user title
     quoteService.retrieveQuotes().then(function (quotes) {
