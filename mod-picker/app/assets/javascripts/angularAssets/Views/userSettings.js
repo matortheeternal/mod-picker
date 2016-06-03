@@ -183,6 +183,7 @@ app.controller('userSettingsController', function ($scope, $q, user, userSetting
             } else {
                 $scope.user.showSuccess = $scope.errors.length == 0;
                 themesService.changeTheme($scope.userSettings.theme);
+                $scope.$emit('reloadCurrentUser', {});
             }
         });
         if ($scope.avatar.file) {
