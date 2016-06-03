@@ -26,7 +26,13 @@ def seed_static_records
 
   puts "\nSeeding games"
 
+  gameBethesda = Game.create(
+      display_name: "Bethesda Games",
+      long_name: "Bethesda Games",
+      abbr_name: "bg"
+  )
   gameSkyrim = Game.create(
+      parent_game_id: gameBethesda.id,
       display_name: "Skyrim",
       long_name: "The Elder Scrolls V: Skyrim",
       abbr_name: "sk",
@@ -35,6 +41,7 @@ def seed_static_records
       steam_app_ids: "72850"
   )
   gameOblivion = Game.create(
+      parent_game_id: gameBethesda.id,
       display_name: "Oblivion",
       long_name: "The Elder Scrolls IV: Oblivion",
       abbr_name: "ob",
@@ -43,6 +50,7 @@ def seed_static_records
       steam_app_ids: "22330,900883"
   )
   gameFallout4 = Game.create(
+      parent_game_id: gameBethesda.id,
       display_name: "Fallout 4",
       long_name: "Fallout 4",
       abbr_name: "fo4",
@@ -51,6 +59,7 @@ def seed_static_records
       steam_app_ids: "377160"
   )
   gameFalloutNV = Game.create(
+      parent_game_id: gameBethesda.id,
       display_name: "Fallout NV",
       long_name: "Fallout: New Vegas",
       abbr_name: "fnv",
@@ -59,6 +68,7 @@ def seed_static_records
       steam_app_ids: "22380,2028016"
   )
   gameFallout3 = Game.create(
+      parent_game_id: gameBethesda.id,
       display_name: "Fallout 3",
       long_name: "Fallout 3",
       abbr_name: "fo3",
