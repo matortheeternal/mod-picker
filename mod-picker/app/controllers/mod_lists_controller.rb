@@ -83,6 +83,27 @@ class ModListsController < ApplicationController
       @mod_list = ModList.find(params[:id])
     end
 
+    def set_active_mod_list
+      # TODO: handle user not logged in
+      if current_user
+        if current_user.active_mod_list_id
+          @mod_list = current_user.active_mod_list
+        else
+          @mod_list = ModList.where(submitted_by: current_user.id).first
+          if @mod_list.present?
+            current_user.active_mod_list_id = @mod_list.id
+            current_user.save!
+          else
+            @mod_list = current_user.mod_lists.create(
+                submitted_by: current_user.id,
+                game_id: params[:game_id] || Game.first.id,
+                name: current_user.username + "'s Mod List'"
+            )
+          end
+        end
+      end
+    end
+
     # Never trust parameters from the scary internet, only allow the white list through.
     def mod_list_params
       params.require(:mod_list).permit(:game_id, :name, :is_collection, :has_adult_content, :status, :visibility, :created, :completed, :description)
