@@ -2,12 +2,19 @@
  * Created by Sirius on 3/9/2016.
  */
 app.config(['$stateProvider', function ($stateProvider) {
-
     $stateProvider.state('settings', {
             templateUrl: '/resources/partials/userSettings/userSettings.html',
             controller: 'userSettingsController',
             url: '/settings',
-            redirectTo: 'settings.Profile'
+            redirectTo: 'settings.Profile',
+            resolve: {
+                settings: function(currentUserService) {
+                    return currentUserService.settings;
+                },
+                user: function(currentUserService) {
+                    return currentUserService.user.promise;
+                }
+            }
         }).state('settings.Profile', {
             templateUrl: '/resources/partials/userSettings/profile.html',
             controller: 'userSettingsController',
@@ -27,57 +34,13 @@ app.config(['$stateProvider', function ($stateProvider) {
         });
 }]);
 
-app.controller('userSettingsController', function ($scope, $q, userSettingsService, userService, quoteService, userTitleService, fileUtils, themesService) {
-    //TODO: put this into a service
-    // A service which calls other services and sets scope variables?
-    // seems odd to me.  -Mator
-    userSettingsService.retrieveUserSettings().then(function (userSettings) {
-        $scope.userSettings = userSettings;
-        //Don't trust the server! (actually, this is just to make sure that caching usersettings doesn't screws us over)
-        //this obviously belongs into a service, do note that todo above this
-        $scope.userSettings.theme = themesService.getTheme();
-        //TODO: I feel like this could be put inside the retrieveUserSettings() function
-        userService.retrieveUser(userSettings.user_id).then(function (user) {
-            $scope.user = user;
-            $scope.avatar = {
-                src: $scope.user.avatar
-            };
+app.controller('userSettingsController', function ($scope, $q, settings, user, userSettingsService, quoteService, fileUtils, themesService) {
+    $scope.userSettings = settings;
+    $scope.user = user;
+    $scope.avatar = {
+        src: $scope.user.avatar
+    };
 
-            // actions the user can or cannot perform
-            var rep = $scope.user.reputation.overall;
-            $scope.canChangeAvatar = (rep >= 10) || ($scope.user.role === 'admin');
-            $scope.canChangeTitle = (rep >= 1280) || ($scope.user.role === 'admin');
-
-            //splitting the modlists into collections and non collections
-            //sorry taffy, this logic should be in a service right? -Sirius
-            modlists = $scope.user.mod_lists;
-            $scope.lists = [];
-            $scope.collections = [];
-            modlists.forEach(function (modlist) {
-                if (modlist.is_collection) {
-                    $scope.collections.push(modlist);
-                }
-                else {
-                    $scope.lists.push(modlist);
-                }
-            });
-
-            // get user title if not custom
-            if (!$scope.user.title) {
-                userTitleService.retrieveUserTitles().then(function (titles) {
-                    var gameTitles = userTitleService.getSortedGameTitles(titles);
-                    $scope.user.title = userTitleService.getUserTitle(gameTitles, rep);
-                });
-            }
-
-            // get random quote for user title
-            quoteService.retrieveQuotes().then(function (quotes) {
-                var label = $scope.canChangeTitle ? "High Reputation" : "Low Reputation";
-                $scope.titleQuote = quoteService.getRandomQuote(quotes, label);
-                $scope.titleQuote.text = $scope.titleQuote.text.replace(/Talos/g, $scope.user.username.capitalize());
-                $scope.refresh = true;
-            });
-        });
     $scope.tabs = [
         {name: 'Profile'},
         {name: 'Account'},
@@ -85,6 +48,17 @@ app.controller('userSettingsController', function ($scope, $q, userSettingsServi
         {name: 'Authored Mods'},
     ];
 
+    // actions the user can or cannot perform
+    var rep = $scope.user.reputation.overall;
+    $scope.canChangeAvatar = (rep >= 10) || ($scope.user.role === 'admin');
+    $scope.canChangeTitle = (rep >= 1280) || ($scope.user.role === 'admin');
+
+    // get random quote for user title
+    quoteService.retrieveQuotes().then(function (quotes) {
+        var label = $scope.canChangeTitle ? "High Reputation" : "Low Reputation";
+        $scope.titleQuote = quoteService.getRandomQuote(quotes, label);
+        $scope.titleQuote.text = $scope.titleQuote.text.replace(/Talos/g, $scope.user.username.capitalize());
+        $scope.refresh = true;
     });
 
     /* avatar */
