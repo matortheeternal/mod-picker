@@ -24,7 +24,7 @@ app.config(['$stateProvider', function ($stateProvider) {
                 reviews: function($q, $state, $stateParams, modId, modObject, modService, reviewSectionService) {
                   //hardcoded redirect to the analysis tab when it's the base game
                   if (!modObject.mod.primary_category_id) {
-                    $state.go('mod.Analysis', {modId: modId});
+                    $state.go('base.mod.Analysis', {modId: modId});
                   }
 
                   //only resolve if the retrieve param is true
@@ -253,7 +253,7 @@ app.controller('modReviewsController', function ($scope, $stateParams, $state, r
   $scope.tabs[$scope.findTabIndex('Reviews')].params.retrieve = false;
 
   $scope.reSortReviews = function() {
-    $state.go("mod.Reviews", {sort: $scope.tabs[$scope.findTabIndex('Reviews')].params.sort, retrieve: true});
+    $state.go("base.mod.Reviews", {sort: $scope.tabs[$scope.findTabIndex('Reviews')].params.sort, retrieve: true});
   };
 
   // instantiate a new review object
@@ -471,7 +471,7 @@ app.controller('modCompatibilityController', function ($scope, $stateParams, com
   $scope.tabs[$scope.findTabIndex('Compatibility')].params.retrieve = false;
 
     $scope.reSortCompatibility = function() {
-      $state.go("mod.Compatibility", {sort: $scope.tabs[$scope.findTabIndex('Compatibility')].params.sort, retrieve: true});
+      $state.go("base.mod.Compatibility", {sort: $scope.tabs[$scope.findTabIndex('Compatibility')].params.sort, retrieve: true});
     };
 
     // COMPATIBILITY NOTE RELATED LOGIC
@@ -568,7 +568,7 @@ app.controller('modInstallOrderController', function ($scope, $stateParams, inst
   $scope.tabs[$scope.findTabIndex('Install Order')].params.retrieve = false;
 
     $scope.reSortInstallOrder = function() {
-      $state.go("mod.Install Order", {sort: $scope.tabs[$scope.findTabIndex('Install Order')].params.sort, retrieve: true});
+      $state.go("base.mod.Install Order", {sort: $scope.tabs[$scope.findTabIndex('Install Order')].params.sort, retrieve: true});
     };
 
     // INSTALL ORDER NOTE RELATED LOGIC
@@ -657,7 +657,7 @@ app.controller('modLoadOrderController', function ($scope, $stateParams, loadOrd
   $scope.tabs[$scope.findTabIndex('Load Order')].params.retrieve = false;
 
     $scope.reSortLoadOrder = function() {
-      $state.go("mod.Load Order", {sort: $scope.tabs[$scope.findTabIndex('Load Order')].params.sort, retrieve: true});
+      $state.go("base.mod.Load Order", {sort: $scope.tabs[$scope.findTabIndex('Load Order')].params.sort, retrieve: true});
     };
 
     // LOAD ORDER NOTE RELATED LOGIC

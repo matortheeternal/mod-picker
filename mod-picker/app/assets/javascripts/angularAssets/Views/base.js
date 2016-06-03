@@ -1,7 +1,27 @@
 app.config(['$stateProvider', function($stateProvider) {
     $stateProvider.state('base', {
-        abstract: true,
-        template: '<ui-view/>',
+        url: '',
+        views: {
+            'header': {
+                templateUrl: '/resources/partials/header.html',
+                controller: 'headerController',
+                resolve: {
+                    games: function(gameService) {
+                        return gameService.getAllGames();
+                    }
+                }
+            },
+            'nav': {
+                templateUrl: '/resources/partials/nav.html',
+                controller: 'navController'
+            },
+            'footer': {
+                templateUrl: '/resources/partials/footer.html'
+            },
+            'content': {
+                template: '<ui-view/>'
+            }
+        },
         resolve: {
             currentUser: function(userService) {
                 return userService.retrieveCurrentUser();
@@ -15,3 +35,25 @@ app.config(['$stateProvider', function($stateProvider) {
         }
     })
 }]);
+
+app.controller('globalController', function($scope, $rootScope, themesService) {
+    $rootScope.$on('themeChanged', function (event, newTheme) {
+        $scope.currentTheme = newTheme;
+    });
+
+    $scope.$on('reloadCurrentUser', function() {
+        userService.retrieveCurrentUser().then(function (user) {
+            $scope.currentUser = user;
+        });
+    });
+});
+
+app.controller('headerController', function($scope, currentUser, games) {
+    $scope.currentUser = currentUser;
+    $scope.games = games;
+});
+
+app.controller('navController', function($scope, currentUser) {
+    $scope.currentUser = currentUser;
+    $scope.permissions = currentUser.permissions;
+});

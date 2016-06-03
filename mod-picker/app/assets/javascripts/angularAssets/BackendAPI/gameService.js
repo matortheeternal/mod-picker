@@ -14,4 +14,8 @@ app.service('gameService', function (backend, $q) {
         });
         return output.promise;
     };
+
+    this.getAllGames = function() {
+        return allGames;
+    };
 });

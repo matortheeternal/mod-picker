@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" ng-app="modPicker" ng-controller="globalController">
+<html lang="en" ng-app="modPicker">
 <head>
   <meta charset="UTF-8">
   <title>Mod Picker: <%= @current_game.display_name %></title>
@@ -17,188 +17,27 @@
       'High Hrothgar': "<%= stylesheet_path 'High Hrothgar' %>"
     }
   </script>
-  <link rel="stylesheet" ng-href="{{currentTheme}}" />
+    <link ng-controller="themesController" rel="stylesheet" ng-href="{{currentTheme}}" />
 </head>
-<body ng-class="{ 'two-columns': twoColumns }" ng-cloak>
-<header>
-  <div class="page-container">
-    <div class="header">
-      <a class="logo" href="/"><h1>Mod Picker</h1></a>
-      <div class="nav-controls">
-        <!-- User signed in navigation -->
-        <ul class="user-nav" ng-if="currentUser">
-          <li>
-            Welcome <a class="inverse-link" ng-href="#/profile/{{currentUser.id}}">{{currentUser.username}}</a>
-          </li>
-          <li>
-            <a class="inverse-link" href="#/settings/mod_lists">Saved Mod Lists</a>
-          </li>
-          <li>
-            <a class="inverse-link" ui-sref="settings">Settings</a>
-          </li>
-          <li>
-            <a class="inverse-link" href="/users/sign_out">Log Out</a>
-          </li>
-          <li>
-            <game-select games="games" selected-game="currentGame"></game-select>
-          </li>
-        </ul>
-        <!-- User signed out navigation -->
-        <ul class="user-nav" ng-if="!currentUser">
-          <li>
-            <a class="inverse-link" href="/users/sign_in">Log In</a>
-          </li>
-          <li>
-            <a class="inverse-link" href="/users/sign_up">Register</a>
-          </li>
-          <li>
-            <game-select games="games" selected-game="currentGame"></game-select>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </div>
-</header>
-<nav>
-  <div class="page-container">
-    <div class="nav-wrapper clearfix">
-      <div class="primary-nav">
-        <a class="nav-modlist" ui-sref="mod-list">
-          <span class="nav-icon">
-            <i class="fa fa-pencil-square-o"></i>
-          </span>
-          <span class="nav-text">
-            <b ng-if="currentUser.active_mod_list_id">Edit your</b>
-            <b ng-if="!currentUser.active_mod_list_id">Start a new</b>
-            Mod List
-          </span>
-        </a>
-        <a class="nav-contributions" ui-sref="home">
-          <span class="nav-icon">
-            <i class="fa fa-comments"></i>
-          </span>
-          <span class="nav-text">
-            <b>View recent</b>
-            Contributions
-          </span>
-        </a>
-        <a class="nav-browse-modlists" ui-sref="mod-lists">
-          <span class="nav-icon">
-            <i class="fa fa-list-ul"></i>
-          </span>
-          <span class="nav-text">
-            <b>See all</b>
-            Public Mod Lists
-          </span>
-        </a>
-        <a class="nav-browse-mods" ui-sref="mods">
-          <span class="nav-icon">
-            <i class="fa fa-globe"></i>
-          </span>
-          <span class="nav-text">
-            <b>Browse</b>
-            Skyrim Mods
-          </span>
-          <span class="nav-dropdown"></span>
-        </a>
-        <a class="nav-submit-mod" ui-sref="submit" ng-if="permissions.canSubmitMod">
-          <span class="nav-icon">
-            <i class="fa fa-plus-square"></i>
-          </span>
-          <span class="nav-text">
-            <b>Submit</b>
-            A {{currentGame.display_name}} Mod
-          </span>
-        </a>
-      </div>
-      <div class="secondary-nav">
-        <div class="search" ng-controller="searchInputController">
-          <form>
-            <input class="search-field" type="text" autocomplete="off" ng-model="search" placeholder="Search mods...">
-            <div class="search-container">
-              <input id="search-btn" class="btn" type="submit" value="Search" ng-click="processSearch()" ng-hide="loading"/>
-              <loader data="!loading" spinner-class="small-spinner"></loader>
-            </div>
-          </form>
-        </div>
-      </div>
-    </div>
-  </div>
-</nav>
 
-<%= yield %>
+<body ng-cloak>
+    <%= yield %>
 
-<footer>
-  <div class="page-container">
-    <div class="left-column wide-column">
-      <span class="logo"><h1>Mod Picker</h1></span>
-      &copy;2016 Mod Picker, LLC.  All rights reserved.
-    </div>
-    <div class="right-column">
-      <section>
-        <span class="section-title">
-          Browse Content
-        </span>
-        <ul>
-          <li><a class="inverse-link" ui-sref="mods">Mods</a></li>
-          <li><a class="inverse-link" ui-sref="mod-lists">Mod Lists</a></li>
-          <li><a class="inverse-link" ui-sref="users">Users</a></li>
-          <li><a class="inverse-link" ui-sref="comments">Comments</a></li>
-        </ul>
-      </section>
-      <section>
-        <span class="section-title">
-          Browse Contributions
-        </span>
-        <ul>
-          <li><a class="inverse-link" ui-sref="reviews">Reviews</a></li>
-          <li><a class="inverse-link" ui-sref="compatibility-notes">Compatibility Notes</a></li>
-          <li><a class="inverse-link" ui-sref="load-order-notes">Load Order Notes</a></li>
-          <li><a class="inverse-link" ui-sref="install-order-notes">Install Order Notes</a></li>
-          <li><a class="inverse-link" ui-sref="corrections">Corrections</a></li>
-        </ul>
-      </section>
-      <section>
-        <span class="section-title">
-          Mod Picker
-        </span>
-        <ul>
-          <li><a class="inverse-link" ui-sref="home">About Us</a></li>
-          <li><a class="inverse-link" ui-sref="home">Terms of Service</a></li>
-          <li><a class="inverse-link" ui-sref="home">Privacy Policy</a></li>
-          <li><a class="inverse-link" ui-sref="home">Help Center</a></li>
-          <li><a class="inverse-link" ui-sref="home">Contact</a></li>
-        </ul>
-      </section>
-      <section>
-        <span class="section-title">
-          Social Media
-        </span>
-        <ul>
-          <li><a class="inverse-link" href="https://twitter.com/Mod_Picker">Twitter</a></li>
-          <li><a class="inverse-link" href="https://www.youtube.com/channel/UCWqJeb-T5-k-AnWZTF_0ZAw">YouTube</a></li>
-          <li><a class="inverse-link" href="https://www.facebook.com/modpicker">Facebook</a></li>
-        </ul>
-      </section>
-    </div>
-  </div>
-</footer>
-
-<!-- defered load of scripts, which is way more performant for browsers -->
-<%= javascript_include_tag 'angular.min.1.5.1' %>
-<%= javascript_include_tag 'marked.min' %>
-<%= javascript_include_tag 'angular-marked.min' %>
-<%= javascript_include_tag 'angular-ui-router.min' %>
-<%= javascript_include_tag 'angular-smooth-scroll.min' %>
-<%= javascript_include_tag 'heartcode-canvasloader-min' %>
-<%= javascript_include_tag 'rzslider.min' %>
-<%= javascript_include_tag 'sticky.min' %>
-<%= javascript_include_tag 'angular-animate.min' %>
-<%= javascript_include_tag 'angular-elastic-input.min' %>
-<%= javascript_include_tag 'simplemde.min' %>
-<%= javascript_include_tag 'spin.min' %>
-<%= javascript_include_tag 'zip' %>
-<%= javascript_include_tag 'rar' %>
-<%= javascript_include_tag 'modpicker' %>
+        <!-- defered load of scripts, which is way more performant for browsers -->
+        <%= javascript_include_tag 'angular.min.1.5.1' %>
+        <%= javascript_include_tag 'marked.min' %>
+        <%= javascript_include_tag 'angular-marked.min' %>
+        <%= javascript_include_tag 'angular-ui-router.min' %>
+        <%= javascript_include_tag 'angular-smooth-scroll.min' %>
+        <%= javascript_include_tag 'heartcode-canvasloader-min' %>
+        <%= javascript_include_tag 'rzslider.min' %>
+        <%= javascript_include_tag 'sticky.min' %>
+        <%= javascript_include_tag 'angular-animate.min' %>
+        <%= javascript_include_tag 'angular-elastic-input.min' %>
+        <%= javascript_include_tag 'simplemde.min' %>
+        <%= javascript_include_tag 'spin.min' %>
+        <%= javascript_include_tag 'zip' %>
+        <%= javascript_include_tag 'rar' %>
+        <%= javascript_include_tag 'modpicker' %>
 </body>
 </html>

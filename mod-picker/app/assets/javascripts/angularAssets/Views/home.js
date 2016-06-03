@@ -3,8 +3,7 @@
  */
 
 app.config(['$stateProvider', function ($stateProvider) {
-    $stateProvider
-        .state('home', {
+    $stateProvider.state('base.home', {
             templateUrl: '/resources/partials/home.html',
             url: '/'
         });

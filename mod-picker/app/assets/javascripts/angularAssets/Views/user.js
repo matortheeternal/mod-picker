@@ -1,5 +1,5 @@
 app.config(['$stateProvider', function ($stateProvider) {
-    $stateProvider.state('user', {
+    $stateProvider.state('base.user', {
             templateUrl: '/resources/partials/showUser/user.html',
             controller: 'userController',
             url: '/profile/:userId'
