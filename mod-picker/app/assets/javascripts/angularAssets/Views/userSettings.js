@@ -209,13 +209,13 @@ app.controller('userSettingsController', function ($scope, $q, userSettingsServi
             if (data.status !== "ok") {
                 $scope.errors.concat(data.errors);
             }
-            $scope.showSuccess = $scope.errors.length == 0;
+            $scope.user.showSuccess = $scope.errors.length == 0;
         });
         userSettingsService.submitUserSettings($scope.userSettings).then(function (data) {
             if (data.status !== "ok") {
                 $scope.errors.concat(data.errors);
             } else {
-                $scope.showSuccess = $scope.errors.length == 0;
+                $scope.user.showSuccess = $scope.errors.length == 0;
                 themesService.changeTheme($scope.userSettings.theme);
             }
         });
@@ -224,7 +224,7 @@ app.controller('userSettingsController', function ($scope, $q, userSettingsServi
                 if (data.status !== "Success") {
                     $scope.errors.push({message: "Avatar: " + data.status});
                 }
-                $scope.showSuccess = $scope.errors.length == 0;
+                $scope.user.showSuccess = $scope.errors.length == 0;
             });
         }
     };
