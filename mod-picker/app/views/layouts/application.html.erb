@@ -101,20 +101,20 @@
           </span>
           <span class="nav-dropdown"></span>
         </a>
-        <a class="nav-submit-mod" ui-sref="submit">
+        <a class="nav-submit-mod" ui-sref="submit" ng-if="permissions.canSubmitMod">
           <span class="nav-icon">
             <i class="fa fa-plus-square"></i>
           </span>
           <span class="nav-text">
             <b>Submit</b>
-            A Skyrim Mod
+            A {{currentGame.display_name}} Mod
           </span>
         </a>
       </div>
       <div class="secondary-nav">
         <div class="search" ng-controller="searchInputController">
           <form>
-            <input class="search-field" type="text" autocomplete="off" ng-model="search" placeholder="Search...">
+            <input class="search-field" type="text" autocomplete="off" ng-model="search" placeholder="Search mods...">
             <div class="search-container">
               <input id="search-btn" class="btn" type="submit" value="Search" ng-click="processSearch()" ng-hide="loading"/>
               <loader data="!loading" spinner-class="small-spinner"></loader>
