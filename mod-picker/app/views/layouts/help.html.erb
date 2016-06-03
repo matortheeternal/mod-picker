@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Mod Picker: Help Center</title>
+  <link href='https://fonts.googleapis.com/css?family=Roboto:400,700,500' rel='stylesheet' type='text/css'>
+  <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+  <%= stylesheet_link_tag 'help' %>
+</head>
+<body>
+<header>
+  <div class="page-container">
+    <h1>Mod Picker: Help Center</h1>
+    <!-- TODO: Link back to main site -->
+    <!-- TODO: Link to Help Center Index -->
+    <!-- TODO: User navigation items -->
+    <!-- TODO: Other navigation items -->
+  </div>
+</header>
+
+<%= yield %>
+
+<footer>
+  <div class="page-container">
+    <div class="left-column wide-column">
+      <span class="logo"><h1>Mod Picker</h1></span>
+      &copy;2016 Mod Picker, LLC.  All rights reserved.
+    </div>
+    <div class="right-column">
+      <section>
+        <span class="section-title">
+          Browse Content
+        </span>
+        <ul>
+          <li><a class="inverse-link" ui-sref="mods">Mods</a></li>
+          <li><a class="inverse-link" ui-sref="mod-lists">Mod Lists</a></li>
+          <li><a class="inverse-link" ui-sref="users">Users</a></li>
+          <li><a class="inverse-link" ui-sref="comments">Comments</a></li>
+        </ul>
+      </section>
+      <section>
+        <span class="section-title">
+          Browse Contributions
+        </span>
+        <ul>
+          <li><a class="inverse-link" ui-sref="reviews">Reviews</a></li>
+          <li><a class="inverse-link" ui-sref="compatibility-notes">Compatibility Notes</a></li>
+          <li><a class="inverse-link" ui-sref="load-order-notes">Load Order Notes</a></li>
+          <li><a class="inverse-link" ui-sref="install-order-notes">Install Order Notes</a></li>
+          <li><a class="inverse-link" ui-sref="corrections">Corrections</a></li>
+        </ul>
+      </section>
+      <section>
+        <span class="section-title">
+          Mod Picker
+        </span>
+        <ul>
+          <li><a class="inverse-link" ui-sref="home">About Us</a></li>
+          <li><a class="inverse-link" ui-sref="home">Terms of Service</a></li>
+          <li><a class="inverse-link" ui-sref="home">Privacy Policy</a></li>
+          <li><a class="inverse-link" ui-sref="home">Help Center</a></li>
+          <li><a class="inverse-link" ui-sref="home">Contact</a></li>
+        </ul>
+      </section>
+      <section>
+        <span class="section-title">
+          Social Media
+        </span>
+        <ul>
+          <li><a class="inverse-link" href="https://twitter.com/Mod_Picker">Twitter</a></li>
+          <li><a class="inverse-link" href="https://www.youtube.com/channel/UCWqJeb-T5-k-AnWZTF_0ZAw">YouTube</a></li>
+          <li><a class="inverse-link" href="https://www.facebook.com/modpicker">Facebook</a></li>
+        </ul>
+      </section>
+    </div>
+  </div>
+</footer>
+
+<!-- defered load of scripts, which is way more performant for browsers -->
+<%= javascript_include_tag 'help' %>
+</body>
+</html>
