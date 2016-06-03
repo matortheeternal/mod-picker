@@ -144,13 +144,6 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, cu
     var isAuthor = author !== null;
     $scope.user.permissions.canManage = $scope.user.permissions.canModerate || isAuthor
 
-    $scope.sort = {
-    //     reviews: 'reputation',
-    //     compatibility: 'reputation',
-    //     installOrder: 'reputation',
-    //     loadOrder: 'reputation'
-    };
-
     $scope.tags = [];
     $scope.newTags = [];
 
