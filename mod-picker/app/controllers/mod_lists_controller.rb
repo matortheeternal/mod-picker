@@ -1,6 +1,6 @@
 class ModListsController < ApplicationController
   before_action :set_mod_list, only: [:show, :update, :destroy]
-  before_action :set_active_mod_list, only: [:active]
+  before_action :set_active_mod_list, only: [:active, :mods]
 
   # GET /mod_lists
   # GET /mod_lists.json
@@ -21,6 +21,15 @@ class ModListsController < ApplicationController
   def active
     if @mod_list
       render :json => @mod_list
+    else
+      render status: 404
+    end
+  end
+
+  # GET /mod_lists/mods
+  def mods
+    if @mod_list
+      render :json => @mod_list.mod_list_mods
     else
       render status: 404
     end
