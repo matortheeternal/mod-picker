@@ -96,6 +96,12 @@ Rails.application.routes.draw do
     # home page
     match '/skyrim', to: 'home#skyrim', via: 'get'
     match '/fallout4', to: 'home#fallout4', via: 'get'
+
+    # help center
+    match '/help', to: 'help_pages#index', via: 'get'
+    match '/help/:id', to: 'help_pages#show', via: 'get'
+    match '/help/:id', to: 'help_pages#destroy', via: 'delete'
+    match '/help/:id', to: 'help_pages#update', via: [:patch, :put]
   end
 
   # welcome page
