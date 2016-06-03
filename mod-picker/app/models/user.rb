@@ -148,8 +148,12 @@ class User < ActiveRecord::Base
   def show_json(current_user)
     # email handling
     methods = [:avatar, :last_sign_in_at, :current_sign_in_at, :email_public?]
+    bio_except = [:nexus_verification_token, :lover_verification_token, :workshop_verification_token]
     if self.email_public? || current_user.id == self.id
       methods.push(:email)
+    end
+    if current_user.id == self.id
+      bio_except = [:user_id]
     end
 
     self.as_json({
@@ -162,7 +166,7 @@ class User < ActiveRecord::Base
                 :only => [:id, :name, :is_collection, :is_public, :status, :mods_count, :created]
             },
             :bio => {
-                :except => [:user_id]
+                :except => bio_except
             },
             :reputation => {
                 :only => [:overall]
@@ -178,9 +182,6 @@ class User < ActiveRecord::Base
           :except => [:active_mod_list_id, :invitation_token, :invitation_created_at, :invitation_sent_at, :invitation_accepted_at, :invitation_limit, :invited_by_id, :invited_by_type, :invitations_count],
           :methods => [:avatar, :last_sign_in_at, :current_sign_in_at],
           :include => {
-              :bio => {
-                  :only => [:nexus_username, :lover_username, :steam_username]
-              },
               :reputation => {
                   :only => [:overall]
               }
