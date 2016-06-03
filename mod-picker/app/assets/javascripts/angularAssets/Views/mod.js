@@ -163,7 +163,7 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, cu
         { name: 'Analysis', params: {}}
     ];
 
-    //returns the index of the tab with tabName
+    //returns the index of the tab with tabName (because sometimes tabs are removed)
     $scope.findTabIndex = function(tabName) {
       return $scope.tabs.findIndex(function(tab) {
         return tab.name === tabName;
