@@ -7,14 +7,20 @@ app.service('quoteService', function (backend, $q) {
         return backend.retrieve('/quotes');
     };
 
-    this.getRandomQuote = function (quotes, label) {
-        if (label) {
-            var filteredQuotes = quotes.filter(function(quote) {
-                return (quote.label === label);
-            });
-            return randomElement(filteredQuotes);
-        } else {
-            return randomElement(quotes);
-        }
+    var allQuotes = this.retrieveQuotes();
+
+    this.getRandomQuote = function (label) {
+        var output = $q.defer();
+        this.allQuotes.then(function(quotes) {
+            if (label) {
+                var filteredQuotes = quotes.filter(function(quote) {
+                    return (quote.label === label);
+                });
+                output.resolve(randomElement(filteredQuotes));
+            } else {
+                output.resolve(randomElement(quotes));
+            }
+        });
+        return output.promise;
     };
 });
