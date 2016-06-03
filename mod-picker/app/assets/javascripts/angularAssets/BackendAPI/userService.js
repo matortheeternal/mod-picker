@@ -1,7 +1,11 @@
 app.service('userService', function (backend, $q, userSettingsService, userTitleService) {
     this.retrieveUser = function (userId) {
+        return backend.retrieve('/users/' + userId);
+    };
+
+    this.retrieveCurrentUser = function () {
         var output = $q.defer();
-        backend.retrieve('/users/' + userId).then(function(user) {
+        backend.retrieve('/current_user').then(function (user) {
             //moving collections into a separate array
             user.collections = [];
             for (var i = user.mod_lists.length - 1; i >= 0; i--) {
@@ -17,17 +21,9 @@ app.service('userService', function (backend, $q, userSettingsService, userTitle
                 });
             }
 
-            output.resolve(user);
-        });
-        return output.promise;
-    };
-
-    this.retrieveCurrentUser = function () {
-        var user = $q.defer();
-        backend.retrieve('/current_user').then(function (data) {
-            user.resolve(data);
+            output.resolve(data);
         };
-        return user.promise;
+        return output.promise;
     };
 
     this.getPermissions = function(user) {
