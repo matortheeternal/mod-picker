@@ -17,35 +17,36 @@
 </div>
 <div class="tab-section" ng-if="bIsEditing">
     <h3 class="section-title">Modlist Options</h3>
-    <section class="note-content-container">
-        <ul class="list flist">
-            <li>
-               <strong>Status</strong>
-                <select ng-init="statusSelect = 'underConstruction'">
-                    <option value="planned">Planned</option>
-                    <option value="underConstruction">Under Construction</option>
-                    <option value="testing">Testing</option>
-                    <option value="complete">Complete</option>
-                </select>
-            </li>
-            <li>
-                <label>
-                <strong>Title</strong>
-                <input type="text" name="mlTitleInput" ng-value="modlistTitle">
-                </label>
-            </li>
-            <li>
-                <strong>Collection</strong>
-                <input type="checkbox" name="mlIsCollection" ng-checked="bIsCollection"> Mod List is a collection
-            </li>
-            <li>
-               <strong>Modlist Visibility</strong>
-                <select ng-model="visibilitySelect" ng-init="visibilitySelect = 'visible'">
-                    <option value="visible">Visible</option>
-                    <option value="unlisted"Unlisted></option>
-                    <option value="hidden">Hidden</option>
-                </select>
-            </li>
-        </ul>
-    </section>
 </div>
+<section class="tabs-column primary-background" ng-if="bIsEditing">
+    <form>
+        <h3 class="section-title">Title</h3>
+        <section>
+            <label>
+                <input type="text" name="mlTitleInput" ng-value="modlistTitle">
+            </label>
+        </section>
+        <h3 class="section-title">Status</h3>
+        <section>
+            <select ng-init="statusSelect = 'underConstruction'">
+                <option value="planned">Planned</option>
+                <option value="underConstruction">Under Construction</option>
+                <option value="testing">Testing</option>
+                <option value="complete">Complete</option>
+            </select>
+        </section>        
+        <h3 class="section-title">Modlist Visibility</h3>
+        <section>
+            <select ng-model="visibilitySelect" ng-init="visibilitySelect = 'visible'">
+                <option value="visible">Visible</option>
+                <option value="unlisted">Unlisted</option>
+                <option value="hidden">Hidden</option>
+            </select>
+        </section>
+        <h3 class="section-title">Collection</h3>
+        <section>
+            <input type="checkbox" name="mlIsCollection" ng-checked="bIsCollection"> Mod List is a collection
+        </section>
+    </form>
+</section>
+
