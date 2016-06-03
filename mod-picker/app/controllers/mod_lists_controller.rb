@@ -1,5 +1,6 @@
 class ModListsController < ApplicationController
   before_action :set_mod_list, only: [:show, :update, :destroy]
+  before_action :set_active_mod_list, only: [:active]
 
   # GET /mod_lists
   # GET /mod_lists.json
@@ -14,6 +15,15 @@ class ModListsController < ApplicationController
   def show
     authorize! :read, @mod_list
     render :json => @mod_list
+  end
+
+  # GET /mod_lists/active
+  def active
+    if @mod_list
+      render :json => @mod_list
+    else
+      render status: 404
+    end
   end
 
   # POST /mod_lists
