@@ -17,19 +17,15 @@ app.config(['$stateProvider', function ($stateProvider) {
             }
         }).state('settings.Profile', {
             templateUrl: '/resources/partials/userSettings/profile.html',
-            controller: 'userSettingsController',
             url: '/profile'
         }).state('settings.Account', {
             templateUrl: '/resources/partials/userSettings/account.html',
-            controller: 'userSettingsController',
             url: '/account'
         }).state('settings.Mod Lists', {
             templateUrl: '/resources/partials/userSettings/modlists.html',
-            controller: 'userSettingsController',
             url: '/mod-lists'
         }).state('settings.Authored Mods', {
             templateUrl: '/resources/partials/userSettings/authoredMods.html',
-            controller: 'userSettingsController',
             url: '/authored-mods'
         });
 }]);
