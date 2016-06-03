@@ -16,14 +16,15 @@ app.config(['$stateProvider', function ($stateProvider) {
             templateUrl: '/resources/partials/userSettings/profile.html',
             url: '/profile',
             resolve: {
-                titleQuote: function(quoteService, currentUser) {
+                titleQuote: function(quoteService, currentUser, $q) {
+                    var output = $q.defer();
                     var label = currentUser.permissions.canChangeTitle ? "High Reputation" : "Low Reputation";
-                    var titleQuote = quoteService.getRandomQuote(label);
-                    titleQuote.text = titleQuote.text.replace(/Talos/g, currentUser.username.capitalize());
-                    return titleQuote;
+                    quoteService.getRandomQuote(label).then(function(quote) {
+                        quote.text = quote.text.replace(/Talos/g, currentUser.username.capitalize());
+                        output.resolve(quote);
+                    });
+                    return output.promise;
                 }
-
-
             }
         }).state('base.settings.Account', {
             templateUrl: '/resources/partials/userSettings/account.html',
