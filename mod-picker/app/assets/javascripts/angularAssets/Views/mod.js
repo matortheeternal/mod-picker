@@ -137,12 +137,13 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, cu
     $scope.mod.star = modObject.star;
     $scope.user = currentUser;
 
+    $scope.permissions = currentUser.permissions;
     //setting up the canManage permission
     var author = $scope.mod.author_users.find(function(author) {
         return author.id == $scope.user.id;
     });
     var isAuthor = author !== null;
-    $scope.user.permissions.canManage = $scope.user.permissions.canModerate || isAuthor
+    $scope.permissions.canManage = $scope.permissions.canModerate || isAuthor
 
     $scope.tags = [];
     $scope.newTags = [];
