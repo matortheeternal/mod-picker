@@ -35,7 +35,7 @@ namespace :reset do
     ModStar.delete_all
     ModListStar.delete_all
     Quote.delete_all
-    ModList.delete_all
+    ModList.destroy_all
     ModAuthor.delete_all
     OverrideRecord.delete_all
     PluginError.delete_all
@@ -63,12 +63,15 @@ namespace :reset do
     UserSetting.delete_all
     UserTitle.delete_all
     User.delete_all
-    Game.delete_all
     CategoryPriority.delete_all
 
+    # clear games
+    Game.where.not(parent_game_id: nil).delete_all
+    Game.where(parent_game_id: nil).delete_all
+
     # clear categories
-    connection.execute("DELETE FROM categories WHERE parent_id IS NOT NULL;")
-    connection.execute("DELETE FROM categories WHERE parent_id IS NULL;")
+    Category.where.not(parent_id: nil).delete_all
+    Category.where(parent_id: nil).delete_all
     puts "    Database reset"
   end
 end
