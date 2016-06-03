@@ -137,6 +137,13 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, cu
     $scope.mod.star = modObject.star;
     $scope.user = currentUser;
 
+    //setting up the canManage permission
+    var author = $scope.mod.author_users.find(function(author) {
+        return author.id == $scope.user.id;
+    });
+    var isAuthor = author !== null;
+    $scope.user.permissions.canManage = $scope.user.permissions.canModerate || isAuthor
+
     $scope.sort = {
     //     reviews: 'reputation',
     //     compatibility: 'reputation',
@@ -185,33 +192,6 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, cu
             break;
     }
 
-    //get user permissions
-    $scope.getPermissions = function() {
-        // if we don't have mod yet, try again in 100ms
-        if (!$scope.mod) {
-            $timeout(function() {
-                $scope.getPermissions();
-            }, 100);
-            return;
-        }
-
-        // set up helper variables
-        var author = $scope.mod.author_users.find(function(author) {
-            return author.id == $scope.user.id;
-        });
-        var rep = $scope.user.reputation.overall;
-        var isAdmin = $scope.user.role === 'admin';
-        var isModerator = $scope.user.role === 'moderator';
-        var isAuthor = author !== null;
-
-        // set up permissions
-        $scope.permissions = {
-            canCreateTags: (rep >= 20) || isAdmin || isModerator,
-            canManage: isAuthor || isModerator || isAdmin,
-            canAppeal: (rep >= 40) || isModerator || isAdmin,
-            canModerate: isModerator || isAdmin
-        };
-    };
 
     // update the markdown editor
     $scope.updateEditor = function() {

@@ -40,6 +40,9 @@ app.service('userService', function (backend, $q, userSettingsService, userTitle
         //permissions.canSubmitMod = permissions.isAdmin || permissions.isModerator || user.reputation.overall > 160;
         permissions.canChangeAvatar = (rep >= 10) || ($scope.user.permissions.isAdmin);
         permissions.canChangeTitle = (rep >= 1280) || ($scope.user.permissions.isAdmin);
+        permissions.canCreateTags = (rep >= 20) || isAdmin || isModerator;
+        permissions.canAppeal = (rep >= 40) || permissions.isModerator || permissions.isAdmin;
+        permissions.canModerate = permissions.isModerator || permissions.isAdmin;
 
         return permissions;
     };
