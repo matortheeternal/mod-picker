@@ -159,7 +159,7 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
     $scope.findTabIndex = function(tabName) {
       return $scope.tabs.findIndex(function(tab) {
         return tab.name === tabName;
-      })
+      });
     };
 
     // only display analysis tab if mod doesn't have a primary category
@@ -680,7 +680,7 @@ app.controller('modInstallOrderController', function ($scope, $stateParams, inst
     };
 });
 
-app.controller('modLoadOrderController', function ($scope, $stateParams, loadOrderNotes, $state, $stateParams) {
+app.controller('modLoadOrderController', function ($scope, $stateParams, loadOrderNotes, $state) {
   if(loadOrderNotes) {
     $scope.mod.load_order_notes = loadOrderNotes;
   }

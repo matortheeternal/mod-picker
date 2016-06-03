@@ -42,5 +42,5 @@ app.service('userService', function (backend, $q, userSettingsService, userTitle
         permissions.canChangeTitle = (rep >= 1280) || ($scope.user.permissions.isAdmin);
 
         return permissions;
-    }
+    };
 });
