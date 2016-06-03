@@ -54,7 +54,7 @@
 
 <loader data="mod.reviews" content-class="" spinner-class="big-spinner">
     <div ng-repeat="review in mod.reviews" class="content-block" ng-if="!review.editing">
-        <review review="review" show-author-column="true" index="100 + $index" user="user" edit="editReview"></review>
+        <review review="review" show-author-column="true" index="100 + $index" user="currentUser" edit="editReview"></review>
     </div>
 
     <div class="no-content-message" ng-if="mod.reviews.length == 0">
