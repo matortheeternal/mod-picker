@@ -11,17 +11,14 @@
     </section>
 </div>
 
-<div class="modlist-content-block modlist-tab-item">
-    <div class="content-title"> 
-        <div>
-            Missing Requirements
-            <span class="section-header-counter"># Unresolved Issues</span>
-        </div>
-        <div>
-            <a ng-click="" class="section-unselected-tab">Resolve All Issues</a>
-        </div>
-    </div>
-    <section class="note-content-container">
+<div class="tab-section" ng-if="!bIsEditing">
+    <h3 class="section-title">Missing Requirements
+    <span class="section-header-counter"># Unresolved Issues</span>
+        <span class="right-item">
+            <a ng-click="">Resolve All Issues</a>
+        </span>
+    </h3>
+    <section>
         Show Missing Requirements Service: Tools
     </section>
-</div> 
+</div>
