@@ -719,7 +719,7 @@ def seed_fake_compatibility_notes
     cnote = CompatibilityNote.new(
         game_id: gameSkyrim.id,
         submitted_by: submitter.id,
-        compatibility_type: CompatibilityNote.compatibility_types.keys.sample,
+        status: CompatibilityNote.statuses.keys.sample,
         submitted: Faker::Date.backward(14),
         text_body: Faker::Lorem.paragraph(10),
         first_mod_id: random_mod.id,
