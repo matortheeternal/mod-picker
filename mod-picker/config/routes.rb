@@ -71,8 +71,8 @@ Rails.application.routes.draw do
     match '/corrections/:id/agreement', to: 'corrections#agreement', via: 'post'
 
     # mod lists
-    match '/mod_lists/active', to: 'mod_lists#active', via: 'get'
     resources :mod_lists, only: [:index, :show, :create, :update, :destroy]
+    match '/active_mod_list', to: 'mod_lists#active', via: 'get'
 
     # mod and mod list stars
     match '/mod_lists/:id/star', to: 'mod_lists#create_star', via: 'post'
