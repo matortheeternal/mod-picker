@@ -53,6 +53,12 @@ app.controller('modsController', function ($scope, $q, modService, sliderFactory
         }
     };
 
+    $scope.availableFilters = function(filters) {
+        return filters.filter(function(item) {
+            return $scope.filterAvailable(item);
+        });
+    };
+
     $scope.filterAvailable = function(filter) {
         var result = true;
         Object.keys($scope.filters.sources).forEach(function(key) {
@@ -75,7 +81,10 @@ app.controller('modsController', function ($scope, $q, modService, sliderFactory
         });
     };
 
+    // fetch mods when we load the page
     $scope.getMods();
+    // laod available stat filters
+    $scope.availableStatFilters = $scope.availableFilters($scope.statFilters);
 
     // create a watch
     var getModsTimeout;
@@ -96,6 +105,9 @@ app.controller('modsController', function ($scope, $q, modService, sliderFactory
                 });
             }
         });
+
+        // hide statistic filters that no longer apply
+        $scope.availableStatFilters = $scope.availableFilters($scope.statFilters);
 
         // get mods
         if($scope.filters && firstGet) {
