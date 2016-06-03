@@ -6,7 +6,8 @@ app.config(['$stateProvider', function ($stateProvider) {
     $stateProvider.state('settings', {
             templateUrl: '/resources/partials/userSettings/userSettings.html',
             controller: 'userSettingsController',
-            url: '/settings'
+            url: '/settings',
+            redirectTo: 'settings.Profile'
         }).state('settings.Profile', {
             templateUrl: '/resources/partials/userSettings/profile.html',
             controller: 'userSettingsController',
