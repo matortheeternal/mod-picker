@@ -132,10 +132,11 @@ app.config(['$stateProvider', function ($stateProvider) {
         });
 }]);
 
-app.controller('modController', function ($scope, $q, $stateParams, $timeout, modObject, modService, pluginService, categoryService, gameService, recordGroupService, userTitleService, assetUtils, reviewSectionService, userService, contributionService, contributionFactory, errorsFactory, tagService, smoothScroll){
+app.controller('modController', function ($scope, $q, $stateParams, $timeout, currentUser, modObject, modService, pluginService, categoryService, gameService, recordGroupService, userTitleService, assetUtils, reviewSectionService, userService, contributionService, contributionFactory, errorsFactory, tagService, smoothScroll){
     $scope.mod = modObject.mod;
     $scope.mod.star = modObject.star;
-    //
+    $scope.user = currentUser;
+
     $scope.sort = {
     //     reviews: 'reputation',
     //     compatibility: 'reputation',
@@ -183,12 +184,6 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
             $scope.statusClass = "red-box";
             break;
     }
-
-    //get current user
-    userService.retrieveCurrentUser().then(function (user) {
-        $scope.user = user;
-        $scope.getPermissions();
-    });
 
     //get user permissions
     $scope.getPermissions = function() {
