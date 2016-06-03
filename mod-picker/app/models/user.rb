@@ -145,6 +145,25 @@ class User < ActiveRecord::Base
     self.create_bio({ user_id: self.id })
   end
 
+  def current_json
+    self.as_json({
+        :only => [:id, :username, :role, :title, :active_mod_list_id],
+        :include => {
+            :reputation => {
+                :only => [:overall]
+            },
+            :settings => {
+                :except => [:user_id]
+            },
+            :active_mod_list => {
+                :only => [:id, :name, :mods_count, :plugins_count, :active_plugins_count, :custom_plugins_count],
+                :methods => [:incompatible_mods]
+            }
+        },
+        :methods => :avatar
+    })
+  end
+
   def show_json(current_user)
     # email handling
     methods = [:avatar, :last_sign_in_at, :current_sign_in_at, :email_public?]
