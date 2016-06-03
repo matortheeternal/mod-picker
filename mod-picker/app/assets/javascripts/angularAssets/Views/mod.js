@@ -93,6 +93,9 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
             $scope.game = gameService.getGameById(data, mod.game_id);
         });
 
+        // get permissions for the current user
+        $scope.getPermissions();
+
         // only display analysis tab if mod doesn't have a primary category
         if (!$scope.mod.primary_category_id) {
             $scope.tabs = [{ name: 'Analysis', url: '/resources/partials/showMod/analysis.html' }];
@@ -130,10 +133,12 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
         var isAuthor = author !== null;
 
         // set up permissions
-        $scope.permissions.canCreateTags = (rep >= 20) || isAuthor || isModerator || isAdmin;
-        $scope.permissions.canManage = isAuthor || isModerator || isAdmin;
-        $scope.permissions.canAppeal = (rep >= 40) || isAuthor || isModerator || isAdmin;
-        $scope.permissions.canModerate = isModerator || isAdmin;
+        $scope.permissions = {
+            canCreateTags: (rep >= 20) || isAuthor || isModerator || isAdmin,
+            canManage: isAuthor || isModerator || isAdmin,
+            canAppeal: (rep >= 40) || isAuthor || isModerator || isAdmin,
+            canModerate: isModerator || isAdmin
+        }
     };
 
     // update the markdown editor
