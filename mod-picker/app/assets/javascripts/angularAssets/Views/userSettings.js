@@ -9,7 +9,17 @@ app.config(['$stateProvider', function ($stateProvider) {
             redirectTo: 'base.settings.Profile',
         }).state('base.settings.Profile', {
             templateUrl: '/resources/partials/userSettings/profile.html',
-            url: '/profile'
+            url: '/profile',
+            resolve: {
+                titleQuote: function(quoteService, currentUser) {
+                    var label = currentUser.permissions.canChangeTitle ? "High Reputation" : "Low Reputation";
+                    var titleQuote = quoteService.getRandomQuote(label);
+                    titleQuote.text = titleQuote.text.replace(/Talos/g, currentUser.username.capitalize());
+                    return titleQuote;
+                }
+
+
+            }
         }).state('base.settings.Account', {
             templateUrl: '/resources/partials/userSettings/account.html',
             url: '/account'
@@ -22,13 +32,14 @@ app.config(['$stateProvider', function ($stateProvider) {
         });
 }]);
 
-app.controller('userSettingsController', function ($scope, $q, currentUser, userSettingsService, quoteService, fileUtils, themesService) {
+app.controller('userSettingsController', function ($scope, $q, currentUser, userSettingsService, titleQuote, fileUtils, themesService) {
     $scope.userSettings = currentUser.settings;
     $scope.user = currentUser;
     $scope.avatar = {
         src: $scope.user.avatar
     };
     $scope.permissions = user.permissions;
+    $scope.titleQuote = titleQuote;
 
     $scope.tabs = [
         {name: 'Profile'},
@@ -36,14 +47,6 @@ app.controller('userSettingsController', function ($scope, $q, currentUser, user
         {name: 'Mod Lists'},
         {name: 'Authored Mods'},
     ];
-
-    // get random quote for user title
-    quoteService.retrieveQuotes().then(function (quotes) {
-        var label = $scope.canChangeTitle ? "High Reputation" : "Low Reputation";
-        $scope.titleQuote = quoteService.getRandomQuote(quotes, label);
-        $scope.titleQuote.text = $scope.titleQuote.text.replace(/Talos/g, $scope.user.username.capitalize());
-        $scope.refresh = true;
-    });
 
     /* avatar */
     $scope.browseAvatar = function() {
