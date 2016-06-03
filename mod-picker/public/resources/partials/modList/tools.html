@@ -1,13 +1,12 @@
-<div class="modlist-content-block modlist-tab-item">
-    <div class="content-title"> 
-        <div>
-            Tools
-        </div>
-        <div>
-            <a ng-click="curToolsSecTab = 'list'" ng-class="cssChange('tools','list')">List</a><a ng-click="curToolsSecTab = 'tiles'" ng-class="cssChange('tools','tiles')">Tiles</a>
-        </div>
-    </div>
-    <section class="note-content-container">
+<div class="tab-section" ng-if="!bIsEditing">
+    <h3 class="section-title">Tools
+        <span class="right-item">
+            <a ng-click="curToolsSecTab = 'list'" ng-class="cssChange('tools','list')">List</a>
+            <span class="divider">|</span>
+            <a ng-click="curToolsSecTab = 'tiles'" ng-class="cssChange('tools','tiles')">Tiles</a>
+        </span>
+    </h3>
+    <section>
         Show Tools Service
     </section>
 </div>
