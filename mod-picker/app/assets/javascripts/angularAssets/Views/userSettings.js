@@ -183,8 +183,8 @@ app.controller('userSettingsController', function ($scope, $q, user, userSetting
                 $scope.errors.concat(data.errors);
             } else {
                 $scope.user.showSuccess = $scope.errors.length == 0;
-                themesService.changeTheme($scope.userSettings.theme);
-                $scope.$emit('reloadCurrentUser', {});
+                $scope.updateTheme();
+                $scope.$broadcast('reloadCurrentUser', {});
             }
         });
         if ($scope.avatar.file) {
@@ -196,4 +196,9 @@ app.controller('userSettingsController', function ($scope, $q, user, userSetting
             });
         }
     };
+
+    $scope.updateTheme = function() {
+        themesService.changeTheme($scope.userSettings.theme);
+    }
+});
 });
