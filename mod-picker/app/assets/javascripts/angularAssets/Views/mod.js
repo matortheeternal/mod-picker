@@ -632,7 +632,7 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
             return;
         }
 
-        $scope.activeInstallOrderNote.valid = $scope.activeInstallOrderNote.text_body.length > 512 &&
+        $scope.activeInstallOrderNote.valid = $scope.activeInstallOrderNote.text_body.length > 256 &&
             ($scope.activeInstallOrderNote.mod_id !== undefined);
     };
 
@@ -657,9 +657,9 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
         var first_mod_id, second_mod_id;
         if ($scope.activeInstallOrderNote.order === 'before') {
             first_mod_id = $scope.mod.id;
-            second_mod_id = $scope.activeInstallOrderNote.mod_id;
+            second_mod_id = parseInt($scope.activeInstallOrderNote.mod_id);
         } else {
-            first_mod_id = $scope.activeInstallOrderNote.mod_id;
+            first_mod_id = parseInt($scope.activeInstallOrderNote.mod_id);
             second_mod_id = $scope.mod.id;
         }
         var noteObj = {
