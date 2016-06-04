@@ -1,18 +1,5 @@
 require 'rails_helper'
 
-  # create_table "install_order_notes", force: :cascade do |t|
-  #   t.integer  "submitted_by",   limit: 4,     null: false
-  #   t.integer  "first_mod_id",  limit: 4,     null: false
-  #   t.integer  "second_mod_id", limit: 4,     null: false
-  #   t.datetime "submitted"
-  #   t.datetime "edited"
-  #   t.text     "text_body",      limit: 65535
-  # end
-
-  # add_index "install_order_notes", ["first_mod_id"], name: "fk_rails_bc30c8f58f", using: :btree
-  # add_index "install_order_notes", ["second_mod_id"], name: "fk_rails_b74bbcab8b", using: :btree
-  # add_index "install_order_notes", ["submitted_by"], name: "fk_rails_ea0bdedfde", using: :btree
-
 RSpec.describe InstallOrderNote, :model do
   fixtures :install_order_notes, 
            :users
