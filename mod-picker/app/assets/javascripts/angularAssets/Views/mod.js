@@ -610,7 +610,7 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
         // set up activeInstallOrderNote object
         $scope.activeInstallOrderNote = {
             order: "before",
-            text_body: ""
+            text_body: contributionFactory.getDefaultTextBody("InstallOrderNote")
         };
 
         // update the markdown editor
@@ -687,7 +687,7 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
         // set up activeLoadOrderNote object
         $scope.activeLoadOrderNote = {
             order: "before",
-            text_body: ""
+            text_body: contributionFactory.getDefaultTextBody("LoadOrderNote")
         };
 
         // update the markdown editor
