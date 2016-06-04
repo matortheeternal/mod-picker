@@ -5,8 +5,9 @@ FactoryGirl.define do
     aliases { Faker::Lorem.characters(3) }
     is_utility false
     has_adult_content false
-    primary_category_id { FactoryGirl::create(:category).id }
-    game_id { FactoryGirl::create(:game).id }
+    primary_category_id {FactoryGirl::create(:category).id}
+    game_id {FactoryGirl::create(:game).id}
     released { DateTime.now }
+    authors { Faker::Name.name }
   end
 end

@@ -1,5 +1,6 @@
 class ModListsController < ApplicationController
   before_action :set_mod_list, only: [:show, :update, :destroy]
+  before_action :set_active_mod_list, only: [:active, :mods]
 
   # GET /mod_lists
   # GET /mod_lists.json
@@ -14,6 +15,24 @@ class ModListsController < ApplicationController
   def show
     authorize! :read, @mod_list
     render :json => @mod_list
+  end
+
+  # GET /mod_lists/active
+  def active
+    if @mod_list
+      render :json => @mod_list
+    else
+      render status: 404
+    end
+  end
+
+  # GET /mod_lists/mods
+  def mods
+    if @mod_list
+      render :json => @mod_list.mod_list_mods
+    else
+      render status: 404
+    end
   end
 
   # POST /mod_lists
@@ -81,6 +100,21 @@ class ModListsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_mod_list
       @mod_list = ModList.find(params[:id])
+    end
+
+    def set_active_mod_list
+      # TODO: handle user not logged in
+      if current_user
+        if current_user.active_mod_list_id
+          @mod_list = current_user.active_mod_list
+        else
+          @mod_list = current_user.mod_lists.create(
+              submitted_by: current_user.id,
+              game_id: params[:game_id] || Game.first.id,
+              name: current_user.username + "'s Mod List'"
+          )
+        end
+      end
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

@@ -6,7 +6,15 @@ class Mod < ActiveRecord::Base
 
   # GENERAL SCOPES
   scope :search, -> (search) { where("name like ? OR aliases like ?", "%#{search}%", "%#{search}%") }
-  scope :game, -> (game) { where(game_id: game) }
+  scope :game, -> (game_id) {
+    game = Game.find(game_id)
+    if game.parent_game_id.present?
+      where(game_id: [game.id, game.parent_game_id])
+    else
+      where(game_id: game.id)
+    end
+  }
+  scope :exclude, -> (excluded_mod_ids) { where.not(id: excluded_mod_ids) }
   scope :sources, -> (sources) {
     results = self.where(nil)
     whereClause = []
@@ -195,7 +203,7 @@ class Mod < ActiveRecord::Base
   self.per_page = 100
 
   # Validations
-  validates :name, :game_id, :released, presence: true
+  validates :name, :game_id, :released, :authors, presence: true
   validates :name, :aliases, length: {maximum: 128}
 
   # callbacks

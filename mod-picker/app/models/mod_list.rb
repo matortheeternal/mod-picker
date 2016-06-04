@@ -2,7 +2,7 @@ class ModList < ActiveRecord::Base
   include Filterable, Sortable, RecordEnhancements
 
   enum status: [ :planned, :"under construction", :testing, :complete ]
-  enum visibility: [ :private, :unlisted, :public ]
+  enum visibility: [ :visibility_private, :visibility_unlisted, :visibility_public ]
 
   belongs_to :game, :inverse_of => 'mod_lists'
   belongs_to :user, :foreign_key => 'submitted_by', :inverse_of => 'mod_lists'
@@ -41,9 +41,9 @@ class ModList < ActiveRecord::Base
   validates :description, length: { maximum: 65535 }
 
   # Callbacks
-  after_create :increment_counters
+  after_create :increment_counters, :set_active
   before_save :set_dates
-  before_destroy :decrement_counters
+  before_destroy :decrement_counters, :unset_active
 
   def update_lazy_counters
     mod_ids = mod_list_mods.all.ids
@@ -113,8 +113,14 @@ class ModList < ActiveRecord::Base
 
   def incompatible_mods
     mod_ids = mod_list_mods.all.ids
-    incompatible_notes = CompatibilityNote.where("compatibility_type in ? AND (first_mod_id in ? OR second_mod_id in ?)", [1, 2], mod_ids, mod_ids)
+    if mod_ids.empty?
+      return []
+    end
+
+    # get incompatible notes
+    incompatible_notes = CompatibilityNote.where("status in ? AND (first_mod_id in ? OR second_mod_id in ?)", [1, 2], mod_ids, mod_ids).pluck(:status, :first_mod_id, :second_mod_id)
     incompatible_mod_ids = []
+    # build array of incompatible mod ids from incompatible notes
     incompatible_notes.each do |n|
       first_id = n.first_mod_id
       second_id = n.second_mod_id
@@ -139,5 +145,17 @@ class ModList < ActiveRecord::Base
 
     def decrement_counters
       self.user.update_counter(:mod_lists_count, -1)
+    end
+
+    def set_active
+      self.user.active_mod_list_id = self.id
+      self.user.save
+    end
+
+    def unset_active
+      if self.user.active_mod_list_id == self.id
+        self.user.active_mod_list_id = nil
+        self.user.save
+      end
     end
 end

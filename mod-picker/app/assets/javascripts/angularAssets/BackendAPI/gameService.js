@@ -8,4 +8,11 @@ app.service('gameService', function (backend, $q) {
             return game.id == id;
         })
     };
+
+    this.getAvailableGames = function(games) {
+        var availableGames = ["Skyrim"];
+        return games.filter(function(game) {
+            return availableGames.indexOf(game.display_name) > -1;
+        });
+    };
 });

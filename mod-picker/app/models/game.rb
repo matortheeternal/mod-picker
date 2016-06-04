@@ -1,4 +1,9 @@
 class Game < ActiveRecord::Base
+  # parent/child games
+  belongs_to :parent_game, :class_name => 'Game', :foreign_key => 'parent_game_id', :inverse_of => 'children_games'
+  has_many :children_games, :class_name => 'Game', :foreign_key => 'parent_game_id', :inverse_of => 'parent_game'
+
+  # content associated with this game
   has_many :mods, :inverse_of => 'game'
   has_many :nexus_infos, :inverse_of => 'game'
   has_many :lover_infos, :inverse_of => 'game'

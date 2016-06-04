@@ -30,6 +30,7 @@ class HelpfulMark < ActiveRecord::Base
     def init
       self.submitted ||= DateTime.now
     end
+
     def decrement_counters
       self.user.update_counter(:helpful_marks_count, -1)
       if self.helpful

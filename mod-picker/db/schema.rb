@@ -175,12 +175,13 @@ ActiveRecord::Schema.define(version: 20160601211222) do
   add_index "dummy_masters", ["plugin_id"], name: "fk_rails_2552b596d8", using: :btree
 
   create_table "games", force: :cascade do |t|
+    t.integer "parent_game_id",            limit: 4
     t.string  "display_name",              limit: 32,              null: false
-    t.string  "nexus_name",                limit: 16,              null: false
     t.string  "long_name",                 limit: 128,             null: false
     t.string  "abbr_name",                 limit: 32,              null: false
-    t.string  "exe_name",                  limit: 32,              null: false
-    t.string  "steam_app_ids",             limit: 64,              null: false
+    t.string  "nexus_name",                limit: 16
+    t.string  "exe_name",                  limit: 32
+    t.string  "steam_app_ids",             limit: 64
     t.integer "mods_count",                limit: 4,   default: 0, null: false
     t.integer "plugins_count",             limit: 4,   default: 0, null: false
     t.integer "asset_files_count",         limit: 4,   default: 0, null: false
@@ -195,6 +196,8 @@ ActiveRecord::Schema.define(version: 20160601211222) do
     t.integer "load_order_notes_count",    limit: 4,   default: 0, null: false
     t.integer "corrections_count",         limit: 4,   default: 0, null: false
   end
+
+  add_index "games", ["parent_game_id"], name: "fk_rails_f750cfc2c5", using: :btree
 
   create_table "help_pages", force: :cascade do |t|
     t.string   "name",           limit: 128,               null: false
@@ -845,6 +848,7 @@ ActiveRecord::Schema.define(version: 20160601211222) do
   add_foreign_key "corrections", "users", column: "submitted_by", name: "corrections_ibfk_4"
   add_foreign_key "custom_sources", "mods"
   add_foreign_key "dummy_masters", "plugins"
+  add_foreign_key "games", "games", column: "parent_game_id"
   add_foreign_key "helpful_marks", "users", column: "submitted_by", name: "helpful_marks_ibfk_4"
   add_foreign_key "install_order_note_history_entries", "install_order_notes"
   add_foreign_key "install_order_note_history_entries", "users", column: "submitted_by"

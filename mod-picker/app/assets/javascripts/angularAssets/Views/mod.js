@@ -18,12 +18,18 @@ app.filter('percentage', function() {
 });
 
 app.controller('modController', function ($scope, $q, $stateParams, $timeout, modService, pluginService, categoryService, gameService, recordGroupService, userTitleService, assetUtils, reviewSectionService, userService, contributionService, contributionFactory, tagService, smoothScroll) {
+    // get parent variables
+    $scope.currentUser = $scope.$parent.currentUser;
+    $scope.currentGame = $scope.$parent.currentGame;
+    $scope.globalPermissions = $scope.$parent.permissions;
+
+    // initialize local variables
     $scope.tags = [];
     $scope.newTags = [];
-    $scope.sort = {};
     $scope.userTitles = [];
     $scope.reviewSections = [];
     $scope.allReviewSections = [];
+    $scope.sort = {};
     $scope.filters = {
         compatibility_notes: true,
         install_order_notes: true,
@@ -37,6 +43,7 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
         load_order_notes: false,
         analysis: false
     };
+    $scope.permissions = {};
 
     // SETUP TABS
     //TODO use the cool ui-router here :D
@@ -86,6 +93,9 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
             $scope.game = gameService.getGameById(data, mod.game_id);
         });
 
+        // get permissions for the current user
+        $scope.getPermissions();
+
         // only display analysis tab if mod doesn't have a primary category
         if (!$scope.mod.primary_category_id) {
             $scope.tabs = [{ name: 'Analysis', url: '/resources/partials/showMod/analysis.html' }];
@@ -111,36 +121,22 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
         $scope.recordGroups = recordGroups;
     });
 
-    //get current user
-    userService.retrieveThisUser().then(function (user) {
-        $scope.user = user;
-        $scope.getPermissions();
-    });
-
     //get user permissions
     $scope.getPermissions = function() {
-        // if we don't have mod yet, try again in 100ms
-        if (!$scope.mod) {
-            $timeout(function() {
-                $scope.getPermissions();
-            }, 100);
-            return;
-        }
-
         // set up helper variables
         var author = $scope.mod.author_users.find(function(author) {
-            return author.id == $scope.user.id;
+            return author.id == $scope.currentUser.id;
         });
-        var rep = $scope.user.reputation.overall;
-        var isAdmin = $scope.user.role === 'admin';
-        var isModerator = $scope.user.role === 'moderator';
+        var rep = $scope.currentUser.reputation.overall;
+        var isAdmin = $scope.globalPermissions.isAdmin;
+        var isModerator = $scope.globalPermissions.isModerator;
         var isAuthor = author !== null;
 
         // set up permissions
         $scope.permissions = {
-            canCreateTags: (rep >= 20) || isAdmin || isModerator,
+            canCreateTags: (rep >= 20) || isAuthor || isModerator || isAdmin,
             canManage: isAuthor || isModerator || isAdmin,
-            canAppeal: (rep >= 40) || isModerator || isAdmin,
+            canAppeal: (rep >= 40) || isAuthor || isModerator || isAdmin,
             canModerate: isModerator || isAdmin
         }
     };

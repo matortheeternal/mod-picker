@@ -5,7 +5,7 @@ require 'rails_helper'
 # and will throw an error if it can't find its commentable.
 RSpec.describe Comment, :model do
   # fixtures
-  fixtures :users, :mod_lists
+  fixtures :users, :mod_lists, :user_bios
 
   it "should be valid with text_body, commentable_id, and commentable_type submitted parameters" do
     comment = build(:comment,
@@ -31,9 +31,11 @@ describe "#init" do
     expect(comment.hidden).to eq(false)
   end
 
-  it "should default submitted => Date.now" do
+  it "should default submitted => DateTime.now" do
     # submitted is a Date field
-    comment = create(:comment)
+    comment = users(:homura).comments.create(attributes_for(:comment))
+
+    expect(comment).to be_valid
     expect(comment.submitted).to be_within(1.minute).of DateTime.now
   end
 end
