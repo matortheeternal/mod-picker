@@ -7,7 +7,7 @@ app.config(['$stateProvider', function($stateProvider) {
                 controller: 'headerController',
                 resolve: {
                     games: function(gameService) {
-                        return gameService.getAllGames();
+                        return gameService.getAvailableGames();
                     }
                 }
             },

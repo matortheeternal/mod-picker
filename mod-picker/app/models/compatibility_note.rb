@@ -32,7 +32,7 @@ class CompatibilityNote < ActiveRecord::Base
   has_many :compatibility_note_history_entries, :inverse_of => 'compatibility_note'
 
   # Validations
-  validates :submitted_by, :compatibility_type, :text_body, :first_mod_id, :second_mod_id, :game_id, presence: true
+  validates :submitted_by, :status, :text_body, :first_mod_id, :second_mod_id, :game_id, presence: true
   validates :text_body, length: { in: 256..16384 }
 
   # Callbacks

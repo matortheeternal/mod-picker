@@ -9,13 +9,20 @@ app.config(['$stateProvider', function ($stateProvider) {
 }]);
 
 app.controller('modsController', function ($scope, $q, modService, sliderFactory, columnsFactory, filtersFactory) {
+    // get parent variables
+    $scope.currentUser = $scope.$parent.currentUser;
+    $scope.currentGame = $scope.$parent.currentGame;
+    $scope.globalPermissions = $scope.$parent.permissions;
+
+    // initialize local variables
     $scope.filters = {
         sources: {
             nexus: true,
             lab: false,
             workshop: false,
             other: false
-        }
+        },
+        game: $scope.currentGame.id
     };
     $scope.availableColumnData = ["nexus"];
     $scope.sort = {};
