@@ -5,19 +5,92 @@ def create_plugin(mod, dump_filename)
   mod.plugins.create(hash).save!
 end
 
+def generate_password
+  if Rails.env.production?
+    SecureRandom.urlsafe_base64
+  else
+    'password'
+  end
+end
+
+
 def seed_staff_users
-  mator = User.create!(
-      username: "mator",
+  staff_password = generate_password
+  User.create!(
+      username: "Mator",
       role: "admin",
       title: "teh autoMator",
       joined: Time.now.to_date,
       email: "mator.eternal@gmail.com",
-      password: "password",
-      password_confirmation: "password",
+      password: staff_password,
+      password_confirmation: staff_password,
       confirmed_at: Time.now.to_date
   )
-
-
+  User.create!(
+      username: "TerrorFox1234",
+      role: "moderator",
+      title: "foxy girl",
+      joined: Time.now.to_date,
+      email: "avaluxaudio@gmail.com",
+      password: staff_password,
+      password_confirmation: staff_password,
+      confirmed_at: Time.now.to_date
+  )
+  User.create!(
+      username: "Thallassa",
+      role: "moderator",
+      title: "spirit of the sea",
+      joined: Time.now.to_date,
+      email: "phaedrathallassa@gmail.com",
+      password: staff_password,
+      password_confirmation: staff_password,
+      confirmed_at: Time.now.to_date
+  )
+  User.create!(
+      username: "Sirius",
+      role: "moderator",
+      joined: Time.now.to_date,
+      email: "thesiriusadam@gmail.com",
+      password: staff_password,
+      password_confirmation: staff_password,
+      confirmed_at: Time.now.to_date
+  )
+  User.create!(
+      username: "Taffy",
+      role: "moderator",
+      joined: Time.now.to_date,
+      email: 	"raphael.buechler@gmail.com",
+      password: staff_password,
+      password_confirmation: staff_password,
+      confirmed_at: Time.now.to_date
+  )
+  User.create!(
+      username: "ThreeTen",
+      role: "moderator",
+      joined: Time.now.to_date,
+      email: "gtumen@gmail.com",
+      password: staff_password,
+      password_confirmation: staff_password,
+      confirmed_at: Time.now.to_date
+  )
+  User.create!(
+      username: "Breems",
+      role: "moderator",
+      joined: Time.now.to_date,
+      email: 	"seesharpcode@gmail.com",
+      password: staff_password,
+      password_confirmation: staff_password,
+      confirmed_at: Time.now.to_date
+  )
+  User.create!(
+      username: "Nariya",
+      role: "moderator",
+      joined: Time.now.to_date,
+      email: 	"mesaslinger@gmail.com",
+      password: staff_password,
+      password_confirmation: staff_password,
+      confirmed_at: Time.now.to_date
+  )
 end
 
 def seed_games
