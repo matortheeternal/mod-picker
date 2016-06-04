@@ -524,7 +524,7 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
     $scope.startNewCompatibilityNote = function() {
         // set up activeCompatibilityNote object
         $scope.activeCompatibilityNote = {
-            compatibility_type: "incompatible",
+            status: "incompatible",
             text_body: contributionFactory.getDefaultTextBody("CompatibilityNote")
         };
 
@@ -539,7 +539,7 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
             return mod.id !== $scope.mod.id;
         });
         $scope.activeCompatibilityNote = {
-            compatibility_type: compatibility_note.compatibility_type,
+            status: compatibility_note.status,
             mod_id: secondMod.id,
             mod_name: secondMod.name,
             compatibility_mod_id: compatibility_note.compatibility_mod_id,
@@ -560,7 +560,7 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
 
         $scope.activeCompatibilityNote.valid = $scope.activeCompatibilityNote.text_body.length > 512 &&
             ($scope.activeCompatibilityNote.second_mod_id !== undefined) &&
-            ($scope.activeCompatibilityNote.compatibility_type === "compatibility mod") ==
+            ($scope.activeCompatibilityNote.status === "compatibility mod") ==
             ($scope.activeCompatibilityNote.compatibility_mod !== undefined);
     };
 
@@ -585,7 +585,7 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
         var noteObj = {
             compatibility_note: {
                 game_id: $scope.mod.game_id,
-                compatibility_type: $scope.activeCompatibilityNote.compatibility_type,
+                status: $scope.activeCompatibilityNote.status,
                 first_mod_id: $scope.mod.id,
                 second_mod_id: $scope.activeCompatibilityNote.mod_id,
                 text_body: $scope.activeCompatibilityNote.text_body,
