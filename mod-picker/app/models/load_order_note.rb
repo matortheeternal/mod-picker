@@ -41,6 +41,10 @@ class LoadOrderNote < ActiveRecord::Base
     [first_mod, second_mod]
   end
 
+  def plugins
+    [first_plugin, second_plugin]
+  end
+
   def recompute_helpful_counts
     self.helpful_count = HelpfulMark.where(helpfulable_id: self.id, helpfulable_type: "LoadOrderNote", helpful: true).count
     self.not_helpful_count = HelpfulMark.where(helpfulable_id: self.id, helpfulable_type: "LoadOrderNote", helpful: false).count
@@ -59,7 +63,7 @@ class LoadOrderNote < ActiveRecord::Base
                   :methods => :avatar
               }
           },
-          :methods => :mods
+          :methods => [:mods, :plugins]
       }
       super(options.merge(default_options))
     else
