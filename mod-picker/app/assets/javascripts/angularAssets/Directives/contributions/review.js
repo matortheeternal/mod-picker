@@ -11,7 +11,8 @@ app.directive('review', function () {
             index: '=',
             user: '=',
             edit: '=?',
-            showAuthorColumn: '=?'
+            showAuthorColumn: '=?',
+            showMod: '=?'
         }
     };
 });

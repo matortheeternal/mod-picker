@@ -1,5 +1,8 @@
 <div class="note-container">
     <div class="content-title">
+        <span ng-if="showMod">
+            <a ng-href="#/mod/{{review.mod.id}}" target="_blank">{{review.mod.name}}</a> -
+        </span>
         {{review.user.username}}'s Review ({{review.overall_rating | number:0}}/100)
     </div>
     <author-column user="review.user" ng-if="showAuthorColumn" class="author-column" index="index"></author-column>
