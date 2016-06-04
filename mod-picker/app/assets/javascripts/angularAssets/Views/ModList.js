@@ -37,7 +37,7 @@ app.config(['$stateProvider', function ($stateProvider) {
 app.controller('modlistController', function($scope, $log, $stateParams, $timeout, currentUser, modListService, userService) {
     $scope.user = currentUser;
     $scope.permissions = currentUser.permissions;
-    
+
 	/*config*/
 	$scope.bIsEditing = false;
 	/*vars - Later down the road these will turn into GET functions*/
