@@ -49,6 +49,10 @@
                                 <label><input type="checkbox" ng-model="filters.sources.lab">
                                     Lovers Lab</label>
                             </li>
+                            <li>
+                                <label><input type="checkbox" ng-model="filters.sources.other">
+                                    Other</label>
+                            </li>
                         </ul>
                     </div>
                 </div>
@@ -86,10 +90,10 @@
                     <a class="expand" ng-click="toggleExtendedFilterVisibility('modPicker')">{{ extendedFilterVisibility.modPicker ? 'Show less' : 'Show more...' }}</a>
                 </div>
 
-                <div id="stat-filters" class="filter-sections">
+                <div id="stat-filters" class="filter-sections" ng-if="availableStatFilters.length">
                     <h3>Statistic Filters</h3>
                     <div class="filter-section">
-                        <div ng-repeat="filter in statFilters" ng-if="filterAvailable(filter)" ng-show="filter.common || extendedFilterVisibility.stat">
+                        <div ng-repeat="filter in availableStatFilters" ng-show="filter.common || extendedFilterVisibility.stat">
                             <h4>{{filter.label}}
                                 <span class="filter-controls" ng-if="filter.max > 500">
                                     <span class="fa fa-wrench" ng-click="" title="Custom Value"></span>

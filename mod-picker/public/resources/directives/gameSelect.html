@@ -1,0 +1,9 @@
+<a class="inverse-link">
+    <form id="game-select-form">
+        <select class="game-selector" ng-model="selectedGame" ng-options="game.display_name for game in games" ng-change="changeGame()">
+        </select>
+        <span class="game-icon icon-{{selectedGame.abbr_name}}">
+            <span class="game-label">{{selectedGame.display_name}}</span>
+        </span>
+    </form>
+</a>

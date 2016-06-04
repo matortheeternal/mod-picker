@@ -1,9 +1,10 @@
 class ModsController < ApplicationController
-  before_action :set_mod, only: [:show, :update, :update_tags, :reviews, :compatibility_notes, :install_order_notes, :load_order_notes, :analysis, :destroy]
+  before_action :set_mod, only: [:update, :update_tags, :corrections, :reviews, :compatibility_notes, :install_order_notes, :load_order_notes, :analysis, :destroy]
 
   # POST /mods
+  # TODO: Adult content filtering
   def index
-    @mods = Mod.includes(:authors).accessible_by(current_ability).filter(filtering_params).sort(params[:sort]).paginate(:page => params[:page])
+    @mods = Mod.includes(:author_users).accessible_by(current_ability).filter(filtering_params).sort(params[:sort]).paginate(:page => params[:page])
     @count =  Mod.accessible_by(current_ability).filter(filtering_params).sort(params[:sort]).count
 
     render :json => {
@@ -18,7 +19,6 @@ class ModsController < ApplicationController
   # POST /mods/search
   def search
     @mods = Mod.where(hidden: false).filter(search_params).sort({ column: "name", direction: "ASC" }).limit(10)
-
     render :json => @mods.as_json({
         :only => [:id, :name]
     })
@@ -26,6 +26,7 @@ class ModsController < ApplicationController
 
   # GET /mods/1
   def show
+    @mod = Mod.includes(:nexus_infos, :workshop_infos, :lover_infos).find(params[:id])
     authorize! :read, @mod
     star = ModStar.exists?(:mod_id => @mod.id, :user_id => current_user.id)
     render :json => {
@@ -128,6 +129,17 @@ class ModsController < ApplicationController
     end
   end
 
+  # GET /mods/1/corrections
+  def corrections
+    authorize! :read, @mod
+    corrections = @mod.corrections.accessible_by(current_ability)
+    agreement_marks = AgreementMark.where(submitted_by: current_user.id, correction_id: corrections.ids)
+    render :json => {
+        corrections: corrections,
+        agreement_marks: agreement_marks.as_json({:only => [:correction_id, :agree]})
+    }
+  end
+
   # GET /mods/1/reviews
   def reviews
     authorize! :read, @mod
@@ -183,7 +195,12 @@ class ModsController < ApplicationController
         plugins: @mod.plugins.as_json({
             :include => {
                 :masters => {
-                    :except => [:plugin_id]
+                    :except => [:plugin_id],
+                    :include => {
+                        :master_plugin => {
+                            :only => [:filename]
+                        }
+                    }
                 },
                 :dummy_masters => {
                     :except => [:plugin_id]
@@ -216,7 +233,7 @@ class ModsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_mod
-      @mod = Mod.includes(:nexus_infos, :workshop_infos, :lover_infos).find(params[:id])
+      @mod = Mod.find(params[:id])
     end
 
     # Params we allow searching on
@@ -226,7 +243,7 @@ class ModsController < ApplicationController
 
     # Includes hash for mods index query
     def mods_include_hash
-      hash = { :authors => { :only => [:id, :username] } }
+      hash = { :author_users => { :only => [:id, :username] } }
       sources = params[:filters][:sources]
       hash[:nexus_infos] = {:except => [:mod_id]} if sources[:nexus]
       hash[:lover_infos] = {:except => [:mod_id]} if sources[:lab]
@@ -269,6 +286,7 @@ class ModsController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def mod_params
       params.require(:mod).permit(:game_id, :name, :aliases, :is_utility, :has_adult_content, :primary_category_id, :secondary_category_id, :released, :nexus_info_id, :lovers_info_id, :workshop_info_id,
+         :custom_sources_attributes => [:label, :url],
          :required_mods_attributes => [:required_id],
          :tag_names => [],
          :asset_paths => [],

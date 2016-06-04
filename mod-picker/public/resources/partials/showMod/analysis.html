@@ -2,8 +2,7 @@
     <div class="mod-tab-items" ng-if="mod.plugins.length > 0">
         <div class="mod-tab-item primary-item">
             <strong>Select Plugin:</strong>
-            <select ng-model="currentPluginFilename" class="plugin-selector" ng-change="selectPlugin()">
-                <option ng-repeat="plugin in mod.plugins">{{plugin.filename}}</option>
+            <select ng-model="currentPlugin" class="plugin-selector" ng-change="selectPlugin(currentPlugin)" ng-options="plugin.filename for plugin in mod.plugins">
             </select>
         </div>
     </div>

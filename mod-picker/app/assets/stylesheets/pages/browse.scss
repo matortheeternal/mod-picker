@@ -96,7 +96,7 @@
       }
       i {
         font-size: 12px;
-        color: $hard_border_color;
+        color: $border_color;
       }
       div.active i {
         color: $text_color;
@@ -181,4 +181,20 @@ select.stealthy.ng-pristine {
 
 .browse-results {
   overflow-x: auto;
+}
+
+.columns-list {
+  text-align: center;
+
+  section {
+    display: inline-block;
+    vertical-align: top;
+    min-width: 120px;
+    text-align: left;
+    margin: 10px;
+
+    h3 {
+      margin-top: 0;
+    }
+  }
 }
