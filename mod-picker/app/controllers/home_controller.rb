@@ -105,7 +105,8 @@ class HomeController < ApplicationController
                         },
                         :methods => :avatar
                     }
-                }
+                },
+                :methods => :mods
             }),
             load_order_notes: load_order_notes.as_json
         }
