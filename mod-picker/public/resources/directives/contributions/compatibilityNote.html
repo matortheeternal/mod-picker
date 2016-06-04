@@ -10,6 +10,12 @@
                 <a ng-href="#/mod/{{note.mods[0].id}}" target="_blank">{{note.mods[0].name}}</a>
             </span>
         </span>
+        <span ng-if="!modId">
+            <a ng-href="#/mod/{{note.mods[0].id}}" target="_blank">{{note.mods[0].name}}</a>:
+            <span class="capitalize">{{note.status}}</span>
+            {{note.compatibility_verb}}
+            <a ng-href="#/mod/{{note.mods[1].id}}" target="_blank">{{note.mods[1].name}}</a>
+        </span>
         <span class="right-item">
             <span class="standing">Good Standing</span>
         </span>
