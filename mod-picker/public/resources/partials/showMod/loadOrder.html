@@ -23,7 +23,7 @@
     <div class="add-note-options">
         <span class="select">
             <select ng-model="activeLoadOrderNote.first_plugin_id">
-                <option ng-repeat="plugin in mod.plugins" ng-show="plugin.id !== activeLoadOrderNote.second_plugin_id">
+                <option ng-repeat="plugin in mod.plugins" ng-show="plugin.id !== activeLoadOrderNote.second_plugin_id" value="{{plugin.id}}">
                   Load {{plugin.filename}}
                 </option>
             </select>

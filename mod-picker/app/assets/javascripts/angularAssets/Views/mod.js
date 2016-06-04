@@ -686,6 +686,7 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
     $scope.startNewLoadOrderNote = function() {
         // set up activeLoadOrderNote object
         $scope.activeLoadOrderNote = {
+            first_plugin_id: $scope.mod.plugins[0].id.toString(),
             order: "before",
             text_body: contributionFactory.getDefaultTextBody("LoadOrderNote")
         };
