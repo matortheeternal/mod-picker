@@ -5,10 +5,7 @@ def create_plugin(mod, dump_filename)
   mod.plugins.create(hash).save!
 end
 
-def seed_static_records
-  #==================================================
-  # CREATE MATOR USER
-  #==================================================
+def seed_staff_users
   mator = User.create!(
       username: "mator",
       role: "admin",
@@ -19,11 +16,11 @@ def seed_static_records
       password_confirmation: "password",
       confirmed_at: Time.now.to_date
   )
-  
-  #==================================================
-  # CREATE GAMES
-  #==================================================
 
+
+end
+
+def seed_games
   puts "\nSeeding games"
 
   gameBethesda = Game.create(
@@ -78,8 +75,9 @@ def seed_static_records
   )
 
   puts "    #{Game.count} games seeded"
+end
 
-
+def seed_categories
   #==================================================
   # CREATE SUPER-CATEGORIES
   #==================================================
@@ -438,7 +436,6 @@ def seed_static_records
 
   puts "    #{CategoryPriority.count} category priorities seeded"
 
-
   #==================================================
   # CREATE REVIEW SECTIONS
   #==================================================
@@ -470,7 +467,7 @@ def seed_static_records
       prompt: "Do you enjoy using the mod?  What do you enjoy about it?",
       default: true
   )
-  ### Character Appearance ###
+### Character Appearance ###
   ReviewSection.create(
       category_id: catCharacter.id,
       name: "Aesthetics",
@@ -494,7 +491,7 @@ def seed_static_records
       prompt: "Do you enjoy using the mod?  What do you enjoy about it?",
       default: true
   )
-  ### Fixes ###
+### Fixes ###
   ReviewSection.create(
       category_id: catFixes.id,
       name: "Consistency",
@@ -507,7 +504,7 @@ def seed_static_records
       prompt: "Does the fix resolve all of the issues with the content it targets, and does it work?",
       default: true
   )
-  ### Gameplay ###
+### Gameplay ###
   ReviewSection.create(
       category_id: catGameplay.id,
       name: "Aesthetics",
@@ -536,14 +533,14 @@ def seed_static_records
       prompt: "Do you enjoy using the mod?  What do you enjoy about it?",
       default: true
   )
-  # FOR QUEST MODS
+# FOR QUEST MODS
   ReviewSection.create(
       category_id: catQuests.id,
       name: "Writing",
       prompt: "Is the story interesting and engaging? Does the dialogue fit the characters? Are the characters interesting?",
       default: true
   )
-  ### Items ###
+### Items ###
   ReviewSection.create(
       category_id: catItems.id,
       name: "Aesthetics",
@@ -567,7 +564,7 @@ def seed_static_records
       prompt: "Do you enjoy using the mod?  What do you enjoy about it?",
       default: true
   )
-  ### Locations ###
+### Locations ###
   ReviewSection.create(
       category_id: catLocations.id,
       name: "Aesthetics",
@@ -612,21 +609,21 @@ def seed_static_records
       prompt: "Do you enjoy using the mod?  What do you enjoy about it?",
       default: true
   )
-  # FOR NEW LANDS MODS
+# FOR NEW LANDS MODS
   ReviewSection.create(
       category_id: catNewLands.id,
       name: "New Content",
       prompt: "What is the quality of new content added by the mod, such as new items, spells or skills?",
       default: true
   )
-  # FOR PLAYER HOME MODS
+# FOR PLAYER HOME MODS
   ReviewSection.create(
       category_id: catNewPlayerHomes.id,
       name: "Features",
       prompt: "Does the player home fit your character’s needs?  Are you happy with what it offers?",
       default: true
   )
-  ### New Characters ###
+### New Characters ###
   ReviewSection.create(
       category_id: catNewChars.id,
       name: "Aesthetics",
@@ -667,7 +664,7 @@ def seed_static_records
       prompt: "Does the dialogue fit the characters? Are the characters interesting?  Do the characters have a good backstory?",
       default: true
   )
-  ### Resources ###
+### Resources ###
   ReviewSection.create(
       category_id: catResources.id,
       name: "Aesthetics",
@@ -700,20 +697,19 @@ def seed_static_records
       default: true
   )
 
-
   puts "    #{ReviewSection.count} review sections seeded"
+end
 
-
-  #==================================================
-  # CREATE QUOTES
-  #==================================================
-
+def seed_quotes
   puts "\nSeeding quotes"
 
+  # get helper variables
+  gameSkyrim = Game.find_by(display_name: "Skyrim")
+
   Quote.create(
-    game_id: gameSkyrim.id,
-    text: "Let me guess, someone stole your sweetroll?",
-    label: "Help"
+      game_id: gameSkyrim.id,
+      text: "Let me guess, someone stole your sweetroll?",
+      label: "Help"
   )
   Quote.create(
       game_id: gameSkyrim.id,
@@ -877,17 +873,18 @@ def seed_static_records
   )
 
   puts "    #{Quote.count} quotes seeded"
+end
 
-  #==================================================
-  # CREATE USER TITLES
-  #==================================================
-
+def seed_user_titles
   puts "\nSeeding user titles"
 
+  # get helper variables
+  gameSkyrim = Game.find_by(display_name: "Skyrim")
+
   UserTitle.create(
-       game_id: gameSkyrim.id,
-       title: "Slaughterfish",
-       rep_required: -9999999
+      game_id: gameSkyrim.id,
+      title: "Slaughterfish",
+      rep_required: -9999999
   )
   UserTitle.create(
       game_id: gameSkyrim.id,
@@ -946,12 +943,14 @@ def seed_static_records
   )
 
   puts "    #{UserTitle.count} user titles seeded"
+end
 
-  #==================================================
-  # CREATE RECORD GROUPS
-  #==================================================
+def seed_record_groups
 
   puts "\nSeeding record groups"
+
+  # get helper variables
+  gameSkyrim = Game.find_by(display_name: "Skyrim")
 
   RecordGroup.create(
       game_id: gameSkyrim.id,
@@ -1741,13 +1740,14 @@ def seed_static_records
   )
 
   puts "    #{RecordGroup.count} record groups seeded"
+end
 
-
-  #==================================================
-  # CREATE OFFICIAL CONTENT
-  #==================================================
-
+def seed_official_content
   puts "\nSeeding official content"
+
+  # get helper variables
+  mator = User.find_by(username: "Mator")
+  gameSkyrim = Game.find_by(display_name: "Skyrim")
 
   modSkyrim = Mod.create!(
       name: "Skyrim",
@@ -1773,8 +1773,8 @@ def seed_static_records
       submitted_by: mator.id,
       is_official: true,
       game_id: gameSkyrim.id,
-      primary_category_id: catLocations.id,
-      secondary_category_id: catFactions.id,
+      primary_category_id: Category.find_by(name: "Locations").id,
+      secondary_category_id: Category.find_by(name: "Gameplay - Factions").id,
       released: DateTime.new(2012, 8, 2),
       custom_sources_attributes: [{
           label: "Steam Store",
@@ -1792,8 +1792,8 @@ def seed_static_records
       submitted_by: mator.id,
       is_official: true,
       game_id: gameSkyrim.id,
-      primary_category_id: catNewPlayerHomes.id,
-      secondary_category_id: catImmersionAndRolePlaying.id,
+      primary_category_id: Category.find_by(name: "Locations - New Player Homes").id,
+      secondary_category_id: Category.find_by(name: "Gameplay - Immersion & Role-playing").id,
       released: DateTime.new(2012, 10, 4),
       custom_sources_attributes: [{
           label: "Steam Store",
@@ -1811,7 +1811,7 @@ def seed_static_records
       submitted_by: mator.id,
       is_official: true,
       game_id: gameSkyrim.id,
-      primary_category_id: catNewLands.id,
+      primary_category_id: Category.find_by(name: "Locations - New Lands").id,
       released: DateTime.new(2013, 2, 5),
       custom_sources_attributes: [{
           label: "Steam Store",
@@ -1829,7 +1829,7 @@ def seed_static_records
       submitted_by: mator.id,
       is_official: true,
       game_id: gameSkyrim.id,
-      primary_category_id: catAudiovisual.id,
+      primary_category_id: Category.find_by(name: "Audiovisual - Models & Textures").id,
       released: DateTime.new(2012, 2, 7),
       custom_sources_attributes: [{
           label: "Steam Store",
