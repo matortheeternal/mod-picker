@@ -21,6 +21,7 @@ installOrderAlpha:
   first_mod_id: SkyRE
   second_mod_id: Apocalypse
   game_id: skyrim
+  submitted: <%= DateTime.now %>
   text_body: >
     Lorem ipsum dolor sit amet, consectetur adipisicing elit. 
     Quam, totam nesciunt a incidunt, libero doloribus eos voluptas molestiae 
@@ -34,6 +35,7 @@ installOrderBeta:
   submitted_by: madoka
   first_mod_id: SkyRE
   second_mod_id: Apocalypse
+  submitted: <%= DateTime.now %>
   game_id: skyrim
   text_body: >
     Lorem ipsum dolor sit amet, consectetur adipisicing elit. 
@@ -47,6 +49,7 @@ installOrderBeta:
   submitted_by: kyoko
   first_mod_id: SkyRE
   second_mod_id: Apocalypse
+  submitted: <%= DateTime.now %>
   game_id: skyrim
   text_body: >
     Lorem ipsum dolor sit amet, consectetur adipisicing elit. 

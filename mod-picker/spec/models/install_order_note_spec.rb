@@ -18,7 +18,9 @@ RSpec.describe InstallOrderNote, :model do
            :users
 
   it "should have a valid factory" do
-    note = build(:install_order_note)
+    note = create(:install_order_note,
+      submitted: DateTime.now)
+    expect(note).to be_valid
   end
 
   it "should have valid fixtures" do
