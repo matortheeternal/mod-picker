@@ -742,7 +742,7 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
             second_plugin_id = parseInt($scope.activeLoadOrderNote.first_plugin_id);
         }
         var noteObj = {
-            install_order_note: {
+            load_order_note: {
                 game_id: $scope.mod.game_id,
                 first_plugin_id: first_plugin_id,
                 second_plugin_id: second_plugin_id,
