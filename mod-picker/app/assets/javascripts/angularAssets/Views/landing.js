@@ -19,7 +19,9 @@ app.controller('searchInputController', function ($scope, $location) {
     };
 });
 
-app.controller('landingController', function ($scope, $q, landingService, reviewSectionService) {
+app.controller('landingController', function ($scope, $q, landingService, reviewSectionService, userTitleService) {
+    // initialize local variables
+    $scope.userTitles = [];
 
     //TODO: put this into the Routing logic
     $scope.tabs = [
@@ -32,10 +34,16 @@ app.controller('landingController', function ($scope, $q, landingService, review
 
     $scope.currentTab = $scope.tabs[0];
 
-
     landingService.retrieveLanding().then(function(data) {
         $scope.landingData = data;
 
+        // associate user titles with contributions
+        userTitleService.associateTitles(data.recent.reviews, $scope.userTitles);
+        userTitleService.associateTitles(data.recent.compatibility_notes, $scope.userTitles);
+        userTitleService.associateTitles(data.recent.install_order_notes, $scope.userTitles);
+        userTitleService.associateTitles(data.recent.load_order_notes, $scope.userTitles);
+
+        // retrieve and associate review sections
         reviewSectionService.retrieveReviewSections().then(function (reviewSections) {
             $scope.landingData.recent.reviews.forEach(function(review) {
                 review.review_ratings.forEach(function(rating) {
@@ -43,6 +51,13 @@ app.controller('landingController', function ($scope, $q, landingService, review
                 });
             });
         });
+    });
+
+    // retrieve user titles and push them into the local variable
+    // so the userTitleService.associateTitles function can access them
+    userTitleService.retrieveUserTitles().then(function(userTitles) {
+        var gameTitles = userTitleService.getSortedGameTitles(userTitles);
+        Array.prototype.push.apply($scope.userTitles, gameTitles);
     });
 
     $scope.wordCount = function(string) {
