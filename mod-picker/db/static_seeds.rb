@@ -7,7 +7,9 @@ end
 
 def generate_password
   if Rails.env.production?
-    SecureRandom.urlsafe_base64
+    pw = SecureRandom.urlsafe_base64
+    puts "    Secure password: #{pw}"
+    pw
   else
     'password'
   end
@@ -15,6 +17,8 @@ end
 
 
 def seed_staff_users
+  puts "\nSeeding staff users"
+
   staff_password = generate_password
   User.create!(
       username: "Mator",
@@ -91,6 +95,8 @@ def seed_staff_users
       password_confirmation: staff_password,
       confirmed_at: Time.now.to_date
   )
+
+  puts "    #{User.all.count} staff users seeded"
 end
 
 def seed_games
