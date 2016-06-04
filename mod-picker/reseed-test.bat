@@ -1,2 +1,2 @@
-call rake reset:clear reset:ids db:seed RAILS_ENV=test
+call rake reset:clear db:seed RAILS_ENV=test
 pause

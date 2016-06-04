@@ -184,36 +184,22 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
             break;
     }
 
-    //get current user
-    userService.retrieveThisUser().then(function (user) {
-        $scope.user = user;
-        $scope.getPermissions();
-    });
-
     //get user permissions
     $scope.getPermissions = function() {
-        // if we don't have mod yet, try again in 100ms
-        if (!$scope.mod) {
-            $timeout(function() {
-                $scope.getPermissions();
-            }, 100);
-            return;
-        }
-
         // set up helper variables
         var author = $scope.mod.author_users.find(function(author) {
-            return author.id == $scope.user.id;
+            return author.id == $scope.currentUser.id;
         });
-        var rep = $scope.user.reputation.overall;
-        var isAdmin = $scope.user.role === 'admin';
-        var isModerator = $scope.user.role === 'moderator';
+        var rep = $scope.currentUser.reputation.overall;
+        var isAdmin = $scope.globalPermissions.isAdmin;
+        var isModerator = $scope.globalPermissions.isModerator;
         var isAuthor = author !== null;
 
         // set up permissions
         $scope.permissions = {
-            canCreateTags: (rep >= 20) || isAdmin || isModerator,
+            canCreateTags: (rep >= 20) || isAuthor || isModerator || isAdmin,
             canManage: isAuthor || isModerator || isAdmin,
-            canAppeal: (rep >= 40) || isModerator || isAdmin,
+            canAppeal: (rep >= 40) || isAuthor || isModerator || isAdmin,
             canModerate: isModerator || isAdmin
         };
     };

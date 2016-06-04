@@ -217,6 +217,7 @@ app.controller('userSettingsController', function ($scope, $q, userSettingsServi
             } else {
                 $scope.showSuccess = $scope.errors.length == 0;
                 themesService.changeTheme($scope.userSettings.theme);
+                $scope.$emit('reloadCurrentUser', {});
             }
         });
         if ($scope.avatar.file) {
