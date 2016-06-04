@@ -8,7 +8,8 @@ app.directive('modInput', function () {
             searchText: '=?',
             onChange: '=?',
             excludedId: '=?',
-            searchPlugins: '=?'
+            searchPlugins: '=?',
+            disabled: '=?'
         }
     }
 });
