@@ -6,6 +6,14 @@ require 'rails_helper'
 
 #   add_index "asset_files", ["filepath"], name: "filepath", unique: true, using: :btree
 
+# asset_files stores the filepath of an asset
+
+# [6:00] 
+# mod_asset_files associates an asset_file record with a mod
+
+# [6:00] 
+# it saves memory when multiple mods have the same asset paths and lets us find asset conflicts easier
+
 RSpec.describe AssetFile, :model do
   fixtures :asset_files
 
@@ -13,7 +21,8 @@ RSpec.describe AssetFile, :model do
     expect(build(:asset_file)).to be_valid
   end
 
-  it "should have valid fixtures" do
+  # TODO: create fixtures for asset_files
+  xit "should have valid fixtures" do
     expect(mod_asset_files(:assetTreeTexture)).to be_valid
     expect(mod_asset_files(:assetRockTexture)).to be_valid
     expect(mod_asset_files(:assetPlantTexture)).to be_valid 

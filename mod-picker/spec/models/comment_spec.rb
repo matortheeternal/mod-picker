@@ -1,6 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe Comment, :model do
+  fixtures :users, :user_bios
+
   it "should be valid with text_body, commentable_id, and commentable_type submitted parameters" do
     comment = build(:comment,
       commentable_type: "User")
@@ -16,10 +18,12 @@ describe "#init" do
     expect(comment.hidden).to eq(false)
   end
 
-  it "should default submitted => Date.now" do
+  it "should default submitted => DateTime.now" do
     # submitted is a Date field
-    comment = build(:comment)
-    expect(comment.submitted).to eq(Date.today)
+    comment = users(:homura).comments.create(attributes_for(:comment))
+
+    expect(comment).to be_valid
+    expect(comment.submitted).to be_within(1.minute).of DateTime.now
   end
 end
 
