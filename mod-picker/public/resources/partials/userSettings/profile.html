@@ -16,7 +16,7 @@
 <span>
     <h3 class="section-title">Title</h3>
     <section>
-        <span class="explanation" ng-if="!permissons.canChangeTitle">
+        <span class="explanation" ng-if="!permissions.canChangeTitle">
             You need more reputation to change your title
         </span>
         <input type="text" ng-model="user.title" ng-disabled="!permissions.canChangeTitle"/>

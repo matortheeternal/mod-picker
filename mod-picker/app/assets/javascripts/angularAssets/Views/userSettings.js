@@ -45,7 +45,7 @@ app.controller('userSettingsController', function ($scope, $q, user, currentUser
     $scope.avatar = {
         src: $scope.user.avatar
     };
-    $scope.permissions = user.permissions;
+    $scope.permissions = currentUser.permissions;
 
     $scope.tabs = [
         {name: 'Profile'},
