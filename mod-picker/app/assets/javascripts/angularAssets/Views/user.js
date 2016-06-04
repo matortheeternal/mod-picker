@@ -2,7 +2,7 @@ app.config(['$stateProvider', function ($stateProvider) {
     $stateProvider.state('base.user', {
             templateUrl: '/resources/partials/showUser/user.html',
             controller: 'userController',
-            url: '/profile/:userId',
+            url: '/user/:userId',
             redirectTo: 'base.user.Social',
             resolve: {
                 user: function(userService, $stateParams) {
