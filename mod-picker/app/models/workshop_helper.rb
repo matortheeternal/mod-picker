@@ -165,9 +165,9 @@ class WorkshopHelper
     # <.detailsStatsContainerRight>
     stats = doc.at_css(".detailsStatsContainerRight").css(".detailsStatRight")
     date_submitted_str = stats[1].text.strip
-    mod_data[:date_submitted] = DateTime.parse(date_submitted_str, workshop_date_format)
+    mod_data[:released] = DateTime.parse(date_submitted_str, workshop_date_format)
     date_updated_str = stats[2].text.strip
-    mod_data[:date_updated] = DateTime.parse(date_updated_str, workshop_date_format)
+    mod_data[:updated] = DateTime.parse(date_updated_str, workshop_date_format)
 
     # scrape statistics
     mod_data[:has_stats] = Rails.application.config.scrape_workshop_statistics
@@ -176,7 +176,7 @@ class WorkshopHelper
       # <.sectionTabs>
       sectionTabs = doc.at_css(".sectionTabs").css(".sectionTab")
       mod_data[:discussions_count] = sectionTabs[1].css(".tabCount").text.to_i
-      mod_data[:comments_count] = sectionTabs[2].css(".tabCount").text.to_i
+      mod_data[:posts_count] = sectionTabs[2].css(".tabCount").text.to_i
       # <.stats-table>
       statsTableRows = doc.at_css(".stats_table").css("tr")
       mod_data[:views] = statsTableRows[0].css("td")[0].text.gsub(',', '').to_i

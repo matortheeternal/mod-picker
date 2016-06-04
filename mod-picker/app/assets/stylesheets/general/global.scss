@@ -711,10 +711,8 @@ a .help-tooltip {
     margin-top: 0;
   }
 
-  form {
-    section {
-      margin: 15px;
-    }
+  section {
+    margin: 15px;
   }
 }
 
@@ -742,9 +740,10 @@ a .help-tooltip {
   margin: auto;
   padding: 14px;
   text-align: center;
-  background-color: $background-highlight;
+
   .page-item {
     border: 1px solid $border_color;
+    background-color: $background-highlight;
     padding: 4px;
   }
   .page-ellipsis {

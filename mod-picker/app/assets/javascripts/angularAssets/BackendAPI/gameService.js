@@ -14,4 +14,17 @@ app.service('gameService', function (backend, $q) {
         });
         return output.promise;
     };
+
+    this.getAvailableGames = function(games) {
+        var output = $q.defer();
+        allGames.then(function(games) {
+            var availableGames = ["Skyrim"];
+            output.resolve(
+                games.filter(function(game) {
+                    return availableGames.indexOf(game.display_name) > -1;
+                })
+            );
+        });
+        return output.promise;
+    };
 });

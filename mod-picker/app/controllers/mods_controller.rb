@@ -2,6 +2,7 @@ class ModsController < ApplicationController
   before_action :set_mod, only: [:update, :update_tags, :corrections, :reviews, :compatibility_notes, :install_order_notes, :load_order_notes, :analysis, :destroy]
 
   # POST /mods
+  # TODO: Adult content filtering
   def index
     @mods = Mod.includes(:author_users).accessible_by(current_ability).filter(filtering_params).sort(params[:sort]).paginate(:page => params[:page])
     @count =  Mod.accessible_by(current_ability).filter(filtering_params).sort(params[:sort]).count

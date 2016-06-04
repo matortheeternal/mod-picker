@@ -6,7 +6,15 @@ class Mod < ActiveRecord::Base
 
   # GENERAL SCOPES
   scope :search, -> (search) { where("name like ? OR aliases like ?", "%#{search}%", "%#{search}%") }
-  scope :game, -> (game) { where(game_id: game) }
+  scope :game, -> (game_id) {
+    game = Game.find(game_id)
+    if game.parent_game_id.present?
+      where(game_id: [game.id, game.parent_game_id])
+    else
+      where(game_id: game.id)
+    end
+  }
+  scope :exclude, -> (excluded_mod_ids) { where.not(id: excluded_mod_ids) }
   scope :sources, -> (sources) {
     results = self.where(nil)
     whereClause = []
@@ -75,7 +83,7 @@ class Mod < ActiveRecord::Base
     sources = range[:sources]
 
     results = self.where(nil)
-    results = results.where(:nexus_infos => {:total_downloads => range[:min]..range[:max]}) if sources[:nexus]
+    results = results.where(:nexus_infos => {:downloads => range[:min]..range[:max]}) if sources[:nexus]
     results = results.where(:lover_infos => {:downloads => range[:min]..range[:max]}) if sources[:lab]
     results
   }
@@ -362,6 +370,7 @@ class Mod < ActiveRecord::Base
           :nexus_infos => {:except => [:mod_id]},
           :workshop_infos => {:except => [:mod_id]},
           :lover_infos => {:except => [:mod_id]},
+          :plugins => {:only => [:id, :filename]},
           :custom_sources => {:except => [:mod_id]},
           :author_users => {:only => [:id, :username]},
           :required_mods => {

@@ -35,7 +35,8 @@ app.service('userTitleService', function (backend, $q) {
             for (var i = 0; i < titles.length; i++) {
                 var title = titles[i];
                 if (reputation < title.rep_required) {
-                    return prevTitle.title;
+                    output.resolve(prevTitle.title);
+                    return;
                 }
                 prevTitle = title;
             }
@@ -49,7 +50,9 @@ app.service('userTitleService', function (backend, $q) {
             // if user is defined and they don't have a custom title
             if (item.user && !item.user.title) {
                 // get their default title
-                item.user.title = thisService.getUserTitle(item.user.reputation.overall);
+                thisService.getUserTitle(item.user.reputation.overall).then(function(title) {
+                    item.user.title = title;
+                });
             }
         });
     };

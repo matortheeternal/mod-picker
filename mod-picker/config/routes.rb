@@ -12,11 +12,11 @@ Rails.application.routes.draw do
     resources :reviews
     resources :mod_authors
     resources :user_bios
-    resources :mod_lists
     resources :mod_asset_files
 
     # users and user settings
     resources :users, only: [:index, :show, :update, :destroy]
+    match '/current_user', to: 'users#current', via: 'get'
     resources :user_settings, only: [:index, :update]
     match '/link_account', to: 'users#link_account', via: 'get'
 
@@ -70,6 +70,10 @@ Rails.application.routes.draw do
 
     # agreement marks
     match '/corrections/:id/agreement', to: 'corrections#agreement', via: 'post'
+
+    # mod lists
+    resources :mod_lists, only: [:index, :show, :create, :update, :destroy]
+    match '/active_mod_list', to: 'mod_lists#active', via: 'get'
 
     # mod and mod list stars
     match '/mod_lists/:id/star', to: 'mod_lists#create_star', via: 'post'

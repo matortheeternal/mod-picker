@@ -1,5 +1,5 @@
 <two-columns>
-    <loader data="user">
+    <loader data="user" spinner-class="big-spinner">
         <div class="page-container">
             <div class="left-column left-user-column medium-column">
                 <img class="avatar avatar-full" ng-src="{{user.avatar}}">
@@ -61,8 +61,10 @@
                 </section>
             </div>
             <div class="right-column tabs-column right-user-column">
-                <tabs current-tab="currentTab" tabs="tabs" container-class="''"></tabs>
-                <div ng-include="currentTab.url" class="tab"></div>
+                <tabs tabs="tabs"></tabs>
+                <state-loader spinner-class="big-spinner">
+                    <div ui-view class="tab"></div>
+                </state-loader>
             </div>
         </div>
     </loader>

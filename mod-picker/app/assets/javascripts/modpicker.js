@@ -11,6 +11,11 @@ app.config(['$httpProvider', '$compileProvider', function ($httpProvider, $compi
     $compileProvider.debugInfoEnabled(false);
 }]);
 
+app.config(function($urlMatcherFactoryProvider) {
+    //this allows urls with and without trailing slashes to go to the same state
+    $urlMatcherFactoryProvider.strictMode(false);
+})
+
 app.config(function ($urlRouterProvider) {
     $urlRouterProvider.otherwise('/');
 });
