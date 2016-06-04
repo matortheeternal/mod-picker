@@ -27,8 +27,8 @@ app.controller('landingController', function ($scope, $q, landingService, review
     $scope.tabs = [
         { name: 'Reviews', url: '/resources/partials/landingPage/reviews.html'},
         { name: 'Compatibility Notes', url: '/resources/partials/landingPage/compatibilityNotes.html'},
-        { name: 'Load Order Notes', url: '/resources/partials/landingPage/loadOrderNotes.html'},
         { name: 'Install Order Notes', url: '/resources/partials/landingPage/installOrderNotes.html'},
+        { name: 'Load Order Notes', url: '/resources/partials/landingPage/loadOrderNotes.html'},
         { name: 'Corrections', url: '/resources/partials/landingPage/corrections.html'}
     ];
 
