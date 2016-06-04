@@ -1,6 +1,6 @@
 <h3 class="section-title">Mod Lists</h3>
 <section>
-    <table border="1" class="listing-table" ng-if="lists.length">
+    <table border="1" class="listing-table" ng-if="user.mod_lists.length">
         <thead>
             <tr>
                 <th class="name-column">Name</th>
@@ -12,28 +12,28 @@
             </tr>
         </thead>
         <tbody>
-            <tr ng-repeat="list in lists">
-                <td class="name-column">{{list.name}}</td>
-                <td>{{list.mods_count}}</td>
-                <td>{{list.status}}</td>
-                <td>{{list.mod_list_stars_count}}</td>
-                <td>{{list.comments_count}}</td>
+            <tr ng-repeat="modlist in user.mod_lists">
+                <td class="name-column">{{modlist.name}}</td>
+                <td>{{modlist.mods_count}}</td>
+                <td>{{modlist.status}}</td>
+                <td>{{modlist.mod_list_stars_count}}</td>
+                <td>{{modlist.comments_count}}</td>
                 <td>
                     <div class="table-buttons">
-                        <input class="btn-sm" type="button" ng-click="cloneModList(list)" value="Clone"/>
-                        <input class="btn-sm" type="button" ng-click="editModList(list)" value="Edit"/>
-                        <input class="btn-sm" type="button" ng-click="deleteModList(list)" value="Delete"/>
+                        <input class="btn-sm" type="button" ng-click="cloneModList(modlist)" value="Clone"/>
+                        <input class="btn-sm" type="button" ng-click="editModList(modlist)" value="Edit"/>
+                        <input class="btn-sm" type="button" ng-click="deleteModList(modlist)" value="Delete"/>
                     </div>
                 </td>
             </tr>
         </tbody>
     </table>
-    <span class="explanation" ng-if="!lists.length">There's nothing here</span>
+    <span class="explanation" ng-if="!user.mod_lists.length">There's nothing here</span>
 </section>
 
 <h3 class="section-title">Mod Collections</h3>
 <section>
-    <table border="1" class="listing-table" ng-if="collections.length">
+    <table border="1" class="listing-table" ng-if="user.collections.length">
         <thead>
             <tr>
                 <th class="name-column">Name</th>
@@ -45,7 +45,7 @@
             </tr>
         </thead>
         <tbody>
-            <tr ng-repeat="collection in collections">
+            <tr ng-repeat="collection in user.collections">
                 <td class="name-column">{{collection.name}}</td>
                 <td>{{collection.mods_count}}</td>
                 <td>{{collection.status}}</td>
@@ -61,6 +61,5 @@
             </tr>
         </tbody>
     </table>
-    <span class="explanation" ng-if="!collections.length">There's nothing here...</span>
+    <span class="explanation" ng-if="!user.collections.length">There's nothing here...</span>
 </section>
-
