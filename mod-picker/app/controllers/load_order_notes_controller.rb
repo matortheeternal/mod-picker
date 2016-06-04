@@ -11,6 +11,8 @@ class LoadOrderNotesController < ContributionsController
   # POST /load_order_notes
   def create
     @load_order_note = LoadOrderNote.new(contribution_params)
+    @load_order_note.submitted_by = current_user.id
+    authorize! :create, @load_order_note
 
     if @load_order_note.save
       render json: {status: :ok}
@@ -32,6 +34,6 @@ class LoadOrderNotesController < ContributionsController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def contribution_params
-      params.require(:load_order_note).permit(:load_first, :load_second, :text_body, :edit_summary)
+      params.require(:load_order_note).permit(:game_id, :first_plugin_id, :second_plugin_id, :text_body, :edit_summary)
     end
 end
