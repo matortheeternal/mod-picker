@@ -574,8 +574,17 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
         }
     };
 
-    // submit a compatibility note
-    $scope.submitCompatibilityNote = function() {
+    // update a compatibility note locally
+    $scope.updateCompatibilityNote = function() {
+        var originalNote = $scope.activeCompatibilityNote.original;
+        var updatedNote = $scope.activeCompatibilityNote;
+        // update the values on the original note
+        originalNote.text_body = updatedNote.text_body.slice(0);
+        originalNote.status = updatedNote.status;
+    };
+
+    // save a compatibility note
+    $scope.saveCompatibilityNote = function() {
         // return if the compatibility note is invalid
         if (!$scope.activeCompatibilityNote.valid) {
             return;
@@ -594,14 +603,30 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
             }
         };
         $scope.activeCompatibilityNote.submitting = true;
-        contributionService.submitContribution("compatibility_notes", noteObj).then(function(data) {
-            if (data.status == "ok") {
-                $scope.submitMessage = "Compatibility Note submitted successfully!";
-                $scope.showSuccess = true;
-                // TODO: push the compatibility note onto the $scope.mod.compatibility_notes array
-                delete $scope.activeCompatibilityNote;
-            }
-        });
+
+        // use update or submit contribution
+        if ($scope.activeCompatibilityNote.original) {
+            var noteId = $scope.activeCompatibilityNote.original.id;
+            contributionService.updateContribution("compatibility_notes", noteId, noteObj).then(function(data) {
+                if (data.status == "ok") {
+                    $scope.submitMessage = "Compatibility Note updated successfully!";
+                    $scope.showSuccess = true;
+
+                    // update original review object and discard copy
+                    $scope.updateCompatibilityNote();
+                    $scope.discardCompatibilityNote();
+                }
+            });
+        } else {
+            contributionService.submitContribution("compatibility_notes", noteObj).then(function(data) {
+                if (data.status == "ok") {
+                    $scope.submitMessage = "Compatibility Note submitted successfully!";
+                    $scope.showSuccess = true;
+                    // TODO: push the compatibility note onto the $scope.mod.compatibility_notes array
+                    $scope.discardCompatibilityNote();
+                }
+            });
+        }
     };
 
     // INSTALL ORDER NOTE RELATED LOGIC
