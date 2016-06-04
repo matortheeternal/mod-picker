@@ -9,12 +9,12 @@ class LoadOrderNote < ActiveRecord::Base
   belongs_to :user, :foreign_key => 'submitted_by', :inverse_of => 'load_order_notes'
 
   # plugins associatied with this load order note
-  belongs_to :first_plugin, :foreign_key => 'first_plugin_id', :class_name => 'Plugin', :inverse_of => 'first_load_order_notes'
-  belongs_to :second_plugin, :foreign_key => 'second_plugin_id', :class_name => 'Plugin', :inverse_of => 'second_load_order_notes'
+  belongs_to :first_plugin, :foreign_key => 'first_plugin_id', :class_name => 'Plugin', :inverse_of => 'load_before_notes'
+  belongs_to :second_plugin, :foreign_key => 'second_plugin_id', :class_name => 'Plugin', :inverse_of => 'load_after_notes'
 
   # mods associated with this load order note
-  has_one :first_mod, :through => :first_plugin, :class_name => 'Mod', :foreign_key => 'mod_id', source: "mod"
-  has_one :second_mod, :through => :second_plugin, :class_name => 'Mod', :foreign_key => 'mod_id', source: "mod"
+  has_one :first_mod, :through => :first_plugin, :class_name => 'Mod', :foreign_key => 'mod_id'
+  has_one :second_mod, :through => :second_plugin, :class_name => 'Mod', :foreign_key => 'mod_id'
 
   # mod lists this load order note appears on
   has_many :mod_list_installation_notes, :inverse_of => 'load_order_note'
@@ -41,10 +41,6 @@ class LoadOrderNote < ActiveRecord::Base
     [first_mod, second_mod]
   end
 
-  def plugins
-    [first_plugin, second_plugin]
-  end
-
   def recompute_helpful_counts
     self.helpful_count = HelpfulMark.where(helpfulable_id: self.id, helpfulable_type: "LoadOrderNote", helpful: true).count
     self.not_helpful_count = HelpfulMark.where(helpfulable_id: self.id, helpfulable_type: "LoadOrderNote", helpful: false).count
@@ -63,7 +59,7 @@ class LoadOrderNote < ActiveRecord::Base
                   :methods => :avatar
               }
           },
-          :methods => [:mods, :plugins]
+          :methods => :mods
       }
       super(options.merge(default_options))
     else

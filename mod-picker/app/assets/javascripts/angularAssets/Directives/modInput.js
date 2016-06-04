@@ -8,8 +8,7 @@ app.directive('modInput', function () {
             searchText: '=?',
             onChange: '=?',
             excludedId: '=?',
-            searchPlugins: '=?',
-            disabled: '=?'
+            searchPlugins: '=?'
         }
     }
 });
@@ -51,11 +50,7 @@ app.controller('modInputController', function($scope, $timeout, modService, plug
 
     $scope.selectResult = function(result) {
         $scope.resultId = result.id;
-        if ($scope.searchPlugins) {
-            $scope.searchText = result.filename;
-        } else {
-            $scope.searchText = result.name;
-        }
+        $scope.searchText = result.name;
         $scope.showDropdown = false;
         $scope.results = [];
         $scope.$applyAsync();
