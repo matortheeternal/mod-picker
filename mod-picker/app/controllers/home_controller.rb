@@ -71,7 +71,7 @@ class HomeController < ApplicationController
             }),
             corrections: corrections.as_json,
             compatibility_notes: compatibility_notes.as_json({
-                :only => [:id, :compatibility_type, :submitted, :edited, :text_body, :corrections_count],
+                :only => [:id, :status, :submitted, :edited, :text_body, :corrections_count],
                 :include => {
                     :first_mod => {
                         :only => [:id, :name]
@@ -86,7 +86,8 @@ class HomeController < ApplicationController
                         },
                         :methods => :avatar
                     }
-                }
+                },
+                :methods => :mods
             }),
             install_order_notes: install_order_notes.as_json({
                 :only => [:id, :submitted, :edited, :text_body],
