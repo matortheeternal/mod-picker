@@ -34,7 +34,9 @@ app.config(['$stateProvider', function ($stateProvider) {
     })
 }]);
 
-app.controller('modlistController', function($scope, $log, $stateParams, $timeout, modListService, userService) {
+app.controller('modlistController', function($scope, $log, $stateParams, $timeout, currentUser, modListService, userService) {
+    $scope.user = currentUser;
+    $scope.permissions = currentUser.permissions;
 
 	/*config*/
 	$scope.bIsEditing = false;
@@ -72,12 +74,6 @@ app.controller('modlistController', function($scope, $log, $stateParams, $timeou
 
     modListService.retrieveModList($stateParams.modListId).then(function(modList) {
        $scope.modlist = modList;
-    });
-
-    //get current user
-    userService.retrieveThisUser().then(function (user) {
-        $scope.user = user;
-        $scope.getPermissions();
     });
 
     //Function To Return Modlist Status as Index for statusIcons
