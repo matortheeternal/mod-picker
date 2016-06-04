@@ -18,7 +18,8 @@
 #   end
 
 plannedVanilla:
-  created_by: homura
+  name: "vanilla mod list"
+  submitted_by: homura
   is_collection: false
   hidden: false
   has_adult_content: false
@@ -28,7 +29,8 @@ plannedVanilla:
   game_id: skyrim
 
 underConstructionVanilla:
-  created_by: kyoko
+  name: "Mod list under construction"
+  submitted_by: kyoko
   is_collection: false
   hidden: false
   has_adult_content: false

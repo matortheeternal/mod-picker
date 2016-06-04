@@ -33,42 +33,6 @@ RSpec.describe CompatibilityNote, :model do
       end
     end
 
-    describe "compatibility_type" do
-      it "should be invalid if not included within valid list of types" do
-        expect{build(:compatibility_note,
-          compatibility_type: "Homura")
-      }
-      .to raise_error(ArgumentError)
-      .with_message(/is not a valid compatibility_type/)
-
-    end
-
-    it "should be valid if compatibility_type is included in whitelist of types" do
-      note = build(:compatibility_note)
-
-      valid_types = ["incompatible", "partially incompatible", "compatibility mod", 
-       "compatibility option", "make custom patch"]
-
-       valid_types.each do |valid_type|
-        note.compatibility_type = valid_type
-        expect(note).to be_valid
-       end
-    end
-
-    it "should be invalid if compatibility_type is empty" do
-
-        # Old method, that used SQL validation rather than rails validation for model
-        # expect{create(:compatibility_note,
-        #   compatibility_type: nil)}
-        # .to raise_error(ActiveRecord::StatementInvalid)
-        note = build(:compatibility_note,
-          compatibility_type: nil)
-
-        note.valid?
-        expect(note.errors[:compatibility_type]).to include("can't be blank")
-      end
-    end
-
     describe "submitted" do
       it "should set the proper date to DateTime.now upon creation" do
         note = create(:compatibility_note)

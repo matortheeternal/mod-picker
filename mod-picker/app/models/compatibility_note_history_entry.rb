@@ -5,10 +5,17 @@ class CompatibilityNoteHistoryEntry < ActiveRecord::Base
   enum status: [ :incompatible, :"partially incompatible", :"compatibility mod", :"compatibility option", :"make custom patch" ]
 
   # Callbacks
+  after_initialize :init
   after_create :increment_counters
   before_destroy :decrement_counters
 
+  # Validations
+  validates :submitted_by, :text_body, presence: true
+
   private
+    def init
+      self.submitted ||= DateTime.now
+    end
     def increment_counters
       self.compatibility_note.update_counter(:history_entries_count, 1)
     end

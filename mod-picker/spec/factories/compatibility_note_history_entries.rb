@@ -17,7 +17,6 @@ FactoryGirl.define do
     association :user, factory: :user
     association :compatibility_mod_id, factory: :mod
     association :compatibility_plugin_id, factory: :plugin
-    compatibility_type "incompatible"
     text_body { Faker::Lorem.sentence(20) }
   end
 end

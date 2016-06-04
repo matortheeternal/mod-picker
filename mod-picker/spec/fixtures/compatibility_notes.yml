@@ -20,7 +20,6 @@
 
 incompatibleNote:
   submitted_by: homura
-  compatibility_type: "Incompatible"
   submitted: 2016-02-15 11:02:57
   first_mod_id: Apocalypse
   second_mod_id: SkyUI
@@ -35,7 +34,6 @@ incompatibleNote:
 
 partiallyCompatibleNote:
   submitted_by: homura
-  compatibility_type: "Partially Incompatible"
   submitted: 2016-02-15 11:02:57
   first_mod_id: Apocalypse
   second_mod_id: SkyUI
@@ -50,7 +48,6 @@ partiallyCompatibleNote:
 
 compatibilityModNote:
   submitted_by: kyoko
-  compatibility_type: "Compatibility Mod"
   submitted: 2016-02-15 11:02:57
   first_mod_id: Apocalypse
   second_mod_id: SkyUI
@@ -65,7 +62,6 @@ compatibilityModNote:
 
 compatibilityPluginNote:
   submitted_by: madoka
-  compatibility_type: "Compatibility Plugin"
   submitted: 2016-02-15 11:02:57
   first_mod_id: Apocalypse
   second_mod_id: SkyUI
@@ -80,7 +76,6 @@ compatibilityPluginNote:
 
 makeCustomPatchNote:
   submitted_by: homura
-  compatibility_type: "Make Custom Patch"
   submitted: 2016-02-15 11:02:57
   first_mod_id: Apocalypse
   second_mod_id: SkyUI

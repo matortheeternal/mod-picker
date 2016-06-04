@@ -21,6 +21,6 @@ FactoryGirl.define do
     description { Faker::Lorem.sentence(3, false, 4)[1..512] }
     crc_hash    { Faker::Lorem.sentence(2)[1..8] }
     game_id     { FactoryGirl.create(:game).id }
+    file_size   { Faker::Number.number(2) }
   end
-
 end

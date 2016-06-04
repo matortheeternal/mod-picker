@@ -24,6 +24,7 @@
 
 FactoryGirl.define do
   factory :mod_list do
+    name { Faker::Name.name }
     association :user, factory: :user
     has_adult_content false
     status "under construction"

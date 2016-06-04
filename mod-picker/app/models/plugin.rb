@@ -33,7 +33,7 @@ class Plugin < ActiveRecord::Base
   accepts_nested_attributes_for :plugin_record_groups, :overrides, :plugin_errors
 
   # validations
-  validates :mod_id, :filename, :crc_hash, :game_id, presence: true
+  validates :mod_id, :file_size, :filename, :crc_hash, :game_id, presence: true
   validates :filename, length: {in: 1..64}
   validates :author, length: {in: 0..64}
   validates :description, length: {in: 0..512}

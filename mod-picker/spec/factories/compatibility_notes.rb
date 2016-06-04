@@ -25,7 +25,6 @@ FactoryGirl.define do
     first_mod_id { FactoryGirl.create(:mod).id }
     second_mod_id { FactoryGirl.create(:mod).id }
     game_id       { FactoryGirl.create(:game).id }
-    compatibility_type "incompatible"
     text_body { Faker::Lorem.sentence(60, false, 0) }
   end
 end
