@@ -675,26 +675,33 @@ def seed_fake_reviews
 
   # generate reviews on mods
   Mod.all.each do |mod|
+    if mod.primary_category_id.nil?
+      next
+    end
+
     nReviews = rand(6)
     puts "    Generating #{nReviews} reviews for #{mod.name}"
     nReviews.times do
       submitter = random_user
+
+      review_ratings = []
+      category_ids = [mod.primary_category_id]
+      category_ids.push(mod.primary_category.parent_id) if mod.primary_category.parent_id
+      review_sections = ReviewSection.where(category_id: category_ids).sample(rand(2..5))
+      review_sections.each do |section|
+        review_ratings.push({review_section_id: section.id, rating: rand(100)})
+      end
+
       review = mod.reviews.new(
           game_id: gameSkyrim.id,
           submitted_by: submitter.id,
           mod_id: mod.id,
           hidden: false,
           submitted: DateTime.now,
-          text_body: Faker::Lorem.paragraph(18)
+          text_body: Faker::Lorem.paragraph(18),
+          review_ratings_attributes: review_ratings
       )
       review.save!
-
-      # seed ratings on reviews
-      nRatings = rand(2..5)
-      nRatings.times do
-        section = random_review_section
-        review.review_ratings.create(rating: rand(100), review_section_id: section.id)
-      end
 
       # seed helpful marks on reviews
       nHelpfulMarks = randpow(10, 3)
