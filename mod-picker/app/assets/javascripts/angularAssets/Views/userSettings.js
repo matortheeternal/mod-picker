@@ -14,6 +14,7 @@ app.config(['$stateProvider', function ($stateProvider) {
             }
         }).state('base.settings.Profile', {
             templateUrl: '/resources/partials/userSettings/profile.html',
+            controller: 'userSettingsProfileController',
             url: '/profile',
             resolve: {
                 titleQuote: function(quoteService, currentUser, $q) {
@@ -200,4 +201,7 @@ app.controller('userSettingsController', function ($scope, $q, user, currentUser
         themesService.changeTheme($scope.userSettings.theme);
     }
 });
+
+app.controller('userSettingsProfileController', function ($scope, titleQuote) {
+    $scope.titleQuote = titleQuote;
 });
