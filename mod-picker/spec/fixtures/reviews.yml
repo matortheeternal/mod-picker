@@ -1,0 +1,89 @@
+# create_table "reviews", force: :cascade do |t|
+#   t.integer  "submitted_by",          limit: 4
+#   t.integer  "mod_id",                limit: 4
+#   t.boolean  "hidden"
+#   t.integer  "rating1",               limit: 1
+#   t.integer  "rating2",               limit: 1
+#   t.integer  "rating3",               limit: 1
+#   t.integer  "rating4",               limit: 1
+#   t.integer  "rating5",               limit: 1
+#   t.datetime "submitted"
+#   t.datetime "edited"
+#   t.text     "text_body",             limit: 65535
+#   t.integer  "corrections_count", limit: 4,     default: 0
+#   t.integer  "review_template_id",    limit: 4
+# end
+
+# Validations
+# validates :review_template_id, :mod_id, :rating1, :text_body, presence: true
+# validates :hidden, inclusion: [true, false]
+# validates :rating1, :rating2, :rating3, :rating4, :rating5, length: {in: 0..100}
+# validates :text_body, length: {in: 255..32768}
+
+review_basic:
+  review_template_id: r_template_one
+  mod_id: Apocalypse
+  rating1: 5
+  text_body: >
+    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Iure natus ea 
+    odio iusto culpa, nam eveniet voluptatem dolorum deserunt incidunt, modi 
+    labore ipsam, accusamus dignissimos dolore sequi quidem optio omnis. Lorem 
+    ipsum dolor sit amet, consectetur adipisicing elit. Sint laudantium mollitia 
+    velit quisquam, labore eaque incidunt sunt, earum rem voluptates. Delectus 
+    iusto molestiae eveniet quam reiciendis, similique eos, harum expedita. 
+    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Veniam maiores 
+    esse eaque, autem soluta, quos temporibus tempora, nisi deleniti consequatur 
+    et reiciendis! Libero debitis necessitatibus corporis quidem quas, veritatis 
+    vero.
+  submitted_by: madoka
+
+review_intermediate:
+  review_template_id: r_template_one
+  mod_id: Apocalypse
+  rating1: 9
+  text_body: >
+    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Iure natus ea 
+    odio iusto culpa, nam eveniet voluptatem dolorum deserunt incidunt, modi 
+    labore ipsam, accusamus dignissimos dolore sequi quidem optio omnis. Lorem 
+    ipsum dolor sit amet, consectetur adipisicing elit. Sint laudantium mollitia 
+    velit quisquam, labore eaque incidunt sunt, earum rem voluptates. Delectus 
+    iusto molestiae eveniet quam reiciendis, similique eos, harum expedita. 
+    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Veniam maiores 
+    esse eaque, autem soluta, quos temporibus tempora, nisi deleniti consequatur 
+    et reiciendis! Libero debitis necessitatibus corporis quidem quas, veritatis 
+    vero.
+  submitted_by: homura
+
+review_advanced:
+  review_template_id: r_template_one
+  mod_id: Apocalypse
+  rating1: 2
+  text_body: >
+    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Iure natus ea 
+    odio iusto culpa, nam eveniet voluptatem dolorum deserunt incidunt, modi 
+    labore ipsam, accusamus dignissimos dolore sequi quidem optio omnis. Lorem 
+    ipsum dolor sit amet, consectetur adipisicing elit. Sint laudantium mollitia 
+    velit quisquam, labore eaque incidunt sunt, earum rem voluptates. Delectus 
+    iusto molestiae eveniet quam reiciendis, similique eos, harum expedita. 
+    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Veniam maiores 
+    esse eaque, autem soluta, quos temporibus tempora, nisi deleniti consequatur 
+    et reiciendis! Libero debitis necessitatibus corporis quidem quas, veritatis 
+    vero.
+  submitted_by: homura
+
+review_expert:
+  review_template_id: r_template_one
+  mod_id: Apocalypse
+  rating1: 7
+  text_body: >
+    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Iure natus ea 
+    odio iusto culpa, nam eveniet voluptatem dolorum deserunt incidunt, modi 
+    labore ipsam, accusamus dignissimos dolore sequi quidem optio omnis. Lorem 
+    ipsum dolor sit amet, consectetur adipisicing elit. Sint laudantium mollitia 
+    velit quisquam, labore eaque incidunt sunt, earum rem voluptates. Delectus 
+    iusto molestiae eveniet quam reiciendis, similique eos, harum expedita. 
+    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Veniam maiores 
+    esse eaque, autem soluta, quos temporibus tempora, nisi deleniti consequatur 
+    et reiciendis! Libero debitis necessitatibus corporis quidem quas, veritatis 
+    vero.
+  submitted_by: homura

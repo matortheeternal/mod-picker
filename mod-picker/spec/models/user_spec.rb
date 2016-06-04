@@ -1,6 +1,83 @@
 # This file and all spec fils should mirror the app directory.
 # for instance, this user_spec spec should have a user file in the app/models
 # directory for the actual model.
+
+# create_table "users", force: :cascade do |t|
+#     t.string   "username",                  limit: 32
+#     t.string   "role",                      limit: 16
+#     t.string   "title",                     limit: 32
+#     t.datetime "joined"
+#     t.integer  "active_mod_list_id",        limit: 4
+#     t.string   "email",                     limit: 255,   default: "", null: false
+#     t.string   "encrypted_password",        limit: 255,   default: "", null: false
+#     t.string   "reset_password_token",      limit: 255
+#     t.datetime "reset_password_sent_at"
+#     t.datetime "remember_created_at"
+#     t.integer  "sign_in_count",             limit: 4,     default: 0,  null: false
+#     t.datetime "current_sign_in_at"
+#     t.datetime "last_sign_in_at"
+#     t.string   "current_sign_in_ip",        limit: 255
+#     t.string   "last_sign_in_ip",           limit: 255
+#     t.string   "confirmation_token",        limit: 255
+#     t.datetime "confirmed_at"
+#     t.datetime "confirmation_sent_at"
+#     t.integer  "comments_count",            limit: 4,     default: 0
+#     t.integer  "reviews_count",             limit: 4,     default: 0
+#     t.integer  "install_order_notes_count", limit: 4,     default: 0
+#     t.integer  "compatibility_notes_count", limit: 4,     default: 0
+#     t.integer  "corrections_count",     limit: 4,     default: 0
+#     t.integer  "agreement_marks_count",     limit: 4,     default: 0
+#     t.integer  "mods_count",                limit: 4,     default: 0
+#     t.integer  "starred_mods_count",        limit: 4,     default: 0
+#     t.integer  "starred_mod_lists_count",   limit: 4,     default: 0
+#     t.integer  "profile_comments_count",    limit: 4,     default: 0
+#     t.integer  "mod_stars_count",           limit: 4,     default: 0
+#     t.text     "about_me",                  limit: 65535
+#     t.integer  "load_order_notes_count",    limit: 4,     default: 0
+#     t.string   "invitation_token",          limit: 255
+#     t.datetime "invitation_created_at"
+#     t.datetime "invitation_sent_at"
+#     t.datetime "invitation_accepted_at"
+#     t.integer  "invitation_limit",          limit: 4
+#     t.integer  "invited_by_id",             limit: 4
+#     t.string   "invited_by_type",           limit: 255
+#     t.integer  "invitations_count",         limit: 4,     default: 0
+#   end
+
+# Validations
+
+# validates :username,
+# presence: true,
+# uniqueness: {
+#   case_sensitive: false
+# },
+# length: {in: 4..20 }
+
+# # TODO: add email regex
+# # basic one, minimize false negatives and confirm users via email confirmation regardless
+# validates :email,
+# presence: true,
+# uniqueness: {
+#   case_sensitive: false
+# },
+# length: {in: 7..254}
+# # format: {
+# # with: VALID_EMAIL_REGEX,
+# # message: must be a valid email address format
+# # }
+
+# validates :role, presence: true
+# validates :about_me, length: {maximum: 16384}
+
+
+# validate :validate_username
+
+# def validate_username
+#   if User.where(email: username).exists?
+#     errors.add(:username, :invalid)
+#   end
+# end
+
 require 'rails_helper'
 
 RSpec.describe User, :model do
@@ -148,14 +225,14 @@ RSpec.describe User, :model do
       end
 
 
-      it "should be invalid with a email length > 100" do
-        email_name = ("a" * 92) + "@mail.com"
+      it "should be invalid with a email length > 254" do
+        email_name = ("a" * 254) + "@mail.com"
 
         user = build(:user,
           email: email_name)
 
         user.valid?
-        expect(user.errors[:email]).to include("is too long (maximum is 100 characters)")
+        expect(user.errors[:email]).to include("is too long (maximum is 254 characters)")
       end
 
       it "should be valid with a username length >= 4  and length <= 20" do

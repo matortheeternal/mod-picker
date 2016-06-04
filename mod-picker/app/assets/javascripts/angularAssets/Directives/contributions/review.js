@@ -10,6 +10,7 @@ app.directive('review', function () {
             review: '=',
             index: '=',
             user: '=',
+            edit: '=?',
             showAuthorColumn: '=?'
         }
     };

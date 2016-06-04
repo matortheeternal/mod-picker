@@ -118,8 +118,8 @@ class LoverHelper
     mappings = { 
       "name" => "mod_name",
       "author" => "uploaded_by",
-      "submitted" => "date_submitted",
-      "updated" => "date_updated",
+      "submitted" => "released",
+      "updated" => "updated",
       "followers" => "followers_count",
       "size" => "file_size",
       "version" => "current_version",

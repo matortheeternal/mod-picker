@@ -24,10 +24,10 @@
             <tr ng-repeat="item in data">
                 <td ng-repeat="column in columns" ng-class="{ 'hidden': !column.visibility, 'text-cell' : !column.filter, 'main-cell' : $index == 0 }">
                     <a ng-if="column.link" class="strong" ng-href="{{column.link(item)}}">
-                        {{ deepValue(item, column.data) | picker:column.filter }}
+                        {{ columnValue(item, column.data) | picker:column.filter }}
                     </a>
                     <span ng-if="!column.link">
-                        {{ deepValue(item, column.data) | picker:column.filter }}
+                        {{ columnValue(item, column.data) | picker:column.filter }}
                     </span>
                 </td>
                 <td class="actions-cell">
@@ -37,21 +37,31 @@
         </tbody>
     </table>
 
+    <div class="no-content-message" ng-hide="data.length">
+        No mods were found matching your search criteria.
+    </div>
+
     <!-- TODO: put this inside its own directive-->
     <div class="modal-container" ng-show="showModal">
-        <div class="modal">
+        <div class="modal big-modal">
             <form>
                 <h3 class="section-title">Edit Columns</h3>
-                <section>
-                    <ul class="checkbox-list">
-                        <li ng-repeat="column in columns" ng-if="!column.required">
-                            <label>
-                                <input type="checkbox" ng-model="column.visibility">
-                                {{column.label}}
-                            </label>
-                        </li>
-                    </ul>
-                </section>
+                <div class="columns-list">
+                    <section ng-repeat="group in columnGroups">
+                        <h3>{{group}}</h3>
+                        <ul class="checkbox-list">
+                            <li ng-repeat="column in groupColumns(columns, group) as groupedColumns">
+                                <label>
+                                    <input type="checkbox" ng-model="column.visibility">
+                                    {{column.label}}
+                                </label>
+                            </li>
+                            <li ng-hide="groupedColumns.length">
+                                No columns available.
+                            </li>
+                        </ul>
+                    </section>
+                </div>
 
                 <div class="action-button-container">
                     <input type="submit" class="btn" value="Close" ng-click="showModal = false">

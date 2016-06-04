@@ -9,10 +9,7 @@ class ModListCompatibilityNote < ActiveRecord::Base
   belongs_to :mod_list, :inverse_of => 'mod_list_compatibility_notes'
   belongs_to :compatibility_note, :inverse_of => 'mod_list_compatibility_notes'
 
-  # validations
-  
-  # FIXME: Validating compatibility_note_id results in failure in ability to test counter_cache
-  # Unless a manual compatabiltiy_note_id is given.
+  # Validations
   validates :mod_list_id, :compatibility_note_id, presence: true
   
   # Private Methods

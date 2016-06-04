@@ -1,5 +1,5 @@
 <div class="note-container">
-	<div class="note-title">
+	<div class="content-title">
 		<span ng-if="modId">
             Install
             <span ng-if="note.mods[0].id == modId">
@@ -18,6 +18,6 @@
     <author-column user="note.user" ng-if="showAuthorColumn" class="author-column" index="index"></author-column>
     <div class="content-column">
         <contribution-text target="note"></contribution-text>
-        <contribution-actions target="note" route="'install_order_notes'" correctable="true" index="index" user="user"></contribution-actions>
+        <contribution-actions target="note" route="'install_order_notes'" correctable="true" index="index" user="user" edit="edit"></contribution-actions>
     </div>
 </div>

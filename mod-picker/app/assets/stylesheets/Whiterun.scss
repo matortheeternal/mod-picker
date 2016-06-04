@@ -8,11 +8,12 @@ $inverse_text_color: #eee;
 $primary_background: #fafaeb;
 $secondary_background: #eeeedd;
 $background_highlight: #fcfce7;
+$input_background: #fff;
 
 $shadow_color: #000;
 $border_color: #cacaca;
 $soft_border_color: #dadada;
-$hard_border_color: #44484a;
+$hard_border_color: #84888a;
 
 $h1_color: #c0a060;
 $h2_color: #000;
@@ -48,7 +49,5 @@ $warning_secondary: #C7B64A;
 $admin_color: #800000;
 $moderator_color: #8000b0;
 $mod_author_color: #008000;
-
-$select_image: image_path("Whiterun_select_arrow.png");
 
 @import 'main';

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" ng-app="modPicker">
+<html lang="en" ng-app="modPicker" ng-controller="globalController">
 <head>
   <meta charset="UTF-8">
   <title>Mod Picker: <%= @current_game.display_name %></title>
@@ -9,7 +9,6 @@
   <%= stylesheet_link_tag 'simplemde.min' %>
   <script>
     window._token = '<%= form_authenticity_token %>';
-    window._current_theme = '<%= @current_theme %>';
     window._current_game_id = <%= @current_game.id %>;
     window._stylesheets = {
       Whiterun: "<%= stylesheet_path 'Whiterun' %>",
@@ -18,7 +17,7 @@
       'High Hrothgar': "<%= stylesheet_path 'High Hrothgar' %>"
     }
   </script>
-    <link ng-controller="themesController" rel="stylesheet" ng-href="{{currentTheme}}" />
+  <link rel="stylesheet" ng-href="{{currentTheme}}" />
 </head>
 <body ng-class="{ 'two-columns': twoColumns }" ng-cloak>
 <header>
@@ -26,43 +25,34 @@
     <div class="header">
       <a class="logo" href="/"><h1>Mod Picker</h1></a>
       <div class="nav-controls">
-        <ul class="user-nav">
-          <% if User.exists?(current_user.id) %>
-              <li>
-                Welcome <%= link_to current_user.username, "#/profile/#{current_user.id}", class: "inverse-link" %>
-              </li>
-              <li>
-                <a class="inverse-link" href="#/settings/mod_lists">Saved Mod Lists</a>
-              </li>
-              <li>
-                <a class="inverse-link" ui-sref="settings">Settings</a>
-              </li>
-              <li>
-                <a class="inverse-link" href="/users/sign_out">Log Out</a>
-              </li>
-          <% else %>
-              <li>
-                <a class="inverse-link" href="/users/sign_in">Log In</a>
-              </li>
-              <li>
-                <a class="inverse-link" href="/users/sign_up">Register</a>
-              </li>
-          <% end %>
+        <!-- User signed in navigation -->
+        <ul class="user-nav" ng-if="currentUser">
           <li>
-            <a class="inverse-link">
-              <form method="post" id="game-select-form">
-                <select class="game-selector" onchange="location = this.value;">
-                  <% @games.each do |game| %>
-                    <option value="<%= game.nexus_name %>" <%= "selected" if @current_game.id == game.id %>>
-                      <%= game.display_name %>
-                    </option>
-                  <% end %>
-                </select>
-                <span class="game-icon <%= "icon-#{@current_game.abbr_name}" %>">
-                  <span class="game-label"><%= @current_game.display_name %></span>
-                </span>
-              </form>
-            </a>
+            Welcome <a class="inverse-link" ng-href="#/profile/{{currentUser.id}}">{{currentUser.username}}</a>
+          </li>
+          <li>
+            <a class="inverse-link" href="#/settings/mod_lists">Saved Mod Lists</a>
+          </li>
+          <li>
+            <a class="inverse-link" ui-sref="settings">Settings</a>
+          </li>
+          <li>
+            <a class="inverse-link" href="/users/sign_out">Log Out</a>
+          </li>
+          <li>
+            <game-select games="availableGames" selected-game="currentGame"></game-select>
+          </li>
+        </ul>
+        <!-- User signed out navigation -->
+        <ul class="user-nav" ng-if="!currentUser">
+          <li>
+            <a class="inverse-link" href="/users/sign_in">Log In</a>
+          </li>
+          <li>
+            <a class="inverse-link" href="/users/sign_up">Register</a>
+          </li>
+          <li>
+            <game-select games="availableGames" selected-game="currentGame"></game-select>
           </li>
         </ul>
       </div>
@@ -78,7 +68,8 @@
             <i class="fa fa-pencil-square-o"></i>
           </span>
           <span class="nav-text">
-            <b>Edit your</b>
+            <b ng-if="currentUser.active_mod_list_id">Edit your</b>
+            <b ng-if="!currentUser.active_mod_list_id">Start a new</b>
             Mod List
           </span>
         </a>
@@ -110,20 +101,20 @@
           </span>
           <span class="nav-dropdown"></span>
         </a>
-        <a class="nav-submit-mod" ui-sref="submit">
+        <a class="nav-submit-mod" ui-sref="submit" ng-if="permissions.canSubmitMod">
           <span class="nav-icon">
             <i class="fa fa-plus-square"></i>
           </span>
           <span class="nav-text">
             <b>Submit</b>
-            A Skyrim Mod
+            A {{currentGame.display_name}} Mod
           </span>
         </a>
       </div>
       <div class="secondary-nav">
         <div class="search" ng-controller="searchInputController">
           <form>
-            <input class="search-field" type="text" autocomplete="off" ng-model="search" placeholder="Search...">
+            <input class="search-field" type="text" autocomplete="off" ng-model="search" placeholder="Search mods...">
             <div class="search-container">
               <input id="search-btn" class="btn" type="submit" value="Search" ng-click="processSearch()" ng-hide="loading"/>
               <loader data="!loading" spinner-class="small-spinner"></loader>
@@ -164,7 +155,7 @@
           <li><a class="inverse-link" ui-sref="compatibility-notes">Compatibility Notes</a></li>
           <li><a class="inverse-link" ui-sref="load-order-notes">Load Order Notes</a></li>
           <li><a class="inverse-link" ui-sref="install-order-notes">Install Order Notes</a></li>
-          <li><a class="inverse-link" ui-sref="incorrect-notes">Incorrect Notes</a></li>
+          <li><a class="inverse-link" ui-sref="corrections">Corrections</a></li>
         </ul>
       </section>
       <section>
@@ -198,8 +189,7 @@
 <%= javascript_include_tag 'marked.min' %>
 <%= javascript_include_tag 'angular-marked.min' %>
 <%= javascript_include_tag 'angular-ui-router.min' %>
-<%= javascript_include_tag 'marked.min' %>
-<%= javascript_include_tag 'angular-marked.min' %>
+<%= javascript_include_tag 'angular-smooth-scroll.min' %>
 <%= javascript_include_tag 'heartcode-canvasloader-min' %>
 <%= javascript_include_tag 'rzslider.min' %>
 <%= javascript_include_tag 'sticky.min' %>

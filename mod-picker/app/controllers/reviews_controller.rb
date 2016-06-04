@@ -8,15 +8,27 @@ class ReviewsController < ContributionsController
     render :json => @reviews
   end
 
+  # PATCH/PUT /reviews/1
+  def update
+    authorize! :update, @contribution
+    @contribution.clear_ratings
+    if @contribution.update(contribution_params)
+      render json: {status: :ok}
+    else
+      render json: @contribution.errors, status: :unprocessable_entity
+    end
+  end
+
   # POST /reviews
   def create
     @review = Review.new(contribution_params)
+    @review.submitted_by = current_user.id
     authorize! :create, @review
 
     if @review.save
       render json: {status: :ok}
     else
-      render json: @contribution.errors, status: :unprocessable_entity
+      render json: @review.errors, status: :unprocessable_entity
     end
   end
 
@@ -33,6 +45,6 @@ class ReviewsController < ContributionsController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def contribution_params
-      params.require(:review).permit(:submitted_by, :mod_id, :hidden, :submitted, :edited, :text_body)
+      params.require(:review).permit(:mod_id, :game_id, :text_body, :edit_summary, review_ratings_attributes: [:rating, :review_section_id])
     end
 end

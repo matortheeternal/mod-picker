@@ -31,13 +31,13 @@ class HomeController < ApplicationController
 
   def index
     # we first get news articles
-    articles = Article.order(:created_at => :DESC).limit(4)
+    articles = Article.order(:submitted => :DESC).limit(4)
 
     # we include associated data we know we'll need because it increases the speed of the query
-    mod_lists = ModList.where("game_id = ? AND status = 3 AND hidden = false", params[:game]).includes(:user => :reputation).order(:completed => :DESC).limit(4)
+    mod_lists = ModList.where("game_id = ? AND status = 3 AND hidden = false", params[:game]).includes(:user => :reputation).order(:edited => :DESC).limit(4)
     mods = Mod.where("game_id = ? AND hidden = false", params[:game]).order(:id => :ASC).limit(4)
     reviews = Review.where("game_id = ? AND hidden = false", params[:game]).includes(:mod, :user => :reputation).order(:submitted => :DESC).limit(4)
-    corrections = IncorrectNote.where("game_id = ? AND hidden = false", params[:game]).includes(:user => :reputation).order(:created_at => :DESC).limit(4)
+    corrections = Correction.where("game_id = ? AND hidden = false", params[:game]).includes(:user => :reputation).order(:created_at => :DESC).limit(4)
     compatibility_notes = CompatibilityNote.where("game_id = ? AND hidden = false", params[:game]).includes(:first_mod, :second_mod, :user => :reputation).order(:submitted => :DESC).limit(4)
     install_order_notes = InstallOrderNote.where("game_id = ? AND hidden = false", params[:game]).includes(:first_mod, :second_mod, :user => :reputation).order(:submitted => :DESC).limit(4)
     load_order_notes = LoadOrderNote.where("game_id = ? AND hidden = false", params[:game]).includes(:first_plugin, :second_plugin, :user => :reputation).order(:submitted => :DESC).limit(4)
@@ -52,7 +52,7 @@ class HomeController < ApplicationController
                 :methods => [:image, :mod_lists_count]
             }),
             reviews: reviews.as_json({
-                :only => [:id, :submitted, :edited, :incorrect_notes_count, :text_body],
+                :only => [:id, :submitted, :edited, :corrections_count, :text_body],
                 :include => {
                     :review_ratings => {
                         :except => [:review_id]
@@ -71,7 +71,7 @@ class HomeController < ApplicationController
             }),
             corrections: corrections.as_json,
             compatibility_notes: compatibility_notes.as_json({
-                :only => [:id, :compatibility_type, :submitted, :edited, :text_body, :incorrect_notes_count],
+                :only => [:id, :compatibility_type, :submitted, :edited, :text_body, :corrections_count],
                 :include => {
                     :first_mod => {
                         :only => [:id, :name]
