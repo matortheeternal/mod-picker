@@ -24,7 +24,7 @@ app.service('gameService', function (backend, $q) {
                     return availableGames.indexOf(game.display_name) > -1;
                 })
             );
-        };
+        });
         return output.promise;
     };
 });

@@ -44,8 +44,9 @@ app.controller('globalController', function($state) {
     });
 });
 
-app.controller('headerController', function($scope, currentUser, games) {
+app.controller('headerController', function($scope, currentUser, games, currentGame) {
     $scope.currentUser = currentUser;
+    $scope.currentGame = currentGame;
     $scope.games = games;
 });
 
