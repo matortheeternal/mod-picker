@@ -108,8 +108,8 @@ app.controller('userSettingsController', function ($scope, $q, user, currentUser
     //TODO: I think we should put the modlist actions inside somewhere reusable (directive)
     /* mod list actions */
     $scope.editModList = function(modlist) {
-        console.log('Edit Mod List: "'+modlist.name+'"');
-        window.location = '#/modlists/' + modlist.id;
+        //TODO: I'm not sure if this state.go is correct, the param might be off
+        $state.go(base.modlist, {modlistId: modlist.id})
     };
 
     $scope.appendModList = function(data) {
