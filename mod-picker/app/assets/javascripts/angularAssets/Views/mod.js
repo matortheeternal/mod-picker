@@ -704,6 +704,17 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
         $scope.updateEditor();
     };
 
+    $scope.validateLoadOrderNote = function() {
+        // exit if we don't have a activeLoadOrderNote yet
+        if (!$scope.activeLoadOrderNote) {
+            return;
+        }
+
+        $scope.activeLoadOrderNote.valid = $scope.activeLoadOrderNote.text_body.length > 256 &&
+            ($scope.activeLoadOrderNote.first_plugin_id !== undefined) &&
+            ($scope.activeLoadOrderNote.second_plugin_id !== undefined);
+    };
+
     // discard the load order note object
     $scope.discardLoadOrderNote = function() {
         if ($scope.activeLoadOrderNote.editing) {
