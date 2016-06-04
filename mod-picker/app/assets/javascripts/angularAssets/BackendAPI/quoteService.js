@@ -11,7 +11,7 @@ app.service('quoteService', function (backend, $q) {
 
     this.getRandomQuote = function (label) {
         var output = $q.defer();
-        this.allQuotes.then(function(quotes) {
+        allQuotes.then(function(quotes) {
             if (label) {
                 var filteredQuotes = quotes.filter(function(quote) {
                     return (quote.label === label);
