@@ -36,15 +36,11 @@ app.config(['$stateProvider', function($stateProvider) {
     })
 }]);
 
-app.controller('globalController', function($scope, $rootScope, themesService) {
-    $rootScope.$on('themeChanged', function (event, newTheme) {
-        $scope.currentTheme = newTheme;
-    });
+app.controller('globalController', function($state) {
 
+    //reload when the user object is changed in the settings
     $scope.$on('reloadCurrentUser', function() {
-        userService.retrieveCurrentUser().then(function (user) {
-            $scope.currentUser = user;
-        });
+        $state.reload();
     });
 });
 
