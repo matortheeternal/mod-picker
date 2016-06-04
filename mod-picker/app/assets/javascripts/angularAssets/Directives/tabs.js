@@ -15,7 +15,7 @@ app.directive('tabs', function () {
 
 app.controller('tabsController', function($scope, $state) {
     $scope.isCurrentTab = function(tabName) {
-        if ($state.includes('*.' + tabName)) {
+        if ($state.includes('**.' + tabName)) {
             return 'selected-tab';
         }
     };

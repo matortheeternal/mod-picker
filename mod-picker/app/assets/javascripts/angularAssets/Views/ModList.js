@@ -2,40 +2,42 @@
  * Created by ThreeTen on 3/26/2016.
  */
 app.config(['$stateProvider', function ($stateProvider) {
-    $stateProvider.state('modlist', {
+    $stateProvider.state('base.modlist', {
         templateUrl: '/resources/partials/modList/modlist_template.html',
         controller: 'modlistController',
         url: '/modlist/:modListId',
         redirectTo: 'modlist.Details'
-    }).state('modlist.Details', {
+    }).state('base.modlist.Details', {
         templateUrl: '/resources/partials/modList/details.html',
         controller: 'modlistDetailsController',
         url: '/details'
-    }).state('modlist.Tools', {
+    }).state('base.modlist.Tools', {
         templateUrl: '/resources/partials/modList/tools.html',
         controller: 'modlistToolsController',
         url: '/tools'
-    }).state('modlist.Mods', {
+    }).state('base.modlist.Mods', {
         templateUrl: '/resources/partials/modList/mods.html',
         controller: 'modlistModsController',
         url: '/mods'
-    }).state('modlist.Plugins', {
+    }).state('base.modlist.Plugins', {
         templateUrl: '/resources/partials/modList/plugins.html',
         controller: 'modlistPluginsController',
         url: '/plugins'
-    }).state('modlist.Config', {
+    }).state('base.modlist.Config', {
         templateUrl: '/resources/partials/modList/config.html',
         controller: 'modlistConfigController',
         url: '/config'
-    }).state('modlist.Comments', {
+    }).state('base.modlist.Comments', {
         templateUrl: '/resources/partials/modList/comments.html',
         controller: 'modlistCommentsController',
         url: '/comments'
     })
 }]);
 
-app.controller('modlistController', function($scope, $log, $stateParams, $timeout, modListService, userService) {
-
+app.controller('modlistController', function($scope, $log, $stateParams, $timeout, currentUser, modListService, userService) {
+    $scope.user = currentUser;
+    $scope.permissions = currentUser.permissions;
+    
 	/*config*/
 	$scope.bIsEditing = false;
 	/*vars - Later down the road these will turn into GET functions*/
@@ -72,12 +74,6 @@ app.controller('modlistController', function($scope, $log, $stateParams, $timeou
 
     modListService.retrieveModList($stateParams.modListId).then(function(modList) {
        $scope.modlist = modList;
-    });
-
-    //get current user
-    userService.retrieveThisUser().then(function (user) {
-        $scope.user = user;
-        $scope.getPermissions();
     });
 
     //Function To Return Modlist Status as Index for statusIcons

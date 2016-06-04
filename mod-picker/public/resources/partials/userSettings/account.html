@@ -136,7 +136,7 @@
 <section>
     <section>
         Skyrim
-        <select ng-model="userSettings.theme">
+        <select ng-model="userSettings.theme" ng-change="updateTheme()">
             <option>High Hrothgar</option>
             <option>Whiterun</option>
             <option>Blackreach</option>

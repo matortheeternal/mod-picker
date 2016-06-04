@@ -7,15 +7,15 @@
     </div>
 </div>
 
-<messages success-bool="showSuccess" errors="errors" success-message="User Settings Saved!">
+<messages success-bool="user.showSuccess" errors="errors" success-message="User Settings Saved!">
 </messages>
 
 <div class="page-container">
     <div class="single-column">
         <form>
-            <loader data="titleQuote" spinner-class="big-spinner">
+            <state-loader spinner-class="big-spinner">
                 <ui-view></ui-view>
-            </loader>
+            </state-loader>
         </form>
     </div>
 </div>

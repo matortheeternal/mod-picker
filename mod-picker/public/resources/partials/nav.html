@@ -1,0 +1,66 @@
+<nav>
+  <div class="page-container">
+    <div class="nav-wrapper clearfix">
+      <div class="primary-nav">
+        <a class="nav-modlist" ui-sref="base.mod-list">
+          <span class="nav-icon">
+            <i class="fa fa-pencil-square-o"></i>
+          </span>
+          <span class="nav-text">
+            <b ng-if="currentUser.active_mod_list_id">Edit your</b>
+            <b ng-if="!currentUser.active_mod_list_id">Start a new</b>
+            Mod List
+          </span>
+        </a>
+        <a class="nav-contributions" ui-sref="base.home">
+          <span class="nav-icon">
+            <i class="fa fa-comments"></i>
+          </span>
+          <span class="nav-text">
+            <b>View recent</b>
+            Contributions
+          </span>
+        </a>
+        <a class="nav-browse-modlists" ui-sref="base.mod-lists">
+          <span class="nav-icon">
+            <i class="fa fa-list-ul"></i>
+          </span>
+          <span class="nav-text">
+            <b>See all</b>
+            Public Mod Lists
+          </span>
+        </a>
+        <a class="nav-browse-mods" ui-sref="base.mods">
+          <span class="nav-icon">
+            <i class="fa fa-globe"></i>
+          </span>
+          <span class="nav-text">
+            <b>Browse</b>
+            Skyrim Mods
+          </span>
+          <span class="nav-dropdown"></span>
+        </a>
+        <a class="nav-submit-mod" ui-sref="base.submit" ng-if="permissions.canSubmitMod">
+          <span class="nav-icon">
+            <i class="fa fa-plus-square"></i>
+          </span>
+          <span class="nav-text">
+            <b>Submit</b>
+            A {{currentGame.display_name}} Mod
+          </span>
+        </a>
+      </div>
+      <div class="secondary-nav">
+        <div class="search" ng-controller="searchInputController">
+          <form>
+            <input class="search-field" type="text" autocomplete="off" ng-model="search" placeholder="Search mods...">
+            <div class="search-container">
+              <input id="search-btn" class="btn" type="submit" value="Search" ng-click="processSearch()" ng-hide="loading"/>
+              <loader data="!loading" spinner-class="small-spinner"></loader>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>

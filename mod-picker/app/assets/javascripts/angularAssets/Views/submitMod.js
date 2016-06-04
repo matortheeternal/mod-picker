@@ -1,5 +1,5 @@
 app.config(['$stateProvider', function ($stateProvider) {
-    $stateProvider.state('submit', {
+    $stateProvider.state('base.submit', {
             templateUrl: '/resources/partials/submitMod.html',
             controller: 'submitModController',
             url: '/submit'

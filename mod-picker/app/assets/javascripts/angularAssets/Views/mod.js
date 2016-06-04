@@ -1,9 +1,9 @@
 app.config(['$stateProvider', function ($stateProvider) {
-    $stateProvider.state('mod', {
+    $stateProvider.state('base.mod', {
             templateUrl: '/resources/partials/showMod/mod.html',
             controller: 'modController',
             url: '/mod/:modId',
-            redirectTo: 'mod.Reviews',
+            redirectTo: 'base.mod.Reviews',
             resolve: {
                 modObject: function(modService, $stateParams) {
                     return modService.retrieveMod($stateParams.modId);
@@ -12,7 +12,7 @@ app.config(['$stateProvider', function ($stateProvider) {
                   return $stateParams.modId;
                 }
             }
-        }).state('mod.Reviews', {
+        }).state('base.mod.Reviews', {
             templateUrl: '/resources/partials/showMod/reviews.html',
             controller: 'modReviewsController',
             url: '/reviews',
@@ -24,7 +24,7 @@ app.config(['$stateProvider', function ($stateProvider) {
                 reviews: function($q, $state, $stateParams, modId, modObject, modService, reviewSectionService) {
                   //hardcoded redirect to the analysis tab when it's the base game
                   if (!modObject.mod.primary_category_id) {
-                    $state.go('mod.Analysis', {modId: modId});
+                    $state.go('base.mod.Analysis', {modId: modId});
                   }
 
                   //only resolve if the retrieve param is true
@@ -42,7 +42,7 @@ app.config(['$stateProvider', function ($stateProvider) {
                     return reviewSectionService.getSectionsForCategory(modObject.mod.primary_category);
                 }
             }
-        }).state('mod.Compatibility', {
+        }).state('base.mod.Compatibility', {
             templateUrl: '/resources/partials/showMod/compatibility.html',
             controller: 'modCompatibilityController',
             url: '/compatibility',
@@ -66,7 +66,7 @@ app.config(['$stateProvider', function ($stateProvider) {
                   }
                 }
             }
-        }).state('mod.Install Order', {
+        }).state('base.mod.Install Order', {
             templateUrl: '/resources/partials/showMod/installOrder.html',
             controller: 'modInstallOrderController',
             url: '/install-order',
@@ -90,7 +90,7 @@ app.config(['$stateProvider', function ($stateProvider) {
                   }
                 }
             }
-        }).state('mod.Load Order', {
+        }).state('base.mod.Load Order', {
             templateUrl: '/resources/partials/showMod/loadOrder.html',
             controller: 'modLoadOrderController',
             url: '/load-order',
@@ -114,7 +114,7 @@ app.config(['$stateProvider', function ($stateProvider) {
                   }
                 }
             }
-        }).state('mod.Analysis', {
+        }).state('base.mod.Analysis', {
             templateUrl: '/resources/partials/showMod/analysis.html',
             controller: 'modAnalysisController',
             url: '/analysis',
@@ -132,16 +132,18 @@ app.config(['$stateProvider', function ($stateProvider) {
         });
 }]);
 
-app.controller('modController', function ($scope, $q, $stateParams, $timeout, modObject, modService, pluginService, categoryService, gameService, recordGroupService, userTitleService, assetUtils, reviewSectionService, userService, contributionService, contributionFactory, errorsFactory, tagService, smoothScroll){
+app.controller('modController', function ($scope, $q, $stateParams, $timeout, currentUser, modObject, modService, pluginService, categoryService, gameService, recordGroupService, userTitleService, assetUtils, reviewSectionService, userService, contributionService, contributionFactory, errorsFactory, tagService, smoothScroll){
     $scope.mod = modObject.mod;
     $scope.mod.star = modObject.star;
-    //
-    $scope.sort = {
-    //     reviews: 'reputation',
-    //     compatibility: 'reputation',
-    //     installOrder: 'reputation',
-    //     loadOrder: 'reputation'
-    };
+    $scope.user = currentUser;
+
+    $scope.permissions = currentUser.permissions;
+    //setting up the canManage permission
+    var author = $scope.mod.author_users.find(function(author) {
+        return author.id == $scope.user.id;
+    });
+    var isAuthor = author !== null;
+    $scope.permissions.canManage = $scope.permissions.canModerate || isAuthor
 
     $scope.tags = [];
     $scope.newTags = [];
@@ -155,11 +157,11 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
         { name: 'Analysis', params: {}}
     ];
 
-    //returns the index of the tab with tabName
+    //returns the index of the tab with tabName (because sometimes tabs are removed)
     $scope.findTabIndex = function(tabName) {
       return $scope.tabs.findIndex(function(tab) {
         return tab.name === tabName;
-      })
+      });
     };
 
     // only display analysis tab if mod doesn't have a primary category
@@ -184,25 +186,6 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
             break;
     }
 
-    //get user permissions
-    $scope.getPermissions = function() {
-        // set up helper variables
-        var author = $scope.mod.author_users.find(function(author) {
-            return author.id == $scope.currentUser.id;
-        });
-        var rep = $scope.currentUser.reputation.overall;
-        var isAdmin = $scope.globalPermissions.isAdmin;
-        var isModerator = $scope.globalPermissions.isModerator;
-        var isAuthor = author !== null;
-
-        // set up permissions
-        $scope.permissions = {
-            canCreateTags: (rep >= 20) || isAuthor || isModerator || isAdmin,
-            canManage: isAuthor || isModerator || isAdmin,
-            canAppeal: (rep >= 40) || isAuthor || isModerator || isAdmin,
-            canModerate: isModerator || isAdmin
-        };
-    };
 
     // update the markdown editor
     $scope.updateEditor = function() {
@@ -270,7 +253,7 @@ app.controller('modReviewsController', function ($scope, $stateParams, $state, r
   $scope.tabs[$scope.findTabIndex('Reviews')].params.retrieve = false;
 
   $scope.reSortReviews = function() {
-    $state.go("mod.Reviews", {sort: $scope.tabs[$scope.findTabIndex('Reviews')].params.sort, retrieve: true});
+    $state.go("base.mod.Reviews", {sort: $scope.tabs[$scope.findTabIndex('Reviews')].params.sort, retrieve: true});
   };
 
   // instantiate a new review object
@@ -488,7 +471,7 @@ app.controller('modCompatibilityController', function ($scope, $stateParams, com
   $scope.tabs[$scope.findTabIndex('Compatibility')].params.retrieve = false;
 
     $scope.reSortCompatibility = function() {
-      $state.go("mod.Compatibility", {sort: $scope.tabs[$scope.findTabIndex('Compatibility')].params.sort, retrieve: true});
+      $state.go("base.mod.Compatibility", {sort: $scope.tabs[$scope.findTabIndex('Compatibility')].params.sort, retrieve: true});
     };
 
     // COMPATIBILITY NOTE RELATED LOGIC
@@ -585,7 +568,7 @@ app.controller('modInstallOrderController', function ($scope, $stateParams, inst
   $scope.tabs[$scope.findTabIndex('Install Order')].params.retrieve = false;
 
     $scope.reSortInstallOrder = function() {
-      $state.go("mod.Install Order", {sort: $scope.tabs[$scope.findTabIndex('Install Order')].params.sort, retrieve: true});
+      $state.go("base.mod.Install Order", {sort: $scope.tabs[$scope.findTabIndex('Install Order')].params.sort, retrieve: true});
     };
 
     // INSTALL ORDER NOTE RELATED LOGIC
@@ -666,7 +649,7 @@ app.controller('modInstallOrderController', function ($scope, $stateParams, inst
     };
 });
 
-app.controller('modLoadOrderController', function ($scope, $stateParams, loadOrderNotes, $state, $stateParams) {
+app.controller('modLoadOrderController', function ($scope, $stateParams, loadOrderNotes, $state) {
   if(loadOrderNotes) {
     $scope.mod.load_order_notes = loadOrderNotes;
   }
@@ -674,7 +657,7 @@ app.controller('modLoadOrderController', function ($scope, $stateParams, loadOrd
   $scope.tabs[$scope.findTabIndex('Load Order')].params.retrieve = false;
 
     $scope.reSortLoadOrder = function() {
-      $state.go("mod.Load Order", {sort: $scope.tabs[$scope.findTabIndex('Load Order')].params.sort, retrieve: true});
+      $state.go("base.mod.Load Order", {sort: $scope.tabs[$scope.findTabIndex('Load Order')].params.sort, retrieve: true});
     };
 
     // LOAD ORDER NOTE RELATED LOGIC
