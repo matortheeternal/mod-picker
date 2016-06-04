@@ -20,8 +20,9 @@ app.config(['$stateProvider', function ($stateProvider) {
         });
 }]);
 
-app.controller('userController', function ($scope, user) {
+app.controller('userController', function ($scope, user, currentUser) {
     $scope.user = user;
+    $scope.permissions = currentUser.permissions;
     $scope.roleClass = "user-role-" + $scope.user.role;
     //formatting the role displayed on the site
     switch($scope.user.role) {
