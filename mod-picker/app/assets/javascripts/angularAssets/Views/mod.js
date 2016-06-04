@@ -725,6 +725,41 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
         }
     };
 
+    // submit a load order note
+    $scope.submitLoadOrderNote = function() {
+        // return if the load order note is invalid
+        if (!$scope.activeLoadOrderNote.valid) {
+            return;
+        }
+
+        // submit the install order note
+        var first_plugin_id, second_plugin_id;
+        if ($scope.activeLoadOrderNote.order === 'before') {
+            first_plugin_id = parseInt($scope.activeLoadOrderNote.first_plugin_id);
+            second_plugin_id = parseInt($scope.activeLoadOrderNote.second_plugin_id);
+        } else {
+            first_plugin_id = parseInt($scope.activeLoadOrderNote.second_plugin_id);
+            second_plugin_id = parseInt($scope.activeLoadOrderNote.first_plugin_id);
+        }
+        var noteObj = {
+            install_order_note: {
+                game_id: $scope.mod.game_id,
+                first_plugin_id: first_plugin_id,
+                second_plugin_id: second_plugin_id,
+                text_body: $scope.activeLoadOrderNote.text_body
+            }
+        };
+        $scope.activeLoadOrderNote.submitting = true;
+        contributionService.submitContribution("load_order_notes", noteObj).then(function(data) {
+            if (data.status == "ok") {
+                $scope.submitMessage = "Load Order Note submitted successfully!";
+                $scope.showSuccess = true;
+                // TODO: push the Load Order note onto the $scope.mod.load_order_notes array
+                delete $scope.activeLoadOrderNote;
+            }
+        });
+    };
+
     // ANALYSIS RELATED LOGIC
     // select the plugin the user selected
     $scope.selectPlugin = function(newPlugin) {
