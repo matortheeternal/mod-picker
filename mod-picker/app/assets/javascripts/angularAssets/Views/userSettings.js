@@ -38,14 +38,13 @@ app.config(['$stateProvider', function ($stateProvider) {
         });
 }]);
 
-app.controller('userSettingsController', function ($scope, $q, user, userSettingsService, titleQuote, fileUtils, themesService) {
+app.controller('userSettingsController', function ($scope, $q, user, currentUser, userSettingsService, fileUtils, themesService) {
     $scope.userSettings = currentUser.settings;
     $scope.user = user;
     $scope.avatar = {
         src: $scope.user.avatar
     };
     $scope.permissions = user.permissions;
-    $scope.titleQuote = titleQuote;
 
     $scope.tabs = [
         {name: 'Profile'},
