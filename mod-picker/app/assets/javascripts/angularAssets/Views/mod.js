@@ -479,7 +479,7 @@ app.controller('modCompatibilityController', function ($scope, $stateParams, com
     $scope.startNewCompatibilityNote = function() {
         // set up activeCompatibilityNote object
         $scope.activeCompatibilityNote = {
-            compatibility_type: "incompatible",
+            status: "incompatible",
             text_body: contributionFactory.getDefaultTextBody("CompatibilityNote")
         };
 
@@ -494,7 +494,7 @@ app.controller('modCompatibilityController', function ($scope, $stateParams, com
             return mod.id !== $scope.mod.id;
         });
         $scope.activeCompatibilityNote = {
-            compatibility_type: compatibility_note.compatibility_type,
+            status: compatibility_note.status,
             mod_id: secondMod.id,
             mod_name: secondMod.name,
             compatibility_mod_id: compatibility_note.compatibility_mod_id,
@@ -514,8 +514,8 @@ app.controller('modCompatibilityController', function ($scope, $stateParams, com
         }
 
         $scope.activeCompatibilityNote.valid = $scope.activeCompatibilityNote.text_body.length > 512 &&
-            ($scope.activeCompatibilityNote.second_mod_id !== undefined) &&
-            ($scope.activeCompatibilityNote.compatibility_type === "compatibility mod") ==
+            ($scope.activeCompatibilityNote.mod_id !== undefined) &&
+            ($scope.activeCompatibilityNote.status === "compatibility mod") ==
             ($scope.activeCompatibilityNote.compatibility_mod !== undefined);
     };
 
@@ -529,8 +529,17 @@ app.controller('modCompatibilityController', function ($scope, $stateParams, com
         }
     };
 
-    // submit a compatibility note
-    $scope.submitCompatibilityNote = function() {
+    // update a compatibility note locally
+    $scope.updateCompatibilityNote = function() {
+        var originalNote = $scope.activeCompatibilityNote.original;
+        var updatedNote = $scope.activeCompatibilityNote;
+        // update the values on the original note
+        originalNote.text_body = updatedNote.text_body.slice(0);
+        originalNote.status = updatedNote.status;
+    };
+
+    // save a compatibility note
+    $scope.saveCompatibilityNote = function() {
         // return if the compatibility note is invalid
         if (!$scope.activeCompatibilityNote.valid) {
             return;
@@ -540,7 +549,7 @@ app.controller('modCompatibilityController', function ($scope, $stateParams, com
         var noteObj = {
             compatibility_note: {
                 game_id: $scope.mod.game_id,
-                compatibility_type: $scope.activeCompatibilityNote.compatibility_type,
+                status: $scope.activeCompatibilityNote.status,
                 first_mod_id: $scope.mod.id,
                 second_mod_id: $scope.activeCompatibilityNote.mod_id,
                 text_body: $scope.activeCompatibilityNote.text_body,
@@ -549,14 +558,30 @@ app.controller('modCompatibilityController', function ($scope, $stateParams, com
             }
         };
         $scope.activeCompatibilityNote.submitting = true;
-        contributionService.submitContribution("compatibility_notes", noteObj).then(function(data) {
-            if (data.status == "ok") {
-                $scope.submitMessage = "Compatibility Note submitted successfully!";
-                $scope.showSuccess = true;
-                // TODO: push the compatibility note onto the $scope.mod.compatibility_notes array
-                delete $scope.activeCompatibilityNote;
-            }
-        });
+
+        // use update or submit contribution
+        if ($scope.activeCompatibilityNote.original) {
+            var noteId = $scope.activeCompatibilityNote.original.id;
+            contributionService.updateContribution("compatibility_notes", noteId, noteObj).then(function(data) {
+                if (data.status == "ok") {
+                    $scope.submitMessage = "Compatibility Note updated successfully!";
+                    $scope.showSuccess = true;
+
+                    // update original review object and discard copy
+                    $scope.updateCompatibilityNote();
+                    $scope.discardCompatibilityNote();
+                }
+            });
+        } else {
+            contributionService.submitContribution("compatibility_notes", noteObj).then(function(data) {
+                if (data.status == "ok") {
+                    $scope.submitMessage = "Compatibility Note submitted successfully!";
+                    $scope.showSuccess = true;
+                    // TODO: push the compatibility note onto the $scope.mod.compatibility_notes array
+                    $scope.discardCompatibilityNote();
+                }
+            });
+        }
     };
 });
 
@@ -577,7 +602,7 @@ app.controller('modInstallOrderController', function ($scope, $stateParams, inst
         // set up activeInstallOrderNote object
         $scope.activeInstallOrderNote = {
             order: "before",
-            text_body: ""
+            text_body: contributionFactory.getDefaultTextBody("InstallOrderNote")
         };
 
         // update the markdown editor
@@ -599,7 +624,7 @@ app.controller('modInstallOrderController', function ($scope, $stateParams, inst
             return;
         }
 
-        $scope.activeInstallOrderNote.valid = $scope.activeInstallOrderNote.text_body.length > 512 &&
+        $scope.activeInstallOrderNote.valid = $scope.activeInstallOrderNote.text_body.length > 256 &&
             ($scope.activeInstallOrderNote.mod_id !== undefined);
     };
 
@@ -624,9 +649,9 @@ app.controller('modInstallOrderController', function ($scope, $stateParams, inst
         var first_mod_id, second_mod_id;
         if ($scope.activeInstallOrderNote.order === 'before') {
             first_mod_id = $scope.mod.id;
-            second_mod_id = $scope.activeInstallOrderNote.mod_id;
+            second_mod_id = parseInt($scope.activeInstallOrderNote.mod_id);
         } else {
-            first_mod_id = $scope.activeInstallOrderNote.mod_id;
+            first_mod_id = parseInt($scope.activeInstallOrderNote.mod_id);
             second_mod_id = $scope.mod.id;
         }
         var noteObj = {
@@ -665,8 +690,9 @@ app.controller('modLoadOrderController', function ($scope, $stateParams, loadOrd
     $scope.startNewLoadOrderNote = function() {
         // set up activeLoadOrderNote object
         $scope.activeLoadOrderNote = {
+            first_plugin_id: $scope.mod.plugins[0].id.toString(),
             order: "before",
-            text_body: ""
+            text_body: contributionFactory.getDefaultTextBody("LoadOrderNote")
         };
 
         // update the markdown editor
@@ -680,6 +706,17 @@ app.controller('modLoadOrderController', function ($scope, $stateParams, loadOrd
 
         // update the markdown editor
         $scope.updateEditor();
+    };
+
+    $scope.validateLoadOrderNote = function() {
+        // exit if we don't have a activeLoadOrderNote yet
+        if (!$scope.activeLoadOrderNote) {
+            return;
+        }
+
+        $scope.activeLoadOrderNote.valid = $scope.activeLoadOrderNote.text_body.length > 256 &&
+            ($scope.activeLoadOrderNote.first_plugin_id !== undefined) &&
+            ($scope.activeLoadOrderNote.second_plugin_id !== undefined);
     };
 
     // discard the load order note object

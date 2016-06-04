@@ -370,6 +370,7 @@ class Mod < ActiveRecord::Base
           :nexus_infos => {:except => [:mod_id]},
           :workshop_infos => {:except => [:mod_id]},
           :lover_infos => {:except => [:mod_id]},
+          :plugins => {:only => [:id, :filename]},
           :custom_sources => {:except => [:mod_id]},
           :author_users => {:only => [:id, :username]},
           :required_mods => {
