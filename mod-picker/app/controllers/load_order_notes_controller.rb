@@ -32,8 +32,13 @@ class LoadOrderNotesController < ContributionsController
       params.slice(:by, :mod);
     end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
+    # Params allowed during creation
     def contribution_params
-      params.require(:load_order_note).permit(:game_id, :first_plugin_id, :second_plugin_id, :text_body, :edit_summary)
+      params.require(:load_order_note).permit(:game_id, :first_plugin_id, :second_plugin_id, :text_body, :moderator_message)
+    end
+
+    # Params that can be updated
+    def contribution_update_params
+      params.require(:install_order_note).permit(:text_body, :edit_summary, :moderator_message)
     end
 end
