@@ -29,15 +29,15 @@ require_relative 'fake_seeds'
 
 fake_config = {
     users: true,
-    mods: true,
+    mods: false,
     comments: true,
     reviews: true,
     cnotes: true,
     inotes: true,
-    lnotes: true,
-    mod_authors: true,
-    mod_lists: true,
-    tags: true
+    lnotes: false,
+    mod_authors: false,
+    mod_lists: false,
+    tags: false
 }
 
 seed_fake_users if fake_config[:users]
