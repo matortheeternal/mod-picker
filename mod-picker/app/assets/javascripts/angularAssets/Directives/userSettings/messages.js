@@ -28,5 +28,12 @@ app.directive('messages', function () {
 });
 
 //TODO: empty controller is probably unnecessary :P
-app.controller('messagesController', function ($scope) {
+app.controller('messagesController', function ($scope, $timeout) {
+    $scope.$watch('successBool', function(newValue) {
+        if(newValue) {
+            $timeout(function() {
+                $scope.successBool = false;
+            }, 7500);
+        }
+    });
 });
