@@ -359,7 +359,8 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
             }) == undefined;
         });
 
-        // update the markdown editor
+        // update validation, update the markdown editor
+        $scope.validateReview();
         $scope.updateEditor();
     };
 
@@ -555,7 +556,8 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
             editing: true
         };
 
-        // update the markdown editor
+        // update validation, update the markdown editor
+        $scope.validateCompatibilityNote();
         $scope.updateEditor();
     };
 
