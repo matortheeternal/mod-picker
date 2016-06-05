@@ -122,6 +122,10 @@ class User < ActiveRecord::Base
     self.role.to_sym == :moderator
   end
 
+  def can_moderate?
+    self.admin? || self.moderator?
+  end
+
   def banned?
     self.role.to_sym == :banned
   end

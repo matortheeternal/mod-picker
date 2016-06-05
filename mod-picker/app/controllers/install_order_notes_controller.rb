@@ -34,11 +34,11 @@ class InstallOrderNotesController < ContributionsController
 
     # Params allowed during creation
     def contribution_params
-      params.require(:install_order_note).permit(:game_id, :first_mod_id, :second_mod_id, :text_body, :moderator_message)
+      params.require(:install_order_note).permit(:game_id, :first_mod_id, :second_mod_id, :text_body, (:moderator_message if current_user.can_moderate?))
     end
 
     # Params that can be updated
     def contribution_update_params
-      params.require(:install_order_note).permit(:text_body, :edit_summary, :moderator_message)
+      params.require(:install_order_note).permit(:text_body, :edit_summary, (:moderator_message if current_user.can_moderate?))
     end
 end

@@ -45,11 +45,11 @@ class ReviewsController < ContributionsController
 
     # Params allowed during creation
     def contribution_params
-      params.require(:review).permit(:mod_id, :game_id, :text_body, :moderator_message, review_ratings_attributes: [:rating, :review_section_id])
+      params.require(:review).permit(:mod_id, :game_id, :text_body, (:moderator_message if current_user.can_moderate?), review_ratings_attributes: [:rating, :review_section_id])
     end
 
     # Params that can be updated
     def contribution_update_params
-      params.require(:review).permit(:text_body, :edit_summary, :moderator_message, review_ratings_attributes: [:rating, :review_section_id])
+      params.require(:review).permit(:text_body, :edit_summary, (:moderator_message if current_user.can_moderate?), review_ratings_attributes: [:rating, :review_section_id])
     end
 end
