@@ -345,6 +345,7 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
         review.editing = true;
         $scope.activeReview = {
             text_body: review.text_body.slice(0),
+            moderator_message: review.moderator_message.slice(0),
             ratings: review.review_ratings.slice(0),
             overall_rating: review.overall_rating,
             original: review,
@@ -548,7 +549,8 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
             mod_name: secondMod.name,
             compatibility_mod_id: compatibility_note.compatibility_mod_id,
             compatibility_plugin_id: compatibility_note.compatibility_plugin_id,
-            text_body: compatibility_note.text_body,
+            text_body: compatibility_note.text_body.slice(0),
+            moderator_message: compatibility_note.moderator_message.slice(0),
             original: compatibility_note,
             editing: true
         };
