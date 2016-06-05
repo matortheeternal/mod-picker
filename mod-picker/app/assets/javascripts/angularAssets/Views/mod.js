@@ -347,7 +347,8 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
             text_body: review.text_body.slice(0),
             ratings: review.review_ratings.slice(0),
             overall_rating: review.overall_rating,
-            original: review
+            original: review,
+            editing: true
         };
 
         // set up availableSections array
@@ -472,7 +473,7 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
         $scope.activeReview.submitting = true;
 
         // use update or submit contribution
-        if ($scope.activeReview.original) {
+        if ($scope.activeReview.editing) {
             var reviewId = $scope.activeReview.original.id;
             contributionService.updateContribution("reviews", reviewId, reviewObj).then(function(data) {
                 if (data.status == "ok") {
@@ -545,7 +546,8 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
             compatibility_mod_id: compatibility_note.compatibility_mod_id,
             compatibility_plugin_id: compatibility_note.compatibility_plugin_id,
             text_body: compatibility_note.text_body,
-            original: compatibility_note
+            original: compatibility_note,
+            editing: true
         };
 
         // update the markdown editor
@@ -605,7 +607,7 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
         $scope.activeCompatibilityNote.submitting = true;
 
         // use update or submit contribution
-        if ($scope.activeCompatibilityNote.original) {
+        if ($scope.activeCompatibilityNote.editing) {
             var noteId = $scope.activeCompatibilityNote.original.id;
             contributionService.updateContribution("compatibility_notes", noteId, noteObj).then(function(data) {
                 if (data.status == "ok") {
