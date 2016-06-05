@@ -443,6 +443,7 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
         var updatedReview = $scope.activeReview;
         // update the values on the original review
         originalReview.text_body = updatedReview.text_body.slice(0);
+        originalReview.moderator_message = updatedReview.moderator_message.slice(0);
         originalReview.review_ratings = updatedReview.ratings.slice(0);
         originalReview.overall_rating = updatedReview.overall_rating;
     };
@@ -467,6 +468,8 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
                 game_id: $scope.mod.game_id,
                 mod_id: $scope.mod.id,
                 text_body: $scope.activeReview.text_body,
+                edit_summary: $scope.activeReview.edit_summary,
+                moderator_message: $scope.activeReview.moderator_message,
                 review_ratings_attributes: review_ratings
             }
         };
@@ -582,6 +585,7 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
         var updatedNote = $scope.activeCompatibilityNote;
         // update the values on the original note
         originalNote.text_body = updatedNote.text_body.slice(0);
+        originalNote.moderator_message = updatedNote.moderator_message.slice(0);
         originalNote.status = updatedNote.status;
     };
 
@@ -600,6 +604,8 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
                 first_mod_id: $scope.mod.id,
                 second_mod_id: $scope.activeCompatibilityNote.mod_id,
                 text_body: $scope.activeCompatibilityNote.text_body,
+                edit_summary: $scope.activeCompatibilityNote.edit_summary,
+                moderator_message: $scope.activeCompatibilityNote.moderator_message,
                 compatibility_plugin_id: $scope.activeCompatibilityNote.compatibility_plugin_id,
                 compatibility_mod_id: $scope.activeCompatibilityNote.compatibility_mod_id
             }
