@@ -47,6 +47,22 @@ class LoadOrderNote < ActiveRecord::Base
     [first_plugin, second_plugin]
   end
 
+  def compute_reputation
+    # TODO: We could base this off of the reputation of the people who marked the review helpful/not helpful, but we aren't doing that yet
+    user_rep = self.user.reputation.overall
+    helpfulness = (self.helpful_count - self.not_helpful_count)
+    if user_rep < 0
+      self.reputation = user_rep + helpfulness
+    else
+      user_rep_factor = 2 / (1 + Math::exp(-0.0075 * (user_rep - 640)))
+      if self.helpful_count < self.not_helpful_count
+        self.reputation = (1 - user_rep_factor / 2) * helpfulness
+      else
+        self.reputation = (1 + user_rep_factor) * helpfulness
+      end
+    end
+  end
+
   def recompute_helpful_counts
     self.helpful_count = HelpfulMark.where(helpfulable_id: self.id, helpfulable_type: "LoadOrderNote", helpful: true).count
     self.not_helpful_count = HelpfulMark.where(helpfulable_id: self.id, helpfulable_type: "LoadOrderNote", helpful: false).count
