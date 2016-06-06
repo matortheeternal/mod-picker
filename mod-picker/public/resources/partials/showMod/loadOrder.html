@@ -22,7 +22,7 @@
     </div>
     <div class="add-note-options">
         <span class="select">
-            <select ng-model="activeLoadOrderNote.first_plugin_id">
+            <select ng-model="activeLoadOrderNote.first_plugin_id" ng-disabled="activeLoadOrderNote.editing">
                 <option ng-repeat="plugin in mod.plugins" ng-show="plugin.id !== activeLoadOrderNote.second_plugin_id" value="{{plugin.id}}">
                   Load {{plugin.filename}}
                 </option>
@@ -34,7 +34,7 @@
                 <option value="after">After</option>
             </select>
         </span>
-        <mod-input search-plugins="true" result-id="activeLoadOrderNote.second_plugin_id" search-text="activeLoadOrderNote.searchText" excluded-id="activeLoadOrderNote.first_plugin_id" on-change="validateLoadOrderNote"></mod-input>
+        <mod-input search-plugins="true" result-id="activeLoadOrderNote.second_plugin_id" search-text="activeLoadOrderNote.searchText" excluded-id="activeLoadOrderNote.first_plugin_id" on-change="validateLoadOrderNote" disabled="activeLoadOrderNote.editing"></mod-input>
     </div>
     <div class="content-container">
         <text-area data="activeLoadOrderNote.text_body" ng-refresh="updateMDE" class="note-text-area" on-change="validateLoadOrderNote"></text-area>
