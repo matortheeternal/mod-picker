@@ -3,7 +3,7 @@ class LoadOrderNotesController < ContributionsController
 
   # GET /load_order_notes
   def index
-    @load_order_notes = LoadOrderNote.filter(filtering_params)
+    @load_order_notes = LoadOrderNote.accessible_by(current_ability).filter(filtering_params).sort(params[:sort]).paginate(:page => params[:page])
 
     render :json => @load_order_notes
   end

@@ -3,7 +3,7 @@ class InstallOrderNotesController < ContributionsController
 
   # GET /install_order_notes
   def index
-    @install_order_notes = InstallOrderNote.filter(filtering_params)
+    @install_order_notes = InstallOrderNote.accessible_by(current_ability).filter(filtering_params).sort(params[:sort]).paginate(:page => params[:page])
 
     render :json => @install_order_notes
   end
