@@ -24,6 +24,8 @@ class Review < ActiveRecord::Base
 
   accepts_nested_attributes_for :review_ratings
 
+  self.per_page = 25
+
   # Validations
   validates :mod_id, :text_body, presence: true
   validates :text_body, length: {in: 512..32768}

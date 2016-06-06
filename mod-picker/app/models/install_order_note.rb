@@ -23,6 +23,8 @@ class InstallOrderNote < ActiveRecord::Base
   # old versions of this install order note
   has_many :install_order_note_history_entries, :inverse_of => 'install_order_note'
 
+  self.per_page = 25
+
   # Validations
   validates :first_mod_id, :second_mod_id, presence: true
   validates :text_body, length: { in: 256..16384 }
