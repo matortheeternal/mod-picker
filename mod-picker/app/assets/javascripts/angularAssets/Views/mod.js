@@ -345,7 +345,7 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
         review.editing = true;
         $scope.activeReview = {
             text_body: review.text_body.slice(0),
-            moderator_message: review.moderator_message.slice(0),
+            moderator_message: review.moderator_message && review.moderator_message.slice(0),
             ratings: review.review_ratings.slice(0),
             overall_rating: review.overall_rating,
             original: review,
@@ -426,7 +426,7 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
 
     // discard a new review object
     $scope.discardReview = function() {
-        if ($scope.activeReview.original) {
+        if ($scope.activeReview.editing) {
             $scope.activeReview.original.editing = false;
             $scope.activeReview = null;
         } else {
@@ -551,7 +551,7 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
             compatibility_mod_id: compatibility_note.compatibility_mod_id,
             compatibility_plugin_id: compatibility_note.compatibility_plugin_id,
             text_body: compatibility_note.text_body.slice(0),
-            moderator_message: compatibility_note.moderator_message.slice(0),
+            moderator_message: compatibility_note.moderator_message && compatibility_note.moderator_message.slice(0),
             original: compatibility_note,
             editing: true
         };
@@ -575,7 +575,7 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
 
     // discard the compatibility note object
     $scope.discardCompatibilityNote = function() {
-        if ($scope.activeCompatibilityNote.original) {
+        if ($scope.activeCompatibilityNote.editing) {
             $scope.activeCompatibilityNote.original.editing = false;
             $scope.activeCompatibilityNote = null;
         } else {
