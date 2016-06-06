@@ -48,14 +48,14 @@
         <div class="message-input" ng-if="activeReview.editing && activeReview.original.submitted_by != currentUser.id">
             <label>
                 <div>Edit Summary</div>
-                <input type="text" ng-model="activeReview.edit_summary">
+                <input type="text" ng-model="activeReview.edit_summary" maxlength="255">
             </label>
         </div>
 
         <div class="message-input" ng-if="permissions.canModerate">
             <label>
                 <div>Moderator Message</div>
-                <input type="text" ng-model="activeReview.moderator_message">
+                <input type="text" ng-model="activeReview.moderator_message" maxlength="255">
             </label>
         </div>
 
