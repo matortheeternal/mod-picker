@@ -29,7 +29,12 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
     $scope.userTitles = [];
     $scope.reviewSections = [];
     $scope.allReviewSections = [];
-    $scope.sort = {};
+    $scope.sort = {
+        reviews: 'reputation',
+        compatibility_notes: 'reputation',
+        install_order_notes: 'reputation',
+        load_order_notes: 'reputation'
+    };
     $scope.filters = {
         compatibility_notes: true,
         install_order_notes: true,
