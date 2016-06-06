@@ -3,7 +3,7 @@ class LoadOrderNotesController < ContributionsController
 
   # GET /load_order_notes
   def index
-    @load_order_notes = LoadOrderNote.filter(filtering_params)
+    @load_order_notes = LoadOrderNote.accessible_by(current_ability).filter(filtering_params).sort(params[:sort]).paginate(:page => params[:page])
 
     render :json => @load_order_notes
   end
@@ -39,6 +39,7 @@ class LoadOrderNotesController < ContributionsController
 
     # Params that can be updated
     def contribution_update_params
-      params.require(:install_order_note).permit(:text_body, :edit_summary, (:moderator_message if current_user.can_moderate?))
+      # TODO: only allow swapping the first and second plugin ids
+      params.require(:load_order_note).permit(:first_plugin_id, :second_plugin_id, :text_body, :edit_summary, (:moderator_message if current_user.can_moderate?))
     end
 end

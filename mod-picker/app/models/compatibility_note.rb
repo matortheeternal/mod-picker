@@ -31,6 +31,8 @@ class CompatibilityNote < ActiveRecord::Base
   # old versions of this compatibility note
   has_many :compatibility_note_history_entries, :inverse_of => 'compatibility_note'
 
+  self.per_page = 25
+
   # Validations
   validates :submitted_by, :status, :text_body, :first_mod_id, :second_mod_id, :game_id, presence: true
   validates :text_body, length: { in: 256..16384 }

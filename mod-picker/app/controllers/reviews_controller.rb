@@ -3,7 +3,7 @@ class ReviewsController < ContributionsController
 
   # GET /reviews
   def index
-    @reviews = Review.filter(filtering_params)
+    @reviews = Review.accessible_by(current_ability).filter(filtering_params).sort(params[:sort]).paginate(:page => params[:page])
 
     render :json => @reviews
   end

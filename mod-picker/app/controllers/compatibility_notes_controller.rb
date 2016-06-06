@@ -3,7 +3,7 @@ class CompatibilityNotesController < ContributionsController
 
   # GET /compatibility_notes
   def index
-    @compatibility_notes = CompatibilityNote.filter(filtering_params)
+    @compatibility_notes = CompatibilityNote.accessible_by(current_ability).filter(filtering_params).sort(params[:sort]).paginate(:page => params[:page])
 
     render :json => @compatibility_notes
   end

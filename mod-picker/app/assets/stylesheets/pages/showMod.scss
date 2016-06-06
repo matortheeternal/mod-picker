@@ -364,6 +364,20 @@
       margin-left: 30px;
       margin-bottom: 30px;
     }
+
+    .message-input {
+      width: 100%;
+      margin-bottom: 10px;
+
+      div {
+        font-size: 13px;
+      }
+
+      input[type="text"] {
+        width: 700px;
+        padding: 3px;
+      }
+    }
   }
 }
 

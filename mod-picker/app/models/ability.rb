@@ -56,11 +56,16 @@ class Ability
       cannot :read, Mod, :hidden => true
 
       # cannot read unapproved content
-      cannot :read, Comment, :approved => false
       cannot :read, CompatibilityNote, :approved => false
       cannot :read, InstallOrderNote, :approved => false
       cannot :read, LoadOrderNote, :approved => false
       cannot :read, Review, :approved => false
+
+      # can read unapproved content they submitted
+      can :read, CompatibilityNote, :approved => false, :submitted_by => user.id
+      can :read, InstallOrderNote, :approved => false, :submitted_by => user.id
+      can :read, LoadOrderNote, :approved => false, :submitted_by => user.id
+      can :read, Review, :approved => false, :submitted_by => user.id
     end
 
     # signed in users who aren't banned

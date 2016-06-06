@@ -5,13 +5,13 @@ class ModsController < ApplicationController
   # TODO: Adult content filtering
   def index
     @mods = Mod.includes(:author_users).accessible_by(current_ability).filter(filtering_params).sort(params[:sort]).paginate(:page => params[:page])
-    @count =  Mod.accessible_by(current_ability).filter(filtering_params).sort(params[:sort]).count
+    count =  Mod.accessible_by(current_ability).filter(filtering_params).count
 
     render :json => {
       mods: @mods.as_json({
           :include => mods_include_hash
       }),
-      max_entries: @count,
+      max_entries: count,
       entries_per_page: Mod.per_page
     }
   end
@@ -143,33 +143,42 @@ class ModsController < ApplicationController
   # GET /mods/1/reviews
   def reviews
     authorize! :read, @mod
-    reviews = @mod.reviews.accessible_by(current_ability).paginate(:page => params[:page])
+    reviews = @mod.reviews.accessible_by(current_ability).sort(params[:sort]).paginate(:page => params[:page], :per_page => 10)
+    count =  @mod.reviews.accessible_by(current_ability).count
     helpful_marks = HelpfulMark.where(submitted_by: current_user.id, helpfulable_type: "Review", helpfulable_id: reviews.ids)
     render :json => {
         reviews: reviews,
-        helpful_marks: helpful_marks.as_json({:only => [:helpfulable_id, :helpful]})
+        helpful_marks: helpful_marks.as_json({:only => [:helpfulable_id, :helpful]}),
+        max_entries: count,
+        entries_per_page: 10
     }
   end
 
   # GET /mods/1/compatibility_notes
   def compatibility_notes
     authorize! :read, @mod
-    compatibility_notes = @mod.compatibility_notes.accessible_by(current_ability).paginate(:page => params[:page])
+    compatibility_notes = @mod.compatibility_notes.accessible_by(current_ability).sort(params[:sort]).paginate(:page => params[:page], :per_page => 10)
+    count =  @mod.compatibility_notes.accessible_by(current_ability).count
     helpful_marks = HelpfulMark.where(submitted_by: current_user.id, helpfulable_type: "CompatibilityNote", helpfulable_id: compatibility_notes.ids)
     render :json => {
         compatibility_notes: compatibility_notes,
-        helpful_marks: helpful_marks.as_json({:only => [:helpfulable_id, :helpful]})
+        helpful_marks: helpful_marks.as_json({:only => [:helpfulable_id, :helpful]}),
+        max_entries: count,
+        entries_per_page: 10
     }
   end
 
   # GET /mods/1/install_order_notes
   def install_order_notes
     authorize! :read, @mod
-    install_order_notes = @mod.install_order_notes.accessible_by(current_ability).paginate(:page => params[:page])
+    install_order_notes = @mod.install_order_notes.accessible_by(current_ability).sort(params[:sort]).paginate(:page => params[:page], :per_page => 10)
+    count =  @mod.install_order_notes.accessible_by(current_ability).count
     helpful_marks = HelpfulMark.where(submitted_by: current_user.id, helpfulable_type: "InstallOrderNote", helpfulable_id: install_order_notes.ids)
     render :json => {
         install_order_notes: install_order_notes,
-        helpful_marks: helpful_marks.as_json({:only => [:helpfulable_id, :helpful]})
+        helpful_marks: helpful_marks.as_json({:only => [:helpfulable_id, :helpful]}),
+        max_entries: count,
+        entries_per_page: 10
     }
   end
 
@@ -177,11 +186,14 @@ class ModsController < ApplicationController
   def load_order_notes
     authorize! :read, @mod
     if @mod.plugins_count > 0
-      load_order_notes = @mod.load_order_notes.accessible_by(current_ability).paginate(:page => params[:page])
+      load_order_notes = @mod.load_order_notes.accessible_by(current_ability).sort(params[:sort]).paginate(:page => params[:page], :per_page => 10)
+      count =  @mod.load_order_notes.accessible_by(current_ability).count
       helpful_marks = HelpfulMark.where(submitted_by: current_user.id, helpfulable_type: "LoadOrderNote", helpfulable_id: load_order_notes.ids)
       render :json => {
           load_order_notes: load_order_notes,
-          helpful_marks: helpful_marks.as_json({:only => [:helpfulable_id, :helpful]})
+          helpful_marks: helpful_marks.as_json({:only => [:helpfulable_id, :helpful]}),
+          max_entries: count,
+          entries_per_page: 10
       }
     else
       render json: { load_order_notes: [] }

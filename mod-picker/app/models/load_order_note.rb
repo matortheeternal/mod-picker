@@ -28,6 +28,8 @@ class LoadOrderNote < ActiveRecord::Base
   # old versions of this load order note
   has_many :load_order_note_history_entries, :inverse_of => 'load_order_note'
 
+  self.per_page = 25
+
   # validations
   validates :first_plugin_id, :second_plugin_id, presence: true
   validates :text_body, length: {in: 256..16384}

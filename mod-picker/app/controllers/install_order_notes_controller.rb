@@ -3,7 +3,7 @@ class InstallOrderNotesController < ContributionsController
 
   # GET /install_order_notes
   def index
-    @install_order_notes = InstallOrderNote.filter(filtering_params)
+    @install_order_notes = InstallOrderNote.accessible_by(current_ability).filter(filtering_params).sort(params[:sort]).paginate(:page => params[:page])
 
     render :json => @install_order_notes
   end
@@ -39,6 +39,7 @@ class InstallOrderNotesController < ContributionsController
 
     # Params that can be updated
     def contribution_update_params
-      params.require(:install_order_note).permit(:text_body, :edit_summary, (:moderator_message if current_user.can_moderate?))
+      # TODO: only allow swapping the first and second mod ids
+      params.require(:install_order_note).permit(:first_mod_id, :second_mod_id, :text_body, :edit_summary, (:moderator_message if current_user.can_moderate?))
     end
 end
