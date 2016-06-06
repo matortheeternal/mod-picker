@@ -1,5 +1,5 @@
 class Review < ActiveRecord::Base
-  include Filterable, RecordEnhancements
+  include Filterable, Sortable, RecordEnhancements
 
   scope :game, -> (id) { where(game_id: id) }
   scope :user, -> (id) { where(submitted_by: id) }

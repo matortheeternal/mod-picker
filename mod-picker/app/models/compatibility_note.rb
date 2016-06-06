@@ -1,5 +1,5 @@
 class CompatibilityNote < ActiveRecord::Base
-  include Filterable, RecordEnhancements
+  include Filterable, Sortable, RecordEnhancements
 
   scope :by, -> (id) { where(submitted_by: id) }
   scope :mod, -> (id) { joins(:mod_versions).where(:mod_versions => {mod_id: id}) }
