@@ -785,6 +785,28 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
 
         // update the markdown editor
         $scope.updateEditor();
+        load_order_note.editing = true;
+        var order, searchText;
+        for (var i = 0; i < 2; i++) {
+            if (load_order_note.mods[i].id != $scope.mod.id) {
+                order = i == 0 ? 'after' : 'before';
+                searchText = load_order_note.plugins[i].filename;
+            }
+        }
+        $scope.activeLoadOrderNote = {
+            first_plugin_id: load_order_note.first_plugin_id.toString(),
+            second_plugin_id: load_order_note.second_plugin_id.toString(),
+            order: order,
+            searchText: searchText,
+            text_body: load_order_note.text_body.slice(0),
+            moderator_message: load_order_note.moderator_message && load_order_note.moderator_message.slice(0),
+            original: load_order_note,
+            editing: true
+        };
+
+        // update validation, update the markdown editor
+        $scope.validateLoadOrderNote();
+        $scope.updateEditor();
     };
 
     $scope.validateLoadOrderNote = function() {
@@ -808,6 +830,21 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
         }
     };
 
+    // update a load order note locally
+    $scope.updateLoadOrderNote = function(updatedNote) {
+        var originalNote = $scope.activeLoadOrderNote.original;
+        // update the values on the original note
+        if ((originalNote.first_plugin_id == updatedNote.second_plugin_id) &&
+            (originalNote.second_plugin_id == updatedNote.first_plugin_id)) {
+            originalNote.mods.reverse();
+            originalNote.plugins.reverse();
+            originalNote.first_plugin_id = originalNote.plugins[0].id;
+            originalNote.second_plugin_id = originalNote.plugins[1].id;
+        }
+        originalNote.text_body = updatedNote.text_body.slice(0);
+        originalNote.moderator_message = updatedNote.moderator_message && updatedNote.moderator_message.slice(0);
+    };
+
     // submit a load order note
     $scope.submitLoadOrderNote = function() {
         // return if the load order note is invalid
@@ -829,18 +866,36 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
                 game_id: $scope.mod.game_id,
                 first_plugin_id: first_plugin_id,
                 second_plugin_id: second_plugin_id,
-                text_body: $scope.activeLoadOrderNote.text_body
+                text_body: $scope.activeLoadOrderNote.text_body,
+                edit_summary: $scope.activeLoadOrderNote.edit_summary,
+                moderator_message: $scope.activeLoadOrderNote.moderator_message
             }
         };
         $scope.activeLoadOrderNote.submitting = true;
-        contributionService.submitContribution("load_order_notes", noteObj).then(function(data) {
-            if (data.status == "ok") {
-                $scope.submitMessage = "Load Order Note submitted successfully!";
-                $scope.showSuccess = true;
-                // TODO: push the Load Order note onto the $scope.mod.load_order_notes array
-                delete $scope.activeLoadOrderNote;
-            }
-        });
+
+        // use update or submit contribution
+        if ($scope.activeLoadOrderNote.editing) {
+            var noteId = $scope.activeLoadOrderNote.original.id;
+            contributionService.updateContribution("load_order_notes", noteId, noteObj).then(function(data) {
+                if (data.status == "ok") {
+                    $scope.submitMessage = "Load Order Note updated successfully!";
+                    $scope.showSuccess = true;
+
+                    // update original load order note and discard copy
+                    $scope.updateLoadOrderNote(noteObj.load_order_note);
+                    $scope.discardLoadOrderNote();
+                }
+            });
+        } else {
+            contributionService.submitContribution("load_order_notes", noteObj).then(function(data) {
+                if (data.status == "ok") {
+                    $scope.submitMessage = "Load Order Note submitted successfully!";
+                    $scope.showSuccess = true;
+                    // TODO: push the Load Order note onto the $scope.mod.load_order_notes array
+                    $scope.discardLoadOrderNote();
+                }
+            });
+        }
     };
 
     // ANALYSIS RELATED LOGIC
