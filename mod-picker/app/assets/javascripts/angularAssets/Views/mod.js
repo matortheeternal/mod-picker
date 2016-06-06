@@ -445,7 +445,7 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
         var updatedReview = $scope.activeReview;
         // update the values on the original review
         originalReview.text_body = updatedReview.text_body.slice(0);
-        originalReview.moderator_message = updatedReview.moderator_message.slice(0);
+        originalReview.moderator_message = updatedReview.moderator_message && updatedReview.moderator_message.slice(0);
         originalReview.review_ratings = updatedReview.ratings.slice(0);
         originalReview.overall_rating = updatedReview.overall_rating;
     };
@@ -589,7 +589,7 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
         var updatedNote = $scope.activeCompatibilityNote;
         // update the values on the original note
         originalNote.text_body = updatedNote.text_body.slice(0);
-        originalNote.moderator_message = updatedNote.moderator_message.slice(0);
+        originalNote.moderator_message = updatedNote.moderator_message && updatedNote.moderator_message.slice(0);
         originalNote.status = updatedNote.status;
     };
 
@@ -705,7 +705,7 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
         // update the values on the original note
         // TODO: update mods array order
         originalNote.text_body = updatedNote.text_body.slice(0);
-        originalNote.moderator_message = updatedNote.moderator_message.slice(0);
+        originalNote.moderator_message = updatedNote.moderator_message && updatedNote.moderator_message.slice(0);
     };
     
     // submit an install order note
