@@ -303,6 +303,11 @@
     display: flex;
     color: $h4_color;
     font-size: 14px;
+
+    .sort-direction {
+      cursor: pointer;
+      font-size: 20px;
+    }
   }
 
   .quality-item {

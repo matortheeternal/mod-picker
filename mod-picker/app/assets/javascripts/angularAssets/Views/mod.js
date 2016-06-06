@@ -30,10 +30,22 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
     $scope.reviewSections = [];
     $scope.allReviewSections = [];
     $scope.sort = {
-        reviews: 'reputation',
-        compatibility_notes: 'reputation',
-        install_order_notes: 'reputation',
-        load_order_notes: 'reputation'
+        reviews: {
+            column: 'reputation',
+            direction: 'desc'
+        },
+        compatibility_notes: {
+            column: 'reputation',
+            direction: 'desc'
+        },
+        install_order_notes: {
+            column: 'reputation',
+            direction: 'desc'
+        },
+        load_order_notes: {
+            column: 'reputation',
+            direction: 'desc'
+        }
     };
     $scope.filters = {
         compatibility_notes: true,
@@ -152,6 +164,11 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
         }
     };
 
+    // change sort direction
+    $scope.toggleSortDirection = function(sort) {
+        sort.direction = sort.direction === 'asc' ? 'desc' : 'asc';
+    };
+
     // update the markdown editor
     $scope.updateEditor = function() {
         $timeout(function() {
@@ -205,10 +222,7 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
     $scope.retrieveReviews = function(page) {
         $scope.retrieving.reviews = true;
         var options = {
-            sort: {
-                column: $scope.sort.reviews || 'reputation',
-                direction: 'DESC'
-            },
+            sort: $scope.sort.reviews,
             page: page || 1
         };
         modService.retrieveAssociation($stateParams.modId, 'reviews', options).then(function(data) {
@@ -223,10 +237,7 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
     $scope.retrieveCompatibilityNotes = function(page) {
         $scope.retrieving.compatibility_notes = true;
         var options = {
-            sort: {
-                column: $scope.sort.compatibility_notes || 'reputation',
-                direction: 'DESC'
-            },
+            sort: $scope.sort.compatibility_notes,
             filters: {
                 mod_list: $scope.filters.compatibility_notes || true,
                 page: page || 1
@@ -243,10 +254,7 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
     $scope.retrieveInstallOrderNotes = function(page) {
         $scope.retrieving.install_order_notes = true;
         var options = {
-            sort: {
-                column: $scope.sort.install_order_notes || 'reputation',
-                direction: 'DESC'
-            },
+            sort: $scope.sort.install_order_notes,
             filters: {
                 mod_list: $scope.filters.install_order_notes,
                 page: page || 1
@@ -263,10 +271,7 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
     $scope.retrieveLoadOrderNotes = function(page) {
         $scope.retrieving.load_order_notes = true;
         var options = {
-            sort: {
-                column: $scope.sort.load_order_notes || 'reputation',
-                direction: 'DESC'
-            },
+            sort: $scope.sort.load_order_notes,
             filters: {
                 mod_list: $scope.filters.load_order_notes,
                 page: page || 1
@@ -328,7 +333,6 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
         $scope.appealStatus = $scope.permissions.canAppeal && openAppeals.length < 2;
     };
 
-    // TAG RELATED LOGIC
     $scope.saveTags = function(updatedTags) {
         var response = $q.defer();
         tagService.updateModTags($scope.mod, updatedTags).then(function(data) {

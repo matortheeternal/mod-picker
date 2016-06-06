@@ -4,21 +4,25 @@
         <br>
         with modlist
     </div>
-    <div class="mod-tab-action filter-checkbox">
+    <div class="mod-tab-item filter-checkbox">
         <label class="checkbox">
-            <strong>Enable Modlist Filter</strong>
             <input type="checkbox" checked>
+            <strong>Mod List Filter</strong>
         </label>
     </div>-->
     <div class="mod-tab-item primary-item">
         <strong>Sort By: </strong>
 
-        <select ng-model="sort.compatibility_notes" ng-change="retrieveCompatibilityNotes()">
+        <select ng-model="sort.compatibility_notes.column" ng-change="retrieveCompatibilityNotes()">
             <option value="reputation">Reputation</option>
             <option value="status">Severity</option>
             <option value="submitted">Date Submitted</option>
             <option value="edited">Last Edited</option>
         </select>
+
+        <span class="sort-direction" title="Sorted in {{ sort.compatibility_notes.direction === 'asc' ? 'ascending' : 'descending' }} order." ng-click="toggleSortDirection(sort.compatibility_notes); retrieveCompatibilityNotes()">
+            <i class="fa fa-sort-amount-{{sort.compatibility_notes.direction}}" aria-hidden="true"></i>
+        </span>
     </div>
     <div class="mod-tab-item">
         <input class="btn" type="button" value="Add Compatibility Note" ng-click="startNewCompatibilityNote()" ng-disabled="activeCompatibilityNote"/>
