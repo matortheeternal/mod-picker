@@ -200,7 +200,10 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
     $scope.retrieveReviews = function(page) {
         $scope.retrieving.reviews = true;
         var options = {
-            sort: $scope.sort.reviews || 'reputation',
+            sort: {
+                column: $scope.sort.reviews || 'reputation',
+                direction: 'DESC'
+            },
             page: page || 1
         };
         modService.retrieveAssociation($stateParams.modId, 'reviews', options).then(function(data) {
@@ -215,7 +218,10 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
     $scope.retrieveCompatibilityNotes = function(page) {
         $scope.retrieving.compatibility_notes = true;
         var options = {
-            sort: $scope.sort.compatibility_notes || 'reputation',
+            sort: {
+                column: $scope.sort.compatibility_notes || 'reputation',
+                direction: 'DESC'
+            },
             filters: {
                 mod_list: $scope.filters.compatibility_notes || true,
                 page: page || 1
@@ -232,7 +238,10 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
     $scope.retrieveInstallOrderNotes = function(page) {
         $scope.retrieving.install_order_notes = true;
         var options = {
-            sort: $scope.sort.install_order_notes || 'reputation',
+            sort: {
+                column: $scope.sort.install_order_notes || 'reputation',
+                direction: 'DESC'
+            },
             filters: {
                 mod_list: $scope.filters.install_order_notes,
                 page: page || 1
@@ -249,7 +258,10 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
     $scope.retrieveLoadOrderNotes = function(page) {
         $scope.retrieving.load_order_notes = true;
         var options = {
-            sort: $scope.sort.load_order_notes || 'reputation',
+            sort: {
+                column: $scope.sort.load_order_notes || 'reputation',
+                direction: 'DESC'
+            },
             filters: {
                 mod_list: $scope.filters.load_order_notes,
                 page: page || 1
