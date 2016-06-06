@@ -3,32 +3,12 @@ app.service('modService', function(backend, $q) {
         return backend.retrieve('/mods/' + modId);
     };
 
-    var pages = {
-        current: 1
-    };
-
-    this.retrieveMods = function(filters, sort, newPage) {
-        var mods = $q.defer();
-
-        if(newPage && newPage > pages.max) {
-            mods.reject();
-            return mods.promise;
-        }
-        pages.current = newPage || pages.current;
-
-        var postData =  {
-            filters: filters,
-            sort: sort,
-            page: pages.current
-        };
-        backend.post('/mods', postData).then(function (data) {
-            pages.max = Math.ceil(data.max_entries / data.entries_per_page);
-            mods.resolve({
-                mods: data.mods,
-                pageInformation: pages
-            });
+    this.retrieveMods = function(options) {
+        var action = $q.defer();
+        backend.post('/mods', options).then(function (data) {
+            action.resolve(data);
         });
-        return mods.promise;
+        return action.promise;
     };
 
     this.searchMods = function(name) {
@@ -60,6 +40,7 @@ app.service('modService', function(backend, $q) {
 
     this.retrieveAssociation = function(modId, name, options) {
         var action = $q.defer();
+        options.page = options.page || 1;
         backend.retrieve('/mods/' + modId + '/' + name, options).then(function (data) {
             action.resolve(data);
         });
