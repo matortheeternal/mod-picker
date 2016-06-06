@@ -17,7 +17,7 @@ app.filter('percentage', function() {
   };
 });
 
-app.controller('modController', function ($scope, $q, $stateParams, $timeout, modService, pluginService, categoryService, gameService, recordGroupService, userTitleService, assetUtils, reviewSectionService, userService, contributionService, contributionFactory, tagService, smoothScroll) {
+app.controller('modController', function ($scope, $q, $stateParams, $timeout, modService, pluginService, categoryService, gameService, recordGroupService, userTitleService, assetUtils, reviewSectionService, userService, contributionService, contributionFactory, tagService, smoothScroll, pageUtils) {
     // get parent variables
     $scope.currentUser = $scope.$parent.currentUser;
     $scope.currentGame = $scope.$parent.currentGame;
@@ -42,6 +42,12 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
         install_order_notes: false,
         load_order_notes: false,
         analysis: false
+    };
+    $scope.pages = {
+        reviews: {},
+        compatibility_notes: {},
+        install_order_notes: {},
+        load_order_notes: {}
     };
     $scope.permissions = {};
 
@@ -191,60 +197,68 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
         });
     };
 
-    $scope.retrieveReviews = function() {
+    $scope.retrieveReviews = function(page) {
         $scope.retrieving.reviews = true;
         var options = {
-            sort: $scope.sort.reviews || 'reputation'
+            sort: $scope.sort.reviews || 'reputation',
+            page: page || 1
         };
         modService.retrieveAssociation($stateParams.modId, 'reviews', options).then(function(data) {
             contributionService.associateHelpfulMarks(data.reviews, data.helpful_marks);
             userTitleService.associateTitles(data.reviews, $scope.userTitles);
             reviewSectionService.associateReviewSections(data.reviews, $scope.reviewSections, $scope.allReviewSections);
+            pageUtils.getPageInformation(data, $scope.pages.reviews, page);
             $scope.mod.reviews = data.reviews;
         });
     };
 
-    $scope.retrieveCompatibilityNotes = function() {
+    $scope.retrieveCompatibilityNotes = function(page) {
         $scope.retrieving.compatibility_notes = true;
         var options = {
             sort: $scope.sort.compatibility_notes || 'reputation',
             filters: {
-                mod_list: $scope.filters.compatibility_notes || true
+                mod_list: $scope.filters.compatibility_notes || true,
+                page: page || 1
             }
         };
         modService.retrieveAssociation($stateParams.modId, 'compatibility_notes', options).then(function(data) {
             contributionService.associateHelpfulMarks(data.compatibility_notes, data.helpful_marks);
             userTitleService.associateTitles(data.compatibility_notes, $scope.userTitles);
+            pageUtils.getPageInformation(data, $scope.pages.compatibility_notes, page);
             $scope.mod.compatibility_notes = data.compatibility_notes;
         });
     };
 
-    $scope.retrieveInstallOrderNotes = function() {
+    $scope.retrieveInstallOrderNotes = function(page) {
         $scope.retrieving.install_order_notes = true;
         var options = {
             sort: $scope.sort.install_order_notes || 'reputation',
             filters: {
-                mod_list: $scope.filters.install_order_notes
+                mod_list: $scope.filters.install_order_notes,
+                page: page || 1
             }
         };
         modService.retrieveAssociation($stateParams.modId, 'install_order_notes', options).then(function(data) {
             contributionService.associateHelpfulMarks(data.install_order_notes, data.helpful_marks);
             userTitleService.associateTitles(data.install_order_notes, $scope.userTitles);
+            pageUtils.getPageInformation(data, $scope.pages.install_order_notes, page);
             $scope.mod.install_order_notes = data.install_order_notes;
         });
     };
 
-    $scope.retrieveLoadOrderNotes = function() {
+    $scope.retrieveLoadOrderNotes = function(page) {
         $scope.retrieving.load_order_notes = true;
         var options = {
             sort: $scope.sort.load_order_notes || 'reputation',
             filters: {
-                mod_list: $scope.filters.load_order_notes
+                mod_list: $scope.filters.load_order_notes,
+                page: page || 1
             }
         };
         modService.retrieveAssociation($stateParams.modId, 'load_order_notes', options).then(function(data) {
             contributionService.associateHelpfulMarks(data.load_order_notes, data.helpful_marks);
             userTitleService.associateTitles(data.load_order_notes, $scope.userTitles);
+            pageUtils.getPageInformation(data, $scope.pages.load_order_notes, page);
             $scope.mod.load_order_notes = data.load_order_notes;
         });
     };
