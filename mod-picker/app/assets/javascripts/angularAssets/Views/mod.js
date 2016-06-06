@@ -584,9 +584,8 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
     };
 
     // update a compatibility note locally
-    $scope.updateCompatibilityNote = function() {
+    $scope.updateCompatibilityNote = function(updatedNote) {
         var originalNote = $scope.activeCompatibilityNote.original;
-        var updatedNote = $scope.activeCompatibilityNote;
         // update the values on the original note
         originalNote.text_body = updatedNote.text_body.slice(0);
         originalNote.moderator_message = updatedNote.moderator_message && updatedNote.moderator_message.slice(0);
@@ -625,7 +624,7 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
                     $scope.showSuccess = true;
 
                     // update original compatibility note and discard copy
-                    $scope.updateCompatibilityNote();
+                    $scope.updateCompatibilityNote(noteObj.compatibility_note);
                     $scope.discardCompatibilityNote();
                 }
             });
@@ -699,12 +698,11 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
     };
 
     // update an install order note locally
-    $scope.updateInstallOrderNote = function() {
+    $scope.updateInstallOrderNote = function(updatedNote) {
         var originalNote = $scope.activeInstallOrderNote.original;
-        var updatedNote = $scope.activeInstallOrderNote;
         // update the values on the original note
-        var other_mod_id = updatedNote.order === 'before' ? originalNote.mods[1].id : originalNote.mods[0].id;
-        if (updatedNote.mod_id != other_mod_id) {
+        if ((updatedNote.first_mod_id == originalNote.second_mod_id) &&
+            (updatedNote.second_mod_id == originalNote.first_mod_id)) {
             originalNote.mods.reverse();
             originalNote.first_mod_id = originalNote.mods[0].id;
             originalNote.second_mod_id = originalNote.mods[1].id;
@@ -750,7 +748,7 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
                     $scope.showSuccess = true;
 
                     // update original install order note and discard copy
-                    $scope.updateInstallOrderNote();
+                    $scope.updateInstallOrderNote(noteObj.install_order_note);
                     $scope.discardInstallOrderNote();
                 }
             });
