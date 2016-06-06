@@ -3,7 +3,11 @@ app.directive('pageResults', function () {
         restrict: 'E',
         templateUrl: '/resources/directives/pageResults.html',
         controller: 'pageResultsController',
-        scope: false
+        scope: {
+            pages: '=',
+            data: '=',
+            callback: '='
+        }
     }
 });
 
