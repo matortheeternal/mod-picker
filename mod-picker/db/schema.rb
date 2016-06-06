@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160603215135) do
+ActiveRecord::Schema.define(version: 20160606053931) do
 
   create_table "agreement_marks", id: false, force: :cascade do |t|
     t.integer "correction_id", limit: 4,                null: false
@@ -111,6 +111,7 @@ ActiveRecord::Schema.define(version: 20160603215135) do
     t.text     "text_body",               limit: 65535,                 null: false
     t.string   "edit_summary",            limit: 255
     t.string   "moderator_message",       limit: 255
+    t.float    "reputation",              limit: 24,    default: 0.0,   null: false
     t.integer  "helpful_count",           limit: 4,     default: 0,     null: false
     t.integer  "not_helpful_count",       limit: 4,     default: 0,     null: false
     t.integer  "corrections_count",       limit: 4,     default: 0,     null: false
@@ -238,6 +239,7 @@ ActiveRecord::Schema.define(version: 20160603215135) do
     t.text     "text_body",             limit: 65535,                 null: false
     t.string   "edit_summary",          limit: 255
     t.string   "moderator_message",     limit: 255
+    t.float    "reputation",            limit: 24,    default: 0.0,   null: false
     t.integer  "helpful_count",         limit: 4,     default: 0,     null: false
     t.integer  "not_helpful_count",     limit: 4,     default: 0,     null: false
     t.integer  "corrections_count",     limit: 4,     default: 0,     null: false
@@ -273,6 +275,7 @@ ActiveRecord::Schema.define(version: 20160603215135) do
     t.text     "text_body",             limit: 65535,                 null: false
     t.string   "edit_summary",          limit: 255
     t.string   "moderator_message",     limit: 255
+    t.float    "reputation",            limit: 24,    default: 0.0,   null: false
     t.integer  "helpful_count",         limit: 4,     default: 0,     null: false
     t.integer  "not_helpful_count",     limit: 4,     default: 0,     null: false
     t.integer  "corrections_count",     limit: 4,     default: 0,     null: false
@@ -660,6 +663,7 @@ ActiveRecord::Schema.define(version: 20160603215135) do
     t.string   "edit_summary",          limit: 255
     t.string   "moderator_message",     limit: 255
     t.float    "overall_rating",        limit: 24,    default: 0.0,   null: false
+    t.float    "reputation",            limit: 24,    default: 0.0,   null: false
     t.integer  "helpful_count",         limit: 4,     default: 0,     null: false
     t.integer  "not_helpful_count",     limit: 4,     default: 0,     null: false
     t.integer  "corrections_count",     limit: 4,     default: 0,     null: false
