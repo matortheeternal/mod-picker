@@ -74,4 +74,6 @@
     <div class="no-content-message" ng-if="mod.reviews.length == 0">
         There are no reviews for this mod yet.
     </div>
+
+    <page-results pages="pages.reviews" data="mod.reviews" callback="retrieveReviews"></page-results>
 </loader>

@@ -85,4 +85,6 @@
     <div class="no-content-message" ng-if="mod.compatibility_notes.length == 0">
         There are no Compatibility Notes for this mod yet.
     </div>
+
+    <page-results pages="pages.compatibility_notes" data="mod.compatibility_notes" callback="retrieveCompatibilityNotes"></page-results>
 </loader>

@@ -69,4 +69,6 @@
     <div class="no-content-message" ng-if="mod.load_order_notes.length == 0">
         There are no Load Order Notes for this mod yet.
     </div>
+
+    <page-results pages="pages.load_order_notes" data="mod.load_order_notes" callback="retrieveLoadOrderNotes"></page-results>
 </loader>

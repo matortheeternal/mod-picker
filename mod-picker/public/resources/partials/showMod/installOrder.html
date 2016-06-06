@@ -60,4 +60,6 @@
     <div class="no-content-message" ng-if="mod.install_order_notes.length == 0">
         There are no Install Order Notes for this mod yet.
     </div>
+
+    <page-results pages="pages.install_order_notes" data="mod.install_order_notes" callback="retrieveInstallOrderNotes"></page-results>
 </loader>
