@@ -624,7 +624,7 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
                     $scope.submitMessage = "Compatibility Note updated successfully!";
                     $scope.showSuccess = true;
 
-                    // update original review object and discard copy
+                    // update original compatibility note and discard copy
                     $scope.updateCompatibilityNote();
                     $scope.discardCompatibilityNote();
                 }
@@ -657,9 +657,24 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
     // edit an existing install order note
     $scope.editInstallOrderNote = function(install_order_note) {
         install_order_note.editing = true;
-        $scope.activeInstallOrderNote = install_order_note;
+        var mod_id, order;
+        for (var i = 0; i < 2; i++) {
+            if (install_order_note.mods[i].id != $scope.mod.id) {
+                mod_id = install_order_note.mods[i].id.toString();
+                order = i == 0 ? 'after' : 'before';
+            }
+        }
+        $scope.activeInstallOrderNote = {
+            mod_id: mod_id,
+            order: order,
+            text_body: install_order_note.text_body.slice(0),
+            moderator_message: install_order_note.moderator_message && install_order_note.moderator_message.slice(0),
+            original: install_order_note,
+            editing: true
+        };
 
-        // update the markdown editor
+        // update validation, update the markdown editor
+        $scope.validateInstallOrderNote();
         $scope.updateEditor();
     };
 
@@ -676,15 +691,25 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
     // discard the install order note object
     $scope.discardInstallOrderNote = function() {
         if ($scope.activeInstallOrderNote.editing) {
-            $scope.activeInstallOrderNote.editing = false;
+            $scope.activeInstallOrderNote.original.editing = false;
             $scope.activeInstallOrderNote = null;
         } else {
             delete $scope.activeInstallOrderNote;
         }
     };
+
+    // update an install order note locally
+    $scope.updateInstallOrderNote = function() {
+        var originalNote = $scope.activeInstallOrderNote.original;
+        var updatedNote = $scope.activeInstallOrderNote;
+        // update the values on the original note
+        // TODO: update mods array order
+        originalNote.text_body = updatedNote.text_body.slice(0);
+        originalNote.moderator_message = updatedNote.moderator_message.slice(0);
+    };
     
     // submit an install order note
-    $scope.submitInstallOrderNote = function() {
+    $scope.saveInstallOrderNote = function() {
         // return if the install order note is invalid
         if (!$scope.activeInstallOrderNote.valid) {
             return;
@@ -704,18 +729,36 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
                 game_id: $scope.mod.game_id,
                 first_mod_id: first_mod_id,
                 second_mod_id: second_mod_id,
-                text_body: $scope.activeInstallOrderNote.text_body
+                text_body: $scope.activeInstallOrderNote.text_body,
+                edit_summary: $scope.activeInstallOrderNote.edit_summary,
+                moderator_message: $scope.activeInstallOrderNote.moderator_message
             }
         };
         $scope.activeInstallOrderNote.submitting = true;
-        contributionService.submitContribution("install_order_notes", noteObj).then(function(data) {
-            if (data.status == "ok") {
-                $scope.submitMessage = "Install Order Note submitted successfully!";
-                $scope.showSuccess = true;
-                // TODO: push the Install Order note onto the $scope.mod.install_order_notes array
-                delete $scope.activeInstallOrderNote;
-            }
-        });
+
+        // use update or submit contribution
+        if ($scope.activeInstallOrderNote.editing) {
+            var noteId = $scope.activeInstallOrderNote.original.id;
+            contributionService.updateContribution("install_order_notes", noteId, noteObj).then(function(data) {
+                if (data.status == "ok") {
+                    $scope.submitMessage = "Install Order Note updated successfully!";
+                    $scope.showSuccess = true;
+
+                    // update original install order note and discard copy
+                    $scope.updateInstallOrderNote();
+                    $scope.discardInstallOrderNote();
+                }
+            });
+        } else {
+            contributionService.submitContribution("install_order_notes", noteObj).then(function(data) {
+                if (data.status == "ok") {
+                    $scope.submitMessage = "Install Order Note submitted successfully!";
+                    $scope.showSuccess = true;
+                    // TODO: push the Install Order note onto the $scope.mod.install_order_notes array
+                    $scope.discardInstallOrderNote();
+                }
+            });
+        }
     };
 
     // LOAD ORDER NOTE RELATED LOGIC
@@ -755,7 +798,7 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
     // discard the load order note object
     $scope.discardLoadOrderNote = function() {
         if ($scope.activeLoadOrderNote.editing) {
-            $scope.activeLoadOrderNote.editing = false;
+            $scope.activeLoadOrderNote.original.editing = false;
             $scope.activeLoadOrderNote = null;
         } else {
             delete $scope.activeLoadOrderNote;
