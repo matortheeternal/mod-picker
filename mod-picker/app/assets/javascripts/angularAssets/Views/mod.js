@@ -703,7 +703,12 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
         var originalNote = $scope.activeInstallOrderNote.original;
         var updatedNote = $scope.activeInstallOrderNote;
         // update the values on the original note
-        // TODO: update mods array order
+        var other_mod_id = updatedNote.order === 'before' ? originalNote.mods[1].id : originalNote.mods[0].id;
+        if (updatedNote.mod_id != other_mod_id) {
+            originalNote.mods.reverse();
+            originalNote.first_mod_id = originalNote.mods[0].id;
+            originalNote.second_mod_id = originalNote.mods[1].id;
+        }
         originalNote.text_body = updatedNote.text_body.slice(0);
         originalNote.moderator_message = updatedNote.moderator_message && updatedNote.moderator_message.slice(0);
     };
