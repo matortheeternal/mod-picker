@@ -846,7 +846,7 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
     };
 
     // submit a load order note
-    $scope.submitLoadOrderNote = function() {
+    $scope.saveLoadOrderNote = function() {
         // return if the load order note is invalid
         if (!$scope.activeLoadOrderNote.valid) {
             return;

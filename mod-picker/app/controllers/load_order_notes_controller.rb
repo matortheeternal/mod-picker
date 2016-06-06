@@ -39,6 +39,6 @@ class LoadOrderNotesController < ContributionsController
 
     # Params that can be updated
     def contribution_update_params
-      params.require(:install_order_note).permit(:text_body, :edit_summary, (:moderator_message if current_user.can_moderate?))
+      params.require(:load_order_note).permit(:text_body, :edit_summary, (:moderator_message if current_user.can_moderate?))
     end
 end
