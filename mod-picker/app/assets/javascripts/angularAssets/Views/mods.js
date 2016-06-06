@@ -80,14 +80,14 @@ app.controller('modsController', function ($scope, $q, modService, sliderFactory
     // TODO: replace firstGet with $scope.mods
     var firstGet = false;
     $scope.getMods = function(page) {
-        delete $scope.data;
+        delete $scope.mods;
         var options =  {
             filters: $scope.filters,
             sort: $scope.sort,
             page: page || 1
         };
         modService.retrieveMods(options).then(function (data) {
-            $scope.data = data.mods;
+            $scope.mods = data.mods;
             pageUtils.getPageInformation(data, $scope.pages, page);
             firstGet = true;
         });
