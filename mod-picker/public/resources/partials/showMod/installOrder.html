@@ -46,7 +46,7 @@
         </div>
 
         <div class="action-button-container">
-            <input class="btn action-btn" type="submit" value="Submit" ng-click="submitInstallOrderNote()" ng-disabled="!activeInstallOrderNote.valid" title="{{activeInstallOrderNote.valid ? 'Submit your install order note' : 'Your install order note is either too short or incomplete.'}}"/>
+            <input class="btn action-btn" type="submit" value="Submit" ng-click="saveInstallOrderNote()" ng-disabled="!activeInstallOrderNote.valid" title="{{activeInstallOrderNote.valid ? 'Submit your install order note' : 'Your install order note is either too short or incomplete.'}}"/>
             <input class="btn action-btn" type="button" value="Discard" ng-click="discardInstallOrderNote()">
         </div>
     </div>
