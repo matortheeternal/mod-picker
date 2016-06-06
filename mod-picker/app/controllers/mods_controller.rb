@@ -129,7 +129,7 @@ class ModsController < ApplicationController
     end
   end
 
-  # GET /mods/1/corrections
+  # POST/GET /mods/1/corrections
   def corrections
     authorize! :read, @mod
     corrections = @mod.corrections.accessible_by(current_ability)
@@ -140,7 +140,7 @@ class ModsController < ApplicationController
     }
   end
 
-  # GET /mods/1/reviews
+  # POST/GET /mods/1/reviews
   def reviews
     authorize! :read, @mod
     reviews = @mod.reviews.accessible_by(current_ability).sort(params[:sort]).paginate(:page => params[:page], :per_page => 10)
@@ -154,7 +154,7 @@ class ModsController < ApplicationController
     }
   end
 
-  # GET /mods/1/compatibility_notes
+  # POST/GET /mods/1/compatibility_notes
   def compatibility_notes
     authorize! :read, @mod
     compatibility_notes = @mod.compatibility_notes.accessible_by(current_ability).sort(params[:sort]).paginate(:page => params[:page], :per_page => 10)
@@ -168,7 +168,7 @@ class ModsController < ApplicationController
     }
   end
 
-  # GET /mods/1/install_order_notes
+  # POST/GET /mods/1/install_order_notes
   def install_order_notes
     authorize! :read, @mod
     install_order_notes = @mod.install_order_notes.accessible_by(current_ability).sort(params[:sort]).paginate(:page => params[:page], :per_page => 10)
@@ -182,7 +182,7 @@ class ModsController < ApplicationController
     }
   end
 
-  # GET /mods/1/load_order_notes
+  # POST/GET /mods/1/load_order_notes
   def load_order_notes
     authorize! :read, @mod
     if @mod.plugins_count > 0
@@ -200,7 +200,7 @@ class ModsController < ApplicationController
     end
   end
 
-  # GET /mods/1/analysis
+  # POST/GET /mods/1/analysis
   def analysis
     authorize! :read, @mod
     render json: {

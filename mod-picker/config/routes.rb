@@ -43,12 +43,12 @@ Rails.application.routes.draw do
     match '/plugins/search', to: 'plugins#search', via: 'post'
 
     # content associated with mods
-    match '/mods/:id/corrections', to: 'mods#corrections', via: 'get'
-    match '/mods/:id/reviews', to: 'mods#reviews', via: 'get'
-    match '/mods/:id/compatibility_notes', to: 'mods#compatibility_notes', via: 'get'
-    match '/mods/:id/install_order_notes', to: 'mods#install_order_notes', via: 'get'
-    match '/mods/:id/load_order_notes', to: 'mods#load_order_notes', via: 'get'
-    match '/mods/:id/analysis', to: 'mods#analysis', via: 'get'
+    match '/mods/:id/corrections', to: 'mods#corrections', via: [:get, :post]
+    match '/mods/:id/reviews', to: 'mods#reviews', via: [:get, :post]
+    match '/mods/:id/compatibility_notes', to: 'mods#compatibility_notes', via: [:get, :post]
+    match '/mods/:id/install_order_notes', to: 'mods#install_order_notes', via: [:get, :post]
+    match '/mods/:id/load_order_notes', to: 'mods#load_order_notes', via: [:get, :post]
+    match '/mods/:id/analysis', to: 'mods#analysis', via: [:get, :post]
 
     # helpful marks
     match '/reviews/:id/helpful', to: 'reviews#helpful', via: 'post'
