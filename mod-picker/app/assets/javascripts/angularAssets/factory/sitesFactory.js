@@ -13,7 +13,7 @@ app.service('sitesFactory', function () {
                 userUrlFormat: /(http[s]:\/\/?)?forums.nexusmods.com\/index.php\?\/user\/([A-Za-z0-9\-]+)(\/)?/i,
                 userIndex: 2,
                 loginUrl: "https://forums.nexusmods.com/",
-                logoPath: "/assets/nexus_logo"
+                logoPath: "/assets/images/nexus_logo.png"
             },
             {
                 label: "Steam Workshop",
@@ -22,7 +22,7 @@ app.service('sitesFactory', function () {
                 userUrlFormat: /(http[s]:\/\/?)?steamcommunity.com\/(id|profiles)\/([A-Za-z0-9\_]+)(\/)?/i,
                 userIndex: 3,
                 loginUrl: "https://steamcommunity.com/login/",
-                logoPath: "/assets/workshop_logo"
+                logoPath: "/assets/images/workshop_logo.png"
             },
             {
                 label: "Lover's Lab",
@@ -31,13 +31,13 @@ app.service('sitesFactory', function () {
                 userUrlFormat: /(http[s]:\/\/?)?www.loverslab.com\/index.php\?\/user\/([A-Za-z0-9\-]+)(\/)?/i,
                 userIndex: 2,
                 loginUrl: "https://www.loverslab.com/",
-                logoPath: "/assets/lab_logo"
+                logoPath: "/assets/images/lab_logo.png"
             },
             {
                 hidden: true,
                 label: "Steam Store",
                 shortLabel: "Steam",
-                logoPath: "/assets/workshop_logo"
+                logoPath: "/assets/images/workshop_logo.png"
             }
         ];
     };
