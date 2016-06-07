@@ -2,31 +2,31 @@ app.service('userService', function (backend, $q, userSettingsService, userTitle
     var thisService = this;
     this.retrieveUser = function (userId) {
         var output = $q.defer();
-        backend.retrieve('/users/' + userId).then(function(user) {
+        backend.retrieve('/users/' + userId).then(function(userData) {
             //moving collections into a separate array
-            user.collections = [];
-            for (var i = user.mod_lists.length - 1; i >= 0; i--) {
-                if (user.mod_lists[i].is_collection) {
-                    user.collections.push(user.mod_lists.splice(i, 1)[0]);
+            userData.collections = [];
+            for (var i = userData.mod_lists.length - 1; i >= 0; i--) {
+                if (userData.mod_lists[i].is_collection) {
+                    userData.collections.push(userData.mod_lists.splice(i, 1)[0]);
                 }
             }
 
             //get user title if it's not custom
-            if (!user.title) {
-                userTitleService.getUserTitle(user.reputation.overall).then(function(title) {
-                    user.title = title;
+            if (!userData.title) {
+                userTitleService.getUserTitle(userData.reputation.overall).then(function(title) {
+                    userData.title = title;
                 });
             }
-            output.resolve(user);
+            output.resolve(userData);
         });
         return output.promise;
     };
 
     this.retrieveCurrentUser = function () {
         var output = $q.defer();
-        backend.retrieve('/current_user').then(function (user) {
-            user.permissions = thisService.getPermissions(user);
-            output.resolve(user);
+        backend.retrieve('/current_user').then(function (userData) {
+            userData.permissions = thisService.getPermissions(userData);
+            output.resolve(userData);
         });
         return output.promise;
     };
