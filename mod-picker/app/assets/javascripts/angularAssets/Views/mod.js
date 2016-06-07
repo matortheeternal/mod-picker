@@ -30,7 +30,7 @@ app.config(['$stateProvider', function ($stateProvider) {
                   //only resolve if the retrieve param is true
                   if ($stateParams.retrieve) {
                     var output = $q.defer();
-                    modService.retrieveAssociation(modId, 'reviews', {sort: $stateParams.sort}).then(function(reviews) {
+                    modService.retrieveContributions(modId, 'reviews', {sort: $stateParams.sort}).then(function(reviews) {
                       reviewSectionService.associateReviewSections(reviews).then(function() {
                         output.resolve(reviews);
                       });
@@ -62,7 +62,7 @@ app.config(['$stateProvider', function ($stateProvider) {
                       sort: $stateParams.sort,
                       filters: $stateParams.filters
                     };
-                    return modService.retrieveAssociation(modId, 'compatibility_notes', options);
+                    return modService.retrieveContributions(modId, 'compatibility_notes', options);
                   }
                 }
             }
@@ -86,7 +86,7 @@ app.config(['$stateProvider', function ($stateProvider) {
                       sort: $stateParams.sort,
                       filters: $stateParams.filters
                     };
-                    return modService.retrieveAssociation(modId, 'install_order_notes', options);
+                    return modService.retrieveContributions(modId, 'install_order_notes', options);
                   }
                 }
             }
@@ -110,7 +110,7 @@ app.config(['$stateProvider', function ($stateProvider) {
                       sort: $stateParams.sort,
                       filters: $stateParams.filters
                     };
-                    return modService.retrieveAssociation(modId, 'load_order_notes', options);
+                    return modService.retrieveContributions(modId, 'load_order_notes', options);
                   }
                 }
             }
@@ -198,7 +198,7 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, cu
 
     $scope.retrieveCorrections = function() {
         $scope.retrieving.corrections = true;
-        modService.retrieveAssociation($stateParams.modId, 'corrections').then(function(data) {
+        modService.retrieveContributions($stateParams.modId, 'corrections').then(function(data) {
             contributionService.associateAgreementMarks(data.corrections, data.agreement_marks);
             userTitleService.associateTitles(data.corrections, $scope.userTitles);
             $scope.mod.corrections = data.corrections;
