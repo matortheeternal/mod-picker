@@ -1,22 +1,26 @@
 app.service('modService', function(backend, $q, helpfulMarkService, userTitleService, categoryService, recordGroupService, assetUtils, errorsFactory) {
     this.retrieveMod = function(modId) {
-      output = $q.defer();
-      backend.retrieve('/mods/' + modId).then(function(modObject) {
-        //get category objects with ids
-        categoryService.getCategoryById(modObject.mod.primary_category_id).then(function(primaryCategory) {
-          //set primary category on mod
-          modObject.mod.primary_category = primaryCategory;
+        output = $q.defer();
+        backend.retrieve('/mods/' + modId).then(function(modObject) {
+            //get category objects with ids
+            if(modObject.mod.primary_category_id){
+                categoryService.getCategoryById(modObject.mod.primary_category_id).then(function(primaryCategory) {
+                    //set primary category on mod
+                    modObject.mod.primary_category = primaryCategory;
 
-          categoryService.getCategoryById(modObject.mod.secondary_category_id).then(function(secondaryCategory) {
-            //set secondary category on mod
-            modObject.mod.secondary_category = secondaryCategory;
+                    if(modObject.mod.secondary_category_id) {
+                        categoryService.getCategoryById(modObject.mod.secondary_category_id).then(function(secondaryCategory) {
+                            //set secondary category on mod
+                            modObject.mod.secondary_category = secondaryCategory;
 
-            //resolve output after both categories are set
-            output.resolve(modObject);
-          });
+                            //resolve output after both categories are set
+                            output.resolve(modObject);
+                        });
+                    }
+                });
+            }
         });
-      });
-      return output.promise;
+        return output.promise;
     };
 
     var pages = {
