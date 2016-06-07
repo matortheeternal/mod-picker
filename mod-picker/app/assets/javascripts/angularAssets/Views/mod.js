@@ -9,7 +9,7 @@ app.config(['$stateProvider', function ($stateProvider) {
                     return modService.retrieveMod($stateParams.modId);
                 },
                 modId: function($stateParams) {
-                  return $stateParams.modId;
+                    return $stateParams.modId;
                 }
             }
         }).state('base.mod.Reviews', {
@@ -123,10 +123,10 @@ app.config(['$stateProvider', function ($stateProvider) {
             },
             resolve: {
                 analysis: function($stateParams, modObject, modService) {
-                  //only resolve if the retrieve param is true
-                  if ($stateParams.retrieve) {
-                    return modService.retrieveAnalysis(modObject.mod.id, modObject.mod.game_id);
-                  }
+                    //only resolve if the retrieve param is true
+                    if ($stateParams.retrieve) {
+                        return modService.retrieveAnalysis(modObject.mod.id, modObject.mod.game_id);
+                    }
                 }
             }
         });
