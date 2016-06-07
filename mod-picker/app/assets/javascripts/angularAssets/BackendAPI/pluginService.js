@@ -16,28 +16,6 @@ app.service('pluginService', function (backend, $q, $timeout, recordGroupService
         return plugins.promise;
     };
 
-    this.associateRecordGroups = function(plugins, recordGroups) {
-        // if we don't have recordGroups yet, try again in 100ms
-        var service = this;
-        if (!recordGroups) {
-            $timeout(function() {
-                service.associateRecordGroups(plugins, recordGroups);
-            }, 100);
-            return;
-        }
-
-        // loop through plugins to associate record groups
-        plugins.forEach(function(plugin) {
-            if (plugin.plugin_record_groups) {
-                plugin.plugin_record_groups.forEach(function(group) {
-                    var record_group = recordGroupService.getGroupFromSignature(recordGroups, group.sig);
-                    group.name = record_group.name;
-                    group.child_group = record_group.child_group;
-                });
-            }
-        });
-    };
-
     //combine dummy_masters array with masters array and sorts the masters array
     this.combineAndSortMasters = function(plugins) {
         // loop through plugins
