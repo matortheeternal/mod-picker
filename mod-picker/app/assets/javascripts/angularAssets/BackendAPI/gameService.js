@@ -5,7 +5,7 @@ app.service('gameService', function (backend, $q) {
 
     var allGames = this.retrieveGames();
 
-    this.getGameById = function (id) {
+    this.getGameById = function(id) {
         var output = $q.defer();
         allGames.then(function(games) {
             output.resolve(games.find(function(game) {
