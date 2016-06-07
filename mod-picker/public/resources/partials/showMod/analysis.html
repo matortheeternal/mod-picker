@@ -46,7 +46,7 @@
     </div>
 
     <div class="content-container analysis-container">
-        <div ng-repeat="errorType in sortedErrors" ng-if="errorType.errors.length > 0">
+        <div ng-repeat="errorType in mod.currentPlugin.plugin_errors" ng-if="errorType.errors.length > 0">
             <h3 class="section-title">
                 {{errorType.name}} ({{errorType.acronym}}s)
                 <!-- TODO: Link to the correct help article here -->
