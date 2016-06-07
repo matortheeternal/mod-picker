@@ -45,8 +45,8 @@ app.service('pluginService', function (backend, $q, $timeout, recordGroupService
     //sort plugin errors
     this.sortErrors = function(plugins) {
         plugins.forEach(function(plugin) {
-            // return if we don't have a plugin to sort errors for
-            if (!plugin) {
+            // return if we don't have errors to sort
+            if (!plugin.plugin_errors.length) {
                 return;
             }
 
