@@ -1,27 +1,27 @@
 app.service('modService', function(backend, $q, helpfulMarkService, userTitleService, categoryService, recordGroupService, assetUtils, errorsFactory) {
     this.retrieveMod = function(modId) {
         output = $q.defer();
-        backend.retrieve('/mods/' + modId).then(function(modObject) {
+        backend.retrieve('/mods/' + modId).then(function(modData) {
             //get category objects with ids
-            if(modObject.mod.primary_category_id){
-                categoryService.getCategoryById(modObject.mod.primary_category_id).then(function(primaryCategory) {
+            if(modData.mod.primary_category_id){
+                categoryService.getCategoryById(modData.mod.primary_category_id).then(function(primaryCategory) {
                     //set primary category on mod
-                    modObject.mod.primary_category = primaryCategory;
+                    modData.mod.primary_category = primaryCategory;
 
-                    if(modObject.mod.secondary_category_id) {
-                        categoryService.getCategoryById(modObject.mod.secondary_category_id).then(function(secondaryCategory) {
+                    if(modData.mod.secondary_category_id) {
+                        categoryService.getCategoryById(modData.mod.secondary_category_id).then(function(secondaryCategory) {
                             //set secondary category on mod
-                            modObject.mod.secondary_category = secondaryCategory;
+                            modData.mod.secondary_category = secondaryCategory;
 
                             //resolve output after both categories are set
-                            output.resolve(modObject);
+                            output.resolve(modData);
                         });
                     } else {
-                        output.resolve(modObject);
+                        output.resolve(modData);
                     }
                 });
             } else {
-                output.resolve(modObject);
+                output.resolve(modData);
             }
         });
         return output.promise;
