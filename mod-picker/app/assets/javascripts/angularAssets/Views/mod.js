@@ -22,21 +22,21 @@ app.config(['$stateProvider', function ($stateProvider) {
             },
             resolve: {
                 reviews: function($q, $state, $stateParams, modId, modObject, modService, reviewSectionService) {
-                  //hardcoded redirect to the analysis tab when it's the base game
-                  if (!modObject.mod.primary_category_id) {
-                    $state.go('base.mod.Analysis', {modId: modId});
-                  }
+                    //hardcoded redirect to the analysis tab when it's the base game
+                    if (!modObject.mod.primary_category_id) {
+                        $state.go('base.mod.Analysis', {modId: modId});
+                    }
 
-                  //only resolve if the retrieve param is true
-                  if ($stateParams.retrieve) {
-                    var output = $q.defer();
-                    modService.retrieveContributions(modId, 'reviews', {sort: $stateParams.sort}).then(function(reviews) {
-                      reviewSectionService.associateReviewSections(reviews).then(function() {
-                        output.resolve(reviews);
-                      });
-                    });
-                    return output.promise;
-                  }
+                    //only resolve if the retrieve param is true
+                    if ($stateParams.retrieve) {
+                        var output = $q.defer();
+                        modService.retrieveContributions(modId, 'reviews', {sort: $stateParams.sort}).then(function(reviews) {
+                            reviewSectionService.associateReviewSections(reviews).then(function() {
+                                output.resolve(reviews);
+                            });
+                        });
+                        return output.promise;
+                    }
                 },
                 reviewSections: function(modObject, reviewSectionService) {
                     return reviewSectionService.getSectionsForCategory(modObject.mod.primary_category);
@@ -50,20 +50,24 @@ app.config(['$stateProvider', function ($stateProvider) {
                 sort: 'reputation',
                 retrieve: true,
                 filters: {
-                  mod_list: true
+                    mod_list: true
                 }
             },
             resolve: {
-                compatibilityNotes: function($stateParams, modId, modService) {
-                  //only resolve if the retrieve param is true
-                  if ($stateParams.retrieve) {
+                compatibilityNotes: function($stateParams, $state, modId, modService, modObject) {
+                    //hardcoded redirect to the analysis tab when it's the base game
+                    if (!modObject.mod.primary_category_id) {
+                        $state.go('base.mod.Analysis', {modId: modId});
+                    }
 
-                    options = {
-                      sort: $stateParams.sort,
-                      filters: $stateParams.filters
-                    };
-                    return modService.retrieveContributions(modId, 'compatibility_notes', options);
-                  }
+                    //only resolve if the retrieve param is true
+                    if ($stateParams.retrieve) {
+                        options = {
+                            sort: $stateParams.sort,
+                            filters: $stateParams.filters
+                        };
+                        return modService.retrieveContributions(modId, 'compatibility_notes', options);
+                    }
                 }
             }
         }).state('base.mod.Install Order', {
@@ -74,20 +78,24 @@ app.config(['$stateProvider', function ($stateProvider) {
                 sort: 'reputation',
                 retrieve: true,
                 filters: {
-                  mod_list: true
+                    mod_list: true
                 }
             },
             resolve: {
-                installOrderNotes: function($stateParams, modId, modService) {
-                  //only resolve if the retrieve param is true
-                  if ($stateParams.retrieve) {
+                installOrderNotes: function($stateParams, $state, modId, modService, modObject) {
+                    //hardcoded redirect to the analysis tab when it's the base game
+                    if (!modObject.mod.primary_category_id) {
+                        $state.go('base.mod.Analysis', {modId: modId});
+                    }
 
-                    options = {
-                      sort: $stateParams.sort,
-                      filters: $stateParams.filters
-                    };
-                    return modService.retrieveContributions(modId, 'install_order_notes', options);
-                  }
+                    //only resolve if the retrieve param is true
+                    if ($stateParams.retrieve) {
+                        options = {
+                            sort: $stateParams.sort,
+                            filters: $stateParams.filters
+                        };
+                        return modService.retrieveContributions(modId, 'install_order_notes', options);
+                    }
                 }
             }
         }).state('base.mod.Load Order', {
@@ -98,20 +106,28 @@ app.config(['$stateProvider', function ($stateProvider) {
                 sort: 'reputation',
                 retrieve: true,
                 filters: {
-                  mod_list: true
+                    mod_list: true
                 }
             },
             resolve: {
-                loadOrderNotes: function($stateParams, modId, modService) {
-                  //only resolve if the retrieve param is true
-                  if ($stateParams.retrieve) {
+                loadOrderNotes: function($stateParams, $state, modId, modService, modObject) {
+                    //hardcoded redirect to the analysis tab when it's the base game
+                    if (!modObject.mod.primary_category_id) {
+                        $state.go('base.mod.Analysis', {modId: modId});
+                    }
+                    //hardcoded redirect to the reviews tab when there aren't any
+                    if (modObject.mod.plugins_count === 0) {
+                        $state.go('base.mod.Reviews', {modId: modId});
+                    }
 
-                    options = {
-                      sort: $stateParams.sort,
-                      filters: $stateParams.filters
-                    };
-                    return modService.retrieveContributions(modId, 'load_order_notes', options);
-                  }
+                    //only resolve if the retrieve param is true
+                    if ($stateParams.retrieve) {
+                        options = {
+                            sort: $stateParams.sort,
+                            filters: $stateParams.filters
+                        };
+                        return modService.retrieveContributions(modId, 'load_order_notes', options);
+                    }
                 }
             }
         }).state('base.mod.Analysis', {
