@@ -16,8 +16,12 @@ app.service('modService', function(backend, $q, helpfulMarkService, userTitleSer
                             //resolve output after both categories are set
                             output.resolve(modObject);
                         });
+                    } else {
+                        output.resolve(modObject);
                     }
                 });
+            } else {
+                output.resolve(modObject);
             }
         });
         return output.promise;
