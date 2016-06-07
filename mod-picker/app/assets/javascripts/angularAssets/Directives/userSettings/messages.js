@@ -8,6 +8,7 @@ app.directive('messages', function () {
         templateUrl: '/resources/directives/userSettings/messages.html',
         controller: 'messagesController',
         scope: {
+            decayTime: '=',
         	successMessage: '@',
         	errors: '=',
             successBool: '='
@@ -17,11 +18,18 @@ app.directive('messages', function () {
 
 //TODO: empty controller is probably unnecessary :P
 app.controller('messagesController', function ($scope, $timeout) {
+    $scope.errors = [
+        {message:'this is an error'},
+        {message: 'error #2'}
+    ];
+
+    var decay = $scope.decayTime || 5000;
+
     $scope.$watch('successBool', function(newValue) {
         if(newValue) {
             $timeout(function() {
                 $scope.successBool = false;
-            }, 7500);
+            }, decay);
         }
     });
 });
