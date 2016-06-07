@@ -1,4 +1,3 @@
-//= skip
 //= require_self
 //= require ./polyfills.js
 //= require_tree ./angularAssets
