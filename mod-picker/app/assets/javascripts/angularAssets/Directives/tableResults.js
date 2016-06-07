@@ -9,6 +9,7 @@ app.directive('tableResults', function () {
             columns: '=',
             sortColumn: '=',
             columnGroups: '=',
+            availableColumnData: '=',
             actions: '=?'
         }
     }
