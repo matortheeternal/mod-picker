@@ -463,7 +463,7 @@ app.controller('modReviewsController', function ($scope, $stateParams, $state, r
   };
 });
 
-app.controller('modCompatibilityController', function ($scope, $stateParams, compatibilityNotes, $stateParams, $state, contributionFactory) {
+app.controller('modCompatibilityController', function ($scope, $stateParams, compatibilityNotes, $state, contributionFactory) {
   if(compatibilityNotes) {
     $scope.mod.compatibility_notes = compatibilityNotes;
   }
@@ -585,7 +585,7 @@ app.controller('modCompatibilityController', function ($scope, $stateParams, com
     };
 });
 
-app.controller('modInstallOrderController', function ($scope, $stateParams, installOrderNotes, $state, $stateParams) {
+app.controller('modInstallOrderController', function ($scope, $stateParams, installOrderNotes, $state) {
   if(installOrderNotes) {
     $scope.mod.install_order_notes = installOrderNotes;
   }
