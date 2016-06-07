@@ -12,18 +12,6 @@ app.directive('messages', function () {
         	errors: '=',
             successBool: '='
         }
-        /*link: function (scope, element, attrs) {
-        	$win = angular.element($window);
-            offsetTop = element.offset().top; // get element's top relative to the document
-
-            $win.on('scroll', function (e) {
-                if ($win.scrollTop() >= offsetTop) {
-                    element.addClass("fixed-messages");
-                } else {
-                    element.removeClass("fixed-messages");
-                }
-            });
-        }*/
     }
 });
 
