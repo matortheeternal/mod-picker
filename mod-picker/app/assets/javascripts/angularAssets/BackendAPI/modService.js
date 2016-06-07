@@ -104,7 +104,7 @@ app.service('modService', function(backend, $q, helpfulMarkService, userTitleSer
             analysis.nestedAssets = assetUtils.convertDataStringToNestedObject(analysis.assets);
 
             //associate groups with plugins
-            recordGroupService.associateGroups(analysis.plugins, gameId);
+            recordGroupService.associateGroups(analysis.plugins);
 
             //combine dummy_masters array with masters array and sorts the masters array
             pluginService.combineAndSortMasters(analysis.plugins);
