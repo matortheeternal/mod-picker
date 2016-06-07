@@ -1,4 +1,4 @@
-app.service('helpfulMarkService', function (fileUtils) {
+app.service('helpfulMarkService', function () {
     this.associateHelpfulMarks = function(data, helpfulMarks) {
         // loop through data
         data.forEach(function(item) {
