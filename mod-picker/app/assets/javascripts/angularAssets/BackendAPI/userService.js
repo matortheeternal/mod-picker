@@ -39,8 +39,8 @@ app.service('userService', function (backend, $q, userSettingsService, userTitle
         // TODO: Remove this when beta is over
         permissions.canSubmitMod = true;
         //permissions.canSubmitMod = permissions.isAdmin || permissions.isModerator || user.reputation.overall > 160;
-        permissions.canChangeAvatar = (rep >= 10) || (permissions.isAdmin);
-        permissions.canChangeTitle = (rep >= 1280) || (permissions.isAdmin);
+        permissions.canChangeAvatar = (rep >= 10) || permissions.isAdmin;
+        permissions.canChangeTitle = (rep >= 1280) || permissions.isAdmin;
         permissions.canCreateTags = (rep >= 20) || permissions.isAdmin || permissions.isModerator;
         permissions.canAppeal = (rep >= 40) || permissions.isModerator || permissions.isAdmin;
         permissions.canModerate = permissions.isModerator || permissions.isAdmin;
