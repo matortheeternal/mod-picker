@@ -82,13 +82,13 @@ app.service('modService', function(backend, $q, helpfulMarkService, userTitleSer
         return star.promise;
     };
 
-    this.retrieveAssociation = function(modId, name, options) {
+    this.retrieveContributions = function(modId, name, options) {
         var action = $q.defer();
         backend.retrieve('/mods/' + modId + '/' + name, options).then(function (data) {
-            var notes = data.reviews || data.compatibility_notes || data.load_order_notes || data.install_order_notes;
-            helpfulMarkService.associateHelpfulMarks(notes, data.helpful_marks);
-            userTitleService.associateTitles(notes);
-            action.resolve(notes);
+            var contributions = data[name];
+            helpfulMarkService.associateHelpfulMarks(contributions, data.helpful_marks);
+            userTitleService.associateTitles(contributions);
+            action.resolve(contributions);
         });
         return action.promise;
     };
