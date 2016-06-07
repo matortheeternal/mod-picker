@@ -43,19 +43,21 @@ app.service('pluginService', function (backend, $q, $timeout, recordGroupService
     };
 
     //sort plugin errors
-    this.sortErrors = function(plugin) {
-        var sortedErrors = errorsFactory.errorTypes();
-        // return if we don't have a plugin to sort errors for
-        if (!plugin) {
-            return;
-        }
+    this.sortErrors = function(plugins) {
+        plugins.forEach(function(plugin) {
+            var sortedErrors = errorsFactory.errorTypes();
+            // return if we don't have a plugin to sort errors for
+            if (!plugin) {
+                return;
+            }
 
-        // loop through plugin's errors, sorting them
-        plugin.plugin_errors.forEach(function(error) {
-            sortedErrors[error.group].errors.push(error);
+            // loop through plugin's errors, sorting them
+            plugin.plugin_errors.forEach(function(error) {
+                sortedErrors[error.group].errors.push(error);
+            });
+
+            // return the sorted errors
+            return sortedErrors;
         });
-
-        // return the sorted errors
-        return sortedErrors;
     };
 });
