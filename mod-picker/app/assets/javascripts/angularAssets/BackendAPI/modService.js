@@ -1,4 +1,4 @@
-app.service('modService', function(backend, $q, helpfulMarkService, userTitleService, categoryService, recordGroupService, assetUtils, errorsFactory) {
+app.service('modService', function(backend, $q, helpfulMarkService, userTitleService, categoryService, recordGroupService, assetUtils, errorsFactory, pluginService) {
     this.retrieveMod = function(modId) {
         output = $q.defer();
         backend.retrieve('/mods/' + modId).then(function(modData) {
@@ -106,29 +106,13 @@ app.service('modService', function(backend, $q, helpfulMarkService, userTitleSer
             //associate groups with plugins
             recordGroupService.associateGroups(analysis.plugins, gameId);
 
-            //combine dummy_masters array with masters array and sort the masters array
-            analysis.plugins.forEach(function(plugin) {
-                plugin.masters = plugin.masters.concat(plugin.dummy_masters);
-                plugin.masters.sort(function(first_master, second_master) {
-                    return first_master.index - second_master.index;
-                });
+            //combine dummy_masters array with masters array and sorts the masters array
+            pluginService.combineAndSortMasters(analysis.plugins);
 
-                //associate overrides with their master file
-                plugin.masters.forEach(function(master) {
-                    master.overrides = [];
-                    plugin.overrides.forEach(function(override) {
-                        if (override.fid >= master.index * 0x01000000) {
-                            master.overrides.push(override);
-                        }
-                    });
-                });
+            //associate overrides with their master file
+            pluginService.associateOverrides(analysis.plugins);
 
-                //sort plugin errors
-                plugin.sortedErrors = errorsFactory.errorTypes();
-                plugin.plugin_errors.forEach(function(error) {
-                    plugin.sortedErrors[error.group].errors.push(error);
-                });
-            });
+            pluginService.sortErrors(analysis.plugins);
 
             output.resolve(analysis);
         });
