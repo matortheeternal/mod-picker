@@ -5,7 +5,8 @@
 </div>
 
 <div>
-	<div ng-repeat="error in errors" class="error-message" sticky ng-click="errors.splice($index, 1)">
+	<div ng-repeat="error in errors" class="error-message" sticky>
     	{{error.message}}
+        <i class="fa fa-times" aria-hidden="true" ng-click="errors.splice($index, 1)"></i>
     </div>
 </div>

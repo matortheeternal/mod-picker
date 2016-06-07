@@ -392,12 +392,27 @@ input[type="button"], input[type="submit"] {
 }
 
 /* css for forms, inputs, and labels */
-.success-message {
-  background-color: $success_primary;
-  padding: 14px;
-  font-weight: 500;
-  font-size: 20px;
-  text-align: center;
+.messages {
+    .error-message {
+        .fa {
+            padding: 4px;
+        }
+
+        .fa:hover {
+            color: $action_text_color;
+            background-color: $text_color;
+            cursor: pointer;
+        }
+    }
+
+    .success-message {
+      background-color: $success_primary;
+      padding: 14px;
+      font-weight: 500;
+      font-size: 20px;
+      text-align: center;
+      height: 54px;
+    }
 }
 
 select {
