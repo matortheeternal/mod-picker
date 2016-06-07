@@ -40,9 +40,15 @@ app.service('modService', function(backend, $q) {
 
     this.retrieveAssociation = function(modId, name, options) {
         var action = $q.defer();
-        backend.post('/mods/' + modId + '/' + name, options).then(function (data) {
-            action.resolve(data);
-        });
+        if (options) {
+            backend.post('/mods/' + modId + '/' + name, options).then(function (data) {
+                action.resolve(data);
+            });
+        } else {
+            backend.retrieve('/mods/' + modId + '/' + name).then(function (data) {
+                action.resolve(data);
+            });
+        }
         return action.promise;
     };
 });
