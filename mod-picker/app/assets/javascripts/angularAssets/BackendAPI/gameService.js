@@ -15,7 +15,7 @@ app.service('gameService', function (backend, $q) {
         return output.promise;
     };
 
-    this.getAvailableGames = function(games) {
+    this.getAvailableGames = function() {
         var output = $q.defer();
         allGames.then(function(games) {
             var availableGames = ["Skyrim"];
