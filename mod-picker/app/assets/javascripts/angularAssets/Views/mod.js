@@ -239,9 +239,9 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
         var options = {
             sort: $scope.sort.compatibility_notes,
             filters: {
-                mod_list: $scope.filters.compatibility_notes || true,
-                page: page || 1
-            }
+                mod_list: $scope.filters.compatibility_notes || true
+            },
+            page: page || 1
         };
         modService.retrieveAssociation($stateParams.modId, 'compatibility_notes', options).then(function(data) {
             contributionService.associateHelpfulMarks(data.compatibility_notes, data.helpful_marks);
@@ -256,9 +256,9 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
         var options = {
             sort: $scope.sort.install_order_notes,
             filters: {
-                mod_list: $scope.filters.install_order_notes,
-                page: page || 1
-            }
+                mod_list: $scope.filters.install_order_notes
+            },
+            page: page || 1
         };
         modService.retrieveAssociation($stateParams.modId, 'install_order_notes', options).then(function(data) {
             contributionService.associateHelpfulMarks(data.install_order_notes, data.helpful_marks);
@@ -273,9 +273,9 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
         var options = {
             sort: $scope.sort.load_order_notes,
             filters: {
-                mod_list: $scope.filters.load_order_notes,
-                page: page || 1
-            }
+                mod_list: $scope.filters.load_order_notes
+            },
+            page: page || 1
         };
         modService.retrieveAssociation($stateParams.modId, 'load_order_notes', options).then(function(data) {
             contributionService.associateHelpfulMarks(data.load_order_notes, data.helpful_marks);

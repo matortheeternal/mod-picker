@@ -40,7 +40,6 @@ app.service('modService', function(backend, $q) {
 
     this.retrieveAssociation = function(modId, name, options) {
         var action = $q.defer();
-        options.page = options.page || 1;
         backend.post('/mods/' + modId + '/' + name, options).then(function (data) {
             action.resolve(data);
         });
