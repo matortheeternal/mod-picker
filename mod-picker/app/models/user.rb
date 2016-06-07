@@ -15,7 +15,7 @@ class User < ActiveRecord::Base
   scope :cnotes, -> (low, high) { where(compatibility_notes_count: (low..high)) }
   scope :inotes, -> (low, high) { where(installation_notes_count: (low..high)) }
   scope :reviews, -> (low, high) { where(reviews_count: (low..high)) }
-  scope :nnotes, -> (low, high) { where(incorrect_notes_count: (low..high)) }
+  scope :nnotes, -> (low, high) { where(corrections_count: (low..high)) }
   scope :comments, -> (low, high) { where(comments_count: (low..high)) }
   scope :mod_lists, -> (low, high) { where(mod_lists_count: (low..high)) }
 
@@ -31,7 +31,7 @@ class User < ActiveRecord::Base
   has_many :load_order_notes, :foreign_key => 'submitted_by', :inverse_of => 'user'
   has_many :compatibility_notes, :foreign_key => 'submitted_by', :inverse_of => 'user'
   has_many :reviews, :foreign_key => 'submitted_by', :inverse_of => 'user'
-  has_many :incorrect_notes, :foreign_key => 'submitted_by', :inverse_of => 'user'
+  has_many :corrections, :foreign_key => 'submitted_by', :inverse_of => 'user'
   has_many :agreement_marks, :foreign_key => 'submitted_by', :inverse_of => 'user'
   has_many :helpful_marks, :foreign_key => 'submitted_by', :inverse_of => 'user'
 
@@ -44,8 +44,8 @@ class User < ActiveRecord::Base
   has_many :submitted_mods, :class_name => 'Mod', :foreign_key => 'submitted_by', :inverse_of => 'user'
 
   has_many :mod_authors, :inverse_of => 'user'
-  has_many :mods, :through => 'mod_authors', :inverse_of => 'authors'
-  has_many :mod_lists, :foreign_key => 'created_by', :inverse_of => 'user'
+  has_many :mods, :through => 'mod_authors', :inverse_of => 'author_users'
+  has_many :mod_lists, :foreign_key => 'submitted_by', :inverse_of => 'user'
 
   belongs_to :active_mod_list, :class_name => 'ModList', :foreign_key => 'active_mod_list_id'
 
@@ -122,6 +122,10 @@ class User < ActiveRecord::Base
     self.role.to_sym == :moderator
   end
 
+  def can_moderate?
+    self.admin? || self.moderator?
+  end
+
   def banned?
     self.role.to_sym == :banned
   end
@@ -145,11 +149,34 @@ class User < ActiveRecord::Base
     self.create_bio({ user_id: self.id })
   end
 
+  def current_json
+    self.as_json({
+        :only => [:id, :username, :role, :title, :active_mod_list_id],
+        :include => {
+            :reputation => {
+                :only => [:overall]
+            },
+            :settings => {
+                :except => [:user_id]
+            },
+            :active_mod_list => {
+                :only => [:id, :name, :mods_count, :plugins_count, :active_plugins_count, :custom_plugins_count],
+                :methods => [:incompatible_mods]
+            }
+        },
+        :methods => :avatar
+    })
+  end
+
   def show_json(current_user)
     # email handling
     methods = [:avatar, :last_sign_in_at, :current_sign_in_at, :email_public?]
+    bio_except = [:nexus_verification_token, :lover_verification_token, :workshop_verification_token]
     if self.email_public? || current_user.id == self.id
       methods.push(:email)
+    end
+    if current_user.id == self.id
+      bio_except = [:user_id]
     end
 
     self.as_json({
@@ -162,7 +189,7 @@ class User < ActiveRecord::Base
                 :only => [:id, :name, :is_collection, :is_public, :status, :mods_count, :created]
             },
             :bio => {
-                :except => [:user_id]
+                :except => bio_except
             },
             :reputation => {
                 :only => [:overall]
@@ -178,9 +205,6 @@ class User < ActiveRecord::Base
           :except => [:active_mod_list_id, :invitation_token, :invitation_created_at, :invitation_sent_at, :invitation_accepted_at, :invitation_limit, :invited_by_id, :invited_by_type, :invitations_count],
           :methods => [:avatar, :last_sign_in_at, :current_sign_in_at],
           :include => {
-              :bio => {
-                  :only => [:nexus_username, :lover_username, :steam_username]
-              },
               :reputation => {
                   :only => [:overall]
               }

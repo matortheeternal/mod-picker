@@ -22,28 +22,21 @@ def random_plugin
   Plugin.offset(rand(Plugin.count)).first
 end
 
+def get_unique_username
+  name = Faker::Internet.user_name(4..20)
+  username = name
+  count = 1
+  while User.find_by(username: username).present?
+    username = name + count.to_s
+    count += 1
+  end
+  username
+end
+
 def seed_fake_users
   require 'securerandom'
 
   puts "\nSeeding users"
-  # create an admin user
-  pw = SecureRandom.urlsafe_base64
-  User.create!(
-      username: "admin",
-      role: "admin",
-      title: "God",
-      joined: Time.now.to_date,
-      email: "admin@mail.com",
-      password: pw,
-      password_confirmation: pw,
-      sign_in_count: 1,
-      confirmed_at: Time.now.to_date,
-      current_sign_in_at: Time.now.to_date,
-      last_sign_in_at: Time.now.to_date,
-      current_sign_in_ip: Faker::Internet.public_ip_v4_address,
-      last_sign_in_ip: Faker::Internet.public_ip_v4_address
-  )
-  puts "    admin seeded with password: #{pw}"
 
   # generates random date between year 2000 and now.
   def time_rand(from = Time.new(2000), to = Time.now)
@@ -52,22 +45,15 @@ def seed_fake_users
 
   # create 99 random users
   99.times do |n|
-    # only allow up to the first 18 characters of a username from the
-    # faker generated username
-    name = Faker::Internet.user_name[0..17]
+    username = get_unique_username
     pw = SecureRandom.urlsafe_base64
     User.create!(
-        username: "#{name}#{n}",
+        username: username,
         joined: time_rand,
-        email: Faker::Internet.email(name),
+        email: Faker::Internet.email(username),
         password: pw,
         password_confirmation: pw,
         confirmed_at: Time.now.to_date,
-        reset_password_token: Faker::Internet.password,
-        sign_in_count: Random.rand(100).to_i + 1,
-        current_sign_in_ip: Faker::Internet.public_ip_v4_address,
-        last_sign_in_at: Time.now.to_date,
-        last_sign_in_ip: Faker::Internet.public_ip_v4_address
     )
   end
   puts "    #{User.count} users seeded"
@@ -79,11 +65,12 @@ def seed_fake_mods
   # Helper vars
   nexusDateFormat = "%d/%m/%Y - %I:%M%p"
   gameSkyrim = Game.where({display_name: "Skyrim"}).first
-  adminUser = User.find_by(:username => 'admin')
+  adminUser = User.find_by(:role => "admin")
 
   # Top recently endorsed mods
   Mod.create(
       name: "SkyUI",
+      authors: "SkyUI Team",
       primary_category_id: Category.where(name: "Gameplay - User Interface").first.id,
       secondary_category_id: Category.where(name: "Resources - Frameworks").first.id,
       is_utility: false,
@@ -96,13 +83,14 @@ def seed_fake_mods
   NexusInfo.create(
       id: 3863,
       mod_id: Mod.last.id,
+      mod_name: Mod.last.name,
       game_id: gameSkyrim.id,
       uploaded_by: "schlangster",
       authors: "SkyUI Team",
-      date_added: DateTime.strptime("17/12/2011 - 12:24AM", nexusDateFormat),
-      date_updated: DateTime.strptime("24/08/2015 - 03:38PM", nexusDateFormat),
+      released: DateTime.strptime("17/12/2011 - 12:24AM", nexusDateFormat),
+      updated: DateTime.strptime("24/08/2015 - 03:38PM", nexusDateFormat),
       endorsements: 404927,
-      total_downloads: 11244061,
+      downloads: 11244061,
       unique_downloads: 5703525,
       views: 26258557,
       posts_count: 17040,
@@ -123,9 +111,6 @@ def seed_fake_mods
     author: "SkyUI Team",
     override_count: 0,
     record_count: 8,
-    master_filenames: [],
-    plugin_errors_attributes: [],
-    overrides_attributes: [],
     plugin_record_groups_attributes: [{
       sig: "QUST",
       override_count: 0,
@@ -133,8 +118,11 @@ def seed_fake_mods
     }]
   })
 
+  Mod.last.update_lazy_counters
+
   Mod.create(
       name: "Immersive Armors",
+      authors: "Hothtrooper44",
       primary_category_id: Category.where(name: "Items - Armor, Clothing, & Accessories").first.id,
       is_utility: false,
       has_adult_content: false,
@@ -146,13 +134,14 @@ def seed_fake_mods
   NexusInfo.create(
       id: 19733,
       mod_id: Mod.last.id,
+      mod_name: Mod.last.name,
       game_id: gameSkyrim.id,
       uploaded_by: "hothtrooper44",
       authors: "Hothtrooper44",
-      date_added: DateTime.strptime("01/07/2012 - 07:23PM", nexusDateFormat),
-      date_updated: DateTime.strptime("20/01/2016 - 12:16AM", nexusDateFormat),
+      released: DateTime.strptime("01/07/2012 - 07:23PM", nexusDateFormat),
+      updated: DateTime.strptime("20/01/2016 - 12:16AM", nexusDateFormat),
       endorsements: 208078,
-      total_downloads: 6423440,
+      downloads: 6423440,
       unique_downloads: 2936645,
       views: 16208593,
       posts_count: 15646,
@@ -165,6 +154,7 @@ def seed_fake_mods
 
   Mod.create(
       name: "Skyrim HD - 2K Textures",
+      authors: "NebuLa from AHBmods",
       primary_category_id: Category.where(name: "Audiovisual - Models & Textures").first.id,
       is_utility: false,
       has_adult_content: false,
@@ -176,13 +166,14 @@ def seed_fake_mods
   NexusInfo.create(
       id: 607,
       mod_id: Mod.last.id,
+      mod_name: Mod.last.name,
       game_id: gameSkyrim.id,
       uploaded_by: "NebuLa1",
       authors: "NebuLa from AHBmods",
-      date_added: DateTime.strptime("19/11/2011 - 01:03AM", nexusDateFormat),
-      date_updated: DateTime.strptime("09/01/2016 - 04:57PM", nexusDateFormat),
+      released: DateTime.strptime("19/11/2011 - 01:03AM", nexusDateFormat),
+      updated: DateTime.strptime("09/01/2016 - 04:57PM", nexusDateFormat),
       endorsements: 158069,
-      total_downloads: 17720870,
+      downloads: 17720870,
       unique_downloads: 8524444,
       views: 20530426,
       posts_count: 8494,
@@ -195,6 +186,7 @@ def seed_fake_mods
 
   Mod.create(
       name: "RaceMenu",
+      authors: "Expired",
       primary_category_id: Category.where(name: "Gameplay - User Interface").first.id,
       secondary_category_id: Category.where(name: "Resources - Frameworks").first.id,
       is_utility: false,
@@ -207,13 +199,14 @@ def seed_fake_mods
   NexusInfo.create(
       id: 29624,
       mod_id: Mod.last.id,
+      mod_name: Mod.last.name,
       game_id: gameSkyrim.id,
       uploaded_by: "expired6978",
       authors: "Expired",
-      date_added: DateTime.strptime("08/01/2013 - 01:10AM", nexusDateFormat),
-      date_updated: DateTime.strptime("18/01/2016 - 10:37AM", nexusDateFormat),
+      released: DateTime.strptime("08/01/2013 - 01:10AM", nexusDateFormat),
+      updated: DateTime.strptime("18/01/2016 - 10:37AM", nexusDateFormat),
       endorsements: 148874,
-      total_downloads: 4187681,
+      downloads: 4187681,
       unique_downloads: 2890642,
       views: 9661000,
       posts_count: 10047,
@@ -226,24 +219,33 @@ def seed_fake_mods
 
   Mod.create(
       name: "Unofficial Skyrim Legendary Edition Patch",
+      authors: "Unofficial Patch Project Team ",
       primary_category_id: Category.where(name: "Fixes").first.id,
       is_utility: false,
       has_adult_content: false,
       game_id: gameSkyrim.id,
       submitted_by: adminUser.id,
-      released: DateTime.strptime("07/11/2015 - 08:41PM", nexusDateFormat)
+      released: DateTime.strptime("07/11/2015 - 08:41PM", nexusDateFormat),
+      required_mods_attributes: [{
+          required_id: Mod.find_by(name: "Dawnguard").id
+      }, {
+          required_id: Mod.find_by(name: "Hearthfire").id
+      }, {
+          required_id: Mod.find_by(name: "Dragonborn").id
+      }]
   )
 
   NexusInfo.create(
       id: 71214,
       mod_id: Mod.last.id,
+      mod_name: Mod.last.name,
       game_id: gameSkyrim.id,
       uploaded_by: "Arthmoor",
       authors: "Unofficial Patch Project Team ",
-      date_added: DateTime.strptime("07/11/2015 - 08:41PM", nexusDateFormat),
-      date_updated: DateTime.strptime("20/01/2016 - 06:41PM", nexusDateFormat),
+      released: DateTime.strptime("07/11/2015 - 08:41PM", nexusDateFormat),
+      updated: DateTime.strptime("20/01/2016 - 06:41PM", nexusDateFormat),
       endorsements: 14628,
-      total_downloads: 272979,
+      downloads: 272979,
       unique_downloads: 183781,
       views: 742126,
       posts_count: 1703,
@@ -256,6 +258,7 @@ def seed_fake_mods
 
   Mod.create(
       name: "Mod Organizer",
+      authors: "Tannin",
       primary_category_id: Category.where(name: "Utilities - Tools").first.id,
       is_utility: true,
       has_adult_content: false,
@@ -267,13 +270,14 @@ def seed_fake_mods
   NexusInfo.create(
       id: 1334,
       mod_id: Mod.last.id,
+      mod_name: Mod.last.name,
       game_id: gameSkyrim.id,
       uploaded_by: "Tannin42",
       authors: "Tannin",
-      date_added: DateTime.strptime("24/11/2011 - 03:30PM", nexusDateFormat),
-      date_updated: DateTime.strptime("01/12/2015 - 09:23PM", nexusDateFormat),
+      released: DateTime.strptime("24/11/2011 - 03:30PM", nexusDateFormat),
+      updated: DateTime.strptime("01/12/2015 - 09:23PM", nexusDateFormat),
       endorsements: 88697,
-      total_downloads: 2078942,
+      downloads: 2078942,
       unique_downloads: 1507428,
       views: 4833168,
       posts_count: 13016,
@@ -286,6 +290,7 @@ def seed_fake_mods
 
   Mod.create(
       name: "Skyrim Flora Overhaul",
+      authors: "vurt",
       primary_category_id: Category.where(name: "Audiovisual - Models & Textures").first.id,
       is_utility: false,
       has_adult_content: false,
@@ -297,13 +302,14 @@ def seed_fake_mods
   NexusInfo.create(
       id: 141,
       mod_id: Mod.last.id,
+      mod_name: Mod.last.name,
       game_id: gameSkyrim.id,
       uploaded_by: "vurt",
       authors: "vurt",
-      date_added: DateTime.strptime("13/11/2011 - 10:36PM", nexusDateFormat),
-      date_updated: DateTime.strptime("16/01/2016 - 10:15PM", nexusDateFormat),
+      released: DateTime.strptime("13/11/2011 - 10:36PM", nexusDateFormat),
+      updated: DateTime.strptime("16/01/2016 - 10:15PM", nexusDateFormat),
       endorsements: 99308,
-      total_downloads: 5225456,
+      downloads: 5225456,
       unique_downloads: 3342510,
       views: 10248390,
       posts_count: 10586,
@@ -316,6 +322,7 @@ def seed_fake_mods
 
   Mod.create(
       name: "TES5Edit",
+      authors: "ElminsterAU",
       primary_category_id: Category.where(name: "Utilities - Tools").first.id,
       secondary_category_id: Category.where(name: "Resources - Frameworks").first.id,
       is_utility: true,
@@ -328,13 +335,14 @@ def seed_fake_mods
   NexusInfo.create(
       id: 25859,
       mod_id: Mod.last.id,
+      mod_name: Mod.last.name,
       game_id: gameSkyrim.id,
       uploaded_by: "Sharlikran",
       authors: "ElminsterAU",
-      date_added: DateTime.strptime("22/10/2012 - 06:22AM", nexusDateFormat),
-      date_updated: DateTime.strptime("10/11/2015 - 07:43AM", nexusDateFormat),
+      released: DateTime.strptime("22/10/2012 - 06:22AM", nexusDateFormat),
+      updated: DateTime.strptime("10/11/2015 - 07:43AM", nexusDateFormat),
       endorsements: 80385,
-      total_downloads: 1597970,
+      downloads: 1597970,
       unique_downloads: 1162331,
       views: 4606415,
       posts_count: 0,
@@ -348,6 +356,7 @@ def seed_fake_mods
 # Top mods in the last 59 days
   Mod.create(
       name: "Merge Plugins",
+      authors: "Mator",
       primary_category_id: Category.where(name: "Utilities - Tools").first.id,
       is_utility: true,
       has_adult_content: false,
@@ -359,13 +368,14 @@ def seed_fake_mods
   NexusInfo.create(
       id: 69905,
       mod_id: Mod.last.id,
+      mod_name: Mod.last.name,
       game_id: gameSkyrim.id,
       uploaded_by: "matortheeternal",
       authors: "Mator",
-      date_added: DateTime.strptime("24/12/2015 - 01:56AM", nexusDateFormat),
-      date_updated: DateTime.strptime("05/01/2016 - 09:16AM", nexusDateFormat),
+      released: DateTime.strptime("24/12/2015 - 01:56AM", nexusDateFormat),
+      updated: DateTime.strptime("05/01/2016 - 09:16AM", nexusDateFormat),
       endorsements: 1099,
-      total_downloads: 12487,
+      downloads: 12487,
       unique_downloads: 11147,
       views: 92672,
       posts_count: 701,
@@ -378,6 +388,7 @@ def seed_fake_mods
 
   Mod.create(
       name: "The Lily - Armour Mashup",
+      authors: "pottoply",
       primary_category_id: Category.where(name: "Items - Armor, Clothing, & Accessories").first.id,
       is_utility: false,
       has_adult_content: false,
@@ -389,13 +400,14 @@ def seed_fake_mods
   NexusInfo.create(
       id: 71843,
       mod_id: Mod.last.id,
+      mod_name: Mod.last.name,
       game_id: gameSkyrim.id,
       uploaded_by: "pottoply",
       authors: "pottoply",
-      date_added: DateTime.strptime("08/12/2015 - 09:42PM", nexusDateFormat),
-      date_updated: DateTime.strptime("19/01/2016 - 07:58PM", nexusDateFormat),
+      released: DateTime.strptime("08/12/2015 - 09:42PM", nexusDateFormat),
+      updated: DateTime.strptime("19/01/2016 - 07:58PM", nexusDateFormat),
       endorsements: 921,
-      total_downloads: 23264,
+      downloads: 23264,
       unique_downloads: 19418,
       views: 122787,
       posts_count: 207,
@@ -408,6 +420,7 @@ def seed_fake_mods
 
   Mod.create(
       name: "THE PEOPLE OF SKYRIM ULTIMATE EDITION",
+      authors: "Nesbit",
       primary_category_id: Category.where(name: "Gameplay - Immersion & Role-playing").first.id,
       secondary_category_id: Category.where(name: "New Characters").first.id,
       is_utility: false,
@@ -420,13 +433,14 @@ def seed_fake_mods
   NexusInfo.create(
       id: 72449,
       mod_id: Mod.last.id,
+      mod_name: Mod.last.name,
       game_id: gameSkyrim.id,
       uploaded_by: "nesbit098",
       authors: "Nesbit",
-      date_added: DateTime.strptime("05/01/2016 - 10:31AM", nexusDateFormat),
-      date_updated: DateTime.strptime("24/01/2016 - 02:41AM", nexusDateFormat),
+      released: DateTime.strptime("05/01/2016 - 10:31AM", nexusDateFormat),
+      updated: DateTime.strptime("24/01/2016 - 02:41AM", nexusDateFormat),
       endorsements: 970,
-      total_downloads: 57197,
+      downloads: 57197,
       unique_downloads: 37661,
       views: 196131,
       posts_count: 1397,
@@ -439,6 +453,7 @@ def seed_fake_mods
 
   Mod.create(
       name: "Skaal You Need - Skaal house and follower",
+      authors: "Elianora",
       primary_category_id: Category.where(name: "Locations - New Player Homes").first.id,
       secondary_category_id: Category.where(name: "New Characters - Allies").first.id,
       is_utility: false,
@@ -451,13 +466,14 @@ def seed_fake_mods
   NexusInfo.create(
       id: 72005,
       mod_id: Mod.last.id,
+      mod_name: Mod.last.name,
       game_id: gameSkyrim.id,
       uploaded_by: "Elianora",
       authors: "Elianora",
-      date_added: DateTime.strptime("17/12/2015 - 09:23PM", nexusDateFormat),
-      date_updated: DateTime.strptime("20/01/2016 - 07:36PM", nexusDateFormat),
+      released: DateTime.strptime("17/12/2015 - 09:23PM", nexusDateFormat),
+      updated: DateTime.strptime("20/01/2016 - 07:36PM", nexusDateFormat),
       endorsements: 737,
-      total_downloads: 12276,
+      downloads: 12276,
       unique_downloads: 9996,
       views: 96800,
       posts_count: 242,
@@ -470,6 +486,7 @@ def seed_fake_mods
 
   Mod.create(
       name: "SC - Hairstyles",
+      authors: "ShinglesCat",
       primary_category_id: Category.where(name: "Character Appearance - Face Parts").first.id,
       is_utility: false,
       has_adult_content: false,
@@ -481,13 +498,14 @@ def seed_fake_mods
   NexusInfo.create(
       id: 71561,
       mod_id: Mod.last.id,
+      mod_name: Mod.last.name,
       game_id: gameSkyrim.id,
       uploaded_by: "ShinglesCat",
       authors: "ShinglesCat",
-      date_added: DateTime.strptime("25/11/2015 - 09:21AM", nexusDateFormat),
-      date_updated: DateTime.strptime("02/01/2016 - 06:11PM", nexusDateFormat),
+      released: DateTime.strptime("25/11/2015 - 09:21AM", nexusDateFormat),
+      updated: DateTime.strptime("02/01/2016 - 06:11PM", nexusDateFormat),
       endorsements: 650,
-      total_downloads: 10243,
+      downloads: 10243,
       unique_downloads: 8640,
       views: 90865,
       posts_count: 98,
@@ -500,6 +518,7 @@ def seed_fake_mods
 
   Mod.create(
       name: "Real Names",
+      authors: "Jaxonz and Nellshini",
       primary_category_id: Category.where(name: "Gameplay - Immersion & Role-playing").first.id,
       is_utility: false,
       has_adult_content: false,
@@ -511,13 +530,14 @@ def seed_fake_mods
   NexusInfo.create(
       id: 71464,
       mod_id: Mod.last.id,
+      mod_name: Mod.last.name,
       game_id: gameSkyrim.id,
       uploaded_by: "nellshini",
       authors: "Jaxonz and Nellshini",
-      date_added: DateTime.strptime("23/11/2015 - 02:11AM", nexusDateFormat),
-      date_updated: DateTime.strptime("21/01/2016 - 07:01AM", nexusDateFormat),
+      released: DateTime.strptime("23/11/2015 - 02:11AM", nexusDateFormat),
+      updated: DateTime.strptime("21/01/2016 - 07:01AM", nexusDateFormat),
       endorsements: 665,
-      total_downloads: 11142,
+      downloads: 11142,
       unique_downloads: 9654,
       views: 47429,
       posts_count: 166,
@@ -536,7 +556,7 @@ end
 def seed_fake_tags
   # helper variables
   gameSkyrim = Game.where({display_name: "Skyrim"}).first
-  
+
   # generate tags
   puts "\nSeeding tags"
 
@@ -669,26 +689,33 @@ def seed_fake_reviews
 
   # generate reviews on mods
   Mod.all.each do |mod|
+    if mod.primary_category_id.nil?
+      next
+    end
+
     nReviews = rand(6)
     puts "    Generating #{nReviews} reviews for #{mod.name}"
     nReviews.times do
       submitter = random_user
+
+      review_ratings = []
+      category_ids = [mod.primary_category_id]
+      category_ids.push(mod.primary_category.parent_id) if mod.primary_category.parent_id
+      review_sections = ReviewSection.where(category_id: category_ids).sample(rand(2..5))
+      review_sections.each do |section|
+        review_ratings.push({review_section_id: section.id, rating: rand(100)})
+      end
+
       review = mod.reviews.new(
           game_id: gameSkyrim.id,
           submitted_by: submitter.id,
           mod_id: mod.id,
           hidden: false,
           submitted: DateTime.now,
-          text_body: Faker::Lorem.paragraph(18)
+          text_body: Faker::Lorem.paragraph(18),
+          review_ratings_attributes: review_ratings
       )
       review.save!
-
-      # seed ratings on reviews
-      nRatings = rand(2..5)
-      nRatings.times do
-        section = random_review_section
-        review.review_ratings.create(rating: rand(100), review_section_id: section.id)
-      end
 
       # seed helpful marks on reviews
       nHelpfulMarks = randpow(10, 3)
@@ -717,7 +744,7 @@ def seed_fake_compatibility_notes
     cnote = CompatibilityNote.new(
         game_id: gameSkyrim.id,
         submitted_by: submitter.id,
-        compatibility_type: CompatibilityNote.compatibility_types.keys.sample,
+        status: CompatibilityNote.statuses.keys.sample,
         submitted: Faker::Date.backward(14),
         text_body: Faker::Lorem.paragraph(10),
         first_mod_id: random_mod.id,
@@ -748,7 +775,6 @@ def seed_fake_install_order_notes
   nNotes = Mod.count
   nNotes.times do
     submitter = random_user
-    puts "    Generating install order note"
     ionote = InstallOrderNote.new(
         game_id: gameSkyrim.id,
         submitted_by: submitter.id,
@@ -833,9 +859,9 @@ def seed_fake_mod_lists
   nModLists = User.count / 2
   nModLists.times do
     author = User.offset(rand(User.count)).first
-    ModList.new(
+    mod_list = ModList.create!(
         name: Faker::Lorem.words(3).join(' '),
-        created_by: author.id,
+        submitted_by: author.id,
         is_collection: [true, false].sample,
         hidden: [true, false].sample,
         has_adult_content: [true, false].sample,
@@ -843,7 +869,14 @@ def seed_fake_mod_lists
         description: Faker::Lorem.paragraph(5),
         submitted: Faker::Date.backward(14),
         game_id: gameSkyrim.id
-    ).save!
+    )
+    Mod.all.each_with_index do |mod, index|
+      mod_list.mod_list_mods.create!(
+        mod_id: mod.id,
+        active: true,
+        index: index
+      )
+    end
   end
 
   puts "    #{ModList.count} mod lists seeded"

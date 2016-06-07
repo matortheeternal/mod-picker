@@ -8,6 +8,11 @@ class UsersController < ApplicationController
     render :json => @users
   end
 
+  # GET /current_user
+  def current
+    render :json => current_user.current_json
+  end
+
   # GET /users/1
   def show
     authorize! :read, @user

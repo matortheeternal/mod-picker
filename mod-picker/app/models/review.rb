@@ -1,5 +1,5 @@
 class Review < ActiveRecord::Base
-  include Filterable, RecordEnhancements
+  include Filterable, Sortable, RecordEnhancements
 
   scope :game, -> (id) { where(game_id: id) }
   scope :user, -> (id) { where(submitted_by: id) }
@@ -24,6 +24,8 @@ class Review < ActiveRecord::Base
 
   accepts_nested_attributes_for :review_ratings
 
+  self.per_page = 25
+
   # Validations
   validates :mod_id, :text_body, presence: true
   validates :text_body, length: {in: 512..32768}
@@ -31,9 +33,7 @@ class Review < ActiveRecord::Base
   # Callbacks
   after_create :increment_counters
   before_save :set_dates
-  before_update :clear_ratings
-  after_update :update_metrics
-  after_save :update_mod_metrics
+  after_save :update_mod_metrics, :update_metrics
   before_destroy :decrement_counters
 
   def clear_ratings
@@ -66,6 +66,27 @@ class Review < ActiveRecord::Base
     self.overall_rating = (total.to_f / count) if count > 0
   end
 
+  def compute_reputation
+    # TODO: We could base this off of the reputation of the people who marked the review helpful/not helpful, but we aren't doing that yet
+    user_rep = self.user.reputation.overall
+    helpfulness = (self.helpful_count - self.not_helpful_count)
+    if user_rep < 0
+      self.reputation = user_rep + helpfulness
+    else
+      user_rep_factor = 2 / (1 + Math::exp(-0.0075 * (user_rep - 640)))
+      if self.helpful_count < self.not_helpful_count
+        self.reputation = (1 - user_rep_factor / 2) * helpfulness
+      else
+        self.reputation = (1 + user_rep_factor) * helpfulness
+      end
+    end
+  end
+
+  def recompute_helpful_counts
+    self.helpful_count = HelpfulMark.where(helpfulable_id: self.id, helpfulable_type: "Review", helpful: true).count
+    self.not_helpful_count = HelpfulMark.where(helpfulable_id: self.id, helpfulable_type: "Review", helpful: false).count
+  end
+
   def as_json(options={})
     if JsonHelpers.json_options_empty(options)
       default_options = {
@@ -86,11 +107,6 @@ class Review < ActiveRecord::Base
     else
       super(options)
     end
-  end
-
-  def recompute_helpful_counts
-    self.helpful_count = HelpfulMark.where(helpfulable_id: self.id, helpfulable_type: "Review", helpful: true).count
-    self.not_helpful_count = HelpfulMark.where(helpfulable_id: self.id, helpfulable_type: "Review", helpful: false).count
   end
 
   private

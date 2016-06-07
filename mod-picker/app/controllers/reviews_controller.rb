@@ -3,9 +3,20 @@ class ReviewsController < ContributionsController
 
   # GET /reviews
   def index
-    @reviews = Review.filter(filtering_params)
+    @reviews = Review.accessible_by(current_ability).filter(filtering_params).sort(params[:sort]).paginate(:page => params[:page])
 
     render :json => @reviews
+  end
+
+  # PATCH/PUT /reviews/1
+  def update
+    authorize! :update, @contribution
+    @contribution.clear_ratings
+    if @contribution.update(contribution_update_params)
+      render json: {status: :ok}
+    else
+      render json: @contribution.errors, status: :unprocessable_entity
+    end
   end
 
   # POST /reviews
@@ -32,8 +43,13 @@ class ReviewsController < ContributionsController
       params.slice(:mod, :by);
     end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
+    # Params allowed during creation
     def contribution_params
-      params.require(:review).permit(:mod_id, :game_id, :text_body, review_ratings_attributes: [:rating, :review_section_id])
+      params.require(:review).permit(:mod_id, :game_id, :text_body, (:moderator_message if current_user.can_moderate?), review_ratings_attributes: [:rating, :review_section_id])
+    end
+
+    # Params that can be updated
+    def contribution_update_params
+      params.require(:review).permit(:text_body, :edit_summary, (:moderator_message if current_user.can_moderate?), review_ratings_attributes: [:rating, :review_section_id])
     end
 end

@@ -2,8 +2,7 @@
     <div class="mod-tab-items" ng-if="mod.plugins.length > 0">
         <div class="mod-tab-item primary-item">
             <strong>Select Plugin:</strong>
-            <select ng-model="currentPluginFilename" class="plugin-selector" ng-change="selectPlugin()">
-                <option ng-repeat="plugin in mod.plugins">{{plugin.filename}}</option>
+            <select ng-model="currentPlugin" class="plugin-selector" ng-change="selectPlugin(currentPlugin)" ng-options="plugin.filename for plugin in mod.plugins">
             </select>
         </div>
     </div>
@@ -49,24 +48,20 @@
         </div>
 
         <div class="content-container analysis-container">
-            <table class="analysis-table">
-                <thead>
-                <tr>
-                    <th>Signature</th>
-                    <th>FormID</th>
-                    <th>Type</th>
-                    <th>Name</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr ng-repeat="error in currentPlugin.plugin_errors">
-                    <td>{{error.signature}}</td>
-                    <td>{{error.form_id | hex:8}}</td>
-                    <td>{{error.group}}</td>
-                    <td>{{error.name}}</td>
-                </tr>
-                </tbody>
-            </table>
+            <div ng-repeat="errorType in sortedErrors" ng-if="errorType.errors.length > 0">
+                <h3 class="section-title">
+                    {{errorType.name}} ({{errorType.acronym}}s)
+                    <!-- TODO: Link to the correct help article here -->
+                    <a ng-href="/help/Plugin_Errors#{{errorType.acronym}}">
+                        <span class="help-tooltip" title="{{errorType.caption}}">?</span>
+                    </a>
+                </h3>
+                <ul class="errors-list">
+                    <li ng-repeat="error in errorType.errors">
+                        <plugin-error error="error" group="{{error.group}}"></plugin-error>
+                    </li>
+                </ul>
+            </div>
         </div>
     </div>
 

@@ -8,7 +8,7 @@ class ContributionsController < ApplicationController
   # PATCH/PUT /contribution/1
   def update
     authorize! :update, @contribution
-    if @contribution.update(contribution_params)
+    if @contribution.update(contribution_update_params)
       render json: {status: :ok}
     else
       render json: @contribution.errors, status: :unprocessable_entity

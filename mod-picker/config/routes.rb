@@ -8,15 +8,15 @@ Rails.application.routes.draw do
     resources :install_order_notes
     resources :load_order_notes
     resources :compatibility_notes
-    resources :incorrect_notes
+    resources :corrections
     resources :reviews
     resources :mod_authors
     resources :user_bios
-    resources :mod_lists
     resources :mod_asset_files
 
     # users and user settings
     resources :users, only: [:index, :show, :update, :destroy]
+    match '/current_user', to: 'users#current', via: 'get'
     resources :user_settings, only: [:index, :update]
     match '/link_account', to: 'users#link_account', via: 'get'
 
@@ -28,8 +28,8 @@ Rails.application.routes.draw do
     # tags
     match '/tags', to: 'tags#index', via: 'post'
     match '/tags/:id', to: 'tags#destroy', via: 'delete'
-    match '/mods/:id/tag', to: 'mods#tag', via: 'post'
-    match '/mod_lists/:id/tag', to: 'mod_lists#tag', via: 'post'
+    match '/mods/:id/tags', to: 'mods#update_tags', via: [:patch, :put]
+    match '/mod_lists/:id/tags', to: 'mod_lists#update_tags', via: [:patch, :put]
 
     # mods
     resources :mods, only: [:show, :update, :destroy]
@@ -43,11 +43,12 @@ Rails.application.routes.draw do
     match '/plugins/search', to: 'plugins#search', via: 'post'
 
     # content associated with mods
-    match '/mods/:id/reviews', to: 'mods#reviews', via: 'get'
-    match '/mods/:id/compatibility_notes', to: 'mods#compatibility_notes', via: 'get'
-    match '/mods/:id/install_order_notes', to: 'mods#install_order_notes', via: 'get'
-    match '/mods/:id/load_order_notes', to: 'mods#load_order_notes', via: 'get'
-    match '/mods/:id/analysis', to: 'mods#analysis', via: 'get'
+    match '/mods/:id/corrections', to: 'mods#corrections', via: [:get, :post]
+    match '/mods/:id/reviews', to: 'mods#reviews', via: [:get, :post]
+    match '/mods/:id/compatibility_notes', to: 'mods#compatibility_notes', via: [:get, :post]
+    match '/mods/:id/install_order_notes', to: 'mods#install_order_notes', via: [:get, :post]
+    match '/mods/:id/load_order_notes', to: 'mods#load_order_notes', via: [:get, :post]
+    match '/mods/:id/analysis', to: 'mods#analysis', via: [:get, :post]
 
     # helpful marks
     match '/reviews/:id/helpful', to: 'reviews#helpful', via: 'post'
@@ -68,7 +69,11 @@ Rails.application.routes.draw do
     match '/load_order_notes/:id/approve', to: 'load_order_notes#approve', via: 'post'
 
     # agreement marks
-    match '/incorrect_notes/:id/agreement', to: 'incorrect_notes#agreement', via: 'post'
+    match '/corrections/:id/agreement', to: 'corrections#agreement', via: 'post'
+
+    # mod lists
+    resources :mod_lists, only: [:index, :show, :create, :update, :destroy]
+    match '/active_mod_list', to: 'mod_lists#active', via: 'get'
 
     # mod and mod list stars
     match '/mod_lists/:id/star', to: 'mod_lists#create_star', via: 'post'

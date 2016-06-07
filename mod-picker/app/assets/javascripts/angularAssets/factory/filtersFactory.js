@@ -71,25 +71,25 @@ app.service('filtersFactory', function () {
                 data: "files",
                 max: 200
             },
-            {
+            /*{ TODO: Unimplemented on backend
                 label: "Bugs Count",
                 common: false,
                 sites: {nexus: true},
-                data: "endorsements",
+                data: "bugs",
                 max: 200
-            },
+            },*/
             {
                 label: "Discussions Count",
                 common: false,
-                sites: {nexus: true, workshop: true},
-                data: "endorsements",
+                sites: {/*nexus: true, TODO: Unimplemented on backend */ workshop: true},
+                data: "discussions",
                 max: 50
             },
             {
                 label: "Articles Count",
                 common: false,
                 sites: {nexus: true},
-                data: "endorsements",
+                data: "articles",
                 max: 50
             }
         ];
