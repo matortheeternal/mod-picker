@@ -6,7 +6,7 @@ app.config(['$stateProvider', function ($stateProvider) {
         templateUrl: '/resources/partials/modList/modlist_template.html',
         controller: 'modlistController',
         url: '/modlist/:modListId',
-        redirectTo: 'modlist.Details'
+        redirectTo: 'base.modlist.Details'
     }).state('base.modlist.Details', {
         templateUrl: '/resources/partials/modList/details.html',
         controller: 'modlistDetailsController',
