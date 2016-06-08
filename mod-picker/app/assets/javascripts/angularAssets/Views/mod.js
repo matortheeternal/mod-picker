@@ -224,9 +224,9 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, cu
 
     // HEADER RELATED LOGIC
     $scope.starMod = function() {
-        modService.starMod($scope.mod.id, $scope.modStarred).then(function(data) {
+        modService.starMod($scope.mod.id, $scope.mod.star).then(function(data) {
             if (data.status == 'ok') {
-                $scope.modStarred = !$scope.modStarred;
+                $scope.star = !$scope.star;
             }
         });
     };
