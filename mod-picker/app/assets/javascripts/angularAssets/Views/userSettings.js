@@ -184,7 +184,7 @@ app.controller('userSettingsController', function ($scope, $q, user, currentUser
             } else {
                 $scope.user.showSuccess = $scope.errors.length == 0;
                 $scope.updateTheme();
-                $scope.$broadcast('reloadCurrentUser', {});
+                $scope.$emit('reloadCurrentUser', {});
             }
         });
         if ($scope.avatar.file) {
