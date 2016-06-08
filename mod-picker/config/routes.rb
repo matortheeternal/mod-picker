@@ -75,6 +75,9 @@ Rails.application.routes.draw do
     resources :mod_lists, only: [:index, :show, :create, :update, :destroy]
     match '/active_mod_list', to: 'mod_lists#active', via: 'get'
 
+    # mod list tools
+    match '/mod_lists/:id/tools', to: 'mod_lists#tools', via: 'get'
+
     # mod and mod list stars
     match '/mod_lists/:id/star', to: 'mod_lists#create_star', via: 'post'
     match '/mod_lists/:id/star', to: 'mod_lists#destroy_star', via: 'delete'

@@ -1,5 +1,5 @@
 class ModListsController < ApplicationController
-  before_action :set_mod_list, only: [:show, :update, :destroy]
+  before_action :set_mod_list, only: [:show, :update, :destroy, :tools]
   before_action :set_active_mod_list, only: [:active, :mods]
 
   # GET /mod_lists
@@ -93,6 +93,17 @@ class ModListsController < ApplicationController
       render json: {status: :ok}
     else
       render json: @mod_list.errors, status: :unprocessable_entity
+    end
+  end
+
+  # GET /mod_lists/1/tools
+  # Get a list of the mods that have the sub category of "Utilities - Tools" 
+  # belonging to the specified mod_list id
+  def tools
+    if @mod_list
+      render :json => @mod_list.mod_tools
+    else
+      render status: 404
     end
   end
 

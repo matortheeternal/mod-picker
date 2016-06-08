@@ -130,6 +130,26 @@ class ModList < ActiveRecord::Base
     incompatible_mod_ids.uniq
   end
 
+  # GET list of mods with a sub-category of utilities - tools
+  def mod_tools
+    mod_ids = mod_list_mods.all.ids
+    if mod_ids.empty?
+      return []
+    end
+
+    # get tool mods
+    mod_tool_ids = []
+    # build array of mod_ids that are tools
+    mod_ids.each do |n|
+      mod_tool = Mod.where("id = ? AND is_utility = ?", n[1], false)
+      mod_tool_ids.push(mod_tool)
+    end
+
+    # returns all unique mods that belong to the mod_list AND are a utility
+    return_mod_tools = Mod.find(mod_tool_ids)
+    return_mod_tools.uniq
+  end
+
   private
     def set_dates
       if self.submitted.nil?
