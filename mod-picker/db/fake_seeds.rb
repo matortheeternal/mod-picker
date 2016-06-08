@@ -840,7 +840,7 @@ def seed_fake_mod_lists
     author = User.offset(rand(User.count)).first
     mod_list = ModList.create!(
         name: Faker::Lorem.words(3).join(' '),
-        created_by: author.id,
+        submitted_by: author.id,
         is_collection: [true, false].sample,
         hidden: [true, false].sample,
         has_adult_content: [true, false].sample,
