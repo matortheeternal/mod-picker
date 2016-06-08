@@ -66,7 +66,7 @@ RSpec.describe HelpfulMark, :model do
           helpfulable_type: "Madoka")
 
         mark.valid?
-        expect(mark.errors[:helpfulable_type]).to include("Not a valid record that contains helpful marks")
+        expect(mark.errors[:helpfulable_type]).to include("Not a valid record type that can contain helpful marks")
       end      
     end
 

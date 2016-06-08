@@ -3,14 +3,10 @@
 #   t.string  "filepath",              limit: 255,             null: false
 #   t.integer "mod_asset_files_count", limit: 4,   default: 0, null: false
 # end
-assetTreeTexture:
-  filepath: "data/textures/tree"
-  game_id: skyrim
+FactoryGirl.define do
+  factory :asset_file do
+    association :game, factory: :game
+    filepath { Faker::Name.name }
+  end
 
-assetRockTexture:
-  filepath: "data/textures/rock"
-  game_id: skyrim 
-  
-assetPlantTexture:
-  filepath: "data/textures/plant"
-  game_id: skyrim
+end
