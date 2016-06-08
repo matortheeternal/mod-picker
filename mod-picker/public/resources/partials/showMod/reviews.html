@@ -2,7 +2,7 @@
     <div class="mod-tab-item primary-item">
         <strong>Sort By: </strong>
 
-        <select ng-model="tabs[0].params.sort" ng-change="reSortReviews()">
+        <select ng-model="findTab('Reviews').params.sort" ng-change="reSortReviews()">
             <option value="reputation">Reputation</option>
             <option value="helpfulness">Helpfulness</option>
             <option value="overallRating">Overall Rating</option>
