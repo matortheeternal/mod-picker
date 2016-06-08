@@ -7,6 +7,7 @@ app.directive('tableResults', function () {
             label: '@',
             data: '=',
             columns: '=',
+            sort: '=',
             columnGroups: '=',
             availableColumnData: '=',
             actions: '=?'
