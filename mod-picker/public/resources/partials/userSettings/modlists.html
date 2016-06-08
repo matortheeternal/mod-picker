@@ -12,17 +12,17 @@
             </tr>
         </thead>
         <tbody>
-            <tr ng-repeat="modlist in user.mod_lists">
-                <td class="name-column">{{modlist.name}}</td>
-                <td>{{modlist.mods_count}}</td>
-                <td>{{modlist.status}}</td>
-                <td>{{modlist.mod_list_stars_count}}</td>
-                <td>{{modlist.comments_count}}</td>
+            <tr ng-repeat="mod_list in user.mod_lists">
+                <td class="name-column">{{mod_list.name}}</td>
+                <td>{{mod_list.mods_count}}</td>
+                <td>{{mod_list.status}}</td>
+                <td>{{mod_list.mod_list_stars_count}}</td>
+                <td>{{mod_list.comments_count}}</td>
                 <td>
                     <div class="table-buttons">
-                        <input class="btn-sm" type="button" ng-click="cloneModList(modlist)" value="Clone"/>
-                        <input class="btn-sm" type="button" ng-click="editModList(modlist)" value="Edit"/>
-                        <input class="btn-sm" type="button" ng-click="deleteModList(modlist)" value="Delete"/>
+                        <input class="btn-sm" type="button" ng-click="cloneModList(mod_list)" value="Clone"/>
+                        <input class="btn-sm" type="button" ng-click="editModList(mod_list)" value="Edit"/>
+                        <input class="btn-sm" type="button" ng-click="deleteModList(mod_list)" value="Delete"/>
                     </div>
                 </td>
             </tr>
