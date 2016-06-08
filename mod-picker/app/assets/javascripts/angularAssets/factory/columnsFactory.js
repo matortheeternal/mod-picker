@@ -43,14 +43,14 @@ app.service('columnsFactory', function() {
                 visibility: true,
                 label: "Reputation",
                 data: "reputation",
-                filter: "number"
+                filter: "number:0"
             },
             {
                 group: "Mod Picker",
                 visibility: false,
                 label: "Avg Rating",
                 data: "average_rating",
-                filter: "number"
+                filter: "number:0"
             },
             {
                 group: "Mod Picker",
