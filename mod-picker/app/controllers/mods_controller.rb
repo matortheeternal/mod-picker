@@ -18,7 +18,7 @@ class ModsController < ApplicationController
 
   # POST /mods/search
   def search
-    @mods = Mod.where(hidden: false).filter(search_params).sort({ column: "name", direction: "ASC" }).limit(10)
+    @mods = Mod.where(hidden: false).is_game(false).filter(search_params).sort({ column: "name", direction: "ASC" }).limit(10)
     render :json => @mods.as_json({
         :only => [:id, :name]
     })

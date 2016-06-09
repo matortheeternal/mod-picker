@@ -14,6 +14,13 @@ class Mod < ActiveRecord::Base
       where(game_id: game.id)
     end
   }
+  scope :is_game, -> (bool) {
+    if bool
+      where("primary_category_id IS NOT NULL")
+    else
+      where("primary_category_id IS NULL")
+    end
+  }
   scope :exclude, -> (excluded_mod_ids) { where.not(id: excluded_mod_ids) }
   scope :sources, -> (sources) {
     results = self.where(nil)
