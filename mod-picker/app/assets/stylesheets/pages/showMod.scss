@@ -678,3 +678,54 @@
     margin-bottom: 4px;
   }
 }
+
+.appeals-container {
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    border: 1px solid $border_color;
+
+    th {
+      margin: 0;
+      padding: 5px 10px;
+      text-align: left;
+      white-space: nowrap;
+      vertical-align: bottom;
+      border-right: 1px solid $border_color;
+    }
+
+    td {
+      border-width: 0 0 0 1px;
+      margin: 0;
+      overflow: visible;
+      padding-left: 10px;
+      white-space: normal;
+
+      .strong {
+        font-weight: 500;
+      }
+    }
+
+    td.main-cell {
+      min-width: 150px;
+      max-width: 200px;
+      white-space: normal;
+    }
+
+    thead tr {
+      background-color: $primary_background;
+      border-bottom: 1px solid $border_color;
+      border-top: 1px solid $border_color;
+    }
+
+    tbody tr:nth-child(odd) {
+      background-color: $secondary_background;
+      border-bottom: 1px solid $border_color;
+    }
+
+    tbody tr:nth-child(even) {
+      background-color: $primary_background;
+      border-bottom: 1px solid $border_color;
+    }
+  }
+}

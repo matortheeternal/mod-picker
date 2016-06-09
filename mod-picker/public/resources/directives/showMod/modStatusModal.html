@@ -30,23 +30,23 @@
             <table ng-if="mod.corrections.length > 0">
                 <thead>
                 <tr>
-                    <td>Title</td>
-                    <td>Date Submitted</td>
-                    <td>Submitted by</td>
-                    <td>Comments</td>
-                    <td>Status</td>
+                    <th>Title</th>
+                    <th>Date Submitted</th>
+                    <th>Submitted by</th>
+                    <th>Comments</th>
+                    <th>Status</th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr ng-repeat="appeal in mod.corrections" ng-class="{ 'appeal-hidden' : appeal.hidden }">
                     <td class="main-cell">
-                        <a ng-click="showAppeal(appeal)">
+                        <a ng-click="showAppeal(appeal)" class="strong">
                             {{appeal.title}}
                         </a>
                     </td>
                     <td>{{appeal.submitted | date}}</td>
                     <td>
-                        <a ng-href="#/profile/{{appeal.submitted_by}}">
+                        <a ng-href="#/profile/{{appeal.submitted_by}}" class="strong">
                             {{appeal.user.username}}
                         </a>
                     </td>
