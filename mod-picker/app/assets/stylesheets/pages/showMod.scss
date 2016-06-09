@@ -360,6 +360,17 @@
     padding: 10px;
   }
 
+  .content-options {
+    margin: 20px;
+
+    strong {
+      width: 110px;
+      cursor: default;
+      text-align: center;
+      display: inline-block;
+    }
+  }
+
   .content-container {
     margin: 20px;
 
@@ -397,27 +408,19 @@
     @include user-select(none);
   }
 
-  .add-note-options {
-    margin: 20px;
-
-    strong {
-      min-width: 263px;
-      text-align: center;
-      display: inline-block;
-    }
-
+  .content-options {
     .compatibility-dropdown {
-      min-width: 236px;
+      width: 260px;
     }
 
     .order-dropdown {
       min-width: 85px;
     }
 
-    > div {
-      display: flex;
-      align-items: center;
+    strong {
+      width: 248px;
       text-align: center;
+      display: inline-block;
     }
   }
 }

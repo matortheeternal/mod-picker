@@ -24,7 +24,7 @@
         <span ng-if="!activeLoadOrderNote.original">Add</span>
         Load Order Note
     </div>
-    <div class="add-note-options">
+    <div class="content-options">
         <span class="select">
             <select ng-model="activeLoadOrderNote.first_plugin_id" ng-disabled="activeLoadOrderNote.editing">
                 <option ng-repeat="plugin in mod.plugins" ng-show="plugin.id !== activeLoadOrderNote.second_plugin_id" value="{{plugin.id}}">

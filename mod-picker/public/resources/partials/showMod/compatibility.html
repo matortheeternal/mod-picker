@@ -35,7 +35,7 @@
         <span ng-if="!activeCompatibilityNote.original">Add</span>
         Compatibility Note
     </div>
-    <div class="add-note-options">
+    <div class="content-options">
         <span class="select compatibility-dropdown">
             <select ng-model="activeCompatibilityNote.status">
                 <option value="incompatible">Incompatible with</option>
@@ -47,7 +47,7 @@
         </span>
         <mod-input result-id="activeCompatibilityNote.mod_id" search-text="activeCompatibilityNote.mod_name" excluded-id="mod.id" on-change="validateCompatibilityNote" disabled="activeCompatibilityNote.original"></mod-input>
     </div>
-    <div class="add-note-options" ng-show="['compatibility mod', 'compatibility option'].indexOf(activeCompatibilityNote.status) > -1">
+    <div class="content-options" ng-show="['compatibility mod', 'compatibility option'].indexOf(activeCompatibilityNote.status) > -1">
         <span ng-if="activeCompatibilityNote.status === 'compatibility mod'">
             <strong>Compatibility Mod</strong>
             <mod-input result-id="activeCompatibilityNote.compatibility_mod_id" excluded-id="mod.id" on-change="validateCompatibilityNote"></mod-input>
