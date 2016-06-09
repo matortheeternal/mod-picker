@@ -170,11 +170,13 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
     };
 
     // update the markdown editor
-    $scope.updateEditor = function() {
-        $timeout(function() {
-            var editorBox = document.getElementsByClassName("add-note-box")[0];
-            smoothScroll(editorBox, {offset: 20});
-        });
+    $scope.updateEditor = function(noScroll) {
+        if (!noScroll) {
+            $timeout(function() {
+                var editorBox = document.getElementsByClassName("add-note-box")[0];
+                smoothScroll(editorBox, {offset: 20});
+            });
+        }
         $scope.updateMDE = ($scope.updateMDE || 0) + 1;
     };
 
