@@ -90,6 +90,6 @@ class CorrectionsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def correction_params
-      params.require(:correction).permit(:submitted_by, :reason, :correctable_id, :correctable_type)
+      params.require(:correction).permit(:game_id, :correctable_id, :correctable_type, :title, :text_body, :mod_status)
     end
 end
