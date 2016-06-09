@@ -9,15 +9,16 @@ class CorrectionsController < ApplicationController
   end
 
   # GET /corrections/1
-  # GET /corrections/1.json
   def show
+    authorize! :read, @correction
     render :json => @correction
   end
 
   # POST /corrections
-  # POST /corrections.json
   def create
     @correction = Correction.new(correction_params)
+    @correction.submitted_by = current_user.id
+    authorize! :create, @correction
 
     if @correction.save
       render json: {status: :ok}
@@ -27,8 +28,8 @@ class CorrectionsController < ApplicationController
   end
 
   # PATCH/PUT /corrections/1
-  # PATCH/PUT /corrections/1.json
   def update
+    authorize! :update, @correction
     if @correction.update(correction_params)
       render json: {status: :ok}
     else
@@ -58,8 +59,8 @@ class CorrectionsController < ApplicationController
   end
 
   # DELETE /corrections/1
-  # DELETE /corrections/1.json
   def destroy
+    authorize! :destroy, @correction
     if @correction.destroy
       render json: {status: :ok}
     else
