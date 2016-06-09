@@ -2,9 +2,8 @@ class CorrectionsController < ApplicationController
   before_action :set_correction, only: [:show, :update, :destroy]
 
   # GET /corrections
-  # GET /corrections.json
   def index
-    @corrections = Correction.filter(filtering_params)
+    @corrections = Correction.accessible_by(current_ability).filter(filtering_params)
 
     render :json => @corrections
   end
