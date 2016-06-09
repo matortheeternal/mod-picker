@@ -1,5 +1,5 @@
 class CorrectionsController < ApplicationController
-  before_action :set_correction, only: [:show, :edit, :update, :destroy]
+  before_action :set_correction, only: [:show, :update, :destroy]
 
   # GET /corrections
   # GET /corrections.json
@@ -13,15 +13,6 @@ class CorrectionsController < ApplicationController
   # GET /corrections/1.json
   def show
     render :json => @correction
-  end
-
-  # GET /corrections/new
-  def new
-    @correction = Correction.new
-  end
-
-  # GET /corrections/1/edit
-  def edit
   end
 
   # POST /corrections
