@@ -29,6 +29,7 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
     $scope.userTitles = [];
     $scope.reviewSections = [];
     $scope.allReviewSections = [];
+    $scope.statusModal = {};
     $scope.sort = {
         reviews: {
             column: 'reputation',
@@ -322,7 +323,7 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
     };
 
     $scope.toggleStatusModal = function(visible) {
-        $scope.showStatusModal = visible;
+        $scope.statusModal.visible = visible;
         if (!$scope.mod.corrections && !$scope.retrieving.corrections) {
             $scope.retrieveCorrections();
         }

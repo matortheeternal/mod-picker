@@ -5,7 +5,7 @@ app.directive('comment', function () {
         controller: 'commentController',
         scope: {
             comment: '='
-        },
+        }
     };
 });
 
