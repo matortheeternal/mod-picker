@@ -8,6 +8,11 @@ app.directive('modStatusModal', function () {
 });
 
 app.controller('modStatusModalController', function ($scope, contributionService) {
+    // compute agree percentage helper
+    $scope.computeAgreePercentage = function(appeal) {
+        return (appeal.agree_count / ((appeal.agree_count + appeal.disagree_count) || 1)) * 100;
+    };
+
     // start a new appeal
     $scope.startNewAppeal = function() {
         var statuses = ["good", "outdated", "dangerous"];

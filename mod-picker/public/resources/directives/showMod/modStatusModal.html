@@ -52,7 +52,7 @@
                     </td>
                     <td>{{appeal.comments_count}}</td>
                     <td>
-                        <span ng-if="appeal.status === 'open'">{{appeal.agree_count / (appeal.agree_count + appeal.disagree_count) | number:0}}% Agree</span>
+                        <span ng-if="appeal.status === 'open'">{{computeAgreePercentage(appeal) | number:0}}% Agree</span>
                         <div ng-if="appeal.status !== 'open'" class="action-box appeal-{{appeal.status}} capitalize">
                             {{appeal.status}}
                         </div>
