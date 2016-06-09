@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160606053931) do
+ActiveRecord::Schema.define(version: 20160609205629) do
 
   create_table "agreement_marks", id: false, force: :cascade do |t|
     t.integer "correction_id", limit: 4,                null: false
@@ -145,7 +145,8 @@ ActiveRecord::Schema.define(version: 20160606053931) do
     t.string   "correctable_type", limit: 255,                   null: false
     t.string   "title",            limit: 64,                    null: false
     t.text     "text_body",        limit: 65535,                 null: false
-    t.integer  "status",           limit: 4,     default: 0,     null: false
+    t.integer  "status",           limit: 1,     default: 0,     null: false
+    t.integer  "mod_status",       limit: 1,     default: 0,     null: false
     t.integer  "agree_count",      limit: 4,     default: 0,     null: false
     t.integer  "disagree_count",   limit: 4,     default: 0,     null: false
     t.integer  "comments_count",   limit: 4,     default: 0,     null: false
