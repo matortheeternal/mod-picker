@@ -336,7 +336,7 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
     $scope.saveTags = function(updatedTags) {
         var response = $q.defer();
         tagService.updateModTags($scope.mod, updatedTags).then(function(data) {
-            if (data.status == "ok") {
+            if (data.status === "ok") {
                 $scope.submitMessage = "Tags submitted successfully.";
                 $scope.showSuccess = true;
             } else {
@@ -516,7 +516,7 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
         if ($scope.activeReview.editing) {
             var reviewId = $scope.activeReview.original.id;
             contributionService.updateContribution("reviews", reviewId, reviewObj).then(function(data) {
-                if (data.status == "ok") {
+                if (data.status === "ok") {
                     $scope.submitMessage = "Review updated successfully!";
                     $scope.showSuccess = true;
 
@@ -527,7 +527,7 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
             });
         } else {
             contributionService.submitContribution("reviews", reviewObj).then(function(data) {
-                if (data.status == "ok") {
+                if (data.status === "ok") {
                     $scope.submitMessage = "Review submitted successfully!";
                     $scope.showSuccess = true;
                     // TODO: push the review onto the $scope.mod.reviews array
@@ -654,7 +654,7 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
         if ($scope.activeCompatibilityNote.editing) {
             var noteId = $scope.activeCompatibilityNote.original.id;
             contributionService.updateContribution("compatibility_notes", noteId, noteObj).then(function(data) {
-                if (data.status == "ok") {
+                if (data.status === "ok") {
                     $scope.submitMessage = "Compatibility Note updated successfully!";
                     $scope.showSuccess = true;
 
@@ -665,7 +665,7 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
             });
         } else {
             contributionService.submitContribution("compatibility_notes", noteObj).then(function(data) {
-                if (data.status == "ok") {
+                if (data.status === "ok") {
                     $scope.submitMessage = "Compatibility Note submitted successfully!";
                     $scope.showSuccess = true;
                     // TODO: push the compatibility note onto the $scope.mod.compatibility_notes array
@@ -778,7 +778,7 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
         if ($scope.activeInstallOrderNote.editing) {
             var noteId = $scope.activeInstallOrderNote.original.id;
             contributionService.updateContribution("install_order_notes", noteId, noteObj).then(function(data) {
-                if (data.status == "ok") {
+                if (data.status === "ok") {
                     $scope.submitMessage = "Install Order Note updated successfully!";
                     $scope.showSuccess = true;
 
@@ -789,7 +789,7 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
             });
         } else {
             contributionService.submitContribution("install_order_notes", noteObj).then(function(data) {
-                if (data.status == "ok") {
+                if (data.status === "ok") {
                     $scope.submitMessage = "Install Order Note submitted successfully!";
                     $scope.showSuccess = true;
                     // TODO: push the Install Order note onto the $scope.mod.install_order_notes array
@@ -912,7 +912,7 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
         if ($scope.activeLoadOrderNote.editing) {
             var noteId = $scope.activeLoadOrderNote.original.id;
             contributionService.updateContribution("load_order_notes", noteId, noteObj).then(function(data) {
-                if (data.status == "ok") {
+                if (data.status === "ok") {
                     $scope.submitMessage = "Load Order Note updated successfully!";
                     $scope.showSuccess = true;
 
@@ -923,7 +923,7 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, mo
             });
         } else {
             contributionService.submitContribution("load_order_notes", noteObj).then(function(data) {
-                if (data.status == "ok") {
+                if (data.status === "ok") {
                     $scope.submitMessage = "Load Order Note submitted successfully!";
                     $scope.showSuccess = true;
                     // TODO: push the Load Order note onto the $scope.mod.load_order_notes array
