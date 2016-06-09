@@ -358,6 +358,27 @@
     color: $bar_text_color;
     background-color: $bar_color;
     padding: 10px;
+
+    input[type="text"] {
+      min-width: 2em;
+      max-width: 100%;
+      padding: 0;
+      margin: 0;
+      font: inherit;
+      color: inherit;
+      border: none;
+      background-color: inherit;
+      @include transition(box-shadow 0.2s ease-in-out);
+
+      &:hover {
+        box-shadow: 0 0 3px 0 $border_color;
+      }
+
+      &:focus {
+        box-shadow: 0 0 3px 0 $border_color;
+        outline: none;
+      }
+    }
   }
 
   .content-options {
