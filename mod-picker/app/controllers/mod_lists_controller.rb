@@ -101,7 +101,13 @@ class ModListsController < ApplicationController
   # belonging to the specified mod_list id
   def tools
     if @mod_list
-      render :json => @mod_list.mod_tools
+      # Get all the mod_list_mod records associatd with @mod_list
+      # join on the "mod" association on the ModListMod (mod_list_mod.rb) model
+      mod_list_mods = @mod_list.mod_list_mods.joins(:mod).where(:mods => {is_utility: true})
+
+      # filter to only include mods who's is_utility is true'
+      final = mod_list_mods.as_json({:only => [:index, :active], :include => {:mod => {:only => [:id, :name, :is_utility]}}})
+      render :json => final
     else
       render status: 404
     end

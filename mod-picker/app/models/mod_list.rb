@@ -133,22 +133,32 @@ class ModList < ActiveRecord::Base
 
   # GET list of mods with a sub-category of utilities - tools
   def mod_tools
-    mod_ids = mod_list_mods.all.ids
-    if mod_ids.empty?
-      return []
-    end
+    # mod_ids = mod_list_mods.all.ids
+    # if mod_ids.empty?
+    #   return []
+    # end
 
-    # get tool mods
-    mod_tool_ids = []
-    # build array of mod_ids that are tools
-    mod_ids.each do |n|
-      mod_tool = Mod.where("id = ? AND is_utility = ?", n[1], false)
-      mod_tool_ids.push(mod_tool)
-    end
+    # # get tool mods
+    # mod_tool_ids = []
+    # # build array of mod_ids that are tools
+    # mod_ids.each do |n|
+    #   mod_tool = Mod.where("id = ? AND is_utility = ?", n[1], true)
+    #   if(!mod_tool[0].nil? && mod_tool[0].is_utility === true)
+    #     mod_tool_ids.push(mod_tool[0])
+    #   end
+    # end
 
-    # returns all unique mods that belong to the mod_list AND are a utility
-    return_mod_tools = Mod.find(mod_tool_ids)
-    return_mod_tools.uniq
+
+    # if mod_tool_ids.empty?
+    #   return []
+    # else
+    #   return_mod_tools = Mod.find(mod_tool_ids)
+    #   return_mod_tools.uniq
+    # end
+
+    mod_list_mods = @mod_list.mod_list_mods.joins(:mod)
+
+    mod_list_mods
   end
 
   private
