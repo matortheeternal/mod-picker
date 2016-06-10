@@ -29,13 +29,7 @@ app.config(['$stateProvider', function ($stateProvider) {
 
                     //only resolve if the retrieve param is true
                     if ($stateParams.retrieve) {
-                        var output = $q.defer();
-                        modService.retrieveContributions(modId, 'reviews', {sort: $stateParams.sort}).then(function(reviews) {
-                            reviewSectionService.associateReviewSections(reviews).then(function() {
-                                output.resolve(reviews);
-                            });
-                        });
-                        return output.promise;
+                        return modService.retrieveReviews(modId, {sort: $stateParams.sort});
                     }
                 },
                 reviewSections: function(modObject, reviewSectionService) {
