@@ -68,6 +68,36 @@ app.controller('contributionActionsController', function ($scope, $timeout, cont
         }
     };
 
+    $scope.updateAgreeCounter = function(agree, increment) {
+        var value = increment ? 1 : -1;
+        if (agree) {
+            $scope.target.agree_count += value;
+        } else {
+            $scope.target.disagree_count += value;
+        }
+    };
+
+    $scope.agreementMark = function(agree) {
+        if ($scope.target.agreement == agree) {
+            contributionService.agreementMark($scope.route, $scope.target.id).then(function (data) {
+                if (data.status == "ok") {
+                    delete $scope.target.agreement;
+                    $scope.updateAgreeCounter(agree, false);
+                }
+            });
+        } else {
+            contributionService.agreementMark($scope.route, $scope.target.id, agree).then(function (data) {
+                if (data.status == "ok") {
+                    if ($scope.target.agreement == !agree) {
+                        $scope.updateAgreeCounter(!agree, false);
+                    }
+                    $scope.target.agreement = agree;
+                    $scope.updateAgreeCounter(agree, true);
+                }
+            });
+        }
+    };
+
     $scope.approve = function(approved) {
         contributionService.approve($scope.route, $scope.target.id, approved).then(function (data) {
             if (data.status == "ok") {
