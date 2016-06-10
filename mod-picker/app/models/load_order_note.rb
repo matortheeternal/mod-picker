@@ -26,7 +26,7 @@ class LoadOrderNote < ActiveRecord::Base
   has_one :base_report, :as => 'reportable'
 
   # old versions of this load order note
-  has_many :load_order_note_history_entries, :inverse_of => 'load_order_note'
+  has_many :history_entries, :class_name => 'LoadOrderNoteHistoryEntry', :inverse_of => 'load_order_note', :foreign_key => 'load_order_note_id'
 
   self.per_page = 25
 

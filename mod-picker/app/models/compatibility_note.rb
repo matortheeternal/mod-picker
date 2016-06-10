@@ -29,7 +29,7 @@ class CompatibilityNote < ActiveRecord::Base
   has_one :base_report, :as => 'reportable'
 
   # old versions of this compatibility note
-  has_many :compatibility_note_history_entries, :inverse_of => 'compatibility_note'
+  has_many :history_entries, :class_name => 'CompatibilityNoteHistoryEntry', :inverse_of => 'compatibility_note', :foreign_key => 'compatibility_note_id'
 
   self.per_page = 25
 

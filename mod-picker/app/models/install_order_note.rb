@@ -21,7 +21,7 @@ class InstallOrderNote < ActiveRecord::Base
   has_many :corrections, :as => 'correctable'
 
   # old versions of this install order note
-  has_many :install_order_note_history_entries, :inverse_of => 'install_order_note'
+  has_many :history_entries, :class_name => 'InstallOrderNoteHistoryEntry', :inverse_of => 'install_order_note', :foreign_key => 'install_order_note_id'
 
   self.per_page = 25
 
