@@ -107,7 +107,7 @@
 
         <div class="content-block">
             <div class="content-title">
-                <input type="text" ng-model="activeAppeal.title" ng-change="validateAppeal" placeholder="Click to edit title" spellcheck="false" pu-elastic-input>
+                Change Status to <span class="capitalize">{{activeAppeal.mod_status}}</span>
             </div>
             <!-- Users cannot change the mod status of an appeal that has already been submitted -->
             <div class="content-options" ng-if="!activeAppeal.editing" title="Select the status you feel this mod should have.">
