@@ -6,8 +6,8 @@ app.directive('contributionActions', function () {
         scope: {
             target: '=',
             index: '=',
-            route: '=',
             user: '=',
+            modelName: '@',
             correctable: '=?', // default true
             approveable: '=?', // default true
             agreeable: '=?',   // default undefined
