@@ -2,15 +2,13 @@ app.service('reviewSectionService', function (backend, $q) {
     var service = this;
 
     this.retrieveReviewSections = function () {
-        var reviewSections = $q.defer();
         try {
         	backend.retrieve('/review_sections').then(function (data) {
-                reviewSections.resolve(data);
+                return reviewSections.resolve(data);
         	});
         } catch (errors) {
         	throw errors;
         }
-        return reviewSections.promise;
     };
 
     var allReviewSections = this.retrieveReviewSections();
