@@ -36,6 +36,14 @@
             <span ng-show="target.disagree_count > 0">({{target.disagree_count}})</span>
         </div>
     </span>
+    <span class="right-item" ng-if="agreeable && !isOpen">
+        <div class="action-box green-box" ng-if="target.status === 'passed'" title="{{target.agree_count}} agreed, {{target.disagree_count}} disagreed">
+            Passed ({{computeAgreePercentage(target) | number:0}}%)
+        </div>
+        <div class="action-box red-box" ng-if="target.status === 'failed'" title="{{target.agree_count}} agreed, {{target.disagree_count}} disagreed">
+            Failed ({{computeAgreePercentage(target) | number:0}}%)
+        </div>
+    </span>
     <span class="right-item" ng-if="target.hidden || approveable && !target.approved">
         <div class="action-box yellow-box no-action" ng-if="target.hidden">Hidden</div>
         <div class="action-box red-box no-action" ng-if="!(target.hidden || target.approved)">Not Approved</div>
