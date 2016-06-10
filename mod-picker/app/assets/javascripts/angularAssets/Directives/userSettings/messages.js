@@ -4,7 +4,7 @@
 
 app.directive('messages', function () {
     return {
-        retrict: 'E',
+        restrict: 'E',
         templateUrl: '/resources/directives/userSettings/messages.html',
         controller: 'messagesController',
         scope: {
