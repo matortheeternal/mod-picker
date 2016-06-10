@@ -1,5 +1,5 @@
 app.service('userService', function (backend, $q, userSettingsService, userTitleService) {
-    var thisService = this;
+    var service = this;
     this.retrieveUser = function (userId) {
         var output = $q.defer();
         try {
@@ -30,7 +30,7 @@ app.service('userService', function (backend, $q, userSettingsService, userTitle
         var output = $q.defer();
         try {
         	backend.retrieve('/current_user').then(function (userData) {
-                userData.permissions = thisService.getPermissions(userData);
+                userData.permissions = service.getPermissions(userData);
                 output.resolve(userData);
         	});
         } catch (errors) {

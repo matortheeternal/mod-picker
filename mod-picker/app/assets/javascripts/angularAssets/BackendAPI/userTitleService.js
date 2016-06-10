@@ -1,5 +1,5 @@
 app.service('userTitleService', function (backend, $q) {
-    var thisService = this;
+    var service = this;
 
     this.retrieveUserTitles = function () {
         var userTitles = $q.defer();
@@ -28,7 +28,7 @@ app.service('userTitleService', function (backend, $q) {
     allTitles = this.retrieveUserTitles();
 
     gameTitles = allTitles.then(function(titles) {
-        return thisService.getSortedGameTitles(titles);
+        return service.getSortedGameTitles(titles);
     });
 
 
@@ -54,7 +54,7 @@ app.service('userTitleService', function (backend, $q) {
             // if user is defined and they don't have a custom title
             if (item.user && !item.user.title) {
                 // get their default title
-                thisService.getUserTitle(item.user.reputation.overall).then(function(title) {
+                service.getUserTitle(item.user.reputation.overall).then(function(title) {
                     item.user.title = title;
                 });
             }

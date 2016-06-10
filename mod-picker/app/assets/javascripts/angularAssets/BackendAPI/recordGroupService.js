@@ -1,5 +1,5 @@
 app.service('recordGroupService', function (backend, $q) {
-    var thisService = this;
+    var service = this;
     this.retrieveRecordGroups = function () {
         return backend.retrieve('/record_groups', {game_id: window._current_game_id});
     };
@@ -17,7 +17,7 @@ app.service('recordGroupService', function (backend, $q) {
             plugins.forEach(function(plugin) {
                 if (plugin.plugin_record_groups) {
                     plugin.plugin_record_groups.forEach(function(group) {
-                        var record_group = thisService.getGroupFromSignature(allGroups, group.sig);
+                        var record_group = service.getGroupFromSignature(allGroups, group.sig);
                         plugin.name = record_group.name;
                         plugin.child_group = record_group.child_group;
                     });
