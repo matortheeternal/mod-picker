@@ -26,6 +26,16 @@
             <span ng-show="target.not_helpful_count > 0">({{target.not_helpful_count}})</span>
         </div>
     </span>
+    <span class="right-item" ng-if="agreeable && !target.hidden">
+        <div class="action-box" ng-class="{ 'green-box' : target.agreement }" ng-click="agreementMark(true)" tabindex="{{index}}">
+            Agree
+            <span ng-show="target.agree_count > 0">({{target.agree_count}})</span>
+        </div>
+        <div class="action-box" ng-class="{ 'red-box' : target.agreement !== undefined && !target.agreement }" ng-click="agreementMark(false)" tabindex="{{index}}">
+            Disagree
+            <span ng-show="target.disagree_count > 0">({{target.disagree_count}})</span>
+        </div>
+    </span>
     <span class="right-item" ng-if="target.hidden || approveable && !target.approved">
         <div class="action-box yellow-box no-action" ng-if="target.hidden">Hidden</div>
         <div class="action-box red-box no-action" ng-if="!(target.hidden || target.approved)">Not Approved</div>

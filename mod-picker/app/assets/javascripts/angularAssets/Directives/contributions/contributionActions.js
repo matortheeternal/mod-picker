@@ -10,6 +10,7 @@ app.directive('contributionActions', function () {
             user: '=',
             correctable: '=?', // default true
             approveable: '=?', // default true
+            agreeable: '=?',   // default undefined
             edit: '=?',        // default undefined
             hasHistory: '=?'   // default undefined
         }
