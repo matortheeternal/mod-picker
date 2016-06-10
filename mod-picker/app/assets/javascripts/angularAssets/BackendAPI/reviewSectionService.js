@@ -3,9 +3,7 @@ app.service('reviewSectionService', function (backend, $q) {
 
     this.retrieveReviewSections = function () {
         try {
-        	backend.retrieve('/review_sections').then(function (data) {
-                return reviewSections.resolve(data);
-        	});
+        	return backend.retrieve('/review_sections');
         } catch (errors) {
         	throw errors;
         }
@@ -24,13 +22,13 @@ app.service('reviewSectionService', function (backend, $q) {
     };
 
     this.getSectionById = function(id) {
-        var section = $q.defer();
+        var output = $q.defer();
         allReviewSections.then(function(sections) {
-            return sections.find(function(section) {
+            output.resolve(sections.find(function(section) {
                 return (section.id === id);
-            });
+            }));
         });
-        return section.promise;
+        return output.promise;
     };
 
     this.associateReviewSections = function(reviews) {

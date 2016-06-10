@@ -1,4 +1,4 @@
-app.service('modService', function(backend, $q, helpfulMarkService, userTitleService, categoryService, recordGroupService, assetUtils, errorsFactory, pluginService) {
+app.service('modService', function(backend, $q, helpfulMarkService, userTitleService, categoryService, recordGroupService, assetUtils, errorsFactory, pluginService, reviewSectionService) {
     this.retrieveMod = function(modId) {
         output = $q.defer();
         try {
@@ -102,18 +102,17 @@ app.service('modService', function(backend, $q, helpfulMarkService, userTitleSer
     };
 
     this.retrieveReviews = function(modId, options) {
+        var reviews = $q.defer();
         try {
-            var reviews = $q.defer();
             this.retrieveContributions(modId, 'reviews', options).then(function(data) {
-                reviewSectionService.associateReviewSections(data).then(function(){
-                    reviews.resolve(data);
-                });
+                reviewSectionService.associateReviewSections(data);
+                reviews.resolve(data);
             });
-            return reviews.output;
         } catch (errors) {
             throw errors;
         }
-    }
+        return reviews.promise;
+    };
 
     this.retrieveAnalysis = function(modId, gameId) {
         var output = $q.defer();
