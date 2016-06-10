@@ -30,7 +30,7 @@
             <table ng-if="mod.corrections.length > 0">
                 <thead>
                 <tr>
-                    <th>Title</th>
+                    <th>Proposed Status</th>
                     <th>Date Submitted</th>
                     <th>Submitted by</th>
                     <th>Comments</th>
@@ -39,9 +39,9 @@
                 </thead>
                 <tbody>
                 <tr ng-repeat="appeal in mod.corrections" ng-class="{ 'appeal-hidden' : appeal.hidden }">
-                    <td class="main-cell">
-                        <a ng-click="showAppeal(appeal)" class="strong">
-                            {{appeal.title}}
+                    <td>
+                        <a ng-click="showAppeal(appeal)" class="strong capitalize">
+                            {{appeal.mod_status}}
                         </a>
                     </td>
                     <td>{{appeal.submitted | date}}</td>
