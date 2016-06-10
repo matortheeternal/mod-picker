@@ -168,7 +168,7 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, cu
         { name: 'Analysis', params: {}}
     ];
 
-    //returns the index of the tab with tabName (because sometimes tabs are removed)
+    //returns a reference to the tab with tabName (because sometimes tabs are removed)
     $scope.findTab = function(tabName) {
       var index = $scope.tabs.findIndex(function(tab) {
         return tab.name === tabName;
@@ -176,13 +176,24 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, cu
       return $scope.tabs[index];
     };
 
+    //removes the tab with tabName
+    $scope.removeTab = function(tabName) {
+      var index = $scope.tabs.findIndex(function(tab) {
+        return tab.name === tabName;
+      });
+      delete $scope.tabs[index];
+    };
+
     // only display analysis tab if mod doesn't have a primary category
     if (!$scope.mod.primary_category_id) {
-        $scope.tabs.splice(0,4);
+        $scope.removeTab('Reviews');
+        $scope.removeTab('Compatibility');
+        $scope.removeTab('Install Order');
+        $scope.removeTab('Load Order');
     }
     // remove Load Order tab if mod has no plugins
     else if ($scope.mod.plugins_count === 0) {
-        $scope.tabs.splice(3, 1);
+        $scope.removeTab('Load Order');
     }
 
     //set the class of the status box
