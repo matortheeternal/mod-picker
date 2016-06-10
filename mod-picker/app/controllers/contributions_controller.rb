@@ -36,6 +36,13 @@ class ContributionsController < ApplicationController
     }
   end
 
+  # POST/GET /contribution/1/history
+  def history
+    authorize! :read, @contribution
+    history_entries = @contribution.history_entries.accessible_by(current_ability)
+    render :json => history_entries
+  end
+
   # POST /contribution/1/helpful
   def helpful
     # get old helpful marks
