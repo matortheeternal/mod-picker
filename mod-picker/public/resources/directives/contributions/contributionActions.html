@@ -26,7 +26,7 @@
             <span ng-show="target.not_helpful_count > 0">({{target.not_helpful_count}})</span>
         </div>
     </span>
-    <span class="right-item" ng-if="target.hidden || !target.approved">
+    <span class="right-item" ng-if="target.hidden || approveable && !target.approved">
         <div class="action-box yellow-box no-action" ng-if="target.hidden">Hidden</div>
         <div class="action-box red-box no-action" ng-if="!(target.hidden || target.approved)">Not Approved</div>
     </span>
