@@ -147,7 +147,8 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, cu
     $scope.mod.star = modObject.star;
     $scope.user = currentUser;
 
-    $scope.permissions = currentUser.permissions;
+    //a copy is created so the original permissions are never changed
+    $scope.permissions = angular.copy(currentUser.permissions);
     //setting up the canManage permission
     var author = $scope.mod.author_users.find(function(author) {
         return author.id == $scope.user.id;
