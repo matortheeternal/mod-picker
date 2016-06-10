@@ -23,20 +23,24 @@ app.service('reviewSectionService', function (backend, $q) {
         return output.promise;
     };
 
-    this.getSectionById = function(sections, id) {
-        return sections.find(function(section) {
-            return (section.id === id);
+    this.getSectionById = function(id) {
+        var section = $q.defer();
+        allReviewSections.then(function(sections) {
+            return sections.find(function(section) {
+                return (section.id === id);
+            });
         });
+        return section.promise;
     };
 
     this.associateReviewSections = function(reviews) {
-        return allReviewSections.then(function(sections) {
-          reviews.forEach(function(review) {
-            //set the category using the categoryId
-            review.review_ratings.forEach(function(rating) {
-                rating.section = service.getSectionById(sections, rating.review_section_id);
+      reviews.forEach(function(review) {
+        //set the category using the categoryId
+        review.review_ratings.forEach(function(rating) {
+            service.getSectionById(rating.review_section_id).then(function(section) {
+                rating.section = section;
             });
-          });
         });
+      });
     };
 });
