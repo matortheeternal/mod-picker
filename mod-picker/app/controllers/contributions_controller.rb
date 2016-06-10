@@ -25,6 +25,17 @@ class ContributionsController < ApplicationController
     end
   end
 
+  # POST/GET /contribution/1/corrections
+  def corrections
+    authorize! :read, @contribution
+    corrections = @contribution.corrections.accessible_by(current_ability)
+    agreement_marks = AgreementMark.where(submitted_by: current_user.id, correction_id: corrections.ids)
+    render :json => {
+        corrections: corrections,
+        agreement_marks: agreement_marks.as_json({:only => [:correction_id, :agree]})
+    }
+  end
+
   # POST /contribution/1/helpful
   def helpful
     # get old helpful marks
