@@ -155,6 +155,9 @@
       width: 100%;
       margin: 10px 0;
       padding: 0 20px;
+      word-break: normal;
+      word-break: break-word; /*Chrome specific*/
+      hyphens: auto;
 
       h1 {
         color: $text_color;
