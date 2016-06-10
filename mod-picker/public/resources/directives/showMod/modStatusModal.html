@@ -75,14 +75,12 @@
             <span class="fa fa-times" ng-click="toggleStatusModal(false)"></span>
         </div>
 
-        <h2>
-            {{mod.name}} - Viewing Appeal
-            <span class="static-box {{statusClass}} capitalize">
-                {{mod.status}}
-            </span>
-        </h2>
+        <h2>{{mod.name}} - Viewing Appeal</h2>
 
-        <appeal appeal="statusModal.appeal" index="100" user="currentUser" edit="editAppeal" show-author-column="true"></appeal>
+        <div class="content-block">
+            <appeal appeal="statusModal.appeal" index="100" user="currentUser" edit="editAppeal" show-author-column="true"></appeal>
+        </div>
+
         <!-- TODO: Comments directive -->
         <h3 class="section-title">Comments</h3>
         <comments comments="statusModal.appeal.comments"></comments>
@@ -98,12 +96,7 @@
             <span class="fa fa-times" ng-click="toggleStatusModal(false)"></span>
         </div>
 
-        <h2>
-            {{mod.name}} - New Appeal
-            <span class="static-box {{statusClass}} capitalize">
-                {{mod.status}}
-            </span>
-        </h2>
+        <h2>{{mod.name}} - New Appeal</h2>
 
         <div class="content-block">
             <div class="content-title">
