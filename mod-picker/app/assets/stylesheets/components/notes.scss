@@ -155,6 +155,10 @@
       width: 100%;
       margin: 10px 0;
       padding: 0 20px;
+
+      h1 {
+        color: $text_color;
+      }
     }
 
     .moderator-message {
