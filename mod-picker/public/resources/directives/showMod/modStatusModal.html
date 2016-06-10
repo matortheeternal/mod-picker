@@ -52,9 +52,14 @@
                     </td>
                     <td>{{appeal.comments_count}}</td>
                     <td>
-                        <span ng-if="appeal.status === 'open'">{{computeAgreePercentage(appeal) | number:0}}% Agree</span>
-                        <div ng-if="appeal.status !== 'open'" class="action-box appeal-{{appeal.status}} capitalize">
-                            {{appeal.status}}
+                        <div class="action-box no-action" ng-if="appeal.status === 'open'" title="{{appeal.agree_count}} agree, {{appeal.disagree_count}} disagree">
+                            Open ({{computeAgreePercentage(appeal) | number:0}}%)
+                        </div>
+                        <div class="action-box green-box no-action" ng-if="appeal.status === 'passed'" title="{{appeal.agree_count}} agreed, {{appeal.disagree_count}} disagreed">
+                            Passed ({{computeAgreePercentage(appeal) | number:0}}%)
+                        </div>
+                        <div class="action-box red-box no-action" ng-if="appeal.status === 'failed'" title="{{appeal.agree_count}} agreed, {{appeal.disagree_count}} disagreed">
+                            Failed ({{computeAgreePercentage(appeal) | number:0}}%)
                         </div>
                     </td>
                 </tr>
