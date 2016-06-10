@@ -102,7 +102,7 @@ app.controller('modStatusModalController', function ($scope, contributionService
         if ($scope.activeAppeal.editing) {
             var appealId = $scope.activeAppeal.original.id;
             contributionService.updateContribution("corrections", appealId, appealObj).then(function(data) {
-                if (data.stuts === "ok") {
+                if (data.status === "ok") {
                     $scope.statusModal.submitMessage = "Appeal updated successfully!";
                     $scope.statusModal.showSuccess = true;
 
