@@ -8,6 +8,15 @@ app.service('contributionService', function (backend, $q) {
         return mark.promise;
     };
 
+    this.agreementMark = function(type, id, agree) {
+        var mark = $q.defer();
+        var agreeObj = agree == undefined ? {} : {agree: agree};
+        backend.post('/' + type + '/' + id + '/agreement', agreeObj).then(function (data) {
+            mark.resolve(data);
+        });
+        return mark.promise;
+    };
+
     this.hide = function(type, id, hidden) {
         var action = $q.defer();
         backend.post('/' + type + '/' + id + '/hide', {hidden: hidden}).then(function (data) {
