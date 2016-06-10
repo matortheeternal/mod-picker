@@ -57,6 +57,7 @@ Rails.application.routes.draw do
     match '/load_order_notes/:id/helpful', to: 'load_order_notes#helpful', via: 'post'
 
     # hiding content
+    match '/corrections/:id/hide', to: 'corrections#hide', via: 'post'
     match '/reviews/:id/hide', to: 'reviews#hide', via: 'post'
     match '/compatibility_notes/:id/hide', to: 'compatibility_notes#hide', via: 'post'
     match '/install_order_notes/:id/hide', to: 'install_order_notes#hide', via: 'post'
