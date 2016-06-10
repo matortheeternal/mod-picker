@@ -70,7 +70,7 @@
         </div>
     </div>
 
-    <div class="modal huge-modal" ng-show="statusModal.appeal && !activeAppeal">
+    <div class="modal huge-modal" ng-if="statusModal.appeal && !activeAppeal">
         <div class="close-modal">
             <span class="fa fa-times" ng-click="toggleStatusModal(false)"></span>
         </div>
@@ -82,9 +82,9 @@
             </span>
         </h2>
 
-        <appeal appeal="statusModal.appeal"></appeal>
+        <appeal appeal="statusModal.appeal" index="100" user="currentUser" edit="editAppeal" show-author-column="true"></appeal>
         <!-- TODO: Comments directive -->
-        <h3>Comments</h3>
+        <h3 class="section-title">Comments</h3>
         <comments comments="statusModal.appeal.comments"></comments>
 
         <!-- TODO: May need to move this before comments or make it a sticky footer? -->
@@ -93,7 +93,7 @@
         </div>
     </div>
 
-    <div class="modal huge-modal" ng-show="activeAppeal">
+    <div class="modal huge-modal" ng-if="activeAppeal">
         <div class="close-modal">
             <span class="fa fa-times" ng-click="toggleStatusModal(false)"></span>
         </div>
