@@ -31,7 +31,6 @@ app.controller('modStatusModalController', function ($scope, contributionService
     $scope.editAppeal = function(appeal) {
         appeal.editing = true;
         $scope.activeAppeal = {
-            title: appeal.title.slice(0),
             text_body: appeal.text_body.slice(0),
             mod_status: appeal.mod_status,
             original: appeal,
@@ -54,8 +53,7 @@ app.controller('modStatusModalController', function ($scope, contributionService
     };
 
     $scope.validateAppeal = function() {
-        $scope.activeAppeal.valid = ($scope.activeAppeal.title.length > 4) &&
-            ($scope.activeAppeal.text_body.length > 256);
+        $scope.activeAppeal.valid = $scope.activeAppeal.text_body.length > 256;
     };
 
     // discard a new appeal object or stop editing an existing one
@@ -73,7 +71,6 @@ app.controller('modStatusModalController', function ($scope, contributionService
         var originalAppeal = $scope.activeAppeal.original;
         var updatedAppeal = $scope.activeAppeal;
         // update the values on the original appeal
-        originalAppeal.title = updatedAppeal.title.slice(0);
         originalAppeal.text_body = updatedAppeal.text_body.slice(0);
         originalAppeal.mod_status = updatedAppeal.mod_status;
     };
@@ -91,7 +88,6 @@ app.controller('modStatusModalController', function ($scope, contributionService
                 game_id: $scope.mod.game_id,
                 correctable_id: $scope.mod.id,
                 correctable_type: "Mod",
-                title: $scope.activeAppeal.title,
                 text_body: $scope.activeAppeal.text_body,
                 mod_status: $scope.activeAppeal.mod_status
             }
