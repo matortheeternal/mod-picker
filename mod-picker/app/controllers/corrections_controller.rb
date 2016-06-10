@@ -1,5 +1,5 @@
 class CorrectionsController < ApplicationController
-  before_action :set_correction, only: [:show, :update, :destroy]
+  before_action :set_correction, only: [:show, :update, :hide, :destroy]
 
   # GET /corrections
   def index
@@ -31,6 +31,17 @@ class CorrectionsController < ApplicationController
   def update
     authorize! :update, @correction
     if @correction.update(correction_params)
+      render json: {status: :ok}
+    else
+      render json: @correction.errors, status: :unprocessable_entity
+    end
+  end
+
+  # POST /corrections/1/hide
+  def hide
+    authorize! :hide, @correction
+    @correction.hidden = params[:hidden]
+    if @correction.save
       render json: {status: :ok}
     else
       render json: @correction.errors, status: :unprocessable_entity
