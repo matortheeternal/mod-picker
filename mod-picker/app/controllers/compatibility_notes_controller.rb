@@ -1,5 +1,5 @@
 class CompatibilityNotesController < ContributionsController
-  before_action :set_compatibility_note, only: [:show, :update, :destroy, :approve, :hide]
+  before_action :set_compatibility_note, only: [:show, :update, :destroy, :corrections, :history, :approve, :hide]
 
   # GET /compatibility_notes
   def index

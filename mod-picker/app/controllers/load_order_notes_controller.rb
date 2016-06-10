@@ -1,5 +1,5 @@
 class LoadOrderNotesController < ContributionsController
-  before_action :set_load_order_note, only: [:show, :update, :approve, :hide, :destroy]
+  before_action :set_load_order_note, only: [:show, :update, :destroy, :corrections, :history, :approve, :hide]
 
   # GET /load_order_notes
   def index

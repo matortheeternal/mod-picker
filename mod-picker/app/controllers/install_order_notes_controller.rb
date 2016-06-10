@@ -1,5 +1,5 @@
 class InstallOrderNotesController < ContributionsController
-  before_action :set_install_order_note, only: [:show, :update, :approve, :hide, :destroy]
+  before_action :set_install_order_note, only: [:show, :update, :corrections, :history, :approve, :hide, :destroy]
 
   # GET /install_order_notes
   def index

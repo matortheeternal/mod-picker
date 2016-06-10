@@ -32,6 +32,16 @@ class ReviewsController < ContributionsController
     end
   end
 
+  # NOT CORRECTABLE
+  def corrections
+    render status: 404
+  end
+
+  # NOT HISTORICAL
+  def history
+    render status: 404
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_review
