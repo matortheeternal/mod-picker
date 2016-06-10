@@ -162,9 +162,10 @@ app.controller('contributionActionsController', function ($scope, $timeout, cont
         var isSubmitter = $scope.user && $scope.user.id === $scope.target.user.id;
         // set up permissions
         $scope.canReport = $scope.user || false;
+        $scope.canAgree = $scope.agreeable && $scope.isOpen && ((rep > 40) || isAdmin || isModerator);
         $scope.canCorrect = (rep > 40) || isAdmin || isModerator;
         $scope.canEdit = isAdmin || isModerator || isSubmitter;
-        $scope.canApprove = isAdmin || isModerator;
+        $scope.canApprove = $scope.approveable && (isAdmin || isModerator);
         $scope.canHide = isAdmin || isModerator;
     };
 
