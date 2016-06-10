@@ -1,9 +1,9 @@
-app.directive('appeal', function () {
+app.directive('correction', function () {
     return {
         restrict: 'E',
-        templateUrl: '/resources/directives/contributions/appeal.html',
+        templateUrl: '/resources/directives/contributions/correction.html',
         scope: {
-        	appeal: '=',
+            correction: '=',
             index: '=',
             user: '=',
             edit: '=?',
