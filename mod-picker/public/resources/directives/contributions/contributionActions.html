@@ -52,6 +52,7 @@
             </div>
         </span>
     </span>
+    <!-- Hidden / Not Approved boxes -->
     <span class="right-item" ng-if="target.hidden || (approveable && !target.approved)">
         <div class="action-box yellow-box no-action" ng-if="target.hidden">Hidden</div>
         <div class="action-box red-box no-action" ng-if="!(target.hidden || target.approved)">Not Approved</div>
