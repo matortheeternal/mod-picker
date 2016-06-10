@@ -78,20 +78,20 @@ app.controller('contributionActionsController', function ($scope, $timeout, cont
     };
 
     $scope.agreementMark = function(agree) {
-        if ($scope.target.agreement == agree) {
+        if ($scope.target.agree == agree) {
             contributionService.agreementMark($scope.route, $scope.target.id).then(function (data) {
                 if (data.status == "ok") {
-                    delete $scope.target.agreement;
+                    delete $scope.target.agree;
                     $scope.updateAgreeCounter(agree, false);
                 }
             });
         } else {
             contributionService.agreementMark($scope.route, $scope.target.id, agree).then(function (data) {
                 if (data.status == "ok") {
-                    if ($scope.target.agreement == !agree) {
+                    if ($scope.target.agree == !agree) {
                         $scope.updateAgreeCounter(!agree, false);
                     }
-                    $scope.target.agreement = agree;
+                    $scope.target.agree = agree;
                     $scope.updateAgreeCounter(agree, true);
                 }
             });
