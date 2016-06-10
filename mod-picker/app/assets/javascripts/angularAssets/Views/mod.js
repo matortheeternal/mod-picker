@@ -153,7 +153,7 @@ app.controller('modController', function ($scope, $q, $stateParams, $timeout, cu
         return author.id == $scope.user.id;
     });
     var isAuthor = author !== null;
-    $scope.permissions.canManage = $scope.permissions.canModerate || isAuthor
+    $scope.permissions.canManage = $scope.permissions.canModerate || isAuthor;
 
     $scope.tags = [];
     $scope.newTags = [];
