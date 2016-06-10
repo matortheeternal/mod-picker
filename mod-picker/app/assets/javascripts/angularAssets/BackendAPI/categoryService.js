@@ -8,18 +8,22 @@ app.service('categoryService', function ($q, backend) {
     function retrieveFilteredCategories(key) {
         var categories = $q.defer();
 
-        backend.retrieve('/categories', {cache: true}).then(function (data) {
-            var returnData = [];
-            data.forEach(function (category) {
-                if (key === 'primary' ? !category.parent_id : category.parent_id == key) {
-                    returnData.push(category);
-                }
-            });
-            returnData.sort(function (a, b) {
-                return a.name.localeCompare(b.name);
-            });
-            categories.resolve(returnData);
-        });
+        try {
+        	backend.retrieve('/categories', {cache: true}).then(function (data) {
+                var returnData = [];
+                data.forEach(function (category) {
+                    if (key === 'primary' ? !category.parent_id : category.parent_id == key) {
+                        returnData.push(category);
+                    }
+                });
+                returnData.sort(function (a, b) {
+                    return a.name.localeCompare(b.name);
+                });
+                categories.resolve(returnData);
+        	});
+        } catch (errors) {
+        	throw errors;
+        }
 
         return categories.promise;
     }
@@ -27,9 +31,13 @@ app.service('categoryService', function ($q, backend) {
     this.retrieveCategoryPriorities = function() {
         var categoryPriorities = $q.defer();
 
-        backend.retrieve('/category_priorities').then(function (data) {
-            categoryPriorities.resolve(data);
-        });
+        try {
+        	backend.retrieve('/category_priorities').then(function (data) {
+                categoryPriorities.resolve(data);
+        	});
+        } catch (errors) {
+        	throw errors;
+        }
 
         return categoryPriorities.promise;
     };

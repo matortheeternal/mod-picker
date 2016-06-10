@@ -2,9 +2,13 @@ app.service('userSettingsService', function (backend, $q) {
 
     this.retrieveUserSettings = function () {
         var userSettings = $q.defer();
-        backend.retrieve('/user_settings').then(function (data) {
-            userSettings.resolve(data);
-        });
+        try {
+        	backend.retrieve('/user_settings').then(function (data) {
+                userSettings.resolve(data);
+        	});
+        } catch (errors) {
+        	throw errors;
+        }
         return userSettings.promise;
     };
 
@@ -18,9 +22,13 @@ app.service('userSettingsService', function (backend, $q) {
 
     this.verifyAccount = function (site, user_path) {
         var verified = $q.defer();
-        backend.retrieve('/link_account', { site: site, user_path: user_path }).then(function (data) {
-            verified.resolve(data);
-        });
+        try {
+        	backend.retrieve('/link_account', { site: site, user_path: user_path }).then(function (data) {
+                verified.resolve(data);
+        	});
+        } catch (errors) {
+        	throw errors;
+        }
         return verified.promise;
     };
 

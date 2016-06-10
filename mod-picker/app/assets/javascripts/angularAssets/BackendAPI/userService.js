@@ -2,7 +2,8 @@ app.service('userService', function (backend, $q, userSettingsService, userTitle
     var thisService = this;
     this.retrieveUser = function (userId) {
         var output = $q.defer();
-        backend.retrieve('/users/' + userId).then(function(userData) {
+        try {
+        	backend.retrieve('/users/' + userId).then(function(userData) {
             //moving collections into a separate array
             userData.collections = [];
             for (var i = userData.mod_lists.length - 1; i >= 0; i--) {
@@ -18,16 +19,23 @@ app.service('userService', function (backend, $q, userSettingsService, userTitle
                 });
             }
             output.resolve(userData);
-        });
+        	});
+        } catch (errors) {
+        	throw errors;
+        }
         return output.promise;
     };
 
     this.retrieveCurrentUser = function () {
         var output = $q.defer();
-        backend.retrieve('/current_user').then(function (userData) {
-            userData.permissions = thisService.getPermissions(userData);
-            output.resolve(userData);
-        });
+        try {
+        	backend.retrieve('/current_user').then(function (userData) {
+                userData.permissions = thisService.getPermissions(userData);
+                output.resolve(userData);
+        	});
+        } catch (errors) {
+        	throw errors;
+        }
         return output.promise;
     };
 

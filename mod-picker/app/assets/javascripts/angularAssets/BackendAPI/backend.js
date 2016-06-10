@@ -24,6 +24,9 @@ app.service('backend', function ($q, $http, objectUtils) {
             params: additionalAttributes,
             cache: additionalAttributes && additionalAttributes.cache || false
         }).then(function(result) {
+            if (result.errors) {
+                throw result.errors;
+            }
             resolver(promise, result);
         });
         return promise.promise;
