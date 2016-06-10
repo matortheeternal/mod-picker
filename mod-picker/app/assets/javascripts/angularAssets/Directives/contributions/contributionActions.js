@@ -30,6 +30,16 @@ app.controller('contributionActionsController', function ($scope, $timeout, cont
     // this is the report object
     $scope.report = {};
 
+    // compute whether or not the target is open if it is agreeable
+    if ($scope.agreeable) {
+        $scope.isOpen = $scope.target.status === 'open';
+    }
+
+    // compute agree percentage helper
+    $scope.computeAgreePercentage = function(appeal) {
+        return (appeal.agree_count / ((appeal.agree_count + appeal.disagree_count) || 1)) * 100;
+    };
+
     $scope.toggleLinkModal = function(visible) {
         $scope.showLinkModal = visible;
     };
