@@ -7,14 +7,21 @@ app.directive('contributionActions', function () {
             target: '=',
             index: '=',
             route: '=',
-            correctable: '=',
             user: '=',
-            edit: '=?'
+            correctable: '=?', // default true
+            approveable: '=?', // default true
+            edit: '=?',        // default undefined
+            hasHistory: '=?'   // default undefined
         }
     };
 });
 
 app.controller('contributionActionsController', function ($scope, $timeout, contributionService) {
+    // correctable should have a default value of true
+    $scope.correctable = angular.isDefined($scope.correctable) ? $scope.correctable : true;
+    // approveable should have a default value of true
+    $scope.approveable = angular.isDefined($scope.approveable) ? $scope.approveable : true;
+
     // this is a direct link to the contribution to be displayed in the get link modal
     $scope.shareLink = window.location.href + '/' + $scope.route + '/' + $scope.target.id;
     // this is a computed label for the contribution (we may want to use a switch in the future)
