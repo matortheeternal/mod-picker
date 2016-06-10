@@ -5,7 +5,7 @@ app.service('modService', function(backend, $q) {
 
     this.retrieveMods = function(options) {
         var action = $q.defer();
-        backend.post('/mods', options).then(function (data) {
+        backend.post('/mods/index', options).then(function (data) {
             action.resolve(data);
         });
         return action.promise;
