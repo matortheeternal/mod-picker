@@ -6,13 +6,13 @@ app.service('gameService', function (backend, $q) {
     var allGames = this.retrieveGames();
 
     this.getGameById = function(id) {
-        var output = $q.defer();
+        var game = $q.defer();
         allGames.then(function(games) {
-            output.resolve(games.find(function(game) {
-                return game.id == id;
+            game.resolve(games.find(function(data) {
+                return data.id == id;
             }));
         });
-        return output.promise;
+        return game.promise;
     };
 
     this.getAvailableGames = function() {
