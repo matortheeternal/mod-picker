@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160610025250) do
+ActiveRecord::Schema.define(version: 20160611171823) do
 
   create_table "agreement_marks", id: false, force: :cascade do |t|
     t.integer "correction_id", limit: 4,                null: false
@@ -104,6 +104,7 @@ ActiveRecord::Schema.define(version: 20160610025250) do
   create_table "compatibility_notes", force: :cascade do |t|
     t.integer  "game_id",                 limit: 4,                     null: false
     t.integer  "submitted_by",            limit: 4,                     null: false
+    t.integer  "edited_by",               limit: 4
     t.integer  "status",                  limit: 4,     default: 0,     null: false
     t.integer  "second_mod_id",           limit: 4,                     null: false
     t.integer  "compatibility_mod_id",    limit: 4
@@ -124,6 +125,7 @@ ActiveRecord::Schema.define(version: 20160610025250) do
   end
 
   add_index "compatibility_notes", ["compatibility_plugin_id"], name: "compatibility_patch", using: :btree
+  add_index "compatibility_notes", ["edited_by"], name: "fk_rails_921b844a68", using: :btree
   add_index "compatibility_notes", ["first_mod_id"], name: "fk_rails_3524228f07", using: :btree
   add_index "compatibility_notes", ["game_id"], name: "fk_rails_c18131e78a", using: :btree
   add_index "compatibility_notes", ["second_mod_id"], name: "fk_rails_10dd0a50f6", using: :btree
@@ -154,9 +156,11 @@ ActiveRecord::Schema.define(version: 20160610025250) do
     t.datetime "submitted",                                      null: false
     t.datetime "edited"
     t.integer  "submitted_by",     limit: 4,                     null: false
+    t.integer  "edited_by",        limit: 4
   end
 
   add_index "corrections", ["correctable_type", "correctable_id"], name: "index_corrections_on_correctable_type_and_correctable_id", using: :btree
+  add_index "corrections", ["edited_by"], name: "fk_rails_aafc41fce4", using: :btree
   add_index "corrections", ["game_id"], name: "fk_rails_6d40e5f2cc", using: :btree
   add_index "corrections", ["submitted_by"], name: "submitted_by", using: :btree
 
@@ -235,6 +239,7 @@ ActiveRecord::Schema.define(version: 20160610025250) do
   create_table "install_order_notes", force: :cascade do |t|
     t.integer  "game_id",               limit: 4,                     null: false
     t.integer  "submitted_by",          limit: 4,                     null: false
+    t.integer  "edited_by",             limit: 4
     t.integer  "first_mod_id",          limit: 4,                     null: false
     t.integer  "second_mod_id",         limit: 4,                     null: false
     t.text     "text_body",             limit: 65535,                 null: false
@@ -251,6 +256,7 @@ ActiveRecord::Schema.define(version: 20160610025250) do
     t.datetime "edited"
   end
 
+  add_index "install_order_notes", ["edited_by"], name: "fk_rails_a44dae8099", using: :btree
   add_index "install_order_notes", ["first_mod_id"], name: "fk_rails_bc30c8f58f", using: :btree
   add_index "install_order_notes", ["game_id"], name: "fk_rails_aa90c33b77", using: :btree
   add_index "install_order_notes", ["second_mod_id"], name: "fk_rails_b74bbcab8b", using: :btree
@@ -271,6 +277,7 @@ ActiveRecord::Schema.define(version: 20160610025250) do
   create_table "load_order_notes", force: :cascade do |t|
     t.integer  "game_id",               limit: 4,                     null: false
     t.integer  "submitted_by",          limit: 4,                     null: false
+    t.integer  "edited_by",             limit: 4
     t.integer  "first_plugin_id",       limit: 4,                     null: false
     t.integer  "second_plugin_id",      limit: 4,                     null: false
     t.text     "text_body",             limit: 65535,                 null: false
@@ -287,6 +294,7 @@ ActiveRecord::Schema.define(version: 20160610025250) do
     t.datetime "edited"
   end
 
+  add_index "load_order_notes", ["edited_by"], name: "fk_rails_e2453073ea", using: :btree
   add_index "load_order_notes", ["first_plugin_id"], name: "fk_rails_d6c931c1cc", using: :btree
   add_index "load_order_notes", ["game_id"], name: "fk_rails_cd2fa42211", using: :btree
   add_index "load_order_notes", ["second_plugin_id"], name: "fk_rails_af9e3c9509", using: :btree
@@ -659,6 +667,7 @@ ActiveRecord::Schema.define(version: 20160610025250) do
   create_table "reviews", force: :cascade do |t|
     t.integer  "game_id",               limit: 4,                     null: false
     t.integer  "submitted_by",          limit: 4,                     null: false
+    t.integer  "edited_by",             limit: 4
     t.integer  "mod_id",                limit: 4,                     null: false
     t.text     "text_body",             limit: 65535,                 null: false
     t.string   "edit_summary",          limit: 255
@@ -676,6 +685,7 @@ ActiveRecord::Schema.define(version: 20160610025250) do
     t.datetime "edited"
   end
 
+  add_index "reviews", ["edited_by"], name: "fk_rails_0fcc18e954", using: :btree
   add_index "reviews", ["game_id"], name: "fk_rails_dfb9dc48b4", using: :btree
   add_index "reviews", ["mod_id"], name: "mod_id", using: :btree
   add_index "reviews", ["submitted_by"], name: "submitted_by", using: :btree
@@ -847,9 +857,11 @@ ActiveRecord::Schema.define(version: 20160610025250) do
   add_foreign_key "compatibility_notes", "mods", column: "first_mod_id"
   add_foreign_key "compatibility_notes", "mods", column: "second_mod_id"
   add_foreign_key "compatibility_notes", "plugins", column: "compatibility_plugin_id", name: "compatibility_notes_ibfk_2"
+  add_foreign_key "compatibility_notes", "users", column: "edited_by"
   add_foreign_key "compatibility_notes", "users", column: "submitted_by", name: "compatibility_notes_ibfk_1"
   add_foreign_key "config_files", "games"
   add_foreign_key "corrections", "games"
+  add_foreign_key "corrections", "users", column: "edited_by"
   add_foreign_key "corrections", "users", column: "submitted_by", name: "corrections_ibfk_4"
   add_foreign_key "custom_sources", "mods"
   add_foreign_key "dummy_masters", "plugins"
@@ -860,12 +872,14 @@ ActiveRecord::Schema.define(version: 20160610025250) do
   add_foreign_key "install_order_notes", "games"
   add_foreign_key "install_order_notes", "mods", column: "first_mod_id"
   add_foreign_key "install_order_notes", "mods", column: "second_mod_id"
+  add_foreign_key "install_order_notes", "users", column: "edited_by"
   add_foreign_key "install_order_notes", "users", column: "submitted_by"
   add_foreign_key "load_order_note_history_entries", "load_order_notes"
   add_foreign_key "load_order_note_history_entries", "users", column: "submitted_by"
   add_foreign_key "load_order_notes", "games"
   add_foreign_key "load_order_notes", "plugins", column: "first_plugin_id"
   add_foreign_key "load_order_notes", "plugins", column: "second_plugin_id"
+  add_foreign_key "load_order_notes", "users", column: "edited_by"
   add_foreign_key "load_order_notes", "users", column: "submitted_by"
   add_foreign_key "lover_infos", "games"
   add_foreign_key "lover_infos", "mods"
@@ -923,6 +937,7 @@ ActiveRecord::Schema.define(version: 20160610025250) do
   add_foreign_key "review_sections", "categories"
   add_foreign_key "reviews", "games"
   add_foreign_key "reviews", "mods", name: "reviews_ibfk_2"
+  add_foreign_key "reviews", "users", column: "edited_by"
   add_foreign_key "reviews", "users", column: "submitted_by", name: "reviews_ibfk_1"
   add_foreign_key "tags", "games"
   add_foreign_key "tags", "users", column: "submitted_by"
