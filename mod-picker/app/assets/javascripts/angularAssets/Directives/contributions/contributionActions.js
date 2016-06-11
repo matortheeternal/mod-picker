@@ -175,7 +175,7 @@ app.controller('contributionActionsController', function ($scope, $timeout, cont
         var rep = $scope.user.reputation.overall;
         var isAdmin = $scope.user && $scope.user.role === 'admin';
         var isModerator = $scope.user && $scope.user.role === 'moderator';
-        var isSubmitter = $scope.user && $scope.user.id === $scope.target.user.id;
+        var isSubmitter = $scope.user && $scope.user.id === $scope.target.submitted_by;
         // set up permissions
         $scope.canReport = $scope.user || false;
         $scope.canAgree = $scope.agreeable && $scope.isOpen && ((rep > 40) || isAdmin || isModerator);
