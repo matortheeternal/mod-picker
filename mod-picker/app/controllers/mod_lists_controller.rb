@@ -1,5 +1,5 @@
 class ModListsController < ApplicationController
-  before_action :set_mod_list, only: [:show, :update, :destroy, :tools, :plugins]
+  before_action :set_mod_list, only: [:show, :update, :destroy, :tools, :plugins, :configs]
   before_action :set_active_mod_list, only: [:active, :mods]
 
   # GET /mod_lists
@@ -58,6 +58,26 @@ class ModListsController < ApplicationController
           :include => {
             :plugin => {
               :only => [:id, :filename]
+            }
+          }
+        })
+      render :json => json_output
+    else
+      render status: 404
+    end
+  end
+
+  # GET /mod_lists/:id/config
+  def configs
+    if @mod_list
+      mod_list_config_files = @mod_list.mod_list_config_files.joins(:config_file)
+
+      # format and return json
+      json_output = mod_list_config_files.as_json(
+        {:only => [:text_body],
+          :include => {
+            :config_file => {
+              :only => [:filename, :install_path, :text_body, :mod_lists_count]
             }
           }
         })

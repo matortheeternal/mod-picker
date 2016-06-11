@@ -84,6 +84,9 @@ Rails.application.routes.draw do
     # mod list plugins
     match '/mod_lists/:id/plugins', to: 'mod_lists#plugins', via: 'get'
 
+    # mod list config files
+    match '/mod_lists/:id/config', to: 'mod_lists#configs', via: 'get'
+
     # mod and mod list stars
     match '/mod_lists/:id/star', to: 'mod_lists#create_star', via: 'post'
     match '/mod_lists/:id/star', to: 'mod_lists#destroy_star', via: 'delete'

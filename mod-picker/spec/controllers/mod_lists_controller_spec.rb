@@ -80,6 +80,7 @@ RSpec.describe ModListsController, :controller, :kin do
       expect(parsed_response).to be_empty
     end
   end
+  # end #tools
 
 
   describe "#plugins" do
@@ -89,14 +90,14 @@ RSpec.describe ModListsController, :controller, :kin do
 
     it "should return a list of plugins belonging to the mod_list" do
       for i in 1..3 do
-        # create mod
+        # create plugin
         plugin = create(:plugin,
           game_id: test_game.id,
           mod_id: test_mod.id,
           filename: "valid_plugin_filename_#{i}"
         )
 
-        # create mod_list_mod
+        # create mod_list_plugin
         mlp = plugin.mod_list_plugins.create(
           mod_list_id: test_list.id,
           index: 0)
@@ -125,4 +126,54 @@ RSpec.describe ModListsController, :controller, :kin do
       expect(parsed_response).to be_empty
     end
   end
+  # end #plugins
+
+  describe "#config" do
+
+    # fixtures
+    let(:test_list) {mod_lists(:plannedVanilla)}
+    let(:test_game) {games(:skyrim)}
+
+    it "should return all config_files belonging to the mod_list" do
+      # create 5 config files associated with the mod_list fixture
+      for i in 1..5 do
+
+        # create config_file
+        config_file = create(:config_file,
+          filename: "valid_config_filename_#{i}"
+        )
+
+        expect(config_file).to be_valid
+
+        # create mod_list_config_file
+        mlc = test_list.mod_list_config_files.create(
+          mod_list_id: test_list.id,
+          config_file_id: config_file.id,
+          text_body: 'valid config_body text'
+        )
+        
+        expect(mlc).to be_valid
+      end
+
+      get :configs, {"id" => "#{test_list.id}"}
+      expect(response).to have_http_status(200)
+
+      parsed_response = JSON(response.body)
+
+      parsed_response.each do |returned_config|
+        expect(returned_config["config_file"]["filename"]).to include("valid_config_filename")
+        expect(returned_config["text_body"]).to include("valid config_body text") 
+      end
+    end
+
+    it "should return empty if no config_files are associated with the mod_list" do
+      get :configs, {"id" => "#{test_list.id}"}
+      expect(response).to have_http_status(200)
+
+      parsed_response = JSON(response.body)
+
+      expect(parsed_response).to be_empty
+    end
+  end
+  # end #configs 
 end
