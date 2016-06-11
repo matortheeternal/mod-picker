@@ -9,7 +9,7 @@ class CompatibilityNote < ActiveRecord::Base
   enum status: [ :incompatible, :"partially incompatible", :"compatibility mod", :"compatibility option", :"make custom patch" ]
 
   belongs_to :game, :inverse_of => 'compatibility_notes'
-  belongs_to :user, :foreign_key => 'submitted_by', :inverse_of => 'compatibility_notes'
+  belongs_to :submitter, :class_name => 'User', :foreign_key => 'submitted_by', :inverse_of => 'compatibility_notes'
 
   # associated mods
   belongs_to :first_mod, :class_name => 'Mod', :foreign_key => 'first_mod_id'
@@ -72,7 +72,7 @@ class CompatibilityNote < ActiveRecord::Base
       default_options = {
           :except => [:submitted_by],
           :include => {
-              :user => {
+              :submitter => {
                   :only => [:id, :username, :role, :title],
                   :include => {
                       :reputation => {:only => [:overall]}

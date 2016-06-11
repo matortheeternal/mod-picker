@@ -7,7 +7,7 @@ class Correction < ActiveRecord::Base
   enum mod_status: [:good, :outdated, :dangerous]
 
   belongs_to :game, :inverse_of => 'corrections'
-  belongs_to :user, :foreign_key => 'submitted_by', :inverse_of => 'corrections'
+  belongs_to :submitter, :class_name => 'User', :foreign_key => 'submitted_by', :inverse_of => 'corrections'
 
   has_many :agreement_marks, :inverse_of => 'correction'
   has_many :comments, :as => 'commentable'
@@ -28,7 +28,7 @@ class Correction < ActiveRecord::Base
     if JsonHelpers.json_options_empty(options)
       default_options = {
           :include => {
-              :user => {
+              :submitter => {
                   :only => [:id, :username, :role, :title],
                   :include => {
                       :reputation => {:only => [:overall]}

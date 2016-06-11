@@ -6,7 +6,7 @@ class LoadOrderNote < ActiveRecord::Base
   scope :mv, -> (id) { joins(:mod_versions).where(:mod_versions => {id: id}) }
 
   belongs_to :game, :inverse_of => 'load_order_notes'
-  belongs_to :user, :foreign_key => 'submitted_by', :inverse_of => 'load_order_notes'
+  belongs_to :submitter, :class_name => 'User', :foreign_key => 'submitted_by', :inverse_of => 'load_order_notes'
 
   # plugins associatied with this load order note
   belongs_to :first_plugin, :foreign_key => 'first_plugin_id', :class_name => 'Plugin', :inverse_of => 'first_load_order_notes'
@@ -73,7 +73,7 @@ class LoadOrderNote < ActiveRecord::Base
       default_options = {
           :except => [:submitted_by],
           :include => {
-              :user => {
+              :submitter => {
                   :only => [:id, :username, :role, :title],
                   :include => {
                       :reputation => {:only => [:overall]}

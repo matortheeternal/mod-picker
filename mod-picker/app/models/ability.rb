@@ -162,9 +162,9 @@ class Ability
       if user.reputation.overall >= 320
         # can update compatibility notes, install order notes, and load order notes  when the user
         # who created them is inactive
-        can :update, CompatibilityNote, { :user => { :inactive? => true } }
-        can :update, InstallOrderNote, { :user => { :inactive? => true } }
-        can :update, LoadOrderNote, { :user => { :inactive? => true } }
+        can :update, CompatibilityNote, { :submitter => { :inactive? => true } }
+        can :update, InstallOrderNote, { :submitter => { :inactive? => true } }
+        can :update, LoadOrderNote, { :submitter => { :inactive? => true } }
         # or when the community has agreed they are incorrect
         can :update, CompatibilityNote, { :incorrect? => true }
         can :update, InstallOrderNote, { :incorrect? => true }

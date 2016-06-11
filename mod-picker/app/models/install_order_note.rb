@@ -6,7 +6,7 @@ class InstallOrderNote < ActiveRecord::Base
   scope :mv, -> (id) { joins(:mod_versions).where(:mod_versions => {id: id}) }
 
   belongs_to :game, :inverse_of => 'install_order_notes'
-  belongs_to :user, :foreign_key => 'submitted_by', :inverse_of => 'install_order_notes'
+  belongs_to :submitter, :class_name => 'User', :foreign_key => 'submitted_by', :inverse_of => 'install_order_notes'
 
   # mods associatied with this install order note
   belongs_to :first_mod, :foreign_key => 'first_mod_id', :class_name => 'Mod', :inverse_of => 'first_install_order_notes'
@@ -64,7 +64,7 @@ class InstallOrderNote < ActiveRecord::Base
       default_options = {
           :except => [:submitted_by],
           :include => {
-              :user => {
+              :submitter => {
                   :only => [:id, :username, :role, :title],
                   :include => {
                       :reputation => {:only => [:overall]}

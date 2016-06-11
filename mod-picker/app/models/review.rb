@@ -14,7 +14,7 @@ class Review < ActiveRecord::Base
   scope :overall_rating, -> (low, high) { where(overall_rating: low..high) }
 
   belongs_to :game, :inverse_of => 'reviews'
-  belongs_to :user, :foreign_key => 'submitted_by', :inverse_of => 'reviews'
+  belongs_to :submitter, :class_name => 'User', :foreign_key => 'submitted_by', :inverse_of => 'reviews'
   belongs_to :mod, :inverse_of => 'reviews'
 
   has_many :review_ratings, :inverse_of => 'review', :dependent => :destroy
@@ -94,7 +94,7 @@ class Review < ActiveRecord::Base
               :review_ratings => {
                   :except => [:review_id]
               },
-              :user => {
+              :submitter => {
                   :only => [:id, :username, :role, :title],
                   :include => {
                       :reputation => {:only => [:overall]}

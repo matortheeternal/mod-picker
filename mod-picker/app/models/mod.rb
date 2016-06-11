@@ -151,7 +151,7 @@ class Mod < ActiveRecord::Base
   scope :subscribers, -> (range) { where(:workshop_infos => { subscribers: range[:min]..range[:max] }) }
 
   belongs_to :game, :inverse_of => 'mods'
-  belongs_to :user, :foreign_key => 'submitted_by', :inverse_of => 'submitted_mods'
+  belongs_to :submitter, :class_name => 'User', :foreign_key => 'submitted_by', :inverse_of => 'submitted_mods'
 
   # categories the mod belongs to
   belongs_to :primary_category, :class_name => 'Category', :foreign_key => 'primary_category_id', :inverse_of => 'primary_mods'
@@ -369,7 +369,7 @@ class Mod < ActiveRecord::Base
           :tags => {
               :except => [:game_id, :hidden, :mod_lists_count],
               :include => {
-                  :user => {
+                  :submitter => {
                       :only => [:id, :username]
                   }
               }
