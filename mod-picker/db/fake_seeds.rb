@@ -870,12 +870,21 @@ def seed_fake_mod_lists
         submitted: Faker::Date.backward(14),
         game_id: gameSkyrim.id
     )
+    plugin_index = 0
     Mod.all.each_with_index do |mod, index|
       mod_list.mod_list_mods.create!(
         mod_id: mod.id,
         active: true,
         index: index
       )
+      mod.plugins.each do |plugin|
+        mod_list.mod_list_plugins.create!(
+          plugin_id: plugin.id,
+          active: true,
+          index: plugin_index
+        )
+        plugin_index += 1
+      end
     end
   end
 
