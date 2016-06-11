@@ -40,6 +40,15 @@ class InstallOrderNote < ActiveRecord::Base
     [first_mod, second_mod]
   end
 
+  def create_history_entry
+    self.history_entries.create(
+        edited_by: self.edited_by || self.submitted_by,
+        text_body: self.text_body,
+        edit_summary: self.edit_summary,
+        edited: self.edited || self.submitted
+    )
+  end
+
   def compute_reputation
     # TODO: We could base this off of the reputation of the people who marked the review helpful/not helpful, but we aren't doing that yet
     user_rep = self.user.reputation.overall
