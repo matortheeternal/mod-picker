@@ -1,6 +1,6 @@
 class InstallOrderNoteHistoryEntry < ActiveRecord::Base
   belongs_to :install_order_note, :inverse_of => 'history_entries', :foreign_key => 'install_order_note_id'
-  belongs_to :user, :foreign_key => 'submitted_by', :inverse_of => 'install_order_note_history_entries'
+  belongs_to :submitter, :class_name => 'User', :foreign_key => 'submitted_by', :inverse_of => 'install_order_note_history_entries'
 
   # Callbacks
   after_create :increment_counters
