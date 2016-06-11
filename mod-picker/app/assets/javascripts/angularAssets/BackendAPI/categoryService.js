@@ -29,17 +29,11 @@ app.service('categoryService', function ($q, backend) {
     }
 
     this.retrieveCategoryPriorities = function() {
-        var categoryPriorities = $q.defer();
-
         try {
-        	backend.retrieve('/category_priorities').then(function (data) {
-                categoryPriorities.resolve(data);
-        	});
+        	return backend.retrieve('/category_priorities');
         } catch (errors) {
         	throw errors;
         }
-
-        return categoryPriorities.promise;
     };
 
     //storing all categories in a variable
