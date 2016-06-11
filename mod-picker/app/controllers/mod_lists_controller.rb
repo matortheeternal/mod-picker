@@ -1,5 +1,5 @@
 class ModListsController < ApplicationController
-  before_action :set_mod_list, only: [:show, :update, :destroy, :tools]
+  before_action :set_mod_list, only: [:show, :update, :destroy, :tools, :plugins]
   before_action :set_active_mod_list, only: [:active, :mods]
 
   # GET /mod_lists
@@ -26,10 +26,42 @@ class ModListsController < ApplicationController
     end
   end
 
-  # GET /mod_lists/mods
+  # GET /mod_lists/:id/mods
+  # filter to only include mods that belong to the mod_list
   def mods
     if @mod_list
-      render :json => @mod_list.mod_list_mods
+      mod_list_mods = @mod_list.mod_list_mods.joins(:mod)
+
+      json_output = mod_list_mods.as_json(
+        {:only => [:index, :active],
+          :include => {
+            :mod => {
+              :only => [:id, :name]
+            }
+          }
+        })
+      render :json => json_output
+    else
+      render status: 404
+    end
+  end
+
+  # GET /mod_lists/:id/plugins
+  # filter to include plugins belonging to an individual mod_list
+  def plugins
+    if @mod_list
+      mod_list_plugins = @mod_list.mod_list_plugins.joins(:plugin)
+
+      # format and return json
+      json_output = mod_list_plugins.as_json(
+        {:only => [:index, :active],
+          :include => {
+            :plugin => {
+              :only => [:id, :filename]
+            }
+          }
+        })
+      render :json => json_output
     else
       render status: 404
     end
@@ -97,8 +129,8 @@ class ModListsController < ApplicationController
   end
 
   # GET /mod_lists/1/tools
-  # Get a list of the mods that have the sub category of "Utilities - Tools" 
-  # belonging to the specified mod_list id
+  # Get a list of the mods that have utility: true and
+  # belong to the specified mod_list
   def tools
     if @mod_list
       # Get all the mod_list_mod records associatd with @mod_list
@@ -106,8 +138,8 @@ class ModListsController < ApplicationController
       mod_list_mods = @mod_list.mod_list_mods.joins(:mod).where(:mods => {is_utility: true})
 
       # filter to only include mods who's is_utility is true'
-      final = mod_list_mods.as_json({:only => [:index, :active], :include => {:mod => {:only => [:id, :name, :is_utility]}}})
-      render :json => final
+      json_output = mod_list_mods.as_json({:only => [:index, :active], :include => {:mod => {:only => [:id, :name, :is_utility]}}})
+      render :json => json_output
     else
       render status: 404
     end
