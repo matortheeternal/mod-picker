@@ -57,6 +57,14 @@ app.service('contributionService', function (backend, $q) {
         return action.promise;
     };
 
+    this.retrieveHistory = function(type, id) {
+        var action = $q.defer();
+        backend.retrieve('/' + type + '/' + id + '/history').then(function (data) {
+            action.resolve(data);
+        });
+        return action.promise;
+    };
+
     this.associateAgreementMarks = function(corrections, agreementMarks) {
         // loop through corrections
         corrections.forEach(function(correction) {
