@@ -1,6 +1,6 @@
 app.service('gameService', function (backend, $q) {
     this.retrieveGames = function () {
-        return backend.retrieve('/games');
+        return backend.retrieve('/games', {cache: true});
     };
 
     var allGames = this.retrieveGames();
