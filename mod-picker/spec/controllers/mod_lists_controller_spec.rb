@@ -3,10 +3,11 @@ require 'rails_helper'
 RSpec.describe ModListsController, :controller, :kin do
   fixtures :mod_lists, :mods, :users, :categories, :games
 
-  describe "GET mod_list tools" do
+  describe "#tools" do
 
     let(:list) {mod_lists(:plannedVanilla)}
     let(:game) {games(:skyrim)}
+
     it "should return only mods with is_utility: true" do
 
       # create 5 utility mods
@@ -74,6 +75,51 @@ RSpec.describe ModListsController, :controller, :kin do
       # Expect response to only include mods who's utility: true'
       get :tools, {'id' => "#{list.id}"}
       expect(response).to have_http_status(200)
+      parsed_response = JSON(response.body)
+
+      expect(parsed_response).to be_empty
+    end
+  end
+
+
+  describe "#plugins" do
+    let(:test_list) {mod_lists(:plannedVanilla)}
+    let(:test_game) {games(:skyrim)}
+    let(:test_mod)  {mods(:Apocalypse)}
+
+    it "should return a list of plugins belonging to the mod_list" do
+      for i in 1..3 do
+        # create mod
+        plugin = create(:plugin,
+          game_id: test_game.id,
+          mod_id: test_mod.id,
+          filename: "valid_plugin_filename_#{i}"
+        )
+
+        # create mod_list_mod
+        mlp = plugin.mod_list_plugins.create(
+          mod_list_id: test_list.id,
+          index: 0)
+        
+        expect(mlp).to be_valid
+      end
+
+      expect(test_list.mod_list_plugins.count).to eq(3)
+
+      get :plugins, {"id" => "#{test_list.id}"}
+      expect(response).to have_http_status(200)
+
+      parsed_response = JSON(response.body)
+
+      parsed_response.each do |plug|
+        expect(plug["plugin"]["filename"]).to include("valid_plugin_filename")
+      end
+    end
+
+    it "should return [] empty array if no plugins are found" do
+      get :plugins, {"id" => "#{test_list.id}"}
+      expect(response).to have_http_status(200)
+
       parsed_response = JSON(response.body)
 
       expect(parsed_response).to be_empty
