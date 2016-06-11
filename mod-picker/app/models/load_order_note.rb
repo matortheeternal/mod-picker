@@ -7,6 +7,7 @@ class LoadOrderNote < ActiveRecord::Base
 
   belongs_to :game, :inverse_of => 'load_order_notes'
   belongs_to :submitter, :class_name => 'User', :foreign_key => 'submitted_by', :inverse_of => 'load_order_notes'
+  belongs_to :editor, :class_name => 'User', :foreign_key => 'edited_by'
 
   # plugins associatied with this load order note
   belongs_to :first_plugin, :foreign_key => 'first_plugin_id', :class_name => 'Plugin', :inverse_of => 'first_load_order_notes'
@@ -27,6 +28,7 @@ class LoadOrderNote < ActiveRecord::Base
 
   # old versions of this load order note
   has_many :history_entries, :class_name => 'LoadOrderNoteHistoryEntry', :inverse_of => 'load_order_note', :foreign_key => 'load_order_note_id'
+  has_many :editors, -> { uniq }, :class_name => 'User', :through => 'history_entries', :source => 'user', :foreign_key => 'submitted_by'
 
   self.per_page = 25
 
@@ -79,6 +81,12 @@ class LoadOrderNote < ActiveRecord::Base
                       :reputation => {:only => [:overall]}
                   },
                   :methods => :avatar
+              },
+              :editor => {
+                  :only => [:id, :username, :role]
+              },
+              :editors => {
+                  :only => [:id, :username, :role]
               }
           },
           :methods => [:mods, :plugins]

@@ -7,6 +7,7 @@ class InstallOrderNote < ActiveRecord::Base
 
   belongs_to :game, :inverse_of => 'install_order_notes'
   belongs_to :submitter, :class_name => 'User', :foreign_key => 'submitted_by', :inverse_of => 'install_order_notes'
+  belongs_to :editor, :class_name => 'User', :foreign_key => 'edited_by'
 
   # mods associatied with this install order note
   belongs_to :first_mod, :foreign_key => 'first_mod_id', :class_name => 'Mod', :inverse_of => 'first_install_order_notes'
@@ -22,6 +23,7 @@ class InstallOrderNote < ActiveRecord::Base
 
   # old versions of this install order note
   has_many :history_entries, :class_name => 'InstallOrderNoteHistoryEntry', :inverse_of => 'install_order_note', :foreign_key => 'install_order_note_id'
+  has_many :editors, -> { uniq }, :class_name => 'User', :through => 'history_entries', :source => 'user', :foreign_key => 'submitted_by'
 
   self.per_page = 25
 
@@ -70,6 +72,12 @@ class InstallOrderNote < ActiveRecord::Base
                       :reputation => {:only => [:overall]}
                   },
                   :methods => :avatar
+              },
+              :editor => {
+                  :only => [:id, :username, :role]
+              },
+              :editors => {
+                  :only => [:id, :username, :role]
               }
           },
           :methods => :mods
