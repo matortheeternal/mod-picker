@@ -23,7 +23,7 @@ class InstallOrderNote < ActiveRecord::Base
 
   # old versions of this install order note
   has_many :history_entries, :class_name => 'InstallOrderNoteHistoryEntry', :inverse_of => 'install_order_note', :foreign_key => 'install_order_note_id'
-  has_many :editors, -> { uniq }, :class_name => 'User', :through => 'history_entries', :source => 'user', :foreign_key => 'submitted_by'
+  has_many :editors, -> { uniq }, :class_name => 'User', :through => 'history_entries', :source => 'submitter', :foreign_key => 'submitted_by'
 
   self.per_page = 25
 
