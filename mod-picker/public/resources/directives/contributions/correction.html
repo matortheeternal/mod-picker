@@ -7,7 +7,7 @@
             {{correction.title}}
         </span>
     </div>
-    <author-column user="correction.user" ng-if="showAuthorColumn" class="author-column" index="index"></author-column>
+    <user-column user="correction.submitter" ng-if="showUserColumn" class="user-column" index="index"></user-column>
     <div class="content-column">
         <contribution-text target="correction"></contribution-text>
         <contribution-actions target="correction" model-name="Correction" index="index" user="user" edit="edit" agreeable="true" approveable="false" correctable="false"></contribution-actions>

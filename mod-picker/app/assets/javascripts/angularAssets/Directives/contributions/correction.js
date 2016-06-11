@@ -7,7 +7,7 @@ app.directive('correction', function () {
             index: '=',
             user: '=',
             edit: '=?',
-            showAuthorColumn: '='
+            showUserColumn: '='
         }
     }
 });
