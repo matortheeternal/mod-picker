@@ -79,6 +79,13 @@ body {
   column-count: $val;
 }
 
+//noinspection ALL
+@mixin wordbreak {
+  word-break: normal;
+  word-break: break-word; /*Chrome specific*/
+  hyphens: auto;
+}
+
 
 /* utility classes */
 .capitalize {
