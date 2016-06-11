@@ -21,6 +21,7 @@ class ContributionsController < ApplicationController
     end
 
     # update the base contribution
+    update_params[:edited_by] = current_user.id
     if @contribution.update(update_params)
       render json: {status: :ok}
     else

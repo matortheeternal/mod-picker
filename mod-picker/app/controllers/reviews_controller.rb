@@ -12,7 +12,10 @@ class ReviewsController < ContributionsController
   def update
     authorize! :update, @contribution
     @contribution.clear_ratings
-    if @contribution.update(contribution_update_params)
+
+    update_params = contribution_update_params
+    update_params[:edited_by] = current_user.id
+    if @contribution.update(update_params)
       render json: {status: :ok}
     else
       render json: @contribution.errors, status: :unprocessable_entity
