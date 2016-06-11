@@ -31,7 +31,7 @@ class CompatibilityNote < ActiveRecord::Base
 
   # old versions of this compatibility note
   has_many :history_entries, :class_name => 'CompatibilityNoteHistoryEntry', :inverse_of => 'compatibility_note', :foreign_key => 'compatibility_note_id'
-  has_many :editors, -> { uniq }, :class_name => 'User', :through => 'history_entries', :source => 'submitter', :foreign_key => 'submitted_by'
+  has_many :editors, -> { uniq }, :class_name => 'User', :through => 'history_entries'
 
   self.per_page = 25
 
