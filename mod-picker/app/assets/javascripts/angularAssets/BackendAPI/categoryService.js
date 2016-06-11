@@ -40,14 +40,14 @@ app.service('categoryService', function ($q, backend) {
     var allCategories = this.retrieveCategories();
 
     this.getCategoryById = function (id) {
-      var output = $q.defer();
+      var category = $q.defer();
 
       allCategories.then(function (categories) {
-        output.resolve(categories.find(function (category) {
-          return category.id === id;
+        category.resolve(categories.find(function (data) {
+          return data.id === id;
         }));
       });
-      return output.promise;
+      return category.promise;
     };
 
     this.retrievePrimaryCategory = function () {
