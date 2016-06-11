@@ -59,13 +59,29 @@ app.controller('contributionActionsController', function ($scope, $timeout, cont
         }
     };
 
+    $scope.toggleHistoryModal = function(visible) {
+        $scope.showHistoryModal = visible;
+        if (!$scope.target.history && !$scope.retrieving.history) {
+            $scope.retrieveHistory();
+        }
+    };
+
     $scope.retrieveCorrections = function() {
         $scope.retrieving.corrections = true;
         contributionService.retrieveCorrections($scope.model.route, $scope.target.id).then(function(data) {
             contributionService.associateAgreementMarks(data.corrections, data.agreement_marks);
-            // TODO: This will work after the service refactor
+            // TODO: This will work automatically after the service refactor
             //userTitleService.associateTitles(data.corrections, $scope.userTitles);
             $scope.target.corrections = data.corrections;
+        });
+    };
+
+    $scope.retrieveHistory = function() {
+        $scope.retrieving.history = true;
+        contributionService.retrieveHistory($scope.model.route, $scope.target.id).then(function(data) {
+            // TODO: This will work automatically after the service refactor
+            //userTitleService.associateTitles(data, $scope.userTitles);
+            $scope.target.history = data;
         });
     };
 
