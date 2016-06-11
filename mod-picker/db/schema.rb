@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160611171823) do
+ActiveRecord::Schema.define(version: 20160611184149) do
 
   create_table "agreement_marks", id: false, force: :cascade do |t|
     t.integer "correction_id", limit: 4,                null: false
@@ -143,6 +143,8 @@ ActiveRecord::Schema.define(version: 20160611171823) do
 
   create_table "corrections", force: :cascade do |t|
     t.integer  "game_id",          limit: 4,                     null: false
+    t.integer  "submitted_by",     limit: 4,                     null: false
+    t.integer  "edited_by",        limit: 4
     t.integer  "correctable_id",   limit: 4,                     null: false
     t.string   "correctable_type", limit: 255,                   null: false
     t.string   "title",            limit: 64
@@ -155,8 +157,6 @@ ActiveRecord::Schema.define(version: 20160611171823) do
     t.boolean  "hidden",                         default: false, null: false
     t.datetime "submitted",                                      null: false
     t.datetime "edited"
-    t.integer  "submitted_by",     limit: 4,                     null: false
-    t.integer  "edited_by",        limit: 4
   end
 
   add_index "corrections", ["correctable_type", "correctable_id"], name: "index_corrections_on_correctable_type_and_correctable_id", using: :btree
