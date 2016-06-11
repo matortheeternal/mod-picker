@@ -16,15 +16,14 @@ app.service('gameService', function (backend, $q) {
     };
 
     this.getAvailableGames = function() {
-        var output = $q.defer();
+        var availableGames = $q.defer();
         allGames.then(function(games) {
-            var availableGames = ["Skyrim"];
-            output.resolve(
-                games.filter(function(game) {
-                    return availableGames.indexOf(game.display_name) > -1;
-                })
-            );
+            var availableGameNames = ["Skyrim"];
+            var filteredGames = games.filter(function(game) {
+                return availableGameNames.indexOf(game.display_name) > -1;
+            });
+            availableGames.resolve(filteredGames);
         });
-        return output.promise;
+        return availableGames.promise;
     };
 });
