@@ -40,9 +40,9 @@ app.service('userTitleService', function (backend, $q, $timeout) {
 
         data.forEach(function(item) {
             // if user is defined and they don't have a custom title
-            if (item.user && !item.user.title) {
+            if (item.submitter && !item.submitter.title) {
                 // get their default title
-                item.user.title = service.getUserTitle(userTitles, item.user.reputation.overall);
+                item.submitter.title = service.getUserTitle(userTitles, item.submitter.reputation.overall);
             }
         });
     }

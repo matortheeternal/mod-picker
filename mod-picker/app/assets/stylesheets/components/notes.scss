@@ -25,7 +25,7 @@
     }
   }
 
-  .author-column {
+  .user-column {
     //background-color: $secondary_background;
     border-right: 1px solid $border_color;
     display: table-cell;
@@ -155,13 +155,18 @@
       width: 100%;
       margin: 10px 0;
       padding: 0 20px;
-      word-break: normal;
-      word-break: break-word; /*Chrome specific*/
-      hyphens: auto;
+      @include wordbreak;
 
       h1 {
         color: $text_color;
       }
+    }
+
+    .edit-summary {
+      font-size: 12px;
+      padding: 0 20px;
+      margin: 10px 0;
+      @include wordbreak;
     }
 
     .moderator-message {

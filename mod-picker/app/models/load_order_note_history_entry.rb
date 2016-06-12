@@ -1,6 +1,6 @@
 class LoadOrderNoteHistoryEntry < ActiveRecord::Base
   belongs_to :load_order_note, :inverse_of => 'history_entries', :foreign_key => 'load_order_note_id'
-  belongs_to :user, :foreign_key => 'submitted_by', :inverse_of => 'load_order_note_history_entries'
+  belongs_to :editor, :class_name => 'User', :foreign_key => 'edited_by', :inverse_of => 'load_order_note_history_entries'
 
   # Callbacks
   after_create :increment_counters

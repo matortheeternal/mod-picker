@@ -7,7 +7,7 @@ app.directive('installOrderNote', function () {
             index: '=',
             user: '=',
             edit: '=?',
-            showAuthorColumn: '=',
+            showUserColumn: '=',
             modId: '=?'
         }
     };

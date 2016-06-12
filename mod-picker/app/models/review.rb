@@ -15,6 +15,7 @@ class Review < ActiveRecord::Base
 
   belongs_to :game, :inverse_of => 'reviews'
   belongs_to :submitter, :class_name => 'User', :foreign_key => 'submitted_by', :inverse_of => 'reviews'
+  belongs_to :editor, :class_name => 'User', :foreign_key => 'edited_by'
   belongs_to :mod, :inverse_of => 'reviews'
 
   has_many :review_ratings, :inverse_of => 'review', :dependent => :destroy
@@ -100,6 +101,9 @@ class Review < ActiveRecord::Base
                       :reputation => {:only => [:overall]}
                   },
                   :methods => :avatar
+              },
+              :editor => {
+                  :only => [:id, :username, :role]
               }
           }
       }

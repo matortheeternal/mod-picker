@@ -8,6 +8,7 @@ class Correction < ActiveRecord::Base
 
   belongs_to :game, :inverse_of => 'corrections'
   belongs_to :submitter, :class_name => 'User', :foreign_key => 'submitted_by', :inverse_of => 'corrections'
+  belongs_to :editor, :class_name => 'User', :foreign_key => 'edited_by'
 
   has_many :agreement_marks, :inverse_of => 'correction'
   has_many :comments, :as => 'commentable'

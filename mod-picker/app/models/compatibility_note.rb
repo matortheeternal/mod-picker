@@ -10,6 +10,7 @@ class CompatibilityNote < ActiveRecord::Base
 
   belongs_to :game, :inverse_of => 'compatibility_notes'
   belongs_to :submitter, :class_name => 'User', :foreign_key => 'submitted_by', :inverse_of => 'compatibility_notes'
+  belongs_to :editor, :class_name => 'User', :foreign_key => 'edited_by'
 
   # associated mods
   belongs_to :first_mod, :class_name => 'Mod', :foreign_key => 'first_mod_id'
@@ -30,6 +31,7 @@ class CompatibilityNote < ActiveRecord::Base
 
   # old versions of this compatibility note
   has_many :history_entries, :class_name => 'CompatibilityNoteHistoryEntry', :inverse_of => 'compatibility_note', :foreign_key => 'compatibility_note_id'
+  has_many :editors, -> { uniq }, :class_name => 'User', :through => 'history_entries'
 
   self.per_page = 25
 
@@ -44,6 +46,18 @@ class CompatibilityNote < ActiveRecord::Base
 
   def mods
     [first_mod, second_mod]
+  end
+
+  def create_history_entry
+    self.history_entries.create(
+      edited_by: self.edited_by || self.submitted_by,
+      status: self.status,
+      compatibility_mod_id: self.compatibility_mod_id,
+      compatibility_plugin_id: self.compatibility_plugin_id,
+      text_body: self.text_body,
+      edit_summary: self.edit_summary,
+      edited: self.edited || self.submitted
+    )
   end
 
   def compute_reputation
@@ -78,6 +92,12 @@ class CompatibilityNote < ActiveRecord::Base
                       :reputation => {:only => [:overall]}
                   },
                   :methods => :avatar
+              },
+              :editor => {
+                  :only => [:id, :username, :role]
+              },
+              :editors => {
+                  :only => [:id, :username, :role]
               }
           },
           :methods => :mods

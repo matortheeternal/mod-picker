@@ -12,7 +12,7 @@ app.directive('compatibilityNote', function () {
             index: '=',
             user: '=',
             edit: '=?',
-            showAuthorColumn: '=',
+            showUserColumn: '=',
             modId: '=?'
         }
     }

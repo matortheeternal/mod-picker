@@ -7,7 +7,7 @@ app.directive('loadOrderNote', function () {
             index: '=',
             user: '=',
             edit: '=?',
-            showAuthorColumn: '='
+            showUserColumn: '='
         }
     };
 });
