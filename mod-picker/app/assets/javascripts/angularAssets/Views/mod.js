@@ -76,7 +76,7 @@ app.config(['$stateProvider', function($stateProvider) {
                     var options = {
                         sort: $stateParams.sort,
                         filters: $stateParams.filters,
-                        page: $stateParams.pages.current || 1
+                        page: $stateParams.page
                     };
                     this.self.data = { pages: {} };
                     return modService.retrieveContributions(modId, 'compatibility_notes', options, this.self.data.pages);
@@ -112,7 +112,7 @@ app.config(['$stateProvider', function($stateProvider) {
                     var options = {
                         sort: $stateParams.sort,
                         filters: $stateParams.filters,
-                        page: $stateParams.pages.current || 1
+                        page: $stateParams.page
                     };
                     this.self.data = { pages: {} };
                     return modService.retrieveContributions(modId, 'install_order_notes', options, this.self.data.pages);
@@ -154,7 +154,7 @@ app.config(['$stateProvider', function($stateProvider) {
                     var options = {
                         sort: $stateParams.sort,
                         filters: $stateParams.filters,
-                        page: $stateParams.pages.current || 1
+                        page: $stateParams.page
                     };
                     this.self.data = { pages: {} };
                     return modService.retrieveContributions(modId, 'load_order_notes', options, this.self.data.pages);
