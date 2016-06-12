@@ -8,7 +8,7 @@ app.directive('tabs', function () {
         templateUrl: '/resources/directives/tabs.html',
         controller: 'tabsController',
         scope: {
-        	tabs: '='
+            tabs: '='
         }
     };
 });

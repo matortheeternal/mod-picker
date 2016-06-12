@@ -2,40 +2,32 @@ app.service('userService', function (backend, $q, userSettingsService, userTitle
     var service = this;
     this.retrieveUser = function (userId) {
         var output = $q.defer();
-        try {
-        	backend.retrieve('/users/' + userId).then(function(userData) {
-            //moving collections into a separate array
-            userData.collections = [];
-            for (var i = userData.mod_lists.length - 1; i >= 0; i--) {
-                if (userData.mod_lists[i].is_collection) {
-                    userData.collections.push(userData.mod_lists.splice(i, 1)[0]);
+            backend.retrieve('/users/' + userId).then(function(userData) {
+                //moving collections into a separate array
+                userData.collections = [];
+                for (var i = userData.mod_lists.length - 1; i >= 0; i--) {
+                    if (userData.mod_lists[i].is_collection) {
+                        userData.collections.push(userData.mod_lists.splice(i, 1)[0]);
+                    }
                 }
-            }
 
-            //get user title if it's not custom
-            if (!userData.title) {
-                userTitleService.getUserTitle(userData.reputation.overall).then(function(title) {
-                    userData.title = title;
-                });
-            }
-            output.resolve(userData);
-        	});
-        } catch (errors) {
-        	throw errors;
-        }
+                //get user title if it's not custom
+                if (!userData.title) {
+                    userTitleService.getUserTitle(userData.reputation.overall).then(function(title) {
+                        userData.title = title;
+                    });
+                }
+                output.resolve(userData);
+            });
         return output.promise;
     };
 
     this.retrieveCurrentUser = function () {
         var output = $q.defer();
-        try {
-        	backend.retrieve('/current_user').then(function (userData) {
+            backend.retrieve('/current_user').then(function (userData) {
                 userData.permissions = service.getPermissions(userData);
                 output.resolve(userData);
-        	});
-        } catch (errors) {
-        	throw errors;
-        }
+            });
         return output.promise;
     };
 

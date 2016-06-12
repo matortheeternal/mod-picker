@@ -4,13 +4,9 @@ app.service('userTitleService', function (backend, $q) {
     this.retrieveUserTitles = function () {
         var userTitles = $q.defer();
 
-        try {
-        	backend.retrieve('/user_titles').then(function(titles) {
-                userTitles.resolve(titles);
-        	});
-        } catch (errors) {
-        	throw errors;
-        }
+        backend.retrieve('/user_titles').then(function(titles) {
+            userTitles.resolve(titles);
+        });
         return userTitles.promise;
     };
 

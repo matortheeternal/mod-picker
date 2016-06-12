@@ -3,7 +3,7 @@ app.directive('loadOrderNote', function () {
         restrict: 'E',
         templateUrl: '/resources/directives/contributions/loadOrderNote.html',
         scope: {
-        	note: '=',
+            note: '=',
             index: '=',
             user: '=',
             edit: '=?',

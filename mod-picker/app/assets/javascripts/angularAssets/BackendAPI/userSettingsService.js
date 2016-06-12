@@ -2,13 +2,9 @@ app.service('userSettingsService', function (backend, $q) {
 
     this.retrieveUserSettings = function () {
         var userSettings = $q.defer();
-        try {
-        	backend.retrieve('/user_settings').then(function (data) {
-                userSettings.resolve(data);
-        	});
-        } catch (errors) {
-        	throw errors;
-        }
+        backend.retrieve('/user_settings').then(function (data) {
+            userSettings.resolve(data);
+        });
         return userSettings.promise;
     };
 
@@ -22,13 +18,9 @@ app.service('userSettingsService', function (backend, $q) {
 
     this.verifyAccount = function (site, user_path) {
         var verified = $q.defer();
-        try {
-        	backend.retrieve('/link_account', { site: site, user_path: user_path }).then(function (data) {
-                verified.resolve(data);
-        	});
-        } catch (errors) {
-        	throw errors;
-        }
+        backend.retrieve('/link_account', { site: site, user_path: user_path }).then(function (data) {
+            verified.resolve(data);
+        });
         return verified.promise;
     };
 
@@ -39,9 +31,9 @@ app.service('userSettingsService', function (backend, $q) {
             user: user
         };
         var update = $q.defer();
-    	backend.update('/users/' + user.id, user_object).then(function (data) {
+        backend.update('/users/' + user.id, user_object).then(function (data) {
             update.resolve(data);
-    	});
+        });
         return update.promise;
     };
 

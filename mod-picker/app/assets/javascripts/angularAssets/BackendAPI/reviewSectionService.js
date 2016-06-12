@@ -2,11 +2,7 @@ app.service('reviewSectionService', function (backend, $q) {
     var service = this;
 
     this.retrieveReviewSections = function () {
-        try {
-        	return backend.retrieve('/review_sections');
-        } catch (errors) {
-        	throw errors;
-        }
+        return backend.retrieve('/review_sections');
     };
 
     var allReviewSections = this.retrieveReviewSections();

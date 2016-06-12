@@ -4,7 +4,7 @@ app.directive('tagSelector', function () {
         templateUrl: '/resources/directives/tagSelector.html',
         controller: 'tagSelectorController',
         scope: {
-        	activeTags: '=',
+            activeTags: '=',
             newTags: '=',
             maxTags: '=',
             canCreate: '=',

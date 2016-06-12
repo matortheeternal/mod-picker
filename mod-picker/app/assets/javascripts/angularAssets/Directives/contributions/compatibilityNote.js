@@ -8,7 +8,7 @@ app.directive('compatibilityNote', function () {
         templateUrl: '/resources/directives/contributions/compatibilityNote.html',
         controller: 'compatibilityNoteController',
         scope: {
-        	note: '=',
+            note: '=',
             index: '=',
             user: '=',
             edit: '=?',

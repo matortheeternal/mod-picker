@@ -8,32 +8,24 @@ app.service('categoryService', function ($q, backend) {
     function retrieveFilteredCategories(key) {
         var categories = $q.defer();
 
-        try {
-        	backend.retrieve('/categories', {cache: true}).then(function (data) {
-                var returnData = [];
-                data.forEach(function (category) {
-                    if (key === 'primary' ? !category.parent_id : category.parent_id == key) {
-                        returnData.push(category);
-                    }
-                });
-                returnData.sort(function (a, b) {
-                    return a.name.localeCompare(b.name);
-                });
-                categories.resolve(returnData);
-        	});
-        } catch (errors) {
-        	throw errors;
-        }
+        backend.retrieve('/categories', {cache: true}).then(function (data) {
+            var returnData = [];
+            data.forEach(function (category) {
+                if (key === 'primary' ? !category.parent_id : category.parent_id == key) {
+                    returnData.push(category);
+                }
+            });
+            returnData.sort(function (a, b) {
+                return a.name.localeCompare(b.name);
+            });
+            categories.resolve(returnData);
+        });
 
         return categories.promise;
     }
 
     this.retrieveCategoryPriorities = function() {
-        try {
-        	return backend.retrieve('/category_priorities');
-        } catch (errors) {
-        	throw errors;
-        }
+        return backend.retrieve('/category_priorities');
     };
 
     //storing all categories in a variable

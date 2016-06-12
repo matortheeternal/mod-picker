@@ -9,8 +9,8 @@ app.directive('messages', function () {
         controller: 'messagesController',
         scope: {
             decayTime: '=',
-        	successMessage: '@',
-        	errors: '=',
+            successMessage: '@',
+            errors: '=',
             successBool: '='
         }
     }
