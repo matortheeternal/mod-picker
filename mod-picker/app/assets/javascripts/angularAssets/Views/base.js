@@ -11,10 +11,6 @@ app.config(['$stateProvider', function($stateProvider) {
                     }
                 }
             },
-            'nav': {
-                templateUrl: '/resources/partials/nav.html',
-                controller: 'navController'
-            },
             'footer': {
                 templateUrl: '/resources/partials/footer.html'
             },
@@ -37,7 +33,6 @@ app.config(['$stateProvider', function($stateProvider) {
 }]);
 
 app.controller('globalController', function($state) {
-
     //reload when the user object is changed in the settings
     $scope.$on('reloadCurrentUser', function() {
         $state.reload();
@@ -46,12 +41,7 @@ app.controller('globalController', function($state) {
 
 app.controller('headerController', function($scope, currentUser, games, currentGame) {
     $scope.currentUser = currentUser;
-    $scope.currentGame = currentGame;
-    $scope.games = games;
-});
-
-app.controller('navController', function($scope, currentUser, currentGame) {
-    $scope.currentUser = currentUser;
     $scope.permissions = currentUser.permissions;
     $scope.currentGame = currentGame;
+    $scope.games = games;
 });

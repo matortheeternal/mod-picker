@@ -1,39 +1,106 @@
 <header>
-  <div class="page-container">
-    <div class="header">
-      <a class="logo" href="/"><h1>Mod Picker</h1></a>
-      <div class="nav-controls">
-        <!-- User signed in navigation -->
-        <ul class="user-nav" ng-if="currentUser">
-          <li>
-            Welcome <a class="inverse-link" ng-href="#/user/{{currentUser.id}}">{{currentUser.username}}</a>
-          </li>
-          <li>
-            <a class="inverse-link" href="#/settings/mod_lists">Saved Mod Lists</a>
-          </li>
-          <li>
-            <a class="inverse-link" ui-sref="base.settings">Settings</a>
-          </li>
-          <li>
-            <a class="inverse-link" href="/users/sign_out">Log Out</a>
-          </li>
-          <li>
-            <game-select games="games" selected-game="currentGame"></game-select>
-          </li>
-        </ul>
-        <!-- User signed out navigation -->
-        <ul class="user-nav" ng-if="!currentUser">
-          <li>
-            <a class="inverse-link" href="/users/sign_in">Log In</a>
-          </li>
-          <li>
-            <a class="inverse-link" href="/users/sign_up">Register</a>
-          </li>
-          <li>
-            <game-select games="games" selected-game="currentGame"></game-select>
-          </li>
-        </ul>
-      </div>
+    <div class="page-container">
+        <div class="header">
+            <a class="logo" href="/"><h1>Mod Picker</h1></a>
+            <div class="nav-controls">
+                <!-- User signed in navigation -->
+                <ul class="user-nav" ng-if="currentUser">
+                    <li>
+                        Welcome <a class="inverse-link" ng-href="#/user/{{currentUser.id}}">{{currentUser.username}}</a>
+                    </li>
+                    <li>
+                        <a class="inverse-link" href="#/settings/mod_lists">Saved Mod Lists</a>
+                    </li>
+                    <li>
+                        <a class="inverse-link" ui-sref="base.settings">Settings</a>
+                    </li>
+                    <li>
+                        <a class="inverse-link" href="/users/sign_out">Log Out</a>
+                    </li>
+                    <li>
+                        <game-select games="games" selected-game="currentGame"></game-select>
+                    </li>
+                </ul>
+                <!-- User signed out navigation -->
+                <ul class="user-nav" ng-if="!currentUser">
+                    <li>
+                        <a class="inverse-link" href="/users/sign_in">Log In</a>
+                    </li>
+                    <li>
+                        <a class="inverse-link" href="/users/sign_up">Register</a>
+                    </li>
+                    <li>
+                        <game-select games="games" selected-game="currentGame"></game-select>
+                    </li>
+                </ul>
+            </div>
+        </div>
     </div>
-  </div>
 </header>
+
+<nav>
+    <div class="page-container">
+        <div class="nav-wrapper clearfix">
+            <div class="primary-nav">
+                <a class="nav-modlist" ui-sref="base.mod-list">
+                    <span class="nav-icon">
+                        <i class="fa fa-pencil-square-o"></i>
+                    </span>
+                    <span class="nav-text">
+                        <b ng-if="currentUser.active_mod_list_id">Edit your</b>
+                        <b ng-if="!currentUser.active_mod_list_id">Start a new</b>
+                        Mod List
+                    </span>
+                </a>
+                <a class="nav-contributions" ui-sref="base.home">
+                    <span class="nav-icon">
+                        <i class="fa fa-comments"></i>
+                    </span>
+                    <span class="nav-text">
+                        <b>View recent</b>
+                        Contributions
+                    </span>
+                </a>
+                <a class="nav-browse-modlists" ui-sref="base.mod-lists">
+                    <span class="nav-icon">
+                        <i class="fa fa-list-ul"></i>
+                    </span>
+                    <span class="nav-text">
+                        <b>See all</b>
+                        Public Mod Lists
+                    </span>
+                </a>
+                <a class="nav-browse-mods" ui-sref="base.mods">
+                    <span class="nav-icon">
+                        <i class="fa fa-globe"></i>
+                    </span>
+                    <span class="nav-text">
+                        <b>Browse</b>
+                        Skyrim Mods
+                    </span>
+                    <span class="nav-dropdown"></span>
+                </a>
+                <a class="nav-submit-mod" ui-sref="base.submit" ng-if="permissions.canSubmitMod">
+                    <span class="nav-icon">
+                        <i class="fa fa-plus-square"></i>
+                    </span>
+                    <span class="nav-text">
+                        <b>Submit</b>
+                        A {{currentGame.display_name}} Mod
+                    </span>
+                </a>
+            </div>
+            <div class="secondary-nav">
+                <div class="search" ng-controller="searchInputController">
+                    <form>
+                        <input class="search-field" type="text" autocomplete="off" ng-model="search" placeholder="Search mods...">
+                        <div class="search-container">
+                            <input id="search-btn" class="btn" type="submit" value="Search" ng-click="processSearch()" ng-hide="loading"/>
+                            <loader data="!loading" spinner-class="small-spinner"></loader>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
