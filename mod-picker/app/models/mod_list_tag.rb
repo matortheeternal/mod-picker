@@ -3,7 +3,7 @@ class ModListTag < ActiveRecord::Base
 
   belongs_to :mod_list, :inverse_of => 'mod_list_tags'
   belongs_to :tag, :inverse_of => 'mod_list_tags'
-  belongs_to :user, :inverse_of => 'mod_list_tags', :foreign_key => 'submitted_by'
+  belongs_to :submitter, :class_name => 'User', :inverse_of => 'mod_list_tags', :foreign_key => 'submitted_by'
 
   # Validations
   validates :tag_id, :mod_list_id, :submitted_by, presence: true

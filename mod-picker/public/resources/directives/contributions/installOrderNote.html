@@ -1,4 +1,4 @@
-<div class="note-container">
+<div class="contribution-container">
 	<div class="content-title">
 		<span ng-if="modId">
             Install
@@ -15,9 +15,9 @@
             <span class="standing">Good Standing</span>
         </span>
 	</div>
-    <author-column user="note.user" ng-if="showAuthorColumn" class="author-column" index="index"></author-column>
+    <user-column user="note.submitter" ng-if="showUserColumn" class="user-column" index="index"></user-column>
     <div class="content-column">
         <contribution-text target="note"></contribution-text>
-        <contribution-actions target="note" route="'install_order_notes'" correctable="true" index="index" user="user" edit="edit"></contribution-actions>
+        <contribution-actions target="note" model-name="InstallOrderNote" index="index" user="user" edit="edit" has-history="true"></contribution-actions>
     </div>
 </div>

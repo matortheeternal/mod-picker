@@ -79,6 +79,13 @@ body {
   column-count: $val;
 }
 
+//noinspection ALL
+@mixin wordbreak {
+  word-break: normal;
+  word-break: break-word; /*Chrome specific*/
+  hyphens: auto;
+}
+
 
 /* utility classes */
 .capitalize {
@@ -392,12 +399,42 @@ input[type="button"], input[type="submit"] {
 }
 
 /* css for forms, inputs, and labels */
-.success-message {
-  background-color: $success_primary;
-  padding: 14px;
-  font-weight: 500;
-  font-size: 20px;
-  text-align: center;
+.messages {
+    max-height: 400px;
+    overflow: hidden;
+
+    &.ng-hide-add {
+      transition: 1s max-height ease-in;
+    }
+
+    &.ng-hide-remove {
+      transition: 1s max-height ease-out;
+    }
+
+    &.ng-hide {
+        max-height: 0;
+    }
+
+    .error-message {
+        .fa {
+            padding: 4px;
+        }
+
+        .fa:hover {
+            color: $action_text_color;
+            background-color: $text_color;
+            cursor: pointer;
+        }
+    }
+
+    .success-message {
+      background-color: $success_primary;
+      padding: 14px;
+      font-weight: 500;
+      font-size: 20px;
+      text-align: center;
+      height: 54px;
+    }
 }
 
 select {
@@ -406,7 +443,7 @@ select {
   border-radius: 4%;
   color: $h4_color;
   font: inherit;
-  padding: 0.5em 3em 0.5em 1em;
+  padding: 0.5em 2.5em 0.5em 0.5em;
 
   // reset browser style
   margin: 0;

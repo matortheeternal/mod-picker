@@ -1,9 +1,9 @@
 class CompatibilityNotesController < ContributionsController
-  before_action :set_compatibility_note, only: [:show, :update, :destroy, :approve, :hide]
+  before_action :set_compatibility_note, only: [:show, :update, :destroy, :corrections, :history, :approve, :hide]
 
   # GET /compatibility_notes
   def index
-    @compatibility_notes = CompatibilityNote.filter(filtering_params)
+    @compatibility_notes = CompatibilityNote.accessible_by(current_ability).filter(filtering_params).sort(params[:sort]).paginate(:page => params[:page])
 
     render :json => @compatibility_notes
   end
@@ -32,8 +32,13 @@ class CompatibilityNotesController < ContributionsController
       params.slice(:by, :mod);
     end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
+    # Params allowed during creation
     def contribution_params
-      params.require(:compatibility_note).permit(:game_id, :status, :first_mod_id, :second_mod_id, :text_body, :edit_summary, :compatibility_plugin_id, :compatibility_mod_id)
+      params.require(:compatibility_note).permit(:game_id, :status, :first_mod_id, :second_mod_id, :text_body, (:moderator_message if current_user.can_moderate?), :compatibility_plugin_id, :compatibility_mod_id)
+    end
+
+    # Params that can be updated
+    def contribution_update_params
+      params.require(:compatibility_note).permit(:status, :text_body, :edit_summary, (:moderator_message if current_user.can_moderate?), :compatibility_plugin_id, :compatibility_mod_id)
     end
 end

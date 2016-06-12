@@ -25,27 +25,27 @@ class User < ActiveRecord::Base
   has_one :bio, :class_name => 'UserBio', :dependent => :destroy
   has_one :reputation, :class_name => 'UserReputation', :dependent => :destroy
 
-  has_many :help_pages, :foreign_key => 'submitted_by', :inverse_of => 'user'
-  has_many :comments, :foreign_key => 'submitted_by', :inverse_of => 'user'
-  has_many :install_order_notes, :foreign_key => 'submitted_by', :inverse_of => 'user'
-  has_many :load_order_notes, :foreign_key => 'submitted_by', :inverse_of => 'user'
-  has_many :compatibility_notes, :foreign_key => 'submitted_by', :inverse_of => 'user'
-  has_many :reviews, :foreign_key => 'submitted_by', :inverse_of => 'user'
-  has_many :corrections, :foreign_key => 'submitted_by', :inverse_of => 'user'
-  has_many :agreement_marks, :foreign_key => 'submitted_by', :inverse_of => 'user'
-  has_many :helpful_marks, :foreign_key => 'submitted_by', :inverse_of => 'user'
+  has_many :help_pages, :foreign_key => 'submitted_by', :inverse_of => 'submitter'
+  has_many :comments, :foreign_key => 'submitted_by', :inverse_of => 'submitter'
+  has_many :install_order_notes, :foreign_key => 'submitted_by', :inverse_of => 'submitter'
+  has_many :load_order_notes, :foreign_key => 'submitted_by', :inverse_of => 'submitter'
+  has_many :compatibility_notes, :foreign_key => 'submitted_by', :inverse_of => 'submitter'
+  has_many :reviews, :foreign_key => 'submitted_by', :inverse_of => 'submitter'
+  has_many :corrections, :foreign_key => 'submitted_by', :inverse_of => 'submitter'
+  has_many :agreement_marks, :foreign_key => 'submitted_by', :inverse_of => 'submitter'
+  has_many :helpful_marks, :foreign_key => 'submitted_by', :inverse_of => 'submitter'
 
-  has_many :compatibility_note_history_entries, :foreign_key => 'submitted_by', :inverse_of => 'user'
+  has_many :compatibility_note_history_entries, :foreign_key => 'submitted_by', :inverse_of => 'submitter'
 
-  has_many :tags, :foreign_key => 'submitted_by', :inverse_of => 'user'
-  has_many :mod_tags, :foreign_key => 'submitted_by', :inverse_of => 'user'
-  has_many :mod_list_tags, :foreign_key => 'submitted_by', :inverse_of => 'user'
+  has_many :tags, :foreign_key => 'submitted_by', :inverse_of => 'submitter'
+  has_many :mod_tags, :foreign_key => 'submitted_by', :inverse_of => 'submitter'
+  has_many :mod_list_tags, :foreign_key => 'submitted_by', :inverse_of => 'submitter'
 
-  has_many :submitted_mods, :class_name => 'Mod', :foreign_key => 'submitted_by', :inverse_of => 'user'
+  has_many :submitted_mods, :class_name => 'Mod', :foreign_key => 'submitted_by', :inverse_of => 'submitter'
 
   has_many :mod_authors, :inverse_of => 'user'
   has_many :mods, :through => 'mod_authors', :inverse_of => 'author_users'
-  has_many :mod_lists, :foreign_key => 'submitted_by', :inverse_of => 'user'
+  has_many :mod_lists, :foreign_key => 'submitted_by', :inverse_of => 'submitter'
 
   belongs_to :active_mod_list, :class_name => 'ModList', :foreign_key => 'active_mod_list_id'
 
@@ -56,7 +56,7 @@ class User < ActiveRecord::Base
   has_many :starred_mod_lists, :through => 'mod_list_stars'
 
   has_many :profile_comments, :class_name => 'Comment', :as => 'commentable'
-  has_many :reports, :inverse_of => 'user'
+  has_many :reports, :foreign_key => 'submitted_by', :inverse_of => 'submitter'
   has_one :base_report, :as => 'reportable'
 
   accepts_nested_attributes_for :settings
@@ -120,6 +120,10 @@ class User < ActiveRecord::Base
 
   def moderator?
     self.role.to_sym == :moderator
+  end
+
+  def can_moderate?
+    self.admin? || self.moderator?
   end
 
   def banned?

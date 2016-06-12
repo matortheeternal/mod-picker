@@ -14,6 +14,13 @@ class Mod < ActiveRecord::Base
       where(game_id: game.id)
     end
   }
+  scope :is_game, -> (bool) {
+    if bool
+      where("primary_category_id IS NOT NULL")
+    else
+      where("primary_category_id IS NULL")
+    end
+  }
   scope :exclude, -> (excluded_mod_ids) { where.not(id: excluded_mod_ids) }
   scope :sources, -> (sources) {
     results = self.where(nil)
@@ -144,7 +151,7 @@ class Mod < ActiveRecord::Base
   scope :subscribers, -> (range) { where(:workshop_infos => { subscribers: range[:min]..range[:max] }) }
 
   belongs_to :game, :inverse_of => 'mods'
-  belongs_to :user, :foreign_key => 'submitted_by', :inverse_of => 'submitted_mods'
+  belongs_to :submitter, :class_name => 'User', :foreign_key => 'submitted_by', :inverse_of => 'submitted_mods'
 
   # categories the mod belongs to
   belongs_to :primary_category, :class_name => 'Category', :foreign_key => 'primary_category_id', :inverse_of => 'primary_mods'
@@ -362,7 +369,7 @@ class Mod < ActiveRecord::Base
           :tags => {
               :except => [:game_id, :hidden, :mod_lists_count],
               :include => {
-                  :user => {
+                  :submitter => {
                       :only => [:id, :username]
                   }
               }

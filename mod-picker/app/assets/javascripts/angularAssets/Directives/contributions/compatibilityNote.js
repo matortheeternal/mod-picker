@@ -4,7 +4,7 @@
 
 app.directive('compatibilityNote', function () {
     return {
-        retrict: 'E',
+        restrict: 'E',
         templateUrl: '/resources/directives/contributions/compatibilityNote.html',
         controller: 'compatibilityNoteController',
         scope: {
@@ -12,7 +12,7 @@ app.directive('compatibilityNote', function () {
             index: '=',
             user: '=',
             edit: '=?',
-            showAuthorColumn: '=',
+            showUserColumn: '=',
             modId: '=?'
         }
     }

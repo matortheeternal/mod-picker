@@ -5,7 +5,7 @@ class Comment < ActiveRecord::Base
   scope :target, -> (id) { where(commentable_id: id) }
   scope :by, -> (id) { where(submitted_by: id) }
 
-  belongs_to :user, :foreign_key => 'submitted_by', :inverse_of => 'comments'
+  belongs_to :submitter, :class_name => 'User', :foreign_key => 'submitted_by', :inverse_of => 'comments'
   belongs_to :commentable, :polymorphic => true
 
   has_one :base_report, :as => 'reportable'

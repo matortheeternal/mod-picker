@@ -132,7 +132,7 @@ class WorkshopHelper
 
   def self.game_id_from_app_id(app_id)
     Game.pluck(:id, :steam_app_ids).each do |id, app_ids|
-      if app_ids.split(',').include?(app_id)
+      if app_ids && app_ids.split(',').include?(app_id)
         return id
       end
     end

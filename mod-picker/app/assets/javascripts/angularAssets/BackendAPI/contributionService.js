@@ -8,6 +8,15 @@ app.service('contributionService', function (backend, $q) {
         return mark.promise;
     };
 
+    this.agreementMark = function(type, id, agree) {
+        var mark = $q.defer();
+        var agreeObj = agree == undefined ? {} : {agree: agree};
+        backend.post('/' + type + '/' + id + '/agreement', agreeObj).then(function (data) {
+            mark.resolve(data);
+        });
+        return mark.promise;
+    };
+
     this.hide = function(type, id, hidden) {
         var action = $q.defer();
         backend.post('/' + type + '/' + id + '/hide', {hidden: hidden}).then(function (data) {
@@ -35,6 +44,22 @@ app.service('contributionService', function (backend, $q) {
     this.updateContribution = function(type, id, contribution) {
         var action = $q.defer();
         backend.update('/' + type + '/' + id, contribution).then(function (data) {
+            action.resolve(data);
+        });
+        return action.promise;
+    };
+
+    this.retrieveCorrections = function(type, id) {
+        var action = $q.defer();
+        backend.retrieve('/' + type + '/' + id + '/corrections').then(function (data) {
+            action.resolve(data);
+        });
+        return action.promise;
+    };
+
+    this.retrieveHistory = function(type, id) {
+        var action = $q.defer();
+        backend.retrieve('/' + type + '/' + id + '/history').then(function (data) {
             action.resolve(data);
         });
         return action.promise;
