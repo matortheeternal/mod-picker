@@ -309,7 +309,7 @@ app.controller('modController', function($scope, $q, $stateParams, $timeout, cur
     $scope.starMod = function() {
         modService.starMod($scope.mod.id, $scope.mod.star).then(function(data) {
             if (data.status == 'ok') {
-                $scope.star = !$scope.star;
+                $scope.mod.star = !$scope.mod.star;
             }
         });
     };
