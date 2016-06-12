@@ -33,7 +33,7 @@ class HelpfulMark < ActiveRecord::Base
     end
 
     def decrement_counters
-      self.user.update_counter(:helpful_marks_count, -1)
+      self.submitter.update_counter(:helpful_marks_count, -1)
       if self.helpful
         self.helpfulable.helpful_count -= 1
         self.helpfulable.compute_reputation
@@ -46,7 +46,7 @@ class HelpfulMark < ActiveRecord::Base
     end
 
     def increment_counters
-      self.user.update_counter(:helpful_marks_count, 1)
+      self.submitter.update_counter(:helpful_marks_count, 1)
       if self.helpful
         self.helpfulable.helpful_count += 1
         self.helpfulable.compute_reputation
