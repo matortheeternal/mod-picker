@@ -98,21 +98,19 @@ app.service('modService', function(backend, $q, helpfulMarkService, userTitleSer
         try {
         	backend.retrieve('/mods/' + modId + '/' + 'analysis').then(function (analysis) {
                 // turn assets into an array of string
+                // create nestedAssets tree
                 analysis.assets = analysis.assets.map(function(asset) {
                     return asset.filepath;
                 });
-                // create nestedAssets tree
                 analysis.nestedAssets = assetUtils.convertDataStringToNestedObject(analysis.assets);
 
-                //associate groups with plugins
+                // associate groups with plugins
                 recordGroupService.associateGroups(analysis.plugins);
 
-                //combine dummy_masters array with masters array and sorts the masters array
+                // combine dummy_masters array with masters array and sorts the masters array
+                // and associate overrides with their master file
                 pluginService.combineAndSortMasters(analysis.plugins);
-
-                //associate overrides with their master file
                 pluginService.associateOverrides(analysis.plugins);
-
                 pluginService.sortErrors(analysis.plugins);
 
                 output.resolve(analysis);
