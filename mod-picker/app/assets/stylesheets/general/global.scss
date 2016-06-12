@@ -392,12 +392,42 @@ input[type="button"], input[type="submit"] {
 }
 
 /* css for forms, inputs, and labels */
-.success-message {
-  background-color: $success_primary;
-  padding: 14px;
-  font-weight: 500;
-  font-size: 20px;
-  text-align: center;
+.messages {
+    max-height: 400px;
+    overflow: hidden;
+
+    &.ng-hide-add {
+      transition: 1s max-height ease-in;
+    }
+
+    &.ng-hide-remove {
+      transition: 1s max-height ease-out;
+    }
+
+    &.ng-hide {
+        max-height: 0;
+    }
+
+    .error-message {
+        .fa {
+            padding: 4px;
+        }
+
+        .fa:hover {
+            color: $action_text_color;
+            background-color: $text_color;
+            cursor: pointer;
+        }
+    }
+
+    .success-message {
+      background-color: $success_primary;
+      padding: 14px;
+      font-weight: 500;
+      font-size: 20px;
+      text-align: center;
+      height: 54px;
+    }
 }
 
 select {
