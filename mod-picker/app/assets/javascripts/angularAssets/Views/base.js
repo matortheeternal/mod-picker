@@ -50,7 +50,8 @@ app.controller('headerController', function($scope, currentUser, games, currentG
     $scope.games = games;
 });
 
-app.controller('navController', function($scope, currentUser) {
+app.controller('navController', function($scope, currentUser, currentGame) {
     $scope.currentUser = currentUser;
     $scope.permissions = currentUser.permissions;
+    $scope.currentGame = currentGame;
 });
