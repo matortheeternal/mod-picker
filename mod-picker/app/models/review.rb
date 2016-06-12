@@ -69,7 +69,7 @@ class Review < ActiveRecord::Base
 
   def compute_reputation
     # TODO: We could base this off of the reputation of the people who marked the review helpful/not helpful, but we aren't doing that yet
-    user_rep = self.user.reputation.overall
+    user_rep = self.submitter.reputation.overall
     helpfulness = (self.helpful_count - self.not_helpful_count)
     if user_rep < 0
       self.reputation = user_rep + helpfulness
@@ -130,13 +130,13 @@ class Review < ActiveRecord::Base
         self.mod.compute_reputation
       end
       self.mod.save
-      self.user.update_counter(:reviews_count, 1)
+      self.submitter.update_counter(:reviews_count, 1)
     end
 
     def decrement_counters
       self.mod.reviews_count -= 1
       self.mod.compute_reputation
       self.mod.save
-      self.user.update_counter(:reviews_count, -1)
+      self.submitter.update_counter(:reviews_count, -1)
     end
 end

@@ -140,22 +140,22 @@ class ModList < ActiveRecord::Base
     end
 
     def increment_counters
-      self.user.update_counter(:mod_lists_count, 1)
+      self.submitter.update_counter(:mod_lists_count, 1)
     end
 
     def decrement_counters
-      self.user.update_counter(:mod_lists_count, -1)
+      self.submitter.update_counter(:mod_lists_count, -1)
     end
 
     def set_active
-      self.user.active_mod_list_id = self.id
-      self.user.save
+      self.submitter.active_mod_list_id = self.id
+      self.submitter.save
     end
 
     def unset_active
-      if self.user.active_mod_list_id == self.id
-        self.user.active_mod_list_id = nil
-        self.user.save
+      if self.submitter.active_mod_list_id == self.id
+        self.submitter.active_mod_list_id = nil
+        self.submitter.save
       end
     end
 end
