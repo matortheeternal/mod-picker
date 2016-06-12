@@ -4,7 +4,7 @@ class Correction < ActiveRecord::Base
   scope :by, -> (id) { where(submitted_by: id) }
 
   enum status: [:open, :passed, :failed]
-  enum mod_status: [:good, :outdated, :dangerous]
+  enum mod_status: [:good, :outdated, :unstable]
 
   belongs_to :game, :inverse_of => 'corrections'
   belongs_to :submitter, :class_name => 'User', :foreign_key => 'submitted_by', :inverse_of => 'corrections'

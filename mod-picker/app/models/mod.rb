@@ -2,7 +2,7 @@ class Mod < ActiveRecord::Base
   include Filterable, Sortable, RecordEnhancements
 
   attr_writer :tag_names, :asset_paths, :plugin_dumps, :nexus_info_id, :lover_info_id, :workshop_info_id
-  enum status: [ :good, :dangerous, :obsolete ]
+  enum status: [ :good, :outdated, :unstable ]
 
   # GENERAL SCOPES
   scope :search, -> (search) { where("name like ? OR aliases like ?", "%#{search}%", "%#{search}%") }

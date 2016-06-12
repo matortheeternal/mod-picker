@@ -15,7 +15,7 @@ app.controller('modStatusModalController', function ($scope, contributionService
 
     // start a new appeal
     $scope.startNewAppeal = function() {
-        var statuses = ["good", "outdated", "dangerous"];
+        var statuses = ["good", "outdated", "unstable"];
         statuses.splice(statuses.indexOf($scope.mod.status) || 0, 1);
         // TODO: Remove statuses that already have open appeals as well
         $scope.activeAppeal = {

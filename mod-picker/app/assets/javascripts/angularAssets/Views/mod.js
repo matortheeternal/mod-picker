@@ -274,7 +274,7 @@ app.controller('modController', function($scope, $q, $stateParams, $timeout, cur
         case "outdated":
             $scope.statusClass = "yellow-box";
             break;
-        case "dangerous":
+        case "unstable":
             $scope.statusClass = "red-box";
             break;
     }
