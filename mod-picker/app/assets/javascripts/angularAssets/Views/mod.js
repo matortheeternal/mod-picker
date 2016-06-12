@@ -179,7 +179,7 @@ app.config(['$stateProvider', function($stateProvider) {
     });
 }]);
 
-app.controller('modController', function($scope, $q, $stateParams, $timeout, currentUser, modObject, modService, pluginService, categoryService, gameService, recordGroupService, userTitleService, assetUtils, reviewSectionService, userService, contributionService, contributionFactory, errorsFactory, tagService, smoothScroll, pageUtils) {
+app.controller('modController', function($scope, $q, $stateParams, $timeout, currentUser, modObject, modService, pluginService, categoryService, gameService, recordGroupService, userTitleService, assetUtils, reviewSectionService, userService, contributionService, contributionFactory, errorsFactory, tagService, smoothScroll) {
     // get parent variables
     $scope.mod = modObject.mod;
     $scope.mod.star = modObject.star;
@@ -189,6 +189,7 @@ app.controller('modController', function($scope, $q, $stateParams, $timeout, cur
     $scope.newTags = [];
     $scope.statusModal = {};
     $scope.pages = {};
+    $scope.retrieving = {};
 
     //a copy is created so the original permissions are never changed
     $scope.permissions = angular.copy(currentUser.permissions);
@@ -198,7 +199,6 @@ app.controller('modController', function($scope, $q, $stateParams, $timeout, cur
     });
     var isAuthor = author !== null;
     $scope.permissions.canManage = $scope.permissions.canModerate || isAuthor;
-
 
     //tabs array
     $scope.tabs = [{
@@ -299,10 +299,8 @@ app.controller('modController', function($scope, $q, $stateParams, $timeout, cur
 
     $scope.retrieveCorrections = function() {
         $scope.retrieving.corrections = true;
-        modService.retrieveContributions($stateParams.modId, 'corrections').then(function(data) {
-            contributionService.associateAgreementMarks(data.corrections, data.agreement_marks);
-            userTitleService.associateTitles(data.corrections, $scope.userTitles);
-            $scope.mod.corrections = data.corrections;
+        modService.retrieveCorrections($stateParams.modId).then(function(corrections) {
+            $scope.mod.corrections = corrections;
             $scope.getAppealStatus();
         });
     };
