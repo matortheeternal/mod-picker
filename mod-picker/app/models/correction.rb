@@ -55,11 +55,11 @@ class Correction < ActiveRecord::Base
 
     def increment_counters
       self.correctable.update_counter(:corrections_count, 1)
-      self.user.update_counter(:corrections_count, 1)
+      self.submitter.update_counter(:corrections_count, 1)
     end
 
     def decrement_counters
       self.correctable.update_counter(:corrections_count, -1)
-      self.user.update_counter(:corrections_count, -1)
+      self.submitter.update_counter(:corrections_count, -1)
     end 
 end
