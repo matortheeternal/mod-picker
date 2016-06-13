@@ -1,5 +1,5 @@
 class Comment < ActiveRecord::Base
-  include Filterable, RecordEnhancements
+  include Filterable, Sortable, RecordEnhancements
 
   scope :type, -> (type) { where(commentable_type: type) }
   scope :target, -> (id) { where(commentable_id: id) }
