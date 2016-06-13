@@ -55,7 +55,7 @@ class User < ActiveRecord::Base
   has_many :mod_list_stars, :inverse_of => 'user'
   has_many :starred_mod_lists, :through => 'mod_list_stars'
 
-  has_many :profile_comments, :class_name => 'Comment', :as => 'commentable'
+  has_many :profile_comments, -> { where(parent_id: nil) }, :class_name => 'Comment', :as => 'commentable'
   has_many :reports, :foreign_key => 'submitted_by', :inverse_of => 'submitter'
   has_one :base_report, :as => 'reportable'
 
