@@ -12,6 +12,7 @@ Rails.application.routes.draw do
     # users and user settings
     resources :users, only: [:index, :show, :update, :destroy]
     match '/current_user', to: 'users#current', via: [:get]
+    match '/users/:id/comments', to: 'users#comments', via: [:get, :post]
     resources :user_settings, only: [:index, :update]
     match '/link_account', to: 'users#link_account', via: [:get]
 

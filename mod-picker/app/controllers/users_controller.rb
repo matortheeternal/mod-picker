@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  before_action :set_user, only: [:show, :update, :destroy]
+  before_action :set_user, only: [:show, :comments, :update, :destroy]
 
   # GET /users
   def index
@@ -38,6 +38,18 @@ class UsersController < ApplicationController
     else
       render json: {status: :ok, verified: false}
     end
+  end
+
+  # GET /users/1/comments
+  def comments
+    authorize! :read, @user
+    comments = @user.profile_comments.where(parent_id: nil).accessible_by(current_ability).sort(params[:sort]).paginate(:page => params[:page], :per_page => 10)
+    count = @user.profile_comments.where(parent_id: nil).accessible_by(current_ability).count
+    render :json => {
+        comments: comments,
+        max_entries: count,
+        entries_per_page: 10
+    }
   end
 
   # PATCH/PUT /users/1
