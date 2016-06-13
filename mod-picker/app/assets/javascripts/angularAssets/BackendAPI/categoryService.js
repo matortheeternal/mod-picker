@@ -1,5 +1,6 @@
 //TODO: maybe we should think about splitting the logic to retrieve all the data and filtering it.
 app.service('categoryService', function ($q, backend) {
+    var service = this;
 
     this.retrieveCategories = function() {
         return backend.retrieve('/categories', {cache: true});
@@ -67,5 +68,19 @@ app.service('categoryService', function ($q, backend) {
             });
         });
         return nestedCategoriesPromise.promise;
+    };
+
+    this.resolveModCategories = function(mod) {
+        if (mod.primary_category_id) {
+            service.getCategoryById(mod.primary_category_id).then(function (primaryCategory) {
+                mod.primary_category = primaryCategory;
+            });
+        }
+
+        if (mod.secondary_category_id) {
+            service.getCategoryById(mod.secondary_category_id).then(function(secondaryCategory) {
+                mod.secondary_category = secondaryCategory;
+            });
+        }
     };
 });
