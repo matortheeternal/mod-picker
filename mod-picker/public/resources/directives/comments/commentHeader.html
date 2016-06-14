@@ -1,9 +1,9 @@
 <span class="user-name">
-    <a class="user-role-{{comment.submitter.role}}" ng-href="#/user/{{comment.submitter.id}}" target="_blank" tabindex="{{index}}">{{comment.submitter.username}}</a>
+    <a class="strong user-role-{{comment.submitter.role}}" ng-href="#/user/{{comment.submitter.id}}" target="_blank" tabindex="{{index}}">{{comment.submitter.username}}</a>
 </span>
 <span class="user-title">
     {{comment.submitter.title}}
 </span>
-<span class="date-submitted">
+<span class="date-submitted" title="submitted {{comment.submitted | date: 'medium'}}">
     {{comment.submitted | date}}
 </span>

@@ -1,5 +1,1 @@
 <div class="text-container" ng-class="{ 'half-opacity' : comment.hidden }" marked="comment.text_body"></div>
-<div class="edit-summary" ng-if="comment.edited">
-    Edited {{comment.edited | date : 'longDate'}} - {{comment.edited | date : 'shortTime'}}
-    <span ng-show="comment.editor">by <a href="#/profile/{{comment.editor.id}}">{{comment.editor.username}}</a></span><br>
-</div>
