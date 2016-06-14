@@ -4,7 +4,6 @@ Rails.application.routes.draw do
   
   # require authentication before allowing user to access any resources
   authenticate :user do
-    resources :comments
     resources :mod_authors
     resources :user_bios
     resources :mod_asset_files
@@ -80,6 +79,11 @@ Rails.application.routes.draw do
     match '/corrections/:id/hide', to: 'corrections#hide', via: [:post]
     match '/load_order_notes/:id/approve', to: 'load_order_notes#approve', via: [:post]
     match '/corrections/:id/agreement', to: 'corrections#agreement', via: [:post]
+
+    # comments
+    resources :comments, only: [:show, :create, :update, :destroy]
+    match '/comments/index', to: 'comments#index', via: [:get, :post]
+    match '/comments/:id/hide', to: 'comments#hide', via: [:post]
 
     # helpful marks
     match '/reviews/:id/helpful', to: 'reviews#helpful', via: [:post]
