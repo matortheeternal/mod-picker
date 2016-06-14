@@ -1,20 +1,31 @@
-app.directive('commentActions', function () {
+app.directive('comment', function () {
     return {
         restrict: 'E',
-        templateUrl: '/resources/directives/comments/commentActions.html',
-        controller: 'commentActionsController',
+        templateUrl: '/resources/directives/contributions/comment.html',
+        controller: 'commentController',
         scope: {
             comment: '=',
-            index: '=',
             currentUser: '=',
-            edit: '='
+            index: '='
         }
     };
 });
 
-app.controller('commentActionsController', function ($scope, contributionService) {
+app.controller('commentController', function ($scope, $filter, contributionService) {
     // this is the report object
     $scope.report = {};
+
+    $scope.getDateString = function() {
+        var comment = $scope.comment;
+        var str = "submitted " + $filter('date')(comment.submitted, 'medium');
+        if (comment.edited) {
+            str += ", edited " + $filter('date')(comment.edited, 'medium');
+            if (comment.editor) {
+                str += " by " + comment.editor.username;
+            }
+        }
+        return str;
+    };
 
     $scope.toggleReportModal = function(visible) {
         $scope.showReportModal = visible;
