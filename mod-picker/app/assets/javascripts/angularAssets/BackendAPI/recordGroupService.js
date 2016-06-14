@@ -10,6 +10,7 @@ app.service('recordGroupService', function (backend, $q) {
         });
     };
 
+    // TODO: this is going to be a problem when we have multiple game modes on the site because this will be cached incorrectly, most likely
     var allRecordGroups = this.retrieveRecordGroups();
 
     this.associateGroups = function(plugins) {

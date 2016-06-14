@@ -36,7 +36,7 @@ app.service('userService', function (backend, $q, userSettingsService, userTitle
         backend.post('/users/' + userId + '/comments', options).then(function(response) {
             userTitleService.associateTitles(response.comments);
             pageUtils.getPageInformation(response, pageInformation, options.page);
-            output.resolve(response);
+            output.resolve(response.comments);
         }, function(response) {
             output.reject(response);
         });
