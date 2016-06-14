@@ -2,9 +2,6 @@
     <span class="user-avatar">
         <img class="avatar avatar-small" ng-src="{{comment.submitter.avatar == null ? '/avatars/' + comment.submitter.title + '.png' : comment.submitter.avatar}}"/>
     </span>
-    <span class="user-reputation">
-        {{comment.submitter.reputation.overall}}
-    </span>
 </div>
 
 <div class="content-column">
@@ -15,11 +12,14 @@
         <span class="user-title">
             {{comment.submitter.title}}
         </span>
+        <!-- TODO: Use a relative date -->
+        <!-- TODO: Show date edited in title as well -->
         <span class="date-submitted" title="submitted {{comment.submitted | date: 'medium'}}">
             {{comment.submitted | date}}
         </span>
     </div>
 
+    <!-- TODO: Conditionally show an inline editor -->
     <div class="text-container" ng-class="{ 'half-opacity' : comment.hidden }" marked="comment.text_body"></div>
 
     <comment-actions comment="comment" index="index" current-user="currentUser" edit="edit"></comment-actions>
