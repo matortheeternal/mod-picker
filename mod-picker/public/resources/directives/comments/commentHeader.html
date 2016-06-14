@@ -1,0 +1,9 @@
+<span class="user-name">
+    <a class="user-role-{{comment.submitter.role}}" ng-href="#/user/{{comment.submitter.id}}" target="_blank" tabindex="{{index}}">{{comment.submitter.username}}</a>
+</span>
+<span class="user-title">
+    {{comment.submitter.title}}
+</span>
+<span class="date-submitted">
+    {{comment.submitted | date}}
+</span>
