@@ -48,24 +48,17 @@ app.service('modService', function(backend, $q, userTitleService, categoryServic
         return action.promise;
     };
 
-    this.retrieveContributions = function(modId, name, options, pageInformation) {
+    this.retrieveContributions = function(modId, route, options, pageInformation) {
         var action = $q.defer();
-        if (options) {
-            backend.post('/mods/' + modId + '/' + name, options).then(function (data) {
-                var contributions = data[name];
-                contributionService.associateHelpfulMarks(contributions, data.helpful_marks);
-                userTitleService.associateTitles(contributions);
-                pageUtils.getPageInformation(data, pageInformation, options.page);
-                action.resolve(contributions);
-            });
-        } else {
-            backend.retrieve('/mods/' + modId + '/' + name).then(function (data) {
-                var contributions = data[name];
-                contributionService.associateHelpfulMarks(contributions, data.helpful_marks);
-                userTitleService.associateTitles(contributions);
-                action.resolve(contributions);
-            });
-        }
+        backend.post('/mods/' + modId + '/' + route, options).then(function (data) {
+            var contributions = data[route];
+            contributionService.associateHelpfulMarks(contributions, data.helpful_marks);
+            userTitleService.associateTitles(contributions);
+            pageUtils.getPageInformation(data, pageInformation, options.page);
+            action.resolve(contributions);
+        }, function(response) {
+            action.reject(response);
+        });
         return action.promise;
     };
 
