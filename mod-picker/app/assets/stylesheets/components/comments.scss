@@ -6,7 +6,7 @@
   .user-column {
     text-align: center;
     display: table-cell;
-    padding: 5px 10px;
+    padding: 0 10px;
 
     .user-avatar {
       display: block;
@@ -24,7 +24,8 @@
         font-weight: 500;
       }
       .date-submitted {
-        color: $h4_color;
+        margin-left: 5px;
+        color: $hard_border_color;
       }
     }
 
