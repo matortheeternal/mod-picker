@@ -1,28 +1,11 @@
 app.service('modService', function(backend, $q, userTitleService, categoryService, recordGroupService, assetUtils, errorsFactory, pluginService, reviewSectionService, contributionService, pageUtils) {
     this.retrieveMod = function(modId) {
         var output = $q.defer();
-        backend.retrieve('/mods/' + modId).then(function(modData) {
-            //get category objects with ids
-            if(modData.mod.primary_category_id){
-                categoryService.getCategoryById(modData.mod.primary_category_id).then(function(primaryCategory) {
-                    //set primary category on mod
-                    modData.mod.primary_category = primaryCategory;
-
-                    if(modData.mod.secondary_category_id) {
-                        categoryService.getCategoryById(modData.mod.secondary_category_id).then(function(secondaryCategory) {
-                            //set secondary category on mod
-                            modData.mod.secondary_category = secondaryCategory;
-
-                            //resolve output after both categories are set
-                            output.resolve(modData);
-                        });
-                    } else {
-                        output.resolve(modData);
-                    }
-                });
-            } else {
-                output.resolve(modData);
-            }
+        backend.retrieve('/mods/' + modId).then(function(data) {
+            categoryService.resolveModCategories(data.mod);
+            output.resolve(data);
+        }, function(response) {
+            output.reject(response);
         });
         return output.promise;
     };
