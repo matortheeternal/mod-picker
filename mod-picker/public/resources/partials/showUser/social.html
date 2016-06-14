@@ -1,16 +1,15 @@
+<div class="content-block" ng-if="user.about_me">
+    <div class="content-title">About Me</div>
+    <div class="content-container">
+        <div marked="user.about_me"></div>
+    </div>
+</div>
 
-    <section class="content-block" ng-if="user.about_me">
-        <div class="content-title">About Me</div>
-        <div class="content-container">
-            <div marked="user.about_me"></div>
+<div class="content-block">
+    <div class="content-title">Comments</div>
+    <loader data="user.profile_comments" spinner-class="big-spinner" content-class="content-container">
+        <div class="comment-container" ng-repeat="comment in user.profile_comments">
+            <comment comment="comment" current-user="currentUser" index="100 + $index"></comment>
         </div>
-    </section>
-
-    <section class="content-block">
-        <div class="content-title">Comments</div>
-        <loader data="user.profile_comments" spinner-class="big-spinner" content-class="content-container">
-            <div class="comment-container" ng-repeat="comment in user.profile_comments">
-                <comment comment="comment" current-user="currentUser" index="100 + $index"></comment>
-            </div>
-        </loader>
-    </section>
+    </loader>
+</div>
