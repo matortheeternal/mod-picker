@@ -25,6 +25,38 @@ class Comment < ActiveRecord::Base
   after_create :increment_counter_caches
   before_destroy :decrement_counter_caches
 
+  def as_json(options={})
+    if JsonHelpers.json_options_empty(options)
+      default_options = {
+          :except => [:parent_id, :submitted_by, :commentable_id, :commentable_type],
+          :include => {
+              :submitter => {
+                  :only => [:id, :username, :role, :title],
+                  :include => {
+                      :reputation => {:only => [:overall]}
+                  },
+                  :methods => :avatar
+              },
+              :children => {
+                  :except => [:submitted_by, :commentable_id, :commentable_type],
+                  :include => {
+                      :submitter => {
+                          :only => [:id, :username, :role, :title],
+                          :include => {
+                              :reputation => {:only => [:overall]}
+                          },
+                          :methods => :avatar
+                      },
+                  }
+              }
+          }
+      }
+      super(options.merge(default_options))
+    else
+      super(options)
+    end
+  end
+
   # Private methods
   private
     def set_dates
