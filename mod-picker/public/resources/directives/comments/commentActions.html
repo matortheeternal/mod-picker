@@ -1,21 +1,11 @@
 <div class="actions-container">
-    <span class="action-box" ng-if="canReply" tabindex="{{index}}" ng-click="reply(comment)">Reply</span>
-    <span class="action-box" ng-focus="showDropdown = true" ng-blur="blurDropdown()" tabindex="{{index}}">
-        Actions <i class="fa fa-caret-down"></i>
-    </span>
-    <span class="actions-dropdown-container">
-        <div class="dropdown" ng-show="showDropdown">
-            <div class="dropdown-item" ng-click="toggleShareModal(true)">Get Link</div>
-            <div class="dropdown-item" ng-if="canReport" ng-click="toggleReportModal(true)">Report</div>
-            <div class="dropdown-separator" ng-if="canEdit || canHide"></div>
-            <div class="dropdown-item" ng-if="canEdit" ng-click="edit(comment)">Edit</div>
-            <div class="dropdown-item" ng-if="canHide && !comment.hidden" ng-click="hide(true)">Hide</div>
-            <div class="dropdown-item" ng-if="canHide && comment.hidden" ng-click="hide(false)">Unhide</div>
-        </div>
-    </span>
+    <a class="action-item" ng-if="canReply" tabindex="{{index}}" ng-click="reply(comment)">reply</a>
+    <a class="action-item" ng-if="canReport" tabindex="{{index}}" ng-click="toggleReportModal(true)">report</a>
+    <a class="action-item" ng-if="canEdit" tabindex="{{index}}" ng-click="edit(comment)">edit</a>
+    <a class="action-item" ng-if="canHide && !comment.hidden" tabindex="{{index}}" ng-click="hide(true)">hide</a>
+    <a class="action-item" ng-if="canHide && comment.hidden" tabindex="{{index}}" ng-click="hide(false)">unhide</a>
     <!-- Hidden box -->
     <span class="action-box yellow-box no-action" ng-if="comment.hidden">Hidden</span>
 </div>
 
-<share-modal ng-if="showShareModal"></share-modal>
 <report-modal ng-if="showReportModal"></report-modal>
