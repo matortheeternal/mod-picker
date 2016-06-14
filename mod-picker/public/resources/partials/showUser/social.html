@@ -1,13 +1,15 @@
-<section class="tab-section">
-    <h3 class="section-title">About Me</h3>
-    <section>
+<section class="content-block" ng-if="user.about_me">
+    <div class="content-title">About Me</div>
+    <div class="content-container">
         <div marked="user.about_me"></div>
-    </section>
+    </div>
 </section>
 
-<section class="tab-section">
-    <h3 class="section-title">Comments</h3>
-    <loader data="user.profile_comments" spinner-class="big-spinner">
-        <comments comments="user.profile_comments" current-user="currentUser" index="100"></comments>
-    </loader>
+<section class="content-block">
+    <div class="content-title">Comments</div>
+    <div class="content-container">
+        <loader data="user.profile_comments" spinner-class="big-spinner">
+            <comments comments="user.profile_comments" current-user="currentUser" index="100"></comments>
+        </loader>
+    </div>
 </section>

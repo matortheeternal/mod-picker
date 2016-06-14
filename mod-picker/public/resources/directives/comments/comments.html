@@ -1,7 +1,7 @@
 <div class="comment-container" ng-repeat="comment in comments">
     <comment-avatar user="comment.submitter"></comment-avatar>
 
-    <div class="content-container">
+    <div class="content-column">
         <comment-header comment="comment" index="index"></comment-header>
         <comment-text comment="comment" ng-if="!comment.editing"></comment-text>
         <comment-actions comment="comment" index="index" current-user="currentUser" edit="edit"></comment-actions>
@@ -11,7 +11,7 @@
         <div class="child-container" ng-repeat="child in comment.children">
             <comment-avatar user="child.submitter"></comment-avatar>
 
-            <div class="content-container">
+            <div class="content-column">
                 <comment-header comment="child" index="index"></comment-header>
                 <comment-text comment="child" ng-if="!child.editing"></comment-text>
                 <comment-actions comment="child" index="index" current-user="currentUser" edit="edit"></comment-actions>
