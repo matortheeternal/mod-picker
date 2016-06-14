@@ -144,7 +144,7 @@ class ModsController < ApplicationController
   def reviews
     authorize! :read, @mod
     reviews = @mod.reviews.accessible_by(current_ability).sort(params[:sort]).paginate(:page => params[:page], :per_page => 10)
-    count =  @mod.reviews.accessible_by(current_ability).count
+    count = @mod.reviews.accessible_by(current_ability).count
     helpful_marks = HelpfulMark.where(submitted_by: current_user.id, helpfulable_type: "Review", helpfulable_id: reviews.ids)
     render :json => {
         reviews: reviews,
