@@ -12,7 +12,7 @@ app.directive('commentActions', function () {
     };
 });
 
-app.controller('commentActionsController', function ($scope) {
+app.controller('commentActionsController', function ($scope, contributionService) {
     // this is the report object
     $scope.report = {};
 
@@ -32,6 +32,14 @@ app.controller('commentActionsController', function ($scope) {
         $scope.canReport = user || false;
         $scope.canEdit = isAdmin || isModerator || isSubmitter;
         $scope.canHide = isAdmin || isModerator;
+    };
+
+    $scope.hide = function(hidden) {
+        contributionService.hide('comments', $scope.comment.id, hidden).then(function (data) {
+            if (data.status == "ok") {
+                $scope.comment.hidden = hidden;
+            }
+        });
     };
 
     // watch current user so if we get the user object after rendering actions
