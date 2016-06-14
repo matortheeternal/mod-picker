@@ -21,9 +21,9 @@ app.service('userTitleService', function (backend, $q) {
     };
 
     //initialize title variables
-    allTitles = this.retrieveUserTitles();
+    var allTitles = this.retrieveUserTitles();
 
-    gameTitles = allTitles.then(function(titles) {
+    var gameTitles = allTitles.then(function(titles) {
         return service.getSortedGameTitles(titles);
     });
 
