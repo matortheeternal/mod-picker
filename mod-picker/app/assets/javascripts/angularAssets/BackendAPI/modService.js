@@ -78,26 +78,25 @@ app.service('modService', function(backend, $q, userTitleService, categoryServic
         return reviews.promise;
     };
 
-    this.retrieveAnalysis = function(modId, gameId) {
+    this.retrieveAnalysis = function(modId) {
         var output = $q.defer();
         backend.retrieve('/mods/' + modId + '/' + 'analysis').then(function (analysis) {
             // turn assets into an array of string
-            // create nestedAssets tree
             analysis.assets = analysis.assets.map(function(asset) {
                 return asset.filepath;
             });
+            // create nestedAssets tree
             analysis.nestedAssets = assetUtils.convertDataStringToNestedObject(analysis.assets);
 
-            // associate groups with plugins
+            // prepare plugin data for display
             recordGroupService.associateGroups(analysis.plugins);
-
-            // combine dummy_masters array with masters array and sorts the masters array
-            // and associate overrides with their master file
             pluginService.combineAndSortMasters(analysis.plugins);
             pluginService.associateOverrides(analysis.plugins);
             pluginService.sortErrors(analysis.plugins);
 
             output.resolve(analysis);
+        }, function(response) {
+            output.reject(response);
         });
         return output.promise;
     };
