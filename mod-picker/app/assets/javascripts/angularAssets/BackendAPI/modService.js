@@ -44,6 +44,8 @@ app.service('modService', function(backend, $q, userTitleService, categoryServic
             contributionService.associateAgreementMarks(data.corrections, data.agreement_marks);
             userTitleService.associateTitles(data.corrections);
             action.resolve(data.corrections);
+        }, function(response) {
+            action.reject(response);
         });
         return action.promise;
     };
@@ -67,6 +69,8 @@ app.service('modService', function(backend, $q, userTitleService, categoryServic
         this.retrieveContributions(modId, 'reviews', options, pageInformation).then(function(data) {
             reviewSectionService.associateReviewSections(data);
             reviews.resolve(data);
+        }, function(response) {
+            reviews.reject(response);
         });
         return reviews.promise;
     };
