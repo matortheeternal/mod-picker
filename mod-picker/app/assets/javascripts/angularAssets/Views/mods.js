@@ -1,7 +1,7 @@
 
 app.config(['$stateProvider', function ($stateProvider) {
     $stateProvider.state('base.mods', {
-            templateUrl: '/resources/partials/mods.html',
+            templateUrl: '/resources/partials/browse/mods.html',
             controller: 'modsController',
             url: '/mods'
         }

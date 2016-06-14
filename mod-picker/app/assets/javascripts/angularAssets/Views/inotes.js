@@ -1,7 +1,7 @@
 
 app.config(['$stateProvider', function ($stateProvider) {
     $stateProvider.state('base.installation_notes', {
-            templateUrl: '/resources/partials/installation_notes.html',
+            templateUrl: '/resources/partials/browse/installation_notes.html',
             controller: 'inotesController',
             url: '/installation_notes'
         }
