@@ -7,8 +7,7 @@
 
 <section class="tab-section">
     <h3 class="section-title">Comments</h3>
-    <div class="comments-container">
-        <comment ng-repeat="comment in comments" comment="comment"></comment>
-        <!-- comments need to be retrieved -->
-    </div>
+    <loader data="user.profile_comments" spinner-class="big-spinner">
+        <comments comments="user.profile_comments" current-user="currentUser" index="100"></comments>
+    </loader>
 </section>
