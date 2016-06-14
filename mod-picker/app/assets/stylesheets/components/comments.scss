@@ -3,18 +3,7 @@
   margin-bottom: 16px;
   position: relative;
 
-  comment-header {
-    font-size: 13px;
-    .user-title {
-      margin-left: 10px;
-      font-weight: 500;
-    }
-    .date-submitted {
-      color: $h4_color;
-    }
-  }
-
-  comment-avatar {
+  .user-column {
     text-align: center;
     display: table-cell;
     padding: 5px 10px;
@@ -24,7 +13,21 @@
     }
   }
 
-  comment-text {
+  .content-column {
+    display: table-cell;
+    vertical-align: top;
+
+    .comment-header {
+      font-size: 13px;
+      .user-title {
+        margin-left: 10px;
+        font-weight: 500;
+      }
+      .date-submitted {
+        color: $h4_color;
+      }
+    }
+
     .text-container {
       p:first-child {
         margin-top: 4px;
@@ -37,11 +40,6 @@
     .edit-summary {
       font-size: 11px;
     }
-  }
-
-  .content-column {
-    display: table-cell;
-    vertical-align: top;
   }
 
   .actions-container {

@@ -1,0 +1,32 @@
+<div class="user-column">
+    <span class="user-avatar">
+        <img class="avatar avatar-small" ng-src="{{comment.submitter.avatar == null ? '/avatars/' + comment.submitter.title + '.png' : comment.submitter.avatar}}"/>
+    </span>
+    <span class="user-reputation">
+        {{comment.submitter.reputation.overall}}
+    </span>
+</div>
+
+<div class="content-column">
+    <div class="comment-header">
+        <span class="user-name">
+            <a class="strong user-role-{{comment.submitter.role}}" ng-href="#/user/{{comment.submitter.id}}" target="_blank" tabindex="{{index}}">{{comment.submitter.username}}</a>
+        </span>
+        <span class="user-title">
+            {{comment.submitter.title}}
+        </span>
+        <span class="date-submitted" title="submitted {{comment.submitted | date: 'medium'}}">
+            {{comment.submitted | date}}
+        </span>
+    </div>
+
+    <div class="text-container" ng-class="{ 'half-opacity' : comment.hidden }" marked="comment.text_body"></div>
+
+    <comment-actions comment="comment" index="index" current-user="currentUser" edit="edit"></comment-actions>
+
+    <!-- TODO: Hide children past the third child by default -->
+    <!-- TODO: Create link to show all children -->
+    <div class="child-comments" ng-if="comment.children">
+        <comment ng-repeat="child in comment.children"></comment>
+    </div>
+</div>
