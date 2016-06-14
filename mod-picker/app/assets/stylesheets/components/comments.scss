@@ -1,0 +1,63 @@
+.comment-container {
+  display: table;
+  margin-bottom: 16px;
+  position: relative;
+
+  comment-header {
+    font-size: 13px;
+    .user-title {
+      margin-left: 10px;
+      font-weight: 500;
+    }
+    .date-submitted {
+      color: $h4_color;
+    }
+  }
+
+  comment-avatar {
+    text-align: center;
+    display: table-cell;
+    padding: 5px 10px;
+
+    .user-avatar {
+      display: block;
+    }
+  }
+
+  comment-text {
+    .text-container {
+      p:first-child {
+        margin-top: 4px;
+      }
+      p:last-child {
+        margin-bottom: 8px;
+      }
+    }
+
+    .edit-summary {
+      font-size: 11px;
+    }
+  }
+
+  .content-column {
+    display: table-cell;
+    vertical-align: top;
+  }
+
+  .actions-container {
+    cursor: default;
+
+    .action-item {
+      color: $hard_border_color;
+      font-size: 13px;
+      font-weight: 500;
+      margin-right: 4px;
+      padding: 2px;
+      cursor: pointer;
+
+      &:hover {
+        color: $text_color;
+      }
+    }
+  }
+}
