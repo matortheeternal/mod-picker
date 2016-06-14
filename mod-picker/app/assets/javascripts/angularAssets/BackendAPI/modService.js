@@ -10,10 +10,13 @@ app.service('modService', function(backend, $q, userTitleService, categoryServic
         return output.promise;
     };
 
-    this.retrieveMods = function(options) {
+    this.retrieveMods = function(options, pageInformation) {
         var action = $q.defer();
         backend.post('/mods/index', options).then(function (data) {
+            pageUtils.getPageInformation(data, pageInformation, options.page);
             action.resolve(data);
+        }, function(response) {
+            action.reject(response);
         });
         return action.promise;
     };

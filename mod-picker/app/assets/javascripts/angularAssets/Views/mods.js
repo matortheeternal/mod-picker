@@ -8,7 +8,7 @@ app.config(['$stateProvider', function ($stateProvider) {
     );
 }]);
 
-app.controller('modsController', function ($scope, $q, modService, sliderFactory, columnsFactory, filtersFactory, pageUtils, currentUser, currentGame) {
+app.controller('modsController', function ($scope, $q, modService, sliderFactory, columnsFactory, filtersFactory, currentUser, currentGame) {
     // get parent variables
     $scope.currentUser = currentUser;
     $scope.currentGame = currentGame;
@@ -86,9 +86,8 @@ app.controller('modsController', function ($scope, $q, modService, sliderFactory
             sort: $scope.sort,
             page: page || 1
         };
-        modService.retrieveMods(options).then(function (data) {
+        modService.retrieveMods(options, $scope.pages).then(function (data) {
             $scope.mods = data.mods;
-            pageUtils.getPageInformation(data, $scope.pages, page);
             firstGet = true;
         });
     };
