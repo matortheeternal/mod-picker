@@ -33,7 +33,7 @@
 
                 <h3 class="section-title" ng-if="user['email_public?']">Contact</h3>
                 <section ng-if="user['email_public?']">
-                    <div class="stat-item">Email: {{user.email}}</div>
+                    <div class="stat-item">Email: <a href="mailto:{{user.email}}">{{user.email}}</a></div>
                     <div ng-if="user.bio.nexus_username">
                         <a ng-href="http://www.nexusmods.com/games/users/{{user.bio.nexus_user_id}}">
                             <div class="action-box source-box">
