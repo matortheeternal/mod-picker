@@ -1,8 +1,7 @@
 class CommentsController < ApplicationController
-  before_action :set_comment, only: [:show, :update, :destroy]
+  before_action :set_comment, only: [:show, :update, :hide, :destroy]
 
   # GET /comments
-  # GET /comments.json
   def index
     @comments = Comment.filter(filtering_params)
 
@@ -10,13 +9,11 @@ class CommentsController < ApplicationController
   end
 
   # GET /comments/1
-  # GET /comments/1.json
   def show
     render :json => @comment
   end
 
   # POST /comments
-  # POST /comments.json
   def create
     @comment = Comment.new(comment_params)
 
@@ -28,7 +25,6 @@ class CommentsController < ApplicationController
   end
 
   # PATCH/PUT /comments/1
-  # PATCH/PUT /comments/1.json
   def update
     if @comment.update(comment_params)
       render :show, status: :ok, location: @comment
@@ -37,8 +33,18 @@ class CommentsController < ApplicationController
     end
   end
 
+  # POST /comments/1/hide
+  def hide
+    authorize! :hide, @comment
+    @comment.hidden = params[:hidden]
+    if @comment.save
+      render json: {status: :ok}
+    else
+      render json: @comment.errors, status: :unprocessable_entity
+    end
+  end
+
   # DELETE /comments/1
-  # DELETE /comments/1.json
   def destroy
     if @comment.destroy
       render json: {status: :ok}
