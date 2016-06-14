@@ -11,8 +11,8 @@ class Comment < ActiveRecord::Base
   has_one :base_report, :as => 'reportable'
 
   # parent/child comment association
-  belongs_to :parent, :class_name => 'Comment', :foreign_key => 'parent_comment', :inverse_of => 'children'
-  has_many :children, :class_name => 'Comment', :foreign_key => 'parent_comment', :inverse_of => 'parent'
+  belongs_to :parent, :class_name => 'Comment', :foreign_key => 'parent_id', :inverse_of => 'children'
+  has_many :children, :class_name => 'Comment', :foreign_key => 'parent_id', :inverse_of => 'parent'
 
   # Validations
   validates :submitted_by, :commentable_type, :commentable_id, presence: true
