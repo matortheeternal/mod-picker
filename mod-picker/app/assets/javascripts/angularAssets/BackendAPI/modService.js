@@ -22,30 +22,20 @@ app.service('modService', function(backend, $q, userTitleService, categoryServic
     };
 
     this.searchMods = function(name) {
-        var mods = $q.defer();
         var postData =  {
             filters: {
                 search: name
             }
         };
-        backend.post('/mods/search', postData).then(function (data) {
-            mods.resolve(data);
-        });
-        return mods.promise;
+        return backend.post('/mods/search', postData);
     };
 
     this.starMod = function(modId, starred) {
-        var star = $q.defer();
         if (starred) {
-            backend.delete('/mods/' + modId + '/star').then(function (data) {
-                star.resolve(data);
-            });
+            return backend.delete('/mods/' + modId + '/star');
         } else {
-            backend.post('/mods/' + modId + '/star', {}).then(function (data) {
-                star.resolve(data);
-            });
+            return backend.post('/mods/' + modId + '/star', {});
         }
-        return star.promise;
     };
 
     this.retrieveCorrections = function(modId) {
