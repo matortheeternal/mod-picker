@@ -2,6 +2,7 @@
   display: table;
   margin-bottom: 16px;
   position: relative;
+  width: 100%;
 
   .user-column {
     text-align: center;
@@ -16,6 +17,7 @@
   .content-column {
     display: table-cell;
     vertical-align: top;
+    width: 100%;
 
     .comment-header {
       font-size: 13px;
@@ -34,17 +36,26 @@
         margin-top: 4px;
       }
       p:last-child {
-        margin-bottom: 8px;
+        margin-bottom: 4px;
       }
     }
 
     .edit-summary {
       font-size: 11px;
     }
+
+    .edit-container {
+      margin-top: 8px;
+    }
+
+    .reply-container {
+      margin: 16px;
+    }
   }
 
   .actions-container {
     cursor: default;
+    height: 26px;
 
     .action-item {
       color: $hard_border_color;
@@ -58,5 +69,9 @@
         color: $text_color;
       }
     }
+  }
+
+  .child-comments {
+    padding-left: 40px;
   }
 }
