@@ -56,6 +56,10 @@ app.controller('correctionsModalController', function ($scope, contributionServi
         });
     };
 
+    $scope.startNewComment = function() {
+        $scope.$broadcast('startNewComment');
+    };
+
     $scope.showCorrection = function(correction) {
         $scope.correction = correction;
         if (!correction.comments && !correction.retrieving_comments) {
