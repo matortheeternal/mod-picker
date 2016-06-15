@@ -19,11 +19,18 @@
         </span>
     </div>
 
-    <!-- TODO: Conditionally show an inline editor -->
-    <div class="text-container" ng-class="{ 'half-opacity' : comment.hidden }" marked="comment.text_body"></div>
+    <div class="text-container" ng-class="{ 'half-opacity' : comment.hidden }" marked="comment.text_body" ng-if="!comment.editing"></div>
+    <div class="edit-container" ng-if="comment.editing">
+        <text-area data="activeComment.text_body" on-change="validateComment" ng-refresh="updateMDE"></text-area>
 
-    <div class="actions-container">
-        <a class="action-item" ng-if="canReply" tabindex="{{index}}" ng-click="reply(comment)">reply</a>
+        <div class="action-button-container">
+            <input class="btn action-btn" type="submit" value="Submit" ng-click="saveComment()" ng-disabled="!activeComment.valid" title="{{activeComment.valid ? 'Submit your comment' : 'Your comment is too short.'}}"/>
+            <input class="btn action-btn" type="button" value="Discard" ng-click="discardComment()">
+        </div>
+    </div>
+
+    <div class="actions-container" ng-if="!comment.editing">
+        <a class="action-item" ng-if="canReply" tabindex="{{index}}" ng-click="reply()">reply</a>
         <a class="action-item" ng-if="canReport" tabindex="{{index}}" ng-click="toggleReportModal(true)">report</a>
         <a class="action-item" ng-if="canEdit" tabindex="{{index}}" ng-click="edit()">edit</a>
         <a class="action-item" ng-if="canHide && !comment.hidden" tabindex="{{index}}" ng-click="hide(true)">hide</a>
@@ -33,6 +40,15 @@
     </div>
 
     <report-modal ng-if="showReportModal"></report-modal>
+
+    <div class="reply-container" ng-if="comment.replying">
+        <text-area data="activeComment.text_body" on-change="validateComment" ng-refresh="updateMDE"></text-area>
+
+        <div class="action-button-container">
+            <input class="btn action-btn" type="submit" value="Submit" ng-click="saveComment()" ng-disabled="!activeComment.valid" title="{{activeComment.valid ? 'Submit your comment' : 'Your comment is too short.'}}"/>
+            <input class="btn action-btn" type="button" value="Discard" ng-click="discardComment()">
+        </div>
+    </div>
 
     <!-- TODO: Hide children past the third child by default -->
     <!-- TODO: Create link to show all children -->
