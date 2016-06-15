@@ -18,6 +18,17 @@ app.controller('commentsController', function ($scope, contributionService) {
         $scope.updateMDE = ($scope.updateMDE || 0) + 1;
     };
 
+    // start a new comment
+    $scope.newComment = function() {
+        $scope.activeComment = {
+            text_body: ""
+        };
+
+        // update markdown editor and validation
+        $scope.validateComment();
+        $scope.updateEditor();
+    };
+
     $scope.validateComment = function() {
         // exit if we don't have a activeCompatibilityNote yet
         if (!$scope.activeComment) {
@@ -30,17 +41,6 @@ app.controller('commentsController', function ($scope, contributionService) {
     // discard the new comment object
     $scope.discardNewComment = function() {
         delete $scope.activeComment;
-    };
-
-    // start a new comment
-    $scope.newComment = function() {
-        $scope.activeComment = {
-            text_body: ""
-        };
-
-        // update markdown editor and validation
-        $scope.validateComment();
-        $scope.updateEditor();
     };
 
     // save a new comment
