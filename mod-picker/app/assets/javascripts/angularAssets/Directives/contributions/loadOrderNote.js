@@ -5,7 +5,7 @@ app.directive('loadOrderNote', function () {
         scope: {
             note: '=',
             index: '=',
-            user: '=',
+            currentUser: '=',
             edit: '=?',
             showUserColumn: '='
         }

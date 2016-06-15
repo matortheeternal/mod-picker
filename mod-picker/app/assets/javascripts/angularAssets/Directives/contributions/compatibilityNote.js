@@ -10,7 +10,7 @@ app.directive('compatibilityNote', function () {
         scope: {
             note: '=',
             index: '=',
-            user: '=',
+            currentUser: '=',
             edit: '=?',
             showUserColumn: '=',
             modId: '=?'

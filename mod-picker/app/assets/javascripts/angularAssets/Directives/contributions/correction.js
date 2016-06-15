@@ -5,7 +5,7 @@ app.directive('correction', function () {
         scope: {
             correction: '=',
             index: '=',
-            user: '=',
+            currentUser: '=',
             edit: '=?',
             showUserColumn: '='
         }

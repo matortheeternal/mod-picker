@@ -5,7 +5,7 @@ app.directive('installOrderNote', function () {
         scope: {
             note: '=',
             index: '=',
-            user: '=',
+            currentUser: '=',
             edit: '=?',
             showUserColumn: '=',
             modId: '=?'
