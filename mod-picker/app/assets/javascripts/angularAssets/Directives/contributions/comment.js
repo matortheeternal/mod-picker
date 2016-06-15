@@ -99,7 +99,6 @@ app.controller('commentController', function ($scope, $filter, $timeout, contrib
     $scope.setPermissions = function() {
         // permissions helper variables
         var user = $scope.currentUser;
-        var rep = user.reputation.overall;
         var isAdmin = user && user.role === 'admin';
         var isModerator = user && user.role === 'moderator';
         var isSubmitter = user && user.id === $scope.comment.submitted_by;
