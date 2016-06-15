@@ -66,14 +66,14 @@ app.controller('userController', function ($scope, $stateParams, currentUser, us
 });
 
 app.controller('userSocialTabController', function($scope, $stateParams, userService) {
-    $scope.retrieveProfileComments = function() {
+    $scope.retrieveProfileComments = function(page) {
         // TODO: Make options dynamic
         var options = {
             sort: {
                 column: 'submitted',
                 direction: 'desc'
             },
-            page: 1
+            page: page || 1
         };
         userService.retrieveProfileComments($stateParams.userId, options, $scope.pages.profile_comments).then(function(data) {
             $scope.user.profile_comments = data;

@@ -11,5 +11,7 @@
         <div class="comment-container" ng-repeat="comment in user.profile_comments">
             <comment comment="comment" current-user="currentUser" index="100 + $index"></comment>
         </div>
+
+        <page-results pages="pages.profile_comments" data="user.profile_comments" callback="retrieveProfileComments"></page-results>
     </loader>
 </div>
