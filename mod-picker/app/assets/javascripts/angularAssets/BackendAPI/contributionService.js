@@ -1,4 +1,4 @@
-app.service('contributionService', function (backend, $q) {
+app.service('contributionService', function (backend, $q, userTitleService, pageUtils) {
     this.helpfulMark = function(type, id, helpful) {
         var mark = $q.defer();
         var helpfulObj = helpful == undefined ? {} : {helpful: helpful};
@@ -55,6 +55,18 @@ app.service('contributionService', function (backend, $q) {
             action.resolve(data);
         });
         return action.promise;
+    };
+
+    this.retrieveComments = function(route, id, options, pageInformation) {
+        var output = $q.defer();
+        backend.post('/' + route + '/' + id + '/comments', options).then(function(response) {
+            userTitleService.associateTitles(response.comments);
+            pageUtils.getPageInformation(response, pageInformation, options.page);
+            output.resolve(response.comments);
+        }, function(response) {
+            output.reject(response);
+        });
+        return output.promise;
     };
 
     this.retrieveHistory = function(type, id) {
