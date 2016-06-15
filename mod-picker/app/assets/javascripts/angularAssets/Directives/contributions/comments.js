@@ -30,7 +30,7 @@ app.controller('commentsController', function ($scope, contributionService) {
     };
 
     $scope.validateComment = function() {
-        // exit if we don't have a activeCompatibilityNote yet
+        // exit if we don't have an activeComment yet
         if (!$scope.activeComment) {
             return;
         }
