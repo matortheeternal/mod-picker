@@ -1,30 +1,4 @@
 .contribution-container {
-  .content-title {
-    background-color: $bar_color;
-    color: $bar_text_color;
-    //border-bottom: 1px solid $bar_dark_color;
-    width: 100%;
-    padding: 10px;
-    font-size: 16px;
-    font-weight: 500;
-
-    .right-item {
-      float: right;
-      .standing {
-        font-size: 14px;
-        font-weight: 100;
-        font-style: italic;
-        vertical-align: top;
-      }
-    }
-    a {
-      color: $bright_action_color;
-      &:hover {
-        color: $bar_text_color;
-      }
-    }
-  }
-
   .user-column {
     //background-color: $secondary_background;
     border-right: 1px solid $border_color;
