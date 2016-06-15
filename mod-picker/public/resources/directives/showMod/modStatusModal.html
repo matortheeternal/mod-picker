@@ -1,5 +1,5 @@
 <div class="modal-container" ng-show="statusModal.visible">
-    <div class="modal huge-modal" ng-hide="statusModal.appeal || activeAppeal">
+    <div class="modal huge-modal" ng-hide="appeal || activeAppeal">
         <div class="close-modal">
             <span class="fa fa-times" ng-click="toggleStatusModal(false)"></span>
         </div>
@@ -75,7 +75,7 @@
         </div>
     </div>
 
-    <div class="modal huge-modal" ng-if="statusModal.appeal && !activeAppeal">
+    <div class="modal huge-modal" ng-if="appeal && !activeAppeal">
         <div class="close-modal">
             <span class="fa fa-times" ng-click="toggleStatusModal(false)"></span>
         </div>
@@ -83,12 +83,21 @@
         <h2>{{mod.name}} - Viewing Appeal</h2>
 
         <div class="content-block">
-            <correction correction="statusModal.appeal" index="100" user="currentUser" edit="editAppeal" show-user-column="true"></correction>
+            <correction correction="appeal" index="100" current-user="currentUser" edit="editAppeal" show-user-column="true"></correction>
         </div>
 
-        <!-- TODO: Comments directive -->
-        <h3 class="section-title">Comments</h3>
-        <comments comments="statusModal.appeal.comments"></comments>
+        <h3 class="section-title">Comments
+            <span>
+                <span class="action-box" ng-click="startNewComment()">
+                    <i class="fa fa-plus"></i> New Comment
+                </span>
+            </span>
+        </h3>
+        <loader data="appeal.comments" spinner-class="big-spinner" content-class="content-container">
+            <comments comments="appeal.comments" current-user="currentUser" model-name="'Correction'" target="appeal"></comments>
+
+            <page-results pages="pages.appeal_comments" data="appeal.comments" callback="retrieveAppealComments"></page-results>
+        </loader>
 
         <!-- TODO: May need to move this before comments or make it a sticky footer? -->
         <div class="action-button-container">

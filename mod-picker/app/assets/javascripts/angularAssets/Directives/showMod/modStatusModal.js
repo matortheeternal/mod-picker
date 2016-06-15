@@ -42,14 +42,39 @@ app.controller('modStatusModalController', function ($scope, contributionService
         $scope.updateEditor(true);
     };
 
+    $scope.retrieveAppealComments = function(page) {
+        // TODO: Make options dynamic
+        var options = {
+            sort: {
+                column: 'submitted',
+                direction: 'desc'
+            },
+            page: page || 1
+        };
+        contributionService.retrieveComments('corrections', $scope.appeal.id, options, $scope.pages.appeal_comments).then(function(data) {
+            $scope.appeal.comments = data;
+            delete $scope.appeal.retrieving_comments;
+        }, function(response) {
+            $scope.displayErrors.correction_comments = response;
+        });
+    };
+
+    $scope.startNewComment = function() {
+        $scope.$broadcast('startNewComment');
+    };
+
     $scope.showAppeal = function(appeal) {
-        $scope.statusModal.appeal = appeal;
+        $scope.appeal = appeal;
+        if (!appeal.comments && !appeal.retrieving_comments) {
+            appeal.retrieving_comments = true;
+            $scope.retrieveAppealComments();
+        }
     };
 
     $scope.showIndex = function() {
         // NOTE: It's important that we're not deleting this, as that would remove
         // the appeal from the index view as well, which is not desireable
-        $scope.statusModal.appeal = null;
+        $scope.appeal = null;
     };
 
     $scope.validateAppeal = function() {

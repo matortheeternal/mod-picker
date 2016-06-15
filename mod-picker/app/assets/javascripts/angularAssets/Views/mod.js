@@ -188,7 +188,9 @@ app.controller('modController', function($scope, $q, $stateParams, $timeout, cur
     $scope.tags = [];
     $scope.newTags = [];
     $scope.statusModal = {};
-    $scope.pages = {};
+    $scope.pages = {
+        appeal_comments: {}
+    };
     $scope.retrieving = {};
 
     //a copy is created so the original permissions are never changed
