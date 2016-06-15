@@ -4,10 +4,6 @@ Rails.application.routes.draw do
   
   # require authentication before allowing user to access any resources
   authenticate :user do
-    resources :mod_authors
-    resources :user_bios
-    resources :mod_asset_files
-
     # users and user settings
     resources :users, only: [:index, :show, :update, :destroy]
     match '/current_user', to: 'users#current', via: [:get]
