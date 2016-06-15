@@ -6,7 +6,9 @@ app.directive('comment', function () {
         scope: {
             comment: '=',
             currentUser: '=',
-            index: '='
+            index: '=',
+            saveCallback: '=',
+            isChild: '=?'
         }
     };
 });
@@ -20,40 +22,12 @@ app.controller('commentController', function ($scope, $filter, $timeout, contrib
         var str = "submitted " + $filter('date')(comment.submitted, 'medium');
         if (comment.edited) {
             str += ", edited " + $filter('date')(comment.edited, 'medium');
-            if (comment.editor) {
-                str += " by " + comment.editor.username;
-            }
         }
         return str;
     };
 
     $scope.toggleReportModal = function(visible) {
         $scope.showReportModal = visible;
-    };
-
-    // update the markdown editor
-    $scope.updateEditor = function() {
-        $scope.updateMDE = ($scope.updateMDE || 0) + 1;
-    };
-
-    $scope.validateComment = function() {
-        // exit if we don't have a activeCompatibilityNote yet
-        if (!$scope.activeComment) {
-            return;
-        }
-
-        $scope.activeComment.valid = $scope.activeComment.text_body.length > 4;
-    };
-
-    // discard the comment object
-    $scope.discardComment = function() {
-        if ($scope.activeComment.editing) {
-            $scope.comment.editing = false;
-            $scope.activeComment = null;
-        } else {
-            $scope.comment.replying = false;
-            delete $scope.activeComment;
-        }
     };
 
     $scope.reply = function() {
@@ -74,12 +48,52 @@ app.controller('commentController', function ($scope, $filter, $timeout, contrib
         $scope.comment.editing = true;
         $scope.activeComment = {
             text_body: $scope.comment.text_body.slice(0),
+            original: $scope.comment,
             editing: true
         };
 
         // update validation, update the markdown editor
         $scope.validateComment();
         $scope.updateEditor();
+    };
+
+    // save comment
+    $scope.saveComment = function() {
+        $scope.saveCallback($scope.activeComment, $scope.discardComment, $scope.updateComment);
+    };
+
+    // update the markdown editor
+    $scope.updateEditor = function() {
+        $scope.updateMDE = ($scope.updateMDE || 0) + 1;
+    };
+
+    $scope.validateComment = function() {
+        // exit if we don't have a activeCompatibilityNote yet
+        if (!$scope.activeComment) {
+            return;
+        }
+
+        $scope.activeComment.valid = $scope.activeComment.text_body.length > 4;
+    };
+
+    // discard the comment object
+    $scope.discardComment = function() {
+        if ($scope.activeComment.editing) {
+            $scope.activeComment.original.editing = false;
+            $scope.activeComment = null;
+        } else {
+            $scope.comment.replying = false;
+            delete $scope.activeComment;
+        }
+    };
+
+    // update the comment locally
+    $scope.updateComment = function() {
+        var originalComment = $scope.comment;
+        var updatedComment = $scope.activeComment;
+        // update the values on the original comment
+        originalComment.text_body = updatedComment.text_body.slice(0);
+        originalComment.edited = new Date();
     };
 
     $scope.setPermissions = function() {
@@ -90,7 +104,7 @@ app.controller('commentController', function ($scope, $filter, $timeout, contrib
         var isModerator = user && user.role === 'moderator';
         var isSubmitter = user && user.id === $scope.comment.submitted_by;
         // set up permissions
-        $scope.canReply = user || false;
+        $scope.canReply = !$scope.isChild && user;
         $scope.canReport = user || false;
         $scope.canEdit = isAdmin || isModerator || isSubmitter;
         $scope.canHide = isAdmin || isModerator;

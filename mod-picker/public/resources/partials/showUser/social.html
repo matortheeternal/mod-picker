@@ -9,7 +9,7 @@
     <div class="content-title">Comments</div>
     <loader data="user.profile_comments" spinner-class="big-spinner" content-class="content-container">
         <div class="comment-container" ng-repeat="comment in user.profile_comments">
-            <comment comment="comment" current-user="currentUser" index="100 + $index"></comment>
+            <comment comment="comment" current-user="currentUser" index="100 + $index" save-callback="saveComment"></comment>
         </div>
 
         <page-results pages="pages.profile_comments" data="user.profile_comments" callback="retrieveProfileComments"></page-results>
