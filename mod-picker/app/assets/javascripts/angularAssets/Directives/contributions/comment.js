@@ -11,7 +11,7 @@ app.directive('comment', function () {
     };
 });
 
-app.controller('commentController', function ($scope, $filter, contributionService) {
+app.controller('commentController', function ($scope, $filter, $timeout, contributionService) {
     // this is the report object
     $scope.report = {};
 
@@ -29,6 +29,57 @@ app.controller('commentController', function ($scope, $filter, contributionServi
 
     $scope.toggleReportModal = function(visible) {
         $scope.showReportModal = visible;
+    };
+
+    // update the markdown editor
+    $scope.updateEditor = function() {
+        $scope.updateMDE = ($scope.updateMDE || 0) + 1;
+    };
+
+    $scope.validateComment = function() {
+        // exit if we don't have a activeCompatibilityNote yet
+        if (!$scope.activeComment) {
+            return;
+        }
+
+        $scope.activeComment.valid = $scope.activeComment.text_body.length > 4;
+    };
+
+    // discard the comment object
+    $scope.discardComment = function() {
+        if ($scope.activeComment.editing) {
+            $scope.comment.editing = false;
+            $scope.activeComment = null;
+        } else {
+            $scope.comment.replying = false;
+            delete $scope.activeComment;
+        }
+    };
+
+    $scope.reply = function() {
+        $scope.activeComment = {
+            parent_id: $scope.comment.id,
+            text_body: ""
+        };
+
+        $scope.comment.replying = true;
+
+        // update markdown editor and validation
+        $scope.validateComment();
+        $scope.updateEditor();
+    };
+
+    // edit comment
+    $scope.edit = function() {
+        $scope.comment.editing = true;
+        $scope.activeComment = {
+            text_body: $scope.comment.text_body.slice(0),
+            editing: true
+        };
+
+        // update validation, update the markdown editor
+        $scope.validateComment();
+        $scope.updateEditor();
     };
 
     $scope.setPermissions = function() {
