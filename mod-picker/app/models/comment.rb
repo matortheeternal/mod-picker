@@ -17,7 +17,7 @@ class Comment < ActiveRecord::Base
   # Validations
   validates :submitted_by, :commentable_type, :commentable_id, presence: true
   validates :hidden, inclusion: [true, false]
-  validates :commentable_type, inclusion: ["User", "ModList"]
+  validates :commentable_type, inclusion: ["User", "ModList", "Correction"]
   validates :text_body, length: {in: 1..8192}
 
   # Callbacks
