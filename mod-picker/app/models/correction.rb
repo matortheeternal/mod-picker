@@ -11,7 +11,7 @@ class Correction < ActiveRecord::Base
   belongs_to :editor, :class_name => 'User', :foreign_key => 'edited_by'
 
   has_many :agreement_marks, :inverse_of => 'correction'
-  has_many :comments, :as => 'commentable'
+  has_many :comments, -> { where(parent_id: nil) }, :as => 'commentable'
   
   belongs_to :correctable, :polymorphic => true
   has_one :base_report, :as => 'reportable'

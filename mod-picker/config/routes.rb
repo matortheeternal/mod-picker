@@ -75,6 +75,7 @@ Rails.application.routes.draw do
     match '/corrections/:id/hide', to: 'corrections#hide', via: [:post]
     match '/load_order_notes/:id/approve', to: 'load_order_notes#approve', via: [:post]
     match '/corrections/:id/agreement', to: 'corrections#agreement', via: [:post]
+    match '/corrections/:id/comments', to: 'corrections#comments', via: [:get, :post]
 
     # comments
     resources :comments, only: [:show, :create, :update, :destroy]

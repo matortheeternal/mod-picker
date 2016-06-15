@@ -1,5 +1,5 @@
 class CorrectionsController < ApplicationController
-  before_action :set_correction, only: [:show, :update, :hide, :destroy]
+  before_action :set_correction, only: [:show, :update, :comments, :hide, :destroy]
 
   # GET /corrections
   def index
@@ -25,6 +25,18 @@ class CorrectionsController < ApplicationController
     else
       render json: @correction.errors, status: :unprocessable_entity
     end
+  end
+
+  # POST/GET /corrections/1/comments
+  def comments
+    authorize! :read, @correction
+    comments = @correction.comments.accessible_by(current_ability).sort(params[:sort]).paginate(:page => params[:page], :per_page => 10)
+    count = @correction.comments.accessible_by(current_ability).count
+    render :json => {
+        comments: comments,
+        max_entries: count,
+        entries_per_page: 10
+    }
   end
 
   # PATCH/PUT /corrections/1
