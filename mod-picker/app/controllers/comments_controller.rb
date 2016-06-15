@@ -3,19 +3,21 @@ class CommentsController < ApplicationController
 
   # GET /comments
   def index
-    @comments = Comment.filter(filtering_params)
+    @comments = Comment.accessible_by(current_ability).filter(filtering_params)
 
     render :json => @comments
   end
 
   # GET /comments/1
   def show
+    authorize! :read, @comment
     render :json => @comment
   end
 
   # POST /comments
   def create
     @comment = Comment.new(comment_params)
+    authorize! :create, @comment
 
     if @comment.save
       render json: {status: :ok}
@@ -26,6 +28,7 @@ class CommentsController < ApplicationController
 
   # PATCH/PUT /comments/1
   def update
+    authorize! :update, @comment
     if @comment.update(comment_params)
       render json: {status: :ok}
     else
@@ -46,6 +49,7 @@ class CommentsController < ApplicationController
 
   # DELETE /comments/1
   def destroy
+    authorize! :destroy, @comment
     if @comment.destroy
       render json: {status: :ok}
     else
