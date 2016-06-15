@@ -1,6 +1,6 @@
 .comment-container {
-  display: table;
-  margin-bottom: 16px;
+  display: flex;
+  margin-bottom: 12px;
   position: relative;
   width: 100%;
 
@@ -72,6 +72,7 @@
   }
 
   .child-comments {
-    padding-left: 40px;
+    padding-top: 10px;
+    padding-right: 10px;
   }
 }
