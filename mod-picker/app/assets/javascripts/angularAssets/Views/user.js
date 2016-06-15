@@ -54,8 +54,6 @@ app.controller('userController', function ($scope, $stateParams, currentUser, us
         errorService.handleError('user', response);
     });
 
-
-
     //of the tab data
     $scope.tabs = [
         { name: 'Social'},
@@ -65,7 +63,7 @@ app.controller('userController', function ($scope, $stateParams, currentUser, us
     ];
 });
 
-app.controller('userSocialTabController', function($scope, $stateParams, userService) {
+app.controller('userSocialTabController', function($scope, $stateParams, userService, contributionService) {
     $scope.retrieveProfileComments = function(page) {
         // TODO: Make options dynamic
         var options = {
@@ -80,6 +78,49 @@ app.controller('userSocialTabController', function($scope, $stateParams, userSer
         }, function(response) {
             $scope.displayErrors.profile_comments = response;
         });
+    };
+
+    // save a comment
+    $scope.saveComment = function(comment, discardCallback, updateCallback) {
+        // return if the comment is invalid
+        if (!comment.valid) {
+            return;
+        }
+
+        // submit the comment
+        var commentObj = {
+            comment: {
+                parent_id: comment.parent_id,
+                commentable_id: $scope.user.id,
+                commentable_type: 'User',
+                text_body: comment.text_body
+            }
+        };
+        comment.submitting = true;
+
+        // use update or submit contribution
+        if (comment.editing) {
+            var commentId = comment.original.id;
+            contributionService.updateContribution("comments", commentId, commentObj).then(function() {
+                $scope.submitMessage = "Comment updated successfully!";
+                $scope.showSuccess = true;
+
+                // update original review object and discard copy
+                updateCallback();
+                discardCallback();
+            }, function(response) {
+                // error handling
+            });
+        } else {
+            contributionService.submitContribution("comments", commentObj).then(function() {
+                $scope.submitMessage = "Comment submitted successfully!";
+                $scope.showSuccess = true;
+                // TODO: push the review onto the $scope.mod.reviews array
+                discardCallback();
+            }, function(response) {
+                // error handling
+            });
+        }
     };
 
     // retrieve the profile comments
