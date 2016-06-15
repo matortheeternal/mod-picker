@@ -640,7 +640,8 @@ a .help-tooltip {
 .avatar-small {
   max-width: 48px;
   max-height: 48px;
-  border-width: 1px;
+  border-width: 0;
+  box-shadow: 0 0 4px 2px $border_color;
 }
 
 .avatar-medium {
