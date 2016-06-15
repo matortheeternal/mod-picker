@@ -17,6 +17,7 @@ class CommentsController < ApplicationController
   # POST /comments
   def create
     @comment = Comment.new(comment_params)
+    @comment.submitted_by = current_user.id
     authorize! :create, @comment
 
     if @comment.save
@@ -70,6 +71,6 @@ class CommentsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def comment_params
-      params.require(:comment).permit(:parent_comment, :submitted_by, :hidden, :submitted, :edited, :text_body)
+      params.require(:comment).permit(:commentable_id, :commentable_type, :parent_id, :text_body)
     end
 end
