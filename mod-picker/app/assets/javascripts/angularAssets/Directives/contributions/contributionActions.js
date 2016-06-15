@@ -33,6 +33,12 @@ app.controller('contributionActionsController', function ($scope, $timeout, cont
 
     // retrieving object for tracking what we're retrieving
     $scope.retrieving = {};
+    // pages object for tracking pagination
+    $scope.pages = {
+        correction_comments: {}
+    };
+    // display errors object for tracking display errors
+    $scope.displayErrors = {};
 
     // compute whether or not the target is open if it is agreeable
     if ($scope.agreeable) {

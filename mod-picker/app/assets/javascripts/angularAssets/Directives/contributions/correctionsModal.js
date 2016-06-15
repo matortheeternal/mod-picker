@@ -39,8 +39,29 @@ app.controller('correctionsModalController', function ($scope, contributionServi
         $scope.updateEditor(true);
     };
 
+    $scope.retrieveCorrectionComments = function(page) {
+        // TODO: Make options dynamic
+        var options = {
+            sort: {
+                column: 'submitted',
+                direction: 'desc'
+            },
+            page: page || 1
+        };
+        contributionService.retrieveComments('corrections', $scope.correction.id, options, $scope.pages.correction_comments).then(function(data) {
+            $scope.correction.comments = data;
+            delete $scope.correction.retrieving_comments;
+        }, function(response) {
+            $scope.displayErrors.correction_comments = response;
+        });
+    };
+
     $scope.showCorrection = function(correction) {
         $scope.correction = correction;
+        if (!correction.comments && !correction.retrieving_comments) {
+            correction.retrieving_comments = true;
+            $scope.retrieveCorrectionComments();
+        }
     };
 
     $scope.showIndex = function() {
