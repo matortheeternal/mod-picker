@@ -70,7 +70,7 @@
             </span>
         </loader>
 
-        <div class="action-button-container">
+        <div class="action-button-container" ng-if="canCorrect">
             <input class="btn action-btn" type="submit" ng-click="startNewCorrection()" value="New Correction">
         </div>
     </div>
@@ -88,7 +88,11 @@
 
         <!-- TODO: Comments directive -->
         <h3 class="section-title">Comments</h3>
-        <comments comments="correction.comments"></comments>
+        <loader data="correction.comments" spinner-class="big-spinner" content-class="content-container">
+            <comments comments="correction.comments" current-user="currentUser" model-name="'Correction'" target="correction"></comments>
+
+            <page-results pages="pages.correction_comments" data="correction.comments" callback="retrieveCorrectionComments"></page-results>
+        </loader>
 
         <!-- TODO: May need to move this before comments or make it a sticky footer? -->
         <div class="action-button-container">
