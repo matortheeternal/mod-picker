@@ -14,7 +14,7 @@
         </span>
     </div>
     <loader data="user.profile_comments" spinner-class="big-spinner" content-class="content-container">
-        <comments comments="user.profile_comments" current-user="currentUser" model-name="'User'" target="user" start-new="newComment"></comments>
+        <comments comments="user.profile_comments" current-user="currentUser" model-name="'User'" target="user"></comments>
 
         <page-results pages="pages.profile_comments" data="user.profile_comments" callback="retrieveProfileComments"></page-results>
     </loader>

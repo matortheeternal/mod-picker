@@ -81,7 +81,7 @@ app.controller('userSocialTabController', function($scope, $stateParams, userSer
     };
 
     $scope.startNewComment = function() {
-        $scope.newComment = ($scope.newComment || 0) + 1;
+        $scope.$broadcast('startNewComment');
     };
 
     // retrieve the profile comments

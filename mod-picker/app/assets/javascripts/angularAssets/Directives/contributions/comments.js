@@ -7,8 +7,7 @@ app.directive('comments', function () {
             comments: '=',
             currentUser: '=',
             modelName: '=',
-            target: '=',
-            startNew: '='
+            target: '='
         }
     };
 });
@@ -92,10 +91,7 @@ app.controller('commentsController', function ($scope, contributionService) {
         }
     };
 
-    $scope.$watch('startNew', function(newVal) {
-        // Skip undefined or false variables
-        if (newVal) {
-            $scope.newComment();
-        }
+    $scope.$on('startNewComment', function() {
+        $scope.newComment();
     });
 });
