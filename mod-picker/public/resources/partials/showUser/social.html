@@ -6,11 +6,15 @@
 </div>
 
 <div class="content-block">
-    <div class="content-title">Comments</div>
+    <div class="content-title">Comments
+        <span class="right-item">
+            <span class="action-box" ng-click="startNewComment()">
+                <i class="fa fa-plus"></i> New Comment
+            </span>
+        </span>
+    </div>
     <loader data="user.profile_comments" spinner-class="big-spinner" content-class="content-container">
-        <div class="comment-container" ng-repeat="comment in user.profile_comments">
-            <comment comment="comment" current-user="currentUser" index="100 + $index" save-callback="saveComment"></comment>
-        </div>
+        <comments comments="user.profile_comments" current-user="currentUser" model-name="'User'" target="user" start-new="newComment"></comments>
 
         <page-results pages="pages.profile_comments" data="user.profile_comments" callback="retrieveProfileComments"></page-results>
     </loader>

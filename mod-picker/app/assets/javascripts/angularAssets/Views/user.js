@@ -80,47 +80,8 @@ app.controller('userSocialTabController', function($scope, $stateParams, userSer
         });
     };
 
-    // save a comment
-    $scope.saveComment = function(comment, discardCallback, updateCallback) {
-        // return if the comment is invalid
-        if (!comment.valid) {
-            return;
-        }
-
-        // submit the comment
-        var commentObj = {
-            comment: {
-                parent_id: comment.parent_id,
-                commentable_id: $scope.user.id,
-                commentable_type: 'User',
-                text_body: comment.text_body
-            }
-        };
-        comment.submitting = true;
-
-        // use update or submit contribution
-        if (comment.editing) {
-            var commentId = comment.original.id;
-            contributionService.updateContribution("comments", commentId, commentObj).then(function() {
-                $scope.submitMessage = "Comment updated successfully!";
-                $scope.showSuccess = true;
-
-                // update original review object and discard copy
-                updateCallback();
-                discardCallback();
-            }, function(response) {
-                // error handling
-            });
-        } else {
-            contributionService.submitContribution("comments", commentObj).then(function() {
-                $scope.submitMessage = "Comment submitted successfully!";
-                $scope.showSuccess = true;
-                // TODO: push the review onto the $scope.mod.reviews array
-                discardCallback();
-            }, function(response) {
-                // error handling
-            });
-        }
+    $scope.startNewComment = function() {
+        $scope.newComment = ($scope.newComment || 0) + 1;
     };
 
     // retrieve the profile comments
