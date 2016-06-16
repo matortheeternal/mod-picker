@@ -1,6 +1,7 @@
 class Correction < ActiveRecord::Base
   include Filterable, RecordEnhancements
 
+  scope :visible, -> { where(hidden: false) }
   scope :by, -> (id) { where(submitted_by: id) }
 
   enum status: [:open, :passed, :failed]
