@@ -14,7 +14,7 @@ app.controller('modsController', function ($scope, $q, modService, sliderFactory
     $scope.currentGame = currentGame;
     $scope.globalPermissions = angular.copy(currentUser.permissions);
 
-    // initialize filtering
+    // initialize local variables
     $scope.filters = {
         sources: {
             nexus: true,
@@ -22,14 +22,9 @@ app.controller('modsController', function ($scope, $q, modService, sliderFactory
             workshop: false,
             other: false
         },
-        game: $scope.currentGame.id
+        game: $scope.currentGame.id,
+        adult: $scope.currentUser && $scope.currentUser.settings.allow_adult_content
     };
-    // adult content filtering
-    if (!$scope.currentUser.settings.allow_adult_content) {
-        $scope.filters.adult = false;
-    }
-
-    // initialize other local variables
     $scope.availableColumnData = ["nexus"];
     $scope.sort = {};
     $scope.pages = {};
