@@ -4,6 +4,11 @@ class Mod < ActiveRecord::Base
   attr_writer :tag_names, :asset_paths, :plugin_dumps, :nexus_info_id, :lover_info_id, :workshop_info_id
   enum status: [ :good, :outdated, :unstable ]
 
+  # BOOLEAN SCOPES (excludes content when false)
+  scope :hidden, -> (bool) { where(hidden: false) if (!bool)  }
+  scope :adult, -> (bool) { where(has_adult_content: false) if (!bool) }
+  scope :official, -> (bool) { where(is_official: false) if !bool }
+  scope :utility, -> (bool) { where(is_utility: false) if !bool }
   # GENERAL SCOPES
   scope :search, -> (search) { where("name like ? OR aliases like ?", "%#{search}%", "%#{search}%") }
   scope :game, -> (game_id) {
@@ -53,9 +58,6 @@ class Mod < ActiveRecord::Base
   }
   scope :released, -> (range) { where(released: parseDate(range[:min])..parseDate(range[:max])) }
   scope :updated, -> (range) { where(updated: parseDate(range[:min])..parseDate(range[:max])) }
-  scope :adult, -> (bool) { where(has_adult_content: bool) }
-  scope :official, -> (bool) { where(is_official: bool) }
-  scope :utility, -> (bool) { where(is_utility: bool) }
   scope :categories, -> (categories) { where("primary_category_id IN (?) OR secondary_category_id IN (?)", categories, categories) }
   scope :tags, -> (array) { joins(:tags).where(:tags => {text: array}) }
   # MOD PICKER SCOPES
