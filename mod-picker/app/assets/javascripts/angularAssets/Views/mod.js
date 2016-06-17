@@ -40,7 +40,7 @@ app.config(['$stateProvider', function($stateProvider) {
                         page: $stateParams.page
                     };
                     this.self.data = { pages: {} };
-                    return modService.retrieveReviews(modId, options, this.self.data.pages);
+                    return modService.retrieveModReviews(modId, options, this.self.data.pages);
                 }
             },
             reviewSections: function(modObject, reviewSectionService) {
@@ -79,7 +79,7 @@ app.config(['$stateProvider', function($stateProvider) {
                         page: $stateParams.page
                     };
                     this.self.data = { pages: {} };
-                    return modService.retrieveContributions(modId, 'compatibility_notes', options, this.self.data.pages);
+                    return modService.retrieveModContributions(modId, 'compatibility_notes', options, this.self.data.pages);
                 }
             }
         }
@@ -115,7 +115,7 @@ app.config(['$stateProvider', function($stateProvider) {
                         page: $stateParams.page
                     };
                     this.self.data = { pages: {} };
-                    return modService.retrieveContributions(modId, 'install_order_notes', options, this.self.data.pages);
+                    return modService.retrieveModContributions(modId, 'install_order_notes', options, this.self.data.pages);
                 }
             }
         }
@@ -157,7 +157,7 @@ app.config(['$stateProvider', function($stateProvider) {
                         page: $stateParams.page
                     };
                     this.self.data = { pages: {} };
-                    return modService.retrieveContributions(modId, 'load_order_notes', options, this.self.data.pages);
+                    return modService.retrieveModContributions(modId, 'load_order_notes', options, this.self.data.pages);
                 }
             }
         }
@@ -172,7 +172,7 @@ app.config(['$stateProvider', function($stateProvider) {
             analysis: function($stateParams, modObject, modService) {
                 //only resolve if the retrieve param is true
                 if ($stateParams.retrieve) {
-                    return modService.retrieveAnalysis(modObject.mod.id);
+                    return modService.retrieveModAnalysis(modObject.mod.id);
                 }
             }
         }

@@ -38,7 +38,7 @@ app.service('modService', function(backend, $q, userTitleService, categoryServic
         }
     };
 
-    this.retrieveContributions = function(modId, route, options, pageInformation) {
+    this.retrieveModContributions = function(modId, route, options, pageInformation) {
         var action = $q.defer();
         backend.post('/mods/' + modId + '/' + route, options).then(function (data) {
             var contributions = data[route];
@@ -52,9 +52,9 @@ app.service('modService', function(backend, $q, userTitleService, categoryServic
         return action.promise;
     };
 
-    this.retrieveReviews = function(modId, options, pageInformation) {
+    this.retrieveModReviews = function(modId, options, pageInformation) {
         var reviews = $q.defer();
-        this.retrieveContributions(modId, 'reviews', options, pageInformation).then(function(data) {
+        this.retrieveModContributions(modId, 'reviews', options, pageInformation).then(function(data) {
             reviewSectionService.associateReviewSections(data);
             reviews.resolve(data);
         }, function(response) {
@@ -63,7 +63,7 @@ app.service('modService', function(backend, $q, userTitleService, categoryServic
         return reviews.promise;
     };
 
-    this.retrieveAnalysis = function(modId) {
+    this.retrieveModAnalysis = function(modId) {
         var output = $q.defer();
         backend.retrieve('/mods/' + modId + '/' + 'analysis').then(function (analysis) {
             // turn assets into an array of string
