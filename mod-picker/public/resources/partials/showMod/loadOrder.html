@@ -2,14 +2,14 @@
     <div class="mod-tab-item primary-item">
         <strong>Sort By: </strong>
 
-        <select ng-model="currentParams.sort.column" ng-change="reSortLoadOrder()">
+        <select ng-model="sort.load_order_notes.column" ng-change="retrieveLoadOrderNotes()">
             <option value="reputation">Reputation</option>
             <option value="submitted">Date Submitted</option>
             <option value="edited">Last Edited</option>
         </select>
 
-        <span class="sort-direction" title="Sorted in {{ currentParams.sort.direction === 'asc' ? 'ascending' : 'descending' }} order." ng-click="toggleSortDirection(currentParams.sort); reSortLoadOrder()">
-            <i class="fa fa-sort-amount-{{currentParams.sort.direction}}" aria-hidden="true"></i>
+        <span class="sort-direction" title="Sorted in {{ sort.load_order_notes.direction === 'asc' ? 'ascending' : 'descending' }} order." ng-click="toggleSortDirection(sort.load_order_notes); retrieveLoadOrderNotes()">
+            <i class="fa fa-sort-amount-{{sort.load_order_notes.direction}}" aria-hidden="true"></i>
         </span>
     </div>
     <!-- TODO: replace input with button that has an inline value -->
@@ -64,7 +64,7 @@
     </div>
 </div>
 
-<state-loader spinner-class="big-spinner">
+<loader data="mod.load_order_notes" spinner-class="big-spinner">
     <div ng-repeat="note in mod.load_order_notes" class="content-block" ng-if="!note.editing">
         <load-order-note note="note" show-user-column="true" index="100 + $index" current-user="currentUser" edit="editLoadOrderNote"></load-order-note>
     </div>
@@ -73,5 +73,5 @@
         There are no Load Order Notes for this mod yet.
     </div>
 
-    <page-results pages="pages.load_order_notes" data="mod.load_order_notes" callback="reSortLoadOrder"></page-results>
-</state-loader>
+    <page-results pages="pages.load_order_notes" data="mod.load_order_notes" callback="retrieveLoadOrderNotes"></page-results>
+</loader>
