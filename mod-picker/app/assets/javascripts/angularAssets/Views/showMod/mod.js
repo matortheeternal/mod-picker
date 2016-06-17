@@ -185,11 +185,34 @@ app.controller('modController', function($scope, $q, $stateParams, $timeout, cur
     $scope.mod.star = modObject.star;
     $scope.currentUser = currentUser;
 
+    // initialize local variables
     $scope.tags = [];
     $scope.newTags = [];
     $scope.statusModal = {};
     $scope.pages = {
-        appeal_comments: {}
+        appeal_comments: {},
+        reviews: {},
+        compatibility_notes: {},
+        install_order_notes: {},
+        load_order_notes: {}
+    };
+    $scope.sort = {
+        reviews: {
+            column: 'reputation',
+            direction: 'desc'
+        },
+        compatibility_notes: {
+            column: 'reputation',
+            direction: 'desc'
+        },
+        install_order_notes: {
+            column: 'reputation',
+            direction: 'desc'
+        },
+        load_order_notes: {
+            column: 'reputation',
+            direction: 'desc'
+        }
     };
     $scope.retrieving = {};
 
