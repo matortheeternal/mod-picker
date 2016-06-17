@@ -1,19 +1,27 @@
-app.controller('modInstallOrderController', function($scope, $stateParams, installOrderNotes, $state, contributionService) {
-    if (installOrderNotes) {
-        $scope.mod.install_order_notes = installOrderNotes;
-        $scope.pages.install_order_notes = $state.current.data.pages;
-    }
-
+app.controller('modInstallOrderController', function($scope, $stateParams, $state, modService, contributionService) {
+    // set local variables
     $scope.currentTab = $scope.findTab('Install Order');
-    $scope.currentParams = $scope.currentTab.params;
-    $scope.currentParams.retrieve = false;
 
-    $scope.reSortInstallOrder = function() {
-        $state.go("base.mod.Install Order", {
-            sort: $scope.currentParams.sort,
-            retrieve: true
+    // BASE RETRIEVAL LOGIC
+    $scope.retrieveInstallOrderNotes = function(page) {
+        $scope.retrieving.install_order_notes = true;
+        var options = {
+            sort: $scope.sort.install_order_notes,
+            filters: $scope.filters.install_order_notes,
+            page: page || 1
+        };
+        modService.retrieveModContributions($stateParams.modId, 'install_order_notes', options, $scope.pages.install_order_notes).then(function(data) {
+            $scope.retrieving.install_order_notes = false;
+            $scope.mod.install_order_notes = data;
+        }, function(response) {
+            // TODO: Display error on view
         });
     };
+
+    // retrieve install order notes if we don't have them and aren't currently retrieving them
+    if (!$scope.mod.install_order_notes && !$scope.retrieving.install_order_notes) {
+        $scope.retrieveInstallOrderNotes();
+    }
 
     // INSTALL ORDER NOTE RELATED LOGIC
     // instantiate a new install order note object
