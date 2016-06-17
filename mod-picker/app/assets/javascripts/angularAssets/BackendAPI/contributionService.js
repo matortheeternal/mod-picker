@@ -1,52 +1,28 @@
 app.service('contributionService', function (backend, $q, userTitleService, pageUtils) {
     this.helpfulMark = function(type, id, helpful) {
-        var mark = $q.defer();
         var helpfulObj = helpful == undefined ? {} : {helpful: helpful};
-        backend.post('/' + type + '/' + id + '/helpful', helpfulObj).then(function (data) {
-            mark.resolve(data);
-        });
-        return mark.promise;
+        return backend.post('/' + type + '/' + id + '/helpful', helpfulObj);
     };
 
     this.agreementMark = function(type, id, agree) {
-        var mark = $q.defer();
         var agreeObj = agree == undefined ? {} : {agree: agree};
-        backend.post('/' + type + '/' + id + '/agreement', agreeObj).then(function (data) {
-            mark.resolve(data);
-        });
-        return mark.promise;
+        return backend.post('/' + type + '/' + id + '/agreement', agreeObj)
     };
 
     this.hide = function(type, id, hidden) {
-        var action = $q.defer();
-        backend.post('/' + type + '/' + id + '/hide', {hidden: hidden}).then(function (data) {
-            action.resolve(data);
-        });
-        return action.promise;
+        return backend.post('/' + type + '/' + id + '/hide', {hidden: hidden});
     };
 
     this.approve = function(type, id, approved) {
-        var action = $q.defer();
-        backend.post('/' + type + '/' + id + '/approve', {approved: approved}).then(function (data) {
-            action.resolve(data);
-        });
-        return action.promise;
+        return backend.post('/' + type + '/' + id + '/approve', {approved: approved});
     };
 
     this.submitContribution = function(type, contribution) {
-        var action = $q.defer();
-        backend.post('/' + type, contribution).then(function (data) {
-            action.resolve(data);
-        });
-        return action.promise;
+        return backend.post('/' + type, contribution);
     };
 
     this.updateContribution = function(type, id, contribution) {
-        var action = $q.defer();
-        backend.update('/' + type + '/' + id, contribution).then(function (data) {
-            action.resolve(data);
-        });
-        return action.promise;
+        return backend.update('/' + type + '/' + id, contribution);
     };
 
     this.retrieveCorrections = function(type, id) {
