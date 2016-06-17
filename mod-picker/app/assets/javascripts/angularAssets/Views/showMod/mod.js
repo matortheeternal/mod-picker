@@ -17,7 +17,6 @@ app.config(['$stateProvider', function($stateProvider) {
         controller: 'modReviewsController',
         url: '/reviews',
         params: {
-            retrieve: true,
             page: 1
         }
     }).state('base.mod.Compatibility', {
@@ -25,36 +24,7 @@ app.config(['$stateProvider', function($stateProvider) {
         controller: 'modCompatibilityController',
         url: '/compatibility',
         params: {
-            sort: {
-                column: 'reputation',
-                direction: 'desc'
-            },
-            retrieve: true,
-            filters: {
-                mod_list: true
-            },
             page: 1
-        },
-        resolve: {
-            compatibilityNotes: function($stateParams, $state, modId, modService, modObject) {
-                //hardcoded redirect to the analysis tab when it's the base game
-                if (!modObject.mod.primary_category_id) {
-                    $state.go('base.mod.Analysis', {
-                        modId: modId
-                    });
-                }
-
-                //only resolve if the retrieve param is true
-                if ($stateParams.retrieve) {
-                    var options = {
-                        sort: $stateParams.sort,
-                        filters: $stateParams.filters,
-                        page: $stateParams.page
-                    };
-                    this.self.data = { pages: {} };
-                    return modService.retrieveModContributions(modId, 'compatibility_notes', options, this.self.data.pages);
-                }
-            }
         }
     }).state('base.mod.Install Order', {
         templateUrl: '/resources/partials/showMod/installOrder.html',
