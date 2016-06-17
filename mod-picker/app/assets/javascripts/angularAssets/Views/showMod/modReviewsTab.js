@@ -1,19 +1,41 @@
-app.controller('modReviewsController', function($scope, $stateParams, $state, reviews, reviewSections, contributionService) {
-    if (reviews) {
-        $scope.mod.reviews = reviews;
-        $scope.pages.reviews = $state.current.data.pages;
-    }
-
+app.controller('modReviewsController', function($scope, $stateParams, $state, modService, reviewSectionService, contributionService) {
+    // set local variables
     $scope.currentTab = $scope.findTab('Reviews');
-    $scope.currentParams = $scope.currentTab.params;
-    $scope.currentParams.retrieve = false;
 
-    $scope.reSortReviews = function() {
-        $state.go("base.mod.Reviews", {
-            sort: $scope.currentParams.sort,
-            retrieve: true
+    // BASE RETRIEVAL LOGIC
+    $scope.retrieveReviews = function(page) {
+        $scope.retrieving.reviews = true;
+        var options = {
+            sort: $scope.sort.reviews,
+            page: page || 1
+        };
+        modService.retrieveModReviews($stateParams.modId, options, $scope.pages.reviews).then(function(data) {
+            $scope.retrieving.reviews = false;
+            $scope.mod.reviews = data;
+        }, function(response) {
+            // TODO: Display error on view
         });
     };
+
+    $scope.retrieveReviewSections = function() {
+        $scope.retrieving.reviewSections = true;
+        reviewSectionService.getSectionsForCategory($scope.mod.primary_category).then(function(data) {
+            $scope.retrieving.reviewSections = false;
+            $scope.reviewSections = data;
+        }, function(response) {
+            // TODO: Display error on view
+        });
+    };
+
+    // retrieve reviews if we don't have them and aren't currently retrieving them
+    if (!$scope.mod.reviews && !$scope.retrieving.reviews) {
+        $scope.retrieveReviews();
+    }
+
+    // retrieve review sections if we don't have them and aren't currently retrieving them
+    if (!$scope.reviewSections && !$scope.retrieving.reviewSections) {
+        $scope.retrieveReviewSections();
+    }
 
     // REVIEW RELATED LOGIC
     // instantiate a new review object
@@ -29,7 +51,7 @@ app.controller('modReviewsController', function($scope, $stateParams, $state, re
 
         // set up default review sections
         // and default text body with prompts
-        reviewSections.forEach(function(section) {
+        $scope.reviewSections.forEach(function(section) {
             if (section.default) {
                 $scope.addNewRating(section);
                 $scope.activeReview.text_body += "## " + section.name + "\n";
