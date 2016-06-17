@@ -34,15 +34,15 @@ app.service('contributionService', function (backend, $q, userTitleService, page
     };
 
     this.retrieveComments = function(route, id, options, pageInformation) {
-        var output = $q.defer();
-        backend.post('/' + route + '/' + id + '/comments', options).then(function(response) {
-            userTitleService.associateTitles(response.comments);
-            pageUtils.getPageInformation(response, pageInformation, options.page);
-            output.resolve(response.comments);
+        var action = $q.defer();
+        backend.post('/' + route + '/' + id + '/comments', options).then(function(data) {
+            userTitleService.associateTitles(data.comments);
+            pageUtils.getPageInformation(data, pageInformation, options.page);
+            action.resolve(data.comments);
         }, function(response) {
-            output.reject(response);
+            action.reject(response);
         });
-        return output.promise;
+        return action.promise;
     };
 
     this.retrieveHistory = function(type, id) {
