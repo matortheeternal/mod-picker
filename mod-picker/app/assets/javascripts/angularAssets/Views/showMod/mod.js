@@ -17,35 +17,8 @@ app.config(['$stateProvider', function($stateProvider) {
         controller: 'modReviewsController',
         url: '/reviews',
         params: {
-            sort: {
-                column: 'reputation',
-                direction: 'desc'
-            },
             retrieve: true,
             page: 1
-        },
-        resolve: {
-            reviews: function($q, $state, $stateParams, modId, modObject, modService, reviewSectionService) {
-                //hardcoded redirect to the analysis tab when it's the base game
-                if (!modObject.mod.primary_category_id) {
-                    $state.go('base.mod.Analysis', {
-                        modId: modId
-                    });
-                }
-
-                //only resolve if the retrieve param is true
-                if ($stateParams.retrieve) {
-                    var options = {
-                        sort: $stateParams.sort,
-                        page: $stateParams.page
-                    };
-                    this.self.data = { pages: {} };
-                    return modService.retrieveModReviews(modId, options, this.self.data.pages);
-                }
-            },
-            reviewSections: function(modObject, reviewSectionService) {
-                return reviewSectionService.getSectionsForCategory(modObject.mod.primary_category);
-            }
         }
     }).state('base.mod.Compatibility', {
         templateUrl: '/resources/partials/showMod/compatibility.html',
@@ -227,13 +200,7 @@ app.controller('modController', function($scope, $q, $stateParams, $timeout, cur
 
     //tabs array
     $scope.tabs = [{
-        name: 'Reviews',
-        params: {
-            sort: {
-                column: 'reputation',
-                direction: 'desc'
-            }
-        }
+        name: 'Reviews'
     }, {
         name: 'Compatibility',
         params: {
