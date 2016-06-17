@@ -1,15 +1,4 @@
 app.service('modService', function(backend, $q, userTitleService, categoryService, recordGroupService, assetUtils, errorsFactory, pluginService, reviewSectionService, contributionService, pageUtils) {
-    this.retrieveMod = function(modId) {
-        var output = $q.defer();
-        backend.retrieve('/mods/' + modId).then(function(data) {
-            categoryService.resolveModCategories(data.mod);
-            output.resolve(data);
-        }, function(response) {
-            output.reject(response);
-        });
-        return output.promise;
-    };
-
     this.retrieveMods = function(options, pageInformation) {
         var action = $q.defer();
         backend.post('/mods/index', options).then(function (data) {
@@ -28,6 +17,17 @@ app.service('modService', function(backend, $q, userTitleService, categoryServic
             }
         };
         return backend.post('/mods/search', postData);
+    };
+    
+    this.retrieveMod = function(modId) {
+        var output = $q.defer();
+        backend.retrieve('/mods/' + modId).then(function(data) {
+            categoryService.resolveModCategories(data.mod);
+            output.resolve(data);
+        }, function(response) {
+            output.reject(response);
+        });
+        return output.promise;
     };
 
     this.starMod = function(modId, starred) {
