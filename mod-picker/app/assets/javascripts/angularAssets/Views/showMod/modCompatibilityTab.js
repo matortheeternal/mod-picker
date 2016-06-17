@@ -1,19 +1,27 @@
-app.controller('modCompatibilityController', function($scope, $stateParams, compatibilityNotes, $state, contributionFactory, contributionService) {
-    if (compatibilityNotes) {
-        $scope.mod.compatibility_notes = compatibilityNotes;
-        $scope.pages.compatibility_notes = $state.current.data.pages;
-    }
-
+app.controller('modCompatibilityController', function($scope, $stateParams, $state, modService, contributionFactory, contributionService) {
+    // set local variables
     $scope.currentTab = $scope.findTab('Compatibility');
-    $scope.currentParams = $scope.currentTab.params;
-    $scope.currentParams.retrieve = false;
 
-    $scope.reSortCompatibility = function() {
-        $state.go("base.mod.Compatibility", {
-            sort: $scope.currentParams.sort,
-            retrieve: true
+    // BASE RETRIEVAL LOGIC
+    $scope.retrieveCompatibilityNotes = function(page) {
+        $scope.retrieving.compatibility_notes = true;
+        var options = {
+            sort: $scope.sort.compatibility_notes,
+            filters: $scope.filters.compatibility_notes,
+            page: page || 1
+        };
+        modService.retrieveModContributions($stateParams.modId, 'compatibility_notes', options, $scope.pages.compatibility_notes).then(function(data) {
+            $scope.retrieving.compatibility_notes = false;
+            $scope.mod.compatibility_notes = data;
+        }, function(response) {
+            // TODO: Display error on view
         });
     };
+
+    // retrieve compatibility notes if we don't have them and aren't currently retrieving them
+    if (!$scope.mod.compatibility_notes && !$scope.retrieving.compatibility_notes) {
+        $scope.retrieveCompatibilityNotes();
+    }
 
     // COMPATIBILITY NOTE RELATED LOGIC
     // instantiate a new compatibility note object
