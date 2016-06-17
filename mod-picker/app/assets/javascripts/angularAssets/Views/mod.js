@@ -299,10 +299,11 @@ app.controller('modController', function($scope, $q, $stateParams, $timeout, cur
         $scope.updateMDE = ($scope.updateMDE || 0) + 1;
     };
 
-    $scope.retrieveCorrections = function() {
-        $scope.retrieving.corrections = true;
-        modService.retrieveCorrections($stateParams.modId).then(function(corrections) {
-            $scope.mod.corrections = corrections;
+    $scope.retrieveAppeals = function() {
+        $scope.retrieving.appeals = true;
+        contributionService.retrieveCorrections('mods', $stateParams.modId).then(function(data) {
+            $scope.retrieving.appeals = false;
+            $scope.mod.corrections = data;
             $scope.getAppealStatus();
         });
     };
@@ -319,7 +320,7 @@ app.controller('modController', function($scope, $q, $stateParams, $timeout, cur
     $scope.toggleStatusModal = function(visible) {
         $scope.statusModal.visible = visible;
         if (!$scope.mod.corrections && !$scope.retrieving.corrections) {
-            $scope.retrieveCorrections();
+            $scope.retrieveAppeals();
         }
     };
 

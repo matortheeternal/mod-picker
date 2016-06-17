@@ -38,18 +38,6 @@ app.service('modService', function(backend, $q, userTitleService, categoryServic
         }
     };
 
-    this.retrieveCorrections = function(modId) {
-        var action = $q.defer();
-        backend.retrieve('/mods/' + modId + '/corrections').then(function (data) {
-            contributionService.associateAgreementMarks(data.corrections, data.agreement_marks);
-            userTitleService.associateTitles(data.corrections);
-            action.resolve(data.corrections);
-        }, function(response) {
-            action.reject(response);
-        });
-        return action.promise;
-    };
-
     this.retrieveContributions = function(modId, route, options, pageInformation) {
         var action = $q.defer();
         backend.post('/mods/' + modId + '/' + route, options).then(function (data) {

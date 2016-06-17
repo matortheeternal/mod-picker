@@ -27,24 +27,24 @@ app.service('contributionService', function (backend, $q, userTitleService, page
         return backend.update('/' + type + '/' + id, contribution);
     };
 
-    this.retrieveCorrections = function(type, id) {
-        var action = $q.defer();
-        backend.retrieve('/' + type + '/' + id + '/corrections').then(function (data) {
-            userTitleService.associateTitles(data.corrections);
-            service.associateAgreementMarks(data.corrections, data.agreement_marks);
-            action.resolve(data);
-        }, function(response) {
-            action.reject(response);
-        });
-        return action.promise;
-    };
-
     this.retrieveComments = function(route, id, options, pageInformation) {
         var action = $q.defer();
         backend.post('/' + route + '/' + id + '/comments', options).then(function(data) {
             userTitleService.associateTitles(data.comments);
             pageUtils.getPageInformation(data, pageInformation, options.page);
             action.resolve(data.comments);
+        }, function(response) {
+            action.reject(response);
+        });
+        return action.promise;
+    };
+
+    this.retrieveCorrections = function(type, id) {
+        var action = $q.defer();
+        backend.retrieve('/' + type + '/' + id + '/corrections').then(function (data) {
+            userTitleService.associateTitles(data.corrections);
+            service.associateAgreementMarks(data.corrections, data.agreement_marks);
+            action.resolve(data);
         }, function(response) {
             action.reject(response);
         });
