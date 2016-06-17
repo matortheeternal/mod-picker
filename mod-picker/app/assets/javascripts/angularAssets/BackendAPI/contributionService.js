@@ -1,4 +1,6 @@
 app.service('contributionService', function (backend, $q, userTitleService, pageUtils) {
+    var service = this;
+
     this.helpfulMark = function(type, id, helpful) {
         var helpfulObj = helpful == undefined ? {} : {helpful: helpful};
         return backend.post('/' + type + '/' + id + '/helpful', helpfulObj);
@@ -28,7 +30,11 @@ app.service('contributionService', function (backend, $q, userTitleService, page
     this.retrieveCorrections = function(type, id) {
         var action = $q.defer();
         backend.retrieve('/' + type + '/' + id + '/corrections').then(function (data) {
+            userTitleService.associateTitles(data.corrections);
+            service.associateAgreementMarks(data.corrections, data.agreement_marks);
             action.resolve(data);
+        }, function(response) {
+            action.reject(response);
         });
         return action.promise;
     };
@@ -48,7 +54,10 @@ app.service('contributionService', function (backend, $q, userTitleService, page
     this.retrieveHistory = function(type, id) {
         var action = $q.defer();
         backend.retrieve('/' + type + '/' + id + '/history').then(function (data) {
-            action.resolve(data);
+            userTitleService.associateTitles(data.history);
+            action.resolve(data.history);
+        }, function(response) {
+            action.reject(response);
         });
         return action.promise;
     };
