@@ -187,6 +187,17 @@ app.controller('modController', function($scope, $q, $stateParams, $timeout, cur
             direction: 'desc'
         }
     };
+    $scope.filters = {
+        compatibility_notes: {
+            mod_list: true
+        },
+        install_order_notes: {
+            mod_list: true
+        },
+        load_order_notes: {
+            mod_list: true
+        }
+    };
     $scope.retrieving = {};
 
     //a copy is created so the original permissions are never changed
