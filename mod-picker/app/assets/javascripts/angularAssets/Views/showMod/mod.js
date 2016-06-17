@@ -38,42 +38,7 @@ app.config(['$stateProvider', function($stateProvider) {
         controller: 'modLoadOrderController',
         url: '/load-order',
         params: {
-            sort: {
-                column: 'reputation',
-                direction: 'desc'
-            },
-            retrieve: true,
-            filters: {
-                mod_list: true
-            },
             page: 1
-        },
-        resolve: {
-            loadOrderNotes: function($stateParams, $state, modId, modService, modObject) {
-                //hardcoded redirect to the analysis tab when it's the base game
-                if (!modObject.mod.primary_category_id) {
-                    $state.go('base.mod.Analysis', {
-                        modId: modId
-                    });
-                }
-                //hardcoded redirect to the reviews tab when there aren't any
-                if (modObject.mod.plugins_count === 0) {
-                    $state.go('base.mod.Reviews', {
-                        modId: modId
-                    });
-                }
-
-                //only resolve if the retrieve param is true
-                if ($stateParams.retrieve) {
-                    var options = {
-                        sort: $stateParams.sort,
-                        filters: $stateParams.filters,
-                        page: $stateParams.page
-                    };
-                    this.self.data = { pages: {} };
-                    return modService.retrieveModContributions(modId, 'load_order_notes', options, this.self.data.pages);
-                }
-            }
         }
     }).state('base.mod.Analysis', {
         templateUrl: '/resources/partials/showMod/analysis.html',

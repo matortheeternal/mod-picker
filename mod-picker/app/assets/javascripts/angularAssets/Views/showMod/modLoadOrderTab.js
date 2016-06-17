@@ -1,19 +1,27 @@
-app.controller('modLoadOrderController', function($scope, $state, $stateParams, loadOrderNotes, contributionService) {
-    if (loadOrderNotes) {
-        $scope.mod.load_order_notes = loadOrderNotes;
-        $scope.pages.load_order_notes = $state.current.data.pages;
-    }
-
+app.controller('modLoadOrderController', function($scope, $state, $stateParams, modService, contributionService) {
+    // set local variables
     $scope.currentTab = $scope.findTab('Load Order');
-    $scope.currentParams = $scope.currentTab.params;
-    $scope.currentParams.retrieve = false;
 
-    $scope.reSortLoadOrder = function() {
-        $state.go("base.mod.Load Order", {
-            sort: $scope.currentParams.sort,
-            retrieve: true
+    // BASE RETRIEVAL LOGIC
+    $scope.retrieveLoadOrderNotes = function(page) {
+        $scope.retrieving.load_order_notes = true;
+        var options = {
+            sort: $scope.sort.load_order_notes,
+            filters: $scope.filters.load_order_notes,
+            page: page || 1
+        };
+        modService.retrieveModContributions($stateParams.modId, 'load_order_notes', options, $scope.pages.load_order_notes).then(function(data) {
+            $scope.retrieving.load_order_notes = false;
+            $scope.mod.load_order_notes = data;
+        }, function(response) {
+            // TODO: Display error on view
         });
     };
+
+    // retrieve laod order notes if we don't have them and aren't currently retrieving them
+    if (!$scope.mod.load_order_notes && !$scope.retrieving.load_order_notes) {
+        $scope.retrieveLoadOrderNotes();
+    }
 
     // LOAD ORDER NOTE RELATED LOGIC
     // instantiate a new load order note object
