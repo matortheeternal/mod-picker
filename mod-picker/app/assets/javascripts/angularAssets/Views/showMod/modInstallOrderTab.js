@@ -117,24 +117,24 @@ app.controller('modInstallOrderController', function($scope, $stateParams, insta
         // use update or submit contribution
         if ($scope.activeInstallOrderNote.editing) {
             var noteId = $scope.activeInstallOrderNote.original.id;
-            contributionService.updateContribution("install_order_notes", noteId, noteObj).then(function(data) {
-                if (data.status === "ok") {
-                    $scope.submitMessage = "Install Order Note updated successfully!";
-                    $scope.showSuccess = true;
+            contributionService.updateContribution("install_order_notes", noteId, noteObj).then(function() {
+                $scope.submitMessage = "Install Order Note updated successfully!";
+                $scope.showSuccess = true;
 
-                    // update original install order note and discard copy
-                    $scope.updateInstallOrderNote(noteObj.install_order_note);
-                    $scope.discardInstallOrderNote();
-                }
+                // update original install order note and discard copy
+                $scope.updateInstallOrderNote(noteObj.install_order_note);
+                $scope.discardInstallOrderNote();
+            }, function(response) {
+                // TODO: Push error to view
             });
         } else {
-            contributionService.submitContribution("install_order_notes", noteObj).then(function(data) {
-                if (data.status === "ok") {
-                    $scope.submitMessage = "Install Order Note submitted successfully!";
-                    $scope.showSuccess = true;
-                    // TODO: push the Install Order note onto the $scope.mod.install_order_notes array
-                    $scope.discardInstallOrderNote();
-                }
+            contributionService.submitContribution("install_order_notes", noteObj).then(function() {
+                $scope.submitMessage = "Install Order Note submitted successfully!";
+                $scope.showSuccess = true;
+                // TODO: push the Install Order note onto the $scope.mod.install_order_notes array
+                $scope.discardInstallOrderNote();
+            }, function(response) {
+                // TODO: Push error to view
             });
         }
     };

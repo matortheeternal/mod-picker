@@ -310,10 +310,10 @@ app.controller('modController', function($scope, $q, $stateParams, $timeout, cur
 
     // HEADER RELATED LOGIC
     $scope.starMod = function() {
-        modService.starMod($scope.mod.id, $scope.mod.star).then(function(data) {
-            if (data.status == 'ok') {
-                $scope.mod.star = !$scope.mod.star;
-            }
+        modService.starMod($scope.mod.id, $scope.mod.star).then(function() {
+            $scope.mod.star = !$scope.mod.star;
+        }, function(response) {
+            // TODO: Push error to view
         });
     };
 
@@ -332,16 +332,15 @@ app.controller('modController', function($scope, $q, $stateParams, $timeout, cur
     };
 
     $scope.saveTags = function(updatedTags) {
-        var response = $q.defer();
-        tagService.updateModTags($scope.mod, updatedTags).then(function(data) {
-            if (data.status === "ok") {
-                $scope.submitMessage = "Tags submitted successfully.";
-                $scope.showSuccess = true;
-            } else {
-                $scope.errors = data.errors;
-            }
-            response.resolve(data);
+        var action = $q.defer();
+        tagService.updateModTags($scope.mod, updatedTags).then(function() {
+            $scope.submitMessage = "Tags submitted successfully.";
+            $scope.showSuccess = true;
+            action.resolve(data);
+        }, function(response) {
+            // TODO: Push error to view
+            action.reject(response);
         });
-        return response.promise;
+        return action.promise;
     };
 });

@@ -127,24 +127,24 @@ app.controller('modLoadOrderController', function($scope, $state, $stateParams, 
         // use update or submit contribution
         if ($scope.activeLoadOrderNote.editing) {
             var noteId = $scope.activeLoadOrderNote.original.id;
-            contributionService.updateContribution("load_order_notes", noteId, noteObj).then(function(data) {
-                if (data.status === "ok") {
-                    $scope.submitMessage = "Load Order Note updated successfully!";
-                    $scope.showSuccess = true;
+            contributionService.updateContribution("load_order_notes", noteId, noteObj).then(function() {
+                $scope.submitMessage = "Load Order Note updated successfully!";
+                $scope.showSuccess = true;
 
-                    // update original load order note and discard copy
-                    $scope.updateLoadOrderNote(noteObj.load_order_note);
-                    $scope.discardLoadOrderNote();
-                }
+                // update original load order note and discard copy
+                $scope.updateLoadOrderNote(noteObj.load_order_note);
+                $scope.discardLoadOrderNote();
+            }, function(response) {
+                // TODO: Push error to view
             });
         } else {
-            contributionService.submitContribution("load_order_notes", noteObj).then(function(data) {
-                if (data.status === "ok") {
-                    $scope.submitMessage = "Load Order Note submitted successfully!";
-                    $scope.showSuccess = true;
-                    // TODO: push the Load Order note onto the $scope.mod.load_order_notes array
-                    $scope.discardLoadOrderNote();
-                }
+            contributionService.submitContribution("load_order_notes", noteObj).then(function() {
+                $scope.submitMessage = "Load Order Note submitted successfully!";
+                $scope.showSuccess = true;
+                // TODO: push the Load Order note onto the $scope.mod.load_order_notes array
+                $scope.discardLoadOrderNote();
+            }, function(response) {
+                // TODO: Push error to view
             });
         }
     };

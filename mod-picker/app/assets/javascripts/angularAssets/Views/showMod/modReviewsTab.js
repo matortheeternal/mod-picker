@@ -184,23 +184,23 @@ app.controller('modReviewsController', function($scope, $stateParams, $state, re
         if ($scope.activeReview.editing) {
             var reviewId = $scope.activeReview.original.id;
             contributionService.updateContribution("reviews", reviewId, reviewObj).then(function(data) {
-                if (data.status == "ok") {
-                    $scope.submitMessage = "Review updated successfully!";
-                    $scope.showSuccess = true;
+                $scope.submitMessage = "Review updated successfully!";
+                $scope.showSuccess = true;
 
-                    // update original review object and discard copy
-                    $scope.updateReview();
-                    $scope.discardReview();
-                }
+                // update original review object and discard copy
+                $scope.updateReview();
+                $scope.discardReview();
+            }, function(response) {
+                // TODO: Push error to view
             });
         } else {
             contributionService.submitContribution("reviews", reviewObj).then(function(data) {
-                if (data.status == "ok") {
-                    $scope.submitMessage = "Review submitted successfully!";
-                    $scope.showSuccess = true;
-                    // TODO: push the review onto the $scope.mod.reviews array
-                    $scope.discardReview();
-                }
+                $scope.submitMessage = "Review submitted successfully!";
+                $scope.showSuccess = true;
+                // TODO: push the review onto the $scope.mod.reviews array
+                $scope.discardReview();
+            }, function(response) {
+                // TODO: Push error to view
             });
         }
     };

@@ -108,24 +108,24 @@ app.controller('modCompatibilityController', function($scope, $stateParams, comp
         // use update or submit contribution
         if ($scope.activeCompatibilityNote.editing) {
             var noteId = $scope.activeCompatibilityNote.original.id;
-            contributionService.updateContribution("compatibility_notes", noteId, noteObj).then(function(data) {
-                if (data.status === "ok") {
-                    $scope.submitMessage = "Compatibility Note updated successfully!";
-                    $scope.showSuccess = true;
+            contributionService.updateContribution("compatibility_notes", noteId, noteObj).then(function() {
+                $scope.submitMessage = "Compatibility Note updated successfully!";
+                $scope.showSuccess = true;
 
-                    // update original compatibility note and discard copy
-                    $scope.updateCompatibilityNote(noteObj.compatibility_note);
-                    $scope.discardCompatibilityNote();
-                }
+                // update original compatibility note and discard copy
+                $scope.updateCompatibilityNote(noteObj.compatibility_note);
+                $scope.discardCompatibilityNote();
+            }, function(response) {
+                // TODO: Push error to view
             });
         } else {
-            contributionService.submitContribution("compatibility_notes", noteObj).then(function(data) {
-                if (data.status === "ok") {
-                    $scope.submitMessage = "Compatibility Note submitted successfully!";
-                    $scope.showSuccess = true;
-                    // TODO: push the compatibility note onto the $scope.mod.compatibility_notes array
-                    $scope.discardCompatibilityNote();
-                }
+            contributionService.submitContribution("compatibility_notes", noteObj).then(function() {
+                $scope.submitMessage = "Compatibility Note submitted successfully!";
+                $scope.showSuccess = true;
+                // TODO: push the compatibility note onto the $scope.mod.compatibility_notes array
+                $scope.discardCompatibilityNote();
+            }, function(response) {
+                // TODO: Push error to view
             });
         }
     };
