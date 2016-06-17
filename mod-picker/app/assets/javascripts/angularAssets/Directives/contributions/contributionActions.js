@@ -75,19 +75,22 @@ app.controller('contributionActionsController', function ($scope, $timeout, cont
     $scope.retrieveCorrections = function() {
         $scope.retrieving.corrections = true;
         contributionService.retrieveCorrections($scope.model.route, $scope.target.id).then(function(data) {
-            contributionService.associateAgreementMarks(data.corrections, data.agreement_marks);
-            // TODO: This will work automatically after the service refactor
-            //userTitleService.associateTitles(data.corrections, $scope.userTitles);
+            $scope.retrieving.corrections = false;
             $scope.target.corrections = data.corrections;
+        }, function(response) {
+            // TODO: Store display error for modal view
+            // TODO: Reset $scope.retrieving.corrections to false after 15 seconds
         });
     };
 
     $scope.retrieveHistory = function() {
         $scope.retrieving.history = true;
         contributionService.retrieveHistory($scope.model.route, $scope.target.id).then(function(data) {
-            // TODO: This will work automatically after the service refactor
-            //userTitleService.associateTitles(data, $scope.userTitles);
+            $scope.retrieving.history = false;
             $scope.target.history = data;
+        }, function(response) {
+            // TODO: Store display error for modal view
+            // TODO: Reset $scope.retrieving.history to false after 15 seconds
         });
     };
 
@@ -102,21 +105,21 @@ app.controller('contributionActionsController', function ($scope, $timeout, cont
 
     $scope.helpfulMark = function(helpful) {
         if ($scope.target.helpful == helpful) {
-            contributionService.helpfulMark($scope.model.route, $scope.target.id).then(function (data) {
-                if (data.status == "ok") {
-                    delete $scope.target.helpful;
-                    $scope.updateHelpfulCounter(helpful, false);
-                }
+            contributionService.helpfulMark($scope.model.route, $scope.target.id).then(function() {
+                delete $scope.target.helpful;
+                $scope.updateHelpfulCounter(helpful, false);
+            }, function(response) {
+                // TODO: emit error message for view to display
             });
         } else {
-            contributionService.helpfulMark($scope.model.route, $scope.target.id, helpful).then(function (data) {
-                if (data.status == "ok") {
-                    if ($scope.target.helpful == !helpful) {
-                        $scope.updateHelpfulCounter(!helpful, false);
-                    }
-                    $scope.target.helpful = helpful;
-                    $scope.updateHelpfulCounter(helpful, true);
+            contributionService.helpfulMark($scope.model.route, $scope.target.id, helpful).then(function() {
+                if ($scope.target.helpful == !helpful) {
+                    $scope.updateHelpfulCounter(!helpful, false);
                 }
+                $scope.target.helpful = helpful;
+                $scope.updateHelpfulCounter(helpful, true);
+            }, function(response) {
+                // TODO: emit error message for view to display
             });
         }
     };
@@ -132,38 +135,38 @@ app.controller('contributionActionsController', function ($scope, $timeout, cont
 
     $scope.agreementMark = function(agree) {
         if ($scope.target.agree == agree) {
-            contributionService.agreementMark($scope.model.route, $scope.target.id).then(function (data) {
-                if (data.status == "ok") {
-                    delete $scope.target.agree;
-                    $scope.updateAgreeCounter(agree, false);
-                }
+            contributionService.agreementMark($scope.model.route, $scope.target.id).then(function() {
+                delete $scope.target.agree;
+                $scope.updateAgreeCounter(agree, false);
+            }, function(response) {
+                // TODO: emit error message for view to display
             });
         } else {
-            contributionService.agreementMark($scope.model.route, $scope.target.id, agree).then(function (data) {
-                if (data.status == "ok") {
-                    if ($scope.target.agree == !agree) {
-                        $scope.updateAgreeCounter(!agree, false);
-                    }
-                    $scope.target.agree = agree;
-                    $scope.updateAgreeCounter(agree, true);
+            contributionService.agreementMark($scope.model.route, $scope.target.id, agree).then(function() {
+                if ($scope.target.agree == !agree) {
+                    $scope.updateAgreeCounter(!agree, false);
                 }
+                $scope.target.agree = agree;
+                $scope.updateAgreeCounter(agree, true);
+            }, function(response) {
+                // TODO: emit error message for view to display
             });
         }
     };
 
     $scope.approve = function(approved) {
-        contributionService.approve($scope.model.route, $scope.target.id, approved).then(function (data) {
-            if (data.status == "ok") {
-                $scope.target.approved = approved;
-            }
+        contributionService.approve($scope.model.route, $scope.target.id, approved).then(function() {
+            $scope.target.approved = approved;
+        }, function(response) {
+            // TODO: emit error message for view to display
         });
     };
 
     $scope.hide = function(hidden) {
-        contributionService.hide($scope.model.route, $scope.target.id, hidden).then(function (data) {
-            if (data.status == "ok") {
-                $scope.target.hidden = hidden;
-            }
+        contributionService.hide($scope.model.route, $scope.target.id, hidden).then(function() {
+            $scope.target.hidden = hidden;
+        }, function(response) {
+            // TODO: emit error message for view to display
         });
     };
 
