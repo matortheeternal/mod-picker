@@ -1,4 +1,4 @@
-app.controller('modReviewsController', function($scope, $stateParams, $state, modService, reviewSectionService, contributionService) {
+app.controller('modReviewsController', function($scope, $stateParams, $state, modService, reviewSectionService, contributionService, errorService) {
     // verify we can access this tab
     $scope.currentTab = $scope.findTab('Reviews');
     if (!$scope.currentTab) {
@@ -226,7 +226,7 @@ app.controller('modReviewsController', function($scope, $stateParams, $state, mo
         // use update or submit contribution
         if ($scope.activeReview.editing) {
             var reviewId = $scope.activeReview.original.id;
-            contributionService.updateContribution("reviews", reviewId, reviewObj).then(function(data) {
+            contributionService.updateContribution("reviews", reviewId, reviewObj).then(function() {
                 $scope.submitMessage = "Review updated successfully!";
                 $scope.showSuccess = true;
 
@@ -234,16 +234,18 @@ app.controller('modReviewsController', function($scope, $stateParams, $state, mo
                 $scope.updateReview();
                 $scope.discardReview();
             }, function(response) {
-                // TODO: Push error to view
+                var msg = errorService.errorMessage('Error updating Review', response);
+                $scope.errors.messages.push(msg);
             });
         } else {
-            contributionService.submitContribution("reviews", reviewObj).then(function(data) {
+            contributionService.submitContribution("reviews", reviewObj).then(function() {
                 $scope.submitMessage = "Review submitted successfully!";
                 $scope.showSuccess = true;
                 // TODO: push the review onto the $scope.mod.reviews array
                 $scope.discardReview();
             }, function(response) {
-                // TODO: Push error to view
+                var msg = errorService.errorMessage('Error submitting Review', response);
+                $scope.errors.messages.push(msg);
             });
         }
     };

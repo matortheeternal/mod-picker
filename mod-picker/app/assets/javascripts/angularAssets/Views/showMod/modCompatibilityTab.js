@@ -1,4 +1,4 @@
-app.controller('modCompatibilityController', function($scope, $stateParams, $state, modService, contributionFactory, contributionService) {
+app.controller('modCompatibilityController', function($scope, $stateParams, $state, modService, contributionFactory, contributionService, errorService) {
     // verify we can access this tab
     $scope.currentTab = $scope.findTab('Compatibility');
     if (!$scope.currentTab) {
@@ -145,7 +145,8 @@ app.controller('modCompatibilityController', function($scope, $stateParams, $sta
                 $scope.updateCompatibilityNote(noteObj.compatibility_note);
                 $scope.discardCompatibilityNote();
             }, function(response) {
-                // TODO: Push error to view
+                var msg = errorService.errorMessage('Error updating Compatibility Note', response);
+                $scope.errors.messages.push(msg);
             });
         } else {
             contributionService.submitContribution("compatibility_notes", noteObj).then(function() {
@@ -154,7 +155,8 @@ app.controller('modCompatibilityController', function($scope, $stateParams, $sta
                 // TODO: push the compatibility note onto the $scope.mod.compatibility_notes array
                 $scope.discardCompatibilityNote();
             }, function(response) {
-                // TODO: Push error to view
+                var msg = errorService.errorMessage('Error submitting Compatibility Note', response);
+                $scope.errors.messages.push(msg);
             });
         }
     };

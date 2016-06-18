@@ -1,4 +1,4 @@
-app.controller('modLoadOrderController', function($scope, $state, $stateParams, modService, contributionService) {
+app.controller('modLoadOrderController', function($scope, $state, $stateParams, modService, contributionService, errorService) {
     // verify we can access this tab
     $scope.currentTab = $scope.findTab('Load Order');
     if (!$scope.currentTab) {
@@ -164,7 +164,8 @@ app.controller('modLoadOrderController', function($scope, $state, $stateParams, 
                 $scope.updateLoadOrderNote(noteObj.load_order_note);
                 $scope.discardLoadOrderNote();
             }, function(response) {
-                // TODO: Push error to view
+                var msg = errorService.errorMessage('Error updating Load Order Note', response);
+                $scope.errors.messages.push(msg);
             });
         } else {
             contributionService.submitContribution("load_order_notes", noteObj).then(function() {
@@ -173,7 +174,8 @@ app.controller('modLoadOrderController', function($scope, $state, $stateParams, 
                 // TODO: push the Load Order note onto the $scope.mod.load_order_notes array
                 $scope.discardLoadOrderNote();
             }, function(response) {
-                // TODO: Push error to view
+                var msg = errorService.errorMessage('Error submitting Load Order Note', response);
+                $scope.errors.messages.push(msg);
             });
         }
     };
