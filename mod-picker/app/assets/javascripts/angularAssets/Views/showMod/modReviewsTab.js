@@ -32,7 +32,7 @@ app.controller('modReviewsController', function($scope, $stateParams, $state, mo
             $scope.retrieving.reviews = false;
             $scope.mod.reviews = data;
         }, function(response) {
-            // TODO: Display error on view
+            $scope.errors.reviews = response;
         });
     };
 
@@ -42,7 +42,7 @@ app.controller('modReviewsController', function($scope, $stateParams, $state, mo
             $scope.retrieving.reviewSections = false;
             $scope.reviewSections = data;
         }, function(response) {
-            // TODO: Display error on view
+            $scope.errors.reviewSections = response;
         });
     };
 
