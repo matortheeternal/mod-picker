@@ -1,6 +1,14 @@
 app.controller('modInstallOrderController', function($scope, $stateParams, $state, modService, contributionService) {
-    // set local variables
+    // verify we can access this tab
     $scope.currentTab = $scope.findTab('Install Order');
+    if (!$scope.currentTab) {
+        // if we can't access this tab, redirect to the first tab we can access and
+        // stop doing stuff in this controller
+        $state.go('base.mod.' + $scope.tabs[0].name, {
+            modId: $stateParams.modId
+        });
+        return;
+    }
 
     // BASE RETRIEVAL LOGIC
     $scope.retrieveInstallOrderNotes = function(page) {
