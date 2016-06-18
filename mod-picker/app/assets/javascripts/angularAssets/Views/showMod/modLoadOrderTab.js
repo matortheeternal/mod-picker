@@ -33,7 +33,7 @@ app.controller('modLoadOrderController', function($scope, $state, $stateParams, 
             $scope.retrieving.load_order_notes = false;
             $scope.mod.load_order_notes = data;
         }, function(response) {
-            // TODO: Display error on view
+            $scope.errors.load_order_notes = response;
         });
     };
 
