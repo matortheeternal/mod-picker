@@ -33,7 +33,7 @@ app.controller('modCompatibilityController', function($scope, $stateParams, $sta
             $scope.retrieving.compatibility_notes = false;
             $scope.mod.compatibility_notes = data;
         }, function(response) {
-            // TODO: Display error on view
+            $scope.errors.compatibility_notes = response;
         });
     };
 

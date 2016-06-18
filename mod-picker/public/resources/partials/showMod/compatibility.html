@@ -81,7 +81,7 @@
     </div>
 </div>
 
-<loader data="mod.compatibility_notes" spinner-class="big-spinner">
+<loader data="mod.compatibility_notes" spinner-class="big-spinner" ng-if="!errors.compatibility_notes">
     <div ng-repeat="note in mod.compatibility_notes" class="content-block" ng-if="!note.editing">
         <compatibility-note note="note" mod-id="mod.id" show-user-column="true" index="100 + $index" current-user="currentUser" edit="editCompatibilityNote"></compatibility-note>
     </div>
@@ -92,3 +92,9 @@
 
     <page-results pages="pages.compatibility_notes" data="mod.compatibility_notes" callback="retrieveCompatibilityNotes"></page-results>
 </loader>
+
+<div class="content-message" ng-if="errors.compatibility_notes">
+    There was an error retrieving compatibility notes for this mod.<br>
+    <!--TODO: Render JSON errors here, if available?-->
+    Error {{errors.compatibility_notes.status}}: {{errors.compatibility_notes.statusText}}
+</div>
