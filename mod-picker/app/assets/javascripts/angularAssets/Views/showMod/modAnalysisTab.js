@@ -41,7 +41,7 @@ app.controller('modAnalysisController', function($scope, $stateParams, $state, m
                 $scope.switchPlugin();
             }
         }, function(response) {
-            // TODO: Display error on view
+            $scope.errors.analysis = response;
         });
     };
 
