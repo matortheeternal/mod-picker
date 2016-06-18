@@ -4,8 +4,18 @@ app.controller('modLoadOrderController', function($scope, $state, $stateParams, 
 
     // BASE RETRIEVAL LOGIC
     $scope.retrieveLoadOrderNotes = function(page) {
-        $state.transitionTo('base.mod.Load Order', {modId: $stateParams.modId, page: page}, { notify: false });
         $scope.retrieving.load_order_notes = true;
+
+        // transition to new url state
+        var params = {
+            modId: $stateParams.modId,
+            page: page,
+            scol: $scope.sort.load_order_notes.column,
+            sdir: $scope.sort.load_order_notes.direction
+        };
+        $state.transitionTo('base.mod.Load Order', params, { notify: false });
+
+        // retrieve the load order notes
         var options = {
             sort: $scope.sort.load_order_notes,
             filters: $scope.filters.load_order_notes,
@@ -21,6 +31,8 @@ app.controller('modLoadOrderController', function($scope, $state, $stateParams, 
 
     // retrieve laod order notes if we don't have them and aren't currently retrieving them
     if (!$scope.mod.load_order_notes && !$scope.retrieving.load_order_notes) {
+        $scope.sort.load_order_notes.column = $stateParams.scol;
+        $scope.sort.load_order_notes.direction = $stateParams.sdir;
         $scope.retrieveLoadOrderNotes($stateParams.page);
     }
 

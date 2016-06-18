@@ -15,30 +15,38 @@ app.config(['$stateProvider', function($stateProvider) {
     }).state('base.mod.Reviews', {
         templateUrl: '/resources/partials/showMod/reviews.html',
         controller: 'modReviewsController',
-        url: '/reviews?{page:int}',
+        url: '/reviews?{page:int}&scol&sdir',
         params: {
-            page: 1
+            page: 1,
+            scol: 'reputation',
+            sdir: 'desc'
         }
     }).state('base.mod.Compatibility', {
         templateUrl: '/resources/partials/showMod/compatibility.html',
         controller: 'modCompatibilityController',
-        url: '/compatibility?{page:int}',
+        url: '/compatibility?{page:int}&scol&sdir',
         params: {
-            page: 1
+            page: 1,
+            scol: 'reputation',
+            sdir: 'desc'
         }
     }).state('base.mod.Install Order', {
         templateUrl: '/resources/partials/showMod/installOrder.html',
         controller: 'modInstallOrderController',
-        url: '/install-order?{page:int}',
+        url: '/install-order?{page:int}&scol&sdir',
         params: {
-            page: 1
+            page: 1,
+            scol: 'reputation',
+            sdir: 'desc'
         }
     }).state('base.mod.Load Order', {
         templateUrl: '/resources/partials/showMod/loadOrder.html',
         controller: 'modLoadOrderController',
-        url: '/load-order?{page:int}',
+        url: '/load-order?{page:int}&scol&sdir',
         params: {
-            page: 1
+            page: 1,
+            scol: 'reputation',
+            sdir: 'desc'
         }
     }).state('base.mod.Analysis', {
         templateUrl: '/resources/partials/showMod/analysis.html',
@@ -76,22 +84,10 @@ app.controller('modController', function($scope, $q, $stateParams, $timeout, cur
         load_order_notes: {}
     };
     $scope.sort = {
-        reviews: {
-            column: 'reputation',
-            direction: 'desc'
-        },
-        compatibility_notes: {
-            column: 'reputation',
-            direction: 'desc'
-        },
-        install_order_notes: {
-            column: 'reputation',
-            direction: 'desc'
-        },
-        load_order_notes: {
-            column: 'reputation',
-            direction: 'desc'
-        }
+        reviews: {},
+        compatibility_notes: {},
+        install_order_notes: {},
+        load_order_notes: {}
     };
     $scope.filters = {
         compatibility_notes: {

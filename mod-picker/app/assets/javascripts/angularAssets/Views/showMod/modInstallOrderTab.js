@@ -4,8 +4,18 @@ app.controller('modInstallOrderController', function($scope, $stateParams, $stat
 
     // BASE RETRIEVAL LOGIC
     $scope.retrieveInstallOrderNotes = function(page) {
-        $state.transitionTo('base.mod.Install Order', {modId: $stateParams.modId, page: page}, { notify: false });
         $scope.retrieving.install_order_notes = true;
+
+        // transition to new url state
+        var params = {
+            modId: $stateParams.modId,
+            page: page,
+            scol: $scope.sort.compatibility_notes.column,
+            sdir: $scope.sort.compatibility_notes.direction
+        };
+        $state.transitionTo('base.mod.Install Order', params, { notify: false });
+
+        // retrieve the install order notes
         var options = {
             sort: $scope.sort.install_order_notes,
             filters: $scope.filters.install_order_notes,
@@ -21,6 +31,8 @@ app.controller('modInstallOrderController', function($scope, $stateParams, $stat
 
     // retrieve install order notes if we don't have them and aren't currently retrieving them
     if (!$scope.mod.install_order_notes && !$scope.retrieving.install_order_notes) {
+        $scope.sort.install_order_notes.column = $stateParams.scol;
+        $scope.sort.install_order_notes.direction = $stateParams.sdir;
         $scope.retrieveInstallOrderNotes($stateParams.page);
     }
 

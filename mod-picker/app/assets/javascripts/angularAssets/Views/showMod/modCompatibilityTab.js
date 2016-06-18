@@ -4,8 +4,18 @@ app.controller('modCompatibilityController', function($scope, $stateParams, $sta
 
     // BASE RETRIEVAL LOGIC
     $scope.retrieveCompatibilityNotes = function(page) {
-        $state.transitionTo('base.mod.Compatibility', {modId: $stateParams.modId, page: page}, { notify: false });
         $scope.retrieving.compatibility_notes = true;
+
+        // transition to new url state
+        var params = {
+            modId: $stateParams.modId,
+            page: page,
+            scol: $scope.sort.compatibility_notes.column,
+            sdir: $scope.sort.compatibility_notes.direction
+        };
+        $state.transitionTo('base.mod.Compatibility', params, { notify: false });
+
+        // retrieve the compatibility notes
         var options = {
             sort: $scope.sort.compatibility_notes,
             filters: $scope.filters.compatibility_notes,
@@ -21,6 +31,8 @@ app.controller('modCompatibilityController', function($scope, $stateParams, $sta
 
     // retrieve compatibility notes if we don't have them and aren't currently retrieving them
     if (!$scope.mod.compatibility_notes && !$scope.retrieving.compatibility_notes) {
+        $scope.sort.compatibility_notes.column = $stateParams.scol;
+        $scope.sort.compatibility_notes.direction = $stateParams.sdir;
         $scope.retrieveCompatibilityNotes($stateParams.page);
     }
 
