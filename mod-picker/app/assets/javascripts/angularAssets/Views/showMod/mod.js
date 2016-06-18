@@ -156,7 +156,7 @@ app.controller('modController', function($scope, $q, $stateParams, $timeout, cur
         var index = $scope.tabs.findIndex(function(tab) {
             return tab.name === tabName;
         });
-        delete $scope.tabs[index];
+        $scope.tabs.splice(index, 1);
     };
 
     // only display analysis tab if mod doesn't have a primary category
