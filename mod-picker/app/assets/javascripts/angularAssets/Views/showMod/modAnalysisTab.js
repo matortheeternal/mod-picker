@@ -3,13 +3,11 @@ app.controller('modAnalysisController', function($scope, $stateParams, $state, m
     $scope.currentTab = $scope.findTab('Analysis');
 
     // PLUGIN SWITCHING LOGIC
-    $scope.switchPlugin = function(newPlugin) {
-        $scope.currentPlugin = newPlugin;
-
+    $scope.switchPlugin = function() {
         // transition to new url state
         var params = {
             modId: $stateParams.modId,
-            plugin: newPlugin.id
+            plugin: $scope.mod.currentPlugin.id
         };
         $state.transitionTo('base.mod.Analysis', params, { notify: false });
     };
@@ -30,7 +28,8 @@ app.controller('modAnalysisController', function($scope, $stateParams, $state, m
             var statePlugin = analysis.plugins.find(function(plugin) {
                 return plugin.id === $stateParams.plugin;
             });
-            $scope.switchPlugin(statePlugin || analysis.plugins[0]);
+            $scope.mod.currentPlugin = statePlugin || analysis.plugins[0];
+            $scope.switchPlugin();
         }, function(response) {
             // TODO: Display error on view
         });
