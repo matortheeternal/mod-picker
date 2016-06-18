@@ -215,8 +215,8 @@ app.controller('modController', function($scope, $q, $stateParams, $timeout, cur
 
     $scope.saveTags = function(updatedTags) {
         var action = $q.defer();
-        tagService.updateModTags($scope.mod, updatedTags).then(function() {
-            $scope.submitMessage = "Tags submitted successfully.";
+        tagService.updateModTags($scope.mod, updatedTags).then(function(data) {
+            $scope.submitMessage = "Tags updated successfully.";
             $scope.showSuccess = true;
             action.resolve(data);
         }, function(response) {
