@@ -406,19 +406,19 @@ input[type="button"], input[type="submit"] {
   }
 
   &.ng-hide {
-      max-height: 0;
+    max-height: 0;
   }
 
   .error-message {
-      .fa {
-          padding: 4px;
-      }
+    .fa {
+        padding: 4px;
+    }
 
-      .fa:hover {
-          color: $action_text_color;
-          background-color: $text_color;
-          cursor: pointer;
-      }
+    .fa:hover {
+        color: $action_text_color;
+        background-color: $text_color;
+        cursor: pointer;
+    }
   }
 
   .success-message {
