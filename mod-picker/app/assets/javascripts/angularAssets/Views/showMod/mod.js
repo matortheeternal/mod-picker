@@ -15,28 +15,28 @@ app.config(['$stateProvider', function($stateProvider) {
     }).state('base.mod.Reviews', {
         templateUrl: '/resources/partials/showMod/reviews.html',
         controller: 'modReviewsController',
-        url: '/reviews',
+        url: '/reviews?{page:int}',
         params: {
             page: 1
         }
     }).state('base.mod.Compatibility', {
         templateUrl: '/resources/partials/showMod/compatibility.html',
         controller: 'modCompatibilityController',
-        url: '/compatibility',
+        url: '/compatibility?{page:int}',
         params: {
             page: 1
         }
     }).state('base.mod.Install Order', {
         templateUrl: '/resources/partials/showMod/installOrder.html',
         controller: 'modInstallOrderController',
-        url: '/install-order',
+        url: '/install-order?{page:int}',
         params: {
             page: 1
         }
     }).state('base.mod.Load Order', {
         templateUrl: '/resources/partials/showMod/loadOrder.html',
         controller: 'modLoadOrderController',
-        url: '/load-order',
+        url: '/load-order?{page:int}',
         params: {
             page: 1
         }

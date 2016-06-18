@@ -4,6 +4,7 @@ app.controller('modInstallOrderController', function($scope, $stateParams, $stat
 
     // BASE RETRIEVAL LOGIC
     $scope.retrieveInstallOrderNotes = function(page) {
+        $state.transitionTo('base.mod.Install Order', {modId: $stateParams.modId, page: page}, { notify: false });
         $scope.retrieving.install_order_notes = true;
         var options = {
             sort: $scope.sort.install_order_notes,
@@ -20,7 +21,7 @@ app.controller('modInstallOrderController', function($scope, $stateParams, $stat
 
     // retrieve install order notes if we don't have them and aren't currently retrieving them
     if (!$scope.mod.install_order_notes && !$scope.retrieving.install_order_notes) {
-        $scope.retrieveInstallOrderNotes();
+        $scope.retrieveInstallOrderNotes($stateParams.page);
     }
 
     // INSTALL ORDER NOTE RELATED LOGIC

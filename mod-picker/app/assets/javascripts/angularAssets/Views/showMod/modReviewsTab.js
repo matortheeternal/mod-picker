@@ -4,6 +4,7 @@ app.controller('modReviewsController', function($scope, $stateParams, $state, mo
 
     // BASE RETRIEVAL LOGIC
     $scope.retrieveReviews = function(page) {
+        $state.transitionTo('base.mod.Reviews', {modId: $stateParams.modId, page: page}, { notify: false });
         $scope.retrieving.reviews = true;
         var options = {
             sort: $scope.sort.reviews,
@@ -29,7 +30,7 @@ app.controller('modReviewsController', function($scope, $stateParams, $state, mo
 
     // retrieve reviews if we don't have them and aren't currently retrieving them
     if (!$scope.mod.reviews && !$scope.retrieving.reviews) {
-        $scope.retrieveReviews();
+        $scope.retrieveReviews($stateParams.page);
     }
 
     // retrieve review sections if we don't have them and aren't currently retrieving them
