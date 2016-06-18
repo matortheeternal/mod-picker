@@ -154,8 +154,8 @@ app.controller('modInstallOrderController', function($scope, $stateParams, $stat
                 $scope.updateInstallOrderNote(noteObj.install_order_note);
                 $scope.discardInstallOrderNote();
             }, function(response) {
-                var msg = errorService.errorMessage('Error updating Install Order Note', response);
-                $scope.errors.messages.push(msg);
+                var params = {label: 'Error updating Install Order Note', response: response};
+                $scope.$emit('errorMessage', params);
             });
         } else {
             contributionService.submitContribution("install_order_notes", noteObj).then(function() {
@@ -164,8 +164,8 @@ app.controller('modInstallOrderController', function($scope, $stateParams, $stat
                 // TODO: push the Install Order note onto the $scope.mod.install_order_notes array
                 $scope.discardInstallOrderNote();
             }, function(response) {
-                var msg = errorService.errorMessage('Error submitting Install Order Note', response);
-                $scope.errors.messages.push(msg);
+                var params = {label: 'Error submitting Install Order Note', response: response};
+                $scope.$emit('errorMessage', params);
             });
         }
     };

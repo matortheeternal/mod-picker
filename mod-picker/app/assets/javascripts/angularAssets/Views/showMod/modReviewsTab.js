@@ -1,4 +1,4 @@
-app.controller('modReviewsController', function($scope, $stateParams, $state, modService, reviewSectionService, contributionService, errorService) {
+app.controller('modReviewsController', function($scope, $stateParams, $state, modService, reviewSectionService, contributionService) {
     // verify we can access this tab
     $scope.currentTab = $scope.findTab('Reviews');
     if (!$scope.currentTab) {
@@ -234,8 +234,8 @@ app.controller('modReviewsController', function($scope, $stateParams, $state, mo
                 $scope.updateReview();
                 $scope.discardReview();
             }, function(response) {
-                var msg = errorService.errorMessage('Error updating Review', response);
-                $scope.errors.messages.push(msg);
+                var params = {label: 'Error updating Review', response: response};
+                $scope.$emit('errorMessage', params);
             });
         } else {
             contributionService.submitContribution("reviews", reviewObj).then(function() {
@@ -244,8 +244,8 @@ app.controller('modReviewsController', function($scope, $stateParams, $state, mo
                 // TODO: push the review onto the $scope.mod.reviews array
                 $scope.discardReview();
             }, function(response) {
-                var msg = errorService.errorMessage('Error submitting Review', response);
-                $scope.errors.messages.push(msg);
+                var params = {label: 'Error submitting Review', response: response};
+                $scope.$emit('errorMessage', params);
             });
         }
     };
