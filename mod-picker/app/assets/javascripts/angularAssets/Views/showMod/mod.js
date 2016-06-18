@@ -51,17 +51,9 @@ app.config(['$stateProvider', function($stateProvider) {
     }).state('base.mod.Analysis', {
         templateUrl: '/resources/partials/showMod/analysis.html',
         controller: 'modAnalysisController',
-        url: '/analysis',
+        url: '/analysis?{plugin:int}',
         params: {
-            retrieve: true
-        },
-        resolve: {
-            analysis: function($stateParams, modObject, modService) {
-                //only resolve if the retrieve param is true
-                if ($stateParams.retrieve) {
-                    return modService.retrieveModAnalysis(modObject.mod.id);
-                }
-            }
+            plugin: 0
         }
     });
 }]);
