@@ -58,7 +58,7 @@ app.config(['$stateProvider', function($stateProvider) {
     });
 }]);
 
-app.controller('modController', function($scope, $q, $stateParams, $timeout, currentUser, modObject, modService, pluginService, categoryService, gameService, recordGroupService, userTitleService, assetUtils, reviewSectionService, userService, contributionService, contributionFactory, errorsFactory, tagService, smoothScroll) {
+app.controller('modController', function($scope, $q, $stateParams, $timeout, currentUser, modObject, contributionService, tagService, smoothScroll, errorService) {
     // get parent variables
     $scope.mod = modObject.mod;
     $scope.mod.star = modObject.star;
@@ -156,6 +156,12 @@ app.controller('modController', function($scope, $q, $stateParams, $timeout, cur
             $scope.statusClass = "red-box";
             break;
     }
+
+    // display error messages
+    $scope.$on('errorMessage', function(event, msg) {
+        var errorMessage = errorService.errorMessage(msg.label, msg.response);
+        $scope.errors.messages.push(errorMessage);
+    });
 
     // change sort direction
     $scope.toggleSortDirection = function(sort) {
