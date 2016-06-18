@@ -33,11 +33,13 @@ app.controller('modAnalysisController', function($scope, $stateParams, $state, m
             $scope.mod.nestedAssets = analysis.nestedAssets;
 
             // set current plugin
-            var statePlugin = analysis.plugins.find(function(plugin) {
-                return plugin.id === $stateParams.plugin;
-            });
-            $scope.mod.currentPlugin = statePlugin || analysis.plugins[0];
-            $scope.switchPlugin();
+            if (analysis.plugins.length > 0) {
+                var statePlugin = analysis.plugins.find(function(plugin) {
+                    return plugin.id === $stateParams.plugin;
+                });
+                $scope.mod.currentPlugin = statePlugin || analysis.plugins[0];
+                $scope.switchPlugin();
+            }
         }, function(response) {
             // TODO: Display error on view
         });
