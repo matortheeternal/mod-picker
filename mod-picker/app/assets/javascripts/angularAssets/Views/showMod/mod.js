@@ -112,36 +112,13 @@ app.controller('modController', function($scope, $q, $stateParams, $timeout, cur
     $scope.permissions.canManage = $scope.permissions.canModerate || isAuthor;
 
     //tabs array
-    $scope.tabs = [{
-        name: 'Reviews'
-    }, {
-        name: 'Compatibility',
-        params: {
-            sort: {
-                column: 'reputation',
-                direction: 'desc'
-            }
-        }
-    }, {
-        name: 'Install Order',
-        params: {
-            sort: {
-                column: 'reputation',
-                direction: 'desc'
-            }
-        }
-    }, {
-        name: 'Load Order',
-        params: {
-            sort: {
-                column: 'reputation',
-                direction: 'desc'
-            }
-        }
-    }, {
-        name: 'Analysis',
-        params: {}
-    }];
+    $scope.tabs = [
+        { name: 'Reviews' },
+        { name: 'Compatibility' },
+        { name: 'Install Order' },
+        { name: 'Load Order' },
+        { name: 'Analysis' }
+    ];
 
     //returns a reference to the tab with tabName (because sometimes tabs are removed)
     $scope.findTab = function(tabName) {
