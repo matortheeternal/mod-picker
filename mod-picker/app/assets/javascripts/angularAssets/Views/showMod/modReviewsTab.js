@@ -101,8 +101,8 @@ app.controller('modReviewsController', function($scope, $stateParams, $state, mo
         // set up availableSections array
         $scope.availableSections = reviewSections.filter(function(section) {
             return $scope.activeReview.ratings.find(function(rating) {
-                    return rating.section == section;
-                }) === undefined;
+                return rating.section == section;
+            }) === undefined;
         });
 
         // update validation, update the markdown editor
