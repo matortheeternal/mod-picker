@@ -33,7 +33,7 @@ app.controller('modInstallOrderController', function($scope, $stateParams, $stat
             $scope.retrieving.install_order_notes = false;
             $scope.mod.install_order_notes = data;
         }, function(response) {
-            // TODO: Display error on view
+            $scope.errors.install_order_notes = response;
         });
     };
 
