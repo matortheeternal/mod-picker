@@ -46,5 +46,7 @@ app.controller('modAnalysisController', function($scope, $stateParams, $state, m
     // retrieve analysis if we don't have them and aren't currently retrieving it
     if (!$scope.mod.analysis && !$scope.retrieving.analysis) {
         $scope.retrieveAnalysis();
+    } else {
+        $scope.switchPlugin();
     }
 });
