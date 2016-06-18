@@ -13,6 +13,8 @@ app.service('reviewSectionService', function (backend, $q) {
           output.resolve(sections.filter(function(section) {
               return (section.category_id === category.id) || (section.category_id === category.parent_id);
           }));
+        }, function(response) {
+            output.reject(response);
         });
         return output.promise;
     };
@@ -23,6 +25,8 @@ app.service('reviewSectionService', function (backend, $q) {
             output.resolve(sections.find(function(section) {
                 return (section.id === id);
             }));
+        }, function(response) {
+            output.reject(response);
         });
         return output.promise;
     };
