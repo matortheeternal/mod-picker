@@ -58,7 +58,7 @@ app.config(['$stateProvider', function($stateProvider) {
     });
 }]);
 
-app.controller('modController', function($scope, $q, $stateParams, $timeout, currentUser, modObject, contributionService, tagService, smoothScroll, errorService) {
+app.controller('modController', function($scope, $q, $stateParams, $timeout, currentUser, modObject, modService, contributionService, tagService, smoothScroll, errorService) {
     // get parent variables
     $scope.mod = modObject.mod;
     $scope.mod.star = modObject.star;
@@ -161,6 +161,8 @@ app.controller('modController', function($scope, $q, $stateParams, $timeout, cur
     $scope.$on('errorMessage', function(event, msg) {
         var errorMessage = errorService.errorMessage(msg.label, msg.response);
         $scope.errors.messages.push(errorMessage);
+        // stop event propagation - we handled it
+        event.stopPropagation();
     });
 
     // change sort direction
