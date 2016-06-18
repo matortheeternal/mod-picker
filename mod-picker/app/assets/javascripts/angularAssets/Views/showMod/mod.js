@@ -195,7 +195,8 @@ app.controller('modController', function($scope, $q, $stateParams, $timeout, cur
         modService.starMod($scope.mod.id, $scope.mod.star).then(function() {
             $scope.mod.star = !$scope.mod.star;
         }, function(response) {
-            // TODO: Push error to view
+            var params = {label: 'Error starring mod', response: response};
+            $scope.$emit('errorMessage', params);
         });
     };
 
@@ -220,7 +221,8 @@ app.controller('modController', function($scope, $q, $stateParams, $timeout, cur
             $scope.showSuccess = true;
             action.resolve(data);
         }, function(response) {
-            // TODO: Push error to view
+            var params = {label: 'Error saving mod tags', response: response};
+            $scope.$emit('errorMessage', params);
             action.reject(response);
         });
         return action.promise;
