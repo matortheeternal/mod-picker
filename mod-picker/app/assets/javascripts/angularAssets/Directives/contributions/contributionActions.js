@@ -104,12 +104,17 @@ app.controller('contributionActionsController', function ($scope, $timeout, cont
     };
 
     $scope.helpfulMark = function(helpful) {
+        var helpfulStr = helpful ? 'helpful' : 'not helpful';
         if ($scope.target.helpful == helpful) {
             contributionService.helpfulMark($scope.model.route, $scope.target.id).then(function() {
                 delete $scope.target.helpful;
                 $scope.updateHelpfulCounter(helpful, false);
             }, function(response) {
-                // TODO: emit error message for view to display
+                var params = {
+                    label: 'Error removing ' + helpfulStr + ' mark',
+                    response: response
+                };
+                $scope.$emit('errorMessage', params);
             });
         } else {
             contributionService.helpfulMark($scope.model.route, $scope.target.id, helpful).then(function() {
@@ -119,7 +124,11 @@ app.controller('contributionActionsController', function ($scope, $timeout, cont
                 $scope.target.helpful = helpful;
                 $scope.updateHelpfulCounter(helpful, true);
             }, function(response) {
-                // TODO: emit error message for view to display
+                var params = {
+                    label: 'Error creating ' + helpfulStr + ' mark',
+                    response: response
+                };
+                $scope.$emit('errorMessage', params);
             });
         }
     };
@@ -134,12 +143,17 @@ app.controller('contributionActionsController', function ($scope, $timeout, cont
     };
 
     $scope.agreementMark = function(agree) {
+        var agreeStr = agree ? 'agreement' : 'disagreement';
         if ($scope.target.agree == agree) {
             contributionService.agreementMark($scope.model.route, $scope.target.id).then(function() {
                 delete $scope.target.agree;
                 $scope.updateAgreeCounter(agree, false);
             }, function(response) {
-                // TODO: emit error message for view to display
+                var params = {
+                    label: 'Error removing ' + agreeStr + ' mark',
+                    response: response
+                };
+                $scope.$emit('errorMessage', params);
             });
         } else {
             contributionService.agreementMark($scope.model.route, $scope.target.id, agree).then(function() {
@@ -149,7 +163,11 @@ app.controller('contributionActionsController', function ($scope, $timeout, cont
                 $scope.target.agree = agree;
                 $scope.updateAgreeCounter(agree, true);
             }, function(response) {
-                // TODO: emit error message for view to display
+                var params = {
+                    label: 'Error creating ' + agreeStr + ' mark',
+                    response: response
+                };
+                $scope.$emit('errorMessage', params);
             });
         }
     };
@@ -158,7 +176,12 @@ app.controller('contributionActionsController', function ($scope, $timeout, cont
         contributionService.approve($scope.model.route, $scope.target.id, approved).then(function() {
             $scope.target.approved = approved;
         }, function(response) {
-            // TODO: emit error message for view to display
+            var approveStr = approved ? 'approving' : 'unapproving';
+            var params = {
+                label: 'Error ' + approveStr + ' contribution',
+                response: response
+            };
+            $scope.$emit('errorMessage', params);
         });
     };
 
@@ -166,7 +189,12 @@ app.controller('contributionActionsController', function ($scope, $timeout, cont
         contributionService.hide($scope.model.route, $scope.target.id, hidden).then(function() {
             $scope.target.hidden = hidden;
         }, function(response) {
-            // TODO: emit error message for view to display
+            var approveStr = hidden ? 'hiding' : 'unhiding';
+            var params = {
+                label: 'Error ' + approveStr + ' contribution',
+                response: response
+            };
+            $scope.$emit('errorMessage', params);
         });
     };
 
