@@ -73,7 +73,7 @@ app.controller('contributionActionsController', function ($scope, $timeout, cont
         $scope.retrieving.corrections = true;
         contributionService.retrieveCorrections($scope.model.route, $scope.target.id).then(function(data) {
             $scope.retrieving.corrections = false;
-            $scope.target.corrections = data.corrections;
+            $scope.target.corrections = data;
         }, function(response) {
             $scope.errors.corrections = response;
             $timeout(function() {
