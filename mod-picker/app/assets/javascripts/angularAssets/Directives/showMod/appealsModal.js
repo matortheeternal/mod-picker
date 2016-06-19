@@ -1,13 +1,13 @@
-app.directive('modStatusModal', function () {
+app.directive('appealsModal', function () {
     return {
         restrict: 'E',
-        templateUrl: '/resources/directives/showMod/modStatusModal.html',
-        controller: 'modStatusModalController',
+        templateUrl: '/resources/directives/showMod/appealsModal.html',
+        controller: 'appealsModalController',
         scope: false
     };
 });
 
-app.controller('modStatusModalController', function ($scope, contributionService) {
+app.controller('appealsModalController', function ($scope, contributionService) {
     // compute agree percentage helper
     $scope.computeAgreePercentage = function(appeal) {
         return (appeal.agree_count / ((appeal.agree_count + appeal.disagree_count) || 1)) * 100;
