@@ -28,17 +28,14 @@ app.controller('contributionActionsController', function ($scope, $timeout, cont
 
     // this is a direct link to the contribution to be displayed in the get link modal
     $scope.shareLink = window.location.href + '/' + $scope.target.id;
+
     // this is the report object
     $scope.report = {};
-
-    // retrieving object for tracking what we're retrieving
     $scope.retrieving = {};
-    // pages object for tracking pagination
     $scope.pages = {
         correction_comments: {}
     };
-    // display errors object for tracking display errors
-    $scope.displayErrors = {};
+    $scope.errors = {};
 
     // compute whether or not the target is open if it is agreeable
     if ($scope.agreeable) {
@@ -78,8 +75,10 @@ app.controller('contributionActionsController', function ($scope, $timeout, cont
             $scope.retrieving.corrections = false;
             $scope.target.corrections = data.corrections;
         }, function(response) {
-            // TODO: Store display error for modal view
-            // TODO: Reset $scope.retrieving.corrections to false after 15 seconds
+            $scope.errors.corrections = response;
+            $timeout(function() {
+                $scope.retrieving.corrections = false;
+            }, 15000);
         });
     };
 
@@ -89,8 +88,10 @@ app.controller('contributionActionsController', function ($scope, $timeout, cont
             $scope.retrieving.history = false;
             $scope.target.history = data;
         }, function(response) {
-            // TODO: Store display error for modal view
-            // TODO: Reset $scope.retrieving.history to false after 15 seconds
+            $scope.errors.history = response;
+            $timeout(function() {
+                $scope.retrieving.history = false;
+            }, 15000);
         });
     };
 
