@@ -17,7 +17,7 @@ app.directive('contributionActions', function () {
     };
 });
 
-app.controller('contributionActionsController', function ($scope, $timeout, contributionService, contributionFactory, userTitleService) {
+app.controller('contributionActionsController', function ($scope, $timeout, contributionService, contributionFactory) {
     // correctable should have a default value of true
     $scope.correctable = angular.isDefined($scope.correctable) ? $scope.correctable : true;
     // approveable should have a default value of true
@@ -29,7 +29,7 @@ app.controller('contributionActionsController', function ($scope, $timeout, cont
     // this is a direct link to the contribution to be displayed in the get link modal
     $scope.shareLink = window.location.href + '/' + $scope.target.id;
 
-    // this is the report object
+    // initialize local variables
     $scope.report = {};
     $scope.retrieving = {};
     $scope.pages = {
