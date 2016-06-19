@@ -195,6 +195,8 @@ app.controller('modController', function($scope, $q, $stateParams, $timeout, cur
             $scope.retrieving.appeals = false;
             $scope.mod.corrections = data;
             $scope.getAppealStatus();
+        }, function(response) {
+            $scope.errors.appeals = response;
         });
     };
 
@@ -210,7 +212,7 @@ app.controller('modController', function($scope, $q, $stateParams, $timeout, cur
 
     $scope.toggleStatusModal = function(visible) {
         $scope.statusModal.visible = visible;
-        if (!$scope.mod.corrections && !$scope.retrieving.corrections) {
+        if (visible && !$scope.mod.corrections && !$scope.retrieving.appeals) {
             $scope.retrieveAppeals();
         }
     };
