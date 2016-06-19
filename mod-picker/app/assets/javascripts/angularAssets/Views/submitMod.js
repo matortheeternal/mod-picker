@@ -255,14 +255,12 @@ app.controller('submitModController', function ($scope, backend, submitService, 
         };
         $scope.submitting = true;
         $scope.submittingStatus = "Submitting Mod...";
-        submitService.submitMod($scope.mod, $scope.analysis, sources, $scope.requirements).then(function(data) {
-            if (data.status == "ok") {
-                $scope.submittingStatus = "Mod Submitted Successfully!";
-                $scope.success = true;
-            } else {
-                $scope.submittingStatus = "There were errors submitting your mod.";
-                $scope.errors = data.errors;
-            }
+        submitService.submitMod($scope.mod, $scope.analysis, sources, $scope.requirements).then(function() {
+            $scope.submittingStatus = "Mod Submitted Successfully!";
+            $scope.success = true;
+        }, function(response) {
+            $scope.submittingStatus = "There were errors submitting your mod.";
+            $scope.errors = response.data;
         });
     };
 
