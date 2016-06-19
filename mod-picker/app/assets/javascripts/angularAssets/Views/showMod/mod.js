@@ -93,10 +93,8 @@ app.controller('modController', function($scope, $q, $stateParams, $timeout, cur
         }
     };
     $scope.retrieving = {};
-    // error handling variables
-    $scope.errors = {
-        messages: []
-    };
+    // error handling
+    $scope.errors = {};
 
     //a copy is created so the original permissions are never changed
     $scope.permissions = angular.copy(currentUser.permissions);
