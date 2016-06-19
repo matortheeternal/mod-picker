@@ -156,9 +156,17 @@ app.controller('modController', function($scope, $q, $stateParams, $timeout, cur
     }
 
     // display error messages
-    $scope.$on('errorMessage', function(event, msg) {
-        var errorMessage = errorService.errorMessage(msg.label, msg.response);
-        $scope.errors.messages.push(errorMessage);
+    $scope.$on('errorMessage', function(event, params) {
+        var errorMessage = errorService.errorMessage(params.label, params.response);
+        $scope.$broadcast('message', errorMessage);
+        // stop event propagation - we handled it
+        event.stopPropagation();
+    });
+
+    // display success message
+    $scope.$on('successMessage', function(event, text) {
+        var successMessage = {type: "success", text: text};
+        $scope.$broadcast('message', successMessage);
         // stop event propagation - we handled it
         event.stopPropagation();
     });
