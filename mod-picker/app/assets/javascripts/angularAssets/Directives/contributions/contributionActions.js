@@ -27,7 +27,7 @@ app.controller('contributionActionsController', function ($scope, $timeout, cont
     $scope.model = contributionFactory.getModel($scope.modelName);
 
     // this is a direct link to the contribution to be displayed in the get link modal
-    $scope.shareLink = window.location.href + '/' + $scope.model.route + '/' + $scope.target.id;
+    $scope.shareLink = window.location.href + '/' + $scope.target.id;
     // this is the report object
     $scope.report = {};
 
