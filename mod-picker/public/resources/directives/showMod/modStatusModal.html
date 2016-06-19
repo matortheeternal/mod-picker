@@ -26,7 +26,7 @@
         </p>
 
         <h3 class="section-title">Appeals</h3>
-        <loader data="mod.corrections" content-class="corrections-container" spinner-class="big-spinner">
+        <loader data="mod.corrections" content-class="corrections-container" spinner-class="big-spinner" ng-if="!errors.appeals">
             <table ng-if="mod.corrections.length > 0">
                 <thead>
                 <tr>
@@ -70,7 +70,13 @@
             </span>
         </loader>
 
-        <div class="action-button-container" ng-if="appealStatus">
+        <div class="content-message" ng-if="errors.appeals">
+            There was an error retrieving appeals for this mod.<br>
+            <!--TODO: Render JSON errors here, if available?-->
+            Error {{errors.appeals.status}}: {{errors.appeals.statusText}}
+        </div>
+
+        <div class="action-button-container" ng-if="appealStatus && !errors.appeals">
             <input class="btn action-btn" type="submit" ng-click="startNewAppeal()" value="New Appeal">
         </div>
     </div>

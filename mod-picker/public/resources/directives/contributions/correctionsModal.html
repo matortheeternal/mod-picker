@@ -26,7 +26,7 @@
         </p>
 
         <h3 class="section-title">Corrections</h3>
-        <loader data="target.corrections" content-class="corrections-container" spinner-class="big-spinner">
+        <loader data="target.corrections" content-class="corrections-container" spinner-class="big-spinner" ng-if="!errors.corrections">
             <table ng-if="target.corrections.length > 0">
                 <thead>
                 <tr>
@@ -65,12 +65,18 @@
                 </tr>
                 </tbody>
             </table>
-            <span ng-if="target.corrections.length == 0">
+            <div class="content-message" ng-if="target.corrections.length == 0">
                 There have been no corrections on this contribution.
-            </span>
+            </div>
         </loader>
 
-        <div class="action-button-container" ng-if="canCorrect">
+        <div class="content-message" ng-if="errors.corrections">
+            There was an error retrieving corrections for this contribution.<br>
+            <!--TODO: Render JSON errors here, if available?-->
+            Error {{errors.corrections.status}}: {{errors.corrections.statusText}}
+        </div>
+
+        <div class="action-button-container" ng-if="canCorrect && !errors.corrections">
             <input class="btn action-btn" type="submit" ng-click="startNewCorrection()" value="New Correction">
         </div>
     </div>
