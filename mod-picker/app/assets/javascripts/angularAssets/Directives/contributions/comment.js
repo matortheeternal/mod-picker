@@ -111,9 +111,14 @@ app.controller('commentController', function ($scope, $filter, $timeout, contrib
 
     $scope.hide = function(hidden) {
         contributionService.hide('comments', $scope.comment.id, hidden).then(function (data) {
-            if (data.status == "ok") {
-                $scope.comment.hidden = hidden;
-            }
+            $scope.comment.hidden = hidden;
+        }, function(response) {
+            var approveStr = hidden ? 'hiding' : 'unhiding';
+            var params = {
+                label: 'Error ' + approveStr + ' comment',
+                response: response
+            };
+            $scope.$emit('errorMessage', params);
         });
     };
 

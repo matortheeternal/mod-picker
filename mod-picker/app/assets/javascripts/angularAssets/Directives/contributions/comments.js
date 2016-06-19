@@ -70,23 +70,22 @@ app.controller('commentsController', function ($scope, contributionService) {
         if (comment.editing) {
             var commentId = comment.original.id;
             contributionService.updateContribution("comments", commentId, commentObj).then(function() {
-                $scope.submitMessage = "Comment updated successfully!";
-                $scope.showSuccess = true;
-
+                $scope.$emit('successMessage', 'Comment updated successfully.');
                 // update original comment object and discard copy
                 updateCallback();
                 discardCallback();
             }, function(response) {
-                // error handling
+                var params = {label: 'Error updating Comment', response: response};
+                $scope.$emit('errorMessage', params);
             });
         } else {
             contributionService.submitContribution("comments", commentObj).then(function() {
-                $scope.submitMessage = "Comment submitted successfully!";
-                $scope.showSuccess = true;
+                $scope.$emit('successMessage', 'Comment submitted successfully.');
                 // TODO: push the comment onto the comments array
                 discardCallback();
             }, function(response) {
-                // error handling
+                var params = {label: 'Error submitting Comment', response: response};
+                $scope.$emit('errorMessage', params);
             });
         }
     };
