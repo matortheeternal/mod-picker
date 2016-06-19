@@ -225,8 +225,7 @@ app.controller('modController', function($scope, $q, $stateParams, $timeout, cur
     $scope.saveTags = function(updatedTags) {
         var action = $q.defer();
         tagService.updateModTags($scope.mod, updatedTags).then(function(data) {
-            $scope.submitMessage = "Tags updated successfully.";
-            $scope.showSuccess = true;
+            $scope.$emit('successMessage', 'Tags updated successfully.');
             action.resolve(data);
         }, function(response) {
             var params = {label: 'Error saving mod tags', response: response};
