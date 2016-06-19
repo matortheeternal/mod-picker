@@ -44,7 +44,7 @@ app.service('contributionService', function (backend, $q, userTitleService, page
         backend.retrieve('/' + type + '/' + id + '/corrections').then(function (data) {
             userTitleService.associateTitles(data.corrections);
             service.associateAgreementMarks(data.corrections, data.agreement_marks);
-            action.resolve(data);
+            action.resolve(data.corrections);
         }, function(response) {
             action.reject(response);
         });
