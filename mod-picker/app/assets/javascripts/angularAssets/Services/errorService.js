@@ -9,7 +9,8 @@ app.service('errorService', function ($rootScope, $location) {
 
     this.errorMessage = function (label, errorResponse) {
         return {
-            message: label + ", " + errorResponse.status + ": " + errorResponse.statusText
+            type: "error",
+            text: label + ", " + errorResponse.status + ": " + errorResponse.statusText
         }
     };
 });
