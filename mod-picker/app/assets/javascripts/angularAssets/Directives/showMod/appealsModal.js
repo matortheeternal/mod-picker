@@ -7,11 +7,27 @@ app.directive('appealsModal', function () {
     };
 });
 
-app.controller('appealsModalController', function ($scope, contributionService) {
+app.controller('appealsModalController', function ($scope, contributionService, errorService) {
     // compute agree percentage helper
     $scope.computeAgreePercentage = function(appeal) {
         return (appeal.agree_count / ((appeal.agree_count + appeal.disagree_count) || 1)) * 100;
     };
+
+    // display error messages
+    $scope.$on('modalErrorMessage', function(event, params) {
+        var errorMessage = errorService.errorMessage(params.label, params.response);
+        $scope.$broadcast('modalMessage', errorMessage);
+        // stop event propagation - we handled it
+        event.stopPropagation();
+    });
+
+    // display success message
+    $scope.$on('modalSuccessMessage', function(event, text) {
+        var successMessage = {type: "success", text: text};
+        $scope.$broadcast('modalMessage', successMessage);
+        // stop event propagation - we handled it
+        event.stopPropagation();
+    });
 
     // start a new appeal
     $scope.startNewAppeal = function() {
@@ -123,22 +139,22 @@ app.controller('appealsModalController', function ($scope, contributionService) 
         if ($scope.activeAppeal.editing) {
             var appealId = $scope.activeAppeal.original.id;
             contributionService.updateContribution("corrections", appealId, appealObj).then(function() {
-                $scope.$emit("successMessage", "Appeal updated successfully.");
+                $scope.$emit("modalSuccessMessage", "Appeal updated successfully.");
                 // update original appeal object and discard copy
                 $scope.updateAppeal();
                 $scope.discardAppeal();
             }, function(response) {
                 var params = {label: 'Error updating Appeal', response: response};
-                $scope.$emit('errorMessage', params);
+                $scope.$emit('modalErrorMessage', params);
             });
         } else {
             contributionService.submitContribution("corrections", appealObj).then(function() {
-                $scope.$emit("successMessage", "Appeal submitted successfully.");
+                $scope.$emit("modalSuccessMessage", "Appeal submitted successfully.");
                 // TODO: push the appeal onto the $scope.mod.corrections array
                 $scope.discardAppeal();
             }, function(response) {
                 var params = {label: 'Error submitting Appeal', response: response};
-                $scope.$emit('errorMessage', params);
+                $scope.$emit('modalErrorMessage', params);
             });
         }
     }
