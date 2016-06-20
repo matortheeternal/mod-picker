@@ -71,7 +71,7 @@
 
         <div class="content-container analysis-container">
             <div ng-repeat="master in mod.currentPlugin.masters" ng-if="master.overrides.length > 0">
-                <h3 class="section-title">{{master.filename}}</h3>
+                <h3 class="section-title">{{master.master_plugin.filename}}</h3>
                 <ul class="overrides-list">
                     <li ng-repeat="override in master.overrides">
                         [{{override.sig}}:{{override.fid | hex:8}}]
