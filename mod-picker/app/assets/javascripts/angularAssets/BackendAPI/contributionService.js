@@ -54,8 +54,8 @@ app.service('contributionService', function (backend, $q, userTitleService, page
     this.retrieveHistory = function(type, id) {
         var action = $q.defer();
         backend.retrieve('/' + type + '/' + id + '/history').then(function (data) {
-            userTitleService.associateTitles(data.history);
-            action.resolve(data.history);
+            userTitleService.associateTitles(data);
+            action.resolve(data);
         }, function(response) {
             action.reject(response);
         });
