@@ -220,7 +220,6 @@ class Mod < ActiveRecord::Base
   def update_lazy_counters
     self.asset_files_count = ModAssetFile.where(mod_id: self.id).count
     self.plugins_count = Plugin.where(mod_id: self.id).count
-    self.save!
   end
 
   def create_tags
