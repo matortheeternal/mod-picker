@@ -20,7 +20,7 @@ app.config(['$stateProvider', function($stateProvider) {
     })
 }]);
 
-app.controller('baseController', function($scope, currentUser, games, currentGame, $state) {
+app.controller('baseController', function($scope, $state, currentUser, games, currentGame) {
     $scope.currentUser = currentUser;
     $scope.permissions = currentUser.permissions;
     $scope.currentGame = currentGame;
@@ -29,5 +29,17 @@ app.controller('baseController', function($scope, currentUser, games, currentGam
     //reload when the user object is changed in the settings
     $scope.$on('reloadCurrentUser', function() {
         $state.reload();
+    });
+
+    $scope.$on("$stateChangeError", function(event, toState, toParams, fromState, fromParams, details) {
+        $state.get('base.error').error = {
+            event: event,
+            toState: toState,
+            toParams: toParams,
+            fromState: fromState,
+            fromParams: fromParams,
+            details: details
+        };
+        $state.go('base.error');
     });
 });
