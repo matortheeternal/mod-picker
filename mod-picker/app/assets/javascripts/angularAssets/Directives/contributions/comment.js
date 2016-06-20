@@ -8,12 +8,16 @@ app.directive('comment', function () {
             currentUser: '=',
             index: '=',
             saveCallback: '=',
-            isChild: '=?'
+            isChild: '=?',
+            eventPrefix: '=?'
         }
     };
 });
 
 app.controller('commentController', function ($scope, $filter, $timeout, contributionService) {
+    // errorEvent string
+    $scope.errorEvent = $scope.eventPrefix ? $scope.eventPrefix + 'ErrorMessage' : 'errorMessage';
+
     // this is the report object
     $scope.report = {};
 
@@ -118,7 +122,7 @@ app.controller('commentController', function ($scope, $filter, $timeout, contrib
                 label: 'Error ' + approveStr + ' comment',
                 response: response
             };
-            $scope.$emit('errorMessage', params);
+            $scope.$emit($scope.errorEvent, params);
         });
     };
 
