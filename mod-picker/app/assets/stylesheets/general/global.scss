@@ -11,6 +11,11 @@ body {
   position: relative;
 }
 
+.no-scroll {
+  overflow-y: hidden;
+  position: fixed;
+}
+
 .content {
   padding-bottom: 176px;
 }
