@@ -17,10 +17,10 @@
       'High Hrothgar': "<%= stylesheet_path 'High Hrothgar' %>"
     }
   </script>
-    <link ng-controller="themesController" rel="stylesheet" ng-href="{{currentTheme}}" />
+  <link ng-controller="themesController" rel="stylesheet" ng-href="{{currentTheme}}" />
 </head>
 
-<body ng-cloak>
+<body ng-cloak ng-controller="bodyController" ng-class="{ 'no-scroll' : modalVisible }">
     <%= yield %>
 
     <!-- defered load of scripts, which is way more performant for browsers -->
