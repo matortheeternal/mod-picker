@@ -52,14 +52,17 @@ app.controller('contributionActionsController', function ($scope, $timeout, cont
     };
 
     $scope.toggleShareModal = function(visible) {
+        $scope.$emit('toggleModal', visible);
         $scope.showShareModal = visible;
     };
 
     $scope.toggleReportModal = function(visible) {
+        $scope.$emit('toggleModal', visible);
         $scope.showReportModal = visible;
     };
 
     $scope.toggleCorrectionsModal = function(visible) {
+        $scope.$emit('toggleModal', visible);
         $scope.showCorrectionsModal = visible;
         if (!$scope.target.corrections && !$scope.retrieving.corrections) {
             $scope.retrieveCorrections();
@@ -67,6 +70,7 @@ app.controller('contributionActionsController', function ($scope, $timeout, cont
     };
 
     $scope.toggleHistoryModal = function(visible) {
+        $scope.$emit('toggleModal', visible);
         $scope.showHistoryModal = visible;
         if (!$scope.target.history && !$scope.retrieving.history) {
             $scope.retrieveHistory();

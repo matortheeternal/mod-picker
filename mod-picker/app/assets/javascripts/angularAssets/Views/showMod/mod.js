@@ -211,6 +211,7 @@ app.controller('modController', function($scope, $q, $stateParams, $timeout, cur
     };
 
     $scope.toggleStatusModal = function(visible) {
+        $scope.$emit('toggleModal', visible);
         $scope.statusModal.visible = visible;
         if (visible && !$scope.mod.corrections && !$scope.retrieving.appeals) {
             $scope.retrieveAppeals();

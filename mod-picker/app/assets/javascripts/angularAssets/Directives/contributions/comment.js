@@ -31,6 +31,7 @@ app.controller('commentController', function ($scope, $filter, $timeout, contrib
     };
 
     $scope.toggleReportModal = function(visible) {
+        $scope.$emit('toggleModal', visible);
         $scope.showReportModal = visible;
     };
 
