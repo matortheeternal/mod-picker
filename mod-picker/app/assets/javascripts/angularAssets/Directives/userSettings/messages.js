@@ -4,6 +4,7 @@ app.directive('messages', function () {
         templateUrl: '/resources/directives/userSettings/messages.html',
         controller: 'messagesController',
         scope: {
+            event: '@',
             errorDecay: '=?',
             successDecay: '=?'
         }
@@ -12,14 +13,15 @@ app.directive('messages', function () {
 
 //TODO: empty controller is probably unnecessary :P
 app.controller('messagesController', function ($scope, $timeout) {
-    // default decay values
+    // default values
+    $scope.event = $scope.event || 'message';
     $scope.errorDecay = $scope.errorDecay || 15000;
     $scope.successDecay = $scope.successDecay || 7500;
 
     // the messages array
     $scope.messages = [];
 
-    $scope.$on('message', function(event, message) {
+    $scope.$on($scope.event, function(event, message) {
         var decay = message.type === 'error' ? $scope.errorDecay : $scope.successDecay;
         $scope.messages.push(message);
         $timeout(function() {
