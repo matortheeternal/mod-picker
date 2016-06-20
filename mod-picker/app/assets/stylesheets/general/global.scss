@@ -168,13 +168,11 @@ h1 {
 
 h2 {
   color: $h2_color;
-  padding: 0;
-  margin: 0;
+  padding: 0 0 4px;
+  margin: 0 0 18px;
   font-size: 24px;
   font-weight: 300;
   border-bottom: 1px solid $border_color;
-  padding-bottom: 4px;
-  margin-bottom: 18px;
 }
 
 h3 {
