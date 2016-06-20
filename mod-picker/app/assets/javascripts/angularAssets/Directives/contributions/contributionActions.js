@@ -12,7 +12,8 @@ app.directive('contributionActions', function () {
             approveable: '=?', // default true
             agreeable: '=?',   // default undefined
             edit: '=?',        // default undefined
-            hasHistory: '=?'   // default undefined
+            hasHistory: '=?',  // default undefined
+            eventPrefix: '=?'  // default ''
         }
     };
 });
@@ -22,6 +23,9 @@ app.controller('contributionActionsController', function ($scope, $timeout, cont
     $scope.correctable = angular.isDefined($scope.correctable) ? $scope.correctable : true;
     // approveable should have a default value of true
     $scope.approveable = angular.isDefined($scope.approveable) ? $scope.approveable : true;
+
+    // errorEvent string
+    $scope.errorEvent = $scope.eventPrefix ? $scope.eventPrefix + 'ErrorMessage' : 'errorMessage';
 
     // we get the model for the route and label
     $scope.model = contributionFactory.getModel($scope.modelName);
@@ -115,7 +119,7 @@ app.controller('contributionActionsController', function ($scope, $timeout, cont
                     label: 'Error removing ' + helpfulStr + ' mark',
                     response: response
                 };
-                $scope.$emit('errorMessage', params);
+                $scope.$emit($scope.errorEvent, params);
             });
         } else {
             contributionService.helpfulMark($scope.model.route, $scope.target.id, helpful).then(function() {
@@ -129,7 +133,7 @@ app.controller('contributionActionsController', function ($scope, $timeout, cont
                     label: 'Error creating ' + helpfulStr + ' mark',
                     response: response
                 };
-                $scope.$emit('errorMessage', params);
+                $scope.$emit($scope.errorEvent, params);
             });
         }
     };
@@ -154,7 +158,7 @@ app.controller('contributionActionsController', function ($scope, $timeout, cont
                     label: 'Error removing ' + agreeStr + ' mark',
                     response: response
                 };
-                $scope.$emit('errorMessage', params);
+                $scope.$emit($scope.errorEvent, params);
             });
         } else {
             contributionService.agreementMark($scope.model.route, $scope.target.id, agree).then(function() {
@@ -168,7 +172,7 @@ app.controller('contributionActionsController', function ($scope, $timeout, cont
                     label: 'Error creating ' + agreeStr + ' mark',
                     response: response
                 };
-                $scope.$emit('errorMessage', params);
+                $scope.$emit($scope.errorEvent, params);
             });
         }
     };
@@ -182,7 +186,7 @@ app.controller('contributionActionsController', function ($scope, $timeout, cont
                 label: 'Error ' + approveStr + ' contribution',
                 response: response
             };
-            $scope.$emit('errorMessage', params);
+            $scope.$emit($scope.errorEvent, params);
         });
     };
 
@@ -195,7 +199,7 @@ app.controller('contributionActionsController', function ($scope, $timeout, cont
                 label: 'Error ' + approveStr + ' contribution',
                 response: response
             };
-            $scope.$emit('errorMessage', params);
+            $scope.$emit($scope.errorEvent, params);
         });
     };
 
