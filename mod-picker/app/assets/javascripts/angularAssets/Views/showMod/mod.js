@@ -5,11 +5,18 @@ app.config(['$stateProvider', function($stateProvider) {
         url: '/mod/:modId',
         redirectTo: 'base.mod.Reviews',
         resolve: {
-            modObject: function(modService, $stateParams) {
-                return modService.retrieveMod($stateParams.modId);
-            },
-            modId: function($stateParams) {
-                return $stateParams.modId;
+            modObject: function(modService, $stateParams, $q) {
+                var mod = $q.defer();
+                modService.retrieveMod($stateParams.modId).then(function(data) {
+                    mod.resolve(data);
+                }, function(response) {
+                    var errorObj = {
+                        text: 'Error retrieving mod',
+                        response: response
+                    };
+                    mod.reject(errorObj);
+                });
+                return mod.promise;
             }
         }
     }).state('base.mod.Reviews', {
