@@ -165,7 +165,7 @@ def seed_categories
 
   catUtilities = Category.create(
       name: "Utilities",
-      description: "These also aren’t necessarily mods, but they can be.  These are tools to aid in the creation and management of mods and mod-related assets."
+      description: "These also aren't necessarily mods, but they can be.  These are tools to aid in the creation and management of mods and mod-related assets."
   )
   catResources = Category.create(
       name: "Resources",
@@ -181,7 +181,7 @@ def seed_categories
   )
   catCharacter = Category.create(
       name: "Character Appearance",
-      description: "Mods that modify the appearance of non-player characters in the game or give you additional options for customizing the player character’s appearance."
+      description: "Mods that modify the appearance of non-player characters in the game or give you additional options for customizing the player character's appearance."
   )
   catNewChars = Category.create(
       name: "New Characters",
@@ -233,7 +233,7 @@ def seed_categories
   Category.create(
       name: "Resources - Frameworks",
       parent_id: catResources.id,
-      description: "Frameworks offer functionality for other mods or tools to build off of.  Frameworks often don’t change much in the game on their own, but enable other mods to do so.  Some frameworks do change aspects of the game."
+      description: "Frameworks offer functionality for other mods or tools to build off of.  Frameworks often don't change much in the game on their own, but enable other mods to do so.  Some frameworks do change aspects of the game."
   )
   Category.create(
       name: "Resources - Guides & Tutorials",
@@ -297,7 +297,7 @@ def seed_categories
   catImmersionAndRolePlaying = Category.create(
       name: "Gameplay - Immersion & Role-playing",
       parent_id: catGameplay.id,
-      description: "Mods which exist specifically to increase the player’s immersion in the game world, or to aid in role-playing."
+      description: "Mods which exist specifically to increase the player's immersion in the game world, or to aid in role-playing."
   )
   catMagic = Category.create(
       name: "Gameplay - Magic",
@@ -351,7 +351,7 @@ def seed_categories
   Category.create(
       name: "New Characters - Neutral",
       parent_id: catNewChars.id,
-      description: "If most of the NPCs added by the mod don’t have a disposition to help or hurt the player, put it here."
+      description: "If most of the NPCs added by the mod don't have a disposition to help or hurt the player, put it here."
   )
   Category.create(
       name: "New Characters - Enemies",
@@ -603,7 +603,7 @@ def seed_categories
   ReviewSection.create(
       category_id: catGameplay.id,
       name: "Functionality",
-      prompt: "Does the mod provide valuable or unique functionality?  Does it do what it’s supposed to do, and does it do it well?",
+      prompt: "Does the mod provide valuable or unique functionality?  Does it do what it's supposed to do, and does it do it well?",
       default: true
   )
   ReviewSection.create(
@@ -699,7 +699,7 @@ def seed_categories
   ReviewSection.create(
       category_id: catNewPlayerHomes.id,
       name: "Features",
-      prompt: "Does the player home fit your character’s needs?  Are you happy with what it offers?",
+      prompt: "Does the player home fit your character's needs?  Are you happy with what it offers?",
       default: true
   )
 ### New Characters ###
@@ -766,13 +766,13 @@ def seed_categories
   ReviewSection.create(
       category_id: catUtilities.id,
       name: "Functionality",
-      prompt: "Does the utility provide valuable or unique functionality?  Does it do what it’s supposed to do, and does it do it well?",
+      prompt: "Does the utility provide valuable or unique functionality?  Does it do what it's supposed to do, and does it do it well?",
       default: true
   )
   ReviewSection.create(
       category_id: catUtilities.id,
       name: "Usability",
-      prompt: "Is the utility intuitive and easy to use?  Are the learning resources sufficient?  Does using the utility get easier once you’ve learned the basics?",
+      prompt: "Is the utility intuitive and easy to use?  Are the learning resources sufficient?  Does using the utility get easier once you've learned the basics?",
       default: true
   )
 
@@ -867,7 +867,7 @@ def seed_quotes
   )
   Quote.create(
       game_id: gameSkyrim.id,
-      text: "You’ll make a fine rug, cat!",
+      text: "You'll make a fine rug, cat!",
       label: "Random"
   )
   Quote.create(
@@ -907,7 +907,7 @@ def seed_quotes
   )
   Quote.create(
       game_id: gameSkyrim.id,
-      text: "I’ll carve you into pieces!",
+      text: "I'll carve you into pieces!",
       label: "Random"
   )
   Quote.create(
