@@ -1,8 +1,24 @@
 app.config(['$stateProvider', function($stateProvider) {
-    $stateProvider.state('landing', {
-        templateUrl: '/resources/partials/landing.html',
+    $stateProvider.state('base.landing', {
+        templateUrl: '/resources/partials/landingPage/landing.html',
         controller: 'landingController',
-        url: '/'
+        url: '/landing',
+        redirectTo: 'base.landing.Reviews'
+    }).state('base.landing.Reviews', {
+        templateUrl: '/resources/partials/landingPage/reviews.html',
+        url: '/reviews'
+    }).state('base.landing.Compatibility Notes', {
+        templateUrl: '/resources/partials/landingPage/compatibilityNotes.html',
+        url: '/compatibility'
+    }).state('base.landing.Install Order Notes', {
+        templateUrl: '/resources/partials/landingPage/installOrderNotes.html',
+        url: '/install-order'
+    }).state('base.landing.Load Order Notes', {
+        templateUrl: '/resources/partials/landingPage/loadOrderNotes.html',
+        url: '/load-order'
+    }).state('base.landing.Corrections', {
+        templateUrl: '/resources/partials/landingPage/corrections.html',
+        url: '/corrections'
     });
 }]);
 
