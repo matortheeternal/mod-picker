@@ -37,7 +37,7 @@
 	  .recent-title {
 			font-size: 14px;
 			font-weight: 500;
-			color: inherit;
+			color: $dark_action_color;
 	  }
 
 	  &:hover {
@@ -69,24 +69,25 @@
 	}
 
 	.news-box {
-    padding-left: 20px;
-    font-size: 14px;
-    margin: 20px 20px 0 20px;
-    border-bottom: 1px solid $border_color;
+        padding-left: 20px;
+        font-size: 14px;
+        margin: 20px 20px 0 20px;
+        border-bottom: 1px solid $border_color;
 
-  	.section-title {
-  		font-size: 20px;
-      display: inline;
-      margin-left: -10px;
-  	}
+      	.section-title {
+      		font-size: 23px;
+          display: inline;
+          margin-left: -10px;
+          color: $dark_action_color;
+      	}
 
-    .news {
-      display: inline-block;
-    }
+        .news {
+          display: inline-block;
+        }
 
-    .article-details {
-      font-size: 12px;
-    }
+        .article-details {
+          font-size: 12px;
+        }
 	}
 
 
