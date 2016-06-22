@@ -39,8 +39,7 @@ app.service('quoteService', function (backend, $q) {
             quotes: [
                 "I'm fairly certain you've wandered into the wrong building, friend.",
                 "Move along citizen!",
-                "Citizen, you must be lost, the tavern is down the road a piece.",
-                "Ha!  Found you!"
+                "Citizen, you must be lost, the tavern is down the road a piece."
             ],
             class: "penitus-quote"
         }, {
