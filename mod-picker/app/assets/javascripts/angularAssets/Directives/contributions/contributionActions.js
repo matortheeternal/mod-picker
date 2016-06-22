@@ -1,4 +1,4 @@
-app.directive('contributionActions', function () {
+app.directive('contributionActions', function() {
     return {
         restrict: 'E',
         templateUrl: '/resources/directives/contributions/contributionActions.html',
@@ -6,7 +6,6 @@ app.directive('contributionActions', function () {
         scope: {
             target: '=',
             index: '=',
-            currentUser: '=',
             modelName: '@',
             correctable: '=?', // default true
             approveable: '=?', // default true
@@ -17,7 +16,21 @@ app.directive('contributionActions', function () {
     };
 });
 
-app.controller('contributionActionsController', function ($scope, $timeout, contributionService, contributionFactory, userTitleService) {
+app.controller('contributionActionsController', function($scope, $timeout, contributionService, contributionFactory, userTitleService) {
+    // permissions helper variables
+    var user = $scope.$parent.$parent.currentUser;
+    var rep = user.reputation.overall;
+    var isAdmin = user && user.role === 'admin';
+    var isModerator = user && user.role === 'moderator';
+    var isSubmitter = user && user.id === $scope.target.submitted_by;
+    // set up permissions
+    $scope.canReport = user || false;
+    $scope.canAgree = $scope.agreeable && $scope.isOpen && ((rep > 40) || isAdmin || isModerator);
+    $scope.canCorrect = (rep > 40) || isAdmin || isModerator;
+    $scope.canEdit = isAdmin || isModerator || isSubmitter;
+    $scope.canApprove = $scope.approveable && (isAdmin || isModerator);
+    $scope.canHide = isAdmin || isModerator;
+
     // correctable should have a default value of true
     $scope.correctable = angular.isDefined($scope.correctable) ? $scope.correctable : true;
     // approveable should have a default value of true
@@ -102,14 +115,14 @@ app.controller('contributionActionsController', function ($scope, $timeout, cont
 
     $scope.helpfulMark = function(helpful) {
         if ($scope.target.helpful == helpful) {
-            contributionService.helpfulMark($scope.model.route, $scope.target.id).then(function (data) {
+            contributionService.helpfulMark($scope.model.route, $scope.target.id).then(function(data) {
                 if (data.status == "ok") {
                     delete $scope.target.helpful;
                     $scope.updateHelpfulCounter(helpful, false);
                 }
             });
         } else {
-            contributionService.helpfulMark($scope.model.route, $scope.target.id, helpful).then(function (data) {
+            contributionService.helpfulMark($scope.model.route, $scope.target.id, helpful).then(function(data) {
                 if (data.status == "ok") {
                     if ($scope.target.helpful == !helpful) {
                         $scope.updateHelpfulCounter(!helpful, false);
@@ -132,14 +145,14 @@ app.controller('contributionActionsController', function ($scope, $timeout, cont
 
     $scope.agreementMark = function(agree) {
         if ($scope.target.agree == agree) {
-            contributionService.agreementMark($scope.model.route, $scope.target.id).then(function (data) {
+            contributionService.agreementMark($scope.model.route, $scope.target.id).then(function(data) {
                 if (data.status == "ok") {
                     delete $scope.target.agree;
                     $scope.updateAgreeCounter(agree, false);
                 }
             });
         } else {
-            contributionService.agreementMark($scope.model.route, $scope.target.id, agree).then(function (data) {
+            contributionService.agreementMark($scope.model.route, $scope.target.id, agree).then(function(data) {
                 if (data.status == "ok") {
                     if ($scope.target.agree == !agree) {
                         $scope.updateAgreeCounter(!agree, false);
@@ -152,7 +165,7 @@ app.controller('contributionActionsController', function ($scope, $timeout, cont
     };
 
     $scope.approve = function(approved) {
-        contributionService.approve($scope.model.route, $scope.target.id, approved).then(function (data) {
+        contributionService.approve($scope.model.route, $scope.target.id, approved).then(function(data) {
             if (data.status == "ok") {
                 $scope.target.approved = approved;
             }
@@ -160,7 +173,7 @@ app.controller('contributionActionsController', function ($scope, $timeout, cont
     };
 
     $scope.hide = function(hidden) {
-        contributionService.hide($scope.model.route, $scope.target.id, hidden).then(function (data) {
+        contributionService.hide($scope.model.route, $scope.target.id, hidden).then(function(data) {
             if (data.status == "ok") {
                 $scope.target.hidden = hidden;
             }
@@ -176,23 +189,4 @@ app.controller('contributionActionsController', function ($scope, $timeout, cont
         }, 100);
     };
 
-    $scope.setPermissions = function() {
-        // permissions helper variables
-        var user = $scope.currentUser;
-        var rep = user.reputation.overall;
-        var isAdmin = user && user.role === 'admin';
-        var isModerator = user && user.role === 'moderator';
-        var isSubmitter = user && user.id === $scope.target.submitted_by;
-        // set up permissions
-        $scope.canReport = user || false;
-        $scope.canAgree = $scope.agreeable && $scope.isOpen && ((rep > 40) || isAdmin || isModerator);
-        $scope.canCorrect = (rep > 40) || isAdmin || isModerator;
-        $scope.canEdit = isAdmin || isModerator || isSubmitter;
-        $scope.canApprove = $scope.approveable && (isAdmin || isModerator);
-        $scope.canHide = isAdmin || isModerator;
-    };
-
-    // watch user so if we get the user object after rendering actions
-    // we can re-render them correctly per the user's permissions
-    $scope.$watch('currentUser', $scope.setPermissions, true);
 });
