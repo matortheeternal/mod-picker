@@ -34,7 +34,7 @@ app.controller('searchInputController', function($scope, $location) {
     };
 });
 
-app.controller('landingController', function($scope, $q, landingService, currentUser) {
+app.controller('landingController', function($scope, $q, landingService, userService) {
     $scope.currentUser = currentUser;
 
     $scope.tabs = [
@@ -47,6 +47,12 @@ app.controller('landingController', function($scope, $q, landingService, current
 
     landingService.retrieveLanding().then(function(data) {
         $scope.landingData = data;
+
+        $scope.landingData.articles.forEach(function(article) {
+            userService.retrieveUser(article.submitted_by).then(function(data) {
+                article.submitted_by = data.username;
+            });
+        })
     });
 
     $scope.wordCount = function(string) {
