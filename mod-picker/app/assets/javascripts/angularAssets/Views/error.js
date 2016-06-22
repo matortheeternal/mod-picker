@@ -19,6 +19,19 @@ app.controller('errorController', function($scope, $state, errorObj, quoteServic
         $scope.stateUrl = errorObj.stateUrl;
         $scope.stateName = errorObj.stateName;
         $scope.status = errorObj.response.status;
+        switch($scope.status) {
+            case 401: case 403: case 550:
+                $scope.statusType = "unauthorized";
+                break;
+            case 404: case 410:
+                $scope.statusType = "not found";
+                break;
+            case 503:
+                $scope.statusType = "unavailable";
+                break;
+            case 500: default:
+                $scope.statusType = "error"
+        }
     }
     // if we don't have an error to display, redirect to base state
     else {
