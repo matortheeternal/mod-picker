@@ -14,7 +14,7 @@ app.config(['$stateProvider', function($stateProvider) {
                         text: 'Error retrieving mod.',
                         response: response,
                         stateName: "base.mod",
-                        stateUrl: "#/mod/" + $stateParams.modId
+                        stateUrl: window.location.hash
                     };
                     mod.reject(errorObj);
                 });
