@@ -74,6 +74,7 @@
     width: 100%;
     font-family: 'Arial', sans-serif;
     font-size: 12px;
+    border: 1px solid $border_color;
 
     th {
       margin: 0;
@@ -105,10 +106,9 @@
 
     .actions-header {
       text-align: center;
-      min-width: 60px;
       cursor: default;
       border: 0;
-      padding: 5px 0;
+      padding: 5px;
     }
 
     td {
@@ -150,20 +150,26 @@
       margin: 4px;
     }
 
-    thead tr {
-      background-color: $primary_background;
-      border-bottom: 1px solid $border_color;
-      border-top: 1px solid $border_color;
+    thead {
+        border: 1px solid $border_color;
+        tr {
+          background-color: $primary_background;
+          border-bottom: 1px solid $border_color;
+          border-top: 1px solid $border_color;
+        }
+
     }
 
-    tbody tr:nth-child(odd) {
-      background-color: $secondary_background;
+    tbody tr {
+      height: 45px;
       border-bottom: 1px solid $border_color;
-    }
 
-    tbody tr:nth-child(even) {
-      background-color: $primary_background;
-      border-bottom: 1px solid $border_color;
+      &:nth-child(odd) {
+          background-color: $secondary_background;
+      }
+      &:nth-child(even) {
+          background-color: $primary_background;
+      }
     }
   }
 }
