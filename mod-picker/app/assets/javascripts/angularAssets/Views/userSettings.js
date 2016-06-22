@@ -2,78 +2,57 @@
  * Created by Sirius on 3/9/2016.
  */
 app.config(['$stateProvider', function ($stateProvider) {
-
-    $stateProvider.state('settings', {
+    $stateProvider.state('base.settings', {
             templateUrl: '/resources/partials/userSettings/userSettings.html',
             controller: 'userSettingsController',
-            url: '/settings'
-        }
-    );
+            url: '/settings',
+            redirectTo: 'base.settings.Profile',
+            resolve: {
+                user: function(userService, currentUser) {
+                    return userService.retrieveUser(currentUser.id);
+                }
+            }
+        }).state('base.settings.Profile', {
+            templateUrl: '/resources/partials/userSettings/profile.html',
+            controller: 'userSettingsProfileController',
+            url: '/profile',
+            resolve: {
+                titleQuote: function(quoteService, currentUser, $q) {
+                    var output = $q.defer();
+                    var label = currentUser.permissions.canChangeTitle ? "High Reputation" : "Low Reputation";
+                    quoteService.getRandomQuote(label).then(function(quote) {
+                        quote.text = quote.text.replace(/Talos/g, currentUser.username.capitalize());
+                        output.resolve(quote);
+                    });
+                    return output.promise;
+                }
+            }
+        }).state('base.settings.Account', {
+            templateUrl: '/resources/partials/userSettings/account.html',
+            url: '/account'
+        }).state('base.settings.Mod Lists', {
+            templateUrl: '/resources/partials/userSettings/modlists.html',
+            url: '/mod-lists'
+        }).state('base.settings.Authored Mods', {
+            templateUrl: '/resources/partials/userSettings/authoredMods.html',
+            url: '/authored-mods'
+        });
 }]);
 
-app.controller('userSettingsController', function ($scope, $q, userSettingsService, userService, quoteService, userTitleService, fileUtils, themesService) {
+app.controller('userSettingsController', function ($scope, $q, user, currentUser, userSettingsService, fileUtils, themesService) {
+    $scope.userSettings = currentUser.settings;
+    $scope.user = user;
+    $scope.avatar = {
+        src: $scope.user.avatar
+    };
+    $scope.permissions = currentUser.permissions;
 
-    //TODO: put this into the Routing logic
     $scope.tabs = [
-        { name: 'Profile', url: '/resources/partials/userSettings/profile.html'},
-        { name: 'Account', url: '/resources/partials/userSettings/account.html'},
-        { name: 'Mod Lists', url: '/resources/partials/userSettings/modlists.html'},
-        { name: 'Authored Mods', url: '/resources/partials/userSettings/authoredMods.html'}
+        {name: 'Profile'},
+        {name: 'Account'},
+        {name: 'Mod Lists'},
+        {name: 'Authored Mods'},
     ];
-
-    $scope.currentTab = $scope.tabs[0];
-
-    //TODO: put this into a service
-    // A service which calls other services and sets scope variables?
-    // seems odd to me.  -Mator
-    userSettingsService.retrieveUserSettings().then(function (userSettings) {
-        $scope.userSettings = userSettings;
-        //Don't trust the server! (actually, this is just to make sure that caching usersettings doesn't screws us over)
-        //this obviously belongs into a service, do note that todo above this
-        $scope.userSettings.theme = themesService.getTheme();
-        //TODO: I feel like this could be put inside the retrieveUserSettings() function
-        userService.retrieveUser(userSettings.user_id).then(function (user) {
-            $scope.user = user;
-            $scope.avatar = {
-                src: $scope.user.avatar
-            };
-
-            // actions the user can or cannot perform
-            var rep = $scope.user.reputation.overall;
-            $scope.canChangeAvatar = (rep >= 10) || ($scope.user.role === 'admin');
-            $scope.canChangeTitle = (rep >= 1280) || ($scope.user.role === 'admin');
-
-            //splitting the modlists into collections and non collections
-            //sorry taffy, this logic should be in a service right? -Sirius
-            modlists = $scope.user.mod_lists;
-            $scope.lists = [];
-            $scope.collections = [];
-            modlists.forEach(function (modlist) {
-                if (modlist.is_collection) {
-                    $scope.collections.push(modlist);
-                }
-                else {
-                    $scope.lists.push(modlist);
-                }
-            });
-
-            // get user title if not custom
-            if (!$scope.user.title) {
-                userTitleService.retrieveUserTitles().then(function (titles) {
-                    var gameTitles = userTitleService.getSortedGameTitles(titles);
-                    $scope.user.title = userTitleService.getUserTitle(gameTitles, rep);
-                });
-            }
-
-            // get random quote for user title
-            quoteService.retrieveQuotes().then(function (quotes) {
-                var label = $scope.canChangeTitle ? "High Reputation" : "Low Reputation";
-                $scope.titleQuote = quoteService.getRandomQuote(quotes, label);
-                $scope.titleQuote.text = $scope.titleQuote.text.replace(/Talos/g, $scope.user.username.capitalize());
-                $scope.refresh = true;
-            });
-        });
-    });
 
     /* avatar */
     $scope.browseAvatar = function() {
@@ -130,8 +109,8 @@ app.controller('userSettingsController', function ($scope, $q, userSettingsServi
     //TODO: I think we should put the modlist actions inside somewhere reusable (directive)
     /* mod list actions */
     $scope.editModList = function(modlist) {
-        console.log('Edit Mod List: "'+modlist.name+'"');
-        window.location = '#/modlists/' + modlist.id;
+        //TODO: I'm not sure if this state.go is correct, the param might be off
+        $state.go(base.modlist, {modlistId: modlist.id})
     };
 
     $scope.appendModList = function(data) {
@@ -204,7 +183,7 @@ app.controller('userSettingsController', function ($scope, $q, userSettingsServi
                 $scope.errors.concat(data.errors);
             } else {
                 $scope.showSuccess = $scope.errors.length == 0;
-                themesService.changeTheme($scope.userSettings.theme);
+                $scope.updateTheme();
                 $scope.$emit('reloadCurrentUser', {});
             }
         });
@@ -217,4 +196,12 @@ app.controller('userSettingsController', function ($scope, $q, userSettingsServi
             });
         }
     };
+
+    $scope.updateTheme = function() {
+        themesService.changeTheme($scope.userSettings.theme);
+    }
+});
+
+app.controller('userSettingsProfileController', function ($scope, titleQuote) {
+    $scope.titleQuote = titleQuote;
 });

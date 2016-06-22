@@ -3,7 +3,7 @@ app.directive('pluginMetadata', function () {
         restrict: 'E',
         templateUrl: '/resources/directives/pluginMetadata.html',
         scope: {
-        	plugin: '=',
+            plugin: '=',
             showRecordGroups: '=?'
         }
     }

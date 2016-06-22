@@ -1,7 +1,7 @@
 
 app.config(['$stateProvider', function ($stateProvider) {
-    $stateProvider.state('compatibility_notes', {
-            templateUrl: '/resources/partials/compatibility_notes.html',
+    $stateProvider.state('base.compatibility_notes', {
+            templateUrl: '/resources/partials/browse/compatibility_notes.html',
             url: '/compatibility_notes',
             controller: 'cnotesController'
         }

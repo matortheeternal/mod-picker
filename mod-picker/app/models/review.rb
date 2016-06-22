@@ -1,5 +1,5 @@
 class Review < ActiveRecord::Base
-  include Filterable, RecordEnhancements
+  include Filterable, Sortable, RecordEnhancements
 
   # GENERAL SCOPES
   scope :visible, -> { where(hidden: false, approved: true) }
@@ -14,7 +14,8 @@ class Review < ActiveRecord::Base
   scope :overall_rating, -> (low, high) { where(overall_rating: low..high) }
 
   belongs_to :game, :inverse_of => 'reviews'
-  belongs_to :user, :foreign_key => 'submitted_by', :inverse_of => 'reviews'
+  belongs_to :submitter, :class_name => 'User', :foreign_key => 'submitted_by', :inverse_of => 'reviews'
+  belongs_to :editor, :class_name => 'User', :foreign_key => 'edited_by'
   belongs_to :mod, :inverse_of => 'reviews'
 
   has_many :review_ratings, :inverse_of => 'review', :dependent => :destroy
@@ -23,6 +24,8 @@ class Review < ActiveRecord::Base
   has_one :base_report, :as => 'reportable'
 
   accepts_nested_attributes_for :review_ratings
+
+  self.per_page = 25
 
   # Validations
   validates :mod_id, :text_body, presence: true
@@ -64,6 +67,27 @@ class Review < ActiveRecord::Base
     self.overall_rating = (total.to_f / count) if count > 0
   end
 
+  def compute_reputation
+    # TODO: We could base this off of the reputation of the people who marked the review helpful/not helpful, but we aren't doing that yet
+    user_rep = self.submitter.reputation.overall
+    helpfulness = (self.helpful_count - self.not_helpful_count)
+    if user_rep < 0
+      self.reputation = user_rep + helpfulness
+    else
+      user_rep_factor = 2 / (1 + Math::exp(-0.0075 * (user_rep - 640)))
+      if self.helpful_count < self.not_helpful_count
+        self.reputation = (1 - user_rep_factor / 2) * helpfulness
+      else
+        self.reputation = (1 + user_rep_factor) * helpfulness
+      end
+    end
+  end
+
+  def recompute_helpful_counts
+    self.helpful_count = HelpfulMark.where(helpfulable_id: self.id, helpfulable_type: "Review", helpful: true).count
+    self.not_helpful_count = HelpfulMark.where(helpfulable_id: self.id, helpfulable_type: "Review", helpful: false).count
+  end
+
   def as_json(options={})
     if JsonHelpers.json_options_empty(options)
       default_options = {
@@ -71,12 +95,15 @@ class Review < ActiveRecord::Base
               :review_ratings => {
                   :except => [:review_id]
               },
-              :user => {
+              :submitter => {
                   :only => [:id, :username, :role, :title],
                   :include => {
                       :reputation => {:only => [:overall]}
                   },
                   :methods => :avatar
+              },
+              :editor => {
+                  :only => [:id, :username, :role]
               }
           }
       }
@@ -84,11 +111,6 @@ class Review < ActiveRecord::Base
     else
       super(options)
     end
-  end
-
-  def recompute_helpful_counts
-    self.helpful_count = HelpfulMark.where(helpfulable_id: self.id, helpfulable_type: "Review", helpful: true).count
-    self.not_helpful_count = HelpfulMark.where(helpfulable_id: self.id, helpfulable_type: "Review", helpful: false).count
   end
 
   private
@@ -108,13 +130,13 @@ class Review < ActiveRecord::Base
         self.mod.compute_reputation
       end
       self.mod.save
-      self.user.update_counter(:reviews_count, 1)
+      self.submitter.update_counter(:reviews_count, 1)
     end
 
     def decrement_counters
       self.mod.reviews_count -= 1
       self.mod.compute_reputation
       self.mod.save
-      self.user.update_counter(:reviews_count, -1)
+      self.submitter.update_counter(:reviews_count, -1)
     end
 end

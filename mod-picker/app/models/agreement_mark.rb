@@ -1,7 +1,7 @@
 class AgreementMark < ActiveRecord::Base
   self.primary_keys = :correction_id, :submitted_by
 
-  belongs_to :user, :foreign_key => 'submitted_by', :inverse_of => 'agreement_marks'
+  belongs_to :submitter, :class_name => 'User', :foreign_key => 'submitted_by', :inverse_of => 'agreement_marks'
   belongs_to :correction, :inverse_of => 'agreement_marks'
 
   # Validations
@@ -14,7 +14,7 @@ class AgreementMark < ActiveRecord::Base
 
   private
     def decrement_counters
-      self.user.update_counter(:agreement_marks_count, -1)
+      self.submitter.update_counter(:agreement_marks_count, -1)
       if self.agree
         self.correction.update_counter(:agree_count, -1)
       else
@@ -23,7 +23,7 @@ class AgreementMark < ActiveRecord::Base
     end
 
     def increment_counters
-      self.user.update_counter(:agreement_marks_count, 1)
+      self.submitter.update_counter(:agreement_marks_count, 1)
       if self.agree
         self.correction.update_counter(:agree_count, 1)
       else

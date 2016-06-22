@@ -1,0 +1,15 @@
+<div class="contribution-container">
+    <div class="content-title">
+        <span ng-if="correction.mod_status">
+            Change Status to <span class="capitalize">{{correction.mod_status}}</span>
+        </span>
+        <span ng-if="!correction.mod_status">
+            {{correction.title}}
+        </span>
+    </div>
+    <user-column user="correction.submitter" ng-if="showUserColumn" class="user-column" index="index"></user-column>
+    <div class="content-column">
+        <contribution-text target="correction"></contribution-text>
+        <contribution-actions target="correction" model-name="Correction" index="index" current-user="currentUser" edit="edit" agreeable="true" approveable="false" correctable="false"></contribution-actions>
+    </div>
+</div>

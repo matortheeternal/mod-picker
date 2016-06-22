@@ -1,6 +1,6 @@
 app.directive('assetTree', function (RecursionHelper) {
     return {
-        retrict: 'E',
+        restrict: 'E',
         templateUrl: '/resources/directives/assetTree.html',
         scope: {
             data: '='

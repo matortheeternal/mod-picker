@@ -25,6 +25,7 @@ Rails.application.config.assets.precompile += [
 'marked.min.js',
 'modpicker.js',
 'angular-animate.min.js',
+'angular-relative-date.min.js',
 'angular-smooth-scroll.min.js',
 'angular.min.1.5.1.js',
 'angular-marked.min.js',

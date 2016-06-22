@@ -1,11 +1,10 @@
-<div>
-    <div class="success-message" ng-if="successBool" sticky>
-    	{{successMessage}}
+<div ng-show="successBool || errors.length" class="messages" sticky>
+    <div class="success-message" ng-show="successBool">
+        {{successMessage}}
     </div>
-</div>
 
-<div>
-	<div ng-repeat="error in errors" class="error-message" sticky>
-    	{{error.message}}
+	<div ng-repeat="error in errors" class="error-message">
+        {{error.message}}
+        <i class="fa fa-times" aria-hidden="true" ng-click="errors.splice($index, 1)"></i>
     </div>
 </div>

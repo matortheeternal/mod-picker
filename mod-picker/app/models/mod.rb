@@ -2,8 +2,13 @@ class Mod < ActiveRecord::Base
   include Filterable, Sortable, RecordEnhancements
 
   attr_writer :tag_names, :asset_paths, :plugin_dumps, :nexus_info_id, :lover_info_id, :workshop_info_id
-  enum status: [ :good, :dangerous, :obsolete ]
+  enum status: [ :good, :outdated, :unstable ]
 
+  # BOOLEAN SCOPES (excludes content when false)
+  scope :hidden, -> (bool) { where(hidden: false) if (!bool)  }
+  scope :adult, -> (bool) { where(has_adult_content: false) if (!bool) }
+  scope :official, -> (bool) { where(is_official: false) if !bool }
+  scope :utility, -> (bool) { where(is_utility: false) if !bool }
   # GENERAL SCOPES
   scope :search, -> (search) { where("name like ? OR aliases like ?", "%#{search}%", "%#{search}%") }
   scope :game, -> (game_id) {
@@ -12,6 +17,13 @@ class Mod < ActiveRecord::Base
       where(game_id: [game.id, game.parent_game_id])
     else
       where(game_id: game.id)
+    end
+  }
+  scope :is_game, -> (bool) {
+    if bool
+      where("primary_category_id IS NOT NULL")
+    else
+      where("primary_category_id IS NULL")
     end
   }
   scope :exclude, -> (excluded_mod_ids) { where.not(id: excluded_mod_ids) }
@@ -46,9 +58,6 @@ class Mod < ActiveRecord::Base
   }
   scope :released, -> (range) { where(released: parseDate(range[:min])..parseDate(range[:max])) }
   scope :updated, -> (range) { where(updated: parseDate(range[:min])..parseDate(range[:max])) }
-  scope :adult, -> (bool) { where(has_adult_content: bool) }
-  scope :official, -> (bool) { where(is_official: bool) }
-  scope :utility, -> (bool) { where(is_utility: bool) }
   scope :categories, -> (categories) { where("primary_category_id IN (?) OR secondary_category_id IN (?)", categories, categories) }
   scope :tags, -> (array) { joins(:tags).where(:tags => {text: array}) }
   # MOD PICKER SCOPES
@@ -144,7 +153,7 @@ class Mod < ActiveRecord::Base
   scope :subscribers, -> (range) { where(:workshop_infos => { subscribers: range[:min]..range[:max] }) }
 
   belongs_to :game, :inverse_of => 'mods'
-  belongs_to :user, :foreign_key => 'submitted_by', :inverse_of => 'submitted_mods'
+  belongs_to :submitter, :class_name => 'User', :foreign_key => 'submitted_by', :inverse_of => 'submitted_mods'
 
   # categories the mod belongs to
   belongs_to :primary_category, :class_name => 'Category', :foreign_key => 'primary_category_id', :inverse_of => 'primary_mods'
@@ -362,7 +371,7 @@ class Mod < ActiveRecord::Base
           :tags => {
               :except => [:game_id, :hidden, :mod_lists_count],
               :include => {
-                  :user => {
+                  :submitter => {
                       :only => [:id, :username]
                   }
               }
@@ -399,10 +408,10 @@ class Mod < ActiveRecord::Base
 
   private
     def decrement_counters
-      self.user.update_counter(:submitted_mods_count, -1) if self.submitted_by.present?
+      self.submitter.update_counter(:submitted_mods_count, -1) if self.submitted_by.present?
     end
 
     def increment_counters
-      self.user.update_counter(:submitted_mods_count, 1) if self.submitted_by.present?
+      self.submitter.update_counter(:submitted_mods_count, 1) if self.submitted_by.present?
     end
 end

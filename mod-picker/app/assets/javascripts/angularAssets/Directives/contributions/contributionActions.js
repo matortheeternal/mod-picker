@@ -6,28 +6,89 @@ app.directive('contributionActions', function () {
         scope: {
             target: '=',
             index: '=',
-            route: '=',
-            correctable: '=',
-            user: '=',
-            edit: '=?'
+            currentUser: '=',
+            modelName: '@',
+            correctable: '=?', // default true
+            approveable: '=?', // default true
+            agreeable: '=?',   // default undefined
+            edit: '=?',        // default undefined
+            hasHistory: '=?'   // default undefined
         }
     };
 });
 
-app.controller('contributionActionsController', function ($scope, $timeout, contributionService) {
+app.controller('contributionActionsController', function ($scope, $timeout, contributionService, contributionFactory, userTitleService) {
+    // correctable should have a default value of true
+    $scope.correctable = angular.isDefined($scope.correctable) ? $scope.correctable : true;
+    // approveable should have a default value of true
+    $scope.approveable = angular.isDefined($scope.approveable) ? $scope.approveable : true;
+
+    // we get the model for the route and label
+    $scope.model = contributionFactory.getModel($scope.modelName);
+
     // this is a direct link to the contribution to be displayed in the get link modal
-    $scope.shareLink = window.location.href + '/' + $scope.route + '/' + $scope.target.id;
-    // this is a computed label for the contribution (we may want to use a switch in the future)
-    $scope.label = $scope.route.split('_').join(' ').slice(0, -1);
+    $scope.shareLink = window.location.href + '/' + $scope.model.route + '/' + $scope.target.id;
     // this is the report object
     $scope.report = {};
 
-    $scope.toggleLinkModal = function(visible) {
-        $scope.showLinkModal = visible;
+    // retrieving object for tracking what we're retrieving
+    $scope.retrieving = {};
+    // pages object for tracking pagination
+    $scope.pages = {
+        correction_comments: {}
+    };
+    // display errors object for tracking display errors
+    $scope.displayErrors = {};
+
+    // compute whether or not the target is open if it is agreeable
+    if ($scope.agreeable) {
+        $scope.isOpen = $scope.target.status === 'open';
+    }
+
+    // compute agree percentage helper
+    $scope.computeAgreePercentage = function(appeal) {
+        return (appeal.agree_count / ((appeal.agree_count + appeal.disagree_count) || 1)) * 100;
+    };
+
+    $scope.toggleShareModal = function(visible) {
+        $scope.showShareModal = visible;
     };
 
     $scope.toggleReportModal = function(visible) {
         $scope.showReportModal = visible;
+    };
+
+    $scope.toggleCorrectionsModal = function(visible) {
+        $scope.showCorrectionsModal = visible;
+        if (!$scope.target.corrections && !$scope.retrieving.corrections) {
+            $scope.retrieveCorrections();
+        }
+    };
+
+    $scope.toggleHistoryModal = function(visible) {
+        $scope.showHistoryModal = visible;
+        if (!$scope.target.history && !$scope.retrieving.history) {
+            $scope.retrieveHistory();
+        }
+    };
+
+    $scope.retrieveCorrections = function() {
+        $scope.retrieving.corrections = true;
+        contributionService.retrieveCorrections($scope.model.route, $scope.target.id).then(function(data) {
+            contributionService.associateAgreementMarks(data.corrections, data.agreement_marks);
+            // TODO: This will work automatically after the service refactor
+            //userTitleService.associateTitles(data.corrections, $scope.userTitles);
+            $scope.target.corrections = data.corrections;
+        });
+    };
+
+    $scope.retrieveHistory = function() {
+        $scope.retrieving.history = true;
+        contributionService.retrieveHistory($scope.model.route, $scope.target.id).then(function(data) {
+            // TODO: This will work automatically after the service refactor
+            //userTitleService.associateTitles(data, $scope.userTitles);
+            $scope.target.history = data;
+        });
     };
 
     $scope.updateHelpfulCounter = function(helpful, increment) {
@@ -41,14 +102,14 @@ app.controller('contributionActionsController', function ($scope, $timeout, cont
 
     $scope.helpfulMark = function(helpful) {
         if ($scope.target.helpful == helpful) {
-            contributionService.helpfulMark($scope.route, $scope.target.id).then(function (data) {
+            contributionService.helpfulMark($scope.model.route, $scope.target.id).then(function (data) {
                 if (data.status == "ok") {
                     delete $scope.target.helpful;
                     $scope.updateHelpfulCounter(helpful, false);
                 }
             });
         } else {
-            contributionService.helpfulMark($scope.route, $scope.target.id, helpful).then(function (data) {
+            contributionService.helpfulMark($scope.model.route, $scope.target.id, helpful).then(function (data) {
                 if (data.status == "ok") {
                     if ($scope.target.helpful == !helpful) {
                         $scope.updateHelpfulCounter(!helpful, false);
@@ -60,8 +121,38 @@ app.controller('contributionActionsController', function ($scope, $timeout, cont
         }
     };
 
+    $scope.updateAgreeCounter = function(agree, increment) {
+        var value = increment ? 1 : -1;
+        if (agree) {
+            $scope.target.agree_count += value;
+        } else {
+            $scope.target.disagree_count += value;
+        }
+    };
+
+    $scope.agreementMark = function(agree) {
+        if ($scope.target.agree == agree) {
+            contributionService.agreementMark($scope.model.route, $scope.target.id).then(function (data) {
+                if (data.status == "ok") {
+                    delete $scope.target.agree;
+                    $scope.updateAgreeCounter(agree, false);
+                }
+            });
+        } else {
+            contributionService.agreementMark($scope.model.route, $scope.target.id, agree).then(function (data) {
+                if (data.status == "ok") {
+                    if ($scope.target.agree == !agree) {
+                        $scope.updateAgreeCounter(!agree, false);
+                    }
+                    $scope.target.agree = agree;
+                    $scope.updateAgreeCounter(agree, true);
+                }
+            });
+        }
+    };
+
     $scope.approve = function(approved) {
-        contributionService.approve($scope.route, $scope.target.id, approved).then(function (data) {
+        contributionService.approve($scope.model.route, $scope.target.id, approved).then(function (data) {
             if (data.status == "ok") {
                 $scope.target.approved = approved;
             }
@@ -69,7 +160,7 @@ app.controller('contributionActionsController', function ($scope, $timeout, cont
     };
 
     $scope.hide = function(hidden) {
-        contributionService.hide($scope.route, $scope.target.id, hidden).then(function (data) {
+        contributionService.hide($scope.model.route, $scope.target.id, hidden).then(function (data) {
             if (data.status == "ok") {
                 $scope.target.hidden = hidden;
             }
@@ -87,17 +178,21 @@ app.controller('contributionActionsController', function ($scope, $timeout, cont
 
     $scope.setPermissions = function() {
         // permissions helper variables
-        var isAdmin = $scope.user && $scope.user.role === 'admin';
-        var isModerator = $scope.user && $scope.user.role === 'moderator';
-        var isSubmitter = $scope.user && $scope.user.id === $scope.target.user.id;
+        var user = $scope.currentUser;
+        var rep = user.reputation.overall;
+        var isAdmin = user && user.role === 'admin';
+        var isModerator = user && user.role === 'moderator';
+        var isSubmitter = user && user.id === $scope.target.submitted_by;
         // set up permissions
-        $scope.canReport = $scope.user || false;
+        $scope.canReport = user || false;
+        $scope.canAgree = $scope.agreeable && $scope.isOpen && ((rep > 40) || isAdmin || isModerator);
+        $scope.canCorrect = (rep > 40) || isAdmin || isModerator;
         $scope.canEdit = isAdmin || isModerator || isSubmitter;
-        $scope.canApprove = isAdmin || isModerator;
+        $scope.canApprove = $scope.approveable && (isAdmin || isModerator);
         $scope.canHide = isAdmin || isModerator;
     };
 
     // watch user so if we get the user object after rendering actions
     // we can re-render them correctly per the user's permissions
-    $scope.$watch('user', $scope.setPermissions, true);
+    $scope.$watch('currentUser', $scope.setPermissions, true);
 });

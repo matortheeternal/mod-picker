@@ -4,12 +4,12 @@
 
 app.directive('versionBoxes', function () {
     return {
-    	transclude: true,
+        transclude: true,
         restrict: 'E',
         templateUrl: '/resources/directives/versionBoxes.html',
         controller: 'versionBoxesController',
         scope: {
-        	versions: '=',
+            versions: '=',
             selectedVersions: '='
         }
     }

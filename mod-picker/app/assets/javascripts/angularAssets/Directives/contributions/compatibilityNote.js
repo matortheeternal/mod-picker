@@ -4,15 +4,15 @@
 
 app.directive('compatibilityNote', function () {
     return {
-        retrict: 'E',
+        restrict: 'E',
         templateUrl: '/resources/directives/contributions/compatibilityNote.html',
         controller: 'compatibilityNoteController',
         scope: {
-        	note: '=',
+            note: '=',
             index: '=',
-            user: '=',
+            currentUser: '=',
             edit: '=?',
-            showAuthorColumn: '=',
+            showUserColumn: '=',
             modId: '=?'
         }
     }

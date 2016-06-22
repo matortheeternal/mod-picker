@@ -1,8 +1,17 @@
-app.service('contributionService', function (backend, $q) {
+app.service('contributionService', function (backend, $q, userTitleService, pageUtils) {
     this.helpfulMark = function(type, id, helpful) {
         var mark = $q.defer();
         var helpfulObj = helpful == undefined ? {} : {helpful: helpful};
         backend.post('/' + type + '/' + id + '/helpful', helpfulObj).then(function (data) {
+            mark.resolve(data);
+        });
+        return mark.promise;
+    };
+
+    this.agreementMark = function(type, id, agree) {
+        var mark = $q.defer();
+        var agreeObj = agree == undefined ? {} : {agree: agree};
+        backend.post('/' + type + '/' + id + '/agreement', agreeObj).then(function (data) {
             mark.resolve(data);
         });
         return mark.promise;
@@ -35,6 +44,34 @@ app.service('contributionService', function (backend, $q) {
     this.updateContribution = function(type, id, contribution) {
         var action = $q.defer();
         backend.update('/' + type + '/' + id, contribution).then(function (data) {
+            action.resolve(data);
+        });
+        return action.promise;
+    };
+
+    this.retrieveCorrections = function(type, id) {
+        var action = $q.defer();
+        backend.retrieve('/' + type + '/' + id + '/corrections').then(function (data) {
+            action.resolve(data);
+        });
+        return action.promise;
+    };
+
+    this.retrieveComments = function(route, id, options, pageInformation) {
+        var output = $q.defer();
+        backend.post('/' + route + '/' + id + '/comments', options).then(function(response) {
+            userTitleService.associateTitles(response.comments);
+            pageUtils.getPageInformation(response, pageInformation, options.page);
+            output.resolve(response.comments);
+        }, function(response) {
+            output.reject(response);
+        });
+        return output.promise;
+    };
+
+    this.retrieveHistory = function(type, id) {
+        var action = $q.defer();
+        backend.retrieve('/' + type + '/' + id + '/history').then(function (data) {
             action.resolve(data);
         });
         return action.promise;

@@ -1,7 +1,7 @@
 
 app.config(['$stateProvider', function ($stateProvider) {
-    $stateProvider.state('reviews', {
-            templateUrl: '/resources/partials/reviews.html',
+    $stateProvider.state('base.reviews', {
+            templateUrl: '/resources/partials/browse/reviews.html',
             controller: 'reviewsController',
             url: '/reviews'
         }
