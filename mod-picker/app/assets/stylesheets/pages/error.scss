@@ -1,0 +1,40 @@
+.error-page {
+  padding: 70px 300px 70px 100px;
+  background-position: top right;
+  background-repeat: no-repeat;
+  min-height: calc(100vh - 428px);
+
+  .big-quote {
+    font-style: italic;
+    font-size: 26px;
+    font-family: Georgia, serif;
+  }
+
+  .explanation {
+    color: $h4_color;
+    font-size: 18px;
+  }
+
+  h3 {
+    margin-top: 40px;
+    font-size: 20px;
+  }
+
+  p {
+    margin-top: 5px;
+    margin-bottom: 0;
+    font-size: 18px;
+  }
+}
+
+.guard-quote {
+  background-image: image_url("guard.png");
+}
+
+.sheogorath-quote {
+  background-image: image_url("sheogorath.png");
+}
+
+.cheese-quote {
+  background-image: image_url("cheese.png");
+}
