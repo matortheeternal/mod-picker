@@ -11,7 +11,6 @@
 	border: 1px solid $border_color;
 	margin: 10px;
   margin-bottom: 30px;
-  box-shadow: 0px 0px 20px -10px $shadow_color;
 
 	.section-title {
 		font-size: 26px;
@@ -62,7 +61,6 @@
   margin-bottom: 20px;
   border: 1px solid $border_color;
   background-color: $secondary_background;
-  box-shadow: 0px 0px 20px -10px $shadow_color;
 
 	.section-title {
 		font-size: 26px;
@@ -117,6 +115,5 @@
     border: 1px solid $border_color;
     padding: 20px;
     background-color: $secondary_background;
-    box-shadow: 0px 0px 20px -10px $shadow_color;
   }
 }
