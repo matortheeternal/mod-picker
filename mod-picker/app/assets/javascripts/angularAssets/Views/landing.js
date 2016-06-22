@@ -34,20 +34,16 @@ app.controller('searchInputController', function($scope, $location) {
     };
 });
 
-app.controller('landingController', function($scope, $q, landingService, reviewSectionService, userTitleService) {
-    // initialize local variables
-    $scope.userTitles = [];
+app.controller('landingController', function($scope, $q, landingService, currentUser) {
+    $scope.currentUser = currentUser;
 
-    //TODO: put this into the Routing logic
     $scope.tabs = [
-        { name: 'Reviews', url: '/resources/partials/landingPage/reviews.html' },
-        { name: 'Compatibility Notes', url: '/resources/partials/landingPage/compatibilityNotes.html' },
-        { name: 'Install Order Notes', url: '/resources/partials/landingPage/installOrderNotes.html' },
-        { name: 'Load Order Notes', url: '/resources/partials/landingPage/loadOrderNotes.html' },
-        { name: 'Corrections', url: '/resources/partials/landingPage/corrections.html' }
+        { name: 'Reviews' },
+        { name: 'Compatibility Notes' },
+        { name: 'Install Order Notes' },
+        { name: 'Load Order Notes' },
+        { name: 'Corrections' }
     ];
-
-    $scope.currentTab = $scope.tabs[0];
 
     landingService.retrieveLanding().then(function(data) {
         $scope.landingData = data;
