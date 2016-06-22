@@ -1,1 +1,3 @@
-﻿<correction ng-repeat="correction in landingData.recent.corrections" note="note" show-author-column="true"></correction>
+<div ng-repeat="correction in landingData.recent.corrections" class="content-block">
+    ﻿<correction currentUser="currentUser" note="note" show-user-column="true"></correction>
+</div>

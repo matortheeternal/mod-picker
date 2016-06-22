@@ -1,1 +1,3 @@
-<install-order-note ng-repeat="note in landingData.recent.install_order_notes" note="note" show-author-column="true"></install-order-note>
+<div ng-repeat="note in landingData.recent.install_order_notes" class="content-block">
+    <install-order-note currentUser="currentUser" note="note" show-user-column="true"></install-order-note>
+</div>

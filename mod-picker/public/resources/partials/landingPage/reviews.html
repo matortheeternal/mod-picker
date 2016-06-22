@@ -1,1 +1,3 @@
-﻿<review ng-repeat="review in landingData.recent.reviews" review="review" show-author-column="true" show-mod="true"></review>
+<div ng-repeat="review in landingData.recent.reviews" class="content-block">
+	<review currentUser="currentUser" review="review" show-user-column="true" show-mod="true"></review>
+</div>
