@@ -28,7 +28,6 @@ app.service('quoteService', function (backend, $q) {
         var errorQuotes = [{
             codes: [401, 403, 550],
             quotes: [
-                "Bit late to be wandering around, isn't it?",
                 "Hmm. I still don't like it, but I guess I'll overlook it. This time.",
                 "My cousin is out fighting dragons. And what do I get? Guard duty.",
                 "Let me guess, someone stole your sweetroll?"
