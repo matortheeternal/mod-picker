@@ -30,7 +30,6 @@ app.service('quoteService', function (backend, $q) {
             quotes: [
                 "Bit late to be wandering around, isn't it?",
                 "Hmm. I still don't like it, but I guess I'll overlook it. This time.",
-                "Wait... I know you.",
                 "My cousin is out fighting dragons. And what do I get? Guard duty.",
                 "Let me guess, someone stole your sweetroll?"
             ],
