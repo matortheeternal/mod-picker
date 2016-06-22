@@ -903,7 +903,7 @@ def seed_fake_articles
         submitted_by: author.id,
         text_body: Faker::Lorem.words(rand(500)).join(' '),
         submitted: Faker::Date.backward(14),
-        updated_at: Faker::Date.backward(13),
+        edited: Faker::Date.backward(13),
         game_id: gameSkyrim.id
     ).save!
   end
