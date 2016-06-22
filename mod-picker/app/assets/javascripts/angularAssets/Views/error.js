@@ -11,7 +11,20 @@ app.config(['$stateProvider', function($stateProvider) {
     })
 }]);
 
-app.controller('errorController', function($scope, errorObj) {
-    $scope.error = errorObj;
-    console.log(errorObj);
+app.controller('errorController', function($scope, $state, errorObj, quoteService) {
+    // set error values to scope
+    if (errorObj) {
+        $scope.message = errorObj.text;
+        $scope.response = errorObj.response;
+        $scope.stateUrl = errorObj.stateUrl;
+        $scope.stateName = errorObj.stateName;
+        $scope.status = errorObj.response.status;
+    }
+    // if we don't have an error to display, redirect to base state
+    else {
+        $state.go('base');
+        return;
+    }
+
+    $scope.quote = quoteService.getErrorQuote($scope.response.status);
 });
