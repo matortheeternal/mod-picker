@@ -26,5 +26,11 @@ app.controller('errorController', function($scope, $state, errorObj, quoteServic
         return;
     }
 
+    // get a quote for the error
     $scope.quote = quoteService.getErrorQuote($scope.response.status);
+
+    // special cheese handling
+    if ($scope.quote.text.startsWith("Cheese!")) {
+        $scope.quote.class = "sheogorath-cheese-quote";
+    }
 });
