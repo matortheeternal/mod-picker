@@ -34,10 +34,11 @@ class Plugin < ActiveRecord::Base
 
   # validations
   validates :mod_id, :file_size, :filename, :crc_hash, :game_id, presence: true
-  validates :filename, length: {in: 1..64}
-  validates :author, length: {in: 0..64}
-  validates :description, length: {in: 0..512}
-  validates :crc_hash, length: {in: 1..8}
+  validates :filename, length: {maximum: 64}
+  validates :author, length: {maximum: 64}
+  validates :description, length: {maximum: 512}
+  validates :crc_hash, length: {in: 8..8}
+  validates_associated :plugin_record_groups, :plugin_errors, :overrides
 
   # callbacks
   after_create :create_associations, :update_lazy_counters

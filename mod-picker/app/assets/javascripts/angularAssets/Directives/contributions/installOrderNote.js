@@ -3,11 +3,11 @@ app.directive('installOrderNote', function () {
         restrict: 'E',
         templateUrl: '/resources/directives/contributions/installOrderNote.html',
         scope: {
-        	note: '=',
+            note: '=',
             index: '=',
-            user: '=',
+            currentUser: '=',
             edit: '=?',
-            showAuthorColumn: '=',
+            showUserColumn: '=',
             modId: '=?'
         }
     };

@@ -1,2 +1,4 @@
 #!/bin/bash
-rake reset:clear db:seed RAILS_ENV=development
+bundle exec rake setup:reset:db
+bundle exec rake setup:reset:ids
+bundle exec rake db:seed

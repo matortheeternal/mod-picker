@@ -13,15 +13,29 @@ app.service('submitService', function (backend, $q) {
     this.submitMod = function (mod, analysis, sources, requirements) {
         // select primary source
         var primarySource = sources.nexus || sources.workshop || sources.lab;
+        var released, updated;
+        for (var property in sources) {
+            if (sources.hasOwnProperty(property) && sources[property]) {
+                var source = sources[property];
+                if (!released || source.released < released) {
+                    released = source.released;
+                }
+                if (!updated || source.updated > updated) {
+                    updated = source.updated;
+                }
+            }
+        }
 
         // prepare mod record
         var modData = {
             mod: {
                 name: primarySource.mod_name,
+                authors: primarySource.authors || primarySource.uploaded_by,
                 is_utility: mod.is_utility,
                 has_adult_content: mod.has_adult_content,
                 game_id: mod.game_id,
-                released: primarySource.date_submitted || primarySource.date_added,
+                released: released || DateTime.now(),
+                updated: updated || DateTime.now(),
                 primary_category_id: mod.categories[0],
                 secondary_category_id: mod.categories[1],
                 nexus_info_id: sources.nexus && sources.nexus.id,
@@ -35,6 +49,6 @@ app.service('submitService', function (backend, $q) {
         };
 
         // submit mod
-        return backend.post('/mods/submit', modData);
+        return backend.post('/mods', modData);
     };
 });

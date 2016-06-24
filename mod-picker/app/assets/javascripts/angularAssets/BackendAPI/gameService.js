@@ -1,30 +1,29 @@
 app.service('gameService', function (backend, $q) {
     this.retrieveGames = function () {
-        return backend.retrieve('/games');
+        return backend.retrieve('/games', {cache: true});
     };
 
     var allGames = this.retrieveGames();
 
-    this.getGameById = function (id) {
-        var output = $q.defer();
+    this.getGameById = function(id) {
+        var game = $q.defer();
         allGames.then(function(games) {
-            output.resolve(games.find(function(game) {
-                return game.id == id;
+            game.resolve(games.find(function(data) {
+                return data.id == id;
             }));
         });
-        return output.promise;
+        return game.promise;
     };
 
-    this.getAvailableGames = function(games) {
-        var output = $q.defer();
+    this.getAvailableGames = function() {
+        var availableGames = $q.defer();
         allGames.then(function(games) {
-            var availableGames = ["Skyrim"];
-            output.resolve(
-                games.filter(function(game) {
-                    return availableGames.indexOf(game.display_name) > -1;
-                })
-            );
+            var availableGameNames = ["Skyrim"];
+            var filteredGames = games.filter(function(game) {
+                return availableGameNames.indexOf(game.display_name) > -1;
+            });
+            availableGames.resolve(filteredGames);
         });
-        return output.promise;
+        return availableGames.promise;
     };
 });

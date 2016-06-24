@@ -1,5 +1,6 @@
 //TODO: maybe we should think about splitting the logic to retrieve all the data and filtering it.
 app.service('categoryService', function ($q, backend) {
+    var service = this;
 
     this.retrieveCategories = function() {
         return backend.retrieve('/categories', {cache: true});
@@ -25,27 +26,21 @@ app.service('categoryService', function ($q, backend) {
     }
 
     this.retrieveCategoryPriorities = function() {
-        var categoryPriorities = $q.defer();
-
-        backend.retrieve('/category_priorities').then(function (data) {
-            categoryPriorities.resolve(data);
-        });
-
-        return categoryPriorities.promise;
+        return backend.retrieve('/category_priorities');
     };
 
     //storing all categories in a variable
     var allCategories = this.retrieveCategories();
 
     this.getCategoryById = function (id) {
-      var output = $q.defer();
+      var category = $q.defer();
 
       allCategories.then(function (categories) {
-        output.resolve(categories.find(function (category) {
-          return category.id === id;
+        category.resolve(categories.find(function (data) {
+          return data.id === id;
         }));
       });
-      return output.promise;
+      return category.promise;
     };
 
     this.retrievePrimaryCategory = function () {
@@ -73,5 +68,19 @@ app.service('categoryService', function ($q, backend) {
             });
         });
         return nestedCategoriesPromise.promise;
+    };
+
+    this.resolveModCategories = function(mod) {
+        if (mod.primary_category_id) {
+            service.getCategoryById(mod.primary_category_id).then(function (primaryCategory) {
+                mod.primary_category = primaryCategory;
+            });
+        }
+
+        if (mod.secondary_category_id) {
+            service.getCategoryById(mod.secondary_category_id).then(function(secondaryCategory) {
+                mod.secondary_category = secondaryCategory;
+            });
+        }
     };
 });

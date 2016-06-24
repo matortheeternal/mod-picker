@@ -31,9 +31,9 @@ app.service('userSettingsService', function (backend, $q) {
             user: user
         };
         var update = $q.defer();
-    	backend.update('/users/' + user.id, user_object).then(function (data) {
+        backend.update('/users/' + user.id, user_object).then(function (data) {
             update.resolve(data);
-    	});
+        });
         return update.promise;
     };
 

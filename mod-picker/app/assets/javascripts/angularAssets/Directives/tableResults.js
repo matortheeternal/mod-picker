@@ -3,7 +3,15 @@ app.directive('tableResults', function () {
         restrict: 'E',
         templateUrl: '/resources/directives/tableResults.html',
         controller: 'tableResultsController',
-        scope: false
+        scope: {
+            label: '@',
+            data: '=',
+            columns: '=',
+            sort: '=',
+            columnGroups: '=',
+            availableColumnData: '=',
+            actions: '=?'
+        }
     }
 });
 

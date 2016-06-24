@@ -176,15 +176,15 @@ app.controller('userSettingsController', function ($scope, $q, user, currentUser
             if (data.status !== "ok") {
                 $scope.errors.concat(data.errors);
             }
-            $scope.user.showSuccess = $scope.errors.length == 0;
+            $scope.showSuccess = $scope.errors.length == 0;
         });
         userSettingsService.submitUserSettings($scope.userSettings).then(function (data) {
             if (data.status !== "ok") {
                 $scope.errors.concat(data.errors);
             } else {
-                $scope.user.showSuccess = $scope.errors.length == 0;
+                $scope.showSuccess = $scope.errors.length == 0;
                 $scope.updateTheme();
-                $scope.$broadcast('reloadCurrentUser', {});
+                $scope.$emit('reloadCurrentUser', {});
             }
         });
         if ($scope.avatar.file) {
@@ -192,7 +192,7 @@ app.controller('userSettingsController', function ($scope, $q, user, currentUser
                 if (data.status !== "Success") {
                     $scope.errors.push({message: "Avatar: " + data.status});
                 }
-                $scope.user.showSuccess = $scope.errors.length == 0;
+                $scope.showSuccess = $scope.errors.length == 0;
             });
         }
     };

@@ -5,7 +5,7 @@ class ModList < ActiveRecord::Base
   enum visibility: [ :visibility_private, :visibility_unlisted, :visibility_public ]
 
   belongs_to :game, :inverse_of => 'mod_lists'
-  belongs_to :user, :foreign_key => 'submitted_by', :inverse_of => 'mod_lists'
+  belongs_to :submitter, :class_name => 'User', :foreign_key => 'submitted_by', :inverse_of => 'mod_lists'
 
   # INSTALL ORDER
   has_many :mod_list_mods, :inverse_of => 'mod_list'
@@ -171,22 +171,22 @@ class ModList < ActiveRecord::Base
     end
 
     def increment_counters
-      self.user.update_counter(:mod_lists_count, 1)
+      self.submitter.update_counter(:mod_lists_count, 1)
     end
 
     def decrement_counters
-      self.user.update_counter(:mod_lists_count, -1)
+      self.submitter.update_counter(:mod_lists_count, -1)
     end
 
     def set_active
-      self.user.active_mod_list_id = self.id
-      self.user.save
+      self.submitter.active_mod_list_id = self.id
+      self.submitter.save
     end
 
     def unset_active
-      if self.user.active_mod_list_id == self.id
-        self.user.active_mod_list_id = nil
-        self.user.save
+      if self.submitter.active_mod_list_id == self.id
+        self.submitter.active_mod_list_id = nil
+        self.submitter.save
       end
     end
 end

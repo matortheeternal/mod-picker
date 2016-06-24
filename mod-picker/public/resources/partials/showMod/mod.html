@@ -46,8 +46,8 @@
                         <!-- TODO: I feel like using some spans here would be wiser -->
                         ACTIONS
                         <div class="action-box" ng-click="starMod()">
-                            <i class="fa {{modStarred ? 'fa-star' : 'fa-star-o'}}" aria-hidden="true"></i>
-                            {{modStarred ? 'Unfavorite' : 'Favorite'}}
+                            <i class="fa {{mod.star ? 'fa-star' : 'fa-star-o'}}" aria-hidden="true"></i>
+                            {{mod.star ? 'Unfavorite' : 'Favorite'}}
                         </div>
                         <div class="action-box">
                             <i class="fa fa-plus" aria-hidden="true"></i>
@@ -65,81 +65,9 @@
             </div>
         </div>
 
-        <div class="modal-container" ng-if="showStatusModal">
-            <div class="modal huge-modal">
-                <div class="close-modal">
-                    <span class="fa fa-times" ng-click="toggleStatusModal(false)"></span>
-                </div>
+        <appeals-modal></appeals-modal>
 
-                <h2>
-                    {{mod.name}}
-                    <span class="static-box {{statusClass}} capitalize">
-                        {{mod.status}}
-                    </span>
-                </h2>
-                <p ng-show="permissions.canAppeal">
-                    If you'd like to contest this mod's status you can submit an appeal to change it
-                    which will then be reviewed by the community over one week.  If enough users agree
-                    with your appeal, the mod's status will be changed.  You can vote on and participate
-                    in discussion on any currently open appeals.
-                </p>
-                <p ng-hide="permissions.canAppeal">
-                    You don't have enough reputation to submit an appeal to change this mod's status.
-                    You can view past appeals and discussions, but will not be able to vote on them or
-                    participate in discussion until you have gained more reputation.
-                </p>
-                <p>
-                    <a href="/help/Appeals_Process">Click here</a> for more information.
-                </p>
-
-                <h3 class="section-title">Appeals</h3>
-                <loader data="mod.corrections" content-class="appeals-container" spinner-class="big-spinner">
-                    <table ng-if="mod.corrections.length > 0">
-                        <thead>
-                        <tr>
-                            <td>Title</td>
-                            <td>Date Submitted</td>
-                            <td>Submitted by</td>
-                            <td>Comments</td>
-                            <td>Status</td>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr ng-repeat="appeal in mod.corrections" ng-class="{ 'appeal-hidden' : appeal.hidden }">
-                            <td class="main-cell">
-                                <a ng-click="showAppeal(appeal.id)">
-                                    {{appeal.title}}
-                                </a>
-                            </td>
-                            <td>{{appeal.submitted | date}}</td>
-                            <td>
-                                <a ng-href="#/user/{{appeal.submitted_by}}">
-                                    {{appeal.user.username}}
-                                </a>
-                            </td>
-                            <td>{{appeal.comments_count}}</td>
-                            <td>
-                                <span ng-if="appeal.status === 'open'">{{appeal.agree_count / (appeal.agree_count + appeal.disagree_count) | number:0}}% Agree</span>
-                                <div ng-if="appeal.status !== 'open'" class="action-box appeal-{{appeal.status}} capitalize">
-                                    {{appeal.status}}
-                                </div>
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
-                    <span ng-if="mod.corrections.length == 0">
-                        There have been no appeals on this mod's status.
-                    </span>
-                </loader>
-
-                <div class="action-button-container" ng-if="appealStatus">
-                    <input class="btn action-btn" type="submit" ng-click="startNewAppeal()" value="New Appeal">
-                </div>
-            </div>
-        </div>
-
-        <messages success-bool="showSuccess" errors="errors" success-message="{{submitMessage}}">
-        </messages>
+        <messages></messages>
 
         <div class="page-container">
             <loader data="mod" spinner-class="big-spinner">
