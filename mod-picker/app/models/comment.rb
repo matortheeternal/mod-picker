@@ -25,6 +25,21 @@ class Comment < ActiveRecord::Base
   after_create :increment_counter_caches
   before_destroy :decrement_counter_caches
 
+  def show_json
+    as_json({
+        :except => [:submitted_by, :commentable_id, :commentable_type],
+        :include => {
+            :submitter => {
+                :only => [:id, :username, :role, :title],
+                :include => {
+                    :reputation => {:only => [:overall]}
+                },
+                :methods => :avatar
+            }
+        }
+    })
+  end
+
   def as_json(options={})
     if JsonHelpers.json_options_empty(options)
       default_options = {
