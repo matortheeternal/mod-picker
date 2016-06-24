@@ -50,10 +50,11 @@ class LoadOrderNote < ActiveRecord::Base
   end
 
   def create_history_entry
+    edit_summary = self.edited_by.nil? ? "Load Order Note Created" : self.edit_summary
     self.history_entries.create(
         edited_by: self.edited_by || self.submitted_by,
         text_body: self.text_body,
-        edit_summary: self.edit_summary,
+        edit_summary: edit_summary || "",
         edited: self.edited || self.submitted
     )
   end
