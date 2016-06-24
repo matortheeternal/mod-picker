@@ -4,11 +4,52 @@
             <span class="fa fa-times" ng-click="toggleHistoryModal(false)"></span>
         </div>
 
-        <h3 class="section-title">
+        <h2>
             {{target.submitter.username}}'s {{model.label}} - History
-        </h3>
+        </h2>
+        <!-- TODO: Display version of the note -->
 
-        <!-- TODO: Display history stuff -->
+        <h3 class="section-title">History</h3>
+        <loader data="target.history" content-class="history-container" spinner-class="big-spinner" ng-if="!errors.history">
+            <table>
+                <thead>
+                <tr>
+                    <th>Date Submitted</th>
+                    <th>Submitted by</th>
+                    <th>Edit Summary</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-if="target.editor" ng-click="showHistory()">
+                    <td>{{target.edited | date}}</td>
+                    <td>
+                        <a ng-href="#/profile/{{target.editor.id}}" class="strong">
+                            {{target.editor.username}}
+                        </a>
+                    </td>
+                    <td>{{target.edit_summary}}</td>
+                </tr>
+                <tr ng-repeat="entry in target.history" ng-click="showHistory(entry)">
+                    <td>{{entry.edited | date}}</td>
+                    <td>
+                        <a ng-href="#/profile/{{entry.editor.id}}" class="strong">
+                            {{entry.editor.username}}
+                        </a>
+                    </td>
+                    <td>{{entry.edit_summary}}</td>
+                </tr>
+                <tr ng-if="!target.history.length">
+                    <td>{{target.submitted | date}}</td>
+                    <td>
+                        <a ng-href="#/profile/{{target.submitter.id}}" class="strong">
+                            {{target.submitter.username}}
+                        </a>
+                    </td>
+                    <td>{{model.label}} Created</td>
+                </tr>
+                </tbody>
+            </table>
+        </loader>
 
         <div class="content-message" ng-if="errors.history">
             There was an error retrieving history for this contribution.<br>
