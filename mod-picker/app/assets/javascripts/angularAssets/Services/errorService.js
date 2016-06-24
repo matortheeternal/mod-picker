@@ -6,4 +6,11 @@ app.service('errorService', function ($rootScope, $location) {
             label: label
         };
     };
+
+    this.errorMessage = function (label, errorResponse) {
+        return {
+            type: "error",
+            text: label + ", " + errorResponse.status + ": " + errorResponse.statusText
+        }
+    };
 });

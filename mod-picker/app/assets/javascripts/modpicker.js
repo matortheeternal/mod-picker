@@ -14,6 +14,8 @@ app.config(['$httpProvider', '$compileProvider', function ($httpProvider, $compi
 app.config(function($urlMatcherFactoryProvider) {
     //this allows urls with and without trailing slashes to go to the same state
     $urlMatcherFactoryProvider.strictMode(false);
+    //this will not display url parameters that are set to their defaults
+    $urlMatcherFactoryProvider.defaultSquashPolicy(true);
 });
 
 app.config(function ($urlRouterProvider) {

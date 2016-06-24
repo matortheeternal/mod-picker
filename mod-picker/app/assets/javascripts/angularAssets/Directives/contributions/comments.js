@@ -7,12 +7,17 @@ app.directive('comments', function () {
             comments: '=',
             currentUser: '=',
             modelName: '=',
-            target: '='
+            target: '=',
+            eventPrefix: '=?'
         }
     };
 });
 
 app.controller('commentsController', function ($scope, contributionService) {
+    // event strings
+    $scope.errorEvent = $scope.eventPrefix ? $scope.eventPrefix + 'ErrorMessage' : 'errorMessage';
+    $scope.successEvent = $scope.eventPrefix ? $scope.eventPrefix + 'SuccessMessage' : 'successMessage';
+
     // update the markdown editor
     $scope.updateEditor = function() {
         $scope.updateMDE = ($scope.updateMDE || 0) + 1;
@@ -70,23 +75,22 @@ app.controller('commentsController', function ($scope, contributionService) {
         if (comment.editing) {
             var commentId = comment.original.id;
             contributionService.updateContribution("comments", commentId, commentObj).then(function() {
-                $scope.submitMessage = "Comment updated successfully!";
-                $scope.showSuccess = true;
-
+                $scope.$emit($scope.successEvent, 'Comment updated successfully.');
                 // update original comment object and discard copy
                 updateCallback();
                 discardCallback();
             }, function(response) {
-                // error handling
+                var params = {label: 'Error updating Comment', response: response};
+                $scope.$emit($scope.errorEvent, params);
             });
         } else {
             contributionService.submitContribution("comments", commentObj).then(function() {
-                $scope.submitMessage = "Comment submitted successfully!";
-                $scope.showSuccess = true;
+                $scope.$emit($scope.successEvent, 'Comment submitted successfully.');
                 // TODO: push the comment onto the comments array
                 discardCallback();
             }, function(response) {
-                // error handling
+                var params = {label: 'Error submitting Comment', response: response};
+                $scope.$emit($scope.errorEvent, params);
             });
         }
     };

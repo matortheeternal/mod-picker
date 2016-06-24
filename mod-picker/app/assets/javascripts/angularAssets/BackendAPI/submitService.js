@@ -49,6 +49,6 @@ app.service('submitService', function (backend, $q) {
         };
 
         // submit mod
-        return backend.post('/mods/submit', modData);
+        return backend.post('/mods', modData);
     };
 });

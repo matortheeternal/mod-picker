@@ -18,7 +18,7 @@ class Review < ActiveRecord::Base
   belongs_to :editor, :class_name => 'User', :foreign_key => 'edited_by'
   belongs_to :mod, :inverse_of => 'reviews'
 
-  has_many :review_ratings, :inverse_of => 'review', :dependent => :destroy
+  has_many :review_ratings, :inverse_of => 'review'
 
   has_many :helpful_marks, :as => 'helpfulable'
   has_one :base_report, :as => 'reportable'
@@ -35,7 +35,7 @@ class Review < ActiveRecord::Base
   after_create :increment_counters
   before_save :set_dates
   after_save :update_mod_metrics, :update_metrics
-  before_destroy :decrement_counters
+  before_destroy :clear_ratings, :decrement_counters
 
   def clear_ratings
     ReviewRating.where(review_id: self.id).delete_all
@@ -124,6 +124,7 @@ class Review < ActiveRecord::Base
 
     def increment_counters
       self.mod.reviews_count += 1
+      self.mod.compute_average_rating
       # we also take this chance to recompute the mod's reputation
       # if there are enough reviews to do so
       if self.mod.reviews_count >= 5
@@ -135,6 +136,7 @@ class Review < ActiveRecord::Base
 
     def decrement_counters
       self.mod.reviews_count -= 1
+      self.mod.compute_average_rating
       self.mod.compute_reputation
       self.mod.save
       self.submitter.update_counter(:reviews_count, -1)

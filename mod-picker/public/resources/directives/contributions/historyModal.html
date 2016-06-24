@@ -1,15 +1,19 @@
 <div class="modal-container">
     <div class="modal huge-modal">
-        <form>
-            <div class="close-modal">
-                <span class="fa fa-times" ng-click="toggleHistoryModal(false)"></span>
-            </div>
+        <div class="close-modal">
+            <span class="fa fa-times" ng-click="toggleHistoryModal(false)"></span>
+        </div>
 
-            <h3 class="section-title">
-                {{target.submitter.username}}'s {{model.label}} - History
-            </h3>
+        <h3 class="section-title">
+            {{target.submitter.username}}'s {{model.label}} - History
+        </h3>
 
-            <!-- TODO: Display history stuff -->
-        </form>
+        <!-- TODO: Display history stuff -->
+
+        <div class="content-message" ng-if="errors.history">
+            There was an error retrieving history for this contribution.<br>
+            <!--TODO: Render JSON errors here, if available?-->
+            Error {{errors.history.status}}: {{errors.history.statusText}}
+        </div>
     </div>
 </div>

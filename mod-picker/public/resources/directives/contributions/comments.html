@@ -8,5 +8,5 @@
 </div>
 
 <div class="comment-container" ng-repeat="comment in comments">
-    <comment comment="comment" current-user="currentUser" index="100 + $index" save-callback="saveComment"></comment>
+    <comment comment="comment" current-user="currentUser" index="100 + $index" save-callback="saveComment" event-prefix="eventPrefix"></comment>
 </div>

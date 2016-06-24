@@ -8,12 +8,16 @@ app.directive('comment', function () {
             currentUser: '=',
             index: '=',
             saveCallback: '=',
-            isChild: '=?'
+            isChild: '=?',
+            eventPrefix: '=?'
         }
     };
 });
 
 app.controller('commentController', function ($scope, $filter, $timeout, contributionService) {
+    // errorEvent string
+    $scope.errorEvent = $scope.eventPrefix ? $scope.eventPrefix + 'ErrorMessage' : 'errorMessage';
+
     // this is the report object
     $scope.report = {};
 
@@ -27,6 +31,7 @@ app.controller('commentController', function ($scope, $filter, $timeout, contrib
     };
 
     $scope.toggleReportModal = function(visible) {
+        $scope.$emit('toggleModal', visible);
         $scope.showReportModal = visible;
     };
 
@@ -111,9 +116,14 @@ app.controller('commentController', function ($scope, $filter, $timeout, contrib
 
     $scope.hide = function(hidden) {
         contributionService.hide('comments', $scope.comment.id, hidden).then(function (data) {
-            if (data.status == "ok") {
-                $scope.comment.hidden = hidden;
-            }
+            $scope.comment.hidden = hidden;
+        }, function(response) {
+            var approveStr = hidden ? 'hiding' : 'unhiding';
+            var params = {
+                label: 'Error ' + approveStr + ' comment',
+                response: response
+            };
+            $scope.$emit($scope.errorEvent, params);
         });
     };
 

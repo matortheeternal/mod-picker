@@ -15,7 +15,7 @@ class CompatibilityNotesController < ContributionsController
     authorize! :create, @compatibility_note
 
     if @compatibility_note.save
-      render json: {status: :ok}
+      render json: @compatibility_note.reload
     else
       render json: @compatibility_note.errors, status: :unprocessable_entity
     end
