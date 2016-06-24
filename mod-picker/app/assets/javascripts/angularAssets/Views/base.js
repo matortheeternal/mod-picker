@@ -31,15 +31,8 @@ app.controller('baseController', function($scope, $state, currentUser, games, cu
         $state.reload();
     });
 
-    $scope.$on("$stateChangeError", function(event, toState, toParams, fromState, fromParams, details) {
-        $state.get('base.error').error = {
-            event: event,
-            toState: toState,
-            toParams: toParams,
-            fromState: fromState,
-            fromParams: fromParams,
-            details: details
-        };
+    $scope.$on("$stateChangeError", function(event, toState, toParams, fromState, fromParams, error) {
+        $state.get('base.error').error = error;
         $state.go('base.error');
     });
 });
