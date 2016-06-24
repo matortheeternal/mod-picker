@@ -101,6 +101,11 @@ Rails.application.routes.draw do
     # avatars
     match '/avatar', to: 'avatars#create', via: [:post]
 
+    # help pages
+    resources :help_pages, only: [:index, :show]
+    
+    
+
     # static data
     resources :categories, only: [:index]
     resources :category_priorities, only: [:index]

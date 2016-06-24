@@ -890,3 +890,7 @@ def seed_fake_mod_lists
 
   puts "    #{ModList.count} mod lists seeded"
 end
+
+def seed_fake_help_pages
+    puts "\n Seeding help pages"
+end
