@@ -21,7 +21,7 @@ class CommentsController < ApplicationController
     authorize! :create, @comment
 
     if @comment.save
-      render json: {status: :ok}
+      render json: @comment.reload
     else
       render json: @comment.errors, status: :unprocessable_entity
     end
