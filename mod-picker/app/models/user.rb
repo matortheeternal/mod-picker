@@ -36,6 +36,8 @@ class User < ActiveRecord::Base
   has_many :helpful_marks, :foreign_key => 'submitted_by', :inverse_of => 'submitter'
 
   has_many :compatibility_note_history_entries, :foreign_key => 'submitted_by', :inverse_of => 'submitter'
+  has_many :install_order_note_history_entries, :foreign_key => 'submitted_by', :inverse_of => 'submitter'
+  has_many :load_order_note_history_entries, :foreign_key => 'submitted_by', :inverse_of => 'submitter'
 
   has_many :tags, :foreign_key => 'submitted_by', :inverse_of => 'submitter'
   has_many :mod_tags, :foreign_key => 'submitted_by', :inverse_of => 'submitter'
