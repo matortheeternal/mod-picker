@@ -236,9 +236,9 @@ app.controller('modReviewsController', function($scope, $stateParams, $state, mo
                 $scope.$emit('errorMessage', params);
             });
         } else {
-            contributionService.submitContribution("reviews", reviewObj).then(function() {
+            contributionService.submitContribution("reviews", reviewObj).then(function(data) {
                 $scope.$emit("successMessage", "Review submitted successfully.");
-                // TODO: push the review onto the $scope.mod.reviews array
+                $scope.mod.reviews.unshift(data);
                 $scope.discardReview();
             }, function(response) {
                 var params = {label: 'Error submitting Review', response: response};

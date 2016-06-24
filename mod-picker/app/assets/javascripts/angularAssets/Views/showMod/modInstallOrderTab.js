@@ -156,9 +156,9 @@ app.controller('modInstallOrderController', function($scope, $stateParams, $stat
                 $scope.$emit('errorMessage', params);
             });
         } else {
-            contributionService.submitContribution("install_order_notes", noteObj).then(function() {
+            contributionService.submitContribution("install_order_notes", noteObj).then(function(data) {
                 $scope.$emit("successMessage", "Install Order Note submitted successfully.");
-                // TODO: push the Install Order note onto the $scope.mod.install_order_notes array
+                $scope.mod.reviews.unshift(data);
                 $scope.discardInstallOrderNote();
             }, function(response) {
                 var params = {label: 'Error submitting Install Order Note', response: response};

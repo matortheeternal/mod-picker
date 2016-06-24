@@ -147,9 +147,9 @@ app.controller('modCompatibilityController', function($scope, $stateParams, $sta
                 $scope.$emit('errorMessage', params);
             });
         } else {
-            contributionService.submitContribution("compatibility_notes", noteObj).then(function() {
+            contributionService.submitContribution("compatibility_notes", noteObj).then(function(data) {
                 $scope.$emit("successMessage", "Compatibility Note submitted successfully.");
-                // TODO: push the compatibility note onto the $scope.mod.compatibility_notes array
+                $scope.mod.reviews.unshift(data);
                 $scope.discardCompatibilityNote();
             }, function(response) {
                 var params = {label: 'Error submitting Compatibility Note', response: response};
