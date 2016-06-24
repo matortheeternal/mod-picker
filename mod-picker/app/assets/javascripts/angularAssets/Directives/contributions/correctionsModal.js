@@ -146,9 +146,9 @@ app.controller('correctionsModalController', function ($scope, contributionServi
                 $scope.$emit('modalErrorMessage', params);
             });
         } else {
-            contributionService.submitContribution("corrections", correctionObj).then(function() {
+            contributionService.submitContribution("corrections", correctionObj).then(function(correction) {
                 $scope.$emit('modalSuccessMessage', 'Correction submitted successfully.');
-                // TODO: push the correction onto the $scope.mod.corrections array
+               $scope.target.corrections.unshift(correction);
                 $scope.discardCorrection();
             }, function(response) {
                 var params = {label: 'Error submitting Correction', response: response};

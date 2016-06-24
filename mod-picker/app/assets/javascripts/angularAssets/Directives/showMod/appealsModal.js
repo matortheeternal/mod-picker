@@ -148,9 +148,9 @@ app.controller('appealsModalController', function ($scope, contributionService, 
                 $scope.$emit('modalErrorMessage', params);
             });
         } else {
-            contributionService.submitContribution("corrections", appealObj).then(function() {
+            contributionService.submitContribution("corrections", appealObj).then(function(appeal) {
                 $scope.$emit("modalSuccessMessage", "Appeal submitted successfully.");
-                // TODO: push the appeal onto the $scope.mod.corrections array
+                $scope.mod.corrections.unshift(appeal);
                 $scope.discardAppeal();
             }, function(response) {
                 var params = {label: 'Error submitting Appeal', response: response};
