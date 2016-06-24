@@ -166,9 +166,9 @@ app.controller('modLoadOrderController', function($scope, $state, $stateParams, 
                 $scope.$emit('errorMessage', params);
             });
         } else {
-            contributionService.submitContribution("load_order_notes", noteObj).then(function(data) {
+            contributionService.submitContribution("load_order_notes", noteObj).then(function(note) {
                 $scope.$emit("successMessage", "Load Order Note submitted successfully.");
-                $scope.mod.reviews.unshift(data);
+                $scope.mod.reviews.unshift(note);
                 $scope.discardLoadOrderNote();
             }, function(response) {
                 var params = {label: 'Error submitting Load Order Note', response: response};
