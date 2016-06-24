@@ -124,6 +124,7 @@ class Review < ActiveRecord::Base
 
     def increment_counters
       self.mod.reviews_count += 1
+      self.mod.compute_average_rating
       # we also take this chance to recompute the mod's reputation
       # if there are enough reviews to do so
       if self.mod.reviews_count >= 5
@@ -135,6 +136,7 @@ class Review < ActiveRecord::Base
 
     def decrement_counters
       self.mod.reviews_count -= 1
+      self.mod.compute_average_rating
       self.mod.compute_reputation
       self.mod.save
       self.submitter.update_counter(:reviews_count, -1)
