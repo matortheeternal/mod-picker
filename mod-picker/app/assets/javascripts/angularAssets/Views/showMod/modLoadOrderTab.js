@@ -157,9 +157,7 @@ app.controller('modLoadOrderController', function($scope, $state, $stateParams, 
         if ($scope.activeLoadOrderNote.editing) {
             var noteId = $scope.activeLoadOrderNote.original.id;
             contributionService.updateContribution("load_order_notes", noteId, noteObj).then(function() {
-                $scope.submitMessage = "Load Order Note updated successfully!";
-                $scope.showSuccess = true;
-
+                $scope.$emit("successMessage", "Load Order Note updated successfully.");
                 // update original load order note and discard copy
                 $scope.updateLoadOrderNote(noteObj.load_order_note);
                 $scope.discardLoadOrderNote();
@@ -169,8 +167,7 @@ app.controller('modLoadOrderController', function($scope, $state, $stateParams, 
             });
         } else {
             contributionService.submitContribution("load_order_notes", noteObj).then(function() {
-                $scope.submitMessage = "Load Order Note submitted successfully!";
-                $scope.showSuccess = true;
+                $scope.$emit("successMessage", "Load Order Note submitted successfully.");
                 // TODO: push the Load Order note onto the $scope.mod.load_order_notes array
                 $scope.discardLoadOrderNote();
             }, function(response) {

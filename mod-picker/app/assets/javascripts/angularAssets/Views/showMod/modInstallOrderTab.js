@@ -147,9 +147,7 @@ app.controller('modInstallOrderController', function($scope, $stateParams, $stat
         if ($scope.activeInstallOrderNote.editing) {
             var noteId = $scope.activeInstallOrderNote.original.id;
             contributionService.updateContribution("install_order_notes", noteId, noteObj).then(function() {
-                $scope.submitMessage = "Install Order Note updated successfully!";
-                $scope.showSuccess = true;
-
+                $scope.$emit("successMessage", "Install Order Note updated successfully.");
                 // update original install order note and discard copy
                 $scope.updateInstallOrderNote(noteObj.install_order_note);
                 $scope.discardInstallOrderNote();
@@ -159,8 +157,7 @@ app.controller('modInstallOrderController', function($scope, $stateParams, $stat
             });
         } else {
             contributionService.submitContribution("install_order_notes", noteObj).then(function() {
-                $scope.submitMessage = "Install Order Note submitted successfully!";
-                $scope.showSuccess = true;
+                $scope.$emit("successMessage", "Install Order Note submitted successfully.");
                 // TODO: push the Install Order note onto the $scope.mod.install_order_notes array
                 $scope.discardInstallOrderNote();
             }, function(response) {

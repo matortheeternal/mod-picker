@@ -138,9 +138,7 @@ app.controller('modCompatibilityController', function($scope, $stateParams, $sta
         if ($scope.activeCompatibilityNote.editing) {
             var noteId = $scope.activeCompatibilityNote.original.id;
             contributionService.updateContribution("compatibility_notes", noteId, noteObj).then(function() {
-                $scope.submitMessage = "Compatibility Note updated successfully!";
-                $scope.showSuccess = true;
-
+                $scope.$emit("successMessage", "Compatibility Note updated successfully.");
                 // update original compatibility note and discard copy
                 $scope.updateCompatibilityNote(noteObj.compatibility_note);
                 $scope.discardCompatibilityNote();
@@ -150,8 +148,7 @@ app.controller('modCompatibilityController', function($scope, $stateParams, $sta
             });
         } else {
             contributionService.submitContribution("compatibility_notes", noteObj).then(function() {
-                $scope.submitMessage = "Compatibility Note submitted successfully!";
-                $scope.showSuccess = true;
+                $scope.$emit("successMessage", "Compatibility Note submitted successfully.");
                 // TODO: push the compatibility note onto the $scope.mod.compatibility_notes array
                 $scope.discardCompatibilityNote();
             }, function(response) {

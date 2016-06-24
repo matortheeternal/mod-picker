@@ -227,9 +227,7 @@ app.controller('modReviewsController', function($scope, $stateParams, $state, mo
         if ($scope.activeReview.editing) {
             var reviewId = $scope.activeReview.original.id;
             contributionService.updateContribution("reviews", reviewId, reviewObj).then(function() {
-                $scope.submitMessage = "Review updated successfully!";
-                $scope.showSuccess = true;
-
+                $scope.$emit("successMessage", "Review updated successfully.");
                 // update original review object and discard copy
                 $scope.updateReview();
                 $scope.discardReview();
@@ -239,8 +237,7 @@ app.controller('modReviewsController', function($scope, $stateParams, $state, mo
             });
         } else {
             contributionService.submitContribution("reviews", reviewObj).then(function() {
-                $scope.submitMessage = "Review submitted successfully!";
-                $scope.showSuccess = true;
+                $scope.$emit("successMessage", "Review submitted successfully.");
                 // TODO: push the review onto the $scope.mod.reviews array
                 $scope.discardReview();
             }, function(response) {
