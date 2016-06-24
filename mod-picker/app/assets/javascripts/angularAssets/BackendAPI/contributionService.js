@@ -1,4 +1,4 @@
-app.service('contributionService', function (backend, $q, userTitleService, pageUtils) {
+app.service('contributionService', function (backend, $q, userTitleService, pageUtils, reviewSectionService) {
     var service = this;
 
     this.helpfulMark = function(type, id, helpful) {
@@ -20,7 +20,18 @@ app.service('contributionService', function (backend, $q, userTitleService, page
     };
 
     this.submitContribution = function(type, contribution) {
-        return backend.post('/' + type, contribution);
+        var action = $q.defer();
+        backend.post('/' + type, contribution).then(function(data) {
+            var contributions = [data];
+            if (type === 'reviews') {
+                reviewSectionService.associateReviewSections(contributions);
+            }
+            userTitleService.associateTitles(contributions);
+            action.resolve(contributions[0]);
+        }, function(response) {
+            action.reject(response);
+        });
+        return action.promise;
     };
 
     this.updateContribution = function(type, id, contribution) {
