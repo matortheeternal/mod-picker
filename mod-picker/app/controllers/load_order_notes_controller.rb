@@ -15,7 +15,7 @@ class LoadOrderNotesController < ContributionsController
     authorize! :create, @load_order_note
 
     if @load_order_note.save
-      render json: {status: :ok}
+      render json: @load_order_note.reload
     else
       render json: @load_order_note.errors, status: :unprocessable_entity
     end

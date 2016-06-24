@@ -29,7 +29,7 @@ class ReviewsController < ContributionsController
     authorize! :create, @review
 
     if @review.save
-      render json: {status: :ok}
+      render json: @review.reload
     else
       render json: @review.errors, status: :unprocessable_entity
     end
