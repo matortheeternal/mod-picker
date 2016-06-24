@@ -56,8 +56,8 @@ app.controller('commentsController', function ($scope, contributionService) {
     // push a comment to the local page view
     $scope.pushCommentToView = function(comment) {
         if (comment.parent_id) {
-            var parent = $scope.comments.find(function(f) {
-                return f.parent_id == comment.parent_id;
+            var parent = $scope.comments.find(function(parent_comment) {
+                return parent_comment.id == comment.parent_id;
             });
             if (parent) {
                 parent.children.unshift(comment);
@@ -100,7 +100,7 @@ app.controller('commentsController', function ($scope, contributionService) {
         } else {
             contributionService.submitContribution("comments", commentObj).then(function(comment) {
                 $scope.$emit($scope.successEvent, 'Comment submitted successfully.');
-                pushCommentToView(comment);
+                $scope.pushCommentToView(comment);
                 discardCallback();
             }, function(response) {
                 var params = {label: 'Error submitting Comment', response: response};
