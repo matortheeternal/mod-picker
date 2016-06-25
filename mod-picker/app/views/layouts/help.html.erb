@@ -5,8 +5,66 @@
   <title>Mod Picker: Help Pages  </title>
   <link href='https://fonts.googleapis.com/css?family=Roboto:400,700,500' rel='stylesheet' type='text/css'>
   <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+  <%= stylesheet_link_tag 'pages/help' %>
 </head>
 <body>
+  <header>
+    <nav>
+      <div class="page-container">
+          <div class="header clearfix">
+             
+              <div class="nav-wrapper">
+                <div class="primary-nav">
+                  <a class="logo" href="/"><h1>Mod Picker</h1></a>
+                  <a href="#">
+                    <span class="nav-icon">
+                      <i class="fa fa-home" aria-hidden="true"></i>
+                    </span>
+                    <span class="nav-text">
+                      <b>Return</b>
+                      Home
+                    </span>
+                  </a>
+                  <a href="#">
+                    <span class="nav-icon">
+                      <i class="fa fa-puzzle-piece" aria-hidden="true"></i>
+                    </span>
+                    <span class="nav-text">
+                      <b>How to use</b>
+                      Mod Picker
+                    </span>
+                  </a>
+                  <a href="#">
+                    <span class="nav-icon">
+                      <i class="fa fa-list-ul" aria-hidden="true"></i>
+                    </span>
+                    <span class="nav-text">
+                      <b>Learn more about</b>
+                      Modding
+                    </span>
+                  </a>
+                  <a href="#">
+                    <span class="nav-icon">
+                      <i class="fa fa-book" aria-hidden="true"></i>
+                    </span>
+                    <span class="nav-text">
+                      <b>Browse all</b>
+                      Guides
+                    </span>
+                    </span>
+                  </a>
+                </div>
+                <div class="secondary-nav">
+                  
+                  <div class="search">
+                    <input type="text" placeholder="Search Help Center...">
+                  </div>
+                </div>
+              </div>
+          </div>
+      </div>
+    </nav>
+</header>
   <%= yield %>
 </body>
 </html>

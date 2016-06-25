@@ -1,0 +1,166 @@
+/* Main style sheet for all help pages
+Other components like header/footer can't be reused because they use angular
+*/
+
+// Colors from whiterun theme
+
+$text_color: #000;
+$inverse_text_color: #eee;
+$soft_text_color: #aaa;
+
+$primary_background: #fafaeb;
+$secondary_background: #eeeedd;
+$background_highlight: #fcfce7;
+$input_background: #fff;
+
+$shadow_color: #000;
+$border_color: #cacaca;
+$soft_border_color: #dadada;
+$hard_border_color: #84888a;
+
+$h1_color: #c0a060;
+$h2_color: #000;
+$h3_color: #665b50;
+$h4_color: #575964;
+
+$action_color: #c0a060;
+$action_text_color: #eee;
+$bright_action_color: #cbae72;
+$dark_action_color: #a68a53;
+
+$bar_color: #342f2a;
+$bar_dark_color: #484037;
+$bar_highlight_color: #48433f;
+$bar_text_color: #eee;
+$bar_highlight_text_color: #c9a9a9;
+
+$link_color: #182e8f;
+$link_hover_color_primary: #3678BF; // #406bba, #2c85c5, #3678BF
+$link_hover_color_secondary: #508bda;
+
+$slider_bg_color: #cacaca;
+$slider_range_color: #508bda;
+$slider_circle_color_after: #205098;
+
+$success_primary: #B4D5B4;
+$success_secondary: #4AC859;
+$error_primary: #F5D0D5;
+$error_secondary: #C74A5B;
+$warning_primary: #F5F0D0;
+$warning_secondary: #C7B64A;
+
+$admin_color: #900000;
+$moderator_color: #8000b0;
+$mod_author_color: #008000;
+
+
+// Global resets
+*, *:before, *:after {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Roboto', sans-serif;
+  color: $text_color;
+  margin: 0;
+  background-color: $primary_background;
+  min-height: 100vh;
+  position: relative;
+}
+
+// Clearfix
+
+/* clearfix */
+.clearfix:before,
+.clearfix:after {
+  content: " ";
+  display: table;
+}
+
+.clearfix:after {
+  clear: both;
+}
+
+.clearfix {
+  *zoom: 1;  // For IE 6/7 only
+}
+
+// Max width settings for parent/child components
+.page-container {
+  max-width: 1220px;
+  margin: 0 auto;
+}
+
+.single-column {
+  padding: 30px 0 40px 0;
+  width: 850px;
+  margin: 0 auto;
+}
+
+
+
+// Nav bar
+
+// logo/nav bar 20/80 split
+
+nav {
+  display: block;
+  background-color: #342f2a;
+  white-space: nowrap;
+  
+  .logo {
+    display: inline-block;
+    margin: 0 auto;
+    padding: 14px 12px;
+  }
+
+  h1 {
+    margin: 0 auto;
+  }
+}
+
+// navigation links, nav icon, and nav text
+nav .primary-nav {
+  display: inline-block;
+  float: left;
+  background-color: $bar_color;
+
+  .nav-icon {
+    display: inline-block;
+    font-size: 24px;
+    margin-right: 6px;
+    vertical-align: top;
+    margin-top: 2px;
+  }
+
+  .nav-text {
+    display: inline-block;
+
+    // Sub header text
+    b {
+      text-transform: uppercase;
+      color: #c9a9a9;
+      font-weight: 700;
+      font-size: 10px;
+      display: block;
+    }
+  }
+}
+
+// nav bar anchor links 
+nav .primary-nav a {
+  display: block;
+  float: left;
+  padding: 18px 12px 18px;
+  height: 60px;
+  text-decoration: none;
+
+  &:link, &:visited {
+    color: $bar_text_color;
+  }
+}
+
+nav .secondary-nav {
+  display: inline-block;
+  float: right;
+}
