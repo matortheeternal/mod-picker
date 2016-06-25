@@ -42,8 +42,8 @@ class LoadOrderNote < ActiveRecord::Base
   before_destroy :decrement_counters
 
   def unique_plugins
-    note = LoadOrderNote.where(first_plugin_id: self.first_plugin_id, second_plugin_id: self.first_plugin_id, hidden: false).where.not(id: self.id)
-    if note.exists?
+    note = LoadOrderNote.where(first_plugin_id: self.first_plugin_id, second_plugin_id: self.first_plugin_id, hidden: false).where.not(id: self.id).first
+    if note.present?
       if note.approved
         errors.add(:plugins, "A Load Order Note for these plugins already exists.")
         errors.add(:link_id, note.id)

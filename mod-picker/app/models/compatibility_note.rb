@@ -45,8 +45,8 @@ class CompatibilityNote < ActiveRecord::Base
   before_destroy :decrement_counters
 
   def unique_mods
-    note = CompatibilityNote.where(first_mod_id: self.first_mod_id, second_mod_id: self.second_mod_id, hidden: false).where.not(id: self.id)
-    if note.exists?
+    note = CompatibilityNote.where(first_mod_id: self.first_mod_id, second_mod_id: self.second_mod_id, hidden: false).where.not(id: self.id).first
+    if note.present?
       if note.approved
         errors.add(:mods, "A Compatibility Note for these mods already exists.")
         errors.add(:link_id, note.id)
