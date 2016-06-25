@@ -53,14 +53,27 @@ app.service('modService', function(backend, $q, userTitleService, categoryServic
     };
 
     this.retrieveModReviews = function(modId, options, pageInformation) {
-        var reviews = $q.defer();
-        this.retrieveModContributions(modId, 'reviews', options, pageInformation).then(function(data) {
-            reviewSectionService.associateReviewSections(data);
-            reviews.resolve(data);
+        var action = $q.defer();
+        backend.post('/mods/' + modId + '/reviews', options).then(function(data) {
+            // prepare reviews
+            var reviews = data.reviews;
+            contributionService.associateHelpfulMarks(reviews, data.helpful_marks);
+            userTitleService.associateTitles(reviews);
+            reviewSectionService.associateReviewSections(reviews);
+            pageUtils.getPageInformation(data, pageInformation, options.page);
+            // prepare user review if present
+            if (data.user_review) {
+                var user_review = [data.user_review];
+                contributionService.associateHelpfulMarks(user_review, data.helpful_marks);
+                userTitleService.associateTitles(user_review);
+                reviewSectionService.associateReviewSections(user_review);
+            }
+            // resolve data
+            action.resolve({ reviews: data.reviews, user_review: data.user_review });
         }, function(response) {
-            reviews.reject(response);
+            action.reject(response);
         });
-        return reviews.promise;
+        return action.promise;
     };
 
     this.retrieveModAnalysis = function(modId) {
