@@ -1,4 +1,4 @@
-app.controller('modLoadOrderController', function($scope, $state, $stateParams, modService, contributionService, errorService) {
+app.controller('modLoadOrderController', function($scope, $state, $stateParams, modService, contributionService, contributionFactory) {
     // verify we can access this tab
     $scope.currentTab = $scope.findTab('Load Order');
     if (!$scope.currentTab) {
