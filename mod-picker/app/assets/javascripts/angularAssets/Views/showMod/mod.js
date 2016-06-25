@@ -166,7 +166,7 @@ app.controller('modController', function($scope, $q, $stateParams, $timeout, cur
 
     // display error messages
     $scope.$on('errorMessage', function(event, params) {
-        var errors = errorService.errorMessages(params.label, params.response);
+        var errors = errorService.errorMessages(params.label, params.response, $scope.mod.id);
         errors.forEach(function(error) {
             $scope.$broadcast('message', error);
         });
