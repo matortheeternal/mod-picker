@@ -143,11 +143,23 @@ class ModsController < ApplicationController
   # POST/GET /mods/1/reviews
   def reviews
     authorize! :read, @mod
-    reviews = @mod.reviews.accessible_by(current_ability).sort(params[:sort]).paginate(:page => params[:page], :per_page => 10)
+
+    # get reviews
+    reviews = @mod.reviews.includes(:review_ratings, :submitter => :reputation).accessible_by(current_ability).sort(params[:sort]).paginate(:page => params[:page], :per_page => 10).where("submitted_by != ? OR hidden = true", current_user.id)
     count = @mod.reviews.accessible_by(current_ability).count
-    user_review = @mod.reviews.find_by(submitted_by: current_user.id)
     review_ids = reviews.ids
-    review_ids.push(user_review.id) if user_review.present?
+
+    # handle user review
+    user_review = @mod.reviews.find_by(submitted_by: current_user.id)
+    if user_review.present?
+      if user_review.hidden
+        user_review = {}
+      else
+        review_ids.push(user_review.id) if user_review.present?
+      end
+    end
+
+    # get helpful marks
     helpful_marks = HelpfulMark.where(submitted_by: current_user.id, helpfulable_type: "Review", helpfulable_id: review_ids)
     render :json => {
         reviews: reviews,

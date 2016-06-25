@@ -62,15 +62,11 @@ app.service('modService', function(backend, $q, userTitleService, categoryServic
             reviewSectionService.associateReviewSections(reviews);
             pageUtils.getPageInformation(data, pageInformation, options.page);
             // prepare user review if present
-            if (data.user_review) {
+            if (data.user_review && data.user_review.id) {
                 var user_review = [data.user_review];
                 contributionService.associateHelpfulMarks(user_review, data.helpful_marks);
                 userTitleService.associateTitles(user_review);
                 reviewSectionService.associateReviewSections(user_review);
-                // filter user_review out of reviews if present
-                data.reviews = reviews.filter(function(review) {
-                    return review.id != data.user_review.id;
-                });
             }
             // resolve data
             action.resolve({ reviews: data.reviews, user_review: data.user_review });
