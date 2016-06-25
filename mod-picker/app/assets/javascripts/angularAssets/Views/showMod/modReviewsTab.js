@@ -239,7 +239,7 @@ app.controller('modReviewsController', function($scope, $stateParams, $state, mo
         } else {
             contributionService.submitContribution("reviews", reviewObj).then(function(review) {
                 $scope.$emit("successMessage", "Review submitted successfully.");
-                $scope.mod.reviews.unshift(review);
+                $scope.mod.user_review = review;
                 $scope.discardReview();
             }, function(response) {
                 var params = {label: 'Error submitting Review', response: response};
