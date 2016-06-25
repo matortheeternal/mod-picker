@@ -31,7 +31,7 @@ class Review < ActiveRecord::Base
   validates :mod_id, :text_body, presence: true
   validates :text_body, length: {in: 512..32768}
   # only one review per mod per user
-  validates :mod_id, uniqueness: { scope: :submitted_by }
+  validates :mod_id, uniqueness: { scope: :submitted_by, :message => "You've already submitted a review for this mod." }
 
   # Callbacks
   after_create :increment_counters
