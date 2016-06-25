@@ -146,9 +146,15 @@ app.controller('modController', function($scope, $q, $stateParams, $timeout, cur
         $scope.removeTab('Install Order');
         $scope.removeTab('Load Order');
     }
-    // remove Load Order tab if mod has no plugins
-    else if ($scope.mod.plugins_count === 0) {
-        $scope.removeTab('Load Order');
+    else {
+        // remove install order notes if mod is a utility
+        if ($scope.mod.is_utility) {
+            $scope.removeTab('Install Order');
+        }
+        // remove Load Order tab if mod has no plugins
+        if ($scope.mod.plugins_count === 0) {
+            $scope.removeTab('Load Order');
+        }
     }
 
     //set the class of the status box
