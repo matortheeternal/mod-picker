@@ -17,6 +17,6 @@ app.directive('installOrderNote', function () {
 
 app.controller('installOrderNoteController', function ($scope) {
     // set defaults
-    $scope.showUserColumn = angular.defined($scope.showUserColumn) ? $scope.showUserColumn : true;
-    $scope.showActions = angular.defined($scope.showActions) ? $scope.showActions : true;
+    $scope.showUserColumn = angular.isDefined($scope.showUserColumn) ? $scope.showUserColumn : true;
+    $scope.showActions = angular.isDefined($scope.showActions) ? $scope.showActions : true;
 });
