@@ -29,6 +29,7 @@ class InstallOrderNote < ActiveRecord::Base
   # Validations
   validates :first_mod_id, :second_mod_id, presence: true
   validates :text_body, length: { in: 256..16384 }
+  validates :first_mod_id, uniqueness: { scope: :second_mod_id, :message => "An Install Order Note for these mods already exists." }, conditions: -> { where(hidden: false) }
 
   # Callbacks
   after_create :increment_counters

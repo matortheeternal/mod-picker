@@ -34,6 +34,7 @@ class LoadOrderNote < ActiveRecord::Base
   # validations
   validates :first_plugin_id, :second_plugin_id, presence: true
   validates :text_body, length: {in: 256..16384}
+  validates :first_plugin_id, uniqueness: { scope: :second_plugin_id, :message => "A Load Order Note for these plugins already exists." }, conditions: -> { where(hidden: false) }
 
   # Callbacks
   after_create :increment_counters

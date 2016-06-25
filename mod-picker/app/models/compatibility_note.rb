@@ -37,6 +37,7 @@ class CompatibilityNote < ActiveRecord::Base
   # Validations
   validates :submitted_by, :status, :text_body, :first_mod_id, :second_mod_id, :game_id, presence: true
   validates :text_body, length: { in: 256..16384 }
+  validates :first_mod_id, uniqueness: { scope: :second_mod_id, :message => "A Compatibility Note for these mods already exists." }, conditions: -> { where(hidden: false) }
 
   # Callbacks
   after_create :increment_counters
