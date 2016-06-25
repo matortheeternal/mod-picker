@@ -716,8 +716,12 @@ a .help-tooltip {
     cursor: pointer;
   }
 
-  .error-message, .success-message {
-    font-size: 18px;
+  .messages {
+    background-color: transparent;
+
+    .error-message, .success-message {
+      font-size: 18px;
+    }
   }
 
   .big-modal {
