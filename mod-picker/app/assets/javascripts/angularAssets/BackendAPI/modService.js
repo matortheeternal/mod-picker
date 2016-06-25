@@ -67,6 +67,10 @@ app.service('modService', function(backend, $q, userTitleService, categoryServic
                 contributionService.associateHelpfulMarks(user_review, data.helpful_marks);
                 userTitleService.associateTitles(user_review);
                 reviewSectionService.associateReviewSections(user_review);
+                // filter user_review out of reviews if present
+                data.reviews = reviews.filter(function(review) {
+                    return review.id != data.user_review.id;
+                });
             }
             // resolve data
             action.resolve({ reviews: data.reviews, user_review: data.user_review });
