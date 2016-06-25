@@ -29,12 +29,24 @@ class InstallOrderNote < ActiveRecord::Base
   # Validations
   validates :first_mod_id, :second_mod_id, presence: true
   validates :text_body, length: { in: 256..16384 }
-  validates :first_mod_id, uniqueness: { scope: :second_mod_id, :message => "An Install Order Note for these mods already exists." }, conditions: -> { where(hidden: false) }
+  validates :unique_mods
 
   # Callbacks
   after_create :increment_counters
   before_save :set_dates
   before_destroy :decrement_counters
+
+  def unique_mods
+    note = InstallOrderNote.where(first_mod_id: self.first_mod_id, second_mod_id: self.second_mod_id, hidden: false).where.not(id: self.id)
+    if note.exists?
+      if note.approved
+        errors.add(:mods, "An Install Order Note for these mods already exists.")
+        errors.add(:link_id, note.id)
+      else
+        errors.add(:mods, "An unapproved Install Order Note for these mods already exists.")
+      end
+    end
+  end
 
   def mods
     [first_mod, second_mod]
