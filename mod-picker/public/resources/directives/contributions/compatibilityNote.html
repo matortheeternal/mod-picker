@@ -10,6 +10,19 @@
                 <a ng-href="#/mod/{{note.mods[0].id}}" target="_blank">{{note.mods[0].name}}</a>
             </span>
         </span>
+        <span ng-if="!modId">
+            <span ng-if="note.compatibility_verb === 'for'">
+                <span class="capitalize">{{note.status}}</span> for
+                <a ng-href="#/mod/{{note.mods[0].id}}" target="_blank">{{note.mods[0].name}}</a>
+                and
+                <a ng-href="#/mod/{{note.mods[1].id}}" target="_blank">{{note.mods[1].name}}</a>
+            </span>
+            <span ng-if="note.compatibility_verb === 'with'">
+                <a ng-href="#/mod/{{note.mods[0].id}}" target="_blank">{{note.mods[0].name}}</a>
+                is <span class="capitalize">{{note.status}}</span> with
+                <a ng-href="#/mod/{{note.mods[1].id}}" target="_blank">{{note.mods[1].name}}</a>
+            </span>
+        </span>
         <span class="right-item">
             <span class="standing">Good Standing</span>
         </span>
