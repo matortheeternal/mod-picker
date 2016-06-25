@@ -2,8 +2,7 @@ class LoadOrderNote < ActiveRecord::Base
   include Filterable, Sortable, RecordEnhancements
 
   scope :by, -> (id) { where(submitted_by: id) }
-  scope :mod, -> (id) { joins(:mod_versions).where(:mod_versions => {mod_id: id}) }
-  scope :mv, -> (id) { joins(:mod_versions).where(:mod_versions => {id: id}) }
+  scope :plugin, -> (id) { where(first_plugin_id: id).or(second_plugin_id: id) }
 
   belongs_to :game, :inverse_of => 'load_order_notes'
   belongs_to :submitter, :class_name => 'User', :foreign_key => 'submitted_by', :inverse_of => 'load_order_notes'

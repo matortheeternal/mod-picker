@@ -2,8 +2,7 @@ class CompatibilityNote < ActiveRecord::Base
   include Filterable, Sortable, RecordEnhancements
 
   scope :by, -> (id) { where(submitted_by: id) }
-  scope :mod, -> (id) { joins(:mod_versions).where(:mod_versions => {mod_id: id}) }
-  scope :mv, -> (id) { joins(:mod_versions).where(:mod_versions => {id: id}) }
+  scope :mod, -> (id) { where(first_mod_id: id).or(second_mod_id: id) }
   scope :type, -> (array) { where(compatibility_type: array) }
 
   enum status: [ :incompatible, :"partially incompatible", :"compatibility mod", :"compatibility option", :"make custom patch" ]
