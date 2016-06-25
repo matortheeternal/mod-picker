@@ -34,7 +34,7 @@ class LoadOrderNote < ActiveRecord::Base
   # validations
   validates :first_plugin_id, :second_plugin_id, presence: true
   validates :text_body, length: {in: 256..16384}
-  validates :unique_plugins
+  validate :unique_plugins
 
   # Callbacks
   after_create :increment_counters
@@ -42,7 +42,8 @@ class LoadOrderNote < ActiveRecord::Base
   before_destroy :decrement_counters
 
   def unique_plugins
-    note = LoadOrderNote.where(first_plugin_id: self.first_plugin_id, second_plugin_id: self.first_plugin_id, hidden: false).where.not(id: self.id).first
+    plugin_ids = [first_plugin_id, second_plugin_id]
+    note = LoadOrderNote.where(first_plugin_id: plugin_ids, second_plugin_id: plugin_ids, hidden: false).where.not(id: self.id).first
     if note.present?
       if note.approved
         errors.add(:plugins, "A Load Order Note for these plugins already exists.")

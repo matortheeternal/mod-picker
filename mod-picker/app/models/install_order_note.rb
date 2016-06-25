@@ -29,7 +29,7 @@ class InstallOrderNote < ActiveRecord::Base
   # Validations
   validates :first_mod_id, :second_mod_id, presence: true
   validates :text_body, length: { in: 256..16384 }
-  validates :unique_mods
+  validate :unique_mods
 
   # Callbacks
   after_create :increment_counters
@@ -37,7 +37,8 @@ class InstallOrderNote < ActiveRecord::Base
   before_destroy :decrement_counters
 
   def unique_mods
-    note = InstallOrderNote.where(first_mod_id: self.first_mod_id, second_mod_id: self.second_mod_id, hidden: false).where.not(id: self.id).first
+    mod_ids = [first_mod_id, second_mod_id]
+    note = InstallOrderNote.where(first_mod_id: mod_ids, second_mod_id: mod_ids, hidden: false).where.not(id: self.id).first
     if note.present?
       if note.approved
         errors.add(:mods, "An Install Order Note for these mods already exists.")
