@@ -300,7 +300,7 @@ class Mod < ActiveRecord::Base
   def compute_average_rating
     total = 0.0
     count = 0
-    self.reviews.each do |r|
+    self.reviews.where(hidden: false, approved: true).each do |r|
       total += r.overall_rating
       count += 1
     end
