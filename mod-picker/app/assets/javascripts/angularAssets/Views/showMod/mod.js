@@ -166,8 +166,10 @@ app.controller('modController', function($scope, $q, $stateParams, $timeout, cur
 
     // display error messages
     $scope.$on('errorMessage', function(event, params) {
-        var errorMessage = errorService.errorMessage(params.label, params.response);
-        $scope.$broadcast('message', errorMessage);
+        var errors = errorService.errorMessages(params.label, params.response);
+        errors.forEach(function(error) {
+            $scope.$broadcast('message', error);
+        });
         // stop event propagation - we handled it
         event.stopPropagation();
     });
