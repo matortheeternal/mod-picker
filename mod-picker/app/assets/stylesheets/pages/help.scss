@@ -154,9 +154,20 @@ nav .primary-nav a {
   padding: 18px 12px 18px;
   height: 60px;
   text-decoration: none;
+  border-left: 1px solid $bar_highlight_color;
+
+  // eliminate border left styling on logo
+  &.logo {
+    border-left: none;
+  }
 
   &:link, &:visited {
     color: $bar_text_color;
+  }
+
+  &:hover {
+    color: $bar_text_color;
+    background-color: $bar_highlight_color;
   }
 }
 
