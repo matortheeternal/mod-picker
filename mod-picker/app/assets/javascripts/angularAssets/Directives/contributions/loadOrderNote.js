@@ -7,7 +7,14 @@ app.directive('loadOrderNote', function () {
             index: '=',
             currentUser: '=',
             edit: '=?',
-            showUserColumn: '='
+            showActions: '=?',
+            showUserColumn: '=?'
         }
     };
+});
+
+app.controller('installOrderNoteController', function ($scope) {
+    // set defaults
+    $scope.showUserColumn = angular.defined($scope.showUserColumn) ? $scope.showUserColumn : true;
+    $scope.showActions = angular.defined($scope.showActions) ? $scope.showActions : true;
 });
