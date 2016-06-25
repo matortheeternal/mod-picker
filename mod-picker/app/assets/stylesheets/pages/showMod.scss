@@ -751,3 +751,23 @@
     }
   }
 }
+
+// history modal
+.modal {
+  .history-container {
+    table {
+      tbody tr {
+        background-color: $primary_background;
+        cursor: pointer;
+
+        &:hover {
+          background-color: $secondary_background;
+        }
+
+        &.selected {
+          background-color: $secondary_background;
+        }
+      }
+    }
+  }
+}
