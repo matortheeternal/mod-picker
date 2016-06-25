@@ -16,6 +16,9 @@ app.controller('historyModalController', function ($scope) {
                     $scope.activeHistoryEntry[property] = entry[property];
                 }
             }
+            if (entry.edited == $scope.target.submitted) {
+                $scope.activeHistoryEntry.edited = null;
+            }
         }
     };
 
