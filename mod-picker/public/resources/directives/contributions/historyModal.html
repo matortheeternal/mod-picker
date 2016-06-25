@@ -7,7 +7,16 @@
         <h2>
             {{target.submitter.username}}'s {{model.label}} - History
         </h2>
-        <!-- TODO: Display version of the note -->
+
+        <div class="content-block" ng-if="model.name === 'CompatibilityNote'">
+            <compatibility-note note="activeHistoryEntry" index="10" current-user="currentUser" show-actions="false"></compatibility-note>
+        </div>
+        <div class="content-block" ng-if="model.name === 'InstallOrderNote'">
+            <install-order-note note="activeHistoryEntry" index="10" current-user="currentUser" show-actions="false"></install-order-note>
+        </div>
+        <div class="content-block" ng-if="model.name === 'LoadOrderNote'">
+            <load-order-note note="activeHistoryEntry" index="10" current-user="currentUser" show-actions="false"></load-order-note>
+        </div>
 
         <h3 class="section-title">History</h3>
         <loader data="target.history" content-class="history-container" spinner-class="big-spinner" ng-if="!errors.history">
