@@ -1,5 +1,5 @@
 class HelpPagesController < ApplicationController
-  before_action :authorize, only: [:index, :create, :update, :destroy]
+  before_action :authorize, only: [:create, :update, :destroy]
 
   def index
 
