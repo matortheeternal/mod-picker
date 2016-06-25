@@ -468,6 +468,12 @@
   }
 }
 
+//user review box
+.user-review {
+  border: 1px solid $bar_dark_color;
+  border-top: none;
+}
+
 //making the text-area scroll
 .note-text-area {
   .CodeMirror {

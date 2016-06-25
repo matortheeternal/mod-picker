@@ -70,6 +70,10 @@
 </div>
 
 <loader data="mod.reviews" spinner-class="big-spinner" ng-if="!errors.reviews && !errors.reviewSections">
+    <div class="content-block user-review" ng-if="!mod.user_review.editing">
+        <review review="mod.user_review" show-user-column="true" index="99" current-user="currentUser" edit="editReview"></review>
+    </div>
+
     <div ng-repeat="review in mod.reviews" class="content-block" ng-if="!review.editing">
         <review review="review" show-user-column="true" index="100 + $index" current-user="currentUser" edit="editReview"></review>
     </div>
