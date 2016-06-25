@@ -1,4 +1,4 @@
-app.controller('modInstallOrderController', function($scope, $stateParams, $state, modService, contributionService, errorService) {
+app.controller('modInstallOrderController', function($scope, $stateParams, $state, modService, contributionService, contributionFactory) {
     // verify we can access this tab
     $scope.currentTab = $scope.findTab('Install Order');
     if (!$scope.currentTab) {
