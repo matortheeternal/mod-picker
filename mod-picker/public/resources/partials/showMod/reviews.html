@@ -20,7 +20,7 @@
     </div>
 
     <div class="mod-tab-item">
-        <input class="btn" type="button" value="Add Review" ng-click="startNewReview()" ng-disabled="activeReview || mod.user_review"/>
+        <input class="btn" type="button" value="Add Review" ng-click="startNewReview()" ng-disabled="activeReview || mod.user_review" title="{{ mod.user_review ? 'You have already submitted a review for this mod.' : 'Add a new review' }}"/>
     </div>
 </div>
 
