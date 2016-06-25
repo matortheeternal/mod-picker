@@ -125,25 +125,8 @@ nav .primary-nav {
   float: left;
   background-color: $bar_color;
 
-  .nav-icon {
-    display: inline-block;
-    font-size: 24px;
-    margin-right: 6px;
-    vertical-align: top;
-    margin-top: 2px;
-  }
-
   .nav-text {
     display: inline-block;
-
-    // Sub header text
-    b {
-      text-transform: uppercase;
-      color: #c9a9a9;
-      font-weight: 700;
-      font-size: 10px;
-      display: block;
-    }
   }
 }
 
@@ -154,11 +137,10 @@ nav .primary-nav a {
   padding: 18px 12px 18px;
   height: 60px;
   text-decoration: none;
-  border-left: 1px solid $bar_highlight_color;
 
   // eliminate border left styling on logo
   &.logo {
-    border-left: none;
+    padding: 6px 12px;
   }
 
   &:link, &:visited {
@@ -166,8 +148,7 @@ nav .primary-nav a {
   }
 
   &:hover {
-    color: $bar_text_color;
-    background-color: $bar_highlight_color;
+    color: darken($bar_text_color, (15%));
   }
 }
 
