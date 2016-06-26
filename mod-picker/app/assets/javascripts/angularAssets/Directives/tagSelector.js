@@ -4,7 +4,7 @@ app.directive('tagSelector', function () {
         templateUrl: '/resources/directives/tagSelector.html',
         controller: 'tagSelectorController',
         scope: {
-        	activeTags: '=',
+            activeTags: '=',
             newTags: '=',
             maxTags: '=',
             canCreate: '=',
@@ -12,13 +12,15 @@ app.directive('tagSelector', function () {
             showModListsCount: '=?',
             showAuthor: '=?',
             showRemove: '=?',
-            showAdd: '=?'
+            showAdd: '=?',
+            saveCallback: '=?'
         }
     }
 });
 
 app.controller('tagSelectorController', function ($scope, tagService) {
     $scope.rawNewTags = [];
+    $scope.removedTags = [];
 
     tagService.retrieveTags().then(function(data) {
         $scope.tags = data;
@@ -37,6 +39,37 @@ app.controller('tagSelectorController', function ($scope, tagService) {
     $scope.removeTag = function($index) {
         $scope.rawNewTags.splice($index, 1);
         $scope.storeTags();
+    };
+
+    $scope.removeActiveTag = function ($index) {
+        var removedTag = $scope.activeTags.splice($index, 1);
+        $scope.removedTags.push(removedTag[0]);
+    };
+
+    $scope.resetTags = function () {
+        $scope.activeTags = $scope.activeTags.concat($scope.removedTags);
+        $scope.rawNewTags = [];
+        $scope.removedTags = [];
+        $scope.storeTags();
+        $scope.$applyAsync();
+    };
+
+    $scope.saveTags = function() {
+        var updatedTags = [];
+        $scope.activeTags.forEach(function(tag) {
+            updatedTags.push(tag.text);
+        });
+        $scope.rawNewTags.forEach(function(tag) {
+            updatedTags.push(tag.text);
+        });
+        $scope.saveCallback(updatedTags).then(function(data) {
+            if (data.status == "ok") {
+                $scope.activeTags = data.tags;
+                $scope.rawNewTags = [];
+                $scope.removedTags = [];
+                $scope.storeTags();
+            }
+        });
     };
 
     $scope.applyTag = function(index, tag) {

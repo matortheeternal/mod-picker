@@ -1,14 +1,9 @@
 //TODO: maybe we should think about splitting the logic to retrieve all the data and filtering it.
 app.service('categoryService', function ($q, backend) {
+    var service = this;
 
     this.retrieveCategories = function() {
-        var categories = $q.defer();
-
-        backend.retrieve('/categories', {cache: true}).then(function (data) {
-            categories.resolve(data);
-        });
-
-        return categories.promise;
+        return backend.retrieve('/categories', {cache: true});
     };
 
     function retrieveFilteredCategories(key) {
@@ -31,22 +26,21 @@ app.service('categoryService', function ($q, backend) {
     }
 
     this.retrieveCategoryPriorities = function() {
-        var categoryPriorities = $q.defer();
-
-        backend.retrieve('/category_priorities').then(function (data) {
-            categoryPriorities.resolve(data);
-        });
-
-        return categoryPriorities.promise;
+        return backend.retrieve('/category_priorities');
     };
 
-    this.getCategoryById = function(categories, id) {
-        for (var i = 0; i < categories.length; i++) {
-            var category = categories[i];
-            if (category.id == id) {
-                return category;
-            }
-        }
+    //storing all categories in a variable
+    var allCategories = this.retrieveCategories();
+
+    this.getCategoryById = function (id) {
+      var category = $q.defer();
+
+      allCategories.then(function (categories) {
+        category.resolve(categories.find(function (data) {
+          return data.id === id;
+        }));
+      });
+      return category.promise;
     };
 
     this.retrievePrimaryCategory = function () {
@@ -74,5 +68,19 @@ app.service('categoryService', function ($q, backend) {
             });
         });
         return nestedCategoriesPromise.promise;
+    };
+
+    this.resolveModCategories = function(mod) {
+        if (mod.primary_category_id) {
+            service.getCategoryById(mod.primary_category_id).then(function (primaryCategory) {
+                mod.primary_category = primaryCategory;
+            });
+        }
+
+        if (mod.secondary_category_id) {
+            service.getCategoryById(mod.secondary_category_id).then(function(secondaryCategory) {
+                mod.secondary_category = secondaryCategory;
+            });
+        }
     };
 });

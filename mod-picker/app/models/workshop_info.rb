@@ -6,7 +6,7 @@ class WorkshopInfo < ActiveRecord::Base
   belongs_to :game, :inverse_of => 'workshop_infos'
 
   # Validations
-  # TODO: Validations
+  validates :game_id, :mod_name, :uploaded_by, :released, presence: true
 
   # Callbacks
   after_save :update_mod_dates
@@ -17,8 +17,8 @@ class WorkshopInfo < ActiveRecord::Base
     end
 
     hash = Hash.new
-    hash[:updated] = self.date_updated if self.mod.updated.nil? || self.mod.updated < self.date_updated
-    hash[:released] = self.date_submitted if self.mod.released.nil? || self.mod.released > self.date_submitted
+    hash[:updated] = self.updated if self.mod.updated.nil? || self.mod.updated < self.updated
+    hash[:released] = self.released if self.mod.released.nil? || self.mod.released > self.released
 
     if hash.any?
       self.mod.update_columns(hash)

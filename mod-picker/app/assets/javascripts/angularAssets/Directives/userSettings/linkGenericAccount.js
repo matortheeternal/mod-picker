@@ -20,13 +20,14 @@ app.controller('linkGenericAccountController', function ($scope, $timeout, userS
     $scope.showModal = false;
     $scope.waiting = false;
     $scope.verified = false;
-    $scope.site = sitesFactory.getSite(sitesFactory.sites(), $scope.siteLabel);
+    $scope.site = sitesFactory.getSite($scope.siteLabel);
 
     $scope.focusText = function($event) {
         $event.target.select();
     };
 
     $scope.toggleModal = function() {
+        $scope.$emit('toggleModal', visible);
         $scope.showModal = !$scope.showModal;
     };
 

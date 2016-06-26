@@ -4,15 +4,15 @@
 
 app.directive('compatibilityNote', function () {
     return {
-        retrict: 'E',
+        restrict: 'E',
         templateUrl: '/resources/directives/contributions/compatibilityNote.html',
         controller: 'compatibilityNoteController',
         scope: {
-        	note: '=',
+            note: '=',
             index: '=',
-            user: '=',
+            currentUser: '=',
             edit: '=?',
-            showAuthorColumn: '=',
+            showUserColumn: '=',
             modId: '=?'
         }
     }
@@ -21,7 +21,7 @@ app.directive('compatibilityNote', function () {
 app.controller('compatibilityNoteController', function ($scope) {
     // TODO: Should probably be moved into some kind of service
     function getVerb() {
-        switch ($scope.note.compatibility_type) {
+        switch ($scope.note.status) {
             case "incompatible":
                 return "with";
             case "partially incompatible":

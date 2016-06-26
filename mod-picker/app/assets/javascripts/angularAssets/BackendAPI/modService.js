@@ -1,106 +1,88 @@
-app.service('modService', function(backend, $q) {
-    this.retrieveMod = function(modId) {
-        return backend.retrieve('/mods/' + modId);
-    };
-
-    var pages = {
-        current: 1
-    };
-
-    this.retrieveMods = function(filters, sort, newPage) {
-        var mods = $q.defer();
-
-        if(newPage && newPage > pages.max) {
-            mods.reject();
-            return mods.promise;
-        }
-
-        pages.current = newPage || pages.current;
-
-        var postData =  {
-            filters: filters,
-            sort: sort,
-            page: pages.current
-        };
-
-        backend.post('/mods', postData).then(function (data) {
-            pages.max = Math.ceil(data.max_entries / data.entries_per_page);
-            mods.resolve({
-                mods: data.mods,
-                pageInformation: pages
-            });
+app.service('modService', function(backend, $q, userTitleService, categoryService, recordGroupService, assetUtils, errorsFactory, pluginService, reviewSectionService, contributionService, pageUtils) {
+    this.retrieveMods = function(options, pageInformation) {
+        var action = $q.defer();
+        backend.post('/mods/index', options).then(function (data) {
+            pageUtils.getPageInformation(data, pageInformation, options.page);
+            action.resolve(data);
+        }, function(response) {
+            action.reject(response);
         });
-
-        return mods.promise;
+        return action.promise;
     };
 
     this.searchMods = function(name) {
-        var mods = $q.defer();
-
         var postData =  {
             filters: {
                 search: name
             }
         };
-
-        backend.post('/mods/search', postData).then(function (data) {
-            mods.resolve(data);
+        return backend.post('/mods/search', postData);
+    };
+    
+    this.retrieveMod = function(modId) {
+        var output = $q.defer();
+        backend.retrieve('/mods/' + modId).then(function(data) {
+            categoryService.resolveModCategories(data.mod);
+            output.resolve(data);
+        }, function(response) {
+            output.reject(response);
         });
-
-        return mods.promise;
+        return output.promise;
     };
 
     this.starMod = function(modId, starred) {
-        var star = $q.defer();
         if (starred) {
-            backend.delete('/mods/' + modId + '/star').then(function (data) {
-                star.resolve(data);
-            });
+            return backend.delete('/mods/' + modId + '/star');
         } else {
-            backend.post('/mods/' + modId + '/star', {}).then(function (data) {
-                star.resolve(data);
-            });
+            return backend.post('/mods/' + modId + '/star', {});
         }
-        return star.promise;
     };
 
-    this.retrieveReviews = function(modId, options) {
+    this.retrieveModContributions = function(modId, route, options, pageInformation) {
+        var action = $q.defer();
+        backend.post('/mods/' + modId + '/' + route, options).then(function (data) {
+            var contributions = data[route];
+            contributionService.associateHelpfulMarks(contributions, data.helpful_marks);
+            userTitleService.associateTitles(contributions);
+            pageUtils.getPageInformation(data, pageInformation, options.page);
+            action.resolve(contributions);
+        }, function(response) {
+            action.reject(response);
+        });
+        return action.promise;
+    };
+
+    this.retrieveModReviews = function(modId, options, pageInformation) {
         var reviews = $q.defer();
-        backend.retrieve('/mods/' + modId + '/reviews', options).then(function (data) {
+        this.retrieveModContributions(modId, 'reviews', options, pageInformation).then(function(data) {
+            reviewSectionService.associateReviewSections(data);
             reviews.resolve(data);
+        }, function(response) {
+            reviews.reject(response);
         });
         return reviews.promise;
     };
 
-    this.retrieveCompatibilityNotes = function(modId, options) {
-        var compatibilityNotes = $q.defer();
-        backend.retrieve('/mods/' + modId + '/compatibility_notes', options).then(function (data) {
-            compatibilityNotes.resolve(data);
-        });
-        return compatibilityNotes.promise;
-    };
+    this.retrieveModAnalysis = function(modId) {
+        var output = $q.defer();
+        backend.retrieve('/mods/' + modId + '/' + 'analysis').then(function (analysis) {
+            // turn assets into an array of string
+            analysis.assets = analysis.assets.map(function(asset) {
+                return asset.filepath;
+            });
+            // create nestedAssets tree
+            analysis.nestedAssets = assetUtils.convertDataStringToNestedObject(analysis.assets);
 
-    this.retrieveInstallOrderNotes = function(modId, options) {
-        var installOrderNotes = $q.defer();
-        backend.retrieve('/mods/' + modId + '/install_order_notes', options).then(function (data) {
-            installOrderNotes.resolve(data);
-        });
-        return installOrderNotes.promise;
-    };
+            // prepare plugin data for display
+            recordGroupService.associateGroups(analysis.plugins);
+            pluginService.combineAndSortMasters(analysis.plugins);
+            pluginService.associateOverrides(analysis.plugins);
+            pluginService.sortErrors(analysis.plugins);
 
-    this.retrieveLoadOrderNotes = function(modId, options) {
-        var loadOrderNotes = $q.defer();
-        backend.retrieve('/mods/' + modId + '/load_order_notes', options).then(function (data) {
-            loadOrderNotes.resolve(data);
+            output.resolve(analysis);
+        }, function(response) {
+            output.reject(response);
         });
-        return loadOrderNotes.promise;
-    };
-
-    this.retrieveAnalysis = function(modId, options) {
-        var analysis = $q.defer();
-        backend.retrieve('/mods/' + modId + '/analysis', options).then(function (data) {
-            analysis.resolve(data);
-        });
-        return analysis.promise;
+        return output.promise;
     };
 });

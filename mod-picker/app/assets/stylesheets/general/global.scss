@@ -11,6 +11,10 @@ body {
   position: relative;
 }
 
+.no-scroll {
+  overflow-y: hidden;
+}
+
 .content {
   padding-bottom: 176px;
 }
@@ -79,6 +83,13 @@ body {
   column-count: $val;
 }
 
+//noinspection ALL
+@mixin wordbreak {
+  word-break: normal;
+  word-break: break-word; /*Chrome specific*/
+  hyphens: auto;
+}
+
 
 /* utility classes */
 .capitalize {
@@ -95,6 +106,10 @@ body {
 
 .half-opacity {
   opacity: 0.50;
+}
+
+.right-item {
+  float: right;
 }
 
 /* url styling */
@@ -152,13 +167,11 @@ h1 {
 
 h2 {
   color: $h2_color;
-  padding: 0;
-  margin: 0;
+  padding: 0 0 4px;
+  margin: 0 0 18px;
   font-size: 24px;
   font-weight: 300;
   border-bottom: 1px solid $border_color;
-  padding-bottom: 4px;
-  margin-bottom: 18px;
 }
 
 h3 {
@@ -226,6 +239,7 @@ input[type="button"], input[type="submit"] {
 }
 
 .action-button-container {
+  margin-top: 16px;
   text-align: center;
 }
 
@@ -235,6 +249,17 @@ input[type="button"], input[type="submit"] {
   margin: 4px;
   padding: 10px;
   height: 38px;
+
+  &:hover {
+    background-color: $shadow_color
+  }
+}
+
+.small-action-btn {
+  background-color: $bar_highlight_color;
+  display: block;
+  padding: 4px 8px;
+  height: 26px;
 
   &:hover {
     background-color: $shadow_color
@@ -277,22 +302,12 @@ input[type="button"], input[type="submit"] {
 }
 
 .tab {
-  .tab-section {
-    margin-left: 0;
-    h3 {
-      margin: 0;
-      background-color: $bar_dark_color;
-      padding: 14px;
-      font-size: 16px;
-      color: $inverse_text_color;
-    }
-    section {
-      margin: 0;
-      padding: 14px;
-      background-color: $primary_background;
-      border: 1px solid $border_color;
-      border-top: 0;
-    }
+  > div:first-child {
+    margin-top: 0;
+  }
+
+  > div:last-child {
+    margin-bottom: 0;
   }
 }
 
@@ -380,12 +395,42 @@ input[type="button"], input[type="submit"] {
 }
 
 /* css for forms, inputs, and labels */
-.success-message {
-  background-color: $success_primary;
-  padding: 14px;
-  font-weight: 500;
-  font-size: 20px;
-  text-align: center;
+.messages {
+  max-height: 400px;
+  overflow: hidden;
+
+  &.ng-hide-add {
+    transition: 1s max-height ease-in;
+  }
+
+  &.ng-hide-remove {
+    transition: 1s max-height ease-out;
+  }
+
+  &.ng-hide {
+    max-height: 0;
+  }
+
+  .error-message {
+    .fa {
+        padding: 4px;
+    }
+
+    .fa:hover {
+        color: $action_text_color;
+        background-color: $text_color;
+        cursor: pointer;
+    }
+  }
+
+  .success-message {
+    background-color: $success_primary;
+    padding: 14px;
+    font-weight: 500;
+    font-size: 20px;
+    text-align: center;
+    height: 54px;
+  }
 }
 
 select {
@@ -394,7 +439,7 @@ select {
   border-radius: 4%;
   color: $h4_color;
   font: inherit;
-  padding: 0.5em 3em 0.5em 1em;
+  padding: 0.5em 2.5em 0.5em 0.5em;
 
   // reset browser style
   margin: 0;
@@ -601,6 +646,8 @@ a .help-tooltip {
 .avatar-small {
   max-width: 48px;
   max-height: 48px;
+  border-width: 0;
+  box-shadow: 0 0 4px 2px $border_color;
 }
 
 .avatar-medium {
@@ -621,6 +668,7 @@ a .help-tooltip {
   left: 0;
   width: 100%;
   height: 100%;
+  overflow-y: auto;
   z-index: 3;
   background-color: rgba($shadow_color, 0.4);
 
@@ -630,7 +678,19 @@ a .help-tooltip {
     padding: 40px;
     margin: 150px auto;
     background-color: $primary_background;
-    box-shadow: 1px 1px 10px 1px rgba($shadow_color, 0.8)
+    box-shadow: 1px 1px 10px 1px rgba($shadow_color, 0.8);
+
+    .section-title {
+      display: block;
+      vertical-align: top;
+      font-size: 20px;
+      font-weight: 500;
+      color: $text_color;
+    }
+
+    .content-message {
+      margin: 20px 0 0;
+    }
   }
 
   .skinny-modal {
@@ -656,6 +716,11 @@ a .help-tooltip {
     width: 600px;
   }
 
+  .huge-modal {
+    width: 800px;
+    margin: 100px auto;
+  }
+
   .checkbox-list {
     font-size: 14px;
   }
@@ -664,10 +729,26 @@ a .help-tooltip {
     margin-top: 0;
   }
 
-  form {
-    section {
-      margin: 15px;
-    }
+  section {
+    margin: 15px;
+  }
+}
+
+.fullscreen-modal-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 3;
+  background-color: $primary_background;
+
+  .modal {
+    position: relative;
+    width: 600px;
+    padding: 40px;
+    margin: 150px auto;
+    text-align: center;
   }
 }
 
@@ -677,9 +758,10 @@ a .help-tooltip {
   margin: auto;
   padding: 14px;
   text-align: center;
-  background-color: $background-highlight;
+
   .page-item {
     border: 1px solid $border_color;
+    background-color: $background-highlight;
     padding: 4px;
   }
   .page-ellipsis {
@@ -691,7 +773,7 @@ a .help-tooltip {
 /* css for spinner */
 
 .big-spinner {
-  height: 300px;
+  height: 200px;
 }
 
 .medium-spinner {

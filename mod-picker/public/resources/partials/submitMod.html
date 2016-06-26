@@ -10,7 +10,7 @@
             <section>
                 <div class="dynamic-item" ng-repeat="source in sources">
                     <select ng-model="source.label" ng-change="validateSource(source)" ng-disabled="source.scraped">
-                        <option ng-repeat="site in sites">{{site.label}}</option>
+                        <option ng-repeat="site in sites" ng-if="!site.hidden">{{site.label}}</option>
                     </select>
                     <input type="text" class="long-input" ng-model="source.url" ng-change="validateSource(source)" ng-disabled="source.scraped">
                     <input type="button" class="btn scrape-button" value="Scrape" ng-click="scrapeSource(source)" ng-disabled="!source.valid || source.scraped">
@@ -52,12 +52,12 @@
                                     <td>{{nexus.current_version}}</td>
                                 </tr>
                                 <tr>
-                                    <td>Date Submitted</td>
-                                    <td>{{nexus.date_added | date }}</td>
+                                    <td>Date Released</td>
+                                    <td>{{nexus.released | date }}</td>
                                 </tr>
                                 <tr>
                                     <td>Date Updated</td>
-                                    <td>{{nexus.date_updated | date }}</td>
+                                    <td>{{nexus.updated | date }}</td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -86,12 +86,12 @@
                                     <td>{{workshop.uploaded_by}}</td>
                                 </tr>
                                 <tr>
-                                    <td>Date Submitted</td>
-                                    <td>{{workshop.date_submitted | date }}</td>
+                                    <td>Date Released</td>
+                                    <td>{{workshop.released | date }}</td>
                                 </tr>
                                 <tr>
                                     <td>Date Updated</td>
-                                    <td>{{workshop.date_updated | date }}</td>
+                                    <td>{{workshop.updated | date }}</td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -120,12 +120,12 @@
                                     <td>{{lab.uploaded_by}}</td>
                                 </tr>
                                 <tr>
-                                    <td>Date Submitted</td>
-                                    <td>{{lab.date_submitted | date }}</td>
+                                    <td>Date Released</td>
+                                    <td>{{lab.released | date }}</td>
                                 </tr>
                                 <tr>
                                     <td>Date Updated</td>
-                                    <td>{{lab.date_updated | date }}</td>
+                                    <td>{{lab.updated | date }}</td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -206,8 +206,27 @@
             </section>
 
             <div class="action-button-container">
-                <input class="btn action-btn" type="submit" ng-disabled='modInvalid()' ng-click="submit()" value="Submit"/>
+                <input class="btn action-btn" type="submit" ng-disabled='submitting || modInvalid()' ng-click="submit()" value="Submit"/>
             </div>
         </form>
+    </div>
+</div>
+
+<div class="fullscreen-modal-container" ng-show="submitting">
+    <div class="modal">
+        <loader data="success || errors" spinner-class="big-spinner">
+        </loader>
+        <h2>{{submittingStatus}}</h2>
+        <div ng-show="success">
+            <a href="#/mods">Click here</a> to return to the Mods Index
+        </div>
+        <div ng-show="errors">
+            <div ng-repeat="error in errors">
+                {{error.message}}
+            </div>
+            <div>
+                <a ng-click="closeModal()">Click here</a> to return the submission form
+            </div>
+        </div>
     </div>
 </div>

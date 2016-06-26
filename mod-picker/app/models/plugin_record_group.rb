@@ -5,5 +5,5 @@ class PluginRecordGroup < ActiveRecord::Base
 
   # Validations
   validates :plugin_id, :sig, :record_count, :override_count, presence: true
-  validates :sig, length: {maximum: 4}
+  validates :sig, length: {is: 4}
 end

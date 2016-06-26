@@ -1,5 +1,5 @@
 <two-columns>
-    <loader data="user">
+    <loader data="user" spinner-class="big-spinner">
         <div class="page-container">
             <div class="left-column left-user-column medium-column">
                 <img class="avatar avatar-full" ng-src="{{user.avatar}}">
@@ -7,7 +7,7 @@
                 <h3 class="big-username">{{user.username}}</h3>
                 <section>
                     <div class="user-title">{{user.title}}</div>
-                    <div class="{{roleClass}}">{{user.role}}</div>
+                    <div class="user-role {{roleClass}}">{{user.role}}</div>
                 </section>
 
                 <h3 class="section-title">Reputation</h3>
@@ -33,11 +33,11 @@
 
                 <h3 class="section-title" ng-if="user['email_public?']">Contact</h3>
                 <section ng-if="user['email_public?']">
-                    <div class="stat-item">Email: {{user.email}}</div>
+                    <div class="stat-item">Email: <a href="mailto:{{user.email}}">{{user.email}}</a></div>
                     <div ng-if="user.bio.nexus_username">
                         <a ng-href="http://www.nexusmods.com/games/users/{{user.bio.nexus_user_id}}">
                             <div class="action-box source-box">
-                                <img src="/assets/nexus_logo" class="source-image"/>
+                                <img src="/images/nexus_logo.png" class="source-image"/>
                                 Nexus
                             </div>
                         </a>
@@ -45,7 +45,7 @@
                     <div ng-if="user.bio.steam_username">
                         <a ng-href="http://steamcommunity.com/id/{{user.bio.steam_username}}">
                             <div class="action-box source-box">
-                                <img src="/assets/steam_logo" class="source-image" />
+                                <img src="/images/workshop_logo.png" class="source-image" />
                                 Steam
                             </div>
                         </a>
@@ -53,7 +53,7 @@
                     <div ng-if="user.bio.lover_username">
                         <a ng-href="http://www.loverslab.com/user/148698-milzschnitte/{{user.bio.lover_user_path}}">
                             <div class="action-box source-box">
-                                <img src="/assets/lovers_logo" class="source-image" />
+                                <img src="/images/lab_logo.png" class="source-image" />
                                 Lover's Lab
                             </div>
                         </a>
@@ -61,8 +61,10 @@
                 </section>
             </div>
             <div class="right-column tabs-column right-user-column">
-                <tabs current-tab="currentTab" tabs="tabs" container-class="''"></tabs>
-                <div ng-include="currentTab.url" class="tab"></div>
+                <tabs tabs="tabs"></tabs>
+                <state-loader spinner-class="big-spinner">
+                    <div ui-view class="tab"></div>
+                </state-loader>
             </div>
         </div>
     </loader>

@@ -2,9 +2,10 @@ class ModList < ActiveRecord::Base
   include Filterable, Sortable, RecordEnhancements
 
   enum status: [ :planned, :"under construction", :testing, :complete ]
+  enum visibility: [ :visibility_private, :visibility_unlisted, :visibility_public ]
 
   belongs_to :game, :inverse_of => 'mod_lists'
-  belongs_to :user, :foreign_key => 'created_by', :inverse_of => 'mod_lists'
+  belongs_to :submitter, :class_name => 'User', :foreign_key => 'submitted_by', :inverse_of => 'mod_lists'
 
   # INSTALL ORDER
   has_many :mod_list_mods, :inverse_of => 'mod_list'
@@ -32,17 +33,20 @@ class ModList < ActiveRecord::Base
   has_one :base_report, :as => 'reportable'
 
   # Validations
-  validates :game_id, presence: true 
+  validates :game_id, :submitted_by, :name, presence: true
+
   validates_inclusion_of :is_collection, :hidden, :has_adult_content, {
     in: [true, false],
     message: "must be true or false"
   }
+
+  validates :name, length: { in: 4..255 }
   validates :description, length: { maximum: 65535 }
 
   # Callbacks
-  after_create :increment_counters
+  after_create :increment_counters, :set_active
   before_save :set_dates
-  before_destroy :decrement_counters
+  before_destroy :decrement_counters, :unset_active
 
   def update_lazy_counters
     mod_ids = mod_list_mods.all.ids
@@ -112,8 +116,14 @@ class ModList < ActiveRecord::Base
 
   def incompatible_mods
     mod_ids = mod_list_mods.all.ids
-    incompatible_notes = CompatibilityNote.where("compatibility_type in ? AND (first_mod_id in ? OR second_mod_id in ?)", [1, 2], mod_ids, mod_ids)
+    if mod_ids.empty?
+      return []
+    end
+
+    # get incompatible notes
+    incompatible_notes = CompatibilityNote.where("status in ? AND (first_mod_id in ? OR second_mod_id in ?)", [1, 2], mod_ids, mod_ids).pluck(:status, :first_mod_id, :second_mod_id)
     incompatible_mod_ids = []
+    # build array of incompatible mod ids from incompatible notes
     incompatible_notes.each do |n|
       first_id = n.first_mod_id
       second_id = n.second_mod_id
@@ -133,10 +143,22 @@ class ModList < ActiveRecord::Base
     end
 
     def increment_counters
-      self.user.update_counter(:mod_lists_count, 1)
+      self.submitter.update_counter(:mod_lists_count, 1)
     end
 
     def decrement_counters
-      self.user.update_counter(:mod_lists_count, -1)
+      self.submitter.update_counter(:mod_lists_count, -1)
+    end
+
+    def set_active
+      self.submitter.active_mod_list_id = self.id
+      self.submitter.save
+    end
+
+    def unset_active
+      if self.submitter.active_mod_list_id == self.id
+        self.submitter.active_mod_list_id = nil
+        self.submitter.save
+      end
     end
 end

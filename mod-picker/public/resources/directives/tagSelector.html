@@ -1,5 +1,5 @@
 <div class="tags-container">
-    <span ng-repeat="tag in activeTags" class="tag-box" title="Submitted by {{tag.user.username}}">
+    <span ng-repeat="tag in activeTags" class="tag-box" title="Submitted by {{tag.submitter.username}}">
         <span class="tag-text">
             {{tag.text}}
         </span>
@@ -12,7 +12,7 @@
               title="The number of mod lists with this tag">
             {{tag.mod_lists_count | number}}
         </span>
-        <span ng-if="showRemove" class="remove-tag" ng-click="activeTags.splice($index, 1)">
+        <span ng-if="showRemove" class="remove-tag" ng-click="removeActiveTag($index)">
             <i class="fa fa-times"></i>
         </span>
     </span>
@@ -36,4 +36,9 @@
             <i class="fa fa-plus"></i> Add a tag
         </span>
     </span>
+</div>
+
+<div class="tag-actions-container" ng-if="saveCallback && (removedTags.length > 0 || rawNewTags.length > 0)">
+    <input class="btn small-action-btn" type="submit" value="Save Tags" ng-click="saveTags()">
+    <input class="btn small-action-btn" type="submit" value="Reset Tags" ng-click="resetTags()">
 </div>

@@ -4,6 +4,9 @@ class ModAssetFile < ActiveRecord::Base
   belongs_to :mod, :inverse_of => 'mod_asset_files'
   belongs_to :asset_file, :inverse_of => 'mod_asset_files'
 
+  # Validations
+  validates :mod_id, :asset_file_id, presence: true
+
   # Callbacks
   after_create :increment_counters
   before_destroy :decrement_counters

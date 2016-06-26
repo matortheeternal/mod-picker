@@ -1,9 +1,9 @@
 class LoadOrderNotesController < ContributionsController
-  before_action :set_load_order_note, only: [:show, :update, :approve, :hide, :destroy]
+  before_action :set_load_order_note, only: [:show, :update, :destroy, :corrections, :history, :approve, :hide]
 
   # GET /load_order_notes
   def index
-    @load_order_notes = LoadOrderNote.filter(filtering_params)
+    @load_order_notes = LoadOrderNote.accessible_by(current_ability).filter(filtering_params).sort(params[:sort]).paginate(:page => params[:page])
 
     render :json => @load_order_notes
   end
@@ -11,9 +11,11 @@ class LoadOrderNotesController < ContributionsController
   # POST /load_order_notes
   def create
     @load_order_note = LoadOrderNote.new(contribution_params)
+    @load_order_note.submitted_by = current_user.id
+    authorize! :create, @load_order_note
 
     if @load_order_note.save
-      render json: {status: :ok}
+      render json: @load_order_note.reload
     else
       render json: @load_order_note.errors, status: :unprocessable_entity
     end
@@ -30,8 +32,14 @@ class LoadOrderNotesController < ContributionsController
       params.slice(:by, :mod);
     end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
+    # Params allowed during creation
     def contribution_params
-      params.require(:load_order_note).permit(:load_first, :load_second, :text_body)
+      params.require(:load_order_note).permit(:game_id, :first_plugin_id, :second_plugin_id, :text_body, (:moderator_message if current_user.can_moderate?))
+    end
+
+    # Params that can be updated
+    def contribution_update_params
+      # TODO: only allow swapping the first and second plugin ids
+      params.require(:load_order_note).permit(:first_plugin_id, :second_plugin_id, :text_body, :edit_summary, (:moderator_message if current_user.can_moderate?))
     end
 end

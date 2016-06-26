@@ -1,16 +1,39 @@
 app.config(['$stateProvider', function ($stateProvider) {
-    $stateProvider.state('user', {
+    $stateProvider.state('base.user', {
             templateUrl: '/resources/partials/showUser/user.html',
             controller: 'userController',
-            url: '/profile/:userId'
-        }
-    );
+            url: '/user/:userId',
+            redirectTo: 'base.user.Social'
+        }).state('base.user.Social', {
+            templateUrl: '/resources/partials/showUser/social.html',
+            controller: 'userSocialTabController'
+        }).state('base.user.Mod Lists', {
+            templateUrl: '/resources/partials/showUser/lists.html'
+        }).state('base.user.Mods', {
+            templateUrl: '/resources/partials/showUser/mods.html'
+        }).state('base.user.Contributions', {
+            templateUrl: '/resources/partials/showUser/contributions.html'
+        });
 }]);
 
-app.controller('userController', function ($scope, $q, $stateParams, userService) {
-    userService.retrieveUser($stateParams.userId).then(function (user) {
-        $scope.user = user;
+app.controller('userController', function ($scope, $stateParams, currentUser, userService, errorService) {
+    // get parent variables
+    $scope.currentUser = currentUser;
+    $scope.permissions = currentUser.permissions;
+
+    // set up local variables
+    $scope.errors = [];
+    $scope.displayErrors = {};
+    $scope.pages = {
+        profile_comments: {}
+    };
+    $scope.retrieving = {};
+
+    // retrieve the user object
+    userService.retrieveUser($stateParams.userId).then(function(data) {
+        $scope.user = data;
         $scope.roleClass = "user-role-" + $scope.user.role;
+
         //formatting the role displayed on the site
         switch($scope.user.role) {
             case "admin":
@@ -27,22 +50,43 @@ app.controller('userController', function ($scope, $q, $stateParams, userService
                 $scope.user.role = "";
                 break;
         }
-
-        var rep = $scope.user.reputation.overall;
-        var numEndorsed = 0; //TODO: retrieve the number of endorsements this user has made
-        $scope.userCanAddMod = (rep >= 160) || ($scope.user.role === 'admin');
-        $scope.userCanAddTags = (rep >= 20) || ($scope.user.role === 'admin');
-        //can the current user endorse another person?
-        $scope.userCanEndorse = (rep >= 40 && numEndorsed <= 5) || (rep >= 160 && numEndorsed <= 10) || (rep >= 640 && numEndorsed <= 15);
+    }, function(response) {
+        errorService.handleError('user', response);
     });
 
     //of the tab data
     $scope.tabs = [
-        { name: 'Social', url: '/resources/partials/showUser/social.html' },
-        { name: 'Mod Lists', url: '/resources/partials/showUser/lists.html' },
-        { name: 'Mods', url: '/resources/partials/showUser/mods.html' },
-        { name: 'Contributions', url: '/resources/partials/showUser/contributions.html' }
+        { name: 'Social'},
+        { name: 'Mod Lists'},
+        { name: 'Mods'},
+        { name: 'Contributions'}
     ];
+});
 
-    $scope.currentTab = $scope.tabs[0];
+app.controller('userSocialTabController', function($scope, $stateParams, userService, contributionService) {
+    $scope.retrieveProfileComments = function(page) {
+        // TODO: Make options dynamic
+        var options = {
+            sort: {
+                column: 'submitted',
+                direction: 'desc'
+            },
+            page: page || 1
+        };
+        userService.retrieveProfileComments($stateParams.userId, options, $scope.pages.profile_comments).then(function(data) {
+            $scope.user.profile_comments = data;
+        }, function(response) {
+            $scope.displayErrors.profile_comments = response;
+        });
+    };
+
+    $scope.startNewComment = function() {
+        $scope.$broadcast('startNewComment');
+    };
+
+    // retrieve the profile comments
+    if (!$scope.retrieving.profile_comments) {
+        $scope.retrieving.profile_comments = true;
+        $scope.retrieveProfileComments();
+    }
 });

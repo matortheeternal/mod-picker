@@ -6,16 +6,6 @@ app.service('backend', function ($q, $http, objectUtils) {
     //Constant to be flexible in the future. Us as prefix for ALL requests
     var BASE_LOCATION = '';
 
-    //This function is only there to set a global timeout for all requests to mock a slow response from the server
-    //Why, you might ask: To see how the page behaves when the server is loaded too heavily and to check high ping
-    //connections.
-    function resolver(promise, result) {
-        //TODO: remove Timeout before going live!!!
-        //setTimeout(function () {
-            promise.resolve(result.data);
-        //}, 500);
-    }
-
     this.retrieve = function (context, additionalAttributes) {
         var promise = $q.defer();
         $http({
@@ -23,8 +13,10 @@ app.service('backend', function ($q, $http, objectUtils) {
             method: 'GET',
             params: additionalAttributes,
             cache: additionalAttributes && additionalAttributes.cache || false
-        }).then(function(result) {
-            resolver(promise, result);
+        }).then(function(response) {
+            promise.resolve(response.data);
+        }, function(response) {
+            promise.reject(response);
         });
         return promise.promise;
     };
@@ -37,8 +29,10 @@ app.service('backend', function ($q, $http, objectUtils) {
             url: BASE_LOCATION + context + '.json',
             method: 'POST',
             data: reqData
-        }).then(function(result) {
-            resolver(promise, result);
+        }).then(function(response) {
+            promise.resolve(response.data);
+        }, function(response) {
+            promise.reject(response);
         });
         return promise.promise;
     };
@@ -55,8 +49,10 @@ app.service('backend', function ($q, $http, objectUtils) {
             headers: {
                 'Content-Type': undefined
             }
-        }).then(function(result) {
-            resolver(promise, result);
+        }).then(function(response) {
+            promise.resolve(response.data);
+        }, function(response) {
+            promise.reject(response);
         });
         return promise.promise;
     };
@@ -69,8 +65,10 @@ app.service('backend', function ($q, $http, objectUtils) {
             url: BASE_LOCATION + context + '.json',
             method: 'PATCH',
             data: reqData
-        }).then(function(result) {
-            resolver(promise, result);
+        }).then(function(response) {
+            promise.resolve(response.data);
+        }, function(response) {
+            promise.reject(response);
         });
         return promise.promise;
     };
@@ -83,8 +81,10 @@ app.service('backend', function ($q, $http, objectUtils) {
             url: BASE_LOCATION + context + '.json',
             method: 'DELETE',
             params: reqData
-        }).then(function(result) {
-            resolver(promise, result);
+        }).then(function(response) {
+            promise.resolve(response.data);
+        }, function(response) {
+            promise.reject(response);
         });
         return promise.promise;
     };
