@@ -15,10 +15,11 @@ class Comment < ActiveRecord::Base
   has_many :children, :class_name => 'Comment', :foreign_key => 'parent_id', :inverse_of => 'parent'
 
   # Validations
-  validates :submitted_by, :commentable_type, :commentable_id, presence: true
+  validates :submitted_by, :commentable_type, :commentable_id, :text_body, presence: true
   validates :hidden, inclusion: [true, false]
   validates :commentable_type, inclusion: ["User", "ModList", "Correction"]
-  validates :text_body, length: {in: 1..8192}
+  validates :text_body, length: {in: 2..8192}
+  # TODO: Validation of nesting
 
   # Callbacks
   before_save :set_dates
