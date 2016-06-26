@@ -17,6 +17,8 @@ app.controller('tabsController', function($scope, $state) {
     $scope.isCurrentTab = function(tabName) {
         if ($state.includes('**.' + tabName)) {
             return 'selected-tab';
+        } else {
+            return 'unselected-tab';
         }
     };
 
