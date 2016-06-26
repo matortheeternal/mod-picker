@@ -33,11 +33,14 @@ class ModList < ActiveRecord::Base
   has_one :base_report, :as => 'reportable'
 
   # Validations
-  validates :game_id, presence: true 
+  validates :game_id, :submitted_by, :name, presence: true
+
   validates_inclusion_of :is_collection, :hidden, :has_adult_content, {
     in: [true, false],
     message: "must be true or false"
   }
+
+  validates :name, length: { in: 4..255 }
   validates :description, length: { maximum: 65535 }
 
   # Callbacks
