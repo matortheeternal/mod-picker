@@ -73,7 +73,7 @@ app.service('contributionService', function (backend, $q, userTitleService, page
         return action.promise;
     };
 
-    this.mergeEditors = function(contributions) {
+    this.handleEditors = function(contributions) {
         contributions.forEach(function(contribution) {
             if (contribution.editor && contribution.editors) {
                 var editor = contribution.editors.find(function(editor) {
@@ -81,6 +81,14 @@ app.service('contributionService', function (backend, $q, userTitleService, page
                 });
                 if (!editor) {
                     contribution.editors.unshift(contribution.editor);
+                }
+            }
+            if (contribution.editors) {
+                var index = contribution.editors.findIndex(function(editor) {
+                    return editor.id == contribution.submitter.id;
+                });
+                if (index > -1) {
+                    contribution.editors.splice(index, 1);
                 }
             }
         });

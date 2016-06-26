@@ -43,7 +43,7 @@ app.service('modService', function(backend, $q, userTitleService, categoryServic
         backend.post('/mods/' + modId + '/' + route, options).then(function (data) {
             var contributions = data[route];
             contributionService.associateHelpfulMarks(contributions, data.helpful_marks);
-            contributionService.mergeEditors(contributions);
+            contributionService.handleEditors(contributions);
             userTitleService.associateTitles(contributions);
             pageUtils.getPageInformation(data, pageInformation, options.page);
             action.resolve(contributions);
