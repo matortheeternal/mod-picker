@@ -6,7 +6,7 @@ class ModListTag < ActiveRecord::Base
   belongs_to :submitter, :class_name => 'User', :inverse_of => 'mod_list_tags', :foreign_key => 'submitted_by'
 
   # Validations
-  validates :tag_id, :mod_list_id, :submitted_by, presence: true
+  validates :mod_list_id, :tag_id, :submitted_by, presence: true
 
   # Callbacks
   after_create :increment_counters
