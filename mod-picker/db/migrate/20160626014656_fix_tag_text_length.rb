@@ -1,5 +1,5 @@
 class FixTagTextLength < ActiveRecord::Migration
   def change
-    change_column :tags, :string, limit: 32, null: false
+    change_column :tags, :text, :string, limit: 32, null: false
   end
 end
