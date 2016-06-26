@@ -5,7 +5,10 @@ app.filter('picker', function($filter) {
             return arguments[0];
         }
         else {
-            return $filter(filterName).apply(null, arguments);
+            var filterArgs = filterName.split(":");
+            filterName = filterArgs.splice(0, 1);
+            filterArgs.unshift(arguments[0]);
+            return $filter(filterName).apply(null, filterArgs);
         }
     };
 });
