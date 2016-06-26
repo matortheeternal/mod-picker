@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160626013027) do
+ActiveRecord::Schema.define(version: 20160626014656) do
 
   create_table "agreement_marks", id: false, force: :cascade do |t|
     t.integer "correction_id", limit: 4,                null: false
@@ -688,12 +688,12 @@ ActiveRecord::Schema.define(version: 20160626013027) do
   add_index "reviews", ["submitted_by"], name: "submitted_by", using: :btree
 
   create_table "tags", force: :cascade do |t|
-    t.integer "game_id",         limit: 4,                   null: false
-    t.integer "submitted_by",    limit: 4,                   null: false
-    t.string  "text",            limit: 255,                 null: false
-    t.integer "mods_count",      limit: 4,   default: 0,     null: false
-    t.integer "mod_lists_count", limit: 4,   default: 0,     null: false
-    t.boolean "hidden",                      default: false, null: false
+    t.integer "game_id",         limit: 4,                  null: false
+    t.integer "submitted_by",    limit: 4,                  null: false
+    t.string  "text",            limit: 32,                 null: false
+    t.integer "mods_count",      limit: 4,  default: 0,     null: false
+    t.integer "mod_lists_count", limit: 4,  default: 0,     null: false
+    t.boolean "hidden",                     default: false, null: false
   end
 
   add_index "tags", ["game_id"], name: "fk_rails_21222987c6", using: :btree
