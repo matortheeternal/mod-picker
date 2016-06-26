@@ -73,6 +73,19 @@ app.service('contributionService', function (backend, $q, userTitleService, page
         return action.promise;
     };
 
+    this.mergeEditors = function(contributions) {
+        contributions.forEach(function(contribution) {
+            if (contribution.editor && contribution.editors) {
+                var editor = contribution.editors.find(function(editor) {
+                    return editor.id == contribution.editor.id;
+                });
+                if (!editor) {
+                    contribution.editors.unshift(contribution.editor);
+                }
+            }
+        });
+    };
+
     this.associateAgreementMarks = function(corrections, agreementMarks) {
         // loop through corrections
         corrections.forEach(function(correction) {
