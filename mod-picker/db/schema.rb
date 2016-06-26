@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160626005604) do
+ActiveRecord::Schema.define(version: 20160626010220) do
 
   create_table "agreement_marks", id: false, force: :cascade do |t|
     t.integer "correction_id", limit: 4,                null: false
@@ -91,7 +91,7 @@ ActiveRecord::Schema.define(version: 20160626005604) do
     t.integer  "compatibility_mod_id",    limit: 4
     t.integer  "compatibility_plugin_id", limit: 4
     t.text     "text_body",               limit: 65535,             null: false
-    t.text     "edit_summary",            limit: 65535
+    t.string   "edit_summary",            limit: 255,               null: false
     t.datetime "edited"
   end
 
