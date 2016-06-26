@@ -1,6 +1,9 @@
 class Article < ActiveRecord::Base
   belongs_to :user, :foreign_key => 'submitted_by', :inverse_of => 'articles'
 
+  # Validations
+  validates :game_id, :submitted_by, :title, :text_body, presence: true
+
   # Callbacks
   before_save :set_dates
 
