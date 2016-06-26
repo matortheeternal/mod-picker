@@ -293,6 +293,7 @@ input[type="button"], input[type="submit"] {
 
   .selected-tab {
     background-color: inherit;
+    cursor: default;
     color: $text_color;
   }
 
