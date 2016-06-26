@@ -2,6 +2,6 @@ class DummyMaster < ActiveRecord::Base
   belongs_to :plugin, :inverse_of => 'dummy_masters'
 
   # Validations
-  validates :filename, :plugin_id, :index, presence: true
-  validates :filename, length: { maximum: 64 }
+  validates :plugin_id, :index, :filename, presence: true
+  validates :filename, length: { in: 4..128 }
 end
