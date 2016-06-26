@@ -509,6 +509,10 @@ input[type="text"], input[type="email"], input[type="password"] {
   div.CodeMirror-cursor {
     border-left: 1px solid $text_color;
   }
+
+  .CodeMirror-line {
+    @include wordbreak;
+  }
 }
 
 .editor-toolbar {
