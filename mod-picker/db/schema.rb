@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160611202215) do
+ActiveRecord::Schema.define(version: 20160626004809) do
 
   create_table "agreement_marks", id: false, force: :cascade do |t|
     t.integer "correction_id", limit: 4,                null: false
@@ -105,6 +105,7 @@ ActiveRecord::Schema.define(version: 20160611202215) do
     t.integer  "submitted_by",            limit: 4,                     null: false
     t.integer  "edited_by",               limit: 4
     t.integer  "status",                  limit: 4,     default: 0,     null: false
+    t.integer  "first_mod_id",            limit: 4,                     null: false
     t.integer  "second_mod_id",           limit: 4,                     null: false
     t.integer  "compatibility_mod_id",    limit: 4
     t.integer  "compatibility_plugin_id", limit: 4
@@ -120,7 +121,6 @@ ActiveRecord::Schema.define(version: 20160611202215) do
     t.datetime "edited"
     t.boolean  "hidden",                                default: false, null: false
     t.datetime "submitted",                                             null: false
-    t.integer  "first_mod_id",            limit: 4,                     null: false
   end
 
   add_index "compatibility_notes", ["compatibility_plugin_id"], name: "compatibility_patch", using: :btree
