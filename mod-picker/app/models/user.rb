@@ -63,29 +63,18 @@ class User < ActiveRecord::Base
   accepts_nested_attributes_for :bio
 
   # Validations
-  validates :username, presence: true, uniqueness: { case_sensitive: false }, length: {in: 4..20 }
+  validates :username, :email, :role, presence: true
+  validates :username, uniqueness: { case_sensitive: false }, length: {in: 4..32 }
 
   # TODO: add email regex
   # basic one, minimize false negatives and confirm users via email confirmation regardless
-  validates :email, presence: true, uniqueness: { case_sensitive: false }, length: {in: 7..254}
-  # format: {
-  # with: VALID_EMAIL_REGEX,
-  # message: must be a valid email address format
-  # }
-  
-  validates :role, presence: true
+  validates :email, uniqueness: { case_sensitive: false }, length: {in: 7..255}
+
   validates :about_me, length: {maximum: 16384}
-  validate :validate_username
 
   # Callbacks
   after_create :create_associations
   after_initialize :init
-
-  def validate_username
-    if User.where(email: username).exists?
-      errors.add(:username, :invalid)
-    end
-  end
 
   def avatar
     png_path = File.join(Rails.public_path, "avatars/#{id}.png")
