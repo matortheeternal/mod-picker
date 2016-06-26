@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160626010220) do
+ActiveRecord::Schema.define(version: 20160626013027) do
 
   create_table "agreement_marks", id: false, force: :cascade do |t|
     t.integer "correction_id", limit: 4,                null: false
@@ -629,7 +629,7 @@ ActiveRecord::Schema.define(version: 20160626010220) do
     t.integer  "type",           limit: 1,   null: false
     t.string   "note",           limit: 128
     t.datetime "submitted",                  null: false
-    t.datetime "edited",                     null: false
+    t.datetime "edited"
   end
 
   add_index "reports", ["base_report_id"], name: "fk_rails_619eb511d7", using: :btree
