@@ -35,7 +35,7 @@ class CompatibilityNote < ActiveRecord::Base
   self.per_page = 25
 
   # Validations
-  validates :submitted_by, :status, :text_body, :first_mod_id, :second_mod_id, :game_id, presence: true
+  validates :game_id, :submitted_by, :status, :first_mod_id, :second_mod_id, :text_body, presence: true
   validates :text_body, length: { in: 256..16384 }
 
   # Callbacks
