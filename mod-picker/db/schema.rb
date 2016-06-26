@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160626004809) do
+ActiveRecord::Schema.define(version: 20160626005604) do
 
   create_table "agreement_marks", id: false, force: :cascade do |t|
     t.integer "correction_id", limit: 4,                null: false
@@ -173,8 +173,8 @@ ActiveRecord::Schema.define(version: 20160626004809) do
 
   create_table "dummy_masters", id: false, force: :cascade do |t|
     t.integer "plugin_id", limit: 4,   null: false
-    t.integer "index",     limit: 4,   null: false
-    t.string  "filename",  limit: 255, null: false
+    t.integer "index",     limit: 1,   null: false
+    t.string  "filename",  limit: 128, null: false
   end
 
   add_index "dummy_masters", ["plugin_id"], name: "fk_rails_2552b596d8", using: :btree
