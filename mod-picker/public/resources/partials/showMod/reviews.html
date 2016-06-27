@@ -85,13 +85,13 @@
     <page-results pages="pages.reviews" data="mod.reviews" callback="retrieveReviews"></page-results>
 </loader>
 
-<div class="content-message" ng-if="errors.reviews">
+<div class="content-message content-error" ng-if="errors.reviews">
     There was an error retrieving reviews for this mod.<br>
     <!--TODO: Render JSON errors here, if available?-->
     Error {{errors.reviews.status}}: {{errors.reviews.statusText}}
 </div>
 
-<div class="content-message" ng-if="errors.reviewSections">
+<div class="content-message content-error" ng-if="errors.reviewSections">
     There was an error retrieving review sections.<br>
     <!--TODO: Render JSON errors here, if available?-->
     Error {{errors.reviewSections.status}}: {{errors.reviewSections.statusText}}

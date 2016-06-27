@@ -60,7 +60,7 @@
             </table>
         </loader>
 
-        <div class="content-message" ng-if="errors.history">
+        <div class="content-message content-error" ng-if="errors.history">
             There was an error retrieving history for this contribution.<br>
             <!--TODO: Render JSON errors here, if available?-->
             Error {{errors.history.status}}: {{errors.history.statusText}}

@@ -72,7 +72,7 @@
             </span>
         </loader>
 
-        <div class="content-message" ng-if="errors.appeals">
+        <div class="content-message content-error" ng-if="errors.appeals">
             There was an error retrieving appeals for this mod.<br>
             <!--TODO: Render JSON errors here, if available?-->
             Error {{errors.appeals.status}}: {{errors.appeals.statusText}}
