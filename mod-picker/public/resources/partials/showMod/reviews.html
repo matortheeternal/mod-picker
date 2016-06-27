@@ -74,7 +74,7 @@
         <review review="review" show-user-column="true" index="100 + $index" current-user="currentUser" edit="editReview"></review>
     </div>
 
-    <div class="content-message" ng-if="mod.reviews.length == 0">
+    <div class="content-message" ng-hide="mod.reviews.length">
         There are no reviews for this mod yet.
     </div>
 

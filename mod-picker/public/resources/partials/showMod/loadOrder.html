@@ -69,7 +69,7 @@
         <load-order-note note="note" show-user-column="true" index="100 + $index" current-user="currentUser" edit="editLoadOrderNote"></load-order-note>
     </div>
 
-    <div class="content-message" ng-if="mod.load_order_notes.length == 0">
+    <div class="content-message" ng-hide="mod.load_order_notes.length">
         There are no Load Order Notes for this mod yet.
     </div>
 
