@@ -1,23 +1,58 @@
 class UsersController < ApplicationController
-  before_action :set_user, only: [:show, :update, :destroy]
+  before_action :set_user, only: [:show, :comments, :update, :destroy]
 
   # GET /users
-  # GET /users.json
   def index
     @users = User.filter(filtering_params)
 
     render :json => @users
   end
 
+  # GET /current_user
+  def current
+    render :json => current_user.current_json
+  end
+
   # GET /users/1
-  # GET /users/1.json
   def show
     authorize! :read, @user
     render :json => @user.show_json(current_user)
   end
 
+  # GET /link_account
+  def link_account
+    bio = current_user.bio
+    case params[:site]
+      when "Nexus Mods"
+        verified = bio.verify_nexus_account(params[:user_path])
+      when "Lover's Lab"
+        verified = bio.verify_lover_account(params[:user_path])
+      when "Steam Workshop"
+        verified = bio.verify_workshop_account(params[:user_path])
+      else
+        verified = false
+    end
+
+    if verified
+      render json: {status: :ok, verified: true, bio: bio}
+    else
+      render json: {status: :ok, verified: false}
+    end
+  end
+
+  # GET /users/1/comments
+  def comments
+    authorize! :read, @user
+    comments = @user.profile_comments.accessible_by(current_ability).sort(params[:sort]).paginate(:page => params[:page], :per_page => 10)
+    count = @user.profile_comments.accessible_by(current_ability).count
+    render :json => {
+        comments: comments,
+        max_entries: count,
+        entries_per_page: 10
+    }
+  end
+
   # PATCH/PUT /users/1
-  # PATCH/PUT /users/1.json
   def update
     authorize! :update, @user
     if @user.update(user_params)
@@ -28,7 +63,6 @@ class UsersController < ApplicationController
   end
 
   # DELETE /users/1
-  # DELETE /users/1.json
   def destroy
     authorize! :destroy, @user
     if @user.destroy

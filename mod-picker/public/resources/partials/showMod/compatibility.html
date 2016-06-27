@@ -1,73 +1,100 @@
-﻿<div class="mod-tab-actions">
-	<!--<div class="centered-mod-tab-action">
-		<strong>Compatible</strong>
-		<br>
-		with modlist
-	</div>
-	<div class="mod-tab-action filter-checkbox">
-		<label class="checkbox">
-			<strong>Enable Modlist Filter</strong>
-			<input type="checkbox" checked>
-		</label>
-	</div>--><!--
+﻿<div class="mod-tab-items">
+    <!--<div class="centered-mod-tab-action">
+        <strong>Compatible</strong>
+        <br>
+        with modlist
+    </div>
+    <div class="mod-tab-item filter-checkbox">
+        <label class="checkbox">
+            <input type="checkbox" checked>
+            <strong>Mod List Filter</strong>
+        </label>
+    </div>-->
+    <div class="mod-tab-item primary-item">
+        <strong>Sort By: </strong>
 
-	--><div class="mod-tab-action sort-by-dropdown">
-		<strong>Sort By: </strong>
-		<div class="select">
-			<select ng-model="cNotesSort">
-				<option value="-sortBySeverity" default>Reputation</option>
-				<option value="-submitted">Date Submitted</option>
-				<option value="-edited">Last Edited</option>
-			</select>
-		</div>
-	</div><!--
-	--><div class="mod-tab-action">
-		<input class="btn mod-page-btn" type="submit" value="Add Note" ng-click="submit()"/>
-	</div>
+        <select ng-model="sort.compatibility_notes.column" ng-change="retrieveCompatibilityNotes()">
+            <option value="reputation">Reputation</option>
+            <option value="status">Severity</option>
+            <option value="submitted">Date Submitted</option>
+            <option value="edited">Last Edited</option>
+        </select>
+
+        <span class="sort-direction" title="Sorted in {{ sort.compatibility_notes.direction === 'asc' ? 'ascending' : 'descending' }} order." ng-click="toggleSortDirection(sort.compatibility_notes); retrieveCompatibilityNotes()">
+            <i class="fa fa-sort-amount-{{sort.compatibility_notes.direction}}" aria-hidden="true"></i>
+        </span>
+    </div>
+    <div class="mod-tab-item">
+        <input class="btn" type="button" value="Add Compatibility Note" ng-click="startNewCompatibilityNote()" ng-disabled="activeCompatibilityNote"/>
+    </div>
 </div>
 
-<div class="add-note-box">
-	<h3 class="section-title">Add Compatibility Note</h3>
-	<section>
-		<div class="add-note-actions">
-			<strong>{{mod.name}}</strong>
-			<div class="select compatibility-dropdown">
-				<select ng-model="newCompatibilityNote.compatibility_type">
-					<!-- TODO: put to server or static.js, set default value (so it's not empty on first drop down) -->
-					<option value="incompatible">is incompatible with</option>
-					<option value="partially incompatible">is partially incompatible with</option>
-					<option value="compatibility mod">requires an assets patch for</option>
-					<option value="compatibility option">requires a plug-in patch for</option>
-					<option value="make custom patch">needs a custom patch made for</option>
-				</select>
-			</div>
-			<input type="text" placeholder="Enter Mod Name" ng-model="otherModName" ng-change="newCompatibilityNote.otherMod = getModByName(newCompatibilityNote.otherModName)">
-		</div>
-	</section>
-	<section class="version-boxes-section">
-		<!-- TODO: probably should work with ng-repeats -->
-		<version-boxes versions="mod.mod_versions" selectedVersions="newCompatibilityNote.mods[0].mod_versions"></version-boxes>
-		<version-boxes ng-if="newCompatibilityNote.otherMod.mod_versions" versions="newCompatibilityNote.otherMod.mod_versions" selectedVersions="newCompatibilityNote.mods[1].mod_versions"></version-boxes>
-	</section>
-	<section>
-		<div ng-if="newCompatibilityNote.compatibility_type === 'compatibility mod'">
-			Compatibility Mod
-			<input type="text" placeholder="Enter Mod Name" ng-model="newCompatibilityNote.compatibilityModName" ng-change="newCompatibilityNote.compatibility_mod = getModByName(newCompatibilityNote.compatibilityModName)">
-		</div>
-		<div ng-if="newCompatibilityNote.compatibility_type === 'compatibility option'">
-			Compatibility Plug-in
-			<select ng-model="newCompatibilityNote.compatibility_type">
-				<option ng-repeat="" value=""></option>
-			</select>
-		</div>
-	</section>
-    <text-area data="newCompatibilityNote.text_body" ng-refresh="true" class="note-text-area"></text-area>
+<div class="content-block add-note-box" ng-show="activeCompatibilityNote">
+    <div class="content-title">
+        <span ng-if="activeCompatibilityNote.original">Edit</span>
+        <span ng-if="!activeCompatibilityNote.original">Add</span>
+        Compatibility Note
+    </div>
+    <div class="content-options">
+        <span class="select compatibility-dropdown">
+            <select ng-model="activeCompatibilityNote.status">
+                <option value="incompatible">Incompatible with</option>
+                <option value="partially incompatible">Partially Incompatible with</option>
+                <option value="compatibility mod">Compatibility Mod for</option>
+                <option value="compatibility option">Compatibility Option for</option>
+                <option value="make custom patch">Make Custom Patch for</option>
+            </select>
+        </span>
+        <mod-input result-id="activeCompatibilityNote.mod_id" search-text="activeCompatibilityNote.mod_name" excluded-id="mod.id" on-change="validateCompatibilityNote" disabled="activeCompatibilityNote.original"></mod-input>
+    </div>
+    <div class="content-options" ng-show="['compatibility mod', 'compatibility option'].indexOf(activeCompatibilityNote.status) > -1">
+        <span ng-if="activeCompatibilityNote.status === 'compatibility mod'">
+            <strong>Compatibility Mod</strong>
+            <mod-input result-id="activeCompatibilityNote.compatibility_mod_id" excluded-id="mod.id" on-change="validateCompatibilityNote"></mod-input>
+        </span>
+        <span ng-if="activeCompatibilityNote.status === 'compatibility option'">
+            <strong>Compatibility Plugin</strong>
+            <mod-input result-id="activeCompatibilityNote.compatibility_plugin_id" search-plugins="true" on-change="validateCompatibilityNote"></mod-input>
+        </span>
+    </div>
+    <div class="content-container">
+        <text-area data="activeCompatibilityNote.text_body" ng-refresh="updateMDE" class="note-text-area" on-change="validateCompatibilityNote"></text-area>
 
-	<div class="submit-note">
-		<input class="btn" type="submit" value="Submit" ng-click="createCompatibilityNote()"/>
-	</div>
+        <div class="message-input" ng-if="activeCompatibilityNote.editing && activeCompatibilityNote.original.submitted_by != currentUser.id">
+            <label>
+                <div>Edit Summary</div>
+                <input type="text" ng-model="activeCompatibilityNote.edit_summary" maxlength="255">
+            </label>
+        </div>
+
+        <div class="message-input" ng-if="permissions.canModerate">
+            <label>
+                <div>Moderator Message</div>
+                <input type="text" ng-model="activeCompatibilityNote.moderator_message" maxlength="255">
+            </label>
+        </div>
+
+        <div class="action-button-container">
+            <input class="btn action-btn" type="submit" value="Submit" ng-click="saveCompatibilityNote()" ng-disabled="!activeCompatibilityNote.valid" title="{{activeCompatibilityNote.valid ? 'Submit your compatibility note' : 'Your compatibility note is either too short or incomplete.'}}"/>
+            <input class="btn action-btn" type="button" value="Discard" ng-click="discardCompatibilityNote()">
+        </div>
+    </div>
 </div>
 
-<div ng-repeat="compatibilityNote in compatibilityNotes | orderBy : compatibilityNotesFilter" class="notes">
-	<c-note note="compatibilityNote"></c-note>
+<loader data="mod.compatibility_notes" spinner-class="big-spinner" ng-if="!errors.compatibility_notes">
+    <div ng-repeat="note in mod.compatibility_notes" class="content-block" ng-if="!note.editing">
+        <compatibility-note note="note" mod-id="mod.id" show-user-column="true" index="100 + $index" current-user="currentUser" edit="editCompatibilityNote"></compatibility-note>
+    </div>
+
+    <div class="content-message" ng-if="mod.compatibility_notes.length == 0">
+        There are no Compatibility Notes for this mod yet.
+    </div>
+
+    <page-results pages="pages.compatibility_notes" data="mod.compatibility_notes" callback="retrieveCompatibilityNotes"></page-results>
+</loader>
+
+<div class="content-message" ng-if="errors.compatibility_notes">
+    There was an error retrieving compatibility notes for this mod.<br>
+    <!--TODO: Render JSON errors here, if available?-->
+    Error {{errors.compatibility_notes.status}}: {{errors.compatibility_notes.statusText}}
 </div>

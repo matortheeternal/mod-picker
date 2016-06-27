@@ -1,68 +1,94 @@
-﻿<div class="mod-tab-actions">
-	<div class="mod-tab-action sort-by-dropdown">
-		<strong>Sort By: </strong>
-		<div class="select">
-			<select ng-model="reviewsFilter">
-				<option value="-sortBySeverity">Severity</option>
-				<option value="-submitted">Date Submitted</option>
-				<option value="-edited">Last Edited</option>
-				<option value="+incorrect_notes_count">Author's Incorrect Notes</option>
-			</select>
-		</div>
-	</div>
+﻿<div class="mod-tab-items">
+    <div class="mod-tab-item primary-item">
+        <strong>Sort By: </strong>
 
-	<div class="mod-tab-action text-centered-block">
-		Average Rating
-		<br>
-		{{mod.average_review}}
-	</div>
+        <select ng-model="sort.reviews.column" ng-change="retrieveReviews()">
+            <option value="reputation">Reputation</option>
+            <option value="overall_rating">Overall Rating</option>
+            <option value="submitted">Date Submitted</option>
+            <option value="edited">Last Edited</option>
+        </select>
 
-	<div class="mod-tab-action">
-		<input class="btn mod-page-btn" type="submit" value="Add Review" ng-click="submit()"/>
-	</div>
+        <span class="sort-direction" title="Sorted in {{ sort.reviews.direction === 'asc' ? 'ascending' : 'descending' }} order." ng-click="toggleSortDirection(sort.reviews); retrieveReviews()">
+            <i class="fa fa-sort-amount-{{sort.reviews.direction}}" aria-hidden="true"></i>
+        </span>
+    </div>
+
+    <div class="quality-item">
+        <span class="quality-number">{{mod.average_rating | number:0}}/100</span>
+        AVG RATING
+    </div>
+
+    <div class="mod-tab-item">
+        <input class="btn" type="button" value="Add Review" ng-click="startNewReview()" ng-disabled="activeReview"/>
+    </div>
 </div>
 
-<div class="add-note-box">
-	<h3 class="section-title">Add Review</h3>
-	<section>
-		<div>
-			Review Template:
-	        <select ng-model="currentTemplate" ng-change="updateReviewTemplate(currentTemplate)" ng-options="review_template as review_template.name for review_template in review_templates" class="review-template-dropdown"></select>
+<div class="content-block add-note-box" ng-show="activeReview">
+    <div class="content-title">
+        <span ng-if="activeReview.original">Edit</span>
+        <span ng-if="!activeReview.original">Add</span>
+        Review
+        ({{activeReview.overall_rating | number:0}}/100)
+    </div>
+    <div class="ratings-container">
+        <div class="rating-item" ng-repeat="rating in activeReview.ratings">
+            <div>
+                <select class="select" ng-options="section as section.name for section in availableSections.concat([rating.section]) track by section.id" ng-model="rating.section" ng-change="changeSection(rating.section, '{{rating.section.id}}')" pu-elastic-input>
+                </select>:
+                <i class="fa fa-caret-down" aria-hidden="true"></i>
+            </div>
+            <input ng-keyup="keyUp(rating)" ng-keypress="keyPress($event)" ng-model="rating.rating" ng-click="focusText($event)" pu-elastic-input>
         </div>
-	</section>
-	<section class="ratings">
-		<!-- TODO: kill redundancy-->
-		<div>
-			{{currentTemplate.section1}}
-			<input type="number" step="0.1" max="10" min="0" placeholder="8.5" ng-model="newReview.ratings[0]" ng-change="updateOverallRating()">
-		</div>
-		<div ng-if="currentTemplate.section2">
-			{{currentTemplate.section2}}
-			<input type="number" step="0.1" max="10" min="0" placeholder="8.5" ng-model="newReview.ratings[1]" ng-change="updateOverallRating()">
-		</div>
-		<div ng-if="currentTemplate.section3">
-			{{currentTemplate.section3}}
-			<input type="number" step="0.1" max="10" min="0" placeholder="8.5" ng-model="newReview.ratings[2]" ng-change="updateOverallRating()">
-		</div>
-		<div ng-if="currentTemplate.section4">
-			{{currentTemplate.section4}}
-			<input type="number" step="0.1" max="10" min="0" placeholder="8.5" ng-model="newReview.ratings[3]" ng-change="updateOverallRating()">
-		</div>
-		<div ng-if="currentTemplate.section5">
-			{{currentTemplate.section5}}
-			<input type="number" step="0.1" max="10" min="0" placeholder="8.5" ng-model="newReview.ratings[4]" ng-change="updateOverallRating()">
-		</div>
-	</section>
-	<section>
-		Overall:
-		{{newReview.overallRating}}
-	</section>
+        <div class="section-tools">
+            <i class="fa fa-plus" aria-hidden="true" ng-class="{ 'disabled' : activeReview.ratings.length >= 5 || availableSections.length == 0 }" ng-click="addNewRating()" title="{{ activeReview.ratings.length >= 5 || availableSections.length == 0 ? 'Maximum review sections reached.  You can\'t add any more!' : 'Add review section' }}"></i>
+            <i class="fa fa-minus" aria-hidden="true" ng-class="{ 'disabled' : activeReview.ratings.length <= 1}" ng-click="removeRating()" title="{{activeReview.ratings.length <= 1 ? 'Minimum review sections reached.  You can\'t remove any more!' : 'Remove review section'}}"></i>
+        </div>
+    </div>
+    <div class="content-container">
+        <text-area class="note-text-area" data="activeReview.text_body" ng-refresh="updateMDE" on-change="validateReview"></text-area>
 
-    <text-area data="newReview.text_body" ng-refresh="true" class="note-text-area"></text-area>
+        <div class="message-input" ng-if="activeReview.editing && activeReview.original.submitted_by != currentUser.id">
+            <label>
+                <div>Edit Summary</div>
+                <input type="text" ng-model="activeReview.edit_summary" maxlength="255">
+            </label>
+        </div>
 
-	<input class="btn mod-page-btn" type="submit" value="Submit" ng-click="createCompatibilityNote()"/>
+        <div class="message-input" ng-if="permissions.canModerate">
+            <label>
+                <div>Moderator Message</div>
+                <input type="text" ng-model="activeReview.moderator_message" maxlength="255">
+            </label>
+        </div>
+
+        <div class="action-button-container">
+            <input class="btn action-btn" type="submit" value="Submit" ng-click="saveReview()" ng-disabled="!activeReview.valid" title="{{activeReview.valid ? 'Submit your Review' : 'Your review is too short.'}}"/>
+            <input class="btn action-btn" type="button" value="Discard" ng-click="discardReview()">
+        </div>
+    </div>
 </div>
 
-<div ng-repeat="review in mod.reviews" class="reviews">
-	<review review="review"></review>
+<loader data="mod.reviews" spinner-class="big-spinner" ng-if="!errors.reviews && !errors.reviewSections">
+    <div ng-repeat="review in mod.reviews" class="content-block" ng-if="!review.editing">
+        <review review="review" show-user-column="true" index="100 + $index" current-user="currentUser" edit="editReview"></review>
+    </div>
+
+    <div class="content-message" ng-if="mod.reviews.length == 0">
+        There are no reviews for this mod yet.
+    </div>
+
+    <page-results pages="pages.reviews" data="mod.reviews" callback="retrieveReviews"></page-results>
+</loader>
+
+<div class="content-message" ng-if="errors.reviews">
+    There was an error retrieving reviews for this mod.<br>
+    <!--TODO: Render JSON errors here, if available?-->
+    Error {{errors.reviews.status}}: {{errors.reviews.statusText}}
+</div>
+
+<div class="content-message" ng-if="errors.reviewSections">
+    There was an error retrieving review sections.<br>
+    <!--TODO: Render JSON errors here, if available?-->
+    Error {{errors.reviewSections.status}}: {{errors.reviewSections.statusText}}
 </div>

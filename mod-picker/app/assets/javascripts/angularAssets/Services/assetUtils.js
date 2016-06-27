@@ -1,10 +1,10 @@
 app.service('assetUtils', function (fileUtils) {
-    this.convertDataStringToNestedObject = function(title, assets) {
+    this.convertDataStringToNestedObject = function(assets) {
         var nestedData = {
             childs: {}
         };
 
-        <!-- TODO: don't use recursive function here, as a simple loop would work as good if not better -->
+        // TODO: don't use recursive function here, as a simple loop would work as good if not better
         function nestObject(nestingArray, currentLayer) {
             var current = nestingArray.shift();
             if(!current) {
@@ -14,7 +14,7 @@ app.service('assetUtils', function (fileUtils) {
                 currentLayer.childs = {};
             }
             if(!currentLayer.childs[current]) {
-                var ext = fileUtils.getFileExtension(current);
+                var ext = fileUtils.getFileExtension(current).toLowerCase();
                 var iconClass = "fa-file-o";
                 switch(ext) {
                     case "": iconClass = "fa-folder-o"; break;
@@ -28,13 +28,14 @@ app.service('assetUtils', function (fileUtils) {
                     case "txt": iconClass = "fa-file-text-o"; break;
                     case "xml": iconClass = "fa-file-text-o"; break;
                     case "fuz": iconClass = "fa-file-sound-o"; break;
+                    case "tri": iconClass = "fa-location-arrow"; break;
                     case "nif": iconClass = "fa-cube"; break;
                     case "dds": iconClass = "fa-image"; break;
                 }
                 currentLayer.childs[current] = {
                     title: current,
                     iconClass: iconClass
-                }
+                };
             }
             return nestObject(nestingArray, currentLayer.childs[current]);
         }

@@ -1,68 +1,88 @@
-app.service('modService', function (backend, $q) {
-    this.retrieveMod = function (modId) {
-        return backend.retrieve('/mods/' + modId);
-    };
-
-    this.submitMod = function (mod) {
-        var update = $q.defer();
-        backend.update('/mods/' + mod.id, {mod: mod}).then(function (data) {
-            update.resolve(data);
+app.service('modService', function(backend, $q, userTitleService, categoryService, recordGroupService, assetUtils, errorsFactory, pluginService, reviewSectionService, contributionService, pageUtils) {
+    this.retrieveMods = function(options, pageInformation) {
+        var action = $q.defer();
+        backend.post('/mods/index', options).then(function (data) {
+            pageUtils.getPageInformation(data, pageInformation, options.page);
+            action.resolve(data);
+        }, function(response) {
+            action.reject(response);
         });
-        return update.promise;
+        return action.promise;
     };
 
-    var pages = {
-        current: 1
-    };
-
-    this.retrieveMods = function (filters, sort, newPage) {
-        var mods = $q.defer();
-
-        if(newPage && newPage > pages.max) {
-            mods.reject();
-            return mods.promise;
-        }
-
-        pages.current = newPage || pages.current;
-
+    this.searchMods = function(name) {
         var postData =  {
-            filters: filters,
-            sort: sort,
-            page: pages.current
+            filters: {
+                search: name
+            }
         };
+        return backend.post('/mods/search', postData);
+    };
+    
+    this.retrieveMod = function(modId) {
+        var output = $q.defer();
+        backend.retrieve('/mods/' + modId).then(function(data) {
+            categoryService.resolveModCategories(data.mod);
+            output.resolve(data);
+        }, function(response) {
+            output.reject(response);
+        });
+        return output.promise;
+    };
 
-        backend.post('/mods', postData).then(function (data) {
-            pages.max = Math.ceil(data.max_entries / data.entries_per_page);
-            mods.resolve({
-                mods: data.mods,
-                pageInformation: pages
+    this.starMod = function(modId, starred) {
+        if (starred) {
+            return backend.delete('/mods/' + modId + '/star');
+        } else {
+            return backend.post('/mods/' + modId + '/star', {});
+        }
+    };
+
+    this.retrieveModContributions = function(modId, route, options, pageInformation) {
+        var action = $q.defer();
+        backend.post('/mods/' + modId + '/' + route, options).then(function (data) {
+            var contributions = data[route];
+            contributionService.associateHelpfulMarks(contributions, data.helpful_marks);
+            userTitleService.associateTitles(contributions);
+            pageUtils.getPageInformation(data, pageInformation, options.page);
+            action.resolve(contributions);
+        }, function(response) {
+            action.reject(response);
+        });
+        return action.promise;
+    };
+
+    this.retrieveModReviews = function(modId, options, pageInformation) {
+        var reviews = $q.defer();
+        this.retrieveModContributions(modId, 'reviews', options, pageInformation).then(function(data) {
+            reviewSectionService.associateReviewSections(data);
+            reviews.resolve(data);
+        }, function(response) {
+            reviews.reject(response);
+        });
+        return reviews.promise;
+    };
+
+    this.retrieveModAnalysis = function(modId) {
+        var output = $q.defer();
+        backend.retrieve('/mods/' + modId + '/' + 'analysis').then(function (analysis) {
+            // turn assets into an array of string
+            analysis.assets = analysis.assets.map(function(asset) {
+                return asset.filepath;
             });
-        });
+            // create nestedAssets tree
+            analysis.nestedAssets = assetUtils.convertDataStringToNestedObject(analysis.assets);
 
-        return mods.promise;
-    };
+            // prepare plugin data for display
+            recordGroupService.associateGroups(analysis.plugins);
+            pluginService.combineAndSortMasters(analysis.plugins);
+            pluginService.associateOverrides(analysis.plugins);
+            pluginService.sortErrors(analysis.plugins);
 
-    this.retrieveCompatibilityNotes = function (modVersionId) {
-        var compatibilityNotes = $q.defer();
-        backend.retrieve('/mod_versions/' + modVersionId + '/compatibility_notes').then(function (data) {
-            compatibilityNotes.resolve(data);
+            output.resolve(analysis);
+        }, function(response) {
+            output.reject(response);
         });
-        return compatibilityNotes.promise;
-    };
-
-    this.retrieveInstallOrderNotes = function (modVersionId) {
-        var installOrderNotes = $q.defer();
-        backend.retrieve('/mod_versions/' + modVersionId + '/install_order_notes').then(function (data) {
-            installOrderNotes.resolve(data);
-        });
-        return installOrderNotes.promise;
-    };
-
-    this.retrieveLoadOrderNotes = function (modVersionId) {
-        var loadOrderNotes = $q.defer();
-        backend.retrieve('/mod_versions/' + modVersionId + '/load_order_notes').then(function (data) {
-            loadOrderNotes.resolve(data);
-        });
-        return loadOrderNotes.promise;
+        return output.promise;
     };
 });

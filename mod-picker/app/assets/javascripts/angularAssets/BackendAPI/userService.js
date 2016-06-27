@@ -1,17 +1,65 @@
-app.service('userService', function (backend, $q, userSettingsService) {
-    this.retrieveUser = function (userId) {
-        return backend.retrieve('/users/' + userId);
-    };
+app.service('userService', function (backend, $q, userSettingsService, userTitleService, pageUtils) {
+    var service = this;
+    this.retrieveUser = function(userId) {
+        var output = $q.defer();
+        backend.retrieve('/users/' + userId).then(function(userData) {
+            //moving collections into a separate array
+            userData.collections = [];
+            for (var i = userData.mod_lists.length - 1; i >= 0; i--) {
+                if (userData.mod_lists[i].is_collection) {
+                    userData.collections.push(userData.mod_lists.splice(i, 1)[0]);
+                }
+            }
 
-    //TODO: there has to be a better way to do this right? -Sirius
-    this.retrieveThisUser = function () {
-        var user = $q.defer();
-    	userSettingsService.retrieveUserSettings().then(function (user_settings) {
-	    	backend.retrieve('/users/' + user_settings.user_id).then(function (data) {
-	            user.resolve(data);
-	        });
+            //get user title if it's not custom
+            if (!userData.title) {
+                userTitleService.getUserTitle(userData.reputation.overall).then(function(title) {
+                    userData.title = title;
+                });
+            }
+            output.resolve(userData);
         });
-        return user.promise;
+        return output.promise;
     };
 
+    this.retrieveCurrentUser = function() {
+        var output = $q.defer();
+        backend.retrieve('/current_user').then(function (userData) {
+            userData.permissions = service.getPermissions(userData);
+            output.resolve(userData);
+        });
+        return output.promise;
+    };
+
+    this.retrieveProfileComments = function(userId, options, pageInformation) {
+        var output = $q.defer();
+        backend.post('/users/' + userId + '/comments', options).then(function(response) {
+            userTitleService.associateTitles(response.comments);
+            pageUtils.getPageInformation(response, pageInformation, options.page);
+            output.resolve(response.comments);
+        }, function(response) {
+            output.reject(response);
+        });
+        return output.promise;
+    };
+
+    this.getPermissions = function(user) {
+        var permissions = {};
+        var rep = user.reputation.overall;
+        permissions.isAdmin = user.role === 'admin';
+        permissions.isModerator = user.role === 'moderator';
+        // TODO: Remove this when beta is over
+        permissions.canSubmitMod = true;
+        //permissions.canSubmitMod = permissions.isAdmin || permissions.isModerator || user.reputation.overall > 160;
+        permissions.canChangeAvatar = (rep >= 10) || permissions.isAdmin || permissions.isModerator;
+        permissions.canChangeTitle = (rep >= 1280) || permissions.isAdmin || permissions.isModerator;
+        permissions.canCreateTags = (rep >= 20) || permissions.isAdmin || permissions.isModerator;
+        permissions.canAppeal = (rep >= 40) || permissions.isModerator || permissions.isAdmin;
+        permissions.canModerate = permissions.isModerator || permissions.isAdmin;
+
+        var numEndorsed = user.reputation.rep_to_count;
+        permissions.canEndorse = (rep >= 40 && numEndorsed <= 5) || (rep >= 160 && numEndorsed <= 10) || (rep >= 640 && numEndorsed <= 15);
+
+        return permissions;
+    };
 });

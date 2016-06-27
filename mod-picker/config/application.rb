@@ -20,6 +20,19 @@ module ModPicker
     # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
     # config.i18n.default_locale = :de
 
+    # AUTOLOAD LIB
+    config.autoload_paths += %W(#{config.root}/lib)
+
+    # SET THE USER AGENT FOR SCRAPING
+    config.user_agent = "Mod Picker Scraper"
+
+    # DO NOT SCRAPE NEXUS STATISTICS UNLESS ROBIN CHANGES HIS MIND
+    config.scrape_nexus_statistics = false
+    # DO NOT SCRAPE WORKSHOP STATISTICS UNTIL WE HAVE PERMISSION
+    config.scrape_workshop_statistics = false
+    # DO NOT SCRAPE LAB STATISTICS UNTIL WE HAVE PERMISSION
+    config.scrape_lab_statistics = false
+
     config.middleware.use Rack::Attack
 
     config.generators do |g|
@@ -31,7 +44,7 @@ module ModPicker
         controller_specs: true,
         request_specs: true
       g.fixture_replacement :factory_girl, dir: "spec/factories"
-  end
+    end
 
 
     # Do not swallow errors in after_commit/after_rollback callbacks.

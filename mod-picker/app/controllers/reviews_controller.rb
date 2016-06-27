@@ -1,60 +1,54 @@
-class ReviewsController < HelpfulableController
-  before_action :set_review, only: [:show, :update, :destroy]
+class ReviewsController < ContributionsController
+  before_action :set_review, only: [:show, :update, :approve, :hide, :destroy]
 
   # GET /reviews
-  # GET /reviews.json
   def index
-    @reviews = Review.filter(filtering_params)
+    @reviews = Review.accessible_by(current_ability).filter(filtering_params).sort(params[:sort]).paginate(:page => params[:page])
 
     render :json => @reviews
   end
 
-  # GET /reviews/1
-  # GET /reviews/1.json
-  def show
-    authorize! :read, @review
-    render :json => @review
+  # PATCH/PUT /reviews/1
+  def update
+    authorize! :update, @contribution
+    @contribution.clear_ratings
+
+    update_params = contribution_update_params
+    update_params[:edited_by] = current_user.id
+    if @contribution.update(update_params)
+      render json: {status: :ok}
+    else
+      render json: @contribution.errors, status: :unprocessable_entity
+    end
   end
 
   # POST /reviews
-  # POST /reviews.json
   def create
-    @review = Review.new(review_params)
+    @review = Review.new(contribution_params)
+    @review.submitted_by = current_user.id
     authorize! :create, @review
 
     if @review.save
-      render json: {status: :ok}
+      render json: @review.reload
     else
       render json: @review.errors, status: :unprocessable_entity
     end
   end
 
-  # PATCH/PUT /reviews/1
-  # PATCH/PUT /reviews/1.json
-  def update
-    authorize! :update, @review
-    if @review.update(review_params)
-      render json: {status: :ok}
-    else
-      render json: @review.errors, status: :unprocessable_entity
-    end
+  # NOT CORRECTABLE
+  def corrections
+    render json: {error: "Reviews are not correctable."}, status: 404
   end
 
-  # DELETE /reviews/1
-  # DELETE /reviews/1.json
-  def destroy
-    authorize! :destroy, @review
-    if @review.destroy
-      render json: {status: :ok}
-    else
-      render json: @review.errors, status: :unprocessable_entity
-    end
+  # NOT HISTORICAL
+  def history
+    render json: {error: "Reviews don't have history."}, status: 404
   end
 
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_review
-      @review = Review.find(params[:id])
+      @contribution = Review.find(params[:id])
     end
 
     # Params we allow filtering on
@@ -62,8 +56,13 @@ class ReviewsController < HelpfulableController
       params.slice(:mod, :by);
     end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def review_params
-      params.require(:review).permit(:submitted_by, :mod_id, :hidden, :rating1, :rating2, :rating3, :rating4, :rating5, :submitted, :edited, :text_body)
+    # Params allowed during creation
+    def contribution_params
+      params.require(:review).permit(:mod_id, :game_id, :text_body, (:moderator_message if current_user.can_moderate?), review_ratings_attributes: [:rating, :review_section_id])
+    end
+
+    # Params that can be updated
+    def contribution_update_params
+      params.require(:review).permit(:text_body, :edit_summary, (:moderator_message if current_user.can_moderate?), review_ratings_attributes: [:rating, :review_section_id])
     end
 end

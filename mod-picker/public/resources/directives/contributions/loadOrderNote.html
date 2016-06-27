@@ -1,0 +1,20 @@
+<div class="contribution-container">
+	<div class="content-title">
+		<span>
+            Load
+            <span>
+                <a ng-href="#/mod/{{note.plugins[0].mod_id}}/analysis" target="_blank">{{note.plugins[0].filename}}</a>
+                Before
+                <a ng-href="#/mod/{{note.plugins[1].mod_id}}/analysis" target="_blank">{{note.plugins[1].filename}}</a>
+            </span>
+        </span>
+        <span class="right-item">
+            <span class="standing">Good Standing</span>
+        </span>
+	</div>
+	<user-column user="note.submitter" ng-if="showUserColumn" class="user-column" index="index"></user-column>
+    <div class="content-column">
+        <contribution-text target="note"></contribution-text>
+        <contribution-actions target="note" model-name="LoadOrderNote" index="index" current-user="currentUser" edit="edit" has-history="true"></contribution-actions>
+    </div>
+</div>

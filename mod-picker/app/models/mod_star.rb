@@ -1,20 +1,24 @@
 class ModStar < ActiveRecord::Base
   self.primary_keys = :mod_id, :user_id
 
-  after_create :increment_counter_caches
-  before_destroy :decrement_counter_caches
-
   belongs_to :user, :inverse_of => 'mod_stars'
   belongs_to :mod, :inverse_of => 'mod_stars'
 
+  # Validations
+  validates :mod_id, :user_id, presence: true
+
+  # Callbacks
+  after_create :increment_counters
+  before_destroy :decrement_counters
+
   private
-    def increment_counter_caches
-      self.mod.mod_stars_count += 1
-      self.mod.save
+    def increment_counters
+      self.user.update_counter(:starred_mod_lists_count, 1)
+      self.mod.update_counter(:stars_count, 1)
     end
 
-    def decrement_counter_caches
-      self.mod.mod_stars_count -= 1
-      self.mod.save
+    def decrement_counters
+      self.user.update_counter(:starred_mod_lists_count, -1)
+      self.mod.update_counter(:stars_count, -1)
     end
 end

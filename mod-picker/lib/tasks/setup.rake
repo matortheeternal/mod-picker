@@ -4,7 +4,7 @@ namespace :setup do
   task unsigned: :environment do
     connection = ActiveRecord::Base.connection
     puts "\nSetting up unsigned columns"
-    connection.execute("ALTER TABLE agreement_marks MODIFY incorrect_note_id INT UNSIGNED;")
+    connection.execute("ALTER TABLE agreement_marks MODIFY correction_id INT UNSIGNED;")
     connection.execute("ALTER TABLE agreement_marks MODIFY submitted_by INT UNSIGNED;")
 
     connection.execute("ALTER TABLE categories MODIFY id INT UNSIGNED NOT NULL AUTO_INCREMENT;")
@@ -28,9 +28,9 @@ namespace :setup do
     connection.execute("ALTER TABLE helpful_marks MODIFY submitted_by INT UNSIGNED;")
     connection.execute("ALTER TABLE helpful_marks MODIFY helpfulable_id INT UNSIGNED;")
 
-    connection.execute("ALTER TABLE incorrect_notes MODIFY id INT UNSIGNED NOT NULL AUTO_INCREMENT;")
-    connection.execute("ALTER TABLE incorrect_notes MODIFY submitted_by INT UNSIGNED;")
-    connection.execute("ALTER TABLE incorrect_notes MODIFY correctable_id INT UNSIGNED")
+    connection.execute("ALTER TABLE corrections MODIFY id INT UNSIGNED NOT NULL AUTO_INCREMENT;")
+    connection.execute("ALTER TABLE corrections MODIFY submitted_by INT UNSIGNED;")
+    connection.execute("ALTER TABLE corrections MODIFY correctable_id INT UNSIGNED")
 
     connection.execute("ALTER TABLE installation_notes MODIFY id INT UNSIGNED NOT NULL AUTO_INCREMENT;")
     connection.execute("ALTER TABLE installation_notes MODIFY submitted_by INT UNSIGNED;")
@@ -70,15 +70,6 @@ namespace :setup do
 
     connection.execute("ALTER TABLE mod_stars MODIFY mod_id INT UNSIGNED;")
     connection.execute("ALTER TABLE mod_stars MODIFY user_id INT UNSIGNED;")
-
-    connection.execute("ALTER TABLE mod_version_compatibility_notes MODIFY mod_version_id INT UNSIGNED;")
-    connection.execute("ALTER TABLE mod_version_compatibility_notes MODIFY compatibility_note_id INT UNSIGNED;")
-
-    connection.execute("ALTER TABLE mod_version_files MODIFY mod_version_id INT UNSIGNED;")
-    connection.execute("ALTER TABLE mod_version_files MODIFY mod_asset_file_id INT UNSIGNED;")
-
-    connection.execute("ALTER TABLE mod_versions MODIFY id INT UNSIGNED NOT NULL AUTO_INCREMENT;")
-    connection.execute("ALTER TABLE mod_versions MODIFY mod_id INT UNSIGNED;")
 
     connection.execute("ALTER TABLE mods MODIFY id INT UNSIGNED NOT NULL AUTO_INCREMENT;")
     connection.execute("ALTER TABLE mods MODIFY game_id INT UNSIGNED;")

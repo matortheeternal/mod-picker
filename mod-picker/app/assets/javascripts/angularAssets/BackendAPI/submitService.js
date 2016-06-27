@@ -1,44 +1,54 @@
 //TODO: change naming
 app.service('submitService', function (backend, $q) {
-    this.scrapeNexus = function (gameId, nexusId) {
-        return backend.retrieve('/nexus_infos/' + nexusId, {game_id: gameId});
+    this.scrapeNexus = function (gameId, modId) {
+        return backend.retrieve('/nexus_infos/' + modId, {game_id: gameId});
+    };
+    this.scrapeLab = function (modId) {
+        return backend.retrieve('/lover_infos/' + modId);
+    };
+    this.scrapeWorkshop = function (modId) {
+        return backend.retrieve('/workshop_infos/' + modId);
     };
 
-    this.verifyPlugins = function (plugins) {
-        // TODO: Compute CRC32 of plugin files to verify the backend doesn't already have them
-    };
+    this.submitMod = function (mod, analysis, sources, requirements) {
+        // select primary source
+        var primarySource = sources.nexus || sources.workshop || sources.lab;
+        var released, updated;
+        for (var property in sources) {
+            if (sources.hasOwnProperty(property) && sources[property]) {
+                var source = sources[property];
+                if (!released || source.released < released) {
+                    released = source.released;
+                }
+                if (!updated || source.updated > updated) {
+                    updated = source.updated;
+                }
+            }
+        }
 
-    this.submitMod = function (mod, nexus_info, assets, plugins) {
         // prepare mod record
         var modData = {
             mod: {
-                name: nexus_info.mod_name,
-                is_utility: is_utility,
-                has_adult_content: has_adult_content,
-                game_id: nexus_info.game_id,
-                released: nexus_info.date_added,
+                name: primarySource.mod_name,
+                authors: primarySource.authors || primarySource.uploaded_by,
+                is_utility: mod.is_utility,
+                has_adult_content: mod.has_adult_content,
+                game_id: mod.game_id,
+                released: released || DateTime.now(),
+                updated: updated || DateTime.now(),
                 primary_category_id: mod.categories[0],
                 secondary_category_id: mod.categories[1],
-                nexus_info_id: nexus_info.id,
-                assets: mod.assets,
-                mod_versions_attributes: [{
-                    released: nexus_info.date_added,
-                    version: nexus_info.current_version
-                }]
+                nexus_info_id: sources.nexus && sources.nexus.id,
+                workshop_info_id: sources.workshop && sources.workshop.id,
+                lover_info_id: sources.lab && sources.lab.id,
+                tag_names: mod.tags,
+                asset_paths: analysis.assets,
+                plugin_dumps: analysis.plugins,
+                required_mods_attributes: requirements
             }
         };
 
         // submit mod
-        backend.post('/mods/submit', modData).then(function (data) {
-            // submit plugins
-            for (var i = 0; i < plugins.length; i++) {
-                plugin = plugins[i];
-                backend.postFile('/plugins', 'plugin', plugin).then(function (data) {
-                    if (data.status !== 'Success') {
-                        alert('Error uploading ' + plugin.name + ': ' + data.status);
-                    }
-                });
-            }
-        });
+        return backend.post('/mods', modData);
     };
 });

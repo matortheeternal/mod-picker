@@ -2,7 +2,6 @@ class UserSettingsController < ApplicationController
   before_action :set_user_setting, only: [:update]
 
   # GET /user_settings
-  # GET /user_settings.json
   # returns the current user's settings
   def index
     @user_setting = current_user.settings
@@ -11,9 +10,8 @@ class UserSettingsController < ApplicationController
   end
 
   # PATCH/PUT /user_settings/1
-  # PATCH/PUT /user_settings/1.json
   def update
-    authorize! :update, @user_settings
+    authorize! :update, @user_setting
     if @user_setting.update(user_setting_params)
       render json: {status: :ok}
     else
@@ -34,6 +32,6 @@ class UserSettingsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def user_setting_params
-      params.require(:user_setting).permit(:id, :show_notifications, :show_tooltips, :email_notifications, :email_public, :allow_adult_content, :allow_nexus_mods, :allow_lovers_lab, :allow_steam_workshop, :timezone, :udate_format, :utime_format, :allow_comments, :theme)
+      params.require(:user_setting).permit(:show_notifications, :show_tooltips, :email_notifications, :email_public, :allow_adult_content, :allow_nexus_mods, :allow_lovers_lab, :allow_steam_workshop, :allow_comments, :theme)
     end
 end

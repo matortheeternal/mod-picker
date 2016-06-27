@@ -17,8 +17,6 @@ gem 'coffee-script-source', '1.8.0'
 # Rack-attack middleware for throttles and restrictions
 gem 'rack-attack'
 
-# Use jquery as the JavaScript library
-gem 'jquery-rails'
 # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
 gem 'turbolinks'
 # bundle exec rake doc:rails generates the API under doc/api.
@@ -26,6 +24,8 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 
 # use nokogiri for parsing html
 gem 'nokogiri'
+# use rest-client for rest actions
+gem 'rest-client'
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'

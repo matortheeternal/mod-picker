@@ -1,30 +1,17 @@
-.user-title {
-  font-style: italic;
-  margin-bottom: 4px;
-}
-
-.user-role-admin {
-  color: #800000;
-}
-
-.user-role-moderator {
-  color: #800080;
-}
-
-.user-role-mod-author {
-  color: #000080;
-}
-
-.user-role-user {
-  color: #008000;
-}
-
 .left-user-column {
   padding-right: 20px;
   font-size: 14px;
 
   .big-username {
     font-size: 20px;
+    font-weight: 500;
+  }
+
+  .user-title {
+    font-style: italic;
+  }
+
+  .user-role {
     font-weight: 500;
   }
 
@@ -46,21 +33,6 @@
 }
 
 .right-user-column {
-  .section-title {
-    display: block;
-    vertical-align: top;
-    font-size: 22px;
-    font-weight: 500;
-    color: $text_color;
-  }
-
-  section {
-    display: block;
-    margin-top: 15px;
-    margin-left: 30px;
-    margin-bottom: 30px;
-  }
-
   .tab {
 	  padding: 20px;
 	  border: 1px solid $border_color;

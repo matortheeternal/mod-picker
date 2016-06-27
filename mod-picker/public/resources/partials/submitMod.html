@@ -2,25 +2,37 @@
     <div class="single-column">
         <h2>Submit Mod</h2>
 
-        <form id="submitModForm" name="submitModForm">
+        <form id="submitModForm" name="submitModForm" spellcheck="false">
 
-            <h3 class="section-title">Sources</h3>
+            <h3 class="section-title">Sources
+                <span class="help-tooltip" title="Locations where an author has officially uploaded a Mod. &#13;You can only enter one valid location for each supported site.">?</span>
+            </h3>
             <section>
-                <div class="input-label">Nexus Mods</div>
-                <input type="text" class="path-input" ng-model="nexusUrl" required>
-                <input type="button" class="btn" ng-disabled='cantScrape()' ng-click="scrape()" value="Scrape">
+                <div class="dynamic-item" ng-repeat="source in sources">
+                    <select ng-model="source.label" ng-change="validateSource(source)" ng-disabled="source.scraped">
+                        <option ng-repeat="site in sites" ng-if="!site.hidden">{{site.label}}</option>
+                    </select>
+                    <input type="text" class="long-input" ng-model="source.url" ng-change="validateSource(source)" ng-disabled="source.scraped">
+                    <input type="button" class="btn scrape-button" value="Scrape" ng-click="scrapeSource(source)" ng-disabled="!source.valid || source.scraped">
+                    <span class="remove-item" ng-click="removeSource(source)" ng-if="$index > 0 && !source.scraped" title="Remove source">
+                        <i class="fa fa-times"></i>
+                    </span>
+                </div>
+                <!-- TODO: Fix this not hiding immediately -->
+                <input type="button" class="btn" value="Add Source" ng-click="addSource()" ng-show="sources.length < sites.length">
 
-                <div ng-show="scraping">
-                    <h3 class="subtitle">Nexus Mods Info</h3>
-                    <loader data="nexus">
-                        <table class="infotable">
-                            <colgroup>
-                                <col span="1" style="width: 160px;">
-                                <col span="1">
-                            </colgroup>
-                            <tbody>
+                <div class="scraped-data-container" ng-if="nexus || lab || workshop">
+                    <div class="scraped-data" ng-if="nexus">
+                        <h4>Nexus Mods Data</h4>
+                        <loader data="nexus.id" spinner-class="medium-spinner">
+                            <table class="infotable">
+                                <colgroup>
+                                    <col span="1" style="width: 160px;">
+                                    <col span="1">
+                                </colgroup>
+                                <tbody>
                                 <tr>
-                                    <td>Nexus ID</td>
+                                    <td>Mod ID</td>
                                     <td>{{nexus.id}}</td>
                                 </tr>
                                 <tr>
@@ -32,16 +44,8 @@
                                     <td>{{nexus.uploaded_by}}</td>
                                 </tr>
                                 <tr>
-                                    <td>Author</td>
+                                    <td>Authors</td>
                                     <td>{{nexus.authors}}</td>
-                                </tr>
-                                <tr>
-                                    <td>Endorsements</td>
-                                    <td>{{nexus.endorsements.toLocaleString()}}</td>
-                                </tr>
-                                <tr>
-                                    <td>Unique Downloads</td>
-                                    <td>{{nexus.unique_downloads.toLocaleString()}}</td>
                                 </tr>
                                 <tr>
                                     <td>Latest Version</td>
@@ -49,16 +53,127 @@
                                 </tr>
                                 <tr>
                                     <td>Date Released</td>
-                                    <td>{{nexus.date_added | date }}</td>
+                                    <td>{{nexus.released | date }}</td>
                                 </tr>
                                 <tr>
                                     <td>Date Updated</td>
-                                    <td>{{nexus.date_updated | date }}</td>
+                                    <td>{{nexus.updated | date }}</td>
                                 </tr>
-                            </tbody>
-                        </table>
-                    </loader>
+                                </tbody>
+                            </table>
+                        </loader>
+                    </div>
+
+                    <div class="scraped-data" ng-if="workshop">
+                        <h4>Steam Workshop Data</h4>
+                        <loader data="workshop.id" spinner-class="medium-spinner">
+                            <table class="infotable">
+                                <colgroup>
+                                    <col span="1" style="width: 160px;">
+                                    <col span="1">
+                                </colgroup>
+                                <tbody>
+                                <tr>
+                                    <td>Mod ID</td>
+                                    <td>{{workshop.id}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Mod Name</td>
+                                    <td>{{workshop.mod_name}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Uploaded By</td>
+                                    <td>{{workshop.uploaded_by}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Date Released</td>
+                                    <td>{{workshop.released | date }}</td>
+                                </tr>
+                                <tr>
+                                    <td>Date Updated</td>
+                                    <td>{{workshop.updated | date }}</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </loader>
+                    </div>
+
+                    <div class="scraped-data" ng-if="lab">
+                        <h4>Lover's Lab Data</h4>
+                        <loader data="lab.id" spinner-class="medium-spinner">
+                            <table class="infotable">
+                                <colgroup>
+                                    <col span="1" style="width: 160px;">
+                                    <col span="1">
+                                </colgroup>
+                                <tbody>
+                                <tr>
+                                    <td>Mod ID</td>
+                                    <td>{{lab.id}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Mod Name</td>
+                                    <td>{{lab.mod_name}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Uploaded By</td>
+                                    <td>{{lab.uploaded_by}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Date Released</td>
+                                    <td>{{lab.released | date }}</td>
+                                </tr>
+                                <tr>
+                                    <td>Date Updated</td>
+                                    <td>{{lab.updated | date }}</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </loader>
+                    </div>
                 </div>
+            </section>
+
+            <h3 class="section-title">
+                Mod Analysis
+                <!-- temporary github link, should link to a help page -->
+                <a href="http://github.com/matortheeternal/mod-asset-mapper">
+                    <span class="help-tooltip" title="Submitting a mod requires uploading an analysis file which &#13; includes an asset file tree and one or more plugin dumps. &#13;You can generate a mod analysis file using Mod Analyzer.  &#13;Click here for more information and download links.">?</span>
+                </a>
+            </h3>
+            <section>
+                <div class="analysis-results" ng-show="analysis">
+                    <h4 class="subtitle" ng-show="analysis.nestedAssets">Asset File Tree</h4>
+                    <div class="subsection analysis-container" ng-show="analysis.nestedAssets">
+                        <asset-tree data="analysis.nestedAssets"></asset-tree>
+                    </div>
+
+                    <h4 class="subtitle" ng-show="analysis.plugins.length > 0">Plugin Analysis</h4>
+                    <div class="subsection analysis-container" ng-show="analysis.plugins.length > 0">
+                        <div class="plugin-analysis-item" ng-repeat="plugin in analysis.plugins">
+                            <plugin-metadata plugin="plugin" show-record-groups="true"></plugin-metadata>
+                        </div>
+                    </div>
+                </div>
+
+                <label>
+                    <input id="analysis-input" type="file" file-change="changeAnalysisFile" accept=".json">
+                    <input type="button" class="btn" ng-click="browseAnalysisFile()" value="Browse">
+                </label>
+            </section>
+
+
+            <h3 class="section-title">Requirements
+                <span class="help-tooltip" title="Mods that are required for this mod to function.">?</span>
+            </h3>
+            <section>
+                <div class="dynamic-item" ng-repeat="requirement in requirements">
+                    <mod-input result-id="requirement.required_id" search-text="requirement.name" class="long-mod-input"></mod-input>
+                    <span class="remove-item" ng-click="removeRequirement(requirement)" title="Remove requirement">
+                        <i class="fa fa-times"></i>
+                    </span>
+                </div>
+                <input type="button" class="btn" value="Add Requirement" ng-click="addRequirement()">
             </section>
 
             <section>
@@ -90,82 +205,28 @@
                 <span class="help-tooltip" title="In this context, adult content is classified as nudity or &#13;depictions of sexual acts.">?</span>
             </section>
 
-            <h3 class="section-title">
-                Asset Files
-                <!-- temporary github link, should link to a help page -->
-                <a href="http://github.com/matortheeternal/mod-asset-mapper">
-                    <span class="help-tooltip" title="Submitting a mod requires uploading an asset file tree which &#13;allows Mod Picker to detect asset conflicts between mods.  An &#13;asset file tree can be generated with the Mod Asset Mapper.  You &#13;can click here for more information and download links.">?</span>
-                </a>
-            </h3>
-            <section>
-                <div ng-show="assets">
-                    <h4 class="subtitle">File Tree</h4>
-                    <div class="file-tree-container">
-                        <ul>
-                            <li ng-repeat="asset in assets">{{asset}}</li>
-                        </ul>
-                    </div>
-                    <asset-file-tree data="assets"></asset-file-tree>
-                </div>
-
-                <label>
-                    <input id="assets-input" type="file" file-change="changeAssetTree" accept=".json">
-                    <input type="button" class="btn" ng-click="browseAssetTree()" value="Browse">
-                </label>
-            </section>
-
-            <h3 class="section-title">Plugins</h3>
-            <section>
-                <div class="plugins-upload">
-                    <label>
-                        <input id="plugins-input" type="file" multiple file-change="changePlugins" accept=".esp, .esm"/>
-                        <div class="upload-container" ng-if="!plugins">
-                            <div class="upload-prompt">
-                                <span class="fa-stack fa-4x">
-                                  <i class="fa fa-upload fa-stack-2x"></i>
-                                </span>
-                                <h4>Select plugins to analyze</h4>
-                                <span>Or drag and drop</span>
-                            </div>
-                        </div>
-                    </label>
-                    <div class="upload-queue" ng-if="plugins">
-                        <table>
-                            <colgroup>
-                                <col style="width:70%">
-                                <col style="width:25%">
-                                <col style="width:5%">
-                            </colgroup>
-                            <tr>
-                                <th>Filename</th>
-                                <th>File size</th>
-                                <th></th>
-                            </tr>
-                            <tr ng-repeat="plugin in plugins" class="plugin-item">
-                                <td>
-                                    {{plugin.name}}
-                                </td>
-                                <td>
-                                    {{plugin.size | bytes:2}}
-                                </td>
-                                <td>
-                                    <i class="fa fa-times cancel-item" title="Remove Plugin" ng-click="removePlugin(plugin.name)"></i>
-                                </td>
-                            </tr>
-                        </table>
-                    </div>
-                    <div class="upload-actions" ng-if="plugins">
-                        <input class="btn" type="button" value="Clear plugins" ng-click="clearPlugins()"/>
-                        <input class="btn" type="button" value="Add plugins" ng-click="addPlugins()"/>
-                    </div>
-                </div>
-
-                <span class="notice">
-                    Plugin analysis will be performed by our servers in the next 24 hours.
-                </span>
-            </section>
-
-            <input class="btn" type="submit" ng-disabled='modInvalid()' ng-click="submit()" value="Submit"/>
+            <div class="action-button-container">
+                <input class="btn action-btn" type="submit" ng-disabled='submitting || modInvalid()' ng-click="submit()" value="Submit"/>
+            </div>
         </form>
+    </div>
+</div>
+
+<div class="fullscreen-modal-container" ng-show="submitting">
+    <div class="modal">
+        <loader data="success || errors" spinner-class="big-spinner">
+        </loader>
+        <h2>{{submittingStatus}}</h2>
+        <div ng-show="success">
+            <a href="#/mods">Click here</a> to return to the Mods Index
+        </div>
+        <div ng-show="errors">
+            <div ng-repeat="error in errors">
+                {{error.message}}
+            </div>
+            <div>
+                <a ng-click="closeModal()">Click here</a> to return the submission form
+            </div>
+        </div>
     </div>
 </div>

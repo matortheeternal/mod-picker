@@ -1,11 +1,114 @@
-def seed_static_records
-  #==================================================
-  # CREATE GAMES
-  #==================================================
+def create_plugin(mod, dump_filename)
+  file = File.read(Rails.root.join("db", "dumps", dump_filename))
+  hash = JSON.parse(file).with_indifferent_access
+  hash[:game_id] = mod.game_id
+  mod.plugins.create(hash).save!
+end
 
+def generate_password
+  if Rails.env.production?
+    pw = SecureRandom.urlsafe_base64
+    puts "    Secure password: #{pw}"
+    pw
+  else
+    'password'
+  end
+end
+
+
+def seed_staff_users
+  puts "\nSeeding staff users"
+
+  staff_password = generate_password
+  User.create!(
+      username: "Mator",
+      role: "admin",
+      title: "teh autoMator",
+      joined: Time.now.to_date,
+      email: "mator.eternal@gmail.com",
+      password: staff_password,
+      password_confirmation: staff_password,
+      confirmed_at: Time.now.to_date
+  )
+  User.create!(
+      username: "TerrorFox1234",
+      role: "moderator",
+      title: "foxy girl",
+      joined: Time.now.to_date,
+      email: "avaluxaudio@gmail.com",
+      password: staff_password,
+      password_confirmation: staff_password,
+      confirmed_at: Time.now.to_date
+  )
+  User.create!(
+      username: "Thallassa",
+      role: "moderator",
+      title: "spirit of the sea",
+      joined: Time.now.to_date,
+      email: "phaedrathallassa@gmail.com",
+      password: staff_password,
+      password_confirmation: staff_password,
+      confirmed_at: Time.now.to_date
+  )
+  User.create!(
+      username: "Sirius",
+      role: "moderator",
+      joined: Time.now.to_date,
+      email: "thesiriusadam@gmail.com",
+      password: staff_password,
+      password_confirmation: staff_password,
+      confirmed_at: Time.now.to_date
+  )
+  User.create!(
+      username: "Taffy",
+      role: "moderator",
+      joined: Time.now.to_date,
+      email: 	"raphael.buechler@gmail.com",
+      password: staff_password,
+      password_confirmation: staff_password,
+      confirmed_at: Time.now.to_date
+  )
+  User.create!(
+      username: "ThreeTen",
+      role: "moderator",
+      joined: Time.now.to_date,
+      email: "gtumen@gmail.com",
+      password: staff_password,
+      password_confirmation: staff_password,
+      confirmed_at: Time.now.to_date
+  )
+  User.create!(
+      username: "Breems",
+      role: "moderator",
+      joined: Time.now.to_date,
+      email: 	"seesharpcode@gmail.com",
+      password: staff_password,
+      password_confirmation: staff_password,
+      confirmed_at: Time.now.to_date
+  )
+  User.create!(
+      username: "Nariya",
+      role: "moderator",
+      joined: Time.now.to_date,
+      email: 	"mesaslinger@gmail.com",
+      password: staff_password,
+      password_confirmation: staff_password,
+      confirmed_at: Time.now.to_date
+  )
+
+  puts "    #{User.all.count} staff users seeded"
+end
+
+def seed_games
   puts "\nSeeding games"
 
+  gameBethesda = Game.create(
+      display_name: "Bethesda Games",
+      long_name: "Bethesda Games",
+      abbr_name: "bg"
+  )
   gameSkyrim = Game.create(
+      parent_game_id: gameBethesda.id,
       display_name: "Skyrim",
       long_name: "The Elder Scrolls V: Skyrim",
       abbr_name: "sk",
@@ -14,6 +117,7 @@ def seed_static_records
       steam_app_ids: "72850"
   )
   gameOblivion = Game.create(
+      parent_game_id: gameBethesda.id,
       display_name: "Oblivion",
       long_name: "The Elder Scrolls IV: Oblivion",
       abbr_name: "ob",
@@ -22,6 +126,7 @@ def seed_static_records
       steam_app_ids: "22330,900883"
   )
   gameFallout4 = Game.create(
+      parent_game_id: gameBethesda.id,
       display_name: "Fallout 4",
       long_name: "Fallout 4",
       abbr_name: "fo4",
@@ -30,6 +135,7 @@ def seed_static_records
       steam_app_ids: "377160"
   )
   gameFalloutNV = Game.create(
+      parent_game_id: gameBethesda.id,
       display_name: "Fallout NV",
       long_name: "Fallout: New Vegas",
       abbr_name: "fnv",
@@ -38,6 +144,7 @@ def seed_static_records
       steam_app_ids: "22380,2028016"
   )
   gameFallout3 = Game.create(
+      parent_game_id: gameBethesda.id,
       display_name: "Fallout 3",
       long_name: "Fallout 3",
       abbr_name: "fo3",
@@ -47,8 +154,9 @@ def seed_static_records
   )
 
   puts "    #{Game.count} games seeded"
+end
 
-
+def seed_categories
   #==================================================
   # CREATE SUPER-CATEGORIES
   #==================================================
@@ -57,15 +165,11 @@ def seed_static_records
 
   catUtilities = Category.create(
       name: "Utilities",
-      description: "These also aren’t necessarily mods, but they can be.  These are tools to aid in the creation and management of mods and mod-related assets."
+      description: "These also aren't necessarily mods, but they can be.  These are tools to aid in the creation and management of mods and mod-related assets."
   )
   catResources = Category.create(
       name: "Resources",
       description: "These aren't necessarily mods, but they can be.  These are files which are resources to be used by other modders or mod-users."
-  )
-  catPatches = Category.create(
-      name: "Patches",
-      description: "Mods that make mods compatible with each other, or carry the changes from one mod into another."
   )
   catLocations = Category.create(
       name: "Locations",
@@ -77,7 +181,7 @@ def seed_static_records
   )
   catCharacter = Category.create(
       name: "Character Appearance",
-      description: "Mods that modify the appearance of non-player characters in the game or give you additional options for customizing the player character’s appearance."
+      description: "Mods that modify the appearance of non-player characters in the game or give you additional options for customizing the player character's appearance."
   )
   catNewChars = Category.create(
       name: "New Characters",
@@ -89,11 +193,11 @@ def seed_static_records
   )
   catFixes = Category.create(
       name: "Fixes",
-      description: "Fixes are mods that fix issues (bugs) in the vanilla game without adding new content."
+      description: "Fixes are mods that fix issues (bugs) in mods or the vanilla game without adding new content."
   )
   catAudiovisual = Category.create(
       name: "Audiovisual",
-      description: "Audiovisual mods are mods which strictly alter the visuals/audio in the game.  So any mod that is strictly graphical or audial would belong in this category.  This category is often superseded by other categories."
+      description: "Audiovisual mods are mods which strictly alter the visuals/audio in the game.  This category is often superseded by other categories."
   )
 
   puts "    #{Category.count} super-categories seeded"
@@ -129,7 +233,7 @@ def seed_static_records
   Category.create(
       name: "Resources - Frameworks",
       parent_id: catResources.id,
-      description: "Frameworks offer functionality for other mods or tools to build off of.  Frameworks often don’t change much in the game on their own, but enable other mods to do so.  Some frameworks do change aspects of the game."
+      description: "Frameworks offer functionality for other mods or tools to build off of.  Frameworks often don't change much in the game on their own, but enable other mods to do so.  Some frameworks do change aspects of the game."
   )
   Category.create(
       name: "Resources - Guides & Tutorials",
@@ -148,7 +252,7 @@ def seed_static_records
       parent_id: catLocations.id,
       description: "Mods which add completely new lands to explore."
   )
-  Category.create(
+  catNewPlayerHomes = Category.create(
       name: "Locations - New Player Homes",
       parent_id: catLocations.id,
       description: "Mods which add new player homes to the game.  This include all sorts of residences ranging from tree houses to castles."
@@ -193,7 +297,7 @@ def seed_static_records
   catImmersionAndRolePlaying = Category.create(
       name: "Gameplay - Immersion & Role-playing",
       parent_id: catGameplay.id,
-      description: "Mods which exist specifically to increase the player’s immersion in the game world, or to aid in role-playing."
+      description: "Mods which exist specifically to increase the player's immersion in the game world, or to aid in role-playing."
   )
   catMagic = Category.create(
       name: "Gameplay - Magic",
@@ -247,7 +351,7 @@ def seed_static_records
   Category.create(
       name: "New Characters - Neutral",
       parent_id: catNewChars.id,
-      description: "If most of the NPCs added by the mod don’t have a disposition to help or hurt the player, put it here."
+      description: "If most of the NPCs added by the mod don't have a disposition to help or hurt the player, put it here."
   )
   Category.create(
       name: "New Characters - Enemies",
@@ -282,6 +386,11 @@ def seed_static_records
       name: "Fixes - Stability & Performance",
       parent_id: catFixes.id,
       description: "A fix that specifically increases game stability or performance."
+  )
+  Category.create(
+      name: "Fixes - Patches",
+      parent_id: catFixes.id,
+      description: "A fix to make mods compatible with each other, or to carry the changes from one mod into another."
   )
 
   # Audiovisual sub-categories
@@ -406,17 +515,280 @@ def seed_static_records
 
   puts "    #{CategoryPriority.count} category priorities seeded"
 
-
   #==================================================
-  # CREATE QUOTES
+  # CREATE REVIEW SECTIONS
   #==================================================
 
+  puts "\nSeeding review sections"
+
+  ### Audiovisual ###
+  ReviewSection.create(
+      category_id: catAudiovisual.id,
+      name: "Aesthetics",
+      prompt: "Does the mod look/sound good?  Are the assets high quality?",
+      default: true
+  )
+  ReviewSection.create(
+      category_id: catAudiovisual.id,
+      name: "Consistency",
+      prompt: "Does the mod fit in your game?  Does it improve your gameplay experience?",
+      default: true
+  )
+  ReviewSection.create(
+      category_id: catAudiovisual.id,
+      name: "Performance",
+      prompt: "Does the mod cause stuttering or a large reduction in average FPS?  Keep the performance of other mods which do similar things in mind.",
+      default: true
+  )
+  ReviewSection.create(
+      category_id: catAudiovisual.id,
+      name: "Enjoyment",
+      prompt: "Do you enjoy using the mod?  What do you enjoy about it?",
+      default: true
+  )
+### Character Appearance ###
+  ReviewSection.create(
+      category_id: catCharacter.id,
+      name: "Aesthetics",
+      prompt: "Does the mod look good?  Are the textures and models high quality?",
+      default: true
+  )
+  ReviewSection.create(
+      category_id: catCharacter.id,
+      name: "Consistency",
+      prompt: "Does the mod fit in your game?  Does it improve your gameplay experience?",
+      default: true
+  )
+  ReviewSection.create(
+      category_id: catCharacter.id,
+      name: "Performance",
+      prompt: "Does the mod cause stuttering or a large reduction in average FPS?  Keep the performance of other mods which do similar things in mind."
+  )
+  ReviewSection.create(
+      category_id: catCharacter.id,
+      name: "Enjoyment",
+      prompt: "Do you enjoy using the mod?  What do you enjoy about it?",
+      default: true
+  )
+### Fixes ###
+  ReviewSection.create(
+      category_id: catFixes.id,
+      name: "Consistency",
+      prompt: "Does the fix retain the spirit and features of the content it targets?",
+      default: true
+  )
+  ReviewSection.create(
+      category_id: catFixes.id,
+      name: "Functionality",
+      prompt: "Does the fix resolve all of the issues with the content it targets, and does it work?",
+      default: true
+  )
+### Gameplay ###
+  ReviewSection.create(
+      category_id: catGameplay.id,
+      name: "Aesthetics",
+      prompt: "Does the mod look/sound good?  Are the assets high quality?"
+  )
+  ReviewSection.create(
+      category_id: catGameplay.id,
+      name: "Consistency",
+      prompt: "Does the mod fit in your game?  Does the mod improve your gameplay experience?  Is the mod balanced?",
+      default: true
+  )
+  ReviewSection.create(
+      category_id: catGameplay.id,
+      name: "Concept",
+      prompt: "Do you like the idea behind the mod?  Is the idea original or unique?"
+  )
+  ReviewSection.create(
+      category_id: catGameplay.id,
+      name: "Functionality",
+      prompt: "Does the mod provide valuable or unique functionality?  Does it do what it's supposed to do, and does it do it well?",
+      default: true
+  )
+  ReviewSection.create(
+      category_id: catGameplay.id,
+      name: "Enjoyment",
+      prompt: "Do you enjoy using the mod?  What do you enjoy about it?",
+      default: true
+  )
+# FOR QUEST MODS
+  ReviewSection.create(
+      category_id: catQuests.id,
+      name: "Writing",
+      prompt: "Is the story interesting and engaging? Does the dialogue fit the characters? Are the characters interesting?",
+      default: true
+  )
+### Items ###
+  ReviewSection.create(
+      category_id: catItems.id,
+      name: "Aesthetics",
+      prompt: "Does the mod look/sound good?  Are the assets high quality?",
+      default: true
+  )
+  ReviewSection.create(
+      category_id: catItems.id,
+      name: "Consistency",
+      prompt: "Do the items fit in your game?  Are they balanced?  Is acquiring the items too easy or too difficult?",
+      default: true
+  )
+  ReviewSection.create(
+      category_id: catItems.id,
+      name: "Concept",
+      prompt: "Do you like the idea behind the mod?  Is the idea original or unique?"
+  )
+  ReviewSection.create(
+      category_id: catItems.id,
+      name: "Enjoyment",
+      prompt: "Do you enjoy using the mod?  What do you enjoy about it?",
+      default: true
+  )
+### Locations ###
+  ReviewSection.create(
+      category_id: catLocations.id,
+      name: "Aesthetics",
+      prompt: "Does the Location look good?  Is it designed well and are the textures/models high quality?  Does the interior design look good?  Are there unique/custom visuals which make it stand out?",
+      default: true
+  )
+  ReviewSection.create(
+      category_id: catLocations.id,
+      name: "Performance",
+      prompt: "Does the mod cause stuttering or a large reduction in average FPS?  Keep the performance of other mods which do similar things in mind."
+  )
+  ReviewSection.create(
+      category_id: catLocations.id,
+      name: "Consistency",
+      prompt: "Does the location fit in your game?  Does it improve your gameplay experience?",
+      default: true
+  )
+  ReviewSection.create(
+      category_id: catLocations.id,
+      name: "Concept",
+      prompt: "Do you like the idea behind the mod?  Is the idea original or unique?"
+  )
+  ReviewSection.create(
+      category_id: catLocations.id,
+      name: "Writing",
+      prompt: "Is the story interesting and engaging? Does the dialogue fit the characters? Are the characters interesting?",
+      default: true
+  )
+  ReviewSection.create(
+      category_id: catLocations.id,
+      name: "Voice Acting",
+      prompt: "Is the recording decent quality? Do the voice actors do a good job of embodying their characters?"
+  )
+  ReviewSection.create(
+      category_id: catLocations.id,
+      name: "Character Behavior",
+      prompt: "Do the characters interact with their environment?  Is their behavior realistic?"
+  )
+  ReviewSection.create(
+      category_id: catLocations.id,
+      name: "Enjoyment",
+      prompt: "Do you enjoy using the mod?  What do you enjoy about it?",
+      default: true
+  )
+# FOR NEW LANDS MODS
+  ReviewSection.create(
+      category_id: catNewLands.id,
+      name: "New Content",
+      prompt: "What is the quality of new content added by the mod, such as new items, spells or skills?",
+      default: true
+  )
+# FOR PLAYER HOME MODS
+  ReviewSection.create(
+      category_id: catNewPlayerHomes.id,
+      name: "Features",
+      prompt: "Does the player home fit your character's needs?  Are you happy with what it offers?",
+      default: true
+  )
+### New Characters ###
+  ReviewSection.create(
+      category_id: catNewChars.id,
+      name: "Aesthetics",
+      prompt: "Do the characters look good?  Do they offer unique aesthetics which help them stand out?",
+      default: true
+  )
+  ReviewSection.create(
+      category_id: catNewChars.id,
+      name: "Character Behavior",
+      prompt: "Do the characters interact with their environment?  Is their behavior realistic?",
+      default: true
+  )
+  ReviewSection.create(
+      category_id: catNewChars.id,
+      name: "Consistency",
+      prompt: "Do the characters fit in your game?  Do they improve your gameplay experience?",
+      default: true
+  )
+  ReviewSection.create(
+      category_id: catNewChars.id,
+      name: "Concept",
+      prompt: "Do you like the idea behind the mod?  Is the idea original or unique?"
+  )
+  ReviewSection.create(
+      category_id: catNewChars.id,
+      name: "Enjoyment",
+      prompt: "Do you enjoy using the mod?  What do you enjoy about it?",
+      default: true
+  )
+  ReviewSection.create(
+      category_id: catNewChars.id,
+      name: "Voice Acting",
+      prompt: "Is the recording decent quality? Do the voice actors do a good job of embodying their characters?"
+  )
+  ReviewSection.create(
+      category_id: catNewChars.id,
+      name: "Writing",
+      prompt: "Does the dialogue fit the characters? Are the characters interesting?  Do the characters have a good backstory?",
+      default: true
+  )
+### Resources ###
+  ReviewSection.create(
+      category_id: catResources.id,
+      name: "Aesthetics",
+      prompt: "Are any provided textures/audio files/models high quality and appealing?  If a GUI is provided, is it intuitive and clean?",
+      default: true
+  )
+  ReviewSection.create(
+      category_id: catResources.id,
+      name: "Functionality",
+      prompt: "Does the resource provide valuable functionality, or save you time?",
+      default: true
+  )
+  ReviewSection.create(
+      category_id: catResources.id,
+      name: "Usability",
+      prompt: "Is it easy to use the resource?  Is the provided documentation sufficient?",
+      default: true
+  )
+  ### Utilities ###
+  ReviewSection.create(
+      category_id: catUtilities.id,
+      name: "Functionality",
+      prompt: "Does the utility provide valuable or unique functionality?  Does it do what it's supposed to do, and does it do it well?",
+      default: true
+  )
+  ReviewSection.create(
+      category_id: catUtilities.id,
+      name: "Usability",
+      prompt: "Is the utility intuitive and easy to use?  Are the learning resources sufficient?  Does using the utility get easier once you've learned the basics?",
+      default: true
+  )
+
+  puts "    #{ReviewSection.count} review sections seeded"
+end
+
+def seed_quotes
   puts "\nSeeding quotes"
 
+  # get helper variables
+  gameSkyrim = Game.find_by(display_name: "Skyrim")
+
   Quote.create(
-    game_id: gameSkyrim.id,
-    text: "Let me guess, someone stole your sweetroll?",
-    label: "Help"
+      game_id: gameSkyrim.id,
+      text: "Let me guess, someone stole your sweetroll?",
+      label: "Help"
   )
   Quote.create(
       game_id: gameSkyrim.id,
@@ -495,7 +867,7 @@ def seed_static_records
   )
   Quote.create(
       game_id: gameSkyrim.id,
-      text: "You’ll make a fine rug, cat!",
+      text: "You'll make a fine rug, cat!",
       label: "Random"
   )
   Quote.create(
@@ -535,7 +907,7 @@ def seed_static_records
   )
   Quote.create(
       game_id: gameSkyrim.id,
-      text: "I’ll carve you into pieces!",
+      text: "I'll carve you into pieces!",
       label: "Random"
   )
   Quote.create(
@@ -580,17 +952,18 @@ def seed_static_records
   )
 
   puts "    #{Quote.count} quotes seeded"
+end
 
-  #==================================================
-  # CREATE USER TITLES
-  #==================================================
-
+def seed_user_titles
   puts "\nSeeding user titles"
 
+  # get helper variables
+  gameSkyrim = Game.find_by(display_name: "Skyrim")
+
   UserTitle.create(
-       game_id: gameSkyrim.id,
-       title: "Slaughterfish",
-       rep_required: -9999999
+      game_id: gameSkyrim.id,
+      title: "Slaughterfish",
+      rep_required: -9999999
   )
   UserTitle.create(
       game_id: gameSkyrim.id,
@@ -649,12 +1022,14 @@ def seed_static_records
   )
 
   puts "    #{UserTitle.count} user titles seeded"
+end
 
-  #==================================================
-  # CREATE RECORD GROUPS
-  #==================================================
+def seed_record_groups
 
   puts "\nSeeding record groups"
+
+  # get helper variables
+  gameSkyrim = Game.find_by(display_name: "Skyrim")
 
   RecordGroup.create(
       game_id: gameSkyrim.id,
@@ -1444,4 +1819,109 @@ def seed_static_records
   )
 
   puts "    #{RecordGroup.count} record groups seeded"
+end
+
+def seed_official_content
+  puts "\nSeeding official content"
+
+  # get helper variables
+  mator = User.find_by(username: "Mator")
+  gameSkyrim = Game.find_by(display_name: "Skyrim")
+
+  modSkyrim = Mod.create!(
+      name: "Skyrim",
+      authors: "Bethesda",
+      submitted_by: mator.id,
+      is_official: true,
+      game_id: gameSkyrim.id,
+      released: DateTime.new(2011, 11, 11),
+      updated: DateTime.new(2013, 3, 20),
+      custom_sources_attributes: [{
+          label: "Steam Store",
+          url: "http://store.steampowered.com/app/72850/"
+      }]
+  )
+  # Create plugins
+  create_plugin(modSkyrim, "Skyrim.esm.json")
+  create_plugin(modSkyrim, "Update.esm.json")
+  modSkyrim.update_lazy_counters
+
+  modDawnguard = Mod.create!(
+      name: "Dawnguard",
+      authors: "Bethesda",
+      submitted_by: mator.id,
+      is_official: true,
+      game_id: gameSkyrim.id,
+      primary_category_id: Category.find_by(name: "Locations").id,
+      secondary_category_id: Category.find_by(name: "Gameplay - Factions").id,
+      released: DateTime.new(2012, 8, 2),
+      custom_sources_attributes: [{
+          label: "Steam Store",
+          url: "http://store.steampowered.com/app/211720/"
+      }],
+      tag_names: ["Vampires", "Dawnguard", "Werewolves", "Soul Cairn", "Dragonbone"]
+  )
+  # Create plugins
+  create_plugin(modDawnguard, "Dawnguard.esm.json")
+  modDawnguard.update_lazy_counters
+
+  modHearthfire = Mod.create!(
+      name: "Hearthfire",
+      authors: "Bethesda",
+      submitted_by: mator.id,
+      is_official: true,
+      game_id: gameSkyrim.id,
+      primary_category_id: Category.find_by(name: "Locations - New Player Homes").id,
+      secondary_category_id: Category.find_by(name: "Gameplay - Immersion & Role-playing").id,
+      released: DateTime.new(2012, 10, 4),
+      custom_sources_attributes: [{
+          label: "Steam Store",
+          url: "http://store.steampowered.com/app/220760/"
+      }],
+      tag_names: ["Building", "Family", "Marriage", "Adoption"]
+  )
+  # Create plugins
+  create_plugin(modHearthfire, "HearthFires.esm.json")
+  modHearthfire.update_lazy_counters
+
+  modDragonborn = Mod.create!(
+      name: "Dragonborn",
+      authors: "Bethesda",
+      submitted_by: mator.id,
+      is_official: true,
+      game_id: gameSkyrim.id,
+      primary_category_id: Category.find_by(name: "Locations - New Lands").id,
+      released: DateTime.new(2013, 2, 5),
+      custom_sources_attributes: [{
+          label: "Steam Store",
+          url: "http://store.steampowered.com/app/211720/"
+      }],
+      tag_names: ["Solstheim", "Apocrypha", "Hermaeus Mora", "Shouts", "Stahlrim", "Nordic", "Bonemold", "Chitin"]
+  )
+  # Create plugins
+  create_plugin(modDragonborn, "Dawnguard.esm.json")
+  modDragonborn.update_lazy_counters
+
+  modHighRes = Mod.create!(
+      name: "High Resolution Texture Pack",
+      authors: "Bethesda",
+      submitted_by: mator.id,
+      is_official: true,
+      game_id: gameSkyrim.id,
+      primary_category_id: Category.find_by(name: "Audiovisual - Models & Textures").id,
+      released: DateTime.new(2012, 2, 7),
+      custom_sources_attributes: [{
+          label: "Steam Store",
+          url: "http://store.steampowered.com/app/202485/"
+      }],
+      tag_names: ["1K", "Armor", "Weapons", "Architecture", "Actors", "Dungeons", "Terrain", "Clutter"]
+  )
+  # Create plugins
+  create_plugin(modHighRes, "HighResTexturePack01.esp.json")
+  create_plugin(modHighRes, "HighResTexturePack02.esp.json")
+  create_plugin(modHighRes, "HighResTexturePack03.esp.json")
+  modHighRes.update_lazy_counters
+
+  puts "    #{Mod.count} official mods seeded"
+  puts "    #{Plugin.count} official plugins seeded"
 end

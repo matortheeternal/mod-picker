@@ -5,15 +5,23 @@ app.service('userSettingsService', function (backend, $q) {
         backend.retrieve('/user_settings').then(function (data) {
             userSettings.resolve(data);
         });
-        return userSettings.promise
+        return userSettings.promise;
     };
 
     this.submitAvatar = function (avatar) {
         var post = $q.defer();
-        backend.postFile('/avatar', 'avatar', avatar).then (function (data) {
+        backend.postFile('/avatar', 'avatar', avatar).then(function (data) {
             post.resolve(data);
         });
         return post.promise;
+    };
+
+    this.verifyAccount = function (site, user_path) {
+        var verified = $q.defer();
+        backend.retrieve('/link_account', { site: site, user_path: user_path }).then(function (data) {
+            verified.resolve(data);
+        });
+        return verified.promise;
     };
 
     //TODO: move this to userservice
@@ -23,10 +31,10 @@ app.service('userSettingsService', function (backend, $q) {
             user: user
         };
         var update = $q.defer();
-    	backend.update('/users/' + user.id, user_object).then(function (data) {
+        backend.update('/users/' + user.id, user_object).then(function (data) {
             update.resolve(data);
-    	});
-        return update.promise
+        });
+        return update.promise;
     };
 
     this.submitUserSettings = function (user_settings) {
@@ -38,7 +46,7 @@ app.service('userSettingsService', function (backend, $q) {
         backend.update('/user_settings/' + user_settings.id, user_settings_object).then(function (data) {
             update.resolve(data);
         });
-        return update.promise
+        return update.promise;
     };
 
     this.cloneModList = function (modlist) {
@@ -46,7 +54,7 @@ app.service('userSettingsService', function (backend, $q) {
         backend.post('/mod_lists/clone/' + modlist.id, {}).then(function (data) {
             clone.resolve(data);
         });
-        return clone.promise
+        return clone.promise;
     };
 
     this.deleteModList = function (modlist) {
@@ -54,6 +62,6 @@ app.service('userSettingsService', function (backend, $q) {
         backend.delete('/mod_lists/' + modlist.id).then(function (data) {
             remove.resolve(data);
         });
-        return remove.promise
+        return remove.promise;
     };
 });

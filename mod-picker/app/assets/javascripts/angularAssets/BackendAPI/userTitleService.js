@@ -1,6 +1,13 @@
 app.service('userTitleService', function (backend, $q) {
+    var service = this;
+
     this.retrieveUserTitles = function () {
-        return backend.retrieve('/user_titles');
+        var userTitles = $q.defer();
+
+        backend.retrieve('/user_titles').then(function(titles) {
+            userTitles.resolve(titles);
+        });
+        return userTitles.promise;
     };
 
     this.getSortedGameTitles = function(titles) {
@@ -13,14 +20,40 @@ app.service('userTitleService', function (backend, $q) {
         return gameTitles;
     };
 
-    this.getUserTitle = function (gameTitles, reputation) {
-        var prevTitle = gameTitles[0];
-        for (var i = 0; i < gameTitles.length; i++) {
-            var title = gameTitles[i];
-            if (reputation < title.rep_required) {
-                return prevTitle.title;
+    //initialize title variables
+    var allTitles = this.retrieveUserTitles();
+
+    var gameTitles = allTitles.then(function(titles) {
+        return service.getSortedGameTitles(titles);
+    });
+
+
+    this.getUserTitle = function (reputation) {
+        var output = $q.defer();
+        gameTitles.then(function(titles) {
+            var prevTitle = titles[0];
+            for (var i = 0; i < titles.length; i++) {
+                var title = titles[i];
+                if (reputation < title.rep_required) {
+                    output.resolve(prevTitle.title);
+                    return;
+                }
+                prevTitle = title;
             }
-            prevTitle = title;
-        }
+            output.resolve(prevTitle.title);
+        });
+        return output.promise;
+    };
+
+    this.associateTitles = function(data) {
+        data.forEach(function(item) {
+            // if user is defined and they don't have a custom title
+            if (item.submitter && !item.submitter.title) {
+                // get their default title
+                service.getUserTitle(item.submitter.reputation.overall).then(function(title) {
+                    item.submitter.title = title;
+                });
+            }
+        });
     };
 });
