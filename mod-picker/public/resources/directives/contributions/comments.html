@@ -10,3 +10,7 @@
 <div class="comment-container" ng-repeat="comment in comments">
     <comment comment="comment" current-user="currentUser" index="100 + $index" save-callback="saveComment" event-prefix="eventPrefix"></comment>
 </div>
+
+<div class="content-message" ng-hide="comments.length">
+    There aren't any comments here yet.
+</div>
