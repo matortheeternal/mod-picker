@@ -52,7 +52,7 @@
 
     <!-- TODO: Hide children past the third child by default -->
     <!-- TODO: Create link to show all children -->
-    <div class="child-comments" ng-if="comment.children_count > 0">
+    <div class="child-comments" ng-if="comment.children.length">
         <div class="comment-container" ng-repeat="child in comment.children">
             <comment comment="child" current-user="currentUser" index="index" save-callback="saveCallback"  is-child="true"></comment>
         </div>

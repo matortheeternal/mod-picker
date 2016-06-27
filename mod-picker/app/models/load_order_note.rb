@@ -34,11 +34,25 @@ class LoadOrderNote < ActiveRecord::Base
   # Validations
   validates :game_id, :submitted_by, :first_plugin_id, :second_plugin_id, :text_body, presence: true
   validates :text_body, length: {in: 256..16384}
+  validate :unique_plugins
 
   # Callbacks
   after_create :increment_counters
   before_save :set_dates
   before_destroy :decrement_counters
+
+  def unique_plugins
+    plugin_ids = [first_plugin_id, second_plugin_id]
+    note = LoadOrderNote.where(first_plugin_id: plugin_ids, second_plugin_id: plugin_ids, hidden: false).where.not(id: self.id).first
+    if note.present?
+      if note.approved
+        errors.add(:plugins, "A Load Order Note for these plugins already exists.")
+        errors.add(:link_id, note.id)
+      else
+        errors.add(:plugins, "An unapproved Load Order Note for these plugins already exists.")
+      end
+    end
+  end
 
   def mods
     [first_mod, second_mod]
@@ -49,10 +63,11 @@ class LoadOrderNote < ActiveRecord::Base
   end
 
   def create_history_entry
+    edit_summary = self.edited_by.nil? ? "Load Order Note Created" : self.edit_summary
     self.history_entries.create(
         edited_by: self.edited_by || self.submitted_by,
         text_body: self.text_body,
-        edit_summary: self.edit_summary,
+        edit_summary: edit_summary || "",
         edited: self.edited || self.submitted
     )
   end

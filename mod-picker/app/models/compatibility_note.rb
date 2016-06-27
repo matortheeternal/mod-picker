@@ -37,24 +37,39 @@ class CompatibilityNote < ActiveRecord::Base
   # Validations
   validates :game_id, :submitted_by, :status, :first_mod_id, :second_mod_id, :text_body, presence: true
   validates :text_body, length: { in: 256..16384 }
+  validate :unique_mods
 
   # Callbacks
   after_create :increment_counters
   before_save :set_dates
   before_destroy :decrement_counters
 
+  def unique_mods
+    mod_ids = [first_mod_id, second_mod_id]
+    note = CompatibilityNote.where(first_mod_id: mod_ids, second_mod_id: mod_ids, hidden: false).where.not(id: self.id).first
+    if note.present?
+      if note.approved
+        errors.add(:mods, "A Compatibility Note for these mods already exists.")
+        errors.add(:link_id, note.id)
+      else
+        errors.add(:mods, "An unapproved Compatibility Note for these mods already exists.")
+      end
+    end
+  end
+
   def mods
     [first_mod, second_mod]
   end
 
   def create_history_entry
+    edit_summary = self.edited_by.nil? ? "Compatibility Note Created" : self.edit_summary
     self.history_entries.create(
       edited_by: self.edited_by || self.submitted_by,
       status: self.status,
       compatibility_mod_id: self.compatibility_mod_id,
       compatibility_plugin_id: self.compatibility_plugin_id,
       text_body: self.text_body,
-      edit_summary: self.edit_summary,
+      edit_summary: edit_summary || "",
       edited: self.edited || self.submitted
     )
   end

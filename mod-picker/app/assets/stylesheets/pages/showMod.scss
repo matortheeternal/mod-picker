@@ -468,6 +468,12 @@
   }
 }
 
+//user review box
+.user-review {
+  border: 1px solid $bar_dark_color;
+  border-top: none;
+}
+
 //making the text-area scroll
 .note-text-area {
   .CodeMirror {
@@ -701,7 +707,7 @@
   }
 }
 
-.corrections-container {
+.modal {
   table {
     width: 100%;
     border-collapse: collapse;
@@ -748,6 +754,26 @@
     tbody tr:nth-child(even) {
       background-color: $primary_background;
       border-bottom: 1px solid $border_color;
+    }
+  }
+}
+
+// history modal
+.modal {
+  .history-container {
+    table {
+      tbody tr {
+        background-color: $primary_background;
+        cursor: pointer;
+
+        &:hover {
+          background-color: $secondary_background;
+        }
+
+        &.selected {
+          background-color: $secondary_background;
+        }
+      }
     }
   }
 }

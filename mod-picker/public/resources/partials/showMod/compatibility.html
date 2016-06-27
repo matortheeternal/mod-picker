@@ -83,7 +83,7 @@
 
 <loader data="mod.compatibility_notes" spinner-class="big-spinner" ng-if="!errors.compatibility_notes">
     <div ng-repeat="note in mod.compatibility_notes" class="content-block" ng-if="!note.editing">
-        <compatibility-note note="note" mod-id="mod.id" show-user-column="true" index="100 + $index" current-user="currentUser" edit="editCompatibilityNote"></compatibility-note>
+        <compatibility-note note="note" mod-id="mod.id" index="100 + $index" current-user="currentUser" edit="editCompatibilityNote"></compatibility-note>
     </div>
 
     <div class="content-message" ng-hide="mod.compatibility_notes.length">

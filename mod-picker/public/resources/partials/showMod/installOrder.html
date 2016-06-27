@@ -58,7 +58,7 @@
 
 <loader data="mod.install_order_notes" spinner-class="big-spinner" ng-if="!errors.install_order_notes">
     <div ng-repeat="note in mod.install_order_notes" class="content-block" ng-if="!note.editing">
-        <install-order-note note="note" show-user-column="true" mod-id="mod.id" index="100 + $index" current-user="currentUser" edit="editInstallOrderNote"></install-order-note>
+        <install-order-note note="note" mod-id="mod.id" index="100 + $index" current-user="currentUser" edit="editInstallOrderNote"></install-order-note>
     </div>
 
     <div class="content-message" ng-hide="mod.install_order_notes.length">

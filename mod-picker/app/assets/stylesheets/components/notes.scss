@@ -42,7 +42,20 @@
           text-transform: uppercase;
         }
       }
+
+      .editors {
+        font-size: 12px;
+        margin-top: 20px;
+
+        b {
+          font-weight: 500;
+        }
+      }
     }
+  }
+
+  .no-actions {
+    padding-bottom: 10px !important;
   }
 
   .content-column {

@@ -11,6 +11,22 @@ class CompatibilityNoteHistoryEntry < ActiveRecord::Base
   after_create :increment_counters
   before_destroy :decrement_counters
 
+  def as_json(options={})
+    if JsonHelpers.json_options_empty(options)
+      default_options = {
+          :except => [:compatibility_note_id, :edited_by],
+          :include => {
+              :editor => {
+                  :only => [:id, :username, :role, :title]
+              }
+          }
+      }
+      super(options.merge(default_options))
+    else
+      super(options)
+    end
+  end
+
   private
     def increment_counters
       self.compatibility_note.update_counter(:history_entries_count, 1)

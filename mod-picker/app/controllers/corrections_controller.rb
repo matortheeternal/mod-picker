@@ -21,7 +21,7 @@ class CorrectionsController < ApplicationController
     authorize! :create, @correction
 
     if @correction.save
-      render json: {status: :ok}
+      render json: @correction.reload
     else
       render json: @correction.errors, status: :unprocessable_entity
     end

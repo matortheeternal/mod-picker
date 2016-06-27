@@ -293,6 +293,7 @@ input[type="button"], input[type="submit"] {
 
   .selected-tab {
     background-color: inherit;
+    cursor: default;
     color: $text_color;
   }
 
@@ -397,6 +398,7 @@ input[type="button"], input[type="submit"] {
 /* css for forms, inputs, and labels */
 .messages {
   max-height: 400px;
+  background-color: $bar_dark_color;
   overflow: hidden;
 
   &.ng-hide-add {
@@ -420,6 +422,13 @@ input[type="button"], input[type="submit"] {
         color: $action_text_color;
         background-color: $text_color;
         cursor: pointer;
+    }
+
+    a {
+      color: $error_secondary;
+      &:hover {
+        color: $text_color;
+      }
     }
   }
 
@@ -500,6 +509,10 @@ input[type="text"], input[type="email"], input[type="password"] {
 
   div.CodeMirror-cursor {
     border-left: 1px solid $text_color;
+  }
+
+  .CodeMirror-line {
+    @include wordbreak;
   }
 }
 
@@ -708,8 +721,12 @@ a .help-tooltip {
     cursor: pointer;
   }
 
-  .error-message, .success-message {
-    font-size: 18px;
+  .messages {
+    background-color: transparent;
+
+    .error-message, .success-message {
+      font-size: 18px;
+    }
   }
 
   .big-modal {

@@ -1,4 +1,4 @@
-app.controller('modInstallOrderController', function($scope, $stateParams, $state, modService, contributionService, errorService) {
+app.controller('modInstallOrderController', function($scope, $stateParams, $state, modService, contributionService, contributionFactory) {
     // verify we can access this tab
     $scope.currentTab = $scope.findTab('Install Order');
     if (!$scope.currentTab) {
@@ -156,9 +156,9 @@ app.controller('modInstallOrderController', function($scope, $stateParams, $stat
                 $scope.$emit('errorMessage', params);
             });
         } else {
-            contributionService.submitContribution("install_order_notes", noteObj).then(function(data) {
+            contributionService.submitContribution("install_order_notes", noteObj).then(function(note) {
                 $scope.$emit("successMessage", "Install Order Note submitted successfully.");
-                $scope.mod.reviews.unshift(data);
+                $scope.mod.reviews.unshift(note);
                 $scope.discardInstallOrderNote();
             }, function(response) {
                 var params = {label: 'Error submitting Install Order Note', response: response};
