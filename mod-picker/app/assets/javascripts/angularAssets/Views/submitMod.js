@@ -49,14 +49,14 @@ app.controller('submitModController', function ($scope, backend, submitService, 
         source.valid = !sourceUsed && match != null;
     };
 
-    $scope.loadGeneralStats = function(stats) {
-        if ($scope.mod.name) {
+    $scope.loadGeneralStats = function(stats, override) {
+        if ($scope.mod.name && !override) {
             return;
         }
 
         // load the stats
         $scope.mod.name = stats.mod_name;
-        $scope.mod.authors = stats.authors;
+        $scope.mod.authors = stats.authors || stats.uploaded_by;
         $scope.mod.released = new Date(Date.parse(stats.released));
         $scope.mod.updated = new Date(Date.parse(stats.updated));
     };
@@ -78,7 +78,7 @@ app.controller('submitModController', function ($scope, backend, submitService, 
                 $scope.nexus.scraping = true;
                 submitService.scrapeNexus(gameId, modId).then(function (data) {
                     $scope.nexus = data;
-                    $scope.loadGeneralStats(data);
+                    $scope.loadGeneralStats(data, true);
                 });
                 break;
             case "Lover's Lab":
