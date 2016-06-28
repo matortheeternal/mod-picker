@@ -10,10 +10,14 @@ app.service('submitService', function (backend, $q) {
         return backend.retrieve('/workshop_infos/' + modId);
     };
 
-    this.submitMod = function (mod, analysis, sources, requirements) {
-        // select primary source
-        var primarySource = sources.nexus || sources.workshop || sources.lab;
-        var released, updated;
+    this.submitMod = function (mod, sources, customSources) {
+        // helper variables
+        var requirements = mod.requirements;
+        var analysis = mod.analysis;
+
+        // load earliest date released and latest date updated from sources
+        var released = mod.released;
+        var updated = mod.updated;
         for (var property in sources) {
             if (sources.hasOwnProperty(property) && sources[property]) {
                 var source = sources[property];
@@ -29,13 +33,14 @@ app.service('submitService', function (backend, $q) {
         // prepare mod record
         var modData = {
             mod: {
-                name: primarySource.mod_name,
-                authors: primarySource.authors || primarySource.uploaded_by,
+                name: mod.name,
+                aliases: mod.aliases,
+                authors: mod.authors,
                 is_utility: mod.is_utility,
                 has_adult_content: mod.has_adult_content,
                 game_id: mod.game_id,
                 released: released || DateTime.now(),
-                updated: updated || DateTime.now(),
+                updated: updated,
                 primary_category_id: mod.categories[0],
                 secondary_category_id: mod.categories[1],
                 nexus_info_id: sources.nexus && sources.nexus.id,
@@ -44,6 +49,7 @@ app.service('submitService', function (backend, $q) {
                 tag_names: mod.tags,
                 asset_paths: analysis.assets,
                 plugin_dumps: analysis.plugins,
+                custom_sources_attributes: customSources,
                 required_mods_attributes: requirements
             }
         };
