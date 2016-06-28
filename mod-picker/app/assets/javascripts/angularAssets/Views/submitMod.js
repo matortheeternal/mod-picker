@@ -8,6 +8,10 @@ app.config(['$stateProvider', function ($stateProvider) {
 }]);
 
 app.controller('submitModController', function ($scope, backend, submitService, pluginService, categoryService, sitesFactory, assetUtils) {
+    // access parent variables
+    $scope.currentUser = $scope.$parent.currentUser;
+    $scope.permissions = $scope.$parent.permissions;
+
     // initialize variables
     $scope.sites = sitesFactory.sites();
     $scope.mod = { game_id: window._current_game_id };
@@ -16,6 +20,7 @@ app.controller('submitModController', function ($scope, backend, submitService, 
         label: "Nexus Mods",
         url: ""
     }];
+    $scope.customSources = [];
 
     /* sources */
     $scope.addSource = function() {
@@ -42,6 +47,18 @@ app.controller('submitModController', function ($scope, backend, submitService, 
         source.valid = !sourceUsed && match != null;
     };
 
+    $scope.loadGeneralStats = function(stats) {
+        if ($scope.mod.name) {
+            return;
+        }
+
+        // load the stats
+        $scope.mod.name = stats.mod_name;
+        $scope.mod.authors = stats.authors;
+        $scope.mod.released = new Date(Date.parse(stats.released));
+        $scope.mod.updated = new Date(Date.parse(stats.updated));
+    };
+
     $scope.scrapeSource = function(source) {
         // exit if the source is invalid
         var site = sitesFactory.getSite(source.label);
@@ -59,6 +76,7 @@ app.controller('submitModController', function ($scope, backend, submitService, 
                 $scope.nexus.scraping = true;
                 submitService.scrapeNexus(gameId, modId).then(function (data) {
                     $scope.nexus = data;
+                    $scope.loadGeneralStats(data);
                 });
                 break;
             case "Lover's Lab":
@@ -66,6 +84,7 @@ app.controller('submitModController', function ($scope, backend, submitService, 
                 $scope.lab.scraping = true;
                 submitService.scrapeLab(modId).then(function (data) {
                     $scope.lab = data;
+                    $scope.loadGeneralStats(data);
                 });
                 break;
             case "Steam Workshop":
@@ -73,9 +92,27 @@ app.controller('submitModController', function ($scope, backend, submitService, 
                 $scope.workshop.scraping = true;
                 submitService.scrapeWorkshop(modId).then(function (data) {
                     $scope.workshop = data;
+                    $scope.loadGeneralStats(data);
                 });
                 break;
         }
+    };
+
+    /* custom sources */
+    $scope.addCustomSource = function() {
+        $scope.customSources.push({
+            label: "Custom",
+            url: ""
+        });
+    };
+
+    $scope.removeCustomSource = function(source) {
+        var index = $scope.customSources.indexOf(source);
+        $scope.customSources.splice(index, 1);
+    };
+
+    $scope.validateCustomSource = function(source) {
+        source.valid = (source.label.length > 4) && (source.url.length > 12);
     };
 
     /* requirements */
