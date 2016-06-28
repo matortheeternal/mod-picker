@@ -134,6 +134,42 @@
                 </div>
             </section>
 
+            <h3 class="section-title">General Info
+                <span class="help-tooltip" title="Information that cannot be fetched from scraping &#13;the mod pages.">?</span>
+            </h3>
+            <section>
+                <label class="subsection" ng-show="!sources.length || permissions.canSetGeneralModInfo">
+                    <span class="input-label">Mod Name</span>
+                    <span class="input-block">
+                        <input type="text" ng-model="mod.name">
+                    </span>
+                </label>
+                <label class="subsection">
+                    <span class="input-label">Aliases</span>
+                    <span class="input-block">
+                        <input type="text" ng-model="mod.aliases">
+                    </span>
+                </label>
+                <label class="subsection" ng-show="!sources.length || permissions.canSetGeneralModInfo">
+                    <span class="input-label">Authors</span>
+                    <span class="input-block">
+                        <input type="text" ng-model="mod.authors">
+                    </span>
+                </label>
+                <label class="subsection" ng-show="!sources.length || permissions.canSetGeneralModInfo">
+                    <span class="input-label">Date Released</span>
+                    <span class="input-block">
+                        <input type="date" ng-model="mod.released">
+                    </span>
+                </label>
+                <label class="subsection" ng-show="!sources.length || permissions.canSetGeneralModInfo">
+                    <span class="input-label">Date Updated</span>
+                    <span class="input-block">
+                        <input type="date" ng-model="mod.updated">
+                    </span>
+                </label>
+            </section>
+
             <h3 class="section-title">
                 Mod Analysis
                 <!-- temporary github link, should link to a help page -->
