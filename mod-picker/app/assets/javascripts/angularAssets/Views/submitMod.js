@@ -14,8 +14,10 @@ app.controller('submitModController', function ($scope, backend, submitService, 
 
     // initialize variables
     $scope.sites = sitesFactory.sites();
-    $scope.mod = { game_id: window._current_game_id };
-    $scope.requirements = [];
+    $scope.mod = {
+        game_id: window._current_game_id,
+        requirements: []
+    };
     $scope.sources = [{
         label: "Nexus Mods",
         url: ""
@@ -117,7 +119,7 @@ app.controller('submitModController', function ($scope, backend, submitService, 
 
     /* requirements */
     $scope.addRequirement = function() {
-        $scope.requirements.push({});
+        $scope.mod.requirements.push({});
     };
 
     $scope.addRequirementFromPlugin = function(filename) {
@@ -126,19 +128,19 @@ app.controller('submitModController', function ($scope, backend, submitService, 
                 return plugin.filename === filename;
             });
             if (plugin) {
-                var match = $scope.requirements.find(function(requirement) {
+                var match = $scope.mod.requirements.find(function(requirement) {
                     return requirement.required_id == plugin.mod_id;
                 });
                 if (!match) {
-                    $scope.requirements.push({required_id: plugin.mod_id, name: plugin.mod.name});
+                    $scope.mod.requirements.push({required_id: plugin.mod_id, name: plugin.mod.name});
                 }
             }
         });
     };
 
     $scope.removeRequirement = function(requirement) {
-        var index = $scope.requirements.indexOf(requirement);
-        $scope.requirements.splice(index, 1);
+        var index = $scope.mod.requirements.indexOf(requirement);
+        $scope.mod.requirements.splice(index, 1);
     };
 
     /* categories */
@@ -247,7 +249,7 @@ app.controller('submitModController', function ($scope, backend, submitService, 
     $scope.getRequirementsFromAnalysis = function() {
         // build list of masters
         var masters = [];
-        $scope.analysis.plugins.forEach(function(plugin) {
+        $scope.mod.analysis.plugins.forEach(function(plugin) {
             plugin.master_plugins.forEach(function(master) {
                 if (masters.indexOf(master.filename) == -1) {
                     masters.push(master.filename);
@@ -264,8 +266,9 @@ app.controller('submitModController', function ($scope, backend, submitService, 
         var fileReader = new FileReader();
         fileReader.onload = function (event) {
             var fixedJson = event.target.result.replace('"plugin_record_groups"', '"plugin_record_groups_attributes"').replace('"plugin_errors"', '"plugin_errors_attributes"').replace('"overrides"', '"overrides_attributes"');
-            $scope.analysis = JSON.parse(fixedJson);
-            $scope.analysis.nestedAssets = assetUtils.convertDataStringToNestedObject($scope.analysis.assets);
+            var analysis = JSON.parse(fixedJson);
+            analysis.nestedAssets = assetUtils.convertDataStringToNestedObject(analysis.assets);
+            $scope.mod.analysis = analysis;
             $scope.getRequirementsFromAnalysis();
             $scope.$apply();
         };

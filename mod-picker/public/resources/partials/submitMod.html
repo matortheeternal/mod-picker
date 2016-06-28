@@ -186,15 +186,15 @@
                 </a>
             </h3>
             <section>
-                <div class="analysis-results" ng-show="analysis">
-                    <h4 class="subtitle" ng-show="analysis.nestedAssets">Asset File Tree</h4>
-                    <div class="subsection analysis-container" ng-show="analysis.nestedAssets">
-                        <asset-tree data="analysis.nestedAssets"></asset-tree>
+                <div class="analysis-results" ng-show="mod.analysis">
+                    <h4 class="subtitle" ng-show="mod.analysis.nestedAssets">Asset File Tree</h4>
+                    <div class="subsection analysis-container" ng-show="mod.analysis.nestedAssets">
+                        <asset-tree data="mod.analysis.nestedAssets"></asset-tree>
                     </div>
 
-                    <h4 class="subtitle" ng-show="analysis.plugins.length > 0">Plugin Analysis</h4>
-                    <div class="subsection analysis-container" ng-show="analysis.plugins.length > 0">
-                        <div class="plugin-analysis-item" ng-repeat="plugin in analysis.plugins">
+                    <h4 class="subtitle" ng-show="mod.analysis.plugins.length > 0">Plugin Analysis</h4>
+                    <div class="subsection analysis-container" ng-show="mod.analysis.plugins.length > 0">
+                        <div class="plugin-analysis-item" ng-repeat="plugin in mod.analysis.plugins">
                             <plugin-metadata plugin="plugin" show-record-groups="true"></plugin-metadata>
                         </div>
                     </div>
@@ -211,7 +211,7 @@
                 <span class="help-tooltip" title="Mods that are required for this mod to function.">?</span>
             </h3>
             <section>
-                <div class="dynamic-item" ng-repeat="requirement in requirements">
+                <div class="dynamic-item" ng-repeat="requirement in mod.requirements">
                     <mod-input result-id="requirement.required_id" search-text="requirement.name" class="long-mod-input"></mod-input>
                     <span class="remove-item" ng-click="removeRequirement(requirement)" title="Remove requirement">
                         <i class="fa fa-times"></i>
