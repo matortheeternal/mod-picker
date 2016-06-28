@@ -40,6 +40,7 @@ class ModsController < ApplicationController
     @mod = Mod.new(mod_params)
     @mod.submitted_by = current_user.id
     authorize! :create, @mod
+    authorize! :assign_custom_sources, @mod if params[:mod][:custom_sources_attributes]
 
     if @mod.save
       render json: {status: :ok}

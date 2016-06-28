@@ -27,6 +27,9 @@ class Ability
       # can hide mod lists
       can :hide, ModList
 
+      # can create mods with custom sources
+      can :assign_custom_sources, Mod
+
       # can update or hide any mod
       can [:update, :hide], Mod
       can :destroy, ModRequirement
