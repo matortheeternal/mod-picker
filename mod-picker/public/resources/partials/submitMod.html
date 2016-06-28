@@ -250,7 +250,7 @@
             </section>
 
             <div class="action-button-container">
-                <input class="btn action-btn" type="submit" ng-disabled='submitting || modInvalid()' ng-click="submit()" value="Submit"/>
+                <input class="btn action-btn" type="submit" ng-disabled='submitting || !modValid()' ng-click="submit()" value="Submit"/>
             </div>
         </form>
     </div>
