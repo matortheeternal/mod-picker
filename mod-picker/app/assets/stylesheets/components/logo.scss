@@ -27,3 +27,35 @@
 .icom-mod_picker:before {
   content: "\1f3f0";
 }
+
+.logo {
+  display: block;
+  position: relative;
+  margin-bottom: 10px;
+
+  i {
+    color: $h1_color;
+    text-shadow: $shadow_color 1px 1px 4px;
+    font-size: 96px;
+    margin-right: 10px;
+  }
+
+  h1 {
+    text-shadow: $shadow_color 1px 1px 4px;
+    position: absolute;
+    top: 40px;
+    display: inline;
+  }
+}
+
+.small-logo {
+  i {
+    font-size: 64px;
+    text-shadow: $shadow_color 1px 1px 3px;
+  }
+
+  h1 {
+    top: 16px;
+    text-shadow: $shadow_color 1px 1px 3px;
+  }
+}
