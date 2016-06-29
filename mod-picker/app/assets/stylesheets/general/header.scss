@@ -18,8 +18,7 @@ header {
   height: 50px;
   display: table;
   font-size: 12px;
-  padding-top: 60px;
-  padding-bottom: 60px;
+  padding: 40px 0;
   position: relative;
 }
 
@@ -36,8 +35,8 @@ header {
   background: rgba($inverse_text_color, 0.7);
   text-align: right;
   float: right;
-  margin: 0;
-  padding: 0 10px 0 10px;
+  margin: 0 0 20px;
+  padding: 0 10px;
 
   li {
     display: inline;
