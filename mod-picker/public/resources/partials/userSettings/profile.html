@@ -2,7 +2,7 @@
 <section>
     <img class="avatar avatar-medium" ng-src="{{avatar.src}}" ng-class="{ 'avatar-pending': avatar.file }">
     <label ng-if="permissions.canChangeAvatar">
-        <input type="file" id="avatar-input" class="btn" value="Browse" accept=".jpg,.png" file-change="changeAvatar" />
+        <input type="file" accept=".jpg,.png" file-change="changeAvatar" />
         <input type="button" id="avatar-browse" class="btn" value="Browse" ng-click="browseAvatar()"/>
     </label>
     <span class="explanation" ng-if="!permissions.canChangeAvatar">

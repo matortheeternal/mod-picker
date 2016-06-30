@@ -51,7 +51,7 @@ app.controller('userSettingsController', function ($scope, $q, user, currentUser
         {name: 'Profile'},
         {name: 'Account'},
         {name: 'Mod Lists'},
-        {name: 'Authored Mods'},
+        {name: 'Authored Mods'}
     ];
 
     /* avatar */
