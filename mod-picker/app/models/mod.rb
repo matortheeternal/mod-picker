@@ -358,6 +358,35 @@ class Mod < ActiveRecord::Base
     end
   end
 
+  def edit_json
+    self.as_json({
+       :include => {
+           :tags => {
+               :except => [:game_id, :hidden, :mod_lists_count],
+               :include => {
+                   :submitter => {
+                       :only => [:id, :username]
+                   }
+               }
+           },
+           :nexus_infos => {:only => [:id, :last_scraped]},
+           :workshop_infos => {:only => [:id, :last_scraped]},
+           :lover_infos => {:only => [:id, :last_scraped]},
+           :custom_sources => {:except => [:mod_id]},
+           :author_users => {:only => [:id, :username]},
+           :required_mods => {
+               :only => [],
+               :include => {
+                   :required_mod => {
+                       :only => [:id, :name]
+                   }
+               }
+           }
+       },
+       :methods => :image
+    })
+  end
+
   def show_json
     self.as_json({
       :include => {
