@@ -25,14 +25,38 @@ app.config(['$stateProvider', function($stateProvider) {
 
 app.controller('editModController', function($scope, $state, currentUser, modObject, modService, tagService, errorService) {
     // get parent variables
-    $scope.mod = modObject;
     $scope.currentUser = currentUser;
 
     // initialize local variables
-    $scope.tags = [];
+    $scope.permissions = angular.copy(currentUser.permissions);
     $scope.newTags = [];
     // error handling
     $scope.errors = {};
+
+    /* load the mod object onto the view */
+    // parse dates to date objects
+    modObject.released = new Date(Date.parse(modObject.released));
+    if (modObject.updated) {
+        modObject.updated = new Date(Date.parse(modObject.updated));
+    }
+    // convert required mods into correct format
+    modObject.requirements = [];
+    modObject.required_mods.forEach(function(requirement) {
+        modObject.requirements.push({
+            required_id: requirement.required_mod.id,
+            name: requirement.required_mod.name
+        })
+    });
+    // convert categories into correct format
+    modObject.categories = [];
+    if (modObject.primary_category_id) {
+        modObject.categories.push(modObject.primary_category_id);
+    }
+    if (modObject.secondary_category_id) {
+        modObject.categories.push(modObject.secondary_category_id);
+    }
+    // put mod on scope
+    $scope.mod = modObject;
 
     // display error messages
     $scope.$on('errorMessage', function(event, params) {
