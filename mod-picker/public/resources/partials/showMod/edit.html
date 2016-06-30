@@ -1,3 +1,5 @@
+<messages></messages>
+
 <div class="column-wrapper">
     <div class="single-column">
         <h2>Edit Mod</h2>
@@ -12,7 +14,8 @@
                     <img class="mod-image" ng-src="{{image.src}}" ng-class="{ 'image-pending': image.file }">
                     <label>
                         <input type="file" id="image-input" accept=".jpg,.png" file-change="changeImage" />
-                        <input type="button" id="image-browse" class="btn" value="Browse" ng-click="browseImage()"/>
+                        <input type="button" class="btn" value="Browse" ng-click="browseImage()"/>
+                        <input type="button" ng-if="image.file" class="btn" value="Reset" ng-click="resetImage()"/>
                     </label>
                     <span class="explanation" ng-if="image.file">
                         New mod image pending, click save changes to save it.

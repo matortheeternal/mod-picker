@@ -23,7 +23,7 @@ app.config(['$stateProvider', function($stateProvider) {
     });
 }]);
 
-app.controller('editModController', function($scope, $state, currentUser, modObject, modService, tagService, categoryService, errorService) {
+app.controller('editModController', function($scope, $state, currentUser, modObject, modService, tagService, categoryService, errorService, fileUtils) {
     // get parent variables
     $scope.currentUser = currentUser;
 
@@ -100,10 +100,10 @@ app.controller('editModController', function($scope, $state, currentUser, modObj
             if ((ext !== 'png') && (ext !== 'jpg')) {
                 errorObj = {
                     type: "error",
-                    message: "Unsupported file type.  Mod image must be a PNG or JPG file."
+                    text: "Unsupported file type.  Mod image must be a PNG or JPG file."
                 };
                 $scope.$broadcast("message", errorObj);
-                $scope.resetAvatar();
+                $scope.resetImage();
                 return;
             }
 
@@ -111,10 +111,10 @@ app.controller('editModController', function($scope, $state, currentUser, modObj
             if (imageFile.size > 1048576) {
                 errorObj = {
                     type: "error",
-                    message: "Mod image is too big.  Maximum file size 1.0MB."
+                    text: "Mod image is too big.  Maximum file size 1.0MB."
                 };
                 $scope.$broadcast("message", errorObj);
-                $scope.resetAvatar();
+                $scope.resetImage();
                 return;
             }
 
@@ -125,13 +125,13 @@ app.controller('editModController', function($scope, $state, currentUser, modObj
                 if (imageTooBig) {
                     errorObj = {
                         type: "error",
-                        message: "Mod image too large.  Maximum dimensions 300x300."
+                        text: "Mod image too large.  Maximum dimensions 300x300."
                     };
                     $scope.$broadcast("message", errorObj);
-                    $scope.resetAvatar();
+                    $scope.resetImage();
                 } else {
-                    $scope.avatar.file = imageFile;
-                    $scope.avatar.src = img.src;
+                    $scope.image.file = imageFile;
+                    $scope.image.src = img.src;
                     $scope.$apply();
                 }
             };
