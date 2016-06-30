@@ -4,43 +4,43 @@ Other components like header/footer can't be reused because they use angular
 
 // Colors from whiterun theme
 
-$text_color: #000;
-$inverse_text_color: #eee;
-$soft_text_color: #aaa;
+$text_color: #404040;
+$inverse_text_color: #ffffff;
+$soft_text_color: #bbb;
 
-$primary_background: #fafaeb;
-$secondary_background: #eeeedd;
-$background_highlight: #fcfce7;
+$primary_background: #ffffff;
+$secondary_background: #f5f5f5;
+$background_highlight: #ffffff;
 $input_background: #fff;
 
 $shadow_color: #000;
-$border_color: #cacaca;
-$soft_border_color: #dadada;
-$hard_border_color: #84888a;
+$border_color: #e6e6e6;
+$soft_border_color: #f0f0f0;
+$hard_border_color: #b6b6b6;
 
-$h1_color: #c0a060;
+$h1_color: #fff;
 $h2_color: #000;
-$h3_color: #665b50;
-$h4_color: #575964;
+$h3_color: #3a4751;
+$h4_color: #606060;
 
-$action_color: #c0a060;
-$action_text_color: #eee;
-$bright_action_color: #cbae72;
-$dark_action_color: #a68a53;
+$action_color: #53b6bf;
+$action_text_color: #ffffff;
+$bright_action_color: #a6ceda;
+$dark_action_color: #479aa2;
 
-$bar_color: #342f2a;
-$bar_dark_color: #484037;
-$bar_highlight_color: #48433f;
-$bar_text_color: #eee;
-$bar_highlight_text_color: #c9a9a9;
+$bar_color: #3a4751;
+$bar_dark_color: #2C353C;
+$bar_highlight_color: #4d5e6b;
+$bar_text_color: #ffffff;
+$bar_highlight_text_color: #53b6bf;
 
-$link_color: #182e8f;
-$link_hover_color_primary: #3678BF; // #406bba, #2c85c5, #3678BF
-$link_hover_color_secondary: #508bda;
+$link_color: #53b6bf;
+$link_hover_color_primary: #53b6bf;
+$link_hover_color_secondary: #3a4751;
 
-$slider_bg_color: #cacaca;
-$slider_range_color: #508bda;
-$slider_circle_color_after: #205098;
+$slider_bg_color: #aeb5b6;
+$slider_range_color: #53b6bf;
+$slider_circle_color_after: #3a4751;
 
 $success_primary: #B4D5B4;
 $success_secondary: #4AC859;
@@ -110,7 +110,7 @@ body {
 
 nav {
   display: block;
-  background-color: #342f2a;
+  background-color: $bar_color;
   white-space: nowrap;
   
   .logo {
@@ -280,7 +280,7 @@ nav .secondary-nav {
 
 // footer
 .footer {
-  background-color: $bar_dark_color;
+  background-color: $bar_color;
   color: $bar_text_color;
   // position absolute + width 100% to make it so footer is always on the bottom
   width: 100%;
