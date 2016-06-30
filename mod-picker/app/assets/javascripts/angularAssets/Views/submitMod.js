@@ -8,14 +8,21 @@ app.config(['$stateProvider', function ($stateProvider) {
 }]);
 
 app.controller('submitModController', function ($scope, backend, submitService, pluginService, categoryService, sitesFactory, assetUtils) {
+    // access parent variables
+    $scope.currentUser = $scope.$parent.currentUser;
+    $scope.permissions = $scope.$parent.permissions;
+
     // initialize variables
     $scope.sites = sitesFactory.sites();
-    $scope.mod = { game_id: window._current_game_id };
-    $scope.requirements = [];
+    $scope.mod = {
+        game_id: window._current_game_id,
+        requirements: []
+    };
     $scope.sources = [{
         label: "Nexus Mods",
         url: ""
     }];
+    $scope.customSources = [];
 
     /* sources */
     $scope.addSource = function() {
@@ -42,6 +49,18 @@ app.controller('submitModController', function ($scope, backend, submitService, 
         source.valid = !sourceUsed && match != null;
     };
 
+    $scope.loadGeneralStats = function(stats, override) {
+        if ($scope.mod.name && !override) {
+            return;
+        }
+
+        // load the stats
+        $scope.mod.name = stats.mod_name;
+        $scope.mod.authors = stats.authors || stats.uploaded_by;
+        $scope.mod.released = new Date(Date.parse(stats.released));
+        $scope.mod.updated = new Date(Date.parse(stats.updated));
+    };
+
     $scope.scrapeSource = function(source) {
         // exit if the source is invalid
         var site = sitesFactory.getSite(source.label);
@@ -59,6 +78,7 @@ app.controller('submitModController', function ($scope, backend, submitService, 
                 $scope.nexus.scraping = true;
                 submitService.scrapeNexus(gameId, modId).then(function (data) {
                     $scope.nexus = data;
+                    $scope.loadGeneralStats(data, true);
                 });
                 break;
             case "Lover's Lab":
@@ -66,6 +86,7 @@ app.controller('submitModController', function ($scope, backend, submitService, 
                 $scope.lab.scraping = true;
                 submitService.scrapeLab(modId).then(function (data) {
                     $scope.lab = data;
+                    $scope.loadGeneralStats(data);
                 });
                 break;
             case "Steam Workshop":
@@ -73,14 +94,32 @@ app.controller('submitModController', function ($scope, backend, submitService, 
                 $scope.workshop.scraping = true;
                 submitService.scrapeWorkshop(modId).then(function (data) {
                     $scope.workshop = data;
+                    $scope.loadGeneralStats(data);
                 });
                 break;
         }
     };
 
+    /* custom sources */
+    $scope.addCustomSource = function() {
+        $scope.customSources.push({
+            label: "Custom",
+            url: ""
+        });
+    };
+
+    $scope.removeCustomSource = function(source) {
+        var index = $scope.customSources.indexOf(source);
+        $scope.customSources.splice(index, 1);
+    };
+
+    $scope.validateCustomSource = function(source) {
+        source.valid = (source.label.length > 4) && (source.url.length > 12);
+    };
+
     /* requirements */
     $scope.addRequirement = function() {
-        $scope.requirements.push({});
+        $scope.mod.requirements.push({});
     };
 
     $scope.addRequirementFromPlugin = function(filename) {
@@ -89,19 +128,19 @@ app.controller('submitModController', function ($scope, backend, submitService, 
                 return plugin.filename === filename;
             });
             if (plugin) {
-                var match = $scope.requirements.find(function(requirement) {
+                var match = $scope.mod.requirements.find(function(requirement) {
                     return requirement.required_id == plugin.mod_id;
                 });
                 if (!match) {
-                    $scope.requirements.push({required_id: plugin.mod_id, name: plugin.mod.name});
+                    $scope.mod.requirements.push({required_id: plugin.mod_id, name: plugin.mod.name});
                 }
             }
         });
     };
 
     $scope.removeRequirement = function(requirement) {
-        var index = $scope.requirements.indexOf(requirement);
-        $scope.requirements.splice(index, 1);
+        var index = $scope.mod.requirements.indexOf(requirement);
+        $scope.mod.requirements.splice(index, 1);
     };
 
     /* categories */
@@ -210,7 +249,7 @@ app.controller('submitModController', function ($scope, backend, submitService, 
     $scope.getRequirementsFromAnalysis = function() {
         // build list of masters
         var masters = [];
-        $scope.analysis.plugins.forEach(function(plugin) {
+        $scope.mod.analysis.plugins.forEach(function(plugin) {
             plugin.master_plugins.forEach(function(master) {
                 if (masters.indexOf(master.filename) == -1) {
                     masters.push(master.filename);
@@ -227,8 +266,9 @@ app.controller('submitModController', function ($scope, backend, submitService, 
         var fileReader = new FileReader();
         fileReader.onload = function (event) {
             var fixedJson = event.target.result.replace('"plugin_record_groups"', '"plugin_record_groups_attributes"').replace('"plugin_errors"', '"plugin_errors_attributes"').replace('"overrides"', '"overrides_attributes"');
-            $scope.analysis = JSON.parse(fixedJson);
-            $scope.analysis.nestedAssets = assetUtils.convertDataStringToNestedObject($scope.analysis.assets);
+            var analysis = JSON.parse(fixedJson);
+            analysis.nestedAssets = assetUtils.convertDataStringToNestedObject(analysis.assets);
+            $scope.mod.analysis = analysis;
             $scope.getRequirementsFromAnalysis();
             $scope.$apply();
         };
@@ -236,18 +276,46 @@ app.controller('submitModController', function ($scope, backend, submitService, 
     };
 
     /* mod submission */
-    $scope.modInvalid = function () {
-        // submission isn't allowed until the user has scraped a nexus page,
-        // provided a mod analysis, and provided at least one category
+
+    // submission isn't allowed until the user has provided at least one valid source
+    // provided a mod analysis, and provided at least one category
+    $scope.modValid = function () {
+        // main source validation
         var sourcesValid = true;
         $scope.sources.forEach(function(source) {
             sourcesValid = sourcesValid && source.valid;
         });
-        return (!sourcesValid || $scope.analysis == null || $scope.mod.categories == null ||
-            $scope.mod.categories.length == 0 || $scope.mod.categories.length > 2)
+
+        // custom source validation
+        if ($scope.customSources.length) {
+            $scope.customSources.forEach(function(source) {
+                sourcesValid = sourcesValid && source.valid;
+            });
+            // if we are only submitting custom soruces, we need to verify
+            // we have all general info
+            if (!$scope.sources.length) {
+                sourcesValid = sourcesValid && $scope.mod.name && $scope.mod.authors &&
+                    $scope.mod.released;
+            }
+        }
+        else {
+            // if we don't have any custom sources we should verify we have
+            // the scraped data for at least one official source
+            sourcesValid = sourcesValid && ($scope.nexus || $scope.workshop || $scope.lab);
+        }
+
+        // return true if any
+        var categoriesValid = $scope.mod.categories && $scope.mod.categories.length &&
+            $scope.mod.categories.length <= 2;
+        return (sourcesValid && categoriesValid && $scope.mod.analysis)
     };
 
     $scope.submit = function () {
+        // return if mod is invalid
+        if (!$scope.modValid()) {
+            return;
+        }
+
         var sources = {
             nexus: $scope.nexus,
             workshop: $scope.workshop,
@@ -255,7 +323,7 @@ app.controller('submitModController', function ($scope, backend, submitService, 
         };
         $scope.submitting = true;
         $scope.submittingStatus = "Submitting Mod...";
-        submitService.submitMod($scope.mod, $scope.analysis, sources, $scope.requirements).then(function() {
+        submitService.submitMod($scope.mod, sources, $scope.customSources).then(function() {
             $scope.submittingStatus = "Mod Submitted Successfully!";
             $scope.success = true;
         }, function(response) {
