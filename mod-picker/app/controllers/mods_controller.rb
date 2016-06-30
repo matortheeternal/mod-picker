@@ -35,6 +35,13 @@ class ModsController < ApplicationController
     }
   end
 
+  # GET /mods/1/edit
+  def edit
+    @mod = Mod.find(params[:id])
+    authorize! :update, @mod
+    render :json => @mod.edit_json
+  end
+
   # POST /mods/submit
   def create
     @mod = Mod.new(mod_params)

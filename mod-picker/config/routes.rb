@@ -23,7 +23,7 @@ Rails.application.routes.draw do
     match '/mod_lists/:id/tags', to: 'mod_lists#update_tags', via: [:patch, :put]
 
     # mods
-    resources :mods, only: [:show, :create, :update, :destroy]
+    resources :mods, only: [:show, :edit, :create, :update, :destroy]
     match '/mods/index', to: 'mods#index', via: [:get, :post]
     match '/mods/search', to: 'mods#search', via: [:post]
 
