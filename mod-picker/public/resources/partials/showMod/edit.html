@@ -1,5 +1,92 @@
-<div class="single-column">
-    <loader data="mod" spinner-class="big-spinner">
-        Editing {{mod.name}}
-    </loader>
+<div class="column-wrapper">
+    <div class="single-column">
+        <h2>Edit Mod</h2>
+
+        <loader data="mod" spinner-class="big-spinner">
+            <form id="editModForm" name="editModForm" spellcheck="false">
+
+                <h3 class="section-title">General Info
+                    <span class="help-tooltip" title="Information that cannot be fetched from scraping &#13;the mod pages.">?</span>
+                </h3>
+                <section>
+                    <label class="subsection" ng-show="!sources.length || permissions.canSetGeneralModInfo">
+                        <span class="input-label">Mod Name</span>
+                    <span class="input-block">
+                        <input type="text" ng-model="mod.name">
+                    </span>
+                    </label>
+                    <label class="subsection">
+                        <span class="input-label">Aliases</span>
+                    <span class="input-block">
+                        <input type="text" ng-model="mod.aliases">
+                    </span>
+                    </label>
+                    <label class="subsection" ng-show="!sources.length || permissions.canSetGeneralModInfo">
+                        <span class="input-label">Authors</span>
+                    <span class="input-block">
+                        <input type="text" ng-model="mod.authors">
+                    </span>
+                    </label>
+                    <label class="subsection" ng-show="!sources.length || permissions.canSetGeneralModInfo">
+                        <span class="input-label">Date Released</span>
+                    <span class="input-block">
+                        <input type="date" ng-model="mod.released">
+                    </span>
+                    </label>
+                    <label class="subsection" ng-show="!sources.length || permissions.canSetGeneralModInfo">
+                        <span class="input-label">Date Updated</span>
+                    <span class="input-block">
+                        <input type="date" ng-model="mod.updated">
+                    </span>
+                    </label>
+                </section>
+
+                <h3 class="section-title">Requirements
+                    <span class="help-tooltip" title="Mods that are required for this mod to function.">?</span>
+                </h3>
+                <section>
+                    <div class="dynamic-item" ng-repeat="requirement in mod.requirements">
+                        <mod-input result-id="requirement.required_id" search-text="requirement.name" class="long-mod-input"></mod-input>
+                    <span class="remove-item" ng-click="removeRequirement(requirement)" title="Remove requirement">
+                        <i class="fa fa-times"></i>
+                    </span>
+                    </div>
+                    <input type="button" class="btn" value="Add Requirement" ng-click="addRequirement()">
+                </section>
+
+                <section>
+                    <category-tree selection="mod.categories" toggle-all="false"></category-tree>
+                    <div id="category-messages">
+                        <div ng-repeat="message in categoryMessages" class="category-message"
+                             ng-class="message.klass">{{message.text}}</div>
+                    </div>
+                    <input type="button" id="check-categories-btn" class="btn" ng-click="checkCategories()" value="Check Categories">
+                </section>
+
+                <h3 class="section-title">Tags</h3>
+                <section>
+                    <tag-selector active-tags="mod.tags" new-tags="newTags" show-mods-count="true" show-add="true" max-tags="10" can-create="true"></tag-selector>
+                </section>
+
+                <h3 class="section-title">Other Options</h3>
+                <section>
+                    <label class="checkbox-option">
+                        <input type="checkbox" ng-model="mod.isUtility">
+                        External Utility
+                    </label>
+                    <span class="help-tooltip" title="A mod is classified as an external utility if it installs files &#13;outside of the user's data directory.  This includes &#13;mod managers, patchers, and script extenders.">?</span><br/>
+
+                    <label class="checkbox-option">
+                        <input type="checkbox" ng-model="mod.hasAdultContent">
+                        Has Adult Content
+                    </label>
+                    <span class="help-tooltip" title="In this context, adult content is classified as nudity or &#13;depictions of sexual acts.">?</span>
+                </section>
+
+                <div class="action-button-container">
+                    <input class="btn action-btn" type="submit" ng-disabled='submitting || !modValid()' ng-click="submit()" value="Save Changes"/>
+                </div>
+            </form>
+        </loader>
+    </div>
 </div>
