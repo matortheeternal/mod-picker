@@ -8,68 +8,72 @@
   <%= stylesheet_link_tag 'pages/help' %>
 </head>
 <body>
-  <header>
-    <nav>
-      <div class="page-container">
-          <div class="header clearfix">
-              <div class="nav-wrapper">
-                <div class="primary-nav">
-                  <a class="logo" href="/">
-                  <h1>Mod Picker</h1>
-                  <span>Help Center</span>
-                  </a>
-                  <a href="/skyrim">
-                    <span class="nav-text">
-                      Home
-                    </span>
-                  </a>
-                  <a href="#">
-                    <span class="nav-text">
-                      Mod Picker
-                    </span>
-                  </a>
-                  <a href="#">
-                    <span class="nav-text">
-                      Modding
-                    </span>
-                  </a>
-                  <a href="#">
-                    <span class="nav-text">
-                      Guides
-                    </span>
-                    </span>
-                  </a>
+  <div class="body-wrapper">
+    <header>
+      <nav>
+        <div class="page-container">
+            <div class="header clearfix">
+                <div class="nav-wrapper">
+                  <div class="primary-nav">
+                    <a class="logo" href="/">
+                    <h1>Mod Picker</h1>
+                    <span>Help Center</span>
+                    </a>
+                    <a href="/skyrim">
+                      <span class="nav-text">
+                        Home
+                      </span>
+                    </a>
+                    <a href="#">
+                      <span class="nav-text">
+                        Mod Picker
+                      </span>
+                    </a>
+                    <a href="#">
+                      <span class="nav-text">
+                        Modding
+                      </span>
+                    </a>
+                    <a href="#">
+                      <span class="nav-text">
+                        Guides
+                      </span>
+                      </span>
+                    </a>
+                  </div>
+                  <div class="secondary-nav">
+                    <div class="search">
+                      <form class="search-form">
+                          <input class="search-field" type="text" autocomplete="off" placeholder="Search Help Center...">
+                          <div class="search-container">
+                              <input id="search-btn" class="btn" type="submit" value="Search" />
+                          </div>
+                      </form>
+                      <div class="search-user-nav">
+                      <% if current_user %>
+                        <a href="/skyrim#/user/<%= current_user.id %>">Profile</a>
+                        <a href="users/sign_out">Log Out</a>
+                      <% else %>
+                        <a href="/users/sign_in">Log In</a>
+                        <a href="/users/sign_up">Sign Up</a>
+                      <% end %>
+                      </div>
+                  </div>
+                  </div>
                 </div>
-                <div class="secondary-nav">
-                  <div class="search">
-                    <form class="search-form">
-                        <input class="search-field" type="text" autocomplete="off" placeholder="Search Help Center...">
-                        <div class="search-container">
-                            <input id="search-btn" class="btn" type="submit" value="Search" />
-                        </div>
-                    </form>
-                    <div class="search-user-nav">
-                    <% if current_user %>
-                      <a href="/skyrim#/user/<%= current_user.id %>">Profile</a>
-                      <a href="users/sign_out">Log Out</a>
-                    <% else %>
-                      <a href="/users/sign_in">Log In</a>
-                      <a href="/users/sign_up">Sign Up</a>
-                    <% end %>
-                    </div>
-                </div>
-                </div>
-              </div>
-          </div>
+            </div>
+        </div>
+      </nav>
+    </header>
+    <%= yield %>
+    <footer class="footer">
+      <div class="footer-container">
+        <span class="footer-logo">
+          <h1>Mod Picker</h1>
+        </span>
+        <span class="footer-text">©2016 Mod Picker, LLC. All rights reserved.</span>
       </div>
-    </nav>
-</header>
-  <%= yield %>
-<footer>
-  <span class="footer-logo">
-    <h1>Mod Picker</h1>
-  </span>
-  <span class="footer-text">©2016 Mod Picker, LLC. All rights reserved.</span>
-</footer>
+    </footer>
+  </div>
 </body>
 </html>

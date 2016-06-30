@@ -53,6 +53,7 @@ $admin_color: #900000;
 $moderator_color: #8000b0;
 $mod_author_color: #008000;
 
+$max-width-container: 1220px;
 
 // Global resets
 *, *:before, *:after {
@@ -85,9 +86,15 @@ body {
   *zoom: 1;  // For IE 6/7 only
 }
 
+// wrapper around entire body contents 
+// + min-height to make sure footer is always at the bottom of the page
+.body-wrapper {
+  min-height: 100%;
+}
+
 // Max width settings for parent/child components
 .page-container {
-  max-width: 1220px;
+  max-width: $max-width-container;
   margin: 0 auto;
 }
 
@@ -141,6 +148,7 @@ nav .primary-nav a {
   // Logo style overrides
   &.logo {
     padding: 6px 12px;
+    padding-left: 0;
   }
 
   &.logo:hover {
@@ -153,7 +161,7 @@ nav .primary-nav a {
   }
 
   &:hover {
-    color: darken($bar_text_color, (15%));
+    color: $bar_highlight_text_color;
   }
 }
 
@@ -255,12 +263,27 @@ nav .secondary-nav {
     }
 
     &:hover {
-      color: darken($bar_text_color, (15%));
+      color: $bar_highlight_text_color;
     }
   }
 }
 
 // footer
+.footer {
+  background-color: $bar_dark_color;
+  color: $bar_text_color;
+  // position absolute + width 100% to make it so footer is always on the bottom
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+}
+
+.footer-container {
+  margin: 0 auto;
+  max-width: $max-width-container; 
+  padding: 1rem 0;
+}
 
 .footer-logo {
   h1 {
