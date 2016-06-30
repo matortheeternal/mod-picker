@@ -11,7 +11,7 @@
                 <section>
                     <img class="mod-image" ng-src="{{image.src}}" ng-class="{ 'image-pending': image.file }">
                     <label>
-                        <input type="file" accept=".jpg,.png" file-change="changeImage" />
+                        <input type="file" id="image-input" accept=".jpg,.png" file-change="changeImage" />
                         <input type="button" id="image-browse" class="btn" value="Browse" ng-click="browseImage()"/>
                     </label>
                     <span class="explanation" ng-if="image.file">
