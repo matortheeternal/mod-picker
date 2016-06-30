@@ -135,6 +135,9 @@ nav .primary-nav {
   float: left;
   background-color: $bar_color;
 
+  // Used to center primary nav section
+  margin-top: 3px;
+
   .nav-text {
     display: inline-block;
   }
@@ -284,7 +287,6 @@ nav .secondary-nav {
 .footer {
   background-color: $secondary_background;
   color: $secondary_text_color;
-  height: 70px;
 
   // position absolute + width 100% to make it so footer is always on the bottom
   width: 100%;
