@@ -502,6 +502,10 @@ input[type="text"], input[type="email"], input[type="password"] {
   }
 }
 
+input[type="file"] {
+  display: none;
+}
+
 .CodeMirror {
   background-color: $input_background;
   color: $text_color;
