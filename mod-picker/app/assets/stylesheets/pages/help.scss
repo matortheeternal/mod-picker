@@ -108,8 +108,6 @@ body {
 
 // Nav bar
 
-// logo/nav bar 20/80 split
-
 nav {
   display: block;
   background-color: #342f2a;
@@ -127,6 +125,9 @@ nav {
 }
 
 // navigation links, nav icon, and nav text
+// primary navigation
+
+
 nav .primary-nav {
   display: inline-block;
   float: left;
@@ -137,30 +138,39 @@ nav .primary-nav {
   }
 }
 
-// nav bar anchor links 
-nav .primary-nav a {
+// logo
+nav .primary-nav .logo {
   display: block;
   float: left;
-  padding: 18px 12px 18px;
-  height: 60px;
   text-decoration: none;
-
-  // Logo style overrides
-  &.logo {
-    padding: 6px 12px;
-    padding-left: 0;
-  }
-
-  &.logo:hover {
-    color: $bar_text_color;
-  }
-
+  margin-top: 4px;
+  padding: 0 2rem 0 0;
 
   &:link, &:visited {
     color: $bar_text_color;
   }
 
   &:hover {
+    color: $bar_text_color;
+  }
+}
+
+// nav bar anchor links 
+nav .primary-nav-links {
+  display: block;
+  float: left;
+  margin-top: 18px;
+  
+  a {
+    margin-right: 1rem;
+  }
+
+  a:link, a:visited {
+    text-decoration: none;
+    color: $bar_text_color;
+  }
+
+  a:hover, a:active {
     color: $bar_highlight_text_color;
   }
 }
@@ -255,7 +265,7 @@ nav .secondary-nav {
   a {
     text-decoration: none;
     height: 35px;
-    padding: 8px;
+    margin: 8px;
     float: left;
 
     &:link, &:visited {
