@@ -1,8 +1,8 @@
 app.config(['$stateProvider', function($stateProvider) {
     $stateProvider.state('base.edit', {
-        templateUrl: '/resources/partials/edit.html',
+        templateUrl: '/resources/partials/showMod/edit.html',
         controller: 'editModController',
-        url: '/edit/:modId',
+        url: '/mod/:modId/edit',
         resolve: {
             modObject: function(modService, $stateParams, $q) {
                 var mod = $q.defer();
@@ -25,7 +25,7 @@ app.config(['$stateProvider', function($stateProvider) {
 
 app.controller('editModController', function($scope, $state, currentUser, modObject, modService, tagService, errorService) {
     // get parent variables
-    $scope.mod = modObject.mod;
+    $scope.mod = modObject;
     $scope.currentUser = currentUser;
 
     // initialize local variables
