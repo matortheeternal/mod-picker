@@ -67,16 +67,14 @@ app.service('categoryService', function ($q, backend) {
     };
 
     this.resolveModCategories = function(mod) {
-        if (mod.primary_category_id) {
-            service.getCategoryById(mod.primary_category_id).then(function (primaryCategory) {
-                mod.primary_category = primaryCategory;
-            });
-        }
+        allCategories.then(function(categories) {
+            if (mod.primary_category_id) {
+                mod.primary_category =  service.getCategoryById(categories, mod.primary_category_id);
+            }
 
-        if (mod.secondary_category_id) {
-            service.getCategoryById(mod.secondary_category_id).then(function(secondaryCategory) {
-                mod.secondary_category = secondaryCategory;
-            });
-        }
+            if (mod.secondary_category_id) {
+                mod.secondary_category = service.getCategoryById(categories, mod.secondary_category_id);
+            }
+        });
     };
 });
