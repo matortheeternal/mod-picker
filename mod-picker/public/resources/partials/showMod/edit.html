@@ -5,6 +5,20 @@
         <loader data="mod" spinner-class="big-spinner">
             <form id="editModForm" name="editModForm" spellcheck="false">
 
+                <h3 class="section-title">Image
+                    <span class="help-tooltip" title="The image that will be shown on the mod page.">?</span>
+                </h3>
+                <section>
+                    <img class="mod-image" ng-src="{{image.src}}" ng-class="{ 'image-pending': image.file }">
+                    <label>
+                        <input type="file" accept=".jpg,.png" file-change="changeImage" />
+                        <input type="button" id="image-browse" class="btn" value="Browse" ng-click="browseImage()"/>
+                    </label>
+                    <span class="explanation" ng-if="image.file">
+                        New mod image pending, click save changes to save it.
+                    </span>
+                </section>
+
                 <h3 class="section-title">General Info
                     <span class="help-tooltip" title="Information that cannot be fetched from scraping &#13;the mod pages.">?</span>
                 </h3>
