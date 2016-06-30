@@ -27,12 +27,6 @@ app.controller('editModController', function($scope, $state, currentUser, modObj
     // get parent variables
     $scope.currentUser = currentUser;
 
-    // initialize local variables
-    $scope.permissions = angular.copy(currentUser.permissions);
-    $scope.newTags = [];
-    // error handling
-    $scope.errors = {};
-
     /* load the mod object onto the view */
     // parse dates to date objects
     modObject.released = new Date(Date.parse(modObject.released));
@@ -57,6 +51,15 @@ app.controller('editModController', function($scope, $state, currentUser, modObj
     }
     // put mod on scope
     $scope.mod = modObject;
+
+    // initialize local variables
+    $scope.permissions = angular.copy(currentUser.permissions);
+    $scope.newTags = [];
+    $scope.image = {
+        src: $scope.mod.image
+    };
+    // error handling
+    $scope.errors = {};
 
     // display error messages
     $scope.$on('errorMessage', function(event, params) {
