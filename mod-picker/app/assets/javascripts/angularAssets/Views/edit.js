@@ -88,12 +88,12 @@ app.controller('editModController', function($scope, $state, currentUser, modObj
     };
 
     /* categories */
-    categoryService.retrieveCategoryPriorities().then(function(data) {
-        $scope.categoryPriorities = data;
+    categoryService.retrieveCategories().then(function(data) {
+        $scope.categories = data;
     });
 
-    categoryService.retrieveCategories().then(function (data) {
-        $scope.categories = data;
+    categoryService.retrieveCategoryPriorities().then(function(data) {
+        $scope.categoryPriorities = data;
     });
 
     $scope.getDominantIds = function(recessiveId) {
