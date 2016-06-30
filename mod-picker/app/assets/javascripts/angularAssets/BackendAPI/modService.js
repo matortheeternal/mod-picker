@@ -30,6 +30,16 @@ app.service('modService', function(backend, $q, userTitleService, categoryServic
         return output.promise;
     };
 
+    this.editMod = function(modId) {
+        var output = $q.defer();
+        backend.retrieve('/mods/' + modId + '/edit').then(function(data) {
+            output.resolve(data);
+        }, function(response) {
+            output.reject(response);
+        });
+        return output.promise;
+    };
+
     this.starMod = function(modId, starred) {
         if (starred) {
             return backend.delete('/mods/' + modId + '/star');
