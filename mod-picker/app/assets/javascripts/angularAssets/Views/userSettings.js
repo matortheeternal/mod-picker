@@ -1,57 +1,76 @@
 /**
  * Created by Sirius on 3/9/2016.
  */
-app.config(['$stateProvider', function ($stateProvider) {
+app.config(['$stateProvider', function($stateProvider) {
     $stateProvider.state('base.settings', {
-            templateUrl: '/resources/partials/userSettings/userSettings.html',
-            controller: 'userSettingsController',
-            url: '/settings',
-            redirectTo: 'base.settings.Profile',
-            resolve: {
-                user: function(userService, currentUser) {
-                    return userService.retrieveUser(currentUser.id);
-                }
+        templateUrl: '/resources/partials/userSettings/userSettings.html',
+        controller: 'userSettingsController',
+        url: '/settings',
+        redirectTo: 'base.settings.Profile'
+    }).state('base.settings.Profile', {
+        sticky: true,
+        deepStateRedirect: true,
+        views: {
+            'Profile': {
+                templateUrl: '/resources/partials/userSettings/profile.html',
+                controller: 'userSettingsProfileController',
             }
-        }).state('base.settings.Profile', {
-            templateUrl: '/resources/partials/userSettings/profile.html',
-            controller: 'userSettingsProfileController',
-            url: '/profile',
-            resolve: {
-                titleQuote: function(quoteService, currentUser, $q) {
-                    var output = $q.defer();
-                    var label = currentUser.permissions.canChangeTitle ? "High Reputation" : "Low Reputation";
-                    quoteService.getRandomQuote(label).then(function(quote) {
-                        quote.text = quote.text.replace(/Talos/g, currentUser.username.capitalize());
-                        output.resolve(quote);
-                    });
-                    return output.promise;
-                }
+        },
+        url: '/profile',
+        resolve: {
+            titleQuote: function(quoteService, currentUser, $q) {
+                var output = $q.defer();
+                var label = currentUser.permissions.canChangeTitle ? "High Reputation" : "Low Reputation";
+                quoteService.getRandomQuote(label).then(function(quote) {
+                    quote.text = quote.text.replace(/Talos/g, currentUser.username.capitalize());
+                    output.resolve(quote);
+                });
+                return output.promise;
             }
-        }).state('base.settings.Account', {
-            templateUrl: '/resources/partials/userSettings/account.html',
-            url: '/account'
-        }).state('base.settings.Mod Lists', {
-            templateUrl: '/resources/partials/userSettings/modlists.html',
-            url: '/mod-lists'
-        }).state('base.settings.Authored Mods', {
-            templateUrl: '/resources/partials/userSettings/authoredMods.html',
-            url: '/authored-mods'
-        });
+        }
+    }).state('base.settings.Account', {
+        sticky: true,
+        deepStateRedirect: true,
+        views: {
+            'Account': {
+                templateUrl: '/resources/partials/userSettings/account.html',
+            }
+        },
+        url: '/account'
+    }).state('base.settings.Mod Lists', {
+        sticky: true,
+        deepStateRedirect: true,
+        views: {
+            'Mod Lists': {
+                templateUrl: '/resources/partials/userSettings/modlists.html',
+            }
+        },
+        url: '/mod-lists'
+    }).state('base.settings.Authored Mods', {
+        sticky: true,
+        deepStateRedirect: true,
+        views: {
+            'Authored Mods': {
+                templateUrl: '/resources/partials/userSettings/authoredMods.html',
+            }
+        },
+        url: '/authored-mods'
+    });
 }]);
 
-app.controller('userSettingsController', function ($scope, $q, user, currentUser, userSettingsService, fileUtils, themesService) {
+app.controller('userSettingsController', function($scope, $q, currentUser, userSettingsService, fileUtils, themesService) {
     $scope.userSettings = currentUser.settings;
-    $scope.user = user;
+    $scope.user = currentUser;
     $scope.avatar = {
         src: $scope.user.avatar
     };
-    $scope.permissions = currentUser.permissions;
+    $scope.permissions = angular.copy(currentUser.permissions);
 
     $scope.tabs = [
-        {name: 'Profile'},
-        {name: 'Account'},
-        {name: 'Mod Lists'},
-        {name: 'Authored Mods'},
+        { name: 'Profile' },
+        { name: 'Account' },
+        { name: 'Mod Lists' },
+        { name: 'Authored Mods' },
     ];
 
     /* avatar */
@@ -73,14 +92,14 @@ app.controller('userSettingsController', function ($scope, $q, user, currentUser
             // check file type
             var ext = fileUtils.getFileExtension(avatarFile.name);
             if ((ext !== 'png') && (ext !== 'jpg')) {
-                $scope.errors.push({message: "Unsupported file type.  Avatar image must be a PNG or JPG file." });
+                $scope.errors.push({ message: "Unsupported file type.  Avatar image must be a PNG or JPG file." });
                 $scope.resetAvatar();
                 return;
             }
 
             // check filesize
             if (avatarFile.size > 1048576) {
-                $scope.errors.push({message: "Avatar image is too big.  Maximum file size 1.0MB." });
+                $scope.errors.push({ message: "Avatar image is too big.  Maximum file size 1.0MB." });
                 $scope.resetAvatar();
                 return;
             }
@@ -91,7 +110,7 @@ app.controller('userSettingsController', function ($scope, $q, user, currentUser
                 //alert("Image loaded!");
                 var imageTooBig = (img.width > 250) || (img.height > 250);
                 if (imageTooBig) {
-                    $scope.errors.push({message: "Avatar image too large.  Maximum dimensions 250x250." });
+                    $scope.errors.push({ message: "Avatar image too large.  Maximum dimensions 250x250." });
                     $scope.resetAvatar();
                 } else {
                     $scope.avatar.file = avatarFile;
@@ -110,7 +129,7 @@ app.controller('userSettingsController', function ($scope, $q, user, currentUser
     /* mod list actions */
     $scope.editModList = function(modlist) {
         //TODO: I'm not sure if this state.go is correct, the param might be off
-        $state.go(base.modlist, {modlistId: modlist.id})
+        $state.go(base.modlist, { modlistId: modlist.id })
     };
 
     $scope.appendModList = function(data) {
@@ -124,14 +143,14 @@ app.controller('userSettingsController', function ($scope, $q, user, currentUser
             }
             $scope.$apply();
         } else {
-            $scope.errors.push({message: "Didn't receive a cloned mod list from the server"});
+            $scope.errors.push({ message: "Didn't receive a cloned mod list from the server" });
         }
     };
 
     $scope.cloneModList = function(modlist) {
-        console.log('Clone Mod List: "'+modlist.name+'"');
+        console.log('Clone Mod List: "' + modlist.name + '"');
         $scope.errors = [];
-        userSettingsService.cloneModList(modlist).then(function (data) {
+        userSettingsService.cloneModList(modlist).then(function(data) {
             if (data.status === "ok") {
                 $scope.appendModList(data);
             } else {
@@ -155,13 +174,13 @@ app.controller('userSettingsController', function ($scope, $q, user, currentUser
     };
 
     $scope.deleteModList = function(modlist) {
-        console.log('Delete Mod List: "'+modlist.name+'"');
+        console.log('Delete Mod List: "' + modlist.name + '"');
         $scope.errors = [];
-        userSettingsService.deleteModList(modlist).then(function (data) {
+        userSettingsService.deleteModList(modlist).then(function(data) {
             if (data.status === "ok") {
                 $scope.removeModList(modlist);
             } else {
-                $scope.errors.push({message: "Delete Mod List: " + data.status });
+                $scope.errors.push({ message: "Delete Mod List: " + data.status });
             }
         });
     };
@@ -172,13 +191,13 @@ app.controller('userSettingsController', function ($scope, $q, user, currentUser
 
         //TODO: I feel like this redundancy can be killed
         // @R79: I was thinking the same thing earlier today. -Mator
-        userSettingsService.submitUser($scope.user).then(function (data) {
+        userSettingsService.submitUser($scope.user).then(function(data) {
             if (data.status !== "ok") {
                 $scope.errors.concat(data.errors);
             }
             $scope.showSuccess = $scope.errors.length == 0;
         });
-        userSettingsService.submitUserSettings($scope.userSettings).then(function (data) {
+        userSettingsService.submitUserSettings($scope.userSettings).then(function(data) {
             if (data.status !== "ok") {
                 $scope.errors.concat(data.errors);
             } else {
@@ -188,9 +207,9 @@ app.controller('userSettingsController', function ($scope, $q, user, currentUser
             }
         });
         if ($scope.avatar.file) {
-            userSettingsService.submitAvatar($scope.avatar.file).then(function (data) {
+            userSettingsService.submitAvatar($scope.avatar.file).then(function(data) {
                 if (data.status !== "Success") {
-                    $scope.errors.push({message: "Avatar: " + data.status});
+                    $scope.errors.push({ message: "Avatar: " + data.status });
                 }
                 $scope.showSuccess = $scope.errors.length == 0;
             });
@@ -202,6 +221,6 @@ app.controller('userSettingsController', function ($scope, $q, user, currentUser
     }
 });
 
-app.controller('userSettingsProfileController', function ($scope, titleQuote) {
+app.controller('userSettingsProfileController', function($scope, titleQuote) {
     $scope.titleQuote = titleQuote;
 });
