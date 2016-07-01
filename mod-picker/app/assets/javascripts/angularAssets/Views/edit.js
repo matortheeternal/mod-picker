@@ -83,6 +83,19 @@ app.controller('editModController', function($scope, $state, currentUser, modObj
         event.stopPropagation();
     });
 
+    /* mod authors */
+    $scope.addAuthor = function() {
+        $scope.mod.mod_authors.push({
+            role: "0",
+            user: {}
+        });
+    };
+
+    $scope.removeAuthor = function(author) {
+        var index = $scope.mod.mod_authors.indexOf(author);
+        $scope.mod.mod_authors.splice(index, 1);
+    };
+
     /* requirements */
     $scope.addRequirement = function() {
         $scope.mod.requirements.push({});
