@@ -23,8 +23,9 @@ app.controller('imageUploadController', function ($scope, $element, fileUtils) {
 
     $scope.resetImage = function() {
         $scope.image.file = null;
+        $scope.image.changed = false;
         $scope.image.src = $scope.defaultSrc;
-        $scope.$apply();
+        $scope.$applyAsync();
     };
 
     $scope.changeImage = function(event) {
@@ -69,8 +70,9 @@ app.controller('imageUploadController', function ($scope, $element, fileUtils) {
                     $scope.resetImage();
                 } else {
                     $scope.image.file = imageFile;
+                    $scope.image.changed = true;
                     $scope.image.src = img.src;
-                    $scope.$apply();
+                    $scope.$applyAsync();
                 }
             };
             img.src = URL.createObjectURL(imageFile);
