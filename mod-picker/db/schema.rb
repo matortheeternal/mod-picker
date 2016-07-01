@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160626014656) do
+ActiveRecord::Schema.define(version: 20160701194514) do
 
   create_table "agreement_marks", id: false, force: :cascade do |t|
     t.integer "correction_id", limit: 4,                null: false
@@ -334,8 +334,9 @@ ActiveRecord::Schema.define(version: 20160626014656) do
   add_index "mod_asset_files", ["mod_id"], name: "mv_id", using: :btree
 
   create_table "mod_authors", id: false, force: :cascade do |t|
-    t.integer "mod_id",  limit: 4, null: false
-    t.integer "user_id", limit: 4, null: false
+    t.integer "mod_id",  limit: 4,             null: false
+    t.integer "user_id", limit: 4,             null: false
+    t.integer "role",    limit: 1, default: 0, null: false
   end
 
   add_index "mod_authors", ["mod_id"], name: "mod_id", using: :btree
