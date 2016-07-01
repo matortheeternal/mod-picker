@@ -23,7 +23,7 @@ app.config(['$stateProvider', function($stateProvider) {
     });
 }]);
 
-app.controller('editModController', function($scope, $state, currentUser, modObject, modService, tagService, categoryService, errorService, fileUtils) {
+app.controller('editModController', function($scope, $state, currentUser, modObject, modService, tagService, categoryService, errorService) {
     // get parent variables
     $scope.currentUser = currentUser;
 
@@ -78,68 +78,6 @@ app.controller('editModController', function($scope, $state, currentUser, modObj
         // stop event propagation - we handled it
         event.stopPropagation();
     });
-
-    /* mod image */
-    $scope.browseImage = function() {
-        document.getElementById('image-input').click();
-    };
-
-    $scope.resetImage = function() {
-        $scope.image.file = null;
-        $scope.image.src = $scope.mod.image;
-        $scope.$apply();
-    };
-
-    $scope.changeImage = function(event) {
-        var errorObj;
-        if (event.target.files && event.target.files[0]) {
-            var imageFile = event.target.files[0];
-
-            // check file type
-            var ext = fileUtils.getFileExtension(imageFile.name);
-            if ((ext !== 'png') && (ext !== 'jpg')) {
-                errorObj = {
-                    type: "error",
-                    text: "Unsupported file type.  Mod image must be a PNG or JPG file."
-                };
-                $scope.$broadcast("message", errorObj);
-                $scope.resetImage();
-                return;
-            }
-
-            // check filesize
-            if (imageFile.size > 1048576) {
-                errorObj = {
-                    type: "error",
-                    text: "Mod image is too big.  Maximum file size 1.0MB."
-                };
-                $scope.$broadcast("message", errorObj);
-                $scope.resetImage();
-                return;
-            }
-
-            // check dimensions
-            var img = new Image();
-            img.onload = function() {
-                var imageTooBig = (img.width > 300) || (img.height > 300);
-                if (imageTooBig) {
-                    errorObj = {
-                        type: "error",
-                        text: "Mod image too large.  Maximum dimensions 300x300."
-                    };
-                    $scope.$broadcast("message", errorObj);
-                    $scope.resetImage();
-                } else {
-                    $scope.image.file = imageFile;
-                    $scope.image.src = img.src;
-                    $scope.$apply();
-                }
-            };
-            img.src = URL.createObjectURL(imageFile);
-        } else if ($scope.mod) {
-            $scope.resetImage();
-        }
-    };
 
     /* requirements */
     $scope.addRequirement = function() {

@@ -11,15 +11,7 @@
                     <span class="help-tooltip" title="The image that will be shown on the mod page.">?</span>
                 </h3>
                 <section>
-                    <img class="mod-image" ng-src="{{image.src}}" ng-class="{ 'image-pending': image.file }">
-                    <label>
-                        <input type="file" id="image-input" accept=".jpg,.png" file-change="changeImage" />
-                        <input type="button" class="btn" value="Browse" ng-click="browseImage()"/>
-                        <input type="button" ng-if="image.file" class="btn" value="Reset" ng-click="resetImage()"/>
-                    </label>
-                    <span class="explanation" ng-if="image.file">
-                        New mod image pending, click save changes to save it.
-                    </span>
+                    <image-upload image="image" can-change="true" default-src="mod.image" label="mod image" image-class="mod-image" max-width="300" max-height="300"></image-upload>
                 </section>
 
                 <h3 class="section-title">General Info
