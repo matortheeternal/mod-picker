@@ -373,7 +373,14 @@ class Mod < ActiveRecord::Base
            :workshop_infos => {:only => [:id, :last_scraped]},
            :lover_infos => {:only => [:id, :last_scraped]},
            :custom_sources => {:except => [:mod_id]},
-           :author_users => {:only => [:id, :username]},
+           :mod_authors => {
+               :only => [:role, :user_id],
+               :include => {
+                   :user => {
+                       :only => [:username]
+                   }
+               }
+           },
            :required_mods => {
                :only => [],
                :include => {
