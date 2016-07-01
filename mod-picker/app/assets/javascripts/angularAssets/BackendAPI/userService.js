@@ -22,6 +22,15 @@ app.service('userService', function (backend, $q, userSettingsService, userTitle
         return output.promise;
     };
 
+    this.searchUsers = function(username) {
+        var postData =  {
+            filters: {
+                search: username
+            }
+        };
+        return backend.post('/users/search', postData);
+    };
+
     this.retrieveCurrentUser = function() {
         var output = $q.defer();
         backend.retrieve('/current_user').then(function (userData) {
