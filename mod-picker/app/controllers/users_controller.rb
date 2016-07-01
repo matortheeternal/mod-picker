@@ -13,6 +13,14 @@ class UsersController < ApplicationController
     render :json => current_user.current_json
   end
 
+  # POST /users/search
+  def search
+    @users = User.filter(search_params).sort({ column: "username", direction: "ASC" }).limit(10)
+    render :json => @users.as_json({
+        :only => [:id, :username]
+    })
+  end
+
   # GET /users/1
   def show
     authorize! :read, @user
@@ -76,6 +84,10 @@ class UsersController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_user
       @user = User.joins(:bio, :reputation).find(params[:id])
+    end
+
+    def search_params
+      params[:filters].slice(:search)
     end
 
     # Params we allow filtering on

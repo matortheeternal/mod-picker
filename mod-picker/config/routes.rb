@@ -10,6 +10,7 @@ Rails.application.routes.draw do
     match '/users/:id/comments', to: 'users#comments', via: [:get, :post]
     resources :user_settings, only: [:index, :update]
     match '/link_account', to: 'users#link_account', via: [:get]
+    match '/users/search', to: 'users#search', via: [:post]
 
     # scraping
     resources :nexus_infos, only: [:show, :destroy]
