@@ -30,7 +30,7 @@
                 <option value="after">Install After</option>
             </select>
         </span>
-        <mod-input result-id="activeInstallOrderNote.mod_id" excluded-id="mod.id" on-change="validateInstallOrderNote"></mod-input>
+        <search-input search-type="mods" result-id="activeInstallOrderNote.mod_id" excluded-id="mod.id" on-change="validateInstallOrderNote"></search-input>
     </div>
     <div class="content-container">
         <text-area data="activeInstallOrderNote.text_body" ng-refresh="updateMDE" class="note-text-area" on-change="validateInstallOrderNote"></text-area>
