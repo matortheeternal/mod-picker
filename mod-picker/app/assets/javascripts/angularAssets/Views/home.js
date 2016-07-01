@@ -9,7 +9,7 @@ app.config(['$stateProvider', function ($stateProvider) {
         });
 }]);
 
-app.controller('searchInputController', function ($scope, $location) {
+app.controller('searchController', function ($scope, $location) {
     $scope.loading = false;
     $scope.processSearch = function () {
         $scope.loading = true;
