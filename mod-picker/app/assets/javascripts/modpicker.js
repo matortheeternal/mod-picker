@@ -3,10 +3,10 @@
 //= require_tree ./angularAssets
 
 var app = angular.module('modPicker', [
-    'ui.router', 'rzModule', 'ngAnimate', 'sticky', 'puElasticInput', 'hc.marked', 'smoothScroll', 'relativeDate'
+    'ui.router', 'rzModule', 'ngAnimate', 'sticky', 'puElasticInput', 'hc.marked', 'smoothScroll', 'relativeDate', 'ct.ui.router.extras'
 ]);
 
-app.config(['$httpProvider', '$compileProvider', function ($httpProvider, $compileProvider) {
+app.config(['$httpProvider', '$compileProvider', function($httpProvider, $compileProvider) {
     $httpProvider.useApplyAsync(true);
     $compileProvider.debugInfoEnabled(false);
 }]);
@@ -18,7 +18,7 @@ app.config(function($urlMatcherFactoryProvider) {
     $urlMatcherFactoryProvider.defaultSquashPolicy(true);
 });
 
-app.config(function ($urlRouterProvider) {
+app.config(function($urlRouterProvider) {
     $urlRouterProvider.otherwise('/');
 });
 
@@ -28,7 +28,7 @@ app.run(['$rootScope', '$state', function($rootScope, $state) {
     $rootScope.$on('$stateChangeStart', function(evt, to, params) {
         if (to.redirectTo) {
             evt.preventDefault();
-            $state.go(to.redirectTo, params, {location: 'replace'});
+            $state.go(to.redirectTo, params, { location: 'replace' });
         }
     });
 }]);
