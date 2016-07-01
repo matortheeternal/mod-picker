@@ -63,10 +63,14 @@ app.controller('editModController', function($scope, $state, currentUser, modObj
 
     // display error messages
     $scope.$on('errorMessage', function(event, params) {
-        var errors = errorService.errorMessages(params.label, params.response);
-        errors.forEach(function(error) {
-            $scope.$broadcast('message', error);
-        });
+        if (params.label && params.response) {
+            var errors = errorService.errorMessages(params.label, params.response);
+            errors.forEach(function(error) {
+                $scope.$broadcast('message', error);
+            });
+        } else {
+            $scope.$broadcast('message', params);
+        }
         // stop event propagation - we handled it
         event.stopPropagation();
     });
