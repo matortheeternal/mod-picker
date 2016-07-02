@@ -22,8 +22,14 @@ app.config(['$stateProvider', function($stateProvider) {
             }
         }
     }).state('base.mod.Reviews', {
-        templateUrl: '/resources/partials/showMod/reviews.html',
-        controller: 'modReviewsController',
+        sticky: true,
+        deepStateRedirect: true,
+        views: {
+            'Reviews': {
+                templateUrl: '/resources/partials/showMod/reviews.html',
+                controller: 'modReviewsController',
+            }
+        },
         url: '/reviews?{page:int}&scol&sdir',
         params: {
             page: 1,
@@ -31,8 +37,14 @@ app.config(['$stateProvider', function($stateProvider) {
             sdir: 'desc'
         }
     }).state('base.mod.Compatibility', {
-        templateUrl: '/resources/partials/showMod/compatibility.html',
-        controller: 'modCompatibilityController',
+        sticky: true,
+        deepStateRedirect: true,
+        views: {
+            'Compatibility': {
+                templateUrl: '/resources/partials/showMod/compatibility.html',
+                controller: 'modCompatibilityController',
+            }
+        },
         url: '/compatibility?{page:int}&scol&sdir',
         params: {
             page: 1,
@@ -40,8 +52,14 @@ app.config(['$stateProvider', function($stateProvider) {
             sdir: 'desc'
         }
     }).state('base.mod.Install Order', {
-        templateUrl: '/resources/partials/showMod/installOrder.html',
-        controller: 'modInstallOrderController',
+        sticky: true,
+        deepStateRedirect: true,
+        views: {
+            'Install Order': {
+                templateUrl: '/resources/partials/showMod/installOrder.html',
+                controller: 'modInstallOrderController',
+            }
+        },
         url: '/install-order?{page:int}&scol&sdir',
         params: {
             page: 1,
@@ -49,8 +67,14 @@ app.config(['$stateProvider', function($stateProvider) {
             sdir: 'desc'
         }
     }).state('base.mod.Load Order', {
-        templateUrl: '/resources/partials/showMod/loadOrder.html',
-        controller: 'modLoadOrderController',
+        sticky: true,
+        deepStateRedirect: true,
+        views: {
+            'Load Order': {
+                templateUrl: '/resources/partials/showMod/loadOrder.html',
+                controller: 'modLoadOrderController',
+            }
+        },
         url: '/load-order?{page:int}&scol&sdir',
         params: {
             page: 1,
@@ -58,8 +82,14 @@ app.config(['$stateProvider', function($stateProvider) {
             sdir: 'desc'
         }
     }).state('base.mod.Analysis', {
-        templateUrl: '/resources/partials/showMod/analysis.html',
-        controller: 'modAnalysisController',
+        sticky: true,
+        deepStateRedirect: true,
+        views: {
+            'Analysis': {
+                templateUrl: '/resources/partials/showMod/analysis.html',
+                controller: 'modAnalysisController',
+            }
+        },
         url: '/analysis?{plugin:int}',
         params: {
             plugin: 0
@@ -145,8 +175,7 @@ app.controller('modController', function($scope, $q, $stateParams, $timeout, cur
         $scope.removeTab('Compatibility');
         $scope.removeTab('Install Order');
         $scope.removeTab('Load Order');
-    }
-    else {
+    } else {
         // remove install order notes if mod is a utility
         if ($scope.mod.is_utility) {
             $scope.removeTab('Install Order');
@@ -182,7 +211,7 @@ app.controller('modController', function($scope, $q, $stateParams, $timeout, cur
 
     // display success message
     $scope.$on('successMessage', function(event, text) {
-        var successMessage = {type: "success", text: text};
+        var successMessage = { type: "success", text: text };
         $scope.$broadcast('message', successMessage);
         // stop event propagation - we handled it
         event.stopPropagation();
@@ -222,7 +251,7 @@ app.controller('modController', function($scope, $q, $stateParams, $timeout, cur
         modService.starMod($scope.mod.id, $scope.mod.star).then(function() {
             $scope.mod.star = !$scope.mod.star;
         }, function(response) {
-            var params = {label: 'Error starring mod', response: response};
+            var params = { label: 'Error starring mod', response: response };
             $scope.$emit('errorMessage', params);
         });
     };
@@ -248,7 +277,7 @@ app.controller('modController', function($scope, $q, $stateParams, $timeout, cur
             $scope.$emit('successMessage', 'Tags updated successfully.');
             action.resolve(data);
         }, function(response) {
-            var params = {label: 'Error saving mod tags', response: response};
+            var params = { label: 'Error saving mod tags', response: response };
             $scope.$emit('errorMessage', params);
             action.reject(response);
         });
