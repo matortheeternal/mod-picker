@@ -70,7 +70,26 @@ class HomeController < ApplicationController
                     }
                 }
             }),
-            corrections: corrections.as_json,
+            corrections: corrections.as_json({
+                :include => {
+                    :correctable => {
+                        :only => [:id, :name],
+                        :include => {
+                            :submitter => {
+                                :only => [:id, :username]
+                            }
+                        },
+                        :methods => :mods
+                    },
+                    :submitter => {
+                        :only => [:id, :username, :role, :title],
+                        :include => {
+                            :reputation => {:only => [:overall]}
+                        },
+                        :methods => :avatar
+                    }
+                }
+            }),
             compatibility_notes: compatibility_notes.as_json,
             install_order_notes: install_order_notes.as_json,
             load_order_notes: load_order_notes.as_json
