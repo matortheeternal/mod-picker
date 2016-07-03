@@ -5,19 +5,19 @@ app.config(['$stateProvider', function($stateProvider) {
         url: '/home',
         redirectTo: 'base.home.Reviews'
     }).state('base.home.Reviews', {
-        templateUrl: '/resources/partials/home/reviews.html',
+        templateUrl: '/resources/partials/home/recentReviews.html',
         url: '/recent-reviews'
     }).state('base.home.Compatibility Notes', {
-        templateUrl: '/resources/partials/home/compatibilityNotes.html',
+        templateUrl: '/resources/partials/home/recentCompatibilityNotes.html',
         url: '/recent-compatibility'
     }).state('base.home.Install Order Notes', {
-        templateUrl: '/resources/partials/home/installOrderNotes.html',
+        templateUrl: '/resources/partials/home/recentInstallOrderNotes.html',
         url: '/recent-install-order'
     }).state('base.home.Load Order Notes', {
-        templateUrl: '/resources/partials/home/loadOrderNotes.html',
+        templateUrl: '/resources/partials/home/recentLoadOrderNotes.html',
         url: '/recent-load-order'
     }).state('base.home.Corrections', {
-        templateUrl: '/resources/partials/home/corrections.html',
+        templateUrl: '/resources/partials/home/recentCorrections.html',
         url: '/recent-corrections'
     });
 }]);
