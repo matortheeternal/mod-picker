@@ -83,6 +83,47 @@ app.controller('editModController', function($scope, $state, currentUser, modObj
         event.stopPropagation();
     });
 
+    /* analysis */
+    $scope.changeAnalysisFile = function(event) {
+        var input = event.target;
+        if (input.files && input.files[0]) {
+            $scope.loadAnalysisFile(input.files[0]);
+        }
+    };
+
+    $scope.browseAnalysisFile = function() {
+        document.getElementById('analysis-input').click();
+    };
+
+    $scope.getRequirementsFromAnalysis = function() {
+        // build list of masters
+        var masters = [];
+        $scope.mod.analysis.plugins.forEach(function(plugin) {
+            plugin.master_plugins.forEach(function(master) {
+                if (masters.indexOf(master.filename) == -1) {
+                    masters.push(master.filename);
+                }
+            });
+        });
+        // load requirements from masters
+        masters.forEach(function(filename) {
+            $scope.addRequirementFromPlugin(filename);
+        });
+    };
+
+    $scope.loadAnalysisFile = function(file) {
+        var fileReader = new FileReader();
+        fileReader.onload = function (event) {
+            var fixedJson = event.target.result.replace('"plugin_record_groups"', '"plugin_record_groups_attributes"').replace('"plugin_errors"', '"plugin_errors_attributes"').replace('"overrides"', '"overrides_attributes"');
+            var analysis = JSON.parse(fixedJson);
+            analysis.nestedAssets = assetUtils.convertDataStringToNestedObject(analysis.assets);
+            $scope.mod.analysis = analysis;
+            $scope.getRequirementsFromAnalysis();
+            $scope.$apply();
+        };
+        fileReader.readAsText(file);
+    };
+
     /* mod authors */
     $scope.addAuthor = function() {
         $scope.mod.mod_authors.push({
