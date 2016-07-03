@@ -1,5 +1,5 @@
-app.service('landingService', function(backend, $q, reviewSectionService, userTitleService) {
-    this.retrieveLanding = function() {
+app.service('homeService', function(backend, $q, reviewSectionService, userTitleService) {
+    this.retrieveHome = function() {
         landingData = $q.defer();
         backend.retrieve('/home', { game: window._current_game_id }).then(function(data) {
             userTitleService.associateTitles(data.recent.reviews);
