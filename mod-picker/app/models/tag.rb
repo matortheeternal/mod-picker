@@ -14,7 +14,7 @@ class Tag < ActiveRecord::Base
   has_one :base_report, :as => 'reportable'
 
   # Validations
-  validates :text, :game_id, :submitted_by, presence: true
+  validates :game_id, :submitted_by, :text, presence: true
   validates :text, length: {in: 2..32}
   validates :hidden, inclusion: [true, false]
 

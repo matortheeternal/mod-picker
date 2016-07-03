@@ -12,7 +12,8 @@ app.directive('contributionActions', function() {
             approveable: '=?', // default true
             agreeable: '=?',   // default undefined
             edit: '=?',        // default undefined
-            hasHistory: '=?'   // default undefined
+            hasHistory: '=?',  // default undefined
+            eventPrefix: '=?'  // default ''
         }
     };
 });
@@ -23,22 +24,22 @@ app.controller('contributionActionsController', function($scope, $timeout, contr
     // approveable should have a default value of true
     $scope.approveable = angular.isDefined($scope.approveable) ? $scope.approveable : true;
 
+    // errorEvent string
+    $scope.errorEvent = $scope.eventPrefix ? $scope.eventPrefix + 'ErrorMessage' : 'errorMessage';
+
     // we get the model for the route and label
     $scope.model = contributionFactory.getModel($scope.modelName);
 
     // this is a direct link to the contribution to be displayed in the get link modal
-    $scope.shareLink = window.location.href + '/' + $scope.model.route + '/' + $scope.target.id;
-    // this is the report object
-    $scope.report = {};
+    $scope.shareLink = window.location.href + '/' + $scope.target.id;
 
-    // retrieving object for tracking what we're retrieving
+    // initialize local variables
+    $scope.report = {};
     $scope.retrieving = {};
-    // pages object for tracking pagination
     $scope.pages = {
         correction_comments: {}
     };
-    // display errors object for tracking display errors
-    $scope.displayErrors = {};
+    $scope.errors = {};
 
     // compute whether or not the target is open if it is agreeable
     if ($scope.agreeable) {
@@ -51,14 +52,17 @@ app.controller('contributionActionsController', function($scope, $timeout, contr
     };
 
     $scope.toggleShareModal = function(visible) {
+        $scope.$emit('toggleModal', visible);
         $scope.showShareModal = visible;
     };
 
     $scope.toggleReportModal = function(visible) {
+        $scope.$emit('toggleModal', visible);
         $scope.showReportModal = visible;
     };
 
     $scope.toggleCorrectionsModal = function(visible) {
+        $scope.$emit('toggleModal', visible);
         $scope.showCorrectionsModal = visible;
         if (!$scope.target.corrections && !$scope.retrieving.corrections) {
             $scope.retrieveCorrections();
@@ -66,6 +70,7 @@ app.controller('contributionActionsController', function($scope, $timeout, contr
     };
 
     $scope.toggleHistoryModal = function(visible) {
+        $scope.$emit('toggleModal', visible);
         $scope.showHistoryModal = visible;
         if (!$scope.target.history && !$scope.retrieving.history) {
             $scope.retrieveHistory();
@@ -75,19 +80,26 @@ app.controller('contributionActionsController', function($scope, $timeout, contr
     $scope.retrieveCorrections = function() {
         $scope.retrieving.corrections = true;
         contributionService.retrieveCorrections($scope.model.route, $scope.target.id).then(function(data) {
-            contributionService.associateAgreementMarks(data.corrections, data.agreement_marks);
-            // TODO: This will work automatically after the service refactor
-            //userTitleService.associateTitles(data.corrections, $scope.userTitles);
-            $scope.target.corrections = data.corrections;
+            $scope.retrieving.corrections = false;
+            $scope.target.corrections = data;
+        }, function(response) {
+            $scope.errors.corrections = response;
+            $timeout(function() {
+                $scope.retrieving.corrections = false;
+            }, 15000);
         });
     };
 
     $scope.retrieveHistory = function() {
         $scope.retrieving.history = true;
         contributionService.retrieveHistory($scope.model.route, $scope.target.id).then(function(data) {
-            // TODO: This will work automatically after the service refactor
-            //userTitleService.associateTitles(data, $scope.userTitles);
+            $scope.retrieving.history = false;
             $scope.target.history = data;
+        }, function(response) {
+            $scope.errors.history = response;
+            $timeout(function() {
+                $scope.retrieving.history = false;
+            }, 15000);
         });
     };
 
@@ -101,22 +113,31 @@ app.controller('contributionActionsController', function($scope, $timeout, contr
     };
 
     $scope.helpfulMark = function(helpful) {
+        var helpfulStr = helpful ? 'helpful' : 'not helpful';
         if ($scope.target.helpful == helpful) {
-            contributionService.helpfulMark($scope.model.route, $scope.target.id).then(function(data) {
-                if (data.status == "ok") {
-                    delete $scope.target.helpful;
-                    $scope.updateHelpfulCounter(helpful, false);
-                }
+            contributionService.helpfulMark($scope.model.route, $scope.target.id).then(function() {
+                delete $scope.target.helpful;
+                $scope.updateHelpfulCounter(helpful, false);
+            }, function(response) {
+                var params = {
+                    label: 'Error removing ' + helpfulStr + ' mark',
+                    response: response
+                };
+                $scope.$emit($scope.errorEvent, params);
             });
         } else {
-            contributionService.helpfulMark($scope.model.route, $scope.target.id, helpful).then(function(data) {
-                if (data.status == "ok") {
-                    if ($scope.target.helpful == !helpful) {
-                        $scope.updateHelpfulCounter(!helpful, false);
-                    }
-                    $scope.target.helpful = helpful;
-                    $scope.updateHelpfulCounter(helpful, true);
+            contributionService.helpfulMark($scope.model.route, $scope.target.id, helpful).then(function() {
+                if ($scope.target.helpful == !helpful) {
+                    $scope.updateHelpfulCounter(!helpful, false);
                 }
+                $scope.target.helpful = helpful;
+                $scope.updateHelpfulCounter(helpful, true);
+            }, function(response) {
+                var params = {
+                    label: 'Error creating ' + helpfulStr + ' mark',
+                    response: response
+                };
+                $scope.$emit($scope.errorEvent, params);
             });
         }
     };
@@ -131,39 +152,58 @@ app.controller('contributionActionsController', function($scope, $timeout, contr
     };
 
     $scope.agreementMark = function(agree) {
+        var agreeStr = agree ? 'agreement' : 'disagreement';
         if ($scope.target.agree == agree) {
-            contributionService.agreementMark($scope.model.route, $scope.target.id).then(function(data) {
-                if (data.status == "ok") {
-                    delete $scope.target.agree;
-                    $scope.updateAgreeCounter(agree, false);
-                }
+            contributionService.agreementMark($scope.model.route, $scope.target.id).then(function() {
+                delete $scope.target.agree;
+                $scope.updateAgreeCounter(agree, false);
+            }, function(response) {
+                var params = {
+                    label: 'Error removing ' + agreeStr + ' mark',
+                    response: response
+                };
+                $scope.$emit($scope.errorEvent, params);
             });
         } else {
-            contributionService.agreementMark($scope.model.route, $scope.target.id, agree).then(function(data) {
-                if (data.status == "ok") {
-                    if ($scope.target.agree == !agree) {
-                        $scope.updateAgreeCounter(!agree, false);
-                    }
-                    $scope.target.agree = agree;
-                    $scope.updateAgreeCounter(agree, true);
+            contributionService.agreementMark($scope.model.route, $scope.target.id, agree).then(function() {
+                if ($scope.target.agree == !agree) {
+                    $scope.updateAgreeCounter(!agree, false);
                 }
+                $scope.target.agree = agree;
+                $scope.updateAgreeCounter(agree, true);
+            }, function(response) {
+                var params = {
+                    label: 'Error creating ' + agreeStr + ' mark',
+                    response: response
+                };
+                $scope.$emit($scope.errorEvent, params);
             });
         }
     };
 
     $scope.approve = function(approved) {
-        contributionService.approve($scope.model.route, $scope.target.id, approved).then(function(data) {
-            if (data.status == "ok") {
-                $scope.target.approved = approved;
-            }
+        contributionService.approve($scope.model.route, $scope.target.id, approved).then(function() {
+            $scope.target.approved = approved;
+        }, function(response) {
+            var approveStr = approved ? 'approving' : 'unapproving';
+            var params = {
+                label: 'Error ' + approveStr + ' contribution',
+                response: response
+            };
+            $scope.$emit($scope.errorEvent, params);
         });
     };
 
     $scope.hide = function(hidden) {
-        contributionService.hide($scope.model.route, $scope.target.id, hidden).then(function(data) {
-            if (data.status == "ok") {
-                $scope.target.hidden = hidden;
-            }
+        contributionService.hide($scope.model.route, $scope.target.id, hidden).then(function() {
+            $scope.target.hidden = hidden;
+        }, function(response) {
+            var approveStr = hidden ? 'hiding' : 'unhiding';
+            var params = {
+                label: 'Error ' + approveStr + ' contribution',
+                response: response
+            };
+            $scope.$emit($scope.errorEvent, params);
         });
     };
 

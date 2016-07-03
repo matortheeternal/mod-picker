@@ -3,8 +3,7 @@ class CompatibilityNote < ActiveRecord::Base
 
   scope :visible, -> { where(hidden: false, approved: true) }
   scope :by, -> (id) { where(submitted_by: id) }
-  scope :mod, -> (id) { joins(:mod_versions).where(:mod_versions => {mod_id: id}) }
-  scope :mv, -> (id) { joins(:mod_versions).where(:mod_versions => {id: id}) }
+  scope :mod, -> (id) { where(first_mod_id: id).or(second_mod_id: id) }
   scope :type, -> (array) { where(compatibility_type: array) }
 
   enum status: [ :incompatible, :"partially incompatible", :"compatibility mod", :"compatibility option", :"make custom patch" ]
@@ -37,26 +36,41 @@ class CompatibilityNote < ActiveRecord::Base
   self.per_page = 25
 
   # Validations
-  validates :submitted_by, :status, :text_body, :first_mod_id, :second_mod_id, :game_id, presence: true
+  validates :game_id, :submitted_by, :status, :first_mod_id, :second_mod_id, :text_body, presence: true
   validates :text_body, length: { in: 256..16384 }
+  validate :unique_mods
 
   # Callbacks
   after_create :increment_counters
   before_save :set_dates
   before_destroy :decrement_counters
 
+  def unique_mods
+    mod_ids = [first_mod_id, second_mod_id]
+    note = CompatibilityNote.where(first_mod_id: mod_ids, second_mod_id: mod_ids, hidden: false).where.not(id: self.id).first
+    if note.present?
+      if note.approved
+        errors.add(:mods, "A Compatibility Note for these mods already exists.")
+        errors.add(:link_id, note.id)
+      else
+        errors.add(:mods, "An unapproved Compatibility Note for these mods already exists.")
+      end
+    end
+  end
+
   def mods
     [first_mod, second_mod]
   end
 
   def create_history_entry
+    edit_summary = self.edited_by.nil? ? "Compatibility Note Created" : self.edit_summary
     self.history_entries.create(
       edited_by: self.edited_by || self.submitted_by,
       status: self.status,
       compatibility_mod_id: self.compatibility_mod_id,
       compatibility_plugin_id: self.compatibility_plugin_id,
       text_body: self.text_body,
-      edit_summary: self.edit_summary,
+      edit_summary: edit_summary || "",
       edited: self.edited || self.submitted
     )
   end

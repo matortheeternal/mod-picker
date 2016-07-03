@@ -18,8 +18,8 @@ class Correction < ActiveRecord::Base
   has_one :base_report, :as => 'reportable'
 
   # Validations
+  validates :game_id, :submitted_by, :correctable_id, :correctable_type, :text_body, presence: true
   validates :text_body, length: { in: 64..16384 }
-  validates :correctable_id, :correctable_type, presence: true
 
   # Callbacks
   after_create :increment_counters

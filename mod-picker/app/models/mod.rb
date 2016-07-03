@@ -9,6 +9,7 @@ class Mod < ActiveRecord::Base
   scope :adult, -> (bool) { where(has_adult_content: false) if (!bool) }
   scope :official, -> (bool) { where(is_official: false) if !bool }
   scope :utility, -> (bool) { where(is_utility: false) if !bool }
+  scope :is_game, -> (bool) { where.not(primary_category_id: nil) if !bool }
   # GENERAL SCOPES
   scope :search, -> (search) { where("name like ? OR aliases like ?", "%#{search}%", "%#{search}%") }
   scope :game, -> (game_id) {
@@ -17,13 +18,6 @@ class Mod < ActiveRecord::Base
       where(game_id: [game.id, game.parent_game_id])
     else
       where(game_id: game.id)
-    end
-  }
-  scope :is_game, -> (bool) {
-    if bool
-      where("primary_category_id IS NOT NULL")
-    else
-      where("primary_category_id IS NULL")
     end
   }
   scope :exclude, -> (excluded_mod_ids) { where.not(id: excluded_mod_ids) }
@@ -212,7 +206,7 @@ class Mod < ActiveRecord::Base
   self.per_page = 100
 
   # Validations
-  validates :name, :game_id, :released, presence: true
+  validates :game_id, :submitted_by, :name, :authors, :released, presence: true
   validates :name, :aliases, length: {maximum: 128}
 
   # callbacks
@@ -226,7 +220,6 @@ class Mod < ActiveRecord::Base
   def update_lazy_counters
     self.asset_files_count = ModAssetFile.where(mod_id: self.id).count
     self.plugins_count = Plugin.where(mod_id: self.id).count
-    self.save!
   end
 
   def create_tags
@@ -307,7 +300,7 @@ class Mod < ActiveRecord::Base
   def compute_average_rating
     total = 0.0
     count = 0
-    self.reviews.each do |r|
+    self.reviews.where(hidden: false, approved: true).each do |r|
       total += r.overall_rating
       count += 1
     end

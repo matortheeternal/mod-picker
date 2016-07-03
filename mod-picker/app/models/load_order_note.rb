@@ -3,8 +3,7 @@ class LoadOrderNote < ActiveRecord::Base
 
   scope :visible, -> { where(hidden: false, approved: true) }
   scope :by, -> (id) { where(submitted_by: id) }
-  scope :mod, -> (id) { joins(:mod_versions).where(:mod_versions => {mod_id: id}) }
-  scope :mv, -> (id) { joins(:mod_versions).where(:mod_versions => {id: id}) }
+  scope :plugin, -> (id) { where(first_plugin_id: id).or(second_plugin_id: id) }
 
   belongs_to :game, :inverse_of => 'load_order_notes'
   belongs_to :submitter, :class_name => 'User', :foreign_key => 'submitted_by', :inverse_of => 'load_order_notes'
@@ -33,14 +32,28 @@ class LoadOrderNote < ActiveRecord::Base
 
   self.per_page = 25
 
-  # validations
-  validates :first_plugin_id, :second_plugin_id, presence: true
+  # Validations
+  validates :game_id, :submitted_by, :first_plugin_id, :second_plugin_id, :text_body, presence: true
   validates :text_body, length: {in: 256..16384}
+  validate :unique_plugins
 
   # Callbacks
   after_create :increment_counters
   before_save :set_dates
   before_destroy :decrement_counters
+
+  def unique_plugins
+    plugin_ids = [first_plugin_id, second_plugin_id]
+    note = LoadOrderNote.where(first_plugin_id: plugin_ids, second_plugin_id: plugin_ids, hidden: false).where.not(id: self.id).first
+    if note.present?
+      if note.approved
+        errors.add(:plugins, "A Load Order Note for these plugins already exists.")
+        errors.add(:link_id, note.id)
+      else
+        errors.add(:plugins, "An unapproved Load Order Note for these plugins already exists.")
+      end
+    end
+  end
 
   def mods
     [first_mod, second_mod]
@@ -51,10 +64,11 @@ class LoadOrderNote < ActiveRecord::Base
   end
 
   def create_history_entry
+    edit_summary = self.edited_by.nil? ? "Load Order Note Created" : self.edit_summary
     self.history_entries.create(
         edited_by: self.edited_by || self.submitted_by,
         text_body: self.text_body,
-        edit_summary: self.edit_summary,
+        edit_summary: edit_summary || "",
         edited: self.edited || self.submitted
     )
   end

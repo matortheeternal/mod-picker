@@ -1,11 +1,13 @@
 <div class="modal-container">
+    <messages event="modalMessage"></messages>
+
     <div class="modal huge-modal" ng-hide="correction || activeCorrection">
         <div class="close-modal">
             <span class="fa fa-times" ng-click="toggleCorrectionsModal(false)"></span>
         </div>
 
         <h2>
-            {{target.submitter.username}}'s {{model.label}}
+            {{target.submitter.username}}'s {{model.label}} - Corrections
         </h2>
         <p ng-show="canCorrect">
             If there is something wrong with this contribution you can propose a correction.
@@ -26,7 +28,7 @@
         </p>
 
         <h3 class="section-title">Corrections</h3>
-        <loader data="target.corrections" content-class="corrections-container" spinner-class="big-spinner">
+        <loader data="target.corrections" content-class="corrections-container" spinner-class="big-spinner" ng-if="!errors.corrections">
             <table ng-if="target.corrections.length > 0">
                 <thead>
                 <tr>
@@ -65,12 +67,18 @@
                 </tr>
                 </tbody>
             </table>
-            <span ng-if="target.corrections.length == 0">
+            <div class="content-message" ng-if="target.corrections.length == 0">
                 There have been no corrections on this contribution.
-            </span>
+            </div>
         </loader>
 
-        <div class="action-button-container" ng-if="canCorrect">
+        <div class="content-message content-error" ng-if="errors.corrections">
+            There was an error retrieving corrections for this contribution.<br>
+            <!--TODO: Render JSON errors here, if available?-->
+            Error {{errors.corrections.status}}: {{errors.corrections.statusText}}
+        </div>
+
+        <div class="action-button-container" ng-if="canCorrect && !errors.corrections">
             <input class="btn action-btn" type="submit" ng-click="startNewCorrection()" value="New Correction">
         </div>
     </div>
@@ -83,7 +91,7 @@
         <h2>{{target.submitter.username}}'s {{model.label}} - Viewing Correction</h2>
 
         <div class="content-block">
-            <correction correction="correction" index="100" current-user="currentUser" edit="editCorrection" show-user-column="true"></correction>
+            <correction correction="correction" index="100" current-user="currentUser" edit="editCorrection" show-user-column="true" event-prefix="'modal'"></correction>
         </div>
 
         <h3 class="section-title">Comments
@@ -94,7 +102,7 @@
             </span>
         </h3>
         <loader data="correction.comments" spinner-class="big-spinner" content-class="content-container">
-            <comments comments="correction.comments" current-user="currentUser" model-name="'Correction'" target="correction"></comments>
+            <comments comments="correction.comments" current-user="currentUser" model-name="'Correction'" target="correction" event-prefix="'modal'"></comments>
 
             <page-results pages="pages.correction_comments" data="correction.comments" callback="retrieveCorrectionComments"></page-results>
         </loader>

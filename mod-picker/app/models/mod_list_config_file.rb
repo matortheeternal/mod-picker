@@ -6,7 +6,7 @@ class ModListConfigFile < ActiveRecord::Base
 
   # validations
   validates :mod_list_id, :config_file_id, presence: true
-  validates :text_body, length: { maximum: 4096}
+  validates :text_body, length: { maximum: 8192}
 
   # Callbacks
   after_create :increment_counters

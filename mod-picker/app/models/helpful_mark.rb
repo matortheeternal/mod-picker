@@ -10,7 +10,7 @@ class HelpfulMark < ActiveRecord::Base
 
   # Validation
   # :helpful's presence is not required because it will fail if :helpful == false
-  validates :helpfulable_id, :helpfulable_type, presence: true
+  validates :submitted_by, :helpfulable_id, :helpfulable_type, presence: true
 
   validates :helpful, inclusion: {
     in: [true, false],
@@ -19,7 +19,7 @@ class HelpfulMark < ActiveRecord::Base
 
   validates :helpfulable_type, inclusion: {
     in: ["CompatibilityNote", "InstallOrderNote", "LoadOrderNote", "Review"],
-    message: "Not a valid record that contains helpful marks"
+    message: "Input helpfulable type does not support helpful marks"
   }
 
   # Callbacks

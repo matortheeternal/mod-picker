@@ -3,8 +3,7 @@ class InstallOrderNote < ActiveRecord::Base
 
   scope :visible, -> { where(hidden: false, approved: true) }
   scope :by, -> (id) { where(submitted_by: id) }
-  scope :mod, -> (id) { joins(:mod_versions).where(:mod_versions => {mod_id: id}) }
-  scope :mv, -> (id) { joins(:mod_versions).where(:mod_versions => {id: id}) }
+  scope :mod, -> (id) { where(first_mod_id: id).or(second_mod_id: id) }
 
   belongs_to :game, :inverse_of => 'install_order_notes'
   belongs_to :submitter, :class_name => 'User', :foreign_key => 'submitted_by', :inverse_of => 'install_order_notes'
@@ -29,23 +28,38 @@ class InstallOrderNote < ActiveRecord::Base
   self.per_page = 25
 
   # Validations
-  validates :first_mod_id, :second_mod_id, presence: true
+  validates :game_id, :submitted_by, :first_mod_id, :second_mod_id, :text_body, presence: true
   validates :text_body, length: { in: 256..16384 }
+  validate :unique_mods
 
   # Callbacks
   after_create :increment_counters
   before_save :set_dates
   before_destroy :decrement_counters
 
+  def unique_mods
+    mod_ids = [first_mod_id, second_mod_id]
+    note = InstallOrderNote.where(first_mod_id: mod_ids, second_mod_id: mod_ids, hidden: false).where.not(id: self.id).first
+    if note.present?
+      if note.approved
+        errors.add(:mods, "An Install Order Note for these mods already exists.")
+        errors.add(:link_id, note.id)
+      else
+        errors.add(:mods, "An unapproved Install Order Note for these mods already exists.")
+      end
+    end
+  end
+
   def mods
     [first_mod, second_mod]
   end
 
   def create_history_entry
+    edit_summary = self.edited_by.nil? ? "Install Order Note Created" : self.edit_summary
     self.history_entries.create(
         edited_by: self.edited_by || self.submitted_by,
         text_body: self.text_body,
-        edit_summary: self.edit_summary,
+        edit_summary: edit_summary || "",
         edited: self.edited || self.submitted
     )
   end

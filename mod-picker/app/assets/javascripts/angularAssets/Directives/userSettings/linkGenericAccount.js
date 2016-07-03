@@ -27,6 +27,7 @@ app.controller('linkGenericAccountController', function ($scope, $timeout, userS
     };
 
     $scope.toggleModal = function() {
+        $scope.$emit('toggleModal', visible);
         $scope.showModal = !$scope.showModal;
     };
 

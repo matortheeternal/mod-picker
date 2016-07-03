@@ -11,7 +11,7 @@ class CommentsController < ApplicationController
   # GET /comments/1
   def show
     authorize! :read, @comment
-    render :json => @comment
+    render :json => @comment.show_json
   end
 
   # POST /comments
@@ -21,7 +21,7 @@ class CommentsController < ApplicationController
     authorize! :create, @comment
 
     if @comment.save
-      render json: {status: :ok}
+      render json: @comment.reload.show_json
     else
       render json: @comment.errors, status: :unprocessable_entity
     end

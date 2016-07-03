@@ -19,8 +19,8 @@ app.service('recordGroupService', function (backend, $q) {
                 if (plugin.plugin_record_groups) {
                     plugin.plugin_record_groups.forEach(function(group) {
                         var record_group = service.getGroupFromSignature(allGroups, group.sig);
-                        plugin.name = record_group.name;
-                        plugin.child_group = record_group.child_group;
+                        group.name = record_group.name;
+                        group.child_group = record_group.child_group;
                     });
                 }
             });

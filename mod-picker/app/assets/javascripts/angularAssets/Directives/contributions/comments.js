@@ -7,12 +7,17 @@ app.directive('comments', function () {
             comments: '=',
             currentUser: '=',
             modelName: '=',
-            target: '='
+            target: '=',
+            eventPrefix: '=?'
         }
     };
 });
 
 app.controller('commentsController', function ($scope, contributionService) {
+    // event strings
+    $scope.errorEvent = $scope.eventPrefix ? $scope.eventPrefix + 'ErrorMessage' : 'errorMessage';
+    $scope.successEvent = $scope.eventPrefix ? $scope.eventPrefix + 'SuccessMessage' : 'successMessage';
+
     // update the markdown editor
     $scope.updateEditor = function() {
         $scope.updateMDE = ($scope.updateMDE || 0) + 1;
@@ -48,6 +53,20 @@ app.controller('commentsController', function ($scope, contributionService) {
         $scope.saveComment($scope.activeComment, $scope.discardNewComment);
     };
 
+    // push a comment to the local page view
+    $scope.pushCommentToView = function(comment) {
+        if (comment.parent_id) {
+            var parent = $scope.comments.find(function(parent_comment) {
+                return parent_comment.id == comment.parent_id;
+            });
+            if (parent) {
+                parent.children.unshift(comment);
+            }
+        } else {
+            $scope.comments.unshift(comment);
+        }
+    };
+
     // save a comment
     $scope.saveComment = function(comment, discardCallback, updateCallback) {
         // return if the comment is invalid
@@ -70,23 +89,22 @@ app.controller('commentsController', function ($scope, contributionService) {
         if (comment.editing) {
             var commentId = comment.original.id;
             contributionService.updateContribution("comments", commentId, commentObj).then(function() {
-                $scope.submitMessage = "Comment updated successfully!";
-                $scope.showSuccess = true;
-
+                $scope.$emit($scope.successEvent, 'Comment updated successfully.');
                 // update original comment object and discard copy
                 updateCallback();
                 discardCallback();
             }, function(response) {
-                // error handling
+                var params = {label: 'Error updating Comment', response: response};
+                $scope.$emit($scope.errorEvent, params);
             });
         } else {
-            contributionService.submitContribution("comments", commentObj).then(function() {
-                $scope.submitMessage = "Comment submitted successfully!";
-                $scope.showSuccess = true;
-                // TODO: push the comment onto the comments array
+            contributionService.submitContribution("comments", commentObj).then(function(comment) {
+                $scope.$emit($scope.successEvent, 'Comment submitted successfully.');
+                $scope.pushCommentToView(comment);
                 discardCallback();
             }, function(response) {
-                // error handling
+                var params = {label: 'Error submitting Comment', response: response};
+                $scope.$emit($scope.errorEvent, params);
             });
         }
     };

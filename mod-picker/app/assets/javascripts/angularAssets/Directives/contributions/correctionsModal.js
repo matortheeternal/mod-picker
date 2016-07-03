@@ -7,11 +7,29 @@ app.directive('correctionsModal', function () {
     };
 });
 
-app.controller('correctionsModalController', function ($scope, contributionService) {
+app.controller('correctionsModalController', function ($scope, contributionService, errorService) {
     // compute agree percentage helper
     $scope.computeAgreePercentage = function(correction) {
         return (correction.agree_count / ((correction.agree_count + correction.disagree_count) || 1)) * 100;
     };
+
+    // display error messages
+    $scope.$on('modalErrorMessage', function(event, params) {
+        var errors = errorService.errorMessages(params.label, params.response);
+        errors.forEach(function(error) {
+            $scope.$broadcast('modalMessage', error);
+        });
+        // stop event propagation - we handled it
+        event.stopPropagation();
+    });
+
+    // display success message
+    $scope.$on('modalSuccessMessage', function(event, text) {
+        var successMessage = {type: "success", text: text};
+        $scope.$broadcast('modalMessage', successMessage);
+        // stop event propagation - we handled it
+        event.stopPropagation();
+    });
 
     // start a new correction
     $scope.startNewCorrection = function() {
@@ -52,7 +70,7 @@ app.controller('correctionsModalController', function ($scope, contributionServi
             $scope.correction.comments = data;
             delete $scope.correction.retrieving_comments;
         }, function(response) {
-            $scope.displayErrors.correction_comments = response;
+            $scope.errors.correction_comments = response;
         });
     };
 
@@ -120,24 +138,23 @@ app.controller('correctionsModalController', function ($scope, contributionServi
         // use update or submit contribution
         if ($scope.activeCorrection.editing) {
             var correctionId = $scope.activeCorrection.original.id;
-            contributionService.updateContribution("corrections", correctionId, correctionObj).then(function(data) {
-                if (data.status === "ok") {
-                    $scope.submitMessage = "Correction updated successfully!";
-                    $scope.showSuccess = true;
-
-                    // update original correction object and discard copy
-                    $scope.updateCorrection();
-                    $scope.discardCorrection();
-                }
+            contributionService.updateContribution("corrections", correctionId, correctionObj).then(function() {
+                $scope.$emit('modalSuccessMessage', 'Correction updated successfully.');
+                // update original correction object and discard copy
+                $scope.updateCorrection();
+                $scope.discardCorrection();
+            }, function(response) {
+                var params = {label: 'Error updating Correction', response: response};
+                $scope.$emit('modalErrorMessage', params);
             });
         } else {
-            contributionService.submitContribution("corrections", correctionObj).then(function(data) {
-                if (data.status === "ok") {
-                    $scope.submitMessage = "Correction submitted successfully!";
-                    $scope.showSuccess = true;
-                    // TODO: push the correction onto the $scope.mod.corrections array
-                    $scope.discardCorrection();
-                }
+            contributionService.submitContribution("corrections", correctionObj).then(function(correction) {
+                $scope.$emit('modalSuccessMessage', 'Correction submitted successfully.');
+               $scope.target.corrections.unshift(correction);
+                $scope.discardCorrection();
+            }, function(response) {
+                var params = {label: 'Error submitting Correction', response: response};
+                $scope.$emit('modalErrorMessage', params);
             });
         }
     }

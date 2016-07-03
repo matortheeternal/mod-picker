@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160611202215) do
+ActiveRecord::Schema.define(version: 20160701194514) do
 
   create_table "agreement_marks", id: false, force: :cascade do |t|
     t.integer "correction_id", limit: 4,                null: false
@@ -91,7 +91,7 @@ ActiveRecord::Schema.define(version: 20160611202215) do
     t.integer  "compatibility_mod_id",    limit: 4
     t.integer  "compatibility_plugin_id", limit: 4
     t.text     "text_body",               limit: 65535,             null: false
-    t.text     "edit_summary",            limit: 65535
+    t.string   "edit_summary",            limit: 255,               null: false
     t.datetime "edited"
   end
 
@@ -105,6 +105,7 @@ ActiveRecord::Schema.define(version: 20160611202215) do
     t.integer  "submitted_by",            limit: 4,                     null: false
     t.integer  "edited_by",               limit: 4
     t.integer  "status",                  limit: 4,     default: 0,     null: false
+    t.integer  "first_mod_id",            limit: 4,                     null: false
     t.integer  "second_mod_id",           limit: 4,                     null: false
     t.integer  "compatibility_mod_id",    limit: 4
     t.integer  "compatibility_plugin_id", limit: 4
@@ -120,7 +121,6 @@ ActiveRecord::Schema.define(version: 20160611202215) do
     t.datetime "edited"
     t.boolean  "hidden",                                default: false, null: false
     t.datetime "submitted",                                             null: false
-    t.integer  "first_mod_id",            limit: 4,                     null: false
   end
 
   add_index "compatibility_notes", ["compatibility_plugin_id"], name: "compatibility_patch", using: :btree
@@ -173,8 +173,8 @@ ActiveRecord::Schema.define(version: 20160611202215) do
 
   create_table "dummy_masters", id: false, force: :cascade do |t|
     t.integer "plugin_id", limit: 4,   null: false
-    t.integer "index",     limit: 4,   null: false
-    t.string  "filename",  limit: 255, null: false
+    t.integer "index",     limit: 1,   null: false
+    t.string  "filename",  limit: 128, null: false
   end
 
   add_index "dummy_masters", ["plugin_id"], name: "fk_rails_2552b596d8", using: :btree
@@ -334,8 +334,9 @@ ActiveRecord::Schema.define(version: 20160611202215) do
   add_index "mod_asset_files", ["mod_id"], name: "mv_id", using: :btree
 
   create_table "mod_authors", id: false, force: :cascade do |t|
-    t.integer "mod_id",  limit: 4, null: false
-    t.integer "user_id", limit: 4, null: false
+    t.integer "mod_id",  limit: 4,             null: false
+    t.integer "user_id", limit: 4,             null: false
+    t.integer "role",    limit: 1, default: 0, null: false
   end
 
   add_index "mod_authors", ["mod_id"], name: "mod_id", using: :btree
@@ -629,7 +630,7 @@ ActiveRecord::Schema.define(version: 20160611202215) do
     t.integer  "type",           limit: 1,   null: false
     t.string   "note",           limit: 128
     t.datetime "submitted",                  null: false
-    t.datetime "edited",                     null: false
+    t.datetime "edited"
   end
 
   add_index "reports", ["base_report_id"], name: "fk_rails_619eb511d7", using: :btree
@@ -688,12 +689,12 @@ ActiveRecord::Schema.define(version: 20160611202215) do
   add_index "reviews", ["submitted_by"], name: "submitted_by", using: :btree
 
   create_table "tags", force: :cascade do |t|
-    t.integer "game_id",         limit: 4,                   null: false
-    t.integer "submitted_by",    limit: 4,                   null: false
-    t.string  "text",            limit: 255,                 null: false
-    t.integer "mods_count",      limit: 4,   default: 0,     null: false
-    t.integer "mod_lists_count", limit: 4,   default: 0,     null: false
-    t.boolean "hidden",                      default: false, null: false
+    t.integer "game_id",         limit: 4,                  null: false
+    t.integer "submitted_by",    limit: 4,                  null: false
+    t.string  "text",            limit: 32,                 null: false
+    t.integer "mods_count",      limit: 4,  default: 0,     null: false
+    t.integer "mod_lists_count", limit: 4,  default: 0,     null: false
+    t.boolean "hidden",                     default: false, null: false
   end
 
   add_index "tags", ["game_id"], name: "fk_rails_21222987c6", using: :btree

@@ -15,7 +15,7 @@ class InstallOrderNotesController < ContributionsController
     authorize! :create, @install_order_note
 
     if @install_order_note.save
-      render json: {status: :ok}
+      render json: @install_order_note.reload
     else
       render json: @install_order_note.errors, status: :unprocessable_entity
     end

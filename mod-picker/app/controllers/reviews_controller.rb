@@ -29,7 +29,7 @@ class ReviewsController < ContributionsController
     authorize! :create, @review
 
     if @review.save
-      render json: {status: :ok}
+      render json: @review.reload
     else
       render json: @review.errors, status: :unprocessable_entity
     end
@@ -37,12 +37,12 @@ class ReviewsController < ContributionsController
 
   # NOT CORRECTABLE
   def corrections
-    render status: 404
+    render json: {error: "Reviews are not correctable."}, status: 404
   end
 
   # NOT HISTORICAL
   def history
-    render status: 404
+    render json: {error: "Reviews don't have history."}, status: 404
   end
 
   private

@@ -11,4 +11,10 @@
     <li class="user-reputation">
         {{user.reputation.overall | number:0}}<span>reputation</span>
     </li>
+    <li class="editors" ng-if="editors.length">
+        <b>Editors:</b>
+        <span ng-repeat="editor in editors">
+            <a href="#/profile/{{editor.id}}">{{editor.username}}</a><span ng-if="!$last">, </span>
+        </span>
+    </li>
 </ul>

@@ -1,4 +1,6 @@
 <div class="modal-container" ng-show="statusModal.visible">
+    <messages event="modalMessage"></messages>
+
     <div class="modal huge-modal" ng-hide="appeal || activeAppeal">
         <div class="close-modal">
             <span class="fa fa-times" ng-click="toggleStatusModal(false)"></span>
@@ -26,7 +28,7 @@
         </p>
 
         <h3 class="section-title">Appeals</h3>
-        <loader data="mod.corrections" content-class="corrections-container" spinner-class="big-spinner">
+        <loader data="mod.corrections" content-class="corrections-container" spinner-class="big-spinner" ng-if="!errors.appeals">
             <table ng-if="mod.corrections.length > 0">
                 <thead>
                 <tr>
@@ -70,7 +72,13 @@
             </span>
         </loader>
 
-        <div class="action-button-container" ng-if="appealStatus">
+        <div class="content-message content-error" ng-if="errors.appeals">
+            There was an error retrieving appeals for this mod.<br>
+            <!--TODO: Render JSON errors here, if available?-->
+            Error {{errors.appeals.status}}: {{errors.appeals.statusText}}
+        </div>
+
+        <div class="action-button-container" ng-if="appealStatus && !errors.appeals">
             <input class="btn action-btn" type="submit" ng-click="startNewAppeal()" value="New Appeal">
         </div>
     </div>
@@ -83,7 +91,7 @@
         <h2>{{mod.name}} - Viewing Appeal</h2>
 
         <div class="content-block">
-            <correction correction="appeal" index="100" current-user="currentUser" edit="editAppeal" show-user-column="true"></correction>
+            <correction correction="appeal" index="100" current-user="currentUser" edit="editAppeal" show-user-column="true" event-prefix="'modal'"></correction>
         </div>
 
         <h3 class="section-title">Comments
@@ -94,7 +102,7 @@
             </span>
         </h3>
         <loader data="appeal.comments" spinner-class="big-spinner" content-class="content-container">
-            <comments comments="appeal.comments" current-user="currentUser" model-name="'Correction'" target="appeal"></comments>
+            <comments comments="appeal.comments" current-user="currentUser" model-name="'Correction'" target="appeal" event-prefix="'modal'"></comments>
 
             <page-results pages="pages.appeal_comments" data="appeal.comments" callback="retrieveAppealComments"></page-results>
         </loader>

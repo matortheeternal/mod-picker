@@ -20,7 +20,7 @@ app.config(['$stateProvider', function($stateProvider) {
     })
 }]);
 
-app.controller('baseController', function($scope, currentUser, games, currentGame, $state) {
+app.controller('baseController', function($scope, $state, currentUser, games, currentGame) {
     $scope.currentUser = currentUser;
     $scope.permissions = currentUser.permissions;
     $scope.currentGame = currentGame;
@@ -42,4 +42,9 @@ app.controller('searchController', function($scope, $location) {
             $scope.$apply();
         }, 1000);
     };
+
+    $scope.$on("$stateChangeError", function(event, toState, toParams, fromState, fromParams, error) {
+        $state.get('base.error').error = error;
+        $state.go('base.error');
+    });
 });
