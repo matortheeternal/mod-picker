@@ -4,6 +4,22 @@ class Article < ActiveRecord::Base
   # Callbacks
   before_save :set_dates
 
+  def as_json(options={})
+    if JsonHelpers.json_options_empty(options)
+      default_options = {
+          :include => {
+              :submitter => {
+                  :only => [:id, :username, :role, :title],
+                  :methods => :avatar
+              }
+          }
+      }
+      super(options.merge(default_options))
+    else
+      super(options)
+    end
+  end
+
   private
     def set_dates
       if self.submitted.nil?
