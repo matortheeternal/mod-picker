@@ -1,5 +1,5 @@
 class Article < ActiveRecord::Base
-  belongs_to :user, :foreign_key => 'submitted_by', :inverse_of => 'articles'
+  belongs_to :submitter, :class_name => 'User', :foreign_key => 'submitted_by', :inverse_of => 'articles'
 
   # Callbacks
   before_save :set_dates
