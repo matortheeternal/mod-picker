@@ -4,6 +4,14 @@ class ModList < ActiveRecord::Base
   enum status: [ :planned, :"under construction", :testing, :complete ]
   enum visibility: [ :visibility_private, :visibility_unlisted, :visibility_public ]
 
+  # BOOLEAN SCOPES
+  scope :adult, -> (bool) { where(has_adult_content: false) if !bool }
+  # GENERAL SCOPES
+  scope :visible, -> { where(hidden: false, visibility: 2) }
+  scope :game, -> (game_id) { where(game_id: game_id) }
+  scope :status, -> (status) { where(status: status) }
+
+  # ASSOCIATIONS
   belongs_to :game, :inverse_of => 'mod_lists'
   belongs_to :submitter, :class_name => 'User', :foreign_key => 'submitted_by', :inverse_of => 'mod_lists'
 

@@ -1,4 +1,4 @@
-app.directive('contributionActions', function () {
+app.directive('contributionActions', function() {
     return {
         restrict: 'E',
         templateUrl: '/resources/directives/contributions/contributionActions.html',
@@ -18,7 +18,7 @@ app.directive('contributionActions', function () {
     };
 });
 
-app.controller('contributionActionsController', function ($scope, $timeout, contributionService, contributionFactory) {
+app.controller('contributionActionsController', function($scope, $timeout, contributionService, contributionFactory) {
     // correctable should have a default value of true
     $scope.correctable = angular.isDefined($scope.correctable) ? $scope.correctable : true;
     // approveable should have a default value of true
