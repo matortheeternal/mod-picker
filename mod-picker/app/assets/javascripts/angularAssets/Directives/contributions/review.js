@@ -9,6 +9,7 @@ app.directive('review', function() {
         scope: {
             review: '=',
             index: '=',
+            currentUser: '=',
             edit: '=?',
             showUserColumn: '=?',
             showMod: '=?'

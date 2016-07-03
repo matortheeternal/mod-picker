@@ -6,6 +6,7 @@ app.directive('contributionActions', function() {
         scope: {
             target: '=',
             index: '=',
+            currentUser: '=',
             modelName: '@',
             correctable: '=?', // default true
             approveable: '=?', // default true
@@ -16,21 +17,7 @@ app.directive('contributionActions', function() {
     };
 });
 
-app.controller('contributionActionsController', function($scope, $timeout, contributionService, contributionFactory, userTitleService) {
-    // permissions helper variables
-    var user = $scope.$parent.$parent.currentUser;
-    var rep = user.reputation.overall;
-    var isAdmin = user && user.role === 'admin';
-    var isModerator = user && user.role === 'moderator';
-    var isSubmitter = user && user.id === $scope.target.submitted_by;
-    // set up permissions
-    $scope.canReport = user || false;
-    $scope.canAgree = $scope.agreeable && $scope.isOpen && ((rep > 40) || isAdmin || isModerator);
-    $scope.canCorrect = (rep > 40) || isAdmin || isModerator;
-    $scope.canEdit = isAdmin || isModerator || isSubmitter;
-    $scope.canApprove = $scope.approveable && (isAdmin || isModerator);
-    $scope.canHide = isAdmin || isModerator;
-
+app.controller('contributionActionsController', function($scope, $timeout, contributionService, contributionFactory) {
     // correctable should have a default value of true
     $scope.correctable = angular.isDefined($scope.correctable) ? $scope.correctable : true;
     // approveable should have a default value of true
@@ -189,4 +176,23 @@ app.controller('contributionActionsController', function($scope, $timeout, contr
         }, 100);
     };
 
+    $scope.setPermissions = function() {
+        // permissions helper variables
+        var user = $scope.currentUser;
+        var rep = user.reputation.overall;
+        var isAdmin = user && user.role === 'admin';
+        var isModerator = user && user.role === 'moderator';
+        var isSubmitter = user && user.id === $scope.target.submitted_by;
+        // set up permissions
+        $scope.canReport = user || false;
+        $scope.canAgree = $scope.agreeable && $scope.isOpen && ((rep > 40) || isAdmin || isModerator);
+        $scope.canCorrect = (rep > 40) || isAdmin || isModerator;
+        $scope.canEdit = isAdmin || isModerator || isSubmitter;
+        $scope.canApprove = $scope.approveable && (isAdmin || isModerator);
+        $scope.canHide = isAdmin || isModerator;
+    };
+
+    // watch user so if we get the user object after rendering actions
+    // we can re-render them correctly per the user's permissions
+    $scope.$watch('currentUser', $scope.setPermissions, true);
 });
