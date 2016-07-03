@@ -48,7 +48,7 @@
 				<h3 class="section-title">Site News</h3>
 				<div class="news-box" ng-repeat="article in landingData.articles" ng-init="article.reduced_text = reduceText(article.text_body); article.expandable = (wordCount(article.text_body) > 50)">
 					<h3 class="section-title">{{article.title}}</h3>
-					<span class="article-details">by {{article.submitted_by}} on {{article.submitted | date}}</span>
+					<span class="article-details">by {{article.submitter.username}} on {{article.submitted | date}}</span>
 					<section marked="article.expanded ? article.text_body : article.reduced_text" ng-class="news">
 					</section>
 					<a ng-if="article.expandable" ng-click="article.expanded = !article.expanded">Show {{article.expanded ? 'Less' : 'More'}}</a>
