@@ -46,7 +46,8 @@ app.controller('landingController', function($scope, $q, landingService, current
     ];
 
     landingService.retrieveLanding().then(function(data) {
-        $scope.landingData = data;
+        $scope.recent = data.recent;
+        $scope.articles = data.articles;
     });
 
     $scope.wordCount = function(string) {

@@ -3,7 +3,7 @@
 		<div class="left-column wide-column home-left-column">
 			<div class="recent-box box-shadow">
 				<h3 class="section-title">Recent Modlists</h3>
-					<section ng-repeat="modlist in landingData.recent.mod_lists">
+					<section ng-repeat="modlist in recent.mod_lists">
 						<a ng-href="#/modlist/{{modlist.id}}">
 							<div class="recent-thing">
 								<img ng-src="{{modlist.user.avatar}}">
@@ -22,7 +22,7 @@
 			<div class="recent-box box-shadow">
 				<h3 class="section-title">Recent Mods</h3>
 					<!-- TODO: make this into a directive -->
-					<section ng-repeat="mod in landingData.recent.mods">
+					<section ng-repeat="mod in recent.mods">
 						<a ng-href="#/mod/{{mod.id}}">
 							<div class="recent-thing">
 								<img ng-src="{{mod.image}}">
@@ -46,7 +46,7 @@
 		<div class="right-column home-right-column">
 			<div class="articles box-shadow">
 				<h3 class="section-title">Site News</h3>
-				<div class="news-box" ng-repeat="article in landingData.articles" ng-init="article.reduced_text = reduceText(article.text_body); article.expandable = (wordCount(article.text_body) > 50)">
+				<div class="news-box" ng-repeat="article in articles" ng-init="article.reduced_text = reduceText(article.text_body); article.expandable = (wordCount(article.text_body) > 50)">
 					<h3 class="section-title">{{article.title}}</h3>
 					<span class="article-details">by {{article.submitter.username}} on {{article.submitted | date}}</span>
 					<section marked="article.expanded ? article.text_body : article.reduced_text" ng-class="news">
