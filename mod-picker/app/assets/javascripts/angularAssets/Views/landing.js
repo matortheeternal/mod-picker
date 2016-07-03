@@ -34,7 +34,7 @@ app.controller('searchController', function($scope, $location) {
     };
 });
 
-app.controller('landingController', function($scope, $q, landingService, userService) {
+app.controller('landingController', function($scope, $q, landingService, currentUser) {
     $scope.currentUser = currentUser;
 
     $scope.tabs = [
