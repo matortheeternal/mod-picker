@@ -31,3 +31,15 @@ app.controller('baseController', function($scope, currentUser, games, currentGam
         $state.reload();
     });
 });
+
+app.controller('searchController', function($scope, $location) {
+    $scope.loading = false;
+    $scope.processSearch = function() {
+        $scope.loading = true;
+        //TODO: remove mockup
+        setTimeout(function() {
+            $scope.loading = false;
+            $scope.$apply();
+        }, 1000);
+    };
+});
