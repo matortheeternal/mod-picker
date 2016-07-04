@@ -90,6 +90,10 @@ body {
   hyphens: auto;
 }
 
+//box shadow for containers
+.box-shadow {
+  box-shadow: 0px 0px 60px -30px $shadow_color;
+}
 
 /* utility classes */
 .capitalize {

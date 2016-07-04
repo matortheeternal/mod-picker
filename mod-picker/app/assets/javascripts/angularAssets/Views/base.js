@@ -30,6 +30,18 @@ app.controller('baseController', function($scope, $state, currentUser, games, cu
     $scope.$on('reloadCurrentUser', function() {
         $state.reload();
     });
+});
+
+app.controller('searchController', function($scope, $location) {
+    $scope.loading = false;
+    $scope.processSearch = function() {
+        $scope.loading = true;
+        //TODO: remove mockup
+        setTimeout(function() {
+            $scope.loading = false;
+            $scope.$apply();
+        }, 1000);
+    };
 
     $scope.$on("$stateChangeError", function(event, toState, toParams, fromState, fromParams, error) {
         $state.get('base.error').error = error;

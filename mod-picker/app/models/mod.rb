@@ -24,13 +24,13 @@ class Mod < ActiveRecord::Base
   scope :sources, -> (sources) {
     results = self.where(nil)
     whereClause = []
-    
+
     # nexus mods
     if sources[:nexus]
       results = results.includes(:nexus_infos).references(:nexus_infos)
       whereClause.push("nexus_infos.id IS NOT NULL")
     end
-    # lover's lab  
+    # lover's lab
     if sources[:lab]
       results = results.includes(:lover_infos).references(:lover_infos)
       whereClause.push("lover_infos.id IS NOT NULL")
@@ -45,7 +45,7 @@ class Mod < ActiveRecord::Base
       results = results.includes(:custom_sources).references(:custom_sources)
       whereClause.push("custom_sources.id IS NOT NULL")
     end
-    
+
     # require one selected source to be present
     results = results.where(whereClause.join(" OR "))
     results
@@ -170,7 +170,7 @@ class Mod < ActiveRecord::Base
   # requirements associated with the mod
   has_many :required_mods, :class_name => 'ModRequirement', :inverse_of => 'mod', :dependent => :destroy
   has_many :required_by, :class_name => 'ModRequirement', :inverse_of => 'required_mod', :dependent => :destroy
-  
+
   # users who can edit the mod
   has_many :mod_authors, :inverse_of => 'mod', :dependent => :destroy
   has_many :author_users, :class_name => 'User', :through => 'mod_authors', :source => 'user', :inverse_of => 'mods'

@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
   # disable registration
   devise_for :users, :controllers => { :registrations => "registrations", :invitations => "user_invitations" }
-  
+
   # require authentication before allowing user to access any resources
   authenticate :user do
     # users and user settings
@@ -114,6 +114,7 @@ Rails.application.routes.draw do
     # home page
     match '/skyrim', to: 'home#skyrim', via: [:get]
     match '/fallout4', to: 'home#fallout4', via: [:get]
+    match '/home', to: 'home#index', via: [:get]
   end
 
   # welcome page

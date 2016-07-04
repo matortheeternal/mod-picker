@@ -890,3 +890,23 @@ def seed_fake_mod_lists
 
   puts "    #{ModList.count} mod lists seeded"
 end
+
+def seed_fake_articles
+  puts "\nSeeding articles"
+
+  gameSkyrim = Game.where({display_name: "Skyrim"}).first
+
+  rand(10).times do
+    author = User.offset(rand(User.count)).first
+    Article.new(
+        title: Faker::Lorem.words(3).join(' '),
+        submitted_by: author.id,
+        text_body: Faker::Lorem.words(rand(500)).join(' '),
+        submitted: Faker::Date.backward(14),
+        edited: Faker::Date.backward(13),
+        game_id: gameSkyrim.id
+    ).save!
+  end
+
+  puts "    #{Article.count} articles seeded"
+end

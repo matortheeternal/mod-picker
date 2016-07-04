@@ -30,6 +30,7 @@ Rails.application.config.assets.precompile += [
 'angular.min.1.5.1.js',
 'angular-marked.min.js',
 'angular-ui-router.min.js',
+'angular-marked.min.js',
 'angular-elastic-input.min.js',
 'sticky.min.js',
 'bootstrap.min.js',
