@@ -201,7 +201,10 @@ class Mod < ActiveRecord::Base
   has_many :mod_list_mods, :inverse_of => 'mod', :dependent => :destroy
   has_many :mod_lists, :through => 'mod_list_mods', :inverse_of => 'mods'
 
-  accepts_nested_attributes_for :required_mods, :custom_sources, :mod_authors, allow_destroy: true
+  accepts_nested_attributes_for :custom_sources, allow_destroy: true
+  accepts_nested_attributes_for :required_mods, :mod_authors, reject_if: proc {
+      |attributes| attributes[:id] && !attributes[:_destroy]
+  }, allow_destroy: true
 
   self.per_page = 100
 
