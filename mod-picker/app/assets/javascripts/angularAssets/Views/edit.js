@@ -29,27 +29,6 @@ app.controller('editModController', function($scope, $state, currentUser, modObj
 
     // loads the mod object onto the view
     $scope.loadModObject = function() {
-        // parse dates to date objects
-        modObject.released = new Date(Date.parse(modObject.released));
-        if (modObject.updated) {
-            modObject.updated = new Date(Date.parse(modObject.updated));
-        }
-        // convert required mods into correct format
-        modObject.requirements = [];
-        modObject.required_mods.forEach(function(requirement) {
-            modObject.requirements.push({
-                required_id: requirement.required_mod.id,
-                name: requirement.required_mod.name
-            })
-        });
-        // convert categories into correct format
-        modObject.categories = [];
-        if (modObject.primary_category_id) {
-            modObject.categories.push(modObject.primary_category_id);
-        }
-        if (modObject.secondary_category_id) {
-            modObject.categories.push(modObject.secondary_category_id);
-        }
         // load sources into scope
         $scope.sources = [];
         if (modObject.nexus_infos) {
@@ -82,6 +61,27 @@ app.controller('editModController', function($scope, $state, currentUser, modObj
             source.valid = true;
             $scope.customSources.push(source);
         });
+        // parse dates to date objects
+        modObject.released = new Date(Date.parse(modObject.released));
+        if (modObject.updated) {
+            modObject.updated = new Date(Date.parse(modObject.updated));
+        }
+        // convert required mods into correct format
+        modObject.requirements = [];
+        modObject.required_mods.forEach(function(requirement) {
+            modObject.requirements.push({
+                required_id: requirement.required_mod.id,
+                name: requirement.required_mod.name
+            })
+        });
+        // convert categories into correct format
+        modObject.categories = [];
+        if (modObject.primary_category_id) {
+            modObject.categories.push(modObject.primary_category_id);
+        }
+        if (modObject.secondary_category_id) {
+            modObject.categories.push(modObject.secondary_category_id);
+        }
         // put mod on scope
         $scope.mod = modObject;
     };
