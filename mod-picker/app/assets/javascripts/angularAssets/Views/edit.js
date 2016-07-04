@@ -35,6 +35,7 @@ app.controller('editModController', function($scope, $state, currentUser, modObj
             $scope.sources.push({
                 label: "Nexus Mods",
                 url: sitesFactory.getModUrl("Nexus Mods", modObject.nexus_infos.id),
+                valid: true,
                 old: true,
                 scraped: true
             });
@@ -43,6 +44,7 @@ app.controller('editModController', function($scope, $state, currentUser, modObj
             $scope.sources.push({
                 label: "Lover's Lab",
                 url: sitesFactory.getModUrl("Lover's Lab", modObject.lover_infos.id),
+                valid: true,
                 old: true,
                 scraped: true
             });
@@ -51,6 +53,7 @@ app.controller('editModController', function($scope, $state, currentUser, modObj
             $scope.sources.push({
                 label: "Steam Workshop",
                 url: sitesFactory.getModUrl("Steam Workshop", modObject.workshop_infos.id),
+                valid: true,
                 old: true,
                 scraped: true
             });
@@ -362,7 +365,7 @@ app.controller('editModController', function($scope, $state, currentUser, modObj
         var sourcesValid = true;
         var oldSources = false;
         $scope.sources.forEach(function(source) {
-            sourcesValid = sourcesValid && (source.valid || source.old);
+            sourcesValid = sourcesValid && source.valid;
             oldSources = oldSources || source.old;
         });
 
