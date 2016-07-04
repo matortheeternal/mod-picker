@@ -210,9 +210,8 @@ class Mod < ActiveRecord::Base
   validates :name, :aliases, length: {maximum: 128}
 
   # callbacks
-  after_save :create_associations
-  after_create :increment_counters, :update_metrics
-  after_update :update_metrics
+  after_create :increment_counters, :create_associations, :update_metrics
+  after_update :create_associations, :update_metrics
   before_destroy :decrement_counters
 
   def no_author?
