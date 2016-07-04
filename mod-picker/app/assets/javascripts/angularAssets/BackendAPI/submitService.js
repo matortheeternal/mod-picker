@@ -93,6 +93,7 @@ app.service('submitService', function (backend, $q) {
         var custom_sources = [];
         customSources.forEach(function(source) {
             custom_sources.push({
+                id: source.id,
                 label: source.label,
                 url: source.url
             })

@@ -349,9 +349,9 @@ class ModsController < ApplicationController
 
     def mod_update_params
       params.require(:mod).permit(:game_id, :name, :authors, :aliases, :is_utility, :has_adult_content, :primary_category_id, :secondary_category_id, :released, :nexus_info_id, :lovers_info_id, :workshop_info_id,
-         :custom_sources_attributes => [:label, :url],
          :required_mods_attributes => [:required_id],
          :mod_authors_attributes => [:role, :user_id],
+         :custom_sources_attributes => [:id, :label, :url],
          :tag_names => [],
          :asset_paths => [],
          :plugin_dumps => [:filename, :author, :description, :crc_hash, :record_count, :override_count, :file_size,
