@@ -194,9 +194,9 @@
                 <section>
                     <div class="dynamic-item" ng-repeat="author in mod.mod_authors">
                         <select ng-model="author.role">
-                            <option value="0">Author</option>
-                            <option value="1">Contributor</option>
-                            <option value="2">Curator</option>
+                            <option value="author">Author</option>
+                            <option value="contributor">Contributor</option>
+                            <option value="curator">Curator</option>
                         </select>
                         <search-input search-type="users" result-id="author.user_id" search-text="author.user.username"></search-input>
                         <span class="remove-item" ng-click="removeAuthor(author)" title="Remove author">

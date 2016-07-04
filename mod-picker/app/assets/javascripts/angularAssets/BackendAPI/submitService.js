@@ -76,7 +76,7 @@ app.service('submitService', function (backend, $q) {
         var mod_authors = [];
         mod.mod_authors.forEach(function(author) {
             mod_authors.push({
-                role: parseInt(author.role),
+                role: author.role,
                 user_id: author.user_id
             })
         });
