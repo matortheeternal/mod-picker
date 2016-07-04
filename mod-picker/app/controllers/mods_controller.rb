@@ -50,6 +50,7 @@ class ModsController < ApplicationController
     authorize! :assign_custom_sources, @mod if params[:mod][:custom_sources_attributes]
 
     if @mod.save
+      @mod.update_metrics
       render json: {status: :ok}
     else
       render json: @mod.errors, status: :unprocessable_entity
@@ -74,6 +75,7 @@ class ModsController < ApplicationController
     end
 
     if @mod.update(mod_update_params)
+      @mod.update_metrics
       render json: {status: :ok}
     else
       render json: @mod.errors, status: :unprocessable_entity
