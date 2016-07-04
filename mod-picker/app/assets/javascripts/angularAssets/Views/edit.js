@@ -23,36 +23,65 @@ app.config(['$stateProvider', function($stateProvider) {
     });
 }]);
 
-app.controller('editModController', function($scope, $state, currentUser, modObject, modService, tagService, categoryService, errorService) {
+app.controller('editModController', function($scope, $state, currentUser, modObject, modService, tagService, categoryService, errorService, submitService, sitesFactory) {
     // get parent variables
     $scope.currentUser = currentUser;
 
-    /* load the mod object onto the view */
-    // parse dates to date objects
-    modObject.released = new Date(Date.parse(modObject.released));
-    if (modObject.updated) {
-        modObject.updated = new Date(Date.parse(modObject.updated));
-    }
-    // convert required mods into correct format
-    modObject.requirements = [];
-    modObject.required_mods.forEach(function(requirement) {
-        modObject.requirements.push({
-            required_id: requirement.required_mod.id,
-            name: requirement.required_mod.name
-        })
-    });
-    // convert categories into correct format
-    modObject.categories = [];
-    if (modObject.primary_category_id) {
-        modObject.categories.push(modObject.primary_category_id);
-    }
-    if (modObject.secondary_category_id) {
-        modObject.categories.push(modObject.secondary_category_id);
-    }
-    // put mod on scope
-    $scope.mod = modObject;
+    // loads the mod object onto the view
+    $scope.loadModObject = function() {
+        // parse dates to date objects
+        modObject.released = new Date(Date.parse(modObject.released));
+        if (modObject.updated) {
+            modObject.updated = new Date(Date.parse(modObject.updated));
+        }
+        // convert required mods into correct format
+        modObject.requirements = [];
+        modObject.required_mods.forEach(function(requirement) {
+            modObject.requirements.push({
+                required_id: requirement.required_mod.id,
+                name: requirement.required_mod.name
+            })
+        });
+        // convert categories into correct format
+        modObject.categories = [];
+        if (modObject.primary_category_id) {
+            modObject.categories.push(modObject.primary_category_id);
+        }
+        if (modObject.secondary_category_id) {
+            modObject.categories.push(modObject.secondary_category_id);
+        }
+        // load sources into scope
+        $scope.sources = [];
+        if (modObject.nexus_infos) {
+            $scope.sources.push({
+                label: "Nexus Mods",
+                url: sitesFactory.getModUrl("Nexus Mods", modObject.nexus_infos.id),
+                scraped: true
+            });
+        }
+        if (modObject.lover_infos) {
+            $scope.sources.push({
+                label: "Lover's Lab",
+                url: sitesFactory.getModUrl("Lover's Lab", modObject.lover_infos.id),
+                scraped: true
+            });
+        }
+        if (modObject.workshop_infos) {
+            $scope.sources.push({
+                label: "Steam Workshop",
+                url: sitesFactory.getModUrl("Steam Workshop", modObject.workshop_infos.id),
+                scraped: true
+            });
+        }
+        // load custom sources into scope
+        $scope.customSources = modObject.custom_sources;
+        // put mod on scope
+        $scope.mod = modObject;
+    };
 
     // initialize local variables
+    $scope.loadModObject();
+    $scope.sites = sitesFactory.sites();
     $scope.permissions = angular.copy(currentUser.permissions);
     $scope.newTags = [];
     $scope.image = {
@@ -82,6 +111,84 @@ app.controller('editModController', function($scope, $state, currentUser, modObj
         // stop event propagation - we handled it
         event.stopPropagation();
     });
+
+    /* sources */
+    $scope.addSource = function() {
+        if ($scope.sources.length == $scope.sites.length)
+            return;
+        $scope.sources.push({
+            label: "Nexus Mods",
+            url: ""
+        });
+    };
+
+    $scope.removeSource = function(source) {
+        var index = $scope.sources.indexOf(source);
+        $scope.sources.splice(index, 1);
+    };
+
+    $scope.validateSource = function(source) {
+        var site = sitesFactory.getSite(source.label);
+        var sourceIndex = $scope.sources.indexOf(source);
+        var sourceUsed = $scope.sources.find(function(item, index) {
+            return index != sourceIndex && item.label === source.label
+        });
+        var match = source.url.match(site.modUrlFormat);
+        source.valid = !sourceUsed && match != null;
+    };
+
+    $scope.scrapeSource = function(source) {
+        // exit if the source is invalid
+        var site = sitesFactory.getSite(source.label);
+        var match = source.url.match(site.modUrlFormat);
+        if (!match) {
+            return;
+        }
+
+        var gameId = window._current_game_id;
+        var modId = match[2];
+        source.scraped = true;
+        switch(source.label) {
+            case "Nexus Mods":
+                $scope.nexus = {};
+                $scope.nexus.scraping = true;
+                submitService.scrapeNexus(gameId, modId).then(function (data) {
+                    $scope.nexus = data;
+                });
+                break;
+            case "Lover's Lab":
+                $scope.lab = {};
+                $scope.lab.scraping = true;
+                submitService.scrapeLab(modId).then(function (data) {
+                    $scope.lab = data;
+                });
+                break;
+            case "Steam Workshop":
+                $scope.workshop = {};
+                $scope.workshop.scraping = true;
+                submitService.scrapeWorkshop(modId).then(function (data) {
+                    $scope.workshop = data;
+                });
+                break;
+        }
+    };
+
+    /* custom sources */
+    $scope.addCustomSource = function() {
+        $scope.customSources.push({
+            label: "Custom",
+            url: ""
+        });
+    };
+
+    $scope.removeCustomSource = function(source) {
+        var index = $scope.customSources.indexOf(source);
+        $scope.customSources.splice(index, 1);
+    };
+
+    $scope.validateCustomSource = function(source) {
+        source.valid = (source.label.length > 4) && (source.url.length > 12);
+    };
 
     /* analysis */
     $scope.changeAnalysisFile = function(event) {
