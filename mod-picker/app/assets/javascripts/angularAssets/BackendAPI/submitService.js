@@ -76,8 +76,10 @@ app.service('submitService', function (backend, $q) {
         var mod_authors = [];
         mod.mod_authors.forEach(function(author) {
             mod_authors.push({
+                id: author.id,
                 role: author.role,
-                user_id: author.user_id
+                user_id: author.user_id,
+                _destroy: author._destroy
             })
         });
 
@@ -85,7 +87,9 @@ app.service('submitService', function (backend, $q) {
         var required_mods = [];
         mod.requirements.forEach(function(requirement) {
             required_mods.push({
-                required_id: requirement.required_id
+                id: requirement.id,
+                required_id: requirement.required_id,
+                _destroy: requirement._destroy
             })
         });
 
@@ -95,7 +99,8 @@ app.service('submitService', function (backend, $q) {
             custom_sources.push({
                 id: source.id,
                 label: source.label,
-                url: source.url
+                url: source.url,
+                _destroy: source._destroy
             })
         });
 
