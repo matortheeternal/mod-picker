@@ -80,6 +80,11 @@ app.service('submitService', function (backend, $q) {
                     id: author.id,
                     _destroy: true
                 })
+            } else if (author.id) {
+                mod_authors.push({
+                    id: author.id,
+                    role: author.role
+                })
             } else {
                 mod_authors.push({
                     role: author.role,
