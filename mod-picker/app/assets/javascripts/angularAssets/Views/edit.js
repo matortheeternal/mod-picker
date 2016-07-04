@@ -335,16 +335,69 @@ app.controller('editModController', function($scope, $state, currentUser, modObj
         }
     };
 
-    //$scope.saveTags = function(updatedTags) {
-    //    var action = $q.defer();
-    //    tagService.updateModTags($scope.mod, updatedTags).then(function(data) {
-    //        $scope.$emit('successMessage', 'Tags updated successfully.');
-    //        action.resolve(data);
-    //    }, function(response) {
-    //        var params = {label: 'Error saving mod tags', response: response};
-    //        $scope.$emit('errorMessage', params);
-    //        action.reject(response);
-    //    });
-    //    return action.promise;
-    //};
+    /* submission */
+    // validate the mod
+    $scope.modValid = function() {
+        // main source validation
+        var sourcesValid = true;
+        var oldSources = false;
+        $scope.sources.forEach(function(source) {
+            sourcesValid = sourcesValid && (source.valid || source.old);
+            oldSources = oldSources || source.old;
+        });
+
+        // custom source validation
+        if ($scope.customSources.length) {
+            $scope.customSources.forEach(function(source) {
+                sourcesValid = sourcesValid && source.valid;
+            });
+            // if we are only submitting custom soruces, we need to verify
+            // we have all general info
+            if (!$scope.sources.length) {
+                sourcesValid = sourcesValid && $scope.mod.name && $scope.mod.authors &&
+                    $scope.mod.released;
+            }
+        }
+        else {
+            // if we don't have any custom sources we should verify we have
+            // the scraped data for at least one official source
+            sourcesValid = sourcesValid && ($scope.nexus || $scope.workshop || $scope.lab || oldSources);
+        }
+
+        // return true if any
+        var categoriesValid = $scope.mod.categories && $scope.mod.categories.length &&
+            $scope.mod.categories.length <= 2;
+        return (sourcesValid && categoriesValid)
+    };
+
+    // save changes
+    $scope.updateMod = function() {
+        // return if mod is invalid
+        if (!$scope.modValid()) {
+            return;
+        }
+
+        // build sources object
+        var sources = {
+            nexus: $scope.nexus || $scope.sources.find(function(source) {
+                return source.label === "Nexus Mods";
+            }),
+            workshop: $scope.workshop || $scope.sources.find(function(source) {
+                return source.label === "Steam Workshop";
+            }),
+            lab: $scope.lab || $scope.sources.find(function(source) {
+                return source.label === "Lover's Lab";
+            })
+        };
+
+        $scope.submitting = true;
+        $scope.submittingStatus = "Submitting Mod...";
+        submitService.updateMod($scope.mod, $scope.image, sources, $scope.customSources).then(function() {
+            $scope.submittingStatus = "Mod Submitted Successfully!";
+            $scope.success = true;
+        }, function(response) {
+            $scope.submittingStatus = "There were errors submitting your mod.";
+            $scope.errors = response.data;
+        });
+    };
 });
