@@ -61,6 +61,18 @@ class ModsController < ApplicationController
     authorize! :update, @mod
     authorize! :assign_authors, @mod if params[:mod][:mod_authors_attributes]
 
+    # destroy associations as needed
+    if params[:mod][:mod_authors_attributes]
+      @mod.mod_authors.destroy_all
+    end
+    if params[:mod][:required_mods_attributes]
+      @mod.required_mods.destroy_all
+    end
+    if params[:mod][:plugin_dumps] || params[:mod][:asset_paths]
+      @mod.mod_asset_files.destroy_all
+      @mod.plugins.destroy_all
+    end
+
     if @mod.update(mod_update_params)
       render json: {status: :ok}
     else
