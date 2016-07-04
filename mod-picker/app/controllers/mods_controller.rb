@@ -59,7 +59,9 @@ class ModsController < ApplicationController
   # PATCH/PUT /mods/1
   def update
     authorize! :update, @mod
-    if @mod.update(mod_params)
+    authorize! :assign_authors, @mod if params[:mod][:mod_authors_attributes]
+
+    if @mod.update(mod_update_params)
       render json: {status: :ok}
     else
       render json: @mod.errors, status: :unprocessable_entity
@@ -324,6 +326,20 @@ class ModsController < ApplicationController
       params.require(:mod).permit(:game_id, :name, :authors, :aliases, :is_utility, :has_adult_content, :primary_category_id, :secondary_category_id, :released, :nexus_info_id, :lovers_info_id, :workshop_info_id,
          :custom_sources_attributes => [:label, :url],
          :required_mods_attributes => [:required_id],
+         :tag_names => [],
+         :asset_paths => [],
+         :plugin_dumps => [:filename, :author, :description, :crc_hash, :record_count, :override_count, :file_size,
+           :master_plugins => [:filename, :crc_hash],
+           :plugin_record_groups_attributes => [:sig, :record_count, :override_count],
+           :plugin_errors_attributes => [:signature, :form_id, :group, :path, :name, :data],
+           :overrides_attributes => [:fid, :sig]])
+    end
+
+    def mod_update_params
+      params.require(:mod).permit(:game_id, :name, :authors, :aliases, :is_utility, :has_adult_content, :primary_category_id, :secondary_category_id, :released, :nexus_info_id, :lovers_info_id, :workshop_info_id,
+         :custom_sources_attributes => [:label, :url],
+         :required_mods_attributes => [:required_id],
+         :mod_authors_attributes => [:role, :user_id],
          :tag_names => [],
          :asset_paths => [],
          :plugin_dumps => [:filename, :author, :description, :crc_hash, :record_count, :override_count, :file_size,
