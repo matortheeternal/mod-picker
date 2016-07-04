@@ -75,22 +75,32 @@ app.service('submitService', function (backend, $q) {
         // prepare mod authors
         var mod_authors = [];
         mod.mod_authors.forEach(function(author) {
-            mod_authors.push({
-                id: author.id,
-                role: author.role,
-                user_id: author.user_id,
-                _destroy: author._destroy
-            })
+            if (author._destroy) {
+                mod_authors.push({
+                    id: author.id,
+                    _destroy: true
+                })
+            } else {
+                mod_authors.push({
+                    role: author.role,
+                    user_id: author.user_id
+                })
+            }
         });
 
         // prepare required mods
         var required_mods = [];
         mod.requirements.forEach(function(requirement) {
-            required_mods.push({
-                id: requirement.id,
-                required_id: requirement.required_id,
-                _destroy: requirement._destroy
-            })
+            if (requirement._destroy) {
+                required_mods.push({
+                    id: requirement.id,
+                    _destroy: true
+                })
+            } else {
+                required_mods.push({
+                    required_id: requirement.required_id
+                })
+            }
         });
 
         // prepare custom sources
