@@ -63,12 +63,6 @@ class ModsController < ApplicationController
     authorize! :assign_authors, @mod if params[:mod][:mod_authors_attributes]
 
     # destroy associations as needed
-    if params[:mod][:mod_authors_attributes]
-      @mod.mod_authors.destroy_all
-    end
-    if params[:mod][:required_mods_attributes]
-      @mod.required_mods.destroy_all
-    end
     if params[:mod][:plugin_dumps] || params[:mod][:asset_paths]
       @mod.mod_asset_files.destroy_all
       @mod.plugins.destroy_all
@@ -351,9 +345,9 @@ class ModsController < ApplicationController
 
     def mod_update_params
       params.require(:mod).permit(:game_id, :name, :authors, :aliases, :is_utility, :has_adult_content, :primary_category_id, :secondary_category_id, :released, :nexus_info_id, :lovers_info_id, :workshop_info_id,
-         :required_mods_attributes => [:required_id],
-         :mod_authors_attributes => [:role, :user_id],
-         :custom_sources_attributes => [:id, :label, :url],
+         :required_mods_attributes => [:id, :required_id, :_destroy],
+         :mod_authors_attributes => [:id, :role, :user_id, :_destroy],
+         :custom_sources_attributes => [:id, :label, :url, :_destroy],
          :tag_names => [],
          :asset_paths => [],
          :plugin_dumps => [:filename, :author, :description, :crc_hash, :record_count, :override_count, :file_size,

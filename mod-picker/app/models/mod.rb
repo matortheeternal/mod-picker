@@ -201,7 +201,7 @@ class Mod < ActiveRecord::Base
   has_many :mod_list_mods, :inverse_of => 'mod', :dependent => :destroy
   has_many :mod_lists, :through => 'mod_list_mods', :inverse_of => 'mods'
 
-  accepts_nested_attributes_for :required_mods, :custom_sources, :mod_authors
+  accepts_nested_attributes_for :required_mods, :custom_sources, :mod_authors, allow_destroy: true
 
   self.per_page = 100
 
@@ -375,7 +375,7 @@ class Mod < ActiveRecord::Base
            :lover_infos => {:only => [:id, :last_scraped]},
            :custom_sources => {:except => [:mod_id]},
            :mod_authors => {
-               :only => [:role, :user_id],
+               :only => [:id, :role, :user_id],
                :include => {
                    :user => {
                        :only => [:username]
@@ -383,7 +383,7 @@ class Mod < ActiveRecord::Base
                }
            },
            :required_mods => {
-               :only => [],
+               :only => [:id],
                :include => {
                    :required_mod => {
                        :only => [:id, :name]
