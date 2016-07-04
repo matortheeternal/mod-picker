@@ -11,10 +11,6 @@ app.service('submitService', function (backend, $q) {
     };
 
     this.submitMod = function (mod, sources, customSources) {
-        // helper variables
-        var requirements = mod.requirements;
-        var analysis = mod.analysis;
-
         // load earliest date released and latest date updated from sources
         var released = mod.released;
         var updated = mod.updated;
@@ -29,6 +25,23 @@ app.service('submitService', function (backend, $q) {
                 }
             }
         }
+
+        // prepare required mods
+        var required_mods = [];
+        mod.requirements.forEach(function(requirement) {
+            required_mods.push({
+                required_id: requirement.required_id
+            })
+        });
+
+        // prepare custom sources
+        var custom_sources = [];
+        customSources.forEach(function(source) {
+            custom_sources.push({
+                label: source.label,
+                url: source.url
+            })
+        });
 
         // prepare mod record
         var modData = {
@@ -47,10 +60,10 @@ app.service('submitService', function (backend, $q) {
                 workshop_info_id: sources.workshop && sources.workshop.id,
                 lover_info_id: sources.lab && sources.lab.id,
                 tag_names: mod.tags,
-                asset_paths: analysis.assets,
-                plugin_dumps: analysis.plugins,
-                custom_sources_attributes: customSources,
-                required_mods_attributes: requirements
+                asset_paths: mod.analysis.assets,
+                plugin_dumps: mod.analysis.plugins,
+                custom_sources_attributes: custom_sources,
+                required_mods_attributes: required_mods
             }
         };
 
