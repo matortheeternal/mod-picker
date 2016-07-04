@@ -4,7 +4,7 @@ class ModAuthor < ActiveRecord::Base
   enum role: [:author, :contributor, :curator]
 
   belongs_to :mod, :inverse_of => 'mod_authors'
-  belongs_to :author_user, :class_name => 'User', :foreign_key => 'user_id', :inverse_of => 'mod_authors'
+  belongs_to :user, :foreign_key => 'user_id', :inverse_of => 'mod_authors'
 
   # Validations
   validates :mod_id, :user_id, presence: true
