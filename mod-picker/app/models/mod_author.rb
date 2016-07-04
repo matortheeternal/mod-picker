@@ -1,6 +1,4 @@
 class ModAuthor < ActiveRecord::Base
-  self.primary_keys = :mod_id, :user_id
-
   enum role: [:author, :contributor, :curator]
 
   belongs_to :mod, :inverse_of => 'mod_authors'
