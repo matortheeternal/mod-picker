@@ -73,7 +73,7 @@ app.service('submitService', function (backend, $q) {
 
     this.updateMod = function(mod, image, sources, customSources) {
         // prepare mod authors
-        var mod_auhors = [];
+        var mod_authors = [];
         mod.mod_authors.forEach(function(author) {
             mod_authors.push({
                 role: parseInt(author.role),
@@ -118,7 +118,7 @@ app.service('submitService', function (backend, $q) {
                 asset_paths: mod.analysis && mod.analysis.assets,
                 plugin_dumps: mod.analysis && mod.analysis.plugins,
                 image: image.file,
-                mod_authors_attributes: mod_auhors,
+                mod_authors_attributes: mod_authors,
                 custom_sources_attributes: custom_sources,
                 required_mods_attributes: required_mods
             }
