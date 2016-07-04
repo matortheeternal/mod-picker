@@ -70,6 +70,7 @@ app.controller('editModController', function($scope, $state, currentUser, modObj
         modObject.requirements = [];
         modObject.required_mods.forEach(function(requirement) {
             modObject.requirements.push({
+                id: requirement.id,
                 required_id: requirement.required_mod.id,
                 name: requirement.required_mod.name
             })
@@ -189,8 +190,12 @@ app.controller('editModController', function($scope, $state, currentUser, modObj
     };
 
     $scope.removeCustomSource = function(source) {
-        var index = $scope.customSources.indexOf(source);
-        $scope.customSources.splice(index, 1);
+        if (source.id) {
+            source._destroy = true;
+        } else {
+            var index = $scope.customSources.indexOf(source);
+            $scope.customSources.splice(index, 1);
+        }
     };
 
     $scope.validateCustomSource = function(source) {
@@ -247,8 +252,12 @@ app.controller('editModController', function($scope, $state, currentUser, modObj
     };
 
     $scope.removeAuthor = function(author) {
-        var index = $scope.mod.mod_authors.indexOf(author);
-        $scope.mod.mod_authors.splice(index, 1);
+        if (author.id) {
+            author._destroy = true;
+        } else {
+            var index = $scope.mod.mod_authors.indexOf(author);
+            $scope.mod.mod_authors.splice(index, 1);
+        }
     };
 
     /* requirements */
@@ -257,8 +266,12 @@ app.controller('editModController', function($scope, $state, currentUser, modObj
     };
 
     $scope.removeRequirement = function(requirement) {
-        var index = $scope.mod.requirements.indexOf(requirement);
-        $scope.mod.requirements.splice(index, 1);
+        if (requirement.id) {
+            requirement._destroy = true;
+        } else {
+            var index = $scope.mod.requirements.indexOf(requirement);
+            $scope.mod.requirements.splice(index, 1);
+        }
     };
 
     /* categories */

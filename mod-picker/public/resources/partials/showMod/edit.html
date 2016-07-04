@@ -28,7 +28,7 @@
                             <i class="fa fa-times"></i>
                         </span>
                     </div>
-                    <div class="dynamic-item" ng-repeat="source in customSources">
+                    <div class="dynamic-item" ng-repeat="source in customSources" ng-hide="source._destroy">
                         <input type="text" class="source-label" ng-model="source.label" ng-change="validateCustomSource(source)">
                         <input type="text" class="long-input" ng-model="source.url" placeholder="Enter Source URL here" ng-change="validateCustomSource(source)">
                         <span class="remove-item" ng-click="removeCustomSource(source)" title="Remove custom source">
@@ -192,7 +192,7 @@
                     <span class="help-tooltip" title="The users who can edit this mod.  Click for &#13;more information.">?</span>
                 </h3>
                 <section>
-                    <div class="dynamic-item" ng-repeat="author in mod.mod_authors">
+                    <div class="dynamic-item" ng-repeat="author in mod.mod_authors" ng-hide="author._destroy">
                         <select ng-model="author.role">
                             <option value="author">Author</option>
                             <option value="contributor">Contributor</option>
@@ -238,7 +238,7 @@
                     <span class="help-tooltip" title="Mods that are required for this mod to function.">?</span>
                 </h3>
                 <section>
-                    <div class="dynamic-item" ng-repeat="requirement in mod.requirements">
+                    <div class="dynamic-item" ng-repeat="requirement in mod.requirements" ng-hide="requirement._destroy">
                         <search-input search-type="mods" result-id="requirement.required_id" search-text="requirement.name" class="long-input"></search-input>
                         <span class="remove-item" ng-click="removeRequirement(requirement)" title="Remove requirement">
                             <i class="fa fa-times"></i>
