@@ -2,7 +2,7 @@
 Other components like header/footer can't be reused because they use angular
 */
 
-// Colors from whiterun theme
+// Colors from high hrothgar theme
 
 $text_color: #404040;
 $inverse_text_color: #ffffff;
@@ -56,6 +56,11 @@ $moderator_color: #8000b0;
 $mod_author_color: #008000;
 
 $max-width-container: 1220px;
+$max-content-width: 850px;
+
+// import child stylesheets for other pages in the help center
+@import 'helpIndex';
+
 
 // Global resets
 *, *:before, *:after {
@@ -293,6 +298,10 @@ nav .secondary-nav {
   position: absolute;
   bottom: 0;
   left: 0;
+
+  // static height so main content has as padding-bottom equal to this
+  // to offset the absolute position which would overlap the content is padding wasn't there
+  height: 100px;
 }
 
 .footer-container {

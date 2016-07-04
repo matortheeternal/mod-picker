@@ -1,0 +1,81 @@
+.landing-page-container {
+  // min height set so footer doesn't cover bottom content
+  padding-bottom: 90px;
+}
+
+.landing-header {
+  max-width: $max-width-container;
+  margin: 5rem auto;
+  font-size: 1.5em;
+  text-align: center;
+  // set to 100vh so footer doesn't overlay bottom content
+
+  // reset margins for header elements
+  h1, h3 {
+    margin: 0;
+  }
+
+  h3 {
+    font-weight: 100;
+  }
+}
+
+
+// primary categories 
+.primary-category-container {
+  max-width: $max-width-container;
+  margin: 0 auto;
+  margin-bottom: 5rem;
+}
+
+.primary-categories-list {
+  list-style: none;
+  padding-left: 0;
+
+  // container for images + text
+  .primary-page-content {
+    display: block;
+    margin: 0 auto;
+  }
+
+  .primary-page {
+    float: left;
+    display: block;
+    width: 30%;
+    margin: 0;
+    margin-left: 5%;
+  }
+
+  .primary-page:nth-child(1) {
+    margin-left: 0;
+  }
+
+  // images
+  .primary-page a img {
+    max-width: 100%;
+  }
+}
+
+// games section
+.games-category-container {
+  max-width: $max-width-container;
+  margin: 0 auto;
+
+  .games-category-header {
+    font-size: 1.5em;
+    text-align: center;
+
+    h3, h4 {
+      margin: 0;
+    }
+    h3 {
+      font-weight: 600;
+    }
+
+    h4 {
+      font-weight: 100;
+    }
+  }
+ 
+
+}
