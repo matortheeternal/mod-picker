@@ -202,8 +202,13 @@ class Mod < ActiveRecord::Base
   has_many :mod_lists, :through => 'mod_list_mods', :inverse_of => 'mods'
 
   accepts_nested_attributes_for :custom_sources, allow_destroy: true
-  accepts_nested_attributes_for :required_mods, :mod_authors, reject_if: proc {
+  # cannot update required mods
+  accepts_nested_attributes_for :required_mods, reject_if: proc {
       |attributes| attributes[:id] && !attributes[:_destroy]
+  }, allow_destroy: true
+  # can only update author role for an existing mod_author record
+  accepts_nested_attributes_for :mod_authors, reject_if: proc {
+      |attributes| attributes[:id] && attributes[:user_id] && !attributes[:_destroy]
   }, allow_destroy: true
 
   self.per_page = 100
