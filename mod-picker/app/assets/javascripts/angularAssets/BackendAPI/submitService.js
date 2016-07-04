@@ -125,6 +125,6 @@ app.service('submitService', function (backend, $q) {
         };
 
         // submit mod
-        return backend.update('/mods', modData);
+        return backend.update('/mods/' + mod.id, modData);
     };
 });
