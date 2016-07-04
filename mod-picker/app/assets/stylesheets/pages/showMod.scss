@@ -511,17 +511,15 @@
 }
 
 .ratings-container {
-  display: flex;
   position: relative;
-  justify-content: center;
-  flex-wrap: wrap;
-  align-items: center;
+  text-align: center;
   font-size: 24px;
   padding-right: 60px; // This makes certain the ratings don't go over the section-tools
   background-color: $bar_highlight_color;
   color: $bright_action_color;
 
   .rating-item {
+    display: inline-block;
     font-weight: 500;
     padding: 0 8px;
 
