@@ -1,44 +1,54 @@
-app.directive('modInput', function () {
+app.directive('searchInput', function () {
     return {
         restrict: 'E',
-        templateUrl: '/resources/directives/modInput.html',
-        controller: 'modInputController',
+        templateUrl: '/resources/directives/searchInput.html',
+        controller: 'searchInputController',
         scope: {
             resultId: '=',
             searchText: '=?',
             onChange: '=?',
             excludedId: '=?',
-            searchPlugins: '=?'
+            disabled: '=?',
+            searchType: '@'
         }
     }
 });
 
-app.controller('modInputController', function($scope, $timeout, modService, pluginService) {
+app.controller('searchInputController', function($scope, $timeout, modService, pluginService, userService) {
     // set some constants
     var pause = 700;
     var minLength = 2;
+    if ($scope.searchType === "plugins") {
+        $scope.placeholder = "Enter plugin name";
+    } else if ($scope.searchType === "users") {
+        $scope.placeholder = "Enter username";
+    } else if ($scope.searchType === "mods") {
+        $scope.placeholder = "Enter mod name";
+    }
 
     $scope.hoverRow = function(index) {
         $scope.currentIndex = index;
     };
 
-    $scope.searchMods = function(str) {
+    $scope.search = function(str) {
         // Begin the search
         str = str.toLowerCase();
         if (str.length >= minLength) {
             var searchCallback = function(data) {
                 $scope.searching = false;
                 if ($scope.excludedId) {
-                    data = data.filter(function(mod) {
-                        return mod.id !== $scope.excludedId;
+                    data = data.filter(function(item) {
+                        return item.id !== $scope.excludedId;
                     });
                 }
                 $scope.results = data;
                 $scope.$applyAsync();
             };
-            if ($scope.searchPlugins) {
+            if ($scope.searchType === 'plugins') {
                 pluginService.searchPlugins(str).then(searchCallback);
-            } else {
+            } else if ($scope.searchType === 'users') {
+                userService.searchUsers(str).then(searchCallback);
+            } else if ($scope.searchType === 'mods')  {
                 modService.searchMods(str).then(searchCallback);
             }
         } else {
@@ -50,13 +60,19 @@ app.controller('modInputController', function($scope, $timeout, modService, plug
 
     $scope.selectResult = function(result) {
         $scope.resultId = result.id;
-        $scope.searchText = result.name;
+        if ($scope.searchType === 'plugins') {
+            $scope.searchText = result.filename;
+        } else if ($scope.searchType === 'users') {
+            $scope.searchText = result.username;
+        } else if ($scope.searchType === 'mods')  {
+            $scope.searchText = result.name;
+        }
         $scope.showDropdown = false;
         $scope.results = [];
         $scope.$applyAsync();
     };
 
-    $scope.blurMod = function() {
+    $scope.blurDropdown = function() {
         // we have to use a timeout for hiding the dropdown because
         // otherwise we would hide it before the click event on a result
         // went through
@@ -129,7 +145,7 @@ app.controller('modInputController', function($scope, $timeout, modService, plug
                 // search for matching tags
                 $scope.searching = true;
                 $scope.searchTimer = setTimeout(function () {
-                    $scope.searchMods($scope.searchText);
+                    $scope.search($scope.searchText);
                 }, pause);
             }
         }

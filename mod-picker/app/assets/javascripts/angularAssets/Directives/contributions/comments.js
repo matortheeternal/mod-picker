@@ -53,6 +53,20 @@ app.controller('commentsController', function ($scope, contributionService) {
         $scope.saveComment($scope.activeComment, $scope.discardNewComment);
     };
 
+    // push a comment to the local page view
+    $scope.pushCommentToView = function(comment) {
+        if (comment.parent_id) {
+            var parent = $scope.comments.find(function(parent_comment) {
+                return parent_comment.id == comment.parent_id;
+            });
+            if (parent) {
+                parent.children.unshift(comment);
+            }
+        } else {
+            $scope.comments.unshift(comment);
+        }
+    };
+
     // save a comment
     $scope.saveComment = function(comment, discardCallback, updateCallback) {
         // return if the comment is invalid
@@ -84,9 +98,9 @@ app.controller('commentsController', function ($scope, contributionService) {
                 $scope.$emit($scope.errorEvent, params);
             });
         } else {
-            contributionService.submitContribution("comments", commentObj).then(function() {
+            contributionService.submitContribution("comments", commentObj).then(function(comment) {
                 $scope.$emit($scope.successEvent, 'Comment submitted successfully.');
-                // TODO: push the comment onto the comments array
+                $scope.pushCommentToView(comment);
                 discardCallback();
             }, function(response) {
                 var params = {label: 'Error submitting Comment', response: response};

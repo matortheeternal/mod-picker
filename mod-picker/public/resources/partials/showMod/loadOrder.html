@@ -38,7 +38,7 @@
                 <option value="after">After</option>
             </select>
         </span>
-        <mod-input search-plugins="true" result-id="activeLoadOrderNote.second_plugin_id" search-text="activeLoadOrderNote.searchText" excluded-id="activeLoadOrderNote.first_plugin_id" on-change="validateLoadOrderNote" disabled="activeLoadOrderNote.editing"></mod-input>
+        <search-input search-type="plugins" result-id="activeLoadOrderNote.second_plugin_id" search-text="activeLoadOrderNote.searchText" excluded-id="activeLoadOrderNote.first_plugin_id" on-change="validateLoadOrderNote" disabled="activeLoadOrderNote.editing"></search-input>
     </div>
     <div class="content-container">
         <text-area data="activeLoadOrderNote.text_body" ng-refresh="updateMDE" class="note-text-area"></text-area>
@@ -66,17 +66,17 @@
 
 <loader data="mod.load_order_notes" spinner-class="big-spinner" ng-if="!errors.load_order_notes">
     <div ng-repeat="note in mod.load_order_notes" class="content-block" ng-if="!note.editing">
-        <load-order-note note="note" show-user-column="true" index="100 + $index" current-user="currentUser" edit="editLoadOrderNote"></load-order-note>
+        <load-order-note note="note" index="100 + $index" current-user="currentUser" edit="editLoadOrderNote"></load-order-note>
     </div>
 
-    <div class="content-message" ng-if="mod.load_order_notes.length == 0">
+    <div class="content-message" ng-hide="mod.load_order_notes.length">
         There are no Load Order Notes for this mod yet.
     </div>
 
     <page-results pages="pages.load_order_notes" data="mod.load_order_notes" callback="retrieveLoadOrderNotes"></page-results>
 </loader>
 
-<div class="content-message" ng-if="errors.load_order_notes">
+<div class="content-message content-error" ng-if="errors.load_order_notes">
     There was an error retrieving load order notes for this mod.<br>
     <!--TODO: Render JSON errors here, if available?-->
     Error {{errors.load_order_notes.status}}: {{errors.load_order_notes.statusText}}

@@ -27,6 +27,11 @@ class Ability
       # can hide mod lists
       can :hide, ModList
 
+      # can create mods with custom sources
+      can :assign_custom_sources, Mod
+      # can assign authors to mods
+      can :assign_authors, Mod
+
       # can update or hide any mod
       can [:update, :hide], Mod
       can :destroy, ModRequirement
@@ -145,6 +150,7 @@ class Ability
       can :update, Mod, { :mod_authors => { :user_id => user.id } }
       can :destroy, ModRequirement, {:mod_version => {:mod => {:mod_authors => {:user_id => user.id } } } }
       can :destroy, ModTag, { :mod => { :mod_authors => { :user_id => user.id } } }
+      can :assign_authors, Mod, { :mod_authors => { :user_id => user.id, :role => 0 } }
 
       # abilities tied to reputation
       if user.reputation.overall >= 20

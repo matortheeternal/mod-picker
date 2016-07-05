@@ -341,9 +341,13 @@
 }
 
 .content-message {
-  margin: 40px 0 20px;
+  margin: 40px 0 0;
   text-align: center;
   font-size: 20px;
+}
+
+.content-error {
+  margin: 40px 0 20px;
 }
 
 .content-block {
@@ -468,6 +472,12 @@
   }
 }
 
+//user review box
+.user-review {
+  border: 1px solid $bar_dark_color;
+  border-top: none;
+}
+
 //making the text-area scroll
 .note-text-area {
   .CodeMirror {
@@ -501,17 +511,15 @@
 }
 
 .ratings-container {
-  display: flex;
   position: relative;
-  justify-content: center;
-  flex-wrap: wrap;
-  align-items: center;
+  text-align: center;
   font-size: 24px;
   padding-right: 60px; // This makes certain the ratings don't go over the section-tools
   background-color: $bar_highlight_color;
   color: $bright_action_color;
 
   .rating-item {
+    display: inline-block;
     font-weight: 500;
     padding: 0 8px;
 
@@ -701,7 +709,7 @@
   }
 }
 
-.corrections-container {
+.modal {
   table {
     width: 100%;
     border-collapse: collapse;
@@ -748,6 +756,26 @@
     tbody tr:nth-child(even) {
       background-color: $primary_background;
       border-bottom: 1px solid $border_color;
+    }
+  }
+}
+
+// history modal
+.modal {
+  .history-container {
+    table {
+      tbody tr {
+        background-color: $primary_background;
+        cursor: pointer;
+
+        &:hover {
+          background-color: $secondary_background;
+        }
+
+        &.selected {
+          background-color: $secondary_background;
+        }
+      }
     }
   }
 }

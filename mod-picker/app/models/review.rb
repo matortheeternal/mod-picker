@@ -1,13 +1,13 @@
 class Review < ActiveRecord::Base
   include Filterable, Sortable, RecordEnhancements
 
-  scope :game, -> (id) { where(game_id: id) }
-  scope :user, -> (id) { where(submitted_by: id) }
+  # GENERAL SCOPES
+  scope :visible, -> { where(hidden: false, approved: true) }
+  scope :game, -> (game_id) { where(game_id: game_id) }
+  scope :user, -> (user_id) { where(submitted_by: user_id) }
   scope :mod, -> (mod) { where(mod_id: mod) }
   scope :submitted, -> (low, high) { where(submitted: parseDate(low)..parseDate(high)) }
   scope :edited, -> (low, high) { where(edited: parseDate(low)..parseDate(high)) }
-  scope :hidden, -> (bool) { where(hidden: bool) }
-  scope :approved, -> (bool) { where(approved: bool) }
   scope :helpful_count, -> (low, high) { where(helpful_count: low..high) }
   scope :not_helpful_count, -> (low, high) { where(not_helpful_count: low..high) }
   scope :ratings_count, -> (low, high) { where(ratings_count: low..high) }
@@ -28,8 +28,10 @@ class Review < ActiveRecord::Base
   self.per_page = 25
 
   # Validations
-  validates :mod_id, :text_body, presence: true
+  validates :game_id, :submitted_by, :mod_id, :text_body, presence: true
   validates :text_body, length: {in: 512..32768}
+  # only one review per mod per user
+  validates :mod_id, uniqueness: { scope: :submitted_by, :message => "You've already submitted a review for this mod." }
 
   # Callbacks
   after_create :increment_counters

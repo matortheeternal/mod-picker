@@ -9,7 +9,8 @@ class HelpfulMark < ActiveRecord::Base
   belongs_to :submitter, :class_name => 'User', :foreign_key => 'submitted_by', :inverse_of => 'helpful_marks'
 
   # Validation
-  validates :helpfulable_id, :helpfulable_type, presence: true
+  # :helpful's presence is not required because it will fail if :helpful == false
+  validates :submitted_by, :helpfulable_id, :helpfulable_type, presence: true
 
   validates :helpful, inclusion: {
     in: [true, false],
@@ -18,7 +19,7 @@ class HelpfulMark < ActiveRecord::Base
 
   validates :helpfulable_type, inclusion: {
     in: ["CompatibilityNote", "InstallOrderNote", "LoadOrderNote", "Review"],
-    message: "Not a valid record type that can contain helpful marks"
+    message: "Input helpfulable type does not support helpful marks"
   }
 
   # Callbacks

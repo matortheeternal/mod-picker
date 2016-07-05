@@ -72,7 +72,7 @@
             </div>
         </loader>
 
-        <div class="content-message" ng-if="errors.corrections">
+        <div class="content-message content-error" ng-if="errors.corrections">
             There was an error retrieving corrections for this contribution.<br>
             <!--TODO: Render JSON errors here, if available?-->
             Error {{errors.corrections.status}}: {{errors.corrections.statusText}}

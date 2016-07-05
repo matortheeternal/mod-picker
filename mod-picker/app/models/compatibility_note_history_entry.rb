@@ -4,13 +4,29 @@ class CompatibilityNoteHistoryEntry < ActiveRecord::Base
 
   enum status: [ :incompatible, :"partially incompatible", :"compatibility mod", :"compatibility option", :"make custom patch" ]
 
+  # Validations
+  validates :compatibility_note_id, :edited_by, :status, :text_body, :edit_summary, presence: true
+
   # Callbacks
   after_initialize :init
   after_create :increment_counters
   before_destroy :decrement_counters
 
-  # Validations
-  validates :submitted_by, :text_body, presence: true
+  def as_json(options={})
+    if JsonHelpers.json_options_empty(options)
+      default_options = {
+          :except => [:compatibility_note_id, :edited_by],
+          :include => {
+              :editor => {
+                  :only => [:id, :username, :role, :title]
+              }
+          }
+      }
+      super(options.merge(default_options))
+    else
+      super(options)
+    end
+  end
 
   private
     def init

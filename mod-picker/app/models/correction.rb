@@ -1,6 +1,7 @@
 class Correction < ActiveRecord::Base
   include Filterable, RecordEnhancements
 
+  scope :visible, -> { where(hidden: false) }
   scope :by, -> (id) { where(submitted_by: id) }
 
   enum status: [:open, :passed, :failed]
@@ -17,8 +18,8 @@ class Correction < ActiveRecord::Base
   has_one :base_report, :as => 'reportable'
 
   # Validations
+  validates :game_id, :submitted_by, :correctable_id, :correctable_type, :text_body, presence: true
   validates :text_body, length: { in: 64..16384 }
-  validates :submitted_by, :correctable_id, :correctable_type, :title, :game_id, presence: true
 
   # Callbacks
   after_create :increment_counters

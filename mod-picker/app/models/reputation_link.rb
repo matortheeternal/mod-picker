@@ -4,6 +4,9 @@ class ReputationLink < ActiveRecord::Base
   belongs_to :from_rep, :class_name => 'UserReputation', :inverse_of => 'from_links'
   belongs_to :to_rep, :class_name => 'UserReputation', :inverse_of => 'to_links'
 
+  # Validations
+  validates :from_rep_id, :to_rep_id, presence: true
+
   # Callbacks
   after_create :increment_counters
   before_destroy :decrement_counters

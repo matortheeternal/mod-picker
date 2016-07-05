@@ -1,5 +1,11 @@
-<div class="contribution-container">
+<div class="contribution-container box-shadow">
     <div class="content-title">
+        <span ng-if="showCorrectable && isAppeal">
+            <a ng-if="isAppeal" ng-href="#/mod/{{correction.correctable.id}}" target="_blank">{{correction.correctable.name}}</a>:
+        </span>
+        <span ng-if="showCorrectable && !isAppeal">
+            <a ng-href="#/mod/{{correction.correctable.mods[0].id}}/{{tabState}}/{{correction.correctable.id}}" target="_blank">{{correction.submitter.username}}'s {{label}}</a>:
+        </span>
         <span ng-if="correction.mod_status">
             Change Status to <span class="capitalize">{{correction.mod_status}}</span>
         </span>

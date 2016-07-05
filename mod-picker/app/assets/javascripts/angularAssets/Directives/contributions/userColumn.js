@@ -4,6 +4,7 @@ app.directive('userColumn', function() {
         templateUrl: '/resources/directives/contributions/userColumn.html',
         scope: {
             user: '=',
+            editors: '=?',
             index: '='
         }
     };

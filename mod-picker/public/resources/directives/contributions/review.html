@@ -1,8 +1,11 @@
-<div class="contribution-container">
+<div class="contribution-container box-shadow">
     <div class="content-title">
+        <span ng-if="showMod">
+            <a ng-href="#/mod/{{review.mod.id}}" target="_blank">{{review.mod.name}}</a> -
+        </span>
         {{review.submitter.username}}'s Review ({{review.overall_rating | number:0}}/100)
     </div>
-    <user-column user="review.submitter" ng-if="showUserColumn" class="user-column" index="index"></user-column>
+    <user-column ng-if="showUserColumn" user="review.submitter" class="user-column" index="index"></user-column>
     <div class="content-column">
         <div class="ratings-container">
             <div class="rating-item" ng-repeat="rating in review.review_ratings">

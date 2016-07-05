@@ -1,4 +1,4 @@
-app.service('modService', function(backend, $q, userTitleService, categoryService, recordGroupService, assetUtils, errorsFactory, pluginService, reviewSectionService, contributionService, pageUtils) {
+app.service('modService', function(backend, $q, userTitleService, recordGroupService, assetUtils, errorsFactory, pluginService, reviewSectionService, contributionService, pageUtils) {
     this.retrieveMods = function(options, pageInformation) {
         var action = $q.defer();
         backend.post('/mods/index', options).then(function (data) {
@@ -22,7 +22,16 @@ app.service('modService', function(backend, $q, userTitleService, categoryServic
     this.retrieveMod = function(modId) {
         var output = $q.defer();
         backend.retrieve('/mods/' + modId).then(function(data) {
-            categoryService.resolveModCategories(data.mod);
+            output.resolve(data);
+        }, function(response) {
+            output.reject(response);
+        });
+        return output.promise;
+    };
+
+    this.editMod = function(modId) {
+        var output = $q.defer();
+        backend.retrieve('/mods/' + modId + '/edit').then(function(data) {
             output.resolve(data);
         }, function(response) {
             output.reject(response);
@@ -43,6 +52,7 @@ app.service('modService', function(backend, $q, userTitleService, categoryServic
         backend.post('/mods/' + modId + '/' + route, options).then(function (data) {
             var contributions = data[route];
             contributionService.associateHelpfulMarks(contributions, data.helpful_marks);
+            contributionService.handleEditors(contributions);
             userTitleService.associateTitles(contributions);
             pageUtils.getPageInformation(data, pageInformation, options.page);
             action.resolve(contributions);
@@ -53,14 +63,27 @@ app.service('modService', function(backend, $q, userTitleService, categoryServic
     };
 
     this.retrieveModReviews = function(modId, options, pageInformation) {
-        var reviews = $q.defer();
-        this.retrieveModContributions(modId, 'reviews', options, pageInformation).then(function(data) {
-            reviewSectionService.associateReviewSections(data);
-            reviews.resolve(data);
+        var action = $q.defer();
+        backend.post('/mods/' + modId + '/reviews', options).then(function(data) {
+            // prepare reviews
+            var reviews = data.reviews;
+            contributionService.associateHelpfulMarks(reviews, data.helpful_marks);
+            userTitleService.associateTitles(reviews);
+            reviewSectionService.associateReviewSections(reviews);
+            pageUtils.getPageInformation(data, pageInformation, options.page);
+            // prepare user review if present
+            if (data.user_review && data.user_review.id) {
+                var user_review = [data.user_review];
+                contributionService.associateHelpfulMarks(user_review, data.helpful_marks);
+                userTitleService.associateTitles(user_review);
+                reviewSectionService.associateReviewSections(user_review);
+            }
+            // resolve data
+            action.resolve({ reviews: data.reviews, user_review: data.user_review });
         }, function(response) {
-            reviews.reject(response);
+            action.reject(response);
         });
-        return reviews.promise;
+        return action.promise;
     };
 
     this.retrieveModAnalysis = function(modId) {

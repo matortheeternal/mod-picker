@@ -67,11 +67,13 @@ app.config(['$stateProvider', function($stateProvider) {
     });
 }]);
 
-app.controller('modController', function($scope, $q, $stateParams, $timeout, currentUser, modObject, modService, contributionService, tagService, smoothScroll, errorService) {
+app.controller('modController', function($scope, $q, $stateParams, $timeout, currentUser, modObject, modService, contributionService, categoryService, tagService, smoothScroll, errorService) {
     // get parent variables
     $scope.mod = modObject.mod;
     $scope.mod.star = modObject.star;
     $scope.currentUser = currentUser;
+    // resolve mod categories
+    categoryService.resolveModCategories($scope.mod);
 
     // initialize local variables
     $scope.tags = [];
@@ -146,9 +148,15 @@ app.controller('modController', function($scope, $q, $stateParams, $timeout, cur
         $scope.removeTab('Install Order');
         $scope.removeTab('Load Order');
     }
-    // remove Load Order tab if mod has no plugins
-    else if ($scope.mod.plugins_count === 0) {
-        $scope.removeTab('Load Order');
+    else {
+        // remove install order notes if mod is a utility
+        if ($scope.mod.is_utility) {
+            $scope.removeTab('Install Order');
+        }
+        // remove Load Order tab if mod has no plugins
+        if ($scope.mod.plugins_count === 0) {
+            $scope.removeTab('Load Order');
+        }
     }
 
     //set the class of the status box
@@ -166,8 +174,10 @@ app.controller('modController', function($scope, $q, $stateParams, $timeout, cur
 
     // display error messages
     $scope.$on('errorMessage', function(event, params) {
-        var errorMessage = errorService.errorMessage(params.label, params.response);
-        $scope.$broadcast('message', errorMessage);
+        var errors = errorService.errorMessages(params.label, params.response, $scope.mod.id);
+        errors.forEach(function(error) {
+            $scope.$broadcast('message', error);
+        });
         // stop event propagation - we handled it
         event.stopPropagation();
     });
