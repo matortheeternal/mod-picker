@@ -86,7 +86,7 @@ header {
 
 #contribution-select-form {
   display: inline-block;
-  width: 110px;
+  width: 100px;
   text-align: center;
 
   .contributions-label {
@@ -94,6 +94,7 @@ header {
     line-height: 32px;
     vertical-align: middle;
     display: inline-block;
+    width: 110px;
   }
 
   .contribution-selector {
