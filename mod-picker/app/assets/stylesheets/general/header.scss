@@ -84,6 +84,29 @@ header {
   }
 }
 
+#contribution-select-form {
+  display: inline-block;
+  width: 100px;
+  text-align: center;
+
+  .contributions-label {
+    padding: 5px 5px 5px 0;
+    line-height: 32px;
+    vertical-align: middle;
+    display: inline-block;
+    width: 110px;
+  }
+
+  .contribution-selector {
+    position: absolute;
+    opacity: 0;
+    height: 42px;
+    font-size: 12px;
+    cursor: pointer;
+    width: 110px;
+  }
+}
+
 /* css for navbar */
 
 nav {

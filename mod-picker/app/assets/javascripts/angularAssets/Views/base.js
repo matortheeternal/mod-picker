@@ -20,11 +20,16 @@ app.config(['$stateProvider', function($stateProvider) {
     })
 }]);
 
-app.controller('baseController', function($scope, $state, currentUser, games, currentGame) {
+app.controller('baseController', function($scope, $state, $location, currentUser, games, currentGame) {
     $scope.currentUser = currentUser;
     $scope.permissions = currentUser.permissions;
     $scope.currentGame = currentGame;
     $scope.games = games;
+
+    // user selected an option from the my contributions dropdown
+    $scope.navigateTo = function(newLocation) {
+        $location.path(newLocation);
+    };
 
     //reload when the user object is changed in the settings
     $scope.$on('reloadCurrentUser', function() {
@@ -32,7 +37,7 @@ app.controller('baseController', function($scope, $state, currentUser, games, cu
     });
 });
 
-app.controller('searchController', function($scope, $location) {
+app.controller('searchController', function($scope) {
     $scope.loading = false;
     $scope.processSearch = function() {
         $scope.loading = true;

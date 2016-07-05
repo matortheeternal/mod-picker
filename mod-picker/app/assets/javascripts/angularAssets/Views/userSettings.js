@@ -35,7 +35,7 @@ app.config(['$stateProvider', function ($stateProvider) {
             url: '/mod-lists'
         }).state('base.settings.Authored Mods', {
             templateUrl: '/resources/partials/userSettings/authoredMods.html',
-            url: '/authored-mods'
+            url: '/mods'
         });
 }]);
 
