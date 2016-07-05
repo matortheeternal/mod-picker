@@ -22,10 +22,10 @@ function getDifferentProperties(obj, otherObj) {
     return result;
 }
 
-function deleteNullProperties(obj, recurse) {
+function deleteEmptyProperties(obj, recurse) {
     for (var property in obj) {
         if (obj.hasOwnProperty(property)) {
-            if (obj[property] === null) {
+            if (typeof obj[property] === 'undefined' || (obj[property].constructor === Array && !obj.length)) {
                 delete obj[property];
             } else if (recurse && typeof obj[property] === 'object') {
                 deleteNullProperties(obj[property], recurse - 1);
