@@ -286,3 +286,22 @@
         </loader>
     </div>
 </div>
+
+<div class="fullscreen-modal-container" ng-show="submitting">
+    <div class="modal">
+        <loader data="success || errors" spinner-class="big-spinner">
+        </loader>
+        <h2>{{submittingStatus}}</h2>
+        <div ng-show="success">
+            <a href="#/mod/{{mod.id}}">Click here</a> to return to the Mod Page
+        </div>
+        <div ng-show="errors">
+            <div ng-repeat="error in errors">
+                {{error.message}}
+            </div>
+            <div>
+                <a ng-click="closeModal()">Click here</a> to return the update form
+            </div>
+        </div>
+    </div>
+</div>

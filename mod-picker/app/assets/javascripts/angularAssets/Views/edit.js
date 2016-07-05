@@ -456,4 +456,10 @@ app.controller('editModController', function($scope, $state, currentUser, modObj
             $scope.errors = response.data;
         });
     };
+
+    $scope.closeModal = function() {
+        delete $scope.success;
+        delete $scope.submitting;
+        delete $scope.errors;
+    };
 });
