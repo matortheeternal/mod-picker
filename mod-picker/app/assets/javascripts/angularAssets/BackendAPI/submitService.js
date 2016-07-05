@@ -71,42 +71,46 @@ app.service('submitService', function (backend, $q) {
         return backend.post('/mods', modData);
     };
 
-    this.updateMod = function(mod, image, sources, customSources) {
+    this.updateMod = function(mod, sources, customSources, image) {
         // prepare mod authors
-        var mod_authors = [];
-        mod.mod_authors.forEach(function(author) {
-            if (author._destroy) {
-                mod_authors.push({
-                    id: author.id,
-                    _destroy: true
-                })
-            } else if (author.id) {
-                mod_authors.push({
-                    id: author.id,
-                    role: author.role
-                })
-            } else {
-                mod_authors.push({
-                    role: author.role,
-                    user_id: author.user_id
-                })
-            }
-        });
+        if (mod.mod_authors) {
+            var mod_authors = [];
+            mod.mod_authors.forEach(function(author) {
+                if (author._destroy) {
+                    mod_authors.push({
+                        id: author.id,
+                        _destroy: true
+                    })
+                } else if (author.id) {
+                    mod_authors.push({
+                        id: author.id,
+                        role: author.role
+                    })
+                } else {
+                    mod_authors.push({
+                        role: author.role,
+                        user_id: author.user_id,
+                    })
+                }
+            });
+        }
 
         // prepare required mods
-        var required_mods = [];
-        mod.requirements.forEach(function(requirement) {
-            if (requirement._destroy) {
-                required_mods.push({
-                    id: requirement.id,
-                    _destroy: true
-                })
-            } else {
-                required_mods.push({
-                    required_id: requirement.required_id
-                })
-            }
-        });
+        if (mod.requirements) {
+            var required_mods = [];
+            mod.requirements.forEach(function(requirement) {
+                if (requirement._destroy) {
+                    required_mods.push({
+                        id: requirement.id,
+                        _destroy: true
+                    })
+                } else {
+                    required_mods.push({
+                        required_id: requirement.required_id
+                    })
+                }
+            });
+        }
 
         // prepare custom sources
         var custom_sources = [];
