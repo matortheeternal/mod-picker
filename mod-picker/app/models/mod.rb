@@ -1,7 +1,7 @@
 class Mod < ActiveRecord::Base
   include Filterable, Sortable, RecordEnhancements
 
-  attr_writer :tag_names, :asset_paths, :plugin_dumps, :nexus_info_id, :lover_info_id, :workshop_info_id
+  attr_writer :tag_names, :asset_paths, :plugin_dumps, :nexus_info_id, :lover_info_id, :workshop_info_id, :image_file
   enum status: [ :good, :outdated, :unstable ]
 
   # BOOLEAN SCOPES (excludes content when false)
@@ -218,8 +218,8 @@ class Mod < ActiveRecord::Base
   validates :name, :aliases, length: {maximum: 128}
 
   # callbacks
-  after_create :create_associations, :increment_counters
-  after_update :create_associations
+  after_create :increment_counters
+  after_save :create_associations, :save_image
   before_destroy :decrement_counters
 
   def no_author?
@@ -325,6 +325,39 @@ class Mod < ActiveRecord::Base
     else
       review_reputation = (self.average_rating / 100)**3 * (510.0 / (1 + Math::exp(-0.2 * (self.reviews_count - 10))) - 60)
       self.reputation = review_reputation
+    end
+  end
+
+  def delete_old_mod_images
+    png_path = Rails.root.join('public', 'mods', self.id.to_s + '.png')
+    jpg_path = Rails.root.join('public', 'mods', self.id.to_s + '.jpg')
+
+    if File.exist?(png_path)
+      File.delete(png_path)
+    end
+    if File.exist?(jpg_path)
+      File.delete(jpg_path)
+    end
+  end
+
+  def save_image
+    if @image_file
+      ext = File.extname(@image_file.original_filename)
+      local_filename = Rails.root.join('public', 'mods', self.id.to_s + ext)
+      if ext != '.png' && ext != '.jpg' # image must be png or jpg
+        self.errors.add(:image, 'Invalid image type, must be PNG or JPG')
+      elsif @image_file.size > 1048576 # 1 megabyte max file size
+        self.errors.add(:image, 'Image is too big')
+      else
+        begin
+          delete_old_mod_images
+          File.open(local_filename, 'wb') do |f|
+            f.write(@image_file.read)
+          end
+        rescue
+          self.errors.add(:image, 'Unknown failure')
+        end
+      end
     end
   end
 
