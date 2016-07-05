@@ -9,10 +9,12 @@ body {
   background-color: $primary_background;
   min-height: 100vh;
   position: relative;
+  overflow-y: scroll;
 }
 
 .no-scroll {
   overflow-y: hidden;
+  padding-right: 17px;
 }
 
 .content {
