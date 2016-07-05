@@ -114,5 +114,14 @@
     border: 1px solid $border_color;
     padding: 20px;
     background-color: $secondary_background;
+    margin-bottom: 30px;
+
+    .content-block:first-child {
+      margin-top: 5px;
+    }
+
+    .content-block:last-child {
+      margin-bottom: 5px;
+    }
   }
 }
