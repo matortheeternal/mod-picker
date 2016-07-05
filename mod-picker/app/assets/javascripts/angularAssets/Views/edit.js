@@ -427,8 +427,8 @@ app.controller('editModController', function($scope, $state, currentUser, modObj
         // get changed mod fields
         var modDiff = getDifferentProperties($scope.mod, $scope.originalMod);
 
-        // return if mod is invalid or no fields have been changed
-        if (!$scope.modValid() || !Object.keys(modDiff).length) {
+        // return if mod is invalid
+        if (!$scope.modValid()) {
             return;
         }
 
@@ -448,13 +448,32 @@ app.controller('editModController', function($scope, $state, currentUser, modObj
         $scope.submitting = true;
         $scope.submittingStatus = "Updating Mod...";
         modDiff.id = $scope.mod.id;
-        submitService.updateMod(modDiff, sources, $scope.customSources, $scope.image).then(function() {
-            $scope.submittingStatus = "Mod Updated Successfully!";
-            $scope.success = true;
+        submitService.updateMod(modDiff, sources, $scope.customSources).then(function() {
+            if (!angular.isDefined($scope.success)) {
+                $scope.success = true;
+            } else if ($scope.success) {
+                $scope.submittingStatus = "Mod Updated Successfully!";
+            }
         }, function(response) {
+            $scope.success = false;
             $scope.submittingStatus = "There were errors updating the mod.";
+            // TODO: Emit errors properly
             $scope.errors = response.data;
         });
+        if ($scope.image.file) {
+            submitService.submitImage($scope.mod.id, $scope.image.file).then(function () {
+                if (!angular.isDefined($scope.success)) {
+                    $scope.success = true;
+                } else if ($scope.success) {
+                    $scope.submittingStatus = "Mod Updated Successfully!";
+                }
+            }, function(response) {
+                $scope.success = false;
+                $scope.submittingStatus = "There were errors updating the mod.";
+                // TODO: Emit errors properly
+                $scope.errors = response.data;
+            });
+        }
     };
 
     $scope.closeModal = function() {
