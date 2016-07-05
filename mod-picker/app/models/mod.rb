@@ -313,7 +313,11 @@ class Mod < ActiveRecord::Base
       total += r.overall_rating
       count += 1
     end
-    self.average_rating = (total / count) if count > 0
+    if count > 0
+      self.average_rating = (total / count)
+    else
+      self.average_rating = 0
+    end
   end
 
   def compute_reputation
