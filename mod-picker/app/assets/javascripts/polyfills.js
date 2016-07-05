@@ -28,7 +28,7 @@ function deleteEmptyProperties(obj, recurse) {
             if (typeof obj[property] === 'undefined' || (obj[property].constructor === Array && !obj.length)) {
                 delete obj[property];
             } else if (recurse && typeof obj[property] === 'object') {
-                deleteNullProperties(obj[property], recurse - 1);
+                deleteEmptyProperties(obj[property], recurse - 1);
             }
         }
     }
