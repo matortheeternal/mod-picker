@@ -21,3 +21,15 @@ function getDifferentProperties(obj, otherObj) {
     }
     return result;
 }
+
+function deleteNullProperties(obj, recurse) {
+    for (var property in obj) {
+        if (obj.hasOwnProperty(property)) {
+            if (obj[property] === null) {
+                delete obj[property];
+            } else if (recurse && typeof obj[property] === 'object') {
+                deleteNullProperties(obj[property], recurse - 1);
+            }
+        }
+    }
+}
