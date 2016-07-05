@@ -40,6 +40,7 @@ Rails.application.routes.draw do
     match '/mods/:id/install_order_notes', to: 'mods#install_order_notes', via: [:get, :post]
     match '/mods/:id/load_order_notes', to: 'mods#load_order_notes', via: [:get, :post]
     match '/mods/:id/analysis', to: 'mods#analysis', via: [:get, :post]
+    match '/mods/:id/image', to: 'mods#image', via: [:post]
 
     # reviews
     resources :reviews, only: [:show, :create, :update, :destroy]

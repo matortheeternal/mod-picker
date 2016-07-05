@@ -1,5 +1,5 @@
 class ModsController < ApplicationController
-  before_action :set_mod, only: [:update, :update_tags, :corrections, :reviews, :compatibility_notes, :install_order_notes, :load_order_notes, :analysis, :destroy]
+  before_action :set_mod, only: [:update, :update_tags, :image, :corrections, :reviews, :compatibility_notes, :install_order_notes, :load_order_notes, :analysis, :destroy]
 
   # POST /mods
   # TODO: Adult content filtering
@@ -118,6 +118,18 @@ class ModsController < ApplicationController
       render json: {status: :ok, tags: @mod.tags}
     else
       render json: {errors: errors, status: :unprocessable_entity, tags: @mod.tags}
+    end
+  end
+
+  # POST /mods/1/image
+  def image
+    authorize! :update, @mod
+    @mod.image_file = params[:image]
+
+    if @mod.save
+      render json: {status: :ok}
+    else
+      render json: @mod.errors, status: :unprocessable_entity
     end
   end
 
