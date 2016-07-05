@@ -25,10 +25,12 @@ function getDifferentProperties(obj, otherObj) {
 function deleteEmptyProperties(obj, recurse) {
     for (var property in obj) {
         if (obj.hasOwnProperty(property)) {
-            if (typeof obj[property] === 'undefined' || (obj[property].constructor === Array && !obj.length)) {
+            var v = obj[property];
+            var vt = typeof v;
+            if (vt === 'undefined' || (v.constructor === Array && !v.length)) {
                 delete obj[property];
-            } else if (recurse && typeof obj[property] === 'object') {
-                deleteEmptyProperties(obj[property], recurse - 1);
+            } else if (recurse && vt === 'object') {
+                deleteEmptyProperties(v, recurse - 1);
             }
         }
     }
