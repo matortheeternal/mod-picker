@@ -370,7 +370,18 @@ app.controller('editModController', function($scope, $state, currentUser, modObj
         }
     };
 
+    $scope.swapCategories = function() {
+        $scope.mod.categories.reverse();
+    };
+
     $scope.$watch('mod.categories', function() {
+        // clear messages when user changes the category
+        if ($scope.categoryMessages && $scope.categoryMessages.length) {
+            if ($scope.categoryMessages[0].klass == "cat-error-message" ||
+                $scope.categoryMessages[0].klass == "cat-success-message") {
+                $scope.categoryMessages = [];
+            }
+        }
         // set primary_category_id and secondary_category_id
         $scope.mod.primary_category_id = $scope.mod.categories[0];
         $scope.mod.secondary_category_id = $scope.mod.categories[1];

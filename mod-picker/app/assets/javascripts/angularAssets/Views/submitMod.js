@@ -236,9 +236,13 @@ app.controller('submitModController', function ($scope, backend, submitService, 
         }
     };
 
+    $scope.swapCategories = function() {
+        $scope.mod.categories.reverse();
+    };
+
     // clear messages when user changes the category
     $scope.$watch('mod.categories', function() {
-        if ($scope.categoryMessages && $scope.categoryMessages.length == 1) {
+        if ($scope.categoryMessages && $scope.categoryMessages.length) {
             if ($scope.categoryMessages[0].klass == "cat-error-message" ||
                 $scope.categoryMessages[0].klass == "cat-success-message") {
                 $scope.categoryMessages = [];

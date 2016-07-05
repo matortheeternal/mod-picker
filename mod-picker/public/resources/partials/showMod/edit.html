@@ -253,7 +253,10 @@
                         <div ng-repeat="message in categoryMessages" class="category-message"
                              ng-class="message.klass">{{message.text}}</div>
                     </div>
-                    <input type="button" id="check-categories-btn" class="btn" ng-click="checkCategories()" value="Check Categories">
+                    <div class="category-buttons">
+                        <input type="button" class="btn" ng-click="checkCategories()" value="Check Categories">
+                        <input type="button" class="btn" ng-click="swapCategories()" value="Swap" title="Swap the primary and secondary categories" ng-disabled="mod.categories.length != 2">
+                    </div>
                 </section>
 
                 <h3 class="section-title">Tags</h3>
