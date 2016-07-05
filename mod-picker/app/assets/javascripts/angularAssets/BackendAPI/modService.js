@@ -1,4 +1,4 @@
-app.service('modService', function(backend, $q, userTitleService, categoryService, recordGroupService, assetUtils, errorsFactory, pluginService, reviewSectionService, contributionService, pageUtils) {
+app.service('modService', function(backend, $q, userTitleService, recordGroupService, assetUtils, errorsFactory, pluginService, reviewSectionService, contributionService, pageUtils) {
     this.retrieveMods = function(options, pageInformation) {
         var action = $q.defer();
         backend.post('/mods/index', options).then(function (data) {
@@ -22,7 +22,6 @@ app.service('modService', function(backend, $q, userTitleService, categoryServic
     this.retrieveMod = function(modId) {
         var output = $q.defer();
         backend.retrieve('/mods/' + modId).then(function(data) {
-            categoryService.resolveModCategories(data.mod);
             output.resolve(data);
         }, function(response) {
             output.reject(response);

@@ -67,11 +67,13 @@ app.config(['$stateProvider', function($stateProvider) {
     });
 }]);
 
-app.controller('modController', function($scope, $q, $stateParams, $timeout, currentUser, modObject, modService, contributionService, tagService, smoothScroll, errorService) {
+app.controller('modController', function($scope, $q, $stateParams, $timeout, currentUser, modObject, modService, contributionService, categoryService, tagService, smoothScroll, errorService) {
     // get parent variables
     $scope.mod = modObject.mod;
     $scope.mod.star = modObject.star;
     $scope.currentUser = currentUser;
+    // resolve mod categories
+    categoryService.resolveModCategories($scope.mod);
 
     // initialize local variables
     $scope.tags = [];
