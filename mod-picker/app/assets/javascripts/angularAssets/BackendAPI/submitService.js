@@ -59,7 +59,7 @@ app.service('submitService', function (backend, $q) {
                 nexus_info_id: sources.nexus && sources.nexus.id,
                 workshop_info_id: sources.workshop && sources.workshop.id,
                 lover_info_id: sources.lab && sources.lab.id,
-                tag_names: mod.tags,
+                tag_names: mod.newTags,
                 asset_paths: mod.analysis.assets,
                 plugin_dumps: mod.analysis.plugins,
                 custom_sources_attributes: custom_sources,
@@ -89,7 +89,7 @@ app.service('submitService', function (backend, $q) {
                 } else {
                     mod_authors.push({
                         role: author.role,
-                        user_id: author.user_id,
+                        user_id: author.user_id
                     })
                 }
             });
