@@ -86,8 +86,11 @@ app.controller('editModController', function($scope, $state, currentUser, modObj
         if (modObject.secondary_category_id) {
             modObject.categories.push(modObject.secondary_category_id);
         }
+        // prepare newTags array
+        modObject.newTags = [];
         // put mod on scope
-        $scope.mod = modObject;
+        $scope.originalMod = modObject;
+        $scope.mod = angular.copy(modObject);
     };
 
     // initialize local variables
@@ -97,9 +100,6 @@ app.controller('editModController', function($scope, $state, currentUser, modObj
     $scope.image = {
         src: $scope.mod.image
     };
-    $scope.mod.newTags = [];
-    // error handling
-    $scope.errors = {};
 
     // display error messages
     $scope.$on('errorMessage', function(event, params) {
@@ -405,7 +405,7 @@ app.controller('editModController', function($scope, $state, currentUser, modObj
             sourcesValid = sourcesValid && ($scope.nexus || $scope.workshop || $scope.lab || oldSources);
         }
 
-        // return true if any
+        // return true if sources and categories are valid
         var categoriesValid = $scope.mod.categories && $scope.mod.categories.length &&
             $scope.mod.categories.length <= 2;
         return (sourcesValid && categoriesValid)
@@ -413,8 +413,11 @@ app.controller('editModController', function($scope, $state, currentUser, modObj
 
     // save changes
     $scope.updateMod = function() {
-        // return if mod is invalid
-        if (!$scope.modValid()) {
+        // get changed mod fields
+        var modDiff = getDifferentProperties($scope.mod, $scope.originalMod);
+
+        // return if mod is invalid or no fields have been changed
+        if (!$scope.modValid() || !Object.keys(modDiff).length) {
             return;
         }
 
@@ -432,12 +435,13 @@ app.controller('editModController', function($scope, $state, currentUser, modObj
         };
 
         $scope.submitting = true;
-        $scope.submittingStatus = "Submitting Mod...";
-        submitService.updateMod($scope.mod, $scope.image, sources, $scope.customSources).then(function() {
-            $scope.submittingStatus = "Mod Submitted Successfully!";
+        $scope.submittingStatus = "Updating Mod...";
+        modDiff.id = $scope.mod.id;
+        submitService.updateMod(modDiff, sources, $scope.customSources, $scope.image).then(function() {
+            $scope.submittingStatus = "Mod Updated Successfully!";
             $scope.success = true;
         }, function(response) {
-            $scope.submittingStatus = "There were errors submitting your mod.";
+            $scope.submittingStatus = "There were errors updating the mod.";
             $scope.errors = response.data;
         });
     };
