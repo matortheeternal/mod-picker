@@ -71,7 +71,7 @@ app.service('submitService', function (backend, $q) {
         return backend.post('/mods', modData);
     };
 
-    this.updateMod = function(mod, sources, customSources, image) {
+    this.updateMod = function(mod, sources, customSources) {
         // prepare mod authors
         if (mod.mod_authors) {
             var mod_authors = [];
@@ -126,6 +126,7 @@ app.service('submitService', function (backend, $q) {
         // prepare mod record
         var modData = {
             mod: {
+                id: mod.id,
                 name: mod.name,
                 aliases: mod.aliases,
                 authors: mod.authors,
@@ -142,7 +143,6 @@ app.service('submitService', function (backend, $q) {
                 tag_names: mod.newTags,
                 asset_paths: mod.analysis && mod.analysis.assets,
                 plugin_dumps: mod.analysis && mod.analysis.plugins,
-                image: image.file,
                 mod_authors_attributes: mod_authors,
                 custom_sources_attributes: custom_sources,
                 required_mods_attributes: required_mods
@@ -152,5 +152,9 @@ app.service('submitService', function (backend, $q) {
 
         // submit mod
         return backend.update('/mods/' + mod.id, modData);
+    };
+
+    this.submitImage = function(modId, image) {
+        return backend.postFile('/mods/' + modId + '/image', 'image', image);
     };
 });
