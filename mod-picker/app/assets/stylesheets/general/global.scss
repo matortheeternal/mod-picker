@@ -195,12 +195,6 @@ h4 {
   color: $h4_color;
 }
 
-.logo {
-  h1 {
-    text-shadow: #000 1px 1px 4px;
-  }
-}
-
 /* button styling */
 input[type="button"], input[type="submit"] {
   display: inline;
@@ -300,7 +294,7 @@ input[type="button"], input[type="submit"] {
   }
 
   a.selected-tab {
-    background-color: inherit;
+    background-color: $secondary_background;
     cursor: default;
     color: $text_color;
 
