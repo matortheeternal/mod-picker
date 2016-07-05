@@ -358,6 +358,12 @@ app.controller('editModController', function($scope, $state, currentUser, modObj
         }
     };
 
+    $scope.$watch('mod.categories', function() {
+        // set primary_category_id and secondary_category_id
+        $scope.mod.primary_category_id = $scope.mod.categories[0];
+        $scope.mod.secondary_category_id = $scope.mod.categories[1];
+    }, true);
+
     /* submission */
     // validate the mod
     $scope.modValid = function() {
