@@ -221,6 +221,18 @@ app.controller('submitModController', function ($scope, backend, submitService, 
                 text: "Categories look good!",
                 klass: "cat-success-message"
             });
+            var primaryCategory = categoryService.getCategoryById($scope.categories, $scope.mod.categories[0]);
+            $scope.categoryMessages.push({
+                text: "Primary Category: " + primaryCategory.name,
+                klass: "cat-success-message"
+            });
+            if ($scope.mod.categories.length > 1) {
+                var secondaryCategory = categoryService.getCategoryById($scope.categories, $scope.mod.categories[1]);
+                $scope.categoryMessages.push({
+                    text: "Secondary Category: " + secondaryCategory.name,
+                    klass: "cat-success-message"
+                });
+            }
         }
     };
 
