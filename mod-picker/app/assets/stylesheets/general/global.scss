@@ -295,8 +295,8 @@ input[type="button"], input[type="submit"] {
     margin-right: 2px;
   }
 
-  .selected-tab {
-    background-color: inherit;
+  a.selected-tab {
+    background-color: $secondary_background;
     cursor: default;
     color: $text_color;
   }
