@@ -18,10 +18,12 @@ app.config(function($urlMatcherFactoryProvider) {
     $urlMatcherFactoryProvider.defaultSquashPolicy(true);
 });
 
+//redirect to /home if someone types in an incorrect url
 app.config(function($urlRouterProvider) {
     $urlRouterProvider.otherwise('/home');
 });
 
+//this allows states to be defined at runtime by 
 app.config(function($futureStateProvider) {
     var lazyStateFactory = function($q, futureState) {
         return $q.when(futureState);
