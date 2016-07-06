@@ -1,39 +1,9 @@
-app.run(function($futureState, filtersFactory) {
-    var getParams = function() {
-        var output = {
-            //column sort
-            sort: 'name',
-            direction: 'desc',
-
-            //searches
-            'name-search': '',
-            'author-search': '',
-
-            //sources
-            nexus: 'true',
-            steam: 'true',
-            lovers: 'true',
-            other: 'true',
-        };
-
-        filtersFactory.modDateFilters().forEach(function(dateFilter) {
-
-        });
-        filtersFactory.modPickerFilters();
-        filtersFactory.modStatisticFilters();
-    };
-    $futureState.futureState({
-        stateName: 'base.mods',
-        name: 'base.mods',
-        templateUrl: '/resources/partials/browse/mods.html',
-        controller: 'modsController',
-        url: '/mods',
-        params: getParams(),
-        type: 'lazy'
-    });
+app.run(function($futureState, modIndexService) {
+    $futureState.futureState(modIndexService.state);
 });
 
-app.controller('modsController', function($scope, $q, modService, sliderFactory, columnsFactory, filtersFactory, currentUser, currentGame) {
+app.controller('modsController', function($scope, $q, modService, sliderFactory, columnsFactory, filtersFactory, currentUser, currentGame, $stateParams) {
+    $scope.$stateParams = $stateParams;
     // get parent variables
     $scope.currentUser = currentUser;
     $scope.currentGame = currentGame;
