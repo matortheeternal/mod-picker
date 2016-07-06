@@ -18,9 +18,10 @@ app.controller('sliderController', function ($scope, sliderOptionsFactory, $time
     if (typeof sliderOptionsFactory[$scope.type]=== "function") {
         $scope.slider = sliderOptionsFactory[$scope.type]($scope.attr);
     }
+
     $scope.rawData = {
-        min: $scope.slider.min || 0,
-        max: $scope.slider.max
+        min: $scope.filters[$scope.data].min || $scope.slider.min || 0,
+        max: $scope.filters[$scope.data].max || $scope.slider.max
     };
 
     $scope.deleteData = function() {
