@@ -1,4 +1,6 @@
 app.service("filtersFactory", function() {
+    var service = this;
+
     this.modStatisticFilters = function() {
         return [{
                 label: "Endorsements",
@@ -171,5 +173,13 @@ app.service("filtersFactory", function() {
                 param: "dr"
             }
         ];
+    };
+
+    this.modFilters = function() {
+        return Array.prototype.concat(
+            service.modStatisticFilters(),
+            service.modPickerFilters(),
+            service.modDateFilters()
+        );
     };
 });
