@@ -123,13 +123,13 @@ class ModList < ActiveRecord::Base
   end
 
   def incompatible_mods
-    mod_ids = mod_list_mods.all.ids
+    mod_ids = mod_list_mods.all.pluck(:mod_id)
     if mod_ids.empty?
       return []
     end
 
     # get incompatible notes
-    incompatible_notes = CompatibilityNote.where("status in ? AND (first_mod_id in ? OR second_mod_id in ?)", [1, 2], mod_ids, mod_ids).pluck(:status, :first_mod_id, :second_mod_id)
+    incompatible_notes = CompatibilityNote.where("status in (?) AND (first_mod_id in (?) OR second_mod_id in (?))", [1, 2], mod_ids, mod_ids).pluck(:status, :first_mod_id, :second_mod_id)
     incompatible_mod_ids = []
     # build array of incompatible mod ids from incompatible notes
     incompatible_notes.each do |n|
