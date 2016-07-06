@@ -16,7 +16,7 @@
     </div>
 </div>
 <div class="tab-section" ng-if="bIsEditing">
-    <h3 class="section-title">Modlist Options</h3>
+    <h3 class="section-title">Options</h3>
 </div>
 <section class="tabs-column primary-background" ng-if="bIsEditing">
     <form>
@@ -35,17 +35,19 @@
                 <option value="complete">Complete</option>
             </select>
         </section>        
-        <h3 class="section-title">Modlist Visibility</h3>
+        <h3 class="section-title">Visibility</h3>
         <section>
-            <select ng-model="visibilitySelect" ng-init="visibilitySelect = 'visible'">
-                <option value="visible">Public</option>
+            <select ng-model="visibilitySelect" ng-init="visibilitySelect = 'public'">
+                <option value="public">Public</option>
                 <option value="unlisted">Unlisted</option>
                 <option value="hidden">Private</option>
             </select>
         </section>
-        <h3 class="section-title">Collection</h3>
+        <h3 class="section-title">Other Options</h3>
         <section>
-            <input type="checkbox" name="mlIsCollection" ng-checked="bIsCollection"> Mod List is a collection
+            <label>
+                <input type="checkbox" name="mlIsCollection" ng-checked="bIsCollection"> Collection
+            </label>
         </section>
     </form>
 </section>
