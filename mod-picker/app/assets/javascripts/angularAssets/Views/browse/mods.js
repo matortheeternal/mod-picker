@@ -1,14 +1,39 @@
+app.run(function($futureState, filtersFactory) {
+    var getParams = function() {
+        var output = {
+            //column sort
+            sort: 'name',
+            direction: 'desc',
 
-app.config(['$stateProvider', function ($stateProvider) {
-    $stateProvider.state('base.mods', {
-            templateUrl: '/resources/partials/browse/mods.html',
-            controller: 'modsController',
-            url: '/mods'
-        }
-    );
-}]);
+            //searches
+            'name-search': '',
+            'author-search': '',
 
-app.controller('modsController', function ($scope, $q, modService, sliderFactory, columnsFactory, filtersFactory, currentUser, currentGame) {
+            //sources
+            nexus: 'true',
+            steam: 'true',
+            lovers: 'true',
+            other: 'true',
+        };
+
+        filtersFactory.modDateFilters().forEach(function(dateFilter) {
+
+        });
+        filtersFactory.modPickerFilters();
+        filtersFactory.modStatisticFilters();
+    };
+    $futureState.futureState({
+        stateName: 'base.mods',
+        name: 'base.mods',
+        templateUrl: '/resources/partials/browse/mods.html',
+        controller: 'modsController',
+        url: '/mods',
+        params: getParams(),
+        type: 'lazy'
+    });
+});
+
+app.controller('modsController', function($scope, $q, modService, sliderFactory, columnsFactory, filtersFactory, currentUser, currentGame) {
     // get parent variables
     $scope.currentUser = currentUser;
     $scope.currentGame = currentGame;
@@ -30,15 +55,13 @@ app.controller('modsController', function ($scope, $q, modService, sliderFactory
     $scope.pages = {};
     $scope.columns = columnsFactory.modColumns();
     $scope.columnGroups = columnsFactory.modColumnGroups();
-    $scope.actions = [
-        {
-            caption: "Add",
-            title: "Add this mod to your mod list",
-            execute: function() {
-                alert("Not functional yet.");
-            }
+    $scope.actions = [{
+        caption: "Add",
+        title: "Add this mod to your mod list",
+        execute: function() {
+            alert("Not functional yet.");
         }
-    ];
+    }];
 
     // load filter prototypes
     $scope.dateFilters = filtersFactory.modDateFilters();
@@ -54,9 +77,9 @@ app.controller('modsController', function ($scope, $q, modService, sliderFactory
         modPicker: false
     };
 
-    $scope.toggleExtendedFilterVisibility = function (filterId) {
+    $scope.toggleExtendedFilterVisibility = function(filterId) {
         var extendedFilter = $scope.extendedFilterVisibility[filterId] = !$scope.extendedFilterVisibility[filterId];
-        if(extendedFilter) {
+        if (extendedFilter) {
             $scope.$broadcast('rerenderSliders');
         }
     };
@@ -82,12 +105,12 @@ app.controller('modsController', function ($scope, $q, modService, sliderFactory
     var firstGet = false;
     $scope.getMods = function(page) {
         delete $scope.mods;
-        var options =  {
+        var options = {
             filters: $scope.filters,
             sort: $scope.sort,
             page: page || 1
         };
-        modService.retrieveMods(options, $scope.pages).then(function (data) {
+        modService.retrieveMods(options, $scope.pages).then(function(data) {
             $scope.mods = data.mods;
             firstGet = true;
         });
@@ -122,7 +145,7 @@ app.controller('modsController', function ($scope, $q, modService, sliderFactory
         $scope.availableStatFilters = $scope.availableFilters($scope.statFilters);
 
         // get mods
-        if($scope.filters && firstGet) {
+        if ($scope.filters && firstGet) {
             clearTimeout(getModsTimeout);
             $scope.pages.current = 1;
             getModsTimeout = setTimeout($scope.getMods, 700);

@@ -22,6 +22,13 @@ app.config(function($urlRouterProvider) {
     $urlRouterProvider.otherwise('/home');
 });
 
+app.config(function($futureStateProvider) {
+    var lazyStateFactory = function($q, futureState) {
+        return $q.when(futureState);
+    };
+    $futureStateProvider.stateFactory('lazy', lazyStateFactory);
+});
+
 //this adds a redirectTo option into ui router, which makes default tabs much nicer
 app.run(['$rootScope', '$state', function($rootScope, $state) {
 
