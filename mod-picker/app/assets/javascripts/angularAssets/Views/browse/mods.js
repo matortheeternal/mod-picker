@@ -1,8 +1,9 @@
 app.run(function($futureState, modIndexService) {
+    // TODO: construct state here
     $futureState.futureState(modIndexService.state);
 });
 
-app.controller('modsController', function($scope, $q, modService, sliderFactory, columnsFactory, filtersFactory, currentUser, currentGame, $stateParams) {
+app.controller('modsController', function($scope, $q, $stateParams, $state, modService, sliderFactory, columnsFactory, filtersFactory, currentUser, currentGame, modIndexService) {
     $scope.$stateParams = $stateParams;
     // get parent variables
     $scope.currentUser = currentUser;
@@ -10,6 +11,7 @@ app.controller('modsController', function($scope, $q, modService, sliderFactory,
     $scope.globalPermissions = angular.copy(currentUser.permissions);
 
     // initialize local variables
+    $scope.filterPrototypes = filtersFactory.modFilters();
     $scope.filters = {
         sources: {
             nexus: $stateParams.nm,
@@ -20,31 +22,14 @@ app.controller('modsController', function($scope, $q, modService, sliderFactory,
         game: $scope.currentGame.id,
         adult: $scope.currentUser && $scope.currentUser.settings.allow_adult_content
     };
-
+    //load name and author from url parameters
+    modIndexService.setFilterFromParam($scope.filters, 'search', $stateParams.n);
+    modIndexService.setFilterFromParam($scope.filters, 'author', $stateParams.a);
     //load slider values from url parameters
-    var setSliderValues = function(filter) {
-        if (!$stateParams[filter.param]) {
-            return;
-        }
-        var filterVals = $stateParams[filter.param].split('-');
-
-        $scope.filters[filter.data] = {
-            min: parseInt(filterVals[0]),
-            max: parseInt(filterVals[1])
-        };
-    };
-    filtersFactory.modStatisticFilters().forEach(setSliderValues);
-    filtersFactory.modPickerFilters().forEach(setSliderValues);
-    filtersFactory.modDateFilters().forEach(setSliderValues);
-
-    //load tags from url parameters
-    if ($stateParams.t) {
-        $scope.filters.tags = $stateParams.t.split(',');
-    }
-    if ($stateParams.c) {
-        $scope.filters.categories = $stateParams.c.split(',');
-    }
-
+    modIndexService.setSliderFiltersFromParams($scope.filters, $scope.filterPrototypes, $stateParams);
+    //load tags and categories from url parameters
+    modIndexService.setListFilterFromParam($scope.filters, 'tags', $stateParams.t);
+    modIndexService.setListFilterFromParam($scope.filters, 'categories', $stateParams.c);
 
     $scope.availableColumnData = ["nexus"];
     $scope.sort = {};
@@ -145,6 +130,12 @@ app.controller('modsController', function($scope, $q, modService, sliderFactory,
             clearTimeout(getModsTimeout);
             $scope.pages.current = 1;
             getModsTimeout = setTimeout($scope.getMods, 700);
+        }
+
+        // set url parameters
+        if ($scope.filters && firstGet) {
+            var params = modIndexService.getParamsFromFilters($scope.filters, $scope.filterPrototypes);
+            $state.transitionTo('base.mods', params, { notify: false });
         }
     }, true);
 });
