@@ -37,6 +37,15 @@ app.controller('modsController', function($scope, $q, modService, sliderFactory,
     filtersFactory.modPickerFilters().forEach(setSliderValues);
     filtersFactory.modDateFilters().forEach(setSliderValues);
 
+    //load tags from url parameters
+    if ($stateParams.t) {
+        $scope.filters.tags = $stateParams.t.split(',');
+    }
+    if ($stateParams.c) {
+        $scope.filters.categories = $stateParams.c.split(',');
+    }
+
+
     $scope.availableColumnData = ["nexus"];
     $scope.sort = {};
     $scope.pages = {};

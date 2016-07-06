@@ -18,7 +18,9 @@ app.service('modIndexService', function(filtersFactory) {
             nm: true,
             sw: true,
             ll: true,
-            ot: true
+            ot: true,
+            t: '',
+            c: ''
         };
         var setFilterParam = function(filter) {
             output[filter.param] = '';
