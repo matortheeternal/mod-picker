@@ -12,10 +12,10 @@ app.service('modIndexService', function() {
             'author-search': '',
 
             //sources
-            nexus: 'true',
-            steam: 'true',
-            lovers: 'true',
-            other: 'true',
+            nm: true,
+            sw: true,
+            ll: true,
+            ot: true
         };
     };
 
