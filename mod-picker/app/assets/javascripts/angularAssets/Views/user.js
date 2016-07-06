@@ -5,25 +5,50 @@ app.config(['$stateProvider', function ($stateProvider) {
             url: '/user/:userId',
             redirectTo: 'base.user.Social',
             resolve: {
-                user: function(userService, $stateParams) {
-                    return userService.retrieveUser($stateParams.userId);
+                userObject: function(userService, $stateParams, $q) {
+                    var user = $q.defer();
+                    userService.retrieveUser($stateParams.userId).then(function(data) {
+                        user.resolve(data);
+                    }, function(response) {
+                        var errorObj = {
+                            text: 'Error retrieving user.',
+                            response: response,
+                            stateName: "base.user",
+                            stateUrl: window.location.hash
+                        };
+                        user.reject(errorObj);
+                    });
+                    return user.promise;
                 }
             }
         }).state('base.user.Social', {
             templateUrl: '/resources/partials/showUser/social.html',
+            controller: 'userSocialTabController'
         }).state('base.user.Mod Lists', {
-            templateUrl: '/resources/partials/showUser/lists.html',
+            templateUrl: '/resources/partials/showUser/lists.html'
         }).state('base.user.Mods', {
-            templateUrl: '/resources/partials/showUser/mods.html',
+            templateUrl: '/resources/partials/showUser/mods.html'
         }).state('base.user.Contributions', {
-            templateUrl: '/resources/partials/showUser/contributions.html',
+            templateUrl: '/resources/partials/showUser/contributions.html'
         });
 }]);
 
-app.controller('userController', function ($scope, user, currentUser) {
-    $scope.user = user;
+app.controller('userController', function ($scope, $stateParams, currentUser, userObject) {
+    // get parent variables
+    $scope.currentUser = currentUser;
     $scope.permissions = currentUser.permissions;
+
+    // set up local variables
+    $scope.user = userObject;
+    $scope.errors = [];
+    $scope.displayErrors = {};
+    $scope.pages = {
+        profile_comments: {}
+    };
+    $scope.retrieving = {};
+
     $scope.roleClass = "user-role-" + $scope.user.role;
+
     //formatting the role displayed on the site
     switch($scope.user.role) {
         case "admin":
@@ -48,4 +73,32 @@ app.controller('userController', function ($scope, user, currentUser) {
         { name: 'Mods'},
         { name: 'Contributions'}
     ];
+});
+
+app.controller('userSocialTabController', function($scope, $stateParams, userService, contributionService) {
+    $scope.retrieveProfileComments = function(page) {
+        // TODO: Make options dynamic
+        var options = {
+            sort: {
+                column: 'submitted',
+                direction: 'desc'
+            },
+            page: page || 1
+        };
+        userService.retrieveProfileComments($stateParams.userId, options, $scope.pages.profile_comments).then(function(data) {
+            $scope.user.profile_comments = data;
+        }, function(response) {
+            $scope.displayErrors.profile_comments = response;
+        });
+    };
+
+    $scope.startNewComment = function() {
+        $scope.$broadcast('startNewComment');
+    };
+
+    // retrieve the profile comments
+    if (!$scope.retrieving.profile_comments) {
+        $scope.retrieving.profile_comments = true;
+        $scope.retrieveProfileComments();
+    }
 });

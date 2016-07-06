@@ -1,0 +1,20 @@
+<ul>
+    <li class="user-name">
+        <a class="inverse-link user-role-{{user.role}}" ng-href="#/user/{{user.id}}" target="_blank" tabindex="{{index}}">{{user.username}}</a>
+    </li>
+    <li class="user-avatar">
+        <img class="avatar avatar-medium" ng-src="{{user.avatar == null ? '/avatars/' + user.title + '.png' : user.avatar}}"/>
+    </li>
+    <li class="user-title">
+        {{user.title}}
+    </li>
+    <li class="user-reputation">
+        {{user.reputation.overall | number:0}}<span>reputation</span>
+    </li>
+    <li class="editors" ng-if="editors.length">
+        <b>Editors:</b>
+        <span ng-repeat="editor in editors">
+            <a href="#/profile/{{editor.id}}">{{editor.username}}</a><span ng-if="!$last">, </span>
+        </span>
+    </li>
+</ul>

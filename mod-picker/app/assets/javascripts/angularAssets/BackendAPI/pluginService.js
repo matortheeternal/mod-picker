@@ -16,28 +16,6 @@ app.service('pluginService', function (backend, $q, $timeout, recordGroupService
         return plugins.promise;
     };
 
-    this.associateRecordGroups = function(plugins, recordGroups) {
-        // if we don't have recordGroups yet, try again in 100ms
-        var service = this;
-        if (!recordGroups) {
-            $timeout(function() {
-                service.associateRecordGroups(plugins, recordGroups);
-            }, 100);
-            return;
-        }
-
-        // loop through plugins to associate record groups
-        plugins.forEach(function(plugin) {
-            if (plugin.plugin_record_groups) {
-                plugin.plugin_record_groups.forEach(function(group) {
-                    var record_group = recordGroupService.getGroupFromSignature(recordGroups, group.sig);
-                    group.name = record_group.name;
-                    group.child_group = record_group.child_group;
-                });
-            }
-        });
-    };
-
     //combine dummy_masters array with masters array and sorts the masters array
     this.combineAndSortMasters = function(plugins) {
         // loop through plugins
@@ -65,19 +43,21 @@ app.service('pluginService', function (backend, $q, $timeout, recordGroupService
     };
 
     //sort plugin errors
-    this.sortErrors = function(plugin) {
-        var sortedErrors = errorsFactory.errorTypes();
-        // return if we don't have a plugin to sort errors for
-        if (!plugin) {
-            return;
-        }
+    this.sortErrors = function(plugins) {
+        plugins.forEach(function(plugin) {
+            // return if we don't have errors to sort
+            if (!plugin.plugin_errors.length) {
+                return;
+            }
 
-        // loop through plugin's errors, sorting them
-        plugin.plugin_errors.forEach(function(error) {
-            sortedErrors[error.group].errors.push(error);
+            var sortedErrors = errorsFactory.errorTypes();
+            // loop through plugin's errors, sorting them
+            plugin.plugin_errors.forEach(function(error) {
+                sortedErrors[error.group].errors.push(error);
+            });
+
+            // return the sorted errors
+            plugin.plugin_errors = sortedErrors;
         });
-
-        // return the sorted errors
-        return sortedErrors;
     };
 });

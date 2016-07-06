@@ -1,6 +1,6 @@
 app.directive('categoryTree', function () {
     return {
-        retrict: 'E',
+        restrict: 'E',
         templateUrl: '/resources/directives/categoryTree.html',
         controller: 'categoryTreeController',
         scope: {
@@ -11,7 +11,25 @@ app.directive('categoryTree', function () {
 });
 
 app.controller('categoryTreeController', function ($scope, categoryService) {
-    $scope.selection = [];
+    // initialize $scope.selection if undefined
+    if (!angular.isDefined($scope.selection)) {
+        $scope.selection = [];
+    }
+
+    $scope.findCategoryIndexes = function(category_id) {
+        for (var i = 0; i < $scope.categories.length; i++) {
+            var category = $scope.categories[i];
+            if (category.id == category_id) {
+                return {primary: category, secondary: null};
+            }
+            for (var j = 0; j < category.childs.length; j++) {
+                var childCategory = category.childs[j];
+                if (childCategory.id == category_id) {
+                    return {primary: category, secondary: childCategory};
+                }
+            }
+        }
+    };
 
     categoryService.retrieveNestedCategories().then(function (data) {
         $scope.categories = data;
@@ -22,6 +40,21 @@ app.controller('categoryTreeController', function ($scope, categoryService) {
                 subCategory.name = subCategory.name.split('- ')[1];
                 subCategory.value = false;
             });
+        });
+        // load selection into view
+        $scope.selection.forEach(function(category_id) {
+            var category = $scope.findCategoryIndexes(category_id);
+            if (category) {
+                if (category.secondary) {
+                    category.secondary.value = true;
+                    if (!category.primary.value) {
+                        category.primary.indeterminate = true;
+                    }
+                } else {
+                    category.primary.value = true;
+                    category.primary.indeterminate = false;
+                }
+            }
         });
     });
 

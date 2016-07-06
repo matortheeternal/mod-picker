@@ -1,0 +1,50 @@
+<div class="modal-container">
+    <div class="modal big-modal">
+        <form>
+            <h3 class="section-title">
+                Report {{target.submitter.username}}'s {{model.label}}
+            </h3>
+            <section>
+                <div class="line-label">What rule or community guideline does this submission violate?</div>
+                <div class="report-reason-list" ng-init="report.type = 'respect'">
+                    <label>
+                        <input type="radio" name="reason" ng-model="report.type" value="respect">
+                        <span class="report-reason">Be Respectful</span>
+                    </label>
+                    <label>
+                        <input type="radio" name="reason" ng-model="report.type" value="trust">
+                        <span class="report-reason">Be Trustworthy</span>
+                    </label>
+                    <label>
+                        <input type="radio" name="reason" ng-model="report.type" value="collaboration">
+                        <span class="report-reason">Be Constructive</span>
+                    </label>
+                    <label>
+                        <input type="radio" name="reason" ng-model="report.type" value="spam">
+                        <span class="report-reason">No Spam, Advertising, or Solicitation</span>
+                    </label>
+                    <label>
+                        <input type="radio" name="reason" ng-model="report.type" value="piracy">
+                        <span class="report-reason">No Piracy</span>
+                    </label>
+                    <label>
+                        <input type="radio" name="reason" ng-model="report.type" value="other">
+                        <span class="report-reason">Other</span>
+                    </label>
+                </div>
+            </section>
+
+            <section>
+                <label>
+                    <div class="line-label">Notes</div>
+                    <textarea class="small-text-area" ng-model="report.note"></textarea>
+                </label>
+            </section>
+
+            <div class="action-button-container">
+                <input type="submit" class="btn action-btn" value="Report" ng-click="submitReport()">
+                <input type="button" class="btn action-btn" value="Cancel" ng-click="toggleReportModal(false)">
+            </div>
+        </form>
+    </div>
+</div>

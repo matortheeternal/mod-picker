@@ -27,6 +27,11 @@ class Ability
       # can hide mod lists
       can :hide, ModList
 
+      # can create mods with custom sources
+      can :assign_custom_sources, Mod
+      # can assign authors to mods
+      can :assign_authors, Mod
+
       # can update or hide any mod
       can [:update, :hide], Mod
       can :destroy, ModRequirement
@@ -56,11 +61,16 @@ class Ability
       cannot :read, Mod, :hidden => true
 
       # cannot read unapproved content
-      cannot :read, Comment, :approved => false
       cannot :read, CompatibilityNote, :approved => false
       cannot :read, InstallOrderNote, :approved => false
       cannot :read, LoadOrderNote, :approved => false
       cannot :read, Review, :approved => false
+
+      # can read unapproved content they submitted
+      can :read, CompatibilityNote, :approved => false, :submitted_by => user.id
+      can :read, InstallOrderNote, :approved => false, :submitted_by => user.id
+      can :read, LoadOrderNote, :approved => false, :submitted_by => user.id
+      can :read, Review, :approved => false, :submitted_by => user.id
     end
 
     # signed in users who aren't banned
@@ -140,6 +150,7 @@ class Ability
       can :update, Mod, { :mod_authors => { :user_id => user.id } }
       can :destroy, ModRequirement, {:mod_version => {:mod => {:mod_authors => {:user_id => user.id } } } }
       can :destroy, ModTag, { :mod => { :mod_authors => { :user_id => user.id } } }
+      can :assign_authors, Mod, { :mod_authors => { :user_id => user.id, :role => 0 } }
 
       # abilities tied to reputation
       if user.reputation.overall >= 20
@@ -157,9 +168,9 @@ class Ability
       if user.reputation.overall >= 320
         # can update compatibility notes, install order notes, and load order notes  when the user
         # who created them is inactive
-        can :update, CompatibilityNote, { :user => { :inactive? => true } }
-        can :update, InstallOrderNote, { :user => { :inactive? => true } }
-        can :update, LoadOrderNote, { :user => { :inactive? => true } }
+        can :update, CompatibilityNote, { :submitter => { :inactive? => true } }
+        can :update, InstallOrderNote, { :submitter => { :inactive? => true } }
+        can :update, LoadOrderNote, { :submitter => { :inactive? => true } }
         # or when the community has agreed they are incorrect
         can :update, CompatibilityNote, { :incorrect? => true }
         can :update, InstallOrderNote, { :incorrect? => true }

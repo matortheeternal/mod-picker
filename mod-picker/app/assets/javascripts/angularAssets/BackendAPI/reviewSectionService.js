@@ -2,11 +2,7 @@ app.service('reviewSectionService', function (backend, $q) {
     var service = this;
 
     this.retrieveReviewSections = function () {
-        var reviewSections = $q.defer();
-        backend.retrieve('/review_sections').then(function (data) {
-            reviewSections.resolve(data);
-        });
-        return reviewSections.promise;
+        return backend.retrieve('/review_sections');
     };
 
     var allReviewSections = this.retrieveReviewSections();
@@ -17,24 +13,32 @@ app.service('reviewSectionService', function (backend, $q) {
           output.resolve(sections.filter(function(section) {
               return (section.category_id === category.id) || (section.category_id === category.parent_id);
           }));
+        }, function(response) {
+            output.reject(response);
         });
         return output.promise;
     };
 
-    this.getSectionById = function(sections, id) {
-        return sections.find(function(section) {
-            return (section.id === id);
+    this.getSectionById = function(id) {
+        var output = $q.defer();
+        allReviewSections.then(function(sections) {
+            output.resolve(sections.find(function(section) {
+                return (section.id === id);
+            }));
+        }, function(response) {
+            output.reject(response);
         });
+        return output.promise;
     };
 
     this.associateReviewSections = function(reviews) {
-        return allReviewSections.then(function(sections) {
-          reviews.forEach(function(review) {
-            //set the category using the categoryId
-            review.review_ratings.forEach(function(rating) {
-                rating.section = service.getSectionById(sections, rating.review_section_id);
+      reviews.forEach(function(review) {
+        //set the category using the categoryId
+        review.review_ratings.forEach(function(rating) {
+            service.getSectionById(rating.review_section_id).then(function(section) {
+                rating.section = section;
             });
-          });
         });
+      });
     };
 });

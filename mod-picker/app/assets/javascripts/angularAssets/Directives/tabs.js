@@ -8,7 +8,7 @@ app.directive('tabs', function () {
         templateUrl: '/resources/directives/tabs.html',
         controller: 'tabsController',
         scope: {
-        	tabs: '='
+            tabs: '='
         }
     };
 });
@@ -17,6 +17,8 @@ app.controller('tabsController', function($scope, $state) {
     $scope.isCurrentTab = function(tabName) {
         if ($state.includes('**.' + tabName)) {
             return 'selected-tab';
+        } else {
+            return 'unselected-tab';
         }
     };
 

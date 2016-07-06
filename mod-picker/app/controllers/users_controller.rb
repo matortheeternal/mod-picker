@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  before_action :set_user, only: [:show, :update, :destroy]
+  before_action :set_user, only: [:show, :comments, :update, :destroy]
 
   # GET /users
   def index
@@ -11,6 +11,14 @@ class UsersController < ApplicationController
   # GET /current_user
   def current
     render :json => current_user.current_json
+  end
+
+  # POST /users/search
+  def search
+    @users = User.filter(search_params).sort({ column: "username", direction: "ASC" }).limit(10)
+    render :json => @users.as_json({
+        :only => [:id, :username]
+    })
   end
 
   # GET /users/1
@@ -40,6 +48,18 @@ class UsersController < ApplicationController
     end
   end
 
+  # GET /users/1/comments
+  def comments
+    authorize! :read, @user
+    comments = @user.profile_comments.accessible_by(current_ability).sort(params[:sort]).paginate(:page => params[:page], :per_page => 10)
+    count = @user.profile_comments.accessible_by(current_ability).count
+    render :json => {
+        comments: comments,
+        max_entries: count,
+        entries_per_page: 10
+    }
+  end
+
   # PATCH/PUT /users/1
   def update
     authorize! :update, @user
@@ -64,6 +84,10 @@ class UsersController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_user
       @user = User.joins(:bio, :reputation).find(params[:id])
+    end
+
+    def search_params
+      params[:filters].slice(:search)
     end
 
     # Params we allow filtering on

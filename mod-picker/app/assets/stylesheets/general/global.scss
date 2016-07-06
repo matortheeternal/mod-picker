@@ -9,6 +9,12 @@ body {
   background-color: $primary_background;
   min-height: 100vh;
   position: relative;
+  overflow-y: scroll;
+}
+
+.no-scroll {
+  overflow-y: hidden;
+  padding-right: 17px;
 }
 
 .content {
@@ -79,6 +85,17 @@ body {
   column-count: $val;
 }
 
+//noinspection ALL
+@mixin wordbreak {
+  word-break: normal;
+  word-break: break-word; /*Chrome specific*/
+  hyphens: auto;
+}
+
+//box shadow for containers
+.box-shadow {
+  box-shadow: 0px 0px 60px -30px $shadow_color;
+}
 
 /* utility classes */
 .capitalize {
@@ -95,6 +112,10 @@ body {
 
 .half-opacity {
   opacity: 0.50;
+}
+
+.right-item {
+  float: right;
 }
 
 /* url styling */
@@ -152,13 +173,11 @@ h1 {
 
 h2 {
   color: $h2_color;
-  padding: 0;
-  margin: 0;
+  padding: 0 0 4px;
+  margin: 0 0 18px;
   font-size: 24px;
   font-weight: 300;
   border-bottom: 1px solid $border_color;
-  padding-bottom: 4px;
-  margin-bottom: 18px;
 }
 
 h3 {
@@ -176,12 +195,6 @@ h4 {
   font-size: 12px;
   text-transform: uppercase;
   color: $h4_color;
-}
-
-.logo {
-  h1 {
-    text-shadow: #000 1px 1px 4px;
-  }
 }
 
 /* button styling */
@@ -283,7 +296,8 @@ input[type="button"], input[type="submit"] {
   }
 
   a.selected-tab {
-    background-color: inherit;
+    background-color: $secondary_background;
+    cursor: default;
     color: $text_color;
 
     &:hover {
@@ -325,6 +339,14 @@ input[type="button"], input[type="submit"] {
       margin-top: -0.5em;
       margin-bottom: -0.5em;
     }
+  }
+
+  > div:first-child {
+    margin-top: 0;
+  }
+
+  > div:last-child {
+    margin-bottom: 0;
   }
 }
 
@@ -412,12 +434,50 @@ input[type="button"], input[type="submit"] {
 }
 
 /* css for forms, inputs, and labels */
-.success-message {
-  background-color: $success_primary;
-  padding: 14px;
-  font-weight: 500;
-  font-size: 20px;
-  text-align: center;
+.messages {
+  max-height: 400px;
+  background-color: $bar_dark_color;
+  overflow: hidden;
+
+  &.ng-hide-add {
+    transition: 1s max-height ease-in;
+  }
+
+  &.ng-hide-remove {
+    transition: 1s max-height ease-out;
+  }
+
+  &.ng-hide {
+    max-height: 0;
+  }
+
+  .error-message {
+    .fa {
+        padding: 4px;
+    }
+
+    .fa:hover {
+        color: $action_text_color;
+        background-color: $text_color;
+        cursor: pointer;
+    }
+
+    a {
+      color: $error_secondary;
+      &:hover {
+        color: $text_color;
+      }
+    }
+  }
+
+  .success-message {
+    background-color: $success_primary;
+    padding: 14px;
+    font-weight: 500;
+    font-size: 20px;
+    text-align: center;
+    height: 54px;
+  }
 }
 
 select {
@@ -426,7 +486,7 @@ select {
   border-radius: 4%;
   color: $h4_color;
   font: inherit;
-  padding: 0.5em 3em 0.5em 1em;
+  padding: 0.5em 2.5em 0.5em 0.5em;
 
   // reset browser style
   margin: 0;
@@ -480,6 +540,10 @@ input[type="text"], input[type="email"], input[type="password"] {
   }
 }
 
+input[type="file"] {
+  display: none;
+}
+
 .CodeMirror {
   background-color: $input_background;
   color: $text_color;
@@ -487,6 +551,10 @@ input[type="text"], input[type="email"], input[type="password"] {
 
   div.CodeMirror-cursor {
     border-left: 1px solid $text_color;
+  }
+
+  .CodeMirror-line {
+    @include wordbreak;
   }
 }
 
@@ -553,6 +621,12 @@ form {
       margin-bottom: 0;
     }
 
+    .subsection {
+      display: block;
+      margin-bottom: 15px;
+      margin-top: 15px;
+    }
+
     section {
       margin-bottom: 15px;
       margin-top: 15px;
@@ -589,6 +663,10 @@ form {
       font-size: 13px;
       padding: 6px;
       height: 32px;
+    }
+
+    input.medium-text {
+      font-size: 16px;
     }
 
     input.short-input {
@@ -633,6 +711,8 @@ a .help-tooltip {
 .avatar-small {
   max-width: 48px;
   max-height: 48px;
+  border-width: 0;
+  box-shadow: 0 0 4px 2px $border_color;
 }
 
 .avatar-medium {
@@ -653,6 +733,7 @@ a .help-tooltip {
   left: 0;
   width: 100%;
   height: 100%;
+  overflow-y: auto;
   z-index: 3;
   background-color: rgba($shadow_color, 0.4);
 
@@ -671,6 +752,10 @@ a .help-tooltip {
       font-weight: 500;
       color: $text_color;
     }
+
+    .content-message {
+      margin: 20px 0 0;
+    }
   }
 
   .skinny-modal {
@@ -688,8 +773,12 @@ a .help-tooltip {
     cursor: pointer;
   }
 
-  .error-message, .success-message {
-    font-size: 18px;
+  .messages {
+    background-color: transparent;
+
+    .error-message, .success-message {
+      font-size: 18px;
+    }
   }
 
   .big-modal {
@@ -699,8 +788,6 @@ a .help-tooltip {
   .huge-modal {
     width: 800px;
     margin: 100px auto;
-    max-height: calc(100vh - 200px);
-    overflow-y: auto;
   }
 
   .checkbox-list {

@@ -2,13 +2,16 @@
     <div class="mod-tab-item primary-item">
         <strong>Sort By: </strong>
 
-        <select ng-model="tabs[0].params.sort" ng-change="reSortReviews()">
+        <select ng-model="sort.reviews.column" ng-change="retrieveReviews()">
             <option value="reputation">Reputation</option>
-            <option value="helpfulness">Helpfulness</option>
-            <option value="overallRating">Overall Rating</option>
+            <option value="overall_rating">Overall Rating</option>
             <option value="submitted">Date Submitted</option>
             <option value="edited">Last Edited</option>
         </select>
+
+        <span class="sort-direction" title="Sorted in {{ sort.reviews.direction === 'asc' ? 'ascending' : 'descending' }} order." ng-click="toggleSortDirection(sort.reviews); retrieveReviews()">
+            <i class="fa fa-sort-amount-{{sort.reviews.direction}}" aria-hidden="true"></i>
+        </span>
     </div>
 
     <div class="quality-item">
@@ -17,7 +20,7 @@
     </div>
 
     <div class="mod-tab-item">
-        <input class="btn" type="button" value="Add Review" ng-click="startNewReview()" ng-disabled="activeReview"/>
+        <input class="btn" type="button" value="Add Review" ng-click="startNewReview()" ng-disabled="activeReview || mod.user_review" title="{{ mod.user_review ? 'You have already submitted a review for this mod.' : 'Add a new review' }}"/>
     </div>
 </div>
 
@@ -45,6 +48,20 @@
     <div class="content-container">
         <text-area class="note-text-area" data="activeReview.text_body" ng-refresh="updateMDE" on-change="validateReview"></text-area>
 
+        <div class="message-input" ng-if="activeReview.editing && activeReview.original.submitted_by != currentUser.id">
+            <label>
+                <div>Edit Summary</div>
+                <input type="text" ng-model="activeReview.edit_summary" maxlength="255">
+            </label>
+        </div>
+
+        <div class="message-input" ng-if="permissions.canModerate">
+            <label>
+                <div>Moderator Message</div>
+                <input type="text" ng-model="activeReview.moderator_message" maxlength="255">
+            </label>
+        </div>
+
         <div class="action-button-container">
             <input class="btn action-btn" type="submit" value="Submit" ng-click="saveReview()" ng-disabled="!activeReview.valid" title="{{activeReview.valid ? 'Submit your Review' : 'Your review is too short.'}}"/>
             <input class="btn action-btn" type="button" value="Discard" ng-click="discardReview()">
@@ -52,12 +69,30 @@
     </div>
 </div>
 
-<state-loader spinner-class="big-spinner">
-    <div ng-repeat="review in mod.reviews" class="content-block" ng-if="!review.editing">
-        <review review="review" show-author-column="true" index="100 + $index" user="currentUser" edit="editReview"></review>
+<loader data="mod.reviews" spinner-class="big-spinner" ng-if="!errors.reviews && !errors.reviewSections">
+    <div class="content-block user-review" ng-if="mod.user_review && mod.user_review.id && !mod.user_review.editing">
+        <review review="mod.user_review" show-user-column="true" index="99" current-user="currentUser" edit="editReview"></review>
     </div>
 
-    <div class="no-content-message" ng-if="reviews.length == 0">
+    <div ng-repeat="review in mod.reviews" class="content-block" ng-if="!review.editing">
+        <review review="review" show-user-column="true" index="100 + $index" current-user="currentUser" edit="editReview"></review>
+    </div>
+
+    <div class="content-message" ng-hide="mod.reviews.length">
         There are no reviews for this mod yet.
     </div>
-</state-loader>
+
+    <page-results pages="pages.reviews" data="mod.reviews" callback="retrieveReviews"></page-results>
+</loader>
+
+<div class="content-message content-error" ng-if="errors.reviews">
+    There was an error retrieving reviews for this mod.<br>
+    <!--TODO: Render JSON errors here, if available?-->
+    Error {{errors.reviews.status}}: {{errors.reviews.statusText}}
+</div>
+
+<div class="content-message content-error" ng-if="errors.reviewSections">
+    There was an error retrieving review sections.<br>
+    <!--TODO: Render JSON errors here, if available?-->
+    Error {{errors.reviewSections.status}}: {{errors.reviewSections.statusText}}
+</div>

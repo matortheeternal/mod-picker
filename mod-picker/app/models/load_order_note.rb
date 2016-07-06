@@ -1,20 +1,21 @@
 class LoadOrderNote < ActiveRecord::Base
-  include Filterable, RecordEnhancements
+  include Filterable, Sortable, RecordEnhancements
 
+  scope :visible, -> { where(hidden: false, approved: true) }
   scope :by, -> (id) { where(submitted_by: id) }
-  scope :mod, -> (id) { joins(:mod_versions).where(:mod_versions => {mod_id: id}) }
-  scope :mv, -> (id) { joins(:mod_versions).where(:mod_versions => {id: id}) }
+  scope :plugin, -> (id) { where(first_plugin_id: id).or(second_plugin_id: id) }
 
   belongs_to :game, :inverse_of => 'load_order_notes'
-  belongs_to :user, :foreign_key => 'submitted_by', :inverse_of => 'load_order_notes'
+  belongs_to :submitter, :class_name => 'User', :foreign_key => 'submitted_by', :inverse_of => 'load_order_notes'
+  belongs_to :editor, :class_name => 'User', :foreign_key => 'edited_by'
 
   # plugins associatied with this load order note
-  belongs_to :first_plugin, :foreign_key => 'first_plugin_id', :class_name => 'Plugin', :inverse_of => 'load_before_notes'
-  belongs_to :second_plugin, :foreign_key => 'second_plugin_id', :class_name => 'Plugin', :inverse_of => 'load_after_notes'
+  belongs_to :first_plugin, :foreign_key => 'first_plugin_id', :class_name => 'Plugin', :inverse_of => 'first_load_order_notes'
+  belongs_to :second_plugin, :foreign_key => 'second_plugin_id', :class_name => 'Plugin', :inverse_of => 'second_load_order_notes'
 
   # mods associated with this load order note
-  has_one :first_mod, :through => :first_plugin, :class_name => 'Mod', :foreign_key => 'mod_id'
-  has_one :second_mod, :through => :second_plugin, :class_name => 'Mod', :foreign_key => 'mod_id'
+  has_one :first_mod, :through => :first_plugin, :class_name => 'Mod', :source => 'mod', :foreign_key => 'mod_id'
+  has_one :second_mod, :through => :second_plugin, :class_name => 'Mod', :source => 'mod', :foreign_key => 'mod_id'
 
   # mod lists this load order note appears on
   has_many :mod_list_installation_notes, :inverse_of => 'load_order_note'
@@ -26,19 +27,67 @@ class LoadOrderNote < ActiveRecord::Base
   has_one :base_report, :as => 'reportable'
 
   # old versions of this load order note
-  has_many :load_order_note_history_entries, :inverse_of => 'load_order_note'
+  has_many :history_entries, :class_name => 'LoadOrderNoteHistoryEntry', :inverse_of => 'load_order_note', :foreign_key => 'load_order_note_id'
+  has_many :editors, -> { uniq }, :class_name => 'User', :through => 'history_entries'
 
-  # validations
-  validates :submitted_by, :game_id, :first_plugin_id, :second_plugin_id, presence: true
+  self.per_page = 25
+
+  # Validations
+  validates :game_id, :submitted_by, :first_plugin_id, :second_plugin_id, :text_body, presence: true
+
   validates :text_body, length: {in: 256..16384}
+  validate :unique_plugins
 
   # Callbacks
   after_create :increment_counters
   before_save :set_dates
   before_destroy :decrement_counters
 
+  def unique_plugins
+    plugin_ids = [first_plugin_id, second_plugin_id]
+    note = LoadOrderNote.where(first_plugin_id: plugin_ids, second_plugin_id: plugin_ids, hidden: false).where.not(id: self.id).first
+    if note.present?
+      if note.approved
+        errors.add(:plugins, "A Load Order Note for these plugins already exists.")
+        errors.add(:link_id, note.id)
+      else
+        errors.add(:plugins, "An unapproved Load Order Note for these plugins already exists.")
+      end
+    end
+  end
+
   def mods
     [first_mod, second_mod]
+  end
+
+  def plugins
+    [first_plugin, second_plugin]
+  end
+
+  def create_history_entry
+    edit_summary = self.edited_by.nil? ? "Load Order Note Created" : self.edit_summary
+    self.history_entries.create(
+        edited_by: self.edited_by || self.submitted_by,
+        text_body: self.text_body,
+        edit_summary: edit_summary || "",
+        edited: self.edited || self.submitted
+    )
+  end
+
+  def compute_reputation
+    # TODO: We could base this off of the reputation of the people who marked the review helpful/not helpful, but we aren't doing that yet
+    user_rep = self.submitter.reputation.overall
+    helpfulness = (self.helpful_count - self.not_helpful_count)
+    if user_rep < 0
+      self.reputation = user_rep + helpfulness
+    else
+      user_rep_factor = 2 / (1 + Math::exp(-0.0075 * (user_rep - 640)))
+      if self.helpful_count < self.not_helpful_count
+        self.reputation = (1 - user_rep_factor / 2) * helpfulness
+      else
+        self.reputation = (1 + user_rep_factor) * helpfulness
+      end
+    end
   end
 
   def recompute_helpful_counts
@@ -51,12 +100,18 @@ class LoadOrderNote < ActiveRecord::Base
       default_options = {
           :except => [:submitted_by],
           :include => {
-              :user => {
+              :submitter => {
                   :only => [:id, :username, :role, :title],
                   :include => {
                       :reputation => {:only => [:overall]}
                   },
                   :methods => :avatar
+              },
+              :editor => {
+                  :only => [:id, :username, :role]
+              },
+              :editors => {
+                  :only => [:id, :username, :role]
               }
           },
           :methods => :mods
@@ -80,7 +135,7 @@ class LoadOrderNote < ActiveRecord::Base
       byebug
       self.first_mod.update_counter(:load_order_notes_count, 1)
       self.second_mod.update_counter(:load_order_notes_count, 1)
-      self.user.update_counter(:load_order_notes_count, 1)
+      self.submitter.update_counter(:load_order_notes_count, 1)
       self.first_plugin.update_counter(:load_order_notes_count, 1)
       self.second_plugin.update_counter(:load_order_notes_count, 1)
     end
@@ -88,7 +143,7 @@ class LoadOrderNote < ActiveRecord::Base
     def decrement_counters
       self.first_mod.update_counter(:load_order_notes_count, -1)
       self.second_mod.update_counter(:load_order_notes_count, -1)
-      self.user.update_counter(:load_order_notes_count, -1)
+      self.submitter.update_counter(:load_order_notes_count, -1)
       self.first_plugin.update_counter(:load_order_notes_count, -1)
       self.second_plugin.update_counter(:load_order_notes_count, -1)
     end

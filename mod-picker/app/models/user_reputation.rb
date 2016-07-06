@@ -7,7 +7,7 @@ class UserReputation < ActiveRecord::Base
 
   has_many :from_links, :class_name => 'ReputationLink', :inverse_of => 'from_rep'
   has_many :to_links, :class_name => 'ReputationLink', :inverse_of => 'to_rep'
-  
+
   # Validations
-  validates :user_id, :overall, :offset, presence: true
+  validates :user_id, presence: true
 end

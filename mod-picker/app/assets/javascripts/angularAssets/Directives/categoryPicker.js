@@ -4,7 +4,7 @@
 
 app.directive('categoryPicker', function () {
     return {
-        retrict: 'E',
+        restrict: 'E',
         templateUrl: '/resources/directives/categoryPicker.html',
         controller: 'categoryPickerController',
         scope: {

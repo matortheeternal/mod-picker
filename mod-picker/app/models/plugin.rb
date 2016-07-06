@@ -27,17 +27,20 @@ class Plugin < ActiveRecord::Base
   has_many :compatibility_note_plugins, :foreign_key => 'compatibility_plugin_id', :inverse_of => 'compatibility_plugin'
 
   # load order notes
-  has_many :first_load_order_notes, :foreign_key => 'first_plugin_id', :class_name => 'LoadOrderNote', :inverse_of => 'load_second_plugin'
-  has_many :second_load_order_notes, :foreign_key => 'second_plugin_id', :class_name => 'LoadOrderNote', :inverse_of => 'load_second_plugin'
+  has_many :first_load_order_notes, :foreign_key => 'first_plugin_id', :class_name => 'LoadOrderNote', :inverse_of => 'second_plugin'
+  has_many :second_load_order_notes, :foreign_key => 'second_plugin_id', :class_name => 'LoadOrderNote', :inverse_of => 'first_plugin'
 
   accepts_nested_attributes_for :plugin_record_groups, :overrides, :plugin_errors
 
   # validations
-  validates :mod_id, :file_size, :filename, :crc_hash, :game_id, presence: true
-  validates :filename, length: {in: 1..64}
-  validates :author, length: {in: 0..64}
-  validates :description, length: {in: 0..512}
-  validates :crc_hash, length: {in: 1..8}
+  validates :game_id, :mod_id, :filename, :crc_hash, :file_size, presence: true
+
+  validates :filename, length: {maximum: 64}
+  validates :author, length: {maximum: 128}
+  validates :description, length: {maximum: 512}
+  validates :crc_hash, length: {is: 8}
+
+  validates_associated :plugin_record_groups, :plugin_errors, :overrides
 
   # callbacks
   after_create :create_associations, :update_lazy_counters

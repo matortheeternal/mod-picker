@@ -1,14 +1,19 @@
 //TODO: maybe we should think about splitting the logic to retrieve all the data and filtering it.
 app.service('categoryService', function ($q, backend) {
+    var service = this;
+    var allCategories;
 
     this.retrieveCategories = function() {
-        return backend.retrieve('/categories', {cache: true});
+        return allCategories;
     };
+
+    //storing all categories in a variable
+    allCategories = backend.retrieve('/categories', {cache: true});
 
     function retrieveFilteredCategories(key) {
         var categories = $q.defer();
 
-        backend.retrieve('/categories', {cache: true}).then(function (data) {
+        allCategories.then(function (data) {
             var returnData = [];
             data.forEach(function (category) {
                 if (key === 'primary' ? !category.parent_id : category.parent_id == key) {
@@ -25,27 +30,13 @@ app.service('categoryService', function ($q, backend) {
     }
 
     this.retrieveCategoryPriorities = function() {
-        var categoryPriorities = $q.defer();
-
-        backend.retrieve('/category_priorities').then(function (data) {
-            categoryPriorities.resolve(data);
-        });
-
-        return categoryPriorities.promise;
+        return backend.retrieve('/category_priorities');
     };
 
-    //storing all categories in a variable
-    var allCategories = this.retrieveCategories();
-
-    this.getCategoryById = function (id) {
-      var output = $q.defer();
-
-      allCategories.then(function (categories) {
-        output.resolve(categories.find(function (category) {
+    this.getCategoryById = function (categories, id) {
+        return categories.find(function (category) {
           return category.id === id;
-        }));
-      });
-      return output.promise;
+        });
     };
 
     this.retrievePrimaryCategory = function () {
@@ -73,5 +64,17 @@ app.service('categoryService', function ($q, backend) {
             });
         });
         return nestedCategoriesPromise.promise;
+    };
+
+    this.resolveModCategories = function(mod) {
+        allCategories.then(function(categories) {
+            if (mod.primary_category_id) {
+                mod.primary_category =  service.getCategoryById(categories, mod.primary_category_id);
+            }
+
+            if (mod.secondary_category_id) {
+                mod.secondary_category = service.getCategoryById(categories, mod.secondary_category_id);
+            }
+        });
     };
 });

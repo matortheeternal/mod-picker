@@ -1,91 +1,92 @@
-app.service('modService', function(backend, $q, helpfulMarkService, userTitleService, categoryService, recordGroupService, assetUtils, errorsFactory) {
-    this.retrieveMod = function(modId) {
-      output = $q.defer();
-      backend.retrieve('/mods/' + modId).then(function(modObject) {
-        //get category objects with ids
-        categoryService.getCategoryById(modObject.mod.primary_category_id).then(function(primaryCategory) {
-          //set primary category on mod
-          modObject.mod.primary_category = primaryCategory;
-
-          categoryService.getCategoryById(modObject.mod.secondary_category_id).then(function(secondaryCategory) {
-            //set secondary category on mod
-            modObject.mod.secondary_category = secondaryCategory;
-
-            //resolve output after both categories are set
-            output.resolve(modObject);
-          });
+app.service('modService', function(backend, $q, userTitleService, recordGroupService, assetUtils, errorsFactory, pluginService, reviewSectionService, contributionService, pageUtils) {
+    this.retrieveMods = function(options, pageInformation) {
+        var action = $q.defer();
+        backend.post('/mods/index', options).then(function (data) {
+            pageUtils.getPageInformation(data, pageInformation, options.page);
+            action.resolve(data);
+        }, function(response) {
+            action.reject(response);
         });
-      });
-      return output.promise;
-    };
-
-    var pages = {
-        current: 1
-    };
-
-    this.retrieveMods = function(filters, sort, newPage) {
-        var mods = $q.defer();
-
-        if(newPage && newPage > pages.max) {
-            mods.reject();
-            return mods.promise;
-        }
-        pages.current = newPage || pages.current;
-
-        var postData =  {
-            filters: filters,
-            sort: sort,
-            page: pages.current
-        };
-        backend.post('/mods', postData).then(function (data) {
-            pages.max = Math.ceil(data.max_entries / data.entries_per_page);
-            mods.resolve({
-                mods: data.mods,
-                pageInformation: pages
-            });
-        });
-        return mods.promise;
+        return action.promise;
     };
 
     this.searchMods = function(name) {
-        var mods = $q.defer();
         var postData =  {
             filters: {
                 search: name
             }
         };
-        backend.post('/mods/search', postData).then(function (data) {
-            mods.resolve(data);
+        return backend.post('/mods/search', postData);
+    };
+    
+    this.retrieveMod = function(modId) {
+        var output = $q.defer();
+        backend.retrieve('/mods/' + modId).then(function(data) {
+            output.resolve(data);
+        }, function(response) {
+            output.reject(response);
         });
-        return mods.promise;
+        return output.promise;
+    };
+
+    this.editMod = function(modId) {
+        var output = $q.defer();
+        backend.retrieve('/mods/' + modId + '/edit').then(function(data) {
+            output.resolve(data);
+        }, function(response) {
+            output.reject(response);
+        });
+        return output.promise;
     };
 
     this.starMod = function(modId, starred) {
-        var star = $q.defer();
         if (starred) {
-            backend.delete('/mods/' + modId + '/star').then(function (data) {
-                star.resolve(data);
-            });
+            return backend.delete('/mods/' + modId + '/star');
         } else {
-            backend.post('/mods/' + modId + '/star', {}).then(function (data) {
-                star.resolve(data);
-            });
+            return backend.post('/mods/' + modId + '/star', {});
         }
-        return star.promise;
     };
 
-    this.retrieveAssociation = function(modId, name, options) {
+    this.retrieveModContributions = function(modId, route, options, pageInformation) {
         var action = $q.defer();
-        backend.retrieve('/mods/' + modId + '/' + name, options).then(function (data) {
-            var notes = data.reviews || data.compatibility_notes || data.load_order_notes || data.install_order_notes;
-            helpfulMarkService.associateHelpfulMarks(notes, data.helpful_marks);
-            userTitleService.associateTitles(notes);
-            action.resolve(notes);
+        backend.post('/mods/' + modId + '/' + route, options).then(function (data) {
+            var contributions = data[route];
+            contributionService.associateHelpfulMarks(contributions, data.helpful_marks);
+            contributionService.handleEditors(contributions);
+            userTitleService.associateTitles(contributions);
+            pageUtils.getPageInformation(data, pageInformation, options.page);
+            action.resolve(contributions);
+        }, function(response) {
+            action.reject(response);
         });
         return action.promise;
     };
 
-    this.retrieveAnalysis = function(modId, gameId) {
+    this.retrieveModReviews = function(modId, options, pageInformation) {
+        var action = $q.defer();
+        backend.post('/mods/' + modId + '/reviews', options).then(function(data) {
+            // prepare reviews
+            var reviews = data.reviews;
+            contributionService.associateHelpfulMarks(reviews, data.helpful_marks);
+            userTitleService.associateTitles(reviews);
+            reviewSectionService.associateReviewSections(reviews);
+            pageUtils.getPageInformation(data, pageInformation, options.page);
+            // prepare user review if present
+            if (data.user_review && data.user_review.id) {
+                var user_review = [data.user_review];
+                contributionService.associateHelpfulMarks(user_review, data.helpful_marks);
+                userTitleService.associateTitles(user_review);
+                reviewSectionService.associateReviewSections(user_review);
+            }
+            // resolve data
+            action.resolve({ reviews: data.reviews, user_review: data.user_review });
+        }, function(response) {
+            action.reject(response);
+        });
+        return action.promise;
+    };
+
+    this.retrieveModAnalysis = function(modId) {
         var output = $q.defer();
         backend.retrieve('/mods/' + modId + '/' + 'analysis').then(function (analysis) {
             // turn assets into an array of string
@@ -95,34 +96,15 @@ app.service('modService', function(backend, $q, helpfulMarkService, userTitleSer
             // create nestedAssets tree
             analysis.nestedAssets = assetUtils.convertDataStringToNestedObject(analysis.assets);
 
-            //associate groups with plugins
-            recordGroupService.associateGroups(analysis.plugins, gameId);
-
-            //combine dummy_masters array with masters array and sort the masters array
-            analysis.plugins.forEach(function(plugin) {
-                plugin.masters = plugin.masters.concat(plugin.dummy_masters);
-                plugin.masters.sort(function(first_master, second_master) {
-                    return first_master.index - second_master.index;
-                });
-
-                //associate overrides with their master file
-                plugin.masters.forEach(function(master) {
-                    master.overrides = [];
-                    plugin.overrides.forEach(function(override) {
-                        if (override.fid >= master.index * 0x01000000) {
-                            master.overrides.push(override);
-                        }
-                    });
-                });
-
-                //sort plugin errors
-                plugin.sortedErrors = errorsFactory.errorTypes();
-                plugin.plugin_errors.forEach(function(error) {
-                    plugin.sortedErrors[error.group].errors.push(error);
-                });
-            });
+            // prepare plugin data for display
+            recordGroupService.associateGroups(analysis.plugins);
+            pluginService.combineAndSortMasters(analysis.plugins);
+            pluginService.associateOverrides(analysis.plugins);
+            pluginService.sortErrors(analysis.plugins);
 
             output.resolve(analysis);
+        }, function(response) {
+            output.reject(response);
         });
         return output.promise;
     };

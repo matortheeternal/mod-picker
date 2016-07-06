@@ -1,7 +1,7 @@
 app.service('recordGroupService', function (backend, $q) {
-    var thisService = this;
-    this.retrieveRecordGroups = function (game_id) {
-        return backend.retrieve('/record_groups', {game_id: game_id});
+    var service = this;
+    this.retrieveRecordGroups = function () {
+        return backend.retrieve('/record_groups', {game_id: window._current_game_id});
     };
 
     this.getGroupFromSignature = function (recordGroups, sig) {
@@ -10,14 +10,17 @@ app.service('recordGroupService', function (backend, $q) {
         });
     };
 
-    this.associateGroups = function(plugins, game_id) {
-        thisService.retrieveRecordGroups(game_id).then(function(allGroups) {
+    // TODO: this is going to be a problem when we have multiple game modes on the site because this will be cached incorrectly, most likely
+    var allRecordGroups = this.retrieveRecordGroups();
+
+    this.associateGroups = function(plugins) {
+        allRecordGroups.then(function(allGroups) {
             plugins.forEach(function(plugin) {
                 if (plugin.plugin_record_groups) {
                     plugin.plugin_record_groups.forEach(function(group) {
-                        var record_group = thisService.getGroupFromSignature(allGroups, group.sig);
-                        plugin.name = record_group.name;
-                        plugin.child_group = record_group.child_group;
+                        var record_group = service.getGroupFromSignature(allGroups, group.sig);
+                        group.name = record_group.name;
+                        group.child_group = record_group.child_group;
                     });
                 }
             });

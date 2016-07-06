@@ -6,10 +6,11 @@ class HelpfulMark < ActiveRecord::Base
   scope :by, -> (id) { where(submitted_by: id) }
 
   belongs_to :helpfulable, :polymorphic => true
-  belongs_to :user, :foreign_key => 'submitted_by', :inverse_of => 'helpful_marks'
+  belongs_to :submitter, :class_name => 'User', :foreign_key => 'submitted_by', :inverse_of => 'helpful_marks'
 
   # Validation
-  validates :helpfulable_id, :helpfulable_type, presence: true
+  # :helpful's presence is not required because it will fail if :helpful == false
+  validates :submitted_by, :helpfulable_id, :helpfulable_type, presence: true
 
   validates :helpful, inclusion: {
     in: [true, false],
@@ -18,7 +19,7 @@ class HelpfulMark < ActiveRecord::Base
 
   validates :helpfulable_type, inclusion: {
     in: ["CompatibilityNote", "InstallOrderNote", "LoadOrderNote", "Review"],
-    message: "Not a valid record type that can contain helpful marks"
+    message: "Input helpfulable type does not support helpful marks"
   }
 
   # Callbacks
@@ -32,20 +33,28 @@ class HelpfulMark < ActiveRecord::Base
     end
 
     def decrement_counters
-      self.user.update_counter(:helpful_marks_count, -1)
+      self.submitter.update_counter(:helpful_marks_count, -1)
       if self.helpful
-        self.helpfulable.update_counter(:helpful_count, -1)
+        self.helpfulable.helpful_count -= 1
+        self.helpfulable.compute_reputation
+        self.helpfulable.update_columns(:helpful_count => self.helpfulable.helpful_count, :reputation => self.helpfulable.reputation)
       else
-        self.helpfulable.update_counter(:not_helpful_count, -1)
+        self.helpfulable.not_helpful_count -= 1
+        self.helpfulable.compute_reputation
+        self.helpfulable.update_columns(:not_helpful_count => self.helpfulable.not_helpful_count, :reputation => self.helpfulable.reputation)
       end
     end
 
     def increment_counters
-      self.user.update_counter(:helpful_marks_count, 1)
+      self.submitter.update_counter(:helpful_marks_count, 1)
       if self.helpful
-        self.helpfulable.update_counter(:helpful_count, 1)
+        self.helpfulable.helpful_count += 1
+        self.helpfulable.compute_reputation
+        self.helpfulable.update_columns(:helpful_count => self.helpfulable.helpful_count, :reputation => self.helpfulable.reputation)
       else
-        self.helpfulable.update_counter(:not_helpful_count, 1)
+        self.helpfulable.not_helpful_count += 1
+        self.helpfulable.compute_reputation
+        self.helpfulable.update_columns(:not_helpful_count => self.helpfulable.not_helpful_count, :reputation => self.helpfulable.reputation)
       end
     end
 end

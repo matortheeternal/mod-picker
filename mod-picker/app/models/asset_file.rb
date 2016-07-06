@@ -7,7 +7,7 @@ class AssetFile < ActiveRecord::Base
   has_many :mods, :through => 'mod_asset_files', :inverse_of => 'asset_files'
 
   # Validations
-  validates :filepath, :game_id, presence: true
+  validates :game_id, :filepath, presence: true
 
   def self.as_json(options={})
     if JsonHelpers.json_options_empty(options)

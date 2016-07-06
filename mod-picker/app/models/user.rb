@@ -1,12 +1,12 @@
 class User < ActiveRecord::Base
-  include Filterable, RecordEnhancements
+  include Filterable, Sortable, RecordEnhancements
 
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :invitable, :database_authenticatable, :registerable, :confirmable,
          :recoverable, :rememberable, :trackable, :validatable
 
-  scope :search, -> (search) { joins(:bio).where("username like ? OR nexus_username like ? OR lover_username like ? OR steam_username like ?", "#{search}%", "#{search}%", "#{search}%", "#{search}%") }
+  scope :search, -> (search) { joins(:bio).where("username like ? OR nexus_username like ? OR lover_username like ? OR workshop_username like ?", "#{search}%", "#{search}%", "#{search}%", "#{search}%") }
   scope :joined, -> (low, high) { where(joined: (low..high)) }
   scope :last_seen, -> (low, high) { where(last_sign_in_at: (low..high)) }
   scope :level, -> (hash) { where(user_level: hash) }
@@ -25,27 +25,30 @@ class User < ActiveRecord::Base
   has_one :bio, :class_name => 'UserBio', :dependent => :destroy
   has_one :reputation, :class_name => 'UserReputation', :dependent => :destroy
 
-  has_many :help_pages, :foreign_key => 'submitted_by', :inverse_of => 'user'
-  has_many :comments, :foreign_key => 'submitted_by', :inverse_of => 'user'
-  has_many :install_order_notes, :foreign_key => 'submitted_by', :inverse_of => 'user'
-  has_many :load_order_notes, :foreign_key => 'submitted_by', :inverse_of => 'user'
-  has_many :compatibility_notes, :foreign_key => 'submitted_by', :inverse_of => 'user'
-  has_many :reviews, :foreign_key => 'submitted_by', :inverse_of => 'user'
-  has_many :corrections, :foreign_key => 'submitted_by', :inverse_of => 'user'
-  has_many :agreement_marks, :foreign_key => 'submitted_by', :inverse_of => 'user'
-  has_many :helpful_marks, :foreign_key => 'submitted_by', :inverse_of => 'user'
+  has_many :articles, :foreign_key => 'submitted_by', :inverse_of => 'submitter'
+  has_many :help_pages, :foreign_key => 'submitted_by', :inverse_of => 'submitter'
+  has_many :comments, :foreign_key => 'submitted_by', :inverse_of => 'submitter'
+  has_many :install_order_notes, :foreign_key => 'submitted_by', :inverse_of => 'submitter'
+  has_many :load_order_notes, :foreign_key => 'submitted_by', :inverse_of => 'submitter'
+  has_many :compatibility_notes, :foreign_key => 'submitted_by', :inverse_of => 'submitter'
+  has_many :reviews, :foreign_key => 'submitted_by', :inverse_of => 'submitter'
+  has_many :corrections, :foreign_key => 'submitted_by', :inverse_of => 'submitter'
+  has_many :agreement_marks, :foreign_key => 'submitted_by', :inverse_of => 'submitter'
+  has_many :helpful_marks, :foreign_key => 'submitted_by', :inverse_of => 'submitter'
 
-  has_many :compatibility_note_history_entries, :foreign_key => 'submitted_by', :inverse_of => 'user'
+  has_many :compatibility_note_history_entries, :foreign_key => 'submitted_by', :inverse_of => 'submitter'
+  has_many :install_order_note_history_entries, :foreign_key => 'submitted_by', :inverse_of => 'submitter'
+  has_many :load_order_note_history_entries, :foreign_key => 'submitted_by', :inverse_of => 'submitter'
 
-  has_many :tags, :foreign_key => 'submitted_by', :inverse_of => 'user'
-  has_many :mod_tags, :foreign_key => 'submitted_by', :inverse_of => 'user'
-  has_many :mod_list_tags, :foreign_key => 'submitted_by', :inverse_of => 'user'
+  has_many :tags, :foreign_key => 'submitted_by', :inverse_of => 'submitter'
+  has_many :mod_tags, :foreign_key => 'submitted_by', :inverse_of => 'submitter'
+  has_many :mod_list_tags, :foreign_key => 'submitted_by', :inverse_of => 'submitter'
 
-  has_many :submitted_mods, :class_name => 'Mod', :foreign_key => 'submitted_by', :inverse_of => 'user'
+  has_many :submitted_mods, :class_name => 'Mod', :foreign_key => 'submitted_by', :inverse_of => 'submitter'
 
   has_many :mod_authors, :inverse_of => 'user'
   has_many :mods, :through => 'mod_authors', :inverse_of => 'author_users'
-  has_many :mod_lists, :foreign_key => 'submitted_by', :inverse_of => 'user'
+  has_many :mod_lists, :foreign_key => 'submitted_by', :inverse_of => 'submitter'
 
   belongs_to :active_mod_list, :class_name => 'ModList', :foreign_key => 'active_mod_list_id'
 
@@ -55,37 +58,26 @@ class User < ActiveRecord::Base
   has_many :mod_list_stars, :inverse_of => 'user'
   has_many :starred_mod_lists, :through => 'mod_list_stars'
 
-  has_many :profile_comments, :class_name => 'Comment', :as => 'commentable'
-  has_many :reports, :inverse_of => 'user'
+  has_many :profile_comments, -> { where(parent_id: nil) }, :class_name => 'Comment', :as => 'commentable'
+  has_many :reports, :foreign_key => 'submitted_by', :inverse_of => 'submitter'
   has_one :base_report, :as => 'reportable'
 
   accepts_nested_attributes_for :settings
   accepts_nested_attributes_for :bio
 
   # Validations
-  validates :username, presence: true, uniqueness: { case_sensitive: false }, length: {in: 4..20 }
+  validates :username, :email, :role, presence: true
+  validates :username, uniqueness: { case_sensitive: false }, length: {in: 4..32 }
 
   # TODO: add email regex
   # basic one, minimize false negatives and confirm users via email confirmation regardless
-  validates :email, presence: true, uniqueness: { case_sensitive: false }, length: {in: 7..254}
-  # format: {
-  # with: VALID_EMAIL_REGEX,
-  # message: must be a valid email address format
-  # }
-  
-  validates :role, presence: true
+  validates :email, uniqueness: { case_sensitive: false }, length: {in: 7..255}
+
   validates :about_me, length: {maximum: 16384}
-  validate :validate_username
 
   # Callbacks
   after_create :create_associations
   after_initialize :init
-
-  def validate_username
-    if User.where(email: username).exists?
-      errors.add(:username, :invalid)
-    end
-  end
 
   def avatar
     png_path = File.join(Rails.public_path, "avatars/#{id}.png")
@@ -120,6 +112,10 @@ class User < ActiveRecord::Base
 
   def moderator?
     self.role.to_sym == :moderator
+  end
+
+  def can_moderate?
+    self.admin? || self.moderator?
   end
 
   def banned?

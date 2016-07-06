@@ -1,45 +1,59 @@
 class CorrectionsController < ApplicationController
-  before_action :set_correction, only: [:show, :edit, :update, :destroy]
+  before_action :set_correction, only: [:show, :update, :comments, :hide, :destroy]
 
   # GET /corrections
-  # GET /corrections.json
   def index
-    @corrections = Correction.filter(filtering_params)
+    @corrections = Correction.accessible_by(current_ability).filter(filtering_params)
 
     render :json => @corrections
   end
 
   # GET /corrections/1
-  # GET /corrections/1.json
   def show
+    authorize! :read, @correction
     render :json => @correction
   end
 
-  # GET /corrections/new
-  def new
-    @correction = Correction.new
-  end
-
-  # GET /corrections/1/edit
-  def edit
-  end
-
   # POST /corrections
-  # POST /corrections.json
   def create
     @correction = Correction.new(correction_params)
+    @correction.submitted_by = current_user.id
+    authorize! :create, @correction
 
     if @correction.save
+      render json: @correction.reload
+    else
+      render json: @correction.errors, status: :unprocessable_entity
+    end
+  end
+
+  # POST/GET /corrections/1/comments
+  def comments
+    authorize! :read, @correction
+    comments = @correction.comments.accessible_by(current_ability).sort(params[:sort]).paginate(:page => params[:page], :per_page => 10)
+    count = @correction.comments.accessible_by(current_ability).count
+    render :json => {
+        comments: comments,
+        max_entries: count,
+        entries_per_page: 10
+    }
+  end
+
+  # PATCH/PUT /corrections/1
+  def update
+    authorize! :update, @correction
+    if @correction.update(correction_params)
       render json: {status: :ok}
     else
       render json: @correction.errors, status: :unprocessable_entity
     end
   end
 
-  # PATCH/PUT /corrections/1
-  # PATCH/PUT /corrections/1.json
-  def update
-    if @correction.update(correction_params)
+  # POST /corrections/1/hide
+  def hide
+    authorize! :hide, @correction
+    @correction.hidden = params[:hidden]
+    if @correction.save
       render json: {status: :ok}
     else
       render json: @correction.errors, status: :unprocessable_entity
@@ -68,8 +82,8 @@ class CorrectionsController < ApplicationController
   end
 
   # DELETE /corrections/1
-  # DELETE /corrections/1.json
   def destroy
+    authorize! :destroy, @correction
     if @correction.destroy
       render json: {status: :ok}
     else
@@ -90,6 +104,6 @@ class CorrectionsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def correction_params
-      params.require(:correction).permit(:submitted_by, :reason, :correctable_id, :correctable_type)
+      params.require(:correction).permit(:game_id, :correctable_id, :correctable_type, :title, :text_body, :mod_status)
     end
 end
