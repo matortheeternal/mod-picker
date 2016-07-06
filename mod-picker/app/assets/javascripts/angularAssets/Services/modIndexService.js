@@ -51,6 +51,18 @@ app.service('modIndexService', function(filtersFactory) {
         return output.slice(0, -1);
     };
 
+    this.setFilterFromParam = function(filters, key, paramValue) {
+        if (paramValue) {
+            filters[key] = paramValue;
+        }
+    };
+
+    this.setListFilterFromParam = function(filters, key, paramValue) {
+        if (paramValue) {
+            filters[key] = paramValue.split(',');
+        }
+    };
+
     this.state = {
         stateName: 'base.mods',
         name: 'base.mods',
