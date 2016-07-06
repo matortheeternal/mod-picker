@@ -77,6 +77,33 @@ app.service('modIndexService', function(filtersFactory) {
         });
     };
 
+    this.getParamsFromFilters = function(filters, filterPrototypes) {
+        var params = {};
+        var setParams = function(protoFilter) {
+            // this is the filter values stored on the scope of the view
+            var filter = filters[protoFilter.data];
+            // if the filter has been set to a non-default value it will be defined
+            if (filter) {
+                // if the filter is a range filter, it will have a min and max value
+                if (filter.min && filter.max) {
+                    params[protoFilter.param] = filter.min + "-" + filter.max;
+                }
+                // else if the filter is an array, make it into a comma separate list
+                else if (filter.constructor === Array) {
+                    params[protoFilter.param] = filter.join(',');
+                }
+                // else the filter should be just a value
+                else {
+                    params[protoFilter.param] = filter.toString();
+                }
+            }
+        };
+
+        filterPrototypes.forEach(setParams);
+
+        return params;
+    };
+
     this.state = {
         stateName: 'base.mods',
         name: 'base.mods',
