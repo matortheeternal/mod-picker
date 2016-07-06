@@ -334,6 +334,9 @@ class ModsController < ApplicationController
       # pad filters with sources
       permitted_filters.each do |key, value|
         if source_filters.include?(key.to_sym)
+          unless permitted_filters[key].is_a?(Hash)
+            permitted_filters[key] = { :value => permitted_filters[key] }
+          end
           permitted_filters[key][:sources] = sources
         end
       end
