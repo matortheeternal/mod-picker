@@ -58,6 +58,7 @@ class Mod < ActiveRecord::Base
   scope :stars, -> (range) { where(stars_count: (range[:min]..range[:max])) }
   scope :reviews, -> (range) { where(reviews_count: (range[:min]..range[:max])) }
   scope :rating, -> (range) { where(average_rating: (range[:min]..range[:max])) }
+  scope :reputation, -> (range) { where(reputation: (range[:min]..range[:max])) }
   scope :compatibility_notes, -> (range) { where(compatibility_notes_count: (range[:min]..range[:max])) }
   scope :install_order_notes, -> (range) { where(install_order_notes_count: (range[:min]..range[:max])) }
   scope :load_order_notes, -> (range) { where(load_order_notes_count: (range[:min]..range[:max])) }
