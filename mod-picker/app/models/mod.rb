@@ -64,13 +64,14 @@ class Mod < ActiveRecord::Base
   scope :load_order_notes, -> (range) { where(load_order_notes_count: (range[:min]..range[:max])) }
   # SHARED SCOPES (ALL)
   scope :author, -> (hash) {
-    author = hash[:author]
+    author = hash[:value]
     sources = hash[:sources]
 
     results = self.where(nil)
     results = results.where("nexus_infos.authors like ? OR nexus_infos.uploaded_by like ?", author, author) if sources[:nexus]
     results = results.where("lover_infos.uploaded_by like ?", author) if sources[:lab]
     results = results.where("workshop_infos.uploaded_by like ?", author) if sources[:workshop]
+    results = results.where("mods.authors like ?", author) if sources[:other]
     results
   }
   scope :views, -> (range) {
