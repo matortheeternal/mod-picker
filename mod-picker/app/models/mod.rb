@@ -53,7 +53,7 @@ class Mod < ActiveRecord::Base
   scope :released, -> (range) { where(released: parseDate(range[:min])..parseDate(range[:max])) }
   scope :updated, -> (range) { where(updated: parseDate(range[:min])..parseDate(range[:max])) }
   scope :categories, -> (categories) { where("primary_category_id IN (?) OR secondary_category_id IN (?)", categories, categories) }
-  scope :tags, -> (array) { joins(:tags).where(:tags => {text: array}) }
+  scope :tags, -> (array) { joins(:tags).where(:tags => {text: array}).having("COUNT(DISTINCT tags.text) = ?", array.length) }
   # MOD PICKER SCOPES
   scope :stars, -> (range) { where(stars_count: (range[:min]..range[:max])) }
   scope :reviews, -> (range) { where(reviews_count: (range[:min]..range[:max])) }
