@@ -77,7 +77,7 @@ app.service('indexService', function(filtersFactory) {
         });
     };
 
-    this.getParamsFromFilters = function(filters, filterPrototypes) {
+    this.getParamsFromSliderFilters = function(filters, filterPrototypes) {
         var params = {};
         var setParams = function(protoFilter) {
             // this is the filter values stored on the scope of the view
@@ -85,7 +85,7 @@ app.service('indexService', function(filtersFactory) {
             // if the filter has been set to a non-default value it will be defined
             if (filter) {
                 // if the filter is a range filter, it will have a min and max value
-                if (filter.min && filter.max) {
+                if (filter.hasOwnProperty('min') && filter.hasOwnProperty('max')) {
                     params[protoFilter.param] = filter.min + "-" + filter.max;
                 }
                 // else if the filter is an array, make it into a comma separate list

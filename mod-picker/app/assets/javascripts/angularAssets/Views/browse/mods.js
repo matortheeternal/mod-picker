@@ -134,7 +134,7 @@ app.controller('modsController', function($scope, $q, $stateParams, $state, modS
 
         // set url parameters
         if ($scope.filters && firstGet) {
-            var params = indexService.getParamsFromFilters($scope.filters, $scope.filterPrototypes);
+            var params = indexService.getParamsFromSliderFilters($scope.filters, $scope.filterPrototypes);
             $state.transitionTo('base.mods', params, { notify: false });
         }
     }, true);
