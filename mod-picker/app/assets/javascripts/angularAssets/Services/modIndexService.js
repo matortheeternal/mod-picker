@@ -63,6 +63,20 @@ app.service('modIndexService', function(filtersFactory) {
         }
     };
 
+    this.setSliderFiltersFromParams = function(filters, filterPrototypes, stateParams) {
+        filterPrototypes.forEach(function(filter) {
+            if (!stateParams[filter.param]) {
+                return;
+            }
+            var filterVals = stateParams[filter.param].split('-');
+
+            filters[filter.data] = {
+                min: parseInt(filterVals[0]),
+                max: parseInt(filterVals[1])
+            };
+        });
+    };
+
     this.state = {
         stateName: 'base.mods',
         name: 'base.mods',
