@@ -4,12 +4,15 @@ app.service('modIndexService', function() {
     this.getParams = function() {
         return {
             //column sort
-            sort: 'name',
-            direction: 'desc',
+            scol: 'name',
+            sdir: 'desc',
 
             //searches
-            'name-search': '',
-            'author-search': '',
+            n: '',
+            a: '',
+
+            //modlist compatibility filter
+            cf: true,
 
             //sources
             nm: true,
