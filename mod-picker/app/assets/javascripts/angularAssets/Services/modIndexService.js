@@ -1,8 +1,8 @@
-app.service('modIndexService', function() {
+app.service('modIndexService', function(filtersFactory) {
     var service = this;
 
     this.getParams = function() {
-        return {
+        var output = {
             //column sort
             scol: 'name',
             sdir: 'desc',
@@ -20,6 +20,33 @@ app.service('modIndexService', function() {
             ll: true,
             ot: true
         };
+        var setFilterParam = function(filter) {
+            output[filter.param] = '';
+        };
+
+        filtersFactory.modStatisticFilters().forEach(setFilterParam);
+        filtersFactory.modPickerFilters().forEach(setFilterParam);
+        filtersFactory.modDateFilters().forEach(setFilterParam);
+
+        return output;
+    };
+
+    var params = this.getParams();
+
+    this.getUrl = function() {
+        var output = '/mods?';
+        for (var property in params) {
+            if (params.hasOwnProperty(property)) {
+                if (typeof params[property] === 'string' || params[property] instanceof String) {
+                    output += property;
+                    output += '&';
+                } else {
+                    output += '{' + property + ':' + getShortTypeString(params[property]) + '}';
+                    output += '&';
+                }
+            }
+        }
+        return output.slice(0, -1);
     };
 
     this.state = {
@@ -27,10 +54,9 @@ app.service('modIndexService', function() {
         name: 'base.mods',
         templateUrl: '/resources/partials/browse/mods.html',
         controller: 'modsController',
-        url: '/mods?sort',
-        params: service.getParams(),
+        url: service.getUrl(),
+        params: params,
         type: 'lazy'
-
     };
 
 });
