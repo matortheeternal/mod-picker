@@ -12,14 +12,31 @@ app.controller('modsController', function($scope, $q, modService, sliderFactory,
     // initialize local variables
     $scope.filters = {
         sources: {
-            nexus: true,
-            lab: false,
-            workshop: false,
-            other: false
+            nexus: $stateParams.nm,
+            lab: $stateParams.ll,
+            workshop: $stateParams.sw,
+            other: $stateParams.ot
         },
         game: $scope.currentGame.id,
         adult: $scope.currentUser && $scope.currentUser.settings.allow_adult_content
     };
+
+    //load slider values from url parameters
+    var setSliderValues = function(filter) {
+        if (!$stateParams[filter.param]) {
+            return;
+        }
+        var filterVals = $stateParams[filter.param].split('-');
+
+        $scope.filters[filter.data] = {
+            min: parseInt(filterVals[0]),
+            max: parseInt(filterVals[1])
+        };
+    };
+    filtersFactory.modStatisticFilters().forEach(setSliderValues);
+    filtersFactory.modPickerFilters().forEach(setSliderValues);
+    filtersFactory.modDateFilters().forEach(setSliderValues);
+
     $scope.availableColumnData = ["nexus"];
     $scope.sort = {};
     $scope.pages = {};
