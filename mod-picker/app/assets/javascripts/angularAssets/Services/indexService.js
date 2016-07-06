@@ -1,4 +1,4 @@
-app.service('modIndexService', function(filtersFactory) {
+app.service('indexService', function(filtersFactory) {
     var service = this;
 
     this.getParams = function() {

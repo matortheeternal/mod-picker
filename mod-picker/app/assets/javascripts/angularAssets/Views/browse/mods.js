@@ -1,9 +1,9 @@
-app.run(function($futureState, modIndexService) {
+app.run(function($futureState, indexService) {
     // TODO: construct state here
-    $futureState.futureState(modIndexService.state);
+    $futureState.futureState(indexService.state);
 });
 
-app.controller('modsController', function($scope, $q, $stateParams, $state, modService, sliderFactory, columnsFactory, filtersFactory, currentUser, currentGame, modIndexService) {
+app.controller('modsController', function($scope, $q, $stateParams, $state, modService, sliderFactory, columnsFactory, filtersFactory, currentUser, currentGame, indexService) {
     $scope.$stateParams = $stateParams;
     // get parent variables
     $scope.currentUser = currentUser;
@@ -23,13 +23,13 @@ app.controller('modsController', function($scope, $q, $stateParams, $state, modS
         adult: $scope.currentUser && $scope.currentUser.settings.allow_adult_content
     };
     //load name and author from url parameters
-    modIndexService.setFilterFromParam($scope.filters, 'search', $stateParams.n);
-    modIndexService.setFilterFromParam($scope.filters, 'author', $stateParams.a);
+    indexService.setFilterFromParam($scope.filters, 'search', $stateParams.n);
+    indexService.setFilterFromParam($scope.filters, 'author', $stateParams.a);
     //load slider values from url parameters
-    modIndexService.setSliderFiltersFromParams($scope.filters, $scope.filterPrototypes, $stateParams);
+    indexService.setSliderFiltersFromParams($scope.filters, $scope.filterPrototypes, $stateParams);
     //load tags and categories from url parameters
-    modIndexService.setListFilterFromParam($scope.filters, 'tags', $stateParams.t);
-    modIndexService.setListFilterFromParam($scope.filters, 'categories', $stateParams.c);
+    indexService.setListFilterFromParam($scope.filters, 'tags', $stateParams.t);
+    indexService.setListFilterFromParam($scope.filters, 'categories', $stateParams.c);
 
     $scope.availableColumnData = ["nexus"];
     $scope.sort = {};
@@ -134,7 +134,7 @@ app.controller('modsController', function($scope, $q, $stateParams, $state, modS
 
         // set url parameters
         if ($scope.filters && firstGet) {
-            var params = modIndexService.getParamsFromFilters($scope.filters, $scope.filterPrototypes);
+            var params = indexService.getParamsFromFilters($scope.filters, $scope.filterPrototypes);
             $state.transitionTo('base.mods', params, { notify: false });
         }
     }, true);
