@@ -63,6 +63,18 @@ app.service('indexService', function(filtersFactory) {
         }
     };
 
+    this.setParamFromFilter = function(filters, key, params, paramKey) {
+        if (filters.hasOwnProperty(key)) {
+            params[paramKey] = filters[key];
+        }
+    };
+
+    this.setListParamFromFilter = function(filters, key, params, paramKey) {
+        if (filters.hasOwnProperty(key)) {
+            params[paramKey] = filters[key].join(',');
+        }
+    };
+
     this.setSliderFiltersFromParams = function(filters, filterPrototypes, stateParams) {
         filterPrototypes.forEach(function(filter) {
             if (!stateParams[filter.param]) {
