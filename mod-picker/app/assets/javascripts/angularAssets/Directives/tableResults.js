@@ -1,4 +1,4 @@
-app.directive('tableResults', function () {
+app.directive('tableResults', function() {
     return {
         restrict: 'E',
         templateUrl: '/resources/directives/tableResults.html',
@@ -18,10 +18,28 @@ app.directive('tableResults', function () {
 app.controller('tableResultsController', function($scope, objectUtils) {
     var sortedColumn;
 
+    if ($scope.sort.column) {
+        //find column defined in url params
+        var preSortedColumn = $scope.columns.find(function(column) {
+            return $scope.sort.column === column.data;
+        });
+
+        preSortedColumn.visibility = true;
+
+        switch ($scope.sort.direction) {
+            case 'asc':
+                preSortedColumn.up = true;
+                break;
+            case 'desc':
+                preSortedColumn.down = true;
+                break;
+        }
+    }
+
     // this function will toggle sorting for an input column between
     // up, down, and no sorting
     $scope.sortColumn = function(column) {
-        if(sortedColumn && sortedColumn !== column) {
+        if (sortedColumn && sortedColumn !== column) {
             sortedColumn.up = false;
             sortedColumn.down = false;
         }
