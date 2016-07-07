@@ -135,6 +135,18 @@ app.controller('modsController', function($scope, $q, $stateParams, $state, modS
         // set url parameters
         if ($scope.filters && firstGet) {
             var params = indexService.getParamsFromSliderFilters($scope.filters, $scope.filterPrototypes);
+
+            // set general params
+            indexService.setParamFromFilter($scope.filters.sources, 'nexus', params, 'nm');
+            indexService.setParamFromFilter($scope.filters.sources, 'lab', params, 'll');
+            indexService.setParamFromFilter($scope.filters.sources, 'workshop', params, 'sw');
+            indexService.setParamFromFilter($scope.filters.sources, 'other', params, 'ot');
+            indexService.setParamFromFilter($scope.filters, 'search', params, 'n');
+            indexService.setParamFromFilter($scope.filters, 'author', params, 'a');
+            indexService.setListParamFromFilter($scope.filters, 'tags', params, 't');
+            indexService.setListParamFromFilter($scope.filters, 'categories', params, 'c');
+
+            // transition to the new state
             $state.transitionTo('base.mods', params, { notify: false });
         }
     }, true);
