@@ -15,10 +15,10 @@ app.service('indexService', function(filtersFactory) {
             cf: true,
 
             //sources
-            nm: true,
-            sw: true,
-            ll: true,
-            ot: true,
+            nm: false,
+            sw: false,
+            ll: false,
+            ot: false,
             t: '',
             c: ''
         };
