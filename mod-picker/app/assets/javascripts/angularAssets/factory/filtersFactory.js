@@ -165,11 +165,13 @@ app.service("filtersFactory", function() {
         return [{
                 label: "Date Updated",
                 data: "updated",
+                type: "Date",
                 param: "du"
             },
             {
                 label: "Date Released",
                 data: "released",
+                type: "Date",
                 param: "dr"
             }
         ];

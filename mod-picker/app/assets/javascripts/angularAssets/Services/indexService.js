@@ -82,10 +82,18 @@ app.service('indexService', function(filtersFactory) {
             }
             var filterVals = stateParams[filter.param].split('-');
 
-            filters[filter.data] = {
-                min: parseInt(filterVals[0]),
-                max: parseInt(filterVals[1])
-            };
+            // special date filter handling
+            if (filter.type === 'Date') {
+                filters[filter.data] = {
+                    min: filterVals[0].replace(/\./g, "/"),
+                    max: filterVals[1].replace(/\./g, "/")
+                };
+            } else {
+                filters[filter.data] = {
+                    min: parseInt(filterVals[0]),
+                    max: parseInt(filterVals[1])
+                };
+            }
         });
     };
 
@@ -96,8 +104,12 @@ app.service('indexService', function(filtersFactory) {
             var filter = filters[protoFilter.data];
             // if the filter has been set to a non-default value it will be defined
             if (filter) {
+                // special handling for date slider filters
+                if (protoFilter.type === 'Date') {
+                    params[protoFilter.param] = (filter.min + "-" + filter.max).replace(/\//g, ".");
+                }
                 // if the filter is a range filter, it will have a min and max value
-                if (filter.hasOwnProperty('min') && filter.hasOwnProperty('max')) {
+                else if (filter.hasOwnProperty('min') && filter.hasOwnProperty('max')) {
                     params[protoFilter.param] = filter.min + "-" + filter.max;
                 }
                 // else if the filter is an array, make it into a comma separate list
