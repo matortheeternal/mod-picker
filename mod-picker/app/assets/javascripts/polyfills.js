@@ -38,13 +38,11 @@ function deleteEmptyProperties(obj, recurse) {
 
 function getShortTypeString(obj) {
     switch (typeof obj) {
-        case 'string':
-            return 'string';
-        case 'integer':
-            return 'int';
+        case 'number':
+            return (obj % 1 === 0) ? 'int' : 'float';
         case 'boolean':
             return 'bool';
         default:
-            return typeof obj;
+            return 'string';
     }
 }
