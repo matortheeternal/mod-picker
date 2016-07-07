@@ -22,9 +22,13 @@ app.controller('modsController', function($scope, $q, $stateParams, $state, modS
         game: $scope.currentGame.id,
         adult: $scope.currentUser && $scope.currentUser.settings.allow_adult_content
     };
+    $scope.sort = {};
+    $scope.pages = {};
     //load name and author from url parameters
     indexService.setFilterFromParam($scope.filters, 'search', $stateParams.n);
     indexService.setFilterFromParam($scope.filters, 'author', $stateParams.a);
+    indexService.setFilterFromParam($scope.sort, 'column', $stateParams.scol);
+    indexService.setFilterFromParam($scope.sort, 'direction', $stateParams.sdir);
     //load slider values from url parameters
     indexService.setSliderFiltersFromParams($scope.filters, $scope.filterPrototypes, $stateParams);
     //load tags and categories from url parameters
@@ -32,8 +36,6 @@ app.controller('modsController', function($scope, $q, $stateParams, $state, modS
     indexService.setListFilterFromParam($scope.filters, 'categories', $stateParams.c);
 
     $scope.availableColumnData = ["nexus"];
-    $scope.sort = {};
-    $scope.pages = {};
     $scope.columns = columnsFactory.modColumns();
     $scope.columnGroups = columnsFactory.modColumnGroups();
     $scope.actions = [{
@@ -133,7 +135,7 @@ app.controller('modsController', function($scope, $q, $stateParams, $state, modS
         }
 
         // set url parameters
-        if ($scope.filters && firstGet) {
+        if ($scope.filters && $scope.sort && firstGet) {
             var params = indexService.getParamsFromSliderFilters($scope.filters, $scope.filterPrototypes);
 
             // set general params
@@ -141,8 +143,13 @@ app.controller('modsController', function($scope, $q, $stateParams, $state, modS
             indexService.setParamFromFilter($scope.filters.sources, 'lab', params, 'll');
             indexService.setParamFromFilter($scope.filters.sources, 'workshop', params, 'sw');
             indexService.setParamFromFilter($scope.filters.sources, 'other', params, 'ot');
+
             indexService.setParamFromFilter($scope.filters, 'search', params, 'n');
             indexService.setParamFromFilter($scope.filters, 'author', params, 'a');
+
+            indexService.setParamFromFilter($scope.sort, 'column', params, 'scol');
+            indexService.setParamFromFilter($scope.sort, 'direction', params, 'sdir');
+
             indexService.setListParamFromFilter($scope.filters, 'tags', params, 't');
             indexService.setListParamFromFilter($scope.filters, 'categories', params, 'c');
 
