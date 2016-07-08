@@ -263,14 +263,15 @@ app.service('columnsFactory', function() {
                 label: "Username",
                 data: "username",
                 link: function(user) {
-                    return "#/profile/" + user.id
+                    return "#/user/" + user.id
                 }
             },
             {
                 group: "General",
                 visibility: true,
                 label: "Role",
-                data: "role"
+                data: "role",
+                filter: "humanize:1"
             },
             {
                 group: "General",
@@ -296,7 +297,8 @@ app.service('columnsFactory', function() {
                 group: "General",
                 visibility: true,
                 label: "Reputation",
-                data: "reputation.overall"
+                data: "reputation.overall",
+                filter: "number:0"
             },
             {
                 group: "Content Statistics",
