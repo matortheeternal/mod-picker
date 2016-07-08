@@ -54,7 +54,7 @@ app.config(['$stateProvider', function($stateProvider) {
                 templateUrl: '/resources/partials/userSettings/authoredMods.html',
             }
         },
-        url: '/authored-mods'
+        url: '/mods'
     });
 }]);
 

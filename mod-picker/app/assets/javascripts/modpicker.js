@@ -19,7 +19,7 @@ app.config(function($urlMatcherFactoryProvider) {
 });
 
 app.config(function($urlRouterProvider) {
-    $urlRouterProvider.otherwise('/');
+    $urlRouterProvider.otherwise('/home');
 });
 
 //this adds a redirectTo option into ui router, which makes default tabs much nicer

@@ -90,8 +90,19 @@ body {
   hyphens: auto;
 }
 
+//box shadow for containers
+.box-shadow {
+  box-shadow: 0 0 37px -30px $shadow_color;
+}
 
-/* utility classes */
+// box shadow spread fix for webkit
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+  .box-shadow {
+    box-shadow: 0 0 60px -30px $shadow_color;
+  }
+}
+
+  /* utility classes */
 .capitalize {
   text-transform: capitalize !important;
 }
@@ -191,12 +202,6 @@ h4 {
   color: $h4_color;
 }
 
-.logo {
-  h1 {
-    text-shadow: #000 1px 1px 4px;
-  }
-}
-
 /* button styling */
 input[type="button"], input[type="submit"] {
   display: inline;
@@ -291,8 +296,8 @@ input[type="button"], input[type="submit"] {
     margin-right: 2px;
   }
 
-  .selected-tab {
-    background-color: inherit;
+  a.selected-tab {
+    background-color: $secondary_background;
     cursor: default;
     color: $text_color;
   }
@@ -502,6 +507,10 @@ input[type="text"], input[type="email"], input[type="password"] {
   }
 }
 
+input[type="file"] {
+  display: none;
+}
+
 .CodeMirror {
   background-color: $input_background;
   color: $text_color;
@@ -579,6 +588,12 @@ form {
       margin-bottom: 0;
     }
 
+    .subsection {
+      display: block;
+      margin-bottom: 15px;
+      margin-top: 15px;
+    }
+
     section {
       margin-bottom: 15px;
       margin-top: 15px;
@@ -615,6 +630,10 @@ form {
       font-size: 13px;
       padding: 6px;
       height: 32px;
+    }
+
+    input.medium-text {
+      font-size: 16px;
     }
 
     input.short-input {

@@ -1,6 +1,7 @@
 class LoadOrderNote < ActiveRecord::Base
   include Filterable, Sortable, RecordEnhancements
 
+  scope :visible, -> { where(hidden: false, approved: true) }
   scope :by, -> (id) { where(submitted_by: id) }
   scope :plugin, -> (id) { where(first_plugin_id: id).or(second_plugin_id: id) }
 

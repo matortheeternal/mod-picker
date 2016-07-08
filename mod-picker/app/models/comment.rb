@@ -1,6 +1,7 @@
 class Comment < ActiveRecord::Base
   include Filterable, Sortable, RecordEnhancements
 
+  scope :visible, -> { where(hidden: false) }
   scope :type, -> (type) { where(commentable_type: type) }
   scope :target, -> (id) { where(commentable_id: id) }
   scope :by, -> (id) { where(submitted_by: id) }

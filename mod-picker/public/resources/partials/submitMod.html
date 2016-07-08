@@ -12,14 +12,22 @@
                     <select ng-model="source.label" ng-change="validateSource(source)" ng-disabled="source.scraped">
                         <option ng-repeat="site in sites" ng-if="!site.hidden">{{site.label}}</option>
                     </select>
-                    <input type="text" class="long-input" ng-model="source.url" ng-change="validateSource(source)" ng-disabled="source.scraped">
+                    <input type="text" class="long-input" ng-model="source.url" placeholder="Enter Source URL here" ng-change="validateSource(source)" ng-disabled="source.scraped">
                     <input type="button" class="btn scrape-button" value="Scrape" ng-click="scrapeSource(source)" ng-disabled="!source.valid || source.scraped">
-                    <span class="remove-item" ng-click="removeSource(source)" ng-if="$index > 0 && !source.scraped" title="Remove source">
+                    <span class="remove-item" ng-click="removeSource(source)" ng-if="($index > 0 || permissions.canUseCustomSources) && !source.scraped" title="Remove source">
+                        <i class="fa fa-times"></i>
+                    </span>
+                </div>
+                <div class="dynamic-item" ng-repeat="source in customSources">
+                    <input type="text" class="source-label" ng-model="source.label" ng-change="validateCustomSource(source)">
+                    <input type="text" class="long-input" ng-model="source.url" placeholder="Enter Source URL here" ng-change="validateCustomSource(source)">
+                    <span class="remove-item" ng-click="removeCustomSource(source)" title="Remove custom source">
                         <i class="fa fa-times"></i>
                     </span>
                 </div>
                 <!-- TODO: Fix this not hiding immediately -->
                 <input type="button" class="btn" value="Add Source" ng-click="addSource()" ng-show="sources.length < sites.length">
+                <input type="button" class="btn" value="Add Custom Source" ng-click="addCustomSource()" ng-show="permissions.canUseCustomSources">
 
                 <div class="scraped-data-container" ng-if="nexus || lab || workshop">
                     <div class="scraped-data" ng-if="nexus">
@@ -134,6 +142,42 @@
                 </div>
             </section>
 
+            <h3 class="section-title">General Info
+                <span class="help-tooltip" title="Information that cannot be fetched from scraping &#13;the mod pages.">?</span>
+            </h3>
+            <section>
+                <label class="subsection" ng-show="!sources.length || permissions.canSetGeneralModInfo">
+                    <span class="input-label">Mod Name</span>
+                    <span class="input-block">
+                        <input type="text" class="medium-text" ng-model="mod.name">
+                    </span>
+                </label>
+                <label class="subsection">
+                    <span class="input-label">Aliases</span>
+                    <span class="input-block">
+                        <input type="text" class="medium-text" ng-model="mod.aliases">
+                    </span>
+                </label>
+                <label class="subsection" ng-show="!sources.length || permissions.canSetGeneralModInfo">
+                    <span class="input-label">Authors</span>
+                    <span class="input-block">
+                        <input type="text" class="medium-text" ng-model="mod.authors">
+                    </span>
+                </label>
+                <label class="subsection" ng-show="!sources.length || permissions.canSetGeneralModInfo">
+                    <span class="input-label">Date Released</span>
+                    <span class="input-block">
+                        <input type="date" ng-model="mod.released">
+                    </span>
+                </label>
+                <label class="subsection" ng-show="!sources.length || permissions.canSetGeneralModInfo">
+                    <span class="input-label">Date Updated</span>
+                    <span class="input-block">
+                        <input type="date" ng-model="mod.updated">
+                    </span>
+                </label>
+            </section>
+
             <h3 class="section-title">
                 Mod Analysis
                 <!-- temporary github link, should link to a help page -->
@@ -142,15 +186,15 @@
                 </a>
             </h3>
             <section>
-                <div class="analysis-results" ng-show="analysis">
-                    <h4 class="subtitle" ng-show="analysis.nestedAssets">Asset File Tree</h4>
-                    <div class="subsection analysis-container" ng-show="analysis.nestedAssets">
-                        <asset-tree data="analysis.nestedAssets"></asset-tree>
+                <div class="analysis-results" ng-show="mod.analysis">
+                    <h4 class="subtitle" ng-show="mod.analysis.nestedAssets">Asset File Tree</h4>
+                    <div class="subsection analysis-container" ng-show="mod.analysis.nestedAssets">
+                        <asset-tree data="mod.analysis.nestedAssets"></asset-tree>
                     </div>
 
-                    <h4 class="subtitle" ng-show="analysis.plugins.length > 0">Plugin Analysis</h4>
-                    <div class="subsection analysis-container" ng-show="analysis.plugins.length > 0">
-                        <div class="plugin-analysis-item" ng-repeat="plugin in analysis.plugins">
+                    <h4 class="subtitle" ng-show="mod.analysis.plugins.length > 0">Plugin Analysis</h4>
+                    <div class="subsection analysis-container" ng-show="mod.analysis.plugins.length > 0">
+                        <div class="plugin-analysis-item" ng-repeat="plugin in mod.analysis.plugins">
                             <plugin-metadata plugin="plugin" show-record-groups="true"></plugin-metadata>
                         </div>
                     </div>
@@ -167,8 +211,8 @@
                 <span class="help-tooltip" title="Mods that are required for this mod to function.">?</span>
             </h3>
             <section>
-                <div class="dynamic-item" ng-repeat="requirement in requirements">
-                    <mod-input result-id="requirement.required_id" search-text="requirement.name" class="long-mod-input"></mod-input>
+                <div class="dynamic-item" ng-repeat="requirement in mod.requirements">
+                    <search-input search-type="mods" result-id="requirement.required_id" search-text="requirement.name" class="long-input"></search-input>
                     <span class="remove-item" ng-click="removeRequirement(requirement)" title="Remove requirement">
                         <i class="fa fa-times"></i>
                     </span>
@@ -182,7 +226,10 @@
                     <div ng-repeat="message in categoryMessages" class="category-message"
                          ng-class="message.klass">{{message.text}}</div>
                 </div>
-                <input type="button" id="check-categories-btn" class="btn" ng-click="checkCategories()" value="Check Categories">
+                <div class="category-buttons">
+                    <input type="button" class="btn" ng-click="checkCategories()" value="Check Categories">
+                    <input type="button" class="btn" ng-click="swapCategories()" value="Swap" title="Swap the primary and secondary categories" ng-disabled="mod.categories.length != 2">
+                </div>
             </section>
 
             <h3 class="section-title">Tags</h3>
@@ -206,7 +253,7 @@
             </section>
 
             <div class="action-button-container">
-                <input class="btn action-btn" type="submit" ng-disabled='submitting || modInvalid()' ng-click="submit()" value="Submit"/>
+                <input class="btn action-btn" type="submit" ng-disabled='submitting || !modValid()' ng-click="submit()" value="Submit"/>
             </div>
         </form>
     </div>

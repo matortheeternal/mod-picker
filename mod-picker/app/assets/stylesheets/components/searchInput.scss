@@ -1,4 +1,4 @@
-mod-input {
+search-input {
   position: relative;
 
   input[type="text"] {
@@ -32,18 +32,27 @@ mod-input {
   }
 }
 
-mod-input.long-mod-input {
-  input[type="text"] {
-    min-width: 400px;
-    max-width: 400px;
-    font-size: 13px;
-    padding: 6px;
-    height: 32px;
-    margin-left: 0;
-    margin-right: 4px;
+.dynamic-item {
+  search-input {
+    input[type="text"] {
+      min-width: 200px;
+      max-width: 200px;
+      font-size: 13px;
+      padding: 6px;
+      height: 32px;
+      margin-left: 0;
+      margin-right: 4px;
+    }
+
+    .dropdown {
+      left: 0;
+    }
   }
 
-  .dropdown {
-    left: 0;
+  search-input.long-input {
+    input[type="text"] {
+      min-width: 400px;
+      max-width: 400px;
+    }
   }
 }

@@ -1,12 +1,12 @@
 class User < ActiveRecord::Base
-  include Filterable, RecordEnhancements
+  include Filterable, Sortable, RecordEnhancements
 
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :invitable, :database_authenticatable, :registerable, :confirmable,
          :recoverable, :rememberable, :trackable, :validatable
 
-  scope :search, -> (search) { joins(:bio).where("username like ? OR nexus_username like ? OR lover_username like ? OR steam_username like ?", "#{search}%", "#{search}%", "#{search}%", "#{search}%") }
+  scope :search, -> (search) { joins(:bio).where("username like ? OR nexus_username like ? OR lover_username like ? OR workshop_username like ?", "#{search}%", "#{search}%", "#{search}%", "#{search}%") }
   scope :joined, -> (low, high) { where(joined: (low..high)) }
   scope :last_seen, -> (low, high) { where(last_sign_in_at: (low..high)) }
   scope :level, -> (hash) { where(user_level: hash) }
@@ -25,6 +25,7 @@ class User < ActiveRecord::Base
   has_one :bio, :class_name => 'UserBio', :dependent => :destroy
   has_one :reputation, :class_name => 'UserReputation', :dependent => :destroy
 
+  has_many :articles, :foreign_key => 'submitted_by', :inverse_of => 'submitter'
   has_many :help_pages, :foreign_key => 'submitted_by', :inverse_of => 'submitter'
   has_many :comments, :foreign_key => 'submitted_by', :inverse_of => 'submitter'
   has_many :install_order_notes, :foreign_key => 'submitted_by', :inverse_of => 'submitter'

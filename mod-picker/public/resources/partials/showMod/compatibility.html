@@ -45,16 +45,16 @@
                 <option value="make custom patch">Make Custom Patch for</option>
             </select>
         </span>
-        <mod-input result-id="activeCompatibilityNote.mod_id" search-text="activeCompatibilityNote.mod_name" excluded-id="mod.id" on-change="validateCompatibilityNote" disabled="activeCompatibilityNote.original"></mod-input>
+        <search-input search-type="mods" result-id="activeCompatibilityNote.mod_id" search-text="activeCompatibilityNote.mod_name" excluded-id="mod.id" on-change="validateCompatibilityNote" disabled="activeCompatibilityNote.original"></search-input>
     </div>
     <div class="content-options" ng-show="['compatibility mod', 'compatibility option'].indexOf(activeCompatibilityNote.status) > -1">
         <span ng-if="activeCompatibilityNote.status === 'compatibility mod'">
             <strong>Compatibility Mod</strong>
-            <mod-input result-id="activeCompatibilityNote.compatibility_mod_id" excluded-id="mod.id" on-change="validateCompatibilityNote"></mod-input>
+            <search-input search-type="mods" result-id="activeCompatibilityNote.compatibility_mod_id" excluded-id="mod.id" on-change="validateCompatibilityNote"></search-input>
         </span>
         <span ng-if="activeCompatibilityNote.status === 'compatibility option'">
             <strong>Compatibility Plugin</strong>
-            <mod-input result-id="activeCompatibilityNote.compatibility_plugin_id" search-plugins="true" on-change="validateCompatibilityNote"></mod-input>
+            <search-input search-type="plugins" result-id="activeCompatibilityNote.compatibility_plugin_id" on-change="validateCompatibilityNote"></search-input>
         </span>
     </div>
     <div class="content-container">

@@ -22,6 +22,15 @@ app.service('userService', function (backend, $q, userSettingsService, userTitle
         return output.promise;
     };
 
+    this.searchUsers = function(username) {
+        var postData =  {
+            filters: {
+                search: username
+            }
+        };
+        return backend.post('/users/search', postData);
+    };
+
     this.retrieveCurrentUser = function() {
         var output = $q.defer();
         backend.retrieve('/current_user').then(function (userData) {
@@ -51,6 +60,8 @@ app.service('userService', function (backend, $q, userSettingsService, userTitle
         // TODO: Remove this when beta is over
         permissions.canSubmitMod = true;
         //permissions.canSubmitMod = permissions.isAdmin || permissions.isModerator || user.reputation.overall > 160;
+        permissions.canUseCustomSources = permissions.isAdmin || permissions.isModerator;
+        permissions.canSetGeneralModInfo = permissions.isAdmin || permissions.isModerator;
         permissions.canChangeAvatar = (rep >= 10) || permissions.isAdmin || permissions.isModerator;
         permissions.canChangeTitle = (rep >= 1280) || permissions.isAdmin || permissions.isModerator;
         permissions.canCreateTags = (rep >= 20) || permissions.isAdmin || permissions.isModerator;

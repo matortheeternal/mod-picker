@@ -1,5 +1,5 @@
 class ModsController < ApplicationController
-  before_action :set_mod, only: [:update, :update_tags, :corrections, :reviews, :compatibility_notes, :install_order_notes, :load_order_notes, :analysis, :destroy]
+  before_action :set_mod, only: [:update, :update_tags, :image, :corrections, :reviews, :compatibility_notes, :install_order_notes, :load_order_notes, :analysis, :destroy]
 
   # POST /mods
   # TODO: Adult content filtering
@@ -35,13 +35,22 @@ class ModsController < ApplicationController
     }
   end
 
+  # GET /mods/1/edit
+  def edit
+    @mod = Mod.find(params[:id])
+    authorize! :update, @mod
+    render :json => @mod.edit_json
+  end
+
   # POST /mods/submit
   def create
     @mod = Mod.new(mod_params)
     @mod.submitted_by = current_user.id
     authorize! :create, @mod
+    authorize! :assign_custom_sources, @mod if params[:mod][:custom_sources_attributes]
 
     if @mod.save
+      @mod.update_metrics
       render json: {status: :ok}
     else
       render json: @mod.errors, status: :unprocessable_entity
@@ -51,7 +60,16 @@ class ModsController < ApplicationController
   # PATCH/PUT /mods/1
   def update
     authorize! :update, @mod
-    if @mod.update(mod_params)
+    authorize! :assign_authors, @mod if params[:mod][:mod_authors_attributes]
+
+    # destroy associations as needed
+    if params[:mod][:plugin_dumps] || params[:mod][:asset_paths]
+      @mod.mod_asset_files.destroy_all
+      @mod.plugins.destroy_all
+    end
+
+    if @mod.update(mod_update_params)
+      @mod.update_metrics
       render json: {status: :ok}
     else
       render json: @mod.errors, status: :unprocessable_entity
@@ -100,6 +118,18 @@ class ModsController < ApplicationController
       render json: {status: :ok, tags: @mod.tags}
     else
       render json: {errors: errors, status: :unprocessable_entity, tags: @mod.tags}
+    end
+  end
+
+  # POST /mods/1/image
+  def image
+    authorize! :update, @mod
+    @mod.image_file = params[:image]
+
+    if @mod.save
+      render json: {status: :ok}
+    else
+      render json: @mod.errors, status: :unprocessable_entity
     end
   end
 
@@ -313,9 +343,23 @@ class ModsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def mod_params
-      params.require(:mod).permit(:game_id, :name, :authors, :aliases, :is_utility, :has_adult_content, :primary_category_id, :secondary_category_id, :released, :nexus_info_id, :lovers_info_id, :workshop_info_id,
+      params.require(:mod).permit(:game_id, :name, :authors, :aliases, :is_utility, :has_adult_content, :primary_category_id, :secondary_category_id, :released, :updated, :nexus_info_id, :lovers_info_id, :workshop_info_id,
          :custom_sources_attributes => [:label, :url],
          :required_mods_attributes => [:required_id],
+         :tag_names => [],
+         :asset_paths => [],
+         :plugin_dumps => [:filename, :author, :description, :crc_hash, :record_count, :override_count, :file_size,
+           :master_plugins => [:filename, :crc_hash],
+           :plugin_record_groups_attributes => [:sig, :record_count, :override_count],
+           :plugin_errors_attributes => [:signature, :form_id, :group, :path, :name, :data],
+           :overrides_attributes => [:fid, :sig]])
+    end
+
+    def mod_update_params
+      params.require(:mod).permit(:name, :authors, :aliases, :is_utility, :has_adult_content, :primary_category_id, :secondary_category_id, :released, :updated, :nexus_info_id, :lovers_info_id, :workshop_info_id,
+         :required_mods_attributes => [:id, :required_id, :_destroy],
+         :mod_authors_attributes => [:id, :role, :user_id, :_destroy],
+         :custom_sources_attributes => [:id, :label, :url, :_destroy],
          :tag_names => [],
          :asset_paths => [],
          :plugin_dumps => [:filename, :author, :description, :crc_hash, :record_count, :override_count, :file_size,

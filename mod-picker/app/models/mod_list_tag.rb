@@ -7,6 +7,8 @@ class ModListTag < ActiveRecord::Base
 
   # Validations
   validates :mod_list_id, :tag_id, :submitted_by, presence: true
+  # can only use a tag on a given mod list once
+  validates :tag_id, uniqueness: { scope: :mod_list_id, :message => "This tag already exists on this mod list." }
 
   # Callbacks
   after_create :increment_counters

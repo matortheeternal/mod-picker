@@ -1,6 +1,7 @@
 class InstallOrderNote < ActiveRecord::Base
   include Filterable, Sortable, RecordEnhancements
 
+  scope :visible, -> { where(hidden: false, approved: true) }
   scope :by, -> (id) { where(submitted_by: id) }
   scope :mod, -> (id) { where(first_mod_id: id).or(second_mod_id: id) }
 

@@ -1,7 +1,7 @@
 class Mod < ActiveRecord::Base
   include Filterable, Sortable, RecordEnhancements
 
-  attr_writer :tag_names, :asset_paths, :plugin_dumps, :nexus_info_id, :lover_info_id, :workshop_info_id
+  attr_writer :tag_names, :asset_paths, :plugin_dumps, :nexus_info_id, :lover_info_id, :workshop_info_id, :image_file
   enum status: [ :good, :outdated, :unstable ]
 
   # BOOLEAN SCOPES (excludes content when false)
@@ -24,13 +24,13 @@ class Mod < ActiveRecord::Base
   scope :sources, -> (sources) {
     results = self.where(nil)
     whereClause = []
-    
+
     # nexus mods
     if sources[:nexus]
       results = results.includes(:nexus_infos).references(:nexus_infos)
       whereClause.push("nexus_infos.id IS NOT NULL")
     end
-    # lover's lab  
+    # lover's lab
     if sources[:lab]
       results = results.includes(:lover_infos).references(:lover_infos)
       whereClause.push("lover_infos.id IS NOT NULL")
@@ -45,7 +45,7 @@ class Mod < ActiveRecord::Base
       results = results.includes(:custom_sources).references(:custom_sources)
       whereClause.push("custom_sources.id IS NOT NULL")
     end
-    
+
     # require one selected source to be present
     results = results.where(whereClause.join(" OR "))
     results
@@ -170,10 +170,10 @@ class Mod < ActiveRecord::Base
   # requirements associated with the mod
   has_many :required_mods, :class_name => 'ModRequirement', :inverse_of => 'mod', :dependent => :destroy
   has_many :required_by, :class_name => 'ModRequirement', :inverse_of => 'required_mod', :dependent => :destroy
-  
+
   # users who can edit the mod
   has_many :mod_authors, :inverse_of => 'mod', :dependent => :destroy
-  has_many :author_users, :through => 'mod_authors', :inverse_of => 'mods'
+  has_many :author_users, :class_name => 'User', :through => 'mod_authors', :source => 'user', :inverse_of => 'mods'
 
   # community feedback on the mod
   has_many :corrections, :as => 'correctable'
@@ -201,7 +201,15 @@ class Mod < ActiveRecord::Base
   has_many :mod_list_mods, :inverse_of => 'mod', :dependent => :destroy
   has_many :mod_lists, :through => 'mod_list_mods', :inverse_of => 'mods'
 
-  accepts_nested_attributes_for :required_mods, :custom_sources
+  accepts_nested_attributes_for :custom_sources, allow_destroy: true
+  # cannot update required mods
+  accepts_nested_attributes_for :required_mods, reject_if: proc {
+      |attributes| attributes[:id] && !attributes[:_destroy]
+  }, allow_destroy: true
+  # can only update author role for an existing mod_author record
+  accepts_nested_attributes_for :mod_authors, reject_if: proc {
+      |attributes| attributes[:id] && attributes[:user_id] && !attributes[:_destroy]
+  }, allow_destroy: true
 
   self.per_page = 100
 
@@ -210,7 +218,8 @@ class Mod < ActiveRecord::Base
   validates :name, :aliases, length: {maximum: 128}
 
   # callbacks
-  after_create :create_associations, :update_metrics, :increment_counters
+  after_create :increment_counters
+  after_save :create_associations, :save_image
   before_destroy :decrement_counters
 
   def no_author?
@@ -304,7 +313,11 @@ class Mod < ActiveRecord::Base
       total += r.overall_rating
       count += 1
     end
-    self.average_rating = (total / count) if count > 0
+    if count > 0
+      self.average_rating = (total / count)
+    else
+      self.average_rating = 0
+    end
   end
 
   def compute_reputation
@@ -316,6 +329,39 @@ class Mod < ActiveRecord::Base
     else
       review_reputation = (self.average_rating / 100)**3 * (510.0 / (1 + Math::exp(-0.2 * (self.reviews_count - 10))) - 60)
       self.reputation = review_reputation
+    end
+  end
+
+  def delete_old_mod_images
+    png_path = Rails.root.join('public', 'mods', self.id.to_s + '.png')
+    jpg_path = Rails.root.join('public', 'mods', self.id.to_s + '.jpg')
+
+    if File.exist?(png_path)
+      File.delete(png_path)
+    end
+    if File.exist?(jpg_path)
+      File.delete(jpg_path)
+    end
+  end
+
+  def save_image
+    if @image_file
+      ext = File.extname(@image_file.original_filename)
+      local_filename = Rails.root.join('public', 'mods', self.id.to_s + ext)
+      if ext != '.png' && ext != '.jpg' # image must be png or jpg
+        self.errors.add(:image, 'Invalid image type, must be PNG or JPG')
+      elsif @image_file.size > 1048576 # 1 megabyte max file size
+        self.errors.add(:image, 'Image is too big')
+      else
+        begin
+          delete_old_mod_images
+          File.open(local_filename, 'wb') do |f|
+            f.write(@image_file.read)
+          end
+        rescue
+          self.errors.add(:image, 'Unknown failure')
+        end
+      end
     end
   end
 
@@ -356,6 +402,42 @@ class Mod < ActiveRecord::Base
     else
       '/mods/Default.png'
     end
+  end
+
+  def edit_json
+    self.as_json({
+       :include => {
+           :tags => {
+               :except => [:game_id, :hidden, :mod_lists_count],
+               :include => {
+                   :submitter => {
+                       :only => [:id, :username]
+                   }
+               }
+           },
+           :nexus_infos => {:only => [:id, :last_scraped]},
+           :workshop_infos => {:only => [:id, :last_scraped]},
+           :lover_infos => {:only => [:id, :last_scraped]},
+           :custom_sources => {:except => [:mod_id]},
+           :mod_authors => {
+               :only => [:id, :role, :user_id],
+               :include => {
+                   :user => {
+                       :only => [:username]
+                   }
+               }
+           },
+           :required_mods => {
+               :only => [:id],
+               :include => {
+                   :required_mod => {
+                       :only => [:id, :name]
+                   }
+               }
+           }
+       },
+       :methods => :image
+    })
   end
 
   def show_json
