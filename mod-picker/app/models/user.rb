@@ -12,18 +12,18 @@ class User < ActiveRecord::Base
   scope :search, -> (search) { where("username like ?", "#{search}%") }
   scope :linked, -> (search) { joins(:bio).where("nexus_username like ? OR lover_username like ? OR workshop_username like ?", "#{search}%", "#{search}%", "#{search}%") }
   scope :roles, -> (roles) { where(role: roles) }
-  scope :reputation, -> (range) { where(:reputation => {:overall => range}) }
+  scope :reputation, -> (range) { joins(:reputation).where(:user_reputations => {:overall => range[:min]..range[:max]}) }
   scope :joined, -> (range) { where(joined: parseDate(range[:min])..parseDate(range[:max])) }
   scope :last_seen, -> (range) { where(last_sign_in_at: parseDate(range[:min])..parseDate(range[:max])) }
   # STATISTIC SCOPES
-  scope :authored_mods, -> (range) { where(authored_mods_count: range) }
-  scope :mod_lists, -> (range) { where(mod_lists_count: range) }
-  scope :comments, -> (range) { where(comments_count: range) }
-  scope :reviews, -> (range) { where(reviews_count: range) }
-  scope :compatibility_notes, -> (range) { where(compatibility_notes_count: range) }
-  scope :install_order_notes, -> (range) { where(install_order_notes_count: range) }
-  scope :load_order_notes, -> (range) { where(load_order_notes_count: range) }
-  scope :corrections, -> (range) { where(corrections_count: range) }
+  scope :authored_mods, -> (range) { where(authored_mods_count: range[:min]..range[:max]) }
+  scope :mod_lists, -> (range) { where(mod_lists_count: range[:min]..range[:max]) }
+  scope :comments, -> (range) { where(comments_count: range[:min]..range[:max]) }
+  scope :reviews, -> (range) { where(reviews_count: range[:min]..range[:max]) }
+  scope :compatibility_notes, -> (range) { where(compatibility_notes_count: range[:min]..range[:max]) }
+  scope :install_order_notes, -> (range) { where(install_order_notes_count: range[:min]..range[:max]) }
+  scope :load_order_notes, -> (range) { where(load_order_notes_count: range[:min]..range[:max]) }
+  scope :corrections, -> (range) { where(corrections_count: range[:min]..range[:max]) }
 
   # ASSOCIATIONS
   has_one :settings, :class_name => 'UserSetting', :dependent => :destroy
