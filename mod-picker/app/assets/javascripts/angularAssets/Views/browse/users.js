@@ -12,7 +12,6 @@ app.run(function($futureState, indexService, filtersFactory) {
         //roles
         adm: false,
         mod: false,
-        vip: false,
         ma: false,
         usr: false
     };
@@ -57,7 +56,6 @@ app.controller('usersController', function ($scope, $q, $stateParams, $state, us
         roles: {
             admin: $stateParams.adm,
             moderator: $stateParams.mod,
-            vip: $stateParams.vip,
             mod_author: $stateParams.ma,
             user: $stateParams.usr
         }
@@ -148,7 +146,6 @@ app.controller('usersController', function ($scope, $q, $stateParams, $state, us
             // set general params
             indexService.setParamFromFilter($scope.filters.roles, 'admin', params, 'adm');
             indexService.setParamFromFilter($scope.filters.roles, 'moderator', params, 'mod');
-            indexService.setParamFromFilter($scope.filters.roles, 'vip', params, 'vip');
             indexService.setParamFromFilter($scope.filters.roles, 'mod_author', params, 'ma');
             indexService.setParamFromFilter($scope.filters.roles, 'user', params, 'usr');
             indexService.setParamFromFilter($scope.filters, 'search', params, 'q');
