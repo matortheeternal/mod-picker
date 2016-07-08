@@ -1,6 +1,44 @@
-app.run(function($futureState, indexService) {
-    // TODO: construct state here
-    $futureState.futureState(indexService.state);
+app.run(function($futureState, indexService, filtersFactory) {
+    // base params
+    var params = {
+        //column sort
+        scol: 'name',
+        sdir: 'desc',
+
+        //searches
+        n: '',
+        a: '',
+
+        //modlist compatibility filter
+        cf: true,
+
+        //sources
+        nm: false,
+        sw: false,
+        ll: false,
+        ot: false,
+        t: '',
+        c: ''
+    };
+
+    // build slider filter params
+    filtersFactory.modFilters().forEach(function(filter) {
+        params[filter.param] = '';
+    });
+
+    // construct state
+    var state = {
+        stateName: 'base.mods',
+        name: 'base.mods',
+        templateUrl: '/resources/partials/browse/mods.html',
+        controller: 'modsController',
+        url: indexService.getUrl(params),
+        params: params,
+        type: 'lazy'
+    };
+
+    // dynamically apply state
+    $futureState.futureState(state);
 });
 
 app.controller('modsController', function($scope, $q, $stateParams, $state, modService, sliderFactory, columnsFactory, filtersFactory, currentUser, currentGame, indexService) {

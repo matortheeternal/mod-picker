@@ -1,41 +1,5 @@
-app.service('indexService', function(filtersFactory) {
-    var service = this;
-
-    this.getParams = function() {
-        var output = {
-            //column sort
-            scol: 'name',
-            sdir: 'desc',
-
-            //searches
-            n: '',
-            a: '',
-
-            //modlist compatibility filter
-            cf: true,
-
-            //sources
-            nm: false,
-            sw: false,
-            ll: false,
-            ot: false,
-            t: '',
-            c: ''
-        };
-        var setFilterParam = function(filter) {
-            output[filter.param] = '';
-        };
-
-        filtersFactory.modStatisticFilters().forEach(setFilterParam);
-        filtersFactory.modPickerFilters().forEach(setFilterParam);
-        filtersFactory.modDateFilters().forEach(setFilterParam);
-
-        return output;
-    };
-
-    var params = this.getParams();
-
-    this.getUrl = function() {
+app.service('indexService', function() {
+    this.getUrl = function(params) {
         var output = '/mods?';
         for (var property in params) {
             if (params.hasOwnProperty(property)) {
@@ -127,15 +91,4 @@ app.service('indexService', function(filtersFactory) {
 
         return params;
     };
-
-    this.state = {
-        stateName: 'base.mods',
-        name: 'base.mods',
-        templateUrl: '/resources/partials/browse/mods.html',
-        controller: 'modsController',
-        url: service.getUrl(),
-        params: params,
-        type: 'lazy'
-    };
-
 });
