@@ -56,7 +56,7 @@ app.controller('usersController', function ($scope, $q, $stateParams, $state, us
         roles: {
             admin: $stateParams.adm,
             moderator: $stateParams.mod,
-            mod_author: $stateParams.ma,
+            author: $stateParams.ma,
             user: $stateParams.usr
         }
     };
@@ -116,7 +116,7 @@ app.controller('usersController', function ($scope, $q, $stateParams, $state, us
             // set general params
             indexService.setParamFromFilter($scope.filters.roles, 'admin', params, 'adm');
             indexService.setParamFromFilter($scope.filters.roles, 'moderator', params, 'mod');
-            indexService.setParamFromFilter($scope.filters.roles, 'mod_author', params, 'ma');
+            indexService.setParamFromFilter($scope.filters.roles, 'author', params, 'ma');
             indexService.setParamFromFilter($scope.filters.roles, 'user', params, 'usr');
             indexService.setParamFromFilter($scope.filters, 'search', params, 'q');
             indexService.setParamFromFilter($scope.filters, 'linked', params, 'l');
