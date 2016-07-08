@@ -4,13 +4,18 @@ Rails.application.routes.draw do
 
   # require authentication before allowing user to access any resources
   authenticate :user do
-    # users and user settings
-    resources :users, only: [:index, :show, :update, :destroy]
-    match '/current_user', to: 'users#current', via: [:get]
-    match '/users/:id/comments', to: 'users#comments', via: [:get, :post]
-    resources :user_settings, only: [:index, :update]
-    match '/link_account', to: 'users#link_account', via: [:get]
+    # users
+    resources :users, only: [:show, :update, :destroy]
+    match '/users/index', to: 'users#index', via: [:get, :post]
     match '/users/search', to: 'users#search', via: [:post]
+    match '/current_user', to: 'users#current', via: [:get]
+
+    # user associations
+    match '/users/:id/comments', to: 'users#comments', via: [:get, :post]
+    match '/link_account', to: 'users#link_account', via: [:get]
+
+    # user settings
+    resources :user_settings, only: [:index, :update]
 
     # scraping
     resources :nexus_infos, only: [:show, :destroy]
