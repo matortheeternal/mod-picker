@@ -3,9 +3,14 @@ class UsersController < ApplicationController
 
   # GET /users
   def index
-    @users = User.filter(filtering_params)
+    @users = User.includes(:reputation).accessible_by(current_ability).filter(filtering_params).sort(params[:sort]).paginate(:page => params[:page])
+    count =  User.accessible_by(current_ability).filter(filtering_params).count
 
-    render :json => @users
+    render :json => {
+        users: @users.as_json,
+        max_entries: count,
+        entries_per_page: User.per_page
+    }
   end
 
   # GET /current_user
