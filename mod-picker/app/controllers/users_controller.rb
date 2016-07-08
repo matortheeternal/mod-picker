@@ -97,7 +97,8 @@ class UsersController < ApplicationController
 
     # Params we allow filtering on
     def filtering_params
-      params.slice(:search, :joined, :level, :rep, :mods, :cnotes, :inotes, :reviews, :nnotes, :comments, :mod_lists);
+      params[:filters].slice(:search, :linked, :reputation, :joined, :last_seen, :authored_mods, :mod_lists, :comments, :reviews, :compatibility_notes, :install_order_notes, :load_order_notes, :corrections,
+         :roles => [:admin, :moderator, :mod_author, :user])
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
