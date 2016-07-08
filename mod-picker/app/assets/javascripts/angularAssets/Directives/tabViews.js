@@ -1,7 +1,6 @@
 app.directive('tabViews', function() {
     return {
         restrict: 'E',
-        templateUrl: '/resources/directives/tabViews.html',
-        scope: true
+        templateUrl: '/resources/directives/tabViews.html'
     };
 });
