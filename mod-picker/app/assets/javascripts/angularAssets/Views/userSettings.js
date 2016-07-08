@@ -48,6 +48,7 @@ app.config(['$stateProvider', function($stateProvider) {
         views: {
             'Mod Lists': {
                 templateUrl: '/resources/partials/userSettings/modlists.html',
+                controller: 'userSettingsModlistsController',
             }
         },
         url: '/mod-lists'
@@ -77,6 +78,48 @@ app.controller('userSettingsController', function($scope, $q, user, currentUser,
         { name: 'Mod Lists' },
         { name: 'Authored Mods' },
     ];
+
+    /* settings submission */
+    $scope.submit = function() {
+        $scope.errors = [];
+
+        //TODO: I feel like this redundancy can be killed
+        // @R79: I was thinking the same thing earlier today. -Mator
+        userSettingsService.submitUser($scope.user).then(function(data) {
+            if (data.status !== "ok") {
+                $scope.errors.concat(data.errors);
+            }
+            $scope.showSuccess = $scope.errors.length == 0;
+        });
+        userSettingsService.submitUserSettings($scope.userSettings).then(function(data) {
+            if (data.status !== "ok") {
+                $scope.errors.concat(data.errors);
+            } else {
+                $scope.showSuccess = $scope.errors.length == 0;
+                $scope.updateTheme();
+                $scope.$emit('reloadCurrentUser', {});
+            }
+        });
+        if ($scope.avatar.file) {
+            userSettingsService.submitAvatar($scope.avatar.file).then(function(data) {
+                if (data.status !== "Success") {
+                    $scope.errors.push({ message: "Avatar: " + data.status });
+                }
+                $scope.showSuccess = $scope.errors.length == 0;
+            });
+        }
+    };
+
+    $scope.updateTheme = function() {
+        themesService.changeTheme($scope.userSettings.theme);
+    }
+});
+
+app.controller('userSettingsProfileController', function($scope, titleQuote) {
+    $scope.titleQuote = titleQuote;
+    $scope.avatar = {
+        src: $scope.user.avatar
+    };
 
     /* avatar */
     $scope.browseAvatar = function() {
@@ -128,13 +171,14 @@ app.controller('userSettingsController', function($scope, $q, user, currentUser,
             $scope.resetAvatar();
         }
     };
+});
 
-
+app.controller('userSettingsModlistsController', function($scope) {
     //TODO: I think we should put the modlist actions inside somewhere reusable (directive)
     /* mod list actions */
     $scope.editModList = function(modlist) {
         //TODO: I'm not sure if this state.go is correct, the param might be off
-        $state.go(base.modlist, { modlistId: modlist.id })
+        $state.go(base.modlist, { modlistId: modlist.id });
     };
 
     $scope.appendModList = function(data) {
@@ -189,43 +233,4 @@ app.controller('userSettingsController', function($scope, $q, user, currentUser,
             }
         });
     };
-
-    /* settings submission */
-    $scope.submit = function() {
-        $scope.errors = [];
-
-        //TODO: I feel like this redundancy can be killed
-        // @R79: I was thinking the same thing earlier today. -Mator
-        userSettingsService.submitUser($scope.user).then(function(data) {
-            if (data.status !== "ok") {
-                $scope.errors.concat(data.errors);
-            }
-            $scope.showSuccess = $scope.errors.length == 0;
-        });
-        userSettingsService.submitUserSettings($scope.userSettings).then(function(data) {
-            if (data.status !== "ok") {
-                $scope.errors.concat(data.errors);
-            } else {
-                $scope.showSuccess = $scope.errors.length == 0;
-                $scope.updateTheme();
-                $scope.$emit('reloadCurrentUser', {});
-            }
-        });
-        if ($scope.avatar.file) {
-            userSettingsService.submitAvatar($scope.avatar.file).then(function(data) {
-                if (data.status !== "Success") {
-                    $scope.errors.push({ message: "Avatar: " + data.status });
-                }
-                $scope.showSuccess = $scope.errors.length == 0;
-            });
-        }
-    };
-
-    $scope.updateTheme = function() {
-        themesService.changeTheme($scope.userSettings.theme);
-    }
-});
-
-app.controller('userSettingsProfileController', function($scope, titleQuote) {
-    $scope.titleQuote = titleQuote;
 });
