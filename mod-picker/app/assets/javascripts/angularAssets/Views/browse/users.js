@@ -10,10 +10,10 @@ app.run(function($futureState, indexService, filtersFactory) {
         l: '',
 
         //roles
-        adm: false,
-        mod: false,
-        ma: false,
-        usr: false
+        adm: true,
+        mod: true,
+        ma: true,
+        usr: true
     };
 
     // build slider filter params
