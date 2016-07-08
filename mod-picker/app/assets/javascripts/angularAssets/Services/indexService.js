@@ -1,6 +1,6 @@
 app.service('indexService', function() {
-    this.getUrl = function(params) {
-        var output = '/mods?';
+    this.getUrl = function(base, params) {
+        var output = '/'+base+'?';
         for (var property in params) {
             if (params.hasOwnProperty(property)) {
                 if (typeof params[property] === 'string' || params[property] instanceof String) {

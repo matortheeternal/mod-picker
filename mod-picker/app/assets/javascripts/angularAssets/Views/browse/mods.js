@@ -34,7 +34,7 @@ app.run(function($futureState, indexService, filtersFactory) {
         name: 'base.mods',
         templateUrl: '/resources/partials/browse/mods.html',
         controller: 'modsController',
-        url: indexService.getUrl(params),
+        url: indexService.getUrl('mods', params),
         params: params,
         type: 'lazy'
     };

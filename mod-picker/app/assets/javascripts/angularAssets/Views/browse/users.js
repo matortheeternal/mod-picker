@@ -27,7 +27,7 @@ app.run(function($futureState, indexService, filtersFactory) {
         name: 'base.users',
         templateUrl: '/resources/partials/browse/users.html',
         controller: 'usersController',
-        url: indexService.getUrl(params),
+        url: indexService.getUrl('users', params),
         params: params,
         type: 'lazy'
     };
