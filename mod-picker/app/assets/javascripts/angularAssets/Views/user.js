@@ -34,15 +34,15 @@ app.config(['$stateProvider', function($stateProvider) {
         sticky: true,
         deepStateRedirect: true,
         views: {
-            'Social': {
-                templateUrl: '/resources/partials/showUser/lists.html'
+            'Mod Lists': {
+                templateUrl: '/resources/partials/showUser/lists.html',
             }
         }
     }).state('base.user.Mods', {
         sticky: true,
         deepStateRedirect: true,
         views: {
-            'Social': {
+            'Mods': {
                 templateUrl: '/resources/partials/showUser/mods.html'
             }
         }
@@ -50,7 +50,7 @@ app.config(['$stateProvider', function($stateProvider) {
         sticky: true,
         deepStateRedirect: true,
         views: {
-            'Social': {
+            'Contributions': {
                 templateUrl: '/resources/partials/showUser/contributions.html'
             }
         }
