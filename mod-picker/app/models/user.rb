@@ -11,7 +11,18 @@ class User < ActiveRecord::Base
   # GENERAL SCOPES
   scope :search, -> (search) { where("username like ?", "#{search}%") }
   scope :linked, -> (search) { joins(:bio).where("nexus_username like ? OR lover_username like ? OR workshop_username like ?", "#{search}%", "#{search}%", "#{search}%") }
-  scope :roles, -> (roles) { where(role: roles) }
+  scope :roles, -> (roles_hash) {
+    # build roles array
+    roles = []
+    roles_hash.each_key do |key|
+      if roles_hash[key]
+        roles.push(key)
+      end
+    end
+
+    # return query
+    where(role: roles)
+  }
   scope :reputation, -> (range) { joins(:reputation).where(:user_reputations => {:overall => range[:min]..range[:max]}) }
   scope :joined, -> (range) { where(joined: parseDate(range[:min])..parseDate(range[:max])) }
   scope :last_seen, -> (range) { where(last_sign_in_at: parseDate(range[:min])..parseDate(range[:max])) }
