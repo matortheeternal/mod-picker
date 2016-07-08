@@ -4,6 +4,16 @@ app.service('userService', function (backend, $q, userSettingsService, userTitle
     this.retrieveUsers = function(options, pageInformation) {
         var action = $q.defer();
         backend.post('/users/index', options).then(function (data) {
+            // associate user titles
+            data.users.forEach(function(user) {
+                if (!user.title) {
+                    userTitleService.getUserTitle(user.reputation.overall).then(function(title) {
+                        user.title = title;
+                    });
+                }
+            });
+
+            // resolve page information and data
             pageUtils.getPageInformation(data, pageInformation, options.page);
             action.resolve(data);
         }, function(response) {
