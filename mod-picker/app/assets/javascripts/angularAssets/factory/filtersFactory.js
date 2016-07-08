@@ -243,7 +243,7 @@ app.service("filtersFactory", function() {
                 param: "crc"
             },
             {
-                label: "Public Mod Lists Count",
+                label: "Mod Lists Count",
                 common: false,
                 data: "mod_lists",
                 max: 50,
@@ -254,11 +254,11 @@ app.service("filtersFactory", function() {
 
     this.userDateFilters = function() {
         return [{
-            label: "Date Joined",
-            data: "joined",
-            type: "Date",
-            param: "dj"
-        },
+                label: "Date Joined",
+                data: "joined",
+                type: "Date",
+                param: "dj"
+            },
             {
                 label: "Date Last Seen",
                 data: "last_seen",
