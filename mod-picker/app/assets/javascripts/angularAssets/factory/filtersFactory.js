@@ -184,4 +184,94 @@ app.service("filtersFactory", function() {
             service.modDateFilters()
         );
     };
+
+    this.userStatisticFilters = function() {
+        return [{
+                label: "Reputation",
+                common: true,
+                data: "reputation",
+                max: 5000,
+                param: "rep"
+            },
+            {
+                label: "Authored Mods",
+                common: true,
+                data: "authored_mods",
+                max: 100,
+                param: "mods"
+            },
+            {
+                label: "Comments Count",
+                common: true,
+                data: "comments",
+                max: 1000,
+                param: "cmc"
+            },
+            {
+                label: "Reviews Count",
+                common: false,
+                data: "reviews",
+                max: 100,
+                param: "rev"
+            },
+            {
+                label: "Compatibility Notes Count",
+                common: false,
+                data: "compatibility_notes",
+                max: 100,
+                param: "cnc"
+            },
+            {
+                label: "Install Order Notes Count",
+                common: false,
+                data: "install_order_notes",
+                max: 100,
+                param: "ioc"
+            },
+            {
+                label: "Load Order Notes Count",
+                common: false,
+                data: "load_order_notes",
+                max: 100,
+                param: "loc"
+            },
+            {
+                label: "Corrections Count",
+                common: false,
+                data: "corrections",
+                max: 50,
+                param: "crc"
+            },
+            {
+                label: "Public Mod Lists Count",
+                common: false,
+                data: "mod_lists",
+                max: 50,
+                param: "mlc"
+            }
+        ];
+    };
+
+    this.userDateFilters = function() {
+        return [{
+            label: "Date Joined",
+            data: "date_joined",
+            type: "Date",
+            param: "dj"
+        },
+            {
+                label: "Date Last Seen",
+                data: "last_seen",
+                type: "Date",
+                param: "ls"
+            }
+        ];
+    };
+
+    this.userFilters = function() {
+        return Array.prototype.concat(
+            service.userStatisticFilters(),
+            service.userDateFilters()
+        );
+    };
 });
