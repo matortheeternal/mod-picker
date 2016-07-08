@@ -293,6 +293,12 @@ app.service('columnsFactory', function() {
                 filter: "date"
             },
             {
+                group: "General",
+                visibility: true,
+                label: "Reputation",
+                data: "reputation.overall"
+            },
+            {
                 group: "Content Statistics",
                 visibility: false,
                 label: "Comments",

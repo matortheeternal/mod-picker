@@ -255,7 +255,7 @@ app.service("filtersFactory", function() {
     this.userDateFilters = function() {
         return [{
             label: "Date Joined",
-            data: "date_joined",
+            data: "joined",
             type: "Date",
             param: "dj"
         },
