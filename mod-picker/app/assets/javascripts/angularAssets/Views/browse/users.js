@@ -81,22 +81,6 @@ app.controller('usersController', function ($scope, $q, $stateParams, $state, us
         }
     };
 
-    $scope.availableFilters = function(filters) {
-        return filters.filter(function(item) {
-            return $scope.filterAvailable(item);
-        });
-    };
-
-    $scope.filterAvailable = function(filter) {
-        var result = true;
-        Object.keys($scope.filters.sources).forEach(function(key) {
-            if ($scope.filters.sources[key] && !filter.sites[key]) {
-                result = false;
-            }
-        });
-        return result;
-    };
-
     /* data */
     var firstGet = false;
     $scope.getUsers = function(page) {
@@ -114,24 +98,10 @@ app.controller('usersController', function ($scope, $q, $stateParams, $state, us
 
     // fetch users when we load the page
     $scope.getUsers();
-    // laod available stat filters
-    $scope.availableStatFilters = $scope.availableFilters($scope.statFilters);
 
     // create a watch
     var getUsersTimeout;
     $scope.$watch('[filters, sort]', function() {
-        // make columns that are no longer available no longer visible
-        $scope.columns.forEach(function(column) {
-            if (column.visibility && typeof column.data === 'object') {
-                column.visibility = Object.keys(column.data).some(function(key) {
-                    return $scope.availableColumnData.indexOf(key) > -1;
-                });
-            }
-        });
-
-        // hide statistic filters that no longer apply
-        $scope.availableStatFilters = $scope.availableFilters($scope.statFilters);
-
         // get users
         if ($scope.filters && firstGet) {
             clearTimeout(getUsersTimeout);

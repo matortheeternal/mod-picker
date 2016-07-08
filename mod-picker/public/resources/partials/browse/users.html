@@ -49,10 +49,10 @@
                     </div>
                 </div>
 
-                <div id="stat-filters" class="filter-sections" ng-if="availableStatFilters.length">
+                <div id="stat-filters" class="filter-sections" ng-if="statFilters.length">
                     <h3>Statistic Filters</h3>
                     <div class="filter-section">
-                        <div ng-repeat="filter in availableStatFilters" ng-show="filter.common || extendedFilterVisibility.stat">
+                        <div ng-repeat="filter in statFilters" ng-show="filter.common || extendedFilterVisibility.stat">
                             <h4>{{filter.label}}
                                 <!--<span class="filter-controls" ng-if="filter.max > 500">
                                     <span class="fa fa-wrench" ng-click="" title="Custom Value"></span>
