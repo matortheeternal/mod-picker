@@ -1,5 +1,17 @@
 app.service('userService', function (backend, $q, userSettingsService, userTitleService, pageUtils) {
     var service = this;
+
+    this.retrieveUsers = function(options, pageInformation) {
+        var action = $q.defer();
+        backend.post('/users/index', options).then(function (data) {
+            pageUtils.getPageInformation(data, pageInformation, options.page);
+            action.resolve(data);
+        }, function(response) {
+            action.reject(response);
+        });
+        return action.promise;
+    };
+
     this.retrieveUser = function(userId) {
         var output = $q.defer();
         backend.retrieve('/users/' + userId).then(function(userData) {

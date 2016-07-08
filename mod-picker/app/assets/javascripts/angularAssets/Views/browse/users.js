@@ -101,7 +101,7 @@ app.controller('usersController', function ($scope, $q, $stateParams, $state, us
 
     /* data */
     var firstGet = false;
-    $scope.getMods = function(page) {
+    $scope.getUsers = function(page) {
         delete $scope.users;
         var options = {
             filters: $scope.filters,
