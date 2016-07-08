@@ -6,7 +6,7 @@ app.run(function($futureState, indexService, filtersFactory) {
         sdir: 'desc',
 
         //searches
-        n: '',
+        q: '',
         a: '',
 
         //modlist compatibility filter
@@ -17,6 +17,8 @@ app.run(function($futureState, indexService, filtersFactory) {
         sw: false,
         ll: false,
         ot: false,
+
+        // tags and categories
         t: '',
         c: ''
     };
@@ -42,7 +44,6 @@ app.run(function($futureState, indexService, filtersFactory) {
 });
 
 app.controller('modsController', function($scope, $q, $stateParams, $state, modService, sliderFactory, columnsFactory, filtersFactory, currentUser, currentGame, indexService) {
-    $scope.$stateParams = $stateParams;
     // get parent variables
     $scope.currentUser = currentUser;
     $scope.currentGame = currentGame;
@@ -61,7 +62,7 @@ app.controller('modsController', function($scope, $q, $stateParams, $state, modS
         adult: $scope.currentUser && $scope.currentUser.settings.allow_adult_content
     };
     //load name and author from url parameters
-    indexService.setFilterFromParam($scope.filters, 'search', $stateParams.n);
+    indexService.setFilterFromParam($scope.filters, 'search', $stateParams.q);
     indexService.setFilterFromParam($scope.filters, 'author', $stateParams.a);
     //load slider values from url parameters
     indexService.setSliderFiltersFromParams($scope.filters, $scope.filterPrototypes, $stateParams);
@@ -179,7 +180,7 @@ app.controller('modsController', function($scope, $q, $stateParams, $state, modS
             indexService.setParamFromFilter($scope.filters.sources, 'lab', params, 'll');
             indexService.setParamFromFilter($scope.filters.sources, 'workshop', params, 'sw');
             indexService.setParamFromFilter($scope.filters.sources, 'other', params, 'ot');
-            indexService.setParamFromFilter($scope.filters, 'search', params, 'n');
+            indexService.setParamFromFilter($scope.filters, 'search', params, 'q');
             indexService.setParamFromFilter($scope.filters, 'author', params, 'a');
             indexService.setListParamFromFilter($scope.filters, 'tags', params, 't');
             indexService.setListParamFromFilter($scope.filters, 'categories', params, 'c');
