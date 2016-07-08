@@ -70,6 +70,9 @@ class User < ActiveRecord::Base
   accepts_nested_attributes_for :settings
   accepts_nested_attributes_for :bio
 
+  # number of users per page on the users index
+  self.per_page = 50
+
   # Validations
   validates :username, :email, :role, presence: true
   validates :username, uniqueness: { case_sensitive: false }, length: {in: 4..32 }

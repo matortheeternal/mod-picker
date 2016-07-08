@@ -213,6 +213,7 @@ class Mod < ActiveRecord::Base
       |attributes| attributes[:id] && attributes[:user_id] && !attributes[:_destroy]
   }, allow_destroy: true
 
+  # numbers of mods per page on the mods index
   self.per_page = 100
 
   # Validations
