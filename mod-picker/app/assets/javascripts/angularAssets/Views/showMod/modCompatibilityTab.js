@@ -8,8 +8,6 @@ app.controller('modCompatibilityController', function($scope, $stateParams, $sta
         return;
     }
 
-    $scope.retrieveCompatibilityNotes = function(page) {
-        $scope.retrieving.compatibility_notes = true;
 
     //update the params on the tab object
     $scope.thisTab.params = {
@@ -19,26 +17,20 @@ app.controller('modCompatibilityController', function($scope, $stateParams, $sta
         filter: $stateParams.filter,
     };
 
-        // retrieve the compatibility notes
-        var options = {
-            sort: $scope.sort.compatibility_notes,
-            filters: $scope.filters.compatibility_notes,
-            page: page || 1
-        };
-        modService.retrieveModContributions($stateParams.modId, 'compatibility_notes', options, $scope.pages.compatibility_notes).then(function(data) {
-            $scope.retrieving.compatibility_notes = false;
-            $scope.mod.compatibility_notes = data;
-        }, function(response) {
-            $scope.errors.compatibility_notes = response;
-        });
+    // retrieve the compatibility notes
+    var options = {
+        sort: {
+            column: $stateParams.scol,
+            direction: $stateParams.sdir
+        },
+        filters: { modlist: $stateParams.filter },
+        page: $stateParams.page
     };
-
-    // retrieve compatibility notes if we don't have them and aren't currently retrieving them
-    if (!$scope.mod.compatibility_notes && !$scope.retrieving.compatibility_notes) {
-        $scope.sort.compatibility_notes.column = $stateParams.scol;
-        $scope.sort.compatibility_notes.direction = $stateParams.sdir;
-        $scope.retrieveCompatibilityNotes($stateParams.page);
-    }
+    modService.retrieveModContributions($stateParams.modId, 'compatibility_notes', options, $scope.pages.compatibility_notes).then(function(data) {
+        $scope.mod.compatibility_notes = data;
+    }, function(response) {
+        $scope.errors.compatibility_notes = response;
+    });
 
     // COMPATIBILITY NOTE RELATED LOGIC
     // instantiate a new compatibility note object
@@ -139,7 +131,7 @@ app.controller('modCompatibilityController', function($scope, $stateParams, $sta
                 $scope.updateCompatibilityNote(noteObj.compatibility_note);
                 $scope.discardCompatibilityNote();
             }, function(response) {
-                var params = {label: 'Error updating Compatibility Note', response: response};
+                var params = { label: 'Error updating Compatibility Note', response: response };
                 $scope.$emit('errorMessage', params);
             });
         } else {
@@ -148,7 +140,7 @@ app.controller('modCompatibilityController', function($scope, $stateParams, $sta
                 $scope.mod.reviews.unshift(note);
                 $scope.discardCompatibilityNote();
             }, function(response) {
-                var params = {label: 'Error submitting Compatibility Note', response: response};
+                var params = { label: 'Error submitting Compatibility Note', response: response };
                 $scope.$emit('errorMessage', params);
             });
         }

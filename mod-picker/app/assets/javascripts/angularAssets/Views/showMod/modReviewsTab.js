@@ -8,8 +8,6 @@ app.controller('modReviewsController', function($scope, $stateParams, $state, mo
         return;
     }
 
-    $scope.retrieveReviews = function(page) {
-        $scope.retrieving.reviews = true;
 
     //update the params on the tab object
     $scope.thisTab.params = {
@@ -19,41 +17,29 @@ app.controller('modReviewsController', function($scope, $stateParams, $state, mo
         filter: $stateParams.filter,
     };
 
-        // retrieve the reviews
-        var options = {
-            sort: $scope.sort.reviews,
-            page: page || 1
-        };
-        modService.retrieveModReviews($stateParams.modId, options, $scope.pages.reviews).then(function(data) {
-            $scope.retrieving.reviews = false;
-            $scope.mod.reviews = data.reviews;
-            $scope.mod.user_review = data.user_review;
-        }, function(response) {
-            $scope.errors.reviews = response;
-        });
+    // retrieve the reviews
+    var options = {
+        sort: {
+            column: $stateParams.scol,
+            direction: $stateParams.sdir
+        },
+        filters: { modlist: $stateParams.filter },
+        page: $stateParams.page
     };
+    modService.retrieveModReviews($stateParams.modId, options, $scope.pages.reviews).then(function(data) {
+        $scope.mod.reviews = data.reviews;
+        $scope.mod.user_review = data.user_review;
+    }, function(response) {
+        $scope.errors.reviews = response;
+    });
 
-    $scope.retrieveReviewSections = function() {
-        $scope.retrieving.reviewSections = true;
-        reviewSectionService.getSectionsForCategory($scope.mod.primary_category).then(function(data) {
-            $scope.retrieving.reviewSections = false;
-            $scope.reviewSections = data;
-        }, function(response) {
-            $scope.errors.reviewSections = response;
-        });
-    };
+    //retrieve review sections
+    reviewSectionService.getSectionsForCategory($scope.mod.primary_category).then(function(data) {
+        $scope.reviewSections = data;
+    }, function(response) {
+        $scope.errors.reviewSections = response;
+    });
 
-    // retrieve reviews if we don't have them and aren't currently retrieving them
-    if (!$scope.mod.reviews && !$scope.retrieving.reviews) {
-        $scope.sort.reviews.column = $stateParams.scol;
-        $scope.sort.reviews.direction = $stateParams.sdir;
-        $scope.retrieveReviews($stateParams.page);
-    }
-
-    // retrieve review sections if we don't have them and aren't currently retrieving them
-    if (!$scope.reviewSections && !$scope.retrieving.reviewSections) {
-        $scope.retrieveReviewSections();
-    }
 
     // REVIEW RELATED LOGIC
     // instantiate a new review object
@@ -229,7 +215,7 @@ app.controller('modReviewsController', function($scope, $stateParams, $state, mo
                 $scope.updateReview();
                 $scope.discardReview();
             }, function(response) {
-                var params = {label: 'Error updating Review', response: response};
+                var params = { label: 'Error updating Review', response: response };
                 $scope.$emit('errorMessage', params);
             });
         } else {
@@ -238,7 +224,7 @@ app.controller('modReviewsController', function($scope, $stateParams, $state, mo
                 $scope.mod.user_review = review;
                 $scope.discardReview();
             }, function(response) {
-                var params = {label: 'Error submitting Review', response: response};
+                var params = { label: 'Error submitting Review', response: response };
                 $scope.$emit('errorMessage', params);
             });
         }
