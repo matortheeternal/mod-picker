@@ -1,13 +1,10 @@
 app.controller('modCompatibilityController', function($scope, $stateParams, $state, modService, contributionFactory, contributionService) {
     $scope.thisTab = $scope.findTab('Compatibility');
     // verify we can access this tab
-    $scope.currentTab = $scope.findTab('Compatibility');
-    if (!$scope.currentTab) {
+    if (!$scope.thisTab) {
         // if we can't access this tab, redirect to the first tab we can access and
         // stop doing stuff in this controller
-        $state.go('base.mod.' + $scope.tabs[0].name, {
-            modId: $stateParams.modId
-        });
+        $scope.redirectToFirstTab();
         return;
     }
 
