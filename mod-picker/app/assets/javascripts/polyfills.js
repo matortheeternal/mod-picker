@@ -10,6 +10,12 @@ String.prototype.titleCase = function() {
     });
 };
 
+String.prototype.toDashFormat = function() {
+    return this.replace(/[A-Z]/g, function(uppercaseLetter) {
+        return "-" + uppercaseLetter.toLowerCase();
+    })
+};
+
 function getDifferentProperties(obj, otherObj) {
     var result = {};
     for (var property in obj) {
