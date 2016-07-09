@@ -1,5 +1,5 @@
-app.service("filtersFactory", function() {
-    var service = this;
+app.factory("filtersFactory", function() {
+    var factory = this;
 
     this.modGeneralFilters = function() {
         return [
@@ -251,10 +251,10 @@ app.service("filtersFactory", function() {
 
     this.modFilters = function() {
         return Array.prototype.concat(
-            service.modGeneralFilters(),
-            service.modStatisticFilters(),
-            service.modPickerFilters(),
-            service.modDateFilters()
+            factory.modGeneralFilters(),
+            factory.modStatisticFilters(),
+            factory.modPickerFilters(),
+            factory.modDateFilters()
         );
     };
 
@@ -393,9 +393,9 @@ app.service("filtersFactory", function() {
 
     this.userFilters = function() {
         return Array.prototype.concat(
-            service.userGeneralFilters(),
-            service.userStatisticFilters(),
-            service.userDateFilters()
+            factory.userGeneralFilters(),
+            factory.userStatisticFilters(),
+            factory.userDateFilters()
         );
     };
 
@@ -414,6 +414,29 @@ app.service("filtersFactory", function() {
                 type: "Range",
                 subtype: "Date",
                 param: "de"
+            }
+        ];
+    };
+
+    this.contributionStandingFilters = function() {
+        return [
+            {
+                data: "standing.good",
+                type: "Boolean",
+                default: true,
+                param: "stg"
+            },
+            {
+                data: "standing.unknown",
+                type: "Boolean",
+                default: true,
+                param: "stu"
+            },
+            {
+                data: "standing.bad",
+                type: "Boolean",
+                default: true,
+                param: "stb"
             }
         ];
     };
@@ -470,10 +493,27 @@ app.service("filtersFactory", function() {
 
     this.commentFilters = function() {
         return Array.prototype.concat(
-            service.commentGeneralFilters(),
-            service.contributionDateFilters(),
-            service.commentStatisticFilters()
+            factory.commentGeneralFilters(),
+            factory.contributionDateFilters(),
+            factory.commentStatisticFilters()
         );
+    };
+
+    this.reviewGeneralFilters = function() {
+        return [
+            {
+                data: "search",
+                param: "q"
+            },
+            {
+                data: "submitter",
+                param: "s"
+            },
+            {
+                data: "editor",
+                param: "e"
+            }
+        ]
     };
 
     this.reviewStatisticFilters = function() {
@@ -540,8 +580,9 @@ app.service("filtersFactory", function() {
 
     this.reviewFilters = function() {
         return Array.prototype.concat(
-            service.contributionDateFilters(),
-            service.reviewStatisticFilters()
+            factory.reviewGeneralFilters(),
+            factory.contributionDateFilters(),
+            factory.reviewStatisticFilters()
         );
     };
 });
