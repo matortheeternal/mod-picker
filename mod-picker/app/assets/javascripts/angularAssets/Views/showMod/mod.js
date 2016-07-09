@@ -206,6 +206,15 @@ app.controller('modController', function($scope, $q, $stateParams, $state, $time
         }
     }
 
+    $scope.$on('$stateChangeSuccess', function(event, toState) {
+        newTabIndex = $scope.tabs.findIndex(function(tab) {
+            return toState.name.slice(9) === tab.name;
+        });
+        if (newTabIndex < 0) {
+            $scope.redirectToFirstTab();
+        }
+    });
+
     //set the class of the status box
     switch ($scope.mod.status) {
         case "good":
