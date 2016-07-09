@@ -274,4 +274,39 @@ app.service("filtersFactory", function() {
             service.userDateFilters()
         );
     };
+
+    this.contributionDateFilters = function() {
+        return [{
+                label: "Date Submitted",
+                data: "submitted",
+                type: "Date",
+                param: "ds"
+            },
+            {
+                label: "Date Edited",
+                data: "edited",
+                type: "Date",
+                param: "de"
+            }
+        ];
+    };
+
+    this.commentStatisticFilters = function() {
+        return [
+            {
+                label: "Replies Count",
+                common: true,
+                data: "replies",
+                max: 100,
+                param: "rc"
+            }
+        ]
+    };
+
+    this.commentFilters = function() {
+        return Array.prototype.concat(
+            service.contributionDateFilters(),
+            service.commentStatisticFilters()
+        );
+    };
 });
