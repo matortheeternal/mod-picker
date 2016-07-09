@@ -1,7 +1,26 @@
 app.service('contributionService', function (backend, $q, userTitleService, pageUtils, reviewSectionService) {
     var service = this;
 
-    this.helpfulMark = function(type, id, helpful) {
+    this.retrieveContributions = function(route, options, pageInformation) {
+        var action = $q.defer();
+        backend.post('/' + route + '/index', options).then(function(data) {
+            // associate other data
+            var contributions = data[route];
+            reviewSectionService.associateReviewSections(contributions);
+            userTitleService.associateTitles(contributions);
+            service.associateAgreementMarks(contributions, data.agreement_marks);
+            service.associateHelpfulMarks(contributions, data.helpful_marks);
+
+            // resolve page information and data
+            pageUtils.getPageInformation(data, pageInformation, options.page);
+            action.resolve(data);
+        }, function(response) {
+            action.reject(response);
+        });
+        return action.promise;
+    };
+
+    this.helpfulMark = function(route, id, helpful) {
         var helpfulObj = helpful == undefined ? {} : {helpful: helpful};
         return backend.post('/' + route + '/' + id + '/helpful', helpfulObj);
     };
