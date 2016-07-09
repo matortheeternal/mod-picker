@@ -95,6 +95,11 @@ app.service('contributionService', function (backend, $q, userTitleService, page
     };
 
     this.associateAgreementMarks = function(corrections, agreementMarks) {
+        // return if agreementMarks is undefined
+        if (!agreementMarks) {
+            return;
+        }
+
         // loop through corrections
         corrections.forEach(function(correction) {
             // see if we have a matching agreement mark
@@ -109,6 +114,11 @@ app.service('contributionService', function (backend, $q, userTitleService, page
     };
 
     this.associateHelpfulMarks = function(contributions, helpfulMarks) {
+        // return if helpfulMarks is undefined
+        if (!helpfulMarks) {
+            return;
+        }
+
         // loop through contributions
         contributions.forEach(function(contribution) {
             // see if we have a matching helpful mark
