@@ -3,30 +3,9 @@ app.run(function($futureState, indexService, filtersFactory) {
     var params = {
         //column sort
         scol: 'name',
-        sdir: 'desc',
-
-        //searches
-        q: '',
-        a: '',
-
-        //modlist compatibility filter
-        cf: true,
-
-        //sources
-        nm: false,
-        sw: false,
-        ll: false,
-        ot: false,
-
-        // tags and categories
-        t: '',
-        c: ''
+        sdir: 'asc'
     };
-
-    // build slider filter params
-    filtersFactory.modFilters().forEach(function(filter) {
-        params[filter.param] = '';
-    });
+    indexService.setDefaultParamsFromFilters(params, filtersFactory.modFilters());
 
     // construct state
     var state = {
@@ -50,31 +29,7 @@ app.controller('modsController', function($scope, $q, $stateParams, $state, modS
     $scope.globalPermissions = angular.copy(currentUser.permissions);
 
     // initialize local variables
-    $scope.filterPrototypes = filtersFactory.modFilters();
-    $scope.filters = {
-        sources: {
-            nexus: $stateParams.nm,
-            lab: $stateParams.ll,
-            workshop: $stateParams.sw,
-            other: $stateParams.ot
-        },
-        game: $scope.currentGame.id,
-        adult: $scope.currentUser && $scope.currentUser.settings.allow_adult_content
-    };
-    //load name and author from url parameters
-    indexService.setFilterFromParam($scope.filters, 'search', $stateParams.q);
-    indexService.setFilterFromParam($scope.filters, 'author', $stateParams.a);
-    //load slider values from url parameters
-    indexService.setSliderFiltersFromParams($scope.filters, $scope.filterPrototypes, $stateParams);
-    //load tags and categories from url parameters
-    indexService.setListFilterFromParam($scope.filters, 'tags', $stateParams.t);
-    indexService.setListFilterFromParam($scope.filters, 'categories', $stateParams.c);
-
     $scope.availableColumnData = ["nexus"];
-    $scope.sort = {};
-    $scope.pages = {};
-    $scope.columns = columnsFactory.modColumns();
-    $scope.columnGroups = columnsFactory.modColumnGroups();
     $scope.actions = [{
         caption: "Add",
         title: "Add this mod to your mod list",
@@ -82,21 +37,28 @@ app.controller('modsController', function($scope, $q, $stateParams, $state, modS
             alert("Not functional yet.");
         }
     }];
+    $scope.extendedFilterVisibility = {};
+    $scope.pages = {};
+    $scope.columns = columnsFactory.modColumns();
+    $scope.columnGroups = columnsFactory.modColumnGroups();
 
-    // load filter prototypes
+    // load sort values from url parameters
+    $scope.sort = {};
+    indexService.setSortFromParams($scope.sort, $stateParams);
+
+    // initialize filters
+    $scope.filterPrototypes = filtersFactory.modFilters();
     $scope.dateFilters = filtersFactory.modDateFilters();
     $scope.modPickerFilters = filtersFactory.modPickerFilters();
     $scope.statFilters = filtersFactory.modStatisticFilters();
-
-    //TODO: should be handled differently
-    // -> remove redundancy
-    // -> probably don't set visibility in the controller but in the view
-
-    $scope.extendedFilterVisibility = {
-        nexusMods: false,
-        modPicker: false
+    $scope.filters = {
+        game: $scope.currentGame.id,
+        adult: $scope.currentUser && $scope.currentUser.settings.allow_adult_content
     };
+    //load slider values from url parameters
+    indexService.setFiltersFromParams($scope.filters, $scope.filterPrototypes, $stateParams);
 
+    /* helper functions */
     $scope.toggleExtendedFilterVisibility = function(filterId) {
         var extendedFilter = $scope.extendedFilterVisibility[filterId] = !$scope.extendedFilterVisibility[filterId];
         if (extendedFilter) {
@@ -104,12 +66,14 @@ app.controller('modsController', function($scope, $q, $stateParams, $state, modS
         }
     };
 
+    // returns a new subset of the input filters with the unavailable filters removed
     $scope.availableFilters = function(filters) {
         return filters.filter(function(item) {
             return $scope.filterAvailable(item);
         });
     };
 
+    // returns true if the filter is available
     $scope.filterAvailable = function(filter) {
         var result = true;
         Object.keys($scope.filters.sources).forEach(function(key) {
@@ -118,6 +82,27 @@ app.controller('modsController', function($scope, $q, $stateParams, $state, modS
             }
         });
         return result;
+    };
+
+    // build availableColumnData string array
+    $scope.buildAvailableColumnData = function() {
+        $scope.availableColumnData = [];
+        for (var property in $scope.filters.sources) {
+            if ($scope.filters.sources.hasOwnProperty(property) && $scope.filters.sources[property]) {
+                $scope.availableColumnData.push(property);
+            }
+        }
+    };
+
+    // hide columns that are no longer available
+    $scope.hideUnavailableColumns = function() {
+        $scope.columns.forEach(function(column) {
+            if (column.visibility && typeof column.data === 'object') {
+                column.visibility = Object.keys(column.data).some(function(key) {
+                    return $scope.availableColumnData.indexOf(key) > -1;
+                });
+            }
+        });
     };
 
     /* data fetching functions */
@@ -144,22 +129,9 @@ app.controller('modsController', function($scope, $q, $stateParams, $state, modS
     // fetch mods again when filters or sort changes
     var getModsTimeout;
     $scope.$watch('[filters, sort]', function() {
-        // build availableColumnData string array
-        $scope.availableColumnData = [];
-        for (var property in $scope.filters.sources) {
-            if ($scope.filters.sources.hasOwnProperty(property) && $scope.filters.sources[property]) {
-                $scope.availableColumnData.push(property);
-            }
-        }
-
-        // make columns that are no longer available no longer visible
-        $scope.columns.forEach(function(column) {
-            if (column.visibility && typeof column.data === 'object') {
-                column.visibility = Object.keys(column.data).some(function(key) {
-                    return $scope.availableColumnData.indexOf(key) > -1;
-                });
-            }
-        });
+        // handle column availability
+        $scope.buildAvailableColumnData();
+        $scope.hideUnavailableColumns();
 
         // hide statistic filters that no longer apply
         $scope.availableStatFilters = $scope.availableFilters($scope.statFilters);
@@ -173,19 +145,7 @@ app.controller('modsController', function($scope, $q, $stateParams, $state, modS
 
         // set url parameters
         if ($scope.filters && firstGet) {
-            var params = indexService.getParamsFromSliderFilters($scope.filters, $scope.filterPrototypes);
-
-            // set general params
-            indexService.setParamFromFilter($scope.filters.sources, 'nexus', params, 'nm');
-            indexService.setParamFromFilter($scope.filters.sources, 'lab', params, 'll');
-            indexService.setParamFromFilter($scope.filters.sources, 'workshop', params, 'sw');
-            indexService.setParamFromFilter($scope.filters.sources, 'other', params, 'ot');
-            indexService.setParamFromFilter($scope.filters, 'search', params, 'q');
-            indexService.setParamFromFilter($scope.filters, 'author', params, 'a');
-            indexService.setListParamFromFilter($scope.filters, 'tags', params, 't');
-            indexService.setListParamFromFilter($scope.filters, 'categories', params, 'c');
-
-            // transition to the new state
+            var params = indexService.getParamsFromFilters($scope.filters, $scope.filterPrototypes);
             $state.transitionTo('base.mods', params, { notify: false });
         }
     }, true);
