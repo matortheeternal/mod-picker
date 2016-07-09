@@ -1,24 +1,7 @@
-app.run(function($futureState, indexService, filtersFactory) {
-    // base params
-    var params = {
-        //column sort
-        scol: 'username',
-        sdir: 'asc'
-    };
-    indexService.setDefaultParamsFromFilters(params, filtersFactory.userFilters());
-
-    // construct state
-    var state = {
-        stateName: 'base.users',
-        name: 'base.users',
-        templateUrl: '/resources/partials/browse/users.html',
-        controller: 'usersController',
-        url: indexService.getUrl('users', params),
-        params: params,
-        type: 'lazy'
-    };
-
-    // dynamically apply state
+app.run(function($futureState, indexFactory, filtersFactory) {
+    // dynamically construct and apply state
+    var filterPrototypes = filtersFactory.userFilters();
+    var state = indexFactory.buildState('username', 'asc', 'users', filterPrototypes);
     $futureState.futureState(state);
 });
 

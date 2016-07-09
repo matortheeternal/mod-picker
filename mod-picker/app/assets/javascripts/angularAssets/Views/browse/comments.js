@@ -1,24 +1,7 @@
-app.run(function($futureState, indexService, filtersFactory) {
-    // base params
-    var params = {
-        //column sort
-        scol: 'id',
-        sdir: 'asc'
-    };
-    indexService.setDefaultParamsFromFilters(params, filtersFactory.commentFilters());
-
-    // construct state
-    var state = {
-        stateName: 'base.comments',
-        name: 'base.comments',
-        templateUrl: '/resources/partials/browse/comments.html',
-        controller: 'commentsIndexController',
-        url: indexService.getUrl('comments', params),
-        params: params,
-        type: 'lazy'
-    };
-
-    // dynamically apply state
+app.run(function($futureState, indexFactory, filtersFactory) {
+    // dynamically construct and apply state
+    var filterPrototypes = filtersFactory.commentFilters();
+    var state = indexFactory.buildState('id', 'asc', 'comments', filterPrototypes);
     $futureState.futureState(state);
 });
 
