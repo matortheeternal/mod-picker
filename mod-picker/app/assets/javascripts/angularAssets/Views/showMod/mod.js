@@ -30,11 +30,12 @@ app.config(['$stateProvider', function($stateProvider) {
                 controller: 'modReviewsController',
             }
         },
-        url: '/reviews?{page:int}&scol&sdir',
+        url: '/reviews?{page:int}&scol&sdir&{filter:bool}',
         params: {
             page: 1,
             scol: 'reputation',
-            sdir: 'desc'
+            sdir: 'desc',
+            filter: true
         }
     }).state('base.mod.Compatibility', {
         sticky: true,
@@ -45,11 +46,12 @@ app.config(['$stateProvider', function($stateProvider) {
                 controller: 'modCompatibilityController',
             }
         },
-        url: '/compatibility?{page:int}&scol&sdir',
+        url: '/compatibility?{page:int}&scol&sdir&{filter:bool}',
         params: {
             page: 1,
             scol: 'reputation',
-            sdir: 'desc'
+            sdir: 'desc',
+            filter: true
         }
     }).state('base.mod.Install Order', {
         sticky: true,
@@ -60,11 +62,12 @@ app.config(['$stateProvider', function($stateProvider) {
                 controller: 'modInstallOrderController',
             }
         },
-        url: '/install-order?{page:int}&scol&sdir',
+        url: '/install-order?{page:int}&scol&sdir&{filter:bool}',
         params: {
             page: 1,
             scol: 'reputation',
-            sdir: 'desc'
+            sdir: 'desc',
+            filter: true
         }
     }).state('base.mod.Load Order', {
         sticky: true,
