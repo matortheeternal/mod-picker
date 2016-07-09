@@ -1,12 +1,5 @@
 app.controller('modLoadOrderController', function($scope, $state, $stateParams, modService, contributionService, contributionFactory) {
     $scope.thisTab = $scope.findTab('Load Order');
-    // verify we can access this tab
-    if (!$scope.thisTab) {
-        // if we can't access this tab, redirect to the first tab we can access and
-        // stop doing stuff in this controller
-        $scope.redirectToFirstTab();
-        return;
-    }
 
     $scope.updatePage = function(page) {
         $scope.thisTab.params.page = page;

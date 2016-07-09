@@ -1,12 +1,5 @@
 app.controller('modCompatibilityController', function($scope, $stateParams, $state, modService, contributionFactory, contributionService) {
     $scope.thisTab = $scope.findTab('Compatibility');
-    // verify we can access this tab
-    if (!$scope.thisTab) {
-        // if we can't access this tab, redirect to the first tab we can access and
-        // stop doing stuff in this controller
-        $scope.redirectToFirstTab();
-        return;
-    }
 
     $scope.updatePage = function(page) {
         $scope.thisTab.params.page = page;

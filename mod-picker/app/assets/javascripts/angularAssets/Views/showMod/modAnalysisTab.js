@@ -1,12 +1,5 @@
 app.controller('modAnalysisController', function($scope, $stateParams, $state, modService) {
     $scope.thisTab = $scope.findTab('Analysis');
-    // verify we can access this tab
-    if (!$scope.thisTab) {
-        // if we can't access this tab, redirect to the first tab we can access and
-        // stop doing stuff in this controller
-        $scope.redirectToFirstTab();
-        return;
-    }
 
     //update the params on the tab object
     $scope.thisTab.params = {
