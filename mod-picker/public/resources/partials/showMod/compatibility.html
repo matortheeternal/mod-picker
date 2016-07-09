@@ -13,15 +13,15 @@
     <div class="mod-tab-item primary-item">
         <strong>Sort By: </strong>
 
-        <select ng-model="sort.compatibility_notes.column" ng-change="retrieveCompatibilityNotes()">
+        <select ng-model="thisTab.params.scol" ng-change="updatePage(1)">
             <option value="reputation">Reputation</option>
             <option value="status">Severity</option>
             <option value="submitted">Date Submitted</option>
             <option value="edited">Last Edited</option>
         </select>
 
-        <span class="sort-direction" title="Sorted in {{ sort.compatibility_notes.direction === 'asc' ? 'ascending' : 'descending' }} order." ng-click="toggleSortDirection(sort.compatibility_notes); retrieveCompatibilityNotes()">
-            <i class="fa fa-sort-amount-{{sort.compatibility_notes.direction}}" aria-hidden="true"></i>
+        <span class="sort-direction" title="Sorted in {{ thisTab.params.sdir === 'asc' ? 'ascending' : 'descending' }} order." ng-click="toggleSortDirection(thisTab); updatePage(1)">
+            <i class="fa fa-sort-amount-{{thisTab.params.sdir}}" aria-hidden="true"></i>
         </span>
     </div>
     <div class="mod-tab-item">
@@ -90,7 +90,7 @@
         There are no Compatibility Notes for this mod yet.
     </div>
 
-    <page-results pages="pages.compatibility_notes" data="mod.compatibility_notes" callback="retrieveCompatibilityNotes"></page-results>
+    <page-results pages="pages.compatibility_notes" data="mod.compatibility_notes" callback="updatePage"></page-results>
 </loader>
 
 <div class="content-message content-error" ng-if="errors.compatibility_notes">
