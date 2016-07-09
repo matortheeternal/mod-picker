@@ -2,7 +2,7 @@ app.run(function($futureState, indexService, filtersFactory) {
     // base params
     var params = {
         //column sort
-        scol: 'reputation',
+        scol: 'id',
         sdir: 'asc'
     };
     indexService.setDefaultParamsFromFilters(params, filtersFactory.commentFilters());
