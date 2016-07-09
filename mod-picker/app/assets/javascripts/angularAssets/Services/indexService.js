@@ -15,6 +15,15 @@ app.service('indexService', function() {
         return output.slice(0, -1);
     };
 
+    this.setSortFromParams = function(sort, params) {
+        if (params.scol) {
+            sort.column = params.scol;
+        }
+        if (params.sdir) {
+            sort.direction = params.sdir;
+        }
+    };
+
     this.setFilterFromParam = function(filters, key, paramValue) {
         if (paramValue) {
             filters[key] = paramValue;
