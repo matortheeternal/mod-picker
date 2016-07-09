@@ -49,6 +49,24 @@ class Comment < ActiveRecord::Base
   after_create :increment_counter_caches
   before_destroy :decrement_counter_caches
 
+  def commentable_link
+    if commentable_type == "Correction"
+      if commentable.correctable_type == "Mod"
+        "#/mods/" + commentable.correctable_id.to_s + "/appeals/" + commentable_id.to_s
+      elsif commentable.correctable_type == "CompatibilityNote"
+        "#/mods/compatibility/" + commentable.correctable_id.to_s + "/corrections/" + commentable_id.to_s
+      elsif commentable.correctable_type == "InstallOrderNote"
+        "#/mods/install-order/" + commentable.correctable_id.to_s + "/corrections/" + commentable_id.to_s
+      elsif commentable.correctable_type == "LoadOrderNote"
+        "#/mods/load-order/" + commentable.correctable_id.to_s + "/corrections/" + commentable_id.to_s
+      end
+    elsif commentable_type == "ModList"
+      "#/mod-list/" + commentable_id.to_s
+    elsif commentable_type == "User"
+      "#/user/" + commentable_id.to_s
+    end
+  end
+
   def show_json
     as_json({
         :except => [:submitted_by, :commentable_id, :commentable_type],
