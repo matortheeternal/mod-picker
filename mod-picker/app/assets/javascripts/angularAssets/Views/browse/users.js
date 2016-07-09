@@ -3,23 +3,9 @@ app.run(function($futureState, indexService, filtersFactory) {
     var params = {
         //column sort
         scol: 'username',
-        sdir: 'desc',
-
-        //searches
-        q: '',
-        l: '',
-
-        //roles
-        adm: true,
-        mod: true,
-        ma: true,
-        usr: true
+        sdir: 'asc'
     };
-
-    // build slider filter params
-    filtersFactory.userFilters().forEach(function(filter) {
-        params[filter.param] = '';
-    });
+    indexService.setDefaultParamsFromFilters(params, filtersFactory.userFilters());
 
     // construct state
     var state = {
@@ -43,32 +29,23 @@ app.controller('usersController', function ($scope, $q, $stateParams, $state, us
 
     // initialize local variables
     $scope.availableColumnData = [];
+    $scope.actions = [];
     $scope.extendedFilterVisibility = {};
-    $scope.sort = {};
     $scope.pages = {};
     $scope.columns = columnsFactory.userColumns();
     $scope.columnGroups = columnsFactory.userColumnGroups();
-    $scope.actions = [];
+
+    // load sort values from url parameters
+    $scope.sort = {};
+    indexService.setSortFromParams($scope.sort, $stateParams);
 
     // initialize filters
     $scope.filterPrototypes = filtersFactory.userFilters();
-    $scope.filters = {
-        roles: {
-            admin: $stateParams.adm,
-            moderator: $stateParams.mod,
-            author: $stateParams.ma,
-            user: $stateParams.usr
-        }
-    };
-    //load name and author from url parameters
-    indexService.setFilterFromParam($scope.filters, 'search', $stateParams.q);
-    indexService.setFilterFromParam($scope.filters, 'linked', $stateParams.l);
-    //load slider values from url parameters
-    indexService.setSliderFiltersFromParams($scope.filters, $scope.filterPrototypes, $stateParams);
-
-    // load filter prototypes
     $scope.dateFilters = filtersFactory.userDateFilters();
     $scope.statFilters = filtersFactory.userStatisticFilters();
+    $scope.filters = {};
+    //load filter values from url parameters
+    indexService.setFiltersFromParams($scope.filters, $scope.filterPrototypes, $stateParams);
 
     /* filter helper functions */
     $scope.toggleExtendedFilterVisibility = function(filterId) {
@@ -108,17 +85,7 @@ app.controller('usersController', function ($scope, $q, $stateParams, $state, us
 
         // set url parameters
         if ($scope.filters && firstGet) {
-            var params = indexService.getParamsFromSliderFilters($scope.filters, $scope.filterPrototypes);
-
-            // set general params
-            indexService.setParamFromFilter($scope.filters.roles, 'admin', params, 'adm');
-            indexService.setParamFromFilter($scope.filters.roles, 'moderator', params, 'mod');
-            indexService.setParamFromFilter($scope.filters.roles, 'author', params, 'ma');
-            indexService.setParamFromFilter($scope.filters.roles, 'user', params, 'usr');
-            indexService.setParamFromFilter($scope.filters, 'search', params, 'q');
-            indexService.setParamFromFilter($scope.filters, 'linked', params, 'l');
-
-            // transition to the new state
+            var params = indexService.getParamsFromFilters($scope.filters, $scope.filterPrototypes);
             $state.transitionTo('base.users', params, { notify: false });
         }
     }, true);
