@@ -232,8 +232,8 @@ app.controller('modController', function($scope, $q, $stateParams, $state, $time
     });
 
     // change sort direction
-    $scope.toggleSortDirection = function(sort) {
-        sort.direction = sort.direction === 'asc' ? 'desc' : 'asc';
+    $scope.toggleSortDirection = function(tab) {
+        tab.params.sdir = tab.params.sdir === 'asc' ? 'desc' : 'asc';
     };
 
     // update the markdown editor
