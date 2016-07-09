@@ -26,4 +26,17 @@ app.service('objectUtils', function () {
         }
         return obj;
     };
+
+    this.setDeepValue = function(obj, path, value) {
+        for (var i = 0, path = path.split('.'), len = path.length; i < len; i++) {
+            if (i == len - 1) {
+                obj[path[i]] = value;
+            } else if (path[i] in obj) {
+                obj = obj[path[i]];
+            } else {
+                obj[path[i]] = {};
+                obj = obj[path[i]];
+            }
+        }
+    };
 });
