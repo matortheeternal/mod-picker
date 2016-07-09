@@ -5,8 +5,8 @@ class Mod < ActiveRecord::Base
   enum status: [ :good, :outdated, :unstable ]
 
   # BOOLEAN SCOPES (excludes content when false)
-  scope :hidden, -> (bool) { where(hidden: false) if (!bool)  }
-  scope :adult, -> (bool) { where(has_adult_content: false) if (!bool) }
+  scope :hidden, -> (bool) { where(hidden: false) if !bool  }
+  scope :adult, -> (bool) { where(has_adult_content: false) if !bool }
   scope :official, -> (bool) { where(is_official: false) if !bool }
   scope :utility, -> (bool) { where(is_utility: false) if !bool }
   scope :is_game, -> (bool) { where.not(primary_category_id: nil) if !bool }
