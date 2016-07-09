@@ -204,41 +204,37 @@ nav .secondary-nav {
     border-radius: 0;
   }
 
-  .search-container {
-    display: inline-block;
-    width: 74px;
-
-    #search-btn {
-      padding: 8px;
-      height: 35px;
-    }
-  }
-
-  input[type="submit"] {
+  #search-btn {
+    padding: 8px;
     height: 35px;
-    font-size: 13px;
-    margin: 0 auto;
-    padding: 0 8px;
-    -moz-appearance: none;
-    display: block;
-  }
-
-    /* button styling */
-  input[type="button"], input[type="submit"] {
-    display: inline;
-    text-align: center;
-    font-size: 12px;
-    line-height: 18px;
-    border: 0;
-    border-radius: 0;
-    cursor: pointer;
-
-    &:disabled {
-      cursor: default;
-      background-color: $bar_color;
-    }
   }
 }
+
+input[type="submit"] {
+  height: 35px;
+  font-size: 13px;
+  margin: 0 auto;
+  padding: 0 8px;
+  -moz-appearance: none;
+  display: block;
+}
+
+/* button styling */
+input[type="button"], input[type="submit"] {
+  display: inline;
+  text-align: center;
+  font-size: 12px;
+  line-height: 18px;
+  border: 0;
+  border-radius: 0;
+  cursor: pointer;
+
+  &:disabled {
+    cursor: default;
+    background-color: $bar_color;
+  }
+}
+
 
 
 // Search bar user nav links
