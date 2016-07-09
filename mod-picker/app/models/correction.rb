@@ -23,7 +23,8 @@ class Correction < ActiveRecord::Base
   # Callbacks
   after_create :increment_counters
   before_save :set_dates
-  before_destroy :decrement_counters
+  after_save :recompute_correctable_standing
+  after_destroy :decrement_counters, :recompute_correctable_standing
 
   def as_json(options={})
     if JsonHelpers.json_options_empty(options)
@@ -41,6 +42,13 @@ class Correction < ActiveRecord::Base
       super(options.merge(default_options))
     else
       super(options)
+    end
+  end
+
+  def recompute_correctable_standing
+    if self.correctable.respond_to(:standing)
+      self.correctable.compute_standing
+      self.correctable.update_column(:standing, self.correctable.standing)
     end
   end
 
