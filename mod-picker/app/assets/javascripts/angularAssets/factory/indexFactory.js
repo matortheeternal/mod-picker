@@ -1,5 +1,5 @@
-app.service('indexFactory', function() {
-    this.buildIndex = function($scope, $stateParams, $state, indexService) {
+app.service('indexFactory', function(indexService) {
+    this.buildIndex = function($scope, $stateParams, $state, localIndexService) {
         // initialize local variables
         $scope.availableColumnData = [];
         $scope.actions = [];
@@ -8,11 +8,11 @@ app.service('indexFactory', function() {
 
         // load sort values from url parameters
         $scope.sort = {};
-        indexService.setSortFromParams($scope.sort, $stateParams);
+        localIndexService.setSortFromParams($scope.sort, $stateParams);
 
         //  load filter values from url parameters
         $scope.filters = {};
-        indexService.setFiltersFromParams($scope.filters, $scope.filterPrototypes, $stateParams);
+        localIndexService.setFiltersFromParams($scope.filters, $scope.filterPrototypes, $stateParams);
 
         /* filter helper functions */
         $scope.toggleExtendedFilterVisibility = function(filterId) {
@@ -56,9 +56,33 @@ app.service('indexFactory', function() {
 
             // set url parameters
             if ($scope.filters && $scope.firstGet) {
-                var params = indexService.getParamsFromFilters($scope.filters, $scope.filterPrototypes);
+                var params = localIndexService.getParamsFromFilters($scope.filters, $scope.filterPrototypes);
                 $state.transitionTo('base.' + $scope.route, params, { notify: false });
             }
         }, true);
+    };
+
+    this.buildState = function(scol, sdir, label, filterPrototypes) {
+        // convert label to dash format
+        var dashLabel = label.toDashFormat();
+
+        // base params
+        var params = {
+            //column sort
+            scol: scol,
+            sdir: sdir
+        };
+        indexService.setDefaultParamsFromFilters(params, filterPrototypes);
+
+        // construct and return the state
+        return {
+            stateName: 'base.' + dashLabel,
+            name: 'base.' + dashLabel,
+            templateUrl: '/resources/partials/browse/' + label + '.html',
+            controller: label + 'Controller',
+            url: indexService.getUrl(dashLabel, params),
+            params: params,
+            type: 'lazy'
+        };
     };
 });
