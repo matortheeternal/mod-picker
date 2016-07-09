@@ -1,5 +1,5 @@
 class InstallOrderNote < ActiveRecord::Base
-  include Filterable, Sortable, RecordEnhancements
+  include Filterable, Sortable, RecordEnhancements, Correctable
 
   scope :visible, -> { where(hidden: false, approved: true) }
   scope :by, -> (id) { where(submitted_by: id) }
@@ -19,7 +19,6 @@ class InstallOrderNote < ActiveRecord::Base
 
   # community feedback on this install order note
   has_many :helpful_marks, :as => 'helpfulable'
-  has_many :corrections, :as => 'correctable'
 
   # old versions of this install order note
   has_many :history_entries, :class_name => 'InstallOrderNoteHistoryEntry', :inverse_of => 'install_order_note', :foreign_key => 'install_order_note_id'

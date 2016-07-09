@@ -1,5 +1,5 @@
 class CompatibilityNote < ActiveRecord::Base
-  include Filterable, Sortable, RecordEnhancements
+  include Filterable, Sortable, RecordEnhancements, Correctable
 
   scope :visible, -> { where(hidden: false, approved: true) }
   scope :by, -> (id) { where(submitted_by: id) }
@@ -26,7 +26,6 @@ class CompatibilityNote < ActiveRecord::Base
 
   # community feedback on this compatibility note
   has_many :helpful_marks, :as => 'helpfulable'
-  has_many :corrections, :as => 'correctable'
   has_one :base_report, :as => 'reportable'
 
   # old versions of this compatibility note
