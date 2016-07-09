@@ -2,26 +2,10 @@ app.run(function($futureState, indexService, filtersFactory) {
     // base params
     var params = {
         //column sort
-        scol: 'username',
-        sdir: 'desc',
-
-        //searches
-        q: '', // search text body
-        s: '', // submitted by
-
-        // allow children comments
-        c: true,
-
-        // commentable types
-        ml: true,
-        cor: true,
-        usr: true
+        scol: 'reputation',
+        sdir: 'asc'
     };
-
-    // build slider filter params
-    filtersFactory.commentFilters().forEach(function(filter) {
-        params[filter.param] = '';
-    });
+    indexService.setDefaultParamsFromFilters(params, filtersFactory.commentFilters());
 
     // construct state
     var state = {
@@ -45,32 +29,23 @@ app.controller('commentsIndexController', function ($scope, $q, $stateParams, $s
 
     // initialize local variables
     $scope.availableColumnData = [];
+    $scope.actions = [];
     $scope.extendedFilterVisibility = {};
-    $scope.sort = {};
     $scope.pages = {};
     $scope.columns = columnsFactory.commentColumns();
     $scope.columnGroups = columnsFactory.commentColumnGroups();
-    $scope.actions = [];
+
+    // load sort values from url parameters
+    $scope.sort = {};
+    indexService.setSortFromParams($scope.sort, $stateParams);
 
     // initialize filters
     $scope.filterPrototypes = filtersFactory.commentFilters();
-    $scope.filters = {
-        commentable: {
-            ModList: $stateParams.ml,
-            Correction: $stateParams.cor,
-            User: $stateParams.usr
-        }
-    };
-    //load submitter from url parameters
-    indexService.setFilterFromParam($scope.filters, 'search', $stateParams.q);
-    indexService.setFilterFromParam($scope.filters, 'submitter', $stateParams.s);
-    indexService.setFilterFromParam($scope.filters, 'is_child', $stateParams.c);
-    //load slider values from url parameters
-    indexService.setSliderFiltersFromParams($scope.filters, $scope.filterPrototypes, $stateParams);
-
-    // load filter prototypes
     $scope.dateFilters = filtersFactory.contributionDateFilters();
     $scope.statFilters = filtersFactory.commentStatisticFilters();
+    $scope.filters = {};
+    //load filter values from url parameters
+    indexService.setFiltersFromParams($scope.filters, $scope.filterPrototypes, $stateParams);
 
     /* data fetching functions */
     var firstGet = false;
@@ -102,17 +77,7 @@ app.controller('commentsIndexController', function ($scope, $q, $stateParams, $s
 
         // set url parameters
         if ($scope.filters && firstGet) {
-            var params = indexService.getParamsFromSliderFilters($scope.filters, $scope.filterPrototypes);
-
-            // set general params
-            indexService.setParamFromFilter($scope.filters, 'search', params, 'q');
-            indexService.setParamFromFilter($scope.filters, 'submitter', params, 's');
-            indexService.setParamFromFilter($scope.filters, 'is_child', params, 'c');
-            indexService.setParamFromFilter($scope.filters.commentable, 'ModList', params, 'ml');
-            indexService.setParamFromFilter($scope.filters.commentable, 'Correction', params, 'cor');
-            indexService.setParamFromFilter($scope.filters.commentable, 'User', params, 'usr');
-
-            // transition to the new state
+            var params = indexService.getParamsFromFilters($scope.filters, $scope.filterPrototypes);
             $state.transitionTo('base.comments', params, { notify: false });
         }
     }, true);
