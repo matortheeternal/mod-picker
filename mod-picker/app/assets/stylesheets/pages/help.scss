@@ -186,9 +186,8 @@ nav .secondary-nav {
 }
 
 .secondary-nav {
-
-  // margin for container of all secondary nav elements
-  margin-top: 13px;
+  position: relative;
+  top: 17px;
 
   .search-form {
     display: inline-block;
@@ -203,7 +202,6 @@ nav .secondary-nav {
     border: 0 none;
     -moz-appearance: none;
     border-radius: 0;
-    float: left;
   }
 
   .search-container {
@@ -223,7 +221,6 @@ nav .secondary-nav {
     padding: 0 8px;
     -moz-appearance: none;
     display: block;
-    float: left;
   }
 
     /* button styling */
@@ -247,15 +244,11 @@ nav .secondary-nav {
 // Search bar user nav links
 .search-user-nav {
   display: inline-block;
-  float: right;
-  height: 35px;
   margin: 0 auto;
 
   a {
     text-decoration: none;
-    height: 35px;
     margin: 8px;
-    float: left;
 
     &:link, &:visited {
       color: $bar_text_color;
