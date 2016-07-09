@@ -176,7 +176,7 @@ app.controller('modController', function($scope, $q, $stateParams, $state, $time
     };
 
     $scope.redirectToFirstTab = function() {
-        var tab = tabs[0];
+        var tab = $scope.tabs[0];
         $state.go('base.mod.' + tab.name, tab.params);
     };
 
