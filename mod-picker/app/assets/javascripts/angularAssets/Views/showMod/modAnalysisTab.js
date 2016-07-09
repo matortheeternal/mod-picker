@@ -28,8 +28,8 @@ app.controller('modAnalysisController', function($scope, $stateParams, $state, m
             //if the plugin defined in the params isn't part of this mod, then reload the tab with
             //the mod's first plugin selected
             if (!statePlugin) {
-                $scope.findTab('Analysis').params.plugin = analysis.plugins[0].id;
-                $scope.refreshTab('Analysis');
+                $scope.thisTab.params.plugin = analysis.plugins[0].id;
+                $scope.refreshTab($scope.thisTab);
             } else {
                 $scope.mod.currentPlugin = statePlugin;
             }
