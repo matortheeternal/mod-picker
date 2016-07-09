@@ -8,14 +8,9 @@ app.controller('modAnalysisController', function($scope, $stateParams, $state, m
         return;
     }
 
-    // PLUGIN SWITCHING LOGIC
-    $scope.switchPlugin = function() {
-        // transition to new url state
-        var params = {
-            modId: $stateParams.modId,
-            plugin: $scope.mod.currentPlugin.id
-        };
-        $state.transitionTo('base.mod.Analysis', params, { notify: false });
+    //update the params on the tab object
+    $scope.thisTab.params = {
+        plugin: $stateParams.plugin
     };
 
     // BASE RETRIEVAL LOGIC

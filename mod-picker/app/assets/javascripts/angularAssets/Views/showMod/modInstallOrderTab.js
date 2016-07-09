@@ -8,18 +8,16 @@ app.controller('modInstallOrderController', function($scope, $stateParams, $stat
         return;
     }
 
-    // BASE RETRIEVAL LOGIC
     $scope.retrieveInstallOrderNotes = function(page) {
         $scope.retrieving.install_order_notes = true;
 
-        // transition to new url state
-        var params = {
-            modId: $stateParams.modId,
-            page: page,
-            scol: $scope.sort.compatibility_notes.column,
-            sdir: $scope.sort.compatibility_notes.direction
-        };
-        $state.transitionTo('base.mod.Install Order', params, { notify: false });
+    //update the params on the tab object
+    $scope.thisTab.params = {
+        scol: $stateParams.scol,
+        sdir: $stateParams.sdir,
+        page: $stateParams.page,
+        filter: $stateParams.filter,
+    };
 
         // retrieve the install order notes
         var options = {

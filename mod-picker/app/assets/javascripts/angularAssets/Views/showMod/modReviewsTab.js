@@ -8,18 +8,16 @@ app.controller('modReviewsController', function($scope, $stateParams, $state, mo
         return;
     }
 
-    // BASE RETRIEVAL LOGIC
     $scope.retrieveReviews = function(page) {
         $scope.retrieving.reviews = true;
 
-        // transition to new url state
-        var params = {
-            modId: $stateParams.modId,
-            page: page,
-            scol: $scope.sort.reviews.column,
-            sdir: $scope.sort.reviews.direction
-        };
-        $state.transitionTo('base.mod.Reviews', params, { notify: false });
+    //update the params on the tab object
+    $scope.thisTab.params = {
+        scol: $stateParams.scol,
+        sdir: $stateParams.sdir,
+        page: $stateParams.page,
+        filter: $stateParams.filter,
+    };
 
         // retrieve the reviews
         var options = {

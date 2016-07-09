@@ -8,18 +8,16 @@ app.controller('modLoadOrderController', function($scope, $state, $stateParams, 
         return;
     }
 
-    // BASE RETRIEVAL LOGIC
     $scope.retrieveLoadOrderNotes = function(page) {
         $scope.retrieving.load_order_notes = true;
 
-        // transition to new url state
-        var params = {
-            modId: $stateParams.modId,
-            page: page,
-            scol: $scope.sort.load_order_notes.column,
-            sdir: $scope.sort.load_order_notes.direction
-        };
-        $state.transitionTo('base.mod.Load Order', params, { notify: false });
+    //update the params on the tab object
+    $scope.thisTab.params = {
+        scol: $stateParams.scol,
+        sdir: $stateParams.sdir,
+        page: $stateParams.page,
+        filter: $stateParams.filter,
+    };
 
         // retrieve the load order notes
         var options = {
