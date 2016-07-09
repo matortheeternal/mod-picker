@@ -1,5 +1,5 @@
 class CompatibilityNote < ActiveRecord::Base
-  include Reputable, Filterable, Sortable, RecordEnhancements
+  include Filterable, Sortable, RecordEnhancements, Correctable, Helpfulable, Reportable
 
   scope :visible, -> { where(hidden: false, approved: true) }
   scope :by, -> (id) { where(submitted_by: id) }
@@ -23,11 +23,6 @@ class CompatibilityNote < ActiveRecord::Base
   # mod lists this compatibility note appears on
   has_many :mod_list_compatibility_notes, :inverse_of => 'compatibility_note'
   has_many :mod_lists, :through => 'mod_list_compatibility_notes', :inverse_of => 'compatibility_notes'
-
-  # community feedback on this compatibility note
-  has_many :helpful_marks, :as => 'helpfulable'
-  has_many :corrections, :as => 'correctable'
-  has_one :base_report, :as => 'reportable'
 
   # old versions of this compatibility note
   has_many :history_entries, :class_name => 'CompatibilityNoteHistoryEntry', :inverse_of => 'compatibility_note', :foreign_key => 'compatibility_note_id'
@@ -73,11 +68,6 @@ class CompatibilityNote < ActiveRecord::Base
       edit_summary: edit_summary || "",
       edited: self.edited || self.submitted
     )
-  end
-
-  def recompute_helpful_counts
-    self.helpful_count = HelpfulMark.where(helpfulable_id: self.id, helpfulable_type: "CompatibilityNote", helpful: true).count
-    self.not_helpful_count = HelpfulMark.where(helpfulable_id: self.id, helpfulable_type: "CompatibilityNote", helpful: false).count
   end
 
   def as_json(options={})

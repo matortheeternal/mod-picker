@@ -333,6 +333,12 @@ class Mod < ActiveRecord::Base
       review_reputation = (self.average_rating / 100)**3 * (510.0 / (1 + Math::exp(-0.2 * (self.reviews_count - 10))) - 60)
       self.reputation = review_reputation
     end
+
+    if self.status == :unstable
+      self.reputation = self.reputation / 4
+    elsif self.status == :outdated
+      self.reputation = self.reputation / 2
+    end
   end
 
   def delete_old_mod_images

@@ -1,5 +1,5 @@
 class Review < ActiveRecord::Base
-  include Reputable, Filterable, Sortable, RecordEnhancements
+  include Filterable, Sortable, RecordEnhancements, Helpfulable, Reportable
 
   # GENERAL SCOPES
   scope :visible, -> { where(hidden: false, approved: true) }
@@ -19,9 +19,6 @@ class Review < ActiveRecord::Base
   belongs_to :mod, :inverse_of => 'reviews'
 
   has_many :review_ratings, :inverse_of => 'review'
-
-  has_many :helpful_marks, :as => 'helpfulable'
-  has_one :base_report, :as => 'reportable'
 
   accepts_nested_attributes_for :review_ratings
 
@@ -68,12 +65,7 @@ class Review < ActiveRecord::Base
 
     self.overall_rating = (total.to_f / count) if count > 0
   end
-
-  def recompute_helpful_counts
-    self.helpful_count = HelpfulMark.where(helpfulable_id: self.id, helpfulable_type: "Review", helpful: true).count
-    self.not_helpful_count = HelpfulMark.where(helpfulable_id: self.id, helpfulable_type: "Review", helpful: false).count
-  end
-
+  
   def as_json(options={})
     if JsonHelpers.json_options_empty(options)
       default_options = {

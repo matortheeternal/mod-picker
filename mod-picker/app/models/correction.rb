@@ -1,10 +1,10 @@
 class Correction < ActiveRecord::Base
-  include Filterable, RecordEnhancements
+  include Filterable, RecordEnhancements, Reportable
 
   scope :visible, -> { where(hidden: false) }
   scope :by, -> (id) { where(submitted_by: id) }
 
-  enum status: [:open, :passed, :failed]
+  enum status: [:open, :passed, :failed, :closed]
   enum mod_status: [:good, :outdated, :unstable]
 
   belongs_to :game, :inverse_of => 'corrections'
@@ -15,7 +15,6 @@ class Correction < ActiveRecord::Base
   has_many :comments, -> { where(parent_id: nil) }, :as => 'commentable'
   
   belongs_to :correctable, :polymorphic => true
-  has_one :base_report, :as => 'reportable'
 
   # Validations
   validates :game_id, :submitted_by, :correctable_id, :correctable_type, :text_body, presence: true
@@ -24,7 +23,8 @@ class Correction < ActiveRecord::Base
   # Callbacks
   after_create :increment_counters
   before_save :set_dates
-  before_destroy :decrement_counters
+  after_save :recompute_correctable_standing
+  after_destroy :decrement_counters, :recompute_correctable_standing
 
   def as_json(options={})
     if JsonHelpers.json_options_empty(options)
@@ -42,6 +42,13 @@ class Correction < ActiveRecord::Base
       super(options.merge(default_options))
     else
       super(options)
+    end
+  end
+
+  def recompute_correctable_standing
+    if self.correctable.respond_to(:standing)
+      self.correctable.compute_standing
+      self.correctable.update_column(:standing, self.correctable.standing)
     end
   end
 

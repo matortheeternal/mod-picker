@@ -1,5 +1,5 @@
 class User < ActiveRecord::Base
-  include Filterable, Sortable, RecordEnhancements
+  include Filterable, Sortable, RecordEnhancements, Reportable
 
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
@@ -76,7 +76,6 @@ class User < ActiveRecord::Base
 
   has_many :profile_comments, -> { where(parent_id: nil) }, :class_name => 'Comment', :as => 'commentable'
   has_many :reports, :foreign_key => 'submitted_by', :inverse_of => 'submitter'
-  has_one :base_report, :as => 'reportable'
 
   accepts_nested_attributes_for :settings
   accepts_nested_attributes_for :bio

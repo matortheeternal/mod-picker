@@ -1,5 +1,5 @@
 class InstallOrderNote < ActiveRecord::Base
-  include Reputable, Filterable, Sortable, RecordEnhancements
+  include Filterable, Sortable, RecordEnhancements, Correctable, Helpfulable, Reportable
 
   scope :visible, -> { where(hidden: false, approved: true) }
   scope :by, -> (id) { where(submitted_by: id) }
@@ -16,10 +16,6 @@ class InstallOrderNote < ActiveRecord::Base
   # mod lists this install order note appears on
   has_many :mod_list_install_order_notes, :inverse_of => 'install_order_note'
   has_many :mod_lists, :through => 'mod_list_install_order_notes', :inverse_of => 'install_order_notes'
-
-  # community feedback on this install order note
-  has_many :helpful_marks, :as => 'helpfulable'
-  has_many :corrections, :as => 'correctable'
 
   # old versions of this install order note
   has_many :history_entries, :class_name => 'InstallOrderNoteHistoryEntry', :inverse_of => 'install_order_note', :foreign_key => 'install_order_note_id'
@@ -62,11 +58,6 @@ class InstallOrderNote < ActiveRecord::Base
         edit_summary: edit_summary || "",
         edited: self.edited || self.submitted
     )
-  end
-
-  def recompute_helpful_counts
-    self.helpful_count = HelpfulMark.where(helpfulable_id: self.id, helpfulable_type: "InstallOrderNote", helpful: true).count
-    self.not_helpful_count = HelpfulMark.where(helpfulable_id: self.id, helpfulable_type: "InstallOrderNote", helpful: false).count
   end
 
   def as_json(options={})
