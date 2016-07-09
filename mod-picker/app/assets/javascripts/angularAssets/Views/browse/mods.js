@@ -120,7 +120,7 @@ app.controller('modsController', function($scope, $q, $stateParams, $state, modS
         return result;
     };
 
-    /* data */
+    /* data fetching functions */
     // TODO: replace firstGet with $scope.mods
     var firstGet = false;
     $scope.getMods = function(page) {
@@ -141,7 +141,7 @@ app.controller('modsController', function($scope, $q, $stateParams, $state, modS
     // laod available stat filters
     $scope.availableStatFilters = $scope.availableFilters($scope.statFilters);
 
-    // create a watch
+    // fetch mods again when filters or sort changes
     var getModsTimeout;
     $scope.$watch('[filters, sort]', function() {
         // build availableColumnData string array

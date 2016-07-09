@@ -65,9 +65,6 @@ app.controller('usersController', function ($scope, $q, $stateParams, $state, us
     indexService.setFilterFromParam($scope.filters, 'linked', $stateParams.l);
     //load slider values from url parameters
     indexService.setSliderFiltersFromParams($scope.filters, $scope.filterPrototypes, $stateParams);
-    //load tags and categories from url parameters
-    indexService.setListFilterFromParam($scope.filters, 'tags', $stateParams.t);
-    indexService.setListFilterFromParam($scope.filters, 'categories', $stateParams.c);
 
     // load filter prototypes
     $scope.dateFilters = filtersFactory.userDateFilters();
@@ -81,7 +78,7 @@ app.controller('usersController', function ($scope, $q, $stateParams, $state, us
         }
     };
 
-    /* data */
+    /* data fetching functions */
     var firstGet = false;
     $scope.getUsers = function(page) {
         delete $scope.users;
@@ -99,7 +96,7 @@ app.controller('usersController', function ($scope, $q, $stateParams, $state, us
     // fetch users when we load the page
     $scope.getUsers();
 
-    // create a watch
+    // fetch users again when filters or sort changes
     var getUsersTimeout;
     $scope.$watch('[filters, sort]', function() {
         // get users
