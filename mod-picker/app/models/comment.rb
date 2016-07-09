@@ -1,11 +1,30 @@
 class Comment < ActiveRecord::Base
   include Filterable, Sortable, RecordEnhancements
 
-  scope :visible, -> { where(hidden: false) }
-  scope :type, -> (type) { where(commentable_type: type) }
-  scope :target, -> (id) { where(commentable_id: id) }
-  scope :by, -> (id) { where(submitted_by: id) }
+  # BOOLEAN SCOPES (excludes content when false)
+  scope :hidden, -> (bool) { where(hidden: false) if !bool  }
+  scope :is_child, -> (bool) { where(parent_id: nil) if !bool }
+  # GENERAL SCOPES
+  scope :search, -> (text) { where("text_body like ?", "%#{text}%") }
+  scope :submitter, -> (username) { joins(:submitter).where(:users => {:username => username}) }
+  scope :commentable, -> (commentable_hash) {
+    # build commentables array
+    commentables = []
+    commentable_hash.each_key do |key|
+      if commentable_hash[key]
+        commentables.push(key)
+      end
+    end
 
+    # return query
+    where(commentable_type: commentables)
+  }
+  # RANGE SCOPES
+  scope :replies, -> (range) { where(children_count: range[:min]..range[:max]) }
+  scope :submitted, -> (range) { where(submitted: parseDate(range[:min])..parseDate(range[:max])) }
+  scope :edited, -> (range) { where(edited: parseDate(range[:min])..parseDate(range[:max])) }
+
+  # ASSOCIATIONS
   belongs_to :submitter, :class_name => 'User', :foreign_key => 'submitted_by', :inverse_of => 'comments'
   belongs_to :commentable, :polymorphic => true
 
