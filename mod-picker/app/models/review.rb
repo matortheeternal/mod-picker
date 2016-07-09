@@ -1,5 +1,5 @@
 class Review < ActiveRecord::Base
-  include Filterable, Sortable, RecordEnhancements, Helpfulable, Reportable, Reputable
+  include Filterable, Sortable, RecordEnhancements, Helpfulable, Reportable
 
   # GENERAL SCOPES
   scope :visible, -> { where(hidden: false, approved: true) }
