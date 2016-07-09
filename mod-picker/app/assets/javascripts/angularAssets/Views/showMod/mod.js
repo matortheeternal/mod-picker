@@ -30,12 +30,11 @@ app.config(['$stateProvider', function($stateProvider) {
                 controller: 'modReviewsController',
             }
         },
-        url: '/reviews?{page:int}&scol&sdir&{filter:bool}',
+        url: '/reviews?{page:int}&scol&sdir',
         params: {
             page: 1,
             scol: 'reputation',
-            sdir: 'desc',
-            filter: true
+            sdir: 'desc'
         }
     }).state('base.mod.Compatibility', {
         sticky: true,

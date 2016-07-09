@@ -17,8 +17,7 @@ app.controller('modReviewsController', function($scope, $stateParams, $state, mo
     $scope.thisTab.params = {
         scol: $stateParams.scol,
         sdir: $stateParams.sdir,
-        page: $stateParams.page,
-        filter: $stateParams.filter,
+        page: $stateParams.page
     };
 
     // retrieve the reviews
