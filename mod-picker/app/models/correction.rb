@@ -4,7 +4,7 @@ class Correction < ActiveRecord::Base
   scope :visible, -> { where(hidden: false) }
   scope :by, -> (id) { where(submitted_by: id) }
 
-  enum status: [:open, :passed, :failed]
+  enum status: [:open, :passed, :failed, :closed]
   enum mod_status: [:good, :outdated, :unstable]
 
   belongs_to :game, :inverse_of => 'corrections'
