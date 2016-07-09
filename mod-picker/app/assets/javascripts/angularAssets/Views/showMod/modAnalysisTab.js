@@ -1,6 +1,10 @@
 app.controller('modAnalysisController', function($scope, $stateParams, $state, modService) {
     $scope.thisTab = $scope.findTab('Analysis');
 
+    $scope.updatePlugin = function() {
+        $scope.thisTab.params.plugin = $scope.mod.currentPlugin.id;
+        $scope.refreshTab($scope.thisTab);
+    };
     //update the params on the tab object
     $scope.thisTab.params = {
         plugin: $stateParams.plugin
