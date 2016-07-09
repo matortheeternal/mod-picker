@@ -186,17 +186,23 @@ app.controller('modController', function($scope, $q, $stateParams, $state, $time
         $scope.removeTab('Compatibility');
         $scope.removeTab('Install Order');
         $scope.removeTab('Load Order');
-        $scope.redirectToFirstTab();
+        if (!$state.is('base.mod.Analysis')) {
+            $scope.redirectToFirstTab();
+        }
     } else {
         // remove install order notes if mod is a utility
         if ($scope.mod.is_utility) {
             $scope.removeTab('Install Order');
-            $scope.redirectToFirstTab();
+            if ($state.is('base.mod.Install Order')) {
+                $scope.redirectToFirstTab();
+            }
         }
         // remove Load Order tab if mod has no plugins
         if ($scope.mod.plugins_count === 0) {
             $scope.removeTab('Load Order');
-            $scope.redirectToFirstTab();
+            if ($state.is('base.mod.Load Order')) {
+                $scope.redirectToFirstTab();
+            }
         }
     }
 
