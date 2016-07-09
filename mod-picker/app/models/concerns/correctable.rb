@@ -1,4 +1,4 @@
-module Sortable
+module Correctable
   extend ActiveSupport::Concern
 
   included do

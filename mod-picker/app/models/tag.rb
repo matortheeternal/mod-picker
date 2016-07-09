@@ -1,5 +1,5 @@
 class Tag < ActiveRecord::Base
-  include Filterable, RecordEnhancements
+  include Filterable, RecordEnhancements, Reportable
 
   scope :game, -> (game) { where(game_id: game) }
 
@@ -10,8 +10,6 @@ class Tag < ActiveRecord::Base
 
   has_many :mod_list_tags, :inverse_of => 'tag'
   has_many :mod_lists, :through => 'mod_list_tags', :inverse_of => 'tags'
-
-  has_one :base_report, :as => 'reportable'
 
   # Validations
   validates :game_id, :submitted_by, :text, presence: true

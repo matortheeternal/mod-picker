@@ -1,5 +1,5 @@
 class Correction < ActiveRecord::Base
-  include Filterable, RecordEnhancements
+  include Filterable, RecordEnhancements, Reportable
 
   scope :visible, -> { where(hidden: false) }
   scope :by, -> (id) { where(submitted_by: id) }
@@ -15,7 +15,6 @@ class Correction < ActiveRecord::Base
   has_many :comments, -> { where(parent_id: nil) }, :as => 'commentable'
   
   belongs_to :correctable, :polymorphic => true
-  has_one :base_report, :as => 'reportable'
 
   # Validations
   validates :game_id, :submitted_by, :correctable_id, :correctable_type, :text_body, presence: true
