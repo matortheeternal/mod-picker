@@ -13,20 +13,6 @@ $secondary_background: #f0f0f0;
 $background_highlight: #ffffff;
 $input_background: #fff;
 
-$shadow_color: #000;
-$border_color: #e6e6e6;
-$soft_border_color: #f0f0f0;
-$hard_border_color: #b6b6b6;
-
-$h1_color: #fff;
-$h2_color: #000;
-$h3_color: #3a4751;
-$h4_color: #606060;
-
-$action_color: #53b6bf;
-$action_text_color: #ffffff;
-$bright_action_color: #a6ceda;
-$dark_action_color: #479aa2;
 
 $bar_color: #3a4751;
 $bar_dark_color: #2C353C;
@@ -36,13 +22,10 @@ $bar_highlight_text_color: #53b6bf;
 
 $secondary_text_color: #b2b2b2;
 
-$link_color: #53b6bf;
+$link_color: #f0f0f0;
 $link_hover_color_primary: #53b6bf;
 $link_hover_color_secondary: #3a4751;
 
-$slider_bg_color: #aeb5b6;
-$slider_range_color: #53b6bf;
-$slider_circle_color_after: #3a4751;
 
 $success_primary: #B4D5B4;
 $success_secondary: #4AC859;
@@ -90,13 +73,7 @@ body {
 }
 
 .clearfix {
-  *zoom: 1;  // For IE 6/7 only
-}
-
-// wrapper around entire body contents 
-// + min-height to make sure footer is always at the bottom of the page
-.body-wrapper {
-  min-height: 100%;
+  zoom: 1;  // For IE 6/7 only
 }
 
 // Max width settings for parent/child components
@@ -113,6 +90,11 @@ body {
 
 
 
+// header
+.help-header {
+  background-color: $bar_color;
+}
+
 // Nav bar
 
 nav {
@@ -120,6 +102,9 @@ nav {
   background-color: $bar_color;
   white-space: nowrap;
   
+  max-width: $max-width-container;
+  margin: 0 auto;
+
   .logo {
     display: inline-block;
     margin: 0 auto;
@@ -150,11 +135,8 @@ nav .primary-nav {
 
 // logo
 nav .primary-nav .logo {
-  display: block;
-  float: left;
+  display: inline-block;
   text-decoration: none;
-  margin-top: 4px;
-  padding: 0 2rem 0 0;
 
   &:link, &:visited {
     color: $bar_text_color;
@@ -167,9 +149,7 @@ nav .primary-nav .logo {
 
 // nav bar anchor links 
 nav .primary-nav-links {
-  display: block;
-  float: left;
-  margin-top: 18px;
+  display: inline-block;
   
   a {
     margin-right: 1rem;
@@ -196,23 +176,22 @@ nav .secondary-nav {
 .btn {
   padding: 7px;
   height: 32px;
-  color: $action_text_color;
+  color: $link_color;
   text-transform: uppercase;
-  background-color: $action_color;
+  background-color: $link_hover_color_primary;
   &:hover {
-    background-color: $bar_highlight_color;
+    color: $link_hover_color_primary;
+    background-color: $link_color;
   }
 }
 
-.search {
-  float: right;
-  
+.secondary-nav {
+
   // margin for container of all secondary nav elements
   margin-top: 13px;
 
   .search-form {
-    float: left;
-    display: block;
+    display: inline-block;
   }
 
   .search-field {
@@ -228,7 +207,7 @@ nav .secondary-nav {
   }
 
   .search-container {
-    float: left;
+    display: inline-block;
     width: 74px;
 
     #search-btn {
@@ -259,7 +238,7 @@ nav .secondary-nav {
 
     &:disabled {
       cursor: default;
-      background-color: $hard_border_color;
+      background-color: $bar_color;
     }
   }
 }

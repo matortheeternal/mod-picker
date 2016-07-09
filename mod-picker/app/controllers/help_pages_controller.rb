@@ -1,10 +1,12 @@
 class HelpPagesController < ApplicationController
   before_action :authorize, only: [:create, :update, :destroy]
+  layout "help"
 
   def index
 
     # Render home page
-    render "help_pages/show", layout: "help"
+    # TODO: rename to render help_pages/index
+    render "help_pages/index"
   end
 
   private
