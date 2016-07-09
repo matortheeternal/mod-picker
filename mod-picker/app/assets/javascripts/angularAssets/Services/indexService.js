@@ -95,10 +95,10 @@ app.service('indexService', function(objectUtils) {
         var params = {};
         filterPrototypes.forEach(function(filter) {
             // this is the filter values stored on the scope of the view
-            var filterValue = filters[filter.data];
+            var filterValue = objectUtils.deepValue(filters, filter.data);
 
             // return if the filter has not been set
-            if (!filterValue) {
+            if (filterValue === null) {
                 return;
             }
 
@@ -114,6 +114,10 @@ app.service('indexService', function(objectUtils) {
             // else if the filter is a list filter, generate param as comma separated list
             else if (filter.type === 'List') {
                 params[filter.param] = filterValue.join(',');
+            }
+            // else if filter is a boolean filter, serialize to 1 or 0
+            else if (filter.type === 'Boolean') {
+                params[filter.param] = filterValue ? '1' : '0';
             }
             // else the filter should be just a value
             else {
