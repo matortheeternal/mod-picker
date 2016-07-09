@@ -100,7 +100,7 @@ app.config(['$stateProvider', function($stateProvider) {
     });
 }]);
 
-app.controller('modController', function($scope, $q, $stateParams, $timeout, currentUser, modObject, modService, contributionService, categoryService, tagService, smoothScroll, errorService) {
+app.controller('modController', function($scope, $q, $stateParams, $state, $timeout, currentUser, modObject, modService, contributionService, categoryService, tagService, smoothScroll, errorService) {
     // get parent variables
     $scope.mod = modObject.mod;
     $scope.mod.star = modObject.star;
@@ -172,6 +172,15 @@ app.controller('modController', function($scope, $q, $stateParams, $timeout, cur
             return tab.name === tabName;
         });
         $scope.tabs.splice(index, 1);
+    };
+
+    $scope.refreshTab = function(tab) {
+        $state.go('base.mod.' + tab.name, tab.params);
+    };
+
+    $scope.redirectToFirstTab = function() {
+        var tab = tabs[0];
+        $state.go('base.mod.' + tab.name, tab.params);
     };
 
     // only display analysis tab if mod doesn't have a primary category
