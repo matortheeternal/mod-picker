@@ -1,4 +1,5 @@
 app.controller('modCompatibilityController', function($scope, $stateParams, $state, modService, contributionFactory, contributionService) {
+    $scope.thisTab = $scope.findTab('Compatibility');
     // verify we can access this tab
     $scope.currentTab = $scope.findTab('Compatibility');
     if (!$scope.currentTab) {

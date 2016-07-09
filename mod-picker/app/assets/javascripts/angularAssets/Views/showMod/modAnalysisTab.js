@@ -1,4 +1,5 @@
 app.controller('modAnalysisController', function($scope, $stateParams, $state, modService) {
+    $scope.thisTab = $scope.findTab('Analysis');
     // verify we can access this tab
     $scope.currentTab = $scope.findTab('Analysis');
     if (!$scope.currentTab) {
