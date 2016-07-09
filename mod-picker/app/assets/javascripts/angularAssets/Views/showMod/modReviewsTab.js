@@ -8,6 +8,10 @@ app.controller('modReviewsController', function($scope, $stateParams, $state, mo
         return;
     }
 
+    $scope.updatePage = function(page) {
+        $scope.thisTab.params.page = page;
+        $scope.refreshTab($scope.thisTab);
+    };
 
     //update the params on the tab object
     $scope.thisTab.params = {

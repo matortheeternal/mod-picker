@@ -8,6 +8,10 @@ app.controller('modCompatibilityController', function($scope, $stateParams, $sta
         return;
     }
 
+    $scope.updatePage = function(page) {
+        $scope.thisTab.params.page = page;
+        $scope.refreshTab($scope.thisTab);
+    };
 
     //update the params on the tab object
     $scope.thisTab.params = {

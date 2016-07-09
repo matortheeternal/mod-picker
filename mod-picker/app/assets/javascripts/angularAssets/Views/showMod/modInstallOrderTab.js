@@ -8,6 +8,10 @@ app.controller('modInstallOrderController', function($scope, $stateParams, $stat
         return;
     }
 
+    $scope.updatePage = function(page) {
+        $scope.thisTab.params.page = page;
+        $scope.refreshTab($scope.thisTab);
+    };
 
     //update the params on the tab object
     $scope.thisTab.params = {
