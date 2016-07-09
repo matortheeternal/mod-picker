@@ -3,29 +3,27 @@ app.service('contributionService', function (backend, $q, userTitleService, page
 
     this.helpfulMark = function(type, id, helpful) {
         var helpfulObj = helpful == undefined ? {} : {helpful: helpful};
-        return backend.post('/' + type + '/' + id + '/helpful', helpfulObj);
+        return backend.post('/' + route + '/' + id + '/helpful', helpfulObj);
     };
 
-    this.agreementMark = function(type, id, agree) {
+    this.agreementMark = function(route, id, agree) {
         var agreeObj = agree == undefined ? {} : {agree: agree};
-        return backend.post('/' + type + '/' + id + '/agreement', agreeObj)
+        return backend.post('/' + route + '/' + id + '/agreement', agreeObj)
     };
 
-    this.hide = function(type, id, hidden) {
-        return backend.post('/' + type + '/' + id + '/hide', {hidden: hidden});
+    this.hide = function(route, id, hidden) {
+        return backend.post('/' + route + '/' + id + '/hide', {hidden: hidden});
     };
 
-    this.approve = function(type, id, approved) {
-        return backend.post('/' + type + '/' + id + '/approve', {approved: approved});
+    this.approve = function(route, id, approved) {
+        return backend.post('/' + route + '/' + id + '/approve', {approved: approved});
     };
 
-    this.submitContribution = function(type, contribution) {
+    this.submitContribution = function(route, contribution) {
         var action = $q.defer();
-        backend.post('/' + type, contribution).then(function(data) {
+        backend.post('/' + route, contribution).then(function(data) {
             var contributions = [data];
-            if (type === 'reviews') {
-                reviewSectionService.associateReviewSections(contributions);
-            }
+            reviewSectionService.associateReviewSections(contributions);
             userTitleService.associateTitles(contributions);
             action.resolve(contributions[0]);
         }, function(response) {
@@ -34,8 +32,8 @@ app.service('contributionService', function (backend, $q, userTitleService, page
         return action.promise;
     };
 
-    this.updateContribution = function(type, id, contribution) {
-        return backend.update('/' + type + '/' + id, contribution);
+    this.updateContribution = function(route, id, contribution) {
+        return backend.update('/' + route + '/' + id, contribution);
     };
 
     this.retrieveComments = function(route, id, options, pageInformation) {
