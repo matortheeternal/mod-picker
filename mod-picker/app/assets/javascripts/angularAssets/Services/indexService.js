@@ -1,4 +1,6 @@
-app.service('indexService', function() {
+app.service('indexService', function(objectUtils) {
+    var service = this;
+
     this.getUrl = function(base, params) {
         var output = '/'+base+'?';
         for (var property in params) {
@@ -25,8 +27,12 @@ app.service('indexService', function() {
     };
 
     this.setFilterFromParam = function(filters, key, paramValue) {
-        if (paramValue) {
-            filters[key] = paramValue;
+        if (typeof paramValue !== "undefined") {
+            if (key.indexOf(".") > -1) {
+                objectUtils.setDeepValue(filters, key, paramValue);
+            } else {
+                filters[key] = paramValue;
+            }
         }
     };
 
