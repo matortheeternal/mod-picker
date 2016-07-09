@@ -309,4 +309,71 @@ app.service("filtersFactory", function() {
             service.commentStatisticFilters()
         );
     };
+
+    this.reviewStatisticFilters = function() {
+        return [
+            {
+                label: "Overall Rating",
+                common: true,
+                data: "overall_rating",
+                max: 100,
+                param: "ovr"
+            },
+            {
+                label: "Reputatation",
+                common: true,
+                data: "reputation",
+                min: -20,
+                max: 40,
+                param: "rep"
+            },
+            {
+                label: "Helpful Count",
+                common: true,
+                data: "helpful_count",
+                min: 0,
+                max: 100,
+                param: "hc"
+            },
+            {
+                label: "Not Helpful Count",
+                common: true,
+                data: "not_helpful_count",
+                min: 0,
+                max: 100,
+                param: "nhc"
+            },
+            {
+                label: "Rating Sections Count",
+                common: false,
+                data: "ratings_count",
+                min: 0,
+                max: 10,
+                param: "rsc"
+            },
+            {
+                label: "Corrections Count",
+                common: false,
+                data: "corrections_count",
+                min: 0,
+                max: 100,
+                param: "crc"
+            },
+            {
+                label: "History Entries Count",
+                common: false,
+                data: "history_entries_count",
+                min: 0,
+                max: 100,
+                param: "hec"
+            }
+        ]
+    };
+
+    this.reviewFilters = function() {
+        return Array.prototype.concat(
+            service.contributionDateFilters(),
+            service.reviewStatisticFilters()
+        );
+    };
 });
