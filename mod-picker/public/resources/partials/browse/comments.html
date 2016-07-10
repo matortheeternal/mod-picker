@@ -4,7 +4,7 @@
             <div class="left-column left-browse-column">
                 <h2>Filters</h2>
 
-                <div id="search-filters" class="filter-section">
+                <div class="filter-section">
                     <h3>Search</h3>
                     <h4>Text</h4>
                     <input type="text" ng-model="filters.search">
@@ -13,7 +13,7 @@
                     <input type="text" ng-model="filters.submitter">
                 </div>
 
-                <div id="role-filters" class="filter-section">
+                <div class="filter-section">
                     <h3>Types</h3>
                     <div class="sidebar-box box-shadow">
                         <ul class="checkbox-list">
@@ -37,7 +37,7 @@
                     </div>
                 </div>
 
-                <div id="date-filters" class="filter-section">
+                <div class="filter-section">
                     <h3>Date Filters</h3>
                     <div ng-repeat="filter in dateFilters">
                         <h4>{{filter.label}}
@@ -49,7 +49,7 @@
                     </div>
                 </div>
 
-                <div id="stat-filters" class="filter-sections" ng-if="statFilters.length">
+                <div class="filter-sections" ng-if="statFilters.length">
                     <h3>Statistic Filters</h3>
                     <div class="filter-section">
                         <div ng-repeat="filter in statFilters">
