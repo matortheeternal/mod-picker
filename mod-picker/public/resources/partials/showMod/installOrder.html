@@ -2,13 +2,13 @@
     <div class="mod-tab-item primary-item">
         <strong>Sort By: </strong>
 
-        <select ng-model="thisTab.params.scol" ng-change="updatePage(1)">
+        <select ng-model="thisTab.params.scol" ng-change="retrieveInstallOrderNotes(1)">
             <option value="reputation">Reputation</option>
             <option value="submitted">Date Submitted</option>
             <option value="edited">Last Edited</option>
         </select>
 
-        <span class="sort-direction" title="Sorted in {{ thisTab.params.sdir === 'asc' ? 'ascending' : 'descending' }} order." ng-click="toggleSortDirection(thisTab); updatePage(1)">
+        <span class="sort-direction" title="Sorted in {{ thisTab.params.sdir === 'asc' ? 'ascending' : 'descending' }} order." ng-click="toggleSortDirection(thisTab); retrieveInstallOrderNotes(1)">
             <i class="fa fa-sort-amount-{{thisTab.params.sdir}}" aria-hidden="true"></i>
         </span>
     </div>
@@ -65,7 +65,7 @@
         There are no Install Order Notes for this mod yet.
     </div>
 
-    <page-results pages="pages.install_order_notes" data="mod.install_order_notes" callback="updatePage"></page-results>
+    <page-results pages="pages.install_order_notes" data="mod.install_order_notes" callback="retrieveInstallOrderNotes"></page-results>
 </loader>
 
 <div class="content-message content-error" ng-if="errors.install_order_notes">

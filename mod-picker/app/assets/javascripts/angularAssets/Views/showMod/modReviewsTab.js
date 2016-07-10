@@ -1,33 +1,37 @@
 app.controller('modReviewsController', function($scope, $stateParams, $state, modService, reviewSectionService, contributionService) {
     $scope.thisTab = $scope.findTab('Reviews');
 
-    $scope.updatePage = function(page) {
-        $scope.thisTab.params.page = page;
-        $scope.refreshTab($scope.thisTab);
+    //update the params on the tab object when the tab is navigated to directly
+    $scope.thisTab.params = angular.copy($stateParams);
+
+    $scope.retrieveReviews = function(page) {
+        // refresh the parameters in the url (without actually changing state), but not on initialization
+        if ($scope.loaded) {
+            $scope.refreshTabParams($scope.thisTab);
+        }
+
+        // retrieve the reviews
+        var options = {
+            sort: {
+                column: $scope.thisTab.params.scol,
+                direction: $scope.thisTab.params.sdir
+            },
+            page: page
+        };
+
+        modService.retrieveModReviews($stateParams.modId, options, $scope.pages.reviews).then(function(data) {
+            $scope.mod.reviews = data.reviews;
+            $scope.mod.user_review = data.user_review;
+        }, function(response) {
+            $scope.errors.reviews = response;
+        });
+
     };
 
-    //update the params on the tab object
-    $scope.thisTab.params = {
-        scol: $stateParams.scol,
-        sdir: $stateParams.sdir,
-        page: $stateParams.page
-    };
-
-    // retrieve the reviews
-    var options = {
-        sort: {
-            column: $stateParams.scol,
-            direction: $stateParams.sdir
-        },
-        filters: { modlist: $stateParams.filter },
-        page: $stateParams.page
-    };
-    modService.retrieveModReviews($stateParams.modId, options, $scope.pages.reviews).then(function(data) {
-        $scope.mod.reviews = data.reviews;
-        $scope.mod.user_review = data.user_review;
-    }, function(response) {
-        $scope.errors.reviews = response;
-    });
+    //retrieve the reviews when the state is first loaded
+    $scope.retrieveReviews($stateParams.page);
+    //start allowing the url params to be updated
+    $scope.loaded = true;
 
     //retrieve review sections
     reviewSectionService.getSectionsForCategory($scope.mod.primary_category).then(function(data) {
@@ -35,6 +39,7 @@ app.controller('modReviewsController', function($scope, $stateParams, $state, mo
     }, function(response) {
         $scope.errors.reviewSections = response;
     });
+
 
 
     // REVIEW RELATED LOGIC

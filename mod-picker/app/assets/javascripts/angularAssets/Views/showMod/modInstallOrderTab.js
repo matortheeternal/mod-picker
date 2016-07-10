@@ -1,34 +1,35 @@
 app.controller('modInstallOrderController', function($scope, $stateParams, $state, modService, contributionService, contributionFactory) {
     $scope.thisTab = $scope.findTab('Install Order');
 
-    $scope.updatePage = function(page) {
-        $scope.thisTab.params.page = page;
-        $scope.refreshTab($scope.thisTab);
+    //update the params on the tab object when the tab is navigated to directly
+    $scope.thisTab.params = angular.copy($stateParams);
+
+    $scope.retrieveInstallOrderNotes = function(page) {
+        // refresh the parameters in the url (without actually changing state), but not on initialization
+        if ($scope.loaded) {
+            $scope.refreshTabParams($scope.thisTab);
+        }
+
+        // retrieve the Install Order Notes
+        var options = {
+            sort: {
+                column: $scope.thisTab.params.scol,
+                direction: $scope.thisTab.params.sdir
+            },
+            filters: { modlist: $scope.thisTab.params.filter },
+            page: page
+        };
+        modService.retrieveModContributions($stateParams.modId, 'install_order_notes', options, $scope.pages.install_order_notes).then(function(data) {
+            $scope.mod.install_order_notes = data;
+        }, function(response) {
+            $scope.errors.install_order_notes = response;
+        });
     };
 
-    //update the params on the tab object
-    $scope.thisTab.params = {
-        scol: $stateParams.scol,
-        sdir: $stateParams.sdir,
-        page: $stateParams.page,
-        filter: $stateParams.filter,
-    };
-
-    // retrieve the Install Order Notes
-    var options = {
-        sort: {
-            column: $stateParams.scol,
-            direction: $stateParams.sdir
-        },
-        filters: { modlist: $stateParams.filter },
-        page: $stateParams.page
-    };
-    modService.retrieveModContributions($stateParams.modId, 'install_order_notes', options, $scope.pages.install_order_notes).then(function(data) {
-        $scope.retrieving.install_order_notes = false;
-        $scope.mod.install_order_notes = data;
-    }, function(response) {
-        $scope.errors.install_order_notes = response;
-    });
+    //retrieve the notes when the state is first loaded
+    $scope.retrieveInstallOrderNotes($stateParams.page);
+    //start allowing the url params to be updated
+    $scope.loaded = true;
 
     // INSTALL ORDER NOTE RELATED LOGIC
     // instantiate a new install order note object

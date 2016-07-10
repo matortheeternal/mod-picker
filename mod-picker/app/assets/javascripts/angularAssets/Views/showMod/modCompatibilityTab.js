@@ -1,33 +1,36 @@
 app.controller('modCompatibilityController', function($scope, $stateParams, $state, modService, contributionFactory, contributionService) {
     $scope.thisTab = $scope.findTab('Compatibility');
 
-    $scope.updatePage = function(page) {
-        $scope.thisTab.params.page = page;
-        $scope.refreshTab($scope.thisTab);
+    //update the params on the tab object when the tab is navigated to directly
+    $scope.thisTab.params = angular.copy($stateParams);
+
+    $scope.retrieveCompatibilityNotes = function(page) {
+        // refresh the parameters in the url (without actually changing state), but not on initialization
+        if ($scope.loaded) {
+            $scope.refreshTabParams($scope.thisTab);
+        }
+
+        // retrieve the compatibility notes
+        var options = {
+            sort: {
+                column: $scope.thisTab.params.scol,
+                direction: $scope.thisTab.params.sdir
+            },
+            filters: { modlist: $scope.thisTab.params.filter },
+            page: page
+        };
+        modService.retrieveModContributions($stateParams.modId, 'compatibility_notes', options, $scope.pages.compatibility_notes).then(function(data) {
+            $scope.mod.compatibility_notes = data;
+
+        }, function(response) {
+            $scope.errors.compatibility_notes = response;
+        });
     };
 
-    //update the params on the tab object
-    $scope.thisTab.params = {
-        scol: $stateParams.scol,
-        sdir: $stateParams.sdir,
-        page: $stateParams.page,
-        filter: $stateParams.filter,
-    };
-
-    // retrieve the compatibility notes
-    var options = {
-        sort: {
-            column: $stateParams.scol,
-            direction: $stateParams.sdir
-        },
-        filters: { modlist: $stateParams.filter },
-        page: $stateParams.page
-    };
-    modService.retrieveModContributions($stateParams.modId, 'compatibility_notes', options, $scope.pages.compatibility_notes).then(function(data) {
-        $scope.mod.compatibility_notes = data;
-    }, function(response) {
-        $scope.errors.compatibility_notes = response;
-    });
+    //retrieve the notes when the state is first loaded
+    $scope.retrieveCompatibilityNotes($stateParams.page);
+    //start allowing the url params to be updated
+    $scope.loaded = true;
 
     // COMPATIBILITY NOTE RELATED LOGIC
     // instantiate a new compatibility note object
