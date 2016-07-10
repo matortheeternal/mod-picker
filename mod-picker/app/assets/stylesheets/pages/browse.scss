@@ -181,8 +181,14 @@ select.stealthy.ng-pristine {
   background-color: $primary_background;
 }
 
-.browse-results {
+.table-results {
   overflow-x: auto;
+}
+
+.grid-results {
+  .content-block:first-child {
+    margin-top: 0;
+  }
 }
 
 .columns-list {
