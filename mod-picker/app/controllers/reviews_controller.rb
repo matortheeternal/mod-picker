@@ -6,8 +6,30 @@ class ReviewsController < ContributionsController
     @reviews = Review.includes(:review_ratings, :editor, :submitter => :reputation).accessible_by(current_ability).filter(filtering_params).sort(params[:sort]).paginate(:page => params[:page])
     count = Review.accessible_by(current_ability).filter(filtering_params).count
 
+    # get helpful marks
+    helpful_marks = HelpfulMark.where(submitted_by: current_user.id, helpfulable_type: "Review", helpfulable_id: @reviews.ids)
     render :json => {
-        reviews: @reviews,
+        reviews: @reviews.as_json({
+            :include => {
+                :review_ratings => {
+                    :except => [:review_id]
+                },
+                :submitter=> {
+                    :only => [:id, :username, :role, :title],
+                    :include => {
+                        :reputation => {:only => [:overall]}
+                    },
+                    :methods => :avatar
+                },
+                :editor => {
+                    :only => [:id, :username, :role]
+                },
+                :mod => {
+                    :only => [:id, :name]
+                }
+            }
+        }),
+        helpful_marks: helpful_marks,
         max_entries: count,
         entries_per_page: Review.per_page
     }
