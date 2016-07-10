@@ -1,9 +1,18 @@
 class LoadOrderNote < ActiveRecord::Base
   include Filterable, Sortable, RecordEnhancements, Correctable, Helpfulable, Reportable
 
+  # BOOLEAN SCOPES (excludes content when false)
+  scope :hidden, -> (bool) { where(hidden: false) if !bool  }
+  scope :adult, -> (bool) { where(has_adult_content: false) if !bool }
+  # GENERAL SCOPES
   scope :visible, -> { where(hidden: false, approved: true) }
-  scope :by, -> (id) { where(submitted_by: id) }
-  scope :plugin, -> (id) { where(first_plugin_id: id).or(second_plugin_id: id) }
+  scope :game, -> (game_id) { where(game_id: game_id) }
+  scope :search, -> (text) { where("text_body like ?", "%#{text}%") }
+  scope :plugin_filename, -> (filename) { joins(:first_plugin, :second_plugin).where("plugins.filename like ?", "%#{filename}%") }
+  scope :submitter, -> (username) { joins(:submitter).where(:users => {:username => username}) }
+  # RANGE SCOPES
+  scope :submitted, -> (range) { where(submitted: parseDate(range[:min])..parseDate(range[:max])) }
+  scope :edited, -> (range) { where(edited: parseDate(range[:min])..parseDate(range[:max])) }
 
   belongs_to :game, :inverse_of => 'load_order_notes'
   belongs_to :submitter, :class_name => 'User', :foreign_key => 'submitted_by', :inverse_of => 'load_order_notes'
