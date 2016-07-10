@@ -1,20 +1,23 @@
+app.run(function($futureState, indexFactory, filtersFactory) {
+    // dynamically construct and apply state
+    var filterPrototypes = filtersFactory.reviewFilters();
+    var state = indexFactory.buildState('reputation', 'asc', 'reviews', filterPrototypes);
+    $futureState.futureState(state);
+});
 
-app.config(['$stateProvider', function ($stateProvider) {
-    $stateProvider.state('base.reviews', {
-            templateUrl: '/resources/partials/browse/reviews.html',
-            controller: 'reviewsController',
-            url: '/reviews'
-        }
-    );
-}]);
+app.controller('reviewsController', function ($scope, $stateParams, $state, currentUser, contributionService, indexService,  filtersFactory, indexFactory) {
+    // get parent variables
+    $scope.currentUser = currentUser;
+    $scope.globalPermissions = angular.copy(currentUser.permissions);
 
-app.controller('reviewsController', function ($scope, $q, backend, sliderFactory) {
-    $scope.loading = true;
+    // filters for view
+    $scope.filterPrototypes = filtersFactory.reviewFilters();
+    $scope.dateFilters = filtersFactory.contributionDateFilters();
+    $scope.statFilters = filtersFactory.reviewStatisticFilters();
 
-
-    /* data */
-    //backend.retrieveReviews().then(function (data) {
-    //    $scope.reviews = data;
-    //    $scope.loading = false;
-    //});
+    // build generic controller stuff
+    $scope.route = 'reviews';
+    $scope.contributions = true;
+    $scope.retrieve = contributionService.retrieveContributions;
+    indexFactory.buildIndex($scope, $stateParams, $state, indexService);
 });
