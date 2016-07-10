@@ -9,7 +9,7 @@ class InstallOrderNotesController < ContributionsController
     # get helpful marks
     helpful_marks = HelpfulMark.where(submitted_by: current_user.id, helpfulable_type: "InstallOrderNote", helpfulable_id: @install_order_notes.ids)
     render :json => {
-        compatibility_notes: @install_order_notes,
+        install_order_notes: @install_order_notes,
         helpful_marks: helpful_marks,
         max_entries: count,
         entries_per_page: InstallOrderNote.per_page
