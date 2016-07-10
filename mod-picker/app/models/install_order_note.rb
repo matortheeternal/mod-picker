@@ -7,7 +7,7 @@ class InstallOrderNote < ActiveRecord::Base
   # GENERAL SCOPES
   scope :visible, -> { where(hidden: false, approved: true) }
   scope :game, -> (game_id) { where(game_id: game_id) }
-  scope :search, -> (text) { where("text_body like ?", "%#{text}%") }
+  scope :search, -> (text) { where("install_order_notes.text_body like ?", "%#{text}%") }
   scope :submitter, -> (username) { joins(:submitter).where(:users => {:username => username}) }
   # RANGE SCOPES
   scope :submitted, -> (range) { where(submitted: parseDate(range[:min])..parseDate(range[:max])) }
