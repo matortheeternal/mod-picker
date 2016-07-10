@@ -1,8 +1,8 @@
 class Correction < ActiveRecord::Base
-  include Filterable, RecordEnhancements, Reportable
 
   scope :visible, -> { where(hidden: false) }
   scope :by, -> (id) { where(submitted_by: id) }
+  include Filterable, Sortable, RecordEnhancements, Reportable
 
   enum status: [:open, :passed, :failed, :closed]
   enum mod_status: [:good, :outdated, :unstable]
@@ -15,6 +15,9 @@ class Correction < ActiveRecord::Base
   has_many :comments, -> { where(parent_id: nil) }, :as => 'commentable'
   
   belongs_to :correctable, :polymorphic => true
+
+  # number of corrections per page on the corrections index
+  self.per_page = 25
 
   # Validations
   validates :game_id, :submitted_by, :correctable_id, :correctable_type, :text_body, presence: true
