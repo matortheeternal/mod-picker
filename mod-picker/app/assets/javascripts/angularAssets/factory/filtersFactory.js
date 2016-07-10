@@ -647,4 +647,6 @@ app.factory("filtersFactory", function() {
             factory.noteStatisticFilters()
         );
     };
+
+    return factory;
 });
