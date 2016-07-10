@@ -3,9 +3,14 @@ class ReviewsController < ContributionsController
 
   # GET /reviews
   def index
-    @reviews = Review.accessible_by(current_ability).filter(filtering_params).sort(params[:sort]).paginate(:page => params[:page])
+    @reviews = Review.includes(:review_ratings, :editor, :submitter => :reputation).accessible_by(current_ability).filter(filtering_params).sort(params[:sort]).paginate(:page => params[:page])
+    count = Review.accessible_by(current_ability).filter(filtering_params).count
 
-    render :json => @reviews
+    render :json => {
+        reviews: @reviews,
+        max_entries: count,
+        entries_per_page: Review.per_page
+    }
   end
 
   # PATCH/PUT /reviews/1
