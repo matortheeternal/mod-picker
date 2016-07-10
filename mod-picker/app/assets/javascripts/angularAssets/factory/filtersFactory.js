@@ -557,17 +557,17 @@ app.factory("filtersFactory", function() {
 
     this.reviewStatisticFilters = function() {
         return [
+            factory.contributionReputationFilter,
+            factory.helpfulFilter,
+            factory.notHelpfulFilter,
             {
                 label: "Overall Rating",
-                common: true,
+                common: false,
                 data: "overall_rating",
                 type: "Range",
                 max: 100,
                 param: "ovr"
             },
-            factory.contributionReputationFilter,
-            factory.helpfulFilter,
-            factory.notHelpfulFilter,
             {
                 label: "Rating Sections Count",
                 common: false,
