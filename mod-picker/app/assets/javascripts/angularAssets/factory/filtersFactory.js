@@ -558,22 +558,6 @@ app.factory("filtersFactory", function() {
                 type: "Range",
                 max: 10,
                 param: "rsc"
-            },
-            {
-                label: "Corrections Count",
-                common: false,
-                data: "corrections_count",
-                type: "Range",
-                max: 100,
-                param: "crc"
-            },
-            {
-                label: "History Entries Count",
-                common: false,
-                data: "history_entries_count",
-                type: "Range",
-                max: 100,
-                param: "hec"
             }
         ]
     };
