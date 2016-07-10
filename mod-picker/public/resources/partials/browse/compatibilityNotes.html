@@ -95,12 +95,16 @@
 
             <div class="right-column right-browse-column">
                 <h2>Compatibility Notes</h2>
-                <div class="content-block" ng-repeat="note in compatibility_notes">
-                    <compatibility-note current-user="currentUser" note="note" show-user-column="true" index="100"></compatibility-note>
-                </div>
-                <div class="content-message" ng-hide="compatibility_notes.length">
-                    No Compatibility Notes were found matching your search criteria.
-                </div>
+                <loader data="compatibility_notes" content-class="browse-results" spinner-class="big-spinner">
+                    <div class="content-block" ng-repeat="note in compatibility_notes">
+                        <compatibility-note current-user="currentUser" note="note" show-user-column="true" index="100"></compatibility-note>
+                    </div>
+
+                    <div class="content-message" ng-hide="compatibility_notes.length">
+                        No Compatibility Notes were found matching your search criteria.
+                    </div>
+                </loader>
+
                 <page-results pages="pages" data="compatibility_notes" callback="getData"></page-results>
             </div>
         </div>

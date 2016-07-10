@@ -47,12 +47,16 @@
 
             <div class="right-column right-browse-column">
                 <h2>Reviews</h2>
-                <div class="content-block" ng-repeat="review in reviews">
-                    <review current-user="currentUser" review="review" show-user-column="true" show-mod="true" index="100"></review>
-                </div>
-                <div class="content-message" ng-hide="reviews.length">
-                    No Reviews were found matching your search criteria.
-                </div>
+                <loader data="reviews" content-class="browse-results" spinner-class="big-spinner">
+                    <div class="content-block" ng-repeat="review in reviews">
+                        <review current-user="currentUser" review="review" show-user-column="true" show-mod="true" index="100"></review>
+                    </div>
+
+                    <div class="content-message" ng-hide="reviews.length">
+                        No Reviews were found matching your search criteria.
+                    </div>
+                </loader>
+
                 <page-results pages="pages" data="reviews" callback="getData"></page-results>
             </div>
         </div>

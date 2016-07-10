@@ -113,12 +113,16 @@
 
             <div class="right-column right-browse-column">
                 <h2>Corrections</h2>
-                <div class="content-block" ng-repeat="correction in corrections">
-                    <correction correction="correction" index="100" current-user="currentUser" show-user-column="true" show-correctable="true"></correction>
-                </div>
-                <div class="content-message" ng-hide="corrections.length">
-                    No Corrections were found matching your search criteria.
-                </div>
+                <loader data="corrections" content-class="browse-results" spinner-class="big-spinner">
+                    <div class="content-block" ng-repeat="correction in corrections">
+                        <correction correction="correction" index="100" current-user="currentUser" show-user-column="true" show-correctable="true"></correction>
+                    </div>
+
+                    <div class="content-message" ng-hide="corrections.length">
+                        No Corrections were found matching your search criteria.
+                    </div>
+                </loader>
+
                 <page-results pages="pages" data="corrections" callback="getData"></page-results>
             </div>
         </div>
