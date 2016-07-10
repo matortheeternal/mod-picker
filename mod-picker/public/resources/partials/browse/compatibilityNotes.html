@@ -98,6 +98,9 @@
                 <div class="content-block" ng-repeat="note in compatibility_notes">
                     <compatibility-note current-user="currentUser" note="note" show-user-column="true" index="100"></compatibility-note>
                 </div>
+                <div class="content-message" ng-hide="compatibility_notes.length">
+                    No Compatibility Notes were found matching your search criteria.
+                </div>
                 <page-results pages="pages" data="compatibility_notes" callback="getData"></page-results>
             </div>
         </div>

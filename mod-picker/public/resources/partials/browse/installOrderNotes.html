@@ -70,6 +70,9 @@
                 <div class="content-block" ng-repeat="note in install_order_notes">
                     <install-order-note current-user="currentUser" note="note" show-user-column="true" index="100"></install-order-note>
                 </div>
+                <div class="content-message" ng-hide="install_order_notes.length">
+                    No Install Order Notes were found matching your search criteria.
+                </div>
                 <page-results pages="pages" data="install_order_notes" callback="getData"></page-results>
             </div>
         </div>
