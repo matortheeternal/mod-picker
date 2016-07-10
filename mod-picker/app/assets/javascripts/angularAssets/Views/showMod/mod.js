@@ -153,8 +153,8 @@ app.controller('modController', function($scope, $q, $stateParams, $state, $time
         $scope.tabs.splice(index, 1);
     };
 
-    $scope.refreshTab = function(tab) {
-        $state.go('base.mod.' + tab.name, tab.params);
+    $scope.refreshTabParams = function(tab) {
+        $state.go('base.mod.' + tab.name, tab.params, { notify: false });
     };
 
     $scope.redirectToFirstTab = function() {
