@@ -676,5 +676,127 @@ app.factory("filtersFactory", function() {
         );
     };
 
+    /* corrections index filters */
+    this.correctionTypeFilters = function() {
+        return [
+            {
+                data: "correctable.Mod",
+                param: "tmo",
+                type: "Boolean",
+                default: true
+            },
+            {
+                data: "correctable.CompatibilityNote",
+                param: "tcn",
+                type: "Boolean",
+                default: true
+            },
+            {
+                data: "correctable.InstallOrderNote",
+                param: "tio",
+                type: "Boolean",
+                default: true
+            },
+            {
+                data: "correctable.LoadOrderNote",
+                param: "tlo",
+                type: "Boolean",
+                default: true
+            }
+        ];
+    };
+
+    this.correctionStatusFilters = function() {
+        return [
+            {
+                data: "status.open",
+                param: "sto",
+                type: "Boolean",
+                default: true
+            },
+            {
+                data: "status.passed",
+                param: "stp",
+                type: "Boolean",
+                default: true
+            },
+            {
+                data: "status.failed",
+                param: "stf",
+                type: "Boolean",
+                default: true
+            },
+            {
+                data: "status.closed",
+                param: "stc",
+                type: "Boolean",
+                default: true
+            }
+        ];
+    };
+
+    this.correctionModStatusFilters = function() {
+        return [
+            {
+                data: "mod_status.good",
+                param: "msg",
+                type: "Boolean",
+                default: true
+            },
+            {
+                data: "mod_status.outdated",
+                param: "mso",
+                type: "Boolean",
+                default: true
+            },
+            {
+                data: "mod_status.unstable",
+                param: "msu",
+                type: "Boolean",
+                default: true
+            }
+        ];
+    };
+
+    this.correctionStatisticFilters = function() {
+        return [
+            {
+                label: "Agree Count",
+                common: true,
+                data: "agree_count",
+                type: "Range",
+                max: 100,
+                param: "ac"
+            },
+            {
+                label: "Disagree Count",
+                common: true,
+                data: "disagree_count",
+                type: "Range",
+                max: 100,
+                param: "dc"
+            },
+            {
+                label: "Comments Count",
+                common: true,
+                data: "comments_count",
+                type: "Range",
+                max: 100,
+                param: "cmc"
+            }
+        ];
+    };
+
+    this.correctionFilters = function() {
+        return Array.prototype.concat(
+            factory.contributionGeneralFilters(),
+            factory.correctionTypeFilters(),
+            factory.correctionStatusFilters(),
+            factory.correctionModStatusFilters(),
+            factory.contributionDateFilters(),
+            factory.correctionStatisticFilters()
+        )
+    };
+
     return factory;
 });
