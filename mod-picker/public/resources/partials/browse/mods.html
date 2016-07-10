@@ -78,7 +78,7 @@
 
                 <div id="mod-picker-filters" class="filter-section">
                     <h3>Mod Picker Filters</h3>
-                    <div ng-repeat="filter in modPickerFilters" ng-show="filter.common || extendedFilterVisibility.modPicker">
+                    <div ng-repeat="filter in modPickerFilters" ng-show="filter.common || expanded.modPicker">
                         <h4>{{filter.label}}
                             <span class="filter-controls" ng-if="filter.max > 500">
                                 <span class="fa fa-wrench" ng-click="" title="Custom Value"></span>
@@ -87,13 +87,13 @@
                         <slider filters="filters" data="filter.data" type="{{filter.max > 500 ? 'StepSlider' : 'CeilSlider'}}" attr="{{filter.max}}"></slider>
                     </div>
 
-                    <a class="expand" ng-click="toggleExtendedFilterVisibility('modPicker')">{{ extendedFilterVisibility.modPicker ? 'Show less' : 'Show more...' }}</a>
+                    <expander expanded="expanded" key="modPicker"></expander>
                 </div>
 
                 <div id="stat-filters" class="filter-sections" ng-if="availableStatFilters.length">
                     <h3>Statistic Filters</h3>
                     <div class="filter-section">
-                        <div ng-repeat="filter in availableStatFilters" ng-show="filter.common || extendedFilterVisibility.stat">
+                        <div ng-repeat="filter in availableStatFilters" ng-show="filter.common || expanded.stat">
                             <h4>{{filter.label}}
                                 <!--<span class="filter-controls" ng-if="filter.max > 500">
                                     <span class="fa fa-wrench" ng-click="" title="Custom Value"></span>
@@ -103,7 +103,7 @@
                         </div>
                     </div>
 
-                    <a class="expand" ng-click="toggleExtendedFilterVisibility('stat')">{{ extendedFilterVisibility.stat ? 'Show less' : 'Show more...' }}</a>
+                    <expander expanded="expanded" key="stat"></expander>
                 </div>
             </div>
 

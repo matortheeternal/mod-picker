@@ -37,7 +37,7 @@ app.controller('modsController', function($scope, $q, $stateParams, $state, modS
             alert("Not functional yet.");
         }
     }];
-    $scope.extendedFilterVisibility = {};
+    $scope.expanded = {};
     $scope.pages = {};
     $scope.columns = columnsFactory.modColumns();
     $scope.columnGroups = columnsFactory.modColumnGroups();
@@ -59,13 +59,6 @@ app.controller('modsController', function($scope, $q, $stateParams, $state, modS
     indexService.setFiltersFromParams($scope.filters, $scope.filterPrototypes, $stateParams);
 
     /* helper functions */
-    $scope.toggleExtendedFilterVisibility = function(filterId) {
-        var extendedFilter = $scope.extendedFilterVisibility[filterId] = !$scope.extendedFilterVisibility[filterId];
-        if (extendedFilter) {
-            $scope.$broadcast('rerenderSliders');
-        }
-    };
-
     // returns a new subset of the input filters with the unavailable filters removed
     $scope.availableFilters = function(filters) {
         return filters.filter(function(item) {

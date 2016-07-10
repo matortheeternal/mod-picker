@@ -3,7 +3,7 @@ app.service('indexFactory', function(indexService) {
         // initialize local variables
         $scope.availableColumnData = [];
         $scope.actions = [];
-        $scope.extendedFilterVisibility = {};
+        $scope.expanded = {};
         $scope.pages = {};
 
         // load sort values from url parameters
@@ -13,14 +13,6 @@ app.service('indexFactory', function(indexService) {
         //  load filter values from url parameters
         $scope.filters = {};
         localIndexService.setFiltersFromParams($scope.filters, $scope.filterPrototypes, $stateParams);
-
-        /* filter helper functions */
-        $scope.toggleExtendedFilterVisibility = function(filterId) {
-            var extendedFilter = $scope.extendedFilterVisibility[filterId] = !$scope.extendedFilterVisibility[filterId];
-            if (extendedFilter) {
-                $scope.$broadcast('rerenderSliders');
-            }
-        };
 
         /* data fetching functions */
         $scope.firstGet = false;

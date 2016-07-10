@@ -52,7 +52,7 @@
                 <div id="stat-filters" class="filter-sections" ng-if="statFilters.length">
                     <h3>Statistic Filters</h3>
                     <div class="filter-section">
-                        <div ng-repeat="filter in statFilters" ng-show="filter.common || extendedFilterVisibility.stat">
+                        <div ng-repeat="filter in statFilters" ng-show="filter.common || expanded.stat">
                             <h4>{{filter.label}}
                                 <!--<span class="filter-controls" ng-if="filter.max > 500">
                                     <span class="fa fa-wrench" ng-click="" title="Custom Value"></span>
@@ -62,7 +62,7 @@
                         </div>
                     </div>
 
-                    <a class="expand" ng-click="toggleExtendedFilterVisibility('stat')">{{ extendedFilterVisibility.stat ? 'Show less' : 'Show more...' }}</a>
+                    <expander expanded="expanded" key="stat"></expander>
                 </div>
             </div>
 
