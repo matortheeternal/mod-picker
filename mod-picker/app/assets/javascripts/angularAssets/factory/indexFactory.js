@@ -43,7 +43,7 @@ app.service('indexFactory', function(indexService) {
             if ($scope.filters && $scope.firstGet) {
                 clearTimeout($scope.getDataTimeout);
                 $scope.pages.current = 1;
-                $scope.getDataTimeout = setTimeout($scope.getData, 700);
+                $scope.getDataTimeout = setTimeout($scope.getData, 1000);
             }
 
             // set url parameters

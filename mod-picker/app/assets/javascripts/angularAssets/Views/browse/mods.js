@@ -133,7 +133,7 @@ app.controller('modsController', function($scope, $q, $stateParams, $state, modS
         if ($scope.filters && firstGet) {
             clearTimeout(getModsTimeout);
             $scope.pages.current = 1;
-            getModsTimeout = setTimeout($scope.getMods, 700);
+            getModsTimeout = setTimeout($scope.getMods, 1000);
         }
 
         // set url parameters
