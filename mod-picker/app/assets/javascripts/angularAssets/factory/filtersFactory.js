@@ -451,6 +451,14 @@ app.factory("filtersFactory", function() {
     };
 
     /* contribution index filters */
+    this.contributionGeneralFilters = function() {
+        return [
+            factory.searchFilter,
+            factory.submitterFilter,
+            factory.editorFilter
+        ]
+    };
+    
     this.contributionDateFilters = function() {
         return [
             {
@@ -547,14 +555,6 @@ app.factory("filtersFactory", function() {
     };
 
     /* reviews index filters */
-    this.reviewGeneralFilters = function() {
-        return [
-            factory.searchFilter,
-            factory.submitterFilter,
-            factory.editorFilter
-        ]
-    };
-
     this.reviewStatisticFilters = function() {
         return [
             factory.contributionReputationFilter,
@@ -581,21 +581,13 @@ app.factory("filtersFactory", function() {
 
     this.reviewFilters = function() {
         return Array.prototype.concat(
-            factory.reviewGeneralFilters(),
+            factory.contributionGeneralFilters(),
             factory.contributionDateFilters(),
             factory.reviewStatisticFilters()
         );
     };
 
     /* note index filters */
-    this.noteGeneralFilters = function() {
-        return [
-            factory.searchFilter,
-            factory.submitterFilter,
-            factory.editorFilter
-        ]
-    };
-
     this.noteStatisticFilters = function() {
         return [
             factory.contributionReputationFilter,
@@ -644,7 +636,7 @@ app.factory("filtersFactory", function() {
 
     this.compatibilityNoteFilters = function() {
         return Array.prototype.concat(
-            factory.noteGeneralFilters(),
+            factory.contributionGeneralFilters(),
             factory.compatibilityNoteTypeFilters(),
             factory.contributionStandingFilters(),
             factory.contributionDateFilters(),
@@ -655,7 +647,7 @@ app.factory("filtersFactory", function() {
     /* install order notes index filters */
     this.installOrderNoteFilters = function() {
         return Array.prototype.concat(
-            factory.noteGeneralFilters(),
+            factory.contributionGeneralFilters(),
             factory.contributionStandingFilters(),
             factory.contributionDateFilters(),
             factory.noteStatisticFilters()
