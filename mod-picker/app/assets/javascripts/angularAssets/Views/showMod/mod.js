@@ -159,7 +159,7 @@ app.controller('modController', function($scope, $q, $stateParams, $state, $time
 
     $scope.redirectToFirstTab = function() {
         var tab = $scope.tabs[0];
-        $state.go('base.mod.' + tab.name, tab.params);
+        $state.go('base.mod.' + tab.name, tab.params, { location: 'replace' });
     };
 
     // only display analysis tab if mod doesn't have a primary category
