@@ -1,18 +1,26 @@
 class Review < ActiveRecord::Base
   include Filterable, Sortable, RecordEnhancements, Helpfulable, Reportable
 
+  # BOOLEAN SCOPES (excludes content when false)
+  scope :hidden, -> (bool) { where(hidden: false) if !bool  }
+  scope :adult, -> (bool) { where(has_adult_content: false) if !bool }
   # GENERAL SCOPES
   scope :visible, -> { where(hidden: false, approved: true) }
   scope :game, -> (game_id) { where(game_id: game_id) }
-  scope :user, -> (user_id) { where(submitted_by: user_id) }
-  scope :mod, -> (mod) { where(mod_id: mod) }
-  scope :submitted, -> (low, high) { where(submitted: parseDate(low)..parseDate(high)) }
-  scope :edited, -> (low, high) { where(edited: parseDate(low)..parseDate(high)) }
-  scope :helpful_count, -> (low, high) { where(helpful_count: low..high) }
-  scope :not_helpful_count, -> (low, high) { where(not_helpful_count: low..high) }
-  scope :ratings_count, -> (low, high) { where(ratings_count: low..high) }
-  scope :overall_rating, -> (low, high) { where(overall_rating: low..high) }
+  scope :search, -> (text) { where("text_body like ?", "%#{text}%") }
+  scope :submitter, -> (username) { joins(:submitter).where(:users => {:username => username}) }
+  scope :editor, -> (username) { joins(:editor).where(:users => {:username => username}) }
+  # RANGE SCOPES
+  scope :overall_rating, -> (range) { where(overall_rating: range[:min]..range[:max]) }
+  scope :reputation, -> (range) { where(reputation: range[:min]..range[:max]) }
+  scope :helpful_count, -> (range) { where(helpful_count: range[:min]..range[:max]) }
+  scope :not_helpful_count, -> (range) { where(not_helpful_count: range[:min]..range[:max]) }
+  scope :corrections_count, -> (range) { where(corrections_count: range[:min]..range[:max]) }
+  scope :ratings_count, -> (range) { where(ratings_count: range[:min]..range[:max]) }
+  scope :submitted, -> (range) { where(submitted: parseDate(range[:min])..parseDate(range[:max])) }
+  scope :edited, -> (range) { where(edited: parseDate(range[:min])..parseDate(range[:max])) }
 
+  # ASSOCIATIONS
   belongs_to :game, :inverse_of => 'reviews'
   belongs_to :submitter, :class_name => 'User', :foreign_key => 'submitted_by', :inverse_of => 'reviews'
   belongs_to :editor, :class_name => 'User', :foreign_key => 'edited_by'
