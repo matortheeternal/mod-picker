@@ -120,7 +120,7 @@ class CorrectionsController < ApplicationController
 
     # Params we allow filtering on
     def filtering_params
-      params.slice(:by);
+      params[:filters].slice(:adult, :game, :search, :submitter, :editor, :status, :mod_status, :correctable, :agree_count, :disagree_count, :submitted, :edited);
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
