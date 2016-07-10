@@ -7,7 +7,7 @@ class LoadOrderNote < ActiveRecord::Base
   # GENERAL SCOPES
   scope :visible, -> { where(hidden: false, approved: true) }
   scope :game, -> (game_id) { where(game_id: game_id) }
-  scope :search, -> (text) { where("install_order_notes.text_body like ?", "%#{text}%") }
+  scope :search, -> (text) { where("load_order_notes.text_body like ?", "%#{text}%") }
   scope :plugin_filename, -> (filename) { joins(:first_plugin, :second_plugin).where("plugins.filename like ?", "%#{filename}%") }
   scope :submitter, -> (username) { joins(:submitter).where(:users => {:username => username}) }
   # RANGE SCOPES
