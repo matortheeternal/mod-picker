@@ -1,12 +1,65 @@
 app.factory("filtersFactory", function() {
     var factory = this;
 
+    /* shared filter prototypes */
+    this.searchFilter = {
+        data: "search",
+        param: "q"
+    };
+    this.submitterFilter = {
+        data: "submitter",
+        param: "s"
+    };
+    this.editorFilter = {
+        data: "editor",
+        param: "e"
+    };
+    this.contributionReputationFilter = {
+        label: "Reputatation",
+        common: true,
+        data: "reputation",
+        type: "Range",
+        min: -40,
+        max: 40,
+        param: "rep"
+    };
+    this.helpfulFilter = {
+        label: "Helpful Count",
+        common: true,
+        data: "helpful_count",
+        type: "Range",
+        max: 100,
+        param: "hc"
+    };
+    this.notHelpfulFilter = {
+        label: "Not Helpful Count",
+        common: true,
+        data: "not_helpful_count",
+        type: "Range",
+        max: 100,
+        param: "nhc"
+    };
+    this.correctionsFilter = {
+        label: "Corrections Count",
+        common: false,
+        data: "corrections_count",
+        type: "Range",
+        max: 100,
+        param: "crc"
+    };
+    this.historyEntriesFilter = {
+        label: "History Entries Count",
+        common: false,
+        data: "history_entries_count",
+        type: "Range",
+        max: 100,
+        param: "hec"
+    };
+
+    /* mods index filters */
     this.modGeneralFilters = function() {
         return [
-            {
-                data: "search",
-                param: "q"
-            },
+            factory.searchFilter,
             {
                 data: "author",
                 param: "a"
@@ -258,12 +311,10 @@ app.factory("filtersFactory", function() {
         );
     };
 
+    /* users index filters */
     this.userGeneralFilters = function() {
         return [
-            {
-                data: "search",
-                param: "q"
-            },
+            factory.searchFilter,
             {
                 data: "linked",
                 param: "l"
@@ -399,6 +450,7 @@ app.factory("filtersFactory", function() {
         );
     };
 
+    /* contribution index filters */
     this.contributionDateFilters = function() {
         return [
             {
@@ -441,16 +493,11 @@ app.factory("filtersFactory", function() {
         ];
     };
 
+    /* comments index filters */
     this.commentGeneralFilters = function() {
         return [
-            {
-                data: "search",
-                param: "q"
-            },
-            {
-                data: "submitter",
-                param: "s"
-            },
+            factory.searchFilter,
+            factory.submitterFilter,
             {
                 data: "is_child",
                 param: "c",
@@ -499,20 +546,12 @@ app.factory("filtersFactory", function() {
         );
     };
 
+    /* reviews index filters */
     this.reviewGeneralFilters = function() {
         return [
-            {
-                data: "search",
-                param: "q"
-            },
-            {
-                data: "submitter",
-                param: "s"
-            },
-            {
-                data: "editor",
-                param: "e"
-            }
+            factory.searchFilter,
+            factory.submitterFilter,
+            factory.editorFilter
         ]
     };
 
@@ -526,31 +565,9 @@ app.factory("filtersFactory", function() {
                 max: 100,
                 param: "ovr"
             },
-            {
-                label: "Reputatation",
-                common: true,
-                data: "reputation",
-                type: "Range",
-                min: -40,
-                max: 40,
-                param: "rep"
-            },
-            {
-                label: "Helpful Count",
-                common: true,
-                data: "helpful_count",
-                type: "Range",
-                max: 100,
-                param: "hc"
-            },
-            {
-                label: "Not Helpful Count",
-                common: true,
-                data: "not_helpful_count",
-                type: "Range",
-                max: 100,
-                param: "nhc"
-            },
+            factory.contributionReputationFilter,
+            factory.helpfulFilter,
+            factory.notHelpfulFilter,
             {
                 label: "Rating Sections Count",
                 common: false,
