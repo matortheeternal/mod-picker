@@ -610,6 +610,7 @@ app.factory("filtersFactory", function() {
     this.compatibilityNoteFilters = function() {
         return Array.prototype.concat(
             factory.noteGeneralFilters(),
+            factory.contributionStandingFilters(),
             factory.contributionDateFilters(),
             factory.noteStatisticFilters()
         );
