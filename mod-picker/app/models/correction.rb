@@ -1,11 +1,60 @@
 class Correction < ActiveRecord::Base
-
-  scope :visible, -> { where(hidden: false) }
-  scope :by, -> (id) { where(submitted_by: id) }
   include Filterable, Sortable, RecordEnhancements, Reportable
 
   enum status: [:open, :passed, :failed, :closed]
   enum mod_status: [:good, :outdated, :unstable]
+
+  # BOOLEAN SCOPES (excludes content when false)
+  scope :hidden, -> (bool) { where(hidden: false) if !bool  }
+  scope :adult, -> (bool) { where(has_adult_content: false) if !bool }
+  # GENERAL SCOPES
+  scope :visible, -> { where(hidden: false) }
+  scope :game, -> (game_id) { where(game_id: game_id) }
+  scope :search, -> (text) { where("corrections.title like ? OR corrections.text_body like ?", "%#{text}%", "%#{text}%") }
+  scope :submitter, -> (username) { joins(:submitter).where(:users => {:username => username}) }
+  scope :editor, -> (username) { joins(:editor).where(:users => {:username => username}) }
+  scope :status, -> (statuses_hash) {
+    # build statuses array
+    statuses = []
+    statuses_hash.each_with_index do |(key,value),index|
+      if statuses_hash[key]
+        statuses.push(index)
+      end
+    end
+
+    # return query
+    where(status: statuses)
+  }
+  scope :mod_status, -> (mod_statuses_hash) {
+    # build mod statuses array
+    mod_statuses = [nil]
+    mod_statuses_hash.each_with_index do |(key,value),index|
+      if mod_statuses_hash[key]
+        mod_statuses.push(index)
+      end
+    end
+
+    # return query
+    where(mod_status: mod_statuses)
+  }
+  scope :correctable, -> (correctable_hash) {
+    # build correctables array
+    correctables = []
+    correctable_hash.each_key do |key|
+      if correctable_hash[key]
+        correctables.push(key)
+      end
+    end
+
+    # return query
+    where(correctable_type: correctables)
+  }
+  # RANGE SCOPES
+  scope :agree_count, -> (range) { where(agree_count: range[:min]..range[:max]) }
+  scope :disagree_count, -> (range) { where(disagree_count: range[:min]..range[:max]) }
+  scope :comments_count, -> (range) { where(comments_count: range[:min]..range[:max]) }
+  scope :submitted, -> (range) { where(submitted: parseDate(range[:min])..parseDate(range[:max])) }
+  scope :edited, -> (range) { where(edited: parseDate(range[:min])..parseDate(range[:max])) }
 
   belongs_to :game, :inverse_of => 'corrections'
   belongs_to :submitter, :class_name => 'User', :foreign_key => 'submitted_by', :inverse_of => 'corrections'
