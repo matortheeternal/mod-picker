@@ -607,9 +607,45 @@ app.factory("filtersFactory", function() {
     };
 
     /* compatibility notes index filters */
+    this.compatibilityNoteTypeFilters = function() {
+        return [
+            {
+                data: "status.incompatible",
+                param: "inc",
+                type: "Boolean",
+                default: true
+            },
+            {
+                data: "status.partially_compatible",
+                param: "pc",
+                type: "Boolean",
+                default: true
+            },
+            {
+                data: "status.compatibility_mod",
+                param: "cm",
+                type: "Boolean",
+                default: true
+            },
+            {
+                data: "status.compatibility_option",
+                param: "co",
+                type: "Boolean",
+                default: true
+            },
+            {
+                data: "status.make_custom_patch",
+                param: "mcp",
+                type: "Boolean",
+                default: true
+            }
+        ]
+    };
+
     this.compatibilityNoteFilters = function() {
         return Array.prototype.concat(
             factory.noteGeneralFilters(),
+            factory.compatibilityNoteTypeFilters(),
             factory.contributionStandingFilters(),
             factory.contributionDateFilters(),
             factory.noteStatisticFilters()
