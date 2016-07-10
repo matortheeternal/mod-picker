@@ -586,4 +586,64 @@ app.factory("filtersFactory", function() {
             factory.reviewStatisticFilters()
         );
     };
+
+    /* note index filters */
+    this.noteGeneralFilters = function() {
+        return [
+            factory.searchFilter,
+            factory.submitterFilter,
+            factory.editorFilter
+        ]
+    };
+
+    this.noteStatisticFilters = function() {
+        return [
+            factory.contributionReputationFilter,
+            factory.helpfulFilter,
+            factory.notHelpfulFilter,
+            factory.correctionsFilter,
+            factory.historyEntriesFilter
+        ]
+    };
+
+    /* compatibility notes index filters */
+    this.compatibilityNoteFilters = function() {
+        return Array.prototype.concat(
+            factory.noteGeneralFilters(),
+            factory.contributionDateFilters(),
+            factory.noteStatisticFilters()
+        );
+    };
+
+    /* install order notes index filters */
+    this.installOrderNoteFilters = function() {
+        return Array.prototype.concat(
+            factory.noteGeneralFilters(),
+            factory.contributionStandingFilters(),
+            factory.contributionDateFilters(),
+            factory.noteStatisticFilters()
+        );
+    };
+
+    /* load order notes index filters */
+    this.loadOrderNoteGeneralFilters = function() {
+        return [
+                factory.searchFilter,
+                factory.submitterFilter,
+                factory.editorFilter,
+                {
+                    data: "plugin_filename",
+                    param: "p"
+                }
+        ];
+    };
+
+    this.loadOrderNoteFilters = function() {
+        return Array.prototype.concat(
+            factory.loadOrderNoteGeneralFilters(),
+            factory.contributionStandingFilters(),
+            factory.contributionDateFilters(),
+            factory.noteStatisticFilters()
+        );
+    };
 });
