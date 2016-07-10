@@ -12,9 +12,6 @@ class Review < ActiveRecord::Base
   scope :editor, -> (username) { joins(:editor).where(:users => {:username => username}) }
   # RANGE SCOPES
   scope :overall_rating, -> (range) { where(overall_rating: range[:min]..range[:max]) }
-  scope :reputation, -> (range) { where(reputation: range[:min]..range[:max]) }
-  scope :helpful_count, -> (range) { where(helpful_count: range[:min]..range[:max]) }
-  scope :not_helpful_count, -> (range) { where(not_helpful_count: range[:min]..range[:max]) }
   scope :ratings_count, -> (range) { where(ratings_count: range[:min]..range[:max]) }
   scope :submitted, -> (range) { where(submitted: parseDate(range[:min])..parseDate(range[:max])) }
   scope :edited, -> (range) { where(edited: parseDate(range[:min])..parseDate(range[:max])) }
