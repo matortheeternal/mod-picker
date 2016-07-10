@@ -1,13 +1,33 @@
 class CompatibilityNote < ActiveRecord::Base
   include Filterable, Sortable, RecordEnhancements, Correctable, Helpfulable, Reportable
 
-  scope :visible, -> { where(hidden: false, approved: true) }
-  scope :by, -> (id) { where(submitted_by: id) }
-  scope :mod, -> (id) { where(first_mod_id: id).or(second_mod_id: id) }
-  scope :type, -> (array) { where(compatibility_type: array) }
-
   enum status: [ :incompatible, :"partially incompatible", :"compatibility mod", :"compatibility option", :"make custom patch" ]
 
+  # BOOLEAN SCOPES (excludes content when false)
+  scope :hidden, -> (bool) { where(hidden: false) if !bool  }
+  scope :adult, -> (bool) { where(has_adult_content: false) if !bool }
+  # GENERAL SCOPES
+  scope :visible, -> { where(hidden: false, approved: true) }
+  scope :game, -> (game_id) { where(game_id: game_id) }
+  scope :search, -> (text) { where("text_body like ?", "%#{text}%") }
+  scope :submitter, -> (username) { joins(:submitter).where(:users => {:username => username}) }
+  scope :status, -> (statuses_hash) {
+    # build commentables array
+    statuses = []
+    statuses_hash.each_with_index do |(key,value),index|
+      if statuses_hash[key]
+        statuses.push(index)
+      end
+    end
+
+    # return query
+    where(status: statuses)
+  }
+  # RANGE SCOPES
+  scope :submitted, -> (range) { where(submitted: parseDate(range[:min])..parseDate(range[:max])) }
+  scope :edited, -> (range) { where(edited: parseDate(range[:min])..parseDate(range[:max])) }
+
+  # ASSOCIATIONS
   belongs_to :game, :inverse_of => 'compatibility_notes'
   belongs_to :submitter, :class_name => 'User', :foreign_key => 'submitted_by', :inverse_of => 'compatibility_notes'
   belongs_to :editor, :class_name => 'User', :foreign_key => 'edited_by'
