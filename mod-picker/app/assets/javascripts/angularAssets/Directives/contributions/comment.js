@@ -9,7 +9,8 @@ app.directive('comment', function () {
             index: '=',
             saveCallback: '=',
             isChild: '=?',
-            eventPrefix: '=?'
+            eventPrefix: '=?',
+            showContext: '=?'
         }
     };
 });
