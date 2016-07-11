@@ -8,7 +8,8 @@ app.directive('comments', function () {
             currentUser: '=',
             modelName: '=?',
             target: '=?',
-            eventPrefix: '=?'
+            eventPrefix: '=?',
+            showContext: "=?"
         }
     };
 });
