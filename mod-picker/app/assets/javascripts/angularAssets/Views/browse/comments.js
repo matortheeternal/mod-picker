@@ -14,10 +14,6 @@ app.controller('commentsIndexController', function ($scope, $stateParams, $state
     // sort options for view
     $scope.sortOptions = sortFactory.commentSortOptions();
 
-    // columns for view
-    $scope.columns = columnsFactory.commentColumns();
-    $scope.columnGroups = columnsFactory.commentColumnGroups();
-
     // filters for view
     $scope.filterPrototypes = filtersFactory.commentFilters();
     $scope.dateFilters = filtersFactory.contributionDateFilters();
