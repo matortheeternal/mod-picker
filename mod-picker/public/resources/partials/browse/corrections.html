@@ -112,7 +112,9 @@
             </div>
 
             <div class="right-column right-browse-column">
-                <h2>Corrections <sort-control></sort-control></h2>
+                <h2>Corrections <span class="right-item sort-item">
+                    <sort-control></sort-control>
+                </span></h2>
                 <loader data="corrections" content-class="grid-results" spinner-class="big-spinner">
                     <div class="content-block" ng-repeat="correction in corrections">
                         <correction correction="correction" index="100" current-user="currentUser" show-user-column="true" show-correctable="true"></correction>

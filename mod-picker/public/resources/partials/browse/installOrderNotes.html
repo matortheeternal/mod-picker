@@ -66,7 +66,9 @@
             </div>
 
             <div class="right-column right-browse-column">
-                <h2>Install Order Notes <sort-control></sort-control></h2>
+                <h2>Install Order Notes <span class="right-item sort-item">
+                    <sort-control></sort-control>
+                </span></h2>
                 <loader data="install_order_notes" content-class="grid-results" spinner-class="big-spinner">
                     <div class="content-block" ng-repeat="note in install_order_notes">
                         <install-order-note current-user="currentUser" note="note" show-user-column="true" index="100"></install-order-note>

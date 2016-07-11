@@ -46,7 +46,9 @@
             </div>
 
             <div class="right-column right-browse-column">
-                <h2>Reviews <sort-control></sort-control></h2>
+                <h2>Reviews <span class="right-item sort-item">
+                    <sort-control></sort-control>
+                </span></h2>
                 <loader data="reviews" content-class="grid-results" spinner-class="big-spinner">
                     <div class="content-block" ng-repeat="review in reviews">
                         <review current-user="currentUser" review="review" show-user-column="true" show-mod="true" index="100"></review>
