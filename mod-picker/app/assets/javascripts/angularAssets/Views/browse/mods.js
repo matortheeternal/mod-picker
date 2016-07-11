@@ -22,7 +22,7 @@ app.run(function($futureState, indexService, filtersFactory) {
     $futureState.futureState(state);
 });
 
-app.controller('modsController', function($scope, $q, $stateParams, $state, modService, sliderFactory, columnsFactory, filtersFactory, currentUser, currentGame, indexService) {
+app.controller('modsController', function($scope, $q, $stateParams, $state, modService, sliderFactory, columnsFactory, filtersFactory, currentUser, currentGame, indexService, smoothScroll) {
     // get parent variables
     $scope.currentUser = currentUser;
     $scope.currentGame = currentGame;
@@ -57,6 +57,9 @@ app.controller('modsController', function($scope, $q, $stateParams, $state, modS
     };
     //load slider values from url parameters
     indexService.setFiltersFromParams($scope.filters, $scope.filterPrototypes, $stateParams);
+    
+    // scroll to top of the page
+    smoothScroll(document.body, { duration: 500 });
 
     /* helper functions */
     // returns a new subset of the input filters with the unavailable filters removed

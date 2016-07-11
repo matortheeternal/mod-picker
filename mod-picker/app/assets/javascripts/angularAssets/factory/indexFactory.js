@@ -1,4 +1,4 @@
-app.service('indexFactory', function(indexService) {
+app.service('indexFactory', function(indexService, smoothScroll) {
     this.buildIndex = function($scope, $stateParams, $state, localIndexService) {
         // initialize local variables
         $scope.availableColumnData = [];
@@ -13,6 +13,9 @@ app.service('indexFactory', function(indexService) {
         //  load filter values from url parameters
         $scope.filters = {};
         localIndexService.setFiltersFromParams($scope.filters, $scope.filterPrototypes, $stateParams);
+
+        // scroll to top of the page
+        smoothScroll(document.body, { duration: 500 });
 
         /* data fetching functions */
         $scope.firstGet = false;
