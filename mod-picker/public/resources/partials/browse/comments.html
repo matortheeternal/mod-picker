@@ -65,8 +65,18 @@
             </div>
 
             <div class="right-column right-browse-column">
-                <h2>Comments</h2>
-                <table-results label="comments" data="comments" columns="columns" actions="actions" column-groups="columnGroups" available-column-data="availableColumnData" sort="sort"></table-results>
+                <h2>Comments <span class="right-item sort-item">
+                    <sort-control></sort-control>
+                </span></h2>
+                <loader data="comments" content-class="grid-results" spinner-class="big-spinner">
+                    <div class="comment-container" ng-repeat="comment in comments">
+                        <comment comment="comment" current-user="currentUser" index="100" save-callback="saveComment" show-context="true"></comment>
+                    </div>
+
+                    <div class="content-message" ng-hide="comments.length">
+                        No Comments were found matching your search criteria.
+                    </div>
+                </loader>
                 <page-results pages="pages" data="comments" callback="getData"></page-results>
             </div>
         </div>
