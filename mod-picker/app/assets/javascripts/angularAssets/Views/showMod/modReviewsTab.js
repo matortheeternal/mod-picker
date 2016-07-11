@@ -59,6 +59,11 @@ app.controller('modReviewsController', function($scope, $stateParams, $state, mo
         $scope.retrieveReviewSections();
     }
 
+    // re-retrieve reviews when the sort object changes
+    $scope.$watch('sort.reviews', function() {
+        $scope.retrieveReviews();
+    }, true);
+
     // REVIEW RELATED LOGIC
     // instantiate a new review object
     $scope.startNewReview = function() {
