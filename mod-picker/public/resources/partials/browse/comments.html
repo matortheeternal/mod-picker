@@ -69,9 +69,7 @@
                     <sort-control></sort-control>
                 </span></h2>
                 <loader data="comments" content-class="grid-results" spinner-class="big-spinner">
-                    <div class="comment-container" ng-repeat="comment in comments">
-                        <comment comment="comment" current-user="currentUser" index="100" save-callback="saveComment" show-context="true"></comment>
-                    </div>
+                    <comments comments="comments" current-user="currentUser" ng-show="comments.length"></comments>
 
                     <div class="content-message" ng-hide="comments.length">
                         No Comments were found matching your search criteria.
