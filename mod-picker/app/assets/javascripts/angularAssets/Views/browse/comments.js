@@ -5,10 +5,13 @@ app.run(function($futureState, indexFactory, filtersFactory) {
     $futureState.futureState(state);
 });
 
-app.controller('commentsIndexController', function ($scope, $stateParams, $state, currentUser, contributionService, columnsFactory, filtersFactory, indexService, indexFactory) {
+app.controller('commentsIndexController', function ($scope, $stateParams, $state, currentUser, contributionService, columnsFactory, filtersFactory, indexService, indexFactory, sortFactory) {
     // get parent variables
     $scope.currentUser = currentUser;
     $scope.globalPermissions = angular.copy(currentUser.permissions);
+
+    // sort options for view
+    $scope.sortOptions = sortFactory.commentSortOptions();
 
     // columns for view
     $scope.columns = columnsFactory.commentColumns();

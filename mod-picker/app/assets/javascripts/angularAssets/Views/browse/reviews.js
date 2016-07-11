@@ -5,10 +5,13 @@ app.run(function($futureState, indexFactory, filtersFactory) {
     $futureState.futureState(state);
 });
 
-app.controller('reviewsController', function ($scope, $stateParams, $state, currentUser, contributionService, indexService,  filtersFactory, indexFactory) {
+app.controller('reviewsController', function ($scope, $stateParams, $state, currentUser, contributionService, indexService,  filtersFactory, indexFactory, sortFactory) {
     // get parent variables
     $scope.currentUser = currentUser;
     $scope.globalPermissions = angular.copy(currentUser.permissions);
+
+    // sort options for view
+    $scope.sortOptions = sortFactory.reviewSortOptions();
 
     // filters for view
     $scope.filterPrototypes = filtersFactory.reviewFilters();
