@@ -69,6 +69,16 @@
 .right-browse-column {
   max-width: 970px;
 
+  .sort-item {
+    font-size: 14px;
+    margin-right: 8px;
+
+    .sort-direction {
+      font-size: 18px;
+      cursor: pointer;
+    }
+  }
+
   table {
     border-collapse: collapse;
     width: 100%;
