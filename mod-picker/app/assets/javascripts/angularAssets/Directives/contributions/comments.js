@@ -6,8 +6,8 @@ app.directive('comments', function () {
         scope: {
             comments: '=',
             currentUser: '=',
-            modelName: '=',
-            target: '=',
+            modelName: '=?',
+            target: '=?',
             eventPrefix: '=?'
         }
     };
@@ -25,7 +25,15 @@ app.controller('commentsController', function ($scope, contributionService) {
 
     // start a new comment
     $scope.newComment = function() {
+        // throw exception if we don't have modelName and target defined
+        if (!modelName || !target) {
+            throw "Cannot create a new comment - no target!";
+        }
+
+        // prepare activeComment object
         $scope.activeComment = {
+            commentable_id: $scope.target.id,
+            commentable_type: $scope.modelName,
             text_body: ""
         };
 
@@ -78,8 +86,8 @@ app.controller('commentsController', function ($scope, contributionService) {
         var commentObj = {
             comment: {
                 parent_id: comment.parent_id,
-                commentable_id: $scope.target.id,
-                commentable_type: $scope.modelName,
+                commentable_id: comment.commentable_id,
+                commentable_type: comment.commentable_id,
                 text_body: comment.text_body
             }
         };
