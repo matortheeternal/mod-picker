@@ -31,10 +31,12 @@ app.config(function($futureStateProvider) {
     $futureStateProvider.stateFactory('lazy', lazyStateFactory);
 });
 
-//this adds a redirectTo option into ui router, which makes default tabs much nicer
-app.run(['$rootScope', '$state', function($rootScope, $state) {
-
+app.run(['$rootScope', '$state', 'smoothScroll', function($rootScope, $state, smoothScroll) {
     $rootScope.$on('$stateChangeStart', function(evt, to, params) {
+        // scroll to the top of the page
+        smoothScroll(document.body, {duration: 300});
+
+        //this adds a redirectTo option into ui router, which makes default tabs much nicer
         if (to.redirectTo) {
             evt.preventDefault();
             $state.go(to.redirectTo, params, { location: 'replace' });
