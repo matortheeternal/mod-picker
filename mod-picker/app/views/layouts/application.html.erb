@@ -18,7 +18,7 @@
             'High Hrothgar': "<%= stylesheet_path 'High Hrothgar' %>"
         }
     </script>
-    <link ng-controller="themesController" rel="stylesheet" ng-href="{{currentTheme}}" />
+    <link ng-controller="themesController" rel="stylesheet" ng-href="{{currentTheme}}" ng-init="currentTheme = '<%= stylesheet_path @current_theme %>'" />
 </head>
 
 <body ng-cloak ng-controller="bodyController" ng-class="{ 'no-scroll' : modalVisible }">
