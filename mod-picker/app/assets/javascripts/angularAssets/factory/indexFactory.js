@@ -27,10 +27,13 @@ app.service('indexFactory', function(indexService) {
                 $scope[$scope.route] = data[$scope.route];
                 $scope.firstGet = true;
             };
+            var errorCallback = function(response) {
+                $scope.error = response;
+            };
             if ($scope.contributions) {
-                $scope.retrieve($scope.route, options, $scope.pages).then(dataCallback);
+                $scope.retrieve($scope.route, options, $scope.pages).then(dataCallback, errorCallback);
             } else {
-                $scope.retrieve(options, $scope.pages).then(dataCallback);
+                $scope.retrieve(options, $scope.pages).then(dataCallback, errorCallback);
             }
         };
 
