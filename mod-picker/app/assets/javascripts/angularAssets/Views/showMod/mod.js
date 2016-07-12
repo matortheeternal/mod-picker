@@ -67,7 +67,7 @@ app.config(['$stateProvider', function($stateProvider) {
     });
 }]);
 
-app.controller('modController', function($scope, $q, $stateParams, $timeout, currentUser, modObject, modService, contributionService, categoryService, tagService, smoothScroll, errorService) {
+app.controller('modController', function($scope, $q, $stateParams, $timeout, currentUser, modObject, modService, contributionService, categoryService, tagService, smoothScroll, errorService, sortFactory) {
     // get parent variables
     $scope.mod = modObject.mod;
     $scope.mod.star = modObject.star;
@@ -91,6 +91,12 @@ app.controller('modController', function($scope, $q, $stateParams, $timeout, cur
         compatibility_notes: {},
         install_order_notes: {},
         load_order_notes: {}
+    };
+    $scope.sortOptions = {
+        reviews: sortFactory.reviewSortOptions(),
+        compatibility_notes: sortFactory.compatibilityNoteSortOptions(),
+        install_order_notes: sortFactory.installOrderNoteSortOptions(),
+        load_order_notes: sortFactory.loadOrderNoteSortOptions()
     };
     $scope.filters = {
         compatibility_notes: {

@@ -44,6 +44,11 @@ app.controller('modLoadOrderController', function($scope, $state, $stateParams, 
         $scope.retrieveLoadOrderNotes($stateParams.page);
     }
 
+    // re-retrieve load order notes when the sort object changes
+    $scope.$watch('sort.load_order_notes', function() {
+        $scope.retrieveLoadOrderNotes();
+    }, true);
+
     // LOAD ORDER NOTE RELATED LOGIC
     // instantiate a new load order note object
     $scope.startNewLoadOrderNote = function() {

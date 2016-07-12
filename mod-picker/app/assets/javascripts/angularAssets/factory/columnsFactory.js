@@ -253,4 +253,240 @@ app.service('columnsFactory', function() {
     this.modColumnGroups = function() {
         return ["General", "Mod Picker", "Site Statistics"];
     };
+
+    this.userColumns = function() {
+        return [
+            {
+                group: "General",
+                visibility: true,
+                required: true,
+                label: "Username",
+                data: "username",
+                link: function(user) {
+                    return "#/user/" + user.id
+                }
+            },
+            {
+                group: "General",
+                visibility: true,
+                label: "Role",
+                data: "role",
+                filter: "humanize:1"
+            },
+            {
+                group: "General",
+                visibility: true,
+                label: "Title",
+                data: "title"
+            },
+            {
+                group: "General",
+                visibility: true,
+                label: "Joined",
+                data: "joined",
+                filter: "date"
+            },
+            {
+                group: "General",
+                visibility: true,
+                label: "Last Seen",
+                data: "last_sign_in_at",
+                filter: "date"
+            },
+            {
+                group: "General",
+                visibility: true,
+                label: "Reputation",
+                data: "reputation.overall",
+                filter: "number:0"
+            },
+            {
+                group: "Content Statistics",
+                visibility: false,
+                label: "Comments",
+                data: "submitted_comments_count",
+                filter: "number"
+            },
+            {
+                group: "Content Statistics",
+                visibility: false,
+                label: "Profile Comments",
+                data: "comments_count",
+                filter: "number"
+            },
+            {
+                group: "Content Statistics",
+                visibility: false,
+                label: "Authored Mods",
+                data: "authored_mods_count",
+                filter: "number"
+            },
+            {
+                group: "Content Statistics",
+                visibility: false,
+                label: "Mod Lists",
+                data: "mod_lists_count",
+                filter: "number"
+            },
+            {
+                group: "Content Statistics",
+                visibility: false,
+                label: "Mod Collections",
+                data: "mod_collections_count",
+                filter: "number"
+            },
+            {
+                group: "Content Statistics",
+                visibility: false,
+                label: "Submitted Mods",
+                data: "submitted_mods_count",
+                filter: "number"
+            },
+            {
+                group: "Contribution Statistics",
+                visibility: false,
+                label: "Reviews",
+                data: "reviews_count",
+                filter: "number"
+            },
+            {
+                group: "Contribution Statistics",
+                visibility: false,
+                label: "Compatibility Notes",
+                data: "compatibility_notes_count",
+                filter: "number"
+            },
+            {
+                group: "Contribution Statistics",
+                visibility: false,
+                label: "Install Order Notes",
+                data: "install_order_notes_count",
+                filter: "number"
+            },
+            {
+                group: "Contribution Statistics",
+                visibility: false,
+                label: "Load Order Notes",
+                data: "load_order_notes_count",
+                filter: "number"
+            },
+            {
+                group: "Contribution Statistics",
+                visibility: false,
+                label: "Corrections",
+                data: "corrections_count",
+                filter: "number"
+            },
+            {
+                group: "Contribution Statistics",
+                visibility: false,
+                label: "Tags",
+                data: "tags_count",
+                filter: "number"
+            },
+            {
+                group: "Extended Statistics",
+                visibility: false,
+                label: "Mod Tags",
+                data: "mod_tags_count",
+                filter: "number"
+            },
+            {
+                group: "Extended Statistics",
+                visibility: false,
+                label: "Mod List Tags",
+                data: "mod_list_tags_count",
+                filter: "number"
+            },
+            {
+                group: "Extended Statistics",
+                visibility: false,
+                label: "Helpful Marks",
+                data: "helpful_marks_count",
+                filter: "number"
+            },
+            {
+                group: "Extended Statistics",
+                visibility: false,
+                label: "Agreement Marks",
+                data: "agreement_marks_count",
+                filter: "number"
+            },
+            {
+                group: "Extended Statistics",
+                visibility: false,
+                label: "Starred Mods",
+                data: "starred_mods_count",
+                filter: "number"
+            },
+            {
+                group: "Extended Statistics",
+                visibility: false,
+                label: "Starred Mod Lists",
+                data: "starred_mod_lists_count",
+                filter: "number"
+            }
+        ];
+    };
+
+    this.userColumnGroups = function() {
+        return ["General", "Content Statistics", "Contribution Statistics", "Extended Statistics"];
+    };
+
+    this.commentColumns = function() {
+        return [
+            {
+                group: "General",
+                visibility: true,
+                required: true,
+                label: "Submitter",
+                data: "submitter.username",
+                link: function(comment) {
+                    return "#/user/" + comment.submitter.id
+                }
+            },
+            {
+                group: "General",
+                visibility: true,
+                label: "Commentable",
+                data: "commentable_type",
+                link: function (comment) {
+                    return comment.commentable_link
+                }
+            },
+            {
+                group: "General",
+                visibility: true,
+                label: "Submitted",
+                data: "submitted",
+                filter: "date"
+            },
+            {
+                group: "General",
+                visibility: true,
+                label: "Edited",
+                data: "edited",
+                filter: "date"
+            },
+            //{
+            //    group: "General",
+            //    visibility: true,
+            //    label: "Parent",
+            //    data: "parent_id",
+            //    link: function(comment) {
+            //        return comment.parent_link
+            //    }
+            //},
+            {
+                group: "General",
+                visibility: true,
+                label: "Replies",
+                data: "children_count"
+            }
+        ];
+    };
+
+    this.commentColumnGroups = function() {
+        return ["General"]
+    };
 });

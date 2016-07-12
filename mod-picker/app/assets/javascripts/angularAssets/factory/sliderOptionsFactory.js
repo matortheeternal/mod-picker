@@ -55,11 +55,11 @@ app.service('sliderOptionsFactory', function (sliderFactory) {
     };
 
     //TODO: make those Dates a provider.value
-    this.UserGeneratedListDateSlider = function () {
+    this.UserDateSlider = function () {
         return this.DateSlider(new Date(2016,0,1));
     };
 
-    this.ModListDateSlider = function () {
+    this.ModDateSlider = function () {
         return this.DateSlider(new Date(2011,10,11));
     };
 });

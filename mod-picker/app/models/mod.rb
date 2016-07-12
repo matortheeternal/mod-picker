@@ -5,8 +5,8 @@ class Mod < ActiveRecord::Base
   enum status: [ :good, :outdated, :unstable ]
 
   # BOOLEAN SCOPES (excludes content when false)
-  scope :hidden, -> (bool) { where(hidden: false) if (!bool)  }
-  scope :adult, -> (bool) { where(has_adult_content: false) if (!bool) }
+  scope :hidden, -> (bool) { where(hidden: false) if !bool  }
+  scope :adult, -> (bool) { where(has_adult_content: false) if !bool }
   scope :official, -> (bool) { where(is_official: false) if !bool }
   scope :utility, -> (bool) { where(is_utility: false) if !bool }
   scope :is_game, -> (bool) { where.not(primary_category_id: nil) if !bool }
@@ -53,23 +53,25 @@ class Mod < ActiveRecord::Base
   scope :released, -> (range) { where(released: parseDate(range[:min])..parseDate(range[:max])) }
   scope :updated, -> (range) { where(updated: parseDate(range[:min])..parseDate(range[:max])) }
   scope :categories, -> (categories) { where("primary_category_id IN (?) OR secondary_category_id IN (?)", categories, categories) }
-  scope :tags, -> (array) { joins(:tags).where(:tags => {text: array}) }
+  scope :tags, -> (array) { joins(:tags).where(:tags => {text: array}).having("COUNT(DISTINCT tags.text) = ?", array.length) }
   # MOD PICKER SCOPES
   scope :stars, -> (range) { where(stars_count: (range[:min]..range[:max])) }
   scope :reviews, -> (range) { where(reviews_count: (range[:min]..range[:max])) }
   scope :rating, -> (range) { where(average_rating: (range[:min]..range[:max])) }
+  scope :reputation, -> (range) { where(reputation: (range[:min]..range[:max])) }
   scope :compatibility_notes, -> (range) { where(compatibility_notes_count: (range[:min]..range[:max])) }
   scope :install_order_notes, -> (range) { where(install_order_notes_count: (range[:min]..range[:max])) }
   scope :load_order_notes, -> (range) { where(load_order_notes_count: (range[:min]..range[:max])) }
   # SHARED SCOPES (ALL)
   scope :author, -> (hash) {
-    author = hash[:author]
+    author = hash[:value]
     sources = hash[:sources]
 
     results = self.where(nil)
     results = results.where("nexus_infos.authors like ? OR nexus_infos.uploaded_by like ?", author, author) if sources[:nexus]
     results = results.where("lover_infos.uploaded_by like ?", author) if sources[:lab]
     results = results.where("workshop_infos.uploaded_by like ?", author) if sources[:workshop]
+    results = results.where("mods.authors like ?", author) if sources[:other]
     results
   }
   scope :views, -> (range) {
@@ -211,6 +213,7 @@ class Mod < ActiveRecord::Base
       |attributes| attributes[:id] && attributes[:user_id] && !attributes[:_destroy]
   }, allow_destroy: true
 
+  # numbers of mods per page on the mods index
   self.per_page = 100
 
   # Validations
@@ -325,6 +328,12 @@ class Mod < ActiveRecord::Base
     else
       review_reputation = (self.average_rating / 100)**3 * (510.0 / (1 + Math::exp(-0.2 * (self.reviews_count - 10))) - 60)
       self.reputation = review_reputation
+    end
+
+    if self.status == :unstable
+      self.reputation = self.reputation / 4
+    elsif self.status == :outdated
+      self.reputation = self.reputation / 2
     end
   end
 

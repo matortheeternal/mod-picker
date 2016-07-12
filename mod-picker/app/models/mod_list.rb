@@ -1,5 +1,5 @@
 class ModList < ActiveRecord::Base
-  include Filterable, Sortable, RecordEnhancements
+  include Filterable, Sortable, RecordEnhancements, Reportable
 
   enum status: [ :planned, :"under construction", :testing, :complete ]
   enum visibility: [ :visibility_private, :visibility_unlisted, :visibility_public ]
@@ -38,7 +38,6 @@ class ModList < ActiveRecord::Base
   has_many :mod_list_stars, :inverse_of => 'mod_list'
   has_many :mod_list_tags, :inverse_of => 'mod_list'
   has_many :comments, :as => 'commentable'
-  has_one :base_report, :as => 'reportable'
 
   # Validations
   validates :game_id, :submitted_by, :name, presence: true

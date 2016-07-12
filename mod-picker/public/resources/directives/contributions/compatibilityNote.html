@@ -24,7 +24,7 @@
             </span>
         </span>
         <span class="right-item">
-            <span class="standing">Good Standing</span>
+            <span class="standing capitalize">{{note.standing}} standing</span>
         </span>
     </div>
     <user-column ng-if="showUserColumn" user="note.submitter" editors="note.editors" class="user-column" index="index"></user-column>

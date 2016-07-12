@@ -2,6 +2,20 @@ String.prototype.capitalize = function() {
     return this.charAt(0).toUpperCase() + this.slice(1);
 };
 
+String.prototype.titleCase = function() {
+    return this.replace(/[^-'\s]+/g, function(word) {
+        return word.replace(/^./, function(first) {
+            return first.toUpperCase();
+        });
+    });
+};
+
+String.prototype.toDashFormat = function() {
+    return this.replace(/[A-Z]/g, function(uppercaseLetter) {
+        return "-" + uppercaseLetter.toLowerCase();
+    })
+};
+
 function getDifferentProperties(obj, otherObj) {
     var result = {};
     for (var property in obj) {
@@ -33,5 +47,16 @@ function deleteEmptyProperties(obj, recurse) {
                 deleteEmptyProperties(v, recurse - 1);
             }
         }
+    }
+}
+
+function getShortTypeString(obj) {
+    switch (typeof obj) {
+        case 'number':
+            return (obj % 1 === 0) ? 'int' : 'float';
+        case 'boolean':
+            return 'bool';
+        default:
+            return 'string';
     }
 }

@@ -312,7 +312,7 @@ class ModsController < ApplicationController
     # Params we allow filtering on
     def filtering_params
       # construct valid filters array
-      valid_filters = [:sources, :search, :game, :released, :updated, :adult, :utility, :categories, :tags, :stars, :reviews, :rating, :compatibility_notes, :install_order_notes, :load_order_notes, :views, :author]
+      valid_filters = [:sources, :search, :game, :released, :updated, :adult, :utility, :categories, :tags, :stars, :reviews, :rating, :reputation, :compatibility_notes, :install_order_notes, :load_order_notes, :views, :author]
       source_filters = [:views, :author, :posts, :videos, :images, :discussions, :downloads, :favorites, :subscribers, :endorsements, :unique_downloads, :files, :bugs, :articles]
       sources = params[:filters][:sources]
 
@@ -334,6 +334,9 @@ class ModsController < ApplicationController
       # pad filters with sources
       permitted_filters.each do |key, value|
         if source_filters.include?(key.to_sym)
+          unless permitted_filters[key].is_a?(Hash)
+            permitted_filters[key] = { :value => permitted_filters[key] }
+          end
           permitted_filters[key][:sources] = sources
         end
       end

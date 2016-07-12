@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160704223943) do
+ActiveRecord::Schema.define(version: 20160710151363) do
 
   create_table "agreement_marks", id: false, force: :cascade do |t|
     t.integer "correction_id", limit: 4,                null: false
@@ -113,6 +113,7 @@ ActiveRecord::Schema.define(version: 20160704223943) do
     t.string   "edit_summary",            limit: 255
     t.string   "moderator_message",       limit: 255
     t.float    "reputation",              limit: 24,    default: 0.0,   null: false
+    t.integer  "standing",                limit: 1,     default: 0,     null: false
     t.integer  "helpful_count",           limit: 4,     default: 0,     null: false
     t.integer  "not_helpful_count",       limit: 4,     default: 0,     null: false
     t.integer  "corrections_count",       limit: 4,     default: 0,     null: false
@@ -244,6 +245,7 @@ ActiveRecord::Schema.define(version: 20160704223943) do
     t.string   "edit_summary",          limit: 255
     t.string   "moderator_message",     limit: 255
     t.float    "reputation",            limit: 24,    default: 0.0,   null: false
+    t.integer  "standing",              limit: 1,     default: 0,     null: false
     t.integer  "helpful_count",         limit: 4,     default: 0,     null: false
     t.integer  "not_helpful_count",     limit: 4,     default: 0,     null: false
     t.integer  "corrections_count",     limit: 4,     default: 0,     null: false
@@ -281,6 +283,7 @@ ActiveRecord::Schema.define(version: 20160704223943) do
     t.string   "edit_summary",          limit: 255
     t.string   "moderator_message",     limit: 255
     t.float    "reputation",            limit: 24,    default: 0.0,   null: false
+    t.integer  "standing",              limit: 1,     default: 0,     null: false
     t.integer  "helpful_count",         limit: 4,     default: 0,     null: false
     t.integer  "not_helpful_count",     limit: 4,     default: 0,     null: false
     t.integer  "corrections_count",     limit: 4,     default: 0,     null: false
@@ -663,23 +666,21 @@ ActiveRecord::Schema.define(version: 20160704223943) do
   add_index "review_sections", ["category_id"], name: "fk_rails_82a032f049", using: :btree
 
   create_table "reviews", force: :cascade do |t|
-    t.integer  "game_id",               limit: 4,                     null: false
-    t.integer  "submitted_by",          limit: 4,                     null: false
-    t.integer  "edited_by",             limit: 4
-    t.integer  "mod_id",                limit: 4,                     null: false
-    t.text     "text_body",             limit: 65535,                 null: false
-    t.string   "edit_summary",          limit: 255
-    t.string   "moderator_message",     limit: 255
-    t.float    "overall_rating",        limit: 24,    default: 0.0,   null: false
-    t.float    "reputation",            limit: 24,    default: 0.0,   null: false
-    t.integer  "helpful_count",         limit: 4,     default: 0,     null: false
-    t.integer  "not_helpful_count",     limit: 4,     default: 0,     null: false
-    t.integer  "corrections_count",     limit: 4,     default: 0,     null: false
-    t.integer  "history_entries_count", limit: 4,     default: 0,     null: false
-    t.integer  "ratings_count",         limit: 4,     default: 0,     null: false
-    t.boolean  "approved",                            default: false, null: false
-    t.boolean  "hidden",                              default: false, null: false
-    t.datetime "submitted",                                           null: false
+    t.integer  "game_id",           limit: 4,                     null: false
+    t.integer  "submitted_by",      limit: 4,                     null: false
+    t.integer  "edited_by",         limit: 4
+    t.integer  "mod_id",            limit: 4,                     null: false
+    t.text     "text_body",         limit: 65535,                 null: false
+    t.string   "edit_summary",      limit: 255
+    t.string   "moderator_message", limit: 255
+    t.float    "overall_rating",    limit: 24,    default: 0.0,   null: false
+    t.float    "reputation",        limit: 24,    default: 0.0,   null: false
+    t.integer  "helpful_count",     limit: 4,     default: 0,     null: false
+    t.integer  "not_helpful_count", limit: 4,     default: 0,     null: false
+    t.integer  "ratings_count",     limit: 4,     default: 0,     null: false
+    t.boolean  "approved",                        default: false, null: false
+    t.boolean  "hidden",                          default: false, null: false
+    t.datetime "submitted",                                       null: false
     t.datetime "edited"
   end
 

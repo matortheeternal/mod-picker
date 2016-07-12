@@ -18,10 +18,20 @@ app.controller('sliderController', function ($scope, sliderOptionsFactory, $time
     if (typeof sliderOptionsFactory[$scope.type]=== "function") {
         $scope.slider = sliderOptionsFactory[$scope.type]($scope.attr);
     }
-    $scope.rawData = {
-        min: $scope.slider.min || 0,
-        max: $scope.slider.max
-    };
+
+    var filterData = $scope.filters[$scope.data];
+    if (filterData) {
+        $scope.rawData = {
+            min: filterData.min,
+            max: filterData.max
+        }
+    } else {
+        $scope.rawData = {
+            min: $scope.slider.min || 0,
+            max: $scope.slider.max
+        };
+    }
+
 
     $scope.deleteData = function() {
         if ($scope.filters) {

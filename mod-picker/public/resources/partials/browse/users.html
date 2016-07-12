@@ -1,82 +1,83 @@
 <two-columns>
     <div class="page-container">
         <div class="column-wrapper">
-            <div class="left-column left-browse-columns">
+            <div class="left-column left-browse-column" style="width:250px; padding: 40px 48px 40px 0;">
                 <h2>Filters</h2>
-                <div id="search-filters" class="filter-section">
+
+                <div class="filter-section">
                     <h3>Search</h3>
-                    <!-- TODO: Use directives here -->
                     <h4>Username</h4>
-                    <input id="username_text" type="text" title="Username">
+                    <input type="text" ng-model="filters.search">
+
+                    <h4>Linked Account Username</h4>
+                    <input type="text" ng-model="filters.linked">
                 </div>
-                <div id="date-filters" class="filter-section">
-                    <h3>Date Filters</h3>
-                    <h4>Date Joined</h4>
-                    <slider data="data.joined" type="UserGeneratedListDateSlider"></slider>
-                    <h4>Date Last Seen</h4>
-                    <slider data="data.lastSeen" type="UserGeneratedListDateSlider"></slider>
-                </div>
-                <div id="user-level-filters" class="filter-section">
-                    <h3>User Level</h3>
-                    <div class="sidebar-box">
-                        <ul class="filter-list">
+
+                <div class="filter-section">
+                    <h3>Roles</h3>
+                    <div class="sidebar-box box-shadow">
+                        <ul class="checkbox-list">
                             <li>
-                                <input id="level_banned" type="checkbox">
-                                <label for="level_banned">Banned</label>
+                                <label><input type="checkbox" ng-model="filters.roles.admin">
+                                    Admin</label>
                             </li>
                             <li>
-                                <input id="level_user" type="checkbox">
-                                <label for="level_user">User</label>
+                                <label><input type="checkbox" ng-model="filters.roles.moderator">
+                                    Moderator</label>
                             </li>
                             <li>
-                                <input id="level_author" type="checkbox">
-                                <label for="level_author">Author</label>
+                                <label><input type="checkbox" ng-model="filters.roles.author">
+                                    Mod Author</label>
                             </li>
                             <li>
-                                <input id="level_vip" type="checkbox">
-                                <label for="level_vip">VIP</label>
-                            </li>
-                            <li>
-                                <input id="level_moderator" type="checkbox">
-                                <label for="level_moderator">Moderator</label>
-                            </li>
-                            <li>
-                                <input id="level_admin" type="checkbox">
-                                <label for="level_admin">Admin</label>
+                                <label><input type="checkbox" ng-model="filters.roles.user">
+                                    User</label>
                             </li>
                         </ul>
                     </div>
                 </div>
-                <div id="stat-filters" class="filter-section">
-                    <h3>Stats</h3>
-                    <h4>Reputation</h4>
-                    <slider data="data.reputation" type="StepSlider" attr="5000"></slider>
 
-                    <h4>Authored Mods</h4>
-                    <slider data="data.mods" type="CeilSlider" attr="100"></slider>
+                <div class="filter-section">
+                    <h3>Date Filters</h3>
+                    <div ng-repeat="filter in dateFilters">
+                        <h4>{{filter.label}}
+                            <!--<span class="filter-controls">
+                                <span class="fa fa-calendar" ng-click="" title="Custom Date"></span>
+                            </span>-->
+                        </h4>
+                        <slider filters="filters" data="filter.data" type="UserDateSlider"></slider>
+                    </div>
+                </div>
 
-                    <h4>Compatibility Notes</h4>
-                    <slider data="data.compatibilityNotes" type="StepSlider" attr="500"></slider>
+                <div class="filter-sections" ng-if="statFilters.length">
+                    <h3>Statistic Filters</h3>
+                    <div class="filter-section">
+                        <div ng-repeat="filter in statFilters" ng-show="filter.common || expanded.stat">
+                            <h4>{{filter.label}}
+                                <!--<span class="filter-controls" ng-if="filter.max > 500">
+                                    <span class="fa fa-wrench" ng-click="" title="Custom Value"></span>
+                                </span>-->
+                            </h4>
+                            <slider filters="filters" data="filter.data" type="{{filter.max > 500 ? 'StepSlider' : 'CeilSlider'}}" attr="{{filter.max}}"></slider>
+                        </div>
+                    </div>
 
-                    <h4>Installation Notes</h4>
-                    <slider data="data.installationNotes" type="StepSlider" attr="500"></slider>
-
-                    <h4>Corrections</h4>
-                    <slider data="data.corrections" type="StepSlider" attr="500"></slider>
-
-                    <h4>Comments</h4>
-
-                    <slider data="data.comments" type="StepSlider" attr="500"></slider>
-
-                    <h4>Public Mod Lists</h4>
-                    <slider data="data.modLists" type="CeilSlider" attr="100"></slider>
+                    <expander expanded="expanded" key="stat"></expander>
                 </div>
             </div>
+
             <div class="right-column right-browse-column">
                 <h2>Users</h2>
-                <loader data="users" spinner-class="big-spinner">
-                    <user-results data="users"></user-results>
+                <loader data="users" content-class="table-results" spinner-class="big-spinner" ng-if="!error">
+                    <table-results label="users" data="users" columns="columns" actions="actions" column-groups="columnGroups" available-column-data="availableColumnData" sort="sort"></table-results>
+                    <page-results pages="pages" data="users" callback="getData"></page-results>
                 </loader>
+
+                <div class="content-message content-error" ng-if="error">
+                    There was an error retrieving Users.<br>
+                    <!--TODO: Render JSON errors here, if available?-->
+                    Error {{error.status}}: {{error.statusText}}
+                </div>
             </div>
         </div>
     </div>
