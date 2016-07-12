@@ -1,6 +1,6 @@
 <!--<loader data="modlist" spinner-class="big-spinner">
 </loader>-->
-<div title="modlist-header">
+<div>
     <div class="modlist-header-color">
         <div class="page-container mod-header">
             <section>
@@ -18,8 +18,11 @@
                     <span>999 Plugins</span>
                     <span class="divider">|</span>
                     <span>999 BSAs</span>
-                    <span class="divider">|</span>
-                    <a ng-if="permissions.canManage && !bIsEditing" ng-click="startEditing()">Edit</a>
+                    <span class="divider" ng-if="permissions.canManage">|</span>
+                    <a ng-if="permissions.canManage" ng-click="toggleEditing()">
+                        <span ng-hide="editing">Edit</span>
+                        <span ng-show="editing">Save</span>
+                    </a>
                 </div>
             </section>
 
