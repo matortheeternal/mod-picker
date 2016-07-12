@@ -76,8 +76,8 @@ app.controller('modlistController', function($scope, $log, $stateParams, $timeou
         complete: 'green-box'
     };
     $scope.statusHints = {
-        under_construction: "This mod list is in the \nprocess of being built.",
-        testing: "This mod list is in the \nprocess of being tested.",
+        under_construction: "This mod list is in the process of being built.",
+        testing: "This mod list is in the process of being tested.",
         complete: "This mod list has been completed."
     };
     $scope.visibilityIcons = {
@@ -91,8 +91,8 @@ app.controller('modlistController', function($scope, $log, $stateParams, $timeou
         visibility_public: 'green-box'
     };
     $scope.visibilityHints = {
-        visibility_private: "Only the mod list creator and moderators\n can view this mod list.",
-        visibility_unlisted: "This mod list won't appear in search results,\n but anyone can access it.",
+        visibility_private: "Only the mod list creator and moderators \ncan view this mod list.",
+        visibility_unlisted: "This mod list won't appear in search results, \nbut anyone can access it.",
         visibility_public: "This mod list is publicly available and will \nappear in search results."
     };
 
