@@ -6,7 +6,24 @@ app.config(['$stateProvider', function ($stateProvider) {
         templateUrl: '/resources/partials/modList/modList.html',
         controller: 'modlistController',
         url: '/mod-list/:modListId',
-        redirectTo: 'base.modlist.Details'
+        redirectTo: 'base.modlist.Details',
+        resolve: {
+            modListObject: function(modListService, $stateParams, $q) {
+                var modList = $q.defer();
+                modListService.retrieveModList($stateParams.modListId).then(function(data) {
+                    modList.resolve(data);
+                }, function(response) {
+                    var errorObj = {
+                        text: 'Error retrieving mod list.',
+                        response: response,
+                        stateName: "base.mod-list",
+                        stateUrl: window.location.hash
+                    };
+                    modList.reject(errorObj);
+                });
+                return modList.promise;
+            }
+        }
     }).state('base.modlist.Details', {
         templateUrl: '/resources/partials/modList/details.html',
         controller: 'modlistDetailsController',
@@ -34,22 +51,20 @@ app.config(['$stateProvider', function ($stateProvider) {
     })
 }]);
 
-app.controller('modlistController', function($scope, $log, $stateParams, $timeout, currentUser, modListService, userService) {
-    $scope.user = currentUser;
-    $scope.permissions = currentUser.permissions;
+app.controller('modlistController', function($scope, $log, $stateParams, $timeout, currentUser, modListObject, modListService) {
+    // get parent variables
+    $scope.modlist = modListObject;
+    $scope.currentUser = currentUser;
 
-	/*config*/
+	// initialize local variables
 	$scope.bIsEditing = false;
-	/*vars - Later down the road these will turn into GET functions*/
-	$scope.curSkyConfigTab = 'skyrim.ini';
-	$scope.curENBConfigTab = 'enblocal.ini';
     $scope.tabs = [
-        {name: 'Details'},
-        {name: 'Tools'},
-        {name: 'Mods'},
-        {name: 'Plugins'},
-        {name: 'Config'},
-        {name: 'Comments'}
+        { name: 'Details' },
+        { name: 'Tools' },
+        { name: 'Mods' },
+        { name: 'Plugins' },
+        { name: 'Config' },
+        { name: 'Comments' }
     ];
     $scope.statusIcons = {
         planned: 'fa-pencil-square-o',
@@ -58,74 +73,32 @@ app.controller('modlistController', function($scope, $log, $stateParams, $timeou
         complete: 'fa-check'
     };
 
-    modListService.retrieveModList($stateParams.modListId).then(function(modList) {
-       $scope.modlist = modList;
+    // a copy is created so the original permissions object is never changed
+    $scope.permissions = angular.copy(currentUser.permissions);
+    // setting up the canManage permission
+    var isAuthor = $scope.modlist.submitter.id == $scope.currentUser.id;
+    $scope.permissions.canManage = $scope.permissions.canModerate || isAuthor;
+
+    // display error messages
+    $scope.$on('errorMessage', function(event, params) {
+        var errors = errorService.errorMessages(params.label, params.response, $scope.modlist.id);
+        errors.forEach(function(error) {
+            $scope.$broadcast('message', error);
+        });
+        // stop event propagation - we handled it
+        event.stopPropagation();
     });
 
-    $scope.startEditing = function() {
-        $scope.bIsEditing = true;
-    };
+    // display success message
+    $scope.$on('successMessage', function(event, text) {
+        var successMessage = {type: "success", text: text};
+        $scope.$broadcast('message', successMessage);
+        // stop event propagation - we handled it
+        event.stopPropagation();
+    });
 
-    //get user permissions
-    $scope.getPermissions = function() {
-        // if we don't have mod yet, try again in 100ms
-        if (!$scope.modlist) {
-            $timeout(function() {
-                $scope.getPermissions();
-            }, 100);
-            return;
-        }
-
-        // set up helper variables
-        var rep = $scope.user.reputation.overall;
-        var isAdmin = $scope.user.role === 'admin';
-        var isModerator = $scope.user.role === 'moderator';
-        var isAuthor = $scope.modlist.created_by === $scope.user.id;
-
-        // set up permissions
-        $scope.permissions = {
-            canCreateTags: (rep >= 20) || isAuthor || isAdmin || isModerator,
-            canManage: isAuthor || isModerator || isAdmin,
-            canModerate: isModerator || isAdmin
-        };
-    };
-
-    $scope.isSelected = function(tabName) {
-    	return $scope.currentTab === tabName;
-    };
-
-    $scope.cssClass = function(tabName) {
-        if($scope.isSelected(tabName))
-            return "selected-tab";
-        else
-            return "unselected-tab";
-    };
-
-
-    $scope.sectionSelected = function(secName) {
-    	if(secName === 'tools')
-    		return $scope.curToolsSecTab;
-    	else if(secName === 'mods')
-    		return $scope.curModsSecTab;
-    	else if(secName === 'plugins')
-			return $scope.curPluginSecTab;
-		else if(secName === 'skyrimConfig')
-			return $scope.curSkyConfigTab;
-		else if(secName === 'enbConfig')
-			return $scope.curENBConfigTab;
-    };
-
-
-    $scope.cssChange = function(sectionName, secTab) {
-    	var scopeVar = $scope.sectionSelected(sectionName);
-        if(scopeVar === secTab)
-            return "section-selected-tab";
-        else
-            return "section-unselected-tab";
-    };
-
-    $scope.debugFunc = function() {
-    	$scope.bIsEditing = $scope.bIsEditing ? false: true;
+    $scope.toggleEditing = function() {
+        $scope.editing = !$scope.editing;
     };
 });
 
