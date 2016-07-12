@@ -1,54 +1,55 @@
-<!-- Mod List Description: Display Mode -->
-<div class="tab-section" ng-if="!bIsEditing">
-    <h3 class="section-title">Description</h3>
-    <section>
-        <div marked="modlist.description" class="text-container"></div>
-    </section>
-</div>
-
-<!-- Mod List Description: Edit Mode -->
-<div class="tab-section" ng-if="bIsEditing">
-    <h3 class="section-title">Description</h3>
-    <div class="content-column">
-        <section class="note-content-container">
-            <text-area class="large-note-text-area" data="modlist.description" ng-refresh="updateMDE"></text-area>
-        </section>
+<!-- Mod List Details: Display Mode -->
+<div ng-if="!editing">
+    <div class="content-block">
+        <div class="content-title">Description</div>
+        <div class="content-container">
+            <div marked="modlist.description" class="text-container"></div>
+        </div>
     </div>
 </div>
-<div class="tab-section" ng-if="bIsEditing">
-    <h3 class="section-title">Options</h3>
-</div>
-<section class="tabs-column primary-background" ng-if="bIsEditing">
-    <form>
-        <h3 class="section-title">Title</h3>
-        <section>
-            <label>
-                <input type="text" name="mlTitleInput" ng-value="modlistTitle">
-            </label>
-        </section>
-        <h3 class="section-title">Status</h3>
-        <section>
-            <select ng-init="statusSelect = 'underConstruction'">
-                <option value="planned">Planned</option>
-                <option value="underConstruction">Under Construction</option>
-                <option value="testing">Testing</option>
-                <option value="complete">Complete</option>
-            </select>
-        </section>        
-        <h3 class="section-title">Visibility</h3>
-        <section>
-            <select ng-model="visibilitySelect" ng-init="visibilitySelect = 'public'">
-                <option value="public">Public</option>
-                <option value="unlisted">Unlisted</option>
-                <option value="hidden">Private</option>
-            </select>
-        </section>
-        <h3 class="section-title">Other Options</h3>
-        <section>
-            <label>
-                <input type="checkbox" name="mlIsCollection" ng-checked="bIsCollection"> Collection
-            </label>
-        </section>
-    </form>
-</section>
 
+<!-- Mod List Details: Edit Mode -->
+<form ng-if="editing">
+    <div class="content-block">
+        <div class="content-title">Description</div>
+        <div class="content-container">
+            <text-area class="large-note-text-area" data="modlist.description" ng-refresh="updateMDE"></text-area>
+        </div>
+    </div>
+
+    <div class="content-block">
+        <div class="content-title">Options</div>
+        <div class="content-container" ng-if="editing">
+            <h3 class="section-title">Name</h3>
+            <section>
+                <input type="text" ng-model="modlist.name">
+            </section>
+
+            <h3 class="section-title">Status</h3>
+            <section>
+                <select ng-model="modlist.status">
+                    <option value="planned">Planned</option>
+                    <option value="under construction">Under Construction</option>
+                    <option value="testing">Testing</option>
+                    <option value="complete">Complete</option>
+                </select>
+            </section>
+
+            <h3 class="section-title">Visibility</h3>
+            <section>
+                <select ng-model="modlist.visibility">
+                    <option value="visibility_public">Public</option>
+                    <option value="visibility_unlisted">Unlisted</option>
+                    <option value="visibility_private">Private</option>
+                </select>
+            </section>
+
+            <h3 class="section-title">Other Options</h3>
+            <section>
+                <label>
+                    <input type="checkbox" ng-model="modlist.is_collection"> Collection
+                </label>
+            </section>
+        </div>
+    </div>
+</form>
