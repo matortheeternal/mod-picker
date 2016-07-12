@@ -14,6 +14,10 @@ app.factory("sortFactory", function() {
         label: "Helpfulness",
         value: "reputation"
     };
+    this.submitterReputationSort = {
+        label: "Submitter Reputation",
+        value: "user_reputations.overall"
+    };
     this.submittedSort = {
         label: "Date Submitted",
         value: "submitted"
@@ -24,14 +28,6 @@ app.factory("sortFactory", function() {
     };
     this.correctionsSort = factory.buildSortOption("Corrections Count");
     this.commentsSort = factory.buildSortOption("Comments Count");
-
-    // TODO: Nested sort options (not yet supported)
-    /* Submitter reputation
-     * Submitter username?
-     * Helpful count?
-     * Not helpful count?
-     * Mod name?
-     */
 
     /* comments index sort options */
     this.commentSortOptions = function() {
@@ -46,6 +42,7 @@ app.factory("sortFactory", function() {
         return [
             factory.buildSortOption("Agree Count"),
             factory.buildSortOption("Disagree Count"),
+            factory.submitterReputationSort,
             // TODO: Agree percentage or Agreement (flat)?
             factory.submittedSort,
             factory.editedSort,
@@ -57,8 +54,9 @@ app.factory("sortFactory", function() {
     this.reviewSortOptions = function() {
         return [
             factory.helpfulnessSort,
+            factory.submitterReputationSort,
             factory.buildSortOption("Overall Rating"),
-            // TODO: Not ratings count?
+            // TODO: Ratings count?
             factory.submittedSort,
             factory.editedSort
         ];
@@ -68,6 +66,7 @@ app.factory("sortFactory", function() {
     this.compatibilityNoteSortOptions = function() {
         return [
             factory.helpfulnessSort,
+            factory.submitterReputationSort,
             {
                 label: "Type",
                 value: "status"
@@ -82,6 +81,7 @@ app.factory("sortFactory", function() {
     this.installOrderNoteSortOptions = function() {
         return [
             factory.helpfulnessSort,
+            factory.submitterReputationSort,
             factory.submittedSort,
             factory.editedSort,
             factory.correctionsSort
@@ -92,6 +92,7 @@ app.factory("sortFactory", function() {
     this.loadOrderNoteSortOptions = function() {
         return [
             factory.helpfulnessSort,
+            factory.submitterReputationSort,
             factory.submittedSort,
             factory.editedSort,
             factory.correctionsSort
