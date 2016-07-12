@@ -27,10 +27,10 @@
   }
 }
 
+/* custom sliders */
 .left-browse-column {
-  min-width: 250px;
+  overflow-x: hidden;
 
-  /* custom sliders */
   .rz-bubble {
     font-size: 12px !important;
   }
@@ -69,11 +69,26 @@
 .right-browse-column {
   max-width: 970px;
 
+  sort-control {
+    font-size: 14px;
+    margin-right: 8px;
+
+    .sort-direction {
+      font-size: 18px;
+      cursor: pointer;
+    }
+
+    select {
+      padding-bottom: 5px;
+    }
+  }
+
   table {
     border-collapse: collapse;
     width: 100%;
     font-family: 'Arial', sans-serif;
     font-size: 12px;
+    border: 1px solid $border_color;
 
     th {
       margin: 0;
@@ -104,16 +119,12 @@
     }
 
     .actions-header {
-      text-align: center;
       min-width: 60px;
+      text-align: center;
       cursor: default;
-      border: 0;
-      padding: 5px 0;
     }
 
     td {
-      border-width: 0 0 0 1px;
-      margin: 0;
       overflow: visible;
       padding-left: 10px;
       white-space: nowrap;
@@ -150,20 +161,25 @@
       margin: 4px;
     }
 
-    thead tr {
-      background-color: $primary_background;
-      border-bottom: 1px solid $border_color;
-      border-top: 1px solid $border_color;
+    thead {
+        border: 1px solid $border_color;
+        tr {
+          background-color: $primary_background;
+          border-bottom: 1px solid $border_color;
+          border-top: 1px solid $border_color;
+        }
+
     }
 
-    tbody tr:nth-child(odd) {
-      background-color: $secondary_background;
+    tbody tr {
       border-bottom: 1px solid $border_color;
-    }
 
-    tbody tr:nth-child(even) {
-      background-color: $primary_background;
-      border-bottom: 1px solid $border_color;
+      &:nth-child(odd) {
+          background-color: $secondary_background;
+      }
+      &:nth-child(even) {
+          background-color: $primary_background;
+      }
     }
   }
 }
@@ -179,8 +195,14 @@ select.stealthy.ng-pristine {
   background-color: $primary_background;
 }
 
-.browse-results {
+.table-results {
   overflow-x: auto;
+}
+
+.grid-results {
+  .content-block:first-child {
+    margin-top: 0;
+  }
 }
 
 .columns-list {

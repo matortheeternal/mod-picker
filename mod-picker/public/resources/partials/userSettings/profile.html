@@ -1,28 +1,19 @@
 <h3 class="section-title">Avatar</h3>
 <section>
-    <img class="avatar avatar-medium" ng-src="{{avatar.src}}" ng-class="{ 'avatar-pending': avatar.file }">
-    <label ng-if="permissions.canChangeAvatar">
-        <input type="file" id="avatar-input" class="btn" value="Browse" accept=".jpg,.png" file-change="changeAvatar" />
-        <input type="button" id="avatar-browse" class="btn" value="Browse" ng-click="browseAvatar()"/>
-    </label>
+    <image-upload image="avatar" can-change="permissions.canChangeAvatar" default-src="user.avatar" label="avatar" image-class="avatar avatar-medium" max-width="250" max-height="250"></image-upload>
     <span class="explanation" ng-if="!permissions.canChangeAvatar">
         You need more reputation to change your avatar.
     </span>
-    <span class="explanation" ng-if="avatar.file">
-        New avatar pending, click save changes to save it.
-    </span>
 </section>
 
-<span>
-    <h3 class="section-title">Title</h3>
-    <section>
-        <span class="explanation" ng-if="!permissions.canChangeTitle">
-            You need more reputation to change your title
-        </span>
-        <input type="text" ng-model="user.title" ng-disabled="!permissions.canChangeTitle"/>
-        <span class="quote">{{titleQuote.text}}</span>
-    </section>
-</span>
+<h3 class="section-title">Title</h3>
+<section>
+    <span class="explanation" ng-if="!permissions.canChangeTitle">
+        You need more reputation to change your title
+    </span>
+    <input type="text" ng-model="user.title" ng-disabled="!permissions.canChangeTitle"/>
+    <span class="quote">{{titleQuote.text}}</span>
+</section>
 
 <h3 class="section-title">Social</h3>
 <section>

@@ -3,7 +3,7 @@ class NexusInfo < ActiveRecord::Base
   belongs_to :game, :inverse_of => 'nexus_infos'
 
   # Validations
-  validates_presence_of :game_id
+  validates :game_id, :mod_name, :uploaded_by, :authors, :released, presence: true
 
   # Callbacks
   after_save :update_mod_dates

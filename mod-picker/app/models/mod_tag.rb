@@ -6,7 +6,9 @@ class ModTag < ActiveRecord::Base
   belongs_to :submitter, :class_name => 'User', :inverse_of => 'mod_tags', :foreign_key => 'submitted_by'
 
   # Validations
-  validates :tag_id, :mod_id, presence: true
+  validates :mod_id, :tag_id, presence: true
+  # can only use a tag on a given mod once
+  validates :tag_id, uniqueness: { scope: :mod_id, :message => "This tag already exists on this mod." }
 
   # Callbacks
   after_create :increment_counters

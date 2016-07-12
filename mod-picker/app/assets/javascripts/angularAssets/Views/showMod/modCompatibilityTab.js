@@ -44,6 +44,11 @@ app.controller('modCompatibilityController', function($scope, $stateParams, $sta
         $scope.retrieveCompatibilityNotes($stateParams.page);
     }
 
+    // re-retrieve compatibility note when the sort object changes
+    $scope.$watch('sort.compatibility_notes', function() {
+        $scope.retrieveCompatibilityNotes();
+    }, true);
+
     // COMPATIBILITY NOTE RELATED LOGIC
     // instantiate a new compatibility note object
     $scope.startNewCompatibilityNote = function() {
@@ -147,9 +152,9 @@ app.controller('modCompatibilityController', function($scope, $stateParams, $sta
                 $scope.$emit('errorMessage', params);
             });
         } else {
-            contributionService.submitContribution("compatibility_notes", noteObj).then(function(data) {
+            contributionService.submitContribution("compatibility_notes", noteObj).then(function(note) {
                 $scope.$emit("successMessage", "Compatibility Note submitted successfully.");
-                $scope.mod.reviews.unshift(data);
+                $scope.mod.reviews.unshift(note);
                 $scope.discardCompatibilityNote();
             }, function(response) {
                 var params = {label: 'Error submitting Compatibility Note', response: response};

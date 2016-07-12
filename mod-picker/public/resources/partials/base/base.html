@@ -1,7 +1,10 @@
 <header>
     <div class="page-container">
         <div class="header">
-            <a class="logo" href="/"><h1>Mod Picker</h1></a>
+            <a class="logo" href="/">
+                <i class="icom-mod_picker"></i>
+                <h1>Mod Picker</h1>
+            </a>
             <div class="nav-controls">
                 <!-- User signed in navigation -->
                 <ul class="user-nav" ng-if="currentUser">
@@ -9,7 +12,22 @@
                         Welcome <a class="inverse-link" ng-href="#/user/{{currentUser.id}}">{{currentUser.username}}</a>
                     </li>
                     <li>
-                        <a class="inverse-link" href="#/settings/mod_lists">Saved Mod Lists</a>
+                        <a class="inverse-link">
+                            <form id="contribution-select-form">
+                                <select class="contribution-selector" ng-model="newLocation" ng-change="navigateTo(newLocation)">
+                                    <option selected disabled hidden style='display: none' value=''></option>
+                                    <option value="/settings/mods">Mods</option>
+                                    <option value="/settings/mod-lists">Mod Lists</option>
+                                    <option value="/comments?a={{currentUser.username}}">Comments</option>
+                                    <option value="/reviews?a={{currentUser.username}}">Reviews</option>
+                                    <option value="/compatibility-notes?a={{currentUser.username}}">Compatibility Notes</option>
+                                    <option value="/install-order-notes?a={{currentUser.username}}">Install Order Notes</option>
+                                    <option value="/load-order-notes?a={{currentUser.username}}">Load Order Notes</option>
+                                    <option value="/corrections?a={{currentUser.username}}">Corrections</option>
+                                </select>
+                                <span class="contributions-label">My Contributions</span>
+                            </form>
+                        </a>
                     </li>
                     <li>
                         <a class="inverse-link" ui-sref="base.settings">Settings</a>
@@ -91,7 +109,7 @@
                 </a>
             </div>
             <div class="secondary-nav">
-                <div class="search" ng-controller="searchInputController">
+                <div class="search" ng-controller="searchController">
                     <form>
                         <input class="search-field" type="text" autocomplete="off" ng-model="search" placeholder="Search mods...">
                         <div class="search-container">
@@ -110,7 +128,10 @@
 <footer>
     <div class="page-container">
         <div class="left-column wide-column">
-            <span class="logo"><h1>Mod Picker</h1></span>
+            <span class="logo small-logo">
+                <i class="icom-mod_picker"></i>
+                <h1>Mod Picker</h1>
+            </span>
             &copy;2016 Mod Picker, LLC.  All rights reserved.
         </div>
         <div class="right-column">

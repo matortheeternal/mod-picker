@@ -18,6 +18,23 @@ class Game < ActiveRecord::Base
   has_many :reviews, :inverse_of => 'game'
   has_many :plugins, :inverse_of => 'game'
 
+  # Validations
+  validates :display_name, :long_name, :abbr_name, presence: true
+
+  # gets the display image path via the game's id if one is present
+  # else returns a default under public/games/*.png|jpg
+  def display_image
+    png_path = File.join(Rails.public_path, "avatars/#{id}.png")
+    jpg_path = File.join(Rails.public_path, "avatars/#{id}.jpg")
+    if File.exists?(png_path)
+      "/games/#{id}.png"
+    elsif File.exists?(jpg_path)
+      "/games/#{id}.jpg"
+    else
+      '/games/Default.png'
+    end 
+  end
+
   def update_lazy_counters
     self.mods_count = self.mods.count
     self.nexus_infos_count = self.nexus_infos.count

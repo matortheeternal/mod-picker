@@ -1,4 +1,4 @@
-<div class="contribution-container">
+<div class="contribution-container box-shadow">
 	<div class="content-title">
 		<span ng-if="modId">
             Install
@@ -11,13 +11,19 @@
                 <a ng-href="#/mod/{{note.mods[0].id}}" target="_blank">{{note.mods[0].name}}</a>
             </span>
         </span>
+        <span ng-if="!modId">
+            Install
+            <a ng-href="#/mod/{{note.mods[0].id}}" target="_blank">{{note.mods[0].name}}</a>
+            Before
+            <a ng-href="#/mod/{{note.mods[1].id}}" target="_blank">{{note.mods[1].name}}</a>
+        </span>
         <span class="right-item">
-            <span class="standing">Good Standing</span>
+            <span class="standing capitalize">{{note.standing}} standing</span>
         </span>
 	</div>
-    <user-column user="note.submitter" ng-if="showUserColumn" class="user-column" index="index"></user-column>
-    <div class="content-column">
+    <user-column ng-if="showUserColumn" user="note.submitter" editors="note.editors" class="user-column" index="index"></user-column>
+    <div class="content-column" ng-class="{ 'no-actions' : !showActions }">
         <contribution-text target="note"></contribution-text>
-        <contribution-actions target="note" model-name="InstallOrderNote" index="index" current-user="currentUser" edit="edit" has-history="true"></contribution-actions>
+        <contribution-actions target="note" ng-if="showActions" model-name="InstallOrderNote" index="index" current-user="currentUser" edit="edit" has-history="true"></contribution-actions>
     </div>
 </div>

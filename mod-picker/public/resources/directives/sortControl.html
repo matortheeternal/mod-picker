@@ -1,0 +1,9 @@
+<strong>Sort By: </strong>
+
+<select ng-model="sort.column">
+    <option ng-repeat="option in sortOptions" value="{{option.value}}">{{option.label}}</option>
+</select>
+
+<span class="sort-direction" title="Sorted in {{ sort.direction === 'asc' ? 'ascending' : 'descending' }} order." ng-click="sort.direction = sort.direction === 'asc' ? 'desc' : 'asc'">
+    <i class="fa fa-sort-amount-{{sort.direction}}" aria-hidden="true"></i>
+</span>

@@ -3,8 +3,6 @@
         <span class="tag-text">
             {{tag.text}}
         </span>
-        <!-- TODO: replace ng-if with ng-show / ng-hide -->
-        <!-- I disagree.  These should be ng-if -->
         <span ng-if="showModsCount" class="tag-count" ng-class="{ 'last-child' : !(showRemove || showModListsCount) }" title="The number of mods with this tag">
             {{tag.mods_count | number}}
         </span>
@@ -12,7 +10,7 @@
               title="The number of mod lists with this tag">
             {{tag.mod_lists_count | number}}
         </span>
-        <span ng-if="showRemove" class="remove-tag" ng-click="removeActiveTag($index)">
+        <span ng-if="showRemove" class="remove-tag" ng-click="removeActiveTag($index)" title="Click to remove this tag">
             <i class="fa fa-times"></i>
         </span>
     </span>

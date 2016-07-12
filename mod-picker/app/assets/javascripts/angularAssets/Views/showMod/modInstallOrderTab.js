@@ -1,4 +1,4 @@
-app.controller('modInstallOrderController', function($scope, $stateParams, $state, modService, contributionService, errorService) {
+app.controller('modInstallOrderController', function($scope, $stateParams, $state, modService, contributionService, contributionFactory) {
     // verify we can access this tab
     $scope.currentTab = $scope.findTab('Install Order');
     if (!$scope.currentTab) {
@@ -43,6 +43,11 @@ app.controller('modInstallOrderController', function($scope, $stateParams, $stat
         $scope.sort.install_order_notes.direction = $stateParams.sdir;
         $scope.retrieveInstallOrderNotes($stateParams.page);
     }
+
+    // re-retrieve install order notes when the sort object changes
+    $scope.$watch('sort.install_order_notes', function() {
+        $scope.retrieveInstallOrderNotes();
+    }, true);
 
     // INSTALL ORDER NOTE RELATED LOGIC
     // instantiate a new install order note object
@@ -156,9 +161,9 @@ app.controller('modInstallOrderController', function($scope, $stateParams, $stat
                 $scope.$emit('errorMessage', params);
             });
         } else {
-            contributionService.submitContribution("install_order_notes", noteObj).then(function(data) {
+            contributionService.submitContribution("install_order_notes", noteObj).then(function(note) {
                 $scope.$emit("successMessage", "Install Order Note submitted successfully.");
-                $scope.mod.reviews.unshift(data);
+                $scope.mod.reviews.unshift(note);
                 $scope.discardInstallOrderNote();
             }, function(response) {
                 var params = {label: 'Error submitting Install Order Note', response: response};

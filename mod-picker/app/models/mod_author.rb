@@ -1,8 +1,8 @@
 class ModAuthor < ActiveRecord::Base
-  self.primary_keys = :mod_id, :user_id
+  enum role: [:author, :contributor, :curator]
 
   belongs_to :mod, :inverse_of => 'mod_authors'
-  belongs_to :author_user, :class_name => 'User', :foreign_key => 'user_id', :inverse_of => 'mod_authors'
+  belongs_to :user, :foreign_key => 'user_id', :inverse_of => 'mod_authors'
 
   # Validations
   validates :mod_id, :user_id, presence: true
@@ -21,10 +21,10 @@ class ModAuthor < ActiveRecord::Base
 
   private
     def decrement_counters
-      self.author_user.update_counter(:authored_mods_count, -1)
+      self.user.update_counter(:authored_mods_count, -1)
     end
 
     def increment_counters
-      self.author_user.update_counter(:authored_mods_count, 1)
+      self.user.update_counter(:authored_mods_count, 1)
     end
 end

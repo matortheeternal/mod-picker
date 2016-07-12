@@ -1,9 +1,17 @@
 class ModList < ActiveRecord::Base
-  include Filterable, Sortable, RecordEnhancements
+  include Filterable, Sortable, RecordEnhancements, Reportable
 
   enum status: [ :planned, :"under construction", :testing, :complete ]
   enum visibility: [ :visibility_private, :visibility_unlisted, :visibility_public ]
 
+  # BOOLEAN SCOPES
+  scope :adult, -> (bool) { where(has_adult_content: false) if !bool }
+  # GENERAL SCOPES
+  scope :visible, -> { where(hidden: false, visibility: 2) }
+  scope :game, -> (game_id) { where(game_id: game_id) }
+  scope :status, -> (status) { where(status: status) }
+
+  # ASSOCIATIONS
   belongs_to :game, :inverse_of => 'mod_lists'
   belongs_to :submitter, :class_name => 'User', :foreign_key => 'submitted_by', :inverse_of => 'mod_lists'
 
@@ -30,14 +38,16 @@ class ModList < ActiveRecord::Base
   has_many :mod_list_stars, :inverse_of => 'mod_list'
   has_many :mod_list_tags, :inverse_of => 'mod_list'
   has_many :comments, :as => 'commentable'
-  has_one :base_report, :as => 'reportable'
 
   # Validations
-  validates :game_id, presence: true 
+  validates :game_id, :submitted_by, :name, presence: true
+
   validates_inclusion_of :is_collection, :hidden, :has_adult_content, {
     in: [true, false],
     message: "must be true or false"
   }
+
+  validates :name, length: { in: 4..255 }
   validates :description, length: { maximum: 65535 }
 
   # Callbacks
@@ -112,13 +122,13 @@ class ModList < ActiveRecord::Base
   end
 
   def incompatible_mods
-    mod_ids = mod_list_mods.all.ids
+    mod_ids = mod_list_mods.all.pluck(:mod_id)
     if mod_ids.empty?
       return []
     end
 
     # get incompatible notes
-    incompatible_notes = CompatibilityNote.where("status in ? AND (first_mod_id in ? OR second_mod_id in ?)", [1, 2], mod_ids, mod_ids).pluck(:status, :first_mod_id, :second_mod_id)
+    incompatible_notes = CompatibilityNote.where("status in (?) AND (first_mod_id in (?) OR second_mod_id in (?))", [1, 2], mod_ids, mod_ids).pluck(:status, :first_mod_id, :second_mod_id)
     incompatible_mod_ids = []
     # build array of incompatible mod ids from incompatible notes
     incompatible_notes.each do |n|

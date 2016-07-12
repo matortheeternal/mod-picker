@@ -3,7 +3,7 @@ class HelpPagesController < ApplicationController
   layout "help"
 
   def index
-
+    @games = Game.all
     # Render home page
     # TODO: rename to render help_pages/index
     render "help_pages/index"

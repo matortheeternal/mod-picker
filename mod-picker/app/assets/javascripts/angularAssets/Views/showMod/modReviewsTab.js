@@ -30,7 +30,8 @@ app.controller('modReviewsController', function($scope, $stateParams, $state, mo
         };
         modService.retrieveModReviews($stateParams.modId, options, $scope.pages.reviews).then(function(data) {
             $scope.retrieving.reviews = false;
-            $scope.mod.reviews = data;
+            $scope.mod.reviews = data.reviews;
+            $scope.mod.user_review = data.user_review;
         }, function(response) {
             $scope.errors.reviews = response;
         });
@@ -57,6 +58,11 @@ app.controller('modReviewsController', function($scope, $stateParams, $state, mo
     if (!$scope.reviewSections && !$scope.retrieving.reviewSections) {
         $scope.retrieveReviewSections();
     }
+
+    // re-retrieve reviews when the sort object changes
+    $scope.$watch('sort.reviews', function() {
+        $scope.retrieveReviews();
+    }, true);
 
     // REVIEW RELATED LOGIC
     // instantiate a new review object
@@ -236,9 +242,9 @@ app.controller('modReviewsController', function($scope, $stateParams, $state, mo
                 $scope.$emit('errorMessage', params);
             });
         } else {
-            contributionService.submitContribution("reviews", reviewObj).then(function(data) {
+            contributionService.submitContribution("reviews", reviewObj).then(function(review) {
                 $scope.$emit("successMessage", "Review submitted successfully.");
-                $scope.mod.reviews.unshift(data);
+                $scope.mod.user_review = review;
                 $scope.discardReview();
             }, function(response) {
                 var params = {label: 'Error submitting Review', response: response};

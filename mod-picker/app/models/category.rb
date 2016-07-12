@@ -10,4 +10,7 @@ class Category < ActiveRecord::Base
   # mods that are in this category
   has_many :primary_mods, :foreign_key => 'primary_category_id', :inverse_of => 'primary_category'
   has_many :secondary_mods, :foreign_key => 'secondary_category_id', :inverse_of => 'secondary_category'
+
+  # Validations
+  validates :name, :description, presence: true
 end

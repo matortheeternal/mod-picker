@@ -1,67 +1,30 @@
 app.service('userSettingsService', function (backend, $q) {
-
     this.retrieveUserSettings = function () {
-        var userSettings = $q.defer();
-        backend.retrieve('/user_settings').then(function (data) {
-            userSettings.resolve(data);
-        });
-        return userSettings.promise;
+        return backend.retrieve('/user_settings');
     };
 
     this.submitAvatar = function (avatar) {
-        var post = $q.defer();
-        backend.postFile('/avatar', 'avatar', avatar).then(function (data) {
-            post.resolve(data);
-        });
-        return post.promise;
+        return backend.postFile('/avatar', 'avatar', avatar);
     };
 
     this.verifyAccount = function (site, user_path) {
-        var verified = $q.defer();
-        backend.retrieve('/link_account', { site: site, user_path: user_path }).then(function (data) {
-            verified.resolve(data);
-        });
-        return verified.promise;
+         return backend.retrieve('/link_account', { site: site, user_path: user_path });
     };
 
     //TODO: move this to userservice
     this.submitUser = function (user) {
-        //TODO: reformat this into the function directly, as the var gets used only once
-        var user_object = {
-            user: user
-        };
-        var update = $q.defer();
-        backend.update('/users/' + user.id, user_object).then(function (data) {
-            update.resolve(data);
-        });
-        return update.promise;
+        return backend.update('/users/' + user.id, { user: user });
     };
 
     this.submitUserSettings = function (user_settings) {
-        //TODO: reformat this into the function directly, as the var gets used only once
-        var user_settings_object = {
-            user_setting: user_settings
-        };
-        var update = $q.defer();
-        backend.update('/user_settings/' + user_settings.id, user_settings_object).then(function (data) {
-            update.resolve(data);
-        });
-        return update.promise;
+        return backend.update('/user_settings/' + user_settings.id, { user_setting: user_settings });
     };
 
     this.cloneModList = function (modlist) {
-        var clone = $q.defer();
-        backend.post('/mod_lists/clone/' + modlist.id, {}).then(function (data) {
-            clone.resolve(data);
-        });
-        return clone.promise;
+        return backend.post('/mod_lists/clone/' + modlist.id, {});
     };
 
     this.deleteModList = function (modlist) {
-        var remove = $q.defer();
-        backend.delete('/mod_lists/' + modlist.id).then(function (data) {
-            remove.resolve(data);
-        });
-        return remove.promise;
+        return backend.delete('/mod_lists/' + modlist.id);
     };
 });

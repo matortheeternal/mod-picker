@@ -1,0 +1,61 @@
+@font-face {
+  font-family: 'icomoon';
+  src:    font-url('icomoon.eot?pfowsy');
+  src:    font-url('icomoon.eot?pfowsy#iefix') format('embedded-opentype'),
+    font-url('icomoon.ttf?pfowsy') format('truetype'),
+    font-url('icomoon.woff?pfowsy') format('woff'),
+    font-url('icomoon.svg?pfowsy#icomoon') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+[class^="icom-"], [class*=" icom-"] {
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: 'icomoon' !important;
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icom-mod_picker:before {
+  content: "\1f3f0";
+}
+
+.logo {
+  display: block;
+  position: relative;
+  margin-bottom: 10px;
+
+  i {
+    color: $h1_color;
+    text-shadow: $shadow_color 1px 1px 4px;
+    font-size: 96px;
+    margin-right: 10px;
+  }
+
+  h1 {
+    text-shadow: $shadow_color 1px 1px 4px;
+    position: absolute;
+    top: 40px;
+    display: inline;
+  }
+}
+
+.small-logo {
+  i {
+    font-size: 64px;
+    text-shadow: $shadow_color 1px 1px 6px;
+  }
+
+  h1 {
+    top: 16px;
+    text-shadow: $shadow_color 1px 1px 6px;
+  }
+}

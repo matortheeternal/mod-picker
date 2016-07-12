@@ -20,16 +20,33 @@ app.config(['$stateProvider', function($stateProvider) {
     })
 }]);
 
-app.controller('baseController', function($scope, $state, currentUser, games, currentGame) {
+app.controller('baseController', function($scope, $state, $location, currentUser, games, currentGame) {
     $scope.currentUser = currentUser;
     $scope.permissions = currentUser.permissions;
     $scope.currentGame = currentGame;
     $scope.games = games;
 
+    // user selected an option from the my contributions dropdown
+    $scope.navigateTo = function(newLocation) {
+        $location.path(newLocation);
+    };
+
     //reload when the user object is changed in the settings
     $scope.$on('reloadCurrentUser', function() {
         $state.reload();
     });
+});
+
+app.controller('searchController', function($scope) {
+    $scope.loading = false;
+    $scope.processSearch = function() {
+        $scope.loading = true;
+        //TODO: remove mockup
+        setTimeout(function() {
+            $scope.loading = false;
+            $scope.$apply();
+        }, 1000);
+    };
 
     $scope.$on("$stateChangeError", function(event, toState, toParams, fromState, fromParams, error) {
         $state.get('base.error').error = error;

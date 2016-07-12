@@ -22,6 +22,10 @@ def random_plugin
   Plugin.offset(rand(Plugin.count)).first
 end
 
+def random_game
+  Game.offset(rand(Game.count)).first
+end
+
 def get_unique_username
   name = Faker::Internet.user_name(4..20)
   username = name
@@ -892,5 +896,38 @@ def seed_fake_mod_lists
 end
 
 def seed_fake_help_pages
-    puts "\n Seeding help pages"
+  puts "\nSeeding help pages"
+  randGame = random_game
+
+  rand(30).times do
+    HelpPage.new(
+      title: Faker::Lorem.words(4).join(' '),
+      text_body: Faker::Lorem.words(rand(300)).join(' '),
+      submitted: Faker::Date.backward(10),
+      edited: Faker::Date.backward(9)
+    ).save!
+  end
+
+  puts "#{HelpPage.count} help pages saved"
 end
+
+def seed_fake_articles
+  puts "\nSeeding articles"
+
+  gameSkyrim = Game.where({display_name: "Skyrim"}).first
+
+  rand(10).times do
+    author = User.offset(rand(User.count)).first
+    Article.new(
+        title: Faker::Lorem.words(3).join(' '),
+        submitted_by: author.id,
+        text_body: Faker::Lorem.words(rand(500)).join(' '),
+        submitted: Faker::Date.backward(14),
+        edited: Faker::Date.backward(13),
+        game_id: gameSkyrim.id
+    ).save!
+  end
+
+  puts "    #{Article.count} articles seeded"
+end
+

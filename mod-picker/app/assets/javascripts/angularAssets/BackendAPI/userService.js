@@ -1,5 +1,27 @@
 app.service('userService', function (backend, $q, userSettingsService, userTitleService, pageUtils) {
     var service = this;
+
+    this.retrieveUsers = function(options, pageInformation) {
+        var action = $q.defer();
+        backend.post('/users/index', options).then(function (data) {
+            // associate user titles
+            data.users.forEach(function(user) {
+                if (!user.title) {
+                    userTitleService.getUserTitle(user.reputation.overall).then(function(title) {
+                        user.title = title;
+                    });
+                }
+            });
+
+            // resolve page information and data
+            pageUtils.getPageInformation(data, pageInformation, options.page);
+            action.resolve(data);
+        }, function(response) {
+            action.reject(response);
+        });
+        return action.promise;
+    };
+
     this.retrieveUser = function(userId) {
         var output = $q.defer();
         backend.retrieve('/users/' + userId).then(function(userData) {
@@ -20,6 +42,15 @@ app.service('userService', function (backend, $q, userSettingsService, userTitle
             output.resolve(userData);
         });
         return output.promise;
+    };
+
+    this.searchUsers = function(username) {
+        var postData =  {
+            filters: {
+                search: username
+            }
+        };
+        return backend.post('/users/search', postData);
     };
 
     this.retrieveCurrentUser = function() {
@@ -51,6 +82,8 @@ app.service('userService', function (backend, $q, userSettingsService, userTitle
         // TODO: Remove this when beta is over
         permissions.canSubmitMod = true;
         //permissions.canSubmitMod = permissions.isAdmin || permissions.isModerator || user.reputation.overall > 160;
+        permissions.canUseCustomSources = permissions.isAdmin || permissions.isModerator;
+        permissions.canSetGeneralModInfo = permissions.isAdmin || permissions.isModerator;
         permissions.canChangeAvatar = (rep >= 10) || permissions.isAdmin || permissions.isModerator;
         permissions.canChangeTitle = (rep >= 1280) || permissions.isAdmin || permissions.isModerator;
         permissions.canCreateTags = (rep >= 20) || permissions.isAdmin || permissions.isModerator;

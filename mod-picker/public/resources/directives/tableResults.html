@@ -1,8 +1,8 @@
-<loader data="data" content-class="browse-results" spinner-class="big-spinner">
+<div class="box-shadow">
     <table>
         <thead>
             <tr>
-                <th ng-repeat="column in columns" ng-class="{ 'hidden': !column.visibility }" ng-click="sortColumn($index)">
+                <th ng-repeat="column in columns" ng-class="{ 'hidden': !column.visibility }" ng-click="sortColumn(column)">
                     {{column.label}}
                     <div class="sorting-options">
                         <div class="sort-up" ng-class="{ 'active' : column.up }">
@@ -69,4 +69,4 @@
             </form>
         </div>
     </div>
-</loader>
+</div>

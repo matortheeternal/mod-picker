@@ -18,12 +18,9 @@ app.directive('tableResults', function () {
 app.controller('tableResultsController', function($scope, objectUtils) {
     var sortedColumn;
 
-    // this function will set toggle sorting for a selected column
-    // index between up, down, and no sorting
-    $scope.sortColumn = function(index) {
-        //TODO: rewrite this
-        var column = $scope.columns[index];
-
+    // this function will toggle sorting for an input column between
+    // up, down, and no sorting
+    $scope.sortColumn = function(column) {
         if(sortedColumn && sortedColumn !== column) {
             sortedColumn.up = false;
             sortedColumn.down = false;

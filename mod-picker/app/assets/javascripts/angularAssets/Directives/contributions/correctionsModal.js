@@ -15,8 +15,10 @@ app.controller('correctionsModalController', function ($scope, contributionServi
 
     // display error messages
     $scope.$on('modalErrorMessage', function(event, params) {
-        var errorMessage = errorService.errorMessage(params.label, params.response);
-        $scope.$broadcast('modalMessage', errorMessage);
+        var errors = errorService.errorMessages(params.label, params.response);
+        errors.forEach(function(error) {
+            $scope.$broadcast('modalMessage', error);
+        });
         // stop event propagation - we handled it
         event.stopPropagation();
     });
@@ -146,9 +148,9 @@ app.controller('correctionsModalController', function ($scope, contributionServi
                 $scope.$emit('modalErrorMessage', params);
             });
         } else {
-            contributionService.submitContribution("corrections", correctionObj).then(function() {
+            contributionService.submitContribution("corrections", correctionObj).then(function(correction) {
                 $scope.$emit('modalSuccessMessage', 'Correction submitted successfully.');
-                // TODO: push the correction onto the $scope.mod.corrections array
+               $scope.target.corrections.unshift(correction);
                 $scope.discardCorrection();
             }, function(response) {
                 var params = {label: 'Error submitting Correction', response: response};
