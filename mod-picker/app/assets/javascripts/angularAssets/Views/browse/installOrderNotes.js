@@ -1,7 +1,7 @@
 app.run(function($futureState, indexFactory, filtersFactory) {
     // dynamically construct and apply state
     var filterPrototypes = filtersFactory.installOrderNoteFilters();
-    var state = indexFactory.buildState('reputation', 'asc', 'installOrderNotes', filterPrototypes);
+    var state = indexFactory.buildState('reputation', 'desc', 'installOrderNotes', filterPrototypes);
     $futureState.futureState(state);
 });
 
