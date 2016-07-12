@@ -11,17 +11,17 @@
                         <a ng-href="#/user/{{modlist.submitter.id}}">{{modlist.submitter.username}}</a>
                     </span>
                     <br>
-                    <span>999 Tools</span>
+                    <span>0 Tools</span> <!-- TODO: Add tools_count to backend -->
                     <span class="divider">|</span>
-                    <span>999 Mods</span>
+                    <span>{{modlist.mods_count}} Mods</span>
                     <span class="divider">|</span>
-                    <span>999 Plugins</span>
+                    <span>{{modlist.plugins_count}} Plugins</span>
                     <span class="divider">|</span>
-                    <span>999 BSAs</span>
+                    <span>{{modlist.config_files_count}} Config Files</span>
                     <span class="divider" ng-if="permissions.canManage">|</span>
                     <a ng-if="permissions.canManage" ng-click="toggleEditing()">
                         <span ng-hide="editing">Edit</span>
-                        <span ng-show="editing">Save</span>
+                        <span ng-show="editing">View</span>
                     </a>
                 </div>
             </section>
@@ -55,7 +55,6 @@
     </div>
 </div>
 <div class="page-container tabs-column">
-    <tabs tabs='tabs' class="secondary-tabs">
-    </tabs>
+    <tabs tabs='tabs' class="secondary-tabs"></tabs>
     <div ui-view class="mod-tab tab"></div>
 </div>
