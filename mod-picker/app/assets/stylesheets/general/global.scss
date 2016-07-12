@@ -565,6 +565,16 @@ input[type="file"] {
   }
 }
 
+.text-container {
+  width: 100%;
+  margin: 10px 0;
+  @include wordbreak;
+
+  h1 {
+    color: $text_color;
+  }
+}
+
 .editor-toolbar {
   cursor: default;
   border-radius: 0;
