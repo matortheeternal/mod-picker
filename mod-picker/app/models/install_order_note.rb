@@ -43,6 +43,11 @@ class InstallOrderNote < ActiveRecord::Base
   before_destroy :decrement_counters
 
   def unique_mods
+    if first_mod_id == second_mod_id
+      errors.add(:mods, "You cannot create a Install Order Note between a mod and itself.")
+      return
+    end
+
     mod_ids = [first_mod_id, second_mod_id]
     note = InstallOrderNote.where(first_mod_id: mod_ids, second_mod_id: mod_ids, hidden: false).where.not(id: self.id).first
     if note.present?

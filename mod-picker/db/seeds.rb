@@ -37,7 +37,7 @@ fake_config = {
     lnotes: false,
     mod_authors: false,
     mod_lists: true,
-    tags: false
+    tags: false,
     articles: false
 }
 

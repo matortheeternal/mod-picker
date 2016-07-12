@@ -5,6 +5,6 @@ class OverrideRecord < ActiveRecord::Base
   belongs_to :master, :inverse_of => 'overrides'
 
   # Validations
-  validates :plugin_id, :fid, :sig, presence: true
+  validates :fid, :sig, presence: true
   validates :sig, length: {is: 4}
 end

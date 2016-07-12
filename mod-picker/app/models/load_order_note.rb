@@ -48,6 +48,11 @@ class LoadOrderNote < ActiveRecord::Base
   before_destroy :decrement_counters
 
   def unique_plugins
+    if first_plugin_id == second_plugin_id
+      errors.add(:plugins, "You cannot create a Load Order Note between a plugin and itself.")
+      return
+    end
+
     plugin_ids = [first_plugin_id, second_plugin_id]
     note = LoadOrderNote.where(first_plugin_id: plugin_ids, second_plugin_id: plugin_ids, hidden: false).where.not(id: self.id).first
     if note.present?
