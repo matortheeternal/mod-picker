@@ -1,7 +1,7 @@
 app.run(function($futureState, indexFactory, filtersFactory) {
     // dynamically construct and apply state
     var filterPrototypes = filtersFactory.correctionFilters();
-    var state = indexFactory.buildState('id', 'asc', 'corrections', filterPrototypes);
+    var state = indexFactory.buildState('submitted', 'desc', 'corrections', filterPrototypes);
     $futureState.futureState(state);
 });
 
