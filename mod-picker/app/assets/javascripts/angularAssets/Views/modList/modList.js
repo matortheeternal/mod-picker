@@ -72,10 +72,21 @@ app.controller('modlistController', function($scope, $log, $stateParams, $timeou
         testing: 'fa-cogs',
         complete: 'fa-check'
     };
+    $scope.statusClasses = {
+        planned: '',
+        "under construction": 'red-box',
+        testing: 'yellow-box',
+        complete: 'green-box'
+    };
     $scope.visibilityIcons = {
         visibility_private: 'fa-eye-slash',
         visibility_unlisted: 'fa-share-alt',
         visibility_public: 'fa-eye'
+    };
+    $scope.visibilityClasses = {
+        visibility_private: 'red-box',
+        visibility_unlisted: 'yellow-box',
+        visibility_public: 'green-box'
     };
 
     // a copy is created so the original permissions object is never changed

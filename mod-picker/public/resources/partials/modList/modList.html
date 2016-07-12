@@ -41,11 +41,11 @@
                 </div>
                 <div class="mod-header-box">
                     STATUS
-                    <div class="action-box {{statusClass}} capitalize">
+                    <div class="action-box {{statusClasses[modlist.status]}} capitalize">
                          <i class="fa {{statusIcons[modlist.status]}}" aria-hidden="true"></i>
                         {{modlist.status}}
                     </div>
-                    <div class="action-box {{visibilityClass}} capitalize">
+                    <div class="action-box {{visibilityClasses[modlist.visibility]}} capitalize">
                         <i class="fa {{visibilityIcons[modlist.visibility]}}" aria-hidden="true"></i>
                         {{modlist.visibility.replace("visibility_", "")}}
                     </div>
