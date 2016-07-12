@@ -109,8 +109,16 @@
 
             <div class="right-column right-browse-column">
                 <h2>Mods</h2>
-                <table-results label="mods" data="mods" columns="columns" actions="actions" column-groups="columnGroups" available-column-data="availableColumnData" sort="sort"></table-results>
-                <page-results pages="pages" data="mods" callback="getMods"></page-results>
+                <loader data="mods" content-class="table-results" spinner-class="big-spinner" ng-if="!error">
+                    <table-results label="mods" data="mods" columns="columns" actions="actions" column-groups="columnGroups" available-column-data="availableColumnData" sort="sort"></table-results>
+                    <page-results pages="pages" data="mods" callback="getMods"></page-results>
+                </loader>
+
+                <div class="content-message content-error" ng-if="error">
+                    There was an error retrieving Mods.<br>
+                    <!--TODO: Render JSON errors here, if available?-->
+                    Error {{error.status}}: {{error.statusText}}
+                </div>
             </div>
         </div>
     </div>

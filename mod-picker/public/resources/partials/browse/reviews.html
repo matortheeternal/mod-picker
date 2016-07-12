@@ -49,7 +49,7 @@
                 <h2>Reviews <span class="right-item">
                     <sort-control></sort-control>
                 </span></h2>
-                <loader data="reviews" content-class="grid-results" spinner-class="big-spinner">
+                <loader data="reviews" content-class="grid-results" spinner-class="big-spinner" ng-if="!error">
                     <div class="content-block" ng-repeat="review in reviews">
                         <review current-user="currentUser" review="review" show-user-column="true" show-mod="true" index="100"></review>
                     </div>
@@ -57,9 +57,15 @@
                     <div class="content-message" ng-hide="reviews.length">
                         No Reviews were found matching your search criteria.
                     </div>
+
+                    <page-results pages="pages" data="reviews" callback="getData"></page-results>
                 </loader>
 
-                <page-results pages="pages" data="reviews" callback="getData"></page-results>
+                <div class="content-message content-error" ng-if="error">
+                    There was an error retrieving Reviews.<br>
+                    <!--TODO: Render JSON errors here, if available?-->
+                    Error {{error.status}}: {{error.statusText}}
+                </div>
             </div>
         </div>
     </div>

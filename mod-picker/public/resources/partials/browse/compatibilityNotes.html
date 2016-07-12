@@ -97,7 +97,7 @@
                 <h2>Compatibility Notes <span class="right-item">
                     <sort-control></sort-control>
                 </span></h2>
-                <loader data="compatibility_notes" content-class="grid-results" spinner-class="big-spinner">
+                <loader data="compatibility_notes" content-class="grid-results" spinner-class="big-spinner" ng-if="!error">
                     <div class="content-block" ng-repeat="note in compatibility_notes">
                         <compatibility-note current-user="currentUser" note="note" show-user-column="true" index="100"></compatibility-note>
                     </div>
@@ -105,9 +105,15 @@
                     <div class="content-message" ng-hide="compatibility_notes.length">
                         No Compatibility Notes were found matching your search criteria.
                     </div>
+
+                    <page-results pages="pages" data="compatibility_notes" callback="getData"></page-results>
                 </loader>
 
-                <page-results pages="pages" data="compatibility_notes" callback="getData"></page-results>
+                <div class="content-message content-error" ng-if="error">
+                    There was an error retrieving Compatibility Notes.<br>
+                    <!--TODO: Render JSON errors here, if available?-->
+                    Error {{error.status}}: {{error.statusText}}
+                </div>
             </div>
         </div>
     </div>

@@ -69,7 +69,7 @@
                 <h2>Load Order Notes <span class="right-item">
                     <sort-control></sort-control>
                 </span></h2>
-                <loader data="load_order_notes" content-class="grid-results" spinner-class="big-spinner">
+                <loader data="load_order_notes" content-class="grid-results" spinner-class="big-spinner" ng-if="!error">
                     <div class="content-block" ng-repeat="note in load_order_notes">
                         <load-order-note current-user="currentUser" note="note" show-user-column="true" index="100"></load-order-note>
                     </div>
@@ -77,9 +77,15 @@
                     <div class="content-message" ng-hide="load_order_notes.length">
                         No Load Order Notes were found matching your search criteria.
                     </div>
+
+                    <page-results pages="pages" data="load_order_notes" callback="getData"></page-results>
                 </loader>
 
-                <page-results pages="pages" data="load_order_notes" callback="getData"></page-results>
+                <div class="content-message content-error" ng-if="error">
+                    There was an error retrieving Load Order Notes.<br>
+                    <!--TODO: Render JSON errors here, if available?-->
+                    Error {{error.status}}: {{error.statusText}}
+                </div>
             </div>
         </div>
     </div>
