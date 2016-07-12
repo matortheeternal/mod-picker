@@ -72,6 +72,11 @@ app.controller('modlistController', function($scope, $log, $stateParams, $timeou
         testing: 'fa-cogs',
         complete: 'fa-check'
     };
+    $scope.visibilityIcons = {
+        visibility_private: 'fa-eye-slash',
+        visibility_unlisted: 'fa-share-alt',
+        visibility_public: 'fa-eye'
+    };
 
     // a copy is created so the original permissions object is never changed
     $scope.permissions = angular.copy(currentUser.permissions);
