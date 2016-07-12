@@ -701,8 +701,10 @@ def seed_fake_reviews
       review_ratings = []
       category_ids = [mod.primary_category_id]
       category_ids.push(mod.primary_category.parent_id) if mod.primary_category.parent_id
-      review_sections = ReviewSection.where(category_id: category_ids).sample(rand(2..5))
+      review_sections = ReviewSection.where(category_id: category_ids)
+      max_review_ratings = rand(2..5)
       review_sections.each do |section|
+        break if review_ratings.length == max_review_ratings
         review_ratings.push({review_section_id: section.id, rating: rand(100)})
       end
 
