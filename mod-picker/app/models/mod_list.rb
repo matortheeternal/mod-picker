@@ -141,34 +141,28 @@ class ModList < ActiveRecord::Base
     incompatible_mod_ids.uniq
   end
 
-  # GET list of mods with a sub-category of utilities - tools
   def mod_tools
-    # mod_ids = mod_list_mods.all.ids
-    # if mod_ids.empty?
-    #   return []
-    # end
+    mod_list_tools = @mod_list.mod_list_mods.joins(:mod).where(:mods => { is_utility: true })
+  end
 
-    # # get tool mods
-    # mod_tool_ids = []
-    # # build array of mod_ids that are tools
-    # mod_ids.each do |n|
-    #   mod_tool = Mod.where("id = ? AND is_utility = ?", n[1], true)
-    #   if(!mod_tool[0].nil? && mod_tool[0].is_utility === true)
-    #     mod_tool_ids.push(mod_tool[0])
-    #   end
-    # end
-
-
-    # if mod_tool_ids.empty?
-    #   return []
-    # else
-    #   return_mod_tools = Mod.find(mod_tool_ids)
-    #   return_mod_tools.uniq
-    # end
-
-    mod_list_mods = @mod_list.mod_list_mods.joins(:mod)
-
-    mod_list_mods
+  def as_json(options={})
+    if JsonHelpers.json_options_empty(options)
+      default_options = {
+          :except => [:submitted_by],
+          :include => {
+              :submitter => {
+                  :only => [:id, :username, :role, :title],
+                  :include => {
+                      :reputation => {:only => [:overall]}
+                  },
+                  :methods => :avatar
+              },
+          }
+      }
+      super(options.merge(default_options))
+    else
+      super(options)
+    end
   end
 
   private
