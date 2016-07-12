@@ -28,7 +28,6 @@
 
             <section>
                 <div class="mod-header-box">
-                    <!-- TODO: I feel like using some spans here would be wiser -->
                     ACTIONS
                     <div class="action-box" ng-click="starMod()">
                         <i class="fa {{modlistStarred ? 'fa-star' : 'fa-star-o'}}" aria-hidden="true"></i>
@@ -41,11 +40,11 @@
                 </div>
                 <div class="mod-header-box">
                     STATUS
-                    <div class="action-box {{statusClasses[modlist.status]}} capitalize">
+                    <div class="action-box no-action {{statusClasses[modlist.status]}} capitalize" title="{{statusHints[modlist.status]}}">
                          <i class="fa {{statusIcons[modlist.status]}}" aria-hidden="true"></i>
-                        {{modlist.status}}
+                        {{modlist.status.replace("_", " ")}}
                     </div>
-                    <div class="action-box {{visibilityClasses[modlist.visibility]}} capitalize">
+                    <div class="action-box no-action {{visibilityClasses[modlist.visibility]}} capitalize" title="{{visibilityHints[modlist.visibility]}}">
                         <i class="fa {{visibilityIcons[modlist.visibility]}}" aria-hidden="true"></i>
                         {{modlist.visibility.replace("visibility_", "")}}
                     </div>

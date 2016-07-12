@@ -1,7 +1,7 @@
 class ModList < ActiveRecord::Base
   include Filterable, Sortable, RecordEnhancements, Reportable
 
-  enum status: [ :planned, :"under construction", :testing, :complete ]
+  enum status: [ :under_construction, :testing, :complete ]
   enum visibility: [ :visibility_private, :visibility_unlisted, :visibility_public ]
 
   # BOOLEAN SCOPES

@@ -57,7 +57,6 @@ app.controller('modlistController', function($scope, $log, $stateParams, $timeou
     $scope.currentUser = currentUser;
 
 	// initialize local variables
-	$scope.bIsEditing = false;
     $scope.tabs = [
         { name: 'Details' },
         { name: 'Tools' },
@@ -67,14 +66,12 @@ app.controller('modlistController', function($scope, $log, $stateParams, $timeou
         { name: 'Comments' }
     ];
     $scope.statusIcons = {
-        planned: 'fa-pencil-square-o',
-        "under construction": 'fa-wrench',
+        under_construction: 'fa-wrench',
         testing: 'fa-cogs',
         complete: 'fa-check'
     };
     $scope.statusClasses = {
-        planned: '',
-        "under construction": 'red-box',
+        under_construction: 'red-box',
         testing: 'yellow-box',
         complete: 'green-box'
     };
