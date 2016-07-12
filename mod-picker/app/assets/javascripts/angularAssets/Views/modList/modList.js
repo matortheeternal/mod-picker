@@ -41,19 +41,6 @@ app.controller('modlistController', function($scope, $log, $stateParams, $timeou
 	/*config*/
 	$scope.bIsEditing = false;
 	/*vars - Later down the road these will turn into GET functions*/
-	$scope.modlistTitle = "My Super Cool Mod List With All The Good Mods - With ENB";
-    $scope.currentTab = 'plugins';
-
-	$scope.bHideCatNotes = false;
-	$scope.bHideModGrpNotes = true;
-	$scope.bIsCollection = true;
-
-
-	$scope.shortDescTextArea = 'Provide a short description of your mod list';
-
-	$scope.curToolsSecTab = 'list';
-	$scope.curModsSecTab = 'list';
-	$scope.curPluginSecTab = 'list';
 	$scope.curSkyConfigTab = 'skyrim.ini';
 	$scope.curENBConfigTab = 'enblocal.ini';
     $scope.tabs = [
@@ -64,31 +51,16 @@ app.controller('modlistController', function($scope, $log, $stateParams, $timeou
         {name: 'Config'},
         {name: 'Comments'}
     ];
-    $scope.statusIcons = [
-                            {name: 'fa-pencil-square-o'}, //planned
-                            {name: 'fa-wrench'}, //under construction
-                            {name: 'fa-cogs'},  //testing
-                            {name: 'fa-check'} //complete
-    ];
-    $scope.curStatusIcon = $scope.statusIcons[2];
+    $scope.statusIcons = {
+        planned: 'fa-pencil-square-o',
+        "under construction": 'fa-wrench',
+        testing: 'fa-cogs',
+        complete: 'fa-check'
+    };
 
     modListService.retrieveModList($stateParams.modListId).then(function(modList) {
        $scope.modlist = modList;
     });
-
-    //Function To Return Modlist Status as Index for statusIcons
-    $scope.mlStatus = function() {
-        var modList = $scope.modlist;
-        if (modList.status == 'planned') {
-            $scope.curStatusIcon = $scope.statusIcons[0];
-        } else if (modList.status == 'under construction') {
-            $scope.curStatusIcon = $scope.statusIcons[1];
-        } else if (modListt.status == 'testing') {
-            $scope.curStatusIcon = $scope.statusIcons[2];
-        } else {
-            $scope.curStatusIcon = $scope.statusIcons[3];
-        }
-    };
 
     $scope.startEditing = function() {
         $scope.bIsEditing = true;
