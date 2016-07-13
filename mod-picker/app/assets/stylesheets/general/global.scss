@@ -448,6 +448,21 @@ input[type="button"], input[type="submit"] {
   }
 }
 
+/* css for tabs */
+.tabs-column {
+  .selected-tab {
+    background-color: $secondary_background;
+    border-bottom: 1px solid $secondary_background;
+    margin-bottom: -1px;
+  }
+}
+
+.tab {
+  padding: 20px;
+  border: 1px solid $border_color;
+  background-color: $secondary_background;
+}
+
 /* css for forms, inputs, and labels */
 .messages {
   max-height: 400px;
