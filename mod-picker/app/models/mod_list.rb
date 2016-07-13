@@ -34,9 +34,12 @@ class ModList < ActiveRecord::Base
   has_many :mod_list_config_files, :inverse_of => 'mod_list'
   has_many :mod_list_custom_config_files, :inverse_of => 'mod_list'
 
+  # TAGS
+  has_many :mod_list_tags, :inverse_of => 'mod_list'
+  has_many :tags, :through => 'mod_list_tags', :inverse_of => 'mod_lists'
+
   # ASSOCIATIONS FROM OTHER USERS
   has_many :mod_list_stars, :inverse_of => 'mod_list'
-  has_many :mod_list_tags, :inverse_of => 'mod_list'
   has_many :comments, :as => 'commentable'
 
   # Validations
