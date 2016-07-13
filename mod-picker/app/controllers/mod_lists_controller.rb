@@ -3,7 +3,6 @@ class ModListsController < ApplicationController
   before_action :set_active_mod_list, only: [:active, :mods]
 
   # GET /mod_lists
-  # GET /mod_lists.json
   def index
     @mod_lists = ModList.all
 
@@ -11,7 +10,6 @@ class ModListsController < ApplicationController
   end
 
   # GET /mod_lists/1
-  # GET /mod_lists/1.json
   def show
     authorize! :read, @mod_list
     star = ModListStar.exists?(:mod_list_id => @mod_list.id, :user_id => current_user.id)
@@ -92,7 +90,6 @@ class ModListsController < ApplicationController
   end
 
   # POST /mod_lists
-  # POST /mod_lists.json
   def create
     @mod_list = ModList.new(mod_list_params)
     authorize! :create, @mod_list
@@ -105,7 +102,6 @@ class ModListsController < ApplicationController
   end
 
   # PATCH/PUT /mod_lists/1
-  # PATCH/PUT /mod_lists/1.json
   def update
     authorize! :update, @mod_list
     if @mod_list.update(mod_list_params)
@@ -142,7 +138,6 @@ class ModListsController < ApplicationController
   end
 
   # DELETE /mod_lists/1
-  # DELETE /mod_lists/1.json
   def destroy
     authorize! :destroy, @mod_list
     if @mod_list.destroy
