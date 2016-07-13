@@ -386,43 +386,17 @@ input[type="button"], input[type="submit"] {
 }
 
 .tab {
-  .tab-section {
-    margin-left: 0;
-    h3 {
-      background-color: $bar_color;
-      color: $bar_text_color;
-      width: 100%;
-      padding: 10px;
-      margin: 0;
-      font-size: 16px;
-      font-weight: 500;
-    }
-    section {
-      margin: 0;
-      padding: 14px;
-      background-color: $primary_background;
-      border: 1px solid $border_color;
-      border-top: 0;
-    }
-    .text-container {
-      margin-top: -0.5em;
-      margin-bottom: -0.5em;
-    }
-  }
+  padding: 20px;
+  border: 1px solid $border_color;
+  background-color: $secondary_background;
+}
 
+.margin-fix {
   > div:first-child {
     margin-top: 0;
   }
 
   > div:last-child {
-    margin-bottom: 0;
-  }
-
-  .content-block:first-child {
-    margin-top: 0;
-  }
-
-  .content-block:last-child {
     margin-bottom: 0;
   }
 }
@@ -517,12 +491,6 @@ input[type="button"], input[type="submit"] {
     border-bottom: 1px solid $secondary_background;
     margin-bottom: -1px;
   }
-}
-
-.tab {
-  padding: 20px;
-  border: 1px solid $border_color;
-  background-color: $secondary_background;
 }
 
 /* css for forms, inputs, and labels */
