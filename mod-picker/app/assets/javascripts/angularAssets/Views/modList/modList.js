@@ -122,6 +122,7 @@ app.controller('modlistController', function($scope, $log, $stateParams, $timeou
 
     $scope.toggleEditing = function() {
         $scope.editing = !$scope.editing;
+        $scope.activeModList = angular.copy($scope.modlist);
     };
 });
 

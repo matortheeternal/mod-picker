@@ -13,7 +13,7 @@
     <div class="content-block">
         <div class="content-title">Description</div>
         <div class="content-container">
-            <text-area class="large-note-text-area" data="modlist.description" ng-refresh="updateMDE"></text-area>
+            <text-area class="large-note-text-area" data="activeModList.description" ng-refresh="updateMDE"></text-area>
         </div>
     </div>
 
@@ -22,12 +22,12 @@
         <div class="content-container" ng-if="editing">
             <h3 class="section-title">Name</h3>
             <section>
-                <input type="text" ng-model="modlist.name">
+                <input type="text" ng-model="activeModList.name">
             </section>
 
             <h3 class="section-title">Status</h3>
             <section>
-                <select ng-model="modlist.status">
+                <select ng-model="activeModList.status">
                     <option value="under_construction">Under Construction</option>
                     <option value="testing">Testing</option>
                     <option value="complete">Complete</option>
@@ -36,7 +36,7 @@
 
             <h3 class="section-title">Visibility</h3>
             <section>
-                <select ng-model="modlist.visibility">
+                <select ng-model="activeModList.visibility">
                     <option value="visibility_public">Public</option>
                     <option value="visibility_unlisted">Unlisted</option>
                     <option value="visibility_private">Private</option>
@@ -46,7 +46,7 @@
             <h3 class="section-title">Other Options</h3>
             <section>
                 <label>
-                    <input type="checkbox" ng-model="modlist.is_collection"> Collection
+                    <input type="checkbox" ng-model="activeModList.is_collection"> Collection
                 </label>
             </section>
         </div>
