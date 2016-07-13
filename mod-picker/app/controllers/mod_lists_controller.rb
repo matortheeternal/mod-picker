@@ -14,7 +14,11 @@ class ModListsController < ApplicationController
   # GET /mod_lists/1.json
   def show
     authorize! :read, @mod_list
-    render :json => @mod_list
+    star = ModListStar.exists?(:mod_list_id => @mod_list.id, :user_id => current_user.id)
+    render :json => {
+        mod_list: @mod_list, #.show_json,
+        star: star
+    }
   end
 
   # GET /mod_lists/active
