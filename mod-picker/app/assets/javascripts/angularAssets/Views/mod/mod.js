@@ -1,6 +1,6 @@
 app.config(['$stateProvider', function($stateProvider) {
     $stateProvider.state('base.mod', {
-        templateUrl: '/resources/partials/showMod/mod.html',
+        templateUrl: '/resources/partials/mod/mod.html',
         controller: 'modController',
         url: '/mod/:modId',
         redirectTo: 'base.mod.Reviews',
@@ -22,7 +22,7 @@ app.config(['$stateProvider', function($stateProvider) {
             }
         }
     }).state('base.mod.Reviews', {
-        templateUrl: '/resources/partials/showMod/reviews.html',
+        templateUrl: '/resources/partials/mod/reviews.html',
         controller: 'modReviewsController',
         url: '/reviews?{page:int}&scol&sdir',
         params: {
@@ -31,7 +31,7 @@ app.config(['$stateProvider', function($stateProvider) {
             sdir: 'desc'
         }
     }).state('base.mod.Compatibility', {
-        templateUrl: '/resources/partials/showMod/compatibility.html',
+        templateUrl: '/resources/partials/mod/compatibility.html',
         controller: 'modCompatibilityController',
         url: '/compatibility?{page:int}&scol&sdir',
         params: {
@@ -40,7 +40,7 @@ app.config(['$stateProvider', function($stateProvider) {
             sdir: 'desc'
         }
     }).state('base.mod.Install Order', {
-        templateUrl: '/resources/partials/showMod/installOrder.html',
+        templateUrl: '/resources/partials/mod/installOrder.html',
         controller: 'modInstallOrderController',
         url: '/install-order?{page:int}&scol&sdir',
         params: {
@@ -49,7 +49,7 @@ app.config(['$stateProvider', function($stateProvider) {
             sdir: 'desc'
         }
     }).state('base.mod.Load Order', {
-        templateUrl: '/resources/partials/showMod/loadOrder.html',
+        templateUrl: '/resources/partials/mod/loadOrder.html',
         controller: 'modLoadOrderController',
         url: '/load-order?{page:int}&scol&sdir',
         params: {
@@ -58,7 +58,7 @@ app.config(['$stateProvider', function($stateProvider) {
             sdir: 'desc'
         }
     }).state('base.mod.Analysis', {
-        templateUrl: '/resources/partials/showMod/analysis.html',
+        templateUrl: '/resources/partials/mod/analysis.html',
         controller: 'modAnalysisController',
         url: '/analysis?{plugin:int}',
         params: {

@@ -1,4 +1,4 @@
-app.controller('modCompatibilityController', function($scope, $stateParams, $state, modService, contributionFactory, contributionService) {
+app.controller('modCompatibilityController', function($scope, $stateParams, $state, contributionFactory, contributionService) {
     // verify we can access this tab
     $scope.currentTab = $scope.findTab('Compatibility');
     if (!$scope.currentTab) {
@@ -29,7 +29,7 @@ app.controller('modCompatibilityController', function($scope, $stateParams, $sta
             filters: $scope.filters.compatibility_notes,
             page: page || 1
         };
-        modService.retrieveModContributions($stateParams.modId, 'compatibility_notes', options, $scope.pages.compatibility_notes).then(function(data) {
+        contributionService.retrieveModContributions($stateParams.modId, 'compatibility_notes', options, $scope.pages.compatibility_notes).then(function(data) {
             $scope.retrieving.compatibility_notes = false;
             $scope.mod.compatibility_notes = data;
         }, function(response) {

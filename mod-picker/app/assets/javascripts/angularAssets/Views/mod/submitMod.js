@@ -1,13 +1,13 @@
 app.config(['$stateProvider', function ($stateProvider) {
     $stateProvider.state('base.submit', {
-            templateUrl: '/resources/partials/submitMod.html',
+            templateUrl: '/resources/partials/mod/submitMod.html',
             controller: 'submitModController',
             url: '/submit'
         }
     );
 }]);
 
-app.controller('submitModController', function ($scope, backend, submitService, pluginService, categoryService, sitesFactory, assetUtils) {
+app.controller('submitModController', function ($scope, backend, modService, scrapeService, pluginService, categoryService, sitesFactory, assetUtils) {
     // access parent variables
     $scope.currentUser = $scope.$parent.currentUser;
     $scope.permissions = $scope.$parent.permissions;
@@ -76,7 +76,7 @@ app.controller('submitModController', function ($scope, backend, submitService, 
             case "Nexus Mods":
                 $scope.nexus = {};
                 $scope.nexus.scraping = true;
-                submitService.scrapeNexus(gameId, modId).then(function (data) {
+                scrapeService.scrapeNexus(gameId, modId).then(function (data) {
                     $scope.nexus = data;
                     $scope.loadGeneralStats(data, true);
                 });
@@ -84,7 +84,7 @@ app.controller('submitModController', function ($scope, backend, submitService, 
             case "Lover's Lab":
                 $scope.lab = {};
                 $scope.lab.scraping = true;
-                submitService.scrapeLab(modId).then(function (data) {
+                scrapeService.scrapeLab(modId).then(function (data) {
                     $scope.lab = data;
                     $scope.loadGeneralStats(data);
                 });
@@ -92,7 +92,7 @@ app.controller('submitModController', function ($scope, backend, submitService, 
             case "Steam Workshop":
                 $scope.workshop = {};
                 $scope.workshop.scraping = true;
-                submitService.scrapeWorkshop(modId).then(function (data) {
+                scrapeService.scrapeWorkshop(modId).then(function (data) {
                     $scope.workshop = data;
                     $scope.loadGeneralStats(data);
                 });
@@ -339,7 +339,7 @@ app.controller('submitModController', function ($scope, backend, submitService, 
         };
         $scope.submitting = true;
         $scope.submittingStatus = "Submitting Mod...";
-        submitService.submitMod($scope.mod, sources, $scope.customSources).then(function() {
+        modService.submitMod($scope.mod, sources, $scope.customSources).then(function() {
             $scope.submittingStatus = "Mod Submitted Successfully!";
             $scope.success = true;
         }, function(response) {

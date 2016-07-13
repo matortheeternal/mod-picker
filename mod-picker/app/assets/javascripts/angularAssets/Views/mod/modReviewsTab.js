@@ -28,7 +28,7 @@ app.controller('modReviewsController', function($scope, $stateParams, $state, mo
             sort: $scope.sort.reviews,
             page: page || 1
         };
-        modService.retrieveModReviews($stateParams.modId, options, $scope.pages.reviews).then(function(data) {
+        contributionService.retrieveModReviews($stateParams.modId, options, $scope.pages.reviews).then(function(data) {
             $scope.retrieving.reviews = false;
             $scope.mod.reviews = data.reviews;
             $scope.mod.user_review = data.user_review;
