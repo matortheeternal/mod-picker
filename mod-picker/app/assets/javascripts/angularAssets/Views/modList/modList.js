@@ -54,6 +54,7 @@ app.config(['$stateProvider', function ($stateProvider) {
 app.controller('modlistController', function($scope, $log, $stateParams, $timeout, currentUser, modListObject, modListService) {
     // get parent variables
     $scope.mod_list = modListObject.mod_list;
+    $scope.mod_list.star = modListObject.star;
     $scope.currentUser = currentUser;
 
 	// initialize local variables
@@ -119,6 +120,16 @@ app.controller('modlistController', function($scope, $log, $stateParams, $timeou
         // stop event propagation - we handled it
         event.stopPropagation();
     });
+
+    // HEADER RELATED LOGIC
+    $scope.starModList = function() {
+        modListService.starModList($scope.mod_list.id, $scope.mod_list.star).then(function() {
+            $scope.mod_list.star = !$scope.mod_list.star;
+        }, function(response) {
+            var params = {label: 'Error starring mod list', response: response};
+            $scope.$emit('errorMessage', params);
+        });
+    };
 
     $scope.toggleEditing = function() {
         $scope.editing = !$scope.editing;
