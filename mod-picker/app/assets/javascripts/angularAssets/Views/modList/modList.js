@@ -136,6 +136,12 @@ app.controller('modListController', function($scope, $q, $stateParams, $timeout,
         $scope.editing = !$scope.editing;
         if (!$scope.activeModList) {
             $scope.activeModList = angular.copy($scope.mod_list);
+        } else if (!$scope.editing) {
+            var modListDiff = objectUtils.getDifferentProperties($scope.activeModList, $scope.mod_list);
+            if (!objectUtils.isEmptyObject(modListDiff)) {
+                var message = {type: 'warning', text: 'Your mod list has unsaved changes.'};
+                $scope.$broadcast('message', message);
+            }
         }
     };
 
