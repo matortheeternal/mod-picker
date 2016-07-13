@@ -16,7 +16,7 @@ class ModListsController < ApplicationController
     authorize! :read, @mod_list
     star = ModListStar.exists?(:mod_list_id => @mod_list.id, :user_id => current_user.id)
     render :json => {
-        mod_list: @mod_list, #.show_json,
+        mod_list: @mod_list.show_json,
         star: star
     }
   end
