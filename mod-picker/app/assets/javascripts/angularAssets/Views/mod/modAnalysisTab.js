@@ -1,4 +1,4 @@
-app.controller('modAnalysisController', function($scope, $stateParams, $state, modService) {
+app.controller('modAnalysisController', function($scope, $stateParams, $state, contributionService) {
     // verify we can access this tab
     $scope.currentTab = $scope.findTab('Analysis');
     if (!$scope.currentTab) {
@@ -25,7 +25,7 @@ app.controller('modAnalysisController', function($scope, $stateParams, $state, m
         $scope.retrieving.analysis = true;
 
         // retrieve the analysis
-        modService.retrieveModAnalysis($stateParams.modId).then(function(analysis) {
+        contributionService.retrieveModAnalysis($stateParams.modId).then(function(analysis) {
             $scope.retrieving.analysis = false;
             $scope.mod.analysis = analysis;
             $scope.mod.plugins = analysis.plugins;

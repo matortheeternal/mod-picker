@@ -1,4 +1,4 @@
-app.controller('modLoadOrderController', function($scope, $state, $stateParams, modService, contributionService, contributionFactory) {
+app.controller('modLoadOrderController', function($scope, $state, $stateParams, contributionService, contributionFactory) {
     // verify we can access this tab
     $scope.currentTab = $scope.findTab('Load Order');
     if (!$scope.currentTab) {
@@ -29,7 +29,7 @@ app.controller('modLoadOrderController', function($scope, $state, $stateParams, 
             filters: $scope.filters.load_order_notes,
             page: page || 1
         };
-        modService.retrieveModContributions($stateParams.modId, 'load_order_notes', options, $scope.pages.load_order_notes).then(function(data) {
+        contributionService.retrieveModContributions($stateParams.modId, 'load_order_notes', options, $scope.pages.load_order_notes).then(function(data) {
             $scope.retrieving.load_order_notes = false;
             $scope.mod.load_order_notes = data;
         }, function(response) {

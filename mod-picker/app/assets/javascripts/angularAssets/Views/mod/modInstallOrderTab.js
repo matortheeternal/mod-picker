@@ -1,4 +1,4 @@
-app.controller('modInstallOrderController', function($scope, $stateParams, $state, modService, contributionService, contributionFactory) {
+app.controller('modInstallOrderController', function($scope, $stateParams, $state, contributionService, contributionFactory) {
     // verify we can access this tab
     $scope.currentTab = $scope.findTab('Install Order');
     if (!$scope.currentTab) {
@@ -29,7 +29,7 @@ app.controller('modInstallOrderController', function($scope, $stateParams, $stat
             filters: $scope.filters.install_order_notes,
             page: page || 1
         };
-        modService.retrieveModContributions($stateParams.modId, 'install_order_notes', options, $scope.pages.install_order_notes).then(function(data) {
+        contributionService.retrieveModContributions($stateParams.modId, 'install_order_notes', options, $scope.pages.install_order_notes).then(function(data) {
             $scope.retrieving.install_order_notes = false;
             $scope.mod.install_order_notes = data;
         }, function(response) {

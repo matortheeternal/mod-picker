@@ -1,6 +1,6 @@
 app.config(['$stateProvider', function($stateProvider) {
-    $stateProvider.state('base.edit', {
-        templateUrl: '/resources/partials/showMod/edit.html',
+    $stateProvider.state('base.edit-mod', {
+        templateUrl: '/resources/partials/mod/editMod.html',
         controller: 'editModController',
         url: '/mod/:modId/edit',
         resolve: {
@@ -12,7 +12,7 @@ app.config(['$stateProvider', function($stateProvider) {
                     var errorObj = {
                         text: 'Error editing mod.',
                         response: response,
-                        stateName: "base.edit",
+                        stateName: "base.edit-mod",
                         stateUrl: window.location.hash
                     };
                     mod.reject(errorObj);
@@ -23,7 +23,7 @@ app.config(['$stateProvider', function($stateProvider) {
     });
 }]);
 
-app.controller('editModController', function($scope, $state, currentUser, modObject, modService, tagService, categoryService, errorService, submitService, sitesFactory) {
+app.controller('editModController', function($scope, $state, currentUser, modObject, modService, tagService, categoryService, errorService, sitesFactory) {
     // get parent variables
     $scope.currentUser = currentUser;
 
@@ -163,21 +163,21 @@ app.controller('editModController', function($scope, $state, currentUser, modObj
             case "Nexus Mods":
                 $scope.nexus = {};
                 $scope.nexus.scraping = true;
-                submitService.scrapeNexus(gameId, modId).then(function (data) {
+                scrapeService.scrapeNexus(gameId, modId).then(function (data) {
                     $scope.nexus = data;
                 });
                 break;
             case "Lover's Lab":
                 $scope.lab = {};
                 $scope.lab.scraping = true;
-                submitService.scrapeLab(modId).then(function (data) {
+                scrapeService.scrapeLab(modId).then(function (data) {
                     $scope.lab = data;
                 });
                 break;
             case "Steam Workshop":
                 $scope.workshop = {};
                 $scope.workshop.scraping = true;
-                submitService.scrapeWorkshop(modId).then(function (data) {
+                scrapeService.scrapeWorkshop(modId).then(function (data) {
                     $scope.workshop = data;
                 });
                 break;
@@ -448,7 +448,7 @@ app.controller('editModController', function($scope, $state, currentUser, modObj
         $scope.submitting = true;
         $scope.submittingStatus = "Updating Mod...";
         modDiff.id = $scope.mod.id;
-        submitService.updateMod(modDiff, sources, $scope.customSources).then(function() {
+        modService.updateMod(modDiff, sources, $scope.customSources).then(function() {
             if (!angular.isDefined($scope.success)) {
                 $scope.success = true;
             } else if ($scope.success) {
@@ -461,7 +461,7 @@ app.controller('editModController', function($scope, $state, currentUser, modObj
             $scope.errors = response.data;
         });
         if ($scope.image.file) {
-            submitService.submitImage($scope.mod.id, $scope.image.file).then(function () {
+            modService.submitImage($scope.mod.id, $scope.image.file).then(function () {
                 if (!angular.isDefined($scope.success)) {
                     $scope.success = true;
                 } else if ($scope.success) {
