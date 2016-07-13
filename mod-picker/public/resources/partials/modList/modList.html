@@ -1,11 +1,11 @@
 <!--<loader data="modlist" spinner-class="big-spinner">
 </loader>-->
-<div class="mod-header-color">
-    <div class="page-container mod-header">
+<div class="page-header-container">
+    <div class="page-container page-header">
         <section>
-            <div class="mod-info">
-                <span class="mod-name">{{mod_list.name}}</span>
-                <span class="mod-authors-container">
+            <div class="header-info">
+                <span class="header-name">{{mod_list.name}}</span>
+                <span class="header-authors-container">
                     by
                     <a ng-href="#/user/{{mod_list.submitter.id}}">{{mod_list.submitter.username}}</a>
                 </span>
@@ -26,7 +26,7 @@
         </section>
 
         <section>
-            <div class="mod-header-box">
+            <div class="header-box">
                 ACTIONS
                 <div class="action-box" ng-click="starModList()">
                     <i class="fa {{mod_list.star ? 'fa-star' : 'fa-star-o'}}" aria-hidden="true"></i>
@@ -37,7 +37,7 @@
                     Dupicate Modlist
                 </div>
             </div>
-            <div class="mod-header-box">
+            <div class="header-box">
                 STATUS
                 <div class="action-box no-action {{statusClasses[mod_list.status]}} capitalize" title="{{statusHints[mod_list.status]}}">
                      <i class="fa {{statusIcons[mod_list.status]}}" aria-hidden="true"></i>
