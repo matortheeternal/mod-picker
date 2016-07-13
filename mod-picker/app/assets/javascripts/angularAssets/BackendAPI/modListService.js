@@ -1,10 +1,22 @@
-app.service('modListService', function (backend, $q) {
+app.service('modListService', function (backend, objectUtils) {
     this.retrieveModList = function(modListId) {
         return backend.retrieve('/mod_lists/' + modListId);
     };
 
-    this.updateModList = function(modlist) {
-        return backend.update('/mod_lists/' + modlist.id, { mod_list: modlist });
+    this.updateModList = function(modList) {
+        var modListData = {
+            mod_list: {
+                id: modList.id,
+                status: modList.status,
+                visibility: modList.visibility,
+                is_collection: modList.is_collection,
+                name: modList.name,
+                description: modList.description
+            }
+        };
+        objectUtils.deleteEmptyProperties(modListData, 1);
+
+        return backend.update('/mod_lists/' + modlist.id, modListData);
     };
 
     this.starModList = function(modListId, starred) {
