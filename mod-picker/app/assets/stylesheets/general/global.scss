@@ -355,6 +355,14 @@ input[type="button"], input[type="submit"] {
   > div:last-child {
     margin-bottom: 0;
   }
+
+  .content-block:first-child {
+    margin-top: 0;
+  }
+
+  .content-block:last-child {
+    margin-bottom: 0;
+  }
 }
 
 /* css for columns */
