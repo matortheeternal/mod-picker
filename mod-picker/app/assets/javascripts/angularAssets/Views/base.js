@@ -1,6 +1,7 @@
 app.config(['$stateProvider', function($stateProvider) {
     $stateProvider.state('base', {
         url: '',
+        redirectTo: 'base.home',
         templateUrl: '/resources/partials/base/base.html',
         controller: 'baseController',
         resolve: {
