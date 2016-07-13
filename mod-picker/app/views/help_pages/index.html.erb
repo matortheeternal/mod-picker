@@ -46,7 +46,7 @@
         <div class="game-page-content page-content">
           <a href="#"><img src="<%= game.display_image %>" alt="<%=game.display_name %> help page preview"></a>
           <div class="game-details">
-            <h3><%= game.long_name %></h3>
+            <h3><%= link_to game.long_name, games_path(game.id) %></h3>
           </div>
         </div>
       </li>

@@ -21,11 +21,15 @@ class Game < ActiveRecord::Base
   # Validations
   validates :display_name, :long_name, :abbr_name, presence: true
 
-  # gets the display image path via the game's id if one is present
-  # else returns a default under public/games/*.png|jpg
+  # gets the display image path via the game's display_name if one is present
   def display_image
-    png_path = File.join(Rails.public_path, "avatars/#{id}.png")
-    jpg_path = File.join(Rails.public_path, "avatars/#{id}.jpg")
+    png_file_name = self.display_name.split("").join("_")
+    jpg_file_name = self.display_name.split("").join("_")
+
+    png_path = File.join(Rails.public_path, png_file_name)
+    jpg_path = File.join(Rails.public_path, jpg_file_name)
+
+
     if File.exists?(png_path)
       "/games/#{id}.png"
     elsif File.exists?(jpg_path)

@@ -928,14 +928,14 @@ def seed_fake_help_pages
 
   rand(30).times do
     HelpPage.new(
-      title: Faker::Lorem.words(4).join(' '),
+      name: Faker::Lorem.words(4).join(' '),
       text_body: Faker::Lorem.words(rand(300)).join(' '),
       submitted: Faker::Date.backward(10),
       edited: Faker::Date.backward(9)
     ).save!
   end
 
-  puts "#{HelpPage.count} help pages saved"
+  puts "    #{HelpPage.count} help pages saved"
 end
 
 def seed_fake_articles
