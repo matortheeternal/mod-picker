@@ -4,7 +4,7 @@
 app.config(['$stateProvider', function ($stateProvider) {
     $stateProvider.state('base.mod-list', {
         templateUrl: '/resources/partials/modList/modList.html',
-        controller: 'modlistController',
+        controller: 'modListController',
         url: '/mod-list/:modListId',
         redirectTo: 'base.mod-list.Details',
         resolve: {
@@ -51,7 +51,7 @@ app.config(['$stateProvider', function ($stateProvider) {
     })
 }]);
 
-app.controller('modlistController', function($scope, $q, $stateParams, $timeout, currentUser, modListObject, modListService, tagService) {
+app.controller('modListController', function($scope, $q, $stateParams, $timeout, currentUser, modListObject, modListService, errorService, tagService) {
     // get parent variables
     $scope.mod_list = modListObject.mod_list;
     $scope.mod_list.star = modListObject.star;
