@@ -5,19 +5,19 @@
         <div class="page-container mod-header">
             <section>
                 <div class="mod-info">
-                    <span class="mod-name">{{modlist.name}}</span>
+                    <span class="mod-name">{{mod_list.name}}</span>
                     <span class="mod-authors-container">
                         by 
-                        <a ng-href="#/user/{{modlist.submitter.id}}">{{modlist.submitter.username}}</a>
+                        <a ng-href="#/user/{{mod_list.submitter.id}}">{{mod_list.submitter.username}}</a>
                     </span>
                     <br>
                     <span>0 Tools</span> <!-- TODO: Add tools_count to backend -->
                     <span class="divider">|</span>
-                    <span>{{modlist.mods_count}} Mods</span>
+                    <span>{{mod_list.mods_count}} Mods</span>
                     <span class="divider">|</span>
-                    <span>{{modlist.plugins_count}} Plugins</span>
+                    <span>{{mod_list.plugins_count}} Plugins</span>
                     <span class="divider">|</span>
-                    <span>{{modlist.config_files_count}} Config Files</span>
+                    <span>{{mod_list.config_files_count}} Config Files</span>
                     <span class="divider" ng-if="permissions.canManage">|</span>
                     <a ng-if="permissions.canManage" ng-click="toggleEditing()">
                         <span ng-hide="editing">Edit</span>
@@ -30,8 +30,8 @@
                 <div class="mod-header-box">
                     ACTIONS
                     <div class="action-box" ng-click="starMod()">
-                        <i class="fa {{modlistStarred ? 'fa-star' : 'fa-star-o'}}" aria-hidden="true"></i>
-                        {{modlistStarred ? 'Unfavorite' : 'Favorite'}}
+                        <i class="fa {{mod_list.star ? 'fa-star' : 'fa-star-o'}}" aria-hidden="true"></i>
+                        {{mod_list.star ? 'Unfavorite' : 'Favorite'}}
                     </div>
                     <div class="action-box">
                         <i class="fa fa-plus" aria-hidden="true"></i>
@@ -40,13 +40,13 @@
                 </div>
                 <div class="mod-header-box">
                     STATUS
-                    <div class="action-box no-action {{statusClasses[modlist.status]}} capitalize" title="{{statusHints[modlist.status]}}">
-                         <i class="fa {{statusIcons[modlist.status]}}" aria-hidden="true"></i>
-                        {{modlist.status.replace("_", " ")}}
+                    <div class="action-box no-action {{statusClasses[mod_list.status]}} capitalize" title="{{statusHints[mod_list.status]}}">
+                         <i class="fa {{statusIcons[mod_list.status]}}" aria-hidden="true"></i>
+                        {{mod_list.status.replace("_", " ")}}
                     </div>
-                    <div class="action-box no-action {{visibilityClasses[modlist.visibility]}} capitalize" title="{{visibilityHints[modlist.visibility]}}">
-                        <i class="fa {{visibilityIcons[modlist.visibility]}}" aria-hidden="true"></i>
-                        {{modlist.visibility.replace("visibility_", "")}}
+                    <div class="action-box no-action {{visibilityClasses[mod_list.visibility]}} capitalize" title="{{visibilityHints[mod_list.visibility]}}">
+                        <i class="fa {{visibilityIcons[mod_list.visibility]}}" aria-hidden="true"></i>
+                        {{mod_list.visibility.replace("visibility_", "")}}
                     </div>
                 </div>
             </section>

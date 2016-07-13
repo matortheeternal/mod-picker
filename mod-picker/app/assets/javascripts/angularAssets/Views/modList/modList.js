@@ -2,11 +2,11 @@
  * Created by ThreeTen on 3/26/2016.
  */
 app.config(['$stateProvider', function ($stateProvider) {
-    $stateProvider.state('base.modlist', {
+    $stateProvider.state('base.mod-list', {
         templateUrl: '/resources/partials/modList/modList.html',
         controller: 'modlistController',
         url: '/mod-list/:modListId',
-        redirectTo: 'base.modlist.Details',
+        redirectTo: 'base.mod-list.Details',
         resolve: {
             modListObject: function(modListService, $stateParams, $q) {
                 var modList = $q.defer();
@@ -24,27 +24,27 @@ app.config(['$stateProvider', function ($stateProvider) {
                 return modList.promise;
             }
         }
-    }).state('base.modlist.Details', {
+    }).state('base.mod-list.Details', {
         templateUrl: '/resources/partials/modList/details.html',
         controller: 'modlistDetailsController',
         url: '/details'
-    }).state('base.modlist.Tools', {
+    }).state('base.mod-list.Tools', {
         templateUrl: '/resources/partials/modList/tools.html',
         controller: 'modlistToolsController',
         url: '/tools'
-    }).state('base.modlist.Mods', {
+    }).state('base.mod-list.Mods', {
         templateUrl: '/resources/partials/modList/mods.html',
         controller: 'modlistModsController',
         url: '/mods'
-    }).state('base.modlist.Plugins', {
+    }).state('base.mod-list.Plugins', {
         templateUrl: '/resources/partials/modList/plugins.html',
         controller: 'modlistPluginsController',
         url: '/plugins'
-    }).state('base.modlist.Config', {
+    }).state('base.mod-list.Config', {
         templateUrl: '/resources/partials/modList/config.html',
         controller: 'modlistConfigController',
         url: '/config'
-    }).state('base.modlist.Comments', {
+    }).state('base.mod-list.Comments', {
         templateUrl: '/resources/partials/modList/comments.html',
         controller: 'modlistCommentsController',
         url: '/comments'
@@ -53,7 +53,7 @@ app.config(['$stateProvider', function ($stateProvider) {
 
 app.controller('modlistController', function($scope, $log, $stateParams, $timeout, currentUser, modListObject, modListService) {
     // get parent variables
-    $scope.modlist = modListObject;
+    $scope.mod_list = modListObject.mod_list;
     $scope.currentUser = currentUser;
 
 	// initialize local variables
@@ -99,12 +99,12 @@ app.controller('modlistController', function($scope, $log, $stateParams, $timeou
     // a copy is created so the original permissions object is never changed
     $scope.permissions = angular.copy(currentUser.permissions);
     // setting up the canManage permission
-    var isAuthor = $scope.modlist.submitter.id == $scope.currentUser.id;
+    var isAuthor = $scope.mod_list.submitter.id == $scope.currentUser.id;
     $scope.permissions.canManage = $scope.permissions.canModerate || isAuthor;
 
     // display error messages
     $scope.$on('errorMessage', function(event, params) {
-        var errors = errorService.errorMessages(params.label, params.response, $scope.modlist.id);
+        var errors = errorService.errorMessages(params.label, params.response, $scope.mod_list.id);
         errors.forEach(function(error) {
             $scope.$broadcast('message', error);
         });
@@ -120,26 +120,31 @@ app.controller('modlistController', function($scope, $log, $stateParams, $timeou
         event.stopPropagation();
     });
 
+    $scope.toggleEditing = function() {
+        $scope.editing = !$scope.editing;
+        if (!$scope.activeModList) {
+            $scope.activeModList = angular.copy($scope.mod_list);
+        }
+    };
+
+    // MOD LIST EDITING LOGIC
     $scope.saveChanges = function() {
         // get changed mod fields
-        var modListDiff = getDifferentProperties($scope.activeModList, $scope.modlist);
-        modListDiff.id = $scope.modlist.id;
+        var modListDiff = getDifferentProperties($scope.activeModList, $scope.mod_list);
+        modListDiff.id = $scope.mod_list.id;
 
         modListService.updateModList(modListDiff).then(function() {
-            $scope.$emit('successMessage', 'Mod List saved successfully.');
-            $scope.modlist = angular.copy($scope.activeModList);
+            $scope.$emit('successMessage', 'Mod list saved successfully.');
+            $scope.mod_list = angular.copy($scope.activeModList);
         }, function(response) {
-            $scope.$emit('errorMessage', {label: 'Error saving Mod List', response: response});
+            $scope.$emit('errorMessage', {label: 'Error saving mod list', response: response});
         });
     };
 
     $scope.discardChanges = function() {
-        $scope.activeModList = angular.copy($scope.modlist);
-    };
-
-    $scope.toggleEditing = function() {
-        $scope.editing = !$scope.editing;
-        $scope.activeModList = angular.copy($scope.modlist);
+        if (confirm("Are you sure you want to discard your changes?")) {
+            $scope.activeModList = angular.copy($scope.mod_list);
+        }
     };
 });
 
