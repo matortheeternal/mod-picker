@@ -1,34 +1,3 @@
-
-.modlist-header-color {
-  background-color: $bar_dark_color;
-}
-
-.modlist-header-color-2 {
-  background-color: $bar_color;
-}
-
-.primary-background {
-  background-color: $primary_background;
-}
-
-.section-header-container {
-  width: 100%;
-  border: 1px solid $hard_border_color;
-}
-
-.modlist-header-box {
-  background-color: $bar_color;
-  
-  padding: 10px;
-  font-size: 12px;
-  font-weight: 500;
-}
-
-.author-line {
-  font-size: 14px;
-  font-weight: 100;
-}
-
 .section-table {
   width: 100%;
   border-collapse: collapse;
@@ -133,8 +102,6 @@
   }
 }
 
-
-
 .olist {
   margin: 0;
   text-align: center;
@@ -190,14 +157,6 @@
   font-size: 24px;
 }
 
-.modlist-authors-container {
-  margin-left: 0px;
-  .mod-authors {
-    font-weight: 600;
-    color: $bright_action_color;
-  }
-}
-
 .modlist-header-title {
   color: $bar_text_color;
   padding-top: 4px;
@@ -211,76 +170,12 @@
   background-color:$primary_background;
 }
 
-/*.section-title {
-  display: block;
-  vertical-align: top;
-  font-size: 18px;
-  font-weight: 500;
-  color: $bar_text_color;
-  margin: 10px 0 5px 5px;
-  text-align: left;
-  vertical-align: middle;
-  //padding-bottom: 2px;
-}*/
-
-.section-selected-tab {
-  opacity: 1;
-}
-
-.section-unselected-tab {
-  opacity: 0.5;
-}
-
 .section-header-counter {
   color: $bright_action_color;
   font-size: 14px;
   text-align: left;
   vertical-align:bottom;
   font-style: italic;
-}
-
-.modlist-tab-items {
-  .modlist-tab-item {
-    border: 1px solid $border_color;
-    border-top: none;
-  }
-}
-
-.large-note-text-area {
-  .CodeMirror {
-    // this needs to be 20px higher than the scroll section height due to padding
-    min-height: 420px;
-  }
-
-  .CodeMirror-scroll {
-    min-height: 400px;
-  }
-}
-
-.modlist-content-block {
-    margin-top: 20px;
-    margin-bottom: 20px;
-    background-color: $primary_background;
-    border: 1px solid $border_color;
-
- .content-title {
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    font-size: 16px;
-    font-weight: 500;
-    color: $bar_text_color;
-    background-color: $bar_color;
-    padding: 10px;
-
-    div {
-      display: inline-block;
-    }
-
-    a {
-      padding-right: 20px;
-    }
-  }
 }
 
 .section-title {
