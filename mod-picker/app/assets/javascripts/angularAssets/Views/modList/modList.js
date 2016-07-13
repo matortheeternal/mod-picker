@@ -51,7 +51,7 @@ app.config(['$stateProvider', function ($stateProvider) {
     })
 }]);
 
-app.controller('modListController', function($scope, $q, $stateParams, $timeout, currentUser, modListObject, modListService, errorService, tagService) {
+app.controller('modListController', function($scope, $q, $stateParams, $timeout, currentUser, modListObject, modListService, errorService, tagService, objectUtils) {
     // get parent variables
     $scope.mod_list = modListObject.mod_list;
     $scope.mod_list.star = modListObject.star;
@@ -142,7 +142,7 @@ app.controller('modListController', function($scope, $q, $stateParams, $timeout,
     // MOD LIST EDITING LOGIC
     $scope.saveChanges = function() {
         // get changed mod fields
-        var modListDiff = getDifferentProperties($scope.activeModList, $scope.mod_list);
+        var modListDiff = objectUtils.getDifferentProperties($scope.activeModList, $scope.mod_list);
         modListDiff.id = $scope.mod_list.id;
 
         modListService.updateModList(modListDiff).then(function() {

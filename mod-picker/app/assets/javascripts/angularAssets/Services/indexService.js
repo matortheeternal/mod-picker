@@ -9,7 +9,7 @@ app.service('indexService', function(objectUtils) {
                     output += property;
                     output += '&';
                 } else {
-                    output += '{' + property + ':' + getShortTypeString(params[property]) + '}';
+                    output += '{' + property + ':' + objectUtils.getShortTypeString(params[property]) + '}';
                     output += '&';
                 }
             }
