@@ -1,4 +1,4 @@
-app.service('modService', function(backend, $q, errorsFactory, pageUtils) {
+app.service('modService', function(backend, $q, errorsFactory, pageUtils, objectUtils) {
     this.retrieveMods = function(options, pageInformation) {
         var action = $q.defer();
         backend.post('/mods/index', options).then(function (data) {
@@ -185,7 +185,7 @@ app.service('modService', function(backend, $q, errorsFactory, pageUtils) {
                 required_mods_attributes: required_mods
             }
         };
-        deleteEmptyProperties(modData, 1);
+        objectUtils.deleteEmptyProperties(modData, 1);
 
         // submit mod
         return backend.update('/mods/' + mod.id, modData);
