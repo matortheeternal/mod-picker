@@ -120,6 +120,23 @@ app.controller('modlistController', function($scope, $log, $stateParams, $timeou
         event.stopPropagation();
     });
 
+    $scope.saveChanges = function() {
+        // get changed mod fields
+        var modListDiff = getDifferentProperties($scope.activeModList, $scope.modlist);
+        modListDiff.id = $scope.modlist.id;
+
+        modListService.updateModList(modListDiff).then(function() {
+            $scope.$emit('successMessage', 'Mod List saved successfully.');
+            $scope.modlist = angular.copy($scope.activeModList);
+        }, function(response) {
+            $scope.$emit('errorMessage', {label: 'Error saving Mod List', response: response});
+        });
+    };
+
+    $scope.discardChanges = function() {
+        $scope.activeModList = angular.copy($scope.modlist);
+    };
+
     $scope.toggleEditing = function() {
         $scope.editing = !$scope.editing;
         $scope.activeModList = angular.copy($scope.modlist);
