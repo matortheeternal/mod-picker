@@ -51,13 +51,14 @@ app.config(['$stateProvider', function ($stateProvider) {
     })
 }]);
 
-app.controller('modlistController', function($scope, $log, $stateParams, $timeout, currentUser, modListObject, modListService) {
+app.controller('modlistController', function($scope, $q, $stateParams, $timeout, currentUser, modListObject, modListService, tagService) {
     // get parent variables
     $scope.mod_list = modListObject.mod_list;
     $scope.mod_list.star = modListObject.star;
     $scope.currentUser = currentUser;
 
 	// initialize local variables
+    $scope.newTags = [];
     $scope.tabs = [
         { name: 'Details' },
         { name: 'Tools' },
@@ -156,6 +157,19 @@ app.controller('modlistController', function($scope, $log, $stateParams, $timeou
         if (confirm("Are you sure you want to discard your changes?")) {
             $scope.activeModList = angular.copy($scope.mod_list);
         }
+    };
+
+    $scope.saveTags = function(updatedTags) {
+        var action = $q.defer();
+        tagService.updateModListTags($scope.mod_list, updatedTags).then(function(data) {
+            $scope.$emit('successMessage', 'Tags updated successfully.');
+            action.resolve(data);
+        }, function(response) {
+            var params = {label: 'Error saving mod list tags', response: response};
+            $scope.$emit('errorMessage', params);
+            action.reject(response);
+        });
+        return action.promise;
     };
 });
 
