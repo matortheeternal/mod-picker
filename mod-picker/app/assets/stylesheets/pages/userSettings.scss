@@ -112,23 +112,6 @@
   }
 }
 
-//error/success messages
-.success-message {
-  background-color: $success_primary;
-  padding: 14px;
-  font-weight: 500;
-  font-size: 20px;
-  text-align: center;
-}
-
-.error-message {
-  background-color: $error_primary;
-  padding: 14px;
-  font-weight: 500;
-  font-size: 20px;
-  text-align: center;
-}
-
 input[type="text"].verification-key-input {
   width: 215px;
 }
