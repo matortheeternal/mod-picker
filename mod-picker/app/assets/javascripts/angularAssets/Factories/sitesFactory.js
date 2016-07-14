@@ -41,6 +41,12 @@ app.service('sitesFactory', function () {
                 label: "Steam Store",
                 shortLabel: "Steam",
                 logoPath: "/images/workshop_logo.png"
+            },
+            {
+                hidden: true,
+                label: "GitHub",
+                shortLabel: "GitHub",
+                logoPath: "/images/github_logo.png"
             }
         ];
     };
