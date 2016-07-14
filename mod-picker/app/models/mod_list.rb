@@ -22,7 +22,6 @@ class ModList < ActiveRecord::Base
   # LOAD ORDER
   has_many :plugins, :through => 'mods'
   has_many :mod_list_plugins, :inverse_of => 'mod_list'
-  has_many :active_plugins, :class_name => 'Plugin', :through => 'mod_list_plugins', :source => :plugins
   has_many :custom_plugins, :class_name => 'ModListCustomPlugin', :inverse_of => 'mod_list'
 
   # ASSOCIATED NOTES
