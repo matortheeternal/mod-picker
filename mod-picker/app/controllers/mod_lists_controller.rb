@@ -28,6 +28,21 @@ class ModListsController < ApplicationController
     end
   end
 
+  # GET /mod_lists/1/tools
+  def tools
+    authorize! :read, @mod_list
+    tools = @mod_list.mod_list_mods.joins(:mod).where(:mods => {is_utility: true})
+    render :json => tools.as_json({
+        :only => [:index, :active],
+        :include => {
+            :mod => {
+                :only => [:id, :name, :aliases, :authors, :released, :updated],
+                :methods => :image
+            }
+        }
+    })
+  end
+
   # GET /mod_lists/:id/mods
   # filter to only include mods that belong to the mod_list
   def mods
@@ -189,23 +204,6 @@ class ModListsController < ApplicationController
       render json: {status: :ok}
     else
       render json: @mod_list.errors, status: :unprocessable_entity
-    end
-  end
-
-  # GET /mod_lists/1/tools
-  # Get a list of the mods that have utility: true and
-  # belong to the specified mod_list
-  def tools
-    if @mod_list
-      # Get all the mod_list_mod records associatd with @mod_list
-      # join on the "mod" association on the ModListMod (mod_list_mod.rb) model
-      mod_list_mods = @mod_list.mod_list_mods.joins(:mod).where(:mods => {is_utility: true})
-
-      # filter to only include mods who's is_utility is true'
-      json_output = mod_list_mods.as_json({:only => [:index, :active], :include => {:mod => {:only => [:id, :name, :is_utility]}}})
-      render :json => json_output
-    else
-      render status: 404
     end
   end
 
