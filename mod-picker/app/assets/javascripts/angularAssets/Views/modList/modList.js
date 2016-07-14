@@ -183,8 +183,12 @@ app.controller('modlistDetailsController', function($scope) {
 
 });
 
-app.controller('modlistToolsController', function($scope) {
-
+app.controller('modlistToolsController', function($scope, modListService) {
+    modListService.retrieveModListTools($scope.mod_list.id).then(function(data) {
+        $scope.mod_list.tools = data;
+    }, function(response) {
+        $scope.errors.tools = response;
+    });
 });
 
 app.controller('modlistModsController', function($scope) {
