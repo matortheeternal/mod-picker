@@ -156,6 +156,17 @@ app.controller('modListController', function($scope, $q, $stateParams, $timeout,
         });
     };
 
+    $scope.removeMod = function(mod, isTool) {
+        mod._destroy = true;
+        // update counts
+        if (isTool) {
+            $scope.mod_list.tools_count -= 1;
+        } else {
+            $scope.mod_list.mods_count -= 1;
+        }
+        $scope.updateTabs();
+    };
+
     $scope.saveChanges = function() {
         // get changed mod fields
         var modListDiff = objectUtils.getDifferentProperties($scope.mod_list, $scope.originalModList);
