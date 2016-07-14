@@ -15,7 +15,7 @@ app.factory("tabsFactory", function() {
                 name: 'Compatibility',
                 count: mod.compatibility_notes_count
             });
-            // utilities don't have an install order
+            // utilities don't have install order notes
             if (!mod.is_utility) {
                 tabs.push({
                     name: 'Install Order',
@@ -23,7 +23,7 @@ app.factory("tabsFactory", function() {
                 });
             }
             // mods with no plugins don't have load order notes
-            if (!mod.plugins_count) {
+            if (mod.plugins_count) {
                 tabs.push({
                     name: 'Load Order',
                     count: mod.load_order_notes_count
