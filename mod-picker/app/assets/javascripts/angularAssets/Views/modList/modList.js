@@ -48,7 +48,7 @@ app.config(['$stateProvider', function ($stateProvider) {
     })
 }]);
 
-app.controller('modListController', function($scope, $q, $stateParams, $timeout, currentUser, modListObject, modListService, errorService, tagService, objectUtils) {
+app.controller('modListController', function($scope, $q, $stateParams, $timeout, currentUser, modListObject, modListService, errorService, tagService, objectUtils, tabsFactory) {
     // get parent variables
     $scope.mod_list = modListObject.mod_list;
     $scope.mod_list.star = modListObject.star;
@@ -56,14 +56,7 @@ app.controller('modListController', function($scope, $q, $stateParams, $timeout,
 
 	// initialize local variables
     $scope.newTags = [];
-    $scope.tabs = [
-        { name: 'Details' },
-        { name: 'Tools' },
-        { name: 'Mods' },
-        { name: 'Plugins' },
-        { name: 'Config' },
-        { name: 'Comments' }
-    ];
+    $scope.tabs = tabsFactory.buildModListTabs($scope.mod_list);
     $scope.statusIcons = {
         under_construction: 'fa-wrench',
         testing: 'fa-cogs',

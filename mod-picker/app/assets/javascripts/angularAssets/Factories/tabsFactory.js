@@ -39,5 +39,33 @@ app.factory("tabsFactory", function() {
         return tabs;
     };
 
+    this.buildModListTabs = function(modList) {
+        return [
+            {
+                name: 'Details'
+            },
+            {
+                name: 'Tools',
+                count: modList.tools_count || 0
+            },
+            {
+                name: 'Mods',
+                count: modList.mods_count
+            },
+            {
+                name: 'Plugins',
+                count: modList.plugins_count
+            },
+            {
+                name: 'Config',
+                count: modList.config_files_count
+            },
+            {
+                name: 'Comments',
+                count: modList.comments_count
+            }
+        ];
+    };
+
     return factory;
 });
