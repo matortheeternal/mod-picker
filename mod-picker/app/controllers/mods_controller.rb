@@ -68,8 +68,12 @@ class ModsController < ApplicationController
       @mod.plugins.destroy_all
     end
 
+    # update mod list tools/mods count if is_utility changed
+    swap_counts = params[:mod].has_key?(:is_utility) && params[:mod][:is_utility] != @mod.is_utility
+
     if @mod.update(mod_update_params)
       @mod.update_metrics
+      @mod.swap_mod_list_mods_tools_counts if swap_counts
       render json: {status: :ok}
     else
       render json: @mod.errors, status: :unprocessable_entity

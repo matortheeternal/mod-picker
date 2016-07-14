@@ -230,6 +230,13 @@ class Mod < ActiveRecord::Base
     self.plugins_count = Plugin.where(mod_id: self.id).count
   end
 
+  def swap_mod_list_mods_tools_counts
+    tools_operator = self.is_utility ? "+" : "-"
+    mods_operator = self.is_utility ? "-" : "+"
+    mod_list_ids = self.mod_lists.ids
+    ModList.where(id: mod_list_ids).update_all("tools_count = tools_count #{tools_operator} 1, mods_count = mods_count #{mods_operator} 1")
+  end
+
   def create_tags
     if @tag_names
       @tag_names.each do |text|
