@@ -211,6 +211,15 @@ class ModListsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def mod_list_params
-      params.require(:mod_list).permit(:game_id, :name, :is_collection, :has_adult_content, :status, :visibility, :created, :completed, :description)
+      params.require(:mod_list).permit(:game_id, :name, :description, :is_collection, :has_adult_content, :status, :visibility,
+          :mod_list_mods_attributes => [:id, :mod_id, :index],
+          :mod_list_plugins_attributes => [:id, :plugin_id, :index, :active],
+          :custom_plugins_attributes => [:id, :index, :filename, :description, :active],
+          :mod_list_config_files_attributes => [:id, :config_file_id, :text_body],
+          :mod_list_custom_config_files => [:id, :filename, :install_path, :text_body],
+          :mod_list_compatibility_notes => [:id, :compatibility_note_id, :status],
+          :mod_list_install_order_notes => [:id, :install_order_note_id, :status],
+          :mod_list_load_order_notes => [:id, :load_order_note_id, :status]
+      )
     end
 end
