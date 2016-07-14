@@ -28,6 +28,6 @@ app.service('modListService', function (backend, objectUtils) {
         };
         objectUtils.deleteEmptyProperties(modListData, 1);
 
-        return backend.update('/mod_lists/' + modlist.id, modListData);
+        return backend.update('/mod_lists/' + modList.id, modListData);
     };
 });
