@@ -8,6 +8,8 @@ class ModListMod < ActiveRecord::Base
   validates :mod_list_id, :mod_id, :index, presence: true
   validates :active, inclusion: [true, false]
   validates :mod_list_id, presence: true
+  # can only have a mod on a given mod list once
+  validates :mod_id, uniqueness: { scope: :mod_list_id, :message => "The mod is already present on the mod list." }
 
   # Callbacks
   after_create :increment_counter_caches
