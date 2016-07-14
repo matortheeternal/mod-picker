@@ -3,6 +3,9 @@
         <div class="content-title">Tools</div>
         <div class="content-container">
             <div class="mod-grid-item box-shadow" ng-repeat="tool in mod_list.tools" ng-hide="tool._destroy">
+                <div class="remove-mod" ng-if="editing">
+                    <span class="fa fa-times" ng-click="removeMod(tool, true)"></span>
+                </div>
                 <div class="image-container">
                     <div class="helper"></div>
                     <img ng-src="{{tool.mod.image}}"/>

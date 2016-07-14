@@ -11,6 +11,22 @@
   padding: 12px;
   background-color: $secondary_background;
   border: 1px solid $border_color;
+  position: relative;
+
+  .remove-mod {
+    position: absolute;
+    right: 0;
+    top: 0;
+    padding-right: 3px;
+    font-size: 20px;
+    cursor: pointer;
+    color: $soft_text_color;
+    @include transition(all 0.2s ease-in-out);
+
+    &:hover {
+      color: $text_color;
+    }
+  }
 
   .image-container {
     height: 96px;
