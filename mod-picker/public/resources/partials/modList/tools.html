@@ -14,7 +14,7 @@
                     </li>
                     <li>by {{tool.mod.authors}}</li>
                     <li>Released {{tool.mod.released | date}}</li>
-                    <li>Updated {{tool.mod.updated | date}}</li>
+                    <li ng-if="tool.mod.updated">Updated {{tool.mod.updated | date}}</li>
                 </ul>
             </div>
         </div>
