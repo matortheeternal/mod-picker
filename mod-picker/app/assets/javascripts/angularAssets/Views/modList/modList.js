@@ -1,6 +1,3 @@
-/**
- * Created by ThreeTen on 3/26/2016.
- */
 app.config(['$stateProvider', function ($stateProvider) {
     $stateProvider.state('base.mod-list', {
         templateUrl: '/resources/partials/modList/modList.html',
