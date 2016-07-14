@@ -52,6 +52,7 @@ app.controller('modListController', function($scope, $q, $stateParams, $timeout,
     // get parent variables
     $scope.mod_list = modListObject.mod_list;
     $scope.mod_list.star = modListObject.star;
+    $scope.originalModList = angular.copy($scope.mod_list);
     $scope.currentUser = currentUser;
 
 	// initialize local variables
@@ -124,26 +125,46 @@ app.controller('modListController', function($scope, $q, $stateParams, $timeout,
 
     $scope.toggleEditing = function() {
         $scope.editing = !$scope.editing;
-        if (!$scope.activeModList) {
-            $scope.activeModList = angular.copy($scope.mod_list);
-        } else if (!$scope.editing) {
-            var modListDiff = objectUtils.getDifferentProperties($scope.activeModList, $scope.mod_list);
+        if (!$scope.editing) {
+            var modListDiff = objectUtils.getDifferentProperties($scope.mod_list, $scope.originalModList);
             if (!objectUtils.isEmptyObject(modListDiff)) {
                 var message = {type: 'warning', text: 'Your mod list has unsaved changes.'};
                 $scope.$broadcast('message', message);
             }
         }
+        // update tab counts
+        $scope.updateTabs();
     };
 
     // MOD LIST EDITING LOGIC
+    $scope.updateTabs = function() {
+        $scope.tabs.forEach(function(tab) {
+            switch (tab.name) {
+                case "Tools":
+                    tab.count = $scope.mod_list.tools_count;
+                    break;
+                case "Mods":
+                    tab.count = $scope.mod_list.mods_count;
+                    break;
+                case "Plugins":
+                    tab.count = $scope.mod_list.plugins_count;
+                    break;
+                case "Config":
+                    tab.count = $scope.mod_list.config_files_count;
+                    break;
+            }
+        });
+    };
+
     $scope.saveChanges = function() {
         // get changed mod fields
-        var modListDiff = objectUtils.getDifferentProperties($scope.activeModList, $scope.mod_list);
+        var modListDiff = objectUtils.getDifferentProperties($scope.mod_list, $scope.originalModList);
         modListDiff.id = $scope.mod_list.id;
 
         modListService.updateModList(modListDiff).then(function() {
             $scope.$emit('successMessage', 'Mod list saved successfully.');
-            $scope.mod_list = angular.copy($scope.activeModList);
+            delete $scope.originalModList;
+            $scope.originalModList = angular.copy($scope.mod_list);
         }, function(response) {
             $scope.$emit('errorMessage', {label: 'Error saving mod list', response: response});
         });
@@ -151,7 +172,8 @@ app.controller('modListController', function($scope, $q, $stateParams, $timeout,
 
     $scope.discardChanges = function() {
         if (confirm("Are you sure you want to discard your changes?")) {
-            $scope.activeModList = angular.copy($scope.mod_list);
+            $scope.mod_list = angular.copy($scope.originalModList);
+            $scope.updateTabs();
         }
     };
 
@@ -176,6 +198,7 @@ app.controller('modlistDetailsController', function($scope) {
 app.controller('modlistToolsController', function($scope, modListService) {
     modListService.retrieveModListTools($scope.mod_list.id).then(function(data) {
         $scope.mod_list.tools = data;
+        $scope.originalModList.tools = angular.copy($scope.mod_list.tools);
     }, function(response) {
         $scope.errors.tools = response;
     });
