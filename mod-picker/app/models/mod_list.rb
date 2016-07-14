@@ -68,10 +68,14 @@ class ModList < ActiveRecord::Base
   before_save :set_dates
   before_destroy :decrement_counters, :unset_active
 
-  def update_lazy_counters
-    mod_ids = self.mods.ids
+  def update_counters
     self.mods_count = self.mods.where(is_utility: false).count
     self.tools_count = self.mods.where(is_utility: true).count
+    update_lazy_counters
+  end
+
+  def update_lazy_counters
+    mod_ids = self.mods.ids
     self.plugins_count = Plugin.where(mod_id: mod_ids).count
     self.active_plugins_count = self.mod_list_plugins.where(active: true).count
     self.compatibility_notes_count = self.mod_list_compatibility_notes.all.count
