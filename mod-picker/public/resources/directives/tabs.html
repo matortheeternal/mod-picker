@@ -1,5 +1,5 @@
 <div class="tabs">
 	<a ng-repeat="tab in tabs" ng-class="isCurrentTab(tab.name)" ng-click="goToState('^.' + tab.name, tab.params)">
-		{{tab.name}}
+		{{tab.name}} <span ng-if="tab.hasOwnProperty('count')">({{tab.count}})</span>
 	</a>
 </div>
