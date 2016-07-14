@@ -48,6 +48,9 @@ class ModList < ActiveRecord::Base
   accepts_nested_attributes_for :custom_plugins, allow_destroy: true
   accepts_nested_attributes_for :mod_list_config_files, allow_destroy: true
   accepts_nested_attributes_for :mod_list_custom_config_files, allow_destroy: true
+  accepts_nested_attributes_for :mod_list_compatibility_notes, allow_destroy: true
+  accepts_nested_attributes_for :mod_list_install_order_notes, allow_destroy: true
+  accepts_nested_attributes_for :mod_list_load_order_notes, allow_destroy: true
 
   # Validations
   validates :game_id, :submitted_by, :name, presence: true
