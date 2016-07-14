@@ -1,24 +1,38 @@
-<div class="content-block">
-    <div class="content-title">Tools
-        <span class="right-item">
-            <a ng-click="curToolsSecTab = 'list'" ng-class="cssChange('tools','list')">List</a>
-            <span class="divider">|</span>
-            <a ng-click="curToolsSecTab = 'tiles'" ng-class="cssChange('tools','tiles')">Tiles</a>
-        </span>
+<loader data="mod_list.tools" spinner-class="big-spinner">
+    <div class="content-block" ng-show="mod_list.tools.length">
+        <div class="content-title">Tools</div>
+        <div class="content-container">
+            <div class="tool-item" ng-repeat="tool in mod_list.tools" ng-hide="tool._destroy">
+                <div class="image-container">
+                    <div class="helper"></div>
+                    <img ng-src="{{tool.image}}"/>
+                </div>
+                <ul>
+                    <li class="tool-name">
+                        <a href="#/mod/{{tool.id}}">{{tool.name}}</a>
+                        <span ng-if="tool.aliases">({{tool.aliases.split(",")[0]}})</span>
+                    </li>
+                    <li>by {{tool.authors}}</li>
+                    <li>Released {{tool.released | date}}</li>
+                    <li>Updated {{tool.updated | date}}</li>
+                </ul>
+            </div>
+        </div>
     </div>
-    <div class="content-container">
-        Show Tools Service
-    </div>
-</div>
 
-<div class="content-block">
-    <div class="content-title">Missing Requirements
-        <span class="section-header-counter"># Unresolved Issues</span>
+    <div class="content-block" ng-show="mod_list.tools.length">
+        <div class="content-title">Missing Requirements
+            <span class="section-header-counter"># Unresolved Issues</span>
         <span class="right-item">
             <a ng-click="">Resolve All Issues</a>
         </span>
+        </div>
+        <div class="content-container">
+            Show Missing Requirements Service: Tools
+        </div>
     </div>
-    <div class="content-container">
-        Show Missing Requirements Service: Tools
+
+    <div class="content-message" ng-hide="mod_list.tools.length">
+        There are no tools in this mod list.
     </div>
-</div>
+</loader>
