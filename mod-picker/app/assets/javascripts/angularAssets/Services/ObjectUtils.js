@@ -42,6 +42,71 @@ app.service('objectUtils', function () {
         }
     };
 
+    this.getDifferentValues = function(v1, v2) {
+        var t1 = typeof v1;
+        var t2 = typeof v2;
+        // type don't match, return new value
+        if (t1 !== t2) {
+            return v2;
+        }
+        // switch on types
+        switch(t1) {
+            // both types undefined - just break (return undefined)
+            case "undefined":
+                break;
+            // special object handling
+            case "object":
+                // handle arrays
+                if (v1.constructor === Array || v2.constructor === Array) {
+                    if (v1.constructor === v2.constructor) {
+                        var arrayDiff = service.getDifferentArrayValues(v1, v2);
+                        // if we have array changes, return them, else return undefined
+                        if (arrayDiff.length) {
+                            return arrayDiff;
+                        }
+                    } else {
+                        return v2;
+                    }
+                }
+                // else handle objects
+                else {
+                    return service.getDifferentObjectValues(v1, v2);
+                }
+                break;
+            default:
+                // by default just do a direct value comparison
+                if (v1 !== v2) {
+                    return v2;
+                }
+        }
+    };
+
+    this.getDifferentArrayValues = function(firstArray, secondArray) {
+        var result = [];
+        var i, firstItem, secondItem, diff;
+        // handle array length mismatch
+        if (firstArray.length < secondArray.length) {
+            for (i = firstArray.length; i < secondArray.length; i++) {
+                result.push(secondArray[i]);
+            }
+        } else if (secondArray.length < firstArray.length) {
+            throw "ObjectUtils.getDifferentArrayItems cannot handle array item deletion!  Use a _destroy property instead."
+        }
+        // add non-equal items to the result array
+        shorterLength = Math.min(firstArray.length, secondArray.length);
+        for (i = 0; i < shorterLength; i++) {
+            firstItem = firstArray[i];
+            secondItem = secondArray[i];
+            diff = service.getDifferentValues(firstItem, secondItem);
+            if (!diff) {
+                continue;
+            }
+            result.push(diff);
+        }
+        // return the result array
+        return result;
+    };
+
     this.getDifferentObjectValues = function(obj, otherObj) {
         var result = {};
         for (var property in obj) {
@@ -49,14 +114,10 @@ app.service('objectUtils', function () {
                 // if we pass absolute equality we skip the property
                 var p1 = obj[property];
                 var p2 = otherObj[property];
-                if (p1 === p2) {
-                    continue;
-                } else if (!!p1 && !!p2) {
-                    if (p1.toString() === p2.toString()) {
-                        continue;
-                    }
+                diff = service.getDifferentValues(p1, p2);
+                if (diff) {
+                    result[property] = diff;
                 }
-                result[property] = obj[property];
             }
         }
         return result;
