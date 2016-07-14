@@ -66,6 +66,7 @@ class ModList < ActiveRecord::Base
   # Callbacks
   after_create :increment_counters, :set_active
   before_save :set_dates
+  after_save :update_lazy_counters
   before_destroy :decrement_counters, :unset_active
 
   def update_counters
