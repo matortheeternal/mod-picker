@@ -109,16 +109,21 @@ app.service('objectUtils', function () {
 
     this.getDifferentObjectValues = function(obj, otherObj) {
         var result = {};
+        var foundDifferences = false;
         for (var property in obj) {
             if (obj.hasOwnProperty(property)) {
-                // if we pass absolute equality we skip the property
-                var p1 = obj[property];
-                var p2 = otherObj[property];
-                diff = service.getDifferentValues(p1, p2);
+                diff = service.getDifferentValues(obj[property], otherObj[property]);
+                // if there are differences, we save them
                 if (diff) {
+                    foundDifferences = true;
                     result[property] = diff;
                 }
             }
+        }
+        // if we found differences and the source object has an id property
+        // save the id property to the result object
+        if (foundDifferences && obj.hasOwnProperty('id')) {
+            result.id = obj.id;
         }
         return result;
     };
