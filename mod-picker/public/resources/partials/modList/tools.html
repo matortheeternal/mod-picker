@@ -2,13 +2,13 @@
     <div class="content-block" ng-show="mod_list.tools.length">
         <div class="content-title">Tools</div>
         <div class="content-container">
-            <div class="tool-item box-shadow" ng-repeat="tool in mod_list.tools" ng-hide="tool._destroy">
+            <div class="mod-grid-item box-shadow" ng-repeat="tool in mod_list.tools" ng-hide="tool._destroy">
                 <div class="image-container">
                     <div class="helper"></div>
                     <img ng-src="{{tool.mod.image}}"/>
                 </div>
                 <ul>
-                    <li class="tool-name">
+                    <li class="mod-name">
                         <a href="#/mod/{{tool.mod.id}}">{{tool.mod.name}}</a>
                         <span ng-if="tool.mod.aliases">({{tool.mod.aliases.split(",")[0]}})</span>
                     </li>
