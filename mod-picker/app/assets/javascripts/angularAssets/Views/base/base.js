@@ -36,6 +36,12 @@ app.controller('baseController', function($scope, $state, $location, currentUser
     $scope.$on('reloadCurrentUser', function() {
         $state.reload();
     });
+
+    // handle state change errors
+    $scope.$on("$stateChangeError", function(event, toState, toParams, fromState, fromParams, error) {
+        $state.get('base.error').error = error;
+        $state.go('base.error');
+    });
 });
 
 app.controller('searchController', function($scope) {
@@ -48,9 +54,4 @@ app.controller('searchController', function($scope) {
             $scope.$apply();
         }, 1000);
     };
-
-    $scope.$on("$stateChangeError", function(event, toState, toParams, fromState, fromParams, error) {
-        $state.get('base.error').error = error;
-        $state.go('base.error');
-    });
 });
