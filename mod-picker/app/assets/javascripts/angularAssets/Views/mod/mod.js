@@ -67,7 +67,7 @@ app.config(['$stateProvider', function($stateProvider) {
     });
 }]);
 
-app.controller('modController', function($scope, $q, $stateParams, $timeout, currentUser, modObject, modService, contributionService, categoryService, tagService, smoothScroll, errorService, sortFactory) {
+app.controller('modController', function($scope, $q, $stateParams, $timeout, currentUser, modObject, modService, contributionService, categoryService, tagService, smoothScroll, errorService, sortFactory, tabsFactory) {
     // get parent variables
     $scope.mod = modObject.mod;
     $scope.mod.star = modObject.star;
@@ -76,6 +76,7 @@ app.controller('modController', function($scope, $q, $stateParams, $timeout, cur
     categoryService.resolveModCategories($scope.mod);
 
     // initialize local variables
+    $scope.tabs = tabsFactory.buildModTabs($scope.mod);
     $scope.tags = [];
     $scope.newTags = [];
     $scope.statusModal = {};
@@ -122,15 +123,6 @@ app.controller('modController', function($scope, $q, $stateParams, $timeout, cur
     var isAuthor = author !== null;
     $scope.permissions.canManage = $scope.permissions.canModerate || isAuthor;
 
-    //tabs array
-    $scope.tabs = [
-        { name: 'Reviews' },
-        { name: 'Compatibility' },
-        { name: 'Install Order' },
-        { name: 'Load Order' },
-        { name: 'Analysis' }
-    ];
-
     //returns a reference to the tab with tabName (because sometimes tabs are removed)
     $scope.findTab = function(tabName) {
         var index = $scope.tabs.findIndex(function(tab) {
@@ -138,32 +130,6 @@ app.controller('modController', function($scope, $q, $stateParams, $timeout, cur
         });
         return $scope.tabs[index];
     };
-
-    //removes the tab with tabName
-    $scope.removeTab = function(tabName) {
-        var index = $scope.tabs.findIndex(function(tab) {
-            return tab.name === tabName;
-        });
-        $scope.tabs.splice(index, 1);
-    };
-
-    // only display analysis tab if mod doesn't have a primary category
-    if (!$scope.mod.primary_category_id) {
-        $scope.removeTab('Reviews');
-        $scope.removeTab('Compatibility');
-        $scope.removeTab('Install Order');
-        $scope.removeTab('Load Order');
-    }
-    else {
-        // remove install order notes if mod is a utility
-        if ($scope.mod.is_utility) {
-            $scope.removeTab('Install Order');
-        }
-        // remove Load Order tab if mod has no plugins
-        if ($scope.mod.plugins_count === 0) {
-            $scope.removeTab('Load Order');
-        }
-    }
 
     //set the class of the status box
     switch ($scope.mod.status) {
