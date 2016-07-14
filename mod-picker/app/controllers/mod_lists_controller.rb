@@ -44,64 +44,45 @@ class ModListsController < ApplicationController
   end
 
   # GET /mod_lists/:id/mods
-  # filter to only include mods that belong to the mod_list
   def mods
-    if @mod_list
-      mod_list_mods = @mod_list.mod_list_mods.joins(:mod)
-
-      json_output = mod_list_mods.as_json(
-        {:only => [:index, :active],
-          :include => {
+    authorize! :read, @mod_list
+    mods = @mod_list.mod_list_mods.joins(:mod)
+    render :json => mods.as_json({
+        :only => [:index, :active],
+        :include => {
             :mod => {
-              :only => [:id, :name]
+                :only => [:id, :name]
             }
-          }
-        })
-      render :json => json_output
-    else
-      render status: 404
-    end
+        }
+    })
   end
 
   # GET /mod_lists/:id/plugins
-  # filter to include plugins belonging to an individual mod_list
   def plugins
-    if @mod_list
-      mod_list_plugins = @mod_list.mod_list_plugins.joins(:plugin)
-
-      # format and return json
-      json_output = mod_list_plugins.as_json(
-        {:only => [:index, :active],
-          :include => {
+    authorize! :read, @mod_list
+    plugins = @mod_list.mod_list_plugins.joins(:plugin)
+    render :json =>  plugins.as_json({
+        :only => [:index, :active],
+        :include => {
             :plugin => {
-              :only => [:id, :filename]
+                :only => [:id, :filename]
             }
-          }
-        })
-      render :json => json_output
-    else
-      render status: 404
-    end
+        }
+    })
   end
 
-  # GET /mod_lists/:id/config
-  def configs
-    if @mod_list
-      mod_list_config_files = @mod_list.mod_list_config_files.joins(:config_file)
-
-      # format and return json
-      json_output = mod_list_config_files.as_json(
-        {:only => [:text_body],
-          :include => {
+  # GET /mod_lists/:id/config_files
+  def config_files
+    authorize! :read, @mod_list
+    config_files = @mod_list.mod_list_config_files.joins(:config_file)
+    render :json => config_files.as_json({
+        :only => [:text_body],
+        :include => {
             :config_file => {
-              :only => [:filename, :install_path, :text_body, :mod_lists_count]
+                :only => [:filename, :install_path, :text_body, :mod_lists_count]
             }
-          }
-        })
-      render :json => json_output
-    else
-      render status: 404
-    end
+        }
+    })
   end
 
   # POST /mod_lists

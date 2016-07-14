@@ -101,7 +101,7 @@ Rails.application.routes.draw do
     match '/mod_lists/:id/mods', to: 'mod_lists#mods', via: 'get'
     match '/mod_lists/:id/tools', to: 'mod_lists#tools', via: 'get'
     match '/mod_lists/:id/plugins', to: 'mod_lists#plugins', via: 'get'
-    match '/mod_lists/:id/config', to: 'mod_lists#configs', via: 'get'
+    match '/mod_lists/:id/config_files', to: 'mod_lists#config_files', via: 'get'
 
     # mod and mod list stars
     match '/mod_lists/:id/star', to: 'mod_lists#create_star', via: [:post]
