@@ -42,7 +42,7 @@ app.service('objectUtils', function () {
         }
     };
 
-    this.getDifferentProperties = function(obj, otherObj) {
+    this.getDifferentObjectValues = function(obj, otherObj) {
         var result = {};
         for (var property in obj) {
             if (obj.hasOwnProperty(property)) {

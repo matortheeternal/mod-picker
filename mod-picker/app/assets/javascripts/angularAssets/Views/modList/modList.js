@@ -126,7 +126,7 @@ app.controller('modListController', function($scope, $q, $stateParams, $timeout,
     $scope.toggleEditing = function() {
         $scope.editing = !$scope.editing;
         if (!$scope.editing) {
-            var modListDiff = objectUtils.getDifferentProperties($scope.mod_list, $scope.originalModList);
+            var modListDiff = objectUtils.getDifferentObjectValues($scope.mod_list, $scope.originalModList);
             if (!objectUtils.isEmptyObject(modListDiff)) {
                 var message = {type: 'warning', text: 'Your mod list has unsaved changes.'};
                 $scope.$broadcast('message', message);
@@ -169,7 +169,8 @@ app.controller('modListController', function($scope, $q, $stateParams, $timeout,
 
     $scope.saveChanges = function() {
         // get changed mod fields
-        var modListDiff = objectUtils.getDifferentProperties($scope.mod_list, $scope.originalModList);
+        var modListDiff = objectUtils.getDifferentObjectValues($scope.mod_list, $scope.originalModList);
+        modListDiff.tools = objectUtils.getDifferentObjectValues($scope.mod_list.tools, $scope.originalModList.tools);
         modListDiff.id = $scope.mod_list.id;
 
         modListService.updateModList(modListDiff).then(function() {
