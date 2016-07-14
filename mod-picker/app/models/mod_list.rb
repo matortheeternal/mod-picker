@@ -71,6 +71,7 @@ class ModList < ActiveRecord::Base
   def update_eager_counters
     self.mods_count = self.mods.where(is_utility: false).count
     self.tools_count = self.mods.where(is_utility: true).count
+    self.save_counters([:mods_count, :tools_count])
   end
 
   def update_lazy_counters
@@ -80,7 +81,7 @@ class ModList < ActiveRecord::Base
     self.compatibility_notes_count = self.mod_list_compatibility_notes.all.count
     self.install_order_notes_count = self.mod_list_install_order_notes.all.count
     self.load_order_notes_count = self.mod_list_load_order_notes.all.count
-    self.save
+    self.save_counters([:plugins_count, :active_plugins_count, :compatibility_notes_count, :install_order_notes_count, :load_order_notes_count])
   end
 
   def refresh_compatibility_notes
