@@ -16,12 +16,20 @@ class ModListMod < ActiveRecord::Base
   private
     # counter caches
     def increment_counter_caches
-      self.mod_list.update_counter(:mods_count, 1)
+      if self.mod.is_utility
+        self.mod_list.update_counter(:tools_count, 1)
+      else
+        self.mod_list.update_counter(:mods_count, 1)
+      end
       self.mod.update_counter(:mod_lists_count, 1)
     end
 
     def decrement_counter_caches
-      self.mod_list.update_counter(:mods_count, -1)
+      if self.mod.is_utility
+        self.mod_list.update_counter(:tools_count, -1)
+      else
+        self.mod_list.update_counter(:mods_count, -1)
+      end
       self.mod.update_counter(:mod_lists_count, -1)
     end
 end
