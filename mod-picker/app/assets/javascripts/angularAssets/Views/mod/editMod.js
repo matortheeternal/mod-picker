@@ -451,6 +451,9 @@ app.controller('editModController', function($scope, $state, currentUser, modObj
         modService.updateMod(modDiff, sources, $scope.customSources).then(function() {
             if (!angular.isDefined($scope.success)) {
                 $scope.success = true;
+                if (!$scope.image.file) {
+                    $scope.submittingStatus = "Mod Updated Successfully!";
+                }
             } else if ($scope.success) {
                 $scope.submittingStatus = "Mod Updated Successfully!";
             }
