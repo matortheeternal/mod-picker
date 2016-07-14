@@ -100,7 +100,7 @@ class ModListsController < ApplicationController
   # PATCH/PUT /mod_lists/1
   def update
     authorize! :update, @mod_list
-    if @mod_list.update(mod_list_params)
+    if @mod_list.update(mod_list_params) && @mod_list.update_lazy_counters
       render json: {status: :ok}
     else
       render json: @mod_list.errors, status: :unprocessable_entity

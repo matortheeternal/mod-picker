@@ -66,13 +66,11 @@ class ModList < ActiveRecord::Base
   # Callbacks
   after_create :increment_counters, :set_active
   before_save :set_dates
-  after_save :update_lazy_counters
   before_destroy :decrement_counters, :unset_active
 
-  def update_counters
+  def update_eager_counters
     self.mods_count = self.mods.where(is_utility: false).count
     self.tools_count = self.mods.where(is_utility: true).count
-    update_lazy_counters
   end
 
   def update_lazy_counters
@@ -82,6 +80,7 @@ class ModList < ActiveRecord::Base
     self.compatibility_notes_count = self.mod_list_compatibility_notes.all.count
     self.install_order_notes_count = self.mod_list_install_order_notes.all.count
     self.load_order_notes_count = self.mod_list_load_order_notes.all.count
+    self.save
   end
 
   def refresh_compatibility_notes
