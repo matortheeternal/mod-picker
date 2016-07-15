@@ -50,7 +50,7 @@
                 <div class="news-box" ng-repeat="article in articles">
                     <h3 class="section-title">{{article.title}}</h3>
                     <span class="article-details">by {{article.submitter.username}} on {{article.submitted | date}}</span>
-                    <read-more text="article.text_body"></read-more>
+                    <read-more text="article.text_body" words="50"></read-more>
                 </div>
                 <div class="load-older-posts">
                     <a href="#/news/">See All News Posts</a>
