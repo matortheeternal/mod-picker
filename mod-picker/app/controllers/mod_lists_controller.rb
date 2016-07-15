@@ -33,7 +33,7 @@ class ModListsController < ApplicationController
     authorize! :read, @mod_list
     tools = @mod_list.mod_list_mods.joins(:mod).where(:mods => {is_utility: true})
     render :json => tools.as_json({
-        :only => [:index, :active],
+        :only => [:id, :index, :active],
         :include => {
             :mod => {
                 :only => [:id, :name, :aliases, :authors, :released, :updated],
@@ -48,7 +48,7 @@ class ModListsController < ApplicationController
     authorize! :read, @mod_list
     mods = @mod_list.mod_list_mods.joins(:mod)
     render :json => mods.as_json({
-        :only => [:index, :active],
+        :only => [:id, :index, :active],
         :include => {
             :mod => {
                 :only => [:id, :name]
