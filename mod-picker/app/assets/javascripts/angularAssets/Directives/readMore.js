@@ -3,7 +3,8 @@ app.directive('readMore', function(spinnerFactory) {
         restrict: 'E',
         templateUrl: '/resources/directives/readMore.html',
         scope: {
-            text: '='
+            text: '=',
+            numWords: '=words'
         },
         controller: 'readMoreController'
     };
@@ -14,14 +15,13 @@ app.controller('readMoreController', function($scope) {
         return string.match(/(\S+)/g).length;
     };
 
-    //returns just the first 50 words of a string
     reduceText = function(string) {
-        words = string.split(' ', 50);
+        words = string.split(' ', $scope.numWords);
         return words.join(' ');
     };
 
     $scope.reducedText = reduceText($scope.text);
-    $scope.expandable = wordCount($scope.text) > 50;
+    $scope.expandable = wordCount($scope.text) > $scope.numWords;
 
     $scope.expanded = false;
     $scope.switchExpansion = function() {
