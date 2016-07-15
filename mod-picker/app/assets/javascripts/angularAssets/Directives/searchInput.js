@@ -50,6 +50,8 @@ app.controller('searchInputController', function($scope, $timeout, modService, p
                 userService.searchUsers(str).then(searchCallback);
             } else if ($scope.searchType === 'mods')  {
                 modService.searchMods(str).then(searchCallback);
+            } else if ($scope.searchType === 'tools') {
+                modService.searchMods(str, true).then(searchCallback);
             }
         } else {
             $scope.searching = false;
@@ -64,7 +66,7 @@ app.controller('searchInputController', function($scope, $timeout, modService, p
             $scope.searchText = result.filename;
         } else if ($scope.searchType === 'users') {
             $scope.searchText = result.username;
-        } else if ($scope.searchType === 'mods')  {
+        } else if ($scope.searchType === 'mods' || $scope.searchType === 'tools')  {
             $scope.searchText = result.name;
         }
         $scope.showDropdown = false;
