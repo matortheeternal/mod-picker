@@ -109,7 +109,8 @@ Rails.application.routes.draw do
     match '/avatar', to: 'avatars#create', via: [:post]
 
     # help pages
-    resources :help_pages, only: [:index, :show]
+    match '/help', to: 'help_pages#index', via: [:get]
+    match '/help/:id', to: 'help_pages#show', via: [:get]
     
     
 

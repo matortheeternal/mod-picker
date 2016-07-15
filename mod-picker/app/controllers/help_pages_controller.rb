@@ -10,7 +10,7 @@ class HelpPagesController < ApplicationController
   end
 
   def show
-    @page = HelpPage.find(params[:id])
+    @help_page = HelpPage.find(params[:id])
 
     render "help_pages/show" 
   end

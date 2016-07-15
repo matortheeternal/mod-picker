@@ -924,13 +924,13 @@ end
 
 def seed_fake_help_pages
   puts "\nSeeding help pages"
-  randGame = random_game
 
   rand(30).times do
     HelpPage.new(
-      
+      category: HelpPage.categories.keys.sample,
+      game: random_game,
       name: Faker::Lorem.words(4).join(' '),
-      text_body: Faker::Lorem.words(rand(300)).join(' '),
+      text_body: Faker::Lorem.words(rand(300) + 30).join(' '),
       submitted: Faker::Date.backward(10),
       edited: Faker::Date.backward(9)
     ).save!
