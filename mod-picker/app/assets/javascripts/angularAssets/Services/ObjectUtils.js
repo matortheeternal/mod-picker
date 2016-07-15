@@ -56,8 +56,16 @@ app.service('objectUtils', function () {
                 break;
             // special object handling
             case "object":
+                // if the value used to be null, return new value
+                if (!v1 && v2) {
+                    return v2;
+                }
+                // v1 is null, return
+                else if (!v1) {
+                    return;
+                }
                 // handle arrays
-                if (v1.constructor === Array || v2.constructor === Array) {
+                else if (v1.constructor === Array || v2.constructor === Array) {
                     if (v1.constructor === v2.constructor) {
                         var arrayDiff = service.getDifferentArrayValues(v1, v2);
                         // if we have array changes, return them, else return undefined
@@ -98,7 +106,7 @@ app.service('objectUtils', function () {
             firstItem = firstArray[i];
             secondItem = secondArray[i];
             diff = service.getDifferentValues(firstItem, secondItem);
-            if (!diff) {
+            if (!diff || service.isEmptyObject(diff)) {
                 continue;
             }
             result.push(diff);
@@ -107,14 +115,17 @@ app.service('objectUtils', function () {
         return result;
     };
 
+    // first object is original, second is changed object
     this.getDifferentObjectValues = function(obj, otherObj) {
         var result = {};
         var foundDifferences = false;
-        for (var property in obj) {
-            if (obj.hasOwnProperty(property)) {
+        var diff;
+        for (var property in otherObj) {
+            if (otherObj.hasOwnProperty(property) && property !== "$$hashKey") {
                 diff = service.getDifferentValues(obj[property], otherObj[property]);
                 // if there are differences, we save them
-                if (diff) {
+                if (typeof diff !== 'undefined' &&
+                   (typeof diff !== 'object' || !service.isEmptyObject(diff))) {
                     foundDifferences = true;
                     result[property] = diff;
                 }
@@ -122,8 +133,8 @@ app.service('objectUtils', function () {
         }
         // if we found differences and the source object has an id property
         // save the id property to the result object
-        if (foundDifferences && obj.hasOwnProperty('id')) {
-            result.id = obj.id;
+        if (foundDifferences && otherObj.hasOwnProperty('id')) {
+            result.id = otherObj.id;
         }
         return result;
     };
