@@ -5,12 +5,13 @@ class Mod < ActiveRecord::Base
   enum status: [ :good, :outdated, :unstable ]
 
   # BOOLEAN SCOPES (excludes content when false)
-  scope :hidden, -> (bool) { where(hidden: false) if !bool  }
-  scope :adult, -> (bool) { where(has_adult_content: false) if !bool }
-  scope :official, -> (bool) { where(is_official: false) if !bool }
-  scope :utility, -> (bool) { where(is_utility: false) if !bool }
-  scope :is_game, -> (bool) { where.not(primary_category_id: nil) if !bool }
+  scope :include_hidden, -> (bool) { where(hidden: false) if !bool  }
+  scope :include_adult, -> (bool) { where(has_adult_content: false) if !bool }
+  scope :include_official, -> (bool) { where(is_official: false) if !bool }
+  scope :include_utilities, -> (bool) { where(is_utility: false) if !bool }
+  scope :include_games, -> (bool) { where.not(primary_category_id: nil) if !bool }
   # GENERAL SCOPES
+  scope :utility, -> (bool) { where(is_utility: bool) }
   scope :search, -> (search) { where("name like ? OR aliases like ?", "%#{search}%", "%#{search}%") }
   scope :game, -> (game_id) {
     game = Game.find(game_id)
