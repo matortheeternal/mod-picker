@@ -926,9 +926,11 @@ def seed_fake_help_pages
   puts "\nSeeding help pages"
 
   rand(30).times do
+    author = User.offset(rand(User.count)).first
     HelpPage.new(
       category: HelpPage.categories.keys.sample,
       game: random_game,
+      submitted_by: author.id,
       name: Faker::Lorem.words(4).join(' '),
       text_body: Faker::Lorem.words(rand(300) + 30).join(' '),
       submitted: Faker::Date.backward(10),
