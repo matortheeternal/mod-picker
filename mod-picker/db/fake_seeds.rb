@@ -928,6 +928,7 @@ def seed_fake_help_pages
 
   rand(30).times do
     HelpPage.new(
+      
       name: Faker::Lorem.words(4).join(' '),
       text_body: Faker::Lorem.words(rand(300)).join(' '),
       submitted: Faker::Date.backward(10),

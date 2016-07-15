@@ -9,6 +9,12 @@ class HelpPagesController < ApplicationController
     render "help_pages/index"
   end
 
+  def show
+    @page = HelpPage.find(params[:id])
+
+    render "help_pages/show" 
+  end
+
   private
     def authorize
       unless current_user.present?

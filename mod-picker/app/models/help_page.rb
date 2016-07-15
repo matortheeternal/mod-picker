@@ -2,8 +2,12 @@ class HelpPage < ActiveRecord::Base
   include RecordEnhancements
 
   belongs_to :submitter, :class_name => 'User', :foreign_key => 'submitted_by', :inverse_of => 'help_pages'
+  belongs_to :game, :inverse_of => 'help_pages'
 
   has_many :comments, :as => 'commentable'
+
+  # enum for help page category
+  enum category: [:mod_picker, :modding, :guides]
 
   # validations
   validates :name, :text_body, presence: true
