@@ -16,6 +16,7 @@ app.service('modListService', function (backend, objectUtils) {
     };
 
     this.updateModList = function(modList) {
+        var mod_list_mods = Array.prototype.concat(modList.tools || [], modList.mods || []);
         var modListData = {
             mod_list: {
                 id: modList.id,
@@ -24,7 +25,7 @@ app.service('modListService', function (backend, objectUtils) {
                 is_collection: modList.is_collection,
                 name: modList.name,
                 description: modList.description,
-                tools_attributes: modList.tools
+                mod_list_mods_attributes: mod_list_mods
             }
         };
         objectUtils.deleteEmptyProperties(modListData, 1);

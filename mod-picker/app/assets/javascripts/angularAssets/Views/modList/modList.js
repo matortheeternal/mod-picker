@@ -170,7 +170,6 @@ app.controller('modListController', function($scope, $q, $stateParams, $timeout,
     $scope.saveChanges = function() {
         // get changed mod fields
         var modListDiff = objectUtils.getDifferentObjectValues($scope.originalModList, $scope.mod_list);
-        modListDiff.tools = objectUtils.getDifferentObjectValues($scope.originalModList, $scope.mod_list);
         modListDiff.id = $scope.mod_list.id;
 
         modListService.updateModList(modListDiff).then(function() {
