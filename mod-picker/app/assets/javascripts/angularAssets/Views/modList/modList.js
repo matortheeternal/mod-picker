@@ -170,7 +170,11 @@ app.controller('modListController', function($scope, $q, $stateParams, $timeout,
     $scope.saveChanges = function() {
         // get changed mod fields
         var modListDiff = objectUtils.getDifferentObjectValues($scope.originalModList, $scope.mod_list);
-        modListDiff.id = $scope.mod_list.id;
+        if (objectUtils.isEmptyObject(modListDiff)) {
+            var message = {type: 'warning', text: 'There are no changes to save.'};
+            $scope.$broadcast('message', message);
+            return;
+        }
 
         modListService.updateModList(modListDiff).then(function() {
             $scope.$emit('successMessage', 'Mod list saved successfully.');
