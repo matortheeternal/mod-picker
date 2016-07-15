@@ -42,70 +42,70 @@ app.service('objectUtils', function () {
         }
     };
 
-    this.getDifferentValues = function(v1, v2) {
-        var t1 = typeof v1;
-        var t2 = typeof v2;
+    this.getDifferentValues = function(oldValue, newValue) {
+        var oldType = typeof oldValue;
+        var newType = typeof newValue;
         // type don't match, return new value
-        if (t1 !== t2) {
-            return v2;
+        if (oldType !== newType) {
+            return newValue;
         }
         // switch on types
-        switch(t1) {
+        switch(oldType) {
             // both types undefined - just break (return undefined)
             case "undefined":
                 break;
             // special object handling
             case "object":
                 // if the value used to be null, return new value
-                if (!v1 && v2) {
-                    return v2;
+                if (!oldValue && newValue) {
+                    return newValue;
                 }
-                // v1 is null, return
-                else if (!v1) {
+                // newValue is null, return undefined
+                else if (!newValue) {
                     return;
                 }
                 // handle arrays
-                else if (v1.constructor === Array || v2.constructor === Array) {
-                    if (v1.constructor === v2.constructor) {
-                        var arrayDiff = service.getDifferentArrayValues(v1, v2);
+                else if (oldValue.constructor === Array || newValue.constructor === Array) {
+                    if (oldValue.constructor === newValue.constructor) {
+                        var arrayDiff = service.getDifferentArrayValues(oldValue, newValue);
                         // if we have array changes, return them, else return undefined
                         if (arrayDiff.length) {
                             return arrayDiff;
                         }
                     } else {
-                        return v2;
+                        return newValue;
                     }
                 }
                 // else handle objects
                 else {
-                    return service.getDifferentObjectValues(v1, v2);
+                    return service.getDifferentObjectValues(oldValue, newValue);
                 }
                 break;
             default:
                 // by default just do a direct value comparison
-                if (v1 !== v2) {
-                    return v2;
+                if (oldValue !== newValue) {
+                    return newValue;
                 }
         }
     };
 
-    this.getDifferentArrayValues = function(firstArray, secondArray) {
+    this.getDifferentArrayValues = function(oldArray, newArray) {
         var result = [];
-        var i, firstItem, secondItem, diff;
+        var i, oldItem, newItem, diff;
         // handle array length mismatch
-        if (firstArray.length < secondArray.length) {
-            for (i = firstArray.length; i < secondArray.length; i++) {
-                result.push(secondArray[i]);
+        if (oldArray.length < newArray.length) {
+            for (i = oldArray.length; i < newArray.length; i++) {
+                result.push(newArray[i]);
             }
-        } else if (secondArray.length < firstArray.length) {
+        } else if (newArray.length < oldArray.length) {
             throw "ObjectUtils.getDifferentArrayItems cannot handle array item deletion!  Use a _destroy property instead."
         }
         // add non-equal items to the result array
-        var shorterLength = Math.min(firstArray.length, secondArray.length);
+        var shorterLength = Math.min(oldArray.length, newArray.length);
         for (i = 0; i < shorterLength; i++) {
-            firstItem = firstArray[i];
-            secondItem = secondArray[i];
-            diff = service.getDifferentValues(firstItem, secondItem);
+            oldItem = oldArray[i];
+            newItem = newArray[i];
+            diff = service.getDifferentValues(oldItem, newItem);
             if (!diff || service.isEmptyObject(diff)) {
                 continue;
             }
@@ -116,13 +116,13 @@ app.service('objectUtils', function () {
     };
 
     // first object is original, second is changed object
-    this.getDifferentObjectValues = function(obj, otherObj) {
+    this.getDifferentObjectValues = function(oldObj, newObj) {
         var result = {};
         var foundDifferences = false;
         var diff;
-        for (var property in otherObj) {
-            if (otherObj.hasOwnProperty(property) && property !== "$$hashKey") {
-                diff = service.getDifferentValues(obj[property], otherObj[property]);
+        for (var property in newObj) {
+            if (newObj.hasOwnProperty(property) && property !== "$$hashKey") {
+                diff = service.getDifferentValues(oldObj[property], newObj[property]);
                 // if there are differences, we save them
                 if (typeof diff !== 'undefined' &&
                    (typeof diff !== 'object' || !service.isEmptyObject(diff))) {
@@ -133,8 +133,8 @@ app.service('objectUtils', function () {
         }
         // if we found differences and the source object has an id property
         // save the id property to the result object
-        if (foundDifferences && otherObj.hasOwnProperty('id')) {
-            result.id = otherObj.id;
+        if (foundDifferences && newObj.hasOwnProperty('id')) {
+            result.id = newObj.id;
         }
         return result;
     };
