@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160714181748) do
+ActiveRecord::Schema.define(version: 20160715003923) do
 
   create_table "agreement_marks", id: false, force: :cascade do |t|
     t.integer "correction_id", limit: 4,                null: false
@@ -345,7 +345,7 @@ ActiveRecord::Schema.define(version: 20160714181748) do
   add_index "mod_authors", ["mod_id"], name: "mod_id", using: :btree
   add_index "mod_authors", ["user_id"], name: "user_id", using: :btree
 
-  create_table "mod_list_compatibility_notes", id: false, force: :cascade do |t|
+  create_table "mod_list_compatibility_notes", force: :cascade do |t|
     t.integer "mod_list_id",           limit: 4,             null: false
     t.integer "compatibility_note_id", limit: 4,             null: false
     t.integer "status",                limit: 1, default: 0, null: false
@@ -354,7 +354,7 @@ ActiveRecord::Schema.define(version: 20160714181748) do
   add_index "mod_list_compatibility_notes", ["compatibility_note_id"], name: "cn_id", using: :btree
   add_index "mod_list_compatibility_notes", ["mod_list_id"], name: "ml_id", using: :btree
 
-  create_table "mod_list_config_files", id: false, force: :cascade do |t|
+  create_table "mod_list_config_files", force: :cascade do |t|
     t.integer "mod_list_id",    limit: 4,     null: false
     t.integer "config_file_id", limit: 4,     null: false
     t.text    "text_body",      limit: 65535
@@ -382,7 +382,7 @@ ActiveRecord::Schema.define(version: 20160714181748) do
 
   add_index "mod_list_custom_plugins", ["mod_list_id"], name: "ml_id", using: :btree
 
-  create_table "mod_list_install_order_notes", id: false, force: :cascade do |t|
+  create_table "mod_list_install_order_notes", force: :cascade do |t|
     t.integer "mod_list_id",           limit: 4,             null: false
     t.integer "install_order_note_id", limit: 4,             null: false
     t.integer "status",                limit: 1, default: 0, null: false
@@ -391,7 +391,7 @@ ActiveRecord::Schema.define(version: 20160714181748) do
   add_index "mod_list_install_order_notes", ["install_order_note_id"], name: "in_id", using: :btree
   add_index "mod_list_install_order_notes", ["mod_list_id"], name: "ml_id", using: :btree
 
-  create_table "mod_list_load_order_notes", id: false, force: :cascade do |t|
+  create_table "mod_list_load_order_notes", force: :cascade do |t|
     t.integer "mod_list_id",        limit: 4,             null: false
     t.integer "load_order_note_id", limit: 4,             null: false
     t.integer "status",             limit: 1, default: 0, null: false
@@ -400,7 +400,7 @@ ActiveRecord::Schema.define(version: 20160714181748) do
   add_index "mod_list_load_order_notes", ["load_order_note_id"], name: "index_mod_list_load_order_notes_on_load_order_note_id", using: :btree
   add_index "mod_list_load_order_notes", ["mod_list_id"], name: "index_mod_list_load_order_notes_on_mod_list_id", using: :btree
 
-  create_table "mod_list_mods", id: false, force: :cascade do |t|
+  create_table "mod_list_mods", force: :cascade do |t|
     t.integer "mod_list_id", limit: 4,                null: false
     t.integer "mod_id",      limit: 4,                null: false
     t.integer "index",       limit: 2,                null: false
@@ -410,7 +410,7 @@ ActiveRecord::Schema.define(version: 20160714181748) do
   add_index "mod_list_mods", ["mod_id"], name: "mod_id", using: :btree
   add_index "mod_list_mods", ["mod_list_id"], name: "ml_id", using: :btree
 
-  create_table "mod_list_plugins", id: false, force: :cascade do |t|
+  create_table "mod_list_plugins", force: :cascade do |t|
     t.integer "mod_list_id", limit: 4,                null: false
     t.integer "plugin_id",   limit: 4,                null: false
     t.integer "index",       limit: 2,                null: false
