@@ -1,6 +1,6 @@
 <loader data="mod.analysis" spinner-class="big-spinner" ng-if="!errors.analysis">
-    <div class="mod-tab-items" ng-if="mod.plugins.length > 0">
-        <div class="mod-tab-item primary-item">
+    <div class="tab-bar-items" ng-if="mod.plugins.length > 0">
+        <div class="tab-bar-item primary-item">
             <strong>Select Plugin:</strong>
             <select ng-options="plugin.filename for plugin in mod.plugins" ng-model="mod.currentPlugin" class="plugin-selector" ng-change="switchPlugin()"></select>
         </div>
