@@ -8,13 +8,9 @@
                     <a ng-href="#/user/{{mod_list.submitter.id}}">{{mod_list.submitter.username}}</a>
                 </span>
                 <br>
-                <span>0 Tools</span> <!-- TODO: Add tools_count to backend -->
-                <span class="divider">|</span>
-                <span>{{mod_list.mods_count}} Mods</span>
-                <span class="divider">|</span>
-                <span>{{mod_list.plugins_count}} Plugins</span>
-                <span class="divider">|</span>
-                <span>{{mod_list.config_files_count}} Config Files</span>
+                <span>Created {{mod_list.submitted | date}}</span>
+                <span class="divider" ng-if="mod_list.updated">|</span>
+                <span ng-if="mod_list.updated">Updated {{mod_list.updated | date}}</span>
                 <span class="divider" ng-if="permissions.canManage">|</span>
                 <a ng-if="permissions.canManage" ng-click="toggleEditing()">
                     <span ng-hide="editing">Edit</span>
