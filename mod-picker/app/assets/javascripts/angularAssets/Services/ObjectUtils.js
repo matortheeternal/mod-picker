@@ -101,7 +101,7 @@ app.service('objectUtils', function () {
             throw "ObjectUtils.getDifferentArrayItems cannot handle array item deletion!  Use a _destroy property instead."
         }
         // add non-equal items to the result array
-        shorterLength = Math.min(firstArray.length, secondArray.length);
+        var shorterLength = Math.min(firstArray.length, secondArray.length);
         for (i = 0; i < shorterLength; i++) {
             firstItem = firstArray[i];
             secondItem = secondArray[i];
