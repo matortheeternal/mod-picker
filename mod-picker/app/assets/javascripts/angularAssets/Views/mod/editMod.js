@@ -425,7 +425,7 @@ app.controller('editModController', function($scope, $state, currentUser, modObj
     // save changes
     $scope.updateMod = function() {
         // get changed mod fields
-        var modDiff = objectUtils.getDifferentObjectValues($scope.mod, $scope.originalMod);
+        var modDiff = objectUtils.getDifferentObjectValues($scope.originalMod, $scope.mod);
 
         // return if mod is invalid
         if (!$scope.modValid()) {
