@@ -47,12 +47,10 @@
         <div class="right-column home-right-column">
             <div class="articles box-shadow">
                 <h3 class="section-title">Site News</h3>
-                <div class="news-box" ng-repeat="article in articles" ng-init="article.reduced_text = reduceText(article.text_body); article.expandable = (wordCount(article.text_body) > 50)">
+                <div class="news-box" ng-repeat="article in articles">
                     <h3 class="section-title">{{article.title}}</h3>
                     <span class="article-details">by {{article.submitter.username}} on {{article.submitted | date}}</span>
-                    <section marked="article.expanded ? article.text_body : article.reduced_text" ng-class="news">
-                    </section>
-                    <a ng-if="article.expandable" ng-click="article.expanded = !article.expanded">Show {{article.expanded ? 'Less' : 'More'}}</a>
+                    <read-more text="article.text_body"></read-more>
                 </div>
                 <div class="load-older-posts">
                     <a href="#/news/">See All News Posts</a>
