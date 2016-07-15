@@ -5,7 +5,7 @@ class ModList < ActiveRecord::Base
   enum visibility: [ :visibility_private, :visibility_unlisted, :visibility_public ]
 
   # BOOLEAN SCOPES
-  scope :adult, -> (bool) { where(has_adult_content: false) if !bool }
+  scope :include_adult, -> (bool) { where(has_adult_content: false) if !bool }
   # GENERAL SCOPES
   scope :visible, -> { where(hidden: false, visibility: 2) }
   scope :game, -> (game_id) { where(game_id: game_id) }
