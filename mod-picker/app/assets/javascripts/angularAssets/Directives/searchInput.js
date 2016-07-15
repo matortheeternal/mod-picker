@@ -6,6 +6,7 @@ app.directive('searchInput', function () {
         scope: {
             resultId: '=',
             searchText: '=?',
+            placeholder: '=?',
             onChange: '=?',
             excludedId: '=?',
             disabled: '=?',
@@ -18,13 +19,12 @@ app.controller('searchInputController', function($scope, $timeout, modService, p
     // set some constants
     var pause = 700;
     var minLength = 2;
-    if ($scope.searchType === "plugins") {
-        $scope.placeholder = "Enter plugin name";
-    } else if ($scope.searchType === "users") {
-        $scope.placeholder = "Enter username";
-    } else if ($scope.searchType === "mods") {
-        $scope.placeholder = "Enter mod name";
-    }
+    $scope.defaultPlaceholders = {
+        plugins: "Enter plugin name",
+        users: "Enter username",
+        mods: "Enter mod name",
+        tools: "Enter tool name"
+    };
 
     $scope.hoverRow = function(index) {
         $scope.currentIndex = index;
