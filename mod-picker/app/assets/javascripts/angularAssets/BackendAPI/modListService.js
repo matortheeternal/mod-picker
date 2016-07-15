@@ -23,7 +23,8 @@ app.service('modListService', function (backend, objectUtils) {
                 visibility: modList.visibility,
                 is_collection: modList.is_collection,
                 name: modList.name,
-                description: modList.description
+                description: modList.description,
+                tools_attributes: modList.tools
             }
         };
         objectUtils.deleteEmptyProperties(modListData, 1);
