@@ -45,15 +45,9 @@ class Ability
       can :destroy, ModListTag
     else
       # users that are not admins or moderators
-      # cannot read hidden content
-      cannot :read, Comment, :hidden => true
-      cannot :read, CompatibilityNote, :hidden => true
-      cannot :read, InstallOrderNote, :hidden => true
-      cannot :read, LoadOrderNote, :hidden => true
-      cannot :read, Review, :hidden => true
-      cannot :read, ModTag, :hidden => true
-      cannot :read, ModListTag, :hidden => true
-      cannot :read, Mod, :hidden => true
+      # cannot read private mod lists unless they submitted them
+      cannot :read, ModList, :visibility => "visibility_private"
+      can :read, ModList, :submitted_by => user.id
 
       # cannot read unapproved content
       cannot :read, CompatibilityNote, :approved => false
@@ -66,6 +60,17 @@ class Ability
       can :read, InstallOrderNote, :approved => false, :submitted_by => user.id
       can :read, LoadOrderNote, :approved => false, :submitted_by => user.id
       can :read, Review, :approved => false, :submitted_by => user.id
+
+        # cannot read hidden content
+      cannot :read, Comment, :hidden => true
+      cannot :read, CompatibilityNote, :hidden => true
+      cannot :read, InstallOrderNote, :hidden => true
+      cannot :read, LoadOrderNote, :hidden => true
+      cannot :read, Review, :hidden => true
+      cannot :read, ModTag, :hidden => true
+      cannot :read, ModListTag, :hidden => true
+      cannot :read, Mod, :hidden => true
+      cannot :read, ModList, :hidden => true
     end
 
     # signed in users who aren't banned
