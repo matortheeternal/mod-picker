@@ -11,12 +11,12 @@ app.directive('readMore', function(spinnerFactory) {
 });
 
 app.controller('readMoreController', function($scope) {
-    wordCount = function(string) {
+    var wordCount = function(string) {
         return string.match(/(\S+)/g).length;
     };
 
-    reduceText = function(string) {
-        words = string.split(' ', $scope.numWords);
+    var reduceText = function(string) {
+        var words = string.split(' ', $scope.numWords);
         return words.join(' ');
     };
 
