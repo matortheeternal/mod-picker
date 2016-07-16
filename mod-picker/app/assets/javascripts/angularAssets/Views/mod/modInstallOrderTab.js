@@ -17,7 +17,8 @@ app.controller('modInstallOrderController', function($scope, $stateParams, $stat
                 direction: $scope.thisTab.params.sdir
             },
             filters: { modlist: $scope.thisTab.params.filter },
-            page: page
+            //if no page is specified load the first one
+            page: page || 1
         };
         contributionService.retrieveModContributions($stateParams.modId, 'install_order_notes', options, $scope.pages.install_order_notes).then(function(data) {
             $scope.mod.install_order_notes = data;

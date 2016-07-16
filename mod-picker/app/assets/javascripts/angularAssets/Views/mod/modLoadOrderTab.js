@@ -17,7 +17,8 @@ app.controller('modLoadOrderController', function($scope, $state, $stateParams, 
                 direction: $scope.thisTab.params.sdir
             },
             filters: { modlist: $stateParamsthisTab.params.filter },
-            page: page
+            //if no page is specified load the first one
+            page: page || 1
         };
         contributionService.retrieveModContributions($stateParams.modId, 'load_order_notes', options, $scope.pages.load_order_notes).then(function(data) {
             $scope.mod.load_order_notes = data;

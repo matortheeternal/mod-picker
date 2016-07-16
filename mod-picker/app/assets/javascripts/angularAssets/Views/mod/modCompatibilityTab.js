@@ -17,7 +17,8 @@ app.controller('modCompatibilityController', function($scope, $stateParams, $sta
                 direction: $scope.thisTab.params.sdir
             },
             filters: { modlist: $scope.thisTab.params.filter },
-            page: page
+            //if no page is specified load the first one
+            page: page || 1
         };
         contributionService.retrieveModContributions($stateParams.modId, 'compatibility_notes', options, $scope.pages.compatibility_notes).then(function(data) {
             $scope.mod.compatibility_notes = data;
