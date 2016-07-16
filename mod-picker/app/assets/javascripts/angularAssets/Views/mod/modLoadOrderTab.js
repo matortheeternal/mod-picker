@@ -17,7 +17,7 @@ app.controller('modLoadOrderController', function($scope, $state, $stateParams, 
                 column: $scope.params.scol,
                 direction: $scope.params.sdir
             },
-            filters: { modlist: $stateParamsparams.filter },
+            filters: { modlist: $scope.params.filter },
             //if no page is specified load the first one
             page: page || 1
         };
