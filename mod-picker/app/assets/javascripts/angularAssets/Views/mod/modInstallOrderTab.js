@@ -1,9 +1,9 @@
 app.controller('modInstallOrderController', function($scope, $stateParams, $state, contributionService, contributionFactory, sortFactory) {
     $scope.thisTab = $scope.findTab('Install Order');
-    $scope.params = $scope.thisTab.params;
 
     //update the params on the tab object when the tab is navigated to directly
     $scope.thisTab.params = angular.copy($stateParams);
+    $scope.params = $scope.thisTab.params;
 
     $scope.retrieveInstallOrderNotes = function(page) {
         // refresh the parameters in the url (without actually changing state), but not on initialization
