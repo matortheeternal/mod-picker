@@ -19,7 +19,7 @@ app.controller('modReviewsController', function($scope, $stateParams, $state, mo
             //if no page is specified load the first one
             page: page || 1
         };
-        contributionService.retrieveModReviews($stateParams.modId, options, $scope.pages.reviews).then(function(data) {
+        contributionService.retrieveModReviews($stateParams.modId, options, $scope.pages).then(function(data) {
             $scope.mod.reviews = data.reviews;
             $scope.mod.user_review = data.user_review;
         }, function(response) {
@@ -28,13 +28,16 @@ app.controller('modReviewsController', function($scope, $stateParams, $state, mo
 
     };
 
+    //loading the sort options
+    $scope.sortOptions = sortFactory.reviewSortOptions();
+
+    //initialize the pages variable
+    $scope.pages = {};
+
     //retrieve the reviews when the state is first loaded
     $scope.retrieveReviews($stateParams.page);
     //start allowing the url params to be updated
     $scope.loaded = true;
-
-    //loading the sort options
-    $scope.sortOptions = sortFactory.reviewSortOptions();
 
     //retrieve review sections
     reviewSectionService.getSectionsForCategory($scope.mod.primary_category).then(function(data) {

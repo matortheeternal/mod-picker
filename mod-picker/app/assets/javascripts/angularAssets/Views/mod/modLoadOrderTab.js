@@ -20,20 +20,23 @@ app.controller('modLoadOrderController', function($scope, $state, $stateParams, 
             //if no page is specified load the first one
             page: page || 1
         };
-        contributionService.retrieveModContributions($stateParams.modId, 'load_order_notes', options, $scope.pages.load_order_notes).then(function(data) {
+        contributionService.retrieveModContributions($stateParams.modId, 'load_order_notes', options, $scope.pages).then(function(data) {
             $scope.mod.load_order_notes = data;
         }, function(response) {
             $scope.errors.load_order_notes = response;
         });
     };
 
+    //loading the sort options
+    $scope.sortOptions = sortFactory.loadOrderNoteSortOptions();
+
+    //initialize the pages variable
+    $scope.pages = {};
+
     //retrieve the notes when the state is first loaded
     $scope.retrieveLoadOrderNotes($stateParams.page);
     //start allowing the url params to be updated
     $scope.loaded = true;
-
-    //loading the sort options
-    $scope.sortOptions = sortFactory.loadOrderNoteSortOptions();
 
     // LOAD ORDER NOTE RELATED LOGIC
     // instantiate a new load order note object

@@ -20,20 +20,23 @@ app.controller('modInstallOrderController', function($scope, $stateParams, $stat
             //if no page is specified load the first one
             page: page || 1
         };
-        contributionService.retrieveModContributions($stateParams.modId, 'install_order_notes', options, $scope.pages.install_order_notes).then(function(data) {
+        contributionService.retrieveModContributions($stateParams.modId, 'install_order_notes', options, $scope.pages).then(function(data) {
             $scope.mod.install_order_notes = data;
         }, function(response) {
             $scope.errors.install_order_notes = response;
         });
     };
 
+    //loading the sort options
+    $scope.sortOptions = sortFactory.installOrderNoteSortOptions();
+
+    //initialize the pages variable
+    $scope.pages = {};
+
     //retrieve the notes when the state is first loaded
     $scope.retrieveInstallOrderNotes($stateParams.page);
     //start allowing the url params to be updated
     $scope.loaded = true;
-
-    //loading the sort options
-    $scope.sortOptions = sortFactory.installOrderNoteSortOptions();
 
     // INSTALL ORDER NOTE RELATED LOGIC
     // instantiate a new install order note object

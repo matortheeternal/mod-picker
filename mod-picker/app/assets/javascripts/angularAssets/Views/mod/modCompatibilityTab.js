@@ -20,7 +20,7 @@ app.controller('modCompatibilityController', function($scope, $stateParams, $sta
             //if no page is specified load the first one
             page: page || 1
         };
-        contributionService.retrieveModContributions($stateParams.modId, 'compatibility_notes', options, $scope.pages.compatibility_notes).then(function(data) {
+        contributionService.retrieveModContributions($stateParams.modId, 'compatibility_notes', options, $scope.pages).then(function(data) {
             $scope.mod.compatibility_notes = data;
 
         }, function(response) {
@@ -28,13 +28,16 @@ app.controller('modCompatibilityController', function($scope, $stateParams, $sta
         });
     };
 
+    //loading the sort options
+    $scope.sortOptions = sortFactory.compatibilityNoteSortOptions();
+
+    //initialize the pages variable
+    $scope.pages = {};
+
     //retrieve the notes when the state is first loaded
     $scope.retrieveCompatibilityNotes($stateParams.page);
     //start allowing the url params to be updated
     $scope.loaded = true;
-
-    //loading the sort options
-    $scope.sortOptions = sortFactory.compatibilityNoteSortOptions();
 
     // COMPATIBILITY NOTE RELATED LOGIC
     // instantiate a new compatibility note object
