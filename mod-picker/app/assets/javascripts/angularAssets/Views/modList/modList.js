@@ -71,6 +71,7 @@ app.controller('modListController', function($scope, $q, $stateParams, $timeout,
     $scope.tabs = tabsFactory.buildModListTabs($scope.mod_list);
     $scope.newTags = [];
     $scope.retrieving = {};
+    $scope.quick = {};
     $scope.sort = {
         tools: {},
         mods: {},
@@ -262,6 +263,15 @@ app.controller('modListToolsController', function($scope, $state, $stateParams, 
         $scope.sort.tools.direction = $stateParams.sdir;
         $scope.retrieveTools();
     }
+
+    // QUICK ADD TOOL
+    $scope.quickAddTool = function() {
+        if ($scope.quick.toolId) {
+            $scope.$emit('successMessage', 'Added tool ' + $scope.quick.toolName + ' successfully.');
+            $scope.quick.toolId = null;
+            $scope.quick.toolName = "";
+        }
+    };
 });
 
 app.controller('modListModsController', function($scope) {
