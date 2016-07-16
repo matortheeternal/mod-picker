@@ -21,7 +21,7 @@ app.controller('readMoreController', function($scope) {
     };
 
     $scope.reducedText = reduceText($scope.text);
-    $scope.expandable = wordCount($scope.text) > $scope.numWords;
+    $scope.expandable = wordCount($scope.text) > $scope.numWords * 1.25;
 
     $scope.expanded = false;
     $scope.toggleExpansion = function() {

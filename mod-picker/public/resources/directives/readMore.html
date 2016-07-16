@@ -1,4 +1,4 @@
-<div marked="expanded ? text : reducedText" class="read-more-text"></div>
+<div marked="expanded || !expandable ? text : reducedText" class="read-more-text"></div>
 
 <div class="read-more">
     <a ng-if="expandable" ng-click="toggleExpansion()" class="read-more">
