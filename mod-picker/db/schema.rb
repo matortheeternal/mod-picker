@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160716214353) do
+ActiveRecord::Schema.define(version: 20160716223412) do
 
   create_table "agreement_marks", id: false, force: :cascade do |t|
     t.integer "correction_id", limit: 4,                null: false
@@ -462,6 +462,7 @@ ActiveRecord::Schema.define(version: 20160716214353) do
     t.boolean  "has_adult_content",                       default: false, null: false
     t.boolean  "hidden",                                  default: false, null: false
     t.datetime "submitted",                                               null: false
+    t.datetime "completed"
     t.datetime "edited"
   end
 
