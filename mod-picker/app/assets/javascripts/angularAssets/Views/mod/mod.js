@@ -162,7 +162,11 @@ app.controller('modController', function($scope, $q, $stateParams, $state, $time
     };
 
     $scope.refreshTabParams = function(tab) {
-        $state.go('base.mod.' + tab.name, tab.params, { notify: false });
+        //this is to prevent the refresh from happening before the
+        //tab params are actually updated
+        $timeout(function() {
+            $state.go('base.mod.' + tab.name, tab.params, { notify: false });
+        }, 1);
     };
 
     $scope.redirectToFirstTab = function() {
