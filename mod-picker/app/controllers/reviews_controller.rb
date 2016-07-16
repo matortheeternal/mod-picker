@@ -3,9 +3,17 @@ class ReviewsController < ContributionsController
 
   # GET /reviews
   def index
-    @reviews = Review.accessible_by(current_ability).filter(filtering_params).sort(params[:sort]).paginate(:page => params[:page])
+    @reviews = Review.includes(:review_ratings, :editor, :submitter => :reputation).accessible_by(current_ability).filter(filtering_params).sort(params[:sort]).paginate(:page => params[:page])
+    count = Review.accessible_by(current_ability).filter(filtering_params).count
 
-    render :json => @reviews
+    # get helpful marks
+    helpful_marks = HelpfulMark.where(submitted_by: current_user.id, helpfulable_type: "Review", helpfulable_id: @reviews.ids)
+    render :json => {
+        reviews: Review.index_json(@reviews),
+        helpful_marks: helpful_marks,
+        max_entries: count,
+        entries_per_page: Review.per_page
+    }
   end
 
   # PATCH/PUT /reviews/1
@@ -53,7 +61,7 @@ class ReviewsController < ContributionsController
 
     # Params we allow filtering on
     def filtering_params
-      params.slice(:mod, :by);
+      params[:filters].slice(:adult, :game, :search, :submitter, :editor, :overall_rating, :reputation, :helpful_count, :not_helpful_count, :ratings_count, :submitted, :edited);
     end
 
     # Params allowed during creation

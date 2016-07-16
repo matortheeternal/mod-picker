@@ -27,10 +27,10 @@
   }
 }
 
+/* custom sliders */
 .left-browse-column {
-  min-width: 250px;
+  overflow-x: hidden;
 
-  /* custom sliders */
   .rz-bubble {
     font-size: 12px !important;
   }
@@ -68,6 +68,20 @@
 /* css for search results */
 .right-browse-column {
   max-width: 970px;
+
+  sort-control {
+    font-size: 14px;
+    margin-right: 8px;
+
+    .sort-direction {
+      font-size: 18px;
+      cursor: pointer;
+    }
+
+    select {
+      padding-bottom: 5px;
+    }
+  }
 
   table {
     border-collapse: collapse;
@@ -181,8 +195,14 @@ select.stealthy.ng-pristine {
   background-color: $primary_background;
 }
 
-.browse-results {
+.table-results {
   overflow-x: auto;
+}
+
+.grid-results {
+  .content-block:first-child {
+    margin-top: 0;
+  }
 }
 
 .columns-list {

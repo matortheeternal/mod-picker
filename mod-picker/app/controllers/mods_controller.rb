@@ -8,9 +8,7 @@ class ModsController < ApplicationController
     count =  Mod.accessible_by(current_ability).filter(filtering_params).count
 
     render :json => {
-      mods: @mods.as_json({
-          :include => mods_include_hash
-      }),
+      mods: Mod.index_json(@mods, params[:filters][:sources]),
       max_entries: count,
       entries_per_page: Mod.per_page
     }
@@ -19,9 +17,7 @@ class ModsController < ApplicationController
   # POST /mods/search
   def search
     @mods = Mod.hidden(false).is_game(false).filter(search_params).sort({ column: "name", direction: "ASC" }).limit(10)
-    render :json => @mods.as_json({
-        :only => [:id, :name]
-    })
+    render :json => @mods
   end
 
   # GET /mods/1
@@ -166,7 +162,7 @@ class ModsController < ApplicationController
     agreement_marks = AgreementMark.where(submitted_by: current_user.id, correction_id: corrections.ids)
     render :json => {
         corrections: corrections,
-        agreement_marks: agreement_marks.as_json({:only => [:correction_id, :agree]})
+        agreement_marks: agreement_marks
     }
   end
 
@@ -193,7 +189,7 @@ class ModsController < ApplicationController
     helpful_marks = HelpfulMark.where(submitted_by: current_user.id, helpfulable_type: "Review", helpfulable_id: review_ids)
     render :json => {
         reviews: reviews,
-        helpful_marks: helpful_marks.as_json({:only => [:helpfulable_id, :helpful]}),
+        helpful_marks: helpful_marks,
         user_review: user_review,
         max_entries: count,
         entries_per_page: 10
@@ -208,7 +204,7 @@ class ModsController < ApplicationController
     helpful_marks = HelpfulMark.where(submitted_by: current_user.id, helpfulable_type: "CompatibilityNote", helpfulable_id: compatibility_notes.ids)
     render :json => {
         compatibility_notes: compatibility_notes,
-        helpful_marks: helpful_marks.as_json({:only => [:helpfulable_id, :helpful]}),
+        helpful_marks: helpful_marks,
         max_entries: count,
         entries_per_page: 10
     }
@@ -222,7 +218,7 @@ class ModsController < ApplicationController
     helpful_marks = HelpfulMark.where(submitted_by: current_user.id, helpfulable_type: "InstallOrderNote", helpfulable_id: install_order_notes.ids)
     render :json => {
         install_order_notes: install_order_notes,
-        helpful_marks: helpful_marks.as_json({:only => [:helpfulable_id, :helpful]}),
+        helpful_marks: helpful_marks,
         max_entries: count,
         entries_per_page: 10
     }
@@ -237,7 +233,7 @@ class ModsController < ApplicationController
       helpful_marks = HelpfulMark.where(submitted_by: current_user.id, helpfulable_type: "LoadOrderNote", helpfulable_id: load_order_notes.ids)
       render :json => {
           load_order_notes: load_order_notes,
-          helpful_marks: helpful_marks.as_json({:only => [:helpfulable_id, :helpful]}),
+          helpful_marks: helpful_marks,
           max_entries: count,
           entries_per_page: 10
       }
@@ -250,31 +246,8 @@ class ModsController < ApplicationController
   def analysis
     authorize! :read, @mod
     render json: {
-        plugins: @mod.plugins.as_json({
-            :include => {
-                :masters => {
-                    :except => [:plugin_id],
-                    :include => {
-                        :master_plugin => {
-                            :only => [:filename]
-                        }
-                    }
-                },
-                :dummy_masters => {
-                    :except => [:plugin_id]
-                },
-                :overrides => {
-                    :except => [:plugin_id]
-                },
-                :plugin_errors => {
-                    :except => [:plugin_id]
-                },
-                :plugin_record_groups => {
-                    :except => [:plugin_id]
-                }
-            }
-        }),
-        assets: @mod.asset_files.as_json({:only => [:filepath]})
+        plugins: @mod.plugins,
+        assets: @mod.asset_files
     }
   end
 
@@ -298,21 +271,11 @@ class ModsController < ApplicationController
     def search_params
       params[:filters].slice(:search, :game)
     end
-
-    # Includes hash for mods index query
-    def mods_include_hash
-      hash = { :author_users => { :only => [:id, :username] } }
-      sources = params[:filters][:sources]
-      hash[:nexus_infos] = {:except => [:mod_id]} if sources[:nexus]
-      hash[:lover_infos] = {:except => [:mod_id]} if sources[:lab]
-      hash[:workshop_infos] = {:except => [:mod_id]} if sources[:workshop]
-      hash
-    end
     
     # Params we allow filtering on
     def filtering_params
       # construct valid filters array
-      valid_filters = [:sources, :search, :game, :released, :updated, :adult, :utility, :categories, :tags, :stars, :reviews, :rating, :compatibility_notes, :install_order_notes, :load_order_notes, :views, :author]
+      valid_filters = [:sources, :search, :game, :released, :updated, :adult, :utility, :categories, :tags, :stars, :reviews, :rating, :reputation, :compatibility_notes, :install_order_notes, :load_order_notes, :views, :author]
       source_filters = [:views, :author, :posts, :videos, :images, :discussions, :downloads, :favorites, :subscribers, :endorsements, :unique_downloads, :files, :bugs, :articles]
       sources = params[:filters][:sources]
 
@@ -334,6 +297,9 @@ class ModsController < ApplicationController
       # pad filters with sources
       permitted_filters.each do |key, value|
         if source_filters.include?(key.to_sym)
+          unless permitted_filters[key].is_a?(Hash)
+            permitted_filters[key] = { :value => permitted_filters[key] }
+          end
           permitted_filters[key][:sources] = sources
         end
       end

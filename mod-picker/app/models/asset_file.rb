@@ -9,7 +9,7 @@ class AssetFile < ActiveRecord::Base
   # Validations
   validates :game_id, :filepath, presence: true
 
-  def self.as_json(options={})
+  def as_json(options={})
     if JsonHelpers.json_options_empty(options)
       default_options = {
           :only => [:filepath]
