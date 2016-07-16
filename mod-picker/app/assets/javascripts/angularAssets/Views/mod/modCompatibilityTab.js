@@ -33,11 +33,6 @@ app.controller('modCompatibilityController', function($scope, $stateParams, $sta
     //start allowing the url params to be updated
     $scope.loaded = true;
 
-    // re-retrieve compatibility note when the sort object changes
-    $scope.$watch('sort.compatibility_notes', function() {
-        $scope.retrieveCompatibilityNotes();
-    }, true);
-
     // COMPATIBILITY NOTE RELATED LOGIC
     // instantiate a new compatibility note object
     $scope.startNewCompatibilityNote = function() {

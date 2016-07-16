@@ -32,11 +32,6 @@ app.controller('modInstallOrderController', function($scope, $stateParams, $stat
     //start allowing the url params to be updated
     $scope.loaded = true;
 
-    // re-retrieve install order notes when the sort object changes
-    $scope.$watch('sort.install_order_notes', function() {
-        $scope.retrieveInstallOrderNotes();
-    }, true);
-
     // INSTALL ORDER NOTE RELATED LOGIC
     // instantiate a new install order note object
     $scope.startNewInstallOrderNote = function() {
