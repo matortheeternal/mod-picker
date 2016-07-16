@@ -222,6 +222,7 @@ class Mod < ActiveRecord::Base
 
   # callbacks
   after_create :increment_counters
+  before_update :destroy_associations
   after_save :create_associations, :save_image
   before_destroy :decrement_counters
 
@@ -232,6 +233,14 @@ class Mod < ActiveRecord::Base
   def update_lazy_counters
     self.asset_files_count = ModAssetFile.where(mod_id: self.id).count
     self.plugins_count = Plugin.where(mod_id: self.id).count
+  end
+
+  def destroy_associations
+    # destroy associations as needed
+    if @plugin_dumps || @asset_paths
+      self.mod_asset_files.destroy_all
+      self.plugins.destroy_all
+    end
   end
 
   def create_tags
