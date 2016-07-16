@@ -7,7 +7,7 @@ class ApplicationController < ActionController::Base
 
   # Render 401 or 403 as appropriate
   rescue_from CanCan::AccessDenied do |exception|
-    if exception.message
+    if exception.message != "You are not authorized to access this page."
       render json: {error: exception.message}, status: 403
     elsif current_user
       render json: {error: "You are not authorized to access this resource."}, status: 403
