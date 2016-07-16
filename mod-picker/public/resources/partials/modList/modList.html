@@ -22,7 +22,7 @@
         <section>
             <div class="header-box">
                 ACTIONS
-                <div class="action-box" ng-click="starModList()">
+                <div class="action-box" ng-click="starModList()" title="{{mod_list.stars_count}} stars">
                     <i class="fa {{mod_list.star ? 'fa-star' : 'fa-star-o'}}" aria-hidden="true"></i>
                     {{mod_list.star ? 'Unfavorite' : 'Favorite'}}
                 </div>
