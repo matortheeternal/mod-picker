@@ -78,6 +78,29 @@ class Correction < ActiveRecord::Base
   after_save :recompute_correctable_standing
   after_destroy :decrement_counters, :recompute_correctable_standing
 
+  def self.index_json(collection)
+    collection.as_json({
+        :include => {
+            :submitter => {
+                :only => [:id, :username, :role, :title],
+                :include => {
+                    :reputation => {:only => [:overall]}
+                },
+                :methods => :avatar
+            },
+            :correctable => {
+                :only => [:id, :name],
+                :include => {
+                    :submitter => {
+                        :only => [:id, :username]
+                    }
+                },
+                :methods => :mods
+            },
+        }
+    })
+  end
+
   def as_json(options={})
     if JsonHelpers.json_options_empty(options)
       default_options = {

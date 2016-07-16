@@ -47,7 +47,7 @@ class ContributionsController < ApplicationController
     agreement_marks = AgreementMark.where(submitted_by: current_user.id, correction_id: corrections.ids)
     render :json => {
         corrections: corrections,
-        agreement_marks: agreement_marks.as_json({:only => [:correction_id, :agree]})
+        agreement_marks: agreement_marks
     }
   end
 

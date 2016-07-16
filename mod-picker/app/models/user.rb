@@ -159,6 +159,12 @@ class User < ActiveRecord::Base
     self.create_bio({ user_id: self.id })
   end
 
+  def self.search_json(collection)
+    collection.as_json({
+        :only => [:id, :username]
+    })
+  end
+
   def current_json
     self.as_json({
         :only => [:id, :username, :role, :title, :active_mod_list_id],

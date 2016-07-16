@@ -9,26 +9,7 @@ class ReviewsController < ContributionsController
     # get helpful marks
     helpful_marks = HelpfulMark.where(submitted_by: current_user.id, helpfulable_type: "Review", helpfulable_id: @reviews.ids)
     render :json => {
-        reviews: @reviews.as_json({
-            :include => {
-                :review_ratings => {
-                    :except => [:review_id]
-                },
-                :submitter=> {
-                    :only => [:id, :username, :role, :title],
-                    :include => {
-                        :reputation => {:only => [:overall]}
-                    },
-                    :methods => :avatar
-                },
-                :editor => {
-                    :only => [:id, :username, :role]
-                },
-                :mod => {
-                    :only => [:id, :name]
-                }
-            }
-        }),
+        reviews: Review.index_json(@reviews),
         helpful_marks: helpful_marks,
         max_entries: count,
         entries_per_page: Review.per_page

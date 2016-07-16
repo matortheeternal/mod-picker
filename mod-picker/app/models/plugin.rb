@@ -75,7 +75,7 @@ class Plugin < ActiveRecord::Base
     ModListPlugin.where(plugin_id: self.id).delete_all
   end
 
-  def self.as_json(options={})
+  def as_json(options={})
     if JsonHelpers.json_options_empty(options)
       default_options = {
           :include => {

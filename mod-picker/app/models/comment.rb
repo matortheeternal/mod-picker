@@ -65,6 +65,22 @@ class Comment < ActiveRecord::Base
     end
   end
 
+  def self.index_json(collection)
+    collection.as_json({
+        :except => [:submitted_by],
+        :include => {
+            :submitter => {
+                :only => [:id, :username, :role, :title],
+                :include => {
+                    :reputation => {:only => [:overall]}
+                },
+                :methods => :avatar
+            }
+        },
+        :methods => :commentable_link
+    })
+  end
+
   def show_json
     as_json({
         :except => [:submitted_by, :commentable_id, :commentable_type],

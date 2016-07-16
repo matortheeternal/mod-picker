@@ -15,6 +15,24 @@ class ModListMod < ActiveRecord::Base
   after_create :increment_counter_caches
   before_destroy :decrement_counter_caches
 
+  def as_json(options={})
+    if JsonHelpers.json_options_empty(options)
+      # TODO: Revise this as necessary
+      default_options = {
+          :only => [:id, :index, :active],
+          :include => {
+              :mod => {
+                  :only => [:id, :name, :aliases, :authors, :released, :updated],
+                  :methods => :image
+              }
+          }
+      }
+      super(options.merge(default_options))
+    else
+      super(options)
+    end
+  end
+
   private
     # counter caches
     def increment_counter_caches
