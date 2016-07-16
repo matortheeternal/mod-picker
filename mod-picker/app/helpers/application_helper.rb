@@ -13,10 +13,9 @@ module ApplicationHelper
     }
 
     renderer = Redcarpet::Render::HTML.new(render_options)
-    # optional extensions can also be included as a separate extensions object
-    # eg. ..Markdown.new(renderer, extensions). See redcarpet docs
-    markdown = Redcarpet::Markdown.new(renderer, extensions)
+    # instance vars used to prevent unnecessary reintiializing
+    @markdown ||= Redcarpet::Markdown.new(renderer, extensions)
 
-    markdown.render(text).html_safe
+    @markdown.render(text).html_safe
   end
 end
