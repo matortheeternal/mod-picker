@@ -23,27 +23,39 @@ app.config(['$stateProvider', function ($stateProvider) {
         }
     }).state('base.mod-list.Details', {
         templateUrl: '/resources/partials/modList/details.html',
-        controller: 'modlistDetailsController',
+        controller: 'modListDetailsController',
         url: '/details'
     }).state('base.mod-list.Tools', {
         templateUrl: '/resources/partials/modList/tools.html',
-        controller: 'modlistToolsController',
-        url: '/tools'
+        controller: 'modListToolsController',
+        url: '/tools?scol&sdir',
+        params: {
+            scol: 'index',
+            sdir: 'asc'
+        }
     }).state('base.mod-list.Mods', {
         templateUrl: '/resources/partials/modList/mods.html',
-        controller: 'modlistModsController',
-        url: '/mods'
+        controller: 'modListModsController',
+        url: '/mods?scol&sdir',
+        params: {
+            scol: 'index',
+            sdir: 'asc'
+        }
     }).state('base.mod-list.Plugins', {
         templateUrl: '/resources/partials/modList/plugins.html',
-        controller: 'modlistPluginsController',
-        url: '/plugins'
+        controller: 'modListPluginsController',
+        url: '/plugins?scol&sdir',
+        params: {
+            scol: 'index',
+            sdir: 'asc'
+        }
     }).state('base.mod-list.Config', {
         templateUrl: '/resources/partials/modList/config.html',
-        controller: 'modlistConfigController',
+        controller: 'modListConfigController',
         url: '/config'
     }).state('base.mod-list.Comments', {
         templateUrl: '/resources/partials/modList/comments.html',
-        controller: 'modlistCommentsController',
+        controller: 'modListCommentsController',
         url: '/comments'
     })
 }]);
@@ -191,7 +203,9 @@ app.controller('modListController', function($scope, $q, $stateParams, $timeout,
             $scope.updateTabs();
         }
     };
+});
 
+app.controller('modListDetailsController', function($scope) {
     $scope.saveTags = function(updatedTags) {
         var action = $q.defer();
         tagService.updateModListTags($scope.mod_list, updatedTags).then(function(data) {
@@ -206,31 +220,23 @@ app.controller('modListController', function($scope, $q, $stateParams, $timeout,
     };
 });
 
-app.controller('modlistDetailsController', function($scope) {
+app.controller('modListToolsController', function($scope, $state, $stateParams, modListService) {
+
 
 });
 
-app.controller('modlistToolsController', function($scope, modListService) {
-    modListService.retrieveModListTools($scope.mod_list.id).then(function(data) {
-        $scope.mod_list.tools = data;
-        $scope.originalModList.tools = angular.copy($scope.mod_list.tools);
-    }, function(response) {
-        $scope.errors.tools = response;
-    });
-});
-
-app.controller('modlistModsController', function($scope) {
+app.controller('modListModsController', function($scope) {
 
 });
 
-app.controller('modlistPluginsController', function($scope) {
+app.controller('modListPluginsController', function($scope) {
 
 });
 
-app.controller('modlistConfigController', function($scope) {
+app.controller('modListConfigController', function($scope) {
 
 });
 
-app.controller('modlistCommentsController', function($scope) {
+app.controller('modListCommentsController', function($scope) {
 
 });
