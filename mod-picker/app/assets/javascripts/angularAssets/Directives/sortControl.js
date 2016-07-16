@@ -2,12 +2,12 @@ app.directive('sortControl', function() {
     return {
         restrict: 'E',
         templateUrl: '/resources/directives/sortControl.html',
-        controller: 'sortController',
+        // controller: 'sortController',
         scope: {
-            column: '=?',
-            direction: '=?',
+            column: '=',
+            direction: '=',
             retrieveCallback: '&',
-            sortOptions: '=?'
+            sortOptions: '='
         }
     }
 });
