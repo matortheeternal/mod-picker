@@ -389,9 +389,7 @@ input[type="button"], input[type="submit"] {
   padding: 20px;
   border: 1px solid $border_color;
   background-color: $secondary_background;
-}
 
-.margin-fix {
   > div:first-child {
     margin-top: 0;
   }
@@ -439,6 +437,26 @@ input[type="button"], input[type="submit"] {
       margin-right: 10px;
       min-width: 190px;
       display: inline-block;
+    }
+  }
+
+  search-input {
+    input[type="text"] {
+      background-color: $input_background;
+      border: 1px solid $border_color;
+      border-radius: 4%;
+      color: $h4_color;
+      font: inherit;
+      padding: 0.5em;
+      margin: 0;
+      box-shadow: none;
+      min-width: 250px;
+      max-width: 250px;
+    }
+
+    .dropdown {
+      left: 0;
+      top: 30px;
     }
   }
 }
