@@ -199,17 +199,15 @@ app.controller('modController', function($scope, $q, $stateParams, $state, $time
         if ($scope.mod.plugins_count === 0) {
             $scope.removeTab('Load Order');
             if ($state.is('base.mod.Load Order')) {
+    $scope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
+        //only if the new state is still on this mod's page
+        if (toParams.modId == fromParams.modId) {
+            newTabIndex = $scope.tabs.findIndex(function(tab) {
+                return toState.name.slice(9) === tab.name;
+            });
+            if (newTabIndex < 0) {
                 $scope.redirectToFirstTab();
             }
-        }
-    }
-
-    $scope.$on('$stateChangeSuccess', function(event, toState) {
-        newTabIndex = $scope.tabs.findIndex(function(tab) {
-            return toState.name.slice(9) === tab.name;
-        });
-        if (newTabIndex < 0) {
-            $scope.redirectToFirstTab();
         }
     });
 
