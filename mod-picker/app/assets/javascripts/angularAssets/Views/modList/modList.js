@@ -60,7 +60,7 @@ app.config(['$stateProvider', function ($stateProvider) {
     })
 }]);
 
-app.controller('modListController', function($scope, $q, $stateParams, $timeout, currentUser, modListObject, modListService, errorService, tagService, objectUtils, tabsFactory) {
+app.controller('modListController', function($scope, $q, $stateParams, $timeout, currentUser, modListObject, modListService, errorService, tagService, objectUtils, tabsFactory, sortFactory) {
     // get parent variables
     $scope.mod_list = modListObject.mod_list;
     $scope.mod_list.star = modListObject.star;
@@ -68,8 +68,21 @@ app.controller('modListController', function($scope, $q, $stateParams, $timeout,
     $scope.currentUser = currentUser;
 
 	// initialize local variables
-    $scope.newTags = [];
     $scope.tabs = tabsFactory.buildModListTabs($scope.mod_list);
+    $scope.newTags = [];
+    $scope.retrieving = {};
+    $scope.sort = {
+        tools: {},
+        mods: {},
+        plugins: {},
+        config: {}
+    };
+    $scope.sortOptions = {
+        tools: sortFactory.modListToolSortOptions(),
+        mods: sortFactory.modListModSortOptions(),
+        plugins: 0, //sortFactory.modListPluginSortOptions(),
+        config: 0 //sortFactory.modListConfigSortOptions()
+    };
     $scope.statusIcons = {
         under_construction: 'fa-wrench',
         testing: 'fa-cogs',
@@ -221,8 +234,34 @@ app.controller('modListDetailsController', function($scope) {
 });
 
 app.controller('modListToolsController', function($scope, $state, $stateParams, modListService) {
+    $scope.retrieveTools = function() {
+        $scope.retrieving.tools = true;
 
+        // transition to new url state
+        var params = {
+            modListId: $stateParams.modListId,
+            scol: $scope.sort.tools.column,
+            sdir: $scope.sort.tools.direction
+        };
+        $state.transitionTo('base.mod-list.Tools', params, { notify: false });
 
+        // retrieve the tools
+        modListService.retrieveModListTools($scope.mod_list.id).then(function(data) {
+            $scope.mod_list.tools = data;
+            // TODO: Retrieve this from the backend
+            $scope.mod_list.missing_tools = [];
+            $scope.originalModList.tools = angular.copy($scope.mod_list.tools);
+        }, function(response) {
+            $scope.errors.tools = response;
+        });
+    };
+
+    // retrieve tools if we don't have them and aren't currently retrieving them
+    if (!$scope.mod_list.tools && !$scope.retrieving.tools) {
+        $scope.sort.tools.column = $stateParams.scol;
+        $scope.sort.tools.direction = $stateParams.sdir;
+        $scope.retrieveTools();
+    }
 });
 
 app.controller('modListModsController', function($scope) {
