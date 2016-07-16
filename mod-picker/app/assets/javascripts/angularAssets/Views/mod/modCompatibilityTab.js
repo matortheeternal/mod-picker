@@ -1,53 +1,43 @@
-app.controller('modCompatibilityController', function($scope, $stateParams, $state, contributionFactory, contributionService) {
-    // verify we can access this tab
-    $scope.currentTab = $scope.findTab('Compatibility');
-    if (!$scope.currentTab) {
-        // if we can't access this tab, redirect to the first tab we can access and
-        // stop doing stuff in this controller
-        $state.go('base.mod.' + $scope.tabs[0].name, {
-            modId: $stateParams.modId
-        });
-        return;
-    }
+app.controller('modCompatibilityController', function($scope, $stateParams, $state, contributionFactory, contributionService, sortFactory) {
+    $scope.thisTab = $scope.findTab('Compatibility');
 
-    // BASE RETRIEVAL LOGIC
+    //update the params on the tab object when the tab is navigated to directly
+    $scope.thisTab.params = angular.copy($stateParams);
+
     $scope.retrieveCompatibilityNotes = function(page) {
-        $scope.retrieving.compatibility_notes = true;
-
-        // transition to new url state
-        var params = {
-            modId: $stateParams.modId,
-            page: page,
-            scol: $scope.sort.compatibility_notes.column,
-            sdir: $scope.sort.compatibility_notes.direction
-        };
-        $state.transitionTo('base.mod.Compatibility', params, { notify: false });
+        // refresh the parameters in the url (without actually changing state), but not on initialization
+        if ($scope.loaded) {
+            $scope.refreshTabParams($scope.thisTab);
+        }
 
         // retrieve the compatibility notes
         var options = {
-            sort: $scope.sort.compatibility_notes,
-            filters: $scope.filters.compatibility_notes,
+            sort: {
+                column: $scope.thisTab.params.scol,
+                direction: $scope.thisTab.params.sdir
+            },
+            filters: { modlist: $scope.thisTab.params.filter },
+            //if no page is specified load the first one
             page: page || 1
         };
-        contributionService.retrieveModContributions($stateParams.modId, 'compatibility_notes', options, $scope.pages.compatibility_notes).then(function(data) {
-            $scope.retrieving.compatibility_notes = false;
+        contributionService.retrieveModContributions($stateParams.modId, 'compatibility_notes', options, $scope.pages).then(function(data) {
             $scope.mod.compatibility_notes = data;
+
         }, function(response) {
             $scope.errors.compatibility_notes = response;
         });
     };
 
-    // retrieve compatibility notes if we don't have them and aren't currently retrieving them
-    if (!$scope.mod.compatibility_notes && !$scope.retrieving.compatibility_notes) {
-        $scope.sort.compatibility_notes.column = $stateParams.scol;
-        $scope.sort.compatibility_notes.direction = $stateParams.sdir;
-        $scope.retrieveCompatibilityNotes($stateParams.page);
-    }
+    //loading the sort options
+    $scope.sortOptions = sortFactory.compatibilityNoteSortOptions();
 
-    // re-retrieve compatibility note when the sort object changes
-    $scope.$watch('sort.compatibility_notes', function() {
-        $scope.retrieveCompatibilityNotes();
-    }, true);
+    //initialize the pages variable
+    $scope.pages = {};
+
+    //retrieve the notes when the state is first loaded
+    $scope.retrieveCompatibilityNotes($stateParams.page);
+    //start allowing the url params to be updated
+    $scope.loaded = true;
 
     // COMPATIBILITY NOTE RELATED LOGIC
     // instantiate a new compatibility note object
@@ -148,7 +138,7 @@ app.controller('modCompatibilityController', function($scope, $stateParams, $sta
                 $scope.updateCompatibilityNote(noteObj.compatibility_note);
                 $scope.discardCompatibilityNote();
             }, function(response) {
-                var params = {label: 'Error updating Compatibility Note', response: response};
+                var params = { label: 'Error updating Compatibility Note', response: response };
                 $scope.$emit('errorMessage', params);
             });
         } else {
@@ -157,7 +147,7 @@ app.controller('modCompatibilityController', function($scope, $stateParams, $sta
                 $scope.mod.reviews.unshift(note);
                 $scope.discardCompatibilityNote();
             }, function(response) {
-                var params = {label: 'Error submitting Compatibility Note', response: response};
+                var params = { label: 'Error submitting Compatibility Note', response: response };
                 $scope.$emit('errorMessage', params);
             });
         }

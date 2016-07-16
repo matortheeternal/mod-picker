@@ -5,20 +5,50 @@ app.config(['$stateProvider', function($stateProvider) {
         url: '/home',
         redirectTo: 'base.home.Reviews'
     }).state('base.home.Reviews', {
-        templateUrl: '/resources/partials/home/recentReviews.html',
-        url: '/recent-reviews'
+        sticky: true,
+        deepStateRedirect: true,
+        views: {
+            'Reviews': {
+                templateUrl: '/resources/partials/home/recentReviews.html',
+                url: '/recent-reviews'
+            }
+        },
     }).state('base.home.Compatibility Notes', {
-        templateUrl: '/resources/partials/home/recentCompatibilityNotes.html',
-        url: '/recent-compatibility'
+        sticky: true,
+        deepStateRedirect: true,
+        views: {
+            'Compatibility Notes': {
+                templateUrl: '/resources/partials/home/recentCompatibilityNotes.html',
+                url: '/recent-compatibility'
+            }
+        },
     }).state('base.home.Install Order Notes', {
-        templateUrl: '/resources/partials/home/recentInstallOrderNotes.html',
-        url: '/recent-install-order'
+        sticky: true,
+        deepStateRedirect: true,
+        views: {
+            'Install Order Notes': {
+                templateUrl: '/resources/partials/home/recentInstallOrderNotes.html',
+                url: '/recent-install-order'
+            }
+        },
     }).state('base.home.Load Order Notes', {
-        templateUrl: '/resources/partials/home/recentLoadOrderNotes.html',
-        url: '/recent-load-order'
+        sticky: true,
+        deepStateRedirect: true,
+        views: {
+            'Load Order Notes': {
+                templateUrl: '/resources/partials/home/recentLoadOrderNotes.html',
+                url: '/recent-load-order'
+            }
+        },
     }).state('base.home.Corrections', {
-        templateUrl: '/resources/partials/home/recentCorrections.html',
-        url: '/recent-corrections'
+        sticky: true,
+        deepStateRedirect: true,
+        views: {
+            'Corrections': {
+                templateUrl: '/resources/partials/home/recentCorrections.html',
+                url: '/recent-corrections'
+            }
+        },
     });
 }]);
 
@@ -37,14 +67,4 @@ app.controller('homeController', function($scope, $q, homeService, currentUser) 
         $scope.recent = data.recent;
         $scope.articles = data.articles;
     });
-
-    $scope.wordCount = function(string) {
-        return string.match(/(\S+)/g).length;
-    };
-
-    //returns just the first 50 words of a string
-    $scope.reduceText = function(string) {
-        words = string.split(' ', 50);
-        return words.join(' ');
-    };
 });

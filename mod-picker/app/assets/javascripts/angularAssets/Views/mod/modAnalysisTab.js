@@ -1,32 +1,17 @@
 app.controller('modAnalysisController', function($scope, $stateParams, $state, contributionService) {
-    // verify we can access this tab
-    $scope.currentTab = $scope.findTab('Analysis');
-    if (!$scope.currentTab) {
-        // if we can't access this tab, redirect to the first tab we can access and
-        // stop doing stuff in this controller
-        $state.go('base.mod.' + $scope.tabs[0].name, {
-            modId: $stateParams.modId
-        });
-        return;
-    }
+    $scope.thisTab = $scope.findTab('Analysis');
 
-    // PLUGIN SWITCHING LOGIC
+    //update the params on the tab object when the tab is navigated to directly
+    $scope.thisTab.params = angular.copy($stateParams);
+
     $scope.switchPlugin = function() {
-        // transition to new url state
-        var params = {
-            modId: $stateParams.modId,
-            plugin: $scope.mod.currentPlugin.id
-        };
-        $state.transitionTo('base.mod.Analysis', params, { notify: false });
+        $scope.thisTab.params.plugin = $scope.mod.currentPlugin.id;
+        $scope.refreshTabParams($scope.thisTab);
     };
 
-    // BASE RETRIEVAL LOGIC
-    $scope.retrieveAnalysis = function() {
-        $scope.retrieving.analysis = true;
-
+    $scope.retrieveAnalysis = function(pluginId) {
         // retrieve the analysis
         contributionService.retrieveModAnalysis($stateParams.modId).then(function(analysis) {
-            $scope.retrieving.analysis = false;
             $scope.mod.analysis = analysis;
             $scope.mod.plugins = analysis.plugins;
             $scope.mod.assets = analysis.assets;
@@ -35,20 +20,24 @@ app.controller('modAnalysisController', function($scope, $stateParams, $state, c
             // set current plugin
             if (analysis.plugins.length > 0) {
                 var statePlugin = analysis.plugins.find(function(plugin) {
-                    return plugin.id === $stateParams.plugin;
+                    return plugin.id === $scope.thisTab.params.plugin;
                 });
-                $scope.mod.currentPlugin = statePlugin || analysis.plugins[0];
-                $scope.switchPlugin();
+                // if the plugin defined in the params isn't part of this mod, then set the currentPlugin
+                // to the first plugin of this mod and update the url parameter
+                if (!statePlugin) {
+                    $scope.mod.currentPlugin = analysis.plugins[0];
+                    $scope.thisTab.params.plugin = analysis.plugins[0].id;
+                    $scope.refreshTabParams($scope.thisTab);
+                } else {
+                    $scope.mod.currentPlugin = statePlugin;
+                }
             }
+
         }, function(response) {
             $scope.errors.analysis = response;
         });
     };
 
-    // retrieve analysis if we don't have them and aren't currently retrieving it
-    if (!$scope.mod.analysis && !$scope.retrieving.analysis) {
-        $scope.retrieveAnalysis();
-    } else {
-        $scope.switchPlugin();
-    }
+    //retrieve the data when the state is first loaded
+    $scope.retrieveAnalysis($stateParams.page);
 });

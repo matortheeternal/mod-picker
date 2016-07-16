@@ -140,6 +140,65 @@ class ModList < ActiveRecord::Base
     incompatible_mod_ids.uniq
   end
 
+  def show_json
+    self.as_json({
+        :except => [:submitted_by],
+        :include => {
+           :submitter => {
+               :only => [:id, :username, :role, :title],
+               :include => {
+                   :reputation => {:only => [:overall]}
+               },
+               :methods => :avatar
+           },
+           :tags => {
+               :except => [:game_id, :hidden, :mods_count],
+               :include => {
+                   :submitter => {
+                       :only => [:id, :username]
+                   }
+               }
+           }
+        }
+    })
+  end
+
+  def self.home_json(collection)
+    # TODO: Revise this as needed
+    collection.as_json({
+        :only => [:id, :name, :submitted, :updated],
+        :include => {
+            :submitter => {
+                :only => [:id, :username, :role, :title],
+                :include => {
+                    :reputation => {:only => [:overall]}
+                },
+                :methods => :avatar
+            }
+        }
+    })
+  end
+
+  def as_json(options={})
+    if JsonHelpers.json_options_empty(options)
+      default_options = {
+          :except => [:submitted_by],
+          :include => {
+              :submitter => {
+                  :only => [:id, :username, :role, :title],
+                  :include => {
+                      :reputation => {:only => [:overall]}
+                  },
+                  :methods => :avatar
+              },
+          }
+      }
+      super(options.merge(default_options))
+    else
+      super(options)
+    end
+  end
+
   private
     def set_dates
       if self.submitted.nil?

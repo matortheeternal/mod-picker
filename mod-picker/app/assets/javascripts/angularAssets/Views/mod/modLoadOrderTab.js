@@ -1,53 +1,42 @@
-app.controller('modLoadOrderController', function($scope, $state, $stateParams, contributionService, contributionFactory) {
-    // verify we can access this tab
-    $scope.currentTab = $scope.findTab('Load Order');
-    if (!$scope.currentTab) {
-        // if we can't access this tab, redirect to the first tab we can access and
-        // stop doing stuff in this controller
-        $state.go('base.mod.' + $scope.tabs[0].name, {
-            modId: $stateParams.modId
-        });
-        return;
-    }
+app.controller('modLoadOrderController', function($scope, $state, $stateParams, contributionService, contributionFactory, sortFactory) {
+    $scope.thisTab = $scope.findTab('Load Order');
 
-    // BASE RETRIEVAL LOGIC
+    //update the params on the tab object when the tab is navigated to directly
+    $scope.thisTab.params = angular.copy($stateParams);
+
     $scope.retrieveLoadOrderNotes = function(page) {
-        $scope.retrieving.load_order_notes = true;
+        // refresh the parameters in the url (without actually changing state), but not on initialization
+        if ($scope.loaded) {
+            $scope.refreshTabParams($scope.thisTab);
+        }
 
-        // transition to new url state
-        var params = {
-            modId: $stateParams.modId,
-            page: page,
-            scol: $scope.sort.load_order_notes.column,
-            sdir: $scope.sort.load_order_notes.direction
-        };
-        $state.transitionTo('base.mod.Load Order', params, { notify: false });
-
-        // retrieve the load order notes
+        // retrieve the Load Order Notes
         var options = {
-            sort: $scope.sort.load_order_notes,
-            filters: $scope.filters.load_order_notes,
+            sort: {
+                column: $scope.thisTab.params.scol,
+                direction: $scope.thisTab.params.sdir
+            },
+            filters: { modlist: $stateParamsthisTab.params.filter },
+            //if no page is specified load the first one
             page: page || 1
         };
-        contributionService.retrieveModContributions($stateParams.modId, 'load_order_notes', options, $scope.pages.load_order_notes).then(function(data) {
-            $scope.retrieving.load_order_notes = false;
+        contributionService.retrieveModContributions($stateParams.modId, 'load_order_notes', options, $scope.pages).then(function(data) {
             $scope.mod.load_order_notes = data;
         }, function(response) {
             $scope.errors.load_order_notes = response;
         });
     };
 
-    // retrieve laod order notes if we don't have them and aren't currently retrieving them
-    if (!$scope.mod.load_order_notes && !$scope.retrieving.load_order_notes) {
-        $scope.sort.load_order_notes.column = $stateParams.scol;
-        $scope.sort.load_order_notes.direction = $stateParams.sdir;
-        $scope.retrieveLoadOrderNotes($stateParams.page);
-    }
+    //loading the sort options
+    $scope.sortOptions = sortFactory.loadOrderNoteSortOptions();
 
-    // re-retrieve load order notes when the sort object changes
-    $scope.$watch('sort.load_order_notes', function() {
-        $scope.retrieveLoadOrderNotes();
-    }, true);
+    //initialize the pages variable
+    $scope.pages = {};
+
+    //retrieve the notes when the state is first loaded
+    $scope.retrieveLoadOrderNotes($stateParams.page);
+    //start allowing the url params to be updated
+    $scope.loaded = true;
 
     // LOAD ORDER NOTE RELATED LOGIC
     // instantiate a new load order note object
@@ -167,7 +156,7 @@ app.controller('modLoadOrderController', function($scope, $state, $stateParams, 
                 $scope.updateLoadOrderNote(noteObj.load_order_note);
                 $scope.discardLoadOrderNote();
             }, function(response) {
-                var params = {label: 'Error updating Load Order Note', response: response};
+                var params = { label: 'Error updating Load Order Note', response: response };
                 $scope.$emit('errorMessage', params);
             });
         } else {
@@ -176,7 +165,7 @@ app.controller('modLoadOrderController', function($scope, $state, $stateParams, 
                 $scope.mod.reviews.unshift(note);
                 $scope.discardLoadOrderNote();
             }, function(response) {
-                var params = {label: 'Error submitting Load Order Note', response: response};
+                var params = { label: 'Error submitting Load Order Note', response: response };
                 $scope.$emit('errorMessage', params);
             });
         }

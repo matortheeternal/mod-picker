@@ -22,8 +22,14 @@ app.config(['$stateProvider', function($stateProvider) {
             }
         }
     }).state('base.mod.Reviews', {
-        templateUrl: '/resources/partials/mod/reviews.html',
-        controller: 'modReviewsController',
+        sticky: true,
+        deepStateRedirect: true,
+        views: {
+            'Reviews': {
+                templateUrl: '/resources/partials/mod/reviews.html',
+                controller: 'modReviewsController',
+            }
+        },
         url: '/reviews?{page:int}&scol&sdir',
         params: {
             page: 1,
@@ -31,43 +37,67 @@ app.config(['$stateProvider', function($stateProvider) {
             sdir: 'desc'
         }
     }).state('base.mod.Compatibility', {
-        templateUrl: '/resources/partials/mod/compatibility.html',
-        controller: 'modCompatibilityController',
-        url: '/compatibility?{page:int}&scol&sdir',
+        sticky: true,
+        deepStateRedirect: true,
+        views: {
+            'Compatibility': {
+                templateUrl: '/resources/partials/mod/compatibility.html',
+                controller: 'modCompatibilityController',
+            }
+        },
+        url: '/compatibility?{page:int}&scol&sdir&{filter:bool}',
         params: {
             page: 1,
             scol: 'reputation',
-            sdir: 'desc'
+            sdir: 'desc',
+            filter: true
         }
     }).state('base.mod.Install Order', {
-        templateUrl: '/resources/partials/mod/installOrder.html',
-        controller: 'modInstallOrderController',
-        url: '/install-order?{page:int}&scol&sdir',
+        sticky: true,
+        deepStateRedirect: true,
+        views: {
+            'Install Order': {
+                templateUrl: '/resources/partials/mod/installOrder.html',
+                controller: 'modInstallOrderController',
+            }
+        },
+        url: '/install-order?{page:int}&scol&sdir&{filter:bool}',
         params: {
             page: 1,
             scol: 'reputation',
-            sdir: 'desc'
+            sdir: 'desc',
+            filter: true
         }
     }).state('base.mod.Load Order', {
-        templateUrl: '/resources/partials/mod/loadOrder.html',
-        controller: 'modLoadOrderController',
-        url: '/load-order?{page:int}&scol&sdir',
+        sticky: true,
+        deepStateRedirect: true,
+        views: {
+            'Load Order': {
+                templateUrl: '/resources/partials/mod/loadOrder.html',
+                controller: 'modLoadOrderController',
+            }
+        },
+        url: '/load-order?{page:int}&scol&sdir&{filter:bool}',
         params: {
             page: 1,
             scol: 'reputation',
-            sdir: 'desc'
+            sdir: 'desc',
+            filter: true
         }
     }).state('base.mod.Analysis', {
-        templateUrl: '/resources/partials/mod/analysis.html',
-        controller: 'modAnalysisController',
-        url: '/analysis?{plugin:int}',
-        params: {
-            plugin: 0
-        }
+        sticky: true,
+        deepStateRedirect: true,
+        views: {
+            'Analysis': {
+                templateUrl: '/resources/partials/mod/analysis.html',
+                controller: 'modAnalysisController',
+            }
+        },
+        url: '/analysis?{plugin:int}'
     });
 }]);
 
-app.controller('modController', function($scope, $q, $stateParams, $timeout, currentUser, modObject, modService, contributionService, categoryService, tagService, smoothScroll, errorService, sortFactory, tabsFactory) {
+app.controller('modController', function($scope, $q, $stateParams, $state, $timeout, currentUser, modObject, modService, contributionService, categoryService, tagService, smoothScroll, errorService, tabsFactory, sortFactory) {
     // get parent variables
     $scope.mod = modObject.mod;
     $scope.mod.star = modObject.star;
@@ -80,36 +110,6 @@ app.controller('modController', function($scope, $q, $stateParams, $timeout, cur
     $scope.tags = [];
     $scope.newTags = [];
     $scope.statusModal = {};
-    $scope.pages = {
-        appeal_comments: {},
-        reviews: {},
-        compatibility_notes: {},
-        install_order_notes: {},
-        load_order_notes: {}
-    };
-    $scope.sort = {
-        reviews: {},
-        compatibility_notes: {},
-        install_order_notes: {},
-        load_order_notes: {}
-    };
-    $scope.sortOptions = {
-        reviews: sortFactory.reviewSortOptions(),
-        compatibility_notes: sortFactory.compatibilityNoteSortOptions(),
-        install_order_notes: sortFactory.installOrderNoteSortOptions(),
-        load_order_notes: sortFactory.loadOrderNoteSortOptions()
-    };
-    $scope.filters = {
-        compatibility_notes: {
-            mod_list: true
-        },
-        install_order_notes: {
-            mod_list: true
-        },
-        load_order_notes: {
-            mod_list: true
-        }
-    };
     $scope.retrieving = {};
     // error handling
     $scope.errors = {};
@@ -130,6 +130,31 @@ app.controller('modController', function($scope, $q, $stateParams, $timeout, cur
         });
         return $scope.tabs[index];
     };
+
+    $scope.refreshTabParams = function(tab) {
+        //this is to prevent the refresh from happening before the
+        //tab params are actually updated
+        $timeout(function() {
+            $state.go('base.mod.' + tab.name, tab.params, { notify: false });
+        }, 1);
+    };
+
+    $scope.redirectToFirstTab = function() {
+        var tab = $scope.tabs[0];
+        $state.go('base.mod.' + tab.name, tab.params, { location: 'replace' });
+    };
+
+    $scope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
+        //only if the new state is still on this mod's page
+        if (toParams.modId == fromParams.modId) {
+            newTabIndex = $scope.tabs.findIndex(function(tab) {
+                return toState.name.slice(9) === tab.name;
+            });
+            if (newTabIndex < 0) {
+                $scope.redirectToFirstTab();
+            }
+        }
+    });
 
     //set the class of the status box
     switch ($scope.mod.status) {
@@ -156,15 +181,15 @@ app.controller('modController', function($scope, $q, $stateParams, $timeout, cur
 
     // display success message
     $scope.$on('successMessage', function(event, text) {
-        var successMessage = {type: "success", text: text};
+        var successMessage = { type: "success", text: text };
         $scope.$broadcast('message', successMessage);
         // stop event propagation - we handled it
         event.stopPropagation();
     });
 
     // change sort direction
-    $scope.toggleSortDirection = function(sort) {
-        sort.direction = sort.direction === 'asc' ? 'desc' : 'asc';
+    $scope.toggleSortDirection = function(tab) {
+        tab.params.sdir = tab.params.sdir === 'asc' ? 'desc' : 'asc';
     };
 
     // update the markdown editor
@@ -196,7 +221,7 @@ app.controller('modController', function($scope, $q, $stateParams, $timeout, cur
         modService.starMod($scope.mod.id, $scope.mod.star).then(function() {
             $scope.mod.star = !$scope.mod.star;
         }, function(response) {
-            var params = {label: 'Error starring mod', response: response};
+            var params = { label: 'Error starring mod', response: response };
             $scope.$emit('errorMessage', params);
         });
     };
@@ -222,7 +247,7 @@ app.controller('modController', function($scope, $q, $stateParams, $timeout, cur
             $scope.$emit('successMessage', 'Tags updated successfully.');
             action.resolve(data);
         }, function(response) {
-            var params = {label: 'Error saving mod tags', response: response};
+            var params = { label: 'Error saving mod tags', response: response };
             $scope.$emit('errorMessage', params);
             action.reject(response);
         });

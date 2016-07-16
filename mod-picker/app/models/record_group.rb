@@ -6,7 +6,7 @@ class RecordGroup < ActiveRecord::Base
   validates :signature, length: {is: 4}
   validates :name, length: {maximum: 64}
 
-  def self.as_json(options={})
+  def as_json(options={})
     if JsonHelpers.json_options_empty(options)
       default_options = {
           :except => [:id, :game_id]

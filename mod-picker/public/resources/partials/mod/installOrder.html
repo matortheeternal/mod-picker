@@ -1,6 +1,6 @@
 ﻿<div class="mod-tab-items">
     <div class="mod-tab-item primary-item">
-        <sort-control sort="sort.install_order_notes" sort-options="sortOptions.install_order_notes"></sort-control>
+        <sort-control column="thisTab.params.scol" direction="thisTab.params.sdir" sort-options="sortOptions" retrieve-callback="retrieveInstallOrderNotes()"></sort-control>
     </div>
     <div class="mod-tab-item">
         <input class="btn" type="submit" value="Add Install Order Note" ng-click="startNewInstallOrderNote()" ng-disabled="activeInstallOrderNote"/>
@@ -55,7 +55,7 @@
         There are no Install Order Notes for this mod yet.
     </div>
 
-    <page-results pages="pages.install_order_notes" data="mod.install_order_notes" callback="retrieveInstallOrderNotes"></page-results>
+    <page-results pages="pages" data="mod.install_order_notes" callback="retrieveInstallOrderNotes"></page-results>
 </loader>
 
 <div class="content-message content-error" ng-if="errors.install_order_notes">

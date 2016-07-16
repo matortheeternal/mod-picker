@@ -45,54 +45,10 @@ class HomeController < ApplicationController
     render :json => {
         articles: articles.as_json,
         recent: {
-            mod_lists: mod_lists.as_json,
-            mods: mods.as_json({
-                :only => [:id, :name, :authors, :released],
-                :include => {
-                    :primary_category => {:only => [:name]}
-                },
-                :methods => [:image]
-            }),
-            reviews: reviews.as_json({
-                :include => {
-                    :review_ratings => {
-                        :except => [:review_id]
-                    },
-                    :submitter=> {
-                        :only => [:id, :username, :role, :title],
-                        :include => {
-                            :reputation => {:only => [:overall]}
-                        },
-                        :methods => :avatar
-                    },
-                    :editor => {
-                        :only => [:id, :username, :role]
-                    },
-                    :mod => {
-                        :only => [:id, :name]
-                    }
-                }
-            }),
-            corrections: corrections.as_json({
-                :include => {
-                    :correctable => {
-                        :only => [:id, :name],
-                        :include => {
-                            :submitter => {
-                                :only => [:id, :username]
-                            }
-                        },
-                        :methods => :mods
-                    },
-                    :submitter => {
-                        :only => [:id, :username, :role, :title],
-                        :include => {
-                            :reputation => {:only => [:overall]}
-                        },
-                        :methods => :avatar
-                    }
-                }
-            }),
+            mod_lists: ModList.home_json(mod_lists),
+            mods: Mod.home_json(mods),
+            reviews: Review.index_json(reviews),
+            corrections: Correction.index_json(corrections),
             compatibility_notes: compatibility_notes.as_json,
             install_order_notes: install_order_notes.as_json,
             load_order_notes: load_order_notes.as_json
