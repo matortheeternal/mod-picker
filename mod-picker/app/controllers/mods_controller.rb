@@ -23,7 +23,7 @@ class ModsController < ApplicationController
   # GET /mods/1
   def show
     @mod = Mod.includes(:nexus_infos, :workshop_infos, :lover_infos).find(params[:id])
-    authorize! :read, @mod
+    authorize! :read, @mod, :message => "You are not allowed to view this mod."
     star = ModStar.exists?(:mod_id => @mod.id, :user_id => current_user.id)
     render :json => {
         mod: @mod.show_json,
@@ -34,7 +34,7 @@ class ModsController < ApplicationController
   # GET /mods/1/edit
   def edit
     @mod = Mod.find(params[:id])
-    authorize! :update, @mod
+    authorize! :update, @mod, :message => "You are not allowed to edit this mod."
     render :json => @mod.edit_json
   end
 
