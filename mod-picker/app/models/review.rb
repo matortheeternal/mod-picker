@@ -69,6 +69,29 @@ class Review < ActiveRecord::Base
 
     self.overall_rating = (total.to_f / count) if count > 0
   end
+
+  def self.index_json(collection)
+    collection.as_json({
+        :include => {
+            :review_ratings => {
+                :except => [:review_id]
+            },
+            :submitter=> {
+                :only => [:id, :username, :role, :title],
+                :include => {
+                    :reputation => {:only => [:overall]}
+                },
+                :methods => :avatar
+            },
+            :editor => {
+                :only => [:id, :username, :role]
+            },
+            :mod => {
+                :only => [:id, :name]
+            }
+        }
+    })
+  end
   
   def as_json(options={})
     if JsonHelpers.json_options_empty(options)
