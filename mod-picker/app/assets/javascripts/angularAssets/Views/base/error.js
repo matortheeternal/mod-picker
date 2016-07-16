@@ -24,7 +24,7 @@ app.controller('errorController', function($scope, $state, errorObj, quoteServic
                 $scope.statusType = "unauthorized";
                 break;
             case 404: case 410:
-                $scope.statusType = "not found";
+                $scope.statusType = "not_found";
                 break;
             case 503:
                 $scope.statusType = "unavailable";
@@ -41,6 +41,11 @@ app.controller('errorController', function($scope, $state, errorObj, quoteServic
 
     // get a quote for the error
     $scope.quote = quoteService.getErrorQuote($scope.response.status);
+    $scope.defaultExplanations = {
+        unauthorized: "You aren't authorized to access this resource.",
+        not_found: "Unfortunately, we weren't able to display the page you were looking for.",
+        unavailable: "The resource is unavailable.  The server is either down or overburdened."
+    };
 
     // special cheese handling
     if ($scope.quote.text.startsWith("Cheese!")) {
