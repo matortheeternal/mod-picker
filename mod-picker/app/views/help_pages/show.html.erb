@@ -8,7 +8,7 @@
    </div>
    <h5>author: <%= @help_page.submitter.username %></h5>
    <div class="text-body">
-     <%= @help_page.text_body %>
+     <%= markdown(@help_page.text_body) %>
    </div>
 </div>
  
