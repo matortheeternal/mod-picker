@@ -1,4 +1,4 @@
-app.controller('modCompatibilityController', function($scope, $stateParams, $state, contributionFactory, contributionService) {
+app.controller('modCompatibilityController', function($scope, $stateParams, $state, contributionFactory, contributionService, sortFactory) {
     $scope.thisTab = $scope.findTab('Compatibility');
 
     //update the params on the tab object when the tab is navigated to directly
@@ -32,6 +32,9 @@ app.controller('modCompatibilityController', function($scope, $stateParams, $sta
     $scope.retrieveCompatibilityNotes($stateParams.page);
     //start allowing the url params to be updated
     $scope.loaded = true;
+
+    //loading the sort options
+    $scope.sortOptions = sortFactory.compatibilityNoteSortOptions();
 
     // COMPATIBILITY NOTE RELATED LOGIC
     // instantiate a new compatibility note object

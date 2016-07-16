@@ -1,4 +1,4 @@
-app.controller('modReviewsController', function($scope, $stateParams, $state, modService, reviewSectionService, contributionService) {
+app.controller('modReviewsController', function($scope, $stateParams, $state, modService, reviewSectionService, contributionService, sortFactory) {
     $scope.thisTab = $scope.findTab('Reviews');
 
     //update the params on the tab object when the tab is navigated to directly
@@ -32,6 +32,9 @@ app.controller('modReviewsController', function($scope, $stateParams, $state, mo
     $scope.retrieveReviews($stateParams.page);
     //start allowing the url params to be updated
     $scope.loaded = true;
+
+    //loading the sort options
+    $scope.sortOptions = sortFactory.reviewSortOptions();
 
     //retrieve review sections
     reviewSectionService.getSectionsForCategory($scope.mod.primary_category).then(function(data) {

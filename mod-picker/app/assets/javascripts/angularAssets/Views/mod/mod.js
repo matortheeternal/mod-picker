@@ -123,12 +123,6 @@ app.controller('modController', function($scope, $q, $stateParams, $state, $time
         install_order_notes: {},
         load_order_notes: {}
     };
-    $scope.sortOptions = {
-        reviews: sortFactory.reviewSortOptions(),
-        compatibility_notes: sortFactory.compatibilityNoteSortOptions(),
-        install_order_notes: sortFactory.installOrderNoteSortOptions(),
-        load_order_notes: sortFactory.loadOrderNoteSortOptions()
-    };
     $scope.filters = {
         compatibility_notes: {
             mod_list: true

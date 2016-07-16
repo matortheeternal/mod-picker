@@ -1,4 +1,4 @@
-app.controller('modInstallOrderController', function($scope, $stateParams, $state, contributionService, contributionFactory) {
+app.controller('modInstallOrderController', function($scope, $stateParams, $state, contributionService, contributionFactory, sortFactory) {
     $scope.thisTab = $scope.findTab('Install Order');
 
     //update the params on the tab object when the tab is navigated to directly
@@ -31,6 +31,9 @@ app.controller('modInstallOrderController', function($scope, $stateParams, $stat
     $scope.retrieveInstallOrderNotes($stateParams.page);
     //start allowing the url params to be updated
     $scope.loaded = true;
+
+    //loading the sort options
+    $scope.sortOptions = sortFactory.installOrderNoteSortOptions();
 
     // INSTALL ORDER NOTE RELATED LOGIC
     // instantiate a new install order note object

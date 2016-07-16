@@ -1,4 +1,4 @@
-app.controller('modLoadOrderController', function($scope, $state, $stateParams, contributionService, contributionFactory) {
+app.controller('modLoadOrderController', function($scope, $state, $stateParams, contributionService, contributionFactory, sortFactory) {
     $scope.thisTab = $scope.findTab('Load Order');
 
     //update the params on the tab object when the tab is navigated to directly
@@ -31,6 +31,9 @@ app.controller('modLoadOrderController', function($scope, $state, $stateParams, 
     $scope.retrieveLoadOrderNotes($stateParams.page);
     //start allowing the url params to be updated
     $scope.loaded = true;
+
+    //loading the sort options
+    $scope.sortOptions = sortFactory.loadOrderNoteSortOptions();
 
     // LOAD ORDER NOTE RELATED LOGIC
     // instantiate a new load order note object
