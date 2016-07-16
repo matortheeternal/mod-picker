@@ -1,8 +1,9 @@
 app.controller('modReviewsController', function($scope, $stateParams, $state, modService, reviewSectionService, contributionService, sortFactory) {
     $scope.thisTab = $scope.findTab('Reviews');
+    $scope.params = $scope.thisTab.params;
 
     //update the params on the tab object when the tab is navigated to directly
-    $scope.thisTab.params = angular.copy($stateParams);
+    $scope.params = angular.copy($stateParams);
 
     $scope.retrieveReviews = function(page) {
         // refresh the parameters in the url (without actually changing state), but not on initialization
@@ -13,8 +14,8 @@ app.controller('modReviewsController', function($scope, $stateParams, $state, mo
         // retrieve the reviews
         var options = {
             sort: {
-                column: $scope.thisTab.params.scol,
-                direction: $scope.thisTab.params.sdir
+                column: $scope.params.scol,
+                direction: $scope.params.sdir
             },
             //if no page is specified load the first one
             page: page || 1

@@ -1,5 +1,6 @@
 app.controller('modInstallOrderController', function($scope, $stateParams, $state, contributionService, contributionFactory, sortFactory) {
     $scope.thisTab = $scope.findTab('Install Order');
+    $scope.params = $scope.thisTab.params;
 
     //update the params on the tab object when the tab is navigated to directly
     $scope.thisTab.params = angular.copy($stateParams);
@@ -13,10 +14,10 @@ app.controller('modInstallOrderController', function($scope, $stateParams, $stat
         // retrieve the Install Order Notes
         var options = {
             sort: {
-                column: $scope.thisTab.params.scol,
-                direction: $scope.thisTab.params.sdir
+                column: $scope.params.scol,
+                direction: $scope.params.sdir
             },
-            filters: { modlist: $scope.thisTab.params.filter },
+            filters: { modlist: $scope.params.filter },
             //if no page is specified load the first one
             page: page || 1
         };
