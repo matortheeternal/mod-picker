@@ -171,7 +171,6 @@ app.service('modService', function(backend, $q, errorsFactory, pageUtils, object
                 aliases: mod.aliases,
                 authors: mod.authors,
                 is_utility: mod.is_utility,
-                has_adult_content: mod.has_adult_content,
                 game_id: mod.game_id,
                 released: mod.released,
                 updated: mod.updated,
@@ -185,7 +184,12 @@ app.service('modService', function(backend, $q, errorsFactory, pageUtils, object
                 plugin_dumps: mod.analysis && mod.analysis.plugins,
                 mod_authors_attributes: mod_authors,
                 custom_sources_attributes: custom_sources,
-                required_mods_attributes: required_mods
+                required_mods_attributes: required_mods,
+                disallow_contributors: mod.disallow_contributors,
+                disable_reviews: mod.disable_reviews,
+                lock_tags: mod.lock_tags,
+                has_adult_content: mod.has_adult_content,
+                hidden: mod.hidden
             }
         };
         objectUtils.deleteEmptyProperties(modData, 1);
