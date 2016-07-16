@@ -161,14 +161,6 @@ app.controller('modController', function($scope, $q, $stateParams, $state, $time
         return $scope.tabs[index];
     };
 
-    //removes the tab with tabName
-    $scope.removeTab = function(tabName) {
-        var index = $scope.tabs.findIndex(function(tab) {
-            return tab.name === tabName;
-        });
-        $scope.tabs.splice(index, 1);
-    };
-
     $scope.refreshTabParams = function(tab) {
         $state.go('base.mod.' + tab.name, tab.params, { notify: false });
     };
@@ -178,27 +170,6 @@ app.controller('modController', function($scope, $q, $stateParams, $state, $time
         $state.go('base.mod.' + tab.name, tab.params, { location: 'replace' });
     };
 
-    // only display analysis tab if mod doesn't have a primary category
-    if (!$scope.mod.primary_category_id) {
-        $scope.removeTab('Reviews');
-        $scope.removeTab('Compatibility');
-        $scope.removeTab('Install Order');
-        $scope.removeTab('Load Order');
-        if (!$state.is('base.mod.Analysis')) {
-            $scope.redirectToFirstTab();
-        }
-    } else {
-        // remove install order notes if mod is a utility
-        if ($scope.mod.is_utility) {
-            $scope.removeTab('Install Order');
-            if ($state.is('base.mod.Install Order')) {
-                $scope.redirectToFirstTab();
-            }
-        }
-        // remove Load Order tab if mod has no plugins
-        if ($scope.mod.plugins_count === 0) {
-            $scope.removeTab('Load Order');
-            if ($state.is('base.mod.Load Order')) {
     $scope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
         //only if the new state is still on this mod's page
         if (toParams.modId == fromParams.modId) {
