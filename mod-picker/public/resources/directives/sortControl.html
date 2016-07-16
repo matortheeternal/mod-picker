@@ -1,7 +1,7 @@
 <strong>Sort By: </strong>
 
-<select ng-model="column">
-    <option ng-repeat="option in sortOptions" value="{{option.value}}" ng-change="retrieveCallback()">{{option.label}}</option>
+<select ng-model="column" ng-change="retrieveCallback()">
+    <option ng-repeat="option in sortOptions" value="{{option.value}}">{{option.label}}</option>
 </select>
 
 <span class="sort-direction" title="Sorted in {{ direction === 'asc' ? 'ascending' : 'descending' }} order."
