@@ -26,7 +26,7 @@ app.controller('errorController', function($scope, $state, errorObj, quoteServic
             case 404: case 410:
                 $scope.statusType = "not_found";
                 break;
-            case 503:
+            case 429: case 503:
                 $scope.statusType = "unavailable";
                 break;
             case 500: default:
