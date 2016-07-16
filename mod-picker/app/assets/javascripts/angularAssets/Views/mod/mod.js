@@ -110,23 +110,6 @@ app.controller('modController', function($scope, $q, $stateParams, $state, $time
     $scope.tags = [];
     $scope.newTags = [];
     $scope.statusModal = {};
-    $scope.sort = {
-        reviews: {},
-        compatibility_notes: {},
-        install_order_notes: {},
-        load_order_notes: {}
-    };
-    $scope.filters = {
-        compatibility_notes: {
-            mod_list: true
-        },
-        install_order_notes: {
-            mod_list: true
-        },
-        load_order_notes: {
-            mod_list: true
-        }
-    };
     $scope.retrieving = {};
     // error handling
     $scope.errors = {};
