@@ -71,6 +71,7 @@ class ModsController < ApplicationController
 
   # PATCH/PUT /mods/1/tags
   def update_tags
+    # TODO: Move this into the model
     # errors array to return to user
     errors = ActiveModel::Errors.new(self)
     current_user_id = current_user.id
@@ -117,9 +118,8 @@ class ModsController < ApplicationController
   # POST /mods/1/image
   def image
     authorize! :update, @mod
-    @mod.image_file = params[:image]
 
-    if @mod.save
+    if @mod.update(image_params)
       render json: {status: :ok}
     else
       render json: @mod.errors, status: :unprocessable_entity
