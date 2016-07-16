@@ -437,67 +437,68 @@ class Mod < ActiveRecord::Base
 
   def edit_json
     self.as_json({
-       :include => {
-           :tags => {
-               :except => [:game_id, :hidden, :mod_lists_count],
-               :include => {
-                   :submitter => {
-                       :only => [:id, :username]
-                   }
-               }
-           },
-           :nexus_infos => {:only => [:id, :last_scraped]},
-           :workshop_infos => {:only => [:id, :last_scraped]},
-           :lover_infos => {:only => [:id, :last_scraped]},
-           :custom_sources => {:except => [:mod_id]},
-           :mod_authors => {
-               :only => [:id, :role, :user_id],
-               :include => {
-                   :user => {
-                       :only => [:username]
-                   }
-               }
-           },
-           :required_mods => {
-               :only => [:id],
-               :include => {
-                   :required_mod => {
-                       :only => [:id, :name]
-                   }
-               }
-           }
-       },
-       :methods => :image
+        :include => {
+            :tags => {
+                :except => [:game_id, :hidden, :mod_lists_count],
+                :include => {
+                    :submitter => {
+                        :only => [:id, :username]
+                    }
+                }
+            },
+            :nexus_infos => {:only => [:id, :last_scraped]},
+            :workshop_infos => {:only => [:id, :last_scraped]},
+            :lover_infos => {:only => [:id, :last_scraped]},
+            :custom_sources => {:except => [:mod_id]},
+            :mod_authors => {
+                :only => [:id, :role, :user_id],
+                :include => {
+                    :user => {
+                        :only => [:username]
+                    }
+                }
+            },
+            :required_mods => {
+                :only => [:id],
+                :include => {
+                    :required_mod => {
+                        :only => [:id, :name]
+                    }
+                }
+            }
+        },
+        :methods => :image
     })
   end
 
   def show_json
     self.as_json({
-      :include => {
-          :tags => {
-              :except => [:game_id, :hidden, :mod_lists_count],
-              :include => {
-                  :submitter => {
-                      :only => [:id, :username]
-                  }
-              }
-          },
-          :nexus_infos => {:except => [:mod_id]},
-          :workshop_infos => {:except => [:mod_id]},
-          :lover_infos => {:except => [:mod_id]},
-          :plugins => {:only => [:id, :filename]},
-          :custom_sources => {:except => [:mod_id]},
-          :author_users => {:only => [:id, :username]},
-          :required_mods => {
-              :only => [],
-              :include => {
-                  :required_mod => {
-                      :only => [:id, :name]
-                  }
-              }
-          }
-      },
-      :methods => :image
+        :except => [:disallow_contributors, :hidden],
+        :include => {
+            :tags => {
+                :except => [:game_id, :hidden, :mod_lists_count],
+                :include => {
+                    :submitter => {
+                        :only => [:id, :username]
+                    }
+                }
+            },
+            :nexus_infos => {:except => [:mod_id]},
+            :workshop_infos => {:except => [:mod_id]},
+            :lover_infos => {:except => [:mod_id]},
+            :plugins => {:only => [:id, :filename]},
+            :custom_sources => {:except => [:mod_id]},
+            :author_users => {:only => [:id, :username]},
+            :required_mods => {
+                :only => [],
+                :include => {
+                    :required_mod => {
+                        :only => [:id, :name]
+                    }
+                }
+            }
+        },
+        :methods => :image
     })
   end
 
