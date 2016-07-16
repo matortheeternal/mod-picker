@@ -48,9 +48,14 @@
             <div class="articles box-shadow">
                 <h3 class="section-title">Site News</h3>
                 <div class="news-box" ng-repeat="article in articles">
-                    <h3 class="section-title">{{article.title}}</h3>
-                    <span class="article-details">by {{article.submitter.username}} on {{article.submitted | date}}</span>
-                    <read-more text="article.text_body" words="50"></read-more>
+                    <div class="image-container">
+                        <img ng-src="{{article.image}}" ng-if="article.image"/>
+                    </div>
+                    <div class="content-container">
+                        <h3 class="article-title">{{article.title}}</h3>
+                        <span class="article-details">by {{article.submitter.username}} on {{article.submitted | date}}</span>
+                        <read-more text="article.text_body" words="50"></read-more>
+                    </div>
                 </div>
                 <div class="load-older-posts">
                     <a href="#/news/">See All News Posts</a>
