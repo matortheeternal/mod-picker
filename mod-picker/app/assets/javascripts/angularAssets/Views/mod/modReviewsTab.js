@@ -1,9 +1,9 @@
 app.controller('modReviewsController', function($scope, $stateParams, $state, modService, reviewSectionService, contributionService, sortFactory) {
     $scope.thisTab = $scope.findTab('Reviews');
-    $scope.params = $scope.thisTab.params;
 
     //update the params on the tab object when the tab is navigated to directly
-    $scope.params = angular.copy($stateParams);
+    $scope.thisTab.params = angular.copy($stateParams);
+    $scope.params = $scope.thisTab.params;
 
     $scope.retrieveReviews = function(page) {
         // refresh the parameters in the url (without actually changing state), but not on initialization
@@ -23,10 +23,26 @@ app.controller('modReviewsController', function($scope, $stateParams, $state, mo
         contributionService.retrieveModReviews($stateParams.modId, options, $scope.pages).then(function(data) {
             $scope.mod.reviews = data.reviews;
             $scope.mod.user_review = data.user_review;
+
+            //seperating the review in the url if any
+            if ($scope.params.reviewId) {
+                var currentIndex = $scope.mod.reviews.findIndex(function(review) {
+                    return review.id === $scope.params.reviewId;
+                });
+                if (currentIndex > -1) {
+                    $scope.currentReview = $scope.mod.reviews.splice(currentIndex, 1)[0];
+                } else {
+                    // remove the reviewId param from the url if it's not part of this mod
+                    $scope.params.reviewId = null;
+                    $scope.refreshTabParams($scope.thisTab);
+                }
+            } else {
+                // clear the currentReview if it's not specified
+                delete $scope.currentReview;
+            }
         }, function(response) {
             $scope.errors.reviews = response;
         });
-
     };
 
     //loading the sort options

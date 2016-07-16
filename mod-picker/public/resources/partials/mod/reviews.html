@@ -59,10 +59,17 @@
 </div>
 
 <loader data="mod.reviews" spinner-class="big-spinner" ng-if="!errors.reviews && !errors.reviewSections">
+    <!-- current user's review -->
     <div class="content-block user-review" ng-if="mod.user_review && mod.user_review.id && !mod.user_review.editing">
-        <review review="mod.user_review" show-user-column="true" index="99" current-user="currentUser" edit="editReview"></review>
+        <review review="mod.user_review" show-user-column="true" index="98" current-user="currentUser" edit="editReview"></review>
     </div>
 
+    <!-- review specified in the url -->
+    <div class="content-block user-review" ng-if="currentReview && !currentReview.editing">
+        <review review="currentReview" show-user-column="true" index="99" current-user="currentUser" edit="editReview"></review>
+    </div>
+
+    <!-- the rest of the reviews -->
     <div ng-repeat="review in mod.reviews" class="content-block" ng-if="!review.editing">
         <review review="review" show-user-column="true" index="100 + $index" current-user="currentUser" edit="editReview"></review>
     </div>
