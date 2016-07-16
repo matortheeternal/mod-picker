@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160716180308) do
+ActiveRecord::Schema.define(version: 20160716214353) do
 
   create_table "agreement_marks", id: false, force: :cascade do |t|
     t.integer "correction_id", limit: 4,                null: false
@@ -23,7 +23,7 @@ ActiveRecord::Schema.define(version: 20160716180308) do
   add_index "agreement_marks", ["submitted_by"], name: "submitted_by", using: :btree
 
   create_table "articles", force: :cascade do |t|
-    t.integer  "game_id",        limit: 4,                 null: false
+    t.integer  "game_id",        limit: 4
     t.integer  "submitted_by",   limit: 4,                 null: false
     t.string   "title",          limit: 255,               null: false
     t.text     "text_body",      limit: 65535,             null: false
