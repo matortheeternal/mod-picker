@@ -1,5 +1,5 @@
 class ModListsController < ApplicationController
-  before_action :set_mod_list, only: [:show, :update, :update_tags, :destroy, :tools, :plugins, :configs]
+  before_action :set_mod_list, only: [:show, :update, :update_tags, :destroy, :tools, :plugins, :config_files, :comments]
   before_action :set_active_mod_list, only: [:active, :mods]
 
   # GET /mod_lists
@@ -83,6 +83,18 @@ class ModListsController < ApplicationController
             }
         }
     })
+  end
+
+  # POST/GET /mod_lists/1/comments
+  def comments
+    authorize! :read, @mod_list
+    comments = @mod_list.comments.accessible_by(current_ability).sort(params[:sort]).paginate(:page => params[:page], :per_page => 10)
+    count = @mod_list.comments.accessible_by(current_ability).count
+    render :json => {
+        comments: comments,
+        max_entries: count,
+        entries_per_page: 10
+    }
   end
 
   # POST /mod_lists
