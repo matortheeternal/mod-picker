@@ -5,6 +5,15 @@ class ApplicationController < ActionController::Base
   
   before_action :configure_permitted_parameters, if: :devise_controller?
 
+  # Render 401 or 403 as appropriate
+  rescue_from CanCan::AccessDenied do |exception|
+    if current_user
+      render json: {error: "You are not authorized to access this resource."}, status: 403
+    else
+      render json: {error: "You must be logged in to perform this action."}, status: 401
+    end
+  end
+
   def after_sign_in_path_for(resource)
     '/skyrim'
   end
