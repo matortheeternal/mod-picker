@@ -8,9 +8,7 @@ class ModsController < ApplicationController
     count =  Mod.accessible_by(current_ability).filter(filtering_params).count
 
     render :json => {
-      mods: @mods.as_json({
-          :include => mods_include_hash
-      }),
+      mods: Mod.index_json(@mods, params[:filters][:sources]),
       max_entries: count,
       entries_per_page: Mod.per_page
     }
@@ -19,9 +17,7 @@ class ModsController < ApplicationController
   # POST /mods/search
   def search
     @mods = Mod.hidden(false).is_game(false).filter(search_params).sort({ column: "name", direction: "ASC" }).limit(10)
-    render :json => @mods.as_json({
-        :only => [:id, :name]
-    })
+    render :json => @mods
   end
 
   # GET /mods/1
@@ -297,16 +293,6 @@ class ModsController < ApplicationController
     # Params we allow searching on
     def search_params
       params[:filters].slice(:search, :game)
-    end
-
-    # Includes hash for mods index query
-    def mods_include_hash
-      hash = { :author_users => { :only => [:id, :username] } }
-      sources = params[:filters][:sources]
-      hash[:nexus_infos] = {:except => [:mod_id]} if sources[:nexus]
-      hash[:lover_infos] = {:except => [:mod_id]} if sources[:lab]
-      hash[:workshop_infos] = {:except => [:mod_id]} if sources[:workshop]
-      hash
     end
     
     # Params we allow filtering on

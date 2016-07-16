@@ -413,6 +413,28 @@ class Mod < ActiveRecord::Base
     end
   end
 
+  def self.index_json(collection, sources)
+    # Includes hash for mods index query
+    include_hash = { :author_users => { :only => [:id, :username] } }
+    include_hash[:nexus_infos] = {:except => [:mod_id]} if sources[:nexus]
+    include_hash[:lover_infos] = {:except => [:mod_id]} if sources[:lab]
+    include_hash[:workshop_infos] = {:except => [:mod_id]} if sources[:workshop]
+
+    collection.as_json({
+        :include => include_hash
+    })
+  end
+
+  def self.home_json(collection)
+    collection.as_json({
+        :only => [:id, :name, :authors, :released],
+        :include => {
+            :primary_category => {:only => [:name]}
+        },
+        :methods => [:image]
+    })
+  end
+
   def edit_json
     self.as_json({
        :include => {
