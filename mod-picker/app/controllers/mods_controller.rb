@@ -43,7 +43,7 @@ class ModsController < ApplicationController
     @mod = Mod.new(mod_params)
     @mod.submitted_by = current_user.id
     authorize! :create, @mod
-    authorize! :assign_custom_sources, @mod if params[:mod][:custom_sources_attributes]
+    authorize! :assign_custom_sources, @mod if params[:mod].has_key?(:custom_sources_attributes)
 
     if @mod.save
       @mod.update_metrics
@@ -56,7 +56,10 @@ class ModsController < ApplicationController
   # PATCH/PUT /mods/1
   def update
     authorize! :update, @mod
-    authorize! :assign_authors, @mod if params[:mod][:mod_authors_attributes]
+    authorize! :hide, @mod if params[:mod].has_key?(:hidden)
+    authorize! :update_authors, @mod if params[:mod].has_key?(:mod_authors_attributes)
+    authorize! :update_options, @mod if options_params.any?
+    authorize! :assign_custom_sources, @mod if params[:mod].has_key?(:custom_sources_attributes)
 
     if @mod.update(mod_update_params)
       @mod.update_metrics
@@ -316,7 +319,7 @@ class ModsController < ApplicationController
     end
 
     def mod_update_params
-      params.require(:mod).permit(:name, :authors, :aliases, :is_utility, :has_adult_content, :primary_category_id, :secondary_category_id, :released, :updated, :nexus_info_id, :lovers_info_id, :workshop_info_id, :disallow_contributors, :disable_reviews, :lock_tags,
+      params.require(:mod).permit(:name, :authors, :aliases, :is_utility, :has_adult_content, :primary_category_id, :secondary_category_id, :released, :updated, :nexus_info_id, :lovers_info_id, :workshop_info_id, :disallow_contributors, :disable_reviews, :lock_tags, :hidden,
          :required_mods_attributes => [:id, :required_id, :_destroy],
          :mod_authors_attributes => [:id, :role, :user_id, :_destroy],
          :custom_sources_attributes => [:id, :label, :url, :_destroy],
@@ -327,5 +330,13 @@ class ModsController < ApplicationController
            :plugin_record_groups_attributes => [:sig, :record_count, :override_count],
            :plugin_errors_attributes => [:signature, :form_id, :group, :path, :name, :data],
            :overrides_attributes => [:fid, :sig]])
+    end
+
+    def options_params
+      params[:mod].slice(:is_utility, :has_adult_content, :disallow_contributors, :disable_reviews, :lock_tags)
+    end
+
+    def image_params
+      {:image_file => params[:image]}
     end
 end
