@@ -5,7 +5,7 @@ app.controller('modAnalysisController', function($scope, $stateParams, $state, c
     $scope.thisTab.params = angular.copy($stateParams);
 
     $scope.switchPlugin = function() {
-        $scope.thisTab.params.plugin = $scope.mod.currentPlugin.id;
+        $scope.params.plugin = $scope.mod.currentPlugin.id;
         $scope.refreshTabParams($scope.thisTab);
     };
 
@@ -20,13 +20,13 @@ app.controller('modAnalysisController', function($scope, $stateParams, $state, c
             // set current plugin
             if (analysis.plugins.length > 0) {
                 var statePlugin = analysis.plugins.find(function(plugin) {
-                    return plugin.id === $scope.thisTab.params.plugin;
+                    return plugin.id === $scope.params.plugin;
                 });
                 // if the plugin defined in the params isn't part of this mod, then set the currentPlugin
                 // to the first plugin of this mod and update the url parameter
                 if (!statePlugin) {
                     $scope.mod.currentPlugin = analysis.plugins[0];
-                    $scope.thisTab.params.plugin = analysis.plugins[0].id;
+                    $scope.params.plugin = analysis.plugins[0].id;
                     $scope.refreshTabParams($scope.thisTab);
                 } else {
                     $scope.mod.currentPlugin = statePlugin;

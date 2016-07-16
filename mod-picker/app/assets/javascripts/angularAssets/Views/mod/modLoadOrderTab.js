@@ -1,5 +1,6 @@
 app.controller('modLoadOrderController', function($scope, $state, $stateParams, contributionService, contributionFactory, sortFactory) {
     $scope.thisTab = $scope.findTab('Load Order');
+    $scope.params = $scope.thisTab.params;
 
     //update the params on the tab object when the tab is navigated to directly
     $scope.thisTab.params = angular.copy($stateParams);
@@ -13,10 +14,10 @@ app.controller('modLoadOrderController', function($scope, $state, $stateParams, 
         // retrieve the Load Order Notes
         var options = {
             sort: {
-                column: $scope.thisTab.params.scol,
-                direction: $scope.thisTab.params.sdir
+                column: $scope.params.scol,
+                direction: $scope.params.sdir
             },
-            filters: { modlist: $stateParamsthisTab.params.filter },
+            filters: { modlist: $stateParamsparams.filter },
             //if no page is specified load the first one
             page: page || 1
         };
