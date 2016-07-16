@@ -23,8 +23,7 @@ app.controller('modAnalysisController', function($scope, $stateParams, $state, c
                 var statePlugin = analysis.plugins.find(function(plugin) {
                     return plugin.id === $scope.params.plugin;
                 });
-                // if the plugin defined in the params isn't part of this mod, then set the currentPlugin
-                // to the first plugin of this mod and update the url parameter
+                // if the plugin defined in the params isn't part of this mod, then set the currentPlugin to the first plugin of this mod and update the url parameter
                 if (!statePlugin) {
                     $scope.mod.currentPlugin = analysis.plugins[0];
                     $scope.params.plugin = analysis.plugins[0].id;
