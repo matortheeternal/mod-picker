@@ -34,7 +34,7 @@ class HomeController < ApplicationController
     articles = Article.game(params[:game]).order(:submitted => :DESC).limit(4)
 
     # we include associated data we know we'll need because it increases the speed of the query
-    mod_lists = ModList.visible.game(params[:game]).includes(:submitter => :reputation).order(:edited => :DESC).limit(5)
+    mod_lists = ModList.visible.game(params[:game]).where(:status => 2).includes(:submitter => :reputation).order(:completed => :DESC).limit(5)
     mods = Mod.include_hidden(false).game(params[:game]).order(:id => :DESC).limit(5)
     reviews = Review.visible.game(params[:game]).includes(:mod, :submitter => :reputation).order(:submitted => :DESC).limit(4)
     corrections = Correction.visible.game(params[:game]).includes(:submitter => :reputation).order(:submitted => :DESC).limit(4)

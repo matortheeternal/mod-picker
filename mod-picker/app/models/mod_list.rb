@@ -190,7 +190,7 @@ class ModList < ActiveRecord::Base
   def self.home_json(collection)
     # TODO: Revise this as needed
     collection.as_json({
-        :only => [:id, :name, :submitted, :updated],
+        :only => [:id, :name, :completed, :mods_count, :plugins_count],
         :include => {
             :submitter => {
                 :only => [:id, :username, :role, :title],
