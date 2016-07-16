@@ -31,7 +31,7 @@ class HomeController < ApplicationController
 
   def index
     # we first get news articles
-    articles = Article.order(:submitted => :DESC).limit(4)
+    articles = Article.game(params[:game]).order(:submitted => :DESC).limit(4)
 
     # we include associated data we know we'll need because it increases the speed of the query
     mod_lists = ModList.visible.game(params[:game]).includes(:submitter => :reputation).order(:edited => :DESC).limit(5)
