@@ -3,6 +3,7 @@ app.controller('modAnalysisController', function($scope, $stateParams, $state, c
 
     //update the params on the tab object when the tab is navigated to directly
     $scope.thisTab.params = angular.copy($stateParams);
+    $scope.params = $scope.thisTab.params;
 
     $scope.switchPlugin = function() {
         $scope.params.plugin = $scope.mod.currentPlugin.id;
