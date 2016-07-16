@@ -37,14 +37,4 @@ app.controller('homeController', function($scope, $q, homeService, currentUser) 
         $scope.recent = data.recent;
         $scope.articles = data.articles;
     });
-
-    $scope.wordCount = function(string) {
-        return string.match(/(\S+)/g).length;
-    };
-
-    //returns just the first 50 words of a string
-    $scope.reduceText = function(string) {
-        words = string.split(' ', 50);
-        return words.join(' ');
-    };
 });
