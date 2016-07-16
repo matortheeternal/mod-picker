@@ -1,7 +1,7 @@
 class Mod < ActiveRecord::Base
-  include Filterable, Sortable, RecordEnhancements
+  include Filterable, Sortable, Imageable, RecordEnhancements
 
-  attr_writer :tag_names, :asset_paths, :plugin_dumps, :nexus_info_id, :lover_info_id, :workshop_info_id, :image_file
+  attr_writer :tag_names, :asset_paths, :plugin_dumps, :nexus_info_id, :lover_info_id, :workshop_info_id
   enum status: [ :good, :outdated, :unstable ]
 
   # BOOLEAN SCOPES (excludes content when false)
@@ -224,7 +224,7 @@ class Mod < ActiveRecord::Base
   # callbacks
   after_create :increment_counters
   before_update :destroy_associations, :hide_contributions
-  after_save :create_associations, :save_image
+  after_save :create_associations
   before_destroy :decrement_counters
 
   def update_lazy_counters
@@ -376,39 +376,6 @@ class Mod < ActiveRecord::Base
     end
   end
 
-  def delete_old_mod_images
-    png_path = Rails.root.join('public', 'mods', self.id.to_s + '.png')
-    jpg_path = Rails.root.join('public', 'mods', self.id.to_s + '.jpg')
-
-    if File.exist?(png_path)
-      File.delete(png_path)
-    end
-    if File.exist?(jpg_path)
-      File.delete(jpg_path)
-    end
-  end
-
-  def save_image
-    if @image_file
-      ext = File.extname(@image_file.original_filename)
-      local_filename = Rails.root.join('public', 'mods', self.id.to_s + ext)
-      if ext != '.png' && ext != '.jpg' # image must be png or jpg
-        self.errors.add(:image, 'Invalid image type, must be PNG or JPG')
-      elsif @image_file.size > 1048576 # 1 megabyte max file size
-        self.errors.add(:image, 'Image is too big')
-      else
-        begin
-          delete_old_mod_images
-          File.open(local_filename, 'wb') do |f|
-            f.write(@image_file.read)
-          end
-        rescue
-          self.errors.add(:image, 'Unknown failure')
-        end
-      end
-    end
-  end
-
   def create_associations
     self.create_tags
     self.create_asset_files
@@ -434,18 +401,6 @@ class Mod < ActiveRecord::Base
 
   def load_order_notes
     LoadOrderNote.where('first_plugin_id in (?) OR second_plugin_id in (?)', self.plugins.ids, self.plugins.ids)
-  end
-
-  def image
-    png_path = File.join(Rails.public_path, "mods/#{id}.png")
-    jpg_path = File.join(Rails.public_path, "mods/#{id}.jpg")
-    if File.exists?(png_path)
-      "/mods/#{id}.png"
-    elsif File.exists?(jpg_path)
-      "/mods/#{id}.jpg"
-    else
-      '/mods/Default.png'
-    end
   end
 
   def self.index_json(collection, sources)
