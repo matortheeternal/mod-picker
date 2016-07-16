@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160715003923) do
+ActiveRecord::Schema.define(version: 20160716180308) do
 
   create_table "agreement_marks", id: false, force: :cascade do |t|
     t.integer "correction_id", limit: 4,                null: false
@@ -519,6 +519,9 @@ ActiveRecord::Schema.define(version: 20160715003923) do
     t.integer  "install_order_notes_count", limit: 4,   default: 0,     null: false
     t.integer  "load_order_notes_count",    limit: 4,   default: 0,     null: false
     t.integer  "corrections_count",         limit: 4,   default: 0,     null: false
+    t.boolean  "disallow_contributors",                 default: false, null: false
+    t.boolean  "disable_reviews",                       default: false, null: false
+    t.boolean  "lock_tags",                             default: false, null: false
     t.boolean  "has_adult_content",                     default: false, null: false
     t.boolean  "hidden",                                default: false, null: false
     t.datetime "released",                                              null: false
