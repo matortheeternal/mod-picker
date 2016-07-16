@@ -3,7 +3,7 @@ app.controller('modReviewsController', function($scope, $stateParams, $state, mo
     $scope.params = $scope.thisTab.params;
 
     //update the params on the tab object when the tab is navigated to directly
-    $scope.params = angular.copy($stateParams);
+    $scope.thisTab.params = angular.copy($stateParams);
 
     $scope.retrieveReviews = function(page) {
         // refresh the parameters in the url (without actually changing state), but not on initialization
