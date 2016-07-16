@@ -11,7 +11,7 @@ class ModListsController < ApplicationController
 
   # GET /mod_lists/1
   def show
-    authorize! :read, @mod_list
+    authorize! :read, @mod_list, :message => "You are not allowed to view this mod list."
     star = ModListStar.exists?(:mod_list_id => @mod_list.id, :user_id => current_user.id)
     render :json => {
         mod_list: @mod_list.show_json,
