@@ -223,7 +223,7 @@ class Mod < ActiveRecord::Base
 
   # callbacks
   after_create :increment_counters
-  before_update :destroy_associations
+  before_update :destroy_associations, :hide_contributions
   after_save :create_associations, :save_image
   before_destroy :decrement_counters
 
@@ -237,6 +237,28 @@ class Mod < ActiveRecord::Base
     if @plugin_dumps || @asset_paths
       self.mod_asset_files.destroy_all
       self.plugins.destroy_all
+    end
+  end
+
+  def hide_contributions
+    if self.attribute_changed?(:hidden) && self.hidden
+      # prepare some helper variables
+      plugin_ids = self.plugins.ids
+      cnote_ids = CompatibilityNote.where("first_mod_id = ? OR second_mod_id = ?", id, id).ids
+      inote_ids = InstallOrderNote.where("first_mod_id = ? OR second_mod_id = ?", id, id).ids
+      lnote_ids = LoadOrderNote.where("first_plugin_id in (?) OR second_plugin_id in (?)", plugin_ids, plugin_ids).ids
+
+      # hide content
+      Review.where(mod_id: self.id).update_all(:hidden => true)
+      Correction.where(correctable_type: "Mod", correctable_id: self.id).update_all(:hidden => true)
+      CompatibilityNote.where(id: cnote_ids).update_all(:hidden => true)
+      InstallOrderNote.where(id: inote_ids).update_all(:hidden => true)
+      LoadOrderNote.where(id: lnote_ids).update_all(:hidden => true)
+      Correction.where(correctable_type: "CompatibilityNote", correctable_id: cnote_ids).update_all(:hidden => true)
+      Correction.where(correctable_type: "InstallOrderNote", correctable_id: inote_ids).update_all(:hidden => true)
+      Correction.where(correctable_type: "LoadOrderNote", correctable_id: lnote_ids).update_all(:hidden => true)
+    elsif self.attribute_changed?(:disable_reviews) && self.disable_reviews
+      Review.where(mod_id: self.id).update_all(:hidden => true)
     end
   end
 
