@@ -5,12 +5,13 @@ class Mod < ActiveRecord::Base
   enum status: [ :good, :outdated, :unstable ]
 
   # BOOLEAN SCOPES (excludes content when false)
-  scope :hidden, -> (bool) { where(hidden: false) if !bool  }
-  scope :adult, -> (bool) { where(has_adult_content: false) if !bool }
-  scope :official, -> (bool) { where(is_official: false) if !bool }
-  scope :utility, -> (bool) { where(is_utility: false) if !bool }
-  scope :is_game, -> (bool) { where.not(primary_category_id: nil) if !bool }
+  scope :include_hidden, -> (bool) { where(hidden: false) if !bool  }
+  scope :include_adult, -> (bool) { where(has_adult_content: false) if !bool }
+  scope :include_official, -> (bool) { where(is_official: false) if !bool }
+  scope :include_utilities, -> (bool) { where(is_utility: false) if !bool }
+  scope :include_games, -> (bool) { where.not(primary_category_id: nil) if !bool }
   # GENERAL SCOPES
+  scope :utility, -> (bool) { where(is_utility: bool) }
   scope :search, -> (search) { where("name like ? OR aliases like ?", "%#{search}%", "%#{search}%") }
   scope :game, -> (game_id) {
     game = Game.find(game_id)
@@ -226,10 +227,6 @@ class Mod < ActiveRecord::Base
   after_save :create_associations, :save_image
   before_destroy :decrement_counters
 
-  def no_author?
-    self.mod_authors.count == 0
-  end
-
   def update_lazy_counters
     self.asset_files_count = ModAssetFile.where(mod_id: self.id).count
     self.plugins_count = Plugin.where(mod_id: self.id).count
@@ -241,6 +238,13 @@ class Mod < ActiveRecord::Base
       self.mod_asset_files.destroy_all
       self.plugins.destroy_all
     end
+  end
+
+  def swap_mod_list_mods_tools_counts
+    tools_operator = self.is_utility ? "+" : "-"
+    mods_operator = self.is_utility ? "-" : "+"
+    mod_list_ids = self.mod_lists.ids
+    ModList.where(id: mod_list_ids).update_all("tools_count = tools_count #{tools_operator} 1, mods_count = mods_count #{mods_operator} 1")
   end
 
   def create_tags
@@ -523,6 +527,10 @@ class Mod < ActiveRecord::Base
   end
 
   private
+    def init
+      self.authors ||= ""
+    end
+    
     def decrement_counters
       self.submitter.update_counter(:submitted_mods_count, -1) if self.submitted_by.present?
     end

@@ -1,2 +1,4 @@
 #!/bin/bash
-bundle exec rake reset:clear reset:ids db:seed
+bundle exec rake setup:reset:db
+bundle exec rake setup:reset:ids
+bundle exec rake db:seed

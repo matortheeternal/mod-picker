@@ -61,8 +61,12 @@ class ModsController < ApplicationController
     authorize! :update_options, @mod if options_params.any?
     authorize! :assign_custom_sources, @mod if params[:mod].has_key?(:custom_sources_attributes)
 
+    # update mod list tools/mods count if is_utility changed
+    swap_counts = params[:mod].has_key?(:is_utility) && params[:mod][:is_utility] != @mod.is_utility
+
     if @mod.update(mod_update_params)
       @mod.update_metrics
+      @mod.swap_mod_list_mods_tools_counts if swap_counts
       render json: {status: :ok}
     else
       render json: @mod.errors, status: :unprocessable_entity
@@ -266,13 +270,13 @@ class ModsController < ApplicationController
 
     # Params we allow searching on
     def search_params
-      params[:filters].slice(:search, :game)
+      params[:filters].slice(:search, :game, :utility)
     end
     
     # Params we allow filtering on
     def filtering_params
       # construct valid filters array
-      valid_filters = [:sources, :search, :game, :released, :updated, :adult, :utility, :categories, :tags, :stars, :reviews, :rating, :reputation, :compatibility_notes, :install_order_notes, :load_order_notes, :views, :author]
+      valid_filters = [:include_adult, :include_utilities, :sources, :search, :game, :released, :updated, :utility, :categories, :tags, :stars, :reviews, :rating, :reputation, :compatibility_notes, :install_order_notes, :load_order_notes, :views, :author]
       source_filters = [:views, :author, :posts, :videos, :images, :discussions, :downloads, :favorites, :subscribers, :endorsements, :unique_downloads, :files, :bugs, :articles]
       sources = params[:filters][:sources]
 

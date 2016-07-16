@@ -10,12 +10,15 @@ app.service('modService', function(backend, $q, errorsFactory, pageUtils, object
         return action.promise;
     };
 
-    this.searchMods = function(name) {
+    this.searchMods = function(name, utility) {
         var postData =  {
             filters: {
                 search: name
             }
         };
+        if (angular.isDefined(utility)) {
+            postData.filters.utility = utility;
+        }
         return backend.post('/mods/search', postData);
     };
     

@@ -22,7 +22,7 @@ app.controller('messagesController', function ($scope, $timeout) {
     $scope.messages = [];
 
     $scope.$on($scope.event, function(event, message) {
-        var decay = message.type === 'error' ? $scope.errorDecay : $scope.successDecay;
+        var decay = message.type === 'success' ? $scope.successDecay : $scope.errorDecay;
         $scope.messages.push(message);
         $timeout(function() {
             var index = $scope.messages.indexOf(message);

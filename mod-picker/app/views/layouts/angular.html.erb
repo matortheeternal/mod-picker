@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="modPicker">
+<head>
+  <meta charset="UTF-8">
+  <title>Mod Picker: Angular Preview</title>
+  <link href='https://fonts.googleapis.com/css?family=Roboto:400,700,500' rel='stylesheet' type='text/css'>
+  <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+  <%= stylesheet_link_tag 'rzslider.min' %>
+  <% if current_user.nil? %>
+      <% current_theme = 'Whiterun' %>
+  <% else %>
+      <% current_theme = current_user.settings.theme %>
+  <% end %>
+  <% if current_theme == 'Blackreach' %>
+    <%= stylesheet_link_tag 'blackreach' %>
+  <% elsif current_theme == 'Darkwater' %>
+    <%= stylesheet_link_tag 'darkwater' %>
+  <% else %>
+    <%= stylesheet_link_tag 'whiterun' %>
+  <% end %>
+  <script>
+    window._token = '<%= form_authenticity_token %>';
+    window._current_theme = '<%= current_theme %>';
+    window._stylesheets.whiterun = "<%= stylesheet_path 'whiterun' %>";
+    window._stylesheets.darkwater = "<%= stylesheet_path 'darkwater' %>";
+    window._stylesheets.blackreach = "<%= stylesheet_path 'blackreach' %>";
+  </script>
+</head>
+<body>
+<header>
+  <div class="page-container">
+    <div class="header">
+      <a class="logo" href="/"><h1>Mod Picker</h1></a>
+      <div class="nav-controls">
+        <ul class="logged-out-nav">
+          <li>
+            <a href="/users/sign_in">Log In</a>
+          </li>
+          <li>
+            <a href="/users/sign_up">Register</a>
+          </li>
+          <li>
+            <a>
+              <form method="post" action="/qapi/switch_game/" id="form_game_select">
+                <select id="game_select" class="game-selector icon-sk hasCustomSelect" name="cc">
+                  <option value="sk" selected="selected">Skyrim</option>
+                  <option value="fo4">Fallout 4</option>
+                  <option value="fnv">Fallout NV</option>
+                  <option value="fo3">Fallout 3</option>
+                  <option value="ob">Oblivion</option>
+                </select><span style="display: inline-block;" class="customSelect language-selector icon-sk"><span style="display: inline-block;" class="customSelectInner">Skyrim</span></span>
+              </form>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</header>
+<nav>
+  <div class="page-container">
+    <div class="nav-wrapper clearfix">
+      <div class="primary-nav">
+        <a class="nav-modlist" href="#/modlist">
+          <span>View your</span>
+          Mod List
+        </a>
+        <a class="nav-contributions" href="#">
+          <span>View recent</span>
+          Contributions
+        </a>
+        <a class="nav-browse-modlists" href="#">
+          <span>See all</span>
+          Public Mod Lists
+        </a>
+        <a class="nav-browse-mods" href="#/mods">
+          <span>Browse</span>
+          Skyrim Mods
+          <span class="nav-dropdown"></span>
+        </a>
+        <a class="nav-submit-mod" href="#/submit">
+          <span>Submit</span>
+          A Skyrim Mod
+        </a>
+      </div>
+      <div class="secondary-nav">
+        <div class="search" ng-controller="searchInputController">
+          <form>
+            <input class="search-field" type="text" autocomplete="off" ng-model="search" placeholder="Search...">
+            <div class="loadingButtonContainer">
+              <input class="btn action-btn" type="submit" value="Search" ng-click="processSearch()" ng-hide="loading"/>
+              <loader data="!!!loading"></loader>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<%= yield %>
+
+<!-- defered load of scripts, which is way more performant for browsers -->
+<%= javascript_include_tag 'angular.min.1.5.1' %>
+<%= javascript_include_tag 'angular-route.min.1.5.1' %>
+<%= javascript_include_tag 'heartcode-canvasloader-min' %>
+<%= javascript_include_tag 'rzslider.min' %>
+<%= javascript_include_tag 'modpicker' %>
+<%= javascript_include_tag 'angular-animate.min' %>
+</body>
+</html>

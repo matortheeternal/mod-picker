@@ -1,17 +1,17 @@
 <two-columns>
     <loader data="mod" spinner-class="big-spinner">
-        <div class="mod-header-color">
-            <div class="page-container mod-header">
+        <div class="page-header-container">
+            <div class="page-container page-header">
                 <section>
                     <div class="quality-item action-box" ng-if="mod.primary_category_id">
                         <span class="quality-number">{{mod.reputation | number:0}}</span>
                         REPUTATION
                     </div>
 
-                    <div class="mod-info">
-                        <span class="mod-name">{{mod.name}}</span>
-                        <span class="mod-authors-container">by
-                            <span class="mod-authors">{{mod.authors}}</span>
+                    <div class="header-info">
+                        <span class="header-name">{{mod.name}}</span>
+                        <span class="header-authors-container">by
+                            <span class="header-authors">{{mod.authors}}</span>
                         </span>
                         <!--<span ng-repeat="author in mod.authors">
                             <a ng-href="#/user/{{author.id}}">{{author.username}}</a>
@@ -42,7 +42,7 @@
                 </section>
 
                 <section>
-                    <div class="mod-header-box">
+                    <div class="header-box">
                         <!-- TODO: I feel like using some spans here would be wiser -->
                         ACTIONS
                         <div class="action-box" ng-click="starMod()">
@@ -55,7 +55,7 @@
                         </div>
                     </div>
 
-                    <div class="mod-header-box" ng-if="mod.primary_category_id">
+                    <div class="header-box" ng-if="mod.primary_category_id">
                         STATUS
                         <div class="action-box {{statusClass}} capitalize" ng-click="toggleStatusModal(true)">
                             {{mod.status}}
@@ -139,7 +139,7 @@
                 </div>
                 <div class="right-column tabs-column">
                     <tabs tabs="tabs"></tabs>
-                    <div ui-view class="mod-tab box-shadow"></div>
+                    <div ui-view class="tab box-shadow"></div>
                 </div>
             </loader>
         </div>

@@ -1,9 +1,9 @@
-﻿<div class="mod-tab-items">
-    <div class="mod-tab-item primary-item">
+﻿<div class="tab-bar-items">
+    <div class="tab-bar-item primary-item">
         <sort-control sort="sort.load_order_notes" sort-options="sortOptions.load_order_notes"></sort-control>
     </div>
     <!-- TODO: replace input with button that has an inline value -->
-    <div class="mod-tab-item">
+    <div class="tab-bar-item">
         <input class="btn" type="submit" value="Add Load Order Note" ng-click="startNewLoadOrderNote()" ng-disabled="activeLoadOrderNote"/>
     </div>
 </div>
@@ -31,7 +31,7 @@
         <search-input search-type="plugins" result-id="activeLoadOrderNote.second_plugin_id" search-text="activeLoadOrderNote.searchText" excluded-id="activeLoadOrderNote.first_plugin_id" on-change="validateLoadOrderNote" disabled="activeLoadOrderNote.editing"></search-input>
     </div>
     <div class="content-container">
-        <text-area data="activeLoadOrderNote.text_body" ng-refresh="updateMDE" class="note-text-area" on-change="validateLoadOrderNote"></text-area>
+        <text-area data="activeLoadOrderNote.text_body" ng-refresh="updateMDE" class="note-text-area"></text-area>
 
         <div class="message-input" ng-if="activeLoadOrderNote.editing && activeLoadOrderNote.original.submitted_by != currentUser.id">
             <label>

@@ -28,6 +28,26 @@ app.factory("sortFactory", function() {
     };
     this.correctionsSort = factory.buildSortOption("Corrections Count");
     this.commentsSort = factory.buildSortOption("Comments Count");
+    this.indexSort = {
+        label: "Index",
+        value: "index"
+    };
+    this.modNameSort = {
+        label: "Mod Name",
+        value: "mods.name"
+    };
+    this.modStatusSort = {
+        label: "Mod Status",
+        value: "mods.status"
+    };
+    this.modReputationSort = {
+        label: "Mod Reputation",
+        value: "mods.reputation"
+    };
+    this.modAverageRatingSort = {
+        label: "Mod Average Rating",
+        value: "mods.average_rating"
+    };
 
     /* comments index sort options */
     this.commentSortOptions = function() {
@@ -96,6 +116,28 @@ app.factory("sortFactory", function() {
             factory.submittedSort,
             factory.editedSort,
             factory.correctionsSort
+        ];
+    };
+
+    /* mod list tool sort options */
+    this.modListToolSortOptions = function() {
+        return [
+            factory.indexSort,
+            factory.modNameSort,
+            factory.modStatusSort,
+            factory.modReputationSort,
+            factory.modAverageRatingSort
+        ];
+    };
+
+    /* mod list mod sort options */
+    this.modListModSortOptions = function() {
+        return [
+            factory.indexSort,
+            factory.modNameSort,
+            factory.modStatusSort,
+            factory.modReputationSort,
+            factory.modAverageRatingSort
         ];
     };
 
