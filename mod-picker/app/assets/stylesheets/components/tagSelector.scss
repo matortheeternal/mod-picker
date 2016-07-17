@@ -78,3 +78,9 @@
   margin: 6px;
   text-align: center;
 }
+
+.wide-tag-selector {
+  .tags-container {
+    max-width: 100%;
+  }
+}

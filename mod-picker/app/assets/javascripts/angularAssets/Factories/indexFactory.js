@@ -51,9 +51,8 @@ app.service('indexFactory', function(indexService) {
 
             // set url parameters
             if ($scope.filters && $scope.firstGet) {
-                var params = localIndexService.getParamsFromFilters($scope.filters, $scope.filterPrototypes);
-                var stateName = 'base.' + $scope.route.replace(/\_/g, "-");
-                $state.transitionTo(stateName, params, { notify: false });
+                var params = localIndexService.getParams($scope.filters, $scope.sort, $scope.filterPrototypes);
+                $state.transitionTo($state.current.name, params, { notify: false });
             }
         }, true);
     };

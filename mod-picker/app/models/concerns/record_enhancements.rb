@@ -10,6 +10,15 @@ module RecordEnhancements
     self.raw_update("#{column} = #{column} #{operator} #{offset.abs}")
   end
 
+  def save_counters(columns)
+    hash = {}
+    instance = self
+    columns.each do |column|
+      hash[column] = instance.public_send(column)
+    end
+    self.raw_update(hash)
+  end
+
   # performs a raw update query to a single record
   def raw_update(args)
     self.class.unscoped.where(self.class.primary_key => id).update_all(args)

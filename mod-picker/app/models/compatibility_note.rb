@@ -4,8 +4,8 @@ class CompatibilityNote < ActiveRecord::Base
   enum status: [ :incompatible, :"partially incompatible", :"compatibility mod", :"compatibility option", :"make custom patch" ]
 
   # BOOLEAN SCOPES (excludes content when false)
-  scope :hidden, -> (bool) { where(hidden: false) if !bool  }
-  scope :adult, -> (bool) { where(has_adult_content: false) if !bool }
+  scope :include_hidden, -> (bool) { where(hidden: false) if !bool  }
+  scope :include_adult, -> (bool) { where(has_adult_content: false) if !bool }
   # GENERAL SCOPES
   scope :visible, -> { where(hidden: false, approved: true) }
   scope :game, -> (game_id) { where(game_id: game_id) }

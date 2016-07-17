@@ -1,11 +1,11 @@
 class ModList < ActiveRecord::Base
   include Filterable, Sortable, RecordEnhancements, Reportable
 
-  enum status: [ :planned, :"under construction", :testing, :complete ]
+  enum status: [ :under_construction, :testing, :complete ]
   enum visibility: [ :visibility_private, :visibility_unlisted, :visibility_public ]
 
   # BOOLEAN SCOPES
-  scope :adult, -> (bool) { where(has_adult_content: false) if !bool }
+  scope :include_adult, -> (bool) { where(has_adult_content: false) if !bool }
   # GENERAL SCOPES
   scope :visible, -> { where(hidden: false, visibility: 2) }
   scope :game, -> (game_id) { where(game_id: game_id) }
@@ -22,7 +22,6 @@ class ModList < ActiveRecord::Base
   # LOAD ORDER
   has_many :plugins, :through => 'mods'
   has_many :mod_list_plugins, :inverse_of => 'mod_list'
-  has_many :active_plugins, :class_name => 'Plugin', :through => 'mod_list_plugins', :source => :plugins
   has_many :custom_plugins, :class_name => 'ModListCustomPlugin', :inverse_of => 'mod_list'
 
   # ASSOCIATED NOTES
@@ -34,10 +33,23 @@ class ModList < ActiveRecord::Base
   has_many :mod_list_config_files, :inverse_of => 'mod_list'
   has_many :mod_list_custom_config_files, :inverse_of => 'mod_list'
 
+  # TAGS
+  has_many :mod_list_tags, :inverse_of => 'mod_list'
+  has_many :tags, :through => 'mod_list_tags', :inverse_of => 'mod_lists'
+
   # ASSOCIATIONS FROM OTHER USERS
   has_many :mod_list_stars, :inverse_of => 'mod_list'
-  has_many :mod_list_tags, :inverse_of => 'mod_list'
   has_many :comments, :as => 'commentable'
+
+  # NESTED ATTRIBUTES
+  accepts_nested_attributes_for :mod_list_mods, allow_destroy: true
+  accepts_nested_attributes_for :mod_list_plugins, allow_destroy: true
+  accepts_nested_attributes_for :custom_plugins, allow_destroy: true
+  accepts_nested_attributes_for :mod_list_config_files, allow_destroy: true
+  accepts_nested_attributes_for :mod_list_custom_config_files, allow_destroy: true
+  accepts_nested_attributes_for :mod_list_compatibility_notes, allow_destroy: true
+  accepts_nested_attributes_for :mod_list_install_order_notes, allow_destroy: true
+  accepts_nested_attributes_for :mod_list_load_order_notes, allow_destroy: true
 
   # Validations
   validates :game_id, :submitted_by, :name, presence: true
@@ -49,19 +61,27 @@ class ModList < ActiveRecord::Base
 
   validates :name, length: { in: 4..255 }
   validates :description, length: { maximum: 65535 }
+  validates :name, length: { maximum: 255 }
 
   # Callbacks
   after_create :increment_counters, :set_active
   before_save :set_dates
   before_destroy :decrement_counters, :unset_active
 
+  def update_eager_counters
+    self.mods_count = self.mods.where(is_utility: false).count
+    self.tools_count = self.mods.where(is_utility: true).count
+    self.save_counters([:mods_count, :tools_count])
+  end
+
   def update_lazy_counters
-    mod_ids = mod_list_mods.all.ids
+    mod_ids = self.mods.ids
     self.plugins_count = Plugin.where(mod_id: mod_ids).count
-    self.active_plugins_count = active_plugins.all.count
-    self.compatibility_notes_count = mod_list_compatibility_notes.all.count
-    self.install_order_notes_count = mod_list_install_order_notes.all.count
-    self.load_order_notes_count = mod_list_load_order_notes.all.count
+    self.active_plugins_count = self.mod_list_plugins.where(active: true).count
+    self.compatibility_notes_count = self.mod_list_compatibility_notes.all.count
+    self.install_order_notes_count = self.mod_list_install_order_notes.all.count
+    self.load_order_notes_count = self.mod_list_load_order_notes.all.count
+    self.save_counters([:plugins_count, :active_plugins_count, :compatibility_notes_count, :install_order_notes_count, :load_order_notes_count])
   end
 
   def refresh_compatibility_notes
@@ -140,6 +160,10 @@ class ModList < ActiveRecord::Base
     incompatible_mod_ids.uniq
   end
 
+  def mod_tools
+    mod_list_tools = @mod_list.mod_list_mods.joins(:mod).where(:mods => { is_utility: true })
+  end
+
   def show_json
     self.as_json({
         :except => [:submitted_by],
@@ -166,7 +190,7 @@ class ModList < ActiveRecord::Base
   def self.home_json(collection)
     # TODO: Revise this as needed
     collection.as_json({
-        :only => [:id, :name, :submitted, :updated],
+        :only => [:id, :name, :completed, :mods_count, :plugins_count],
         :include => {
             :submitter => {
                 :only => [:id, :username, :role, :title],

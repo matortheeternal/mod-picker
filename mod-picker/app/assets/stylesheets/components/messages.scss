@@ -1,0 +1,54 @@
+
+.messages {
+  max-height: 400px;
+  background-color: $bar_dark_color;
+  overflow: hidden;
+
+  &.ng-hide-add {
+    transition: 1s max-height ease-in;
+  }
+
+  &.ng-hide-remove {
+    transition: 1s max-height ease-out;
+  }
+
+  &.ng-hide {
+    max-height: 0;
+  }
+
+  .message {
+    padding: 14px;
+    font-weight: 500;
+    font-size: 20px;
+    text-align: center;
+
+    .fa {
+      padding: 4px;
+    }
+
+    .fa:hover {
+      color: $action_text_color;
+      background-color: $text_color;
+      cursor: pointer;
+    }
+
+    a {
+      color: $error_secondary;
+      &:hover {
+        color: $text_color;
+      }
+    }
+  }
+
+  .success-message {
+    background-color: $success_primary;
+  }
+
+  .error-message {
+    background-color: $error_primary;
+  }
+
+  .warning-message {
+    background-color: $warning_primary;
+  }
+}

@@ -98,6 +98,10 @@ Rails.application.routes.draw do
     # mod lists
     resources :mod_lists, only: [:index, :show, :create, :update, :destroy]
     match '/active_mod_list', to: 'mod_lists#active', via: [:get]
+    match '/mod_lists/:id/mods', to: 'mod_lists#mods', via: [:get, :post]
+    match '/mod_lists/:id/tools', to: 'mod_lists#tools', via: [:get, :post]
+    match '/mod_lists/:id/plugins', to: 'mod_lists#plugins', via: [:get, :post]
+    match '/mod_lists/:id/config_files', to: 'mod_lists#config_files', via: [:get, :post]
 
     # mod and mod list stars
     match '/mod_lists/:id/star', to: 'mod_lists#create_star', via: [:post]

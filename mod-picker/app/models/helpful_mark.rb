@@ -23,7 +23,7 @@ class HelpfulMark < ActiveRecord::Base
   }
 
   # Callbacks
-  before_save :set_dates
+  after_initialize :init
   after_create :increment_counters
   before_destroy :decrement_counters
 
@@ -39,8 +39,8 @@ class HelpfulMark < ActiveRecord::Base
   end
 
   private
-    def set_dates
-      self.submitted = DateTime.now
+    def init
+      self.submitted ||= DateTime.now
     end
 
     def decrement_counters
