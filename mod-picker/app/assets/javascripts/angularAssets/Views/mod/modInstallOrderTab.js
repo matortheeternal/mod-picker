@@ -23,6 +23,23 @@ app.controller('modInstallOrderController', function($scope, $stateParams, $stat
         };
         contributionService.retrieveModContributions($stateParams.modId, 'install_order_notes', options, $scope.pages).then(function(data) {
             $scope.mod.install_order_notes = data;
+
+            //seperating the installOrderNote in the url if any
+            if ($scope.params.installOrderNoteId) {
+                var currentIndex = $scope.mod.install_order_notes.findIndex(function(installOrderNote) {
+                    return installOrderNote.id === $scope.params.installOrderNoteId;
+                });
+                if (currentIndex > -1) {
+                    $scope.currentInstallOrderNote = $scope.mod.install_order_notes.splice(currentIndex, 1)[0];
+                } else {
+                    // remove the installOrderNoteId param from the url if it's not part of this mod
+                    $scope.params.installOrderNoteId = null;
+                    $scope.refreshTabParams($scope.thisTab);
+                }
+            } else {
+                // clear the currentInstallOrderNote if it's not specified
+                delete $scope.currentInstallOrderNote;
+            }
         }, function(response) {
             $scope.errors.install_order_notes = response;
         });
