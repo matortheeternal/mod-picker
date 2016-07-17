@@ -91,8 +91,11 @@ app.service('indexService', function(objectUtils) {
         });
     };
 
-    this.getParamsFromFilters = function(filters, filterPrototypes) {
-        var params = {};
+    this.getParams = function(filters, sort, filterPrototypes) {
+        var params = {
+            scol: sort.column,
+            sdir: sort.direction
+        };
         filterPrototypes.forEach(function(filter) {
             // this is the filter values stored on the scope of the view
             var filterValue = objectUtils.deepValue(filters, filter.data);
