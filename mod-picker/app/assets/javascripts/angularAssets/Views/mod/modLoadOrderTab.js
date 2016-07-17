@@ -23,6 +23,23 @@ app.controller('modLoadOrderController', function($scope, $state, $stateParams, 
         };
         contributionService.retrieveModContributions($stateParams.modId, 'load_order_notes', options, $scope.pages).then(function(data) {
             $scope.mod.load_order_notes = data;
+
+            //seperating the note in the url if any
+            if ($scope.params.loadOrderNoteId) {
+                var currentIndex = $scope.mod.load_order_notes.findIndex(function(loadOrderNote) {
+                    return loadOrderNoteid === $scope.params.loadOrderNoteId;
+                });
+                if (currentIndex > -1) {
+                    $scope.currentloadOrderNote = $scope.mod.load_order_notes.splice(currentIndex, 1)[0];
+                } else {
+                    // remove the note param from the url if it's not part of this mod
+                    $scope.params.loadOrderNoteId = null;
+                    $scope.refreshTabParams($scope.thisTab);
+                }
+            } else {
+                // clear the note if it's not specified
+                delete $scope.currentloadOrderNote;
+            }
         }, function(response) {
             $scope.errors.load_order_notes = response;
         });

@@ -78,12 +78,13 @@ app.config(['$stateProvider', function($stateProvider) {
                 controller: 'modLoadOrderController',
             }
         },
-        url: '/load-order?{page:int}&scol&sdir&{filter:bool}',
+        url: '/load-order/{loadOrderNoteId:int}?{page:int}&scol&sdir&{filter:bool}',
         params: {
             page: 1,
             scol: 'reputation',
             sdir: 'desc',
-            filter: true
+            filter: true,
+            loadOrderNoteId: null
         }
     }).state('base.mod.Analysis', {
         sticky: true,
