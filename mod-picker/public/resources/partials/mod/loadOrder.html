@@ -57,7 +57,7 @@
 <loader data="mod.load_order_notes" spinner-class="big-spinner" ng-if="!errors.load_order_notes">
 
     <!-- note specified in the url -->
-    <div class="content-block user-review" ng-if="currentloadOrderNote && !currentloadOrderNote.editing">
+    <div class="content-block current-contribution" ng-if="currentloadOrderNote && !currentloadOrderNote.editing">
         <load-order-note note="currentloadOrderNote" index="99" current-user="currentUser" edit="editLoadOrderNote"></load-order-note>
     </div>
 

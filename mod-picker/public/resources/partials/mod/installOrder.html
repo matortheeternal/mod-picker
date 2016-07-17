@@ -48,7 +48,7 @@
 
 <loader data="mod.install_order_notes" spinner-class="big-spinner" ng-if="!errors.install_order_notes">
     <!-- note specified in the url -->
-    <div class="content-block user-review" ng-if="currentInstallOrderNote&& !currentInstallOrderNote.editing">
+    <div class="content-block current-contribution" ng-if="currentInstallOrderNote&& !currentInstallOrderNote.editing">
         <install-order-note note="currentInstallOrderNote" mod-id="mod.id" index="99" current-user="currentUser" edit="editInstallOrderNote"></install-order-note>
     </div>
 
