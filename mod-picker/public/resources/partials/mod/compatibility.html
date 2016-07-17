@@ -81,7 +81,7 @@
         <compatibility-note note="note" mod-id="mod.id" index="100 + $index" current-user="currentUser" edit="editCompatibilityNote"></compatibility-note>
     </div>
 
-    <div class="content-message" ng-hide="mod.compatibility_notes.length">
+    <div class="content-message" ng-hide="mod.compatibility_notes.length || currentCompatibilityNote">
         There are no Compatibility Notes for this mod yet.
     </div>
 

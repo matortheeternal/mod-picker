@@ -57,7 +57,7 @@
         <install-order-note note="note" mod-id="mod.id" index="100 + $index" current-user="currentUser" edit="editInstallOrderNote"></install-order-note>
     </div>
 
-    <div class="content-message" ng-hide="mod.install_order_notes.length">
+    <div class="content-message" ng-hide="mod.install_order_notes.length || currentInstallOrderNote">
         There are no Install Order Notes for this mod yet.
     </div>
 
