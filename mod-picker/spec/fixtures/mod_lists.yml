@@ -1,10 +1,9 @@
 # create_table "mod_lists", force: :cascade do |t|
-#     t.integer "created_by",                limit: 4
+#     t.integer "dd_by",                limit: 4
 #     t.boolean "is_collection"
 #     t.boolean "is_public"
 #     t.boolean "has_adult_content"
 #     t.enum    "status",                    limit: ["Planned", "Under Construction", "Testing", "Complete"]
-#     t.date    "created"
 #     t.date    "completed"
 #     t.text    "description",               limit: 65535
 #     t.integer "game_id",                   limit: 4
@@ -18,23 +17,23 @@
 #   end
 
 plannedVanilla:
-  created_by: homura
+  name: "Vanilla list"
+  submitted_by: homura
   is_collection: false
   hidden: false
   has_adult_content: false
   status: "Planned"
-  created: 2016-02-11
-  completed: 2016-02-11
+  submitted: 2016-02-11
   description: "A basic vanilla modlist"
   game_id: skyrim
 
 underConstructionVanilla:
-  created_by: kyoko
+  name: "under construction list"
+  submitted_by: kyoko
   is_collection: false
   hidden: false
   has_adult_content: false
   status: "Under Construction"
-  created: 2016-02-22
-  completed: 2016-02-25
+  submitted: 2016-02-25
   description: "A mod List that is under construction by kyoko"
   game_id: skyrim

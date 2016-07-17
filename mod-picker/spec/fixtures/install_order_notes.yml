@@ -1,37 +1,60 @@
-  # create_table "install_order_notes", force: :cascade do |t|
-  #   t.integer  "submitted_by",   limit: 4,     null: false
-  #   t.integer  "install_first",  limit: 4,     null: false
-  #   t.integer  "install_second", limit: 4,     null: false
-  #   t.datetime "submitted"
-  #   t.datetime "edited"
-  #   t.text     "text_body",      limit: 65535
-  # end
-
-  # TODO: Change instlal_order_note fixtures to reference actual mods objects
+# create_table "install_order_notes", force: :cascade do |t|
+#     t.integer  "submitted_by",          limit: 4,                     null: false
+#     t.integer  "first_mod_id",          limit: 4,                     null: false
+#     t.integer  "second_mod_id",         limit: 4,                     null: false
+#     t.datetime "submitted"
+#     t.datetime "edited"
+#     t.text     "text_body",             limit: 65535
+#     t.boolean  "hidden",                              default: false, null: false
+#     t.integer  "game_id",               limit: 4,                     null: false
+#     t.boolean  "approved",                            default: false
+#     t.string   "moderator_message",     limit: 255
+#     t.integer  "helpful_count",         limit: 4,     default: 0
+#     t.integer  "not_helpful_count",     limit: 4,     default: 0
+#     t.integer  "history_entries_count", limit: 4,     default: 0
+#     t.integer  "comments_count",        limit: 4,     default: 0
+#     t.integer  "corrections_count",     limit: 4,     default: 0
+#   end
 
 installOrderAlpha:
   submitted_by: homura
-  install_first: SkyRE
-  install_second: Apocalypse
+  first_mod_id: SkyRE
+  second_mod_id: Apocalypse
+  game_id: skyrim
+  submitted: <%= DateTime.now %>
   text_body: >
     Lorem ipsum dolor sit amet, consectetur adipisicing elit. 
     Quam, totam nesciunt a incidunt, libero doloribus eos voluptas molestiae 
     quasi ab sapiente nihil officia facere commodi odit itaque hic animi quae.
+    Lorem ipsum dolor sit amet, consectetur adipisicing elit. 
+    Quam, totam nesciunt a incidunt, libero doloribus eos voluptas molestiae 
+    quasi ab sapiente nihil officia facere commodi odit itaque hic animi quae.
+
 
 installOrderBeta:
   submitted_by: madoka
-  install_first: SkyRE
-  install_second: Apocalypse
+  first_mod_id: SkyRE
+  second_mod_id: Apocalypse
+  submitted: <%= DateTime.now %>
+  game_id: skyrim
   text_body: >
+    Lorem ipsum dolor sit amet, consectetur adipisicing elit. 
+    Quam, totam nesciunt a incidunt, libero doloribus eos voluptas molestiae 
+    quasi ab sapiente nihil officia facere commodi odit itaque hic animi quae.
     Lorem ipsum dolor sit amet, consectetur adipisicing elit. 
     Quam, totam nesciunt a incidunt, libero doloribus eos voluptas molestiae 
     quasi ab sapiente nihil officia facere commodi odit itaque hic animi quae.
 
 installOrderBeta:
   submitted_by: kyoko
-  install_first: SkyRE
-  install_second: Apocalypse
+  first_mod_id: SkyRE
+  second_mod_id: Apocalypse
+  submitted: <%= DateTime.now %>
+  game_id: skyrim
   text_body: >
+    Lorem ipsum dolor sit amet, consectetur adipisicing elit. 
+    Quam, totam nesciunt a incidunt, libero doloribus eos voluptas molestiae 
+    quasi ab sapiente nihil officia facere commodi odit itaque hic animi quae.
     Lorem ipsum dolor sit amet, consectetur adipisicing elit. 
     Quam, totam nesciunt a incidunt, libero doloribus eos voluptas molestiae 
     quasi ab sapiente nihil officia facere commodi odit itaque hic animi quae.

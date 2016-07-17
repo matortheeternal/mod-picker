@@ -1,0 +1,54 @@
+<!-- Mod List Details: Display Mode -->
+<div class="content-block">
+    <div class="content-title">Description</div>
+    <div class="content-container" ng-if="!editing">
+        <div marked="mod_list.description" class="text-container"></div>
+    </div>
+    <div class="content-container" ng-if="editing">
+        <text-area class="large-note-text-area" data="mod_list.description" ng-refresh="updateMDE"></text-area>
+    </div>
+</div>
+
+<div class="content-block" ng-if="editing">
+    <div class="content-title">Options</div>
+    <div class="content-container" ng-if="editing">
+        <form>
+            <h3 class="section-title">Name</h3>
+            <section>
+                <input type="text" ng-model="mod_list.name">
+            </section>
+
+            <h3 class="section-title">Status</h3>
+            <section>
+                <select ng-model="mod_list.status">
+                    <option value="under_construction">Under Construction</option>
+                    <option value="testing">Testing</option>
+                    <option value="complete">Complete</option>
+                </select>
+            </section>
+
+            <h3 class="section-title">Visibility</h3>
+            <section>
+                <select ng-model="mod_list.visibility">
+                    <option value="visibility_public">Public</option>
+                    <option value="visibility_unlisted">Unlisted</option>
+                    <option value="visibility_private">Private</option>
+                </select>
+            </section>
+
+            <h3 class="section-title">Other Options</h3>
+            <section>
+                <label>
+                    <input type="checkbox" ng-model="mod_list.is_collection"> Collection
+                </label>
+            </section>
+        </form>
+    </div>
+</div>
+
+<tag-selector active-tags="mod_list.tags" new-tags="newTags" max-tags="10" show-mod-lists-count="true" show-add="true" can-create="permissions.canCreateTags" show-remove="permissions.canManage" save-callback="saveTags" class="wide-tag-selector"></tag-selector>
+
+<div class="action-button-container" ng-if="editing">
+    <input class="btn action-btn" type="submit" value="Save" ng-click="saveChanges()"/>
+    <input class="btn action-btn" type="button" value="Reset" ng-click="discardChanges()"/>
+</div>

@@ -62,7 +62,7 @@ RSpec.describe Correction, :model do
         expect(note.errors[:correctable_type]).to include("can't be blank")
       end
 
-      it "should be invalid if not a valid correctable_type" do
+      xit "should be invalid if not a valid correctable_type" do
         note = build(:correction)
 
         invalid_types = ["lets", "go", "in", "the", "garden"]
@@ -75,7 +75,7 @@ RSpec.describe Correction, :model do
         end
       end
 
-      it "should be valid correctable_type is a valid type" do
+      xit "should be valid correctable_type is a valid type" do
         note = build(:correction)
 
         valid_types = ["CompatibilityNote", "InstallOrderNote", "InstallationNote", "Review"]
@@ -88,16 +88,14 @@ RSpec.describe Correction, :model do
       end
     end
 
-    describe "created_at" do
+    describe "submitted" do
       it "should be set to DateTime.now on initilization" do
-        note = build(:correction)
+        note = create(:correction)
 
         expect(note).to be_valid
-        expect(note.created_at).to be_within(1.minute).of DateTime.now
+        expect(note.submitted).to be_within(1.minute).of DateTime.now
       end
     end
 
-    # IDEA: validate datetime type for correction?
-    # blank fields are currently valid.
   end
 end

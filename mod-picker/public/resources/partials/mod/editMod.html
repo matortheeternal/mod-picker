@@ -276,7 +276,30 @@
                         <input type="checkbox" ng-model="mod.has_adult_content">
                         Has Adult Content
                     </label>
-                    <span class="help-tooltip" title="In this context, adult content is classified as nudity or &#13;depictions of sexual acts.">?</span>
+                    <span class="help-tooltip" title="In this context, adult content is classified as nudity or &#13;depictions of sexual acts.">?</span><br/>
+
+                    <label class="checkbox-option">
+                        <input type="checkbox" ng-model="mod.disallow_contributors">
+                        Don't allow contributors to edit the mod page
+                    </label>
+                    <span class="help-tooltip" title="Makes it so Mod Authors who are contributors cannot &#13;access the edit mod page.">?</span><br/>
+
+                    <label class="checkbox-option">
+                        <input type="checkbox" ng-model="mod.disable_reviews">
+                        Disable Reviews
+                    </label>
+                    <span class="help-tooltip" title="If enabled the Reviews tab for this mod will be hidden &#13;and any existing reviews on this mod will be hidden from &#13;public viewing.  NOTE: Unsetting this will not restore the hidden &#13;reviews, only a moderator or site administrator can restore them.">?</span><br/>
+
+                    <label class="checkbox-option">
+                        <input type="checkbox" ng-model="mod.lock_tags">
+                        Don't allow users to submit new tags
+                    </label>
+                    <span class="help-tooltip" title="If enabled only mod authors, moderators and administrators &#13;will be able to add tags to this mod.">?</span><br/>
+
+                    <label class="checkbox-option" ng-if="permissions.canModerate">
+                        <input type="checkbox" ng-model="mod.hidden">
+                        Hidden
+                    </label>
                 </section>
 
                 <div class="action-button-container">

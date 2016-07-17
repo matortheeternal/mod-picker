@@ -23,7 +23,7 @@ class ModsController < ApplicationController
   # GET /mods/1
   def show
     @mod = Mod.includes(:nexus_infos, :workshop_infos, :lover_infos).find(params[:id])
-    authorize! :read, @mod
+    authorize! :read, @mod, :message => "You are not allowed to view this mod."
     star = ModStar.exists?(:mod_id => @mod.id, :user_id => current_user.id)
     render :json => {
         mod: @mod.show_json,
@@ -34,7 +34,7 @@ class ModsController < ApplicationController
   # GET /mods/1/edit
   def edit
     @mod = Mod.find(params[:id])
-    authorize! :update, @mod
+    authorize! :update, @mod, :message => "You are not allowed to edit this mod."
     render :json => @mod.edit_json
   end
 
@@ -43,7 +43,7 @@ class ModsController < ApplicationController
     @mod = Mod.new(mod_params)
     @mod.submitted_by = current_user.id
     authorize! :create, @mod
-    authorize! :assign_custom_sources, @mod if params[:mod][:custom_sources_attributes]
+    authorize! :assign_custom_sources, @mod if params[:mod].has_key?(:custom_sources_attributes)
 
     if @mod.save
       @mod.update_metrics
@@ -56,16 +56,17 @@ class ModsController < ApplicationController
   # PATCH/PUT /mods/1
   def update
     authorize! :update, @mod
-    authorize! :assign_authors, @mod if params[:mod][:mod_authors_attributes]
+    authorize! :hide, @mod if params[:mod].has_key?(:hidden)
+    authorize! :update_authors, @mod if params[:mod].has_key?(:mod_authors_attributes)
+    authorize! :update_options, @mod if options_params.any?
+    authorize! :assign_custom_sources, @mod if params[:mod].has_key?(:custom_sources_attributes)
 
-    # destroy associations as needed
-    if params[:mod][:plugin_dumps] || params[:mod][:asset_paths]
-      @mod.mod_asset_files.destroy_all
-      @mod.plugins.destroy_all
-    end
+    # update mod list tools/mods count if is_utility changed
+    swap_counts = params[:mod].has_key?(:is_utility) && params[:mod][:is_utility] != @mod.is_utility
 
     if @mod.update(mod_update_params)
       @mod.update_metrics
+      @mod.swap_mod_list_mods_tools_counts if swap_counts
       render json: {status: :ok}
     else
       render json: @mod.errors, status: :unprocessable_entity
@@ -74,6 +75,7 @@ class ModsController < ApplicationController
 
   # PATCH/PUT /mods/1/tags
   def update_tags
+    # TODO: Move this into the model
     # errors array to return to user
     errors = ActiveModel::Errors.new(self)
     current_user_id = current_user.id
@@ -120,9 +122,8 @@ class ModsController < ApplicationController
   # POST /mods/1/image
   def image
     authorize! :update, @mod
-    @mod.image_file = params[:image]
 
-    if @mod.save
+    if @mod.update(image_params)
       render json: {status: :ok}
     else
       render json: @mod.errors, status: :unprocessable_entity
@@ -269,13 +270,13 @@ class ModsController < ApplicationController
 
     # Params we allow searching on
     def search_params
-      params[:filters].slice(:search, :game)
+      params[:filters].slice(:search, :game, :utility)
     end
     
     # Params we allow filtering on
     def filtering_params
       # construct valid filters array
-      valid_filters = [:sources, :search, :game, :released, :updated, :adult, :utility, :categories, :tags, :stars, :reviews, :rating, :reputation, :compatibility_notes, :install_order_notes, :load_order_notes, :views, :author]
+      valid_filters = [:include_adult, :include_utilities, :sources, :search, :game, :released, :updated, :utility, :categories, :tags, :stars, :reviews, :rating, :reputation, :compatibility_notes, :install_order_notes, :load_order_notes, :views, :author]
       source_filters = [:views, :author, :posts, :videos, :images, :discussions, :downloads, :favorites, :subscribers, :endorsements, :unique_downloads, :files, :bugs, :articles]
       sources = params[:filters][:sources]
 
@@ -322,7 +323,7 @@ class ModsController < ApplicationController
     end
 
     def mod_update_params
-      params.require(:mod).permit(:name, :authors, :aliases, :is_utility, :has_adult_content, :primary_category_id, :secondary_category_id, :released, :updated, :nexus_info_id, :lovers_info_id, :workshop_info_id,
+      params.require(:mod).permit(:name, :authors, :aliases, :is_utility, :has_adult_content, :primary_category_id, :secondary_category_id, :released, :updated, :nexus_info_id, :lovers_info_id, :workshop_info_id, :disallow_contributors, :disable_reviews, :lock_tags, :hidden,
          :required_mods_attributes => [:id, :required_id, :_destroy],
          :mod_authors_attributes => [:id, :role, :user_id, :_destroy],
          :custom_sources_attributes => [:id, :label, :url, :_destroy],
@@ -333,5 +334,13 @@ class ModsController < ApplicationController
            :plugin_record_groups_attributes => [:sig, :record_count, :override_count],
            :plugin_errors_attributes => [:signature, :form_id, :group, :path, :name, :data],
            :overrides_attributes => [:fid, :sig]])
+    end
+
+    def options_params
+      params[:mod].slice(:is_utility, :has_adult_content, :disallow_contributors, :disable_reviews, :lock_tags)
+    end
+
+    def image_params
+      {:image_file => params[:image]}
     end
 end
