@@ -5,8 +5,8 @@ app.directive('sortControl', function() {
         scope: {
             column: '=',
             direction: '=',
-            retrieveCallback: '&',
+            retrieveCallback: '&?',
             sortOptions: '='
         }
-    }
+    };
 });
