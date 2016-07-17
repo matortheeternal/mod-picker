@@ -102,7 +102,7 @@ class LoadOrderNote < ActiveRecord::Base
                   :only => [:id, :username, :role]
               }
           },
-          :methods => :mods
+          :methods => [:mods, :plugins]
       }
       super(options.merge(default_options))
     else
