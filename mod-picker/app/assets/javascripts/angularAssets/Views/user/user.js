@@ -1,6 +1,6 @@
 app.config(['$stateProvider', function ($stateProvider) {
     $stateProvider.state('base.user', {
-            templateUrl: '/resources/partials/showUser/user.html',
+            templateUrl: '/resources/partials/user/user.html',
             controller: 'userController',
             url: '/user/:userId',
             redirectTo: 'base.user.Social',
@@ -22,14 +22,14 @@ app.config(['$stateProvider', function ($stateProvider) {
                 }
             }
         }).state('base.user.Social', {
-            templateUrl: '/resources/partials/showUser/social.html',
+            templateUrl: '/resources/partials/user/social.html',
             controller: 'userSocialTabController'
         }).state('base.user.Mod Lists', {
-            templateUrl: '/resources/partials/showUser/lists.html'
+            templateUrl: '/resources/partials/user/lists.html'
         }).state('base.user.Mods', {
-            templateUrl: '/resources/partials/showUser/mods.html'
+            templateUrl: '/resources/partials/user/mods.html'
         }).state('base.user.Contributions', {
-            templateUrl: '/resources/partials/showUser/contributions.html'
+            templateUrl: '/resources/partials/user/contributions.html'
         });
 }]);
 
