@@ -267,9 +267,24 @@ app.controller('modListToolsController', function($scope, $state, $stateParams, 
     // QUICK ADD TOOL
     $scope.quickAddTool = function() {
         if ($scope.quick.toolId) {
-            $scope.$emit('successMessage', 'Added tool ' + $scope.quick.toolName + ' successfully.');
-            $scope.quick.toolId = null;
-            $scope.quick.toolName = "";
+            modListService.newModListMod($scope.quick.toolId).then(function(data) {
+                // prepare tool
+                var tool = data;
+                delete tool.id;
+                tool.mod_id = tool.mod.id;
+
+                // push tool onto view
+                $scope.mod_list.tools.push(tool);
+                $scope.mod_list.tools_count += 1;
+                $scope.$emit('successMessage', 'Added tool ' + $scope.quick.toolName + ' successfully.');
+
+                // reset the add tool search
+                $scope.quick.toolId = null;
+                $scope.quick.toolName = "";
+            }, function(response) {
+                var params = {label: 'Error adding tool', response: response};
+                $scope.$emit('errorMessage', params);
+            });
         }
     };
 });
