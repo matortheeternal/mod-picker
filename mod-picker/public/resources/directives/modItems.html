@@ -1,5 +1,5 @@
 <ul dnd-list="mods" dnd-horizontal-list="true">
-    <li class="mod-grid-item box-shadow" ng-repeat="item in mods" ng-hide="item._destroy" dnd-draggable="item" dnd-moved="mods.splice($index, 1)" dnd-effect-allowed="move" dnd-disable-if="!editing">
+    <li class="mod-grid-item box-shadow" ng-repeat="item in mods" ng-hide="item._destroy" dnd-draggable="item" dnd-moved="modMoved($index)" dnd-effect-allowed="move" dnd-disable-if="!editing">
         <div class="remove-mod" ng-if="editing">
             <span class="fa fa-times" ng-click="removeCallback(item, tools)"></span>
         </div>
