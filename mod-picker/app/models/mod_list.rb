@@ -148,16 +148,8 @@ class ModList < ActiveRecord::Base
     end
 
     # get incompatible notes
-    incompatible_notes = CompatibilityNote.where("status in (?) AND (first_mod_id in (?) OR second_mod_id in (?))", [1, 2], mod_ids, mod_ids).pluck(:status, :first_mod_id, :second_mod_id)
-    incompatible_mod_ids = []
-    # build array of incompatible mod ids from incompatible notes
-    incompatible_notes.each do |n|
-      first_id = n.first_mod_id
-      second_id = n.second_mod_id
-      incompatible_mod_ids.push(first_id) if mod_ids.exclude?(first_id)
-      incompatible_mod_ids.push(second_id) if mod_ids.exclude?(second_id)
-    end
-    incompatible_mod_ids.uniq
+    incompatible_notes = CompatibilityNote.where("status in (?) AND (first_mod_id in (?) OR second_mod_id in (?))", [1, 2], mod_ids, mod_ids).pluck(:first_mod_id, :second_mod_id)
+    incompatible_notes.flatten(1).uniq
   end
 
   def mod_tools
