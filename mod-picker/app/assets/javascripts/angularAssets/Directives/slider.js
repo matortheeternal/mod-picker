@@ -1,5 +1,3 @@
-
-
 app.directive('slider', function () {
     return {
         restrict: 'E',
