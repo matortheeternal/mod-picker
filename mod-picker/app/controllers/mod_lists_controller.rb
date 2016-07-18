@@ -32,29 +32,14 @@ class ModListsController < ApplicationController
   def tools
     authorize! :read, @mod_list
     tools = @mod_list.mod_list_mods.joins(:mod).where(:mods => {is_utility: true}).order(:index)
-    render :json => tools.as_json({
-        :only => [:id, :index, :active],
-        :include => {
-            :mod => {
-                :only => [:id, :name, :aliases, :authors, :released, :updated],
-                :methods => :image
-            }
-        }
-    })
+    render :json => tools
   end
 
   # GET /mod_lists/:id/mods
   def mods
     authorize! :read, @mod_list
     mods = @mod_list.mod_list_mods.joins(:mod).where(:mods => {is_utility: false}).order(:index)
-    render :json => mods.as_json({
-        :only => [:id, :index, :active],
-        :include => {
-            :mod => {
-                :only => [:id, :name]
-            }
-        }
-    })
+    render :json => mods
   end
 
   # GET /mod_lists/:id/plugins
