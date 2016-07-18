@@ -16,7 +16,13 @@ app.service('modListService', function (backend, objectUtils) {
     };
 
     this.updateModList = function(modList) {
-        var mod_list_mods = Array.prototype.concat(modList.tools || [], modList.mods || []);
+        var mod_list_mods = angular.copy(Array.prototype.concat(modList.tools || [], modList.mods || []));
+        mod_list_mods.forEach(function(item) {
+            if (item.mod) {
+                delete item.mod;
+            }
+        });
+
         var modListData = {
             mod_list: {
                 id: modList.id,
@@ -24,11 +30,11 @@ app.service('modListService', function (backend, objectUtils) {
                 visibility: modList.visibility,
                 name: modList.name,
                 description: modList.description,
-                mod_list_mods_attributes: mod_list_mods,
                 is_collection: modList.is_collection,
                 disable_comments: modList.disable_comments,
                 lock_tags: modList.lock_tags,
-                hidden: modList.hidden
+                hidden: modList.hidden,
+                mod_list_mods_attributes: mod_list_mods
             }
         };
         objectUtils.deleteEmptyProperties(modListData, 1);
