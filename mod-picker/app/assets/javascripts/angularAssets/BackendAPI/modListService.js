@@ -35,4 +35,8 @@ app.service('modListService', function (backend, objectUtils) {
 
         return backend.update('/mod_lists/' + modList.id, modListData);
     };
+
+    this.newModListMod = function(mod_id) {
+        return backend.retrieve('/mod_list_mods/new', {mod_id: mod_id});
+    }
 });
