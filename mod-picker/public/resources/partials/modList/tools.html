@@ -1,15 +1,12 @@
 <loader data="mod_list.tools" spinner-class="big-spinner">
-    <div class="tab-bar-items">
+    <div class="tab-bar-items" ng-if="editing">
         <div class="tab-bar-item primary-item">
             {{mod_list.missing_tools.length}} Missing Requirements
         </div>
 
         <div class="tab-bar-item">
-            <sort-control sort="sort.tools" sort-options="sortOptions.tools"></sort-control>
-        </div>
-
-        <div class="tab-bar-item">
-            <search-input search-type="tools" result-id="quick.toolId" search-text="quick.toolName" on-change="quickAddTool" placeholder="'Add a tool'"></search-input>
+            <strong>Add a tool:</strong>
+            <search-input search-type="tools" result-id="quick.toolId" search-text="quick.toolName" on-change="quickAddTool"></search-input>
         </div>
     </div>
 
