@@ -112,6 +112,7 @@ class ModListsController < ApplicationController
   # PATCH/PUT /mod_lists/1
   def update
     authorize! :update, @mod_list
+    authorize! :hide, @mod_list if params[:mod_list].has_key?(:hidden)
     if @mod_list.update(mod_list_params) && @mod_list.update_lazy_counters
       render json: {status: :ok}
     else
@@ -223,7 +224,7 @@ class ModListsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def mod_list_params
-      params.require(:mod_list).permit(:game_id, :name, :description, :is_collection, :has_adult_content, :status, :visibility,
+      params.require(:mod_list).permit(:game_id, :name, :description, :status, :visibility, :is_collection, :disable_comments, :lock_tags, :hidden,
           :mod_list_mods_attributes => [:id, :mod_id, :index, :_destroy],
           :mod_list_plugins_attributes => [:id, :plugin_id, :index, :active, :_destroy],
           :custom_plugins_attributes => [:id, :index, :filename, :description, :active, :_destroy],
