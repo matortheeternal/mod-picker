@@ -1,0 +1,18 @@
+<div class="mod-grid-item box-shadow" ng-repeat="item in mods" ng-hide="item._destroy" >
+    <div class="remove-mod" ng-if="editing">
+        <span class="fa fa-times" ng-click="removeCallback(item, tools)"></span>
+    </div>
+    <div class="image-container">
+        <div class="helper"></div>
+        <img ng-src="{{item.mod.image}}"/>
+    </div>
+    <ul>
+        <li class="mod-name">
+            <a href="#/mod/{{item.mod.id}}">{{item.mod.name}}</a>
+            <span ng-if="item.mod.aliases">({{item.mod.aliases.split(",")[0]}})</span>
+        </li>
+        <li>by {{item.mod.authors}}</li>
+        <li>Released {{item.mod.released | date}}</li>
+        <li ng-if="item.mod.updated">Updated {{item.mod.updated | date}}</li>
+    </ul>
+</div>
