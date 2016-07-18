@@ -300,9 +300,8 @@ app.controller('modListToolsController', function($scope, $state, $stateParams, 
             else {
                 $scope.$emit('customMessage', {type: 'error', text: 'Failed to add tool ' + $scope.add.toolName + ', the tool has already been added to this mod list.'});
             }
-        }
-        // retrieve tool information from the backend
-        else {
+        } else {
+            // retrieve tool information from the backend
             modListService.newModListMod($scope.add.toolId).then(function(data) {
                 // prepare tool
                 var tool = data;
