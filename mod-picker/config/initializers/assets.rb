@@ -27,6 +27,7 @@ Rails.application.config.assets.precompile += [
 'angular-animate.min.js',
 'angular-relative-date.min.js',
 'angular-smooth-scroll.min.js',
+'angular-drag-and-drop-lists.min.js',
 'angular.min.1.5.1.js',
 'angular-marked.min.js',
 'angular-ui-router.min.js',
