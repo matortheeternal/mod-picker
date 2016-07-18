@@ -22,10 +22,13 @@ app.service('modListService', function (backend, objectUtils) {
                 id: modList.id,
                 status: modList.status,
                 visibility: modList.visibility,
-                is_collection: modList.is_collection,
                 name: modList.name,
                 description: modList.description,
-                mod_list_mods_attributes: mod_list_mods
+                mod_list_mods_attributes: mod_list_mods,
+                is_collection: modList.is_collection,
+                disable_comments: modList.disable_comments,
+                lock_tags: modList.lock_tags,
+                hidden: modList.hidden
             }
         };
         objectUtils.deleteEmptyProperties(modListData, 1);
