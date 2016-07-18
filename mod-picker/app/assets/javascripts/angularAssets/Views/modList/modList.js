@@ -60,7 +60,7 @@ app.config(['$stateProvider', function ($stateProvider) {
     })
 }]);
 
-app.controller('modListController', function($scope, $q, $stateParams, $timeout, currentUser, modListObject, modListService, errorService, tagService, objectUtils, tabsFactory, sortFactory) {
+app.controller('modListController', function($scope, $q, $stateParams, $timeout, currentUser, modListObject, modListService, errorService, objectUtils, tabsFactory, sortFactory) {
     // get parent variables
     $scope.mod_list = modListObject.mod_list;
     $scope.mod_list.star = modListObject.star;
@@ -226,7 +226,7 @@ app.controller('modListController', function($scope, $q, $stateParams, $timeout,
     };
 });
 
-app.controller('modListDetailsController', function($scope) {
+app.controller('modListDetailsController', function($scope, tagService) {
     $scope.saveTags = function(updatedTags) {
         var action = $q.defer();
         tagService.updateModListTags($scope.mod_list, updatedTags).then(function(data) {
