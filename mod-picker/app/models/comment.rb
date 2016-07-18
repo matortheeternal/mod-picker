@@ -67,7 +67,7 @@ class Comment < ActiveRecord::Base
 
   def self.index_json(collection)
     collection.as_json({
-        :except => [:submitted_by],
+        :except => :submitted_by,
         :include => {
             :submitter => {
                 :only => [:id, :username, :role, :title],
@@ -83,7 +83,7 @@ class Comment < ActiveRecord::Base
 
   def show_json
     as_json({
-        :except => [:submitted_by, :commentable_id, :commentable_type],
+        :except => :submitted_by,
         :include => {
             :submitter => {
                 :only => [:id, :username, :role, :title],
@@ -99,7 +99,7 @@ class Comment < ActiveRecord::Base
   def as_json(options={})
     if JsonHelpers.json_options_empty(options)
       default_options = {
-          :except => [:parent_id, :submitted_by, :commentable_id, :commentable_type],
+          :except => [:parent_id, :submitted_by],
           :include => {
               :submitter => {
                   :only => [:id, :username, :role, :title],
@@ -109,7 +109,7 @@ class Comment < ActiveRecord::Base
                   :methods => :avatar
               },
               :children => {
-                  :except => [:submitted_by, :commentable_id, :commentable_type],
+                  :except => :submitted_by,
                   :include => {
                       :submitter => {
                           :only => [:id, :username, :role, :title],
