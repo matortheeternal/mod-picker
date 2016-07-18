@@ -71,7 +71,7 @@ app.controller('modListController', function($scope, $q, $stateParams, $timeout,
     $scope.tabs = tabsFactory.buildModListTabs($scope.mod_list);
     $scope.newTags = [];
     $scope.retrieving = {};
-    $scope.quick = {};
+    $scope.add = {};
     $scope.sort = {
         tools: {},
         mods: {},
@@ -135,6 +135,13 @@ app.controller('modListController', function($scope, $q, $stateParams, $timeout,
     $scope.$on('successMessage', function(event, text) {
         var successMessage = {type: 'success', text: text};
         $scope.$broadcast('message', successMessage);
+        // stop event propagation - we handled it
+        event.stopPropagation();
+    });
+
+    // display custom message
+    $scope.$on('customMessage', function(event, message) {
+        $scope.$broadcast('message', message);
         // stop event propagation - we handled it
         event.stopPropagation();
     });
@@ -265,9 +272,19 @@ app.controller('modListToolsController', function($scope, $state, $stateParams, 
     }
 
     // QUICK ADD TOOL
-    $scope.quickAddTool = function() {
-        if ($scope.quick.toolId) {
-            modListService.newModListMod($scope.quick.toolId).then(function(data) {
+    $scope.addTool = function() {
+        if ($scope.add.toolId) {
+            // don't add the tool if it's already present on the user's mod list
+            var toolExists = $scope.mod_list.tools.find(function(tool) {
+                return tool.mod.id == $scope.add.toolId;
+            });
+            if (toolExists) {
+                $scope.$emit('customMessage', {type: 'error', text: 'Failed to add tool ' + $scope.add.toolName + ', the tool has already been added to this mod list.'});
+                return;
+            }
+
+            // retrieve information from the backend
+            modListService.newModListMod($scope.add.toolId).then(function(data) {
                 // prepare tool
                 var tool = data;
                 delete tool.id;
@@ -276,11 +293,11 @@ app.controller('modListToolsController', function($scope, $state, $stateParams, 
                 // push tool onto view
                 $scope.mod_list.tools.push(tool);
                 $scope.mod_list.tools_count += 1;
-                $scope.$emit('successMessage', 'Added tool ' + $scope.quick.toolName + ' successfully.');
+                $scope.$emit('successMessage', 'Added tool ' + $scope.add.toolName + ' successfully.');
 
                 // reset the add tool search
-                $scope.quick.toolId = null;
-                $scope.quick.toolName = "";
+                $scope.add.toolId = null;
+                $scope.add.toolName = "";
             }, function(response) {
                 var params = {label: 'Error adding tool', response: response};
                 $scope.$emit('errorMessage', params);
