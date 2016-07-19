@@ -15,6 +15,10 @@ app.service('modListService', function (backend, objectUtils) {
         return backend.retrieve('/mod_lists/' + modListId + '/tools');
     };
 
+    this.retrieveModListMods = function(modListId) {
+        return backend.retrieve('/mod_lists/' + modListId + '/mods');
+    };
+
     this.updateModList = function(modList) {
         var mod_list_mods = angular.copy(Array.prototype.concat(modList.tools || [], modList.mods || []));
         mod_list_mods.forEach(function(item) {
