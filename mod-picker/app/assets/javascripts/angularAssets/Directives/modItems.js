@@ -23,6 +23,4 @@ app.controller('modItemsController', function($scope) {
         $scope.mods.splice(index, 1);
         $scope.updateIndexes();
     };
-
-    $scope.updateIndexes();
 });
