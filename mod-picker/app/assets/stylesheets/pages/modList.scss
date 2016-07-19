@@ -2,6 +2,19 @@
   .content-message {
     margin: 20px 0;
   }
+
+  .tab-bar-items {
+    .primary-item {
+      span {
+        margin-right: 16px;
+
+        strong {
+          font-size: 16px;
+          margin-right: 4px;
+        }
+      }
+    }
+  }
 }
 
 .section-table {
