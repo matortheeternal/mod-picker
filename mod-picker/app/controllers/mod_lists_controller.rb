@@ -32,28 +32,33 @@ class ModListsController < ApplicationController
   def tools
     authorize! :read, @mod_list
     tools = @mod_list.mod_list_mods.includes(:mod).utility(true).order(:index)
-    render :json => tools
+    groups = @mod_list.groups.where(:tab => :tools)
+    render :json => {
+        tools: tools,
+        groups: groups
+    }
   end
 
   # GET /mod_lists/:id/mods
   def mods
     authorize! :read, @mod_list
     mods = @mod_list.mod_list_mods.includes(:mod).utility(false).order(:index)
-    render :json => mods
+    groups = @mod_list.groups.where(:tab => :mods)
+    render :json => {
+        mods: mods,
+        groups: groups
+    }
   end
 
   # GET /mod_lists/:id/plugins
   def plugins
     authorize! :read, @mod_list
     plugins = @mod_list.mod_list_plugins.joins(:plugin)
-    render :json =>  plugins.as_json({
-        :only => [:index, :active],
-        :include => {
-            :plugin => {
-                :only => [:id, :filename]
-            }
-        }
-    })
+    groups = @mod_list.groups.where(:tab => :plugins)
+    render :json => {
+        plugins: plugins,
+        groups: groups
+    }
   end
 
   # GET /mod_lists/:id/config_files
