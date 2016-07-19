@@ -1,4 +1,6 @@
 class ModListGroup < ActiveRecord::Base
+  enum tab: [:tools, :mods, :plugins]
+
   belongs_to :mod_list, :inverse_of => 'groups'
 
   # Validations
