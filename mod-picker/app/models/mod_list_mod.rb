@@ -7,7 +7,6 @@ class ModListMod < ActiveRecord::Base
   # Validations
   validates :mod_list_id, :mod_id, :index, presence: true
   validates :active, inclusion: [true, false]
-  validates :mod_list_id, presence: true
   # can only have a mod on a given mod list once
   validates :mod_id, uniqueness: { scope: :mod_list_id, :message => "The mod is already present on the mod list." }
 
@@ -19,7 +18,7 @@ class ModListMod < ActiveRecord::Base
     if JsonHelpers.json_options_empty(options)
       # TODO: Revise this as necessary
       default_options = {
-          :only => [:id, :index, :active],
+          :only => [:id, :group_id, :index, :active],
           :include => {
               :mod => {
                   :only => [:id, :name, :aliases, :authors, :released, :updated],
