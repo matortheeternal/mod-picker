@@ -3,6 +3,9 @@
         <div class="remove-mod" ng-if="editing">
             <span class="fa fa-times" ng-click="removeCallback(item, tools)"></span>
         </div>
+        <div class="item-index">
+            {{item.index}}
+        </div>
         <div class="image-container">
             <div class="helper"></div>
             <img ng-src="{{item.mod.image}}"/>

@@ -39,6 +39,19 @@ mod-items {
       }
     }
 
+    .item-index {
+      position: absolute;
+      left: 0;
+      top: 0;
+      padding: 1px 4px;
+      min-width: 18px;
+      font-size: 14px;
+      background-color: $background_highlight;
+      text-align: center;
+      border-right: 1px solid $border_color;
+      border-bottom: 1px solid $border_color;
+    }
+
     .image-container {
       height: 96px;
       float: left;
