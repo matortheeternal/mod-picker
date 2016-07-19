@@ -1,0 +1,70 @@
+.help-page-content {
+  max-width: $max-content-width;
+  margin: 0 auto;
+  display: block;
+  padding: 50px 0 150px;
+}
+
+// meta information
+span.meta {
+  font-size: 0.8em;
+  color: #999;
+}
+
+table td {
+  border: 1px solid #CCC;
+}
+
+table {
+  border: 1px solid #CCC;
+}
+
+// help page header 
+.help-page-header {
+  // font awesome icons
+  .fa {
+    margin-right: 5px;
+  }
+  .header-img {
+    width: 100%;
+  }
+
+  .date {
+    display: inline;
+  }
+
+  span.game,
+  span.category {
+    float: right;
+  }
+
+  span.category {
+    text-transform: capitalize;
+  }
+}
+
+// table of contents
+.help-page-toc {
+  display: inline-block;
+  padding: 1rem 0 1rem 1rem;
+  margin: 1rem 0;
+  border-left: 0.5rem solid #CCC;
+
+  .toc-title {
+    margin-top: 0;
+  }
+  > ul {
+    padding-left: 0;
+  }
+
+  ul {
+    list-style: none;
+  }
+}
+
+// footer of help page
+.help-page-footer {
+  margin-top: 1rem;
+  border-top: 1px solid #DDD;
+  padding-top: 1rem;
+}

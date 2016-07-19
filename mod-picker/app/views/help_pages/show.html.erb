@@ -1,15 +1,71 @@
-<div class="page-content">
-   <h1><%= @help_page.name %></h1>
-   <h3>Game: <%= @help_page.game.long_name %></h3>
-   <h3>Category: <%= @help_page.category %></h3>
-   <div class="date">
-     <span class="submitted"><%= @help_page.submitted %></span>
-     <span class="edited"><%= @help_page.edited %></span>
-   </div>
-   <h5>author: <%= @help_page.submitter.username %></h5>
-   <div class="text-body">
-     <%= markdown(@help_page.text_body) %>
-   </div>
+<div class="help-page-content">
+  <div class="help-page-header">
+    <img class="header-img" src="<%= @help_page.banner %>" alt="">
+    <h1 class="page-title"><%= @help_page.name %></h1>
+    
+    <span class="meta author" title="Author">
+      <i class="fa fa-user" aria-hidden="true"></i>
+      <%= link_to @help_page.submitter.username, user_path(@help_page.submitter) %>
+    </span>
+
+    <span class="meta game" title="Game">
+      <i class="fa fa-gamepad" aria-hidden="true"></i>
+      <%= @help_page.game.long_name %>
+    </span>
+
+    <br>
+    
+    <!-- date posted/edited conditional-->
+    <div class="date">
+      <span class="meta submit-date" title="<%= @help_page.submitted.strftime("%m/%d/%Y %I:%M:%S %z") %>">
+      <i class="fa fa-clock-o" aria-hidden="true"></i>
+      <%= @help_page.submitted.strftime("Posted on %b %e %Y") %>
+      </span>
+
+      <% if @help_page.edited %>
+        <span class="meta edit-date" title="<%= @help_page.edited.strftime("%m/%d/%Y %I:%M:%S %z") %>">
+          - <em><%= @help_page.edited.strftime("Edited on %b %e %Y") %></em>
+        </span>
+      <% end %>
+    </div>
+    <span class="meta category" title="Category">
+      <i class="fa fa-folder" aria-hidden="true"></i>
+      <%= @help_page.category %>
+    </span>
+  </div>
+  <!-- enddate -->
+
+  <!-- table of contents class = "help-page-toc" -->
+  <%= markdown_toc(@help_page.text_body) %>
+
+  <br>
+
+  <!-- help page body content -->
+  <div class="help-page-body">
+    <%= markdown(@help_page.text_body) %>
+  </div>
+
+  <!-- footer -->
+  <div class="help-page-footer">
+    <span class="meta author" title="Author">
+      <i class="fa fa-user" aria-hidden="true"></i>
+      <%= link_to @help_page.submitter.username, user_path(@help_page.submitter) %>
+    </span>
+
+    <div class="date">
+      <span class="meta submit-date" title="<%= @help_page.submitted.strftime("%m/%d/%Y %I:%M:%S %z") %>">
+      <i class="fa fa-clock-o" aria-hidden="true"></i>
+      <%= @help_page.submitted.strftime("Posted on %b %e %Y") %>
+      </span>
+
+      <% if @help_page.edited %>
+        <span class="meta edit-date" title="<%= @help_page.edited.strftime("%m/%d/%Y %I:%M:%S %z") %>">
+          - <em><%= @help_page.edited.strftime("Edited on %b %e %Y") %></em>
+        </span>
+      <% end %>
+    </div>
+  </div>
+  <!-- endfooter -->
 </div>
  
   

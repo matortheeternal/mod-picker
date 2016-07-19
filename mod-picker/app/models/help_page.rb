@@ -17,6 +17,19 @@ class HelpPage < ActiveRecord::Base
   # Callbacks
   before_save :set_dates
 
+  # show image banner via post id
+  def banner
+    png_path = File.join(Rails.public_path, "help_pages/#{id}.png")
+    jpg_path = File.join(Rails.public_path, "help_pages/#{id}.jpg")
+    if File.exists?(png_path)
+      "/help_pages/#{id}.png"
+    elsif File.exists?(jpg_path)
+      "/help_pages/#{id}.jpg"
+    else
+      "/help_pages/Default.png"
+    end
+  end
+
   private
     def set_dates
       if self.submitted.nil?

@@ -43,7 +43,7 @@ $max-content-width: 850px;
 
 // import child stylesheets for other pages in the help center
 @import 'helpIndex';
-
+@import 'helpShow';
 
 // Global resets
 *, *:before, *:after {
