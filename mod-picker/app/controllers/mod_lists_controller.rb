@@ -54,9 +54,11 @@ class ModListsController < ApplicationController
   def plugins
     authorize! :read, @mod_list
     plugins = @mod_list.mod_list_plugins.joins(:plugin)
+    custom_plugins = @mod_list.custom_plugins
     groups = @mod_list.groups.where(:tab => :plugins)
     render :json => {
         plugins: plugins,
+        custom_plugins: custom_plugins,
         groups: groups
     }
   end
@@ -65,14 +67,11 @@ class ModListsController < ApplicationController
   def config_files
     authorize! :read, @mod_list
     config_files = @mod_list.mod_list_config_files.joins(:config_file)
-    render :json => config_files.as_json({
-        :only => [:text_body],
-        :include => {
-            :config_file => {
-                :only => [:filename, :install_path, :text_body, :mod_lists_count]
-            }
-        }
-    })
+    custom_config_files = @mod_list.mod_list_custom_config_files
+    render :json => {
+        config_files: config_files,
+        custom_config_files: custom_config_files
+    }
   end
 
   # POST/GET /mod_lists/1/comments
