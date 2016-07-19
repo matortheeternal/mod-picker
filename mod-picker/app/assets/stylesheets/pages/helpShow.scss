@@ -68,3 +68,10 @@ table {
   border-top: 1px solid #DDD;
   padding-top: 1rem;
 }
+
+
+// code block highlighting
+.help-page-body > pre {
+  background-color: #DDD;
+  padding: 0.25rem 1rem;
+}

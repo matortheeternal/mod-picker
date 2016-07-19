@@ -10,12 +10,12 @@ module ApplicationHelper
       with_toc_data: true,
       hard_wrap: true,
       space_after_headers: true,
-      fenced_code_blocks: true
     }
 
     extensions = {
       strikethrough: true,
-      tables: true
+      tables: true,
+      fenced_code_blocks: true
     }
 
     renderer = Redcarpet::Render::HTML.new(render_options)
