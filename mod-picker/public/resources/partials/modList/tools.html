@@ -1,10 +1,10 @@
 <loader data="mod_list.tools" spinner-class="big-spinner">
-    <div class="tab-bar-items" ng-if="editing">
+    <div class="tab-bar-items">
         <div class="tab-bar-item primary-item">
             {{mod_list.missing_tools.length}} Missing Requirements
         </div>
 
-        <div class="tab-bar-item">
+        <div class="tab-bar-item" ng-if="editing">
             <strong>Add a tool:</strong>
             <search-input search-type="tools" result-id="add.toolId" search-text="add.toolName" on-change="addTool"></search-input>
         </div>
