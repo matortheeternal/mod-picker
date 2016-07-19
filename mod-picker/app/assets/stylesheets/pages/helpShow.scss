@@ -72,6 +72,7 @@ table {
 
 // code block highlighting
 .help-page-body > pre {
+  overflow: scroll;
   background-color: #DDD;
   padding: 0.25rem 1rem;
 }
