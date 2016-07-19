@@ -31,14 +31,14 @@ class ModListsController < ApplicationController
   # GET /mod_lists/1/tools
   def tools
     authorize! :read, @mod_list
-    tools = @mod_list.mod_list_mods.joins(:mod).where(:mods => {is_utility: true}).order(:index)
+    tools = @mod_list.mod_list_mods.includes(:mod).utility(true).order(:index)
     render :json => tools
   end
 
   # GET /mod_lists/:id/mods
   def mods
     authorize! :read, @mod_list
-    mods = @mod_list.mod_list_mods.joins(:mod).where(:mods => {is_utility: false}).order(:index)
+    mods = @mod_list.mod_list_mods.includes(:mod).utility(false).order(:index)
     render :json => mods
   end
 

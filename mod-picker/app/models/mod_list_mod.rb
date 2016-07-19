@@ -1,6 +1,10 @@
 class ModListMod < ActiveRecord::Base
   include RecordEnhancements
 
+  # SCOPES
+  scope :utility, -> (bool) { joins(:mod).where(:mods => {is_utility: bool}) }
+
+  # ASSOCIATIONS
   belongs_to :mod_list, :inverse_of => 'mod_list_mods'
   belongs_to :mod, :inverse_of => 'mod_list_mods'
 
