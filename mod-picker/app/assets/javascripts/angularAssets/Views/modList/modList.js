@@ -193,8 +193,9 @@ app.controller('modListController', function($scope, $q, $stateParams, $timeout,
     };
 
     // add a mod or tool
-    $scope.addMod = function(add, array, label) {
+    $scope.addMod = function(array, label) {
         // return if we don't have a tool to add
+        var add = $scope.add[label];
         if (!add.id) {
             return;
         }
