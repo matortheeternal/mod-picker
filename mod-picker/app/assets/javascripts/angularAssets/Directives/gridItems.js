@@ -1,8 +1,8 @@
-app.directive('modItems', function () {
+app.directive('gridItems', function () {
     return {
         restrict: 'E',
-        templateUrl: '/resources/directives/modItems.html',
-        controller: 'modItemsController',
+        templateUrl: '/resources/directives/gridItems.html',
+        controller: 'gridItemsController',
         scope: {
             model: '=',
             editing: '=',
@@ -12,7 +12,7 @@ app.directive('modItems', function () {
     }
 });
 
-app.controller('modItemsController', function($scope, colorsFactory) {
+app.controller('gridItemsController', function($scope, colorsFactory) {
     $scope.colorOptions = colorsFactory.getColors();
 
     $scope.updateItems = function() {
