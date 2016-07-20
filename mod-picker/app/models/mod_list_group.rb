@@ -1,5 +1,6 @@
 class ModListGroup < ActiveRecord::Base
   enum tab: [:tools, :mods, :plugins]
+  enum color: [:red, :orange, :yellow, :green, :blue, :purple, :white, :gray, :brown, :black]
 
   belongs_to :mod_list, :inverse_of => 'mod_list_groups'
 
