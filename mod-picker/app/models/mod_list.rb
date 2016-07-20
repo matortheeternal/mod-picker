@@ -16,7 +16,7 @@ class ModList < ActiveRecord::Base
   belongs_to :submitter, :class_name => 'User', :foreign_key => 'submitted_by', :inverse_of => 'mod_lists'
 
   # Groups to be used for organizing mods and plugins
-  has_many :groups, :class_name => 'ModListGroup', :inverse_of => 'mod_list'
+  has_many :mod_list_groups, :inverse_of => 'mod_list'
 
   # INSTALL ORDER
   has_many :mod_list_mods, :inverse_of => 'mod_list'
