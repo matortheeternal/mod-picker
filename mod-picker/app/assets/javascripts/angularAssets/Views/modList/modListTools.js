@@ -49,7 +49,7 @@ app.controller('modListToolsController', function($scope, $state, $stateParams, 
             var group = data;
             group.children = [];
             $scope.mod_list.groups.push(group);
-            $scope.originalModList.groups.push(group);
+            $scope.originalModList.groups.push(angular.copy(group));
             $scope.model.tools.push(group);
         }, function(response) {
             var params = {label: 'Error creating new Mod List Group', response: response};
