@@ -504,10 +504,7 @@ class Mod < ActiveRecord::Base
   end
 
   private
-    def init
-      self.authors ||= ""
-    end
-    
+
     def decrement_counters
       self.submitter.update_counter(:submitted_mods_count, -1) if self.submitted_by.present?
     end
