@@ -32,7 +32,7 @@ class ModListsController < ApplicationController
   def tools
     authorize! :read, @mod_list
     tools = @mod_list.mod_list_mods.includes(:mod).utility(true).order(:index)
-    groups = @mod_list.groups.where(:tab => :tools)
+    groups = @mod_list.mod_list_groups.where(tab: 0)
     render :json => {
         tools: tools,
         groups: groups
@@ -43,7 +43,7 @@ class ModListsController < ApplicationController
   def mods
     authorize! :read, @mod_list
     mods = @mod_list.mod_list_mods.includes(:mod).utility(false).order(:index)
-    groups = @mod_list.groups.where(:tab => :mods)
+    groups = @mod_list.mod_list_groups.where(tab: 1)
     render :json => {
         mods: mods,
         groups: groups
@@ -55,7 +55,7 @@ class ModListsController < ApplicationController
     authorize! :read, @mod_list
     plugins = @mod_list.mod_list_plugins.joins(:plugin)
     custom_plugins = @mod_list.custom_plugins
-    groups = @mod_list.groups.where(:tab => :plugins)
+    groups = @mod_list.mod_list_groups.where(tab: 2)
     render :json => {
         plugins: plugins,
         custom_plugins: custom_plugins,
