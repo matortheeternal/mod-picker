@@ -40,13 +40,20 @@ app.controller('modListModsController', function($scope, modListService) {
 
     $scope.addModGroup = function() {
         var newGroup = {
+            mod_list_id: $scope.mod_list.id,
             tab: 'mods',
             color: 'red',
-            name: 'New Group',
-            description: '',
-            children: []
+            name: 'New Group'
         };
-        $scope.mod_list.groups.push(newGroup);
-        $scope.model.mods.push(newGroup);
+        modListService.newModListGroup(newGroup).then(function(data) {
+            var group = data;
+            group.children = [];
+            $scope.mod_list.groups.push(group);
+            $scope.originalModList.groups.push(group);
+            $scope.model.mods.push(group);
+        }, function(response) {
+            var params = {label: 'Error creating new Mod List Group', response: response};
+            $scope.$emit('errorMessage', params);
+        });
     };
 });
