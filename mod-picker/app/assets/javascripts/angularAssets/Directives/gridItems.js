@@ -30,6 +30,10 @@ app.controller('gridItemsController', function($scope, colorsFactory) {
         });
     };
 
+    $scope.focusText = function($event) {
+        $event.target.select();
+    };
+
     $scope.moveItem = function(array, index) {
         array.splice(index, 1);
         $scope.updateItems();
