@@ -15,9 +15,6 @@ class ModList < ActiveRecord::Base
   belongs_to :game, :inverse_of => 'mod_lists'
   belongs_to :submitter, :class_name => 'User', :foreign_key => 'submitted_by', :inverse_of => 'mod_lists'
 
-  # Groups to be used for organizing mods and plugins
-  has_many :mod_list_groups, :inverse_of => 'mod_list'
-
   # INSTALL ORDER
   has_many :mod_list_mods, :inverse_of => 'mod_list'
   has_many :mods, :through => 'mod_list_mods', :inverse_of => 'mod_lists'
@@ -26,6 +23,13 @@ class ModList < ActiveRecord::Base
   has_many :plugins, :through => 'mods'
   has_many :mod_list_plugins, :inverse_of => 'mod_list'
   has_many :custom_plugins, :class_name => 'ModListCustomPlugin', :inverse_of => 'mod_list'
+
+  # GROUPS
+  # NOTE: This association has to be after the mods_list_mods, mod_list_plugins,
+  # and custom_plugins associations in order to yield correct behavior with
+  # nested attributes in certain circumstances (specifically when mods have been
+  # moved out of a group and the group has been deleted)
+  has_many :mod_list_groups, :inverse_of => 'mod_list'
 
   # ASSOCIATED NOTES
   has_many :mod_list_compatibility_notes, :inverse_of => 'mod_list'
