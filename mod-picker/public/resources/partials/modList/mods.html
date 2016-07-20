@@ -13,9 +13,13 @@
     </div>
 
     <div class="content-block" ng-show="mod_list.mods.length">
-        <div class="content-title">Mods</div>
+        <div class="content-title">Mods
+            <span class="right-item action-box" ng-if="editing" ng-click="addModGroup()">
+                <i class="fa fa-plus"></i> New Group
+            </span>
+        </div>
         <div class="content-container">
-            <mod-items mods="mod_list.mods" editing="editing" remove-callback="removeMod"></mod-items>
+            <grid-items type="mods" model="model.mods" editing="editing" remove-callback="removeItem"></grid-items>
         </div>
     </div>
 

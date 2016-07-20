@@ -1,12 +1,33 @@
 app.controller('modListModsController', function($scope, modListService) {
+    $scope.buildModsModel = function(mods, groups) {
+        $scope.model.mods = [];
+        groups.forEach(function(group) {
+            if (group.tab !== 'mods') {
+                return;
+            }
+            $scope.model.mods.push(group);
+            group.children = mods.filter(function(mod) {
+                return mod.group_id == group.id;
+            });
+        });
+        mods.forEach(function(mod) {
+            if (!mod.group_id) {
+                $scope.model.mods.push(mod);
+            }
+        });
+    };
+
     $scope.retrieveMods = function() {
         $scope.retrieving.mods = true;
         modListService.retrieveModListMods($scope.mod_list.id).then(function(data) {
-            $scope.mod_list.mods = data;
-            $scope.retrieving.mods = false;
+            $scope.buildModsModel(data.mods, data.groups);
+            $scope.mod_list.mods = data.mods;
+            $scope.mod_list.groups = Array.prototype.concat($scope.mod_list.groups || [], data.groups);
+            $scope.originalModList.mods = angular.copy($scope.mod_list.mods);
+            $scope.originalModList.groups = angular.copy($scope.mod_list.groups);
             // TODO: Retrieve this from the backend
             $scope.mod_list.missing_mods = [];
-            $scope.originalModList.mods = angular.copy($scope.mod_list.mods);
+            $scope.retrieving.mods = false;
         }, function(response) {
             $scope.errors.mods = response;
         });
@@ -16,4 +37,16 @@ app.controller('modListModsController', function($scope, modListService) {
     if (!$scope.mod_list.mods && !$scope.retrieving.mods) {
         $scope.retrieveMods();
     }
+
+    $scope.addModGroup = function() {
+        var newGroup = {
+            tab: 'mods',
+            color: 'red',
+            name: 'New Group',
+            description: '',
+            children: []
+        };
+        $scope.mod_list.groups.push(newGroup);
+        $scope.model.mods.push(newGroup);
+    };
 });
