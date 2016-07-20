@@ -38,7 +38,8 @@ app.service('modListService', function (backend, objectUtils) {
                 disable_comments: modList.disable_comments,
                 lock_tags: modList.lock_tags,
                 hidden: modList.hidden,
-                mod_list_mods_attributes: mod_list_mods
+                mod_list_mods_attributes: mod_list_mods,
+                mod_list_groups_attributes: modList.groups
             }
         };
         objectUtils.deleteEmptyProperties(modListData, 1);
