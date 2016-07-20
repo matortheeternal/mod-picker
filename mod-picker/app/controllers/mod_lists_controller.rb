@@ -215,9 +215,9 @@ class ModListsController < ApplicationController
     def mod_list_params
       params.require(:mod_list).permit(:game_id, :name, :description, :status, :visibility, :is_collection, :disable_comments, :lock_tags, :hidden,
           :mod_list_groups_attributes => [:id, :tab, :color, :name, :description, :_destroy],
-          :mod_list_mods_attributes => [:id, :mod_id, :index, :_destroy],
-          :mod_list_plugins_attributes => [:id, :plugin_id, :index, :active, :_destroy],
-          :custom_plugins_attributes => [:id, :index, :filename, :description, :active, :_destroy],
+          :mod_list_mods_attributes => [:id, :group_id, :mod_id, :index, :_destroy],
+          :mod_list_plugins_attributes => [:id, :group_id, :plugin_id, :index, :active, :_destroy],
+          :custom_plugins_attributes => [:id, :group_id, :index, :filename, :description, :active, :_destroy],
           :mod_list_config_files_attributes => [:id, :config_file_id, :text_body, :_destroy],
           :mod_list_custom_config_files => [:id, :filename, :install_path, :text_body, :_destroy],
           :mod_list_compatibility_notes => [:id, :compatibility_note_id, :status, :_destroy],
