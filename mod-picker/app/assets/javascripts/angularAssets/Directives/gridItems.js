@@ -36,13 +36,13 @@ app.controller('gridItemsController', function($scope, colorsFactory) {
     };
 
     $scope.removeGroup = function(group, index) {
+        // handle the group children
         group.children.forEach(function(child) {
-            $scope.model.splice(index, 0, child);
+            child.group_id = null;
+            $scope.model.splice(index++, 0, child);
         });
-        if (group.id) {
-            group._destroy = true;
-        } else {
-            $scope.model.splice(index, 1);
-        }
+        // destroy the group and clear its children
+        group._destroy = true;
+        group.children = [];
     };
 });
