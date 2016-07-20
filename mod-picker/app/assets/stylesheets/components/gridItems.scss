@@ -151,13 +151,46 @@ grid-items {
       }
     }
   }
+}
 
-  // GROUP COLORS
-  .group-red, .group-0 {
-    background-color: #fbefef !important;
-  }
 
-  .group-yellow {
-    background-color: #fbfbe8 !important;
-  }
+// GROUP COLORS
+.bg-red {
+  background-color: $red_color !important;
+}
+
+.bg-orange {
+  background-color: $orange_color !important;
+}
+
+.bg-yellow {
+  background-color: $yellow_color !important;
+}
+
+.bg-green {
+  background-color: $yellow_color !important;
+}
+
+.bg-blue {
+  background-color: $blue_color !important;
+}
+
+.bg-purple {
+  background-color: $purple_color !important;
+}
+
+.bg-white {
+  background-color: $white_color !important;
+}
+
+.bg-gray {
+  background-color: $gray_color !important;
+}
+
+.bg-brown {
+  background-color: $brown_color !important;
+}
+
+.bg-black {
+  background-color: $black_color !important;
 }
