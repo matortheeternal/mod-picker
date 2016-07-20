@@ -39,6 +39,10 @@ app.controller('gridItemsController', function($scope, colorsFactory) {
         group.children.forEach(function(child) {
             $scope.model.splice(index, 0, child);
         });
-        $scope.removeCallback(group, $scope.type)
+        if (group.id) {
+            group._destroy = true;
+        } else {
+            $scope.model.splice(index, 1);
+        }
     };
 });
