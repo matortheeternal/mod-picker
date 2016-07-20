@@ -26,6 +26,17 @@ app.service('modListService', function (backend, objectUtils) {
                 delete item.mod;
             }
         });
+        var mod_list_groups = angular.copy(modList.groups || []);
+        mod_list_groups.forEach(function(group) {
+            if (group.id && group.children) {
+                delete group.children;
+            } else {
+                var newChildren = [];
+                group.children.forEach(function(child) {
+                    newChildren.push({id: child.id});
+                });
+            }
+        });
 
         var modListData = {
             mod_list: {
@@ -39,7 +50,7 @@ app.service('modListService', function (backend, objectUtils) {
                 lock_tags: modList.lock_tags,
                 hidden: modList.hidden,
                 mod_list_mods_attributes: mod_list_mods,
-                mod_list_groups_attributes: modList.groups
+                mod_list_groups_attributes: mod_list_groups
             }
         };
         objectUtils.deleteEmptyProperties(modListData, 1);
