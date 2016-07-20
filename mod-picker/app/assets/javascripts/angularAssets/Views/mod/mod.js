@@ -3,7 +3,6 @@ app.config(['$stateProvider', function($stateProvider) {
         templateUrl: '/resources/partials/mod/mod.html',
         controller: 'modController',
         url: '/mod/:modId',
-        redirectTo: 'base.mod.Reviews',
         resolve: {
             modObject: function(modService, $stateParams, $q) {
                 var mod = $q.defer();
@@ -143,6 +142,9 @@ app.controller('modController', function($scope, $q, $stateParams, $state, $time
         var tab = $scope.tabs[0];
         $state.go('base.mod.' + tab.name, tab.params, { location: 'replace' });
     };
+
+    //redirect to the first tab when the mod state is loaded
+    $scope.redirectToFirstTab();
 
     $scope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
         //only if the new state is still on this mod's page
