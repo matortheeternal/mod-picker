@@ -4,23 +4,41 @@ app.directive('modItems', function () {
         templateUrl: '/resources/directives/modItems.html',
         controller: 'modItemsController',
         scope: {
-            mods: '=',
+            model: '=',
             editing: '=',
             removeCallback: '=',
-            tools: '=?'
+            type: '@'
         }
     }
 });
 
-app.controller('modItemsController', function($scope) {
-    $scope.updateIndexes = function() {
-        for (var i = 0; i < $scope.mods.length; i++) {
-            $scope.mods[i].index = i + 1;
-        }
+app.controller('modItemsController', function($scope, colorsFactory) {
+    $scope.colorOptions = colorsFactory.getColors();
+
+    $scope.updateItems = function() {
+        var i = 1;
+        $scope.model.forEach(function(item) {
+            if (item.children) {
+                item.children.forEach(function(child) {
+                    child.group_id = item.id;
+                    child.index = i++;
+                });
+            } else {
+                item.group_id = null;
+                item.index = i++;
+            }
+        });
     };
 
-    $scope.modMoved = function(index) {
-        $scope.mods.splice(index, 1);
-        $scope.updateIndexes();
+    $scope.moveItem = function(array, index) {
+        array.splice(index, 1);
+        $scope.updateItems();
+    };
+
+    $scope.removeGroup = function(group, index) {
+        group.children.forEach(function(child) {
+            $scope.model.splice(index, 0, child);
+        });
+        $scope.removeCallback(group, $scope.type)
     };
 });
