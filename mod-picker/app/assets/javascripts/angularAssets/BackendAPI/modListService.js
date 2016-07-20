@@ -61,5 +61,9 @@ app.service('modListService', function (backend, objectUtils) {
 
     this.newModListMod = function(mod_id) {
         return backend.retrieve('/mod_list_mods/new', {mod_id: mod_id});
-    }
+    };
+
+    this.newModListGroup = function(group) {
+        return backend.post('/mod_list_groups', {mod_list_group: group});
+    };
 });
