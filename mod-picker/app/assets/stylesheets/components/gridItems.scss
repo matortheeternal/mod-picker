@@ -43,6 +43,10 @@ grid-items {
             box-shadow: 0 0 3px 1px $action_color;
             outline: none;
           }
+
+          &:disabled {
+            box-shadow: none !important;
+          }
         }
       }
 
