@@ -1,6 +1,6 @@
 app.config(['$stateProvider', function($stateProvider) {
     $stateProvider.state('base.user', {
-        templateUrl: '/resources/partials/showUser/user.html',
+        templateUrl: '/resources/partials/user/user.html',
         controller: 'userController',
         url: '/user/:userId',
         redirectTo: 'base.user.Social',
@@ -26,7 +26,7 @@ app.config(['$stateProvider', function($stateProvider) {
         deepStateRedirect: true,
         views: {
             'Social': {
-                templateUrl: '/resources/partials/showUser/social.html',
+                templateUrl: '/resources/partials/user/social.html',
                 controller: 'userSocialTabController'
             }
         }
@@ -35,7 +35,7 @@ app.config(['$stateProvider', function($stateProvider) {
         deepStateRedirect: true,
         views: {
             'Mod Lists': {
-                templateUrl: '/resources/partials/showUser/lists.html',
+                templateUrl: '/resources/partials/user/lists.html',
             }
         }
     }).state('base.user.Mods', {
@@ -43,7 +43,7 @@ app.config(['$stateProvider', function($stateProvider) {
         deepStateRedirect: true,
         views: {
             'Mods': {
-                templateUrl: '/resources/partials/showUser/mods.html'
+                templateUrl: '/resources/partials/user/mods.html'
             }
         }
     }).state('base.user.Contributions', {
@@ -51,7 +51,7 @@ app.config(['$stateProvider', function($stateProvider) {
         deepStateRedirect: true,
         views: {
             'Contributions': {
-                templateUrl: '/resources/partials/showUser/contributions.html'
+                templateUrl: '/resources/partials/user/contributions.html'
             }
         }
     });

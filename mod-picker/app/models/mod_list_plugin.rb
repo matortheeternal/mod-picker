@@ -18,7 +18,7 @@ class ModListPlugin < ActiveRecord::Base
     if JsonHelpers.json_options_empty(options)
       # TODO: Revise this as necessary
       default_options = {
-          :only => [:index, :active],
+          :only => [:index, :group_id, :active],
           :include => {
               :plugin => {
                   :only => [:id, :filename]

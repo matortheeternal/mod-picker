@@ -27,7 +27,7 @@ app.controller('commentsController', function ($scope, contributionService) {
     // start a new comment
     $scope.newComment = function() {
         // throw exception if we don't have modelName and target defined
-        if (!modelName || !target) {
+        if (!$scope.modelName || !$scope.target) {
             throw "Cannot create a new comment - no target!";
         }
 
@@ -88,7 +88,7 @@ app.controller('commentsController', function ($scope, contributionService) {
             comment: {
                 parent_id: comment.parent_id,
                 commentable_id: comment.commentable_id,
-                commentable_type: comment.commentable_id,
+                commentable_type: comment.commentable_type,
                 text_body: comment.text_body
             }
         };

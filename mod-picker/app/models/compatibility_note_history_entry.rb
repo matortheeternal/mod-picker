@@ -8,7 +8,6 @@ class CompatibilityNoteHistoryEntry < ActiveRecord::Base
   validates :compatibility_note_id, :edited_by, :status, :text_body, :edit_summary, presence: true
 
   # Callbacks
-  after_initialize :init
   after_create :increment_counters
   before_destroy :decrement_counters
 
@@ -29,9 +28,6 @@ class CompatibilityNoteHistoryEntry < ActiveRecord::Base
   end
 
   private
-    def init
-      self.submitted ||= DateTime.now
-    end
     def increment_counters
       self.compatibility_note.update_counter(:history_entries_count, 1)
     end

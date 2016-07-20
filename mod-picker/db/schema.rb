@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160716223412) do
+ActiveRecord::Schema.define(version: 20160719192837) do
 
   create_table "agreement_marks", id: false, force: :cascade do |t|
     t.integer "correction_id", limit: 4,                null: false
@@ -374,13 +374,25 @@ ActiveRecord::Schema.define(version: 20160716223412) do
 
   create_table "mod_list_custom_plugins", force: :cascade do |t|
     t.integer "mod_list_id", limit: 4,                    null: false
+    t.integer "group_id",    limit: 4
     t.integer "index",       limit: 2,                    null: false
     t.string  "filename",    limit: 64,                   null: false
     t.boolean "active",                    default: true, null: false
     t.text    "description", limit: 65535
   end
 
+  add_index "mod_list_custom_plugins", ["group_id"], name: "fk_rails_53bf719a81", using: :btree
   add_index "mod_list_custom_plugins", ["mod_list_id"], name: "ml_id", using: :btree
+
+  create_table "mod_list_groups", force: :cascade do |t|
+    t.integer "mod_list_id", limit: 4,                 null: false
+    t.integer "tab",         limit: 1,     default: 0, null: false
+    t.integer "color",       limit: 1,     default: 0, null: false
+    t.string  "name",        limit: 128,               null: false
+    t.text    "description", limit: 65535
+  end
+
+  add_index "mod_list_groups", ["mod_list_id"], name: "fk_rails_0abd07c656", using: :btree
 
   create_table "mod_list_install_order_notes", force: :cascade do |t|
     t.integer "mod_list_id",           limit: 4,             null: false
@@ -402,21 +414,25 @@ ActiveRecord::Schema.define(version: 20160716223412) do
 
   create_table "mod_list_mods", force: :cascade do |t|
     t.integer "mod_list_id", limit: 4,                null: false
+    t.integer "group_id",    limit: 4
     t.integer "mod_id",      limit: 4,                null: false
     t.integer "index",       limit: 2,                null: false
     t.boolean "active",                default: true, null: false
   end
 
+  add_index "mod_list_mods", ["group_id"], name: "fk_rails_cb3cdf0fc4", using: :btree
   add_index "mod_list_mods", ["mod_id"], name: "mod_id", using: :btree
   add_index "mod_list_mods", ["mod_list_id"], name: "ml_id", using: :btree
 
   create_table "mod_list_plugins", force: :cascade do |t|
     t.integer "mod_list_id", limit: 4,                null: false
+    t.integer "group_id",    limit: 4
     t.integer "plugin_id",   limit: 4,                null: false
     t.integer "index",       limit: 2,                null: false
     t.boolean "active",                default: true, null: false
   end
 
+  add_index "mod_list_plugins", ["group_id"], name: "fk_rails_8fbf03f255", using: :btree
   add_index "mod_list_plugins", ["mod_list_id"], name: "ml_id", using: :btree
   add_index "mod_list_plugins", ["plugin_id"], name: "pl_id", using: :btree
 
@@ -459,6 +475,8 @@ ActiveRecord::Schema.define(version: 20160716223412) do
     t.integer  "tags_count",                limit: 4,     default: 0,     null: false
     t.integer  "stars_count",               limit: 4,     default: 0,     null: false
     t.integer  "comments_count",            limit: 4,     default: 0,     null: false
+    t.boolean  "disable_comments",                        default: false, null: false
+    t.boolean  "lock_tags",                               default: false
     t.boolean  "has_adult_content",                       default: false, null: false
     t.boolean  "hidden",                                  default: false, null: false
     t.datetime "submitted",                                               null: false
@@ -897,13 +915,17 @@ ActiveRecord::Schema.define(version: 20160716223412) do
   add_foreign_key "mod_list_config_files", "config_files"
   add_foreign_key "mod_list_config_files", "mod_lists"
   add_foreign_key "mod_list_custom_config_files", "mod_lists"
+  add_foreign_key "mod_list_custom_plugins", "mod_list_groups", column: "group_id"
   add_foreign_key "mod_list_custom_plugins", "mod_lists", name: "mod_list_custom_plugins_ibfk_1"
+  add_foreign_key "mod_list_groups", "mod_lists"
   add_foreign_key "mod_list_install_order_notes", "install_order_notes"
   add_foreign_key "mod_list_install_order_notes", "mod_lists", name: "mod_list_install_order_notes_ibfk_1"
   add_foreign_key "mod_list_load_order_notes", "load_order_notes"
   add_foreign_key "mod_list_load_order_notes", "mod_lists"
+  add_foreign_key "mod_list_mods", "mod_list_groups", column: "group_id"
   add_foreign_key "mod_list_mods", "mod_lists", name: "mod_list_mods_ibfk_1"
   add_foreign_key "mod_list_mods", "mods", name: "mod_list_mods_ibfk_2"
+  add_foreign_key "mod_list_plugins", "mod_list_groups", column: "group_id"
   add_foreign_key "mod_list_plugins", "mod_lists", name: "mod_list_plugins_ibfk_1"
   add_foreign_key "mod_list_plugins", "plugins", name: "mod_list_plugins_ibfk_2"
   add_foreign_key "mod_list_stars", "mod_lists", name: "mod_list_stars_ibfk_1"
