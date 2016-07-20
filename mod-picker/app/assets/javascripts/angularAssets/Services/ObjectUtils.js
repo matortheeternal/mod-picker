@@ -122,8 +122,8 @@ app.service('objectUtils', function () {
             if (newObj.hasOwnProperty(property) && property !== "$$hashKey") {
                 diff = service.getDifferentValues(oldObj[property], newObj[property]);
                 // if there are differences, we save them
-                if (typeof diff !== 'undefined' &&
-                   (typeof diff !== 'object' || !service.isEmptyObject(diff))) {
+                if (typeof diff !== 'undefined' && (typeof diff !== 'object' ||
+                    diff == null || !service.isEmptyObject(diff))) {
                     foundDifferences = true;
                     result[property] = diff;
                 }
