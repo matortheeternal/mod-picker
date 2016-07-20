@@ -45,10 +45,10 @@ class ModList < ActiveRecord::Base
   has_many :comments, :as => 'commentable'
 
   # NESTED ATTRIBUTES
-  accepts_nested_attributes_for :mod_list_groups, allow_destroy: true
   accepts_nested_attributes_for :mod_list_mods, allow_destroy: true
   accepts_nested_attributes_for :mod_list_plugins, allow_destroy: true
   accepts_nested_attributes_for :custom_plugins, allow_destroy: true
+  accepts_nested_attributes_for :mod_list_groups, allow_destroy: true
   accepts_nested_attributes_for :mod_list_config_files, allow_destroy: true
   accepts_nested_attributes_for :mod_list_custom_config_files, allow_destroy: true
   accepts_nested_attributes_for :mod_list_compatibility_notes, allow_destroy: true

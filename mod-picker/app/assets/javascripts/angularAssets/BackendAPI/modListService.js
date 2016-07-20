@@ -30,11 +30,12 @@ app.service('modListService', function (backend, objectUtils) {
         mod_list_groups.forEach(function(group) {
             if (group.id && group.children) {
                 delete group.children;
-            } else {
+            } else if (group.children) {
                 var newChildren = [];
                 group.children.forEach(function(child) {
                     newChildren.push({id: child.id});
                 });
+                group.children = newChildren;
             }
         });
 
