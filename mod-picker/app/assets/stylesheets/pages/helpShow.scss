@@ -72,17 +72,46 @@ table {
   display: inline-block;
   padding: 1rem 0 1rem 1rem;
   margin: 1rem 0;
-  border-left: 0.5rem solid #CCC;
+  border-left: 0.5rem solid $bar-color;
 
   .toc-title {
+    color: $bar-color;
     margin-top: 0;
   }
+
+  // all list items
+  ul {
+    list-style: none;
+  }
+
+  // parent toc list
   > ul {
     padding-left: 0;
   }
 
-  ul {
-    list-style: none;
+  // all other lists below the parent
+  li > ul {
+    padding-left: 30px;
+  }
+}
+
+
+// help page main body
+.help-page-body {
+
+  //  code highlighting
+  > pre {
+    font-family: Courier New, Lucida Sans Typewriter;
+    overflow: scroll;
+    background-color: #EEE;
+    padding: 0.25rem 1rem;
+  }
+
+  // block quote style
+  blockquote {
+    margin-left: 0;
+    border-left: 0.5rem solid $bar_highlight_text_color;
+    padding-left: 1rem;
   }
 }
 
@@ -91,13 +120,16 @@ table {
   margin-top: 1rem;
   border-top: 1px solid #DDD;
   padding-top: 1rem;
+
+  // links
+  a:link,
+  a:visited {
+    color: #999;
+  }
+
+  a:hover,
+  a:active {
+    color: $link_hover_color_primary;
+  }
 }
 
-
-// code block highlighting
-.help-page-body > pre {
-  font-family: Courier New, Lucida Sans Typewriter;
-  overflow: scroll;
-  background-color: #DDD;
-  padding: 0.25rem 1rem;
-}
