@@ -171,8 +171,6 @@ app.controller('modListController', function($scope, $q, $stateParams, $timeout,
                 $scope.$broadcast('message', message);
             }
         }
-        // update tab counts
-        $scope.updateTabs();
     };
 
     // MOD LIST EDITING LOGIC
