@@ -23,15 +23,26 @@ grid-items {
         top: 10px;
         left: 20px;
         z-index: 2;
+        font-weight: 500;
+        font-size: 16px;
 
         input {
-          padding: 0.5em;
-          min-width: 100px;
-        }
+          background: none;
+          border: none;
+          font: inherit;
+          margin-top: -2px;
+          padding: 0 4px;
+          @include transition(box-shadow 0.2s ease-in-out);
 
-        span {
-          font-weight: 500;
-          font-size: 16px;
+          &:hover {
+            box-shadow: 0 0 3px 1px $action_color;
+          }
+
+          &:focus {
+            background-color: $input_background;
+            box-shadow: 0 0 3px 1px $action_color;
+            outline: none;
+          }
         }
       }
 
