@@ -1,7 +1,8 @@
 mod-items {
   ul[dnd-list] {
-    min-height: 42px;
+    min-height: 120px;
     padding-left: 0;
+    padding-bottom: 10px;
     position: relative;
 
     .dndDraggingSource {
@@ -10,7 +11,71 @@ mod-items {
 
     .dndPlaceholder {
       min-height: 122px;
-      background-color: #ddd;
+      background-color: $border_color;
+    }
+
+    li.group {
+      width: 1090px;
+      padding: 10px;
+
+      .group-name {
+        position: absolute;
+        top: 10px;
+        left: 20px;
+        z-index: 2;
+
+        input {
+          padding: 0.5em;
+          min-width: 100px;
+        }
+
+        span {
+          font-weight: 500;
+          font-size: 16px;
+        }
+      }
+
+      .group-color {
+        position: absolute;
+        top: 10px;
+        right: 40px;
+        z-index: 2;
+
+        select {
+          padding: 0;
+          background: $input_background;
+        }
+      }
+
+      ul[dnd-list] {
+        padding-top: 30px;
+
+        > li {
+          width: 335px;
+        }
+      }
+
+      .content-message {
+        position: absolute;
+        top: 40px;
+        left: 400px;
+      }
+    }
+  }
+
+  .remove-item {
+    position: absolute;
+    z-index: 2;
+    top: 0;
+    right: 0;
+    padding-right: 3px;
+    font-size: 20px;
+    cursor: pointer;
+    color: $soft_text_color;
+    @include transition(all 0.2s ease-in-out);
+
+    &:hover {
+      color: $text_color;
     }
   }
 
@@ -24,19 +89,8 @@ mod-items {
     position: relative;
     vertical-align: bottom;
 
-    .remove-mod {
-      position: absolute;
-      right: 0;
-      top: 0;
-      padding-right: 3px;
-      font-size: 20px;
-      cursor: pointer;
-      color: $soft_text_color;
-      @include transition(all 0.2s ease-in-out);
-
-      &:hover {
-        color: $text_color;
-      }
+    > div {
+      display: inline;
     }
 
     .item-index {
@@ -70,7 +124,7 @@ mod-items {
       }
     }
 
-    ul {
+    ul.mod-rows {
       list-style: none;
       padding-left: 0;
       margin: 12px 0 0;
@@ -80,5 +134,14 @@ mod-items {
         font-weight: 500;
       }
     }
+  }
+
+  // GROUP COLORS
+  .group-red, .group-0 {
+    background-color: #fbefef !important;
+  }
+
+  .group-yellow {
+    background-color: #fbfbe8 !important;
   }
 }
