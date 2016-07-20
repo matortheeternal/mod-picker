@@ -3,6 +3,18 @@
   margin: 0 auto;
   display: block;
   padding: 50px 0 150px;
+
+  // link styles
+  a:link,
+  a:visited {
+    color: $link_hover_color_primary;
+    text-decoration: none;
+  }
+
+  a:hover,
+  a:active {
+    color: $link_hover_color_secondary;
+  }
 }
 
 // meta information
@@ -21,6 +33,18 @@ table {
 
 // help page header 
 .help-page-header {
+  // header links
+  a:link,
+  a:visited {
+    color: #999;
+  }
+
+  a:hover,
+  a:active {
+    color: $link_hover_color_primary;
+  }
+
+
   // font awesome icons
   .fa {
     margin-right: 5px;
@@ -72,6 +96,7 @@ table {
 
 // code block highlighting
 .help-page-body > pre {
+  font-family: Courier New, Lucida Sans Typewriter;
   overflow: scroll;
   background-color: #DDD;
   padding: 0.25rem 1rem;
