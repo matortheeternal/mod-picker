@@ -64,11 +64,13 @@ app.controller('modListController', function($scope, $q, $stateParams, $timeout,
     // get parent variables
     $scope.mod_list = modListObject.mod_list;
     $scope.mod_list.star = modListObject.star;
+    $scope.mod_list.groups = [];
     $scope.originalModList = angular.copy($scope.mod_list);
     $scope.currentUser = currentUser;
 
 	// initialize local variables
     $scope.tabs = tabsFactory.buildModListTabs($scope.mod_list);
+    $scope.model = {};
     $scope.newTags = [];
     $scope.retrieving = {};
     $scope.add = {
@@ -162,6 +164,7 @@ app.controller('modListController', function($scope, $q, $stateParams, $timeout,
     $scope.toggleEditing = function() {
         $scope.editing = !$scope.editing;
         if (!$scope.editing) {
+            $scope.flattenModels();
             var modListDiff = objectUtils.getDifferentObjectValues($scope.originalModList, $scope.mod_list);
             if (!objectUtils.isEmptyObject(modListDiff)) {
                 var message = {type: 'warning', text: 'Your mod list has unsaved changes.'};
@@ -173,6 +176,29 @@ app.controller('modListController', function($scope, $q, $stateParams, $timeout,
     };
 
     // MOD LIST EDITING LOGIC
+    $scope.flattenModel = function(label) {
+        if ($scope.model[label]) {
+            $scope.mod_list[label] = [];
+            $scope.model[label].forEach(function(item) {
+                if (item.children) {
+                    $scope.mod_list.groups.push(item);
+                    item.children.forEach(function(child) {
+                        $scope.mod_list[label].push(child);
+                    })
+                } else {
+                    $scope.mod_list[label].push(item);
+                }
+            });
+        }
+    };
+
+    $scope.flattenModels = function() {
+        $scope.mod_list.groups = [];
+        $scope.flattenModel('tools');
+        $scope.flattenModel('mods');
+        $scope.flattenModel('plugins');
+    };
+
     $scope.updateTabs = function() {
         $scope.tabs.forEach(function(tab) {
             switch (tab.name) {
@@ -228,6 +254,7 @@ app.controller('modListController', function($scope, $q, $stateParams, $timeout,
 
                 // push tool onto view
                 array.push(modItem);
+                $scope.model[label].push(modItem);
                 $scope.mod_list[count_label] += 1;
                 $scope.updateTabs();
                 $scope.$emit('successMessage', 'Added ' + label + ' ' + add.name + ' successfully.');
@@ -242,20 +269,21 @@ app.controller('modListController', function($scope, $q, $stateParams, $timeout,
         add.name = "";
     };
 
-    // remove a mod or tool
-    $scope.removeMod = function(mod, isTool) {
-        mod._destroy = true;
-        // update counts
-        if (isTool) {
-            $scope.mod_list.tools_count -= 1;
+    // remove an item
+    $scope.removeItem = function(array, index, type) {
+        var item = array[index];
+        if (item.id) {
+            item._destroy = true;
         } else {
-            $scope.mod_list.mods_count -= 1;
+            array.splice(index, 1);
         }
+        $scope.mod_list[type + "_count"] -= 1;
         $scope.updateTabs();
     };
 
     $scope.saveChanges = function() {
         // get changed mod fields
+        $scope.flattenModels();
         var modListDiff = objectUtils.getDifferentObjectValues($scope.originalModList, $scope.mod_list);
         if (objectUtils.isEmptyObject(modListDiff)) {
             var message = {type: 'warning', text: 'There are no changes to save.'};
