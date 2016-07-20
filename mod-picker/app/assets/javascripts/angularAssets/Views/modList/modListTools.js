@@ -37,4 +37,16 @@ app.controller('modListToolsController', function($scope, $state, $stateParams, 
     if (!$scope.mod_list.tools && !$scope.retrieving.tools) {
         $scope.retrieveTools();
     }
+
+    $scope.addToolGroup = function() {
+        var newGroup = {
+            tab: 'tools',
+            color: 'red',
+            name: 'New Group',
+            description: '',
+            children: []
+        };
+        $scope.mod_list.groups.push(newGroup);
+        $scope.model.tools.push(newGroup);
+    };
 });
