@@ -222,7 +222,7 @@ class ModListsController < ApplicationController
           :mod_list_mods_attributes => [:id, :group_id, :mod_id, :index, :_destroy],
           :mod_list_plugins_attributes => [:id, :group_id, :plugin_id, :index, :active, :_destroy],
           :custom_plugins_attributes => [:id, :group_id, :index, :filename, :description, :active, :_destroy],
-          :mod_list_groups_attributes => [:id, :tab, :color, :name, :description, :_destroy,
+          :mod_list_groups_attributes => [:id, :index, :tab, :color, :name, :description, :_destroy,
               :children => [:id]
           ],
           :mod_list_config_files_attributes => [:id, :config_file_id, :text_body, :_destroy],
