@@ -56,6 +56,7 @@ app.controller('modListModsController', function($scope, modListService) {
     $scope.addModGroup = function() {
         var newGroup = {
             mod_list_id: $scope.mod_list.id,
+            index: $scope.model.mods.length,
             tab: 'mods',
             color: 'red',
             name: 'New Group'

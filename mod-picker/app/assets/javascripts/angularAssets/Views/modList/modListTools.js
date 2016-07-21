@@ -56,6 +56,7 @@ app.controller('modListToolsController', function($scope, $state, $stateParams, 
     $scope.addToolGroup = function() {
         var newGroup = {
             mod_list_id: $scope.mod_list.id,
+            index: $scope.model.tools.length,
             tab: 'tools',
             color: 'red',
             name: 'New Group'
