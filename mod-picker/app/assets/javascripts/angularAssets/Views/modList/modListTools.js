@@ -12,7 +12,10 @@ app.controller('modListToolsController', function($scope, $state, $stateParams, 
         });
         tools.forEach(function(tool) {
             if (!tool.group_id) {
-                $scope.model.tools.push(tool);
+                var insertIndex = $scope.model.tools.findIndex(function(item) {
+                    return item.index > tool.index;
+                });
+                $scope.model.tools.splice(insertIndex, 0, tool);
             }
         });
     };

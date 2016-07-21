@@ -12,7 +12,10 @@ app.controller('modListModsController', function($scope, modListService) {
         });
         mods.forEach(function(mod) {
             if (!mod.group_id) {
-                $scope.model.mods.push(mod);
+                var insertIndex = $scope.model.mods.findIndex(function(item) {
+                    return item.index > mod.index;
+                });
+                $scope.model.mods.splice(insertIndex, 0, mod);
             }
         });
     };
