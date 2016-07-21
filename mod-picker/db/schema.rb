@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160719192837) do
+ActiveRecord::Schema.define(version: 20160721222716) do
 
   create_table "agreement_marks", id: false, force: :cascade do |t|
     t.integer "correction_id", limit: 4,                null: false
@@ -386,6 +386,7 @@ ActiveRecord::Schema.define(version: 20160719192837) do
 
   create_table "mod_list_groups", force: :cascade do |t|
     t.integer "mod_list_id", limit: 4,                 null: false
+    t.integer "index",       limit: 2,                 null: false
     t.integer "tab",         limit: 1,     default: 0, null: false
     t.integer "color",       limit: 1,     default: 0, null: false
     t.string  "name",        limit: 128,               null: false
