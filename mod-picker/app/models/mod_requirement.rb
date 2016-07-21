@@ -12,8 +12,11 @@ class ModRequirement < ActiveRecord::Base
   def as_json(options={})
     if JsonHelpers.json_options_empty(options)
       default_options = {
-          :only => [:mod_id],
+          :only => [],
           :include => {
+              :mod => {
+                  :only => [:id, :name]
+              },
               :required_mod => {
                   :only => [:id, :name]
               }
