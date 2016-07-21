@@ -25,8 +25,7 @@ app.controller('modListModsController', function($scope, modListService) {
             $scope.mod_list.groups = Array.prototype.concat($scope.mod_list.groups || [], data.groups);
             $scope.originalModList.mods = angular.copy($scope.mod_list.mods);
             $scope.originalModList.groups = angular.copy($scope.mod_list.groups);
-            // TODO: Retrieve this from the backend
-            $scope.mod_list.missing_mods = [];
+            $scope.required_mods = data.required_mods;
             $scope.retrieving.mods = false;
         }, function(response) {
             $scope.errors.mods = response;

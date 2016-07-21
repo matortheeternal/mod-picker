@@ -25,8 +25,7 @@ app.controller('modListToolsController', function($scope, $state, $stateParams, 
             $scope.mod_list.groups = Array.prototype.concat($scope.mod_list.groups || [], data.groups);
             $scope.originalModList.tools = angular.copy($scope.mod_list.tools);
             $scope.originalModList.groups = angular.copy($scope.mod_list.groups);
-            // TODO: Retrieve this from the backend
-            $scope.mod_list.missing_tools = [];
+            $scope.required_tools = data.required_tools;
             $scope.retrieving.tools = false;
         }, function(response) {
             $scope.errors.tools = response;
