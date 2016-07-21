@@ -265,6 +265,7 @@
 
     .toggle-item {
       cursor: pointer;
+      @include user-select(none);
     }
 
     a {
