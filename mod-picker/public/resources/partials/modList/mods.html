@@ -32,9 +32,11 @@
         <div class="content-container">
             <ul ng-show="show.missing_mods">
                 <li ng-repeat="requirement in missing_mods">
-                    <a href="#/mod/{{requirement.mod.id}}">{{requirement.mod.name}}</a>
-                    requires
                     <a href="#/mod/{{requirement.required_mod.id}}">{{requirement.required_mod.name}}</a>
+                    is required by
+                    <a href="#/mod/{{requirement.mod.id}}">{{requirement.mod.name}}</a>
+                    <span class="action-box green-box" ng-click="addRequirement(requirement)">Add Requirement</span>
+                    <span class="action-box red-box" ng-click="removeRequirer(requirement)">Remove Requirer</span>
                 </li>
                 <li ng-hide="missing_mods.length">
                     No missing mods to display.
@@ -42,9 +44,9 @@
             </ul>
             <ul ng-hide="show.missing_mods">
                 <li ng-repeat="requirement in required_mods">
-                    <a href="#/mod/{{requirement.mod.id}}">{{requirement.mod.name}}</a>
-                    requires
                     <a href="#/mod/{{requirement.required_mod.id}}">{{requirement.required_mod.name}}</a>
+                    is required by
+                    <a href="#/mod/{{requirement.mod.id}}">{{requirement.mod.name}}</a>
                 </li>
                 <li ng-hide="required_mods.length">
                     No requirements to display.
