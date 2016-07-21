@@ -73,6 +73,7 @@ app.controller('modListController', function($scope, $q, $stateParams, $timeout,
     $scope.model = {};
     $scope.newTags = [];
     $scope.retrieving = {};
+    $scope.shared = {};
     $scope.show = {
         missing_tools: true,
         missing_mods: true

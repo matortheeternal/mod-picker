@@ -3,7 +3,7 @@
         <div class="tab-bar-item primary-item">
             <span><strong>999</strong> Unresolved Issues</span>
             <span><strong>999</strong> Ignored Issues</span>
-            <span><strong>999</strong> Missing Requirements</span>
+            <span><strong>{{shared.missing_tools.length}}</strong> Missing Requirements</span>
         </div>
 
         <div class="tab-bar-item" ng-if="editing">
@@ -26,29 +26,29 @@
     <div class="content-block">
         <div class="content-title">Required Tools
             <span class="right-item toggle-item" ng-click="show.missing_tools = !show.missing_tools">
-                {{show.missing_tools ? 'Show All' : 'Show Missing Tools'}}
+                {{show.missing_tools ? 'Show All' : 'Show Missing Requirements'}}
             </span>
         </div>
         <div class="content-container">
             <ul ng-show="show.missing_tools">
-                <li ng-repeat="requirement in missing_tools">
+                <li ng-repeat="requirement in shared.missing_tools">
                     <a href="#/mod/{{requirement.required_mod.id}}">{{requirement.required_mod.name}}</a>
                     is required by
                     <a href="#/mod/{{requirement.mod.id}}">{{requirement.mod.name}}</a>
                     <span class="action-box green-box" ng-click="addRequirement(requirement)">Add Requirement</span>
                     <span class="action-box red-box" ng-click="removeRequirer(requirement)">Remove Requirer</span>
                 </li>
-                <li ng-hide="missing_tools.length">
+                <li ng-hide="shared.missing_tools.length">
                     No missing tools to display.
                 </li>
             </ul>
             <ul ng-hide="show.missing_tools">
-                <li ng-repeat="requirement in required_tools">
+                <li ng-repeat="requirement in shared.required_tools">
                     <a href="#/mod/{{requirement.required_mod.id}}">{{requirement.required_mod.name}}</a>
                     is required by
                     <a href="#/mod/{{requirement.mod.id}}">{{requirement.mod.name}}</a>
                 </li>
-                <li ng-hide="required_tools.length">
+                <li ng-hide="shared.required_tools.length">
                     No requirements to display.
                 </li>
             </ul>

@@ -18,13 +18,13 @@ app.controller('modListToolsController', function($scope, $state, $stateParams, 
     };
 
     $scope.buildMissingTools = function(required_tools, tools) {
-        $scope.missing_tools = [];
+        $scope.shared.missing_tools = [];
         required_tools.forEach(function(requirement) {
             var toolPresent = tools.find(function(modListTool) {
                 return !modListTool._destroy && modListTool.mod.id == requirement.required_mod.id;
             });
             if (!toolPresent) {
-                $scope.missing_tools.push(requirement);
+                $scope.shared.missing_tools.push(requirement);
             }
         });
     };
@@ -34,7 +34,7 @@ app.controller('modListToolsController', function($scope, $state, $stateParams, 
         modListService.retrieveModListTools($scope.mod_list.id).then(function(data) {
             $scope.buildMissingTools(data.required_tools, data.tools);
             $scope.buildToolsModel(data.tools, data.groups);
-            $scope.required_tools = data.required_tools;
+            $scope.shared.required_tools = data.required_tools;
             $scope.mod_list.tools = data.tools;
             $scope.mod_list.groups = Array.prototype.concat($scope.mod_list.groups || [], data.groups);
             $scope.originalModList.tools = angular.copy($scope.mod_list.tools);
