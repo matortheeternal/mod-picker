@@ -23,15 +23,33 @@
         </div>
     </div>
 
-    <div class="content-block" ng-show="false"> <!-- mod_list.tools.length -->
-        <div class="content-title">Missing Requirements
-            <span class="section-header-counter"># Unresolved Issues</span>
-        <span class="right-item">
-            <a ng-click="">Resolve All Issues</a>
-        </span>
+    <div class="content-block">
+        <div class="content-title">Required Tools
+            <span class="right-item toggle-item" ng-click="show.missing_tools = !show.missing_tools">
+                {{show.missing_tools ? 'Show All' : 'Show Missing Tools'}}
+            </span>
         </div>
         <div class="content-container">
-            Show Missing Requirements Service: Tools
+            <ul ng-show="show.missing_tools">
+                <li ng-repeat="requirement in missing_tools">
+                    <a href="#/mod/{{requirement.mod.id}}">{{requirement.mod.name}}</a>
+                    requires
+                    <a href="#/mod/{{requirement.required_mod.id}}">{{requirement.required_mod.name}}</a>
+                </li>
+                <li ng-hide="missing_tools.length">
+                    No missing tools to display.
+                </li>
+            </ul>
+            <ul ng-hide="show.missing_tools">
+                <li ng-repeat="requirement in required_tools">
+                    <a href="#/mod/{{requirement.mod.id}}">{{requirement.mod.name}}</a>
+                    requires
+                    <a href="#/mod/{{requirement.required_mod.id}}">{{requirement.required_mod.name}}</a>
+                </li>
+                <li ng-hide="required_tools.length">
+                    No requirements to display.
+                </li>
+            </ul>
         </div>
     </div>
 

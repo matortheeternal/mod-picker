@@ -23,10 +23,33 @@
         </div>
     </div>
 
-    <div class="content-block" ng-show="mod_list.missing_mods">
-        <div class="content-title">Missing Requirements</div>
+    <div class="content-block">
+        <div class="content-title">Required Mods
+            <span class="right-item toggle-item" ng-click="show.missing_mods = !show.missing_mods">
+                {{show.missing_mods ? 'Show All' : 'Show Missing Mods'}}
+            </span>
+        </div>
         <div class="content-container">
-            Show Missing Requirements Service: Mods
+            <ul ng-show="show.missing_mods">
+                <li ng-repeat="requirement in missing_mods">
+                    <a href="#/mod/{{requirement.mod.id}}">{{requirement.mod.name}}</a>
+                    requires
+                    <a href="#/mod/{{requirement.required_mod.id}}">{{requirement.required_mod.name}}</a>
+                </li>
+                <li ng-hide="missing_mods.length">
+                    No missing mods to display.
+                </li>
+            </ul>
+            <ul ng-hide="show.missing_mods">
+                <li ng-repeat="requirement in required_mods">
+                    <a href="#/mod/{{requirement.mod.id}}">{{requirement.mod.name}}</a>
+                    requires
+                    <a href="#/mod/{{requirement.required_mod.id}}">{{requirement.required_mod.name}}</a>
+                </li>
+                <li ng-hide="required_mods.length">
+                    No requirements to display.
+                </li>
+            </ul>
         </div>
     </div>
 
