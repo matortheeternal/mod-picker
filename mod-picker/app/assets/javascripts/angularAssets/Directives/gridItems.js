@@ -19,6 +19,7 @@ app.controller('gridItemsController', function($scope, colorsFactory) {
         var i = 1;
         $scope.model.forEach(function(item) {
             if (item.children) {
+                item.index = i; // group indexing
                 item.children.forEach(function(child) {
                     child.group_id = item.id;
                     child.index = i++;
