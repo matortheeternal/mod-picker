@@ -1,4 +1,11 @@
 grid-items {
+  ul[dnd-list].dragging-group {
+    .dndPlaceholder {
+      width: 1090px;
+      min-height: 140px;
+    }
+  }
+
   ul[dnd-list] {
     min-height: 120px;
     padding-left: 0;
