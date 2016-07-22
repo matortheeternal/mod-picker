@@ -82,7 +82,7 @@ app.controller('modListModsController', function($scope, modListService) {
         if (modListMod._destroy) {
             delete modListMod._destroy;
             $scope.mod_list.mods_count += 1;
-            $scope.reAddRequirements($scope.shared.required_mods, modListMod.id);
+            $scope.reAddRequirements($scope.shared.required_mods, modListMod.mod.id);
             $scope.buildMissingMods($scope.shared.required_mods, $scope.mod_list.mods);
             $scope.updateTabs();
             $scope.$emit('successMessage', 'Added mod ' + modListMod.mod.name + ' successfully.');

@@ -62,7 +62,7 @@ app.controller('modListToolsController', function($scope, $state, $stateParams, 
         if (modListTool._destroy) {
             delete modListTool._destroy;
             $scope.mod_list.tools_count += 1;
-            $scope.reAddRequirements($scope.shared.required_tools, modListTool.id);
+            $scope.reAddRequirements($scope.shared.required_tools, modListTool.mod.id);
             $scope.buildMissingTools($scope.shared.required_tools, $scope.mod_list.tools);
             $scope.updateTabs();
             $scope.$emit('successMessage', 'Added tool ' + modListTool.mod.name + ' successfully.');
