@@ -245,8 +245,8 @@ app.controller('modListController', function($scope, $q, $stateParams, $timeout,
                 requirement._destroy = true;
             }
         };
-        $scope.shared.required_mods.forEach(destroyMatchingRequirements);
-        $scope.shared.required_tools.forEach(destroyMatchingRequirements);
+        $scope.shared.required_mods && $scope.shared.required_mods.forEach(destroyMatchingRequirements);
+        $scope.shared.required_tools && $scope.shared.required_tools.forEach(destroyMatchingRequirements);
     };
 
     // remove an item
