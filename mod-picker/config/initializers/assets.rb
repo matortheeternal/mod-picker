@@ -37,6 +37,8 @@ Rails.application.config.assets.precompile += [
 'sticky.min.js',
 'bootstrap.min.js',
 'rzslider.min.js',
+'sortable.min.js',
+'ng-sortable.min.js',
 'heartcode-canvasloader-min.js',
 'jquery.countdown.min.js',
 'jquery.nicescroll.min.js',
