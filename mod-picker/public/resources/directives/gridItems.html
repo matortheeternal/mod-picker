@@ -1,5 +1,5 @@
 <ul dnd-list="model" dnd-horizontal="true">
-    <li ng-repeat="item in model" class="{{item.children ? 'group box-shadow bg-'+item.color : 'mod-grid-item box-shadow'}}" ng-hide="item._destroy" dnd-draggable="item" dnd-moved="moveItem(model, $index)" dnd-effect-allowed="move" dnd-disable-if="!editing" dnd-type="{{item.children ? 'group' : 'item'}}" dnd-swap-orientation="{{!!item.children}}">
+    <li ng-repeat="item in model" class="{{item.children ? 'group box-shadow bg-'+item.color : 'mod-grid-item box-shadow'}}" ng-hide="item._destroy" dnd-draggable="item" dnd-moved="moveItem(model, $index)" dnd-effect-allowed="move" dnd-disable-if="!editing" dnd-type="{{item.children ? 'group' : 'item'}}">
 
         <!-- TODO: Prevent user from moving groups into other groups -->
         <!-- display options for groups -->
