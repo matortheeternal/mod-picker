@@ -12,7 +12,7 @@ app.directive('gridItems', function () {
     }
 });
 
-app.controller('gridItemsController', function($scope, colorsFactory) {
+app.controller('gridItemsController', function($scope, colorsFactory, objectUtils) {
     $scope.colorOptions = colorsFactory.getColors();
     $scope.draggingGroup = false;
 
@@ -61,4 +61,6 @@ app.controller('gridItemsController', function($scope, colorsFactory) {
     $scope.dragEnd = function() {
         $scope.draggingGroup = false;
     };
+
+    $scope.isEmpty = objectUtils.isEmptyArray;
 });

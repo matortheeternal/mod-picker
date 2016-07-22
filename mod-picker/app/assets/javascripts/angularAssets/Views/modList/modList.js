@@ -60,7 +60,7 @@ app.config(['$stateProvider', function ($stateProvider) {
     })
 }]);
 
-app.controller('modListController', function($scope, $q, $stateParams, $timeout, currentUser, modListObject, modListService, errorService, objectUtils, tabsFactory, sortFactory) {
+app.controller('modListController', function($scope, $q, $stateParams, $timeout, currentUser, modListObject, modListService, errorService, objectUtils, tabsFactory) {
     // get parent variables
     $scope.mod_list = modListObject.mod_list;
     $scope.mod_list.star = modListObject.star;
@@ -259,6 +259,8 @@ app.controller('modListController', function($scope, $q, $stateParams, $timeout,
         add.id = null;
         add.name = "";
     };
+
+    $scope.isEmpty = objectUtils.isEmptyArray;
 
     // remove an item
     $scope.removeItem = function(array, index) {

@@ -23,7 +23,7 @@
             </ul>
 
             <!-- display message if there are no children -->
-            <div class="content-message" ng-hide="item.children.length">
+            <div class="content-message" ng-show="isEmpty(item.children)">
                 There are no {{type}} in this group.
             </div>
         </div>
@@ -32,5 +32,8 @@
         <div ng-if="!item.children">
             <grid-item item="item" array="model" index="$index" remove-callback="removeCallback" editing="editing"></grid-item>
         </div>
+    </li>
+    <li ng-show="isEmpty(model)">
+        There are no {{type}} in this list.
     </li>
 </ul>
