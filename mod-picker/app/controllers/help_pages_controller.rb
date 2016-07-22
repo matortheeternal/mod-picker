@@ -11,6 +11,11 @@ class HelpPagesController < ApplicationController
 
   def show
     @help_page = HelpPage.find(params[:id])
+    # initial, unoptimized implementation of related pages
+    # @related_pages = HelpPage.where.not(id: params[:id])
+    #                          .partition { |game| game.game_id == @help_page.game_id}.flatten
+    #                          .limit(5)
+
 
     render "help_pages/show" 
   end
