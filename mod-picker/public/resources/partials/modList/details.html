@@ -38,15 +38,31 @@
 
             <h3 class="section-title">Other Options</h3>
             <section>
-                <label>
+                <label class="checkbox-option">
                     <input type="checkbox" ng-model="mod_list.is_collection"> Collection
+                </label>
+                <span class="help-tooltip" title="Collections are a special type of Mod List which can be added to &#13;other mod lists.">?</span><br/>
+
+                <label class="checkbox-option">
+                    <input type="checkbox" ng-model="mod_list.disable_comments"> Disable Comments
+                </label>
+                <span class="help-tooltip" title="If enabled the Comments tab for this mod list will be hidden and &#13;any existing comments on this mod list will be hidden from public&#13;viewing.  NOTE: Unsetting this will not restore the hidden comments, &#13;only a moderator or site administrator can restore them.">?</span><br/>
+
+                <label class="checkbox-option">
+                    <input type="checkbox" ng-model="mod_list.lock_tags"> Lock Tags
+                </label>
+                <span class="help-tooltip" title="If enabled only the mod list author, moderators and administrators &#13;will be able to add tags to this mod list.">?</span><br/>
+
+                <label class="checkbox-option" ng-if="permissions.canModerate">
+                    <input type="checkbox" ng-model="mod_list.hidden">
+                    Hidden
                 </label>
             </section>
         </form>
     </div>
 </div>
 
-<tag-selector active-tags="mod_list.tags" new-tags="newTags" max-tags="10" show-mod-lists-count="true" show-add="true" can-create="permissions.canCreateTags" show-remove="permissions.canManage" save-callback="saveTags" class="wide-tag-selector"></tag-selector>
+<tag-selector active-tags="mod_list.tags" new-tags="newTags" max-tags="10" show-mod-lists-count="true" show-add="permissions.canManage || !mod_list.lock_tags" can-create="permissions.canCreateTags" show-remove="permissions.canManage" save-callback="saveTags" class="wide-tag-selector"></tag-selector>
 
 <div class="action-button-container" ng-if="editing">
     <input class="btn action-btn" type="submit" value="Save" ng-click="saveChanges()"/>

@@ -248,18 +248,24 @@
     padding: 10px;
 
     .right-item {
+      margin-top: 3px;
       font-size: 12px;
+    }
 
-      .standing {
-        font-size: 14px;
-        font-weight: 100;
-        font-style: italic;
-        vertical-align: top;
-      }
+    .standing {
+      font-size: 14px;
+      font-weight: 100;
+      font-style: italic;
+      vertical-align: top;
+    }
 
-      .action-box {
-        margin-top: -1px;
-      }
+    .action-box {
+      margin-top: -1px;
+    }
+
+    .toggle-item {
+      cursor: pointer;
+      @include user-select(none);
     }
 
     a {

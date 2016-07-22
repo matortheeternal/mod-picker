@@ -2,58 +2,19 @@
   .content-message {
     margin: 20px 0;
   }
-}
 
-.mod-grid-item {
-  width: 350px;
-  display: inline-block;
-  margin: 10px;
-  padding: 12px;
-  background-color: $secondary_background;
-  border: 1px solid $border_color;
-  position: relative;
+  .tab-bar-items {
+    min-height: 42px;
+    
+    .primary-item {
+      span {
+        margin-right: 16px;
 
-  .remove-mod {
-    position: absolute;
-    right: 0;
-    top: 0;
-    padding-right: 3px;
-    font-size: 20px;
-    cursor: pointer;
-    color: $soft_text_color;
-    @include transition(all 0.2s ease-in-out);
-
-    &:hover {
-      color: $text_color;
-    }
-  }
-
-  .image-container {
-    height: 96px;
-    float: left;
-    margin-right: 14px;
-
-    .helper {
-      display: inline-block;
-      height: 100%;
-      vertical-align: middle;
-    }
-
-    img {
-      vertical-align: middle;
-      width: 96px;
-      max-height: 96px;
-    }
-  }
-
-  ul {
-    list-style: none;
-    padding-left: 0;
-    margin: 12px 0 0;
-    font-size: 14px;
-
-    li.mod-name {
-      font-weight: 500;
+        strong {
+          font-size: 16px;
+          margin-right: 4px;
+        }
+      }
     }
   }
 }

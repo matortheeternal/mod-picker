@@ -92,24 +92,22 @@ app.service('objectUtils', function () {
     this.getDifferentArrayValues = function(oldArray, newArray) {
         var result = [];
         var i, oldItem, newItem, diff;
-        // handle array length mismatch
-        if (oldArray.length < newArray.length) {
-            for (i = oldArray.length; i < newArray.length; i++) {
-                result.push(newArray[i]);
-            }
-        } else if (newArray.length < oldArray.length) {
-            throw "ObjectUtils.getDifferentArrayItems cannot handle array item deletion!  Use a _destroy property instead."
-        }
-        // add non-equal items to the result array
-        var shorterLength = Math.min(oldArray.length, newArray.length);
-        for (i = 0; i < shorterLength; i++) {
-            oldItem = oldArray[i];
+        for (i = 0; i < newArray.length; i++) {
             newItem = newArray[i];
-            diff = service.getDifferentValues(oldItem, newItem);
-            if (!diff || service.isEmptyObject(diff)) {
-                continue;
+            // new items that have an id should exist in the oldArray
+            // find and compare them against their corresponding item in oldArray
+            if (newItem.hasOwnProperty('id')) {
+                oldItem = oldArray.find(function(item) {
+                    return item.id == newItem.id;
+                });
+                diff = oldItem && service.getDifferentValues(oldItem, newItem);
+                if (!diff || service.isEmptyObject(diff)) {
+                    continue;
+                }
+                result.push(diff);
+            } else {
+                result.push(newItem);
             }
-            result.push(diff);
         }
         // return the result array
         return result;
@@ -124,8 +122,8 @@ app.service('objectUtils', function () {
             if (newObj.hasOwnProperty(property) && property !== "$$hashKey") {
                 diff = service.getDifferentValues(oldObj[property], newObj[property]);
                 // if there are differences, we save them
-                if (typeof diff !== 'undefined' &&
-                   (typeof diff !== 'object' || !service.isEmptyObject(diff))) {
+                if (typeof diff !== 'undefined' && (typeof diff !== 'object' ||
+                    diff == null || !service.isEmptyObject(diff))) {
                     foundDifferences = true;
                     result[property] = diff;
                 }

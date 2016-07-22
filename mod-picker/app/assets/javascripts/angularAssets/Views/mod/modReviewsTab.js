@@ -88,7 +88,7 @@ app.controller('modReviewsController', function($scope, $stateParams, $state, mo
         };
 
         // set up availableSections array
-        $scope.availableSections = reviewSections.filter(function(section) {
+        $scope.availableSections = $scope.reviewSections.filter(function(section) {
             return $scope.activeReview.ratings.find(function(rating) {
                 return rating.section == section;
             }) === undefined;

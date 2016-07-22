@@ -1,49 +1,15 @@
 class ModListModsController < ApplicationController
-  before_action :set_mod_list_mod, only: [:update, :destroy]
+  # GET /mod_list_mods/new
+  # Renders the JSON for a new mod list mod
+  def new
+    if params.has_key?(:mod_id)
+      @mod = Mod.find(params[:mod_id])
+      authorize! :read, @mod
 
-  # POST /mod_list_mods
-  # POST /mod_list_mods.json
-  def create
-    @mod_list_mod = ModListMod.new(mod_list_mod_params)
-    authorize! :create, @mod_list_mod
-
-    if @mod_list_mod.save
-      render json: {status: :ok}
+      @mod_list_mod = ModListMod.new(mod_id: @mod.id, index: 0)
+      render json: @mod_list_mod
     else
-      render json: @mod_list_mod.errors, status: :unprocessable_entity
+      render json: {error: "You must specify a mod_id to create a new ModListMod."}, status: 400
     end
   end
-
-  # PATCH/PUT /mod_list_mods/1
-  # PATCH/PUT /mod_list_mods/1.json
-  def update
-    authorize! :update, @mod_list_mod
-    if @mod_list_mod.update(mod_list_mod_params)
-      render json: {status: :ok}
-    else
-      render json: @mod_list_mod.errors, status: :unprocessable_entity
-    end
-  end
-
-  # DELETE /mod_list_mods/1
-  # DELETE /mod_list_mods/1.json
-  def destroy
-    authorize! :destroy, @mod_list_mod
-    if @mod_list_mod.destroy
-      render json: {status: :ok}
-    else
-      render json: @mod_list_mod.errors, status: :unprocessable_entity
-    end
-  end
-
-  private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_mod_list_mod
-      @mod_list_mod = ModListMod.find_by(mod_list_id: params[:mod_list_id], mod_id: params[:mod_id])
-    end
-
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def mod_list_mod_params
-      params.require(:mod_list_mod).permit(:mod_list_id, :mod_id, :active, :install_order)
-    end
 end
