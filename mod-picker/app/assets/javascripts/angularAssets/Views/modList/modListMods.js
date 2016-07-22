@@ -120,29 +120,31 @@ app.controller('modListModsController', function($scope, modListService) {
         });
     };
 
-    $scope.addMod = function() {
+    $scope.addMod = function(modId) {
         // return if we don't have a mod to add
-        if (!$scope.add.mod.id) {
+        if (!modId) {
             return;
         }
 
         // see if the mod is already present on the user's mod list
         var existingMod = $scope.mod_list.mods.find(function(modListMod) {
-            return modListMod.mod.id == $scope.add.mod.id;
+            return modListMod.mod.id == modId;
         });
         if (existingMod) {
             $scope.reAddMod(existingMod);
         } else {
-            $scope.addNewMod($scope.add.mod.id);
+            $scope.addNewMod(modId);
         }
 
-        // reset mod search
-        $scope.add.mod.id = null;
-        $scope.add.mod.name = "";
+        if ($scope.add.mod.id) {
+            $scope.add.mod.id = null;
+            $scope.add.mod.name = "";
+        }
     };
 
-    $scope.removeMod = function(array, index) {
-        $scope.removeItem(array, index);
+    $scope.removeMod = function(modListMod) {
+        modListMod._destroy = true;
+        $scope.removeRequirements(modListMod.mod.id);
         $scope.buildMissingMods($scope.required.mods, $scope.mod_list.mods);
         $scope.mod_list.mods_count -= 1;
         $scope.updateTabs();

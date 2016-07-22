@@ -4,8 +4,6 @@ app.directive('gridItem', function () {
         templateUrl: '/resources/directives/gridItem.html',
         scope: {
             item: '=',
-            array: '=',
-            index: '=',
             editing: '=',
             removeCallback: '='
         }

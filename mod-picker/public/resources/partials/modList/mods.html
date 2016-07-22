@@ -8,7 +8,7 @@
 
         <div class="tab-bar-item" ng-if="editing">
             <strong>Add a mod:</strong>
-            <search-input search-type="mods" result-id="add.mod.id" search-text="add.mod.name" on-change="addMod()"></search-input>
+            <search-input search-type="mods" result-id="add.mod.id" search-text="add.mod.name" on-change="addMod(add.mod.id)"></search-input>
         </div>
     </div>
 
@@ -35,7 +35,7 @@
                     <a href="#/mod/{{requirement.required_mod.id}}">{{requirement.required_mod.name}}</a>
                     is required by
                     <a href="#/mod/{{requirement.mod.id}}">{{requirement.mod.name}}</a>
-                    <span class="action-box green-box" ng-click="addRequirement(requirement)" title="Add {{requirement.required_mod.name}}">Add Requirement</span>
+                    <span class="action-box green-box" ng-click="addTool(requirement.required_mod.id)" title="Add {{requirement.required_mod.name}}">Add Requirement</span>
                     <span class="action-box red-box" ng-click="removeRequirer(requirement)" title="Remove {{requirement.mod.name}}">Remove Requirer</span>
                 </li>
                 <li ng-hide="required.missing_mods.length">

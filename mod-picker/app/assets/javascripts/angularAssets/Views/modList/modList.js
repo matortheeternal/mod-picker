@@ -265,19 +265,6 @@ app.controller('modListController', function($scope, $q, $stateParams, $timeout,
         $scope.$broadcast('rebuildMissingMods');
     });
 
-    // remove an item
-    $scope.removeItem = function(array, index) {
-        var item = array[index];
-        if (item.id) {
-            item._destroy = true;
-        } else {
-            array.splice(index, 1);
-        }
-        if (item.mod) {
-            $scope.removeRequirements(item.mod.id);
-        }
-    };
-
     $scope.removeDestroyedItems = function() {
         var removeIfDestroyed = function(item, index, array) {
             if (item._destroy) {

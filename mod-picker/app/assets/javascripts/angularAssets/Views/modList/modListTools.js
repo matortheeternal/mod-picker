@@ -100,29 +100,31 @@ app.controller('modListToolsController', function($scope, $state, $stateParams, 
         });
     };
 
-    $scope.addTool = function() {
+    $scope.addTool = function(toolId) {
         // return if we don't have a tool to add
-        if (!$scope.add.tool.id) {
+        if (!toolId) {
             return;
         }
 
         // see if the tool is already present on the user's mod list
         var existingTool = $scope.mod_list.tools.find(function(modListTool) {
-            return modListTool.mod.id == $scope.add.tool.id;
+            return modListTool.mod.id == toolId;
         });
         if (existingTool) {
             $scope.reAddTool(existingTool);
         } else {
-            $scope.addNewTool($scope.add.tool.id);
+            $scope.addNewTool(toolId);
         }
 
-        // reset tool search
-        $scope.add.tool.id = null;
-        $scope.add.tool.name = "";
+        if ($scope.add.tool.id) {
+            $scope.add.tool.id = null;
+            $scope.add.tool.name = "";
+        }
     };
 
-    $scope.removeTool = function(array, index) {
-        $scope.removeItem(array, index);
+    $scope.removeTool = function(modListTool) {
+        modListTool._destroy = true;
+        $scope.removeRequirements(modListTool.mod.id);
         $scope.buildMissingTools($scope.required.tools, $scope.mod_list.tools);
         $scope.mod_list.tools_count -= 1;
         $scope.updateTabs();
