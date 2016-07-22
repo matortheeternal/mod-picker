@@ -70,29 +70,17 @@ app.controller('modListController', function($scope, $q, $stateParams, $timeout,
 
 	// initialize local variables
     $scope.tabs = tabsFactory.buildModListTabs($scope.mod_list);
-    $scope.model = {};
+    $scope.model = {}; // this can be removed when we make states sticky
     $scope.newTags = [];
-    $scope.retrieving = {};
-    $scope.shared = {};
-    $scope.show = {
+    $scope.retrieving = {}; // this can be removed when we make states sticky
+    $scope.shared = {}; // this can be removed when we make states sticky
+    $scope.show = { // this can be removed when we make states sticky
         missing_tools: true,
         missing_mods: true
     };
     $scope.add = {
         tool: {},
         mod: {}
-    };
-    $scope.sort = {
-        tools: {},
-        mods: {},
-        plugins: {},
-        config: {}
-    };
-    $scope.sortOptions = {
-        tools: sortFactory.modListToolSortOptions(),
-        mods: sortFactory.modListModSortOptions(),
-        plugins: 0, //sortFactory.modListPluginSortOptions(),
-        config: 0 //sortFactory.modListConfigSortOptions()
     };
     $scope.statusIcons = {
         under_construction: 'fa-wrench',
@@ -306,6 +294,7 @@ app.controller('modListController', function($scope, $q, $stateParams, $timeout,
     $scope.discardChanges = function() {
         if (confirm("Are you sure you want to discard your changes?")) {
             $scope.mod_list = angular.copy($scope.originalModList);
+            $scope.$broadcast('rebuildModels');
             $scope.updateTabs();
         }
     };
