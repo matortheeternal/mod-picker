@@ -209,6 +209,27 @@ app.controller('modListController', function($scope, $q, $stateParams, $timeout,
         });
     };
 
+    $scope.addGroup = function(tab) {
+        var model = $scope.model[tab];
+        var newGroup = {
+            mod_list_id: $scope.mod_list.id,
+            index: model.length,
+            tab: tab,
+            color: 'red',
+            name: 'New Group'
+        };
+        modListService.newModListGroup(newGroup).then(function(data) {
+            var group = data;
+            group.children = [];
+            $scope.mod_list.groups.push(group);
+            $scope.originalModList.groups.push(angular.copy(group));
+            model.push(group);
+        }, function(response) {
+            var params = {label: 'Error creating new Mod List Group', response: response};
+            $scope.$emit('errorMessage', params);
+        });
+    };
+
     $scope.isEmpty = objectUtils.isEmptyArray;
 
     // remove an item
