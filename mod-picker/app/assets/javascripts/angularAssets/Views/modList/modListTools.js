@@ -62,8 +62,8 @@ app.controller('modListToolsController', function($scope, $state, $stateParams, 
         if (modListTool._destroy) {
             delete modListTool._destroy;
             $scope.mod_list.tools_count += 1;
-            // TODO: Re-add requirements
-            // TODO: Re-add missing requirements
+            $scope.reAddRequirements($scope.shared.required_tools, modListTool.id);
+            $scope.buildMissingTools($scope.shared.required_tools, $scope.mod_list.tools);
             $scope.updateTabs();
             $scope.$emit('successMessage', 'Added tool ' + modListTool.mod.name + ' successfully.');
         }
@@ -78,6 +78,7 @@ app.controller('modListToolsController', function($scope, $state, $stateParams, 
         modListService.newModListMod(toolId).then(function(data) {
             // prepare tool
             var modListTool = data;
+            // we delete this because it's null, would be better if we just didn't render it though
             delete modListTool.id;
             modListTool.mod_id = modListTool.mod.id;
 
@@ -118,8 +119,7 @@ app.controller('modListToolsController', function($scope, $state, $stateParams, 
 
     $scope.removeTool = function(array, index) {
         $scope.removeItem(array, index);
-        // TODO: remove requirements
-        // TODO: add missing requirements
+        $scope.buildMissingTools($scope.shared.required_tools, $scope.mod_list.tools);
         $scope.mod_list.tools_count -= 1;
         $scope.updateTabs();
     };

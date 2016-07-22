@@ -112,6 +112,7 @@ app.controller('modListController', function($scope, $q, $stateParams, $timeout,
         visibility_unlisted: "This mod list won't appear in search results, \nbut anyone can access it.",
         visibility_public: "This mod list is publicly available and will \nappear in search results."
     };
+    $scope.isEmpty = objectUtils.isEmptyArray;
 
     // a copy is created so the original permissions object is never changed
     $scope.permissions = angular.copy(currentUser.permissions);
@@ -230,7 +231,23 @@ app.controller('modListController', function($scope, $q, $stateParams, $timeout,
         });
     };
 
-    $scope.isEmpty = objectUtils.isEmptyArray;
+    $scope.reAddRequirements = function(required_items, itemId) {
+        required_items.forEach(function(item) {
+            if (item.mod.id == itemId && item._destroy) {
+                delete item._destroy;
+            }
+        });
+    };
+
+    $scope.removeRequirements = function(modId) {
+        var destroyMatchingRequirements = function(requirement) {
+            if (requirement.mod.id == modId) {
+                requirement._destroy = true;
+            }
+        };
+        $scope.shared.required_mods.forEach(destroyMatchingRequirements);
+        $scope.shared.required_tools.forEach(destroyMatchingRequirements);
+    };
 
     // remove an item
     $scope.removeItem = function(array, index) {
@@ -239,6 +256,9 @@ app.controller('modListController', function($scope, $q, $stateParams, $timeout,
             item._destroy = true;
         } else {
             array.splice(index, 1);
+        }
+        if (item.mod_id) {
+            $scope.removeRequirements(item.mod_id);
         }
     };
 

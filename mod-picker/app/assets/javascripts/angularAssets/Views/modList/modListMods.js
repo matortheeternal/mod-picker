@@ -82,8 +82,8 @@ app.controller('modListModsController', function($scope, modListService) {
         if (modListMod._destroy) {
             delete modListMod._destroy;
             $scope.mod_list.mods_count += 1;
-            // TODO: Re-add requirements
-            // TODO: Re-add missing requirements
+            $scope.reAddRequirements($scope.shared.required_mods, modListMod.id);
+            $scope.buildMissingMods($scope.shared.required_mods, $scope.mod_list.mods);
             $scope.updateTabs();
             $scope.$emit('successMessage', 'Added mod ' + modListMod.mod.name + ' successfully.');
         }
@@ -98,6 +98,7 @@ app.controller('modListModsController', function($scope, modListService) {
         modListService.newModListMod(modId).then(function(data) {
             // prepare mod
             var modListMod = data;
+            // we delete this because it's null, would be better if we just didn't render it though
             delete modListMod.id;
             modListMod.mod_id = modListMod.mod.id;
 
@@ -138,8 +139,7 @@ app.controller('modListModsController', function($scope, modListService) {
 
     $scope.removeMod = function(array, index) {
         $scope.removeItem(array, index);
-        // TODO: remove requirements
-        // TODO: add missing requirements
+        $scope.buildMissingMods($scope.shared.required_mods, $scope.mod_list.mods);
         $scope.mod_list.mods_count -= 1;
         $scope.updateTabs();
     };
