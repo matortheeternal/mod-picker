@@ -1,51 +1,57 @@
 <loader data="mod_list.tools" spinner-class="big-spinner">
     <div class="tab-bar-items">
         <div class="tab-bar-item primary-item">
-            {{mod_list.missing_tools.length}} Missing Requirements
+            <span><strong>999</strong> Unresolved Issues</span>
+            <span><strong>999</strong> Ignored Issues</span>
+            <span><strong>{{shared.missing_tools.length}}</strong> Missing Requirements</span>
         </div>
 
-        <div class="tab-bar-item">
-            <sort-control sort="sort.tools" sort-options="sortOptions.tools"></sort-control>
-        </div>
-
-        <div class="tab-bar-item">
-            <search-input search-type="tools" result-id="quick.toolId" search-text="quick.toolName" on-change="quickAddTool" placeholder="'Add a tool'"></search-input>
+        <div class="tab-bar-item" ng-if="editing">
+            <strong>Add a tool:</strong>
+            <search-input search-type="tools" result-id="add.tool.id" search-text="add.tool.name" on-change="addMod(mod_list.tools, 'tool')"></search-input>
         </div>
     </div>
 
     <div class="content-block" ng-show="mod_list.tools.length">
-        <div class="content-title">Tools</div>
+        <div class="content-title">Tools
+            <span class="right-item action-box" ng-if="editing" ng-click="addToolGroup()">
+                <i class="fa fa-plus"></i> New Group
+            </span>
+        </div>
         <div class="content-container">
-            <div class="mod-grid-item box-shadow" ng-repeat="tool in mod_list.tools" ng-hide="tool._destroy">
-                <div class="remove-mod" ng-if="editing">
-                    <span class="fa fa-times" ng-click="removeMod(tool, true)"></span>
-                </div>
-                <div class="image-container">
-                    <div class="helper"></div>
-                    <img ng-src="{{tool.mod.image}}"/>
-                </div>
-                <ul>
-                    <li class="mod-name">
-                        <a href="#/mod/{{tool.mod.id}}">{{tool.mod.name}}</a>
-                        <span ng-if="tool.mod.aliases">({{tool.mod.aliases.split(",")[0]}})</span>
-                    </li>
-                    <li>by {{tool.mod.authors}}</li>
-                    <li>Released {{tool.mod.released | date}}</li>
-                    <li ng-if="tool.mod.updated">Updated {{tool.mod.updated | date}}</li>
-                </ul>
-            </div>
+            <grid-items type="tools" model="model.tools" editing="editing" remove-callback="removeItem"></grid-items>
         </div>
     </div>
 
-    <div class="content-block" ng-show="false"> <!-- mod_list.tools.length -->
-        <div class="content-title">Missing Requirements
-            <span class="section-header-counter"># Unresolved Issues</span>
-        <span class="right-item">
-            <a ng-click="">Resolve All Issues</a>
-        </span>
+    <div class="content-block">
+        <div class="content-title">Required Tools
+            <span class="right-item toggle-item" ng-click="show.missing_tools = !show.missing_tools">
+                {{show.missing_tools ? 'Show All' : 'Show Missing Requirements'}}
+            </span>
         </div>
         <div class="content-container">
-            Show Missing Requirements Service: Tools
+            <ul ng-show="show.missing_tools">
+                <li ng-repeat="requirement in shared.missing_tools">
+                    <a href="#/mod/{{requirement.required_mod.id}}">{{requirement.required_mod.name}}</a>
+                    is required by
+                    <a href="#/mod/{{requirement.mod.id}}">{{requirement.mod.name}}</a>
+                    <span class="action-box green-box" ng-click="addRequirement(requirement)">Add Requirement</span>
+                    <span class="action-box red-box" ng-click="removeRequirer(requirement)">Remove Requirer</span>
+                </li>
+                <li ng-hide="shared.missing_tools.length">
+                    No missing tools to display.
+                </li>
+            </ul>
+            <ul ng-hide="show.missing_tools">
+                <li ng-repeat="requirement in shared.required_tools">
+                    <a href="#/mod/{{requirement.required_mod.id}}">{{requirement.required_mod.name}}</a>
+                    is required by
+                    <a href="#/mod/{{requirement.mod.id}}">{{requirement.mod.name}}</a>
+                </li>
+                <li ng-hide="shared.required_tools.length">
+                    No requirements to display.
+                </li>
+            </ul>
         </div>
     </div>
 

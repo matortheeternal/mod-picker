@@ -15,21 +15,55 @@ app.service('modListService', function (backend, objectUtils) {
         return backend.retrieve('/mod_lists/' + modListId + '/tools');
     };
 
+    this.retrieveModListMods = function(modListId) {
+        return backend.retrieve('/mod_lists/' + modListId + '/mods');
+    };
+
     this.updateModList = function(modList) {
-        var mod_list_mods = Array.prototype.concat(modList.tools || [], modList.mods || []);
+        var mod_list_mods = angular.copy(Array.prototype.concat(modList.tools || [], modList.mods || []));
+        mod_list_mods.forEach(function(item) {
+            if (item.mod) {
+                delete item.mod;
+            }
+        });
+        var mod_list_groups = angular.copy(modList.groups || []);
+        mod_list_groups.forEach(function(group) {
+            if (group.id && group.children) {
+                delete group.children;
+            } else if (group.children) {
+                var newChildren = [];
+                group.children.forEach(function(child) {
+                    newChildren.push({id: child.id});
+                });
+                group.children = newChildren;
+            }
+        });
+
         var modListData = {
             mod_list: {
                 id: modList.id,
                 status: modList.status,
                 visibility: modList.visibility,
-                is_collection: modList.is_collection,
                 name: modList.name,
                 description: modList.description,
-                mod_list_mods_attributes: mod_list_mods
+                is_collection: modList.is_collection,
+                disable_comments: modList.disable_comments,
+                lock_tags: modList.lock_tags,
+                hidden: modList.hidden,
+                mod_list_mods_attributes: mod_list_mods,
+                mod_list_groups_attributes: mod_list_groups
             }
         };
         objectUtils.deleteEmptyProperties(modListData, 1);
 
         return backend.update('/mod_lists/' + modList.id, modListData);
+    };
+
+    this.newModListMod = function(mod_id) {
+        return backend.retrieve('/mod_list_mods/new', {mod_id: mod_id});
+    };
+
+    this.newModListGroup = function(group) {
+        return backend.post('/mod_list_groups', {mod_list_group: group});
     };
 });

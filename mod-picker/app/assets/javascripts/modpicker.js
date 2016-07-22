@@ -3,7 +3,7 @@
 //= require_tree ./angularAssets
 
 var app = angular.module('modPicker', [
-    'ui.router', 'rzModule', 'ngAnimate', 'sticky', 'puElasticInput', 'hc.marked', 'smoothScroll', 'relativeDate', 'ct.ui.router.extras'
+    'ui.router', 'rzModule', 'ngAnimate', 'sticky', 'puElasticInput', 'hc.marked', 'smoothScroll', 'relativeDate', 'ct.ui.router.extras', 'dndLists'
 ]);
 
 app.config(['$httpProvider', '$compileProvider', function($httpProvider, $compileProvider) {

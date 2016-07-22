@@ -1,121 +1,87 @@
-<div class="modlist-content-block modlist-tab-item">
-    <div class="content-title"> 
-            <div>
-                Mods Overview
-            </div>
+<loader data="mod_list.mods" spinner-class="big-spinner">
+    <div class="tab-bar-items">
+        <div class="tab-bar-item primary-item">
+            <span><strong>999</strong> Unresolved Issues</span>
+            <span><strong>999</strong> Ignored Issues</span>
+            <span><strong>{{shared.missing_mods.length}}</strong> Missing Requirements</span>
+        </div>
+
+        <div class="tab-bar-item" ng-if="editing">
+            <strong>Add a mod:</strong>
+            <search-input search-type="mods" result-id="add.mod.id" search-text="add.mod.name" on-change="addMod(mod_list.mods, 'mod')"></search-input>
+        </div>
     </div>
-    <section class="overview-content-container">
-        <div>
-            <ul>
-                <li>
-                    <span class="modlist-status">[_] Stable</span> 
+
+    <div class="content-block" ng-show="mod_list.mods.length">
+        <div class="content-title">Mods
+            <span class="right-item action-box" ng-if="editing" ng-click="addModGroup()">
+                <i class="fa fa-plus"></i> New Group
+            </span>
+        </div>
+        <div class="content-container">
+            <grid-items type="mods" model="model.mods" editing="editing" remove-callback="removeItem"></grid-items>
+        </div>
+    </div>
+
+    <div class="content-block">
+        <div class="content-title">Required Mods
+            <span class="right-item toggle-item" ng-click="show.missing_mods = !show.missing_mods">
+                {{show.missing_mods ? 'Show All' : 'Show Missing Requirements'}}
+            </span>
+        </div>
+        <div class="content-container">
+            <ul ng-show="show.missing_mods">
+                <li ng-repeat="requirement in shared.missing_mods">
+                    <a href="#/mod/{{requirement.required_mod.id}}">{{requirement.required_mod.name}}</a>
+                    is required by
+                    <a href="#/mod/{{requirement.mod.id}}">{{requirement.mod.name}}</a>
+                    <span class="action-box green-box" ng-click="addRequirement(requirement)">Add Requirement</span>
+                    <span class="action-box red-box" ng-click="removeRequirer(requirement)">Remove Requirer</span>
                 </li>
-                <li>
-                    <span>999</span> 
-                    Unresolved Issues
+                <li ng-hide="shared.missing_mods.length">
+                    No missing mods to display.
                 </li>
-                <li>
-                    <span>999</span> 
-                    Ignored Issues
+            </ul>
+            <ul ng-hide="show.missing_mods">
+                <li ng-repeat="requirement in shared.required_mods">
+                    <a href="#/mod/{{requirement.required_mod.id}}">{{requirement.required_mod.name}}</a>
+                    is required by
+                    <a href="#/mod/{{requirement.mod.id}}">{{requirement.mod.name}}</a>
+                </li>
+                <li ng-hide="shared.required_mods.length">
+                    No requirements to display.
                 </li>
             </ul>
         </div>
-        <div>
-            <ul>
-                <li>
-                    <span>999</span> 
-                    Compatible Mods
-                </li>
-                <li>
-                    <span>999</span> 
-                    Compatible With Patch
-                </li>
-                <li>
-                    <span>999</span> 
-                    Partially Incompatible
-                </li>
-                <li>
-                    <span>999</span> 
-                    Incompatible
-                </li>
-            </ul> 
-        </div>
-    </section>
-</div> 
-<div class="modlist-content-block modlist-tab-item">
-    <div class="content-title"> 
-        <div>
-            Mods
-        </div>
-        <div>
-            <a ng-click="curModsSecTab = 'list'" ng-class="cssChange('mods','list')">List</a><a ng-click="curModsSecTab = 'tiles'" ng-class="cssChange('mods','tiles')">Tiles</a>
-        </div>
     </div>
-    <section class="ratings-container">
-    _
-    <!--Modlist editing options go here! (may port over to the service directive, here for display purposes)-->
-    </section>
-    <section class="note-content-container">
-        Show Mods Service
-    </section>
-</div> 
 
-<div class="modlist-content-block modlist-tab-item">
-    <div class="content-title"> 
-        <div>
-            Missing Requirements
-            <span class="section-header-counter"># Unresolved Issues</span>
-        </div>
-        <div>
-            <a ng-click="" class="section-unselected-tab">Resolve All Issues</a>
+    <div class="content-block" ng-show="mod_list.compatibility_notes">
+        <div class="content-title">Compatibility Issues</div>
+        <div class="content-container">
+            Mods: Show compatibility issues Here
         </div>
     </div>
-    <section class="note-content-container">
-        Show Missing Requirements Service: Mods
-    </section>
-</div>
 
-<div class="modlist-content-block modlist-tab-item">
-    <div class="content-title"> 
-        <div>
-            Compatibility Issues
-            <span class="section-header-counter"># Unresolved Issues</span>
-        </div>
-        <div>
-            <a ng-click="" class="section-unselected-tab">Show ignored issues(#)</a><a ng-click="" class="section-unselected-tab">Show resolved issues(#)</a>
+    <div class="content-block" ng-show="mod_list.install_order_notes">
+        <div class="content-title">Install Order Notes</div>
+        <div class="content-container">
+            Mods: Show Install Order Notes Here
         </div>
     </div>
-    <section class="note-content-container">
-        Mods: Show compatibility issues Here
-    </section>
-</div> 
 
-<div class="modlist-content-block modlist-tab-item">
-    <div class="content-title"> 
-        <div>
-            Install Order Notes
-            <span class="section-header-counter"># Unresolved Issues</span>
-        </div>
-        <div>
-            <a ng-click="" class="section-unselected-tab">Show ignored notes(#)</a><a ng-click="" class="section-unselected-tab">Show resolved notes(#)</a>
+    <div class="content-block" ng-show="mod_list.asset_conflicts">
+        <div class="content-title">Asset Conflicts</div>
+        <div class="content-container">
+            Mods: Asset Conflicts Container.  Will be a directive.
         </div>
     </div>
-    <section class="note-content-container">
-        Mods: Show Install Order Notes Here
-    </section>
-</div> 
 
-<div class="modlist-content-block modlist-tab-item">
-    <div class="content-title"> 
-        <div>
-            Asset Conflicts
-        </div>
+    <div class="content-message" ng-hide="mod_list.mods.length">
+        There are no mods in this mod list.
     </div>
-    <section class="ratings-container">
-    _
-    <!--Asset Conflict Table Options Go Here! (will port over service directive, here for display purposes)-->
-    </section>
-    <section class="note-content-container">
-        Mods: Asset Conflicts Container.  Will be a directive.
-    </section>
-</div>
+
+    <div class="action-button-container" ng-if="editing">
+        <input class="btn action-btn" type="submit" value="Save" ng-click="saveChanges()"/>
+        <input class="btn action-btn" type="button" value="Reset" ng-click="discardChanges()"/>
+    </div>
+</loader>

@@ -60,7 +60,7 @@ app.service('categoryService', function ($q, backend) {
                 }));
             });
             $q.all(secondaryCategoryPromises).then(function () {
-                nestedCategoriesPromise.resolve(nestedCategories);
+                nestedCategoriesPromise.resolve(angular.copy(nestedCategories));
             });
         });
         return nestedCategoriesPromise.promise;

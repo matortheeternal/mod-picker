@@ -249,7 +249,7 @@ app.controller('editModController', function($scope, $state, currentUser, modObj
     /* mod authors */
     $scope.addAuthor = function() {
         $scope.mod.mod_authors.push({
-            role: "0",
+            role: "author",
             user: {}
         });
     };

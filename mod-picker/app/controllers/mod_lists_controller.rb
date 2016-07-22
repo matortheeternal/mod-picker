@@ -31,58 +31,52 @@ class ModListsController < ApplicationController
   # GET /mod_lists/1/tools
   def tools
     authorize! :read, @mod_list
-    tools = @mod_list.mod_list_mods.joins(:mod).where(:mods => {is_utility: true})
-    render :json => tools.as_json({
-        :only => [:id, :index, :active],
-        :include => {
-            :mod => {
-                :only => [:id, :name, :aliases, :authors, :released, :updated],
-                :methods => :image
-            }
-        }
-    })
+    tools = @mod_list.mod_list_mods.utility(true).includes(:mod => :required_mods).order(:index)
+    groups = @mod_list.mod_list_groups.where(tab: 0)
+    render :json => {
+        tools: tools,
+        required_tools: @mod_list.required_tools,
+        groups: groups
+    }
   end
 
   # GET /mod_lists/:id/mods
   def mods
     authorize! :read, @mod_list
-    mods = @mod_list.mod_list_mods.joins(:mod)
-    render :json => mods.as_json({
-        :only => [:id, :index, :active],
-        :include => {
-            :mod => {
-                :only => [:id, :name]
-            }
-        }
-    })
+    mods = @mod_list.mod_list_mods.utility(false).includes(:mod => :required_mods).order(:index)
+    groups = @mod_list.mod_list_groups.where(tab: 1)
+    render :json => {
+        mods: mods,
+        groups: groups,
+        required_mods: @mod_list.required_mods,
+        compatibility_notes: @mod_list.compatibility_notes,
+        install_order_notes: @mod_list.install_order_notes
+    }
   end
 
   # GET /mod_lists/:id/plugins
   def plugins
     authorize! :read, @mod_list
     plugins = @mod_list.mod_list_plugins.joins(:plugin)
-    render :json =>  plugins.as_json({
-        :only => [:index, :active],
-        :include => {
-            :plugin => {
-                :only => [:id, :filename]
-            }
-        }
-    })
+    custom_plugins = @mod_list.custom_plugins
+    groups = @mod_list.mod_list_groups.where(tab: 2)
+    render :json => {
+        plugins: plugins,
+        custom_plugins: custom_plugins,
+        groups: groups,
+        load_order_notes: @mod_list.load_order_notes
+    }
   end
 
   # GET /mod_lists/:id/config_files
   def config_files
     authorize! :read, @mod_list
     config_files = @mod_list.mod_list_config_files.joins(:config_file)
-    render :json => config_files.as_json({
-        :only => [:text_body],
-        :include => {
-            :config_file => {
-                :only => [:filename, :install_path, :text_body, :mod_lists_count]
-            }
-        }
-    })
+    custom_config_files = @mod_list.mod_list_custom_config_files
+    render :json => {
+        config_files: config_files,
+        custom_config_files: custom_config_files
+    }
   end
 
   # POST/GET /mod_lists/1/comments
@@ -112,6 +106,7 @@ class ModListsController < ApplicationController
   # PATCH/PUT /mod_lists/1
   def update
     authorize! :update, @mod_list
+    authorize! :hide, @mod_list if params[:mod_list].has_key?(:hidden)
     if @mod_list.update(mod_list_params) && @mod_list.update_lazy_counters
       render json: {status: :ok}
     else
@@ -223,10 +218,13 @@ class ModListsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def mod_list_params
-      params.require(:mod_list).permit(:game_id, :name, :description, :is_collection, :has_adult_content, :status, :visibility,
-          :mod_list_mods_attributes => [:id, :mod_id, :index, :_destroy],
-          :mod_list_plugins_attributes => [:id, :plugin_id, :index, :active, :_destroy],
-          :custom_plugins_attributes => [:id, :index, :filename, :description, :active, :_destroy],
+      params.require(:mod_list).permit(:game_id, :name, :description, :status, :visibility, :is_collection, :disable_comments, :lock_tags, :hidden,
+          :mod_list_mods_attributes => [:id, :group_id, :mod_id, :index, :_destroy],
+          :mod_list_plugins_attributes => [:id, :group_id, :plugin_id, :index, :active, :_destroy],
+          :custom_plugins_attributes => [:id, :group_id, :index, :filename, :description, :active, :_destroy],
+          :mod_list_groups_attributes => [:id, :tab, :color, :name, :description, :_destroy,
+              :children => [:id]
+          ],
           :mod_list_config_files_attributes => [:id, :config_file_id, :text_body, :_destroy],
           :mod_list_custom_config_files => [:id, :filename, :install_path, :text_body, :_destroy],
           :mod_list_compatibility_notes => [:id, :compatibility_note_id, :status, :_destroy],

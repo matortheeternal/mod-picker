@@ -60,18 +60,28 @@ app.config(['$stateProvider', function ($stateProvider) {
     })
 }]);
 
-app.controller('modListController', function($scope, $q, $stateParams, $timeout, currentUser, modListObject, modListService, errorService, tagService, objectUtils, tabsFactory, sortFactory) {
+app.controller('modListController', function($scope, $q, $stateParams, $timeout, currentUser, modListObject, modListService, errorService, objectUtils, tabsFactory, sortFactory) {
     // get parent variables
     $scope.mod_list = modListObject.mod_list;
     $scope.mod_list.star = modListObject.star;
+    $scope.mod_list.groups = [];
     $scope.originalModList = angular.copy($scope.mod_list);
     $scope.currentUser = currentUser;
 
 	// initialize local variables
     $scope.tabs = tabsFactory.buildModListTabs($scope.mod_list);
+    $scope.model = {};
     $scope.newTags = [];
     $scope.retrieving = {};
-    $scope.quick = {};
+    $scope.shared = {};
+    $scope.show = {
+        missing_tools: true,
+        missing_mods: true
+    };
+    $scope.add = {
+        tool: {},
+        mod: {}
+    };
     $scope.sort = {
         tools: {},
         mods: {},
@@ -139,6 +149,13 @@ app.controller('modListController', function($scope, $q, $stateParams, $timeout,
         event.stopPropagation();
     });
 
+    // display custom message
+    $scope.$on('customMessage', function(event, message) {
+        $scope.$broadcast('message', message);
+        // stop event propagation - we handled it
+        event.stopPropagation();
+    });
+
     // HEADER RELATED LOGIC
     $scope.starModList = function() {
         modListService.starModList($scope.mod_list.id, $scope.mod_list.star).then(function() {
@@ -152,17 +169,39 @@ app.controller('modListController', function($scope, $q, $stateParams, $timeout,
     $scope.toggleEditing = function() {
         $scope.editing = !$scope.editing;
         if (!$scope.editing) {
+            $scope.flattenModels();
             var modListDiff = objectUtils.getDifferentObjectValues($scope.originalModList, $scope.mod_list);
             if (!objectUtils.isEmptyObject(modListDiff)) {
                 var message = {type: 'warning', text: 'Your mod list has unsaved changes.'};
                 $scope.$broadcast('message', message);
             }
         }
-        // update tab counts
-        $scope.updateTabs();
     };
 
     // MOD LIST EDITING LOGIC
+    $scope.flattenModel = function(label) {
+        if ($scope.model[label]) {
+            $scope.mod_list[label] = [];
+            $scope.model[label].forEach(function(item) {
+                if (item.children) {
+                    $scope.mod_list.groups.push(item);
+                    item.children.forEach(function(child) {
+                        $scope.mod_list[label].push(child);
+                    })
+                } else {
+                    $scope.mod_list[label].push(item);
+                }
+            });
+        }
+    };
+
+    $scope.flattenModels = function() {
+        $scope.mod_list.groups = [];
+        $scope.flattenModel('tools');
+        $scope.flattenModel('mods');
+        $scope.flattenModel('plugins');
+    };
+
     $scope.updateTabs = function() {
         $scope.tabs.forEach(function(tab) {
             switch (tab.name) {
@@ -182,19 +221,72 @@ app.controller('modListController', function($scope, $q, $stateParams, $timeout,
         });
     };
 
-    $scope.removeMod = function(mod, isTool) {
-        mod._destroy = true;
-        // update counts
-        if (isTool) {
-            $scope.mod_list.tools_count -= 1;
-        } else {
-            $scope.mod_list.mods_count -= 1;
+    // add a mod or tool
+    $scope.addMod = function(array, label) {
+        // return if we don't have a tool to add
+        var add = $scope.add[label];
+        if (!add.id) {
+            return;
         }
+
+        // see if the tool is already present on the user's mod list
+        var existingMod = array.find(function(item) {
+            return item.mod.id == add.id;
+        });
+        var count_label = label + "s_count";
+        if (existingMod) {
+            // if tool is already present on the user's mod list but has been
+            // removed, add it back
+            if (existingMod._destroy) {
+                delete existingMod._destroy;
+                $scope.mod_list[count_label] += 1;
+                $scope.updateTabs();
+                $scope.$emit('successMessage', 'Added ' + label + ' ' + add.name + ' successfully.');
+            }
+            // else inform the user that the tool is already on their mod list
+            else {
+                $scope.$emit('customMessage', {type: 'error', text: 'Failed to add ' + label + ' ' + add.name + ', the ' + label + ' has already been added to this mod list.'});
+            }
+        } else {
+            // retrieve tool information from the backend
+            modListService.newModListMod(add.id).then(function(data) {
+                // prepare tool
+                var modItem = data;
+                delete modItem.id;
+                modItem.mod_id = modItem.mod.id;
+
+                // push tool onto view
+                array.push(modItem);
+                $scope.model[label].push(modItem);
+                $scope.mod_list[count_label] += 1;
+                $scope.updateTabs();
+                $scope.$emit('successMessage', 'Added ' + label + ' ' + add.name + ' successfully.');
+            }, function(response) {
+                var params = {label: 'Error adding ' + label, response: response};
+                $scope.$emit('errorMessage', params);
+            });
+        }
+
+        // reset tool search
+        add.id = null;
+        add.name = "";
+    };
+
+    // remove an item
+    $scope.removeItem = function(array, index, type) {
+        var item = array[index];
+        if (item.id) {
+            item._destroy = true;
+        } else {
+            array.splice(index, 1);
+        }
+        $scope.mod_list[type + "_count"] -= 1;
         $scope.updateTabs();
     };
 
     $scope.saveChanges = function() {
         // get changed mod fields
+        $scope.flattenModels();
         var modListDiff = objectUtils.getDifferentObjectValues($scope.originalModList, $scope.mod_list);
         if (objectUtils.isEmptyObject(modListDiff)) {
             var message = {type: 'warning', text: 'There are no changes to save.'};
@@ -217,75 +309,4 @@ app.controller('modListController', function($scope, $q, $stateParams, $timeout,
             $scope.updateTabs();
         }
     };
-});
-
-app.controller('modListDetailsController', function($scope) {
-    $scope.saveTags = function(updatedTags) {
-        var action = $q.defer();
-        tagService.updateModListTags($scope.mod_list, updatedTags).then(function(data) {
-            $scope.$emit('successMessage', 'Tags updated successfully.');
-            action.resolve(data);
-        }, function(response) {
-            var params = {label: 'Error saving mod list tags', response: response};
-            $scope.$emit('errorMessage', params);
-            action.reject(response);
-        });
-        return action.promise;
-    };
-});
-
-app.controller('modListToolsController', function($scope, $state, $stateParams, modListService) {
-    $scope.retrieveTools = function() {
-        $scope.retrieving.tools = true;
-
-        // transition to new url state
-        var params = {
-            modListId: $stateParams.modListId,
-            scol: $scope.sort.tools.column,
-            sdir: $scope.sort.tools.direction
-        };
-        $state.transitionTo('base.mod-list.Tools', params, { notify: false });
-
-        // retrieve the tools
-        modListService.retrieveModListTools($scope.mod_list.id).then(function(data) {
-            $scope.mod_list.tools = data;
-            // TODO: Retrieve this from the backend
-            $scope.mod_list.missing_tools = [];
-            $scope.originalModList.tools = angular.copy($scope.mod_list.tools);
-        }, function(response) {
-            $scope.errors.tools = response;
-        });
-    };
-
-    // retrieve tools if we don't have them and aren't currently retrieving them
-    if (!$scope.mod_list.tools && !$scope.retrieving.tools) {
-        $scope.sort.tools.column = $stateParams.scol;
-        $scope.sort.tools.direction = $stateParams.sdir;
-        $scope.retrieveTools();
-    }
-
-    // QUICK ADD TOOL
-    $scope.quickAddTool = function() {
-        if ($scope.quick.toolId) {
-            $scope.$emit('successMessage', 'Added tool ' + $scope.quick.toolName + ' successfully.');
-            $scope.quick.toolId = null;
-            $scope.quick.toolName = "";
-        }
-    };
-});
-
-app.controller('modListModsController', function($scope) {
-
-});
-
-app.controller('modListPluginsController', function($scope) {
-
-});
-
-app.controller('modListConfigController', function($scope) {
-
-});
-
-app.controller('modListCommentsController', function($scope) {
-
 });

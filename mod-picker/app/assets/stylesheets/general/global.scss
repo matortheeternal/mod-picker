@@ -414,6 +414,10 @@ input[type="button"], input[type="submit"] {
     color: $h4_color;
     font-size: 14px;
 
+    strong {
+      margin-right: 6px;
+    }
+
     .sort-direction {
       cursor: pointer;
       font-size: 20px;
