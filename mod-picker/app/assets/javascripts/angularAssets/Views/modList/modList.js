@@ -209,57 +209,6 @@ app.controller('modListController', function($scope, $q, $stateParams, $timeout,
         });
     };
 
-    // add a mod or tool
-    $scope.addMod = function(array, label) {
-        // return if we don't have a tool to add
-        var add = $scope.add[label];
-        if (!add.id) {
-            return;
-        }
-
-        // see if the tool is already present on the user's mod list
-        var existingMod = array.find(function(item) {
-            return item.mod.id == add.id;
-        });
-        var count_label = label + "s_count";
-        if (existingMod) {
-            // if tool is already present on the user's mod list but has been
-            // removed, add it back
-            if (existingMod._destroy) {
-                delete existingMod._destroy;
-                $scope.mod_list[count_label] += 1;
-                $scope.updateTabs();
-                $scope.$emit('successMessage', 'Added ' + label + ' ' + add.name + ' successfully.');
-            }
-            // else inform the user that the tool is already on their mod list
-            else {
-                $scope.$emit('customMessage', {type: 'error', text: 'Failed to add ' + label + ' ' + add.name + ', the ' + label + ' has already been added to this mod list.'});
-            }
-        } else {
-            // retrieve tool information from the backend
-            modListService.newModListMod(add.id).then(function(data) {
-                // prepare tool
-                var modItem = data;
-                delete modItem.id;
-                modItem.mod_id = modItem.mod.id;
-
-                // push tool onto view
-                array.push(modItem);
-                $scope.model[label].push(modItem);
-                $scope.mod_list[count_label] += 1;
-                $scope.updateTabs();
-                $scope.$emit('successMessage', 'Added ' + label + ' ' + add.name + ' successfully.');
-            }, function(response) {
-                var params = {label: 'Error adding ' + label, response: response};
-                $scope.$emit('errorMessage', params);
-            });
-        }
-
-        // reset tool search
-        add.id = null;
-        add.name = "";
-    };
-
     $scope.isEmpty = objectUtils.isEmptyArray;
 
     // remove an item
