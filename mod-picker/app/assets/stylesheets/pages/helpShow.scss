@@ -1,3 +1,14 @@
+// mixins
+
+// accepts a color and highlight and sets them to the color and hover color
+@mixin link_style ($color, $highlight_color: lighten($color, 10%)) {
+    color: $color;
+
+    &:hover {
+      color: $highlight_color;
+    }
+}
+
 .help-page-content {
   max-width: $max-content-width;
   margin: 0 auto;
@@ -69,7 +80,6 @@ table {
 
 // table of contents
 .help-page-toc {
-  display: inline-block;
   padding: 1rem 0 1rem 1rem;
   margin: 1rem 0;
   border-left: 0.5rem solid $bar-color;
@@ -86,7 +96,8 @@ table {
 
   // parent toc list
   > ul {
-    padding-left: 0;
+    padding-left: 1rem;
+    list-style: decimal;
   }
 
   // all other lists below the parent
@@ -112,6 +123,7 @@ table {
     margin-left: 0;
     border-left: 0.5rem solid $bar_highlight_text_color;
     padding-left: 1rem;
+    // padding-top: 0.25rem;
   }
 }
 
@@ -120,6 +132,15 @@ table {
   margin-top: 1rem;
   border-top: 1px solid #DDD;
   padding-top: 1rem;
+  
+  // clearfix
+  overflow: hidden;
+
+  // meta info
+  .footer-meta {
+    display: inline-block;
+    float: left;
+  }
 
   // links
   a:link,
@@ -130,6 +151,30 @@ table {
   a:hover,
   a:active {
     color: $link_hover_color_primary;
+  }
+  
+  // social media share section
+  .share-section {
+    font-size: 2.5em;
+    display: inline-block;
+    float: right;
+
+    // social icon colors
+    .fa-facebook-square {
+      @include link_style($facebook_primary);
+    }
+
+    .fa-twitter-square {
+      @include link_style($twitter_primary);
+    }
+
+    .fa-google-plus-square {
+      @include link_style($google_primary);
+    }
+
+    .fa-reddit-square {
+      @include link_style($reddit_primary);
+    }
   }
 }
 

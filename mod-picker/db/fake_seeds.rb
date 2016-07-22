@@ -1051,6 +1051,7 @@ _Image with alt :_
 
     Markup : ![picture alt](http://www.brightlightpictures.com/assets/images/portfolio/thethaw_header.jpg "Title is optional")
 }
+
   # seeding one page with markdown examples
   author = User.offset(rand(User.count)).first
   HelpPage.new(

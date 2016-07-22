@@ -47,25 +47,54 @@
 
   <!-- footer -->
   <div class="help-page-footer">
-    <span class="meta author" title="Author">
-      <i class="fa fa-user" aria-hidden="true"></i>
-      <%= link_to @help_page.submitter.username, user_path(@help_page.submitter) %>
-    </span>
-
-    <div class="date">
-      <span class="meta submit-date" title="<%= @help_page.submitted.strftime("%m/%d/%Y %I:%M:%S %z") %>">
-      <i class="fa fa-clock-o" aria-hidden="true"></i>
-      <%= @help_page.submitted.strftime("Posted on %b %e %Y") %>
+    <div class="footer-meta">
+      <span class="meta author" title="Author">
+        <i class="fa fa-user" aria-hidden="true"></i>
+        <%= link_to @help_page.submitter.username, user_path(@help_page.submitter) %>
       </span>
 
-      <% if @help_page.edited %>
-        <span class="meta edit-date" title="<%= @help_page.edited.strftime("%m/%d/%Y %I:%M:%S %z") %>">
-          - <em><%= @help_page.edited.strftime("Edited on %b %e %Y") %></em>
+      <div class="date">
+        <span class="meta submit-date" title="<%= @help_page.submitted.strftime("%m/%d/%Y %I:%M:%S %z") %>">
+        <i class="fa fa-clock-o" aria-hidden="true"></i>
+        <%= @help_page.submitted.strftime("Posted on %b %e %Y") %>
         </span>
-      <% end %>
+
+        <% if @help_page.edited %>
+          <span class="meta edit-date" title="<%= @help_page.edited.strftime("%m/%d/%Y %I:%M:%S %z") %>">
+            - <em><%= @help_page.edited.strftime("Edited on %b %e %Y") %></em>
+          </span>
+        <% end %>
+      </div>
     </div>
-  </div>
+
+    <!--social media share section-->
+    <div class="share-section">
+    <!-- Sharingbutton Facebook -->
+    <a class="share-link" href="https://facebook.com/sharer/sharer.php?u=<%=request.original_url%>" target="_blank" aria-label="">
+      <i class="fa fa-facebook-square" aria-hidden="true"></i>
+    </a>
+
+    <!-- Sharingbutton Twitter -->
+    <a class="share-link" href="https://twitter.com/intent/tweet/?text=<%=@help_page.name + ' ' + request.original_url%>" target="_blank" aria-label="">
+      <i class="fa fa-twitter-square" aria-hidden="true"></i>
+    </a>
+
+    <!-- Sharingbutton Google+ -->
+    <a class="share-link" href="https://plus.google.com/share?url=<%=request.original_url%>" target="_blank" aria-label="">
+      <i class="fa fa-google-plus-square" aria-hidden="true"></i> 
+    </a>
+
+    <!-- Sharingbutton E-Mail -->
+    <a class="share-link" href="mailto:?subject=<%= @help_page.name%>&amp;body=<%=@help_page.name + ' ' + request.original_url%>" target="_blank" aria-label="">
+      <i class="fa fa-envelope-square" aria-hidden="true"></i>
+    </a>
+
+    <!-- Sharingbutton Reddit -->
+    <a class="share-link" href="https://reddit.com/submit/?url=<%=request.original_url%>" target="_blank" aria-label="">
+      <i class="fa fa-reddit-square" aria-hidden="true"></i>
+    </a>
+    </div>
   <!-- endfooter -->
+  </div>
 </div>
- 
   
