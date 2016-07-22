@@ -35,8 +35,8 @@
                     <a href="#/mod/{{requirement.required_mod.id}}">{{requirement.required_mod.name}}</a>
                     is required by
                     <a href="#/mod/{{requirement.mod.id}}">{{requirement.mod.name}}</a>
-                    <span class="action-box green-box" ng-click="addRequirement(requirement)">Add Requirement</span>
-                    <span class="action-box red-box" ng-click="removeRequirer(requirement)">Remove Requirer</span>
+                    <span class="action-box green-box" ng-click="addRequirement(requirement)" title="Add {{requirement.required_mod.name}}">Add Requirement</span>
+                    <span class="action-box red-box" ng-click="removeRequirer(requirement)" title="Remove {{requirement.mod.name}}">Remove Requirer</span>
                 </li>
                 <li ng-hide="required.missing_mods.length">
                     No missing mods to display.
