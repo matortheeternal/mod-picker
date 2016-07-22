@@ -106,9 +106,9 @@ app.controller('modListToolsController', function($scope, $state, $stateParams, 
         });
     };
 
-    $scope.findTool = function(toolId) {
+    $scope.findTool = function(toolId, ignoreDestroyed) {
         return $scope.mod_list.tools.find(function(modListTool) {
-            return modListTool.mod.id == toolId;
+            return (ignoreDestroyed ? !modListTool._destroy : true) && modListTool.mod.id == toolId;
         });
     };
 
