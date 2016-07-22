@@ -245,8 +245,9 @@ app.controller('modListController', function($scope, $q, $stateParams, $timeout,
                 requirement._destroy = true;
             }
         };
-        $scope.required.mods && $scope.required.mods.forEach(destroyMatchingRequirements);
-        $scope.required.tools && $scope.required.tools.forEach(destroyMatchingRequirements);
+        var req = $scope.required; // an alias to make the code a bit shorter
+        req.mods && req.mods.forEach(destroyMatchingRequirements);
+        req.tools && req.tools.forEach(destroyMatchingRequirements);
     };
 
     $scope.addRequirements = function(requirements, tools) {
@@ -277,6 +278,21 @@ app.controller('modListController', function($scope, $q, $stateParams, $timeout,
         }
     };
 
+    $scope.removeDestroyedItems = function() {
+        var removeIfDestroyed = function(item, index, array) {
+            if (item._destroy) {
+                array.splice(index, 1);
+            }
+        };
+        var ml = $scope.mod_list; // an alias to make the code a bit shorter
+        ml.mods && ml.mods.forEach(removeIfDestroyed);
+        ml.tools && ml.tools.forEach(removeIfDestroyed);
+        ml.groups && ml.groups.forEach(removeIfDestroyed);
+        var req = $scope.required; // an alias to make the code a bit shorter
+        req.mods && req.mods.forEach(removeIfDestroyed);
+        req.tools && req.tools.forEach(removeIfDestroyed);
+    };
+
     $scope.saveChanges = function() {
         // get changed mod fields
         $scope.flattenModels();
@@ -289,6 +305,7 @@ app.controller('modListController', function($scope, $q, $stateParams, $timeout,
 
         modListService.updateModList(modListDiff).then(function() {
             $scope.$emit('successMessage', 'Mod list saved successfully.');
+            $scope.removeDestroyedItems();
             delete $scope.originalModList;
             $scope.originalModList = angular.copy($scope.mod_list);
         }, function(response) {
