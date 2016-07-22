@@ -79,15 +79,20 @@ app.controller('modListToolsController', function($scope, $state, $stateParams, 
             // prepare tool
             var modListTool = data.mod_list_mod;
 
+        modListService.newModListMod(mod_list_mod).then(function(data) {
             // push tool onto view
-            // TODO: Get new requirements and append them to the requirement arrays
-            $scope.buildMissingTools($scope.shared.required_tools, $scope.mod_list.tools);
-            // TODO: Figure out a way to build missing mods as well
-            $scope.mod_list.tools.push(modListTool);
-            $scope.model.tools.push(modListTool);
+            $scope.mod_list.tools.push(data.mod_list_mod);
+            $scope.model.tools.push(data.mod_list_mod);
             $scope.mod_list.tools_count += 1;
             $scope.updateTabs();
-            $scope.$emit('successMessage', 'Added tool ' + modListTool.mod.name + ' successfully.');
+
+            // handle requirements
+            $scope.addRequirements(data.required_tools, true);
+            $scope.addRequirements(data.required_mods, false);
+            $scope.$emit('rebuildMissing');
+
+            // success message
+            $scope.$emit('successMessage', 'Added tool ' + data.mod_list_mod.mod.name + ' successfully.');
         }, function(response) {
             var params = {label: 'Error adding tool', response: response};
             $scope.$emit('errorMessage', params);

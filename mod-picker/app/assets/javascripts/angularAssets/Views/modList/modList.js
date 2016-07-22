@@ -249,6 +249,21 @@ app.controller('modListController', function($scope, $q, $stateParams, $timeout,
         $scope.shared.required_tools && $scope.shared.required_tools.forEach(destroyMatchingRequirements);
     };
 
+    $scope.addRequirements = function(requirements, tools) {
+        requirements.forEach(function(requirement) {
+            if (tools) {
+                $scope.shared.required_tools && $scope.shared.required_tools.push(requirement);
+            } else {
+                $scope.shared.required_mods && $scope.shared.required_mods.push(requirement);
+            }
+        });
+    };
+
+    $scope.$on('rebuildMissing', function() {
+        $scope.$broadcast('rebuildMissingTools');
+        $scope.$broadcast('rebuildMissingMods');
+    });
+
     // remove an item
     $scope.removeItem = function(array, index) {
         var item = array[index];
