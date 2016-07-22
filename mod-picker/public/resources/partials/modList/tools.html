@@ -8,7 +8,7 @@
 
         <div class="tab-bar-item" ng-if="editing">
             <strong>Add a tool:</strong>
-            <search-input search-type="tools" result-id="add.tool.id" search-text="add.tool.name" on-change="addMod(mod_list.tools, 'tool')"></search-input>
+            <search-input search-type="tools" result-id="add.tool.id" search-text="add.tool.name" on-change="addTool()"></search-input>
         </div>
     </div>
 
@@ -43,12 +43,12 @@
                 </li>
             </ul>
             <ul ng-hide="show.missing_tools">
-                <li ng-repeat="requirement in mod_list.required_tools">
+                <li ng-repeat="requirement in shared.required_tools">
                     <a href="#/mod/{{requirement.required_mod.id}}">{{requirement.required_mod.name}}</a>
                     is required by
                     <a href="#/mod/{{requirement.mod.id}}">{{requirement.mod.name}}</a>
                 </li>
-                <li ng-hide="mod_list.required_tools.length">
+                <li ng-show="isEmpty(shared.required_tools)">
                     No requirements to display.
                 </li>
             </ul>

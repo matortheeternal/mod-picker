@@ -37,7 +37,10 @@ app.controller('modListModsController', function($scope, modListService) {
         modListService.retrieveModListMods($scope.mod_list.id).then(function(data) {
             $scope.buildMissingMods(data.required_mods, data.mods);
             $scope.buildModsModel(data.mods, data.groups);
-            $scope.mod_list.required_mods = data.required_mods;
+            // We put this in shared because we don't want to detect changes to it as changes
+            // to the mod list itself.  Changes in requirements are due to mods being added
+            // or removed.
+            $scope.shared.required_mods = data.required_mods;
             $scope.mod_list.mods = data.mods;
             $scope.mod_list.groups = Array.prototype.concat($scope.mod_list.groups || [], data.groups);
             $scope.originalModList.mods = angular.copy($scope.mod_list.mods);
@@ -73,6 +76,66 @@ app.controller('modListModsController', function($scope, modListService) {
         });
     };
 
+    $scope.reAddMod = function(modListMod) {
+        // if mod is already present on the user's mod list but has been
+        // removed, add it back
+        if (modListMod._destroy) {
+            delete modListMod._destroy;
+            $scope.mod_list.mods_count += 1;
+            // TODO: Re-add requirements
+            // TODO: Re-add missing requirements
+            $scope.updateTabs();
+            $scope.$emit('successMessage', 'Added mod ' + modListMod.mod.name + ' successfully.');
+        }
+        // else inform the user that the mod is already on their mod list
+        else {
+            $scope.$emit('customMessage', {type: 'error', text: 'Failed to add mod ' + modListMod.mod.name + ', the mod has already been added to this mod list.'});
+        }
+    };
+
+    $scope.addNewMod = function(modId) {
+        // retrieve mod information from the backend
+        modListService.newModListMod(modId).then(function(data) {
+            // prepare mod
+            var modListMod = data;
+            delete modListMod.id;
+            modListMod.mod_id = modListMod.mod.id;
+
+            // push mod onto view
+            // TODO: Handle new requirements
+            // TODO: Handle missing requirements
+            $scope.mod_list.mods.push(modListMod);
+            $scope.model.mods.push(modListMod);
+            $scope.mod_list.mods_count += 1;
+            $scope.updateTabs();
+            $scope.$emit('successMessage', 'Added mod ' + modListMod.mod.name + ' successfully.');
+        }, function(response) {
+            var params = {label: 'Error adding mod', response: response};
+            $scope.$emit('errorMessage', params);
+        });
+    };
+
+    $scope.addMod = function() {
+        // return if we don't have a mod to add
+        if (!$scope.add.mod.id) {
+            return;
+        }
+
+        // see if the mod is already present on the user's mod list
+        var existingMod = $scope.mod_list.mods.find(function(modListMod) {
+            return modListMod.mod.id == $scope.add.mod.id;
+        });
+        if (existingMod) {
+            $scope.reAddMod(existingMod);
+        } else {
+            $scope.addNewMod($scope.add.mod.id);
+        }
+
+        // reset mod search
+        $scope.add.mod.id = null;
+        $scope.add.mod.name = "";
+    };
+
     $scope.removeMod = function(array, index) {
         $scope.removeItem(array, index);
         // TODO: remove requirements
@@ -83,6 +146,6 @@ app.controller('modListModsController', function($scope, modListService) {
 
     $scope.$on('rebuildModels', function() {
         $scope.buildModsModel($scope.mod_list.mods, $scope.mod_list.groups);
-        $scope.buildMissingMods($scope.mod_list.required_mods, $scope.mod_list.mods);
+        $scope.buildMissingMods($scope.shared.required_mods, $scope.mod_list.mods);
     });
 });
