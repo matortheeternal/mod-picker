@@ -173,8 +173,8 @@ app.service('objectUtils', function () {
 
     this.isEmptyArray = function(arr) {
         var empty = true;
-        arr.forEach(function(item) {
-            empty = empty && item._destroy;
+        arr && arr.forEach(function(item) {
+            empty = empty && !!item._destroy;
         });
         return empty;
     };
