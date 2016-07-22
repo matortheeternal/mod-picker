@@ -103,8 +103,8 @@ app.controller('modListModsController', function($scope, modListService) {
             modListMod.mod_id = modListMod.mod.id;
 
             // push mod onto view
-            // TODO: Handle new requirements
-            // TODO: Handle missing requirements
+            // TODO: Get new requirements and append them to the required_tools array
+            $scope.buildMissingMods($scope.shared.required_mods, $scope.mod_list.mods);
             $scope.mod_list.mods.push(modListMod);
             $scope.model.mods.push(modListMod);
             $scope.mod_list.mods_count += 1;
