@@ -19,6 +19,18 @@ class ModListMod < ActiveRecord::Base
   after_create :increment_counter_caches
   before_destroy :decrement_counter_caches
 
+  def new_json
+    self.as_json({
+        :only => [:group_id, :index, :active],
+        :include => {
+            :mod => {
+                :only => [:id, :name, :aliases, :authors, :released, :updated],
+                :methods => :image
+            }
+        }
+    })
+  end
+
   def as_json(options={})
     if JsonHelpers.json_options_empty(options)
       # TODO: Revise this as necessary

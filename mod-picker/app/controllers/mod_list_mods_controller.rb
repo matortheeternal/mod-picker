@@ -7,7 +7,10 @@ class ModListModsController < ApplicationController
       authorize! :read, @mod
 
       @mod_list_mod = ModListMod.new(mod_id: @mod.id, index: 0)
-      render json: @mod_list_mod
+      render json: {
+          mod_list_mod: @mod_list_mod.new_json,
+          requirements: @mod_list_mod.mod.required_mods
+      }
     else
       render json: {error: "You must specify a mod_id to create a new ModListMod."}, status: 400
     end

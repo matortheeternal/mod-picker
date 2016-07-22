@@ -77,10 +77,7 @@ app.controller('modListToolsController', function($scope, $state, $stateParams, 
         // retrieve tool information from the backend
         modListService.newModListMod(toolId).then(function(data) {
             // prepare tool
-            var modListTool = data;
-            // we delete this because it's null, would be better if we just didn't render it though
-            delete modListTool.id;
-            modListTool.mod_id = modListTool.mod.id;
+            var modListTool = data.mod_list_mod;
 
             // push tool onto view
             // TODO: Get new requirements and append them to the requirement arrays

@@ -257,8 +257,8 @@ app.controller('modListController', function($scope, $q, $stateParams, $timeout,
         } else {
             array.splice(index, 1);
         }
-        if (item.mod_id) {
-            $scope.removeRequirements(item.mod_id);
+        if (item.mod) {
+            $scope.removeRequirements(item.mod.id);
         }
     };
 

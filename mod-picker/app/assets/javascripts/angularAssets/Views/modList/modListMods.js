@@ -97,10 +97,7 @@ app.controller('modListModsController', function($scope, modListService) {
         // retrieve mod information from the backend
         modListService.newModListMod(modId).then(function(data) {
             // prepare mod
-            var modListMod = data;
-            // we delete this because it's null, would be better if we just didn't render it though
-            delete modListMod.id;
-            modListMod.mod_id = modListMod.mod.id;
+            var modListMod = data.mod_list_mod;
 
             // push mod onto view
             // TODO: Get new requirements and append them to the requirement arrays
