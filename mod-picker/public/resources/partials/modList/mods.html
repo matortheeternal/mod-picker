@@ -43,12 +43,12 @@
                 </li>
             </ul>
             <ul ng-hide="show.missing_mods">
-                <li ng-repeat="requirement in shared.required_mods">
+                <li ng-repeat="requirement in shared.required_mods" ng-hide="requirement._destroy">
                     <a href="#/mod/{{requirement.required_mod.id}}">{{requirement.required_mod.name}}</a>
                     is required by
                     <a href="#/mod/{{requirement.mod.id}}">{{requirement.mod.name}}</a>
                 </li>
-                <li ng-hide="isEmpty(shared.required_mods)">
+                <li ng-show="isEmpty(shared.required_mods)">
                     No requirements to display.
                 </li>
             </ul>

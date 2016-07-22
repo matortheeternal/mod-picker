@@ -43,7 +43,7 @@
                 </li>
             </ul>
             <ul ng-hide="show.missing_tools">
-                <li ng-repeat="requirement in shared.required_tools">
+                <li ng-repeat="requirement in shared.required_tools" ng-hide="requirement._destroy">
                     <a href="#/mod/{{requirement.required_mod.id}}">{{requirement.required_mod.name}}</a>
                     is required by
                     <a href="#/mod/{{requirement.mod.id}}">{{requirement.mod.name}}</a>
