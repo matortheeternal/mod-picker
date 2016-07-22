@@ -14,6 +14,7 @@ app.directive('gridItems', function () {
 
 app.controller('gridItemsController', function($scope, colorsFactory) {
     $scope.colorOptions = colorsFactory.getColors();
+    $scope.draggingGroup = false;
 
     $scope.updateItems = function() {
         var i = 1;
@@ -49,5 +50,15 @@ app.controller('gridItemsController', function($scope, colorsFactory) {
         // destroy the group and clear its children
         group._destroy = true;
         group.children = [];
+    };
+
+    $scope.dragStart = function(item) {
+        if (item.children) {
+            $scope.draggingGroup = true;
+        }
+    };
+
+    $scope.dragEnd = function() {
+        $scope.draggingGroup = false;
     };
 });
