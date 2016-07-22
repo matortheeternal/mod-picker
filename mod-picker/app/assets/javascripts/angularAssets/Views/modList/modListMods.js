@@ -37,7 +37,7 @@ app.controller('modListModsController', function($scope, modListService) {
         modListService.retrieveModListMods($scope.mod_list.id).then(function(data) {
             $scope.buildMissingMods(data.required_mods, data.mods);
             $scope.buildModsModel(data.mods, data.groups);
-            $scope.shared.required_mods = data.required_mods;
+            $scope.mod_list.required_mods = data.required_mods;
             $scope.mod_list.mods = data.mods;
             $scope.mod_list.groups = Array.prototype.concat($scope.mod_list.groups || [], data.groups);
             $scope.originalModList.mods = angular.copy($scope.mod_list.mods);
@@ -72,4 +72,9 @@ app.controller('modListModsController', function($scope, modListService) {
             $scope.$emit('errorMessage', params);
         });
     };
+
+    $scope.$on('rebuildModels', function() {
+        $scope.buildModsModel($scope.mod_list.mods, $scope.mod_list.groups);
+        $scope.buildMissingMods($scope.mod_list.required_mods, $scope.mod_list.mods);
+    });
 });

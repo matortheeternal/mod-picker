@@ -37,7 +37,7 @@ app.controller('modListToolsController', function($scope, $state, $stateParams, 
         modListService.retrieveModListTools($scope.mod_list.id).then(function(data) {
             $scope.buildMissingTools(data.required_tools, data.tools);
             $scope.buildToolsModel(data.tools, data.groups);
-            $scope.shared.required_tools = data.required_tools;
+            $scope.mod_list.required_tools = data.required_tools;
             $scope.mod_list.tools = data.tools;
             $scope.mod_list.groups = Array.prototype.concat($scope.mod_list.groups || [], data.groups);
             $scope.originalModList.tools = angular.copy($scope.mod_list.tools);
@@ -72,4 +72,9 @@ app.controller('modListToolsController', function($scope, $state, $stateParams, 
             $scope.$emit('errorMessage', params);
         });
     };
+
+    $scope.$on('rebuildModels', function() {
+        $scope.buildToolsModel($scope.mod_list.tools, $scope.mod_list.groups);
+        $scope.buildMissingTools($scope.mod_list.required_tools, $scope.mod_list.tools);
+    });
 });
