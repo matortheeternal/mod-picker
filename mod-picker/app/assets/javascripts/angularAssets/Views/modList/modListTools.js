@@ -73,6 +73,15 @@ app.controller('modListToolsController', function($scope, $state, $stateParams, 
         });
     };
 
+    $scope.removeTool = function(array, index) {
+        $scope.removeItem(array, index);
+        // TODO: remove requirements
+        // TODO: add missing requirements
+        $scope.mod_list.tools_count -= 1;
+        $scope.updateTabs();
+    };
+
+
     $scope.$on('rebuildModels', function() {
         $scope.buildToolsModel($scope.mod_list.tools, $scope.mod_list.groups);
         $scope.buildMissingTools($scope.mod_list.required_tools, $scope.mod_list.tools);

@@ -7,8 +7,7 @@ app.directive('gridItem', function () {
             array: '=',
             index: '=',
             editing: '=',
-            removeCallback: '=',
-            type: '='
+            removeCallback: '='
         }
     }
 });

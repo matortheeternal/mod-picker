@@ -261,15 +261,13 @@ app.controller('modListController', function($scope, $q, $stateParams, $timeout,
     };
 
     // remove an item
-    $scope.removeItem = function(array, index, type) {
+    $scope.removeItem = function(array, index) {
         var item = array[index];
         if (item.id) {
             item._destroy = true;
         } else {
             array.splice(index, 1);
         }
-        $scope.mod_list[type + "_count"] -= 1;
-        $scope.updateTabs();
     };
 
     $scope.saveChanges = function() {

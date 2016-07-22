@@ -73,6 +73,14 @@ app.controller('modListModsController', function($scope, modListService) {
         });
     };
 
+    $scope.removeMod = function(array, index) {
+        $scope.removeItem(array, index);
+        // TODO: remove requirements
+        // TODO: add missing requirements
+        $scope.mod_list.mods_count -= 1;
+        $scope.updateTabs();
+    };
+
     $scope.$on('rebuildModels', function() {
         $scope.buildModsModel($scope.mod_list.mods, $scope.mod_list.groups);
         $scope.buildMissingMods($scope.mod_list.required_mods, $scope.mod_list.mods);
