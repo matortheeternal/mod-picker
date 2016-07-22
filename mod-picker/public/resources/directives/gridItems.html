@@ -1,7 +1,6 @@
-<ul dnd-list="model" dnd-horizontal-list="true">
-    <li ng-repeat="item in model" class="{{item.children ? 'group box-shadow bg-'+item.color : 'mod-grid-item box-shadow'}}" ng-hide="item._destroy" dnd-draggable="item" dnd-moved="moveItem(model, $index)" dnd-effect-allowed="move" dnd-disable-if="!editing" dnd-vertical="true">
+<ul dnd-list="model" dnd-horizontal="true">
+    <li ng-repeat="item in model" class="{{item.children ? 'group box-shadow bg-'+item.color : 'mod-grid-item box-shadow'}}" ng-hide="item._destroy" dnd-draggable="item" dnd-moved="moveItem(model, $index)" dnd-effect-allowed="move" dnd-disable-if="!editing" dnd-type="{{item.children ? 'group' : 'item'}}" dnd-swap-orientation="{{!!item.children}}">
 
-        <!-- TODO: Use templates or something to make this DRYer -->
         <!-- TODO: Prevent user from moving groups into other groups -->
         <!-- display options for groups -->
         <div ng-if="item.children">
@@ -19,26 +18,8 @@
 
             <!-- display children of groups -->
             <ul dnd-list="item.children" dnd-horizontal-list="true">
-                <li class="mod-grid-item box-shadow" ng-repeat="child in item.children" ng-hide="child._destroy" dnd-draggable="child" dnd-moved="moveItem(item.children, $index)" dnd-effect-allowed="move" dnd-disable-if="!editing">
-                    <div class="remove-item" ng-if="editing">
-                        <span class="fa fa-times" ng-click="removeCallback(item.children, $index, type)"></span>
-                    </div>
-                    <div class="item-index">
-                        {{child.index}}
-                    </div>
-                    <div class="image-container">
-                        <div class="helper"></div>
-                        <img ng-src="{{child.mod.image}}"/>
-                    </div>
-                    <ul class="mod-rows">
-                        <li class="mod-name">
-                            <a href="#/mod/{{child.mod.id}}">{{child.mod.name}}</a>
-                            <span ng-if="child.mod.aliases">({{child.mod.aliases.split(",")[0]}})</span>
-                        </li>
-                        <li>by {{child.mod.authors}}</li>
-                        <li>Released {{child.mod.released | date}}</li>
-                        <li ng-if="child.mod.updated">Updated {{child.mod.updated | date}}</li>
-                    </ul>
+                <li class="mod-grid-item box-shadow" ng-repeat="child in item.children" ng-hide="child._destroy" dnd-draggable="child" dnd-moved="moveItem(item.children, $index)" dnd-effect-allowed="move" dnd-disable-if="!editing" dnd-type="'item'">
+                    <grid-item item="child" array="item.children" index="$index" type="type" remove-callback="removeCallback"></grid-item>
                 </li>
             </ul>
 
@@ -50,25 +31,7 @@
 
         <!-- display item -->
         <div ng-if="!item.children">
-            <div class="remove-item" ng-if="editing">
-                <span class="fa fa-times" ng-click="removeCallback(model, $index, type)"></span>
-            </div>
-            <div class="item-index">
-                {{item.index}}
-            </div>
-            <div class="image-container">
-                <div class="helper"></div>
-                <img ng-src="{{item.mod.image}}"/>
-            </div>
-            <ul class="mod-rows">
-                <li class="mod-name">
-                    <a href="#/mod/{{item.mod.id}}">{{item.mod.name}}</a>
-                    <span ng-if="item.mod.aliases">({{item.mod.aliases.split(",")[0]}})</span>
-                </li>
-                <li>by {{item.mod.authors}}</li>
-                <li>Released {{item.mod.released | date}}</li>
-                <li ng-if="item.mod.updated">Updated {{item.mod.updated | date}}</li>
-            </ul>
+            <grid-item item="item" array="model" index="$index" type="type" remove-callback="removeCallback"></grid-item>
         </div>
     </li>
 </ul>
