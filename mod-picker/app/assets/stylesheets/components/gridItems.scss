@@ -1,4 +1,16 @@
 grid-items {
+  display: block;
+  position: relative;
+
+  .content-message {
+    position: absolute;
+    top: 30px;
+    margin-left: auto;
+    margin-right: auto;
+    left: 0;
+    right: 0;
+  }
+
   ul[dnd-list].dragging-group {
     .dndPlaceholder {
       width: 1090px;
@@ -80,9 +92,7 @@ grid-items {
       }
 
       .content-message {
-        position: absolute;
         top: 40px;
-        left: 400px;
       }
     }
   }
