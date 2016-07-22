@@ -1,5 +1,5 @@
 <ul dnd-list="model" dnd-horizontal="true">
-    <li ng-repeat="item in model" class="{{item.children ? 'group box-shadow bg-'+item.color : 'mod-grid-item box-shadow'}}" ng-hide="item._destroy" dnd-draggable="item" dnd-moved="moveItem(model, $index)" dnd-effect-allowed="move" dnd-disable-if="!editing" dnd-type="{{item.children ? 'group' : 'item'}}">
+    <li ng-repeat="item in model" class="{{item.children ? 'group box-shadow bg-'+item.color : 'mod-grid-item box-shadow'}}" ng-hide="item._destroy" dnd-draggable="item" dnd-moved="moveItem(model, $index)" dnd-effect-allowed="move" dnd-disable-if="!editing" dnd-type="{{item.children ? '\'group\'' : '\'item\''}}">
 
         <!-- TODO: Prevent user from moving groups into other groups -->
         <!-- display options for groups -->
@@ -17,7 +17,7 @@
             </div>
 
             <!-- display children of groups -->
-            <ul dnd-list="item.children" dnd-horizontal-list="true">
+            <ul dnd-list="item.children" dnd-horizontal-list="true" dnd-allowed-types="['item']">
                 <li class="mod-grid-item box-shadow" ng-repeat="child in item.children" ng-hide="child._destroy" dnd-draggable="child" dnd-moved="moveItem(item.children, $index)" dnd-effect-allowed="move" dnd-disable-if="!editing" dnd-type="'item'">
                     <grid-item item="child" array="item.children" index="$index" type="type" remove-callback="removeCallback"></grid-item>
                 </li>
