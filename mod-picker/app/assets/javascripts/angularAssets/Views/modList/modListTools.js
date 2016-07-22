@@ -15,6 +15,9 @@ app.controller('modListToolsController', function($scope, $state, $stateParams, 
                 var insertIndex = $scope.model.tools.findIndex(function(item) {
                     return item.index > tool.index;
                 });
+                if (insertIndex == -1) {
+                    insertIndex = $scope.model.tools.length;
+                }
                 $scope.model.tools.splice(insertIndex, 0, tool);
             }
         });

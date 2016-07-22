@@ -15,6 +15,9 @@ app.controller('modListModsController', function($scope, modListService) {
                 var insertIndex = $scope.model.mods.findIndex(function(item) {
                     return item.index > mod.index;
                 });
+                if (insertIndex == -1) {
+                    insertIndex = $scope.model.mods.length;
+                }
                 $scope.model.mods.splice(insertIndex, 0, mod);
             }
         });
