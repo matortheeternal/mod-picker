@@ -23,6 +23,9 @@ app.controller('modListToolsController', function($scope, $state, $stateParams, 
     $scope.buildMissingTools = function(required_tools, tools) {
         $scope.required.missing_tools = [];
         required_tools.forEach(function(requirement) {
+            if (requirement._destroy) {
+                return;
+            }
             var toolPresent = tools.find(function(modListTool) {
                 return !modListTool._destroy && modListTool.mod.id == requirement.required_mod.id;
             });

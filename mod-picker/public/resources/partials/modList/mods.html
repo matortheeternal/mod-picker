@@ -31,14 +31,14 @@
         </div>
         <div class="content-container">
             <ul ng-show="show.missing_mods">
-                <li ng-repeat="requirement in required.missing_mods" ng-hide="requirement._destroy">
+                <li ng-repeat="requirement in required.missing_mods">
                     <a href="#/mod/{{requirement.required_mod.id}}">{{requirement.required_mod.name}}</a>
                     is required by
                     <a href="#/mod/{{requirement.mod.id}}">{{requirement.mod.name}}</a>
                     <span class="action-box green-box" ng-click="addMod(requirement.required_mod.id)" title="Add {{requirement.required_mod.name}}">Add Requirement</span>
                     <span class="action-box red-box" ng-click="removeMod(findMod(requirement.mod.id))" title="Remove {{requirement.mod.name}}">Remove Requirer</span>
                 </li>
-                <li ng-show="isEmpty(required.missing_mods)">
+                <li ng-hide="required.missing_mods.length">
                     No missing mods to display.
                 </li>
             </ul>

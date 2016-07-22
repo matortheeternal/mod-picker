@@ -23,6 +23,9 @@ app.controller('modListModsController', function($scope, modListService) {
     $scope.buildMissingMods = function(required_mods, mods) {
         $scope.required.missing_mods = [];
         required_mods.forEach(function(requirement) {
+            if (requirement._destroy) {
+                return;
+            }
             var modPresent = mods.find(function(modListMod) {
                 return !modListMod._destroy && modListMod.mod.id == requirement.required_mod.id;
             });
