@@ -85,6 +85,10 @@ grid-items {
         select {
           padding: 0;
           background: $input_background;
+
+          option {
+            font-size: 13px;
+          }
         }
       }
 
