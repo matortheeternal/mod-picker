@@ -83,8 +83,9 @@ app.controller('modListToolsController', function($scope, $state, $stateParams, 
             modListTool.mod_id = modListTool.mod.id;
 
             // push tool onto view
-            // TODO: Get new requirements and append them to the required_tools array
+            // TODO: Get new requirements and append them to the requirement arrays
             $scope.buildMissingTools($scope.shared.required_tools, $scope.mod_list.tools);
+            // TODO: Figure out a way to build missing mods as well
             $scope.mod_list.tools.push(modListTool);
             $scope.model.tools.push(modListTool);
             $scope.mod_list.tools_count += 1;
