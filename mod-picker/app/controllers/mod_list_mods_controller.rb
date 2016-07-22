@@ -1,18 +1,24 @@
 class ModListModsController < ApplicationController
-  # GET /mod_list_mods/new
-  # Renders the JSON for a new mod list mod
-  def new
-    if params.has_key?(:mod_id)
-      @mod = Mod.find(params[:mod_id])
-      authorize! :read, @mod
+  # POST /mod_list_mods
+  def create
+    @mod_list_mod = ModListMod.new(mod_list_mod_params)
 
-      @mod_list_mod = ModListMod.new(mod_id: @mod.id, index: 0)
+    if @mod_list_mod.save
+      mod_id = @mod_list_mod.mod_id
+      required_tools = ModRequirement.where(mod_id: mod_id).joins(:mod).where(:mods => {is_utility: true})
+      required_mods = ModRequirement.where(mod_id: mod_id).joins(:mod).where(:mods => {is_utility: false})
       render json: {
-          mod_list_mod: @mod_list_mod.new_json,
-          requirements: @mod_list_mod.mod.required_mods
+          mod_list_mod: @mod_list_mod,
+          required_tools: required_tools,
+          required_mods: required_mods
       }
     else
-      render json: {error: "You must specify a mod_id to create a new ModListMod."}, status: 400
+      render json: @mod_list_mod.errors, status: :unprocessable_entity
     end
   end
+
+  private
+    def mod_list_mod_params
+      params.require(:mod_list_mod).permit(:mod_list_id, :mod_id, :index)
+    end
 end

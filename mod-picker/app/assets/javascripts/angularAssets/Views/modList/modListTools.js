@@ -74,10 +74,11 @@ app.controller('modListToolsController', function($scope, $state, $stateParams, 
     };
 
     $scope.addNewTool = function(toolId) {
-        // retrieve tool information from the backend
-        modListService.newModListMod(toolId).then(function(data) {
-            // prepare tool
-            var modListTool = data.mod_list_mod;
+        var mod_list_mod = {
+            mod_list_id: $scope.mod_list.id,
+            mod_id: toolId,
+            index: $scope.mod_list.tools.length
+        };
 
         modListService.newModListMod(mod_list_mod).then(function(data) {
             // push tool onto view
@@ -129,6 +130,10 @@ app.controller('modListToolsController', function($scope, $state, $stateParams, 
 
     $scope.$on('rebuildModels', function() {
         $scope.buildToolsModel($scope.mod_list.tools, $scope.mod_list.groups);
+        $scope.buildMissingTools($scope.shared.required_tools, $scope.mod_list.tools);
+    });
+
+    $scope.$on('rebuildMissingTools', function() {
         $scope.buildMissingTools($scope.shared.required_tools, $scope.mod_list.tools);
     });
 });

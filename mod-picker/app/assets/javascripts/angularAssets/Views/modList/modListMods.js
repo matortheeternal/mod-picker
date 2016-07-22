@@ -94,10 +94,11 @@ app.controller('modListModsController', function($scope, modListService) {
     };
 
     $scope.addNewMod = function(modId) {
-        // retrieve mod information from the backend
-        modListService.newModListMod(modId).then(function(data) {
-            // prepare mod
-            var modListMod = data.mod_list_mod;
+        var mod_list_mod = {
+            mod_list_id: $scope.mod_list.id,
+            mod_id: modId,
+            index: $scope.mod_list.mods.length
+        };
 
         modListService.newModListMod(mod_list_mod).then(function(data) {
             // push mod onto view
@@ -149,6 +150,10 @@ app.controller('modListModsController', function($scope, modListService) {
 
     $scope.$on('rebuildModels', function() {
         $scope.buildModsModel($scope.mod_list.mods, $scope.mod_list.groups);
+        $scope.buildMissingMods($scope.shared.required_mods, $scope.mod_list.mods);
+    });
+
+    $scope.$on('rebuildMissingMods', function() {
         $scope.buildMissingMods($scope.shared.required_mods, $scope.mod_list.mods);
     });
 });
