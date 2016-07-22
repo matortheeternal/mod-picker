@@ -21,13 +21,13 @@ app.controller('modListModsController', function($scope, modListService) {
     };
 
     $scope.buildMissingMods = function(required_mods, mods) {
-        $scope.shared.missing_mods = [];
+        $scope.required.missing_mods = [];
         required_mods.forEach(function(requirement) {
             var modPresent = mods.find(function(modListMod) {
                 return !modListMod._destroy && modListMod.mod.id == requirement.required_mod.id;
             });
             if (!modPresent) {
-                $scope.shared.missing_mods.push(requirement);
+                $scope.required.missing_mods.push(requirement);
             }
         });
     };
@@ -40,7 +40,7 @@ app.controller('modListModsController', function($scope, modListService) {
             // We put this in shared because we don't want to detect changes to it as changes
             // to the mod list itself.  Changes in requirements are due to mods being added
             // or removed.
-            $scope.shared.required_mods = data.required_mods;
+            $scope.required.mods = data.required_mods;
             $scope.mod_list.mods = data.mods;
             $scope.mod_list.groups = Array.prototype.concat($scope.mod_list.groups || [], data.groups);
             $scope.originalModList.mods = angular.copy($scope.mod_list.mods);
@@ -82,8 +82,8 @@ app.controller('modListModsController', function($scope, modListService) {
         if (modListMod._destroy) {
             delete modListMod._destroy;
             $scope.mod_list.mods_count += 1;
-            $scope.reAddRequirements($scope.shared.required_mods, modListMod.mod.id);
-            $scope.buildMissingMods($scope.shared.required_mods, $scope.mod_list.mods);
+            $scope.reAddRequirements($scope.required.mods, modListMod.mod.id);
+            $scope.buildMissingMods($scope.required.mods, $scope.mod_list.mods);
             $scope.updateTabs();
             $scope.$emit('successMessage', 'Added mod ' + modListMod.mod.name + ' successfully.');
         }
@@ -143,17 +143,17 @@ app.controller('modListModsController', function($scope, modListService) {
 
     $scope.removeMod = function(array, index) {
         $scope.removeItem(array, index);
-        $scope.buildMissingMods($scope.shared.required_mods, $scope.mod_list.mods);
+        $scope.buildMissingMods($scope.required.mods, $scope.mod_list.mods);
         $scope.mod_list.mods_count -= 1;
         $scope.updateTabs();
     };
 
     $scope.$on('rebuildModels', function() {
         $scope.buildModsModel($scope.mod_list.mods, $scope.mod_list.groups);
-        $scope.buildMissingMods($scope.shared.required_mods, $scope.mod_list.mods);
+        $scope.buildMissingMods($scope.required.mods, $scope.mod_list.mods);
     });
 
     $scope.$on('rebuildMissingMods', function() {
-        $scope.buildMissingMods($scope.shared.required_mods, $scope.mod_list.mods);
+        $scope.buildMissingMods($scope.required.mods, $scope.mod_list.mods);
     });
 });

@@ -73,11 +73,11 @@ app.controller('modListController', function($scope, $q, $stateParams, $timeout,
     $scope.model = {}; // this can be removed when we make states sticky
     $scope.newTags = [];
     $scope.retrieving = {}; // this can be removed when we make states sticky
-    $scope.shared = {}; // this can be removed when we make states sticky
     $scope.show = { // this can be removed when we make states sticky
         missing_tools: true,
         missing_mods: true
     };
+    $scope.required = {};
     $scope.add = {
         tool: {},
         mod: {}
@@ -245,16 +245,16 @@ app.controller('modListController', function($scope, $q, $stateParams, $timeout,
                 requirement._destroy = true;
             }
         };
-        $scope.shared.required_mods && $scope.shared.required_mods.forEach(destroyMatchingRequirements);
-        $scope.shared.required_tools && $scope.shared.required_tools.forEach(destroyMatchingRequirements);
+        $scope.required.mods && $scope.required.mods.forEach(destroyMatchingRequirements);
+        $scope.required.tools && $scope.required.tools.forEach(destroyMatchingRequirements);
     };
 
     $scope.addRequirements = function(requirements, tools) {
         requirements.forEach(function(requirement) {
             if (tools) {
-                $scope.shared.required_tools && $scope.shared.required_tools.push(requirement);
+                $scope.required.tools && $scope.required.tools.push(requirement);
             } else {
-                $scope.shared.required_mods && $scope.shared.required_mods.push(requirement);
+                $scope.required.mods && $scope.required.mods.push(requirement);
             }
         });
     };

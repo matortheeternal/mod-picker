@@ -3,7 +3,7 @@
         <div class="tab-bar-item primary-item">
             <span><strong>999</strong> Unresolved Issues</span>
             <span><strong>999</strong> Ignored Issues</span>
-            <span><strong>{{shared.missing_mods.length}}</strong> Missing Requirements</span>
+            <span><strong>{{required.missing_mods.length}}</strong> Missing Requirements</span>
         </div>
 
         <div class="tab-bar-item" ng-if="editing">
@@ -31,24 +31,24 @@
         </div>
         <div class="content-container">
             <ul ng-show="show.missing_mods">
-                <li ng-repeat="requirement in shared.missing_mods">
+                <li ng-repeat="requirement in required.missing_mods">
                     <a href="#/mod/{{requirement.required_mod.id}}">{{requirement.required_mod.name}}</a>
                     is required by
                     <a href="#/mod/{{requirement.mod.id}}">{{requirement.mod.name}}</a>
                     <span class="action-box green-box" ng-click="addRequirement(requirement)">Add Requirement</span>
                     <span class="action-box red-box" ng-click="removeRequirer(requirement)">Remove Requirer</span>
                 </li>
-                <li ng-hide="shared.missing_mods.length">
+                <li ng-hide="required.missing_mods.length">
                     No missing mods to display.
                 </li>
             </ul>
             <ul ng-hide="show.missing_mods">
-                <li ng-repeat="requirement in shared.required_mods" ng-hide="requirement._destroy">
+                <li ng-repeat="requirement in required.mods" ng-hide="requirement._destroy">
                     <a href="#/mod/{{requirement.required_mod.id}}">{{requirement.required_mod.name}}</a>
                     is required by
                     <a href="#/mod/{{requirement.mod.id}}">{{requirement.mod.name}}</a>
                 </li>
-                <li ng-show="isEmpty(shared.required_mods)">
+                <li ng-show="isEmpty(required.mods)">
                     No requirements to display.
                 </li>
             </ul>
