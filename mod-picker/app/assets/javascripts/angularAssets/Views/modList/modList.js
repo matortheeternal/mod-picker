@@ -280,6 +280,17 @@ app.controller('modListController', function($scope, $q, $stateParams, $timeout,
         req.tools && req.tools.forEach(removeIfDestroyed);
     };
 
+    $scope.recoverDestroyedItems = function() {
+        var recoverIfDestroyed = function(item) {
+            if (item._destroy) {
+                delete item._destroy;
+            }
+        };
+        var req = $scope.required; // an alias to make the code a bit shorter
+        req.mods && req.mods.forEach(recoverIfDestroyed);
+        req.tools && req.tools.forEach(recoverIfDestroyed);
+    };
+
     $scope.saveChanges = function() {
         // get changed mod fields
         $scope.flattenModels();
@@ -303,6 +314,7 @@ app.controller('modListController', function($scope, $q, $stateParams, $timeout,
     $scope.discardChanges = function() {
         if (confirm("Are you sure you want to discard your changes?")) {
             $scope.mod_list = angular.copy($scope.originalModList);
+            $scope.recoverDestroyedItems();
             $scope.$broadcast('rebuildModels');
             $scope.updateTabs();
         }
