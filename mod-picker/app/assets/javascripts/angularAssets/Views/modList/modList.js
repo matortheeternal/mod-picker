@@ -70,14 +70,15 @@ app.controller('modListController', function($scope, $q, $stateParams, $timeout,
 
 	// initialize local variables
     $scope.tabs = tabsFactory.buildModListTabs($scope.mod_list);
-    $scope.model = {}; // this can be removed when we make states sticky
+    $scope.model = {};
     $scope.newTags = [];
+    $scope.required = {};
+    $scope.notes = {};
     $scope.retrieving = {}; // this can be removed when we make states sticky
     $scope.show = { // this can be removed when we make states sticky
         missing_tools: true,
         missing_mods: true
     };
-    $scope.required = {};
     $scope.add = {
         tool: {},
         mod: {}
@@ -316,6 +317,8 @@ app.controller('modListController', function($scope, $q, $stateParams, $timeout,
             $scope.mod_list = angular.copy($scope.originalModList);
             $scope.recoverDestroyedItems();
             $scope.$broadcast('rebuildModels');
+            $scope.$broadcast('rebuildMissingTools');
+            $scope.$broadcast('rebuildMissingMods');
             $scope.updateTabs();
         }
     };

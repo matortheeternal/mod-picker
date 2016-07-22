@@ -1,7 +1,7 @@
 app.controller('modListToolsController', function($scope, $state, $stateParams, modListService) {
-    $scope.buildToolsModel = function(tools, groups) {
+    $scope.buildToolsModel = function() {
         $scope.model.tools = [];
-        groups.forEach(function(group) {
+        $scope.mod_list.groups.forEach(function(group) {
             if (group.tab !== 'tools') {
                 return;
             }
@@ -10,7 +10,7 @@ app.controller('modListToolsController', function($scope, $state, $stateParams, 
                 return tool.group_id == group.id;
             });
         });
-        tools.forEach(function(tool) {
+        $scope.mod_list.tools.forEach(function(tool) {
             if (!tool.group_id) {
                 var insertIndex = $scope.model.tools.findIndex(function(item) {
                     return item.index > tool.index;
@@ -23,15 +23,13 @@ app.controller('modListToolsController', function($scope, $state, $stateParams, 
         });
     };
 
-    $scope.buildMissingTools = function(required_tools, tools) {
+    $scope.buildMissingTools = function() {
         $scope.required.missing_tools = [];
-        required_tools.forEach(function(requirement) {
+        $scope.required.tools.forEach(function(requirement) {
             if (requirement._destroy) {
                 return;
             }
-            var toolPresent = tools.find(function(modListTool) {
-                return !modListTool._destroy && modListTool.mod.id == requirement.required_mod.id;
-            });
+            var toolPresent = $scope.findTool(requirement.required_mod.id, true);
             if (!toolPresent) {
                 $scope.required.missing_tools.push(requirement);
             }
@@ -41,16 +39,13 @@ app.controller('modListToolsController', function($scope, $state, $stateParams, 
     $scope.retrieveTools = function() {
         $scope.retrieving.tools = true;
         modListService.retrieveModListTools($scope.mod_list.id).then(function(data) {
-            $scope.buildMissingTools(data.required_tools, data.tools);
-            $scope.buildToolsModel(data.tools, data.groups);
-            // We put this in shared because we don't want to detect changes to it as changes
-            // to the mod list itself.  Changes in requirements are due to tools being added
-            // or removed.
             $scope.required.tools = data.required_tools;
             $scope.mod_list.tools = data.tools;
             $scope.mod_list.groups = Array.prototype.concat($scope.mod_list.groups || [], data.groups);
             $scope.originalModList.tools = angular.copy($scope.mod_list.tools);
             $scope.originalModList.groups = angular.copy($scope.mod_list.groups);
+            $scope.buildMissingTools();
+            $scope.buildToolsModel();
             $scope.retrieving.tools = false;
         }, function(response) {
             $scope.errors.tools = response;
@@ -69,7 +64,7 @@ app.controller('modListToolsController', function($scope, $state, $stateParams, 
             delete modListTool._destroy;
             $scope.mod_list.tools_count += 1;
             $scope.reAddRequirements($scope.required.tools, modListTool.mod.id);
-            $scope.buildMissingTools($scope.required.tools, $scope.mod_list.tools);
+            $scope.buildMissingTools();
             $scope.updateTabs();
             $scope.$emit('successMessage', 'Added tool ' + modListTool.mod.name + ' successfully.');
         }
@@ -135,17 +130,16 @@ app.controller('modListToolsController', function($scope, $state, $stateParams, 
     $scope.removeTool = function(modListTool) {
         modListTool._destroy = true;
         $scope.removeRequirements(modListTool.mod.id);
-        $scope.buildMissingTools($scope.required.tools, $scope.mod_list.tools);
+        $scope.buildMissingTools();
         $scope.mod_list.tools_count -= 1;
         $scope.updateTabs();
     };
 
     $scope.$on('rebuildModels', function() {
-        $scope.buildToolsModel($scope.mod_list.tools, $scope.mod_list.groups);
-        $scope.buildMissingTools($scope.required.tools, $scope.mod_list.tools);
+        $scope.buildToolsModel();
     });
 
     $scope.$on('rebuildMissingTools', function() {
-        $scope.buildMissingTools($scope.required.tools, $scope.mod_list.tools);
+        $scope.buildMissingTools();
     });
 });

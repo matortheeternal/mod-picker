@@ -1,7 +1,7 @@
 app.controller('modListModsController', function($scope, modListService) {
-    $scope.buildModsModel = function(mods, groups) {
+    $scope.buildModsModel = function() {
         $scope.model.mods = [];
-        groups.forEach(function(group) {
+        $scope.mod_list.groups.forEach(function(group) {
             if (group.tab !== 'mods') {
                 return;
             }
@@ -10,7 +10,7 @@ app.controller('modListModsController', function($scope, modListService) {
                 return mod.group_id == group.id;
             });
         });
-        mods.forEach(function(mod) {
+        $scope.mod_list.mods.forEach(function(mod) {
             if (!mod.group_id) {
                 var insertIndex = $scope.model.mods.findIndex(function(item) {
                     return item.index > mod.index;
@@ -23,15 +23,13 @@ app.controller('modListModsController', function($scope, modListService) {
         });
     };
 
-    $scope.buildMissingMods = function(required_mods, mods) {
+    $scope.buildMissingMods = function() {
         $scope.required.missing_mods = [];
-        required_mods.forEach(function(requirement) {
+        $scope.required.mods.forEach(function(requirement) {
             if (requirement._destroy) {
                 return;
             }
-            var modPresent = mods.find(function(modListMod) {
-                return !modListMod._destroy && modListMod.mod.id == requirement.required_mod.id;
-            });
+            var modPresent = $scope.findMod(requirement.required_mod.id, true);
             if (!modPresent) {
                 $scope.required.missing_mods.push(requirement);
             }
@@ -41,16 +39,15 @@ app.controller('modListModsController', function($scope, modListService) {
     $scope.retrieveMods = function() {
         $scope.retrieving.mods = true;
         modListService.retrieveModListMods($scope.mod_list.id).then(function(data) {
-            $scope.buildMissingMods(data.required_mods, data.mods);
-            $scope.buildModsModel(data.mods, data.groups);
-            // We put this in shared because we don't want to detect changes to it as changes
-            // to the mod list itself.  Changes in requirements are due to mods being added
-            // or removed.
             $scope.required.mods = data.required_mods;
+            $scope.notes.compatibility = data.compatibility_notes;
+            $scope.notes.install_order = data.install_order_notes;
             $scope.mod_list.mods = data.mods;
             $scope.mod_list.groups = Array.prototype.concat($scope.mod_list.groups || [], data.groups);
             $scope.originalModList.mods = angular.copy($scope.mod_list.mods);
             $scope.originalModList.groups = angular.copy($scope.mod_list.groups);
+            $scope.buildMissingMods();
+            $scope.buildModsModel();
             $scope.retrieving.mods = false;
         }, function(response) {
             $scope.errors.mods = response;
@@ -155,17 +152,16 @@ app.controller('modListModsController', function($scope, modListService) {
     $scope.removeMod = function(modListMod) {
         modListMod._destroy = true;
         $scope.removeRequirements(modListMod.mod.id);
-        $scope.buildMissingMods($scope.required.mods, $scope.mod_list.mods);
+        $scope.buildMissingMods();
         $scope.mod_list.mods_count -= 1;
         $scope.updateTabs();
     };
 
     $scope.$on('rebuildModels', function() {
-        $scope.buildModsModel($scope.mod_list.mods, $scope.mod_list.groups);
-        $scope.buildMissingMods($scope.required.mods, $scope.mod_list.mods);
+        $scope.buildModsModel();
     });
 
     $scope.$on('rebuildMissingMods', function() {
-        $scope.buildMissingMods($scope.required.mods, $scope.mod_list.mods);
+        $scope.buildMissingMods();
     });
 });
