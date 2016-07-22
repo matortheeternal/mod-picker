@@ -120,6 +120,12 @@ app.controller('modListModsController', function($scope, modListService) {
         });
     };
 
+    $scope.findMod = function(modId) {
+        return $scope.mod_list.mods.find(function(modListMod) {
+            return modListMod.mod.id == modId;
+        });
+    };
+
     $scope.addMod = function(modId) {
         // return if we don't have a mod to add
         if (!modId) {
@@ -127,9 +133,7 @@ app.controller('modListModsController', function($scope, modListService) {
         }
 
         // see if the mod is already present on the user's mod list
-        var existingMod = $scope.mod_list.mods.find(function(modListMod) {
-            return modListMod.mod.id == modId;
-        });
+        var existingMod = $scope.findMod(modId);
         if (existingMod) {
             $scope.reAddMod(existingMod);
         } else {

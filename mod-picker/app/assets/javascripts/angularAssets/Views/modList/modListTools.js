@@ -100,6 +100,12 @@ app.controller('modListToolsController', function($scope, $state, $stateParams, 
         });
     };
 
+    $scope.findTool = function(toolId) {
+        return $scope.mod_list.tools.find(function(modListTool) {
+            return modListTool.mod.id == toolId;
+        });
+    };
+
     $scope.addTool = function(toolId) {
         // return if we don't have a tool to add
         if (!toolId) {
@@ -107,9 +113,7 @@ app.controller('modListToolsController', function($scope, $state, $stateParams, 
         }
 
         // see if the tool is already present on the user's mod list
-        var existingTool = $scope.mod_list.tools.find(function(modListTool) {
-            return modListTool.mod.id == toolId;
-        });
+        var existingTool = $scope.findTool(toolId);
         if (existingTool) {
             $scope.reAddTool(existingTool);
         } else {
