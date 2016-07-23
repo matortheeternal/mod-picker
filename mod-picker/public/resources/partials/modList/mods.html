@@ -30,7 +30,7 @@
             </span>
         </div>
         <div class="content-container">
-            <ul ng-show="show.missing_mods">
+            <ul ng-if="show.missing_mods">
                 <li ng-repeat="requirement in required.missing_mods">
                     <a href="#/mod/{{requirement.required_mod.id}}">{{requirement.required_mod.name}}</a>
                     is required by
@@ -38,20 +38,21 @@
                     <span class="action-box green-box" ng-click="addMod(requirement.required_mod.id)" title="Add {{requirement.required_mod.name}}">Add Requirement</span>
                     <span class="action-box red-box" ng-click="removeMod(findMod(requirement.mod.id))" title="Remove {{requirement.mod.name}}">Remove Requirer</span>
                 </li>
-                <li ng-hide="required.missing_mods.length">
-                    No missing mods to display.
-                </li>
             </ul>
-            <ul ng-hide="show.missing_mods">
+            <div ng-show="show.missing_mods && !required.missing_mods.length" class="content-message">
+                No missing mods to display.
+            </div>
+
+            <ul ng-if="!show.missing_mods">
                 <li ng-repeat="requirement in required.mods" ng-hide="requirement._destroy">
                     <a href="#/mod/{{requirement.required_mod.id}}">{{requirement.required_mod.name}}</a>
                     is required by
                     <a href="#/mod/{{requirement.mod.id}}">{{requirement.mod.name}}</a>
                 </li>
-                <li ng-show="isEmpty(required.mods)">
-                    No requirements to display.
-                </li>
             </ul>
+            <div ng-show="!show.missing_mods && isEmpty(required.mods)" class="content-message">
+                No requirements to display.
+            </div>
         </div>
     </div>
 

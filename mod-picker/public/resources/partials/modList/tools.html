@@ -30,7 +30,7 @@
             </span>
         </div>
         <div class="content-container">
-            <ul ng-show="show.missing_tools">
+            <ul ng-if="show.missing_tools">
                 <li ng-repeat="requirement in required.missing_tools">
                     <a href="#/mod/{{requirement.required_mod.id}}">{{requirement.required_mod.name}}</a>
                     is required by
@@ -38,20 +38,21 @@
                     <span class="action-box green-box" ng-click="addTool(requirement.required_mod.id)" title="Add {{requirement.required_mod.name}}">Add Requirement</span>
                     <span class="action-box red-box" ng-click="removeTool(findTool(requirement.mod.id))" title="Remove {{requirement.mod.name}}">Remove Requirer</span>
                 </li>
-                <li ng-hide="required.missing_tools.length">
-                    No missing tools to display.
-                </li>
             </ul>
-            <ul ng-hide="show.missing_tools">
+            <div ng-show="show.missing_tools && !required.missing_tools.length" class="content-message">
+                No missing tools to display.
+            </div>
+
+            <ul ng-if="!show.missing_tools">
                 <li ng-repeat="requirement in required.tools" ng-hide="requirement._destroy">
                     <a href="#/mod/{{requirement.required_mod.id}}">{{requirement.required_mod.name}}</a>
                     is required by
                     <a href="#/mod/{{requirement.mod.id}}">{{requirement.mod.name}}</a>
                 </li>
-                <li ng-show="isEmpty(required.tools)">
-                    No requirements to display.
-                </li>
             </ul>
+            <div ng-show="!show.missing_tools && isEmpty(required.tools)">
+                No requirements to display.
+            </div>
         </div>
     </div>
 
