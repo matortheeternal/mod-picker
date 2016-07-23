@@ -103,11 +103,18 @@ class ModList < ActiveRecord::Base
     Plugin.where(mod_id: mod_ids).ids
   end
 
-  def compatibility_notes
+  def mod_compatibility_notes
     mod_ids = self.mod_list_mod_ids
     return [] if mod_ids.empty?
 
-    CompatibilityNote.visible.where(first_mod_id: mod_ids, second_mod_id: mod_ids)
+    CompatibilityNote.visible.where(first_mod_id: mod_ids, second_mod_id: mod_ids, status: [0, 1, 2])
+  end
+
+  def plugin_compatibility_notes
+    mod_ids = self.mod_list_mod_ids
+    return [] if mod_ids.empty?
+
+    CompatibilityNote.visible.where(first_mod_id: mod_ids, second_mod_id: mod_ids, status: [3, 4])
   end
 
   def install_order_notes

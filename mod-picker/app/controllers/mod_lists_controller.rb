@@ -49,7 +49,7 @@ class ModListsController < ApplicationController
         mods: mods,
         groups: groups,
         required_mods: @mod_list.required_mods,
-        compatibility_notes: @mod_list.compatibility_notes,
+        compatibility_notes: @mod_list.mod_compatibility_notes,
         install_order_notes: @mod_list.install_order_notes
     }
   end
@@ -64,6 +64,7 @@ class ModListsController < ApplicationController
         plugins: plugins,
         custom_plugins: custom_plugins,
         groups: groups,
+        compatibility_notes: @mod_list.plugin_compatibility_notes,
         load_order_notes: @mod_list.load_order_notes
     }
   end
