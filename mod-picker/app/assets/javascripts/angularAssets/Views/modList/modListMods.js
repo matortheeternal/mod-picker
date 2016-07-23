@@ -140,7 +140,10 @@ app.controller('modListModsController', function($scope, modListService) {
             delete modListMod._destroy;
             $scope.mod_list.mods_count += 1;
             $scope.reAddRequirements(modListMod.mod.id);
+            $scope.reAddNotes(modListMod.mod.id);
             $scope.buildMissingMods();
+            $scope.buildUnresolvedCompatibility();
+            $scope.buildUnresolvedInstallOrder();
             $scope.updateTabs();
             $scope.$emit('successMessage', 'Added mod ' + modListMod.mod.name + ' successfully.');
         }
@@ -210,7 +213,10 @@ app.controller('modListModsController', function($scope, modListService) {
     $scope.removeMod = function(modListMod) {
         modListMod._destroy = true;
         $scope.removeRequirements(modListMod.mod.id);
+        $scope.removeNotes(modListMod.mod.id);
         $scope.buildMissingMods();
+        $scope.buildUnresolvedCompatibility();
+        $scope.buildUnresolvedInstallOrder();
         $scope.mod_list.mods_count -= 1;
         $scope.updateTabs();
     };
