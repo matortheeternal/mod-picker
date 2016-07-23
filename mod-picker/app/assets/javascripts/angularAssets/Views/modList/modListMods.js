@@ -6,7 +6,7 @@ app.controller('modListModsController', function($scope, modListService) {
                 return;
             }
             $scope.model.mods.push(group);
-            group.children = mods.filter(function(mod) {
+            group.children = $scope.mod_list.mods.filter(function(mod) {
                 return mod.group_id == group.id;
             });
         });

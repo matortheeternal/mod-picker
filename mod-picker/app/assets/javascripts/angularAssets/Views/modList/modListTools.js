@@ -6,7 +6,7 @@ app.controller('modListToolsController', function($scope, $state, $stateParams, 
                 return;
             }
             $scope.model.tools.push(group);
-            group.children = tools.filter(function(tool) {
+            group.children = $scope.mod_list.tools.filter(function(tool) {
                 return tool.group_id == group.id;
             });
         });
