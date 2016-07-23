@@ -1,4 +1,4 @@
-app.service('modListService', function (backend, objectUtils) {
+app.service('modListService', function (backend, $q, objectUtils, userTitleService, contributionService) {
     this.retrieveModList = function(modListId) {
         return backend.retrieve('/mod_lists/' + modListId);
     };
@@ -16,7 +16,17 @@ app.service('modListService', function (backend, objectUtils) {
     };
 
     this.retrieveModListMods = function(modListId) {
-        return backend.retrieve('/mod_lists/' + modListId + '/mods');
+        var action = $q.defer();
+        backend.retrieve('/mod_lists/' + modListId + '/mods').then(function(data) {
+            userTitleService.associateTitles(data.compatibility_notes);
+            userTitleService.associateTitles(data.install_order_notes);
+            contributionService.associateHelpfulMarks(data.compatibility_notes, data.c_helpful_marks);
+            contributionService.associateHelpfulMarks(data.install_order_notes, data.i_helpful_marks);
+            action.resolve(data);
+        }, function(response) {
+            action.reject(response);
+        });
+        return action.promise;
     };
 
     this.updateModList = function(modList) {
