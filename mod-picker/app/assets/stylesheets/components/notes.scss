@@ -76,15 +76,11 @@
 
     .resolution-options {
       .action-box {
-        margin-top: 2px;
+        margin: 2px 0;
       }
 
-      .green-box {
-        margin-bottom: 14px !important;
-      }
-
-      .yellow-box {
-        margin-top: 14px !important;
+      .green-box, .yellow-box {
+        margin: 14px 0 !important;
       }
     }
   }
