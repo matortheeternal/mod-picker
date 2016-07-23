@@ -22,7 +22,7 @@ app.config(['$stateProvider', function($stateProvider) {
             }
         }
     }).state('base.mod.Reviews', {
-        templateUrl: '/resources/partials/mod/reviews.html',
+        templateUrl: '/resources/partials/mod/modReviews.html',
         controller: 'modReviewsController',
         url: '/reviews?{page:int}&scol&sdir',
         params: {
@@ -31,7 +31,7 @@ app.config(['$stateProvider', function($stateProvider) {
             sdir: 'desc'
         }
     }).state('base.mod.Compatibility', {
-        templateUrl: '/resources/partials/mod/compatibility.html',
+        templateUrl: '/resources/partials/mod/modCompatibility.html',
         controller: 'modCompatibilityController',
         url: '/compatibility?{page:int}&scol&sdir',
         params: {
@@ -40,7 +40,7 @@ app.config(['$stateProvider', function($stateProvider) {
             sdir: 'desc'
         }
     }).state('base.mod.Install Order', {
-        templateUrl: '/resources/partials/mod/installOrder.html',
+        templateUrl: '/resources/partials/mod/modInstallOrder.html',
         controller: 'modInstallOrderController',
         url: '/install-order?{page:int}&scol&sdir',
         params: {
@@ -49,7 +49,7 @@ app.config(['$stateProvider', function($stateProvider) {
             sdir: 'desc'
         }
     }).state('base.mod.Load Order', {
-        templateUrl: '/resources/partials/mod/loadOrder.html',
+        templateUrl: '/resources/partials/mod/modLoadOrder.html',
         controller: 'modLoadOrderController',
         url: '/load-order?{page:int}&scol&sdir',
         params: {
@@ -58,7 +58,7 @@ app.config(['$stateProvider', function($stateProvider) {
             sdir: 'desc'
         }
     }).state('base.mod.Analysis', {
-        templateUrl: '/resources/partials/mod/analysis.html',
+        templateUrl: '/resources/partials/mod/modAnalysis.html',
         controller: 'modAnalysisController',
         url: '/analysis?{plugin:int}',
         params: {
