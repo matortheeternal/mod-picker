@@ -23,6 +23,28 @@ app.controller('modListModsController', function($scope, modListService) {
         });
     };
 
+    $scope.buildUnresolvedCompatibility = function() {
+        $scope.notes.unresolved_compatibility = [];
+        $scope.notes.compatibility.forEach(function(note) {
+            // TODO: Skip notes that are ignored
+            switch (note.status) {
+                case 'incompatible':
+                case 'partially compatible':
+                    // unresolved if both mods are present
+                    if (!$scope.findMod(note.mods[0].id, true) && !$scope.findMod(note.mods[1].id, true)) {
+                        $scope.notes.unresolved_compatibility.push(note);
+                    }
+                    break;
+                case 'compatibility mod':
+                    // unresolved if the compatibility mod is not present
+                    if (!$scope.findMod(note.compatibility_mod_id, true)) {
+                        $scope.notes.unresolved_compatibility.push(note);
+                    }
+                    break;
+            }
+        });
+    };
+
     $scope.buildMissingMods = function() {
         $scope.required.missing_mods = [];
         $scope.required.mods.forEach(function(requirement) {
@@ -48,6 +70,7 @@ app.controller('modListModsController', function($scope, modListService) {
             $scope.originalModList.groups = angular.copy($scope.mod_list.groups);
             $scope.buildMissingMods();
             $scope.buildModsModel();
+            $scope.buildUnresolvedCompatibility();
             $scope.retrieving.mods = false;
         }, function(response) {
             $scope.errors.mods = response;
