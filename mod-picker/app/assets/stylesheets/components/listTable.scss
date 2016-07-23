@@ -35,13 +35,21 @@
   tbody {
     border: 0;
     font-size: 14px;
+
+    td {
+      padding: 8px 20px 8px 20px;
+    }
+
+    .odd-row {
+        background-color: $primary_background;
+    }
+
+    .even-row {
+        background-color: $secondary_background;
+    }
   }
 
   tr {
     border: 1px solid $border_color;
-  }
-
-  td {
-    padding: 10px 20px 10px 20px;
   }
 }

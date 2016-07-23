@@ -11,7 +11,7 @@
             </tr>
         </thead>
         <tbody>
-            <tr ng-repeat="mod in mods">
+            <tr ng-repeat="mod in mods" ng-class-odd="'odd-row'" ng-class-even="'even-row'">
                 <td class="name-column">
                     <a ui-state="'base.mod'" ui-state-params="{modId: mod.id}">{{mod.name}}</a>
                 </td>

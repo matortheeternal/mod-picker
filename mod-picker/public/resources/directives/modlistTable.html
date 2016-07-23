@@ -12,7 +12,7 @@
             </tr>
         </thead>
         <tbody>
-            <tr ng-repeat="modlist in modlists">
+            <tr ng-repeat="modlist in modlists" ng-class-odd="'odd-row'" ng-class-even="'even-row'">
                 <td class="name-column">
                     <a ui-state="'base.mod-list'" ui-state-params="{modListId: modlist.id}">{{modlist.name}}</a>
                 </td>
@@ -22,12 +22,12 @@
                 <td>{{modlist.comments_count}}</td>
                 <td>
                     <div class="table-buttons">
-                        <input class="btn-sm" type="button" ng-click="clone(modlist)" value="Clone"/>
+                        <input class="action-box" type="button" ng-click="clone(modlist)" value="Clone"/>
                         <!-- TODO: verify that this link is correct once the edit modlist state is set up -->
                         <a ui-state="'base.edit-modlist'" ui-state-params="{modlistId: modlist.id}">
-                            <input type="button" value="Edit"/>
+                            <input type="button" class="action-box" value="Edit"/>
                         </a>
-                        <input class="btn-sm" type="button" ng-click="delete(modlist)" value="Delete"/>
+                        <input class="action-box" type="button" ng-click="delete(modlist)" value="Delete"/>
                     </div>
                 </td>
             </tr>
