@@ -1,0 +1,32 @@
+<h3 class="section-title">{{title}}</h3>
+<section>
+    <table border="1" class="listing-table" ng-if="modlists.length">
+        <thead>
+            <tr>
+                <th class="name-column">Name</th>
+                <th>Mods</th>
+                <th>Status</th>
+                <th>Stars</th>
+                <th>Comments</th>
+                <th>Options</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="modlist in modlists">
+                <td class="name-column">{{modlist.name}}</td>
+                <td>{{modlist.mods_count}}</td>
+                <td>{{modlist.status}}</td>
+                <td>{{modlist.mod_modlist_stars_count}}</td>
+                <td>{{modlist.comments_count}}</td>
+                <td>
+                    <div class="table-buttons">
+                        <input class="btn-sm" type="button" ng-click="clone(modlist)" value="Clone"/>
+                        <input class="btn-sm" type="button" ng-click="edit(modlist)" value="Edit"/>
+                        <input class="btn-sm" type="button" ng-click="delete(modlist)" value="Delete"/>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <span class="explanation" ng-if="!modlists.length">There's nothing here</span>
+</section>
