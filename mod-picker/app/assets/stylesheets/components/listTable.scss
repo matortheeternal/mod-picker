@@ -1,0 +1,47 @@
+.listing-table {
+  border: 1px solid $border_color;
+  border-collapse: collapse;
+  text-align: center;
+
+  thead {
+    font-size: 16px;
+    font-weight: 500;
+    color: $bar_text_color;
+    background-color: $bar_color;
+    padding: 10px;
+    font-size: 16px;
+  }
+
+  th {
+    padding: 10px 20px 10px 20px;
+    border: none;
+  }
+
+  .name-column {
+    padding-left: 20px;
+    padding-right: 50px;
+    text-align: left;
+    font-weight: 500;
+    font-size: 18px;
+    width: 400px;
+  }
+
+  .table-buttons {
+    display: flex;
+    vertical-align: middle;
+    font-size: 14px;
+  }
+
+  tbody {
+    border: 0;
+    font-size: 14px;
+  }
+
+  tr {
+    border: 1px solid $border_color;
+  }
+
+  td {
+    padding: 10px 20px 10px 20px;
+  }
+}
