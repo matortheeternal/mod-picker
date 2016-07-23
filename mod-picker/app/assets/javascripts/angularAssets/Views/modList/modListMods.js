@@ -26,6 +26,10 @@ app.controller('modListModsController', function($scope, modListService) {
     $scope.buildUnresolvedCompatibility = function() {
         $scope.notes.unresolved_compatibility = [];
         $scope.notes.compatibility.forEach(function(note) {
+            // skip destroyed notes
+            if (note._destroy) {
+                return;
+            }
             // TODO: Skip notes that are ignored
             switch (note.status) {
                 case 'incompatible':
@@ -48,6 +52,7 @@ app.controller('modListModsController', function($scope, modListService) {
     $scope.buildMissingMods = function() {
         $scope.required.missing_mods = [];
         $scope.required.mods.forEach(function(requirement) {
+            // skip destroyed requirements
             if (requirement._destroy) {
                 return;
             }
