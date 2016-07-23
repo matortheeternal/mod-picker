@@ -31,7 +31,7 @@ app.controller('modListModsController', function($scope, modListService) {
                 case 'incompatible':
                 case 'partially compatible':
                     // unresolved if both mods are present
-                    if (!$scope.findMod(note.mods[0].id, true) && !$scope.findMod(note.mods[1].id, true)) {
+                    if ($scope.findMod(note.mods[0].id, true) && $scope.findMod(note.mods[1].id, true)) {
                         $scope.notes.unresolved_compatibility.push(note);
                     }
                     break;
