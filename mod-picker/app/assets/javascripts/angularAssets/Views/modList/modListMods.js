@@ -27,7 +27,7 @@ app.controller('modListModsController', function($scope, modListService) {
         $scope.notes.unresolved_compatibility = [];
         $scope.notes.compatibility.forEach(function(note) {
             // skip destroyed or ignored notes
-            if (note._destroy || note.ignore) {
+            if (note._destroy || note.ignored) {
                 return;
             }
             switch (note.status) {
@@ -59,7 +59,7 @@ app.controller('modListModsController', function($scope, modListService) {
         $scope.notes.unresolved_install_order = [];
         $scope.notes.install_order.forEach(function(note) {
             // skip destroyed or ignored notes
-            if (note._destroy || note.ignore) {
+            if (note._destroy || note.ignored) {
                 return;
             }
             var first_mod = $scope.findMod(note.mods[0].id, true);
@@ -225,12 +225,12 @@ app.controller('modListModsController', function($scope, modListService) {
                 $scope.addMod(options.note.compatibility_mod.id);
                 break;
             case "ignore":
-                options.note.ignore = true;
+                options.note.ignored = true;
                 // TODO: Update $scope.mod_list.ignored_notes
                 $scope.buildUnresolvedCompatibility();
                 break;
             case "unignore":
-                options.note.ignore = false;
+                options.note.ignored = false;
                 // TODO: Update $scope.mod_list.ignored_notes
                 $scope.buildUnresolvedCompatibility();
                 break;
@@ -245,12 +245,12 @@ app.controller('modListModsController', function($scope, modListService) {
                 $scope.$broadcast('moveMod', {move: moveId, dest: destId});
                 break;
             case "ignore":
-                options.note.ignore = true;
+                options.note.ignored = true;
                 // TODO: Update $scope.mod_list.ignored_notes
                 $scope.buildUnresolvedInstallOrder();
                 break;
             case "unignore":
-                options.note.ignore = false;
+                options.note.ignored = false;
                 // TODO: Update $scope.mod_list.ignored_notes
                 $scope.buildUnresolvedInstallOrder();
                 break;
