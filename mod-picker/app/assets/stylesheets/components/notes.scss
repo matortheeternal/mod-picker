@@ -64,13 +64,13 @@
     border-left: 1px solid $border_color;
     background-color: $bar_highlight_color;
     min-width: 200px;
-    padding: 10px;
+    padding: 14px;
     text-align: center;
 
     .resolution-status {
       font-size: 20px;
       font-weight: 500;
-      margin: 16px 0;
+      margin: 8px 0 16px;
       color: $bar_text_color;
     }
 
