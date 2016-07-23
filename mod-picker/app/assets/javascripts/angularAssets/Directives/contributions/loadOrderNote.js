@@ -9,7 +9,8 @@ app.directive('loadOrderNote', function () {
             currentUser: '=',
             edit: '=?',
             showActions: '=?',
-            showUserColumn: '=?'
+            showUserColumn: '=?',
+            showResolutionOptions: '=?'
         }
     };
 });

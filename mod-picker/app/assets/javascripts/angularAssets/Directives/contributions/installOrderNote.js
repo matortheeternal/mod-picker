@@ -10,6 +10,7 @@ app.directive('installOrderNote', function () {
             edit: '=?',
             showActions: '=?',
             showUserColumn: '=?',
+            showResolutionOptions: '=?',
             modId: '=?'
         }
     };
