@@ -36,6 +36,25 @@ app.controller('compatibilityNoteController', function ($scope) {
         }
     };
 
+    $scope.getResolutionStatus = function() {
+        if ($scope.ignored) {
+            return "Ignored";
+        } else if ($scope.resolved) {
+            return "Resolved";
+        } else {
+            return "Unresolved";
+        }
+    };
+
+    $scope.resolve = function(action, index) {
+        var options = {
+            note: $scope.note,
+            action: action,
+            index: index
+        };
+        $scope.$emit('resolveCompatibilityNote', options);
+    };
+
     // set compatibility_verb
     $scope.note.compatibility_verb = $scope.getVerb();
 });
