@@ -54,67 +54,6 @@ app.controller('userSettingsController', function ($scope, $q, user, currentUser
         {name: 'Authored Mods'}
     ];
 
-
-    //TODO: I think we should put the modlist actions inside somewhere reusable (directive)
-    /* mod list actions */
-    $scope.editModList = function(modlist) {
-        //TODO: I'm not sure if this state.go is correct, the param might be off
-        $state.go(base.modlist, {modlistId: modlist.id})
-    };
-
-    $scope.appendModList = function(data) {
-        var modlists = $scope.user.mod_lists;
-        if (data.modlist) {
-            modlists.push(data.modlist);
-            if (data.modlist.is_collection) {
-                $scope.collections.push(data.modlist);
-            } else {
-                $scope.lists.push(data.modlist);
-            }
-            $scope.$apply();
-        } else {
-            $scope.errors.push({message: "Didn't receive a cloned mod list from the server"});
-        }
-    };
-
-    $scope.cloneModList = function(modlist) {
-        console.log('Clone Mod List: "'+modlist.name+'"');
-        $scope.errors = [];
-        userSettingsService.cloneModList(modlist).then(function (data) {
-            if (data.status === "ok") {
-                $scope.appendModList(data);
-            } else {
-                $scope.errors.push(data.status);
-            }
-        });
-    };
-
-    $scope.removeModList = function(modlist) {
-        var modlists = $scope.user.mod_lists;
-        var index = modlists.indexOf(modlist);
-        modlists.splice(index, 1);
-        if (modlist.is_collection) {
-            index = $scope.collections.indexOf(modlist);
-            $scope.collections.splice(index, 1);
-        } else {
-            index = $scope.lists.indexOf(modlist);
-            $scope.lists.splice(index, 1);
-        }
-        $scope.$apply();
-    };
-
-    $scope.deleteModList = function(modlist) {
-        console.log('Delete Mod List: "'+modlist.name+'"');
-        $scope.errors = [];
-        userSettingsService.deleteModList(modlist).then(function (data) {
-            if (data.status === "ok") {
-                $scope.removeModList(modlist);
-            } else {
-                $scope.errors.push({message: "Delete Mod List: " + data.status });
-            }
-        });
-    };
-
     /* settings submission */
     $scope.submit = function() {
         $scope.errors = [];
