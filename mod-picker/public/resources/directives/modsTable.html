@@ -21,7 +21,7 @@
                 <td>
                     <div class="table-buttons">
                         <input type="button" ng-click="modHide(authored_mod)" value="Hide from Public">
-                        <a href="/angular#/editMod/{{authored_mod.name}}">
+                        <a ui-state="'base.edit-mod'" ui-state-params="{modId: mod.id}">
                             <input type="button" value="Edit"/>
                         </a>
                     </div>
