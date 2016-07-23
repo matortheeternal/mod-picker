@@ -25,8 +25,7 @@ app.controller('compatibilityNoteController', function ($scope) {
     $scope.showUserColumn = angular.isDefined($scope.showUserColumn) ? $scope.showUserColumn : true;
     $scope.showActions = angular.isDefined($scope.showActions) ? $scope.showActions : true;
 
-    // TODO: Should probably be moved into some kind of service
-    function getVerb() {
+    $scope.getVerb = function () {
         switch ($scope.note.status) {
             case "incompatible":
                 return "with";
@@ -35,8 +34,8 @@ app.controller('compatibilityNoteController', function ($scope) {
             default:
                 return "for";
         }
-    }
+    };
 
     // set compatibility_verb
-    $scope.note.compatibility_verb = getVerb();
+    $scope.note.compatibility_verb = $scope.getVerb();
 });
