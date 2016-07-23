@@ -65,6 +65,8 @@ app.service('modListService', function (backend, objectUtils) {
 
     this.newModListGroup = function(group) {
         return backend.post('/mod_list_groups', {mod_list_group: group});
+    };
+
     this.cloneModList = function(modlist) {
         return backend.post('/mod_lists/clone/' + modlist.id, {});
     };
