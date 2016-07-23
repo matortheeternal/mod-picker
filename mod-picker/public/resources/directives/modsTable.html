@@ -12,7 +12,9 @@
         </thead>
         <tbody>
             <tr ng-repeat="mod in mods">
-                <td class="name-column">{{mod.name}}</td>
+                <td class="name-column">
+                    <a ui-state="'base.mod'" ui-state-params="{modId: mod.id}">{{mod.name}}</a>
+                </td>
                 <td>{{mod.stars_count}}</td>
                 <td>{{mod.reputation}}</td>
                 <td>{{mod.reviews_count}}</td>
