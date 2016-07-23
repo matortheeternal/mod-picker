@@ -237,6 +237,26 @@ app.controller('modListModsController', function($scope, modListService) {
         }
     });
 
+    $scope.$on('resolveInstallOrderNote', function(event, options) {
+        switch(options.action) {
+            case "move":
+                var moveId = options.note.mods[options.index].id;
+                var destId = options.note.mods[+!options.index].id;
+                $scope.$broadcast('moveMod', {move: moveId, dest: destId});
+                break;
+            case "ignore":
+                options.note.ignore = true;
+                // TODO: Update $scope.mod_list.ignored_notes
+                $scope.buildUnresolvedInstallOrder();
+                break;
+            case "unignore":
+                options.note.ignore = false;
+                // TODO: Update $scope.mod_list.ignored_notes
+                $scope.buildUnresolvedInstallOrder();
+                break;
+        }
+    });
+
     $scope.$on('rebuildModels', function() {
         $scope.buildModsModel();
     });
