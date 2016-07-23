@@ -29,10 +29,10 @@
     <div ng-if="showResolutionOptions" class="resolution-column">
         <div class="resolution-status">{{getResolutionStatus()}}</div>
         <div class="resolution-options order-options">
-            <span class="action-box green-box" ng-click="resolve('move', 0)" ng-disabled="note.resolved">Move  {{note.mods[0].name}}</span>
-            <span class="action-box green-box" ng-click="resolve('move', 1)" ng-disabled="note.resolved">Move  {{note.mods[1].name}}</span>
-            <span class="action-box yellow-box single" ng-if="!note.ignore" ng-click="resolve('ignore')" ng-disabled="note.resolved">Ignore Issue</span>
-            <span class="action-box yellow-box single" ng-if="note.ignore" ng-click="resolve('ignore')" ng-disabled="note.resolved">Unignore Issue</span>
+            <span class="action-box green-box" ng-click="resolve('move', 0)" ng-class="{ 'disabled' : note.resolved }">Move  {{note.mods[0].name}}</span>
+            <span class="action-box green-box" ng-click="resolve('move', 1)" ng-class="{ 'disabled' : note.resolved }">Move  {{note.mods[1].name}}</span>
+            <span class="action-box yellow-box single" ng-if="!note.ignore" ng-click="resolve('ignore')" ng-class="{ 'disabled' : note.resolved }">Ignore Issue</span>
+            <span class="action-box yellow-box single" ng-if="note.ignore" ng-click="resolve('ignore')" ng-class="{ 'disabled' : note.resolved }">Unignore Issue</span>
         </div>
     </div>
 </div>

@@ -35,13 +35,13 @@
     <div ng-if="showResolutionOptions" class="resolution-column">
         <div class="resolution-status">{{getResolutionStatus()}}</div>
         <div class="resolution-options">
-            <span class="action-box green-box single" ng-if="note.compatibility_mod" ng-click="resolve('add mod')" ng-disabled="note.resolved">Add {{note.compatibility_mod.name}}</span>
-            <span class="action-box green-box single" ng-if="note.compatibility_plugin" ng-click="resolve('add plugin')" ng-disabled="note.resolved">Add {{note.compatibility_plugin.filename}}</span>
-            <span class="action-box green-box single" ng-if="note.status === 'make custom patch'" ng-click="resolve('add custom')" ng-disabled="note.resolved">Add Custom Patch Plugin</span>
-            <span class="action-box red-box" ng-click="resolve('remove', 0)" ng-disabled="note.resolved">Remove {{note.mods[0].name}}</span>
-            <span class="action-box red-box" ng-click="resolve('remove', 1)" ng-disabled="note.resolved">Remove {{note.mods[1].name}}</span>
-            <span class="action-box yellow-box single" ng-if="!note.ignore" ng-click="resolve('ignore')" ng-disabled="note.resolved">Ignore Issue</span>
-            <span class="action-box yellow-box single" ng-if="note.ignore" ng-click="resolve('unignore')" ng-disabled="note.resolved">Unignore Issue</span>
+            <span class="action-box green-box single" ng-if="note.compatibility_mod" ng-click="resolve('add mod')" ng-class="{ 'disabled' : note.resolved }">Add {{note.compatibility_mod.name}}</span>
+            <span class="action-box green-box single" ng-if="note.compatibility_plugin" ng-click="resolve('add plugin')" ng-class="{ 'disabled' : note.resolved }">Add {{note.compatibility_plugin.filename}}</span>
+            <span class="action-box green-box single" ng-if="note.status === 'make custom patch'" ng-click="resolve('add custom')" ng-class="{ 'disabled' : note.resolved }">Add Custom Patch Plugin</span>
+            <span class="action-box red-box" ng-click="resolve('remove', 0)" ng-class="{ 'disabled' : note.resolved }">Remove {{note.mods[0].name}}</span>
+            <span class="action-box red-box" ng-click="resolve('remove', 1)" ng-class="{ 'disabled' : note.resolved }">Remove {{note.mods[1].name}}</span>
+            <span class="action-box yellow-box single" ng-if="!note.ignore" ng-click="resolve('ignore')" ng-class="{ 'disabled' : note.resolved }">Ignore Issue</span>
+            <span class="action-box yellow-box single" ng-if="note.ignore" ng-click="resolve('unignore')" ng-class="{ 'disabled' : note.resolved }">Unignore Issue</span>
         </div>
     </div>
 </div>
