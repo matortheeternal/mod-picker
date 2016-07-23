@@ -10,7 +10,7 @@ app.directive('modlistTable', function() {
     };
 });
 
-app.controller('modlistTableController', function($scope) {
+app.controller('modlistTableController', function($scope, modListService) {
     $scope.append = function(data) {
         var modlists = $scope.user.mod_lists;
         if (data.modlist) {
@@ -29,7 +29,7 @@ app.controller('modlistTableController', function($scope) {
     $scope.clone = function(modlist) {
         console.log('Clone Mod list: "' + modlist.name + '"');
         $scope.errors = [];
-        userSettingsService.cloneModlist(modlist).then(function(data) {
+        modListService.cloneModlist(modlist).then(function(data) {
             if (data.status === "ok") {
                 $scope.append(data);
             } else {
@@ -55,7 +55,7 @@ app.controller('modlistTableController', function($scope) {
     $scope.delete = function(modlist) {
         console.log('Delete Mod modlist: "' + modlist.name + '"');
         $scope.errors = [];
-        userSettingsService.deleteModlist(modlist).then(function(data) {
+        modListService.deleteModlist(modlist).then(function(data) {
             if (data.status === "ok") {
                 $scope.remove(modlist);
             } else {
