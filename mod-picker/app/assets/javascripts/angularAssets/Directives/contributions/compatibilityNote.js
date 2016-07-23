@@ -47,6 +47,9 @@ app.controller('compatibilityNoteController', function ($scope) {
     };
 
     $scope.resolve = function(action, index) {
+        if ($scope.note.resolved) {
+            return;
+        }
         var options = {
             note: $scope.note,
             action: action,
