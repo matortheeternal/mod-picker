@@ -148,6 +148,7 @@ app.controller('modController', function($scope, $q, $stateParams, $state, $time
         $scope.redirectToFirstTab();
     }
 
+    //redirect to the first tab if a tab that isn't visible is typed into the url while the mod page is loaded
     $scope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
         //only if the new state is still on this mod's page
         if (toParams.modId == fromParams.modId) {
