@@ -143,8 +143,10 @@ app.controller('modController', function($scope, $q, $stateParams, $state, $time
         $state.go('base.mod.' + tab.name, tab.params, { location: 'replace' });
     };
 
-    //redirect to the first tab when the mod state is loaded
-    $scope.redirectToFirstTab();
+    //redirect to the first tab if just the parent mod state is loaded
+    if ($state.is('base.mod')) {
+        $scope.redirectToFirstTab();
+    }
 
     $scope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
         //only if the new state is still on this mod's page
