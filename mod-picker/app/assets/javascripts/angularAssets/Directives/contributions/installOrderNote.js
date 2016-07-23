@@ -22,9 +22,9 @@ app.controller('installOrderNoteController', function ($scope) {
     $scope.showActions = angular.isDefined($scope.showActions) ? $scope.showActions : true;
 
     $scope.getResolutionStatus = function() {
-        if ($scope.ignored) {
+        if ($scope.note.ignored) {
             return "Ignored";
-        } else if ($scope.resolved) {
+        } else if ($scope.note.resolved) {
             return "Resolved";
         } else {
             return "Unresolved";
