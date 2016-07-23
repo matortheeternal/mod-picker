@@ -1,5 +1,9 @@
 app.controller('modCompatibilityController', function($scope, $stateParams, $state, contributionFactory, contributionService, sortFactory) {
     $scope.thisTab = $scope.findTab('Compatibility');
+    //loading the sort options
+    $scope.sortOptions = sortFactory.compatibilityNoteSortOptions();
+    //initialize the pages variable
+    $scope.pages = {};
 
     //update the params on the tab object when the tab is navigated to directly
     $scope.thisTab.params = angular.copy($stateParams);
@@ -28,12 +32,6 @@ app.controller('modCompatibilityController', function($scope, $stateParams, $sta
             $scope.errors.compatibility_notes = response;
         });
     };
-
-    //loading the sort options
-    $scope.sortOptions = sortFactory.compatibilityNoteSortOptions();
-
-    //initialize the pages variable
-    $scope.pages = {};
 
     //retrieve the notes when the state is first loaded
     $scope.retrieveCompatibilityNotes($stateParams.page);
