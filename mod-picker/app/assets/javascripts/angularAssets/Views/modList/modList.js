@@ -234,12 +234,15 @@ app.controller('modListController', function($scope, $q, $stateParams, $timeout,
         });
     };
 
-    $scope.reAddRequirements = function(required_items, itemId) {
-        required_items.forEach(function(item) {
-            if (item.mod.id == itemId && item._destroy) {
+    $scope.reAddRequirements = function(modId) {
+        var reAddMatchingRequirements = function(item) {
+            if (item._destroy && item.mod.id == modId) {
                 delete item._destroy;
             }
-        });
+        };
+        var req = $scope.required; // an alias to make the code a bit shorter
+        req.mods && req.mods.forEach(reAddMatchingRequirements);
+        req.tools && req.tools.forEach(reAddMatchingRequirements);
     };
 
     $scope.reAddNotes = function(modId) {
