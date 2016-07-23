@@ -10,7 +10,7 @@ class ModListGroup < ActiveRecord::Base
   def as_json(options={})
     if JsonHelpers.json_options_empty(options)
       default_options = {
-          :only => [:id, :tab, :color, :name, :description]
+          :except => [:mod_list_id]
       }
       super(options.merge(default_options))
     else

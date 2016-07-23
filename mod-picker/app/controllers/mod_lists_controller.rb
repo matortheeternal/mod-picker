@@ -32,7 +32,7 @@ class ModListsController < ApplicationController
   def tools
     authorize! :read, @mod_list
     tools = @mod_list.mod_list_mods.utility(true).includes(:mod => :required_mods).order(:index)
-    groups = @mod_list.mod_list_groups.where(tab: 0)
+    groups = @mod_list.mod_list_groups.where(tab: 0).order(:index)
     render :json => {
         tools: tools,
         required_tools: @mod_list.required_tools,
@@ -44,7 +44,7 @@ class ModListsController < ApplicationController
   def mods
     authorize! :read, @mod_list
     mods = @mod_list.mod_list_mods.utility(false).includes(:mod => :required_mods).order(:index)
-    groups = @mod_list.mod_list_groups.where(tab: 1)
+    groups = @mod_list.mod_list_groups.where(tab: 1).order(:index)
     render :json => {
         mods: mods,
         groups: groups,
@@ -59,7 +59,7 @@ class ModListsController < ApplicationController
     authorize! :read, @mod_list
     plugins = @mod_list.mod_list_plugins.joins(:plugin)
     custom_plugins = @mod_list.custom_plugins
-    groups = @mod_list.mod_list_groups.where(tab: 2)
+    groups = @mod_list.mod_list_groups.where(tab: 2).order(:index)
     render :json => {
         plugins: plugins,
         custom_plugins: custom_plugins,
@@ -222,7 +222,7 @@ class ModListsController < ApplicationController
           :mod_list_mods_attributes => [:id, :group_id, :mod_id, :index, :_destroy],
           :mod_list_plugins_attributes => [:id, :group_id, :plugin_id, :index, :active, :_destroy],
           :custom_plugins_attributes => [:id, :group_id, :index, :filename, :description, :active, :_destroy],
-          :mod_list_groups_attributes => [:id, :tab, :color, :name, :description, :_destroy,
+          :mod_list_groups_attributes => [:id, :index, :tab, :color, :name, :description, :_destroy,
               :children => [:id]
           ],
           :mod_list_config_files_attributes => [:id, :config_file_id, :text_body, :_destroy],

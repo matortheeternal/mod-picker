@@ -3,23 +3,23 @@
         <div class="tab-bar-item primary-item">
             <span><strong>999</strong> Unresolved Issues</span>
             <span><strong>999</strong> Ignored Issues</span>
-            <span><strong>{{shared.missing_mods.length}}</strong> Missing Requirements</span>
+            <span><strong>{{required.missing_mods.length}}</strong> Missing Requirements</span>
         </div>
 
         <div class="tab-bar-item" ng-if="editing">
             <strong>Add a mod:</strong>
-            <search-input search-type="mods" result-id="add.mod.id" search-text="add.mod.name" on-change="addMod(mod_list.mods, 'mod')"></search-input>
+            <search-input search-type="mods" result-id="add.mod.id" search-text="add.mod.name" on-change="addMod(add.mod.id)"></search-input>
         </div>
     </div>
 
     <div class="content-block" ng-show="mod_list.mods.length">
         <div class="content-title">Mods
-            <span class="right-item action-box" ng-if="editing" ng-click="addModGroup()">
+            <span class="right-item action-box" ng-if="editing" ng-click="addGroup('mods')">
                 <i class="fa fa-plus"></i> New Group
             </span>
         </div>
         <div class="content-container">
-            <grid-items type="mods" model="model.mods" editing="editing" remove-callback="removeItem"></grid-items>
+            <grid-items type="mods" model="model.mods" editing="editing" remove-callback="removeMod"></grid-items>
         </div>
     </div>
 
@@ -31,24 +31,24 @@
         </div>
         <div class="content-container">
             <ul ng-show="show.missing_mods">
-                <li ng-repeat="requirement in shared.missing_mods">
+                <li ng-repeat="requirement in required.missing_mods">
                     <a href="#/mod/{{requirement.required_mod.id}}">{{requirement.required_mod.name}}</a>
                     is required by
                     <a href="#/mod/{{requirement.mod.id}}">{{requirement.mod.name}}</a>
-                    <span class="action-box green-box" ng-click="addRequirement(requirement)">Add Requirement</span>
-                    <span class="action-box red-box" ng-click="removeRequirer(requirement)">Remove Requirer</span>
+                    <span class="action-box green-box" ng-click="addMod(requirement.required_mod.id)" title="Add {{requirement.required_mod.name}}">Add Requirement</span>
+                    <span class="action-box red-box" ng-click="removeMod(findMod(requirement.mod.id))" title="Remove {{requirement.mod.name}}">Remove Requirer</span>
                 </li>
-                <li ng-hide="shared.missing_mods.length">
+                <li ng-hide="required.missing_mods.length">
                     No missing mods to display.
                 </li>
             </ul>
             <ul ng-hide="show.missing_mods">
-                <li ng-repeat="requirement in shared.required_mods">
+                <li ng-repeat="requirement in required.mods" ng-hide="requirement._destroy">
                     <a href="#/mod/{{requirement.required_mod.id}}">{{requirement.required_mod.name}}</a>
                     is required by
                     <a href="#/mod/{{requirement.mod.id}}">{{requirement.mod.name}}</a>
                 </li>
-                <li ng-hide="shared.required_mods.length">
+                <li ng-show="isEmpty(required.mods)">
                     No requirements to display.
                 </li>
             </ul>

@@ -170,4 +170,12 @@ app.service('objectUtils', function () {
                 return 'string';
         }
     };
+
+    this.isEmptyArray = function(arr) {
+        var empty = true;
+        arr && arr.forEach(function(item) {
+            empty = empty && !!item._destroy;
+        });
+        return empty;
+    };
 });

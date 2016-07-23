@@ -1,4 +1,23 @@
 grid-items {
+  display: block;
+  position: relative;
+
+  .content-message {
+    position: absolute;
+    top: 30px;
+    margin-left: auto;
+    margin-right: auto;
+    left: 0;
+    right: 0;
+  }
+
+  ul[dnd-list].dragging-group {
+    .dndPlaceholder {
+      width: 1090px;
+      min-height: 140px;
+    }
+  }
+
   ul[dnd-list] {
     min-height: 120px;
     padding-left: 0;
@@ -57,6 +76,12 @@ grid-items {
         right: 40px;
         z-index: 2;
 
+        strong {
+          margin-right: 2px;
+          font-weight: 500;
+          font-size: 14px;
+        }
+
         select {
           padding: 0;
           background: $input_background;
@@ -67,14 +92,13 @@ grid-items {
         padding-top: 30px;
 
         > li {
-          width: 335px;
+          width: 340px;
+          margin: 8px;
         }
       }
 
       .content-message {
-        position: absolute;
         top: 40px;
-        left: 400px;
       }
     }
   }
@@ -144,9 +168,10 @@ grid-items {
       list-style: none;
       padding-left: 0;
       margin: 12px 0 0;
-      font-size: 14px;
+      font-size: 13px;
 
       li.mod-name {
+        font-size: 14px;
         font-weight: 500;
       }
     }
@@ -168,7 +193,7 @@ grid-items {
 }
 
 .bg-green {
-  background-color: $yellow_color !important;
+  background-color: $green_color !important;
 }
 
 .bg-blue {

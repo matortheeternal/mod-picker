@@ -60,7 +60,7 @@ app.config(['$stateProvider', function ($stateProvider) {
     })
 }]);
 
-app.controller('modListController', function($scope, $q, $stateParams, $timeout, currentUser, modListObject, modListService, errorService, objectUtils, tabsFactory, sortFactory) {
+app.controller('modListController', function($scope, $q, $stateParams, $timeout, currentUser, modListObject, modListService, errorService, objectUtils, tabsFactory) {
     // get parent variables
     $scope.mod_list = modListObject.mod_list;
     $scope.mod_list.star = modListObject.star;
@@ -70,29 +70,17 @@ app.controller('modListController', function($scope, $q, $stateParams, $timeout,
 
 	// initialize local variables
     $scope.tabs = tabsFactory.buildModListTabs($scope.mod_list);
-    $scope.model = {};
+    $scope.model = {}; // this can be removed when we make states sticky
     $scope.newTags = [];
-    $scope.retrieving = {};
-    $scope.shared = {};
-    $scope.show = {
+    $scope.retrieving = {}; // this can be removed when we make states sticky
+    $scope.show = { // this can be removed when we make states sticky
         missing_tools: true,
         missing_mods: true
     };
+    $scope.required = {};
     $scope.add = {
         tool: {},
         mod: {}
-    };
-    $scope.sort = {
-        tools: {},
-        mods: {},
-        plugins: {},
-        config: {}
-    };
-    $scope.sortOptions = {
-        tools: sortFactory.modListToolSortOptions(),
-        mods: sortFactory.modListModSortOptions(),
-        plugins: 0, //sortFactory.modListPluginSortOptions(),
-        config: 0 //sortFactory.modListConfigSortOptions()
     };
     $scope.statusIcons = {
         under_construction: 'fa-wrench',
@@ -124,6 +112,7 @@ app.controller('modListController', function($scope, $q, $stateParams, $timeout,
         visibility_unlisted: "This mod list won't appear in search results, \nbut anyone can access it.",
         visibility_public: "This mod list is publicly available and will \nappear in search results."
     };
+    $scope.isEmpty = objectUtils.isEmptyArray;
 
     // a copy is created so the original permissions object is never changed
     $scope.permissions = angular.copy(currentUser.permissions);
@@ -221,67 +210,85 @@ app.controller('modListController', function($scope, $q, $stateParams, $timeout,
         });
     };
 
-    // add a mod or tool
-    $scope.addMod = function(array, label) {
-        // return if we don't have a tool to add
-        var add = $scope.add[label];
-        if (!add.id) {
-            return;
-        }
-
-        // see if the tool is already present on the user's mod list
-        var existingMod = array.find(function(item) {
-            return item.mod.id == add.id;
+    $scope.addGroup = function(tab) {
+        var model = $scope.model[tab];
+        var newGroup = {
+            mod_list_id: $scope.mod_list.id,
+            index: model.length,
+            tab: tab,
+            color: 'red',
+            name: 'New Group'
+        };
+        modListService.newModListGroup(newGroup).then(function(data) {
+            var group = data;
+            group.children = [];
+            $scope.mod_list.groups.push(group);
+            $scope.originalModList.groups.push(angular.copy(group));
+            model.push(group);
+        }, function(response) {
+            var params = {label: 'Error creating new Mod List Group', response: response};
+            $scope.$emit('errorMessage', params);
         });
-        var count_label = label + "s_count";
-        if (existingMod) {
-            // if tool is already present on the user's mod list but has been
-            // removed, add it back
-            if (existingMod._destroy) {
-                delete existingMod._destroy;
-                $scope.mod_list[count_label] += 1;
-                $scope.updateTabs();
-                $scope.$emit('successMessage', 'Added ' + label + ' ' + add.name + ' successfully.');
-            }
-            // else inform the user that the tool is already on their mod list
-            else {
-                $scope.$emit('customMessage', {type: 'error', text: 'Failed to add ' + label + ' ' + add.name + ', the ' + label + ' has already been added to this mod list.'});
-            }
-        } else {
-            // retrieve tool information from the backend
-            modListService.newModListMod(add.id).then(function(data) {
-                // prepare tool
-                var modItem = data;
-                delete modItem.id;
-                modItem.mod_id = modItem.mod.id;
-
-                // push tool onto view
-                array.push(modItem);
-                $scope.model[label].push(modItem);
-                $scope.mod_list[count_label] += 1;
-                $scope.updateTabs();
-                $scope.$emit('successMessage', 'Added ' + label + ' ' + add.name + ' successfully.');
-            }, function(response) {
-                var params = {label: 'Error adding ' + label, response: response};
-                $scope.$emit('errorMessage', params);
-            });
-        }
-
-        // reset tool search
-        add.id = null;
-        add.name = "";
     };
 
-    // remove an item
-    $scope.removeItem = function(array, index, type) {
-        var item = array[index];
-        if (item.id) {
-            item._destroy = true;
-        } else {
-            array.splice(index, 1);
-        }
-        $scope.mod_list[type + "_count"] -= 1;
-        $scope.updateTabs();
+    $scope.reAddRequirements = function(required_items, itemId) {
+        required_items.forEach(function(item) {
+            if (item.mod.id == itemId && item._destroy) {
+                delete item._destroy;
+            }
+        });
+    };
+
+    $scope.removeRequirements = function(modId) {
+        var destroyMatchingRequirements = function(requirement) {
+            if (requirement.mod.id == modId) {
+                requirement._destroy = true;
+            }
+        };
+        var req = $scope.required; // an alias to make the code a bit shorter
+        req.mods && req.mods.forEach(destroyMatchingRequirements);
+        req.tools && req.tools.forEach(destroyMatchingRequirements);
+    };
+
+    $scope.addRequirements = function(requirements, tools) {
+        requirements.forEach(function(requirement) {
+            if (tools) {
+                $scope.required.tools && $scope.required.tools.push(requirement);
+            } else {
+                $scope.required.mods && $scope.required.mods.push(requirement);
+            }
+        });
+    };
+
+    $scope.$on('rebuildMissing', function() {
+        $scope.$broadcast('rebuildMissingTools');
+        $scope.$broadcast('rebuildMissingMods');
+    });
+
+    $scope.removeDestroyedItems = function() {
+        var removeIfDestroyed = function(item, index, array) {
+            if (item._destroy) {
+                array.splice(index, 1);
+            }
+        };
+        var ml = $scope.mod_list; // an alias to make the code a bit shorter
+        ml.mods && ml.mods.forEach(removeIfDestroyed);
+        ml.tools && ml.tools.forEach(removeIfDestroyed);
+        ml.groups && ml.groups.forEach(removeIfDestroyed);
+        var req = $scope.required; // an alias to make the code a bit shorter
+        req.mods && req.mods.forEach(removeIfDestroyed);
+        req.tools && req.tools.forEach(removeIfDestroyed);
+    };
+
+    $scope.recoverDestroyedItems = function() {
+        var recoverIfDestroyed = function(item) {
+            if (item._destroy) {
+                delete item._destroy;
+            }
+        };
+        var req = $scope.required; // an alias to make the code a bit shorter
+        req.mods && req.mods.forEach(recoverIfDestroyed);
+        req.tools && req.tools.forEach(recoverIfDestroyed);
     };
 
     $scope.saveChanges = function() {
@@ -296,6 +303,7 @@ app.controller('modListController', function($scope, $q, $stateParams, $timeout,
 
         modListService.updateModList(modListDiff).then(function() {
             $scope.$emit('successMessage', 'Mod list saved successfully.');
+            $scope.removeDestroyedItems();
             delete $scope.originalModList;
             $scope.originalModList = angular.copy($scope.mod_list);
         }, function(response) {
@@ -306,6 +314,8 @@ app.controller('modListController', function($scope, $q, $stateParams, $timeout,
     $scope.discardChanges = function() {
         if (confirm("Are you sure you want to discard your changes?")) {
             $scope.mod_list = angular.copy($scope.originalModList);
+            $scope.recoverDestroyedItems();
+            $scope.$broadcast('rebuildModels');
             $scope.updateTabs();
         }
     };
