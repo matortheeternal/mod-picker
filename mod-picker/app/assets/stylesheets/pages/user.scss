@@ -36,6 +36,14 @@
         margin-left: 20px;
         font-weight: 500;
     }
+
+    .no-interaction {
+        cursor: default;
+
+        &:hover {
+            background-color: $action_color;
+        }
+    }
   }
 }
 

@@ -14,9 +14,13 @@
                 <section>
                     <div class="stat-item reputation">
                         {{user.reputation.overall | number}}
-                        <div class="action-box" ng-click="giveRep()">
+                        <div class="action-box" ng-click="giveRep()" ng-if="permissions.canEndorse">
                             <i class="fa {{user.repped ? 'fa-heart' : 'fa-heart-o'}}" aria-hidden="true"></i>
                             {{user.repped ? 'Take Back Reputation' : 'Give Reputation' }}
+                        </div>
+
+                        <div class="action-box no-interaction" ng-if="!permissions.canEndorse">
+                            You can't endorse any more people
                         </div>
                     </div>
                 </section>
