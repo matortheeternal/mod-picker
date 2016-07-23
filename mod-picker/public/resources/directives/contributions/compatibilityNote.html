@@ -42,8 +42,7 @@
             <span class="action-box green-box single" ng-if="note.status === 'make custom patch'" ng-click="resolve('add custom')" ng-class="{ 'disabled' : note.resolved }">Add Custom Patch Plugin</span>
             <span class="action-box red-box" ng-click="resolve('remove', 0)" ng-class="{ 'disabled' : note.resolved }">Remove {{note.mods[0].name}}</span>
             <span class="action-box red-box" ng-click="resolve('remove', 1)" ng-class="{ 'disabled' : note.resolved }">Remove {{note.mods[1].name}}</span>
-            <span class="action-box yellow-box single" ng-if="!note.ignored" ng-click="resolve('ignore')" ng-class="{ 'disabled' : note.resolved }">Ignore Issue</span>
-            <span class="action-box yellow-box single" ng-if="note.ignored" ng-click="resolve('unignore')" ng-class="{ 'disabled' : note.resolved }">Unignore Issue</span>
+            <span class="action-box yellow-box single" ng-click="resolve('ignore')" ng-class="{ 'disabled' : note.resolved }">{{note.ignored ? 'Unignore' : 'Ignore'}} Issue</span>
         </div>
     </div>
 </div>

@@ -225,12 +225,7 @@ app.controller('modListModsController', function($scope, modListService) {
                 $scope.addMod(options.note.compatibility_mod.id);
                 break;
             case "ignore":
-                options.note.ignored = true;
-                // TODO: Update $scope.mod_list.ignored_notes
-                $scope.buildUnresolvedCompatibility();
-                break;
-            case "unignore":
-                options.note.ignored = false;
+                options.note.ignored = !options.note.ignored;
                 // TODO: Update $scope.mod_list.ignored_notes
                 $scope.buildUnresolvedCompatibility();
                 break;
@@ -245,12 +240,7 @@ app.controller('modListModsController', function($scope, modListService) {
                 $scope.$broadcast('moveMod', {move: moveId, dest: destId});
                 break;
             case "ignore":
-                options.note.ignored = true;
-                // TODO: Update $scope.mod_list.ignored_notes
-                $scope.buildUnresolvedInstallOrder();
-                break;
-            case "unignore":
-                options.note.ignored = false;
+                options.note.ignored = !options.note.ignored;
                 // TODO: Update $scope.mod_list.ignored_notes
                 $scope.buildUnresolvedInstallOrder();
                 break;

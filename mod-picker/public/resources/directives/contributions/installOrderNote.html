@@ -33,8 +33,7 @@
         <div class="resolution-options order-options">
             <span class="action-box green-box" ng-click="resolve('move', 0)" ng-class="{ 'disabled' : note.resolved }">Move  {{note.mods[0].name}}</span>
             <span class="action-box green-box" ng-click="resolve('move', 1)" ng-class="{ 'disabled' : note.resolved }">Move  {{note.mods[1].name}}</span>
-            <span class="action-box yellow-box single" ng-if="!note.ignored" ng-click="resolve('ignore')" ng-class="{ 'disabled' : note.resolved }">Ignore Issue</span>
-            <span class="action-box yellow-box single" ng-if="note.ignored" ng-click="resolve('ignore')" ng-class="{ 'disabled' : note.resolved }">Unignore Issue</span>
+            <span class="action-box yellow-box single" ng-click="resolve('ignore')" ng-class="{ 'disabled' : note.resolved }">{{note.ignored ? 'Unignore' : 'Ignore'}} Issue</span>
         </div>
     </div>
 </div>
