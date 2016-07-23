@@ -41,7 +41,7 @@
             <span class="action-box red-box" ng-click="resolve('remove', 0)" ng-disabled="note.resolved">Remove {{note.mods[0].name}}</span>
             <span class="action-box red-box" ng-click="resolve('remove', 1)" ng-disabled="note.resolved">Remove {{note.mods[1].name}}</span>
             <span class="action-box yellow-box single" ng-if="!note.ignore" ng-click="resolve('ignore')" ng-disabled="note.resolved">Ignore Issue</span>
-            <span class="action-box yellow-box single" ng-if="note.ignore" ng-click="resolve('ignore')" ng-disabled="note.resolved">Unignore Issue</span>
+            <span class="action-box yellow-box single" ng-if="note.ignore" ng-click="resolve('unignore')" ng-disabled="note.resolved">Unignore Issue</span>
         </div>
     </div>
 </div>
