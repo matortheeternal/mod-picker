@@ -77,7 +77,8 @@ app.controller('modListController', function($scope, $q, $stateParams, $timeout,
     $scope.retrieving = {}; // this can be removed when we make states sticky
     $scope.show = { // this can be removed when we make states sticky
         missing_tools: true,
-        missing_mods: true
+        missing_mods: true,
+        unresolved_compatibility: true
     };
     $scope.add = {
         tool: {},
