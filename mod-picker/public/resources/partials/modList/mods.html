@@ -35,8 +35,11 @@
                     <a href="#/mod/{{requirement.required_mod.id}}">{{requirement.required_mod.name}}</a>
                     is required by
                     <a href="#/mod/{{requirement.mod.id}}">{{requirement.mod.name}}</a>
-                    <span class="action-box green-box" ng-click="addMod(requirement.required_mod.id)" title="Add {{requirement.required_mod.name}}">Add Requirement</span>
-                    <span class="action-box red-box" ng-click="removeMod(findMod(requirement.mod.id))" title="Remove {{requirement.mod.name}}">Remove Requirer</span>
+                    <!-- resolution options -->
+                    <span ng-if="editing">
+                        <span class="action-box green-box" ng-click="addMod(requirement.required_mod.id)" title="Add {{requirement.required_mod.name}}">Add Requirement</span>
+                        <span class="action-box red-box" ng-click="removeMod(findMod(requirement.mod.id))" title="Remove {{requirement.mod.name}}">Remove Requirer</span>
+                    </span>
                 </li>
             </ul>
             <div ng-show="show.missing_mods && !required.missing_mods.length" class="content-message">
@@ -64,14 +67,14 @@
         </div>
         <div class="content-container">
             <div ng-if="show.unresolved_compatibility" ng-repeat="note in notes.unresolved_compatibility" class="content-block">
-                <compatibility-note note="note" index="100 + $index" current-user="currentUser" show-resolution-options="true"></compatibility-note>
+                <compatibility-note note="note" index="100 + $index" current-user="currentUser" show-resolution-options="editing"></compatibility-note>
             </div>
             <div ng-show="show.unresolved_compatibility && !notes.unresolved_compatibility.length" class="content-message">
                 No unresolved compatibility issues to display.
             </div>
 
             <div ng-if="!show.unresolved_compatibility" ng-repeat="note in notes.compatibility" class="content-block" ng-hide="note._destroy">
-                <compatibility-note note="note" index="100 + $index" current-user="currentUser" show-resolution-options="true"></compatibility-note>
+                <compatibility-note note="note" index="100 + $index" current-user="currentUser" show-resolution-options="editing"></compatibility-note>
             </div>
             <div ng-show="!show.unresolved_compatibility && isEmpty(notes.compatibility)" class="content-message">
                 No compatibility issues to display.
@@ -87,14 +90,14 @@
         </div>
         <div class="content-container">
             <div ng-if="show.unresolved_install_order" ng-repeat="note in notes.unresolved_install_order" class="content-block">
-                <install-order-note note="note" index="100 + $index" current-user="currentUser" show-resolution-options="true"></install-order-note>
+                <install-order-note note="note" index="100 + $index" current-user="currentUser" show-resolution-options="editing"></install-order-note>
             </div>
             <div ng-show="show.unresolved_install_order && !notes.unresolved_install_order.length" class="content-message">
                 No unresolved install order issues to display.
             </div>
 
             <div ng-if="!show.unresolved_install_order" ng-repeat="note in notes.install_order" class="content-block" ng-hide="note._destroy">
-                <install-order-note note="note" index="500 + $index" current-user="currentUser" show-resolution-options="true"></install-order-note>
+                <install-order-note note="note" index="500 + $index" current-user="currentUser" show-resolution-options="editing"></install-order-note>
             </div>
             <div ng-show="!show.unresolved_install_order && isEmpty(notes.install_order)" class="content-message">
                 No install order issues to display.
