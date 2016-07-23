@@ -23,13 +23,17 @@ app.config(['$stateProvider', function ($stateProvider) {
             }
         }).state('base.user.Social', {
             templateUrl: '/resources/partials/user/social.html',
-            controller: 'userSocialTabController'
+            controller: 'userSocialTabController',
+            url: '/social'
         }).state('base.user.Mod Lists', {
-            templateUrl: '/resources/partials/user/lists.html'
+            templateUrl: '/resources/partials/user/lists.html',
+            url: '/mod-lists'
         }).state('base.user.Mods', {
-            templateUrl: '/resources/partials/user/mods.html'
+            templateUrl: '/resources/partials/user/mods.html',
+            url: '/mods'
         }).state('base.user.Contributions', {
-            templateUrl: '/resources/partials/user/contributions.html'
+            templateUrl: '/resources/partials/user/contributions.html',
+            url: '/contributions'
         });
 }]);
 
