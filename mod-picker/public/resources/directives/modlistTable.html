@@ -13,7 +13,9 @@
         </thead>
         <tbody>
             <tr ng-repeat="modlist in modlists">
-                <td class="name-column">{{modlist.name}}</td>
+                <td class="name-column">
+                    <a ui-state="'base.mod-list'" ui-state-params="{modListId: modlist.id}">{{modlist.name}}</a>
+                </td>
                 <td>{{modlist.mods_count}}</td>
                 <td>{{modlist.status}}</td>
                 <td>{{modlist.stars_count}}</td>
