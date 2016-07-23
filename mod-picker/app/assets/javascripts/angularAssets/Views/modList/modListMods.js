@@ -147,9 +147,13 @@ app.controller('modListModsController', function($scope, modListService) {
     };
 
     $scope.findMod = function(modId, ignoreDestroyed) {
-        return $scope.mod_list.mods.find(function(modListMod) {
-            return (ignoreDestroyed ? !modListMod._destroy : true) && modListMod.mod.id == modId;
+        var foundMod = $scope.mod_list.mods.find(function(modListMod) {
+            return modListMod.mod.id == modId;
         });
+        if (foundMod && ignoreDestroyed && foundMod._destroy) {
+            return;
+        }
+        return foundMod;
     };
 
     $scope.addMod = function(modId) {
