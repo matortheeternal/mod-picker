@@ -79,7 +79,11 @@
         margin-top: 2px;
       }
 
-      .green-box, .yellow-box {
+      .green-box {
+        margin-bottom: 14px !important;
+      }
+
+      .yellow-box {
         margin-top: 14px !important;
       }
     }
