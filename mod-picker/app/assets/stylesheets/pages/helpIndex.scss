@@ -1,6 +1,18 @@
 .landing-page-container {
   // min height set so footer doesn't cover bottom content
   padding-bottom: 90px;
+
+  // links
+  a:link,
+  a:visited {
+    color: $link_hover_color_primary;
+    text-decoration: none;
+  }
+
+  a:hover,
+  a:active {
+    color: $link_hover_color_secondary;
+  }
 }
 
 .landing-header {

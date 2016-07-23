@@ -1,6 +1,6 @@
 <div class="help-page-content">
   <div class="help-page-header">
-    <img class="header-img" src="<%= @help_page.banner %>" alt="">
+    <img class="header-img" src="<%= @help_page.display_image %>" alt="">
     <h1 class="page-title"><%= @help_page.name %></h1>
     
     <span class="meta author" title="Author">
@@ -30,7 +30,7 @@
     </div>
     <span class="meta category" title="Category">
       <i class="fa fa-folder" aria-hidden="true"></i>
-      <%= @help_page.category %>
+      <%= @help_page.category.humanize %>
     </span>
   </div>
   <!-- enddate -->

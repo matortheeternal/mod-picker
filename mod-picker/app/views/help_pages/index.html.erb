@@ -6,30 +6,18 @@
 
   <div class="primary-category-container category-container clearfix">
     <ul class="primary-categories-list categories-list">
+      <% @categories.each do |category| %> 
       <li class="primary-page page">
         <div class="primary-page-content page-content">
-          <a href="#"><img src="https://www.placehold.it/500x270" alt="Mod Picker help pages preview image"></a>
+          <a href=<%= "/help/category/#{category[0]}" %>><img src="https://www.placehold.it/500x270" alt="Modding Help pages preview image"></a>
           <div class="primary-details page-details">
-            <h3>How to use the Mod Picker website</h3>
+            <h3>
+              <a href=<%= "/help/category/#{category[0]}" %>><%= category[0].humanize %></a>
+              </h3>
           </div>
         </div>
       </li>
-      <li class="primary-page page">
-        <div class="primary-page-content page-content">
-          <a href=""><img src="https://www.placehold.it/500x270" alt="Modding Help pages preview image"></a>
-          <div class="primary-details page-details">
-            <h3>Articles on general Modding information</h3>
-          </div>
-        </div>
-      </li>
-      <li class="primary-page page">
-        <div class="primary-page-content page-content">
-          <a href=""><img src="https://www.placehold.it/500x270" alt="Guides help pages preview image"></a>
-          <div class="primary-details page-details">
-            <h3>Articles on how to use different modding tools and applications</h3>
-          </div>
-        </div>
-      </li>
+      <% end %>
     </ul>
   </div>
 
@@ -44,9 +32,13 @@
       <% @games.each do |game| %>
       <li class="game-page page">
         <div class="game-page-content page-content">
-          <a href="#"><img src="<%= game.display_image %>" alt="<%=game.display_name %> help page preview"></a>
+          <a href=<%= "/help/game/" + game.display_name.parameterize.underscore %>>
+            <img src="<%= game.display_image %>" alt="<%=game.display_name %> help page preview">
+          </a>
           <div class="game-details">
-            <h3><%= link_to game.long_name, games_path(game.id) %></h3>
+            <h3>
+              <a href=<%= "/help/game/#{game.display_name}" %>><%= game.long_name %></a>
+              </h3>
           </div>
         </div>
       </li>

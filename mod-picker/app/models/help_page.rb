@@ -18,7 +18,7 @@ class HelpPage < ActiveRecord::Base
   before_save :set_dates
 
   # show image banner via post id
-  def banner
+  def display_image
     png_path = File.join(Rails.public_path, "help_pages/#{id}.png")
     jpg_path = File.join(Rails.public_path, "help_pages/#{id}.jpg")
     if File.exists?(png_path)

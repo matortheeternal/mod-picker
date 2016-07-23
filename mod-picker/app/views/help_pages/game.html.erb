@@ -1,0 +1,12 @@
+<div class="game-page">
+  <h1><%= @game.long_name %></h1>
+  <ul>
+    <% @help_pages.each do |page| %>
+      <%= link_to "/help/#{page.id}", method: :get do %>
+        <h2><%= page.name %></h2>
+      <% end %>
+      <span><%= page.category %></span>
+      <span><%= page.game.display_name %></span>
+    <% end %>
+  </ul>
+</div>

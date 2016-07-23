@@ -4,8 +4,7 @@ class HelpPagesController < ApplicationController
 
   def index
     @games = Game.all
-    # Render home page
-    # TODO: rename to render help_pages/index
+    @categories = HelpPage.categories
     render "help_pages/index"
   end
 
@@ -18,6 +17,20 @@ class HelpPagesController < ApplicationController
 
 
     render "help_pages/show" 
+  end
+
+  def game
+    @game = Game.find_by_display_name(params[:game].humanize)
+    @help_pages = HelpPage.where(game_id: @game.id)
+
+    render "help_pages/game"
+  end
+
+  def category
+    @category = params[:category]
+    @help_pages = HelpPage.where(category: HelpPage.categories[params[:category]]) 
+
+    render "help_pages/category"
   end
 
   private
