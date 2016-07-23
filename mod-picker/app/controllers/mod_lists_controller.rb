@@ -45,12 +45,18 @@ class ModListsController < ApplicationController
     authorize! :read, @mod_list
     mods = @mod_list.mod_list_mods.utility(false).includes(:mod => :required_mods).order(:index)
     groups = @mod_list.mod_list_groups.where(tab: 1).order(:index)
+    compatibility_notes = @mod_list.mod_compatibility_notes
+    c_helpful_marks = HelpfulMark.where(submitted_by: current_user.id, helpfulable_type: "CompatibilityNote", helpfulable_id: compatibility_notes.ids)
+    install_order_notes = @mod_list.install_order_notes
+    i_helpful_marks = HelpfulMark.where(submitted_by: current_user.id, helpfulable_type: "InstallOrderNote", helpfulable_id: install_order_notes.ids)
     render :json => {
         mods: mods,
         groups: groups,
         required_mods: @mod_list.required_mods,
-        compatibility_notes: @mod_list.mod_compatibility_notes,
-        install_order_notes: @mod_list.install_order_notes
+        compatibility_notes: compatibility_notes,
+        install_order_notes: install_order_notes,
+        c_helpful_marks: c_helpful_marks,
+        i_helpful_marks: i_helpful_marks
     }
   end
 
