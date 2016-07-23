@@ -12,7 +12,7 @@
         </div>
     </div>
 
-    <div class="content-block" ng-show="mod_list.mods.length">
+    <div class="content-block">
         <div class="content-title">Mods
             <span class="right-item action-box" ng-if="editing" ng-click="addGroup('mods')">
                 <i class="fa fa-plus"></i> New Group
@@ -103,17 +103,6 @@
                 No install order issues to display.
             </div>
         </div>
-    </div>
-
-    <div class="content-block" ng-show="mod_list.asset_conflicts">
-        <div class="content-title">Asset Conflicts</div>
-        <div class="content-container">
-            Mods: Asset Conflicts Container.  Will be a directive.
-        </div>
-    </div>
-
-    <div class="content-message" ng-hide="mod_list.mods.length">
-        There are no mods in this mod list.
     </div>
 
     <div class="action-button-container" ng-if="editing">
