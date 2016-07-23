@@ -36,16 +36,6 @@ app.controller('compatibilityNoteController', function ($scope) {
         }
     };
 
-    $scope.getResolutionStatus = function() {
-        if ($scope.note.ignored) {
-            return "Ignored";
-        } else if ($scope.note.resolved) {
-            return "Resolved";
-        } else {
-            return "Unresolved";
-        }
-    };
-
     $scope.resolve = function(action, index) {
         if ($scope.note.resolved) {
             return;

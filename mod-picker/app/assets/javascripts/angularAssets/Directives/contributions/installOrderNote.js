@@ -21,16 +21,6 @@ app.controller('installOrderNoteController', function ($scope) {
     $scope.showUserColumn = angular.isDefined($scope.showUserColumn) ? $scope.showUserColumn : true;
     $scope.showActions = angular.isDefined($scope.showActions) ? $scope.showActions : true;
 
-    $scope.getResolutionStatus = function() {
-        if ($scope.note.ignored) {
-            return "Ignored";
-        } else if ($scope.note.resolved) {
-            return "Resolved";
-        } else {
-            return "Unresolved";
-        }
-    };
-
     $scope.resolve = function(action, index) {
         if ($scope.note.resolved) {
             return;

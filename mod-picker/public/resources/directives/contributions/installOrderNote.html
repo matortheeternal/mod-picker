@@ -27,7 +27,9 @@
         <contribution-actions target="note" ng-if="showActions" model-name="InstallOrderNote" index="index" current-user="currentUser" edit="edit" has-history="true"></contribution-actions>
     </div>
     <div ng-if="showResolutionOptions" class="resolution-column">
-        <div class="resolution-status">{{getResolutionStatus()}}</div>
+        <div class="resolution-status">
+            {{note.ignored ? "Ignored" : note.resolved ? "Resolved" : "Unresolved"}}
+        </div>
         <div class="resolution-options order-options">
             <span class="action-box green-box" ng-click="resolve('move', 0)" ng-class="{ 'disabled' : note.resolved }">Move  {{note.mods[0].name}}</span>
             <span class="action-box green-box" ng-click="resolve('move', 1)" ng-class="{ 'disabled' : note.resolved }">Move  {{note.mods[1].name}}</span>
