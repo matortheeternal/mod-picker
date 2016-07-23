@@ -26,23 +26,29 @@ app.controller('modListModsController', function($scope, modListService) {
     $scope.buildUnresolvedCompatibility = function() {
         $scope.notes.unresolved_compatibility = [];
         $scope.notes.compatibility.forEach(function(note) {
-            // skip destroyed notes
-            if (note._destroy) {
+            // skip destroyed or ignored notes
+            if (note._destroy || note.ignore) {
                 return;
             }
-            // TODO: Skip notes that are ignored
             switch (note.status) {
                 case 'incompatible':
                 case 'partially compatible':
                     // unresolved if both mods are present
                     if ($scope.findMod(note.mods[0].id, true) && $scope.findMod(note.mods[1].id, true)) {
+                        note.resolved = false;
                         $scope.notes.unresolved_compatibility.push(note);
+                    } else {
+                        note.resolved = true;
                     }
                     break;
                 case 'compatibility mod':
-                    // unresolved if the compatibility mod is not present
-                    if (!$scope.findMod(note.compatibility_mod_id, true)) {
+                    // unresolved if the compatibility mod is not present and both mods are present
+                    if (!$scope.findMod(note.compatibility_mod_id, true) &&
+                        $scope.findMod(note.mods[0].id, true) && $scope.findMod(note.mods[1].id, true)) {
+                        note.resolved = false;
                         $scope.notes.unresolved_compatibility.push(note);
+                    } else {
+                        note.resolved = true;
                     }
                     break;
             }
@@ -52,16 +58,18 @@ app.controller('modListModsController', function($scope, modListService) {
     $scope.buildUnresolvedInstallOrder = function() {
         $scope.notes.unresolved_install_order = [];
         $scope.notes.install_order.forEach(function(note) {
-            // skip destroyed notes
-            if (note._destroy) {
+            // skip destroyed or ignored notes
+            if (note._destroy || note.ignore) {
                 return;
             }
-            // TODO: Skip notes that are ignored
             var first_mod = $scope.findMod(note.mods[0].id, true);
             var second_mod = $scope.findMod(note.mods[1].id, true);
             // unresolved if the both mods are present and the first mod comes after the second mod
             if (first_mod && second_mod && first_mod.index > second_mod.index) {
+                note.resolved = false;
                 $scope.notes.unresolved_install_order.push(note);
+            } else {
+                note.resolved = true;
             }
         });
     };
