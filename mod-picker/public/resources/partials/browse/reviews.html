@@ -1,58 +1,72 @@
 <two-columns>
-    <div class="column-wrapper">
-        <div class="left-column left-browse-column">
-            <h2>Filters</h2>
-            <div id="search-filter" class="filter-section">
-                <h3>Search</h3>
-                <!-- TODO: Use directives here -->
+    <div class="page-container">
+        <div class="column-wrapper">
+            <div class="left-column left-browse-column" style="width:250px; padding: 40px 48px 40px 0;">
+                <h2>Filters</h2>
 
-                <h4>Submitted by</h4>
-                <input id="submitted_text" type="text" title="Submitted by">
+                <div class="filter-section">
+                    <h3>Search</h3>
+                    <h4>Text</h4>
+                    <input type="text" ng-model="filters.search">
 
-                <h4>Mod</h4>
-                <input id="mod_text" type="text" title="Mod">
-            </div>
-            <div id="date-filters" class="filter-section">
-                <h3>Date Filters</h3>
-                <h4>Date Submitted</h4>
-                <slider data="data.submitted" type="UserGeneratedListDateSlider"></slider>
+                    <h4>Submitter</h4>
+                    <input type="text" ng-model="filters.submitter">
 
-                <h4>Date Edited</h4>
-                <slider data="data.edited" type="UserGeneratedListDateSlider"></slider>
-            </div>
-            <div id="rating-filter" class="filter-section">
-                <h3>Rating</h3>
-                <slider data="data.rating" type="BaseRangeSlider" attr="100"></slider>
-            </div>
-            <div id="standing-filters" class="filter-section">
-                <h3>Standing</h3>
-                <div class="sidebar-box">
-                    <ul class="filter-list">
-                        <li>
-                            <input id="standing_good" type="checkbox">
-                            <label for="standing_good">Good</label>
-                        </li>
-                        <li>
-                            <input id="standing_unknown" type="checkbox">
-                            <label for="standing_unknown">Unknown</label>
-                        </li>
-                        <li>
-                            <input id="standing_bad" type="checkbox">
-                            <label for="standing_bad">Bad</label>
-                        </li>
-                    </ul>
+                    <h4>Editor</h4>
+                    <input type="text" ng-model="filters.editor">
+                </div>
+
+                <div class="filter-section">
+                    <h3>Date Filters</h3>
+                    <div ng-repeat="filter in dateFilters">
+                        <h4>{{filter.label}}
+                            <!--<span class="filter-controls">
+                                <span class="fa fa-calendar" ng-click="" title="Custom Date"></span>
+                            </span>-->
+                        </h4>
+                        <slider filters="filters" data="filter.data" type="UserDateSlider"></slider>
+                    </div>
+                </div>
+
+                <div class="filter-sections" ng-if="statFilters.length">
+                    <h3>Statistic Filters</h3>
+                    <div class="filter-section">
+                        <div ng-repeat="filter in statFilters" ng-show="filter.common || expanded.stat">
+                            <h4>{{filter.label}}
+                                <!--<span class="filter-controls" ng-if="filter.max > 500">
+                                    <span class="fa fa-wrench" ng-click="" title="Custom Value"></span>
+                                </span>-->
+                            </h4>
+                            <slider filters="filters" data="filter.data" type="{{filter.max > 500 ? 'StepSlider' : 'CeilSlider'}}" attr="{{filter.max}}"></slider>
+                        </div>
+                    </div>
+
+                    <expander expanded="expanded" key="stat"></expander>
                 </div>
             </div>
-            <div id="helpfulness-filter" class="filter-section">
-                <h3>Helpfulness</h3>
-                <slider data="data.helpfulness" type="StepSlider" attr="500"></slider>
+
+            <div class="right-column right-browse-column">
+                <h2>Reviews <span class="right-item">
+                    <sort-control></sort-control>
+                </span></h2>
+                <loader data="reviews" content-class="grid-results" spinner-class="big-spinner" ng-if="!error">
+                    <div class="content-block" ng-repeat="review in reviews">
+                        <review current-user="currentUser" review="review" show-user-column="true" show-mod="true" index="100"></review>
+                    </div>
+
+                    <div class="content-message" ng-hide="reviews.length">
+                        No Reviews were found matching your search criteria.
+                    </div>
+
+                    <page-results pages="pages" data="reviews" callback="getData"></page-results>
+                </loader>
+
+                <div class="content-message content-error" ng-if="error">
+                    There was an error retrieving Reviews.<br>
+                    <!--TODO: Render JSON errors here, if available?-->
+                    Error {{error.status}}: {{error.statusText}}
+                </div>
             </div>
-        </div>
-        <div class="right-column right-browse-column">
-            <h2>Reviews</h2>
-            <loader data="reviews" spinner-class="big-spinner">
-                <review-results data="reviews"></review-results>
-            </loader>
         </div>
     </div>
 </two-columns>

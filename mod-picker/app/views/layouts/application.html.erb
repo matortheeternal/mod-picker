@@ -1,33 +1,35 @@
 <!DOCTYPE html>
 <html lang="en" ng-app="modPicker">
 <head>
-  <meta charset="UTF-8">
-  <title>Mod Picker: <%= @current_game.display_name %></title>
-  <link href='https://fonts.googleapis.com/css?family=Roboto:400,700,500' rel='stylesheet' type='text/css'>
-  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
-  <%= stylesheet_link_tag 'rzslider.min' %>
-  <%= stylesheet_link_tag 'simplemde.min' %>
-  <script>
-    window._token = '<%= form_authenticity_token %>';
-    window._current_game_id = <%= @current_game.id %>;
-    window._stylesheets = {
-      Whiterun: "<%= stylesheet_path 'Whiterun' %>",
-      Darkwater: "<%= stylesheet_path 'Darkwater' %>",
-      Blackreach: "<%= stylesheet_path 'Blackreach' %>",
-      'High Hrothgar': "<%= stylesheet_path 'High Hrothgar' %>"
-    }
-  </script>
-  <link ng-controller="themesController" rel="stylesheet" ng-href="{{currentTheme}}" />
+    <meta charset="UTF-8">
+    <title>Mod Picker: <%= @current_game.display_name %></title>
+    <link href='https://fonts.googleapis.com/css?family=Roboto:400,700,500' rel='stylesheet' type='text/css'>
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+    <%= stylesheet_link_tag 'rzslider.min' %>
+    <%= stylesheet_link_tag 'simplemde.min' %>
+    <%= javascript_include_tag 'angular.min.1.5.1' %>
+    <script>
+        window._token = '<%= form_authenticity_token %>';
+        window._current_game_id = <%= @current_game.id %>;
+        window._stylesheets = {
+            Whiterun: "<%= stylesheet_path 'Whiterun' %>",
+            Darkwater: "<%= stylesheet_path 'Darkwater' %>",
+            Blackreach: "<%= stylesheet_path 'Blackreach' %>",
+            'High Hrothgar': "<%= stylesheet_path 'High Hrothgar' %>"
+        }
+    </script>
+    <link ng-controller="themesController" rel="stylesheet" ng-href="{{currentTheme}}" ng-init="currentTheme = '<%= stylesheet_path @current_theme %>'" />
 </head>
 
 <body ng-cloak ng-controller="bodyController" ng-class="{ 'no-scroll' : modalVisible }">
     <%= yield %>
 
     <!-- defered load of scripts, which is way more performant for browsers -->
-    <%= javascript_include_tag 'angular.min.1.5.1' %>
     <%= javascript_include_tag 'marked.min' %>
     <%= javascript_include_tag 'angular-marked.min' %>
+    <%= javascript_include_tag 'angular-drag-and-drop-lists.min' %>
     <%= javascript_include_tag 'angular-ui-router.min' %>
+    <%= javascript_include_tag 'ct-ui-router-extras.min' %>
     <%= javascript_include_tag 'angular-smooth-scroll.min' %>
     <%= javascript_include_tag 'heartcode-canvasloader-min' %>
     <%= javascript_include_tag 'angular-relative-date.min' %>

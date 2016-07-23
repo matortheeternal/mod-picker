@@ -9,7 +9,8 @@ app.directive('comment', function () {
             index: '=',
             saveCallback: '=',
             isChild: '=?',
-            eventPrefix: '=?'
+            eventPrefix: '=?',
+            showContext: '=?'
         }
     };
 });
@@ -38,6 +39,8 @@ app.controller('commentController', function ($scope, $filter, $timeout, contrib
     $scope.reply = function() {
         $scope.activeComment = {
             parent_id: $scope.comment.id,
+            commentable_id: $scope.comment.commentable_id,
+            commentable_type: $scope.comment.commentable_type.slice(0),
             text_body: ""
         };
 
@@ -52,6 +55,9 @@ app.controller('commentController', function ($scope, $filter, $timeout, contrib
     $scope.edit = function() {
         $scope.comment.editing = true;
         $scope.activeComment = {
+            parent_id: $scope.comment.parent_id,
+            commentable_id: $scope.comment.commentable_id,
+            commentable_type: $scope.comment.commentable_type.slice(0),
             text_body: $scope.comment.text_body.slice(0),
             original: $scope.comment,
             editing: true

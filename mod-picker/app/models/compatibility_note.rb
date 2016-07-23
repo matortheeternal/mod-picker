@@ -1,12 +1,33 @@
 class CompatibilityNote < ActiveRecord::Base
-  include Filterable, Sortable, RecordEnhancements
-
-  scope :by, -> (id) { where(submitted_by: id) }
-  scope :mod, -> (id) { where(first_mod_id: id).or(second_mod_id: id) }
-  scope :type, -> (array) { where(compatibility_type: array) }
+  include Filterable, Sortable, RecordEnhancements, Correctable, Helpfulable, Reportable
 
   enum status: [ :incompatible, :"partially incompatible", :"compatibility mod", :"compatibility option", :"make custom patch" ]
 
+  # BOOLEAN SCOPES (excludes content when false)
+  scope :include_hidden, -> (bool) { where(hidden: false) if !bool  }
+  scope :include_adult, -> (bool) { where(has_adult_content: false) if !bool }
+  # GENERAL SCOPES
+  scope :visible, -> { where(hidden: false, approved: true) }
+  scope :game, -> (game_id) { where(game_id: game_id) }
+  scope :search, -> (text) { where("compatibility_notes.text_body like ?", "%#{text}%") }
+  scope :submitter, -> (username) { joins(:submitter).where(:users => {:username => username}) }
+  scope :status, -> (statuses_hash) {
+    # build commentables array
+    statuses = []
+    statuses_hash.each_with_index do |(key,value),index|
+      if statuses_hash[key]
+        statuses.push(index)
+      end
+    end
+
+    # return query
+    where(status: statuses)
+  }
+  # RANGE SCOPES
+  scope :submitted, -> (range) { where(submitted: parseDate(range[:min])..parseDate(range[:max])) }
+  scope :edited, -> (range) { where(edited: parseDate(range[:min])..parseDate(range[:max])) }
+
+  # ASSOCIATIONS
   belongs_to :game, :inverse_of => 'compatibility_notes'
   belongs_to :submitter, :class_name => 'User', :foreign_key => 'submitted_by', :inverse_of => 'compatibility_notes'
   belongs_to :editor, :class_name => 'User', :foreign_key => 'edited_by'
@@ -23,11 +44,6 @@ class CompatibilityNote < ActiveRecord::Base
   has_many :mod_list_compatibility_notes, :inverse_of => 'compatibility_note'
   has_many :mod_lists, :through => 'mod_list_compatibility_notes', :inverse_of => 'compatibility_notes'
 
-  # community feedback on this compatibility note
-  has_many :helpful_marks, :as => 'helpfulable'
-  has_many :corrections, :as => 'correctable'
-  has_one :base_report, :as => 'reportable'
-
   # old versions of this compatibility note
   has_many :history_entries, :class_name => 'CompatibilityNoteHistoryEntry', :inverse_of => 'compatibility_note', :foreign_key => 'compatibility_note_id'
   has_many :editors, -> { uniq }, :class_name => 'User', :through => 'history_entries'
@@ -37,47 +53,46 @@ class CompatibilityNote < ActiveRecord::Base
   # Validations
   validates :game_id, :submitted_by, :status, :first_mod_id, :second_mod_id, :text_body, presence: true
   validates :text_body, length: { in: 256..16384 }
+  validate :unique_mods
 
   # Callbacks
   after_create :increment_counters
   before_save :set_dates
   before_destroy :decrement_counters
 
+  def unique_mods
+    if first_mod_id == second_mod_id
+      errors.add(:mods, "You cannot create a Compatibility Note between a mod and itself.")
+      return
+    end
+
+    mod_ids = [first_mod_id, second_mod_id]
+    note = CompatibilityNote.where(first_mod_id: mod_ids, second_mod_id: mod_ids, hidden: false).where.not(id: self.id).first
+    if note.present?
+      if note.approved
+        errors.add(:mods, "A Compatibility Note for these mods already exists.")
+        errors.add(:link_id, note.id)
+      else
+        errors.add(:mods, "An unapproved Compatibility Note for these mods already exists.")
+      end
+    end
+  end
+
   def mods
     [first_mod, second_mod]
   end
 
   def create_history_entry
+    edit_summary = self.edited_by.nil? ? "Compatibility Note Created" : self.edit_summary
     self.history_entries.create(
       edited_by: self.edited_by || self.submitted_by,
       status: self.status,
       compatibility_mod_id: self.compatibility_mod_id,
       compatibility_plugin_id: self.compatibility_plugin_id,
       text_body: self.text_body,
-      edit_summary: self.edit_summary,
+      edit_summary: edit_summary || "",
       edited: self.edited || self.submitted
     )
-  end
-
-  def compute_reputation
-    # TODO: We could base this off of the reputation of the people who marked the review helpful/not helpful, but we aren't doing that yet
-    user_rep = self.submitter.reputation.overall
-    helpfulness = (self.helpful_count - self.not_helpful_count)
-    if user_rep < 0
-      self.reputation = user_rep + helpfulness
-    else
-      user_rep_factor = 2 / (1 + Math::exp(-0.0075 * (user_rep - 640)))
-      if self.helpful_count < self.not_helpful_count
-        self.reputation = (1 - user_rep_factor / 2) * helpfulness
-      else
-        self.reputation = (1 + user_rep_factor) * helpfulness
-      end
-    end
-  end
-
-  def recompute_helpful_counts
-    self.helpful_count = HelpfulMark.where(helpfulable_id: self.id, helpfulable_type: "CompatibilityNote", helpful: true).count
-    self.not_helpful_count = HelpfulMark.where(helpfulable_id: self.id, helpfulable_type: "CompatibilityNote", helpful: false).count
   end
 
   def as_json(options={})

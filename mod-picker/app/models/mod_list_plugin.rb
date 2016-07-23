@@ -1,6 +1,5 @@
 class ModListPlugin < ActiveRecord::Base
-
-  self.primary_keys = :mod_list_id, :plugin_id
+  include RecordEnhancements
 
   belongs_to :mod_list, :inverse_of => 'mod_list_plugins'
   belongs_to :plugin, :inverse_of => 'mod_list_plugins'
@@ -8,10 +7,29 @@ class ModListPlugin < ActiveRecord::Base
   # Validations
   validates :mod_list_id, :plugin_id, :index, presence: true
   validates :active, inclusion: [true, false]
+  # can only have a mod on a given mod list once
+  validates :plugin_id, uniqueness: { scope: :mod_list_id, :message => "The plugin is already present on the mod list." }
 
   # Callbacks
   after_create :increment_counters
   before_destroy :decrement_counters
+
+  def as_json(options={})
+    if JsonHelpers.json_options_empty(options)
+      # TODO: Revise this as necessary
+      default_options = {
+          :only => [:index, :group_id, :active],
+          :include => {
+              :plugin => {
+                  :only => [:id, :filename]
+              }
+          }
+      }
+      super(options.merge(default_options))
+    else
+      super(options)
+    end
+  end
 
   private
     def increment_counters

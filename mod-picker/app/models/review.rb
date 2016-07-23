@@ -1,27 +1,28 @@
 class Review < ActiveRecord::Base
-  include Filterable, Sortable, RecordEnhancements
+  include Filterable, Sortable, RecordEnhancements, Helpfulable, Reportable
 
-  scope :game, -> (id) { where(game_id: id) }
-  scope :user, -> (id) { where(submitted_by: id) }
-  scope :mod, -> (mod) { where(mod_id: mod) }
-  scope :submitted, -> (low, high) { where(submitted: parseDate(low)..parseDate(high)) }
-  scope :edited, -> (low, high) { where(edited: parseDate(low)..parseDate(high)) }
-  scope :hidden, -> (bool) { where(hidden: bool) }
-  scope :approved, -> (bool) { where(approved: bool) }
-  scope :helpful_count, -> (low, high) { where(helpful_count: low..high) }
-  scope :not_helpful_count, -> (low, high) { where(not_helpful_count: low..high) }
-  scope :ratings_count, -> (low, high) { where(ratings_count: low..high) }
-  scope :overall_rating, -> (low, high) { where(overall_rating: low..high) }
+  # BOOLEAN SCOPES (excludes content when false)
+  scope :include_hidden, -> (bool) { where(hidden: false) if !bool  }
+  scope :include_adult, -> (bool) { where(has_adult_content: false) if !bool }
+  # GENERAL SCOPES
+  scope :visible, -> { where(hidden: false, approved: true) }
+  scope :game, -> (game_id) { where(game_id: game_id) }
+  scope :search, -> (text) { where("text_body like ?", "%#{text}%") }
+  scope :submitter, -> (username) { joins(:submitter).where(:users => {:username => username}) }
+  scope :editor, -> (username) { joins(:editor).where(:users => {:username => username}) }
+  # RANGE SCOPES
+  scope :overall_rating, -> (range) { where(overall_rating: range[:min]..range[:max]) }
+  scope :ratings_count, -> (range) { where(ratings_count: range[:min]..range[:max]) }
+  scope :submitted, -> (range) { where(submitted: parseDate(range[:min])..parseDate(range[:max])) }
+  scope :edited, -> (range) { where(edited: parseDate(range[:min])..parseDate(range[:max])) }
 
+  # ASSOCIATIONS
   belongs_to :game, :inverse_of => 'reviews'
   belongs_to :submitter, :class_name => 'User', :foreign_key => 'submitted_by', :inverse_of => 'reviews'
   belongs_to :editor, :class_name => 'User', :foreign_key => 'edited_by'
   belongs_to :mod, :inverse_of => 'reviews'
 
   has_many :review_ratings, :inverse_of => 'review'
-
-  has_many :helpful_marks, :as => 'helpfulable'
-  has_one :base_report, :as => 'reportable'
 
   accepts_nested_attributes_for :review_ratings
 
@@ -30,6 +31,8 @@ class Review < ActiveRecord::Base
   # Validations
   validates :game_id, :submitted_by, :mod_id, :text_body, presence: true
   validates :text_body, length: {in: 512..32768}
+  # only one review per mod per user
+  validates :mod_id, uniqueness: { scope: :submitted_by, :message => "You've already submitted a review for this mod." }
 
   # Callbacks
   after_create :increment_counters
@@ -67,27 +70,29 @@ class Review < ActiveRecord::Base
     self.overall_rating = (total.to_f / count) if count > 0
   end
 
-  def compute_reputation
-    # TODO: We could base this off of the reputation of the people who marked the review helpful/not helpful, but we aren't doing that yet
-    user_rep = self.submitter.reputation.overall
-    helpfulness = (self.helpful_count - self.not_helpful_count)
-    if user_rep < 0
-      self.reputation = user_rep + helpfulness
-    else
-      user_rep_factor = 2 / (1 + Math::exp(-0.0075 * (user_rep - 640)))
-      if self.helpful_count < self.not_helpful_count
-        self.reputation = (1 - user_rep_factor / 2) * helpfulness
-      else
-        self.reputation = (1 + user_rep_factor) * helpfulness
-      end
-    end
+  def self.index_json(collection)
+    collection.as_json({
+        :include => {
+            :review_ratings => {
+                :except => [:review_id]
+            },
+            :submitter=> {
+                :only => [:id, :username, :role, :title],
+                :include => {
+                    :reputation => {:only => [:overall]}
+                },
+                :methods => :avatar
+            },
+            :editor => {
+                :only => [:id, :username, :role]
+            },
+            :mod => {
+                :only => [:id, :name]
+            }
+        }
+    })
   end
-
-  def recompute_helpful_counts
-    self.helpful_count = HelpfulMark.where(helpfulable_id: self.id, helpfulable_type: "Review", helpful: true).count
-    self.not_helpful_count = HelpfulMark.where(helpfulable_id: self.id, helpfulable_type: "Review", helpful: false).count
-  end
-
+  
   def as_json(options={})
     if JsonHelpers.json_options_empty(options)
       default_options = {

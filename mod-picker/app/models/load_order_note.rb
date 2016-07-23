@@ -1,8 +1,18 @@
 class LoadOrderNote < ActiveRecord::Base
-  include Filterable, Sortable, RecordEnhancements
+  include Filterable, Sortable, RecordEnhancements, Correctable, Helpfulable, Reportable
 
-  scope :by, -> (id) { where(submitted_by: id) }
-  scope :plugin, -> (id) { where(first_plugin_id: id).or(second_plugin_id: id) }
+  # BOOLEAN SCOPES (excludes content when false)
+  scope :include_hidden, -> (bool) { where(hidden: false) if !bool  }
+  scope :include_adult, -> (bool) { where(has_adult_content: false) if !bool }
+  # GENERAL SCOPES
+  scope :visible, -> { where(hidden: false, approved: true) }
+  scope :game, -> (game_id) { where(game_id: game_id) }
+  scope :search, -> (text) { where("load_order_notes.text_body like ?", "%#{text}%") }
+  scope :plugin_filename, -> (filename) { joins(:first_plugin, :second_plugin).where("plugins.filename like ?", "%#{filename}%") }
+  scope :submitter, -> (username) { joins(:submitter).where(:users => {:username => username}) }
+  # RANGE SCOPES
+  scope :submitted, -> (range) { where(submitted: parseDate(range[:min])..parseDate(range[:max])) }
+  scope :edited, -> (range) { where(edited: parseDate(range[:min])..parseDate(range[:max])) }
 
   belongs_to :game, :inverse_of => 'load_order_notes'
   belongs_to :submitter, :class_name => 'User', :foreign_key => 'submitted_by', :inverse_of => 'load_order_notes'
@@ -13,17 +23,12 @@ class LoadOrderNote < ActiveRecord::Base
   belongs_to :second_plugin, :foreign_key => 'second_plugin_id', :class_name => 'Plugin', :inverse_of => 'second_load_order_notes'
 
   # mods associated with this load order note
-  has_one :first_mod, :through => :first_plugin, :class_name => 'Mod', :foreign_key => 'mod_id', source: "mod"
-  has_one :second_mod, :through => :second_plugin, :class_name => 'Mod', :foreign_key => 'mod_id', source: "mod"
+  has_one :first_mod, :through => :first_plugin, :class_name => 'Mod', :source => 'mod', :foreign_key => 'mod_id'
+  has_one :second_mod, :through => :second_plugin, :class_name => 'Mod', :source => 'mod', :foreign_key => 'mod_id'
 
   # mod lists this load order note appears on
   has_many :mod_list_installation_notes, :inverse_of => 'load_order_note'
   has_many :mod_lists, :through => 'mod_list_load_order_notes', :inverse_of => 'load_order_notes'
-
-  # community feedback on this load order note
-  has_many :helpful_marks, :as => 'helpfulable'
-  has_many :corrections, :as => 'correctable'
-  has_one :base_report, :as => 'reportable'
 
   # old versions of this load order note
   has_many :history_entries, :class_name => 'LoadOrderNoteHistoryEntry', :inverse_of => 'load_order_note', :foreign_key => 'load_order_note_id'
@@ -33,12 +38,32 @@ class LoadOrderNote < ActiveRecord::Base
 
   # Validations
   validates :game_id, :submitted_by, :first_plugin_id, :second_plugin_id, :text_body, presence: true
+
   validates :text_body, length: {in: 256..16384}
+  validate :unique_plugins
 
   # Callbacks
   after_create :increment_counters
   before_save :set_dates
   before_destroy :decrement_counters
+
+  def unique_plugins
+    if first_plugin_id == second_plugin_id
+      errors.add(:plugins, "You cannot create a Load Order Note between a plugin and itself.")
+      return
+    end
+
+    plugin_ids = [first_plugin_id, second_plugin_id]
+    note = LoadOrderNote.where(first_plugin_id: plugin_ids, second_plugin_id: plugin_ids, hidden: false).where.not(id: self.id).first
+    if note.present?
+      if note.approved
+        errors.add(:plugins, "A Load Order Note for these plugins already exists.")
+        errors.add(:link_id, note.id)
+      else
+        errors.add(:plugins, "An unapproved Load Order Note for these plugins already exists.")
+      end
+    end
+  end
 
   def mods
     [first_mod, second_mod]
@@ -49,33 +74,13 @@ class LoadOrderNote < ActiveRecord::Base
   end
 
   def create_history_entry
+    edit_summary = self.edited_by.nil? ? "Load Order Note Created" : self.edit_summary
     self.history_entries.create(
         edited_by: self.edited_by || self.submitted_by,
         text_body: self.text_body,
-        edit_summary: self.edit_summary,
+        edit_summary: edit_summary || "",
         edited: self.edited || self.submitted
     )
-  end
-
-  def compute_reputation
-    # TODO: We could base this off of the reputation of the people who marked the review helpful/not helpful, but we aren't doing that yet
-    user_rep = self.submitter.reputation.overall
-    helpfulness = (self.helpful_count - self.not_helpful_count)
-    if user_rep < 0
-      self.reputation = user_rep + helpfulness
-    else
-      user_rep_factor = 2 / (1 + Math::exp(-0.0075 * (user_rep - 640)))
-      if self.helpful_count < self.not_helpful_count
-        self.reputation = (1 - user_rep_factor / 2) * helpfulness
-      else
-        self.reputation = (1 + user_rep_factor) * helpfulness
-      end
-    end
-  end
-
-  def recompute_helpful_counts
-    self.helpful_count = HelpfulMark.where(helpfulable_id: self.id, helpfulable_type: "LoadOrderNote", helpful: true).count
-    self.not_helpful_count = HelpfulMark.where(helpfulable_id: self.id, helpfulable_type: "LoadOrderNote", helpful: false).count
   end
 
   def as_json(options={})
@@ -115,6 +120,7 @@ class LoadOrderNote < ActiveRecord::Base
     end
 
     def increment_counters
+      byebug
       self.first_mod.update_counter(:load_order_notes_count, 1)
       self.second_mod.update_counter(:load_order_notes_count, 1)
       self.submitter.update_counter(:load_order_notes_count, 1)

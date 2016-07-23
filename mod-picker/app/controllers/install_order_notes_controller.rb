@@ -3,9 +3,17 @@ class InstallOrderNotesController < ContributionsController
 
   # GET /install_order_notes
   def index
-    @install_order_notes = InstallOrderNote.accessible_by(current_ability).filter(filtering_params).sort(params[:sort]).paginate(:page => params[:page])
+    @install_order_notes = InstallOrderNote.includes(:editor, :editors, :submitter => :reputation).accessible_by(current_ability).filter(filtering_params).sort(params[:sort]).paginate(:page => params[:page])
+    count = InstallOrderNote.accessible_by(current_ability).filter(filtering_params).count
 
-    render :json => @install_order_notes
+    # get helpful marks
+    helpful_marks = HelpfulMark.where(submitted_by: current_user.id, helpfulable_type: "InstallOrderNote", helpfulable_id: @install_order_notes.ids)
+    render :json => {
+        install_order_notes: @install_order_notes,
+        helpful_marks: helpful_marks,
+        max_entries: count,
+        entries_per_page: InstallOrderNote.per_page
+    }
   end
 
   # POST /install_order_notes
@@ -29,7 +37,7 @@ class InstallOrderNotesController < ContributionsController
 
     # Params we allow filtering on
     def filtering_params
-      params.slice(:by, :mod);
+      params[:filters].slice(:adult, :game, :search, :submitter, :editor, :reputation, :helpful_count, :not_helpful_count, :standing, :corrections_count, :history_entries_count, :submitted, :edited);
     end
 
     # Params allowed during creation

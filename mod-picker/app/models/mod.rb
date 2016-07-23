@@ -1,16 +1,17 @@
 class Mod < ActiveRecord::Base
-  include Filterable, Sortable, RecordEnhancements
+  include Filterable, Sortable, Imageable, RecordEnhancements
 
   attr_writer :tag_names, :asset_paths, :plugin_dumps, :nexus_info_id, :lover_info_id, :workshop_info_id
   enum status: [ :good, :outdated, :unstable ]
 
   # BOOLEAN SCOPES (excludes content when false)
-  scope :hidden, -> (bool) { where(hidden: false) if (!bool)  }
-  scope :adult, -> (bool) { where(has_adult_content: false) if (!bool) }
-  scope :official, -> (bool) { where(is_official: false) if !bool }
-  scope :utility, -> (bool) { where(is_utility: false) if !bool }
-  scope :is_game, -> (bool) { where.not(primary_category_id: nil) if !bool }
+  scope :include_hidden, -> (bool) { where(hidden: false) if !bool  }
+  scope :include_adult, -> (bool) { where(has_adult_content: false) if !bool }
+  scope :include_official, -> (bool) { where(is_official: false) if !bool }
+  scope :include_utilities, -> (bool) { where(is_utility: false) if !bool }
+  scope :include_games, -> (bool) { where.not(primary_category_id: nil) if !bool }
   # GENERAL SCOPES
+  scope :utility, -> (bool) { where(is_utility: bool) }
   scope :search, -> (search) { where("name like ? OR aliases like ?", "%#{search}%", "%#{search}%") }
   scope :game, -> (game_id) {
     game = Game.find(game_id)
@@ -24,13 +25,13 @@ class Mod < ActiveRecord::Base
   scope :sources, -> (sources) {
     results = self.where(nil)
     whereClause = []
-    
+
     # nexus mods
     if sources[:nexus]
       results = results.includes(:nexus_infos).references(:nexus_infos)
       whereClause.push("nexus_infos.id IS NOT NULL")
     end
-    # lover's lab  
+    # lover's lab
     if sources[:lab]
       results = results.includes(:lover_infos).references(:lover_infos)
       whereClause.push("lover_infos.id IS NOT NULL")
@@ -45,7 +46,7 @@ class Mod < ActiveRecord::Base
       results = results.includes(:custom_sources).references(:custom_sources)
       whereClause.push("custom_sources.id IS NOT NULL")
     end
-    
+
     # require one selected source to be present
     results = results.where(whereClause.join(" OR "))
     results
@@ -53,23 +54,25 @@ class Mod < ActiveRecord::Base
   scope :released, -> (range) { where(released: parseDate(range[:min])..parseDate(range[:max])) }
   scope :updated, -> (range) { where(updated: parseDate(range[:min])..parseDate(range[:max])) }
   scope :categories, -> (categories) { where("primary_category_id IN (?) OR secondary_category_id IN (?)", categories, categories) }
-  scope :tags, -> (array) { joins(:tags).where(:tags => {text: array}) }
+  scope :tags, -> (array) { joins(:tags).where(:tags => {text: array}).having("COUNT(DISTINCT tags.text) = ?", array.length) }
   # MOD PICKER SCOPES
   scope :stars, -> (range) { where(stars_count: (range[:min]..range[:max])) }
   scope :reviews, -> (range) { where(reviews_count: (range[:min]..range[:max])) }
   scope :rating, -> (range) { where(average_rating: (range[:min]..range[:max])) }
+  scope :reputation, -> (range) { where(reputation: (range[:min]..range[:max])) }
   scope :compatibility_notes, -> (range) { where(compatibility_notes_count: (range[:min]..range[:max])) }
   scope :install_order_notes, -> (range) { where(install_order_notes_count: (range[:min]..range[:max])) }
   scope :load_order_notes, -> (range) { where(load_order_notes_count: (range[:min]..range[:max])) }
   # SHARED SCOPES (ALL)
   scope :author, -> (hash) {
-    author = hash[:author]
+    author = hash[:value]
     sources = hash[:sources]
 
     results = self.where(nil)
     results = results.where("nexus_infos.authors like ? OR nexus_infos.uploaded_by like ?", author, author) if sources[:nexus]
     results = results.where("lover_infos.uploaded_by like ?", author) if sources[:lab]
     results = results.where("workshop_infos.uploaded_by like ?", author) if sources[:workshop]
+    results = results.where("mods.authors like ?", author) if sources[:other]
     results
   }
   scope :views, -> (range) {
@@ -170,10 +173,10 @@ class Mod < ActiveRecord::Base
   # requirements associated with the mod
   has_many :required_mods, :class_name => 'ModRequirement', :inverse_of => 'mod', :dependent => :destroy
   has_many :required_by, :class_name => 'ModRequirement', :inverse_of => 'required_mod', :dependent => :destroy
-  
+
   # users who can edit the mod
   has_many :mod_authors, :inverse_of => 'mod', :dependent => :destroy
-  has_many :author_users, :through => 'mod_authors', :inverse_of => 'mods'
+  has_many :author_users, :class_name => 'User', :through => 'mod_authors', :source => 'user', :inverse_of => 'mods'
 
   # community feedback on the mod
   has_many :corrections, :as => 'correctable'
@@ -201,8 +204,17 @@ class Mod < ActiveRecord::Base
   has_many :mod_list_mods, :inverse_of => 'mod', :dependent => :destroy
   has_many :mod_lists, :through => 'mod_list_mods', :inverse_of => 'mods'
 
-  accepts_nested_attributes_for :required_mods, :custom_sources
+  accepts_nested_attributes_for :custom_sources, allow_destroy: true
+  # cannot update required mods
+  accepts_nested_attributes_for :required_mods, reject_if: proc {
+      |attributes| attributes[:id] && !attributes[:_destroy]
+  }, allow_destroy: true
+  # can only update author role for an existing mod_author record
+  accepts_nested_attributes_for :mod_authors, reject_if: proc {
+      |attributes| attributes[:id] && attributes[:user_id] && !attributes[:_destroy]
+  }, allow_destroy: true
 
+  # numbers of mods per page on the mods index
   self.per_page = 100
 
   # Validations
@@ -210,16 +222,51 @@ class Mod < ActiveRecord::Base
   validates :name, :aliases, length: {maximum: 128}
 
   # callbacks
-  after_create :create_associations, :update_metrics, :increment_counters
+  after_create :increment_counters
+  before_update :destroy_associations, :hide_contributions
+  after_save :create_associations
   before_destroy :decrement_counters
-
-  def no_author?
-    self.mod_authors.count == 0
-  end
 
   def update_lazy_counters
     self.asset_files_count = ModAssetFile.where(mod_id: self.id).count
     self.plugins_count = Plugin.where(mod_id: self.id).count
+  end
+
+  def destroy_associations
+    # destroy associations as needed
+    if @plugin_dumps || @asset_paths
+      self.mod_asset_files.destroy_all
+      self.plugins.destroy_all
+    end
+  end
+
+  def hide_contributions
+    if self.attribute_changed?(:hidden) && self.hidden
+      # prepare some helper variables
+      plugin_ids = self.plugins.ids
+      cnote_ids = CompatibilityNote.where("first_mod_id = ? OR second_mod_id = ?", id, id).ids
+      inote_ids = InstallOrderNote.where("first_mod_id = ? OR second_mod_id = ?", id, id).ids
+      lnote_ids = LoadOrderNote.where("first_plugin_id in (?) OR second_plugin_id in (?)", plugin_ids, plugin_ids).ids
+
+      # hide content
+      Review.where(mod_id: self.id).update_all(:hidden => true)
+      Correction.where(correctable_type: "Mod", correctable_id: self.id).update_all(:hidden => true)
+      CompatibilityNote.where(id: cnote_ids).update_all(:hidden => true)
+      InstallOrderNote.where(id: inote_ids).update_all(:hidden => true)
+      LoadOrderNote.where(id: lnote_ids).update_all(:hidden => true)
+      Correction.where(correctable_type: "CompatibilityNote", correctable_id: cnote_ids).update_all(:hidden => true)
+      Correction.where(correctable_type: "InstallOrderNote", correctable_id: inote_ids).update_all(:hidden => true)
+      Correction.where(correctable_type: "LoadOrderNote", correctable_id: lnote_ids).update_all(:hidden => true)
+    elsif self.attribute_changed?(:disable_reviews) && self.disable_reviews
+      Review.where(mod_id: self.id).update_all(:hidden => true)
+    end
+  end
+
+  def swap_mod_list_mods_tools_counts
+    tools_operator = self.is_utility ? "+" : "-"
+    mods_operator = self.is_utility ? "-" : "+"
+    mod_list_ids = self.mod_lists.ids
+    ModList.where(id: mod_list_ids).update_all("tools_count = tools_count #{tools_operator} 1, mods_count = mods_count #{mods_operator} 1")
   end
 
   def create_tags
@@ -300,11 +347,15 @@ class Mod < ActiveRecord::Base
   def compute_average_rating
     total = 0.0
     count = 0
-    self.reviews.each do |r|
+    self.reviews.where(hidden: false, approved: true).each do |r|
       total += r.overall_rating
       count += 1
     end
-    self.average_rating = (total / count) if count > 0
+    if count > 0
+      self.average_rating = (total / count)
+    else
+      self.average_rating = 0
+    end
   end
 
   def compute_reputation
@@ -316,6 +367,12 @@ class Mod < ActiveRecord::Base
     else
       review_reputation = (self.average_rating / 100)**3 * (510.0 / (1 + Math::exp(-0.2 * (self.reviews_count - 10))) - 60)
       self.reputation = review_reputation
+    end
+
+    if self.status == :unstable
+      self.reputation = self.reputation / 4
+    elsif self.status == :outdated
+      self.reputation = self.reputation / 2
     end
   end
 
@@ -346,45 +403,92 @@ class Mod < ActiveRecord::Base
     LoadOrderNote.where('first_plugin_id in (?) OR second_plugin_id in (?)', self.plugins.ids, self.plugins.ids)
   end
 
-  def image
-    png_path = File.join(Rails.public_path, "mods/#{id}.png")
-    jpg_path = File.join(Rails.public_path, "mods/#{id}.jpg")
-    if File.exists?(png_path)
-      "/mods/#{id}.png"
-    elsif File.exists?(jpg_path)
-      "/mods/#{id}.jpg"
-    else
-      '/mods/Default.png'
-    end
+  def self.index_json(collection, sources)
+    # Includes hash for mods index query
+    include_hash = { :author_users => { :only => [:id, :username] } }
+    include_hash[:nexus_infos] = {:except => [:mod_id]} if sources[:nexus]
+    include_hash[:lover_infos] = {:except => [:mod_id]} if sources[:lab]
+    include_hash[:workshop_infos] = {:except => [:mod_id]} if sources[:workshop]
+
+    collection.as_json({
+        :include => include_hash
+    })
+  end
+
+  def self.home_json(collection)
+    collection.as_json({
+        :only => [:id, :name, :authors, :released],
+        :include => {
+            :primary_category => {:only => [:name]}
+        },
+        :methods => [:image]
+    })
+  end
+
+  def edit_json
+    self.as_json({
+        :include => {
+            :tags => {
+                :except => [:game_id, :hidden, :mod_lists_count],
+                :include => {
+                    :submitter => {
+                        :only => [:id, :username]
+                    }
+                }
+            },
+            :nexus_infos => {:only => [:id, :last_scraped]},
+            :workshop_infos => {:only => [:id, :last_scraped]},
+            :lover_infos => {:only => [:id, :last_scraped]},
+            :custom_sources => {:except => [:mod_id]},
+            :mod_authors => {
+                :only => [:id, :role, :user_id],
+                :include => {
+                    :user => {
+                        :only => [:username]
+                    }
+                }
+            },
+            :required_mods => {
+                :only => [:id],
+                :include => {
+                    :required_mod => {
+                        :only => [:id, :name]
+                    }
+                }
+            }
+        },
+        :methods => :image
+    })
   end
 
   def show_json
     self.as_json({
-      :include => {
-          :tags => {
-              :except => [:game_id, :hidden, :mod_lists_count],
-              :include => {
-                  :submitter => {
-                      :only => [:id, :username]
-                  }
-              }
-          },
-          :nexus_infos => {:except => [:mod_id]},
-          :workshop_infos => {:except => [:mod_id]},
-          :lover_infos => {:except => [:mod_id]},
-          :plugins => {:only => [:id, :filename]},
-          :custom_sources => {:except => [:mod_id]},
-          :author_users => {:only => [:id, :username]},
-          :required_mods => {
-              :only => [],
-              :include => {
-                  :required_mod => {
-                      :only => [:id, :name]
-                  }
-              }
-          }
-      },
-      :methods => :image
+        :except => [:disallow_contributors, :hidden],
+        :include => {
+            :tags => {
+                :except => [:game_id, :hidden, :mod_lists_count],
+                :include => {
+                    :submitter => {
+                        :only => [:id, :username]
+                    }
+                }
+            },
+            :nexus_infos => {:except => [:mod_id]},
+            :workshop_infos => {:except => [:mod_id]},
+            :lover_infos => {:except => [:mod_id]},
+            :plugins => {:only => [:id, :filename]},
+            :custom_sources => {:except => [:mod_id]},
+            :author_users => {:only => [:id, :username]},
+            :required_mods => {
+                :only => [],
+                :include => {
+                    :required_mod => {
+                        :only => [:id, :name]
+                    }
+                }
+            }
+        },
+        :methods => :image
     })
   end
 
@@ -400,6 +504,7 @@ class Mod < ActiveRecord::Base
   end
 
   private
+
     def decrement_counters
       self.submitter.update_counter(:submitted_mods_count, -1) if self.submitted_by.present?
     end

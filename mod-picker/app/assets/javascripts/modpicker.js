@@ -3,10 +3,10 @@
 //= require_tree ./angularAssets
 
 var app = angular.module('modPicker', [
-    'ui.router', 'rzModule', 'ngAnimate', 'sticky', 'puElasticInput', 'hc.marked', 'smoothScroll', 'relativeDate'
+    'ui.router', 'rzModule', 'ngAnimate', 'sticky', 'puElasticInput', 'hc.marked', 'smoothScroll', 'relativeDate', 'ct.ui.router.extras', 'dndLists'
 ]);
 
-app.config(['$httpProvider', '$compileProvider', function ($httpProvider, $compileProvider) {
+app.config(['$httpProvider', '$compileProvider', function($httpProvider, $compileProvider) {
     $httpProvider.useApplyAsync(true);
     $compileProvider.debugInfoEnabled(false);
 }]);
@@ -18,17 +18,28 @@ app.config(function($urlMatcherFactoryProvider) {
     $urlMatcherFactoryProvider.defaultSquashPolicy(true);
 });
 
-app.config(function ($urlRouterProvider) {
-    $urlRouterProvider.otherwise('/');
+//redirect to /home if someone types in an incorrect url
+app.config(function($urlRouterProvider) {
+    $urlRouterProvider.otherwise('/home');
 });
 
-//this adds a redirectTo option into ui router, which makes default tabs much nicer
-app.run(['$rootScope', '$state', function($rootScope, $state) {
+//this allows states to be defined at runtime by 
+app.config(function($futureStateProvider) {
+    var lazyStateFactory = function($q, futureState) {
+        return $q.when(futureState);
+    };
+    $futureStateProvider.stateFactory('lazy', lazyStateFactory);
+});
 
+app.run(['$rootScope', '$state', 'smoothScroll', function($rootScope, $state, smoothScroll) {
     $rootScope.$on('$stateChangeStart', function(evt, to, params) {
+        // scroll to the top of the page
+        smoothScroll(document.body, {duration: 300});
+
+        //this adds a redirectTo option into ui router, which makes default tabs much nicer
         if (to.redirectTo) {
             evt.preventDefault();
-            $state.go(to.redirectTo, params, {location: 'replace'});
+            $state.go(to.redirectTo, params, { location: 'replace' });
         }
     });
 }]);

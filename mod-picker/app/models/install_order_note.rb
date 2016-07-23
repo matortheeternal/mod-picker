@@ -1,8 +1,17 @@
 class InstallOrderNote < ActiveRecord::Base
-  include Filterable, Sortable, RecordEnhancements
+  include Filterable, Sortable, RecordEnhancements, Correctable, Helpfulable, Reportable
 
-  scope :by, -> (id) { where(submitted_by: id) }
-  scope :mod, -> (id) { where(first_mod_id: id).or(second_mod_id: id) }
+  # BOOLEAN SCOPES (excludes content when false)
+  scope :include_hidden, -> (bool) { where(hidden: false) if !bool  }
+  scope :include_adult, -> (bool) { where(has_adult_content: false) if !bool }
+  # GENERAL SCOPES
+  scope :visible, -> { where(hidden: false, approved: true) }
+  scope :game, -> (game_id) { where(game_id: game_id) }
+  scope :search, -> (text) { where("install_order_notes.text_body like ?", "%#{text}%") }
+  scope :submitter, -> (username) { joins(:submitter).where(:users => {:username => username}) }
+  # RANGE SCOPES
+  scope :submitted, -> (range) { where(submitted: parseDate(range[:min])..parseDate(range[:max])) }
+  scope :edited, -> (range) { where(edited: parseDate(range[:min])..parseDate(range[:max])) }
 
   belongs_to :game, :inverse_of => 'install_order_notes'
   belongs_to :submitter, :class_name => 'User', :foreign_key => 'submitted_by', :inverse_of => 'install_order_notes'
@@ -16,10 +25,6 @@ class InstallOrderNote < ActiveRecord::Base
   has_many :mod_list_install_order_notes, :inverse_of => 'install_order_note'
   has_many :mod_lists, :through => 'mod_list_install_order_notes', :inverse_of => 'install_order_notes'
 
-  # community feedback on this install order note
-  has_many :helpful_marks, :as => 'helpfulable'
-  has_many :corrections, :as => 'correctable'
-
   # old versions of this install order note
   has_many :history_entries, :class_name => 'InstallOrderNoteHistoryEntry', :inverse_of => 'install_order_note', :foreign_key => 'install_order_note_id'
   has_many :editors, -> { uniq }, :class_name => 'User', :through => 'history_entries'
@@ -28,45 +33,45 @@ class InstallOrderNote < ActiveRecord::Base
 
   # Validations
   validates :game_id, :submitted_by, :first_mod_id, :second_mod_id, :text_body, presence: true
+
   validates :text_body, length: { in: 256..16384 }
+  validate :unique_mods
 
   # Callbacks
   after_create :increment_counters
   before_save :set_dates
   before_destroy :decrement_counters
 
+  def unique_mods
+    if first_mod_id == second_mod_id
+      errors.add(:mods, "You cannot create a Install Order Note between a mod and itself.")
+      return
+    end
+
+    mod_ids = [first_mod_id, second_mod_id]
+    note = InstallOrderNote.where(first_mod_id: mod_ids, second_mod_id: mod_ids, hidden: false).where.not(id: self.id).first
+    if note.present?
+      if note.approved
+        errors.add(:mods, "An Install Order Note for these mods already exists.")
+        errors.add(:link_id, note.id)
+      else
+        errors.add(:mods, "An unapproved Install Order Note for these mods already exists.")
+      end
+    end
+  end
+
   def mods
     [first_mod, second_mod]
   end
 
   def create_history_entry
+    edit_summary = self.edited_by.nil? ? "Install Order Note Created" : self.edit_summary
     self.history_entries.create(
         edited_by: self.edited_by || self.submitted_by,
         text_body: self.text_body,
-        edit_summary: self.edit_summary,
+        edit_summary: edit_summary || "",
         edited: self.edited || self.submitted
     )
-  end
-
-  def compute_reputation
-    # TODO: We could base this off of the reputation of the people who marked the review helpful/not helpful, but we aren't doing that yet
-    user_rep = self.submitter.reputation.overall
-    helpfulness = (self.helpful_count - self.not_helpful_count)
-    if user_rep < 0
-      self.reputation = user_rep + helpfulness
-    else
-      user_rep_factor = 2 / (1 + Math::exp(-0.0075 * (user_rep - 640)))
-      if self.helpful_count < self.not_helpful_count
-        self.reputation = (1 - user_rep_factor / 2) * helpfulness
-      else
-        self.reputation = (1 + user_rep_factor) * helpfulness
-      end
-    end
-  end
-
-  def recompute_helpful_counts
-    self.helpful_count = HelpfulMark.where(helpfulable_id: self.id, helpfulable_type: "InstallOrderNote", helpful: true).count
-    self.not_helpful_count = HelpfulMark.where(helpfulable_id: self.id, helpfulable_type: "InstallOrderNote", helpful: false).count
   end
 
   def as_json(options={})

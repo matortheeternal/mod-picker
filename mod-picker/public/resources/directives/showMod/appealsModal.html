@@ -72,7 +72,7 @@
             </span>
         </loader>
 
-        <div class="content-message" ng-if="errors.appeals">
+        <div class="content-message content-error" ng-if="errors.appeals">
             There was an error retrieving appeals for this mod.<br>
             <!--TODO: Render JSON errors here, if available?-->
             Error {{errors.appeals.status}}: {{errors.appeals.statusText}}
@@ -95,10 +95,8 @@
         </div>
 
         <h3 class="section-title">Comments
-            <span>
-                <span class="action-box" ng-click="startNewComment()">
-                    <i class="fa fa-plus"></i> New Comment
-                </span>
+            <span class="action-box" ng-click="startNewComment()">
+                <i class="fa fa-plus"></i> New Comment
             </span>
         </h3>
         <loader data="appeal.comments" spinner-class="big-spinner" content-class="content-container">

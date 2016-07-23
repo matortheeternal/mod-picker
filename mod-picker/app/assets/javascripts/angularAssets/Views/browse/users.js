@@ -1,17 +1,26 @@
+app.run(function($futureState, indexFactory, filtersFactory) {
+    // dynamically construct and apply state
+    var filterPrototypes = filtersFactory.userFilters();
+    var state = indexFactory.buildState('username', 'asc', 'users', filterPrototypes);
+    $futureState.futureState(state);
+});
 
-app.config(['$stateProvider', function ($stateProvider) {
-    $stateProvider.state('base.users', {
-            templateUrl: '/resources/partials/browse/users.html',
-            controller: 'usersController',
-            url: '/users'
-        }
-    );
-}]);
+app.controller('usersController', function ($scope, $stateParams, $state, currentUser, userService, columnsFactory, filtersFactory, indexService, indexFactory) {
+    // get parent variables
+    $scope.currentUser = currentUser;
+    $scope.globalPermissions = angular.copy(currentUser.permissions);
 
-app.controller('usersController', function ($scope, $q, backend, sliderFactory) {
-    ///* data */
-    //backend.retrieveUsers().then(function (data) {
-    //    $scope.users = data;
-    //    $scope.loading = false;
-    //});
+    // columns for view
+    $scope.columns = columnsFactory.userColumns();
+    $scope.columnGroups = columnsFactory.userColumnGroups();
+
+    // initialize filters
+    $scope.filterPrototypes = filtersFactory.userFilters();
+    $scope.dateFilters = filtersFactory.userDateFilters();
+    $scope.statFilters = filtersFactory.userStatisticFilters();
+
+    // build generic controller stuff
+    $scope.route = 'users';
+    $scope.retrieve = userService.retrieveUsers;
+    indexFactory.buildIndex($scope, $stateParams, $state, indexService);
 });

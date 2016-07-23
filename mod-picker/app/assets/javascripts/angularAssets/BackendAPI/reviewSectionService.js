@@ -34,7 +34,7 @@ app.service('reviewSectionService', function (backend, $q) {
     this.associateReviewSections = function(reviews) {
       reviews.forEach(function(review) {
         //set the category using the categoryId
-        review.review_ratings.forEach(function(rating) {
+        review.review_ratings && review.review_ratings.forEach(function(rating) {
             service.getSectionById(rating.review_section_id).then(function(section) {
                 rating.section = section;
             });

@@ -22,6 +22,30 @@ def random_plugin
   Plugin.offset(rand(Plugin.count)).first
 end
 
+def get_unique_mod_pair(model)
+  mod_ids = [0, 0]
+  while true do
+    mod_ids[0] = random_mod.id
+    mod_ids[1] = random_mod.id
+    if mod_ids[0] != mod_ids[1] && model.where(first_mod_id: mod_ids, second_mod_id: mod_ids).empty?
+      break
+    end
+  end
+  mod_ids
+end
+
+def get_unique_plugin_pair(model)
+  plugin_ids = [0, 0]
+  while true do
+    plugin_ids[0] = random_plugin.id
+    plugin_ids[1] = random_plugin.id
+    if random_plugin[0] != random_plugin[1] && model.where(first_plugin_id: plugin_ids, second_plugin_id: plugin_ids).empty?
+      break
+    end
+  end
+  plugin_ids
+end
+
 def get_unique_username
   name = Faker::Internet.user_name(4..20)
   username = name
@@ -701,8 +725,10 @@ def seed_fake_reviews
       review_ratings = []
       category_ids = [mod.primary_category_id]
       category_ids.push(mod.primary_category.parent_id) if mod.primary_category.parent_id
-      review_sections = ReviewSection.where(category_id: category_ids).sample(rand(2..5))
+      review_sections = ReviewSection.where(category_id: category_ids)
+      max_review_ratings = rand(2..5)
       review_sections.each do |section|
+        break if review_ratings.length == max_review_ratings
         review_ratings.push({review_section_id: section.id, rating: rand(100)})
       end
 
@@ -741,14 +767,15 @@ def seed_fake_compatibility_notes
   nNotes = Mod.count
   nNotes.times do
     submitter = random_user
+    (first_mod_id, second_mod_id) = get_unique_mod_pair(CompatibilityNote)
     cnote = CompatibilityNote.new(
         game_id: gameSkyrim.id,
         submitted_by: submitter.id,
         status: CompatibilityNote.statuses.keys.sample,
         submitted: Faker::Date.backward(14),
         text_body: Faker::Lorem.paragraph(10),
-        first_mod_id: random_mod.id,
-        second_mod_id: random_mod.id
+        first_mod_id: first_mod_id,
+        second_mod_id: second_mod_id
     )
     cnote.save!
 
@@ -771,15 +798,15 @@ def seed_fake_install_order_notes
 
   # helper variables
   gameSkyrim = Game.where({display_name: "Skyrim"}).first
-
   nNotes = Mod.count
   nNotes.times do
     submitter = random_user
+    (first_mod_id, second_mod_id) = get_unique_mod_pair(InstallOrderNote)
     ionote = InstallOrderNote.new(
         game_id: gameSkyrim.id,
         submitted_by: submitter.id,
-        first_mod_id: random_mod.id,
-        second_mod_id: random_mod.id,
+        first_mod_id: first_mod_id,
+        second_mod_id: second_mod_id,
         submitted: Faker::Date.backward(14),
         text_body: Faker::Lorem.paragraph(10)
     )
@@ -808,12 +835,12 @@ def seed_fake_load_order_notes
   nNotes = Plugin.count
   nNotes.times do
     submitter = random_user
-    puts "    Generating load order"
+    (first_plugin_id, second_plugin_id) = get_unique_plugin_pair(LoadOrderNote)
     lnote = LoadOrderNote.new(
         game_id: gameSkyrim.id,
         submitted_by: submitter.id,
-        first_plugin_id: random_plugin.id,
-        second_plugin_id: random_plugin.id,
+        first_plugin_id: first_plugin_id,
+        second_plugin_id: second_plugin_id,
         submitted: Faker::Date.backward(14),
         text_body: Faker::Lorem.paragraph(10)
     )
@@ -889,4 +916,24 @@ def seed_fake_mod_lists
   end
 
   puts "    #{ModList.count} mod lists seeded"
+end
+
+def seed_fake_articles
+  puts "\nSeeding articles"
+
+  gameSkyrim = Game.where({display_name: "Skyrim"}).first
+
+  rand(10).times do
+    author = User.offset(rand(User.count)).first
+    Article.new(
+        title: Faker::Lorem.words(3).join(' '),
+        submitted_by: author.id,
+        text_body: Faker::Lorem.words(rand(500)).join(' '),
+        submitted: Faker::Date.backward(14),
+        edited: Faker::Date.backward(13),
+        game_id: gameSkyrim.id
+    ).save!
+  end
+
+  puts "    #{Article.count} articles seeded"
 end

@@ -1,7 +1,8 @@
 require 'rails_helper'
+require 'pp'
 
 RSpec.describe CompatibilityNote, :model do
-  fixtures :compatibility_notes
+  fixtures :compatibility_notes, :users, :games
 
   it "should be valid with factory parameters" do
     note = build(:compatibility_note)
@@ -29,44 +30,6 @@ RSpec.describe CompatibilityNote, :model do
           submitted_by: nil)
         note.valid?
         expect(note.errors[:submitted_by]).to include("can't be blank")
-      end
-    end
-
-
-    xdescribe "compatibility_mod_id" do
-    end
-
-    xdescribe "compatibility_plugin_id" do
-    end
-
-    describe "compatibility_type" do
-      it "should be invalid if not included within valid list of types" do
-        expect{build(:compatibility_note,
-          compatibility_type: "Homura")
-      }
-      .to raise_error(ArgumentError)
-      .with_message(/is not a valid compatibility_type/)
-
-    end
-
-    it "should be valid if compatibility_type is included in whitelist of types" do
-      note = build(:compatibility_note)
-
-      valid_types = ["incompatible", "partially incompatible", "compatibility mod", 
-       "compatibility option", "make custom patch"]
-
-       valid_types.each do |valid_type|
-        note.compatibility_type = valid_type
-        expect(note).to be_valid
-      end
-    end
-
-    it "should be invalid if compatibility_type is empty" do
-
-        # TODO: refactor compatibility note spec test for empty enum value
-        expect{create(:compatibility_note,
-          compatibility_type: nil)}
-        .to raise_error(ActiveRecord::StatementInvalid)
       end
     end
 
@@ -98,8 +61,8 @@ RSpec.describe CompatibilityNote, :model do
     # end
 
     describe "text_body" do
-      it "should be valid with 64 < Length < 16384" do
-        minText = "a" * 64
+      it "should be valid with 256 < Length < 16384" do
+        minText = "a" * 256
         maxText = "a" * 16384
 
         minNote = build(:compatibility_note,
@@ -112,13 +75,13 @@ RSpec.describe CompatibilityNote, :model do
         expect(maxNote).to be_valid
       end
 
-      it "should be invalid with a length < 64" do
-        invalidText = "a" * 63
+      it "should be invalid with a length < 256" do
+        invalidText = "a" * 255
         note = build(:compatibility_note,
           text_body: invalidText)
 
         note.valid?
-        expect(note.errors[:text_body]).to include("is too short (minimum is 64 characters)")
+        expect(note.errors[:text_body]).to include("is too short (minimum is 256 characters)")
       end
 
       it "should be invalid with a length of > 16384" do
@@ -140,8 +103,8 @@ RSpec.describe CompatibilityNote, :model do
         note.valid?
         note2.valid?
 
-        expect(note.errors[:text_body]).to include("is too short (minimum is 64 characters)")
-        expect(note2.errors[:text_body]).to include("is too short (minimum is 64 characters)")
+        expect(note.errors[:text_body]).to include("is too short (minimum is 256 characters)")
+        expect(note2.errors[:text_body]).to include("is too short (minimum is 256 characters)")
       end
     end
   end
@@ -152,26 +115,35 @@ RSpec.describe CompatibilityNote, :model do
       let(:note) {compatibility_notes(:incompatibleNote)}
 
       it "should increment by 1 when creating an correction" do
+        expect(note.corrections_count).to eq(0)
+
         expect { 
-          inote = note.corrections.create(
-            text_body: Faker::Lorem.sentence(20, false, 20),
-            correctable_type: "CompatibilityNote",
-            correctable_id: note.id)
+          cnote = note.corrections.create(
+          attributes_for(:correction,
+            submitted_by: users(:homura).id,
+            ))
 
-
-        }.to change { note.corrections.count }.by(1)
+          note.reload
+        }.to change { note.corrections_count }.by(1)
       end
 
       it "should decrement by 1 when deleting an correction" do
-        inote = note.corrections.create(
-            text_body: Faker::Lorem.sentence(20, false, 20),
-            correctable_type: "CompatibilityNote",
-            correctable_id: note.id)
+        expect(note.corrections_count).to eq(0)
+
+        cnote = note.corrections.create(
+           attributes_for(:correction,
+            submitted_by: users(:homura).id,
+            ))
+
+        note.reload
+
+        expect(note.corrections_count).to eq(1)
 
         expect { 
-          note.corrections.destroy(inote.id)
+          note.corrections.destroy(cnote.id)
 
-        }.to change { note.corrections.count }.by(-1)
+          note.reload
+        }.to change { note.corrections_count }.by(-1)
       end
     end
   end

@@ -3,9 +3,17 @@ class CompatibilityNotesController < ContributionsController
 
   # GET /compatibility_notes
   def index
-    @compatibility_notes = CompatibilityNote.accessible_by(current_ability).filter(filtering_params).sort(params[:sort]).paginate(:page => params[:page])
+    @compatibility_notes = CompatibilityNote.includes(:editor, :editors, :submitter => :reputation).accessible_by(current_ability).filter(filtering_params).sort(params[:sort]).paginate(:page => params[:page])
+    count = CompatibilityNote.accessible_by(current_ability).filter(filtering_params).count
 
-    render :json => @compatibility_notes
+    # get helpful marks
+    helpful_marks = HelpfulMark.where(submitted_by: current_user.id, helpfulable_type: "CompatibilityNote", helpfulable_id: @compatibility_notes.ids)
+    render :json => {
+        compatibility_notes: @compatibility_notes,
+        helpful_marks: helpful_marks,
+        max_entries: count,
+        entries_per_page: CompatibilityNote.per_page
+    }
   end
 
   # POST /compatibility_notes
@@ -29,7 +37,7 @@ class CompatibilityNotesController < ContributionsController
 
     # Params we allow filtering on
     def filtering_params
-      params.slice(:by, :mod);
+      params[:filters].slice(:adult, :game, :search, :status, :submitter, :editor, :reputation, :helpful_count, :not_helpful_count, :standing, :corrections_count, :history_entries_count, :submitted, :edited);
     end
 
     # Params allowed during creation

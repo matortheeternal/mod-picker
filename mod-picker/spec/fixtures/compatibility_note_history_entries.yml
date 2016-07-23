@@ -21,7 +21,6 @@ history_note_skyre:
   submitted_by: homura
   compatibility_mod_id: SkyRE
   compatibility_plugin_id: SkyRE_esp
-  compatibility_type: "incompatible"
   submitted: <%= DateTime.now %>
   text_body: "solved a problem where perma was incompatibile with apocalypse so just removed apocalypse"
 
@@ -31,7 +30,6 @@ history_note_skyui:
   submitted_by: homura
   compatibility_mod_id: SkyUI
   compatibility_plugin_id: SkyUI_esp
-  compatibility_type: "incompatible"
   submitted: <%= DateTime.now %>
   text_body: "solved a thing where SkyRE was incompatibile with apocalypse so just removed apocalypse"
 
@@ -41,6 +39,5 @@ history_note_apocalypse:
   submitted_by: homura
   compatibility_mod_id: Apocalypse
   compatibility_plugin_id: Apocalypse_esp
-  compatibility_type: "incompatible"
   submitted: <%= DateTime.now %>
   text_body: "solved a problem where Ordinator was incompatibile with apocalypse so just deleted ordinator"

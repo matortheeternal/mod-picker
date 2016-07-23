@@ -1,72 +1,22 @@
+app.run(function($futureState, indexFactory, filtersFactory) {
+    // dynamically construct and apply state
+    var filterPrototypes = filtersFactory.modFilters();
+    var state = indexFactory.buildState('name', 'asc', 'mods', filterPrototypes);
+    $futureState.futureState(state);
+});
 
-app.config(['$stateProvider', function ($stateProvider) {
-    $stateProvider.state('base.mods', {
-            templateUrl: '/resources/partials/browse/mods.html',
-            controller: 'modsController',
-            url: '/mods'
-        }
-    );
-}]);
-
-app.controller('modsController', function ($scope, $q, modService, sliderFactory, columnsFactory, filtersFactory, currentUser, currentGame) {
+app.controller('modsController', function($scope, $q, $stateParams, $state, modService, sliderFactory, columnsFactory, filtersFactory, currentUser, currentGame, indexService, indexFactory) {
     // get parent variables
     $scope.currentUser = currentUser;
     $scope.currentGame = currentGame;
     $scope.globalPermissions = angular.copy(currentUser.permissions);
 
-    // initialize local variables
-    $scope.filters = {
-        sources: {
-            nexus: true,
-            lab: false,
-            workshop: false,
-            other: false
-        },
-        game: $scope.currentGame.id,
-        adult: $scope.currentUser && $scope.currentUser.settings.allow_adult_content
-    };
-    $scope.availableColumnData = ["nexus"];
-    $scope.sort = {};
-    $scope.pages = {};
+    // columns for view
     $scope.columns = columnsFactory.modColumns();
     $scope.columnGroups = columnsFactory.modColumnGroups();
-    $scope.actions = [
-        {
-            caption: "Add",
-            title: "Add this mod to your mod list",
-            execute: function() {
-                alert("Not functional yet.");
-            }
-        }
-    ];
 
-    // load filter prototypes
-    $scope.dateFilters = filtersFactory.modDateFilters();
-    $scope.modPickerFilters = filtersFactory.modPickerFilters();
-    $scope.statFilters = filtersFactory.modStatisticFilters();
-
-    //TODO: should be handled differently
-    // -> remove redundancy
-    // -> probably don't set visibility in the controller but in the view
-
-    $scope.extendedFilterVisibility = {
-        nexusMods: false,
-        modPicker: false
-    };
-
-    $scope.toggleExtendedFilterVisibility = function (filterId) {
-        var extendedFilter = $scope.extendedFilterVisibility[filterId] = !$scope.extendedFilterVisibility[filterId];
-        if(extendedFilter) {
-            $scope.$broadcast('rerenderSliders');
-        }
-    };
-
-    $scope.availableFilters = function(filters) {
-        return filters.filter(function(item) {
-            return $scope.filterAvailable(item);
-        });
-    };
-
+    /* helper functions */
+    // returns true if the input filter is available
     $scope.filterAvailable = function(filter) {
         var result = true;
         Object.keys($scope.filters.sources).forEach(function(key) {
@@ -77,39 +27,25 @@ app.controller('modsController', function ($scope, $q, modService, sliderFactory
         return result;
     };
 
-    /* data */
-    // TODO: replace firstGet with $scope.mods
-    var firstGet = false;
-    $scope.getMods = function(page) {
-        delete $scope.mods;
-        var options =  {
-            filters: $scope.filters,
-            sort: $scope.sort,
-            page: page || 1
-        };
-        modService.retrieveMods(options, $scope.pages).then(function (data) {
-            $scope.mods = data.mods;
-            firstGet = true;
+    // returns a new subset of the input filters with the unavailable filters removed
+    $scope.availableFilters = function(filters) {
+        return filters.filter(function(item) {
+            return $scope.filterAvailable(item);
         });
     };
 
-    // fetch mods when we load the page
-    $scope.getMods();
-    // laod available stat filters
-    $scope.availableStatFilters = $scope.availableFilters($scope.statFilters);
-
-    // create a watch
-    var getModsTimeout;
-    $scope.$watch('[filters, sort]', function() {
-        // build availableColumnData string array
+    // build availableColumnData string array
+    $scope.buildAvailableColumnData = function() {
         $scope.availableColumnData = [];
         for (var property in $scope.filters.sources) {
             if ($scope.filters.sources.hasOwnProperty(property) && $scope.filters.sources[property]) {
                 $scope.availableColumnData.push(property);
             }
         }
+    };
 
-        // make columns that are no longer available no longer visible
+    // hide columns that are no longer available
+    $scope.hideUnavailableColumns = function() {
         $scope.columns.forEach(function(column) {
             if (column.visibility && typeof column.data === 'object') {
                 column.visibility = Object.keys(column.data).some(function(key) {
@@ -117,15 +53,43 @@ app.controller('modsController', function ($scope, $q, modService, sliderFactory
                 });
             }
         });
+    };
+
+    // filters for view
+    $scope.filterPrototypes = filtersFactory.modFilters();
+    $scope.dateFilters = filtersFactory.modDateFilters();
+    $scope.modPickerFilters = filtersFactory.modPickerFilters();
+    $scope.statFilters = filtersFactory.modStatisticFilters();
+    $scope.filters = {
+        game: $scope.currentGame.id,
+        include_adult: $scope.currentUser && $scope.currentUser.settings.allow_adult_content
+    };
+
+    // build generic controller stuff
+    $scope.route = 'mods';
+    $scope.retrieve = modService.retrieveMods;
+    indexFactory.buildIndex($scope, $stateParams, $state, indexService);
+
+    // override some data from the generic controller
+    $scope.buildAvailableColumnData();
+    $scope.actions = [{
+        caption: "Add",
+        title: "Add this mod to your mod list",
+        execute: function() {
+            alert("Not functional yet.");
+        }
+    }];
+
+    // build available stat filters for view
+    $scope.availableStatFilters = $scope.availableFilters($scope.statFilters);
+
+    // handle special column/filter logic when filters change
+    $scope.$watch('filters', function() {
+        // handle column availability
+        $scope.buildAvailableColumnData();
+        $scope.hideUnavailableColumns();
 
         // hide statistic filters that no longer apply
         $scope.availableStatFilters = $scope.availableFilters($scope.statFilters);
-
-        // get mods
-        if($scope.filters && firstGet) {
-            clearTimeout(getModsTimeout);
-            $scope.pages.current = 1;
-            getModsTimeout = setTimeout($scope.getMods, 700);
-        }
     }, true);
 });

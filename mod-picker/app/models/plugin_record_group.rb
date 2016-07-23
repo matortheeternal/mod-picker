@@ -4,6 +4,6 @@ class PluginRecordGroup < ActiveRecord::Base
   belongs_to :plugin, :inverse_of => 'plugin_record_groups'
 
   # Validations
-  validates :plugin_id, :sig, :record_count, :override_count, presence: true
+  validates :sig, :record_count, :override_count, presence: true
   validates :sig, length: {is: 4}
 end

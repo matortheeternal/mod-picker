@@ -1,74 +1,72 @@
-<loader data="data" content-class="browse-results" spinner-class="big-spinner">
-    <div class="box-shadow">
-        <table>
-            <thead>
-                <tr>
-                    <th ng-repeat="column in columns" ng-class="{ 'hidden': !column.visibility }" ng-click="sortColumn(column)">
-                        {{column.label}}
-                        <div class="sorting-options">
-                            <div class="sort-up" ng-class="{ 'active' : column.up }">
-                                <i class="fa fa-caret-up"></i>
-                            </div>
-                            <div class="sort-down" ng-class="{ 'active' : column.down }">
-                                <i class="fa fa-caret-down"></i>
-                            </div>
+<div class="box-shadow">
+    <table ng-show="data.length">
+        <thead>
+            <tr>
+                <th ng-repeat="column in columns" ng-class="{ 'hidden': !column.visibility }" ng-click="sortColumn(column)">
+                    {{column.label}}
+                    <div class="sorting-options">
+                        <div class="sort-up" ng-class="{ 'active' : column.up }">
+                            <i class="fa fa-caret-up"></i>
                         </div>
-                    </th>
-                    <th class="actions-header">
-                        <a ng-click="showModal = true">
-                            <i class="fa fa-columns" title="Edit Columns"></i>
-                        </a>
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr ng-repeat="item in data">
-                    <td ng-repeat="column in columns" ng-class="{ 'hidden': !column.visibility, 'text-cell' : !column.filter, 'main-cell' : $index == 0 }">
-                        <a ng-if="column.link" class="strong" ng-href="{{column.link(item)}}">
-                            {{ columnValue(item, column.data) | picker:column.filter }}
-                        </a>
-                        <span ng-if="!column.link">
-                            {{ columnValue(item, column.data) | picker:column.filter }}
-                        </span>
-                    </td>
-                    <td class="actions-cell">
-                        <input ng-repeat="action in actions" class="btn-sm" type="button" ng-click="action.execute(item)" value="{{action.caption}}" title="{{action.title}}"/>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-
-        <div class="content-message" ng-hide="data.length">
-            No {{label}} were found matching your search criteria.
-        </div>
-
-        <!-- TODO: put this inside its own directive-->
-        <div class="modal-container" ng-show="showModal">
-            <div class="modal big-modal">
-                <form>
-                    <h3 class="section-title">Edit Columns</h3>
-                    <div class="columns-list">
-                        <section ng-repeat="group in columnGroups">
-                            <h3>{{group}}</h3>
-                            <ul class="checkbox-list">
-                                <li ng-repeat="column in groupColumns(columns, group) as groupedColumns">
-                                    <label>
-                                        <input type="checkbox" ng-model="column.visibility">
-                                        {{column.label}}
-                                    </label>
-                                </li>
-                                <li ng-hide="groupedColumns.length">
-                                    No columns available.
-                                </li>
-                            </ul>
-                        </section>
+                        <div class="sort-down" ng-class="{ 'active' : column.down }">
+                            <i class="fa fa-caret-down"></i>
+                        </div>
                     </div>
+                </th>
+                <th class="actions-header">
+                    <a ng-click="showModal = true">
+                        <i class="fa fa-columns" title="Edit Columns"></i>
+                    </a>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="item in data">
+                <td ng-repeat="column in columns" ng-class="{ 'hidden': !column.visibility, 'text-cell' : !column.filter, 'main-cell' : $index == 0 }">
+                    <a ng-if="column.link" class="strong" ng-href="{{column.link(item)}}">
+                        {{ columnValue(item, column.data) | picker:column.filter }}
+                    </a>
+                    <span ng-if="!column.link">
+                        {{ columnValue(item, column.data) | picker:column.filter }}
+                    </span>
+                </td>
+                <td class="actions-cell">
+                    <input ng-repeat="action in actions" class="btn-sm" type="button" ng-click="action.execute(item)" value="{{action.caption}}" title="{{action.title}}"/>
+                </td>
+            </tr>
+        </tbody>
+    </table>
 
-                    <div class="action-button-container">
-                        <input type="submit" class="btn" value="Close" ng-click="showModal = false">
-                    </div>
-                </form>
-            </div>
+    <div class="content-message" ng-hide="data.length">
+        No {{label}} were found matching your search criteria.
+    </div>
+
+    <!-- TODO: put this inside its own directive-->
+    <div class="modal-container" ng-show="showModal">
+        <div class="modal big-modal">
+            <form>
+                <h3 class="section-title">Edit Columns</h3>
+                <div class="columns-list">
+                    <section ng-repeat="group in columnGroups">
+                        <h3>{{group}}</h3>
+                        <ul class="checkbox-list">
+                            <li ng-repeat="column in groupColumns(columns, group) as groupedColumns">
+                                <label>
+                                    <input type="checkbox" ng-model="column.visibility">
+                                    {{column.label}}
+                                </label>
+                            </li>
+                            <li ng-hide="groupedColumns.length">
+                                No columns available.
+                            </li>
+                        </ul>
+                    </section>
+                </div>
+
+                <div class="action-button-container">
+                    <input type="submit" class="btn" value="Close" ng-click="showModal = false">
+                </div>
+            </form>
         </div>
     </div>
-</loader>
+</div>

@@ -9,10 +9,12 @@ body {
   background-color: $primary_background;
   min-height: 100vh;
   position: relative;
+  overflow-y: scroll;
 }
 
 .no-scroll {
   overflow-y: hidden;
+  padding-right: 17px;
 }
 
 .content {
@@ -90,8 +92,19 @@ body {
   hyphens: auto;
 }
 
+//box shadow for containers
+.box-shadow {
+  box-shadow: 0 0 37px -30px $shadow_color;
+}
 
-/* utility classes */
+// box shadow spread fix for webkit
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+  .box-shadow {
+    box-shadow: 0 0 60px -30px $shadow_color;
+  }
+}
+
+  /* utility classes */
 .capitalize {
   text-transform: capitalize !important;
 }
@@ -191,12 +204,6 @@ h4 {
   color: $h4_color;
 }
 
-.logo {
-  h1 {
-    text-shadow: #000 1px 1px 4px;
-  }
-}
-
 /* button styling */
 input[type="button"], input[type="submit"] {
   display: inline;
@@ -277,8 +284,70 @@ input[type="button"], input[type="submit"] {
   }
 }
 
-/* css for tabs */
+/* css for page headers */
+.page-header-container {
+  background-color: $bar_dark_color;
 
+  .page-header {
+    color: $bar_text_color;
+    padding-top: 30px;
+    padding-bottom: 30px;
+    display: flex;
+    justify-content: space-between;
+    align-content: center;
+
+    .header-info {
+      font-size: 14px;
+      margin-left: 10px;
+      max-width: 700px;
+
+      a {
+        cursor: pointer;
+        font-weight: 600;
+        color: $bar_highlight_text_color;
+      }
+
+      a:hover {
+        color: $bar_text_color;
+      }
+    }
+
+    .divider {
+      margin-right: 8px;
+      margin-left: 8px;
+      color: $bar_highlight_color;
+    }
+
+    .header-name {
+      font-size: 24px;
+      font-weight: 100;
+    }
+
+    .header-authors-container {
+      margin-left: 6px;
+
+      .header-authors {
+        font-weight: 600;
+        color: $bright_action_color;
+      }
+    }
+
+    section {
+      display: flex;
+      align-self: center;
+    }
+
+    .header-box {
+      background-color: $bar_color;
+      border: 1px solid $bar_dark_color;
+      padding: 10px;
+      font-size: 12px;
+      font-weight: 500;
+    }
+  }
+}
+
+/* css for tabs */
 .tabs {
   a {
     display: inline-block;
@@ -289,25 +358,110 @@ input[type="button"], input[type="submit"] {
     border-bottom: 0;
     background-color: $action_color;
     margin-right: 2px;
+
+    &:hover {
+      background-color: $bar_highlight_color;
+    }
   }
 
-  .selected-tab {
-    background-color: inherit;
+  a.selected-tab {
+    background-color: $secondary_background;
+    cursor: default;
     color: $text_color;
-  }
 
-  .unselected-tab:hover {
-    background-color: $bar_highlight_color;
+    &:hover {
+      background-color: inherit;
+    }
+  }
+}
+
+.secondary-tabs {
+  a.selected-tab {
+    background-color: $secondary_background;
+
+    &:hover {
+      background-color: $secondary_background;
+    }
   }
 }
 
 .tab {
+  padding: 20px;
+  border: 1px solid $border_color;
+  background-color: $secondary_background;
+
   > div:first-child {
     margin-top: 0;
   }
 
   > div:last-child {
     margin-bottom: 0;
+  }
+}
+
+.tab-bar-items {
+  display: flex;
+
+  .tab-bar-item {
+    text-align: center;
+    vertical-align: middle;
+    align-items: center;
+    min-height: 40px;
+    padding: 5px 16px 5px 16px;
+    border: 1px solid $border_color;
+    background-color: $primary_background;
+    display: flex;
+    color: $h4_color;
+    font-size: 14px;
+
+    strong {
+      margin-right: 6px;
+    }
+
+    .sort-direction {
+      cursor: pointer;
+      font-size: 20px;
+    }
+  }
+
+  .quality-item {
+    height: auto;
+    padding: 5px 16px 5px 16px;
+    border: 1px solid $border_color;
+    background-color: $primary_background;
+    color: $h4_color;
+    text-align: center;
+  }
+
+  .primary-item {
+    flex-grow: 1;
+
+    select {
+      margin-left: 10px;
+      margin-right: 10px;
+      min-width: 190px;
+      display: inline-block;
+    }
+  }
+
+  search-input {
+    input[type="text"] {
+      background-color: $input_background;
+      border: 1px solid $border_color;
+      border-radius: 4%;
+      color: $h4_color;
+      font: inherit;
+      padding: 0.5em;
+      margin: 0;
+      box-shadow: none;
+      min-width: 250px;
+      max-width: 250px;
+    }
+
+    .dropdown {
+      left: 0;
+      top: 30px;
+    }
   }
 }
 
@@ -394,45 +548,16 @@ input[type="button"], input[type="submit"] {
   }
 }
 
-/* css for forms, inputs, and labels */
-.messages {
-  max-height: 400px;
-  overflow: hidden;
-
-  &.ng-hide-add {
-    transition: 1s max-height ease-in;
-  }
-
-  &.ng-hide-remove {
-    transition: 1s max-height ease-out;
-  }
-
-  &.ng-hide {
-    max-height: 0;
-  }
-
-  .error-message {
-    .fa {
-        padding: 4px;
-    }
-
-    .fa:hover {
-        color: $action_text_color;
-        background-color: $text_color;
-        cursor: pointer;
-    }
-  }
-
-  .success-message {
-    background-color: $success_primary;
-    padding: 14px;
-    font-weight: 500;
-    font-size: 20px;
-    text-align: center;
-    height: 54px;
+/* css for tabs */
+.tabs-column {
+  .selected-tab {
+    background-color: $secondary_background;
+    border-bottom: 1px solid $secondary_background;
+    margin-bottom: -1px;
   }
 }
 
+/* css for forms, inputs, and labels */
 select {
   background-color: $input_background;
   border: 1px solid $border_color;
@@ -493,6 +618,10 @@ input[type="text"], input[type="email"], input[type="password"] {
   }
 }
 
+input[type="file"] {
+  display: none;
+}
+
 .CodeMirror {
   background-color: $input_background;
   color: $text_color;
@@ -500,6 +629,20 @@ input[type="text"], input[type="email"], input[type="password"] {
 
   div.CodeMirror-cursor {
     border-left: 1px solid $text_color;
+  }
+
+  .CodeMirror-line {
+    @include wordbreak;
+  }
+}
+
+.text-container {
+  width: 100%;
+  margin: 10px 0;
+  @include wordbreak;
+
+  h1 {
+    color: $text_color;
   }
 }
 
@@ -566,6 +709,12 @@ form {
       margin-bottom: 0;
     }
 
+    .subsection {
+      display: block;
+      margin-bottom: 15px;
+      margin-top: 15px;
+    }
+
     section {
       margin-bottom: 15px;
       margin-top: 15px;
@@ -602,6 +751,10 @@ form {
       font-size: 13px;
       padding: 6px;
       height: 32px;
+    }
+
+    input.medium-text {
+      font-size: 16px;
     }
 
     input.short-input {
@@ -708,8 +861,12 @@ a .help-tooltip {
     cursor: pointer;
   }
 
-  .error-message, .success-message {
-    font-size: 18px;
+  .messages {
+    background-color: transparent;
+
+    .error-message, .success-message {
+      font-size: 18px;
+    }
   }
 
   .big-modal {
@@ -796,4 +953,13 @@ plugin-metadata {
     white-space: pre-line;
     word-wrap: break-word;
   }
+}
+
+//css for readMore directive
+.read-more {
+    font-size: 14px;
+
+    //moving the margin from the marked div to below the show more link
+    margin-top: -12px;
+    margin-bottom: 16px;
 }

@@ -3,15 +3,20 @@ class CommentsController < ApplicationController
 
   # GET /comments
   def index
-    @comments = Comment.accessible_by(current_ability).filter(filtering_params)
+    @comments = Comment.includes(:submitter => :reputation).accessible_by(current_ability).filter(filtering_params).sort(params[:sort]).paginate(:page => params[:page])
+    count = Comment.accessible_by(current_ability).filter(filtering_params).count
 
-    render :json => @comments
+    render :json => {
+        comments: Comment.index_json(@comments),
+        max_entries: count,
+        entries_per_page: Comment.per_page
+    }
   end
 
   # GET /comments/1
   def show
     authorize! :read, @comment
-    render :json => @comment
+    render :json => @comment.show_json
   end
 
   # POST /comments
@@ -21,7 +26,7 @@ class CommentsController < ApplicationController
     authorize! :create, @comment
 
     if @comment.save
-      render json: {status: :ok}
+      render json: @comment.reload.show_json
     else
       render json: @comment.errors, status: :unprocessable_entity
     end
@@ -66,7 +71,7 @@ class CommentsController < ApplicationController
 
     # Params we allow filtering on
     def filtering_params
-      params.slice(:type, :target, :by);
+      params[:filters].slice(:search, :submitter, :is_child, :commentable, :replies, :submitted, :edited);
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

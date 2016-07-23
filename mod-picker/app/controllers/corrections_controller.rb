@@ -3,9 +3,17 @@ class CorrectionsController < ApplicationController
 
   # GET /corrections
   def index
-    @corrections = Correction.accessible_by(current_ability).filter(filtering_params)
+    @corrections = Correction.includes(:editor, :submitter => :reputation).accessible_by(current_ability).filter(filtering_params).sort(params[:sort]).paginate(:page => params[:page])
+    count = Correction.accessible_by(current_ability).filter(filtering_params).count
 
-    render :json => @corrections
+    # get helpful marks
+    agreement_marks = AgreementMark.where(submitted_by: current_user.id, correction_id: @corrections.ids)
+    render :json => {
+        corrections: Correction.index_json(@corrections),
+        agreement_marks: agreement_marks,
+        max_entries: count,
+        entries_per_page: Correction.per_page
+    }
   end
 
   # GET /corrections/1
@@ -21,7 +29,7 @@ class CorrectionsController < ApplicationController
     authorize! :create, @correction
 
     if @correction.save
-      render json: {status: :ok}
+      render json: @correction.reload
     else
       render json: @correction.errors, status: :unprocessable_entity
     end
@@ -99,7 +107,7 @@ class CorrectionsController < ApplicationController
 
     # Params we allow filtering on
     def filtering_params
-      params.slice(:by);
+      params[:filters].slice(:adult, :game, :search, :submitter, :editor, :status, :mod_status, :correctable, :agree_count, :disagree_count, :submitted, :edited);
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

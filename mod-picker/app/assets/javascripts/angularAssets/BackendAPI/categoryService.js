@@ -1,15 +1,19 @@
 //TODO: maybe we should think about splitting the logic to retrieve all the data and filtering it.
 app.service('categoryService', function ($q, backend) {
     var service = this;
+    var allCategories;
 
     this.retrieveCategories = function() {
-        return backend.retrieve('/categories', {cache: true});
+        return allCategories;
     };
+
+    //storing all categories in a variable
+    allCategories = backend.retrieve('/categories', {cache: true});
 
     function retrieveFilteredCategories(key) {
         var categories = $q.defer();
 
-        backend.retrieve('/categories', {cache: true}).then(function (data) {
+        allCategories.then(function (data) {
             var returnData = [];
             data.forEach(function (category) {
                 if (key === 'primary' ? !category.parent_id : category.parent_id == key) {
@@ -29,18 +33,10 @@ app.service('categoryService', function ($q, backend) {
         return backend.retrieve('/category_priorities');
     };
 
-    //storing all categories in a variable
-    var allCategories = this.retrieveCategories();
-
-    this.getCategoryById = function (id) {
-      var category = $q.defer();
-
-      allCategories.then(function (categories) {
-        category.resolve(categories.find(function (data) {
-          return data.id === id;
-        }));
-      });
-      return category.promise;
+    this.getCategoryById = function (categories, id) {
+        return categories.find(function (category) {
+          return category.id === id;
+        });
     };
 
     this.retrievePrimaryCategory = function () {
@@ -64,23 +60,21 @@ app.service('categoryService', function ($q, backend) {
                 }));
             });
             $q.all(secondaryCategoryPromises).then(function () {
-                nestedCategoriesPromise.resolve(nestedCategories);
+                nestedCategoriesPromise.resolve(angular.copy(nestedCategories));
             });
         });
         return nestedCategoriesPromise.promise;
     };
 
     this.resolveModCategories = function(mod) {
-        if (mod.primary_category_id) {
-            service.getCategoryById(mod.primary_category_id).then(function (primaryCategory) {
-                mod.primary_category = primaryCategory;
-            });
-        }
+        allCategories.then(function(categories) {
+            if (mod.primary_category_id) {
+                mod.primary_category =  service.getCategoryById(categories, mod.primary_category_id);
+            }
 
-        if (mod.secondary_category_id) {
-            service.getCategoryById(mod.secondary_category_id).then(function(secondaryCategory) {
-                mod.secondary_category = secondaryCategory;
-            });
-        }
+            if (mod.secondary_category_id) {
+                mod.secondary_category = service.getCategoryById(categories, mod.secondary_category_id);
+            }
+        });
     };
 });

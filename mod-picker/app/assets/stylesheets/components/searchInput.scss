@@ -1,0 +1,58 @@
+search-input {
+  position: relative;
+
+  input[type="text"] {
+    max-width: 450px;
+    min-width: 140px;
+    padding: 8px;
+    height: 30px;
+    border: 0;
+    margin-left: 20px;
+    font-size: 16px;
+    box-shadow: 0 0 3px 1px $border_color;
+    @include transition(box-shadow 0.2s ease-in-out);
+
+    &.valid {
+      box-shadow: 0 0 3px 1px $success_secondary;
+    }
+
+    &:hover {
+      box-shadow: 0 0 3px 1px $action_color;
+    }
+
+    &:focus {
+      box-shadow: 0;
+    }
+  }
+
+  .dropdown {
+    top: 28px;
+    left: 19px;
+    width: 250px;
+  }
+}
+
+.dynamic-item {
+  search-input {
+    input[type="text"] {
+      min-width: 200px;
+      max-width: 200px;
+      font-size: 13px;
+      padding: 6px;
+      height: 32px;
+      margin-left: 0;
+      margin-right: 4px;
+    }
+
+    .dropdown {
+      left: 0;
+    }
+  }
+
+  search-input.long-input {
+    input[type="text"] {
+      min-width: 400px;
+      max-width: 400px;
+    }
+  }
+}

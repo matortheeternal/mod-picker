@@ -3,16 +3,22 @@ class LoadOrderNotesController < ContributionsController
 
   # GET /load_order_notes
   def index
-    @load_order_notes = LoadOrderNote.accessible_by(current_ability).filter(filtering_params).sort(params[:sort]).paginate(:page => params[:page])
+    @load_order_notes = LoadOrderNote.includes(:editor, :editors, :submitter => :reputation).accessible_by(current_ability).filter(filtering_params).sort(params[:sort]).paginate(:page => params[:page])
+    count = LoadOrderNote.accessible_by(current_ability).filter(filtering_params).count
 
-    render :json => @load_order_notes
+    # get helpful marks
+    helpful_marks = HelpfulMark.where(submitted_by: current_user.id, helpfulable_type: "LoadOrderNote", helpfulable_id: @load_order_notes.ids)
+    render :json => {
+        load_order_notes: @load_order_notes,
+        helpful_marks: helpful_marks,
+        max_entries: count,
+        entries_per_page: LoadOrderNote.per_page
+    }
   end
 
   # POST /load_order_notes
   def create
     @load_order_note = LoadOrderNote.new(contribution_params)
-    @load_order_note.submitted_by = current_user.id
-    authorize! :create, @load_order_note
 
     if @load_order_note.save
       render json: @load_order_note.reload
@@ -29,7 +35,7 @@ class LoadOrderNotesController < ContributionsController
 
     # Params we allow filtering on
     def filtering_params
-      params.slice(:by, :mod);
+      params[:filters].slice(:adult, :game, :search, :submitter, :editor, :plugin_filename, :reputation, :helpful_count, :not_helpful_count, :standing, :corrections_count, :history_entries_count, :submitted, :edited);
     end
 
     # Params allowed during creation

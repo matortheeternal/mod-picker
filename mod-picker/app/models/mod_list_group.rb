@@ -1,0 +1,20 @@
+class ModListGroup < ActiveRecord::Base
+  enum tab: [:tools, :mods, :plugins]
+  enum color: [:red, :orange, :yellow, :green, :blue, :purple, :white, :gray, :brown, :black]
+
+  belongs_to :mod_list, :inverse_of => 'mod_list_groups'
+
+  # Validations
+  validates :mod_list_id, :name, presence: true
+
+  def as_json(options={})
+    if JsonHelpers.json_options_empty(options)
+      default_options = {
+          :except => [:mod_list_id]
+      }
+      super(options.merge(default_options))
+    else
+      super(options)
+    end
+  end
+end

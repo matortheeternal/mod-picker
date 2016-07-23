@@ -1,15 +1,21 @@
 Rails.application.routes.draw do
   # disable registration
   devise_for :users, :controllers => { :registrations => "registrations", :invitations => "user_invitations" }
-  
+
   # require authentication before allowing user to access any resources
   authenticate :user do
-    # users and user settings
-    resources :users, only: [:index, :show, :update, :destroy]
+    # users
+    resources :users, only: [:show, :update, :destroy]
+    match '/users/index', to: 'users#index', via: [:get, :post]
+    match '/users/search', to: 'users#search', via: [:post]
     match '/current_user', to: 'users#current', via: [:get]
+
+    # user associations
     match '/users/:id/comments', to: 'users#comments', via: [:get, :post]
-    resources :user_settings, only: [:index, :update]
     match '/link_account', to: 'users#link_account', via: [:get]
+
+    # user settings
+    resources :user_settings, only: [:index, :update]
 
     # scraping
     resources :nexus_infos, only: [:show, :destroy]
@@ -23,7 +29,7 @@ Rails.application.routes.draw do
     match '/mod_lists/:id/tags', to: 'mod_lists#update_tags', via: [:patch, :put]
 
     # mods
-    resources :mods, only: [:show, :create, :update, :destroy]
+    resources :mods, only: [:show, :edit, :create, :update, :destroy]
     match '/mods/index', to: 'mods#index', via: [:get, :post]
     match '/mods/search', to: 'mods#search', via: [:post]
 
@@ -39,6 +45,7 @@ Rails.application.routes.draw do
     match '/mods/:id/install_order_notes', to: 'mods#install_order_notes', via: [:get, :post]
     match '/mods/:id/load_order_notes', to: 'mods#load_order_notes', via: [:get, :post]
     match '/mods/:id/analysis', to: 'mods#analysis', via: [:get, :post]
+    match '/mods/:id/image', to: 'mods#image', via: [:post]
 
     # reviews
     resources :reviews, only: [:show, :create, :update, :destroy]
@@ -91,6 +98,12 @@ Rails.application.routes.draw do
     # mod lists
     resources :mod_lists, only: [:index, :show, :create, :update, :destroy]
     match '/active_mod_list', to: 'mod_lists#active', via: [:get]
+    match '/mod_lists/:id/mods', to: 'mod_lists#mods', via: [:get, :post]
+    match '/mod_lists/:id/tools', to: 'mod_lists#tools', via: [:get, :post]
+    match '/mod_lists/:id/plugins', to: 'mod_lists#plugins', via: [:get, :post]
+    match '/mod_lists/:id/config_files', to: 'mod_lists#config_files', via: [:get, :post]
+    match '/mod_list_mods', to: 'mod_list_mods#create', via: [:post]
+    match '/mod_list_groups', to: 'mod_list_groups#create', via: [:post]
 
     # mod and mod list stars
     match '/mod_lists/:id/star', to: 'mod_lists#create_star', via: [:post]
@@ -113,6 +126,7 @@ Rails.application.routes.draw do
     # home page
     match '/skyrim', to: 'home#skyrim', via: [:get]
     match '/fallout4', to: 'home#fallout4', via: [:get]
+    match '/home', to: 'home#index', via: [:get]
   end
 
   # welcome page
