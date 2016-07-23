@@ -49,6 +49,23 @@ app.controller('modListModsController', function($scope, modListService) {
         });
     };
 
+    $scope.buildUnresolvedInstallOrder = function() {
+        $scope.notes.unresolved_install_order = [];
+        $scope.notes.install_order.forEach(function(note) {
+            // skip destroyed notes
+            if (note._destroy) {
+                return;
+            }
+            // TODO: Skip notes that are ignored
+            var first_mod = $scope.findMod(note.mods[0].id, true);
+            var second_mod = $scope.findMod(note.mods[1].id, true);
+            // unresolved if the both mods are present and the first mod comes after the second mod
+            if (first_mod && second_mod && first_mod.index > second_mod.index) {
+                $scope.notes.unresolved_install_order.push(note);
+            }
+        });
+    };
+
     $scope.buildMissingMods = function() {
         $scope.required.missing_mods = [];
         $scope.required.mods.forEach(function(requirement) {
@@ -76,6 +93,7 @@ app.controller('modListModsController', function($scope, modListService) {
             $scope.buildMissingMods();
             $scope.buildModsModel();
             $scope.buildUnresolvedCompatibility();
+            $scope.buildUnresolvedInstallOrder();
             $scope.retrieving.mods = false;
         }, function(response) {
             $scope.errors.mods = response;
