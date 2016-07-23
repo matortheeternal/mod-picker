@@ -215,6 +215,28 @@ app.controller('modListModsController', function($scope, modListService) {
         $scope.updateTabs();
     };
 
+    $scope.$on('resolveCompatibilityNote', function(event, options) {
+        switch(options.action) {
+            case "remove":
+                var foundMod = $scope.findMod(options.note.mods[options.index].id);
+                foundMod && $scope.removeMod(foundMod);
+                break;
+            case "add mod":
+                $scope.addMod(options.note.compatibility_mod.id);
+                break;
+            case "ignore":
+                options.note.ignore = true;
+                // TODO: Update $scope.mod_list.ignored_notes
+                $scope.buildUnresolvedCompatibility();
+                break;
+            case "unignore":
+                options.note.ignore = false;
+                // TODO: Update $scope.mod_list.ignored_notes
+                $scope.buildUnresolvedCompatibility();
+                break;
+        }
+    });
+
     $scope.$on('rebuildModels', function() {
         $scope.buildModsModel();
     });
