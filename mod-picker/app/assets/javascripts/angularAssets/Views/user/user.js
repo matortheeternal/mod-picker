@@ -43,7 +43,8 @@ app.controller('userController', function ($scope, $stateParams, currentUser, us
     $scope.permissions = currentUser.permissions;
 
     // set up local variables
-    $scope.user = userObject;
+    $scope.user = userObject.user;
+    $scope.user.repped = userObject.repped;
     $scope.errors = [];
     $scope.displayErrors = {};
     $scope.pages = {
