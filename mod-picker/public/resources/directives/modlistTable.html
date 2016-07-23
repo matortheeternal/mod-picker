@@ -21,7 +21,10 @@
                 <td>
                     <div class="table-buttons">
                         <input class="btn-sm" type="button" ng-click="clone(modlist)" value="Clone"/>
-                        <input class="btn-sm" type="button" ng-click="edit(modlist)" value="Edit"/>
+                        <!-- TODO: verify that this link is correct once the edit modlist state is set up -->
+                        <a ui-state="'base.edit-modlist'" ui-state-params="{modlistId: modlist.id}">
+                            <input type="button" value="Edit"/>
+                        </a>
                         <input class="btn-sm" type="button" ng-click="delete(modlist)" value="Delete"/>
                     </div>
                 </td>

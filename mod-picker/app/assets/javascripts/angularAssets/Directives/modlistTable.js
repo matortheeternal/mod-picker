@@ -11,11 +11,6 @@ app.directive('modlistTable', function() {
 });
 
 app.controller('modlistTableController', function($scope) {
-    $scope.edit = function(modlist) {
-        //TODO: I'm not sure if this state.go is correct, the param might be off
-        $state.go(base.modlist, { modlistId: modlist.id });
-    };
-
     $scope.append = function(data) {
         var modlists = $scope.user.mod_lists;
         if (data.modlist) {
