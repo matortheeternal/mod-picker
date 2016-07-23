@@ -202,7 +202,7 @@ class User < ActiveRecord::Base
                 :only => [:id, :name, :game_id, :stars_count, :reviews_count, :reputation]
             },
             :mod_lists => {
-                :only => [:id, :name, :is_collection, :is_public, :status, :mods_count, :created]
+                :only => [:id, :name, :is_collection, :is_public, :status, :mods_count, :created, :stars_count, :comments_count]
             },
             :bio => {
                 :except => bio_except
