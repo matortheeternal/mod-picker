@@ -242,6 +242,17 @@ app.controller('modListController', function($scope, $q, $stateParams, $timeout,
         });
     };
 
+    $scope.reAddNotes = function(modId) {
+        var reAddMatchingNotes = function(note) {
+            if (note._destroy && note.mods[0].id == modId || note.mods[1].id == modId) {
+                delete note._destroy;
+            }
+        };
+        var nts = $scope.notes; // an alias to make the code a bit shorter
+        nts.compatibility && nts.compatibility.forEach(reAddMatchingNotes);
+        nts.install_order && nts.install_order.forEach(reAddMatchingNotes);
+    };
+
     $scope.removeRequirements = function(modId) {
         var destroyMatchingRequirements = function(requirement) {
             if (requirement.mod.id == modId) {
@@ -251,6 +262,16 @@ app.controller('modListController', function($scope, $q, $stateParams, $timeout,
         var req = $scope.required; // an alias to make the code a bit shorter
         req.mods && req.mods.forEach(destroyMatchingRequirements);
         req.tools && req.tools.forEach(destroyMatchingRequirements);
+    };
+
+    $scope.removeNotes = function(modId) {
+        var destroyMatchingNotes = function(note) {
+            if (note.mods[0].id == modId || note.mods[1].id == modId) {
+                note._destroy = true;
+            }
+        };
+        $scope.notes.compatibility.forEach(destroyMatchingNotes);
+        $scope.notes.install_order.forEach(destroyMatchingNotes);
     };
 
     $scope.addRequirements = function(requirements, tools) {
