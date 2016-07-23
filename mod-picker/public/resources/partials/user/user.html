@@ -12,9 +12,13 @@
 
                 <h3 class="section-title">Reputation</h3>
                 <section>
-                    <div class="stat-item reputation">{{user.reputation.overall | number}}</div>
-                    <input type="button" class="btn" value="Endorse" ng-if="" ng-click="toggleRep">
-                    <input type="button" class="btn" value="Unendorse" ng-if="" ng-click="toggleRep">
+                    <div class="stat-item reputation">
+                        {{user.reputation.overall | number}}
+                        <div class="action-box" ng-click="giveRep()">
+                            <i class="fa {{user.repped ? 'fa-heart' : 'fa-heart-o'}}" aria-hidden="true"></i>
+                            {{user.repped ? 'Take Back Reputation' : 'Give Reputation' }}
+                        </div>
+                    </div>
                 </section>
 
                 <h3 class="section-title">Contributions</h3>

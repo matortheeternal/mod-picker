@@ -29,6 +29,13 @@
 
   .reputation {
 	font-size: 18px;
+    display: flex;
+    align-items: center;
+
+    .action-box {
+        margin-left: 20px;
+        font-weight: 500;
+    }
   }
 }
 

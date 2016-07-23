@@ -37,7 +37,7 @@ app.config(['$stateProvider', function ($stateProvider) {
         });
 }]);
 
-app.controller('userController', function ($scope, $stateParams, currentUser, userObject) {
+app.controller('userController', function ($scope, $stateParams, currentUser, userObject, userService) {
     // get parent variables
     $scope.currentUser = currentUser;
     $scope.permissions = currentUser.permissions;
@@ -78,6 +78,15 @@ app.controller('userController', function ($scope, $stateParams, currentUser, us
         { name: 'Mods'},
         { name: 'Contributions'}
     ];
+
+    $scope.giveRep = function() {
+        userService.giveRep($scope.user.id, $scope.user.repped).then(function() {
+            $scope.user.repped = !$scope.user.repped;
+        }, function(response) {
+            var params = {label: 'Error giving reputation', response: response};
+            $scope.$emit('errorMessage', params);
+        });
+    };
 });
 
 app.controller('userSocialTabController', function($scope, $stateParams, userService, contributionService) {
