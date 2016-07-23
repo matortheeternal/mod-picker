@@ -95,4 +95,12 @@ app.service('userService', function (backend, $q, userSettingsService, userTitle
 
         return permissions;
     };
+
+    this.giveRep = function(userId, given) {
+        if (given) {
+            return backend.delete('/users/' + userId + '/rep');
+        } else {
+            return backend.post('/users/' + userId + '/rep', {});
+        }
+    };
 });

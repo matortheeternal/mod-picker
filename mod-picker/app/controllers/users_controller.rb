@@ -83,6 +83,32 @@ class UsersController < ApplicationController
     end
   end
 
+  # POST /users/1/rep
+  def give_rep
+    @reputation_link = ReputationLink.find_or_initialize_by(from_rep_id: current_user.id, to_rep_id: params[:id])
+    authorize! :create, @reputation_link
+    if @reputation_link.save
+      render json: {status: :ok}
+    else
+      render json: @reputation_link.errors, status: :unprocessable_entity
+    end
+  end
+
+  # DELETE /users/1/rep
+  def ungive_rep
+    @reputation_link = ReputationLink.find_by(from_rep_id: current_user.id, to_rep_id: params[:id])
+    authorize! :destroy, @reputation_link
+    if @reputation_link.nil?
+      render json: {status: :ok}
+    else
+      if @reputation_link.delete
+        render json: {status: :ok}
+      else
+        render json: @reputation_link.errors, status: :unprocessable_entity
+      end
+    end
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_user
