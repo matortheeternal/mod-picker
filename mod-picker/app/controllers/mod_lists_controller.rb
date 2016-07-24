@@ -192,16 +192,6 @@ class ModListsController < ApplicationController
     end
   end
 
-  # DELETE /mod_lists/1
-  def destroy
-    authorize! :destroy, @mod_list
-    if @mod_list.destroy
-      render json: {status: :ok}
-    else
-      render json: @mod_list.errors, status: :unprocessable_entity
-    end
-  end
-
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_mod_list
