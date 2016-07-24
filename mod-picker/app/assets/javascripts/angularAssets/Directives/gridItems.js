@@ -110,7 +110,7 @@ app.controller('gridItemsController', function($scope, colorsFactory, objectUtil
         }
 
         // if both mods are in the same group, move within the group
-        var moveModel = moveMod.group_id == destMod.group_id ? $scope.findGroup(moveMod.group_id) : $scope.model;
+        var moveModel = moveMod.group_id == destMod.group_id ? $scope.findGroup(moveMod.group_id).children : $scope.model;
         // send a cursor down the model until the index of the item we're on exceeds the destMod's index
         var newIndex = moveModel.findIndex(function(item) {
             return item.index > destMod.index;
