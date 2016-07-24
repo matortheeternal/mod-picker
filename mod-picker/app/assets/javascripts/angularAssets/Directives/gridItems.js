@@ -118,5 +118,8 @@ app.controller('gridItemsController', function($scope, colorsFactory, objectUtil
 
         // reinsert the mod at the new index
         moveModel.splice(options.after ? newIndex + 1 : newIndex, 0, moveMod);
+
+        // update item indexes and groups
+        $scope.updateItems();
     });
 });
