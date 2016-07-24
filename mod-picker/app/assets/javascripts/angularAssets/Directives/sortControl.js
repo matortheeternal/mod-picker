@@ -1,4 +1,3 @@
-
 app.directive('sortControl', function () {
     return {
         restrict: 'E',
