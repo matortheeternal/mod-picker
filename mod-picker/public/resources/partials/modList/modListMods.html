@@ -1,8 +1,8 @@
 <loader data="mod_list.mods && !retrieving.mods" spinner-class="big-spinner">
     <div class="tab-bar-items">
         <div class="tab-bar-item primary-item">
-            <span><strong>999</strong> Unresolved Issues</span>
-            <span><strong>999</strong> Ignored Issues</span>
+            <span><strong>{{notes.unresolved_compatibility.length + notes.unresolved_install_order.length}}</strong> Unresolved Issues</span>
+            <span><strong>{{notes.ignored_compatibility.length + notes.ignored_install_order.length}}</strong> Ignored Issues</span>
             <span><strong>{{required.missing_mods.length}}</strong> Missing Requirements</span>
         </div>
 
