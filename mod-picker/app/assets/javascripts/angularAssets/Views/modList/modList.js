@@ -70,6 +70,9 @@ app.controller('modListController', function($scope, $q, $stateParams, $timeout,
 
 	// initialize local variables
     $scope.tabs = tabsFactory.buildModListTabs($scope.mod_list);
+    $scope.pages = {
+        comments: {}
+    };
     $scope.model = {};
     $scope.newTags = [];
     $scope.required = {};
