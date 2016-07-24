@@ -25,9 +25,13 @@ app.controller('modListModsController', function($scope, modListService, listUti
 
     $scope.buildUnresolvedCompatibility = function() {
         $scope.notes.unresolved_compatibility = [];
+        $scope.notes.ignored_compatibility = [];
         $scope.notes.compatibility.forEach(function(note) {
             // skip destroyed or ignored notes
-            if (note._destroy || note.ignored) {
+            if (note._destroy) {
+                return;
+            } else if (note.ignored) {
+                $scope.notes.ignored_compatibility.push(note);
                 return;
             }
             switch (note.status) {
@@ -57,9 +61,13 @@ app.controller('modListModsController', function($scope, modListService, listUti
 
     $scope.buildUnresolvedInstallOrder = function() {
         $scope.notes.unresolved_install_order = [];
+        $scope.notes.ignored_install_order = [];
         $scope.notes.install_order.forEach(function(note) {
             // skip destroyed or ignored notes
-            if (note._destroy || note.ignored) {
+            if (note._destroy) {
+                return;
+            } else if (note.ignored) {
+                $scope.notes.ignored_install_order.push(note);
                 return;
             }
             var first_mod = $scope.findMod(note.mods[0].id, true);
