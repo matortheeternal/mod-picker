@@ -141,13 +141,10 @@ class ModList < ActiveRecord::Base
     mod_ids = self.mod_list_mod_ids
     return [] if mod_ids.empty?
 
-    # get incompatible notes
-    incompatible_notes = CompatibilityNote.where("status in (?) AND (first_mod_id in (?) OR second_mod_id in (?))", [1, 2], mod_ids, mod_ids).pluck(:first_mod_id, :second_mod_id)
-    incompatible_notes.flatten(1).uniq
-  end
-
-  def mod_tools
-    mod_list_tools = @mod_list.mod_list_mods.joins(:mod).where(:mods => { is_utility: true })
+    # get incompatible mod ids
+    incompatible_ids = CompatibilityNote.status([1, 2]).mod(mod_ids).pluck(:first_mod_id, :second_mod_id)
+    # return array of unique mod ids from the notes, excluding mod list mod ids
+    incompatible_ids.flatten(1).uniq - mod_ids
   end
 
   def show_json
