@@ -60,7 +60,7 @@
     <div class="page-container">
         <div class="nav-wrapper clearfix">
             <div class="primary-nav">
-                <a class="nav-modlist" ui-sref="base.mod-list">
+                <a class="nav-modlist" ng-href="{{ currentUser.active_mod_list_id ? '#/mod-list/' + currentUser.active_mod_list_id : '#/mod-list/new}}">
                     <span class="nav-icon">
                         <i class="fa fa-pencil-square-o"></i>
                     </span>
@@ -70,7 +70,7 @@
                         Mod List
                     </span>
                 </a>
-                <a class="nav-contributions" ui-sref="base.home">
+                <a class="nav-contributions">
                     <span class="nav-icon">
                         <i class="fa fa-comments"></i>
                     </span>
@@ -79,7 +79,7 @@
                         Contributions
                     </span>
                 </a>
-                <a class="nav-browse-modlists" ui-sref="base.mod-lists">
+                <a class="nav-browse-modlists" ng-href="#/mod-lists">
                     <span class="nav-icon">
                         <i class="fa fa-list-ul"></i>
                     </span>
@@ -88,7 +88,7 @@
                         Public Mod Lists
                     </span>
                 </a>
-                <a class="nav-browse-mods" ui-sref="base.mods">
+                <a class="nav-browse-mods" ng-href="#/mods">
                     <span class="nav-icon">
                         <i class="fa fa-globe"></i>
                     </span>
@@ -98,7 +98,7 @@
                     </span>
                     <span class="nav-dropdown"></span>
                 </a>
-                <a class="nav-submit-mod" ui-sref="base.submit" ng-if="permissions.canSubmitMod">
+                <a class="nav-submit-mod" ng-href="#/submit" ng-if="permissions.canSubmitMod">
                     <span class="nav-icon">
                         <i class="fa fa-plus-square"></i>
                     </span>
@@ -138,30 +138,30 @@
             <section>
                 <span class="section-title">Browse Content</span>
                 <ul>
-                    <li><a class="inverse-link" ui-sref="base.mods">Mods</a></li>
-                    <li><a class="inverse-link" ui-sref="base.mod-lists">Mod Lists</a></li>
-                    <li><a class="inverse-link" ui-sref="base.users">Users</a></li>
-                    <li><a class="inverse-link" ui-sref="base.comments">Comments</a></li>
+                    <li><a class="inverse-link" ng-href="#/mods">Mods</a></li>
+                    <li><a class="inverse-link" ng-href="#/mod-lists">Mod Lists</a></li>
+                    <li><a class="inverse-link" ng-href="#/users">Users</a></li>
+                    <li><a class="inverse-link" ng-href="#/comments">Comments</a></li>
                 </ul>
             </section>
             <section>
                 <span class="section-title">Browse Contributions</span>
                 <ul>
-                    <li><a class="inverse-link" ui-sref="base.reviews">Reviews</a></li>
-                    <li><a class="inverse-link" ui-sref="base.compatibility-notes">Compatibility Notes</a></li>
-                    <li><a class="inverse-link" ui-sref="base.load-order-notes">Load Order Notes</a></li>
-                    <li><a class="inverse-link" ui-sref="base.install-order-notes">Install Order Notes</a></li>
-                    <li><a class="inverse-link" ui-sref="base.corrections">Corrections</a></li>
+                    <li><a class="inverse-link" ng-href="#/reviews">Reviews</a></li>
+                    <li><a class="inverse-link" ng-href="#/compatibility-notes">Compatibility Notes</a></li>
+                    <li><a class="inverse-link" ng-href="#/load-order-notes">Load Order Notes</a></li>
+                    <li><a class="inverse-link" ng-href="#/install-order-notes">Install Order Notes</a></li>
+                    <li><a class="inverse-link" ng-href="#/corrections">Corrections</a></li>
                 </ul>
             </section>
             <section>
                 <span class="section-title">Mod Picker</span>
                 <ul>
-                    <li><a class="inverse-link" ui-sref="base.home">About Us</a></li>
-                    <li><a class="inverse-link" ui-sref="base.home">Terms of Service</a></li>
+                    <li><a class="inverse-link" ng-href="/help/modpicker/About">About Us</a></li>
+                    <li><a class="inverse-link" ng-href="base.home">Terms of Service</a></li>
                     <li><a class="inverse-link" ui-sref="base.home">Privacy Policy</a></li>
-                    <li><a class="inverse-link" ui-sref="base.home">Help Center</a></li>
-                    <li><a class="inverse-link" ui-sref="base.home">Contact</a></li>
+                    <li><a class="inverse-link" ng-href="/help">Help Center</a></li>
+                    <li><a class="inverse-link" ng-href="/help/modpicker/Contact">Contact</a></li>
                 </ul>
             </section>
             <section>
