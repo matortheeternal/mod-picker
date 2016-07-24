@@ -70,13 +70,13 @@ app.controller('gridItemsController', function($scope, colorsFactory, objectUtil
             if (item.children) {
                 for (var j = 0; j < item.children.length; j++) {
                     var child = item.children[j];
-                    if (child.id == modId) {
-                        return (splice && item.children.splice(j, 1)) || child;
+                    if (child.mod.id == modId) {
+                        return (splice && item.children.splice(j, 1)[0]) || child;
                     }
                 }
             } else {
-                if (item.id == modId) {
-                    return (splice && $scope.model.splice(i, 1)) || item;
+                if (item.mod.id == modId) {
+                    return (splice && $scope.model.splice(i, 1)[0]) || item;
                 }
             }
         }
