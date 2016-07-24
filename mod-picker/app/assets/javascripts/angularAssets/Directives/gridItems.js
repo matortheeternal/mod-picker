@@ -65,30 +65,6 @@ app.controller('gridItemsController', function($scope, colorsFactory, objectUtil
         $scope.draggingGroup = false;
     };
 
-    $scope.findMod = function(modId, splice) {
-        for (var i = 0; i < $scope.model.length; i++) {
-            var item = $scope.model[i];
-            if (item.children) {
-                for (var j = 0; j < item.children.length; j++) {
-                    var child = item.children[j];
-                    if (child.mod.id == modId) {
-                        return (splice && item.children.splice(j, 1)[0]) || child;
-                    }
-                }
-            } else {
-                if (item.mod.id == modId) {
-                    return (splice && $scope.model.splice(i, 1)[0]) || item;
-                }
-            }
-        }
-    };
-
-    $scope.findGroup = function(groupId) {
-        return $scope.model.find(function(item) {
-            return item.children && item.id == groupId;
-        });
-    };
-
     $scope.$on('moveMod', function(event, options) {
         var params;
         var destMod = $scope.findMod(options.destId);
