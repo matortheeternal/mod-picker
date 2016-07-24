@@ -1,4 +1,4 @@
-app.controller('modListModsController', function($scope, modListService) {
+app.controller('modListModsController', function($scope, modListService, listUtils) {
     $scope.buildModsModel = function() {
         $scope.model.mods = [];
         $scope.mod_list.groups.forEach(function(group) {
@@ -98,8 +98,8 @@ app.controller('modListModsController', function($scope, modListService) {
             $scope.mod_list.groups = Array.prototype.concat($scope.mod_list.groups || [], data.groups);
             $scope.originalModList.mods = angular.copy($scope.mod_list.mods);
             $scope.originalModList.groups = angular.copy($scope.mod_list.groups);
-            $scope.buildMissingMods();
             $scope.buildModsModel();
+            $scope.buildMissingMods();
             $scope.buildUnresolvedCompatibility();
             $scope.buildUnresolvedInstallOrder();
             $scope.retrieving.mods = false;
@@ -182,9 +182,7 @@ app.controller('modListModsController', function($scope, modListService) {
     };
 
     $scope.findMod = function(modId, ignoreDestroyed) {
-        var foundMod = $scope.mod_list.mods.find(function(modListMod) {
-            return modListMod.mod.id == modId;
-        });
+        var foundMod = listUtils.findMod($scope.model.mods, modId);
         if (foundMod && ignoreDestroyed && foundMod._destroy) {
             return;
         }
