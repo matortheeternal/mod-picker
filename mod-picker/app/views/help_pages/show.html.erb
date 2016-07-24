@@ -10,7 +10,7 @@
 
     <span class="meta game" title="Game">
       <i class="fa fa-gamepad" aria-hidden="true"></i>
-      <%= link_to page.game.display_name, "/help/game/#{page.game.display_name}" %>
+      <%= link_to @help_page.game.display_name, "/help/game/#{@help_page.game.display_name}" %>
     </span>
 
     <br>
@@ -30,7 +30,7 @@
     </div>
     <span class="meta category" title="Category">
       <i class="fa fa-folder" aria-hidden="true"></i>
-      <%= link_to page.category.humanize, "/help/category/#{page.category}" %>
+      <%= link_to @help_page.category.humanize, "/help/category/#{@help_page.category}" %>
     </span>
   </div>
   <!-- enddate -->
