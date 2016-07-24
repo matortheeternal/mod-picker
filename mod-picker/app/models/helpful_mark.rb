@@ -22,8 +22,8 @@ class HelpfulMark < ActiveRecord::Base
     message: "Input helpfulable type does not support helpful marks"
   }
 
-  # Callbacks
-  after_initialize :init
+  # CALLBACKS
+  before_save :set_dates
   after_create :increment_counters
   before_destroy :decrement_counters
 
@@ -39,8 +39,10 @@ class HelpfulMark < ActiveRecord::Base
   end
 
   private
-    def init
-      self.submitted ||= DateTime.now
+    def set_dates
+      if self.submitted.nil?
+        self.submitted = DateTime.now
+      end
     end
 
     def decrement_counters
