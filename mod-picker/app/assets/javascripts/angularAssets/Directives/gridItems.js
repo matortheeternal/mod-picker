@@ -13,8 +13,10 @@ app.directive('gridItems', function () {
 });
 
 app.controller('gridItemsController', function($scope, colorsFactory, objectUtils) {
+    // initialize variables
     $scope.colorOptions = colorsFactory.getColors();
     $scope.draggingGroup = false;
+    $scope.isEmpty = objectUtils.isEmptyArray;
 
     $scope.updateItems = function() {
         var i = 1;
@@ -62,8 +64,6 @@ app.controller('gridItemsController', function($scope, colorsFactory, objectUtil
     $scope.dragEnd = function() {
         $scope.draggingGroup = false;
     };
-
-    $scope.isEmpty = objectUtils.isEmptyArray;
 
     $scope.findMod = function(modId, splice) {
         for (var i = 0; i < $scope.model.length; i++) {
