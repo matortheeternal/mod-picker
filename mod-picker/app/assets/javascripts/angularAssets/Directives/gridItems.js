@@ -63,4 +63,60 @@ app.controller('gridItemsController', function($scope, colorsFactory, objectUtil
     };
 
     $scope.isEmpty = objectUtils.isEmptyArray;
+
+    $scope.findMod = function(modId, splice) {
+        for (var i = 0; i < $scope.model.length; i++) {
+            var item = $scope.model[i];
+            if (item.children) {
+                for (var j = 0; j < item.children.length; j++) {
+                    var child = item.children[j];
+                    if (child.id == modId) {
+                        return (splice && item.children.splice(j, 1)) || child;
+                    }
+                }
+            } else {
+                if (item.id == modId) {
+                    return (splice && $scope.model.splice(i, 1)) || item;
+                }
+            }
+        }
+    };
+
+    $scope.findGroup = function(groupId) {
+        return $scope.model.find(function(item) {
+            return item.children && item.id == groupId;
+        });
+    };
+
+    $scope.$on('moveMod', function(event, options) {
+        var params;
+        var destMod = $scope.findMod(options.destId);
+
+        // check if the destination mod is on the view model
+        if (!destMod) {
+            params = {type: 'error', text: 'Failed to move mod, could not find destination mod.' };
+            $scope.$emit('customMessage', params);
+            return;
+        }
+
+        // this splices the mod if found
+        var moveMod = $scope.findMod(options.moveId, true);
+
+        // check if the mod to be moved is on the view model
+        if (!moveMod) {
+            params = {type: 'error', text: 'Failed to move mod, could not find mod to move.' };
+            $scope.$emit('customMessage', params);
+            return;
+        }
+
+        // if both mods are in the same group, move within the group
+        var moveModel = moveMod.group_id == destMod.group_id ? $scope.findGroup(moveMod.group_id) : $scope.model;
+        // send a cursor down the model until the index of the item we're on exceeds the destMod's index
+        var newIndex = moveModel.findIndex(function(item) {
+            return item.index > destMod.index;
+        });
+
+        // reinsert the mod at the new index
+        moveModel.splice(options.after ? newIndex : newIndex - 1, 0, moveMod);
+    });
 });
