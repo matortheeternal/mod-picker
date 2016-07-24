@@ -31,9 +31,6 @@ app.config(['$stateProvider', function ($stateProvider) {
         }).state('base.user.Mods', {
             templateUrl: '/resources/partials/user/mods.html',
             url: '/mods'
-        }).state('base.user.Contributions', {
-            templateUrl: '/resources/partials/user/contributions.html',
-            url: '/contributions'
         });
 }]);
 
@@ -75,8 +72,7 @@ app.controller('userController', function ($scope, $stateParams, currentUser, us
     $scope.tabs = [
         { name: 'Social'},
         { name: 'Mod Lists'},
-        { name: 'Mods'},
-        { name: 'Contributions'}
+        { name: 'Mods'}
     ];
 
     $scope.giveRep = function() {
