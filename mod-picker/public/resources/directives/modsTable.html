@@ -13,7 +13,7 @@
         <tbody>
             <tr ng-repeat="mod in mods" ng-class-odd="'odd-row'" ng-class-even="'even-row'">
                 <td class="name-column">
-                    <a ui-state="'base.mod'" ui-state-params="{modId: mod.id}">{{mod.name}}</a>
+                    <a ui-sref="base.mod({modId: mod.id})">{{mod.name}}</a>
                 </td>
                 <td>{{mod.stars_count}}</td>
                 <td>{{mod.reputation}}</td>
@@ -21,7 +21,7 @@
                 <td>
                     <div class="table-buttons">
                         <input type="button" class="action-box" ng-click="modHide(authored_mod)" value="Hide from Public">
-                        <a ui-state="'base.edit-mod'" ui-state-params="{modId: mod.id}">
+                        <a ui-sref="base.edit-mod({modId: mod.id})">
                             <input type="button" class="action-box" value="Edit"/>
                         </a>
                     </div>
