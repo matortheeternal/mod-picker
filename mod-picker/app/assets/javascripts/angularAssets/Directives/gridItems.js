@@ -113,10 +113,10 @@ app.controller('gridItemsController', function($scope, colorsFactory, objectUtil
         var moveModel = moveMod.group_id == destMod.group_id ? $scope.findGroup(moveMod.group_id).children : $scope.model;
         // send a cursor down the model until the index of the item we're on exceeds the destMod's index
         var newIndex = moveModel.findIndex(function(item) {
-            return item.index > destMod.index;
+            return item.index >= destMod.index;
         });
 
         // reinsert the mod at the new index
-        moveModel.splice(options.after ? newIndex : newIndex - 1, 0, moveMod);
+        moveModel.splice(options.after ? newIndex + 1 : newIndex, 0, moveMod);
     });
 });
