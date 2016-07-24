@@ -170,7 +170,7 @@ class User < ActiveRecord::Base
         :only => [:id, :username, :role, :title, :active_mod_list_id],
         :include => {
             :reputation => {
-                :only => [:overall]
+                :only => [:overall, :rep_to_count]
             },
             :settings => {
                 :except => [:user_id]
