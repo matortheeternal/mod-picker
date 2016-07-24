@@ -2,4 +2,20 @@
   padding-bottom: 150px;
   margin: 0 auto;
   max-width: $max-content-width;
+
+   // links
+  a:link,
+  a:visited {
+    color: $link_hover_color_primary;
+    text-decoration: none;
+  }
+
+  a:hover,
+  a:active {
+    color: $link_hover_color_secondary;
+  }
+
+  .pages-list {
+    padding-left: 0;
+  }
 }

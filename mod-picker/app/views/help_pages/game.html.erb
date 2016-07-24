@@ -1,12 +1,50 @@
-<div class="game-page">
-  <h1><%= @game.long_name %></h1>
-  <ul>
+<div class="category-page">
+  <h1 class="page-title"><%= @page_title %></h1>
+  <ul class="pages-list">
     <% @help_pages.each do |page| %>
-      <%= link_to "/help/#{page.id}", method: :get do %>
-        <h2><%= page.name %></h2>
-      <% end %>
-      <span><%= page.category %></span>
-      <span><%= page.game.display_name %></span>
+      <li>
+        <%= link_to "/help/#{page.id}", method: :get do %>
+          <img class="header-img" src="<%= page.display_image %>" alt="help page display banner">
+        <% end %>
+
+        <div class="meta-container">
+          <%= link_to "/help/#{page.id}", method: :get do %>
+            <h4 class="item-title"><%= page.name.capitalize %></h4>
+          <% end %>
+          
+
+          <span class="meta author" title="Author">
+            <i class="fa fa-user" aria-hidden="true"></i>
+            <%= link_to page.submitter.username, user_path(page.submitter) %>
+          </span>
+          
+          <span class="meta comment">
+            <% if page.comments_count > 0 %>
+              <i class="fa fa-comment" aria-hidden="true"></i>
+            <% else %>
+              <i class="fa fa-comment-o" aria-hidden="true"></i>
+            <% end %>
+            <%= page.comments_count %> 
+          </span>
+          
+          <div class="date">
+            <span class="meta submit-date" title="<%= page.submitted.strftime("%m/%d/%Y %I:%M:%S %z") %>">
+            <i class="fa fa-clock-o" aria-hidden="true"></i>
+            <%= page.submitted.strftime("Posted %b %e %Y") %>
+            </span>
+          </div>
+
+          <span class="meta game" title="Game">
+            <i class="fa fa-gamepad" aria-hidden="true"></i>
+            <%= page.game.display_name %>
+          </span>
+
+          <span class="meta category" title="Category">
+            <i class="fa fa-folder" aria-hidden="true"></i>
+            <%= page.category.humanize %>
+          </span>
+          </div>
+      </li>
     <% end %>
   </ul>
 </div>

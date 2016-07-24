@@ -111,9 +111,13 @@ Rails.application.routes.draw do
     # help pages
     match '/help', to: 'help_pages#index', via: [:get]
     match '/help/:id', to: 'help_pages#show', via: [:get]
+    match '/help/:id', to: 'help_pages#create', via: [:post]
+    match '/help/:id', to: 'help_pages#edit', via: [:post]
+    match '/help/:id', to: 'help_pages#destroy', via: [:delete]
+    
     match '/help/category/:category', to: 'help_pages#category', via: [:get]
     match '/help/game/:game', to: 'help_pages#game', via: [:get]
-    
+
 
     # static data
     resources :categories, only: [:index]

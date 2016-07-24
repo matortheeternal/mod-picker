@@ -26,26 +26,28 @@
   a:active {
     color: $link_hover_color_secondary;
   }
+
+  // meta information
+  span.meta {
+    font-size: 0.8em;
+    color: #999;
+  }
+
+  table td {
+    border: 1px solid #CCC;
+  }
+
+  table {
+    border: 1px solid #CCC;
+  }
+
+  // font awesome icons
+  .fa {
+    margin-right: 5px;
+  }
 }
 
-// meta information
-span.meta {
-  font-size: 0.8em;
-  color: #999;
-}
 
-table td {
-  border: 1px solid #CCC;
-}
-
-table {
-  border: 1px solid #CCC;
-}
-
-// font awesome icons
-.fa {
-  margin-right: 5px;
-}
 
 // help page header 
 .help-page-header {

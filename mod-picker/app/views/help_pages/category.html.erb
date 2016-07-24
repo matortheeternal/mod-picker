@@ -1,12 +1,14 @@
 <div class="category-page">
   <h1><%= @category.humanize %></h1>
-  <ul>
+  <ul class="pages-list">
     <% @help_pages.each do |page| %>
-      <%= link_to "/help/#{page.id}", method: :get do %>
-        <h2><%= page.name %></h2>
-      <% end %>
-      <span><%= page.category %></span>
-      <span><%= page.game.display_name %></span>
+       <li>
+        <%= link_to "/help/#{page.id}", method: :get do %>
+          <h2><%= page.name %></h2>
+        <% end %>
+        <span><%= page.category %></span>
+        <span><%= page.game.display_name %></span>
+      </li>
     <% end %>
   </ul>
 </div>

@@ -1,5 +1,99 @@
-.game-page {
+.category-page {
   padding-bottom: 150px;
   margin: 0 auto;
-  max-width: $max-content-width;
+  max-width: $max-width-container;
+
+  // title
+  .page-title {
+    font-size: 3em;
+    text-align: center;
+  }
+   // links
+  a:link,
+  a:visited {
+    color: $link_hover_color_primary;
+    text-decoration: none;
+  }
+
+  a:hover,
+  a:active {
+    color: $link_hover_color_secondary;
+  }
+
+  .pages-list {
+    padding-left: 0;
+    list-style: none;
+  }
+}
+
+.pages-list {
+  overflow: hidden;
+
+  // clearfix
+  // content: '';
+  // display: table;
+
+  // header image for each help page
+  .header-img {
+    max-width: 100%;
+    background-size: cover;
+  }
+
+  // meta data
+  .meta {
+    font-size: 0.8em;
+    color: #999;
+  }
+
+  li {
+    padding: 0;
+    background-color: #EEE;
+    margin-bottom: 1rem;
+
+    // grid styling
+    width: 32%;
+    margin-left: 1.5%;
+    float: left;
+
+    &:nth-child(3n + 1) {
+      clear: both;
+      margin-left: 0;
+    }
+
+    // meta info
+    .meta-container {
+      padding: 0 1rem 1rem;
+    }
+
+    .meta {
+      display: block;
+    }
+
+    .item-title {
+      margin: 0.5rem 0 1rem;
+    }
+
+    .author {
+      a:visited,
+      a:link {
+        color: #999;
+      }
+
+      a:hover,
+      a:active {
+        color: $link_hover_color_primary;
+      }
+    }
+
+    .date {
+      display: inline;
+    }
+
+    .category {
+    }
+
+    .game {
+      display: inline;
+    }
+  }
 }

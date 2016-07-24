@@ -15,22 +15,23 @@ class HelpPagesController < ApplicationController
     #                          .partition { |game| game.game_id == @help_page.game_id}.flatten
     #                          .limit(5)
 
-
     render "help_pages/show" 
   end
 
   def game
-    @game = Game.find_by_display_name(params[:game].humanize)
-    @help_pages = HelpPage.where(game_id: @game.id)
+    game = Game.find_by_display_name(params[:game])
+    @page_title = game.long_name
+    
+    @help_pages = HelpPage.where(game_id: game.id)
 
     render "help_pages/game"
   end
 
   def category
-    @category = params[:category]
+    @page_title = params[:category].humanize.capitalize
     @help_pages = HelpPage.where(category: HelpPage.categories[params[:category]]) 
 
-    render "help_pages/category"
+    render "help_pages/game"
   end
 
   private
