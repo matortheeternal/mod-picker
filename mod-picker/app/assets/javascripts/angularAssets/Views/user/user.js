@@ -78,6 +78,9 @@ app.controller('userController', function ($scope, $stateParams, currentUser, us
     $scope.giveRep = function() {
         userService.giveRep($scope.user.id, $scope.user.repped).then(function() {
             $scope.user.repped = !$scope.user.repped;
+
+            //update the currentUser's permissions without having to re-retrieve
+            $scope.$emit('updateRepPermissions', $scope.user.repped);
         }, function(response) {
             var params = {label: 'Error giving reputation', response: response};
             $scope.$emit('errorMessage', params);
