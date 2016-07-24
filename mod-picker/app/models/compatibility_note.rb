@@ -74,7 +74,7 @@ class CompatibilityNote < ActiveRecord::Base
     end
 
     mod_ids = [first_mod_id, second_mod_id]
-    note = CompatibilityNote.where(first_mod_id: mod_ids, second_mod_id: mod_ids, hidden: false).where.not(id: self.id).first
+    note = CompatibilityNote.mods(mod_ids).where("hidden = 0 and id != ?", self.id).first
     if note.present?
       if note.approved
         errors.add(:mods, "A Compatibility Note for these mods already exists.")

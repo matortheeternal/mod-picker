@@ -56,7 +56,7 @@ class LoadOrderNote < ActiveRecord::Base
     end
 
     plugin_ids = [first_plugin_id, second_plugin_id]
-    note = LoadOrderNote.where(first_plugin_id: plugin_ids, second_plugin_id: plugin_ids, hidden: false).where.not(id: self.id).first
+    note = LoadOrderNote.plugins(plugin_ids).where("hidden = 0 and id != ?", self.id).first
     if note.present?
       if note.approved
         errors.add(:plugins, "A Load Order Note for these plugins already exists.")
