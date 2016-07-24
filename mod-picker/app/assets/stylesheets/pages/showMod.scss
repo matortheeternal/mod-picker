@@ -275,9 +275,17 @@
     .toggle-item {
       cursor: pointer;
       @include user-select(none);
+      @include transition(all 0.2s ease-in-out);
     }
 
-    a {
+    .note-item {
+      font-style: italic;
+      font-size: 12px;
+      font-weight: normal;
+      margin-left: 6px;
+    }
+
+    a, .toggle-item {
       color: $bright_action_color;
       &:hover {
         color: $bar_text_color;
