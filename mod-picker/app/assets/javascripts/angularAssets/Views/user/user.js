@@ -34,7 +34,7 @@ app.config(['$stateProvider', function ($stateProvider) {
         });
 }]);
 
-app.controller('userController', function ($scope, $stateParams, currentUser, userObject, userService) {
+app.controller('userController', function ($scope, $stateParams, currentUser, userObject, userService, errorService) {
     // get parent variables
     $scope.currentUser = currentUser;
     $scope.permissions = currentUser.permissions;
@@ -42,8 +42,6 @@ app.controller('userController', function ($scope, $stateParams, currentUser, us
     // set up local variables
     $scope.user = userObject.user;
     $scope.user.repped = userObject.repped;
-    $scope.errors = [];
-    $scope.displayErrors = {};
     $scope.pages = {
         profile_comments: {}
     };
@@ -86,6 +84,16 @@ app.controller('userController', function ($scope, $stateParams, currentUser, us
             $scope.$emit('errorMessage', params);
         });
     };
+
+    // display error messages
+    $scope.$on('errorMessage', function(event, params) {
+        var errors = errorService.errorMessages(params.label, params.response);
+        errors.forEach(function(error) {
+            $scope.$broadcast('message', error);
+        });
+        // stop event propagation - we handled it
+        event.stopPropagation();
+    });
 });
 
 app.controller('userSocialTabController', function($scope, $stateParams, userService, contributionService) {
@@ -101,7 +109,8 @@ app.controller('userSocialTabController', function($scope, $stateParams, userSer
         userService.retrieveProfileComments($stateParams.userId, options, $scope.pages.profile_comments).then(function(data) {
             $scope.user.profile_comments = data;
         }, function(response) {
-            $scope.displayErrors.profile_comments = response;
+            var params = {label: 'Error retrieving Comments', response: response};
+            $scope.$emit('errorMessage', params);
         });
     };
 
