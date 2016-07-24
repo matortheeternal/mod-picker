@@ -4,13 +4,31 @@ class ModListModsController < ApplicationController
     @mod_list_mod = ModListMod.new(mod_list_mod_params)
 
     if @mod_list_mod.save
-      mod_id = @mod_list_mod.mod_id
-      required_tools = ModRequirement.where(mod_id: mod_id).joins(:mod).where(:mods => {is_utility: true})
-      required_mods = ModRequirement.where(mod_id: mod_id).joins(:mod).where(:mods => {is_utility: false})
+      # helper variables
+      mod_ids = [ @mod_list_mod.mod_id ]
+      mod_list = @mod_list_mod.mod_list
+
+      # prepare requirements
+      required_tools = ModRequirement.mods(mod_ids).utility(true)
+      required_mods = ModRequirement.mods(mod_ids).utility(false)
+
+      # prepare notes
+      compatibility_notes = mod_list.mod_compatibility_notes.mod(mod_ids)
+      install_order_notes = mod_list.install_order_notes.mod(mod_ids)
+
+      # prepare helpful marks
+      c_helpful_marks = HelpfulMark.submitter(current_user.id).helpfulable("CompatibilityNote", compatibility_notes.ids)
+      i_helpful_marks = HelpfulMark.submitter(current_user.id).helpfulable("InstallOrderNote", install_order_notes.ids)
+
+      # render response
       render json: {
           mod_list_mod: @mod_list_mod,
           required_tools: required_tools,
-          required_mods: required_mods
+          required_mods: required_mods,
+          compatibility_notes: compatibility_notes,
+          install_order_notes: install_order_notes,
+          c_helpful_marks: c_helpful_marks,
+          i_helpful_marks: i_helpful_marks
       }
     else
       render json: @mod_list_mod.errors, status: :unprocessable_entity
