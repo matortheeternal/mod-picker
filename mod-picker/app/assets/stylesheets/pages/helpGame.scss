@@ -26,7 +26,7 @@
   }
 }
 
-.pages-list {
+.category-page .pages-list {
   overflow: hidden;
 
   // clearfix
@@ -63,17 +63,7 @@
     // meta info
     .meta-container {
       padding: 0 1rem 1rem;
-    }
 
-    .meta {
-      display: block;
-    }
-
-    .item-title {
-      margin: 0.5rem 0 1rem;
-    }
-
-    .author {
       a:visited,
       a:link {
         color: #999;
@@ -85,15 +75,27 @@
       }
     }
 
-    .date {
-      display: inline;
+    .meta {
+      display: block;
     }
 
-    .category {
+    .item-title {
+      margin: 0.5rem 0 1rem;
     }
 
     .game {
       display: inline;
     }
+  }
+}
+
+.category-page .date {
+  // new icon
+  .new-label {
+    margin-left: 0.5rem;
+    padding: 0 0.5rem;
+    color: $success_secondary;
+    border: 1px solid $success_secondary;
+    text-transform: uppercase; 
   }
 }

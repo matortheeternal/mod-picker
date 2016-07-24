@@ -29,19 +29,22 @@
           
           <div class="date">
             <span class="meta submit-date" title="<%= page.submitted.strftime("%m/%d/%Y %I:%M:%S %z") %>">
-            <i class="fa fa-clock-o" aria-hidden="true"></i>
-            <%= page.submitted.strftime("Posted %b %e %Y") %>
+              <i class="fa fa-clock-o" aria-hidden="true"></i>
+              <%= page.submitted.strftime("Posted %b %e %Y") %>
+              <% if page.submitted.between?((DateTime.now - 2.week), DateTime.now) %>
+                <span class="new-label">NEW</span>
+              <% end %>
             </span>
           </div>
 
           <span class="meta game" title="Game">
             <i class="fa fa-gamepad" aria-hidden="true"></i>
-            <%= page.game.display_name %>
+            <%= link_to page.game.display_name, "/help/game/#{page.game.display_name}" %>
           </span>
 
           <span class="meta category" title="Category">
             <i class="fa fa-folder" aria-hidden="true"></i>
-            <%= page.category.humanize %>
+            <%= link_to page.category.humanize, "/help/category/#{page.category}" %>
           </span>
           </div>
       </li>
