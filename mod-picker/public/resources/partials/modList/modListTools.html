@@ -25,6 +25,9 @@
 
     <div class="content-block">
         <div class="content-title">Required Tools
+            <span class="note-item">
+                ({{show.missing_tools ? 'Missing' : 'All'}})
+            </span>
             <span class="right-item toggle-item" ng-click="show.missing_tools = !show.missing_tools">
                 {{show.missing_tools ? 'Show All' : 'Show Missing Requirements'}}
             </span>

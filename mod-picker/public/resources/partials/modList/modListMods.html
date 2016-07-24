@@ -25,6 +25,9 @@
 
     <div class="content-block">
         <div class="content-title">Required Mods
+            <span class="note-item">
+                ({{show.missing_mods ? 'Missing' : 'All'}})
+            </span>
             <span class="right-item toggle-item" ng-click="show.missing_mods = !show.missing_mods">
                 {{show.missing_mods ? 'Show All' : 'Show Missing Requirements'}}
             </span>
@@ -61,6 +64,9 @@
 
     <div class="content-block">
         <div class="content-title">Compatibility Issues
+            <span class="note-item">
+                ({{show.unresolved_compatibility ? 'Unresolved' : 'All'}})
+            </span>
             <span class="right-item toggle-item" ng-click="show.unresolved_compatibility = !show.unresolved_compatibility">
                 {{show.unresolved_compatibility ? 'Show All' : 'Show Unresolved Issues'}}
             </span>
@@ -84,6 +90,9 @@
 
     <div class="content-block">
         <div class="content-title">Install Order Issues
+            <span class="note-item">
+                ({{show.unresolved_install_order ? 'Unresolved' : 'All'}})
+            </span>
             <span class="right-item toggle-item" ng-click="show.unresolved_install_order = !show.unresolved_install_order">
                 {{show.unresolved_install_order ? 'Show All' : 'Show Unresolved Issues'}}
             </span>
