@@ -149,7 +149,8 @@ app.controller('modListModsController', function($scope, modListService) {
         }
         // else inform the user that the mod is already on their mod list
         else {
-            $scope.$emit('customMessage', {type: 'error', text: 'Failed to add mod ' + modListMod.mod.name + ', the mod has already been added to this mod list.'});
+            var params = {type: 'error', text: 'Failed to add mod ' + modListMod.mod.name + ', the mod has already been added to this mod list.'};
+            $scope.$emit('customMessage', params);
         }
     };
 
@@ -241,9 +242,12 @@ app.controller('modListModsController', function($scope, modListService) {
     $scope.$on('resolveInstallOrderNote', function(event, options) {
         switch(options.action) {
             case "move":
-                var moveId = options.note.mods[options.index].id;
-                var destId = options.note.mods[+!options.index].id;
-                $scope.$broadcast('moveMod', {move: moveId, dest: destId});
+                var moveOptions = {
+                    moveId: options.note.mods[options.index].id,
+                    destId: options.note.mods[+!options.index].id,
+                    after: !!options.index
+                };
+                $scope.$broadcast('moveMod', moveOptions);
                 break;
             case "ignore":
                 options.note.ignored = !options.note.ignored;
