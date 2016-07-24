@@ -124,6 +124,12 @@ Rails.application.routes.draw do
     resources :review_sections, only: [:index]
     resources :user_titles, only: [:index]
 
+    # legal pages
+    match '/legal', to: 'legal_pages#index', via: [:get]
+    match '/legal/tos', to: 'legal_pages#tos', via: [:get]
+    match '/legal/privacy', to: 'legal_pages#privacy', via: [:get]
+    match '/legal/copyright', to: 'legal_pages#copyright', via: [:get]
+
     # home page
     match '/skyrim', to: 'home#skyrim', via: [:get]
     match '/fallout4', to: 'home#fallout4', via: [:get]

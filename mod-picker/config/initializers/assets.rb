@@ -18,6 +18,7 @@ Rails.application.config.assets.precompile += [
 'Blackreach.css',
 'High Hrothgar.css',
 'bootstrap.min.css',
+'legal.css',
 'temp/welcome.css',
 'rzslider.min.css',
 'style-responsive.css',
