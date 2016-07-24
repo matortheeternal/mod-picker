@@ -9,19 +9,26 @@ class CompatibilityNote < ActiveRecord::Base
   # GENERAL SCOPES
   scope :visible, -> { where(hidden: false, approved: true) }
   scope :game, -> (game_id) { where(game_id: game_id) }
+  scope :mod, -> (mod_ids) { where("first_mod_id IN (?) OR second_mod_id IN (?)", mod_ids, mod_ids) }
+  scope :mods, -> (mod_ids) { where(first_mod_id: mod_ids, second_mod_id: mod_ids) }
   scope :search, -> (text) { where("compatibility_notes.text_body like ?", "%#{text}%") }
   scope :submitter, -> (username) { joins(:submitter).where(:users => {:username => username}) }
-  scope :status, -> (statuses_hash) {
-    # build commentables array
-    statuses = []
-    statuses_hash.each_with_index do |(key,value),index|
-      if statuses_hash[key]
-        statuses.push(index)
+  scope :status, -> (statuses) {
+    if statuses.is_a?(Hash)
+      # handle hash search by building a commentables array
+      statuses_arary = []
+      statuses.each_with_index do |(key,value),index|
+        if statuses[key]
+          statuses_array.push(index)
+        end
       end
+    else
+      # else treat as an array of statuses
+      statuses_array = statuses
     end
 
     # return query
-    where(status: statuses)
+    where(status: statuses_array)
   }
   # RANGE SCOPES
   scope :submitted, -> (range) { where(submitted: parseDate(range[:min])..parseDate(range[:max])) }
