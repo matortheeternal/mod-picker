@@ -12,7 +12,7 @@ app.directive('gridItems', function () {
     }
 });
 
-app.controller('gridItemsController', function($scope, colorsFactory, objectUtils) {
+app.controller('gridItemsController', function($scope, $timeout, colorsFactory, objectUtils, listUtils) {
     // initialize variables
     $scope.colorOptions = colorsFactory.getColors();
     $scope.draggingGroup = false;
@@ -67,7 +67,7 @@ app.controller('gridItemsController', function($scope, colorsFactory, objectUtil
 
     $scope.$on('moveMod', function(event, options) {
         var params;
-        var destMod = $scope.findMod(options.destId);
+        var destMod = listUtils.findMod($scope.model, options.destId);
 
         // check if the destination mod is on the view model
         if (!destMod) {
@@ -77,7 +77,7 @@ app.controller('gridItemsController', function($scope, colorsFactory, objectUtil
         }
 
         // this splices the mod if found
-        var moveMod = $scope.findMod(options.moveId, true);
+        var moveMod = listUtils.findMod($scope.model, options.moveId, true);
 
         // check if the mod to be moved is on the view model
         if (!moveMod) {
@@ -86,8 +86,11 @@ app.controller('gridItemsController', function($scope, colorsFactory, objectUtil
             return;
         }
 
+        var moveModel = $scope.model;
         // if both mods are in the same group, move within the group
-        var moveModel = moveMod.group_id == destMod.group_id ? $scope.findGroup(moveMod.group_id).children : $scope.model;
+        if (moveMod.group_id == destMod.group_id) {
+            moveModel = listUtils.findGroup($scope.model, moveMod.group_id).children;
+        }
         // send a cursor down the model until the index of the item we're on exceeds the destMod's index
         var newIndex = moveModel.findIndex(function(item) {
             return item.index >= destMod.index;
