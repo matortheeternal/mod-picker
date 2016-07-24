@@ -97,8 +97,8 @@ app.service('userService', function (backend, $q, userSettingsService, userTitle
         return permissions;
     };
 
-    this.giveRep = function(userId, given) {
-        if (given) {
+    this.giveRep = function(userId, repped) {
+        if (repped) {
             return backend.delete('/users/' + userId + '/rep');
         } else {
             return backend.post('/users/' + userId + '/rep', {});
