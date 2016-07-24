@@ -174,9 +174,9 @@ class Ability
         can :update, InstallOrderNote, { :submitter => { :inactive? => true } }
         can :update, LoadOrderNote, { :submitter => { :inactive? => true } }
         # or when the community has agreed they are incorrect
-        can :update, CompatibilityNote, { :incorrect? => true }
-        can :update, InstallOrderNote, { :incorrect? => true }
-        can :update, LoadOrderNote, { :incorrect? => true }
+        # can :update, CompatibilityNote, { :incorrect? => true }
+        # can :update, InstallOrderNote, { :incorrect? => true }
+        # can :update, LoadOrderNote, { :incorrect? => true }
       end
       if user.reputation.overall >= 640
         can :rescrape, Mod # can request mods be re-scraped

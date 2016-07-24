@@ -25,7 +25,7 @@ app.config(['$stateProvider', function($stateProvider) {
         deepStateRedirect: true,
         views: {
             'Reviews': {
-                templateUrl: '/resources/partials/mod/reviews.html',
+                templateUrl: '/resources/partials/mod/modReviews.html',
                 controller: 'modReviewsController',
             }
         },
@@ -40,7 +40,7 @@ app.config(['$stateProvider', function($stateProvider) {
         deepStateRedirect: true,
         views: {
             'Compatibility': {
-                templateUrl: '/resources/partials/mod/compatibility.html',
+                templateUrl: '/resources/partials/mod/modCompatibility.html',
                 controller: 'modCompatibilityController',
             }
         },
@@ -56,7 +56,7 @@ app.config(['$stateProvider', function($stateProvider) {
         deepStateRedirect: true,
         views: {
             'Install Order': {
-                templateUrl: '/resources/partials/mod/installOrder.html',
+                templateUrl: '/resources/partials/mod/modInstallOrder.html',
                 controller: 'modInstallOrderController',
             }
         },
@@ -72,7 +72,7 @@ app.config(['$stateProvider', function($stateProvider) {
         deepStateRedirect: true,
         views: {
             'Load Order': {
-                templateUrl: '/resources/partials/mod/loadOrder.html',
+                templateUrl: '/resources/partials/mod/modLoadOrder.html',
                 controller: 'modLoadOrderController',
             }
         },
@@ -88,7 +88,7 @@ app.config(['$stateProvider', function($stateProvider) {
         deepStateRedirect: true,
         views: {
             'Analysis': {
-                templateUrl: '/resources/partials/mod/analysis.html',
+                templateUrl: '/resources/partials/mod/modAnalysis.html',
                 controller: 'modAnalysisController',
             }
         },
