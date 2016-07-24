@@ -39,6 +39,7 @@ app.controller('gridItemsController', function($scope, colorsFactory, objectUtil
     $scope.moveItem = function(array, index) {
         array.splice(index, 1);
         $scope.updateItems();
+        $scope.$emit('modMoved');
     };
 
     $scope.removeGroup = function(group, index) {
@@ -121,5 +122,6 @@ app.controller('gridItemsController', function($scope, colorsFactory, objectUtil
 
         // update item indexes and groups
         $scope.updateItems();
+        $scope.$emit('modMoved');
     });
 });

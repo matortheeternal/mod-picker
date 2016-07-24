@@ -264,4 +264,8 @@ app.controller('modListModsController', function($scope, modListService) {
     $scope.$on('rebuildMissingMods', function() {
         $scope.buildMissingMods();
     });
+
+    $scope.$on('modMoved', function() {
+        $scope.buildUnresolvedInstallOrder();
+    });
 });
