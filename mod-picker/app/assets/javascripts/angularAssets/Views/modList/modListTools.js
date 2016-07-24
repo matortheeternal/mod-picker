@@ -1,4 +1,4 @@
-app.controller('modListToolsController', function($scope, $state, $stateParams, modListService) {
+app.controller('modListToolsController', function($scope, $state, $stateParams, modListService, listUtils) {
     $scope.buildToolsModel = function() {
         $scope.model.tools = [];
         $scope.mod_list.groups.forEach(function(group) {
@@ -44,8 +44,8 @@ app.controller('modListToolsController', function($scope, $state, $stateParams, 
             $scope.mod_list.groups = Array.prototype.concat($scope.mod_list.groups || [], data.groups);
             $scope.originalModList.tools = angular.copy($scope.mod_list.tools);
             $scope.originalModList.groups = angular.copy($scope.mod_list.groups);
-            $scope.buildMissingTools();
             $scope.buildToolsModel();
+            $scope.buildMissingTools();
             $scope.retrieving.tools = false;
         }, function(response) {
             $scope.errors.tools = response;
@@ -102,9 +102,11 @@ app.controller('modListToolsController', function($scope, $state, $stateParams, 
     };
 
     $scope.findTool = function(toolId, ignoreDestroyed) {
-        return $scope.mod_list.tools.find(function(modListTool) {
-            return (ignoreDestroyed ? !modListTool._destroy : true) && modListTool.mod.id == toolId;
-        });
+        var foundTool = listUtils.findMod($scope.model.tools, toolId);
+        if (foundTool && ignoreDestroyed && foundTool._destroy) {
+            return;
+        }
+        return foundTool;
     };
 
     $scope.addTool = function(toolId) {
