@@ -46,7 +46,7 @@ class ModList < ActiveRecord::Base
 
   # ASSOCIATIONS FROM OTHER USERS
   has_many :mod_list_stars, :inverse_of => 'mod_list'
-  has_many :comments, :as => 'commentable'
+  has_many :comments, -> { where(parent_id: nil) }, :as => 'commentable'
 
   # NESTED ATTRIBUTES
   accepts_nested_attributes_for :mod_list_mods, allow_destroy: true
