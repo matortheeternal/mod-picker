@@ -92,7 +92,7 @@ app.service('userService', function (backend, $q, userSettingsService, userTitle
         permissions.canModerate = permissions.isModerator || permissions.isAdmin;
 
         var numEndorsed = user.reputation.rep_to_count;
-        permissions.canEndorse = (rep >= 40 && numEndorsed <= 5) || (rep >= 160 && numEndorsed <= 10) || (rep >= 640 && numEndorsed <= 15);
+        permissions.canEndorse = (rep >= 40 && numEndorsed < 5) || (rep >= 160 && numEndorsed < 10) || (rep >= 640 && numEndorsed < 15);
 
         return permissions;
     };
