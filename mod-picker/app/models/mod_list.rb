@@ -31,11 +31,6 @@ class ModList < ActiveRecord::Base
   # moved out of a group and the group has been deleted)
   has_many :mod_list_groups, :inverse_of => 'mod_list'
 
-  # ASSOCIATED NOTES
-  has_many :mod_list_compatibility_notes, :inverse_of => 'mod_list'
-  has_many :mod_list_install_order_notes, :inverse_of => 'mod_list'
-  has_many :mod_list_load_order_notes, :inverse_of => 'mod_list'
-
   # CONFIG FILES
   has_many :mod_list_config_files, :inverse_of => 'mod_list'
   has_many :mod_list_custom_config_files, :inverse_of => 'mod_list'
@@ -55,9 +50,6 @@ class ModList < ActiveRecord::Base
   accepts_nested_attributes_for :mod_list_groups, allow_destroy: true
   accepts_nested_attributes_for :mod_list_config_files, allow_destroy: true
   accepts_nested_attributes_for :mod_list_custom_config_files, allow_destroy: true
-  accepts_nested_attributes_for :mod_list_compatibility_notes, allow_destroy: true
-  accepts_nested_attributes_for :mod_list_install_order_notes, allow_destroy: true
-  accepts_nested_attributes_for :mod_list_load_order_notes, allow_destroy: true
 
   # Validations
   validates :game_id, :submitted_by, :name, presence: true
