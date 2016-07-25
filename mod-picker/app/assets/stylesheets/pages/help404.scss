@@ -1,0 +1,9 @@
+.help-page-404 {
+  margin: 0 auto;
+  max-width: $max-width-container;
+
+  a {
+    text-decoration: none;
+    @include link_style($link_hover_color_primary, $link_hover_color_secondary)
+  }
+}

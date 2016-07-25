@@ -50,11 +50,27 @@ $reddit_secondary: #5f99cf;
 $max-width-container: 1220px;
 $max-content-width: 850px;
 
+// mixins
+
+// accepts a color and highlight and sets them to the color and hover color
+@mixin link_style ($color, $highlight_color: lighten($color, 10%)) {
+    &:link,
+    &:visited {
+      color: $color;
+    }
+
+    &:hover,
+    &:active {
+      color: $highlight_color;
+    }
+}
+
 // import child stylesheets for other pages in the help center
 @import 'helpIndex';
 @import 'helpShow';
 @import 'helpGame';
 @import 'helpCategory';
+@import 'help404';
 
 // Global resets
 *, *:before, *:after {

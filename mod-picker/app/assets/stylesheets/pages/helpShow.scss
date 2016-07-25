@@ -1,13 +1,3 @@
-// mixins
-
-// accepts a color and highlight and sets them to the color and hover color
-@mixin link_style ($color, $highlight_color: lighten($color, 10%)) {
-    color: $color;
-
-    &:hover {
-      color: $highlight_color;
-    }
-}
 
 .help-page-content {
   max-width: $max-content-width;

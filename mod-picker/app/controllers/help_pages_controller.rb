@@ -1,5 +1,6 @@
 class HelpPagesController < ApplicationController
-  before_action :authorize, only: [:create, :update, :destroy]
+  before_action :authorize, only: [:create, :edit, :update, :destroy]
+  before_action :set_help_page, only: [:show, :edit, :update, :destroy]
   layout "help"
 
   # GET /help
@@ -10,18 +11,14 @@ class HelpPagesController < ApplicationController
   end
   # GET /help/1
   def show
-    @help_page = HelpPage.find(params[:id])
-    # initial, unoptimized implementation of related pages
-    # @related_pages = HelpPage.where.not(id: params[:id])
-    #                          .partition { |game| game.game_id == @help_page.game_id}.flatten
-    #                          .limit(5)
-
+    authorize! :read, @help_page
     render "help_pages/show" 
   end
 
   # GET /help/new
   def new
     @help_page = HelpPage.new
+    authorize! :create, @help_page
     render "help_pages/new"
   end
 
@@ -40,14 +37,12 @@ class HelpPagesController < ApplicationController
   # GET /help/1/edit
   def edit
     authorize! :update, @help_page
-    @help_page = HelpPage.find(params[:id])
     render "help_pages/edit"
   end
 
   # PATCH/PUT /help/1
   def update
     authorize! :update, @help_page
-    @help_page = HelpPage.find(params[:id])
     if @help_page.update(help_page_params)
       redirect_to "/help/#{@help_page.id}"
     else
@@ -57,29 +52,46 @@ class HelpPagesController < ApplicationController
 
   # DELETE /help/1
   def destroy
-    HelpPage.find(params[:id]).destroy
-    redirect_to action: "index"
+    authorize! :destroy, @help_page
+
+    if @help_page.destroy
+      redirect_to action: "index"
+    end
   end
 
   # GET /help/game/game.display_name
   def game
-    game = Game.find_by_display_name(params[:game])
-    @page_title = game.long_name
-    
-    @help_pages = HelpPage.where(game_id: game.id)
+    if game = Game.find_by_display_name(params[:game])
+      @page_title = game.long_name
+      @help_pages = HelpPage.where(game_id: game.id).order(:submitted)
 
-    render "help_pages/game"
+      render "help_pages/game"
+    else
+      render "help_pages/404"
+    end
+   
   end
 
   # GET /help/category/HelpPage.category
   def category
     @page_title = params[:category].humanize.capitalize
-    @help_pages = HelpPage.where(category: HelpPage.categories[params[:category]]) 
+    @help_pages = HelpPage.where(category: HelpPage.categories[params[:category]]).order(:submitted)
 
     render "help_pages/game"
   end
 
   private
+    # call back to set shared help page logic
+    # returns help page 404 if record isn't found'
+    def set_help_page
+      begin
+        @help_page = HelpPage.find(params[:id])
+      rescue ActiveRecord::RecordNotFound  
+        render "help_pages/404"
+        return
+      end
+    end
+
     def authorize
       unless current_user.present?
         redirect_to "/users/sign_in"
