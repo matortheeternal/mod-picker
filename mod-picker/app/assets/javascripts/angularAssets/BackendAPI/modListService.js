@@ -70,7 +70,17 @@ app.service('modListService', function (backend, $q, objectUtils, userTitleServi
     };
 
     this.newModListMod = function(mod_list_mod) {
-        return backend.post('/mod_list_mods', {mod_list_mod: mod_list_mod});
+        var action = $q.defer();
+        backend.post('/mod_list_mods', {mod_list_mod: mod_list_mod}).then(function(data) {
+            userTitleService.associateTitles(data.compatibility_notes);
+            userTitleService.associateTitles(data.install_order_notes);
+            contributionService.associateHelpfulMarks(data.compatibility_notes, data.c_helpful_marks);
+            contributionService.associateHelpfulMarks(data.install_order_notes, data.i_helpful_marks);
+            action.resolve(data);
+        }, function(response) {
+            action.reject(response);
+        });
+        return action.promise;
     };
 
     this.newModListGroup = function(group) {
