@@ -26,7 +26,7 @@
     </div>
     <div class="content-options">
         <span class="select compatibility-dropdown">
-            <select ng-model="activeCompatibilityNote.compatibility_type">
+            <select ng-model="activeCompatibilityNote.status">
                 <option value="incompatible">Incompatible with</option>
                 <option value="partially incompatible">Partially Incompatible with</option>
                 <option value="compatibility mod">Compatibility Mod for</option>
@@ -41,7 +41,7 @@
             <strong>Compatibility Mod</strong>
             <search-input search-type="mods" result-id="activeCompatibilityNote.compatibility_mod_id" excluded-id="mod.id" on-change="validateCompatibilityNote"></search-input>
         </span>
-        <span ng-if="activeCompatibilityNote.compatibility_type === 'compatibility option'">
+        <span ng-if="activeCompatibilityNote.status === 'compatibility option'">
             <strong>Compatibility Plugin</strong>
             <search-input search-type="plugins" result-id="activeCompatibilityNote.compatibility_plugin_id" on-change="validateCompatibilityNote"></search-input>
         </span>
