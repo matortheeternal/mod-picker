@@ -181,6 +181,11 @@ app.controller('modListModsController', function($scope, modListService, listUti
             Array.prototype.unite($scope.required.mods, data.required_mods);
             $scope.$emit('rebuildMissing');
 
+            // handle notes
+            Array.prototype.unite($scope.notes.compatibility, data.compatibility_notes);
+            Array.prototype.unite($scope.notes.install_order, data.install_order_notes);
+            $scope.$emit('rebuildUnresolved');
+
             // success message
             $scope.$emit('successMessage', 'Added mod ' + data.mod_list_mod.mod.name + ' successfully.');
         }, function(response) {
@@ -263,15 +268,10 @@ app.controller('modListModsController', function($scope, modListService, listUti
         }
     });
 
-    $scope.$on('rebuildModels', function() {
-        $scope.buildModsModel();
-    });
-
-    $scope.$on('rebuildMissingMods', function() {
-        $scope.buildMissingMods();
-    });
-
-    $scope.$on('modMoved', function() {
-        $scope.buildUnresolvedInstallOrder();
-    });
+    // direct method trigger events
+    $scope.$on('rebuildModels', $scope.buildModsModel);
+    $scope.$on('rebuildMissingMods', $scope.buildMissingMods);
+    $scope.$on('rebuildUnresolvedCompatibility', $scope.buildUnresolvedCompatibility);
+    $scope.$on('rebuildUnresolvedCompatibility', $scope.buildUnresolvedCompatibility);
+    $scope.$on('modMoved', $scope.buildUnresolvedInstallOrder);
 });

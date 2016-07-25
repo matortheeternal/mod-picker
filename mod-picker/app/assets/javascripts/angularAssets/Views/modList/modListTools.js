@@ -137,11 +137,7 @@ app.controller('modListToolsController', function($scope, $state, $stateParams, 
         $scope.updateTabs();
     };
 
-    $scope.$on('rebuildModels', function() {
-        $scope.buildToolsModel();
-    });
-
-    $scope.$on('rebuildMissingTools', function() {
-        $scope.buildMissingTools();
-    });
+    // direct method trigger events
+    $scope.$on('rebuildModels', $scope.buildToolsModel);
+    $scope.$on('rebuildMissingTools', $scope.buildMissingTools);
 });
