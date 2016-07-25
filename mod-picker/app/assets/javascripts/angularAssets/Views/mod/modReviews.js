@@ -1,4 +1,4 @@
-app.controller('modReviewsController', function($scope, $stateParams, $timeout, $state, modService, reviewSectionService, contributionService, sortFactory) {
+app.controller('modReviewsController', function($scope, $stateParams, $state, modService, reviewSectionService, contributionService, sortFactory) {
     $scope.sort = {
         column: $stateParams.scol,
         direction: $stateParams.sdir
@@ -22,20 +22,13 @@ app.controller('modReviewsController', function($scope, $stateParams, $timeout, 
             $scope.errors.reviews = response;
         });
 
-        //don't refresh the url on the first load
-        if ($scope.loaded) {
-            //refresh the tab's params
-            var params = {
-                scol: $scope.sort.column,
-                sdir: $scope.sort.direction,
-                page: page || 1
-            };
-            $scope.refreshTabParams('Reviews', params);
-        } else {
-            $timeout(function(){
-                $scope.loaded = true;
-            }, 100);
-        }
+        //refresh the tab's params
+        var params = {
+            scol: $scope.sort.column,
+            sdir: $scope.sort.direction,
+            page: page || 1
+        };
+        $scope.refreshTabParams('Reviews', params);
     };
     //retrieve the reviews when the state is first loaded
     $scope.retrieveReviews($stateParams.page);

@@ -1,4 +1,4 @@
-app.controller('modCompatibilityController', function($scope, $stateParams, $state, $timeout, contributionFactory, contributionService, sortFactory) {
+app.controller('modCompatibilityController', function($scope, $stateParams, $state, contributionFactory, contributionService, sortFactory) {
     $scope.sort = {
         column: $stateParams.scol,
         direction: $stateParams.sdir
@@ -26,21 +26,14 @@ app.controller('modCompatibilityController', function($scope, $stateParams, $sta
             $scope.errors.compatibility_notes = response;
         });
 
-        //don't refresh the url on the first load
-        if ($scope.loaded) {
-            //refresh the tab's params
-            var params = {
-                scol: $scope.sort.column,
-                sdir: $scope.sort.direction,
-                filter: $scope.filters.modlist,
-                page: page || 1
-            };
-            $scope.refreshTabParams('Compatibility', params);
-        } else {
-            $timeout(function(){
-                $scope.loaded = true;
-            }, 100);
-        }
+        //refresh the tab's params
+        var params = {
+            scol: $scope.sort.column,
+            sdir: $scope.sort.direction,
+            filter: $scope.filters.modlist,
+            page: page || 1
+        };
+        $scope.refreshTabParams('Compatibility', params);
     };
 
     //retrieve the notes when the state is first loaded

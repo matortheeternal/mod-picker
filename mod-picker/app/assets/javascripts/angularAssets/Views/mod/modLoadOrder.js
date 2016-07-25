@@ -1,4 +1,4 @@
-app.controller('modLoadOrderController', function($scope, $state, $stateParams, $timeout, contributionService, contributionFactory, sortFactory) {
+app.controller('modLoadOrderController', function($scope, $state, $stateParams, contributionService, contributionFactory, sortFactory) {
     $scope.sort = {
         column: $stateParams.scol,
         direction: $stateParams.sdir
@@ -25,21 +25,14 @@ app.controller('modLoadOrderController', function($scope, $state, $stateParams, 
             $scope.errors.load_order_notes = response;
         });
 
-        //don't refresh the url on the first load
-        if ($scope.loaded) {
-            //refresh the tab's params
-            var params = {
-                scol: $scope.sort.column,
-                sdir: $scope.sort.direction,
-                filter: $scope.filters.modlist,
-                page: page || 1
-            };
-            $scope.refreshTabParams('Load Order', params);
-        } else {
-            $timeout(function(){
-                $scope.loaded = true;
-            }, 100);
-        }
+        //refresh the tab's params
+        var params = {
+            scol: $scope.sort.column,
+            sdir: $scope.sort.direction,
+            filter: $scope.filters.modlist,
+            page: page || 1
+        };
+        $scope.refreshTabParams('Load Order', params);
     };
 
     //retrieve the notes when the state is first loaded

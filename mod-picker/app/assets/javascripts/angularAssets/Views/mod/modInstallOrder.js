@@ -1,4 +1,4 @@
-app.controller('modInstallOrderController', function($scope, $stateParams, $timeout, $state, contributionService, contributionFactory, sortFactory) {
+app.controller('modInstallOrderController', function($scope, $stateParams, $state, contributionService, contributionFactory, sortFactory) {
     $scope.sort = {
         column: $stateParams.scol,
         direction: $stateParams.sdir
@@ -25,21 +25,14 @@ app.controller('modInstallOrderController', function($scope, $stateParams, $time
             $scope.errors.install_order_notes = response;
         });
 
-        //don't refresh the url on the first load
-        if ($scope.loaded) {
-            //refresh the tab's params
-            var params = {
-                scol: $scope.sort.column,
-                sdir: $scope.sort.direction,
-                filter: $scope.filters.modlist,
-                page: page || 1
-            };
-            $scope.refreshTabParams('Install Order', params);
-        } else {
-            $timeout(function(){
-                $scope.loaded = true;
-            }, 100);
-        }
+        //refresh the tab's params
+        var params = {
+            scol: $scope.sort.column,
+            sdir: $scope.sort.direction,
+            filter: $scope.filters.modlist,
+            page: page || 1
+        };
+        $scope.refreshTabParams('Install Order', params);
     };
 
     //retrieve the notes when the state is first loaded
