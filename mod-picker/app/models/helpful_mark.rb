@@ -3,12 +3,15 @@ class HelpfulMark < ActiveRecord::Base
   
   self.primary_keys = :submitted_by, :helpfulable_id, :helpfulable_type
 
-  scope :by, -> (id) { where(submitted_by: id) }
+  # SCOPES
+  scope :submitter, -> (id) { where(submitted_by: id) }
+  scope :helpfulable, -> (model, ids) { where(helpfulable_type: model, helpfulable_id: ids) }
 
+  # ASSOCIATIONS
   belongs_to :helpfulable, :polymorphic => true
   belongs_to :submitter, :class_name => 'User', :foreign_key => 'submitted_by', :inverse_of => 'helpful_marks'
 
-  # Validation
+  # VALIDATIONS
   # :helpful's presence is not required because it will fail if :helpful == false
   validates :submitted_by, :helpfulable_id, :helpfulable_type, presence: true
 
