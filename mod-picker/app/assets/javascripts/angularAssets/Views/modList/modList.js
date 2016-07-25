@@ -285,6 +285,12 @@ app.controller('modListController', function($scope, $q, $stateParams, $timeout,
         $scope.$broadcast('rebuildMissingMods');
     });
 
+    $scope.$on('rebuildUnresolved', function() {
+        $scope.$broadcast('rebuildUnresolvedCompatibility');
+        $scope.$broadcast('rebuildUnresolvedInstallOrder');
+        $scope.$broadcast('rebuildUnresolvedLoadOrder');
+    });
+
     $scope.removeDestroyedItems = function() {
         var removeIfDestroyed = function(item, index, array) {
             if (item._destroy) {
