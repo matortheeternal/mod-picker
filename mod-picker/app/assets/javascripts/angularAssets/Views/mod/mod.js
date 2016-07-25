@@ -123,6 +123,7 @@ app.controller('modController', function($scope, $q, $stateParams, $state, $time
     $scope.permissions.canManage = $scope.permissions.canModerate || isAuthor;
 
     $scope.refreshTabParams = function(tabName, params) {
+        params.modId = $scope.mod.id;
         $state.transitionTo('base.mod.' + tabName, params, { notify: false });
     };
 
