@@ -25,11 +25,9 @@ app.controller('modReviewsController', function($scope, $stateParams, $state, mo
         //refresh the tab's params
         var params = {
             scol: $scope.sort.column,
-            sdir: $scope.sort.direction
+            sdir: $scope.sort.direction,
+            page: page || 1
         };
-        if (page) {
-            params.page = page;
-        }
         $scope.refreshTabParams('Reviews', params);
     };
     //retrieve the reviews when the state is first loaded

@@ -29,11 +29,10 @@ app.controller('modCompatibilityController', function($scope, $stateParams, $sta
         //refresh the tab's params
         var params = {
             scol: $scope.sort.column,
-            sdir: $scope.sort.direction
+            sdir: $scope.sort.direction,
+            filter: $scope.filters.modlist,
+            page: page || 1
         };
-        if (page) {
-            params.page = page;
-        }
         $scope.refreshTabParams('Compatibility', params);
     };
 

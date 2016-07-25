@@ -28,11 +28,10 @@ app.controller('modInstallOrderController', function($scope, $stateParams, $stat
         //refresh the tab's params
         var params = {
             scol: $scope.sort.column,
-            sdir: $scope.sort.direction
+            sdir: $scope.sort.direction,
+            filter: $scope.filters.modlist,
+            page: page || 1
         };
-        if (page) {
-            params.page = page;
-        }
         $scope.refreshTabParams('Install Order', params);
     };
 
