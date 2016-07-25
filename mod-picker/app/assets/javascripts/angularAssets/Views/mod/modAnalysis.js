@@ -1,13 +1,6 @@
 app.controller('modAnalysisController', function($scope, $stateParams, $state, contributionService) {
-    $scope.thisTab = $scope.findTab('Analysis');
-
-    //update the params on the tab object when the tab is navigated to directly
-    $scope.thisTab.params = angular.copy($stateParams);
-    $scope.params = $scope.thisTab.params;
-
     $scope.switchPlugin = function() {
-        $scope.params.plugin = $scope.mod.currentPlugin.id;
-        $scope.refreshTabParams($scope.thisTab);
+        $scope.refreshTabParams('Analysis', {plugin: $scope.mod.currentPlugin.id});
     };
 
     $scope.retrieveAnalysis = function(pluginId) {
@@ -21,13 +14,13 @@ app.controller('modAnalysisController', function($scope, $stateParams, $state, c
             // set current plugin
             if (analysis.plugins.length > 0) {
                 var statePlugin = analysis.plugins.find(function(plugin) {
-                    return plugin.id === $scope.params.plugin;
+                    return plugin.id === pluginId;
                 });
                 // if the plugin defined in the params isn't part of this mod, then set the currentPlugin to the first plugin of this mod and update the url parameter
                 if (!statePlugin) {
-                    $scope.mod.currentPlugin = analysis.plugins[0];
-                    $scope.params.plugin = analysis.plugins[0].id;
-                    $scope.refreshTabParams($scope.thisTab);
+                    var firstPlugin = analysis.plugins[0];
+                    $scope.mod.currentPlugin = firstPlugin;
+                    $scope.refreshTabParams('Analysis', {plugin: firstPlugin.id});
                 } else {
                     $scope.mod.currentPlugin = statePlugin;
                 }
@@ -39,5 +32,5 @@ app.controller('modAnalysisController', function($scope, $stateParams, $state, c
     };
 
     //retrieve the data when the state is first loaded
-    $scope.retrieveAnalysis($stateParams.page);
+    $scope.retrieveAnalysis($stateParams.plugin);
 });

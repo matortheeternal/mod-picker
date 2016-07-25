@@ -1,27 +1,21 @@
 app.controller('modCompatibilityController', function($scope, $stateParams, $state, contributionFactory, contributionService, sortFactory) {
-    $scope.thisTab = $scope.findTab('Compatibility');
-    //loading the sort options
-    $scope.sortOptions = sortFactory.compatibilityNoteSortOptions();
-    //initialize the pages variable
+    $scope.sort = {
+        column: $stateParams.scol,
+        direction: $stateParams.sdir
+    };
+    $scope.filters = {
+        modlist: $stateParams.filter
+    };
     $scope.pages = {};
 
-    //update the params on the tab object when the tab is navigated to directly
-    $scope.thisTab.params = angular.copy($stateParams);
-    $scope.params = $scope.thisTab.params;
+    //loading the sort options
+    $scope.sortOptions = sortFactory.compatibilityNoteSortOptions();
 
     $scope.retrieveCompatibilityNotes = function(page) {
-        // refresh the parameters in the url (without actually changing state), but not on initialization
-        if ($scope.loaded) {
-            $scope.refreshTabParams($scope.thisTab);
-        }
-
         // retrieve the compatibility notes
         var options = {
-            sort: {
-                column: $scope.params.scol,
-                direction: $scope.params.sdir
-            },
-            filters: { modlist: $scope.params.filter },
+            sort: $scope.sort,
+            filters: $scope.filters,
             //if no page is specified load the first one
             page: page || 1
         };
@@ -31,12 +25,25 @@ app.controller('modCompatibilityController', function($scope, $stateParams, $sta
         }, function(response) {
             $scope.errors.compatibility_notes = response;
         });
+
+        //refresh the tab's params
+        var params = {
+            scol: $scope.sort.column,
+            sdir: $scope.sort.direction
+        };
+        if (page) {
+            params.page = page;
+        }
+        $scope.refreshTabParams('Compatibility', params);
     };
 
     //retrieve the notes when the state is first loaded
     $scope.retrieveCompatibilityNotes($stateParams.page);
-    //start allowing the url params to be updated
-    $scope.loaded = true;
+
+    // re-retrieve reviews when the sort object changes
+    $scope.$watch('sort', function() {
+        $scope.retrieveCompatibilityNotes();
+    }, true);
 
     // COMPATIBILITY NOTE RELATED LOGIC
     // instantiate a new compatibility note object
