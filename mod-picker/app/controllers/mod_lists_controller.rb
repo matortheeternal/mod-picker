@@ -77,17 +77,27 @@ class ModListsController < ApplicationController
     authorize! :read, @mod_list
 
     # prepare primary data
-    plugins = @mod_list.mod_list_plugins.joins(:plugin)
+    plugins = @mod_list.mod_list_plugins.includes(:plugin)
     custom_plugins = @mod_list.custom_plugins
     groups = @mod_list.mod_list_groups.where(tab: 2).order(:index)
+
+    # prepare notes
+    compatibility_notes = @mod_list.plugin_compatibility_notes
+    load_order_notes = @mod_list.load_order_notes
+
+    # prepare helpful marks
+    c_helpful_marks = HelpfulMark.submitter(current_user.id).helpfulable("CompatibilityNote", compatibility_notes.ids)
+    l_helpful_marks = HelpfulMark.submitter(current_user.id).helpfulable("LoadOrderNote", load_order_notes.ids)
 
     # render response
     render :json => {
         plugins: plugins,
         custom_plugins: custom_plugins,
         groups: groups,
-        compatibility_notes: @mod_list.plugin_compatibility_notes,
-        load_order_notes: @mod_list.load_order_notes
+        compatibility_notes: compatibility_notes,
+        load_order_notes: load_order_notes,
+        c_helpful_marks: c_helpful_marks,
+        l_helpful_marks: l_helpful_marks
     }
   end
 
