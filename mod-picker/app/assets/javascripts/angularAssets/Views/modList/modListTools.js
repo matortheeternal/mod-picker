@@ -1,4 +1,4 @@
-app.controller('modListToolsController', function($scope, $state, $stateParams, modListService, listUtils) {
+app.controller('modListToolsController', function($scope, $state, $stateParams, modListService) {
     $scope.buildToolsModel = function() {
         $scope.model.tools = [];
         $scope.mod_list.groups.forEach(function(group) {
@@ -56,6 +56,26 @@ app.controller('modListToolsController', function($scope, $state, $stateParams, 
     if (!$scope.mod_list.tools && !$scope.retrieving.tools) {
         $scope.retrieveTools();
     }
+
+    $scope.addToolGroup = function() {
+        var newGroup = {
+            mod_list_id: $scope.mod_list.id,
+            index: $scope.model.tools.length,
+            tab: 'tools',
+            color: 'red',
+            name: 'New Group'
+        };
+        modListService.newModListGroup(newGroup).then(function(data) {
+            var group = data;
+            group.children = [];
+            $scope.mod_list.groups.push(group);
+            $scope.originalModList.groups.push(angular.copy(group));
+            $scope.model.tools.push(group);
+        }, function(response) {
+            var params = {label: 'Error creating new Tool Group', response: response};
+            $scope.$emit('errorMessage', params);
+        });
+    };
 
     $scope.reAddTool = function(modListTool) {
         // if tool is already present on the user's mod list but has been
