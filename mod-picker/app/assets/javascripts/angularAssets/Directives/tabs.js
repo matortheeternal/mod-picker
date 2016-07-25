@@ -20,14 +20,6 @@ app.controller('tabsController', function($scope, $state, $stickyState) {
         return $scope.tabs[index];
     };
 
-    $scope.isCurrentTab = function(tabName) {
-        if ($state.includes('**.' + tabName)) {
-            return 'selected-tab';
-        } else {
-            return '';
-        }
-    };
-
     $scope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
         var oldTabName = fromState.name.split(".").find(function(stateName) {
             return $scope.findTab(stateName);
