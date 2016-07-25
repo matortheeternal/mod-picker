@@ -43,11 +43,17 @@ class ContributionsController < ApplicationController
   # POST/GET /contribution/1/corrections
   def corrections
     authorize! :read, @contribution
+
+    # prepare corrections
     corrections = @contribution.corrections.accessible_by(current_ability)
-    agreement_marks = AgreementMark.where(submitted_by: current_user.id, correction_id: corrections.ids)
+
+    # prepare agreement marks
+    agreement_marks = AgreementMark.submitter(current_user.id).corrections(corrections.ids)
+
+    # render response
     render :json => {
         corrections: corrections,
-        agreement_marks: agreement_marks.as_json({:only => [:correction_id, :agree]})
+        agreement_marks: agreement_marks
     }
   end
 
@@ -61,10 +67,7 @@ class ContributionsController < ApplicationController
   # POST /contribution/1/helpful
   def helpful
     # get old helpful marks
-    old_helpful_marks = HelpfulMark.where(
-        submitted_by: current_user.id,
-        helpfulable_id: params[:id],
-        helpfulable_type: controller_name.classify)
+    old_helpful_marks = HelpfulMark.submitter(current_user.id).helpfulable(params[:id], controller_name.classify)
 
     if params.has_key?(:helpful)
       # create new helpful mark

@@ -1,16 +1,8 @@
-<!--TODO: Make this view better-->
-
 <div class="page-container">
     <div class="error-page {{quote.class}}">
         <div class="big-quote">"{{quote.text}}"</div>
-        <div class="explanation" ng-if="statusType === 'unauthorized'">
-            You aren't authorized to access this resource.
-        </div>
-        <div class="explanation" ng-if="statusType === 'not found'">
-            Unfortunately, we weren't able to display the page you were looking for.
-        </div>
-        <div class="explanation" ng-if="statusType === 'unavailable'">
-            The resource is unavailable.  The server is either down or overburdened.
+        <div class="explanation" ng-if="statusType !== 'error'">
+            {{response.data.error || defaultExplanations[statusType]}}
         </div>
         <div class="explanation" ng-if="statusType === 'error'">
             An unexpected error has occured.  You can <a ng-if="stateUrl" href="{{stateUrl}}">try again</a><span ng-if="!stateUrl">try again</span> or <a href="#/">contact us</a> if the problem persists.

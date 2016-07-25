@@ -98,6 +98,12 @@ Rails.application.routes.draw do
     # mod lists
     resources :mod_lists, only: [:index, :show, :create, :update, :destroy]
     match '/active_mod_list', to: 'mod_lists#active', via: [:get]
+    match '/mod_lists/:id/mods', to: 'mod_lists#mods', via: [:get, :post]
+    match '/mod_lists/:id/tools', to: 'mod_lists#tools', via: [:get, :post]
+    match '/mod_lists/:id/plugins', to: 'mod_lists#plugins', via: [:get, :post]
+    match '/mod_lists/:id/config_files', to: 'mod_lists#config_files', via: [:get, :post]
+    match '/mod_list_mods', to: 'mod_list_mods#create', via: [:post]
+    match '/mod_list_groups', to: 'mod_list_groups#create', via: [:post]
 
     # mod and mod list stars
     match '/mod_lists/:id/star', to: 'mod_lists#create_star', via: [:post]
@@ -129,6 +135,12 @@ Rails.application.routes.draw do
     resources :record_groups, only: [:index]
     resources :review_sections, only: [:index]
     resources :user_titles, only: [:index]
+
+    # legal pages
+    match '/legal', to: 'legal_pages#index', via: [:get]
+    match '/legal/tos', to: 'legal_pages#tos', via: [:get]
+    match '/legal/privacy', to: 'legal_pages#privacy', via: [:get]
+    match '/legal/copyright', to: 'legal_pages#copyright', via: [:get]
 
     # home page
     match '/skyrim', to: 'home#skyrim', via: [:get]

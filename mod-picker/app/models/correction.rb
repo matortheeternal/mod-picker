@@ -5,8 +5,8 @@ class Correction < ActiveRecord::Base
   enum mod_status: [:good, :outdated, :unstable]
 
   # BOOLEAN SCOPES (excludes content when false)
-  scope :hidden, -> (bool) { where(hidden: false) if !bool  }
-  scope :adult, -> (bool) { where(has_adult_content: false) if !bool }
+  scope :include_hidden, -> (bool) { where(hidden: false) if !bool  }
+  scope :include_adult, -> (bool) { where(has_adult_content: false) if !bool }
   # GENERAL SCOPES
   scope :visible, -> { where(hidden: false) }
   scope :game, -> (game_id) { where(game_id: game_id) }
@@ -77,6 +77,29 @@ class Correction < ActiveRecord::Base
   before_save :set_dates
   after_save :recompute_correctable_standing
   after_destroy :decrement_counters, :recompute_correctable_standing
+
+  def self.index_json(collection)
+    collection.as_json({
+        :include => {
+            :submitter => {
+                :only => [:id, :username, :role, :title],
+                :include => {
+                    :reputation => {:only => [:overall]}
+                },
+                :methods => :avatar
+            },
+            :correctable => {
+                :only => [:id, :name],
+                :include => {
+                    :submitter => {
+                        :only => [:id, :username]
+                    }
+                },
+                :methods => :mods
+            },
+        }
+    })
+  end
 
   def as_json(options={})
     if JsonHelpers.json_options_empty(options)

@@ -27,13 +27,8 @@ class Ability
       # can hide mod lists
       can :hide, ModList
 
-      # can create mods with custom sources
-      can :assign_custom_sources, Mod
-      # can assign authors to mods
-      can :assign_authors, Mod
-
       # can update or hide any mod
-      can [:update, :hide], Mod
+      can [:update, :hide, :assign_custom_sources, :update_authors, :update_options], Mod
       can :destroy, ModRequirement
 
       # can update, approve, or hide any contribution
@@ -50,15 +45,9 @@ class Ability
       can :destroy, ModListTag
     else
       # users that are not admins or moderators
-      # cannot read hidden content
-      cannot :read, Comment, :hidden => true
-      cannot :read, CompatibilityNote, :hidden => true
-      cannot :read, InstallOrderNote, :hidden => true
-      cannot :read, LoadOrderNote, :hidden => true
-      cannot :read, Review, :hidden => true
-      cannot :read, ModTag, :hidden => true
-      cannot :read, ModListTag, :hidden => true
-      cannot :read, Mod, :hidden => true
+      # cannot read private mod lists unless they submitted them
+      cannot :read, ModList, :visibility => "visibility_private"
+      can :read, ModList, :submitted_by => user.id
 
       # cannot read unapproved content
       cannot :read, CompatibilityNote, :approved => false
@@ -71,6 +60,17 @@ class Ability
       can :read, InstallOrderNote, :approved => false, :submitted_by => user.id
       can :read, LoadOrderNote, :approved => false, :submitted_by => user.id
       can :read, Review, :approved => false, :submitted_by => user.id
+
+        # cannot read hidden content
+      cannot :read, Comment, :hidden => true
+      cannot :read, CompatibilityNote, :hidden => true
+      cannot :read, InstallOrderNote, :hidden => true
+      cannot :read, LoadOrderNote, :hidden => true
+      cannot :read, Review, :hidden => true
+      cannot :read, ModTag, :hidden => true
+      cannot :read, ModListTag, :hidden => true
+      cannot :read, Mod, :hidden => true
+      cannot :read, ModList, :hidden => true
     end
 
     # signed in users who aren't banned
@@ -148,9 +148,11 @@ class Ability
 
       # abilities for mod authors
       can :update, Mod, { :mod_authors => { :user_id => user.id } }
+      cannot :update, Mod, { :disallow_contributors => true, :mod_authors => { :user_id => user.id, :role => 1 } }
       can :destroy, ModRequirement, {:mod_version => {:mod => {:mod_authors => {:user_id => user.id } } } }
       can :destroy, ModTag, { :mod => { :mod_authors => { :user_id => user.id } } }
-      can :assign_authors, Mod, { :mod_authors => { :user_id => user.id, :role => 0 } }
+      can :update_authors, Mod, { :mod_authors => { :user_id => user.id, :role => 0 } }
+      can :update_options, Mod, { :mod_authors => { :user_id => user.id, :role => 1 } }
 
       # abilities tied to reputation
       if user.reputation.overall >= 20
@@ -172,9 +174,9 @@ class Ability
         can :update, InstallOrderNote, { :submitter => { :inactive? => true } }
         can :update, LoadOrderNote, { :submitter => { :inactive? => true } }
         # or when the community has agreed they are incorrect
-        can :update, CompatibilityNote, { :incorrect? => true }
-        can :update, InstallOrderNote, { :incorrect? => true }
-        can :update, LoadOrderNote, { :incorrect? => true }
+        # can :update, CompatibilityNote, { :incorrect? => true }
+        # can :update, InstallOrderNote, { :incorrect? => true }
+        # can :update, LoadOrderNote, { :incorrect? => true }
       end
       if user.reputation.overall >= 640
         can :rescrape, Mod # can request mods be re-scraped

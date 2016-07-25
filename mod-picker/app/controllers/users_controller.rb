@@ -7,7 +7,7 @@ class UsersController < ApplicationController
     count =  User.accessible_by(current_ability).filter(filtering_params).count
 
     render :json => {
-        users: @users.as_json,
+        users: @users,
         max_entries: count,
         entries_per_page: User.per_page
     }
@@ -21,9 +21,7 @@ class UsersController < ApplicationController
   # POST /users/search
   def search
     @users = User.filter(search_params).sort({ column: "username", direction: "ASC" }).limit(10)
-    render :json => @users.as_json({
-        :only => [:id, :username]
-    })
+    render :json => User.search_json(@users)
   end
 
   # GET /users/1

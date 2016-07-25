@@ -1,0 +1,41 @@
+<ul dnd-list="model" class="{{draggingGroup ? 'dragging-group' : ''}}">
+    <li ng-repeat="item in model" class="box-shadow {{item.children ? 'group bg-'+item.color : ''}}" ng-hide="item._destroy" dnd-draggable="item" dnd-moved="moveItem(model, $index)" dnd-effect-allowed="move" dnd-disable-if="!editing" dnd-type="{{item.children ? '\'group\'' : '\'item\''}}" dnd-dragstart="dragStart(item)" dnd-dragend="dragEnd()">
+
+        <!-- display options for groups -->
+        <div ng-if="item.children">
+            <div class="remove-item" ng-if="editing">
+                <span class="fa fa-times" ng-click="removeGroup(item, $index)"></span>
+            </div>
+            <div class="group-name">
+                <input type="text" ng-model="item.name" ng-click="focusText($event)" pu-elastic-input ng-disabled="!editing"/>
+            </div>
+            <div class="group-color" ng-if="editing">
+                <strong>Color:</strong>
+                <select ng-model="item.color">
+                    <option ng-repeat="option in colorOptions" value="{{option}}">{{option | humanize:1}}</option>
+                </select>
+            </div>
+
+            <!-- display children of groups -->
+            <ul dnd-list="item.children" dnd-horizontal-list="true" dnd-allowed-types="['item']">
+                <li class="box-shadow" ng-repeat="child in item.children" ng-hide="child._destroy" dnd-draggable="child" dnd-moved="moveItem(item.children, $index)" dnd-effect-allowed="move" dnd-disable-if="!editing" dnd-type="'item'">
+                    <grid-item item="child" remove-callback="removeCallback" editing="editing"></grid-item>
+                </li>
+            </ul>
+
+            <!-- display message if there are no children -->
+            <div class="content-message" ng-show="isEmpty(item.children)">
+                There are no {{type}} in this group.
+            </div>
+        </div>
+
+        <!-- display item -->
+        <div ng-if="!item.children">
+            <grid-item item="item" remove-callback="removeCallback" editing="editing"></grid-item>
+        </div>
+    </li>
+</ul>
+
+<div class="content-message" ng-show="isEmpty(model)">
+    There are no {{type}} in this list.
+</div>

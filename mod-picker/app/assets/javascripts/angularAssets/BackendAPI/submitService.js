@@ -1,5 +1,5 @@
 //TODO: change naming
-app.service('submitService', function (backend, $q) {
+app.service('submitService', function (backend, objectUtils) {
     this.scrapeNexus = function (gameId, modId) {
         return backend.retrieve('/nexus_infos/' + modId, {game_id: gameId});
     };
@@ -148,7 +148,7 @@ app.service('submitService', function (backend, $q) {
                 required_mods_attributes: required_mods
             }
         };
-        deleteEmptyProperties(modData, 1);
+        objectUtils.deleteEmptyProperties(modData, 1);
 
         // submit mod
         return backend.update('/mods/' + mod.id, modData);

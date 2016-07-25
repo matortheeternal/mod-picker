@@ -9,20 +9,7 @@ class CorrectionsController < ApplicationController
     # get helpful marks
     agreement_marks = AgreementMark.where(submitted_by: current_user.id, correction_id: @corrections.ids)
     render :json => {
-        corrections: @corrections.as_json({
-            :include => {
-                :submitter => {
-                    :only => [:id, :username, :role, :title],
-                    :include => {
-                        :reputation => {:only => [:overall]}
-                    },
-                    :methods => :avatar
-                },
-                :correctable => {
-                    :only => [:id, :name]
-                }
-            }
-        }),
+        corrections: Correction.index_json(@corrections),
         agreement_marks: agreement_marks,
         max_entries: count,
         entries_per_page: Correction.per_page

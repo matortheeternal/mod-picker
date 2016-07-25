@@ -6,6 +6,7 @@ app.directive('searchInput', function () {
         scope: {
             resultId: '=',
             searchText: '=?',
+            placeholder: '=?',
             onChange: '=?',
             excludedId: '=?',
             disabled: '=?',
@@ -18,13 +19,12 @@ app.controller('searchInputController', function($scope, $timeout, modService, p
     // set some constants
     var pause = 700;
     var minLength = 2;
-    if ($scope.searchType === "plugins") {
-        $scope.placeholder = "Enter plugin name";
-    } else if ($scope.searchType === "users") {
-        $scope.placeholder = "Enter username";
-    } else if ($scope.searchType === "mods") {
-        $scope.placeholder = "Enter mod name";
-    }
+    $scope.defaultPlaceholders = {
+        plugins: "Enter plugin name",
+        users: "Enter username",
+        mods: "Enter mod name",
+        tools: "Enter tool name"
+    };
 
     $scope.hoverRow = function(index) {
         $scope.currentIndex = index;
@@ -50,6 +50,8 @@ app.controller('searchInputController', function($scope, $timeout, modService, p
                 userService.searchUsers(str).then(searchCallback);
             } else if ($scope.searchType === 'mods')  {
                 modService.searchMods(str).then(searchCallback);
+            } else if ($scope.searchType === 'tools') {
+                modService.searchMods(str, true).then(searchCallback);
             }
         } else {
             $scope.searching = false;
@@ -64,7 +66,7 @@ app.controller('searchInputController', function($scope, $timeout, modService, p
             $scope.searchText = result.filename;
         } else if ($scope.searchType === 'users') {
             $scope.searchText = result.username;
-        } else if ($scope.searchType === 'mods')  {
+        } else if ($scope.searchType === 'mods' || $scope.searchType === 'tools')  {
             $scope.searchText = result.name;
         }
         $scope.showDropdown = false;

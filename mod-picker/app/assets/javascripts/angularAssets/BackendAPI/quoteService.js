@@ -42,7 +42,7 @@ app.service('quoteService', function (backend, $q) {
             ],
             class: "penitus-quote"
         }, {
-            codes: [503],
+            codes: [429, 503],
             quotes: [
                 "I can't carry any more.",
                 "I am sworn to carry your burdens.",

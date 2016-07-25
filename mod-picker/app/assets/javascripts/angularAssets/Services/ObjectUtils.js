@@ -1,4 +1,6 @@
 app.service('objectUtils', function () {
+    var service = this;
+
     this.shallowCopy = function(original) {
         // First create an empty object with
         // same prototype of our original source
@@ -38,5 +40,142 @@ app.service('objectUtils', function () {
                 obj = obj[path[i]];
             }
         }
+    };
+
+    this.getDifferentValues = function(oldValue, newValue) {
+        var oldType = typeof oldValue;
+        var newType = typeof newValue;
+        // type don't match, return new value
+        if (oldType !== newType) {
+            return newValue;
+        }
+        // switch on types
+        switch(oldType) {
+            // both types undefined - just break (return undefined)
+            case "undefined":
+                break;
+            // special object handling
+            case "object":
+                // if the value used to be null, return new value
+                if (!oldValue && newValue) {
+                    return newValue;
+                }
+                // newValue is null, return undefined
+                else if (!newValue) {
+                    return;
+                }
+                // handle arrays
+                else if (oldValue.constructor === Array || newValue.constructor === Array) {
+                    if (oldValue.constructor === newValue.constructor) {
+                        var arrayDiff = service.getDifferentArrayValues(oldValue, newValue);
+                        // if we have array changes, return them, else return undefined
+                        if (arrayDiff.length) {
+                            return arrayDiff;
+                        }
+                    } else {
+                        return newValue;
+                    }
+                }
+                // else handle objects
+                else {
+                    return service.getDifferentObjectValues(oldValue, newValue);
+                }
+                break;
+            default:
+                // by default just do a direct value comparison
+                if (oldValue !== newValue) {
+                    return newValue;
+                }
+        }
+    };
+
+    this.getDifferentArrayValues = function(oldArray, newArray) {
+        var result = [];
+        var i, oldItem, newItem, diff;
+        for (i = 0; i < newArray.length; i++) {
+            newItem = newArray[i];
+            // new items that have an id should exist in the oldArray
+            // find and compare them against their corresponding item in oldArray
+            if (newItem.hasOwnProperty('id')) {
+                oldItem = oldArray.find(function(item) {
+                    return item.id == newItem.id;
+                });
+                diff = oldItem && service.getDifferentValues(oldItem, newItem);
+                if (!diff || service.isEmptyObject(diff)) {
+                    continue;
+                }
+                result.push(diff);
+            } else {
+                result.push(newItem);
+            }
+        }
+        // return the result array
+        return result;
+    };
+
+    // first object is original, second is changed object
+    this.getDifferentObjectValues = function(oldObj, newObj) {
+        var result = {};
+        var foundDifferences = false;
+        var diff;
+        for (var property in newObj) {
+            if (newObj.hasOwnProperty(property) && property !== "$$hashKey") {
+                diff = service.getDifferentValues(oldObj[property], newObj[property]);
+                // if there are differences, we save them
+                if (typeof diff !== 'undefined' && (typeof diff !== 'object' ||
+                    diff == null || !service.isEmptyObject(diff))) {
+                    foundDifferences = true;
+                    result[property] = diff;
+                }
+            }
+        }
+        // if we found differences and the source object has an id property
+        // save the id property to the result object
+        if (foundDifferences && newObj.hasOwnProperty('id')) {
+            result.id = newObj.id;
+        }
+        return result;
+    };
+
+    this.isEmptyObject = function(obj) {
+        for (var property in obj) {
+            if (obj.hasOwnProperty(property)) {
+                return false;
+            }
+        }
+        return true;
+    };
+
+    this.deleteEmptyProperties = function(obj, recurse) {
+        for (var property in obj) {
+            if (obj.hasOwnProperty(property)) {
+                var v = obj[property];
+                var vt = typeof v;
+                if (vt === 'undefined' || (v.constructor === Array && !v.length)) {
+                    delete obj[property];
+                } else if (recurse && vt === 'object') {
+                    service.deleteEmptyProperties(v, recurse - 1);
+                }
+            }
+        }
+    };
+
+    this.getShortTypeString = function(obj) {
+        switch (typeof obj) {
+            case 'number':
+                return (obj % 1 === 0) ? 'int' : 'float';
+            case 'boolean':
+                return 'bool';
+            default:
+                return 'string';
+        }
+    };
+
+    this.isEmptyArray = function(arr) {
+        var empty = true;
+        arr && arr.forEach(function(item) {
+            empty = empty && !!item._destroy;
+        });
+        return empty;
     };
 });

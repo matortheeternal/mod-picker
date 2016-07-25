@@ -1,10 +1,24 @@
 class Article < ActiveRecord::Base
+  include Imageable, RecordEnhancements
+
+  # SCOPES
+  scope :game, -> (game_id) {
+    # nil game_id means article is site-wide
+    game = Game.find(game_id)
+    if game.parent_game_id.present?
+      where(game_id: [game.id, game.parent_game_id, nil])
+    else
+      where(game_id: [game.id, nil])
+    end
+  }
+
+  # ASSOCIATIONS
   belongs_to :submitter, :class_name => 'User', :foreign_key => 'submitted_by', :inverse_of => 'articles'
 
-  # Validations
-  validates :game_id, :submitted_by, :title, :text_body, presence: true
+  # VALIDATIONS
+  validates :submitted_by, :title, :text_body, presence: true
 
-  # Callbacks
+  # CALLBACKS
   before_save :set_dates
 
   def as_json(options={})
@@ -15,7 +29,8 @@ class Article < ActiveRecord::Base
                   :only => [:id, :username, :role, :title],
                   :methods => :avatar
               }
-          }
+          },
+          :methods => :image
       }
       super(options.merge(default_options))
     else

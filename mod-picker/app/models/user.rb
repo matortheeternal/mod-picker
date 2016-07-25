@@ -141,7 +141,7 @@ class User < ActiveRecord::Base
   end
 
   def inactive?
-    self.last_sign_in_at < 28.days.ago
+    self.last_sign_in_at.nil? || self.last_sign_in_at < 28.days.ago
   end
 
   def email_public?
@@ -157,6 +157,12 @@ class User < ActiveRecord::Base
     self.create_reputation({ user_id: self.id })
     self.create_settings({ user_id: self.id })
     self.create_bio({ user_id: self.id })
+  end
+
+  def self.search_json(collection)
+    collection.as_json({
+        :only => [:id, :username]
+    })
   end
 
   def current_json

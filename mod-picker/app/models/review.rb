@@ -2,8 +2,8 @@ class Review < ActiveRecord::Base
   include Filterable, Sortable, RecordEnhancements, Helpfulable, Reportable
 
   # BOOLEAN SCOPES (excludes content when false)
-  scope :hidden, -> (bool) { where(hidden: false) if !bool  }
-  scope :adult, -> (bool) { where(has_adult_content: false) if !bool }
+  scope :include_hidden, -> (bool) { where(hidden: false) if !bool  }
+  scope :include_adult, -> (bool) { where(has_adult_content: false) if !bool }
   # GENERAL SCOPES
   scope :visible, -> { where(hidden: false, approved: true) }
   scope :game, -> (game_id) { where(game_id: game_id) }
@@ -68,6 +68,29 @@ class Review < ActiveRecord::Base
     end
 
     self.overall_rating = (total.to_f / count) if count > 0
+  end
+
+  def self.index_json(collection)
+    collection.as_json({
+        :include => {
+            :review_ratings => {
+                :except => [:review_id]
+            },
+            :submitter=> {
+                :only => [:id, :username, :role, :title],
+                :include => {
+                    :reputation => {:only => [:overall]}
+                },
+                :methods => :avatar
+            },
+            :editor => {
+                :only => [:id, :username, :role]
+            },
+            :mod => {
+                :only => [:id, :name]
+            }
+        }
+    })
   end
   
   def as_json(options={})

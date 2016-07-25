@@ -3,12 +3,15 @@ class HelpfulMark < ActiveRecord::Base
   
   self.primary_keys = :submitted_by, :helpfulable_id, :helpfulable_type
 
-  scope :by, -> (id) { where(submitted_by: id) }
+  # SCOPES
+  scope :submitter, -> (id) { where(submitted_by: id) }
+  scope :helpfulable, -> (model, ids) { where(helpfulable_type: model, helpfulable_id: ids) }
 
+  # ASSOCIATIONS
   belongs_to :helpfulable, :polymorphic => true
   belongs_to :submitter, :class_name => 'User', :foreign_key => 'submitted_by', :inverse_of => 'helpful_marks'
 
-  # Validation
+  # VALIDATIONS
   # :helpful's presence is not required because it will fail if :helpful == false
   validates :submitted_by, :helpfulable_id, :helpfulable_type, presence: true
 
@@ -23,13 +26,24 @@ class HelpfulMark < ActiveRecord::Base
   }
 
   # Callbacks
-  before_save :set_dates
+  after_initialize :init
   after_create :increment_counters
   before_destroy :decrement_counters
 
+  def as_json(options={})
+    if JsonHelpers.json_options_empty(options)
+      default_options = {
+          :only => [:helpfulable_id, :helpful]
+      }
+      super(options.merge(default_options))
+    else
+      super(options)
+    end
+  end
+
   private
-    def set_dates
-      self.submitted = DateTime.now
+    def init
+      self.submitted ||= DateTime.now
     end
 
     def decrement_counters

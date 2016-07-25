@@ -1,0 +1,19 @@
+<div class="remove-item" ng-if="editing">
+    <span class="fa fa-times" ng-click="removeCallback(item)"></span>
+</div>
+<div class="item-index">
+    {{item.index}}
+</div>
+<div class="image-container">
+    <div class="helper"></div>
+    <img ng-src="{{item.mod.image}}"/>
+</div>
+<ul class="mod-rows">
+    <li class="mod-name">
+        <a href="#/mod/{{item.mod.id}}">{{item.mod.name}}</a>
+        <span ng-if="item.mod.aliases">({{item.mod.aliases.split(",")[0]}})</span>
+    </li>
+    <li>by {{item.mod.authors}}</li>
+    <li>Released {{item.mod.released | date}}</li>
+    <li ng-if="item.mod.updated">Updated {{item.mod.updated | date}}</li>
+</ul>

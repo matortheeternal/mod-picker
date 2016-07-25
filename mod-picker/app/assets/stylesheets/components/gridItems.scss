@@ -1,0 +1,221 @@
+grid-items {
+  display: block;
+  position: relative;
+
+  .content-message {
+    position: absolute;
+    top: 30px;
+    margin-left: auto;
+    margin-right: auto;
+    left: 0;
+    right: 0;
+  }
+
+  ul[dnd-list].dragging-group {
+    .dndPlaceholder {
+      width: 1090px;
+      min-height: 140px;
+    }
+  }
+
+  ul[dnd-list] {
+    min-height: 120px;
+    padding-left: 0;
+    padding-bottom: 10px;
+    position: relative;
+
+    .dndDraggingSource {
+      display: none;
+    }
+
+    .dndPlaceholder {
+      min-height: 122px;
+      background-color: $border_color;
+    }
+
+    li.group {
+      width: 1090px;
+      padding: 10px;
+
+      .group-name {
+        position: absolute;
+        top: 10px;
+        left: 20px;
+        z-index: 2;
+        font-weight: 500;
+        font-size: 16px;
+
+        input {
+          background: none;
+          border: none;
+          font: inherit;
+          margin-top: -2px;
+          padding: 0 4px;
+          max-width: 850px;
+          @include transition(box-shadow 0.2s ease-in-out);
+
+          &:hover {
+            box-shadow: 0 0 3px 1px $action_color;
+          }
+
+          &:focus {
+            background-color: $input_background;
+            box-shadow: 0 0 3px 1px $action_color;
+            outline: none;
+          }
+
+          &:disabled {
+            box-shadow: none !important;
+          }
+        }
+      }
+
+      .group-color {
+        position: absolute;
+        top: 10px;
+        right: 40px;
+        z-index: 2;
+
+        strong {
+          margin-right: 2px;
+          font-weight: 500;
+          font-size: 14px;
+        }
+
+        select {
+          padding: 0;
+          background: $input_background;
+        }
+      }
+
+      ul[dnd-list] {
+        padding-top: 30px;
+
+        > li {
+          width: 340px;
+          margin: 8px;
+        }
+      }
+
+      .content-message {
+        top: 40px;
+      }
+    }
+  }
+
+  .remove-item {
+    position: absolute;
+    z-index: 2;
+    top: 0;
+    right: 0;
+    padding-right: 3px;
+    font-size: 20px;
+    cursor: pointer;
+    color: $soft_text_color;
+    @include transition(all 0.2s ease-in-out);
+
+    &:hover {
+      color: $text_color;
+    }
+  }
+
+  ul[dnd-list] > li {
+    width: 350px;
+    display: inline-block;
+    margin: 10px;
+    padding: 12px;
+    background-color: $secondary_background;
+    border: 1px solid $border_color;
+    position: relative;
+    vertical-align: bottom;
+
+    > div {
+      display: inline;
+    }
+
+    .item-index {
+      position: absolute;
+      left: -1px;
+      top: -1px;
+      padding: 0 2px;
+      background-color: $primary_background;
+      border: 1px solid $border_color;
+      min-width: 16px;
+      font-size: 13px;
+      font-weight: bold;
+      text-align: center;
+    }
+
+    .image-container {
+      height: 96px;
+      float: left;
+      margin-right: 14px;
+
+      .helper {
+        display: inline-block;
+        height: 100%;
+        vertical-align: middle;
+      }
+
+      img {
+        vertical-align: middle;
+        width: 96px;
+        max-height: 96px;
+      }
+    }
+
+    ul.mod-rows {
+      list-style: none;
+      padding-left: 0;
+      margin: 12px 0 0;
+      font-size: 13px;
+
+      li.mod-name {
+        font-size: 14px;
+        font-weight: 500;
+      }
+    }
+  }
+}
+
+
+// GROUP COLORS
+.bg-red {
+  background-color: $red_color !important;
+}
+
+.bg-orange {
+  background-color: $orange_color !important;
+}
+
+.bg-yellow {
+  background-color: $yellow_color !important;
+}
+
+.bg-green {
+  background-color: $green_color !important;
+}
+
+.bg-blue {
+  background-color: $blue_color !important;
+}
+
+.bg-purple {
+  background-color: $purple_color !important;
+}
+
+.bg-white {
+  background-color: $white_color !important;
+}
+
+.bg-gray {
+  background-color: $gray_color !important;
+}
+
+.bg-brown {
+  background-color: $brown_color !important;
+}
+
+.bg-black {
+  background-color: $black_color !important;
+}

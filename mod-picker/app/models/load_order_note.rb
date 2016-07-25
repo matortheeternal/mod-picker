@@ -2,8 +2,8 @@ class LoadOrderNote < ActiveRecord::Base
   include Filterable, Sortable, RecordEnhancements, Correctable, Helpfulable, Reportable
 
   # BOOLEAN SCOPES (excludes content when false)
-  scope :hidden, -> (bool) { where(hidden: false) if !bool  }
-  scope :adult, -> (bool) { where(has_adult_content: false) if !bool }
+  scope :include_hidden, -> (bool) { where(hidden: false) if !bool  }
+  scope :include_adult, -> (bool) { where(has_adult_content: false) if !bool }
   # GENERAL SCOPES
   scope :visible, -> { where(hidden: false, approved: true) }
   scope :game, -> (game_id) { where(game_id: game_id) }
@@ -23,8 +23,8 @@ class LoadOrderNote < ActiveRecord::Base
   belongs_to :second_plugin, :foreign_key => 'second_plugin_id', :class_name => 'Plugin', :inverse_of => 'second_load_order_notes'
 
   # mods associated with this load order note
-  has_one :first_mod, :through => :first_plugin, :class_name => 'Mod', :foreign_key => 'mod_id', source: "mod"
-  has_one :second_mod, :through => :second_plugin, :class_name => 'Mod', :foreign_key => 'mod_id', source: "mod"
+  has_one :first_mod, :through => :first_plugin, :class_name => 'Mod', :source => 'mod', :foreign_key => 'mod_id'
+  has_one :second_mod, :through => :second_plugin, :class_name => 'Mod', :source => 'mod', :foreign_key => 'mod_id'
 
   # mod lists this load order note appears on
   has_many :mod_list_installation_notes, :inverse_of => 'load_order_note'
@@ -38,6 +38,7 @@ class LoadOrderNote < ActiveRecord::Base
 
   # Validations
   validates :game_id, :submitted_by, :first_plugin_id, :second_plugin_id, :text_body, presence: true
+
   validates :text_body, length: {in: 256..16384}
   validate :unique_plugins
 
@@ -119,6 +120,7 @@ class LoadOrderNote < ActiveRecord::Base
     end
 
     def increment_counters
+      byebug
       self.first_mod.update_counter(:load_order_notes_count, 1)
       self.second_mod.update_counter(:load_order_notes_count, 1)
       self.submitter.update_counter(:load_order_notes_count, 1)

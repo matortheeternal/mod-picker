@@ -63,7 +63,7 @@ def seed_staff_users
       username: "Taffy",
       role: "moderator",
       joined: Time.now.to_date,
-      email: 	"raphael.buechler@gmail.com",
+      email: "r@r79.io",
       password: staff_password,
       password_confirmation: staff_password,
       confirmed_at: Time.now.to_date

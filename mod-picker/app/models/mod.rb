@@ -1,16 +1,17 @@
 class Mod < ActiveRecord::Base
-  include Filterable, Sortable, RecordEnhancements
+  include Filterable, Sortable, Imageable, RecordEnhancements
 
-  attr_writer :tag_names, :asset_paths, :plugin_dumps, :nexus_info_id, :lover_info_id, :workshop_info_id, :image_file
+  attr_writer :tag_names, :asset_paths, :plugin_dumps, :nexus_info_id, :lover_info_id, :workshop_info_id
   enum status: [ :good, :outdated, :unstable ]
 
   # BOOLEAN SCOPES (excludes content when false)
-  scope :hidden, -> (bool) { where(hidden: false) if !bool  }
-  scope :adult, -> (bool) { where(has_adult_content: false) if !bool }
-  scope :official, -> (bool) { where(is_official: false) if !bool }
-  scope :utility, -> (bool) { where(is_utility: false) if !bool }
-  scope :is_game, -> (bool) { where.not(primary_category_id: nil) if !bool }
+  scope :include_hidden, -> (bool) { where(hidden: false) if !bool  }
+  scope :include_adult, -> (bool) { where(has_adult_content: false) if !bool }
+  scope :include_official, -> (bool) { where(is_official: false) if !bool }
+  scope :include_utilities, -> (bool) { where(is_utility: false) if !bool }
+  scope :include_games, -> (bool) { where.not(primary_category_id: nil) if !bool }
   # GENERAL SCOPES
+  scope :utility, -> (bool) { where(is_utility: bool) }
   scope :search, -> (search) { where("name like ? OR aliases like ?", "%#{search}%", "%#{search}%") }
   scope :game, -> (game_id) {
     game = Game.find(game_id)
@@ -222,16 +223,50 @@ class Mod < ActiveRecord::Base
 
   # callbacks
   after_create :increment_counters
-  after_save :create_associations, :save_image
+  before_update :destroy_associations, :hide_contributions
+  after_save :create_associations
   before_destroy :decrement_counters
-
-  def no_author?
-    self.mod_authors.count == 0
-  end
 
   def update_lazy_counters
     self.asset_files_count = ModAssetFile.where(mod_id: self.id).count
     self.plugins_count = Plugin.where(mod_id: self.id).count
+  end
+
+  def destroy_associations
+    # destroy associations as needed
+    if @plugin_dumps || @asset_paths
+      self.mod_asset_files.destroy_all
+      self.plugins.destroy_all
+    end
+  end
+
+  def hide_contributions
+    if self.attribute_changed?(:hidden) && self.hidden
+      # prepare some helper variables
+      plugin_ids = self.plugins.ids
+      cnote_ids = CompatibilityNote.where("first_mod_id = ? OR second_mod_id = ?", id, id).ids
+      inote_ids = InstallOrderNote.where("first_mod_id = ? OR second_mod_id = ?", id, id).ids
+      lnote_ids = LoadOrderNote.where("first_plugin_id in (?) OR second_plugin_id in (?)", plugin_ids, plugin_ids).ids
+
+      # hide content
+      Review.where(mod_id: self.id).update_all(:hidden => true)
+      Correction.where(correctable_type: "Mod", correctable_id: self.id).update_all(:hidden => true)
+      CompatibilityNote.where(id: cnote_ids).update_all(:hidden => true)
+      InstallOrderNote.where(id: inote_ids).update_all(:hidden => true)
+      LoadOrderNote.where(id: lnote_ids).update_all(:hidden => true)
+      Correction.where(correctable_type: "CompatibilityNote", correctable_id: cnote_ids).update_all(:hidden => true)
+      Correction.where(correctable_type: "InstallOrderNote", correctable_id: inote_ids).update_all(:hidden => true)
+      Correction.where(correctable_type: "LoadOrderNote", correctable_id: lnote_ids).update_all(:hidden => true)
+    elsif self.attribute_changed?(:disable_reviews) && self.disable_reviews
+      Review.where(mod_id: self.id).update_all(:hidden => true)
+    end
+  end
+
+  def swap_mod_list_mods_tools_counts
+    tools_operator = self.is_utility ? "+" : "-"
+    mods_operator = self.is_utility ? "-" : "+"
+    mod_list_ids = self.mod_lists.ids
+    ModList.where(id: mod_list_ids).update_all("tools_count = tools_count #{tools_operator} 1, mods_count = mods_count #{mods_operator} 1")
   end
 
   def create_tags
@@ -341,39 +376,6 @@ class Mod < ActiveRecord::Base
     end
   end
 
-  def delete_old_mod_images
-    png_path = Rails.root.join('public', 'mods', self.id.to_s + '.png')
-    jpg_path = Rails.root.join('public', 'mods', self.id.to_s + '.jpg')
-
-    if File.exist?(png_path)
-      File.delete(png_path)
-    end
-    if File.exist?(jpg_path)
-      File.delete(jpg_path)
-    end
-  end
-
-  def save_image
-    if @image_file
-      ext = File.extname(@image_file.original_filename)
-      local_filename = Rails.root.join('public', 'mods', self.id.to_s + ext)
-      if ext != '.png' && ext != '.jpg' # image must be png or jpg
-        self.errors.add(:image, 'Invalid image type, must be PNG or JPG')
-      elsif @image_file.size > 1048576 # 1 megabyte max file size
-        self.errors.add(:image, 'Image is too big')
-      else
-        begin
-          delete_old_mod_images
-          File.open(local_filename, 'wb') do |f|
-            f.write(@image_file.read)
-          end
-        rescue
-          self.errors.add(:image, 'Unknown failure')
-        end
-      end
-    end
-  end
-
   def create_associations
     self.create_tags
     self.create_asset_files
@@ -401,81 +403,92 @@ class Mod < ActiveRecord::Base
     LoadOrderNote.where('first_plugin_id in (?) OR second_plugin_id in (?)', self.plugins.ids, self.plugins.ids)
   end
 
-  def image
-    png_path = File.join(Rails.public_path, "mods/#{id}.png")
-    jpg_path = File.join(Rails.public_path, "mods/#{id}.jpg")
-    if File.exists?(png_path)
-      "/mods/#{id}.png"
-    elsif File.exists?(jpg_path)
-      "/mods/#{id}.jpg"
-    else
-      '/mods/Default.png'
-    end
+  def self.index_json(collection, sources)
+    # Includes hash for mods index query
+    include_hash = { :author_users => { :only => [:id, :username] } }
+    include_hash[:nexus_infos] = {:except => [:mod_id]} if sources[:nexus]
+    include_hash[:lover_infos] = {:except => [:mod_id]} if sources[:lab]
+    include_hash[:workshop_infos] = {:except => [:mod_id]} if sources[:workshop]
+
+    collection.as_json({
+        :include => include_hash
+    })
+  end
+
+  def self.home_json(collection)
+    collection.as_json({
+        :only => [:id, :name, :authors, :released],
+        :include => {
+            :primary_category => {:only => [:name]}
+        },
+        :methods => [:image]
+    })
   end
 
   def edit_json
     self.as_json({
-       :include => {
-           :tags => {
-               :except => [:game_id, :hidden, :mod_lists_count],
-               :include => {
-                   :submitter => {
-                       :only => [:id, :username]
-                   }
-               }
-           },
-           :nexus_infos => {:only => [:id, :last_scraped]},
-           :workshop_infos => {:only => [:id, :last_scraped]},
-           :lover_infos => {:only => [:id, :last_scraped]},
-           :custom_sources => {:except => [:mod_id]},
-           :mod_authors => {
-               :only => [:id, :role, :user_id],
-               :include => {
-                   :user => {
-                       :only => [:username]
-                   }
-               }
-           },
-           :required_mods => {
-               :only => [:id],
-               :include => {
-                   :required_mod => {
-                       :only => [:id, :name]
-                   }
-               }
-           }
-       },
-       :methods => :image
+        :include => {
+            :tags => {
+                :except => [:game_id, :hidden, :mod_lists_count],
+                :include => {
+                    :submitter => {
+                        :only => [:id, :username]
+                    }
+                }
+            },
+            :nexus_infos => {:only => [:id, :last_scraped]},
+            :workshop_infos => {:only => [:id, :last_scraped]},
+            :lover_infos => {:only => [:id, :last_scraped]},
+            :custom_sources => {:except => [:mod_id]},
+            :mod_authors => {
+                :only => [:id, :role, :user_id],
+                :include => {
+                    :user => {
+                        :only => [:username]
+                    }
+                }
+            },
+            :required_mods => {
+                :only => [:id],
+                :include => {
+                    :required_mod => {
+                        :only => [:id, :name]
+                    }
+                }
+            }
+        },
+        :methods => :image
     })
   end
 
   def show_json
     self.as_json({
-      :include => {
-          :tags => {
-              :except => [:game_id, :hidden, :mod_lists_count],
-              :include => {
-                  :submitter => {
-                      :only => [:id, :username]
-                  }
-              }
-          },
-          :nexus_infos => {:except => [:mod_id]},
-          :workshop_infos => {:except => [:mod_id]},
-          :lover_infos => {:except => [:mod_id]},
-          :plugins => {:only => [:id, :filename]},
-          :custom_sources => {:except => [:mod_id]},
-          :author_users => {:only => [:id, :username]},
-          :required_mods => {
-              :only => [],
-              :include => {
-                  :required_mod => {
-                      :only => [:id, :name]
-                  }
-              }
-          }
-      },
-      :methods => :image
+        :except => [:disallow_contributors, :hidden],
+        :include => {
+            :tags => {
+                :except => [:game_id, :hidden, :mod_lists_count],
+                :include => {
+                    :submitter => {
+                        :only => [:id, :username]
+                    }
+                }
+            },
+            :nexus_infos => {:except => [:mod_id]},
+            :workshop_infos => {:except => [:mod_id]},
+            :lover_infos => {:except => [:mod_id]},
+            :plugins => {:only => [:id, :filename]},
+            :custom_sources => {:except => [:mod_id]},
+            :author_users => {:only => [:id, :username]},
+            :required_mods => {
+                :only => [],
+                :include => {
+                    :required_mod => {
+                        :only => [:id, :name]
+                    }
+                }
+            }
+        },
+        :methods => :image
     })
   end
 
@@ -491,6 +504,7 @@ class Mod < ActiveRecord::Base
   end
 
   private
+
     def decrement_counters
       self.submitter.update_counter(:submitted_mods_count, -1) if self.submitted_by.present?
     end

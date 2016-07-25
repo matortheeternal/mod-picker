@@ -10,7 +10,7 @@ require 'rails_helper'
 
 # add_index "plugins", ["mod_version_id"], name: "mv_id", using: :btree
 
-RSpec.describe Plugin, :model do
+RSpec.describe Plugin, :model, :bbb do
   it "should have a valid factory" do
     expect(build(:plugin)).to be_valid
   end

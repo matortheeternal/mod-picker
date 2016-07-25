@@ -29,9 +29,12 @@
     img {
       max-width: 100px;
       max-height: 100px;
-      height: auto;
-      width: auto;
       margin-right: 10px;
+    }
+
+    img.smaller-image {
+      max-width: 64px;
+      max-height: 64px;
     }
 
     .recent-title {
@@ -73,19 +76,36 @@
     margin: 20px 20px 0 20px;
     border-bottom: 1px solid $border_color;
 
-    .section-title {
-      font-size: 23px;
-      display: inline;
-      margin-left: -10px;
-      color: $dark_action_color;
+    .image-container {
+      display: table-cell;
+      width: 150px;
+      padding-right: 14px;
+
+      img {
+        max-width: 150px;
+        max-height: 150px;
+      }
     }
 
-    .news {
-      display: inline-block;
-    }
+    .content-container {
+      display: table-cell;
+      vertical-align: top;
 
-    .article-details {
-      font-size: 12px;
+      .article-title {
+        font-size: 23px;
+        display: inline;
+        margin-left: 0;
+        color: $dark_action_color;
+      }
+
+      read-more {
+        display: block;
+        margin-left: 10px;
+      }
+
+      .article-details {
+        font-size: 12px;
+      }
     }
   }
 

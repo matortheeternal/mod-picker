@@ -1,0 +1,87 @@
+<loader data="mod_list.mods" spinner-class="big-spinner">
+    <div class="tab-bar-items">
+        <div class="tab-bar-item primary-item">
+            <span><strong>999</strong> Unresolved Issues</span>
+            <span><strong>999</strong> Ignored Issues</span>
+            <span><strong>{{required.missing_mods.length}}</strong> Missing Requirements</span>
+        </div>
+
+        <div class="tab-bar-item" ng-if="editing">
+            <strong>Add a mod:</strong>
+            <search-input search-type="mods" result-id="add.mod.id" search-text="add.mod.name" on-change="addMod(add.mod.id)"></search-input>
+        </div>
+    </div>
+
+    <div class="content-block" ng-show="mod_list.mods.length">
+        <div class="content-title">Mods
+            <span class="right-item action-box" ng-if="editing" ng-click="addGroup('mods')">
+                <i class="fa fa-plus"></i> New Group
+            </span>
+        </div>
+        <div class="content-container">
+            <grid-items type="mods" model="model.mods" editing="editing" remove-callback="removeMod"></grid-items>
+        </div>
+    </div>
+
+    <div class="content-block">
+        <div class="content-title">Required Mods
+            <span class="right-item toggle-item" ng-click="show.missing_mods = !show.missing_mods">
+                {{show.missing_mods ? 'Show All' : 'Show Missing Requirements'}}
+            </span>
+        </div>
+        <div class="content-container">
+            <ul ng-show="show.missing_mods">
+                <li ng-repeat="requirement in required.missing_mods">
+                    <a href="#/mod/{{requirement.required_mod.id}}">{{requirement.required_mod.name}}</a>
+                    is required by
+                    <a href="#/mod/{{requirement.mod.id}}">{{requirement.mod.name}}</a>
+                    <span class="action-box green-box" ng-click="addMod(requirement.required_mod.id)" title="Add {{requirement.required_mod.name}}">Add Requirement</span>
+                    <span class="action-box red-box" ng-click="removeMod(findMod(requirement.mod.id))" title="Remove {{requirement.mod.name}}">Remove Requirer</span>
+                </li>
+                <li ng-hide="required.missing_mods.length">
+                    No missing mods to display.
+                </li>
+            </ul>
+            <ul ng-hide="show.missing_mods">
+                <li ng-repeat="requirement in required.mods" ng-hide="requirement._destroy">
+                    <a href="#/mod/{{requirement.required_mod.id}}">{{requirement.required_mod.name}}</a>
+                    is required by
+                    <a href="#/mod/{{requirement.mod.id}}">{{requirement.mod.name}}</a>
+                </li>
+                <li ng-show="isEmpty(required.mods)">
+                    No requirements to display.
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="content-block" ng-show="mod_list.compatibility_notes">
+        <div class="content-title">Compatibility Issues</div>
+        <div class="content-container">
+            Mods: Show compatibility issues Here
+        </div>
+    </div>
+
+    <div class="content-block" ng-show="mod_list.install_order_notes">
+        <div class="content-title">Install Order Notes</div>
+        <div class="content-container">
+            Mods: Show Install Order Notes Here
+        </div>
+    </div>
+
+    <div class="content-block" ng-show="mod_list.asset_conflicts">
+        <div class="content-title">Asset Conflicts</div>
+        <div class="content-container">
+            Mods: Asset Conflicts Container.  Will be a directive.
+        </div>
+    </div>
+
+    <div class="content-message" ng-hide="mod_list.mods.length">
+        There are no mods in this mod list.
+    </div>
+
+    <div class="action-button-container" ng-if="editing">
+        <input class="btn action-btn" type="submit" value="Save" ng-click="saveChanges()"/>
+        <input class="btn action-btn" type="button" value="Reset" ng-click="discardChanges()"/>
+    </div>
+</loader>

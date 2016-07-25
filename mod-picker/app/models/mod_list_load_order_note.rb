@@ -1,9 +1,4 @@
 class ModListLoadOrderNote < ActiveRecord::Base
-  after_create :increment_counter_caches
-  before_destroy :decrement_counter_caches
-
-  self.primary_keys = :mod_list_id, :load_order_note_id
-
   enum status: [ :unresolved, :resolved, :ignored ]
 
   belongs_to :load_order_note, :inverse_of => 'mod_list_load_order_notes'
@@ -11,6 +6,10 @@ class ModListLoadOrderNote < ActiveRecord::Base
 
   # Validations
   validates :mod_list_id, :load_order_note_id, presence: true
+
+  # Callbacks
+  after_create :increment_counter_caches
+  before_destroy :decrement_counter_caches
 
   # Private Methods
   private

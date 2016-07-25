@@ -8,9 +8,7 @@ class ModsController < ApplicationController
     count =  Mod.accessible_by(current_ability).filter(filtering_params).count
 
     render :json => {
-      mods: @mods.as_json({
-          :include => mods_include_hash
-      }),
+      mods: Mod.index_json(@mods, params[:filters][:sources]),
       max_entries: count,
       entries_per_page: Mod.per_page
     }
@@ -18,16 +16,14 @@ class ModsController < ApplicationController
 
   # POST /mods/search
   def search
-    @mods = Mod.hidden(false).is_game(false).filter(search_params).sort({ column: "name", direction: "ASC" }).limit(10)
-    render :json => @mods.as_json({
-        :only => [:id, :name]
-    })
+    @mods = Mod.include_hidden(false).include_games(false).filter(search_params).sort({ column: "name", direction: "ASC" }).limit(10)
+    render :json => @mods
   end
 
   # GET /mods/1
   def show
     @mod = Mod.includes(:nexus_infos, :workshop_infos, :lover_infos).find(params[:id])
-    authorize! :read, @mod
+    authorize! :read, @mod, :message => "You are not allowed to view this mod."
     star = ModStar.exists?(:mod_id => @mod.id, :user_id => current_user.id)
     render :json => {
         mod: @mod.show_json,
@@ -38,7 +34,7 @@ class ModsController < ApplicationController
   # GET /mods/1/edit
   def edit
     @mod = Mod.find(params[:id])
-    authorize! :update, @mod
+    authorize! :update, @mod, :message => "You are not allowed to edit this mod."
     render :json => @mod.edit_json
   end
 
@@ -47,7 +43,7 @@ class ModsController < ApplicationController
     @mod = Mod.new(mod_params)
     @mod.submitted_by = current_user.id
     authorize! :create, @mod
-    authorize! :assign_custom_sources, @mod if params[:mod][:custom_sources_attributes]
+    authorize! :assign_custom_sources, @mod if params[:mod].has_key?(:custom_sources_attributes)
 
     if @mod.save
       @mod.update_metrics
@@ -60,16 +56,17 @@ class ModsController < ApplicationController
   # PATCH/PUT /mods/1
   def update
     authorize! :update, @mod
-    authorize! :assign_authors, @mod if params[:mod][:mod_authors_attributes]
+    authorize! :hide, @mod if params[:mod].has_key?(:hidden)
+    authorize! :update_authors, @mod if params[:mod].has_key?(:mod_authors_attributes)
+    authorize! :update_options, @mod if options_params.any?
+    authorize! :assign_custom_sources, @mod if params[:mod].has_key?(:custom_sources_attributes)
 
-    # destroy associations as needed
-    if params[:mod][:plugin_dumps] || params[:mod][:asset_paths]
-      @mod.mod_asset_files.destroy_all
-      @mod.plugins.destroy_all
-    end
+    # update mod list tools/mods count if is_utility changed
+    swap_counts = params[:mod].has_key?(:is_utility) && params[:mod][:is_utility] != @mod.is_utility
 
     if @mod.update(mod_update_params)
       @mod.update_metrics
+      @mod.swap_mod_list_mods_tools_counts if swap_counts
       render json: {status: :ok}
     else
       render json: @mod.errors, status: :unprocessable_entity
@@ -78,6 +75,7 @@ class ModsController < ApplicationController
 
   # PATCH/PUT /mods/1/tags
   def update_tags
+    # TODO: Move this into the model
     # errors array to return to user
     errors = ActiveModel::Errors.new(self)
     current_user_id = current_user.id
@@ -124,9 +122,8 @@ class ModsController < ApplicationController
   # POST /mods/1/image
   def image
     authorize! :update, @mod
-    @mod.image_file = params[:image]
 
-    if @mod.save
+    if @mod.update(image_params)
       render json: {status: :ok}
     else
       render json: @mod.errors, status: :unprocessable_entity
@@ -162,11 +159,17 @@ class ModsController < ApplicationController
   # POST/GET /mods/1/corrections
   def corrections
     authorize! :read, @mod
+
+    # prepare corrections
     corrections = @mod.corrections.accessible_by(current_ability)
-    agreement_marks = AgreementMark.where(submitted_by: current_user.id, correction_id: corrections.ids)
+
+    # prepare agreement marks
+    agreement_marks = AgreementMark.submitter(current_user.id).corrections(corrections.ids)
+
+    # render response
     render :json => {
         corrections: corrections,
-        agreement_marks: agreement_marks.as_json({:only => [:correction_id, :agree]})
+        agreement_marks: agreement_marks
     }
   end
 
@@ -174,12 +177,12 @@ class ModsController < ApplicationController
   def reviews
     authorize! :read, @mod
 
-    # get reviews
+    # prepare reviews
     reviews = @mod.reviews.includes(:review_ratings, :submitter => :reputation).accessible_by(current_ability).sort(params[:sort]).paginate(:page => params[:page], :per_page => 10).where("submitted_by != ? OR hidden = true", current_user.id)
     count = @mod.reviews.accessible_by(current_ability).count
     review_ids = reviews.ids
 
-    # handle user review
+    # prepare user review
     user_review = @mod.reviews.find_by(submitted_by: current_user.id)
     if user_review.present?
       if user_review.hidden
@@ -189,11 +192,13 @@ class ModsController < ApplicationController
       end
     end
 
-    # get helpful marks
-    helpful_marks = HelpfulMark.where(submitted_by: current_user.id, helpfulable_type: "Review", helpfulable_id: review_ids)
+    # prepare helpful marks
+    helpful_marks = HelpfulMark.submitter(current_user.id).helpfulable("Review", review_ids)
+
+    # render response
     render :json => {
         reviews: reviews,
-        helpful_marks: helpful_marks.as_json({:only => [:helpfulable_id, :helpful]}),
+        helpful_marks: helpful_marks,
         user_review: user_review,
         max_entries: count,
         entries_per_page: 10
@@ -203,12 +208,18 @@ class ModsController < ApplicationController
   # POST/GET /mods/1/compatibility_notes
   def compatibility_notes
     authorize! :read, @mod
+
+    # prepare compatibility notes
     compatibility_notes = @mod.compatibility_notes.accessible_by(current_ability).sort(params[:sort]).paginate(:page => params[:page], :per_page => 10)
     count =  @mod.compatibility_notes.accessible_by(current_ability).count
-    helpful_marks = HelpfulMark.where(submitted_by: current_user.id, helpfulable_type: "CompatibilityNote", helpfulable_id: compatibility_notes.ids)
+
+    # prepare helpful marks
+    helpful_marks = HelpfulMark.submitter(current_user.id).helpfulable("CompatibilityNote", compatibility_notes.ids)
+
+    # render response
     render :json => {
         compatibility_notes: compatibility_notes,
-        helpful_marks: helpful_marks.as_json({:only => [:helpfulable_id, :helpful]}),
+        helpful_marks: helpful_marks,
         max_entries: count,
         entries_per_page: 10
     }
@@ -217,12 +228,18 @@ class ModsController < ApplicationController
   # POST/GET /mods/1/install_order_notes
   def install_order_notes
     authorize! :read, @mod
+
+    # prepare install order notes
     install_order_notes = @mod.install_order_notes.accessible_by(current_ability).sort(params[:sort]).paginate(:page => params[:page], :per_page => 10)
     count =  @mod.install_order_notes.accessible_by(current_ability).count
-    helpful_marks = HelpfulMark.where(submitted_by: current_user.id, helpfulable_type: "InstallOrderNote", helpfulable_id: install_order_notes.ids)
+
+    # prepare helpful marks
+    helpful_marks = HelpfulMark.submitter(current_user.id).helpfulable("InstallOrderNote", install_order_notes.ids)
+
+    # render response
     render :json => {
         install_order_notes: install_order_notes,
-        helpful_marks: helpful_marks.as_json({:only => [:helpfulable_id, :helpful]}),
+        helpful_marks: helpful_marks,
         max_entries: count,
         entries_per_page: 10
     }
@@ -231,50 +248,35 @@ class ModsController < ApplicationController
   # POST/GET /mods/1/load_order_notes
   def load_order_notes
     authorize! :read, @mod
-    if @mod.plugins_count > 0
-      load_order_notes = @mod.load_order_notes.accessible_by(current_ability).sort(params[:sort]).paginate(:page => params[:page], :per_page => 10)
-      count =  @mod.load_order_notes.accessible_by(current_ability).count
-      helpful_marks = HelpfulMark.where(submitted_by: current_user.id, helpfulable_type: "LoadOrderNote", helpfulable_id: load_order_notes.ids)
-      render :json => {
-          load_order_notes: load_order_notes,
-          helpful_marks: helpful_marks.as_json({:only => [:helpfulable_id, :helpful]}),
-          max_entries: count,
-          entries_per_page: 10
-      }
-    else
+
+    # render empty array if mod has no plugins
+    unless @mod.plugins_count > 0
       render json: { load_order_notes: [] }
+      return
     end
+
+    # prepare load order notes
+    load_order_notes = @mod.load_order_notes.accessible_by(current_ability).sort(params[:sort]).paginate(:page => params[:page], :per_page => 10)
+    count =  @mod.load_order_notes.accessible_by(current_ability).count
+
+    # prepare helpful marks
+    helpful_marks = HelpfulMark.submitter(current_user.id).helpfulable("LoadOrderNote", load_order_notes.ids)
+
+    # render response
+    render :json => {
+        load_order_notes: load_order_notes,
+        helpful_marks: helpful_marks,
+        max_entries: count,
+        entries_per_page: 10
+    }
   end
 
   # POST/GET /mods/1/analysis
   def analysis
     authorize! :read, @mod
     render json: {
-        plugins: @mod.plugins.as_json({
-            :include => {
-                :masters => {
-                    :except => [:plugin_id],
-                    :include => {
-                        :master_plugin => {
-                            :only => [:filename]
-                        }
-                    }
-                },
-                :dummy_masters => {
-                    :except => [:plugin_id]
-                },
-                :overrides => {
-                    :except => [:plugin_id]
-                },
-                :plugin_errors => {
-                    :except => [:plugin_id]
-                },
-                :plugin_record_groups => {
-                    :except => [:plugin_id]
-                }
-            }
-        }),
-        assets: @mod.asset_files.as_json({:only => [:filepath]})
+        plugins: @mod.plugins,
+        assets: @mod.asset_files
     }
   end
 
@@ -296,23 +298,13 @@ class ModsController < ApplicationController
 
     # Params we allow searching on
     def search_params
-      params[:filters].slice(:search, :game)
-    end
-
-    # Includes hash for mods index query
-    def mods_include_hash
-      hash = { :author_users => { :only => [:id, :username] } }
-      sources = params[:filters][:sources]
-      hash[:nexus_infos] = {:except => [:mod_id]} if sources[:nexus]
-      hash[:lover_infos] = {:except => [:mod_id]} if sources[:lab]
-      hash[:workshop_infos] = {:except => [:mod_id]} if sources[:workshop]
-      hash
+      params[:filters].slice(:search, :game, :utility)
     end
     
     # Params we allow filtering on
     def filtering_params
       # construct valid filters array
-      valid_filters = [:sources, :search, :game, :released, :updated, :adult, :utility, :categories, :tags, :stars, :reviews, :rating, :reputation, :compatibility_notes, :install_order_notes, :load_order_notes, :views, :author]
+      valid_filters = [:include_adult, :include_utilities, :sources, :search, :game, :released, :updated, :utility, :categories, :tags, :stars, :reviews, :rating, :reputation, :compatibility_notes, :install_order_notes, :load_order_notes, :views, :author]
       source_filters = [:views, :author, :posts, :videos, :images, :discussions, :downloads, :favorites, :subscribers, :endorsements, :unique_downloads, :files, :bugs, :articles]
       sources = params[:filters][:sources]
 
@@ -359,7 +351,7 @@ class ModsController < ApplicationController
     end
 
     def mod_update_params
-      params.require(:mod).permit(:name, :authors, :aliases, :is_utility, :has_adult_content, :primary_category_id, :secondary_category_id, :released, :updated, :nexus_info_id, :lovers_info_id, :workshop_info_id,
+      params.require(:mod).permit(:name, :authors, :aliases, :is_utility, :has_adult_content, :primary_category_id, :secondary_category_id, :released, :updated, :nexus_info_id, :lovers_info_id, :workshop_info_id, :disallow_contributors, :disable_reviews, :lock_tags, :hidden,
          :required_mods_attributes => [:id, :required_id, :_destroy],
          :mod_authors_attributes => [:id, :role, :user_id, :_destroy],
          :custom_sources_attributes => [:id, :label, :url, :_destroy],
@@ -370,5 +362,13 @@ class ModsController < ApplicationController
            :plugin_record_groups_attributes => [:sig, :record_count, :override_count],
            :plugin_errors_attributes => [:signature, :form_id, :group, :path, :name, :data],
            :overrides_attributes => [:fid, :sig]])
+    end
+
+    def options_params
+      params[:mod].slice(:is_utility, :has_adult_content, :disallow_contributors, :disable_reviews, :lock_tags)
+    end
+
+    def image_params
+      {:image_file => params[:image]}
     end
 end

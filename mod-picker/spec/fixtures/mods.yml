@@ -33,10 +33,10 @@ SkyUI:
   game_id: skyrim.id
   primary_category_id: subCatGameplayUserInterface.id
   secondary_category_id: subCatResourcesFrameworks.id
-  mod_stars_count: 0
   submitted_by: homura
-  
-  
+  authors: "authors here"
+  released: <%= DateTime.now %>
+
 TES5Edit:
   name: "TES5Edit"
   is_utility: true
@@ -44,8 +44,9 @@ TES5Edit:
   game_id: skyrim.id
   primary_category_id: subCatUtilitiesTools.id
   secondary_category_id: subCatResourcesFrameworks.id
-  mod_stars_count: 0
   submitted_by: homura
+  authors: "authors here"
+  released: <%= DateTime.now %>
 
 Apocalypse:
   name: "Apocalypse Spell Package"
@@ -54,8 +55,9 @@ Apocalypse:
   game_id: skyrim.id
   primary_category_id: subCatUtilitiesTools.id
   secondary_category_id: subCatResourcesFrameworks.id
-  mod_stars_count: 0
   submitted_by: homura
+  authors: "authors here"
+  released: <%= DateTime.now %>
 
 SkyRE:
   name: "Skyrim Redone"
@@ -64,5 +66,6 @@ SkyRE:
   game_id: skyrim.id
   primary_category_id: subCatUtilitiesTools.id
   secondary_category_id: subCatResourcesFrameworks.id
-  mod_stars_count: 0
   submitted_by: homura
+  authors: "authors here"
+  released: <%= DateTime.now %>
