@@ -248,19 +248,27 @@ class ModsController < ApplicationController
   # POST/GET /mods/1/load_order_notes
   def load_order_notes
     authorize! :read, @mod
-    if @mod.plugins_count > 0
-      load_order_notes = @mod.load_order_notes.accessible_by(current_ability).sort(params[:sort]).paginate(:page => params[:page], :per_page => 10)
-      count =  @mod.load_order_notes.accessible_by(current_ability).count
-      helpful_marks = HelpfulMark.where(submitted_by: current_user.id, helpfulable_type: "LoadOrderNote", helpfulable_id: load_order_notes.ids)
-      render :json => {
-          load_order_notes: load_order_notes,
-          helpful_marks: helpful_marks,
-          max_entries: count,
-          entries_per_page: 10
-      }
-    else
+
+    # render empty array if mod has no plugins
+    unless @mod.plugins_count > 0
       render json: { load_order_notes: [] }
+      return
     end
+
+    # prepare load order notes
+    load_order_notes = @mod.load_order_notes.accessible_by(current_ability).sort(params[:sort]).paginate(:page => params[:page], :per_page => 10)
+    count =  @mod.load_order_notes.accessible_by(current_ability).count
+
+    # prepare helpful marks
+    helpful_marks = HelpfulMark.submitter(current_user.id).helpfulable("LoadOrderNote", load_order_notes.ids)
+
+    # render response
+    render :json => {
+        load_order_notes: load_order_notes,
+        helpful_marks: helpful_marks,
+        max_entries: count,
+        entries_per_page: 10
+    }
   end
 
   # POST/GET /mods/1/analysis
