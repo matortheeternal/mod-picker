@@ -89,8 +89,8 @@ app.controller('modListToolsController', function($scope, $state, $stateParams, 
             $scope.updateTabs();
 
             // handle requirements
-            $scope.addRequirements(data.required_tools, true);
-            $scope.addRequirements(data.required_mods, false);
+            Array.prototype.unite($scope.required.tools, data.required_tools);
+            Array.prototype.unite($scope.required.mods, data.required_mods);
             $scope.$emit('rebuildMissing');
 
             // success message

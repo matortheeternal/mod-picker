@@ -280,16 +280,6 @@ app.controller('modListController', function($scope, $q, $stateParams, $timeout,
         $scope.notes.install_order.forEach(destroyMatchingNotes);
     };
 
-    $scope.addRequirements = function(requirements, tools) {
-        requirements.forEach(function(requirement) {
-            if (tools) {
-                $scope.required.tools && $scope.required.tools.push(requirement);
-            } else {
-                $scope.required.mods && $scope.required.mods.push(requirement);
-            }
-        });
-    };
-
     $scope.$on('rebuildMissing', function() {
         $scope.$broadcast('rebuildMissingTools');
         $scope.$broadcast('rebuildMissingMods');
