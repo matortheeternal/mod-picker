@@ -40,14 +40,16 @@ class HelpPagesController < ApplicationController
   # GET /help/1/edit
   def edit
     authorize! :update, @help_page
+    @help_page = HelpPage.find(params[:id])
     render "help_pages/edit"
   end
 
   # PATCH/PUT /help/1
   def update
     authorize! :update, @help_page
+    @help_page = HelpPage.find(params[:id])
     if @help_page.update(help_page_params)
-      redirect_to @help_page
+      redirect_to "/help/#{@help_page.id}"
     else
       render "help_pages/edit"
     end
