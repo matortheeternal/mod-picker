@@ -77,11 +77,8 @@ class ModList < ActiveRecord::Base
   def update_lazy_counters
     mod_ids = self.mods.ids
     self.plugins_count = Plugin.where(mod_id: mod_ids).count
-    self.active_plugins_count = self.mod_list_plugins.where(active: true).count
-    self.compatibility_notes_count = self.mod_list_compatibility_notes.all.count
-    self.install_order_notes_count = self.mod_list_install_order_notes.all.count
-    self.load_order_notes_count = self.mod_list_load_order_notes.all.count
-    self.save_counters([:plugins_count, :active_plugins_count, :compatibility_notes_count, :install_order_notes_count, :load_order_notes_count])
+    self.active_plugins_count = self.mod_list_plugins.count
+    self.save_counters([:plugins_count, :active_plugins_count])
   end
 
   def mod_list_mod_ids
