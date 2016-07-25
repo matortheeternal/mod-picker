@@ -20,7 +20,8 @@ String.prototype.toDashFormat = function() {
 // does nothing if either array1 or array2 are undefined
 Array.prototype.unite = function(array1, array2) {
     if (array1 && array2) {
-        //noinspection JSUnusedAssignment
-        array1 = Array.prototype.concat(array1, array2);
+        for (var i = 0; i < array2.length; i++) {
+            array1.push(array2[i]);
+        }
     }
 };
