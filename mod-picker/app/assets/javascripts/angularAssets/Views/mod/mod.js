@@ -122,14 +122,6 @@ app.controller('modController', function($scope, $q, $stateParams, $state, $time
     var isAuthor = angular.isDefined(author);
     $scope.permissions.canManage = $scope.permissions.canModerate || isAuthor;
 
-    //returns a reference to the tab with tabName (because sometimes tabs are removed)
-    $scope.findTab = function(tabName) {
-        var index = $scope.tabs.findIndex(function(tab) {
-            return tab.name === tabName;
-        });
-        return $scope.tabs[index];
-    };
-
     $scope.refreshTabParams = function(tabName, params) {
         var tab = $scope.findTab(tabName);
         tab.params = params;
