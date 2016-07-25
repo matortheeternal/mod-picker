@@ -123,9 +123,7 @@ app.controller('modController', function($scope, $q, $stateParams, $state, $time
     $scope.permissions.canManage = $scope.permissions.canModerate || isAuthor;
 
     $scope.refreshTabParams = function(tabName, params) {
-        var tab = $scope.findTab(tabName);
-        tab.params = params;
-        $state.go('base.mod.' + tab.name, tab.params, { notify: false });
+        $state.transitionTo('base.mod.' + tabName, params, { notify: false });
     };
 
     $scope.redirectToFirstTab = function() {
