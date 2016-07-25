@@ -40,6 +40,11 @@ app.controller('modReviewsController', function($scope, $stateParams, $timeout, 
     //retrieve the reviews when the state is first loaded
     $scope.retrieveReviews($stateParams.page);
 
+    // re-retrieve reviews when the sort object changes
+    $scope.$watch('sort', function() {
+        $scope.retrieveReviews();
+    }, true);
+
     //retrieve review sections
     reviewSectionService.getSectionsForCategory($scope.mod.primary_category).then(function(data) {
         $scope.reviewSections = data;
