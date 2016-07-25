@@ -216,6 +216,14 @@ app.controller('modListController', function($scope, $q, $stateParams, $timeout,
         });
     };
 
+    $scope.findTool = function(toolId, ignoreDestroyed) {
+        var foundTool = listUtils.findMod($scope.model.tools, toolId);
+        if (foundTool && ignoreDestroyed && foundTool._destroy) {
+            return;
+        }
+        return foundTool;
+    };
+
     $scope.findMod = function(modId, ignoreDestroyed) {
         var foundMod = listUtils.findMod($scope.model.mods, modId);
         if (foundMod && ignoreDestroyed && foundMod._destroy) {

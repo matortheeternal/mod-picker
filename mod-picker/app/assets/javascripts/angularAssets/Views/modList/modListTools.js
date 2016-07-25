@@ -101,14 +101,6 @@ app.controller('modListToolsController', function($scope, $state, $stateParams, 
         });
     };
 
-    $scope.findTool = function(toolId, ignoreDestroyed) {
-        var foundTool = listUtils.findMod($scope.model.tools, toolId);
-        if (foundTool && ignoreDestroyed && foundTool._destroy) {
-            return;
-        }
-        return foundTool;
-    };
-
     $scope.addTool = function(toolId) {
         // return if we don't have a tool to add
         if (!toolId) {
