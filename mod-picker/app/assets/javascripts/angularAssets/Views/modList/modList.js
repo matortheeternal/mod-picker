@@ -60,7 +60,7 @@ app.config(['$stateProvider', function ($stateProvider) {
     })
 }]);
 
-app.controller('modListController', function($scope, $q, $stateParams, $timeout, currentUser, modListObject, modListService, errorService, objectUtils, tabsFactory) {
+app.controller('modListController', function($scope, $q, $stateParams, $timeout, currentUser, modListObject, modListService, errorService, objectUtils, tabsFactory, listUtils) {
     // get parent variables
     $scope.mod_list = modListObject.mod_list;
     $scope.mod_list.star = modListObject.star;
@@ -214,6 +214,14 @@ app.controller('modListController', function($scope, $q, $stateParams, $timeout,
                     break;
             }
         });
+    };
+
+    $scope.findMod = function(modId, ignoreDestroyed) {
+        var foundMod = listUtils.findMod($scope.model.mods, modId);
+        if (foundMod && ignoreDestroyed && foundMod._destroy) {
+            return;
+        }
+        return foundMod;
     };
 
     $scope.addGroup = function(tab) {

@@ -1,4 +1,4 @@
-app.controller('modListModsController', function($scope, modListService, listUtils) {
+app.controller('modListModsController', function($scope, modListService) {
     $scope.buildModsModel = function() {
         $scope.model.mods = [];
         $scope.mod_list.groups.forEach(function(group) {
@@ -192,14 +192,6 @@ app.controller('modListModsController', function($scope, modListService, listUti
             var params = {label: 'Error adding mod', response: response};
             $scope.$emit('errorMessage', params);
         });
-    };
-
-    $scope.findMod = function(modId, ignoreDestroyed) {
-        var foundMod = listUtils.findMod($scope.model.mods, modId);
-        if (foundMod && ignoreDestroyed && foundMod._destroy) {
-            return;
-        }
-        return foundMod;
     };
 
     $scope.addMod = function(modId) {
