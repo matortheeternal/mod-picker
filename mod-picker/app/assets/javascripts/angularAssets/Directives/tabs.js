@@ -28,10 +28,10 @@ app.controller('tabsController', function($scope, $state, $stickyState) {
         }
     };
 
-    $scope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
-        var oldTab = $scope.findTab(fromState.name.slice(9));
-        if(oldTab) {
-            oldTab.params = fromParams;
-        }
+    $scope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
+        var oldTabName = fromState.name.split(".").find(function(stateName) {
+            return $scope.findTab(stateName);
+        });
+        $scope.findTab(oldTabName).params = fromParams;
     });
 });
