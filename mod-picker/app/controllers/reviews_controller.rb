@@ -3,11 +3,14 @@ class ReviewsController < ContributionsController
 
   # GET /reviews
   def index
+    # prepare reviews
     @reviews = Review.includes(:review_ratings, :editor, :submitter => :reputation).accessible_by(current_ability).filter(filtering_params).sort(params[:sort]).paginate(:page => params[:page])
     count = Review.accessible_by(current_ability).filter(filtering_params).count
 
-    # get helpful marks
-    helpful_marks = HelpfulMark.where(submitted_by: current_user.id, helpfulable_type: "Review", helpfulable_id: @reviews.ids)
+    # prepare helpful marks
+    helpful_marks = HelpfulMark.submitter(current_user.id).helpfulable("Review", @reviews.ids)
+
+    # render response
     render :json => {
         reviews: Review.index_json(@reviews),
         helpful_marks: helpful_marks,

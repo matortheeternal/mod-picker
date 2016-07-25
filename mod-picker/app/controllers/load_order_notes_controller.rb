@@ -3,11 +3,14 @@ class LoadOrderNotesController < ContributionsController
 
   # GET /load_order_notes
   def index
+    # prepare load order notes
     @load_order_notes = LoadOrderNote.includes(:editor, :editors, :submitter => :reputation).accessible_by(current_ability).filter(filtering_params).sort(params[:sort]).paginate(:page => params[:page])
     count = LoadOrderNote.accessible_by(current_ability).filter(filtering_params).count
 
-    # get helpful marks
-    helpful_marks = HelpfulMark.where(submitted_by: current_user.id, helpfulable_type: "LoadOrderNote", helpfulable_id: @load_order_notes.ids)
+    # prepare helpful marks
+    helpful_marks = HelpfulMark.submitter(current_user.id).helpfulable("LoadOrderNote", @load_order_notes.ids)
+
+    # render response
     render :json => {
         load_order_notes: @load_order_notes,
         helpful_marks: helpful_marks,
@@ -19,6 +22,8 @@ class LoadOrderNotesController < ContributionsController
   # POST /load_order_notes
   def create
     @load_order_note = LoadOrderNote.new(contribution_params)
+    @load_order_note.submitted_by = current_user.id
+    authorize! :create, @load_order_note
 
     if @load_order_note.save
       render json: @load_order_note.reload
