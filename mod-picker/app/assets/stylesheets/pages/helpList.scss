@@ -1,7 +1,7 @@
-.category-page {
+.help-list-page {
   padding-bottom: 150px;
   margin: 0 auto;
-  max-width: $max-width-container;
+  max-width: $max-content-width;
 
   // title
   .page-title {
@@ -26,7 +26,7 @@
   }
 }
 
-.category-page .pages-list {
+.help-list-page .pages-list {
   overflow: hidden;
 
   // clearfix
@@ -90,7 +90,7 @@
   }
 }
 
-.category-page .date {
+.help-list-page .date {
   // new icon
   .new-label {
     margin-left: 0.5rem;
