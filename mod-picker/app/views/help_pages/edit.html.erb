@@ -1,5 +1,5 @@
-<div class="new-help-page">
-  <h1>New Help Page</h1>
+<div class="edit-help-page">
+  <h1>Edit Help Page</h1>
 
   <% if @help_page.errors.any? %>
   <ul>
@@ -10,10 +10,14 @@
   <% end %>
   
   <%= form_for @help_page, url: {action: "update"}, html: {class: "help-page-form"} do |f| %>
+    <%= f.label :name %>
     <%= f.text_field :name %>
+    <%= f.label :category %>
     <%= f.select :category, options_for_select(HelpPage.categories.map {|k, v| [k.humanize.capitalize, k]}) %>
-    <%= f.select :game_id, options_for_select(Game.all.map {|k, v| [k.display_name, k.id]}) %>
+    <%= f.label :game_id %>
+    <%= f.select :game_id, options_for_select(Game.all.map {|k, v| [k.display_name, k.id]}), include_blank: "None" %>
+    <%= f.label :text_body %>
     <%= f.text_area :text_body, size: "60x12" %>
-    <%= f.submit "Create" %>
+    <%= f.submit "Submit" %>
   <% end %>
 </div>
