@@ -66,7 +66,7 @@
 
             <div class="right-column right-browse-column">
                 <h2>Comments <span class="right-item">
-                    <sort-control column="sort.column" direction="sort.direction" sort-options="sortOptions"></sort-control>
+                    <sort-control></sort-control>
                 </span></h2>
                 <loader data="comments" content-class="grid-results" spinner-class="big-spinner" ng-if="!error">
                     <comments comments="comments" current-user="currentUser" show-context="true" ng-show="comments.length"></comments>

@@ -3,11 +3,14 @@ class CompatibilityNotesController < ContributionsController
 
   # GET /compatibility_notes
   def index
+    # prepare compatibility notes
     @compatibility_notes = CompatibilityNote.includes(:editor, :editors, :submitter => :reputation).accessible_by(current_ability).filter(filtering_params).sort(params[:sort]).paginate(:page => params[:page])
     count = CompatibilityNote.accessible_by(current_ability).filter(filtering_params).count
 
-    # get helpful marks
-    helpful_marks = HelpfulMark.where(submitted_by: current_user.id, helpfulable_type: "CompatibilityNote", helpfulable_id: @compatibility_notes.ids)
+    # prepare helpful marks
+    helpful_marks = HelpfulMark.submitter(current_user.id).helpfulable("CompatibilityNote", @compatibility_notes.ids)
+
+    # render response
     render :json => {
         compatibility_notes: @compatibility_notes,
         helpful_marks: helpful_marks,

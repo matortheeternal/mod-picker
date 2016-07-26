@@ -23,9 +23,10 @@ app.config(['$stateProvider', function($stateProvider) {
     }).state('base.mod.Reviews', {
         sticky: true,
         deepStateRedirect: true,
+        reloadOnSearch:false,
         views: {
             'Reviews': {
-                templateUrl: '/resources/partials/mod/reviews.html',
+                templateUrl: '/resources/partials/mod/modReviews.html',
                 controller: 'modReviewsController',
             }
         },
@@ -39,9 +40,10 @@ app.config(['$stateProvider', function($stateProvider) {
     }).state('base.mod.Compatibility', {
         sticky: true,
         deepStateRedirect: true,
+        reloadOnSearch:false,
         views: {
             'Compatibility': {
-                templateUrl: '/resources/partials/mod/compatibility.html',
+                templateUrl: '/resources/partials/mod/modCompatibility.html',
                 controller: 'modCompatibilityController',
             }
         },
@@ -56,9 +58,10 @@ app.config(['$stateProvider', function($stateProvider) {
     }).state('base.mod.Install Order', {
         sticky: true,
         deepStateRedirect: true,
+        reloadOnSearch:false,
         views: {
             'Install Order': {
-                templateUrl: '/resources/partials/mod/installOrder.html',
+                templateUrl: '/resources/partials/mod/modInstallOrder.html',
                 controller: 'modInstallOrderController',
             }
         },
@@ -73,9 +76,10 @@ app.config(['$stateProvider', function($stateProvider) {
     }).state('base.mod.Load Order', {
         sticky: true,
         deepStateRedirect: true,
+        reloadOnSearch:false,
         views: {
             'Load Order': {
-                templateUrl: '/resources/partials/mod/loadOrder.html',
+                templateUrl: '/resources/partials/mod/modLoadOrder.html',
                 controller: 'modLoadOrderController',
             }
         },
@@ -90,9 +94,10 @@ app.config(['$stateProvider', function($stateProvider) {
     }).state('base.mod.Analysis', {
         sticky: true,
         deepStateRedirect: true,
+        reloadOnSearch:false,
         views: {
             'Analysis': {
-                templateUrl: '/resources/partials/mod/analysis.html',
+                templateUrl: '/resources/partials/mod/modAnalysis.html',
                 controller: 'modAnalysisController',
             }
         },
@@ -126,37 +131,24 @@ app.controller('modController', function($scope, $q, $stateParams, $state, $time
     var isAuthor = angular.isDefined(author);
     $scope.permissions.canManage = $scope.permissions.canModerate || isAuthor;
 
-    //returns a reference to the tab with tabName (because sometimes tabs are removed)
-    $scope.findTab = function(tabName) {
-        var index = $scope.tabs.findIndex(function(tab) {
-            return tab.name === tabName;
-        });
-        return $scope.tabs[index];
-    };
-
-    $scope.refreshTabParams = function(tab) {
-        //this is to prevent the refresh from happening before the
-        //tab params are actually updated
-        $timeout(function() {
-            $state.go('base.mod.' + tab.name, tab.params, { notify: false });
-        }, 1);
-    };
-
     $scope.redirectToFirstTab = function() {
         var tab = $scope.tabs[0];
         $state.go('base.mod.' + tab.name, tab.params, { location: 'replace' });
     };
 
-    //redirect to the first tab when the mod state is loaded
-    $scope.redirectToFirstTab();
+    //redirect to the first tab if just the parent mod state is loaded
+    if ($state.is('base.mod')) {
+        $scope.redirectToFirstTab();
+    }
 
+    //redirect to the first tab if a tab that isn't visible is typed into the url while the mod page is loaded
     $scope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
         //only if the new state is still on this mod's page
         if (toParams.modId == fromParams.modId) {
             newTabIndex = $scope.tabs.findIndex(function(tab) {
                 return toState.name.slice(9) === tab.name;
             });
-            if (newTabIndex < 0) {
+            if (newTabIndex == -1) {
                 $scope.redirectToFirstTab();
             }
         }
@@ -192,11 +184,6 @@ app.controller('modController', function($scope, $q, $stateParams, $state, $time
         // stop event propagation - we handled it
         event.stopPropagation();
     });
-
-    // change sort direction
-    $scope.toggleSortDirection = function(tab) {
-        tab.params.sdir = tab.params.sdir === 'asc' ? 'desc' : 'asc';
-    };
 
     // update the markdown editor
     $scope.updateEditor = function(noScroll) {
