@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160726025709) do
+ActiveRecord::Schema.define(version: 20160726063847) do
 
   create_table "agreement_marks", id: false, force: :cascade do |t|
     t.integer "correction_id", limit: 4,                null: false
@@ -212,7 +212,7 @@ ActiveRecord::Schema.define(version: 20160726025709) do
     t.integer  "comments_count", limit: 4,     default: 0, null: false
     t.datetime "submitted",                                null: false
     t.datetime "edited"
-    t.integer  "game_id",        limit: 4,                 null: false
+    t.integer  "game_id",        limit: 4
     t.integer  "category",       limit: 1,     default: 0, null: false
     t.integer  "submitted_by",   limit: 4,                 null: false
   end
