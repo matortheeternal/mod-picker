@@ -1,4 +1,6 @@
 class Game < ActiveRecord::Base
+  include RecordEnhancements
+  
   # parent/child games
   belongs_to :parent_game, :class_name => 'Game', :foreign_key => 'parent_game_id', :inverse_of => 'children_games'
   has_many :children_games, :class_name => 'Game', :foreign_key => 'parent_game_id', :inverse_of => 'parent_game'
@@ -54,5 +56,6 @@ class Game < ActiveRecord::Base
     self.load_order_notes_count = self.load_order_notes.count
     self.reviews_count = self.reviews.count
     self.plugins_count = self.plugins.count
+    self.help_pages_count = self.help_pages.count
   end
 end

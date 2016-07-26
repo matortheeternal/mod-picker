@@ -54,3 +54,15 @@ seed_fake_mod_lists if fake_config[:mod_lists]
 seed_fake_tags if fake_config[:tags]
 seed_fake_articles if fake_config[:articles]
 seed_fake_help_pages if fake_config[:help_pages]
+
+
+# update all games counter caches since its normally lazily updated daily
+def update_game_counters
+    puts "\nUpdating game counter caches"
+    Game.all.each do |game|
+        game.update_lazy_counters
+        game.save!
+    end
+end
+
+update_game_counters

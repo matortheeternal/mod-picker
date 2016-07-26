@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160721222716) do
+ActiveRecord::Schema.define(version: 20160726025709) do
 
   create_table "agreement_marks", id: false, force: :cascade do |t|
     t.integer "correction_id", limit: 4,                null: false
@@ -201,6 +201,7 @@ ActiveRecord::Schema.define(version: 20160721222716) do
     t.integer "install_order_notes_count", limit: 4,   default: 0, null: false
     t.integer "load_order_notes_count",    limit: 4,   default: 0, null: false
     t.integer "corrections_count",         limit: 4,   default: 0, null: false
+    t.integer "help_pages_count",          limit: 4,   default: 0, null: false
   end
 
   add_index "games", ["parent_game_id"], name: "fk_rails_f750cfc2c5", using: :btree

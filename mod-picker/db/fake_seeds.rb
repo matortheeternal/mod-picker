@@ -1064,7 +1064,7 @@ _Image with alt :_
     edited: Faker::Date.backward(9)
   ).save!  
 
-  rand(30).times do
+  30.times do
     author = User.offset(rand(User.count)).first
     HelpPage.new(
       category: HelpPage.categories.keys.sample,

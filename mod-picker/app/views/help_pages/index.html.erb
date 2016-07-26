@@ -30,6 +30,7 @@
     </div>
     <ul class="games-category-list categories-list">
       <% @games.each do |game| %>
+      <% if game.help_pages_count > 0%>
       <li class="game-page page">
         <div class="game-page-content page-content">
           <a href=<%= "/help/game/" + game.display_name.parameterize.underscore %>>
@@ -42,6 +43,7 @@
           </div>
         </div>
       </li>
+      <% end %>
       <% end %>
     </ul>
   </div>
