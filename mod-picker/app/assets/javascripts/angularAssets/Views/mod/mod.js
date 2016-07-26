@@ -23,7 +23,7 @@ app.config(['$stateProvider', function($stateProvider) {
     }).state('base.mod.Reviews', {
         sticky: true,
         deepStateRedirect: true,
-        reloadOnSearch:false,
+        reloadOnSearch: false,
         views: {
             'Reviews': {
                 templateUrl: '/resources/partials/mod/modReviews.html',
@@ -39,7 +39,7 @@ app.config(['$stateProvider', function($stateProvider) {
     }).state('base.mod.Compatibility', {
         sticky: true,
         deepStateRedirect: true,
-        reloadOnSearch:false,
+        reloadOnSearch: false,
         views: {
             'Compatibility': {
                 templateUrl: '/resources/partials/mod/modCompatibility.html',
@@ -56,7 +56,7 @@ app.config(['$stateProvider', function($stateProvider) {
     }).state('base.mod.Install Order', {
         sticky: true,
         deepStateRedirect: true,
-        reloadOnSearch:false,
+        reloadOnSearch: false,
         views: {
             'Install Order': {
                 templateUrl: '/resources/partials/mod/modInstallOrder.html',
@@ -73,7 +73,7 @@ app.config(['$stateProvider', function($stateProvider) {
     }).state('base.mod.Load Order', {
         sticky: true,
         deepStateRedirect: true,
-        reloadOnSearch:false,
+        reloadOnSearch: false,
         views: {
             'Load Order': {
                 templateUrl: '/resources/partials/mod/modLoadOrder.html',
@@ -90,7 +90,7 @@ app.config(['$stateProvider', function($stateProvider) {
     }).state('base.mod.Analysis', {
         sticky: true,
         deepStateRedirect: true,
-        reloadOnSearch:false,
+        reloadOnSearch: false,
         views: {
             'Analysis': {
                 templateUrl: '/resources/partials/mod/modAnalysis.html',
