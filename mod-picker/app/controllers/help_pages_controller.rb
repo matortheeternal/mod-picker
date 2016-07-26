@@ -1,6 +1,8 @@
 class HelpPagesController < ApplicationController
   before_action :authorize, only: [:create, :edit, :update, :destroy]
   before_action :set_help_page, only: [:show, :edit, :update, :destroy]
+  rescue_from ::ActiveRecord::RecordNotFound, with: :record_not_found
+
   layout "help"
 
   # GET /help
@@ -61,15 +63,12 @@ class HelpPagesController < ApplicationController
 
   # GET /help/game/game.display_name
   def game
-    if game = Game.find_by_display_name(params[:game])
-      @page_title = game.long_name
-      @help_pages = HelpPage.where(game_id: game.id).order(:submitted)
+    # find_by! used to RecordNotFound error is raised instead of just returning nil
+    game = Game.find_by_display_name!(params[:game])
+    @page_title = game.long_name
+    @help_pages = HelpPage.where(game_id: game.id).order(:submitted)
 
-      render "help_pages/game"
-    else
-      render "help_pages/404"
-    end
-   
+    render "help_pages/game"
   end
 
   # GET /help/category/HelpPage.category
@@ -81,15 +80,15 @@ class HelpPagesController < ApplicationController
   end
 
   private
-    # call back to set shared help page logic
-    # returns help page 404 if record isn't found'
+    # exception handling for record not found
+    def record_not_found(exception)
+      @error = exception.message
+      render "help_pages/404", status: 404
+    end
+
+    # set instance variable via /help/:id via callback to keep things DRY
     def set_help_page
-      begin
         @help_page = HelpPage.find(params[:id])
-      rescue ActiveRecord::RecordNotFound  
-        render "help_pages/404"
-        return
-      end
     end
 
     def authorize
