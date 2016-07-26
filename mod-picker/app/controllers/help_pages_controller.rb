@@ -82,7 +82,7 @@ class HelpPagesController < ApplicationController
     @page_title = params[:category].humanize.capitalize
     @help_pages = HelpPage.where(category: HelpPage.categories[params[:category]]).order(submitted: :desc)
 
-    render "help_pages/game"
+    render "help_pages/category"
   end
 
   private
