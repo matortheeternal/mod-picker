@@ -154,19 +154,19 @@
 
     // social icon colors
     .fa-facebook-square {
-      @include link_style($facebook_primary);
+      @include icon_style($facebook_primary);
     }
 
     .fa-twitter-square {
-      @include link_style($twitter_primary);
+      @include icon_style($twitter_primary);
     }
 
     .fa-google-plus-square {
-      @include link_style($google_primary);
+      @include icon_style($google_primary);
     }
 
     .fa-reddit-square {
-      @include link_style($reddit_primary);
+      @include icon_style($reddit_primary);
     }
   }
 }

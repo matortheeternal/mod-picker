@@ -65,6 +65,15 @@ $max-content-width: 850px;
     }
 }
 
+// used for social icons
+@mixin icon_style($color, $highlight_color: lighten($color, 10%)) {
+  color: $color;
+
+  &:hover {
+    color: $highlight_color;
+  }
+}
+
 // import child stylesheets for other pages in the help center
 @import 'helpIndex';
 @import 'helpShow';

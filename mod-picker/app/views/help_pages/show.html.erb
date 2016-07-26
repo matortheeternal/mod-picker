@@ -35,9 +35,7 @@
     </span>
   </div>
   <!-- enddate -->
-  <%= button_to "Delete Page", { action: "destroy", id: @help_page.id },
-                                method: :delete, data: { confirm: "Are you sure you want to delete this page?" } %>
-                                
+
   <!-- table of contents class = "help-page-toc" -->
   <%= markdown_toc(@help_page.text_body) %>
 
