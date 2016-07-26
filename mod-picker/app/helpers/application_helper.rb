@@ -1,8 +1,3 @@
-# smarty pants mixin for code syntax highlighting
-class HTMLWithPants < Redcarpet::Render::HTML
-  include Redcarpet::Render::SmartyPants
-end
-
 module ApplicationHelper
   def markdown(text)
     render_options = {
