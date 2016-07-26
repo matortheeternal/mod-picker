@@ -1,60 +1,42 @@
 app.controller('modReviewsController', function($scope, $stateParams, $state, modService, reviewSectionService, contributionService, sortFactory) {
-    $scope.thisTab = $scope.findTab('Reviews');
+    $scope.sort = {
+        column: $stateParams.scol,
+        direction: $stateParams.sdir
+    };
+    $scope.pages = {};
 
-    //update the params on the tab object when the tab is navigated to directly
-    $scope.thisTab.params = angular.copy($stateParams);
-    $scope.params = $scope.thisTab.params;
+    //loading the sort options
+    $scope.sortOptions = sortFactory.reviewSortOptions();
 
     $scope.retrieveReviews = function(page) {
-        // refresh the parameters in the url (without actually changing state), but not on initialization
-        if ($scope.loaded) {
-            $scope.refreshTabParams($scope.thisTab);
-        }
-
         // retrieve the reviews
         var options = {
-            sort: {
-                column: $scope.params.scol,
-                direction: $scope.params.sdir
-            },
+            sort: $scope.sort,
             //if no page is specified load the first one
             page: page || 1
         };
         contributionService.retrieveModReviews($stateParams.modId, options, $scope.pages).then(function(data) {
             $scope.mod.reviews = data.reviews;
             $scope.mod.user_review = data.user_review;
-
-            //seperating the review in the url if any
-            if ($scope.params.reviewId) {
-                var currentIndex = $scope.mod.reviews.findIndex(function(review) {
-                    return review.id === $scope.params.reviewId;
-                });
-                if (currentIndex > -1) {
-                    $scope.currentReview = $scope.mod.reviews.splice(currentIndex, 1)[0];
-                } else {
-                    // remove the reviewId param from the url if it's not part of this mod
-                    $scope.params.reviewId = null;
-                    $scope.refreshTabParams($scope.thisTab);
-                }
-            } else {
-                // clear the currentReview if it's not specified
-                delete $scope.currentReview;
-            }
         }, function(response) {
             $scope.errors.reviews = response;
         });
+
+        //refresh the tab's params
+        var params = {
+            scol: $scope.sort.column,
+            sdir: $scope.sort.direction,
+            page: page || 1
+        };
+        $state.go(".", params);
     };
-
-    //loading the sort options
-    $scope.sortOptions = sortFactory.reviewSortOptions();
-
-    //initialize the pages variable
-    $scope.pages = {};
-
     //retrieve the reviews when the state is first loaded
     $scope.retrieveReviews($stateParams.page);
-    //start allowing the url params to be updated
-    $scope.loaded = true;
+
+    // re-retrieve reviews when the sort object changes
+    $scope.$watch('sort', function() {
+        $scope.retrieveReviews();
+    }, true);
 
     //retrieve review sections
     reviewSectionService.getSectionsForCategory($scope.mod.primary_category).then(function(data) {
@@ -62,6 +44,11 @@ app.controller('modReviewsController', function($scope, $stateParams, $state, mo
     }, function(response) {
         $scope.errors.reviewSections = response;
     });
+
+    // re-retrieve reviews when the sort object changes
+    $scope.$watch('sort', function() {
+        $scope.retrieveReviews();
+    }, true);
 
     // REVIEW RELATED LOGIC
     // instantiate a new review object

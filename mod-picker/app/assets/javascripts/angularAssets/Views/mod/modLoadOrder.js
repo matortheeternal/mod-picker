@@ -1,60 +1,47 @@
 app.controller('modLoadOrderController', function($scope, $state, $stateParams, contributionService, contributionFactory, sortFactory) {
-    $scope.thisTab = $scope.findTab('Load Order');
+    $scope.sort = {
+        column: $stateParams.scol,
+        direction: $stateParams.sdir
+    };
+    $scope.filters = {
+        modlist: $stateParams.filter
+    };
+    $scope.pages = {};
 
-    //update the params on the tab object when the tab is navigated to directly
-    $scope.thisTab.params = angular.copy($stateParams);
-    $scope.params = $scope.thisTab.params;
+    //loading the sort options
+    $scope.sortOptions = sortFactory.loadOrderNoteSortOptions();
 
     $scope.retrieveLoadOrderNotes = function(page) {
-        // refresh the parameters in the url (without actually changing state), but not on initialization
-        if ($scope.loaded) {
-            $scope.refreshTabParams($scope.thisTab);
-        }
-
         // retrieve the Load Order Notes
         var options = {
-            sort: {
-                column: $scope.params.scol,
-                direction: $scope.params.sdir
-            },
-            filters: { modlist: $scope.params.filter },
+            sort: $scope.sort,
+            filters: $scope.filters,
             //if no page is specified load the first one
             page: page || 1
         };
         contributionService.retrieveModContributions($stateParams.modId, 'load_order_notes', options, $scope.pages).then(function(data) {
             $scope.mod.load_order_notes = data;
-
-            //seperating the note in the url if any
-            if ($scope.params.loadOrderNoteId) {
-                var currentIndex = $scope.mod.load_order_notes.findIndex(function(loadOrderNote) {
-                    return loadOrderNoteid === $scope.params.loadOrderNoteId;
-                });
-                if (currentIndex > -1) {
-                    $scope.currentloadOrderNote = $scope.mod.load_order_notes.splice(currentIndex, 1)[0];
-                } else {
-                    // remove the note param from the url if it's not part of this mod
-                    $scope.params.loadOrderNoteId = null;
-                    $scope.refreshTabParams($scope.thisTab);
-                }
-            } else {
-                // clear the note if it's not specified
-                delete $scope.currentloadOrderNote;
-            }
         }, function(response) {
             $scope.errors.load_order_notes = response;
         });
+
+        //refresh the tab's params
+        var params = {
+            scol: $scope.sort.column,
+            sdir: $scope.sort.direction,
+            filter: $scope.filters.modlist,
+            page: page || 1
+        };
+        $state.go(".", params);
     };
-
-    //loading the sort options
-    $scope.sortOptions = sortFactory.loadOrderNoteSortOptions();
-
-    //initialize the pages variable
-    $scope.pages = {};
 
     //retrieve the notes when the state is first loaded
     $scope.retrieveLoadOrderNotes($stateParams.page);
-    //start allowing the url params to be updated
-    $scope.loaded = true;
+
+    // re-retrieve reviews when the sort object changes
+    $scope.$watch('sort', function() {
+        $scope.retrieveLoadOrderNotes();
+    }, true);
 
     // LOAD ORDER NOTE RELATED LOGIC
     // instantiate a new load order note object

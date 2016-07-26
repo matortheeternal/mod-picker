@@ -1,60 +1,48 @@
 app.controller('modCompatibilityController', function($scope, $stateParams, $state, contributionFactory, contributionService, sortFactory) {
-    $scope.thisTab = $scope.findTab('Compatibility');
+    $scope.sort = {
+        column: $stateParams.scol,
+        direction: $stateParams.sdir
+    };
+    $scope.filters = {
+        modlist: $stateParams.filter
+    };
+    $scope.pages = {};
 
-    //update the params on the tab object when the tab is navigated to directly
-    $scope.thisTab.params = angular.copy($stateParams);
-    $scope.params = $scope.thisTab.params;
+    //loading the sort options
+    $scope.sortOptions = sortFactory.compatibilityNoteSortOptions();
 
     $scope.retrieveCompatibilityNotes = function(page) {
-        // refresh the parameters in the url (without actually changing state), but not on initialization
-        if ($scope.loaded) {
-            $scope.refreshTabParams($scope.thisTab);
-        }
-
         // retrieve the compatibility notes
         var options = {
-            sort: {
-                column: $scope.params.scol,
-                direction: $scope.params.sdir
-            },
-            filters: { modlist: $scope.params.filter },
+            sort: $scope.sort,
+            filters: $scope.filters,
             //if no page is specified load the first one
             page: page || 1
         };
         contributionService.retrieveModContributions($stateParams.modId, 'compatibility_notes', options, $scope.pages).then(function(data) {
             $scope.mod.compatibility_notes = data;
 
-            //seperating the compatibilityNote in the url if any
-            if ($scope.params.compatibilityNoteId) {
-                var currentIndex = $scope.mod.compatibility_notes.findIndex(function(compatibilityNote) {
-                    return compatibilityNote.id === $scope.params.compatibilityNoteId;
-                });
-                if (currentIndex > -1) {
-                    $scope.currentCompatibilityNote = $scope.mod.compatibility_notes.splice(currentIndex, 1)[0];
-                } else {
-                    // remove the compatibilityNoteId param from the url if it's not part of this mod
-                    $scope.params.compatibilityNoteId = null;
-                    $scope.refreshTabParams($scope.thisTab);
-                }
-            } else {
-                // clear the currentCompatibilityNote if it's not specified
-                delete $scope.currentCompatibilityNote;
-            }
         }, function(response) {
             $scope.errors.compatibility_notes = response;
         });
+
+        //refresh the tab's params
+        var params = {
+            scol: $scope.sort.column,
+            sdir: $scope.sort.direction,
+            filter: $scope.filters.modlist,
+            page: page || 1
+        };
+        $state.go(".", params);
     };
-
-    //loading the sort options
-    $scope.sortOptions = sortFactory.compatibilityNoteSortOptions();
-
-    //initialize the pages variable
-    $scope.pages = {};
 
     //retrieve the notes when the state is first loaded
     $scope.retrieveCompatibilityNotes($stateParams.page);
-    //start allowing the url params to be updated
-    $scope.loaded = true;
+
+    // re-retrieve reviews when the sort object changes
+    $scope.$watch('sort', function() {
+        $scope.retrieveCompatibilityNotes();
+    }, true);
 
     // COMPATIBILITY NOTE RELATED LOGIC
     // instantiate a new compatibility note object
