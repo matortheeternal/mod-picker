@@ -141,7 +141,7 @@ class User < ActiveRecord::Base
   end
 
   def inactive?
-    self.last_sign_in_at < 28.days.ago
+    self.last_sign_in_at.nil? || self.last_sign_in_at < 28.days.ago
   end
 
   def email_public?
