@@ -32,7 +32,7 @@ app.controller('modInstallOrderController', function($scope, $stateParams, $stat
             filter: $scope.filters.modlist,
             page: page || 1
         };
-        $scope.refreshTabParams('Install Order', params);
+        $state.go(".", params);
     };
 
     //retrieve the notes when the state is first loaded

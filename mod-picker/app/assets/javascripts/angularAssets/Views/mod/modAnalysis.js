@@ -1,6 +1,6 @@
 app.controller('modAnalysisController', function($scope, $stateParams, $state, contributionService) {
     $scope.switchPlugin = function() {
-        $scope.refreshTabParams('Analysis', {plugin: $scope.mod.currentPlugin.id});
+        $state.go(".", {plugin: $scope.mod.currentPlugin.id});
     };
 
     $scope.retrieveAnalysis = function(pluginId) {
@@ -20,7 +20,7 @@ app.controller('modAnalysisController', function($scope, $stateParams, $state, c
                 if (!statePlugin) {
                     var firstPlugin = analysis.plugins[0];
                     $scope.mod.currentPlugin = firstPlugin;
-                    $scope.refreshTabParams('Analysis', {plugin: firstPlugin.id});
+                    $state.go(".", {plugin: firstPlugin.id});
                 } else {
                     $scope.mod.currentPlugin = statePlugin;
                 }

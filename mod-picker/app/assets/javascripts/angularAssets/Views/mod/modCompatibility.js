@@ -33,7 +33,7 @@ app.controller('modCompatibilityController', function($scope, $stateParams, $sta
             filter: $scope.filters.modlist,
             page: page || 1
         };
-        $scope.refreshTabParams('Compatibility', params);
+        $state.go(".", params);
     };
 
     //retrieve the notes when the state is first loaded

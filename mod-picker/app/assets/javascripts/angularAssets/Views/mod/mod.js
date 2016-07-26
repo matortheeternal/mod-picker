@@ -23,6 +23,7 @@ app.config(['$stateProvider', function($stateProvider) {
     }).state('base.mod.Reviews', {
         sticky: true,
         deepStateRedirect: true,
+        reloadOnSearch:false,
         views: {
             'Reviews': {
                 templateUrl: '/resources/partials/mod/modReviews.html',
@@ -38,6 +39,7 @@ app.config(['$stateProvider', function($stateProvider) {
     }).state('base.mod.Compatibility', {
         sticky: true,
         deepStateRedirect: true,
+        reloadOnSearch:false,
         views: {
             'Compatibility': {
                 templateUrl: '/resources/partials/mod/modCompatibility.html',
@@ -54,6 +56,7 @@ app.config(['$stateProvider', function($stateProvider) {
     }).state('base.mod.Install Order', {
         sticky: true,
         deepStateRedirect: true,
+        reloadOnSearch:false,
         views: {
             'Install Order': {
                 templateUrl: '/resources/partials/mod/modInstallOrder.html',
@@ -70,6 +73,7 @@ app.config(['$stateProvider', function($stateProvider) {
     }).state('base.mod.Load Order', {
         sticky: true,
         deepStateRedirect: true,
+        reloadOnSearch:false,
         views: {
             'Load Order': {
                 templateUrl: '/resources/partials/mod/modLoadOrder.html',
@@ -86,6 +90,7 @@ app.config(['$stateProvider', function($stateProvider) {
     }).state('base.mod.Analysis', {
         sticky: true,
         deepStateRedirect: true,
+        reloadOnSearch:false,
         views: {
             'Analysis': {
                 templateUrl: '/resources/partials/mod/modAnalysis.html',
@@ -121,11 +126,6 @@ app.controller('modController', function($scope, $q, $stateParams, $state, $time
     });
     var isAuthor = angular.isDefined(author);
     $scope.permissions.canManage = $scope.permissions.canModerate || isAuthor;
-
-    $scope.refreshTabParams = function(tabName, params) {
-        params.modId = $scope.mod.id;
-        $state.transitionTo('base.mod.' + tabName, params, { notify: false });
-    };
 
     $scope.redirectToFirstTab = function() {
         var tab = $scope.tabs[0];
