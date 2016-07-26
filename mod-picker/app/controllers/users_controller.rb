@@ -105,7 +105,7 @@ class UsersController < ApplicationController
     if @reputation_link.nil?
       render json: {status: :ok}
     else
-      if @reputation_link.delete
+      if @reputation_link.destroy
         render json: {status: :ok}
       else
         render json: @reputation_link.errors, status: :unprocessable_entity
