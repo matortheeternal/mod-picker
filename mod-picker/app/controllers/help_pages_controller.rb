@@ -61,15 +61,10 @@ class HelpPagesController < ApplicationController
     end
   end
 
-  # GET /help/game/game.display_name
+  # GET /help/game/:game(game.display_name)
   def game
     # find_by! used to RecordNotFound error is raised instead of just returning nil
     game = Game.find_by_display_name!(params[:game].humanize)
-
-    # check if game has at least 1 help page else 404
-    if game.help_pages_count < 0 
-      render "help_pages/404", status: 404
-    end
 
     @page_title = game.long_name
     @help_pages = HelpPage.where(game_id: game.id).order(submitted: :asc)
@@ -82,7 +77,13 @@ class HelpPagesController < ApplicationController
     @page_title = params[:category].humanize.capitalize
     @help_pages = HelpPage.where(category: HelpPage.categories[params[:category]]).order(submitted: :desc)
 
-    render "help_pages/category"
+    if @help_pages.count < 1
+      render "help_pages/404"
+    else
+      render "help_pages/category"
+    end
+
+    
   end
 
   private
