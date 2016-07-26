@@ -72,7 +72,7 @@ class HelpPagesController < ApplicationController
     end
 
     @page_title = game.long_name
-    @help_pages = HelpPage.where(game_id: game.id).order(:submitted)
+    @help_pages = HelpPage.where(game_id: game.id).order(submitted: :asc)
 
     render "help_pages/game"
   end
@@ -80,7 +80,7 @@ class HelpPagesController < ApplicationController
   # GET /help/category/HelpPage.category
   def category
     @page_title = params[:category].humanize.capitalize
-    @help_pages = HelpPage.where(category: HelpPage.categories[params[:category]]).order(:submitted)
+    @help_pages = HelpPage.where(category: HelpPage.categories[params[:category]]).order(submitted: :desc)
 
     render "help_pages/game"
   end

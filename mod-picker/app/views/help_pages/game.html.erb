@@ -37,10 +37,12 @@
             </span>
           </div>
 
+          <% if page.game.present? %>
           <span class="meta game" title="Game">
             <i class="fa fa-gamepad" aria-hidden="true"></i>
             <%= link_to page.game.display_name, "/help/game/#{page.game.display_name}" %>
           </span>
+          <% end %>
 
           <span class="meta category" title="Category">
             <i class="fa fa-folder" aria-hidden="true"></i>
