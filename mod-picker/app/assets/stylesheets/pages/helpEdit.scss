@@ -1,6 +1,16 @@
 .edit-help-page {
   max-width: $max-content-width;
   margin: 0 auto;
+
+  // delete btn
+  .delete-btn {
+    color: $link_color;
+    background-color: $error_secondary;
+
+    &:hover {
+      background-color: darken($error_secondary, 10%);
+    }
+  }
 }
 
 .help-page-form {
@@ -8,6 +18,7 @@
   input,
   textarea {
     display: block;
+    margin: 0 0 1rem;
   }
 
   #help_page_name {
@@ -17,5 +28,14 @@
   #help_page_text_body {
     font-size: 1em;
     width: 100%;
+  }
+
+  input[type="submit"] {
+    color: $link_color;
+    background-color: $link_hover_color_primary;
+
+    &:hover {
+      background-color: $link_hover_color_secondary;
+    }
   }
 }
