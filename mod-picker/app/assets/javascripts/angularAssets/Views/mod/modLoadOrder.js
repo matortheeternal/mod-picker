@@ -32,7 +32,7 @@ app.controller('modLoadOrderController', function($scope, $state, $stateParams, 
             filter: $scope.filters.modlist,
             page: page || 1
         };
-        $state.go(".", params);
+        $state.go($state.current.name, params);
     };
 
     //retrieve the notes when the state is first loaded
