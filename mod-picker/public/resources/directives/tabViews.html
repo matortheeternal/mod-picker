@@ -1,1 +1,1 @@
-<div ng-repeat="tab in tabs" ui-view="{{tab.name}}" ng-show="visible(tab.name)"></div>
+<div ng-repeat="tab in tabs" ui-view="{{tab.name}}" ng-show="'**.' + tab.name | includedByState"></div>
