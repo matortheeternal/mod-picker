@@ -3,6 +3,7 @@ class ModListPlugin < ActiveRecord::Base
 
   belongs_to :mod_list, :inverse_of => 'mod_list_plugins'
   belongs_to :plugin, :inverse_of => 'mod_list_plugins'
+  has_one :mod, :through => 'plugin'
 
   # Validations
   validates :mod_list_id, :plugin_id, :index, presence: true
