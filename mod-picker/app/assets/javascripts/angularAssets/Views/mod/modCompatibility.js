@@ -1,25 +1,19 @@
 app.controller('modCompatibilityController', function($scope, $stateParams, $state, contributionFactory, contributionService, sortFactory) {
-    $scope.sort = {
+    $scope.sort.compatibility_notes = {
         column: $stateParams.scol,
         direction: $stateParams.sdir
     };
-    $scope.filters = {
-        modlist: $stateParams.filter
-    };
-    $scope.pages = {};
-
-    //loading the sort options
-    $scope.sortOptions = sortFactory.compatibilityNoteSortOptions();
+    $scope.filters.compatibility_notes.modlist = $stateParams.filter;
 
     $scope.retrieveCompatibilityNotes = function(page) {
         // retrieve the compatibility notes
         var options = {
-            sort: $scope.sort,
-            filters: $scope.filters,
+            sort: $scope.sort.compatibility_notes,
+            filters: $scope.filters.compatibility_notes,
             //if no page is specified load the first one
             page: page || 1
         };
-        contributionService.retrieveModContributions($stateParams.modId, 'compatibility_notes', options, $scope.pages).then(function(data) {
+        contributionService.retrieveModContributions($stateParams.modId, 'compatibility_notes', options, $scope.pages.compatibility_notes).then(function(data) {
             $scope.mod.compatibility_notes = data;
 
         }, function(response) {
@@ -28,9 +22,9 @@ app.controller('modCompatibilityController', function($scope, $stateParams, $sta
 
         //refresh the tab's params
         var params = {
-            scol: $scope.sort.column,
-            sdir: $scope.sort.direction,
-            filter: $scope.filters.modlist,
+            scol: $scope.sort.compatibility_notes.column,
+            sdir: $scope.sort.compatibility_notes.direction,
+            filter: $scope.filters.compatibility_notes.modlist,
             page: page || 1
         };
         $state.go($state.current.name, params);
@@ -40,7 +34,7 @@ app.controller('modCompatibilityController', function($scope, $stateParams, $sta
     $scope.retrieveCompatibilityNotes($stateParams.page);
 
     // re-retrieve reviews when the sort object changes
-    $scope.$watch('sort', function() {
+    $scope.$watch('sort + filters', function() {
         $scope.retrieveCompatibilityNotes();
     }, true);
 
