@@ -30,37 +30,31 @@ app.controller('modlistTableController', function($scope, modListService) {
         console.log('Clone Mod list: "' + modlist.name + '"');
         $scope.errors = [];
         modListService.cloneModlist(modlist).then(function(data) {
-            if (data.status === "ok") {
-                $scope.append(data);
-            } else {
-                $scope.errors.push(data.status);
-            }
+            $scope.append(data);
+        }, function(response) {
+            var params = { label: "Failed to clone mod list", response: response };
+            $scope.$emit('errorMessage', params);
         });
-    };
-
-    $scope.remove = function(modlist) {
-        var modlists = $scope.user.mod_lists;
-        var index = modlists.indexOf(modlist);
-        modlists.splice(index, 1);
-        if (modlist.is_collection) {
-            index = $scope.collections.indexOf(modlist);
-            $scope.collections.splice(index, 1);
-        } else {
-            index = $scope.modlists.indexOf(modlist);
-            $scope.modlists.splice(index, 1);
-        }
-        $scope.$apply();
     };
 
     $scope.delete = function(modlist) {
         console.log('Delete Mod modlist: "' + modlist.name + '"');
         $scope.errors = [];
         modListService.deleteModlist(modlist).then(function(data) {
-            if (data.status === "ok") {
-                $scope.remove(modlist);
+            var modlists = $scope.user.mod_lists;
+            var index = modlists.indexOf(modlist);
+            modlists.splice(index, 1);
+            if (modlist.is_collection) {
+                index = $scope.collections.indexOf(modlist);
+                $scope.collections.splice(index, 1);
             } else {
-                $scope.errors.push({ message: "Delete Mod list: " + data.status });
+                index = $scope.modlists.indexOf(modlist);
+                $scope.modlists.splice(index, 1);
             }
+            $scope.$apply();
+        }, function(response) {
+            var params = { label: "Failed to delete mod list", response: response };
+            $scope.$emit('errorMessage', params);
         });
     };
 });
