@@ -250,7 +250,7 @@ app.controller('modListModsController', function($scope, modListService) {
                     destId: options.note.mods[+!options.index].id,
                     after: !!options.index
                 };
-                $scope.$broadcast('moveMod', moveOptions);
+                $scope.$broadcast('moveItem', moveOptions);
                 break;
             case "ignore":
                 options.note.ignored = !options.note.ignored;
@@ -265,5 +265,5 @@ app.controller('modListModsController', function($scope, modListService) {
     $scope.$on('rebuildMissingMods', $scope.buildMissingMods);
     $scope.$on('rebuildUnresolvedCompatibility', $scope.buildUnresolvedCompatibility);
     $scope.$on('rebuildUnresolvedCompatibility', $scope.buildUnresolvedCompatibility);
-    $scope.$on('modMoved', $scope.buildUnresolvedInstallOrder);
+    $scope.$on('itemMoved', $scope.buildUnresolvedInstallOrder);
 });
