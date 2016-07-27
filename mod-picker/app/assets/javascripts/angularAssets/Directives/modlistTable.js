@@ -10,27 +10,13 @@ app.directive('modlistTable', function() {
     };
 });
 
-app.controller('modlistTableController', function($scope, modListService) {
-    $scope.append = function(data) {
-        var modlists = $scope.user.mod_lists;
-        if (data.modlist) {
-            modlists.push(data.modlist);
-            if (data.modlist.is_collection) {
-                $scope.collections.push(data.modlist);
-            } else {
-                $scope.modlists.push(data.modlist);
-            }
-            $scope.$apply();
-        } else {
-            $scope.errors.push({ message: "Didn't receive a cloned mod list from the server" });
-        }
-    };
-
+app.controller('modlistTableController', function($scope, $state, modListService) {
     $scope.clone = function(modlist) {
         console.log('Clone Mod list: "' + modlist.name + '"');
         $scope.errors = [];
         modListService.cloneModlist(modlist).then(function(data) {
-            $scope.append(data);
+            // TODO: verify that this parameter is correct
+            $state.go('base.mod-list', {modListId: data.id});
         }, function(response) {
             var params = { label: "Failed to clone mod list", response: response };
             $scope.$emit('errorMessage', params);
