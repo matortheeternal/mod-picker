@@ -8,7 +8,6 @@ app.directive('tableItems', function () {
             columns: '=',
             actions: '=',
             editing: '=',
-            removeCallback: '=',
             type: '@'
         }
     }
@@ -23,6 +22,12 @@ app.controller('tableItemsController', function($scope, $timeout, colorsFactory,
     $scope.removeGroup = listUtils.removeGroup;
     $scope.focusText = formUtils.focusText;
     $scope.columnValue = tableUtils.columnValue;
+
+    // when the user wants to remove an item emit a removeItem event for the parent
+    // controller to handle and respond to with an updateItems event when done
+    $scope.removeItem = function(item) {
+        $scope.$emit('removeItem', item);
+    };
 
     // execute an action on an item
     $scope.execute = function(action, item) {
@@ -46,5 +51,9 @@ app.controller('tableItemsController', function($scope, $timeout, colorsFactory,
             listUtils.updateItems($scope.model);
             $scope.$emit('itemMoved');
         }
+    });
+
+    $scope.$on('updateItems', function() {
+        listUtils.updateItems($scope.model);
     });
 });

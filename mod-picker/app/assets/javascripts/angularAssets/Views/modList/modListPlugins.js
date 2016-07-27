@@ -6,7 +6,7 @@ app.controller('modListPluginsController', function($scope, modListService, colu
         title: "Remove this plugin from the mod list",
         execute: function($scope, item) {
             if (!$scope.editing) return;
-            $scope.removeCallback(item);
+            $scope.removeItem(item);
         }
     }];
 
@@ -59,4 +59,20 @@ app.controller('modListPluginsController', function($scope, modListService, colu
     if (!$scope.mod_list.plugins && !$scope.retrieving.plugins) {
         $scope.retrievePlugins();
     }
+
+    $scope.removePlugin = function(modListPlugin) {
+        modListPlugin._destroy = true;
+        //$scope.removeRequirements(modListPlugin.plugin.id);
+        //$scope.removeNotes(modListPlugin.plugin.id);
+        //$scope.buildMissingPlugins();
+        //$scope.buildUnresolvedPluginCompatibility();
+        //$scope.buildUnresolvedLoadOrder();
+        $scope.mod_list.plugins_count -= 1;
+        $scope.updateTabs();
+        $scope.$broadcast('updateItems');
+    };
+
+    $scope.$on('removeItem', function(event, modListPlugin) {
+        $scope.removePlugin(modListPlugin);
+    });
 });
