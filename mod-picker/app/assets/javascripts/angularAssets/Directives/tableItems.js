@@ -8,7 +8,8 @@ app.directive('tableItems', function () {
             columns: '=',
             actions: '=',
             editing: '=',
-            type: '@'
+            type: '@',
+            label: '@'
         }
     }
 });
