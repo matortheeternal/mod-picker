@@ -50,7 +50,7 @@
                     <section ng-repeat="group in columnGroups">
                         <h3>{{group}}</h3>
                         <ul class="checkbox-list">
-                            <li ng-repeat="column in groupColumns(columns, group) as groupedColumns">
+                            <li ng-repeat="column in groupColumns(availableColumnData, columns, group) as groupedColumns">
                                 <label>
                                     <input type="checkbox" ng-model="column.visibility">
                                     {{column.label}}
