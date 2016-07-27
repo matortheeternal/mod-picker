@@ -12,7 +12,7 @@
         </tr>
     </thead>
     <tbody dnd-list="model" class="{{draggingGroup ? 'dragging-group' : ''}}">
-        <tr ng-repeat="item in model" class="{{item.children ? 'group bg-'+item.color : ''}}" ng-hide="item._destroy" dnd-draggable="item" dnd-moved="moveItem(model, $index)" dnd-effect-allowed="move" dnd-disable-if="!editing" dnd-type="{{item.children ? '\'group\'' : '\'item\''}}" dnd-dragstart="dragStart(item)" dnd-dragend="dragEnd()">
+        <tr ng-repeat="item in model" class="{{item.children ? 'group bg-'+item.color : ''}}" ng-if="!item._destroy" dnd-draggable="item" dnd-moved="itemMoved(model, $index)" dnd-effect-allowed="move" dnd-disable-if="!editing" dnd-type="{{item.children ? '\'group\'' : '\'item\''}}" dnd-dragstart="draggingGroup = !item.children" dnd-dragend="draggingGroup = false">
             <!-- display group -->
             <td ng-if="item.children" class="group-cell">
 
