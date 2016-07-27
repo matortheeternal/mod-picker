@@ -47,9 +47,11 @@ app.service('listUtils', function () {
     this.updateItems = function(model) {
         var i = 1;
         model.forEach(function(item) {
+            if (item._destroy) return;
             if (item.children) {
                 item.index = i; // group indexing
                 item.children.forEach(function(child) {
+                    if (child._destroy) return;
                     child.group_id = item.id;
                     child.index = i++;
                 });
