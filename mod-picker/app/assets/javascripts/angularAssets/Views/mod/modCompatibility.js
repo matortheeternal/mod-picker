@@ -34,7 +34,7 @@ app.controller('modCompatibilityController', function($scope, $stateParams, $sta
     $scope.retrieveCompatibilityNotes($stateParams.page);
 
     // re-retrieve reviews when the sort object changes
-    $scope.$watch('sort + filters', function() {
+    $scope.$watch('sort', function() {
         $scope.retrieveCompatibilityNotes();
     }, true);
 
