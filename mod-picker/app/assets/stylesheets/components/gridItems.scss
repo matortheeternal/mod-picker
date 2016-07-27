@@ -182,6 +182,26 @@ grid-items {
   }
 }
 
+table-items {
+  tbody[dnd-list].dragging-group {
+    .dndPlaceholder {
+      min-height: 140px;
+    }
+  }
+
+
+  tbody[dnd-list] {
+    .dndDraggingSource {
+      display: none;
+    }
+
+    .dndPlaceholder {
+      list-style: none;
+      height: 33px;
+      background-color: $border_color;
+    }
+  }
+}
 
 // GROUP COLORS
 .bg-red {
