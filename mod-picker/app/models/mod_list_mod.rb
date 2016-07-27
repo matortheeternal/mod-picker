@@ -26,7 +26,7 @@ class ModListMod < ActiveRecord::Base
           :only => [:id, :group_id, :index, :active],
           :include => {
               :mod => {
-                  :only => [:id, :name, :aliases, :authors, :released, :updated],
+                  :only => [:id, :primary_category_id, :secondary_category_id, :name, :aliases, :authors, :released, :updated],
                   :methods => :image
               }
           }
