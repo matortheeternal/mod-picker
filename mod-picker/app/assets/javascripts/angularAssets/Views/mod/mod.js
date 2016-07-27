@@ -30,11 +30,12 @@ app.config(['$stateProvider', function($stateProvider) {
                 controller: 'modReviewsController',
             }
         },
-        url: '/reviews?{page:int}&scol&sdir',
+        url: '/reviews/{reviewId:int}?{page:int}&scol&sdir',
         params: {
             page: 1,
             scol: 'reputation',
-            sdir: 'desc'
+            sdir: 'desc',
+            reviewId: null
         }
     }).state('base.mod.Compatibility', {
         sticky: true,
@@ -46,12 +47,13 @@ app.config(['$stateProvider', function($stateProvider) {
                 controller: 'modCompatibilityController',
             }
         },
-        url: '/compatibility?{page:int}&scol&sdir&{filter:bool}',
+        url: '/compatibility/{compatibilityNoteId:int}?{page:int}&scol&sdir&{filter:bool}',
         params: {
             page: 1,
             scol: 'reputation',
             sdir: 'desc',
-            filter: true
+            filter: true,
+            compatibilityNoteId: null
         }
     }).state('base.mod.Install Order', {
         sticky: true,
@@ -63,12 +65,13 @@ app.config(['$stateProvider', function($stateProvider) {
                 controller: 'modInstallOrderController',
             }
         },
-        url: '/install-order?{page:int}&scol&sdir&{filter:bool}',
+        url: '/install-order/{installOrderNoteId:int}?{page:int}&scol&sdir&{filter:bool}',
         params: {
             page: 1,
             scol: 'reputation',
             sdir: 'desc',
-            filter: true
+            filter: true,
+            installOrderNoteId: null
         }
     }).state('base.mod.Load Order', {
         sticky: true,
@@ -80,12 +83,13 @@ app.config(['$stateProvider', function($stateProvider) {
                 controller: 'modLoadOrderController',
             }
         },
-        url: '/load-order?{page:int}&scol&sdir&{filter:bool}',
+        url: '/load-order/{loadOrderNoteId:int}?{page:int}&scol&sdir&{filter:bool}',
         params: {
             page: 1,
             scol: 'reputation',
             sdir: 'desc',
-            filter: true
+            filter: true,
+            loadOrderNoteId: null
         }
     }).state('base.mod.Analysis', {
         sticky: true,
