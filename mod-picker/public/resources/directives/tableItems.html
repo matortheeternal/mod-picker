@@ -1,0 +1,34 @@
+<table>
+    <thead>
+        <tr>
+            <th ng-repeat="column in columns" ng-class="{ 'hidden': !column.visibility }">
+                {{column.label}}
+            </th>
+        </tr>
+    </thead>
+    <tbody dnd-list="model" class="{{draggingGroup ? 'dragging-group' : ''}}">
+        <tr ng-repeat="item in model" class="{{item.children ? 'group bg-'+item.color : ''}}" ng-hide="item._destroy" dnd-draggable="item" dnd-moved="moveItem(model, $index)" dnd-effect-allowed="move" dnd-disable-if="!editing" dnd-type="{{item.children ? '\'group\'' : '\'item\''}}" dnd-dragstart="dragStart(item)" dnd-dragend="dragEnd()">
+            <!-- display group -->
+            <td ng-if="item.children" class="group-cell">
+
+            </td>
+
+            <!-- display item -->
+            <td ng-if="!item.children" ng-repeat="column in columns" ng-class="{ 'hidden': !column.visibility, 'text-cell' : !column.filter, 'main-cell' : $index == 0 }">
+                <a ng-if="column.link" class="strong" ng-href="{{column.link(item)}}">
+                    {{ columnValue(item, column.data) | picker:column.filter }}
+                </a>
+                <span ng-if="!column.link">
+                    {{ columnValue(item, column.data) | picker:column.filter }}
+                </span>
+            </td>
+            <td ng-if="!item.children && editing" class="actions-cell">
+                <input class="btn-sm" type="button" ng-click="removeCallback(item)" value="Remove" title="Remove Plugin"/>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<div class="content-message" ng-show="isEmpty(model)">
+    There are no {{type}} in this list.
+</div>
