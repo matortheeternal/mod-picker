@@ -16,12 +16,12 @@
                 <section>
                     <div class="stat-item reputation">
                         {{user.reputation.overall | number}}
-                        <div class="action-box" ng-click="giveRep()" ng-if="permissions.canEndorse || user.repped">
-                            <i class="fa {{user.repped ? 'fa-heart' : 'fa-heart-o'}}" aria-hidden="true"></i>
-                            {{user.repped ? 'Take Back Reputation' : 'Give Reputation' }}
+                        <div class="action-box" ng-click="endorse()" ng-if="permissions.canEndorse || user.endorsed">
+                            <i class="fa {{user.endorsed ? 'fa-heart' : 'fa-heart-o'}}" aria-hidden="true"></i>
+                            {{user.endorsed ? 'Take Back Reputation' : 'Give Reputation' }}
                         </div>
 
-                        <div class="action-box no-interaction" ng-if="!(permissions.canEndorse || user.repped)">
+                        <div class="action-box no-interaction" ng-if="!(permissions.canEndorse || user.endorsed)">
                             <!-- TODO: have this link to a page with all of the current user's endorsements -->
                             You can't endorse any more people
                         </div>

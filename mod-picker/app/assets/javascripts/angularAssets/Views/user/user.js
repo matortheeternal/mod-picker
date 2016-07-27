@@ -41,7 +41,7 @@ app.controller('userController', function ($scope, $stateParams, currentUser, us
 
     // set up local variables
     $scope.user = userObject.user;
-    $scope.user.repped = userObject.repped;
+    $scope.user.endorsed = userObject.endorsed;
     $scope.pages = {
         profile_comments: {}
     };
@@ -73,12 +73,12 @@ app.controller('userController', function ($scope, $stateParams, currentUser, us
         { name: 'Mods'}
     ];
 
-    $scope.giveRep = function() {
-        userService.giveRep($scope.user.id, $scope.user.repped).then(function() {
-            $scope.user.repped = !$scope.user.repped;
+    $scope.endorse = function() {
+        userService.endorse($scope.user.id, $scope.user.endorsed).then(function() {
+            $scope.user.endorsed = !$scope.user.endorsed;
 
             //update the currentUser's permissions without having to re-retrieve
-            $scope.$emit('updateRepPermissions', $scope.user.repped);
+            $scope.$emit('updateRepPermissions', $scope.user.endorsed);
         }, function(response) {
             var params = {label: 'Error giving reputation', response: response};
             $scope.$emit('errorMessage', params);

@@ -27,10 +27,10 @@ class UsersController < ApplicationController
   # GET /users/1
   def show
     authorize! :read, @user
-    repped = ReputationLink.exists?(:from_rep_id => current_user.id, :to_rep_id => @user.id)
+    endorsed = ReputationLink.exists?(:from_rep_id => current_user.id, :to_rep_id => @user.id)
     render :json => {
         user: @user.show_json(current_user),
-        repped: repped
+        endorsed: endorsed
     }
   end
 
@@ -88,7 +88,7 @@ class UsersController < ApplicationController
   end
 
   # POST /users/1/rep
-  def give_rep
+  def endorse
     @reputation_link = ReputationLink.find_or_initialize_by(from_rep_id: current_user.id, to_rep_id: params[:id])
     authorize! :create, @reputation_link
     if @reputation_link.save
@@ -99,7 +99,7 @@ class UsersController < ApplicationController
   end
 
   # DELETE /users/1/rep
-  def ungive_rep
+  def unendorse
     @reputation_link = ReputationLink.find_by(from_rep_id: current_user.id, to_rep_id: params[:id])
     authorize! :destroy, @reputation_link
     if @reputation_link.nil?

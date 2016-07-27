@@ -37,9 +37,9 @@ app.controller('baseController', function($scope, $state, $location, currentUser
         $state.reload();
     });
 
-    $scope.$on('updateRepPermissions', function(event, updatedRepped) {
-        //if the user was just given rep
-        if (updatedRepped) {
+    $scope.$on('updateRepPermissions', function(event, endorsed) {
+        //if the user was just endorsed
+        if (endorsed) {
             currentUser.reputation.rep_to_count++;
         } else {
             currentUser.reputation.rep_to_count--;

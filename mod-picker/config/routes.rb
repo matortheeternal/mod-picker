@@ -15,8 +15,8 @@ Rails.application.routes.draw do
     match '/link_account', to: 'users#link_account', via: [:get]
 
     # user reputation_links
-    match '/users/:id/rep', to: 'users#give_rep', via: [:post]
-    match '/users/:id/rep', to: 'users#ungive_rep', via: [:delete]
+    match '/users/:id/rep', to: 'users#endorse', via: [:post]
+    match '/users/:id/rep', to: 'users#unendorse', via: [:delete]
 
     # user settings
     resources :user_settings, only: [:index, :update]

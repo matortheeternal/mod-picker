@@ -97,9 +97,9 @@ app.service('userService', function (backend, $q, userSettingsService, userTitle
         return permissions;
     };
 
-    this.giveRep = function(userId, repped) {
-        if (repped) {
-        //if the user is currently repped delete, otherwise post
+    this.endorse = function(userId, endorsed) {
+        if (endorsed) {
+        //if the user is currently endorsed delete, otherwise post
             return backend.delete('/users/' + userId + '/rep');
         } else {
             return backend.post('/users/' + userId + '/rep', {});
