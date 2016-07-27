@@ -4,6 +4,11 @@
             <th ng-repeat="column in columns" ng-class="{ 'hidden': !column.visibility }">
                 {{column.label}}
             </th>
+            <th class="actions-header">
+                <a ng-click="showModal = true">
+                    <i class="fa fa-columns" title="Edit Columns"></i>
+                </a>
+            </th>
         </tr>
     </thead>
     <tbody dnd-list="model" class="{{draggingGroup ? 'dragging-group' : ''}}">
@@ -32,3 +37,5 @@
 <div class="content-message" ng-show="isEmpty(model)">
     There are no {{type}} in this list.
 </div>
+
+<edit-columns-modal></edit-columns-modal>
