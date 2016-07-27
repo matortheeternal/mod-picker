@@ -39,6 +39,21 @@ app.service('modListService', function (backend, $q, objectUtils, userTitleServi
         return action.promise;
     };
 
+    this.retrieveModListPlugins = function(modListId) {
+        var action = $q.defer();
+        backend.retrieve('/mod_lists/' + modListId + '/plugins').then(function(data) {
+            categoryService.associateCategories(data.plugins);
+            userTitleService.associateTitles(data.compatibility_notes);
+            userTitleService.associateTitles(data.load_order_notes);
+            contributionService.associateHelpfulMarks(data.compatibility_notes, data.c_helpful_marks);
+            contributionService.associateHelpfulMarks(data.load_order_notes, data.l_helpful_marks);
+            action.resolve(data);
+        }, function(response) {
+            action.reject(response);
+        });
+        return action.promise;
+    };
+
     this.updateModList = function(modList) {
         var mod_list_mods = angular.copy(Array.prototype.concat(modList.tools || [], modList.mods || []));
         mod_list_mods.forEach(function(item) {
