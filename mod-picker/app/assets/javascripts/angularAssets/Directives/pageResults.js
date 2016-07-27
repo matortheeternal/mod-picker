@@ -24,7 +24,7 @@ app.controller('pageResultsController', function($scope, smoothScroll) {
         }
     };
 
-    $scope.scrollTo = function() {
+    $scope.scrollToTop = function() {
         smoothScroll({duration: 300});
     };
 
