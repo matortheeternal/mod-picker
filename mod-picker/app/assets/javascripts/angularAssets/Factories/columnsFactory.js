@@ -489,4 +489,85 @@ app.service('columnsFactory', function() {
     this.commentColumnGroups = function() {
         return ["General"]
     };
+
+    this.modListPluginColumns = function() {
+        return [
+            {
+                group: "General",
+                visibility: true,
+                label: "Index",
+                data: "index"
+            },
+            {
+                group: "General",
+                visibility: true,
+                label: "Filename",
+                data: "plugin.filename",
+                link: function (modListPlugin) {
+                    return "#/mod/" + modListPlugin.mod.id + "/analysis?plugin=" + modListPlugin.plugin.id;
+                }
+            },
+            {
+                group: "General",
+                visibility: false,
+                label: "Mod",
+                data: "plugin.mod.name",
+                link: function (modListPlugin) {
+                    return "#/mod/" + modListPlugin.mod.id;
+                }
+            },
+            {
+                group: "General",
+                visibility: true,
+                label: "Primary Category",
+                data: "plugin.mod.primary_category.name"
+            },
+            {
+                group: "General",
+                visibility: false,
+                label: "Secondary Category",
+                data: "plugin.mod.secondary_category.name"
+            },
+            {
+                group: "General",
+                visibility: false,
+                label: "CRC",
+                data: "plugin.crc_hash"
+            },
+            {
+                group: "General",
+                visibility: false,
+                label: "File Size",
+                data: "plugin.file_size",
+                filter: "bytes"
+            },
+            {
+                group: "General",
+                visibility: false,
+                label: "Author",
+                data: "plugin.author"
+            },
+            {
+                group: "General",
+                visibility: true,
+                label: "Record Count",
+                data: "plugin.record_count",
+                filter: "number"
+            },
+            {
+                group: "General",
+                visibility: true,
+                label: "Override Count",
+                data: "plugin.override_count",
+                filter: "number"
+            },
+            {
+                group: "General",
+                visibility: true,
+                label: "Errors Count",
+                data: "plugin.errors_count",
+                filter: "number"
+            }
+        ];
+    };
 });
