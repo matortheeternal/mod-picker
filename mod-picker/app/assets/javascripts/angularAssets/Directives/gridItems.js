@@ -7,7 +7,8 @@ app.directive('gridItems', function () {
             model: '=',
             editing: '=',
             removeCallback: '=',
-            type: '@'
+            type: '@',
+            label: '@'
         }
     }
 });
