@@ -4,7 +4,6 @@ app.directive('modsTable', function() {
         templateUrl: '/resources/directives/modsTable.html',
         controller: 'modsTableController',
         scope: {
-            title: '@',
             mods: '='
         }
     };
