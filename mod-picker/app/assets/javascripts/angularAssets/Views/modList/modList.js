@@ -233,6 +233,14 @@ app.controller('modListController', function($scope, $q, $stateParams, $timeout,
         return foundMod;
     };
 
+    $scope.findPlugin = function(pluginId, ignoreDestroyed) {
+        var foundPlugin = listUtils.findPlugin($scope.model.plugins, pluginId);
+        if (foundPlugin && ignoreDestroyed && foundPlugin._destroy) {
+            return;
+        }
+        return foundPlugin;
+    };
+
     $scope.addGroup = function(tab) {
         var model = $scope.model[tab];
         var newGroup = {
