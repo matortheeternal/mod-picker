@@ -1,5 +1,5 @@
 <div class="box-shadow">
-    <table ng-show="data.length">
+    <table ng-show="data.length" class="browse-table">
         <thead>
             <tr>
                 <th ng-repeat="column in columns" ng-class="{ 'hidden': !column.visibility }" ng-click="sortColumn(column)">
