@@ -495,6 +495,7 @@ app.service('columnsFactory', function() {
             {
                 group: "General",
                 visibility: true,
+                required: true,
                 label: "Index",
                 data: "index",
                 filter: "number"
@@ -502,6 +503,7 @@ app.service('columnsFactory', function() {
             {
                 group: "General",
                 visibility: true,
+                required: true,
                 label: "Filename",
                 data: "plugin.filename",
                 link: function (modListPlugin) {
