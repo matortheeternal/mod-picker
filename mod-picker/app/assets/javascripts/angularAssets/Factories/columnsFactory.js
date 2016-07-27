@@ -496,7 +496,8 @@ app.service('columnsFactory', function() {
                 group: "General",
                 visibility: true,
                 label: "Index",
-                data: "index"
+                data: "index",
+                filter: "number"
             },
             {
                 group: "General",
