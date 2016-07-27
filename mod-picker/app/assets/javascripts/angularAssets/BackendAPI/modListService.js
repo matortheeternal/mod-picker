@@ -12,7 +12,16 @@ app.service('modListService', function (backend, $q, objectUtils, userTitleServi
     };
 
     this.retrieveModListTools = function(modListId) {
-        return backend.retrieve('/mod_lists/' + modListId + '/tools');
+        var action = $q.defer();
+        backend.retrieve('/mod_lists/' + modListId + '/tools').then(function(data) {
+            categoryService.associateCategories(data.mods);
+            userTitleService.associateTitles(data.compatibility_notes);
+            contributionService.associateHelpfulMarks(data.compatibility_notes, data.c_helpful_marks);
+            action.resolve(data);
+        }, function(response) {
+            action.reject(response);
+        });
+        return action.promise;
     };
 
     this.retrieveModListMods = function(modListId) {
