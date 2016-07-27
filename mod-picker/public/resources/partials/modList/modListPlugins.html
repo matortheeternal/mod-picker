@@ -1,120 +1,122 @@
-<div class="modlist-content-block modlist-tab-item">
-    <div class="content-title"> 
-            <div>
-                Plugins Overview
-            </div>
+<loader data="mod_list.plugins && !retrieving.plugins" spinner-class="big-spinner">
+    <div class="tab-bar-items">
+        <div class="tab-bar-item primary-item">
+            <span><strong>{{notes.unresolved_plugin_compatibility.length + notes.unresolved_load_order.length}}</strong> Unresolved Issues</span>
+            <span><strong>{{notes.ignored_plugin_compatibility.length + notes.ignored_load_order.length}}</strong> Ignored Issues</span>
+            <span><strong>{{required.missing_plugins.length}}</strong> Missing Requirements</span>
+        </div>
+
+        <div class="tab-bar-item" ng-if="editing">
+            <strong>Add a plugin:</strong>
+            <search-input search-type="plugins" data-set="mod_list.plugin_store" result-id="add.plugin.id" search-text="add.plugin.name" on-change="addPlugin(add.plugin.id)"></search-input>
+        </div>
     </div>
-    <section class="overview-content-container">
-        <div>
-            <ul>
-                <li>
-                    <span class="modlist-status">[_] Stable</span> 
-                </li>
-                <li>
-                    <span>999</span> 
-                    Unresolved Issues
-                </li>
-                <li>
-                    <span>999</span> 
-                    Ignored Issues
+
+    <div class="content-block">
+        <div class="content-title">Plugins
+            <span class="right-item action-box" ng-if="editing" ng-click="addGroup('plugins')">
+                <i class="fa fa-plus"></i> New Group
+            </span>
+        </div>
+        <div class="content-container">
+            <table-items type="plugins" columns="columns" model="model.plugins" editing="editing" remove-callback="removePlugin"></table-items>
+        </div>
+    </div>
+
+    <!--<div class="content-block">
+        <div class="content-title">Required Plugins
+            <span class="note-item">
+                ({{show.missing_plugins ? 'Missing' : 'All'}})
+            </span>
+            <span class="right-item toggle-item" ng-click="show.missing_plugins = !show.missing_plugins">
+                {{show.missing_plugins ? 'Show All' : 'Show Missing Requirements'}}
+            </span>
+        </div>
+        <div class="content-container">
+            <ul ng-if="show.missing_plugins">
+                <li ng-repeat="requirement in required.missing_plugins">
+                    &lt;!&ndash; TODO: Links &ndash;&gt;
+                    {{requirement.master_plugin.filename}}
+                    is required by
+                    {{requirement.plugin.filename}}
+                    &lt;!&ndash; resolution options &ndash;&gt;
+                    <span ng-if="editing">
+                        <span class="action-box green-box" ng-click="addPlugin(requirement.master_plugin.id)" title="Add {{requirement.master_plugin.filename}}">Add Requirement</span>
+                        <span class="action-box red-box" ng-click="removePlugin(findPlugin(requirement.plugin.id))" title="Remove {{requirement.plugin.filename}}">Remove Requirer</span>
+                    </span>
                 </li>
             </ul>
-        </div>
-        <div>
-            <ul>
-                <li>
-                    <span>999</span> 
-                    Master Plugins
-                </li>
-                <li>
-                    <span>999</span> 
-                    Standard Plugins
-                </li>
-                <li>
-                    <span>999</span> 
-                    Patch Plugins
-                </li>
-                <li>
-                    <span>999</span> 
-                    Custom Plugins
-                </li>
-            </ul> 
-        </div>
-    </section>
-</div>
-<div class="modlist-content-block modlist-tab-item">
-    <div class="content-title"> 
-        <div>
-            Plugins
-        </div>
-        <div>
-            <a ng-click="curPluginSecTab = 'list'" ng-class="cssChange('plugins','list')">List</a><a ng-click="curPluginSecTab = 'tiles'" ng-class="cssChange('plugins','tiles')">Tiles</a>
-        </div>
-    </div>
-    <section class="ratings-container">
-    _
-    <!--Modlist plugin editing options go here! (may port over to the service directive, here for display purposes)-->
-    </section>
-    <section class="note-content-container">
-        Show Plugins Service
-    </section>
-</div>
+            <div ng-show="show.missing_plugins && !required.missing_plugins.length" class="content-message">
+                No missing requirements to display.
+            </div>
 
-<div class="modlist-content-block modlist-tab-item">
-    <div class="content-title"> 
-        <div>
-            Missing Requirements
-            <span class="section-header-counter"># Unresolved Issues</span>
-        </div>
-        <div>
-            <a ng-click="" class="section-unselected-tab">Resolve All Issues</a>
+            <ul ng-if="!show.missing_plugins">
+                <li ng-repeat="requirement in required.plugins" ng-hide="requirement._destroy">
+                    {{requirement.master_plugin.filename}}
+                    is required by
+                    {{requirement.plugin.filename}}
+                </li>
+            </ul>
+            <div ng-show="!show.missing_plugins && isEmpty(required.plugins)" class="content-message">
+                No requirements to display.
+            </div>
         </div>
     </div>
-    <section class="note-content-container">
-        Show Missing Requirements Service: Plugins
-    </section>
-</div>
 
-<div class="modlist-content-block modlist-tab-item">
-    <div class="content-title"> 
-        <div>
-            Compatibility Issues
-            <span class="section-header-counter"># Unresolved Issues</span>
+    <div class="content-block">
+        <div class="content-title">Compatibility Issues
+            <span class="note-item">
+                ({{show.unresolved_plugin_compatibility ? 'Unresolved' : 'All'}})
+            </span>
+            <span class="right-item toggle-item" ng-click="show.unresolved_plugin_compatibility = !show.unresolved_plugin_compatibility">
+                {{show.unresolved_plugin_compatibility ? 'Show All' : 'Show Unresolved Issues'}}
+            </span>
         </div>
-        <div>
-            <a ng-click="" class="section-unselected-tab">Show ignored issues(#)</a><a ng-click="" class="section-unselected-tab">Show resolved issues(#)</a>
-        </div>
-    </div>
-    <section class="note-content-container">
-        Plugins: Show compatibility issues Here
-    </section>
-</div> 
+        <div class="content-container">
+            <div ng-if="show.unresolved_plugin_compatibility" ng-repeat="note in notes.unresolved_plugin_compatibility" class="content-block">
+                <compatibility-note note="note" index="100 + $index" current-user="currentUser" show-resolution-options="editing"></compatibility-note>
+            </div>
+            <div ng-show="show.unresolved_plugin_compatibility && !notes.unresolved_plugin_compatibility.length" class="content-message">
+                No unresolved compatibility issues to display.
+            </div>
 
-<div class="modlist-content-block modlist-tab-item">
-    <div class="content-title"> 
-        <div>
-            Load Order Notes
-            <span class="section-header-counter"># Unresolved Issues</span>
-        </div>
-        <div>
-            <a ng-click="" class="section-unselected-tab">Show ignored notes(#)</a><a ng-click="" class="section-unselected-tab">Show resolved notes(#)</a>
+            <div ng-if="!show.unresolved_plugin_compatibility" ng-repeat="note in notes.plugin_compatibility" class="content-block" ng-hide="note._destroy">
+                <compatibility-note note="note" index="100 + $index" current-user="currentUser" show-resolution-options="editing"></compatibility-note>
+            </div>
+            <div ng-show="!show.unresolved_plugin_compatibility && isEmpty(notes.plugin_compatibility)" class="content-message">
+                No compatibility issues to display.
+            </div>
         </div>
     </div>
-    <section class="note-content-container">
-        Plugins: Show Install Order Notes Here
-    </section>
-</div>
-<div class="modlist-content-block modlist-tab-item">
-    <div class="content-title"> 
-        <div>
-            Record Conflicts
+
+    <div class="content-block">
+        <div class="content-title">Load Order Issues
+            <span class="note-item">
+                ({{show.unresolved_load_order ? 'Unresolved' : 'All'}})
+            </span>
+            <span class="right-item toggle-item" ng-click="show.unresolved_load_order = !show.unresolved_load_order">
+                {{show.unresolved_load_order ? 'Show All' : 'Show Unresolved Issues'}}
+            </span>
+        </div>
+        <div class="content-container">
+            <div ng-if="show.unresolved_load_order" ng-repeat="note in notes.unresolved_load_order" class="content-block">
+                <load-order-note note="note" index="100 + $index" current-user="currentUser" show-resolution-options="editing"></load-order-note>
+            </div>
+            <div ng-show="show.unresolved_load_order && !notes.unresolved_load_order.length" class="content-message">
+                No unresolved load order issues to display.
+            </div>
+
+            <div ng-if="!show.unresolved_load_order" ng-repeat="note in notes.load_order" class="content-block" ng-hide="note._destroy">
+                <load-order-note note="note" index="500 + $index" current-user="currentUser" show-resolution-options="editing"></load-order-note>
+            </div>
+            <div ng-show="!show.unresolved_load_order && isEmpty(notes.load_order)" class="content-message">
+                No load order issues to display.
+            </div>
         </div>
     </div>
-    <section class="ratings-container">
-    _
-    <!--Asset Conflict Table Options Go Here! (will port over service directive, here for display purposes)-->
-    </section>
-    <section class="note-content-container">
-        Plugins: Record Conflict Container.  Will be a directive.
-    </section>
-</div>
+
+    <div class="action-button-container" ng-if="editing">
+        <input class="btn action-btn" type="submit" value="Save" ng-click="saveChanges()"/>
+        <input class="btn action-btn" type="button" value="Reset" ng-click="discardChanges()"/>
+    </div>-->
+</loader>
