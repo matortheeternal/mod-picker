@@ -1,17 +1,13 @@
 app.controller('modReviewsController', function($scope, $stateParams, $state, modService, reviewSectionService, contributionService, sortFactory) {
-    $scope.sort = {
+    $scope.sort.reviews = {
         column: $stateParams.scol,
         direction: $stateParams.sdir
     };
-    $scope.pages = {};
-
-    //loading the sort options
-    $scope.sortOptions = sortFactory.reviewSortOptions();
 
     $scope.retrieveReviews = function(page) {
         // retrieve the reviews
         var options = {
-            sort: $scope.sort,
+            sort: $scope.sort.reviews,
             //if no page is specified load the first one
             page: page || 1
         };
@@ -24,11 +20,11 @@ app.controller('modReviewsController', function($scope, $stateParams, $state, mo
 
         //refresh the tab's params
         var params = {
-            scol: $scope.sort.column,
-            sdir: $scope.sort.direction,
+            scol: $scope.sort.reviews.column,
+            sdir: $scope.sort.reviews.direction,
             page: page || 1
         };
-        $state.go(".", params);
+        $state.go($state.current.name, params);
     };
     //retrieve the reviews when the state is first loaded
     $scope.retrieveReviews($stateParams.page);
@@ -46,7 +42,7 @@ app.controller('modReviewsController', function($scope, $stateParams, $state, mo
     });
 
     // re-retrieve reviews when the sort object changes
-    $scope.$watch('sort', function() {
+    $scope.$watch('sort.reviews', function() {
         $scope.retrieveReviews();
     }, true);
 

@@ -1,25 +1,19 @@
 app.controller('modLoadOrderController', function($scope, $state, $stateParams, contributionService, contributionFactory, sortFactory) {
-    $scope.sort = {
+    $scope.sort.load_order_notes = {
         column: $stateParams.scol,
         direction: $stateParams.sdir
     };
-    $scope.filters = {
-        modlist: $stateParams.filter
-    };
-    $scope.pages = {};
-
-    //loading the sort options
-    $scope.sortOptions = sortFactory.loadOrderNoteSortOptions();
+    $scope.filters.load_order_notes = $stateParams.filter;
 
     $scope.retrieveLoadOrderNotes = function(page) {
         // retrieve the Load Order Notes
         var options = {
-            sort: $scope.sort,
-            filters: $scope.filters,
+            sort: $scope.sort.load_order_notes,
+            filters: $scope.filters.load_order_notes,
             //if no page is specified load the first one
             page: page || 1
         };
-        contributionService.retrieveModContributions($stateParams.modId, 'load_order_notes', options, $scope.pages).then(function(data) {
+        contributionService.retrieveModContributions($stateParams.modId, 'load_order_notes', options, $scope.pages.load_order_notes).then(function(data) {
             $scope.mod.load_order_notes = data;
         }, function(response) {
             $scope.errors.load_order_notes = response;
@@ -27,19 +21,19 @@ app.controller('modLoadOrderController', function($scope, $state, $stateParams, 
 
         //refresh the tab's params
         var params = {
-            scol: $scope.sort.column,
-            sdir: $scope.sort.direction,
-            filter: $scope.filters.modlist,
+            scol: $scope.sort.load_order_notes.column,
+            sdir: $scope.sort.load_order_notes.direction,
+            filter: $scope.filters.load_order_notes.modlist,
             page: page || 1
         };
-        $state.go(".", params);
+        $state.go($state.current.name, params);
     };
 
     //retrieve the notes when the state is first loaded
     $scope.retrieveLoadOrderNotes($stateParams.page);
 
-    // re-retrieve reviews when the sort object changes
-    $scope.$watch('sort', function() {
+    // re-retrieve load order notes when the sort object changes
+    $scope.$watch('sort.load_order_notes', function() {
         $scope.retrieveLoadOrderNotes();
     }, true);
 

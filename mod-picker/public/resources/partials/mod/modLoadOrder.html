@@ -1,6 +1,6 @@
 ﻿<div class="tab-bar-items">
     <div class="tab-bar-item primary-item">
-        <sort-control sort="sort" sort-options="sortOptions"></sort-control>
+        <sort-control sort="sort.load_order_notes" sort-options="sortOptions.load_order_notes"></sort-control>
     </div>
     <!-- TODO: replace input with button that has an inline value -->
     <div class="tab-bar-item">
@@ -63,7 +63,7 @@
         There are no Load Order Notes for this mod yet.
     </div>
 
-    <page-results pages="pages" data="mod.load_order_notes" callback="retrieveLoadOrderNotes"></page-results>
+    <page-results pages="pages.load_order_notes" data="mod.load_order_notes" callback="retrieveLoadOrderNotes"></page-results>
 </loader>
 
 <div class="content-message content-error" ng-if="errors.load_order_notes">

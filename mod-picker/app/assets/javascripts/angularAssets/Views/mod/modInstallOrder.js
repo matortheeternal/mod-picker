@@ -1,25 +1,19 @@
 app.controller('modInstallOrderController', function($scope, $stateParams, $state, contributionService, contributionFactory, sortFactory) {
-    $scope.sort = {
+    $scope.sort.install_order_notes = {
         column: $stateParams.scol,
         direction: $stateParams.sdir
     };
-    $scope.filters = {
-        modlist: $stateParams.filter
-    };
-    $scope.pages = {};
-
-    //loading the sort options
-    $scope.sortOptions = sortFactory.installOrderNoteSortOptions();
+    $scope.filters.install_order_notes = $stateParams.filter;
 
     $scope.retrieveInstallOrderNotes = function(page) {
         // retrieve the Install Order Notes
         var options = {
-            sort: $scope.sort,
-            filters: $scope.filters,
+            sort: $scope.sort.install_order_notes,
+            filters: $scope.filters.install_order_notes,
             //if no page is specified load the first one
             page: page || 1
         };
-        contributionService.retrieveModContributions($stateParams.modId, 'install_order_notes', options, $scope.pages).then(function(data) {
+        contributionService.retrieveModContributions($stateParams.modId, 'install_order_notes', options, $scope.pages.install_order_notes).then(function(data) {
             $scope.mod.install_order_notes = data;
         }, function(response) {
             $scope.errors.install_order_notes = response;
@@ -27,19 +21,19 @@ app.controller('modInstallOrderController', function($scope, $stateParams, $stat
 
         //refresh the tab's params
         var params = {
-            scol: $scope.sort.column,
-            sdir: $scope.sort.direction,
-            filter: $scope.filters.modlist,
+            scol: $scope.sort.install_order_notes.column,
+            sdir: $scope.sort.install_order_notes.direction,
+            filter: $scope.filters.install_order_notes.modlist,
             page: page || 1
         };
-        $state.go(".", params);
+        $state.go($state.current.name, params);
     };
 
     //retrieve the notes when the state is first loaded
     $scope.retrieveInstallOrderNotes($stateParams.page);
 
-    // re-retrieve reviews when the sort object changes
-    $scope.$watch('sort', function() {
+    // re-retrieve install order notes when the sort object changes
+    $scope.$watch('sort.install_order_notes', function() {
         $scope.retrieveInstallOrderNotes();
     }, true);
 

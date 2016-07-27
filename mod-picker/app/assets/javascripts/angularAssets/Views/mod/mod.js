@@ -23,7 +23,7 @@ app.config(['$stateProvider', function($stateProvider) {
     }).state('base.mod.Reviews', {
         sticky: true,
         deepStateRedirect: true,
-        reloadOnSearch:false,
+        reloadOnSearch: false,
         views: {
             'Reviews': {
                 templateUrl: '/resources/partials/mod/modReviews.html',
@@ -40,7 +40,7 @@ app.config(['$stateProvider', function($stateProvider) {
     }).state('base.mod.Compatibility', {
         sticky: true,
         deepStateRedirect: true,
-        reloadOnSearch:false,
+        reloadOnSearch: false,
         views: {
             'Compatibility': {
                 templateUrl: '/resources/partials/mod/modCompatibility.html',
@@ -58,7 +58,7 @@ app.config(['$stateProvider', function($stateProvider) {
     }).state('base.mod.Install Order', {
         sticky: true,
         deepStateRedirect: true,
-        reloadOnSearch:false,
+        reloadOnSearch: false,
         views: {
             'Install Order': {
                 templateUrl: '/resources/partials/mod/modInstallOrder.html',
@@ -76,7 +76,7 @@ app.config(['$stateProvider', function($stateProvider) {
     }).state('base.mod.Load Order', {
         sticky: true,
         deepStateRedirect: true,
-        reloadOnSearch:false,
+        reloadOnSearch: false,
         views: {
             'Load Order': {
                 templateUrl: '/resources/partials/mod/modLoadOrder.html',
@@ -94,7 +94,7 @@ app.config(['$stateProvider', function($stateProvider) {
     }).state('base.mod.Analysis', {
         sticky: true,
         deepStateRedirect: true,
-        reloadOnSearch:false,
+        reloadOnSearch: false,
         views: {
             'Analysis': {
                 templateUrl: '/resources/partials/mod/modAnalysis.html',
@@ -118,6 +118,36 @@ app.controller('modController', function($scope, $q, $stateParams, $state, $time
     $scope.tags = [];
     $scope.newTags = [];
     $scope.statusModal = {};
+    $scope.pages = {
+        appeal_comments: {},
+        reviews: {},
+        compatibility_notes: {},
+        install_order_notes: {},
+        load_order_notes: {}
+    };
+    $scope.sort = {
+        reviews: {},
+        compatibility_notes: {},
+        install_order_notes: {},
+        load_order_notes: {}
+    };
+    $scope.sortOptions = {
+        reviews: sortFactory.reviewSortOptions(),
+        compatibility_notes: sortFactory.compatibilityNoteSortOptions(),
+        install_order_notes: sortFactory.installOrderNoteSortOptions(),
+        load_order_notes: sortFactory.loadOrderNoteSortOptions()
+    };
+    $scope.filters = {
+        compatibility_notes: {
+            mod_list: true
+        },
+        install_order_notes: {
+            mod_list: true
+        },
+        load_order_notes: {
+            mod_list: true
+        }
+    };
     $scope.retrieving = {};
     // error handling
     $scope.errors = {};

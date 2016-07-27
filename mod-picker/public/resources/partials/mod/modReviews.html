@@ -1,6 +1,6 @@
 ﻿<div class="tab-bar-items">
     <div class="tab-bar-item primary-item">
-        <sort-control sort="sort" sort-options="sortOptions"></sort-control>
+        <sort-control sort="sort.reviews" sort-options="sortOptions.reviews"></sort-control>
     </div>
 
     <div class="quality-item">
@@ -71,7 +71,7 @@
         There are no reviews for this mod yet.
     </div>
 
-    <page-results pages="pages" data="mod.reviews" callback="retrieveReviews"></page-results>
+    <page-results pages="pages.reviews" data="mod.reviews" callback="retrieveReviews"></page-results>
 </loader>
 
 <div class="content-message content-error" ng-if="errors.reviews">
