@@ -5,8 +5,9 @@ app.directive('tableItems', function () {
         controller: 'tableItemsController',
         scope: {
             model: '=',
-            editing: '=',
             columns: '=',
+            actions: '=',
+            editing: '=',
             removeCallback: '=',
             type: '@'
         }
@@ -22,6 +23,11 @@ app.controller('tableItemsController', function($scope, $timeout, colorsFactory,
     $scope.removeGroup = listUtils.removeGroup;
     $scope.focusText = formUtils.focusText;
     $scope.columnValue = tableUtils.columnValue;
+
+    // execute an action on an item
+    $scope.execute = function(action, item) {
+        action.execute($scope, item);
+    };
 
     // when the user moves an item splice the original out of the array it was in,
     // update item grouping and indexes, and emit a itemMoved event
