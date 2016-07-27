@@ -71,6 +71,7 @@ app.controller('modListToolsController', function($scope, $state, $stateParams, 
             $scope.mod_list.groups.push(group);
             $scope.originalModList.groups.push(angular.copy(group));
             $scope.model.tools.push(group);
+            $scope.$broadcast('updateItems');
         }, function(response) {
             var params = {label: 'Error creating new Tool Group', response: response};
             $scope.$emit('errorMessage', params);
@@ -86,6 +87,7 @@ app.controller('modListToolsController', function($scope, $state, $stateParams, 
             $scope.reAddRequirements($scope.required.tools, modListTool.mod.id);
             $scope.buildMissingTools();
             $scope.updateTabs();
+            $scope.$broadcast('updateItems');
             $scope.$emit('successMessage', 'Added tool ' + modListTool.mod.name + ' successfully.');
         }
         // else inform the user that the tool is already on their mod list
@@ -114,6 +116,7 @@ app.controller('modListToolsController', function($scope, $state, $stateParams, 
             $scope.$emit('rebuildMissing');
 
             // success message
+            $scope.$broadcast('updateItems');
             $scope.$emit('successMessage', 'Added tool ' + data.mod_list_mod.mod.name + ' successfully.');
         }, function(response) {
             var params = {label: 'Error adding tool', response: response};
@@ -147,7 +150,12 @@ app.controller('modListToolsController', function($scope, $state, $stateParams, 
         $scope.buildMissingTools();
         $scope.mod_list.tools_count -= 1;
         $scope.updateTabs();
+        $scope.$broadcast('updateItems');
     };
+
+    $scope.$on('removeItem', function(event, modListTool) {
+        $scope.removeTool(modListTool);
+    });
 
     // direct method trigger events
     $scope.$on('rebuildModels', $scope.buildToolsModel);

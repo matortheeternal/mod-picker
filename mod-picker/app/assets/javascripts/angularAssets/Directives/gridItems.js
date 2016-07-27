@@ -6,7 +6,6 @@ app.directive('gridItems', function () {
         scope: {
             model: '=',
             editing: '=',
-            removeCallback: '=',
             type: '@',
             label: '@'
         }
@@ -21,6 +20,12 @@ app.controller('gridItemsController', function($scope, $timeout, colorsFactory, 
     $scope.isEmpty = objectUtils.isEmptyArray;
     $scope.removeGroup = listUtils.removeGroup;
     $scope.focusText = formUtils.focusText;
+
+    // when the user wants to remove an item emit a removeItem event for the parent
+    // controller to handle and respond to with an updateItems event when done
+    $scope.removeItem = function(item) {
+        $scope.$emit('removeItem', item);
+    };
 
     // when the user moves an item splice the original out of the array it was in,
     // update item grouping and indexes, and emit a itemMoved event
@@ -39,5 +44,9 @@ app.controller('gridItemsController', function($scope, $timeout, colorsFactory, 
             listUtils.updateItems($scope.model);
             $scope.$emit('itemMoved');
         }
+    });
+
+    $scope.$on('updateItems', function() {
+        listUtils.updateItems($scope.model);
     });
 });

@@ -135,6 +135,7 @@ app.controller('modListModsController', function($scope, modListService) {
             $scope.mod_list.groups.push(group);
             $scope.originalModList.groups.push(angular.copy(group));
             $scope.model.mods.push(group);
+            $scope.$broadcast('updateItems');
         }, function(response) {
             var params = {label: 'Error creating new Mod Group', response: response};
             $scope.$emit('errorMessage', params);
@@ -153,6 +154,7 @@ app.controller('modListModsController', function($scope, modListService) {
             $scope.buildUnresolvedCompatibility();
             $scope.buildUnresolvedInstallOrder();
             $scope.updateTabs();
+            $scope.$broadcast('updateItems');
             $scope.$emit('successMessage', 'Added mod ' + modListMod.mod.name + ' successfully.');
         }
         // else inform the user that the mod is already on their mod list
@@ -187,6 +189,7 @@ app.controller('modListModsController', function($scope, modListService) {
             $scope.$emit('rebuildUnresolved');
 
             // success message
+            $scope.$broadcast('updateItems');
             $scope.$emit('successMessage', 'Added mod ' + data.mod_list_mod.mod.name + ' successfully.');
         }, function(response) {
             var params = {label: 'Error adding mod', response: response};
@@ -223,6 +226,7 @@ app.controller('modListModsController', function($scope, modListService) {
         $scope.buildUnresolvedInstallOrder();
         $scope.mod_list.mods_count -= 1;
         $scope.updateTabs();
+        $scope.$broadcast('updateItems');
     };
 
     $scope.$on('resolveCompatibilityNote', function(event, options) {
@@ -258,6 +262,10 @@ app.controller('modListModsController', function($scope, modListService) {
                 $scope.buildUnresolvedInstallOrder();
                 break;
         }
+    });
+
+    $scope.$on('removeItem', function(event, modListMod) {
+        $scope.removeMod(modListMod);
     });
 
     // direct method trigger events
