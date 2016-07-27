@@ -33,7 +33,7 @@ app.controller('modCompatibilityController', function($scope, $stateParams, $sta
     //retrieve the notes when the state is first loaded
     $scope.retrieveCompatibilityNotes($stateParams.page);
 
-    // re-retrieve compatibility when the sort object changes
+    // re-retrieve compatibility note when the sort object changes
     $scope.$watch('sort.compatibility_notes', function() {
         $scope.retrieveCompatibilityNotes();
     }, true);
