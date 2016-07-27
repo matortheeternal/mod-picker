@@ -18,8 +18,8 @@
 
             <!-- display children of groups -->
             <ul dnd-list="item.children" dnd-horizontal-list="true" dnd-allowed-types="['item']">
-                <li class="box-shadow" ng-repeat="child in item.children" ng-hide="child._destroy" dnd-draggable="child" dnd-moved="itemMoved(item.children, $index)" dnd-effect-allowed="move" dnd-disable-if="!editing" dnd-type="'item'">
-                    <grid-item item="child" remove-callback="removeCallback" editing="editing"></grid-item>
+                <li class="box-shadow" ng-repeat="item in item.children" ng-hide="item._destroy" dnd-draggable="item" dnd-moved="itemMoved($parent.item.children, $index)" dnd-effect-allowed="move" dnd-disable-if="!editing" dnd-type="'item'">
+                    <grid-item></grid-item>
                 </li>
             </ul>
 
@@ -31,7 +31,7 @@
 
         <!-- display item -->
         <div ng-if="!item.children">
-            <grid-item item="item" remove-callback="removeCallback" editing="editing"></grid-item>
+            <grid-item></grid-item>
         </div>
     </li>
 </ul>
