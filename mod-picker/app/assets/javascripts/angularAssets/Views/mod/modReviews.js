@@ -1,4 +1,4 @@
-app.controller('modReviewsController', function($scope, $stateParams, $state, modService, reviewSectionService, contributionService) {
+app.controller('modReviewsController', function($scope, $stateParams, $state, modService, reviewSectionService, contributionService, formUtils) {
     // verify we can access this tab
     $scope.currentTab = $scope.findTab('Reviews');
     if (!$scope.currentTab) {
@@ -9,6 +9,9 @@ app.controller('modReviewsController', function($scope, $stateParams, $state, mo
         });
         return;
     }
+
+    // inherited functions
+    $scope.focusText = formUtils.focusText;
 
     // BASE RETRIEVAL LOGIC
     $scope.retrieveReviews = function(page) {
@@ -184,11 +187,6 @@ app.controller('modReviewsController', function($scope, $stateParams, $state, mo
         } else {
             delete $scope.activeReview;
         }
-    };
-
-    // focus text in rating input
-    $scope.focusText = function($event) {
-        $event.target.select();
     };
 
     // update a review locally

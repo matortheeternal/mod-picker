@@ -17,14 +17,14 @@ app.directive('linkGenericAccount', function () {
 });
 
 app.controller('linkGenericAccountController', function ($scope, $timeout, userSettingsService, sitesFactory) {
+    // initialize variables
     $scope.showModal = false;
     $scope.waiting = false;
     $scope.verified = false;
     $scope.site = sitesFactory.getSite($scope.siteLabel);
 
-    $scope.focusText = function($event) {
-        $event.target.select();
-    };
+    // inherited functions
+    $scope.focusText = formUtils.focusText;
 
     $scope.toggleModal = function() {
         $scope.$emit('toggleModal', visible);
