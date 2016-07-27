@@ -32,8 +32,8 @@ app.controller('modLoadOrderController', function($scope, $state, $stateParams, 
     //retrieve the notes when the state is first loaded
     $scope.retrieveLoadOrderNotes($stateParams.page);
 
-    // re-retrieve reviews when the sort object changes
-    $scope.$watch('sort', function() {
+    // re-retrieve load order notes when the sort object changes
+    $scope.$watch('sort.load_order_notes', function() {
         $scope.retrieveLoadOrderNotes();
     }, true);
 

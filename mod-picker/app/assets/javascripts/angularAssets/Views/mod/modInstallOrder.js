@@ -32,8 +32,8 @@ app.controller('modInstallOrderController', function($scope, $stateParams, $stat
     //retrieve the notes when the state is first loaded
     $scope.retrieveInstallOrderNotes($stateParams.page);
 
-    // re-retrieve reviews when the sort object changes
-    $scope.$watch('sort', function() {
+    // re-retrieve install order when the sort object changes
+    $scope.$watch('sort.install_order_notes', function() {
         $scope.retrieveInstallOrderNotes();
     }, true);
 

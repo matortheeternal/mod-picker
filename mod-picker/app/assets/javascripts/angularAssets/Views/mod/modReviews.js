@@ -42,7 +42,7 @@ app.controller('modReviewsController', function($scope, $stateParams, $state, mo
     });
 
     // re-retrieve reviews when the sort object changes
-    $scope.$watch('sort', function() {
+    $scope.$watch('sort.reviews', function() {
         $scope.retrieveReviews();
     }, true);
 
