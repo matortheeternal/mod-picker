@@ -511,7 +511,7 @@ app.service('columnsFactory', function() {
                 group: "General",
                 visibility: false,
                 label: "Mod",
-                data: "plugin.mod.name",
+                data: "mod.name",
                 link: function (modListPlugin) {
                     return "#/mod/" + modListPlugin.mod.id;
                 }
@@ -520,13 +520,13 @@ app.service('columnsFactory', function() {
                 group: "General",
                 visibility: true,
                 label: "Primary Category",
-                data: "plugin.mod.primary_category.name"
+                data: "mod.primary_category.name"
             },
             {
                 group: "General",
                 visibility: false,
                 label: "Secondary Category",
-                data: "plugin.mod.secondary_category.name"
+                data: "mod.secondary_category.name"
             },
             {
                 group: "General",
