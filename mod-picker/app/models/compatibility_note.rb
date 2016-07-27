@@ -44,7 +44,7 @@ class CompatibilityNote < ActiveRecord::Base
   belongs_to :second_mod, :class_name => 'Mod', :foreign_key => 'second_mod_id'
 
   # associated compatibility plugin/compatibilty mod for automatic resolution purposes
-  belongs_to :compatibility_plugin, :class_name => 'Plugin', :foreign_key => 'compatibility_plugin_id', :inverse_of => 'compatibility_note_plugins'
+  belongs_to :compatibility_plugin, :class_name => 'Plugin', :foreign_key => 'compatibility_plugin_id', :inverse_of => 'compatibility_notes'
   belongs_to :compatibility_mod, :class_name => 'Mod', :foreign_key => 'compatibility_mod_id', :inverse_of => 'compatibility_note_mods'
 
   # mod lists this compatibility note appears on
