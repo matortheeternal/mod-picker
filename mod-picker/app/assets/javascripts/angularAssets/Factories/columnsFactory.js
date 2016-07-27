@@ -571,4 +571,8 @@ app.service('columnsFactory', function() {
             }
         ];
     };
+
+    this.modListPluginColumnGroups = function() {
+        return ["General"];
+    };
 });

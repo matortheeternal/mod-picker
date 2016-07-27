@@ -1,6 +1,7 @@
 app.controller('modListPluginsController', function($scope, modListService, columnsFactory) {
     // initialize variables
     $scope.columns = columnsFactory.modListPluginColumns();
+    $scope.columnGroups = columnsFactory.modListPluginColumnGroups();
     $scope.actions = [{
         caption: "Remove",
         title: "Remove this plugin from the mod list",

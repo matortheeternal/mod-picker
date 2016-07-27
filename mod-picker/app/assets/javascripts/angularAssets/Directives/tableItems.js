@@ -6,6 +6,7 @@ app.directive('tableItems', function () {
         scope: {
             model: '=',
             columns: '=',
+            columnGroups: '=',
             actions: '=',
             editing: '=',
             type: '@',
@@ -23,6 +24,7 @@ app.controller('tableItemsController', function($scope, $timeout, colorsFactory,
     $scope.removeGroup = listUtils.removeGroup;
     $scope.focusText = formUtils.focusText;
     $scope.columnValue = tableUtils.columnValue;
+    $scope.groupColumns = tableUtils.groupColumns;
 
     // when the user wants to remove an item emit a removeItem event for the parent
     // controller to handle and respond to with an updateItems event when done
