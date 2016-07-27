@@ -4,8 +4,7 @@
             <div class="page-container page-header">
                 <section>
                     <div class="quality-item action-box" ng-if="mod.primary_category_id">
-                        <span class="quality-number">{{mod.reputation | number:0}}</span>
-                        REPUTATION
+                        <span class="quality-number">{{mod.reputation | number:0}}</span> REPUTATION
                     </div>
 
                     <div class="header-info">
@@ -46,12 +45,10 @@
                         <!-- TODO: I feel like using some spans here would be wiser -->
                         ACTIONS
                         <div class="action-box" ng-click="starMod()">
-                            <i class="fa {{mod.star ? 'fa-star' : 'fa-star-o'}}" aria-hidden="true"></i>
-                            {{mod.star ? 'Unfavorite' : 'Favorite'}}
+                            <i class="fa {{mod.star ? 'fa-star' : 'fa-star-o'}}" aria-hidden="true"></i> {{mod.star ? 'Unfavorite' : 'Favorite'}}
                         </div>
                         <div class="action-box">
-                            <i class="fa fa-plus" aria-hidden="true"></i>
-                            Add to mod list
+                            <i class="fa fa-plus" aria-hidden="true"></i> Add to mod list
                         </div>
                     </div>
 
@@ -74,7 +71,7 @@
                 <div class="left-column left-mod-column wide-column">
 
                     <!--Image-->
-                    <img ng-if="mod.image !== '/mods/Default.png'" ng-src="{{mod.image}}" class="mod-image"/>
+                    <img ng-if="mod.image !== '/mods/Default.png'" ng-src="{{mod.image}}" class="mod-image" />
 
                     <!-- General -->
                     <h3 class="section-title">General</h3>
@@ -139,7 +136,9 @@
                 </div>
                 <div class="right-column tabs-column">
                     <tabs tabs="tabs"></tabs>
-                    <div ui-view class="tab box-shadow"></div>
+                    <div class="tab box-shadow">
+                        <tab-views></tab-views>
+                    </div>
                 </div>
             </loader>
         </div>
