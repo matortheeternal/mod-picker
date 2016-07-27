@@ -8,9 +8,6 @@ app.directive('appealsModal', function () {
 });
 
 app.controller('appealsModalController', function ($scope, contributionService, errorService) {
-    //initializing pages variable for comments
-    $scope.pages = {};
-
     // compute agree percentage helper
     $scope.computeAgreePercentage = function(appeal) {
         return (appeal.agree_count / ((appeal.agree_count + appeal.disagree_count) || 1)) * 100;
