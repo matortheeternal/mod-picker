@@ -94,6 +94,7 @@ class ModListsController < ApplicationController
         plugins: plugins,
         custom_plugins: custom_plugins,
         groups: groups,
+        required_plugins: @mod_list.required_plugins,
         compatibility_notes: compatibility_notes,
         load_order_notes: load_order_notes,
         c_helpful_marks: c_helpful_marks,
