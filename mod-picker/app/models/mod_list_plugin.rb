@@ -19,7 +19,7 @@ class ModListPlugin < ActiveRecord::Base
     if JsonHelpers.json_options_empty(options)
       # TODO: Revise this as necessary
       default_options = {
-          :only => [:index, :group_id, :active],
+          :only => [:id, :index, :group_id],
           :include => {
               :plugin => {
                   :except => [:game_id, :mod_id, :description, :mod_lists_count, :load_order_notes_count]
