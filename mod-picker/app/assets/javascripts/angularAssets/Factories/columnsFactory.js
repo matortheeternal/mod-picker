@@ -490,6 +490,16 @@ app.service('columnsFactory', function() {
         return ["General"]
     };
 
+    // TODO
+    this.modListToolColumns = function() {
+        return [];
+    };
+
+    // TODO
+    this.modListModColumns = function() {
+        return [];
+    };
+
     this.modListPluginColumns = function() {
         return [
             {
