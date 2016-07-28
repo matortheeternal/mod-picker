@@ -102,7 +102,7 @@ app.controller('modListPluginsController', function($scope, modListService, colu
             if (requirement._destroy) {
                 return;
             }
-            var pluginPresent = $scope.findPlugin(requirement.required_plugin.id, true);
+            var pluginPresent = $scope.findPlugin(requirement.master_plugin.id, true);
             if (!pluginPresent) {
                 $scope.required.missing_plugins.push(requirement);
             }
@@ -112,7 +112,7 @@ app.controller('modListPluginsController', function($scope, modListService, colu
     $scope.retrievePlugins = function() {
         $scope.retrieving.plugins = true;
         modListService.retrieveModListPlugins($scope.mod_list.id).then(function(data) {
-            $scope.required.plugins = data.required_plugins || [];
+            $scope.required.plugins = data.required_plugins;
             $scope.notes.plugin_compatibility = data.compatibility_notes;
             $scope.notes.load_order = data.load_order_notes;
             $scope.mod_list.plugins = data.plugins;
