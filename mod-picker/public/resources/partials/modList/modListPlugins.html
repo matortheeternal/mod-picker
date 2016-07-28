@@ -35,10 +35,9 @@
         <div class="content-container">
             <ul ng-if="show.missing_plugins">
                 <li ng-repeat="requirement in required.missing_plugins">
-                    <!-- TODO: Links -->
-                    {{requirement.master_plugin.filename}}
+                    <a ng-href="#/mod/{{requirement.master_plugin.mod_id}}/analysis?plugin={{requirement.master_plugin.id}}">{{requirement.master_plugin.filename}}</a>
                     is required by
-                    {{requirement.plugin.filename}}
+                    <a ng-href="#/mod/{{requirement.plugin.mod_id}}/analysis?plugin={{requirement.plugin.id}}">{{requirement.plugin.filename}}</a>
                     <!-- resolution options -->
                     <span ng-if="editing">
                         <span class="action-box green-box" ng-click="addPlugin(requirement.master_plugin.id)" title="Add {{requirement.master_plugin.filename}}">Add Requirement</span>
@@ -52,9 +51,9 @@
 
             <ul ng-if="!show.missing_plugins">
                 <li ng-repeat="requirement in required.plugins" ng-hide="requirement._destroy">
-                    {{requirement.master_plugin.filename}}
+                    <a ng-href="#/mod/{{requirement.master_plugin.mod_id}}/analysis?plugin={{requirement.master_plugin.id}}">{{requirement.master_plugin.filename}}</a>
                     is required by
-                    {{requirement.plugin.filename}}
+                    <a ng-href="#/mod/{{requirement.plugin.mod_id}}/analysis?plugin={{requirement.plugin.id}}">{{requirement.plugin.filename}}</a>
                 </li>
             </ul>
             <div ng-show="!show.missing_plugins && isEmpty(required.plugins)" class="content-message">
