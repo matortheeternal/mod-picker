@@ -14,8 +14,43 @@
     <tbody dnd-list="model" class="{{draggingGroup ? 'dragging-group' : ''}}">
         <tr ng-repeat="item in model" class="{{item.children ? 'group bg-'+item.color : ''}}" ng-if="!item._destroy" dnd-draggable="item" dnd-moved="itemMoved(model, $index)" dnd-effect-allowed="move" dnd-disable-if="!editing" dnd-type="{{item.children ? '\'group\'' : '\'item\''}}" dnd-dragstart="draggingGroup = !item.children" dnd-dragend="draggingGroup = false">
             <!-- display group -->
-            <td ng-if="item.children" class="group-cell">
+            <td colspan="{{getNumCols(columns)}}" ng-if="item.children" class="group-cell">
+                <div class="remove-item" ng-if="editing">
+                    <span class="fa fa-times" ng-click="removeGroup(model, item, $index)"></span>
+                </div>
+                <div class="group-name">
+                    <input type="text" ng-model="item.name" ng-click="focusText($event)" pu-elastic-input ng-disabled="!editing"/>
+                </div>
+                <div class="group-color" ng-if="editing">
+                    <strong>Color:</strong>
+                    <select ng-model="item.color">
+                        <option ng-repeat="option in colorOptions" value="{{option}}">{{option | humanize:1}}</option>
+                    </select>
+                </div>
 
+                <!-- display children of groups -->
+                <table class="browse-table" ng-class="{ 'no-border' : isEmpty(item.children) }">
+                    <tbody dnd-list="item.children" dnd-allowed-types="['item']">
+                        <tr ng-repeat="item in item.children as children" ng-if="!item._destroy" dnd-draggable="item" dnd-moved="itemMoved(children, $index)" dnd-effect-allowed="move" dnd-disable-if="!editing" dnd-type="'item'">
+                            <!-- display item -->
+                            <td ng-repeat="column in columns" ng-class="{ 'hidden': !column.visibility, 'text-cell' : !column.filter }">
+                                <a ng-if="column.link" class="strong" ng-href="{{column.link(item)}}">
+                                    {{ columnValue(item, column.data) | picker:column.filter }}
+                                </a>
+                                <span ng-if="!column.link">
+                                    {{ columnValue(item, column.data) | picker:column.filter }}
+                                </span>
+                            </td>
+                            <td class="actions-cell">
+                                <input ng-repeat="action in actions" class="btn-sm" type="button" ng-click="execute(action, item)" value="{{action.caption}}" title="{{action.title}}" ng-disabled="!editing"/>
+                            </td>
+                        </tr>
+                        <!-- display message if there are no children -->
+                        <tr class="content-message" ng-show="isEmpty(item.children)">
+                            <td>There are no {{label}} in this group.</td>
+                        </tr>
+                    </tbody>
+                </table>
             </td>
 
             <!-- display item -->
