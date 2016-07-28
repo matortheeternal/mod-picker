@@ -25,6 +25,7 @@ app.controller('tableItemsController', function($scope, $timeout, colorsFactory,
     $scope.focusText = formUtils.focusText;
     $scope.columnValue = tableUtils.columnValue;
     $scope.groupColumns = tableUtils.groupColumns;
+    $scope.getNumCols = tableUtils.getNumCols;
 
     // when the user wants to remove an item emit a removeItem event for the parent
     // controller to handle and respond to with an updateItems event when done
