@@ -8,7 +8,7 @@ app.config(['$stateProvider', function ($stateProvider) {
             url: '/settings',
             redirectTo: 'base.settings.Profile',
             resolve: {
-                user: function(userService, currentUser) {
+                userObject: function(userService, currentUser) {
                     return userService.retrieveUser(currentUser.id);
                 }
             }
@@ -39,9 +39,9 @@ app.config(['$stateProvider', function ($stateProvider) {
         });
 }]);
 
-app.controller('userSettingsController', function ($scope, $q, user, currentUser, userSettingsService, fileUtils, themesService) {
+app.controller('userSettingsController', function ($scope, $q, userObject, currentUser, userSettingsService, fileUtils, themesService) {
     $scope.userSettings = currentUser.settings;
-    $scope.user = user;
+    $scope.user = userObject.user;
     $scope.avatar = {
         src: $scope.user.avatar
     };
