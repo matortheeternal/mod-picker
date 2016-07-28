@@ -23,7 +23,7 @@
         </div>
     </div>
 
-    <!--<div class="content-block">
+    <div class="content-block">
         <div class="content-title">Required Plugins
             <span class="note-item">
                 ({{show.missing_plugins ? 'Missing' : 'All'}})
@@ -35,11 +35,11 @@
         <div class="content-container">
             <ul ng-if="show.missing_plugins">
                 <li ng-repeat="requirement in required.missing_plugins">
-                    &lt;!&ndash; TODO: Links &ndash;&gt;
+                    <!-- TODO: Links -->
                     {{requirement.master_plugin.filename}}
                     is required by
                     {{requirement.plugin.filename}}
-                    &lt;!&ndash; resolution options &ndash;&gt;
+                    <!-- resolution options -->
                     <span ng-if="editing">
                         <span class="action-box green-box" ng-click="addPlugin(requirement.master_plugin.id)" title="Add {{requirement.master_plugin.filename}}">Add Requirement</span>
                         <span class="action-box red-box" ng-click="removePlugin(findPlugin(requirement.plugin.id))" title="Remove {{requirement.plugin.filename}}">Remove Requirer</span>
@@ -113,7 +113,7 @@
                 No load order issues to display.
             </div>
         </div>
-    </div>-->
+    </div>
 
     <div class="action-button-container" ng-if="editing">
         <input class="btn action-btn" type="submit" value="Save" ng-click="saveChanges()"/>
