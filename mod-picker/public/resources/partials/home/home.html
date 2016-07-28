@@ -47,7 +47,9 @@
                         <img ng-src="{{article.image}}" ng-if="article.image"/>
                     </div>
                     <div class="content-container">
-                        <h3 class="article-title">{{article.title}}</h3>
+                        <a ng-href="#/article/{{article.id}}">
+                            <h3 class="article-title">{{article.title}}</h3>
+                        </a>
                         <span class="article-details">by {{article.submitter.username}} on {{article.submitted | date}}</span>
                         <read-more text="article.text_body" words="50"></read-more>
                     </div>
