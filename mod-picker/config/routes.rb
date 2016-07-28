@@ -133,6 +133,9 @@ Rails.application.routes.draw do
     match '/skyrim', to: 'home#skyrim', via: [:get]
     match '/fallout4', to: 'home#fallout4', via: [:get]
     match '/home', to: 'home#index', via: [:get]
+
+    #articles
+    resources :articles, only: [:show, :create, :update, :destroy]
   end
 
   # welcome page

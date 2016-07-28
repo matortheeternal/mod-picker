@@ -3,7 +3,9 @@ class ArticlesController < ApplicationController
 
   # GET /articles/1
   def show
-    authorize! :show, @article
+    @article = Article.find(params[:id])
+    authorize! :read, @article, :message => "You are not allowed to view this article."
+    render :json => @article.as_json
   end
 
   # GET /articles/new
