@@ -73,6 +73,15 @@ app.service('modListService', function (backend, $q, objectUtils, userTitleServi
                 group.children = newChildren;
             }
         });
+        var mod_list_plugins = angular.copy(modList.plugins || []);
+        mod_list_plugins.forEach(function(item) {
+            if (item.mod) {
+                delete item.mod;
+            }
+            if (item.plugin) {
+                delete item.plugin;
+            }
+        });
 
         var modListData = {
             mod_list: {
@@ -85,8 +94,9 @@ app.service('modListService', function (backend, $q, objectUtils, userTitleServi
                 disable_comments: modList.disable_comments,
                 lock_tags: modList.lock_tags,
                 hidden: modList.hidden,
+                mod_list_groups_attributes: mod_list_groups,
                 mod_list_mods_attributes: mod_list_mods,
-                mod_list_groups_attributes: mod_list_groups
+                mod_list_plugins_attributes: mod_list_plugins
             }
         };
         objectUtils.deleteEmptyProperties(modListData, 1);
