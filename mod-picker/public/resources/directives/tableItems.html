@@ -11,8 +11,8 @@
             </th>
         </tr>
     </thead>
-    <tbody dnd-list="model" class="{{draggingGroup ? 'dragging-group' : ''}}">
-        <tr ng-repeat="item in model" class="{{item.children ? 'group bg-'+item.color : ''}}" ng-if="!item._destroy" dnd-draggable="item" dnd-moved="itemMoved(model, $index)" dnd-effect-allowed="move" dnd-disable-if="!editing" dnd-type="{{item.children ? '\'group\'' : '\'item\''}}" dnd-dragstart="draggingGroup = !item.children" dnd-dragend="draggingGroup = false">
+    <tbody dnd-list="model" ng-class="{ 'dragging-group' : draggingGroup }">
+        <tr ng-repeat="item in model" class="{{item.children ? 'group bg-'+item.color : ''}}" ng-if="!item._destroy" dnd-draggable="item" dnd-moved="itemMoved(model, $index)" dnd-effect-allowed="move" dnd-disable-if="!editing" dnd-type="{{item.children ? '\'group\'' : '\'item\''}}" dnd-dragstart="dragStart(item)" dnd-dragend="dragEnd()">
             <!-- display group -->
             <td colspan="{{getNumCols(columns)}}" ng-if="item.children" class="group-cell">
                 <div class="remove-item" ng-if="editing">

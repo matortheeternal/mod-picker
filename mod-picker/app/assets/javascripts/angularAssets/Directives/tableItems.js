@@ -18,6 +18,7 @@ app.directive('tableItems', function () {
 app.controller('tableItemsController', function($scope, $timeout, colorsFactory, objectUtils, listUtils, formUtils, tableUtils) {
     // initialize variables
     $scope.colorOptions = colorsFactory.getColors();
+    $scope.draggingGroup = false;
 
     // inherited functions
     $scope.isEmpty = objectUtils.isEmptyArray;
@@ -44,6 +45,14 @@ app.controller('tableItemsController', function($scope, $timeout, colorsFactory,
         array.splice(index, 1);
         listUtils.updateItems($scope.model);
         $scope.$emit('itemMoved');
+    };
+
+    $scope.dragStart = function(item) {
+        $scope.draggingGroup = !!item.children;
+    };
+
+    $scope.dragEnd = function() {
+        $scope.draggingGroup = false;
     };
 
     $scope.$on('moveItem', function(event, options) {

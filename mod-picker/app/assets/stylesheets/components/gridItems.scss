@@ -193,7 +193,7 @@ grid-items {
 table-items {
   tbody[dnd-list].dragging-group {
     .dndPlaceholder {
-      min-height: 140px;
+      height: 120px !important;
     }
   }
 
@@ -203,9 +203,8 @@ table-items {
     }
 
     .dndPlaceholder {
-      list-style: none;
       height: 33px;
-      background-color: $border_color;
+      background-color: $background_highlight !important;
     }
 
     tr.content-message {
