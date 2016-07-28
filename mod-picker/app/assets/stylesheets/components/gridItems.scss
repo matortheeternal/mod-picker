@@ -191,6 +191,9 @@ grid-items {
 }
 
 table-items {
+  display: block;
+  overflow-x: auto;
+
   tbody[dnd-list].dragging-group {
     .dndPlaceholder {
       height: 120px !important;
@@ -225,6 +228,45 @@ table-items {
 
       table.no-border {
         border: 0;
+      }
+    }
+  }
+
+  table {
+    thead, tbody {
+      .text-cell {
+        width: 240px;
+        min-width: 240px !important;
+      }
+
+      .number-cell, .bytes-cell {
+        width: 100px;
+        min-width: 100px;
+      }
+
+      .actions-cell {
+        min-width: 90px;
+        width: 90px;
+      }
+
+      .crc-column {
+        min-width: 80px !important;
+        width: 80px !important;
+      }
+
+      .author-column {
+        min-width: 180px !important;
+        width: 180px !important;
+      }
+
+      .index-column {
+        width: 55px !important;
+        min-width: 55px !important;
+      }
+
+      .primary-column {
+        width: 300px !important;
+        min-width: 300px !important;
       }
     }
   }

@@ -498,7 +498,8 @@ app.service('columnsFactory', function() {
                 required: true,
                 label: "Index",
                 data: "index",
-                filter: "number"
+                filter: "number",
+                class: "index-column"
             },
             {
                 group: "General",
@@ -508,7 +509,8 @@ app.service('columnsFactory', function() {
                 data: "plugin.filename",
                 link: function (modListPlugin) {
                     return "#/mod/" + modListPlugin.mod.id + "/analysis?plugin=" + modListPlugin.plugin.id;
-                }
+                },
+                class: "primary-column"
             },
             {
                 group: "General",
@@ -535,7 +537,8 @@ app.service('columnsFactory', function() {
                 group: "General",
                 visibility: false,
                 label: "CRC",
-                data: "plugin.crc_hash"
+                data: "plugin.crc_hash",
+                class: "crc-column"
             },
             {
                 group: "General",
@@ -548,7 +551,8 @@ app.service('columnsFactory', function() {
                 group: "General",
                 visibility: false,
                 label: "Author",
-                data: "plugin.author"
+                data: "plugin.author",
+                class: "author-column"
             },
             {
                 group: "General",
