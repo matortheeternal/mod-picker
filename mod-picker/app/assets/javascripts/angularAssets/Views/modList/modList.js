@@ -257,7 +257,7 @@ app.controller('modListController', function($scope, $q, $stateParams, $timeout,
             $scope.originalModList.groups.push(angular.copy(group));
             model.push(group);
         }, function(response) {
-            var params = {label: 'Error creating new Mod List Group', response: response};
+            var params = {label: 'Error creating new group', response: response};
             $scope.$emit('errorMessage', params);
         });
     };

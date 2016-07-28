@@ -121,27 +121,6 @@ app.controller('modListModsController', function($scope, modListService) {
         $scope.retrieveMods();
     }
 
-    $scope.addModGroup = function() {
-        var newGroup = {
-            mod_list_id: $scope.mod_list.id,
-            index: $scope.model.mods.length,
-            tab: 'mods',
-            color: 'red',
-            name: 'New Group'
-        };
-        modListService.newModListGroup(newGroup).then(function(data) {
-            var group = data;
-            group.children = [];
-            $scope.mod_list.groups.push(group);
-            $scope.originalModList.groups.push(angular.copy(group));
-            $scope.model.mods.push(group);
-            $scope.$broadcast('updateItems');
-        }, function(response) {
-            var params = {label: 'Error creating new Mod Group', response: response};
-            $scope.$emit('errorMessage', params);
-        });
-    };
-
     $scope.reAddMod = function(modListMod) {
         // if mod is already present on the user's mod list but has been
         // removed, add it back
