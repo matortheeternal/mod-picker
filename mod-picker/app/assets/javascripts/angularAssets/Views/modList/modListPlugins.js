@@ -112,7 +112,7 @@ app.controller('modListPluginsController', function($scope, modListService, colu
     $scope.retrievePlugins = function() {
         $scope.retrieving.plugins = true;
         modListService.retrieveModListPlugins($scope.mod_list.id).then(function(data) {
-            $scope.required.plugins = data.required_plugins;
+            $scope.required.plugins = data.required_plugins || [];
             $scope.notes.plugin_compatibility = data.compatibility_notes;
             $scope.notes.load_order = data.load_order_notes;
             $scope.mod_list.plugins = data.plugins;
@@ -120,9 +120,9 @@ app.controller('modListPluginsController', function($scope, modListService, colu
             $scope.originalModList.plugins = angular.copy($scope.mod_list.mods);
             $scope.originalModList.groups = angular.copy($scope.mod_list.groups);
             $scope.buildPluginsModel();
-            /*$scope.buildMissingPlugins();
+            $scope.buildMissingPlugins();
             $scope.buildUnresolvedPluginCompatibility();
-            $scope.buildUnresolvedLoadOrder();*/
+            $scope.buildUnresolvedLoadOrder();
             $scope.retrieving.plugins = false;
         }, function(response) {
             $scope.errors.plugins = response;
