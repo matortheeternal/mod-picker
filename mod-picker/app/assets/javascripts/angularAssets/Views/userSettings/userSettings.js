@@ -33,6 +33,9 @@ app.config(['$stateProvider', function ($stateProvider) {
         }).state('base.settings.Mod Lists', {
             templateUrl: '/resources/partials/userSettings/modlists.html',
             url: '/mod-lists'
+        }).state('base.settings.Collections', {
+            templateUrl: '/resources/partials/userSettings/collections.html',
+            url: '/collections'
         }).state('base.settings.Authored Mods', {
             templateUrl: '/resources/partials/userSettings/authoredMods.html',
             url: '/mods'
@@ -51,6 +54,7 @@ app.controller('userSettingsController', function ($scope, $q, userObject, curre
         {name: 'Profile'},
         {name: 'Account'},
         {name: 'Mod Lists'},
+        {name: 'Collections'},
         {name: 'Authored Mods'}
     ];
 

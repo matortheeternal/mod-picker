@@ -28,6 +28,9 @@ app.config(['$stateProvider', function ($stateProvider) {
         }).state('base.user.Mod Lists', {
             templateUrl: '/resources/partials/user/lists.html',
             url: '/mod-lists'
+        }).state('base.user.Collections', {
+            templateUrl: '/resources/partials/user/collections.html',
+            url: '/collections'
         }).state('base.user.Mods', {
             templateUrl: '/resources/partials/user/mods.html',
             url: '/mods'
@@ -70,6 +73,7 @@ app.controller('userController', function ($scope, $stateParams, currentUser, us
     $scope.tabs = [
         { name: 'Social'},
         { name: 'Mod Lists'},
+        { name: 'Collections'},
         { name: 'Mods'}
     ];
 
