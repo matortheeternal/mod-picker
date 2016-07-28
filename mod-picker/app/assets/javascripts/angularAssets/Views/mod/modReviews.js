@@ -1,63 +1,45 @@
-app.controller('modReviewsController', function($scope, $stateParams, $state, modService, reviewSectionService, contributionService) {
-    // verify we can access this tab
-    $scope.currentTab = $scope.findTab('Reviews');
-    if (!$scope.currentTab) {
-        // if we can't access this tab, redirect to the first tab we can access and
-        // stop doing stuff in this controller
-        $state.go('base.mod.' + $scope.tabs[0].name, {
-            modId: $stateParams.modId
-        });
-        return;
-    }
+app.controller('modReviewsController', function($scope, $stateParams, $state, modService, reviewSectionService, contributionService, sortFactory) {
+    $scope.sort.reviews = {
+        column: $stateParams.scol,
+        direction: $stateParams.sdir
+    };
 
-    // BASE RETRIEVAL LOGIC
     $scope.retrieveReviews = function(page) {
-        $scope.retrieving.reviews = true;
-
-        // transition to new url state
-        var params = {
-            modId: $stateParams.modId,
-            page: page,
-            scol: $scope.sort.reviews.column,
-            sdir: $scope.sort.reviews.direction
-        };
-        $state.transitionTo('base.mod.Reviews', params, { notify: false });
-
         // retrieve the reviews
         var options = {
             sort: $scope.sort.reviews,
+            //if no page is specified load the first one
             page: page || 1
         };
-        contributionService.retrieveModReviews($stateParams.modId, options, $scope.pages.reviews).then(function(data) {
-            $scope.retrieving.reviews = false;
+        contributionService.retrieveModReviews($stateParams.modId, options, $scope.pages).then(function(data) {
             $scope.mod.reviews = data.reviews;
             $scope.mod.user_review = data.user_review;
         }, function(response) {
             $scope.errors.reviews = response;
         });
+
+        //refresh the tab's params
+        var params = {
+            scol: $scope.sort.reviews.column,
+            sdir: $scope.sort.reviews.direction,
+            page: page || 1
+        };
+        $state.go($state.current.name, params);
     };
+    //retrieve the reviews when the state is first loaded
+    $scope.retrieveReviews($stateParams.page);
 
-    $scope.retrieveReviewSections = function() {
-        $scope.retrieving.reviewSections = true;
-        reviewSectionService.getSectionsForCategory($scope.mod.primary_category).then(function(data) {
-            $scope.retrieving.reviewSections = false;
-            $scope.reviewSections = data;
-        }, function(response) {
-            $scope.errors.reviewSections = response;
-        });
-    };
+    // re-retrieve reviews when the sort object changes
+    $scope.$watch('sort', function() {
+        $scope.retrieveReviews();
+    }, true);
 
-    // retrieve reviews if we don't have them and aren't currently retrieving them
-    if (!$scope.mod.reviews && !$scope.retrieving.reviews) {
-        $scope.sort.reviews.column = $stateParams.scol;
-        $scope.sort.reviews.direction = $stateParams.sdir;
-        $scope.retrieveReviews($stateParams.page);
-    }
-
-    // retrieve review sections if we don't have them and aren't currently retrieving them
-    if (!$scope.reviewSections && !$scope.retrieving.reviewSections) {
-        $scope.retrieveReviewSections();
-    }
+    //retrieve review sections
+    reviewSectionService.getSectionsForCategory($scope.mod.primary_category).then(function(data) {
+        $scope.reviewSections = data;
+    }, function(response) {
+        $scope.errors.reviewSections = response;
+    });
 
     // re-retrieve reviews when the sort object changes
     $scope.$watch('sort.reviews', function() {
@@ -238,7 +220,7 @@ app.controller('modReviewsController', function($scope, $stateParams, $state, mo
                 $scope.updateReview();
                 $scope.discardReview();
             }, function(response) {
-                var params = {label: 'Error updating Review', response: response};
+                var params = { label: 'Error updating Review', response: response };
                 $scope.$emit('errorMessage', params);
             });
         } else {
@@ -247,7 +229,7 @@ app.controller('modReviewsController', function($scope, $stateParams, $state, mo
                 $scope.mod.user_review = review;
                 $scope.discardReview();
             }, function(response) {
-                var params = {label: 'Error submitting Review', response: response};
+                var params = { label: 'Error submitting Review', response: response };
                 $scope.$emit('errorMessage', params);
             });
         }
