@@ -131,7 +131,14 @@ class ModList < ActiveRecord::Base
     mod_ids = self.mod_list_mod_ids
     return [] if mod_ids.empty?
 
-    ModRequirement.mods(mod_ids).utility(false)
+    ModRequirement.mods(mod_ids).utility(false).order(:required_id)
+  end
+
+  def required_plugins
+    plugin_ids = self.mod_list_plugin_ids
+    return [] if plugin_ids.empty?
+
+    Master.plugins(plugin_ids).order(:master_plugin_id)
   end
 
   def incompatible_mods
