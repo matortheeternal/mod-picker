@@ -32,6 +32,15 @@ app.service('tableUtils', function (objectUtils) {
         }
     };
 
+    // this function returns the number of columns visible (plus 1 for the
+    // actions column)
+    this.getNumCols = function(columns) {
+        var i = 1;
+        columns.forEach(function(column) {
+            if (column.visibility) i++;
+        });
+        return i;
+    };
 
     // this function returns a subset of @columns with group properties
     // matching @groupName.  Also excludes columns that are not available
