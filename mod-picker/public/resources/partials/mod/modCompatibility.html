@@ -71,11 +71,17 @@
 </div>
 
 <loader data="mod.compatibility_notes" spinner-class="big-spinner" ng-if="!errors.compatibility_notes">
+    <!-- note specified in the url -->
+     <div class="content-block current-contribution" ng-if="currentCompatibilityNote && !currentCompatibilityNote.editing">
+         <compatibility-note note="currentCompatibilityNote" index="99" current-user="currentUser" edit="editCompatibilityNote"></compatibility-note>
+     </div>
+
+     <!-- the rest of the notes -->
     <div ng-repeat="note in mod.compatibility_notes" class="content-block" ng-if="!note.editing">
         <compatibility-note note="note" mod-id="mod.id" index="100 + $index" current-user="currentUser" edit="editCompatibilityNote"></compatibility-note>
     </div>
 
-    <div class="content-message" ng-hide="mod.compatibility_notes.length">
+    <div class="content-message" ng-hide="mod.compatibility_notes.length || currentCompatibilityNote">
         There are no Compatibility Notes for this mod yet.
     </div>
 

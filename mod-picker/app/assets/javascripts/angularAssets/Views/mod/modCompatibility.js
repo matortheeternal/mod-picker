@@ -16,6 +16,21 @@ app.controller('modCompatibilityController', function($scope, $stateParams, $sta
         contributionService.retrieveModContributions($stateParams.modId, 'compatibility_notes', options, $scope.pages.compatibility_notes).then(function(data) {
             $scope.mod.compatibility_notes = data;
 
+            //seperating the compatibilityNote in the url if any
+            if ($stateParams.compatibilityNoteId) {
+                var currentIndex = $scope.mod.compatibility_notes.findIndex(function(compatibilityNote) {
+                    return compatibilityNote.id === $stateParams.compatibilityNoteId;
+                });
+                if (currentIndex > -1) {
+                    $scope.currentCompatibilityNote = $scope.mod.compatibility_notes.splice(currentIndex, 1)[0];
+                } else {
+                    // remove the compatibilityNoteId param from the url if it's not part of this mod
+                    $state.go($state.current.name, {compatibilityNoteId: null});
+                }
+            } else {
+                // clear the currentCompatibilityNote if it's not specified
+                delete $scope.currentCompatibilityNote;
+            }
         }, function(response) {
             $scope.errors.compatibility_notes = response;
         });

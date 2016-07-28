@@ -14,6 +14,22 @@ app.controller('modReviewsController', function($scope, $stateParams, $state, mo
         contributionService.retrieveModReviews($stateParams.modId, options, $scope.pages).then(function(data) {
             $scope.mod.reviews = data.reviews;
             $scope.mod.user_review = data.user_review;
+
+            //seperating the review in the url if any
+            if ($stateParams.reviewId) {
+                var currentIndex = $scope.mod.reviews.findIndex(function(review) {
+                    return review.id === $stateParams.reviewId;
+                });
+                if (currentIndex > -1) {
+                    $scope.currentReview = $scope.mod.reviews.splice(currentIndex, 1)[0];
+                } else {
+                    // remove the reviewId param from the url if it's not part of this mod
+                    $state.go($state.current.name, {reviewId: null});
+                }
+            } else {
+                // clear the currentReview if it's not specified
+                delete $scope.currentReview;
+            }
         }, function(response) {
             $scope.errors.reviews = response;
         });
