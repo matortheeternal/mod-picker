@@ -1,41 +1,23 @@
-grid-items {
-  display: block;
-  position: relative;
-
-  .content-message {
+table-items, grid-items {
+  .remove-item {
     position: absolute;
-    top: 30px;
-    margin-left: auto;
-    margin-right: auto;
-    left: 0;
+    z-index: 2;
+    top: 0;
     right: 0;
-  }
+    padding-right: 3px;
+    font-size: 20px;
+    cursor: pointer;
+    color: $soft_text_color;
+    @include transition(all 0.2s ease-in-out);
 
-  ul[dnd-list].dragging-group {
-    .dndPlaceholder {
-      width: 1090px;
-      min-height: 140px;
+    &:hover {
+      color: $text_color;
     }
   }
 
-  ul[dnd-list] {
-    min-height: 120px;
-    padding-left: 0;
-    padding-bottom: 10px;
-    position: relative;
-
-    .dndDraggingSource {
-      display: none;
-    }
-
-    .dndPlaceholder {
-      min-height: 122px;
-      background-color: $border_color;
-    }
-
-    li.group {
-      width: 1090px;
-      padding: 10px;
+  ul[dnd-list], tbody[dnd-list] {
+    li.group, tr.group {
+      font-family: 'Roboto', sans-serif;
 
       .group-name {
         position: absolute;
@@ -91,6 +73,48 @@ grid-items {
           }
         }
       }
+    }
+  }
+}
+
+grid-items {
+  display: block;
+  position: relative;
+
+  .content-message {
+    position: absolute;
+    top: 30px;
+    margin-left: auto;
+    margin-right: auto;
+    left: 0;
+    right: 0;
+  }
+
+  ul[dnd-list].dragging-group {
+    .dndPlaceholder {
+      width: 1090px;
+      min-height: 140px;
+    }
+  }
+
+  ul[dnd-list] {
+    min-height: 120px;
+    padding-left: 0;
+    padding-bottom: 10px;
+    position: relative;
+
+    .dndDraggingSource {
+      display: none;
+    }
+
+    .dndPlaceholder {
+      min-height: 122px;
+      background-color: $border_color;
+    }
+
+    li.group {
+      width: 1090px;
+      padding: 10px;
 
       ul[dnd-list] {
         padding-top: 30px;
@@ -104,22 +128,6 @@ grid-items {
       .content-message {
         top: 40px;
       }
-    }
-  }
-
-  .remove-item {
-    position: absolute;
-    z-index: 2;
-    top: 0;
-    right: 0;
-    padding-right: 3px;
-    font-size: 20px;
-    cursor: pointer;
-    color: $soft_text_color;
-    @include transition(all 0.2s ease-in-out);
-
-    &:hover {
-      color: $text_color;
     }
   }
 
@@ -189,7 +197,6 @@ table-items {
     }
   }
 
-
   tbody[dnd-list] {
     .dndDraggingSource {
       display: none;
@@ -199,6 +206,28 @@ table-items {
       list-style: none;
       height: 33px;
       background-color: $border_color;
+      @include column-span(all);
+    }
+
+    tr.content-message {
+      background-color: transparent !important;
+      border-bottom: 0;
+    }
+
+    td.group-cell {
+      position: relative;
+      padding: 10px 0;
+
+      table {
+        border-left: 0;
+        border-right: 0;
+        margin: 30px 0;
+        width: 100%;
+      }
+
+      table.no-border {
+        border: 0;
+      }
     }
   }
 }
