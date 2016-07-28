@@ -1,0 +1,19 @@
+<div class="load-older-posts">
+    <a href="#/news/">See All News Posts</a>
+</div>
+
+<div class="articles box-shadow">
+    <h3 class="section-title">Site News</h3>
+    <div class="news-box">
+        <div class="image-container">
+            <img ng-src="{{article.image}}"
+                ng-if="article.image" />
+        </div>
+        <div class="content-container">
+            <h3 class="article-title">{{article.title}}</h3>
+            <span class="article-details">
+                by {{article.submitter.username}} on {{article.submitted | date}}
+            </span> {{article.text_body}}
+        </div>
+    </div>
+</div>
