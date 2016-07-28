@@ -206,7 +206,6 @@ table-items {
       list-style: none;
       height: 33px;
       background-color: $border_color;
-      @include column-span(all);
     }
 
     tr.content-message {
