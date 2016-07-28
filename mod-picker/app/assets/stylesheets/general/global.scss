@@ -368,10 +368,6 @@ input[type="button"], input[type="submit"] {
     background-color: $secondary_background;
     cursor: default;
     color: $text_color;
-
-    &:hover {
-      background-color: inherit;
-    }
   }
 }
 

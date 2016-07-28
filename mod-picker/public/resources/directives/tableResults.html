@@ -26,7 +26,7 @@
                     <a ng-if="column.link" class="strong" ng-href="{{column.link(item)}}">
                         {{ columnValue(item, column.data) | picker:column.filter }}
                     </a>
-                    <span ng-if="!column.link">
+                    <span ng-hide="column.link">
                         {{ columnValue(item, column.data) | picker:column.filter }}
                     </span>
                 </td>
