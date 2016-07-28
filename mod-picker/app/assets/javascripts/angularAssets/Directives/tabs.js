@@ -24,6 +24,9 @@ app.controller('tabsController', function($scope, $state, $stickyState, $timeout
         var oldTabName = fromState.name.split(".").find(function(stateName) {
             return $scope.findTab(stateName);
         });
-        $scope.findTab(oldTabName).params = fromParams;
+        var oldTab = $scope.findTab(oldTabName);
+        if (oldTab) {
+            oldTab.params = fromParams;
+        }
     });
 });
