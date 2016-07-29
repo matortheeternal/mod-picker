@@ -507,7 +507,9 @@ app.service('columnsFactory', function() {
                 visibility: true,
                 required: true,
                 label: "Index",
-                data: "index",
+                data: function(item) {
+                    return item.merged ? 'merged' : item.index;
+                },
                 filter: "number",
                 class: "index-column"
             },
