@@ -3,7 +3,7 @@ app.service('tableUtils', function (objectUtils) {
 
     // this function resolves a variable as a function if it is one,
     // else returns its value
-    this.resolveAttribute = function(attribute, item) {
+    this.resolve = function(attribute, item) {
         if (typeof attribute === 'function') {
             return attribute(item);
         } else {

@@ -25,6 +25,7 @@ app.controller('tableItemsController', function($scope, $timeout, colorsFactory,
     $scope.removeGroup = listUtils.removeGroup;
     $scope.focusText = formUtils.focusText;
     $scope.columnValue = tableUtils.columnValue;
+    $scope.resolve = tableUtils.resolve;
     $scope.groupColumns = tableUtils.groupColumns;
     $scope.getNumCols = tableUtils.getNumCols;
 
