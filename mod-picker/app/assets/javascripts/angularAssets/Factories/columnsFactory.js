@@ -520,6 +520,9 @@ app.service('columnsFactory', function() {
                 link: function (modListPlugin) {
                     return "#/mod/" + modListPlugin.mod.id + "/analysis?plugin=" + modListPlugin.plugin.id;
                 },
+                note: function(item) {
+                    return item.cleaned && '(cleaned)';
+                },
                 class: "primary-column"
             },
             {
