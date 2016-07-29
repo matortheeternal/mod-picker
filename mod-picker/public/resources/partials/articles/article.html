@@ -7,7 +7,8 @@
             <div class="content-container">
                 <h3 class="article-title">{{article.title}}</h3>
                 <span class="article-details">
-                    by {{article.submitter.username}} on {{article.submitted | date}}
+                    by <a ng-href="#/user/{{article.submitter.id}}">{{article.submitter.username}}</a>
+                    on {{article.submitted | date}}
                 </span>
                 <div marked="article.text_body"></div>
             </div>
