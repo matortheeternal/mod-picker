@@ -1,6 +1,6 @@
 app.config(['$stateProvider', function($stateProvider) {
     $stateProvider.state('base.article', {
-        templateUrl: '/resources/partials/articles/article.html',
+        templateUrl: '/resources/partials/articles/showArticle.html',
         controller: 'showArticleController',
         url: '/article/:articleId',
         resolve: {
