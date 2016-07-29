@@ -4,6 +4,7 @@ app.directive('comments', function () {
         templateUrl: '/resources/directives/contributions/comments/comments.html',
         controller: 'commentsController',
         scope: {
+            comments: '=',
             pageData: '=',
             currentUser: '=',
             objectType: '=',

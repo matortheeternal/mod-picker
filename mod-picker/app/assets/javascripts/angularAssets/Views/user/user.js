@@ -26,7 +26,8 @@ app.config(['$stateProvider', function($stateProvider) {
         deepStateRedirect: true,
         views: {
             'Social': {
-                templateUrl: '/resources/partials/user/social.html'
+                templateUrl: '/resources/partials/user/social.html',
+                controller: 'userSocialTabController'
             }
         }
     }).state('base.user.Mod Lists', {
@@ -96,4 +97,22 @@ app.controller('userController', function($scope, $stateParams, currentUser, use
         { name: 'Mods' },
         { name: 'Contributions' }
     ];
+});
+
+app.controller('userSocialTabController', function($scope, $stateParams, userService, contributionService) {
+    $scope.retrieveProfileComments = function(page) {
+        // TODO: Make options dynamic
+        var options = {
+            sort: {
+                column: 'submitted',
+                direction: 'desc'
+            },
+            page: page || 1
+        };
+        userService.retrieveProfileComments($stateParams.userId, options, $scope.pages.profile_comments).then(function(data) {
+            $scope.user.profile_comments = data;
+        }, function(response) {
+            $scope.displayErrors.profile_comments = response;
+        });
+    };
 });
