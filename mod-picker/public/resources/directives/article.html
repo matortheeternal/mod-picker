@@ -2,16 +2,19 @@
     <div class="news-box">
         <div class="image-container"
             ng-if="article.image">
-            <img ng-src="{{article.image}}" />
+            <a ng-href="#/article/{{article.id}}">
+                <img ng-src="{{article.image}}" />
+            </a>
         </div>
         <div class="content-container">
-            <h3 class="article-title">{{article.title}}</h3>
+            <a ng-href="#/article/{{article.id}}">
+                <h3 class="article-title">{{article.title}}</h3>
+            </a>
             <span class="article-details">
                     by <a ng-href="#/user/{{article.submitter.id}}">{{article.submitter.username}}</a>
                     on {{article.submitted | date}}
-                </span>
+            </span>
             <div marked="article.text_body"></div>
-            <a ng-href="#/article/{{article.id}}"></a>
         </div>
     </div>
 </div>
