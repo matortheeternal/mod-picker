@@ -1,15 +1,8 @@
-app.controller('modListPluginsController', function($scope, modListService, columnsFactory) {
+app.controller('modListPluginsController', function($scope, modListService, columnsFactory, actionsFactory) {
     // initialize variables
     $scope.columns = columnsFactory.modListPluginColumns();
     $scope.columnGroups = columnsFactory.modListPluginColumnGroups();
-    $scope.actions = [{
-        caption: "Remove",
-        title: "Remove this plugin from the mod list",
-        execute: function($scope, item) {
-            if (!$scope.editing) return;
-            $scope.removeItem(item);
-        }
-    }];
+    $scope.actions = actionsFactory.modListPluginActions();
 
     // functions
     $scope.buildPluginsModel = function() {
