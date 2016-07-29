@@ -94,6 +94,22 @@ app.controller('modListPluginsController', function($scope, modListService, colu
             }
         });
     };
+    
+    $scope.compactRequiredPlugins = function() {
+        var requirements = $scope.required.plugins;
+        var req, prev;
+        for (var i = requirements.length; i >= 0; i--) {
+            req = requirements[i];
+            if (prev && req.master_plugin.id == prev.master_plugin.id) {
+                prev.unshift(req.plugin);
+                requirements.splice(i, 1);
+            } else {
+                req.plugins = [req.plugin];
+                delete req.plugin;
+            }
+            prev = req;
+        }
+    };
 
     $scope.buildMissingPlugins = function() {
         $scope.required.missing_plugins = [];
@@ -120,6 +136,7 @@ app.controller('modListPluginsController', function($scope, modListService, colu
             $scope.originalModList.plugins = angular.copy($scope.mod_list.mods);
             $scope.originalModList.groups = angular.copy($scope.mod_list.groups);
             $scope.buildPluginsModel();
+            $scope.compactRequiredPlugins();
             $scope.buildMissingPlugins();
             $scope.buildUnresolvedPluginCompatibility();
             $scope.buildUnresolvedLoadOrder();
