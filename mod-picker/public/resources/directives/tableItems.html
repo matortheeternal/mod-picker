@@ -45,7 +45,7 @@
                                 </span>
                             </td>
                             <td class="actions-cell">
-                                <input ng-repeat="action in actions" class="btn-sm" type="button" ng-click="execute(action, item)" value="{{action.caption}}" title="{{action.title}}" ng-disabled="!editing"/>
+                                <actions></actions>
                             </td>
                         </tr>
                         <!-- display message if there are no children -->
@@ -73,7 +73,7 @@
                 </span>
             </td>
             <td ng-if="!item.children" class="actions-cell">
-                <input ng-repeat="action in actions" class="btn-sm" type="button" ng-click="execute(action, item)" value="{{action.caption}}" title="{{action.title}}" ng-disabled="!editing"/>
+                <actions></actions>
             </td>
         </tr>
         <!-- drag and drop placeholder -->
