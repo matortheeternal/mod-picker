@@ -119,6 +119,7 @@ app.controller('modListPluginsController', function($scope, modListService, colu
                 return;
             }
             var pluginPresent = $scope.findPlugin(requirement.master_plugin.id, true);
+            // TODO: Check if one of the plugins in the plugins array is present
             if (!pluginPresent) {
                 $scope.required.missing_plugins.push(requirement);
             }
@@ -150,7 +151,19 @@ app.controller('modListPluginsController', function($scope, modListService, colu
     if (!$scope.mod_list.plugins && !$scope.retrieving.plugins) {
         $scope.retrievePlugins();
     }
-
+    
+    // requirement handling
+    $scope.getRequirerList = function(requirement) {
+        return requirement.plugins.map(function(plugin) {
+            return plugin.filename;
+        }).join(', ');
+    };
+    
+    $scope.removeRequirers = function(requirement) {
+        // TODO
+    };
+    
+    // plugin handling
     $scope.reAddPlugin = function(modListPlugin) {
         // if plugin is already present on the user's mod list but has been
         // removed, add it back
