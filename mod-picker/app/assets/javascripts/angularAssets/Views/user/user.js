@@ -115,14 +115,4 @@ app.controller('userSocialTabController', function($scope, $stateParams, userSer
             $scope.displayErrors.profile_comments = response;
         });
     };
-
-    $scope.startNewComment = function() {
-        $scope.$broadcast('startNewComment');
-    };
-
-    // retrieve the profile comments
-    if (!$scope.retrieving.profile_comments) {
-        $scope.retrieving.profile_comments = true;
-        $scope.retrieveProfileComments();
-    }
 });

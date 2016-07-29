@@ -100,7 +100,7 @@
             </span>
         </h3>
         <loader data="correction.comments" spinner-class="big-spinner" content-class="content-container">
-            <comments comments="correction.comments" current-user="currentUser" model-name="'Correction'" target="correction" event-prefix="'modal'"></comments>
+            <comments-display comments="correction.comments" current-user="currentUser" model-name="'Correction'" target="correction" event-prefix="'modal'"></comments-display>
 
             <page-results pages="pages.correction_comments" data="correction.comments" callback="retrieveCorrectionComments"></page-results>
         </loader>
