@@ -37,11 +37,18 @@
                 <li ng-repeat="requirement in required.missing_plugins">
                     <a ng-href="#/mod/{{requirement.master_plugin.mod_id}}/analysis?plugin={{requirement.master_plugin.id}}">{{requirement.master_plugin.filename}}</a>
                     is required by
-                    <a ng-href="#/mod/{{requirement.plugin.mod_id}}/analysis?plugin={{requirement.plugin.id}}">{{requirement.plugin.filename}}</a>
+                    <span ng-repeat="plugin in requirement.plugins | limitTo: 3">
+                        <a ng-href="#/mod/{{plugin.mod_id}}/analysis?plugin={{plugin.id}}">{{plugin.filename}}</a>
+                        {{!$last || requirement.plugins.length > 3 ? ', ' : ''}}
+                    </span>
+                    <span ng-if="requirement.plugins.length > 3">
+                        and 
+                        <a ng-click="showRequirers(requirement)">{{requirement.plugins.length - 3}} more</a>
+                    </span>
                     <!-- resolution options -->
                     <span ng-if="editing">
                         <span class="action-box green-box" ng-click="addPlugin(requirement.master_plugin.id)" title="Add {{requirement.master_plugin.filename}}">Add Requirement</span>
-                        <span class="action-box red-box" ng-click="removePlugin(findPlugin(requirement.plugin.id))" title="Remove {{requirement.plugin.filename}}">Remove Requirer</span>
+                        <span class="action-box red-box" ng-click="removeRequirers(requirement)" title="Remove {{getRequirerList(requirement)}}">Remove Requirers</span>
                     </span>
                 </li>
             </ul>
