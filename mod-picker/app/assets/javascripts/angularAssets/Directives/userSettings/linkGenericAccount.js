@@ -26,7 +26,7 @@ app.controller('linkGenericAccountController', function ($scope, $timeout, userS
     // inherited functions
     $scope.focusText = formUtils.focusText;
 
-    $scope.toggleModal = function() {
+    $scope.toggleModal = function(visible) {
         $scope.$emit('toggleModal', visible);
         $scope.showModal = !$scope.showModal;
     };
