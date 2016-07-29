@@ -8,7 +8,7 @@
         AVG RATING
     </div>
 
-    <div class="tab-bar-item" ng-if="$mod.user_review">
+    <div class="tab-bar-item" ng-if="!mod.user_review">
         <input class="btn" type="button" value="Add Review" ng-click="startNewReview()" ng-disabled="activeReview" title="{{ mod.user_review ? 'You have already submitted a review for this mod.' : 'Add a new review' }}"/>
     </div>
 </div>
