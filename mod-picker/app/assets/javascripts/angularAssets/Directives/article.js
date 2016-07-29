@@ -5,13 +5,13 @@ app.directive('article', function() {
         controller: 'articleController',
         scope: {
             article: '=data',
-            condense: '=?'
+            condensed: '=?'
         }
     };
 });
 
 app.controller('articleController', function($scope) {
-    if ($scope.condense) {
+    if ($scope.condensed) {
         var words = $scope.article.text_body.split(' ', 50);
         $scope.article.text_body = words.join(' ');
         $scope.article.text_body += "...";
