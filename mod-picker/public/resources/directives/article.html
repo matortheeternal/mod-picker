@@ -1,0 +1,17 @@
+<div class="article">
+    <div class="news-box">
+        <div class="image-container"
+            ng-if="article.image">
+            <img ng-src="{{article.image}}" />
+        </div>
+        <div class="content-container">
+            <h3 class="article-title">{{article.title}}</h3>
+            <span class="article-details">
+                    by <a ng-href="#/user/{{article.submitter.id}}">{{article.submitter.username}}</a>
+                    on {{article.submitted | date}}
+                </span>
+            <div marked="article.text_body"></div>
+            <a ng-href="#/article/{{article.id}}"></a>
+        </div>
+    </div>
+</div>
