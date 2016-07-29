@@ -923,7 +923,7 @@ def seed_fake_articles
 
   gameSkyrim = Game.where({display_name: "Skyrim"}).first
 
-  rand(10).times do
+  rand(50).times do
     author = User.offset(rand(User.count)).first
     Article.new(
         title: Faker::Lorem.words(3).join(' '),
