@@ -511,7 +511,9 @@ app.service('columnsFactory', function() {
                     return item.merged ? 'merged' : item.index;
                 },
                 filter: "number",
-                class: "index-column"
+                class: function(item) {
+                    return item.merged ? 'index-column merged' : 'index-column';
+                }
             },
             {
                 group: "General",
