@@ -40,6 +40,9 @@
                                 <span ng-if="!column.link">
                                     {{ columnValue(item, column.data) | picker:column.filter }}
                                 </span>
+                                <span ng-if="column.note" class="note">
+                                    {{ resolve(column.note, item) }}
+                                </span>
                             </td>
                             <td class="actions-cell">
                                 <input ng-repeat="action in actions" class="btn-sm" type="button" ng-click="execute(action, item)" value="{{action.caption}}" title="{{action.title}}" ng-disabled="!editing"/>
@@ -64,6 +67,9 @@
                 </a>
                 <span ng-if="!column.link">
                     {{ columnValue(item, column.data) | picker:column.filter }}
+                </span>
+                <span ng-if="column.note" class="note">
+                    {{ resolve(column.note, item) }}
                 </span>
             </td>
             <td ng-if="!item.children" class="actions-cell">
