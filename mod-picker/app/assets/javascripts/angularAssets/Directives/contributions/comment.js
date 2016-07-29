@@ -1,7 +1,7 @@
 app.directive('comment', function () {
     return {
         restrict: 'E',
-        templateUrl: '/resources/directives/contributions/comments/comment.html',
+        templateUrl: '/resources/directives/contributions/comment.html',
         controller: 'commentController',
         scope: {
             comment: '=',
