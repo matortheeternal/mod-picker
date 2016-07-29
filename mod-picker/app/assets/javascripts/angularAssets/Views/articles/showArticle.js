@@ -25,4 +25,8 @@ app.config(['$stateProvider', function($stateProvider) {
 
 app.controller('showArticleController', function($scope, $stateParams, article) {
     $scope.article = article;
+
+    $scope.pages = {
+        articleComments: {}
+    };
 });
