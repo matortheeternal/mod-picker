@@ -14,6 +14,7 @@ class Article < ActiveRecord::Base
 
   # ASSOCIATIONS
   belongs_to :submitter, :class_name => 'User', :foreign_key => 'submitted_by', :inverse_of => 'articles'
+  has_many :comments, :as => 'commentable'
 
   # VALIDATIONS
   validates :submitted_by, :title, :text_body, presence: true

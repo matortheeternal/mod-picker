@@ -48,6 +48,19 @@ class ArticlesController < ApplicationController
     redirect_to articles_url, notice: 'Article was successfully destroyed.'
   end
 
+  # GET /articles/1/comments
+  def comments
+    article = Article.find(params[:id])
+    authorize! :read, article
+    comments = article.comments.accessible_by(current_ability).sort(params[:sort]).paginate(:page => params[:page], :per_page => 10)
+    count = article.comments.accessible_by(current_ability).count
+    render :json => {
+        comments: comments,
+        max_entries: count,
+        entries_per_page: 10
+    }
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_article
