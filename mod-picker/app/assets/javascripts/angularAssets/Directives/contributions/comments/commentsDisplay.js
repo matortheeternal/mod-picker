@@ -1,8 +1,8 @@
-app.directive('comments', function () {
+app.directive('commentsDisplay', function () {
     return {
         restrict: 'E',
-        templateUrl: '/resources/directives/contributions/comments.html',
-        controller: 'commentsController',
+        templateUrl: '/resources/directives/contributions/comments/commentsDisplay.html',
+        controller: 'commentsDisplayController',
         scope: {
             comments: '=',
             currentUser: '=',
@@ -14,7 +14,7 @@ app.directive('comments', function () {
     };
 });
 
-app.controller('commentsController', function ($scope, contributionService) {
+app.controller('commentsDisplayController', function ($scope, contributionService) {
     // event strings
     $scope.errorEvent = $scope.eventPrefix ? $scope.eventPrefix + 'ErrorMessage' : 'errorMessage';
     $scope.successEvent = $scope.eventPrefix ? $scope.eventPrefix + 'SuccessMessage' : 'successMessage';

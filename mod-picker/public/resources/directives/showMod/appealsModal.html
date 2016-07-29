@@ -100,7 +100,7 @@
             </span>
         </h3>
         <loader data="appeal.comments" spinner-class="big-spinner" content-class="content-container">
-            <comments comments="appeal.comments" current-user="currentUser" model-name="'Correction'" target="appeal" event-prefix="'modal'"></comments>
+            <comments-display comments="appeal.comments" current-user="currentUser" model-name="'Correction'" target="appeal" event-prefix="'modal'"></comments-display>
 
             <page-results pages="pages" data="appeal.comments" callback="retrieveAppealComments"></page-results>
         </loader>
