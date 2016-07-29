@@ -12,6 +12,11 @@ app.service('tableUtils', function (objectUtils) {
         if (typeof data === 'string' || data instanceof String) {
             return objectUtils.deepValue(item, data);
         }
+        // sometimes it's a function because it needs to do something
+        // more complex than just display a single value from the item
+        else if (typeof data === 'function') {
+            return data(item);
+        }
         // sometimes it's not.  sometimes the data property is an
         // object with an ordered set of keys to check on the item
         // (e.g. for different site statistics), which we need to
