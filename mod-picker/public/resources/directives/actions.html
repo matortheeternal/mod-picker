@@ -1,0 +1,10 @@
+<span class="action-container" ng-repeat="action in actions">
+    <span class="action-box" ng-click="resolve(action.execute, item)" title="{{action.title}}" ng-class="{ 'disabled' : !editing, 'icon-box' : !!action.icon }">
+        <i ng-show="action.icon" class="fa {{action.icon}}"></i>{{action.caption}}
+    </span>
+    <div class="dropdown" ng-if="action.items" ng-show="item[action.key]">
+        <div class="dropdown-item" ng-repeat="actionItem in action.items" ng-click="resolve(actionItem.execute, item)">
+            {{resolve(actionItem.text, item)}}
+        </div>
+    </div>
+</span>
