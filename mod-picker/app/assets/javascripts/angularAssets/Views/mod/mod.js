@@ -181,6 +181,13 @@ app.controller('modController', function($scope, $q, $stateParams, $state, $time
         return (tabIndex !== -1);
     };
 
+    $scope.findTab = function(tabName) {
+        var tabIndex = $scope.tabs.findIndex(function(tab) {
+            return tabName === tab.name;
+        });
+        return $scope.tabs[tabIndex];
+    };
+
     $scope.currentTab = function() {
         var currentState = $state.current.name;
         var currentStateArray = currentState.split(".");

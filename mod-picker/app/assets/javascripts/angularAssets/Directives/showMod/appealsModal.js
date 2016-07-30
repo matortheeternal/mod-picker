@@ -1,7 +1,17 @@
 app.controller('appealsModalController', function ($scope, $previousState, contributionService, errorService) {
-    var previousState = $previousState.get();
+    var previousState;
+    var previousTab;
+    if ($previousState.get()) {
+        previousState = $previousState.get().state;
 
-
+        var previousStateArray = previousState.name.split(".");
+        var previousStateName = previousStateArray[previousStateArray.length - 1];
+        previousTab = $scope.findTab(previousStateName);
+        //if the last state was a tab
+        if (previousTab) {
+            previousTab.show = true;
+        }
+    }
     //turn off scrolling
     $scope.$emit('toggleModal', true);
 
@@ -18,7 +28,13 @@ app.controller('appealsModalController', function ($scope, $previousState, contr
     };
 
     $scope.closeStatusModal = function() {
-        $previousState.go();
+        //if the last state was a tab
+        if (previousTab) {
+            delete previousTab.show;
+            $previousState.go();
+        } else {
+            $scope.redirectToFirstTab();
+        }
         $scope.$emit('toggleModal', false);
     };
 
