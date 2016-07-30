@@ -703,6 +703,20 @@ def seed_fake_comments
       ).save!
     end
   end
+  puts "\nSeeding article comments"
+  Article.all.each do |article|
+    rnd = randpow(10, 2)
+    puts "    Generating #{rnd} comments for #{article.title}"
+    rnd.times do
+      submitter = random_user
+      article.comments.new(
+          submitted_by: submitter.id,
+          hidden: false,
+          submitted: Faker::Date.backward(14),
+          text_body: Faker::Lorem.paragraph(1)
+      ).save!
+    end
+  end
 end
 
 def seed_fake_reviews
@@ -923,7 +937,7 @@ def seed_fake_articles
 
   gameSkyrim = Game.where({display_name: "Skyrim"}).first
 
-  rand(10).times do
+  rand(50).times do
     author = User.offset(rand(User.count)).first
     Article.new(
         title: Faker::Lorem.words(3).join(' '),
