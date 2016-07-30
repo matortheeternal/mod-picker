@@ -1,4 +1,4 @@
-app.controller('appealsModalController', function ($scope, $previousState, contributionService, errorService) {
+app.controller('appealsModalController', function ($scope, $stateParams, $previousState, contributionService, errorService) {
     var previousState;
     var previousTab;
     if ($previousState.get()) {
@@ -26,6 +26,9 @@ app.controller('appealsModalController', function ($scope, $previousState, contr
             $scope.$emit('modalErrorMessage', params);
         });
     };
+
+    //retrieve when the state is first loaded
+    $scope.retrieveAppeals();
 
     $scope.closeStatusModal = function() {
         //if the last state was a tab
