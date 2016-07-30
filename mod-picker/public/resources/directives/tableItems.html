@@ -12,7 +12,7 @@
         </tr>
     </thead>
     <tbody dnd-list="model" ng-class="{ 'dragging-group' : draggingGroup }">
-        <tr ng-repeat="item in model" class="{{item.children ? 'group bg-'+item.color : ''}}" ng-if="!item._destroy" dnd-draggable="item" dnd-moved="itemMoved(model, $index)" dnd-effect-allowed="move" dnd-disable-if="!editing" dnd-type="{{item.children ? '\'group\'' : '\'item\''}}" dnd-dragstart="dragStart(item)" dnd-dragend="dragEnd()">
+        <tr ng-repeat="item in model" class="{{item.children ? 'group bg-'+item.color : ''}}" ng-if="!item._destroy" dnd-draggable="item" dnd-moved="itemMoved(model, $index)" dnd-effect-allowed="move" dnd-disable-if="!editing" dnd-type="{{item.children ? '\'group\'' : '\'item\''}}" dnd-dragstart="dragStart(item)" dnd-dragend="dragEnd()" ng-class="{ 'merged' : item.merged }">
             <!-- display group -->
             <td colspan="{{getNumCols(columns)}}" ng-if="item.children" class="group-cell">
                 <div class="remove-item" ng-if="editing">
@@ -31,9 +31,9 @@
                 <!-- display children of groups -->
                 <table class="browse-table" ng-class="{ 'no-border' : isEmpty(item.children) }">
                     <tbody dnd-list="item.children" dnd-allowed-types="['item']">
-                        <tr ng-repeat="item in item.children as children" ng-if="!item._destroy" dnd-draggable="item" dnd-moved="itemMoved(children, $index)" dnd-effect-allowed="move" dnd-disable-if="!editing" dnd-type="'item'">
+                        <tr ng-repeat="item in item.children as children" ng-if="!item._destroy" dnd-draggable="item" dnd-moved="itemMoved(children, $index)" dnd-effect-allowed="move" dnd-disable-if="!editing" dnd-type="'item'" ng-class="{ 'merged' : item.merged }">
                             <!-- display item -->
-                            <td ng-repeat="column in columns" ng-class="{ 'hidden': !column.visibility, 'text-cell' : !column.filter,  '{{column.filter}}-cell' : !!column.filter, '{{resolve(column.class, item)}}' : !!column.class }">
+                            <td ng-repeat="column in columns" ng-class="{ 'hidden': !column.visibility, 'text-cell' : !column.filter,  '{{column.filter}}-cell' : !!column.filter, '{{column.class}}' : !!column.class }">
                                 <a ng-if="column.link" class="strong" ng-href="{{column.link(item)}}">
                                     {{ columnValue(item, column.data) | picker:column.filter }}
                                 </a>
@@ -61,7 +61,7 @@
             </td>
 
             <!-- display item -->
-            <td ng-if="!item.children" ng-repeat="column in columns" ng-class="{ 'hidden': !column.visibility, 'text-cell' : !column.filter,  '{{column.filter}}-cell' : !!column.filter, '{{resolve(column.class, item)}}' : !!column.class }">
+            <td ng-if="!item.children" ng-repeat="column in columns" ng-class="{ 'hidden': !column.visibility, 'text-cell' : !column.filter,  '{{column.filter}}-cell' : !!column.filter, '{{column.class}}' : !!column.class }">
                 <a ng-if="column.link" class="strong" ng-href="{{column.link(item)}}">
                     {{ columnValue(item, column.data) | picker:column.filter }}
                 </a>
