@@ -5,12 +5,12 @@ app.directive('searchInput', function () {
         controller: 'searchInputController',
         scope: {
             resultId: '=',
+            searchFunction: '=',
             searchText: '=?',
             placeholder: '=?',
             onChange: '=?',
             excludedId: '=?',
             disabled: '=?',
-            searchType: '@'
         }
     }
 });
@@ -33,8 +33,8 @@ app.controller('searchInputController', function($scope, $timeout, modService, p
     $scope.search = function(str) {
         // Begin the search
         str = str.toLowerCase();
-        if (str.length >= minLength) {
-            var searchCallback = function(data) {
+        if (str.length >= $scope.minLength) {
+            $scope.searchFunction(str).then(function(data) {
                 $scope.searching = false;
                 if ($scope.excludedId) {
                     data = data.filter(function(item) {
@@ -43,16 +43,7 @@ app.controller('searchInputController', function($scope, $timeout, modService, p
                 }
                 $scope.results = data;
                 $scope.$applyAsync();
-            };
-            if ($scope.searchType === 'plugins') {
-                pluginService.searchPlugins(str).then(searchCallback);
-            } else if ($scope.searchType === 'users') {
-                userService.searchUsers(str).then(searchCallback);
-            } else if ($scope.searchType === 'mods')  {
-                modService.searchMods(str).then(searchCallback);
-            } else if ($scope.searchType === 'tools') {
-                modService.searchMods(str, true).then(searchCallback);
-            }
+            });
         } else {
             $scope.searching = false;
             $scope.showDropdown = false;
