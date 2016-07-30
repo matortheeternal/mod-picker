@@ -53,11 +53,15 @@ app.service('listUtils', function () {
                 item.children.forEach(function(child) {
                     if (child._destroy) return;
                     child.group_id = item.id;
-                    child.index = i++;
+                    child.index = i;
+                    // don't increment index if item is marked as merged
+                    !child.merged && i++;
                 });
             } else {
                 item.group_id = null;
-                item.index = i++;
+                item.index = i;
+                // don't increment index if item is marked as merged
+                !item.merged && i++;
             }
         });
     };
