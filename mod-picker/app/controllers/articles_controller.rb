@@ -1,5 +1,5 @@
 class ArticlesController < ApplicationController
-  before_action :set_article, only: [:show, :edit, :update, :destroy]
+  before_action :set_article, only: [:show, :comments, :update, :destroy]
 
   # GET /articles/1
   def show
@@ -14,20 +14,15 @@ class ArticlesController < ApplicationController
     @article = Article.new
   end
 
-  # GET /articles/1/edit
-  def edit
-    authorize! :update, @article
-  end
-
   # POST /articles
   def create
     authorize! :create, @article
     @article = Article.new(article_params)
 
     if @article.save
-      redirect_to @article, notice: 'Article was successfully created.'
+      render json: {status: :ok}
     else
-      render :new
+      render json: @article.errors, status: :unprocessable_entity
     end
   end
 
@@ -35,17 +30,20 @@ class ArticlesController < ApplicationController
   def update
     authorize! :update, @article
     if @article.update(article_params)
-      redirect_to @article, notice: 'Article was successfully updated.'
+      render json: {status: :ok}
     else
-      render :edit
+      render json: @article.errors, status: :unprocessable_entity
     end
   end
 
   # DELETE /articles/1
   def destroy
     authorize! :destroy, @article
-    @article.destroy
-    redirect_to articles_url, notice: 'Article was successfully destroyed.'
+    if @article.destroy
+      render json: {status: :ok}
+    else
+      render json: @article.errors, status: :unprocessable_entity
+    end
   end
 
   # GET /articles/1/comments
@@ -67,7 +65,7 @@ class ArticlesController < ApplicationController
       @article = Article.find(params[:id])
     end
 
-    # Only allow a trusted parameter "white list" through.
+    # Never trust parameters from the scary internet, only allow the white list through.
     def article_params
       params.require(:article).permit(:title, :submitted_by, :text_body)
     end
