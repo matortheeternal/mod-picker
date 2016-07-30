@@ -23,6 +23,8 @@ app.controller('modListPluginsController', function($scope, modListService, colu
                 });
                 if (insertIndex == -1) {
                     insertIndex = $scope.model.plugins.length;
+                } else if (plugin.merged) {
+                    insertIndex--;
                 }
                 $scope.model.plugins.splice(insertIndex, 0, plugin);
             }
