@@ -102,6 +102,14 @@ app.config(['$stateProvider', function($stateProvider) {
             }
         },
         url: '/analysis?{plugin:int}'
+    }).state('base.mod.appeals', {
+        views: {
+            'appeals': {
+                templateUrl: '/resources/partials/mod/appealsModal.html',
+                controller: 'appealsModalController',
+            }
+        },
+        url: '/appeals'
     });
 }]);
 
@@ -179,16 +187,16 @@ app.controller('modController', function($scope, $q, $stateParams, $state, $time
         return currentStateArray[currentStateArray.length - 1];
     };
 
-    //redirect to the first tab if changing to a non-present tab
-    $scope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
-        //if changing to the mod state
-        if (toState.name.substring(0, 8) === "base.mod") {
-            //if changing to a tab that isn't in tabs[]
-            if (!tabIsPresent(currentTab())) {
-                redirectToFirstTab();
-            }
-        }
-    });
+    // //redirect to the first tab if changing to a non-present tab
+    // $scope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
+    //     //if changing to the mod state
+    //     if (toState.name.substring(0, 8) === "base.mod") {
+    //         //if changing to a tab that isn't in tabs[]
+    //         if (!tabIsPresent(currentTab())) {
+    //             redirectToFirstTab();
+    //         }
+    //     }
+    // });
 
     //set the class of the status box
     switch ($scope.mod.status) {
@@ -234,17 +242,6 @@ app.controller('modController', function($scope, $q, $stateParams, $state, $time
         $scope.updateMDE = ($scope.updateMDE || 0) + 1;
     };
 
-    $scope.retrieveAppeals = function() {
-        $scope.retrieving.appeals = true;
-        contributionService.retrieveCorrections('mods', $stateParams.modId).then(function(data) {
-            $scope.retrieving.appeals = false;
-            $scope.mod.corrections = data;
-            $scope.getAppealStatus();
-        }, function(response) {
-            $scope.errors.appeals = response;
-        });
-    };
-
     // HEADER RELATED LOGIC
     $scope.starMod = function() {
         modService.starMod($scope.mod.id, $scope.mod.star).then(function() {
@@ -253,21 +250,6 @@ app.controller('modController', function($scope, $q, $stateParams, $state, $time
             var params = { label: 'Error starring mod', response: response };
             $scope.$emit('errorMessage', params);
         });
-    };
-
-    $scope.toggleStatusModal = function(visible) {
-        $scope.$emit('toggleModal', visible);
-        $scope.statusModal.visible = visible;
-        if (visible && !$scope.mod.corrections && !$scope.retrieving.appeals) {
-            $scope.retrieveAppeals();
-        }
-    };
-
-    $scope.getAppealStatus = function() {
-        var openAppeals = $scope.mod.corrections.filter(function(correction) {
-            return !correction.hidden && (correction.status == "open");
-        });
-        $scope.appealStatus = $scope.permissions.canAppeal && openAppeals.length < 2;
     };
 
     $scope.saveTags = function(updatedTags) {

@@ -54,15 +54,17 @@
 
                     <div class="header-box" ng-if="mod.primary_category_id">
                         STATUS
-                        <div class="action-box {{statusClass}} capitalize" ng-click="toggleStatusModal(true)">
-                            {{mod.status}}
+                        <div class="action-box {{statusClass}} capitalize">
+                            <a ng-href="#/mod/{{mod.id}}/appeals">
+                                {{mod.status}}
+                            </a>
                         </div>
                     </div>
                 </section>
             </div>
         </div>
 
-        <appeals-modal></appeals-modal>
+        <div ui-view="appeals"></div>
 
         <messages></messages>
 

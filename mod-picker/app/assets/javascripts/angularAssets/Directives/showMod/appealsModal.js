@@ -1,13 +1,34 @@
-app.directive('appealsModal', function () {
-    return {
-        restrict: 'E',
-        templateUrl: '/resources/directives/showMod/appealsModal.html',
-        controller: 'appealsModalController',
-        scope: false
-    };
-});
+app.controller('appealsModalController', function ($scope, $previousState, contributionService, errorService) {
+    var previousState = $previousState.get();
 
-app.controller('appealsModalController', function ($scope, contributionService, errorService) {
+
+    //turn off scrolling
+    $scope.$emit('toggleModal', true);
+
+    $scope.retrieveAppeals = function() {
+        $scope.retrieving.appeals = true;
+        contributionService.retrieveCorrections('mods', $stateParams.modId).then(function(data) {
+            $scope.retrieving.appeals = false;
+            $scope.mod.corrections = data;
+            $scope.getAppealStatus();
+        }, function(response) {
+            var params = { label: 'Error retrieving appeals', response: response };
+            $scope.$emit('modalErrorMessage', params);
+        });
+    };
+
+    $scope.closeStatusModal = function() {
+        $previousState.go();
+        $scope.$emit('toggleModal', false);
+    };
+
+    $scope.getAppealStatus = function() {
+        var openAppeals = $scope.mod.corrections.filter(function(correction) {
+            return !correction.hidden && (correction.status == "open");
+        });
+        $scope.appealStatus = $scope.permissions.canAppeal && openAppeals.length < 2;
+    };
+
     // compute agree percentage helper
     $scope.computeAgreePercentage = function(appeal) {
         return (appeal.agree_count / ((appeal.agree_count + appeal.disagree_count) || 1)) * 100;
