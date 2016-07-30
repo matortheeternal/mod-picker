@@ -25,7 +25,6 @@ app.controller('tableItemsController', function($scope, $timeout, colorsFactory,
     $scope.removeGroup = listUtils.removeGroup;
     $scope.focusText = formUtils.focusText;
     $scope.columnValue = tableUtils.columnValue;
-    $scope.resolve = tableUtils.resolve;
     $scope.groupColumns = tableUtils.groupColumns;
     $scope.getNumCols = tableUtils.getNumCols;
 
@@ -35,9 +34,14 @@ app.controller('tableItemsController', function($scope, $timeout, colorsFactory,
         $scope.$emit('removeItem', item);
     };
 
-    // execute an action on an item
-    $scope.execute = function(action, item) {
-        action.execute($scope, item);
+    // this function resolves a variable as a function if it is one,
+    // else returns its value
+    $scope.resolve = function(attribute, item, context) {
+        if (typeof attribute === 'function') {
+            return attribute($scope, item, context);
+        } else {
+            return attribute;
+        }
     };
 
     // when the user moves an item splice the original out of the array it was in,
