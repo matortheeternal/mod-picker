@@ -508,12 +508,13 @@ app.service('columnsFactory', function() {
                 required: true,
                 label: "Index",
                 data: function(item) {
-                    return item.merged ? 'merged' : item.index;
+                    if (!item.merged) return item.index;
+                },
+                note: function($scope, item) {
+                    if (item.merged) return 'merged';
                 },
                 filter: "number",
-                class: function(item) {
-                    return item.merged ? 'index-column merged' : 'index-column';
-                }
+                class: "index-column"
             },
             {
                 group: "General",
