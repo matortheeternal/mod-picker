@@ -16,7 +16,7 @@ app.controller('createArticleController', function($scope, $stateParams, objectU
     $scope.articleValid = function() {
         var article = $scope.article;
 
-        return article.submitted_by && article.title && article.text_body;
+        return article.title && article.text_body;
     };
 
     $scope.submit = function () {

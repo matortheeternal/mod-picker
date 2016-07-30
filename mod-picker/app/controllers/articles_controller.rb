@@ -18,6 +18,7 @@ class ArticlesController < ApplicationController
   def create
     authorize! :create, @article
     @article = Article.new(article_params)
+    @article.submitted_by = current_user.id
 
     if @article.save
       render json: {status: :ok}
