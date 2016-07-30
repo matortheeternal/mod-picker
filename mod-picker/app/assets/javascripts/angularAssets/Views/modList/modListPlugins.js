@@ -149,8 +149,8 @@ app.controller('modListPluginsController', function($scope, modListService, colu
     }
     
     // requirement handling
-    $scope.getRequirerList = function(requirement) {
-        return requirement.plugins.map(function(plugin) {
+    $scope.getRequirerList = function(requirement, startIndex) {
+        return requirement.plugins.slice(startIndex).map(function(plugin) {
             return plugin.filename;
         }).join(', ');
     };
