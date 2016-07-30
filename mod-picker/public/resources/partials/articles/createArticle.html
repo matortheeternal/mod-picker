@@ -19,7 +19,6 @@
         <section>
             <image-upload image="image"
                 can-change="true"
-                default-src="article.image"
                 label="article image"
                 image-class="mod-image"
                 max-width="300"
@@ -39,7 +38,7 @@
             <input class="btn action-btn"
                 type="submit"
                 ng-disabled='submitting || !articleValid()'
-                ng-click="updateArticle()"
+                ng-click="submit()"
                 value="Save Changes" />
         </div>
     </form>
@@ -51,14 +50,14 @@
         </loader>
         <h2>{{submittingStatus}}</h2>
         <div ng-show="success">
-            <a href="#/article{{article.id}}">Click here</a> to return to the article Page
+            <a href="#/article/{{article.id}}">Click here</a> to return to the article Page
         </div>
         <div ng-show="errors">
             <div ng-repeat="error in errors">
                 {{error.message}}
             </div>
             <div>
-                <a ng-click="closeModal()">Click here</a> to return the update form
+                <a ng-click="closeModal()">Click here</a> to return the submit form
             </div>
         </div>
     </div>
