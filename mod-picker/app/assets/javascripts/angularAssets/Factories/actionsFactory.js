@@ -2,14 +2,13 @@ app.service('actionsFactory', function() {
     var factory = this;
 
     /* function factories */
-    this.toggleText = function(key) {
+    this.toggleTextFunction = function(key) {
         return function($scope, item) {
-            if (!$scope.editing) return;
             return item[key] ? 'Mark not '+key : 'Mark '+key;
         };
     };
 
-    this.toggleOnClick = function(key) {
+    this.toggleFunction = function(key) {
         return function($scope, item) {
             if (!$scope.editing) return;
             item[key] = !item[key];
@@ -31,23 +30,23 @@ app.service('actionsFactory', function() {
                 $scope.removeItem(item);
             }
         }, {
-            key: "options",
+            key: "showOptions",
             icon: "fa-gear",
             title: "More Options",
             items: [{
                 text: "View details",
-                onclick: function($scope, item) {
+                execute: function($scope, item) {
                     $scope.detailsItem = item;
                     $scope.showDetailsModal = true;
                 }
             }, {
-                text: factory.toggleText('merged'),
+                text: factory.toggleTextFunction('merged'),
                 disabled: factory.disabledWhenNotEditing,
-                onclick: factory.toggleOnClick('merged')
+                execute: factory.toggleFunction('merged')
             }, {
-                text: factory.toggleText('cleaned'),
+                text: factory.toggleTextFunction('cleaned'),
                 disabled: factory.disabledWhenNotEditing,
-                onclick: factory.toggleOnClick('cleaned')
+                execute: factory.toggleFunction('cleaned')
             }]
         }];
     };
