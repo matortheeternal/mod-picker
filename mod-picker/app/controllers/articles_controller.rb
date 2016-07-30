@@ -28,7 +28,7 @@ class ArticlesController < ApplicationController
 
   # PATCH/PUT /articles/1
   def update
-    authorize! :update, @article
+    authorize! :update, @article, :message => "You are not allowed to edit this article"
     if @article.update(article_params)
       render json: {status: :ok}
     else
