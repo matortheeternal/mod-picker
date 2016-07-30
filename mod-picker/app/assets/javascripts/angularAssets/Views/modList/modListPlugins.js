@@ -93,16 +93,17 @@ app.controller('modListPluginsController', function($scope, modListService, colu
     $scope.compactRequiredPlugins = function() {
         var requirements = $scope.required.plugins;
         var req, prev;
-        for (var i = requirements.length; i >= 0; i--) {
+        for (var i = requirements.length - 1; i >= 0; i--) {
             req = requirements[i];
             if (prev && req.master_plugin.id == prev.master_plugin.id) {
-                prev.unshift(req.plugin);
+                prev.plugins.unshift(req.plugin);
                 requirements.splice(i, 1);
             } else {
                 req.plugins = [req.plugin];
+                req.destroyed_plugins = [];
                 delete req.plugin;
+                prev = req;
             }
-            prev = req;
         }
     };
 
