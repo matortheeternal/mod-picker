@@ -169,34 +169,37 @@ app.controller('modController', function($scope, $q, $stateParams, $state, $time
     var isAuthor = angular.isDefined(author);
     $scope.permissions.canManage = $scope.permissions.canModerate || isAuthor;
 
-    var redirectToFirstTab = function() {
+    $scope.redirectToFirstTab = function() {
         var tab = $scope.tabs[0];
         $state.go('base.mod.' + tab.name, tab.params, { location: 'replace' });
     };
 
-    var tabIsPresent = function(tabName) {
+    $scope.tabIsPresent = function(tabName) {
         var tabIndex = $scope.tabs.findIndex(function(tab) {
             return tabName === tab.name;
         });
         return (tabIndex !== -1);
     };
 
-    var currentTab = function() {
+    $scope.currentTab = function() {
         var currentState = $state.current.name;
         var currentStateArray = currentState.split(".");
         return currentStateArray[currentStateArray.length - 1];
     };
 
-    // //redirect to the first tab if changing to a non-present tab
-    // $scope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
-    //     //if changing to the mod state
-    //     if (toState.name.substring(0, 8) === "base.mod") {
-    //         //if changing to a tab that isn't in tabs[]
-    //         if (!tabIsPresent(currentTab())) {
-    //             redirectToFirstTab();
-    //         }
-    //     }
-    // });
+    //redirect to the first tab if changing to a non-present tab
+    $scope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
+        //if changing to the mod state
+        if (toState.name.substring(0, 8) === "base.mod") {
+            //if changing to a tab that isn't in tabs[]
+            if (!$scope.tabIsPresent($scope.currentTab())) {
+                //if not changing to the appeals state
+                if (toState.name.substring(9) !== "appeals") {
+                    $scope.redirectToFirstTab();
+                }
+            }
+        }
+    });
 
     //set the class of the status box
     switch ($scope.mod.status) {
