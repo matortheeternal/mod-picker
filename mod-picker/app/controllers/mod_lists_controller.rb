@@ -254,7 +254,7 @@ class ModListsController < ApplicationController
     def mod_list_params
       params.require(:mod_list).permit(:game_id, :name, :description, :status, :visibility, :is_collection, :disable_comments, :lock_tags, :hidden,
           :mod_list_mods_attributes => [:id, :group_id, :mod_id, :index, :_destroy],
-          :mod_list_plugins_attributes => [:id, :group_id, :plugin_id, :index, :active, :_destroy],
+          :mod_list_plugins_attributes => [:id, :group_id, :plugin_id, :index, :cleaned, :merged, :_destroy],
           :custom_plugins_attributes => [:id, :group_id, :index, :filename, :description, :active, :_destroy],
           :mod_list_groups_attributes => [:id, :index, :tab, :color, :name, :description, :_destroy,
               :children => [:id]
