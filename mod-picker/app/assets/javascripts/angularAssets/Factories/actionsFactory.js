@@ -42,7 +42,11 @@ app.service('actionsFactory', function() {
             }, {
                 text: factory.toggleTextFunction('merged'),
                 disabled: factory.disabledWhenNotEditing,
-                execute: factory.toggleFunction('merged')
+                execute: function($scope, item) {
+                    if (!$scope.editing) return;
+                    item.merged = !item.merged;
+                    $scope.$emit('updateItems');
+                }
             }, {
                 text: factory.toggleTextFunction('cleaned'),
                 disabled: factory.disabledWhenNotEditing,
