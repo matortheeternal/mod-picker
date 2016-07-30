@@ -25,6 +25,7 @@ app.service('actionsFactory', function() {
         return [{
             caption: "Remove",
             title: "Remove this plugin from the mod list",
+            disabled: factory.disabledWhenNotEditing,
             execute: function($scope, item) {
                 if (!$scope.editing) return;
                 $scope.removeItem(item);
