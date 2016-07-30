@@ -34,7 +34,7 @@ app.controller('editArticleController', function($scope, $stateParams, article, 
     $scope.articleValid = function() {
         var article = $scope.article;
 
-        return article.submitted_by && article.title && article.text_body;
+        return article.submitted_by && article.title && article.text_body || $scope.delete;
     };
 
     $scope.updateArticle = function() {
