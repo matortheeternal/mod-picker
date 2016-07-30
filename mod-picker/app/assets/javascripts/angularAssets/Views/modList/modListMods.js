@@ -25,79 +25,6 @@ app.controller('modListModsController', function($scope, modListService, modServ
         });
     };
 
-    $scope.buildUnresolvedCompatibility = function() {
-        $scope.notes.unresolved_compatibility = [];
-        $scope.notes.ignored_compatibility = [];
-        $scope.notes.compatibility.forEach(function(note) {
-            // skip destroyed or ignored notes
-            if (note._destroy) {
-                return;
-            } else if (note.ignored) {
-                $scope.notes.ignored_compatibility.push(note);
-                return;
-            }
-            switch (note.status) {
-                case 'incompatible':
-                case 'partially compatible':
-                    // unresolved if both mods are present
-                    if ($scope.findMod(note.mods[0].id, true) && $scope.findMod(note.mods[1].id, true)) {
-                        note.resolved = false;
-                        $scope.notes.unresolved_compatibility.push(note);
-                    } else {
-                        note.resolved = true;
-                    }
-                    break;
-                case 'compatibility mod':
-                    // unresolved if the compatibility mod is not present and both mods are present
-                    if (!$scope.findMod(note.compatibility_mod_id, true) &&
-                        $scope.findMod(note.mods[0].id, true) && $scope.findMod(note.mods[1].id, true)) {
-                        note.resolved = false;
-                        $scope.notes.unresolved_compatibility.push(note);
-                    } else {
-                        note.resolved = true;
-                    }
-                    break;
-            }
-        });
-    };
-
-    $scope.buildUnresolvedInstallOrder = function() {
-        $scope.notes.unresolved_install_order = [];
-        $scope.notes.ignored_install_order = [];
-        $scope.notes.install_order.forEach(function(note) {
-            // skip destroyed or ignored notes
-            if (note._destroy) {
-                return;
-            } else if (note.ignored) {
-                $scope.notes.ignored_install_order.push(note);
-                return;
-            }
-            var first_mod = $scope.findMod(note.mods[0].id, true);
-            var second_mod = $scope.findMod(note.mods[1].id, true);
-            // unresolved if the both mods are present and the first mod comes after the second mod
-            if (first_mod && second_mod && first_mod.index > second_mod.index) {
-                note.resolved = false;
-                $scope.notes.unresolved_install_order.push(note);
-            } else {
-                note.resolved = true;
-            }
-        });
-    };
-
-    $scope.buildMissingMods = function() {
-        $scope.required.missing_mods = [];
-        $scope.required.mods.forEach(function(requirement) {
-            // skip destroyed requirements
-            if (requirement._destroy) {
-                return;
-            }
-            var modPresent = $scope.findMod(requirement.required_mod.id, true);
-            if (!modPresent) {
-                $scope.required.missing_mods.push(requirement);
-            }
-        });
-    };
-
     $scope.retrieveMods = function() {
         $scope.retrieving.mods = true;
         modListService.retrieveModListMods($scope.mod_list.id).then(function(data) {
@@ -210,49 +137,11 @@ app.controller('modListModsController', function($scope, modListService, modServ
         $scope.$broadcast('updateItems');
     };
 
-    $scope.$on('resolveCompatibilityNote', function(event, options) {
-        switch(options.action) {
-            case "remove":
-                var foundMod = $scope.findMod(options.note.mods[options.index].id);
-                foundMod && $scope.removeMod(foundMod);
-                break;
-            case "add mod":
-                $scope.addMod(options.note.compatibility_mod.id);
-                break;
-            case "ignore":
-                options.note.ignored = !options.note.ignored;
-                // TODO: Update $scope.mod_list.ignored_notes
-                $scope.buildUnresolvedCompatibility();
-                break;
-        }
-    });
-
-    $scope.$on('resolveInstallOrderNote', function(event, options) {
-        switch(options.action) {
-            case "move":
-                var moveOptions = {
-                    moveId: options.note.mods[options.index].id,
-                    destId: options.note.mods[+!options.index].id,
-                    after: !!options.index
-                };
-                $scope.$broadcast('moveItem', moveOptions);
-                break;
-            case "ignore":
-                options.note.ignored = !options.note.ignored;
-                // TODO: Update $scope.mod_list.ignored_notes
-                $scope.buildUnresolvedInstallOrder();
-                break;
-        }
-    });
-
     $scope.$on('removeItem', function(event, modListMod) {
         $scope.removeMod(modListMod);
     });
 
     // direct method trigger events
     $scope.$on('rebuildModels', $scope.buildModsModel);
-    $scope.$on('rebuildMissingMods', $scope.buildMissingMods);
-    $scope.$on('rebuildUnresolvedCompatibility', $scope.buildUnresolvedCompatibility);
-    $scope.$on('rebuildUnresolvedCompatibility', $scope.buildUnresolvedCompatibility);
     $scope.$on('itemMoved', $scope.buildUnresolvedInstallOrder);
 });
