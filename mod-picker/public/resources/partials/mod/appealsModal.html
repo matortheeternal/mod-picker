@@ -85,7 +85,7 @@
 
     <div class="modal huge-modal" ng-if="appeal && !activeAppeal">
         <div class="close-modal">
-            <span class="fa fa-times" ng-click="toggleStatusModal(false)"></span>
+            <span class="fa fa-times" ng-click="closeStatusModal()"></span>
         </div>
 
         <h2>{{mod.name}} - Viewing Appeal</h2>
@@ -113,7 +113,7 @@
 
     <div class="modal huge-modal" ng-if="activeAppeal">
         <div class="close-modal">
-            <span class="fa fa-times" ng-click="toggleStatusModal(false)"></span>
+            <span class="fa fa-times" ng-click="closeStatusModal()"></span>
         </div>
 
         <h2>{{mod.name}} - New Appeal</h2>
