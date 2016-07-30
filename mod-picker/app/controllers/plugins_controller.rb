@@ -5,27 +5,20 @@ class PluginsController < ApplicationController
   def index
     @plugins = Plugin.all
 
-    render :json => @plugins
+    render :json => Plugin.index_json(@plugins)
   end
 
   # POST /plugins/search
   def search
     @plugins = Plugin.filter(search_params).sort({ column: "filename", direction: "ASC" }).limit(10)
 
-    render :json => @plugins.as_json({
-        :only => [:mod_id, :id, :filename],
-        :include => {
-            :mod => {
-                :only => [:name]
-            }
-        }
-    })
+    render :json => @plugins
   end
 
   # GET /plugins/1
   def show
     authorize! :read, @plugin
-    render :json => @plugin
+    render :json => Plugin.show_json(@plugin)
   end
 
   # DELETE /plugins/1
