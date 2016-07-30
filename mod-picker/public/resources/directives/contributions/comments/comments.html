@@ -1,0 +1,12 @@
+<div class="content-block">
+    <div class="content-title">Comments
+        <span class="right-item action-box" ng-click="startNewComment()">
+            <i class="fa fa-plus"></i> New Comment
+        </span>
+    </div>
+    <loader data="comments" spinner-class="big-spinner" content-class="content-container">
+        <comments-display comments="comments" current-user="currentUser" model-name="objectType" target="object"></comments-display>
+
+        <page-results pages="pageData" data="comments" callback="retrievalCallback"></page-results>
+    </loader>
+</div>

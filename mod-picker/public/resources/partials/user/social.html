@@ -5,15 +5,4 @@
     </div>
 </div>
 
-<div class="content-block">
-    <div class="content-title">Comments
-        <span class="right-item action-box" ng-click="startNewComment()">
-            <i class="fa fa-plus"></i> New Comment
-        </span>
-    </div>
-    <loader data="user.profile_comments" spinner-class="big-spinner" content-class="content-container">
-        <comments comments="user.profile_comments" current-user="currentUser" model-name="'User'" target="user"></comments>
-
-        <page-results pages="pages.profile_comments" data="user.profile_comments" callback="retrieveProfileComments"></page-results>
-    </loader>
-</div>
+<comments current-user="currentUser" page-data="pages.profile_comments" object-type="'User'" object="user"></comments>
