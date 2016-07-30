@@ -3,6 +3,12 @@
         <i class="fa fa-angle-left" aria-hidden="true"></i>
         See All Articles
     </a>
+    <br>
+    <a ng-href="#/article/{{article.id}}/edit" ng-if="permissions.canModerate">
+        <i class="fa fa-gear" aria-hidden="true"></i>
+        Edit This Article
+    </a>
+
     <article data="article"></article>
 
     <comments current-user="currentUser" page-data="pages.articleComments" object-type="'Article'" object="article"></comments>

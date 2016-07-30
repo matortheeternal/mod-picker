@@ -23,8 +23,9 @@ app.config(['$stateProvider', function($stateProvider) {
     });
 }]);
 
-app.controller('showArticleController', function($scope, $stateParams, article) {
+app.controller('showArticleController', function($scope, $stateParams, article, currentUser) {
     $scope.article = article;
+    $scope.permissions = currentUser.permissions;
 
     $scope.pages = {
         articleComments: {}

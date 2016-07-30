@@ -4,20 +4,8 @@ app.config(['$stateProvider', function($stateProvider) {
         controller: 'editArticleController',
         url: '/article/:articleId/edit',
         resolve: {
-            article: function(articleService, $stateParams, $q, currentUser) {
+            article: function(articleService, $stateParams, $q) {
                 var article = $q.defer();
-
-                //redirect to error page if the user doesn't have permission to edit articles
-                if (!currentUser.permissions.canModerate) {
-                    this.self.errorObj = {
-                        text: 'You aren\'t Allowed to edit Articles',
-                        response: response,
-                        stateName: "base.edit-article",
-                        stateUrl: window.location.hash
-                    };
-                    article.reject();
-                }
-
                 articleService.retrieveArticle($stateParams.articleId).then(function(articleData) {
                     article.resolve(articleData);
                 }, function(response) {
@@ -50,6 +38,12 @@ app.controller('editArticleController', function($scope, $stateParams, article, 
     };
 
     $scope.updateArticle = function() {
+        //delete the article if the box is checked
+        if ($scope.delete) {
+            $scope.deleteArticle();
+            return;
+        }
+
         // get changed article fields
         var articleDiff = objectUtils.getDifferentObjectValues($scope.originalArticle, $scope.article);
 
@@ -90,6 +84,20 @@ app.controller('editArticleController', function($scope, $stateParams, article, 
                 $scope.errors = response.data;
             });
         }
+    };
+
+    $scope.deleteArticle = function() {
+        $scope.submitting = true;
+        $scope.submittingStatus = "Deleting Article...";
+        articleService.deleteArticle($scope.article.id).then(function() {
+            $scope.success = true;
+            $scope.submittingStatus = "Article Deleted Successfully!";
+        }, function(response) {
+            $scope.success = false;
+            $scope.submittingStatus = "There were errors deleting the article.";
+            // TODO: Emit errors properly
+            $scope.errors = response.data;
+        });
     };
 
     $scope.closeModal = function() {

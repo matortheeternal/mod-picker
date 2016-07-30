@@ -44,6 +44,16 @@
                 ng-refresh="updateMDE"></text-area>
         </section>
 
+        <h3 class="section-title">Delete Article
+        <span class="help-tooltip" title="Check this and click save to permanently delete this article from the server.">?</span>
+    </h3>
+        <section>
+            <label>
+                <input type="checkbox" ng-model="delete" />
+                Permanently remove this article?
+            </label>
+        </section>
+
         <div class="action-button-container">
             <input class="btn action-btn"
                 type="submit"
