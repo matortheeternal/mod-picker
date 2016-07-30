@@ -277,6 +277,26 @@ table-items {
         min-width: 300px !important;
       }
     }
+
+    td a {
+      display: inline-block !important;
+    }
+
+    td .note {
+      font-style: italic;
+    }
+
+    tr.merged  {
+      td.index-column .note, td.load-order-column .note {
+        font-style: normal;
+        font-size: 11px;
+        color: $success_secondary;
+        font-weight: 700;
+        padding: 4px;
+        text-transform: capitalize;
+        margin: -2px;
+      }
+    }
   }
 }
 
