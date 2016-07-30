@@ -10,7 +10,7 @@ app.service('articleService', function(backend, $q, objectUtils) {
     };
 
     this.updateArticle = function(article) {
-        // prepare mod record
+        // prepare article record
         var articleData = {
             article: {
                 id: article.id,
@@ -21,7 +21,7 @@ app.service('articleService', function(backend, $q, objectUtils) {
         };
         objectUtils.deleteEmptyProperties(articleData, 1);
 
-        // submit mod
+        // submit article
         return backend.update('/articles/' + article.id, articleData);
     };
 
