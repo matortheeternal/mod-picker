@@ -25,6 +25,7 @@
             <table-items type="plugin" label="plugins" columns="columns" column-groups="columnGroups" actions="actions" model="model.plugins" editing="editing"></table-items>
         </div>
     </div>
+</loader>
 
 <required-plugins></required-plugins>
 
@@ -32,9 +33,7 @@
 
 <plugin-load-order-issues></plugin-load-order-issues>
 
-
-    <div class="action-button-container" ng-if="editing">
-        <input class="btn action-btn" type="submit" value="Save" ng-click="saveChanges()"/>
-        <input class="btn action-btn" type="button" value="Reset" ng-click="discardChanges()"/>
-    </div>
-</loader>
+<div class="action-button-container" ng-if="editing">
+    <input class="btn action-btn" type="submit" value="Save" ng-click="saveChanges()"/>
+    <input class="btn action-btn" type="button" value="Reset" ng-click="discardChanges()"/>
+</div>
