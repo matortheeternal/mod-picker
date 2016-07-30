@@ -7,25 +7,25 @@ app.directive('searchInput', function () {
             resultId: '=',
             searchFunction: '=',
             searchText: '=?',
-            placeholder: '=?',
             onChange: '=?',
             excludedId: '=?',
             disabled: '=?',
+            pause: '=?',
+            minLength: '=?',
+            placeholder: '@',
+            label: '@',
+            key: '@'
         }
     }
 });
 
-app.controller('searchInputController', function($scope, $timeout, modService, pluginService, userService) {
-    // set some constants
-    var pause = 700;
-    var minLength = 2;
-    $scope.defaultPlaceholders = {
-        plugins: "Enter plugin name",
-        users: "Enter username",
-        mods: "Enter mod name",
-        tools: "Enter tool name"
-    };
+app.controller('searchInputController', function($scope, $timeout) {
+    // default values
+    if (angular.isUndefined($scope.pause)) $scope.pause = 700;
+    if (angular.isUndefined($scope.minLength)) $scope.minLength = 2;
+    if (angular.isUndefined($scope.placeholder)) $scope.placeholder = 'Enter ' + $scope.label + ' ' + $scope.key;
 
+    // functions
     $scope.hoverRow = function(index) {
         $scope.currentIndex = index;
     };
@@ -53,13 +53,7 @@ app.controller('searchInputController', function($scope, $timeout, modService, p
 
     $scope.selectResult = function(result) {
         $scope.resultId = result.id;
-        if ($scope.searchType === 'plugins') {
-            $scope.searchText = result.filename;
-        } else if ($scope.searchType === 'users') {
-            $scope.searchText = result.username;
-        } else if ($scope.searchType === 'mods' || $scope.searchType === 'tools')  {
-            $scope.searchText = result.name;
-        }
+        $scope.searchText = result[$scope.key];
         $scope.showDropdown = false;
         $scope.results = [];
         $scope.$applyAsync();
@@ -132,21 +126,19 @@ app.controller('searchInputController', function($scope, $timeout, modService, p
             }
 
             // search if we have more than minLength characters
-            if ($scope.searchText.length >= minLength) {
+            if ($scope.searchText.length >= $scope.minLength) {
                 $scope.showDropdown = true;
 
                 // search for matching tags
                 $scope.searching = true;
                 $scope.searchTimer = setTimeout(function () {
                     $scope.search($scope.searchText);
-                }, pause);
+                }, $scope.pause);
             }
         }
     };
 
     $scope.$watch('resultId', function() {
-        if ($scope.onChange) {
-            $scope.onChange();
-        }
+        $scope.onChange && $scope.onChange();
     }, true);
 });
