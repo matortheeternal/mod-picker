@@ -518,6 +518,20 @@ app.service('columnsFactory', function() {
             },
             {
                 group: "General",
+                visibility: false,
+                required: true,
+                label: "Load Order",
+                data: function(item) {
+                    if (!item.merged) return item.index;
+                },
+                note: function($scope, item) {
+                    if (item.merged) return 'merged';
+                },
+                filter: "hex",
+                class: "load-order-column"
+            },
+            {
+                group: "General",
                 visibility: true,
                 required: true,
                 label: "Filename",
