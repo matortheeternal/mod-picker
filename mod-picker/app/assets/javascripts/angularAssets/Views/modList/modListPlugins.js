@@ -1,10 +1,19 @@
-app.controller('modListPluginsController', function($scope, modListService, columnsFactory, actionsFactory) {
+app.controller('modListPluginsController', function($scope, $q, modListService, columnsFactory, actionsFactory) {
     // initialize variables
     $scope.columns = columnsFactory.modListPluginColumns();
     $scope.columnGroups = columnsFactory.modListPluginColumnGroups();
     $scope.actions = actionsFactory.modListPluginActions();
 
     // functions
+    $scope.searchPluginStore = function(str) {
+        var action = $q.defer();
+        var matchingPlugins = $scope.plugin_store.filter(function(plugin) {
+            return plugin.filename.toLowerCase().includes(str);
+        });
+        action.resolve(matchingPlugins);
+        return action.promise;
+    };
+
     $scope.buildPluginsModel = function() {
         $scope.model.plugins = [];
         $scope.mod_list.groups.forEach(function(group) {
