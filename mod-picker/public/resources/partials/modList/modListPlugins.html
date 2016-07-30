@@ -17,6 +17,9 @@
             <span class="right-item action-box" ng-if="editing" ng-click="addGroup('plugins')">
                 <i class="fa fa-plus"></i> New Group
             </span>
+            <span class="right-item toggle-item" ng-click="toggleLoadOrder()">
+                Show {{showLoadOrder ? 'Decimal Indexes' : 'Hex Load Order'}}
+            </span>
         </div>
         <div class="content-container overflow-hack">
             <table-items type="plugin" label="plugins" columns="columns" column-groups="columnGroups" actions="actions" model="model.plugins" editing="editing"></table-items>

@@ -246,6 +246,12 @@ app.controller('modListPluginsController', function($scope, modListService, colu
         $scope.$broadcast('updateItems');
     };
 
+    $scope.toggleLoadOrder = function() {
+        $scope.showLoadOrder = !$scope.showLoadOrder;
+        $scope.columns[0].visibility = !$scope.showLoadOrder;
+        $scope.columns[1].visibility = $scope.showLoadOrder;
+    };
+
     $scope.$on('removeItem', function(event, modListPlugin) {
         $scope.removePlugin(modListPlugin);
     });
