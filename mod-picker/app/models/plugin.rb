@@ -75,29 +75,58 @@ class Plugin < ActiveRecord::Base
     ModListPlugin.where(plugin_id: self.id).delete_all
   end
 
+  def self.index_json(collection)
+    collection.as_json({
+        :include => {
+            :masters => {
+                :except => [:plugin_id],
+                :include => {
+                    :master_plugin => {
+                        :only => [:id, :mod_id, :filename]
+                    }
+                }
+            },
+            :mod => {
+                :only => [:id, :name]
+            }
+        }
+    })
+  end
+
+  def self.show_json(collection)
+    collection.as_json({
+        :include => {
+            :masters => {
+                :except => [:plugin_id],
+                :include => {
+                    :master_plugin => {
+                        :only => [:mod_id, :filename]
+                    }
+                }
+            },
+            :dummy_masters => {
+                :except => [:plugin_id]
+            },
+            :overrides => {
+                :except => [:plugin_id]
+            },
+            :plugin_errors => {
+                :except => [:plugin_id]
+            },
+            :plugin_record_groups => {
+                :except => [:plugin_id]
+            }
+        }
+    })
+  end
+
   def as_json(options={})
     if JsonHelpers.json_options_empty(options)
       default_options = {
+          :only => [:mod_id, :id, :filename],
           :include => {
-              :masters => {
-                  :except => [:plugin_id],
-                  :include => {
-                      :master_plugin => {
-                          :only => [:mod_id, :filename]
-                      }
-                  }
-              },
-              :dummy_masters => {
-                  :except => [:plugin_id]
-              },
-              :overrides => {
-                  :except => [:plugin_id]
-              },
-              :plugin_errors => {
-                  :except => [:plugin_id]
-              },
-              :plugin_record_groups => {
-                  :except => [:plugin_id]
+              :mod => {
+                  :only => [:name]
               }
           }
       }
