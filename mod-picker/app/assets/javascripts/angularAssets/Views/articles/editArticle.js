@@ -4,20 +4,8 @@ app.config(['$stateProvider', function($stateProvider) {
         controller: 'editArticleController',
         url: '/article/:articleId/edit',
         resolve: {
-            article: function(articleService, $stateParams, $q, currentUser) {
+            article: function(articleService, $stateParams, $q) {
                 var article = $q.defer();
-
-                //redirect to error page if the user doesn't have permission to edit articles
-                if (!currentUser.permissions.canModerate) {
-                    this.self.errorObj = {
-                        text: 'You aren\'t Allowed to edit Articles',
-                        response: response,
-                        stateName: "base.edit-article",
-                        stateUrl: window.location.hash
-                    };
-                    article.reject();
-                }
-
                 articleService.retrieveArticle($stateParams.articleId).then(function(articleData) {
                     article.resolve(articleData);
                 }, function(response) {
