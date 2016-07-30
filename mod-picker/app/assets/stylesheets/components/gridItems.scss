@@ -243,38 +243,38 @@ table-items {
   table {
     thead, tbody {
       .text-cell {
-        width: 240px;
         min-width: 240px !important;
+        max-width: 240px;
       }
 
       .number-cell, .bytes-cell {
-        width: 100px;
         min-width: 100px;
+        max-width: 100px;
       }
 
       .actions-cell {
         min-width: 90px;
-        width: 90px;
+        max-width: 90px;
       }
 
       .crc-column {
         min-width: 80px !important;
-        width: 80px !important;
+        max-width: 80px !important;
       }
 
       .author-column {
         min-width: 180px !important;
-        width: 180px !important;
+        max-width: 180px !important;
       }
 
       .index-column {
-        width: 55px !important;
         min-width: 55px !important;
+        max-width: 55px !important;
       }
 
       .load-order-column {
-        width: 70px !important;
-        min-width: 70px !important;
+        min-width: 75px !important;
+        max-width: 75px !important;
       }
 
       .primary-column {
