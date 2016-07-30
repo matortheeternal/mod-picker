@@ -3,7 +3,7 @@ class PluginsController < ApplicationController
 
   # GET /plugins
   def index
-    @plugins = Plugin.all
+    @plugins = Plugin.accessible_by(current_ability).filter(filtering_params).sort(params[:sort]).paginate(:page => params[:page])
 
     render :json => Plugin.index_json(@plugins)
   end
@@ -37,9 +37,14 @@ class PluginsController < ApplicationController
       @plugin = Plugin.find(params[:id])
     end
 
+    # Params we allow filtering on
+    def filtering_params
+      params[:filters].permit(:search, :game)
+    end
+
     # Params we allow searching on
     def search_params
-      params[:filters].slice(:search, :game)
+      params[:filters].permit(:search, :game)
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
