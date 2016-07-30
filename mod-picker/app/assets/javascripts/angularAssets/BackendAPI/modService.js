@@ -21,6 +21,14 @@ app.service('modService', function(backend, $q, categoryService, errorsFactory, 
         }
         return backend.post('/mods/search', postData);
     };
+
+    this.searchModsNoTools = function(name) {
+        return service.searchMods(name, false);
+    };
+
+    this.searchTools = function() {
+        return service.searchMods(name, true);
+    };
     
     this.retrieveMod = function(modId) {
         var output = $q.defer();
