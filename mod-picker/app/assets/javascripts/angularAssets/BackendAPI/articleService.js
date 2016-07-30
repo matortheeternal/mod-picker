@@ -23,4 +23,8 @@ app.service('articleService', function(backend, $q, objectUtils) {
         // submit mod
         return backend.update('/articles/' + article.id, articleData);
     };
+
+    this.submitImage = function(articleId, image) {
+        return backend.postFile('/articles/' + articleId + '/image', 'image', image);
+    };
 });

@@ -76,7 +76,7 @@ app.controller('editArticleController', function($scope, $stateParams, article, 
             $scope.errors = response.data;
         });
         if ($scope.image.file) {
-            modService.submitImage($scope.article.id, $scope.image.file).then(function () {
+            articleService.submitImage($scope.article.id, $scope.image.file).then(function () {
                 if (!angular.isDefined($scope.success)) {
                     $scope.success = true;
                 } else if ($scope.success) {

@@ -137,6 +137,7 @@ Rails.application.routes.draw do
     #articles
     resources :articles, only: [:show, :create, :update, :destroy]
     match '/articles/:id/comments', to: 'articles#comments', via: [:get, :post]
+    match '/articles/:id/image', to: 'articles#image', via: [:post]
   end
 
   # welcome page

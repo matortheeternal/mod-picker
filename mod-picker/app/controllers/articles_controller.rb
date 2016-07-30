@@ -1,5 +1,5 @@
 class ArticlesController < ApplicationController
-  before_action :set_article, only: [:show, :comments, :update, :destroy]
+  before_action :set_article, only: [:show, :comments, :image, :update, :destroy]
 
   # GET /articles/1
   def show
@@ -59,6 +59,17 @@ class ArticlesController < ApplicationController
     }
   end
 
+  # POST /articles/1/image
+  def image
+    authorize! :update, @article
+
+    if @article.update(image_params)
+      render json: {status: :ok}
+    else
+      render json: @article.errors, status: :unprocessable_entity
+    end
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_article
@@ -68,5 +79,9 @@ class ArticlesController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def article_params
       params.require(:article).permit(:title, :submitted_by, :text_body)
+    end
+
+    def image_params
+      { image_file: params[:image] }
     end
 end
