@@ -1,4 +1,4 @@
-app.service('articleService', function(backend, $q) {
+app.service('articleService', function(backend, $q, objectUtils) {
     this.retrieveArticle = function(articleId) {
         var output = $q.defer();
         backend.retrieve('/articles/' + articleId).then(function(articleData) {
@@ -7,5 +7,20 @@ app.service('articleService', function(backend, $q) {
             output.reject(response);
         });
         return output.promise;
+    };
+
+    this.updateArticle = function(article) {
+        // prepare mod record
+        var articleData = {
+            article: {
+                title: article.title,
+                submitted_by: article.submitted_by,
+                text_body: article.text_body
+            }
+        };
+        objectUtils.deleteEmptyProperties(articleData, 1);
+
+        // submit mod
+        return backend.update('/articles/' + article.id, articleData);
     };
 });
