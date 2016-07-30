@@ -40,13 +40,13 @@
                 <li ng-repeat="requirement in required.missing_plugins">
                     <a ng-href="#/mod/{{requirement.master_plugin.mod_id}}/analysis?plugin={{requirement.master_plugin.id}}">{{requirement.master_plugin.filename}}</a>
                     is required by
-                    <span ng-repeat="plugin in requirement.plugins | limitTo: 3">
+                    <span ng-repeat="plugin in requirement.plugins | limitTo: 2">
                         <a ng-href="#/mod/{{plugin.mod_id}}/analysis?plugin={{plugin.id}}">{{plugin.filename}}</a>
-                        {{!$last || requirement.plugins.length > 3 ? ', ' : ''}}
+                        {{!$last || requirement.plugins.length > 2 ? ', ' : ''}}
                     </span>
-                    <span ng-if="requirement.plugins.length > 3">
-                        and 
-                        <a ng-click="showRequirers(requirement)">{{requirement.plugins.length - 3}} more</a>
+                    <span ng-if="requirement.plugins.length > 2">
+                        and
+                        <span class="help-tooltip" title="{{getRequirerList(requirement, 2)}}">{{requirement.plugins.length - 2}} more</span>
                     </span>
                     <!-- resolution options -->
                     <span ng-if="editing">
@@ -63,7 +63,13 @@
                 <li ng-repeat="requirement in required.plugins" ng-hide="requirement._destroy">
                     <a ng-href="#/mod/{{requirement.master_plugin.mod_id}}/analysis?plugin={{requirement.master_plugin.id}}">{{requirement.master_plugin.filename}}</a>
                     is required by
-                    <a ng-href="#/mod/{{requirement.plugin.mod_id}}/analysis?plugin={{requirement.plugin.id}}">{{requirement.plugin.filename}}</a>
+                    <span ng-repeat="plugin in requirement.plugins | limitTo: 2">
+                        <a ng-href="#/mod/{{plugin.mod_id}}/analysis?plugin={{plugin.id}}">{{plugin.filename}}</a>{{!$last || requirement.plugins.length > 2 ? ', ' : ''}}
+                    </span>
+                    <span ng-if="requirement.plugins.length > 2">
+                        and
+                        <span class="help-tooltip no-margin" title="{{getRequirerList(requirement, 2)}}">{{requirement.plugins.length - 2}} more</span>
+                    </span>
                 </li>
             </ul>
             <div ng-show="!show.missing_plugins && isEmpty(required.plugins)" class="content-message">
