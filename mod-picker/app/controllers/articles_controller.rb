@@ -1,5 +1,5 @@
 class ArticlesController < ApplicationController
-  before_action :set_article, only: [:show, :comments, :update, :destroy]
+  before_action :set_article, only: [:show, :comments, :image, :update, :destroy]
 
   # GET /articles/1
   def show
@@ -28,7 +28,7 @@ class ArticlesController < ApplicationController
 
   # PATCH/PUT /articles/1
   def update
-    authorize! :update, @article
+    authorize! :update, @article, :message => "You are not allowed to edit this article"
     if @article.update(article_params)
       render json: {status: :ok}
     else
@@ -48,15 +48,25 @@ class ArticlesController < ApplicationController
 
   # GET /articles/1/comments
   def comments
-    article = Article.find(params[:id])
-    authorize! :read, article
-    comments = article.comments.accessible_by(current_ability).sort(params[:sort]).paginate(:page => params[:page], :per_page => 10)
-    count = article.comments.accessible_by(current_ability).count
+    authorize! :read, @article
+    comments = @article.comments.accessible_by(current_ability).sort(params[:sort]).paginate(:page => params[:page], :per_page => 10)
+    count = @article.comments.accessible_by(current_ability).count
     render :json => {
         comments: comments,
         max_entries: count,
         entries_per_page: 10
     }
+  end
+
+  # POST /articles/1/image
+  def image
+    authorize! :update, @article
+
+    if @article.update(image_params)
+      render json: {status: :ok}
+    else
+      render json: @article.errors, status: :unprocessable_entity
+    end
   end
 
   private
@@ -68,5 +78,9 @@ class ArticlesController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def article_params
       params.require(:article).permit(:title, :submitted_by, :text_body)
+    end
+
+    def image_params
+      { image_file: params[:image] }
     end
 end
