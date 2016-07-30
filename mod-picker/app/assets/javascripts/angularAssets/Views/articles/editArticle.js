@@ -38,6 +38,12 @@ app.controller('editArticleController', function($scope, $stateParams, article, 
     };
 
     $scope.updateArticle = function() {
+        //delete the article if the box is checked
+        if ($scope.delete) {
+            $scope.deleteArticle();
+            return;
+        }
+
         // get changed article fields
         var articleDiff = objectUtils.getDifferentObjectValues($scope.originalArticle, $scope.article);
 
@@ -78,6 +84,20 @@ app.controller('editArticleController', function($scope, $stateParams, article, 
                 $scope.errors = response.data;
             });
         }
+    };
+
+    $scope.deleteArticle = function() {
+        $scope.submitting = true;
+        $scope.submittingStatus = "Deleting Article...";
+        articleService.deleteArticle($scope.article.id).then(function() {
+            $scope.success = true;
+            $scope.submittingStatus = "Article Deleted Successfully!";
+        }, function(response) {
+            $scope.success = false;
+            $scope.submittingStatus = "There were errors deleting the article.";
+            // TODO: Emit errors properly
+            $scope.errors = response.data;
+        });
     };
 
     $scope.closeModal = function() {

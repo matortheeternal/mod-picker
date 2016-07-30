@@ -25,6 +25,10 @@ app.service('articleService', function(backend, $q, objectUtils) {
         return backend.update('/articles/' + article.id, articleData);
     };
 
+    this.deleteArticle = function(articleId) {
+        return backend.delete('/articles/' + articleId);
+    };
+
     this.submitImage = function(articleId, image) {
         return backend.postFile('/articles/' + articleId + '/image', 'image', image);
     };
