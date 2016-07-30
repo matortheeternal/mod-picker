@@ -129,6 +129,7 @@ app.controller('modListPluginsController', function($scope, modListService, colu
             $scope.notes.plugin_compatibility = data.compatibility_notes;
             $scope.notes.load_order = data.load_order_notes;
             $scope.mod_list.plugins = data.plugins;
+            $scope.plugin_store = data.plugin_store;
             $scope.mod_list.groups = Array.prototype.concat($scope.mod_list.groups || [], data.groups);
             $scope.originalModList.plugins = angular.copy($scope.mod_list.plugins);
             $scope.originalModList.groups = angular.copy($scope.mod_list.groups);

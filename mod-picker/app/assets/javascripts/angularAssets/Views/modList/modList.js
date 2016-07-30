@@ -74,6 +74,7 @@ app.controller('modListController', function($scope, $q, $stateParams, $timeout,
         comments: {}
     };
     $scope.model = {};
+    $scope.plugin_store = [];
     $scope.newTags = [];
     $scope.required = {};
     $scope.notes = {};
