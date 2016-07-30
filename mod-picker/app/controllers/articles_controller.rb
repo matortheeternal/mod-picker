@@ -48,10 +48,9 @@ class ArticlesController < ApplicationController
 
   # GET /articles/1/comments
   def comments
-    article = Article.find(params[:id])
-    authorize! :read, article
-    comments = article.comments.accessible_by(current_ability).sort(params[:sort]).paginate(:page => params[:page], :per_page => 10)
-    count = article.comments.accessible_by(current_ability).count
+    authorize! :read, @article
+    comments = @article.comments.accessible_by(current_ability).sort(params[:sort]).paginate(:page => params[:page], :per_page => 10)
+    count = @article.comments.accessible_by(current_ability).count
     render :json => {
         comments: comments,
         max_entries: count,
