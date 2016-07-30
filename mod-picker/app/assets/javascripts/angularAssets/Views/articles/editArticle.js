@@ -60,6 +60,7 @@ app.controller('editArticleController', function($scope, $stateParams, article, 
 
         $scope.submitting = true;
         $scope.submittingStatus = "Updating Article...";
+        articleDiff.id = $scope.article.id;
         articleService.updateArticle(articleDiff).then(function() {
             if (!angular.isDefined($scope.success)) {
                 $scope.success = true;

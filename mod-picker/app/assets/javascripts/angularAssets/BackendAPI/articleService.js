@@ -13,6 +13,7 @@ app.service('articleService', function(backend, $q, objectUtils) {
         // prepare mod record
         var articleData = {
             article: {
+                id: article.id,
                 title: article.title,
                 submitted_by: article.submitted_by,
                 text_body: article.text_body
