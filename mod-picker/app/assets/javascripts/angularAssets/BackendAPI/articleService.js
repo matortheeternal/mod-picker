@@ -25,6 +25,19 @@ app.service('articleService', function(backend, $q, objectUtils) {
         return backend.update('/articles/' + article.id, articleData);
     };
 
+    this.submitArticle = function(article, image) {
+        // prepare article record
+        var articleData = {
+            article: {
+                title: article.title,
+                text_body: article.text_body
+            }
+        };
+
+        // submit article
+        return backend.post('/articles', articleData);
+    }
+
     this.submitImage = function(articleId, image) {
         return backend.postFile('/articles/' + articleId + '/image', 'image', image);
     };

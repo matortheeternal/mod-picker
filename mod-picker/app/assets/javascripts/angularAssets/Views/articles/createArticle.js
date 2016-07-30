@@ -24,13 +24,29 @@ app.controller('createArticleController', function($scope, $stateParams, objectU
         if (!$scope.articleValid()) {
             return;
         }
+        $scope.submitting = true;
 
         $scope.submittingStatus = "Submitting article..";
-        articleService.submitArticle($scope.articles).then(function() {
-            $scope.submittingStatus = "Article Submitted Successfully!";
-            $scope.success = true;
+        articleService.submitArticle($scope.article).then(function(response) {
+            var articleId = response.id;
+            if ($scope.image.file) {
+                articleService.submitImage(articleId, $scope.image.file).then(function () {
+                    $scope.success = true;
+                    $scope.submittingStatus = "Article submitted Successfully!";
+                }, function(response) {
+                    $scope.success = false;
+                    $scope.submittingStatus = "There were errors submitting the article.";
+                    // TODO: Emit errors properly
+                    $scope.errors = response.data;
+                });
+            } else {
+                $scope.submittingStatus = "Article submitted Successfully!";
+                $scope.success = true;
+            }
         }, function(response) {
-            $scope.submittingStatus = "There were errors submitting your article.";
+            $scope.success = false;
+            $scope.submittingStatus = "There were errors submitting the article.";
+            // TODO: Emit errors properly
             $scope.errors = response.data;
         });
     };

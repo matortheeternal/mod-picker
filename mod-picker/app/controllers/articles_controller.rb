@@ -21,7 +21,7 @@ class ArticlesController < ApplicationController
     @article.submitted_by = current_user.id
 
     if @article.save
-      render json: {status: :ok}
+      render json: {status: :ok, id: @article.id}
     else
       render json: @article.errors, status: :unprocessable_entity
     end
