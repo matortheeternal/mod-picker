@@ -1,5 +1,7 @@
 app.filter('hex', function() {
     return function(number, padding) {
+        // return undefined if number is undefined
+        if (!number) return;
         // set up default padding
         if (typeof padding === 'undefined') padding = 2;
 
