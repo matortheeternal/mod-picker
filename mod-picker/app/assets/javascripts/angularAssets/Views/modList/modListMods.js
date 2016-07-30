@@ -1,4 +1,6 @@
-app.controller('modListModsController', function($scope, modListService) {
+app.controller('modListModsController', function($scope, modListService, modService) {
+    $scope.searchMods = modService.searchModsNoTools;
+
     $scope.buildModsModel = function() {
         $scope.model.mods = [];
         $scope.mod_list.groups.forEach(function(group) {

@@ -8,7 +8,7 @@
 
         <div class="tab-bar-item" ng-if="editing">
             <strong>Add a tool:</strong>
-            <search-input search-type="tools" result-id="add.tool.id" search-text="add.tool.name" on-change="addTool(add.tool.id)"></search-input>
+            <search-input search-function="searchTools" result-id="add.tool.id" search-text="add.tool.name" on-change="addTool(add.tool.id)" label="tool" key="name"></search-input>
         </div>
     </div>
 

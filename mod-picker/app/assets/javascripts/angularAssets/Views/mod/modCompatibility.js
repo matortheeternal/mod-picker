@@ -1,10 +1,15 @@
-app.controller('modCompatibilityController', function($scope, $stateParams, $state, contributionFactory, contributionService, sortFactory) {
+app.controller('modCompatibilityController', function($scope, $stateParams, $state, modService, pluginService, contributionFactory, contributionService, sortFactory) {
     $scope.sort.compatibility_notes = {
         column: $stateParams.scol,
         direction: $stateParams.sdir
     };
     $scope.filters.compatibility_notes.modlist = $stateParams.filter;
 
+    // inherited functions
+    $scope.searchMods = modService.searchMods;
+    $scope.searchPlugins = pluginService.searchPlugins;
+
+    // functions
     $scope.retrieveCompatibilityNotes = function(page) {
         // retrieve the compatibility notes
         var options = {
