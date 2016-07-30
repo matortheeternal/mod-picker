@@ -7,7 +7,7 @@ class ModListPlugin < ActiveRecord::Base
 
   # Validations
   validates :mod_list_id, :plugin_id, :index, presence: true
-  validates :active, inclusion: [true, false]
+  validates :cleaned, :merged, inclusion: [true, false]
   # can only have a mod on a given mod list once
   validates :plugin_id, uniqueness: { scope: :mod_list_id, :message => "The plugin is already present on the mod list." }
 
