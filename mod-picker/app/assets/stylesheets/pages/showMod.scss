@@ -273,6 +273,7 @@
     }
 
     .toggle-item {
+      margin-right: 8px;
       cursor: pointer;
       @include user-select(none);
       @include transition(all 0.2s ease-in-out);
