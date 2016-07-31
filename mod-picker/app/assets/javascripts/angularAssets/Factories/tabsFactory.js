@@ -40,7 +40,7 @@ app.factory("tabsFactory", function() {
     };
 
     this.buildModListTabs = function(modList) {
-        return [
+        var tabs = [
             {
                 name: 'Details'
             },
@@ -59,12 +59,17 @@ app.factory("tabsFactory", function() {
             {
                 name: 'Config',
                 count: modList.config_files_count
-            },
-            {
-                name: 'Comments',
-                count: modList.comments_count
             }
         ];
+
+        if (!modList.disable_comments) {
+            tabs.push({
+                name: 'Comments',
+                count: modList.comments_count
+            });
+        }
+
+        return tabs;
     };
 
     return factory;
