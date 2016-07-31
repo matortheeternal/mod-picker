@@ -4,7 +4,8 @@ app.directive('modlistTable', function() {
         templateUrl: '/resources/directives/modlistTable.html',
         controller: 'modlistTableController',
         scope: {
-            modlists: '='
+            modlists: '=',
+            title: '@'
         }
     };
 });
