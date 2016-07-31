@@ -619,21 +619,21 @@ app.service('columnsFactory', function() {
             {
                 group: "General",
                 visibility: true,
-                label: "Record Count",
+                label: "Records",
                 data: "plugin.record_count",
                 filter: "number"
             },
             {
                 group: "General",
                 visibility: true,
-                label: "Override Count",
+                label: "Overrides",
                 data: "plugin.override_count",
                 filter: "number"
             },
             {
                 group: "General",
                 visibility: true,
-                label: "Errors Count",
+                label: "Errors",
                 data: "plugin.errors_count",
                 filter: "number"
             }
