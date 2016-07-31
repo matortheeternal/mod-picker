@@ -21,11 +21,11 @@ app.service('requirementUtils', function () {
         for (var i = 0; i < array.length; i++) {
             if (findFunction.constructor == Array) {
                 for (var j = 0; j < findFunction.length; j++) {
-                    if (findFunction[j](array[i], true)) {
+                    if (findFunction[j](array[i].id, true)) {
                         return true;
                     }
                 }
-            } else if (findFunction(array[i], true)) {
+            } else if (findFunction(array[i].id, true)) {
                 return true;
             }
         }
