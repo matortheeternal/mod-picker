@@ -17,6 +17,14 @@ app.service('requirementUtils', function () {
         }
     };
 
+    this.findOne = function(findFunction, array) {
+        for (var i = 0; i < array.length; i++) {
+            if (findFunction(array[i], true)) {
+                return true;
+            }
+        }
+    };
+
     this.addRequirements = function(newRequirements, requirements, key, reqKey) {
         var pluralKey = key + "s";
         var destroyedKey = "destroyed_" + pluralKey;
