@@ -26,7 +26,6 @@ app.controller('modListModsController', function($scope, modListService, modServ
     };
 
     $scope.retrieveMods = function() {
-        $scope.retrieving.mods = true;
         modListService.retrieveModListMods($scope.mod_list.id).then(function(data) {
             $scope.required.mods = data.required_mods;
             $scope.notes.compatibility = data.compatibility_notes;
@@ -37,16 +36,14 @@ app.controller('modListModsController', function($scope, modListService, modServ
             $scope.originalModList.groups = angular.copy($scope.mod_list.groups);
             $scope.buildModsModel();
             $scope.$broadcast('initializeModules');
-            $scope.retrieving.mods = false;
+            $scope.modsReady = true;
         }, function(response) {
             $scope.errors.mods = response;
         });
     };
 
-    // retrieve mods if we don't have them and aren't currently retrieving them
-    if (!$scope.mod_list.mods && !$scope.retrieving.mods) {
-        $scope.retrieveMods();
-    }
+    // retrieve mods when the state is first loaded
+    $scope.retrieveMods();
 
     $scope.recoverMod = function(modListMod) {
         // if mod is already present on the user's mod list but has been

@@ -4,7 +4,7 @@
             <i class="fa fa-plus"></i> New Comment
         </span>
     </div>
-    <loader data="mod_list.comments" spinner-class="big-spinner" content-class="content-container">
+    <loader data="mod_list.comments && commentsReady" spinner-class="big-spinner" content-class="content-container">
         <comments comments="mod_list.comments" current-user="currentUser" model-name="'ModList'" target="mod_list"></comments>
 
         <page-results pages="pages.comments" data="mod_list.comments" callback="retrieveComments"></page-results>

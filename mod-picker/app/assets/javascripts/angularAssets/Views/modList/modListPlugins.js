@@ -41,7 +41,6 @@ app.controller('modListPluginsController', function($scope, $q, modListService, 
     };
 
     $scope.retrievePlugins = function() {
-        $scope.retrieving.plugins = true;
         modListService.retrieveModListPlugins($scope.mod_list.id).then(function(data) {
             $scope.required.plugins = data.required_plugins;
             $scope.notes.plugin_compatibility = data.compatibility_notes;
@@ -53,16 +52,14 @@ app.controller('modListPluginsController', function($scope, $q, modListService, 
             $scope.originalModList.groups = angular.copy($scope.mod_list.groups);
             $scope.buildPluginsModel();
             $scope.$broadcast('initializeModules');
-            $scope.retrieving.plugins = false;
+            $scope.pluginsReady = true;
         }, function(response) {
             $scope.errors.plugins = response;
         });
     };
 
-    // retrieve plugins if we don't have them and aren't currently retrieving them
-    if (!$scope.mod_list.plugins && !$scope.retrieving.plugins) {
-        $scope.retrievePlugins();
-    }
+    // retrieve plugins when the state is first loaded
+    $scope.retrievePlugins();
     
     // plugin handling
     $scope.recoverPlugin = function(modListPlugin) {

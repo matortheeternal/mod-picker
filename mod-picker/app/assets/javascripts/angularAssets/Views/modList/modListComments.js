@@ -10,7 +10,7 @@ app.controller('modListCommentsController', function($scope, contributionService
         };
         contributionService.retrieveComments('mod_lists', $scope.mod_list.id, options, $scope.pages.comments).then(function(data) {
             $scope.mod_list.comments = data;
-            $scope.retrieving.comments = false;
+            $scope.commentsReady = true;
         }, function(response) {
             $scope.errors.comments = response;
         });
@@ -20,9 +20,6 @@ app.controller('modListCommentsController', function($scope, contributionService
         $scope.$broadcast('startNewComment');
     };
 
-    // retrieve mods if we don't have them and aren't currently retrieving them
-    if (!$scope.mod_list.comments && !$scope.retrieving.comments) {
-        $scope.retrieving.comments = true;
-        $scope.retrieveComments();
-    }
+    // retrieve comments when the state is first loaded
+    $scope.retrieveComments();
 });
