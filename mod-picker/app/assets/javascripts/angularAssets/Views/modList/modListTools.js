@@ -1,4 +1,8 @@
-app.controller('modListToolsController', function($scope, $rootScope, $state, $stateParams, $timeout, modListService, modService, listUtils) {
+app.controller('modListToolsController', function($scope, $rootScope, $state, $stateParams, $timeout, modListService, modService, listUtils, columnsFactory, actionsFactory) {
+    // initialize variables
+    $scope.columns = columnsFactory.modListModColumns();
+    $scope.columnGroups = columnsFactory.modListModColumnGroups();
+    $scope.actions = actionsFactory.modListToolActions();
     $scope.searchTools = modService.searchTools;
 
     $scope.buildToolsModel = function() {
