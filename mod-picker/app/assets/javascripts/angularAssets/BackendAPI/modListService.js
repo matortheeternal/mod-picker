@@ -96,7 +96,8 @@ app.service('modListService', function (backend, $q, objectUtils, userTitleServi
                 hidden: modList.hidden,
                 mod_list_groups_attributes: mod_list_groups,
                 mod_list_mods_attributes: mod_list_mods,
-                mod_list_plugins_attributes: mod_list_plugins
+                mod_list_plugins_attributes: mod_list_plugins,
+                custom_plugins_attributes: modList.custom_plugins
             }
         };
         objectUtils.deleteEmptyProperties(modListData, 1);
