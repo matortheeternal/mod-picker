@@ -19,7 +19,7 @@ app.controller('requiredModsController', function($scope, requirementUtils) {
             }
             var requiredModPresent = $scope.findMod(requirement.required_mod.id, true);
             if (!requiredModPresent) {
-                if (requirementUtils.findOne($scope.findMod, requirement.mods)) {
+                if (requirementUtils.findOne([$scope.findTool, $scope.findMod], requirement.mods)) {
                     $scope.required.missing_mods.push(requirement);
                 }
             }
