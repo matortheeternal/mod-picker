@@ -19,6 +19,9 @@ class Article < ActiveRecord::Base
   belongs_to :submitter, :class_name => 'User', :foreign_key => 'submitted_by', :inverse_of => 'articles'
   has_many :comments, :as => 'commentable'
 
+  # number of users per page on the users index
+  self.per_page = 15
+
   # VALIDATIONS
   validates :submitted_by, :title, :text_body, presence: true
 
