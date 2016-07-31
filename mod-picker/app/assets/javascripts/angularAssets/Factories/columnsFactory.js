@@ -491,7 +491,7 @@ app.service('columnsFactory', function() {
             {
                 group: "General",
                 visibility: false,
-                label: "Average Rating",
+                label: "Avg Rating",
                 data: "mod.average_rating",
                 filter: "number:0"
             },
