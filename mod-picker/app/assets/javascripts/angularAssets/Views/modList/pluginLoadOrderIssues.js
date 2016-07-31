@@ -8,23 +8,8 @@ app.directive('pluginLoadOrderIssues', function() {
     }
 });
 
-app.controller('pluginLoadOrderIssuesController', function($scope) {
-    $scope.reAddNotes = function(pluginId) {
-        $scope.notes.load_order.forEach(function(note) {
-            if (note._destroy && note.plugins[0].id == pluginId || note.plugins[1].id == pluginId) {
-                delete note._destroy;
-            }
-        });
-    };
-
-    $scope.removeNotes = function(pluginId) {
-        $scope.notes.load_order.forEach(function(note) {
-            if (note.plugins[0].id == pluginId || note.plugins[1].id == pluginId) {
-                note._destroy = true;
-            }
-        });
-    };
-
+app.controller('pluginLoadOrderIssuesController', function($scope, listUtils) {
+    /* BUILD VIEW MODEL */
     $scope.buildUnresolvedLoadOrder = function() {
         $scope.notes.unresolved_load_order = [];
         $scope.notes.ignored_load_order = [];
@@ -48,6 +33,24 @@ app.controller('pluginLoadOrderIssuesController', function($scope) {
         });
     };
 
+    /* UPDATE VIEW MODEL */
+    $scope.recoverLoadOrderNotes = function(pluginId) {
+        $scope.notes.load_order.forEach(function(note) {
+            if (note._destroy && note.plugins[0].id == pluginId || note.plugins[1].id == pluginId) {
+                delete note._destroy;
+            }
+        });
+    };
+
+    $scope.removeLoadOrderNotes = function(pluginId) {
+        $scope.notes.load_order.forEach(function(note) {
+            if (note.plugins[0].id == pluginId || note.plugins[1].id == pluginId) {
+                note._destroy = true;
+            }
+        });
+    };
+
+    /* RESOLUTIONS ACTIONS */
     $scope.$on('resolveLoadOrderNote', function(event, options) {
         switch(options.action) {
             case "move":
@@ -66,6 +69,24 @@ app.controller('pluginLoadOrderIssuesController', function($scope) {
         }
     });
 
-    // direct method trigger events
-    $scope.$on('rebuildUnresolvedLoadOrder', $scope.buildUnresolvedLoadOrder);
+    // event triggers
+    $scope.$on('initializeModules', function() {
+        $scope.buildUnresolvedLoadOrder();
+    });
+    $scope.$on('reloadModules', function() {
+        listUtils.recoverAll($scope.notes.load_order);
+        $scope.buildUnresolvedLoadOrder();
+    });
+    $scope.$on('pluginRemoved', function(pluginId) {
+        $scope.removeLoadOrderNotes(pluginId);
+        $scope.buildUnresolvedLoadOrder();
+    });
+    $scope.$on('pluginRecovered', function(pluginId) {
+        $scope.recoverLoadOrderNotes(pluginId);
+        $scope.buildUnresolvedLoadOrder();
+    });
+    $scope.$on('pluginAdded', function(event, pluginData) {
+        $scope.notes.load_order.unite(pluginData.load_order_notes);
+        $scope.buildUnresolvedLoadOrder();
+    });
 });
