@@ -46,3 +46,21 @@
 	  background-color: $secondary_background;
   }
 }
+
+.list-table-container {
+  .content-block {
+    border: 1px solid $border_color;
+
+    .content-title {
+      background-color: $bar_dark_color;
+      text-align: center;
+      font-size: 20px;
+      font-weight: 500;
+      padding: 8px;
+    }
+
+    .explanation {
+      text-align: center;
+    }
+  }
+}
