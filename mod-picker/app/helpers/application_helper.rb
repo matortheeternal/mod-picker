@@ -38,4 +38,9 @@ module ApplicationHelper
       nil
     end
   end
+
+  # helper method to append active class to html element depending on the url
+  def active_url(url)
+    current_page?(url) ? "active" : ""
+  end
 end

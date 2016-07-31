@@ -179,6 +179,13 @@ nav .primary-nav .logo {
 nav .primary-nav-links {
   display: inline-block;
   
+  // styling for url is same as the one in the nav bar
+  a.active{
+    border-bottom: 3px solid $link_hover_color_primary;
+    padding-bottom: 2px;
+    @include link_style($link_hover_color_primary, $link_hover_color_primary);
+  }
+
   a {
     margin-right: 1rem;
   }

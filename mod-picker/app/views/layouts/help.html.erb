@@ -16,12 +16,11 @@
           <span>Help Center</span>
         </a>
         <div class="primary-nav-links">
-          <a href="/">Home</a>
-          <a href="/help">Help Center</a>
-          <a href="/help/category/mod_picker">Mod Picker</a>
-          <a href="/help/category/modding">Modding</a>
-          <a href="/help/category/guides">Guides</a>
-         
+          <%= link_to "Home", root_url, class: active_url(root_url) %>
+          <%= link_to "Help Center", help_pages_path, class: active_url(help_pages_path) %>
+          <%= link_to "Mod Picker", "/help/category/mod_picker", class: active_url("/help/category/mod_picker") %>
+          <%= link_to "Modding", "/help/category/modding", class: active_url("/help/category/modding") %>
+          <%= link_to "Guides", "/help/category/guides", class: active_url("/help/category/guides") %>
         </div>
       </div>
       <div class="secondary-nav">
