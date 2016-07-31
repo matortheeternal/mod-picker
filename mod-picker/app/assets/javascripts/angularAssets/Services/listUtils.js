@@ -18,12 +18,12 @@ app.service('listUtils', function () {
             if (item.children) {
                 for (var j = 0; j < item.children.length; j++) {
                     var child = item.children[j];
-                    if (child[key].id == itemId) {
+                    if (child.hasOwnProperty(key) && child[key].id == itemId) {
                         return (splice && item.children.splice(j, 1)[0]) || child;
                     }
                 }
             } else {
-                if (item[key].id == itemId) {
+                if (item.hasOwnProperty(key) && item[key].id == itemId) {
                     return (splice && model.splice(i, 1)[0]) || item;
                 }
             }
