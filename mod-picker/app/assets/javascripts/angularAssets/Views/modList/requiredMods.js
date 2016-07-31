@@ -35,8 +35,9 @@ app.controller('requiredModsController', function($scope, requirementUtils) {
 
     /* RESOLUTION ACTIONS */
     $scope.removeRequirers = function(requirement) {
+        if (!$scope.model.tools) return;
         requirement.mods.forEach(function(mod) {
-            $scope.removeMod($scope.findMod(mod.id, true));
+            $scope.$parent.$broadcast('removeMod', mod.id);
         });
     };
 
