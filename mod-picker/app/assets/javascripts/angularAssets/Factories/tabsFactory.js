@@ -46,7 +46,7 @@ app.factory("tabsFactory", function() {
             },
             {
                 name: 'Tools',
-                count: modList.tools_count || 0
+                count: modList.tools_count
             },
             {
                 name: 'Mods',
@@ -54,7 +54,7 @@ app.factory("tabsFactory", function() {
             },
             {
                 name: 'Plugins',
-                count: modList.plugins_count
+                count: modList.plugins_count + modList.custom_plugins_count
             },
             {
                 name: 'Config',
