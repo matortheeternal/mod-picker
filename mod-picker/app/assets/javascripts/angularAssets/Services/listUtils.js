@@ -1,6 +1,17 @@
 app.service('listUtils', function () {
     var service = this;
 
+    this.getNextIndex = function(model) {
+        if (model.length) {
+            var lastItem = model.slice(-1).pop();
+            if (lastItem.children && lastItem.children.length) {
+                lastItem = lastItem.children.slice(-1).pop();
+            }
+            return lastItem.index + 1;
+        }
+        return 1;
+    };
+
     this.findItem = function(model, key, itemId, splice) {
         for (var i = 0; i < model.length; i++) {
             var item = model[i];
