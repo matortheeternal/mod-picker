@@ -51,6 +51,7 @@ app.controller('modListPluginsController', function($scope, $q, $timeout, modLis
             $scope.plugin_store = data.plugin_store;
             $scope.mod_list.groups = Array.prototype.concat($scope.mod_list.groups || [], data.groups);
             $scope.originalModList.plugins = angular.copy($scope.mod_list.plugins);
+            $scope.originalModList.custom_plugins = angular.copy($scope.mod_list.custom_plugins);
             $scope.originalModList.groups = angular.copy($scope.mod_list.groups);
             $scope.buildPluginsModel();
             $timeout(function() {
@@ -159,7 +160,9 @@ app.controller('modListPluginsController', function($scope, $q, $timeout, modLis
         $scope.updateTabs();
 
         // update modules
-        $scope.$broadcast('pluginRemoved', modListPlugin.plugin.id);
+        if (modListPlugin.hasOwnProperty('plugin')) {
+            $scope.$broadcast('pluginRemoved', modListPlugin.plugin.id);
+        }
         $scope.$broadcast('updateItems');
     };
 

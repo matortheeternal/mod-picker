@@ -116,7 +116,6 @@ app.controller('modListController', function($scope, $q, $stateParams, $timeout,
         comments: {}
     };
     $scope.model = {};
-    $scope.plugin_store = [];
     $scope.newTags = [];
     $scope.required = {};
     $scope.notes = {};
@@ -216,6 +215,7 @@ app.controller('modListController', function($scope, $q, $stateParams, $timeout,
         var custom_label = 'custom_' + label;
         if ($scope.model[label]) {
             $scope.mod_list[label] = [];
+            $scope.mod_list[custom_label] = [];
             $scope.model[label].forEach(function(item) {
                 if (item.children) {
                     $scope.mod_list.groups.push(item);
