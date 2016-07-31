@@ -138,6 +138,12 @@ app.controller('modListToolsController', function($scope, $state, $stateParams, 
     };
 
     // event triggers
+    $scope.$on('removeMod', function(event, modId) {
+        var foundTool = $scope.findTool(modId);
+        if (foundTool) {
+            $scope.removeTool(foundTool);
+        }
+    });
     $scope.$on('removeItem', function(event, modListTool) {
         $scope.removeTool(modListTool);
     });

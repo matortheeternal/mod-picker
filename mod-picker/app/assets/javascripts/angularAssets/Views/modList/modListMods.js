@@ -127,6 +127,12 @@ app.controller('modListModsController', function($scope, modListService, modServ
     };
 
     // event triggers
+    $scope.$on('removeMod', function(event, modId) {
+        var foundMod = $scope.findMod(modId);
+        if (foundMod) {
+            $scope.removeMod(foundMod);
+        }
+    });
     $scope.$on('removeItem', function(event, modListMod) {
         $scope.removeMod(modListMod);
     });
