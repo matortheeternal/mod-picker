@@ -14,12 +14,12 @@ app.controller('requiredModsController', function($scope, requirementUtils) {
         $scope.required.missing_mods = [];
         $scope.required.mods.forEach(function(requirement) {
             // skip destroyed requirements
-            if (requirement._destroy) {
+            if (!requirement.mods.length) {
                 return;
             }
-            var modPresent = $scope.findMod(requirement.required_mod.id, true);
-            // TODO: Check if one of the mods in the mods array is present
-            if (!modPresent) {
+            var requiredModPresent = $scope.findMod(requirement.required_mod.id, true);
+            if (!requiredModPresent) {
+                // TODO: Check if one of the mods in the mods array is present
                 $scope.required.missing_mods.push(requirement);
             }
         });

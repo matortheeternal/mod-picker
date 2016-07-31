@@ -14,12 +14,12 @@ app.controller('requiredPluginsController', function($scope, requirementUtils) {
         $scope.required.missing_plugins = [];
         $scope.required.plugins.forEach(function(requirement) {
             // skip destroyed requirements
-            if (requirement._destroy) {
+            if (!requirement.plugins.length) {
                 return;
             }
-            var pluginPresent = $scope.findPlugin(requirement.master_plugin.id, true);
-            // TODO: Check if one of the plugins in the plugins array is present
-            if (!pluginPresent) {
+            var requiredPluginPresent = $scope.findPlugin(requirement.master_plugin.id, true);
+            if (!requiredPluginPresent) {
+                // TODO: Check if one of the plugins in the plugins array is present
                 $scope.required.missing_plugins.push(requirement);
             }
         });
