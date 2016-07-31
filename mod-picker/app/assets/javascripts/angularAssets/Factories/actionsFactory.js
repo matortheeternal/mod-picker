@@ -21,6 +21,30 @@ app.service('actionsFactory', function() {
     };
 
     /* mod list actions */
+    this.modListToolActions = function() {
+        return [{
+            caption: "Remove",
+            title: "Remove this tool from the mod list",
+            disabled: factory.disabledWhenNotEditing,
+            execute: function($scope, item) {
+                if (!$scope.editing) return;
+                $scope.removeItem(item);
+            }
+        }]
+    };
+
+    this.modListModActions = function() {
+        return [{
+            caption: "Remove",
+            title: "Remove this mod from the mod list",
+            disabled: factory.disabledWhenNotEditing,
+            execute: function($scope, item) {
+                if (!$scope.editing) return;
+                $scope.removeItem(item);
+            }
+        }]
+    };
+
     this.modListPluginActions = function() {
         return [{
             caption: "Remove",
