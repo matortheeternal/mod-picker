@@ -70,6 +70,7 @@ app.controller('requiredPluginsController', function($scope) {
             }
         });
     };
+
     $scope.recoverRequirements = function(pluginId) {
         $scope.required.plugins.forEach(function(requirement) {
             var index = requirement.destroyed_plugins.findIndex(function(plugin) {
@@ -79,6 +80,13 @@ app.controller('requiredPluginsController', function($scope) {
                 var plugin = requirement.destroyed_plugins.splice(index, 1)[0];
                 requirement.plugins.push(plugin);
             }
+        });
+    };
+
+    $scope.recoverAllRequirements = function() {
+        $scope.required.plugins.forEach(function(requirement) {
+            requirement.plugins.unite(requirement.destroyed_plugins);
+            requirement.destroyed_plugins = [];
         });
     };
 
@@ -102,6 +110,7 @@ app.controller('requiredPluginsController', function($scope) {
         $scope.buildMissingPlugins();
     });
     $scope.$on('reloadModules', function() {
+        $scope.recoverAllRequirements();
         $scope.buildMissingPlugins();
     });
     $scope.$on('pluginRemoved', function(event, pluginId) {
