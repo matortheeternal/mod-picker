@@ -798,13 +798,6 @@ app.factory("filtersFactory", function() {
         )
     };
 
-    this.articleFilters = function() {
-        return Array.prototype.concat(
-            factory.articleSearchFilters(),
-            factory.articleDateFilters()
-        );
-    };
-
     this.articleSearchFilters = function() {
         return [
             factory.searchFilter,
@@ -819,6 +812,13 @@ app.factory("filtersFactory", function() {
             subtype: "Date",
             param: "dc"
         }];
+    };
+
+    this.articleFilters = function() {
+        return Array.prototype.concat(
+            factory.articleSearchFilters(),
+            factory.articleDateFilters()
+        );
     };
 
     return factory;
