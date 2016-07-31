@@ -24,12 +24,24 @@ app.service('modService', function(backend, $q, categoryService, errorsFactory, 
         return backend.post('/mods/search', postData);
     };
 
-    this.searchModsNoTools = function(name) {
-        return service.searchMods(name, false);
+    this.searchModListMods = function(name) {
+        var postData =  {
+            filters: {
+                search: name,
+                include_games: true
+            }
+        };
+        return backend.post('/mods/search', postData);
     };
 
-    this.searchTools = function() {
-        return service.searchMods(name, true);
+    this.searchModListTools = function() {
+        var postData =  {
+            filters: {
+                search: name,
+                utility: true
+            }
+        };
+        return backend.post('/mods/search', postData);
     };
     
     this.retrieveMod = function(modId) {

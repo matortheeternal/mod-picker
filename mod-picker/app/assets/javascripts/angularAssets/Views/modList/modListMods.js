@@ -3,7 +3,7 @@ app.controller('modListModsController', function($scope, $rootScope, $timeout, m
     $scope.columns = columnsFactory.modListModColumns();
     $scope.columnGroups = columnsFactory.modListModColumnGroups();
     $scope.actions = actionsFactory.modListModActions();
-    $scope.searchMods = modService.searchModsNoTools;
+    $scope.searchMods = modService.searchModListMods;
 
     $scope.buildModsModel = function() {
         $scope.model.mods = [];

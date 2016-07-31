@@ -3,7 +3,7 @@ app.controller('modListToolsController', function($scope, $rootScope, $state, $s
     $scope.columns = columnsFactory.modListModColumns();
     $scope.columnGroups = columnsFactory.modListModColumnGroups();
     $scope.actions = actionsFactory.modListToolActions();
-    $scope.searchTools = modService.searchTools;
+    $scope.searchTools = modService.searchModListTools;
 
     $scope.buildToolsModel = function() {
         $scope.model.tools = [];
