@@ -364,6 +364,24 @@
 
 //user review box
 .user-review {
+  border: 2px solid $border_color;
+  margin-top: 10px;
+
+  .content-title {
+      cursor: pointer;
+    .fa {
+      float: right;
+      font-size: 22px;
+    }
+  }
+
+  .contribution-container .content-title {
+    display: none;
+  }
+}
+
+// contribution that has been specified in the url
+.current-contribution {
   border: 1px solid $bar_dark_color;
   border-top: none;
 }

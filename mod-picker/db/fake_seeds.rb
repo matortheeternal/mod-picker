@@ -28,7 +28,7 @@ end
 
 def get_unique_mod_pair(model)
   mod_ids = [0, 0]
-  while true do
+  while
     mod_ids[0] = random_mod.id
     mod_ids[1] = random_mod.id
     if mod_ids[0] != mod_ids[1] && model.where(first_mod_id: mod_ids, second_mod_id: mod_ids).empty?
@@ -40,10 +40,10 @@ end
 
 def get_unique_plugin_pair(model)
   plugin_ids = [0, 0]
-  while true do
+  while
     plugin_ids[0] = random_plugin.id
     plugin_ids[1] = random_plugin.id
-    if random_plugin[0] != random_plugin[1] && model.where(first_plugin_id: plugin_ids, second_plugin_id: plugin_ids).empty?
+    if plugin_ids[0] != plugin_ids[1] && model.where(first_plugin_id: plugin_ids, second_plugin_id: plugin_ids).empty?
       break
     end
   end
@@ -707,6 +707,20 @@ def seed_fake_comments
       ).save!
     end
   end
+  puts "\nSeeding article comments"
+  Article.all.each do |article|
+    rnd = randpow(10, 2)
+    puts "    Generating #{rnd} comments for #{article.title}"
+    rnd.times do
+      submitter = random_user
+      article.comments.new(
+          submitted_by: submitter.id,
+          hidden: false,
+          submitted: Faker::Date.backward(14),
+          text_body: Faker::Lorem.paragraph(1)
+      ).save!
+    end
+  end
 end
 
 def seed_fake_reviews
@@ -1085,7 +1099,7 @@ def seed_fake_articles
 
   gameSkyrim = Game.where({display_name: "Skyrim"}).first
 
-  rand(10).times do
+  rand(50).times do
     author = User.offset(rand(User.count)).first
     Article.new(
         title: Faker::Lorem.words(3).join(' '),

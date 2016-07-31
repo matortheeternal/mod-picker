@@ -11,7 +11,7 @@ app.directive('pageResults', function () {
     }
 });
 
-app.controller('pageResultsController', function($scope) {
+app.controller('pageResultsController', function($scope, smoothScroll) {
     var pageDistance = 3;
     $scope.range = [];
 
@@ -22,6 +22,10 @@ app.controller('pageResultsController', function($scope) {
                 (Math.abs($scope.pages.current - i) < pageDistance))
                 $scope.range.push(i);
         }
+    };
+
+    $scope.scrollToTop = function() {
+        smoothScroll({duration: 300});
     };
 
     $scope.$watch('pages.max', $scope.pageRange);

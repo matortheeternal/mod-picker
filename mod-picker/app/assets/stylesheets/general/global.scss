@@ -368,10 +368,6 @@ input[type="button"], input[type="submit"] {
     background-color: $secondary_background;
     cursor: default;
     color: $text_color;
-
-    &:hover {
-      background-color: inherit;
-    }
   }
 }
 
@@ -920,7 +916,20 @@ a .help-tooltip {
     border: 1px solid $border_color;
     background-color: $background-highlight;
     padding: 4px;
+    font: inherit;
+    cursor: pointer;
+    color: $link_color;
+
+    &:hover {
+        color: $link_hover_color_primary;
+    }
+
+    &:disabled {
+        color: inherit;
+        cursor: auto;
+    }
   }
+
   .page-ellipsis {
     margin-left: 3px;
     margin-right: 3px;

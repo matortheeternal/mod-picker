@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160726063847) do
+ActiveRecord::Schema.define(version: 20160729184445) do
 
   create_table "agreement_marks", id: false, force: :cascade do |t|
     t.integer "correction_id", limit: 4,                null: false
@@ -421,11 +421,10 @@ ActiveRecord::Schema.define(version: 20160726063847) do
   add_index "mod_list_load_order_notes", ["mod_list_id"], name: "index_mod_list_load_order_notes_on_mod_list_id", using: :btree
 
   create_table "mod_list_mods", force: :cascade do |t|
-    t.integer "mod_list_id", limit: 4,                null: false
+    t.integer "mod_list_id", limit: 4, null: false
     t.integer "group_id",    limit: 4
-    t.integer "mod_id",      limit: 4,                null: false
-    t.integer "index",       limit: 2,                null: false
-    t.boolean "active",                default: true, null: false
+    t.integer "mod_id",      limit: 4, null: false
+    t.integer "index",       limit: 2, null: false
   end
 
   add_index "mod_list_mods", ["group_id"], name: "fk_rails_cb3cdf0fc4", using: :btree
@@ -433,11 +432,12 @@ ActiveRecord::Schema.define(version: 20160726063847) do
   add_index "mod_list_mods", ["mod_list_id"], name: "ml_id", using: :btree
 
   create_table "mod_list_plugins", force: :cascade do |t|
-    t.integer "mod_list_id", limit: 4,                null: false
+    t.integer "mod_list_id", limit: 4,                 null: false
     t.integer "group_id",    limit: 4
-    t.integer "plugin_id",   limit: 4,                null: false
-    t.integer "index",       limit: 2,                null: false
-    t.boolean "active",                default: true, null: false
+    t.integer "plugin_id",   limit: 4,                 null: false
+    t.integer "index",       limit: 2,                 null: false
+    t.boolean "cleaned",               default: false, null: false
+    t.boolean "merged",                default: false, null: false
   end
 
   add_index "mod_list_plugins", ["group_id"], name: "fk_rails_8fbf03f255", using: :btree
