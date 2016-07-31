@@ -26,7 +26,6 @@ app.controller('modListToolsController', function($scope, $state, $stateParams, 
     };
 
     $scope.retrieveTools = function() {
-        $scope.retrieving.tools = true;
         modListService.retrieveModListTools($scope.mod_list.id).then(function(data) {
             $scope.required.tools = data.required_tools;
             $scope.mod_list.tools = data.tools;
@@ -35,16 +34,14 @@ app.controller('modListToolsController', function($scope, $state, $stateParams, 
             $scope.originalModList.groups = angular.copy($scope.mod_list.groups);
             $scope.buildToolsModel();
             $scope.$broadcast('initializeModules');
-            $scope.retrieving.tools = false;
+            $scope.toolsReady = true;
         }, function(response) {
             $scope.errors.tools = response;
         });
     };
 
-    // retrieve tools if we don't have them and aren't currently retrieving them
-    if (!$scope.mod_list.tools && !$scope.retrieving.tools) {
-        $scope.retrieveTools();
-    }
+    // retrieve tools when the state is first loaded
+    $scope.retrieveTools();
 
     $scope.recoverTool = function(modListTool) {
         // if tool is already present on the user's mod list but has been
