@@ -8,7 +8,7 @@ app.directive('pluginCompatibilityIssues', function() {
     }
 });
 
-app.controller('pluginCompatibilityIssuesController', function($scope) {
+app.controller('pluginCompatibilityIssuesController', function($scope, listUtils) {
     /* BUILD VIEW MODEL */
     $scope.buildUnresolvedPluginCompatibility = function() {
         $scope.notes.unresolved_plugin_compatibility = [];
@@ -85,6 +85,7 @@ app.controller('pluginCompatibilityIssuesController', function($scope) {
         $scope.buildUnresolvedPluginCompatibility();
     });
     $scope.$on('reloadModules', function() {
+        listUtils.recoverAll($scope.notes.plugin_compatibility);
         $scope.buildUnresolvedPluginCompatibility();
     });
     $scope.$on('pluginRemoved', function() {
@@ -93,16 +94,16 @@ app.controller('pluginCompatibilityIssuesController', function($scope) {
     $scope.$on('pluginRecovered', function() {
         $scope.buildUnresolvedPluginCompatibility();
     });
+    $scope.$on('pluginAdded', function(event, pluginData) {
+        $scope.notes.plugin_compatibility.unite(pluginData.compatibility_notes);
+        $scope.buildUnresolvedPluginCompatibility();
+    });
     $scope.$on('modRemoved', function(event, modId) {
         $scope.removeCompatibilityNotes(modId);
         $scope.buildUnresolvedPluginCompatibility();
     });
     $scope.$on('modRecovered', function(event, modId) {
         $scope.recoverCompatibilityNotes(modId);
-        $scope.buildUnresolvedPluginCompatibility();
-    });
-    $scope.$on('pluginAdded', function(event, pluginData) {
-        $scope.notes.plugin_compatibility.unite(pluginData.compatibility_notes);
         $scope.buildUnresolvedPluginCompatibility();
     });
 });
