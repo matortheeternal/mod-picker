@@ -433,14 +433,101 @@ app.service('columnsFactory', function() {
         return ["General", "Content Statistics", "Contribution Statistics", "Extended Statistics"];
     };
 
-    // TODO
-    this.modListToolColumns = function() {
-        return [];
+    this.modListModColumns = function() {
+        return [
+            {
+                group: "General",
+                visibility: true,
+                required: true,
+                label: "Index",
+                data: "index",
+                filter: "number",
+                class: "index-column"
+            },
+            {
+                group: "General",
+                visibility: true,
+                required: true,
+                label: "Name",
+                data: "mod.name",
+                link: function (modListPlugin) {
+                    return "#/mod/" + modListPlugin.mod.id;
+                },
+                class: "primary-column"
+            },
+            {
+                group: "General",
+                visibility: false,
+                label: "Aliases",
+                data: "mod.aliases",
+                class: "aliases-column"
+            },
+            {
+                group: "General",
+                visibility: true,
+                label: "Authors",
+                data: "mod.authors",
+                class: "author-column"
+            },
+            {
+                group: "General",
+                visibility: true,
+                label: "Primary Category",
+                data: "mod.primary_category.name"
+            },
+            {
+                group: "General",
+                visibility: false,
+                label: "Secondary Category",
+                data: "mod.secondary_category.name"
+            },
+            {
+                group: "General",
+                visibility: false,
+                label: "Status",
+                data: "mod.status",
+                class: "status-column"
+            },
+            {
+                group: "General",
+                visibility: false,
+                label: "Average Rating",
+                data: "mod.average_rating",
+                filter: "number:0"
+            },
+            {
+                group: "General",
+                visibility: false,
+                label: "Reputation",
+                data: "mod.reputation",
+                filter: "number:0"
+            },
+            {
+                group: "General",
+                visibility: false,
+                label: "Stars",
+                data: "mod.stars_count",
+                filter: "number"
+            },
+            {
+                group: "General",
+                visibility: true,
+                label: "Released",
+                data: "mod.released",
+                filter: "date"
+            },
+            {
+                group: "General",
+                visibility: true,
+                label: "Updated",
+                data: "mod.updated",
+                filter: "date"
+            }
+        ];
     };
 
-    // TODO
-    this.modListModColumns = function() {
-        return [];
+    this.modListModColumnGroups = function() {
+        return ["General"];
     };
 
     this.modListPluginColumns = function() {
