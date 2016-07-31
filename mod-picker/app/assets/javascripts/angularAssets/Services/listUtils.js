@@ -103,4 +103,12 @@ app.service('listUtils', function () {
             }
         });
     };
+
+    this.removeDestroyed = function(model) {
+        model.forEach(function(item, index, array) {
+            if (item._destroy) {
+                array.splice(index, 1);
+            }
+        });
+    };
 });
