@@ -276,36 +276,11 @@ app.controller('modListController', function($scope, $q, $stateParams, $timeout,
         });
     };
 
-    $scope.removeDestroyedItems = function() {
-        var removeIfDestroyed = function(item, index, array) {
-            if (item._destroy) {
-                array.splice(index, 1);
-            }
-        };
-        var ml = $scope.mod_list; // an alias to make the code a bit shorter
-        ml.mods && ml.mods.forEach(removeIfDestroyed);
-        ml.tools && ml.tools.forEach(removeIfDestroyed);
-        ml.groups && ml.groups.forEach(removeIfDestroyed);
-        var req = $scope.required; // an alias to make the code a bit shorter
-        req.mods && req.mods.forEach(removeIfDestroyed);
-        req.tools && req.tools.forEach(removeIfDestroyed);
-    };
-
-    $scope.recoverDestroyedItems = function() {
-        var recoverIfDestroyed = function(item) {
-            if (item._destroy) {
-                delete item._destroy;
-            }
-        };
-        var req = $scope.required; // an alias to make the code a bit shorter
-        req.mods && req.mods.forEach(recoverIfDestroyed);
-        req.tools && req.tools.forEach(recoverIfDestroyed);
-    };
-
     $scope.saveChanges = function() {
         // get changed mod fields
         $scope.flattenModels();
         var modListDiff = objectUtils.getDifferentObjectValues($scope.originalModList, $scope.mod_list);
+        // if no fields were changed, inform the user
         if (objectUtils.isEmptyObject(modListDiff)) {
             var message = {type: 'warning', text: 'There are no changes to save.'};
             $scope.$broadcast('message', message);
@@ -313,10 +288,10 @@ app.controller('modListController', function($scope, $q, $stateParams, $timeout,
         }
 
         modListService.updateModList(modListDiff).then(function() {
+            // update modules
+            $scope.$broadcast('saveChanges');
+            // success message
             $scope.$emit('successMessage', 'Mod list saved successfully.');
-            $scope.removeDestroyedItems();
-            delete $scope.originalModList;
-            $scope.originalModList = angular.copy($scope.mod_list);
         }, function(response) {
             $scope.$emit('errorMessage', {label: 'Error saving mod list', response: response});
         });
@@ -324,11 +299,29 @@ app.controller('modListController', function($scope, $q, $stateParams, $timeout,
 
     $scope.discardChanges = function() {
         if (confirm("Are you sure you want to discard your changes?")) {
+            // discard changes
             $scope.mod_list = angular.copy($scope.originalModList);
-            $scope.recoverDestroyedItems();
+            // update modules
             $scope.$broadcast('rebuildModels');
             $scope.$broadcast('reloadModules');
             $scope.updateTabs();
         }
     };
+
+    // event triggers
+    $scope.$on('reloadModules', function() {
+        // recover destroyed groups
+        if ($scope.mod_list.groups) {
+            listUtils.recoverAll($scope.mod_list.groups);
+        }
+    });
+    $scope.$on('saveChanges', function() {
+        // remove destroyed groups
+        if ($scope.mod_list.groups) {
+            listUtils.removeDestroyed($scope.mod_list.groups);
+        }
+        // set originalModList to the current version of mod_list
+        delete $scope.originalModList;
+        $scope.originalModList = angular.copy($scope.mod_list);
+    })
 });
