@@ -23,11 +23,46 @@ app.config(['$stateProvider', function($stateProvider) {
     });
 }]);
 
-app.controller('showArticleController', function($scope, $stateParams, article, currentUser) {
+app.controller('showArticleController', function($scope, $stateParams, article, currentUser, articleService) {
     $scope.article = article;
-    $scope.permissions = currentUser.permissions;
+    $scope.currentUser = angular.copy(currentUser);
+    $scope.permissions = $scope.currentUser.permissions;
 
     $scope.pages = {
-        articleComments: {}
+        comments: {}
     };
+
+    $scope.displayErrors = {
+        comments: {}
+    };
+
+    $scope.retrieving = {
+        comments: {}
+    };
+
+    $scope.retrieveComments = function(page) {
+        $scope.retrieving.comments = true;
+        // TODO: Make options dynamic
+        var options = {
+            sort: {
+                column: 'submitted',
+                direction: 'desc'
+            },
+            page: page || 1
+        };
+        articleService.retrieveComments($stateParams.articleId, options, $scope.pages.comments).then(function(data) {
+            $scope.retrieving.comments = false;
+            $scope.article.comments = data;
+        }, function(response) {
+            $scope.retrieving.comments = false;
+            $scope.displayErrors.comments = response;
+        });
+    };
+
+    $scope.startNewComment = function() {
+        $scope.$broadcast('startNewComment');
+    };
+
+    // retrieve the comments
+    $scope.retrieveComments();
 });
