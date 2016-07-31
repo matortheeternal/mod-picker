@@ -91,7 +91,8 @@ app.controller('modListController', function($scope, $q, $stateParams, $timeout,
     };
     $scope.add = {
         tool: {},
-        mod: {}
+        mod: {},
+        plugin: {}
     };
     $scope.statusIcons = {
         under_construction: 'fa-wrench',
