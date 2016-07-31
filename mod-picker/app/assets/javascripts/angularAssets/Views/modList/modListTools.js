@@ -1,4 +1,4 @@
-app.controller('modListToolsController', function($scope, $state, $stateParams, modListService, modService) {
+app.controller('modListToolsController', function($scope, $state, $stateParams, modListService, modService, listUtils) {
     $scope.searchTools = modService.searchTools;
 
     $scope.buildToolsModel = function() {
@@ -47,7 +47,7 @@ app.controller('modListToolsController', function($scope, $state, $stateParams, 
             $scope.originalModList.tools = angular.copy($scope.mod_list.tools);
             $scope.originalModList.groups = angular.copy($scope.mod_list.groups);
             $scope.buildToolsModel();
-            $scope.buildMissingTools();
+            $scope.$broadcast('initializeModules');
             $scope.retrieving.tools = false;
         }, function(response) {
             $scope.errors.tools = response;
@@ -80,16 +80,19 @@ app.controller('modListToolsController', function($scope, $state, $stateParams, 
         });
     };
 
-    $scope.reAddTool = function(modListTool) {
+    $scope.recoverTool = function(modListTool) {
         // if tool is already present on the user's mod list but has been
         // removed, add it back
         if (modListTool._destroy) {
             delete modListTool._destroy;
             $scope.mod_list.tools_count += 1;
-            $scope.reAddRequirements($scope.required.tools, modListTool.mod.id);
-            $scope.buildMissingTools();
             $scope.updateTabs();
+
+            // upudate modules
+            $scope.$parent.$broadcast('modRecovered', modListTool.mod.id);
             $scope.$broadcast('updateItems');
+
+            // success message
             $scope.$emit('successMessage', 'Added tool ' + modListTool.mod.name + ' successfully.');
         }
         // else inform the user that the tool is already on their mod list
@@ -112,10 +115,9 @@ app.controller('modListToolsController', function($scope, $state, $stateParams, 
             $scope.mod_list.tools_count += 1;
             $scope.updateTabs();
 
-            // handle requirements
-            Array.prototype.unite($scope.required.tools, data.required_tools);
-            Array.prototype.unite($scope.required.mods, data.required_mods);
-            $scope.$emit('rebuildMissing');
+            // update modules
+            $scope.$parent.$broadcast('modAdded', data);
+            $scope.$broadcast('updateItems');
 
             // success message
             $scope.$broadcast('updateItems');
@@ -135,7 +137,7 @@ app.controller('modListToolsController', function($scope, $state, $stateParams, 
         // see if the tool is already present on the user's mod list
         var existingTool = $scope.findTool(toolId);
         if (existingTool) {
-            $scope.reAddTool(existingTool);
+            $scope.recoverTool(existingTool);
         } else {
             $scope.addNewTool(toolId);
         }
@@ -148,10 +150,11 @@ app.controller('modListToolsController', function($scope, $state, $stateParams, 
 
     $scope.removeTool = function(modListTool) {
         modListTool._destroy = true;
-        $scope.removeRequirements(modListTool.mod.id);
-        $scope.buildMissingTools();
         $scope.mod_list.tools_count -= 1;
         $scope.updateTabs();
+
+        // update modules
+        $scope.$parent.$broadcast('modRemoved', modListTool.mod.id);
         $scope.$broadcast('updateItems');
     };
 
@@ -161,5 +164,7 @@ app.controller('modListToolsController', function($scope, $state, $stateParams, 
 
     // direct method trigger events
     $scope.$on('rebuildModels', $scope.buildToolsModel);
-    $scope.$on('rebuildMissingTools', $scope.buildMissingTools);
+    $scope.$on('reloadModules', function() {
+        listUtils.recoverAll($scope.mod_list.plugins);
+    });
 });
