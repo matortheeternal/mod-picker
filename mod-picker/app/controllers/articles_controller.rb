@@ -81,7 +81,7 @@ class ArticlesController < ApplicationController
 
     # Params we allow filtering on
     def filtering_params
-      params[:filters].slice(:search, :submitter, :submitted)
+      params[:filters].slice(:title, :text, :submitter, :submitted)
     end
 
     # Only allow a trusted parameter "white list" through.

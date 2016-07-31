@@ -2,7 +2,8 @@ class Article < ActiveRecord::Base
   include Filterable, Sortable, Imageable, RecordEnhancements
 
   # SCOPES
-  scope :search, -> (search) { where("text_body like ? OR title like ?", "%#{search}%", "#{search}%") }
+  scope :text, -> (search) { where("text_body like ?", "%#{search}%") }
+  scope :title, -> (search) { where("title like ?", "%#{search}%") }
   scope :submitter, -> (username) { joins(:submitter).where(:users => {:username => username}) }
   scope :submitted, -> (range) { where(submitted: parseDate(range[:min])..parseDate(range[:max])) }
   scope :game, -> (game_id) {
