@@ -1,4 +1,4 @@
-app.controller('modListToolsController', function($scope, $state, $stateParams, modListService, modService, listUtils) {
+app.controller('modListToolsController', function($scope, $rootScope, $state, $stateParams, modListService, modService, listUtils) {
     $scope.searchTools = modService.searchTools;
 
     $scope.buildToolsModel = function() {
@@ -52,7 +52,7 @@ app.controller('modListToolsController', function($scope, $state, $stateParams, 
             $scope.updateTabs();
 
             // upudate modules
-            $scope.$parent.$broadcast('modRecovered', modListTool.mod.id);
+            $rootScope.$broadcast('modRecovered', modListTool.mod.id);
             $scope.$broadcast('updateItems');
 
             // success message
@@ -79,7 +79,7 @@ app.controller('modListToolsController', function($scope, $state, $stateParams, 
             $scope.updateTabs();
 
             // update modules
-            $scope.$parent.$broadcast('modAdded', data);
+            $rootScope.$broadcast('modAdded', data);
             $scope.$broadcast('updateItems');
 
             // success message
@@ -117,7 +117,7 @@ app.controller('modListToolsController', function($scope, $state, $stateParams, 
         $scope.updateTabs();
 
         // update modules
-        $scope.$parent.$broadcast('modRemoved', modListTool.mod.id);
+        $rootScope.$broadcast('modRemoved', modListTool.mod.id);
         $scope.$broadcast('updateItems');
     };
 

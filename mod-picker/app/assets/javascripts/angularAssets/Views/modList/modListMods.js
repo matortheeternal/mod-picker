@@ -1,4 +1,4 @@
-app.controller('modListModsController', function($scope, modListService, modService, listUtils) {
+app.controller('modListModsController', function($scope, $rootScope, modListService, modService, listUtils) {
     $scope.searchMods = modService.searchModsNoTools;
 
     $scope.buildModsModel = function() {
@@ -54,7 +54,7 @@ app.controller('modListModsController', function($scope, modListService, modServ
             $scope.updateTabs();
 
             // upudate modules
-            $scope.$parent.$broadcast('modRecovered', modListMod.mod.id);
+            $rootScope.$broadcast('modRecovered', modListMod.mod.id);
             $scope.$broadcast('updateItems');
 
             // success message
@@ -82,7 +82,7 @@ app.controller('modListModsController', function($scope, modListService, modServ
             $scope.updateTabs();
 
             // update modules
-            $scope.$parent.$broadcast('modAdded', data);
+            $rootScope.$broadcast('modAdded', data);
             $scope.$broadcast('updateItems');
 
             // success message
@@ -119,7 +119,7 @@ app.controller('modListModsController', function($scope, modListService, modServ
         $scope.updateTabs();
 
         // update modules
-        $scope.$parent.$broadcast('modRemoved', modListMod.mod.id);
+        $rootScope.$broadcast('modRemoved', modListMod.mod.id);
         $scope.$broadcast('updateItems');
     };
 

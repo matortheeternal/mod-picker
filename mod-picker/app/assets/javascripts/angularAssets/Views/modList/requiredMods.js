@@ -8,7 +8,7 @@ app.directive('requiredMods', function() {
     }
 });
 
-app.controller('requiredModsController', function($scope, requirementUtils) {
+app.controller('requiredModsController', function($scope, $rootScope, requirementUtils) {
     $scope.showMissingMods = true;
 
     /* BUILD VIEW MODEL */
@@ -39,7 +39,7 @@ app.controller('requiredModsController', function($scope, requirementUtils) {
     $scope.removeRequirers = function(requirement) {
         if (!$scope.model.tools) return;
         requirement.mods.forEach(function(mod) {
-            $scope.$parent.$broadcast('removeMod', mod.id);
+            $rootScope.$broadcast('removeMod', mod.id);
         });
     };
 
