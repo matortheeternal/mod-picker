@@ -21,8 +21,11 @@
                 <i class="fa {{ modsTable ? 'fa-th-large' : 'fa-list-ul' }}" ng-class=""></i> {{ modsTable ? 'Grid View' : 'List View' }}
             </span>
         </div>
-        <div class="content-container">
+        <div class="content-container" ng-if="!modsTable">
             <grid-items type="mod" label="mods" model="model.mods" editing="editing"></grid-items>
+        </div>
+        <div class="content-container" ng-if="modsTable">
+            <table-items type="mod" label="mods" columns="columns" column-groups="columnGroups" actions="actions" model="model.mods" editing="editing"></table-items>
         </div>
     </div>
 </loader>
