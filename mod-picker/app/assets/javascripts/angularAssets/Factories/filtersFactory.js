@@ -798,5 +798,28 @@ app.factory("filtersFactory", function() {
         )
     };
 
+    this.articleFilters = function() {
+        return Array.prototype.concat(
+            factory.articleSearchFilters(),
+            factory.articleDateFilters()
+        );
+    };
+
+    this.articleSearchFilters = function() {
+        return [
+            factory.searchFilter,
+            factory.submitterFilter,
+        ];
+    };
+
+    this.articleDateFilters = function() {
+        return [{
+            data: "submitted",
+            type: "Range",
+            subtype: "Date",
+            param: "dc"
+        }];
+    };
+
     return factory;
 });
