@@ -115,6 +115,24 @@ app.controller('modListPluginsController', function($scope, $q, $timeout, modLis
         });
     };
 
+    $scope.addCustomPlugin = function() {
+        var custom_plugin = {
+            mod_list_id: $scope.mod_list.id,
+            index: listUtils.getNextIndex($scope.model.plugins),
+            filename: 'CustomPlugin.esp'
+        };
+
+        // push plugin onto view
+        $scope.mod_list.custom_plugins.push(custom_plugin);
+        $scope.model.plugins.push(custom_plugin);
+        $scope.mod_list.plugins_count += 1;
+        $scope.updateTabs();
+
+        // update modules
+        $scope.$broadcast('customPluginAdded');
+        $scope.$broadcast('updateItems');
+    };
+
     $scope.addPlugin = function(pluginId) {
         // return if we don't have a mod to add
         if (!pluginId) {
