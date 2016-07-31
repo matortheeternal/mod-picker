@@ -60,8 +60,8 @@ app.controller('pluginLoadOrderIssuesController', function($scope) {
                 break;
             case "ignore":
                 options.note.ignored = !options.note.ignored;
-                // TODO: Update $scope.plugin_list.ignored_notes
-                $scope.$broadcast('rebuildUnresolvedLoadOrder');
+                // TODO: Update $scope.mod_list.ignored_notes
+                $scope.buildUnresolvedLoadOrder();
                 break;
         }
     });

@@ -74,8 +74,8 @@ app.controller('pluginCompatibilityIssuesController', function($scope) {
                 break;
             case "ignore":
                 options.note.ignored = !options.note.ignored;
-                // TODO: Update $scope.plugin_list.ignored_notes
-                $scope.$broadcast('rebuildUnresolvedPluginCompatibility');
+                // TODO: Update $scope.mod_list.ignored_notes
+                $scope.buildUnresolvedPluginCompatibility();
                 break;
         }
     });
