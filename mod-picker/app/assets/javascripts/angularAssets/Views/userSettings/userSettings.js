@@ -51,15 +51,6 @@ app.config(['$stateProvider', function($stateProvider) {
             }
         },
         url: '/mod-lists'
-    }).state('base.settings.Collections', {
-        sticky: true,
-        deepStateRedirect: true,
-        views: {
-            'Collections': {
-                templateUrl: '/resources/partials/userSettings/collections.html',
-            }
-        },
-        url: '/collections'
     }).state('base.settings.Authored Mods', {
         sticky: true,
         deepStateRedirect: true,
@@ -84,7 +75,6 @@ app.controller('userSettingsController', function($scope, $q, userObject, curren
         { name: 'Profile' },
         { name: 'Account' },
         { name: 'Mod Lists' },
-        { name: 'Collections' },
         { name: 'Authored Mods' }
     ];
 

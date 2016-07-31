@@ -40,15 +40,6 @@ app.config(['$stateProvider', function($stateProvider) {
             }
         },
         url: '/mod-lists'
-    }).state('base.user.Collections', {
-        sticky: true,
-        deepStateRedirect: true,
-        views: {
-            'Collections': {
-                templateUrl: '/resources/partials/user/collections.html'
-            }
-        },
-        url: '/collections'
     }).state('base.user.Mods', {
         sticky: true,
         deepStateRedirect: true,
@@ -97,7 +88,6 @@ app.controller('userController', function($scope, $stateParams, currentUser, use
     $scope.tabs = [
         { name: 'Social'},
         { name: 'Mod Lists'},
-        { name: 'Collections'},
         { name: 'Mods'}
     ];
 
