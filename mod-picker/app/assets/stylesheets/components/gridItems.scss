@@ -247,7 +247,7 @@ table-items {
         max-width: 240px;
       }
 
-      .number-cell, .bytes-cell {
+      .number-cell, .bytes-cell, .date-cell {
         min-width: 100px;
         max-width: 100px;
       }
@@ -267,6 +267,17 @@ table-items {
         max-width: 180px !important;
       }
 
+      .aliases-column {
+        min-width: 100px !important;
+        max-width: 100px !important;
+      }
+
+      .status-column {
+        text-transform: capitalize;
+        min-width: 80px !important;
+        max-width: 80px !important;
+      }
+
       .index-column {
         min-width: 55px !important;
         max-width: 55px !important;
@@ -278,8 +289,8 @@ table-items {
       }
 
       .primary-column {
-        width: 300px !important;
         min-width: 300px !important;
+        max-width: 300px !important;
       }
     }
 
