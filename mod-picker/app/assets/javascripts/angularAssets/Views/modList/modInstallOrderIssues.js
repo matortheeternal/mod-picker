@@ -8,23 +8,8 @@ app.directive('modInstallOrderIssues', function() {
     }
 });
 
-app.controller('modInstallOrderIssuesController', function($scope) {
-    $scope.reAddNotes = function(modId) {
-        $scope.notes.install_order.forEach(function(note) {
-            if (note._destroy && note.mods[0].id == modId || note.mods[1].id == modId) {
-                delete note._destroy;
-            }
-        });
-    };
-
-    $scope.removeNotes = function(modId) {
-        $scope.notes.install_order.forEach(function(note) {
-            if (note.mods[0].id == modId || note.mods[1].id == modId) {
-                note._destroy = true;
-            }
-        });
-    };
-
+app.controller('modInstallOrderIssuesController', function($scope, listUtils) {
+    /* BUILD VIEW MODEL */
     $scope.buildUnresolvedInstallOrder = function() {
         $scope.notes.unresolved_install_order = [];
         $scope.notes.ignored_install_order = [];
@@ -48,6 +33,24 @@ app.controller('modInstallOrderIssuesController', function($scope) {
         });
     };
 
+    /* UPDATE VIEW MODEL */
+    $scope.recoverInstallOrderNotes = function(modId) {
+        $scope.notes.install_order.forEach(function(note) {
+            if (note._destroy && note.mods[0].id == modId || note.mods[1].id == modId) {
+                delete note._destroy;
+            }
+        });
+    };
+
+    $scope.removeInstallOrderNotes = function(modId) {
+        $scope.notes.install_order.forEach(function(note) {
+            if (note.mods[0].id == modId || note.mods[1].id == modId) {
+                note._destroy = true;
+            }
+        });
+    };
+
+    /* RESOLUTION ACTIONS */
     $scope.$on('resolveInstallOrderNote', function(event, options) {
         switch(options.action) {
             case "move":
@@ -66,6 +69,31 @@ app.controller('modInstallOrderIssuesController', function($scope) {
         }
     });
 
-    // direct method trigger events
-    $scope.$on('rebuildUnresolvedInstallOrder', $scope.buildUnresolvedInstallOrder);
+    // event triggers
+    $scope.$on('initializeModules', function() {
+        $scope.buildUnresolvedInstallOrder();
+    });
+    $scope.$on('reloadModules', function() {
+        listUtils.recoverDestroyed($scope.notes.load_order);
+        $scope.buildUnresolvedInstallOrder();
+    });
+    $scope.$on('saveChanges', function() {
+        listUtils.removeDestroyed($scope.notes.load_order);
+        $scope.buildUnresolvedInstallOrder();
+    });
+    $scope.$on('modRemoved', function(pluginId) {
+        $scope.removeInstallOrderNotes(pluginId);
+        $scope.buildUnresolvedInstallOrder();
+    });
+    $scope.$on('modRecovered', function(pluginId) {
+        $scope.recoverInstallOrderNotes(pluginId);
+        $scope.buildUnresolvedInstallOrder();
+    });
+    $scope.$on('modAdded', function(event, modData) {
+        $scope.notes.install_order.unite(modData.install_order_notes);
+        $scope.buildUnresolvedInstallOrder();
+    });
+    $scope.$on('modMoved', function() {
+        $scope.buildUnresolvedInstallOrder();
+    });
 });
