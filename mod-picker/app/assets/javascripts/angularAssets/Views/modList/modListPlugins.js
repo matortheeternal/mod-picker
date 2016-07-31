@@ -159,6 +159,9 @@ app.controller('modListPluginsController', function($scope, $q, modListService, 
     $scope.$on('reloadModules', function() {
         listUtils.recoverAll($scope.mod_list.plugins);
     });
+    $scope.$on('saveChanges', function() {
+        listUtils.removeDestroyed($scope.mod_list.plugins);
+    });
     $scope.$on('itemMoved', function() {
         $scope.$broadcast('pluginMoved');
     });

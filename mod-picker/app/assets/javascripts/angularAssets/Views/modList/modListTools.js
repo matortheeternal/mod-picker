@@ -167,4 +167,7 @@ app.controller('modListToolsController', function($scope, $state, $stateParams, 
     $scope.$on('reloadModules', function() {
         listUtils.recoverAll($scope.mod_list.tools);
     });
+    $scope.$on('saveChanges', function() {
+        listUtils.removeDestroyed($scope.mod_list.tools);
+    });
 });

@@ -135,6 +135,9 @@ app.controller('modListModsController', function($scope, modListService, modServ
     $scope.$on('reloadModules', function() {
         listUtils.recoverAll($scope.mod_list.mods);
     });
+    $scope.$on('saveChanges', function() {
+        listUtils.removeDestroyed($scope.mod_list.mods);
+    });
     $scope.$on('itemMoved', function() {
         $scope.$broadcast('modMoved');
     });
