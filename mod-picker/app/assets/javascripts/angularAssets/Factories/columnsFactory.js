@@ -565,9 +565,13 @@ app.service('columnsFactory', function() {
                 visibility: true,
                 required: true,
                 label: "Filename",
-                data: "plugin.filename",
-                link: function (modListPlugin) {
-                    return "#/mod/" + modListPlugin.mod.id + "/analysis?plugin=" + modListPlugin.plugin.id;
+                data: function(item) {
+                    return item.filename || item.plugin.filename;
+                },
+                link: function (item) {
+                    if (item.mod && item.plugin) {
+                        return "#/mod/" + item.mod.id + "/analysis?plugin=" + item.plugin.id;
+                    }
                 },
                 note: function($scope, item) {
                     return item.cleaned ? '(cleaned)' : '';
@@ -579,8 +583,10 @@ app.service('columnsFactory', function() {
                 visibility: false,
                 label: "Mod",
                 data: "mod.name",
-                link: function (modListPlugin) {
-                    return "#/mod/" + modListPlugin.mod.id;
+                link: function (item) {
+                    if (item.mod) {
+                        return "#/mod/" + item.mod.id;
+                    }
                 }
             },
             {
