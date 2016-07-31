@@ -19,8 +19,9 @@ app.controller('requiredPluginsController', function($scope, requirementUtils) {
             }
             var requiredPluginPresent = $scope.findPlugin(requirement.master_plugin.id, true);
             if (!requiredPluginPresent) {
-                // TODO: Check if one of the plugins in the plugins array is present
-                $scope.required.missing_plugins.push(requirement);
+                if (requirementUtils.findOne($scope.findPlugin, requirement.plugins)) {
+                    $scope.required.missing_plugins.push(requirement);
+                }
             }
         });
     };

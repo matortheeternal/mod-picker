@@ -19,8 +19,9 @@ app.controller('requiredToolsController', function($scope, requirementUtils) {
             }
             var requiredToolPresent = $scope.findTool(requirement.required_mod.id, true);
             if (!requiredToolPresent) {
-                // TODO: Check if one of the mods in the mods array is present
-                $scope.required.missing_tools.push(requirement);
+                if (requirementUtils.findOne($scope.findTool, requirement.mods)) {
+                    $scope.required.missing_tools.push(requirement);
+                }
             }
         });
     };

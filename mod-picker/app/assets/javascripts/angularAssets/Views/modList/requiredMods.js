@@ -19,8 +19,9 @@ app.controller('requiredModsController', function($scope, requirementUtils) {
             }
             var requiredModPresent = $scope.findMod(requirement.required_mod.id, true);
             if (!requiredModPresent) {
-                // TODO: Check if one of the mods in the mods array is present
-                $scope.required.missing_mods.push(requirement);
+                if (requirementUtils.findOne($scope.findMod, requirement.mods)) {
+                    $scope.required.missing_mods.push(requirement);
+                }
             }
         });
     };
