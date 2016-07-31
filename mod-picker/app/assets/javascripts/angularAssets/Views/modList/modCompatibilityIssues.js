@@ -8,23 +8,8 @@ app.directive('modCompatibilityIssues', function() {
     }
 });
 
-app.controller('modCompatibilityIssuesController', function($scope) {
-    $scope.reAddNotes = function(modId) {
-        $scope.notes.compatibility.forEach(function(note) {
-            if (note._destroy && note.mods[0].id == modId || note.mods[1].id == modId) {
-                delete note._destroy;
-            }
-        });
-    };
-
-    $scope.removeNotes = function(modId) {
-        $scope.notes.compatibility.forEach(function(note) {
-            if (note.mods[0].id == modId || note.mods[1].id == modId) {
-                note._destroy = true;
-            }
-        });
-    };
-
+app.controller('modCompatibilityIssuesController', function($scope, listUtils) {
+    /* BUILD VIEW MODEL */
     $scope.buildUnresolvedCompatibility = function() {
         $scope.notes.unresolved_compatibility = [];
         $scope.notes.ignored_compatibility = [];
@@ -61,6 +46,24 @@ app.controller('modCompatibilityIssuesController', function($scope) {
         });
     };
 
+    /* UPDATE VIEW MODEL */
+    $scope.recoverCompatibilityNotes = function(modId) {
+        $scope.notes.compatibility.forEach(function(note) {
+            if (note._destroy && note.mods[0].id == modId || note.mods[1].id == modId) {
+                delete note._destroy;
+            }
+        });
+    };
+
+    $scope.removeCompatibilityNotes = function(modId) {
+        $scope.notes.compatibility.forEach(function(note) {
+            if (note.mods[0].id == modId || note.mods[1].id == modId) {
+                note._destroy = true;
+            }
+        });
+    };
+
+    /* RESOLUTION ACTIONS */
     $scope.$on('resolveCompatibilityNote', function(event, options) {
         switch(options.action) {
             case "remove":
@@ -78,6 +81,28 @@ app.controller('modCompatibilityIssuesController', function($scope) {
         }
     });
 
-    // direct method trigger events
-    $scope.$on('rebuildUnresolvedCompatibility', $scope.buildUnresolvedCompatibility);
+    // event triggers
+    $scope.$on('initializeModules', function() {
+        $scope.buildUnresolvedCompatibility();
+    });
+    $scope.$on('reloadModules', function() {
+        listUtils.recoverDestroyed($scope.notes.compatibility);
+        $scope.buildUnresolvedCompatibility();
+    });
+    $scope.$on('saveChanges', function() {
+        listUtils.removeDestroyed($scope.notes.compatibility);
+        $scope.buildUnresolvedCompatibility();
+    });
+    $scope.$on('modRemoved', function(event, modId) {
+        $scope.removeCompatibilityNotes(modId);
+        $scope.buildUnresolvedCompatibility();
+    });
+    $scope.$on('modRecovered', function(event, modId) {
+        $scope.recoverCompatibilityNotes(modId);
+        $scope.buildUnresolvedCompatibility();
+    });
+    $scope.$on('modAdded', function(event, modData) {
+        $scope.notes.compatibility.unite(modData.compatibility_notes);
+        $scope.buildUnresolvedCompatibility();
+    });
 });
