@@ -318,8 +318,7 @@ app.controller('modListController', function($scope, $q, $stateParams, $timeout,
             $scope.mod_list = angular.copy($scope.originalModList);
             $scope.recoverDestroyedItems();
             $scope.$broadcast('rebuildModels');
-            $scope.$broadcast('rebuildMissingTools');
-            $scope.$broadcast('rebuildMissingMods');
+            $scope.$broadcast('reloadModules');
             $scope.updateTabs();
         }
     };
