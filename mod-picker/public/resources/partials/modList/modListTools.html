@@ -17,6 +17,9 @@
             <span class="right-item action-box" ng-if="editing" ng-click="addToolGroup()">
                 <i class="fa fa-plus"></i> New Group
             </span>
+            <span class="right-item action-box" ng-click="toolsTable = !toolsTable">
+                <i class="fa {{ toolsTable ? 'fa-th-large' : 'fa-list-ul' }}" ng-class=""></i> {{ toolsTable ? 'Grid View' : 'List View' }}
+            </span>
         </div>
         <div class="content-container">
             <grid-items type="mod" label="tools" model="model.tools" editing="editing"></grid-items>
