@@ -1,11 +1,14 @@
 <div class="single-column">
-    <a href="#/articles">
-        <i class="fa fa-angle-left" aria-hidden="true"></i> See All Articles
-    </a>
-    <br>
-    <a ng-href="#/article/{{article.id}}/edit" ng-if="permissions.canModerate">
-        <i class="fa fa-gear" aria-hidden="true"></i> Edit This Article
-    </a>
+    <div class="actions">
+        <a href="#/articles">
+            <i class="fa fa-angle-left" aria-hidden="true"></i> See All Articles
+        </a>
+        <a ng-href="#/article/{{article.id}}/edit" ng-if="permissions.canModerate">
+            <div class="edit-article action-box">
+                <i class="fa fa-edit" aria-hidden="true"></i> Edit This Article
+            </div>
+        </a>
+    </div>
 
     <article data="article"></article>
 
