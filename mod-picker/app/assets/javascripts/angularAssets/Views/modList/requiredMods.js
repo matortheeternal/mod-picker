@@ -8,25 +8,8 @@ app.directive('requiredMods', function() {
     }
 });
 
-app.controller('requiredModsController', function($scope) {
+app.controller('requiredModsController', function($scope, requirementUtils) {
     /* BUILD VIEW MODEL */
-    $scope.compactRequiredMods = function() {
-        var requirements = $scope.required.mods;
-        var req, prev;
-        for (var i = requirements.length - 1; i >= 0; i--) {
-            req = requirements[i];
-            if (prev && req.required_mod.id == prev.required_mod.id) {
-                prev.mods.unshift(req.mod);
-                requirements.splice(i, 1);
-            } else {
-                req.mods = [req.mod];
-                req.destroyed_mods = [];
-                delete req.mod;
-                prev = req;
-            }
-        }
-    };
-
     $scope.buildMissingMods = function() {
         $scope.required.missing_mods = [];
         $scope.required.mods.forEach(function(requirement) {
@@ -39,54 +22,6 @@ app.controller('requiredModsController', function($scope) {
             if (!modPresent) {
                 $scope.required.missing_mods.push(requirement);
             }
-        });
-    };
-
-    /* UPDATE VIEW MODEL */
-    $scope.addRequirements = function(requirements) {
-        requirements.forEach(function(newRequirement) {
-            var foundRequirement = $scope.required.mods.find(function(requirement) {
-                return requirement.required_mod.id == newRequirement.required_mod.id;
-            });
-            if (foundRequirement) {
-                foundRequirement.mods.push(newRequirement.mod);
-            } else {
-                newRequirement.mods = [newRequirement.mod];
-                newRequirement.destroyed_mods = [];
-                delete newRequirement.mod;
-                $scope.required.mods.push(newRequirement);
-            }
-        });
-    };
-
-    $scope.removeRequirements = function(modId) {
-        $scope.required.mods.forEach(function(requirement) {
-            var index = requirement.mods.findIndex(function(mod) {
-                return mod.id == modId;
-            });
-            if (index > -1) {
-                var mod = requirement.mods.splice(index, 1)[0];
-                requirement.destroyed_mods.push(mod);
-            }
-        });
-    };
-
-    $scope.recoverRequirements = function(modId) {
-        $scope.required.mods.forEach(function(requirement) {
-            var index = requirement.destroyed_mods.findIndex(function(mod) {
-                return mod.id == modId;
-            });
-            if (index > -1) {
-                var mod = requirement.destroyed_mods.splice(index, 1)[0];
-                requirement.mods.push(mod);
-            }
-        });
-    };
-
-    $scope.recoverAllRequirements = function() {
-        $scope.required.mods.forEach(function(requirement) {
-            requirement.mods.unite(requirement.destroyed_mods);
-            requirement.destroyed_mods = [];
         });
     };
 
@@ -106,23 +41,28 @@ app.controller('requiredModsController', function($scope) {
 
     /* EVENT TRIGGERS */
     $scope.$on('initializeModules', function() {
-        $scope.compactRequiredMods();
+        requirementUtils.compactRequirements($scope.required.mods, 'mod', 'required_mod');
         $scope.buildMissingMods();
     });
     $scope.$on('reloadModules', function() {
-        $scope.recoverAllRequirements();
+        requirementUtils.recoverDestroyedRequirements($scope.required.mods, 'mod');
+        $scope.buildMissingMods();
+    });
+    $scope.$on('saveChanges', function() {
+        requirementUtils.removeDestroyedRequirements($scope.required.mods, 'mod');
         $scope.buildMissingMods();
     });
     $scope.$on('modRemoved', function(event, modId) {
-        $scope.removeRequirements(modId);
+        requirementUtils.removeRequirements(modId, $scope.required.mods, 'mod');
         $scope.buildMissingMods();
     });
     $scope.$on('modRecovered', function(event, modId) {
-        $scope.recoverRequirements(modId);
+        requirementUtils.recoverRequirements(modId, $scope.required.mods, 'mod');
         $scope.buildMissingMods();
     });
     $scope.$on('modAdded', function(event, modData) {
-        $scope.addRequirements(modData.required_mods);
+        var requirements = modData.required_mods;
+        requirementUtils.addRequirements(requirements, $scope.required.mods, 'mod', 'required_mod');
         $scope.buildMissingMods();
     });
 });
