@@ -1,5 +1,5 @@
 <div class="article">
-    <div class="news-box">
+    <div class="news-box" ng-class="condensed ? '' : 'no-border'">
         <div class="image-container" ng-if="article.image">
             <a ng-href="#/article/{{article.id}}">
                 <img ng-src="{{article.image}}" />
