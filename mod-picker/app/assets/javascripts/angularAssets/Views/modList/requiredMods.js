@@ -9,6 +9,8 @@ app.directive('requiredMods', function() {
 });
 
 app.controller('requiredModsController', function($scope, requirementUtils) {
+    $scope.showMissingMods = true;
+
     /* BUILD VIEW MODEL */
     $scope.buildMissingMods = function() {
         $scope.required.missing_mods = [];

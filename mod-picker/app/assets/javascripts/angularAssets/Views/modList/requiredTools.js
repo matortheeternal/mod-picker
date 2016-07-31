@@ -9,6 +9,8 @@ app.directive('requiredTools', function() {
 });
 
 app.controller('requiredToolsController', function($scope, requirementUtils) {
+    $scope.showMissingTools = true;
+
     /* BUILD VIEW MODEL */
     $scope.buildMissingTools = function() {
         $scope.required.missing_tools = [];

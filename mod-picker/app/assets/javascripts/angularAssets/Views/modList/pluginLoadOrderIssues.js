@@ -9,6 +9,8 @@ app.directive('pluginLoadOrderIssues', function() {
 });
 
 app.controller('pluginLoadOrderIssuesController', function($scope, listUtils) {
+    $scope.showUnresolvedLoadOrder = true;
+
     /* BUILD VIEW MODEL */
     $scope.buildUnresolvedLoadOrder = function() {
         $scope.notes.unresolved_load_order = [];

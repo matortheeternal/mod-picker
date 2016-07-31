@@ -9,6 +9,8 @@ app.directive('pluginCompatibilityIssues', function() {
 });
 
 app.controller('pluginCompatibilityIssuesController', function($scope, listUtils) {
+    $scope.showUnresolvedPluginCompatibility = true;
+
     /* BUILD VIEW MODEL */
     $scope.buildUnresolvedPluginCompatibility = function() {
         $scope.notes.unresolved_plugin_compatibility = [];

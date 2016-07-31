@@ -9,6 +9,8 @@ app.directive('modCompatibilityIssues', function() {
 });
 
 app.controller('modCompatibilityIssuesController', function($scope, listUtils) {
+    $scope.showUnresolvedCompatibility = true;
+
     /* BUILD VIEW MODEL */
     $scope.buildUnresolvedCompatibility = function() {
         $scope.notes.unresolved_compatibility = [];

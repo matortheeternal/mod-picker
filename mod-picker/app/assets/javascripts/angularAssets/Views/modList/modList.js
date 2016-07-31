@@ -121,16 +121,6 @@ app.controller('modListController', function($scope, $q, $stateParams, $timeout,
     $scope.required = {};
     $scope.notes = {};
     $scope.errors = {};
-    $scope.retrieving = {}; // this can be removed when we make states sticky
-    $scope.show = { // this can be removed when we make states sticky
-        missing_tools: true,
-        missing_mods: true,
-        missing_plugins: true,
-        unresolved_compatibility: true,
-        unresolved_install_order: true,
-        unresolved_plugin_compatibility: true,
-        unresolved_load_order: true
-    };
     $scope.add = {
         tool: {},
         mod: {},

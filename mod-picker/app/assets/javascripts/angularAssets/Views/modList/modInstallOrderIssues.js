@@ -9,6 +9,8 @@ app.directive('modInstallOrderIssues', function() {
 });
 
 app.controller('modInstallOrderIssuesController', function($scope, listUtils) {
+    $scope.showUnresolvedInstallOrder = true;
+
     /* BUILD VIEW MODEL */
     $scope.buildUnresolvedInstallOrder = function() {
         $scope.notes.unresolved_install_order = [];

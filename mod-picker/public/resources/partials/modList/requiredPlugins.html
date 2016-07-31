@@ -1,14 +1,14 @@
 <div class="content-block">
     <div class="content-title">Required Plugins
         <span class="note-item">
-            ({{show.missing_plugins ? 'Missing' : 'All'}})
+            ({{showMissingPlugins ? 'Missing' : 'All'}})
         </span>
-        <span class="right-item toggle-item" ng-click="show.missing_plugins = !show.missing_plugins">
-            {{show.missing_plugins ? 'Show All' : 'Show Missing Requirements'}}
+        <span class="right-item toggle-item" ng-click="showMissingPlugins = !showMissingPlugins">
+            {{showMissingPlugins ? 'Show All' : 'Show Missing Requirements'}}
         </span>
     </div>
     <div class="content-container">
-        <ul ng-if="show.missing_plugins">
+        <ul ng-if="showMissingPlugins">
             <li ng-repeat="requirement in required.missing_plugins">
                 <a ng-href="#/mod/{{requirement.master_plugin.mod_id}}/analysis?plugin={{requirement.master_plugin.id}}">{{requirement.master_plugin.filename}}</a>
                 is required by
@@ -27,11 +27,11 @@
                 </span>
             </li>
         </ul>
-        <div ng-show="show.missing_plugins && !required.missing_plugins.length" class="content-message">
+        <div ng-show="showMissingPlugins && !required.missing_plugins.length" class="content-message">
             No missing requirements to display.
         </div>
 
-        <ul ng-if="!show.missing_plugins">
+        <ul ng-if="!showMissingPlugins">
             <li ng-repeat="requirement in required.plugins" ng-show="requirement.plugins.length">
                 <a ng-href="#/mod/{{requirement.master_plugin.mod_id}}/analysis?plugin={{requirement.master_plugin.id}}">{{requirement.master_plugin.filename}}</a>
                 is required by
@@ -44,7 +44,7 @@
                 </span>
             </li>
         </ul>
-        <div ng-show="!show.missing_plugins && isEmpty(required.plugins)" class="content-message">
+        <div ng-show="!showMissingPlugins && isEmpty(required.plugins)" class="content-message">
             No requirements to display.
         </div>
     </div>

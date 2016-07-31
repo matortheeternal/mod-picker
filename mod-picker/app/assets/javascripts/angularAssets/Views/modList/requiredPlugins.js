@@ -9,6 +9,8 @@ app.directive('requiredPlugins', function() {
 });
 
 app.controller('requiredPluginsController', function($scope, requirementUtils) {
+    $scope.showMissingPlugins = true;
+
     /* BUILD VIEW MODEL */
     $scope.buildMissingPlugins = function() {
         $scope.required.missing_plugins = [];
