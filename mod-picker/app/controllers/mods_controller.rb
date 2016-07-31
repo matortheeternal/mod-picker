@@ -298,7 +298,7 @@ class ModsController < ApplicationController
 
     # Params we allow searching on
     def search_params
-      params[:filters].slice(:search, :game, :utility)
+      params[:filters].slice(:search, :game, :utility, :include_games)
     end
     
     # Params we allow filtering on
