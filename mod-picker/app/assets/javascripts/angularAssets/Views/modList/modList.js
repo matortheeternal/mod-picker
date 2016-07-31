@@ -212,17 +212,24 @@ app.controller('modListController', function($scope, $q, $stateParams, $timeout,
     };
 
     // MOD LIST EDITING LOGIC
-    $scope.flattenModel = function(label) {
+    $scope.flattenModel = function(label, associationLabel) {
+        var custom_label = 'custom_' + label;
         if ($scope.model[label]) {
             $scope.mod_list[label] = [];
             $scope.model[label].forEach(function(item) {
                 if (item.children) {
                     $scope.mod_list.groups.push(item);
                     item.children.forEach(function(child) {
-                        $scope.mod_list[label].push(child);
+                        if (child.hasOwnProperty(associationLabel)) {
+                            $scope.mod_list[label].push(child);
+                        } else {
+                            $scope.mod_list[custom_label].push(child);
+                        }
                     })
-                } else {
+                } else if (item.hasOwnProperty(associationLabel)) {
                     $scope.mod_list[label].push(item);
+                } else {
+                    $scope.mod_list[custom_label].push(item);
                 }
             });
         }
@@ -230,9 +237,9 @@ app.controller('modListController', function($scope, $q, $stateParams, $timeout,
 
     $scope.flattenModels = function() {
         $scope.mod_list.groups = [];
-        $scope.flattenModel('tools');
-        $scope.flattenModel('mods');
-        $scope.flattenModel('plugins');
+        $scope.flattenModel('tools', 'mod');
+        $scope.flattenModel('mods', 'mod');
+        $scope.flattenModel('plugins', 'plugin');
     };
 
     $scope.updateTabs = function() {
