@@ -433,63 +433,6 @@ app.service('columnsFactory', function() {
         return ["General", "Content Statistics", "Contribution Statistics", "Extended Statistics"];
     };
 
-    this.commentColumns = function() {
-        return [
-            {
-                group: "General",
-                visibility: true,
-                required: true,
-                label: "Submitter",
-                data: "submitter.username",
-                link: function(comment) {
-                    return "#/user/" + comment.submitter.id
-                }
-            },
-            {
-                group: "General",
-                visibility: true,
-                label: "Commentable",
-                data: "commentable_type",
-                link: function (comment) {
-                    return comment.commentable_link
-                }
-            },
-            {
-                group: "General",
-                visibility: true,
-                label: "Submitted",
-                data: "submitted",
-                filter: "date"
-            },
-            {
-                group: "General",
-                visibility: true,
-                label: "Edited",
-                data: "edited",
-                filter: "date"
-            },
-            //{
-            //    group: "General",
-            //    visibility: true,
-            //    label: "Parent",
-            //    data: "parent_id",
-            //    link: function(comment) {
-            //        return comment.parent_link
-            //    }
-            //},
-            {
-                group: "General",
-                visibility: true,
-                label: "Replies",
-                data: "children_count"
-            }
-        ];
-    };
-
-    this.commentColumnGroups = function() {
-        return ["General"]
-    };
-
     // TODO
     this.modListToolColumns = function() {
         return [];
