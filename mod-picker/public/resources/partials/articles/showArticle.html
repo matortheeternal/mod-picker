@@ -18,7 +18,7 @@
                 <i class="fa fa-plus"></i> New Comment
             </span>
         </div>
-        <loader data="article.comments" spinner-class="big-spinner" content-class="content-container">
+        <loader data="article.comments" spinner-class="big-spinner" content-class="article-comments">
             <comments comments="article.comments" current-user="currentUser" model-name="'Article'" target="article"></comments>
 
             <page-results pages="pages.comments" data="article.comments" callback="retrieveComments"></page-results>
