@@ -36,9 +36,7 @@ app.controller('modListModsController', function($scope, modListService, modServ
             $scope.originalModList.mods = angular.copy($scope.mod_list.mods);
             $scope.originalModList.groups = angular.copy($scope.mod_list.groups);
             $scope.buildModsModel();
-            $scope.buildMissingMods();
-            $scope.buildUnresolvedCompatibility();
-            $scope.buildUnresolvedInstallOrder();
+            $scope.$broadcast('initializeModules');
             $scope.retrieving.mods = false;
         }, function(response) {
             $scope.errors.mods = response;
@@ -50,19 +48,19 @@ app.controller('modListModsController', function($scope, modListService, modServ
         $scope.retrieveMods();
     }
 
-    $scope.reAddMod = function(modListMod) {
+    $scope.recoverMod = function(modListMod) {
         // if mod is already present on the user's mod list but has been
         // removed, add it back
         if (modListMod._destroy) {
             delete modListMod._destroy;
             $scope.mod_list.mods_count += 1;
-            $scope.reAddRequirements(modListMod.mod.id);
-            $scope.reAddNotes(modListMod.mod.id);
-            $scope.buildMissingMods();
-            $scope.buildUnresolvedCompatibility();
-            $scope.buildUnresolvedInstallOrder();
             $scope.updateTabs();
+
+            // upudate modules
+            $scope.$parent.$broadcast('modRecovered', modListMod.mod.id);
             $scope.$broadcast('updateItems');
+
+            // success message
             $scope.$emit('successMessage', 'Added mod ' + modListMod.mod.name + ' successfully.');
         }
         // else inform the user that the mod is already on their mod list
@@ -86,18 +84,11 @@ app.controller('modListModsController', function($scope, modListService, modServ
             $scope.mod_list.mods_count += 1;
             $scope.updateTabs();
 
-            // handle requirements
-            Array.prototype.unite($scope.required.tools, data.required_tools);
-            Array.prototype.unite($scope.required.mods, data.required_mods);
-            $scope.$emit('rebuildMissing');
-
-            // handle notes
-            Array.prototype.unite($scope.notes.compatibility, data.compatibility_notes);
-            Array.prototype.unite($scope.notes.install_order, data.install_order_notes);
-            $scope.$emit('rebuildUnresolved');
+            // update modules
+            $scope.$parent.$broadcast('modAdded', data);
+            $scope.$broadcast('updateItems');
 
             // success message
-            $scope.$broadcast('updateItems');
             $scope.$emit('successMessage', 'Added mod ' + data.mod_list_mod.mod.name + ' successfully.');
         }, function(response) {
             var params = {label: 'Error adding mod', response: response};
@@ -114,7 +105,7 @@ app.controller('modListModsController', function($scope, modListService, modServ
         // see if the mod is already present on the user's mod list
         var existingMod = $scope.findMod(modId);
         if (existingMod) {
-            $scope.reAddMod(existingMod);
+            $scope.recoverMod(existingMod);
         } else {
             $scope.addNewMod(modId);
         }
@@ -127,13 +118,11 @@ app.controller('modListModsController', function($scope, modListService, modServ
 
     $scope.removeMod = function(modListMod) {
         modListMod._destroy = true;
-        $scope.removeRequirements(modListMod.mod.id);
-        $scope.removeNotes(modListMod.mod.id);
-        $scope.buildMissingMods();
-        $scope.buildUnresolvedCompatibility();
-        $scope.buildUnresolvedInstallOrder();
         $scope.mod_list.mods_count -= 1;
         $scope.updateTabs();
+
+        // update modules
+        $scope.$parent.$broadcast('modRemoved', modListMod.mod.id);
         $scope.$broadcast('updateItems');
     };
 
@@ -141,7 +130,9 @@ app.controller('modListModsController', function($scope, modListService, modServ
         $scope.removeMod(modListMod);
     });
 
-    // direct method trigger events
+    // event triggers
     $scope.$on('rebuildModels', $scope.buildModsModel);
-    $scope.$on('itemMoved', $scope.buildUnresolvedInstallOrder);
+    $scope.$on('itemMoved', function() {
+        $scope.$broadcast('modMoved');
+    });
 });
