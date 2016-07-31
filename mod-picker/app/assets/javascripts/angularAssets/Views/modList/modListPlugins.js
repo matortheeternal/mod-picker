@@ -25,7 +25,8 @@ app.controller('modListPluginsController', function($scope, $q, $timeout, modLis
                 return plugin.group_id == group.id;
             });
         });
-        $scope.mod_list.plugins.forEach(function(plugin) {
+        var plugins = $scope.mod_list.plugins.concat($scope.mod_list.custom_plugins);
+        plugins.forEach(function(plugin) {
             if (!plugin.group_id) {
                 var insertIndex = $scope.model.plugins.findIndex(function(item) {
                     return item.index > plugin.index;
@@ -46,6 +47,7 @@ app.controller('modListPluginsController', function($scope, $q, $timeout, modLis
             $scope.notes.plugin_compatibility = data.compatibility_notes;
             $scope.notes.load_order = data.load_order_notes;
             $scope.mod_list.plugins = data.plugins;
+            $scope.mod_list.custom_plugins = data.custom_plugins;
             $scope.plugin_store = data.plugin_store;
             $scope.mod_list.groups = Array.prototype.concat($scope.mod_list.groups || [], data.groups);
             $scope.originalModList.plugins = angular.copy($scope.mod_list.plugins);
