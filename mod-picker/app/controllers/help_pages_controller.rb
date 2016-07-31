@@ -58,6 +58,8 @@ class HelpPagesController < ApplicationController
 
     if @help_page.destroy
       redirect_to action: "index"
+    else
+      redirect_to "/help/#{@help_page.id}/edit"
     end
   end
 
