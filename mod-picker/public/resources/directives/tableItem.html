@@ -31,7 +31,7 @@
 </td>
 
 <!-- display item -->
-<td ng-if="!item.children" ng-repeat="column in columns" ng-class="{ 'hidden': !column.visibility, 'text-cell' : !column.filter,  '{{column.filter}}-cell' : !!column.filter, '{{column.class}}' : !!column.class }">
+<td ng-if="!item.children" ng-repeat="column in columns" ng-class="{ 'hidden': !column.visibility, 'text-cell' : !column.filter,  '{{filterClass(column.filter)}}-cell' : !!column.filter, '{{column.class}}' : !!column.class }">
     <a ng-if="column.link" class="strong" ng-href="{{column.link(item)}}">
         {{ columnValue(item, column.data) | picker:column.filter }}
     </a>

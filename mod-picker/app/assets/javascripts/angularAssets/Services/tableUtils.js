@@ -1,6 +1,15 @@
 app.service('tableUtils', function (objectUtils) {
     var service = this;
 
+    // sanitizes a filter to be a class by removing any filter params
+    this.filterClass = function(filter) {
+        if (filter && filter.indexOf(':') > -1) {
+            return filter.split(':')[0];
+        } else {
+            return filter;
+        }
+    };
+
     // this function uses objectUtils.deepValue to retrieve the value
     // of a data item based on the data path described in the column's
     // data property.  if the data property has multiple paths it will
