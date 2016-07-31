@@ -51,7 +51,7 @@ app.controller('requiredToolsController', function($scope, requirementUtils) {
     });
     $scope.$on('saveChanges', function() {
         requirementUtils.removeDestroyedRequirements($scope.required.tools, 'mod');
-        $scope.buildMissingPlugins();
+        $scope.buildMissingTools();
     });
     $scope.$on('modRemoved', function(event, modId) {
         requirementUtils.removeRequirements(modId, $scope.required.tools, 'mod');
