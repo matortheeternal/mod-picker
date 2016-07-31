@@ -22,40 +22,82 @@ app.config(['$stateProvider', function ($stateProvider) {
             }
         }
     }).state('base.mod-list.Details', {
-        templateUrl: '/resources/partials/modList/modListDetails.html',
-        controller: 'modListDetailsController',
+        sticky: true,
+        deepStateRedirect: true,
+        reloadOnSearch: false,
+        views: {
+            'Details': {
+                templateUrl: '/resources/partials/modList/modListDetails.html',
+                controller: 'modListDetailsController'
+            }
+        },
         url: '/details'
     }).state('base.mod-list.Tools', {
-        templateUrl: '/resources/partials/modList/modListTools.html',
-        controller: 'modListToolsController',
+        sticky: true,
+        deepStateRedirect: true,
+        reloadOnSearch: false,
+        views: {
+            'Tools': {
+                templateUrl: '/resources/partials/modList/modListTools.html',
+                controller: 'modListToolsController'
+            }
+        },
         url: '/tools?scol&sdir',
         params: {
             scol: 'index',
             sdir: 'asc'
         }
     }).state('base.mod-list.Mods', {
-        templateUrl: '/resources/partials/modList/modListMods.html',
-        controller: 'modListModsController',
+        sticky: true,
+        deepStateRedirect: true,
+        reloadOnSearch: false,
+        views: {
+            'Mods': {
+                templateUrl: '/resources/partials/modList/modListMods.html',
+                controller: 'modListModsController'
+            }
+        },
         url: '/mods?scol&sdir',
         params: {
             scol: 'index',
             sdir: 'asc'
         }
     }).state('base.mod-list.Plugins', {
-        templateUrl: '/resources/partials/modList/modListPlugins.html',
-        controller: 'modListPluginsController',
+        sticky: true,
+        deepStateRedirect: true,
+        reloadOnSearch: false,
+        views: {
+            'Plugins': {
+                templateUrl: '/resources/partials/modList/modListPlugins.html',
+                controller: 'modListPluginsController'
+            }
+        },
         url: '/plugins?scol&sdir',
         params: {
             scol: 'index',
             sdir: 'asc'
         }
     }).state('base.mod-list.Config', {
-        templateUrl: '/resources/partials/modList/modListConfig.html',
-        controller: 'modListConfigController',
+        sticky: true,
+        deepStateRedirect: true,
+        reloadOnSearch: false,
+        views: {
+            'Config': {
+                templateUrl: '/resources/partials/modList/modListConfig.html',
+                controller: 'modListConfigController'
+            }
+        },
         url: '/config'
     }).state('base.mod-list.Comments', {
-        templateUrl: '/resources/partials/modList/modListComments.html',
-        controller: 'modListCommentsController',
+        sticky: true,
+        deepStateRedirect: true,
+        reloadOnSearch: false,
+        views: {
+            'Comments': {
+                templateUrl: '/resources/partials/modList/modListComments.html',
+                controller: 'modListCommentsController'
+            }
+        },
         url: '/comments'
     })
 }]);
