@@ -25,19 +25,6 @@ app.controller('modListToolsController', function($scope, $state, $stateParams, 
         });
     };
 
-    $scope.buildMissingTools = function() {
-        $scope.required.missing_tools = [];
-        $scope.required.tools.forEach(function(requirement) {
-            if (requirement._destroy) {
-                return;
-            }
-            var toolPresent = $scope.findTool(requirement.required_mod.id, true);
-            if (!toolPresent) {
-                $scope.required.missing_tools.push(requirement);
-            }
-        });
-    };
-
     $scope.retrieveTools = function() {
         $scope.retrieving.tools = true;
         modListService.retrieveModListTools($scope.mod_list.id).then(function(data) {
