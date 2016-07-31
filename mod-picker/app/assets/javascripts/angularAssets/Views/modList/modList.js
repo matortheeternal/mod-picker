@@ -312,7 +312,7 @@ app.controller('modListController', function($scope, $q, $stateParams, $timeout,
     $scope.$on('reloadModules', function() {
         // recover destroyed groups
         if ($scope.mod_list.groups) {
-            listUtils.recoverAll($scope.mod_list.groups);
+            listUtils.recoverDestroyed($scope.mod_list.groups);
         }
     });
     $scope.$on('saveChanges', function() {

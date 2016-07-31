@@ -96,7 +96,7 @@ app.service('listUtils', function () {
         moveModel.splice(options.after ? newIndex + 1 : newIndex, 0, moveItem);
     };
 
-    this.recoverAll = function(model) {
+    this.recoverDestroyed = function(model) {
         model.forEach(function(item) {
             if (item._destroy) {
                  delete item._destroy;

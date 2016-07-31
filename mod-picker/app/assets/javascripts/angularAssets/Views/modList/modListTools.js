@@ -158,14 +158,13 @@ app.controller('modListToolsController', function($scope, $state, $stateParams, 
         $scope.$broadcast('updateItems');
     };
 
+    // event triggers
     $scope.$on('removeItem', function(event, modListTool) {
         $scope.removeTool(modListTool);
     });
-
-    // direct method trigger events
     $scope.$on('rebuildModels', $scope.buildToolsModel);
     $scope.$on('reloadModules', function() {
-        listUtils.recoverAll($scope.mod_list.tools);
+        listUtils.recoverDestroyed($scope.mod_list.tools);
     });
     $scope.$on('saveChanges', function() {
         listUtils.removeDestroyed($scope.mod_list.tools);

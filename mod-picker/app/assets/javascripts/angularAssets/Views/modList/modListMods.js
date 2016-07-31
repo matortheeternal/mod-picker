@@ -126,14 +126,13 @@ app.controller('modListModsController', function($scope, modListService, modServ
         $scope.$broadcast('updateItems');
     };
 
+    // event triggers
     $scope.$on('removeItem', function(event, modListMod) {
         $scope.removeMod(modListMod);
     });
-
-    // event triggers
     $scope.$on('rebuildModels', $scope.buildModsModel);
     $scope.$on('reloadModules', function() {
-        listUtils.recoverAll($scope.mod_list.mods);
+        listUtils.recoverDestroyed($scope.mod_list.mods);
     });
     $scope.$on('saveChanges', function() {
         listUtils.removeDestroyed($scope.mod_list.mods);

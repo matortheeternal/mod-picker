@@ -85,7 +85,7 @@ app.controller('pluginCompatibilityIssuesController', function($scope, listUtils
         $scope.buildUnresolvedPluginCompatibility();
     });
     $scope.$on('reloadModules', function() {
-        listUtils.recoverAll($scope.notes.plugin_compatibility);
+        listUtils.recoverDestroyed($scope.notes.plugin_compatibility);
         $scope.buildUnresolvedPluginCompatibility();
     });
     $scope.$on('saveChanges', function() {

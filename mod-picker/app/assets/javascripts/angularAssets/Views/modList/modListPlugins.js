@@ -150,14 +150,13 @@ app.controller('modListPluginsController', function($scope, $q, modListService, 
         $scope.columns[1].visibility = $scope.showLoadOrder;
     };
 
+    // event triggers
     $scope.$on('removeItem', function(event, modListPlugin) {
         $scope.removePlugin(modListPlugin);
     });
-
-    // direct method trigger events
     $scope.$on('rebuildModels', $scope.buildPluginsModel);
     $scope.$on('reloadModules', function() {
-        listUtils.recoverAll($scope.mod_list.plugins);
+        listUtils.recoverDestroyed($scope.mod_list.plugins);
     });
     $scope.$on('saveChanges', function() {
         listUtils.removeDestroyed($scope.mod_list.plugins);

@@ -74,7 +74,7 @@ app.controller('pluginLoadOrderIssuesController', function($scope, listUtils) {
         $scope.buildUnresolvedLoadOrder();
     });
     $scope.$on('reloadModules', function() {
-        listUtils.recoverAll($scope.notes.load_order);
+        listUtils.recoverDestroyed($scope.notes.load_order);
         $scope.buildUnresolvedLoadOrder();
     });
     $scope.$on('saveChanges', function() {
