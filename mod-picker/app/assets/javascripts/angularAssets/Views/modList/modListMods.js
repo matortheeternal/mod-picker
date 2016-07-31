@@ -1,4 +1,4 @@
-app.controller('modListModsController', function($scope, modListService, modService) {
+app.controller('modListModsController', function($scope, modListService, modService, listUtils) {
     $scope.searchMods = modService.searchModsNoTools;
 
     $scope.buildModsModel = function() {
