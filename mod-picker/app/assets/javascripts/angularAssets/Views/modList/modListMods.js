@@ -1,4 +1,4 @@
-app.controller('modListModsController', function($scope, $rootScope, modListService, modService, listUtils) {
+app.controller('modListModsController', function($scope, $rootScope, $timeout, modListService, modService, listUtils) {
     $scope.searchMods = modService.searchModsNoTools;
 
     $scope.buildModsModel = function() {
@@ -35,7 +35,9 @@ app.controller('modListModsController', function($scope, $rootScope, modListServ
             $scope.originalModList.mods = angular.copy($scope.mod_list.mods);
             $scope.originalModList.groups = angular.copy($scope.mod_list.groups);
             $scope.buildModsModel();
-            $scope.$broadcast('initializeModules');
+            $timeout(function() {
+                $scope.$broadcast('initializeModules');
+            }, 100);
             $scope.modsReady = true;
         }, function(response) {
             $scope.errors.mods = response;

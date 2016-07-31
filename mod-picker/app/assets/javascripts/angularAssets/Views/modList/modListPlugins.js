@@ -1,4 +1,4 @@
-app.controller('modListPluginsController', function($scope, $q, modListService, columnsFactory, actionsFactory, listUtils) {
+app.controller('modListPluginsController', function($scope, $q, $timeout, modListService, columnsFactory, actionsFactory, listUtils) {
     // initialize variables
     $scope.columns = columnsFactory.modListPluginColumns();
     $scope.columnGroups = columnsFactory.modListPluginColumnGroups();
@@ -51,7 +51,9 @@ app.controller('modListPluginsController', function($scope, $q, modListService, 
             $scope.originalModList.plugins = angular.copy($scope.mod_list.plugins);
             $scope.originalModList.groups = angular.copy($scope.mod_list.groups);
             $scope.buildPluginsModel();
-            $scope.$broadcast('initializeModules');
+            $timeout(function() {
+                $scope.$broadcast('initializeModules');
+            }, 100);
             $scope.pluginsReady = true;
         }, function(response) {
             $scope.errors.plugins = response;
