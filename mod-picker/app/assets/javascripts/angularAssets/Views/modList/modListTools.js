@@ -74,7 +74,7 @@ app.controller('modListToolsController', function($scope, $rootScope, $state, $s
         var mod_list_mod = {
             mod_list_id: $scope.mod_list.id,
             mod_id: toolId,
-            index: $scope.mod_list.tools.length
+            index: listUtils.getNextIndex($scope.model.tools)
         };
 
         modListService.newModListMod(mod_list_mod).then(function(data) {

@@ -291,7 +291,7 @@ app.controller('modListController', function($scope, $q, $stateParams, $timeout,
         var model = $scope.model[tab];
         var newGroup = {
             mod_list_id: $scope.mod_list.id,
-            index: model.length,
+            index: listUtils.getNextIndex(model) - 1,
             tab: tab,
             color: 'red',
             name: 'New Group'
