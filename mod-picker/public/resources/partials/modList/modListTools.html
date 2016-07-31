@@ -22,45 +22,11 @@
             <grid-items type="mod" label="tools" model="model.tools" editing="editing"></grid-items>
         </div>
     </div>
-
-    <div class="content-block">
-        <div class="content-title">Required Tools
-            <span class="note-item">
-                ({{show.missing_tools ? 'Missing' : 'All'}})
-            </span>
-            <span class="right-item toggle-item" ng-click="show.missing_tools = !show.missing_tools">
-                {{show.missing_tools ? 'Show All' : 'Show Missing Requirements'}}
-            </span>
-        </div>
-        <div class="content-container">
-            <ul ng-if="show.missing_tools">
-                <li ng-repeat="requirement in required.missing_tools">
-                    <a href="#/mod/{{requirement.required_mod.id}}">{{requirement.required_mod.name}}</a>
-                    is required by
-                    <a href="#/mod/{{requirement.mod.id}}">{{requirement.mod.name}}</a>
-                    <span class="action-box green-box" ng-click="addTool(requirement.required_mod.id)" title="Add {{requirement.required_mod.name}}">Add Requirement</span>
-                    <span class="action-box red-box" ng-click="removeTool(findTool(requirement.mod.id))" title="Remove {{requirement.mod.name}}">Remove Requirer</span>
-                </li>
-            </ul>
-            <div ng-show="show.missing_tools && !required.missing_tools.length" class="content-message">
-                No missing requirements to display.
-            </div>
-
-            <ul ng-if="!show.missing_tools">
-                <li ng-repeat="requirement in required.tools" ng-hide="requirement._destroy">
-                    <a href="#/mod/{{requirement.required_mod.id}}">{{requirement.required_mod.name}}</a>
-                    is required by
-                    <a href="#/mod/{{requirement.mod.id}}">{{requirement.mod.name}}</a>
-                </li>
-            </ul>
-            <div ng-show="!show.missing_tools && isEmpty(required.tools)">
-                No requirements to display.
-            </div>
-        </div>
-    </div>
-
-    <div class="action-button-container" ng-if="editing">
-        <input class="btn action-btn" type="submit" value="Save" ng-click="saveChanges()"/>
-        <input class="btn action-btn" type="button" value="Reset" ng-click="discardChanges()"/>
-    </div>
 </loader>
+
+<required-tools></required-tools>
+
+<div class="action-button-container" ng-if="editing">
+    <input class="btn action-btn" type="submit" value="Save" ng-click="saveChanges()"/>
+    <input class="btn action-btn" type="button" value="Reset" ng-click="discardChanges()"/>
+</div>
