@@ -24,7 +24,7 @@
                 <!-- resolution options -->
                 <span ng-if="editing">
                     <span class="action-box green-box" ng-click="addTool(requirement.required_mod.id)" title="Add {{requirement.required_mod.name}}">Add Requirement</span>
-                    <span class="action-box red-box" ng-click="removeRequirers(requirement)" title="Remove {{getRequirerList(requirement)}}">Remove Requirers</span>
+                    <span class="action-box red-box" ng-click="removeRequirers(requirement)" title="{{ model.mods ? 'Remove ' + getRequirerList(requirement) : 'You must visit the mods tab before you can use this action.' }}" ng-class="{ 'disabled' : !model.mods }">Remove Requirers</span>
                 </span>
             </li>
         </ul>
