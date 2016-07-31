@@ -165,6 +165,6 @@ app.controller('modListToolsController', function($scope, $state, $stateParams, 
     // direct method trigger events
     $scope.$on('rebuildModels', $scope.buildToolsModel);
     $scope.$on('reloadModules', function() {
-        listUtils.recoverAll($scope.mod_list.plugins);
+        listUtils.recoverAll($scope.mod_list.tools);
     });
 });

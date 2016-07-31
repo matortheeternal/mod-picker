@@ -1,4 +1,4 @@
-app.controller('modListPluginsController', function($scope, $q, modListService, columnsFactory, actionsFactory) {
+app.controller('modListPluginsController', function($scope, $q, modListService, columnsFactory, actionsFactory, listUtils) {
     // initialize variables
     $scope.columns = columnsFactory.modListPluginColumns();
     $scope.columnGroups = columnsFactory.modListPluginColumnGroups();
@@ -138,6 +138,8 @@ app.controller('modListPluginsController', function($scope, $q, modListService, 
         modListPlugin._destroy = true;
         $scope.mod_list.plugins_count -= 1;
         $scope.updateTabs();
+
+        // update modules
         $scope.$broadcast('pluginRemoved', modListPlugin.plugin.id);
         $scope.$broadcast('updateItems');
     };
@@ -154,7 +156,10 @@ app.controller('modListPluginsController', function($scope, $q, modListService, 
 
     // direct method trigger events
     $scope.$on('rebuildModels', $scope.buildPluginsModel);
+    $scope.$on('reloadModules', function() {
+        listUtils.recoverAll($scope.mod_list.plugins);
+    });
     $scope.$on('itemMoved', function() {
-        $scope.$broadcast('rebuildUnresolvedLoadOrder');
+        $scope.$broadcast('pluginMoved');
     });
 });

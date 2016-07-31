@@ -132,6 +132,9 @@ app.controller('modListModsController', function($scope, modListService, modServ
 
     // event triggers
     $scope.$on('rebuildModels', $scope.buildModsModel);
+    $scope.$on('reloadModules', function() {
+        listUtils.recoverAll($scope.mod_list.mods);
+    });
     $scope.$on('itemMoved', function() {
         $scope.$broadcast('modMoved');
     });
