@@ -93,4 +93,7 @@ app.controller('pluginLoadOrderIssuesController', function($scope, listUtils) {
         $scope.notes.load_order.unite(pluginData.load_order_notes);
         $scope.buildUnresolvedLoadOrder();
     });
+    $scope.$on('pluginMoved', function() {
+        $scope.buildUnresolvedLoadOrder();
+    });
 });
