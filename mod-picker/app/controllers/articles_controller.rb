@@ -79,10 +79,6 @@ class ArticlesController < ApplicationController
       @article = Article.find(params[:id])
     end
 
-    def search_params
-      params[:filters].slice(:search)
-    end
-
     # Params we allow filtering on
     def filtering_params
       params[:filters].slice(:search, :submitter, :submitted)
