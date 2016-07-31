@@ -1,7 +1,10 @@
 class Article < ActiveRecord::Base
-  include Imageable, RecordEnhancements
+  include Filterable, Sortable, Imageable, RecordEnhancements
 
   # SCOPES
+  scope :search, -> (search) { where("text_body like ? OR title like ?", "%#{search}%", "#{search}%") }
+  scope :submitter, -> (username) { joins(:submitter).where(:users => {:username => username}) }
+  scope :submitted, -> (range) { where(submitted: parseDate(range[:min])..parseDate(range[:max])) }
   scope :game, -> (game_id) {
     # nil game_id means article is site-wide
     game = Game.find(game_id)

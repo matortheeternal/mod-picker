@@ -8,6 +8,18 @@ class ArticlesController < ApplicationController
     render :json => @article.as_json
   end
 
+  # GET /articles/index
+  def index
+    @articles= Article.accessible_by(current_ability).filter(filtering_params).sort(params[:sort]).paginate(:page => params[:page])
+    count =  Article.accessible_by(current_ability).filter(filtering_params).count
+
+    render :json => {
+        articles: @articles,
+        max_entries: count,
+        entries_per_page: User.per_page
+    }
+  end
+
   # GET /articles/new
   def new
     authorize! :create, @article
@@ -65,6 +77,15 @@ class ArticlesController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_article
       @article = Article.find(params[:id])
+    end
+
+    def search_params
+      params[:filters].slice(:search)
+    end
+
+    # Params we allow filtering on
+    def filtering_params
+      params[:filters].slice(:search, :submitter, :submitted)
     end
 
     # Only allow a trusted parameter "white list" through.
