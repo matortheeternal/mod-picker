@@ -88,6 +88,10 @@ app.controller('pluginCompatibilityIssuesController', function($scope, listUtils
         listUtils.recoverAll($scope.notes.plugin_compatibility);
         $scope.buildUnresolvedPluginCompatibility();
     });
+    $scope.$on('saveChanges', function() {
+        listUtils.removeDestroyed($scope.notes.plugin_compatibility);
+        $scope.buildUnresolvedPluginCompatibility();
+    });
     $scope.$on('pluginRemoved', function() {
         $scope.buildUnresolvedPluginCompatibility();
     });
