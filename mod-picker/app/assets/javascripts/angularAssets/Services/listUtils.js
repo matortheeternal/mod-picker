@@ -95,12 +95,4 @@ app.service('listUtils', function () {
         // reinsert the mod at the new index
         moveModel.splice(options.after ? newIndex + 1 : newIndex, 0, moveItem);
     };
-
-    this.moveMod = function(model, options) {
-        return service.moveItem(model, 'mod', options);
-    };
-
-    this.movePlugin = function(model, options) {
-        return service.moveItem(model, 'plugin', options);
-    };
 });
