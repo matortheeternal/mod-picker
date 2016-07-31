@@ -95,4 +95,12 @@ app.service('listUtils', function () {
         // reinsert the mod at the new index
         moveModel.splice(options.after ? newIndex + 1 : newIndex, 0, moveItem);
     };
+
+    this.recoverAll = function(model) {
+        model.forEach(function(item) {
+            if (item._destroy) {
+                 delete item._destroy;
+            }
+        });
+    };
 });
