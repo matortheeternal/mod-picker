@@ -8,25 +8,8 @@ app.directive('requiredPlugins', function() {
     }
 });
 
-app.controller('requiredPluginsController', function($scope) {
+app.controller('requiredPluginsController', function($scope, requirementUtils) {
     /* BUILD VIEW MODEL */
-    $scope.compactRequiredPlugins = function() {
-        var requirements = $scope.required.plugins;
-        var req, prev;
-        for (var i = requirements.length - 1; i >= 0; i--) {
-            req = requirements[i];
-            if (prev && req.master_plugin.id == prev.master_plugin.id) {
-                prev.plugins.unshift(req.plugin);
-                requirements.splice(i, 1);
-            } else {
-                req.plugins = [req.plugin];
-                req.destroyed_plugins = [];
-                delete req.plugin;
-                prev = req;
-            }
-        }
-    };
-
     $scope.buildMissingPlugins = function() {
         $scope.required.missing_plugins = [];
         $scope.required.plugins.forEach(function(requirement) {
@@ -39,54 +22,6 @@ app.controller('requiredPluginsController', function($scope) {
             if (!pluginPresent) {
                 $scope.required.missing_plugins.push(requirement);
             }
-        });
-    };
-
-    /* UPDATE VIEW MODEL */
-    $scope.addRequirements = function(requirements) {
-        requirements.forEach(function(newRequirement) {
-            var foundRequirement = $scope.required.plugins.find(function(requirement) {
-                return requirement.master_plugin.id == newRequirement.master_plugin.id;
-            });
-            if (foundRequirement) {
-                foundRequirement.plugins.push(newRequirement.plugin);
-            } else {
-                newRequirement.plugins = [newRequirement.plugin];
-                newRequirement.destroyed_plugins = [];
-                delete newRequirement.plugin;
-                $scope.required.plugins.push(newRequirement);
-            }
-        });
-    };
-
-    $scope.removeRequirements = function(pluginId) {
-        $scope.required.plugins.forEach(function(requirement) {
-            var index = requirement.plugins.findIndex(function(plugin) {
-                return plugin.id == pluginId;
-            });
-            if (index > -1) {
-                var plugin = requirement.plugins.splice(index, 1)[0];
-                requirement.destroyed_plugins.push(plugin);
-            }
-        });
-    };
-
-    $scope.recoverRequirements = function(pluginId) {
-        $scope.required.plugins.forEach(function(requirement) {
-            var index = requirement.destroyed_plugins.findIndex(function(plugin) {
-                return plugin.id == pluginId;
-            });
-            if (index > -1) {
-                var plugin = requirement.destroyed_plugins.splice(index, 1)[0];
-                requirement.plugins.push(plugin);
-            }
-        });
-    };
-
-    $scope.recoverAllRequirements = function() {
-        $scope.required.plugins.forEach(function(requirement) {
-            requirement.plugins.unite(requirement.destroyed_plugins);
-            requirement.destroyed_plugins = [];
         });
     };
 
@@ -106,23 +41,28 @@ app.controller('requiredPluginsController', function($scope) {
 
     /* EVENT TRIGGERS */
     $scope.$on('initializeModules', function() {
-        $scope.compactRequiredPlugins();
+        requirementUtils.compactRequirements($scope.required.plugins, 'plugin', 'master_plugin');
         $scope.buildMissingPlugins();
     });
     $scope.$on('reloadModules', function() {
-        $scope.recoverAllRequirements();
+        requirementUtils.recoverDestroyedRequirements($scope.required.plugins, 'plugin');
+        $scope.buildMissingPlugins();
+    });
+    $scope.$on('saveChanges', function() {
+        requirementUtils.removeDestroyedRequirements($scope.required.plugins, 'plugin');
         $scope.buildMissingPlugins();
     });
     $scope.$on('pluginRemoved', function(event, pluginId) {
-        $scope.removeRequirements(pluginId);
+        requirementUtils.removeRequirements(pluginId, $scope.required.plugins, 'plugin');
         $scope.buildMissingPlugins();
     });
     $scope.$on('pluginRecovered', function(event, pluginId) {
-        $scope.recoverRequirements(pluginId);
+        requirementUtils.recoverRequirements(pluginId, $scope.required.plugins, 'plugin');
         $scope.buildMissingPlugins();
     });
     $scope.$on('pluginAdded', function(event, pluginData) {
-        $scope.addRequirements(pluginData.required_plugins);
+        var requirements = pluginData.required_plugins;
+        requirementUtils.addRequirements(requirements, $scope.required.plugins, 'plugin', 'master_plugin');
         $scope.buildMissingPlugins();
     });
 });
