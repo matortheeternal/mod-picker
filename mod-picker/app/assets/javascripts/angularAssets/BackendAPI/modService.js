@@ -1,4 +1,6 @@
 app.service('modService', function(backend, $q, categoryService, errorsFactory, pageUtils, objectUtils) {
+    var service = this;
+
     this.retrieveMods = function(options, pageInformation) {
         var action = $q.defer();
         backend.post('/mods/index', options).then(function (data) {
