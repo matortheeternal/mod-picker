@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160801162227) do
+ActiveRecord::Schema.define(version: 20160801181628) do
 
   create_table "agreement_marks", id: false, force: :cascade do |t|
     t.integer "correction_id", limit: 4,                null: false
@@ -362,6 +362,17 @@ ActiveRecord::Schema.define(version: 20160801162227) do
   end
 
   add_index "mod_list_custom_config_files", ["mod_list_id"], name: "fk_rails_af192d0984", using: :btree
+
+  create_table "mod_list_custom_mods", force: :cascade do |t|
+    t.integer "mod_list_id", limit: 4,     null: false
+    t.integer "group_id",    limit: 4,     null: false
+    t.integer "index",       limit: 2,     null: false
+    t.string  "name",        limit: 255,   null: false
+    t.text    "description", limit: 65535
+  end
+
+  add_index "mod_list_custom_mods", ["group_id"], name: "fk_rails_4c21862783", using: :btree
+  add_index "mod_list_custom_mods", ["mod_list_id"], name: "fk_rails_a95ebb44e6", using: :btree
 
   create_table "mod_list_custom_plugins", force: :cascade do |t|
     t.integer "mod_list_id",           limit: 4,                     null: false
@@ -895,6 +906,8 @@ ActiveRecord::Schema.define(version: 20160801162227) do
   add_foreign_key "mod_list_config_files", "config_files"
   add_foreign_key "mod_list_config_files", "mod_lists"
   add_foreign_key "mod_list_custom_config_files", "mod_lists"
+  add_foreign_key "mod_list_custom_mods", "mod_list_groups", column: "group_id"
+  add_foreign_key "mod_list_custom_mods", "mod_lists"
   add_foreign_key "mod_list_custom_plugins", "mod_list_groups", column: "group_id"
   add_foreign_key "mod_list_custom_plugins", "mod_lists", name: "mod_list_custom_plugins_ibfk_1"
   add_foreign_key "mod_list_groups", "mod_lists"
