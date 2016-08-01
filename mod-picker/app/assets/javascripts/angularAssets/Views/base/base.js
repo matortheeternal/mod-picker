@@ -37,6 +37,18 @@ app.controller('baseController', function($scope, $state, $location, currentUser
         $state.reload();
     });
 
+    $scope.$on('updateRepPermissions', function(event, endorsed) {
+        //if the user was just endorsed
+        if (endorsed) {
+            currentUser.reputation.rep_to_count++;
+        } else {
+            currentUser.reputation.rep_to_count--;
+        }
+        var numEndorsed = currentUser.reputation.rep_to_count;
+        var rep = currentUser.reputation.overall;
+        currentUser.permissions.canEndorse = (rep >= 40 && numEndorsed < 5) || (rep >= 160 && numEndorsed < 10) || (rep >= 640 && numEndorsed < 15);
+    });
+
     // handle state change errors
     $scope.$on("$stateChangeError", function(event, toState, toParams, fromState, fromParams, error) {
         $state.get('base.error').error = error;

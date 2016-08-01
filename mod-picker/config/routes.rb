@@ -14,6 +14,10 @@ Rails.application.routes.draw do
     match '/users/:id/comments', to: 'users#comments', via: [:get, :post]
     match '/link_account', to: 'users#link_account', via: [:get]
 
+    # user reputation_links
+    match '/users/:id/rep', to: 'users#endorse', via: [:post]
+    match '/users/:id/rep', to: 'users#unendorse', via: [:delete]
+
     # user settings
     resources :user_settings, only: [:index, :update]
 
@@ -102,6 +106,7 @@ Rails.application.routes.draw do
     match '/mod_lists/:id/tools', to: 'mod_lists#tools', via: [:get, :post]
     match '/mod_lists/:id/plugins', to: 'mod_lists#plugins', via: [:get, :post]
     match '/mod_lists/:id/config_files', to: 'mod_lists#config_files', via: [:get, :post]
+    match '/mod_lists/:id/comments', to: 'mod_lists#comments', via: [:get, :post]
     match '/mod_list_mods', to: 'mod_list_mods#create', via: [:post]
     match '/mod_list_groups', to: 'mod_list_groups#create', via: [:post]
 

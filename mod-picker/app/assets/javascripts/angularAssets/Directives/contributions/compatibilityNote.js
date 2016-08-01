@@ -14,6 +14,7 @@ app.directive('compatibilityNote', function () {
             edit: '=?',
             showActions: '=?',
             showUserColumn: '=?',
+            showResolutionOptions: '=?',
             modId: '=?'
         }
     }
@@ -24,8 +25,7 @@ app.controller('compatibilityNoteController', function ($scope) {
     $scope.showUserColumn = angular.isDefined($scope.showUserColumn) ? $scope.showUserColumn : true;
     $scope.showActions = angular.isDefined($scope.showActions) ? $scope.showActions : true;
 
-    // TODO: Should probably be moved into some kind of service
-    function getVerb() {
+    $scope.getVerb = function () {
         switch ($scope.note.status) {
             case "incompatible":
                 return "with";
@@ -34,8 +34,20 @@ app.controller('compatibilityNoteController', function ($scope) {
             default:
                 return "for";
         }
-    }
+    };
+
+    $scope.resolve = function(action, index) {
+        if ($scope.note.resolved) {
+            return;
+        }
+        var options = {
+            note: $scope.note,
+            action: action,
+            index: index
+        };
+        $scope.$emit('resolveCompatibilityNote', options);
+    };
 
     // set compatibility_verb
-    $scope.note.compatibility_verb = getVerb();
+    $scope.note.compatibility_verb = $scope.getVerb();
 });

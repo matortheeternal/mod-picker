@@ -24,6 +24,9 @@ class ModList < ActiveRecord::Base
   has_many :mod_list_plugins, :inverse_of => 'mod_list'
   has_many :custom_plugins, :class_name => 'ModListCustomPlugin', :inverse_of => 'mod_list'
 
+  # IGNORED NOTES
+  has_many :ignored_notes, :class_name => 'ModListIgnoredNote', :inverse_of => 'mod_list'
+
   # GROUPS
   # NOTE: This association has to be after the mods_list_mods, mod_list_plugins,
   # and custom_plugins associations in order to yield correct behavior with
@@ -31,14 +34,9 @@ class ModList < ActiveRecord::Base
   # moved out of a group and the group has been deleted)
   has_many :mod_list_groups, :inverse_of => 'mod_list'
 
-  # ASSOCIATED NOTES
-  has_many :mod_list_compatibility_notes, :inverse_of => 'mod_list'
-  has_many :mod_list_install_order_notes, :inverse_of => 'mod_list'
-  has_many :mod_list_load_order_notes, :inverse_of => 'mod_list'
-
   # CONFIG FILES
   has_many :mod_list_config_files, :inverse_of => 'mod_list'
-  has_many :mod_list_custom_config_files, :inverse_of => 'mod_list'
+  has_many :custom_config_files, :class_name => 'ModListCustomConfigFile', :inverse_of => 'mod_list'
 
   # TAGS
   has_many :mod_list_tags, :inverse_of => 'mod_list'
@@ -46,7 +44,7 @@ class ModList < ActiveRecord::Base
 
   # ASSOCIATIONS FROM OTHER USERS
   has_many :mod_list_stars, :inverse_of => 'mod_list'
-  has_many :comments, :as => 'commentable'
+  has_many :comments, -> { where(parent_id: nil) }, :as => 'commentable'
 
   # NESTED ATTRIBUTES
   accepts_nested_attributes_for :mod_list_mods, allow_destroy: true
@@ -54,10 +52,8 @@ class ModList < ActiveRecord::Base
   accepts_nested_attributes_for :custom_plugins, allow_destroy: true
   accepts_nested_attributes_for :mod_list_groups, allow_destroy: true
   accepts_nested_attributes_for :mod_list_config_files, allow_destroy: true
-  accepts_nested_attributes_for :mod_list_custom_config_files, allow_destroy: true
-  accepts_nested_attributes_for :mod_list_compatibility_notes, allow_destroy: true
-  accepts_nested_attributes_for :mod_list_install_order_notes, allow_destroy: true
-  accepts_nested_attributes_for :mod_list_load_order_notes, allow_destroy: true
+  accepts_nested_attributes_for :custom_config_files, allow_destroy: true
+  accepts_nested_attributes_for :ignored_notes, allow_destroy: true
 
   # Validations
   validates :game_id, :submitted_by, :name, presence: true
@@ -85,11 +81,8 @@ class ModList < ActiveRecord::Base
   def update_lazy_counters
     mod_ids = self.mods.ids
     self.plugins_count = Plugin.where(mod_id: mod_ids).count
-    self.active_plugins_count = self.mod_list_plugins.where(active: true).count
-    self.compatibility_notes_count = self.mod_list_compatibility_notes.all.count
-    self.install_order_notes_count = self.mod_list_install_order_notes.all.count
-    self.load_order_notes_count = self.mod_list_load_order_notes.all.count
-    self.save_counters([:plugins_count, :active_plugins_count, :compatibility_notes_count, :install_order_notes_count, :load_order_notes_count])
+    self.active_plugins_count = self.mod_list_plugins.count
+    self.save_counters([:plugins_count, :active_plugins_count])
   end
 
   def mod_list_mod_ids
@@ -103,73 +96,87 @@ class ModList < ActiveRecord::Base
     Plugin.where(mod_id: mod_ids).ids
   end
 
-  def compatibility_notes
+  def mod_compatibility_notes
     mod_ids = self.mod_list_mod_ids
     return [] if mod_ids.empty?
 
-    CompatibilityNote.where(first_mod_id: mod_ids, second_mod_id: mod_ids)
+    CompatibilityNote.visible.mods(mod_ids).status([0, 1, 2])
+  end
+
+  def plugin_compatibility_notes
+    mod_ids = self.mod_list_mod_ids
+    return [] if mod_ids.empty?
+
+    CompatibilityNote.visible.mods(mod_ids).status([3, 4])
   end
 
   def install_order_notes
     mod_ids = self.mod_list_mod_ids
     return [] if mod_ids.empty?
 
-    InstallOrderNote.where(first_mod_id: mod_ids, second_mod_id: mod_ids)
+    InstallOrderNote.visible.mods(mod_ids)
   end
 
   def load_order_notes
     plugin_ids = self.mod_list_plugin_ids
     return [] if plugin_ids.empty?
 
-    LoadOrderNote.where(first_plugin_id: plugin_ids, second_plugin_id: plugin_ids)
+    LoadOrderNote.visible.plugins(plugin_ids)
   end
 
   def required_tools
     mod_ids = self.mod_list_mod_ids
     return [] if mod_ids.empty?
 
-    ModRequirement.where(mod_id: mod_ids).joins(:required_mod).where(:mods => {is_utility: true})
+    ModRequirement.mods(mod_ids).utility(true)
   end
 
   def required_mods
     mod_ids = self.mod_list_mod_ids
     return [] if mod_ids.empty?
 
-    ModRequirement.where(mod_id: mod_ids).joins(:required_mod).where(:mods => {is_utility: false})
+    ModRequirement.mods(mod_ids).utility(false).order(:required_id)
+  end
+
+  def required_plugins
+    plugin_ids = self.mod_list_plugin_ids
+    return [] if plugin_ids.empty?
+
+    Master.plugins(plugin_ids).order(:master_plugin_id)
   end
 
   def incompatible_mods
     mod_ids = self.mod_list_mod_ids
     return [] if mod_ids.empty?
 
-    # get incompatible notes
-    incompatible_notes = CompatibilityNote.where("status in (?) AND (first_mod_id in (?) OR second_mod_id in (?))", [1, 2], mod_ids, mod_ids).pluck(:first_mod_id, :second_mod_id)
-    incompatible_notes.flatten(1).uniq
-  end
-
-  def mod_tools
-    mod_list_tools = @mod_list.mod_list_mods.joins(:mod).where(:mods => { is_utility: true })
+    # get incompatible mod ids
+    incompatible_ids = CompatibilityNote.status([1, 2]).mod(mod_ids).pluck(:first_mod_id, :second_mod_id)
+    # return array of unique mod ids from the notes, excluding mod list mod ids
+    incompatible_ids.flatten(1).uniq - mod_ids
   end
 
   def show_json
     self.as_json({
         :except => [:submitted_by],
         :include => {
-           :submitter => {
-               :only => [:id, :username, :role, :title],
-               :include => {
-                   :reputation => {:only => [:overall]}
-               },
-               :methods => :avatar
-           },
-           :tags => {
-               :except => [:game_id, :hidden, :mods_count],
-               :include => {
-                   :submitter => {
-                       :only => [:id, :username]
-                   }
-               }
-           }
+            :submitter => {
+                :only => [:id, :username, :role, :title],
+                :include => {
+                    :reputation => {:only => [:overall]}
+                },
+                :methods => :avatar
+            },
+            :tags => {
+                :except => [:game_id, :hidden, :mods_count],
+                :include => {
+                    :submitter => {
+                        :only => [:id, :username]
+                    }
+                }
+            },
+            :ignored_notes => {
+                :except => [:mod_list_id]
+            }
         }
     })
   end

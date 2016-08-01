@@ -26,7 +26,7 @@ class ModListMod < ActiveRecord::Base
           :only => [:id, :group_id, :index, :active],
           :include => {
               :mod => {
-                  :only => [:id, :name, :aliases, :authors, :released, :updated],
+                  :only => [:id, :name, :aliases, :authors, :status, :primary_category_id, :secondary_category_id, :average_rating, :reputation, :stars_count, :released, :updated],
                   :methods => :image
               }
           }
@@ -35,6 +35,42 @@ class ModListMod < ActiveRecord::Base
     else
       super(options)
     end
+  end
+
+  def mod_compatibility_notes
+    mod_ids = self.mod_list.mod_list_mod_ids
+    return [] if mod_ids.empty?
+
+    CompatibilityNote.visible.mod(mod_ids).mod([self.mod_id]).status([0, 1, 2])
+  end
+
+  def plugin_compatibility_notes
+    mod_ids = self.mod_list.mod_list_mod_ids
+    return [] if mod_ids.empty?
+
+    CompatibilityNote.visible.mods(mod_ids).mod([self.mod_id]).status([3, 4])
+  end
+
+  def install_order_notes
+    mod_ids = self.mod_list.mod_list_mod_ids
+    return [] if mod_ids.empty?
+
+    InstallOrderNote.visible.mod(mod_ids).mod([self.mod_id])
+  end
+
+  def load_order_notes
+    plugin_ids = self.mod_list.mod_list_plugin_ids
+    return [] if plugin_ids.empty?
+
+    LoadOrderNote.visible.plugin(plugin_ids).plugin(self.mod.plugins.ids)
+  end
+
+  def required_tools
+    ModRequirement.mods(mod_id).utility(true)
+  end
+
+  def required_mods
+    ModRequirement.mods(mod_id).utility(false)
   end
 
   private
