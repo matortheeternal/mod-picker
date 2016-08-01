@@ -3,7 +3,9 @@ class ArticlesController < ApplicationController
 
   # GET /articles/1
   def show
-    authorize! :show, @article
+    @article = Article.find(params[:id])
+    authorize! :read, @article, :message => "You are not allowed to view this article."
+    render :json => @article.as_json
   end
 
   # GET /articles/new
@@ -44,6 +46,19 @@ class ArticlesController < ApplicationController
     authorize! :destroy, @article
     @article.destroy
     redirect_to articles_url, notice: 'Article was successfully destroyed.'
+  end
+
+  # GET /articles/1/comments
+  def comments
+    article = Article.find(params[:id])
+    authorize! :read, article
+    comments = article.comments.accessible_by(current_ability).sort(params[:sort]).paginate(:page => params[:page], :per_page => 10)
+    count = article.comments.accessible_by(current_ability).count
+    render :json => {
+        comments: comments,
+        max_entries: count,
+        entries_per_page: 10
+    }
   end
 
   private
