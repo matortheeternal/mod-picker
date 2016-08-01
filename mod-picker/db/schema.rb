@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160729184445) do
+ActiveRecord::Schema.define(version: 20160801011321) do
 
   create_table "agreement_marks", id: false, force: :cascade do |t|
     t.integer "correction_id", limit: 4,                null: false
@@ -394,6 +394,14 @@ ActiveRecord::Schema.define(version: 20160729184445) do
   end
 
   add_index "mod_list_groups", ["mod_list_id"], name: "fk_rails_0abd07c656", using: :btree
+
+  create_table "mod_list_ignored_notes", force: :cascade do |t|
+    t.integer "mod_list_id", limit: 4,   null: false
+    t.integer "note_id",     limit: 4,   null: false
+    t.string  "note_type",   limit: 255, null: false
+  end
+
+  add_index "mod_list_ignored_notes", ["mod_list_id"], name: "fk_rails_89a67a287a", using: :btree
 
   create_table "mod_list_install_order_notes", force: :cascade do |t|
     t.integer "mod_list_id",           limit: 4,             null: false
@@ -919,6 +927,7 @@ ActiveRecord::Schema.define(version: 20160729184445) do
   add_foreign_key "mod_list_custom_plugins", "mod_list_groups", column: "group_id"
   add_foreign_key "mod_list_custom_plugins", "mod_lists", name: "mod_list_custom_plugins_ibfk_1"
   add_foreign_key "mod_list_groups", "mod_lists"
+  add_foreign_key "mod_list_ignored_notes", "mod_lists"
   add_foreign_key "mod_list_install_order_notes", "install_order_notes"
   add_foreign_key "mod_list_install_order_notes", "mod_lists", name: "mod_list_install_order_notes_ibfk_1"
   add_foreign_key "mod_list_load_order_notes", "load_order_notes"
