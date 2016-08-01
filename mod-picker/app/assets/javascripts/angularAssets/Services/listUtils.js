@@ -12,18 +12,23 @@ app.service('listUtils', function () {
         return 1;
     };
 
-    this.findItem = function(model, key, itemId, splice) {
+    this.findItem = function(model, key, innerKey, itemId, splice) {
+        var itemMatches = innerKey ? function(item) {
+            return item.hasOwnProperty(key) && item[key][innerKey] == itemId;
+        } : function(item) {
+            return item[key] == itemId;
+        };
         for (var i = 0; i < model.length; i++) {
             var item = model[i];
             if (item.children) {
                 for (var j = 0; j < item.children.length; j++) {
                     var child = item.children[j];
-                    if (child.hasOwnProperty(key) && child[key].id == itemId) {
+                    if (itemMatches(child)) {
                         return (splice && item.children.splice(j, 1)[0]) || child;
                     }
                 }
             } else {
-                if (item.hasOwnProperty(key) && item[key].id == itemId) {
+                if (itemMatches(item)) {
                     return (splice && model.splice(i, 1)[0]) || item;
                 }
             }
@@ -31,11 +36,15 @@ app.service('listUtils', function () {
     };
 
     this.findMod = function(model, modId, splice) {
-        return service.findItem(model, 'mod', modId, splice);
+        return service.findItem(model, 'mod', 'id', modId, splice);
     };
 
     this.findPlugin = function(model, pluginId, splice) {
-        return service.findItem(model, 'plugin', pluginId, splice);
+        return service.findItem(model, 'plugin', 'id', pluginId, splice);
+    };
+
+    this.findCustomPlugin = function(model, noteId, splice) {
+        return service.findItem(model, 'compatibility_note_id', '', noteId, splice);
     };
 
     this.findGroup = function(model, groupId) {
