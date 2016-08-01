@@ -95,6 +95,7 @@ app.controller('pluginCompatibilityIssuesController', function($scope, listUtils
     $scope.$on('pluginRemoved', $scope.buildUnresolvedPluginCompatibility);
     $scope.$on('pluginRecovered', $scope.buildUnresolvedPluginCompatibility);
     $scope.$on('pluginAdded', $scope.buildUnresolvedPluginCompatibility);
+    $scope.$on('customPluginAdded', $scope.buildUnresolvedPluginCompatibility);
     $scope.$on('modRemoved', function(event, modId) {
         $scope.removeCompatibilityNotes(modId);
         $scope.buildUnresolvedPluginCompatibility();
