@@ -9,13 +9,14 @@
 
                     <div class="header-info">
                         <span class="header-name">{{mod.name}}</span>
+                        <br>
                         <span class="header-authors-container">by
                             <span class="header-authors">{{mod.authors}}</span>
                         </span>
                         <!--<span ng-repeat="author in mod.authors">
                             <a ng-href="#/user/{{author.id}}">{{author.username}}</a>
                         </span>-->
-                        <br>
+
                         <!-- TODO: add this with css :after content -->
                         <span class="divider" ng-if="mod.primary_category_id && (mod.aliases || permissions.canManage)">
                             |
