@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160801181628) do
+ActiveRecord::Schema.define(version: 20160801183603) do
 
   create_table "agreement_marks", id: false, force: :cascade do |t|
     t.integer "correction_id", limit: 4,                null: false
@@ -364,10 +364,11 @@ ActiveRecord::Schema.define(version: 20160801181628) do
   add_index "mod_list_custom_config_files", ["mod_list_id"], name: "fk_rails_af192d0984", using: :btree
 
   create_table "mod_list_custom_mods", force: :cascade do |t|
-    t.integer "mod_list_id", limit: 4,     null: false
-    t.integer "group_id",    limit: 4,     null: false
-    t.integer "index",       limit: 2,     null: false
-    t.string  "name",        limit: 255,   null: false
+    t.integer "mod_list_id", limit: 4,                     null: false
+    t.integer "group_id",    limit: 4,                     null: false
+    t.integer "index",       limit: 2,                     null: false
+    t.boolean "is_utility",                default: false, null: false
+    t.string  "name",        limit: 255,                   null: false
     t.text    "description", limit: 65535
   end
 
@@ -460,7 +461,8 @@ ActiveRecord::Schema.define(version: 20160801181628) do
     t.integer  "tools_count",               limit: 4,     default: 0,     null: false
     t.integer  "mods_count",                limit: 4,     default: 0,     null: false
     t.integer  "plugins_count",             limit: 4,     default: 0,     null: false
-    t.integer  "active_plugins_count",      limit: 4,     default: 0,     null: false
+    t.integer  "available_plugins_count",   limit: 4,     default: 0,     null: false
+    t.integer  "custom_mods_count",         limit: 4,     default: 0,     null: false
     t.integer  "custom_plugins_count",      limit: 4,     default: 0,     null: false
     t.integer  "config_files_count",        limit: 4,     default: 0,     null: false
     t.integer  "custom_config_files_count", limit: 4,     default: 0,     null: false
