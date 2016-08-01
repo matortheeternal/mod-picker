@@ -33,8 +33,10 @@ app.controller('modListToolsController', function($scope, $rootScope, $state, $s
         modListService.retrieveModListTools($scope.mod_list.id).then(function(data) {
             $scope.required.tools = data.required_tools;
             $scope.mod_list.tools = data.tools;
+            $scope.mod_list.custom_tools = data.custom_tools;
             $scope.mod_list.groups = Array.prototype.concat($scope.mod_list.groups || [], data.groups);
             $scope.originalModList.tools = angular.copy($scope.mod_list.tools);
+            $scope.originalModList.custom_tools = angular.copy($scope.mod_list.custom_tools);
             $scope.originalModList.groups = angular.copy($scope.mod_list.groups);
             $scope.buildToolsModel();
             $timeout(function() {

@@ -35,8 +35,10 @@ app.controller('modListModsController', function($scope, $rootScope, $timeout, m
             $scope.notes.compatibility = data.compatibility_notes;
             $scope.notes.install_order = data.install_order_notes;
             $scope.mod_list.mods = data.mods;
+            $scope.mod_list.custom_mods = data.custom_mods;
             $scope.mod_list.groups = Array.prototype.concat($scope.mod_list.groups || [], data.groups);
             $scope.originalModList.mods = angular.copy($scope.mod_list.mods);
+            $scope.originalModList.custom_mods = angular.copy($scope.mod_list.custom_mods);
             $scope.originalModList.groups = angular.copy($scope.mod_list.groups);
             $scope.associateIgnore($scope.notes.compatibility, 'CompatibilityNote');
             $scope.associateIgnore($scope.notes.install_order, 'InstallOrderNote');
