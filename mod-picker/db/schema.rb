@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160801041806) do
+ActiveRecord::Schema.define(version: 20160801162227) do
 
   create_table "agreement_marks", id: false, force: :cascade do |t|
     t.integer "correction_id", limit: 4,                null: false
@@ -364,12 +364,14 @@ ActiveRecord::Schema.define(version: 20160801041806) do
   add_index "mod_list_custom_config_files", ["mod_list_id"], name: "fk_rails_af192d0984", using: :btree
 
   create_table "mod_list_custom_plugins", force: :cascade do |t|
-    t.integer "mod_list_id", limit: 4,                    null: false
-    t.integer "group_id",    limit: 4
-    t.integer "index",       limit: 2,                    null: false
-    t.string  "filename",    limit: 64,                   null: false
-    t.boolean "active",                    default: true, null: false
-    t.text    "description", limit: 65535
+    t.integer "mod_list_id",           limit: 4,                     null: false
+    t.integer "group_id",              limit: 4
+    t.integer "index",                 limit: 2,                     null: false
+    t.boolean "cleaned",                             default: false, null: false
+    t.boolean "merged",                              default: false, null: false
+    t.integer "compatibility_note_id", limit: 4
+    t.string  "filename",              limit: 64,                    null: false
+    t.text    "description",           limit: 65535
   end
 
   add_index "mod_list_custom_plugins", ["group_id"], name: "fk_rails_53bf719a81", using: :btree
