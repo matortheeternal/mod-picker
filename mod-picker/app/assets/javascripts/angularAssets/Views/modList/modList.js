@@ -331,6 +331,24 @@ app.controller('modListController', function($scope, $q, $stateParams, $timeout,
         });
     };
 
+    $scope.ignoreNote = function(type, note) {
+        if (note.ignored) {
+            var foundIgnoredNote = $scope.findIgnoredNote(type, note.id);
+            if (note.ignored) {
+                if (!foundIgnoredNote) {
+                    $scope.mod_list.ignored_notes.push({
+                        note_type: type,
+                        note_id: note.id
+                    });
+                } else if (foundIgnoredNote._destroy) {
+                    delete foundIgnoredNote._destroy;
+                }
+            } else if (foundIgnoredNote) {
+                foundIgnoredNote._destroy = true;
+            }
+        }
+    };
+
     $scope.saveChanges = function() {
         // get changed mod fields
         $scope.flattenModels();
