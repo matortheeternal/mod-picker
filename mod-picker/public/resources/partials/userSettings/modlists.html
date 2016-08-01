@@ -1,65 +1,13 @@
-<h3 class="section-title">Mod Lists</h3>
-<section>
-    <table border="1" class="listing-table" ng-if="user.mod_lists.length">
-        <thead>
-            <tr>
-                <th class="name-column">Name</th>
-                <th>Mods</th>
-                <th>Status</th>
-                <th>Stars</th>
-                <th>Comments</th>
-                <th>Options</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr ng-repeat="mod_list in user.mod_lists">
-                <td class="name-column">{{mod_list.name}}</td>
-                <td>{{mod_list.mods_count}}</td>
-                <td>{{mod_list.status}}</td>
-                <td>{{mod_list.mod_list_stars_count}}</td>
-                <td>{{mod_list.comments_count}}</td>
-                <td>
-                    <div class="table-buttons">
-                        <input class="btn-sm" type="button" ng-click="cloneModList(mod_list)" value="Clone"/>
-                        <input class="btn-sm" type="button" ng-click="editModList(mod_list)" value="Edit"/>
-                        <input class="btn-sm" type="button" ng-click="deleteModList(mod_list)" value="Delete"/>
-                    </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <span class="explanation" ng-if="!user.mod_lists.length">There's nothing here</span>
-</section>
+<div class="list-table-container">
+    <div class="content-block">
+        <div class="content-title">Mod Lists</div>
+        <modlist-table modlists="user.mod_lists" title="Mod Lists"></modlist-table>
+    </div>
+</div>
 
-<h3 class="section-title">Mod Collections</h3>
-<section>
-    <table border="1" class="listing-table" ng-if="user.collections.length">
-        <thead>
-            <tr>
-                <th class="name-column">Name</th>
-                <th>Mods</th>
-                <th>Status</th>
-                <th>Stars</th>
-                <th>Comments</th>
-                <th>Options</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr ng-repeat="collection in user.collections">
-                <td class="name-column">{{collection.name}}</td>
-                <td>{{collection.mods_count}}</td>
-                <td>{{collection.status}}</td>
-                <td>{{collection.mod_list_stars_count}}</td>
-                <td>{{collection.comments_count}}</td>
-                <td>
-                    <div class="table-buttons">
-                        <input class="btn-sm" type="button" ng-click="cloneModList(collection)" value="Clone"/>
-                        <input class="btn-sm" type="button" ng-click="editModList(collection)" value="Edit"/>
-                        <input class="btn-sm" type="button" ng-click="deleteModList(collection)" value="Delete"/>
-                    </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <span class="explanation" ng-if="!user.collections.length">There's nothing here...</span>
-</section>
+<div class="list-table-container">
+    <div class="content-block">
+        <div class="content-title">Collections</div>
+        <modlist-table modlists="user.collections" title="Collections"></modlist-table>
+    </div>
+</div>

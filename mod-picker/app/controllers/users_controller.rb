@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  before_action :set_user, only: [:show, :comments, :update, :destroy]
+  before_action :set_user, only: [:show, :comments, :endorse, :unendorse, :update, :destroy]
 
   # GET /users
   def index
@@ -27,7 +27,11 @@ class UsersController < ApplicationController
   # GET /users/1
   def show
     authorize! :read, @user
-    render :json => @user.show_json(current_user)
+    endorsed = ReputationLink.exists?(from_rep_id: current_user.id, to_rep_id: @user.id)
+    render :json => {
+        user: @user.show_json(current_user),
+        endorsed: endorsed
+    }
   end
 
   # GET /link_account
@@ -80,6 +84,32 @@ class UsersController < ApplicationController
       render json: {status: :ok}
     else
       render json: @user.errors, status: :unprocessable_entity
+    end
+  end
+
+  # POST /users/1/rep
+  def endorse
+    @reputation_link = ReputationLink.find_or_initialize_by(from_rep_id: current_user.reputation.id, to_rep_id: @user.reputation.id)
+    authorize! :create, @reputation_link
+    if @reputation_link.save
+      render json: {status: :ok}
+    else
+      render json: @reputation_link.errors, status: :unprocessable_entity
+    end
+  end
+
+  # DELETE /users/1/rep
+  def unendorse
+    @reputation_link = ReputationLink.find_by(from_rep_id: current_user.reputation.id, to_rep_id: @user.reputation.id)
+    if @reputation_link.nil?
+      render json: {status: :ok}
+    else
+      authorize! :destroy, @reputation_link
+      if @reputation_link.destroy
+        render json: {status: :ok}
+      else
+        render json: @reputation_link.errors, status: :unprocessable_entity
+      end
     end
   end
 
