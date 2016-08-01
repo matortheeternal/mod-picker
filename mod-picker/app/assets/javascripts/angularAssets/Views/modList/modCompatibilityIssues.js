@@ -84,9 +84,7 @@ app.controller('modCompatibilityIssuesController', function($scope, listUtils) {
     });
 
     // event triggers
-    $scope.$on('initializeModules', function() {
-        $scope.buildUnresolvedCompatibility();
-    });
+    $scope.$on('initializeModules', $scope.buildUnresolvedCompatibility);
     $scope.$on('reloadModules', function() {
         listUtils.recoverDestroyed($scope.notes.compatibility);
         $scope.buildUnresolvedCompatibility();

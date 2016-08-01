@@ -72,9 +72,7 @@ app.controller('modInstallOrderIssuesController', function($scope, listUtils) {
     });
 
     // event triggers
-    $scope.$on('initializeModules', function() {
-        $scope.buildUnresolvedInstallOrder();
-    });
+    $scope.$on('initializeModules', $scope.buildUnresolvedInstallOrder);
     $scope.$on('reloadModules', function() {
         listUtils.recoverDestroyed($scope.notes.install_order);
         $scope.buildUnresolvedInstallOrder();
@@ -95,7 +93,5 @@ app.controller('modInstallOrderIssuesController', function($scope, listUtils) {
         $scope.notes.install_order.unite(modData.install_order_notes);
         $scope.buildUnresolvedInstallOrder();
     });
-    $scope.$on('modMoved', function() {
-        $scope.buildUnresolvedInstallOrder();
-    });
+    $scope.$on('modMoved', $scope.buildUnresolvedInstallOrder);
 });

@@ -83,9 +83,7 @@ app.controller('pluginCompatibilityIssuesController', function($scope, listUtils
     });
 
     // event triggers
-    $scope.$on('initializeModules', function() {
-        $scope.buildUnresolvedPluginCompatibility();
-    });
+    $scope.$on('initializeModules', $scope.buildUnresolvedPluginCompatibility);
     $scope.$on('reloadModules', function() {
         listUtils.recoverDestroyed($scope.notes.plugin_compatibility);
         $scope.buildUnresolvedPluginCompatibility();
@@ -94,15 +92,9 @@ app.controller('pluginCompatibilityIssuesController', function($scope, listUtils
         listUtils.removeDestroyed($scope.notes.plugin_compatibility);
         $scope.buildUnresolvedPluginCompatibility();
     });
-    $scope.$on('pluginRemoved', function() {
-        $scope.buildUnresolvedPluginCompatibility();
-    });
-    $scope.$on('pluginRecovered', function() {
-        $scope.buildUnresolvedPluginCompatibility();
-    });
-    $scope.$on('pluginAdded', function() {
-        $scope.buildUnresolvedPluginCompatibility();
-    });
+    $scope.$on('pluginRemoved', $scope.buildUnresolvedPluginCompatibility);
+    $scope.$on('pluginRecovered', $scope.buildUnresolvedPluginCompatibility);
+    $scope.$on('pluginAdded', $scope.buildUnresolvedPluginCompatibility);
     $scope.$on('modRemoved', function(event, modId) {
         $scope.removeCompatibilityNotes(modId);
         $scope.buildUnresolvedPluginCompatibility();
