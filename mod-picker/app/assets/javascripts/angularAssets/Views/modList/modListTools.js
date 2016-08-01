@@ -102,6 +102,35 @@ app.controller('modListToolsController', function($scope, $rootScope, $state, $s
         });
     };
 
+    $scope.addCustomTool = function() {
+        var custom_tool = {
+            mod_list_id: $scope.mod_list.id,
+            index: listUtils.getNextIndex($scope.model.tools),
+            is_utility: true,
+            name: 'Custom Tool'
+        };
+
+        modListService.newModListCustomMod(custom_tool).then(function(data) {
+            // push plugin onto view
+            var modListCustomTool = data.mod_list_custom_mod;
+            $scope.mod_list.custom_tools.push(modListCustomTool);
+            $scope.model.tools.push(modListCustomTool);
+            $scope.originalModList.custom_tools.push(angular.copy(modListCustomTool));
+            $scope.mod_list.tools_count += 1;
+            $scope.updateTabs();
+
+            // update modules
+            $scope.$broadcast('customModAdded');
+            $scope.$broadcast('updateItems');
+
+            // open plugin details for custom plugin
+            $scope.toggleDetailsModal(true, modListCustomTool);
+        }, function(response) {
+            var params = {label: 'Error adding custom tool', response: response};
+            $scope.$emit('errorMessage', params);
+        });
+    };
+
     $scope.addTool = function(toolId) {
         // return if we don't have a tool to add
         if (!toolId) {

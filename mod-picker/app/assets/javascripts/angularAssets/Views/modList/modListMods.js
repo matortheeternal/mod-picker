@@ -106,6 +106,34 @@ app.controller('modListModsController', function($scope, $rootScope, $timeout, m
         });
     };
 
+    $scope.addCustomMod = function() {
+        var custom_mod = {
+            mod_list_id: $scope.mod_list.id,
+            index: listUtils.getNextIndex($scope.model.mods),
+            name: 'Custom Mod'
+        };
+
+        modListService.newModListCustomMod(custom_mod).then(function(data) {
+            // push plugin onto view
+            var modListCustomMod = data.mod_list_custom_mod;
+            $scope.mod_list.custom_mods.push(modListCustomMod);
+            $scope.model.mods.push(modListCustomMod);
+            $scope.originalModList.custom_mods.push(angular.copy(modListCustomMod));
+            $scope.mod_list.mods_count += 1;
+            $scope.updateTabs();
+
+            // update modules
+            $scope.$broadcast('customModAdded');
+            $scope.$broadcast('updateItems');
+
+            // open plugin details for custom plugin
+            $scope.toggleDetailsModal(true, modListCustomMod);
+        }, function(response) {
+            var params = {label: 'Error adding custom mod', response: response};
+            $scope.$emit('errorMessage', params);
+        });
+    };
+
     $scope.addMod = function(modId) {
         // return if we don't have a mod to add
         if (!modId) {
