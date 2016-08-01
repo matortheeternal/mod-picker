@@ -135,6 +135,7 @@ app.controller('modListPluginsController', function($scope, $q, $timeout, modLis
         };
 
         if (compatibilityNoteId) {
+            // TODO: We should really just have an integer field on custom plugins for this
             custom_plugin.filename = 'CustomPatch'+compatibilityNoteId+'.esp';
             custom_plugin.description = '[Custom Patch for '+compatibilityNoteId+']';
         }
