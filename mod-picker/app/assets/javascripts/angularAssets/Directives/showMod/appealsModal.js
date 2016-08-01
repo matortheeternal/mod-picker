@@ -5,11 +5,14 @@ app.controller('appealsModalController', function ($scope, $stateParams, $previo
         previousState = $previousState.get().state;
 
         var previousStateArray = previousState.name.split(".");
-        var previousStateName = previousStateArray[previousStateArray.length - 1];
-        previousTab = $scope.findTab(previousStateName);
-        //if the last state was a tab
-        if (previousTab) {
-            previousTab.show = true;
+        //if the last state was base.mod
+        if (previousStateArray[1] === 'mod') {
+            var previousStateName = previousStateArray[2];
+            previousTab = $scope.findTab(previousStateName);
+            //if the last state was a tab
+            if (previousTab) {
+                previousTab.show = true;
+            }
         }
     }
     //turn off scrolling
