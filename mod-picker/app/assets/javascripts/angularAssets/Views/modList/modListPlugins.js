@@ -135,6 +135,12 @@ app.controller('modListPluginsController', function($scope, $q, $timeout, modLis
         };
 
         if (compatibilityNoteId) {
+            var foundCustomPlugin = $scope.findCustomPlugin(compatibilityNoteId);
+            if (foundCustomPlugin) {
+                foundCustomPlugin._destroy = false;
+                $scope.$broadcast('customPluginAdded');
+                return;
+            }
             custom_plugin.filename = 'CustomPatch'+compatibilityNoteId+'.esp';
             custom_plugin.compatibility_note_id = compatibilityNoteId;
         }
