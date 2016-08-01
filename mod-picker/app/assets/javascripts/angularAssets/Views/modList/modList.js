@@ -294,6 +294,19 @@ app.controller('modListController', function($scope, $q, $stateParams, $timeout,
         return foundPlugin;
     };
 
+    $scope.findCustomPlugin = function(noteId, ignoreDestroyed) {
+        if (!$scope.model.plugins) {
+            return false;
+        }
+        var foundPlugin = $scope.model.plugins.find(function(plugin) {
+            return plugin.compatibility_note_id == noteId;
+        });
+        if (foundPlugin && ignoreDestroyed && foundPlugin._destroy) {
+            return;
+        }
+        return foundPlugin;
+    };
+
     $scope.findIgnoredNote = function(note_type, note_id, ignoreDestroyed) {
         var foundIgnoredNote = $scope.mod_list.ignored_notes.find(function(ignoredNote) {
             return ignoredNote.note_type === note_type && ignoredNote.note_id == note_id;
