@@ -65,7 +65,7 @@ app.controller('modInstallOrderIssuesController', function($scope, listUtils) {
                 break;
             case "ignore":
                 options.note.ignored = !options.note.ignored;
-                $scope.ignoreNote('CompatibilityNote', options.note);
+                $scope.ignoreNote('InstallOrderNote', options.note);
                 $scope.buildUnresolvedInstallOrder();
                 break;
         }
