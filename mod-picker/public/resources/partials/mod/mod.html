@@ -16,9 +16,6 @@
                             <a ng-href="#/user/{{author.id}}">{{author.username}}</a>
                         </span>-->
                         <br>
-                        <span ng-if="mod.primary_category_id">
-                            {{mod.reviews_count | number}} reviews
-                        </span>
                         <!-- TODO: add this with css :after content -->
                         <span class="divider" ng-if="mod.primary_category_id && (mod.aliases || permissions.canManage)">
                             |
