@@ -26,11 +26,19 @@ article {
       display: table-cell;
       vertical-align: top;
 
-      .article-title {
-        font-size  : 23px;
-        display    : inline;
+      h3 {
+        font-size: 24px;
+        display: inline;
         margin-left: 0;
-        color      : $dark_action_color;
+      }
+
+      a h3 {
+        color: $action_color;
+        @include transition(all 0.2s ease-in-out);
+
+        &:hover {
+          color: $text_color;
+        }
       }
 
       read-more {
