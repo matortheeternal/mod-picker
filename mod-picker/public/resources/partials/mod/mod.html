@@ -36,7 +36,6 @@
                             </span>
                         </span>
 
-                        <a ng-href="#/mod/{{mod.id}}/edit" ng-if="permissions.canManage">Edit</a>
                     </div>
                 </section>
 
@@ -50,6 +49,11 @@
                         <div class="action-box">
                             <i class="fa fa-plus" aria-hidden="true"></i> Add to mod list
                         </div>
+                        <a ng-href="#/mod/{{mod.id}}/edit" ng-if="permissions.canManage">
+                            <div class="action-box">
+                                <i class="fa fa-edit" aria-hidden="true"></i> Edit
+                            </div>
+                        </a>
                     </div>
 
                     <div class="header-box" ng-if="mod.primary_category_id">
