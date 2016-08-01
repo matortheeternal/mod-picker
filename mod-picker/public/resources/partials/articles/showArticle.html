@@ -1,0 +1,27 @@
+<div class="single-column">
+    <div class="actions">
+        <a href="#/articles">
+            <i class="fa fa-angle-left" aria-hidden="true"></i> See All Articles
+        </a>
+        <a ng-href="#/article/{{article.id}}/edit" ng-if="permissions.canModerate">
+            <div class="action-box">
+                <i class="fa fa-edit" aria-hidden="true"></i> Edit Article
+            </div>
+        </a>
+    </div>
+
+    <article data="article"></article>
+
+    <div class="content-block">
+        <div class="content-title">Comments
+            <span class="right-item action-box" ng-click="startNewComment()">
+                <i class="fa fa-plus"></i> New Comment
+            </span>
+        </div>
+        <loader data="article.comments" spinner-class="big-spinner" content-class="article-comments">
+            <comments comments="article.comments" current-user="currentUser" model-name="'Article'" target="article"></comments>
+
+            <page-results pages="pages.comments" data="article.comments" callback="retrieveComments"></page-results>
+        </loader>
+    </div>
+</div>
