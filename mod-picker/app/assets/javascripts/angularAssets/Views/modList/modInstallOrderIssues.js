@@ -81,12 +81,12 @@ app.controller('modInstallOrderIssuesController', function($scope, listUtils) {
         listUtils.removeDestroyed($scope.notes.install_order);
         $scope.buildUnresolvedInstallOrder();
     });
-    $scope.$on('modRemoved', function(pluginId) {
-        $scope.removeInstallOrderNotes(pluginId);
+    $scope.$on('modRemoved', function(modId) {
+        if (modId) $scope.removeInstallOrderNotes(modId);
         $scope.buildUnresolvedInstallOrder();
     });
-    $scope.$on('modRecovered', function(pluginId) {
-        $scope.recoverInstallOrderNotes(pluginId);
+    $scope.$on('modRecovered', function(modId) {
+        if (modId) $scope.recoverInstallOrderNotes(modId);
         $scope.buildUnresolvedInstallOrder();
     });
     $scope.$on('modAdded', function(event, modData) {

@@ -57,11 +57,11 @@ app.controller('requiredModsController', function($scope, $rootScope, requiremen
         $scope.buildMissingMods();
     });
     $scope.$on('modRemoved', function(event, modId) {
-        requirementUtils.removeRequirements(modId, $scope.required.mods, 'mod');
+        if (modId) requirementUtils.removeRequirements(modId, $scope.required.mods, 'mod');
         $scope.buildMissingMods();
     });
     $scope.$on('modRecovered', function(event, modId) {
-        requirementUtils.recoverRequirements(modId, $scope.required.mods, 'mod');
+        if (modId) requirementUtils.recoverRequirements(modId, $scope.required.mods, 'mod');
         $scope.buildMissingMods();
     });
     $scope.$on('modAdded', function(event, modData) {
