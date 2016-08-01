@@ -100,28 +100,28 @@ class ModList < ActiveRecord::Base
     mod_ids = self.mod_list_mod_ids
     return [] if mod_ids.empty?
 
-    CompatibilityNote.visible.mods(mod_ids).status([0, 1, 2]).includes(:first_mod, :second_mod)
+    CompatibilityNote.visible.mods(mod_ids).status([0, 1, 2]).includes(:first_mod, :second_mod, :submitter => :reputation)
   end
 
   def plugin_compatibility_notes
     mod_ids = self.mod_list_mod_ids
     return [] if mod_ids.empty?
 
-    CompatibilityNote.visible.mods(mod_ids).status([3, 4]).includes(:first_mod, :second_mod)
+    CompatibilityNote.visible.mods(mod_ids).status([3, 4]).includes(:first_mod, :second_mod, :history_entries, :submitter => :reputation)
   end
 
   def install_order_notes
     mod_ids = self.mod_list_mod_ids
     return [] if mod_ids.empty?
 
-    InstallOrderNote.visible.mods(mod_ids).includes(:first_mod, :second_mod)
+    InstallOrderNote.visible.mods(mod_ids).includes(:first_mod, :second_mod, :history_entries, :submitter => :reputation)
   end
 
   def load_order_notes
     plugin_ids = self.mod_list_plugin_ids
     return [] if plugin_ids.empty?
 
-    LoadOrderNote.visible.plugins(plugin_ids).includes(:first_plugin, :second_plugin)
+    LoadOrderNote.visible.plugins(plugin_ids).includes(:first_plugin, :second_plugin, :history_entries, :submitter => :reputation)
   end
 
   def required_tools
