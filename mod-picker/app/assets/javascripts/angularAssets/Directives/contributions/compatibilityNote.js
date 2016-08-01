@@ -15,6 +15,7 @@ app.directive('compatibilityNote', function () {
             showActions: '=?',
             showUserColumn: '=?',
             showResolutionOptions: '=?',
+            modDataLoaded: '=?',
             modId: '=?'
         }
     }
