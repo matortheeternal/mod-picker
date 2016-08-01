@@ -48,7 +48,7 @@
                     <sort-control></sort-control>
                 </span></h2>
                 <loader data="articles" content-class="grid-results" spinner-class="big-spinner" ng-if="!error">
-                    <article data="article" condensed="true" ng-repeat="article in articles"></article>
+                    <article data="article" ng-repeat="article in articles"></article>
 
                     <div class="content-message" ng-hide="articles.length">
                         No articles were found matching your search criteria.
