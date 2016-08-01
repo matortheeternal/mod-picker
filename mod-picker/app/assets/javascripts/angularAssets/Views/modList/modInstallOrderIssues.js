@@ -76,11 +76,11 @@ app.controller('modInstallOrderIssuesController', function($scope, listUtils) {
         $scope.buildUnresolvedInstallOrder();
     });
     $scope.$on('reloadModules', function() {
-        listUtils.recoverDestroyed($scope.notes.load_order);
+        listUtils.recoverDestroyed($scope.notes.install_order);
         $scope.buildUnresolvedInstallOrder();
     });
     $scope.$on('saveChanges', function() {
-        listUtils.removeDestroyed($scope.notes.load_order);
+        listUtils.removeDestroyed($scope.notes.install_order);
         $scope.buildUnresolvedInstallOrder();
     });
     $scope.$on('modRemoved', function(pluginId) {
