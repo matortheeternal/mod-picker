@@ -132,18 +132,25 @@ app.controller('modListPluginsController', function($scope, $q, $timeout, modLis
             filename: 'CustomPlugin.esp'
         };
 
-        // push plugin onto view
-        $scope.mod_list.custom_plugins.push(custom_plugin);
-        $scope.model.plugins.push(custom_plugin);
-        $scope.mod_list.plugins_count += 1;
-        $scope.updateTabs();
 
-        // update modules
-        $scope.$broadcast('customPluginAdded');
-        $scope.$broadcast('updateItems');
+        modListService.newModListCustomPlugin(custom_plugin).then(function(data) {
+            // push plugin onto view
+            var custom_plugin = data.mod_list_custom_plugin;
+            $scope.mod_list.custom_plugins.push(custom_plugin);
+            $scope.model.plugins.push(custom_plugin);
+            $scope.mod_list.plugins_count += 1;
+            $scope.updateTabs();
 
-        // open plugin details for custom plugin
-        $scope.toggleDetailsModal(true, custom_plugin);
+            // update modules
+            $scope.$broadcast('customPluginAdded');
+            $scope.$broadcast('updateItems');
+
+            // open plugin details for custom plugin
+            $scope.toggleDetailsModal(true, custom_plugin);
+        }, function(response) {
+            var params = {label: 'Error adding custom plugin', response: response};
+            $scope.$emit('errorMessage', params);
+        });
     };
 
     $scope.addPlugin = function(pluginId) {
