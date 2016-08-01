@@ -142,7 +142,7 @@ app.controller('modListPluginsController', function($scope, $q, $timeout, modLis
         modListService.newModListCustomPlugin(custom_plugin).then(function(data) {
             // push plugin onto view
             var modListCustomPlugin = data.mod_list_custom_plugin;
-            modListService.associateCompatibilityNote(modListCustomPlugin, $scope.mod_list.plugin_compatibility);
+            modListService.associateCompatibilityNote(modListCustomPlugin, $scope.notes.plugin_compatibility);
             $scope.mod_list.custom_plugins.push(modListCustomPlugin);
             $scope.model.plugins.push(modListCustomPlugin);
             $scope.originalModList.custom_plugins.push(angular.copy(modListCustomPlugin));

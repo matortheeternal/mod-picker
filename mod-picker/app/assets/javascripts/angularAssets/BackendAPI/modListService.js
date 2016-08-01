@@ -42,12 +42,12 @@ app.service('modListService', function (backend, $q, objectUtils, userTitleServi
     this.retrieveModListPlugins = function(modListId) {
         var action = $q.defer();
         backend.retrieve('/mod_lists/' + modListId + '/plugins').then(function(data) {
-            service.associateCompatibilityNotes(data.custom_plugins, data.plugin_compatibility_notes);
             categoryService.associateCategories(data.plugins);
             userTitleService.associateTitles(data.compatibility_notes);
             userTitleService.associateTitles(data.load_order_notes);
             contributionService.associateHelpfulMarks(data.compatibility_notes, data.c_helpful_marks);
             contributionService.associateHelpfulMarks(data.load_order_notes, data.l_helpful_marks);
+            service.associateCompatibilityNotes(data.custom_plugins, data.compatibility_notes);
             action.resolve(data);
         }, function(response) {
             action.reject(response);
