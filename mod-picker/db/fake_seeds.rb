@@ -746,6 +746,8 @@ def seed_fake_reviews
         review_ratings.push({review_section_id: section.id, rating: rand(100)})
       end
 
+      next if Review.exists?(submitted_by: submitter.id)
+
       review = mod.reviews.new(
           game_id: gameSkyrim.id,
           submitted_by: submitter.id,
