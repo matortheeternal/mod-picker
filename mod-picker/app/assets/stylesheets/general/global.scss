@@ -507,6 +507,7 @@ input[type="button"], input[type="submit"] {
 
 .right-column {
   width: 970px;
+  height: calc(100vh - 428px);
   padding: 40px 0 40px 48px;
   display: table-cell;
   vertical-align: top;
