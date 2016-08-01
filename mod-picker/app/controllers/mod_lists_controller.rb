@@ -34,11 +34,13 @@ class ModListsController < ApplicationController
 
     # prepare primary data
     tools = @mod_list.mod_list_mods.utility(true).includes(:mod => :required_mods).order(:index)
+    custom_tools = @mod_list.custom_mods.utility(true)
     groups = @mod_list.mod_list_groups.where(tab: 0).order(:index)
 
     # render response
     render :json => {
         tools: tools,
+        custom_tools: custom_tools,
         required_tools: @mod_list.required_tools,
         groups: groups
     }
@@ -50,6 +52,7 @@ class ModListsController < ApplicationController
 
     # prepare primary data
     mods = @mod_list.mod_list_mods.utility(false).includes(:mod).order(:index)
+    custom_mods = @mod_list.custom_mods.utility(false)
     groups = @mod_list.mod_list_groups.where(tab: 1).order(:index)
 
     # prepare notes
@@ -63,6 +66,7 @@ class ModListsController < ApplicationController
     # render response
     render :json => {
         mods: mods,
+        custom_mods: custom_mods,
         groups: groups,
         required_mods: @mod_list.required_mods,
         compatibility_notes: compatibility_notes,
@@ -256,6 +260,7 @@ class ModListsController < ApplicationController
     def mod_list_params
       params.require(:mod_list).permit(:game_id, :name, :description, :status, :visibility, :is_collection, :disable_comments, :lock_tags, :hidden,
           :mod_list_mods_attributes => [:id, :group_id, :mod_id, :index, :_destroy],
+          :custom_mods_attributes => [:id, :group_id, :is_utility, :index, :name, :description, :_destroy],
           :mod_list_plugins_attributes => [:id, :group_id, :plugin_id, :index, :cleaned, :merged, :_destroy],
           :custom_plugins_attributes => [:id, :group_id, :index, :cleaned, :merged, :compatibility_note_id, :filename, :description, :_destroy],
           :mod_list_groups_attributes => [:id, :index, :tab, :color, :name, :description, :_destroy,

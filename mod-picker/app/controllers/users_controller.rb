@@ -27,7 +27,7 @@ class UsersController < ApplicationController
   # GET /users/1
   def show
     authorize! :read, @user
-    endorsed = ReputationLink.exists?(from_rep_id: current_user.id, to_rep_id: @user.id)
+    endorsed = ReputationLink.exists?(from_rep_id: current_user.reputation.id, to_rep_id: @user.reputation.id)
     render :json => {
         user: @user.show_json(current_user),
         endorsed: endorsed

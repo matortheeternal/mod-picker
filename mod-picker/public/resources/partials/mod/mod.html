@@ -111,8 +111,12 @@
                         <!--Categories-->
                         <h3 class="section-title">Categories</h3>
                         <section>
-                            <div class="action-box">{{mod.primary_category.name}}</div>
-                            <div ng-show="mod.secondary_category_id" class="action-box">{{mod.secondary_category.name}}</div>
+                            <a ng-href="#/mods?c={{mod.primary_category_id}}">
+                                <div class="action-box">{{mod.primary_category.name}}</div>
+                            </a>
+                            <a ng-href="#/mods?c={{mod.secondary_category_id}}" ng-show="mod.secondary_category_id">
+                                <div class="action-box">{{mod.secondary_category.name}}</div>
+                            </a>
                         </section>
 
                         <!--Tags-->

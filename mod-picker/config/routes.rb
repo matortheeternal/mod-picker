@@ -110,6 +110,7 @@ Rails.application.routes.draw do
     match '/mod_list_groups', to: 'mod_list_groups#create', via: [:post]
     match '/mod_list_mods', to: 'mod_list_mods#create', via: [:post]
     match '/mod_list_plugins', to: 'mod_list_plugins#create', via: [:post]
+    match '/mod_list_custom_mods', to: 'mod_list_custom_mods#create', via: [:post]
     match '/mod_list_custom_plugins', to: 'mod_list_custom_plugins#create', via: [:post]
 
     # mod and mod list stars

@@ -24,7 +24,8 @@ app.controller('modListModsController', function($scope, $rootScope, $timeout, m
                 return mod.group_id == group.id;
             });
         });
-        $scope.mod_list.mods.forEach(function(mod) {
+        var mods = $scope.mod_list.mods.concat($scope.mod_list.custom_mods);
+        mods.forEach(function(mod) {
             if (!mod.group_id) {
                 var insertIndex = $scope.model.mods.findIndex(function(item) {
                     return item.index > mod.index;
@@ -43,8 +44,10 @@ app.controller('modListModsController', function($scope, $rootScope, $timeout, m
             $scope.notes.compatibility = data.compatibility_notes;
             $scope.notes.install_order = data.install_order_notes;
             $scope.mod_list.mods = data.mods;
+            $scope.mod_list.custom_mods = data.custom_mods;
             $scope.mod_list.groups = Array.prototype.concat($scope.mod_list.groups || [], data.groups);
             $scope.originalModList.mods = angular.copy($scope.mod_list.mods);
+            $scope.originalModList.custom_mods = angular.copy($scope.mod_list.custom_mods);
             $scope.originalModList.groups = angular.copy($scope.mod_list.groups);
             $scope.associateIgnore($scope.notes.compatibility, 'CompatibilityNote');
             $scope.associateIgnore($scope.notes.install_order, 'InstallOrderNote');
@@ -107,6 +110,34 @@ app.controller('modListModsController', function($scope, $rootScope, $timeout, m
             $scope.$emit('successMessage', 'Added mod ' + modListMod.mod.name + ' successfully.');
         }, function(response) {
             var params = {label: 'Error adding mod', response: response};
+            $scope.$emit('errorMessage', params);
+        });
+    };
+
+    $scope.addCustomMod = function() {
+        var custom_mod = {
+            mod_list_id: $scope.mod_list.id,
+            index: listUtils.getNextIndex($scope.model.mods),
+            name: 'Custom Mod'
+        };
+
+        modListService.newModListCustomMod(custom_mod).then(function(data) {
+            // push plugin onto view
+            var modListCustomMod = data.mod_list_custom_mod;
+            $scope.mod_list.custom_mods.push(modListCustomMod);
+            $scope.model.mods.push(modListCustomMod);
+            $scope.originalModList.custom_mods.push(angular.copy(modListCustomMod));
+            $scope.mod_list.mods_count += 1;
+            $scope.updateTabs();
+
+            // update modules
+            $scope.$broadcast('customModAdded');
+            $scope.$broadcast('updateItems');
+
+            // open plugin details for custom plugin
+            $scope.toggleDetailsModal(true, modListCustomMod);
+        }, function(response) {
+            var params = {label: 'Error adding custom mod', response: response};
             $scope.$emit('errorMessage', params);
         });
     };
