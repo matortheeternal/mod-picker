@@ -1,9 +1,17 @@
 app.controller('modListModsController', function($scope, $rootScope, $timeout, modListService, modService, listUtils, columnsFactory, actionsFactory) {
     // initialize variables
+    $scope.showDetailsModal = false;
+    $scope.detailsItem = {};
     $scope.columns = columnsFactory.modListModColumns();
     $scope.columnGroups = columnsFactory.modListModColumnGroups();
     $scope.actions = actionsFactory.modListModActions();
     $scope.searchMods = modService.searchModListMods;
+
+    $scope.toggleDetailsModal = function(visible, item) {
+        $scope.$emit('toggleModal', visible);
+        $scope.showDetailsModal = visible;
+        $scope.detailsItem = item;
+    };
 
     $scope.buildModsModel = function() {
         $scope.model.mods = [];
@@ -152,5 +160,8 @@ app.controller('modListModsController', function($scope, $rootScope, $timeout, m
     });
     $scope.$on('itemMoved', function() {
         $scope.$broadcast('modMoved');
+    });
+    $scope.$on('toggleDetailsModal', function(event, options) {
+        $scope.toggleDetailsModal(options.visible, options.item);
     });
 });
