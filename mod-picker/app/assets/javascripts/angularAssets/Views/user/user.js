@@ -29,7 +29,8 @@ app.config(['$stateProvider', function($stateProvider) {
                 templateUrl: '/resources/partials/user/social.html',
                 controller: 'userSocialTabController'
             }
-        }
+        },
+        url: '/social'
     }).state('base.user.Mod Lists', {
         sticky: true,
         deepStateRedirect: true,
@@ -37,7 +38,8 @@ app.config(['$stateProvider', function($stateProvider) {
             'Mod Lists': {
                 templateUrl: '/resources/partials/user/lists.html',
             }
-        }
+        },
+        url: '/mod-lists'
     }).state('base.user.Mods', {
         sticky: true,
         deepStateRedirect: true,
@@ -45,27 +47,19 @@ app.config(['$stateProvider', function($stateProvider) {
             'Mods': {
                 templateUrl: '/resources/partials/user/mods.html'
             }
-        }
-    }).state('base.user.Contributions', {
-        sticky: true,
-        deepStateRedirect: true,
-        views: {
-            'Contributions': {
-                templateUrl: '/resources/partials/user/contributions.html'
-            }
-        }
+        },
+        url: '/mods'
     });
 }]);
 
-app.controller('userController', function($scope, $stateParams, currentUser, userObject) {
+app.controller('userController', function($scope, $stateParams, currentUser, userObject, userService, errorService) {
     // get parent variables
     $scope.currentUser = currentUser;
     $scope.permissions = currentUser.permissions;
 
     // set up local variables
-    $scope.user = userObject;
-    $scope.errors = [];
-    $scope.displayErrors = {};
+    $scope.user = userObject.user;
+    $scope.user.endorsed = userObject.endorsed;
     $scope.pages = {
         profile_comments: {}
     };
@@ -92,11 +86,32 @@ app.controller('userController', function($scope, $stateParams, currentUser, use
 
     //of the tab data
     $scope.tabs = [
-        { name: 'Social' },
-        { name: 'Mod Lists' },
-        { name: 'Mods' },
-        { name: 'Contributions' }
+        { name: 'Social'},
+        { name: 'Mod Lists'},
+        { name: 'Mods'}
     ];
+
+    $scope.endorse = function() {
+        userService.endorse($scope.user.id, $scope.user.endorsed).then(function() {
+            $scope.user.endorsed = !$scope.user.endorsed;
+
+            //update the currentUser's permissions without having to re-retrieve
+            $scope.$emit('updateRepPermissions', $scope.user.endorsed);
+        }, function(response) {
+            var params = {label: 'Error giving reputation', response: response};
+            $scope.$emit('errorMessage', params);
+        });
+    };
+
+    // display error messages
+    $scope.$on('errorMessage', function(event, params) {
+        var errors = errorService.errorMessages(params.label, params.response);
+        errors.forEach(function(error) {
+            $scope.$broadcast('message', error);
+        });
+        // stop event propagation - we handled it
+        event.stopPropagation();
+    });
 });
 
 app.controller('userSocialTabController', function($scope, $stateParams, userService, contributionService) {
@@ -112,7 +127,8 @@ app.controller('userSocialTabController', function($scope, $stateParams, userSer
         userService.retrieveProfileComments($stateParams.userId, options, $scope.pages.profile_comments).then(function(data) {
             $scope.user.profile_comments = data;
         }, function(response) {
-            $scope.displayErrors.profile_comments = response;
+            var params = {label: 'Error retrieving Comments', response: response};
+            $scope.$emit('errorMessage', params);
         });
     };
 

@@ -1,0 +1,30 @@
+<table class="listing-table" ng-if="mods.length">
+    <thead>
+        <tr>
+            <th class="name-column">Name</th>
+            <th>Stars</th>
+            <th>Reputation</th>
+            <th>Reviews</th>
+            <th>Options</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr ng-repeat="mod in mods" ng-class-odd="'odd-row'" ng-class-even="'even-row'">
+            <td class="name-column">
+                <a ui-sref="base.mod({modId: mod.id})">{{mod.name}}</a>
+            </td>
+            <td>{{mod.stars_count}}</td>
+            <td>{{mod.reputation}}</td>
+            <td>{{mod.reviews_count}}</td>
+            <td>
+                <div class="table-buttons">
+                    <input type="button" class="action-box" ng-click="modHide(mod)" value="Hide from Public">
+                    <a ui-sref="base.edit-mod({modId: mod.id})">
+                        <input type="button" class="action-box" value="Edit" />
+                    </a>
+                </div>
+            </td>
+        </tr>
+    </tbody>
+</table>
+<span class="explanation" ng-if="!mods.length">There's nothing here...</span>

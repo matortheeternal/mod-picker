@@ -1,0 +1,34 @@
+<table border="1" class="listing-table" ng-if="modlists.length">
+    <thead>
+        <tr>
+            <th class="name-column">Name</th>
+            <th>Mods</th>
+            <th>Status</th>
+            <th>Stars</th>
+            <th>Comments</th>
+            <th>Options</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr ng-repeat="modlist in modlists" ng-class-odd="'odd-row'" ng-class-even="'even-row'">
+            <td class="name-column">
+                <a ui-sref="base.mod-list({modListId: modlist.id})">{{modlist.name}}</a>
+            </td>
+            <td>{{modlist.mods_count}}</td>
+            <td>{{modlist.status}}</td>
+            <td>{{modlist.stars_count}}</td>
+            <td>{{modlist.comments_count}}</td>
+            <td>
+                <div class="table-buttons">
+                    <input class="action-box" type="button" ng-click="clone(modlist)" value="Clone" />
+                    <!-- TODO: verify that this link is correct once the edit modlist state is set up -->
+                    <a ui-sref="base.edit-modlist({modlistId: modlist.id})">
+                        <input type="button" class="action-box" value="Edit" />
+                    </a>
+                    <input class="action-box" type="button" ng-click="delete(modlist)" value="Delete" />
+                </div>
+            </td>
+        </tr>
+    </tbody>
+</table>
+<span class="explanation" ng-if="!modlists.length">There's nothing here</span>
