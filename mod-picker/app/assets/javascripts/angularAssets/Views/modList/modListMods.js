@@ -38,6 +38,8 @@ app.controller('modListModsController', function($scope, $rootScope, $timeout, m
             $scope.mod_list.groups = Array.prototype.concat($scope.mod_list.groups || [], data.groups);
             $scope.originalModList.mods = angular.copy($scope.mod_list.mods);
             $scope.originalModList.groups = angular.copy($scope.mod_list.groups);
+            $scope.associateIgnore($scope.notes.compatibility, 'CompatibilityNote');
+            $scope.associateIgnore($scope.notes.install_order, 'InstallOrderNote');
             $scope.buildModsModel();
             $timeout(function() {
                 $scope.$broadcast('initializeModules');
@@ -82,8 +84,10 @@ app.controller('modListModsController', function($scope, $rootScope, $timeout, m
 
         modListService.newModListMod(mod_list_mod).then(function(data) {
             // push mod onto view
-            $scope.mod_list.mods.push(data.mod_list_mod);
-            $scope.model.mods.push(data.mod_list_mod);
+            var modListMod = data.mod_list_mod;
+            $scope.mod_list.mods.push(modListMod);
+            $scope.model.mods.push(modListMod);
+            $scope.originalModList.mods.push(angular.copy(modListMod));
             $scope.mod_list.mods_count += 1;
             $scope.updateTabs();
 
@@ -92,7 +96,7 @@ app.controller('modListModsController', function($scope, $rootScope, $timeout, m
             $scope.$broadcast('updateItems');
 
             // success message
-            $scope.$emit('successMessage', 'Added mod ' + data.mod_list_mod.mod.name + ' successfully.');
+            $scope.$emit('successMessage', 'Added mod ' + modListMod.mod.name + ' successfully.');
         }, function(response) {
             var params = {label: 'Error adding mod', response: response};
             $scope.$emit('errorMessage', params);

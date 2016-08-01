@@ -76,16 +76,14 @@ app.controller('pluginCompatibilityIssuesController', function($scope, listUtils
                 break;
             case "ignore":
                 options.note.ignored = !options.note.ignored;
-                // TODO: Update $scope.mod_list.ignored_notes
+                $scope.ignoreNote('CompatibilityNote', options.note);
                 $scope.buildUnresolvedPluginCompatibility();
                 break;
         }
     });
 
     // event triggers
-    $scope.$on('initializeModules', function() {
-        $scope.buildUnresolvedPluginCompatibility();
-    });
+    $scope.$on('initializeModules', $scope.buildUnresolvedPluginCompatibility);
     $scope.$on('reloadModules', function() {
         listUtils.recoverDestroyed($scope.notes.plugin_compatibility);
         $scope.buildUnresolvedPluginCompatibility();
@@ -94,22 +92,20 @@ app.controller('pluginCompatibilityIssuesController', function($scope, listUtils
         listUtils.removeDestroyed($scope.notes.plugin_compatibility);
         $scope.buildUnresolvedPluginCompatibility();
     });
-    $scope.$on('pluginRemoved', function() {
-        $scope.buildUnresolvedPluginCompatibility();
-    });
-    $scope.$on('pluginRecovered', function() {
-        $scope.buildUnresolvedPluginCompatibility();
-    });
-    $scope.$on('pluginAdded', function(event, pluginData) {
-        $scope.notes.plugin_compatibility.unite(pluginData.compatibility_notes);
-        $scope.buildUnresolvedPluginCompatibility();
-    });
+    $scope.$on('pluginRemoved', $scope.buildUnresolvedPluginCompatibility);
+    $scope.$on('pluginRecovered', $scope.buildUnresolvedPluginCompatibility);
+    $scope.$on('pluginAdded', $scope.buildUnresolvedPluginCompatibility);
+    $scope.$on('customPluginAdded', $scope.buildUnresolvedPluginCompatibility);
     $scope.$on('modRemoved', function(event, modId) {
         $scope.removeCompatibilityNotes(modId);
         $scope.buildUnresolvedPluginCompatibility();
     });
     $scope.$on('modRecovered', function(event, modId) {
         $scope.recoverCompatibilityNotes(modId);
+        $scope.buildUnresolvedPluginCompatibility();
+    });
+    $scope.$on('modAdded', function(event, modData) {
+        $scope.notes.plugin_compatibility.unite(modData.plugin_compatibility_notes);
         $scope.buildUnresolvedPluginCompatibility();
     });
 });

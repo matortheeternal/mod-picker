@@ -79,8 +79,10 @@ app.controller('modListToolsController', function($scope, $rootScope, $state, $s
 
         modListService.newModListMod(mod_list_mod).then(function(data) {
             // push tool onto view
-            $scope.mod_list.tools.push(data.mod_list_mod);
-            $scope.model.tools.push(data.mod_list_mod);
+            var modListTool = data.mod_list_mod;
+            $scope.mod_list.tools.push(modListTool);
+            $scope.model.tools.push(modListTool);
+            $scope.originalModList.tools.push(angular.copy(modListTool));
             $scope.mod_list.tools_count += 1;
             $scope.updateTabs();
 
@@ -90,7 +92,7 @@ app.controller('modListToolsController', function($scope, $rootScope, $state, $s
 
             // success message
             $scope.$broadcast('updateItems');
-            $scope.$emit('successMessage', 'Added tool ' + data.mod_list_mod.mod.name + ' successfully.');
+            $scope.$emit('successMessage', 'Added tool ' + modListTool.mod.name + ' successfully.');
         }, function(response) {
             var params = {label: 'Error adding tool', response: response};
             $scope.$emit('errorMessage', params);

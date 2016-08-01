@@ -77,16 +77,14 @@ app.controller('modCompatibilityIssuesController', function($scope, listUtils) {
                 break;
             case "ignore":
                 options.note.ignored = !options.note.ignored;
-                // TODO: Update $scope.mod_list.ignored_notes
+                $scope.ignoreNote('CompatibilityNote', options.note);
                 $scope.buildUnresolvedCompatibility();
                 break;
         }
     });
 
     // event triggers
-    $scope.$on('initializeModules', function() {
-        $scope.buildUnresolvedCompatibility();
-    });
+    $scope.$on('initializeModules', $scope.buildUnresolvedCompatibility);
     $scope.$on('reloadModules', function() {
         listUtils.recoverDestroyed($scope.notes.compatibility);
         $scope.buildUnresolvedCompatibility();
@@ -104,7 +102,7 @@ app.controller('modCompatibilityIssuesController', function($scope, listUtils) {
         $scope.buildUnresolvedCompatibility();
     });
     $scope.$on('modAdded', function(event, modData) {
-        $scope.notes.compatibility.unite(modData.compatibility_notes);
+        $scope.notes.compatibility.unite(modData.mod_compatibility_notes);
         $scope.buildUnresolvedCompatibility();
     });
 });

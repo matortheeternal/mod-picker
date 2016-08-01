@@ -15,6 +15,7 @@ app.directive('compatibilityNote', function () {
             showActions: '=?',
             showUserColumn: '=?',
             showResolutionOptions: '=?',
+            modDataLoaded: '=?',
             modId: '=?'
         }
     }
@@ -46,6 +47,13 @@ app.controller('compatibilityNoteController', function ($scope) {
             index: index
         };
         $scope.$emit('resolveCompatibilityNote', options);
+    };
+
+    $scope.getTitle = function() {
+        // TODO: Titles for when the note is resolved/ignored
+        if (!$scope.modDataLoaded) {
+            return 'You must visit the mods tab before you can use this action.'
+        }
     };
 
     // set compatibility_verb
