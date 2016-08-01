@@ -344,7 +344,12 @@ app.controller('modListController', function($scope, $q, $stateParams, $timeout,
                     delete foundIgnoredNote._destroy;
                 }
             } else if (foundIgnoredNote) {
-                foundIgnoredNote._destroy = true;
+                if (foundIgnoredNote.id) {
+                    foundIgnoredNote._destroy = true;
+                } else {
+                    var index = $scope.mod_list.ignored_notes.indexOf(foundIgnoredNote);
+                    $scope.mod_list.ignored_notes.splice(index, 1);
+                }
             }
         }
     };
