@@ -16,7 +16,7 @@
         </div>
 
         <div ng-if="!showUnresolvedCompatibility" ng-repeat="note in notes.compatibility" class="content-block" ng-hide="note._destroy">
-            <compatibility-note note="note" index="100 + $index" current-user="currentUser" show-resolution-options="editing"></compatibility-note>
+            <compatibility-note note="note" index="100 + $index" current-user="currentUser" show-resolution-options="editing" mod-data-loaded="!!mod_list.mods"></compatibility-note>
         </div>
         <div ng-show="!showUnresolvedCompatibility && isEmpty(notes.compatibility)" class="content-message">
             No compatibility issues to display.

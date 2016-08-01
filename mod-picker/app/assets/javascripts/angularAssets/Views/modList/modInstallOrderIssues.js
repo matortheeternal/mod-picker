@@ -65,22 +65,20 @@ app.controller('modInstallOrderIssuesController', function($scope, listUtils) {
                 break;
             case "ignore":
                 options.note.ignored = !options.note.ignored;
-                // TODO: Update $scope.mod_list.ignored_notes
+                $scope.ignoreNote('InstallOrderNote', options.note);
                 $scope.buildUnresolvedInstallOrder();
                 break;
         }
     });
 
     // event triggers
-    $scope.$on('initializeModules', function() {
-        $scope.buildUnresolvedInstallOrder();
-    });
+    $scope.$on('initializeModules', $scope.buildUnresolvedInstallOrder);
     $scope.$on('reloadModules', function() {
-        listUtils.recoverDestroyed($scope.notes.load_order);
+        listUtils.recoverDestroyed($scope.notes.install_order);
         $scope.buildUnresolvedInstallOrder();
     });
     $scope.$on('saveChanges', function() {
-        listUtils.removeDestroyed($scope.notes.load_order);
+        listUtils.removeDestroyed($scope.notes.install_order);
         $scope.buildUnresolvedInstallOrder();
     });
     $scope.$on('modRemoved', function(pluginId) {
@@ -95,7 +93,5 @@ app.controller('modInstallOrderIssuesController', function($scope, listUtils) {
         $scope.notes.install_order.unite(modData.install_order_notes);
         $scope.buildUnresolvedInstallOrder();
     });
-    $scope.$on('modMoved', function() {
-        $scope.buildUnresolvedInstallOrder();
-    });
+    $scope.$on('modMoved', $scope.buildUnresolvedInstallOrder);
 });

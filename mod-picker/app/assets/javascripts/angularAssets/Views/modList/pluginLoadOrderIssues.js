@@ -65,16 +65,14 @@ app.controller('pluginLoadOrderIssuesController', function($scope, listUtils) {
                 break;
             case "ignore":
                 options.note.ignored = !options.note.ignored;
-                // TODO: Update $scope.mod_list.ignored_notes
+                $scope.ignoreNote('LoadOrderNote', options.note);
                 $scope.buildUnresolvedLoadOrder();
                 break;
         }
     });
 
     // event triggers
-    $scope.$on('initializeModules', function() {
-        $scope.buildUnresolvedLoadOrder();
-    });
+    $scope.$on('initializeModules', $scope.buildUnresolvedLoadOrder);
     $scope.$on('reloadModules', function() {
         listUtils.recoverDestroyed($scope.notes.load_order);
         $scope.buildUnresolvedLoadOrder();
@@ -91,11 +89,10 @@ app.controller('pluginLoadOrderIssuesController', function($scope, listUtils) {
         $scope.recoverLoadOrderNotes(pluginId);
         $scope.buildUnresolvedLoadOrder();
     });
-    $scope.$on('pluginAdded', function(event, pluginData) {
-        $scope.notes.load_order.unite(pluginData.load_order_notes);
-        $scope.buildUnresolvedLoadOrder();
-    });
-    $scope.$on('pluginMoved', function() {
+    $scope.$on('pluginAdded', $scope.buildUnresolvedLoadOrder);
+    $scope.$on('pluginMoved', $scope.buildUnresolvedLoadOrder);
+    $scope.$on('modAdded', function(event, modData) {
+        $scope.notes.load_order.unite(modData.load_order_notes);
         $scope.buildUnresolvedLoadOrder();
     });
 });

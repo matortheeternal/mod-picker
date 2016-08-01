@@ -294,6 +294,22 @@ app.controller('modListController', function($scope, $q, $stateParams, $timeout,
         return foundPlugin;
     };
 
+    $scope.findIgnoredNote = function(note_type, note_id, ignoreDestroyed) {
+        var foundIgnoredNote = $scope.mod_list.ignored_notes.find(function(ignoredNote) {
+            return ignoredNote.note_type === note_type && ignoredNote.note_id == note_id;
+        });
+        if (foundIgnoredNote && ignoreDestroyed && foundIgnoredNote._destroy) {
+            return;
+        }
+         return foundIgnoredNote;
+    };
+
+    $scope.associateIgnore = function(notes, note_type) {
+        notes.forEach(function(note) {
+            note.ignored = !!$scope.findIgnoredNote(note_type, note.id, true);
+        });
+    };
+
     $scope.addGroup = function(tab) {
         var model = $scope.model[tab];
         var newGroup = {
@@ -313,6 +329,29 @@ app.controller('modListController', function($scope, $q, $stateParams, $timeout,
             var params = {label: 'Error creating new group', response: response};
             $scope.$emit('errorMessage', params);
         });
+    };
+
+    $scope.ignoreNote = function(type, note) {
+        if (note.ignored) {
+            var foundIgnoredNote = $scope.findIgnoredNote(type, note.id);
+            if (note.ignored) {
+                if (!foundIgnoredNote) {
+                    $scope.mod_list.ignored_notes.push({
+                        note_type: type,
+                        note_id: note.id
+                    });
+                } else if (foundIgnoredNote._destroy) {
+                    delete foundIgnoredNote._destroy;
+                }
+            } else if (foundIgnoredNote) {
+                if (foundIgnoredNote.id) {
+                    foundIgnoredNote._destroy = true;
+                } else {
+                    var index = $scope.mod_list.ignored_notes.indexOf(foundIgnoredNote);
+                    $scope.mod_list.ignored_notes.splice(index, 1);
+                }
+            }
+        }
     };
 
     $scope.saveChanges = function() {

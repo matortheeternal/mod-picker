@@ -100,49 +100,49 @@ class ModList < ActiveRecord::Base
     mod_ids = self.mod_list_mod_ids
     return [] if mod_ids.empty?
 
-    CompatibilityNote.visible.mods(mod_ids).status([0, 1, 2])
+    CompatibilityNote.visible.mods(mod_ids).status([0, 1, 2]).includes(:first_mod, :second_mod)
   end
 
   def plugin_compatibility_notes
     mod_ids = self.mod_list_mod_ids
     return [] if mod_ids.empty?
 
-    CompatibilityNote.visible.mods(mod_ids).status([3, 4])
+    CompatibilityNote.visible.mods(mod_ids).status([3, 4]).includes(:first_mod, :second_mod)
   end
 
   def install_order_notes
     mod_ids = self.mod_list_mod_ids
     return [] if mod_ids.empty?
 
-    InstallOrderNote.visible.mods(mod_ids)
+    InstallOrderNote.visible.mods(mod_ids).includes(:first_mod, :second_mod)
   end
 
   def load_order_notes
     plugin_ids = self.mod_list_plugin_ids
     return [] if plugin_ids.empty?
 
-    LoadOrderNote.visible.plugins(plugin_ids)
+    LoadOrderNote.visible.plugins(plugin_ids).includes(:first_plugin, :second_plugin)
   end
 
   def required_tools
     mod_ids = self.mod_list_mod_ids
     return [] if mod_ids.empty?
 
-    ModRequirement.mods(mod_ids).utility(true)
+    ModRequirement.mods(mod_ids).includes(:required_mod, :mod).utility(true)
   end
 
   def required_mods
     mod_ids = self.mod_list_mod_ids
     return [] if mod_ids.empty?
 
-    ModRequirement.mods(mod_ids).utility(false).order(:required_id)
+    ModRequirement.mods(mod_ids).utility(false).includes(:required_mod, :mod).order(:required_id)
   end
 
   def required_plugins
     plugin_ids = self.mod_list_plugin_ids
     return [] if plugin_ids.empty?
 
-    Master.plugins(plugin_ids).order(:master_plugin_id)
+    Master.plugins(plugin_ids).includes(:plugin, :master_plugin).order(:master_plugin_id)
   end
 
   def incompatible_mods

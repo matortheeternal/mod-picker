@@ -15,6 +15,10 @@ class ModListPlugin < ActiveRecord::Base
   after_create :increment_counters
   before_destroy :decrement_counters
 
+  def required_plugins
+    Master.plugins([self.plugin_id]).order(:master_plugin_id)
+  end
+
   def as_json(options={})
     if JsonHelpers.json_options_empty(options)
       # TODO: Revise this as necessary

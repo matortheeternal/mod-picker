@@ -95,7 +95,8 @@ app.service('modListService', function (backend, $q, objectUtils, userTitleServi
                 mod_list_groups_attributes: mod_list_groups,
                 mod_list_mods_attributes: mod_list_mods,
                 mod_list_plugins_attributes: mod_list_plugins,
-                custom_plugins_attributes: modList.custom_plugins
+                custom_plugins_attributes: modList.custom_plugins,
+                ignored_notes_attributes: modList.ignored_notes
             }
         };
         objectUtils.deleteEmptyProperties(modListData, 1);
@@ -106,15 +107,27 @@ app.service('modListService', function (backend, $q, objectUtils, userTitleServi
     this.newModListMod = function(mod_list_mod) {
         var action = $q.defer();
         backend.post('/mod_list_mods', {mod_list_mod: mod_list_mod}).then(function(data) {
-            userTitleService.associateTitles(data.compatibility_notes);
+            userTitleService.associateTitles(data.mod_compatibility_notes);
+            userTitleService.associateTitles(data.plugin_compatibility_notes);
             userTitleService.associateTitles(data.install_order_notes);
-            contributionService.associateHelpfulMarks(data.compatibility_notes, data.c_helpful_marks);
+            userTitleService.associateTitles(data.load_order_notes);
+            contributionService.associateHelpfulMarks(data.mod_compatibility_notes, data.c_helpful_marks);
+            contributionService.associateHelpfulMarks(data.plugin_compatibility_notes, data.c_helpful_marks);
             contributionService.associateHelpfulMarks(data.install_order_notes, data.i_helpful_marks);
+            contributionService.associateHelpfulMarks(data.load_order_notes, data.l_helpful_marks);
             action.resolve(data);
         }, function(response) {
             action.reject(response);
         });
         return action.promise;
+    };
+
+    this.newModListPlugin = function(mod_list_plugin) {
+        return backend.post('/mod_list_plugins', {mod_list_plugin: mod_list_plugin});
+    };
+
+    this.newModListCustomPlugin = function(custom_plugin) {
+        return backend.post('/mod_list_custom_plugins', {mod_list_custom_plugin: custom_plugin});
     };
 
     this.newModListGroup = function(group) {

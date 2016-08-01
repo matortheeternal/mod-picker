@@ -3,7 +3,7 @@ class ModListCustomPlugin < ActiveRecord::Base
 
   # Validations
   validates :mod_list_id, :index, :filename, presence: true
-  validates :active, inclusion: [true, false]
+  validates :merged, :cleaned, inclusion: [true, false]
   validates :description, length: {maximum: 4096}
 
   # Callbacks
@@ -14,7 +14,7 @@ class ModListCustomPlugin < ActiveRecord::Base
     if JsonHelpers.json_options_empty(options)
       # TODO: Revise this as necessary
       default_options = {
-          :only => [:id, :index, :group_id, :filename, :description]
+          :except => [:mod_list_id]
       }
       super(options.merge(default_options))
     else

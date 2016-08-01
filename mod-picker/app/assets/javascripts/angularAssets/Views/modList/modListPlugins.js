@@ -60,6 +60,8 @@ app.controller('modListPluginsController', function($scope, $q, $timeout, modLis
             $scope.originalModList.plugins = angular.copy($scope.mod_list.plugins);
             $scope.originalModList.custom_plugins = angular.copy($scope.mod_list.custom_plugins);
             $scope.originalModList.groups = angular.copy($scope.mod_list.groups);
+            $scope.associateIgnore($scope.notes.plugin_compatibility, 'CompatibilityNote');
+            $scope.associateIgnore($scope.notes.load_order, 'LoadOrderNote');
             $scope.buildPluginsModel();
             $timeout(function() {
                 $scope.$broadcast('initializeModules');
@@ -105,8 +107,10 @@ app.controller('modListPluginsController', function($scope, $q, $timeout, modLis
 
         modListService.newModListPlugin(mod_list_plugin).then(function(data) {
             // push plugin onto view
-            $scope.mod_list.plugins.push(data.mod_list_plugin);
-            $scope.model.plugins.push(data.mod_list_plugin);
+            var modListPlugin = data.mod_list_plugin;
+            $scope.mod_list.plugins.push(modListPlugin);
+            $scope.model.plugins.push(modListPlugin);
+            $scope.originalModList.plugins.push(angular.copy(modListPlugin));
             $scope.mod_list.plugins_count += 1;
             $scope.updateTabs();
 
@@ -123,25 +127,38 @@ app.controller('modListPluginsController', function($scope, $q, $timeout, modLis
         });
     };
 
-    $scope.addCustomPlugin = function() {
+    $scope.addCustomPlugin = function(compatibilityNoteId) {
         var custom_plugin = {
             mod_list_id: $scope.mod_list.id,
             index: listUtils.getNextIndex($scope.model.plugins),
             filename: 'CustomPlugin.esp'
         };
 
-        // push plugin onto view
-        $scope.mod_list.custom_plugins.push(custom_plugin);
-        $scope.model.plugins.push(custom_plugin);
-        $scope.mod_list.plugins_count += 1;
-        $scope.updateTabs();
+        if (compatibilityNoteId) {
+            // TODO: We should really just have an integer field on custom plugins for this
+            custom_plugin.filename = 'CustomPatch'+compatibilityNoteId+'.esp';
+            custom_plugin.description = '[Custom Patch for '+compatibilityNoteId+']';
+        }
 
-        // update modules
-        $scope.$broadcast('customPluginAdded');
-        $scope.$broadcast('updateItems');
+        modListService.newModListCustomPlugin(custom_plugin).then(function(data) {
+            // push plugin onto view
+            var modListCustomPlugin = data.mod_list_custom_plugin;
+            $scope.mod_list.custom_plugins.push(modListCustomPlugin);
+            $scope.model.plugins.push(modListCustomPlugin);
+            $scope.originalModList.custom_plugins.push(angular.copy(modListCustomPlugin));
+            $scope.mod_list.plugins_count += 1;
+            $scope.updateTabs();
 
-        // open plugin details for custom plugin
-        $scope.toggleDetailsModal(true, custom_plugin);
+            // update modules
+            $scope.$broadcast('customPluginAdded');
+            $scope.$broadcast('updateItems');
+
+            // open plugin details for custom plugin
+            $scope.toggleDetailsModal(true, modListCustomPlugin);
+        }, function(response) {
+            var params = {label: 'Error adding custom plugin', response: response};
+            $scope.$emit('errorMessage', params);
+        });
     };
 
     $scope.addPlugin = function(pluginId) {
