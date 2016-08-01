@@ -18,6 +18,7 @@ class ModList < ActiveRecord::Base
   # INSTALL ORDER
   has_many :mod_list_mods, :inverse_of => 'mod_list'
   has_many :mods, :through => 'mod_list_mods', :inverse_of => 'mod_lists'
+  has_many :custom_mods, :class_name => 'ModListCustomMod', :inverse_of => 'mod_list'
 
   # LOAD ORDER
   has_many :plugins, :through => 'mods'
@@ -48,6 +49,7 @@ class ModList < ActiveRecord::Base
 
   # NESTED ATTRIBUTES
   accepts_nested_attributes_for :mod_list_mods, allow_destroy: true
+  accepts_nested_attributes_for :custom_mods, allow_destroy: true
   accepts_nested_attributes_for :mod_list_plugins, allow_destroy: true
   accepts_nested_attributes_for :custom_plugins, allow_destroy: true
   accepts_nested_attributes_for :mod_list_groups, allow_destroy: true
