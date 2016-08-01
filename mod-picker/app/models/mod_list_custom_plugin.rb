@@ -3,7 +3,7 @@ class ModListCustomPlugin < ActiveRecord::Base
 
   # Validations
   validates :mod_list_id, :index, :filename, presence: true
-  validates :active, inclusion: [true, false]
+  validates :merged, :cleaned, inclusion: [true, false]
   validates :description, length: {maximum: 4096}
 
   # Callbacks
