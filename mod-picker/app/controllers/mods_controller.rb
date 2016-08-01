@@ -16,7 +16,7 @@ class ModsController < ApplicationController
 
   # POST /mods/search
   def search
-    @mods = Mod.include_hidden(false).include_games(false).filter(search_params).sort({ column: "name", direction: "ASC" }).limit(10)
+    @mods = Mod.include_hidden(false).filter(search_params).sort({ column: "name", direction: "ASC" }).limit(10)
     render :json => @mods
   end
 
@@ -275,7 +275,7 @@ class ModsController < ApplicationController
   def analysis
     authorize! :read, @mod
     render json: {
-        plugins: @mod.plugins,
+        plugins: Plugin.show_json(@mod.plugins),
         assets: @mod.asset_files
     }
   end
@@ -298,9 +298,12 @@ class ModsController < ApplicationController
 
     # Params we allow searching on
     def search_params
-      params[:filters].slice(:search, :game, :utility)
+      unless params[:filters].has_key?(:include_games)
+        params[:filters][:include_games] = false;
+      end
+      params[:filters].slice(:search, :game, :utility, :include_games)
     end
-    
+
     # Params we allow filtering on
     def filtering_params
       # construct valid filters array

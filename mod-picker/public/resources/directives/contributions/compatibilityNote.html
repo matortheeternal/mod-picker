@@ -32,4 +32,17 @@
         <contribution-text target="note"></contribution-text>
         <contribution-actions target="note" ng-if="showActions" index="index" current-user="currentUser" model-name="CompatibilityNote" edit="edit" has-history="true"></contribution-actions>
     </div>
+    <div ng-if="showResolutionOptions" class="resolution-column">
+        <div class="resolution-status">
+            {{note.ignored ? "Ignored" : note.resolved ? "Resolved" : "Unresolved"}}
+        </div>
+        <div class="resolution-options">
+            <span class="action-box green-box single" ng-if="note.compatibility_mod" ng-click="resolve('add mod')" ng-class="{ 'disabled' : note.resolved || note.ignored }">Add {{note.compatibility_mod.name}}</span>
+            <span class="action-box green-box single" ng-if="note.compatibility_plugin" ng-click="resolve('add plugin')" ng-class="{ 'disabled' : note.resolved || note.ignored }">Add {{note.compatibility_plugin.filename}}</span>
+            <span class="action-box green-box single" ng-if="note.status === 'make custom patch'" ng-click="resolve('add custom')" ng-class="{ 'disabled' : note.resolved || note.ignored }">Add Custom Patch Plugin</span>
+            <span class="action-box red-box" ng-click="resolve('remove', 0)" ng-class="{ 'disabled' : note.resolved || note.ignored || !modDataLoaded }" title="{{getTitle()}}">Remove {{note.mods[0].name}}</span>
+            <span class="action-box red-box" ng-click="resolve('remove', 1)" ng-class="{ 'disabled' : note.resolved || note.ignored || !modDataLoaded }" title="{{getTitle()}}">Remove {{note.mods[1].name}}</span>
+            <span class="action-box yellow-box single" ng-click="resolve('ignore')" ng-class="{ 'disabled' : note.resolved }">{{note.ignored ? 'Unignore' : 'Ignore'}} Issue</span>
+        </div>
+    </div>
 </div>

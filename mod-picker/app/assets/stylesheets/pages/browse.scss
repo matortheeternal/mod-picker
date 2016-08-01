@@ -68,6 +68,7 @@
 /* css for search results */
 .right-browse-column {
   max-width: 970px;
+  height: calc(100vh - 428px);
 
   sort-control {
     font-size: 14px;
@@ -82,104 +83,104 @@
       padding-bottom: 5px;
     }
   }
+}
 
-  table {
-    border-collapse: collapse;
-    width: 100%;
-    font-family: 'Arial', sans-serif;
-    font-size: 12px;
-    border: 1px solid $border_color;
+table.browse-table {
+  border-collapse: collapse;
+  width: 100%;
+  font-family: 'Arial', sans-serif;
+  font-size: 12px;
+  border: 1px solid $border_color;
 
-    th {
-      margin: 0;
-      padding: 5px 10px;
-      text-align: left;
-      white-space: nowrap;
-      vertical-align: bottom;
-      cursor: pointer;
-      border-right: 1px solid $border_color;
-      @include user-select(none);
+  th {
+    margin: 0;
+    padding: 5px 10px;
+    text-align: left;
+    white-space: nowrap;
+    vertical-align: bottom;
+    cursor: pointer;
+    border-right: 1px solid $border_color;
+    @include user-select(none);
+  }
+
+  .sorting-options {
+    margin-left: 4px;
+    margin-bottom: 2px;
+    display: inline-block;
+    vertical-align: bottom;
+    div {
+      height: 10px;
     }
-
-    .sorting-options {
-      margin-left: 4px;
-      margin-bottom: 2px;
-      display: inline-block;
-      vertical-align: bottom;
-      div {
-        height: 10px;
-      }
-      i {
-        font-size: 12px;
-        color: $border_color;
-      }
-      div.active i {
-        color: $text_color;
-      }
-    }
-
-    .actions-header {
-      min-width: 60px;
-      text-align: center;
-      cursor: default;
-    }
-
-    td {
-      overflow: visible;
-      padding-left: 10px;
-      white-space: nowrap;
-
-      a {
-        display: block;
-        padding: 7px 0;
-      }
-    }
-
-    .text-cell {
-      min-width: 125px;
-      white-space: normal;
-    }
-
-    .main-cell {
-      min-width: 200px;
-      max-width: 250px;
-      white-space: normal;
-    }
-
-    .actions-cell {
-      text-align: center;
-      padding: 0;
-    }
-
     i {
-      font-size: 16px;
-    }
-
-    input {
       font-size: 12px;
-      padding: 3px;
-      margin: 4px;
+      color: $border_color;
     }
-
-    thead {
-        border: 1px solid $border_color;
-        tr {
-          background-color: $primary_background;
-          border-bottom: 1px solid $border_color;
-          border-top: 1px solid $border_color;
-        }
-
+    div.active i {
+      color: $text_color;
     }
+  }
 
-    tbody tr {
+  .actions-header {
+    min-width: 60px;
+    text-align: center;
+    cursor: default;
+  }
+
+  td {
+    overflow: visible;
+    padding-left: 10px;
+    white-space: nowrap;
+
+    a {
+      display: block;
+      padding: 7px 0;
+    }
+  }
+
+  .text-cell {
+    min-width: 125px;
+    white-space: normal;
+  }
+
+  .main-cell {
+    min-width: 200px;
+    max-width: 250px;
+    white-space: normal;
+  }
+
+  .actions-cell {
+    text-align: center;
+    padding: 0;
+  }
+
+  i {
+    font-size: 16px;
+  }
+
+  input {
+    font-size: 12px;
+    padding: 3px;
+    margin: 4px;
+  }
+
+  thead {
+    border: 1px solid $border_color;
+    tr {
+      background-color: $primary_background;
       border-bottom: 1px solid $border_color;
+      border-top: 1px solid $border_color;
+    }
 
-      &:nth-child(odd) {
-          background-color: $secondary_background;
-      }
-      &:nth-child(even) {
-          background-color: $primary_background;
-      }
+  }
+
+  tbody tr {
+    border-bottom: 1px solid $border_color;
+
+    &:nth-child(odd) {
+      background-color: $secondary_background;
+    }
+    &:nth-child(even) {
+      background-color: $primary_background;
     }
   }
 }

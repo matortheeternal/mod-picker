@@ -24,7 +24,7 @@ class Plugin < ActiveRecord::Base
   has_many :mod_lists, :through => 'mod_list_plugins'
 
   # is a compatibility plugin for
-  has_many :compatibility_note_plugins, :foreign_key => 'compatibility_plugin_id', :inverse_of => 'compatibility_plugin'
+  has_many :compatibility_notes, :foreign_key => 'compatibility_plugin_id', :inverse_of => 'compatibility_plugin'
 
   # load order notes
   has_many :first_load_order_notes, :foreign_key => 'first_plugin_id', :class_name => 'LoadOrderNote', :inverse_of => 'second_plugin'
@@ -75,29 +75,58 @@ class Plugin < ActiveRecord::Base
     ModListPlugin.where(plugin_id: self.id).delete_all
   end
 
+  def self.index_json(collection)
+    collection.as_json({
+        :include => {
+            :masters => {
+                :except => [:plugin_id],
+                :include => {
+                    :master_plugin => {
+                        :only => [:id, :mod_id, :filename]
+                    }
+                }
+            },
+            :mod => {
+                :only => [:id, :name]
+            }
+        }
+    })
+  end
+
+  def self.show_json(collection)
+    collection.as_json({
+        :include => {
+            :masters => {
+                :except => [:plugin_id],
+                :include => {
+                    :master_plugin => {
+                        :only => [:mod_id, :filename]
+                    }
+                }
+            },
+            :dummy_masters => {
+                :except => [:plugin_id]
+            },
+            :overrides => {
+                :except => [:plugin_id]
+            },
+            :plugin_errors => {
+                :except => [:plugin_id]
+            },
+            :plugin_record_groups => {
+                :except => [:plugin_id]
+            }
+        }
+    })
+  end
+
   def as_json(options={})
     if JsonHelpers.json_options_empty(options)
       default_options = {
+          :only => [:mod_id, :id, :filename],
           :include => {
-              :masters => {
-                  :except => [:plugin_id],
-                  :include => {
-                      :master_plugin => {
-                          :only => [:mod_id, :filename]
-                      }
-                  }
-              },
-              :dummy_masters => {
-                  :except => [:plugin_id]
-              },
-              :overrides => {
-                  :except => [:plugin_id]
-              },
-              :plugin_errors => {
-                  :except => [:plugin_id]
-              },
-              :plugin_record_groups => {
-                  :except => [:plugin_id]
+              :mod => {
+                  :only => [:name]
               }
           }
       }

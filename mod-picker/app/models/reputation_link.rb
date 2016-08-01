@@ -1,8 +1,8 @@
 class ReputationLink < ActiveRecord::Base
   self.primary_keys = :from_rep_id, :to_rep_id
 
-  belongs_to :from_rep, :class_name => 'UserReputation', :inverse_of => 'from_links'
-  belongs_to :to_rep, :class_name => 'UserReputation', :inverse_of => 'to_links'
+  belongs_to :target_reputation, :class_name => 'UserReputation', :inverse_of => 'received_reputation'
+  belongs_to :source_reputation, :class_name => 'UserReputation', :inverse_of => 'given_reputation'
 
   # Validations
   validates :from_rep_id, :to_rep_id, presence: true
@@ -13,12 +13,12 @@ class ReputationLink < ActiveRecord::Base
 
   private
     def decrement_counters
-      self.from_rep.update_counter(:rep_to_count, -1)
-      self.to_rep.update_counter(:rep_from_count, -1)
+      self.source_reputation.update_counter(:rep_to_count, -1)
+      self.target_reputation.update_counter(:rep_from_count, -1)
     end
 
     def increment_counters
-      self.from_rep.update_counter(:rep_to_count, 1)
-      self.to_rep.update_counter(:rep_from_count, 1)
+      self.source_reputation.update_counter(:rep_to_count, 1)
+      self.target_reputation.update_counter(:rep_from_count, 1)
     end
 end
