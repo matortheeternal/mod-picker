@@ -49,7 +49,7 @@ class ModListsController < ApplicationController
     authorize! :read, @mod_list
 
     # prepare primary data
-    mods = @mod_list.mod_list_mods.utility(false).includes(:mod => :required_mods).order(:index)
+    mods = @mod_list.mod_list_mods.utility(false).includes(:mod).order(:index)
     groups = @mod_list.mod_list_groups.where(tab: 1).order(:index)
 
     # prepare notes
