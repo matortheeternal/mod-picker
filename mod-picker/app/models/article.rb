@@ -1,7 +1,11 @@
 class Article < ActiveRecord::Base
-  include Imageable, RecordEnhancements
+  include Filterable, Sortable, Imageable, RecordEnhancements
 
   # SCOPES
+  scope :search, -> (search) { where("title like ?", "%#{search}%") }
+  scope :text, -> (search) { where("text_body like ?", "%#{search}%") }
+  scope :submitter, -> (username) { joins(:submitter).where(:users => {:username => username}) }
+  scope :submitted, -> (range) { where(submitted: parseDate(range[:min])..parseDate(range[:max])) }
   scope :game, -> (game_id) {
     # nil game_id means article is site-wide
     game = Game.find(game_id)
@@ -15,6 +19,9 @@ class Article < ActiveRecord::Base
   # ASSOCIATIONS
   belongs_to :submitter, :class_name => 'User', :foreign_key => 'submitted_by', :inverse_of => 'articles'
   has_many :comments, :as => 'commentable'
+
+  # number of users per page on the users index
+  self.per_page = 15
 
   # VALIDATIONS
   validates :submitted_by, :title, :text_body, presence: true
