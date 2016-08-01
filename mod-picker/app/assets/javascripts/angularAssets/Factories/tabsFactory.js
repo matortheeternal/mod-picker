@@ -40,13 +40,13 @@ app.factory("tabsFactory", function() {
     };
 
     this.buildModListTabs = function(modList) {
-        return [
+        var tabs = [
             {
                 name: 'Details'
             },
             {
                 name: 'Tools',
-                count: modList.tools_count || 0
+                count: modList.tools_count
             },
             {
                 name: 'Mods',
@@ -54,17 +54,22 @@ app.factory("tabsFactory", function() {
             },
             {
                 name: 'Plugins',
-                count: modList.plugins_count
+                count: modList.plugins_count + modList.custom_plugins_count
             },
             {
                 name: 'Config',
                 count: modList.config_files_count
-            },
-            {
-                name: 'Comments',
-                count: modList.comments_count
             }
         ];
+
+        if (!modList.disable_comments) {
+            tabs.push({
+                name: 'Comments',
+                count: modList.comments_count
+            });
+        }
+
+        return tabs;
     };
 
     return factory;

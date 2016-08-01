@@ -24,6 +24,9 @@ app.controller('submitModController', function ($scope, backend, modService, scr
     }];
     $scope.customSources = [];
 
+    // inherited functions
+    $scope.searchMods = modService.searchMods;
+
     /* sources */
     $scope.addSource = function() {
         if ($scope.sources.length == $scope.sites.length)

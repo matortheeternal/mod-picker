@@ -227,7 +227,7 @@ app.controller('contributionActionsController', function($scope, $timeout, contr
         $scope.canReport = user || false;
         $scope.canAgree = $scope.agreeable && $scope.isOpen && ((rep > 40) || isAdmin || isModerator);
         $scope.canCorrect = (rep > 40) || isAdmin || isModerator;
-        $scope.canEdit = isAdmin || isModerator || isSubmitter;
+        $scope.canEdit = $scope.edit && (isAdmin || isModerator || isSubmitter);
         $scope.canApprove = $scope.approveable && (isAdmin || isModerator);
         $scope.canHide = isAdmin || isModerator;
     };
