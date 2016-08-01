@@ -27,6 +27,12 @@
 
             <h2>{{ editing ? 'Edit Custom Plugin' : 'Custom Plugin Details' }}</h2>
 
+            <h3 class="section-title" ng-if="detailsModal.item.compatibility_note">
+                <a ng-href="#/mod/{{detailsModal.item.compatibility_note.mods[0].id}}/compatibility/{{detailsModal.item.compatibility_note.id}}">Custom Patch</a> for
+                <a ng-href="#/mod/{{detailsModal.item.compatibility_note.mods[0].id}}">{{detailsModal.item.compatibility_note.mods[0].name}}</a> and
+                <a ng-href="#/mod/{{detailsModal.item.compatibility_note.mods[1].id}}">{{detailsModal.item.compatibility_note.mods[1].name}}</a>
+            </h3>
+
             <h3 class="section-title">Filename</h3>
             <section>
                 <input type="text" ng-model="detailsModal.item.filename" ng-click="focusText($event)" spellcheck="false" ng-disabled="!editing">
