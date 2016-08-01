@@ -15,6 +15,6 @@ class ModListCustomPluginsController < ApplicationController
 
   private
     def mod_list_custom_plugin_params
-      params.require(:mod_list_custom_plugin).permit(:mod_list_id, :group_id, :index, :filename, :description)
+      params.require(:mod_list_custom_plugin).permit(:mod_list_id, :group_id, :index, :compatibility_note_id, :filename, :description)
     end
 end
