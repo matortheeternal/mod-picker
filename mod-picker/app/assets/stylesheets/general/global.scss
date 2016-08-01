@@ -589,21 +589,26 @@ select {
   background-repeat: no-repeat;
 }
 
-.big-text-area {
-  width: 100%;
-  height: 300px;
-  max-width: 100%;
-  overflow-y: auto;
-}
-
-.small-text-area {
+.big-text-area, .medium-text-area, .small-text-area {
   width: 100%;
   max-width: 100%;
-  height: 60px;
   overflow-y: auto;
   padding: 4px;
   font-size: 16px;
   font-family: inherit;
+}
+
+.big-text-area {
+  height: 300px;
+}
+
+.medium-text-area {
+  width: 500px;
+  height: 150px;
+}
+
+.small-text-area {
+  height: 60px;
 }
 
 input, textarea {
