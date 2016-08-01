@@ -65,7 +65,7 @@ app.controller('pluginLoadOrderIssuesController', function($scope, listUtils) {
                 break;
             case "ignore":
                 options.note.ignored = !options.note.ignored;
-                // TODO: Update $scope.mod_list.ignored_notes
+                $scope.ignoreNote('CompatibilityNote', options.note);
                 $scope.buildUnresolvedLoadOrder();
                 break;
         }
