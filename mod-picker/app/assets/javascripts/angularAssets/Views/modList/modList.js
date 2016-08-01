@@ -294,6 +294,16 @@ app.controller('modListController', function($scope, $q, $stateParams, $timeout,
         return foundPlugin;
     };
 
+    $scope.findIgnoredNote = function(note_type, note_id, ignoreDestroyed) {
+        var foundIgnoredNote = $scope.mod_list.ignored_notes.find(function(ignoredNote) {
+            return ignoredNote.note_type === note_type && ignoredNote.note_id == note_id;
+        });
+        if (foundIgnoredNote && ignoreDestroyed && foundIgnoredNote._destroy) {
+            return;
+        }
+         return foundIgnoredNote;
+    };
+
     $scope.addGroup = function(tab) {
         var model = $scope.model[tab];
         var newGroup = {
