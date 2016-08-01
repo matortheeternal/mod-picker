@@ -298,9 +298,7 @@ app.controller('modListController', function($scope, $q, $stateParams, $timeout,
         if (!$scope.model.plugins) {
             return false;
         }
-        var foundPlugin = $scope.model.plugins.find(function(plugin) {
-            return plugin.compatibility_note_id == noteId;
-        });
+        var foundPlugin = listUtils.findCustomPlugin($scope.model.plugins, noteId);
         if (foundPlugin && ignoreDestroyed && foundPlugin._destroy) {
             return;
         }
