@@ -36,7 +36,7 @@ class ModList < ActiveRecord::Base
 
   # CONFIG FILES
   has_many :mod_list_config_files, :inverse_of => 'mod_list'
-  has_many :mod_list_custom_config_files, :inverse_of => 'mod_list'
+  has_many :custom_config_files, :class_name => 'ModListCustomConfigFile', :inverse_of => 'mod_list'
 
   # TAGS
   has_many :mod_list_tags, :inverse_of => 'mod_list'
@@ -52,8 +52,8 @@ class ModList < ActiveRecord::Base
   accepts_nested_attributes_for :custom_plugins, allow_destroy: true
   accepts_nested_attributes_for :mod_list_groups, allow_destroy: true
   accepts_nested_attributes_for :mod_list_config_files, allow_destroy: true
-  accepts_nested_attributes_for :mod_list_custom_config_files, allow_destroy: true
-  accepts_nested_attributes_for :mod_list_ignored_notes, allow_destroy: true
+  accepts_nested_attributes_for :custom_config_files, allow_destroy: true
+  accepts_nested_attributes_for :ignored_notes, allow_destroy: true
 
   # Validations
   validates :game_id, :submitted_by, :name, presence: true

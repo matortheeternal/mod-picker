@@ -262,8 +262,8 @@ class ModListsController < ApplicationController
               :children => [:id]
           ],
           :mod_list_config_files_attributes => [:id, :config_file_id, :text_body, :_destroy],
-          :mod_list_custom_config_files => [:id, :filename, :install_path, :text_body, :_destroy],
-          :mod_list_ignored_notes => [:id, :note_id, :note_type, :_destroy]
+          :custom_config_files_attributes => [:id, :filename, :install_path, :text_body, :_destroy],
+          :ignored_notes_attributes => [:id, :note_id, :note_type, :_destroy]
       )
     end
 end
