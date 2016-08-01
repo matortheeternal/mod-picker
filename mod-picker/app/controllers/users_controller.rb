@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  before_action :set_user, only: [:show, :comments, :update, :destroy]
+  before_action :set_user, only: [:show, :comments, :endorse, :unendorse, :update, :destroy]
 
   # GET /users
   def index
@@ -89,7 +89,7 @@ class UsersController < ApplicationController
 
   # POST /users/1/rep
   def endorse
-    @reputation_link = ReputationLink.find_or_initialize_by(from_rep_id: current_user.id, to_rep_id: params[:id])
+    @reputation_link = ReputationLink.find_or_initialize_by(from_rep_id: current_user.reputation.id, to_rep_id: @user.reputation.id)
     authorize! :create, @reputation_link
     if @reputation_link.save
       render json: {status: :ok}
@@ -100,7 +100,7 @@ class UsersController < ApplicationController
 
   # DELETE /users/1/rep
   def unendorse
-    @reputation_link = ReputationLink.find_by(from_rep_id: current_user.id, to_rep_id: params[:id])
+    @reputation_link = ReputationLink.find_by(from_rep_id: current_user.reputation.id, to_rep_id: @user.reputation.id)
     if @reputation_link.nil?
       render json: {status: :ok}
     else
