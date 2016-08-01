@@ -1,10 +1,14 @@
-app.controller('modInstallOrderController', function($scope, $stateParams, $state, contributionService, contributionFactory, sortFactory) {
+app.controller('modInstallOrderController', function($scope, $stateParams, $state, contributionService, modService, contributionFactory, sortFactory) {
     $scope.sort.install_order_notes = {
         column: $stateParams.scol,
         direction: $stateParams.sdir
     };
     $scope.filters.install_order_notes = $stateParams.filter;
 
+    // inherited functions
+    $scope.searchMods = modService.searchMods;
+
+    // functions
     $scope.retrieveInstallOrderNotes = function(page) {
         // retrieve the Install Order Notes
         var options = {

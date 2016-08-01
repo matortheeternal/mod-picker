@@ -1,0 +1,19 @@
+actions {
+  // dropdown handling
+  .action-container {
+    position: relative;
+
+    .action-box {
+      vertical-align: middle;
+    }
+
+    .icon-box {
+      padding: 3px 6px;
+    }
+
+    .dropdown {
+      left: initial;
+      right: 0;
+    }
+  }
+}

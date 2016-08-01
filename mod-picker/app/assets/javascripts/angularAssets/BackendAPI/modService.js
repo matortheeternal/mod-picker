@@ -1,4 +1,6 @@
 app.service('modService', function(backend, $q, categoryService, errorsFactory, pageUtils, objectUtils) {
+    var service = this;
+
     this.retrieveMods = function(options, pageInformation) {
         var action = $q.defer();
         backend.post('/mods/index', options).then(function (data) {
@@ -19,6 +21,26 @@ app.service('modService', function(backend, $q, categoryService, errorsFactory, 
         if (angular.isDefined(utility)) {
             postData.filters.utility = utility;
         }
+        return backend.post('/mods/search', postData);
+    };
+
+    this.searchModListMods = function(name) {
+        var postData =  {
+            filters: {
+                search: name,
+                include_games: true
+            }
+        };
+        return backend.post('/mods/search', postData);
+    };
+
+    this.searchModListTools = function() {
+        var postData =  {
+            filters: {
+                search: name,
+                utility: true
+            }
+        };
         return backend.post('/mods/search', postData);
     };
     

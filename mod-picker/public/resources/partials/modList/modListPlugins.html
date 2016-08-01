@@ -1,0 +1,44 @@
+<loader data="mod_list.plugins && pluginsReady" spinner-class="big-spinner">
+    <div class="tab-bar-items">
+        <div class="tab-bar-item primary-item">
+            <span><strong>{{notes.unresolved_plugin_compatibility.length + notes.unresolved_load_order.length}}</strong> Unresolved Issues</span>
+            <span><strong>{{notes.ignored_plugin_compatibility.length + notes.ignored_load_order.length}}</strong> Ignored Issues</span>
+            <span><strong>{{required.missing_plugins.length}}</strong> Missing Requirements</span>
+        </div>
+
+        <div class="tab-bar-item" ng-if="editing">
+            <strong>Add a plugin:</strong>
+            <search-input search-function="searchPluginStore" result-id="add.plugin.id" search-text="add.plugin.name" on-change="addPlugin(add.plugin.id)" label="plugin" key="filename"></search-input>
+        </div>
+    </div>
+
+    <div class="content-block">
+        <div class="content-title">Plugins
+            <span class="right-item action-box" ng-if="editing" ng-click="addCustomPlugin()">
+                <i class="fa fa-plus"></i> Add Custom Plugin
+            </span>
+            <span class="right-item action-box" ng-if="editing" ng-click="addGroup('plugins')">
+                <i class="fa fa-plus"></i> Add Group
+            </span>
+            <span class="right-item toggle-item" ng-click="toggleLoadOrder()">
+                Show {{showLoadOrder ? 'Decimal Indexes' : 'Hex Load Order'}}
+            </span>
+        </div>
+        <div class="content-container overflow-hack">
+            <table-items type="plugin" label="plugins" columns="columns" column-groups="columnGroups" actions="actions" model="model.plugins" editing="editing"></table-items>
+        </div>
+    </div>
+
+    <plugin-details-modal></plugin-details-modal>
+</loader>
+
+<required-plugins></required-plugins>
+
+<plugin-compatibility-issues></plugin-compatibility-issues>
+
+<plugin-load-order-issues></plugin-load-order-issues>
+
+<div class="action-button-container" ng-if="editing">
+    <input class="btn action-btn" type="submit" value="Save" ng-click="saveChanges()"/>
+    <input class="btn action-btn" type="button" value="Reset" ng-click="discardChanges()"/>
+</div>

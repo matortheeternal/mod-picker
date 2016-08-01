@@ -77,4 +77,12 @@ app.service('categoryService', function ($q, backend) {
             }
         });
     };
+
+    this.associateCategories = function(data) {
+        data.forEach(function(item) {
+            if (item.mod) {
+                service.resolveModCategories(item.mod);
+            }
+        });
+    }
 });

@@ -1,10 +1,14 @@
-app.controller('modLoadOrderController', function($scope, $state, $stateParams, contributionService, contributionFactory, sortFactory) {
+app.controller('modLoadOrderController', function($scope, $state, $stateParams, pluginService, contributionService, contributionFactory, sortFactory) {
     $scope.sort.load_order_notes = {
         column: $stateParams.scol,
         direction: $stateParams.sdir
     };
     $scope.filters.load_order_notes = $stateParams.filter;
 
+    // inherited functions
+    $scope.searchPlugins = pluginService.searchPlugins;
+
+    // functions
     $scope.retrieveLoadOrderNotes = function(page) {
         // retrieve the Load Order Notes
         var options = {
