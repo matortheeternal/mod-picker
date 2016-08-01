@@ -202,7 +202,7 @@ app.controller('modController', function($scope, $q, $stateParams, $state, $time
             //if changing to a tab that isn't in tabs[]
             if (!$scope.tabIsPresent($scope.currentTab())) {
                 //if not changing to the appeals state
-                if (toState.name.substring(9) !== "appeals") {
+                if (toStateNameArray[2] !== "appeals") {
                     $scope.redirectToFirstTab();
                 }
             }
