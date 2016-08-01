@@ -800,15 +800,12 @@ app.factory("filtersFactory", function() {
 
     this.articleSearchFilters = function() {
         return [
+            factory.searchFilter,
             {
                 data: "text",
-                param: "tx"
+                param: "t"
             },
-            {
-                data: "title",
-                param: "tt"
-            },
-            factory.submitterFilter,
+            factory.submitterFilter
         ];
     };
 
