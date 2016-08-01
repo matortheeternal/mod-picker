@@ -1899,7 +1899,7 @@ def seed_official_content
       tag_names: ["Solstheim", "Apocrypha", "Hermaeus Mora", "Shouts", "Stahlrim", "Nordic", "Bonemold", "Chitin"]
   )
   # Create plugins
-  create_plugin(modDragonborn, "Dawnguard.esm.json")
+  create_plugin(modDragonborn, "Dragonborn.esm.json")
   modDragonborn.update_lazy_counters
 
   modHighRes = Mod.create!(

@@ -1,9 +1,13 @@
-app.controller('modReviewsController', function($scope, $stateParams, $state, modService, reviewSectionService, contributionService, sortFactory) {
+app.controller('modReviewsController', function($scope, $stateParams, $state, modService, reviewSectionService, contributionService, sortFactory, formUtils) {
     $scope.sort.reviews = {
         column: $stateParams.scol,
         direction: $stateParams.sdir
     };
 
+    // inherited functions
+    $scope.focusText = formUtils.focusText;
+
+    // BASE RETRIEVAL LOGIC
     $scope.retrieveReviews = function(page) {
         // retrieve the reviews
         var options = {
@@ -182,11 +186,6 @@ app.controller('modReviewsController', function($scope, $stateParams, $state, mo
         } else {
             delete $scope.activeReview;
         }
-    };
-
-    // focus text in rating input
-    $scope.focusText = function($event) {
-        $event.target.select();
     };
 
     // update a review locally

@@ -14,7 +14,7 @@ class ModListCustomPlugin < ActiveRecord::Base
     if JsonHelpers.json_options_empty(options)
       # TODO: Revise this as necessary
       default_options = {
-          :only => [:index, :group_id, :filename, :active, :description]
+          :only => [:id, :index, :group_id, :filename, :description]
       }
       super(options.merge(default_options))
     else
