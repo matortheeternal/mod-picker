@@ -85,7 +85,7 @@ app.controller('modListPluginsController', function($scope, $q, $timeout, modLis
             $scope.updateTabs();
 
             // upudate modules
-            $scope.$broadcast('pluginRecovered', modListPlugin.plugin.id);
+            $scope.$broadcast('pluginRecovered', !!modListPlugin.plugin && modListPlugin.plugin.id);
             $scope.$broadcast('updateItems');
 
             // success message
@@ -187,9 +187,7 @@ app.controller('modListPluginsController', function($scope, $q, $timeout, modLis
         $scope.updateTabs();
 
         // update modules
-        if (modListPlugin.hasOwnProperty('plugin')) {
-            $scope.$broadcast('pluginRemoved', modListPlugin.plugin.id);
-        }
+        $scope.$broadcast('pluginRemoved', !!modListPlugin.plugin && modListPlugin.plugin.id);
         $scope.$broadcast('updateItems');
     };
 

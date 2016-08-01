@@ -81,12 +81,16 @@ app.controller('pluginLoadOrderIssuesController', function($scope, listUtils) {
         listUtils.removeDestroyed($scope.notes.load_order);
         $scope.buildUnresolvedLoadOrder();
     });
-    $scope.$on('pluginRemoved', function(pluginId) {
-        $scope.removeLoadOrderNotes(pluginId);
+    $scope.$on('pluginRemoved', function(event, pluginId) {
+        if (pluginId) {
+            $scope.removeLoadOrderNotes(pluginId);
+        }
         $scope.buildUnresolvedLoadOrder();
     });
-    $scope.$on('pluginRecovered', function(pluginId) {
-        $scope.recoverLoadOrderNotes(pluginId);
+    $scope.$on('pluginRecovered', function(event, pluginId) {
+        if (pluginId) {
+            $scope.recoverLoadOrderNotes(pluginId);
+        }
         $scope.buildUnresolvedLoadOrder();
     });
     $scope.$on('pluginAdded', $scope.buildUnresolvedLoadOrder);
