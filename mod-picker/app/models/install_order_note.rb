@@ -26,6 +26,7 @@ class InstallOrderNote < ActiveRecord::Base
   # mod lists this install order note appears on
   has_many :mod_list_install_order_notes, :inverse_of => 'install_order_note'
   has_many :mod_lists, :through => 'mod_list_install_order_notes', :inverse_of => 'install_order_notes'
+  has_many :mod_list_ignored_notes, :as => 'note'
 
   # old versions of this install order note
   has_many :history_entries, :class_name => 'InstallOrderNoteHistoryEntry', :inverse_of => 'install_order_note', :foreign_key => 'install_order_note_id'

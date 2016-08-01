@@ -50,6 +50,7 @@ class CompatibilityNote < ActiveRecord::Base
   # mod lists this compatibility note appears on
   has_many :mod_list_compatibility_notes, :inverse_of => 'compatibility_note'
   has_many :mod_lists, :through => 'mod_list_compatibility_notes', :inverse_of => 'compatibility_notes'
+  has_many :mod_list_ignored_notes, :as => 'note'
 
   # old versions of this compatibility note
   has_many :history_entries, :class_name => 'CompatibilityNoteHistoryEntry', :inverse_of => 'compatibility_note', :foreign_key => 'compatibility_note_id'

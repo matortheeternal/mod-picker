@@ -31,6 +31,7 @@ class LoadOrderNote < ActiveRecord::Base
   # mod lists this load order note appears on
   has_many :mod_list_installation_notes, :inverse_of => 'load_order_note'
   has_many :mod_lists, :through => 'mod_list_load_order_notes', :inverse_of => 'load_order_notes'
+  has_many :mod_list_ignored_notes, :as => 'note'
 
   # old versions of this load order note
   has_many :history_entries, :class_name => 'LoadOrderNoteHistoryEntry', :inverse_of => 'load_order_note', :foreign_key => 'load_order_note_id'
