@@ -174,13 +174,6 @@ app.controller('modController', function($scope, $q, $stateParams, $state, $time
         $state.go('base.mod.' + tab.name, tab.params, { location: 'replace' });
     };
 
-    $scope.tabIsPresent = function(tabName) {
-        var tabIndex = $scope.tabs.findIndex(function(tab) {
-            return tabName === tab.name;
-        });
-        return (tabIndex !== -1);
-    };
-
     $scope.findTab = function(tabName) {
         var tabIndex = $scope.tabs.findIndex(function(tab) {
             return tabName === tab.name;
@@ -191,7 +184,7 @@ app.controller('modController', function($scope, $q, $stateParams, $state, $time
     $scope.currentTab = function() {
         var currentState = $state.current.name;
         var currentStateArray = currentState.split(".");
-        return currentStateArray[currentStateArray.length - 1];
+        return $scope.findTab(currentStateArray[2]);
     };
 
     //redirect to the first tab if changing to a non-present tab
@@ -199,8 +192,8 @@ app.controller('modController', function($scope, $q, $stateParams, $state, $time
         //if changing to the mod state
         toStateNameArray = toState.name.split(".");
         if (toStateNameArray[1] === "mod") {
-            //if changing to a tab that isn't in tabs[]
-            if (!$scope.tabIsPresent($scope.currentTab())) {
+            //if changing to a state that isn't a valid tab
+            if (!$scope.currentTab()) {
                 //if not changing to the appeals state
                 if (toStateNameArray[2] !== "appeals") {
                     $scope.redirectToFirstTab();
