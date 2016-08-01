@@ -1,4 +1,10 @@
 class ModListCustomMod < ActiveRecord::Base
+  include RecordEnhancements
+
+  # Scopes
+  scope :utility, -> (bool) { where(is_utility: bool) }
+
+  # Associations
   belongs_to :mod_list, :inverse_of => 'custom_mods'
 
   # Validations
