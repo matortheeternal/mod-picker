@@ -56,12 +56,7 @@ app.service('modListService', function (backend, $q, objectUtils, userTitleServi
     };
 
     this.updateModList = function(modList) {
-        var mod_list_mods = angular.copy(Array.prototype.concat(modList.tools || [], modList.mods || []));
-        mod_list_mods.forEach(function(item) {
-            if (item.mod) {
-                delete item.mod;
-            }
-        });
+        // Mod List Groups
         var mod_list_groups = angular.copy(modList.groups || []);
         mod_list_groups.forEach(function(group) {
             if (group.id && group.children) {
@@ -74,6 +69,17 @@ app.service('modListService', function (backend, $q, objectUtils, userTitleServi
                 group.children = newChildren;
             }
         });
+
+        // Mod List Mods
+        var mod_list_mods = angular.copy(Array.prototype.concat(modList.tools || [], modList.mods || []));
+        mod_list_mods.forEach(function(item) {
+            if (item.mod) {
+                delete item.mod;
+            }
+        });
+        var custom_mods = angular.copy(Array.prototype.concat(modList.custom_tools || [], modList.custom_mods || []));
+
+        // Mod List Plugins
         var mod_list_plugins = angular.copy(modList.plugins || []);
         mod_list_plugins.forEach(function(item) {
             if (item.mod) {
@@ -103,6 +109,7 @@ app.service('modListService', function (backend, $q, objectUtils, userTitleServi
                 hidden: modList.hidden,
                 mod_list_groups_attributes: mod_list_groups,
                 mod_list_mods_attributes: mod_list_mods,
+                custom_mods_attributes: custom_mods,
                 mod_list_plugins_attributes: mod_list_plugins,
                 custom_plugins_attributes: custom_plugins,
                 ignored_notes_attributes: modList.ignored_notes
