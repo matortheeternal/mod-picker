@@ -1,4 +1,6 @@
 app.service('modListService', function (backend, $q, objectUtils, userTitleService, contributionService, categoryService) {
+    var service = this;
+
     this.retrieveModList = function(modListId) {
         return backend.retrieve('/mod_lists/' + modListId);
     };
@@ -40,6 +42,7 @@ app.service('modListService', function (backend, $q, objectUtils, userTitleServi
     this.retrieveModListPlugins = function(modListId) {
         var action = $q.defer();
         backend.retrieve('/mod_lists/' + modListId + '/plugins').then(function(data) {
+            service.associateCompatibilityNotes(data.custom_plugins, data.plugin_compatibility_notes);
             categoryService.associateCategories(data.plugins);
             userTitleService.associateTitles(data.compatibility_notes);
             userTitleService.associateTitles(data.load_order_notes);
@@ -140,5 +143,22 @@ app.service('modListService', function (backend, $q, objectUtils, userTitleServi
 
     this.deleteModList = function(modlist) {
         return backend.delete('/mod_lists/' + modlist.id);
+    };
+
+    this.associateCompatibilityNote = function(customPlugin, compatibilityNotes) {
+        if (customPlugin.compatibility_note_id) {
+            var note = compatibilityNotes.find(function(compatibilityNote) {
+                return compatibilityNote.id == customPlugin.compatibility_note_id;
+            });
+            if (note) {
+                customPlugin.compatibility_note = note;
+            }
+        }
+    };
+
+    this.associateCompatibilityNotes = function(customPlugins, compatibilityNotes) {
+        customPlugins.forEach(function(customPlugin) {
+            service.associateCompatibilityNote(customPlugin, compatibilityNotes);
+        });
     };
 });
