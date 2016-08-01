@@ -159,21 +159,24 @@ class ModList < ActiveRecord::Base
     self.as_json({
         :except => [:submitted_by],
         :include => {
-           :submitter => {
-               :only => [:id, :username, :role, :title],
-               :include => {
-                   :reputation => {:only => [:overall]}
-               },
-               :methods => :avatar
-           },
-           :tags => {
-               :except => [:game_id, :hidden, :mods_count],
-               :include => {
-                   :submitter => {
-                       :only => [:id, :username]
-                   }
-               }
-           }
+            :submitter => {
+                :only => [:id, :username, :role, :title],
+                :include => {
+                    :reputation => {:only => [:overall]}
+                },
+                :methods => :avatar
+            },
+            :tags => {
+                :except => [:game_id, :hidden, :mods_count],
+                :include => {
+                    :submitter => {
+                        :only => [:id, :username]
+                    }
+                }
+            },
+            :ignored_notes => {
+                :except => [:mod_list_id]
+            }
         }
     })
   end
