@@ -13,12 +13,12 @@ class ReputationLink < ActiveRecord::Base
 
   private
     def decrement_counters
-      self.from_rep.update_counter(:rep_to_count, -1)
-      self.to_rep.update_counter(:rep_from_count, -1)
+      self.source_reputation.update_counter(:rep_to_count, -1)
+      self.target_reputation.update_counter(:rep_from_count, -1)
     end
 
     def increment_counters
-      self.from_rep.update_counter(:rep_to_count, 1)
-      self.to_rep.update_counter(:rep_from_count, 1)
+      self.source_reputation.update_counter(:rep_to_count, 1)
+      self.target_reputation.update_counter(:rep_from_count, 1)
     end
 end
