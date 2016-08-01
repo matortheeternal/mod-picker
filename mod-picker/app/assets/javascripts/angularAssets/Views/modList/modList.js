@@ -304,6 +304,12 @@ app.controller('modListController', function($scope, $q, $stateParams, $timeout,
          return foundIgnoredNote;
     };
 
+    $scope.associateIgnore = function(notes, note_type) {
+        notes.forEach(function(note) {
+            note.ignored = !!$scope.findIgnoredNote(note_type, note.id, true);
+        });
+    };
+
     $scope.addGroup = function(tab) {
         var model = $scope.model[tab];
         var newGroup = {
