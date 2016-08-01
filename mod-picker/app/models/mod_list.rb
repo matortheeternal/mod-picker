@@ -25,7 +25,7 @@ class ModList < ActiveRecord::Base
   has_many :custom_plugins, :class_name => 'ModListCustomPlugin', :inverse_of => 'mod_list'
 
   # IGNORED NOTES
-  has_many :mod_list_ignored_notes, :inverse_of => 'mod_list'
+  has_many :ignored_notes, :class_name => 'ModListIgnoredNote', :inverse_of => 'mod_list'
 
   # GROUPS
   # NOTE: This association has to be after the mods_list_mods, mod_list_plugins,

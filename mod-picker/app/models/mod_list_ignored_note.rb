@@ -1,5 +1,5 @@
 class ModListIgnoredNote < ActiveRecord::Base
-  belongs_to :mod_list, :inverse_of => 'mod_list_ignored_notes'
+  belongs_to :mod_list, :inverse_of => 'ignored_notes'
   belongs_to :note, :polymorphic => true
 
   # Validations
