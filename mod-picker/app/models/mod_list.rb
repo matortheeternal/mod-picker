@@ -18,6 +18,7 @@ class ModList < ActiveRecord::Base
   # INSTALL ORDER
   has_many :mod_list_mods, :inverse_of => 'mod_list'
   has_many :mods, :through => 'mod_list_mods', :inverse_of => 'mod_lists'
+  has_many :custom_mods, :class_name => 'ModListCustomMod', :inverse_of => 'mod_list'
 
   # LOAD ORDER
   has_many :plugins, :through => 'mods'
@@ -48,6 +49,7 @@ class ModList < ActiveRecord::Base
 
   # NESTED ATTRIBUTES
   accepts_nested_attributes_for :mod_list_mods, allow_destroy: true
+  accepts_nested_attributes_for :custom_mods, allow_destroy: true
   accepts_nested_attributes_for :mod_list_plugins, allow_destroy: true
   accepts_nested_attributes_for :custom_plugins, allow_destroy: true
   accepts_nested_attributes_for :mod_list_groups, allow_destroy: true
@@ -79,10 +81,9 @@ class ModList < ActiveRecord::Base
   end
 
   def update_lazy_counters
-    mod_ids = self.mods.ids
-    self.plugins_count = Plugin.where(mod_id: mod_ids).count
-    self.active_plugins_count = self.mod_list_plugins.count
-    self.save_counters([:plugins_count, :active_plugins_count])
+    mod_ids = self.mod_list_mod_ids
+    self.available_plugins_count = Plugin.where(mod_id: mod_ids).count
+    self.save_counters([:available_plugins_count])
   end
 
   def mod_list_mod_ids
