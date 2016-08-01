@@ -818,6 +818,7 @@ app.factory("filtersFactory", function() {
         }];
     };
 
+    // TODO: Article Game Filters
     this.articleFilters = function() {
         return Array.prototype.concat(
             factory.articleSearchFilters(),
