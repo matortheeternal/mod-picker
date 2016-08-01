@@ -60,6 +60,8 @@ app.controller('modListPluginsController', function($scope, $q, $timeout, modLis
             $scope.originalModList.plugins = angular.copy($scope.mod_list.plugins);
             $scope.originalModList.custom_plugins = angular.copy($scope.mod_list.custom_plugins);
             $scope.originalModList.groups = angular.copy($scope.mod_list.groups);
+            $scope.associateIgnore($scope.notes.plugin_compatibility, 'CompatibilityNote');
+            $scope.associateIgnore($scope.notes.load_order, 'LoadOrderNote');
             $scope.buildPluginsModel();
             $timeout(function() {
                 $scope.$broadcast('initializeModules');

@@ -38,6 +38,8 @@ app.controller('modListModsController', function($scope, $rootScope, $timeout, m
             $scope.mod_list.groups = Array.prototype.concat($scope.mod_list.groups || [], data.groups);
             $scope.originalModList.mods = angular.copy($scope.mod_list.mods);
             $scope.originalModList.groups = angular.copy($scope.mod_list.groups);
+            $scope.associateIgnore($scope.notes.compatibility, 'CompatibilityNote');
+            $scope.associateIgnore($scope.notes.install_order, 'InstallOrderNote');
             $scope.buildModsModel();
             $timeout(function() {
                 $scope.$broadcast('initializeModules');
