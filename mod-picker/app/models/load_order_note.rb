@@ -123,7 +123,6 @@ class LoadOrderNote < ActiveRecord::Base
     end
 
     def increment_counters
-      byebug
       self.first_mod.update_counter(:load_order_notes_count, 1)
       self.second_mod.update_counter(:load_order_notes_count, 1)
       self.submitter.update_counter(:load_order_notes_count, 1)
