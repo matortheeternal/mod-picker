@@ -24,6 +24,9 @@ class ModList < ActiveRecord::Base
   has_many :mod_list_plugins, :inverse_of => 'mod_list'
   has_many :custom_plugins, :class_name => 'ModListCustomPlugin', :inverse_of => 'mod_list'
 
+  # IGNORED NOTES
+  has_many :mod_list_ignored_notes, :inverse_of => 'mod_list'
+
   # GROUPS
   # NOTE: This association has to be after the mods_list_mods, mod_list_plugins,
   # and custom_plugins associations in order to yield correct behavior with
@@ -50,6 +53,7 @@ class ModList < ActiveRecord::Base
   accepts_nested_attributes_for :mod_list_groups, allow_destroy: true
   accepts_nested_attributes_for :mod_list_config_files, allow_destroy: true
   accepts_nested_attributes_for :mod_list_custom_config_files, allow_destroy: true
+  accepts_nested_attributes_for :mod_list_ignored_notes, allow_destroy: true
 
   # Validations
   validates :game_id, :submitted_by, :name, presence: true
