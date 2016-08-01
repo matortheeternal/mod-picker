@@ -135,14 +135,14 @@ app.controller('modListPluginsController', function($scope, $q, $timeout, modLis
         };
 
         if (compatibilityNoteId) {
-            // TODO: We should really just have an integer field on custom plugins for this
             custom_plugin.filename = 'CustomPatch'+compatibilityNoteId+'.esp';
-            custom_plugin.description = '[Custom Patch for '+compatibilityNoteId+']';
+            custom_plugin.compatibility_note_id = compatibilityNoteId;
         }
 
         modListService.newModListCustomPlugin(custom_plugin).then(function(data) {
             // push plugin onto view
             var modListCustomPlugin = data.mod_list_custom_plugin;
+            modListService.associateCompatibilityNote(modListCustomPlugin, $scope.mod_list.plugin_compatibility);
             $scope.mod_list.custom_plugins.push(modListCustomPlugin);
             $scope.model.plugins.push(modListCustomPlugin);
             $scope.originalModList.custom_plugins.push(angular.copy(modListCustomPlugin));
