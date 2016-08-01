@@ -107,8 +107,10 @@ app.controller('modListPluginsController', function($scope, $q, $timeout, modLis
 
         modListService.newModListPlugin(mod_list_plugin).then(function(data) {
             // push plugin onto view
-            $scope.mod_list.plugins.push(data.mod_list_plugin);
-            $scope.model.plugins.push(data.mod_list_plugin);
+            var modListPlugin = data.mod_list_plugin;
+            $scope.mod_list.plugins.push(modListPlugin);
+            $scope.model.plugins.push(modListPlugin);
+            $scope.originalModList.plugins.push(angular.copy(modListPlugin));
             $scope.mod_list.plugins_count += 1;
             $scope.updateTabs();
 
@@ -139,9 +141,10 @@ app.controller('modListPluginsController', function($scope, $q, $timeout, modLis
 
         modListService.newModListCustomPlugin(custom_plugin).then(function(data) {
             // push plugin onto view
-            var custom_plugin = data.mod_list_custom_plugin;
-            $scope.mod_list.custom_plugins.push(custom_plugin);
-            $scope.model.plugins.push(custom_plugin);
+            var modListCustomPlugin = data.mod_list_custom_plugin;
+            $scope.mod_list.custom_plugins.push(modListCustomPlugin);
+            $scope.model.plugins.push(modListCustomPlugin);
+            $scope.originalModList.custom_plugins.push(angular.copy(modListCustomPlugin));
             $scope.mod_list.plugins_count += 1;
             $scope.updateTabs();
 
@@ -150,7 +153,7 @@ app.controller('modListPluginsController', function($scope, $q, $timeout, modLis
             $scope.$broadcast('updateItems');
 
             // open plugin details for custom plugin
-            $scope.toggleDetailsModal(true, custom_plugin);
+            $scope.toggleDetailsModal(true, modListCustomPlugin);
         }, function(response) {
             var params = {label: 'Error adding custom plugin', response: response};
             $scope.$emit('errorMessage', params);

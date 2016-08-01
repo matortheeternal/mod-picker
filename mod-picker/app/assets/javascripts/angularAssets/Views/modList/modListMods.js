@@ -84,8 +84,10 @@ app.controller('modListModsController', function($scope, $rootScope, $timeout, m
 
         modListService.newModListMod(mod_list_mod).then(function(data) {
             // push mod onto view
-            $scope.mod_list.mods.push(data.mod_list_mod);
-            $scope.model.mods.push(data.mod_list_mod);
+            var modListMod = data.mod_list_mod;
+            $scope.mod_list.mods.push(modListMod);
+            $scope.model.mods.push(modListMod);
+            $scope.originalModList.mods.push(angular.copy(modListMod));
             $scope.mod_list.mods_count += 1;
             $scope.updateTabs();
 
@@ -94,7 +96,7 @@ app.controller('modListModsController', function($scope, $rootScope, $timeout, m
             $scope.$broadcast('updateItems');
 
             // success message
-            $scope.$emit('successMessage', 'Added mod ' + data.mod_list_mod.mod.name + ' successfully.');
+            $scope.$emit('successMessage', 'Added mod ' + modListMod.mod.name + ' successfully.');
         }, function(response) {
             var params = {label: 'Error adding mod', response: response};
             $scope.$emit('errorMessage', params);
