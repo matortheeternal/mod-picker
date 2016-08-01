@@ -122,6 +122,10 @@ app.service('modListService', function (backend, $q, objectUtils, userTitleServi
         return action.promise;
     };
 
+    this.newModListCustomMod = function(custom_mod) {
+        return backend.post('/mod_list_custom_mods', {mod_list_custom_mod: custom_mod});
+    };
+
     this.newModListPlugin = function(mod_list_plugin) {
         return backend.post('/mod_list_plugins', {mod_list_plugin: mod_list_plugin});
     };
