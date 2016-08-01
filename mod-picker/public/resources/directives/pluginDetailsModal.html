@@ -1,28 +1,28 @@
-<div class="modal-container" ng-show="detailsModal.visible">
+<div class="modal-container">
     <messages event="modalMessage"></messages>
 
     <!-- Plugin Details -->
-    <div class="modal huge-modal" ng-if="detailsModal.item.plugin">
+    <div class="modal huge-modal" ng-if="detailsItem.plugin">
         <div class="close-modal">
             <span class="fa fa-times" ng-click="toggleDetailsModal()"></span>
         </div>
 
-        <h2>{{detailsModal.item.plugin.filename}} Details</h2>
+        <h2>{{detailsItem.plugin.filename}} Details</h2>
 
         <!-- TODO: This should use the same components as the mod analysis tab -->
 
-        <div class="content-message content-error" ng-if="errors.detailsModal">
+        <div class="content-message content-error" ng-if="error">
             There was an error retrieving details for this plugin.<br>
             <!--TODO: Render JSON errors here, if available?-->
-            Error {{errors.detailsModal.status}}: {{errors.detailsModal.statusText}}
+            Error {{error.status}}: {{error.statusText}}
         </div>
     </div>
 
     <!-- Custom Plugin Details -->
-    <div class="modal huge-modal" ng-if="!detailsModal.item.plugin">
+    <div class="modal huge-modal" ng-if="!detailsItem.plugin">
         <form>
             <div class="close-modal">
-                <span class="fa fa-times" ng-click="toggleDetailsModal(false)"></span>
+                <span class="fa fa-times" ng-click="toggleDetailsModal()"></span>
             </div>
 
             <h2>{{ editing ? 'Edit Custom Plugin' : 'Custom Plugin Details' }}</h2>
@@ -35,12 +35,12 @@
 
             <h3 class="section-title">Filename</h3>
             <section>
-                <input type="text" ng-model="detailsModal.item.filename" ng-click="focusText($event)" spellcheck="false" ng-disabled="!editing">
+                <input type="text" ng-model="detailsItem.filename" ng-click="focusText($event)" spellcheck="false" ng-disabled="!editing">
             </section>
 
             <h3 class="section-title">Description</h3>
             <section>
-                <textarea class="medium-text-area" ng-model="detailsModal.item.description" ng-disabled="!editing"></textarea>
+                <textarea class="medium-text-area" ng-model="detailsItem.description" ng-disabled="!editing"></textarea>
             </section>
 
             <div class="action-button-container">

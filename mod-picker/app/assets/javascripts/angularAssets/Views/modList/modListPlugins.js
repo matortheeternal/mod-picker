@@ -1,17 +1,17 @@
 app.controller('modListPluginsController', function($scope, $q, $timeout, modListService, columnsFactory, actionsFactory, listUtils) {
     // initialize variables
-    $scope.detailsModal = {};
+    $scope.showDetailsModal = false;
+    $scope.detailsItem = {};
     $scope.columns = columnsFactory.modListPluginColumns();
     $scope.columnGroups = columnsFactory.modListPluginColumnGroups();
     $scope.actions = actionsFactory.modListPluginActions();
 
     $scope.toggleDetailsModal = function(visible, item) {
         $scope.$emit('toggleModal', visible);
-        $scope.detailsModal.visible = visible;
-        $scope.detailsModal.item = item;
+        $scope.showDetailsModal = visible;
+        $scope.detailsItem = item;
     };
 
-    // functions
     $scope.searchPluginStore = function(str) {
         var action = $q.defer();
         var matchingPlugins = $scope.plugin_store.filter(function(plugin) {
