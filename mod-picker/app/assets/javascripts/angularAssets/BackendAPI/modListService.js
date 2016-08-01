@@ -123,7 +123,11 @@ app.service('modListService', function (backend, $q, objectUtils, userTitleServi
     };
 
     this.newModListPlugin = function(mod_list_plugin) {
-        return backend.post('/mod_list_plugins', {mod_list_plugin: mod_list_plugin})
+        return backend.post('/mod_list_plugins', {mod_list_plugin: mod_list_plugin});
+    };
+
+    this.newModListCustomPlugin = function(custom_plugin) {
+        return backend.post('/mod_list_custom_plugins', {mod_list_custom_plugin: custom_plugin});
     };
 
     this.newModListGroup = function(group) {
