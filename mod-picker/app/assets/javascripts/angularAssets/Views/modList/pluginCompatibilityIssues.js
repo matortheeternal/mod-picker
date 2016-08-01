@@ -100,8 +100,7 @@ app.controller('pluginCompatibilityIssuesController', function($scope, listUtils
     $scope.$on('pluginRecovered', function() {
         $scope.buildUnresolvedPluginCompatibility();
     });
-    $scope.$on('pluginAdded', function(event, pluginData) {
-        $scope.notes.plugin_compatibility.unite(pluginData.compatibility_notes);
+    $scope.$on('pluginAdded', function() {
         $scope.buildUnresolvedPluginCompatibility();
     });
     $scope.$on('modRemoved', function(event, modId) {
@@ -110,6 +109,10 @@ app.controller('pluginCompatibilityIssuesController', function($scope, listUtils
     });
     $scope.$on('modRecovered', function(event, modId) {
         $scope.recoverCompatibilityNotes(modId);
+        $scope.buildUnresolvedPluginCompatibility();
+    });
+    $scope.$on('modAdded', function(event, modData) {
+        $scope.notes.plugin_compatibility.unite(modData.plugin_compatibility_notes);
         $scope.buildUnresolvedPluginCompatibility();
     });
 });

@@ -91,11 +91,14 @@ app.controller('pluginLoadOrderIssuesController', function($scope, listUtils) {
         $scope.recoverLoadOrderNotes(pluginId);
         $scope.buildUnresolvedLoadOrder();
     });
-    $scope.$on('pluginAdded', function(event, pluginData) {
-        $scope.notes.load_order.unite(pluginData.load_order_notes);
+    $scope.$on('pluginAdded', function() {
         $scope.buildUnresolvedLoadOrder();
     });
     $scope.$on('pluginMoved', function() {
+        $scope.buildUnresolvedLoadOrder();
+    });
+    $scope.$on('modAdded', function(event, modData) {
+        $scope.notes.load_order.unite(modData.load_order_notes);
         $scope.buildUnresolvedLoadOrder();
     });
 });

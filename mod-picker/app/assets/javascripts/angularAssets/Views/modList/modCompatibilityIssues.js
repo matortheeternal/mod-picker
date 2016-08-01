@@ -104,7 +104,7 @@ app.controller('modCompatibilityIssuesController', function($scope, listUtils) {
         $scope.buildUnresolvedCompatibility();
     });
     $scope.$on('modAdded', function(event, modData) {
-        $scope.notes.compatibility.unite(modData.compatibility_notes);
+        $scope.notes.compatibility.unite(modData.mod_compatibility_notes);
         $scope.buildUnresolvedCompatibility();
     });
 });
