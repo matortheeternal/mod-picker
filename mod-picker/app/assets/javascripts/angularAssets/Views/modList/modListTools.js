@@ -66,7 +66,7 @@ app.controller('modListToolsController', function($scope, $rootScope, $state, $s
             $scope.updateTabs();
 
             // upudate modules
-            $rootScope.$broadcast('modRecovered', modListTool.mod.id);
+            $rootScope.$broadcast('modRecovered', !!modListTool.mod && modListTool.mod.id);
             $scope.$broadcast('updateItems');
 
             // success message
@@ -133,7 +133,7 @@ app.controller('modListToolsController', function($scope, $rootScope, $state, $s
         $scope.updateTabs();
 
         // update modules
-        $rootScope.$broadcast('modRemoved', modListTool.mod.id);
+        $rootScope.$broadcast('modRemoved', !!modListTool.mod && modListTool.mod.id);
         $scope.$broadcast('updateItems');
     };
 

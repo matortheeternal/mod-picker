@@ -70,7 +70,7 @@ app.controller('modListModsController', function($scope, $rootScope, $timeout, m
             $scope.updateTabs();
 
             // upudate modules
-            $rootScope.$broadcast('modRecovered', modListMod.mod.id);
+            $rootScope.$broadcast('modRecovered', !!modListMod.mod && modListMod.mod.id);
             $scope.$broadcast('updateItems');
 
             // success message
@@ -137,7 +137,7 @@ app.controller('modListModsController', function($scope, $rootScope, $timeout, m
         $scope.updateTabs();
 
         // update modules
-        $rootScope.$broadcast('modRemoved', modListMod.mod.id);
+        $rootScope.$broadcast('modRemoved', !!modListMod.mod && modListMod.mod.id);
         $scope.$broadcast('updateItems');
     };
 
