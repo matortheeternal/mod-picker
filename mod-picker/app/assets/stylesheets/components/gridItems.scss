@@ -31,6 +31,22 @@ table-items, grid-items {
     }
   }
 
+  .remove-item {
+    position: absolute;
+    z-index: 2;
+    top: 0;
+    right: 0;
+    padding-right: 3px;
+    font-size: 20px;
+    cursor: pointer;
+    color: $soft_text_color;
+    @include transition(all 0.2s ease-in-out);
+    
+    &:hover {
+      color: $text_color;
+    }
+  }
+
   ul[dnd-list], tbody[dnd-list] {
     li.group, tr.group {
       font-family: 'Roboto', sans-serif;
