@@ -1,9 +1,17 @@
 app.controller('modListToolsController', function($scope, $rootScope, $state, $stateParams, $timeout, modListService, modService, listUtils, columnsFactory, actionsFactory) {
     // initialize variables
+    $scope.showDetailsModal = false;
+    $scope.detailsItem = {};
     $scope.columns = columnsFactory.modListModColumns();
     $scope.columnGroups = columnsFactory.modListModColumnGroups();
     $scope.actions = actionsFactory.modListToolActions();
     $scope.searchTools = modService.searchModListTools;
+
+    $scope.toggleDetailsModal = function(visible, item) {
+        $scope.$emit('toggleModal', visible);
+        $scope.showDetailsModal = visible;
+        $scope.detailsItem = item;
+    };
 
     $scope.buildToolsModel = function() {
         $scope.model.tools = [];
@@ -145,5 +153,8 @@ app.controller('modListToolsController', function($scope, $rootScope, $state, $s
     });
     $scope.$on('saveChanges', function() {
         listUtils.removeDestroyed($scope.mod_list.tools);
+    });
+    $scope.$on('toggleDetailsModal', function(event, options) {
+        $scope.toggleDetailsModal(options.visible, options.item);
     });
 });
