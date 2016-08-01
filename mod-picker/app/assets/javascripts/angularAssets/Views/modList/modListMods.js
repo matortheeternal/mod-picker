@@ -16,7 +16,8 @@ app.controller('modListModsController', function($scope, $rootScope, $timeout, m
                 return mod.group_id == group.id;
             });
         });
-        $scope.mod_list.mods.forEach(function(mod) {
+        var mods = $scope.mod_list.mods.concat($scope.mod_list.custom_mods);
+        mods.forEach(function(mod) {
             if (!mod.group_id) {
                 var insertIndex = $scope.model.mods.findIndex(function(item) {
                     return item.index > mod.index;

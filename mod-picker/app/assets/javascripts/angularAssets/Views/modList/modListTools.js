@@ -16,7 +16,8 @@ app.controller('modListToolsController', function($scope, $rootScope, $state, $s
                 return tool.group_id == group.id;
             });
         });
-        $scope.mod_list.tools.forEach(function(tool) {
+        var tools = $scope.mod_list.tools.concat($scope.mod_list.custom_tools);
+        tools.forEach(function(tool) {
             if (!tool.group_id) {
                 var insertIndex = $scope.model.tools.findIndex(function(item) {
                     return item.index > tool.index;
