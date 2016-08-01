@@ -83,6 +83,12 @@ app.service('modListService', function (backend, $q, objectUtils, userTitleServi
                 delete item.plugin;
             }
         });
+        var custom_plugins = angular.copy(modList.custom_plugins || []);
+        custom_plugins.forEach(function(item) {
+            if (item.compatibility_note) {
+                delete item.compatibility_note;
+            }
+        });
 
         var modListData = {
             mod_list: {
@@ -98,7 +104,7 @@ app.service('modListService', function (backend, $q, objectUtils, userTitleServi
                 mod_list_groups_attributes: mod_list_groups,
                 mod_list_mods_attributes: mod_list_mods,
                 mod_list_plugins_attributes: mod_list_plugins,
-                custom_plugins_attributes: modList.custom_plugins,
+                custom_plugins_attributes: custom_plugins,
                 ignored_notes_attributes: modList.ignored_notes
             }
         };
