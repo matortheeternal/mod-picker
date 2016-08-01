@@ -263,9 +263,7 @@ class ModListsController < ApplicationController
           ],
           :mod_list_config_files_attributes => [:id, :config_file_id, :text_body, :_destroy],
           :mod_list_custom_config_files => [:id, :filename, :install_path, :text_body, :_destroy],
-          :mod_list_compatibility_notes => [:id, :compatibility_note_id, :status, :_destroy],
-          :mod_list_install_order_notes => [:id, :install_order_note_id, :status, :_destroy],
-          :mod_list_load_order_notes => [:id, :load_order_note_id, :status, :_destroy]
+          :mod_list_ignored_notes => [:id, :note_id, :note_type, :_destroy]
       )
     end
 end
