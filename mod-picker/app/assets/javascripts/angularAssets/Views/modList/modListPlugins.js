@@ -125,13 +125,17 @@ app.controller('modListPluginsController', function($scope, $q, $timeout, modLis
         });
     };
 
-    $scope.addCustomPlugin = function() {
+    $scope.addCustomPlugin = function(compatibilityNoteId) {
         var custom_plugin = {
             mod_list_id: $scope.mod_list.id,
             index: listUtils.getNextIndex($scope.model.plugins),
             filename: 'CustomPlugin.esp'
         };
 
+        if (compatibilityNoteId) {
+            custom_plugin.filename = 'CustomPatch'+compatibilityNoteId+'.esp';
+            custom_plugin.description = '[Custom Patch for '+compatibilityNoteId+']';
+        }
 
         modListService.newModListCustomPlugin(custom_plugin).then(function(data) {
             // push plugin onto view
