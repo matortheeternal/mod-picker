@@ -52,7 +52,7 @@ app.config(['$stateProvider', function($stateProvider) {
     });
 }]);
 
-app.controller('userController', function($scope, $stateParams, currentUser, userObject) {
+app.controller('userController', function($scope, $stateParams, currentUser, userObject, userService, errorService) {
     // get parent variables
     $scope.currentUser = currentUser;
     $scope.permissions = currentUser.permissions;
