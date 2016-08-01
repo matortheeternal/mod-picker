@@ -54,11 +54,11 @@
 
                     <div class="header-box" ng-if="mod.primary_category_id">
                         STATUS
-                        <div class="action-box {{statusClass}} capitalize">
-                            <a ng-href="#/mod/{{mod.id}}/appeals">
+                        <a ng-href="#/mod/{{mod.id}}/appeals">
+                            <div class="action-box {{statusClass}} capitalize">
                                 {{mod.status}}
-                            </a>
-                        </div>
+                            </div>
+                        </a>
                     </div>
                 </section>
             </div>
