@@ -61,8 +61,7 @@ app.service('actionsFactory', function() {
             items: [{
                 text: "View details",
                 execute: function($scope, item) {
-                    $scope.detailsItem = item;
-                    $scope.showDetailsModal = true;
+                    $scope.$emit('toggleDetailsModal', {visible: true, item: item});
                 }
             }, {
                 text: factory.toggleTextFunction('merged'),
