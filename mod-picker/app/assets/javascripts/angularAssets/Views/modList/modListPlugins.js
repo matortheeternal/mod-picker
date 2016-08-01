@@ -1,8 +1,15 @@
 app.controller('modListPluginsController', function($scope, $q, $timeout, modListService, columnsFactory, actionsFactory, listUtils) {
     // initialize variables
+    $scope.detailsModal = {};
     $scope.columns = columnsFactory.modListPluginColumns();
     $scope.columnGroups = columnsFactory.modListPluginColumnGroups();
     $scope.actions = actionsFactory.modListPluginActions();
+
+    $scope.toggleDetailsModal = function(visible, item) {
+        $scope.$emit('toggleModal', visible);
+        $scope.detailsModal.visible = visible;
+        $scope.detailsModal.item = item;
+    };
 
     // functions
     $scope.searchPluginStore = function(str) {
@@ -132,6 +139,9 @@ app.controller('modListPluginsController', function($scope, $q, $timeout, modLis
         // update modules
         $scope.$broadcast('customPluginAdded');
         $scope.$broadcast('updateItems');
+
+        // open plugin details for custom plugin
+        $scope.toggleDetailsModal(true, custom_plugin);
     };
 
     $scope.addPlugin = function(pluginId) {
@@ -185,5 +195,8 @@ app.controller('modListPluginsController', function($scope, $q, $timeout, modLis
     });
     $scope.$on('itemMoved', function() {
         $scope.$broadcast('pluginMoved');
+    });
+    $scope.$on('toggleDetailsModal', function(event, options) {
+        $scope.toggleDetailsModal(options.visible, options.item);
     });
 });
