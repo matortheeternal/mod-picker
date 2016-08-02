@@ -74,10 +74,21 @@ class ModList < ActiveRecord::Base
   before_save :set_dates
   before_destroy :decrement_counters, :unset_active
 
-  def update_eager_counters
-    self.mods_count = self.mods.utility(false).count
-    self.tools_count = self.mods.utility(true).count
-    self.save_counters([:mods_count, :tools_count])
+  def update_all_counters
+    self.tools_count = self.mod_list_mods.utility(true).count
+    self.mods_count = self.mod_list_mods.utility(false).count
+    self.custom_tools_count = self.custom_mods.utility(true).count
+    self.custom_mods_count = self.custom_mods.utility(false).count
+    self.plugins_count = self.mod_list_plugins.count
+    self.custom_plugins_count = self.custom_plugins.count
+    self.config_files_count = self.config_files.count
+    self.custom_config_files_count = self.custom_config_files.count
+    self.ignored_notes_count = self.ignored_notes.count
+    self.tags_count = self.tags.count
+    self.stars_count = self.mod_list_stars.count
+    self.comments_count = self.comments.count
+    self.save_counters([:tools_count, :mods_count, :custom_tools_count, :custom_mods_count, :plugins_count, :custom_plugins_count, :config_files_count, :custom_config_files_count, :ignored_notes_count, :tags_count, :stars_count, :comments_count])
+    self.update_lazy_counters
   end
 
   def update_lazy_counters
