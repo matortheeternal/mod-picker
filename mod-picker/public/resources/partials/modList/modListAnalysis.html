@@ -4,88 +4,141 @@
     </div>
     <div class="content-container statistics-grid">
         <div>
-            <span class="number">{{mod_list.tools_count}}</span>
-            <span class="label">Tools</span>
+            <span class="title">Mods</span>
+            <div class="left-column">
+                <i class="fa fa-cubes"></i>
+            </div>
+            <div class="right-column">
+                <div class="stat-item">
+                    <span class="number">{{mod_list.tools_count}}</span>
+                    <span class="label">Tools</span>
+                </div>
+                <div class="stat-item">
+                    <span class="number">{{mod_list.mods_count}}</span>
+                    <span class="label">Mods</span>
+                </div>
+                <div class="stat-item">
+                    <span class="number">{{mod_list.custom_mods_count}}</span>
+                    <span class="label">Custom Mods/Tools</span>
+                </div>
+            </div>
         </div>
+
         <div>
-            <span class="number">{{mod_list.mods_count}}</span>
-            <span class="label">Mods</span>
+            <span class="title">Plugins</span>
+            <div class="left-column">
+                <i class="fa fa-plug"></i>
+            </div>
+            <div class="right-column">
+                <div class="stat-item">
+                    <span class="number">{{mod_list.plugins_count}}</span>
+                    <span class="label">Plugins</span>
+                </div>
+                <div class="stat-item">
+                    <span class="number">{{mod_list.master_plugins_count}}</span>
+                    <span class="label">Master Plugins</span>
+                </div>
+                <div class="stat-item">
+                    <span class="number">{{mod_list.available_plugins_count}}</span>
+                    <span class="label">Available Plugins</span>
+                </div>
+                <div class="stat-item">
+                    <span class="number">{{mod_list.custom_plugins_count}}</span>
+                    <span class="label">Custom Plugins</span>
+                </div>
+            </div>
         </div>
+
         <div>
-            <span class="number">{{mod_list.custom_mods_count}}</span>
-            <span class="label">Custom Mods/Tools</span>
+            <span class="title">Config</span>
+            <div class="left-column">
+                <i class="fa fa-sliders"></i>
+            </div>
+            <div class="right-column">
+                <div class="stat-item">
+                    <span class="number">{{mod_list.config_files_count}}</span>
+                    <span class="label">Config Files</span>
+                </div>
+                <div class="stat-item">
+                    <span class="number">{{mod_list.custom_config_files_count}}</span>
+                    <span class="label">Custom Config Files</span>
+                </div>
+            </div>
         </div>
+
         <div>
-            <span class="number">{{mod_list.plugins_count}}</span>
-            <span class="label">Plugins</span>
+            <span class="title">Social</span>
+            <div class="left-column">
+                <i class="fa fa-comments"></i>
+            </div>
+            <div class="right-column">
+                <div class="stat-item">
+                    <span class="number">{{mod_list.tags_count}}</span>
+                    <span class="label">Tags</span>
+                </div>
+                <div class="stat-item">
+                    <span class="number">{{mod_list.comments_count}}</span>
+                    <span class="label">Comments</span>
+                </div>
+                <div class="stat-item">
+                    <span class="number">{{mod_list.stars_count}}</span>
+                    <span class="label">Stars</span>
+                </div>
+            </div>
         </div>
-        <div title="ESMs">
-            <span class="number">{{mod_list.master_plugins_count}}</span>
-            <span class="label">Master Plugins</span>
-        </div>
+
         <div>
-            <span class="number">{{mod_list.available_plugins_count}}</span>
-            <span class="label">Available Plugins</span>
+            <span class="title">Notes</span>
+            <div class="left-column">
+                <i class="fa fa-tasks"></i>
+            </div>
+            <div class="right-column">
+                <div class="stat-item">
+                    <span class="number">{{mod_list.compatibility_notes_count}}</span>
+                    <span class="label">Compatibility Notes</span>
+                </div>
+                <div class="stat-item">
+                    <span class="number">{{mod_list.install_order_notes_count}}</span>
+                    <span class="label">Install Order Notes</span>
+                </div>
+                <div class="stat-item">
+                    <span class="number">{{mod_list.load_order_notes_count}}</span>
+                    <span class="label">Load Order Notes</span>
+                </div>
+                <div class="stat-item">
+                    <span class="number">{{mod_list.ignored_notes_count}}</span>
+                    <span class="label">Ignored Notes</span>
+                </div>
+            </div>
         </div>
+
         <div>
-            <span class="number">{{mod_list.custom_plugins_count}}</span>
-            <span class="label">Custom Plugins</span>
-        </div>
-        <div>
-            <span class="number">{{mod_list.config_files_count}}</span>
-            <span class="label">Config Files</span>
-        </div>
-        <div>
-            <span class="number">{{mod_list.custom_config_files_count}}</span>
-            <span class="label">Custom Config Files</span>
-        </div>
-        <div>
-            <span class="number">{{mod_list.tags_count}}</span>
-            <span class="label">Tags</span>
-        </div>
-        <div>
-            <span class="number">{{mod_list.comments_count}}</span>
-            <span class="label">Comments</span>
-        </div>
-        <div>
-            <span class="number">{{mod_list.stars_count}}</span>
-            <span class="label">Stars</span>
-        </div>
-        <div>
-            <span class="number">{{mod_list.compatibility_notes_count}}</span>
-            <span class="label">Compatibility Notes</span>
-        </div>
-        <div>
-            <span class="number">{{mod_list.install_order_notes_count}}</span>
-            <span class="label">Install Order Notes</span>
-        </div>
-        <div>
-            <span class="number">{{mod_list.load_order_notes_count}}</span>
-            <span class="label">Load Order Notes</span>
-        </div>
-        <div>
-            <span class="number">{{mod_list.ignored_notes_count}}</span>
-            <span class="label">Ignored Notes</span>
-        </div>
-        <div>
-            <span class="number">{{mod_list.asset_files_count}}</span>
-            <span class="label">BSA Files</span>
-        </div>
-        <div>
-            <span class="number">{{mod_list.asset_files_count}}</span>
-            <span class="label">Asset Files</span>
-        </div>
-        <div>
-            <span class="number">{{mod_list.records_count}}</span>
-            <span class="label">Records</span>
-        </div>
-        <div>
-            <span class="number">{{mod_list.override_records_count}}</span>
-            <span class="label">Override Records</span>
-        </div>
-        <div>
-            <span class="number">{{mod_list.plugin_errors_count}}</span>
-            <span class="label">Plugin Errors</span>
+            <span class="title">Data</span>
+            <div class="left-column">
+                <i class="fa fa-database"></i>
+            </div>
+            <div class="right-column">
+                <div class="stat-item">
+                    <span class="number">{{mod_list.asset_files_count}}</span>
+                    <span class="label">BSA Files</span>
+                </div>
+                <div class="stat-item">
+                    <span class="number">{{mod_list.asset_files_count}}</span>
+                    <span class="label">Asset Files</span>
+                </div>
+                <div class="stat-item">
+                    <span class="number">{{mod_list.records_count}}</span>
+                    <span class="label">Records</span>
+                </div>
+                <div class="stat-item">
+                    <span class="number">{{mod_list.override_records_count}}</span>
+                    <span class="label">Override Records</span>
+                </div>
+                <div class="stat-item">
+                    <span class="number">{{mod_list.plugin_errors_count}}</span>
+                    <span class="label">Plugin Errors</span>
+                </div>
+            </div>
         </div>
     </div>
 </div>

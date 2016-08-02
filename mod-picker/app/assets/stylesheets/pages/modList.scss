@@ -28,6 +28,40 @@
 .statistics-grid {
   text-align: center;
 
+  > div {
+    display: inline-block;
+    width: 300px;
+    padding: 10px;
+    margin: 20px;
+    text-align: left;
+
+    .title {
+      font-size: 20px;
+    }
+
+    .number {
+      font-weight: 600;
+    }
+
+    i {
+      font-size: 54px;
+    }
+
+    .left-column {
+      background-color: inherit;
+      border: none;
+      padding: 20px 10px 20px 0;
+    }
+
+    .right-column {
+      padding: 20px 0;
+    }
+  }
+}
+
+/*.statistics-grid {
+  text-align: center;
+
   div {
     min-width: 150px;
     min-height: 85px;
@@ -48,7 +82,7 @@
       font-size: 14px;
     }
   }
-}
+}*/
 
 .section-table {
   width: 100%;
