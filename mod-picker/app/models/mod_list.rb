@@ -75,8 +75,8 @@ class ModList < ActiveRecord::Base
   before_destroy :decrement_counters, :unset_active
 
   def update_eager_counters
-    self.mods_count = self.mods.where(is_utility: false).count
-    self.tools_count = self.mods.where(is_utility: true).count
+    self.mods_count = self.mods.utility(false).count
+    self.tools_count = self.mods.utility(true).count
     self.save_counters([:mods_count, :tools_count])
   end
 
