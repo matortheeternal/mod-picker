@@ -82,8 +82,18 @@ class ModList < ActiveRecord::Base
 
   def update_lazy_counters
     mod_ids = self.mod_list_mod_ids
-    self.available_plugins_count = Plugin.where(mod_id: mod_ids).count
-    self.save_counters([:available_plugins_count])
+    plugin_ids = self.mod_list_plugin_ids
+    self.available_plugins_count = Plugin.mods(mod_ids).count
+    self.master_plugins_count = Plugin.mods(mod_ids).esm.count
+    self.compatibility_notes_count = CompatibilityNote.visible.mods(mod_ids).count
+    self.install_order_notes_count = InstallOrderNote.visible.mods(mod_ids).count
+    self.load_order_notes_count = LoadOrderNote.visible.mods(plugin_ids).count
+    self.bsa_files_count = ModAssetFile.mods(mod_ids).bsa.count
+    self.asset_files_count = ModAssetFile.mods(mod_ids).count
+    self.records_count = Plugin.find(plugin_ids).sum(:record_count)
+    self.override_records_count = Plugin.find(plugin_ids).sum(:override_count)
+    self.plugin_errors_count = PluginError.plugins(plugin_ids).count
+    self.save_counters([:available_plugins_count, :master_plugins_count, :compatibility_notes_count, :install_order_notes_count, :load_order_notes_count, :bsa_files_count, :asset_files_count, :records_count, :override_records_count, :plugin_errors_count])
   end
 
   def mod_list_plugin_ids
