@@ -3,9 +3,13 @@ class Plugin < ActiveRecord::Base
 
   attr_writer :master_plugins
 
+  # Scopes
   scope :search, -> (search) { where("filename like ?", "%#{search}%") }
   scope :game, -> (game) { where(game_id: game) }
+  scope :mods, -> (mod_ids) { where(mod_id: mod_ids) }
+  scope :esm, -> { where("filename like %.esm") }
 
+  # Associations
   belongs_to :game, :inverse_of => 'plugins'
   belongs_to :mod, :inverse_of => 'plugins'
 

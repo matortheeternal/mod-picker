@@ -3,6 +3,7 @@ class ModAssetFile < ActiveRecord::Base
 
   # Scopes
   scope :mods, -> (mod_ids) { where(mod_id: mod_ids) }
+  scope :bsa, -> { joins(:asset_file).where("asset_file.path like %.bsa") }
 
   # Associations
   belongs_to :mod, :inverse_of => 'mod_asset_files'
