@@ -33,11 +33,17 @@ app.service('pluginService', function (backend, $q, $timeout, recordGroupService
         plugins.forEach(function(plugin) {
             plugin.masters.forEach(function(master) {
                 master.overrides = [];
-                plugin.overrides.forEach(function(override) {
-                    if (override.fid >= master.index * 0x01000000) {
-                        master.overrides.push(override);
-                    }
-                });
+                for (var group in plugin.formatted_overrides) {
+                    if (!plugin.formatted_overrides.hasOwnProperty(group)) continue;
+                    var formIDs = plugin.formatted_overrides[group];
+                    formIDs.forEach(function(formID) {
+                        if (formID >>> 24 != master.index) return;
+                        master.overrides.push({
+                            sig: group,
+                            fid: formID
+                        });
+                    });
+                }
             });
         });
     };
