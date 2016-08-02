@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160801202540) do
+ActiveRecord::Schema.define(version: 20160802023437) do
 
   create_table "agreement_marks", id: false, force: :cascade do |t|
     t.integer "correction_id", limit: 4,                null: false
@@ -460,13 +460,22 @@ ActiveRecord::Schema.define(version: 20160801202540) do
     t.text     "description",               limit: 65535
     t.integer  "tools_count",               limit: 4,     default: 0,     null: false
     t.integer  "mods_count",                limit: 4,     default: 0,     null: false
-    t.integer  "plugins_count",             limit: 4,     default: 0,     null: false
-    t.integer  "available_plugins_count",   limit: 4,     default: 0,     null: false
     t.integer  "custom_mods_count",         limit: 4,     default: 0,     null: false
+    t.integer  "plugins_count",             limit: 4,     default: 0,     null: false
+    t.integer  "master_plugins_count",      limit: 4,     default: 0,     null: false
+    t.integer  "available_plugins_count",   limit: 4,     default: 0,     null: false
     t.integer  "custom_plugins_count",      limit: 4,     default: 0,     null: false
     t.integer  "config_files_count",        limit: 4,     default: 0,     null: false
     t.integer  "custom_config_files_count", limit: 4,     default: 0,     null: false
+    t.integer  "compatibility_notes_count", limit: 4,     default: 0,     null: false
+    t.integer  "install_order_notes_count", limit: 4,     default: 0,     null: false
+    t.integer  "load_order_notes_count",    limit: 4,     default: 0,     null: false
     t.integer  "ignored_notes_count",       limit: 4,     default: 0,     null: false
+    t.integer  "bsa_files_count",           limit: 4,     default: 0,     null: false
+    t.integer  "asset_files_count",         limit: 4,     default: 0,     null: false
+    t.integer  "records_count",             limit: 4,     default: 0,     null: false
+    t.integer  "override_records_count",    limit: 4,     default: 0,     null: false
+    t.integer  "plugin_errors_count",       limit: 4,     default: 0,     null: false
     t.integer  "tags_count",                limit: 4,     default: 0,     null: false
     t.integer  "stars_count",               limit: 4,     default: 0,     null: false
     t.integer  "comments_count",            limit: 4,     default: 0,     null: false
