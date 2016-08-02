@@ -460,6 +460,7 @@ ActiveRecord::Schema.define(version: 20160802204017) do
     t.text     "description",               limit: 65535
     t.integer  "tools_count",               limit: 4,     default: 0,     null: false
     t.integer  "mods_count",                limit: 4,     default: 0,     null: false
+    t.integer  "custom_tools_count",        limit: 4,     default: 0,     null: false
     t.integer  "custom_mods_count",         limit: 4,     default: 0,     null: false
     t.integer  "plugins_count",             limit: 4,     default: 0,     null: false
     t.integer  "master_plugins_count",      limit: 4,     default: 0,     null: false
