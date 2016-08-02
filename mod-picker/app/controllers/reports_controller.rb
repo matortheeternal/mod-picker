@@ -11,12 +11,28 @@ class ReportsController < ApplicationController
   # POST /reviews
   # POST /reviews.json
   def create
-    @report = BaseReport.new(base_report_params)
+    @base_report = BaseReport.where(base_report_params).first_or_create
+    @report = Report.where(
+      base_report_id: @base_report.id,
+      submitted_by: current_user.id,
+    ).first_or_initialize
+    @report.report_type = report_params[:report_type]
+    @report.note = report_params[:note]
+    @report.save!
 
-    if @report.save
+    errors = nil
+
+    @base_report.errors.each do |key|
+      errors[key] = @base_report.errors[key]
+    end
+    @report.errors.each do |key|
+      errors[key] = @report.errors[key]
+    end
+
+    if errors.nil?
       render json: {status: :ok}
     else
-      render json: @report.errors, status: :unprocessable_entity
+      render json: errors, status: :unprocessable_entity
     end
   end
 
@@ -43,8 +59,11 @@ class ReportsController < ApplicationController
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
+    def report_params
+      params.require(:report).permit(:note, :report_type)
+    end
+
     def base_report_params
-      # TODO
-      params.require(:base_report).permit
+      params.require(:base_report).permit(:reportable_id, :reportable_type)
     end
 end
