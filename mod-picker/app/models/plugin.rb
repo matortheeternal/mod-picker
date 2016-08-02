@@ -79,6 +79,18 @@ class Plugin < ActiveRecord::Base
     ModListPlugin.where(plugin_id: self.id).delete_all
   end
 
+  def formatted_overrides
+    output = {}
+    self.overrides.each do |ovr|
+      if output.has_key?(ovr.sig)
+        output[ovr.sig].push(ovr.fid)
+      else
+        output[ovr.sig] = [ovr.fid]
+      end
+    end
+    output
+  end
+
   def self.index_json(collection)
     collection.as_json({
         :include => {
