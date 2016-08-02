@@ -1,5 +1,5 @@
 class ModListsController < ApplicationController
-  before_action :set_mod_list, only: [:show, :update, :update_tags, :destroy, :tools, :plugins, :config_files, :comments]
+  before_action :set_mod_list, only: [:show, :update, :update_tags, :destroy, :tools, :plugins, :config_files, :analysis, :comments]
   before_action :set_active_mod_list, only: [:active, :mods]
 
   # GET /mod_lists
@@ -120,6 +120,26 @@ class ModListsController < ApplicationController
     render :json => {
         config_files: config_files,
         custom_config_files: custom_config_files
+    }
+  end
+
+  # GET /mod_lists/1/analysis
+  def analysis
+    authorize! :read, @mod_list
+
+    # prepare primary data
+    mod_ids = @mod_list.mod_list_mod_ids
+    mods = Mod.where(id: mod_ids)
+    plugins = Plugin.where(mod_id: mod_ids)
+
+    # render response
+    render :json => {
+        mods: mods,
+        plugins: plugins,
+        asset_files: @mod_list.asset_files,
+        override_records: @mod_list.override_records,
+        record_groups: @mod_list.record_groups,
+        plugin_errors: @mod_list.plugin_errors
     }
   end
 
