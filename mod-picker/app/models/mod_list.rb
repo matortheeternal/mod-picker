@@ -156,6 +156,34 @@ class ModList < ActiveRecord::Base
     incompatible_ids.flatten(1).uniq - mod_ids
   end
 
+  def asset_files
+    mod_ids = self.mod_list_mod_ids
+    return [] if mod_ids.empty?
+
+    ModAssetFile.mods(mod_ids).includes(:asset_file)
+  end
+
+  def override_records
+    plugin_ids = self.mod_list_plugin_ids
+    return [] if plugin_ids.empty?
+
+    OverrideRecord.plugins(plugin_ids)
+  end
+
+  def record_groups
+    plugin_ids = self.mod_list_plugin_ids
+    return [] if plugin_ids.empty?
+
+    PluginRecordGroup.plugins(plugin_ids)
+  end
+
+  def plugin_errors
+    plugin_ids = self.mod_list_plugin_ids
+    return [] if plugin_ids.empty?
+
+    PluginError.plugins(plugin_ids)
+  end
+
   def show_json
     self.as_json({
         :except => [:submitted_by],
