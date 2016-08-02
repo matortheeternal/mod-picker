@@ -56,6 +56,19 @@
 
     .right-column {
       padding: 20px 0;
+
+      .stat-column {
+        display: inline-flex;
+        flex-direction: column;
+      }
+
+      .count-column {
+        align-items: flex-end;
+      }
+
+      .label-column {
+        align-items: flex-start;
+      }
     }
   }
 }
