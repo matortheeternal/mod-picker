@@ -7,7 +7,7 @@ class Plugin < ActiveRecord::Base
   scope :search, -> (search) { where("filename like ?", "%#{search}%") }
   scope :game, -> (game) { where(game_id: game) }
   scope :mods, -> (mod_ids) { where(mod_id: mod_ids) }
-  scope :esm, -> { where("filename like %.esm") }
+  scope :esm, -> { where("filename like '%.esm'") }
 
   # Associations
   belongs_to :game, :inverse_of => 'plugins'
