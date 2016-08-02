@@ -55,6 +55,10 @@ app.service('modListService', function (backend, $q, objectUtils, userTitleServi
         return action.promise;
     };
 
+    this.retrieveModListAnalysis = function(modListId) {
+        return backend.retrieve('/mod_lists/' + modListId + '/analysis');
+    };
+
     this.updateModList = function(modList) {
         // Mod List Groups
         var mod_list_groups = angular.copy(modList.groups || []);
