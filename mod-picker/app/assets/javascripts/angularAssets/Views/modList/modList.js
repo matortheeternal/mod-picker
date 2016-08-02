@@ -88,6 +88,17 @@ app.config(['$stateProvider', function ($stateProvider) {
             }
         },
         url: '/config'
+    }).state('base.mod-list.Analysis', {
+        sticky: true,
+        deepStateRedirect: true,
+        reloadOnSearch: false,
+        views: {
+            'Analysis': {
+                templateUrl: '/resources/partials/modList/modListAnalysis.html',
+                controller: 'modListAnalysisController'
+            }
+        },
+        url: '/analysis'
     }).state('base.mod-list.Comments', {
         sticky: true,
         deepStateRedirect: true,

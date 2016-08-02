@@ -59,6 +59,9 @@ app.factory("tabsFactory", function() {
             {
                 name: 'Config',
                 count: modList.config_files_count
+            },
+            {
+                name: 'Analysis'
             }
         ];
 
