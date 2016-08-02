@@ -86,15 +86,12 @@ class ModList < ActiveRecord::Base
     self.save_counters([:available_plugins_count])
   end
 
-  def mod_list_mod_ids
-    mod_list_mods.all.pluck(:mod_id)
+  def mod_list_plugin_ids
+    mod_list_plugins.all.pluck(:plugin_id)
   end
 
-  def mod_list_plugin_ids
-    mod_ids = self.mod_list_mod_ids
-    return [] if mod_ids.empty?
-
-    Plugin.where(mod_id: mod_ids).ids
+  def mod_list_mod_ids
+    mod_list_mods.all.pluck(:mod_id)
   end
 
   def mod_compatibility_notes
@@ -119,7 +116,7 @@ class ModList < ActiveRecord::Base
   end
 
   def load_order_notes
-    plugin_ids = self.mod_list_plugin_ids
+    plugin_ids = Plugin.mods(self.mod_list_mod_ids).ids
     return [] if plugin_ids.empty?
 
     LoadOrderNote.visible.plugins(plugin_ids).includes(:first_plugin, :second_plugin, :history_entries, :submitter => :reputation)
