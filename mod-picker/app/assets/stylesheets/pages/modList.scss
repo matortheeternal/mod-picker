@@ -25,6 +25,28 @@
   }
 }
 
+.statistics-grid {
+  text-align: center;
+
+  div {
+    min-width: 155px;
+    min-height: 90px;
+    display: inline-block;
+    vertical-align: top;
+    padding: 4px;
+
+    .number {
+      display: block;
+      font-size: 24px;
+      font-weight: 500;
+    }
+
+    .label {
+      font-size: 14px;
+    }
+  }
+}
+
 .section-table {
   width: 100%;
   border-collapse: collapse;
