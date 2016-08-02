@@ -123,16 +123,14 @@ class Plugin < ActiveRecord::Base
             :dummy_masters => {
                 :except => [:plugin_id]
             },
-            :overrides => {
-                :except => [:plugin_id]
-            },
             :plugin_errors => {
                 :except => [:plugin_id]
             },
             :plugin_record_groups => {
                 :except => [:plugin_id]
             }
-        }
+        },
+        :methods => :formatted_overrides
     })
   end
 
