@@ -11,13 +11,17 @@ class ReportsController < ApplicationController
   # POST /reviews
   # POST /reviews.json
   def create
-    @base_report = BaseReport.where(base_report_params).first_or_create
+    @base_report = BaseReport.where(base_report_params).first_or_initialize
+    authorize! :create, @base_report
+    @base_report.save!
+
     @report = Report.where(
       base_report_id: @base_report.id,
       submitted_by: current_user.id,
     ).first_or_initialize
     @report.report_type = report_params[:report_type]
     @report.note = report_params[:note]
+    authorize! :create, @report
     @report.save!
 
     errors = nil

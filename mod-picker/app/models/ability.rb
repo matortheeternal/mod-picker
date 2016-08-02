@@ -85,6 +85,10 @@ class Ability
       can :create, ModTag
       can :create, ModListTag
 
+      #can sumbit reports
+      can :create, Report
+      can :create, BaseReport
+
       # can submit mods
       can :submit, :mod
       can :create, NexusInfo
