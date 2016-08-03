@@ -23,6 +23,12 @@ class ModListPlugin < ActiveRecord::Base
     Master.plugins([self.plugin_id]).order(:master_plugin_id)
   end
 
+  def self.load_order_json(collection)
+    collection.as_json({
+        :only => [:plugin_id, :index, :merged]
+    })
+  end
+
   def as_json(options={})
     if JsonHelpers.json_options_empty(options)
       # TODO: Revise this as necessary
