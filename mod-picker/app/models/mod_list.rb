@@ -100,8 +100,8 @@ class ModList < ActiveRecord::Base
     self.install_order_notes_count = InstallOrderNote.visible.mods(mod_ids).count
     self.load_order_notes_count = LoadOrderNote.visible.plugins(plugin_ids).count
 
-    mod_ids = mod_list_mods.joins(:mod).where(:mods => { is_official: false }).pluck(:mod_id)
-    plugin_ids = mod_list_plugins.joins(:plugin => :mod).where(:mods => { is_official: false }).pluck(:plugin_id)
+    mod_ids = mod_list_mods.official(false).pluck(:mod_id)
+    plugin_ids = mod_list_plugins.official(false).pluck(:plugin_id)
     self.bsa_files_count = ModAssetFile.mods(mod_ids).bsa.count
     self.asset_files_count = ModAssetFile.mods(mod_ids).count
     self.records_count = Plugin.where(id: plugin_ids).sum(:record_count)
