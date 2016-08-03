@@ -1,4 +1,6 @@
 app.service('pluginService', function (backend, $q, $timeout, recordGroupService, errorsFactory) {
+    var service = this;
+
     this.retrievePlugin = function (pluginId) {
         return backend.retrieve('/plugins/' + pluginId);
     };
@@ -40,6 +42,54 @@ app.service('pluginService', function (backend, $q, $timeout, recordGroupService
             return found.index;
         } else {
             return -1;
+        }
+    };
+
+    this.buildLoadOrderOverrides = function(plugins, loadOrder) {
+        var load_order_overrides = [];
+
+        // build array of load order overrides
+        plugins.forEach(function(plugin) {
+            for (var group in plugin.formatted_overrides) {
+                if (!plugin.formatted_overrides.hasOwnProperty(group)) continue;
+                var formIDs = plugin.formatted_overrides[group];
+                formIDs.forEach(function(formID) {
+                    var master_index = formID >>> 24;
+                    var master = plugin.masters[master_index];
+                    var load_ordinal = service.getLoadOrder(loadOrder, master.master_plugin_id);
+                    if (load_ordinal == -1) return;
+                    var fid = formID % 0x01000000 + load_ordinal * 0x01000000;
+                    load_order_overrides.push({
+                        sig: group,
+                        fid: fid,
+                        plugin_ids: [plugin.id]
+                    });
+                });
+            }
+        });
+
+        // return result
+        return load_order_overrides;
+    };
+
+    this.compactLoadOrderOverrides = function(loadOrderOverrides) {
+        // sort array
+        loadOrderOverrides.sort(function(first_override, second_override) {
+            return first_override.fid - second_override.fid;
+        });
+
+        // compact array
+        var prevOverride = {
+            fid: -1
+        };
+        for (var i = loadOrderOverrides.length - 1; i >= 0; i--) {
+            var override = loadOrderOverrides[i];
+            if (override.fid == prevOverride.fid) {
+                prevOverride.plugin_ids.push(override.plugin_ids[0]);
+                loadOrderOverrides.splice(i, 1);
+            } else {
+                prevOverride = override;
+            }
         }
     };
 
