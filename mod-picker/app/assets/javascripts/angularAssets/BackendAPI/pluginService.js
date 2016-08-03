@@ -27,6 +27,22 @@ app.service('pluginService', function (backend, $q, $timeout, recordGroupService
         });
     };
 
+    this.getLoadOrderPlugin = function(loadOrder, plugin_id) {
+        return loadOrder.find(function(item) {
+            return item.plugin_id == plugin_id;
+        });
+    };
+
+    // get the load order ordinal of a plugin
+    this.getLoadOrder = function(loadOrder, plugin_id) {
+        var found = service.getLoadOrderPlugin(loadOrder, plugin_id);
+        if (found) {
+            return found.index;
+        } else {
+            return -1;
+        }
+    };
+
     //associate overrides with their master file
     this.associateOverrides = function(plugins) {
         // loop through plugins
