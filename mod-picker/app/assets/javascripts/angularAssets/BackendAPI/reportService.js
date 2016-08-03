@@ -15,5 +15,5 @@ app.service('reportService', function($q, backend) {
 
         // submit report
         return backend.post('/reports', reportData);
-    }
+    };
 });
