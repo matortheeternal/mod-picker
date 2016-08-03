@@ -64,8 +64,8 @@ app.service('listUtils', function () {
         group.children = [];
     };
 
-    this.updateItems = function(model) {
-        var i = 1;
+    this.updateItems = function(model, startingIndex) {
+        var i = angular.isUndefined(startingIndex) ? 1 : startingIndex;
         model.forEach(function(item) {
             if (item._destroy) return;
             if (item.children) {
