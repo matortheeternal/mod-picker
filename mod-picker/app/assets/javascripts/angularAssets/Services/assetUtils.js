@@ -47,4 +47,18 @@ app.service('assetUtils', function (fileUtils) {
 
         return nestedData;
     };
+
+    this.compactConflictingAssets = function(conflictingAssets) {
+        var prevAsset = {};
+        for (var i = conflictingAssets.length - 1; i >= 0; i--) {
+            var asset = conflictingAssets[i];
+            if (asset.asset_file_id == prevAsset.asset_file_id) {
+                prevAsset.mod_ids.push(asset.mod_id);
+                conflictingAssets.splice(i, 1);
+            } else {
+                asset.mod_ids = [asset.mod_id];
+                prevAsset = asset;
+            }
+        }
+    };
 });
