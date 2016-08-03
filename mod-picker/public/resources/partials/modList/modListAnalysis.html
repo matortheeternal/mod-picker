@@ -126,3 +126,34 @@
         </div>
     </div>
 </div>
+
+<div class="content-block">
+    <div class="content-title">
+        Conflicting Overrides
+    </div>
+    <div class="content-container analysis-container">
+        <table class="analysis-table big-analysis-table" ng-if="analysis.conflicting_overrides.length">
+            <thead>
+            <tr>
+                <th>Master Plugin</th>
+                <th>FormID</th>
+                <th>Plugins</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="override in analysis.conflicting_overrides">
+                <td>{{override.master_plugin.plugin.filename}}</td>
+                <td>[{{override.sig}}:{{override.fid | hex:8}}]</td>
+                <td>
+                    <span ng-repeat="plugin in override.plugins track by $index">
+                        {{plugin.plugin.filename}}{{!$last ? ',' : ''}}
+                    </span>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <div class="content-message" ng-if="!analysis.conflicting_overrides.length">
+            No conflicting overrides found.
+        </div>
+    </div>
+</div>
