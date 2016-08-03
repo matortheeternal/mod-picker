@@ -129,6 +129,17 @@
 
 <div class="content-block">
     <div class="content-title">
+        Conflicting Assets
+    </div>
+    <div class="content-container analysis-container">
+        <div class="content-message" ng-if="!analysis.conflicting_assets.length">
+            No conflicting assets found.
+        </div>
+    </div>
+</div>
+
+<div class="content-block">
+    <div class="content-title">
         Conflicting Overrides
     </div>
     <div class="content-container analysis-container">
@@ -154,6 +165,44 @@
         </table>
         <div class="content-message" ng-if="!analysis.conflicting_overrides.length">
             No conflicting overrides found.
+        </div>
+    </div>
+</div>
+
+<div class="content-block">
+    <div class="content-title">
+        Record Composition
+    </div>
+    <div class="content-container analysis-container">
+        <table class="analysis-table" ng-if="analysis.record_groups.length">
+            <thead>
+            <tr>
+                <th>Group</th>
+                <th>Record Count</th>
+                <th>Override Count</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="group in analysis.record_groups">
+                <td>{{group.sig}} - {{group.name}}</td>
+                <td>{{group.record_count}}</td>
+                <td>{{group.override_count}}</td>
+            </tr>
+            </tbody>
+        </table>
+        <div class="content-message" ng-if="!analysis.record_groups.length">
+            No record groups found.
+        </div>
+    </div>
+</div>
+
+<div class="content-block">
+    <div class="content-title">
+        Plugin Errors
+    </div>
+    <div class="content-container analysis-container">
+        <div class="content-message" ng-if="!analysis.plugin_errors.length">
+            No plugin errors found.
         </div>
     </div>
 </div>
