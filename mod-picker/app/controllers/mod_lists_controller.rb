@@ -132,10 +132,12 @@ class ModListsController < ApplicationController
     plugin_ids = @mod_list.mod_list_plugins.official(false).pluck(:plugin_id)
     mods = Mod.where(id: mod_ids)
     plugins = Plugin.where(id: plugin_ids).includes(:masters, :dummy_masters, :plugin_record_groups, :plugin_errors, :overrides)
+    load_order = @mod_list.mod_list_plugins.official(false)
     conflicting_assets = ModAssetFile.mods(mod_ids).includes(:asset_file).conflicting
 
     # render response
     render :json => {
+        load_order: ModListPlugin.load_order_json(load_order),
         mods: mods,
         plugins: Plugin.show_json(plugins),
         conflicting_assets: conflicting_assets
