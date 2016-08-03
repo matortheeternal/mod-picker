@@ -20,6 +20,17 @@ class ModListMod < ActiveRecord::Base
   after_create :increment_counter_caches
   before_destroy :decrement_counter_caches
 
+  def self.install_order_json(collection)
+    collection.as_json({
+        :only => [:mod_id, :index],
+        :include => {
+            :mod => {
+                :only => [:name]
+            }
+        }
+    })
+  end
+
   def as_json(options={})
     if JsonHelpers.json_options_empty(options)
       # TODO: Revise this as necessary

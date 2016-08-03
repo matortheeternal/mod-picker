@@ -25,7 +25,12 @@ class ModListPlugin < ActiveRecord::Base
 
   def self.load_order_json(collection)
     collection.as_json({
-        :only => [:plugin_id, :index, :merged]
+        :only => [:plugin_id, :index, :merged],
+        :include => {
+            :plugin => {
+                :only => [:mod_id, :filename]
+            }
+        }
     })
   end
 
