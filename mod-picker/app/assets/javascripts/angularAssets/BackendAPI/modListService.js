@@ -1,4 +1,4 @@
-app.service('modListService', function (backend, $q, objectUtils, userTitleService, contributionService, categoryService) {
+app.service('modListService', function (backend, $q, objectUtils, userTitleService, contributionService, categoryService, recordGroupService, pluginService, assetUtils) {
     var service = this;
 
     this.retrieveModList = function(modListId) {
@@ -56,7 +56,19 @@ app.service('modListService', function (backend, $q, objectUtils, userTitleServi
     };
 
     this.retrieveModListAnalysis = function(modListId) {
-        return backend.retrieve('/mod_lists/' + modListId + '/analysis');
+        var action = $q.defer();
+        backend.retrieve('/mod_lists/' + modListId + '/analysis').then(function(data) {
+            assetUtils.compactConflictingAssets(data.conflicting_assets);
+            recordGroupService.associateGroups(data.plugins);
+            pluginService.combineAndSortMasters(data.plugins);
+            pluginService.sortErrors(data.plugins);
+            data.load_order_overrides = pluginService.buildLoadOrderOverrides(data.plugins, data.load_order);
+            pluginService.compactLoadOrderOverrides(data.load_order_overrides);
+            action.resolve(data);
+        }, function(response) {
+            action.reject(response);
+        });
+        return action.promise;
     };
 
     this.updateModList = function(modList) {
