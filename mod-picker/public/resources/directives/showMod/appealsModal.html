@@ -102,7 +102,7 @@
         <loader data="appeal.comments" spinner-class="big-spinner" content-class="content-container">
             <comments comments="appeal.comments" current-user="currentUser" model-name="'Correction'" target="appeal" event-prefix="'modal'"></comments>
 
-            <page-results pages="pages.appeal_comments" data="appeal.comments" callback="retrieveAppealComments"></page-results>
+            <page-results pages="pages" data="appeal.comments" callback="retrieveAppealComments"></page-results>
         </loader>
 
         <!-- TODO: May need to move this before comments or make it a sticky footer? -->

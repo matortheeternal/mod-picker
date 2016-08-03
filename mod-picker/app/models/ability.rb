@@ -85,6 +85,10 @@ class Ability
       can :create, ModTag
       can :create, ModListTag
 
+      #can sumbit reports
+      can :create, Report
+      can :create, BaseReport
+
       # can submit mods
       can :submit, :mod
       can :create, NexusInfo
@@ -115,31 +119,6 @@ class Ability
       # can create and update their mod lists
       can :create, ModList
       can :update, ModList, :submitted_by => user.id
-
-      # can create stuff associated with their mod list
-      can :create, ModListMod
-      can :create, ModListPlugin
-      can :create, ModListCustomPlugin
-      can :create, ModListConfigFile
-      can :create, ModListCustomConfigFile
-
-      # can update stuff associated with their mod lists
-      can :update, ModListMod, { :mod_list => { :created_by => user.id } }
-      can :update, ModListPlugin, { :mod_list => { :created_by => user.id } }
-      can :update, ModListCustomPlugin, { :mod_list => { :created_by => user.id } }
-      can :update, ModListConfigFile, { :mod_list => { :created_by => user.id } }
-      can :update, ModListCustomConfigFile, { :mod_list => { :created_by => user.id } }
-      can :update, ModListCompatibilityNote, { :mod_list => { :created_by => user.id } }
-      can :update, ModListInstallOrderNote, { :mod_list => { :created_by => user.id } }
-      can :update, ModListLoadOrderNote, { :mod_list => { :created_by => user.id } }
-
-      # can delete stuff associated with their mod lists
-      can :destroy, ModListTag, { :mod_list => { :created_by => user.id }}
-      can :destroy, ModListMod, { :mod_list => { :created_by => user.id } }
-      can :destroy, ModListPlugin, { :mod_list => { :created_by => user.id } }
-      can :destroy, ModListCustomPlugin, { :mod_list => { :created_by => user.id } }
-      can :destroy, ModListConfigFile, { :mod_list => { :created_by => user.id } }
-      can :destroy, ModListCustomConfigFile, { :mod_list => { :created_by => user.id } }
 
       # can update their settings or their account
       can :update, User, { :id => user.id }

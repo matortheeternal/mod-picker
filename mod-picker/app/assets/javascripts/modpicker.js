@@ -32,14 +32,16 @@ app.config(function($futureStateProvider) {
 });
 
 app.run(['$rootScope', '$state', 'smoothScroll', function($rootScope, $state, smoothScroll) {
-    $rootScope.$on('$stateChangeStart', function(evt, to, params) {
-        // scroll to the top of the page
-        smoothScroll(document.body, {duration: 300});
-
+    $rootScope.$on('$stateChangeStart', function(evt, toState, params, fromState) {
         //this adds a redirectTo option into ui router, which makes default tabs much nicer
-        if (to.redirectTo) {
+        if (toState.redirectTo) {
             evt.preventDefault();
-            $state.go(to.redirectTo, params, { location: 'replace' });
+            $state.go(toState.redirectTo, params, { location: 'replace' });
+        }
+        //don't scroll if the transition is from one sticky state to another
+        if (!toState.sticky || !fromState.sticky) {
+            // scroll to the top of the page
+            smoothScroll(document.body, {duration: 300});
         }
     });
 }]);

@@ -3,6 +3,12 @@
     margin: 20px 0;
   }
 
+  .content-block {
+    .content-message {
+      margin: 40px 0;
+    }
+  }
+
   .tab-bar-items {
     min-height: 42px;
     
@@ -197,10 +203,4 @@
   text-align: left;
   vertical-align:bottom;
   font-style: italic;
-}
-
-.section-title {
-  .right-item {
-    float: right;
-  }
 }

@@ -1,3 +1,5 @@
+<messages></messages>
+
 <two-columns>
     <loader data="user" spinner-class="big-spinner">
         <div class="page-container">
@@ -12,17 +14,40 @@
 
                 <h3 class="section-title">Reputation</h3>
                 <section>
-                    <div class="stat-item reputation">{{user.reputation.overall | number}}</div>
-                    <input type="button" class="btn" value="Endorse" ng-if="" ng-click="toggleRep">
-                    <input type="button" class="btn" value="Unendorse" ng-if="" ng-click="toggleRep">
+                    <div class="stat-item reputation">
+                        {{user.reputation.overall | number}}
+                        <div class="action-box" ng-click="endorse()" ng-if="permissions.canEndorse || user.endorsed">
+                            <i class="fa {{user.endorsed ? 'fa-heart' : 'fa-heart-o'}}" aria-hidden="true"></i>
+                            {{user.endorsed ? 'Take Back Reputation' : 'Give Reputation' }}
+                        </div>
+
+                        <div class="action-box no-action" ng-if="!(permissions.canEndorse || user.endorsed)">
+                            <!-- TODO: have this link to a page with all of the current user's endorsements -->
+                            You can't endorse any more people
+                        </div>
+                    </div>
                 </section>
 
                 <h3 class="section-title">Contributions</h3>
                 <section>
-                    <div class="stat-item">{{user.reviews_count | number}} Reviews</div>
-                    <div class="stat-item">{{user.compatibility_notes_count | number}} Compatibility Notes</div>
-                    <div class="stat-item">{{user.install_order_notes_count + user.load_order_notes_count | number}} Install Order Notes</div>
-                    <div class="stat-item">{{user.load_order_notes_count + user.load_order_notes_count | number}} Load Order Notes</div>
+                    <a ng-href="#/reviews?scol=submitted&s={{user.username}}">
+                        <div class="stat-item">{{user.reviews_count | number}} Reviews</div>
+                    </a>
+                    <a ng-href="#/compatibility-notes?scol=submitted&s={{user.username}}">
+                        <div class="stat-item">{{user.compatibility_notes_count | number}} Compatibility Notes</div>
+                    </a>
+                    <a ng-href="#/install-order-notes?scol=submitted&s={{user.username}}">
+                        <div class="stat-item">{{user.install_order_notes_count| number}} Install Order Notes</div>
+                    </a>
+                    <a ng-href="#/load-order-notes?scol=submitted&s={{user.username}}">
+                        <div class="stat-item">{{user.load_order_notes_count | number}} Load Order Notes</div>
+                    </a>
+                    <a ng-href="#/corrections?scol=submitted&s={{user.username}}">
+                        <div class="stat-item">{{user.corrections_count | number}} Corrections</div>
+                    </a>
+                    <a ng-href="#/comments?scol=submitted&s={{user.username}}">
+                        <div class="stat-item">{{user.comments_count | number}} Comments</div>
+                    </a>
                 </section>
 
                 <h3 class="section-title">Activity</h3>
@@ -63,7 +88,9 @@
             <div class="right-column tabs-column right-user-column">
                 <tabs tabs="tabs"></tabs>
                 <state-loader spinner-class="big-spinner">
-                    <div ui-view class="tab"></div>
+                    <div class="tab">
+                        <tab-views></tab-views>
+                    </div>
                 </state-loader>
             </div>
         </div>

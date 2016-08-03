@@ -20,7 +20,7 @@
                 <option value="after">Install After</option>
             </select>
         </span>
-        <search-input search-type="mods" result-id="activeInstallOrderNote.mod_id" excluded-id="mod.id" on-change="validateInstallOrderNote"></search-input>
+        <search-input search-function="searchMods" result-id="activeInstallOrderNote.mod_id" excluded-id="mod.id" on-change="validateInstallOrderNote" label="mod" key="name"></search-input>
     </div>
     <div class="content-container">
         <text-area data="activeInstallOrderNote.text_body" ng-refresh="updateMDE" class="note-text-area" on-change="validateInstallOrderNote"></text-area>
@@ -47,11 +47,17 @@
 </div>
 
 <loader data="mod.install_order_notes" spinner-class="big-spinner" ng-if="!errors.install_order_notes">
+    <!-- note specified in the url -->
+    <div class="content-block current-contribution" ng-if="currentInstallOrderNote && !currentInstallOrderNote.editing">
+        <install-order-note note="currentInstallOrderNote" mod-id="mod.id" index="99" current-user="currentUser" edit="editInstallOrderNote"></install-order-note>
+    </div>
+
+    <!-- the rest of the notes -->
     <div ng-repeat="note in mod.install_order_notes" class="content-block" ng-if="!note.editing">
         <install-order-note note="note" mod-id="mod.id" index="100 + $index" current-user="currentUser" edit="editInstallOrderNote"></install-order-note>
     </div>
 
-    <div class="content-message" ng-hide="mod.install_order_notes.length">
+    <div class="content-message" ng-hide="mod.install_order_notes.length || currentInstallOrderNote">
         There are no Install Order Notes for this mod yet.
     </div>
 

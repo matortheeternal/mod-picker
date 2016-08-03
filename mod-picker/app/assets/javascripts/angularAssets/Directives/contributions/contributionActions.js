@@ -34,7 +34,10 @@ app.controller('contributionActionsController', function($scope, $timeout, contr
     $scope.shareLink = window.location.href + '/' + $scope.target.id;
 
     // initialize local variables
-    $scope.report = {};
+    $scope.report = {
+        reportable_id: $scope.target.id,
+        reportable_type: $scope.modelName
+    };
     $scope.retrieving = {};
     $scope.pages = {
         correction_comments: {}
@@ -227,7 +230,7 @@ app.controller('contributionActionsController', function($scope, $timeout, contr
         $scope.canReport = user || false;
         $scope.canAgree = $scope.agreeable && $scope.isOpen && ((rep > 40) || isAdmin || isModerator);
         $scope.canCorrect = (rep > 40) || isAdmin || isModerator;
-        $scope.canEdit = isAdmin || isModerator || isSubmitter;
+        $scope.canEdit = $scope.edit && (isAdmin || isModerator || isSubmitter);
         $scope.canApprove = $scope.approveable && (isAdmin || isModerator);
         $scope.canHide = isAdmin || isModerator;
     };

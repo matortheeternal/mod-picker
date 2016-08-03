@@ -433,60 +433,224 @@ app.service('columnsFactory', function() {
         return ["General", "Content Statistics", "Contribution Statistics", "Extended Statistics"];
     };
 
-    this.commentColumns = function() {
+    this.modListModColumns = function() {
         return [
             {
                 group: "General",
                 visibility: true,
                 required: true,
-                label: "Submitter",
-                data: "submitter.username",
-                link: function(comment) {
-                    return "#/user/" + comment.submitter.id
-                }
+                label: "Index",
+                data: "index",
+                filter: "number",
+                class: "index-column"
             },
             {
                 group: "General",
                 visibility: true,
-                label: "Commentable",
-                data: "commentable_type",
-                link: function (comment) {
-                    return comment.commentable_link
-                }
+                required: true,
+                label: "Name",
+                data: function(item) {
+                    return item.name || item.mod.name;
+                },
+                link: function (modListPlugin) {
+                    if (item.mod) {
+                        return "#/mod/" + modListPlugin.mod.id;
+                    }
+                },
+                class: "primary-column"
+            },
+            {
+                group: "General",
+                visibility: false,
+                label: "Aliases",
+                data: "mod.aliases",
+                class: "aliases-column"
             },
             {
                 group: "General",
                 visibility: true,
-                label: "Submitted",
-                data: "submitted",
+                label: "Authors",
+                data: "mod.authors",
+                class: "author-column"
+            },
+            {
+                group: "General",
+                visibility: true,
+                label: "Primary Category",
+                data: "mod.primary_category.name"
+            },
+            {
+                group: "General",
+                visibility: false,
+                label: "Secondary Category",
+                data: "mod.secondary_category.name"
+            },
+            {
+                group: "General",
+                visibility: false,
+                label: "Status",
+                data: "mod.status",
+                class: "status-column"
+            },
+            {
+                group: "General",
+                visibility: false,
+                label: "Avg Rating",
+                data: "mod.average_rating",
+                filter: "number:0"
+            },
+            {
+                group: "General",
+                visibility: false,
+                label: "Reputation",
+                data: "mod.reputation",
+                filter: "number:0"
+            },
+            {
+                group: "General",
+                visibility: false,
+                label: "Stars",
+                data: "mod.stars_count",
+                filter: "number"
+            },
+            {
+                group: "General",
+                visibility: true,
+                label: "Released",
+                data: "mod.released",
                 filter: "date"
             },
             {
                 group: "General",
                 visibility: true,
-                label: "Edited",
-                data: "edited",
+                label: "Updated",
+                data: "mod.updated",
                 filter: "date"
-            },
-            //{
-            //    group: "General",
-            //    visibility: true,
-            //    label: "Parent",
-            //    data: "parent_id",
-            //    link: function(comment) {
-            //        return comment.parent_link
-            //    }
-            //},
-            {
-                group: "General",
-                visibility: true,
-                label: "Replies",
-                data: "children_count"
             }
         ];
     };
 
-    this.commentColumnGroups = function() {
-        return ["General"]
+    this.modListModColumnGroups = function() {
+        return ["General"];
+    };
+
+    this.modListPluginColumns = function() {
+        return [
+            {
+                group: "General",
+                visibility: true,
+                required: true,
+                label: "Index",
+                data: function(item) {
+                    if (!item.merged) return item.index;
+                },
+                note: function($scope, item) {
+                    if (item.merged) return 'merged';
+                },
+                filter: "number",
+                class: "index-column"
+            },
+            {
+                group: "General",
+                visibility: false,
+                required: true,
+                label: "Load Order",
+                data: function(item) {
+                    if (!item.merged) return item.index;
+                },
+                note: function($scope, item) {
+                    if (item.merged) return 'merged';
+                },
+                filter: "hex",
+                class: "load-order-column"
+            },
+            {
+                group: "General",
+                visibility: true,
+                required: true,
+                label: "Filename",
+                data: function(item) {
+                    return item.filename || item.plugin.filename;
+                },
+                link: function (item) {
+                    if (item.mod && item.plugin) {
+                        return "#/mod/" + item.mod.id + "/analysis?plugin=" + item.plugin.id;
+                    }
+                },
+                note: function($scope, item) {
+                    return item.cleaned ? '(cleaned)' : '';
+                },
+                class: "primary-column"
+            },
+            {
+                group: "General",
+                visibility: false,
+                label: "Mod",
+                data: "mod.name",
+                link: function (item) {
+                    if (item.mod) {
+                        return "#/mod/" + item.mod.id;
+                    }
+                }
+            },
+            {
+                group: "General",
+                visibility: true,
+                label: "Primary Category",
+                data: "mod.primary_category.name"
+            },
+            {
+                group: "General",
+                visibility: false,
+                label: "Secondary Category",
+                data: "mod.secondary_category.name"
+            },
+            {
+                group: "General",
+                visibility: false,
+                label: "CRC",
+                data: "plugin.crc_hash",
+                class: "crc-column"
+            },
+            {
+                group: "General",
+                visibility: false,
+                label: "File Size",
+                data: "plugin.file_size",
+                filter: "bytes"
+            },
+            {
+                group: "General",
+                visibility: false,
+                label: "Author",
+                data: "plugin.author",
+                class: "author-column"
+            },
+            {
+                group: "General",
+                visibility: true,
+                label: "Records",
+                data: "plugin.record_count",
+                filter: "number"
+            },
+            {
+                group: "General",
+                visibility: true,
+                label: "Overrides",
+                data: "plugin.override_count",
+                filter: "number"
+            },
+            {
+                group: "General",
+                visibility: true,
+                label: "Errors",
+                data: "plugin.errors_count",
+                filter: "number"
+            }
+        ];
+    };
+
+    this.modListPluginColumnGroups = function() {
+        return ["General"];
     };
 });

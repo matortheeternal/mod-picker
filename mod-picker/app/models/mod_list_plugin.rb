@@ -3,10 +3,11 @@ class ModListPlugin < ActiveRecord::Base
 
   belongs_to :mod_list, :inverse_of => 'mod_list_plugins'
   belongs_to :plugin, :inverse_of => 'mod_list_plugins'
+  has_one :mod, :through => 'plugin'
 
   # Validations
   validates :mod_list_id, :plugin_id, :index, presence: true
-  validates :active, inclusion: [true, false]
+  validates :cleaned, :merged, inclusion: [true, false]
   # can only have a mod on a given mod list once
   validates :plugin_id, uniqueness: { scope: :mod_list_id, :message => "The plugin is already present on the mod list." }
 
@@ -14,14 +15,21 @@ class ModListPlugin < ActiveRecord::Base
   after_create :increment_counters
   before_destroy :decrement_counters
 
+  def required_plugins
+    Master.plugins([self.plugin_id]).order(:master_plugin_id)
+  end
+
   def as_json(options={})
     if JsonHelpers.json_options_empty(options)
       # TODO: Revise this as necessary
       default_options = {
-          :only => [:index, :group_id, :active],
+          :only => [:id, :index, :group_id, :cleaned, :merged],
           :include => {
               :plugin => {
-                  :only => [:id, :filename]
+                  :except => [:game_id, :mod_id, :description, :mod_lists_count, :load_order_notes_count]
+              },
+              :mod => {
+                  :only => [:id, :name, :primary_category_id, :secondary_category_id]
               }
           }
       }

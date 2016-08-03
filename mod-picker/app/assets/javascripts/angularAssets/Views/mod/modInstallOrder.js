@@ -1,48 +1,56 @@
-app.controller('modInstallOrderController', function($scope, $stateParams, $state, contributionService, contributionFactory) {
-    // verify we can access this tab
-    $scope.currentTab = $scope.findTab('Install Order');
-    if (!$scope.currentTab) {
-        // if we can't access this tab, redirect to the first tab we can access and
-        // stop doing stuff in this controller
-        $state.go('base.mod.' + $scope.tabs[0].name, {
-            modId: $stateParams.modId
-        });
-        return;
-    }
+app.controller('modInstallOrderController', function($scope, $stateParams, $state, contributionService, modService, contributionFactory, sortFactory) {
+    $scope.sort.install_order_notes = {
+        column: $stateParams.scol,
+        direction: $stateParams.sdir
+    };
+    $scope.filters.install_order_notes = $stateParams.filter;
 
-    // BASE RETRIEVAL LOGIC
+    // inherited functions
+    $scope.searchMods = modService.searchMods;
+
+    // functions
     $scope.retrieveInstallOrderNotes = function(page) {
-        $scope.retrieving.install_order_notes = true;
-
-        // transition to new url state
-        var params = {
-            modId: $stateParams.modId,
-            page: page,
-            scol: $scope.sort.compatibility_notes.column,
-            sdir: $scope.sort.compatibility_notes.direction
-        };
-        $state.transitionTo('base.mod.Install Order', params, { notify: false });
-
-        // retrieve the install order notes
+        // retrieve the Install Order Notes
         var options = {
             sort: $scope.sort.install_order_notes,
             filters: $scope.filters.install_order_notes,
+            //if no page is specified load the first one
             page: page || 1
         };
         contributionService.retrieveModContributions($stateParams.modId, 'install_order_notes', options, $scope.pages.install_order_notes).then(function(data) {
-            $scope.retrieving.install_order_notes = false;
             $scope.mod.install_order_notes = data;
+
+            //seperating the installOrderNote in the url if any
+            if ($stateParams.installOrderNoteId) {
+                var currentIndex = $scope.mod.install_order_notes.findIndex(function(installOrderNote) {
+                    return installOrderNote.id === $stateParams.installOrderNoteId;
+                });
+                if (currentIndex > -1) {
+                    $scope.currentInstallOrderNote = $scope.mod.install_order_notes.splice(currentIndex, 1)[0];
+                } else {
+                    // remove the installOrderNoteId param from the url if it's not part of this mod
+                    $state.go($state.current.name, {installOrderNoteId: null});
+                }
+            } else {
+                // clear the currentInstallOrderNote if it's not specified
+                delete $scope.currentInstallOrderNote;
+            }
         }, function(response) {
             $scope.errors.install_order_notes = response;
         });
+
+        //refresh the tab's params
+        var params = {
+            scol: $scope.sort.install_order_notes.column,
+            sdir: $scope.sort.install_order_notes.direction,
+            filter: $scope.filters.install_order_notes.modlist,
+            page: page || 1
+        };
+        $state.go($state.current.name, params);
     };
 
-    // retrieve install order notes if we don't have them and aren't currently retrieving them
-    if (!$scope.mod.install_order_notes && !$scope.retrieving.install_order_notes) {
-        $scope.sort.install_order_notes.column = $stateParams.scol;
-        $scope.sort.install_order_notes.direction = $stateParams.sdir;
-        $scope.retrieveInstallOrderNotes($stateParams.page);
-    }
+    //retrieve the notes when the state is first loaded
+    $scope.retrieveInstallOrderNotes($stateParams.page);
 
     // re-retrieve install order notes when the sort object changes
     $scope.$watch('sort.install_order_notes', function() {
@@ -157,7 +165,7 @@ app.controller('modInstallOrderController', function($scope, $stateParams, $stat
                 $scope.updateInstallOrderNote(noteObj.install_order_note);
                 $scope.discardInstallOrderNote();
             }, function(response) {
-                var params = {label: 'Error updating Install Order Note', response: response};
+                var params = { label: 'Error updating Install Order Note', response: response };
                 $scope.$emit('errorMessage', params);
             });
         } else {
@@ -166,7 +174,7 @@ app.controller('modInstallOrderController', function($scope, $stateParams, $stat
                 $scope.mod.reviews.unshift(note);
                 $scope.discardInstallOrderNote();
             }, function(response) {
-                var params = {label: 'Error submitting Install Order Note', response: response};
+                var params = { label: 'Error submitting Install Order Note', response: response };
                 $scope.$emit('errorMessage', params);
             });
         }

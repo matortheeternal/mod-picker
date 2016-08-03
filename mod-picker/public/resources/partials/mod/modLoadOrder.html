@@ -28,7 +28,7 @@
                 <option value="after">After</option>
             </select>
         </span>
-        <search-input search-type="plugins" result-id="activeLoadOrderNote.second_plugin_id" search-text="activeLoadOrderNote.searchText" excluded-id="activeLoadOrderNote.first_plugin_id" on-change="validateLoadOrderNote" disabled="activeLoadOrderNote.editing"></search-input>
+        <search-input search-function="searchPlugins" result-id="activeLoadOrderNote.second_plugin_id" search-text="activeLoadOrderNote.searchText" excluded-id="activeLoadOrderNote.first_plugin_id" on-change="validateLoadOrderNote" disabled="activeLoadOrderNote.editing" label="plugins" key="filename"></search-input>
     </div>
     <div class="content-container">
         <text-area data="activeLoadOrderNote.text_body" ng-refresh="updateMDE" class="note-text-area"></text-area>
@@ -55,11 +55,17 @@
 </div>
 
 <loader data="mod.load_order_notes" spinner-class="big-spinner" ng-if="!errors.load_order_notes">
+    <!-- note specified in the url -->
+    <div class="content-lock current-contribution" ng-if="currentloadOrderNote && !currentloadOrderNote.editing">
+        <load-order-note note="currentloadOrderNote" index="99" current-user="currentUser" edit="editLoadOrderNote"></load-order-note>
+    </div>
+
+    <!-- the rest of the notes -->
     <div ng-repeat="note in mod.load_order_notes" class="content-block" ng-if="!note.editing">
         <load-order-note note="note" index="100 + $index" current-user="currentUser" edit="editLoadOrderNote"></load-order-note>
     </div>
 
-    <div class="content-message" ng-hide="mod.load_order_notes.length">
+    <div class="content-message" ng-hide="mod.load_order_notes.length || currentLoadOrderNote">
         There are no Load Order Notes for this mod yet.
     </div>
 

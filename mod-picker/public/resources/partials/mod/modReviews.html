@@ -8,8 +8,8 @@
         AVG RATING
     </div>
 
-    <div class="tab-bar-item">
-        <input class="btn" type="button" value="Add Review" ng-click="startNewReview()" ng-disabled="activeReview || mod.user_review" title="{{ mod.user_review ? 'You have already submitted a review for this mod.' : 'Add a new review' }}"/>
+    <div class="tab-bar-item" ng-if="!mod.user_review">
+        <input class="btn" type="button" value="Add Review" ng-click="startNewReview()" ng-disabled="activeReview" title="{{ mod.user_review ? 'You have already submitted a review for this mod.' : 'Add a new review' }}"/>
     </div>
 </div>
 
@@ -59,15 +59,28 @@
 </div>
 
 <loader data="mod.reviews" spinner-class="big-spinner" ng-if="!errors.reviews && !errors.reviewSections">
-    <div class="content-block user-review" ng-if="mod.user_review && mod.user_review.id && !mod.user_review.editing">
-        <review review="mod.user_review" show-user-column="true" index="99" current-user="currentUser" edit="editReview"></review>
+     <!-- current user's review -->
+    <div class="content-block user-review" ng-if="mod.user_review">
+        <div class="content-title" ng-click="myReviewExpanded = !myReviewExpanded">
+            Your Review ({{mod.user_review.overall_rating}}/100)
+            <i class="fa fa-caret-down" aria-hidden="true" ng-hide="myReviewExpanded"></i>
+            <i class="fa fa-caret-up" aria-hidden="true" ng-show="myReviewExpanded"></i>
+        </div>
+        <div ng-if="myReviewExpanded">
+            <review review="mod.user_review" show-user-column="true" index="98" current-user="currentUser" edit="editReview"></review>
+        </div>
+    </div>
+
+    <!-- review specified in the url -->
+    <div class="content-block current-contribution" ng-if="currentReview && !currentReview.editing">
+        <review review="currentReview" show-user-column="true" index="99" current-user="currentUser" edit="editReview"></review>
     </div>
 
     <div ng-repeat="review in mod.reviews" class="content-block" ng-if="!review.editing">
         <review review="review" show-user-column="true" index="100 + $index" current-user="currentUser" edit="editReview"></review>
     </div>
 
-    <div class="content-message" ng-hide="mod.reviews.length">
+    <div class="content-message" ng-hide="mod.reviews.length || currentReview">
         There are no reviews for this mod yet.
     </div>
 

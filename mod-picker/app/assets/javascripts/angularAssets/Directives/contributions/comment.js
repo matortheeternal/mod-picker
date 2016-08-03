@@ -20,7 +20,10 @@ app.controller('commentController', function ($scope, $filter, $timeout, contrib
     $scope.errorEvent = $scope.eventPrefix ? $scope.eventPrefix + 'ErrorMessage' : 'errorMessage';
 
     // this is the report object
-    $scope.report = {};
+    $scope.report = {
+        reportable_id: $scope.comment.id,
+        reportable_type: 'Comment'
+    };
 
     $scope.getDateString = function() {
         var comment = $scope.comment;

@@ -1,5 +1,5 @@
 <div class="box-shadow">
-    <table ng-show="data.length">
+    <table ng-show="data.length" class="browse-table">
         <thead>
             <tr>
                 <th ng-repeat="column in columns" ng-class="{ 'hidden': !column.visibility }" ng-click="sortColumn(column)">
@@ -26,7 +26,7 @@
                     <a ng-if="column.link" class="strong" ng-href="{{column.link(item)}}">
                         {{ columnValue(item, column.data) | picker:column.filter }}
                     </a>
-                    <span ng-if="!column.link">
+                    <span ng-hide="column.link">
                         {{ columnValue(item, column.data) | picker:column.filter }}
                     </span>
                 </td>
@@ -41,32 +41,5 @@
         No {{label}} were found matching your search criteria.
     </div>
 
-    <!-- TODO: put this inside its own directive-->
-    <div class="modal-container" ng-show="showModal">
-        <div class="modal big-modal">
-            <form>
-                <h3 class="section-title">Edit Columns</h3>
-                <div class="columns-list">
-                    <section ng-repeat="group in columnGroups">
-                        <h3>{{group}}</h3>
-                        <ul class="checkbox-list">
-                            <li ng-repeat="column in groupColumns(columns, group) as groupedColumns">
-                                <label>
-                                    <input type="checkbox" ng-model="column.visibility">
-                                    {{column.label}}
-                                </label>
-                            </li>
-                            <li ng-hide="groupedColumns.length">
-                                No columns available.
-                            </li>
-                        </ul>
-                    </section>
-                </div>
-
-                <div class="action-button-container">
-                    <input type="submit" class="btn" value="Close" ng-click="showModal = false">
-                </div>
-            </form>
-        </div>
-    </div>
+    <edit-columns-modal></edit-columns-modal>
 </div>
