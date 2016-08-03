@@ -3,6 +3,7 @@ class ModListMod < ActiveRecord::Base
 
   # SCOPES
   scope :utility, -> (bool) { joins(:mod).where(:mods => {is_utility: bool}) }
+  scope :official, -> (bool) { joins(:mod).where(:mods => {is_official: bool}) }
 
   # ASSOCIATIONS
   belongs_to :mod_list, :inverse_of => 'mod_list_mods'

@@ -1,6 +1,10 @@
 class ModListPlugin < ActiveRecord::Base
   include RecordEnhancements
 
+  # Scopes
+  scope :official, -> (bool) { joins(:plugin => :mod).where(:mods => { is_official: bool }) }
+
+  # Associations
   belongs_to :mod_list, :inverse_of => 'mod_list_plugins'
   belongs_to :plugin, :inverse_of => 'mod_list_plugins'
   has_one :mod, :through => 'plugin'
