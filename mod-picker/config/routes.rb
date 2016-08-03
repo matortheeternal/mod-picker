@@ -148,6 +148,7 @@ Rails.application.routes.draw do
     match '/articles/index', to: 'articles#index', via: [:get, :post]
 
     resources :reports, only: [:create, :destroy]
+    match'/reports/index', to: 'reports#index', via: [:get, :post]
   end
 
   # welcome page

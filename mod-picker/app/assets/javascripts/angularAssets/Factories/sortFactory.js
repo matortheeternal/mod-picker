@@ -150,5 +150,23 @@ app.factory("sortFactory", function() {
         ];
     };
 
+    /* modQueue sort options */
+    this.modQueueSortOptions = function() {
+        return [
+            {
+                label: "Date First Report Submitted",
+                value: "submitted"
+            },
+            {
+                label: "Date Last Report Submitted",
+                value: "edited"
+            },
+            {
+                label: "Total Reports",
+                value: "reports_count"
+            }
+        ];
+    };
+
     return factory;
 });

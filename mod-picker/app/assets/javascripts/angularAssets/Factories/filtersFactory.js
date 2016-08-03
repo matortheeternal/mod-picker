@@ -102,8 +102,7 @@ app.factory("filtersFactory", function() {
     };
 
     this.modStatisticFilters = function() {
-        return [
-            {
+        return [{
                 label: "Endorsements",
                 common: true,
                 sites: { nexus: true },
@@ -223,8 +222,7 @@ app.factory("filtersFactory", function() {
     };
 
     this.modPickerFilters = function() {
-        return [
-            {
+        return [{
                 label: "Reputation",
                 common: true,
                 data: "reputation",
@@ -284,8 +282,7 @@ app.factory("filtersFactory", function() {
     };
 
     this.modDateFilters = function() {
-        return [
-            {
+        return [{
                 label: "Date Updated",
                 data: "updated",
                 type: "Range",
@@ -347,8 +344,7 @@ app.factory("filtersFactory", function() {
     };
 
     this.userStatisticFilters = function() {
-        return [
-            {
+        return [{
                 label: "Reputation",
                 common: true,
                 data: "reputation",
@@ -424,8 +420,7 @@ app.factory("filtersFactory", function() {
     };
 
     this.userDateFilters = function() {
-        return [
-            {
+        return [{
                 label: "Date Joined",
                 data: "joined",
                 type: "Range",
@@ -458,10 +453,9 @@ app.factory("filtersFactory", function() {
             factory.editorFilter
         ]
     };
-    
+
     this.contributionDateFilters = function() {
-        return [
-            {
+        return [{
                 label: "Date Submitted",
                 data: "submitted",
                 type: "Range",
@@ -479,8 +473,7 @@ app.factory("filtersFactory", function() {
     };
 
     this.contributionStandingFilters = function() {
-        return [
-            {
+        return [{
                 data: "standing.good",
                 type: "Boolean",
                 default: true,
@@ -534,16 +527,14 @@ app.factory("filtersFactory", function() {
     };
 
     this.commentStatisticFilters = function() {
-        return [
-            {
-                label: "Replies Count",
-                common: true,
-                data: "replies",
-                type: "Range",
-                max: 100,
-                param: "rc"
-            }
-        ]
+        return [{
+            label: "Replies Count",
+            common: true,
+            data: "replies",
+            type: "Range",
+            max: 100,
+            param: "rc"
+        }]
     };
 
     this.commentFilters = function() {
@@ -600,8 +591,7 @@ app.factory("filtersFactory", function() {
 
     /* compatibility notes index filters */
     this.compatibilityNoteTypeFilters = function() {
-        return [
-            {
+        return [{
                 data: "status.incompatible",
                 param: "inc",
                 type: "Boolean",
@@ -657,13 +647,13 @@ app.factory("filtersFactory", function() {
     /* load order notes index filters */
     this.loadOrderNoteGeneralFilters = function() {
         return [
-                factory.searchFilter,
-                factory.submitterFilter,
-                factory.editorFilter,
-                {
-                    data: "plugin_filename",
-                    param: "p"
-                }
+            factory.searchFilter,
+            factory.submitterFilter,
+            factory.editorFilter,
+            {
+                data: "plugin_filename",
+                param: "p"
+            }
         ];
     };
 
@@ -678,8 +668,7 @@ app.factory("filtersFactory", function() {
 
     /* corrections index filters */
     this.correctionTypeFilters = function() {
-        return [
-            {
+        return [{
                 data: "correctable.Mod",
                 param: "tmo",
                 type: "Boolean",
@@ -707,8 +696,7 @@ app.factory("filtersFactory", function() {
     };
 
     this.correctionStatusFilters = function() {
-        return [
-            {
+        return [{
                 data: "status.open",
                 param: "sto",
                 type: "Boolean",
@@ -736,8 +724,7 @@ app.factory("filtersFactory", function() {
     };
 
     this.correctionModStatusFilters = function() {
-        return [
-            {
+        return [{
                 data: "mod_status.good",
                 param: "msg",
                 type: "Boolean",
@@ -759,8 +746,7 @@ app.factory("filtersFactory", function() {
     };
 
     this.correctionStatisticFilters = function() {
-        return [
-            {
+        return [{
                 label: "Agree Count",
                 common: true,
                 data: "agree_count",
@@ -823,6 +809,158 @@ app.factory("filtersFactory", function() {
         return Array.prototype.concat(
             factory.articleSearchFilters(),
             factory.articleDateFilters()
+        );
+    };
+
+    this.modQueueGeneralFilters = function() {
+        return [{
+            data: "reports_count",
+            param: "rc"
+        }];
+    };
+
+    this.modQueueSearchFilters = function() {
+        return [
+            factory.searchFilter,
+            {
+                data: "reports.note",
+                param: "n"
+            },
+            {
+                data: "reports.submitter",
+                param: "s"
+            }
+        ];
+    };
+
+    this.modQueueDateFilters = function() {
+        return [{
+                label: "First Reported On",
+                data: "submitted",
+                type: "Range",
+                subtype: "Date",
+                param: "dc"
+            },
+            {
+                label: "Most Recently Reported On",
+                data: "edited",
+                type: "Range",
+                subtype: "Date",
+                param: "du"
+            }
+        ];
+    };
+
+    this.modQueueReportTypeFilters = function() {
+        return [{
+                //respect
+                data: "report_type.1",
+                param: "rtr",
+                type: "Boolean",
+                default: true
+            },
+            {
+                //trustworthy
+                data: "report_type.2",
+                param: "rtt",
+                type: "Boolean",
+                default: true
+            },
+            {
+                //constructive
+                data: "report_type.3",
+                param: "rtc",
+                type: "Boolean",
+                default: true
+            },
+            {
+                //spam
+                data: "report_type.4",
+                param: "rts",
+                type: "Boolean",
+                default: true
+            },
+            {
+                //piracy
+                data: "report_type.5",
+                param: "rtp",
+                type: "Boolean",
+                default: true
+            },
+            {
+                //other
+                data: "report_type.6",
+                param: "rto",
+                type: "Boolean",
+                default: true
+            }
+        ];
+    };
+
+    this.modQueueReportableTypeFilters = function() {
+        return [{
+                data: "reportable.Comment",
+                param: "tc",
+                type: "Boolean",
+                default: true
+            },
+            {
+                data: "reportable.Correction",
+                param: "tcr",
+                type: "Boolean",
+                default: true
+            },
+            {
+                data: "reportable.ModList",
+                param: "tml",
+                type: "Boolean",
+                default: true
+            },
+            {
+                data: "reportable.Tag",
+                param: "tt",
+                type: "Boolean",
+                default: true
+            },
+            {
+                data: "reportable.User",
+                param: "tu",
+                type: "Boolean",
+                default: true
+            },
+            {
+                data: "reportable.Review",
+                param: "tr",
+                type: "Boolean",
+                default: true
+            },
+            {
+                data: "reportable.CompatibilityNote",
+                param: "tcn",
+                type: "Boolean",
+                default: true
+            },
+            {
+                data: "reportable.InstallOrderNote",
+                param: "tio",
+                type: "Boolean",
+                default: true
+            },
+            {
+                data: "reportable.LoadOrderNote",
+                param: "tlo",
+                type: "Boolean",
+                default: true
+            }
+        ];
+    };
+
+    this.modQueueFilters = function() {
+        return Array.prototype.concat(
+            factory.modQueueGeneralFilters(),
+            factory.modQueueSearchFilters(),
+            factory.modQueueDateFilters(),
+            factory.modQueueReportableTypeFilters()
         );
     };
 

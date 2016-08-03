@@ -1,4 +1,4 @@
-app.service('reportService', function($q, backend) {
+app.service('reportService', function($q, backend, pageUtils) {
 
     this.submitReport = function(report) {
         // prepare report record
@@ -15,5 +15,17 @@ app.service('reportService', function($q, backend) {
 
         // submit report
         return backend.post('/reports', reportData);
-    }
+    };
+
+    this.retrieveReports = function(options, pageInformation) {
+        var action = $q.defer();
+        backend.post('/reports/index', options).then(function (data) {
+            // resolve page information and data
+            pageUtils.getPageInformation(data, pageInformation, options.page);
+            action.resolve(data);
+        }, function(response) {
+            action.reject(response);
+        });
+        return action.promise;
+    };
 });
