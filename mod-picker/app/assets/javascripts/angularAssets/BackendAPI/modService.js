@@ -1,4 +1,4 @@
-app.service('modService', function(backend, $q, categoryService, errorsFactory, pageUtils, objectUtils, contributionService, userTitleService, reviewSectionService, recordGroupService, pluginService) {
+app.service('modService', function(backend, $q, categoryService, errorsFactory, pageUtils, objectUtils, contributionService, userTitleService, reviewSectionService, recordGroupService, pluginService, assetUtils) {
     var service = this;
 
     this.retrieveMods = function(options, pageInformation) {
@@ -97,12 +97,8 @@ app.service('modService', function(backend, $q, categoryService, errorsFactory, 
     this.retrieveModAnalysis = function(modId) {
         var output = $q.defer();
         backend.retrieve('/mods/' + modId + '/' + 'analysis').then(function (analysis) {
-            // turn assets into an array of string
-            analysis.assets = analysis.assets.map(function(asset) {
-                return asset.filepath;
-            });
             // create nestedAssets tree
-            analysis.nestedAssets = assetUtils.convertDataStringToNestedObject(analysis.assets);
+            analysis.nestedAssets = assetUtils.convertDataStringToNestedObject(analysis.asset_file_paths);
 
             // prepare plugin data for display
             recordGroupService.associateGroups(analysis.plugins);
