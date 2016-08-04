@@ -287,9 +287,23 @@ class Mod < ActiveRecord::Base
 
   def create_asset_files
     if @asset_paths
+      basepaths = []
       @asset_paths.each do |path|
-        asset_file = AssetFile.find_or_create_by(game_id: self.game_id, filepath: path)
-        self.mod_asset_files.create(asset_file_id: asset_file.id)
+        # prioritize files over data folder matching
+        split_paths = path.split(/(?<=\.bsa\\|\.esp|\.esm|Data\\)/)
+        basepaths |= [split_paths[0]] if split_paths.length > 1
+      end
+      # sort by longest path first so nested paths are prioritized
+      basepaths.sort { |a,b| b.length - a.length }
+
+      @asset_paths.each do |path|
+        basepath = basepaths.find { |basepath| path.starts_with?(basepath) }
+        if basepath.present?
+          asset_file = AssetFile.find_or_create_by(game_id: self.game_id, path: path.sub(basepath, ''))
+          self.mod_asset_files.create(asset_file_id: asset_file.id, subpath: basepath)
+        else
+          self.mod_asset_files.create(subpath: path)
+        end
       end
     end
   end
