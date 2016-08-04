@@ -1,4 +1,4 @@
-app.service('modService', function(backend, $q, categoryService, errorsFactory, pageUtils, objectUtils) {
+app.service('modService', function(backend, $q, categoryService, errorsFactory, pageUtils, objectUtils, contributionService, userTitleService, reviewSectionService, recordGroupService, pluginService) {
     var service = this;
 
     this.retrieveMods = function(options, pageInformation) {
@@ -49,6 +49,68 @@ app.service('modService', function(backend, $q, categoryService, errorsFactory, 
         backend.retrieve('/mods/' + modId).then(function(data) {
             categoryService.resolveModCategories(data);
             output.resolve(data);
+        }, function(response) {
+            output.reject(response);
+        });
+        return output.promise;
+    };
+
+    this.retrieveModContributions = function(modId, route, options, pageInformation) {
+        var action = $q.defer();
+        backend.post('/mods/' + modId + '/' + route, options).then(function (data) {
+            var contributions = data[route];
+            contributionService.associateHelpfulMarks(contributions, data.helpful_marks);
+            contributionService.handleEditors(contributions);
+            userTitleService.associateTitles(contributions);
+            pageUtils.getPageInformation(data, pageInformation, options.page);
+            action.resolve(contributions);
+        }, function(response) {
+            action.reject(response);
+        });
+        return action.promise;
+    };
+
+    this.retrieveModReviews = function(modId, options, pageInformation) {
+        var action = $q.defer();
+        backend.post('/mods/' + modId + '/reviews', options).then(function(data) {
+            // prepare reviews
+            var reviews = data.reviews;
+            contributionService.associateHelpfulMarks(reviews, data.helpful_marks);
+            userTitleService.associateTitles(reviews);
+            reviewSectionService.associateReviewSections(reviews);
+            pageUtils.getPageInformation(data, pageInformation, options.page);
+            // prepare user review if present
+            if (data.user_review && data.user_review.id) {
+                var user_review = [data.user_review];
+                service.associateHelpfulMarks(user_review, data.helpful_marks);
+                userTitleService.associateTitles(user_review);
+                reviewSectionService.associateReviewSections(user_review);
+            }
+            // resolve data
+            action.resolve({ reviews: data.reviews, user_review: data.user_review });
+        }, function(response) {
+            action.reject(response);
+        });
+        return action.promise;
+    };
+
+    this.retrieveModAnalysis = function(modId) {
+        var output = $q.defer();
+        backend.retrieve('/mods/' + modId + '/' + 'analysis').then(function (analysis) {
+            // turn assets into an array of string
+            analysis.assets = analysis.assets.map(function(asset) {
+                return asset.filepath;
+            });
+            // create nestedAssets tree
+            analysis.nestedAssets = assetUtils.convertDataStringToNestedObject(analysis.assets);
+
+            // prepare plugin data for display
+            recordGroupService.associateGroups(analysis.plugins);
+            pluginService.combineAndSortMasters(analysis.plugins);
+            pluginService.associateOverrides(analysis.plugins);
+            pluginService.sortErrors(analysis.plugins);
+
+            output.resolve(analysis);
         }, function(response) {
             output.reject(response);
         });
