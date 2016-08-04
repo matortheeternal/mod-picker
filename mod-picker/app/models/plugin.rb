@@ -109,6 +109,28 @@ class Plugin < ActiveRecord::Base
     })
   end
 
+  def self.analysis_json(collection)
+    collection.as_json({
+        :include => {
+            :masters => {
+                :except => [:plugin_id],
+                :include => {
+                    :master_plugin => {
+                        :only => [:mod_id, :filename]
+                    }
+                }
+            },
+            :dummy_masters => {
+                :except => [:plugin_id]
+            },
+            :plugin_record_groups => {
+                :except => [:plugin_id]
+            }
+        },
+        :methods => :formatted_overrides
+    })
+  end
+
   def self.show_json(collection)
     collection.as_json({
         :include => {
