@@ -297,7 +297,7 @@ class Mod < ActiveRecord::Base
       basepaths.sort { |a,b| b.length - a.length }
 
       @asset_paths.each do |path|
-        basepath = basepaths.find { |basepath| path.starts_with?(basepath) }
+        basepath = basepaths.find { |basepath| path.start_with?(basepath) }
         if basepath.present?
           asset_file = AssetFile.find_or_create_by(game_id: self.game_id, path: path.sub(basepath, ''))
           self.mod_asset_files.create(asset_file_id: asset_file.id, subpath: basepath)
