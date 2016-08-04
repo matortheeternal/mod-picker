@@ -292,7 +292,7 @@ app.service('modService', function(backend, $q, categoryService, errorsFactory, 
 
     this.associateInstallOrderMods = function(items, installOrder) {
         items.forEach(function(item) {
-            item.mod = service.getInstallOrderMod(installOrder, item.mod_id);
+            item.mod = angular.copy(service.getInstallOrderMod(installOrder, item.mod_id));
         });
     };
 });
