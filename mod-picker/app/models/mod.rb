@@ -324,6 +324,10 @@ class Mod < ActiveRecord::Base
     end
   end
 
+  def asset_file_paths
+    self.mod_asset_files.joins(:asset_file).pluck(:subpath, :path).map { |item| item.join('') }
+  end
+
   def link_sources
     if @nexus_info_id
       @nexus_info = NexusInfo.find(@nexus_info_id)
