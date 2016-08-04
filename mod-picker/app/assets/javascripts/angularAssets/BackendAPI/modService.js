@@ -98,7 +98,7 @@ app.service('modService', function(backend, $q, categoryService, errorsFactory, 
         var output = $q.defer();
         backend.retrieve('/mods/' + modId + '/' + 'analysis').then(function (analysis) {
             // create nestedAssets tree
-            analysis.nestedAssets = assetUtils.convertDataStringToNestedObject(analysis.asset_file_paths);
+            analysis.nestedAssets = assetUtils.convertDataStringToNestedObject(analysis.assets);
 
             // prepare plugin data for display
             recordGroupService.associateGroups(analysis.plugins);
