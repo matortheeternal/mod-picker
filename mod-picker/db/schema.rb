@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160802195232) do
+ActiveRecord::Schema.define(version: 20160804041649) do
 
   create_table "agreement_marks", id: false, force: :cascade do |t|
     t.integer "correction_id", limit: 4,                null: false
@@ -36,12 +36,12 @@ ActiveRecord::Schema.define(version: 20160802195232) do
 
   create_table "asset_files", force: :cascade do |t|
     t.integer "game_id",               limit: 4,               null: false
-    t.string  "filepath",              limit: 255,             null: false
+    t.string  "path",                  limit: 255,             null: false
     t.integer "mod_asset_files_count", limit: 4,   default: 0, null: false
   end
 
-  add_index "asset_files", ["filepath"], name: "filepath", unique: true, using: :btree
   add_index "asset_files", ["game_id"], name: "fk_rails_2e8fb86f89", using: :btree
+  add_index "asset_files", ["path"], name: "filepath", unique: true, using: :btree
 
   create_table "base_reports", force: :cascade do |t|
     t.integer  "reportable_id",   limit: 4,               null: false
@@ -329,11 +329,13 @@ ActiveRecord::Schema.define(version: 20160802195232) do
   add_index "masters", ["plugin_id"], name: "pl_id", using: :btree
 
   create_table "mod_asset_files", id: false, force: :cascade do |t|
-    t.integer "mod_id",        limit: 4, null: false
-    t.integer "asset_file_id", limit: 4, null: false
+    t.integer "mod_id",        limit: 4,   null: false
+    t.integer "asset_file_id", limit: 4
+    t.string  "subpath",       limit: 255
   end
 
   add_index "mod_asset_files", ["asset_file_id"], name: "maf_id", using: :btree
+  add_index "mod_asset_files", ["mod_id", "asset_file_id"], name: "mod_id", unique: true, using: :btree
   add_index "mod_asset_files", ["mod_id"], name: "mv_id", using: :btree
 
   create_table "mod_authors", force: :cascade do |t|
