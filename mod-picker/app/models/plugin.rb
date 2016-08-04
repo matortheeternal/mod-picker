@@ -111,6 +111,7 @@ class Plugin < ActiveRecord::Base
 
   def self.analysis_json(collection)
     collection.as_json({
+        :only => [:id, :mod_id, :filename, :errors_count],
         :include => {
             :masters => {
                 :except => [:plugin_id],
@@ -121,9 +122,6 @@ class Plugin < ActiveRecord::Base
                 }
             },
             :dummy_masters => {
-                :except => [:plugin_id]
-            },
-            :plugin_record_groups => {
                 :except => [:plugin_id]
             }
         },
