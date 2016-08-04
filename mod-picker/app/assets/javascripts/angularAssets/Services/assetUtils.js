@@ -81,15 +81,43 @@ app.service('assetUtils', function (fileUtils) {
 
     this.compactConflictingAssets = function(conflictingAssets) {
         var prevAsset = {};
+        var mod;
+
+        // compact conflicting assets with a backwards loop
         for (var i = conflictingAssets.length - 1; i >= 0; i--) {
             var asset = conflictingAssets[i];
             if (asset.asset_file_id == prevAsset.asset_file_id) {
-                prevAsset.mod_ids.push(asset.mod_id);
+                mod = asset.mod;
+                mod.subpath = asset.subpath;
+                prevAsset.mods.push(mod);
                 conflictingAssets.splice(i, 1);
             } else {
-                asset.mod_ids = [asset.mod_id];
+                mod = asset.mod;
+                mod.subpath = asset.subpath;
+                asset.mods = [mod];
+                delete asset.mod;
+                delete asset.subpath;
                 prevAsset = asset;
             }
         }
+
+        // sort mods in conflicting assets
+        conflictingAssets.forEach(function(asset) {
+            asset.mods && asset.mods.sort(function(a, b) { return a.index - b.index })
+        });
+
+        // mark winning mods
+        conflictingAssets.forEach(function(asset) {
+            var looseAssetMod;
+            for (var i = 0; i < asset.mods.length; i++) {
+                var mod = asset.mods[i];
+                if (!mod.subpath.endsWith('.bsa\\')) looseAssetMod = mod;
+            }
+            if (looseAssetMod) {
+                looseAssetMod.wins = true;
+            } else {
+                asset.mods[asset.mods.length - 1].wins = true;
+            }
+        })
     };
 });
