@@ -132,7 +132,7 @@ class ModListsController < ApplicationController
     plugin_ids = @mod_list.mod_list_plugins.official(false).pluck(:plugin_id)
     install_order = @mod_list.mod_list_mods.utility(false)
     load_order = @mod_list.mod_list_plugins
-    plugins = Plugin.where(id: plugin_ids).includes(:masters, :dummy_masters, :plugin_record_groups, :overrides)
+    plugins = Plugin.where(id: plugin_ids).includes(:masters, :dummy_masters, :overrides)
     conflicting_assets = ModAssetFile.mods(mod_ids).includes(:asset_file).conflicting
 
     # render response

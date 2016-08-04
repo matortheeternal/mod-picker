@@ -59,7 +59,6 @@ app.service('modListService', function (backend, $q, objectUtils, userTitleServi
         var action = $q.defer();
         backend.retrieve('/mod_lists/' + modListId + '/analysis').then(function(data) {
             assetUtils.compactConflictingAssets(data.conflicting_assets);
-            recordGroupService.associateGroups(data.plugins);
             pluginService.combineAndSortMasters(data.plugins);
             data.load_order_overrides = pluginService.buildLoadOrderOverrides(data.plugins, data.load_order);
             pluginService.compactLoadOrderOverrides(data.load_order_overrides);
