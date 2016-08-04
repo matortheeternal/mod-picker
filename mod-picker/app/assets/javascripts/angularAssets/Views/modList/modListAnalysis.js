@@ -34,4 +34,11 @@ app.controller('modListAnalysisController', function($scope, modListService, plu
 
     // retrieve analysis when the state is first loaded
     $scope.retrieveAnalysis();
+
+    // returns true if there are no errors to display
+    $scope.noPluginErrors = function() {
+        return !$scope.analysis.plugins.find(function(plugin) {
+            return plugin.errors_count > 0;
+        })
+    };
 });

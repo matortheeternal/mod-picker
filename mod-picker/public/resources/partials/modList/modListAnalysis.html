@@ -206,5 +206,8 @@
                 <a ng-href="#/mod/{{plugin.mod_id}}/analysis?plugin={{plugin.id}}">{{plugin.filename}}</a> ({{plugin.errors_count}} Errors)
             </li>
         </ul>
+        <div class="content-message" ng-if="noPluginErrors()">
+            No plugin errors found.
+        </div>
     </div>
 </div>
