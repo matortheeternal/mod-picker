@@ -1,4 +1,4 @@
-app.service('modListService', function (backend, $q, objectUtils, userTitleService, contributionService, categoryService, recordGroupService, pluginService, assetUtils) {
+app.service('modListService', function (backend, $q, objectUtils, userTitleService, contributionService, categoryService, recordGroupService, pluginService, assetUtils, modService) {
     var service = this;
 
     this.retrieveModList = function(modListId) {
@@ -58,6 +58,7 @@ app.service('modListService', function (backend, $q, objectUtils, userTitleServi
     this.retrieveModListAnalysis = function(modListId) {
         var action = $q.defer();
         backend.retrieve('/mod_lists/' + modListId + '/analysis').then(function(data) {
+            modService.associateInstallOrderMods(data.conflicting_assets, data.install_order);
             assetUtils.compactConflictingAssets(data.conflicting_assets);
             pluginService.combineAndSortMasters(data.plugins);
             data.load_order_overrides = pluginService.buildLoadOrderOverrides(data.plugins, data.load_order);
