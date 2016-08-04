@@ -283,4 +283,16 @@ app.service('modService', function(backend, $q, categoryService, errorsFactory, 
     this.submitImage = function(modId, image) {
         return backend.postFile('/mods/' + modId + '/image', 'image', image);
     };
+
+    this.getInstallOrderMod = function(installOrder, modId) {
+        return installOrder.find(function(item) {
+            return item.mod_id == modId;
+        });
+    };
+
+    this.associateInstallOrderMods = function(items, installOrder) {
+        items.forEach(function(item) {
+            item.mod = service.getInstallOrderMod(installOrder, item.mod_id);
+        });
+    };
 });
