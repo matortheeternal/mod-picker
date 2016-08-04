@@ -174,6 +174,9 @@ class Mod < ActiveRecord::Base
   has_many :required_mods, :class_name => 'ModRequirement', :inverse_of => 'mod', :dependent => :destroy
   has_many :required_by, :class_name => 'ModRequirement', :inverse_of => 'required_mod', :dependent => :destroy
 
+  # config files associated with the mod
+  has_many :config_files, :inverse_of => 'mod', :dependent => :destroy
+
   # users who can edit the mod
   has_many :mod_authors, :inverse_of => 'mod', :dependent => :destroy
   has_many :author_users, :class_name => 'User', :through => 'mod_authors', :source => 'user', :inverse_of => 'mods'
