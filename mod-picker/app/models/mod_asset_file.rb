@@ -23,7 +23,7 @@ class ModAssetFile < ActiveRecord::Base
           :except => [],
           :include => {
               :asset_file => {
-                  :only => [:filepath]
+                  :only => [:path]
               }
           }
       }
