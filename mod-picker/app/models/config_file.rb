@@ -7,4 +7,15 @@ class ConfigFile < ActiveRecord::Base
 
   # Validations
   validates :game_id, :mod_id, :filename, :install_path, presence: true
+
+  def as_json(options={})
+    if JsonHelpers.json_options_empty(options)
+      default_options = {
+          :only => [:id, :filename]
+      }
+      super(options.merge(default_options))
+    else
+      super(options)
+    end
+  end
 end
