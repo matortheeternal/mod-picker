@@ -1,52 +1,69 @@
 app.service('assetUtils', function (fileUtils) {
-    this.convertDataStringToNestedObject = function(assets) {
-        var nestedData = {
-            childs: {}
-        };
+    var service = this;
 
-        // TODO: don't use recursive function here, as a simple loop would work as good if not better
-        function nestObject(nestingArray, currentLayer) {
-            var current = nestingArray.shift();
-            if(!current) {
-                return;
-            }
-            if(!currentLayer.childs) {
-                currentLayer.childs = {};
-            }
-            if(!currentLayer.childs[current]) {
-                var ext = fileUtils.getFileExtension(current).toLowerCase();
-                var iconClass = "fa-file-o";
-                switch(ext) {
-                    case "": iconClass = "fa-folder-o"; break;
-                    case "esp": iconClass = "fa-globe"; break;
-                    case "esm": iconClass = "fa-globe"; break;
-                    case "bsa": iconClass = "fa-file-archive-o"; break;
-                    case "ba2": iconClass = "fa-file-archive-o"; break;
-                    case "pex": iconClass = "fa-file-code-o"; break;
-                    case "psc": iconClass = "fa-file-code-o"; break;
-                    case "ini": iconClass = "fa-file-text-o"; break;
-                    case "txt": iconClass = "fa-file-text-o"; break;
-                    case "xml": iconClass = "fa-file-text-o"; break;
-                    case "fuz": iconClass = "fa-file-sound-o"; break;
-                    case "tri": iconClass = "fa-location-arrow"; break;
-                    case "nif": iconClass = "fa-cube"; break;
-                    case "dds": iconClass = "fa-image"; break;
-                }
-                currentLayer.childs[current] = {
-                    title: current,
-                    iconClass: iconClass
-                };
-            }
-            return nestObject(nestingArray, currentLayer.childs[current]);
+    this.getIconClass = function(ext) {
+        switch(ext) {
+            case "": return "fa-folder-o";
+            case "esp": return "fa-globe";
+            case "esm": return "fa-globe";
+            case "bsa": return "fa-file-archive-o";
+            case "ba2": return "fa-file-archive-o";
+            case "pex": return "fa-file-code-o";
+            case "psc": return "fa-file-code-o";
+            case "ini": return "fa-file-text-o";
+            case "txt": return "fa-file-text-o";
+            case "xml": return "fa-file-text-o";
+            case "fuz": return "fa-file-sound-o";
+            case "tri": return "fa-location-arrow";
+            case "nif": return "fa-cube";
+            case "dds": return "fa-image";
+            default: return "fa-file-o"
         }
+    };
 
-        assets.forEach(function (asset) {
-            var assetNesting = asset.split('\\');
-            nestObject(assetNesting, nestedData);
+    this.getNestedAssets = function(assetPaths) {
+        var nestedAssets = [];
+        assetPaths.forEach(function(assetPath) {
+            var paths = assetPath.split('\\');
+            var fileName = paths.pop();
+            var fileExt = fileUtils.getFileExtension(fileName).toLowerCase();
+            var currentLevel = nestedAssets;
+
+            // traverse/generate levels as needed
+            paths.forEach(function(folderName) {
+                var folderExt = fileUtils.getFileExtension(folderName).toLowerCase();
+                var foundFolder = currentLevel.find(function(item) {
+                    return item.name.toLowerCase() === folderName.toLowerCase();
+                });
+                if (foundFolder) {
+                    if (!foundFolder.children) foundFolder.children = [];
+                    currentLevel = foundFolder.children;
+                } else {
+                    currentLevel.unshift({
+                        name: folderName,
+                        iconClass: service.getIconClass(folderExt),
+                        children: []
+                    });
+                    currentLevel = currentLevel[0].children;
+                }
+            });
+
+            // push the file onto the current level if it isn't already present
+            var foundFile = currentLevel.find(function(item) {
+                return item.name.toLowerCase() === fileName.toLowerCase();
+            });
+            if (!foundFile) {
+                currentLevel.push({
+                    name: fileName,
+                    iconClass: service.getIconClass(fileExt)
+                });
+            }
         });
 
-        return nestedData;
+        return nestedAssets;
     };
+
+    // TODO: sort levels by filename
 
     this.compactConflictingAssets = function(conflictingAssets) {
         var prevAsset = {};
