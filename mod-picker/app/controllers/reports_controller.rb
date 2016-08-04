@@ -1,6 +1,4 @@
 class ReportsController < ApplicationController
-  # TODO: submission logic
-
   # GET /reports.json
   def index
     @reports = BaseReport.filter(filtering_params)
