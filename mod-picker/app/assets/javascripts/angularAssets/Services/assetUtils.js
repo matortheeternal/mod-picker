@@ -63,7 +63,21 @@ app.service('assetUtils', function (fileUtils) {
         return nestedAssets;
     };
 
-    // TODO: sort levels by filename
+    this.sortNestedAssets = function(nestedAssets) {
+        nestedAssets.sort(function(a, b) {
+            if (a.children || !b.children) {
+                if (a.name < b.name) return -1;
+                if (a.name > b.name) return 1;
+                return 0;
+            } else {
+                return 1;
+            }
+        });
+        // recurse into children
+        nestedAssets.forEach(function(asset) {
+            if (asset.children) service.sortNestedAssets(asset.children);
+        });
+    };
 
     this.compactConflictingAssets = function(conflictingAssets) {
         var prevAsset = {};

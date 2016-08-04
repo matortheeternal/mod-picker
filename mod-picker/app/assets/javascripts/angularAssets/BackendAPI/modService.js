@@ -99,6 +99,7 @@ app.service('modService', function(backend, $q, categoryService, errorsFactory, 
         backend.retrieve('/mods/' + modId + '/' + 'analysis').then(function (analysis) {
             // create nestedAssets tree
             analysis.nestedAssets = assetUtils.getNestedAssets(analysis.assets);
+            assetUtils.sortNestedAssets(analysis.nestedAssets);
 
             // prepare plugin data for display
             recordGroupService.associateGroups(analysis.plugins);
