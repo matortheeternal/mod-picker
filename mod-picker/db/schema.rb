@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160804041649) do
+ActiveRecord::Schema.define(version: 20160804222824) do
 
   create_table "agreement_marks", id: false, force: :cascade do |t|
     t.integer "correction_id", limit: 4,                null: false
@@ -133,6 +133,7 @@ ActiveRecord::Schema.define(version: 20160804041649) do
 
   create_table "config_files", force: :cascade do |t|
     t.integer "game_id",         limit: 4,                 null: false
+    t.integer "mod_id",          limit: 4,                 null: false
     t.string  "filename",        limit: 64,                null: false
     t.string  "install_path",    limit: 128,               null: false
     t.text    "text_body",       limit: 65535
@@ -140,6 +141,7 @@ ActiveRecord::Schema.define(version: 20160804041649) do
   end
 
   add_index "config_files", ["game_id", "filename"], name: "index_config_files_on_game_id_and_filename", using: :btree
+  add_index "config_files", ["mod_id"], name: "fk_rails_241d26b9f7", using: :btree
 
   create_table "corrections", force: :cascade do |t|
     t.integer  "game_id",          limit: 4,                     null: false
@@ -889,6 +891,7 @@ ActiveRecord::Schema.define(version: 20160804041649) do
   add_foreign_key "compatibility_notes", "users", column: "edited_by"
   add_foreign_key "compatibility_notes", "users", column: "submitted_by", name: "compatibility_notes_ibfk_1"
   add_foreign_key "config_files", "games"
+  add_foreign_key "config_files", "mods"
   add_foreign_key "corrections", "games"
   add_foreign_key "corrections", "users", column: "edited_by"
   add_foreign_key "corrections", "users", column: "submitted_by", name: "corrections_ibfk_4"
