@@ -522,7 +522,7 @@
 
   .section-tools {
     position: absolute;
-    right: 0;
+    right: 36px;
     top: 0;
     padding: 10px;
     display: flex;
@@ -552,6 +552,17 @@
       &:hover {
         color: $error_secondary;
       }
+    }
+  }
+
+  .fa-refresh {
+    color: $dark_action_color;
+    font-size: 18px;
+    position: absolute;
+    left: 10px;
+    top: 18px;
+    &:hover {
+      color: $bright_action_color;
     }
   }
 }
