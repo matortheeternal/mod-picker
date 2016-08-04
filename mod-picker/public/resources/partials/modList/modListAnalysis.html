@@ -144,7 +144,7 @@
                 <tr ng-repeat="asset in analysis.conflicting_assets">
                     <td>{{asset.asset_file.path}}</td>
                     <td>
-                        <div ng-repeat="mod in asset.mods" title="{{mod.subpath}}{{asset.asset_file.path}}" class="{{ mod.wins ? 'winning-asset' : 'losing-asset' }}">
+                        <div ng-repeat="mod in asset.mods" title="{{mod.subpath}}{{asset.asset_file.path}}" ng-class="{ 'winning-asset' : mod.wins }">
                             [{{mod.index}}] {{mod.mod.name}}
                             <span ng-show="mod.subpath.endsWith('.bsa\\')">(BSA)</span>
                         </div>
