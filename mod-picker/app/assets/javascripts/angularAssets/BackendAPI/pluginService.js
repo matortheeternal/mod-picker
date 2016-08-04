@@ -132,4 +132,17 @@ app.service('pluginService', function (backend, $q, $timeout, recordGroupService
             plugin.plugin_errors = sortedErrors;
         });
     };
+
+    this.buildPluginErrors = function(plugins, loadOrder) {
+        var errorTypes = errorsFactory.errorTypes();
+        var pluginErrors = [];
+        plugins.forEach(function(plugin) {
+            plugin.plugin_errors.forEach(function(error) {
+                error.plugin = service.getLoadOrderPlugin(loadOrder, plugin.id);
+                error.type = errorTypes[error.group];
+                pluginErrors.push(error);
+            });
+        });
+        return pluginErrors;
+    }
 });

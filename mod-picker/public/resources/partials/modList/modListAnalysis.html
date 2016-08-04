@@ -201,6 +201,22 @@
         Plugin Errors
     </div>
     <div class="content-container analysis-container">
+        <table class="analysis-table big-analysis-table" ng-if="analysis.plugin_errors.length">
+            <thead>
+            <tr>
+                <th>Plugin</th>
+                <th>Group</th>
+                <th>Message</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="error in analysis.plugin_errors">
+                <td class="primary-column">{{error.plugin.plugin.filename}}</td>
+                <td title="{{error.type.name}}">{{error.type.acronym}}</td>
+                <td><plugin-error error="error"></plugin-error></td>
+            </tr>
+            </tbody>
+        </table>
         <div class="content-message" ng-if="!analysis.plugin_errors.length">
             No plugin errors found.
         </div>

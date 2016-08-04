@@ -61,7 +61,7 @@ app.service('modListService', function (backend, $q, objectUtils, userTitleServi
             assetUtils.compactConflictingAssets(data.conflicting_assets);
             recordGroupService.associateGroups(data.plugins);
             pluginService.combineAndSortMasters(data.plugins);
-            pluginService.sortErrors(data.plugins);
+            data.plugin_errors = pluginService.buildPluginErrors(data.plugins, data.load_order);
             data.load_order_overrides = pluginService.buildLoadOrderOverrides(data.plugins, data.load_order);
             pluginService.compactLoadOrderOverrides(data.load_order_overrides);
             action.resolve(data);
