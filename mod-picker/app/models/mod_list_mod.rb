@@ -11,7 +11,6 @@ class ModListMod < ActiveRecord::Base
 
   # Validations
   validates :mod_list_id, :mod_id, :index, presence: true
-  validates :active, inclusion: [true, false]
   # can only have a mod on a given mod list once
   # TODO: If we don't allow the user to change the mod_id with nested attributes we could refactor this validation to be an after_create callback
   validates :mod_id, uniqueness: { scope: :mod_list_id, :message => "The mod is already present on the mod list." }
