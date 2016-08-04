@@ -2,10 +2,10 @@
     <li ng-repeat="asset in assets">
         <div ng-click="toggle(asset)" class="asset-tree-title" ng-class="{ 'asset-tree-expandable' : asset.children }">
             <span ng-if="asset.children" >
-                <span ng-show="expanded" class="expanded-icon">
+                <span ng-show="asset.expanded" class="expanded-icon">
                     <i class="fa fa-chevron-down"></i>
                 </span>
-                <span ng-hide="expanded" class="collapsed-icon">
+                <span ng-hide="asset.expanded" class="collapsed-icon">
                     <i class="fa fa-chevron-right"></i>
                 </span>
             </span>
