@@ -26,7 +26,7 @@
             <span class="config-tab" ng-repeat="config in group.configs" ng-click="selectConfig(group, config)" ng-class="{ 'active' : config.config_file.id == group.activeConfig.id }">
                 {{config.config_file.filename}}
                 <span class="action-items" ng-click="removeConfig(group, $index)" ng-if="editing">
-                    <span class="fa fa-cross"></span>
+                    <span class="fa fa-times"></span>
                 </span>
             </span>
         </div>
@@ -40,8 +40,8 @@
             Custom Config Files
             <span class="config-tab" ng-repeat="config in mod_list.custom_config_files" ng-click="activeCustomConfig = config"  ng-class="{ 'active' : config.id == activeCustomConfig.id }">
                 {{config.filename}}
-                <span class="action-items" ng-click="removeCustomConfig($index)" ng-if="editing">
-                    <span class="fa fa-cross"></span>
+                <span class="action-items" ng-click="removeCustomConfig(config)" ng-if="editing">
+                    <span class="fa fa-times"></span>
                 </span>
             </span>
         </div>
