@@ -103,13 +103,19 @@
     cursor: pointer;
     font-size: 12px;
     font-weight: normal;
-    margin: 0 10px;
+    margin: 0 4px;
     padding: 4px 14px;
     background-color: $action_color;
     @include transition(all 0.2s ease-in-out);
 
     &:hover {
       background-color: $bar_highlight_color;
+    }
+
+    .action-items {
+      margin-left: 4px;
+      margin-right: -8px;
+      cursor: pointer;
     }
   }
 
