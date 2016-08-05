@@ -131,7 +131,9 @@ app.service('modListService', function (backend, $q, objectUtils, userTitleServi
                 custom_mods_attributes: custom_mods,
                 mod_list_plugins_attributes: mod_list_plugins,
                 custom_plugins_attributes: custom_plugins,
-                ignored_notes_attributes: modList.ignored_notes
+                ignored_notes_attributes: modList.ignored_notes,
+                mod_list_config_files_attributes: modList.config_files,
+                custom_config_files_attributes: modList.custom_config_files
             }
         };
         objectUtils.deleteEmptyProperties(modListData, 1);
