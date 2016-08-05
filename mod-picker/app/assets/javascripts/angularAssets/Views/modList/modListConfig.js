@@ -147,6 +147,27 @@ app.controller('modListConfigController', function($scope, $q, $timeout, modList
     };
 
     $scope.addCustomConfig = function() {
-        // TODO
+        var custom_config = {
+            mod_list_id: $scope.mod_list.id,
+            filename: 'Custom Config',
+            install_path: '{{GamePath}}'
+        };
+
+        modListService.newModListCustomConfigFile(custom_config).then(function(data) {
+            // push config onto view
+            var modListCustomConfig = data.mod_list_custom_config_file;
+            $scope.mod_list.custom_config_files.push(angular.copy(modListCustomConfig));
+            $scope.originalModList.custom_config_files.push(angular.copy(modListCustomConfig));
+            $scope.mod_list.config_files_count += 1;
+            $scope.updateTabs();
+
+            // update models
+            $scope.model.custom_configs.push(modListCustomConfig);
+            $scope.selectCustomConfig(modListCustomConfig);
+            $scope.showCustomConfigs = true;
+        }, function(response) {
+            var params = {label: 'Error adding custom config file', response: response};
+            $scope.$emit('errorMessage', params);
+        });
     };
 });
