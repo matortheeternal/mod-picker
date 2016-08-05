@@ -19,7 +19,7 @@ class ModListConfigFile < ActiveRecord::Base
           :only => [:id, :text_body],
           :include => {
               :config_file => {
-                  :only => [:filename, :install_path, :text_body, :mod_lists_count],
+                  :only => [:id, :filename, :install_path, :mod_lists_count],
                   :include => {
                       :mod => {
                           :only => [:id, :name]
