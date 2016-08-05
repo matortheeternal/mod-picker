@@ -153,6 +153,26 @@ app.controller('modListConfigController', function($scope, $q, $timeout, modList
         $scope.activeCustomConfig.active = true;
     };
 
+    $scope.removeCustomConfig = function(customConfig) {
+        customConfig._destroy = true;
+        // verify there is another custom config
+        // switch to the first available custom config if the user destroyed the active custom config
+        for (var i = 0; i < $scope.model.custom_configs.length; i++) {
+            var config = $scope.model.custom_configs[i];
+            if (!config._destroy) {
+                if (customConfig.active) {
+                    $timeout(function() {
+                        $scope.selectCustomConfig(config);
+                    });
+                }
+                return;
+            }
+        }
+        // no more custom configs
+        customConfig.active = false;
+        $scope.showCustomConfigs = false;
+    };
+
     $scope.addCustomConfig = function() {
         var custom_config = {
             mod_list_id: $scope.mod_list.id,
