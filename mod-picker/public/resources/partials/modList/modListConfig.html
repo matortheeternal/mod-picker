@@ -23,7 +23,7 @@
     <div class="content-block config-block" ng-repeat="group in model.configs" ng-hide="group._destroy">
         <div class="content-title">
             <div><a ng-href="#/mod/{{group.id}}">{{group.name}}</a> Config Files</div>
-            <span class="config-tab" ng-repeat="config in group.configs" ng-click="selectConfig(group, config)">
+            <span class="config-tab" ng-repeat="config in group.configs" ng-click="selectConfig(group, config)" ng-class="{ 'active' : config.config_file.id == group.activeConfig.id }">
                 {{config.config_file.filename}}
                 <span class="action-items" ng-click="removeConfig(group, $index)" ng-if="editing">
                     <span class="fa fa-cross"></span>
@@ -38,7 +38,7 @@
     <div class="content-block config-block" ng-show="mod_list.custom_config_files.length">
         <div class="content-title">
             Custom Config Files
-            <span class="config-tab" ng-repeat="config in mod_list.custom_config_files" ng-click="activeCustomConfig = config">
+            <span class="config-tab" ng-repeat="config in mod_list.custom_config_files" ng-click="activeCustomConfig = config"  ng-class="{ 'active' : config.id == activeCustomConfig.id }">
                 {{config.filename}}
                 <span class="action-items" ng-click="removeCustomConfig($index)" ng-if="editing">
                     <span class="fa fa-cross"></span>
