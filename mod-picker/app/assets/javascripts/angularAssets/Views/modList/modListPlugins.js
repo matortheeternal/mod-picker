@@ -12,6 +12,11 @@ app.controller('modListPluginsController', function($scope, $q, $timeout, modLis
         $scope.detailsItem = item;
     };
 
+    $scope.toggleManagePluginsModal = function(visible) {
+        $scope.$emit('toggleModal', visible);
+        $scope.showManagePluginsModal = visible;
+    };
+
     $scope.searchPluginStore = function(str) {
         var action = $q.defer();
         var matchingPlugins = $scope.plugins_store.filter(function(plugin) {
