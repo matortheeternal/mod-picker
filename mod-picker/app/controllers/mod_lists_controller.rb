@@ -82,7 +82,7 @@ class ModListsController < ApplicationController
 
     # prepare primary data
     plugins = @mod_list.mod_list_plugins.includes(:plugin)
-    plugin_store = @mod_list.plugins
+    plugins_store = @mod_list.plugins.order(:mod_id)
     custom_plugins = @mod_list.custom_plugins
     groups = @mod_list.mod_list_groups.where(tab: 2).order(:index)
 
@@ -97,7 +97,7 @@ class ModListsController < ApplicationController
     # render response
     render :json => {
         plugins: plugins,
-        plugin_store: plugin_store,
+        plugins_store: plugins_store,
         custom_plugins: custom_plugins,
         groups: groups,
         required_plugins: @mod_list.required_plugins,

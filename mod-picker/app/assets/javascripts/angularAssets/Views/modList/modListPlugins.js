@@ -14,7 +14,7 @@ app.controller('modListPluginsController', function($scope, $q, $timeout, modLis
 
     $scope.searchPluginStore = function(str) {
         var action = $q.defer();
-        var matchingPlugins = $scope.plugin_store.filter(function(plugin) {
+        var matchingPlugins = $scope.plugins_store.filter(function(plugin) {
             return plugin.filename.toLowerCase().includes(str);
         });
         action.resolve(matchingPlugins);
@@ -55,7 +55,7 @@ app.controller('modListPluginsController', function($scope, $q, $timeout, modLis
             $scope.notes.load_order = data.load_order_notes;
             $scope.mod_list.plugins = data.plugins;
             $scope.mod_list.custom_plugins = data.custom_plugins;
-            $scope.plugin_store = data.plugin_store;
+            $scope.plugins_store = data.plugins_store;
             $scope.mod_list.groups = Array.prototype.concat($scope.mod_list.groups || [], data.groups);
             $scope.originalModList.plugins = angular.copy($scope.mod_list.plugins);
             $scope.originalModList.custom_plugins = angular.copy($scope.mod_list.custom_plugins);
