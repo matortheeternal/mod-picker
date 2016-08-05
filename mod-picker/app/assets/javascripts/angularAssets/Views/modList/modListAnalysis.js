@@ -37,7 +37,7 @@ app.controller('modListAnalysisController', function($scope, modListService, plu
 
     // returns true if there are no errors to display
     $scope.noPluginErrors = function() {
-        if (!$scope.analysis || !$scope.analysis.plugins) return;
+        if (!$scope.analysis || !$scope.analysis.plugins) return true;
         return !$scope.analysis.plugins.find(function(plugin) {
             return plugin.errors_count > 0;
         })
