@@ -4,6 +4,15 @@ app.controller('modListConfigController', function($scope, $q, modListService, c
         $scope.showManageConfigsModal = visible;
     };
 
+    $scope.searchConfigStore = function(str) {
+        var action = $q.defer();
+        var matchingConfigs = $scope.configs_store.filter(function(config) {
+            return config.filename.toLowerCase().includes(str);
+        });
+        action.resolve(matchingConfigs);
+        return action.promise;
+    };
+
     $scope.buildConfigModel = function() {
         $scope.model.configs = configFilesService.groupConfigFiles($scope.mod_list.config_files);
     };
