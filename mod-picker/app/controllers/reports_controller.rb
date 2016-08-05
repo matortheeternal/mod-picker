@@ -1,4 +1,5 @@
 class ReportsController < ApplicationController
+  before_action :set_base_report, only: [:destroy]
   # TODO: submission logic
 
   # GET /reports.json
@@ -55,17 +56,24 @@ class ReportsController < ApplicationController
   # DELETE /reviews/1
   # DELETE /reviews/1.json
   def destroy
-    if @report.destroy
+    errors = nil
+    @base_report.reports.each do |report|
+      unless report.destroy
+        errors += report.errors
+      end
+    end
+    if errors.nil? and @base_report.destroy
       render json: {status: :ok}
     else
-      render json: @report.errors, status: :unprocessable_entity
+      errors += @base_report.errors
+      render json: errors, status: :unprocessable_entity
     end
   end
 
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_base_report
-      @report = BaseReport.find(params[:id])
+      @base_report = BaseReport.find(params[:id])
     end
 
     # Params we allow filtering on

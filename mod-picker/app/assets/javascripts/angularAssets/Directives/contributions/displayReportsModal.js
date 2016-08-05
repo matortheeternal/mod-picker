@@ -9,5 +9,10 @@ app.directive('displayReportsModal', function () {
 app.controller('displayReportsController', function($scope, reportService) {
     reportService.retrieveContributionReports($scope.modelName, $scope.target.id, $scope.pages.reports).then(function(reportObject) {
         $scope.reports = reportObject.reports;
+        $scope.baseReportId = reportObject.id;
     });
+
+    $scope.removeReports = function(report) {
+      reportService.removeBaseReport($scope.baseReportId);
+    };
 });

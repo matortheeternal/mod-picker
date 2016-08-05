@@ -40,4 +40,8 @@ app.service('reportService', function($q, backend, pageUtils) {
         });
         return base_report.promise;
     };
+
+    this.removeBaseReport = function(baseReportId) {
+        return backend.delete('/reports/' + baseReportId);
+    };
 });

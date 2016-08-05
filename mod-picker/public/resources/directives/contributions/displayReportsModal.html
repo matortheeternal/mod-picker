@@ -8,6 +8,11 @@
             Reports of {{target.submitter.username}}'s {{model.label}}
         </h3>
 
+        <span class="action-box" ng-click="removeReports()">
+            <i class="fa fa-trash" aria-hidden="true"></i>
+            Clear reports
+        </span>
+
         <div ng-repeat="report in reports" class="report-container">
 
             <div class="report-user-column">
@@ -41,12 +46,6 @@
                 </div>
 
                 <div class="report-text-container" marked="report.note"></div>
-
-                <div class="report-actions-container" ng-if="!report.editing">
-                  <!-- TODO: add resolve(removes report) action -->
-                  <!-- example action
-                  <a class="action-item" ng-if="canReply" tabindex="{{index}}" ng-click="reply()">reply</a> -->
-                </div>
             </div>
 
         </div>
