@@ -14,7 +14,7 @@ class ReportsController < ApplicationController
   end
 
   def show
-    @report = BaseReport.find_by(reportable_type: params[:reportable_type], reportable_id: params[:reportable_id])
+    @report = BaseReport.find_by!(reportable_type: params[:reportable_type], reportable_id: params[:reportable_id])
     authorize! :read, @report, :message => "You are not allowed to view this report."
 
     render :json => @report.as_json
