@@ -36,6 +36,7 @@ class ModList < ActiveRecord::Base
   has_many :mod_list_groups, :inverse_of => 'mod_list'
 
   # CONFIG FILES
+  has_many :config_files, :through => 'mods'
   has_many :mod_list_config_files, :inverse_of => 'mod_list'
   has_many :custom_config_files, :class_name => 'ModListCustomConfigFile', :inverse_of => 'mod_list'
 
