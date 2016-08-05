@@ -80,15 +80,24 @@ app.controller('modListConfigController', function($scope, $q, $timeout, modList
         }
     };
 
-    $scope.removeConfig = function(configGroup, index) {
-        configGroup.configs[index]._destroy = true;
-        for (var i = 0; i < configGroup.configs.length; i++) {
-            if (!configGroup.configs[i]._destroy) {
-                configGroup.activeConfig = configGroup.configs[i];
+    $scope.removeConfig = function(group, index) {
+        var configToRemove = group.configs[index];
+        configToRemove._destroy = true;
+        // verify there is another config in this group
+        // switch to the first available config if the user destroyed the active config
+        for (var i = 0; i < group.configs.length; i++) {
+            if (!group.configs[i]._destroy) {
+                if (configToRemove.active) {
+                    $timeout(function() {
+                        $scope.selectConfig(group, group.configs[i]);
+                    });
+                }
                 return;
             }
         }
-        configGroup._destroy = true;
+        // no configs in the group to switch to, destroy the group!
+        configToRemove.active = false;
+        group._destroy = true;
     };
 
     $scope.addNewConfig = function(configId) {
