@@ -49,13 +49,13 @@
             <div class="content-options">
                 <label>
                     <strong>Filename</strong>
-                    <input type="text" ng-model="activeCustomConfig.filename" ng-disabled="!editing" spellcheck="false">
+                    <input type="text" class="text-input" ng-model="activeCustomConfig.filename" ng-disabled="!editing" spellcheck="false" pu-elastic-input>
                 </label>
             </div>
             <div class="content-options">
                 <label>
                     <strong>Install Path</strong>
-                    <input type="text" ng-model="activeCustomConfig.install_path" ng-disabled="!editing" spellcheck="false">
+                    <input type="text" class="text-input" ng-model="activeCustomConfig.install_path" ng-disabled="!editing" spellcheck="false" pu-elastic-input>
                 </label>
             </div>
             <textarea class="config-editor" ng-model="activeCustomConfig.text_body" ng-disabled="!editing" spellcheck="false"></textarea>

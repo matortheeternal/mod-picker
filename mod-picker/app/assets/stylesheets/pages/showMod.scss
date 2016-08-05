@@ -326,7 +326,9 @@
       display: inline-block;
     }
 
-    input[type="text"] {
+    .text-input {
+      min-width: 200px;
+      max-width: 800px;
       padding: 8px;
       height: 30px;
       border: 0;
