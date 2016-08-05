@@ -31,6 +31,8 @@
             <table-items type="mod" label="mods" columns="columns" column-groups="columnGroups" actions="actions" model="model.mods" editing="editing"></table-items>
         </div>
     </div>
+
+    <mod-details-modal ng-if="showDetailsModal"></mod-details-modal>
 </loader>
 
 <required-mods></required-mods>

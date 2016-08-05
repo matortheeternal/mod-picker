@@ -15,7 +15,7 @@ app.controller('modReviewsController', function($scope, $stateParams, $state, mo
             //if no page is specified load the first one
             page: page || 1
         };
-        contributionService.retrieveModReviews($stateParams.modId, options, $scope.pages.reviews).then(function(data) {
+        modService.retrieveModReviews($stateParams.modId, options, $scope.pages.reviews).then(function(data) {
             $scope.mod.reviews = data.reviews;
             $scope.mod.user_review = data.user_review;
 

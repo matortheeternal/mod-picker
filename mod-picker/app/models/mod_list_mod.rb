@@ -3,6 +3,7 @@ class ModListMod < ActiveRecord::Base
 
   # SCOPES
   scope :utility, -> (bool) { joins(:mod).where(:mods => {is_utility: bool}) }
+  scope :official, -> (bool) { joins(:mod).where(:mods => {is_official: bool}) }
 
   # ASSOCIATIONS
   belongs_to :mod_list, :inverse_of => 'mod_list_mods'
@@ -10,7 +11,6 @@ class ModListMod < ActiveRecord::Base
 
   # Validations
   validates :mod_list_id, :mod_id, :index, presence: true
-  validates :active, inclusion: [true, false]
   # can only have a mod on a given mod list once
   # TODO: If we don't allow the user to change the mod_id with nested attributes we could refactor this validation to be an after_create callback
   validates :mod_id, uniqueness: { scope: :mod_list_id, :message => "The mod is already present on the mod list." }
@@ -18,6 +18,17 @@ class ModListMod < ActiveRecord::Base
   # Callbacks
   after_create :increment_counter_caches
   before_destroy :decrement_counter_caches
+
+  def self.install_order_json(collection)
+    collection.as_json({
+        :only => [:mod_id, :index],
+        :include => {
+            :mod => {
+                :only => [:name]
+            }
+        }
+    })
+  end
 
   def as_json(options={})
     if JsonHelpers.json_options_empty(options)

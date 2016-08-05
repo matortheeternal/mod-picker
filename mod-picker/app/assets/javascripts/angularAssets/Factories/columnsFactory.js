@@ -452,9 +452,9 @@ app.service('columnsFactory', function() {
                 data: function(item) {
                     return item.name || item.mod.name;
                 },
-                link: function (modListPlugin) {
+                link: function (item) {
                     if (item.mod) {
-                        return "#/mod/" + modListPlugin.mod.id;
+                        return "#/mod/" + item.mod.id;
                     }
                 },
                 class: "primary-column"

@@ -9,8 +9,8 @@
                 </span>
                 <br>
                 <span>Created {{mod_list.submitted | date}}</span>
-                <span class="divider" ng-if="mod_list.updated">|</span>
-                <span ng-if="mod_list.updated">Updated {{mod_list.updated | date}}</span>
+                <span class="divider" ng-if="mod_list.edited">|</span>
+                <span ng-if="mod_list.edited">Updated {{mod_list.edited | date}}</span>
                 <span class="divider" ng-if="permissions.canManage">|</span>
                 <a ng-if="permissions.canManage" ng-click="toggleEditing()">
                     <span ng-hide="editing">Edit</span>
@@ -28,7 +28,7 @@
                 </div>
                 <div class="action-box">
                     <i class="fa fa-plus" aria-hidden="true"></i>
-                    Dupicate Modlist
+                    Duplicate Modlist
                 </div>
             </div>
             <div class="header-box">

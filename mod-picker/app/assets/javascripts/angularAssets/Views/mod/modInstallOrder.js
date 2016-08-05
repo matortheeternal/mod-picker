@@ -17,7 +17,7 @@ app.controller('modInstallOrderController', function($scope, $stateParams, $stat
             //if no page is specified load the first one
             page: page || 1
         };
-        contributionService.retrieveModContributions($stateParams.modId, 'install_order_notes', options, $scope.pages.install_order_notes).then(function(data) {
+        modService.retrieveModContributions($stateParams.modId, 'install_order_notes', options, $scope.pages.install_order_notes).then(function(data) {
             $scope.mod.install_order_notes = data;
 
             //seperating the installOrderNote in the url if any

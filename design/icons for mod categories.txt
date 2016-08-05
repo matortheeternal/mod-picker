@@ -1,0 +1,9 @@
+audiovisual fa-eye, fa-image
+character appearance fa-paint-brush
+fixes fa-bug
+gameplay fa-gamepad
+items fa-flask
+locations building-o
+new characters fa-group
+resources fa-book
+utilities fa-gears

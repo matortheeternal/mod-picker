@@ -1,4 +1,4 @@
-<loader data="mod_list.plugins && pluginsReady" spinner-class="big-spinner">
+<loader data="pluginsReady" spinner-class="big-spinner">
     <div class="tab-bar-items">
         <div class="tab-bar-item primary-item">
             <span><strong>{{notes.unresolved_plugin_compatibility.length + notes.unresolved_load_order.length}}</strong> Unresolved Issues</span>
@@ -10,7 +10,15 @@
             <strong>Add a plugin:</strong>
             <search-input search-function="searchPluginStore" result-id="add.plugin.id" search-text="add.plugin.name" on-change="addPlugin(add.plugin.id)" label="plugin" key="filename"></search-input>
         </div>
+
+        <div class="tab-bar-item" ng-if="editing">
+            <span class="action-box green-box" ng-click="toggleManagePluginsModal(true)">
+                Manage Plugins
+            </span>
+        </div>
     </div>
+
+    <manage-plugins-modal ng-if="showManagePluginsModal"></manage-plugins-modal>
 
     <div class="content-block">
         <div class="content-title">Plugins
@@ -25,11 +33,11 @@
             </span>
         </div>
         <div class="content-container overflow-hack">
-            <table-items type="plugin" label="plugins" columns="columns" column-groups="columnGroups" actions="actions" model="model.plugins" editing="editing"></table-items>
+            <table-items type="plugin" label="plugins" columns="columns" column-groups="columnGroups" actions="actions" model="model.plugins" editing="editing" starting-index="0"></table-items>
         </div>
     </div>
 
-    <plugin-details-modal></plugin-details-modal>
+    <plugin-details-modal ng-if="showDetailsModal"></plugin-details-modal>
 </loader>
 
 <required-plugins></required-plugins>

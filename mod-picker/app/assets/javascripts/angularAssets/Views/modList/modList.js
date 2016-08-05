@@ -88,6 +88,17 @@ app.config(['$stateProvider', function ($stateProvider) {
             }
         },
         url: '/config'
+    }).state('base.mod-list.Analysis', {
+        sticky: true,
+        deepStateRedirect: true,
+        reloadOnSearch: false,
+        views: {
+            'Analysis': {
+                templateUrl: '/resources/partials/modList/modListAnalysis.html',
+                controller: 'modListAnalysisController'
+            }
+        },
+        url: '/analysis'
     }).state('base.mod-list.Comments', {
         sticky: true,
         deepStateRedirect: true,
@@ -123,7 +134,8 @@ app.controller('modListController', function($scope, $q, $stateParams, $timeout,
     $scope.add = {
         tool: {},
         mod: {},
-        plugin: {}
+        plugin: {},
+        config: {}
     };
     $scope.statusIcons = {
         under_construction: 'fa-wrench',
@@ -235,11 +247,31 @@ app.controller('modListController', function($scope, $q, $stateParams, $timeout,
         }
     };
 
+    $scope.flattenConfigs = function() {
+        if ($scope.model.configs) {
+            $scope.mod_list.config_files = [];
+            $scope.mod_list.custom_config_files = [];
+            $scope.model.configs.forEach(function(group) {
+                group.configs.forEach(function(config) {
+                    var copiedConfig = angular.copy(config);
+                    if (copiedConfig.hasOwnProperty('active')) delete copiedConfig.active;
+                    $scope.mod_list.config_files.push(copiedConfig);
+                });
+            });
+            $scope.model.custom_configs.forEach(function(config) {
+                var copiedConfig = angular.copy(config);
+                if (copiedConfig.hasOwnProperty('active')) delete copiedConfig.active;
+                $scope.mod_list.custom_config_files.push(copiedConfig);
+            });
+        }
+    };
+
     $scope.flattenModels = function() {
         $scope.mod_list.groups = [];
         $scope.flattenModel('tools', 'mod');
         $scope.flattenModel('mods', 'mod');
         $scope.flattenModel('plugins', 'plugin');
+        $scope.flattenConfigs();
     };
 
     $scope.updateTabs = function() {
@@ -294,6 +326,17 @@ app.controller('modListController', function($scope, $q, $stateParams, $timeout,
         return foundPlugin;
     };
 
+    $scope.findCustomPlugin = function(noteId, ignoreDestroyed) {
+        if (!$scope.model.plugins) {
+            return false;
+        }
+        var foundPlugin = listUtils.findCustomPlugin($scope.model.plugins, noteId);
+        if (foundPlugin && ignoreDestroyed && foundPlugin._destroy) {
+            return;
+        }
+        return foundPlugin;
+    };
+
     $scope.findIgnoredNote = function(note_type, note_id, ignoreDestroyed) {
         var foundIgnoredNote = $scope.mod_list.ignored_notes.find(function(ignoredNote) {
             return ignoredNote.note_type === note_type && ignoredNote.note_id == note_id;
@@ -302,6 +345,17 @@ app.controller('modListController', function($scope, $q, $stateParams, $timeout,
             return;
         }
          return foundIgnoredNote;
+    };
+
+    $scope.findConfig = function(configId, ignoreDestroyed) {
+        if (!$scope.model.configs) {
+            return true;
+        }
+        var foundConfig = listUtils.findConfig($scope.model.configs, configId);
+        if (foundConfig && ignoreDestroyed && foundConfig._destroy) {
+            return;
+        }
+        return foundConfig;
     };
 
     $scope.associateIgnore = function(notes, note_type) {

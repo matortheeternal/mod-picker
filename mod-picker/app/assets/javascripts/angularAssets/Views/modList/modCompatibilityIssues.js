@@ -94,11 +94,11 @@ app.controller('modCompatibilityIssuesController', function($scope, listUtils) {
         $scope.buildUnresolvedCompatibility();
     });
     $scope.$on('modRemoved', function(event, modId) {
-        $scope.removeCompatibilityNotes(modId);
+        if (modId) $scope.removeCompatibilityNotes(modId);
         $scope.buildUnresolvedCompatibility();
     });
     $scope.$on('modRecovered', function(event, modId) {
-        $scope.recoverCompatibilityNotes(modId);
+        if (modId) $scope.recoverCompatibilityNotes(modId);
         $scope.buildUnresolvedCompatibility();
     });
     $scope.$on('modAdded', function(event, modData) {

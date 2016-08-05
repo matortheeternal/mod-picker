@@ -9,6 +9,7 @@ app.directive('tableItems', function () {
             columnGroups: '=',
             actions: '=',
             editing: '=',
+            startingIndex: '=?',
             type: '@',
             label: '@'
         }
@@ -49,7 +50,7 @@ app.controller('tableItemsController', function($scope, $timeout, colorsFactory,
     // update item grouping and indexes, and emit a itemMoved event
     $scope.itemMoved = function(array, index) {
         array.splice(index, 1);
-        listUtils.updateItems($scope.model);
+        listUtils.updateItems($scope.model, $scope.startingIndex);
         $scope.$emit('itemMoved');
     };
 
@@ -67,12 +68,12 @@ app.controller('tableItemsController', function($scope, $timeout, colorsFactory,
             $scope.$emit('customMessage', { type: 'error', text: errorMessage });
         } else {
             // success: update item indexes and groups and emit an itemMoved event
-            listUtils.updateItems($scope.model);
+            listUtils.updateItems($scope.model, $scope.startingIndex);
             $scope.$emit('itemMoved');
         }
     });
 
     $scope.$on('updateItems', function() {
-        listUtils.updateItems($scope.model);
+        listUtils.updateItems($scope.model, $scope.startingIndex);
     });
 });

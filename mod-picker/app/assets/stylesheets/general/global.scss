@@ -643,6 +643,10 @@ input[type="file"] {
   .CodeMirror-line {
     @include wordbreak;
   }
+
+  span.cm-invalidchar[title="\\ufeff"] {
+    display: none;
+  }
 }
 
 .text-container {

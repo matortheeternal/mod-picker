@@ -1,4 +1,8 @@
 class PluginError < ActiveRecord::Base
+  # Scopes
+  scope :plugins, -> (plugin_ids) { where(plugin_id: plugin_ids) }
+
+  # Associations
   belongs_to :plugin, :inverse_of => 'errors'
 
   # Validations

@@ -325,6 +325,30 @@
       text-align: center;
       display: inline-block;
     }
+
+    .text-input {
+      min-width: 200px;
+      max-width: 800px;
+      padding: 8px;
+      height: 30px;
+      border: 0;
+      margin-left: 20px;
+      font-size: 16px;
+      box-shadow: 0 0 3px 1px $border_color;
+      @include transition(box-shadow 0.2s ease-in-out);
+
+      &:disabled {
+        box-shadow: 0 0 3px 1px $border_color !important;
+      }
+
+      &:hover {
+        box-shadow: 0 0 3px 1px $action_color;
+      }
+
+      &:focus {
+        box-shadow: 0;
+      }
+    }
   }
 
   .content-container {
@@ -574,6 +598,10 @@
       margin-top: 0;
     }
   }
+}
+
+.big-analysis-table {
+  width: 100%;
 }
 
 .analysis-table {
