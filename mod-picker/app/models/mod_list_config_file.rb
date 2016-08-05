@@ -9,6 +9,7 @@ class ModListConfigFile < ActiveRecord::Base
   validates :config_file_id, uniqueness: { scope: :mod_list_id, :message => "The config file already present on the mod list." }
 
   # Callbacks
+  before_create :set_default_text_body
   after_create :increment_counters
   before_destroy :decrement_counters
 
@@ -34,6 +35,10 @@ class ModListConfigFile < ActiveRecord::Base
   end
 
   private
+    def set_default_text_body
+      self.text_body ||= self.config_file.text_body
+    end
+
     def increment_counters
       self.mod_list.update_counter(:config_files_count, 1)
       self.config_file.update_counter(:mod_lists_count, 1)
