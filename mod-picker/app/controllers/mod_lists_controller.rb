@@ -108,16 +108,18 @@ class ModListsController < ApplicationController
     }
   end
 
-  # GET /mod_lists/:id/config_files
+  # GET /mod_lists/:id/config
   def config_files
     authorize! :read, @mod_list
 
     # prepare primary data
-    config_files = @mod_list.mod_list_config_files.joins(:config_file)
-    custom_config_files = @mod_list.mod_list_custom_config_files
+    config_files_store = @mod_list.config_files.order(:mod_id)
+    config_files = @mod_list.mod_list_config_files.includes(:config_file => :mod)
+    custom_config_files = @mod_list.custom_config_files
 
     # render response
     render :json => {
+        config_files_store: config_files_store,
         config_files: config_files,
         custom_config_files: custom_config_files
     }
