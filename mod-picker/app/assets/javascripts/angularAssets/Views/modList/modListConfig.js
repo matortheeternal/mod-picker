@@ -55,6 +55,13 @@ app.controller('modListConfigController', function($scope, $q, $timeout, modList
         });
     };
 
+    $scope.selectConfig = function(group, config) {
+        if (config._destroy) return;
+        if (group.activeConfig) group.activeConfig.active = false;
+        group.activeConfig = config;
+        group.activeConfig.active = true;
+    };
+
     $scope.recoverConfig = function(modListConfig) {
         // if plugin is already present on the user's mod list but has been
         // removed, add it back
