@@ -14,12 +14,16 @@ class ModListConfigFile < ActiveRecord::Base
 
   def as_json(options={})
     if JsonHelpers.json_options_empty(options)
-      # TODO: Revise this as necessary
       default_options =   {
-          :only => [:text_body],
+          :only => [:id, :text_body],
           :include => {
               :config_file => {
-                  :only => [:filename, :install_path, :text_body, :mod_lists_count]
+                  :only => [:filename, :install_path, :text_body, :mod_lists_count],
+                  :include => {
+                      :mod => {
+                          :only => [:id, :name]
+                      }
+                  }
               }
           }
       }
