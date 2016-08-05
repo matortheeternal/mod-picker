@@ -33,4 +33,14 @@ app.controller('modListConfigController', function($scope, $q, modListService, c
 
     // retrieve config when the state is first loaded
     $scope.retrieveConfig();
+
+    // returns true if there are no config files to display
+    $scope.noConfigFiles = function() {
+        if (!$scope.model.configs || !$scope.mod_list.custom_config_files) return true;
+        return !$scope.model.configs.find(function(group) {
+            return !group._destroy;
+        }) && !$scope.mod_list.custom_config_files.find(function(config) {
+            return !config._destroy;
+        });
+    };
 });
