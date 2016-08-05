@@ -16,7 +16,7 @@
             <div class="dropdown-item" ng-if="canHide && target.hidden" ng-click="hide(false)">Unhide</div>
         </div>
     </span>
-    <span class="action-box" ng-if="canModerate && target.base_report" ng-click="toggleDisplayReportsModal(true)">
+    <span class="action-box red-box" ng-if="canModerate && target.base_report" ng-click="toggleDisplayReportsModal(true)">
       {{target.base_report.reports_count}} Report<span ng-show="target.base_report.reports_count > 1">s</span>
     </span>
     <span class="right-item" ng-if="!target.hidden">
