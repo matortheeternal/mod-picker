@@ -27,6 +27,9 @@ class Ability
       # can hide mod lists
       can :hide, ModList
 
+      # can view reports
+      can :read, BaseReport
+
       # can update or hide any mod
       can [:update, :hide, :assign_custom_sources, :update_authors, :update_options], Mod
       can :destroy, ModRequirement

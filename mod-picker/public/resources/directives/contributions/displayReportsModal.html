@@ -1,0 +1,54 @@
+<div class="modal-container">
+    <div class="modal big-modal">
+        <div class="close-modal">
+            <span class="fa fa-times" ng-click="toggleDisplayReportsModal(false)"></span>
+        </div>
+
+        <h3 class="section-title">
+            Reports of {{target.submitter.username}}'s {{model.label}}
+        </h3>
+
+        <div ng-repeat="report in reports" class="report-container">
+
+            <div class="report-user-column">
+                <div class="user-avatar">
+                    <img class="avatar avatar-small" ng-src="{{report.submitter.avatar == null ? '/avatars/' + report.submitter.title + '.png' : report.submitter.avatar}}" />
+                </div>
+                <strong class="rep-number">{{report.submitter.reputation.overall | number:0}}</strong> REP
+            </div>
+
+            <div class="report-content-column">
+                <div class="report-header">
+                    <span class="user-name">
+                        <a class="strong user-role-{{report.submitter.role}}" ng-href="#/user/{{report.submitter.id}}" target="_blank" tabindex="{{index}}">{{report.submitter.username}}</a>
+                    </span>
+                    <span class="user-title">
+                        {{report.submitter.title}}
+                    </span>
+                    <span class="date-submitted" title="{{getDateString()}}">
+                        {{report.submitted | relativeDate}}
+                    </span>
+                </div>
+
+                <div class="report-reason">
+                    <strong>Report Reason:</strong>
+                    <span class="report-reason" ng-if="report.report_type == 1">Be Respectful</span>
+                    <span class="report-reason" ng-if="report.report_type == 2">Be Trustworthy</span>
+                    <span class="report-reason" ng-if="report.report_type == 3">Be Constructive</span>
+                    <span class="report-reason" ng-if="report.report_type == 4">No Spam, Advertising, or Solicitation</span>
+                    <span class="report-reason" ng-if="report.report_type == 5">No Piracy</span>
+                    <span class="report-reason" ng-if="report.report_type == 6">Other</span>
+                </div>
+
+                <div class="report-text-container" marked="report.note"></div>
+
+                <div class="report-actions-container" ng-if="!report.editing">
+                  <!-- TODO: add resolve(removes report) action -->
+                  <!-- example action
+                  <a class="action-item" ng-if="canReply" tabindex="{{index}}" ng-click="reply()">reply</a> -->
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

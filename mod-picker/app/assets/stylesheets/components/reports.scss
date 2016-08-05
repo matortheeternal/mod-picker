@@ -1,0 +1,76 @@
+.report-reason {
+  border-bottom: 1px solid $border_color;
+  margin-top: 5px;
+}
+
+.report-container {
+  display: flex;
+  margin: 12px 0 12px;
+  position: relative;
+  width: 100%;
+
+  .report-user-column {
+    text-align: center;
+    display: table-cell;
+    padding: 0 10px;
+    font-size: 12px;
+
+    .rep-number {
+      font-size: 14px;
+    }
+
+    .user-avatar {
+      display: block;
+    }
+  }
+
+  .report-content-column {
+    display: table-cell;
+    vertical-align: top;
+    width: 100%;
+
+    .report-header {
+      font-size: 13px;
+      .user-title {
+        margin-left: 10px;
+        font-weight: 500;
+      }
+      .date-submitted {
+        margin-left: 5px;
+        color: $soft_text_color;
+      }
+    }
+
+    .report-text-container {
+      p:first-child {
+        margin-top: 4px;
+      }
+      p:last-child {
+        margin-bottom: 4px;
+      }
+    }
+  }
+
+  .report-actions-container {
+    cursor: default;
+    height: 26px;
+
+    .action-item {
+      color: $soft_text_color;
+      font-size: 13px;
+      font-weight: 500;
+      margin-right: 4px;
+      padding: 2px;
+      cursor: pointer;
+
+      &:hover {
+        color: $text_color;
+      }
+    }
+  }
+
+  .child-reports {
+    padding-top: 10px;
+    padding-right: 10px;
+  }
+}

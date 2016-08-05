@@ -64,6 +64,11 @@ app.controller('contributionActionsController', function($scope, $timeout, contr
         $scope.showReportModal = visible;
     };
 
+    $scope.toggleDisplayReportsModal = function(visible) {
+        $scope.$emit('toggleModal', visible);
+        $scope.showDisplayReportsModal = visible;
+    };
+
     $scope.toggleCorrectionsModal = function(visible) {
         $scope.$emit('toggleModal', visible);
         $scope.showCorrectionsModal = visible;
@@ -228,6 +233,7 @@ app.controller('contributionActionsController', function($scope, $timeout, contr
         var isSubmitter = user && user.id === $scope.target.submitted_by;
         // set up permissions
         $scope.canReport = user || false;
+        $scope.canModerate = isModerator || isAdmin;
         $scope.canAgree = $scope.agreeable && $scope.isOpen && ((rep > 40) || isAdmin || isModerator);
         $scope.canCorrect = (rep > 40) || isAdmin || isModerator;
         $scope.canEdit = $scope.edit && (isAdmin || isModerator || isSubmitter);

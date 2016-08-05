@@ -13,6 +13,13 @@ class ReportsController < ApplicationController
     }
   end
 
+  def show
+    @report = BaseReport.find_by(reportable_type: params[:reportable_type], reportable_id: params[:reportable_id])
+    authorize! :read, @report, :message => "You are not allowed to view this report."
+
+    render :json => @report.as_json
+  end
+
   # POST /reviews
   # POST /reviews.json
   def create
@@ -63,7 +70,7 @@ class ReportsController < ApplicationController
 
     # Params we allow filtering on
     def filtering_params
-      params.permit(:reportable, :reports_count, :report_type, :submitted, :edited,
+      params.permit(:reportable, :reportable_type, :reportable_id, :reports_count, :report_type, :submitted, :edited,
         :reports => [:note, :submitter]
       )
     end

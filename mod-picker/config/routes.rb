@@ -149,6 +149,7 @@ Rails.application.routes.draw do
 
     resources :reports, only: [:create, :destroy]
     match'/reports/index', to: 'reports#index', via: [:get, :post]
+    match '/reports/contribution', to: 'reports#show', via: [:post]
   end
 
   # welcome page

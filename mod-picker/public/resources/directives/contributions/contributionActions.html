@@ -16,6 +16,7 @@
             <div class="dropdown-item" ng-if="canHide && target.hidden" ng-click="hide(false)">Unhide</div>
         </div>
     </span>
+    <span class="action-box" ng-if="canModerate" ng-click="toggleDisplayReportsModal(true)">Reports</span>
     <span class="right-item" ng-if="!target.hidden">
         <!-- Helpful marks -->
         <span ng-if="!agreeable && target.approved">
@@ -61,5 +62,6 @@
 
 <share-modal ng-if="showShareModal"></share-modal>
 <report-modal ng-if="showReportModal"></report-modal>
+<display-reports-modal ng-if="showDisplayReportsModal" contribution-type="modelName" contribution-id="target.id"></display-reports-modal>
 <corrections-modal ng-if="showCorrectionsModal"></corrections-modal>
 <history-modal ng-if="showHistoryModal"></history-modal>

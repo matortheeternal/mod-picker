@@ -1,5 +1,5 @@
 app.service('reportService', function($q, backend, pageUtils) {
-
+    var service = this;
     this.submitReport = function(report) {
         // prepare report record
         var reportData = {
@@ -27,5 +27,17 @@ app.service('reportService', function($q, backend, pageUtils) {
             action.reject(response);
         });
         return action.promise;
+    };
+
+    this.retrieveContributionReports = function(contributionType, contributionId) {
+        var base_report = $q.defer();
+        var params = {
+            reportable_type: contributionType,
+            reportable_id: contributionId
+        };
+        backend.post('/reports/contribution', params).then(function(data) {
+            base_report.resolve(data);
+        });
+        return base_report.promise;
     };
 });
