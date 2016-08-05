@@ -1,4 +1,4 @@
-app.controller('modListConfigController', function($scope, $q, modListService, configFilesService) {
+app.controller('modListConfigController', function($scope, $q, $timeout, modListService, configFilesService, listUtils) {
     $scope.toggleManageConfigsModal = function(visible) {
         $scope.$emit('toggleModal', visible);
         $scope.showManageConfigsModal = visible;
@@ -13,8 +13,19 @@ app.controller('modListConfigController', function($scope, $q, modListService, c
         return action.promise;
     };
 
+    $scope.setActiveCustomConfig = function() {
+        $scope.activeCustomConfig = $scope.model.custom_configs.find(function(config) {
+            return !config._destroy;
+        });
+        if ($scope.activeCustomConfig) $scope.activeCustomConfig.active = true;
+        $scope.showCustomConfigs = $scope.model.custom_configs.length > 0;
+    };
+
     $scope.buildConfigModel = function() {
+        // build models
         $scope.model.configs = configFilesService.groupConfigFiles($scope.mod_list.config_files);
+        $scope.model.custom_configs = angular.copy($scope.mod_list.custom_config_files);
+        $scope.setActiveCustomConfig();
     };
 
     $scope.retrieveConfig = function() {
