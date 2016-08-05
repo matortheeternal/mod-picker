@@ -35,9 +35,9 @@
         </div>
     </div>
 
-    <div class="content-block config-block" ng-show="mod_list.custom_config_files.length">
+    <div class="content-block config-block" ng-show="showCustomConfigs">
         <div class="content-title">
-            Custom Config Files
+            <div>Custom Config Files</div>
             <span class="config-tab" ng-repeat="config in model.custom_configs" ng-click="selectCustomConfig(config)"  ng-class="{ 'active' : config.active }" ng-hide="config._destroy">
                 {{config.filename}}
                 <span class="action-items" ng-click="removeCustomConfig(config)" ng-if="editing">
