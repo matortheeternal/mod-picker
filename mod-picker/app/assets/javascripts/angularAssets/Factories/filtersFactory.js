@@ -851,52 +851,6 @@ app.factory("filtersFactory", function() {
         ];
     };
 
-    this.modQueueReportTypeFilters = function() {
-        return [{
-                //respect
-                data: "report_type.1",
-                param: "rtr",
-                type: "Boolean",
-                default: true
-            },
-            {
-                //trustworthy
-                data: "report_type.2",
-                param: "rtt",
-                type: "Boolean",
-                default: true
-            },
-            {
-                //constructive
-                data: "report_type.3",
-                param: "rtc",
-                type: "Boolean",
-                default: true
-            },
-            {
-                //spam
-                data: "report_type.4",
-                param: "rts",
-                type: "Boolean",
-                default: true
-            },
-            {
-                //piracy
-                data: "report_type.5",
-                param: "rtp",
-                type: "Boolean",
-                default: true
-            },
-            {
-                //other
-                data: "report_type.6",
-                param: "rto",
-                type: "Boolean",
-                default: true
-            }
-        ];
-    };
-
     this.modQueueReportableTypeFilters = function() {
         return [{
                 data: "reportable.Comment",
