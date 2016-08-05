@@ -154,11 +154,11 @@ app.factory("sortFactory", function() {
     this.modQueueSortOptions = function() {
         return [
             {
-                label: "Date First Report Submitted",
+                label: "Date First Reported",
                 value: "submitted"
             },
             {
-                label: "Date Last Report Submitted",
+                label: "Date Last Reported",
                 value: "edited"
             },
             {
