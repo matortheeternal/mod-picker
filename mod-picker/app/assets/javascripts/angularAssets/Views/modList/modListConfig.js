@@ -1,4 +1,8 @@
 app.controller('modListConfigController', function($scope, $q, modListService, configFilesService) {
+    $scope.toggleManageConfigsModal = function(visible) {
+        $scope.$emit('toggleModal', visible);
+        $scope.showManageConfigsModal = visible;
+    };
 
     $scope.buildConfigModel = function() {
         $scope.model.configs = configFilesService.groupConfigFiles($scope.mod_list.config_files);
