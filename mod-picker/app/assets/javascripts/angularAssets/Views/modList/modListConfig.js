@@ -146,6 +146,23 @@ app.controller('modListConfigController', function($scope, $q, $timeout, modList
         }
     };
 
+    $scope.toggleConfig = function(configItem) {
+        if (configItem.active) {
+            $scope.addConfig(configItem.id);
+        } else {
+            for (var i = 0; i < $scope.model.configs.length; i++) {
+                group = $scope.model.configs[i];
+                var index = group.configs.findIndex(function(config) {
+                    return config.config_file.id == configItem.id;
+                });
+                if (index > -1) {
+                    $scope.removeConfig(group, index);
+                    break;
+                }
+            }
+        }
+    };
+
     $scope.selectCustomConfig = function(customConfig) {
         if (customConfig._destroy) return;
         if ($scope.activeCustomConfig) $scope.activeCustomConfig.active = false;
