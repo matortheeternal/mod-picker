@@ -109,11 +109,13 @@ app.controller('modListConfigController', function($scope, $q, $timeout, modList
         modListService.newModListConfigFile(config_file).then(function(data) {
             // push config onto view
             var modListConfigFile = data.mod_list_config_file;
-            $scope.mod_list.config_files.push(modListConfigFile);
-            configFilesService.addConfigFile($scope.model.configs, modListConfigFile);
+            $scope.mod_list.config_files.push(angular.copy(modListConfigFile));
             $scope.originalModList.config_files.push(angular.copy(modListConfigFile));
             $scope.mod_list.config_files_count += 1;
             $scope.updateTabs();
+
+            // update models
+            configFilesService.addConfigFile($scope.model.configs, modListConfigFile);
 
             // success message
             var filename = modListConfigFile.config_file.filename;
