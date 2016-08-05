@@ -43,4 +43,81 @@ app.controller('modListConfigController', function($scope, $q, modListService, c
             return !config._destroy;
         });
     };
+
+    $scope.recoverConfig = function(modListConfig) {
+        // if plugin is already present on the user's mod list but has been
+        // removed, add it back
+        if (modListConfig._destroy) {
+            delete modListConfig._destroy;
+            $scope.mod_list.config_files_count += 1;
+            $scope.updateTabs();
+
+            // success message
+            $scope.$emit('successMessage', 'Added config file ' + modListConfig.config_file.filename+ ' successfully.');
+        }
+        // else inform the user that the plugin is already on their mod list
+        else {
+            var params = {type: 'error', text: 'Failed to add config file ' + modListConfig.config_file.filename + ', the config file has already been added to this mod list.'};
+            $scope.$emit('customMessage', params);
+        }
+    };
+
+    $scope.removeConfig = function(configGroup, index) {
+        configGroup.configs[index]._destroy = true;
+        for (var i = 0; i < configGroup.configs.length; i++) {
+            if (!configGroup.configs[i]._destroy) {
+                configGroup.activeConfig = configGroup.configs[i];
+                return;
+            }
+        }
+        configGroup._destroy = true;
+    };
+
+    $scope.addNewConfig = function(configId) {
+        var config_file = {
+            mod_list_id: $scope.mod_list.id,
+            config_file_id: configId
+        };
+
+        modListService.newModListConfigFile(config_file).then(function(data) {
+            // push config onto view
+            var modListConfigFile = data.mod_list_config_file;
+            $scope.mod_list.config_files.push(modListConfigFile);
+            configFilesService.addConfigFile($scope.model.configs, modListConfigFile);
+            $scope.originalModList.config_files.push(angular.copy(modListConfigFile));
+            $scope.mod_list.config_files_count += 1;
+            $scope.updateTabs();
+
+            // success message
+            var filename = modListConfigFile.config_file.filename;
+            $scope.$emit('successMessage', 'Added config file ' + filename + ' successfully.');
+        }, function(response) {
+            var params = {label: 'Error adding config file', response: response};
+            $scope.$emit('errorMessage', params);
+        });
+    };
+
+    $scope.addConfig = function(configId) {
+        // return if we don't have a config to add
+        if (!configId) {
+            return;
+        }
+
+        // see if the plugin is already present on the user's plugin list
+        var existingConfig = $scope.findConfig(configId);
+        if (existingConfig) {
+            $scope.recoverConfig(existingConfig);
+        } else {
+            $scope.addNewConfig(configId);
+        }
+
+        if ($scope.add.config.id) {
+            $scope.add.config.id = null;
+            $scope.add.config.name = "";
+        }
+    };
+
+    $scope.addCustomConfig = function() {
+        // TODO
+    };
 });
