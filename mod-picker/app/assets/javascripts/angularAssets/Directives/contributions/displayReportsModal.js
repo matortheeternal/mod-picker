@@ -12,7 +12,7 @@ app.controller('displayReportsController', function($scope, $filter, reportServi
         $scope.baseReportId = reportObject.id;
     });
 
-    $scope.removeReports = function(report) {
+    $scope.removeReports = function() {
       reportService.removeBaseReport($scope.baseReportId);
     };
 
