@@ -86,9 +86,40 @@
 }
 
 .config-block {
+  .content-title {
+    padding-bottom: 3px !important;
+    div {
+      padding-bottom: 8px;
+    }
+  }
+
   .config-editor {
     width: 100%;
     max-width: 100%;
     height: 400px;
+  }
+
+  .config-tab {
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: normal;
+    margin: 0 10px;
+    padding: 4px 14px;
+    background-color: $action_color;
+    @include transition(all 0.2s ease-in-out);
+
+    &:hover {
+      background-color: $bar_highlight_color;
+    }
+  }
+
+  .config-tab.active {
+    cursor: default;
+    color: $text_color;
+    background-color: $primary_background;
+
+    &:hover {
+      background-color: $primary_background;
+    }
   }
 }
