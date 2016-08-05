@@ -146,6 +146,13 @@ app.controller('modListConfigController', function($scope, $q, $timeout, modList
         }
     };
 
+    $scope.selectCustomConfig = function(customConfig) {
+        if (customConfig._destroy) return;
+        if ($scope.activeCustomConfig) $scope.activeCustomConfig.active = false;
+        $scope.activeCustomConfig = customConfig;
+        $scope.activeCustomConfig.active = true;
+    };
+
     $scope.addCustomConfig = function() {
         var custom_config = {
             mod_list_id: $scope.mod_list.id,
