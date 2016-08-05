@@ -94,6 +94,9 @@ class InstallOrderNote < ActiveRecord::Base
               },
               :editors => {
                   :only => [:id, :username, :role]
+              },
+              :base_report => {
+                :only => [:reports_count]
               }
           },
           :methods => :mods

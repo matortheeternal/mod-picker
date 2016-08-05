@@ -109,6 +109,9 @@ class Review < ActiveRecord::Base
               },
               :editor => {
                   :only => [:id, :username, :role]
+              },
+              :base_report => {
+                :only => [:reports_count]
               }
           }
       }
