@@ -197,4 +197,35 @@ app.controller('modListConfigController', function($scope, $q, $timeout, modList
             $scope.$emit('errorMessage', params);
         });
     };
+
+    // event triggers
+    $scope.$on('rebuildModels', $scope.buildConfigModel);
+    $scope.$on('reloadModules', function() {
+        // recover destroyed config groups
+        listUtils.recoverDestroyed($scope.model.configs);
+
+        // recover destroyed configs
+        $scope.model.configs.forEach(function(group) {
+            listUtils.recoverDestroyed(group.configs);
+            if (!group.activeConfig) group.activeConfig = group.configs[0];
+        });
+
+        // recover destroyed custom configs
+        listUtils.recoverDestroyed($scope.model.custom_configs);
+        if (!$scope.activeCustomConfig || !$scope.showCustomConfigs) {
+            $scope.setActiveCustomConfig();
+        }
+    });
+    $scope.$on('saveChanges', function() {
+        // remove destroyed config groups
+        listUtils.removeDestroyed($scope.model.configs);
+
+        // remove destroyed configs
+        $scope.model.configs.forEach(function(group) {
+            listUtils.removeDestroyed(group.configs);
+        });
+
+        // remove destroyed custom configs
+        listUtils.removeDestroyed($scope.model.custom_configs);
+    });
 });
