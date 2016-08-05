@@ -46,14 +46,16 @@
             </span>
         </div>
         <div class="content-container">
-            <div>
+            <div class="content-options">
                 <label>
-                    Filename
-                    <input type="text" ng-model="activeCustomConfig.filename" ng-disabled="!editing">
+                    <strong>Filename</strong>
+                    <input type="text" ng-model="activeCustomConfig.filename" ng-disabled="!editing" spellcheck="false">
                 </label>
+            </div>
+            <div class="content-options">
                 <label>
-                    Install Path
-                    <input type="text" ng-model="activeCustomConfig.install_path" ng-disabled="!editing">
+                    <strong>Install Path</strong>
+                    <input type="text" ng-model="activeCustomConfig.install_path" ng-disabled="!editing" spellcheck="false">
                 </label>
             </div>
             <textarea class="config-editor" ng-model="activeCustomConfig.text_body" ng-disabled="!editing" spellcheck="false"></textarea>
