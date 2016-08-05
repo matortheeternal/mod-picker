@@ -247,11 +247,31 @@ app.controller('modListController', function($scope, $q, $stateParams, $timeout,
         }
     };
 
+    $scope.flattenConfigs = function() {
+        if ($scope.model.configs) {
+            $scope.mod_list.config_files = [];
+            $scope.mod_list.custom_config_files = [];
+            $scope.model.configs.forEach(function(group) {
+                group.configs.forEach(function(config) {
+                    var copiedConfig = angular.copy(config);
+                    if (copiedConfig.hasOwnProperty('active')) delete copiedConfig.active;
+                    $scope.mod_list.config_files.push(copiedConfig);
+                });
+            });
+            $scope.model.custom_configs.forEach(function(config) {
+                var copiedConfig = angular.copy(config);
+                if (copiedConfig.hasOwnProperty('active')) delete copiedConfig.active;
+                $scope.mod_list.custom_config_files.push(copiedConfig);
+            });
+        }
+    };
+
     $scope.flattenModels = function() {
         $scope.mod_list.groups = [];
         $scope.flattenModel('tools', 'mod');
         $scope.flattenModel('mods', 'mod');
         $scope.flattenModel('plugins', 'plugin');
+        $scope.flattenConfigs();
     };
 
     $scope.updateTabs = function() {
