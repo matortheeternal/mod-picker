@@ -47,6 +47,10 @@ app.service('listUtils', function () {
         return service.findItem(model, 'compatibility_note_id', '', noteId, splice);
     };
 
+    this.findConfig = function(model, configId, splice) {
+        return service.findItem(model, 'config_file', 'id', configId, splice);
+    };
+
     this.findGroup = function(model, groupId) {
         return model.find(function(item) {
             return item.children && item.id == groupId;
