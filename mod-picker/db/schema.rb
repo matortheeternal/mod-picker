@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160804222824) do
+ActiveRecord::Schema.define(version: 20160805205222) do
 
   create_table "agreement_marks", id: false, force: :cascade do |t|
     t.integer "correction_id", limit: 4,                null: false
@@ -490,7 +490,7 @@ ActiveRecord::Schema.define(version: 20160804222824) do
     t.boolean  "hidden",                                  default: false, null: false
     t.datetime "submitted",                                               null: false
     t.datetime "completed"
-    t.datetime "edited"
+    t.datetime "updated"
   end
 
   add_index "mod_lists", ["game_id"], name: "fk_rails_f25cbc0432", using: :btree
