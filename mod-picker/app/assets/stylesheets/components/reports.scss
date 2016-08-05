@@ -1,6 +1,7 @@
 .report-reason {
   border-bottom: 1px solid $border_color;
   margin-top: 5px;
+  margin-left: 5px;
 }
 
 .report-container {
@@ -42,6 +43,7 @@
     }
 
     .report-text-container {
+      margin-left: 10px;
       p:first-child {
         margin-top: 4px;
       }
