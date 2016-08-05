@@ -10,7 +10,7 @@ app.service('configFilesService', function () {
         } else {
             var group = {
                 id: configFile.config_file.mod.id,
-                name: configFile.config_file.mod.name.slice(0),
+                name: configFile.config_file.mod.name,
                 configs: [configFile]
             };
             model.push(group);
@@ -23,7 +23,8 @@ app.service('configFilesService', function () {
             service.addConfigFile(groupedConfigFiles, configFile);
         });
         groupedConfigFiles.forEach(function(group) {
-            group.activeConfig = group.configs[0].config_file;
+            group.activeConfig = group.configs[0];
+            group.activeConfig.active = true;
         });
         return groupedConfigFiles;
     };
