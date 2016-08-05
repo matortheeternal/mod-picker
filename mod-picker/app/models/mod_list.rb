@@ -275,6 +275,9 @@ class ModList < ActiveRecord::Base
       else
         self.edited = DateTime.now
       end
+      if self.status == "complete" && self.completed.nil?
+        self.completed = DateTime.now
+      end
     end
 
     def increment_counters
