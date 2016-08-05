@@ -10,7 +10,15 @@
             <strong>Add a plugin:</strong>
             <search-input search-function="searchPluginStore" result-id="add.plugin.id" search-text="add.plugin.name" on-change="addPlugin(add.plugin.id)" label="plugin" key="filename"></search-input>
         </div>
+
+        <div class="tab-bar-item" ng-if="editing">
+            <span class="action-box green-box" ng-click="toggleManagePluginsModal(true)">
+                Manage Plugins
+            </span>
+        </div>
     </div>
+
+    <manage-plugins-modal ng-if="showManagePluginsModal"></manage-plugins-modal>
 
     <div class="content-block">
         <div class="content-title">Plugins
