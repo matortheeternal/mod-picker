@@ -1,4 +1,26 @@
-<loader data="configReady" spinner-class="big-spinner">    <div class="content-block config-block" ng-repeat="group in model.configs" ng-hide="group._destroy">
+<loader data="configReady" spinner-class="big-spinner">
+    <div class="tab-bar-items" ng-if="editing">
+        <div class="tab-bar-item primary-item">
+            <strong>Add a config file:</strong>
+            <search-input search-function="searchConfigStore" result-id="add.config.id" search-text="add.config.name" on-change="addConfig(add.config.id)" label="config" key="filename"></search-input>
+        </div>
+
+        <div class="tab-bar-item">
+            <span class="action-box green-box" ng-click="toggleManageConfigsModal(true)">
+                Manage Config Files
+            </span>
+        </div>
+
+        <div class="tab-bar-item">
+            <span class="action-box" ng-click="addCustomConfig()">
+                <i class="fa fa-plus"></i> Add Custom Config File
+            </span>
+        </div>
+    </div>
+
+    <manage-configs-modal ng-if="showManageConfigsModal"></manage-configs-modal>
+
+    <div class="content-block config-block" ng-repeat="group in model.configs" ng-hide="group._destroy">
         <div class="content-title">
             <div><a ng-href="#/mod/{{group.id}}">{{group.name}}</a> Config Files</div>
             <span class="config-tab" ng-repeat="config in group.configs" ng-click="selectConfig(group, config)">
