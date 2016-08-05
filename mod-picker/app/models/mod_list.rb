@@ -273,7 +273,7 @@ class ModList < ActiveRecord::Base
       if self.submitted.nil?
         self.submitted = DateTime.now
       else
-        self.edited = DateTime.now
+        self.updated = DateTime.now
       end
       if self.status == "complete" && self.completed.nil?
         self.completed = DateTime.now
