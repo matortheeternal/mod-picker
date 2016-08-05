@@ -134,7 +134,8 @@ app.controller('modListController', function($scope, $q, $stateParams, $timeout,
     $scope.add = {
         tool: {},
         mod: {},
-        plugin: {}
+        plugin: {},
+        config: {}
     };
     $scope.statusIcons = {
         under_construction: 'fa-wrench',
@@ -324,6 +325,17 @@ app.controller('modListController', function($scope, $q, $stateParams, $timeout,
             return;
         }
          return foundIgnoredNote;
+    };
+
+    $scope.findConfig = function(configId, ignoreDestroyed) {
+        if (!$scope.model.configs) {
+            return true;
+        }
+        var foundConfig = listUtils.findConfig($scope.model.configs, configId);
+        if (foundConfig && ignoreDestroyed && foundConfig._destroy) {
+            return;
+        }
+        return foundConfig;
     };
 
     $scope.associateIgnore = function(notes, note_type) {
