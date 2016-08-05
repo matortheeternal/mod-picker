@@ -55,6 +55,10 @@ app.service('modListService', function (backend, $q, objectUtils, userTitleServi
         return action.promise;
     };
 
+    this.retrieveModListConfigFiles = function(modListId) {
+        return backend.retrieve('/mod_lists/' + modListId + '/config');
+    };
+
     this.retrieveModListAnalysis = function(modListId) {
         var action = $q.defer();
         backend.retrieve('/mod_lists/' + modListId + '/analysis').then(function(data) {
@@ -167,6 +171,14 @@ app.service('modListService', function (backend, $q, objectUtils, userTitleServi
 
     this.newModListGroup = function(group) {
         return backend.post('/mod_list_groups', {mod_list_group: group});
+    };
+
+    this.newModListConfigFile = function(config_file) {
+        return backend.post('/mod_list_config_files', {mod_list_config_file: config_file});
+    };
+
+    this.newModListCustomConfigFile = function(custom_config_file) {
+        return backend.post('/mod_list_custom_config_files', {mod_list_custom_config_file: custom_config_file});
     };
 
     this.cloneModList = function(modlist) {
