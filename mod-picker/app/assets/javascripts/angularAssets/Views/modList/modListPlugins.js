@@ -102,7 +102,7 @@ app.controller('modListPluginsController', function($scope, $q, $timeout, modLis
         var mod_list_plugin = {
             mod_list_id: $scope.mod_list.id,
             plugin_id: pluginId,
-            index: $scope.getNextIndex($scope.model.plugins)
+            index: listUtils.getNextIndex($scope.model.plugins)
         };
 
         modListService.newModListPlugin(mod_list_plugin).then(function(data) {
