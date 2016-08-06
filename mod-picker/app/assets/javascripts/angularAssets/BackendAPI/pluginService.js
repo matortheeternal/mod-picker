@@ -1,8 +1,20 @@
-app.service('pluginService', function (backend, $q, $timeout, recordGroupService, errorsFactory) {
+app.service('pluginService', function (backend, $q, $timeout, recordGroupService, errorsFactory, objectUtils) {
     var service = this;
 
     this.retrievePlugin = function (pluginId) {
-        return backend.retrieve('/plugins/' + pluginId);
+        var output = $q.defer();
+        backend.retrieve('/plugins/' + pluginId).then(function(plugin) {
+            // prepare plugin data for display
+            var plugins = [plugin];
+            recordGroupService.associateGroups(plugins);
+            service.combineAndSortMasters(plugins);
+            service.associateOverrides(plugins);
+            service.sortErrors(plugins);
+            output.resolve(plugin);
+        }, function(response) {
+            output.reject(response);
+        });
+        return output.promise;
     };
 
     this.searchPlugins = function (filename) {
