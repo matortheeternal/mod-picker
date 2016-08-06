@@ -48,7 +48,7 @@ app.controller('modListPluginsController', function($scope, $q, $timeout, modLis
                 } else if (plugin.merged) {
                     insertIndex--;
                 }
-                $scope.model.plugins.splice(insertIndex, 0, plugin);
+                $scope.model.plugins.splice(insertIndex, 0, angular.copy(plugin));
             }
         });
     };
