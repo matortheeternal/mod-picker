@@ -275,22 +275,7 @@ app.controller('modListController', function($scope, $q, $stateParams, $timeout,
     };
 
     $scope.updateTabs = function() {
-        $scope.tabs.forEach(function(tab) {
-            switch (tab.name) {
-                case "Tools":
-                    tab.count = $scope.mod_list.tools_count;
-                    break;
-                case "Mods":
-                    tab.count = $scope.mod_list.mods_count;
-                    break;
-                case "Plugins":
-                    tab.count = $scope.mod_list.plugins_count;
-                    break;
-                case "Config":
-                    tab.count = $scope.mod_list.config_files_count;
-                    break;
-            }
-        });
+        tabsFactory.updateModListTabs($scope.mod_list, $scope.tabs);
     };
 
     $scope.findTool = function(toolId, ignoreDestroyed) {
