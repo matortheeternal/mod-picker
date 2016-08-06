@@ -208,6 +208,15 @@ app.controller('modListPluginsController', function($scope, $q, $timeout, modLis
         $scope.columns[1].visibility = $scope.showLoadOrder;
     };
 
+    $scope.togglePlugin = function(pluginItem) {
+        if (pluginItem.active) {
+            $scope.addPlugin(pluginItem.id);
+        } else {
+            var foundPlugin = $scope.findPlugin(pluginItem.id, true);
+            if (foundPlugin) $scope.removePlugin(foundPlugin);
+        }
+    };
+
     // event triggers
     $scope.$on('removeItem', function(event, modListPlugin) {
         $scope.removePlugin(modListPlugin);
