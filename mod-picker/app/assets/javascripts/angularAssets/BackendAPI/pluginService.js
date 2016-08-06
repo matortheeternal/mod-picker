@@ -111,6 +111,7 @@ app.service('pluginService', function (backend, $q, $timeout, recordGroupService
                     });
                 }
             });
+            plugin.has_overrides = !objectUtils.isEmptyObject(plugin.formatted_overrides);
         });
     };
 
