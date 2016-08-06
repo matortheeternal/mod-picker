@@ -8,8 +8,8 @@ app.controller('modListPluginsController', function($scope, $q, $timeout, modLis
 
     $scope.toggleDetailsModal = function(visible, item) {
         $scope.$emit('toggleModal', visible);
-        $scope.showDetailsModal = visible;
         $scope.detailsItem = item;
+        $scope.showDetailsModal = visible;
     };
 
     $scope.toggleManagePluginsModal = function(visible) {
