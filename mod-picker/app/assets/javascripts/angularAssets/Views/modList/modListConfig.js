@@ -153,7 +153,7 @@ app.controller('modListConfigController', function($scope, $q, $timeout, modList
             $scope.addConfig(configItem.id);
         } else {
             for (var i = 0; i < $scope.model.config_files.length; i++) {
-                group = $scope.model.config_files[i];
+                var group = $scope.model.config_files[i];
                 var index = group.children.findIndex(function(config) {
                     return config.config_file.id == configItem.id;
                 });
