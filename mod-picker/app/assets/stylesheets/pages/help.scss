@@ -203,7 +203,8 @@ nav .primary-nav-links {
 nav .secondary-nav {
   display: inline-block;
   float: right;
-  height: 60px;
+  height: 50px;
+  padding-top: 10px;
 }
 
 /* search field bar ================================================ */
@@ -242,6 +243,7 @@ nav .secondary-nav {
   #search-btn {
     padding: 8px;
     height: 35px;
+    vertical-align: top;
   }
 }
 
