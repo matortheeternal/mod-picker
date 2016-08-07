@@ -1,10 +1,14 @@
-app.controller('modInstallOrderController', function($scope, $stateParams, $state, contributionService, contributionFactory, sortFactory) {
+app.controller('modInstallOrderController', function($scope, $stateParams, $state, contributionService, modService, contributionFactory, sortFactory) {
     $scope.sort.install_order_notes = {
         column: $stateParams.scol,
         direction: $stateParams.sdir
     };
     $scope.filters.install_order_notes = $stateParams.filter;
 
+    // inherited functions
+    $scope.searchMods = modService.searchMods;
+
+    // functions
     $scope.retrieveInstallOrderNotes = function(page) {
         // retrieve the Install Order Notes
         var options = {
@@ -13,7 +17,7 @@ app.controller('modInstallOrderController', function($scope, $stateParams, $stat
             //if no page is specified load the first one
             page: page || 1
         };
-        contributionService.retrieveModContributions($stateParams.modId, 'install_order_notes', options, $scope.pages.install_order_notes).then(function(data) {
+        modService.retrieveModContributions($stateParams.modId, 'install_order_notes', options, $scope.pages.install_order_notes).then(function(data) {
             $scope.mod.install_order_notes = data;
 
             //seperating the installOrderNote in the url if any

@@ -22,45 +22,98 @@ app.config(['$stateProvider', function ($stateProvider) {
             }
         }
     }).state('base.mod-list.Details', {
-        templateUrl: '/resources/partials/modList/details.html',
-        controller: 'modListDetailsController',
+        sticky: true,
+        deepStateRedirect: true,
+        reloadOnSearch: false,
+        views: {
+            'Details': {
+                templateUrl: '/resources/partials/modList/modListDetails.html',
+                controller: 'modListDetailsController'
+            }
+        },
         url: '/details'
     }).state('base.mod-list.Tools', {
-        templateUrl: '/resources/partials/modList/tools.html',
-        controller: 'modListToolsController',
+        sticky: true,
+        deepStateRedirect: true,
+        reloadOnSearch: false,
+        views: {
+            'Tools': {
+                templateUrl: '/resources/partials/modList/modListTools.html',
+                controller: 'modListToolsController'
+            }
+        },
         url: '/tools?scol&sdir',
         params: {
             scol: 'index',
             sdir: 'asc'
         }
     }).state('base.mod-list.Mods', {
-        templateUrl: '/resources/partials/modList/mods.html',
-        controller: 'modListModsController',
+        sticky: true,
+        deepStateRedirect: true,
+        reloadOnSearch: false,
+        views: {
+            'Mods': {
+                templateUrl: '/resources/partials/modList/modListMods.html',
+                controller: 'modListModsController'
+            }
+        },
         url: '/mods?scol&sdir',
         params: {
             scol: 'index',
             sdir: 'asc'
         }
     }).state('base.mod-list.Plugins', {
-        templateUrl: '/resources/partials/modList/plugins.html',
-        controller: 'modListPluginsController',
+        sticky: true,
+        deepStateRedirect: true,
+        reloadOnSearch: false,
+        views: {
+            'Plugins': {
+                templateUrl: '/resources/partials/modList/modListPlugins.html',
+                controller: 'modListPluginsController'
+            }
+        },
         url: '/plugins?scol&sdir',
         params: {
             scol: 'index',
             sdir: 'asc'
         }
     }).state('base.mod-list.Config', {
-        templateUrl: '/resources/partials/modList/config.html',
-        controller: 'modListConfigController',
+        sticky: true,
+        deepStateRedirect: true,
+        reloadOnSearch: false,
+        views: {
+            'Config': {
+                templateUrl: '/resources/partials/modList/modListConfig.html',
+                controller: 'modListConfigController'
+            }
+        },
         url: '/config'
+    }).state('base.mod-list.Analysis', {
+        sticky: true,
+        deepStateRedirect: true,
+        reloadOnSearch: false,
+        views: {
+            'Analysis': {
+                templateUrl: '/resources/partials/modList/modListAnalysis.html',
+                controller: 'modListAnalysisController'
+            }
+        },
+        url: '/analysis'
     }).state('base.mod-list.Comments', {
-        templateUrl: '/resources/partials/modList/comments.html',
-        controller: 'modListCommentsController',
+        sticky: true,
+        deepStateRedirect: true,
+        reloadOnSearch: false,
+        views: {
+            'Comments': {
+                templateUrl: '/resources/partials/modList/modListComments.html',
+                controller: 'modListCommentsController'
+            }
+        },
         url: '/comments'
     })
 }]);
 
-app.controller('modListController', function($scope, $q, $stateParams, $timeout, currentUser, modListObject, modListService, errorService, objectUtils, tabsFactory) {
+app.controller('modListController', function($scope, $q, $stateParams, $timeout, currentUser, modListObject, modListService, errorService, objectUtils, tabsFactory, listUtils) {
     // get parent variables
     $scope.mod_list = modListObject.mod_list;
     $scope.mod_list.star = modListObject.star;
@@ -70,17 +123,19 @@ app.controller('modListController', function($scope, $q, $stateParams, $timeout,
 
 	// initialize local variables
     $scope.tabs = tabsFactory.buildModListTabs($scope.mod_list);
-    $scope.model = {}; // this can be removed when we make states sticky
-    $scope.newTags = [];
-    $scope.retrieving = {}; // this can be removed when we make states sticky
-    $scope.show = { // this can be removed when we make states sticky
-        missing_tools: true,
-        missing_mods: true
+    $scope.pages = {
+        comments: {}
     };
+    $scope.model = {};
+    $scope.newTags = [];
     $scope.required = {};
+    $scope.notes = {};
+    $scope.errors = {};
     $scope.add = {
         tool: {},
-        mod: {}
+        mod: {},
+        plugin: {},
+        config: {}
     };
     $scope.statusIcons = {
         under_construction: 'fa-wrench',
@@ -168,27 +223,55 @@ app.controller('modListController', function($scope, $q, $stateParams, $timeout,
     };
 
     // MOD LIST EDITING LOGIC
-    $scope.flattenModel = function(label) {
+    $scope.flattenModel = function(label, associationLabel) {
+        var custom_label = 'custom_' + label;
         if ($scope.model[label]) {
             $scope.mod_list[label] = [];
+            $scope.mod_list[custom_label] = [];
             $scope.model[label].forEach(function(item) {
                 if (item.children) {
                     $scope.mod_list.groups.push(item);
                     item.children.forEach(function(child) {
-                        $scope.mod_list[label].push(child);
+                        if (child.hasOwnProperty(associationLabel)) {
+                            $scope.mod_list[label].push(child);
+                        } else {
+                            $scope.mod_list[custom_label].push(child);
+                        }
                     })
-                } else {
+                } else if (item.hasOwnProperty(associationLabel)) {
                     $scope.mod_list[label].push(item);
+                } else {
+                    $scope.mod_list[custom_label].push(item);
                 }
+            });
+        }
+    };
+
+    $scope.flattenConfigs = function() {
+        if ($scope.model.configs) {
+            $scope.mod_list.config_files = [];
+            $scope.mod_list.custom_config_files = [];
+            $scope.model.configs.forEach(function(group) {
+                group.configs.forEach(function(config) {
+                    var copiedConfig = angular.copy(config);
+                    if (copiedConfig.hasOwnProperty('active')) delete copiedConfig.active;
+                    $scope.mod_list.config_files.push(copiedConfig);
+                });
+            });
+            $scope.model.custom_configs.forEach(function(config) {
+                var copiedConfig = angular.copy(config);
+                if (copiedConfig.hasOwnProperty('active')) delete copiedConfig.active;
+                $scope.mod_list.custom_config_files.push(copiedConfig);
             });
         }
     };
 
     $scope.flattenModels = function() {
         $scope.mod_list.groups = [];
-        $scope.flattenModel('tools');
-        $scope.flattenModel('mods');
-        $scope.flattenModel('plugins');
+        $scope.flattenModel('tools', 'mod');
+        $scope.flattenModel('mods', 'mod');
+        $scope.flattenModel('plugins', 'plugin');
+        $scope.flattenConfigs();
     };
 
     $scope.updateTabs = function() {
@@ -210,11 +293,82 @@ app.controller('modListController', function($scope, $q, $stateParams, $timeout,
         });
     };
 
+    $scope.findTool = function(toolId, ignoreDestroyed) {
+        if (!$scope.model.tools) {
+            return true;
+        }
+        var foundTool = listUtils.findMod($scope.model.tools, toolId);
+        if (foundTool && ignoreDestroyed && foundTool._destroy) {
+            return;
+        }
+        return foundTool;
+    };
+
+    $scope.findMod = function(modId, ignoreDestroyed) {
+        if (!$scope.model.mods) {
+            return true;
+        }
+        var foundMod = listUtils.findMod($scope.model.mods, modId);
+        if (foundMod && ignoreDestroyed && foundMod._destroy) {
+            return;
+        }
+        return foundMod;
+    };
+
+    $scope.findPlugin = function(pluginId, ignoreDestroyed) {
+        if (!$scope.model.plugins) {
+            return true;
+        }
+        var foundPlugin = listUtils.findPlugin($scope.model.plugins, pluginId);
+        if (foundPlugin && ignoreDestroyed && foundPlugin._destroy) {
+            return;
+        }
+        return foundPlugin;
+    };
+
+    $scope.findCustomPlugin = function(noteId, ignoreDestroyed) {
+        if (!$scope.model.plugins) {
+            return false;
+        }
+        var foundPlugin = listUtils.findCustomPlugin($scope.model.plugins, noteId);
+        if (foundPlugin && ignoreDestroyed && foundPlugin._destroy) {
+            return;
+        }
+        return foundPlugin;
+    };
+
+    $scope.findIgnoredNote = function(note_type, note_id, ignoreDestroyed) {
+        var foundIgnoredNote = $scope.mod_list.ignored_notes.find(function(ignoredNote) {
+            return ignoredNote.note_type === note_type && ignoredNote.note_id == note_id;
+        });
+        if (foundIgnoredNote && ignoreDestroyed && foundIgnoredNote._destroy) {
+            return;
+        }
+         return foundIgnoredNote;
+    };
+
+    $scope.findConfig = function(configId, ignoreDestroyed) {
+        if (!$scope.model.configs) {
+            return true;
+        }
+        var foundConfig = listUtils.findConfig($scope.model.configs, configId);
+        if (foundConfig && ignoreDestroyed && foundConfig._destroy) {
+            return;
+        }
+        return foundConfig;
+    };
+
+    $scope.associateIgnore = function(notes, note_type) {
+        notes.forEach(function(note) {
+            note.ignored = !!$scope.findIgnoredNote(note_type, note.id, true);
+        });
+    };
+
     $scope.addGroup = function(tab) {
         var model = $scope.model[tab];
         var newGroup = {
             mod_list_id: $scope.mod_list.id,
-            index: model.length,
+            index: listUtils.getNextIndex(model) - 1,
             tab: tab,
             color: 'red',
             name: 'New Group'
@@ -226,75 +380,39 @@ app.controller('modListController', function($scope, $q, $stateParams, $timeout,
             $scope.originalModList.groups.push(angular.copy(group));
             model.push(group);
         }, function(response) {
-            var params = {label: 'Error creating new Mod List Group', response: response};
+            var params = {label: 'Error creating new group', response: response};
             $scope.$emit('errorMessage', params);
         });
     };
 
-    $scope.reAddRequirements = function(required_items, itemId) {
-        required_items.forEach(function(item) {
-            if (item.mod.id == itemId && item._destroy) {
-                delete item._destroy;
+    $scope.ignoreNote = function(type, note) {
+        if (note.ignored) {
+            var foundIgnoredNote = $scope.findIgnoredNote(type, note.id);
+            if (note.ignored) {
+                if (!foundIgnoredNote) {
+                    $scope.mod_list.ignored_notes.push({
+                        note_type: type,
+                        note_id: note.id
+                    });
+                } else if (foundIgnoredNote._destroy) {
+                    delete foundIgnoredNote._destroy;
+                }
+            } else if (foundIgnoredNote) {
+                if (foundIgnoredNote.id) {
+                    foundIgnoredNote._destroy = true;
+                } else {
+                    var index = $scope.mod_list.ignored_notes.indexOf(foundIgnoredNote);
+                    $scope.mod_list.ignored_notes.splice(index, 1);
+                }
             }
-        });
-    };
-
-    $scope.removeRequirements = function(modId) {
-        var destroyMatchingRequirements = function(requirement) {
-            if (requirement.mod.id == modId) {
-                requirement._destroy = true;
-            }
-        };
-        var req = $scope.required; // an alias to make the code a bit shorter
-        req.mods && req.mods.forEach(destroyMatchingRequirements);
-        req.tools && req.tools.forEach(destroyMatchingRequirements);
-    };
-
-    $scope.addRequirements = function(requirements, tools) {
-        requirements.forEach(function(requirement) {
-            if (tools) {
-                $scope.required.tools && $scope.required.tools.push(requirement);
-            } else {
-                $scope.required.mods && $scope.required.mods.push(requirement);
-            }
-        });
-    };
-
-    $scope.$on('rebuildMissing', function() {
-        $scope.$broadcast('rebuildMissingTools');
-        $scope.$broadcast('rebuildMissingMods');
-    });
-
-    $scope.removeDestroyedItems = function() {
-        var removeIfDestroyed = function(item, index, array) {
-            if (item._destroy) {
-                array.splice(index, 1);
-            }
-        };
-        var ml = $scope.mod_list; // an alias to make the code a bit shorter
-        ml.mods && ml.mods.forEach(removeIfDestroyed);
-        ml.tools && ml.tools.forEach(removeIfDestroyed);
-        ml.groups && ml.groups.forEach(removeIfDestroyed);
-        var req = $scope.required; // an alias to make the code a bit shorter
-        req.mods && req.mods.forEach(removeIfDestroyed);
-        req.tools && req.tools.forEach(removeIfDestroyed);
-    };
-
-    $scope.recoverDestroyedItems = function() {
-        var recoverIfDestroyed = function(item) {
-            if (item._destroy) {
-                delete item._destroy;
-            }
-        };
-        var req = $scope.required; // an alias to make the code a bit shorter
-        req.mods && req.mods.forEach(recoverIfDestroyed);
-        req.tools && req.tools.forEach(recoverIfDestroyed);
+        }
     };
 
     $scope.saveChanges = function() {
         // get changed mod fields
         $scope.flattenModels();
         var modListDiff = objectUtils.getDifferentObjectValues($scope.originalModList, $scope.mod_list);
+        // if no fields were changed, inform the user
         if (objectUtils.isEmptyObject(modListDiff)) {
             var message = {type: 'warning', text: 'There are no changes to save.'};
             $scope.$broadcast('message', message);
@@ -302,10 +420,10 @@ app.controller('modListController', function($scope, $q, $stateParams, $timeout,
         }
 
         modListService.updateModList(modListDiff).then(function() {
+            // update modules
+            $scope.$broadcast('saveChanges');
+            // success message
             $scope.$emit('successMessage', 'Mod list saved successfully.');
-            $scope.removeDestroyedItems();
-            delete $scope.originalModList;
-            $scope.originalModList = angular.copy($scope.mod_list);
         }, function(response) {
             $scope.$emit('errorMessage', {label: 'Error saving mod list', response: response});
         });
@@ -313,10 +431,29 @@ app.controller('modListController', function($scope, $q, $stateParams, $timeout,
 
     $scope.discardChanges = function() {
         if (confirm("Are you sure you want to discard your changes?")) {
+            // discard changes
             $scope.mod_list = angular.copy($scope.originalModList);
-            $scope.recoverDestroyedItems();
+            // update modules
             $scope.$broadcast('rebuildModels');
+            $scope.$broadcast('reloadModules');
             $scope.updateTabs();
         }
     };
+
+    // event triggers
+    $scope.$on('reloadModules', function() {
+        // recover destroyed groups
+        if ($scope.mod_list.groups) {
+            listUtils.recoverDestroyed($scope.mod_list.groups);
+        }
+    });
+    $scope.$on('saveChanges', function() {
+        // remove destroyed groups
+        if ($scope.mod_list.groups) {
+            listUtils.removeDestroyed($scope.mod_list.groups);
+        }
+        // set originalModList to the current version of mod_list
+        delete $scope.originalModList;
+        $scope.originalModList = angular.copy($scope.mod_list);
+    })
 });

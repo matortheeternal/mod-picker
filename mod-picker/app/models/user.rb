@@ -170,7 +170,7 @@ class User < ActiveRecord::Base
         :only => [:id, :username, :role, :title, :active_mod_list_id],
         :include => {
             :reputation => {
-                :only => [:overall]
+                :only => [:overall, :rep_to_count]
             },
             :settings => {
                 :except => [:user_id]
@@ -199,10 +199,10 @@ class User < ActiveRecord::Base
         :except => [:active_mod_list_id, :invitation_token, :invitation_created_at, :invitation_sent_at, :invitation_accepted_at, :invitation_limit, :invited_by_id, :invited_by_type, :invitations_count],
         :include => {
             :mods => {
-                :only => [:id, :name, :game_id, :mod_stars_count]
+                :only => [:id, :name, :game_id, :stars_count, :reviews_count, :reputation]
             },
             :mod_lists => {
-                :only => [:id, :name, :is_collection, :is_public, :status, :mods_count, :created]
+                :only => [:id, :name, :is_collection, :is_public, :status, :mods_count, :created, :stars_count, :comments_count]
             },
             :bio => {
                 :except => bio_except

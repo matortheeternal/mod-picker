@@ -750,6 +750,8 @@ def seed_fake_reviews
         review_ratings.push({review_section_id: section.id, rating: rand(100)})
       end
 
+      next if Review.exists?(submitted_by: submitter.id)
+
       review = mod.reviews.new(
           game_id: gameSkyrim.id,
           submitted_by: submitter.id,
@@ -919,13 +921,11 @@ def seed_fake_mod_lists
     Mod.all.each_with_index do |mod, index|
       mod_list.mod_list_mods.create!(
         mod_id: mod.id,
-        active: true,
         index: index
       )
       mod.plugins.each do |plugin|
         mod_list.mod_list_plugins.create!(
           plugin_id: plugin.id,
-          active: true,
           index: plugin_index
         )
         plugin_index += 1

@@ -141,5 +141,14 @@ app.factory("sortFactory", function() {
         ];
     };
 
+    /* articles sort options */
+    this.articleSortOptions = function() {
+        return [
+            factory.submittedSort,
+            factory.commentsSort,
+            factory.editedSort
+        ];
+    };
+
     return factory;
 });

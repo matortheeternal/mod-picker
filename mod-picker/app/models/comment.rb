@@ -38,7 +38,7 @@ class Comment < ActiveRecord::Base
   # Validations
   validates :submitted_by, :commentable_type, :commentable_id, :text_body, presence: true
   validates :hidden, inclusion: [true, false]
-  validates :commentable_type, inclusion: ["User", "ModList", "Correction"]
+  validates :commentable_type, inclusion: ["User", "ModList", "Correction", "Article"]
   validates :text_body, length: {in: 2..8192}
   # TODO: Validation of nesting
 

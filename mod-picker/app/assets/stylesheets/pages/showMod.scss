@@ -5,6 +5,7 @@
   padding: 4px 8px;
   display: inline-block;
   font-size: 12px;
+  font-weight: 500;
   border-radius: 4%;
   margin: 2px;
   cursor: pointer;
@@ -13,6 +14,15 @@
 
   &:focus, &:hover {
     background-color: $bar_highlight_color;
+  }
+
+  &.disabled {
+    background-color: $hard_border_color;
+    cursor: default;
+
+    &:hover {
+      background-color: $hard_border_color;
+    }
   }
 }
 
@@ -225,7 +235,7 @@
 }
 
 .content-message {
-  margin: 40px 0 0;
+  margin: 40px 0 20px;
   text-align: center;
   font-size: 20px;
 }
@@ -264,11 +274,20 @@
     }
 
     .toggle-item {
+      margin-right: 8px;
       cursor: pointer;
       @include user-select(none);
+      @include transition(all 0.2s ease-in-out);
     }
 
-    a {
+    .note-item {
+      font-style: italic;
+      font-size: 12px;
+      font-weight: normal;
+      margin-left: 6px;
+    }
+
+    a, .toggle-item {
       color: $bright_action_color;
       &:hover {
         color: $bar_text_color;
@@ -305,6 +324,30 @@
       cursor: default;
       text-align: center;
       display: inline-block;
+    }
+
+    .text-input {
+      min-width: 200px;
+      max-width: 800px;
+      padding: 8px;
+      height: 30px;
+      border: 0;
+      margin-left: 20px;
+      font-size: 16px;
+      box-shadow: 0 0 3px 1px $border_color;
+      @include transition(box-shadow 0.2s ease-in-out);
+
+      &:disabled {
+        box-shadow: 0 0 3px 1px $border_color !important;
+      }
+
+      &:hover {
+        box-shadow: 0 0 3px 1px $action_color;
+      }
+
+      &:focus {
+        box-shadow: 0;
+      }
     }
   }
 
@@ -555,6 +598,10 @@
       margin-top: 0;
     }
   }
+}
+
+.big-analysis-table {
+  width: 100%;
 }
 
 .analysis-table {

@@ -2,7 +2,7 @@ app.config(['$stateProvider', function ($stateProvider) {
     $stateProvider.state('base.submit', {
             templateUrl: '/resources/partials/mod/submitMod.html',
             controller: 'submitModController',
-            url: '/submit'
+            url: '/mods/submit'
         }
     );
 }]);
@@ -23,6 +23,9 @@ app.controller('submitModController', function ($scope, backend, modService, scr
         url: ""
     }];
     $scope.customSources = [];
+
+    // inherited functions
+    $scope.searchMods = modService.searchMods;
 
     /* sources */
     $scope.addSource = function() {

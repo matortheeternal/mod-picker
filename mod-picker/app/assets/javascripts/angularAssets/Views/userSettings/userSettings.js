@@ -8,7 +8,7 @@ app.config(['$stateProvider', function($stateProvider) {
         url: '/settings',
         redirectTo: 'base.settings.Profile',
         resolve: {
-            user: function(userService, currentUser) {
+            userObject: function(userService, currentUser) {
                 return userService.retrieveUser(currentUser.id);
             }
         }
@@ -21,7 +21,6 @@ app.config(['$stateProvider', function($stateProvider) {
                 controller: 'userSettingsProfileController',
             }
         },
-        url: '/profile',
         resolve: {
             titleQuote: function(quoteService, currentUser, $q) {
                 var output = $q.defer();
@@ -32,7 +31,8 @@ app.config(['$stateProvider', function($stateProvider) {
                 });
                 return output.promise;
             }
-        }
+        },
+        url: 'profile'
     }).state('base.settings.Account', {
         sticky: true,
         deepStateRedirect: true,
@@ -48,7 +48,6 @@ app.config(['$stateProvider', function($stateProvider) {
         views: {
             'Mod Lists': {
                 templateUrl: '/resources/partials/userSettings/modlists.html',
-                controller: 'userSettingsModlistsController',
             }
         },
         url: '/mod-lists'
@@ -64,9 +63,9 @@ app.config(['$stateProvider', function($stateProvider) {
     });
 }]);
 
-app.controller('userSettingsController', function($scope, $q, user, currentUser, userSettingsService, fileUtils, themesService) {
+app.controller('userSettingsController', function($scope, $q, userObject, currentUser, userSettingsService, fileUtils, themesService) {
     $scope.userSettings = currentUser.settings;
-    $scope.user = user;
+    $scope.user = userObject.user;
     $scope.avatar = {
         src: $scope.user.avatar
     };
@@ -76,7 +75,7 @@ app.controller('userSettingsController', function($scope, $q, user, currentUser,
         { name: 'Profile' },
         { name: 'Account' },
         { name: 'Mod Lists' },
-        { name: 'Authored Mods' },
+        { name: 'Authored Mods' }
     ];
 
     /* settings submission */
@@ -170,67 +169,5 @@ app.controller('userSettingsProfileController', function($scope, titleQuote) {
         } else if ($scope.user) {
             $scope.resetAvatar();
         }
-    };
-});
-
-app.controller('userSettingsModlistsController', function($scope) {
-    //TODO: I think we should put the modlist actions inside somewhere reusable (directive)
-    /* mod list actions */
-    $scope.editModList = function(modlist) {
-        //TODO: I'm not sure if this state.go is correct, the param might be off
-        $state.go(base.modlist, { modlistId: modlist.id });
-    };
-
-    $scope.appendModList = function(data) {
-        var modlists = $scope.user.mod_lists;
-        if (data.modlist) {
-            modlists.push(data.modlist);
-            if (data.modlist.is_collection) {
-                $scope.collections.push(data.modlist);
-            } else {
-                $scope.lists.push(data.modlist);
-            }
-            $scope.$apply();
-        } else {
-            $scope.errors.push({ message: "Didn't receive a cloned mod list from the server" });
-        }
-    };
-
-    $scope.cloneModList = function(modlist) {
-        console.log('Clone Mod List: "' + modlist.name + '"');
-        $scope.errors = [];
-        userSettingsService.cloneModList(modlist).then(function(data) {
-            if (data.status === "ok") {
-                $scope.appendModList(data);
-            } else {
-                $scope.errors.push(data.status);
-            }
-        });
-    };
-
-    $scope.removeModList = function(modlist) {
-        var modlists = $scope.user.mod_lists;
-        var index = modlists.indexOf(modlist);
-        modlists.splice(index, 1);
-        if (modlist.is_collection) {
-            index = $scope.collections.indexOf(modlist);
-            $scope.collections.splice(index, 1);
-        } else {
-            index = $scope.lists.indexOf(modlist);
-            $scope.lists.splice(index, 1);
-        }
-        $scope.$apply();
-    };
-
-    $scope.deleteModList = function(modlist) {
-        console.log('Delete Mod List: "' + modlist.name + '"');
-        $scope.errors = [];
-        userSettingsService.deleteModList(modlist).then(function(data) {
-            if (data.status === "ok") {
-                $scope.removeModList(modlist);
-            } else {
-                $scope.errors.push({ message: "Delete Mod List: " + data.status });
-            }
-        });
     };
 });

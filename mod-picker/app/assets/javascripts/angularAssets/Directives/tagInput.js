@@ -16,14 +16,13 @@ app.directive('tagInput', function () {
     }
 });
 
-app.controller('tagInputController', function($scope, $timeout) {
+app.controller('tagInputController', function($scope, $timeout, formUtils) {
     // set some constants
     var pause = 200;
     var minLength = 1;
 
-    $scope.focusText = function ($event) {
-        $event.target.select();
-    };
+    // inherited functions
+    $scope.focusText = formUtils.focusText;
 
     $scope.hoverRow = function(index) {
         $scope.currentIndex = index;

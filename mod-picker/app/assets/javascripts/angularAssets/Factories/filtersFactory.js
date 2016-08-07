@@ -798,5 +798,33 @@ app.factory("filtersFactory", function() {
         )
     };
 
+    this.articleSearchFilters = function() {
+        return [
+            factory.searchFilter,
+            {
+                data: "text",
+                param: "t"
+            },
+            factory.submitterFilter
+        ];
+    };
+
+    this.articleDateFilters = function() {
+        return [{
+            data: "submitted",
+            type: "Range",
+            subtype: "Date",
+            param: "dc"
+        }];
+    };
+
+    // TODO: Article Game Filters
+    this.articleFilters = function() {
+        return Array.prototype.concat(
+            factory.articleSearchFilters(),
+            factory.articleDateFilters()
+        );
+    };
+
     return factory;
 });

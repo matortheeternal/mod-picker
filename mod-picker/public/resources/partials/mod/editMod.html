@@ -198,7 +198,7 @@
                             <option value="contributor">Contributor</option>
                             <option value="curator">Curator</option>
                         </select>
-                        <search-input search-type="users" result-id="author.user_id" search-text="author.user.username" disabled="author.id"></search-input>
+                        <search-input search-function="searchUsers" result-id="author.user_id" search-text="author.user.username" disabled="author.id" label="user" model="username" placeholder="Enter username"></search-input>
                         <span class="remove-item" ng-click="removeAuthor(author)" title="Remove author">
                             <i class="fa fa-times"></i>
                         </span>
@@ -239,7 +239,7 @@
                 </h3>
                 <section>
                     <div class="dynamic-item" ng-repeat="requirement in mod.requirements" ng-hide="requirement._destroy">
-                        <search-input search-type="mods" result-id="requirement.required_id" search-text="requirement.name" class="long-input" disabled="requirement.id"></search-input>
+                        <search-input search-function="searchMods" result-id="requirement.required_id" search-text="requirement.name" class="long-input" disabled="requirement.id" label="mod" key="name"></search-input>
                         <span class="remove-item" ng-click="removeRequirement(requirement)" title="Remove requirement">
                             <i class="fa fa-times"></i>
                         </span>

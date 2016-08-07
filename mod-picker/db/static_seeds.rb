@@ -5,6 +5,17 @@ def create_plugin(mod, dump_filename)
   mod.plugins.create(hash).save!
 end
 
+def create_config_file(mod, config_filename, config_install_path)
+  file = File.read(Rails.root.join("db", "config_files", config_filename))
+  hash = {
+      game_id: mod.game_id,
+      filename: config_filename,
+      install_path: config_install_path,
+      text_body: file
+  }
+  mod.config_files.create(hash).save!
+end
+
 def generate_password
   if Rails.env.production?
     pw = SecureRandom.urlsafe_base64
@@ -1841,6 +1852,9 @@ def seed_official_content
           url: "http://store.steampowered.com/app/72850/"
       }]
   )
+  # Create config files
+  create_config_file(modSkyrim, "Skyrim.ini", "{{MyGamesFolder}}")
+  create_config_file(modSkyrim, "SkyrimPrefs.ini", "{{MyGamesFolder}}")
   # Create plugins
   create_plugin(modSkyrim, "Skyrim.esm.json")
   create_plugin(modSkyrim, "Update.esm.json")
@@ -1899,7 +1913,7 @@ def seed_official_content
       tag_names: ["Solstheim", "Apocrypha", "Hermaeus Mora", "Shouts", "Stahlrim", "Nordic", "Bonemold", "Chitin"]
   )
   # Create plugins
-  create_plugin(modDragonborn, "Dawnguard.esm.json")
+  create_plugin(modDragonborn, "Dragonborn.esm.json")
   modDragonborn.update_lazy_counters
 
   modHighRes = Mod.create!(

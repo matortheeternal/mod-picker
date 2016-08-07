@@ -34,16 +34,16 @@
                 <option value="make custom patch">Make Custom Patch for</option>
             </select>
         </span>
-        <search-input search-type="mods" result-id="activeCompatibilityNote.mod_id" search-text="activeCompatibilityNote.mod_name" excluded-id="mod.id" on-change="validateCompatibilityNote" disabled="activeCompatibilityNote.original"></search-input>
+        <search-input search-function="searchMods" result-id="activeCompatibilityNote.mod_id" search-text="activeCompatibilityNote.mod_name" excluded-id="mod.id" on-change="validateCompatibilityNote" disabled="activeCompatibilityNote.original" label="mod" key="name"></search-input>
     </div>
     <div class="content-options" ng-show="['compatibility mod', 'compatibility option'].indexOf(activeCompatibilityNote.status) > -1">
         <span ng-if="activeCompatibilityNote.status === 'compatibility mod'">
             <strong>Compatibility Mod</strong>
-            <search-input search-type="mods" result-id="activeCompatibilityNote.compatibility_mod_id" excluded-id="mod.id" on-change="validateCompatibilityNote"></search-input>
+            <search-input search-function="searchMods" result-id="activeCompatibilityNote.compatibility_mod_id" excluded-id="mod.id" on-change="validateCompatibilityNote" label="mod" key="name"></search-input>
         </span>
         <span ng-if="activeCompatibilityNote.status === 'compatibility option'">
             <strong>Compatibility Plugin</strong>
-            <search-input search-type="plugins" result-id="activeCompatibilityNote.compatibility_plugin_id" on-change="validateCompatibilityNote"></search-input>
+            <search-input search-function="searchPlugins" result-id="activeCompatibilityNote.compatibility_plugin_id" on-change="validateCompatibilityNote" label="plugin" key="filename"></search-input>
         </span>
     </div>
     <div class="content-container">
@@ -64,7 +64,7 @@
         </div>
 
         <div class="action-button-container">
-            <input class="btn action-btn" type="submit" value="Submit" ng-click="submitCompatibilityNote()" ng-disabled="!activeCompatibilityNote.valid" title="{{activeCompatibilityNote.valid ? 'Submit your compatibility note' : 'Your compatibility note is either too short or incomplete.'}}"/>
+            <input class="btn action-btn" type="submit" value="Submit" ng-click="saveCompatibilityNote()" ng-disabled="!activeCompatibilityNote.valid" title="{{activeCompatibilityNote.valid ? 'Submit your compatibility note' : 'Your compatibility note is either too short or incomplete.'}}"/>
             <input class="btn action-btn" type="button" value="Discard" ng-click="discardCompatibilityNote()">
         </div>
     </div>

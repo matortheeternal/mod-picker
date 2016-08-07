@@ -25,18 +25,19 @@ app.service('userService', function (backend, $q, userSettingsService, userTitle
     this.retrieveUser = function(userId) {
         var output = $q.defer();
         backend.retrieve('/users/' + userId).then(function(userData) {
+            var userObject = userData.user;
             //moving collections into a separate array
-            userData.collections = [];
-            for (var i = userData.mod_lists.length - 1; i >= 0; i--) {
-                if (userData.mod_lists[i].is_collection) {
-                    userData.collections.push(userData.mod_lists.splice(i, 1)[0]);
+            userObject.collections = [];
+            for (var i = userObject.mod_lists.length - 1; i >= 0; i--) {
+                if (userObject.mod_lists[i].is_collection) {
+                    userObject.collections.push(userObject.mod_lists.splice(i, 1)[0]);
                 }
             }
 
             //get user title if it's not custom
-            if (!userData.title) {
-                userTitleService.getUserTitle(userData.reputation.overall).then(function(title) {
-                    userData.title = title;
+            if (!userObject.title) {
+                userTitleService.getUserTitle(userObject.reputation.overall).then(function(title) {
+                    userObject.title = title;
                 });
             }
             output.resolve(userData);
@@ -79,9 +80,10 @@ app.service('userService', function (backend, $q, userSettingsService, userTitle
         var rep = user.reputation.overall;
         permissions.isAdmin = user.role === 'admin';
         permissions.isModerator = user.role === 'moderator';
+        permissions.canSubmitArticles = permissions.isModerator || permissions.isAdmin;
         // TODO: Remove this when beta is over
-        permissions.canSubmitMod = true;
-        //permissions.canSubmitMod = permissions.isAdmin || permissions.isModerator || user.reputation.overall > 160;
+        permissions.canSubmitMods = true;
+        //permissions.canSubmitMods = permissions.isAdmin || permissions.isModerator || user.reputation.overall > 160;
         permissions.canUseCustomSources = permissions.isAdmin || permissions.isModerator;
         permissions.canSetGeneralModInfo = permissions.isAdmin || permissions.isModerator;
         permissions.canChangeAvatar = (rep >= 10) || permissions.isAdmin || permissions.isModerator;
@@ -91,8 +93,17 @@ app.service('userService', function (backend, $q, userSettingsService, userTitle
         permissions.canModerate = permissions.isModerator || permissions.isAdmin;
 
         var numEndorsed = user.reputation.rep_to_count;
-        permissions.canEndorse = (rep >= 40 && numEndorsed <= 5) || (rep >= 160 && numEndorsed <= 10) || (rep >= 640 && numEndorsed <= 15);
+        permissions.canEndorse = (rep >= 40 && numEndorsed < 5) || (rep >= 160 && numEndorsed < 10) || (rep >= 640 && numEndorsed < 15);
 
         return permissions;
+    };
+
+    this.endorse = function(userId, endorsed) {
+        if (endorsed) {
+        //if the user is currently endorsed delete, otherwise post
+            return backend.delete('/users/' + userId + '/rep');
+        } else {
+            return backend.post('/users/' + userId + '/rep', {});
+        }
     };
 });
