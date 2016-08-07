@@ -74,18 +74,16 @@ class HelpPagesController < ApplicationController
     render "help_pages/game"
   end
 
-  # GET /help/category/HelpPage.category
+  # GET /help/category/:category
   def category
-    @page_title = params[:category].humanize.capitalize
-    @help_pages = HelpPage.where(category: HelpPage.categories[params[:category]]).order(submitted: :desc)
-
-    if @help_pages.count < 1
-      render "help_pages/404"
-    else
-      render "help_pages/category"
+    unless HelpPage.categories.include? params[:category]
+      render "help_pages/404", status: 404
+      return
     end
 
-    
+    @page_title = params[:category].humanize.titleize
+    @help_pages = HelpPage.where(category: HelpPage.categories[params[:category]]).order(submitted: :desc)
+    render "help_pages/category"
   end
 
   private
