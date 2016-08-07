@@ -1,11 +1,11 @@
-app.controller('modAnalysisController', function($scope, $stateParams, $state, contributionService) {
+app.controller('modAnalysisController', function($scope, $stateParams, $state, modService) {
     $scope.switchPlugin = function() {
         $state.go($state.current.name, {plugin: $scope.mod.currentPlugin.id});
     };
 
     $scope.retrieveAnalysis = function(pluginId) {
         // retrieve the analysis
-        contributionService.retrieveModAnalysis($stateParams.modId).then(function(analysis) {
+        modService.retrieveModAnalysis($stateParams.modId).then(function(analysis) {
             $scope.mod.analysis = analysis;
             $scope.mod.plugins = analysis.plugins;
             $scope.mod.assets = analysis.assets;

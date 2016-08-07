@@ -9,19 +9,26 @@ class CompatibilityNote < ActiveRecord::Base
   # GENERAL SCOPES
   scope :visible, -> { where(hidden: false, approved: true) }
   scope :game, -> (game_id) { where(game_id: game_id) }
+  scope :mod, -> (mod_ids) { where("first_mod_id IN (?) OR second_mod_id IN (?)", mod_ids, mod_ids) }
+  scope :mods, -> (mod_ids) { where(first_mod_id: mod_ids, second_mod_id: mod_ids) }
   scope :search, -> (text) { where("compatibility_notes.text_body like ?", "%#{text}%") }
   scope :submitter, -> (username) { joins(:submitter).where(:users => {:username => username}) }
-  scope :status, -> (statuses_hash) {
-    # build commentables array
-    statuses = []
-    statuses_hash.each_with_index do |(key,value),index|
-      if statuses_hash[key]
-        statuses.push(index)
+  scope :status, -> (statuses) {
+    if statuses.is_a?(Hash)
+      # handle hash search by building a commentables array
+      statuses_array = []
+      statuses.each_with_index do |(key,value),index|
+        if statuses[key]
+          statuses_array.push(index)
+        end
       end
+    else
+      # else treat as an array of statuses
+      statuses_array = statuses
     end
 
     # return query
-    where(status: statuses)
+    where(status: statuses_array)
   }
   # RANGE SCOPES
   scope :submitted, -> (range) { where(submitted: parseDate(range[:min])..parseDate(range[:max])) }
@@ -37,12 +44,13 @@ class CompatibilityNote < ActiveRecord::Base
   belongs_to :second_mod, :class_name => 'Mod', :foreign_key => 'second_mod_id'
 
   # associated compatibility plugin/compatibilty mod for automatic resolution purposes
-  belongs_to :compatibility_plugin, :class_name => 'Plugin', :foreign_key => 'compatibility_plugin_id', :inverse_of => 'compatibility_note_plugins'
+  belongs_to :compatibility_plugin, :class_name => 'Plugin', :foreign_key => 'compatibility_plugin_id', :inverse_of => 'compatibility_notes'
   belongs_to :compatibility_mod, :class_name => 'Mod', :foreign_key => 'compatibility_mod_id', :inverse_of => 'compatibility_note_mods'
 
   # mod lists this compatibility note appears on
   has_many :mod_list_compatibility_notes, :inverse_of => 'compatibility_note'
   has_many :mod_lists, :through => 'mod_list_compatibility_notes', :inverse_of => 'compatibility_notes'
+  has_many :mod_list_ignored_notes, :as => 'note'
 
   # old versions of this compatibility note
   has_many :history_entries, :class_name => 'CompatibilityNoteHistoryEntry', :inverse_of => 'compatibility_note', :foreign_key => 'compatibility_note_id'
@@ -67,7 +75,7 @@ class CompatibilityNote < ActiveRecord::Base
     end
 
     mod_ids = [first_mod_id, second_mod_id]
-    note = CompatibilityNote.where(first_mod_id: mod_ids, second_mod_id: mod_ids, hidden: false).where.not(id: self.id).first
+    note = CompatibilityNote.mods(mod_ids).where("hidden = 0 and id != ?", self.id).first
     if note.present?
       if note.approved
         errors.add(:mods, "A Compatibility Note for these mods already exists.")

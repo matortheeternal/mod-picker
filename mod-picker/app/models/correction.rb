@@ -121,7 +121,7 @@ class Correction < ActiveRecord::Base
   end
 
   def recompute_correctable_standing
-    if self.correctable.respond_to(:standing)
+    if self.correctable.respond_to?(:standing)
       self.correctable.compute_standing
       self.correctable.update_column(:standing, self.correctable.standing)
     end

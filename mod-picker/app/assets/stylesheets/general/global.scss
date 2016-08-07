@@ -117,6 +117,10 @@ body {
   background-color: inherit !important;
 }
 
+.no-margin {
+  margin: 0 !important;
+}
+
 .no-action {
   cursor: default !important;
 }
@@ -589,21 +593,26 @@ select {
   background-repeat: no-repeat;
 }
 
-.big-text-area {
-  width: 100%;
-  height: 300px;
-  max-width: 100%;
-  overflow-y: auto;
-}
-
-.small-text-area {
+.big-text-area, .medium-text-area, .small-text-area {
   width: 100%;
   max-width: 100%;
-  height: 60px;
   overflow-y: auto;
   padding: 4px;
   font-size: 16px;
   font-family: inherit;
+}
+
+.big-text-area {
+  height: 300px;
+}
+
+.medium-text-area {
+  width: 500px;
+  height: 150px;
+}
+
+.small-text-area {
+  height: 60px;
 }
 
 input, textarea {
@@ -633,6 +642,10 @@ input[type="file"] {
 
   .CodeMirror-line {
     @include wordbreak;
+  }
+
+  span.cm-invalidchar[title="\\ufeff"] {
+    display: none;
   }
 }
 
@@ -920,7 +933,20 @@ a .help-tooltip {
     border: 1px solid $border_color;
     background-color: $background-highlight;
     padding: 4px;
+    font: inherit;
+    cursor: pointer;
+    color: $link_color;
+
+    &:hover {
+        color: $link_hover_color_primary;
+    }
+
+    &:disabled {
+        color: inherit;
+        cursor: auto;
+    }
   }
+
   .page-ellipsis {
     margin-left: 3px;
     margin-right: 3px;

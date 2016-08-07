@@ -1,5 +1,5 @@
 class ModListsController < ApplicationController
-  before_action :set_mod_list, only: [:show, :update, :update_tags, :destroy, :tools, :plugins, :config_files, :comments]
+  before_action :set_mod_list, only: [:show, :update, :update_tags, :destroy, :tools, :plugins, :config_files, :analysis, :comments]
   before_action :set_active_mod_list, only: [:active, :mods]
 
   # GET /mod_lists
@@ -31,10 +31,16 @@ class ModListsController < ApplicationController
   # GET /mod_lists/1/tools
   def tools
     authorize! :read, @mod_list
+
+    # prepare primary data
     tools = @mod_list.mod_list_mods.utility(true).includes(:mod => :required_mods).order(:index)
+    custom_tools = @mod_list.custom_mods.utility(true)
     groups = @mod_list.mod_list_groups.where(tab: 0).order(:index)
+
+    # render response
     render :json => {
         tools: tools,
+        custom_tools: custom_tools,
         required_tools: @mod_list.required_tools,
         groups: groups
     }
@@ -43,47 +49,112 @@ class ModListsController < ApplicationController
   # GET /mod_lists/:id/mods
   def mods
     authorize! :read, @mod_list
-    mods = @mod_list.mod_list_mods.utility(false).includes(:mod => :required_mods).order(:index)
+
+    # prepare primary data
+    mods = @mod_list.mod_list_mods.utility(false).includes(:mod).order(:index)
+    custom_mods = @mod_list.custom_mods.utility(false)
     groups = @mod_list.mod_list_groups.where(tab: 1).order(:index)
+
+    # prepare notes
+    compatibility_notes = @mod_list.mod_compatibility_notes
+    install_order_notes = @mod_list.install_order_notes
+
+    # prepare helpful marks
+    c_helpful_marks = HelpfulMark.submitter(current_user.id).helpfulable("CompatibilityNote", compatibility_notes.ids)
+    i_helpful_marks = HelpfulMark.submitter(current_user.id).helpfulable("InstallOrderNote", install_order_notes.ids)
+
+    # render response
     render :json => {
         mods: mods,
+        custom_mods: custom_mods,
         groups: groups,
         required_mods: @mod_list.required_mods,
-        compatibility_notes: @mod_list.compatibility_notes,
-        install_order_notes: @mod_list.install_order_notes
+        compatibility_notes: compatibility_notes,
+        install_order_notes: install_order_notes,
+        c_helpful_marks: c_helpful_marks,
+        i_helpful_marks: i_helpful_marks
     }
   end
 
   # GET /mod_lists/:id/plugins
   def plugins
     authorize! :read, @mod_list
-    plugins = @mod_list.mod_list_plugins.joins(:plugin)
+
+    # prepare primary data
+    plugins = @mod_list.mod_list_plugins.includes(:plugin)
+    plugins_store = @mod_list.plugins.order(:mod_id)
     custom_plugins = @mod_list.custom_plugins
     groups = @mod_list.mod_list_groups.where(tab: 2).order(:index)
+
+    # prepare notes
+    compatibility_notes = @mod_list.plugin_compatibility_notes
+    load_order_notes = @mod_list.load_order_notes
+
+    # prepare helpful marks
+    c_helpful_marks = HelpfulMark.submitter(current_user.id).helpfulable("CompatibilityNote", compatibility_notes.ids)
+    l_helpful_marks = HelpfulMark.submitter(current_user.id).helpfulable("LoadOrderNote", load_order_notes.ids)
+
+    # render response
     render :json => {
         plugins: plugins,
+        plugins_store: plugins_store,
         custom_plugins: custom_plugins,
         groups: groups,
-        load_order_notes: @mod_list.load_order_notes
+        required_plugins: @mod_list.required_plugins,
+        compatibility_notes: compatibility_notes,
+        load_order_notes: load_order_notes,
+        c_helpful_marks: c_helpful_marks,
+        l_helpful_marks: l_helpful_marks
     }
   end
 
-  # GET /mod_lists/:id/config_files
+  # GET /mod_lists/:id/config
   def config_files
     authorize! :read, @mod_list
-    config_files = @mod_list.mod_list_config_files.joins(:config_file)
-    custom_config_files = @mod_list.mod_list_custom_config_files
+
+    # prepare primary data
+    config_files_store = @mod_list.config_files.order(:mod_id)
+    config_files = @mod_list.mod_list_config_files.includes(:config_file => :mod)
+    custom_config_files = @mod_list.custom_config_files
+
+    # render response
     render :json => {
+        config_files_store: config_files_store,
         config_files: config_files,
         custom_config_files: custom_config_files
+    }
+  end
+
+  # GET /mod_lists/1/analysis
+  def analysis
+    authorize! :read, @mod_list
+
+    # prepare primary data
+    mod_ids = @mod_list.mod_list_mods.utility(false).official(false).pluck(:mod_id)
+    plugin_ids = @mod_list.mod_list_plugins.official(false).pluck(:plugin_id)
+    install_order = @mod_list.mod_list_mods.utility(false).includes(:mod)
+    load_order = @mod_list.mod_list_plugins.includes(:plugin)
+    plugins = Plugin.where(id: plugin_ids).includes(:dummy_masters, :overrides, :masters => :master_plugin)
+    conflicting_assets = ModAssetFile.mods(mod_ids).includes(:asset_file).conflicting
+
+    # render response
+    render :json => {
+        load_order: ModListPlugin.load_order_json(load_order),
+        install_order: ModListMod.install_order_json(install_order),
+        plugins: Plugin.analysis_json(plugins),
+        conflicting_assets: conflicting_assets
     }
   end
 
   # POST/GET /mod_lists/1/comments
   def comments
     authorize! :read, @mod_list
+
+    # prepare primary data
     comments = @mod_list.comments.accessible_by(current_ability).sort(params[:sort]).paginate(:page => params[:page], :per_page => 10)
     count = @mod_list.comments.accessible_by(current_ability).count
+
+    # render response
     render :json => {
         comments: comments,
         max_entries: count,
@@ -94,6 +165,7 @@ class ModListsController < ApplicationController
   # POST /mod_lists
   def create
     @mod_list = ModList.new(mod_list_params)
+    @mod_list.submitted_by = current_user.id
     authorize! :create, @mod_list
 
     if @mod_list.save
@@ -107,6 +179,7 @@ class ModListsController < ApplicationController
   def update
     authorize! :update, @mod_list
     authorize! :hide, @mod_list if params[:mod_list].has_key?(:hidden)
+
     if @mod_list.update(mod_list_params) && @mod_list.update_lazy_counters
       render json: {status: :ok}
     else
@@ -185,16 +258,6 @@ class ModListsController < ApplicationController
     end
   end
 
-  # DELETE /mod_lists/1
-  def destroy
-    authorize! :destroy, @mod_list
-    if @mod_list.destroy
-      render json: {status: :ok}
-    else
-      render json: @mod_list.errors, status: :unprocessable_entity
-    end
-  end
-
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_mod_list
@@ -220,16 +283,15 @@ class ModListsController < ApplicationController
     def mod_list_params
       params.require(:mod_list).permit(:game_id, :name, :description, :status, :visibility, :is_collection, :disable_comments, :lock_tags, :hidden,
           :mod_list_mods_attributes => [:id, :group_id, :mod_id, :index, :_destroy],
-          :mod_list_plugins_attributes => [:id, :group_id, :plugin_id, :index, :active, :_destroy],
-          :custom_plugins_attributes => [:id, :group_id, :index, :filename, :description, :active, :_destroy],
+          :custom_mods_attributes => [:id, :group_id, :is_utility, :index, :name, :description, :_destroy],
+          :mod_list_plugins_attributes => [:id, :group_id, :plugin_id, :index, :cleaned, :merged, :_destroy],
+          :custom_plugins_attributes => [:id, :group_id, :index, :cleaned, :merged, :compatibility_note_id, :filename, :description, :_destroy],
           :mod_list_groups_attributes => [:id, :index, :tab, :color, :name, :description, :_destroy,
               :children => [:id]
           ],
           :mod_list_config_files_attributes => [:id, :config_file_id, :text_body, :_destroy],
-          :mod_list_custom_config_files => [:id, :filename, :install_path, :text_body, :_destroy],
-          :mod_list_compatibility_notes => [:id, :compatibility_note_id, :status, :_destroy],
-          :mod_list_install_order_notes => [:id, :install_order_note_id, :status, :_destroy],
-          :mod_list_load_order_notes => [:id, :load_order_note_id, :status, :_destroy]
+          :custom_config_files_attributes => [:id, :filename, :install_path, :text_body, :_destroy],
+          :ignored_notes_attributes => [:id, :note_id, :note_type, :_destroy]
       )
     end
 end

@@ -8,6 +8,18 @@ class ArticlesController < ApplicationController
     render :json => @article.as_json
   end
 
+  # GET /articles/index
+  def index
+    @articles= Article.accessible_by(current_ability).filter(filtering_params).sort(params[:sort]).paginate(:page => params[:page])
+    count =  Article.accessible_by(current_ability).filter(filtering_params).count
+
+    render :json => {
+        articles: @articles,
+        max_entries: count,
+        entries_per_page: User.per_page
+    }
+  end
+
   # GET /articles/new
   def new
     authorize! :create, @article
@@ -76,7 +88,12 @@ class ArticlesController < ApplicationController
       @article = Article.find(params[:id])
     end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
+    # Params we allow filtering on
+    def filtering_params
+      params[:filters].slice(:search, :text, :submitter, :submitted)
+    end
+
+    # Only allow a trusted parameter "white list" through.
     def article_params
       params.require(:article).permit(:title, :submitted_by, :text_body)
     end

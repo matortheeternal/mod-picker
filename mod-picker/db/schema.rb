@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160729184445) do
+ActiveRecord::Schema.define(version: 20160805205222) do
 
   create_table "agreement_marks", id: false, force: :cascade do |t|
     t.integer "correction_id", limit: 4,                null: false
@@ -36,12 +36,12 @@ ActiveRecord::Schema.define(version: 20160729184445) do
 
   create_table "asset_files", force: :cascade do |t|
     t.integer "game_id",               limit: 4,               null: false
-    t.string  "filepath",              limit: 255,             null: false
+    t.string  "path",                  limit: 255,             null: false
     t.integer "mod_asset_files_count", limit: 4,   default: 0, null: false
   end
 
-  add_index "asset_files", ["filepath"], name: "filepath", unique: true, using: :btree
   add_index "asset_files", ["game_id"], name: "fk_rails_2e8fb86f89", using: :btree
+  add_index "asset_files", ["path"], name: "filepath", unique: true, using: :btree
 
   create_table "base_reports", force: :cascade do |t|
     t.integer  "reportable_id",   limit: 4,               null: false
@@ -133,6 +133,7 @@ ActiveRecord::Schema.define(version: 20160729184445) do
 
   create_table "config_files", force: :cascade do |t|
     t.integer "game_id",         limit: 4,                 null: false
+    t.integer "mod_id",          limit: 4,                 null: false
     t.string  "filename",        limit: 64,                null: false
     t.string  "install_path",    limit: 128,               null: false
     t.text    "text_body",       limit: 65535
@@ -140,6 +141,7 @@ ActiveRecord::Schema.define(version: 20160729184445) do
   end
 
   add_index "config_files", ["game_id", "filename"], name: "index_config_files_on_game_id_and_filename", using: :btree
+  add_index "config_files", ["mod_id"], name: "fk_rails_241d26b9f7", using: :btree
 
   create_table "corrections", force: :cascade do |t|
     t.integer  "game_id",          limit: 4,                     null: false
@@ -329,11 +331,13 @@ ActiveRecord::Schema.define(version: 20160729184445) do
   add_index "masters", ["plugin_id"], name: "pl_id", using: :btree
 
   create_table "mod_asset_files", id: false, force: :cascade do |t|
-    t.integer "mod_id",        limit: 4, null: false
-    t.integer "asset_file_id", limit: 4, null: false
+    t.integer "mod_id",        limit: 4,   null: false
+    t.integer "asset_file_id", limit: 4
+    t.string  "subpath",       limit: 255
   end
 
   add_index "mod_asset_files", ["asset_file_id"], name: "maf_id", using: :btree
+  add_index "mod_asset_files", ["mod_id", "asset_file_id"], name: "mod_id", unique: true, using: :btree
   add_index "mod_asset_files", ["mod_id"], name: "mv_id", using: :btree
 
   create_table "mod_authors", force: :cascade do |t|
@@ -344,15 +348,6 @@ ActiveRecord::Schema.define(version: 20160729184445) do
 
   add_index "mod_authors", ["mod_id"], name: "mod_id", using: :btree
   add_index "mod_authors", ["user_id"], name: "user_id", using: :btree
-
-  create_table "mod_list_compatibility_notes", force: :cascade do |t|
-    t.integer "mod_list_id",           limit: 4,             null: false
-    t.integer "compatibility_note_id", limit: 4,             null: false
-    t.integer "status",                limit: 1, default: 0, null: false
-  end
-
-  add_index "mod_list_compatibility_notes", ["compatibility_note_id"], name: "cn_id", using: :btree
-  add_index "mod_list_compatibility_notes", ["mod_list_id"], name: "ml_id", using: :btree
 
   create_table "mod_list_config_files", force: :cascade do |t|
     t.integer "mod_list_id",    limit: 4,     null: false
@@ -372,13 +367,27 @@ ActiveRecord::Schema.define(version: 20160729184445) do
 
   add_index "mod_list_custom_config_files", ["mod_list_id"], name: "fk_rails_af192d0984", using: :btree
 
-  create_table "mod_list_custom_plugins", force: :cascade do |t|
-    t.integer "mod_list_id", limit: 4,                    null: false
+  create_table "mod_list_custom_mods", force: :cascade do |t|
+    t.integer "mod_list_id", limit: 4,                     null: false
     t.integer "group_id",    limit: 4
-    t.integer "index",       limit: 2,                    null: false
-    t.string  "filename",    limit: 64,                   null: false
-    t.boolean "active",                    default: true, null: false
+    t.integer "index",       limit: 2,                     null: false
+    t.boolean "is_utility",                default: false, null: false
+    t.string  "name",        limit: 255,                   null: false
     t.text    "description", limit: 65535
+  end
+
+  add_index "mod_list_custom_mods", ["group_id"], name: "fk_rails_4c21862783", using: :btree
+  add_index "mod_list_custom_mods", ["mod_list_id"], name: "fk_rails_a95ebb44e6", using: :btree
+
+  create_table "mod_list_custom_plugins", force: :cascade do |t|
+    t.integer "mod_list_id",           limit: 4,                     null: false
+    t.integer "group_id",              limit: 4
+    t.integer "index",                 limit: 2,                     null: false
+    t.boolean "cleaned",                             default: false, null: false
+    t.boolean "merged",                              default: false, null: false
+    t.integer "compatibility_note_id", limit: 4
+    t.string  "filename",              limit: 64,                    null: false
+    t.text    "description",           limit: 65535
   end
 
   add_index "mod_list_custom_plugins", ["group_id"], name: "fk_rails_53bf719a81", using: :btree
@@ -395,23 +404,13 @@ ActiveRecord::Schema.define(version: 20160729184445) do
 
   add_index "mod_list_groups", ["mod_list_id"], name: "fk_rails_0abd07c656", using: :btree
 
-  create_table "mod_list_install_order_notes", force: :cascade do |t|
-    t.integer "mod_list_id",           limit: 4,             null: false
-    t.integer "install_order_note_id", limit: 4,             null: false
-    t.integer "status",                limit: 1, default: 0, null: false
+  create_table "mod_list_ignored_notes", force: :cascade do |t|
+    t.integer "mod_list_id", limit: 4,   null: false
+    t.integer "note_id",     limit: 4,   null: false
+    t.string  "note_type",   limit: 255, null: false
   end
 
-  add_index "mod_list_install_order_notes", ["install_order_note_id"], name: "in_id", using: :btree
-  add_index "mod_list_install_order_notes", ["mod_list_id"], name: "ml_id", using: :btree
-
-  create_table "mod_list_load_order_notes", force: :cascade do |t|
-    t.integer "mod_list_id",        limit: 4,             null: false
-    t.integer "load_order_note_id", limit: 4,             null: false
-    t.integer "status",             limit: 1, default: 0, null: false
-  end
-
-  add_index "mod_list_load_order_notes", ["load_order_note_id"], name: "index_mod_list_load_order_notes_on_load_order_note_id", using: :btree
-  add_index "mod_list_load_order_notes", ["mod_list_id"], name: "index_mod_list_load_order_notes_on_mod_list_id", using: :btree
+  add_index "mod_list_ignored_notes", ["mod_list_id"], name: "fk_rails_89a67a287a", using: :btree
 
   create_table "mod_list_mods", force: :cascade do |t|
     t.integer "mod_list_id", limit: 4, null: false
@@ -465,14 +464,23 @@ ActiveRecord::Schema.define(version: 20160729184445) do
     t.text     "description",               limit: 65535
     t.integer  "tools_count",               limit: 4,     default: 0,     null: false
     t.integer  "mods_count",                limit: 4,     default: 0,     null: false
+    t.integer  "custom_tools_count",        limit: 4,     default: 0,     null: false
+    t.integer  "custom_mods_count",         limit: 4,     default: 0,     null: false
     t.integer  "plugins_count",             limit: 4,     default: 0,     null: false
-    t.integer  "active_plugins_count",      limit: 4,     default: 0,     null: false
+    t.integer  "master_plugins_count",      limit: 4,     default: 0,     null: false
+    t.integer  "available_plugins_count",   limit: 4,     default: 0,     null: false
     t.integer  "custom_plugins_count",      limit: 4,     default: 0,     null: false
     t.integer  "config_files_count",        limit: 4,     default: 0,     null: false
     t.integer  "custom_config_files_count", limit: 4,     default: 0,     null: false
     t.integer  "compatibility_notes_count", limit: 4,     default: 0,     null: false
     t.integer  "install_order_notes_count", limit: 4,     default: 0,     null: false
     t.integer  "load_order_notes_count",    limit: 4,     default: 0,     null: false
+    t.integer  "ignored_notes_count",       limit: 4,     default: 0,     null: false
+    t.integer  "bsa_files_count",           limit: 4,     default: 0,     null: false
+    t.integer  "asset_files_count",         limit: 4,     default: 0,     null: false
+    t.integer  "records_count",             limit: 4,     default: 0,     null: false
+    t.integer  "override_records_count",    limit: 4,     default: 0,     null: false
+    t.integer  "plugin_errors_count",       limit: 4,     default: 0,     null: false
     t.integer  "tags_count",                limit: 4,     default: 0,     null: false
     t.integer  "stars_count",               limit: 4,     default: 0,     null: false
     t.integer  "comments_count",            limit: 4,     default: 0,     null: false
@@ -482,7 +490,7 @@ ActiveRecord::Schema.define(version: 20160729184445) do
     t.boolean  "hidden",                                  default: false, null: false
     t.datetime "submitted",                                               null: false
     t.datetime "completed"
-    t.datetime "edited"
+    t.datetime "updated"
   end
 
   add_index "mod_lists", ["game_id"], name: "fk_rails_f25cbc0432", using: :btree
@@ -883,6 +891,7 @@ ActiveRecord::Schema.define(version: 20160729184445) do
   add_foreign_key "compatibility_notes", "users", column: "edited_by"
   add_foreign_key "compatibility_notes", "users", column: "submitted_by", name: "compatibility_notes_ibfk_1"
   add_foreign_key "config_files", "games"
+  add_foreign_key "config_files", "mods"
   add_foreign_key "corrections", "games"
   add_foreign_key "corrections", "users", column: "edited_by"
   add_foreign_key "corrections", "users", column: "submitted_by", name: "corrections_ibfk_4"
@@ -911,18 +920,15 @@ ActiveRecord::Schema.define(version: 20160729184445) do
   add_foreign_key "mod_asset_files", "mods"
   add_foreign_key "mod_authors", "mods", name: "mod_authors_ibfk_1"
   add_foreign_key "mod_authors", "users", name: "mod_authors_ibfk_2"
-  add_foreign_key "mod_list_compatibility_notes", "compatibility_notes"
-  add_foreign_key "mod_list_compatibility_notes", "mod_lists", name: "mod_list_compatibility_notes_ibfk_1"
   add_foreign_key "mod_list_config_files", "config_files"
   add_foreign_key "mod_list_config_files", "mod_lists"
   add_foreign_key "mod_list_custom_config_files", "mod_lists"
+  add_foreign_key "mod_list_custom_mods", "mod_list_groups", column: "group_id"
+  add_foreign_key "mod_list_custom_mods", "mod_lists"
   add_foreign_key "mod_list_custom_plugins", "mod_list_groups", column: "group_id"
   add_foreign_key "mod_list_custom_plugins", "mod_lists", name: "mod_list_custom_plugins_ibfk_1"
   add_foreign_key "mod_list_groups", "mod_lists"
-  add_foreign_key "mod_list_install_order_notes", "install_order_notes"
-  add_foreign_key "mod_list_install_order_notes", "mod_lists", name: "mod_list_install_order_notes_ibfk_1"
-  add_foreign_key "mod_list_load_order_notes", "load_order_notes"
-  add_foreign_key "mod_list_load_order_notes", "mod_lists"
+  add_foreign_key "mod_list_ignored_notes", "mod_lists"
   add_foreign_key "mod_list_mods", "mod_list_groups", column: "group_id"
   add_foreign_key "mod_list_mods", "mod_lists", name: "mod_list_mods_ibfk_1"
   add_foreign_key "mod_list_mods", "mods", name: "mod_list_mods_ibfk_2"
