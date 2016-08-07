@@ -9,52 +9,54 @@
     <%= stylesheet_link_tag 'help/High Hrothgar' %>
 </head>
 <body>
-<header class="help-header">
-    <nav class="clearfix">
-        <div class="primary-nav">
-            <a class="logo" href="/skyrim">
-                <h1>Mod Picker</h1>
-                <span>Help Center</span>
-            </a>
-            <div class="primary-nav-links">
-                <%= link_to "Help Center", help_pages_path, class: active_url(help_pages_path) %>
-                <%= link_to "Mod Picker", "/help/category/mod_picker", class: active_url("/help/category/mod_picker") %>
-                <%= link_to "Modding", "/help/category/modding", class: active_url("/help/category/modding") %>
-                <%= link_to "Guides", "/help/category/guides", class: active_url("/help/category/guides") %>
+    <header class="help-header">
+        <nav class="clearfix">
+            <div class="primary-nav">
+                <a class="logo" href="/skyrim">
+                    <i class="icom-mod_picker"></i>
+                    <h1>Mod Picker</h1>
+                </a>
+                <div class="primary-nav-links">
+                    <%= link_to "Help Center", help_pages_path, class: active_url(help_pages_path) %>
+                    <%= link_to "Mod Picker", "/help/category/mod_picker", class: active_url("/help/category/mod_picker") %>
+                    <%= link_to "Modding", "/help/category/modding", class: active_url("/help/category/modding") %>
+                    <%= link_to "Guides", "/help/category/guides", class: active_url("/help/category/guides") %>
+                </div>
             </div>
-        </div>
-        <div class="secondary-nav">
-            <form class="search-form">
-                <input class="search-field" type="text" autocomplete="off" placeholder="Search Help Center...">
-                <input id="search-btn" class="btn" type="submit" value="Search"/>
-            </form>
-            <div class="search-user-nav">
-                <% if current_user %>
-                    <a href="/skyrim#/user/<%= current_user.id %>">Profile</a>
-                    <a href="users/sign_out">Log Out</a>
-                <% else %>
-                    <a href="/users/sign_in">Log In</a>
-                    <a href="/users/sign_up">Sign Up</a>
-                <% end %>
+            <div class="secondary-nav">
+                <form class="search-form">
+                    <input class="search-field" type="text" autocomplete="off" placeholder="Search Help Center...">
+                    <input id="search-btn" class="btn" type="submit" value="Search"/>
+                </form>
+                <div class="search-user-nav">
+                    <% if current_user %>
+                        <a href="/skyrim#/user/<%= current_user.id %>">Profile</a>
+                        <a href="users/sign_out">Log Out</a>
+                    <% else %>
+                        <a href="/users/sign_in">Log In</a>
+                        <a href="/users/sign_up">Sign Up</a>
+                    <% end %>
+                </div>
             </div>
+        </nav>
+    </header>
+
+    <%= yield %>
+
+    <footer class="footer clearfix">
+        <div class="footer-container">
+            <span class="footer-logo">
+              <h1>Mod Picker</h1><br>
+              <span class="footer-text">Copyright © 2016 Mod Picker, LLC. All rights reserved.</span>
+            </span>
+            <ul class="footer-nav">
+                <li><a href="/help/about_us">About Us</a></li>
+                <li><a href="/legal/tos">Terms of Service</a></li>
+                <li><a href="/legal/privacy">Privacy Policy</a></li>
+                <li><a href="/help">Help Center</a></li>
+                <li><a href="/help/contact">Contact</a></li>
+            </ul>
         </div>
-    </nav>
-</header>
-<%= yield %>
-<footer class="footer clearfix">
-    <div class="footer-container">
-        <span class="footer-logo">
-          <h1>Mod Picker</h1><br>
-          <span class="footer-text">Copyright © 2016 Mod Picker, LLC. All rights reserved.</span>
-        </span>
-        <ul class="footer-nav">
-            <li><a href="#">About Us</a></li>
-            <li><a href="#">Terms of Service</a></li>
-            <li><a href="#">Privacy Policy</a></li>
-            <li><a href="#">Help Center</a></li>
-            <li><a href="#">Contact</a></li>
-        </ul>
-    </div>
-</footer>
+    </footer>
 </body>
 </html>
