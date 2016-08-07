@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160805205222) do
+ActiveRecord::Schema.define(version: 20160807190556) do
 
   create_table "agreement_marks", id: false, force: :cascade do |t|
     t.integer "correction_id", limit: 4,                null: false
@@ -209,14 +209,14 @@ ActiveRecord::Schema.define(version: 20160805205222) do
   add_index "games", ["parent_game_id"], name: "fk_rails_f750cfc2c5", using: :btree
 
   create_table "help_pages", force: :cascade do |t|
+    t.integer  "game_id",        limit: 4
+    t.integer  "category",       limit: 1,     default: 0, null: false
+    t.integer  "submitted_by",   limit: 4,                 null: false
     t.string   "name",           limit: 128,               null: false
     t.text     "text_body",      limit: 65535,             null: false
     t.integer  "comments_count", limit: 4,     default: 0, null: false
     t.datetime "submitted",                                null: false
     t.datetime "edited"
-    t.integer  "game_id",        limit: 4
-    t.integer  "category",       limit: 1,     default: 0, null: false
-    t.integer  "submitted_by",   limit: 4,                 null: false
   end
 
   add_index "help_pages", ["game_id"], name: "index_help_pages_on_game_id", using: :btree
