@@ -1,37 +1,38 @@
 .help-list-page {
   padding-bottom: 150px;
-  margin: 0 auto;
-  max-width: $max-content-width;
 
   // title
   .page-title {
-    font-size: 3em;
+    font-size: 48px;
     text-align: center;
   }
-   // links
-  a:link,
-  a:visited {
+
+  // links
+  a:link, a:visited {
     color: $link_hover_color_primary;
     text-decoration: none;
   }
 
-  a:hover,
-  a:active {
+  a:hover, a:active {
     color: $link_hover_color_secondary;
   }
 
-  .pages-list {
-    padding-left: 0;
-    list-style: none;
+  .date {
+    // new icon
+    .new-label {
+      margin-left: 0.5rem;
+      padding: 0 0.5rem;
+      color: $success_secondary;
+      border: 1px solid $success_secondary;
+      text-transform: uppercase;
+    }
   }
 }
 
-.help-list-page .pages-list {
+.pages-list {
+  padding-left: 0;
+  list-style: none;
   overflow: hidden;
-
-  // clearfix
-  // content: '';
-  // display: table;
 
   // header image for each help page
   .header-img {
@@ -64,13 +65,11 @@
     .meta-container {
       padding: 0 1rem 1rem;
 
-      a:visited,
-      a:link {
+      a:visited, a:link {
         color: #999;
       }
 
-      a:hover,
-      a:active {
+      a:hover, a:active {
         color: $link_hover_color_primary;
       }
     }
@@ -87,16 +86,5 @@
     .game {
       display: inline;
     }
-  }
-}
-
-.help-list-page .date {
-  // new icon
-  .new-label {
-    margin-left: 0.5rem;
-    padding: 0 0.5rem;
-    color: $success_secondary;
-    border: 1px solid $success_secondary;
-    text-transform: uppercase; 
   }
 }

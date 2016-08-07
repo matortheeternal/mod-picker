@@ -1,0 +1,157 @@
+// header
+.help-header {
+  background-color: $bar_color;
+}
+
+// Nav bar
+nav {
+  display: block;
+  background-color: $bar_color;
+  white-space: nowrap;
+  height: 64px;
+  max-width: $max-width-container;
+  margin: 0 auto;
+
+  .primary-nav {
+    display: inline-block;
+    background-color: $bar_color;
+    margin-top: 2px;
+
+    > a {
+      display: inline-block;
+    }
+
+    .logo {
+      width: 234px;
+      display: inline-block;
+      text-decoration: none;
+      margin-bottom: 0;
+
+      h1 {
+        margin: 0;
+        top: 14px;
+        font-size: 30px !important;
+      }
+
+      i {
+        font-size: 54px !important;
+      }
+
+      &:link, &:visited {
+        color: $bar_text_color;
+      }
+
+      &:hover {
+        color: $bar_text_color;
+      }
+    }
+  }
+
+  .primary-nav-links {
+    display: inline-block;
+    vertical-align: top;
+    padding-top: 25px;
+
+    a {
+      margin-right: 1rem;
+    }
+
+    a.active{
+      border-bottom: 3px solid $link_hover_color_primary;
+      padding-bottom: 2px;
+      @include link_style($link_hover_color_primary, $link_hover_color_primary);
+    }
+
+    a:link, a:visited {
+      text-decoration: none;
+      color: $bar_text_color;
+    }
+
+    a:hover, a:active {
+      color: $bar_highlight_text_color;
+    }
+  }
+
+  .secondary-nav {
+    display: inline-block;
+    float: right;
+    position: relative;
+    top: 17px;
+
+    .search-form {
+      display: inline-block;
+    }
+
+    .search-field {
+      width: 200px;
+      height: 35px;
+      font-size: 13px;
+      margin: 0 auto;
+      padding: 0 8px;
+      border: 0 none;
+      -moz-appearance: none;
+      border-radius: 0;
+    }
+
+    #search-btn {
+      padding: 8px;
+      height: 35px;
+      vertical-align: top;
+    }
+  }
+
+  // Search bar user nav links
+  .search-user-nav {
+    display: inline-block;
+    margin: 0 auto;
+
+    a {
+      text-decoration: none;
+      margin: 8px;
+
+      &:link, &:visited {
+        color: $bar_text_color;
+      }
+
+      &:hover {
+        color: $bar_highlight_text_color;
+      }
+    }
+  }
+}
+
+.btn {
+  padding: 7px;
+  height: 32px;
+  color: $link_color;
+  text-transform: uppercase;
+  background-color: $link_hover_color_primary;
+  &:hover {
+    color: $link_hover_color_primary;
+    background-color: $link_color;
+  }
+}
+
+input[type="submit"] {
+  height: 35px;
+  font-size: 13px;
+  margin: 0 auto;
+  padding: 0 8px;
+  -moz-appearance: none;
+  display: block;
+}
+
+/* button styling */
+input[type="button"], input[type="submit"] {
+  display: inline;
+  text-align: center;
+  font-size: 12px;
+  border: 0;
+  border-radius: 0;
+  cursor: pointer;
+
+  &:disabled {
+    cursor: default;
+    background-color: $bar_color;
+  }
+}

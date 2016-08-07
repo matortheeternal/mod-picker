@@ -1,0 +1,58 @@
+/* HIGH HROTHGAR THEME */
+
+$text_color: #404040;
+$inverse_text_color: #ffffff;
+$soft_text_color: #bbb;
+
+$primary_background: #ffffff;
+$secondary_background: #f0f0f0;
+$background_highlight: #fafafa;
+$input_background: #fff;
+
+$shadow_color: #000;
+$border_color: #e6e6e6;
+$soft_border_color: #f0f0f0;
+$hard_border_color: #b6b6b6;
+
+$h1_color: #fff;
+$h2_color: #000;
+$h3_color: #3a4751;
+$h4_color: #606060;
+
+$action_color: #53b6bf;
+$action_text_color: #ffffff;
+$bright_action_color: #a6ceda;
+$dark_action_color: #479aa2;
+
+$bar_color: #3a4751;
+$bar_dark_color: #2C353C;
+$bar_highlight_color: #4d5e6b;
+$bar_text_color: #ffffff;
+$bar_highlight_text_color: #53b6bf;
+
+$link_color: #f0f0f0;
+$link_hover_color_primary: #53b6bf;
+$link_hover_color_secondary: #3a4751;
+
+$success_primary: #B4D5B4;
+$success_secondary: #4AC859;
+$error_primary: #F5D0D5;
+$error_secondary: #C74A5B;
+$warning_primary: #F5F0D0;
+$warning_secondary: #C7B64A;
+
+$admin_color: #900000;
+$moderator_color: #8000b0;
+$mod_author_color: #008000;
+
+$facebook_primary: #3b5998;
+$facebook_secondary: #8b9dc3;
+$twitter_primary: #55acee;
+$google_primary: #dd4b39;
+$reddit_primary: #ff4500;
+$reddit_secondary: #5f99cf;
+
+$max-width-container: 1220px;
+$max-content-width: 850px;
+
+@import 'help';

@@ -1,4 +1,3 @@
-
 .help-page-content {
   max-width: $max-content-width;
   margin: 0 auto;
@@ -6,14 +5,12 @@
   padding: 50px 0 150px;
 
   // link styles
-  a:link,
-  a:visited {
+  a:link, a:visited {
     color: $link_hover_color_primary;
     text-decoration: none;
   }
 
-  a:hover,
-  a:active {
+  a:hover, a:active {
     color: $link_hover_color_secondary;
   }
 
@@ -37,21 +34,16 @@
   }
 }
 
-
-
-// help page header 
+// help page header
 .help-page-header {
   // header links
-  a:link,
-  a:visited {
+  a:link, a:visited {
     color: #999;
   }
 
-  a:hover,
-  a:active {
+  a:hover, a:active {
     color: $link_hover_color_primary;
   }
-
 
   .header-img {
     width: 100%;
@@ -61,8 +53,7 @@
     display: inline;
   }
 
-  span.game,
-  span.category {
+  span.game, span.category {
     float: right;
   }
 
@@ -105,7 +96,7 @@
 
   //  code highlighting
   > pre {
-    font-family: Courier New, Lucida Sans Typewriter;
+    font-family: 'Courier New', 'Lucida Sans Typewriter', sans-serif;
     overflow: scroll;
     background-color: #EEE;
     padding: 0.25rem 1rem;
@@ -125,7 +116,7 @@
   margin-top: 1rem;
   border-top: 1px solid #DDD;
   padding-top: 1rem;
-  
+
   // clearfix
   overflow: hidden;
 
@@ -136,16 +127,14 @@
   }
 
   // links
-  a:link,
-  a:visited {
+  a:link, a:visited {
     color: #999;
   }
 
-  a:hover,
-  a:active {
+  a:hover, a:active {
     color: $link_hover_color_primary;
   }
-  
+
   // social media share section
   .share-section {
     font-size: 2.5em;
@@ -170,4 +159,3 @@
     }
   }
 }
-

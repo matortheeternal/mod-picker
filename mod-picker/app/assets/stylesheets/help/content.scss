@@ -1,16 +1,57 @@
+.page-container {
+  max-width: $max-content-width;
+  margin: 0 auto;
+}
+
+// TODO: Move to buttons
+// delete btn
+.delete-btn {
+  color: $inverse_text_color;
+  background-color: $error_secondary;
+
+  &:hover {
+    background-color: darken($error_secondary, 10%);
+  }
+}
+
+// TODO: Make generic
+.help-page-form {
+  select, input, textarea {
+    display: block;
+    margin: 0 0 1rem;
+  }
+
+  #help_page_name {
+    width: 50%;
+  }
+
+  #help_page_text_body {
+    font-size: 1em;
+    width: 100%;
+  }
+
+  input[type="submit"] {
+    color: $link_color;
+    background-color: $link_hover_color_primary;
+
+    &:hover {
+      background-color: $link_hover_color_secondary;
+    }
+  }
+}
+
+// TODO: Refactor
 .landing-page-container {
   // min height set so footer doesn't cover bottom content
   padding-bottom: 90px;
 
   // links
-  a:link,
-  a:visited {
+  a:link, a:visited {
     color: $link_hover_color_primary;
     text-decoration: none;
   }
 
-  a:hover,
-  a:active {
+  a:hover, a:active {
     color: $link_hover_color_secondary;
   }
 }
@@ -71,8 +112,6 @@
 
 // games section
 .games-category-container {
-
-  // header
   .games-category-header {
     font-size: 1.5em;
     text-align: center;
@@ -89,7 +128,7 @@
       font-weight: 100;
     }
   }
-  
+
   // games list + pages
   .game-page {
     // 24% per page, margin-left of 1.33 * 3(first page has no margin-left)

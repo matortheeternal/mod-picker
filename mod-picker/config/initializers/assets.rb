@@ -17,6 +17,7 @@ Rails.application.config.assets.precompile += [
 'main/Darkwater.css',
 'main/Blackreach.css',
 'main/High Hrothgar.css',
+'help/High Hrothgar.css',
 'legal.css',
 # temporary welcome page assets
 'temp/welcome.css',

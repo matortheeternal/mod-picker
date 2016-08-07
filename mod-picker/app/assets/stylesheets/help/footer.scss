@@ -1,0 +1,62 @@
+// footer
+.footer {
+  background-color: $secondary_background;
+  color: $soft_text_color;
+
+  // position absolute + width 100% to make it so footer is always on the bottom
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+
+  // static height so main content has as padding-bottom equal to this
+  // to offset the absolute position which would overlap the content is padding wasn't there
+  height: 100px;
+}
+
+.footer-container {
+  margin: 0 auto;
+  max-width: $max-width-container;
+  padding: 1rem 0;
+}
+
+// Make copy right text inline
+.footer-logo {
+  display: inline-block;
+  float: left;
+
+  h1 {
+    margin: 0 auto;
+    display: inline-block;
+  }
+
+  span {
+    display: inline-block;
+  }
+}
+
+// footer nav links
+.footer-nav {
+  margin-top: 1.5rem;
+  display: inline-block;
+  float: right;
+  list-style: none;
+
+  li {
+    display: inline-block;
+    margin-left: 1rem;
+  }
+
+  // link styling
+  a {
+    text-decoration: none;
+  }
+
+  a:link, a:visited {
+    color: $soft_text_color;
+  }
+
+  a:hover, a:active {
+    color: darken($soft_text_color, 15%);
+  }
+}
