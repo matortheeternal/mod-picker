@@ -1,5 +1,5 @@
 <% content_for :head do %>
-    <title>Mod Picker: Help Center - Index </title>
+    <title>Mod Picker: Help Center</title>
 <% end %>
 
 <div class="landing-page-container">
@@ -13,12 +13,12 @@
             <% @categories.each do |category| %>
             <li class="primary-page page">
                 <div class="primary-page-content page-content">
-                    <a href=<%= "/help/category/#{category[0]}" %>><img src="https://www.placehold.it/500x270" alt="Modding Help pages preview image"></a>
-                    <div class="primary-details page-details">
-                        <h3>
-                            <a href=<%= "/help/category/#{category[0]}" %>><%= category[0].humanize %></a>
-                        </h3>
-                    </div>
+                    <%= link_to "/help/category/#{category}" do %>
+                    <img src="https://www.placehold.it/500x270">
+                    <% end %>
+                    <h3 class="capitalize">
+                        <%= link_to "#{category.humanize}", "/help/category/#{category}" %>
+                    </h3>
                 </div>
             </li>
             <% end %>
@@ -36,16 +36,15 @@
         <ul class="games-category-list categories-list">
             <% @games.each do |game| %>
             <% if game.help_pages_count > 0 %>
+            <% game_link = game.display_name.parameterize.underscore %>
             <li class="game-page page">
                 <div class="game-page-content page-content">
-                    <a href=<%= "/help/game/" + game.display_name.parameterize.underscore %>>
-                        <img src="<%= game.display_image %>" alt="<%= game.display_name %> help page preview">
-                    </a>
-                    <div class="game-details">
-                        <h3>
-                            <a href=<%= "/help/game/#{game.display_name}" %>><%= game.long_name %></a>
-                        </h3>
-                    </div>
+                    <%= link_to "/help/game/#{game_link}" do %>
+                    <%= image_tag "#{game.display_image}", alt: "#{game.display_name} image" %>
+                    <% end %>
+                    <h3 class="capitalize">
+                        <%= link_to "help/game/#{game_link}", "#{game.display_name}" %>
+                    </h3>
                 </div>
             </li>
             <% end %>

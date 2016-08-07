@@ -8,7 +8,7 @@ class HelpPagesController < ApplicationController
   # GET /help
   def index
     @games = Game.all
-    @categories = HelpPage.categories
+    @categories = HelpPage.categories.keys
     render "help_pages/index"
   end
   # GET /help/1
