@@ -23,9 +23,13 @@ app.config(['$stateProvider', function($stateProvider) {
     });
 }]);
 
-app.controller('editModController', function($scope, $state, currentUser, modObject, modService, tagService, categoryService, errorService, sitesFactory, objectUtils) {
+app.controller('editModController', function($scope, $state, currentUser, modObject, modService, userService,tagService, categoryService, errorService, sitesFactory, objectUtils) {
     // get parent variables
     $scope.currentUser = currentUser;
+
+    // inherited functions
+    $scope.searchMods = modService.searchMods;
+    $scope.searchUsers = userService.searchUsers;
 
     // loads the mod object onto the view
     $scope.loadModObject = function() {

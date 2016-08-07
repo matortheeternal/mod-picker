@@ -58,8 +58,35 @@
     padding-bottom: 10px !important;
   }
 
+  .resolution-column {
+    display: table-cell;
+    vertical-align: top;
+    border-left: 1px solid $border_color;
+    background-color: $bar_highlight_color;
+    width: 200px;
+    padding: 14px;
+    text-align: center;
+
+    .resolution-status {
+      font-size: 20px;
+      font-weight: 500;
+      margin: 8px 0 16px;
+      color: $bar_text_color;
+    }
+
+    .resolution-options {
+      .action-box {
+        margin: 2px 0;
+      }
+
+      .action-box.single {
+        margin: 14px 0;
+      }
+    }
+  }
+
   .content-column {
-    display:table-cell;
+    display: table-cell;
     vertical-align: top;
     position: relative;
     padding-bottom: 35px;

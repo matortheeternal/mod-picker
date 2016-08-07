@@ -1,0 +1,47 @@
+<!-- display group -->
+<td colspan="{{getNumCols(columns)}}" ng-if="item.children" class="group-cell">
+    <div class="action-items" ng-if="editing">
+        <span class="fa fa-times" ng-click="removeGroup(model, item, $index)"></span>
+    </div>
+    <div class="group-name">
+        <input type="text" ng-model="item.name" ng-click="focusText($event)" pu-elastic-input ng-disabled="!editing"/>
+    </div>
+    <div class="group-color" ng-if="editing">
+        <strong>Color:</strong>
+        <select ng-model="item.color">
+            <option ng-repeat="option in colorOptions" value="{{option}}">{{option | humanize:1}}</option>
+        </select>
+    </div>
+
+    <!-- display children of groups -->
+    <table class="browse-table" ng-class="{ 'no-border' : isEmpty(item.children) }">
+        <tbody dnd-list="item.children" dnd-allowed-types="['item']">
+            <tr ng-repeat="item in item.children as children" ng-if="!item._destroy" dnd-draggable="item" dnd-moved="itemMoved(children, $index)" dnd-effect-allowed="move" dnd-disable-if="!editing" dnd-type="'item'" ng-class="{ 'merged' : item.merged }" table-item>
+            </tr>
+            <!-- display message if there are no children -->
+            <tr class="content-message" ng-show="isEmpty(item.children)">
+                <td>There are no {{label}} in this group.</td>
+            </tr>
+            <!-- drag and drop placeholder -->
+            <tr class="dndPlaceholder">
+                <td colspan="{{getNumCols(columns)}}"></td>
+            </tr>
+        </tbody>
+    </table>
+</td>
+
+<!-- display item -->
+<td ng-if="!item.children" ng-repeat="column in columns" ng-class="{ 'hidden': !column.visibility, 'text-cell' : !column.filter,  '{{filterClass(column.filter)}}-cell' : !!column.filter, '{{column.class}}' : !!column.class }">
+    <a ng-if="column.link" class="strong" ng-href="{{column.link(item)}}">
+        {{ columnValue(item, column.data) | picker:column.filter }}
+    </a>
+    <span ng-if="!column.link">
+        {{ columnValue(item, column.data) | picker:column.filter }}
+    </span>
+    <span ng-if="column.note" class="note">
+        {{ resolve(column.note, item) }}
+    </span>
+</td>
+<td ng-if="!item.children" class="actions-cell">
+    <actions></actions>
+</td>

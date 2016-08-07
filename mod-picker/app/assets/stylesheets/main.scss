@@ -2,6 +2,7 @@
 @import 'general/global',
         'general/header',
         'general/footer',
+        'components/actions',
         'components/assetTree',
         'components/categoryTree',
         'components/comments',
@@ -15,6 +16,7 @@
         'components/versionBoxes',
         'components/textArea',
         'components/article',
+        'components/listTable',
         'pages/devise',
         'pages/browse',
         'pages/error',
@@ -23,5 +25,6 @@
         'pages/modList',
         'pages/home',
         'pages/user',
+        'pages/showArticle',
         'pages/showMod',
         'pages/editPages';

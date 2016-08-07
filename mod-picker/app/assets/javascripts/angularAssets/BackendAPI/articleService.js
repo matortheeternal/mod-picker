@@ -9,6 +9,18 @@ app.service('articleService', function($q, backend, userTitleService, pageUtils,
         return output.promise;
     };
 
+    this.retrieveArticles = function(options, pageInformation) {
+        var action = $q.defer();
+        backend.post('/articles/index', options).then(function (data) {
+            // resolve page information and data
+            pageUtils.getPageInformation(data, pageInformation, options.page);
+            action.resolve(data);
+        }, function(response) {
+            action.reject(response);
+        });
+        return action.promise;
+    };
+
     this.retrieveComments = function(articleId, options, pageInformation) {
         var output = $q.defer();
         backend.post('/articles/' + articleId+ '/comments', options).then(function(response) {

@@ -7,6 +7,8 @@ class InstallOrderNote < ActiveRecord::Base
   # GENERAL SCOPES
   scope :visible, -> { where(hidden: false, approved: true) }
   scope :game, -> (game_id) { where(game_id: game_id) }
+  scope :mod, -> (mod_ids) { where("first_mod_id IN (?) OR second_mod_id IN (?)", mod_ids, mod_ids) }
+  scope :mods, -> (mod_ids) { where(first_mod_id: mod_ids, second_mod_id: mod_ids) }
   scope :search, -> (text) { where("install_order_notes.text_body like ?", "%#{text}%") }
   scope :submitter, -> (username) { joins(:submitter).where(:users => {:username => username}) }
   # RANGE SCOPES
@@ -24,6 +26,7 @@ class InstallOrderNote < ActiveRecord::Base
   # mod lists this install order note appears on
   has_many :mod_list_install_order_notes, :inverse_of => 'install_order_note'
   has_many :mod_lists, :through => 'mod_list_install_order_notes', :inverse_of => 'install_order_notes'
+  has_many :mod_list_ignored_notes, :as => 'note'
 
   # old versions of this install order note
   has_many :history_entries, :class_name => 'InstallOrderNoteHistoryEntry', :inverse_of => 'install_order_note', :foreign_key => 'install_order_note_id'
@@ -49,7 +52,7 @@ class InstallOrderNote < ActiveRecord::Base
     end
 
     mod_ids = [first_mod_id, second_mod_id]
-    note = InstallOrderNote.where(first_mod_id: mod_ids, second_mod_id: mod_ids, hidden: false).where.not(id: self.id).first
+    note = InstallOrderNote.mods(mod_ids).where("hidden = 0 and id != ?", self.id).first
     if note.present?
       if note.approved
         errors.add(:mods, "An Install Order Note for these mods already exists.")

@@ -1,41 +1,43 @@
-grid-items {
-  display: block;
-  position: relative;
+.overflow-hack {
+  margin-bottom: -80px !important;
 
-  .content-message {
+  table-items {
+    padding-bottom: 100px;
+  }
+}
+
+table-items, grid-items {
+  .action-items {
     position: absolute;
-    top: 30px;
-    margin-left: auto;
-    margin-right: auto;
-    left: 0;
+    z-index: 2;
+    top: 0;
     right: 0;
-  }
 
-  ul[dnd-list].dragging-group {
-    .dndPlaceholder {
-      width: 1090px;
-      min-height: 140px;
+    span {
+      font-size: 20px;
+      cursor: pointer;
+      color: $soft_text_color;
+      @include transition(all 0.2s ease-in-out);
+
+      &.fa-cog {
+        padding-top: 3px;
+        font-size: 16px;
+        vertical-align: top;
+      }
+
+      &:hover {
+        color: $text_color;
+      }
+    }
+
+    span:last-child {
+      padding-right: 3px;
     }
   }
 
-  ul[dnd-list] {
-    min-height: 120px;
-    padding-left: 0;
-    padding-bottom: 10px;
-    position: relative;
-
-    .dndDraggingSource {
-      display: none;
-    }
-
-    .dndPlaceholder {
-      min-height: 122px;
-      background-color: $border_color;
-    }
-
-    li.group {
-      width: 1090px;
-      padding: 10px;
+  ul[dnd-list], tbody[dnd-list] {
+    li.group, tr.group {
+      font-family: 'Roboto', sans-serif;
 
       .group-name {
         position: absolute;
@@ -85,8 +87,54 @@ grid-items {
         select {
           padding: 0;
           background: $input_background;
+
+          option {
+            font-size: 13px;
+          }
         }
       }
+    }
+  }
+}
+
+grid-items {
+  display: block;
+  position: relative;
+
+  .content-message {
+    position: absolute;
+    top: 30px;
+    margin-left: auto;
+    margin-right: auto;
+    left: 0;
+    right: 0;
+  }
+
+  ul[dnd-list].dragging-group {
+    .dndPlaceholder {
+      width: 1090px;
+      min-height: 140px;
+    }
+  }
+
+  ul[dnd-list] {
+    min-height: 120px;
+    padding-left: 0;
+    padding-bottom: 10px;
+    position: relative;
+
+    .dndDraggingSource {
+      display: none;
+    }
+
+    .dndPlaceholder {
+      min-height: 122px;
+      background-color: $border_color;
+    }
+
+    li.group {
+      width: 1090px;
+      padding: 10px;
 
       ul[dnd-list] {
         padding-top: 30px;
@@ -98,24 +146,8 @@ grid-items {
       }
 
       .content-message {
-        top: 40px;
+        top: 30px;
       }
-    }
-  }
-
-  .remove-item {
-    position: absolute;
-    z-index: 2;
-    top: 0;
-    right: 0;
-    padding-right: 3px;
-    font-size: 20px;
-    cursor: pointer;
-    color: $soft_text_color;
-    @include transition(all 0.2s ease-in-out);
-
-    &:hover {
-      color: $text_color;
     }
   }
 
@@ -178,6 +210,123 @@ grid-items {
   }
 }
 
+table-items {
+  display: block;
+  overflow-x: auto;
+
+  tbody[dnd-list].dragging-group {
+    .dndPlaceholder {
+      height: 120px !important;
+    }
+  }
+
+  tbody[dnd-list] {
+    .dndDraggingSource {
+      display: none;
+    }
+
+    .dndPlaceholder {
+      height: 33px;
+      background-color: $background_highlight !important;
+    }
+
+    tr.content-message {
+      background-color: transparent !important;
+      border-bottom: 0;
+    }
+
+    td.group-cell {
+      position: relative;
+      padding: 10px 0;
+
+      table {
+        border-left: 0;
+        border-right: 0;
+        margin: 30px 0;
+        width: 100%;
+      }
+
+      table.no-border {
+        border: 0;
+      }
+    }
+  }
+
+  table {
+    thead, tbody {
+      .text-cell {
+        min-width: 240px !important;
+        width: 240px;
+      }
+
+      .number-cell, .bytes-cell, .date-cell {
+        min-width: 100px;
+        width: 100px;
+      }
+
+      .actions-cell {
+        min-width: 90px;
+        width: 90px;
+      }
+
+      .crc-column {
+        min-width: 80px !important;
+        width: 80px !important;
+      }
+
+      .author-column {
+        min-width: 180px !important;
+        width: 180px !important;
+      }
+
+      .aliases-column {
+        min-width: 100px !important;
+        width: 100px !important;
+      }
+
+      .status-column {
+        text-transform: capitalize;
+        min-width: 80px !important;
+        width: 80px !important;
+      }
+
+      .index-column {
+        min-width: 55px !important;
+        width: 55px !important;
+      }
+
+      .load-order-column {
+        min-width: 75px !important;
+        width: 75px !important;
+      }
+
+      .primary-column {
+        min-width: 300px !important;
+        width: auto !important;
+      }
+    }
+
+    td a {
+      display: inline-block !important;
+    }
+
+    td .note {
+      font-style: italic;
+    }
+
+    tr.merged  {
+      td.index-column .note, td.load-order-column .note {
+        font-style: normal;
+        font-size: 11px;
+        color: $success_secondary;
+        font-weight: 700;
+        padding: 4px;
+        text-transform: capitalize;
+        margin: -2px;
+      }
+    }
+  }
+}
 
 // GROUP COLORS
 .bg-red {

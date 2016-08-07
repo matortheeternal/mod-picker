@@ -1,10 +1,15 @@
-app.controller('modCompatibilityController', function($scope, $stateParams, $state, contributionFactory, contributionService, sortFactory) {
+app.controller('modCompatibilityController', function($scope, $stateParams, $state, modService, pluginService, contributionFactory, contributionService, sortFactory) {
     $scope.sort.compatibility_notes = {
         column: $stateParams.scol,
         direction: $stateParams.sdir
     };
     $scope.filters.compatibility_notes.modlist = $stateParams.filter;
 
+    // inherited functions
+    $scope.searchMods = modService.searchMods;
+    $scope.searchPlugins = pluginService.searchPlugins;
+
+    // functions
     $scope.retrieveCompatibilityNotes = function(page) {
         // retrieve the compatibility notes
         var options = {
@@ -13,7 +18,7 @@ app.controller('modCompatibilityController', function($scope, $stateParams, $sta
             //if no page is specified load the first one
             page: page || 1
         };
-        contributionService.retrieveModContributions($stateParams.modId, 'compatibility_notes', options, $scope.pages.compatibility_notes).then(function(data) {
+        modService.retrieveModContributions($stateParams.modId, 'compatibility_notes', options, $scope.pages.compatibility_notes).then(function(data) {
             $scope.mod.compatibility_notes = data;
 
             //seperating the compatibilityNote in the url if any

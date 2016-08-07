@@ -19,12 +19,4 @@ app.service('userSettingsService', function (backend, $q) {
     this.submitUserSettings = function (user_settings) {
         return backend.update('/user_settings/' + user_settings.id, { user_setting: user_settings });
     };
-
-    this.cloneModList = function (modlist) {
-        return backend.post('/mod_lists/clone/' + modlist.id, {});
-    };
-
-    this.deleteModList = function (modlist) {
-        return backend.delete('/mod_lists/' + modlist.id);
-    };
 });

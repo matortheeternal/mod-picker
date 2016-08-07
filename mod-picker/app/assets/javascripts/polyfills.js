@@ -15,3 +15,13 @@ String.prototype.toDashFormat = function() {
         return "-" + uppercaseLetter.toLowerCase();
     })
 };
+
+// concatenates array1 with array2 and assigns the result to a1
+// does nothing if either array1 or array2 are undefined
+Array.prototype.unite = function(array1, array2) {
+    if (array1 && array2) {
+        for (var i = 0; i < array2.length; i++) {
+            array1.push(array2[i]);
+        }
+    }
+};
