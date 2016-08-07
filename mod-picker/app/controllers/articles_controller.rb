@@ -33,7 +33,7 @@ class ArticlesController < ApplicationController
     authorize! :create, @article
 
     if @article.save
-      render json: {status: :ok}
+      render json: {status: :ok, id: @article.id}
     else
       render json: @article.errors, status: :unprocessable_entity
     end

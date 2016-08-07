@@ -34,7 +34,7 @@ app.service('articleService', function($q, backend, userTitleService, pageUtils,
     };
 
     this.updateArticle = function(article) {
-        // prepare mod record
+        // prepare article record
         var articleData = {
             article: {
                 id: article.id,
@@ -45,9 +45,22 @@ app.service('articleService', function($q, backend, userTitleService, pageUtils,
         };
         objectUtils.deleteEmptyProperties(articleData, 1);
 
-        // submit mod
+        // submit article
         return backend.update('/articles/' + article.id, articleData);
     };
+
+    this.submitArticle = function(article, image) {
+        // prepare article record
+        var articleData = {
+            article: {
+                title: article.title,
+                text_body: article.text_body
+            }
+        };
+
+        // submit article
+        return backend.post('/articles', articleData);
+    }
 
     this.deleteArticle = function(articleId) {
         return backend.delete('/articles/' + articleId);
