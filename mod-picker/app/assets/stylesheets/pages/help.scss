@@ -50,7 +50,13 @@ $reddit_secondary: #5f99cf;
 $max-width-container: 1220px;
 $max-content-width: 850px;
 
-// mixins
+/* mixins */
+@mixin transition($values) {
+  -webkit-transition: $values;
+  -moz-transition: $values;
+  -o-transition: $values;
+  transition: $values;
+}
 
 // accepts a color and highlight and sets them to the color and hover color
 @mixin link_style ($color, $highlight_color: lighten($color, 10%)) {
@@ -112,6 +118,13 @@ body {
   zoom: 1;  // For IE 6/7 only
 }
 
+/* url styling */
+a {
+  text-decoration: none;
+  cursor: pointer;
+  @include transition(all 0.2s ease-in-out);
+}
+
 // Max width settings for parent/child components
 .page-container {
   max-width: $max-width-container;
@@ -124,7 +137,6 @@ body {
 }
 
 // Nav bar
-
 nav {
   display: block;
   background-color: $bar_color;
