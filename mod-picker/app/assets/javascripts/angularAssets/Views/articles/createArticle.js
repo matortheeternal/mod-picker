@@ -37,7 +37,7 @@ app.controller('createArticleController', function($scope, $stateParams, objectU
                     $scope.success = false;
                     $scope.submittingStatus = "There were errors submitting the article.";
                     // TODO: Emit errors properly
-                    $scope.errors = response.data;
+                    $scope.errors = response;
                 });
             } else {
                 $scope.submittingStatus = "Article submitted Successfully!";
@@ -47,7 +47,7 @@ app.controller('createArticleController', function($scope, $stateParams, objectU
             $scope.success = false;
             $scope.submittingStatus = "There were errors submitting the article.";
             // TODO: Emit errors properly
-            $scope.errors = response.data;
+            $scope.errors = response;
         });
     };
 
