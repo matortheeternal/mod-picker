@@ -1,0 +1,60 @@
+/* css for page headers */
+.page-header-container {
+  background-color: $bar_dark_color;
+
+  .page-header {
+    color: $bar_text_color;
+    padding-top: 30px;
+    padding-bottom: 30px;
+    display: flex;
+    justify-content: space-between;
+    align-content: center;
+
+    .header-info {
+      font-size: 14px;
+      margin-left: 10px;
+      max-width: 700px;
+
+      a {
+        cursor: pointer;
+        font-weight: 600;
+        color: $bar_highlight_text_color;
+      }
+
+      a:hover {
+        color: $bar_text_color;
+      }
+    }
+
+    .divider {
+      color: $bar_highlight_color;
+    }
+
+    .header-name {
+      font-size: 24px;
+      font-weight: 100;
+    }
+
+    .header-authors-container {
+      margin-left: 6px;
+
+      .header-authors {
+        font-weight: 600;
+        color: $bright_action_color;
+      }
+    }
+
+    section {
+      display: flex;
+      align-self: center;
+    }
+
+    .header-box {
+      background-color: $bar_color;
+      border: 1px solid $bar_dark_color;
+      padding: 10px;
+      font-size: 12px;
+      font-weight: 500;
+    }
+  }
+}

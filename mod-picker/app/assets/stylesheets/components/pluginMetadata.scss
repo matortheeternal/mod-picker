@@ -1,0 +1,12 @@
+/* css for plugin-metadata  */
+plugin-metadata {
+  .stat-data {
+    width: calc(100% - 170px);
+    white-space: normal;
+  }
+
+  .plugin-description {
+    white-space: pre-line;
+    word-wrap: break-word;
+  }
+}

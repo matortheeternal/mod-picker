@@ -1,0 +1,79 @@
+/* button styling */
+input[type="button"], input[type="submit"] {
+  display: inline;
+  text-align: center;
+  font-size: 12px;
+  line-height: 18px;
+  border: 0;
+  border-radius: 0;
+  cursor: pointer;
+  @include transition(all 0.2s ease-in-out);
+
+  &:disabled {
+    cursor: default;
+    background-color: $hard_border_color;
+  }
+}
+
+.btn {
+  padding: 7px;
+  height: 32px;
+  color: $action_text_color;
+  text-transform: uppercase;
+  background-color: $action_color;
+  &:hover {
+    background-color: $bar_highlight_color;
+  }
+}
+
+.btn-round {
+  padding: 8px;
+  color: $action_text_color;
+  border-radius: 3%;
+  background-color: $action_color;
+  cursor: pointer;
+
+
+  &:hover {
+    background-color: $bar_highlight_color;
+  }
+}
+
+.action-button-container {
+  margin-top: 16px;
+  text-align: center;
+}
+
+.action-btn {
+  background-color: $bar_highlight_color;
+  display: block;
+  margin: 4px;
+  padding: 10px;
+  height: 38px;
+
+  &:hover {
+    background-color: $shadow_color
+  }
+}
+
+.small-action-btn {
+  background-color: $bar_highlight_color;
+  display: block;
+  padding: 4px 8px;
+  height: 26px;
+
+  &:hover {
+    background-color: $shadow_color
+  }
+}
+
+.btn-sm {
+  padding: 7px;
+  color: $action_text_color;
+  background-color: $action_color;
+  margin-right: 4px;
+  margin-left: 4px;
+  &:hover {
+    background-color: $bar_highlight_color;
+  }
+}

@@ -1,0 +1,18 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Roboto', sans-serif;
+  color: $text_color;
+  margin: 0;
+  background-color: $primary_background;
+  min-height: 100vh;
+  position: relative;
+  overflow-y: scroll;
+}
+
+.page-container {
+  width: 1220px;
+  margin: auto;
+}

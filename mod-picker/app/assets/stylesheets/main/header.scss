@@ -1,0 +1,209 @@
+/* header */
+header {
+  background-color: $bar_color;
+  background-image: url($banner_image);
+  background-repeat: no-repeat;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  height: 192px;
+}
+
+.header {
+  max-width: 1220px;
+  width: 100%;
+  margin: 0 auto;
+  height: 50px;
+  display: table;
+  font-size: 12px;
+  padding: 40px 0;
+  position: relative;
+}
+
+.nav-controls {
+  width: 75%;
+  display: table-cell;
+  vertical-align: middle;
+  height: 44px;
+  margin: 0;
+  padding: 0;
+}
+
+.user-nav {
+  background: rgba($inverse_text_color, 0.7);
+  text-align: right;
+  float: right;
+  margin: 0 0 20px;
+  padding: 0 10px;
+
+  li {
+    display: inline;
+    padding: 0 0.5em;
+    border-right: 1px solid $hard_border_color;
+    list-style: outside none none;
+  }
+
+  a {
+    font-weight: 700;
+  }
+}
+
+#game-select-form {
+  display: inline-block;
+  width: 95px;
+  text-align: center;
+
+  .game-selector {
+    position: absolute;
+    opacity: 0;
+    height: 42px;
+    font-size: 12px;
+    cursor: pointer;
+  }
+
+  .game-icon .game-label {
+    padding: 5px 5px 5px 0;
+    line-height: 32px;
+    vertical-align: middle;
+    display: inline-block;
+  }
+
+  .game-icon {
+    display: inline-block;
+    font-weight: 700;
+    padding-left: 32px;
+    background-size: 32px 32px;
+    background-position: 0 5px;
+    background-repeat: no-repeat;
+  }
+
+  .icon-sk {
+    background-image: url(image_path("skyrim_icon.png"));
+  }
+}
+
+#contribution-select-form {
+  display: inline-block;
+  width: 100px;
+  text-align: center;
+
+  .contributions-label {
+    padding: 5px 5px 5px 0;
+    line-height: 32px;
+    vertical-align: middle;
+    display: inline-block;
+    width: 110px;
+  }
+
+  .contribution-selector {
+    position: absolute;
+    opacity: 0;
+    height: 42px;
+    font-size: 12px;
+    cursor: pointer;
+    width: 110px;
+  }
+}
+
+/* css for navbar */
+nav {
+  display: block;
+  background-color: $bar_color;
+  white-space: nowrap;
+  //border-bottom: 2px solid $soft_border_color;
+
+  .primary-nav {
+    a {
+      border-left: 1px solid $bar_highlight_color;
+      height: 60px;
+      padding: 12px 12px 16px;
+      color: $bar_text_color;
+      display: block;
+      float: left;
+
+      &:hover {
+        color: $bar_text_color;
+        background-color: $bar_highlight_color;
+      }
+
+      &:last-child {
+        border-right: 1px solid $bar_highlight_color;
+      }
+    }
+
+    b {
+      text-transform: uppercase;
+      color: $bar_highlight_text_color;
+      font-weight: 700;
+      font-size: 10px;
+      display: block;
+    }
+
+    .nav-icon {
+      display: inline-block;
+      font-size: 24px;
+      margin-right: 6px;
+      vertical-align: top;
+      margin-top: 2px;
+    }
+
+    .nav-text {
+      display: inline-block;
+    }
+  }
+}
+
+.nav-wrapper {
+  position: relative;
+}
+
+.primary-nav {
+  float: left;
+}
+
+.secondary-nav {
+  float: right;
+  height: 60px;
+}
+
+.search {
+  float: right;
+
+  .search-field {
+    width: 200px;
+    height: 35px;
+    font-size: 13px;
+    margin: 10px 0 0;
+    padding: 0 8px;
+    border: 0 none;
+    -moz-appearance: none;
+    border-radius: 0;
+    float: left;
+  }
+
+  .search-container {
+    float: left;
+    width: 74px;
+
+    #search-btn {
+      padding: 8px;
+      height: 35px;
+    }
+  }
+
+  #loader {
+    margin-top: 10px;
+    margin-left: 20px;
+  }
+
+  input[type="submit"] {
+    height: 35px;
+    font-size: 13px;
+    margin: 10px 0 0;
+    padding: 0 8px;
+    -moz-appearance: none;
+    display: block;
+    float: left;
+  }
+}
