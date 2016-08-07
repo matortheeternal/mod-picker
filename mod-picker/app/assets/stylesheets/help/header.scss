@@ -119,39 +119,3 @@ nav {
     }
   }
 }
-
-.btn {
-  padding: 7px;
-  height: 32px;
-  color: $link_color;
-  text-transform: uppercase;
-  background-color: $link_hover_color_primary;
-  &:hover {
-    color: $link_hover_color_primary;
-    background-color: $link_color;
-  }
-}
-
-input[type="submit"] {
-  height: 35px;
-  font-size: 13px;
-  margin: 0 auto;
-  padding: 0 8px;
-  -moz-appearance: none;
-  display: block;
-}
-
-/* button styling */
-input[type="button"], input[type="submit"] {
-  display: inline;
-  text-align: center;
-  font-size: 12px;
-  border: 0;
-  border-radius: 0;
-  cursor: pointer;
-
-  &:disabled {
-    cursor: default;
-    background-color: $bar_color;
-  }
-}

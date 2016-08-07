@@ -1,6 +1,11 @@
 .page-container {
   max-width: $max-content-width;
   margin: 0 auto;
+
+  h1 {
+    color: $text_color;
+    margin-top: 30px;
+  }
 }
 
 // TODO: Move to buttons
@@ -16,11 +21,6 @@
 
 // TODO: Make generic
 .help-page-form {
-  select, input, textarea {
-    display: block;
-    margin: 0 0 1rem;
-  }
-
   #help_page_name {
     width: 50%;
   }
@@ -28,15 +28,6 @@
   #help_page_text_body {
     font-size: 1em;
     width: 100%;
-  }
-
-  input[type="submit"] {
-    color: $link_color;
-    background-color: $link_hover_color_primary;
-
-    &:hover {
-      background-color: $link_hover_color_secondary;
-    }
   }
 }
 
