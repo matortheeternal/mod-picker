@@ -30,7 +30,7 @@ class HelpPagesController < ApplicationController
     authorize! :create, @help_page
 
     if @help_page.save
-      redirect_to "/help/#{@help_page.id}"
+      redirect_to "/help/#{@help_page.url_name}"
     else
       render "help_pages/new"
     end
@@ -46,7 +46,7 @@ class HelpPagesController < ApplicationController
   def update
     authorize! :update, @help_page
     if @help_page.update(help_page_params)
-      redirect_to "/help/#{@help_page.id}"
+      redirect_to "/help/#{@help_page.url_name}"
     else
       render "help_pages/edit"
     end
@@ -59,7 +59,7 @@ class HelpPagesController < ApplicationController
     if @help_page.destroy
       redirect_to action: "index"
     else
-      redirect_to "/help/#{@help_page.id}/edit"
+      redirect_to "/help/#{@help_page.url_name}/edit"
     end
   end
 
@@ -95,7 +95,7 @@ class HelpPagesController < ApplicationController
 
     # set instance variable via /help/:id via callback to keep things DRY
     def set_help_page
-        @help_page = HelpPage.find(params[:id])
+      @help_page = HelpPage.where(name: params[:id].humanize).first
     end
 
     def authorize

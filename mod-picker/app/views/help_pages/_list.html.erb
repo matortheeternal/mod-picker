@@ -1,12 +1,12 @@
 <ul class="pages-list">
     <% @help_pages.each do |page| %>
     <li>
-        <%= link_to "/help/#{page.id}", method: :get do %>
+        <%= link_to "/help/#{page.url_name}", method: :get do %>
         <img class="header-img" src="<%= page.display_image %>" alt="help page display banner">
         <% end %>
 
         <div class="meta-container">
-            <%= link_to "/help/#{page.id}", method: :get do %>
+            <%= link_to "/help/#{page.url_name}", method: :get do %>
                 <h4 class="item-title"><%= page.name.capitalize %></h4>
             <% end %>
 

@@ -30,6 +30,10 @@ class HelpPage < ActiveRecord::Base
     end
   end
 
+  def url_name
+    self.name.parameterize.underscore
+  end
+
   private
     def set_dates
       if self.submitted.nil?

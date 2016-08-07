@@ -58,4 +58,8 @@ class Game < ActiveRecord::Base
     self.plugins_count = self.plugins.count
     self.help_pages_count = self.help_pages.count
   end
+
+  def url_name
+    self.display_name.parameterize.underscore
+  end
 end
