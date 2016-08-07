@@ -1,0 +1,173 @@
+
+.help-page-content {
+  max-width: $max-content-width;
+  margin: 0 auto;
+  display: block;
+  padding: 50px 0 150px;
+
+  // link styles
+  a:link,
+  a:visited {
+    color: $link_hover_color_primary;
+    text-decoration: none;
+  }
+
+  a:hover,
+  a:active {
+    color: $link_hover_color_secondary;
+  }
+
+  // meta information
+  span.meta {
+    font-size: 0.8em;
+    color: #999;
+  }
+
+  table td {
+    border: 1px solid #CCC;
+  }
+
+  table {
+    border: 1px solid #CCC;
+  }
+
+  // font awesome icons
+  .fa {
+    margin-right: 5px;
+  }
+}
+
+
+
+// help page header 
+.help-page-header {
+  // header links
+  a:link,
+  a:visited {
+    color: #999;
+  }
+
+  a:hover,
+  a:active {
+    color: $link_hover_color_primary;
+  }
+
+
+  .header-img {
+    width: 100%;
+  }
+
+  .date {
+    display: inline;
+  }
+
+  span.game,
+  span.category {
+    float: right;
+  }
+
+  span.category {
+    text-transform: capitalize;
+  }
+}
+
+// table of contents
+.help-page-toc {
+  padding: 1rem 0 1rem 1rem;
+  margin: 1rem 0;
+  border-left: 0.5rem solid $bar-color;
+
+  .toc-title {
+    color: $bar-color;
+    margin-top: 0;
+  }
+
+  // all list items
+  ul {
+    list-style: none;
+  }
+
+  // parent toc list
+  > ul {
+    padding-left: 1rem;
+    list-style: decimal;
+  }
+
+  // all other lists below the parent
+  li > ul {
+    padding-left: 30px;
+  }
+}
+
+
+// help page main body
+.help-page-body {
+
+  //  code highlighting
+  > pre {
+    font-family: Courier New, Lucida Sans Typewriter;
+    overflow: scroll;
+    background-color: #EEE;
+    padding: 0.25rem 1rem;
+  }
+
+  // block quote style
+  blockquote {
+    margin-left: 0;
+    border-left: 0.5rem solid $bar_highlight_text_color;
+    padding-left: 1rem;
+    // padding-top: 0.25rem;
+  }
+}
+
+// footer of help page
+.help-page-footer {
+  margin-top: 1rem;
+  border-top: 1px solid #DDD;
+  padding-top: 1rem;
+  
+  // clearfix
+  overflow: hidden;
+
+  // meta info
+  .footer-meta {
+    display: inline-block;
+    float: left;
+  }
+
+  // links
+  a:link,
+  a:visited {
+    color: #999;
+  }
+
+  a:hover,
+  a:active {
+    color: $link_hover_color_primary;
+  }
+  
+  // social media share section
+  .share-section {
+    font-size: 2.5em;
+    display: inline-block;
+    float: right;
+
+    // social icon colors
+    .fa-facebook-square {
+      @include icon_style($facebook_primary);
+    }
+
+    .fa-twitter-square {
+      @include icon_style($twitter_primary);
+    }
+
+    .fa-google-plus-square {
+      @include icon_style($google_primary);
+    }
+
+    .fa-reddit-square {
+      @include icon_style($reddit_primary);
+    }
+  }
+}
+

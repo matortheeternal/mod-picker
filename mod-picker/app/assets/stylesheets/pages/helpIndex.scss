@@ -1,0 +1,110 @@
+.landing-page-container {
+  // min height set so footer doesn't cover bottom content
+  padding-bottom: 90px;
+
+  // links
+  a:link,
+  a:visited {
+    color: $link_hover_color_primary;
+    text-decoration: none;
+  }
+
+  a:hover,
+  a:active {
+    color: $link_hover_color_secondary;
+  }
+}
+
+.landing-header {
+  max-width: $max-width-container;
+  margin: 5rem auto;
+  font-size: 1.5em;
+  text-align: center;
+  // set to 100vh so footer doesn't overlay bottom content
+
+  // reset margins for header elements
+  h1, h3 {
+    margin: 0;
+  }
+
+  h3 {
+    font-weight: 100;
+  }
+}
+
+
+// generic stlying for both primary categories and game categories
+.category-container {
+  max-width: $max-width-container;
+  margin: 0 auto;
+  margin-bottom: 5rem;
+}
+
+.categories-list {
+  list-style: none;
+  padding-left: 0;
+
+  // container for images + text
+  .page-content {
+    display: block;
+    margin: 0 auto;
+  }
+
+  .page {
+    text-align: center;
+    float: left;
+    display: block;
+    width: 30%;
+    margin: 0;
+    margin-left: 5%;
+  }
+
+  .page:nth-child(1) {
+    margin-left: 0;
+  }
+
+  // images
+  .page a img {
+    max-width: 100%;
+  }
+}
+
+// games section
+.games-category-container {
+
+  // header
+  .games-category-header {
+    font-size: 1.5em;
+    text-align: center;
+    margin: 3rem 0;
+
+    h3, h4 {
+      margin: 0;
+    }
+    h3 {
+      font-weight: 600;
+    }
+
+    h4 {
+      font-weight: 100;
+    }
+  }
+  
+  // games list + pages
+  .game-page {
+    // 24% per page, margin-left of 1.33 * 3(first page has no margin-left)
+    float: left;
+    display: block;
+    width: 24%;
+    margin: 0;
+    margin-left: 1.333333333%;
+  }
+
+  .game-page:nth-child(4n + 1) {
+    margin-left: 0;
+  }
+
+  .game-details {
+    height: 3rem;
+  }
+}

@@ -1,0 +1,102 @@
+.help-list-page {
+  padding-bottom: 150px;
+  margin: 0 auto;
+  max-width: $max-content-width;
+
+  // title
+  .page-title {
+    font-size: 3em;
+    text-align: center;
+  }
+   // links
+  a:link,
+  a:visited {
+    color: $link_hover_color_primary;
+    text-decoration: none;
+  }
+
+  a:hover,
+  a:active {
+    color: $link_hover_color_secondary;
+  }
+
+  .pages-list {
+    padding-left: 0;
+    list-style: none;
+  }
+}
+
+.help-list-page .pages-list {
+  overflow: hidden;
+
+  // clearfix
+  // content: '';
+  // display: table;
+
+  // header image for each help page
+  .header-img {
+    max-width: 100%;
+    background-size: cover;
+  }
+
+  // meta data
+  .meta {
+    font-size: 0.8em;
+    color: #999;
+  }
+
+  li {
+    padding: 0;
+    background-color: #EEE;
+    margin-bottom: 1rem;
+
+    // grid styling
+    width: 32%;
+    margin-left: 1.5%;
+    float: left;
+
+    &:nth-child(3n + 1) {
+      clear: both;
+      margin-left: 0;
+    }
+
+    // meta info
+    .meta-container {
+      padding: 0 1rem 1rem;
+
+      a:visited,
+      a:link {
+        color: #999;
+      }
+
+      a:hover,
+      a:active {
+        color: $link_hover_color_primary;
+      }
+    }
+
+    .meta {
+      display: block;
+    }
+
+    .item-title {
+      color: $link_hover_color_primary;
+      margin: 0.5rem 0 1rem;
+    }
+
+    .game {
+      display: inline;
+    }
+  }
+}
+
+.help-list-page .date {
+  // new icon
+  .new-label {
+    margin-left: 0.5rem;
+    padding: 0 0.5rem;
+    color: $success_secondary;
+    border: 1px solid $success_secondary;
+    text-transform: uppercase; 
+  }
+}

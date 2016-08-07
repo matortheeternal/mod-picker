@@ -164,6 +164,7 @@ GEM
     rake (11.2.2)
     rdoc (4.2.2)
       json (~> 1.4)
+    redcarpet (3.3.3)
     responders (2.1.2)
       railties (>= 4.2.0, < 5.1)
     rest-client (1.6.7)
@@ -270,6 +271,7 @@ DEPENDENCIES
   nokogiri
   rack-attack
   rails (= 4.2.5)
+  redcarpet
   rest-client
   rspec-rails
   sass-rails (~> 5.0)

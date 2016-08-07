@@ -48,5 +48,6 @@ Rails.application.config.assets.precompile += [
 'lzma.js',
 'rar.js',
 'wow.min.js',
-'zip.js'
+'zip.js',
+'pages/help.css'
 ]

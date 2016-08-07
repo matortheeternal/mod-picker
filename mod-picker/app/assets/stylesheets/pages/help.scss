@@ -1,0 +1,355 @@
+/* Main style sheet for all help pages
+Other components like header/footer can't be reused because they use angular
+*/
+
+// Colors from high hrothgar theme
+
+$text_color: #404040;
+$inverse_text_color: #ffffff;
+$soft_text_color: #bbb;
+
+$primary_background: #ffffff;
+$secondary_background: #f0f0f0;
+
+
+$bar_color: #3a4751;
+$bar_dark_color: #2C353C;
+$bar_highlight_color: #4d5e6b;
+$bar_text_color: #ffffff;
+$bar_highlight_text_color: #53b6bf;
+
+$secondary_text_color: #b2b2b2;
+
+$link_color: #f0f0f0;
+$link_hover_color_primary: #53b6bf;
+$link_hover_color_secondary: #3a4751;
+
+
+$success_primary: #B4D5B4;
+$success_secondary: #4AC859;
+$error_primary: #F5D0D5;
+$error_secondary: #C74A5B;
+$warning_primary: #F5F0D0;
+$warning_secondary: #C7B64A;
+
+$admin_color: #900000;
+$moderator_color: #8000b0;
+$mod_author_color: #008000;
+
+// social media share colors
+$facebook_primary: #3b5998;
+$facebook_secondary: #8b9dc3;
+
+$twitter_primary: #55acee;
+
+$google_primary: #dd4b39;
+
+$reddit_primary: #ff4500;
+$reddit_secondary: #5f99cf;
+
+$max-width-container: 1220px;
+$max-content-width: 850px;
+
+// mixins
+
+// accepts a color and highlight and sets them to the color and hover color
+@mixin link_style ($color, $highlight_color: lighten($color, 10%)) {
+    &:link,
+    &:visited {
+      color: $color;
+    }
+
+    &:hover,
+    &:active {
+      color: $highlight_color;
+    }
+}
+
+// used for social icons
+@mixin icon_style($color, $highlight_color: lighten($color, 10%)) {
+  color: $color;
+
+  &:hover {
+    color: $highlight_color;
+  }
+}
+
+// import child stylesheets for other pages in the help center
+@import 'helpIndex';
+@import 'helpShow';
+@import 'helpList';
+@import 'help404';
+@import 'helpForm';
+
+// Global resets
+*, *:before, *:after {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Roboto', sans-serif;
+  color: $text_color;
+  margin: 0;
+  background-color: $primary_background;
+  min-height: 100vh;
+  position: relative;
+}
+
+// Clearfix
+
+/* clearfix */
+.clearfix:before,
+.clearfix:after {
+  content: " ";
+  display: table;
+}
+
+.clearfix:after {
+  clear: both;
+}
+
+.clearfix {
+  zoom: 1;  // For IE 6/7 only
+}
+
+// Max width settings for parent/child components
+.page-container {
+  max-width: $max-width-container;
+  margin: 0 auto;
+}
+
+// header
+.help-header {
+  background-color: $bar_color;
+}
+
+// Nav bar
+
+nav {
+  display: block;
+  background-color: $bar_color;
+  white-space: nowrap;
+  
+  max-width: $max-width-container;
+  margin: 0 auto;
+
+  .logo {
+    display: inline-block;
+    margin: 0 auto;
+    padding: 14px 12px;
+  }
+
+  h1 {
+    margin: 0 auto;
+  }
+}
+
+// navigation links, nav icon, and nav text
+// primary navigation
+
+
+nav .primary-nav {
+  display: inline-block;
+  float: left;
+  background-color: $bar_color;
+
+  // Used to center primary nav section
+  margin-top: 3px;
+
+  > a {
+    display: inline-block;
+  }
+}
+
+// logo
+nav .primary-nav .logo {
+  display: inline-block;
+  text-decoration: none;
+
+  &:link, &:visited {
+    color: $bar_text_color;
+  }
+
+  &:hover {
+    color: $bar_text_color;
+  }
+}
+
+// nav bar anchor links 
+nav .primary-nav-links {
+  display: inline-block;
+  
+  // styling for url is same as the one in the nav bar
+  a.active{
+    border-bottom: 3px solid $link_hover_color_primary;
+    padding-bottom: 2px;
+    @include link_style($link_hover_color_primary, $link_hover_color_primary);
+  }
+
+  a {
+    margin-right: 1rem;
+  }
+
+  a:link, a:visited {
+    text-decoration: none;
+    color: $bar_text_color;
+  }
+
+  a:hover, a:active {
+    color: $bar_highlight_text_color;
+  }
+}
+
+nav .secondary-nav {
+  display: inline-block;
+  float: right;
+  height: 60px;
+}
+
+/* search field bar ================================================ */
+
+.btn {
+  padding: 7px;
+  height: 32px;
+  color: $link_color;
+  text-transform: uppercase;
+  background-color: $link_hover_color_primary;
+  &:hover {
+    color: $link_hover_color_primary;
+    background-color: $link_color;
+  }
+}
+
+.secondary-nav {
+  position: relative;
+  top: 17px;
+
+  .search-form {
+    display: inline-block;
+  }
+
+  .search-field {
+    width: 200px;
+    height: 35px;
+    font-size: 13px;
+    margin: 0 auto;
+    padding: 0 8px;
+    border: 0 none;
+    -moz-appearance: none;
+    border-radius: 0;
+  }
+
+  #search-btn {
+    padding: 8px;
+    height: 35px;
+  }
+}
+
+input[type="submit"] {
+  height: 35px;
+  font-size: 13px;
+  margin: 0 auto;
+  padding: 0 8px;
+  -moz-appearance: none;
+  display: block;
+}
+
+/* button styling */
+input[type="button"], input[type="submit"] {
+  display: inline;
+  text-align: center;
+  font-size: 12px;
+  border: 0;
+  border-radius: 0;
+  cursor: pointer;
+
+  &:disabled {
+    cursor: default;
+    background-color: $bar_color;
+  }
+}
+
+
+
+// Search bar user nav links
+.search-user-nav {
+  display: inline-block;
+  margin: 0 auto;
+
+  a {
+    text-decoration: none;
+    margin: 8px;
+
+    &:link, &:visited {
+      color: $bar_text_color;
+    }
+
+    &:hover {
+      color: $bar_highlight_text_color;
+    }
+  }
+}
+
+// footer
+.footer {
+  background-color: $secondary_background;
+  color: $secondary_text_color;
+
+  // position absolute + width 100% to make it so footer is always on the bottom
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+
+  // static height so main content has as padding-bottom equal to this
+  // to offset the absolute position which would overlap the content is padding wasn't there
+  height: 100px;
+}
+
+.footer-container {
+  margin-top: 15px;
+  margin: 0 auto;
+  max-width: $max-width-container; 
+  padding: 1rem 0;
+}
+
+// Make copy right text inline
+.footer-logo {
+  display: inline-block;
+  float: left;
+
+  h1 {
+    margin: 0 auto;
+    display: inline-block;
+  }
+
+  span {
+    display: inline-block;
+  }
+}
+
+// footer nav links
+.footer-nav {
+  margin-top: 1.5rem;
+  display: inline-block;
+  float: right;
+  list-style: none;
+
+  li {
+    display: inline-block;
+    margin-left: 1rem;
+  }
+
+  // link styling
+  a {
+    text-decoration: none;
+  }
+  
+  a:link, a:visited {
+    color: $secondary_text_color;
+  }
+
+  a:hover, a:active {
+    color: darken($secondary_text_color, 15%);
+  }
+}

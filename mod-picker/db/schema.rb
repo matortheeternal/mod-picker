@@ -203,6 +203,7 @@ ActiveRecord::Schema.define(version: 20160805205222) do
     t.integer "install_order_notes_count", limit: 4,   default: 0, null: false
     t.integer "load_order_notes_count",    limit: 4,   default: 0, null: false
     t.integer "corrections_count",         limit: 4,   default: 0, null: false
+    t.integer "help_pages_count",          limit: 4,   default: 0, null: false
   end
 
   add_index "games", ["parent_game_id"], name: "fk_rails_f750cfc2c5", using: :btree
@@ -213,7 +214,13 @@ ActiveRecord::Schema.define(version: 20160805205222) do
     t.integer  "comments_count", limit: 4,     default: 0, null: false
     t.datetime "submitted",                                null: false
     t.datetime "edited"
+    t.integer  "game_id",        limit: 4
+    t.integer  "category",       limit: 1,     default: 0, null: false
+    t.integer  "submitted_by",   limit: 4,                 null: false
   end
+
+  add_index "help_pages", ["game_id"], name: "index_help_pages_on_game_id", using: :btree
+  add_index "help_pages", ["submitted_by"], name: "fk_rails_01a3f94bf2", using: :btree
 
   create_table "helpful_marks", id: false, force: :cascade do |t|
     t.integer  "submitted_by",     limit: 4,                  null: false
@@ -898,6 +905,8 @@ ActiveRecord::Schema.define(version: 20160805205222) do
   add_foreign_key "custom_sources", "mods"
   add_foreign_key "dummy_masters", "plugins"
   add_foreign_key "games", "games", column: "parent_game_id"
+  add_foreign_key "help_pages", "games"
+  add_foreign_key "help_pages", "users", column: "submitted_by"
   add_foreign_key "helpful_marks", "users", column: "submitted_by", name: "helpful_marks_ibfk_4"
   add_foreign_key "install_order_note_history_entries", "install_order_notes"
   add_foreign_key "install_order_note_history_entries", "users", column: "edited_by"
