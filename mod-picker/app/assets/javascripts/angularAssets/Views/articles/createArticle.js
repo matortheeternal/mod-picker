@@ -2,7 +2,7 @@ app.config(['$stateProvider', function($stateProvider) {
     $stateProvider.state('base.create-article', {
         templateUrl: '/resources/partials/articles/createArticle.html',
         controller: 'createArticleController',
-        url: '/create-article'
+        url: '/articles/submit'
     });
 }]);
 
