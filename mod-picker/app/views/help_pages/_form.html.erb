@@ -7,13 +7,27 @@
 <% end %>
 
 <%= form_for @help_page, html: { class: "help-page-form" } do |f| %>
-    <%= f.label :name %>
-    <%= f.text_field :name %>
-    <%= f.label :category %>
-    <%= f.select :category, options_for_select(HelpPage.categories.map { |k, v| [k.humanize.capitalize, k] }) %>
-    <%= f.label :game_id %>
-    <%= f.select :game_id, options_for_select(Game.all.map { |k, v| [k.display_name, k.id] }), include_blank: "None" %>
-    <%= f.label :text_body %>
-    <%= f.text_area :text_body, size: "60x12" %>
-    <%= f.submit "Submit" %>
+    <h3 class="section-title">Title</h3>
+    <section>
+        <%= f.text_field :name %>
+    </section>
+
+    <h3 class="section-title">Category</h3>
+    <section>
+        <%= f.select :category, options_for_select(HelpPage.categories.map { |k, v| [k.humanize.titleize, k] }) %>
+    </section>
+
+    <h3 class="section-title">Game</h3>
+    <section>
+        <%= f.select :game_id, options_for_select(Game.all.map { |k, v| [k.display_name, k.id] }), include_blank: "None" %>
+    </section>
+
+    <h3 class="section-title">Text Body</h3>
+    <section>
+        <%= f.text_area :text_body, size: "60x12" %>
+    </section>
+
+    <div class="action-button-container">
+        <%= f.submit "Submit", class: "btn action-btn" %>
+    </div>
 <% end %>
