@@ -24,12 +24,12 @@
         <div class="date">
             <span class="meta submit-date" title="<%= @help_page.submitted.strftime("%m/%d/%Y %I:%M:%S %z") %>">
                 <i class="fa fa-clock-o" aria-hidden="true"></i>
-                <%= @help_page.submitted.strftime("Posted %b %e %Y") %>
+                <%= @help_page.submitted.strftime("Created %b %e %Y") %>
             </span>
 
             <% if @help_page.edited %>
             <span class="meta edit-date" title="<%= @help_page.edited.strftime("%m/%d/%Y %I:%M:%S %z") %>">
-              - <em><%= @help_page.edited.strftime("Edited %b %e %Y") %></em>
+              - <em><%= @help_page.edited.strftime("Updated %b %e %Y") %></em>
             </span>
             <% end %>
         </div>
@@ -40,11 +40,8 @@
     </div>
     <!-- enddate -->
 
-
     <!-- table of contents class = "help-page-toc" -->
     <%= markdown_toc(@help_page.text_body) %>
-
-    <br>
 
     <!-- help page body content -->
     <div class="help-page-body">
@@ -62,12 +59,12 @@
             <div class="date">
                 <span class="meta submit-date" title="<%= @help_page.submitted.strftime("%m/%d/%Y %I:%M:%S %z") %>">
                     <i class="fa fa-clock-o" aria-hidden="true"></i>
-                    <%= @help_page.submitted.strftime("Posted %b %e %Y") %>
+                    <%= @help_page.submitted.strftime("Created %b %e %Y") %>
                 </span>
 
                 <% if @help_page.edited %>
                     <span class="meta edit-date" title="<%= @help_page.edited.strftime("%m/%d/%Y %I:%M:%S %z") %>">
-                    - <em><%= @help_page.edited.strftime("Edited %b %e %Y") %></em>
+                    - <em><%= @help_page.edited.strftime("Updated %b %e %Y") %></em>
                     </span>
                 <% end %>
             </div>
