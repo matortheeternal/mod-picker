@@ -1,60 +1,60 @@
 <!DOCTYPE html>
 <html lang="en" ng-app="modPicker">
 <head>
-  <meta charset="UTF-8">
-  <%= yield :head %>
-  <link href='https://fonts.googleapis.com/css?family=Roboto:400,700,500' rel='stylesheet' type='text/css'>
-  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
-  <%= stylesheet_link_tag 'pages/help' %>
+    <meta charset="UTF-8">
+    <%= yield :head %>
+    <link href='https://fonts.googleapis.com/css?family=Roboto:400,700,500' rel='stylesheet' type='text/css'>
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+    <%= stylesheet_link_tag 'pages/help' %>
 </head>
 <body>
 <header class="help-header">
     <nav class="clearfix">
-      <div class="primary-nav">
-        <a class="logo" href="/help">
-          <h1>Mod Picker</h1>
-          <span>Help Center</span>
-        </a>
-        <div class="primary-nav-links">
-          <%= link_to "Home", root_url, class: active_url(root_url) %>
-          <%= link_to "Help Center", help_pages_path, class: active_url(help_pages_path) %>
-          <%= link_to "Mod Picker", "/help/category/mod_picker", class: active_url("/help/category/mod_picker") %>
-          <%= link_to "Modding", "/help/category/modding", class: active_url("/help/category/modding") %>
-          <%= link_to "Guides", "/help/category/guides", class: active_url("/help/category/guides") %>
+        <div class="primary-nav">
+            <a class="logo" href="/help">
+                <h1>Mod Picker</h1>
+                <span>Help Center</span>
+            </a>
+            <div class="primary-nav-links">
+                <%= link_to "Home", root_url, class: active_url(root_url) %>
+                <%= link_to "Help Center", help_pages_path, class: active_url(help_pages_path) %>
+                <%= link_to "Mod Picker", "/help/category/mod_picker", class: active_url("/help/category/mod_picker") %>
+                <%= link_to "Modding", "/help/category/modding", class: active_url("/help/category/modding") %>
+                <%= link_to "Guides", "/help/category/guides", class: active_url("/help/category/guides") %>
+            </div>
         </div>
-      </div>
-      <div class="secondary-nav">
-        <form class="search-form">
-          <input class="search-field" type="text" autocomplete="off" placeholder="Search Help Center...">
-          <input id="search-btn" class="btn" type="submit" value="Search" />
-        </form>
-        <div class="search-user-nav">
-          <% if current_user %>
-          <a href="/skyrim#/user/<%= current_user.id %>">Profile</a>
-          <a href="users/sign_out">Log Out</a>
-          <% else %>
-          <a href="/users/sign_in">Log In</a>
-          <a href="/users/sign_up">Sign Up</a>
-          <% end %>
+        <div class="secondary-nav">
+            <form class="search-form">
+                <input class="search-field" type="text" autocomplete="off" placeholder="Search Help Center...">
+                <input id="search-btn" class="btn" type="submit" value="Search"/>
+            </form>
+            <div class="search-user-nav">
+                <% if current_user %>
+                    <a href="/skyrim#/user/<%= current_user.id %>">Profile</a>
+                    <a href="users/sign_out">Log Out</a>
+                <% else %>
+                    <a href="/users/sign_in">Log In</a>
+                    <a href="/users/sign_up">Sign Up</a>
+                <% end %>
+            </div>
         </div>
-      </div>
     </nav>
-  </header>
-  <%= yield %>
-  <footer class="footer clearfix">
+</header>
+<%= yield %>
+<footer class="footer clearfix">
     <div class="footer-container">
         <span class="footer-logo">
           <h1>Mod Picker</h1><br>
           <span class="footer-text">Copyright © 2016 Mod Picker, LLC. All rights reserved.</span>
         </span>
         <ul class="footer-nav">
-          <li><a href="#">About Us</a></li>
-          <li><a href="#">Terms of Service</a></li>
-          <li><a href="#">Privacy Policy</a></li>
-          <li><a href="#">Help Center</a></li>
-          <li><a href="#">Contact</a></li>
+            <li><a href="#">About Us</a></li>
+            <li><a href="#">Terms of Service</a></li>
+            <li><a href="#">Privacy Policy</a></li>
+            <li><a href="#">Help Center</a></li>
+            <li><a href="#">Contact</a></li>
         </ul>
     </div>
-  </footer>
+</footer>
 </body>
 </html>
