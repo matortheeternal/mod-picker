@@ -54,6 +54,7 @@ app.config(['$stateProvider', function($stateProvider) {
 
 app.controller('homeController', function($scope, $q, homeService, currentUser) {
     $scope.currentUser = currentUser;
+    $scope.permissions = currentUser.permissions;
 
     $scope.tabs = [
         { name: 'Reviews' },
