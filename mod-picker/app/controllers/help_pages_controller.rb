@@ -63,12 +63,12 @@ class HelpPagesController < ApplicationController
     end
   end
 
-  # GET /help/game/:game(game.display_name)
+  # GET /help/game/:game
   def game
     # find_by! used to RecordNotFound error is raised instead of just returning nil
     game = Game.find_by_display_name!(params[:game].humanize)
 
-    @page_title = game.long_name
+    @page_title = game.long_name.titleize
     @help_pages = HelpPage.where(game_id: game.id).order(submitted: :asc)
 
     render "help_pages/game"
