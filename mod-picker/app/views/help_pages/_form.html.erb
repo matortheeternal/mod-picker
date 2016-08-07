@@ -1,20 +1,19 @@
-
-  <% if @help_page.errors.any? %>
-  <ul>
+<% if @help_page.errors.any? %>
+<ul>
     <% @help_page.errors.full_messages.each do |msg| %>
-      <li><%= msg %></li>
+        <li><%= msg %></li>
     <% end %>
-  </ul>
-  <% end %>
-  
-  <%= form_for @help_page, html: {class: "help-page-form"} do |f| %>
+</ul>
+<% end %>
+
+<%= form_for @help_page, html: { class: "help-page-form" } do |f| %>
     <%= f.label :name %>
     <%= f.text_field :name %>
     <%= f.label :category %>
-    <%= f.select :category, options_for_select(HelpPage.categories.map {|k, v| [k.humanize.capitalize, k]}) %>
+    <%= f.select :category, options_for_select(HelpPage.categories.map { |k, v| [k.humanize.capitalize, k] }) %>
     <%= f.label :game_id %>
-    <%= f.select :game_id, options_for_select(Game.all.map {|k, v| [k.display_name, k.id]}), include_blank: "None" %>
+    <%= f.select :game_id, options_for_select(Game.all.map { |k, v| [k.display_name, k.id] }), include_blank: "None" %>
     <%= f.label :text_body %>
     <%= f.text_area :text_body, size: "60x12" %>
     <%= f.submit "Submit" %>
-  <% end %>
+<% end %>
