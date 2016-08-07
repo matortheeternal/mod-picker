@@ -80,6 +80,7 @@ app.service('userService', function (backend, $q, userSettingsService, userTitle
         var rep = user.reputation.overall;
         permissions.isAdmin = user.role === 'admin';
         permissions.isModerator = user.role === 'moderator';
+        permissions.canSubmitArticles = permissions.isModerator || permissions.isAdmin;
         // TODO: Remove this when beta is over
         permissions.canSubmitMods = true;
         //permissions.canSubmitMods = permissions.isAdmin || permissions.isModerator || user.reputation.overall > 160;
