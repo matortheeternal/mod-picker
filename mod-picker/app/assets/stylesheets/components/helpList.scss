@@ -79,8 +79,13 @@
     }
 
     .item-title {
-      color: $link_hover_color_primary;
-      margin: 0.5rem 0 1rem;
+      margin: 8px 0;
+      color: $text_color;
+      @include transition(color 0.2s ease-in-out);
+
+      &:hover {
+        color: $link_hover_color_primary;
+      }
     }
 
     .game {

@@ -9,7 +9,7 @@
 
         <div class="meta-container">
             <%= link_to "/help/#{page.url_name}", method: :get do %>
-                <h4 class="item-title"><%= page.name.capitalize %></h4>
+                <h4 class="item-title"><%= page.name %></h4>
             <% end %>
 
 
@@ -18,20 +18,11 @@
                 <%= link_to page.submitter.username, user_path(page.submitter) %>
             </span>
 
-            <span class="meta comment">
-                <% if page.comments_count > 0 %>
-                <i class="fa fa-comment" aria-hidden="true"></i>
-                <% else %>
-                <i class="fa fa-comment-o" aria-hidden="true"></i>
-                <% end %>
-                <%= page.comments_count %>
-            </span>
-
             <div class="date">
                 <span class="meta submit-date" title="<%= page.submitted.strftime("%m/%d/%Y %I:%M:%S %z") %>">
                     <i class="fa fa-clock-o" aria-hidden="true"></i>
                     <%= page.submitted.strftime("Created %b %e %Y") %>
-                    <% if page.submitted.between?((DateTime.now - 2.week), DateTime.now) %>
+                    <% if page.submitted.between?((DateTime.now - 2.weeks), DateTime.now) %>
                     <span class="new-label">NEW</span>
                     <% end %>
                 </span>
@@ -46,7 +37,7 @@
 
             <span class="meta category" title="Category">
                 <i class="fa fa-folder" aria-hidden="true"></i>
-                <%= link_to page.category.humanize, "/help/category/#{page.category}" %>
+                <%= "#{page.category.humanize.titleize}" %>
             </span>
         </div>
     </li>
