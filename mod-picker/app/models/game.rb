@@ -26,12 +26,8 @@ class Game < ActiveRecord::Base
 
   # gets the display image path via the game's display_name if one is present
   def display_image
-    png_file_name = self.display_name.split("").join("_")
-    jpg_file_name = self.display_name.split("").join("_")
-
-    png_path = File.join(Rails.public_path, png_file_name)
-    jpg_path = File.join(Rails.public_path, jpg_file_name)
-
+    png_path = File.join(Rails.public_path, "games/#{id}.png")
+    jpg_path = File.join(Rails.public_path, "games/#{id}.jpg")
 
     if File.exists?(png_path)
       "/games/#{id}.png"
