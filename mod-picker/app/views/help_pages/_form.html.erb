@@ -9,12 +9,12 @@
 <%= form_for @help_page, html: { class: "help-page-form" } do |f| %>
     <h3 class="section-title">Title</h3>
     <section>
-        <%= f.text_field :name %>
+        <%= f.text_field :title %>
     </section>
 
     <h3 class="section-title">Category</h3>
     <section>
-        <%= f.select :category, options_for_select(HelpPage.categories.map { |k, v| [k.humanize, k] }), class: "capitalize" %>
+        <%= f.select :category, options_for_select(HelpPage.categories.map { |k, v| [k.humanize.titleize, k] }) %>
     </section>
 
     <h3 class="section-title">Game</h3>

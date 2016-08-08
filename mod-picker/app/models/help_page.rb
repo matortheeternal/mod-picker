@@ -28,8 +28,8 @@ class HelpPage < ActiveRecord::Base
     end
   end
 
-  def url_name
-    self.name.parameterize.underscore
+  def url
+    self.title.parameterize.underscore
   end
 
   private

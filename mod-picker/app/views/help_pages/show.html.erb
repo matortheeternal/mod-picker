@@ -1,5 +1,5 @@
 <% content_for :head do %>
-    <title>Mod Picker: Help Center - <%= @help_page.name %></title>
+    <title>Mod Picker: Help Center - <%= @help_page.title %></title>
 <% end %>
 
 <div class="page-container help-page-content">
@@ -8,10 +8,10 @@
         <%= image_tag "#{@help_page.display_image}", class: "header-image" %>
         <% end %>
         <h1 class="page-title">
-            <%= @help_page.name %>
+            <%= @help_page.title %>
             <span class="right-item">
                 <% if can? :update, HelpPage %>
-                <%= link_to "/help/#{@help_page.url_name}/edit" do %>
+                <%= link_to "/help/#{@help_page.url}/edit" do %>
                 <span class="action-box">
                     <i class="fa fa-edit" aria-hidden="true"></i> Edit Help Page
                 </span>
@@ -94,7 +94,7 @@
             </a>
 
             <!-- Sharingbutton Twitter -->
-            <a class="share-link" href="https://twitter.com/intent/tweet/?text=<%= @help_page.name + ' ' + request.original_url %>"
+            <a class="share-link" href="https://twitter.com/intent/tweet/?text=<%= @help_page.title + ' ' + request.original_url %>"
                target="_blank" title="Share this page on Twitter">
                 <i class="fa fa-twitter-square" aria-hidden="true"></i>
             </a>
@@ -106,7 +106,7 @@
             </a>
 
             <!-- Sharingbutton E-Mail -->
-            <a class="share-link" href="mailto:?subject=<%= @help_page.name %>&amp;body=<%= @help_page.name + ' ' + request.original_url %>"
+            <a class="share-link" href="mailto:?subject=<%= @help_page.title %>&amp;body=<%= @help_page.title + ' ' + request.original_url %>"
                target="_blank" title="Share this page via E-Mail">
                 <i class="fa fa-envelope-square" aria-hidden="true"></i>
             </a>

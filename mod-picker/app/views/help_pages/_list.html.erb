@@ -2,15 +2,15 @@
     <% @help_pages.each do |page| %>
     <li>
         <% if page.display_image %>
-        <%= link_to "/help/#{page.url_name}", method: :get do %>
+        <%= link_to "/help/#{page.url}", method: :get do %>
             <%= image_tag "#{@help_page.display_image}", class: "header-image" %>
         <% end %>
         <% end %>
 
         <div class="meta-container">
-            <%= link_to "/help/#{page.url_name}", method: :get do %>
+            <%= link_to "/help/#{page.url}", method: :get do %>
                 <h4 class="item-title">
-                    <%= page.name %>
+                    <%= page.title %>
                     <% if page.submitted.between?((DateTime.now - 2.weeks), DateTime.now) %>
                     <span class="new-label">NEW</span>
                     <% end %>
