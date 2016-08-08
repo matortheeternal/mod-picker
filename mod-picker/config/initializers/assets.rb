@@ -12,6 +12,7 @@ Rails.application.config.assets.version = '1.0'
 Rails.application.config.assets.precompile += [
 # angular apps
 'modpicker.js',
+'helpcenter.js',
 # themes
 'main/Whiterun.css',
 'main/Darkwater.css',
