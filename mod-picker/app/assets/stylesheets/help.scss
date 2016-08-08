@@ -11,25 +11,3 @@
 'pages/showHelpPage',
 'pages/helpCenter',
 'components/helpList';
-
-* {
-  box-sizing: border-box;
-}
-
-html {
-  height: 100%;
-}
-
-body {
-  font-family: 'Roboto', sans-serif;
-  color: $text_color;
-  margin: 0;
-  background-color: $primary_background;
-  min-height: 100vh;
-  position: relative;
-}
-
-.content-message {
-  text-align: center;
-  font-size: 20px;
-}

@@ -1,20 +1,32 @@
+* {
+  box-sizing: border-box;
+}
+
+html {
+  height: 100%;
+}
+
+body {
+  font-family: 'Roboto', sans-serif;
+  color: $text_color;
+  margin: 0;
+  background-color: $primary_background;
+  min-height: 100vh;
+  position: relative;
+}
+
+.content-message {
+  text-align: center;
+  font-size: 20px;
+}
+
 .page-container {
   max-width: $max-content-width;
   margin: 0 auto;
+  padding-bottom: 130px;
 
   h1 {
     color: $text_color;
     margin-top: 30px;
-  }
-}
-
-// TODO: Move to buttons
-// delete btn
-.delete-btn {
-  color: $inverse_text_color;
-  background-color: $error_secondary;
-
-  &:hover {
-    background-color: darken($error_secondary, 10%);
   }
 }
