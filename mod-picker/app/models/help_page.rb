@@ -10,8 +10,8 @@ class HelpPage < ActiveRecord::Base
   enum category: [:mod_picker, :modding, :guides]
 
   # validations
-  validates :name, :text_body, :category, presence: true
-  validates :name, length: {in: 4..128}
+  validates :title, :text_body, :category, presence: true
+  validates :title, length: {in: 4..128}
   validates :text_body, length: {in: 64..32768}
 
   # Callbacks
