@@ -18,7 +18,7 @@
                         </span>-->
 
                         <!-- TODO: add this with css :after content -->
-                        <span class="divider" ng-if="mod.primary_category_id && (mod.aliases || permissions.canManage)">
+                        <span class="divider" ng-if="mod.primary_category_id && mod.aliases">
                             |
                         </span>
 
@@ -29,11 +29,7 @@
 
                         <span ng-if="mod.aliases">
                             <strong>Aliases: </strong>{{mod.aliases}}
-                            <span class="divider" ng-if="permissions.canManage">
-                                |
-                            </span>
                         </span>
-
                     </div>
                 </section>
 
