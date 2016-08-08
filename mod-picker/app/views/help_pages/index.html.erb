@@ -43,7 +43,7 @@
                     <%= image_tag "#{game.display_image}", alt: "#{game.display_name} image" %>
                     <% end %>
                     <h3 class="capitalize">
-                        <%= link_to "help/game/#{game_link}", "#{game.display_name}" %>
+                        <%= link_to "#{game.display_name}", "help/game/#{game_link}" %>
                     </h3>
                 </div>
             </li>
