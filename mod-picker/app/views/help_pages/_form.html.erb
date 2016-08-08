@@ -14,7 +14,7 @@
 
     <h3 class="section-title">Category</h3>
     <section>
-        <%= f.select :category, options_for_select(HelpPage.categories.map { |k, v| [k.humanize.titleize, k] }) %>
+        <%= f.select :category, options_for_select(HelpPage.categories.map { |k, v| [k.humanize, k] }), class: "capitalize" %>
     </section>
 
     <h3 class="section-title">Game</h3>
