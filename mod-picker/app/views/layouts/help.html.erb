@@ -28,10 +28,10 @@
             </div>
             <div class="secondary-nav">
                 <form class="search-form">
-                    <input class="search-field" type="text" autocomplete="off" placeholder="Search Help Center...">
-                    <input id="search-btn" class="btn" type="submit" value="Search"/>
+                    <input type="text" autocomplete="off" placeholder="Search Help Center...">
+                    <input type="submit" class="btn" value="Search"/>
                 </form>
-                <div class="search-user-nav">
+                <div class="user-nav">
                     <% if current_user %>
                         <a href="/skyrim#/user/<%= current_user.id %>">Profile</a>
                         <a href="users/sign_out">Log Out</a>

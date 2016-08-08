@@ -80,30 +80,36 @@ nav {
 
     .search-form {
       display: inline-block;
-    }
+      margin-right: 4px;
 
-    .search-field {
-      width: 200px;
-      height: 35px;
-      font-size: 13px;
-      margin: 0 auto;
-      padding: 0 8px;
-      border: 0 none;
-      -moz-appearance: none;
-      border-radius: 0;
+      input {
+        float: left;
+        height: 35px;
+        vertical-align: top;
+        padding: 8px;
+      }
+
+      input[type="text"] {
+        width: 200px;
+        font-size: 13px;
+        margin: 0 auto;
+        padding: 0 8px;
+        border: 0 none;
+        -moz-appearance: none;
+        border-radius: 0;
+      }
     }
 
     #search-btn {
-      padding: 8px;
-      height: 35px;
-      vertical-align: top;
     }
   }
 
   // Search bar user nav links
-  .search-user-nav {
+  .user-nav {
     display: inline-block;
     margin: 0 auto;
+    vertical-align: top;
+    padding-top: 10px;
 
     a {
       text-decoration: none;
