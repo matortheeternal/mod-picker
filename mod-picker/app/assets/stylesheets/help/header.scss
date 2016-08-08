@@ -3,11 +3,9 @@
 }
 
 nav {
-  display: block;
-  background-color: $bar_color;
   white-space: nowrap;
   height: 64px;
-  max-width: $max-width-container;
+  width: $max-width-container;
   margin: 0 auto;
 
   a {
