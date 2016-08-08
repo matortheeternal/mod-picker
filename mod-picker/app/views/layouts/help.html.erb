@@ -1,11 +1,16 @@
 <!DOCTYPE html>
-<html lang="en" ng-app="modPicker">
+<html lang="en" ng-app="helpCenter">
 <head>
     <meta charset="UTF-8">
     <%= yield :head %>
     <link href='https://fonts.googleapis.com/css?family=Roboto:400,700,500' rel='stylesheet' type='text/css'>
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+    <%= stylesheet_link_tag 'simplemde.min' %>
+    <%= javascript_include_tag 'angular.min.1.5.1' %>
     <!-- TODO: Support themes here -->
+    <script>
+        window._token = '<%= form_authenticity_token %>';
+    </script>
     <%= stylesheet_link_tag 'help/High Hrothgar' %>
 </head>
 <body>
@@ -61,5 +66,15 @@
             </ul>
         </div>
     </footer>
+
+    <!-- defered load of scripts, which is way more performant for browsers -->
+    <%= javascript_include_tag 'marked.min' %>
+    <%= javascript_include_tag 'angular-marked.min' %>
+    <%= javascript_include_tag 'angular-relative-date.min' %>
+    <%= javascript_include_tag 'sticky.min' %>
+    <%= javascript_include_tag 'angular-animate.min' %>
+    <%= javascript_include_tag 'simplemde.min' %>
+    <%= javascript_include_tag 'spin.min' %>
+    <%= javascript_include_tag 'helpcenter' %>
 </body>
 </html>
