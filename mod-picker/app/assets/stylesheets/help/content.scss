@@ -20,6 +20,38 @@ body {
   font-size: 20px;
 }
 
+.content-block {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  background-color: $primary_background;
+  border: 1px solid $border_color;
+
+  .content-title {
+    font-size: 16px;
+    font-weight: 500;
+    color: $bar_text_color;
+    background-color: $bar_color;
+    padding: 10px;
+
+    .right-item {
+      margin-top: 3px;
+      font-size: 12px;
+    }
+
+    .action-box {
+      margin-top: -1px;
+    }
+  }
+
+  .content-container {
+    margin: 20px;
+
+    .content-message {
+      margin: 40px 0;
+    }
+  }
+}
+
 .page-container {
   max-width: $max-content-width;
   margin: 0 auto;
