@@ -13,31 +13,32 @@
             <% end %>
 
 
-            <span class="meta author" title="Author">
-                <i class="fa fa-user" aria-hidden="true"></i>
+            <span class="meta author">
+                <i class="fa fa-user" aria-hidden="true" title="Author"></i>
                 <%= link_to page.submitter.username, user_path(page.submitter) %>
             </span>
 
             <div class="date">
                 <span class="meta submit-date" title="<%= page.submitted.strftime("%m/%d/%Y %I:%M:%S %z") %>">
-                    <i class="fa fa-clock-o" aria-hidden="true"></i>
-                    <%= page.submitted.strftime("Created %b %e %Y") %>
+                    <i class="fa fa-clock-o" aria-hidden="true" title="Created"></i>
+                    <%= time_ago_in_words(page.submitted).capitalize %> ago
                     <% if page.submitted.between?((DateTime.now - 2.weeks), DateTime.now) %>
                     <span class="new-label">NEW</span>
                     <% end %>
                 </span>
             </div>
 
-            <% if page.game.present? %>
-            <span class="meta game" title="Game">
-                <i class="fa fa-gamepad" aria-hidden="true"></i>
-                <%= link_to page.game.display_name, "/help/game/#{page.game.display_name}" %>
-            </span>
-            <% end %>
-
-            <span class="meta category" title="Category">
-                <i class="fa fa-folder" aria-hidden="true"></i>
-                <%= "#{page.category.humanize.titleize}" %>
+            <span class="meta">
+                <% if page.game.present? %>
+                <span>
+                    <i class="fa fa-gamepad" aria-hidden="true" title="Game"></i>
+                    <%= link_to page.game.display_name, "/help/game/#{page.game.display_name}" %>
+                </span>
+                <% end %>
+                <span>
+                    <i class="fa fa-folder" aria-hidden="true" title="Category"></i>
+                        <%= "#{page.category.humanize.titleize}" %>
+                </span>
             </span>
         </div>
     </li>

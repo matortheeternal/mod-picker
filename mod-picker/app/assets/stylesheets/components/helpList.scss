@@ -76,6 +76,11 @@
 
     .meta {
       display: block;
+
+      span {
+        display: inline-block;
+        margin-right: 16px;
+      }
     }
 
     .item-title {
@@ -86,10 +91,6 @@
       &:hover {
         color: $link_hover_color_primary;
       }
-    }
-
-    .game {
-      display: inline;
     }
   }
 }

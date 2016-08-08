@@ -20,24 +20,26 @@
             <%= link_to @help_page.game.display_name, "/help/game/#{@help_page.game.display_name}" %>
         </span>
         <% end %>
-        <br>
 
         <!-- date posted/edited conditional-->
-        <div class="date">
-            <span class="meta submit-date" title="<%= @help_page.submitted.strftime("%m/%d/%Y %I:%M:%S %z") %>">
+        <span class="meta date">
+            <span class="submit-date" title="<%= @help_page.submitted.strftime("%m/%d/%Y %I:%M:%S %z") %>">
                 <i class="fa fa-clock-o" aria-hidden="true"></i>
                 <%= @help_page.submitted.strftime("Created %b %e %Y") %>
             </span>
 
             <% if @help_page.edited %>
-            <span class="meta edit-date" title="<%= @help_page.edited.strftime("%m/%d/%Y %I:%M:%S %z") %>">
+            <span class="edit-date" title="<%= @help_page.edited.strftime("%m/%d/%Y %I:%M:%S %z") %>">
               - <em><%= @help_page.edited.strftime("Updated %b %e %Y") %></em>
             </span>
             <% end %>
-        </div>
-        <span class="meta category" title="Category">
-          <i class="fa fa-folder" aria-hidden="true"></i>
-            <%= link_to @help_page.category.humanize, "/help/category/#{@help_page.category}" %>
+        </span>
+
+        <span class="meta" title="Category">
+            <span class="category">
+                <i class="fa fa-folder" aria-hidden="true"></i>
+                <%= link_to @help_page.category.humanize.titleize, "/help/category/#{@help_page.category}" %>
+            </span>
         </span>
     </div>
     <!-- enddate -->
@@ -58,18 +60,18 @@
                 <%= link_to @help_page.submitter.username, user_path(@help_page.submitter) %>
             </span>
 
-            <div class="date">
-                <span class="meta submit-date" title="<%= @help_page.submitted.strftime("%m/%d/%Y %I:%M:%S %z") %>">
+            <span class="meta date">
+                <span class="submit-date" title="<%= @help_page.submitted.strftime("%m/%d/%Y %I:%M:%S %z") %>">
                     <i class="fa fa-clock-o" aria-hidden="true"></i>
                     <%= @help_page.submitted.strftime("Created %b %e %Y") %>
                 </span>
 
                 <% if @help_page.edited %>
-                    <span class="meta edit-date" title="<%= @help_page.edited.strftime("%m/%d/%Y %I:%M:%S %z") %>">
+                    <span class="edit-date" title="<%= @help_page.edited.strftime("%m/%d/%Y %I:%M:%S %z") %>">
                     - <em><%= @help_page.edited.strftime("Updated %b %e %Y") %></em>
                     </span>
                 <% end %>
-            </div>
+            </span>
         </div>
 
         <!--social media share section-->
