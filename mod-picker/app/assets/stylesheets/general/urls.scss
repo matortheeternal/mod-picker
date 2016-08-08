@@ -6,14 +6,6 @@ a {
   @include transition(all 0.2s ease-in-out);
 }
 
-a.strong {
-  font-weight: 600;
-}
-
-a.medium {
-  font-weight: 500;
-}
-
 a.expand {
   display: block;
   padding-top: 16px;
