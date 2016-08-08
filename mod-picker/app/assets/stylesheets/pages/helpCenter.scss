@@ -1,0 +1,71 @@
+.landing-page-container {
+  padding-bottom: 90px;
+}
+
+.landing-header {
+  margin: 80px auto;
+  font-size: 24px;
+  text-align: center;
+}
+
+// generic stlying for both primary categories and game categories
+.category-container {
+  max-width: $max-width-container;
+  margin: 0 auto 80px;
+}
+
+.categories-list {
+  list-style: none;
+  padding-left: 0;
+
+  // container for images + text
+  .page-content {
+    display: block;
+    margin: 0 auto;
+  }
+
+  .page {
+    text-align: center;
+    float: left;
+    display: block;
+    width: 30%;
+    margin: 0;
+    margin-left: 5%;
+  }
+
+  .page:nth-child(1) {
+    margin-left: 0;
+  }
+
+  // images
+  .page a img {
+    max-width: 100%;
+  }
+}
+
+// games section
+.games-category-container {
+  .games-category-header {
+    font-size: 24px;
+    text-align: center;
+    margin: 48px 0;
+  }
+
+  // games list + pages
+  .game-page {
+    // 24% per page, margin-left of 1.33 * 3(first page has no margin-left)
+    float: left;
+    display: block;
+    width: 24%;
+    margin: 0;
+    margin-left: 1.333333333%;
+  }
+
+  .game-page:nth-child(4n + 1) {
+    margin-left: 0;
+  }
+
+  .game-details {
+    height: 3rem;
+  }
+}
