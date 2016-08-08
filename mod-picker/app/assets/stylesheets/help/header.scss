@@ -12,6 +12,18 @@ nav {
   max-width: $max-width-container;
   margin: 0 auto;
 
+  a {
+    text-decoration: none;
+
+    &:link, &:visited {
+      color: $bar_text_color;
+    }
+
+    &:hover {
+      color: $bar_highlight_text_color;
+    }
+  }
+
   .primary-nav {
     display: inline-block;
     background-color: $bar_color;
@@ -61,15 +73,6 @@ nav {
       padding-bottom: 2px;
       @include link_style($link_hover_color_primary, $link_hover_color_primary);
     }
-
-    a:link, a:visited {
-      text-decoration: none;
-      color: $bar_text_color;
-    }
-
-    a:hover, a:active {
-      color: $bar_highlight_text_color;
-    }
   }
 
   .secondary-nav {
@@ -109,16 +112,7 @@ nav {
     padding-top: 10px;
 
     a {
-      text-decoration: none;
       margin: 8px;
-
-      &:link, &:visited {
-        color: $bar_text_color;
-      }
-
-      &:hover {
-        color: $bar_highlight_text_color;
-      }
     }
   }
 }
