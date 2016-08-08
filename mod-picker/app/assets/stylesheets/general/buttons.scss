@@ -93,6 +93,15 @@ input[type="button"], input[type="submit"] {
   @include user-select(none);
   @include transition(all 0.2s ease-in-out);
 
+  i.fa {
+    font-size: 13px;
+  }
+
+  // this hack makes it look better
+  i.fa.fa-edit {
+    vertical-align: middle;
+  }
+
   &:focus, &:hover {
     color: $action_text_color;
     background-color: $bar_highlight_color;
