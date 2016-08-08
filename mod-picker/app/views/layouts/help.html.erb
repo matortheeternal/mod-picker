@@ -21,6 +21,9 @@
                     <%= link_to "Mod Picker", "/help/category/mod_picker", class: active_url("/help/category/mod_picker") %>
                     <%= link_to "Modding", "/help/category/modding", class: active_url("/help/category/modding") %>
                     <%= link_to "Guides", "/help/category/guides", class: active_url("/help/category/guides") %>
+                    <% if can? :create, HelpPage %>
+                    <%= link_to "New Help Page", "/help/new", class: active_url("/help/new") %>
+                    <% end %>
                 </div>
             </div>
             <div class="secondary-nav">
