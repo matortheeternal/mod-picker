@@ -1,7 +1,7 @@
 class HelpPagesController < ApplicationController
   before_action :authorize, only: [:create, :edit, :update, :destroy]
   before_action :set_help_page, only: [:show, :edit]
-  before_action :set_help_page_from_id, only: [:update, :destroy]
+  before_action :set_help_page_from_id, only: [:comments, :update, :destroy]
   rescue_from ::ActiveRecord::RecordNotFound, with: :record_not_found
 
   layout "help"
@@ -13,10 +13,16 @@ class HelpPagesController < ApplicationController
     render "help_pages/index"
   end
 
-  # GET /help/1
+  # GET /help/:title
   def show
     authorize! :read, @help_page
     render "help_pages/show" 
+  end
+
+  # GET /help/:title/edit
+  def edit
+    authorize! :update, @help_page
+    render "help_pages/edit"
   end
 
   # GET /help/new
@@ -38,10 +44,39 @@ class HelpPagesController < ApplicationController
     end
   end
 
-  # GET /help/1/edit
-  def edit
-    authorize! :update, @help_page
-    render "help_pages/edit"
+  # GET /help/category/:category
+  def category
+    unless HelpPage.categories.include? params[:category]
+      render "help_pages/404", status: 404
+      return
+    end
+
+    @page_title = params[:category].humanize.titleize
+    @help_pages = HelpPage.where(category: HelpPage.categories[params[:category]]).order(submitted: :desc)
+    render "help_pages/category"
+  end
+
+  # GET /help/game/:game
+  def game
+    # find_by! used to RecordNotFound error is raised instead of just returning nil
+    game = Game.find_by_display_name!(params[:game].humanize)
+
+    @page_title = game.long_name.titleize
+    @help_pages = HelpPage.where(game_id: game.id).order(submitted: :asc)
+
+    render "help_pages/game"
+  end
+
+  # POST/GET /help/1/comments
+  def comments
+    authorize! :read, @help_page
+    comments = @help_page.comments.accessible_by(current_ability).sort(params[:sort]).paginate(:page => params[:page], :per_page => 10)
+    count = @help_page.comments.accessible_by(current_ability).count
+    render :json => {
+        comments: comments,
+        max_entries: count,
+        entries_per_page: 10
+    }
   end
 
   # PATCH/PUT /help/1
@@ -63,29 +98,6 @@ class HelpPagesController < ApplicationController
     else
       redirect_to "/help/#{@help_page.url}/edit"
     end
-  end
-
-  # GET /help/game/:game
-  def game
-    # find_by! used to RecordNotFound error is raised instead of just returning nil
-    game = Game.find_by_display_name!(params[:game].humanize)
-
-    @page_title = game.long_name.titleize
-    @help_pages = HelpPage.where(game_id: game.id).order(submitted: :asc)
-
-    render "help_pages/game"
-  end
-
-  # GET /help/category/:category
-  def category
-    unless HelpPage.categories.include? params[:category]
-      render "help_pages/404", status: 404
-      return
-    end
-
-    @page_title = params[:category].humanize.titleize
-    @help_pages = HelpPage.where(category: HelpPage.categories[params[:category]]).order(submitted: :desc)
-    render "help_pages/category"
   end
 
   private
@@ -114,6 +126,6 @@ class HelpPagesController < ApplicationController
     end
 
     def help_page_params
-      params.require(:help_page).permit(:title, :text_body, :game_id, :category)
+      params.require(:help_page).permit(:game_id, :category, :title, :text_body)
     end
 end

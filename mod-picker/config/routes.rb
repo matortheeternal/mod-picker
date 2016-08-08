@@ -127,9 +127,10 @@ Rails.application.routes.draw do
 
     # help pages
     resources :help_pages, path: 'help', except: [:destroy]
-    match '/help/:id/destroy', to: 'help_pages#destroy', via: [:get]
     match '/help/category/:category', to: 'help_pages#category', via: [:get]
     match '/help/game/:game', to: 'help_pages#game', via: [:get]
+    match '/help/:id/comments', to: 'help_pages#comments', via: [:get, :post]
+    match '/help/:id/destroy', to: 'help_pages#destroy', via: [:get]
 
 
     # static data
