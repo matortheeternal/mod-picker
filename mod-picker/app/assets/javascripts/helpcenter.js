@@ -13,7 +13,7 @@
 //= require ./angularAssets/Factories/spinnerFactory.js
 //= require ./angularAssets/Services/pageUtils.js
 //= require ./angularAssets/Services/ObjectUtils.js
-//= require_tree ./angularAssets/Views/help
+//= require_tree angularAssets/Directives/help
 
 var app = angular.module('helpCenter', [
     'ngAnimate', 'sticky', 'hc.marked', 'relativeDate'
