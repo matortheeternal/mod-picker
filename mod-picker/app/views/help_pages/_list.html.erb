@@ -1,8 +1,10 @@
 <ul class="pages-list">
     <% @help_pages.each do |page| %>
     <li>
+        <% if page.display_image %>
         <%= link_to "/help/#{page.url_name}", method: :get do %>
-        <img class="header-img" src="<%= page.display_image %>" alt="help page display banner">
+            <%= image_tag "#{@help_page.display_image}", class: "header-image" %>
+        <% end %>
         <% end %>
 
         <div class="meta-container">
@@ -28,7 +30,7 @@
             <div class="date">
                 <span class="meta submit-date" title="<%= page.submitted.strftime("%m/%d/%Y %I:%M:%S %z") %>">
                     <i class="fa fa-clock-o" aria-hidden="true"></i>
-                    <%= page.submitted.strftime("Posted %b %e %Y") %>
+                    <%= page.submitted.strftime("Created %b %e %Y") %>
                     <% if page.submitted.between?((DateTime.now - 2.week), DateTime.now) %>
                     <span class="new-label">NEW</span>
                     <% end %>

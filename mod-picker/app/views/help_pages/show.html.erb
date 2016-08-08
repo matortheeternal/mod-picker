@@ -4,7 +4,9 @@
 
 <div class="help-page-content">
     <div class="help-page-header">
-        <img class="header-img" src="<%= @help_page.display_image %>" alt="">
+        <% if @help_page.display_image %>
+        <%= image_tag "#{@help_page.display_image}", class: "header-image" %>
+        <% end %>
         <h1 class="page-title"><%= @help_page.name %></h1>
     
         <span class="meta author" title="Author">

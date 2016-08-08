@@ -25,8 +25,6 @@ class HelpPage < ActiveRecord::Base
       "/help_pages/#{id}.png"
     elsif File.exists?(jpg_path)
       "/help_pages/#{id}.jpg"
-    else
-      "/help_pages/Default.png"
     end
   end
 
