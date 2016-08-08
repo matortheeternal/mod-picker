@@ -35,26 +35,25 @@
 
                 <section>
                     <div class="header-box">
-                        <!-- TODO: I feel like using some spans here would be wiser -->
                         ACTIONS
-                        <div class="action-box" ng-click="starMod()">
-                            <i class="fa {{mod.star ? 'fa-star' : 'fa-star-o'}}" aria-hidden="true"></i> {{mod.star ? 'Unfavorite' : 'Favorite'}}
-                        </div>
-                        <div class="action-box">
-                            <i class="fa fa-plus" aria-hidden="true"></i> Add to mod list
-                        </div>
                         <a ng-href="#/mod/{{mod.id}}/edit" ng-if="permissions.canManage">
-                            <div class="action-box">
+                            <span class="action-box">
                                 <i class="fa fa-edit" aria-hidden="true"></i> Edit
-                            </div>
+                            </span>
                         </a>
+                        <span class="action-box" ng-click="starMod()">
+                            <i class="fa {{mod.star ? 'fa-star' : 'fa-star-o'}}" aria-hidden="true"></i> {{mod.star ? 'Unfavorite' : 'Favorite'}}
+                        </span>
+                        <span class="action-box">
+                            <i class="fa fa-plus" aria-hidden="true"></i> Add to mod list
+                        </span>
                     </div>
 
                     <div class="header-box" ng-if="mod.primary_category_id">
                         STATUS
-                        <div class="action-box {{statusClass}} capitalize" ng-click="toggleStatusModal(true)">
+                        <span class="action-box {{statusClass}} capitalize" ng-click="toggleStatusModal(true)">
                             {{mod.status}}
-                        </div>
+                        </span>
                     </div>
                 </section>
             </div>
