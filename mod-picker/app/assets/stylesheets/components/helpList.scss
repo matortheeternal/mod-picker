@@ -7,16 +7,6 @@
     text-align: center;
   }
 
-  // links
-  a:link, a:visited {
-    color: $link_hover_color_primary;
-    text-decoration: none;
-  }
-
-  a:hover, a:active {
-    color: $link_hover_color_secondary;
-  }
-
   .date {
     // new icon
     .new-label {
@@ -64,14 +54,6 @@
     // meta info
     .meta-container {
       padding: 0 1rem 1rem;
-
-      a:visited, a:link {
-        color: #999;
-      }
-
-      a:hover, a:active {
-        color: $link_hover_color_primary;
-      }
     }
 
     .meta {

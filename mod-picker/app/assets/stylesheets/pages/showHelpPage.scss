@@ -4,16 +4,6 @@
   display: block;
   padding: 50px 0 150px;
 
-  // link styles
-  a:link, a:visited {
-    color: $link_hover_color_primary;
-    text-decoration: none;
-  }
-
-  a:hover, a:active {
-    color: $link_hover_color_secondary;
-  }
-
   // meta information
   span.meta {
     display: block;
@@ -40,15 +30,6 @@
   h1 {
     color: inherit;
     margin: 0;
-  }
-
-  // header links
-  a:link, a:visited {
-    color: #999;
-  }
-
-  a:hover, a:active {
-    color: $link_hover_color_primary;
   }
 
   .header-img {
@@ -137,15 +118,6 @@
   .footer-meta {
     display: inline-block;
     float: left;
-  }
-
-  // links
-  a:link, a:visited {
-    color: #999;
-  }
-
-  a:hover, a:active {
-    color: $link_hover_color_primary;
   }
 
   // social media share section

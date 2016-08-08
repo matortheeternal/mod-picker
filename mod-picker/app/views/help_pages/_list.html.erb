@@ -15,7 +15,7 @@
 
             <span class="meta author">
                 <i class="fa fa-user" aria-hidden="true" title="Author"></i>
-                <%= link_to page.submitter.username, user_path(page.submitter) %>
+                <%= link_to page.submitter.username, user_path(page.submitter), class: "medium-link" %>
             </span>
 
             <div class="date">
@@ -32,12 +32,12 @@
                 <% if page.game.present? %>
                 <span>
                     <i class="fa fa-gamepad" aria-hidden="true" title="Game"></i>
-                    <%= link_to page.game.display_name, "/help/game/#{page.game.display_name}" %>
+                    <%= link_to page.game.display_name, "/help/game/#{page.game.display_name}", class: "medium-link" %>
                 </span>
                 <% end %>
                 <span>
                     <i class="fa fa-folder" aria-hidden="true" title="Category"></i>
-                        <%= page.category.humanize.titleize %>
+                    <%= link_to page.category.humanize.titleize, "/help/category/#{page.category}", class: "medium-link" %>
                 </span>
             </span>
         </div>

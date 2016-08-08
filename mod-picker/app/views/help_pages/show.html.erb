@@ -22,13 +22,13 @@
     
         <span class="meta author" title="Author">
           <i class="fa fa-user" aria-hidden="true"></i>
-            <%= link_to @help_page.submitter.username, user_path(@help_page.submitter) %>
+            <%= link_to @help_page.submitter.username, user_path(@help_page.submitter), class: "medium-link" %>
         </span>
 
         <% if @help_page.game.present? %>
         <span class="meta game" title="Game">
           <i class="fa fa-gamepad" aria-hidden="true"></i>
-            <%= link_to @help_page.game.display_name, "/help/game/#{@help_page.game.display_name}" %>
+            <%= link_to @help_page.game.display_name, "/help/game/#{@help_page.game.display_name}", class: "medium-link" %>
         </span>
         <% end %>
 
@@ -46,10 +46,10 @@
             <% end %>
         </span>
 
-        <span class="meta" title="Category">
+        <span class="meta">
             <span class="category">
-                <i class="fa fa-folder" aria-hidden="true"></i>
-                <%= link_to @help_page.category.humanize.titleize, "/help/category/#{@help_page.category}" %>
+                <i class="fa fa-folder" aria-hidden="true" title="Category"></i>
+                <%= link_to @help_page.category.humanize.titleize, "/help/category/#{@help_page.category}", class: "medium-link" %>
             </span>
         </span>
     </div>
@@ -66,9 +66,9 @@
     <!-- footer -->
     <div class="help-page-footer">
         <div class="footer-meta">
-            <span class="meta author" title="Author">
-                <i class="fa fa-user" aria-hidden="true"></i>
-                <%= link_to @help_page.submitter.username, user_path(@help_page.submitter) %>
+            <span class="meta author">
+                <i class="fa fa-user" aria-hidden="true" title="Author"></i>
+                <%= link_to @help_page.submitter.username, user_path(@help_page.submitter), class: "medium-link" %>
             </span>
 
             <span class="meta date">
