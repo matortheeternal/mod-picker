@@ -78,9 +78,9 @@
                 </span>
 
                 <% if @help_page.edited %>
-                    <span class="edit-date" title="<%= @help_page.edited.strftime("%m/%d/%Y %I:%M:%S %z") %>">
+                <span class="edit-date" title="<%= @help_page.edited.strftime("%m/%d/%Y %I:%M:%S %z") %>">
                     - <em><%= @help_page.edited.strftime("Updated %b %e %Y") %></em>
-                    </span>
+                </span>
                 <% end %>
             </span>
         </div>
@@ -119,5 +119,7 @@
         </div>
     </div>
     <!-- endfooter -->
+
+    <help-page-comments help-page-id="<%= @help_page.id %>"></help-page-comments>
 </div>
   
