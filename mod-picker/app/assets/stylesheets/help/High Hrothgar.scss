@@ -1,14 +1,13 @@
-/* WORKSHOP THEME */
-
-$banner_image: image_path("workshop.jpg");
+/* HIGH HROTHGAR THEME */
 
 $text_color: #404040;
 $inverse_text_color: #ffffff;
 $soft_text_color: #bbb;
+$medium_text_color: #888;
 
 $primary_background: #ffffff;
-$secondary_background: #f5f5f5;
-$background_highlight: #ffffff;
+$secondary_background: #f0f0f0;
+$background_highlight: #fafafa;
 $input_background: #fff;
 
 $shadow_color: #000;
@@ -19,7 +18,7 @@ $hard_border_color: #b6b6b6;
 $h1_color: #fff;
 $h2_color: #000;
 $h3_color: #3a4751;
-$h4_color: #707070;
+$h4_color: #606060;
 
 $action_color: #53b6bf;
 $action_text_color: #ffffff;
@@ -27,6 +26,7 @@ $bright_action_color: #a6ceda;
 $dark_action_color: #479aa2;
 
 $bar_color: #3a4751;
+$bar_dark_color: #2C353C;
 $bar_highlight_color: #4d5e6b;
 $bar_text_color: #ffffff;
 $bar_highlight_text_color: #53b6bf;
@@ -34,10 +34,6 @@ $bar_highlight_text_color: #53b6bf;
 $link_color: #53b6bf;
 $link_hover_color_primary: #53b6bf;
 $link_hover_color_secondary: #3a4751;
-
-$slider_bg_color: #aeb5b6;
-$slider_range_color: #53b6bf;
-$slider_circle_color_after: #3a4751;
 
 $success_primary: #B4D5B4;
 $success_secondary: #4AC859;
@@ -50,15 +46,12 @@ $admin_color: #900000;
 $moderator_color: #8000b0;
 $mod_author_color: #008000;
 
-$red_color: #FBEFEF;
-$orange_color: #FFF0E2;
-$yellow_color: #FBFBE8;
-$green_color: #E5FAE0;
-$blue_color: #E2E5FB;
-$purple_color: #F8EAFF;
-$white_color: #FFF;
-$gray_color: #E5E5E5;
-$brown_color: #F0E4D2;
-$black_color: #DDD;
+$facebook_primary: #3b5998;
+$twitter_primary: #55acee;
+$google_primary: #dd281c;
+$reddit_primary: #ff4500;
 
-@import 'main';
+$max-width-container: 1220px;
+$max-content-width: 850px;
+
+@import 'help';

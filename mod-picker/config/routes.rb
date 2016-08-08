@@ -105,13 +105,16 @@ Rails.application.routes.draw do
     match '/mod_lists/:id/mods', to: 'mod_lists#mods', via: [:get, :post]
     match '/mod_lists/:id/tools', to: 'mod_lists#tools', via: [:get, :post]
     match '/mod_lists/:id/plugins', to: 'mod_lists#plugins', via: [:get, :post]
-    match '/mod_lists/:id/config_files', to: 'mod_lists#config_files', via: [:get, :post]
+    match '/mod_lists/:id/config', to: 'mod_lists#config_files', via: [:get, :post]
+    match '/mod_lists/:id/analysis', to: 'mod_lists#analysis', via: [:get, :post]
     match '/mod_lists/:id/comments', to: 'mod_lists#comments', via: [:get, :post]
     match '/mod_list_groups', to: 'mod_list_groups#create', via: [:post]
     match '/mod_list_mods', to: 'mod_list_mods#create', via: [:post]
     match '/mod_list_plugins', to: 'mod_list_plugins#create', via: [:post]
+    match '/mod_list_config_files', to: 'mod_list_config_files#create', via: [:post]
     match '/mod_list_custom_mods', to: 'mod_list_custom_mods#create', via: [:post]
     match '/mod_list_custom_plugins', to: 'mod_list_custom_plugins#create', via: [:post]
+    match '/mod_list_custom_config_files', to: 'mod_list_custom_config_files#create', via: [:post]
 
     # mod and mod list stars
     match '/mod_lists/:id/star', to: 'mod_lists#create_star', via: [:post]
@@ -121,6 +124,14 @@ Rails.application.routes.draw do
 
     # avatars
     match '/avatar', to: 'avatars#create', via: [:post]
+
+    # help pages
+    resources :help_pages, path: 'help', except: [:destroy]
+    match '/help/category/:category', to: 'help_pages#category', via: [:get]
+    match '/help/game/:game', to: 'help_pages#game', via: [:get]
+    match '/help/:id/comments', to: 'help_pages#comments', via: [:get, :post]
+    match '/help/:id/destroy', to: 'help_pages#destroy', via: [:get]
+
 
     # static data
     resources :categories, only: [:index]
@@ -145,6 +156,7 @@ Rails.application.routes.draw do
     #articles
     resources :articles, only: [:show, :create, :update, :destroy]
     match '/articles/:id/comments', to: 'articles#comments', via: [:get, :post]
+    match '/articles/:id/image', to: 'articles#image', via: [:post]
     match '/articles/index', to: 'articles#index', via: [:get, :post]
   end
 

@@ -174,6 +174,9 @@ class Mod < ActiveRecord::Base
   has_many :required_mods, :class_name => 'ModRequirement', :inverse_of => 'mod', :dependent => :destroy
   has_many :required_by, :class_name => 'ModRequirement', :inverse_of => 'required_mod', :dependent => :destroy
 
+  # config files associated with the mod
+  has_many :config_files, :inverse_of => 'mod', :dependent => :destroy
+
   # users who can edit the mod
   has_many :mod_authors, :inverse_of => 'mod', :dependent => :destroy
   has_many :author_users, :class_name => 'User', :through => 'mod_authors', :source => 'user', :inverse_of => 'mods'
@@ -287,9 +290,23 @@ class Mod < ActiveRecord::Base
 
   def create_asset_files
     if @asset_paths
+      basepaths = []
       @asset_paths.each do |path|
-        asset_file = AssetFile.find_or_create_by(game_id: self.game_id, filepath: path)
-        self.mod_asset_files.create(asset_file_id: asset_file.id)
+        # prioritize files over data folder matching
+        split_paths = path.split(/(?<=\.bsa\\|\.esp|\.esm|Data\\)/)
+        basepaths |= [split_paths[0]] if split_paths.length > 1
+      end
+      # sort by longest path first so nested paths are prioritized
+      basepaths.sort { |a,b| b.length - a.length }
+
+      @asset_paths.each do |path|
+        basepath = basepaths.find { |basepath| path.start_with?(basepath) }
+        if basepath.present?
+          asset_file = AssetFile.find_or_create_by(game_id: self.game_id, path: path.sub(basepath, ''))
+          self.mod_asset_files.create(asset_file_id: asset_file.id, subpath: basepath)
+        else
+          self.mod_asset_files.create(subpath: path)
+        end
       end
     end
   end
@@ -308,6 +325,10 @@ class Mod < ActiveRecord::Base
         end
       end
     end
+  end
+
+  def asset_file_paths
+    self.mod_asset_files.joins(:asset_file).pluck(:subpath, :path).map { |item| item.join('') }
   end
 
   def link_sources

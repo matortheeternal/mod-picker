@@ -1,6 +1,10 @@
 class ModListPlugin < ActiveRecord::Base
   include RecordEnhancements
 
+  # Scopes
+  scope :official, -> (bool) { joins(:plugin => :mod).where(:mods => { is_official: bool }) }
+
+  # Associations
   belongs_to :mod_list, :inverse_of => 'mod_list_plugins'
   belongs_to :plugin, :inverse_of => 'mod_list_plugins'
   has_one :mod, :through => 'plugin'
@@ -17,6 +21,17 @@ class ModListPlugin < ActiveRecord::Base
 
   def required_plugins
     Master.plugins([self.plugin_id]).order(:master_plugin_id)
+  end
+
+  def self.load_order_json(collection)
+    collection.as_json({
+        :only => [:plugin_id, :index, :merged],
+        :include => {
+            :plugin => {
+                :only => [:mod_id, :filename]
+            }
+        }
+    })
   end
 
   def as_json(options={})

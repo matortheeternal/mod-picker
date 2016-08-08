@@ -2,7 +2,7 @@ app.config(['$stateProvider', function ($stateProvider) {
     $stateProvider.state('base.submit', {
             templateUrl: '/resources/partials/mod/submitMod.html',
             controller: 'submitModController',
-            url: '/submit'
+            url: '/mods/submit'
         }
     );
 }]);

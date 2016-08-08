@@ -1,20 +1,25 @@
 app.controller('modListPluginsController', function($scope, $q, $timeout, modListService, columnsFactory, actionsFactory, listUtils) {
     // initialize variables
-    $scope.detailsModal = {};
+    $scope.showDetailsModal = false;
+    $scope.detailsItem = {};
     $scope.columns = columnsFactory.modListPluginColumns();
     $scope.columnGroups = columnsFactory.modListPluginColumnGroups();
     $scope.actions = actionsFactory.modListPluginActions();
 
     $scope.toggleDetailsModal = function(visible, item) {
         $scope.$emit('toggleModal', visible);
-        $scope.detailsModal.visible = visible;
-        $scope.detailsModal.item = item;
+        $scope.detailsItem = item;
+        $scope.showDetailsModal = visible;
     };
 
-    // functions
+    $scope.toggleManagePluginsModal = function(visible) {
+        $scope.$emit('toggleModal', visible);
+        $scope.showManagePluginsModal = visible;
+    };
+
     $scope.searchPluginStore = function(str) {
         var action = $q.defer();
-        var matchingPlugins = $scope.plugin_store.filter(function(plugin) {
+        var matchingPlugins = $scope.plugins_store.filter(function(plugin) {
             return plugin.filename.toLowerCase().includes(str);
         });
         action.resolve(matchingPlugins);
@@ -43,7 +48,7 @@ app.controller('modListPluginsController', function($scope, $q, $timeout, modLis
                 } else if (plugin.merged) {
                     insertIndex--;
                 }
-                $scope.model.plugins.splice(insertIndex, 0, plugin);
+                $scope.model.plugins.splice(insertIndex, 0, angular.copy(plugin));
             }
         });
     };
@@ -55,7 +60,7 @@ app.controller('modListPluginsController', function($scope, $q, $timeout, modLis
             $scope.notes.load_order = data.load_order_notes;
             $scope.mod_list.plugins = data.plugins;
             $scope.mod_list.custom_plugins = data.custom_plugins;
-            $scope.plugin_store = data.plugin_store;
+            $scope.plugins_store = data.plugins_store;
             $scope.mod_list.groups = Array.prototype.concat($scope.mod_list.groups || [], data.groups);
             $scope.originalModList.plugins = angular.copy($scope.mod_list.plugins);
             $scope.originalModList.custom_plugins = angular.copy($scope.mod_list.custom_plugins);
@@ -85,7 +90,7 @@ app.controller('modListPluginsController', function($scope, $q, $timeout, modLis
             $scope.updateTabs();
 
             // upudate modules
-            $scope.$broadcast('pluginRecovered', modListPlugin.plugin.id);
+            $scope.$broadcast('pluginRecovered', !!modListPlugin.plugin && modListPlugin.plugin.id);
             $scope.$broadcast('updateItems');
 
             // success message
@@ -102,7 +107,7 @@ app.controller('modListPluginsController', function($scope, $q, $timeout, modLis
         var mod_list_plugin = {
             mod_list_id: $scope.mod_list.id,
             plugin_id: pluginId,
-            index: $scope.getNextIndex($scope.model.plugins)
+            index: listUtils.getNextIndex($scope.model.plugins)
         };
 
         modListService.newModListPlugin(mod_list_plugin).then(function(data) {
@@ -135,14 +140,20 @@ app.controller('modListPluginsController', function($scope, $q, $timeout, modLis
         };
 
         if (compatibilityNoteId) {
-            // TODO: We should really just have an integer field on custom plugins for this
+            var foundCustomPlugin = $scope.findCustomPlugin(compatibilityNoteId);
+            if (foundCustomPlugin) {
+                foundCustomPlugin._destroy = false;
+                $scope.$broadcast('customPluginAdded');
+                return;
+            }
             custom_plugin.filename = 'CustomPatch'+compatibilityNoteId+'.esp';
-            custom_plugin.description = '[Custom Patch for '+compatibilityNoteId+']';
+            custom_plugin.compatibility_note_id = compatibilityNoteId;
         }
 
         modListService.newModListCustomPlugin(custom_plugin).then(function(data) {
             // push plugin onto view
             var modListCustomPlugin = data.mod_list_custom_plugin;
+            modListService.associateCompatibilityNote(modListCustomPlugin, $scope.notes.plugin_compatibility);
             $scope.mod_list.custom_plugins.push(modListCustomPlugin);
             $scope.model.plugins.push(modListCustomPlugin);
             $scope.originalModList.custom_plugins.push(angular.copy(modListCustomPlugin));
@@ -187,9 +198,7 @@ app.controller('modListPluginsController', function($scope, $q, $timeout, modLis
         $scope.updateTabs();
 
         // update modules
-        if (modListPlugin.hasOwnProperty('plugin')) {
-            $scope.$broadcast('pluginRemoved', modListPlugin.plugin.id);
-        }
+        $scope.$broadcast('pluginRemoved', !!modListPlugin.plugin && modListPlugin.plugin.id);
         $scope.$broadcast('updateItems');
     };
 
@@ -197,6 +206,15 @@ app.controller('modListPluginsController', function($scope, $q, $timeout, modLis
         $scope.showLoadOrder = !$scope.showLoadOrder;
         $scope.columns[0].visibility = !$scope.showLoadOrder;
         $scope.columns[1].visibility = $scope.showLoadOrder;
+    };
+
+    $scope.togglePlugin = function(pluginItem) {
+        if (pluginItem.active) {
+            $scope.addPlugin(pluginItem.id);
+        } else {
+            var foundPlugin = $scope.findPlugin(pluginItem.id, true);
+            if (foundPlugin) $scope.removePlugin(foundPlugin);
+        }
     };
 
     // event triggers

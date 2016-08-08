@@ -12,6 +12,9 @@
 
     <div class="content-block">
         <div class="content-title">Tools
+            <span class="right-item action-box" ng-if="editing" ng-click="addCustomTool()">
+                <i class="fa fa-plus"></i> Add Custom Tool
+            </span>
             <span class="right-item action-box" ng-if="editing" ng-click="addToolGroup()">
                 <i class="fa fa-plus"></i> Add Group
             </span>
@@ -26,6 +29,8 @@
             <table-items type="mod" label="tools" columns="columns" column-groups="columnGroups" actions="actions" model="model.tools" editing="editing"></table-items>
         </div>
     </div>
+
+    <mod-details-modal ng-if="showDetailsModal"></mod-details-modal>
 </loader>
 
 <required-tools></required-tools>

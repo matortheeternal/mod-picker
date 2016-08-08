@@ -88,6 +88,17 @@ app.config(['$stateProvider', function ($stateProvider) {
             }
         },
         url: '/config'
+    }).state('base.mod-list.Analysis', {
+        sticky: true,
+        deepStateRedirect: true,
+        reloadOnSearch: false,
+        views: {
+            'Analysis': {
+                templateUrl: '/resources/partials/modList/modListAnalysis.html',
+                controller: 'modListAnalysisController'
+            }
+        },
+        url: '/analysis'
     }).state('base.mod-list.Comments', {
         sticky: true,
         deepStateRedirect: true,
@@ -102,7 +113,7 @@ app.config(['$stateProvider', function ($stateProvider) {
     })
 }]);
 
-app.controller('modListController', function($scope, $q, $stateParams, $timeout, currentUser, modListObject, modListService, errorService, objectUtils, tabsFactory, listUtils) {
+app.controller('modListController', function($scope, $q, $stateParams, $timeout, currentUser, modListObject, modListService, errorService, objectUtils, tabsFactory, baseFactory, listUtils) {
     // get parent variables
     $scope.mod_list = modListObject.mod_list;
     $scope.mod_list.star = modListObject.star;
@@ -123,7 +134,8 @@ app.controller('modListController', function($scope, $q, $stateParams, $timeout,
     $scope.add = {
         tool: {},
         mod: {},
-        plugin: {}
+        plugin: {},
+        config: {}
     };
     $scope.statusIcons = {
         under_construction: 'fa-wrench',
@@ -211,54 +223,54 @@ app.controller('modListController', function($scope, $q, $stateParams, $timeout,
     };
 
     // MOD LIST EDITING LOGIC
-    $scope.flattenModel = function(label, associationLabel) {
+    $scope.flattenModel = function(label, associationLabel, mainBase, customBase, pushGroups) {
         var custom_label = 'custom_' + label;
+        var cleanedItem;
         if ($scope.model[label]) {
             $scope.mod_list[label] = [];
             $scope.mod_list[custom_label] = [];
             $scope.model[label].forEach(function(item) {
                 if (item.children) {
-                    $scope.mod_list.groups.push(item);
+                    if (pushGroups) $scope.mod_list.groups.push(item);
                     item.children.forEach(function(child) {
                         if (child.hasOwnProperty(associationLabel)) {
-                            $scope.mod_list[label].push(child);
+                            cleanedItem = objectUtils.cleanAttributes(child, mainBase);
+                            $scope.mod_list[label].push(cleanedItem);
                         } else {
-                            $scope.mod_list[custom_label].push(child);
+                            cleanedItem = objectUtils.cleanAttributes(child, customBase);
+                            $scope.mod_list[custom_label].push(cleanedItem);
                         }
                     })
                 } else if (item.hasOwnProperty(associationLabel)) {
-                    $scope.mod_list[label].push(item);
+                    cleanedItem = objectUtils.cleanAttributes(item, mainBase);
+                    $scope.mod_list[label].push(cleanedItem);
                 } else {
-                    $scope.mod_list[custom_label].push(item);
+                    cleanedItem = objectUtils.cleanAttributes(item, customBase);
+                    $scope.mod_list[custom_label].push(cleanedItem);
                 }
             });
         }
     };
 
     $scope.flattenModels = function() {
+        // prepare base objects for cleaning
+        var customModBase = baseFactory.getModListModBase();
+        var modListModBase = baseFactory.getCustomModBase();
+        var modListPluginBase = baseFactory.getModListPluginBase();
+        var customPluginBase = baseFactory.getCustomPluginBase();
+        var modListConfigBase = baseFactory.getModListConfigFileBase();
+        var customConfigBase = baseFactory.getCustomConfigFileBase();
+
+        // flatten all models
         $scope.mod_list.groups = [];
-        $scope.flattenModel('tools', 'mod');
-        $scope.flattenModel('mods', 'mod');
-        $scope.flattenModel('plugins', 'plugin');
+        $scope.flattenModel('tools', 'mod', modListModBase, customModBase, true);
+        $scope.flattenModel('mods', 'mod', modListModBase, customModBase, true);
+        $scope.flattenModel('plugins', 'plugin', modListPluginBase, customPluginBase, true);
+        $scope.flattenModel('config_files', 'config_file', modListConfigBase, customConfigBase);
     };
 
     $scope.updateTabs = function() {
-        $scope.tabs.forEach(function(tab) {
-            switch (tab.name) {
-                case "Tools":
-                    tab.count = $scope.mod_list.tools_count;
-                    break;
-                case "Mods":
-                    tab.count = $scope.mod_list.mods_count;
-                    break;
-                case "Plugins":
-                    tab.count = $scope.mod_list.plugins_count;
-                    break;
-                case "Config":
-                    tab.count = $scope.mod_list.config_files_count;
-                    break;
-            }
-        });
+        tabsFactory.updateModListTabs($scope.mod_list, $scope.tabs);
     };
 
     $scope.findTool = function(toolId, ignoreDestroyed) {
@@ -294,6 +306,17 @@ app.controller('modListController', function($scope, $q, $stateParams, $timeout,
         return foundPlugin;
     };
 
+    $scope.findCustomPlugin = function(noteId, ignoreDestroyed) {
+        if (!$scope.model.plugins) {
+            return false;
+        }
+        var foundPlugin = listUtils.findCustomPlugin($scope.model.plugins, noteId);
+        if (foundPlugin && ignoreDestroyed && foundPlugin._destroy) {
+            return;
+        }
+        return foundPlugin;
+    };
+
     $scope.findIgnoredNote = function(note_type, note_id, ignoreDestroyed) {
         var foundIgnoredNote = $scope.mod_list.ignored_notes.find(function(ignoredNote) {
             return ignoredNote.note_type === note_type && ignoredNote.note_id == note_id;
@@ -302,6 +325,17 @@ app.controller('modListController', function($scope, $q, $stateParams, $timeout,
             return;
         }
          return foundIgnoredNote;
+    };
+
+    $scope.findConfig = function(configId, ignoreDestroyed) {
+        if (!$scope.model.configs) {
+            return true;
+        }
+        var foundConfig = listUtils.findConfig($scope.model.configs, configId);
+        if (foundConfig && ignoreDestroyed && foundConfig._destroy) {
+            return;
+        }
+        return foundConfig;
     };
 
     $scope.associateIgnore = function(notes, note_type) {

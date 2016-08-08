@@ -1,0 +1,32 @@
+mod_asset_file
+basepath: string
+
+asset_file
+path: string
+
+ModAssetFile.all.offset(187).each do |maf|
+  a = maf.asset_file.path.split(/(?<=\.bsa\\|Data\\|\.esp|\.esm)/)
+  next if a.length < 2
+  maf.subpath = a[0]
+  maf.asset_file.path = a[1]
+  existing_asset_file = AssetFile.find_by(path: a[1])
+  if existing_asset_file.present?
+    old_asset_file = AssetFile.find(maf.asset_file_id)
+    maf.asset_file_id = existing_asset_file.id
+    old_asset_file.destroy
+    maf.save
+  else
+    maf.save
+    maf.asset_file.save
+  end
+end
+
+SELECT `mod_asset_files`.* FROM `mod_asset_files` INNER JOIN `asset_files` ON `asset_files`.`id` = `mod_asset_files`.`asset_file_id` WHERE (subpath IS NULL)
+
+ModAssetFile.where("subpath IS NULL and mod_id > 26").each do |maf|
+  old_asset_file = maf.asset_file
+  maf.subpath = maf.asset_file.path
+  maf.asset_file_id = nil
+  old_asset_file.destroy
+  maf.save
+end

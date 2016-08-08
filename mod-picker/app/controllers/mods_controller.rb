@@ -276,7 +276,7 @@ class ModsController < ApplicationController
     authorize! :read, @mod
     render json: {
         plugins: Plugin.show_json(@mod.plugins),
-        assets: @mod.asset_files
+        assets: @mod.asset_file_paths
     }
   end
 

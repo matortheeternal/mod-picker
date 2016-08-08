@@ -12,7 +12,7 @@ app.config(['$stateProvider', function($stateProvider) {
                 templateUrl: '/resources/partials/home/recentReviews.html',
                 url: '/recent-reviews'
             }
-        },
+        }
     }).state('base.home.Compatibility Notes', {
         sticky: true,
         deepStateRedirect: true,
@@ -21,7 +21,7 @@ app.config(['$stateProvider', function($stateProvider) {
                 templateUrl: '/resources/partials/home/recentCompatibilityNotes.html',
                 url: '/recent-compatibility'
             }
-        },
+        }
     }).state('base.home.Install Order Notes', {
         sticky: true,
         deepStateRedirect: true,
@@ -30,7 +30,7 @@ app.config(['$stateProvider', function($stateProvider) {
                 templateUrl: '/resources/partials/home/recentInstallOrderNotes.html',
                 url: '/recent-install-order'
             }
-        },
+        }
     }).state('base.home.Load Order Notes', {
         sticky: true,
         deepStateRedirect: true,
@@ -39,7 +39,7 @@ app.config(['$stateProvider', function($stateProvider) {
                 templateUrl: '/resources/partials/home/recentLoadOrderNotes.html',
                 url: '/recent-load-order'
             }
-        },
+        }
     }).state('base.home.Corrections', {
         sticky: true,
         deepStateRedirect: true,
@@ -48,12 +48,13 @@ app.config(['$stateProvider', function($stateProvider) {
                 templateUrl: '/resources/partials/home/recentCorrections.html',
                 url: '/recent-corrections'
             }
-        },
+        }
     });
 }]);
 
 app.controller('homeController', function($scope, $q, homeService, currentUser) {
     $scope.currentUser = currentUser;
+    $scope.permissions = currentUser.permissions;
 
     $scope.tabs = [
         { name: 'Reviews' },

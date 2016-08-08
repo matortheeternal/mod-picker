@@ -16,7 +16,7 @@ class CompatibilityNote < ActiveRecord::Base
   scope :status, -> (statuses) {
     if statuses.is_a?(Hash)
       # handle hash search by building a commentables array
-      statuses_arary = []
+      statuses_array = []
       statuses.each_with_index do |(key,value),index|
         if statuses[key]
           statuses_array.push(index)

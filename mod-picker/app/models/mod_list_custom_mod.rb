@@ -1,4 +1,10 @@
 class ModListCustomMod < ActiveRecord::Base
+  include RecordEnhancements
+
+  # Scopes
+  scope :utility, -> (bool) { where(is_utility: bool) }
+
+  # Associations
   belongs_to :mod_list, :inverse_of => 'custom_mods'
 
   # Validations
@@ -24,10 +30,18 @@ class ModListCustomMod < ActiveRecord::Base
 
   private
     def increment_counters
-      self.mod_list.update_counter(:custom_mods_count, 1)
+      if self.is_utility
+        self.mod_list.update_counter(:custom_tools_count, 1)
+      else
+        self.mod_list.update_counter(:custom_mods_count, 1)
+      end
     end
 
     def decrement_counters
-      self.mod_list.update_counter(:custom_mods_count, -1)
+      if self.is_utility
+        self.mod_list.update_counter(:custom_tools_count, -1)
+      else
+        self.mod_list.update_counter(:custom_mods_count, -1)
+      end
     end
 end

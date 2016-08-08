@@ -1,4 +1,9 @@
-app.controller('modListCommentsController', function($scope, contributionService) {
+app.controller('modListCommentsController', function($scope, $state, contributionService) {
+    if ($scope.mod_list.disable_comments) {
+        $state.go('base.mod-list.Details', {}, { location: 'replace' });
+        return;
+    }
+
     $scope.retrieveComments = function(page) {
         // TODO: Make options dynamic
         var options = {

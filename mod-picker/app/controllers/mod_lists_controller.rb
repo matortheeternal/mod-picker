@@ -1,5 +1,5 @@
 class ModListsController < ApplicationController
-  before_action :set_mod_list, only: [:show, :update, :update_tags, :destroy, :tools, :plugins, :config_files, :comments]
+  before_action :set_mod_list, only: [:show, :update, :update_tags, :destroy, :tools, :plugins, :config_files, :analysis, :comments]
   before_action :set_active_mod_list, only: [:active, :mods]
 
   # GET /mod_lists
@@ -34,11 +34,13 @@ class ModListsController < ApplicationController
 
     # prepare primary data
     tools = @mod_list.mod_list_mods.utility(true).includes(:mod => :required_mods).order(:index)
+    custom_tools = @mod_list.custom_mods.utility(true)
     groups = @mod_list.mod_list_groups.where(tab: 0).order(:index)
 
     # render response
     render :json => {
         tools: tools,
+        custom_tools: custom_tools,
         required_tools: @mod_list.required_tools,
         groups: groups
     }
@@ -50,6 +52,7 @@ class ModListsController < ApplicationController
 
     # prepare primary data
     mods = @mod_list.mod_list_mods.utility(false).includes(:mod).order(:index)
+    custom_mods = @mod_list.custom_mods.utility(false)
     groups = @mod_list.mod_list_groups.where(tab: 1).order(:index)
 
     # prepare notes
@@ -63,6 +66,7 @@ class ModListsController < ApplicationController
     # render response
     render :json => {
         mods: mods,
+        custom_mods: custom_mods,
         groups: groups,
         required_mods: @mod_list.required_mods,
         compatibility_notes: compatibility_notes,
@@ -78,7 +82,7 @@ class ModListsController < ApplicationController
 
     # prepare primary data
     plugins = @mod_list.mod_list_plugins.includes(:plugin)
-    plugin_store = @mod_list.plugins
+    plugins_store = @mod_list.plugins.order(:mod_id)
     custom_plugins = @mod_list.custom_plugins
     groups = @mod_list.mod_list_groups.where(tab: 2).order(:index)
 
@@ -93,7 +97,7 @@ class ModListsController < ApplicationController
     # render response
     render :json => {
         plugins: plugins,
-        plugin_store: plugin_store,
+        plugins_store: plugins_store,
         custom_plugins: custom_plugins,
         groups: groups,
         required_plugins: @mod_list.required_plugins,
@@ -104,18 +108,41 @@ class ModListsController < ApplicationController
     }
   end
 
-  # GET /mod_lists/:id/config_files
+  # GET /mod_lists/:id/config
   def config_files
     authorize! :read, @mod_list
 
     # prepare primary data
-    config_files = @mod_list.mod_list_config_files.joins(:config_file)
-    custom_config_files = @mod_list.mod_list_custom_config_files
+    config_files_store = @mod_list.config_files.order(:mod_id)
+    config_files = @mod_list.mod_list_config_files.includes(:config_file => :mod)
+    custom_config_files = @mod_list.custom_config_files
 
     # render response
     render :json => {
+        config_files_store: config_files_store,
         config_files: config_files,
         custom_config_files: custom_config_files
+    }
+  end
+
+  # GET /mod_lists/1/analysis
+  def analysis
+    authorize! :read, @mod_list
+
+    # prepare primary data
+    mod_ids = @mod_list.mod_list_mods.utility(false).official(false).pluck(:mod_id)
+    plugin_ids = @mod_list.mod_list_plugins.official(false).pluck(:plugin_id)
+    install_order = @mod_list.mod_list_mods.utility(false).includes(:mod)
+    load_order = @mod_list.mod_list_plugins.includes(:plugin)
+    plugins = Plugin.where(id: plugin_ids).includes(:dummy_masters, :overrides, :masters => :master_plugin)
+    conflicting_assets = ModAssetFile.mods(mod_ids).includes(:asset_file).conflicting
+
+    # render response
+    render :json => {
+        load_order: ModListPlugin.load_order_json(load_order),
+        install_order: ModListMod.install_order_json(install_order),
+        plugins: Plugin.analysis_json(plugins),
+        conflicting_assets: conflicting_assets
     }
   end
 

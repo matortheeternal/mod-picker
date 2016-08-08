@@ -178,4 +178,26 @@ app.service('objectUtils', function () {
         });
         return empty;
     };
+
+    this.cleanAttributes = function(obj, base) {
+        obj = angular.copy(obj);
+        for (var prop in obj) {
+            if (!obj.hasOwnProperty(prop)) continue;
+            if (base.hasOwnProperty(prop)) {
+                // recursion if obj and base properties are both objects
+                if (typeof obj[prop] === 'object') {
+                    if (typeof base[prop] === 'object') {
+                        service.cleanAttributes(obj[prop], base[prop]);
+                    } else {
+                        // delete obj property if it is an object and the base property is not
+                        delete obj[prop];
+                    }
+                }
+            } else {
+                // delete property if base doesn't have it
+                delete obj[prop];
+            }
+        }
+        return obj;
+    }
 });

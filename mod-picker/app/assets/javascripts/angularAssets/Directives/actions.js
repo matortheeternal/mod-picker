@@ -9,7 +9,9 @@ app.directive('actions', function () {
 
 app.controller('actionsController', function($scope, $timeout) {
     $scope.toggleDropdown = function(item, action) {
-        item[action.key] = !item[action.key];
+        if (!$scope.resolve(action.disabled, item)) {
+            item[action.key] = !item[action.key];
+        }
     };
 
     $scope.blurDropdown = function(item, action) {
