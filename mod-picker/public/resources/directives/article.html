@@ -14,7 +14,7 @@
             on {{article.submitted | date}}
         </span>
         <div marked="article.text_body"></div>
-        <a ng-href="#/article/{{article.id}}" ng-if="!showFull">
+        <a ng-href="#/article/{{article.id}}" ng-if="truncated">
             Read More
         </a>
     </div>
