@@ -1,7 +1,8 @@
 // footer
 .footer {
-  background-color: $secondary_background;
+  background-color: $background_highlight;
   color: $soft_text_color;
+  border-top: 1px solid $border_color;
 
   // position absolute + width 100% to make it so footer is always on the bottom
   width: 100%;
