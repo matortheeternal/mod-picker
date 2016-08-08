@@ -1,5 +1,5 @@
 class ArticlesController < ApplicationController
-  before_action :set_article, only: [:show, :edit, :update, :destroy]
+  before_action :set_article, only: [:show, :comments, :image, :update, :destroy]
 
   # GET /articles/1
   def show
@@ -26,51 +26,60 @@ class ArticlesController < ApplicationController
     @article = Article.new
   end
 
-  # GET /articles/1/edit
-  def edit
-    authorize! :update, @article
-  end
-
   # POST /articles
   def create
-    authorize! :create, @article
     @article = Article.new(article_params)
+    @article.submitted_by = current_user.id
+    authorize! :create, @article
 
     if @article.save
-      redirect_to @article, notice: 'Article was successfully created.'
+      render json: {status: :ok, id: @article.id}
     else
-      render :new
+      render json: @article.errors, status: :unprocessable_entity
     end
   end
 
   # PATCH/PUT /articles/1
   def update
-    authorize! :update, @article
+    authorize! :update, @article, :message => "You are not allowed to edit this article"
     if @article.update(article_params)
-      redirect_to @article, notice: 'Article was successfully updated.'
+      render json: {status: :ok}
     else
-      render :edit
+      render json: @article.errors, status: :unprocessable_entity
     end
   end
 
   # DELETE /articles/1
   def destroy
     authorize! :destroy, @article
-    @article.destroy
-    redirect_to articles_url, notice: 'Article was successfully destroyed.'
+    if @article.destroy
+      render json: {status: :ok}
+    else
+      render json: @article.errors, status: :unprocessable_entity
+    end
   end
 
   # GET /articles/1/comments
   def comments
-    article = Article.find(params[:id])
-    authorize! :read, article
-    comments = article.comments.accessible_by(current_ability).sort(params[:sort]).paginate(:page => params[:page], :per_page => 10)
-    count = article.comments.accessible_by(current_ability).count
+    authorize! :read, @article
+    comments = @article.comments.accessible_by(current_ability).sort(params[:sort]).paginate(:page => params[:page], :per_page => 10)
+    count = @article.comments.accessible_by(current_ability).count
     render :json => {
         comments: comments,
         max_entries: count,
         entries_per_page: 10
     }
+  end
+
+  # POST /articles/1/image
+  def image
+    authorize! :update, @article
+
+    if @article.update(image_params)
+      render json: {status: :ok}
+    else
+      render json: @article.errors, status: :unprocessable_entity
+    end
   end
 
   private
@@ -86,6 +95,10 @@ class ArticlesController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def article_params
-      params.require(:article).permit(:title, :submitted_by, :text_body)
+      params.require(:article).permit(:id, :title, :text_body)
+    end
+
+    def image_params
+      { image_file: params[:image] }
     end
 end

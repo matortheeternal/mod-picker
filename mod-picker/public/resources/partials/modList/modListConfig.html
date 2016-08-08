@@ -1,54 +1,73 @@
-<table title='Skyrim Configuration Files' class='section-table'>
-    <colgroup>
-        <col style="width: 100%">
-    </colgroup>
-    <thead>
-        <tr>
-            <th>
-                <span class="section-title">Custom Settings & Preferences</span>
-                <a ng-click="curSkyConfigTab = 'skyrim.ini'" ng-class="cssChange('skyrimConfig','skyrim.ini')">Skyrim.ini</a><a ng-click="curSkyConfigTab = 'skyrimprefs.ini'" ng-class="cssChange('skyrimConfig','skyrimprefs.ini')">SkyrimPrefs.ini</a>
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td>
-                <ul class="list tblist">
-                    <li ng-show='bIsEditing'>
-                        <textarea>{{longDescTextArea}}</textarea>
-                    </li>
-                    <li ng-hide='bIsEditing'>
-                        {{longDescTextArea}}
-                    </li>
-                </ul>
-            </td>
-        </tr>
-    </tbody>
-</table>
-<table title='ENB Configuration Files' class='section-table'>
-    <colgroup>
-        <col style="width: 100%">
-    </colgroup>
-    <thead>
-        <tr>
-            <th>
-                <span class="section-title">Custom ENB Settings</span>
-                <a ng-click="curENBConfigTab = 'enblocal.ini'" ng-class="cssChange('enbConfig','enblocal.ini')">enblocal.ini</a><a ng-click="curENBConfigTab = 'enbseries.ini'" ng-class="cssChange('enbConfig','enbseries.ini')">enbseries.ini</a>
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td>
-                <ul class="list tblist">
-                    <li ng-show='bIsEditing'>
-                        <textarea>{{longDescTextArea}}</textarea>
-                    </li>
-                    <li ng-hide='bIsEditing'>
-                        {{longDescTextArea}}
-                    </li>
-                </ul>
-            </td>
-        </tr>
-    </tbody>
-</table>     
+<loader data="configReady" spinner-class="big-spinner">
+    <div class="tab-bar-items" ng-if="editing">
+        <div class="tab-bar-item primary-item">
+            <strong>Add a config file:</strong>
+            <search-input search-function="searchConfigStore" result-id="add.config.id" search-text="add.config.name" on-change="addConfig(add.config.id)" label="config" key="filename"></search-input>
+        </div>
+
+        <div class="tab-bar-item">
+            <span class="action-box green-box" ng-click="toggleManageConfigsModal(true)">
+                Manage Config Files
+            </span>
+        </div>
+
+        <div class="tab-bar-item">
+            <span class="action-box" ng-click="addCustomConfig()">
+                <i class="fa fa-plus"></i> Add Custom Config File
+            </span>
+        </div>
+    </div>
+
+    <manage-configs-modal ng-if="showManageConfigsModal"></manage-configs-modal>
+
+    <div class="content-block config-block" ng-repeat="group in model.configs" ng-hide="group._destroy">
+        <div class="content-title">
+            <div><a ng-href="#/mod/{{group.id}}">{{group.name}}</a> Config Files</div>
+            <span class="config-tab" ng-repeat="config in group.configs" ng-click="selectConfig(group, config)" ng-class="{ 'active' : config.active }" ng-hide="config._destroy">
+                {{config.config_file.filename}}
+                <span class="action-items" ng-click="removeConfig(group, $index)" ng-if="editing">
+                    <span class="fa fa-times"></span>
+                </span>
+            </span>
+        </div>
+        <div class="content-container">
+            <textarea class="config-editor" ng-model="group.activeConfig.text_body" ng-disabled="!editing" spellcheck="false"></textarea>
+        </div>
+    </div>
+
+    <div class="content-block config-block" ng-show="showCustomConfigs">
+        <div class="content-title">
+            <div>Custom Config Files</div>
+            <span class="config-tab" ng-repeat="config in model.custom_configs" ng-click="selectCustomConfig(config)"  ng-class="{ 'active' : config.active }" ng-hide="config._destroy">
+                {{config.filename}}
+                <span class="action-items" ng-click="removeCustomConfig(config)" ng-if="editing">
+                    <span class="fa fa-times"></span>
+                </span>
+            </span>
+        </div>
+        <div class="content-container">
+            <div class="content-options">
+                <label>
+                    <strong>Filename</strong>
+                    <input type="text" class="text-input" ng-model="activeCustomConfig.filename" ng-disabled="!editing" spellcheck="false" pu-elastic-input>
+                </label>
+            </div>
+            <div class="content-options">
+                <label>
+                    <strong>Install Path</strong>
+                    <input type="text" class="text-input" ng-model="activeCustomConfig.install_path" ng-disabled="!editing" spellcheck="false" pu-elastic-input>
+                </label>
+            </div>
+            <textarea class="config-editor" ng-model="activeCustomConfig.text_body" ng-disabled="!editing" spellcheck="false"></textarea>
+        </div>
+    </div>
+
+    <div class="content-message" ng-if="noConfigFiles()">
+        No config files to display.
+    </div>
+</loader>
+
+<div class="action-button-container" ng-if="editing">
+    <input class="btn action-btn" type="submit" value="Save" ng-click="saveChanges()"/>
+    <input class="btn action-btn" type="button" value="Reset" ng-click="discardChanges()"/>
+</div>

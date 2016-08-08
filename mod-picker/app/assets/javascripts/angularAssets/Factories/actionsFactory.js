@@ -30,7 +30,13 @@ app.service('actionsFactory', function() {
                 if (!$scope.editing) return;
                 $scope.removeItem(item);
             }
-        }]
+        }, {
+            icon: "fa-gear",
+            title: "View Details",
+            execute: function($scope, item) {
+                $scope.$emit('toggleDetailsModal', {visible: true, item: item});
+            }
+        }];
     };
 
     this.modListModActions = function() {
@@ -42,7 +48,13 @@ app.service('actionsFactory', function() {
                 if (!$scope.editing) return;
                 $scope.removeItem(item);
             }
-        }]
+        }, {
+            icon: "fa-gear",
+            title: "View Details",
+            execute: function($scope, item) {
+                $scope.$emit('toggleDetailsModal', {visible: true, item: item});
+            }
+        }];
     };
 
     this.modListPluginActions = function() {

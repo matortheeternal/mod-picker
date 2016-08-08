@@ -6,10 +6,10 @@ app.directive('textArea', function ($timeout) {
     return {
         restrict: 'E',
         templateUrl: '/resources/directives/textArea.html',
-        controller: 'textAreaController',
         scope: {
             data: '=',
             onChange: '=?',
+            field: '@',
             refresh: '=ngRefresh'
         },
         link: function(scope, element, attrs) {
@@ -43,7 +43,4 @@ app.directive('textArea', function ($timeout) {
             });
         }
     }
-});
-
-app.controller('textAreaController', function ($scope) {
 });

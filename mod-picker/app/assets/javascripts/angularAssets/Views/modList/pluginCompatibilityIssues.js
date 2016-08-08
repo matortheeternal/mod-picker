@@ -36,7 +36,7 @@ app.controller('pluginCompatibilityIssuesController', function($scope, listUtils
                     break;
                 case 'make custom patch':
                     // unresolved if the custom plugin is not present and both mods are present
-                    if (!$scope.findCustomPlugin(note.id) &&
+                    if (!$scope.findCustomPlugin(note.id, true) &&
                         $scope.findMod(note.mods[0].id, true) && $scope.findMod(note.mods[1].id, true)) {
                         note.resolved = false;
                         $scope.notes.unresolved_plugin_compatibility.push(note);
@@ -97,11 +97,11 @@ app.controller('pluginCompatibilityIssuesController', function($scope, listUtils
     $scope.$on('pluginAdded', $scope.buildUnresolvedPluginCompatibility);
     $scope.$on('customPluginAdded', $scope.buildUnresolvedPluginCompatibility);
     $scope.$on('modRemoved', function(event, modId) {
-        $scope.removeCompatibilityNotes(modId);
+        if (modId) $scope.removeCompatibilityNotes(modId);
         $scope.buildUnresolvedPluginCompatibility();
     });
     $scope.$on('modRecovered', function(event, modId) {
-        $scope.recoverCompatibilityNotes(modId);
+        if (modId) $scope.recoverCompatibilityNotes(modId);
         $scope.buildUnresolvedPluginCompatibility();
     });
     $scope.$on('modAdded', function(event, modData) {

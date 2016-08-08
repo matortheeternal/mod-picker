@@ -21,6 +21,12 @@ app.controller('gridItemsController', function($scope, $timeout, colorsFactory, 
     $scope.removeGroup = listUtils.removeGroup;
     $scope.focusText = formUtils.focusText;
 
+    // when the user wants to view details on an item emit a toggleDetailsModal
+    // event for the parent controller to handle
+    $scope.viewDetails = function(item) {
+        $scope.$emit('toggleDetailsModal', {visible: true, item: item});
+    };
+
     // when the user wants to remove an item emit a removeItem event for the parent
     // controller to handle and respond to with an updateItems event when done
     $scope.removeItem = function(item) {

@@ -3,9 +3,13 @@ class Plugin < ActiveRecord::Base
 
   attr_writer :master_plugins
 
+  # Scopes
   scope :search, -> (search) { where("filename like ?", "%#{search}%") }
   scope :game, -> (game) { where(game_id: game) }
+  scope :mods, -> (mod_ids) { where(mod_id: mod_ids) }
+  scope :esm, -> { where("filename like '%.esm'") }
 
+  # Associations
   belongs_to :game, :inverse_of => 'plugins'
   belongs_to :mod, :inverse_of => 'plugins'
 
@@ -75,6 +79,18 @@ class Plugin < ActiveRecord::Base
     ModListPlugin.where(plugin_id: self.id).delete_all
   end
 
+  def formatted_overrides
+    output = {}
+    self.overrides.each do |ovr|
+      if output.has_key?(ovr.sig)
+        output[ovr.sig].push(ovr.fid)
+      else
+        output[ovr.sig] = [ovr.fid]
+      end
+    end
+    output
+  end
+
   def self.index_json(collection)
     collection.as_json({
         :include => {
@@ -93,6 +109,26 @@ class Plugin < ActiveRecord::Base
     })
   end
 
+  def self.analysis_json(collection)
+    collection.as_json({
+        :only => [:id, :mod_id, :filename, :errors_count],
+        :include => {
+            :masters => {
+                :except => [:plugin_id],
+                :include => {
+                    :master_plugin => {
+                        :only => [:mod_id, :filename]
+                    }
+                }
+            },
+            :dummy_masters => {
+                :except => [:plugin_id]
+            }
+        },
+        :methods => :formatted_overrides
+    })
+  end
+
   def self.show_json(collection)
     collection.as_json({
         :include => {
@@ -107,16 +143,14 @@ class Plugin < ActiveRecord::Base
             :dummy_masters => {
                 :except => [:plugin_id]
             },
-            :overrides => {
-                :except => [:plugin_id]
-            },
             :plugin_errors => {
                 :except => [:plugin_id]
             },
             :plugin_record_groups => {
                 :except => [:plugin_id]
             }
-        }
+        },
+        :methods => :formatted_overrides
     })
   end
 

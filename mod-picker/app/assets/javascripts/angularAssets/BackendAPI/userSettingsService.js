@@ -1,4 +1,4 @@
-app.service('userSettingsService', function (backend, $q) {
+app.service('userSettingsService', function (backend) {
     this.retrieveUserSettings = function () {
         return backend.retrieve('/user_settings');
     };

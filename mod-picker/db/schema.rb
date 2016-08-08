@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160801183603) do
+ActiveRecord::Schema.define(version: 20160808192457) do
 
   create_table "agreement_marks", id: false, force: :cascade do |t|
     t.integer "correction_id", limit: 4,                null: false
@@ -36,12 +36,12 @@ ActiveRecord::Schema.define(version: 20160801183603) do
 
   create_table "asset_files", force: :cascade do |t|
     t.integer "game_id",               limit: 4,               null: false
-    t.string  "filepath",              limit: 255,             null: false
+    t.string  "path",                  limit: 255,             null: false
     t.integer "mod_asset_files_count", limit: 4,   default: 0, null: false
   end
 
-  add_index "asset_files", ["filepath"], name: "filepath", unique: true, using: :btree
   add_index "asset_files", ["game_id"], name: "fk_rails_2e8fb86f89", using: :btree
+  add_index "asset_files", ["path"], name: "filepath", unique: true, using: :btree
 
   create_table "base_reports", force: :cascade do |t|
     t.integer  "reportable_id",   limit: 4,               null: false
@@ -133,6 +133,7 @@ ActiveRecord::Schema.define(version: 20160801183603) do
 
   create_table "config_files", force: :cascade do |t|
     t.integer "game_id",         limit: 4,                 null: false
+    t.integer "mod_id",          limit: 4,                 null: false
     t.string  "filename",        limit: 64,                null: false
     t.string  "install_path",    limit: 128,               null: false
     t.text    "text_body",       limit: 65535
@@ -140,6 +141,7 @@ ActiveRecord::Schema.define(version: 20160801183603) do
   end
 
   add_index "config_files", ["game_id", "filename"], name: "index_config_files_on_game_id_and_filename", using: :btree
+  add_index "config_files", ["mod_id"], name: "fk_rails_241d26b9f7", using: :btree
 
   create_table "corrections", force: :cascade do |t|
     t.integer  "game_id",          limit: 4,                     null: false
@@ -201,17 +203,24 @@ ActiveRecord::Schema.define(version: 20160801183603) do
     t.integer "install_order_notes_count", limit: 4,   default: 0, null: false
     t.integer "load_order_notes_count",    limit: 4,   default: 0, null: false
     t.integer "corrections_count",         limit: 4,   default: 0, null: false
+    t.integer "help_pages_count",          limit: 4,   default: 0, null: false
   end
 
   add_index "games", ["parent_game_id"], name: "fk_rails_f750cfc2c5", using: :btree
 
   create_table "help_pages", force: :cascade do |t|
-    t.string   "name",           limit: 128,               null: false
+    t.integer  "game_id",        limit: 4
+    t.integer  "category",       limit: 1,     default: 0, null: false
+    t.integer  "submitted_by",   limit: 4,                 null: false
+    t.string   "title",          limit: 128,               null: false
     t.text     "text_body",      limit: 65535,             null: false
     t.integer  "comments_count", limit: 4,     default: 0, null: false
     t.datetime "submitted",                                null: false
     t.datetime "edited"
   end
+
+  add_index "help_pages", ["game_id"], name: "index_help_pages_on_game_id", using: :btree
+  add_index "help_pages", ["submitted_by"], name: "fk_rails_01a3f94bf2", using: :btree
 
   create_table "helpful_marks", id: false, force: :cascade do |t|
     t.integer  "submitted_by",     limit: 4,                  null: false
@@ -329,11 +338,13 @@ ActiveRecord::Schema.define(version: 20160801183603) do
   add_index "masters", ["plugin_id"], name: "pl_id", using: :btree
 
   create_table "mod_asset_files", id: false, force: :cascade do |t|
-    t.integer "mod_id",        limit: 4, null: false
-    t.integer "asset_file_id", limit: 4, null: false
+    t.integer "mod_id",        limit: 4,   null: false
+    t.integer "asset_file_id", limit: 4
+    t.string  "subpath",       limit: 255
   end
 
   add_index "mod_asset_files", ["asset_file_id"], name: "maf_id", using: :btree
+  add_index "mod_asset_files", ["mod_id", "asset_file_id"], name: "mod_id", unique: true, using: :btree
   add_index "mod_asset_files", ["mod_id"], name: "mv_id", using: :btree
 
   create_table "mod_authors", force: :cascade do |t|
@@ -365,7 +376,7 @@ ActiveRecord::Schema.define(version: 20160801183603) do
 
   create_table "mod_list_custom_mods", force: :cascade do |t|
     t.integer "mod_list_id", limit: 4,                     null: false
-    t.integer "group_id",    limit: 4,                     null: false
+    t.integer "group_id",    limit: 4
     t.integer "index",       limit: 2,                     null: false
     t.boolean "is_utility",                default: false, null: false
     t.string  "name",        limit: 255,                   null: false
@@ -460,13 +471,23 @@ ActiveRecord::Schema.define(version: 20160801183603) do
     t.text     "description",               limit: 65535
     t.integer  "tools_count",               limit: 4,     default: 0,     null: false
     t.integer  "mods_count",                limit: 4,     default: 0,     null: false
-    t.integer  "plugins_count",             limit: 4,     default: 0,     null: false
-    t.integer  "available_plugins_count",   limit: 4,     default: 0,     null: false
+    t.integer  "custom_tools_count",        limit: 4,     default: 0,     null: false
     t.integer  "custom_mods_count",         limit: 4,     default: 0,     null: false
+    t.integer  "plugins_count",             limit: 4,     default: 0,     null: false
+    t.integer  "master_plugins_count",      limit: 4,     default: 0,     null: false
+    t.integer  "available_plugins_count",   limit: 4,     default: 0,     null: false
     t.integer  "custom_plugins_count",      limit: 4,     default: 0,     null: false
     t.integer  "config_files_count",        limit: 4,     default: 0,     null: false
     t.integer  "custom_config_files_count", limit: 4,     default: 0,     null: false
+    t.integer  "compatibility_notes_count", limit: 4,     default: 0,     null: false
+    t.integer  "install_order_notes_count", limit: 4,     default: 0,     null: false
+    t.integer  "load_order_notes_count",    limit: 4,     default: 0,     null: false
     t.integer  "ignored_notes_count",       limit: 4,     default: 0,     null: false
+    t.integer  "bsa_files_count",           limit: 4,     default: 0,     null: false
+    t.integer  "asset_files_count",         limit: 4,     default: 0,     null: false
+    t.integer  "records_count",             limit: 4,     default: 0,     null: false
+    t.integer  "override_records_count",    limit: 4,     default: 0,     null: false
+    t.integer  "plugin_errors_count",       limit: 4,     default: 0,     null: false
     t.integer  "tags_count",                limit: 4,     default: 0,     null: false
     t.integer  "stars_count",               limit: 4,     default: 0,     null: false
     t.integer  "comments_count",            limit: 4,     default: 0,     null: false
@@ -476,7 +497,7 @@ ActiveRecord::Schema.define(version: 20160801183603) do
     t.boolean  "hidden",                                  default: false, null: false
     t.datetime "submitted",                                               null: false
     t.datetime "completed"
-    t.datetime "edited"
+    t.datetime "updated"
   end
 
   add_index "mod_lists", ["game_id"], name: "fk_rails_f25cbc0432", using: :btree
@@ -877,12 +898,15 @@ ActiveRecord::Schema.define(version: 20160801183603) do
   add_foreign_key "compatibility_notes", "users", column: "edited_by"
   add_foreign_key "compatibility_notes", "users", column: "submitted_by", name: "compatibility_notes_ibfk_1"
   add_foreign_key "config_files", "games"
+  add_foreign_key "config_files", "mods"
   add_foreign_key "corrections", "games"
   add_foreign_key "corrections", "users", column: "edited_by"
   add_foreign_key "corrections", "users", column: "submitted_by", name: "corrections_ibfk_4"
   add_foreign_key "custom_sources", "mods"
   add_foreign_key "dummy_masters", "plugins"
   add_foreign_key "games", "games", column: "parent_game_id"
+  add_foreign_key "help_pages", "games"
+  add_foreign_key "help_pages", "users", column: "submitted_by"
   add_foreign_key "helpful_marks", "users", column: "submitted_by", name: "helpful_marks_ibfk_4"
   add_foreign_key "install_order_note_history_entries", "install_order_notes"
   add_foreign_key "install_order_note_history_entries", "users", column: "edited_by"

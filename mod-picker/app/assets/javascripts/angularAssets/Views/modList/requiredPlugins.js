@@ -56,11 +56,11 @@ app.controller('requiredPluginsController', function($scope, requirementUtils) {
         $scope.buildMissingPlugins();
     });
     $scope.$on('pluginRemoved', function(event, pluginId) {
-        requirementUtils.removeRequirements(pluginId, $scope.required.plugins, 'plugin');
+        if (pluginId) requirementUtils.removeRequirements(pluginId, $scope.required.plugins, 'plugin');
         $scope.buildMissingPlugins();
     });
     $scope.$on('pluginRecovered', function(event, pluginId) {
-        requirementUtils.recoverRequirements(pluginId, $scope.required.plugins, 'plugin');
+        if (pluginId) requirementUtils.recoverRequirements(pluginId, $scope.required.plugins, 'plugin');
         $scope.buildMissingPlugins();
     });
     $scope.$on('pluginAdded', function(event, pluginData) {

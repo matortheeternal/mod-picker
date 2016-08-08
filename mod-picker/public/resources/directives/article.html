@@ -1,4 +1,4 @@
-<div class="news-box" ng-class="{ 'no-border' : showFull }">
+<div class="news-box" ng-class="{ 'full-article' : showFull }">
     <div class="image-container" ng-if="article.image">
         <a ng-href="#/article/{{article.id}}">
             <img ng-src="{{article.image}}" />
@@ -14,7 +14,7 @@
             on {{article.submitted | date}}
         </span>
         <div marked="article.text_body"></div>
-        <a ng-href="#/article/{{article.id}}" ng-if="!showFull">
+        <a ng-href="#/article/{{article.id}}" ng-if="truncated">
             Read More
         </a>
     </div>

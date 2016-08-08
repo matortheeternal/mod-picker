@@ -57,11 +57,11 @@ app.controller('requiredToolsController', function($scope, $rootScope, requireme
         $scope.buildMissingTools();
     });
     $scope.$on('modRemoved', function(event, modId) {
-        requirementUtils.removeRequirements(modId, $scope.required.tools, 'mod');
+        if (modId) requirementUtils.removeRequirements(modId, $scope.required.tools, 'mod');
         $scope.buildMissingTools();
     });
     $scope.$on('modRecovered', function(event, modId) {
-        requirementUtils.recoverRequirements(modId, $scope.required.tools, 'mod');
+        if (modId) requirementUtils.recoverRequirements(modId, $scope.required.tools, 'mod');
         $scope.buildMissingTools();
     });
     $scope.$on('modAdded', function(event, modData) {

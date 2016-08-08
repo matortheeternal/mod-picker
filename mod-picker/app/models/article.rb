@@ -18,7 +18,7 @@ class Article < ActiveRecord::Base
 
   # ASSOCIATIONS
   belongs_to :submitter, :class_name => 'User', :foreign_key => 'submitted_by', :inverse_of => 'articles'
-  has_many :comments, :as => 'commentable'
+  has_many :comments, -> { where(parent_id: nil) }, :class_name => 'Comment', :as => 'commentable'
 
   # number of users per page on the users index
   self.per_page = 15

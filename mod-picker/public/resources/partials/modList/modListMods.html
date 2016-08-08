@@ -14,6 +14,9 @@
 
     <div class="content-block">
         <div class="content-title">Mods
+            <span class="right-item action-box" ng-if="editing" ng-click="addCustomMod()">
+                <i class="fa fa-plus"></i> Add Custom Mod
+            </span>
             <span class="right-item action-box" ng-if="editing" ng-click="addGroup('mods')">
                 <i class="fa fa-plus"></i> Add Group
             </span>
@@ -28,6 +31,8 @@
             <table-items type="mod" label="mods" columns="columns" column-groups="columnGroups" actions="actions" model="model.mods" editing="editing"></table-items>
         </div>
     </div>
+
+    <mod-details-modal ng-if="showDetailsModal"></mod-details-modal>
 </loader>
 
 <required-mods></required-mods>

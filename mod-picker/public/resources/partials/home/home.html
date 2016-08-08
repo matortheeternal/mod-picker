@@ -46,7 +46,11 @@
             <div class="articles box-shadow">
                 <article data="article" condensed="true" ng-repeat="article in articles"></article>
                 <div class="load-older-posts">
-                    <a href="#/articles/">See All Articles</a>
+                    <a href="#/articles/">Browse All Articles</a>
+                    <span class="divider" ng-if="permissions.canSubmitArticles">|</span>
+                    <a href="#/articles/submit" ng-if="permissions.canSubmitArticles">
+                        Submit Article
+                    </a>
                 </div>
             </div>
             <div class="recent-notes-tabs">

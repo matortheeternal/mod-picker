@@ -449,9 +449,13 @@ app.service('columnsFactory', function() {
                 visibility: true,
                 required: true,
                 label: "Name",
-                data: "mod.name",
-                link: function (modListPlugin) {
-                    return "#/mod/" + modListPlugin.mod.id;
+                data: function(item) {
+                    return item.name || item.mod.name;
+                },
+                link: function (item) {
+                    if (item.mod) {
+                        return "#/mod/" + item.mod.id;
+                    }
                 },
                 class: "primary-column"
             },
