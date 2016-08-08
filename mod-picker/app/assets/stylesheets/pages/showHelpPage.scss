@@ -11,8 +11,12 @@
     color: $medium_text_color;
 
     .fa {
-      width: 11px;
+      width: 14px;
       margin-right: 5px;
+    }
+
+    span:not(:first-child) {
+      margin-left: 16px;
     }
   }
 }
