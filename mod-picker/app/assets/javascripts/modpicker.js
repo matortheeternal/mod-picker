@@ -1,6 +1,7 @@
 //= require_self
 //= require ./polyfills.js
 //= require_tree ./angularAssets
+//= stub_tree ./angularAssets/Views/help
 
 var app = angular.module('modPicker', [
     'ui.router', 'rzModule', 'ngAnimate', 'sticky', 'puElasticInput', 'hc.marked', 'smoothScroll', 'relativeDate', 'ct.ui.router.extras', 'dndLists'
