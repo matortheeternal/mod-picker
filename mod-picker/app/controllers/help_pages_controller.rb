@@ -1,6 +1,7 @@
 class HelpPagesController < ApplicationController
   before_action :authorize, only: [:create, :edit, :update, :destroy]
-  before_action :set_help_page, only: [:show, :edit, :update, :destroy]
+  before_action :set_help_page, only: [:show, :edit]
+  before_action :set_help_page_from_id, only: [:update, :destroy]
   rescue_from ::ActiveRecord::RecordNotFound, with: :record_not_found
 
   layout "help"
@@ -96,6 +97,10 @@ class HelpPagesController < ApplicationController
     # set instance variable via /help/:id via callback to keep things DRY
     def set_help_page
       @help_page = HelpPage.where(name: params[:id].humanize).first
+    end
+
+    def set_help_page_from_id
+      @help_page = HelpPage.find(params[:id])
     end
 
     def authorize
