@@ -8,19 +8,12 @@
   span.meta {
     display: block;
     font-size: 0.8em;
-  }
+    color: $medium_text_color;
 
-  table td {
-    border: 1px solid #CCC;
-  }
-
-  table {
-    border: 1px solid #CCC;
-  }
-
-  // font awesome icons
-  .fa {
-    margin-right: 5px;
+    .fa {
+      width: 11px;
+      margin-right: 5px;
+    }
   }
 }
 
@@ -33,10 +26,6 @@
 
   .header-img {
     width: 100%;
-  }
-
-  .date {
-    display: inline;
   }
 }
 
@@ -52,11 +41,6 @@
     margin: 0;
   }
 
-  // all list items
-  ul {
-    list-style: none;
-  }
-
   // parent toc list
   > ul {
     padding-left: 16px;
@@ -64,11 +48,14 @@
     list-style: decimal;
   }
 
-  // all other lists below the parent
+  // second level list
   li > ul {
     padding-left: 24px;
     list-style: lower-alpha;
+
+    // third level list
     li > ul {
+      padding-left: 24px;
       list-style: decimal;
     }
   }
@@ -77,7 +64,7 @@
 
 // help page main body
 .help-page-body {
-  // header customization
+  // HEADER CUSTOMIZATION
   h2 {
     color: $h2_color;
     padding: 0 0 4px;
@@ -87,7 +74,7 @@
     border-bottom: 1px solid $border_color;
   }
 
-  //  code highlighting
+  // CODE HIGHLIGHTING
   > pre {
     font-family: 'Courier New', 'Lucida Sans Typewriter', sans-serif;
     overflow: scroll;
@@ -95,7 +82,16 @@
     padding: 4px 16px;
   }
 
-  // block quote style
+  // MARKDOWN TABLES
+  table td {
+    border: 1px solid #CCC;
+  }
+
+  table {
+    border: 1px solid #CCC;
+  }
+
+  // BLOCK QUOTES
   blockquote {
     margin-left: 0;
     border-left: 8px solid $bar_highlight_text_color;
