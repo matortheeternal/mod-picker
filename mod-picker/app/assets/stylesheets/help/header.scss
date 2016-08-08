@@ -1,9 +1,7 @@
-// header
 .help-header {
   background-color: $bar_color;
 }
 
-// Nav bar
 nav {
   display: block;
   background-color: $bar_color;
@@ -47,10 +45,6 @@ nav {
 
       i {
         font-size: 54px !important;
-      }
-
-      &:link, &:visited {
-        color: $bar_text_color;
       }
 
       &:hover {
