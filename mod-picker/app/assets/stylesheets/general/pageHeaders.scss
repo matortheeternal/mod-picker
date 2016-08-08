@@ -34,14 +34,10 @@
       font-size: 24px;
       font-weight: 100;
     }
-
-    .header-authors-container {
-      margin-left: 6px;
-
-      .header-authors {
-        font-weight: 600;
-        color: $bright_action_color;
-      }
+    
+    .header-authors {
+      font-weight: 600;
+      color: $bright_action_color;
     }
 
     section {
