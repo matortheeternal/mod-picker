@@ -20,9 +20,8 @@
                 ACTIONS
                 <a ng-if="permissions.canManage" ng-click="toggleEditing()">
                     <div class="action-box">
-                        <i class="fa fa-edit" aria-hidden="true"></i>
-                        <span ng-hide="editing">Edit</span>
-                        <span ng-show="editing">View</span>
+                        <i class="fa {{editing ? 'fa-eye' : 'fa-edit' }}" aria-hidden="true"></i>
+                        {{editing ? 'View' : 'Edit' }}
                     </div>
                 </a>
                 <div class="action-box" ng-click="starModList()" title="{{mod_list.stars_count}} stars">
