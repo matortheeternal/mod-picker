@@ -12,6 +12,7 @@ class HelpPagesController < ApplicationController
     @categories = HelpPage.categories.keys
     render "help_pages/index"
   end
+
   # GET /help/1
   def show
     authorize! :read, @help_page
