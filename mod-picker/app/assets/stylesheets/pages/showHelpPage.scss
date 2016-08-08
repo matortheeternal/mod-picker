@@ -157,6 +157,10 @@
       @include icon_style($twitter_primary);
     }
 
+    .fa-envelope-square {
+      @include icon_style($action_color);
+    }
+
     .fa-google-plus-square {
       @include icon_style($google_primary);
     }

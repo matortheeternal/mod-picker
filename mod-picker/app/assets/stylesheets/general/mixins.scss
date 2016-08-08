@@ -62,10 +62,11 @@
 }
 
 // used for social icons
-@mixin icon_style($color, $highlight_color: lighten($color, 10%)) {
-  color: $color;
+@mixin icon_style($color) {
+  color: $text_color;
+  @include transition(color 0.2s ease-in-out);
 
   &:hover {
-    color: $highlight_color;
+    color: $color;
   }
 }
