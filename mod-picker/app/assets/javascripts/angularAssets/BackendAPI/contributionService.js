@@ -1,4 +1,4 @@
-app.service('contributionService', function (backend, $q, userTitleService, pageUtils, reviewSectionService, recordGroupService, pluginService, assetUtils) {
+app.service('contributionService', function (backend, $q, userTitleService, pageUtils, reviewSectionService) {
     var service = this;
 
     this.retrieveContributions = function(route, options, pageInformation) {

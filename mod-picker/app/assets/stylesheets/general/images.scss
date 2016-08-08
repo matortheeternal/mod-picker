@@ -1,0 +1,22 @@
+/* css for avatars */
+.avatar {
+  border: 2px solid $border_color;
+  vertical-align: bottom;
+}
+
+.avatar-small {
+  max-width: 48px;
+  max-height: 48px;
+  border-width: 0;
+  box-shadow: 0 0 4px 2px $border_color;
+}
+
+.avatar-medium {
+  max-width: 96px;
+  max-height: 96px;
+}
+
+.avatar-full {
+  max-width: 250px;
+  max-height: 250px;
+}

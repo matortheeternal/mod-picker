@@ -1,0 +1,153 @@
+.help-page-content {
+  max-width: $max-content-width;
+  margin: 0 auto;
+  display: block;
+  padding: 50px 0 150px;
+
+  // meta information
+  span.meta {
+    display: block;
+    font-size: 13px;
+    color: $medium_text_color;
+
+    .fa {
+      width: 14px;
+      margin-right: 5px;
+    }
+
+    span:not(:first-child) {
+      margin-left: 16px;
+    }
+
+    span.edit-date {
+      margin-left: 0;
+    }
+  }
+}
+
+// help page header
+.help-page-header {
+  h1 {
+    color: inherit;
+    margin: 0;
+  }
+
+  .header-img {
+    width: 100%;
+  }
+}
+
+// table of contents
+.help-page-toc {
+  padding: 8px 0 4px 16px;
+  margin: 16px 0;
+  border-left: 8px solid $bar-color;
+
+  .toc-title {
+    color: $bar-color;
+    font-size: 20px;
+    margin: 0;
+  }
+
+  // parent toc list
+  > ul {
+    padding-left: 16px;
+    margin: 8px;
+    list-style: decimal;
+  }
+
+  // second level list
+  li > ul {
+    padding-left: 24px;
+    list-style: lower-alpha;
+
+    // third level list
+    li > ul {
+      padding-left: 24px;
+      list-style: decimal;
+    }
+  }
+}
+
+
+// help page main body
+.help-page-body {
+  // HEADER CUSTOMIZATION
+  h2 {
+    color: $h2_color;
+    padding: 0 0 4px;
+    margin: 0 0 18px;
+    font-size: 24px;
+    font-weight: 300;
+    border-bottom: 1px solid $border_color;
+  }
+
+  // CODE HIGHLIGHTING
+  > pre {
+    font-family: 'Courier New', 'Lucida Sans Typewriter', sans-serif;
+    overflow: scroll;
+    background-color: #EEE;
+    padding: 4px 16px;
+  }
+
+  // MARKDOWN TABLES
+  table td {
+    border: 1px solid #CCC;
+  }
+
+  table {
+    border: 1px solid #CCC;
+  }
+
+  // BLOCK QUOTES
+  blockquote {
+    margin-left: 0;
+    border-left: 8px solid $bar_highlight_text_color;
+    padding-left: 16px;
+    // padding-top: 4px;
+  }
+}
+
+// footer of help page
+.help-page-footer {
+  margin: 16px 0 48px;
+  border-top: 1px solid $hard_border_color;
+  padding-top: 16px;
+
+  // clearfix
+  overflow: hidden;
+
+  // meta info
+  .footer-meta {
+    display: inline-block;
+    float: left;
+  }
+
+  // social media share section
+  .share-section {
+    font-size: 2.5em;
+    display: inline-block;
+    float: right;
+
+    // social icon colors
+    .fa-facebook-square {
+      @include icon_style($facebook_primary);
+    }
+
+    .fa-twitter-square {
+      @include icon_style($twitter_primary);
+    }
+
+    .fa-envelope-square {
+      @include icon_style($action_color);
+    }
+
+    .fa-google-plus-square {
+      @include icon_style($google_primary);
+    }
+
+    .fa-reddit-square {
+      @include icon_style($reddit_primary);
+    }
+  }
+}

@@ -42,7 +42,7 @@ article {
       }
 
       read-more {
-        display    : block;
+        display: block;
         margin-left: 10px;
       }
 
@@ -51,6 +51,11 @@ article {
         font-size: 12px;
       }
     }
+  }
+
+  .full-article {
+    border: none;
+    margin-bottom: 60px;
   }
 }
 

@@ -125,6 +125,14 @@ Rails.application.routes.draw do
     # avatars
     match '/avatar', to: 'avatars#create', via: [:post]
 
+    # help pages
+    resources :help_pages, path: 'help', except: [:destroy]
+    match '/help/category/:category', to: 'help_pages#category', via: [:get]
+    match '/help/game/:game', to: 'help_pages#game', via: [:get]
+    match '/help/:id/comments', to: 'help_pages#comments', via: [:get, :post]
+    match '/help/:id/destroy', to: 'help_pages#destroy', via: [:get]
+
+
     # static data
     resources :categories, only: [:index]
     resources :category_priorities, only: [:index]
@@ -148,6 +156,7 @@ Rails.application.routes.draw do
     #articles
     resources :articles, only: [:show, :create, :update, :destroy]
     match '/articles/:id/comments', to: 'articles#comments', via: [:get, :post]
+    match '/articles/:id/image', to: 'articles#image', via: [:post]
     match '/articles/index', to: 'articles#index', via: [:get, :post]
   end
 

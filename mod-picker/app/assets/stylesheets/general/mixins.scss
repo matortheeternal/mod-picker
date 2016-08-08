@@ -1,0 +1,72 @@
+/* mixins */
+@mixin flexbox() {
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+}
+
+@mixin flex($values) {
+  -webkit-box-flex: $values;
+  -moz-box-flex:  $values;
+  -webkit-flex:  $values;
+  -ms-flex:  $values;
+  flex:  $values;
+}
+
+@mixin order($val) {
+  -webkit-box-ordinal-group: $val;
+  -moz-box-ordinal-group: $val;
+  -ms-flex-order: $val;
+  -webkit-order: $val;
+  order: $val;
+}
+
+@mixin user-select($val) {
+  -webkit-user-select: $val;
+  -moz-user-select: $val;
+  -ms-user-select: $val;
+  user-select: $val;
+}
+
+@mixin transition($values) {
+  -webkit-transition: $values;
+  -moz-transition: $values;
+  -o-transition: $values;
+  transition: $values;
+}
+
+@mixin column-count($val) {
+  -webkit-column-count: $val;
+  -moz-column-count: $val;
+  column-count: $val;
+}
+
+//noinspection ALL
+@mixin wordbreak {
+  word-break: normal;
+  word-break: break-word; /*Chrome specific*/
+  hyphens: auto;
+}
+
+// accepts a color and highlight and sets them to the color and hover color
+@mixin link_style ($color, $highlight_color: lighten($color, 10%)) {
+  &:link, &:visited {
+    color: $color;
+  }
+
+  &:hover, &:active {
+    color: $highlight_color;
+  }
+}
+
+// used for social icons
+@mixin icon_style($color) {
+  color: $text_color;
+  @include transition(color 0.2s ease-in-out);
+
+  &:hover {
+    color: $color;
+  }
+}

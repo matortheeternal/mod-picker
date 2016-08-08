@@ -12,8 +12,11 @@ app.directive('article', function() {
 
 app.controller('articleController', function($scope) {
     if (!$scope.showFull) {
-        var words = $scope.article.text_body.split(' ', 50);
-        $scope.article.text_body = words.join(' ');
-        $scope.article.text_body += "...";
+        var reducedText = $scope.article.text_body.reduceText(50);
+        if (reducedText.length < $scope.article.text_body.length) {
+            reducedText += "\n\n...";
+            $scope.article.text_body = reducedText;
+            $scope.truncated = true;
+        }
     }
 });

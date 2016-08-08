@@ -12,13 +12,13 @@
         window._token = '<%= form_authenticity_token %>';
         window._current_game_id = <%= @current_game.id %>;
         window._stylesheets = {
-            Whiterun: "<%= stylesheet_path 'Whiterun' %>",
-            Darkwater: "<%= stylesheet_path 'Darkwater' %>",
-            Blackreach: "<%= stylesheet_path 'Blackreach' %>",
-            'High Hrothgar': "<%= stylesheet_path 'High Hrothgar' %>"
+            Whiterun: "<%= stylesheet_path 'main/Whiterun' %>",
+            Darkwater: "<%= stylesheet_path 'main/Darkwater' %>",
+            Blackreach: "<%= stylesheet_path 'main/Blackreach' %>",
+            'High Hrothgar': "<%= stylesheet_path 'main/High Hrothgar' %>"
         }
     </script>
-    <link ng-controller="themesController" rel="stylesheet" ng-href="{{currentTheme}}" ng-init="currentTheme = '<%= stylesheet_path @current_theme %>'" />
+    <link ng-controller="themesController" rel="stylesheet" ng-href="{{currentTheme}}" ng-init="currentTheme = '<%= stylesheet_path "main/#{@current_theme}" %>'" />
 </head>
 
 <body ng-cloak ng-controller="bodyController" ng-class="{ 'no-scroll' : modalVisible }">

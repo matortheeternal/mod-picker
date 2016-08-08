@@ -33,25 +33,37 @@ class HomeController < ApplicationController
     # we first get news articles
     articles = Article.game(params[:game]).order(:submitted => :DESC).limit(4)
 
-    # we include associated data we know we'll need because it increases the speed of the query
+    # get recent contributions
     mod_lists = ModList.visible.game(params[:game]).where(:status => 2).includes(:submitter => :reputation).order(:completed => :DESC).limit(5)
     mods = Mod.include_hidden(false).game(params[:game]).order(:id => :DESC).limit(5)
-    reviews = Review.visible.game(params[:game]).includes(:mod, :submitter => :reputation).order(:submitted => :DESC).limit(4)
+    reviews = Review.visible.game(params[:game]).includes(:review_ratings, :mod, :submitter => :reputation).order(:submitted => :DESC).limit(4)
     corrections = Correction.visible.game(params[:game]).includes(:submitter => :reputation).order(:submitted => :DESC).limit(4)
     compatibility_notes = CompatibilityNote.visible.game(params[:game]).includes(:first_mod, :second_mod, :submitter => :reputation).order(:submitted => :DESC).limit(4)
     install_order_notes = InstallOrderNote.visible.game(params[:game]).includes(:first_mod, :second_mod, :submitter => :reputation).order(:submitted => :DESC).limit(4)
     load_order_notes = LoadOrderNote.visible.game(params[:game]).includes(:first_plugin, :second_plugin, :submitter => :reputation).order(:submitted => :DESC).limit(4)
 
+    # get helpful/agreement marks
+    r_helpful_marks = HelpfulMark.submitter(current_user.id).helpfulable("Review", reviews.ids)
+    c_helpful_marks = HelpfulMark.submitter(current_user.id).helpfulable("CompatibilityNote", compatibility_notes.ids)
+    i_helpful_marks = HelpfulMark.submitter(current_user.id).helpfulable("InstallOrderNote", install_order_notes.ids)
+    l_helpful_marks = HelpfulMark.submitter(current_user.id).helpfulable("LoadOrderNote", load_order_notes.ids)
+    agreement_marks = AgreementMark.submitter(current_user.id).corrections(corrections.ids)
+
     render :json => {
-        articles: articles.as_json,
+        articles: articles,
         recent: {
             mod_lists: ModList.home_json(mod_lists),
             mods: Mod.home_json(mods),
             reviews: Review.index_json(reviews),
             corrections: Correction.index_json(corrections),
-            compatibility_notes: compatibility_notes.as_json,
-            install_order_notes: install_order_notes.as_json,
-            load_order_notes: load_order_notes.as_json
+            compatibility_notes: compatibility_notes,
+            install_order_notes: install_order_notes,
+            load_order_notes: load_order_notes,
+            r_helpful_marks: r_helpful_marks,
+            c_helpful_marks: c_helpful_marks,
+            i_helpful_marks: i_helpful_marks,
+            l_helpful_marks: l_helpful_marks,
+            agreement_marks: agreement_marks
         }
     }
   end

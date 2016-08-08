@@ -1,0 +1,125 @@
+<% content_for :head do %>
+    <title>Mod Picker: Help Center - <%= @help_page.title %></title>
+<% end %>
+
+<div class="page-container help-page-content">
+    <div class="help-page-header">
+        <% if @help_page.display_image %>
+        <%= image_tag "#{@help_page.display_image}", class: "header-image" %>
+        <% end %>
+        <h1 class="page-title">
+            <%= @help_page.title %>
+            <span class="right-item">
+                <% if can? :update, HelpPage %>
+                <%= link_to "/help/#{@help_page.url}/edit" do %>
+                <span class="action-box">
+                    <i class="fa fa-edit" aria-hidden="true"></i> Edit Help Page
+                </span>
+                <% end %>
+                <% end %>
+            </span>
+        </h1>
+    
+        <span class="meta author">
+          <i class="fa fa-user" aria-hidden="true" title="Author"></i>
+            <%= link_to @help_page.submitter.username, user_path(@help_page.submitter), class: "medium-link" %>
+        </span>
+
+        <!-- date posted/edited conditional-->
+        <span class="meta date">
+            <span class="submit-date" title="<%= @help_page.submitted.strftime("%m/%d/%Y %I:%M:%S %z") %>">
+                <i class="fa fa-clock-o" aria-hidden="true"></i>
+                <%= @help_page.submitted.strftime("Created %b %e %Y") %>
+            </span>
+
+            <% if @help_page.edited %>
+            <span class="edit-date" title="<%= @help_page.edited.strftime("%m/%d/%Y %I:%M:%S %z") %>">
+              - <em><%= @help_page.edited.strftime("Updated %b %e %Y") %></em>
+            </span>
+            <% end %>
+        </span>
+
+        <span class="meta">
+            <span class="category">
+                <i class="fa fa-folder" aria-hidden="true" title="Category"></i>
+                <%= link_to @help_page.category.humanize, "/help/category/#{@help_page.category}", class: "medium-link capitalize" %>
+            </span>
+
+            <% if @help_page.game.present? %>
+            <span class="game">
+              <i class="fa fa-gamepad" aria-hidden="true" title="Game"></i>
+                <%= link_to @help_page.game.display_name, "/help/game/#{@help_page.game.display_name}", class: "medium-link" %>
+            </span>
+            <% end %>
+        </span>
+    </div>
+    <!-- enddate -->
+
+    <!-- table of contents class = "help-page-toc" -->
+    <%= markdown_toc(@help_page.text_body) %>
+
+    <!-- help page body content -->
+    <div class="help-page-body">
+        <%= markdown(@help_page.text_body) %>
+    </div>
+
+    <!-- footer -->
+    <div class="help-page-footer">
+        <div class="footer-meta">
+            <span class="meta author">
+                <i class="fa fa-user" aria-hidden="true" title="Author"></i>
+                <%= link_to @help_page.submitter.username, user_path(@help_page.submitter), class: "medium-link" %>
+            </span>
+
+            <span class="meta date">
+                <span class="submit-date" title="<%= @help_page.submitted.strftime("%m/%d/%Y %I:%M:%S %z") %>">
+                    <i class="fa fa-clock-o" aria-hidden="true"></i>
+                    <%= @help_page.submitted.strftime("Created %b %e %Y") %>
+                </span>
+
+                <% if @help_page.edited %>
+                <span class="edit-date" title="<%= @help_page.edited.strftime("%m/%d/%Y %I:%M:%S %z") %>">
+                    - <em><%= @help_page.edited.strftime("Updated %b %e %Y") %></em>
+                </span>
+                <% end %>
+            </span>
+        </div>
+
+        <!--social media share section-->
+        <div class="share-section">
+            <!-- Sharingbutton Facebook -->
+            <a class="share-link" href="https://facebook.com/sharer/sharer.php?u=<%= request.original_url %>"
+               target="_blank" title="Share this page on Facebook">
+                <i class="fa fa-facebook-square" aria-hidden="true"></i>
+            </a>
+
+            <!-- Sharingbutton Twitter -->
+            <a class="share-link" href="https://twitter.com/intent/tweet/?text=<%= @help_page.title + ' ' + request.original_url %>"
+               target="_blank" title="Share this page on Twitter">
+                <i class="fa fa-twitter-square" aria-hidden="true"></i>
+            </a>
+
+            <!-- Sharingbutton Google+ -->
+            <a class="share-link" href="https://plus.google.com/share?url=<%= request.original_url %>"
+               target="_blank" title="Share this page on Google+">
+                <i class="fa fa-google-plus-square" aria-hidden="true"></i>
+            </a>
+
+            <!-- Sharingbutton E-Mail -->
+            <a class="share-link" href="mailto:?subject=<%= @help_page.title %>&amp;body=<%= @help_page.title + ' ' + request.original_url %>"
+               target="_blank" title="Share this page via E-Mail">
+                <i class="fa fa-envelope-square" aria-hidden="true"></i>
+            </a>
+
+            <!-- Sharingbutton Reddit -->
+            <a class="share-link" href="https://reddit.com/submit/?url=<%= request.original_url %>"
+               target="_blank" title="Share this page on Reddit">
+                <i class="fa fa-reddit-square" aria-hidden="true"></i>
+            </a>
+        </div>
+    </div>
+    <!-- endfooter -->
+
+    <help-page-comments help-page-id="<%= @help_page.id %>"></help-page-comments>
+</div>
+  

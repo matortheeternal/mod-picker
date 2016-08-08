@@ -1,0 +1,15 @@
+/* css for help tooltips */
+.help-tooltip {
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  cursor: default;
+  display: inline-block;
+  margin-left: 8px;
+  border-bottom: dotted 1px $text_color;
+  line-height: 15px;
+}
+
+a .help-tooltip {
+  cursor: pointer;
+}

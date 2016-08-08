@@ -1,0 +1,151 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Roboto', sans-serif;
+  color: $text_color;
+  margin: 0;
+  background-color: $primary_background;
+  min-height: 100vh;
+  position: relative;
+  overflow-y: scroll;
+}
+
+.page-container {
+  width: 1220px;
+  margin: auto;
+}
+
+.content-block {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  background-color: $primary_background;
+  border: 1px solid $border_color;
+
+  .content-title {
+    font-size: 16px;
+    font-weight: 500;
+    color: $bar_text_color;
+    background-color: $bar_color;
+    padding: 10px;
+
+    .right-item {
+      margin-top: 3px;
+      font-size: 12px;
+    }
+
+    .standing {
+      font-size: 14px;
+      font-weight: 100;
+      font-style: italic;
+      vertical-align: top;
+    }
+
+    .action-box {
+      margin-top: -1px;
+    }
+
+    .toggle-item {
+      margin-right: 8px;
+      cursor: pointer;
+      @include user-select(none);
+      @include transition(all 0.2s ease-in-out);
+    }
+
+    .note-item {
+      font-style: italic;
+      font-size: 12px;
+      font-weight: normal;
+      margin-left: 6px;
+    }
+
+    a, .toggle-item {
+      color: $bright_action_color;
+      &:hover {
+        color: $bar_text_color;
+      }
+    }
+
+    input[type="text"] {
+      min-width: 2em;
+      max-width: 100%;
+      padding: 0;
+      margin: 0;
+      font: inherit;
+      color: inherit;
+      border: none;
+      background-color: inherit;
+      @include transition(box-shadow 0.2s ease-in-out);
+
+      &:hover {
+        box-shadow: 0 0 3px 0 $border_color;
+      }
+
+      &:focus {
+        box-shadow: 0 0 3px 0 $border_color;
+        outline: none;
+      }
+    }
+  }
+
+  .content-options {
+    margin: 20px;
+
+    strong {
+      width: 110px;
+      cursor: default;
+      text-align: center;
+      display: inline-block;
+    }
+
+    .text-input {
+      min-width: 200px;
+      max-width: 800px;
+      padding: 8px;
+      height: 30px;
+      border: 0;
+      margin-left: 20px;
+      font-size: 16px;
+      box-shadow: 0 0 3px 1px $border_color;
+      @include transition(box-shadow 0.2s ease-in-out);
+
+      &:disabled {
+        box-shadow: 0 0 3px 1px $border_color !important;
+      }
+
+      &:hover {
+        box-shadow: 0 0 3px 1px $action_color;
+      }
+
+      &:focus {
+        box-shadow: 0;
+      }
+    }
+  }
+
+  .content-container {
+    margin: 20px;
+
+    section {
+      display: block;
+      margin-top: 15px;
+      margin-left: 30px;
+      margin-bottom: 30px;
+    }
+
+    .message-input {
+      width: 100%;
+      margin-bottom: 10px;
+
+      div {
+        font-size: 13px;
+      }
+
+      input[type="text"] {
+        width: 700px;
+        padding: 3px;
+      }
+    }
+  }
+}
