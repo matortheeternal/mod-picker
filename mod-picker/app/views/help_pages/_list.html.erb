@@ -9,7 +9,12 @@
 
         <div class="meta-container">
             <%= link_to "/help/#{page.url_name}", method: :get do %>
-                <h4 class="item-title"><%= page.name %></h4>
+                <h4 class="item-title">
+                    <%= page.name %>
+                    <% if page.submitted.between?((DateTime.now - 2.weeks), DateTime.now) %>
+                    <span class="new-label">NEW</span>
+                    <% end %>
+                </h4>
             <% end %>
 
 
@@ -22,9 +27,6 @@
                 <span class="meta submit-date" title="<%= page.submitted.strftime("%m/%d/%Y %I:%M:%S %z") %>">
                     <i class="fa fa-clock-o" aria-hidden="true" title="Created"></i>
                     <%= time_ago_in_words(page.submitted).capitalize %> ago
-                    <% if page.submitted.between?((DateTime.now - 2.weeks), DateTime.now) %>
-                    <span class="new-label">NEW</span>
-                    <% end %>
                 </span>
             </div>
 

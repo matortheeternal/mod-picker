@@ -6,17 +6,6 @@
     font-size: 48px;
     text-align: center;
   }
-
-  .date {
-    // new icon
-    .new-label {
-      margin-left: 0.5rem;
-      padding: 0 0.5rem;
-      color: $success_secondary;
-      border: 1px solid $success_secondary;
-      text-transform: uppercase;
-    }
-  }
 }
 
 .pages-list {
@@ -76,6 +65,16 @@
 
       &:hover {
         color: $link_hover_color_primary;
+      }
+
+      .new-label {
+        font-weight: normal;
+        font-size: 12px;
+        margin-left: 0.5rem;
+        padding: 0 0.5rem;
+        color: $success_secondary;
+        border: 1px solid $success_secondary;
+        text-transform: uppercase;
       }
     }
   }
