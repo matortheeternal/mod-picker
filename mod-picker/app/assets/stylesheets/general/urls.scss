@@ -17,10 +17,18 @@ a:hover {
   color: $link_hover_color_secondary;
 }
 
-.inverse-link {
+a.inverse-link {
   color: $text_color;
 
   &:hover {
+    color: $link_hover_color_primary;
+  }
+}
+
+a.medium-link {
+  color: $medium_text_color;
+
+  &:hover, &:active {
     color: $link_hover_color_primary;
   }
 }
