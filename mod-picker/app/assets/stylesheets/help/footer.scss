@@ -58,6 +58,6 @@
   }
 
   a:hover, a:active {
-    color: darken($soft_text_color, 15%);
+    color: $text_color;
   }
 }
