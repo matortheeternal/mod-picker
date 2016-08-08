@@ -1,25 +1,8 @@
 <div class="modal-container">
     <messages event="modalMessage"></messages>
 
-    <!-- Plugin Details -->
-    <div class="modal huge-modal" ng-if="detailsItem.plugin">
-        <div class="close-modal">
-            <span class="fa fa-times" ng-click="toggleDetailsModal()"></span>
-        </div>
-
-        <h2>{{detailsItem.plugin.filename}} Details</h2>
-
-        <!-- TODO: This should use the same components as the mod analysis tab -->
-
-        <div class="content-message content-error" ng-if="error">
-            There was an error retrieving details for this plugin.<br>
-            <!--TODO: Render JSON errors here, if available?-->
-            Error {{error.status}}: {{error.statusText}}
-        </div>
-    </div>
-
     <!-- Custom Plugin Details -->
-    <div class="modal huge-modal" ng-if="!detailsItem.plugin">
+    <div class="modal huge-modal">
         <form>
             <div class="close-modal">
                 <span class="fa fa-times" ng-click="toggleDetailsModal()"></span>

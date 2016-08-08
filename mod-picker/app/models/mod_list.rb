@@ -72,6 +72,7 @@ class ModList < ActiveRecord::Base
 
   # Callbacks
   after_create :increment_counters, :set_active
+  before_update :hide_comments
   before_save :set_dates
   before_destroy :decrement_counters, :unset_active
 
@@ -109,6 +110,14 @@ class ModList < ActiveRecord::Base
     self.override_records_count = Plugin.where(id: plugin_ids).sum(:override_count)
     self.plugin_errors_count = PluginError.plugins(plugin_ids).count
     self.save_counters([:available_plugins_count, :master_plugins_count, :compatibility_notes_count, :install_order_notes_count, :load_order_notes_count, :bsa_files_count, :asset_files_count, :records_count, :override_records_count, :plugin_errors_count])
+  end
+
+  def hide_comments
+    if self.attribute_changed?(:hidden) && self.hidden
+      self.comments.update_all(:hidden => true)
+    elsif self.attribute_changed?(:disable_comments) && self.disable_comments
+      self.comments.update_all(:hidden => true)
+    end
   end
 
   def mod_list_plugin_ids

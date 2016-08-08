@@ -33,7 +33,7 @@ app.controller('modListToolsController', function($scope, $rootScope, $state, $s
                 if (insertIndex == -1) {
                     insertIndex = $scope.model.tools.length;
                 }
-                $scope.model.tools.splice(insertIndex, 0, tool);
+                $scope.model.tools.splice(insertIndex, 0, angular.copy(tool));
             }
         });
     };

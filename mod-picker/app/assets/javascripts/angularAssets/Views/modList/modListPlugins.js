@@ -8,8 +8,8 @@ app.controller('modListPluginsController', function($scope, $q, $timeout, modLis
 
     $scope.toggleDetailsModal = function(visible, item) {
         $scope.$emit('toggleModal', visible);
-        $scope.showDetailsModal = visible;
         $scope.detailsItem = item;
+        $scope.showDetailsModal = visible;
     };
 
     $scope.toggleManagePluginsModal = function(visible) {
@@ -48,7 +48,7 @@ app.controller('modListPluginsController', function($scope, $q, $timeout, modLis
                 } else if (plugin.merged) {
                     insertIndex--;
                 }
-                $scope.model.plugins.splice(insertIndex, 0, plugin);
+                $scope.model.plugins.splice(insertIndex, 0, angular.copy(plugin));
             }
         });
     };
@@ -206,6 +206,15 @@ app.controller('modListPluginsController', function($scope, $q, $timeout, modLis
         $scope.showLoadOrder = !$scope.showLoadOrder;
         $scope.columns[0].visibility = !$scope.showLoadOrder;
         $scope.columns[1].visibility = $scope.showLoadOrder;
+    };
+
+    $scope.togglePlugin = function(pluginItem) {
+        if (pluginItem.active) {
+            $scope.addPlugin(pluginItem.id);
+        } else {
+            var foundPlugin = $scope.findPlugin(pluginItem.id, true);
+            if (foundPlugin) $scope.removePlugin(foundPlugin);
+        }
     };
 
     // event triggers

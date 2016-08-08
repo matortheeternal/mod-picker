@@ -33,6 +33,7 @@ app.service('actionsFactory', function() {
         }, {
             icon: "fa-gear",
             title: "View Details",
+            hidden: function($scope, item) { return !!item.mod },
             execute: function($scope, item) {
                 $scope.$emit('toggleDetailsModal', {visible: true, item: item});
             }
@@ -51,6 +52,7 @@ app.service('actionsFactory', function() {
         }, {
             icon: "fa-gear",
             title: "View Details",
+            hidden: function($scope, item) { return !!item.mod },
             execute: function($scope, item) {
                 $scope.$emit('toggleDetailsModal', {visible: true, item: item});
             }
@@ -70,8 +72,10 @@ app.service('actionsFactory', function() {
             key: "showOptions",
             icon: "fa-gear",
             title: "More Options",
+            disabled: function($scope, item) { return !$scope.editing && !!item.plugin },
             items: [{
                 text: "View details",
+                disabled: function($scope, item) { return !!item.plugin },
                 execute: function($scope, item) {
                     $scope.$emit('toggleDetailsModal', {visible: true, item: item});
                 }

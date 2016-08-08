@@ -33,7 +33,7 @@ app.controller('modListModsController', function($scope, $rootScope, $timeout, m
                 if (insertIndex == -1) {
                     insertIndex = $scope.model.mods.length;
                 }
-                $scope.model.mods.splice(insertIndex, 0, mod);
+                $scope.model.mods.splice(insertIndex, 0, angular.copy(mod));
             }
         });
     };

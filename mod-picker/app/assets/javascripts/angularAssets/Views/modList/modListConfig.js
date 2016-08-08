@@ -13,19 +13,10 @@ app.controller('modListConfigController', function($scope, $q, $timeout, modList
         return action.promise;
     };
 
-    $scope.setActiveCustomConfig = function() {
-        $scope.activeCustomConfig = $scope.model.custom_configs.find(function(config) {
-            return !config._destroy;
-        });
-        if ($scope.activeCustomConfig) $scope.activeCustomConfig.active = true;
-        $scope.showCustomConfigs = $scope.model.custom_configs.length > 0;
-    };
-
     $scope.buildConfigModel = function() {
         // build models
-        $scope.model.configs = configFilesService.groupConfigFiles($scope.mod_list.config_files);
-        $scope.model.custom_configs = angular.copy($scope.mod_list.custom_config_files);
-        $scope.setActiveCustomConfig();
+        $scope.model.config_files = [];
+        configFilesService.groupConfigFiles($scope.model.config_files, $scope.mod_list.config_files, $scope.mod_list.custom_config_files);
     };
 
     $scope.retrieveConfig = function() {
@@ -47,8 +38,8 @@ app.controller('modListConfigController', function($scope, $q, $timeout, modList
 
     // returns true if there are no config files to display
     $scope.noConfigFiles = function() {
-        if (!$scope.model.configs || !$scope.mod_list.custom_config_files) return true;
-        return !$scope.model.configs.find(function(group) {
+        if (!$scope.model.config_files || !$scope.mod_list.custom_config_files) return true;
+        return !$scope.model.config_files.find(function(group) {
             return !group._destroy;
         }) && !$scope.mod_list.custom_config_files.find(function(config) {
             return !config._destroy;
@@ -81,20 +72,31 @@ app.controller('modListConfigController', function($scope, $q, $timeout, modList
     };
 
     $scope.removeConfig = function(group, index) {
-        var configToRemove = group.configs[index];
+        var configToRemove = group.children[index];
+        if (configToRemove._destroy) return;
         configToRemove._destroy = true;
+
+        // update counts
+        if (configToRemove.config_file) {
+            $scope.mod_list.config_files_count -= 1;
+        } else {
+            $scope.mod_list.custom_config_files_count -= 1;
+        }
+        $scope.updateTabs();
+
         // verify there is another config in this group
         // switch to the first available config if the user destroyed the active config
-        for (var i = 0; i < group.configs.length; i++) {
-            if (!group.configs[i]._destroy) {
+        for (var i = 0; i < group.children.length; i++) {
+            if (!group.children[i]._destroy) {
                 if (configToRemove.active) {
                     $timeout(function() {
-                        $scope.selectConfig(group, group.configs[i]);
+                        $scope.selectConfig(group, group.children[i]);
                     });
                 }
                 return;
             }
         }
+
         // no configs in the group to switch to, destroy the group!
         configToRemove.active = false;
         group._destroy = true;
@@ -115,7 +117,7 @@ app.controller('modListConfigController', function($scope, $q, $timeout, modList
             $scope.updateTabs();
 
             // update models
-            configFilesService.addConfigFile($scope.model.configs, modListConfigFile);
+            configFilesService.addConfigFile($scope.model.config_files, modListConfigFile);
 
             // success message
             var filename = modListConfigFile.config_file.filename;
@@ -150,9 +152,9 @@ app.controller('modListConfigController', function($scope, $q, $timeout, modList
         if (configItem.active) {
             $scope.addConfig(configItem.id);
         } else {
-            for (var i = 0; i < $scope.model.configs.length; i++) {
-                group = $scope.model.configs[i];
-                var index = group.configs.findIndex(function(config) {
+            for (var i = 0; i < $scope.model.config_files.length; i++) {
+                var group = $scope.model.config_files[i];
+                var index = group.children.findIndex(function(config) {
                     return config.config_file.id == configItem.id;
                 });
                 if (index > -1) {
@@ -161,33 +163,6 @@ app.controller('modListConfigController', function($scope, $q, $timeout, modList
                 }
             }
         }
-    };
-
-    $scope.selectCustomConfig = function(customConfig) {
-        if (customConfig._destroy) return;
-        if ($scope.activeCustomConfig) $scope.activeCustomConfig.active = false;
-        $scope.activeCustomConfig = customConfig;
-        $scope.activeCustomConfig.active = true;
-    };
-
-    $scope.removeCustomConfig = function(customConfig) {
-        customConfig._destroy = true;
-        // verify there is another custom config
-        // switch to the first available custom config if the user destroyed the active custom config
-        for (var i = 0; i < $scope.model.custom_configs.length; i++) {
-            var config = $scope.model.custom_configs[i];
-            if (!config._destroy) {
-                if (customConfig.active) {
-                    $timeout(function() {
-                        $scope.selectCustomConfig(config);
-                    });
-                }
-                return;
-            }
-        }
-        // no more custom configs
-        customConfig.active = false;
-        $scope.showCustomConfigs = false;
     };
 
     $scope.addCustomConfig = function() {
@@ -206,9 +181,7 @@ app.controller('modListConfigController', function($scope, $q, $timeout, modList
             $scope.updateTabs();
 
             // update models
-            $scope.model.custom_configs.push(modListCustomConfig);
-            $scope.selectCustomConfig(modListCustomConfig);
-            $scope.showCustomConfigs = true;
+            configFilesService.addCustomConfigFile($scope.model.config_files, modListCustomConfig);
         }, function(response) {
             var params = {label: 'Error adding custom config file', response: response};
             $scope.$emit('errorMessage', params);
@@ -218,31 +191,16 @@ app.controller('modListConfigController', function($scope, $q, $timeout, modList
     // event triggers
     $scope.$on('rebuildModels', $scope.buildConfigModel);
     $scope.$on('reloadModules', function() {
-        // recover destroyed config groups
-        listUtils.recoverDestroyed($scope.model.configs);
-
-        // recover destroyed configs
-        $scope.model.configs.forEach(function(group) {
-            listUtils.recoverDestroyed(group.configs);
+        listUtils.recoverDestroyed($scope.model.config_files);
+        $scope.model.config_files.forEach(function(group) {
+            listUtils.recoverDestroyed(group.children);
             if (!group.activeConfig) group.activeConfig = group.configs[0];
         });
-
-        // recover destroyed custom configs
-        listUtils.recoverDestroyed($scope.model.custom_configs);
-        if (!$scope.activeCustomConfig || !$scope.showCustomConfigs) {
-            $scope.setActiveCustomConfig();
-        }
     });
     $scope.$on('saveChanges', function() {
-        // remove destroyed config groups
-        listUtils.removeDestroyed($scope.model.configs);
-
-        // remove destroyed configs
-        $scope.model.configs.forEach(function(group) {
-            listUtils.removeDestroyed(group.configs);
+        listUtils.removeDestroyed($scope.model.config_files);
+        $scope.model.config_files.forEach(function(group) {
+            listUtils.removeDestroyed(group.children);
         });
-
-        // remove destroyed custom configs
-        listUtils.removeDestroyed($scope.model.custom_configs);
     });
 });
