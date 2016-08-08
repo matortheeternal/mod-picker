@@ -14,7 +14,7 @@
             <li class="primary-page page">
                 <div class="primary-page-content page-content">
                     <%= link_to "/help/category/#{category}" do %>
-                    <img src="https://www.placehold.it/500x270">
+                    <%= image_tag("#{category}.png") %>
                     <% end %>
                     <h3 class="capitalize">
                         <%= link_to "#{category.humanize}", "/help/category/#{category}" %>
@@ -30,7 +30,7 @@
     <div class="games-category-container category-container clearfix">
         <div class="games-category-header">
             <h3 class="no-margin strong">Games</h3>
-            <h4 class="no-margin thin">Browse articles related to the games you're interested in modding</h4>
+            <h4 class="no-margin thin">Articles related to the games you're interested in modding</h4>
         </div>
 
         <ul class="games-category-list categories-list">
