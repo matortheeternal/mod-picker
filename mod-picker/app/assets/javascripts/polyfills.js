@@ -15,6 +15,18 @@ String.prototype.toDashFormat = function() {
         return "-" + uppercaseLetter.toLowerCase();
     })
 };
+String.prototype.wordCount = function() {
+    return this.length ? this.match(/(\S+)/g).length : 0;
+};
+
+String.prototype.reduceText = function(numWords) {
+    var lines = this.split('\n');
+    var result = '';
+    while (result.wordCount() < numWords && lines.length) {
+        result += lines.shift() + '\n';
+    }
+    return result.trim();
+};
 
 // concatenates array1 with array2 and assigns the result to a1
 // does nothing if either array1 or array2 are undefined

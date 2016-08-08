@@ -1,4 +1,4 @@
-app.directive('readMore', function(spinnerFactory) {
+app.directive('readMore', function() {
     return {
         restrict: 'E',
         templateUrl: '/resources/directives/readMore.html',
@@ -11,17 +11,9 @@ app.directive('readMore', function(spinnerFactory) {
 });
 
 app.controller('readMoreController', function($scope) {
-    var wordCount = function(string) {
-        return string.match(/(\S+)/g).length;
-    };
-
-    var reduceText = function(string) {
-        var words = string.split(' ', $scope.numWords);
-        return words.join(' ');
-    };
-
-    $scope.reducedText = reduceText($scope.text);
-    $scope.expandable = wordCount($scope.text) > $scope.numWords * 1.25;
+    $scope.reducedText = $scope.text.reduceText($scope.numWords);
+    $scope.expandable = $scope.text.wordCount() > $scope.numWords * 1.25 &&
+        $scope.reducedText.length < $scope.text.length;
 
     $scope.expanded = false;
     $scope.toggleExpansion = function() {
