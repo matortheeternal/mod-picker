@@ -25,13 +25,4 @@ app.controller('pluginDetailsModalController', function ($scope, pluginService, 
         // stop event propagation - we handled it
         event.stopPropagation();
     });
-
-    if ($scope.detailsItem.plugin) {
-        delete $scope.pluginAnalysis;
-        pluginService.retrievePlugin($scope.detailsItem.plugin.id).then(function(data) {
-            $scope.pluginAnalysis = data;
-        }, function(response) {
-            $scope.errors.pluginDetails = response;
-        });
-    }
 });
