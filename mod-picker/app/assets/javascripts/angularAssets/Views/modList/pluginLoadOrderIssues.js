@@ -8,8 +8,9 @@ app.directive('pluginLoadOrderIssues', function() {
     }
 });
 
-app.controller('pluginLoadOrderIssuesController', function($scope, listUtils) {
+app.controller('pluginLoadOrderIssuesController', function($scope, listUtils, requirementUtils) {
     $scope.showUnresolvedLoadOrder = true;
+    $scope.getRequirerList = requirementUtils.getPluginRequirerList;
 
     /* BUILD VIEW MODEL */
     $scope.buildUnresolvedLoadOrder = function() {
@@ -33,6 +34,30 @@ app.controller('pluginLoadOrderIssuesController', function($scope, listUtils) {
                 note.resolved = true;
             }
         });
+    };
+
+    $scope.buildOutOfOrderPlugins = function() {
+        $scope.required.out_of_order_plugins = [];
+        $scope.required.plugins.forEach(function(requirement) {
+            var masterPlugin = $scope.findPlugin(requirement.master_plugin.id, true);
+            if (masterPlugin) {
+                var item = {};
+                var masterIndex = masterPlugin.index;
+                item.plugins = requirement.plugins.filter(function(plugin) {
+                    var foundPlugin = $scope.findPlugin(plugin.id, true);
+                    return foundPlugin && foundPlugin.index < masterIndex;
+                });
+                if (item.plugins.length) {
+                    item.master_plugin = requirement.master_plugin;
+                    $scope.required.out_of_order_plugins.push(item);
+                }
+            }
+        });
+    };
+
+    $scope.buildLoadOrderIssues = function() {
+        $scope.buildUnresolvedLoadOrder();
+        $scope.buildOutOfOrderPlugins();
     };
 
     /* UPDATE VIEW MODEL */
@@ -72,27 +97,27 @@ app.controller('pluginLoadOrderIssuesController', function($scope, listUtils) {
     });
 
     // event triggers
-    $scope.$on('initializeModules', $scope.buildUnresolvedLoadOrder);
+    $scope.$on('initializeModules', $scope.buildLoadOrderIssues);
     $scope.$on('reloadModules', function() {
         listUtils.recoverDestroyed($scope.notes.load_order);
-        $scope.buildUnresolvedLoadOrder();
+        $scope.buildLoadOrderIssues();
     });
     $scope.$on('saveChanges', function() {
         listUtils.removeDestroyed($scope.notes.load_order);
-        $scope.buildUnresolvedLoadOrder();
+        $scope.buildLoadOrderIssues();
     });
     $scope.$on('pluginRemoved', function(event, pluginId) {
         if (pluginId) $scope.removeLoadOrderNotes(pluginId);
-        $scope.buildUnresolvedLoadOrder();
+        $scope.buildLoadOrderIssues();
     });
     $scope.$on('pluginRecovered', function(event, pluginId) {
         if (pluginId) $scope.recoverLoadOrderNotes(pluginId);
-        $scope.buildUnresolvedLoadOrder();
+        $scope.buildLoadOrderIssues();
     });
-    $scope.$on('pluginAdded', $scope.buildUnresolvedLoadOrder);
-    $scope.$on('pluginMoved', $scope.buildUnresolvedLoadOrder);
+    $scope.$on('pluginAdded', $scope.buildLoadOrderIssues);
+    $scope.$on('pluginMoved', $scope.buildLoadOrderIssues);
     $scope.$on('modAdded', function(event, modData) {
         $scope.notes.load_order.unite(modData.load_order_notes);
-        $scope.buildUnresolvedLoadOrder();
+        $scope.buildLoadOrderIssues();
     });
 });
