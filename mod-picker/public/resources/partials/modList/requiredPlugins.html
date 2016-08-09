@@ -21,10 +21,10 @@
                     <span class="help-tooltip" title="{{getRequirerList(requirement, 2)}}">{{requirement.plugins.length - 2}} more</span>
                 </span>
                 <!-- resolution options -->
-                <span ng-if="editing">
+                <div class="inline-flex" ng-if="editing">
                     <span class="action-box green-box" ng-click="addPlugin(requirement.master_plugin.id)" title="Add {{requirement.master_plugin.filename}}">Add Requirement</span>
                     <span class="action-box red-box" ng-click="removeRequirers(requirement)" title="Remove {{getRequirerList(requirement)}}">Remove Requirers</span>
-                </span>
+                </div>
             </li>
         </ul>
         <div ng-show="showMissingPlugins && !required.missing_plugins.length" class="content-message">
