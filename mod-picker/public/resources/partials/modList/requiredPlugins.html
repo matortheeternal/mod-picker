@@ -13,12 +13,11 @@
                 <a ng-href="#/mod/{{requirement.master_plugin.mod_id}}/analysis?plugin={{requirement.master_plugin.id}}">{{requirement.master_plugin.filename}}</a>
                 is required by
                 <span ng-repeat="plugin in requirement.plugins | limitTo: 2">
-                    <a ng-href="#/mod/{{plugin.mod_id}}/analysis?plugin={{plugin.id}}">{{plugin.filename}}</a>
-                    {{!$last || requirement.plugins.length > 2 ? ', ' : ''}}
+                    <a ng-href="#/mod/{{plugin.mod_id}}/analysis?plugin={{plugin.id}}">{{plugin.filename}}</a>{{!$last || requirement.plugins.length > 2 ? ', ' : ''}}
                 </span>
                 <span ng-if="requirement.plugins.length > 2">
                     and
-                    <span class="help-tooltip" title="{{getRequirerList(requirement, 2)}}">{{requirement.plugins.length - 2}} more</span>
+                    <span class="help-tooltip no-margin" title="{{getRequirerList(requirement, 2)}}">{{requirement.plugins.length - 2}} more</span>
                 </span>
                 <!-- resolution options -->
                 <div class="inline-flex" ng-if="editing">
