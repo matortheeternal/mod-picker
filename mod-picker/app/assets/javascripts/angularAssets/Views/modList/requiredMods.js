@@ -10,6 +10,7 @@ app.directive('requiredMods', function() {
 
 app.controller('requiredModsController', function($scope, $rootScope, requirementUtils) {
     $scope.showMissingMods = true;
+    $scope.getRequirerList = requirementUtils.getModRequirerList;
 
     /* BUILD VIEW MODEL */
     $scope.buildMissingMods = function() {
@@ -26,13 +27,6 @@ app.controller('requiredModsController', function($scope, $rootScope, requiremen
                 }
             }
         });
-    };
-
-    /* HELPER FUNCTIONS */
-    $scope.getRequirerList = function(requirement, startIndex) {
-        return requirement.mods.slice(startIndex).map(function(mod) {
-            return mod.name;
-        }).join(', ');
     };
 
     /* RESOLUTION ACTIONS */

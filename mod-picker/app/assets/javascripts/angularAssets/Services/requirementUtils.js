@@ -1,4 +1,19 @@
 app.service('requirementUtils', function () {
+    var service = this;
+    this.getRequirerList = function(requirement, startIndex, key, model) {
+        return requirement[key].slice(startIndex).map(function(item) {
+            return item[model];
+        }).join(', ');
+    };
+
+    this.getPluginRequirerList = function(requirement, startIndex) {
+        return service.getRequirerList(requirement, startIndex, 'plugins', 'filename');
+    };
+
+    this.getModRequirerList = function(requirement, startIndex) {
+        return service.getRequirerList(requirement, startIndex, 'mods', 'name');
+    };
+
     this.compactRequirements = function(requirements, key, reqKey) {
         var pluralKey = key + "s";
         var destroyedKey = "destroyed_" + pluralKey;
