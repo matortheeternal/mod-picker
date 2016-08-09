@@ -97,7 +97,7 @@ app.service('listUtils', function () {
     };
 
     this.moveItem = function(model, key, options) {
-        var destItem = service.findItem(model, key, options.destId);
+        var destItem = service.findItem(model, key, 'id', options.destId);
 
         // check if the destination item is on the view model
         if (!destItem) {
@@ -105,7 +105,7 @@ app.service('listUtils', function () {
         }
 
         // this splices the item if found
-        var moveItem = service.findItem(model, key, options.moveId, true);
+        var moveItem = service.findItem(model, key, 'id', options.moveId, true);
 
         // check if the item be moved is on the view model
         if (!moveItem) {
