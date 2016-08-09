@@ -22,9 +22,9 @@
             {{note.ignored ? "Ignored" : note.resolved ? "Resolved" : "Unresolved"}}
         </div>
         <div class="resolution-options order-options">
-            <span class="action-box green-box" ng-click="resolve('move', 0)" ng-class="{ 'disabled' : note.resolved || note.ignored }">Move {{note.plugins[0].filename}}</span>
-            <span class="action-box green-box" ng-click="resolve('move', 1)" ng-class="{ 'disabled' : note.resolved || note.ignored }">Move {{note.plugins[1].filename}}</span>
-            <span class="action-box yellow-box single" ng-click="resolve('ignore')" ng-class="{ 'disabled' : note.resolved }">{{note.ignored ? 'Unignore' : 'Ignore'}} Issue</span>
+            <div class="action-box green-box" ng-click="resolve('move', 0)" ng-class="{ 'disabled' : note.resolved || note.ignored }">Move {{note.plugins[0].filename}}</div>
+            <div class="action-box green-box" ng-click="resolve('move', 1)" ng-class="{ 'disabled' : note.resolved || note.ignored }">Move {{note.plugins[1].filename}}</div>
+            <div class="action-box yellow-box single" ng-click="resolve('ignore')" ng-class="{ 'disabled' : note.resolved }">{{note.ignored ? 'Unignore' : 'Ignore'}} Issue</div>
         </div>
     </div>
 </div>
