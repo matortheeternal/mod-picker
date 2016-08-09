@@ -203,6 +203,11 @@
       bottom: 0;
       cursor: default;
 
+      .action-box {
+        display: inline-block;
+        margin: 2px 0;
+      }
+
       .actions-dropdown-container {
         position: relative;
         outline: none;
