@@ -41,14 +41,19 @@ app.controller('pluginLoadOrderIssuesController', function($scope, listUtils, re
         $scope.required.plugins.forEach(function(requirement) {
             var masterPlugin = $scope.findPlugin(requirement.master_plugin.id, true);
             if (masterPlugin) {
-                var item = {};
+                var item = {}, earliestIndex = 999, earliestPlugin = {};
                 var masterIndex = masterPlugin.index;
                 item.plugins = requirement.plugins.filter(function(plugin) {
                     var foundPlugin = $scope.findPlugin(plugin.id, true);
+                    if (foundPlugin.index < earliestIndex) {
+                        earliestIndex = foundPlugin.index;
+                        earliestPlugin = foundPlugin.plugin;
+                    }
                     return foundPlugin && foundPlugin.index < masterIndex;
                 });
                 if (item.plugins.length) {
                     item.master_plugin = requirement.master_plugin;
+                    item.earliest_plugin = earliestPlugin;
                     $scope.required.out_of_order_plugins.push(item);
                 }
             }
