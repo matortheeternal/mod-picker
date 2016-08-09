@@ -22,25 +22,25 @@
         <section>
             <div class="header-box">
                 ACTIONS
-                <div class="action-box" ng-click="starModList()" title="{{mod_list.stars_count}} stars">
+                <span class="action-box" ng-click="starModList()" title="{{mod_list.stars_count}} stars">
                     <i class="fa {{mod_list.star ? 'fa-star' : 'fa-star-o'}}" aria-hidden="true"></i>
                     {{mod_list.star ? 'Unfavorite' : 'Favorite'}}
-                </div>
-                <div class="action-box">
+                </span>
+                <span class="action-box">
                     <i class="fa fa-plus" aria-hidden="true"></i>
                     Duplicate Modlist
-                </div>
+                </span>
             </div>
             <div class="header-box">
                 STATUS
-                <div class="action-box no-action {{statusClasses[mod_list.status]}} capitalize" title="{{statusHints[mod_list.status]}}">
+                <span class="action-box no-action {{statusClasses[mod_list.status]}} capitalize" title="{{statusHints[mod_list.status]}}">
                      <i class="fa {{statusIcons[mod_list.status]}}" aria-hidden="true"></i>
                     {{mod_list.status.replace("_", " ")}}
-                </div>
-                <div class="action-box no-action {{visibilityClasses[mod_list.visibility]}} capitalize" title="{{visibilityHints[mod_list.visibility]}}">
+                </span>
+                <span class="action-box no-action {{visibilityClasses[mod_list.visibility]}} capitalize" title="{{visibilityHints[mod_list.visibility]}}">
                     <i class="fa {{visibilityIcons[mod_list.visibility]}}" aria-hidden="true"></i>
                     {{mod_list.visibility.replace("visibility_", "")}}
-                </div>
+                </span>
             </div>
         </section>
     </div>
