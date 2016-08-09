@@ -36,6 +36,12 @@ app.controller('requiredPluginsController', function($scope, requirementUtils) {
         });
     };
 
+    $scope.resolveAllRequirements = function() {
+        $scope.required.missing_plugins.forEach(function(requirement) {
+            $scope.addPlugin(requirement.master_plugin.id)
+        });
+    };
+
     /* EVENT TRIGGERS */
     $scope.$on('initializeModules', function() {
         requirementUtils.compactRequirements($scope.required.plugins, 'plugin', 'master_plugin');
