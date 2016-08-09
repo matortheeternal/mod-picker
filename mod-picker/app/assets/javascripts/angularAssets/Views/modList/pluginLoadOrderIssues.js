@@ -101,6 +101,28 @@ app.controller('pluginLoadOrderIssuesController', function($scope, listUtils, re
         }
     });
 
+    $scope.reorder = function(requirement, reorderDependencies) {
+        var moveOptions;
+        if (reorderDependencies) {
+            moveOptions = {
+                destId: requirement.master_plugin.id,
+                after: true
+            };
+            for (var i = requirement.plugins.length - 1; i >= 0; i--) {
+                var plugin = requirement.plugins[i];
+                moveOptions.moveId = plugin.id;
+                $scope.$broadcast('moveItem', moveOptions);
+            }
+        } else {
+            moveOptions = {
+                moveId: requirement.master_plugin.id,
+                destId: requirement.earliest_plugin.id,
+                after: false
+            };
+            $scope.$broadcast('moveItem', moveOptions);
+        }
+    };
+
     // event triggers
     $scope.$on('initializeModules', $scope.buildLoadOrderIssues);
     $scope.$on('reloadModules', function() {
