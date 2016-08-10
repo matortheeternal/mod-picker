@@ -1,11 +1,14 @@
 <div class="content-block">
     <div class="content-title">Compatibility Issues
-            <span class="note-item">
-                ({{showUnresolvedPluginCompatibility ? 'Unresolved' : 'All'}})
-            </span>
-            <span class="right-item toggle-item" ng-click="showUnresolvedPluginCompatibility = !showUnresolvedPluginCompatibility">
-                {{showUnresolvedPluginCompatibility ? 'Show All' : 'Show Unresolved Issues'}}
-            </span>
+        <span class="note-item">
+            ({{showUnresolvedPluginCompatibility ? 'Unresolved' : 'All'}})
+        </span>
+        <span class="right-item action-box" ng-if="notes.unresolved_plugin_compatibility.length" ng-click="resolveAllCompatibility()">
+            <i class="fa fa-check"></i> Resolve All
+        </span>
+        <span class="right-item toggle-item" ng-click="showUnresolvedPluginCompatibility = !showUnresolvedPluginCompatibility">
+            {{showUnresolvedPluginCompatibility ? 'Show All' : 'Show Unresolved Issues'}}
+        </span>
     </div>
     <div class="content-container">
         <div ng-if="showUnresolvedPluginCompatibility" ng-repeat="note in notes.unresolved_plugin_compatibility" class="content-block">
