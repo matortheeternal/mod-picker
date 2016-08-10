@@ -123,6 +123,20 @@ app.controller('pluginLoadOrderIssuesController', function($scope, listUtils, re
         }
     };
 
+    $scope.resolveAllLoadOrder = function() {
+        $scope.required.out_of_order_plugins.forEach(function(requirement) {
+            $scope.reorder(requirement);
+        });
+        $scope.notes.unresolved_load_order.forEach(function(note) {
+            var moveOptions = {
+                moveId: note.plugins[0].id,
+                destId: note.plugins[1].id,
+                after: false
+            };
+            $scope.$broadcast('moveItem', moveOptions);
+        });
+    };
+
     // event triggers
     $scope.$on('initializeModules', $scope.buildLoadOrderIssues);
     $scope.$on('reloadModules', function() {

@@ -1,11 +1,14 @@
 <div class="content-block">
     <div class="content-title">Load Order Issues
-            <span class="note-item">
-                ({{showUnresolvedLoadOrder ? 'Unresolved' : 'All'}})
-            </span>
-            <span class="right-item toggle-item" ng-click="showUnresolvedLoadOrder = !showUnresolvedLoadOrder">
-                {{showUnresolvedLoadOrder ? 'Show All' : 'Show Unresolved Issues'}}
-            </span>
+        <span class="note-item">
+            ({{showUnresolvedLoadOrder ? 'Unresolved' : 'All'}})
+        </span>
+        <span class="right-item action-box" ng-if="required.out_of_order_plugins.length || notes.unresolved_load_order.length" ng-click="resolveAllLoadOrder()">
+            <i class="fa fa-check"></i> Resolve All
+        </span>
+        <span class="right-item toggle-item" ng-click="showUnresolvedLoadOrder = !showUnresolvedLoadOrder">
+            {{showUnresolvedLoadOrder ? 'Show All' : 'Show Unresolved Issues'}}
+        </span>
     </div>
     <div class="content-container">
         <div ng-if="required.out_of_order_plugins.length" class="content-block">
