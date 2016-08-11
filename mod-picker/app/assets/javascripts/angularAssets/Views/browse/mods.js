@@ -27,6 +27,19 @@ app.controller('modsController', function($scope, $q, $stateParams, $state, modS
         return result;
     };
 
+    $scope.toggleModListFilter = function() {
+        if ($scope.filters.exclude) {
+            // it's being disabled
+            delete $scope.filters.exclude;
+        } else {
+            // it's being enabled
+            var activeModList = $scope.currentUser.active_mod_list;
+            if (activeModList) {
+                $scope.filters.exclude = activeModList.incompatible_mods;
+            }
+        }
+    };
+
     // returns a new subset of the input filters with the unavailable filters removed
     $scope.availableFilters = function(filters) {
         return filters.filter(function(item) {
