@@ -84,7 +84,6 @@ input[type="button"], input[type="submit"] {
   text-align: center;
   background-color: $action_color;
   padding: 4px 8px;
-  display: inline;
   font-size: 12px;
   font-weight: 500;
   border-radius: 4%;
@@ -115,6 +114,10 @@ input[type="button"], input[type="submit"] {
       background-color: $hard_border_color;
     }
   }
+}
+
+div.action-box {
+  display: inline-block;
 }
 
 .static-box {

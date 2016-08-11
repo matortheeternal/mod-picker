@@ -37,3 +37,8 @@ Array.prototype.unite = function(array1, array2) {
         }
     }
 };
+
+// gets a random item from the array
+Array.prototype.random = function () {
+    return this[Math.floor((Math.random() * this.length))];
+};

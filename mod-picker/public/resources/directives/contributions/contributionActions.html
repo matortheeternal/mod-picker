@@ -1,8 +1,8 @@
 <div class="actions-container">
-    <span class="action-box" ng-if="correctable" tabindex="{{index}}" ng-click="toggleCorrectionsModal(true)">View Corrections</span>
-    <span class="action-box" ng-focus="showDropdown = true" ng-blur="blurDropdown()" tabindex="{{index}}">
+    <div class="action-box" ng-if="correctable" tabindex="{{index}}" ng-click="toggleCorrectionsModal(true)">View Corrections</div>
+    <div class="action-box" ng-focus="showDropdown = true" ng-blur="blurDropdown()" tabindex="{{index}}">
         Actions <i class="fa fa-caret-down"></i>
-    </span>
+    </div>
     <span class="actions-dropdown-container">
         <div class="dropdown" ng-show="showDropdown">
             <div class="dropdown-item" ng-if="hasHistory" ng-click="toggleHistoryModal(true)">View History</div>

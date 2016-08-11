@@ -10,6 +10,7 @@ app.directive('requiredPlugins', function() {
 
 app.controller('requiredPluginsController', function($scope, requirementUtils) {
     $scope.showMissingPlugins = true;
+    $scope.getRequirerList = requirementUtils.getPluginRequirerList;
 
     /* BUILD VIEW MODEL */
     $scope.buildMissingPlugins = function() {
@@ -28,17 +29,16 @@ app.controller('requiredPluginsController', function($scope, requirementUtils) {
         });
     };
 
-    /* HELPER FUNCTIONS */
-    $scope.getRequirerList = function(requirement, startIndex) {
-        return requirement.plugins.slice(startIndex).map(function(plugin) {
-            return plugin.filename;
-        }).join(', ');
-    };
-
     /* RESOLUTION ACTIONS */
     $scope.removeRequirers = function(requirement) {
         requirement.plugins.forEach(function(plugin) {
             $scope.removePlugin($scope.findPlugin(plugin.id, true));
+        });
+    };
+
+    $scope.resolveAllRequirements = function() {
+        $scope.required.missing_plugins.forEach(function(requirement) {
+            $scope.addPlugin(requirement.master_plugin.id)
         });
     };
 

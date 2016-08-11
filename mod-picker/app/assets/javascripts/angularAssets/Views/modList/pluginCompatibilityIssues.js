@@ -82,6 +82,21 @@ app.controller('pluginCompatibilityIssuesController', function($scope, listUtils
         }
     });
 
+    $scope.resolveAllCompatibility = function() {
+        $scope.notes.unresolved_plugin_compatibility.forEach(function(note) {
+            switch(note.status) {
+                case "compatibility option":
+                    if (note.compatibility_plugin.id) {
+                        $scope.addPlugin(note.compatibility_plugin.id);
+                    }
+                    break;
+                case "make custom patch":
+                    $scope.addCustomPlugin(note.id);
+                    break;
+            }
+        });
+    };
+
     // event triggers
     $scope.$on('initializeModules', $scope.buildUnresolvedPluginCompatibility);
     $scope.$on('reloadModules', function() {
