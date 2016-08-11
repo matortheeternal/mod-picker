@@ -182,7 +182,7 @@ class ModList < ActiveRecord::Base
     return [] if mod_ids.empty?
 
     # get incompatible mod ids
-    incompatible_ids = CompatibilityNote.status([1, 2]).mod(mod_ids).pluck(:first_mod_id, :second_mod_id)
+    incompatible_ids = CompatibilityNote.status([0, 1]).mod(mod_ids).pluck(:first_mod_id, :second_mod_id)
     # return array of unique mod ids from the notes, excluding mod list mod ids
     incompatible_ids.flatten(1).uniq - mod_ids
   end
