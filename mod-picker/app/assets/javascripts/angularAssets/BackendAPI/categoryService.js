@@ -33,8 +33,8 @@ app.service('categoryService', function ($q, backend) {
         return backend.retrieve('/category_priorities');
     };
 
-    this.getCategoryById = function (categories, id) {
-        return categories.find(function (category) {
+    this.getCategoryById = function(categories, id) {
+        return categories.find(function(category) {
           return category.id === id;
         });
     };
@@ -44,11 +44,11 @@ app.service('categoryService', function ($q, backend) {
         return retrieveFilteredCategories('primary');
     };
 
-    this.retrieveSecondaryCategory = function (primaryCategoryId) {
+    this.retrieveSecondaryCategory = function(primaryCategoryId) {
         return retrieveFilteredCategories(primaryCategoryId);
     };
 
-    this.retrieveNestedCategories = function () {
+    this.retrieveNestedCategories = function() {
         var nestedCategories = [];
         var secondaryCategoryPromises = [];
         var nestedCategoriesPromise = $q.defer();
@@ -84,5 +84,5 @@ app.service('categoryService', function ($q, backend) {
                 service.resolveModCategories(item.mod);
             }
         });
-    }
+    };
 });
