@@ -1,0 +1,177 @@
+<header>
+    <div class="page-container">
+        <div class="header">
+            <a class="logo" href="/{{currentGame.nexus_name}}#/home">
+                <i class="icom-mod_picker"></i>
+                <h1>Mod Picker</h1>
+            </a>
+            <div class="nav-controls">
+                <!-- User signed in navigation -->
+                <ul class="user-nav" ng-if="currentUser">
+                    <li>
+                        Welcome <a class="inverse-link" ng-href="#/user/{{currentUser.id}}">{{currentUser.username}}</a>
+                    </li>
+                    <li>
+                        <a class="inverse-link">
+                            <form id="contribution-select-form">
+                                <select class="contribution-selector" ng-model="newLocation" ng-change="navigateTo(newLocation)">
+                                    <option selected disabled hidden style='display: none' value=''></option>
+                                    <option value="/settings/mods">Mods</option>
+                                    <option value="/settings/mod-lists">Mod Lists</option>
+                                    <option value="/comments?a={{currentUser.username}}">Comments</option>
+                                    <option value="/reviews?a={{currentUser.username}}">Reviews</option>
+                                    <option value="/compatibility-notes?a={{currentUser.username}}">Compatibility Notes</option>
+                                    <option value="/install-order-notes?a={{currentUser.username}}">Install Order Notes</option>
+                                    <option value="/load-order-notes?a={{currentUser.username}}">Load Order Notes</option>
+                                    <option value="/corrections?a={{currentUser.username}}">Corrections</option>
+                                </select>
+                                <span class="contributions-label">My Contributions</span>
+                            </form>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="inverse-link" href="#/settings">Settings</a>
+                    </li>
+                    <li>
+                        <a class="inverse-link" href="/users/sign_out">Log Out</a>
+                    </li>
+                    <li>
+                        <game-select games="games" selected-game="currentGame"></game-select>
+                    </li>
+                </ul>
+                <!-- User signed out navigation -->
+                <ul class="user-nav" ng-if="!currentUser">
+                    <li>
+                        <a class="inverse-link" href="/users/sign_in">Log In</a>
+                    </li>
+                    <li>
+                        <a class="inverse-link" href="/users/sign_up">Register</a>
+                    </li>
+                    <li>
+                        <game-select games="games" selected-game="currentGame"></game-select>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</header>
+
+<nav>
+    <div class="page-container">
+        <div class="nav-wrapper clearfix">
+            <div class="primary-nav">
+                <a class="nav-modlist" ng-href="{{ currentUser.active_mod_list_id ? '#/mod-list/' + currentUser.active_mod_list_id : '#/mod-list/new'}}">
+                    <span class="nav-icon">
+                        <i class="fa fa-pencil-square-o"></i>
+                    </span>
+                    <span class="nav-text">
+                        <b ng-if="currentUser.active_mod_list_id">Edit your</b>
+                        <b ng-if="!currentUser.active_mod_list_id">Start a new</b>
+                        Mod List
+                    </span>
+                </a>
+                <a class="nav-contributions">
+                    <span class="nav-icon">
+                        <i class="fa fa-comments"></i>
+                    </span>
+                    <span class="nav-text">
+                        <b>View recent</b>
+                        Contributions
+                    </span>
+                </a>
+                <a class="nav-browse-modlists" href="#/mod-lists">
+                    <span class="nav-icon">
+                        <i class="fa fa-list-ul"></i>
+                    </span>
+                    <span class="nav-text">
+                        <b>See all</b>
+                        Public Mod Lists
+                    </span>
+                </a>
+                <a class="nav-browse-mods" href="#/mods">
+                    <span class="nav-icon">
+                        <i class="fa fa-globe"></i>
+                    </span>
+                    <span class="nav-text">
+                        <b>Browse</b>
+                        Skyrim Mods
+                    </span>
+                    <span class="nav-dropdown"></span>
+                </a>
+                <a class="nav-submit-mod" href="#/submit" ng-if="permissions.canSubmitMods">
+                    <span class="nav-icon">
+                        <i class="fa fa-plus-square"></i>
+                    </span>
+                    <span class="nav-text">
+                        <b>Submit</b>
+                        A {{currentGame.display_name}} Mod
+                    </span>
+                </a>
+            </div>
+            <div class="secondary-nav">
+                <div class="search" ng-controller="searchController">
+                    <form>
+                        <input class="search-field" type="text" autocomplete="off" ng-model="search" placeholder="Search mods...">
+                        <div class="search-container">
+                            <input id="search-btn" class="btn" type="submit" value="Search" ng-click="processSearch()" ng-hide="loading"/>
+                            <loader data="!loading" spinner-class="small-spinner"></loader>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<ui-view></ui-view>
+
+<footer>
+    <div class="page-container">
+        <div class="left-column wide-column">
+            <span class="logo small-logo">
+                <i class="icom-mod_picker"></i>
+                <h1>Mod Picker</h1>
+            </span>
+            &copy;2016 Mod Picker, LLC.  All rights reserved.
+        </div>
+        <div class="right-column">
+            <section>
+                <span class="section-title">Browse Content</span>
+                <ul>
+                    <li><a class="inverse-link" href="#/mods">Mods</a></li>
+                    <li><a class="inverse-link" href="#/mod-lists">Mod Lists</a></li>
+                    <li><a class="inverse-link" href="#/users">Users</a></li>
+                    <li><a class="inverse-link" href="#/comments">Comments</a></li>
+                </ul>
+            </section>
+            <section>
+                <span class="section-title">Browse Contributions</span>
+                <ul>
+                    <li><a class="inverse-link" href="#/reviews">Reviews</a></li>
+                    <li><a class="inverse-link" href="#/compatibility-notes">Compatibility Notes</a></li>
+                    <li><a class="inverse-link" href="#/load-order-notes">Load Order Notes</a></li>
+                    <li><a class="inverse-link" href="#/install-order-notes">Install Order Notes</a></li>
+                    <li><a class="inverse-link" href="#/corrections">Corrections</a></li>
+                </ul>
+            </section>
+            <section>
+                <span class="section-title">Mod Picker</span>
+                <ul>
+                    <li><a class="inverse-link" href="/help/modpicker/About">About Us</a></li>
+                    <li><a class="inverse-link" href="/legal/tos">Terms of Service</a></li>
+                    <li><a class="inverse-link" href="/legal/privacy">Privacy Policy</a></li>
+                    <li><a class="inverse-link" href="/help">Help Center</a></li>
+                    <li><a class="inverse-link" href="/help/modpicker/Contact">Contact</a></li>
+                </ul>
+            </section>
+            <section>
+                <span class="section-title">Social Media</span>
+                <ul>
+                    <li><a class="inverse-link" href="https://twitter.com/Mod_Picker">Twitter</a></li>
+                    <li><a class="inverse-link" href="https://www.youtube.com/channel/UCWqJeb-T5-k-AnWZTF_0ZAw">YouTube</a></li>
+                    <li><a class="inverse-link" href="https://www.facebook.com/modpicker">Facebook</a></li>
+                </ul>
+            </section>
+        </div>
+    </div>
+</footer>

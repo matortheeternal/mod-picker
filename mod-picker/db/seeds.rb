@@ -36,8 +36,10 @@ fake_config = {
     inotes: true,
     lnotes: false,
     mod_authors: false,
-    mod_lists: false,
-    tags: false
+    mod_lists: true,
+    tags: false,
+    articles: false,
+    help_pages: true
 }
 
 seed_fake_users if fake_config[:users]
@@ -50,3 +52,17 @@ seed_fake_load_order_notes if fake_config[:lnotes]
 seed_fake_mod_authors if fake_config[:mod_authors]
 seed_fake_mod_lists if fake_config[:mod_lists]
 seed_fake_tags if fake_config[:tags]
+seed_fake_articles if fake_config[:articles]
+seed_fake_help_pages if fake_config[:help_pages]
+
+
+# update all games counter caches since its normally lazily updated daily
+def update_game_counters
+    puts "\nUpdating game counter caches"
+    Game.all.each do |game|
+        game.update_lazy_counters
+        game.save!
+    end
+end
+
+update_game_counters

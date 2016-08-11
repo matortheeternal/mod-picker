@@ -1,13 +1,13 @@
 <div class="actions-container">
-    <span class="action-box" ng-if="correctable" tabindex="{{index}}">View Corrections</span>
-    <span class="action-box" ng-focus="showDropdown = true" ng-blur="blurDropdown()" tabindex="{{index}}">
+    <div class="action-box" ng-if="correctable" tabindex="{{index}}" ng-click="toggleCorrectionsModal(true)">View Corrections</div>
+    <div class="action-box" ng-focus="showDropdown = true" ng-blur="blurDropdown()" tabindex="{{index}}">
         Actions <i class="fa fa-caret-down"></i>
-    </span>
+    </div>
     <span class="actions-dropdown-container">
         <div class="dropdown" ng-show="showDropdown">
-            <div class="dropdown-item">View History</div>
-            <div class="dropdown-item" ng-click="toggleLinkModal(true)">Get Link</div>
-            <div class="dropdown-item" ng-click="toggleReportModal(true)" ng-if="canReport">Report</div>
+            <div class="dropdown-item" ng-if="hasHistory" ng-click="toggleHistoryModal(true)">View History</div>
+            <div class="dropdown-item" ng-click="toggleShareModal(true)">Get Link</div>
+            <div class="dropdown-item" ng-if="canReport" ng-click="toggleReportModal(true)">Report</div>
             <div class="dropdown-separator" ng-if="canEdit || canApprove || canHide"></div>
             <div class="dropdown-item" ng-if="canEdit" ng-click="edit(target)">Edit</div>
             <div class="dropdown-item" ng-if="canApprove && !target.approved" ng-click="approve(true)">Approve</div>
@@ -16,86 +16,50 @@
             <div class="dropdown-item" ng-if="canHide && target.hidden" ng-click="hide(false)">Unhide</div>
         </div>
     </span>
-    <span class="right-item" ng-if="target.approved && !target.hidden">
-        <div class="action-box" ng-class="{ 'green-box' : target.helpful }" ng-click="helpfulMark(true)" tabindex="{{index}}">
-            Helpful
-            <span ng-show="target.helpful_count > 0">({{target.helpful_count}})</span>
-        </div>
-        <div class="action-box" ng-class="{ 'red-box' : target.helpful !== undefined && !target.helpful }" ng-click="helpfulMark(false)" tabindex="{{index}}">
-            Not Helpful
-            <span ng-show="target.not_helpful_count > 0">({{target.not_helpful_count}})</span>
-        </div>
+    <span class="right-item" ng-if="!target.hidden">
+        <!-- Helpful marks -->
+        <span ng-if="!agreeable && target.approved">
+            <div class="action-box" ng-class="{ 'green-box' : target.helpful }" ng-click="helpfulMark(true)" tabindex="{{index}}">
+                Helpful
+                <span ng-show="target.helpful_count > 0">({{target.helpful_count}})</span>
+            </div>
+            <div class="action-box" ng-class="{ 'red-box' : target.helpful !== undefined && !target.helpful }" ng-click="helpfulMark(false)" tabindex="{{index}}">
+                Not Helpful
+                <span ng-show="target.not_helpful_count > 0">({{target.not_helpful_count}})</span>
+            </div>
+        </span>
+        <!-- Agreement marks -->
+        <span ng-if="canAgree">
+            <div class="action-box" ng-class="{ 'green-box' : target.agree }" ng-click="agreementMark(true)" tabindex="{{index}}">
+                Agree
+                <span ng-show="target.agree_count > 0">({{target.agree_count}})</span>
+            </div>
+            <div class="action-box" ng-class="{ 'red-box' : target.agree !== undefined && !target.agree }" ng-click="agreementMark(false)" tabindex="{{index}}">
+                Disagree
+                <span ng-show="target.disagree_count > 0">({{target.disagree_count}})</span>
+            </div>
+        </span>
+        <!-- Agreement overview -->
+        <span ng-if="agreeable && !canAgree">
+            <div class="action-box no-action" ng-if="target.status === 'open'" title="{{target.agree_count}} agree, {{target.disagree_count}} disagree">
+                Open ({{computeAgreePercentage(target) | number:0}}%)
+            </div>
+            <div class="action-box green-box no-action" ng-if="target.status === 'passed'" title="{{target.agree_count}} agreed, {{target.disagree_count}} disagreed">
+                Passed ({{computeAgreePercentage(target) | number:0}}%)
+            </div>
+            <div class="action-box red-box no-action" ng-if="target.status === 'failed'" title="{{target.agree_count}} agreed, {{target.disagree_count}} disagreed">
+                Failed ({{computeAgreePercentage(target) | number:0}}%)
+            </div>
+        </span>
     </span>
-    <span class="right-item" ng-if="target.hidden || !target.approved">
+    <!-- Hidden / Not Approved boxes -->
+    <span class="right-item" ng-if="target.hidden || (approveable && !target.approved)">
         <div class="action-box yellow-box no-action" ng-if="target.hidden">Hidden</div>
         <div class="action-box red-box no-action" ng-if="!(target.hidden || target.approved)">Not Approved</div>
     </span>
 </div>
 
-<div class="modal-container" ng-if="showLinkModal">
-    <div class="modal skinny-modal">
-        <form>
-            <div class="close-modal">
-                <span class="fa fa-times" ng-click="toggleLinkModal(false)"></span>
-            </div>
-
-            <h3 class="section-title">
-                Share {{target.user.username}}'s
-                <span class="capitalize">{{label}}</span>
-            </h3>
-            <input type="text" class="max-input" ng-model="shareLink" title="Link" spellcheck="false">
-        </form>
-    </div>
-</div>
-
-<div class="modal-container" ng-if="showReportModal">
-    <div class="modal big-modal">
-        <form>
-            <h3 class="section-title">
-                Report {{target.user.username}}'s
-                <span class="capitalize">{{label}}</span>
-            </h3>
-            <section>
-                <div class="line-label">What rule or community guideline does this submission violate?</div>
-                <div class="report-reason-list" ng-init="report.type = 'respect'">
-                    <label>
-                        <input type="radio" name="reason" ng-model="report.type" value="respect">
-                        <span class="report-reason">Be Respectful</span>
-                    </label>
-                    <label>
-                        <input type="radio" name="reason" ng-model="report.type" value="trust">
-                        <span class="report-reason">Be Trustworthy</span>
-                    </label>
-                    <label>
-                        <input type="radio" name="reason" ng-model="report.type" value="collaboration">
-                        <span class="report-reason">Be Constructive</span>
-                    </label>
-                    <label>
-                        <input type="radio" name="reason" ng-model="report.type" value="spam">
-                        <span class="report-reason">No Spam, Advertising, or Solicitation</span>
-                    </label>
-                    <label>
-                        <input type="radio" name="reason" ng-model="report.type" value="piracy">
-                        <span class="report-reason">No Piracy</span>
-                    </label>
-                    <label>
-                        <input type="radio" name="reason" ng-model="report.type" value="other">
-                        <span class="report-reason">Other</span>
-                    </label>
-                </div>
-            </section>
-            
-            <section>
-                <label>
-                    <div class="line-label">Notes</div>
-                    <textarea class="small-text-area" ng-model="report.note"></textarea>
-                </label>
-            </section>
-
-            <div class="action-button-container">
-                <input type="submit" class="btn action-btn" value="Report" ng-click="submitReport()">
-                <input type="button" class="btn action-btn" value="Cancel" ng-click="toggleReportModal(false)">
-            </div>
-        </form>
-    </div>
-</div>
+<share-modal ng-if="showShareModal"></share-modal>
+<report-modal ng-if="showReportModal"></report-modal>
+<corrections-modal ng-if="showCorrectionsModal"></corrections-modal>
+<history-modal ng-if="showHistoryModal"></history-modal>

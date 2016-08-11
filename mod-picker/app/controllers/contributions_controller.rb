@@ -8,9 +8,24 @@ class ContributionsController < ApplicationController
   # PATCH/PUT /contribution/1
   def update
     authorize! :update, @contribution
-    if @contribution.update(contribution_update_params)
+    update_params = contribution_update_params
+
+    # create a history entry if the contribution has a create_history_entry method,
+    # our update_params is not just a moderator messages,
+    # and the user editing the contribution is not the last person to edit it
+    if @contribution.respond_to?(:create_history_entry)
+      last_edited_by = @contribution.edited_by
+      if (update_params.keys - [:moderator_message]).any? && current_user.id != last_edited_by
+        history_entry = @contribution.create_history_entry
+      end
+    end
+
+    # update the base contribution
+    update_params[:edited_by] = current_user.id
+    if @contribution.update(update_params)
       render json: {status: :ok}
     else
+      history_entry.delete if history_entry
       render json: @contribution.errors, status: :unprocessable_entity
     end
   end
@@ -25,13 +40,34 @@ class ContributionsController < ApplicationController
     end
   end
 
+  # POST/GET /contribution/1/corrections
+  def corrections
+    authorize! :read, @contribution
+
+    # prepare corrections
+    corrections = @contribution.corrections.accessible_by(current_ability)
+
+    # prepare agreement marks
+    agreement_marks = AgreementMark.submitter(current_user.id).corrections(corrections.ids)
+
+    # render response
+    render :json => {
+        corrections: corrections,
+        agreement_marks: agreement_marks
+    }
+  end
+
+  # POST/GET /contribution/1/history
+  def history
+    authorize! :read, @contribution
+    history_entries = @contribution.history_entries.accessible_by(current_ability)
+    render :json => history_entries
+  end
+
   # POST /contribution/1/helpful
   def helpful
     # get old helpful marks
-    old_helpful_marks = HelpfulMark.where(
-        submitted_by: current_user.id,
-        helpfulable_id: params[:id],
-        helpfulable_type: controller_name.classify)
+    old_helpful_marks = HelpfulMark.submitter(current_user.id).helpfulable(params[:id], controller_name.classify)
 
     if params.has_key?(:helpful)
       # create new helpful mark

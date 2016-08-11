@@ -1,0 +1,34 @@
+<div class="modal-container">
+    <messages event="modalMessage"></messages>
+
+    <!-- Custom Plugin Details -->
+    <div class="modal huge-modal">
+        <form>
+            <div class="close-modal">
+                <span class="fa fa-times" ng-click="toggleDetailsModal()"></span>
+            </div>
+
+            <h2>{{ editing ? 'Edit Custom Plugin' : 'Custom Plugin Details' }}</h2>
+
+            <h3 class="section-title" ng-if="detailsItem.compatibility_note">
+                <a ng-href="#/mod/{{detailsItem.compatibility_note.mods[0].id}}/compatibility/{{detailsItem.compatibility_note.id}}">Custom Patch</a> for
+                <a ng-href="#/mod/{{detailsItem.compatibility_note.mods[0].id}}">{{detailsItem.compatibility_note.mods[0].name}}</a> and
+                <a ng-href="#/mod/{{detailsItem.compatibility_note.mods[1].id}}">{{detailsItem.compatibility_note.mods[1].name}}</a>
+            </h3>
+
+            <h3 class="section-title">Filename</h3>
+            <section>
+                <input type="text" ng-model="detailsItem.filename" ng-click="focusText($event)" spellcheck="false" ng-disabled="!editing">
+            </section>
+
+            <h3 class="section-title">Description</h3>
+            <section>
+                <textarea class="medium-text-area" ng-model="detailsItem.description" ng-disabled="!editing"></textarea>
+            </section>
+
+            <div class="action-button-container">
+                <input type="submit" class="btn action-btn" value="Close" ng-click="toggleDetailsModal()">
+            </div>
+        </form>
+    </div>
+</div>

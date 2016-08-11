@@ -1,20 +1,36 @@
 class AgreementMark < ActiveRecord::Base
   self.primary_keys = :correction_id, :submitted_by
 
-  belongs_to :user, :foreign_key => 'submitted_by', :inverse_of => 'agreement_marks'
+  # SCOPES
+  scope :submitter, -> (id) { where(submitted_by: id) }
+  scope :corrections, -> (ids) { where(correction_id: ids) }
+
+  # ASSOCIATIONS
+  belongs_to :submitter, :class_name => 'User', :foreign_key => 'submitted_by', :inverse_of => 'agreement_marks'
   belongs_to :correction, :inverse_of => 'agreement_marks'
 
-  # Validations
+  # VALIDATIONS
   validates :correction_id, :submitted_by, presence: true
   validates :agree, inclusion: [true, false]
 
-  # Callbacks
+  # CALLBACKS
   after_create :increment_counters
   before_destroy :decrement_counters
 
+  def as_json(options={})
+    if JsonHelpers.json_options_empty(options)
+      default_options = {
+          :only => [:correction_id, :agree]
+      }
+      super(options.merge(default_options))
+    else
+      super(options)
+    end
+  end
+
   private
     def decrement_counters
-      self.user.update_counter(:agreement_marks_count, -1)
+      self.submitter.update_counter(:agreement_marks_count, -1)
       if self.agree
         self.correction.update_counter(:agree_count, -1)
       else
@@ -23,7 +39,7 @@ class AgreementMark < ActiveRecord::Base
     end
 
     def increment_counters
-      self.user.update_counter(:agreement_marks_count, 1)
+      self.submitter.update_counter(:agreement_marks_count, 1)
       if self.agree
         self.correction.update_counter(:agree_count, 1)
       else

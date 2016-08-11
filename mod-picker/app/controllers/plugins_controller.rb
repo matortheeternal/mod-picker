@@ -3,29 +3,22 @@ class PluginsController < ApplicationController
 
   # GET /plugins
   def index
-    @plugins = Plugin.all
+    @plugins = Plugin.accessible_by(current_ability).filter(filtering_params).sort(params[:sort]).paginate(:page => params[:page])
 
-    render :json => @plugins
+    render :json => Plugin.index_json(@plugins)
   end
 
   # POST /plugins/search
   def search
     @plugins = Plugin.filter(search_params).sort({ column: "filename", direction: "ASC" }).limit(10)
 
-    render :json => @plugins.as_json({
-        :only => [:mod_id, :id, :filename],
-        :include => {
-            :mod => {
-                :only => [:name]
-            }
-        }
-    })
+    render :json => @plugins
   end
 
   # GET /plugins/1
   def show
     authorize! :read, @plugin
-    render :json => @plugin
+    render :json => Plugin.show_json(@plugin)
   end
 
   # DELETE /plugins/1
@@ -44,9 +37,14 @@ class PluginsController < ApplicationController
       @plugin = Plugin.find(params[:id])
     end
 
+    # Params we allow filtering on
+    def filtering_params
+      params[:filters].permit(:search, :game)
+    end
+
     # Params we allow searching on
     def search_params
-      params[:filters].slice(:search, :game)
+      params[:filters].permit(:search, :game)
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

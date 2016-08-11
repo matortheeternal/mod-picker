@@ -4,4 +4,8 @@ class UserTitle < ActiveRecord::Base
   scope :game, -> (game) { where(game_id: game) }
 
   belongs_to :game
+
+  # Validations
+  validates :game_id, :title, :rep_required, presence: true
+  validates :title, length: {maximum: 32}
 end

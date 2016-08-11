@@ -1,0 +1,131 @@
+.mod-list-tab {
+  .content-message {
+    margin: 20px 0;
+  }
+
+  .content-block {
+    .content-message {
+      margin: 40px 0;
+    }
+  }
+
+  .tab-bar-items {
+    min-height: 42px;
+    
+    .primary-item {
+      span {
+        margin-right: 16px;
+
+        strong {
+          font-size: 16px;
+          margin-right: 4px;
+        }
+      }
+    }
+  }
+}
+
+.winning-asset {
+  color: $success_secondary;
+  font-weight: bold;
+}
+
+.statistics-grid {
+  text-align: center;
+  margin: 5px !important;
+
+  > div {
+    display: inline-block;
+    width: 300px;
+    padding: 10px;
+    margin: 10px 20px;
+    text-align: left;
+
+    .title {
+      font-size: 20px;
+    }
+
+    .number {
+      font-weight: 600;
+    }
+
+    i {
+      font-size: 54px;
+    }
+
+    .left-column {
+      background-color: inherit;
+      border: none;
+      padding: 20px 10px 20px 0;
+    }
+
+    .right-column {
+      padding: 20px 0;
+
+      .stat-column {
+        display: inline-flex;
+        flex-direction: column;
+      }
+
+      .count-column {
+        align-items: flex-end;
+      }
+
+      .label-column {
+        align-items: flex-start;
+      }
+    }
+  }
+}
+
+.modal {
+  .manage-item {
+    padding-left: 20px;
+    display: block;
+  }
+}
+
+.config-block {
+  .content-title {
+    padding-bottom: 3px !important;
+    div {
+      padding-bottom: 8px;
+    }
+  }
+
+  .config-editor {
+    width: 100%;
+    max-width: 100%;
+    height: 400px;
+  }
+
+  .config-tab {
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: normal;
+    margin: 0 4px;
+    padding: 4px 14px;
+    background-color: $action_color;
+    @include transition(all 0.2s ease-in-out);
+
+    &:hover {
+      background-color: $bar_highlight_color;
+    }
+
+    .action-items {
+      margin-left: 4px;
+      margin-right: -8px;
+      cursor: pointer;
+    }
+  }
+
+  .config-tab.active {
+    cursor: default;
+    color: $text_color;
+    background-color: $primary_background;
+
+    &:hover {
+      background-color: $primary_background;
+    }
+  }
+}

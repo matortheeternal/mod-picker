@@ -1,0 +1,56 @@
+<div class="page-header-container">
+    <div class="page-container page-header">
+        <section>
+            <div class="header-info">
+                <span class="header-name">{{mod_list.name}}</span>
+                <span class="header-authors-container">
+                    by
+                    <a ng-href="#/user/{{mod_list.submitter.id}}">{{mod_list.submitter.username}}</a>
+                </span>
+                <br>
+                <span>Created {{mod_list.submitted | date}}</span>
+                <span class="divider" ng-if="mod_list.updated">|</span>
+                <span ng-if="mod_list.updated">Updated {{mod_list.updated | date}}</span>
+                <span class="divider" ng-if="permissions.canManage">|</span>
+                <a ng-if="permissions.canManage" ng-click="toggleEditing()">
+                    <span ng-hide="editing">Edit</span>
+                    <span ng-show="editing">View</span>
+                </a>
+            </div>
+        </section>
+
+        <section>
+            <div class="header-box">
+                ACTIONS
+                <span class="action-box" ng-click="starModList()" title="{{mod_list.stars_count}} stars">
+                    <i class="fa {{mod_list.star ? 'fa-star' : 'fa-star-o'}}" aria-hidden="true"></i>
+                    {{mod_list.star ? 'Unfavorite' : 'Favorite'}}
+                </span>
+                <span class="action-box">
+                    <i class="fa fa-plus" aria-hidden="true"></i>
+                    Duplicate Modlist
+                </span>
+            </div>
+            <div class="header-box">
+                STATUS
+                <span class="action-box no-action {{statusClasses[mod_list.status]}} capitalize" title="{{statusHints[mod_list.status]}}">
+                     <i class="fa {{statusIcons[mod_list.status]}}" aria-hidden="true"></i>
+                    {{mod_list.status.replace("_", " ")}}
+                </span>
+                <span class="action-box no-action {{visibilityClasses[mod_list.visibility]}} capitalize" title="{{visibilityHints[mod_list.visibility]}}">
+                    <i class="fa {{visibilityIcons[mod_list.visibility]}}" aria-hidden="true"></i>
+                    {{mod_list.visibility.replace("visibility_", "")}}
+                </span>
+            </div>
+        </section>
+    </div>
+</div>
+
+<messages></messages>
+
+<div class="page-container tabs-column">
+    <tabs tabs='tabs' class="secondary-tabs"></tabs>
+    <div class="tab mod-list-tab box-shadow">
+        <tab-views></tab-views>
+    </div>
+</div>

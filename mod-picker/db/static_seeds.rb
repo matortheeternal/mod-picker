@@ -5,6 +5,17 @@ def create_plugin(mod, dump_filename)
   mod.plugins.create(hash).save!
 end
 
+def create_config_file(mod, config_filename, config_install_path)
+  file = File.read(Rails.root.join("db", "config_files", config_filename))
+  hash = {
+      game_id: mod.game_id,
+      filename: config_filename,
+      install_path: config_install_path,
+      text_body: file
+  }
+  mod.config_files.create(hash).save!
+end
+
 def generate_password
   if Rails.env.production?
     pw = SecureRandom.urlsafe_base64
@@ -63,7 +74,7 @@ def seed_staff_users
       username: "Taffy",
       role: "moderator",
       joined: Time.now.to_date,
-      email: 	"raphael.buechler@gmail.com",
+      email: "r@r79.io",
       password: staff_password,
       password_confirmation: staff_password,
       confirmed_at: Time.now.to_date
@@ -165,7 +176,7 @@ def seed_categories
 
   catUtilities = Category.create(
       name: "Utilities",
-      description: "These also aren’t necessarily mods, but they can be.  These are tools to aid in the creation and management of mods and mod-related assets."
+      description: "These also aren't necessarily mods, but they can be.  These are tools to aid in the creation and management of mods and mod-related assets."
   )
   catResources = Category.create(
       name: "Resources",
@@ -181,7 +192,7 @@ def seed_categories
   )
   catCharacter = Category.create(
       name: "Character Appearance",
-      description: "Mods that modify the appearance of non-player characters in the game or give you additional options for customizing the player character’s appearance."
+      description: "Mods that modify the appearance of non-player characters in the game or give you additional options for customizing the player character's appearance."
   )
   catNewChars = Category.create(
       name: "New Characters",
@@ -233,7 +244,7 @@ def seed_categories
   Category.create(
       name: "Resources - Frameworks",
       parent_id: catResources.id,
-      description: "Frameworks offer functionality for other mods or tools to build off of.  Frameworks often don’t change much in the game on their own, but enable other mods to do so.  Some frameworks do change aspects of the game."
+      description: "Frameworks offer functionality for other mods or tools to build off of.  Frameworks often don't change much in the game on their own, but enable other mods to do so.  Some frameworks do change aspects of the game."
   )
   Category.create(
       name: "Resources - Guides & Tutorials",
@@ -297,7 +308,7 @@ def seed_categories
   catImmersionAndRolePlaying = Category.create(
       name: "Gameplay - Immersion & Role-playing",
       parent_id: catGameplay.id,
-      description: "Mods which exist specifically to increase the player’s immersion in the game world, or to aid in role-playing."
+      description: "Mods which exist specifically to increase the player's immersion in the game world, or to aid in role-playing."
   )
   catMagic = Category.create(
       name: "Gameplay - Magic",
@@ -351,7 +362,7 @@ def seed_categories
   Category.create(
       name: "New Characters - Neutral",
       parent_id: catNewChars.id,
-      description: "If most of the NPCs added by the mod don’t have a disposition to help or hurt the player, put it here."
+      description: "If most of the NPCs added by the mod don't have a disposition to help or hurt the player, put it here."
   )
   Category.create(
       name: "New Characters - Enemies",
@@ -603,7 +614,7 @@ def seed_categories
   ReviewSection.create(
       category_id: catGameplay.id,
       name: "Functionality",
-      prompt: "Does the mod provide valuable or unique functionality?  Does it do what it’s supposed to do, and does it do it well?",
+      prompt: "Does the mod provide valuable or unique functionality?  Does it do what it's supposed to do, and does it do it well?",
       default: true
   )
   ReviewSection.create(
@@ -699,7 +710,7 @@ def seed_categories
   ReviewSection.create(
       category_id: catNewPlayerHomes.id,
       name: "Features",
-      prompt: "Does the player home fit your character’s needs?  Are you happy with what it offers?",
+      prompt: "Does the player home fit your character's needs?  Are you happy with what it offers?",
       default: true
   )
 ### New Characters ###
@@ -766,13 +777,13 @@ def seed_categories
   ReviewSection.create(
       category_id: catUtilities.id,
       name: "Functionality",
-      prompt: "Does the utility provide valuable or unique functionality?  Does it do what it’s supposed to do, and does it do it well?",
+      prompt: "Does the utility provide valuable or unique functionality?  Does it do what it's supposed to do, and does it do it well?",
       default: true
   )
   ReviewSection.create(
       category_id: catUtilities.id,
       name: "Usability",
-      prompt: "Is the utility intuitive and easy to use?  Are the learning resources sufficient?  Does using the utility get easier once you’ve learned the basics?",
+      prompt: "Is the utility intuitive and easy to use?  Are the learning resources sufficient?  Does using the utility get easier once you've learned the basics?",
       default: true
   )
 
@@ -867,7 +878,7 @@ def seed_quotes
   )
   Quote.create(
       game_id: gameSkyrim.id,
-      text: "You’ll make a fine rug, cat!",
+      text: "You'll make a fine rug, cat!",
       label: "Random"
   )
   Quote.create(
@@ -907,7 +918,7 @@ def seed_quotes
   )
   Quote.create(
       game_id: gameSkyrim.id,
-      text: "I’ll carve you into pieces!",
+      text: "I'll carve you into pieces!",
       label: "Random"
   )
   Quote.create(
@@ -1841,6 +1852,9 @@ def seed_official_content
           url: "http://store.steampowered.com/app/72850/"
       }]
   )
+  # Create config files
+  create_config_file(modSkyrim, "Skyrim.ini", "{{MyGamesFolder}}")
+  create_config_file(modSkyrim, "SkyrimPrefs.ini", "{{MyGamesFolder}}")
   # Create plugins
   create_plugin(modSkyrim, "Skyrim.esm.json")
   create_plugin(modSkyrim, "Update.esm.json")
@@ -1899,7 +1913,7 @@ def seed_official_content
       tag_names: ["Solstheim", "Apocrypha", "Hermaeus Mora", "Shouts", "Stahlrim", "Nordic", "Bonemold", "Chitin"]
   )
   # Create plugins
-  create_plugin(modDragonborn, "Dawnguard.esm.json")
+  create_plugin(modDragonborn, "Dragonborn.esm.json")
   modDragonborn.update_lazy_counters
 
   modHighRes = Mod.create!(

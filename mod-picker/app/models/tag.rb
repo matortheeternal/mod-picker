@@ -1,9 +1,9 @@
 class Tag < ActiveRecord::Base
-  include Filterable, RecordEnhancements
+  include Filterable, RecordEnhancements, Reportable
 
   scope :game, -> (game) { where(game_id: game) }
 
-  belongs_to :user, :foreign_key => :submitted_by, :inverse_of => 'tags'
+  belongs_to :submitter, :class_name => 'User', :foreign_key => :submitted_by, :inverse_of => 'tags'
 
   has_many :mod_tags, :inverse_of => 'tag'
   has_many :mods, :through => 'mod_tags', :inverse_of => 'tags'
@@ -11,10 +11,8 @@ class Tag < ActiveRecord::Base
   has_many :mod_list_tags, :inverse_of => 'tag'
   has_many :mod_lists, :through => 'mod_list_tags', :inverse_of => 'tags'
 
-  has_one :base_report, :as => 'reportable'
-
   # Validations
-  validates :text, :game_id, :submitted_by, presence: true
+  validates :game_id, :submitted_by, :text, presence: true
   validates :text, length: {in: 2..32}
   validates :hidden, inclusion: [true, false]
 
@@ -25,10 +23,10 @@ class Tag < ActiveRecord::Base
   # Private methods
   private
     def increment_counter_caches
-      self.user.update_counter(:tags_count, 1)
+      self.submitter.update_counter(:tags_count, 1)
     end
 
     def decrement_counter_caches
-      self.user.update_counter(:tags_count, -1)
+      self.submitter.update_counter(:tags_count, -1)
     end
 end

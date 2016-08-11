@@ -4,7 +4,7 @@ app.directive('tagSelector', function () {
         templateUrl: '/resources/directives/tagSelector.html',
         controller: 'tagSelectorController',
         scope: {
-        	activeTags: '=',
+            activeTags: '=',
             newTags: '=',
             maxTags: '=',
             canCreate: '=',
@@ -63,12 +63,10 @@ app.controller('tagSelectorController', function ($scope, tagService) {
             updatedTags.push(tag.text);
         });
         $scope.saveCallback(updatedTags).then(function(data) {
-            if (data.status == "ok") {
-                $scope.activeTags = data.tags;
-                $scope.rawNewTags = [];
-                $scope.removedTags = [];
-                $scope.storeTags();
-            }
+            $scope.activeTags = data.tags;
+            $scope.rawNewTags = [];
+            $scope.removedTags = [];
+            $scope.storeTags();
         });
     };
 

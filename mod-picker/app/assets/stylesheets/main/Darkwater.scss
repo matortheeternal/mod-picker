@@ -1,0 +1,66 @@
+/* DARKWATER THEME */
+
+$banner_image: image_path("darkwater.jpg");
+
+$text_color: #151d1f;
+$inverse_text_color: #aeb5b6;
+$soft_text_color: #757d7f;
+$medium_text_color: #555;
+
+$primary_background: #ddd;
+$secondary_background: #ced0cf;
+$background_highlight: #b5beb7;
+$input_background: #fff;
+
+$shadow_color: #000;
+$border_color: #aebcbe;
+$soft_border_color: #c3cacb;
+$hard_border_color: #777;
+
+$h1_color: #fff;
+$h2_color: #000;
+$h3_color: #2e2c1d;
+$h4_color: #313d31;
+
+$action_color: #2f443d;
+$action_text_color: #bcc3c4;
+$bright_action_color: #6b8078;
+$dark_action_color: #172224;
+
+$bar_color: #202424;
+$bar_dark_color: #2F3737;
+$bar_highlight_color: #303434;
+$bar_text_color: #a0a5a6;
+$bar_highlight_text_color: #88a9b3;
+
+$link_color: #205098;
+$link_hover_color_primary: #a6ceda;
+$link_hover_color_secondary: #4f5e61;
+
+$slider_bg_color: #aeb5b6;
+$slider_range_color: #6e8c8e;
+$slider_circle_color_after: #2f443d;
+
+$success_primary: #526A52;
+$success_secondary: #4d994d;
+$error_primary: #743E45;
+$error_secondary: #994d4d;
+$warning_primary: #74743E;
+$warning_secondary: #998e4d;
+
+$admin_color: #900000;
+$moderator_color: #8000b0;
+$mod_author_color: #008000;
+
+$red_color: #FBEFEF;
+$orange_color: #FFF0E2;
+$yellow_color: #FBFBE8;
+$green_color: #E5FAE0;
+$blue_color: #E2E5FB;
+$purple_color: #F8EAFF;
+$white_color: #FFF;
+$gray_color: #E5E5E5;
+$brown_color: #F0E4D2;
+$black_color: #DDD;
+
+@import 'main';

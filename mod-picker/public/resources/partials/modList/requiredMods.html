@@ -1,0 +1,53 @@
+<div class="content-block">
+    <div class="content-title">Required Mods
+        <span class="note-item">
+            ({{showMissingMods ? 'Missing' : 'All'}})
+        </span>
+        <span class="right-item toggle-item" ng-click="showMissingMods = !showMissingMods">
+            {{showMissingMods ? 'Show All' : 'Show Missing Requirements'}}
+        </span>
+    </div>
+
+    <div class="content-container">
+        <ul ng-if="showMissingMods">
+            <li ng-repeat="requirement in required.missing_mods">
+                <a href="#/mod/{{requirement.required_mod.id}}">{{requirement.required_mod.name}}</a>
+                is required by
+                <span ng-repeat="mod in requirement.mods | limitTo: 2">
+                    <a ng-href="#/mod/{{mod.id}}">{{mod.name}}</a>
+                    {{!$last || requirement.mods.length > 2 ? ', ' : ''}}
+                </span>
+                <span ng-if="requirement.mods.length > 2">
+                    and
+                    <span class="help-tooltip" title="{{getRequirerList(requirement, 2)}}">{{requirement.mods.length - 2}} more</span>
+                </span>
+                <!-- resolution options -->
+                <div class="inline-flex" ng-if="editing">
+                    <span class="action-box green-box" ng-click="addMod(requirement.required_mod.id)" title="Add {{requirement.required_mod.name}}">Add Requirement</span>
+                    <span class="action-box red-box" ng-click="removeRequirers(requirement)" title="{{ model.mods ? 'Remove ' + getRequirerList(requirement) : 'You must visit the tools tab before you can use this action.' }}" ng-class="{ 'disabled' : !model.tools }">Remove Requirers</span>
+                </div>
+            </li>
+        </ul>
+        <div ng-show="showMissingMods && !required.missing_mods.length" class="content-message">
+            No missing requirements to display.
+        </div>
+
+        <ul ng-if="!showMissingMods">
+            <li ng-repeat="requirement in required.mods" ng-hide="requirement._destroy">
+                <a href="#/mod/{{requirement.required_mod.id}}">{{requirement.required_mod.name}}</a>
+                is required by
+                <span ng-repeat="mod in requirement.mods | limitTo: 2">
+                    <a ng-href="#/mod/{{mod.id}}">{{mod.name}}</a>
+                    {{!$last || requirement.mods.length > 2 ? ', ' : ''}}
+                </span>
+                <span ng-if="requirement.mods.length > 2">
+                    and
+                    <span class="help-tooltip" title="{{getRequirerList(requirement, 2)}}">{{requirement.mods.length - 2}} more</span>
+                </span>
+            </li>
+        </ul>
+        <div ng-show="!showMissingMods && isEmpty(required.mods)" class="content-message">
+            No requirements to display.
+        </div>
+    </div>
+</div>

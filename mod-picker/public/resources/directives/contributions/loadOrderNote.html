@@ -1,4 +1,4 @@
-<div class="note-container">
+<div class="contribution-container box-shadow">
 	<div class="content-title">
 		<span>
             Load
@@ -9,12 +9,22 @@
             </span>
         </span>
         <span class="right-item">
-            <span class="standing">Good Standing</span>
+            <span class="standing capitalize">{{note.standing}} standing</span>
         </span>
 	</div>
-	<author-column user="note.user" ng-if="showAuthorColumn" class="author-column" index="index"></author-column>
-    <div class="content-column">
+	<user-column ng-if="showUserColumn" user="note.submitter" editors="note.editors" class="user-column" index="index"></user-column>
+    <div class="content-column" ng-class="{ 'no-actions' : !showActions }">
         <contribution-text target="note"></contribution-text>
-        <contribution-actions target="note" route="'load_order_notes'" correctable="true" index="index" user="user" edit="edit"></contribution-actions>
+        <contribution-actions target="note" ng-if="showActions" model-name="LoadOrderNote" index="index" current-user="currentUser" edit="edit" has-history="true"></contribution-actions>
+    </div>
+    <div ng-if="showResolutionOptions" class="resolution-column">
+        <div class="resolution-status">
+            {{note.ignored ? "Ignored" : note.resolved ? "Resolved" : "Unresolved"}}
+        </div>
+        <div class="resolution-options order-options">
+            <div class="action-box green-box" ng-click="resolve('move', 0)" ng-class="{ 'disabled' : note.resolved || note.ignored }">Move {{note.plugins[0].filename}}</div>
+            <div class="action-box green-box" ng-click="resolve('move', 1)" ng-class="{ 'disabled' : note.resolved || note.ignored }">Move {{note.plugins[1].filename}}</div>
+            <div class="action-box yellow-box single" ng-click="resolve('ignore')" ng-class="{ 'disabled' : note.resolved }">{{note.ignored ? 'Unignore' : 'Ignore'}} Issue</div>
+        </div>
     </div>
 </div>

@@ -1,6 +1,20 @@
-app.service('pluginService', function (backend, $q, $timeout, recordGroupService, errorsFactory) {
+app.service('pluginService', function (backend, $q, $timeout, recordGroupService, errorsFactory, objectUtils) {
+    var service = this;
+
     this.retrievePlugin = function (pluginId) {
-        return backend.retrieve('/plugins/' + pluginId);
+        var output = $q.defer();
+        backend.retrieve('/plugins/' + pluginId).then(function(plugin) {
+            // prepare plugin data for display
+            var plugins = [plugin];
+            recordGroupService.associateGroups(plugins);
+            service.combineAndSortMasters(plugins);
+            service.associateOverrides(plugins);
+            service.sortErrors(plugins);
+            output.resolve(plugin);
+        }, function(response) {
+            output.reject(response);
+        });
+        return output.promise;
     };
 
     this.searchPlugins = function (filename) {
@@ -16,28 +30,6 @@ app.service('pluginService', function (backend, $q, $timeout, recordGroupService
         return plugins.promise;
     };
 
-    this.associateRecordGroups = function(plugins, recordGroups) {
-        // if we don't have recordGroups yet, try again in 100ms
-        var service = this;
-        if (!recordGroups) {
-            $timeout(function() {
-                service.associateRecordGroups(plugins, recordGroups);
-            }, 100);
-            return;
-        }
-
-        // loop through plugins to associate record groups
-        plugins.forEach(function(plugin) {
-            if (plugin.plugin_record_groups) {
-                plugin.plugin_record_groups.forEach(function(group) {
-                    var record_group = recordGroupService.getGroupFromSignature(recordGroups, group.sig);
-                    group.name = record_group.name;
-                    group.child_group = record_group.child_group;
-                });
-            }
-        });
-    };
-
     //combine dummy_masters array with masters array and sorts the masters array
     this.combineAndSortMasters = function(plugins) {
         // loop through plugins
@@ -49,35 +41,108 @@ app.service('pluginService', function (backend, $q, $timeout, recordGroupService
         });
     };
 
+    this.getLoadOrderPlugin = function(loadOrder, plugin_id) {
+        return loadOrder.find(function(item) {
+            return item.plugin_id == plugin_id;
+        });
+    };
+
+    // get the load order ordinal of a plugin
+    this.getLoadOrder = function(loadOrder, plugin_id) {
+        var found = service.getLoadOrderPlugin(loadOrder, plugin_id);
+        if (found) {
+            return found.index;
+        } else {
+            return -1;
+        }
+    };
+
+    this.buildLoadOrderOverrides = function(plugins, loadOrder) {
+        var load_order_overrides = [];
+
+        // build array of load order overrides
+        plugins.forEach(function(plugin) {
+            for (var group in plugin.formatted_overrides) {
+                if (!plugin.formatted_overrides.hasOwnProperty(group)) continue;
+                var formIDs = plugin.formatted_overrides[group];
+                formIDs.forEach(function(formID) {
+                    var master_index = formID >>> 24;
+                    var master = plugin.masters[master_index];
+                    var load_ordinal = service.getLoadOrder(loadOrder, master.master_plugin_id);
+                    if (load_ordinal == -1) return;
+                    var fid = formID % 0x01000000 + load_ordinal * 0x01000000;
+                    load_order_overrides.push({
+                        sig: group,
+                        fid: fid,
+                        plugin_ids: [plugin.id]
+                    });
+                });
+            }
+        });
+
+        // return result
+        return load_order_overrides;
+    };
+
+    this.compactLoadOrderOverrides = function(loadOrderOverrides) {
+        // sort array
+        loadOrderOverrides.sort(function(first_override, second_override) {
+            return first_override.fid - second_override.fid;
+        });
+
+        // compact array
+        var prevOverride = {
+            fid: -1
+        };
+        for (var i = loadOrderOverrides.length - 1; i >= 0; i--) {
+            var override = loadOrderOverrides[i];
+            if (override.fid == prevOverride.fid) {
+                prevOverride.plugin_ids.push(override.plugin_ids[0]);
+                loadOrderOverrides.splice(i, 1);
+            } else {
+                prevOverride = override;
+            }
+        }
+    };
+
     //associate overrides with their master file
     this.associateOverrides = function(plugins) {
         // loop through plugins
         plugins.forEach(function(plugin) {
             plugin.masters.forEach(function(master) {
                 master.overrides = [];
-                plugin.overrides.forEach(function(override) {
-                    if (override.fid >= master.index * 0x01000000) {
-                        master.overrides.push(override);
-                    }
-                });
+                for (var group in plugin.formatted_overrides) {
+                    if (!plugin.formatted_overrides.hasOwnProperty(group)) continue;
+                    var formIDs = plugin.formatted_overrides[group];
+                    formIDs.forEach(function(formID) {
+                        if (formID >>> 24 != master.index) return;
+                        master.overrides.push({
+                            sig: group,
+                            fid: formID
+                        });
+                    });
+                }
             });
+            plugin.has_overrides = !objectUtils.isEmptyObject(plugin.formatted_overrides);
         });
     };
 
     //sort plugin errors
-    this.sortErrors = function(plugin) {
-        var sortedErrors = errorsFactory.errorTypes();
-        // return if we don't have a plugin to sort errors for
-        if (!plugin) {
-            return;
-        }
+    this.sortErrors = function(plugins) {
+        plugins.forEach(function(plugin) {
+            // return if we don't have errors to sort
+            if (!plugin.plugin_errors.length) {
+                return;
+            }
 
-        // loop through plugin's errors, sorting them
-        plugin.plugin_errors.forEach(function(error) {
-            sortedErrors[error.group].errors.push(error);
+            var sortedErrors = errorsFactory.errorTypes();
+            // loop through plugin's errors, sorting them
+            plugin.plugin_errors.forEach(function(error) {
+                sortedErrors[error.group].errors.push(error);
+            });
+
+            // return the sorted errors
+            plugin.plugin_errors = sortedErrors;
         });
-
-        // return the sorted errors
-        return sortedErrors;
     };
 });

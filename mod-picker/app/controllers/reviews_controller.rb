@@ -3,16 +3,30 @@ class ReviewsController < ContributionsController
 
   # GET /reviews
   def index
-    @reviews = Review.accessible_by(current_ability).filter(filtering_params).sort(params[:sort]).paginate(:page => params[:page])
+    # prepare reviews
+    @reviews = Review.includes(:review_ratings, :editor, :submitter => :reputation).accessible_by(current_ability).filter(filtering_params).sort(params[:sort]).paginate(:page => params[:page])
+    count = Review.accessible_by(current_ability).filter(filtering_params).count
 
-    render :json => @reviews
+    # prepare helpful marks
+    helpful_marks = HelpfulMark.submitter(current_user.id).helpfulable("Review", @reviews.ids)
+
+    # render response
+    render :json => {
+        reviews: Review.index_json(@reviews),
+        helpful_marks: helpful_marks,
+        max_entries: count,
+        entries_per_page: Review.per_page
+    }
   end
 
   # PATCH/PUT /reviews/1
   def update
     authorize! :update, @contribution
     @contribution.clear_ratings
-    if @contribution.update(contribution_update_params)
+
+    update_params = contribution_update_params
+    update_params[:edited_by] = current_user.id
+    if @contribution.update(update_params)
       render json: {status: :ok}
     else
       render json: @contribution.errors, status: :unprocessable_entity
@@ -26,10 +40,20 @@ class ReviewsController < ContributionsController
     authorize! :create, @review
 
     if @review.save
-      render json: {status: :ok}
+      render json: @review.reload
     else
       render json: @review.errors, status: :unprocessable_entity
     end
+  end
+
+  # NOT CORRECTABLE
+  def corrections
+    render json: {error: "Reviews are not correctable."}, status: 404
+  end
+
+  # NOT HISTORICAL
+  def history
+    render json: {error: "Reviews don't have history."}, status: 404
   end
 
   private
@@ -40,7 +64,7 @@ class ReviewsController < ContributionsController
 
     # Params we allow filtering on
     def filtering_params
-      params.slice(:mod, :by);
+      params[:filters].slice(:adult, :game, :search, :submitter, :editor, :overall_rating, :reputation, :helpful_count, :not_helpful_count, :ratings_count, :submitted, :edited);
     end
 
     # Params allowed during creation

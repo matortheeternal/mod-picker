@@ -3,9 +3,13 @@ class Plugin < ActiveRecord::Base
 
   attr_writer :master_plugins
 
+  # Scopes
   scope :search, -> (search) { where("filename like ?", "%#{search}%") }
   scope :game, -> (game) { where(game_id: game) }
+  scope :mods, -> (mod_ids) { where(mod_id: mod_ids) }
+  scope :esm, -> { where("filename like '%.esm'") }
 
+  # Associations
   belongs_to :game, :inverse_of => 'plugins'
   belongs_to :mod, :inverse_of => 'plugins'
 
@@ -21,23 +25,26 @@ class Plugin < ActiveRecord::Base
 
   # mod list usage
   has_many :mod_list_plugins, :inverse_of => 'plugin'
-  has_many :mod_lists, :through => 'mod_list_plugins', :inverse_of => 'plugins'
+  has_many :mod_lists, :through => 'mod_list_plugins'
 
   # is a compatibility plugin for
-  has_many :compatibility_note_plugins, :foreign_key => 'compatibility_plugin_id', :inverse_of => 'compatibility_plugin'
+  has_many :compatibility_notes, :foreign_key => 'compatibility_plugin_id', :inverse_of => 'compatibility_plugin'
 
   # load order notes
-  has_many :first_load_order_notes, :foreign_key => 'first_plugin_id', :class_name => 'LoadOrderNote', :inverse_of => 'load_second_plugin'
-  has_many :second_load_order_notes, :foreign_key => 'second_plugin_id', :class_name => 'LoadOrderNote', :inverse_of => 'load_second_plugin'
+  has_many :first_load_order_notes, :foreign_key => 'first_plugin_id', :class_name => 'LoadOrderNote', :inverse_of => 'second_plugin'
+  has_many :second_load_order_notes, :foreign_key => 'second_plugin_id', :class_name => 'LoadOrderNote', :inverse_of => 'first_plugin'
 
   accepts_nested_attributes_for :plugin_record_groups, :overrides, :plugin_errors
 
   # validations
-  validates :mod_id, :filename, :crc_hash, presence: true
-  validates :filename, length: {in: 1..64}
-  validates :author, length: {in: 0..64}
-  validates :description, length: {in: 0..512}
-  validates :crc_hash, length: {in: 1..8}
+  validates :game_id, :mod_id, :filename, :crc_hash, :file_size, presence: true
+
+  validates :filename, length: {maximum: 64}
+  validates :author, length: {maximum: 128}
+  validates :description, length: {maximum: 512}
+  validates :crc_hash, length: {is: 8}
+
+  validates_associated :plugin_record_groups, :plugin_errors, :overrides
 
   # callbacks
   after_create :create_associations, :update_lazy_counters
@@ -72,29 +79,88 @@ class Plugin < ActiveRecord::Base
     ModListPlugin.where(plugin_id: self.id).delete_all
   end
 
-  def self.as_json(options={})
+  def formatted_overrides
+    output = {}
+    self.overrides.each do |ovr|
+      if output.has_key?(ovr.sig)
+        output[ovr.sig].push(ovr.fid)
+      else
+        output[ovr.sig] = [ovr.fid]
+      end
+    end
+    output
+  end
+
+  def self.index_json(collection)
+    collection.as_json({
+        :include => {
+            :masters => {
+                :except => [:plugin_id],
+                :include => {
+                    :master_plugin => {
+                        :only => [:id, :mod_id, :filename]
+                    }
+                }
+            },
+            :mod => {
+                :only => [:id, :name]
+            }
+        }
+    })
+  end
+
+  def self.analysis_json(collection)
+    collection.as_json({
+        :only => [:id, :mod_id, :filename, :errors_count],
+        :include => {
+            :masters => {
+                :except => [:plugin_id],
+                :include => {
+                    :master_plugin => {
+                        :only => [:mod_id, :filename]
+                    }
+                }
+            },
+            :dummy_masters => {
+                :except => [:plugin_id]
+            }
+        },
+        :methods => :formatted_overrides
+    })
+  end
+
+  def self.show_json(collection)
+    collection.as_json({
+        :include => {
+            :masters => {
+                :except => [:plugin_id],
+                :include => {
+                    :master_plugin => {
+                        :only => [:mod_id, :filename]
+                    }
+                }
+            },
+            :dummy_masters => {
+                :except => [:plugin_id]
+            },
+            :plugin_errors => {
+                :except => [:plugin_id]
+            },
+            :plugin_record_groups => {
+                :except => [:plugin_id]
+            }
+        },
+        :methods => :formatted_overrides
+    })
+  end
+
+  def as_json(options={})
     if JsonHelpers.json_options_empty(options)
       default_options = {
+          :only => [:mod_id, :id, :filename],
           :include => {
-              :masters => {
-                  :except => [:plugin_id],
-                  :include => {
-                      :master_plugin => {
-                          :only => [:mod_id, :filename]
-                      }
-                  }
-              },
-              :dummy_masters => {
-                  :except => [:plugin_id]
-              },
-              :overrides => {
-                  :except => [:plugin_id]
-              },
-              :plugin_errors => {
-                  :except => [:plugin_id]
-              },
-              :plugin_record_groups => {
-                  :except => [:plugin_id]
+              :mod => {
+                  :only => [:name]
               }
           }
       }

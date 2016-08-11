@@ -1,51 +1,70 @@
 class User < ActiveRecord::Base
-  include Filterable, RecordEnhancements
+  include Filterable, Sortable, RecordEnhancements, Reportable
 
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :invitable, :database_authenticatable, :registerable, :confirmable,
          :recoverable, :rememberable, :trackable, :validatable
 
-  scope :search, -> (search) { joins(:bio).where("username like ? OR nexus_username like ? OR lover_username like ? OR steam_username like ?", "#{search}%", "#{search}%", "#{search}%", "#{search}%") }
-  scope :joined, -> (low, high) { where(joined: (low..high)) }
-  scope :last_seen, -> (low, high) { where(last_sign_in_at: (low..high)) }
-  scope :level, -> (hash) { where(user_level: hash) }
-  scope :rep, -> (low, high) { where(:reputation => {overall: (low..high)}) }
-  scope :mods, -> (low, high) { where(mods_count: (low..high)) }
-  scope :cnotes, -> (low, high) { where(compatibility_notes_count: (low..high)) }
-  scope :inotes, -> (low, high) { where(installation_notes_count: (low..high)) }
-  scope :reviews, -> (low, high) { where(reviews_count: (low..high)) }
-  scope :nnotes, -> (low, high) { where(corrections_count: (low..high)) }
-  scope :comments, -> (low, high) { where(comments_count: (low..high)) }
-  scope :mod_lists, -> (low, high) { where(mod_lists_count: (low..high)) }
-
   attr_accessor :login
 
+  # GENERAL SCOPES
+  scope :search, -> (search) { where("username like ?", "#{search}%") }
+  scope :linked, -> (search) { joins(:bio).where("nexus_username like ? OR lover_username like ? OR workshop_username like ?", "#{search}%", "#{search}%", "#{search}%") }
+  scope :roles, -> (roles_hash) {
+    # build roles array
+    roles = []
+    roles_hash.each_key do |key|
+      if roles_hash[key]
+        roles.push(key)
+      end
+    end
+
+    # return query
+    where(role: roles)
+  }
+  scope :reputation, -> (range) { joins(:reputation).where(:user_reputations => {:overall => range[:min]..range[:max]}) }
+  scope :joined, -> (range) { where(joined: parseDate(range[:min])..parseDate(range[:max])) }
+  scope :last_seen, -> (range) { where(last_sign_in_at: parseDate(range[:min])..parseDate(range[:max])) }
+  # STATISTIC SCOPES
+  scope :authored_mods, -> (range) { where(authored_mods_count: range[:min]..range[:max]) }
+  scope :mod_lists, -> (range) { where(mod_lists_count: range[:min]..range[:max]) }
+  scope :comments, -> (range) { where(comments_count: range[:min]..range[:max]) }
+  scope :reviews, -> (range) { where(reviews_count: range[:min]..range[:max]) }
+  scope :compatibility_notes, -> (range) { where(compatibility_notes_count: range[:min]..range[:max]) }
+  scope :install_order_notes, -> (range) { where(install_order_notes_count: range[:min]..range[:max]) }
+  scope :load_order_notes, -> (range) { where(load_order_notes_count: range[:min]..range[:max]) }
+  scope :corrections, -> (range) { where(corrections_count: range[:min]..range[:max]) }
+
+  # ASSOCIATIONS
   has_one :settings, :class_name => 'UserSetting', :dependent => :destroy
   has_one :bio, :class_name => 'UserBio', :dependent => :destroy
   has_one :reputation, :class_name => 'UserReputation', :dependent => :destroy
 
-  has_many :help_pages, :foreign_key => 'submitted_by', :inverse_of => 'user'
-  has_many :comments, :foreign_key => 'submitted_by', :inverse_of => 'user'
-  has_many :install_order_notes, :foreign_key => 'submitted_by', :inverse_of => 'user'
-  has_many :load_order_notes, :foreign_key => 'submitted_by', :inverse_of => 'user'
-  has_many :compatibility_notes, :foreign_key => 'submitted_by', :inverse_of => 'user'
-  has_many :reviews, :foreign_key => 'submitted_by', :inverse_of => 'user'
-  has_many :corrections, :foreign_key => 'submitted_by', :inverse_of => 'user'
-  has_many :agreement_marks, :foreign_key => 'submitted_by', :inverse_of => 'user'
-  has_many :helpful_marks, :foreign_key => 'submitted_by', :inverse_of => 'user'
+  has_many :articles, :foreign_key => 'submitted_by', :inverse_of => 'submitter'
+  has_many :help_pages, :foreign_key => 'submitted_by', :inverse_of => 'submitter'
+  has_many :comments, :foreign_key => 'submitted_by', :inverse_of => 'submitter'
+  has_many :install_order_notes, :foreign_key => 'submitted_by', :inverse_of => 'submitter'
+  has_many :load_order_notes, :foreign_key => 'submitted_by', :inverse_of => 'submitter'
+  has_many :compatibility_notes, :foreign_key => 'submitted_by', :inverse_of => 'submitter'
+  has_many :reviews, :foreign_key => 'submitted_by', :inverse_of => 'submitter'
+  has_many :corrections, :foreign_key => 'submitted_by', :inverse_of => 'submitter'
+  has_many :agreement_marks, :foreign_key => 'submitted_by', :inverse_of => 'submitter'
+  has_many :helpful_marks, :foreign_key => 'submitted_by', :inverse_of => 'submitter'
 
-  has_many :compatibility_note_history_entries, :foreign_key => 'submitted_by', :inverse_of => 'user'
+  has_many :compatibility_note_history_entries, :foreign_key => 'submitted_by', :inverse_of => 'submitter'
+  has_many :install_order_note_history_entries, :foreign_key => 'submitted_by', :inverse_of => 'submitter'
+  has_many :load_order_note_history_entries, :foreign_key => 'submitted_by', :inverse_of => 'submitter'
 
-  has_many :tags, :foreign_key => 'submitted_by', :inverse_of => 'user'
-  has_many :mod_tags, :foreign_key => 'submitted_by', :inverse_of => 'user'
-  has_many :mod_list_tags, :foreign_key => 'submitted_by', :inverse_of => 'user'
+  has_many :tags, :foreign_key => 'submitted_by', :inverse_of => 'submitter'
+  has_many :mod_tags, :foreign_key => 'submitted_by', :inverse_of => 'submitter'
+  has_many :mod_list_tags, :foreign_key => 'submitted_by', :inverse_of => 'submitter'
 
-  has_many :submitted_mods, :class_name => 'Mod', :foreign_key => 'submitted_by', :inverse_of => 'user'
+  has_many :submitted_mods, :class_name => 'Mod', :foreign_key => 'submitted_by', :inverse_of => 'submitter'
 
   has_many :mod_authors, :inverse_of => 'user'
   has_many :mods, :through => 'mod_authors', :inverse_of => 'author_users'
-  has_many :mod_lists, :foreign_key => 'submitted_by', :inverse_of => 'user'
+  has_many :mod_lists, :foreign_key => 'submitted_by', :inverse_of => 'submitter'
 
   belongs_to :active_mod_list, :class_name => 'ModList', :foreign_key => 'active_mod_list_id'
 
@@ -55,37 +74,28 @@ class User < ActiveRecord::Base
   has_many :mod_list_stars, :inverse_of => 'user'
   has_many :starred_mod_lists, :through => 'mod_list_stars'
 
-  has_many :profile_comments, :class_name => 'Comment', :as => 'commentable'
-  has_many :reports, :inverse_of => 'user'
-  has_one :base_report, :as => 'reportable'
+  has_many :profile_comments, -> { where(parent_id: nil) }, :class_name => 'Comment', :as => 'commentable'
+  has_many :reports, :foreign_key => 'submitted_by', :inverse_of => 'submitter'
 
   accepts_nested_attributes_for :settings
   accepts_nested_attributes_for :bio
 
+  # number of users per page on the users index
+  self.per_page = 50
+
   # Validations
-  validates :username, presence: true, uniqueness: { case_sensitive: false }, length: {in: 4..20 }
+  validates :username, :email, :role, presence: true
+  validates :username, uniqueness: { case_sensitive: false }, length: {in: 4..32 }
 
   # TODO: add email regex
   # basic one, minimize false negatives and confirm users via email confirmation regardless
-  validates :email, presence: true, uniqueness: { case_sensitive: false }, length: {in: 7..254}
-  # format: {
-  # with: VALID_EMAIL_REGEX,
-  # message: must be a valid email address format
-  # }
-  
-  validates :role, presence: true
+  validates :email, uniqueness: { case_sensitive: false }, length: {in: 7..255}
+
   validates :about_me, length: {maximum: 16384}
-  validate :validate_username
 
   # Callbacks
   after_create :create_associations
   after_initialize :init
-
-  def validate_username
-    if User.where(email: username).exists?
-      errors.add(:username, :invalid)
-    end
-  end
 
   def avatar
     png_path = File.join(Rails.public_path, "avatars/#{id}.png")
@@ -131,7 +141,7 @@ class User < ActiveRecord::Base
   end
 
   def inactive?
-    self.last_sign_in_at < 28.days.ago
+    self.last_sign_in_at.nil? || self.last_sign_in_at < 28.days.ago
   end
 
   def email_public?
@@ -149,12 +159,18 @@ class User < ActiveRecord::Base
     self.create_bio({ user_id: self.id })
   end
 
+  def self.search_json(collection)
+    collection.as_json({
+        :only => [:id, :username]
+    })
+  end
+
   def current_json
     self.as_json({
         :only => [:id, :username, :role, :title, :active_mod_list_id],
         :include => {
             :reputation => {
-                :only => [:overall]
+                :only => [:overall, :rep_to_count]
             },
             :settings => {
                 :except => [:user_id]
@@ -183,10 +199,10 @@ class User < ActiveRecord::Base
         :except => [:active_mod_list_id, :invitation_token, :invitation_created_at, :invitation_sent_at, :invitation_accepted_at, :invitation_limit, :invited_by_id, :invited_by_type, :invitations_count],
         :include => {
             :mods => {
-                :only => [:id, :name, :game_id, :mod_stars_count]
+                :only => [:id, :name, :game_id, :stars_count, :reviews_count, :reputation]
             },
             :mod_lists => {
-                :only => [:id, :name, :is_collection, :is_public, :status, :mods_count, :created]
+                :only => [:id, :name, :is_collection, :is_public, :status, :mods_count, :created, :stars_count, :comments_count]
             },
             :bio => {
                 :except => bio_except

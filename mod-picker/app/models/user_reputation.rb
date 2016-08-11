@@ -5,9 +5,9 @@ class UserReputation < ActiveRecord::Base
 
   belongs_to :user
 
-  has_many :from_links, :class_name => 'ReputationLink', :inverse_of => 'from_rep'
-  has_many :to_links, :class_name => 'ReputationLink', :inverse_of => 'to_rep'
-  
+  has_many :received_reputation, :class_name => 'ReputationLink', :inverse_of => 'target_reputation', :dependent => :destroy
+  has_many :given_reputation, :class_name => 'ReputationLink', :inverse_of => 'source_reputation', :dependent => :destroy
+
   # Validations
-  validates :user_id, :overall, :offset, presence: true
+  validates :user_id, presence: true
 end

@@ -1,0 +1,100 @@
+﻿<div class="tab-bar-items">
+    <div class="tab-bar-item primary-item">
+        <sort-control sort="sort.reviews" sort-options="sortOptions.reviews"></sort-control>
+    </div>
+
+    <div class="quality-item">
+        <span class="quality-number">{{mod.average_rating | number:0}}/100</span>
+        AVG RATING
+    </div>
+
+    <div class="tab-bar-item" ng-if="!mod.user_review">
+        <input class="btn" type="button" value="Add Review" ng-click="startNewReview()" ng-disabled="activeReview" title="{{ mod.user_review ? 'You have already submitted a review for this mod.' : 'Add a new review' }}"/>
+    </div>
+</div>
+
+<div class="content-block add-note-box" ng-show="activeReview">
+    <div class="content-title">
+        <span ng-if="activeReview.original">Edit</span>
+        <span ng-if="!activeReview.original">Add</span>
+        Review
+        ({{activeReview.overall_rating | number:0}}/100)
+    </div>
+    <div class="ratings-container">
+        <div class="rating-item" ng-repeat="rating in activeReview.ratings">
+            <div>
+                <select class="select" ng-options="section as section.name for section in availableSections.concat([rating.section]) track by section.id" ng-model="rating.section" ng-change="changeSection(rating.section, '{{rating.section.id}}')" pu-elastic-input>
+                </select>:
+                <i class="fa fa-caret-down" aria-hidden="true"></i>
+            </div>
+            <input ng-keyup="keyUp(rating)" ng-keypress="keyPress($event)" ng-model="rating.rating" ng-click="focusText($event)" pu-elastic-input>
+        </div>
+        <div class="section-tools">
+            <i class="fa fa-plus" aria-hidden="true" ng-class="{ 'disabled' : activeReview.ratings.length >= 5 || availableSections.length == 0 }" ng-click="addNewRating()" title="{{ activeReview.ratings.length >= 5 || availableSections.length == 0 ? 'Maximum review sections reached.  You can\'t add any more!' : 'Add review section' }}"></i>
+            <i class="fa fa-minus" aria-hidden="true" ng-class="{ 'disabled' : activeReview.ratings.length <= 1}" ng-click="removeRating()" title="{{activeReview.ratings.length <= 1 ? 'Minimum review sections reached.  You can\'t remove any more!' : 'Remove review section'}}"></i>
+        </div>
+    </div>
+    <div class="content-container">
+        <text-area class="note-text-area" data="activeReview.text_body" ng-refresh="updateMDE" on-change="validateReview"></text-area>
+
+        <div class="message-input" ng-if="activeReview.editing && activeReview.original.submitted_by != currentUser.id">
+            <label>
+                <div>Edit Summary</div>
+                <input type="text" ng-model="activeReview.edit_summary" maxlength="255">
+            </label>
+        </div>
+
+        <div class="message-input" ng-if="permissions.canModerate">
+            <label>
+                <div>Moderator Message</div>
+                <input type="text" ng-model="activeReview.moderator_message" maxlength="255">
+            </label>
+        </div>
+
+        <div class="action-button-container">
+            <input class="btn action-btn" type="submit" value="Submit" ng-click="saveReview()" ng-disabled="!activeReview.valid" title="{{activeReview.valid ? 'Submit your Review' : 'Your review is too short.'}}"/>
+            <input class="btn action-btn" type="button" value="Discard" ng-click="discardReview()">
+        </div>
+    </div>
+</div>
+
+<loader data="mod.reviews" spinner-class="big-spinner" ng-if="!errors.reviews && !errors.reviewSections">
+     <!-- current user's review -->
+    <div class="content-block user-review" ng-if="mod.user_review">
+        <div class="content-title" ng-click="myReviewExpanded = !myReviewExpanded">
+            Your Review ({{mod.user_review.overall_rating}}/100)
+            <i class="fa fa-caret-down" aria-hidden="true" ng-hide="myReviewExpanded"></i>
+            <i class="fa fa-caret-up" aria-hidden="true" ng-show="myReviewExpanded"></i>
+        </div>
+        <div ng-if="myReviewExpanded">
+            <review review="mod.user_review" show-user-column="true" index="98" current-user="currentUser" edit="editReview"></review>
+        </div>
+    </div>
+
+    <!-- review specified in the url -->
+    <div class="content-block current-contribution" ng-if="currentReview && !currentReview.editing">
+        <review review="currentReview" show-user-column="true" index="99" current-user="currentUser" edit="editReview"></review>
+    </div>
+
+    <div ng-repeat="review in mod.reviews" class="content-block" ng-if="!review.editing">
+        <review review="review" show-user-column="true" index="100 + $index" current-user="currentUser" edit="editReview"></review>
+    </div>
+
+    <div class="content-message" ng-hide="mod.reviews.length || currentReview">
+        There are no reviews for this mod yet.
+    </div>
+
+    <page-results pages="pages.reviews" data="mod.reviews" callback="retrieveReviews"></page-results>
+</loader>
+
+<div class="content-message content-error" ng-if="errors.reviews">
+    There was an error retrieving reviews for this mod.<br>
+    <!--TODO: Render JSON errors here, if available?-->
+    Error {{errors.reviews.status}}: {{errors.reviews.statusText}}
+</div>
+
+<div class="content-message content-error" ng-if="errors.reviewSections">
+    There was an error retrieving review sections.<br>
+    <!--TODO: Render JSON errors here, if available?-->
+    Error {{errors.reviewSections.status}}: {{errors.reviewSections.statusText}}
+</div>

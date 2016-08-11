@@ -1,0 +1,41 @@
+<ul dnd-list="model" class="{{draggingGroup ? 'dragging-group' : ''}}">
+    <li ng-repeat="item in model" class="box-shadow {{item.children ? 'group bg-'+item.color : ''}}" ng-hide="item._destroy" dnd-draggable="item" dnd-moved="itemMoved(model, $index)" dnd-effect-allowed="move" dnd-disable-if="!editing" dnd-type="{{item.children ? '\'group\'' : '\'item\''}}" dnd-dragstart="draggingGroup = !!item.children" dnd-dragend="draggingGroup = false">
+
+        <!-- display options for groups -->
+        <div ng-if="item.children">
+            <div class="action-items" ng-if="editing">
+                <span class="fa fa-times" ng-click="removeGroup(model, item, $index)"></span>
+            </div>
+            <div class="group-name">
+                <input type="text" ng-model="item.name" ng-click="focusText($event)" pu-elastic-input ng-disabled="!editing"/>
+            </div>
+            <div class="group-color" ng-if="editing">
+                <strong>Color:</strong>
+                <select ng-model="item.color">
+                    <option ng-repeat="option in colorOptions" value="{{option}}">{{option | humanize:1}}</option>
+                </select>
+            </div>
+
+            <!-- display children of groups -->
+            <ul dnd-list="item.children" dnd-horizontal-list="true" dnd-allowed-types="['item']">
+                <li class="box-shadow" ng-repeat="item in item.children" ng-hide="item._destroy" dnd-draggable="item" dnd-moved="itemMoved($parent.item.children, $index)" dnd-effect-allowed="move" dnd-disable-if="!editing" dnd-type="'item'">
+                    <grid-item></grid-item>
+                </li>
+            </ul>
+
+            <!-- display message if there are no children -->
+            <div class="content-message" ng-show="isEmpty(item.children)">
+                There are no {{label}} in this group.
+            </div>
+        </div>
+
+        <!-- display item -->
+        <div ng-if="!item.children">
+            <grid-item></grid-item>
+        </div>
+    </li>
+</ul>
+
+<div class="content-message" ng-show="isEmpty(model)">
+    There are no {{label}} in this list.
+</div>

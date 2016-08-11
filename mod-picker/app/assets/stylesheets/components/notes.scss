@@ -1,31 +1,5 @@
-.note-container {
-  .content-title {
-    background-color: $bar_color;
-    color: $bar_text_color;
-    //border-bottom: 1px solid $bar_dark_color;
-    width: 100%;
-    padding: 10px;
-    font-size: 16px;
-    font-weight: 500;
-
-    .right-item {
-      float: right;
-      .standing {
-        font-size: 14px;
-        font-weight: 100;
-        font-style: italic;
-        vertical-align: top;
-      }
-    }
-    a {
-      color: $bright_action_color;
-      &:hover {
-        color: $bar_text_color;
-      }
-    }
-  }
-
-  .author-column {
+.contribution-container {
+  .user-column {
     //background-color: $secondary_background;
     border-right: 1px solid $border_color;
     display: table-cell;
@@ -68,11 +42,51 @@
           text-transform: uppercase;
         }
       }
+
+      .editors {
+        font-size: 12px;
+        margin-top: 20px;
+
+        b {
+          font-weight: 500;
+        }
+      }
+    }
+  }
+
+  .no-actions {
+    padding-bottom: 10px !important;
+  }
+
+  .resolution-column {
+    display: table-cell;
+    vertical-align: top;
+    border-left: 1px solid $border_color;
+    background-color: $bar_highlight_color;
+    width: 200px;
+    padding: 14px;
+    text-align: center;
+
+    .resolution-status {
+      font-size: 20px;
+      font-weight: 500;
+      margin: 8px 0 16px;
+      color: $bar_text_color;
+    }
+
+    .resolution-options {
+      .action-box {
+        margin: 2px 0;
+      }
+
+      .action-box.single {
+        margin: 14px 0;
+      }
     }
   }
 
   .content-column {
-    display:table-cell;
+    display: table-cell;
     vertical-align: top;
     position: relative;
     padding-bottom: 35px;
@@ -152,9 +166,14 @@
     }
 
     .text-container {
-      width: 100%;
-      margin: 10px 0;
       padding: 0 20px;
+    }
+
+    .edit-summary {
+      font-size: 12px;
+      padding: 0 20px;
+      margin: 10px 0;
+      @include wordbreak;
     }
 
     .moderator-message {
@@ -184,6 +203,11 @@
       bottom: 0;
       cursor: default;
 
+      .action-box {
+        display: inline-block;
+        margin: 2px 0;
+      }
+
       .actions-dropdown-container {
         position: relative;
         outline: none;
@@ -192,10 +216,6 @@
           top: 25px;
           left: -69px;
         }
-      }
-
-      .right-item {
-        float: right;
       }
     }
   }

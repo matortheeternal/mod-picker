@@ -15,7 +15,7 @@ form {
     margin-bottom: 10px;
   }
 
-  #check-categories-btn {
+  .category-buttons {
     display: block;
     margin-top: 6px;
   }
@@ -80,6 +80,14 @@ form {
     margin-bottom: 6px;
     display: block;
     line-height: 32px;
+
+    .source-label {
+      font-size: 13px;
+      border: 1px solid rgb(230, 230, 230);
+      padding: 0.5em;
+      width: 148px;
+      margin-right: 1px;
+    }
 
     .remove-item {
       cursor: pointer;

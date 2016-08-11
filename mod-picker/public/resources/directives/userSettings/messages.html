@@ -1,11 +1,9 @@
-<div>
-    <div class="success-message" ng-if="successBool" sticky>
-    	{{successMessage}}
-    </div>
-</div>
-
-<div>
-	<div ng-repeat="error in errors" class="error-message" sticky>
-    	{{error.message}}
+<div ng-show="messages.length" class="messages" sticky use-placeholder="false">
+	<div ng-repeat="message in messages" class="message {{message.type}}-message">
+        <span ng-if="!message.url">{{message.text}}</span>
+        <a ng-if="message.url" href="{{message.url}}">{{message.text}}</a>
+        <span class="right-item">
+            <i class="fa fa-times" aria-hidden="true" ng-click="messages.splice($index, 1)"></i>
+        </span>
     </div>
 </div>

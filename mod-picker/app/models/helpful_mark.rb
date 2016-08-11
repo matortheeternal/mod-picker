@@ -3,14 +3,17 @@ class HelpfulMark < ActiveRecord::Base
   
   self.primary_keys = :submitted_by, :helpfulable_id, :helpfulable_type
 
-  scope :by, -> (id) { where(submitted_by: id) }
+  # SCOPES
+  scope :submitter, -> (id) { where(submitted_by: id) }
+  scope :helpfulable, -> (model, ids) { where(helpfulable_type: model, helpfulable_id: ids) }
 
+  # ASSOCIATIONS
   belongs_to :helpfulable, :polymorphic => true
-  belongs_to :user, :foreign_key => 'submitted_by', :inverse_of => 'helpful_marks'
+  belongs_to :submitter, :class_name => 'User', :foreign_key => 'submitted_by', :inverse_of => 'helpful_marks'
 
-  # Validation
+  # VALIDATIONS
   # :helpful's presence is not required because it will fail if :helpful == false
-  validates :helpfulable_id, :helpfulable_type, presence: true
+  validates :submitted_by, :helpfulable_id, :helpfulable_type, presence: true
 
   validates :helpful, inclusion: {
     in: [true, false],
@@ -19,21 +22,34 @@ class HelpfulMark < ActiveRecord::Base
 
   validates :helpfulable_type, inclusion: {
     in: ["CompatibilityNote", "InstallOrderNote", "LoadOrderNote", "Review"],
-    message: "Not a valid record that contains helpful marks"
+    message: "Input helpfulable type does not support helpful marks"
   }
 
-  # Callbacks
+  # CALLBACKS
   before_save :set_dates
   after_create :increment_counters
   before_destroy :decrement_counters
 
+  def as_json(options={})
+    if JsonHelpers.json_options_empty(options)
+      default_options = {
+          :only => [:helpfulable_id, :helpful]
+      }
+      super(options.merge(default_options))
+    else
+      super(options)
+    end
+  end
+
   private
     def set_dates
-      self.submitted = DateTime.now
+      if self.submitted.nil?
+        self.submitted = DateTime.now
+      end
     end
 
     def decrement_counters
-      self.user.update_counter(:helpful_marks_count, -1)
+      self.submitter.update_counter(:helpful_marks_count, -1)
       if self.helpful
         self.helpfulable.helpful_count -= 1
         self.helpfulable.compute_reputation
@@ -46,7 +62,7 @@ class HelpfulMark < ActiveRecord::Base
     end
 
     def increment_counters
-      self.user.update_counter(:helpful_marks_count, 1)
+      self.submitter.update_counter(:helpful_marks_count, 1)
       if self.helpful
         self.helpfulable.helpful_count += 1
         self.helpfulable.compute_reputation

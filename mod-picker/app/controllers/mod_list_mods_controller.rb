@@ -1,49 +1,40 @@
 class ModListModsController < ApplicationController
-  before_action :set_mod_list_mod, only: [:update, :destroy]
-
   # POST /mod_list_mods
-  # POST /mod_list_mods.json
   def create
     @mod_list_mod = ModListMod.new(mod_list_mod_params)
-    authorize! :create, @mod_list_mod
 
     if @mod_list_mod.save
-      render json: {status: :ok}
-    else
-      render json: @mod_list_mod.errors, status: :unprocessable_entity
-    end
-  end
+      # prepare notes
+      mod_compatibility_notes = @mod_list_mod.mod_compatibility_notes
+      plugin_compatibility_notes = @mod_list_mod.plugin_compatibility_notes
+      install_order_notes = @mod_list_mod.install_order_notes
+      load_order_notes = @mod_list_mod.load_order_notes
 
-  # PATCH/PUT /mod_list_mods/1
-  # PATCH/PUT /mod_list_mods/1.json
-  def update
-    authorize! :update, @mod_list_mod
-    if @mod_list_mod.update(mod_list_mod_params)
-      render json: {status: :ok}
-    else
-      render json: @mod_list_mod.errors, status: :unprocessable_entity
-    end
-  end
+      # prepare helpful marks
+      c_helpful_marks = HelpfulMark.submitter(current_user.id).helpfulable("CompatibilityNote", mod_compatibility_notes.ids + plugin_compatibility_notes.ids)
+      i_helpful_marks = HelpfulMark.submitter(current_user.id).helpfulable("InstallOrderNote", install_order_notes.ids)
+      l_helpful_marks = HelpfulMark.submitter(current_user.id).helpfulable("LoadOrderNote", load_order_notes.ids)
 
-  # DELETE /mod_list_mods/1
-  # DELETE /mod_list_mods/1.json
-  def destroy
-    authorize! :destroy, @mod_list_mod
-    if @mod_list_mod.destroy
-      render json: {status: :ok}
+      # render response
+      render json: {
+          mod_list_mod: @mod_list_mod,
+          required_tools: @mod_list_mod.required_tools,
+          required_mods: @mod_list_mod.required_mods,
+          mod_compatibility_notes: mod_compatibility_notes,
+          plugin_compatibility_notes: plugin_compatibility_notes,
+          install_order_notes: install_order_notes,
+          load_order_notes: load_order_notes,
+          c_helpful_marks: c_helpful_marks,
+          i_helpful_marks: i_helpful_marks,
+          l_helpful_marks: l_helpful_marks
+      }
     else
       render json: @mod_list_mod.errors, status: :unprocessable_entity
     end
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_mod_list_mod
-      @mod_list_mod = ModListMod.find_by(mod_list_id: params[:mod_list_id], mod_id: params[:mod_id])
-    end
-
-    # Never trust parameters from the scary internet, only allow the white list through.
     def mod_list_mod_params
-      params.require(:mod_list_mod).permit(:mod_list_id, :mod_id, :active, :install_order)
+      params.require(:mod_list_mod).permit(:mod_list_id, :mod_id, :index)
     end
 end

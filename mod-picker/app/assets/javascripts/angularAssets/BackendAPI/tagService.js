@@ -11,14 +11,18 @@ app.service('tagService', function (backend, $q) {
     };
 
     this.updateModTags = function(mod, tags) {
-        var action = $q.defer();
         var putData = {
             game_id: mod.game_id,
             tags: tags
         };
-        backend.update('/mods/' + mod.id + '/tags', putData).then(function (data) {
-            action.resolve(data);
-        });
-        return action.promise;
+        return backend.update('/mods/' + mod.id + '/tags', putData);
+    };
+
+    this.updateModListTags = function(mod_list, tags) {
+        var putData = {
+            game_id: mod_list.game_id,
+            tags: tags
+        };
+        return backend.update('/mod_lists/' + mod_list.id + '/tags', putData);
     };
 });

@@ -1,0 +1,135 @@
+<div class="modal-container">
+    <messages event="modalMessage"></messages>
+
+    <div class="modal huge-modal" ng-hide="correction || activeCorrection">
+        <div class="close-modal">
+            <span class="fa fa-times" ng-click="toggleCorrectionsModal(false)"></span>
+        </div>
+
+        <h2>
+            {{target.submitter.username}}'s {{model.label}} - Corrections
+        </h2>
+        <p ng-show="canCorrect">
+            If there is something wrong with this contribution you can propose a correction.
+            The author of the contribution will be notified of your proposed correction, and
+            can edit their contribution if they agree with you.  If the author disagrees with
+            you the correction will be reviewed by the community over one week.  If enough users
+            agree with your correction, the contribution will become editable by you so you can
+            make the correction yourself.  You can vote on and participate in discussion on any
+            currently open corrections.
+        </p>
+        <p ng-hide="canCorrect">
+            You don't have enough reputation to submit a correction on this contribution.  You
+            can view past corrections and discussions, but will not be able to vote on them or
+            participate in discussion until you have gained more reputation.
+        </p>
+        <p>
+            <a href="/help/Corrections_Process">Click here</a> for more information.
+        </p>
+
+        <h3 class="section-title">Corrections</h3>
+        <loader data="target.corrections" content-class="corrections-container" spinner-class="big-spinner" ng-if="!errors.corrections">
+            <table ng-if="target.corrections.length > 0">
+                <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Date Submitted</th>
+                    <th>Submitted by</th>
+                    <th>Comments</th>
+                    <th>Status</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="correction in target.corrections" ng-class="{ 'appeal-hidden' : appeal.hidden }">
+                    <td>
+                        <a ng-click="showCorrection(correction)" class="strong capitalize">
+                            {{correction.title}}
+                        </a>
+                    </td>
+                    <td>{{correction.submitted | date}}</td>
+                    <td>
+                        <a ng-href="#/profile/{{correction.submitted_by}}" class="strong">
+                            {{correction.submitter.username}}
+                        </a>
+                    </td>
+                    <td>{{correction.comments_count}}</td>
+                    <td>
+                        <div class="action-box no-action" ng-if="correction.status === 'open'" title="{{correction.agree_count}} agree, {{correction.disagree_count}} disagree">
+                            Open ({{computeAgreePercentage(correction) | number:0}}%)
+                        </div>
+                        <div class="action-box green-box no-action" ng-if="correction.status === 'passed'" title="{{correction.agree_count}} agreed, {{correction.disagree_count}} disagreed">
+                            Passed ({{computeAgreePercentage(correction) | number:0}}%)
+                        </div>
+                        <div class="action-box red-box no-action" ng-if="correction.status === 'failed'" title="{{correction.agree_count}} agreed, {{correction.disagree_count}} disagreed">
+                            Failed ({{computeAgreePercentage(correction) | number:0}}%)
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <div class="content-message" ng-if="target.corrections.length == 0">
+                There have been no corrections on this contribution.
+            </div>
+        </loader>
+
+        <div class="content-message content-error" ng-if="errors.corrections">
+            There was an error retrieving corrections for this contribution.<br>
+            <!--TODO: Render JSON errors here, if available?-->
+            Error {{errors.corrections.status}}: {{errors.corrections.statusText}}
+        </div>
+
+        <div class="action-button-container" ng-if="canCorrect && !errors.corrections">
+            <input class="btn action-btn" type="submit" ng-click="startNewCorrection()" value="New Correction">
+        </div>
+    </div>
+
+    <div class="modal huge-modal" ng-if="correction && !activeCorrection">
+        <div class="close-modal">
+            <span class="fa fa-times" ng-click="toggleCorrectionsModal(false)"></span>
+        </div>
+
+        <h2>{{target.submitter.username}}'s {{model.label}} - Viewing Correction</h2>
+
+        <div class="content-block">
+            <correction correction="correction" index="100" current-user="currentUser" edit="editCorrection" show-user-column="true" event-prefix="'modal'"></correction>
+        </div>
+
+        <h3 class="section-title">Comments
+            <span class="action-box" ng-click="startNewComment()">
+                <i class="fa fa-plus"></i> New Comment
+            </span>
+        </h3>
+        <loader data="correction.comments" spinner-class="big-spinner" content-class="content-container">
+            <comments comments="correction.comments" current-user="currentUser" model-name="'Correction'" target="correction" event-prefix="'modal'"></comments>
+
+            <page-results pages="pages.correction_comments" data="correction.comments" callback="retrieveCorrectionComments"></page-results>
+        </loader>
+
+        <!-- TODO: May need to move this before comments or make it a sticky footer? -->
+        <div class="action-button-container">
+            <input class="btn action-btn" type="submit" ng-click="showIndex()" value="Back">
+        </div>
+    </div>
+
+    <div class="modal huge-modal" ng-if="activeCorrection">
+        <div class="close-modal">
+            <span class="fa fa-times" ng-click="toggleCorrectionsModal(false)"></span>
+        </div>
+
+        <h2>{{target.submitter.username}}'s {{model.label}} - New Correction</h2>
+
+        <div class="content-block">
+            <div class="content-title">
+                <input type="text" ng-model="activeCorrection.title" placeholder="Enter Title Here" pu-elastic-input>
+            </div>
+            <div class="content-container">
+                <text-area data="activeCorrection.text_body" ng-refresh="updateMDE" on-change="validateCorrection"></text-area>
+
+                <div class="action-button-container">
+                    <input class="btn action-btn" type="submit" value="Submit" ng-click="saveCorrection()" ng-disabled="!activeCorrection.valid" title="{{activeCorrection.valid ? 'Submit your correction' : 'Your correction is too short.'}}"/>
+                    <input class="btn action-btn" type="button" value="Discard" ng-click="discardCorrection()">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,79 @@
+﻿<div class="tab-bar-items">
+    <div class="tab-bar-item primary-item">
+        <sort-control sort="sort.load_order_notes" sort-options="sortOptions.load_order_notes"></sort-control>
+    </div>
+    <!-- TODO: replace input with button that has an inline value -->
+    <div class="tab-bar-item">
+        <input class="btn" type="submit" value="Add Load Order Note" ng-click="startNewLoadOrderNote()" ng-disabled="activeLoadOrderNote"/>
+    </div>
+</div>
+
+<div class="content-block add-note-box" ng-show="activeLoadOrderNote">
+    <div class="content-title">
+        <span ng-if="activeLoadOrderNote.original">Edit</span>
+        <span ng-if="!activeLoadOrderNote.original">Add</span>
+        Load Order Note
+    </div>
+    <div class="content-options">
+        <span class="select">
+            <select ng-model="activeLoadOrderNote.first_plugin_id" ng-disabled="activeLoadOrderNote.editing">
+                <option ng-repeat="plugin in mod.plugins" ng-show="plugin.id !== activeLoadOrderNote.second_plugin_id" value="{{plugin.id}}">
+                  Load {{plugin.filename}}
+                </option>
+            </select>
+        </span>
+        <span class="select order-dropdown">
+            <select ng-model="activeLoadOrderNote.order">
+                <option value="before">Before</option>
+                <option value="after">After</option>
+            </select>
+        </span>
+        <search-input search-function="searchPlugins" result-id="activeLoadOrderNote.second_plugin_id" search-text="activeLoadOrderNote.searchText" excluded-id="activeLoadOrderNote.first_plugin_id" on-change="validateLoadOrderNote" disabled="activeLoadOrderNote.editing" label="plugins" key="filename"></search-input>
+    </div>
+    <div class="content-container">
+        <text-area data="activeLoadOrderNote.text_body" ng-refresh="updateMDE" class="note-text-area"></text-area>
+
+        <div class="message-input" ng-if="activeLoadOrderNote.editing && activeLoadOrderNote.original.submitted_by != currentUser.id">
+            <label>
+                <div>Edit Summary</div>
+                <input type="text" ng-model="activeLoadOrderNote.edit_summary" maxlength="255">
+            </label>
+        </div>
+
+        <div class="message-input" ng-if="permissions.canModerate">
+            <label>
+                <div>Moderator Message</div>
+                <input type="text" ng-model="activeLoadOrderNote.moderator_message" maxlength="255">
+            </label>
+        </div>
+
+        <div class="action-button-container">
+            <input class="btn action-btn" type="submit" value="Submit" ng-click="saveLoadOrderNote()" ng-disabled="!activeLoadOrderNote.valid" title="{{activeLoadOrderNote.valid ? 'Submit your load order note' : 'Your load order note is either too short or incomplete.'}}"/>
+            <input class="btn action-btn" type="button" value="Discard" ng-click="discardLoadOrderNote()">
+        </div>
+    </div>
+</div>
+
+<loader data="mod.load_order_notes" spinner-class="big-spinner" ng-if="!errors.load_order_notes">
+    <!-- note specified in the url -->
+    <div class="content-lock current-contribution" ng-if="currentloadOrderNote && !currentloadOrderNote.editing">
+        <load-order-note note="currentloadOrderNote" index="99" current-user="currentUser" edit="editLoadOrderNote"></load-order-note>
+    </div>
+
+    <!-- the rest of the notes -->
+    <div ng-repeat="note in mod.load_order_notes" class="content-block" ng-if="!note.editing">
+        <load-order-note note="note" index="100 + $index" current-user="currentUser" edit="editLoadOrderNote"></load-order-note>
+    </div>
+
+    <div class="content-message" ng-hide="mod.load_order_notes.length || currentLoadOrderNote">
+        There are no Load Order Notes for this mod yet.
+    </div>
+
+    <page-results pages="pages.load_order_notes" data="mod.load_order_notes" callback="retrieveLoadOrderNotes"></page-results>
+</loader>
+
+<div class="content-message content-error" ng-if="errors.load_order_notes">
+    There was an error retrieving load order notes for this mod.<br>
+    <!--TODO: Render JSON errors here, if available?-->
+    Error {{errors.load_order_notes.status}}: {{errors.load_order_notes.statusText}}
+</div>

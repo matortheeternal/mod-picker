@@ -4,6 +4,9 @@ class BaseReport < ActiveRecord::Base
   belongs_to :reportable, :polymorphic => true
   has_many :reports, :inverse_of => 'base_report'
 
+  # Validations
+  validates :reportable_id, :reportable_type, presence: true
+
   # Callbacks
   before_save :set_dates
 

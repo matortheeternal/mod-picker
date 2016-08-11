@@ -1,0 +1,172 @@
+/* button styling */
+input[type="button"], input[type="submit"] {
+  display: inline;
+  text-align: center;
+  font-size: 12px;
+  line-height: 18px;
+  border: 0;
+  border-radius: 0;
+  cursor: pointer;
+  @include transition(all 0.2s ease-in-out);
+
+  &:disabled {
+    cursor: default;
+    background-color: $hard_border_color;
+  }
+}
+
+.btn {
+  padding: 7px;
+  height: 32px;
+  color: $action_text_color;
+  text-transform: uppercase;
+  background-color: $action_color;
+  &:hover {
+    background-color: $bar_highlight_color;
+  }
+}
+
+.btn-round {
+  padding: 8px;
+  color: $action_text_color;
+  border-radius: 3%;
+  background-color: $action_color;
+  cursor: pointer;
+
+
+  &:hover {
+    background-color: $bar_highlight_color;
+  }
+}
+
+.action-button-container {
+  margin-top: 16px;
+  text-align: center;
+}
+
+.action-btn {
+  background-color: $bar_highlight_color;
+  display: block;
+  margin: 4px;
+  padding: 10px;
+  height: 38px;
+
+  &:hover {
+    background-color: $shadow_color
+  }
+}
+
+.small-action-btn {
+  background-color: $bar_highlight_color;
+  display: block;
+  padding: 4px 8px;
+  height: 26px;
+
+  &:hover {
+    background-color: $shadow_color
+  }
+}
+
+.btn-sm {
+  padding: 7px;
+  color: $action_text_color;
+  background-color: $action_color;
+  margin-right: 4px;
+  margin-left: 4px;
+  &:hover {
+    background-color: $bar_highlight_color;
+  }
+}
+
+// action boxes
+.action-box {
+  color: $action_text_color;
+  text-align: center;
+  background-color: $action_color;
+  padding: 4px 8px;
+  font-size: 12px;
+  font-weight: 500;
+  border-radius: 4%;
+  margin: 2px;
+  cursor: pointer;
+  @include user-select(none);
+  @include transition(all 0.2s ease-in-out);
+
+  i.fa {
+    font-size: 13px;
+  }
+
+  // this hack makes it look better
+  i.fa.fa-edit {
+    vertical-align: middle;
+  }
+
+  &:focus, &:hover {
+    color: $action_text_color;
+    background-color: $bar_highlight_color;
+  }
+
+  &.disabled {
+    background-color: $hard_border_color;
+    cursor: default;
+
+    &:hover {
+      background-color: $hard_border_color;
+    }
+  }
+}
+
+div.action-box {
+  display: inline-block;
+}
+
+.static-box {
+  display: inline-block;
+  float: right;
+  color: $action_text_color;
+  text-align: center;
+  background-color: $action_color;
+  padding: 4px 8px;
+  font-size: 18px;
+  border-radius: 4%;
+  margin-bottom: 4px;
+  cursor: default;
+  pointer-events: none;
+  @include user-select(none);
+}
+
+.red-box {
+  background-color: $error_secondary;
+
+  &:focus {
+    background-color: $error_secondary;
+  }
+
+  &:hover {
+    background-color: $action_color;
+  }
+}
+
+.green-box {
+  background-color: $success_secondary;
+
+  &:focus {
+    background-color: $success_secondary;
+  }
+
+  &:hover {
+    background-color: $action_color;
+  }
+}
+
+.yellow-box {
+  background-color: $warning_secondary;
+
+  &:focus {
+    background-color: $warning_secondary;
+  }
+
+  &:hover {
+    background-color: $action_color;
+  }
+}

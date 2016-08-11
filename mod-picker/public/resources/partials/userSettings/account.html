@@ -1,75 +1,64 @@
 <h3 class="section-title">Linked Accounts</h3>
 <section ng-if="user.bio">
-    <section>
+    <div class="subsection">
         <link-generic-account bio="user.bio" site-label="'Nexus Mods'" site-username="user.bio.nexus_username" site-posts-count="user.bio.nexus_posts_count" site-date-joined="user.bio.nexus_date_joined" site-verification-token="user.bio.nexus_verification_token"></link-generic-account>
-    </section>
-    <section>
+    </div>
+    <div class="subsection">
         <link-generic-account bio="user.bio" site-label="'Lover\'s Lab'" site-username="user.bio.lover_username" site-posts-count="user.bio.lover_posts_count" site-date-joined="user.bio.lover_date_joined" site-verification-token="user.bio.lover_verification_token"></link-generic-account>
-    </section>
-    <section>
+    </div>
+    <div class="subsection">
         <link-generic-account bio="user.bio" site-label="'Steam Workshop'" site-username="user.bio.workshop_username" site-submissions-count="user.bio.workshop_submissions_count" site-followers-count="user.bio.workshop_followers_count" site-verification-token="user.bio.workshop_verification_token"></link-generic-account>
-    </section>
-
+    </div>
 </section>
 
 <h3 class="section-title">Email</h3>
 <section>
-    <section>
+    <div class="subsection">
         <input type="email" name="email" ng-model="user.email" />
-    </section>
-    <section>
-        <label>
-            <input type="checkbox" ng-model="userSettings.email_public">
-            Allow other users to see my email address
-        </label>
-    </section>
+    </div>
+    <label class="subsection">
+        <input type="checkbox" ng-model="userSettings.email_public">
+        Allow other users to see my email address
+    </label>
 </section>
 
 <h3 class="section-title">Password</h3>
 <section>
-    <section>
+    <label class="subsection">
         <span class="input-label">New Password</span>
         <span class="input-block">
             <span class="explanation">Passwords must be at least 8 characters long</span>
             <input type="password" ng-model="user.newPassword">
         </span>
-    </section>
-    <section>
+    </label>
+    <label class="subsection">
         <span class="input-label">Confirm New Password</span>
         <input type="password" ng-model="user.newPassword_confirmation">
-    </section>
-    <section>
+    </label>
+    <label class="subsection">
         <span class="input-label">Current Password</span>
         <input type="password" ng-model="user.password">
-    </section>
+    </label>
 </section>
 
 <h3 class="section-title">Content shown</h3>
 <section>
-    <section>
-        <label>
-            <input type="checkbox" ng-model="userSettings.allow_adult_content">
-            Allow adult content
-        </label>
-    </section>
-    <section>
-        <label>
-            <input type="checkbox" ng-model="userSettings.allow_nexus_mods">
-            Allow mods from Nexus Mods
-        </label>
-    </section>
-    <section>
-        <label>
-            <input type="checkbox" ng-model="userSettings.allow_steam_workshop">
-            Allow mods from the Steam Workshop
-        </label>
-    </section>
-    <section>
-        <label>
-            <input type="checkbox" ng-model="userSettings.allow_lovers_lab">
-            Allow mods from Lover's Lab
-        </label>
-    </section>
+    <label class="subsection">
+        <input type="checkbox" ng-model="userSettings.allow_adult_content">
+        Allow adult content
+    </label>
+    <label class="subsection">
+        <input type="checkbox" ng-model="userSettings.allow_nexus_mods">
+        Allow mods from Nexus Mods
+    </label>
+    <label class="subsection">
+        <input type="checkbox" ng-model="userSettings.allow_steam_workshop">
+        Allow mods from the Steam Workshop
+    </label>
+    <label class="subsection">
+        <input type="checkbox" ng-model="userSettings.allow_lovers_lab">
+        Allow mods from Lover's Lab
+    </label>
 </section>
 
 <!-- should be auto set from browser

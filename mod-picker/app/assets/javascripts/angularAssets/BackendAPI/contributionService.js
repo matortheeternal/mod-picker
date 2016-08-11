@@ -1,46 +1,122 @@
-app.service('contributionService', function (backend, $q) {
-    this.helpfulMark = function(type, id, helpful) {
-        var mark = $q.defer();
+app.service('contributionService', function (backend, $q, userTitleService, pageUtils, reviewSectionService) {
+    var service = this;
+
+    this.retrieveContributions = function(route, options, pageInformation) {
+        var action = $q.defer();
+        backend.post('/' + route + '/index', options).then(function(data) {
+            // associate other data
+            var contributions = data[route];
+            reviewSectionService.associateReviewSections(contributions);
+            userTitleService.associateTitles(contributions);
+            service.associateAgreementMarks(contributions, data.agreement_marks);
+            service.associateHelpfulMarks(contributions, data.helpful_marks);
+
+            // resolve page information and data
+            pageUtils.getPageInformation(data, pageInformation, options.page);
+            action.resolve(data);
+        }, function(response) {
+            action.reject(response);
+        });
+        return action.promise;
+    };
+
+    this.helpfulMark = function(route, id, helpful) {
         var helpfulObj = helpful == undefined ? {} : {helpful: helpful};
-        backend.post('/' + type + '/' + id + '/helpful', helpfulObj).then(function (data) {
-            mark.resolve(data);
-        });
-        return mark.promise;
+        return backend.post('/' + route + '/' + id + '/helpful', helpfulObj);
     };
 
-    this.hide = function(type, id, hidden) {
+    this.agreementMark = function(route, id, agree) {
+        var agreeObj = agree == undefined ? {} : {agree: agree};
+        return backend.post('/' + route + '/' + id + '/agreement', agreeObj)
+    };
+
+    this.hide = function(route, id, hidden) {
+        return backend.post('/' + route + '/' + id + '/hide', {hidden: hidden});
+    };
+
+    this.approve = function(route, id, approved) {
+        return backend.post('/' + route + '/' + id + '/approve', {approved: approved});
+    };
+
+    this.submitContribution = function(route, contribution) {
         var action = $q.defer();
-        backend.post('/' + type + '/' + id + '/hide', {hidden: hidden}).then(function (data) {
-            action.resolve(data);
+        backend.post('/' + route, contribution).then(function(data) {
+            var contributions = [data];
+            reviewSectionService.associateReviewSections(contributions);
+            userTitleService.associateTitles(contributions);
+            action.resolve(contributions[0]);
+        }, function(response) {
+            action.reject(response);
         });
         return action.promise;
     };
 
-    this.approve = function(type, id, approved) {
+    this.updateContribution = function(route, id, contribution) {
+        return backend.update('/' + route + '/' + id, contribution);
+    };
+
+    this.retrieveComments = function(route, id, options, pageInformation) {
         var action = $q.defer();
-        backend.post('/' + type + '/' + id + '/approve', {approved: approved}).then(function (data) {
-            action.resolve(data);
+        backend.post('/' + route + '/' + id + '/comments', options).then(function(data) {
+            userTitleService.associateTitles(data.comments);
+            pageUtils.getPageInformation(data, pageInformation, options.page);
+            action.resolve(data.comments);
+        }, function(response) {
+            action.reject(response);
         });
         return action.promise;
     };
 
-    this.submitContribution = function(type, contribution) {
+    this.retrieveCorrections = function(type, id) {
         var action = $q.defer();
-        backend.post('/' + type, contribution).then(function (data) {
-            action.resolve(data);
+        backend.retrieve('/' + type + '/' + id + '/corrections').then(function (data) {
+            userTitleService.associateTitles(data.corrections);
+            service.associateAgreementMarks(data.corrections, data.agreement_marks);
+            action.resolve(data.corrections);
+        }, function(response) {
+            action.reject(response);
         });
         return action.promise;
     };
 
-    this.updateContribution = function(type, id, contribution) {
+    this.retrieveHistory = function(type, id) {
         var action = $q.defer();
-        backend.update('/' + type + '/' + id, contribution).then(function (data) {
+        backend.retrieve('/' + type + '/' + id + '/history').then(function (data) {
+            userTitleService.associateTitles(data);
             action.resolve(data);
+        }, function(response) {
+            action.reject(response);
         });
         return action.promise;
+    };
+
+    this.handleEditors = function(contributions) {
+        contributions.forEach(function(contribution) {
+            if (contribution.editor && contribution.editors) {
+                var editor = contribution.editors.find(function(editor) {
+                    return editor.id == contribution.editor.id;
+                });
+                if (!editor) {
+                    contribution.editors.unshift(contribution.editor);
+                }
+            }
+            if (contribution.editors) {
+                var index = contribution.editors.findIndex(function(editor) {
+                    return editor.id == contribution.submitter.id;
+                });
+                if (index > -1) {
+                    contribution.editors.splice(index, 1);
+                }
+            }
+        });
     };
 
     this.associateAgreementMarks = function(corrections, agreementMarks) {
+        // return if agreementMarks is undefined
+        if (!agreementMarks) {
+            return;
+        }
+
         // loop through corrections
         corrections.forEach(function(correction) {
             // see if we have a matching agreement mark
@@ -55,6 +131,11 @@ app.service('contributionService', function (backend, $q) {
     };
 
     this.associateHelpfulMarks = function(contributions, helpfulMarks) {
+        // return if helpfulMarks is undefined
+        if (!helpfulMarks) {
+            return;
+        }
+
         // loop through contributions
         contributions.forEach(function(contribution) {
             // see if we have a matching helpful mark

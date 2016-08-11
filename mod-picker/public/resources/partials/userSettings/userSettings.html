@@ -2,7 +2,7 @@
     <div class="page-container">
         <h1>User Settings</h1>
         <div class="settings-tabs">
-            <tabs current-tab="currentTab" tabs="tabs"></tabs>
+            <tabs tabs="tabs"></tabs>
         </div>
     </div>
 </div>
@@ -13,9 +13,9 @@
 <div class="page-container">
     <div class="single-column">
         <form>
-            <loader data="titleQuote" spinner-class="big-spinner">
-                <ng-include src="currentTab.url"></ng-include>
-            </loader>
+            <state-loader spinner-class="big-spinner">
+                <tab-views></tab-views>
+            </state-loader>
         </form>
     </div>
 </div>

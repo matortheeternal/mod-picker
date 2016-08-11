@@ -1,9 +1,0 @@
-<input type="text" placeholder="{{ searchPlugins ? 'Enter Plugin Name' : 'Enter Mod Name' }}" ng-model="searchText" ng-keydown="keyDown($event)" ng-keyup="keyUp($event)" ng-blur="blurMod($event)" ng-class="{ 'valid' : resultId && !disabled }" ng-disabled="disabled" pu-elastic-input>
-<div class="dropdown" ng-show="showDropdown">
-    <span ng-show="searching">Searching...</span>
-    <span ng-show="!searching && (!results || results.length == 0)">No results found</span>
-    <div class="dropdown-item" ng-repeat="result in results" ng-click="selectResult(result)" ng-mouseover="hoverRow()" ng-class="{ 'dropdown-selected-item': $index == currentIndex}">
-        <div ng-if="!searchPlugins">{{result.name}}</div>
-        <div ng-if="searchPlugins">{{result.filename}}</div>
-    </div>
-</div>

@@ -1,4 +1,6 @@
 class Game < ActiveRecord::Base
+  include RecordEnhancements
+  
   # parent/child games
   belongs_to :parent_game, :class_name => 'Game', :foreign_key => 'parent_game_id', :inverse_of => 'children_games'
   has_many :children_games, :class_name => 'Game', :foreign_key => 'parent_game_id', :inverse_of => 'parent_game'
@@ -17,6 +19,24 @@ class Game < ActiveRecord::Base
   has_many :load_order_notes, :inverse_of => 'game'
   has_many :reviews, :inverse_of => 'game'
   has_many :plugins, :inverse_of => 'game'
+  has_many :help_pages, :inverse_of => 'game'
+
+  # Validations
+  validates :display_name, :long_name, :abbr_name, presence: true
+
+  # gets the display image path via the game's display_name if one is present
+  def display_image
+    png_path = File.join(Rails.public_path, "games/#{id}.png")
+    jpg_path = File.join(Rails.public_path, "games/#{id}.jpg")
+
+    if File.exists?(png_path)
+      "/games/#{id}.png"
+    elsif File.exists?(jpg_path)
+      "/games/#{id}.jpg"
+    else
+      '/games/Default.png'
+    end 
+  end
 
   def update_lazy_counters
     self.mods_count = self.mods.count
@@ -32,5 +52,10 @@ class Game < ActiveRecord::Base
     self.load_order_notes_count = self.load_order_notes.count
     self.reviews_count = self.reviews.count
     self.plugins_count = self.plugins.count
+    self.help_pages_count = self.help_pages.count
+  end
+
+  def url
+    self.display_name.parameterize.underscore
   end
 end

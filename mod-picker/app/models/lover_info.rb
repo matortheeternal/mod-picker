@@ -2,6 +2,9 @@ class LoverInfo < ActiveRecord::Base
   belongs_to :mod
   belongs_to :game
 
+  # validations
+  validates :game_id, :mod_name, :uploaded_by, :released, presence: true
+
   # Callbacks
   after_save :update_mod_dates
 

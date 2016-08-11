@@ -1,14 +1,14 @@
-app.directive('assetTree', function (RecursionHelper) {
+app.directive('assetTree', function () {
     return {
-        retrict: 'E',
+        restrict: 'E',
         templateUrl: '/resources/directives/assetTree.html',
         scope: {
-            data: '='
+            assets: '='
         },
         link: function(scope) {
             scope.expanded = false;
-            scope.toggle = function () {
-                scope.expanded = !scope.expanded;
+            scope.toggle = function (asset) {
+                asset.expanded = !asset.expanded;
             }
         }
     }

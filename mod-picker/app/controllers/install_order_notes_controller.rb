@@ -1,11 +1,22 @@
 class InstallOrderNotesController < ContributionsController
-  before_action :set_install_order_note, only: [:show, :update, :approve, :hide, :destroy]
+  before_action :set_install_order_note, only: [:show, :update, :corrections, :history, :approve, :hide, :destroy]
 
   # GET /install_order_notes
   def index
-    @install_order_notes = InstallOrderNote.accessible_by(current_ability).filter(filtering_params).sort(params[:sort]).paginate(:page => params[:page])
+    # prepare install order notes
+    @install_order_notes = InstallOrderNote.includes(:editor, :editors, :submitter => :reputation).accessible_by(current_ability).filter(filtering_params).sort(params[:sort]).paginate(:page => params[:page])
+    count = InstallOrderNote.accessible_by(current_ability).filter(filtering_params).count
 
-    render :json => @install_order_notes
+    # prepare helpful marks
+    helpful_marks = HelpfulMark.submitter(current_user.id).helpfulable("InstallOrderNote", @install_order_notes.ids)
+
+    # render response
+    render :json => {
+        install_order_notes: @install_order_notes,
+        helpful_marks: helpful_marks,
+        max_entries: count,
+        entries_per_page: InstallOrderNote.per_page
+    }
   end
 
   # POST /install_order_notes
@@ -15,7 +26,7 @@ class InstallOrderNotesController < ContributionsController
     authorize! :create, @install_order_note
 
     if @install_order_note.save
-      render json: {status: :ok}
+      render json: @install_order_note.reload
     else
       render json: @install_order_note.errors, status: :unprocessable_entity
     end
@@ -29,7 +40,7 @@ class InstallOrderNotesController < ContributionsController
 
     # Params we allow filtering on
     def filtering_params
-      params.slice(:by, :mod);
+      params[:filters].slice(:adult, :game, :search, :submitter, :editor, :reputation, :helpful_count, :not_helpful_count, :standing, :corrections_count, :history_entries_count, :submitted, :edited);
     end
 
     # Params allowed during creation

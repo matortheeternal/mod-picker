@@ -1,0 +1,70 @@
+<!-- Mod List Details: Display Mode -->
+<div class="content-block">
+    <div class="content-title">Description</div>
+    <div class="content-container" ng-if="!editing">
+        <div marked="mod_list.description" class="text-container"></div>
+    </div>
+    <div class="content-container" ng-if="editing">
+        <text-area class="large-note-text-area" data="mod_list.description" ng-refresh="updateMDE"></text-area>
+    </div>
+</div>
+
+<div class="content-block" ng-if="editing">
+    <div class="content-title">Options</div>
+    <div class="content-container" ng-if="editing">
+        <form>
+            <h3 class="section-title">Name</h3>
+            <section>
+                <input type="text" ng-model="mod_list.name">
+            </section>
+
+            <h3 class="section-title">Status</h3>
+            <section>
+                <select ng-model="mod_list.status">
+                    <option value="under_construction">Under Construction</option>
+                    <option value="testing">Testing</option>
+                    <option value="complete">Complete</option>
+                </select>
+            </section>
+
+            <h3 class="section-title">Visibility</h3>
+            <section>
+                <select ng-model="mod_list.visibility">
+                    <option value="visibility_public">Public</option>
+                    <option value="visibility_unlisted">Unlisted</option>
+                    <option value="visibility_private">Private</option>
+                </select>
+            </section>
+
+            <h3 class="section-title">Other Options</h3>
+            <section>
+                <label class="checkbox-option">
+                    <input type="checkbox" ng-model="mod_list.is_collection"> Collection
+                </label>
+                <span class="help-tooltip" title="Collections are a special type of Mod List which can be added to &#13;other mod lists.">?</span><br/>
+
+                <label class="checkbox-option">
+                    <input type="checkbox" ng-model="mod_list.disable_comments"> Disable Comments
+                </label>
+                <span class="help-tooltip" title="If enabled the Comments tab for this mod list will be hidden and &#13;any existing comments on this mod list will be hidden from public&#13;viewing.  NOTE: Unsetting this will not restore the hidden comments, &#13;only a moderator or site administrator can restore them.">?</span><br/>
+
+                <label class="checkbox-option">
+                    <input type="checkbox" ng-model="mod_list.lock_tags"> Lock Tags
+                </label>
+                <span class="help-tooltip" title="If enabled only the mod list author, moderators and administrators &#13;will be able to add tags to this mod list.">?</span><br/>
+
+                <label class="checkbox-option" ng-if="permissions.canModerate">
+                    <input type="checkbox" ng-model="mod_list.hidden">
+                    Hidden
+                </label>
+            </section>
+        </form>
+    </div>
+</div>
+
+<tag-selector active-tags="mod_list.tags" new-tags="newTags" max-tags="10" show-mod-lists-count="true" show-add="permissions.canManage || !mod_list.lock_tags" can-create="permissions.canCreateTags" show-remove="permissions.canManage" save-callback="saveTags" class="wide-tag-selector"></tag-selector>
+
+<div class="action-button-container" ng-if="editing">
+    <input class="btn action-btn" type="submit" value="Save" ng-click="saveChanges()"/>
+    <input class="btn action-btn" type="button" value="Reset" ng-click="discardChanges()"/>
+</div>

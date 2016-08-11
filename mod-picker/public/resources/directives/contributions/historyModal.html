@@ -1,0 +1,69 @@
+<div class="modal-container">
+    <div class="modal huge-modal">
+        <div class="close-modal">
+            <span class="fa fa-times" ng-click="toggleHistoryModal(false)"></span>
+        </div>
+
+        <h2>
+            {{target.submitter.username}}'s {{model.label}} - History
+        </h2>
+
+        <div class="content-block" ng-if="model.name === 'CompatibilityNote'">
+            <compatibility-note note="activeHistoryEntry" index="index" current-user="currentUser" show-actions="false"></compatibility-note>
+        </div>
+        <div class="content-block" ng-if="model.name === 'InstallOrderNote'">
+            <install-order-note note="activeHistoryEntry" index="index" current-user="currentUser" show-actions="false"></install-order-note>
+        </div>
+        <div class="content-block" ng-if="model.name === 'LoadOrderNote'">
+            <load-order-note note="activeHistoryEntry" index="index" current-user="currentUser" show-actions="false"></load-order-note>
+        </div>
+
+        <h3 class="section-title">History</h3>
+        <loader data="target.history" content-class="history-container" spinner-class="big-spinner" ng-if="!errors.history">
+            <table>
+                <thead>
+                <tr>
+                    <th>Date Submitted</th>
+                    <th>Submitted by</th>
+                    <th>Edit Summary</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-if="target.editor" ng-click="showHistory()" ng-class="{ 'selected' : activeHistoryEntry.text_body === target.text_body }">
+                    <td>{{target.edited | date}}</td>
+                    <td>
+                        <a ng-href="#/profile/{{target.editor.id}}" class="strong">
+                            {{target.editor.username}}
+                        </a>
+                    </td>
+                    <td>{{target.edit_summary}}</td>
+                </tr>
+                <tr ng-repeat="entry in target.history" ng-click="showHistory(entry)" ng-class="{ 'selected' : activeHistoryEntry.text_body === entry.text_body }">
+                    <td>{{entry.edited | date}}</td>
+                    <td>
+                        <a ng-href="#/profile/{{entry.editor.id}}" class="strong">
+                            {{entry.editor.username}}
+                        </a>
+                    </td>
+                    <td>{{entry.edit_summary}}</td>
+                </tr>
+                <tr class="selected" ng-if="!target.history.length">
+                    <td>{{target.submitted | date}}</td>
+                    <td>
+                        <a ng-href="#/profile/{{target.submitter.id}}" class="strong">
+                            {{target.submitter.username}}
+                        </a>
+                    </td>
+                    <td>{{model.label}} Created</td>
+                </tr>
+                </tbody>
+            </table>
+        </loader>
+
+        <div class="content-message content-error" ng-if="errors.history">
+            There was an error retrieving history for this contribution.<br>
+            <!--TODO: Render JSON errors here, if available?-->
+            Error {{errors.history.status}}: {{errors.history.statusText}}
+        </div>
+    </div>
+</div>
