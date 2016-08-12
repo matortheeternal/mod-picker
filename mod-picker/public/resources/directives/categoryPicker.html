@@ -1,8 +1,0 @@
-<select ng-model="model.mainCategoryId" ng-required="required" ng-class="required ? '' : 'stealthy'">
-    <option value="">Main Category</option>
-    <option ng-repeat="cat in mainCategories" ng-value="cat.id">{{cat.name}}</option>
-</select>
-<select ng-show="subCategories && subCategories.length" ng-model="model.subCategoryId" class="stealthy">
-    <option value="">Subcategory</option>
-    <option ng-repeat="cat in subCategories" ng-value="cat.id">{{cat.name}}</option>
-</select>
