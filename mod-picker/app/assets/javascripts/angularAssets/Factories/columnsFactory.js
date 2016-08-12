@@ -653,4 +653,186 @@ app.service('columnsFactory', function() {
     this.modListPluginColumnGroups = function() {
         return ["General"];
     };
+
+    this.modListColumns = function(onIndex) {
+        return [
+            {
+                group: "General",
+                visibility: true,
+                required: true,
+                label: "Name",
+                data: "name",
+                class: "primary-column",
+                link: function (item) {
+                    return "#/mod-list/" + item.id;
+                }
+            },
+            {
+                group: "General",
+                visibility: false,
+                label: "Submitter",
+                data: "submitter.username",
+                link: function (item) {
+                    return "#/user/" + item.submitter.id;
+                }
+            },
+            {
+                group: "General",
+                visibility: true,
+                label: "Status",
+                data: "status",
+                filter: "humanize:1"
+            },
+            {
+                group: "General",
+                visibility: !onIndex,
+                label: "Visibility",
+                data: function(item) {
+                    switch(item.visibility) {
+                        case 'visibility_private': return 'Private';
+                        case 'visibility_unlisted': return 'Unlisted';
+                        case 'visibility_public': return 'Public';
+                    }
+                },
+                filter: "humanize:1"
+            },
+            {
+                group: "General",
+                visibility: !!onIndex,
+                label: "Tools",
+                data: "tools_count",
+                filter: "number"
+            },
+            {
+                group: "General",
+                visibility: true,
+                label: "Mods",
+                data: "mods_count",
+                filter: "number"
+            },
+            {
+                group: "General",
+                visibility: true,
+                label: "Plugins",
+                data: "plugins_count",
+                filter: "number"
+            },
+            {
+                group: "General",
+                visibility: !!onIndex,
+                label: "Config Files",
+                data: "config_files_count",
+                filter: "number"
+            },
+            {
+                group: "Extended",
+                visibility: false,
+                label: "Custom Mods",
+                data: "custom_mods_count",
+                filter: "number"
+            },
+            {
+                group: "Extended",
+                visibility: false,
+                label: "Custom Tools",
+                data: "custom_tools_count",
+                filter: "number"
+            },
+            {
+                group: "Extended",
+                visibility: false,
+                label: "Custom Config Files",
+                data: "custom_config_files_count",
+                filter: "number"
+            },
+            {
+                group: "Extended",
+                visibility: false,
+                label: "Compatibility Notes",
+                data: "compatibility_notes_count",
+                filter: "number"
+            },
+            {
+                group: "Extended",
+                visibility: false,
+                label: "Install Order Notes",
+                data: "install_order_notes_count",
+                filter: "number"
+            },
+            {
+                group: "Extended",
+                visibility: false,
+                label: "Load Order Notes",
+                data: "load_order_notes_count",
+                filter: "number"
+            },
+            {
+                group: "Extended",
+                visibility: false,
+                label: "Ignored Notes",
+                data: "ignored_notes_count",
+                filter: "number"
+            },
+            {
+                group: "Extended",
+                visibility: false,
+                label: "BSA Files",
+                data: "bsa_files_count",
+                filter: "number"
+            },
+            {
+                group: "Extended",
+                visibility: false,
+                label: "Asset Files",
+                data: "asset_files_count",
+                filter: "number"
+            },
+            {
+                group: "Extended",
+                visibility: false,
+                label: "Records",
+                data: "records_count",
+                filter: "number"
+            },
+            {
+                group: "Extended",
+                visibility: false,
+                label: "Override Records",
+                data: "override_records_count",
+                filter: "number"
+            },
+            {
+                group: "Extended",
+                visibility: false,
+                label: "Plugin Errors",
+                data: "plugin_errors_count",
+                filter: "number"
+            },
+            {
+                group: "General",
+                visibility: false,
+                label: "Tags",
+                data: "tags_count",
+                filter: "number"
+            },
+            {
+                group: "General",
+                visibility: !onIndex,
+                label: "Stars",
+                data: "stars_count",
+                filter: "number"
+            },
+            {
+                group: "General",
+                visibility: false,
+                label: "Comments",
+                data: "comments_count",
+                filter: "number"
+            }
+        ]
+    };
+
+    this.modListColumnGroups = function() {
+        return ["General", "Extended"];
+    };
 });
