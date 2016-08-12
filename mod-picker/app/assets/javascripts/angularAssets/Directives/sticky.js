@@ -13,7 +13,7 @@ app.directive('sticky', function () {
                     if (scrollPos <= top + heightDiff) {
                         fixed = false;
                         if ($placeholder) $placeholder.remove();
-                        if (heightDiff < 0) window.scrollBy(0, -heightDiff);
+                        if (heightDiff != 0) window.scrollBy(0, -heightDiff);
                         $elem.classList.remove('sticky');
                     }
                 } else if (scrollPos > top) {
