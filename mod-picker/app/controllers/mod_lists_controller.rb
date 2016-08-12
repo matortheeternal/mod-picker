@@ -279,6 +279,10 @@ class ModListsController < ApplicationController
       end
     end
 
+    def filtering_params
+      params[:filters].slice(:search, :description, :submitter, :status, :kind, :created, :updated, :completed, :tools, :mods, :plugins, :config_files, :ignored_notes, :stars, :custom_tools, :custom_mods, :master_plugins, :available_plugins, :custom_plugins, :custom_config_files, :compatibility_notes, :install_order_notes, :load_order_notes, :bsa_files, :asset_files, :records, :override_records, :plugin_errors, :tags, :comments)
+    end
+
     # Never trust parameters from the scary internet, only allow the white list through.
     def mod_list_params
       params.require(:mod_list).permit(:game_id, :name, :description, :status, :visibility, :is_collection, :disable_comments, :lock_tags, :hidden,
