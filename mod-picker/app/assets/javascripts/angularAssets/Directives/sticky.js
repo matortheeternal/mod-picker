@@ -2,19 +2,25 @@ app.directive('sticky', function () {
     return {
         restrict: 'A',
         link: function(scope, element, attrs) {
-            var $elem = element[0];
-            var top = $elem.getBoundingClientRect().top;
+            var $placeholder, $elem = element[0];
+            var placeholderHeight, bottom, top = $elem.getBoundingClientRect().top;
             var fixed = false;
 
             var toggleSticky = function(scrollPos) {
                 if (fixed) {
-                    // unfix if we are at or above the top of the element
-                    if (scrollPos <= top) {
+                    // unfix if we are at or above the top of the element + the different in the placeholder and the element's height
+                    if (scrollPos <= top + (placeholderHeight - $elem.offsetHeight)) {
                         fixed = false;
+                        if ($placeholder) $placeholder.remove();
                         $elem.classList.remove('sticky');
                     }
                 } else if (scrollPos > top) {
                     fixed = true;
+                    placeholderHeight = $elem.offsetHeight;
+                    $placeholder = document.createElement('div');
+                    $placeholder.style.height = placeholderHeight + 'px';
+                    $elem.parentElement.appendChild($placeholder);
+                    bottom = $placeholder.getBoundingClientRect().bottom;
                     $elem.classList.add('sticky');
                 }
             };
