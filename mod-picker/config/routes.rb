@@ -39,7 +39,7 @@ Rails.application.routes.draw do
 
     # plugins
     resources :plugins, only: [:show, :destroy]
-    match '/plugins', to: 'plugins#index', via: [:post]
+    match '/plugins', to: 'plugins#index', via: [:get, :post]
     match '/plugins/search', to: 'plugins#search', via: [:post]
 
     # content associated with mods
@@ -100,7 +100,8 @@ Rails.application.routes.draw do
     match '/load_order_notes/:id/helpful', to: 'load_order_notes#helpful', via: [:post]
 
     # mod lists
-    resources :mod_lists, only: [:index, :show, :create, :update, :destroy]
+    resources :mod_lists, only: [:show, :create, :update]
+    match '/mod_lists/index', to: 'mod_lists#index', via: [:get, :post]
     match '/active_mod_list', to: 'mod_lists#active', via: [:get]
     match '/mod_lists/:id/mods', to: 'mod_lists#mods', via: [:get, :post]
     match '/mod_lists/:id/tools', to: 'mod_lists#tools', via: [:get, :post]
@@ -110,6 +111,7 @@ Rails.application.routes.draw do
     match '/mod_lists/:id/comments', to: 'mod_lists#comments', via: [:get, :post]
     match '/mod_list_groups', to: 'mod_list_groups#create', via: [:post]
     match '/mod_list_mods', to: 'mod_list_mods#create', via: [:post]
+    match '/mod_list_mods', to: 'mod_list_mods#destroy', via: [:delete]
     match '/mod_list_plugins', to: 'mod_list_plugins#create', via: [:post]
     match '/mod_list_config_files', to: 'mod_list_config_files#create', via: [:post]
     match '/mod_list_custom_mods', to: 'mod_list_custom_mods#create', via: [:post]

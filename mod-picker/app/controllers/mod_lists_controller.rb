@@ -4,9 +4,14 @@ class ModListsController < ApplicationController
 
   # GET /mod_lists
   def index
-    @mod_lists = ModList.all
+    @mod_lists = ModList.accessible_by(current_ability).filter(filtering_params).sort(params[:sort]).paginate(:page => params[:page])
+    count =  ModList.accessible_by(current_ability).filter(filtering_params).count
 
-    render :json => @mod_lists
+    render :json => {
+        mod_lists: @mod_lists,
+        max_entries: count,
+        entries_per_page: ModList.per_page
+    }
   end
 
   # GET /mod_lists/1
@@ -169,7 +174,8 @@ class ModListsController < ApplicationController
     authorize! :create, @mod_list
 
     if @mod_list.save
-      render json: {status: :ok}
+      @mod_list.add_official_content
+      render json: {id: @mod_list.id, status: :ok}
     else
       render json: @mod_list.errors, status: :unprocessable_entity
     end
@@ -277,6 +283,10 @@ class ModListsController < ApplicationController
           )
         end
       end
+    end
+
+    def filtering_params
+      params[:filters].slice(:search, :description, :submitter, :status, :kind, :created, :updated, :completed, :tools, :mods, :plugins, :config_files, :ignored_notes, :stars, :custom_tools, :custom_mods, :master_plugins, :available_plugins, :custom_plugins, :custom_config_files, :compatibility_notes, :install_order_notes, :load_order_notes, :bsa_files, :asset_files, :records, :override_records, :plugin_errors, :tags, :comments)
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

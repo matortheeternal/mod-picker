@@ -5,11 +5,13 @@ app.run(function($futureState, indexFactory, filtersFactory) {
     $futureState.futureState(state);
 });
 
-app.controller('modsController', function($scope, $q, $stateParams, $state, modService, sliderFactory, columnsFactory, filtersFactory, currentUser, currentGame, indexService, indexFactory) {
+app.controller('modsController', function($scope, $q, $stateParams, $state, currentUser, currentGame, categories, modService, sliderFactory, columnsFactory, filtersFactory, actionsFactory, indexService, indexFactory) {
     // get parent variables
     $scope.currentUser = currentUser;
     $scope.currentGame = currentGame;
-    $scope.globalPermissions = angular.copy(currentUser.permissions);
+    $scope.categories = categories;
+    $scope.activeModList = currentUser.active_mod_list;
+    $scope.permissions = angular.copy(currentUser.permissions);
 
     // columns for view
     $scope.columns = columnsFactory.modColumns();
@@ -25,6 +27,19 @@ app.controller('modsController', function($scope, $q, $stateParams, $state, modS
             }
         });
         return result;
+    };
+
+    $scope.toggleModListFilter = function() {
+        if ($scope.filters.exclude) {
+            // it's being disabled
+            delete $scope.filters.exclude;
+        } else {
+            // it's being enabled
+            var activeModList = $scope.currentUser.active_mod_list;
+            if (activeModList) {
+                $scope.filters.exclude = activeModList.incompatible_mods;
+            }
+        }
     };
 
     // returns a new subset of the input filters with the unavailable filters removed
@@ -72,13 +87,7 @@ app.controller('modsController', function($scope, $q, $stateParams, $state, modS
 
     // override some data from the generic controller
     $scope.buildAvailableColumnData();
-    $scope.actions = [{
-        caption: "Add",
-        title: "Add this mod to your mod list",
-        execute: function() {
-            alert("Not functional yet.");
-        }
-    }];
+    $scope.actions = actionsFactory.modIndexActions();
 
     // build available stat filters for view
     $scope.availableStatFilters = $scope.availableFilters($scope.statFilters);

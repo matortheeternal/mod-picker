@@ -7,24 +7,40 @@ app.directive('tableResults', function () {
             label: '@',
             data: '=',
             columns: '=',
-            sort: '=',
             columnGroups: '=',
-            availableColumnData: '=',
+            availableColumnData: '=?',
+            sort: '=?',
             actions: '=?'
         }
     }
 });
 
 app.controller('tableResultsController', function($scope, tableUtils) {
+    // initialize variables
+    $scope.permissions = $scope.$parent.permissions;
     var sortedColumn;
 
     // inherited functions
     $scope.columnValue = tableUtils.columnValue;
     $scope.groupColumns = tableUtils.groupColumns;
+    $scope.filterClass = tableUtils.filterClass;
+
+    // this function resolves a variable as a function if it is one,
+    // else returns its value
+    $scope.resolve = function(attribute, item, context) {
+        if (typeof attribute === 'function') {
+            return attribute($scope, item, context);
+        } else {
+            return attribute;
+        }
+    };
 
     // this function will toggle sorting for an input column between
     // up, down, and no sorting
     $scope.sortColumn = function(column) {
+        // return if we don't have a sort object
+        if (!$scope.sort) return;
+
         if(sortedColumn && sortedColumn !== column) {
             sortedColumn.up = false;
             sortedColumn.down = false;

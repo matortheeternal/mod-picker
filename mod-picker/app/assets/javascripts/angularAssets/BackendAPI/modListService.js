@@ -1,5 +1,17 @@
-app.service('modListService', function (backend, $q, objectUtils, userTitleService, contributionService, categoryService, recordGroupService, pluginService, assetUtils, modService) {
+app.service('modListService', function (backend, $q, userTitleService, contributionService, modService, categoryService, recordGroupService, pluginService, objectUtils, assetUtils, pageUtils) {
     var service = this;
+
+    this.retrieveModLists = function(options, pageInformation) {
+        var action = $q.defer();
+        backend.post('/mod_lists/index', options).then(function(data) {
+            // resolve page information and data
+            pageUtils.getPageInformation(data, pageInformation, options.page);
+            action.resolve(data);
+        }, function(response) {
+            action.reject(response);
+        });
+        return action.promise;
+    };
 
     this.retrieveModList = function(modListId) {
         return backend.retrieve('/mod_lists/' + modListId);
@@ -14,20 +26,12 @@ app.service('modListService', function (backend, $q, objectUtils, userTitleServi
     };
 
     this.retrieveModListTools = function(modListId) {
-        var action = $q.defer();
-        backend.retrieve('/mod_lists/' + modListId + '/tools').then(function(data) {
-            categoryService.associateCategories(data.tools);
-            action.resolve(data);
-        }, function(response) {
-            action.reject(response);
-        });
-        return action.promise;
+        return backend.retrieve('/mod_lists/' + modListId + '/tools');
     };
 
     this.retrieveModListMods = function(modListId) {
         var action = $q.defer();
         backend.retrieve('/mod_lists/' + modListId + '/mods').then(function(data) {
-            categoryService.associateCategories(data.mods);
             userTitleService.associateTitles(data.compatibility_notes);
             userTitleService.associateTitles(data.install_order_notes);
             contributionService.associateHelpfulMarks(data.compatibility_notes, data.c_helpful_marks);
@@ -42,7 +46,6 @@ app.service('modListService', function (backend, $q, objectUtils, userTitleServi
     this.retrieveModListPlugins = function(modListId) {
         var action = $q.defer();
         backend.retrieve('/mod_lists/' + modListId + '/plugins').then(function(data) {
-            categoryService.associateCategories(data.plugins);
             userTitleService.associateTitles(data.compatibility_notes);
             userTitleService.associateTitles(data.load_order_notes);
             contributionService.associateHelpfulMarks(data.compatibility_notes, data.c_helpful_marks);
@@ -141,7 +144,18 @@ app.service('modListService', function (backend, $q, objectUtils, userTitleServi
         return backend.update('/mod_lists/' + modList.id, modListData);
     };
 
-    this.newModListMod = function(mod_list_mod) {
+    this.newModList = function(mod_list) {
+        return backend.post('/mod_lists', {mod_list: mod_list})
+    };
+
+    this.newModListMod = function(mod_list_mod, noResponse) {
+        // no response mode is used when we aren't on the mod list view
+        if (noResponse) {
+            var options = {mod_list_mod: mod_list_mod, no_response: true};
+            return backend.post('/mod_list_mods', options);
+        }
+
+        // else we use a full promise and associate data with the response
         var action = $q.defer();
         backend.post('/mod_list_mods', {mod_list_mod: mod_list_mod}).then(function(data) {
             userTitleService.associateTitles(data.mod_compatibility_notes);
@@ -157,6 +171,14 @@ app.service('modListService', function (backend, $q, objectUtils, userTitleServi
             action.reject(response);
         });
         return action.promise;
+    };
+
+    this.removeModListMod = function(mod_list_id, mod_id) {
+        var options = {
+            mod_list_id: mod_list_id,
+            mod_id: mod_id
+        };
+        return backend.delete('/mod_list_mods', options);
     };
 
     this.newModListCustomMod = function(custom_mod) {

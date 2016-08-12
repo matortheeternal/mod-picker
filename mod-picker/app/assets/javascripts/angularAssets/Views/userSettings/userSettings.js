@@ -18,7 +18,7 @@ app.config(['$stateProvider', function($stateProvider) {
         views: {
             'Profile': {
                 templateUrl: '/resources/partials/userSettings/profile.html',
-                controller: 'userSettingsProfileController',
+                controller: 'userSettingsProfileController'
             }
         },
         resolve: {
@@ -38,7 +38,7 @@ app.config(['$stateProvider', function($stateProvider) {
         deepStateRedirect: true,
         views: {
             'Account': {
-                templateUrl: '/resources/partials/userSettings/account.html',
+                templateUrl: '/resources/partials/userSettings/account.html'
             }
         },
         url: '/account'
@@ -48,6 +48,7 @@ app.config(['$stateProvider', function($stateProvider) {
         views: {
             'Mod Lists': {
                 templateUrl: '/resources/partials/userSettings/modlists.html',
+                controller: 'userSettingsModListsController'
             }
         },
         url: '/mod-lists'
@@ -56,7 +57,7 @@ app.config(['$stateProvider', function($stateProvider) {
         deepStateRedirect: true,
         views: {
             'Authored Mods': {
-                templateUrl: '/resources/partials/userSettings/authoredMods.html',
+                templateUrl: '/resources/partials/userSettings/authoredMods.html'
             }
         },
         url: '/mods'

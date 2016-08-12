@@ -194,6 +194,15 @@ app.factory("filtersFactory", function() {
                 param: "fc"
             },
             /*{ TODO: Unimplemented on backend
+                label: "File Size",
+                common: false,
+                sites: { lab: true, workshop: true },
+                data: "file_size",
+                type: "Range",
+                subtype: "Bytes",
+                max: 4294967296 // 4GB
+             },*/
+            /*{ TODO: Unimplemented on backend
                 label: "Bugs Count",
                 common: false,
                 sites: {nexus: true},
@@ -824,6 +833,334 @@ app.factory("filtersFactory", function() {
             factory.articleSearchFilters(),
             factory.articleDateFilters()
         );
+    };
+
+    this.modListGeneralFilters = function() {
+        return [
+            factory.searchFilter,
+            {
+                data: "description",
+                param: "t"
+            },
+            factory.submitterFilter,
+            {
+                data: "tags",
+                param: "t",
+                type: "List"
+            },
+            {
+                data: "status.complete",
+                param: "sco",
+                type: "Boolean",
+                default: true
+            },
+            {
+                data: "status.testing",
+                param: "ste",
+                type: "Boolean",
+                default: false
+            },
+            {
+                data: "status.under_construction",
+                param: "sun",
+                type: "Boolean",
+                default: false
+            },
+            {
+                data: "kind.normal",
+                param: "cln",
+                type: "Boolean",
+                default: true
+            },
+            {
+                data: "kind.collection",
+                param: "clc",
+                type: "Boolean",
+                default: false
+            }
+        ];
+    };
+
+    this.modListDateFilters = function() {
+        return [
+            {
+                label: "Date Created",
+                data: "created",
+                type: "Range",
+                subtype: "Date",
+                param: "dc"
+            },
+            {
+                label: "Date Updated",
+                data: "updated",
+                type: "Range",
+                subtype: "Date",
+                param: "du"
+            },
+            {
+                label: "Date Completed",
+                data: "completed",
+                type: "Range",
+                subtype: "Date",
+                param: "dcom"
+            }
+        ];
+    };
+
+    this.modListStatisticFilters = function() {
+        return [
+            {
+                label: "Tools Count",
+                common: true,
+                data: "tools",
+                type: "Range",
+                max: 100,
+                param: "tc"
+            },
+            {
+                label: "Mods Count",
+                common: true,
+                data: "mods",
+                type: "Range",
+                max: 2000,
+                param: "mc"
+            },
+            {
+                label: "Plugins Count",
+                common: true,
+                data: "plugins",
+                type: "Range",
+                max: 2000,
+                param: "pc"
+            },
+            {
+                label: "Config Files Count",
+                common: true,
+                data: "config_files",
+                type: "Range",
+                max: 100,
+                param: "cfc"
+            },
+            {
+                label: "Ignored Notes Count",
+                common: true,
+                data: "ignored_notes",
+                type: "Range",
+                max: 2000,
+                param: "inc"
+            },
+            {
+                label: "Stars Count",
+                common: true,
+                data: "stars",
+                type: "Range",
+                max: 10000,
+                param: "sc"
+            },
+            {
+                label: "Custom Tools Count",
+                common: false,
+                data: "custom_tools",
+                type: "Range",
+                max: 100,
+                param: "ctc"
+            },
+            {
+                label: "Custom Mods Count",
+                common: false,
+                data: "custom_mods",
+                type: "Range",
+                max: 200,
+                param: "cmc"
+            },
+            {
+                label: "Master Plugins Count",
+                common: false,
+                data: "master_plugins",
+                type: "Range",
+                max: 100,
+                param: "mpc"
+            },
+            {
+                label: "Available Plugins Count",
+                common: false,
+                data: "available_plugins",
+                type: "Range",
+                max: 2000,
+                param: "apc"
+            },
+            {
+                label: "Custom Plugins Count",
+                common: false,
+                data: "custom_plugins",
+                type: "Range",
+                max: 200,
+                param: "cpc"
+            },
+            {
+                label: "Custom Config Files Count",
+                common: false,
+                data: "custom_config_files",
+                type: "Range",
+                max: 100,
+                param: "ccfc"
+            },
+            {
+                label: "Compatibility Notes Count",
+                common: false,
+                data: "compatibility_notes",
+                type: "Range",
+                max: 1000,
+                param: "cnc"
+            },
+            {
+                label: "Install Order Notes Count",
+                common: false,
+                data: "install_order_notes",
+                type: "Range",
+                max: 1000,
+                param: "ioc"
+            },
+            {
+                label: "Load Order Notes Count",
+                common: false,
+                data: "load_order_notes",
+                type: "Range",
+                max: 1000,
+                param: "loc"
+            },
+            {
+                label: "BSA Files Count",
+                common: false,
+                data: "bsa_files",
+                type: "Range",
+                max: 1000,
+                param: "bfc"
+            },
+            {
+                label: "Asset Files Count",
+                common: false,
+                data: "asset_files",
+                type: "Range",
+                max: 1000000,
+                param: "afc"
+            },
+            {
+                label: "Records Count",
+                common: false,
+                data: "records",
+                type: "Range",
+                max: 20000000,
+                param: "rec"
+            },
+            {
+                label: "Override Records Count",
+                common: false,
+                data: "override_records",
+                type: "Range",
+                max: 1000000,
+                param: "orc"
+            },
+            {
+                label: "Plugin Errors Count",
+                common: false,
+                data: "plugin_errors",
+                type: "Range",
+                max: 2000,
+                param: "pec"
+            },
+            {
+                label: "Comments Count",
+                common: false,
+                data: "comments",
+                type: "Range",
+                max: 500,
+                param: "cc"
+            }
+        ];
+    };
+
+    this.modListFilters = function() {
+        return Array.prototype.concat(
+            factory.modListGeneralFilters(),
+            factory.modListDateFilters(),
+            factory.modListStatisticFilters()
+        )
+    };
+
+    this.pluginSearchFilters = function() {
+        return [
+            factory.searchFilter,
+            {
+                data: "author",
+                param: "a"
+            },
+            {
+                data: "description",
+                param: "d"
+            }
+        ]
+    };
+
+    this.pluginStatisticFilters = function() {
+        return [
+            {
+                label: "File Size",
+                common: true,
+                data: "file_size",
+                type: "Range",
+                subtype: "Bytes",
+                max: 536870912, // 512MB
+                param: "fsz"
+            },
+            {
+                label: "Record Count",
+                common: true,
+                data: "records",
+                type: "Range",
+                max: 2000000,
+                param: "rc"
+            },
+            {
+                label: "Override Record Count",
+                common: true,
+                data: "overrides",
+                type: "Range",
+                max: 100000,
+                param: "oc"
+            },
+            {
+                label: "Errors Count",
+                common: true,
+                data: "errors",
+                type: "Range",
+                max: 5000,
+                param: "ec"
+            },
+            {
+                label: "Mod Lists Count",
+                common: true,
+                data: "mod_lists",
+                type: "Range",
+                max: 1000,
+                param: "mlc"
+            },
+            {
+                label: "Load Order Notes Count",
+                common: true,
+                data: "load_order_notes",
+                type: "Range",
+                max: 100,
+                param: "loc"
+            }
+        ]
+    };
+
+    this.pluginFilters = function() {
+        return Array.prototype.concat(
+            factory.pluginSearchFilters(),
+            factory.pluginStatisticFilters()
+        )
     };
 
     return factory;

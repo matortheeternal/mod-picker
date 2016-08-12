@@ -13,21 +13,25 @@
                     <input type="text" ng-model="filters.author">
                 </div>
 
-                <div class="filter-section">
+                <div class="filter-section" ng-if="currentUser.active_mod_list">
                     <h3>Mod List</h3>
                     <div class="sidebar-box box-shadow">
                         <ul class="checkbox-list">
                             <li>
-                                <label><input id="compatibility_enabled" type="checkbox">
+                                <label><input type="checkbox" ng-model="modListFilter" ng-change="toggleModListFilter()">
                                     Enable compatibility filter</label>
                             </li>
                             <li class="half-box">
                                 <h4>Mods</h4>
-                                <a href="#">123</a> <!-- PLACEHOLDER VALUE -->
+                                <a ng-href="#/mod-list/{{currentUser.active_mod_list_id}}/mods">
+                                    {{currentUser.active_mod_list.mods_count}}
+                                </a>
                             </li>
                             <li class="half-box">
                                 <h4>Plugins</h4>
-                                <a href="#">98</a> <!-- PLACEHOLDER VALUE -->
+                                <a ng-href="#/mod-list/{{currentUser.active_mod_list_id}}/plugins">
+                                    {{currentUser.active_mod_list.plugins_count}}
+                                </a>
                             </li>
                         </ul>
                     </div>
@@ -57,7 +61,7 @@
                     </div>
                 </div>
 
-                <category-tree class="filter-section" selection="filters.categories" toggle-all="true"></category-tree>
+                <category-tree class="filter-section" categories="categories" selection="filters.categories" toggle-all="true"></category-tree>
 
                 <div class="filter-section">
                     <h3>Tags</h3>

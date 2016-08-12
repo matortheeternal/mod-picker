@@ -58,14 +58,15 @@ app.controller('tagInputController', function($scope, $timeout, formUtils) {
     };
 
     $scope.blurTag = function() {
-        var isValidTag = $scope.tags.indexOf($scope.tag) > -1;
-        if (!(isValidTag || $scope.canCreate) || $scope.tag.text == "") {
-            $scope.removeTag($scope.index)
-        }
-        // we have to use a timeout for hiding the dropdown because
-        // otherwise we would hide it before the click event on a result
-        // went through
+        // we have to use a timeout because otherwise we would test
+        // the tag before the click event on a result went through
         $timeout(function() {
+            var isValidTag = $scope.tags.findIndex(function(tag) {
+                return tag.text === $scope.tag.text;
+            }) > -1;
+            if (!(isValidTag || $scope.canCreate) || $scope.tag.text == "") {
+                $scope.removeTag($scope.index)
+            }
             $scope.showDropdown = false;
         }, 100);
     };

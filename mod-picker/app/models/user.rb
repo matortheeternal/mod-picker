@@ -177,7 +177,7 @@ class User < ActiveRecord::Base
             },
             :active_mod_list => {
                 :only => [:id, :name, :mods_count, :plugins_count, :active_plugins_count, :custom_plugins_count],
-                :methods => [:incompatible_mods]
+                :methods => [:incompatible_mods, :mod_list_mod_ids]
             }
         },
         :methods => :avatar

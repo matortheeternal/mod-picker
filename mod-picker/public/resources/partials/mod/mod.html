@@ -47,8 +47,9 @@
                         <span class="action-box" ng-click="starMod()">
                             <i class="fa {{mod.star ? 'fa-star' : 'fa-star-o'}}" aria-hidden="true"></i> {{mod.star ? 'Unfavorite' : 'Favorite'}}
                         </span>
-                        <span class="action-box">
-                            <i class="fa fa-plus" aria-hidden="true"></i> Add to mod list
+                        <span class="action-box" ng-if="activeModList" ng-click="toggleInModList()">
+                            <i class="fa {{ mod.in_mod_list ? 'fa-remove' : 'fa-plus' }}" aria-hidden="true"></i>
+                            {{ mod.in_mod_list ? 'Remove from' : 'Add to' }} mod list
                         </span>
                     </div>
 
