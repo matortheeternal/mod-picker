@@ -5,7 +5,7 @@ app.run(function($futureState, indexFactory, filtersFactory) {
     $futureState.futureState(state);
 });
 
-app.controller('modsController', function($scope, $q, $stateParams, $state, modService, sliderFactory, columnsFactory, filtersFactory, currentUser, currentGame, indexService, indexFactory) {
+app.controller('modsController', function($scope, $q, $stateParams, $state, currentUser, currentGame, modService, sliderFactory, columnsFactory, filtersFactory, actionsFactory, indexService, indexFactory) {
     // get parent variables
     $scope.currentUser = currentUser;
     $scope.currentGame = currentGame;
@@ -85,13 +85,7 @@ app.controller('modsController', function($scope, $q, $stateParams, $state, modS
 
     // override some data from the generic controller
     $scope.buildAvailableColumnData();
-    $scope.actions = [{
-        caption: "Add",
-        title: "Add this mod to your mod list",
-        execute: function() {
-            alert("Not functional yet.");
-        }
-    }];
+    $scope.actions = actionsFactory.modIndexActions();
 
     // build available stat filters for view
     $scope.availableStatFilters = $scope.availableFilters($scope.statFilters);

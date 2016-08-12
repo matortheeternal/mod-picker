@@ -20,6 +20,23 @@ app.service('actionsFactory', function() {
         return !$scope.editing;
     };
 
+    /* mod actions */
+    this.modIndexActions = function() {
+        return [{
+            caption: "Add",
+            title: "Add this mod to your mod list",
+            hidden: function($scope, item) {
+                var foundMod = $scope.activeModList.mods.find(function(mod) {
+                    return mod.id == item.id;
+                });
+                return !!foundMod;
+            },
+            execute: function($scope, item) {
+                $scope.$emit('addMod', item);
+            }
+        }]
+    };
+
     /* mod list actions */
     this.modListIndexActions = function() {
         return [{
