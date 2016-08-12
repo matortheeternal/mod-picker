@@ -7,22 +7,22 @@
 
 <div class="sidebar-box box-shadow">
     <div class="category-tree">
-        <div ng-repeat="primaryCategory in categories">
-            <div ng-if="primaryCategory.childs.length">
-                <span ng-show="categories[$index].expanded" ng-click="categories[$index].expanded = !categories[$index].expanded" class="expanded-icon">
+        <div ng-repeat="superCategory in nestedCategories">
+            <div ng-if="superCategory.childs.length">
+                <span ng-show="superCategory.expanded" ng-click="superCategory.expanded = !superCategory.expanded" class="expanded-icon">
                     <i class="fa fa-chevron-down"></i>
                 </span>
-                <span ng-hide="categories[$index].expanded" ng-click="categories[$index].expanded = !categories[$index].expanded" class="collapsed-icon">
+                <span ng-hide="superCategory.expanded" ng-click="superCategory.expanded = !superCategory.expanded" class="collapsed-icon">
                     <i class="fa fa-chevron-right"></i>
                 </span>
 
                 <label class="supercategory">
-                    <input type="checkbox" ng-model="categories[$index].value" ng-indeterminate="categories[$index].indeterminate" ng-change="updateSelection($index)"/>
-                    <span>{{primaryCategory.name}}</span>
+                    <input type="checkbox" ng-model="superCategory.value" ng-indeterminate="superCategory.indeterminate" ng-change="updateSelection($index)"/>
+                    <span>{{superCategory.name}}</span>
                 </label>
-                <div class="sub-category" ng-repeat="secondaryCategory in primaryCategory.childs" ng-show="categories[$parent.$index].expanded">
+                <div class="sub-category" ng-repeat="secondaryCategory in superCategory.childs" ng-show="superCategory.expanded">
                     <label>
-                        <input type="checkbox" ng-model="categories[$parent.$index].childs[$index].value" ng-change="updateSelection($parent.$index, $index)"/>
+                        <input type="checkbox" ng-model="superCategory.childs[$index].value" ng-change="updateSelection($parent.$index, $index)"/>
                         <span>{{secondaryCategory.name}}</span>
                     </label>
                 </div>
@@ -30,12 +30,12 @@
 
             <!-- TODO: kill duplication-->
             <!-- Improved slightly using ng-if, now the HTML served to the user isn't quite as polluted -->
-            <div ng-if="!primaryCategory.childs.length">
+            <div ng-if="!superCategory.childs.length">
                 <div class="expandable-title-container">
                     <span class="no-icon"></span>
                     <label class="supercategory">
-                        <input type="checkbox" ng-model="categories[$index].value" ng-indeterminate="categories[$index].indeterminate" ng-change="updateSelection($index)"/>
-                        <span>{{primaryCategory.name}}</span>
+                        <input type="checkbox" ng-model="superCategory.value" ng-indeterminate="superCategory.indeterminate" ng-change="updateSelection($index)"/>
+                        <span>{{superCategory.name}}</span>
                     </label>
                 </div>
             </div>
