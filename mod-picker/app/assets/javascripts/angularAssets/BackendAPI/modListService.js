@@ -1,5 +1,17 @@
-app.service('modListService', function (backend, $q, objectUtils, userTitleService, contributionService, categoryService, recordGroupService, pluginService, assetUtils, modService) {
+app.service('modListService', function (backend, $q, userTitleService, contributionService, modService, categoryService, recordGroupService, pluginService, objectUtils, assetUtils, pageUtils) {
     var service = this;
+
+    this.retrieveModLists = function(options, pageInformation) {
+        var action = $q.defer();
+        backend.post('/mod_lists/index', options).then(function(data) {
+            // resolve page information and data
+            pageUtils.getPageInformation(data, pageInformation, options.page);
+            action.resolve(data);
+        }, function(response) {
+            action.reject(response);
+        });
+        return action.promise;
+    };
 
     this.retrieveModList = function(modListId) {
         return backend.retrieve('/mod_lists/' + modListId);
