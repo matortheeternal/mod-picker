@@ -1,4 +1,4 @@
-<div ng-show="messages.length" class="messages" sticky use-placeholder="false">
+<div class="messages" sticky use-placeholder="false">
 	<div ng-repeat="message in messages" class="message {{message.type}}-message">
         <span ng-if="!message.url">{{message.text}}</span>
         <a ng-if="message.url" href="{{message.url}}">{{message.text}}</a>
