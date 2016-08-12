@@ -6,30 +6,34 @@ class ModListModsController < ApplicationController
     authorize! :create, @mod_list_mod
 
     if @mod_list_mod.save
-      # prepare notes
-      mod_compatibility_notes = @mod_list_mod.mod_compatibility_notes
-      plugin_compatibility_notes = @mod_list_mod.plugin_compatibility_notes
-      install_order_notes = @mod_list_mod.install_order_notes
-      load_order_notes = @mod_list_mod.load_order_notes
+      if params[:no_response]
+        render json: {status: :ok}
+      else
+        # prepare notes
+        mod_compatibility_notes = @mod_list_mod.mod_compatibility_notes
+        plugin_compatibility_notes = @mod_list_mod.plugin_compatibility_notes
+        install_order_notes = @mod_list_mod.install_order_notes
+        load_order_notes = @mod_list_mod.load_order_notes
 
-      # prepare helpful marks
-      c_helpful_marks = HelpfulMark.submitter(current_user.id).helpfulable("CompatibilityNote", mod_compatibility_notes.ids + plugin_compatibility_notes.ids)
-      i_helpful_marks = HelpfulMark.submitter(current_user.id).helpfulable("InstallOrderNote", install_order_notes.ids)
-      l_helpful_marks = HelpfulMark.submitter(current_user.id).helpfulable("LoadOrderNote", load_order_notes.ids)
+        # prepare helpful marks
+        c_helpful_marks = HelpfulMark.submitter(current_user.id).helpfulable("CompatibilityNote", mod_compatibility_notes.ids + plugin_compatibility_notes.ids)
+        i_helpful_marks = HelpfulMark.submitter(current_user.id).helpfulable("InstallOrderNote", install_order_notes.ids)
+        l_helpful_marks = HelpfulMark.submitter(current_user.id).helpfulable("LoadOrderNote", load_order_notes.ids)
 
-      # render response
-      render json: {
-          mod_list_mod: @mod_list_mod,
-          required_tools: @mod_list_mod.required_tools,
-          required_mods: @mod_list_mod.required_mods,
-          mod_compatibility_notes: mod_compatibility_notes,
-          plugin_compatibility_notes: plugin_compatibility_notes,
-          install_order_notes: install_order_notes,
-          load_order_notes: load_order_notes,
-          c_helpful_marks: c_helpful_marks,
-          i_helpful_marks: i_helpful_marks,
-          l_helpful_marks: l_helpful_marks
-      }
+        # render response
+        render json: {
+            mod_list_mod: @mod_list_mod,
+            required_tools: @mod_list_mod.required_tools,
+            required_mods: @mod_list_mod.required_mods,
+            mod_compatibility_notes: mod_compatibility_notes,
+            plugin_compatibility_notes: plugin_compatibility_notes,
+            install_order_notes: install_order_notes,
+            load_order_notes: load_order_notes,
+            c_helpful_marks: c_helpful_marks,
+            i_helpful_marks: i_helpful_marks,
+            l_helpful_marks: l_helpful_marks
+        }
+      end
     else
       render json: @mod_list_mod.errors, status: :unprocessable_entity
     end
