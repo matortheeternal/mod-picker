@@ -178,6 +178,26 @@ class ModList < ActiveRecord::Base
     end
   end
 
+  def add_official_content
+    # official mods
+    official_content = Mod.game(self.game_id).where(is_official: true)
+    official_content.each_with_index do |m, index|
+      self.mod_list_mods.create({
+          mod_id: m.id,
+          index: index
+      })
+    end
+
+    # official plugins
+    official_plugins = Plugin.mods(official_content)
+    official_plugins.each_with_index do |p, index|
+      self.mod_list_plugins.create({
+          plugin_id: p.id,
+          index: index
+      })
+    end
+  end
+
   def mod_list_plugin_ids
     mod_list_plugins.all.pluck(:plugin_id)
   end
