@@ -26,8 +26,7 @@ app.controller('messagesController', function ($scope, $timeout) {
         $scope.messages.push(message);
         $timeout(function() {
             var index = $scope.messages.indexOf(message);
-            // TODO: We should set display hidden before splicing the message so the transition works
-            $scope.messages.splice(index, 1);
+            if (index > -1) $scope.messages.splice(index, 1);
         }, message.decay || decay);
     });
 });
