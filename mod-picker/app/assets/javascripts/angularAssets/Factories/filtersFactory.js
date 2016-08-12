@@ -194,6 +194,15 @@ app.factory("filtersFactory", function() {
                 param: "fc"
             },
             /*{ TODO: Unimplemented on backend
+                label: "File Size",
+                common: false,
+                sites: { lab: true, workshop: true },
+                data: "file_size",
+                type: "Range",
+                subtype: "Bytes",
+                max: 4294967296 // 4GB
+             },*/
+            /*{ TODO: Unimplemented on backend
                 label: "Bugs Count",
                 common: false,
                 sites: {nexus: true},
