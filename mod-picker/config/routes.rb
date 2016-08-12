@@ -111,6 +111,7 @@ Rails.application.routes.draw do
     match '/mod_lists/:id/comments', to: 'mod_lists#comments', via: [:get, :post]
     match '/mod_list_groups', to: 'mod_list_groups#create', via: [:post]
     match '/mod_list_mods', to: 'mod_list_mods#create', via: [:post]
+    match '/mod_list_mods', to: 'mod_list_mods#destroy', via: [:delete]
     match '/mod_list_plugins', to: 'mod_list_plugins#create', via: [:post]
     match '/mod_list_config_files', to: 'mod_list_config_files#create', via: [:post]
     match '/mod_list_custom_mods', to: 'mod_list_custom_mods#create', via: [:post]
