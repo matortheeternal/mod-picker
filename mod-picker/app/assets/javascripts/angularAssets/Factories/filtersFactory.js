@@ -1079,5 +1079,80 @@ app.factory("filtersFactory", function() {
         )
     };
 
+    this.pluginSearchFilters = function() {
+        return [
+            factory.searchFilter,
+            {
+                data: "author",
+                param: "a"
+            },
+            {
+                data: "description",
+                param: "d"
+            }
+        ]
+    };
+
+    this.pluginStatisticFilters = function() {
+        return [
+            {
+                label: "File Size",
+                common: true,
+                data: "file_size",
+                type: "Range",
+                subtype: "Bytes",
+                max: 536870912, // 512MB
+                param: "fsz"
+            },
+            {
+                label: "Record Count",
+                common: true,
+                data: "records",
+                type: "Range",
+                max: 2000000,
+                param: "rc"
+            },
+            {
+                label: "Override Record Count",
+                common: true,
+                data: "overrides",
+                type: "Range",
+                max: 100000,
+                param: "oc"
+            },
+            {
+                label: "Errors Count",
+                common: true,
+                data: "errors",
+                type: "Range",
+                max: 5000,
+                param: "ec"
+            },
+            {
+                label: "Mod Lists Count",
+                common: true,
+                data: "mod_lists",
+                type: "Range",
+                max: 1000,
+                param: "mlc"
+            },
+            {
+                label: "Load Order Notes Count",
+                common: true,
+                data: "load_order_notes",
+                type: "Range",
+                max: 100,
+                param: "loc"
+            }
+        ]
+    };
+
+    this.pluginFilters = function() {
+        return Array.prototype.concat(
+            factory.pluginSearchFilters(),
+            factory.pluginStatisticFilters()
+        )
+    };
+
     return factory;
 });
