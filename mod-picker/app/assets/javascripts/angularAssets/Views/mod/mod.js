@@ -111,6 +111,12 @@ app.controller('modController', function($scope, $q, $stateParams, $state, $time
     $scope.mod = modObject.mod;
     $scope.mod.star = modObject.star;
     $scope.currentUser = currentUser;
+    $scope.activeModList = $scope.currentUser.active_mod_list;
+    if ($scope.activeModList) {
+        $scope.mod.in_mod_list = $scope.activeModList.mod_list_mod_ids.find(function(modId) {
+            return modId == $scope.mod.id;
+        });
+    }
 
     // initialize local variables
     $scope.tabs = tabsFactory.buildModTabs($scope.mod);
