@@ -1,4 +1,4 @@
-app.controller('modListToolsController', function($scope, $rootScope, $state, $stateParams, $timeout, modListService, modService, listUtils, columnsFactory, actionsFactory) {
+app.controller('modListToolsController', function($scope, $rootScope, $state, $stateParams, $timeout, categories, categoryService, modListService, modService, listUtils, columnsFactory, actionsFactory) {
     // initialize variables
     $scope.showDetailsModal = false;
     $scope.detailsItem = {};
@@ -40,6 +40,7 @@ app.controller('modListToolsController', function($scope, $rootScope, $state, $s
 
     $scope.retrieveTools = function() {
         modListService.retrieveModListTools($scope.mod_list.id).then(function(data) {
+            categoryService.associateCategories(categories, data.tools);
             $scope.required.tools = data.required_tools;
             $scope.mod_list.tools = data.tools;
             $scope.mod_list.custom_tools = data.custom_tools;

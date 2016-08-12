@@ -16,7 +16,7 @@
                     <input type="text" ng-model="filters.description">
                 </div>
 
-                <category-tree class="filter-section" selection="filters.categories" toggle-all="true"></category-tree>
+                <category-tree class="filter-section" categories="categories" selection="filters.categories" toggle-all="true"></category-tree>
 
                 <div class="filter-sections" ng-if="statFilters.length">
                     <h3>Statistic Filters</h3>

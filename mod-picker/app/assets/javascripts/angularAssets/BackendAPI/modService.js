@@ -3,7 +3,7 @@ app.service('modService', function(backend, $q, categoryService, errorsFactory, 
 
     this.retrieveMods = function(options, pageInformation) {
         var action = $q.defer();
-        backend.post('/mods/index', options).then(function (data) {
+        backend.post('/mods/index', options).then(function(data) {
             pageUtils.getPageInformation(data, pageInformation, options.page);
             action.resolve(data);
         }, function(response) {
@@ -45,14 +45,7 @@ app.service('modService', function(backend, $q, categoryService, errorsFactory, 
     };
     
     this.retrieveMod = function(modId) {
-        var output = $q.defer();
-        backend.retrieve('/mods/' + modId).then(function(data) {
-            categoryService.resolveModCategories(data);
-            output.resolve(data);
-        }, function(response) {
-            output.reject(response);
-        });
-        return output.promise;
+        return backend.retrieve('/mods/' + modId);
     };
 
     this.retrieveModContributions = function(modId, route, options, pageInformation) {

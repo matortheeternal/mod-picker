@@ -26,20 +26,12 @@ app.service('modListService', function (backend, $q, userTitleService, contribut
     };
 
     this.retrieveModListTools = function(modListId) {
-        var action = $q.defer();
-        backend.retrieve('/mod_lists/' + modListId + '/tools').then(function(data) {
-            categoryService.associateCategories(data.tools);
-            action.resolve(data);
-        }, function(response) {
-            action.reject(response);
-        });
-        return action.promise;
+        return backend.retrieve('/mod_lists/' + modListId + '/tools');
     };
 
     this.retrieveModListMods = function(modListId) {
         var action = $q.defer();
         backend.retrieve('/mod_lists/' + modListId + '/mods').then(function(data) {
-            categoryService.associateCategories(data.mods);
             userTitleService.associateTitles(data.compatibility_notes);
             userTitleService.associateTitles(data.install_order_notes);
             contributionService.associateHelpfulMarks(data.compatibility_notes, data.c_helpful_marks);
@@ -54,7 +46,6 @@ app.service('modListService', function (backend, $q, userTitleService, contribut
     this.retrieveModListPlugins = function(modListId) {
         var action = $q.defer();
         backend.retrieve('/mod_lists/' + modListId + '/plugins').then(function(data) {
-            categoryService.associateCategories(data.plugins);
             userTitleService.associateTitles(data.compatibility_notes);
             userTitleService.associateTitles(data.load_order_notes);
             contributionService.associateHelpfulMarks(data.compatibility_notes, data.c_helpful_marks);

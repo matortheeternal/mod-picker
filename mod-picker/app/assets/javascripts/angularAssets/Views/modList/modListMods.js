@@ -1,4 +1,4 @@
-app.controller('modListModsController', function($scope, $rootScope, $timeout, modListService, modService, listUtils, columnsFactory, actionsFactory) {
+app.controller('modListModsController', function($scope, $rootScope, $timeout, categories, categoryService, modListService, modService, listUtils, columnsFactory, actionsFactory) {
     // initialize variables
     $scope.showDetailsModal = false;
     $scope.detailsItem = {};
@@ -40,6 +40,7 @@ app.controller('modListModsController', function($scope, $rootScope, $timeout, m
 
     $scope.retrieveMods = function() {
         modListService.retrieveModListMods($scope.mod_list.id).then(function(data) {
+            categoryService.associateCategories(categories, data.mods);
             $scope.required.mods = data.required_mods;
             $scope.notes.compatibility = data.compatibility_notes;
             $scope.notes.install_order = data.install_order_notes;

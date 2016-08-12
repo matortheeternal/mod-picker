@@ -23,9 +23,10 @@ app.config(['$stateProvider', function($stateProvider) {
     });
 }]);
 
-app.controller('editModController', function($scope, $state, currentUser, modObject, modService, userService,tagService, categoryService, errorService, sitesFactory, objectUtils) {
+app.controller('editModController', function($scope, $state, currentUser, categories, categoryPriorities, modObject, modService, userService,tagService, categoryService, errorService, sitesFactory, objectUtils) {
     // get parent variables
     $scope.currentUser = currentUser;
+    $scope.categories = categories;
 
     // inherited functions
     $scope.searchMods = modService.searchMods;
@@ -281,19 +282,10 @@ app.controller('editModController', function($scope, $state, currentUser, modObj
         }
     };
 
-    /* categories */
-    categoryService.retrieveCategories().then(function(data) {
-        $scope.categories = data;
-    });
-
-    categoryService.retrieveCategoryPriorities().then(function(data) {
-        $scope.categoryPriorities = data;
-    });
-
     $scope.getDominantIds = function(recessiveId) {
         var dominantIds = [];
-        for (var i = 0; i < $scope.categoryPriorities.length; i++) {
-            var priority = $scope.categoryPriorities[i];
+        for (var i = 0; i < categoryPriorities.length; i++) {
+            var priority = categoryPriorities[i];
             if (priority.recessive_id == recessiveId) {
                 dominantIds.push(priority.dominant_id);
             }
@@ -302,8 +294,8 @@ app.controller('editModController', function($scope, $state, currentUser, modObj
     };
 
     $scope.getCategoryPriority = function(recessiveId, dominantId) {
-        for (var i = 0; i < $scope.categoryPriorities.length; i++) {
-            var priority = $scope.categoryPriorities[i];
+        for (var i = 0; i < categoryPriorities.length; i++) {
+            var priority = categoryPriorities[i];
             if (priority.recessive_id == recessiveId &&
                 priority.dominant_id == dominantId)
                 return priority;
@@ -311,8 +303,8 @@ app.controller('editModController', function($scope, $state, currentUser, modObj
     };
 
     $scope.createPriorityMessage = function(recessiveId, dominantId) {
-        var recessiveCategory = categoryService.getCategoryById($scope.categories, recessiveId);
-        var dominantCategory = categoryService.getCategoryById($scope.categories, dominantId);
+        var recessiveCategory = categoryService.getCategoryById(categories, recessiveId);
+        var dominantCategory = categoryService.getCategoryById(categories, dominantId);
         var categoryPriority = $scope.getCategoryPriority(recessiveId, dominantId);
         var messageText = dominantCategory.name + " > " + recessiveCategory.name + "\n" + categoryPriority.description;
         $scope.categoryMessages.push({
@@ -324,7 +316,7 @@ app.controller('editModController', function($scope, $state, currentUser, modObj
     $scope.getSuperCategories = function() {
         var superCategories = [];
         $scope.mod.categories.forEach(function (id) {
-            var superCategory = categoryService.getCategoryById($scope.categories, id).parent_id;
+            var superCategory = categoryService.getCategoryById(categories, id).parent_id;
             if (superCategory && superCategories.indexOf(superCategory) == -1) {
                 superCategories.push(superCategory);
             }
@@ -359,13 +351,13 @@ app.controller('editModController', function($scope, $state, currentUser, modObj
                 text: "Categories look good!",
                 klass: "cat-success-message"
             });
-            var primaryCategory = categoryService.getCategoryById($scope.categories, $scope.mod.categories[0]);
+            var primaryCategory = categoryService.getCategoryById(categories, $scope.mod.categories[0]);
             $scope.categoryMessages.push({
                 text: "Primary Category: " + primaryCategory.name,
                 klass: "cat-success-message"
             });
             if ($scope.mod.categories.length > 1) {
-                var secondaryCategory = categoryService.getCategoryById($scope.categories, $scope.mod.categories[1]);
+                var secondaryCategory = categoryService.getCategoryById(categories, $scope.mod.categories[1]);
                 $scope.categoryMessages.push({
                     text: "Secondary Category: " + secondaryCategory.name,
                     klass: "cat-success-message"

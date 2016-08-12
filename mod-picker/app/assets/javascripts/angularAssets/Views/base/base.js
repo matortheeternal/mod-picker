@@ -13,6 +13,12 @@ app.config(['$stateProvider', function($stateProvider) {
             },
             games: function(gameService) {
                 return gameService.getAvailableGames();
+            },
+            categories: function(categoryService) {
+                return categoryService.retrieveCategories();
+            },
+            categoryPriorities: function(categoryService) {
+                return categoryService.retrieveCategoryPriorities();
             }
         },
         onEnter: function(themesService, currentUser) {

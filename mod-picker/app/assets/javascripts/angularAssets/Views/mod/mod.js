@@ -4,9 +4,10 @@ app.config(['$stateProvider', function($stateProvider) {
         controller: 'modController',
         url: '/mod/:modId',
         resolve: {
-            modObject: function(modService, $stateParams, $q) {
+            modObject: function($stateParams, $q, categories, modService, categoryService) {
                 var mod = $q.defer();
                 modService.retrieveMod($stateParams.modId).then(function(data) {
+                    categoryService.resolveModCategories(categories, data.mod);
                     mod.resolve(data);
                 }, function(response) {
                     var errorObj = {
@@ -110,8 +111,6 @@ app.controller('modController', function($scope, $q, $stateParams, $state, $time
     $scope.mod = modObject.mod;
     $scope.mod.star = modObject.star;
     $scope.currentUser = currentUser;
-    // resolve mod categories
-    categoryService.resolveModCategories($scope.mod);
 
     // initialize local variables
     $scope.tabs = tabsFactory.buildModTabs($scope.mod);

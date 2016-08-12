@@ -5,10 +5,11 @@ app.run(function($futureState, indexFactory, filtersFactory) {
     $futureState.futureState(state);
 });
 
-app.controller('pluginsController', function ($scope, $stateParams, $state, currentUser, currentGame, pluginService, columnsFactory, filtersFactory, actionsFactory, indexService, indexFactory) {
+app.controller('pluginsController', function ($scope, $stateParams, $state, currentUser, currentGame, categories, pluginService, columnsFactory, filtersFactory, actionsFactory, indexService, indexFactory) {
     // get parent variables
     $scope.currentUser = currentUser;
     $scope.currentGame = currentGame;
+    $scope.categories = categories;
     $scope.permissions = angular.copy(currentUser.permissions);
 
     // columns for view
