@@ -64,6 +64,7 @@
 
   &.sticky {
     position: fixed;
+    z-index: 3000;
     width: 100%;
     top: 0;
     left: 0;
