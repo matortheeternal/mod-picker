@@ -16,6 +16,8 @@ app.directive('tableResults', function () {
 });
 
 app.controller('tableResultsController', function($scope, tableUtils) {
+    // initialize variables
+    $scope.permissions = $scope.$parent.permissions;
     var sortedColumn;
 
     // inherited functions
