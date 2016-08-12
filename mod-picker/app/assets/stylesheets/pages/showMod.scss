@@ -69,7 +69,8 @@
 
 .source-box {
   font-size: 16px;
-  display: inline-flex;
+  display: inline-flex !important;
+  
   .source-label {
     padding: 5px 2px;
   }
