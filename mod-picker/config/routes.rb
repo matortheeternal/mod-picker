@@ -100,7 +100,8 @@ Rails.application.routes.draw do
     match '/load_order_notes/:id/helpful', to: 'load_order_notes#helpful', via: [:post]
 
     # mod lists
-    resources :mod_lists, only: [:index, :show, :create, :update, :destroy]
+    resources :mod_lists, only: [:show, :create, :update]
+    match '/mod_lists/index', to: 'mod_lists#index', via: [:get, :post]
     match '/active_mod_list', to: 'mod_lists#active', via: [:get]
     match '/mod_lists/:id/mods', to: 'mod_lists#mods', via: [:get, :post]
     match '/mod_lists/:id/tools', to: 'mod_lists#tools', via: [:get, :post]
