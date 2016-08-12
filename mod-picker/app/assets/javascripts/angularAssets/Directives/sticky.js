@@ -9,9 +9,11 @@ app.directive('sticky', function () {
             var toggleSticky = function(scrollPos) {
                 if (fixed) {
                     // unfix if we are at or above the top of the element + the different in the placeholder and the element's height
-                    if (scrollPos <= top + (placeholderHeight - $elem.offsetHeight)) {
+                    var heightDiff = placeholderHeight - $elem.offsetHeight;
+                    if (scrollPos <= top + heightDiff) {
                         fixed = false;
                         if ($placeholder) $placeholder.remove();
+                        if (heightDiff < 0) window.scrollBy(0, -heightDiff);
                         $elem.classList.remove('sticky');
                     }
                 } else if (scrollPos > top) {
