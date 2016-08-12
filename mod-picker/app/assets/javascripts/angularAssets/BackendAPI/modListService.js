@@ -175,6 +175,14 @@ app.service('modListService', function (backend, $q, userTitleService, contribut
         return action.promise;
     };
 
+    this.removeModListMod = function(mod_list_id, mod_id) {
+        var options = {
+            mod_list_id: mod_list_id,
+            mod_id: mod_id
+        };
+        return backend.delete('/mod_list_mods', options);
+    };
+
     this.newModListCustomMod = function(custom_mod) {
         return backend.post('/mod_list_custom_mods', {mod_list_custom_mod: custom_mod});
     };
