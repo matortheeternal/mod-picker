@@ -7,9 +7,9 @@ app.directive('tableResults', function () {
             label: '@',
             data: '=',
             columns: '=',
-            sort: '=',
             columnGroups: '=',
-            availableColumnData: '=',
+            availableColumnData: '=?',
+            sort: '=?',
             actions: '=?'
         }
     }
@@ -25,6 +25,9 @@ app.controller('tableResultsController', function($scope, tableUtils) {
     // this function will toggle sorting for an input column between
     // up, down, and no sorting
     $scope.sortColumn = function(column) {
+        // return if we don't have a sort object
+        if (!$scope.sort) return;
+
         if(sortedColumn && sortedColumn !== column) {
             sortedColumn.up = false;
             sortedColumn.down = false;
