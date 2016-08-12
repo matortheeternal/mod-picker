@@ -15,7 +15,7 @@ module Filterable
     def parseDate(datestr)
       if datestr == "Now"
         DateTime.now.utc
-      elsif match = /([0-9]+) hours ago/.match(datestr)
+      elsif (match = /([0-9]+) hours ago/.match(datestr))
         match[1].to_i.hours.ago
       else
         DateTime.strptime(datestr, "%m/%d/%Y")
