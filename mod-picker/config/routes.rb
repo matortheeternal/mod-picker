@@ -39,7 +39,7 @@ Rails.application.routes.draw do
 
     # plugins
     resources :plugins, only: [:show, :destroy]
-    match '/plugins', to: 'plugins#index', via: [:post]
+    match '/plugins', to: 'plugins#index', via: [:get, :post]
     match '/plugins/search', to: 'plugins#search', via: [:post]
 
     # content associated with mods
