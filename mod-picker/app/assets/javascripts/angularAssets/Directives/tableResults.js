@@ -21,6 +21,17 @@ app.controller('tableResultsController', function($scope, tableUtils) {
     // inherited functions
     $scope.columnValue = tableUtils.columnValue;
     $scope.groupColumns = tableUtils.groupColumns;
+    $scope.filterClass = tableUtils.filterClass;
+
+    // this function resolves a variable as a function if it is one,
+    // else returns its value
+    $scope.resolve = function(attribute, item, context) {
+        if (typeof attribute === 'function') {
+            return attribute($scope, item, context);
+        } else {
+            return attribute;
+        }
+    };
 
     // this function will toggle sorting for an input column between
     // up, down, and no sorting
