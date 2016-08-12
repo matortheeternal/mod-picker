@@ -21,7 +21,7 @@ app.config(['$stateProvider', function($stateProvider) {
     })
 }]);
 
-app.controller('baseController', function($scope, $state, $location, currentUser, games, currentGame) {
+app.controller('baseController', function($scope, $state, $location, currentUser, games, currentGame, modListService) {
     $scope.currentUser = currentUser;
     $scope.permissions = currentUser.permissions;
     $scope.currentGame = currentGame;
@@ -30,6 +30,29 @@ app.controller('baseController', function($scope, $state, $location, currentUser
     // user selected an option from the my contributions dropdown
     $scope.navigateTo = function(newLocation) {
         $location.path(newLocation);
+    };
+
+    // user selected to start a new mod list
+    $scope.newModList = function() {
+        var mod_list = {
+            game_id: window._current_game_id,
+            name: $scope.currentUser.username + "'s Mod List",
+            // TODO: Should have a default description set on the backend
+            description: "A brand new mod list!"
+        };
+
+        modListService.newModList(mod_list).then(function(data) {
+            $scope.$emit('reloadCurrentUser');
+            $state.go('base.mod-list', {modListId: data.id});
+        }, function(response) {
+            $state.get('base.error').error = {
+                text: 'Error creating new mod list.',
+                response: response,
+                stateName: 'base',
+                stateUrl: window.location.hash
+            };
+            $state.go('base.error');
+        });
     };
 
     //reload when the user object is changed in the settings
