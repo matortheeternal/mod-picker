@@ -48,6 +48,9 @@ class Plugin < ActiveRecord::Base
 
   accepts_nested_attributes_for :plugin_record_groups, :overrides, :plugin_errors
 
+  # numbers of plugins per page on the plugins index
+  self.per_page = 100
+
   # validations
   validates :game_id, :mod_id, :filename, :crc_hash, :file_size, presence: true
 
