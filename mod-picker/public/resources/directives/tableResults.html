@@ -2,9 +2,9 @@
     <table ng-show="data.length" class="browse-table">
         <thead>
             <tr>
-                <th ng-repeat="column in columns" ng-class="{ 'hidden': !column.visibility }" ng-click="sortColumn(column)">
+                <th ng-repeat="column in columns" ng-class="{ 'hidden': !column.visibility, 'no-action' : !sort }" ng-click="sortColumn(column)">
                     {{column.label}}
-                    <div class="sorting-options">
+                    <div class="sorting-options" ng-if="sort">
                         <div class="sort-up" ng-class="{ 'active' : column.up }">
                             <i class="fa fa-caret-up"></i>
                         </div>
