@@ -157,7 +157,14 @@ app.service('modListService', function (backend, $q, userTitleService, contribut
         return backend.post('/mod_lists', {mod_list: mod_list})
     };
 
-    this.newModListMod = function(mod_list_mod) {
+    this.newModListMod = function(mod_list_mod, noResponse) {
+        // no response mode is used when we aren't on the mod list view
+        if (noResponse) {
+            var options = {mod_list_mod: mod_list_mod, no_response: true};
+            return backend.post('/mod_list_mods', options);
+        }
+
+        // else we use a full promise and associate data with the response
         var action = $q.defer();
         backend.post('/mod_list_mods', {mod_list_mod: mod_list_mod}).then(function(data) {
             userTitleService.associateTitles(data.mod_compatibility_notes);
