@@ -153,6 +153,10 @@ app.service('modListService', function (backend, $q, userTitleService, contribut
         return backend.update('/mod_lists/' + modList.id, modListData);
     };
 
+    this.newModList = function(mod_list) {
+        return backend.post('/mod_lists', {mod_list: mod_list})
+    };
+
     this.newModListMod = function(mod_list_mod) {
         var action = $q.defer();
         backend.post('/mod_list_mods', {mod_list_mod: mod_list_mod}).then(function(data) {
