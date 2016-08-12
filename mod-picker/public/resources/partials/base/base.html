@@ -60,13 +60,21 @@
     <div class="page-container">
         <div class="nav-wrapper clearfix">
             <div class="primary-nav">
-                <a class="nav-modlist" ng-href="{{ currentUser.active_mod_list_id ? '#/mod-list/' + currentUser.active_mod_list_id : '#/mod-list/new'}}">
+                <a class="nav-modlist" ng-if="currentUser.active_mod_list" ng-href="#/mod-list/{{currentUser.active_mod_list_id}}">
                     <span class="nav-icon">
                         <i class="fa fa-pencil-square-o"></i>
                     </span>
                     <span class="nav-text">
-                        <b ng-if="currentUser.active_mod_list_id">Edit your</b>
-                        <b ng-if="!currentUser.active_mod_list_id">Start a new</b>
+                        <b>Edit your</b>
+                        Mod List
+                    </span>
+                </a>
+                <a class="nav-modlist" ng-if="!currentUser.active_mod_list" ng-click="newModList()">
+                    <span class="nav-icon">
+                        <i class="fa fa-pencil-square-o"></i>
+                    </span>
+                    <span class="nav-text">
+                        <b>Start a new</b>
                         Mod List
                     </span>
                 </a>
