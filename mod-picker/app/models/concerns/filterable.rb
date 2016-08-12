@@ -21,5 +21,17 @@ module Filterable
         DateTime.strptime(datestr, "%m/%d/%Y")
       end
     end
+
+    def parseBytes(bytestr)
+      sp = bytestr.split(' ')
+      return 0 if !sp || sp.length < 2
+      units = ['bytes', 'kB', 'MB', 'GB', 'TB', 'PB']
+      power = units.index(sp[1])
+      if power == -1
+        0
+      else
+        (sp[0].to_f * 1024 ** power).floor
+      end
+    end
   end
 end
