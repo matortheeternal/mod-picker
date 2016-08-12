@@ -3,11 +3,23 @@ class Plugin < ActiveRecord::Base
 
   attr_writer :master_plugins
 
-  # Scopes
-  scope :search, -> (search) { where("filename like ?", "%#{search}%") }
+  # GENERAL SCOPES
   scope :game, -> (game) { where(game_id: game) }
   scope :mods, -> (mod_ids) { where(mod_id: mod_ids) }
   scope :esm, -> { where("filename like '%.esm'") }
+  # SEARCH SCOPES
+  scope :search, -> (search) { where("filename like ?", "%#{search}%") }
+  scope :author, -> (search) { where("author like ?", "%#{search}%") }
+  scope :description, -> (search) { where("description like ?", "%#{search}%") }
+  # HASH SCOPES
+  scope :categories, -> (categories) { joins(:mod).where("mods.primary_category_id IN (?) OR mods.secondary_category_id IN (?)", categories, categories) }
+  # STATISTIC SCOPES
+  scope :file_size, -> (range) { where(file_size: (parseBytes(range[:min])..parseBytes(range[:max]))) }
+  scope :records, -> (range) { where(record_count: (range[:min]..range[:max])) }
+  scope :overrides, -> (range) { where(override_count: (range[:min]..range[:max])) }
+  scope :errors, -> (range) { where(errors_count: (range[:min]..range[:max])) }
+  scope :mod_lists, -> (range) { where(mod_lists_count: (range[:min]..range[:max])) }
+  scope :load_order_notes, -> (range) { where(load_order_notes_count: (range[:min]..range[:max])) }
 
   # Associations
   belongs_to :game, :inverse_of => 'plugins'
