@@ -26,7 +26,7 @@ app.service('columnsFactory', function() {
             },
             {
                 group: "General",
-                visibility: true,
+                visibility: false,
                 label: "Updated",
                 data: "updated",
                 filter: "date"
