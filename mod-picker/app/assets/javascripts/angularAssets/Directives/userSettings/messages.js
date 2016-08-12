@@ -11,7 +11,6 @@ app.directive('messages', function () {
     }
 });
 
-//TODO: empty controller is probably unnecessary :P
 app.controller('messagesController', function ($scope, $timeout) {
     // default values
     $scope.event = $scope.event || 'message';
@@ -22,7 +21,9 @@ app.controller('messagesController', function ($scope, $timeout) {
     $scope.messages = [];
 
     $scope.$on($scope.event, function(event, message) {
-        var decay = message.type === 'success' ? $scope.successDecay : $scope.errorDecay;
+        var isSuccessMessage = message.type === 'success';
+        var decay = isSuccessMessage ? $scope.successDecay : $scope.errorDecay;
+        if (isSuccessMessage) $scope.messages = [];
         $scope.messages.push(message);
         $timeout(function() {
             var index = $scope.messages.indexOf(message);
