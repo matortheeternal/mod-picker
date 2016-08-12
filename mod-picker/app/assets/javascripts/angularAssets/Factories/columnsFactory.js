@@ -835,4 +835,87 @@ app.service('columnsFactory', function() {
     this.modListColumnGroups = function() {
         return ["General", "Extended"];
     };
+
+    this.pluginColumns = function() {
+        return [
+            {
+                group: "General",
+                visibility: true,
+                required: true,
+                label: "Filename",
+                data: "filename",
+                class: "primary-column",
+                link: function (item) {
+                    return "#/mod/" + item.mod.id + "/analysis?plugin=" + item.id;
+                }
+            },
+            {
+                group: "General",
+                visibility: true,
+                label: "Mod",
+                data: "mod.name",
+                link: function (item) {
+                    return "#/mod/" + item.mod.id;
+                }
+            },
+            {
+                group: "General",
+                visibility: false,
+                label: "CRC",
+                data: "crc_hash"
+            },
+            {
+                group: "General",
+                visibility: false,
+                label: "Author",
+                data: "author"
+            },
+            {
+                group: "General",
+                visibility: true,
+                label: "File Size",
+                data: "file_size",
+                filter: "bytes"
+            },
+            {
+                group: "General",
+                visibility: true,
+                label: "Records",
+                data: "record_count",
+                filter: "number"
+            },
+            {
+                group: "General",
+                visibility: true,
+                label: "Overrides",
+                data: "override_count",
+                filter: "number"
+            },
+            {
+                group: "General",
+                visibility: false,
+                label: "Errors",
+                data: "errors_count",
+                filter: "number"
+            },
+            {
+                group: "General",
+                visibility: false,
+                label: "Mod Lists",
+                data: "mod_lists_count",
+                filter: "number"
+            },
+            {
+                group: "General",
+                visibility: false,
+                label: "Load Order Notes",
+                data: "load_order_notes_count",
+                filter: "number"
+            }
+        ]
+    };
+
+    this.pluginColumnGroups = function() {
+        return ["General"];
+    };
 });
