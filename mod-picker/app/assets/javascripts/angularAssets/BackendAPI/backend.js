@@ -6,13 +6,13 @@ app.service('backend', function ($q, $http, objectUtils) {
     //Constant to be flexible in the future. Us as prefix for ALL requests
     var BASE_LOCATION = '';
 
-    this.retrieve = function (context, additionalAttributes) {
+    this.retrieve = function (context, options) {
         var promise = $q.defer();
         $http({
             url: BASE_LOCATION + context + '.json',
             method: 'GET',
-            params: additionalAttributes,
-            cache: additionalAttributes && additionalAttributes.cache || false
+            params: options,
+            cache: options && options.cache || false
         }).then(function(response) {
             promise.resolve(response.data);
         }, function(response) {
@@ -73,9 +73,9 @@ app.service('backend', function ($q, $http, objectUtils) {
         return promise.promise;
     };
 
-    this.delete = function (context) {
+    this.delete = function (context, options) {
         var promise = $q.defer();
-        var reqData = {};
+        var reqData = objectUtils.shallowCopy(options || {});
         reqData.authenticity_token = window._token;
         $http({
             url: BASE_LOCATION + context + '.json',
