@@ -113,6 +113,9 @@ class ModList < ActiveRecord::Base
   accepts_nested_attributes_for :custom_config_files, allow_destroy: true
   accepts_nested_attributes_for :ignored_notes, allow_destroy: true
 
+  # numbers of mod lists per page on the mod lists index
+  self.per_page = 100
+
   # Validations
   validates :game_id, :submitted_by, :name, presence: true
 
