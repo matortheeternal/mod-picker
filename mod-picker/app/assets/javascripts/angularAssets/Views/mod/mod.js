@@ -106,7 +106,7 @@ app.config(['$stateProvider', function($stateProvider) {
     });
 }]);
 
-app.controller('modController', function($scope, $q, $stateParams, $state, $timeout, currentUser, modObject, modService, contributionService, categoryService, tagService, smoothScroll, errorService, tabsFactory, sortFactory) {
+app.controller('modController', function($scope, $q, $stateParams, $state, $timeout, currentUser, categories, modObject, modService, modListService, contributionService, categoryService, tagService, smoothScroll, errorService, tabsFactory, sortFactory) {
     // get parent variables
     $scope.mod = modObject.mod;
     $scope.mod.star = modObject.star;
@@ -259,6 +259,38 @@ app.controller('modController', function($scope, $q, $stateParams, $state, $time
             var params = { label: 'Error starring mod', response: response };
             $scope.$emit('errorMessage', params);
         });
+    };
+
+    $scope.toggleInModList = function() {
+        if ($scope.mod.in_mod_list) {
+            // remove from mod list
+            modListService.removeModListMod($scope.activeModList.id, $scope.mod.id).then(function() {
+                $scope.mod.in_mod_list = false;
+                $scope.$emit('successMessage', 'Mod removed from your mod list successfully.');
+            }, function(response) {
+                var params = {
+                    label: 'Error removing mod from your mod list',
+                    response: response
+                };
+                $scope.$emit('errorMessage', params);
+            });
+        } else {
+            // add to mod list
+            var mod_list_mod = {
+                mod_list_id: $scope.activeModList.id,
+                mod_id: $scope.mod.id
+            };
+            modListService.newModListMod(mod_list_mod, true).then(function() {
+                $scope.mod.in_mod_list = true;
+                $scope.$emit('successMessage', 'Mod added to your mod list successfully.');
+            }, function(response) {
+                var params = {
+                    label: 'Error adding mod to your mod list',
+                    response: response
+                };
+                $scope.$emit('errorMessage', params);
+            });
+        }
     };
 
     $scope.toggleStatusModal = function(visible) {
