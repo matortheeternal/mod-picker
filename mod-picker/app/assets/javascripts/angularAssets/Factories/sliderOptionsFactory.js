@@ -50,6 +50,10 @@ app.service('sliderOptionsFactory', function (sliderFactory) {
         return this.BaseStepsSlider(sliderFactory.generateDateSteps(start));
     };
 
+    this.BytesSlider = function(max) {
+        return this.BaseStepsSlider(sliderFactory.generateByteSteps(max));
+    };
+
     this.StepSlider = function (max) {
         return this.BaseStepsSlider(sliderFactory.generateSteps(1, parseInt(max)));
     };
