@@ -28,7 +28,7 @@ app.config(['$stateProvider', function($stateProvider) {
         views: {
             'Reviews': {
                 templateUrl: '/resources/partials/mod/modReviews.html',
-                controller: 'modReviewsController',
+                controller: 'modReviewsController'
             }
         },
         url: '/reviews/{reviewId:int}?{page:int}&scol&sdir',
@@ -45,7 +45,7 @@ app.config(['$stateProvider', function($stateProvider) {
         views: {
             'Compatibility': {
                 templateUrl: '/resources/partials/mod/modCompatibility.html',
-                controller: 'modCompatibilityController',
+                controller: 'modCompatibilityController'
             }
         },
         url: '/compatibility/{compatibilityNoteId:int}?{page:int}&scol&sdir&{filter:bool}',
@@ -63,7 +63,7 @@ app.config(['$stateProvider', function($stateProvider) {
         views: {
             'Install Order': {
                 templateUrl: '/resources/partials/mod/modInstallOrder.html',
-                controller: 'modInstallOrderController',
+                controller: 'modInstallOrderController'
             }
         },
         url: '/install-order/{installOrderNoteId:int}?{page:int}&scol&sdir&{filter:bool}',
@@ -81,7 +81,7 @@ app.config(['$stateProvider', function($stateProvider) {
         views: {
             'Load Order': {
                 templateUrl: '/resources/partials/mod/modLoadOrder.html',
-                controller: 'modLoadOrderController',
+                controller: 'modLoadOrderController'
             }
         },
         url: '/load-order/{loadOrderNoteId:int}?{page:int}&scol&sdir&{filter:bool}',
@@ -99,7 +99,7 @@ app.config(['$stateProvider', function($stateProvider) {
         views: {
             'Analysis': {
                 templateUrl: '/resources/partials/mod/modAnalysis.html',
-                controller: 'modAnalysisController',
+                controller: 'modAnalysisController'
             }
         },
         url: '/analysis?{plugin:int}'
