@@ -318,15 +318,11 @@ class ModList < ActiveRecord::Base
   def as_json(options={})
     if JsonHelpers.json_options_empty(options)
       default_options = {
-          :except => [:submitted_by],
+          :except => [:game_id, :hidden, :submitted_by],
           :include => {
               :submitter => {
-                  :only => [:id, :username, :role, :title],
-                  :include => {
-                      :reputation => {:only => [:overall]}
-                  },
-                  :methods => :avatar
-              },
+                  :only => [:id, :username]
+              }
           }
       }
       super(options.merge(default_options))
