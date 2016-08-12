@@ -1,6 +1,7 @@
 class ModListPluginsController < ApplicationController
   def create
     @mod_list_plugin = ModListPlugin.new(mod_list_plugin_params)
+    authorize! :read, @mod_list_plugin.plugin
     authorize! :create, @mod_list_plugin
 
     if @mod_list_plugin.save

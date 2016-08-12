@@ -2,6 +2,7 @@ class ModListCustomModsController < ApplicationController
 
   def create
     @mod_list_custom_mod = ModListCustomMod.new(mod_list_custom_mod_params)
+    authorize! :create, @mod_list_custom_mod
 
     if @mod_list_custom_mod.save
       # render response

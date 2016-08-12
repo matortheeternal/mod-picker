@@ -2,6 +2,7 @@ class ModListCustomConfigFilesController < ApplicationController
 
   def create
     @mod_list_custom_config_file = ModListCustomConfigFile.new(mod_list_custom_config_file_params)
+    authorize! :create, @mod_list_custom_config_file
 
     if @mod_list_custom_config_file.save
       # render response
