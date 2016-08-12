@@ -3,9 +3,14 @@ class PluginsController < ApplicationController
 
   # GET /plugins
   def index
-    @plugins = Plugin.accessible_by(current_ability).filter(filtering_params).sort(params[:sort]).paginate(:page => params[:page])
+    @plugins = Plugin.includes(:mod).accessible_by(current_ability).filter(filtering_params).sort(params[:sort]).paginate(:page => params[:page])
+    count =  Plugin.accessible_by(current_ability).filter(filtering_params).count
 
-    render :json => Plugin.index_json(@plugins)
+    render :json => {
+        plugins: Plugin.index_json(@plugins),
+        max_entries: count,
+        entries_per_page: Plugin.per_page
+    }
   end
 
   # POST /plugins/search
