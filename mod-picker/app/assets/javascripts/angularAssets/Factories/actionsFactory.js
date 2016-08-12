@@ -21,6 +21,19 @@ app.service('actionsFactory', function() {
     };
 
     /* mod list actions */
+    this.modListIndexActions = function() {
+        return [{
+            caption: "Add",
+            title: "Add this collection to your mod list",
+            hidden: function($scope, item) {
+                return !item.is_collection;
+            },
+            execute: function($scope, item) {
+                $scope.$emit('addCollection', item);
+            }
+        }]
+    };
+
     this.modListToolActions = function() {
         return [{
             caption: "Remove",
