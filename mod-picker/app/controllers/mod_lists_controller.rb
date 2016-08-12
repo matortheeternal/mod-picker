@@ -4,9 +4,14 @@ class ModListsController < ApplicationController
 
   # GET /mod_lists
   def index
-    @mod_lists = ModList.all
+    @mod_lists = ModList.accessible_by(current_ability).filter(filtering_params).sort(params[:sort]).paginate(:page => params[:page])
+    count =  ModList.accessible_by(current_ability).filter(filtering_params).count
 
-    render :json => @mod_lists
+    render :json => {
+        mod_lists: @mod_lists,
+        max_entries: count,
+        entries_per_page: ModList.per_page
+    }
   end
 
   # GET /mod_lists/1
