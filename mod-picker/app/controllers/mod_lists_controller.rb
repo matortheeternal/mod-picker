@@ -174,7 +174,8 @@ class ModListsController < ApplicationController
     authorize! :create, @mod_list
 
     if @mod_list.save
-      render json: {status: :ok}
+      @mod_list.add_official_content
+      render json: {id: @mod_list.id, status: :ok}
     else
       render json: @mod_list.errors, status: :unprocessable_entity
     end
