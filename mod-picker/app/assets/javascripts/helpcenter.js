@@ -8,6 +8,7 @@
 //= require ./angularAssets/BackendAPI/userTitleService.js
 //= require ./angularAssets/Directives/loader.js
 //= require ./angularAssets/Directives/textArea.js
+//= require ./angularAssets/Directives/sticky.js
 //= require ./angularAssets/Directives/contributions/comment.js
 //= require ./angularAssets/Directives/contributions/comments.js
 //= require ./angularAssets/Factories/spinnerFactory.js
