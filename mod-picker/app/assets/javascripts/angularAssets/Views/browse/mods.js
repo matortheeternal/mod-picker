@@ -5,7 +5,7 @@ app.run(function($futureState, indexFactory, filtersFactory) {
     $futureState.futureState(state);
 });
 
-app.controller('modsController', function($scope, $q, $stateParams, $state, currentUser, currentGame, categories, modService, sliderFactory, columnsFactory, filtersFactory, actionsFactory, indexService, indexFactory) {
+app.controller('modsController', function($scope, $q, $stateParams, $state, currentUser, currentGame, categories, modService, modListService, sliderFactory, columnsFactory, filtersFactory, actionsFactory, indexService, indexFactory) {
     // get parent variables
     $scope.currentUser = currentUser;
     $scope.currentGame = currentGame;
@@ -69,6 +69,32 @@ app.controller('modsController', function($scope, $q, $stateParams, $state, curr
             }
         });
     };
+
+    // adds a mod to the user's mod list
+    $scope.$on('addMod', function(event, mod) {
+        modListService.addModListMod($scope.activeModList, mod).then(function() {
+            $scope.$emit('successMessage', 'Mod added to your mod list successfully.');
+        }, function(response) {
+            var params = {
+                label: 'Error adding mod to your mod list',
+                response: response
+            };
+            $scope.$emit('errorMessage', params);
+        });
+    });
+
+    // removes a mod from the user's mod list
+    $scope.$on('removeMod', function(event, mod) {
+        modListService.removeModListMod($scope.activeModList, mod).then(function() {
+            $scope.$emit('successMessage', 'Mod removed from your mod list successfully.');
+        }, function(response) {
+            var params = {
+                label: 'Error removing mod from your mod list',
+                response: response
+            };
+            $scope.$emit('errorMessage', params);
+        });
+    });
 
     // filters for view
     $scope.filterPrototypes = filtersFactory.modFilters();
