@@ -264,8 +264,7 @@ app.controller('modController', function($scope, $q, $stateParams, $state, $time
     $scope.toggleInModList = function() {
         if ($scope.mod.in_mod_list) {
             // remove from mod list
-            modListService.removeModListMod($scope.activeModList.id, $scope.mod.id).then(function() {
-                $scope.mod.in_mod_list = false;
+            modListService.removeModListMod($scope.activeModList, $scope.mod).then(function() {
                 $scope.$emit('successMessage', 'Mod removed from your mod list successfully.');
             }, function(response) {
                 var params = {
@@ -275,13 +274,7 @@ app.controller('modController', function($scope, $q, $stateParams, $state, $time
                 $scope.$emit('errorMessage', params);
             });
         } else {
-            // add to mod list
-            var mod_list_mod = {
-                mod_list_id: $scope.activeModList.id,
-                mod_id: $scope.mod.id
-            };
-            modListService.newModListMod(mod_list_mod, true).then(function() {
-                $scope.mod.in_mod_list = true;
+            modListService.addModListMod($scope.activeModList, $scope.mod).then(function() {
                 $scope.$emit('successMessage', 'Mod added to your mod list successfully.');
             }, function(response) {
                 var params = {
