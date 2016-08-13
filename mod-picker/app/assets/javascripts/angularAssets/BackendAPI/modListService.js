@@ -148,14 +148,7 @@ app.service('modListService', function (backend, $q, userTitleService, contribut
         return backend.post('/mod_lists', {mod_list: mod_list})
     };
 
-    this.newModListMod = function(mod_list_mod, noResponse) {
-        // no response mode is used when we aren't on the mod list view
-        if (noResponse) {
-            var options = {mod_list_mod: mod_list_mod, no_response: true};
-            return backend.post('/mod_list_mods', options);
-        }
-
-        // else we use a full promise and associate data with the response
+    this.newModListMod = function(mod_list_mod) {
         var action = $q.defer();
         backend.post('/mod_list_mods', {mod_list_mod: mod_list_mod}).then(function(data) {
             userTitleService.associateTitles(data.mod_compatibility_notes);
@@ -173,12 +166,46 @@ app.service('modListService', function (backend, $q, userTitleService, contribut
         return action.promise;
     };
 
-    this.removeModListMod = function(mod_list_id, mod_id) {
+    // this function is used to add a mod list mod when not on the mod list page
+    this.addModListMod = function(mod_list, mod) {
+        var action = $q.defer();
         var options = {
-            mod_list_id: mod_list_id,
-            mod_id: mod_id
+            mod_list_mod: {
+                mod_list_id: mod_list.id,
+                mod_id: mod.id
+            },
+            no_response: true
         };
-        return backend.delete('/mod_list_mods', options);
+        backend.post('/mod_list_mods', options).then(function(data) {
+            mod.in_mod_list = true;
+            mod.is_utility ? mod_list.tools_count++ : mod_list.mods_count++;
+            mod_list.mod_list_mod_ids.push(mod.id);
+            action.resolve(data);
+        }, function(response) {
+            action.reject(response);
+        });
+        return action.promise;
+    };
+
+    // this function is used to remove a mod list mod when not on the mod list page
+    this.removeModListMod = function(mod_list, mod) {
+        var action = $q.defer();
+        var options = {
+            mod_list_id: mod_list.id,
+            mod_id: mod.id
+        };
+        backend.delete('/mod_list_mods', options).then(function(response) {
+            mod.in_mod_list = false;
+            mod.is_utility ? mod_list.tools_count-- : mod_list.mods_count--;
+            var index = mod_list.mod_list_mod_ids.indexOf(mod.id);
+            if (index > -1) {
+                mod_list.mod_list_mod_ids.splice(index, 1);
+            }
+            action.resolve(response);
+        }, function(response) {
+            action.reject(response);
+        });
+        return action.promise;
     };
 
     this.newModListCustomMod = function(custom_mod) {
