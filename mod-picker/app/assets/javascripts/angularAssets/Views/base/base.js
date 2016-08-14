@@ -27,7 +27,7 @@ app.config(['$stateProvider', function($stateProvider) {
     })
 }]);
 
-app.controller('baseController', function($scope, $state, $location, currentUser, games, currentGame, modListService) {
+app.controller('baseController', function($scope, $state, $location, $window, currentUser, games, currentGame, modListService) {
     $scope.currentUser = currentUser;
     $scope.permissions = currentUser.permissions;
     $scope.currentGame = currentGame;
@@ -48,8 +48,9 @@ app.controller('baseController', function($scope, $state, $location, currentUser
         };
 
         modListService.newModList(mod_list).then(function(data) {
-            $scope.$emit('reloadCurrentUser');
-            $state.go('base.mod-list', {modListId: data.id});
+            $location.path('/mod-list/' + data.id);
+            // this is required to reload the currentUser object
+            $window.location.reload(true);
         }, function(response) {
             $state.get('base.error').error = {
                 text: 'Error creating new mod list.',
