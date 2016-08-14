@@ -67,6 +67,28 @@ app.service('actionsFactory', function() {
         }]
     };
 
+    this.userModListActions = function() {
+        return [{
+            caption: "Clone",
+            title: "Make a copy of this mod list",
+            hidden: function($scope, item) {
+                return !$scope.permissions.canModerate && $scope.currentUser.id != item.submitter.id;
+            },
+            execute: function($scope, item) {
+                $scope.$emit('cloneModList', item);
+            }
+        }, {
+            caption: "Delete",
+            title: "Delete this mod list",
+            hidden: function($scope, item) {
+                return !$scope.permissions.canModerate && $scope.currentUser.id != item.submitter.id;
+            },
+            execute: function($scope, item) {
+                $scope.$emit('deleteModList', item);
+            }
+        }]
+    };
+
     this.modListToolActions = function() {
         return [{
             caption: "Remove",
