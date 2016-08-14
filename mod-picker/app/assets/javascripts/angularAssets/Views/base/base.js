@@ -27,7 +27,7 @@ app.config(['$stateProvider', function($stateProvider) {
     })
 }]);
 
-app.controller('baseController', function($scope, $state, $location, $window, currentUser, games, currentGame, modListService) {
+app.controller('baseController', function($scope, $state, $location, currentUser, games, currentGame, userService, modListService) {
     $scope.currentUser = currentUser;
     $scope.permissions = currentUser.permissions;
     $scope.currentGame = currentGame;
@@ -48,9 +48,9 @@ app.controller('baseController', function($scope, $state, $location, $window, cu
         };
 
         modListService.newModList(mod_list).then(function(data) {
-            $location.path('/mod-list/' + data.id);
-            // this is required to reload the currentUser object
-            $window.location.reload(true);
+            $scope.retrieveCurrentUser(function() {
+                $state.go('base.mod-list', {modListId: data.id});
+            })
         }, function(response) {
             $state.get('base.error').error = {
                 text: 'Error creating new mod list.',
@@ -63,8 +63,23 @@ app.controller('baseController', function($scope, $state, $location, $window, cu
     };
 
     //reload when the user object is changed in the settings
+    $scope.retrieveCurrentUser = function(callback) {
+        userService.retrieveCurrentUser().then(function(currentUser) {
+            $scope.currentUser = currentUser;
+            callback && callback();
+        }, function(response) {
+            $state.get('base.error').error = {
+                text: 'Error retrieving current user.',
+                response: response,
+                stateName: 'base',
+                stateUrl: window.location.hash
+            };
+            $state.go('base.error');
+        });
+    };
+
     $scope.$on('reloadCurrentUser', function() {
-        $state.reload();
+        $scope.retrieveCurrentUser();
     });
 
     $scope.$on('updateRepPermissions', function(event, endorsed) {
