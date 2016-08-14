@@ -26,13 +26,29 @@ app.service('actionsFactory', function() {
             caption: "Add",
             title: "Add this mod to your mod list",
             hidden: function($scope, item) {
-                var foundMod = $scope.activeModList.mods.find(function(mod) {
-                    return mod.id == item.id;
+                var activeModList = $scope.$parent.activeModList;
+                if (!activeModList) return true;
+                var foundMod = activeModList.mod_list_mod_ids.find(function(modId) {
+                    return modId == item.id;
                 });
                 return !!foundMod;
             },
             execute: function($scope, item) {
                 $scope.$emit('addMod', item);
+            }
+        }, {
+            caption: "Remove",
+            title: "Remove this mod from your mod list",
+            hidden: function($scope, item) {
+                var activeModList = $scope.$parent.activeModList;
+                if (!activeModList) return true;
+                var foundMod = activeModList.mod_list_mod_ids.find(function(modId) {
+                    return modId == item.id;
+                });
+                return !foundMod;
+            },
+            execute: function($scope, item) {
+                $scope.$emit('removeMod', item);
             }
         }]
     };
