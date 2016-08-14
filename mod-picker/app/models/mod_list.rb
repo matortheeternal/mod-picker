@@ -72,37 +72,37 @@ class ModList < ActiveRecord::Base
   has_many :active_users, :class_name => 'User', :foreign_key => 'active_mod_list_id', :inverse_of => 'active_mod_list', :dependent => :nullify
 
   # INSTALL ORDER
-  has_many :mod_list_mods, :inverse_of => 'mod_list'
+  has_many :mod_list_mods, :inverse_of => 'mod_list', :dependent => :destroy
   has_many :mods, :through => 'mod_list_mods', :inverse_of => 'mod_lists'
-  has_many :custom_mods, :class_name => 'ModListCustomMod', :inverse_of => 'mod_list'
+  has_many :custom_mods, :class_name => 'ModListCustomMod', :inverse_of => 'mod_list', :dependent => :destroy
 
   # LOAD ORDER
   has_many :plugins, :through => 'mods'
-  has_many :mod_list_plugins, :inverse_of => 'mod_list'
-  has_many :custom_plugins, :class_name => 'ModListCustomPlugin', :inverse_of => 'mod_list'
+  has_many :mod_list_plugins, :inverse_of => 'mod_list', :dependent => :destroy
+  has_many :custom_plugins, :class_name => 'ModListCustomPlugin', :inverse_of => 'mod_list', :dependent => :destroy
 
   # IGNORED NOTES
-  has_many :ignored_notes, :class_name => 'ModListIgnoredNote', :inverse_of => 'mod_list'
+  has_many :ignored_notes, :class_name => 'ModListIgnoredNote', :inverse_of => 'mod_list', :dependent => :destroy
 
   # GROUPS
   # NOTE: This association has to be after the mods_list_mods, mod_list_plugins,
   # and custom_plugins associations in order to yield correct behavior with
   # nested attributes in certain circumstances (specifically when mods have been
   # moved out of a group and the group has been deleted)
-  has_many :mod_list_groups, :inverse_of => 'mod_list'
+  has_many :mod_list_groups, :inverse_of => 'mod_list', :dependent => :destroy
 
   # CONFIG FILES
   has_many :config_files, :through => 'mods'
-  has_many :mod_list_config_files, :inverse_of => 'mod_list'
-  has_many :custom_config_files, :class_name => 'ModListCustomConfigFile', :inverse_of => 'mod_list'
+  has_many :mod_list_config_files, :inverse_of => 'mod_list', :dependent => :destroy
+  has_many :custom_config_files, :class_name => 'ModListCustomConfigFile', :inverse_of => 'mod_list', :dependent => :destroy
 
   # TAGS
-  has_many :mod_list_tags, :inverse_of => 'mod_list'
+  has_many :mod_list_tags, :inverse_of => 'mod_list', :dependent => :destroy
   has_many :tags, :through => 'mod_list_tags', :inverse_of => 'mod_lists'
 
   # ASSOCIATIONS FROM OTHER USERS
-  has_many :mod_list_stars, :inverse_of => 'mod_list'
-  has_many :comments, -> { where(parent_id: nil) }, :as => 'commentable'
+  has_many :mod_list_stars, :inverse_of => 'mod_list', :dependent => :destroy
+  has_many :comments, -> { where(parent_id: nil) }, :as => 'commentable', :dependent => :destroy
 
   # NESTED ATTRIBUTES
   accepts_nested_attributes_for :mod_list_mods, allow_destroy: true
