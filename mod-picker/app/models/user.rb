@@ -66,7 +66,7 @@ class User < ActiveRecord::Base
   has_many :mods, :through => 'mod_authors', :inverse_of => 'author_users'
   has_many :mod_lists, :foreign_key => 'submitted_by', :inverse_of => 'submitter'
 
-  belongs_to :active_mod_list, :class_name => 'ModList', :foreign_key => 'active_mod_list_id'
+  belongs_to :active_mod_list, :class_name => 'ModList', :foreign_key => 'active_mod_list_id', :inverse_of => 'active_users'
 
   has_many :mod_stars, :inverse_of => 'user'
   has_many :starred_mods, :through => 'mod_stars'
