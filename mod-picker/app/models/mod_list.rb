@@ -69,7 +69,6 @@ class ModList < ActiveRecord::Base
   # ASSOCIATIONS
   belongs_to :game, :inverse_of => 'mod_lists'
   belongs_to :submitter, :class_name => 'User', :foreign_key => 'submitted_by', :inverse_of => 'mod_lists'
-  has_many :active_users, :class_name => 'User', :foreign_key => 'active_mod_list_id', :inverse_of => 'active_mod_list', :dependent => :nullify
 
   # INSTALL ORDER
   has_many :mod_list_mods, :inverse_of => 'mod_list', :dependent => :destroy
