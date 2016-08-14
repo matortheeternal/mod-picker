@@ -1,4 +1,4 @@
-<table border="1" class="listing-table" ng-if="modlists.length">
+<table border="1" class="listing-table" ng-if="modLists.length">
     <thead>
         <tr>
             <th class="name-column">Name</th>
@@ -10,25 +10,21 @@
         </tr>
     </thead>
     <tbody>
-        <tr ng-repeat="modlist in modlists" ng-class-odd="'odd-row'" ng-class-even="'even-row'">
+        <tr ng-repeat="modList in modLists" ng-class-odd="'odd-row'" ng-class-even="'even-row'">
             <td class="name-column">
-                <a ui-sref="base.mod-list({modListId: modlist.id})">{{modlist.name}}</a>
+                <a ui-sref="base.mod-list({modListId: modList.id})">{{modList.name}}</a>
             </td>
-            <td>{{modlist.mods_count}}</td>
-            <td>{{modlist.status}}</td>
-            <td>{{modlist.stars_count}}</td>
-            <td>{{modlist.comments_count}}</td>
+            <td>{{modList.mods_count}}</td>
+            <td class="capitalize nowrap">{{modList.status.replace('_', ' ')}}</td>
+            <td>{{modList.stars_count}}</td>
+            <td>{{modList.comments_count}}</td>
             <td>
                 <div class="table-buttons">
-                    <input class="action-box" type="button" ng-click="clone(modlist)" value="Clone" />
-                    <!-- TODO: verify that this link is correct once the edit modlist state is set up -->
-                    <a ui-sref="base.edit-modlist({modlistId: modlist.id})">
-                        <input type="button" class="action-box" value="Edit" />
-                    </a>
-                    <input class="action-box" type="button" ng-click="delete(modlist)" value="Delete" />
+                    <input class="action-box" type="button" ng-click="clone(modList)" value="Clone" />
+                    <input class="action-box red-box" type="button" ng-click="delete(modList)" value="Delete" />
                 </div>
             </td>
         </tr>
     </tbody>
 </table>
-<span class="explanation" ng-if="!modlists.length">There's nothing here</span>
+<span class="explanation" ng-if="!modLists.length">There's nothing here</span>
