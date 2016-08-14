@@ -1,20 +1,20 @@
-app.directive('modlistTable', function() {
+app.directive('modListTable', function() {
     return {
         restrict: 'E',
-        templateUrl: '/resources/directives/modlistTable.html',
-        controller: 'modlistTableController',
+        templateUrl: '/resources/directives/modListTable.html',
+        controller: 'modListTableController',
         scope: {
-            modlists: '=',
+            modLists: '=',
             title: '@'
         }
     };
 });
 
-app.controller('modlistTableController', function($scope, $state, modListService) {
-    $scope.clone = function(modlist) {
-        console.log('Clone Mod list: "' + modlist.name + '"');
+app.controller('modListTableController', function($scope, $state, modListService) {
+    $scope.clone = function(modList) {
+        console.log('Clone Mod list: "' + modList.name + '"');
         $scope.errors = [];
-        modListService.cloneModlist(modlist).then(function(data) {
+        modListService.cloneModlist(modList).then(function(data) {
             // TODO: verify that this parameter is correct
             $state.go('base.mod-list', {modListId: data.id});
         }, function(response) {
@@ -23,19 +23,19 @@ app.controller('modlistTableController', function($scope, $state, modListService
         });
     };
 
-    $scope.delete = function(modlist) {
-        console.log('Delete Mod modlist: "' + modlist.name + '"');
+    $scope.delete = function(modList) {
+        console.log('Delete Mod modList: "' + modList.name + '"');
         $scope.errors = [];
-        modListService.deleteModlist(modlist).then(function(data) {
-            var modlists = $scope.user.mod_lists;
-            var index = modlists.indexOf(modlist);
-            modlists.splice(index, 1);
-            if (modlist.is_collection) {
-                index = $scope.collections.indexOf(modlist);
+        modListService.deleteModlist(modList).then(function(data) {
+            var modLists = $scope.user.mod_lists;
+            var index = modLists.indexOf(modList);
+            modLists.splice(index, 1);
+            if (modList.is_collection) {
+                index = $scope.collections.indexOf(modList);
                 $scope.collections.splice(index, 1);
             } else {
-                index = $scope.modlists.indexOf(modlist);
-                $scope.modlists.splice(index, 1);
+                index = $scope.modLists.indexOf(modList);
+                $scope.modLists.splice(index, 1);
             }
             $scope.$apply();
         }, function(response) {
