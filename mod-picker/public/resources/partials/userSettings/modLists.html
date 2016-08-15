@@ -1,3 +1,14 @@
+<h3 class="section-title">Active Mod List</h3>
+<section>
+    <select ng-model="user.active_mod_list_id">
+        <option value="">None</option>
+        <option ng-repeat="mod_list in all_mod_lists" value="mod_list.id">
+            {{mod_list.name}}
+        </option>
+    </select>
+    <input type="button" class="btn" value="Save" ng-click="submit()"/>
+</section>
+
 <div class="content-block">
     <div class="content-title">
         Mod Lists
