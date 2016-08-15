@@ -54,6 +54,35 @@ app.service('actionsFactory', function() {
         }]
     };
 
+    this.userModActions = function() {
+        return [{
+            caption: "Edit",
+            title: "Edit this mod.",
+            hidden: function($scope, item) {
+                var isAuthor = item.mod_authors.find(function(author) {
+                    return author.id == $scope.currentUser.id;
+                });
+                return !$scope.permissions.canModerate && !isAuthor;
+            },
+            execute: function($scope, item) {
+                $scope.$emit('editMod', item);
+            }
+        }, {
+            caption: "Hide",
+            title: "Hide this mod from public viewing.",
+            class: 'red-box',
+            hidden: function($scope, item) {
+                var isAuthor = item.mod_authors.find(function(author) {
+                    return author.id == $scope.currentUser.id;
+                });
+                return !$scope.permissions.canModerate && !isAuthor;
+            },
+            execute: function($scope, item) {
+                $scope.$emit('hideMod', item);
+            }
+        }];
+    };
+
     /* mod list actions */
     this.modListIndexActions = function() {
         return [{
