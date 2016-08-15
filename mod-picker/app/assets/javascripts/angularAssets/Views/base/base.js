@@ -8,6 +8,9 @@ app.config(['$stateProvider', function($stateProvider) {
             currentUser: function(userService) {
                 return userService.retrieveCurrentUser();
             },
+            activeModList: function(modListService) {
+                return modListService.retrieveActiveModList();
+            },
             currentGame: function(gameService) {
                 return gameService.getGameById(window._current_game_id);
             },
@@ -27,10 +30,10 @@ app.config(['$stateProvider', function($stateProvider) {
     })
 }]);
 
-app.controller('baseController', function($scope, $state, $location, currentUser, games, currentGame, userService, modListService) {
+app.controller('baseController', function($scope, $state, $location, currentUser, activeModList, games, currentGame, userService, modListService) {
     $scope.currentUser = currentUser;
     $scope.permissions = currentUser.permissions;
-    $scope.activeModList = currentUser.active_mod_list;
+    $scope.activeModList = activeModList;
     $scope.currentGame = currentGame;
     $scope.games = games;
 

@@ -5,12 +5,12 @@ app.run(function($futureState, indexFactory, filtersFactory) {
     $futureState.futureState(state);
 });
 
-app.controller('modsController', function($scope, $q, $stateParams, $state, currentUser, currentGame, categories, modService, modListService, sliderFactory, columnsFactory, filtersFactory, actionsFactory, indexService, indexFactory) {
+app.controller('modsController', function($scope, $q, $stateParams, $state, currentUser, activeModList, currentGame, categories, modService, modListService, sliderFactory, columnsFactory, filtersFactory, actionsFactory, indexService, indexFactory) {
     // get parent variables
     $scope.currentUser = currentUser;
     $scope.currentGame = currentGame;
     $scope.categories = categories;
-    $scope.activeModList = currentUser.active_mod_list;
+    $scope.activeModList = activeModList;
     $scope.permissions = angular.copy(currentUser.permissions);
 
     // columns for view
@@ -35,9 +35,8 @@ app.controller('modsController', function($scope, $q, $stateParams, $state, curr
             delete $scope.filters.exclude;
         } else {
             // it's being enabled
-            var activeModList = $scope.currentUser.active_mod_list;
-            if (activeModList) {
-                $scope.filters.exclude = activeModList.incompatible_mods;
+            if ($scope.activeModList) {
+                $scope.filters.exclude = $scope.activeModList.incompatible_mods;
             }
         }
     };
