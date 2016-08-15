@@ -73,8 +73,9 @@ app.service('tableUtils', function (objectUtils) {
         var data = column.data;
         var dataType = typeof data;
         // if the data property of the column is a string or a function the
-        // column should always be present
-        if (dataType === 'string' || dataType === 'function' || data instanceof String) {
+        // column should always be present.  also, if availableColumnData is
+        // undefined assume all columns are available
+        if (dataType === 'string' || dataType === 'function' || !availableColumnData) {
             return true;
         }
         // else we need to check if one of the data property keys is contained
