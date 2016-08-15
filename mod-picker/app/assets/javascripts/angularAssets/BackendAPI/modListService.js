@@ -17,6 +17,10 @@ app.service('modListService', function (backend, $q, userTitleService, contribut
         return backend.retrieve('/mod_lists/' + modListId);
     };
 
+    this.setActiveModList = function(modListId) {
+        return backend.post('/mod_lists/active', {id: modListId});
+    };
+
     this.starModList = function(modListId, starred) {
         if (starred) {
             return backend.delete('/mod_lists/' + modListId + '/star');
