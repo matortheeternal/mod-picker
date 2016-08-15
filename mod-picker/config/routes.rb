@@ -5,10 +5,10 @@ Rails.application.routes.draw do
   # require authentication before allowing user to access any resources
   authenticate :user do
     # users
-    resources :users, only: [:show, :update, :destroy]
     match '/users/index', to: 'users#index', via: [:get, :post]
     match '/users/search', to: 'users#search', via: [:post]
     match '/current_user', to: 'users#current', via: [:get]
+    resources :users, only: [:show, :update, :destroy]
 
     # user associations
     match '/users/:id/comments', to: 'users#comments', via: [:get, :post]
@@ -33,14 +33,14 @@ Rails.application.routes.draw do
     match '/mod_lists/:id/tags', to: 'mod_lists#update_tags', via: [:patch, :put]
 
     # mods
-    resources :mods, only: [:show, :edit, :create, :update, :destroy]
     match '/mods/index', to: 'mods#index', via: [:get, :post]
     match '/mods/search', to: 'mods#search', via: [:post]
+    resources :mods, only: [:show, :edit, :create, :update, :destroy]
 
     # plugins
-    resources :plugins, only: [:show, :destroy]
     match '/plugins', to: 'plugins#index', via: [:get, :post]
     match '/plugins/search', to: 'plugins#search', via: [:post]
+    resources :plugins, only: [:show, :destroy]
 
     # content associated with mods
     match '/mods/:id/corrections', to: 'mods#corrections', via: [:get, :post]
@@ -52,46 +52,46 @@ Rails.application.routes.draw do
     match '/mods/:id/image', to: 'mods#image', via: [:post]
 
     # reviews
-    resources :reviews, only: [:show, :create, :update, :destroy]
     match '/reviews/index', to: 'reviews#index', via: [:get, :post]
     match '/reviews/:id/approve', to: 'reviews#approve', via: [:post]
     match '/reviews/:id/hide', to: 'reviews#hide', via: [:post]
+    resources :reviews, only: [:show, :create, :update, :destroy]
 
     # compatibility notes
-    resources :compatibility_notes, only: [:show, :create, :update, :destroy]
     match '/compatibility_notes/index', to: 'compatibility_notes#index', via: [:get, :post]
     match '/compatibility_notes/:id/approve', to: 'compatibility_notes#approve', via: [:post]
     match '/compatibility_notes/:id/hide', to: 'compatibility_notes#hide', via: [:post]
     match '/compatibility_notes/:id/corrections', to: 'compatibility_notes#corrections', via: [:get]
     match '/compatibility_notes/:id/history', to: 'compatibility_notes#history', via: [:get]
+    resources :compatibility_notes, only: [:show, :create, :update, :destroy]
 
     # install order notes
-    resources :install_order_notes, only: [:show, :create, :update, :destroy]
     match '/install_order_notes/index', to: 'install_order_notes#index', via: [:get, :post]
     match '/install_order_notes/:id/hide', to: 'install_order_notes#hide', via: [:post]
     match '/install_order_notes/:id/corrections', to: 'install_order_notes#corrections', via: [:get]
     match '/install_order_notes/:id/history', to: 'install_order_notes#history', via: [:get]
+    resources :install_order_notes, only: [:show, :create, :update, :destroy]
 
     # load order notes
-    resources :load_order_notes, only: [:show, :create, :update, :destroy]
     match '/load_order_notes/index', to: 'load_order_notes#index', via: [:get, :post]
     match '/load_order_notes/:id/hide', to: 'load_order_notes#hide', via: [:post]
     match '/install_order_notes/:id/approve', to: 'install_order_notes#approve', via: [:post]
     match '/load_order_notes/:id/corrections', to: 'load_order_notes#corrections', via: [:get]
     match '/load_order_notes/:id/history', to: 'load_order_notes#history', via: [:get]
+    resources :load_order_notes, only: [:show, :create, :update, :destroy]
 
     # corrections
-    resources :corrections, only: [:show, :create, :update, :destroy]
     match '/corrections/index', to: 'corrections#index', via: [:get, :post]
     match '/corrections/:id/hide', to: 'corrections#hide', via: [:post]
     match '/load_order_notes/:id/approve', to: 'load_order_notes#approve', via: [:post]
     match '/corrections/:id/agreement', to: 'corrections#agreement', via: [:post]
     match '/corrections/:id/comments', to: 'corrections#comments', via: [:get, :post]
+    resources :corrections, only: [:show, :create, :update, :destroy]
 
     # comments
-    resources :comments, only: [:show, :create, :update, :destroy]
     match '/comments/index', to: 'comments#index', via: [:get, :post]
     match '/comments/:id/hide', to: 'comments#hide', via: [:post]
+    resources :comments, only: [:show, :create, :update, :destroy]
 
     # helpful marks
     match '/reviews/:id/helpful', to: 'reviews#helpful', via: [:post]
@@ -100,7 +100,6 @@ Rails.application.routes.draw do
     match '/load_order_notes/:id/helpful', to: 'load_order_notes#helpful', via: [:post]
 
     # mod lists
-    resources :mod_lists, only: [:show, :create, :update]
     match '/mod_lists/index', to: 'mod_lists#index', via: [:get, :post]
     match '/active_mod_list', to: 'mod_lists#active', via: [:get]
     match '/mod_lists/active', to: 'mod_lists#set_active', via: [:post]
@@ -118,6 +117,7 @@ Rails.application.routes.draw do
     match '/mod_list_custom_mods', to: 'mod_list_custom_mods#create', via: [:post]
     match '/mod_list_custom_plugins', to: 'mod_list_custom_plugins#create', via: [:post]
     match '/mod_list_custom_config_files', to: 'mod_list_custom_config_files#create', via: [:post]
+    resources :mod_lists, only: [:show, :create, :update]
 
     # mod and mod list stars
     match '/mod_lists/:id/star', to: 'mod_lists#create_star', via: [:post]
@@ -129,11 +129,11 @@ Rails.application.routes.draw do
     match '/avatar', to: 'avatars#create', via: [:post]
 
     # help pages
-    resources :help_pages, path: 'help', except: [:destroy]
     match '/help/category/:category', to: 'help_pages#category', via: [:get]
     match '/help/game/:game', to: 'help_pages#game', via: [:get]
     match '/help/:id/comments', to: 'help_pages#comments', via: [:get, :post]
     match '/help/:id/destroy', to: 'help_pages#destroy', via: [:get]
+    resources :help_pages, path: 'help', except: [:destroy]
 
 
     # static data
@@ -157,10 +157,10 @@ Rails.application.routes.draw do
     match '/home', to: 'home#index', via: [:get]
 
     #articles
-    resources :articles, only: [:show, :create, :update, :destroy]
     match '/articles/:id/comments', to: 'articles#comments', via: [:get, :post]
     match '/articles/:id/image', to: 'articles#image', via: [:post]
     match '/articles/index', to: 'articles#index', via: [:get, :post]
+    resources :articles, only: [:show, :create, :update, :destroy]
   end
 
   # welcome page
