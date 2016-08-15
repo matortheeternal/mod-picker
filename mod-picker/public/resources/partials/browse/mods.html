@@ -115,8 +115,8 @@
 
             <div class="right-column right-browse-column">
                 <h2>Mods</h2>
-                <loader data="mods" content-class="table-results" spinner-class="big-spinner" ng-if="!error">
-                    <table-results label="mods" data="mods" columns="columns" actions="actions" column-groups="columnGroups" available-column-data="availableColumnData" sort="sort"></table-results>
+                <loader data="mods" content-class="table-container" spinner-class="big-spinner" ng-if="!error">
+                    <table-results label="mods" data="mods"></table-results>
                     <page-results pages="pages" data="mods" callback="getMods"></page-results>
                 </loader>
 
