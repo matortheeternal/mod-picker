@@ -190,6 +190,23 @@ class ModListsController < ApplicationController
     end
   end
 
+  # POST /mod_lists/active
+  def set_active
+    @mod_list = nil
+    if params.has_key?(:id) && params[:id]
+      @mod_list = ModList.find(params[:id])
+      authorize! :read, @mod_list
+    end
+
+    if current_user.update(active_mod_list_id: params[:id])
+      render json: {
+          mod_list: @mod_list && @mod_list.tracking_json
+      }
+    else
+      render json: current_user.errors, status: :unproccessable_entity
+    end
+  end
+
   # PATCH/PUT /mod_lists/1
   def update
     authorize! :update, @mod_list
