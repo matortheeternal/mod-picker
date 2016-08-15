@@ -167,17 +167,13 @@ class User < ActiveRecord::Base
 
   def current_json
     self.as_json({
-        :only => [:id, :username, :role, :title, :active_mod_list_id],
+        :only => [:id, :username, :role, :title],
         :include => {
             :reputation => {
                 :only => [:overall, :rep_to_count]
             },
             :settings => {
-                :except => [:user_id]
-            },
-            :active_mod_list => {
-                :only => [:id, :name, :mods_count, :plugins_count, :active_plugins_count, :custom_plugins_count],
-                :methods => [:incompatible_mods, :mod_list_mod_ids]
+                :only => [:theme, :show_notifications, :allow_adult_content]
             }
         },
         :methods => :avatar
