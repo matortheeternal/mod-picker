@@ -82,6 +82,10 @@ app.controller('baseController', function($scope, $state, $location, currentUser
         $scope.retrieveCurrentUser();
     });
 
+    $scope.$on('setActiveModList', function(event, mod_list) {
+        $scope.activeModList = mod_list;
+    });
+
     $scope.$on('updateRepPermissions', function(event, endorsed) {
         //if the user was just endorsed
         if (endorsed) {
