@@ -5,6 +5,7 @@ app.directive('tableResults', function () {
         controller: 'tableResultsController',
         scope: {
             label: '@',
+            message: '@',
             data: '=',
             columns: '=?',
             columnGroups: '=?',
@@ -22,9 +23,14 @@ app.controller('tableResultsController', function($scope, tableUtils) {
     angular.inherit($scope, 'availableColumnData');
     angular.inherit($scope, 'sort');
     angular.inherit($scope, 'actions');
+    angular.inherit($scope, 'permissions');
+
+    // default attribute values
+    if (angular.isUndefined($scope.message)) {
+        $scope.message = 'No ' + label + ' were found matching your search criteria.';
+    }
 
     // initialize variables
-    $scope.permissions = $scope.$parent.permissions;
     var sortedColumn;
 
     // inherited functions
