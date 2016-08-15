@@ -144,8 +144,8 @@ app.service('modListService', function (backend, $q, userTitleService, contribut
         return backend.update('/mod_lists/' + modList.id, modListData);
     };
 
-    this.newModList = function(mod_list) {
-        return backend.post('/mod_lists', {mod_list: mod_list})
+    this.newModList = function(mod_list, active) {
+        return backend.post('/mod_lists', {mod_list: mod_list, active: active})
     };
 
     this.newModListMod = function(mod_list_mod) {
