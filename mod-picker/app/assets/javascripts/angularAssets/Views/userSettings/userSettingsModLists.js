@@ -1,4 +1,4 @@
-app.controller('userSettingsModListsController', function($scope, currentUser, columnsFactory, actionsFactory, modListService) {
+app.controller('userSettingsModListsController', function($scope, columnsFactory, actionsFactory, modListService) {
     // initialize variables
     $scope.actions = actionsFactory.userModListActions();
     $scope.columns = columnsFactory.modListColumns();
