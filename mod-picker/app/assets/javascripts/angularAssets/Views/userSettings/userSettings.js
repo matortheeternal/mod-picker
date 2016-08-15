@@ -78,7 +78,7 @@ app.controller('userSettingsController', function($scope, $q, userObject, curren
         { name: 'Mod Lists' },
         { name: 'Authored Mods' }
     ];
-    
+
     // display error messages
     $scope.$on('errorMessage', function(event, params) {
         var errors = errorService.errorMessages(params.label, params.response, $scope.mod.id);
