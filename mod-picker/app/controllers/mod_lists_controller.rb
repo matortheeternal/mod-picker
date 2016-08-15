@@ -175,7 +175,16 @@ class ModListsController < ApplicationController
 
     if @mod_list.save
       @mod_list.add_official_content
-      render json: {id: @mod_list.id, status: :ok}
+      if params.has_key?(:active) && params[:active]
+        @mod_list.set_active
+        render json: {
+            mod_list: @mod_list.tracking_json
+        }
+      else
+        render json: {
+            mod_list: @mod_list
+        }
+      end
     else
       render json: @mod_list.errors, status: :unprocessable_entity
     end
