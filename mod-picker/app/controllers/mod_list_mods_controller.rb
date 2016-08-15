@@ -4,7 +4,7 @@ class ModListModsController < ApplicationController
     @mod_list_mod = ModListMod.new(mod_list_mod_params)
     @mod_list_mod.index = @mod_list_mod.mod_list.mods_count + 1
     authorize! :read, @mod_list_mod.mod
-    authorize! :create, @mod_list_mod
+    authorize! :update, @mod_list_mod.mod_list
 
     if @mod_list_mod.save
       if params[:no_response]
@@ -43,7 +43,7 @@ class ModListModsController < ApplicationController
   # DELETE /mod_list_mods
   def destroy
     @mod_list_mod = ModListMod.find_by(mod_list_id: params[:mod_list_id], mod_id: params[:mod_id])
-    authorize! :destroy, @mod_list_mod
+    authorize! :update, @mod_list_mod.mod_list
 
     if @mod_list_mod.destroy
       render json: {status: :ok}

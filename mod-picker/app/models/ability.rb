@@ -115,12 +115,6 @@ class Ability
       # can create and update their mod lists
       can :create, ModList
       can :update, ModList, :submitted_by => user.id
-      can [:create, :destroy], ModListMod, :mod_list => { :submitted_by => user.id }
-      can :create, ModListPlugin, :mod_list => { :submitted_by => user.id }
-      can :create, ModListConfigFile, :mod_list => { :submitted_by => user.id }
-      can :create, ModListCustomMod, :mod_list => { :submitted_by => user.id }
-      can :create, ModListCustomPlugin, :mod_list => { :submitted_by => user.id }
-      can :create, ModListCustomConfigFile, :mod_list => { :submitted_by => user.id }
 
       # can update their settings or their account
       can :update, User, { :id => user.id }
