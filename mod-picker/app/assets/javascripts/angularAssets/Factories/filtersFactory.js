@@ -884,8 +884,8 @@ app.factory("filtersFactory", function() {
     this.modListDateFilters = function() {
         return [
             {
-                label: "Date Created",
-                data: "created",
+                label: "Date Started",
+                data: "submitted",
                 type: "Range",
                 subtype: "Date",
                 param: "dc"

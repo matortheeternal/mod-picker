@@ -40,7 +40,7 @@ class ModList < ActiveRecord::Base
     where(is_collection: is_collection) if is_collection.length == 1
   }
   # DATE SCOPES
-  scope :created, -> (range) { where(created: parseDate(range[:min])..parseDate(range[:max])) }
+  scope :submitted, -> (range) { where(submitted: parseDate(range[:min])..parseDate(range[:max])) }
   scope :updated, -> (range) { where(updated: parseDate(range[:min])..parseDate(range[:max])) }
   scope :completed, -> (range) { where(completed: parseDate(range[:min])..parseDate(range[:max])) }
   # STATISTIC SCOPES
