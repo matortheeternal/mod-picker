@@ -31,12 +31,19 @@ app.controller('tableResultsController', function($scope, tableUtils) {
     }
 
     // initialize variables
+    $scope.showModal = false;
     var sortedColumn;
 
     // inherited functions
     $scope.columnValue = tableUtils.columnValue;
     $scope.groupColumns = tableUtils.groupColumns;
     $scope.filterClass = tableUtils.filterClass;
+
+    // toggles the visibility of the edit columns modal
+    $scope.toggleModal = function(visible) {
+        $scope.$emit('toggleModal', visible);
+        $scope.showModal = visible;
+    };
 
     // this function resolves a variable as a function if it is one,
     // else returns its value
