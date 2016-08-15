@@ -27,7 +27,7 @@ app.controller('tableResultsController', function($scope, tableUtils) {
 
     // default attribute values
     if (angular.isUndefined($scope.message)) {
-        $scope.message = 'No ' + label + ' were found matching your search criteria.';
+        $scope.message = 'No ' + $scope.label + ' were found matching your search criteria.';
     }
 
     // initialize variables
