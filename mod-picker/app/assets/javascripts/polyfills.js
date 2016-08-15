@@ -63,3 +63,10 @@ Array.prototype.unite = function(array1, array2) {
 Array.prototype.random = function () {
     return this[Math.floor((Math.random() * this.length))];
 };
+
+// angular polyfills
+angular.inherit = function(scope, attribute) {
+    if (angular.isUndefined(scope[attribute])) {
+        scope[attribute] = scope.$parent[attribute];
+    }
+};
