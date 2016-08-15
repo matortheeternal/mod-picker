@@ -75,6 +75,7 @@ class Mod < ActiveRecord::Base
     results = results.where("mods.authors like ?", author) if sources[:other]
     results
   }
+  scope :mp_author, -> (username) { joins(:author_users).where(:users => {username: username}) }
   scope :views, -> (range) {
     sources = range[:sources]
 
