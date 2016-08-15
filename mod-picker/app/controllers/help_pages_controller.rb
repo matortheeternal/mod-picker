@@ -33,7 +33,8 @@ class HelpPagesController < ApplicationController
 
   # POST /help/new
   def create
-    @help_page = current_user.help_pages.build(help_page_params)
+    @help_page = HelpPage.new(help_page_params)
+    @help_page.submitted_by = current_user.id
     authorize! :create, @help_page
 
     if @help_page.save
