@@ -27,7 +27,7 @@ class ModListsController < ApplicationController
   def active
     @mod_list = current_user.present? && current_user.active_mod_list
     if @mod_list
-      render :json => @mod_list
+      render :json => @mod_list.tracking_json
     else
       render status: 404
     end
