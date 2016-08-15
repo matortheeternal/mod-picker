@@ -65,13 +65,18 @@ app.config(['$stateProvider', function($stateProvider) {
 }]);
 
 app.controller('userSettingsController', function($scope, $q, userObject, currentUser, userSettingsService, fileUtils, themesService) {
+    // inherited variables
+    $scope.currentUser = currentUser;
     $scope.userSettings = currentUser.settings;
+    $scope.activeModList = currentUser.active_mod_list;
+    $scope.permissions = angular.copy(currentUser.permissions);
+
+    // initialize variables
     $scope.user = userObject.user;
     $scope.avatar = {
         src: $scope.user.avatar
     };
-    $scope.permissions = angular.copy(currentUser.permissions);
-
+    $scope.errors = {};
     $scope.tabs = [
         { name: 'Profile' },
         { name: 'Account' },
