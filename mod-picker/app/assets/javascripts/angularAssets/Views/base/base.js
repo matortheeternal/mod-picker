@@ -30,6 +30,7 @@ app.config(['$stateProvider', function($stateProvider) {
 app.controller('baseController', function($scope, $state, $location, currentUser, games, currentGame, userService, modListService) {
     $scope.currentUser = currentUser;
     $scope.permissions = currentUser.permissions;
+    $scope.activeModList = currentUser.active_mod_list;
     $scope.currentGame = currentGame;
     $scope.games = games;
 
@@ -47,10 +48,9 @@ app.controller('baseController', function($scope, $state, $location, currentUser
             description: "A brand new mod list!"
         };
 
-        modListService.newModList(mod_list).then(function(data) {
-            $scope.retrieveCurrentUser(function() {
-                $state.go('base.mod-list', {modListId: data.id});
-            })
+        modListService.newModList(mod_list, true).then(function(data) {
+            $scope.activeModList = data.mod_list;
+            $state.go('base.mod-list', {modListId: data.mod_list.id});
         }, function(response) {
             $state.get('base.error').error = {
                 text: 'Error creating new mod list.',
