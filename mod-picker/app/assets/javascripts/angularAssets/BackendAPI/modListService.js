@@ -20,14 +20,12 @@ app.service('modListService', function (backend, $q, userTitleService, contribut
     this.retrieveActiveModList = function() {
         var action = $q.defer();
         backend.retrieve('/mod_lists/active').then(function(data) {
+            if (data.error) {
+                action.resolve(null);
+            }
             action.resolve(data);
         }, function(response) {
-            if (response.status == 404) {
-                // 404 means user has no active mod list, so resolve null
-                action.resolve(null);
-            } else {
-                action.reject(response);
-            }
+            action.reject(response);
         });
         return action.promise;
     };
