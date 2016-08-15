@@ -324,6 +324,13 @@ class ModList < ActiveRecord::Base
     })
   end
 
+  def tracking_json
+    self.as_json({
+        :only => [:id, :name, :mods_count, :plugins_count, :active_plugins_count, :custom_plugins_count],
+        :methods => [:incompatible_mods, :mod_list_mod_ids]
+    })
+  end
+
   def self.home_json(collection)
     # TODO: Revise this as needed
     collection.as_json({
