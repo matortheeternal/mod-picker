@@ -98,6 +98,14 @@ class Ability
       can :update, InstallOrderNote, :submitted_by => user.id
       can :update, Review, :submitted_by => user.id
 
+      # cannot update hidden contributions
+      cannot :update, Comment, :hidden => true
+      cannot :update, CompatibilityNote, :hidden => true
+      cannot :update, Correction, :hidden => true
+      cannot :update, LoadOrderNote, :hidden => true
+      cannot :update, InstallOrderNote, :hidden => true
+      cannot :update, Review, :hidden => true
+
       # can update or remove their helpful/agreement marks
       can [:update, :destroy], AgreementMark, :submitted_by => user.id
       can [:update, :destroy], HelpfulMark, :submitted_by => user.id
@@ -115,6 +123,7 @@ class Ability
       # can create and update their mod lists
       can :create, ModList
       can :update, ModList, :submitted_by => user.id
+      cannot :update, ModList, :hidden => true
 
       # can update their settings or their account
       can :update, User, { :id => user.id }
