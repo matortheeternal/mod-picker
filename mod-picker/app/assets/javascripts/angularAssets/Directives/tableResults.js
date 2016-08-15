@@ -6,8 +6,8 @@ app.directive('tableResults', function () {
         scope: {
             label: '@',
             data: '=',
-            columns: '=',
-            columnGroups: '=',
+            columns: '=?',
+            columnGroups: '=?',
             availableColumnData: '=?',
             sort: '=?',
             actions: '=?'
@@ -16,6 +16,13 @@ app.directive('tableResults', function () {
 });
 
 app.controller('tableResultsController', function($scope, tableUtils) {
+    // inherit scope attributes
+    angular.inherit($scope, 'columns');
+    angular.inherit($scope, 'columnGroups');
+    angular.inherit($scope, 'availableColumnData');
+    angular.inherit($scope, 'sort');
+    angular.inherit($scope, 'actions');
+
     // initialize variables
     $scope.permissions = $scope.$parent.permissions;
     var sortedColumn;
