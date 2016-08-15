@@ -129,7 +129,7 @@ class ModList < ActiveRecord::Base
   validates :name, length: { maximum: 255 }
 
   # Callbacks
-  after_create :increment_counters, :set_active
+  after_create :increment_counters
   before_update :hide_comments
   before_save :set_dates
   before_destroy :decrement_counters, :unset_active
@@ -196,6 +196,11 @@ class ModList < ActiveRecord::Base
           index: index
       })
     end
+  end
+
+  def set_active
+    self.submitter.active_mod_list_id = self.id
+    self.submitter.save
   end
 
   def mod_list_plugin_ids
@@ -369,11 +374,6 @@ class ModList < ActiveRecord::Base
 
     def decrement_counters
       self.submitter.update_counter(:mod_lists_count, -1)
-    end
-
-    def set_active
-      self.submitter.active_mod_list_id = self.id
-      self.submitter.save
     end
 
     def unset_active
