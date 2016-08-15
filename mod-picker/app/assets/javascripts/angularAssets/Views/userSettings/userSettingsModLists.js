@@ -1,9 +1,14 @@
-app.controller('userSettingsModListsController', function($scope, columnsFactory, actionsFactory, modListService) {
+app.controller('userSettingsModListsController', function($scope, $timeout, columnsFactory, actionsFactory, modListService) {
     // initialize variables
     $scope.actions = actionsFactory.userModListActions();
     $scope.columns = columnsFactory.modListColumns();
     $scope.columnGroups = columnsFactory.modListColumnGroups();
-    $scope.activeModListId = $scope.activeModList && $scope.activeModList.id.toString();
+    $scope.model = {
+        activeModListId: $scope.activeModList && $scope.activeModList.id.toString()
+    };
+    $scope.activeModListChange = function(newValue) {
+        $scope.activeModListId = newValue;
+    };
 
     // BASE RETRIEVAL LOGIC
     $scope.retrieveModLists = function() {
@@ -54,7 +59,7 @@ app.controller('userSettingsModListsController', function($scope, columnsFactory
 
     // SAVE ACTIVE MOD LIST
     $scope.saveActiveModList = function() {
-        var modListId = parseInt($scope.activeModListId);
+        var modListId = $scope.model.activeModListId ? parseInt($scope.model.activeModListId) : null;
         modListService.setActiveModList(modListId).then(function(data) {
             $scope.$emit('setActiveModList', data.mod_list);
             $scope.$emit('successMessage', 'Set active mod list successfully.');

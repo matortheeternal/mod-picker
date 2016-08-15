@@ -1,7 +1,7 @@
 <loader data="all_mod_lists" spinner-class="big-spinner" ng-if="!errors.mod_lists">
     <h3 class="section-title">Active Mod List</h3>
     <section>
-        <select ng-model="activeModListId">
+        <select ng-model="model.activeModListId">
             <option value="">None</option>
             <option ng-repeat="modList in all_mod_lists" value="{{modList.id}}">
                 {{modList.name}}

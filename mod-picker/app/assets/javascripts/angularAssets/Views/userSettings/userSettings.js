@@ -65,11 +65,11 @@ app.config(['$stateProvider', function($stateProvider) {
     });
 }]);
 
-app.controller('userSettingsController', function($scope, $q, userObject, currentUser, userSettingsService, fileUtils, themesService) {
+app.controller('userSettingsController', function($scope, $q, userObject, currentUser, activeModList, userSettingsService, fileUtils, themesService) {
     // inherited variables
     $scope.currentUser = currentUser;
     $scope.userSettings = currentUser.settings;
-    $scope.activeModList = currentUser.active_mod_list;
+    $scope.activeModList = activeModList;
     $scope.permissions = angular.copy(currentUser.permissions);
 
     // initialize variables
