@@ -1,6 +1,5 @@
 class ModListsController < ApplicationController
-  before_action :set_mod_list, only: [:show, :update, :update_tags, :destroy, :tools, :plugins, :config_files, :analysis, :comments]
-  before_action :set_active_mod_list, only: [:active, :mods]
+  before_action :set_mod_list, only: [:show, :update, :update_tags, :destroy, :tools, :mods, :plugins, :config_files, :analysis, :comments]
 
   # GET /mod_lists
   def index
@@ -26,6 +25,7 @@ class ModListsController < ApplicationController
 
   # GET /mod_lists/active
   def active
+    @mod_list = current_user.present? && current_user.active_mod_list
     if @mod_list
       render :json => @mod_list
     else
@@ -294,21 +294,6 @@ class ModListsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_mod_list
       @mod_list = ModList.find(params[:id])
-    end
-
-    def set_active_mod_list
-      # TODO: handle user not logged in
-      if current_user
-        if current_user.active_mod_list_id
-          @mod_list = current_user.active_mod_list
-        else
-          @mod_list = current_user.mod_lists.create(
-              submitted_by: current_user.id,
-              game_id: params[:game_id] || Game.first.id,
-              name: current_user.username + "'s Mod List'"
-          )
-        end
-      end
     end
 
     def filtering_params
