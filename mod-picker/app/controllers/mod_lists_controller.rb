@@ -30,7 +30,7 @@ class ModListsController < ApplicationController
     if @mod_list
       render :json => @mod_list.tracking_json
     else
-      render :json => { error: "No active mod list found." }, status: 204
+      render :json => { error: "No active mod list found." }
     end
   end
 
