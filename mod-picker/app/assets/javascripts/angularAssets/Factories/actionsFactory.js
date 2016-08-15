@@ -39,6 +39,7 @@ app.service('actionsFactory', function() {
         }, {
             caption: "Remove",
             title: "Remove this mod from your mod list",
+            class: 'red-box',
             hidden: function($scope, item) {
                 var activeModList = $scope.$parent.activeModList;
                 if (!activeModList) return true;
@@ -80,6 +81,7 @@ app.service('actionsFactory', function() {
         }, {
             caption: "Delete",
             title: "Delete this mod list",
+            class: 'red-box',
             hidden: function($scope, item) {
                 return !$scope.permissions.canModerate && $scope.currentUser.id != item.submitter.id;
             },
