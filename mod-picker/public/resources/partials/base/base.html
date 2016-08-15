@@ -60,7 +60,7 @@
     <div class="page-container">
         <div class="nav-wrapper clearfix">
             <div class="primary-nav">
-                <a class="nav-modlist" ng-if="currentUser.active_mod_list" ng-href="#/mod-list/{{currentUser.active_mod_list_id}}">
+                <a class="nav-modlist" ng-if="activeModList" ng-href="#/mod-list/{{activeModList.id}}">
                     <span class="nav-icon">
                         <i class="fa fa-pencil-square-o"></i>
                     </span>
@@ -69,7 +69,7 @@
                         Mod List
                     </span>
                 </a>
-                <a class="nav-modlist" ng-if="!currentUser.active_mod_list" ng-click="newModList()">
+                <a class="nav-modlist" ng-if="!activeModList" ng-click="newModList()">
                     <span class="nav-icon">
                         <i class="fa fa-pencil-square-o"></i>
                     </span>
