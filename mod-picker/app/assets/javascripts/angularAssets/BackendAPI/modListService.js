@@ -22,7 +22,7 @@ app.service('modListService', function (backend, $q, userTitleService, contribut
         backend.retrieve('/mod_lists/active').then(function(data) {
             action.resolve(data);
         }, function(response) {
-            if (response.statusCode == 404) {
+            if (response.status == 404) {
                 // 404 means user has no active mod list, so resolve null
                 action.resolve(null);
             } else {
