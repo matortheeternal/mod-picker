@@ -1,20 +1,27 @@
 <div class="content-block">
-    <div class="content-title">Mod Lists</div>
-    <div class="content-container">
-        <table-results label="mod lists" data="user.mod_lists" columns="columns" actions="actions" column-groups="columnGroups" available-column-data="availableColumnData" sort="sort"></table-results>
+    <div class="content-title">
+        Mod Lists
+        <span class="right-item">
+            <span class="action-box green-box" ng-click="newModList(false)">
+                <i class="fa fa-plus"></i> New Mod List
+            </span>
+        </span>
+    </div>
+    <div class="content-container table-container">
+        <table-results label="mod lists" data="mod_lists"></table-results>
     </div>
 </div>
 
-<div class="list-table-container">
-    <div class="content-block">
-        <div class="content-title">Mod Lists</div>
-        <mod-list-table mod-lists="user.mod_lists" title="Mod Lists"></mod-list-table>
+<div class="content-block">
+    <div class="content-title">
+        Mod Collections
+        <span class="right-item">
+            <span class="action-box green-box" ng-click="newModList(true)">
+                <i class="fa fa-plus"></i> New Mod Collection
+            </span>
+        </span>
     </div>
-</div>
-
-<div class="list-table-container">
-    <div class="content-block">
-        <div class="content-title">Collections</div>
-        <mod-list-table modlists="user.collections" title="Collections"></mod-list-table>
+    <div class="content-container table-container">
+        <table-results label="mod collections" data="collections"></table-results>
     </div>
 </div>
