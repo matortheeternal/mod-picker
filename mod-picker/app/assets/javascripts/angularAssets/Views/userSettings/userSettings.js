@@ -57,7 +57,8 @@ app.config(['$stateProvider', function($stateProvider) {
         deepStateRedirect: true,
         views: {
             'Authored Mods': {
-                templateUrl: '/resources/partials/userSettings/authoredMods.html'
+                templateUrl: '/resources/partials/userSettings/authoredMods.html',
+                controller: 'userSettingsModsController'
             }
         },
         url: '/mods'
