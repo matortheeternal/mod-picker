@@ -828,6 +828,27 @@ app.service('columnsFactory', function() {
                 label: "Comments",
                 data: "comments_count",
                 filter: "number"
+            },
+            {
+                group: "General",
+                visibility: false,
+                label: "Started",
+                data: "submitted",
+                filter: "date"
+            },
+            {
+                group: "General",
+                visibility: false,
+                label: "Completed",
+                data: "completed",
+                filter: "date"
+            },
+            {
+                group: "General",
+                visibility: false,
+                label: "Updated",
+                data: "updated",
+                filter: "date"
             }
         ]
     };
