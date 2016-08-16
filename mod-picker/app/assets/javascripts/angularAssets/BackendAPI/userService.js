@@ -23,26 +23,18 @@ app.service('userService', function (backend, $q, userSettingsService, userTitle
     };
 
     this.retrieveUser = function(userId) {
-        var output = $q.defer();
+        var action = $q.defer();
         backend.retrieve('/users/' + userId).then(function(userData) {
-            var userObject = userData.user;
-            //moving collections into a separate array
-            userObject.collections = [];
-            for (var i = userObject.mod_lists.length - 1; i >= 0; i--) {
-                if (userObject.mod_lists[i].is_collection) {
-                    userObject.collections.push(userObject.mod_lists.splice(i, 1)[0]);
-                }
-            }
-
+            var user = userData.user;
             //get user title if it's not custom
-            if (!userObject.title) {
-                userTitleService.getUserTitle(userObject.reputation.overall).then(function(title) {
-                    userObject.title = title;
+            if (!user.title) {
+                userTitleService.getUserTitle(user.reputation.overall).then(function(title) {
+                    user.title = title;
                 });
             }
-            output.resolve(userData);
+            action.resolve(userData);
         });
-        return output.promise;
+        return action.promise;
     };
 
     this.searchUsers = function(username) {
