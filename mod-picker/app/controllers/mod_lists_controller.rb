@@ -1,6 +1,6 @@
 class ModListsController < ApplicationController
   before_action :check_sign_in, only: [:create, :set_active, :update, :update_tags, :create_star, :destroy_star]
-  before_action :set_mod_list, only: [:show, :update, :update_tags, :destroy, :tools, :mods, :plugins, :config_files, :analysis, :comments]
+  before_action :set_mod_list, only: [:show, :hide, :update, :update_tags, :tools, :mods, :plugins, :config_files, :analysis, :comments]
 
   # GET /mod_lists
   def index
@@ -205,6 +205,17 @@ class ModListsController < ApplicationController
       }
     else
       render json: current_user.errors, status: :unproccessable_entity
+    end
+  end
+
+  # POST /mod_lists/1/hide
+  def hide
+    authorize! :hide, @mod_list
+    @mod_list.hidden = params[:hidden]
+    if @mod_list.save
+      render json: {status: :ok}
+    else
+      render json: @mod_list.errors, status: :unprocessable_entity
     end
   end
 
