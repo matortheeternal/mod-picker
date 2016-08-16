@@ -4,7 +4,6 @@ app.controller('userSettingsProfileController', function($scope, titleQuote) {
         src: $scope.user.avatar
     };
 
-    /* avatar */
     $scope.browseAvatar = function() {
         document.getElementById('avatar-input').click();
     };
@@ -23,14 +22,14 @@ app.controller('userSettingsProfileController', function($scope, titleQuote) {
             // check file type
             var ext = fileUtils.getFileExtension(avatarFile.name);
             if ((ext !== 'png') && (ext !== 'jpg')) {
-                $scope.errors.push({ message: "Unsupported file type.  Avatar image must be a PNG or JPG file." });
+                $scope.$emit('customMessage', {type: 'error', message: 'Unsupported file type.  Avatar image must be a PNG or JPG file.'});
                 $scope.resetAvatar();
                 return;
             }
 
             // check filesize
             if (avatarFile.size > 1048576) {
-                $scope.errors.push({ message: "Avatar image is too big.  Maximum file size 1.0MB." });
+                $scope.$emit('customMessage', {type: 'error', message: 'Avatar image is too big.  Maximum file size 1.0MB.'});
                 $scope.resetAvatar();
                 return;
             }
@@ -41,7 +40,7 @@ app.controller('userSettingsProfileController', function($scope, titleQuote) {
                 //alert("Image loaded!");
                 var imageTooBig = (img.width > 250) || (img.height > 250);
                 if (imageTooBig) {
-                    $scope.errors.push({ message: "Avatar image too large.  Maximum dimensions 250x250." });
+                    $scope.$emit('customMessage', {type: 'error', message: 'Avatar image too large.  Maximum dimensions 250x250.'});
                     $scope.resetAvatar();
                 } else {
                     $scope.avatar.file = avatarFile;
@@ -49,6 +48,8 @@ app.controller('userSettingsProfileController', function($scope, titleQuote) {
                     $scope.$apply();
                 }
             };
+
+            // update img src with a generated blob url
             img.src = URL.createObjectURL(avatarFile);
         } else if ($scope.user) {
             $scope.resetAvatar();
