@@ -98,7 +98,17 @@ class User < ActiveRecord::Base
 
   # alias for image method
   def avatar
-    self.image
+    png_path = File.join(Rails.public_path, "users/#{id}.png")
+    jpg_path = File.join(Rails.public_path, "users/#{id}.jpg")
+    if File.exists?(png_path)
+      "/users/#{id}.png"
+    elsif File.exists?(jpg_path)
+      "/users/#{id}.jpg"
+    elsif self.title.nil?
+      nil
+    else
+      "/users/Default.png"
+    end
   end
 
   def self.find_first_by_auth_conditions(warden_conditions)
