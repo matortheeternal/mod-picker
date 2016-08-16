@@ -5,8 +5,8 @@ app.config(['$stateProvider', function($stateProvider) {
         url: '/settings',
         redirectTo: 'base.settings.Profile',
         resolve: {
-            userObject: function(userService, currentUser) {
-                return userService.retrieveUser(currentUser.id);
+            userObject: function(userSettingsService, currentUser) {
+                return userSettingsService.retrieveSettings(currentUser.id);
             }
         }
     }).state('base.settings.Profile', {
@@ -62,25 +62,17 @@ app.config(['$stateProvider', function($stateProvider) {
     });
 }]);
 
-app.controller('userSettingsController', function($scope, $q, userObject, currentUser, activeModList, userSettingsService, fileUtils, themesService) {
+app.controller('userSettingsController', function($scope, $q, currentUser, activeModList, userObject, userSettingsService, themesService, errorService, tabsFactory, objectUtils) {
     // inherited variables
     $scope.currentUser = currentUser;
-    $scope.userSettings = currentUser.settings;
     $scope.activeModList = activeModList;
     $scope.permissions = angular.copy(currentUser.permissions);
 
     // initialize variables
-    $scope.user = userObject.user;
-    $scope.avatar = {
-        src: $scope.user.avatar
-    };
+    $scope.user = userObject;
+    $scope.settings = userObject.settings;
     $scope.errors = {};
-    $scope.tabs = [
-        { name: 'Profile' },
-        { name: 'Account' },
-        { name: 'Mod Lists' },
-        { name: 'Authored Mods' }
-    ];
+    $scope.tabs = tabsFactory.buildUserSettingsTabs();
 
     // display error messages
     $scope.$on('errorMessage', function(event, params) {
