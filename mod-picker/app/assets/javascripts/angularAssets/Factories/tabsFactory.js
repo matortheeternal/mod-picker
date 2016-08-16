@@ -1,6 +1,15 @@
 app.factory("tabsFactory", function() {
     var factory = this;
 
+    this.buildUserSettingsTabs = function() {
+        return [
+            { name: 'Profile' },
+            { name: 'Account' },
+            { name: 'Mod Lists' },
+            { name: 'Authored Mods' }
+        ];
+    };
+
     this.buildModTabs = function(mod) {
         var tabs = [];
 
