@@ -1,6 +1,19 @@
-app.service('userSettingsService', function (backend, objectUtils) {
+app.service('userSettingsService', function (backend, $q, objectUtils, userTitleService) {
     this.retrieveSettings = function (userId) {
-        return backend.retrieve('/settings/' + userId);
+        var action = $q.defer();
+        backend.retrieve('/settings/' + userId).then(function(data) {
+            var user = data.user;
+            //get user title if it's not custom
+            if (!user.title) {
+                userTitleService.getUserTitle(user.reputation.overall).then(function(title) {
+                    user.title = title;
+                });
+            }
+            action.resolve(data);
+        }, function(response) {
+            action.reject(response);
+        });
+        return action.promise;
     };
 
     this.updateUserSettings = function (user) {

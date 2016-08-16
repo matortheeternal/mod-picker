@@ -6,7 +6,7 @@ class UserSettingsController < ApplicationController
   # GET /settings/:id
   def show
     authorize! :update, @user
-    render :json => @user.settings_json
+    render :json => { user: @user.settings_json }
   end
 
   # PATCH/PUT /settings/:id
