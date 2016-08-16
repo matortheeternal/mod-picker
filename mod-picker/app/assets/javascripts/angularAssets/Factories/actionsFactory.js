@@ -102,7 +102,7 @@ app.service('actionsFactory', function() {
             caption: "Clone",
             title: "Make a copy of this mod list",
             hidden: function($scope, item) {
-                return !$scope.permissions.canModerate && $scope.currentUser.id != item.submitter.id;
+                return item.hidden || !$scope.permissions.canModerate && $scope.currentUser.id != item.submitter.id;
             },
             execute: function($scope, item) {
                 $scope.$emit('cloneModList', item);
@@ -112,10 +112,20 @@ app.service('actionsFactory', function() {
             title: "Delete this mod list",
             class: 'red-box',
             hidden: function($scope, item) {
-                return !$scope.permissions.canModerate && $scope.currentUser.id != item.submitter.id;
+                return item.hidden || !$scope.permissions.canModerate && $scope.currentUser.id != item.submitter.id;
             },
             execute: function($scope, item) {
                 $scope.$emit('deleteModList', item);
+            }
+        }, {
+            caption: "Recover",
+            title: "Click here to recover this mod list.",
+            class: 'green-box',
+            hidden: function($scope, item) {
+                return !item.hidden;
+            },
+            execute: function($scope, item) {
+                $scope.$emit('recoverModList', item);
             }
         }]
     };
