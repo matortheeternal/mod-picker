@@ -1,4 +1,4 @@
-app.controller('userSettingsModListsController', function($scope, $timeout, columnsFactory, actionsFactory, modListService) {
+app.controller('userSettingsModListsController', function($scope, $rootScope, $timeout, columnsFactory, actionsFactory, modListService) {
     // initialize variables
     $scope.actions = actionsFactory.userModListActions();
     $scope.columns = columnsFactory.modListColumns();
@@ -61,7 +61,7 @@ app.controller('userSettingsModListsController', function($scope, $timeout, colu
     $scope.saveActiveModList = function() {
         var modListId = $scope.model.activeModListId ? parseInt($scope.model.activeModListId) : null;
         modListService.setActiveModList(modListId).then(function(data) {
-            $scope.$emit('setActiveModList', data.mod_list);
+            $rootScope.activeModList = data.mod_list;
             $scope.$emit('successMessage', 'Set active mod list successfully.');
         }, function(response) {
             var params = {

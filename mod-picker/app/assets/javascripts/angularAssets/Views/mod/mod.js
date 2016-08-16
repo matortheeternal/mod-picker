@@ -4,10 +4,10 @@ app.config(['$stateProvider', function($stateProvider) {
         controller: 'modController',
         url: '/mod/:modId',
         resolve: {
-            modObject: function($stateParams, $q, categories, modService, categoryService) {
+            modObject: function($rootScope, $stateParams, $q, modService, categoryService) {
                 var mod = $q.defer();
                 modService.retrieveMod($stateParams.modId).then(function(data) {
-                    categoryService.resolveModCategories(categories, data.mod);
+                    categoryService.resolveModCategories($rootScope.categories, data.mod);
                     mod.resolve(data);
                 }, function(response) {
                     var errorObj = {
@@ -106,12 +106,12 @@ app.config(['$stateProvider', function($stateProvider) {
     });
 }]);
 
-app.controller('modController', function($scope, $q, $stateParams, $state, $timeout, currentUser, categories, modObject, modService, modListService, contributionService, categoryService, tagService, smoothScroll, errorService, tabsFactory, sortFactory) {
+app.controller('modController', function($scope, $rootScope, $q, $stateParams, $state, $timeout, modObject, modService, modListService, contributionService, categoryService, tagService, smoothScroll, errorService, tabsFactory, sortFactory) {
     // get parent variables
     $scope.mod = modObject.mod;
     $scope.mod.star = modObject.star;
-    $scope.currentUser = currentUser;
-    $scope.activeModList = $scope.currentUser.active_mod_list;
+    $scope.currentUser = $rootScope.currentUser;
+    $scope.activeModList = $rootScope.activeModList;
     if ($scope.activeModList) {
         $scope.mod.in_mod_list = $scope.activeModList.mod_list_mod_ids.find(function(modId) {
             return modId == $scope.mod.id;
@@ -158,7 +158,7 @@ app.controller('modController', function($scope, $q, $stateParams, $state, $time
     $scope.errors = {};
 
     //a copy is created so the original permissions are never changed
-    $scope.permissions = angular.copy(currentUser.permissions);
+    $scope.permissions = angular.copy($rootScope.permissions);
     //setting up the canManage permission
     var author = $scope.mod.author_users.find(function(author) {
         return author.id == $scope.currentUser.id;

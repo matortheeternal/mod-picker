@@ -23,10 +23,11 @@ app.config(['$stateProvider', function($stateProvider) {
     });
 }]);
 
-app.controller('editModController', function($scope, $state, currentUser, categories, categoryPriorities, modObject, modService, userService,tagService, categoryService, errorService, sitesFactory, objectUtils) {
+app.controller('editModController', function($scope, $rootScope, $state, modObject, modService, userService,tagService, categoryService, errorService, sitesFactory, objectUtils) {
     // get parent variables
-    $scope.currentUser = currentUser;
-    $scope.categories = categories;
+    $scope.currentUser = $rootScope.currentUser;
+    $scope.categories = $rootScope.categories;
+    $scope.categoryPriorities = $rootScope.categoryPriorities;
 
     // inherited functions
     $scope.searchMods = modService.searchMods;
@@ -101,7 +102,7 @@ app.controller('editModController', function($scope, $state, currentUser, catego
     // initialize local variables
     $scope.loadModObject();
     $scope.sites = sitesFactory.sites();
-    $scope.permissions = angular.copy(currentUser.permissions);
+    $scope.permissions = angular.copy($rootScope.permissions);
     $scope.image = {
         src: $scope.mod.image
     };
@@ -284,8 +285,8 @@ app.controller('editModController', function($scope, $state, currentUser, catego
 
     $scope.getDominantIds = function(recessiveId) {
         var dominantIds = [];
-        for (var i = 0; i < categoryPriorities.length; i++) {
-            var priority = categoryPriorities[i];
+        for (var i = 0; i < $scope.categoryPriorities.length; i++) {
+            var priority = $scope.categoryPriorities[i];
             if (priority.recessive_id == recessiveId) {
                 dominantIds.push(priority.dominant_id);
             }
@@ -294,8 +295,8 @@ app.controller('editModController', function($scope, $state, currentUser, catego
     };
 
     $scope.getCategoryPriority = function(recessiveId, dominantId) {
-        for (var i = 0; i < categoryPriorities.length; i++) {
-            var priority = categoryPriorities[i];
+        for (var i = 0; i < $scope.categoryPriorities.length; i++) {
+            var priority = $scope.categoryPriorities[i];
             if (priority.recessive_id == recessiveId &&
                 priority.dominant_id == dominantId)
                 return priority;

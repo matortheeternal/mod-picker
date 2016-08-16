@@ -30,12 +30,14 @@ app.config(['$stateProvider', function($stateProvider) {
     })
 }]);
 
-app.controller('baseController', function($scope, $state, $window, currentUser, activeModList, games, currentGame, userService, modListService) {
-    $scope.currentUser = currentUser;
-    $scope.permissions = currentUser.permissions;
-    $scope.activeModList = activeModList;
-    $scope.currentGame = currentGame;
-    $scope.games = games;
+app.controller('baseController', function($scope, $rootScope, $state, $window, currentUser, activeModList, games, currentGame, userService, modListService) {
+    // shared variables - used on multiple states.  These have to stored on the
+    // $rootScope else we can't modify them for all states
+    $rootScope.currentUser = currentUser;
+    $rootScope.permissions = currentUser.permissions;
+    $rootScope.activeModList = activeModList;
+    $rootScope.currentGame = currentGame;
+    $rootScope.games = games;
 
     // user selected an option from the my contributions dropdown
     $scope.navigateTo = function(newLocation) {
@@ -46,13 +48,13 @@ app.controller('baseController', function($scope, $state, $window, currentUser, 
     $scope.newModList = function() {
         var mod_list = {
             game_id: window._current_game_id,
-            name: $scope.currentUser.username + "'s Mod List",
+            name: $rootScope.currentUser.username + "'s Mod List",
             // TODO: Should have a default description set on the backend
             description: "A brand new mod list!"
         };
 
         modListService.newModList(mod_list, true).then(function(data) {
-            $scope.activeModList = data.mod_list;
+            $rootScope.activeModList = data.mod_list;
             $state.go('base.mod-list', {modListId: data.mod_list.id});
         }, function(response) {
             $state.get('base.error').error = {
@@ -68,7 +70,7 @@ app.controller('baseController', function($scope, $state, $window, currentUser, 
     //reload when the user object is changed in the settings
     $scope.retrieveCurrentUser = function(callback) {
         userService.retrieveCurrentUser().then(function(currentUser) {
-            $scope.currentUser = currentUser;
+            $rootScope.currentUser = currentUser;
             callback && callback();
         }, function(response) {
             $state.get('base.error').error = {
@@ -85,20 +87,17 @@ app.controller('baseController', function($scope, $state, $window, currentUser, 
         $scope.retrieveCurrentUser();
     });
 
-    $scope.$on('setActiveModList', function(event, mod_list) {
-        $scope.activeModList = mod_list;
-    });
-
     $scope.$on('updateRepPermissions', function(event, endorsed) {
         //if the user was just endorsed
+        var user = $rootScope.currentUser;
         if (endorsed) {
-            currentUser.reputation.rep_to_count++;
+            user.reputation.rep_to_count++;
         } else {
-            currentUser.reputation.rep_to_count--;
+            user.reputation.rep_to_count--;
         }
-        var numEndorsed = currentUser.reputation.rep_to_count;
-        var rep = currentUser.reputation.overall;
-        currentUser.permissions.canEndorse = (rep >= 40 && numEndorsed < 5) || (rep >= 160 && numEndorsed < 10) || (rep >= 640 && numEndorsed < 15);
+        var numEndorsed = user.reputation.rep_to_count;
+        var rep = user.reputation.overall;
+        user.permissions.canEndorse = (rep >= 40 && numEndorsed < 5) || (rep >= 160 && numEndorsed < 10) || (rep >= 640 && numEndorsed < 15);
     });
 
     // handle state change errors

@@ -5,10 +5,10 @@ app.run(function($futureState, indexFactory, filtersFactory) {
     $futureState.futureState(state);
 });
 
-app.controller('usersController', function ($scope, $stateParams, $state, currentUser, userService, columnsFactory, filtersFactory, indexService, indexFactory) {
+app.controller('usersController', function ($scope, $rootScope, $stateParams, $state, userService, columnsFactory, filtersFactory, indexService, indexFactory) {
     // get parent variables
-    $scope.currentUser = currentUser;
-    $scope.globalPermissions = angular.copy(currentUser.permissions);
+    $scope.currentUser = $rootScope.currentUser;
+    $scope.globalPermissions = angular.copy($rootScope.permissions);
 
     // columns for view
     $scope.columns = columnsFactory.userColumns();

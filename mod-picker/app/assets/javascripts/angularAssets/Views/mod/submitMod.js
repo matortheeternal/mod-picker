@@ -7,11 +7,12 @@ app.config(['$stateProvider', function ($stateProvider) {
     );
 }]);
 
-app.controller('submitModController', function ($scope, currentUser, categories, categoryPriorities, backend, modService, scrapeService, pluginService, categoryService, sitesFactory, assetUtils) {
+app.controller('submitModController', function ($scope, $rootScope, backend, modService, scrapeService, pluginService, categoryService, sitesFactory, assetUtils) {
     // access parent variables
-    $scope.currentUser = currentUser;
-    $scope.categories = categories;
-    $scope.permissions = angular.copy(currentUser.permissions);
+    $scope.currentUser = $rootScope.currentUser;
+    $scope.categories = $rootScope.categories;
+    $scope.categoryPriorities = $rootScope.categoryPriorities;
+    $scope.permissions = angular.copy($rootScope.permissions);
 
     // initialize variables
     $scope.sites = sitesFactory.sites();
@@ -149,8 +150,8 @@ app.controller('submitModController', function ($scope, currentUser, categories,
 
     $scope.getDominantIds = function(recessiveId) {
         var dominantIds = [];
-        for (var i = 0; i < categoryPriorities.length; i++) {
-            var priority = categoryPriorities[i];
+        for (var i = 0; i < $scope.categoryPriorities.length; i++) {
+            var priority = $scope.categoryPriorities[i];
             if (priority.recessive_id == recessiveId) {
                 dominantIds.push(priority.dominant_id);
             }
@@ -159,8 +160,8 @@ app.controller('submitModController', function ($scope, currentUser, categories,
     };
 
     $scope.getCategoryPriority = function(recessiveId, dominantId) {
-        for (var i = 0; i < categoryPriorities.length; i++) {
-            var priority = categoryPriorities[i];
+        for (var i = 0; i < $scope.categoryPriorities.length; i++) {
+            var priority = $scope.categoryPriorities[i];
             if (priority.recessive_id == recessiveId &&
                 priority.dominant_id == dominantId)
                 return priority;

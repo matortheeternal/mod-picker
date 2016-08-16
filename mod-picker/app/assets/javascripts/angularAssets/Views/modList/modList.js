@@ -113,14 +113,16 @@ app.config(['$stateProvider', function ($stateProvider) {
     })
 }]);
 
-app.controller('modListController', function($scope, $q, $stateParams, $timeout, currentUser, activeModList, modListObject, modListService, errorService, objectUtils, tabsFactory, baseFactory, listUtils) {
-    // get parent variables
+app.controller('modListController', function($scope, $rootScope, $q, $stateParams, $timeout, modListObject, modListService, errorService, objectUtils, tabsFactory, baseFactory, listUtils) {
+    // inherited variables
+    $scope.currentUser = $rootScope.currentUser;
+    $scope.activeModList = $rootScope.activeModList;
+
+    // main view model variables
     $scope.mod_list = modListObject.mod_list;
     $scope.mod_list.star = modListObject.star;
     $scope.mod_list.groups = [];
     $scope.originalModList = angular.copy($scope.mod_list);
-    $scope.currentUser = currentUser;
-    $scope.activeModList = activeModList;
 
 	// initialize local variables
     $scope.tabs = tabsFactory.buildModListTabs($scope.mod_list);
@@ -172,7 +174,7 @@ app.controller('modListController', function($scope, $q, $stateParams, $timeout,
     $scope.isEmpty = objectUtils.isEmptyArray;
 
     // a copy is created so the original permissions object is never changed
-    $scope.permissions = angular.copy(currentUser.permissions);
+    $scope.permissions = angular.copy($rootScope.permissions);
     // setting up the canManage permission
     var isAuthor = $scope.mod_list.submitter.id == $scope.currentUser.id;
     $scope.permissions.canManage = $scope.permissions.canModerate || isAuthor;

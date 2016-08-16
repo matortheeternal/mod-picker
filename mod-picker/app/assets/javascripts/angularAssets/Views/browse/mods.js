@@ -5,13 +5,13 @@ app.run(function($futureState, indexFactory, filtersFactory) {
     $futureState.futureState(state);
 });
 
-app.controller('modsController', function($scope, $q, $stateParams, $state, currentUser, activeModList, currentGame, categories, modService, modListService, sliderFactory, columnsFactory, filtersFactory, actionsFactory, indexService, indexFactory) {
-    // get parent variables
-    $scope.currentUser = currentUser;
-    $scope.currentGame = currentGame;
-    $scope.categories = categories;
-    $scope.activeModList = activeModList;
-    $scope.permissions = angular.copy(currentUser.permissions);
+app.controller('modsController', function($scope, $rootScope, $q, $stateParams, $state, modService, modListService, sliderFactory, columnsFactory, filtersFactory, actionsFactory, indexService, indexFactory) {
+    // inherited variables
+    $scope.currentUser = $rootScope.currentUser;
+    $scope.currentGame = $rootScope.currentGame;
+    $scope.categories = $rootScope.categories;
+    $scope.activeModList = $rootScope.activeModList;
+    $scope.permissions = angular.copy($rootScope.permissions);
 
     // columns for view
     $scope.columns = columnsFactory.modColumns();
