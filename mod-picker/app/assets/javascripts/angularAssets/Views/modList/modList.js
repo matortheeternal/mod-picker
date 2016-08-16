@@ -113,13 +113,14 @@ app.config(['$stateProvider', function ($stateProvider) {
     })
 }]);
 
-app.controller('modListController', function($scope, $q, $stateParams, $timeout, currentUser, modListObject, modListService, errorService, objectUtils, tabsFactory, baseFactory, listUtils) {
+app.controller('modListController', function($scope, $q, $stateParams, $timeout, currentUser, activeModList, modListObject, modListService, errorService, objectUtils, tabsFactory, baseFactory, listUtils) {
     // get parent variables
     $scope.mod_list = modListObject.mod_list;
     $scope.mod_list.star = modListObject.star;
     $scope.mod_list.groups = [];
     $scope.originalModList = angular.copy($scope.mod_list);
     $scope.currentUser = currentUser;
+    $scope.activeModList = activeModList;
 
 	// initialize local variables
     $scope.tabs = tabsFactory.buildModListTabs($scope.mod_list);
@@ -167,6 +168,7 @@ app.controller('modListController', function($scope, $q, $stateParams, $timeout,
         visibility_unlisted: "This mod list won't appear in search results, \nbut anyone can access it.",
         visibility_public: "This mod list is publicly available and will \nappear in search results."
     };
+    $scope.isActive = $scope.activeModList.id == $scope.mod_list.id;
     $scope.isEmpty = objectUtils.isEmptyArray;
 
     // a copy is created so the original permissions object is never changed
@@ -392,13 +394,14 @@ app.controller('modListController', function($scope, $q, $stateParams, $timeout,
         // get changed mod fields
         $scope.flattenModels();
         var modListDiff = objectUtils.getDifferentObjectValues($scope.originalModList, $scope.mod_list);
-        // if no fields were changed, inform the user
+        // if no fields were changed, inform the user and return
         if (objectUtils.isEmptyObject(modListDiff)) {
             var message = {type: 'warning', text: 'There are no changes to save.'};
             $scope.$broadcast('message', message);
             return;
         }
 
+        // else submit changes to the backend
         modListService.updateModList(modListDiff).then(function() {
             // update modules
             $scope.$broadcast('saveChanges');

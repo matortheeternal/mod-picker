@@ -41,6 +41,10 @@
                     <i class="fa {{visibilityIcons[mod_list.visibility]}}" aria-hidden="true"></i>
                     {{mod_list.visibility.replace("visibility_", "")}}
                 </span>
+                <span ng-if="isActive" class="action-box green-box no-action" title="This is your active mod list - added mods will end up here.">
+                    <i class="fa fa-chevron-circle-down"></i>
+                    Active
+                </span>
             </div>
         </section>
     </div>
