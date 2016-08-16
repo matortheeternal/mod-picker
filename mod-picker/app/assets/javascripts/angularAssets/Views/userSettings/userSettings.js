@@ -1,6 +1,3 @@
-/**
- * Created by Sirius on 3/9/2016.
- */
 app.config(['$stateProvider', function($stateProvider) {
     $stateProvider.state('base.settings', {
         templateUrl: '/resources/partials/userSettings/userSettings.html',
@@ -32,7 +29,7 @@ app.config(['$stateProvider', function($stateProvider) {
                 return output.promise;
             }
         },
-        url: 'profile'
+        url: '/profile'
     }).state('base.settings.Account', {
         sticky: true,
         deepStateRedirect: true,
