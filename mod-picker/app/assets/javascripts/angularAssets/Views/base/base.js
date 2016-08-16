@@ -30,7 +30,7 @@ app.config(['$stateProvider', function($stateProvider) {
     })
 }]);
 
-app.controller('baseController', function($scope, $state, $location, currentUser, activeModList, games, currentGame, userService, modListService) {
+app.controller('baseController', function($scope, $state, $window, currentUser, activeModList, games, currentGame, userService, modListService) {
     $scope.currentUser = currentUser;
     $scope.permissions = currentUser.permissions;
     $scope.activeModList = activeModList;
@@ -39,7 +39,7 @@ app.controller('baseController', function($scope, $state, $location, currentUser
 
     // user selected an option from the my contributions dropdown
     $scope.navigateTo = function(newLocation) {
-        $location.path(newLocation);
+        $window.location.hash = newLocation;
     };
 
     // user selected to start a new mod list
