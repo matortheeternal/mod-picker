@@ -34,27 +34,6 @@ class UsersController < ApplicationController
     }
   end
 
-  # GET /link_account
-  def link_account
-    bio = current_user.bio
-    case params[:site]
-      when "Nexus Mods"
-        verified = bio.verify_nexus_account(params[:user_path])
-      when "Lover's Lab"
-        verified = bio.verify_lover_account(params[:user_path])
-      when "Steam Workshop"
-        verified = bio.verify_workshop_account(params[:user_path])
-      else
-        verified = false
-    end
-
-    if verified
-      render json: {status: :ok, verified: true, bio: bio}
-    else
-      render json: {status: :ok, verified: false}
-    end
-  end
-
   # GET /users/1/comments
   def comments
     authorize! :read, @user
