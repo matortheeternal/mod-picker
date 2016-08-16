@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  before_action :set_user, only: [:show, :comments, :endorse, :unendorse, :update, :destroy]
+  before_action :set_user, only: [:show, :comments, :endorse, :unendorse]
 
   # GET /users
   def index
@@ -46,26 +46,6 @@ class UsersController < ApplicationController
     }
   end
 
-  # PATCH/PUT /users/1
-  def update
-    authorize! :update, @user
-    if @user.update(user_params)
-      render json: {status: :ok}
-    else
-      render json: @user.errors, status: :unprocessable_entity
-    end
-  end
-
-  # DELETE /users/1
-  def destroy
-    authorize! :destroy, @user
-    if @user.destroy
-      render json: {status: :ok}
-    else
-      render json: @user.errors, status: :unprocessable_entity
-    end
-  end
-
   # POST /users/1/rep
   def endorse
     @reputation_link = ReputationLink.find_or_initialize_by(from_rep_id: current_user.reputation.id, to_rep_id: @user.reputation.id)
@@ -95,7 +75,7 @@ class UsersController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_user
-      @user = User.joins(:bio, :reputation).find(params[:id])
+      @user = User.find(params[:id])
     end
 
     def search_params
@@ -105,10 +85,5 @@ class UsersController < ApplicationController
     # Params we allow filtering on
     def filtering_params
       params[:filters].slice(:search, :linked, :roles, :reputation, :joined, :last_seen, :authored_mods, :mod_lists, :comments, :reviews, :compatibility_notes, :install_order_notes, :load_order_notes, :corrections)
-    end
-
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def user_params
-      params.require(:user).permit(:username, :role, :title, :joined, :active_mod_list_id, :email, :about_me)
     end
 end
