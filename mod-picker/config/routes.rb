@@ -24,9 +24,9 @@ Rails.application.routes.draw do
     match '/settings/link_account', to: 'user_settings#link_account', via: [:post]
 
     # scraping
-    resources :nexus_infos, only: [:show, :destroy]
-    resources :workshop_infos, only: [:show, :destroy]
-    resources :lover_infos, only: [:show, :destroy]
+    match '/nexus_infos/:id', to: 'nexus_infos#show', via: [:get]
+    match '/lover_infos/:id', to: 'lover_infos#show', via: [:get]
+    match '/workshop_infos/:id', to: 'workshop_infos#show', via: [:get]
 
     # tags
     match '/tags', to: 'tags#index', via: [:post]
@@ -37,12 +37,12 @@ Rails.application.routes.draw do
     # mods
     match '/mods/index', to: 'mods#index', via: [:get, :post]
     match '/mods/search', to: 'mods#search', via: [:post]
-    resources :mods, only: [:show, :edit, :create, :update, :destroy]
+    resources :mods, only: [:show, :edit, :create, :update]
 
     # plugins
     match '/plugins', to: 'plugins#index', via: [:get, :post]
     match '/plugins/search', to: 'plugins#search', via: [:post]
-    resources :plugins, only: [:show, :destroy]
+    match '/plugins/:id', to: 'plugins#show', via: [:get]
 
     # content associated with mods
     match '/mods/:id/corrections', to: 'mods#corrections', via: [:get, :post]
@@ -57,7 +57,7 @@ Rails.application.routes.draw do
     match '/reviews/index', to: 'reviews#index', via: [:get, :post]
     match '/reviews/:id/approve', to: 'reviews#approve', via: [:post]
     match '/reviews/:id/hide', to: 'reviews#hide', via: [:post]
-    resources :reviews, only: [:show, :create, :update, :destroy]
+    resources :reviews, only: [:show, :create, :update]
 
     # compatibility notes
     match '/compatibility_notes/index', to: 'compatibility_notes#index', via: [:get, :post]
@@ -65,14 +65,14 @@ Rails.application.routes.draw do
     match '/compatibility_notes/:id/hide', to: 'compatibility_notes#hide', via: [:post]
     match '/compatibility_notes/:id/corrections', to: 'compatibility_notes#corrections', via: [:get]
     match '/compatibility_notes/:id/history', to: 'compatibility_notes#history', via: [:get]
-    resources :compatibility_notes, only: [:show, :create, :update, :destroy]
+    resources :compatibility_notes, only: [:show, :create, :update]
 
     # install order notes
     match '/install_order_notes/index', to: 'install_order_notes#index', via: [:get, :post]
     match '/install_order_notes/:id/hide', to: 'install_order_notes#hide', via: [:post]
     match '/install_order_notes/:id/corrections', to: 'install_order_notes#corrections', via: [:get]
     match '/install_order_notes/:id/history', to: 'install_order_notes#history', via: [:get]
-    resources :install_order_notes, only: [:show, :create, :update, :destroy]
+    resources :install_order_notes, only: [:show, :create, :update]
 
     # load order notes
     match '/load_order_notes/index', to: 'load_order_notes#index', via: [:get, :post]
@@ -80,7 +80,7 @@ Rails.application.routes.draw do
     match '/install_order_notes/:id/approve', to: 'install_order_notes#approve', via: [:post]
     match '/load_order_notes/:id/corrections', to: 'load_order_notes#corrections', via: [:get]
     match '/load_order_notes/:id/history', to: 'load_order_notes#history', via: [:get]
-    resources :load_order_notes, only: [:show, :create, :update, :destroy]
+    resources :load_order_notes, only: [:show, :create, :update]
 
     # corrections
     match '/corrections/index', to: 'corrections#index', via: [:get, :post]
@@ -88,12 +88,12 @@ Rails.application.routes.draw do
     match '/load_order_notes/:id/approve', to: 'load_order_notes#approve', via: [:post]
     match '/corrections/:id/agreement', to: 'corrections#agreement', via: [:post]
     match '/corrections/:id/comments', to: 'corrections#comments', via: [:get, :post]
-    resources :corrections, only: [:show, :create, :update, :destroy]
+    resources :corrections, only: [:show, :create, :update]
 
     # comments
     match '/comments/index', to: 'comments#index', via: [:get, :post]
     match '/comments/:id/hide', to: 'comments#hide', via: [:post]
-    resources :comments, only: [:show, :create, :update, :destroy]
+    resources :comments, only: [:show, :create, :update]
 
     # helpful marks
     match '/reviews/:id/helpful', to: 'reviews#helpful', via: [:post]
