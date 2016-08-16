@@ -1,5 +1,5 @@
 class User < ActiveRecord::Base
-  include Filterable, Sortable, RecordEnhancements, Reportable
+  include Filterable, Sortable, RecordEnhancements, Imageable, Reportable
 
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
@@ -97,18 +97,9 @@ class User < ActiveRecord::Base
   after_create :create_associations
   after_initialize :init
 
+  # alias for image method
   def avatar
-    png_path = File.join(Rails.public_path, "avatars/#{id}.png")
-    jpg_path = File.join(Rails.public_path, "avatars/#{id}.jpg")
-    if File.exists?(png_path)
-      "/avatars/#{id}.png"
-    elsif File.exists?(jpg_path)
-      "/avatars/#{id}.jpg"
-    elsif self.title.nil?
-      nil
-    else
-      '/avatars/Default.png'
-    end
+    self.image
   end
 
   def self.find_first_by_auth_conditions(warden_conditions)
