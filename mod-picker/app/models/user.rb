@@ -171,28 +171,36 @@ class User < ActiveRecord::Base
     })
   end
 
+  def settings_json
+    self.as_json({
+        :except => [:active_mod_list_id, :invitation_token, :invitation_created_at, :invitation_sent_at, :invitation_accepted_at, :invitation_limit, :invited_by_id, :invited_by_type, :invitations_count],
+        :include => {
+            :bio => {
+                :except => [:user_id]
+            },
+            :reputation => {
+                :except => [:user_id, :dont_compute]
+            },
+            :settings => {
+                :except => [:user_id]
+            }
+        },
+        :methods => :avatar
+    })
+  end
+
   def show_json(current_user)
     # email handling
-    methods = [:avatar, :last_sign_in_at, :current_sign_in_at, :email_public?]
-    bio_except = [:nexus_verification_token, :lover_verification_token, :workshop_verification_token]
-    if self.email_public? || current_user.id == self.id
+    methods = [:avatar, :last_sign_in_at, :current_sign_in_at]
+    if self.email_public?
       methods.push(:email)
-    end
-    if current_user.id == self.id
-      bio_except = [:user_id]
     end
 
     self.as_json({
         :except => [:active_mod_list_id, :invitation_token, :invitation_created_at, :invitation_sent_at, :invitation_accepted_at, :invitation_limit, :invited_by_id, :invited_by_type, :invitations_count],
         :include => {
-            :mods => {
-                :only => [:id, :name, :game_id, :stars_count, :reviews_count, :reputation]
-            },
-            :mod_lists => {
-                :only => [:id, :name, :is_collection, :is_public, :status, :mods_count, :created, :stars_count, :comments_count]
-            },
             :bio => {
-                :except => bio_except
+                :except => [:user_id, :nexus_verification_token, :lover_verification_token, :workshop_verification_token]
             },
             :reputation => {
                 :only => [:overall]
