@@ -3,7 +3,7 @@
         <a class="inverse-link user-role-{{user.role}}" ng-href="#/user/{{user.id}}" target="_blank" tabindex="{{index}}">{{user.username}}</a>
     </li>
     <li class="user-avatar">
-        <img class="avatar avatar-medium" ng-src="{{user.avatar == null ? '/avatars/' + user.title + '.png' : user.avatar}}"/>
+        <img class="avatar avatar-medium" ng-src="{{user.avatar == null ? '/users/' + user.title + '.png' : user.avatar}}"/>
     </li>
     <li class="user-title">
         {{user.title}}
