@@ -5,21 +5,23 @@ Rails.application.routes.draw do
   # require authentication before allowing user to access any resources
   authenticate :user do
     # users
+    match '/current_user', to: 'users#current', via: [:get]
     match '/users/index', to: 'users#index', via: [:get, :post]
     match '/users/search', to: 'users#search', via: [:post]
-    match '/current_user', to: 'users#current', via: [:get]
-    resources :users, only: [:show, :update, :destroy]
+    match '/users/:id', to: 'users#show', via: [:get]
 
     # user associations
     match '/users/:id/comments', to: 'users#comments', via: [:get, :post]
-    match '/link_account', to: 'users#link_account', via: [:get]
 
     # user reputation_links
     match '/users/:id/rep', to: 'users#endorse', via: [:post]
     match '/users/:id/rep', to: 'users#unendorse', via: [:delete]
 
     # user settings
-    resources :user_settings, only: [:index, :update]
+    match '/settings/:id', to: 'user_settings#show', via: [:get]
+    match '/settings/:id', to: 'user_settings#update', via: [:patch, :put]
+    match '/settings/avatar', to: 'user_settings#avatar', via: [:post]
+    match '/settings/link_account', to: 'user_settings#link_account', via: [:post]
 
     # scraping
     resources :nexus_infos, only: [:show, :destroy]
@@ -124,9 +126,6 @@ Rails.application.routes.draw do
     match '/mod_lists/:id/star', to: 'mod_lists#destroy_star', via: [:delete]
     match '/mods/:id/star', to: 'mods#create_star', via: [:post]
     match '/mods/:id/star', to: 'mods#destroy_star', via: [:delete]
-
-    # avatars
-    match '/avatar', to: 'avatars#create', via: [:post]
 
     # help pages
     match '/help/category/:category', to: 'help_pages#category', via: [:get]
