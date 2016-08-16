@@ -1,14 +1,6 @@
 app.service('errorService', function ($rootScope) {
     var service = this;
 
-    this.handleError = function (label, errorResponse) {
-        $rootScope.error = {
-            code: errorResponse.status,
-            url: errorResponse.request_url,
-            label: label
-        };
-    };
-
     this.createErrorLink = function(errors, errorResponse, id, baseId) {
         var url, label;
         switch(errorResponse.config.url) {
