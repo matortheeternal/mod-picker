@@ -18,7 +18,7 @@
 <h3 class="section-title">Social</h3>
 <section>
     <label>
-        <input type="checkbox" ng-model="userSettings.allow_comments">
+        <input type="checkbox" ng-model="settings.allow_comments">
         Allow comments to be posted on your profile
     </label>
     <h3 class="subtitle">About me</h3>
@@ -26,5 +26,5 @@
 </section>
 
 <div class="action-button-container">
-    <input class="btn action-btn" type="submit" value="Save Changes" ng-click="submit()"/>
+    <input class="btn action-btn" type="submit" value="Save Changes" ng-click="saveChanges()"/>
 </div>
