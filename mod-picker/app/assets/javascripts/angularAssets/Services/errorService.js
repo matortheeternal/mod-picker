@@ -1,4 +1,4 @@
-app.service('errorService', function ($rootScope) {
+app.service('errorService', function () {
     var service = this;
 
     this.createErrorLink = function(errors, errorResponse, id, baseId) {
