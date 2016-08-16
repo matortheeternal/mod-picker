@@ -70,13 +70,14 @@ app.controller('userSettingsController', function($scope, $q, currentUser, activ
 
     // initialize variables
     $scope.user = userObject;
+    $scope.originalUser = angular.copy($scope.user);
     $scope.settings = userObject.settings;
     $scope.errors = {};
     $scope.tabs = tabsFactory.buildUserSettingsTabs();
 
     // display error messages
     $scope.$on('errorMessage', function(event, params) {
-        var errors = errorService.errorMessages(params.label, params.response, $scope.mod.id);
+        var errors = errorService.errorMessages(params.label, params.response);
         errors.forEach(function(error) {
             $scope.$broadcast('message', error);
         });
@@ -92,38 +93,50 @@ app.controller('userSettingsController', function($scope, $q, currentUser, activ
         event.stopPropagation();
     });
 
-    /* settings submission */
-    $scope.submit = function() {
-        $scope.errors = [];
+    // display custom message
+    $scope.$on('customMessage', function(event, message) {
+        $scope.$broadcast('message', message);
+        // stop event propagation - we handled it
+        event.stopPropagation();
+    });
 
-        //TODO: I feel like this redundancy can be killed
-        // @R79: I was thinking the same thing earlier today. -Mator
-        userSettingsService.submitUser($scope.user).then(function(data) {
-            if (data.status !== "ok") {
-                $scope.errors.concat(data.errors);
+    $scope.saveChanges = function() {
+        // get changed user fields
+        var userDiff = objectUtils.getDifferentObjectValues($scope.originalUser, $scope.user);
+
+        // if no fields were changed, inform the user and return
+        if (objectUtils.isEmptyObject(userDiff)) {
+            if (!$scope.avatar || !$scope.avatar.file) {
+                var message = {type: 'warning', text: 'There are no changes to save.'};
+                $scope.$broadcast('message', message);
+                return;
             }
-            $scope.showSuccess = $scope.errors.length == 0;
-        });
-        userSettingsService.submitUserSettings($scope.userSettings).then(function(data) {
-            if (data.status !== "ok") {
-                $scope.errors.concat(data.errors);
-            } else {
-                $scope.showSuccess = $scope.errors.length == 0;
-                $scope.updateTheme();
-                $scope.$emit('reloadCurrentUser', {});
-            }
-        });
-        if ($scope.avatar.file) {
-            userSettingsService.submitAvatar($scope.avatar.file).then(function(data) {
-                if (data.status !== "Success") {
-                    $scope.errors.push({ message: "Avatar: " + data.status });
-                }
-                $scope.showSuccess = $scope.errors.length == 0;
+        }
+        // else submit changes to the backend
+        else {
+            userSettingsService.updateUserSettings(userDiff).then(function () {
+                themesService.changeTheme($scope.settings.theme);
+                $scope.$emit('successMessage', 'User settings saved successfully.')
+            }, function (response) {
+                var params = {
+                    label: 'Error saving user settings',
+                    response: response
+                };
+                $scope.$emit('errorMessage', params);
+            });
+        }
+
+        // submit avatar if changed
+        if ($scope.avatar && $scope.avatar.file) {
+            userSettingsService.submitAvatar($scope.avatar.file).then(function() {
+                $scope.$emit('successMessage', 'Avatar updated successfully.')
+            }, function(response) {
+                var params = {
+                    label: 'Error updating avatar',
+                    response: response
+                };
+                $scope.$emit('errorMessage', params);
             });
         }
     };
-
-    $scope.updateTheme = function() {
-        themesService.changeTheme($scope.userSettings.theme);
-    }
 });
