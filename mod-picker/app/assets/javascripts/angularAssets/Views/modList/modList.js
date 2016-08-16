@@ -170,7 +170,7 @@ app.controller('modListController', function($scope, $rootScope, $q, $stateParam
         visibility_unlisted: "This mod list won't appear in search results, \nbut anyone can access it.",
         visibility_public: "This mod list is publicly available and will \nappear in search results."
     };
-    $scope.isActive = $scope.activeModList.id == $scope.mod_list.id;
+    $scope.isActive = $scope.activeModList && $scope.activeModList.id == $scope.mod_list.id;
     $scope.isEmpty = objectUtils.isEmptyArray;
 
     // a copy is created so the original permissions object is never changed
@@ -217,11 +217,28 @@ app.controller('modListController', function($scope, $rootScope, $q, $stateParam
     $scope.toggleEditing = function() {
         $scope.editing = !$scope.editing;
         if (!$scope.editing) {
+            // tell the user if there are unsaved changes
             $scope.flattenModels();
             var modListDiff = objectUtils.getDifferentObjectValues($scope.originalModList, $scope.mod_list);
             if (!objectUtils.isEmptyObject(modListDiff)) {
                 var message = {type: 'warning', text: 'Your mod list has unsaved changes.'};
                 $scope.$broadcast('message', message);
+            }
+        } else {
+            // make the mod list the user's active mod list if it isn't their active
+            // mod list and they authored it
+            if  (!$scope.isActive && isAuthor) {
+                modListService.setActiveModList($scope.mod_list.id).then(function(data) {
+                    $rootScope.activeModList = data.mod_list;
+                    $scope.$emit('successMessage', 'This is now your active mod list.');
+                    $scope.isActive = true;
+                }, function(response) {
+                    var params = {
+                        label: 'Error setting active mod list',
+                        response: response
+                    };
+                    $scope.$emit('errorMessage', params);
+                });
             }
         }
     };
