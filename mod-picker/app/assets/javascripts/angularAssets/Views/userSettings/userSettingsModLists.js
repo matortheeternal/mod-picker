@@ -71,4 +71,42 @@ app.controller('userSettingsModListsController', function($scope, $rootScope, $t
             $scope.$emit('errorMessage', params);
         });
     };
+
+    // ACTION HANDLERS
+    $scope.$on('cloneModList', function(event, modList) {
+        // TODO
+    });
+
+    $scope.$on('deleteModList', function(event, modList) {
+        modListService.hide(modList.id, true).then(function() {
+            var model = modList.is_collection ? $scope.collections : $scope.mod_lists;
+            var index = model.findIndex(function(item) {
+                return item.id == modList.id;
+            });
+            model.splice(index, 1);
+            if ($scope.activeModList && $scope.activeModList.id == modList.id) {
+                $rootScope.activeModList = null;
+            }
+            $scope.$emit('successMessage', 'Mod list deleted successfully.');
+        }, function(response) {
+            var params = {
+                label: 'Error deleting mod list',
+                response: response
+            };
+            $scope.$emit('errorMessage', params);
+        });
+    });
+
+    $scope.$on('recoverModList', function(event, modList) {
+        modListService.hide(modList.id, false).then(function() {
+            modList.hidden = false;
+            $scope.$emit('successMessage', 'Mod list recovered successfully.');
+        }, function(response) {
+            var params = {
+                label: 'Error recovering mod list',
+                response: response
+            };
+            $scope.$emit('errorMessage', params);
+        });
+    });
 });
