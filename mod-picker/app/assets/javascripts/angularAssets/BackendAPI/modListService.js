@@ -253,8 +253,8 @@ app.service('modListService', function (backend, $q, userTitleService, contribut
         return backend.post('/mod_lists/clone/' + modlist.id, {});
     };
 
-    this.deleteModList = function(modlist) {
-        return backend.delete('/mod_lists/' + modlist.id);
+    this.hide = function(modListId, hidden) {
+        return backend.post('/mod_lists/' + modListId + '/hide', {hidden: hidden});
     };
 
     this.associateCompatibilityNote = function(customPlugin, compatibilityNotes) {
