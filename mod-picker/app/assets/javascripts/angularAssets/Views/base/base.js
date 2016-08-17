@@ -30,7 +30,7 @@ app.config(['$stateProvider', function($stateProvider) {
     })
 }]);
 
-app.controller('baseController', function($scope, $rootScope, $state, $window, currentUser, activeModList, games, currentGame, userService, modListService) {
+app.controller('baseController', function($scope, $rootScope, $state, $window, currentUser, activeModList, games, currentGame, categories, categoryPriorities, userService, modListService) {
     // shared variables - used on multiple states.  These have to stored on the
     // $rootScope else we can't modify them for all states
     $rootScope.currentUser = currentUser;
@@ -38,6 +38,8 @@ app.controller('baseController', function($scope, $rootScope, $state, $window, c
     $rootScope.activeModList = activeModList;
     $rootScope.currentGame = currentGame;
     $rootScope.games = games;
+    $rootScope.categories = categories;
+    $rootScope.categoryPriorities = categoryPriorities;
 
     // user selected an option from the my contributions dropdown
     $scope.navigateTo = function(newLocation) {
