@@ -71,7 +71,7 @@ app.controller('userSettingsController', function($scope, $rootScope, $q, userOb
     // initialize variables
     $scope.user = userObject.user;
     $scope.originalUser = angular.copy($scope.user);
-    $scope.settings = userObject.settings;
+    $scope.settings = $scope.user.settings;
     $scope.errors = {};
     $scope.tabs = tabsFactory.buildUserSettingsTabs();
 
