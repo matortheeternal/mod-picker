@@ -6,7 +6,7 @@
                 <section ng-repeat="modlist in recent.mod_lists">
                     <a ng-href="#/mod-list/{{modlist.id}}">
                         <div class="recent-thing" ng-init="user = modlist.submitter">
-                            <img class="smaller-image" ng-src="{{user.avatar == null ? '/avatars/' + user.title + '.png' : user.avatar}}">
+                            <img class="smaller-image" ng-src="{{user.avatar == null ? '/users/' + user.title + '.png' : user.avatar}}">
                             <div>
                                 <div class="recent-title">{{modlist.name}}</div>
                                 <div> by {{modlist.submitter.username}}</div>
