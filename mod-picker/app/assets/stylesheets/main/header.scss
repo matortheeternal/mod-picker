@@ -159,8 +159,9 @@ nav {
         i {
           font-size: 48px;
           color: $bright_action_color;
+          text-shadow: 0 0 3px $bright_action_color;
           display: block;
-          @include transition(color 0.3s ease)
+          @include transition(all 0.3s ease)
         }
 
         /* tweaks for icons which don't have enough margin below them */
@@ -170,7 +171,8 @@ nav {
 
         &:hover {
           i {
-            color: $link_hover_color_primary;
+            color: $action_color;
+            text-shadow: 0 0 4px $action_color;
           }
         }
       }
@@ -191,7 +193,7 @@ nav {
         padding: 2px;
 
         &:hover {
-          color: $link_hover_color_primary;
+          color: $action_color;
         }
       }
     }
