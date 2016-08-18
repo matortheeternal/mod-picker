@@ -96,7 +96,7 @@
                         Public Mod Lists
                     </span>
                 </a>
-                <a class="nav-browse-mods" href="#/mods">
+                <a class="nav-item" ng-click="toggleDropdown($event, 'Mods')" tabindex="0" ng-blur="blurDropdown('Mods')">
                     <span class="nav-icon">
                         <i class="fa fa-globe"></i>
                     </span>
@@ -104,9 +104,54 @@
                         <b>Browse</b>
                         Skyrim Mods
                     </span>
-                    <span class="nav-dropdown"></span>
+                    <span class="dropdown-icon">
+                        <i class="fa fa-chevron-down"></i>
+                    </span>
                 </a>
-                <a class="nav-submit-mod" href="#/mods/submit" ng-if="permissions.canSubmitMods">
+                <div class="nav-dropdown" id="mods-dropdown" ng-show="showModsDropdown">
+                    <!-- TODO: We should change the category tree selection logic so when the supercategory is specified on its own it checks the subcategories too -->
+                    <a class="nav-category" href="#/mods">
+                        <i class="fa fa-cubes"></i>
+                        All Mods
+                    </a>
+                    <a class="nav-category" href="#/mods?c=9,44,45,46,47,48">
+                        <i class="fa fa-image"></i>
+                        Audiovisual
+                    </a>
+                    <a class="nav-category" href="#/mods?c=5,32,34,33">
+                        <i class="fa fa-eye"></i>
+                        Character Appearance
+                    </a>
+                    <a class="nav-category" href="#/mods?c=8,43,42">
+                        <i class="fa fa-bug"></i>
+                        Fixes
+                    </a>
+                    <a class="nav-category" href="#/mods?c=4,21,23,22,24,25,26,27,28,29,30,31">
+                        <i class="fa fa-gamepad"></i>
+                        Gameplay
+                    </a>
+                    <a class="nav-category" href="#/mods?c=7,39,40,41,38">
+                        <i class="fa fa-flask"></i>
+                        Items
+                    </a>
+                    <a class="nav-category" href="#/mods?c=3,19,17,18,20,16">
+                        <i class="fa fa-building-o"></i>
+                        Locations
+                    </a>
+                    <a class="nav-category" href="#/mods?c=6,35,37,36">
+                        <i class="fa fa-group"></i>
+                        New Characters
+                    </a>
+                    <a class="nav-category" href="#/mods?c=2,13,14,15">
+                        <i class="fa fa-book"></i>
+                        Resources
+                    </a>
+                    <a class="nav-category" href="#/mods?c=1,10,11,12">
+                        <i class="fa fa-gears"></i>
+                        Utilities
+                    </a>
+                </div>
+                <a class="nav-item" href="#/mods/submit" ng-if="permissions.canSubmitMods">
                     <span class="nav-icon">
                         <i class="fa fa-plus-square"></i>
                     </span>
