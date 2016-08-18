@@ -86,7 +86,7 @@ app.controller('pluginCompatibilityIssuesController', function($scope, listUtils
         $scope.notes.unresolved_plugin_compatibility.forEach(function(note) {
             switch(note.status) {
                 case "compatibility option":
-                    if (note.compatibility_plugin.id) {
+                    if (note.compatibility_plugin) {
                         $scope.addPlugin(note.compatibility_plugin.id);
                     }
                     break;
