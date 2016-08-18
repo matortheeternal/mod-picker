@@ -75,7 +75,7 @@ app.controller('modInstallOrderIssuesController', function($scope, listUtils) {
         listUtils.removeDestroyed($scope.notes.install_order);
         $scope.buildUnresolvedInstallOrder();
     });
-    $scope.$on('modRemoved', function(modId) {
+    $scope.$on('modRemoved', function(event, modId) {
         if (modId) {
             listUtils.removeModNotes($scope.notes.install_order, modId, function(note) {
                 $scope.destroyIgnoreNote('InstallOrderNote', note);
@@ -83,7 +83,7 @@ app.controller('modInstallOrderIssuesController', function($scope, listUtils) {
         }
         $scope.buildUnresolvedInstallOrder();
     });
-    $scope.$on('modRecovered', function(modId) {
+    $scope.$on('modRecovered', function(event, modId) {
         if (modId) listUtils.recoverModNotes($scope.notes.install_order, modId);
         $scope.buildUnresolvedInstallOrder();
     });
