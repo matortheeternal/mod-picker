@@ -35,23 +35,6 @@ app.controller('modInstallOrderIssuesController', function($scope, listUtils) {
         });
     };
 
-    /* UPDATE VIEW MODEL */
-    $scope.recoverInstallOrderNotes = function(modId) {
-        $scope.notes.install_order.forEach(function(note) {
-            if (note._destroy && note.mods[0].id == modId || note.mods[1].id == modId) {
-                delete note._destroy;
-            }
-        });
-    };
-
-    $scope.removeInstallOrderNotes = function(modId) {
-        $scope.notes.install_order.forEach(function(note) {
-            if (note.mods[0].id == modId || note.mods[1].id == modId) {
-                note._destroy = true;
-            }
-        });
-    };
-
     /* RESOLUTION ACTIONS */
     $scope.$on('resolveInstallOrderNote', function(event, options) {
         switch(options.action) {
@@ -93,11 +76,15 @@ app.controller('modInstallOrderIssuesController', function($scope, listUtils) {
         $scope.buildUnresolvedInstallOrder();
     });
     $scope.$on('modRemoved', function(modId) {
-        if (modId) $scope.removeInstallOrderNotes(modId);
+        if (modId) {
+            listUtils.removeModNotes($scope.notes.install_order, modId, function(note) {
+                $scope.destroyIgnoreNote('InstallOrderNote', note);
+            });
+        }
         $scope.buildUnresolvedInstallOrder();
     });
     $scope.$on('modRecovered', function(modId) {
-        if (modId) $scope.recoverInstallOrderNotes(modId);
+        if (modId) listUtils.recoverModNotes($scope.notes.install_order, modId);
         $scope.buildUnresolvedInstallOrder();
     });
     $scope.$on('modAdded', function(event, modData) {

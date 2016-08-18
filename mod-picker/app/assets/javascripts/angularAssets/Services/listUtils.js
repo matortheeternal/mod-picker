@@ -141,4 +141,22 @@ app.service('listUtils', function () {
             }
         });
     };
+
+    this.removeModNotes = function(notes, modId, ignoredCallback) {
+        notes.forEach(function(note) {
+            if (note.mods[0].id == modId || note.mods[1].id == modId) {
+                note._destroy = true;
+                if (note.ignored) ignoredCallback(note);
+            }
+        });
+    };
+
+    this.recoverModNotes = function(notes, modId) {
+        notes.forEach(function(note) {
+            if (note._destroy && note.mods[0].id == modId || note.mods[1].id == modId) {
+                delete note._destroy;
+                if (note.ignored) note.ignored = false;
+            }
+        });
+    };
 });
