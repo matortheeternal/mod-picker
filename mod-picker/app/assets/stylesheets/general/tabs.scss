@@ -78,6 +78,10 @@
     background-color: $primary_background;
     color: $h4_color;
     text-align: center;
+
+    &:hover {
+      background-color: $primary_background;
+    }
   }
 
   .primary-item {
