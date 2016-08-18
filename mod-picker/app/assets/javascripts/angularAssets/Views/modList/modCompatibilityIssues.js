@@ -83,6 +83,14 @@ app.controller('modCompatibilityIssuesController', function($scope, listUtils) {
         }
     });
 
+    $scope.resolveAllCompatibility = function() {
+        $scope.notes.unresolved_compatibility.forEach(function(note) {
+            if (note.compatibility_mod) {
+                $scope.addMod(note.compatibility_mod.id);
+            }
+        });
+    };
+
     // event triggers
     $scope.$on('initializeModules', $scope.buildUnresolvedCompatibility);
     $scope.$on('reloadModules', function() {
