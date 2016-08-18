@@ -60,7 +60,7 @@
     <div class="page-container">
         <div class="nav-wrapper clearfix">
             <div class="primary-nav">
-                <a class="nav-modlist" ng-if="activeModList" ng-href="#/mod-list/{{activeModList.id}}">
+                <a class="nav-item" ng-if="activeModList" ng-href="#/mod-list/{{activeModList.id}}">
                     <span class="nav-icon">
                         <i class="fa fa-pencil-square-o"></i>
                     </span>
@@ -69,7 +69,7 @@
                         Mod List
                     </span>
                 </a>
-                <a class="nav-modlist" ng-if="!activeModList" ng-click="newModList()">
+                <a class="nav-item" ng-if="!activeModList" ng-click="newModList()">
                     <span class="nav-icon">
                         <i class="fa fa-pencil-square-o"></i>
                     </span>
@@ -78,7 +78,7 @@
                         Mod List
                     </span>
                 </a>
-                <a class="nav-contributions">
+                <a class="nav-item" ng-click="toggleDropdown($event, 'Contributions')" tabindex="0" ng-blur="blurDropdown('Contributions')">
                     <span class="nav-icon">
                         <i class="fa fa-comments"></i>
                     </span>
@@ -86,8 +86,18 @@
                         <b>View recent</b>
                         Contributions
                     </span>
+                    <span class="dropdown-icon">
+                        <i class="fa fa-chevron-down"></i>
+                    </span>
                 </a>
-                <a class="nav-browse-modlists" href="#/mod-lists">
+                <div class="nav-dropdown" id="contributions-dropdown" ng-show="showContributionsDropdown">
+                    <a href="#/reviews">Reviews</a>
+                    <a href="#/compatibility-notes">Compatibility Notes</a>
+                    <a href="#/install-order-notes">Install Order Notes</a>
+                    <a href="#/load-order-notes">Load Order Notes</a>
+                    <a href="#/corrections">Corrections</a>
+                </div>
+                <a class="nav-item" href="#/mod-lists">
                     <span class="nav-icon">
                         <i class="fa fa-list-ul"></i>
                     </span>
