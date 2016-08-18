@@ -159,4 +159,21 @@ app.service('listUtils', function () {
             }
         });
     };
+
+    this.removePluginNotes = function(notes, pluginId, ignoredCallback) {
+        notes.forEach(function(note) {
+            if (note.plugins[0].id == pluginId || note.plugins[1].id == pluginId) {
+                note._destroy = true;
+                if (note.ignored) ignoredCallback(note);
+            }
+        });
+    };
+
+    this.recoverPluginNotes = function(notes, pluginId) {
+        notes.forEach(function(note) {
+            if (note._destroy && note.plugins[0].id == pluginId || note.plugins[1].id == pluginId) {
+                delete note._destroy;
+            }
+        });
+    };
 });
