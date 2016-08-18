@@ -37,6 +37,12 @@ app.controller('requiredModsController', function($scope, $rootScope, requiremen
         });
     };
 
+    $scope.resolveAllRequirements = function() {
+        $scope.required.missing_mods.forEach(function(requirement) {
+            $scope.addMod(requirement.required_mod.id)
+        });
+    };
+
     /* EVENT TRIGGERS */
     $scope.$on('initializeModules', function() {
         requirementUtils.compactRequirements($scope.required.mods, 'mod', 'required_mod');
