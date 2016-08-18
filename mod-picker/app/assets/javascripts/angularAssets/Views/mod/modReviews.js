@@ -1,4 +1,4 @@
-app.controller('modReviewsController', function($scope, $stateParams, $state, modService, reviewSectionService, contributionService, sortFactory, formUtils) {
+app.controller('modReviewsController', function($scope, $stateParams, $state, modService, reviewSectionService, contributionService, sortFactory, formUtils, objectUtils) {
     $scope.sort.reviews = {
         column: $stateParams.scol,
         direction: $stateParams.sdir
@@ -17,7 +17,12 @@ app.controller('modReviewsController', function($scope, $stateParams, $state, mo
         };
         modService.retrieveModReviews($stateParams.modId, options, $scope.pages.reviews).then(function(data) {
             $scope.mod.reviews = data.reviews;
-            $scope.mod.user_review = data.user_review;
+            if (data.user_review && objectUtils.isEmptyObject(data.user_review)) {
+                $scope.userReviewHidden = true;
+            } else {
+                $scope.mod.user_review = data.user_review;
+
+            }
 
             //seperating the review in the url if any
             if ($stateParams.reviewId) {
