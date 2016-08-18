@@ -15,6 +15,7 @@ String.prototype.toDashFormat = function() {
         return "-" + uppercaseLetter.toLowerCase();
     })
 };
+
 String.prototype.wordCount = function() {
     return this.length ? this.match(/(\S+)/g).length : 0;
 };
