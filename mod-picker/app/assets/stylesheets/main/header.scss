@@ -159,7 +159,7 @@ nav {
         i {
           font-size: 48px;
           color: $bright_action_color;
-          text-shadow: 0 0 2.5px $bright_action_color;
+          text-shadow: 0 0 1px $bright_action_color;
           display: block;
           @include transition(all 0.3s ease)
         }
@@ -172,7 +172,7 @@ nav {
         &:hover {
           i {
             color: $action_color;
-            text-shadow: 0 0 4px $action_color;
+            text-shadow: 0 0 2px $action_color;
           }
         }
       }
