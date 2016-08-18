@@ -8,7 +8,7 @@ app.directive('pluginLoadOrderIssues', function() {
     }
 });
 
-app.controller('pluginLoadOrderIssuesController', function($scope, listUtils, requirementUtils) {
+app.controller('pluginLoadOrderIssuesController', function($scope, $timeout, listUtils, requirementUtils) {
     $scope.showUnresolvedLoadOrder = true;
     $scope.getRequirerList = requirementUtils.getPluginRequirerList;
 
@@ -140,7 +140,11 @@ app.controller('pluginLoadOrderIssuesController', function($scope, listUtils, re
     });
     $scope.$on('pluginRecovered', function(event, pluginId) {
         if (pluginId) listUtils.recoverPluginNotes($scope.notes.load_order, pluginId);
-        $scope.buildLoadOrderIssues();
+        // this $timeout is necessary because we need to indexes to be rebuilt
+        // prior to determining unresolved load order issues
+        $timeout(function() {
+            $scope.buildLoadOrderIssues();
+        });
     });
     $scope.$on('pluginAdded', $scope.buildLoadOrderIssues);
     $scope.$on('pluginMoved', $scope.buildLoadOrderIssues);

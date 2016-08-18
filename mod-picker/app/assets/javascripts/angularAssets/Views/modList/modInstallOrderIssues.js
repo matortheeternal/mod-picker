@@ -8,7 +8,7 @@ app.directive('modInstallOrderIssues', function() {
     }
 });
 
-app.controller('modInstallOrderIssuesController', function($scope, listUtils) {
+app.controller('modInstallOrderIssuesController', function($scope, $timeout, listUtils) {
     $scope.showUnresolvedInstallOrder = true;
 
     /* BUILD VIEW MODEL */
@@ -85,7 +85,11 @@ app.controller('modInstallOrderIssuesController', function($scope, listUtils) {
     });
     $scope.$on('modRecovered', function(event, modId) {
         if (modId) listUtils.recoverModNotes($scope.notes.install_order, modId);
-        $scope.buildUnresolvedInstallOrder();
+        // this $timeout is necessary because we need to indexes to be rebuilt
+        // prior to determining unresolved install order issues
+        $timeout(function() {
+            $scope.buildUnresolvedInstallOrder();
+        });
     });
     $scope.$on('modAdded', function(event, modData) {
         $scope.notes.install_order.unite(modData.install_order_notes);
