@@ -71,6 +71,17 @@ app.controller('modInstallOrderIssuesController', function($scope, listUtils) {
         }
     });
 
+    $scope.resolveAllInstallOrder = function() {
+        $scope.notes.unresolved_install_order.forEach(function(note) {
+            var moveOptions = {
+                moveId: note.mods[0].id,
+                destId: note.mods[1].id,
+                after: false
+            };
+            $scope.$broadcast('moveItem', moveOptions);
+        });
+    };
+
     // event triggers
     $scope.$on('initializeModules', $scope.buildUnresolvedInstallOrder);
     $scope.$on('reloadModules', function() {
