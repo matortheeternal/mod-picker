@@ -8,6 +8,7 @@ header {
   -o-background-size: cover;
   background-size: cover;
   height: 192px;
+  z-index: 100;
 }
 
 .header {
@@ -111,24 +112,87 @@ nav {
   display: block;
   background-color: $bar_color;
   white-space: nowrap;
-  //border-bottom: 2px solid $soft_border_color;
 
   .primary-nav {
-    a {
+    .nav-item {
       border-left: 1px solid $bar_highlight_color;
       height: 60px;
       padding: 12px 12px 16px;
       color: $bar_text_color;
+      background-color: $bar_color;
       display: block;
       float: left;
+      position: relative;
+      z-index: 100;
 
-      &:hover {
+      &:hover, &:focus {
+        outline: none;
         color: $bar_text_color;
         background-color: $bar_highlight_color;
       }
 
       &:last-child {
         border-right: 1px solid $bar_highlight_color;
+      }
+    }
+
+    .nav-dropdown {
+      display: block;
+      white-space: normal;
+      position: absolute;
+      text-align: center;
+      z-index: 2;
+      top: 60px;
+      padding: 10px;
+      background-color: $bar_highlight_color;
+      box-shadow: 0 0 10px 2px $shadow_color;
+
+      .nav-category {
+        display: inline-block;
+        vertical-align: middle;
+        text-align: center;
+        margin: 14px 4px;
+        font-size: 13px;
+        width: 85px;
+        color: $bar_text_color;
+
+        i {
+          font-size: 48px;
+          color: $bright_action_color;
+          display: block;
+          @include transition(color 0.3s ease)
+        }
+
+        /* tweaks for icons which don't have enough margin below them */
+        .fa-cubes, .fa-building-o {
+          margin-bottom: 2px;
+        }
+
+        &:hover {
+          i {
+            color: $link_hover_color_primary;
+          }
+        }
+      }
+    }
+
+    #mods-dropdown {
+      left: 295px;
+      width: 502px;
+    }
+
+    #contributions-dropdown {
+      left: 122px;
+      width: 180px;
+
+      a {
+        display: block;
+        color: $bar_text_color;
+        padding: 2px;
+
+        &:hover {
+          color: $link_hover_color_primary;
+        }
       }
     }
 
@@ -146,6 +210,14 @@ nav {
       margin-right: 6px;
       vertical-align: top;
       margin-top: 2px;
+    }
+
+    .dropdown-icon {
+      display: inline-block;
+      font-size: 16px;
+      margin-left: 6px;
+      vertical-align: top;
+      margin-top: 6px;
     }
 
     .nav-text {
