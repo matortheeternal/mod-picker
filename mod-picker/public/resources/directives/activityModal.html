@@ -1,0 +1,13 @@
+<div class="modal-container" ng-if="showActivityModal">
+    <div class="modal huge-modal">
+        <div class="close-modal" ng-if="activityComplete">
+            <span class="fa fa-times" ng-click="closeActivityModal()"></span>
+        </div>
+
+        <h2>{{activityTitle}}</h2>
+
+        <loader data="activityComplete" spinner-class="big-spinner"></loader>
+
+        <div class="content-message">{{activityMessage}}</div>
+    </div>
+</div>
