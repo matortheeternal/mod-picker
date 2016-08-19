@@ -27,17 +27,17 @@ app.controller('modListPluginsController', function($scope, $q, $timeout, catego
     };
 
     $scope.buildPluginsModel = function() {
+        var plugins = $scope.mod_list.plugins.concat($scope.mod_list.custom_plugins);
         $scope.model.plugins = [];
         $scope.mod_list.groups.forEach(function(group) {
             if (group.tab !== 'plugins') {
                 return;
             }
             $scope.model.plugins.push(group);
-            group.children = $scope.mod_list.plugins.filter(function(plugin) {
+            group.children = plugins.filter(function(plugin) {
                 return plugin.group_id == group.id;
             });
         });
-        var plugins = $scope.mod_list.plugins.concat($scope.mod_list.custom_plugins);
         plugins.forEach(function(plugin) {
             if (!plugin.group_id) {
                 var insertIndex = $scope.model.plugins.findIndex(function(item) {
