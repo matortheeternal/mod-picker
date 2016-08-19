@@ -243,6 +243,27 @@ app.controller('modListController', function($scope, $rootScope, $q, $stateParam
         }
     };
 
+    // ACTIVITY MODAL
+    $scope.startActivity = function(title) {
+        $scope.activityTitle = title;
+        $scope.activityComplete = false;
+        $scope.$emit('toggleModal', true);
+        $scope.showActivityModal = true;
+    };
+
+    $scope.setActivityMessage = function(message) {
+        $scope.activityMessage = message;
+    };
+
+    $scope.completeActivity = function() {
+        $scope.activityComplete = true;
+    };
+
+    $scope.closeActivityModal = function() {
+        $scope.$emit('toggleModal', false);
+        $scope.showActivityModal = false;
+    };
+
     // MOD LIST EDITING LOGIC
     $scope.flattenModel = function(label, associationLabel, mainBase, customBase, pushGroups) {
         var custom_label = 'custom_' + label;
