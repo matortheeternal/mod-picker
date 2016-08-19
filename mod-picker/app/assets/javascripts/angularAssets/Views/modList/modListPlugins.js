@@ -218,6 +218,107 @@ app.controller('modListPluginsController', function($scope, $q, $timeout, catego
         }
     };
 
+    // LOAD ORDER SORTING
+    $scope.startSortLoadOrder = function() {
+        // Display activity modal
+        $scope.startActivity('Sorting Load Order');
+        $scope.setActivityMessage('Preparing mod list for sorting');
+
+        // Dissassociate plugins, destroy original groups, and unmark as merged
+        sortUtils.prepareToSortPlugins($scope.mod_list);
+
+        // Save changes and call sortLoadOrder if successful
+        $scope.saveChanges(true).then(function() {
+            $scope.sortLoadOrder();
+        }, function() {
+            $scope.$emit('customMessage', { type: 'error', text: "Failed to sort load order.  Couldn't save mod list."});
+            $scope.setActivityMessage('Failed to prepare mod list for sorting');
+            $scope.completeActivity();
+        });
+    };
+
+    $scope.sortLoadOrder = function() {
+        // STEP 1: Build groups for categories
+        $scope.setActivityMessage('Building category groups');
+        var groups = sortUtils.buildPluginGroups($scope.mod_list);
+
+        // STEP 2: Merge category groups with less than 5 members into super category groups
+        sortUtils.combinePluginGroups($scope.mod_list, groups, $scope.categories);
+
+        // STEP 3: Sort groups and sort plugins in groups by override count
+        $scope.setActivityMessage('Sorting groups and plugins');
+        sortUtils.sortGroupsByPriority(groups);
+        sortUtils.sortPluginsByOverrides(groups);
+        sortUtils.updateIndexes(groups);
+
+        /* NOW ORPHANING PLUGINS OUTSIDE OF GROUPS IF NECESSARY */
+        // STEP 4: Sort plugins per load order notes
+        $scope.setActivityMessage('Handling load order notes');
+        sortUtils.handleLoadOrderNotes(groups, $scope.notes.load_order);
+
+        // STEP 5: Sort plugins per master dependencies
+        $scope.setActivityMessage('Handling dependencies');
+        sortUtils.handleMasterDependencies(groups, $scope.required.plugins);
+
+        // STEP 6: Save the new groups and associate plugins with groups
+        $scope.setActivityMessage('Saving groups');
+        $scope.model.plugins = [];
+        var groupPromises = [];
+        groups.forEach(function(group) {
+            // skip empty groups
+            if (!group.children.length) return;
+
+            // prepare promise for tracking purposes
+            var action = $q.defer();
+            var groupItem = {
+                mod_list_id: group.mod_list_id,
+                index: group.index,
+                tab: group.tab,
+                color: group.color,
+                name: group.name,
+                description: group.description
+            };
+
+            // tell the server to create the new mod list group
+            modListService.newModListGroup(groupItem).then(function(data) {
+                var newGroup = data;
+                newGroup.children = [];
+
+                // associate children with the new group object
+                group.children.forEach(function(child) {
+                    child.group_id = data.id;
+                    newGroup.children.push(child);
+                });
+
+                // push the new group object onto the view model
+                $scope.mod_list.groups.push(newGroup);
+                $scope.originalModList.groups.push(angular.copy(newGroup));
+                $scope.model.plugins.push(newGroup);
+                action.resolve(newGroup);
+            }, function(response) {
+                action.reject(response);
+            });
+
+            // push the promise onto the groupPromises array
+            groupPromises.push(action.promise);
+        });
+
+        // STEP 7: Update indexes and save changes
+        $q.all(groupPromises).then(function() {
+            $scope.setActivityMessage('Finalizing changes');
+            $scope.$broadcast('updateItems');
+            $timeout(function() {
+                $scope.saveChanges().then(function() {
+                    $scope.setActivityMessage('All done!');
+                    $scope.completeActivity();
+                }, function() {
+                    $scope.setActivityMessage('Failed to save changes, please save manually.');
+                    $scope.completeActivity();
+                });
+            });
+        });
+    };
+
     // event triggers
     $scope.$on('removeItem', function(event, modListPlugin) {
         $scope.removePlugin(modListPlugin);
