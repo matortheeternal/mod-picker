@@ -8,6 +8,6 @@ app.service('colorsFactory', function() {
     };
 
     this.randomColor = function() {
-        service.getColors().random();
+        return service.getColors().random();
     };
 });
