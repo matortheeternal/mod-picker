@@ -15,7 +15,6 @@ app.service('indexFactory', function(indexService) {
         localIndexService.setFiltersFromParams($scope.filters, $scope.filterPrototypes, $stateParams);
 
         /* data fetching functions */
-        $scope.firstGet = false;
         $scope.getData = function(page) {
             delete $scope[$scope.route];
             var options = {
@@ -26,6 +25,7 @@ app.service('indexFactory', function(indexService) {
             var dataCallback = function(data) {
                 $scope[$scope.route] = data[$scope.route];
                 $scope.firstGet = true;
+                if ($scope.dataCallback) $scope.dataCallback();
             };
             var errorCallback = function(response) {
                 $scope.error = response;
