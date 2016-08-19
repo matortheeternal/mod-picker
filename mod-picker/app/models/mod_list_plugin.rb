@@ -44,7 +44,7 @@ class ModListPlugin < ActiveRecord::Base
                   :except => [:game_id, :mod_id, :description, :mod_lists_count, :load_order_notes_count]
               },
               :mod => {
-                  :only => [:id, :name, :primary_category_id, :secondary_category_id]
+                  :only => [:id, :name, :is_official, :primary_category_id, :secondary_category_id]
               }
           }
       }
