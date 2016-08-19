@@ -5,7 +5,7 @@ app.run(function($futureState, indexFactory, filtersFactory) {
     $futureState.futureState(state);
 });
 
-app.controller('modsController', function($scope, $rootScope, $q, $stateParams, $state, modService, modListService, sliderFactory, columnsFactory, filtersFactory, actionsFactory, indexService, indexFactory) {
+app.controller('modsController', function($scope, $rootScope, $q, $stateParams, $state, modService, categoryService, modListService, sliderFactory, columnsFactory, filtersFactory, actionsFactory, indexService, indexFactory) {
     // inherited variables
     $scope.currentUser = $rootScope.currentUser;
     $scope.currentGame = $rootScope.currentGame;
@@ -134,6 +134,13 @@ app.controller('modsController', function($scope, $rootScope, $q, $stateParams, 
 
     // build available stat filters for view
     $scope.availableStatFilters = $scope.availableFilters($scope.statFilters);
+
+    // manipulate data before displaying it on the view
+    $scope.dataCallback = function() {
+        $scope.mods.forEach(function(mod) {
+            categoryService.resolveModCategories($scope.categories, mod);
+        });
+    };
 
     // handle special column/filter logic when filters change
     $scope.$watch('filters', function() {
