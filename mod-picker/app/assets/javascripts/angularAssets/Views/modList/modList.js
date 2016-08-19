@@ -439,10 +439,10 @@ app.controller('modListController', function($scope, $rootScope, $q, $stateParam
         }
     };
 
-    $scope.saveChanges = function() {
+    $scope.saveChanges = function(skipFlatten) {
         var action = $q.defer();
         // get changed mod fields
-        $scope.flattenModels();
+        if (!skipFlatten) $scope.flattenModels();
         var modListDiff = objectUtils.getDifferentObjectValues($scope.originalModList, $scope.mod_list);
         // if no fields were changed, inform the user and return
         if (objectUtils.isEmptyObject(modListDiff)) {
