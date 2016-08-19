@@ -419,6 +419,7 @@ app.controller('modListController', function($scope, $rootScope, $q, $stateParam
     };
 
     $scope.saveChanges = function() {
+        var action = $q.defer();
         // get changed mod fields
         $scope.flattenModels();
         var modListDiff = objectUtils.getDifferentObjectValues($scope.originalModList, $scope.mod_list);
@@ -426,7 +427,8 @@ app.controller('modListController', function($scope, $rootScope, $q, $stateParam
         if (objectUtils.isEmptyObject(modListDiff)) {
             var message = {type: 'warning', text: 'There are no changes to save.'};
             $scope.$broadcast('message', message);
-            return;
+            action.reject("No changes.");
+            return action.promise;
         }
 
         // else submit changes to the backend
@@ -435,9 +437,14 @@ app.controller('modListController', function($scope, $rootScope, $q, $stateParam
             $scope.$broadcast('saveChanges');
             // success message
             $scope.$emit('successMessage', 'Mod list saved successfully.');
+            action.resolve(true);
         }, function(response) {
             $scope.$emit('errorMessage', {label: 'Error saving mod list', response: response});
+            action.reject(response);
         });
+
+        //
+        return action.promise;
     };
 
     $scope.discardChanges = function() {
