@@ -1,4 +1,16 @@
 app.service('baseFactory', function() {
+    this.getModListGroupBase = function() {
+        return {
+            id: 0,
+            _destroy: false,
+            index: 0,
+            tab: "",
+            color: 0,
+            name: "",
+            description: ""
+        }
+    };
+
     this.getModListConfigFileBase = function() {
         return {
             id: 0,
