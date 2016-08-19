@@ -19,6 +19,18 @@ app.service('columnsFactory', function() {
             },
             {
                 group: "General",
+                visibility: false,
+                label: "Primary Category",
+                data: "primary_category.name"
+            },
+            {
+                group: "General",
+                visibility: false,
+                label: "Secondary Category",
+                data: "secondary_category.name"
+            },
+            {
+                group: "General",
                 visibility: true,
                 label: "Released",
                 data: "released",
