@@ -106,17 +106,17 @@ app.controller('pluginLoadOrderIssuesController', function($scope, $timeout, lis
         }
     };
 
-    $scope.resolveAllLoadOrder = function() {
-        $scope.required.out_of_order_plugins.forEach(function(requirement) {
-            $scope.reorder(requirement);
-        });
+    $scope.resolveAllLoadOrder = function(moveDown) {
         $scope.notes.unresolved_load_order.forEach(function(note) {
             var moveOptions = {
-                moveId: note.plugins[0].id,
-                destId: note.plugins[1].id,
-                after: false
+                moveId: note.plugins[+moveDown].id,
+                destId: note.plugins[+!moveDown].id,
+                after: moveDown
             };
             $scope.$broadcast('moveItem', moveOptions);
+        });
+        $scope.required.out_of_order_plugins.forEach(function(requirement) {
+            $scope.reorder(requirement, moveDown);
         });
     };
 
