@@ -24,6 +24,76 @@ class HelpPagesController < ApplicationController
     render "help_pages/edit"
   end
 
+  # GET /help/search?query=...
+  def search
+    @page_title = params[:search].humanize.titleize
+
+    # this makes 2 SQL queries to combine ORs.
+    # alternative is to use raw SQL or arel.
+    @help_pages = HelpPage.search(params[:search]) | HelpPage.game_long_name(params[:search])
+
+    # @help_pages = HelpPage.where("title LIKE ? OR text_body LIKE ? OR category LIKE ?",
+    #          "%#{searchParam}%", "%#{searchParam}%", HelpPage.categories[searchParam.parameterize("_").to_sym]) | 
+    #   (HelpPage.joins(:game).where("games.long_name LIKE '%#{searchParam}%' "))
+
+    # @help_pages = HelpPage.where(
+    #   HelpPage.arel_table[:text_body].matches("%#{searchParam}%")
+    #   .or(
+    #     HelpPage.joins(
+    #       HelpPage.arel_table.join(Game.arel_table).on(
+    #       Game.arel_table[:id].eq(HelpPage.arel_table[:game_id])
+    #     )[:long_name].matches("%#{searchParam}%"))
+    #   ).or(
+    #       HelpPage.arel_table[:title].matches("%#{searchParam}%")
+    #   )
+    # )
+
+    # @help_pages = HelpPage.select(Arel.star).where(
+    #   Game.arel_table[:long_name].matches("%#{searchParam}%").or(
+    #     HelpPage.arel_table[:title].matches("%#{searchParam}%")
+    #   )).joins(
+    #   HelpPage.arel_table.join(Game.arel_table).on(
+    #     Game.arel_table[:id].eq(HelpPage.arel_table[:game_id])
+    #   ).join_sources
+    # )
+
+
+    # @help_pages = HelpPage.where(
+    #   HelpPage.arel_table[:title].matches("%#{searchParam}%").or(
+    #     HelpPage.select(Arel.star).where(Game.arel_table[:long_name].matches("%#{searchParam}%")).joins(
+    #       HelpPage.arel_table.join(Game.arel_table).on(
+    #         Game.arel_table[:id].eq(HelpPage.arel_table[:game_id])
+    #       ).join_sources
+    #     )
+    #   )
+    # )
+
+    # puts HelpPage.where(
+    #   HelpPage.arel_table[:title].matches("%#{searchParam}%").or(
+    #     HelpPage.select(Arel.star).where(Game.arel_table[:long_name].matches("%#{searchParam}%")).joins(
+    #       HelpPage.arel_table.join(Game.arel_table).on(
+    #         Game.arel_table[:id].eq(HelpPage.arel_table[:game_id])
+    #       ).join_sources
+    #     )
+    #   )
+    # ).to_sql
+
+    # @help_pages = HelpPage.where([ byHelpPageTextBody, byHelpPageTitle ].map{|s| s.arel.constraints.reduce(:and) }.reduce(:or))\
+      # .merge(byGameLongName)
+    # @help_pages = HelpPage
+    #   .where("title LIKE ? OR text_body LIKE ?",
+    #         "%#{searchParam}%", "%#{searchParam}%").order("submitted DESC")
+
+    # @connection.exec_query(
+    #   'select help_pages.* from help_pages INNER JOIN games ON games.id = help_pages.game_id WHERE games.long_name LIKE "%Skyrim%"')
+
+
+    # 'SELECT help_pages.* FROM help_pages WHERE (SELECT help_pages.* FROM help_pages INNER JOIN games ON games.id = help_pages.game_id WHERE games.long_name LIKE "%Skyrim%"') OR (title LIKE "%Skyrim%"') OR (text_body LIKE "%Skyrim%"')
+
+    # @connection.exec_query('select help_pages.* from help_pages INNER JOIN games ON games.id = help_pages.game_id WHERE (games.long_name LIKE "%Skyrim%") OR (help_pages.title LIKE "%Skyrim%") OR (help_pages.text_body LIKE "%Skyrim%")')
+    # @help_pages = ActiveRecord::Base.connection.exec_query('SELECT help_pages.* FROM help_pages INNER JOIN games ON games.id = help_pages.game_id WHERE (games.long_name LIKE "%Skyrim%") OR (help_pages.title LIKE "%Skyrim%") OR (help_pages.text_body LIKE "%Skyrim%")')
+  end
+
   # GET /help/new
   def new
     @help_page = HelpPage.new

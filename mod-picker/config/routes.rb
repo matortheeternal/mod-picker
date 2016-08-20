@@ -8,7 +8,10 @@ Rails.application.routes.draw do
     match '/current_user', to: 'users#current', via: [:get]
     match '/users/index', to: 'users#index', via: [:get, :post]
     match '/users/search', to: 'users#search', via: [:post]
-    match '/users/:id', to: 'users#show', via: [:get]
+    
+    # as: :single_user defined so you can create links to individual user pages
+    # via single_user_path(@user_reference) inside of template pages 
+    match '/users/:id', to: 'users#show', via: [:get], as: :single_user
 
     # user associations
     match '/users/:id/comments', to: 'users#comments', via: [:get, :post]
@@ -132,6 +135,7 @@ Rails.application.routes.draw do
     match '/help/game/:game', to: 'help_pages#game', via: [:get]
     match '/help/:id/comments', to: 'help_pages#comments', via: [:get, :post]
     match '/help/:id/destroy', to: 'help_pages#destroy', via: [:get]
+    match '/help/search', to:  'help_pages#search', via: [:get]
     resources :help_pages, path: 'help', except: [:destroy]
 
 

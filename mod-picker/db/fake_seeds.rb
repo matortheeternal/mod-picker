@@ -1072,7 +1072,7 @@ _Image with alt :_
     category: HelpPage.categories.keys.sample,
     game: random_game,
     submitted_by: author.id,
-    name: Faker::Lorem.words(4).join(' '),
+    title: Faker::Lorem.words(4).join(' '),
     text_body: markdown_text,
     submitted: Faker::Date.backward(10),
     edited: Faker::Date.backward(9)
@@ -1084,7 +1084,7 @@ _Image with alt :_
       category: HelpPage.categories.keys.sample,
       game: random_game,
       submitted_by: author.id,
-      name: Faker::Lorem.words(4).join(' '),
+      title: Faker::Lorem.words(4).join(' '),
       text_body: Faker::Lorem.words(rand(300) + 30).join(' '),
       submitted: Faker::Date.backward(10),
       edited: Faker::Date.backward(9)

@@ -22,7 +22,7 @@
     
         <span class="meta author">
           <i class="fa fa-user" aria-hidden="true" title="Author"></i>
-            <%= link_to @help_page.submitter.username, user_path(@help_page.submitter), class: "medium-link" %>
+            <%= link_to @help_page.submitter.username, single_user_path(@help_page.submitter), class: "medium-link" %>
         </span>
 
         <!-- date posted/edited conditional-->
@@ -68,7 +68,7 @@
         <div class="footer-meta">
             <span class="meta author">
                 <i class="fa fa-user" aria-hidden="true" title="Author"></i>
-                <%= link_to @help_page.submitter.username, user_path(@help_page.submitter), class: "medium-link" %>
+                <%= link_to @help_page.submitter.username, single_user_path(@help_page.submitter), class: "medium-link" %>
             </span>
 
             <span class="meta date">
