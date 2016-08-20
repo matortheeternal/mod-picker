@@ -28,8 +28,7 @@ class HelpPagesController < ApplicationController
   def search
     @page_title = params[:search].humanize.titleize
 
-    # this makes 2 SQL queries to combine ORs.
-    # alternative is to use raw SQL or arel.
+    # search by title and text_body via help_page scope
     @help_pages = HelpPage.search(params[:search])
 
     render "help_pages/search"

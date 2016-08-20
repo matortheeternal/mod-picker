@@ -69,3 +69,31 @@
     }
   }
 }
+
+// search page input
+.search-page-container {
+  .search-form {
+    margin-top: 2rem;
+    font-size: 1em;
+
+    // flex used so text input takes up remaining width next to button
+    display: flex;
+  }
+
+  .search-form input {
+    flex: 1;
+    padding: 1rem;
+    font-size: inherit;
+    height: auto;
+  }
+
+  .search-form input[type="text"] {
+    margin-right: 1rem;
+    flex: 8;
+  }
+
+  .search-form .btn {
+    flex: 1;
+  }
+
+}
