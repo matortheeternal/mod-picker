@@ -1,91 +1,57 @@
-app.service('sortUtils', function (categoryService, colorsFactory, baseFactory, objectUtils) {
-    var service = this;
+app.service('sortUtils', function ($q, categoryService, colorsFactory, modListService) {
 
-    this.prepareToSortPlugins = function(mod_list) {
-        var preparePlugin = function(item) {
+    this.prepareToSort = function(mod_list, key) {
+        var customKey = 'custom_' + key;
+        var prepareItem = function(item) {
             item.group_id = null;
             if (item.merged) item.merged = false;
         };
-        mod_list.plugins.forEach(preparePlugin);
-        mod_list.custom_plugins.forEach(preparePlugin);
+        mod_list[key].forEach(prepareItem);
+        mod_list[customKey].forEach(prepareItem);
         mod_list.groups.forEach(function(group) {
-            if (group.tab === 'plugins') {
+            if (group.tab === key) {
                 group._destroy = true;
             }
         });
     };
 
-    this.updateIndexes = function(groups) {
-        var index = 0;
-        groups.forEach(function(group) {
-            group.index = index;
-            group.children.forEach(function(plugin) {
-                plugin.index = index++;
-            })
-        });
-    };
-
-    this.findPlugin = function(groups, pluginId, splice) {
-        for (var i = 0; i < groups.length; i++) {
-            var group = groups[i];
-            for (var j = 0; j < group.children.length; j++) {
-                var item = group.children[j];
-                if (item.plugin.id == pluginId) {
-                    return splice ? group.children.splice(j, 1) : item;
-                }
-            }
-        }
-    };
-
-    this.movePlugin = function(groups, srcPlugin, dstPlugin, after) {
-        var movingPlugin = service.findPlugin(groups, srcPlugin.plugin.id, true);
-        for (var i = 0; i < groups.length; i++) {
-            var group = groups[i];
-            for (var j = 0; j < group.children.length; j++) {
-                var item = group.children[j];
-                // when we find the destination plugin splice the movingPlugin
-                // before or after it and return
-                if (item.plugin.id == dstPlugin.plugin.id) {
-                    group.children.splice(j + after, 0, movingPlugin);
-                    service.updateIndexes(groups);
-                    return;
-                }
-            }
-        }
-    };
-
-    this.buildPluginGroups = function(mod_list) {
+    this.buildGroups = function(mod_list, key) {
         // initial groups for official content and ESMs
         var groups = [{
             mod_list_id: mod_list.id,
             index: 0,
-            tab: 'plugins',
+            tab: key,
             color: 'white',
             name: 'Official Content',
             priority: 0,
             children: []
-        }, {
-            mod_list_id: mod_list.id,
-            index: 1,
-            tab: 'plugins',
-            color: colorsFactory.randomColor(),
-            name: 'ESMs',
-            priority: 1,
-            children: []
         }];
 
-        // sort plugins into groups
-        mod_list.plugins.forEach(function(item) {
+        var handlingPlugins = key === 'plugins';
+        if (handlingPlugins) {
+            groups.push({
+                mod_list_id: mod_list.id,
+                index: 1,
+                tab: key,
+                color: colorsFactory.randomColor(),
+                name: 'ESMs',
+                priority: 1,
+                children: []
+            });
+        }
+
+        // sort items into groups
+        mod_list[key].forEach(function(item) {
             var mod = item.mod;
             var plugin = item.plugin;
             var foundGroup;
 
-            // plugins from official mods go into the Official Content group
+            // items from official mods go into the Official Content group
             if (mod.is_official) {
                 groups[0].children.push(item);
             }
             // non-official ESMs go into the ESMs group
-            else if (plugin.filename.endsWith('.esm')) {
+            else if (handlingPlugins && plugin.filename.endsWith('.esm')) {
                 // TODO: Check ESM flag instead once we have it
                 groups[1].children.push(item);
             }
@@ -103,7 +69,7 @@ app.service('sortUtils', function (categoryService, colorsFactory, baseFactory, 
                 else {
                     groups.push({
                         mod_list_id: mod_list.id,
-                        tab: 'plugins',
+                        tab: key,
                         color: colorsFactory.randomColor(),
                         name: primaryCategory.name,
                         priority: primaryCategory.priority,
@@ -114,15 +80,16 @@ app.service('sortUtils', function (categoryService, colorsFactory, baseFactory, 
             }
         });
 
-        // put custom plugins in a group at the end of the load order
+        // put custom items in a group at the end
+        var customKey = 'custom_'+key;
         groups.push({
             mod_list_id: mod_list.id,
             index: 9999,
-            tab: 'plugins',
+            tab: key,
             color: colorsFactory.randomColor(),
-            name: 'Custom Plugins',
+            name: 'Custom '+key.capitalize(),
             priority: 255,
-            children: mod_list.custom_plugins
+            children: mod_list[customKey]
         });
 
         // return the groups we built
@@ -135,43 +102,17 @@ app.service('sortUtils', function (categoryService, colorsFactory, baseFactory, 
         });
     };
 
-    this.sortPluginsByOverrides = function(groups) {
+    this.sortItems = function(groups, key, innerKey) {
         // we slice the first off because we don't want to sort official content
+        // we slice the last off because we don't want to sort custom content
         groups.slice(1, groups.length - 1).forEach(function(group) {
             group.children.sort(function(a, b) {
-                return a.override_count - b.override_count;
+                return a[key][innerKey] - b[key][innerKey];
             });
         });
     };
 
-    this.handleLoadOrderNotes = function(groups, notes) {
-        notes.forEach(function(note) {
-            var firstPlugin = service.findPlugin(note.plugins[0].id);
-            var secondPlugin = service.findPlugin(note.plugins[0].id);
-            if (firstPlugin && secondPlugin && firstPlugin.index > secondPlugin.index) {
-                service.movePlugin(groups, firstPlugin, secondPlugin);
-            }
-        });
-    };
-
-    this.handleMasterDependencies = function(groups, requirements) {
-        requirements.forEach(function(req) {
-            var masterPlugin = service.findPlugin(req.master_plugin.id);
-            var earliestIndex = 99999, earliestPlugin;
-            req.plugins.forEach(function(plugin) {
-                var foundPlugin = service.findPlugin(groups, plugin.id);
-                if (foundPlugin && foundPlugin.index < earliestIndex) {
-                    earliestIndex = foundPlugin.index;
-                    earliestPlugin = foundPlugin.plugin;
-                }
-            });
-            if (masterPlugin && earliestPlugin && masterPlugin.index > earliestPlugin.index) {
-                service.movePlugin(groups, masterPlugin, earliestPlugin);
-            }
-        });
-    };
-
-    this.combinePluginGroups = function(mod_list, groups, categoryStore) {
+    this.combineGroups = function(mod_list, key, groups, categoryStore) {
         for (var i = groups.length - 1; i >= 0; i--) {
             var group = groups[i];
             var category = group.category;
@@ -195,7 +136,7 @@ app.service('sortUtils', function (categoryService, colorsFactory, baseFactory, 
                 if (Math.abs(superCategory.priority - category.priority) > 10) continue;
                 groups.push({
                     mod_list_id: mod_list.id,
-                    tab: 'plugins',
+                    tab: key,
                     color: colorsFactory.randomColor(),
                     name: superCategory.name,
                     priority: superCategory.priority,
@@ -208,4 +149,49 @@ app.service('sortUtils', function (categoryService, colorsFactory, baseFactory, 
             groups.splice(i, 1);
         }
     };
+
+    this.saveGroups = function(groups, model, key, mod_list, originalModList) {
+        model[key] = [];
+        var groupPromises = [];
+        groups.forEach(function(group) {
+            // skip empty groups
+            if (!group.children.length) return;
+
+            // prepare promise for tracking purposes
+            var action = $q.defer();
+            var groupItem = {
+                mod_list_id: group.mod_list_id,
+                index: group.index,
+                tab: group.tab,
+                color: group.color,
+                name: group.name,
+                description: group.description
+            };
+
+            // tell the server to create the new mod list group
+            modListService.newModListGroup(groupItem).then(function(data) {
+                var newGroup = data;
+                newGroup.children = [];
+
+                // associate children with the new group object
+                group.children.forEach(function(child) {
+                    child.group_id = data.id;
+                    newGroup.children.push(child);
+                });
+
+                // push the new group object onto the view model
+                mod_list.groups.push(newGroup);
+                originalModList.groups.push(angular.copy(newGroup));
+                model[key].push(newGroup);
+                action.resolve(newGroup);
+            }, function(response) {
+                action.reject(response);
+            });
+
+            // push the promise onto the groupPromises array
+            groupPromises.push(action.promise);
+        });
+
+        return groupPromises;
+    }
 });
