@@ -448,7 +448,7 @@ app.controller('modListController', function($scope, $rootScope, $q, $stateParam
         if (objectUtils.isEmptyObject(modListDiff)) {
             var message = {type: 'warning', text: 'There are no changes to save.'};
             $scope.$broadcast('message', message);
-            action.reject("No changes.");
+            action.resolve(false);
             return action.promise;
         }
 
