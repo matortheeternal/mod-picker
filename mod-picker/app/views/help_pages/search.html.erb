@@ -1,0 +1,14 @@
+<% content_for :head do %>
+    <title>Mod Picker: Help Center - <%= @page_title %></title>
+<% end %>
+
+<div class="page-container help-list-page">
+    <% if @help_pages.length > 0 %>
+         <h1 class="page-title"><%= @help_pages.length %> Results for '<%= @page_title.humanize %>'</h1>
+        <%= render "list" %>
+    <% else %>
+    <div class="content-message">
+       <h1 class="page-title">No results found for '<%= params[:search] %>'</h1>
+    </div>
+    <% end %>
+</div>
