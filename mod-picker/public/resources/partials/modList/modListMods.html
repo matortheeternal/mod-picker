@@ -20,6 +20,9 @@
             <span class="right-item action-box" ng-if="editing" ng-click="addGroup('mods')">
                 <i class="fa fa-plus"></i> Add Group
             </span>
+            <span class="right-item action-box" ng-if="editing" ng-click="startSortInstallOrder()">
+                <i class="fa fa-sort-amount-desc"></i> Sort Install Order
+            </span>
             <span class="right-item action-box" ng-click="modsTable = !modsTable">
                 <i class="fa {{ modsTable ? 'fa-th-large' : 'fa-list-ul' }}" ng-class=""></i> {{ modsTable ? 'Grid View' : 'List View' }}
             </span>
