@@ -225,7 +225,7 @@ app.controller('modListPluginsController', function($scope, $q, $timeout, catego
         $scope.setActivityMessage('Preparing mod list for sorting');
 
         // Dissassociate plugins, destroy original groups, and unmark as merged
-        sortUtils.prepareToSortPlugins($scope.mod_list);
+        sortUtils.prepareToSort($scope.mod_list, 'plugins');
 
         // Save changes and call sortLoadOrder if successful
         $scope.saveChanges(true).then(function() {
@@ -240,75 +240,30 @@ app.controller('modListPluginsController', function($scope, $q, $timeout, catego
     $scope.sortLoadOrder = function() {
         // STEP 1: Build groups for categories
         $scope.setActivityMessage('Building category groups');
-        var groups = sortUtils.buildPluginGroups($scope.mod_list);
+        var groups = sortUtils.buildGroups($scope.mod_list, 'plugins');
 
         // STEP 2: Merge category groups with less than 5 members into super category groups
-        sortUtils.combinePluginGroups($scope.mod_list, groups, $scope.categories);
+        sortUtils.combineGroups($scope.mod_list, 'plugins', groups, $scope.categories);
 
         // STEP 3: Sort groups and sort plugins in groups by override count
         $scope.setActivityMessage('Sorting groups and plugins');
         sortUtils.sortGroupsByPriority(groups);
-        sortUtils.sortPluginsByOverrides(groups);
-        sortUtils.updateIndexes(groups);
+        sortUtils.sortItems(groups, 'plugin', 'overrides_count');
+        listUtils.updateItems(groups, 0);
 
-        /* NOW ORPHANING PLUGINS OUTSIDE OF GROUPS IF NECESSARY */
-        // STEP 4: Sort plugins per load order notes
-        $scope.setActivityMessage('Handling load order notes');
-        sortUtils.handleLoadOrderNotes(groups, $scope.notes.load_order);
-
-        // STEP 5: Sort plugins per master dependencies
-        $scope.setActivityMessage('Handling master dependencies');
-        sortUtils.handleMasterDependencies(groups, $scope.required.plugins);
-
-        // STEP 6: Save the new groups and associate plugins with groups
+        // STEP 4: Save the new groups and associate plugins with groups
         $scope.setActivityMessage('Saving groups');
-        $scope.model.plugins = [];
-        var groupPromises = [];
-        groups.forEach(function(group) {
-            // skip empty groups
-            if (!group.children.length) return;
+        var groupPromises = sortUtils.saveGroups(groups, $scope.model, 'plugins', $scope.mod_list, $scope.originalModList);
 
-            // prepare promise for tracking purposes
-            var action = $q.defer();
-            var groupItem = {
-                mod_list_id: group.mod_list_id,
-                index: group.index,
-                tab: group.tab,
-                color: group.color,
-                name: group.name,
-                description: group.description
-            };
-
-            // tell the server to create the new mod list group
-            modListService.newModListGroup(groupItem).then(function(data) {
-                var newGroup = data;
-                newGroup.children = [];
-
-                // associate children with the new group object
-                group.children.forEach(function(child) {
-                    child.group_id = data.id;
-                    newGroup.children.push(child);
-                });
-
-                // push the new group object onto the view model
-                $scope.mod_list.groups.push(newGroup);
-                $scope.originalModList.groups.push(angular.copy(newGroup));
-                $scope.model.plugins.push(newGroup);
-                action.resolve(newGroup);
-            }, function(response) {
-                action.reject(response);
-            });
-
-            // push the promise onto the groupPromises array
-            groupPromises.push(action.promise);
-        });
-
-        // STEP 7: Update indexes and save changes
         $q.all(groupPromises).then(function() {
-            $scope.setActivityMessage('Finalizing changes');
-            $scope.$broadcast('updateItems');
+            // STEP 5: Sort plugins per load order notes and master dependencies
+            $scope.setActivityMessage('Handling load order notes and master dependencies');
+            $scope.$broadcast('resolveAllLoadOrder');
+
+            // STEP 6: Update indexes and save changes
             $timeout(function() {
                 $scope.saveChanges().then(function() {
+                    $scope.setActivityMessage('Finalizing changes');
                     $scope.setActivityMessage('All done!');
                     $scope.completeActivity();
                 }, function() {
