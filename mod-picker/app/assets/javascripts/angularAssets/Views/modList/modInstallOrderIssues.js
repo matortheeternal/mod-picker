@@ -54,12 +54,12 @@ app.controller('modInstallOrderIssuesController', function($scope, $timeout, lis
         }
     });
 
-    $scope.resolveAllInstallOrder = function() {
+    $scope.resolveAllInstallOrder = function(moveDown) {
         $scope.notes.unresolved_install_order.forEach(function(note) {
             var moveOptions = {
-                moveId: note.mods[0].id,
-                destId: note.mods[1].id,
-                after: false
+                moveId: note.mods[+moveDown].id,
+                destId: note.mods[+!moveDown].id,
+                after: moveDown
             };
             $scope.$broadcast('moveItem', moveOptions);
         });
