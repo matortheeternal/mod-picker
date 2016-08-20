@@ -257,7 +257,7 @@ app.controller('modListPluginsController', function($scope, $q, $timeout, catego
         sortUtils.handleLoadOrderNotes(groups, $scope.notes.load_order);
 
         // STEP 5: Sort plugins per master dependencies
-        $scope.setActivityMessage('Handling dependencies');
+        $scope.setActivityMessage('Handling master dependencies');
         sortUtils.handleMasterDependencies(groups, $scope.required.plugins);
 
         // STEP 6: Save the new groups and associate plugins with groups
