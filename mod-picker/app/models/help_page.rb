@@ -11,8 +11,8 @@ class HelpPage < ActiveRecord::Base
   scope :game, -> (game_id) { where(game_id: game_id) }
 
   # searches by title, text body, and category
-  scope :search, -> (text) { where("title LIKE ? OR text_body LIKE ? OR category LIKE ?",
-             "%#{text}%", "%#{text}%", self.categories[text.parameterize("_").to_sym])}
+  scope :search, -> (text) { where("title LIKE ? OR text_body LIKE ?",
+             "%#{text}%", "%#{text}%"])}
 
   # associations
   belongs_to :submitter, :class_name => 'User', :foreign_key => 'submitted_by', :inverse_of => 'help_pages'
