@@ -350,7 +350,7 @@ class ModList < ActiveRecord::Base
   def as_json(options={})
     if JsonHelpers.json_options_empty(options)
       default_options = {
-          :except => [:game_id, :hidden, :submitted_by],
+          :except => [:game_id, :submitted_by],
           :include => {
               :submitter => {
                   :only => [:id, :username]

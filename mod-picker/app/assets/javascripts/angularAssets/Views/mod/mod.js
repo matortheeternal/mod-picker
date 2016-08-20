@@ -4,10 +4,10 @@ app.config(['$stateProvider', function($stateProvider) {
         controller: 'modController',
         url: '/mod/:modId',
         resolve: {
-            modObject: function($rootScope, $stateParams, $q, modService, categoryService) {
+            modObject: function($stateParams, $q, categories, modService, categoryService) {
                 var mod = $q.defer();
                 modService.retrieveMod($stateParams.modId).then(function(data) {
-                    categoryService.resolveModCategories($rootScope.categories, data.mod);
+                    categoryService.resolveModCategories(categories, data.mod);
                     mod.resolve(data);
                 }, function(response) {
                     var errorObj = {

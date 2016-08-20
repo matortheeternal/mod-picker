@@ -388,23 +388,32 @@ app.controller('modListController', function($scope, $rootScope, $q, $stateParam
 
     $scope.ignoreNote = function(type, note) {
         if (note.ignored) {
-            var foundIgnoredNote = $scope.findIgnoredNote(type, note.id);
-            if (note.ignored) {
-                if (!foundIgnoredNote) {
-                    $scope.mod_list.ignored_notes.push({
-                        note_type: type,
-                        note_id: note.id
-                    });
-                } else if (foundIgnoredNote._destroy) {
-                    delete foundIgnoredNote._destroy;
-                }
-            } else if (foundIgnoredNote) {
-                if (foundIgnoredNote.id) {
-                    foundIgnoredNote._destroy = true;
-                } else {
-                    var index = $scope.mod_list.ignored_notes.indexOf(foundIgnoredNote);
-                    $scope.mod_list.ignored_notes.splice(index, 1);
-                }
+            $scope.createIgnoreNote(type, note);
+        } else {
+            $scope.destroyIgnoreNote(type, note);
+        }
+    };
+
+    $scope.createIgnoreNote = function(type, note) {
+        var foundIgnoredNote = $scope.findIgnoredNote(type, note.id);
+        if (!foundIgnoredNote) {
+            $scope.mod_list.ignored_notes.push({
+                note_type: type,
+                note_id: note.id
+            });
+        } else if (foundIgnoredNote._destroy) {
+            delete foundIgnoredNote._destroy;
+        }
+    };
+
+    $scope.destroyIgnoreNote = function(type, note) {
+        var foundIgnoredNote = $scope.findIgnoredNote(type, note.id);
+        if (foundIgnoredNote) {
+            if (foundIgnoredNote.id) {
+                foundIgnoredNote._destroy = true;
+            } else {
+                var index = $scope.mod_list.ignored_notes.indexOf(foundIgnoredNote);
+                $scope.mod_list.ignored_notes.splice(index, 1);
             }
         }
     };

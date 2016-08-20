@@ -40,11 +40,6 @@
         line-height: 14px;
         color: $action_text_color;
         background-color: inherit;
-
-        &:hover, &:focus {
-          border: 0;
-          background-color: $dark_action_color;
-        }
       }
     }
 
@@ -64,12 +59,12 @@
   }
 
   .add-tag-box {
-    background-color: $dark_action_color;
+    background-color: $bar_highlight_color;
     cursor: pointer;
     @include transition(all 0.2s ease-in-out);
 
     &:hover {
-      background-color: $bar_color;
+      background-color: $action_color;
     }
   }
 }

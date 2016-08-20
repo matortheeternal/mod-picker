@@ -30,6 +30,12 @@ app.controller('tableItemsController', function($scope, $timeout, colorsFactory,
     $scope.filterClass = tableUtils.filterClass;
     $scope.getNumCols = tableUtils.getNumCols;
 
+    // toggles the visibility of the edit columns modal
+    $scope.toggleModal = function(visible) {
+        $scope.$emit('toggleModal', visible);
+        $scope.showModal = visible;
+    };
+
     // when the user wants to remove an item emit a removeItem event for the parent
     // controller to handle and respond to with an updateItems event when done
     $scope.removeItem = function(item) {

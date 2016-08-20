@@ -141,4 +141,39 @@ app.service('listUtils', function () {
             }
         });
     };
+
+    this.removeModNotes = function(notes, modId, ignoredCallback) {
+        notes.forEach(function(note) {
+            if (note.mods[0].id == modId || note.mods[1].id == modId) {
+                note._destroy = true;
+                if (note.ignored) ignoredCallback(note);
+            }
+        });
+    };
+
+    this.recoverModNotes = function(notes, modId) {
+        notes.forEach(function(note) {
+            if (note._destroy && note.mods[0].id == modId || note.mods[1].id == modId) {
+                delete note._destroy;
+                if (note.ignored) note.ignored = false;
+            }
+        });
+    };
+
+    this.removePluginNotes = function(notes, pluginId, ignoredCallback) {
+        notes.forEach(function(note) {
+            if (note.plugins[0].id == pluginId || note.plugins[1].id == pluginId) {
+                note._destroy = true;
+                if (note.ignored) ignoredCallback(note);
+            }
+        });
+    };
+
+    this.recoverPluginNotes = function(notes, pluginId) {
+        notes.forEach(function(note) {
+            if (note._destroy && note.plugins[0].id == pluginId || note.plugins[1].id == pluginId) {
+                delete note._destroy;
+            }
+        });
+    };
 });

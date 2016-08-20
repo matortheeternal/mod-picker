@@ -17,6 +17,21 @@ app.controller('categoryTreeController', function($scope, categoryService) {
         $scope.selection = [];
     }
 
+    $scope.findCategoryIndexes = function(category_id) {
+        for (var i = 0; i < $scope.nestedCategories.length; i++) {
+            var category = $scope.nestedCategories[i];
+            if (category.id == category_id) {
+                return { primary: category, secondary: null };
+            }
+            for (var j = 0; j < category.childs.length; j++) {
+                var childCategory = category.childs[j];
+                if (childCategory.id == category_id) {
+                    return { primary: category, secondary: childCategory };
+                }
+            }
+        }
+    };
+
     // prepare nested categories
     $scope.nestedCategories = categoryService.nestCategories($scope.categories);
 
@@ -46,21 +61,6 @@ app.controller('categoryTreeController', function($scope, categoryService) {
             }
         }
     });
-
-    $scope.findCategoryIndexes = function(category_id) {
-        for (var i = 0; i < $scope.nestedCategories.length; i++) {
-            var category = $scope.nestedCategories[i];
-            if (category.id == category_id) {
-                return { primary: category, secondary: null };
-            }
-            for (var j = 0; j < category.childs.length; j++) {
-                var childCategory = category.childs[j];
-                if (childCategory.id == category_id) {
-                    return { primary: category, secondary: childCategory };
-                }
-            }
-        }
-    };
 
     $scope.handleSelection = function(target) {
         if (target.value) {

@@ -122,8 +122,7 @@ class Ability
 
       # can create and update their mod lists
       can :create, ModList
-      can :update, ModList, :submitted_by => user.id
-      cannot :update, ModList, :hidden => true
+      can [:update, :hide], ModList, :submitted_by => user.id, :hidden => false
 
       # can update their settings or their account
       can :update, User, { :id => user.id }

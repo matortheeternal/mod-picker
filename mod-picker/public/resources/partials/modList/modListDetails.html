@@ -53,10 +53,13 @@
                 </label>
                 <span class="help-tooltip" title="If enabled only the mod list author, moderators and administrators &#13;will be able to add tags to this mod list.">?</span><br/>
 
-                <label class="checkbox-option" ng-if="permissions.canModerate">
+                <label class="checkbox-option">
                     <input type="checkbox" ng-model="mod_list.hidden">
-                    Hidden
+                    Deleted
                 </label>
+                <a href="/help/data_policies">
+                    <span class="help-tooltip" title="Checking this box will delete this mod list.  Click for more information &#13;on our data deletion and recovery policies.">?</span>
+                </a><br/>
             </section>
         </form>
     </div>

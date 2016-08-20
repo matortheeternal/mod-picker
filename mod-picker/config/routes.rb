@@ -8,10 +8,7 @@ Rails.application.routes.draw do
     match '/current_user', to: 'users#current', via: [:get]
     match '/users/index', to: 'users#index', via: [:get, :post]
     match '/users/search', to: 'users#search', via: [:post]
-    
-    # as: :single_user defined so you can create links to individual user pages
-    # via single_user_path(@user_reference) inside of template pages 
-    match '/users/:id', to: 'users#show', via: [:get], as: :single_user
+    match '/users/:id', to: 'users#show', via: [:get]
 
     # user associations
     match '/users/:id/comments', to: 'users#comments', via: [:get, :post]
@@ -114,6 +111,7 @@ Rails.application.routes.draw do
     match '/mod_lists/:id/config', to: 'mod_lists#config_files', via: [:get, :post]
     match '/mod_lists/:id/analysis', to: 'mod_lists#analysis', via: [:get, :post]
     match '/mod_lists/:id/comments', to: 'mod_lists#comments', via: [:get, :post]
+    match '/mod_lists/:id/hide', to: 'mod_lists#hide', via: [:post]
     match '/mod_list_groups', to: 'mod_list_groups#create', via: [:post]
     match '/mod_list_mods', to: 'mod_list_mods#create', via: [:post]
     match '/mod_list_mods', to: 'mod_list_mods#destroy', via: [:delete]

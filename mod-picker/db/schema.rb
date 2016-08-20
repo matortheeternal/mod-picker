@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160810210300) do
+ActiveRecord::Schema.define(version: 20160819001117) do
 
   create_table "agreement_marks", id: false, force: :cascade do |t|
     t.integer "correction_id", limit: 4,                null: false
@@ -52,11 +52,10 @@ ActiveRecord::Schema.define(version: 20160810210300) do
   end
 
   create_table "categories", force: :cascade do |t|
-    t.integer "parent_id",              limit: 4
-    t.string  "name",                   limit: 64,              null: false
-    t.string  "description",            limit: 255,             null: false
-    t.integer "install_order_priority", limit: 4,   default: 0, null: false
-    t.integer "load_order_priority",    limit: 4,   default: 0, null: false
+    t.integer "parent_id",   limit: 4
+    t.string  "name",        limit: 64,              null: false
+    t.string  "description", limit: 255,             null: false
+    t.integer "priority",    limit: 4,   default: 0, null: false
   end
 
   add_index "categories", ["parent_id"], name: "fk_rails_82f48f7407", using: :btree

@@ -27,6 +27,8 @@ class HelpPage < ActiveRecord::Base
 
   # Callbacks
   before_save :set_dates
+  after_create :increment_counters
+  before_destroy :decrement_counters
 
   # show image banner via post id
   def display_image
@@ -50,5 +52,13 @@ class HelpPage < ActiveRecord::Base
       else
         self.edited = DateTime.now
       end
+    end
+
+    def decrement_counters
+      self.game.update_counter(:help_pages_count, -1) if self.game_id.present?
+    end
+
+    def increment_counters
+      self.game.update_counter(:help_pages_count, 1) if self.game_id.present?
     end
 end

@@ -60,7 +60,7 @@
     <div class="page-container">
         <div class="nav-wrapper clearfix">
             <div class="primary-nav">
-                <a class="nav-modlist" ng-if="activeModList" ng-href="#/mod-list/{{activeModList.id}}">
+                <a class="nav-item" ng-if="activeModList" ng-href="#/mod-list/{{activeModList.id}}">
                     <span class="nav-icon">
                         <i class="fa fa-pencil-square-o"></i>
                     </span>
@@ -69,7 +69,7 @@
                         Mod List
                     </span>
                 </a>
-                <a class="nav-modlist" ng-if="!activeModList" ng-click="newModList()">
+                <a class="nav-item" ng-if="!activeModList" ng-click="newModList()">
                     <span class="nav-icon">
                         <i class="fa fa-pencil-square-o"></i>
                     </span>
@@ -78,7 +78,7 @@
                         Mod List
                     </span>
                 </a>
-                <a class="nav-contributions">
+                <a class="nav-item" ng-click="toggleDropdown($event, 'Contributions')" tabindex="0" ng-blur="blurDropdown('Contributions')">
                     <span class="nav-icon">
                         <i class="fa fa-comments"></i>
                     </span>
@@ -86,8 +86,18 @@
                         <b>View recent</b>
                         Contributions
                     </span>
+                    <span class="dropdown-icon">
+                        <i class="fa fa-chevron-down"></i>
+                    </span>
                 </a>
-                <a class="nav-browse-modlists" href="#/mod-lists">
+                <div class="nav-dropdown" id="contributions-dropdown" ng-show="showContributionsDropdown">
+                    <a href="#/reviews">Reviews</a>
+                    <a href="#/compatibility-notes">Compatibility Notes</a>
+                    <a href="#/install-order-notes">Install Order Notes</a>
+                    <a href="#/load-order-notes">Load Order Notes</a>
+                    <a href="#/corrections">Corrections</a>
+                </div>
+                <a class="nav-item" href="#/mod-lists">
                     <span class="nav-icon">
                         <i class="fa fa-list-ul"></i>
                     </span>
@@ -96,7 +106,7 @@
                         Public Mod Lists
                     </span>
                 </a>
-                <a class="nav-browse-mods" href="#/mods">
+                <a class="nav-item" ng-click="toggleDropdown($event, 'Mods')" tabindex="0" ng-blur="blurDropdown('Mods')">
                     <span class="nav-icon">
                         <i class="fa fa-globe"></i>
                     </span>
@@ -104,9 +114,54 @@
                         <b>Browse</b>
                         Skyrim Mods
                     </span>
-                    <span class="nav-dropdown"></span>
+                    <span class="dropdown-icon">
+                        <i class="fa fa-chevron-down"></i>
+                    </span>
                 </a>
-                <a class="nav-submit-mod" href="#/mods/submit" ng-if="permissions.canSubmitMods">
+                <div class="nav-dropdown" id="mods-dropdown" ng-show="showModsDropdown">
+                    <!-- TODO: We should change the category tree selection logic so when the supercategory is specified on its own it checks the subcategories too -->
+                    <a class="nav-category" href="#/mods">
+                        <i class="fa fa-cubes"></i>
+                        All Mods
+                    </a>
+                    <a class="nav-category" href="#/mods?c=1,10,11,12,13,14">
+                        <i class="fa fa-image"></i>
+                        Audiovisual
+                    </a>
+                    <a class="nav-category" href="#/mods?c=2,15,16,17">
+                        <i class="fa fa-eye"></i>
+                        Character Appearance
+                    </a>
+                    <a class="nav-category" href="#/mods?c=3,18,19">
+                        <i class="fa fa-bug"></i>
+                        Fixes
+                    </a>
+                    <a class="nav-category" href="#/mods?c=4,20,21,22,23,24,25,26,27,28,29,30">
+                        <i class="fa fa-gamepad"></i>
+                        Gameplay
+                    </a>
+                    <a class="nav-category" href="#/mods?c=5,31,32,33,34">
+                        <i class="fa fa-flask"></i>
+                        Items
+                    </a>
+                    <a class="nav-category" href="#/mods?c=6,35,36,37,38,39">
+                        <i class="fa fa-building-o"></i>
+                        Locations
+                    </a>
+                    <a class="nav-category" href="#/mods?c=7,40,41,42">
+                        <i class="fa fa-group"></i>
+                        New Characters
+                    </a>
+                    <a class="nav-category" href="#/mods?c=8,46,47,48">
+                        <i class="fa fa-book"></i>
+                        Resources
+                    </a>
+                    <a class="nav-category" href="#/mods?c=9,43,44,45">
+                        <i class="fa fa-gears"></i>
+                        Utilities
+                    </a>
+                </div>
+                <a class="nav-item" href="#/mods/submit" ng-if="permissions.canSubmitMods">
                     <span class="nav-icon">
                         <i class="fa fa-plus-square"></i>
                     </span>
