@@ -32,6 +32,7 @@ class HelpPagesController < ApplicationController
     # alternative is to use raw SQL or arel.
     @help_pages = HelpPage.search(params[:search])
 
+    render "help_pages/search"
   end
 
   # GET /help/new

@@ -36,10 +36,6 @@
                     <%= text_field_tag :search, params[:search], placeholder: "Search Help Center...",  autocomplete: "off"  %>
                     <%= submit_tag "Search", :name => nil, class: "btn" %>
                 <% end %>
-                <!--<form class="search-form">
-                    <input type="text" autocomplete="off" placeholder="Search Help Center...">
-                    <input type="submit" class="btn" value="Search"/>
-                </form>-->
                 <div class="user-nav">
                     <% if current_user %>
                         <a href="/skyrim#/user/<%= current_user.id %>">Profile</a>

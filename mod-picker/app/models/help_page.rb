@@ -12,7 +12,7 @@ class HelpPage < ActiveRecord::Base
 
   # searches by title, text body, and category
   scope :search, -> (text) { where("title LIKE ? OR text_body LIKE ?",
-             "%#{text}%", "%#{text}%"])}
+             "%#{text}%", "%#{text}%")}
 
   # associations
   belongs_to :submitter, :class_name => 'User', :foreign_key => 'submitted_by', :inverse_of => 'help_pages'
