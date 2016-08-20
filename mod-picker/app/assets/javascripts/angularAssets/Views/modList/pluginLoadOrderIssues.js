@@ -130,6 +130,11 @@ app.controller('pluginLoadOrderIssuesController', function($scope, $timeout, lis
         listUtils.removeDestroyed($scope.notes.load_order);
         $scope.buildLoadOrderIssues();
     });
+    $scope.$on('resolveAllLoadOrder', function() {
+        $scope.buildUnresolvedLoadOrder();
+        $scope.buildOutOfOrderPlugins();
+        $scope.resolveAllLoadOrder(true);
+    });
     $scope.$on('pluginRemoved', function(event, pluginId) {
         if (pluginId) {
             listUtils.removePluginNotes($scope.notes.load_order, pluginId, function(note) {
