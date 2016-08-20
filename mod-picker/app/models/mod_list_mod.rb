@@ -32,12 +32,11 @@ class ModListMod < ActiveRecord::Base
 
   def as_json(options={})
     if JsonHelpers.json_options_empty(options)
-      # TODO: Revise this as necessary
       default_options = {
           :only => [:id, :group_id, :index, :active],
           :include => {
               :mod => {
-                  :only => [:id, :name, :aliases, :authors, :status, :primary_category_id, :secondary_category_id, :average_rating, :reputation, :stars_count, :released, :updated],
+                  :only => [:id, :is_official, :name, :aliases, :authors, :status, :primary_category_id, :secondary_category_id, :average_rating, :reputation, :asset_files_count, :stars_count, :released, :updated],
                   :methods => :image
               }
           }
