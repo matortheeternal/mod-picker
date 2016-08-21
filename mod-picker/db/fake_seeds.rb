@@ -61,7 +61,7 @@ def get_unique_username
   username
 end
 
-def seed_fake_users
+def seed_fake_users(num_users)
   require 'securerandom'
 
   puts "\nSeeding users"
@@ -71,8 +71,8 @@ def seed_fake_users
     Time.at(from + rand * (to.to_f - from.to_f)).to_date
   end
 
-  # create 99 random users
-  99.times do |n|
+  # create random users
+  num_users.times do |n|
     username = get_unique_username
     pw = SecureRandom.urlsafe_base64
     User.create!(
