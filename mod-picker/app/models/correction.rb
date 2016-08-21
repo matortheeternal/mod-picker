@@ -13,29 +13,39 @@ class Correction < ActiveRecord::Base
   scope :search, -> (text) { where("corrections.title like ? OR corrections.text_body like ?", "%#{text}%", "%#{text}%") }
   scope :submitter, -> (username) { joins(:submitter).where(:users => {:username => username}) }
   scope :editor, -> (username) { joins(:editor).where(:users => {:username => username}) }
-  scope :status, -> (statuses_hash) {
-    # build statuses array
-    statuses = []
-    statuses_hash.each_with_index do |(key,value),index|
-      if statuses_hash[key]
-        statuses.push(index)
+  scope :status, -> (statuses) {
+    if statuses.is_a?(Hash)
+      # handle hash search by building a statuses array
+      statuses_array = []
+      statuses.each_with_index do |(key,value),index|
+        if statuses[key]
+          statuses_array.push(index)
+        end
       end
+    else
+      # else treat as an array of statuses
+      statuses_array = statuses
     end
 
     # return query
-    where(status: statuses)
+    where(status: statuses_array)
   }
-  scope :mod_status, -> (mod_statuses_hash) {
-    # build mod statuses array
-    mod_statuses = [nil]
-    mod_statuses_hash.each_with_index do |(key,value),index|
-      if mod_statuses_hash[key]
-        mod_statuses.push(index)
+  scope :mod_status, -> (mod_statuses) {
+    if mod_statuses.is_a?(Hash)
+      # handle hash search by building a statuses array
+      mod_statuses_array = []
+      mod_statuses.each_with_index do |(key,value),index|
+        if mod_statuses[key]
+          mod_statuses_array.push(index)
+        end
       end
+    else
+      # else treat as an array of statuses
+      mod_statuses_array = mod_statuses
     end
 
     # return query
-    where(mod_status: mod_statuses)
+    where(mod_status: mod_statuses_array)
   }
   scope :correctable, -> (correctable_hash) {
     # build correctables array
