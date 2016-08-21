@@ -35,6 +35,16 @@ class UserReputation < ActiveRecord::Base
   MOD_TAG_REP = 0.1
   MOD_LIST_TAG_REP = 0.05
 
+  # author reputation
+  AUTHOR_MAX = 1.0
+  AUTHOR_OFFSET = 0.5
+  AUTHOR_RANGE = 5
+  CONTRIBUTOR_MAX = 0.3
+  CONTRIBUTOR_OFFSET = 0.25
+  CONTRIBUTOR_RANGE = 100
+  CURATOR_BASE_REP = 5
+  MAX_CURATOR_REP = 100
+
   def calculate_site_rep
     # MOD PICKER
     mp_account_age = (Date.now - self.user.joined)
@@ -105,5 +115,28 @@ class UserReputation < ActiveRecord::Base
     self.contribution_rep += self.user.tags_count * NEW_TAG_REP
     self.contribution_rep += self.user.mod_tags_count * MOD_TAG_REP
     self.contribution_rep += self.user.mod_list_tags_count * MOD_LIST_TAG_REP
+  end
+
+  def calculate_author_rep
+    curator_rep = 0
+    self.user.mod_authors.each do |ma|
+      if ma.role == :author
+        authors_count = ModAuthor.where(mod_id: ma.mod_id, role: 0).count
+        percentage = AUTHOR_MAX - AUTHOR_OFFSET * (authors_count / AUTHOR_RANGE)
+        self.author_rep += percentage * ma.mod.reputation
+      elsif ma.role == :contributor
+        contributors_count = ModAuthor.where(mod_id: ma.mod_id, role: 1).count
+        percentage = CONTRIBUTOR_MAX - CONTRIBUTOR_OFFSET * (contributors_count / CONTRIBUTOR_RANGE)
+        self.author_rep += percentage * ma.mod.reputation
+      else # curator
+        curator_rep += CURATOR_BASE_REP
+      end
+    end
+
+    self.author_rep += [curator_rep, MAX_CURATOR_REP].max
+  end
+
+  def prepare_for_traversal
+    self.calc_rep = self.offset + self.site_rep + self.contribution_rep + self.author_rep
   end
 end
