@@ -1,8 +1,6 @@
 class UserReputation < ActiveRecord::Base
   include Filterable, RecordEnhancements
 
-  attr_accessor :calc_rep
-
   scope :user, -> (id) { where(user_id: id) }
 
   belongs_to :user
@@ -136,8 +134,8 @@ class UserReputation < ActiveRecord::Base
     self.author_rep += [curator_rep, MAX_CURATOR_REP].max
   end
 
-  def prepare_for_traversal
-    self.calc_rep = self.offset + self.site_rep + self.contribution_rep + self.author_rep
+  def calculate_overall_rep
+    self.overall = offset + site_rep + contribution_rep + author_rep + given_rep
   end
 
   def update_site_rep
