@@ -56,7 +56,7 @@ app.controller('modListPluginsController', function($scope, $q, $timeout, catego
     $scope.destroyModRemovedPlugins = function() {
         if (!$scope.removedModIds.length) return;
         var removeIfModRemoved = function(item) {
-            if (!item._destroy && $scope.removedModIds.indexOf(item.mod.id) > -1) {
+            if (item.mod && $scope.removedModIds.indexOf(item.mod.id) > -1) {
                 $scope.removePlugin(item);
             }
         };
@@ -216,6 +216,7 @@ app.controller('modListPluginsController', function($scope, $q, $timeout, catego
     };
 
     $scope.removePlugin = function(modListPlugin) {
+        if (modListPlugin._destroy) return;
         modListPlugin._destroy = true;
         $scope.mod_list.plugins_count -= 1;
         $scope.updateTabs();
