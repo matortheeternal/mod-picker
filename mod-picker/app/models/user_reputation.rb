@@ -151,4 +151,16 @@ class UserReputation < ActiveRecord::Base
     author_rep_diff = starting_author_rep - self.author_rep
     self.overall += author_rep_diff
   end
+
+  def get_max_links
+    if self.overall >= 640
+      15
+    elsif self.overall >= 160
+      10
+    elsif self.overall >= 40
+      5
+    else
+      0
+    end
+  end
 end
