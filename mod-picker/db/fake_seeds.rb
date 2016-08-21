@@ -28,7 +28,7 @@ end
 
 def get_unique_mod_pair(model)
   mod_ids = [0, 0]
-  while
+  while 1
     mod_ids[0] = random_mod.id
     mod_ids[1] = random_mod.id
     if mod_ids[0] != mod_ids[1] && model.where(first_mod_id: mod_ids, second_mod_id: mod_ids).empty?
@@ -40,7 +40,7 @@ end
 
 def get_unique_plugin_pair(model)
   plugin_ids = [0, 0]
-  while
+  while 1
     plugin_ids[0] = random_plugin.id
     plugin_ids[1] = random_plugin.id
     if plugin_ids[0] != plugin_ids[1] && model.where(first_plugin_id: plugin_ids, second_plugin_id: plugin_ids).empty?
