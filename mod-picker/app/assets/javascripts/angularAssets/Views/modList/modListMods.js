@@ -73,7 +73,7 @@ app.controller('modListModsController', function($scope, $rootScope, $timeout, $
             $scope.mod_list.mods_count += 1;
             $scope.updateTabs();
 
-            // upudate modules
+            // update modules
             $rootScope.$broadcast('modRecovered', !!modListMod.mod && modListMod.mod.id);
             $scope.$broadcast('updateItems');
 
@@ -233,8 +233,14 @@ app.controller('modListModsController', function($scope, $rootScope, $timeout, $
         var foundMod = $scope.findMod(modId);
         if (foundMod) {
             $scope.removeMod(foundMod);
-            $scope.removedModIds.push(modId);
         }
+    });
+    $scope.$on('modRemoved', function(event, modId) {
+        $scope.removedModIds.push(modId);
+    });
+    $scope.$on('modRecovered', function(event, modId) {
+        var index = $scope.removedModIds.indexOf(modId);
+        if (index > -1) $scope.removedModIds.splice(index, 1);
     });
     $scope.$on('removeItem', function(event, modListMod) {
         $scope.removeMod(modListMod);
