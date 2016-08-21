@@ -20,6 +20,21 @@ class UserReputation < ActiveRecord::Base
   WORKSHOP_FOLLOWERS_RATIO = 0.005
   MAX_SITE_REP = 50
 
+  # contribution reputation
+  REVIEW_BASE_REP = 2
+  REVIEW_HELPFUL_RATIO = 0.1
+  CNOTE_BASE_REP = 1
+  CNOTE_HELPFUL_RATIO = 0.05
+  INOTE_BASE_REP = 1
+  INOTE_HELPFUL_RATIO = 0.05
+  LNOTE_BASE_REP = 1
+  LNOTE_HELPFUL_RATIO = 0.05
+  OPEN_CORRECTION_REP = 1
+  CLOSED_CORRECTION_REP = 3
+  NEW_TAG_REP = 0.2
+  MOD_TAG_REP = 0.1
+  MOD_LIST_TAG_REP = 0.05
+
   def calculate_site_rep
     # MOD PICKER
     mp_account_age = (Date.now - self.user.joined)
@@ -47,5 +62,48 @@ class UserReputation < ActiveRecord::Base
 
     # Cap at MAX_SITE_REP
     self.site_rep = [self.site_rep, MAX_SITE_REP].max
+  end
+
+  # Alternatively, this could potentially be built into the the callback when a
+  # helpful mark is created or destroyed
+  def calculate_contribution_rep
+    def get_contribution_rep(h, base, ratio)
+      base + [-base, (h[0] - h[1]) * ratio, base].sort[1]
+    end
+
+    # REVIEWS
+    reviews = self.user.reviews.visible
+    reviews.pluck(:helpful_count, :not_helpful_count).each do |h|
+      self.contribution_rep += get_contribution_rep(h, REVIEW_BASE_REP, REVIEW_HELPFUL_RATIO)
+    end
+
+    # COMPATIBILITY NOTES
+    compatibility_notes = self.user.compatibility_notes.visible.standing([0])
+    compatibility_notes.pluck(:helpful_count, :not_helpful_count).each do |h|
+      self.contribution_rep += get_contribution_rep(h, CNOTE_BASE_REP, CNOTE_HELPFUL_RATIO)
+    end
+
+    # INSTALL ORDER NOTES
+    install_order_notes = self.user.install_order_notes.visible.standing([0])
+    install_order_notes.pluck(:helpful_count, :not_helpful_count).each do |h|
+      self.contribution_rep += get_contribution_rep(h, INOTE_BASE_REP, INOTE_HELPFUL_RATIO)
+    end
+
+    # LOAD ORDER NOTES
+    load_order_notes = self.user.load_order_notes.visible.standing([0])
+    load_order_notes.pluck(:helpful_count, :not_helpful_count).each do |h|
+      self.contribution_rep += get_contribution_rep(h, LNOTE_BASE_REP, LNOTE_HELPFUL_RATIO)
+    end
+
+    # CORRECTIONS
+    open_corrections_count = self.user.corrections.visible.status([0]).count
+    closed_corrections_count = self.user.corrections.visible.status([1, 3]).count
+    self.contribution_rep += open_corrections_count * OPEN_CORRECTION_REP
+    self.contribution_rep += closed_corrections_count * CLOSED_CORRECTION_REP
+
+    # TAGS
+    self.contribution_rep += self.user.tags_count * NEW_TAG_REP
+    self.contribution_rep += self.user.mod_tags_count * MOD_TAG_REP
+    self.contribution_rep += self.user.mod_list_tags_count * MOD_LIST_TAG_REP
   end
 end
