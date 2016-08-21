@@ -278,6 +278,25 @@ app.controller('modListPluginsController', function($scope, $q, $timeout, catego
     $scope.$on('removeItem', function(event, modListPlugin) {
         $scope.removePlugin(modListPlugin);
     });
+    $scope.$on('modRemoved', function(event, modId) {
+        var removedIfModMatches = function(item) {
+            if (item.mod.id == modId) {
+                $scope.removePlugin(item);
+            }
+        };
+        $scope.model.plugins.forEach(function(item) {
+            if (item.children) {
+                item.children.forEach(removedIfModMatches)
+            } else {
+                removedIfModMatches(item);
+            }
+        });
+        $scope.plugins_store.forEach(function(plugin) {
+            if (plugin.mod_id == modId) {
+                plugin._destroy = true;
+            }
+        });
+    });
     $scope.$on('rebuildModels', $scope.buildPluginsModel);
     $scope.$on('reloadModules', function() {
         listUtils.recoverDestroyed($scope.mod_list.plugins);
