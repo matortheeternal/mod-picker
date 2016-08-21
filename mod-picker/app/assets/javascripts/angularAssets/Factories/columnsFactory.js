@@ -489,13 +489,15 @@ app.service('columnsFactory', function() {
                 group: "General",
                 visibility: true,
                 label: "Primary Category",
-                data: "mod.primary_category.name"
+                data: "mod.primary_category.name",
+                class: 'category-column'
             },
             {
                 group: "General",
                 visibility: false,
                 label: "Secondary Category",
-                data: "mod.secondary_category.name"
+                data: "mod.secondary_category.name",
+                class: 'category-column'
             },
             {
                 group: "General",
@@ -609,13 +611,15 @@ app.service('columnsFactory', function() {
                 group: "General",
                 visibility: true,
                 label: "Primary Category",
-                data: "mod.primary_category.name"
+                data: "mod.primary_category.name",
+                class: 'category-column'
             },
             {
                 group: "General",
                 visibility: false,
                 label: "Secondary Category",
-                data: "mod.secondary_category.name"
+                data: "mod.secondary_category.name",
+                class: 'category-column'
             },
             {
                 group: "General",
