@@ -301,21 +301,40 @@ app.controller('modListPluginsController', function($scope, $q, $timeout, catego
         $scope.removePlugin(modListPlugin);
     });
     $scope.$on('modRemoved', function(event, modId) {
-        var removedIfModMatches = function(item) {
+        var removeIfModMatches = function(item) {
             if (item.mod.id == modId) {
                 $scope.removePlugin(item);
             }
         };
         $scope.model.plugins.forEach(function(item) {
             if (item.children) {
-                item.children.forEach(removedIfModMatches)
+                item.children.forEach(removeIfModMatches)
             } else {
-                removedIfModMatches(item);
+                removeIfModMatches(item);
             }
         });
         $scope.plugins_store.forEach(function(plugin) {
             if (plugin.mod_id == modId) {
                 plugin._destroy = true;
+            }
+        });
+    });
+    $scope.$on('modRecovered', function(event, modId) {
+        var recoverIfModMatches = function(item) {
+            if (item.mod.id == modId) {
+                recoverPlugin(item);
+            }
+        };
+        $scope.model.plugins.forEach(function(item) {
+            if (item.children) {
+                item.children.forEach(recoverIfModMatches)
+            } else {
+                recoverIfModMatches(item);
+            }
+        });
+        $scope.plugins_store.forEach(function(plugin) {
+            if (plugin.mod_id == modId && plugin._destroy) {
+                delete plugin._destroy;
             }
         });
     });
@@ -325,6 +344,7 @@ app.controller('modListPluginsController', function($scope, $q, $timeout, catego
     });
     $scope.$on('saveChanges', function() {
         listUtils.removeDestroyed($scope.mod_list.plugins);
+        listUtils.removeDestroyed($scope.plugins_store);
     });
     $scope.$on('itemMoved', function() {
         $scope.$broadcast('pluginMoved');
