@@ -1,7 +1,7 @@
 <table class="browse-table" ng-hide="isEmpty(model)">
     <thead>
         <tr>
-            <th ng-repeat="column in columns" class="no-action" ng-class="{ 'hidden' : !column.visibility, '{{column.class}}' : !!column.class }">
+            <th ng-repeat="column in columns" class="no-action" ng-class="{ 'hidden' : !column.visibility, '{{filterClass(column.filter)}}-cell' : !!column.filter, '{{column.class}}' : !!column.class }">
                 {{column.label}}
             </th>
             <th class="actions-header">
