@@ -302,7 +302,7 @@ app.controller('modListPluginsController', function($scope, $q, $timeout, catego
     });
     $scope.$on('modRemoved', function(event, modId) {
         var removeIfModMatches = function(item) {
-            if (item.mod.id == modId) {
+            if (item.mod && item.mod.id == modId) {
                 $scope.removePlugin(item);
             }
         };
@@ -321,7 +321,7 @@ app.controller('modListPluginsController', function($scope, $q, $timeout, catego
     });
     $scope.$on('modRecovered', function(event, modId) {
         var recoverIfModMatches = function(item) {
-            if (item.mod.id == modId) {
+            if (item.mod && item.mod.id == modId) {
                 recoverPlugin(item);
             }
         };
