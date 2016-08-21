@@ -2,6 +2,7 @@ class ModListCustomPluginsController < ApplicationController
 
   def create
     @mod_list_custom_plugin = ModListCustomPlugin.new(mod_list_custom_plugin_params)
+    authorize! :update, @mod_list_custom_plugin.mod_list
 
     if @mod_list_custom_plugin.save
       # render response

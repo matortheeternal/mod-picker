@@ -1,0 +1,46 @@
+<loader data="all_mod_lists" spinner-class="big-spinner" ng-if="!errors.mod_lists">
+    <h3 class="section-title">Active Mod List</h3>
+    <section>
+        <select ng-model="model.activeModListId">
+            <option value="">None</option>
+            <option ng-repeat="modList in all_mod_lists" value="{{modList.id}}">
+                {{modList.name}}
+            </option>
+        </select>
+        <input type="button" class="btn" value="Save" ng-click="saveActiveModList()"/>
+    </section>
+
+    <div class="content-block">
+        <div class="content-title">
+            Mod Lists
+            <span class="right-item">
+                <span class="action-box green-box" ng-click="newModList(false)">
+                    <i class="fa fa-plus"></i> New Mod List
+                </span>
+            </span>
+        </div>
+        <div class="content-container table-container">
+            <table-results data="mod_lists" message="No mod lists found."></table-results>
+        </div>
+    </div>
+
+    <div class="content-block">
+        <div class="content-title">
+            Mod Collections
+            <span class="right-item">
+                <span class="action-box green-box" ng-click="newModList(true)">
+                    <i class="fa fa-plus"></i> New Mod Collection
+                </span>
+            </span>
+        </div>
+        <div class="content-container table-container">
+            <table-results data="collections" message="No mod collections found."></table-results>
+        </div>
+    </div>
+</loader>
+
+<div class="content-message content-error" ng-if="errors.mod_lists">
+    There was an error retrieving your Mod Lists.<br>
+    <!--TODO: Render JSON errors here, if available?-->
+    Error {{error.status}}: {{error.statusText}}
+</div>

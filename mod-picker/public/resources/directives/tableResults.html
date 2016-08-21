@@ -2,9 +2,9 @@
     <table ng-show="data.length" class="browse-table">
         <thead>
             <tr>
-                <th ng-repeat="column in columns" ng-class="{ 'hidden': !column.visibility }" ng-click="sortColumn(column)">
+                <th ng-repeat="column in columns" ng-class="{ 'hidden': !column.visibility, 'no-action' : !sort }" ng-click="sortColumn(column)">
                     {{column.label}}
-                    <div class="sorting-options">
+                    <div class="sorting-options" ng-if="sort">
                         <div class="sort-up" ng-class="{ 'active' : column.up }">
                             <i class="fa fa-caret-up"></i>
                         </div>
@@ -14,7 +14,7 @@
                     </div>
                 </th>
                 <th class="actions-header">
-                    <a ng-click="showModal = true">
+                    <a ng-click="toggleModal(true)">
                         <i class="fa fa-columns" title="Edit Columns"></i>
                     </a>
                 </th>
@@ -23,7 +23,7 @@
         <tbody>
             <tr ng-repeat="item in data">
                 <td ng-repeat="column in columns" ng-class="{ 'hidden': !column.visibility, 'text-cell' : !column.filter, 'main-cell' : $index == 0 }">
-                    <a ng-if="column.link" class="strong" ng-href="{{column.link(item)}}">
+                    <a ng-if="column.link" ng-href="{{column.link(item)}}">
                         {{ columnValue(item, column.data) | picker:column.filter }}
                     </a>
                     <span ng-hide="column.link">
@@ -31,14 +31,14 @@
                     </span>
                 </td>
                 <td class="actions-cell">
-                    <input ng-repeat="action in actions" class="btn-sm" type="button" ng-click="action.execute(item)" value="{{action.caption}}" title="{{action.title}}"/>
+                    <actions></actions>
                 </td>
             </tr>
         </tbody>
     </table>
 
     <div class="content-message" ng-hide="data.length">
-        No {{label}} were found matching your search criteria.
+        {{message}}
     </div>
 
     <edit-columns-modal></edit-columns-modal>

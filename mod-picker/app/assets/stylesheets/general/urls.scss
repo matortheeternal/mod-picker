@@ -4,6 +4,10 @@ a {
   text-decoration: none;
   cursor: pointer;
   @include transition(all 0.2s ease-in-out);
+
+  &:hover {
+    color: $link_hover_color_secondary;
+  }
 }
 
 a.expand {
@@ -11,10 +15,6 @@ a.expand {
   padding-top: 16px;
   cursor: pointer;
   font-size: 12px;
-}
-
-a:hover {
-  color: $link_hover_color_secondary;
 }
 
 a.inverse-link {

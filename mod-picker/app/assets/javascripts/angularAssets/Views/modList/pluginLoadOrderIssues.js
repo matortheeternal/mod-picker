@@ -8,7 +8,7 @@ app.directive('pluginLoadOrderIssues', function() {
     }
 });
 
-app.controller('pluginLoadOrderIssuesController', function($scope, listUtils, requirementUtils) {
+app.controller('pluginLoadOrderIssuesController', function($scope, $timeout, listUtils, requirementUtils) {
     $scope.showUnresolvedLoadOrder = true;
     $scope.getRequirerList = requirementUtils.getPluginRequirerList;
 
@@ -63,23 +63,6 @@ app.controller('pluginLoadOrderIssuesController', function($scope, listUtils, re
     $scope.buildLoadOrderIssues = function() {
         $scope.buildUnresolvedLoadOrder();
         $scope.buildOutOfOrderPlugins();
-    };
-
-    /* UPDATE VIEW MODEL */
-    $scope.recoverLoadOrderNotes = function(pluginId) {
-        $scope.notes.load_order.forEach(function(note) {
-            if (note._destroy && note.plugins[0].id == pluginId || note.plugins[1].id == pluginId) {
-                delete note._destroy;
-            }
-        });
-    };
-
-    $scope.removeLoadOrderNotes = function(pluginId) {
-        $scope.notes.load_order.forEach(function(note) {
-            if (note.plugins[0].id == pluginId || note.plugins[1].id == pluginId) {
-                note._destroy = true;
-            }
-        });
     };
 
     /* RESOLUTIONS ACTIONS */
@@ -148,12 +131,20 @@ app.controller('pluginLoadOrderIssuesController', function($scope, listUtils, re
         $scope.buildLoadOrderIssues();
     });
     $scope.$on('pluginRemoved', function(event, pluginId) {
-        if (pluginId) $scope.removeLoadOrderNotes(pluginId);
+        if (pluginId) {
+            listUtils.removePluginNotes($scope.notes.load_order, pluginId, function(note) {
+                $scope.destroyIgnoreNote('LoadOrderNote', note);
+            });
+        }
         $scope.buildLoadOrderIssues();
     });
     $scope.$on('pluginRecovered', function(event, pluginId) {
-        if (pluginId) $scope.recoverLoadOrderNotes(pluginId);
-        $scope.buildLoadOrderIssues();
+        if (pluginId) listUtils.recoverPluginNotes($scope.notes.load_order, pluginId);
+        // this $timeout is necessary because we need to indexes to be rebuilt
+        // prior to determining unresolved load order issues
+        $timeout(function() {
+            $scope.buildLoadOrderIssues();
+        });
     });
     $scope.$on('pluginAdded', $scope.buildLoadOrderIssues);
     $scope.$on('pluginMoved', $scope.buildLoadOrderIssues);

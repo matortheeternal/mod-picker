@@ -43,6 +43,12 @@ app.controller('requiredToolsController', function($scope, $rootScope, requireme
         });
     };
 
+    $scope.resolveAllRequirements = function() {
+        $scope.required.missing_tools.forEach(function(requirement) {
+            $scope.addTool(requirement.required_mod.id)
+        });
+    };
+
     /* EVENT TRIGGERS */
     $scope.$on('initializeModules', function() {
         requirementUtils.compactRequirements($scope.required.tools, 'mod', 'required_mod');

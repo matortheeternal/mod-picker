@@ -9,44 +9,99 @@ class ModList < ActiveRecord::Base
   # GENERAL SCOPES
   scope :visible, -> { where(hidden: false, visibility: 2) }
   scope :game, -> (game_id) { where(game_id: game_id) }
-  scope :status, -> (status) { where(status: status) }
+  # SEARCH SCOPES
+  scope :search, -> (search) { where("name like ?", "#{search}%") }
+  scope :description, -> (search) { where("description like ?", "#{search}%") }
+  scope :submitter, -> (username) { joins(:submitter).where(:users => {:username => username}) }
+  scope :tags, -> (array) { joins(:tags).where(:tags => {text: array}).having("COUNT(DISTINCT tags.text) = ?", array.length) }
+  # HASH SCOPES
+  scope :status, -> (statuses) {
+    if statuses.is_a?(Hash)
+      # handle hash search by building a statuses array
+      statuses_array = []
+      statuses.each_key do |key|
+        statuses_array.push(ModList.statuses[key]) if statuses[key]
+      end
+    else
+      # else treat as an array of statuses
+      statuses_array = statuses
+    end
+
+    # return query
+    where(status: statuses_array)
+  }
+  scope :kind, -> (kinds) {
+    # build is_collection values array
+    is_collection = []
+    is_collection.push(false) if kinds[:normal]
+    is_collection.push(true) if kinds[:collection]
+
+    # return query if length is 1
+    where(is_collection: is_collection) if is_collection.length == 1
+  }
+  # DATE SCOPES
+  scope :submitted, -> (range) { where(submitted: parseDate(range[:min])..parseDate(range[:max])) }
+  scope :updated, -> (range) { where(updated: parseDate(range[:min])..parseDate(range[:max])) }
+  scope :completed, -> (range) { where(completed: parseDate(range[:min])..parseDate(range[:max])) }
+  # STATISTIC SCOPES
+  scope :tools, -> (range) { where(tools_count: (range[:min]..range[:max])) }
+  scope :mods, -> (range) { where(mods_count: (range[:min]..range[:max])) }
+  scope :plugins, -> (range) { where(plugins_count: (range[:min]..range[:max])) }
+  scope :config_files, -> (range) { where(config_files_count: (range[:min]..range[:max])) }
+  scope :ignored_notes, -> (range) { where(ignored_notes_count: (range[:min]..range[:max])) }
+  scope :stars, -> (range) { where(stars_count: (range[:min]..range[:max])) }
+  scope :custom_tools, -> (range) { where(custom_tools_count: (range[:min]..range[:max])) }
+  scope :custom_mods, -> (range) { where(custom_mods_count: (range[:min]..range[:max])) }
+  scope :master_plugins, -> (range) { where(master_plugins_count: (range[:min]..range[:max])) }
+  scope :available_plugins, -> (range) { where(available_plugins_count: (range[:min]..range[:max])) }
+  scope :custom_plugins, -> (range) { where(custom_plugins_count: (range[:min]..range[:max])) }
+  scope :custom_config_files, -> (range) { where(custom_config_files_count: (range[:min]..range[:max])) }
+  scope :compatibility_notes, -> (range) { where(compatibility_notes_count: (range[:min]..range[:max])) }
+  scope :install_order_notes, -> (range) { where(install_order_notes_count: (range[:min]..range[:max])) }
+  scope :load_order_notes, -> (range) { where(load_order_notes_count: (range[:min]..range[:max])) }
+  scope :bsa_files, -> (range) { where(bsa_files_count: (range[:min]..range[:max])) }
+  scope :asset_files, -> (range) { where(asset_files_count: (range[:min]..range[:max])) }
+  scope :records, -> (range) { where(records_count: (range[:min]..range[:max])) }
+  scope :override_records, -> (range) { where(override_records_count: (range[:min]..range[:max])) }
+  scope :plugin_errors, -> (range) { where(plugin_errors_count: (range[:min]..range[:max])) }
+  scope :comments, -> (range) { where(comments_count: (range[:min]..range[:max])) }
 
   # ASSOCIATIONS
   belongs_to :game, :inverse_of => 'mod_lists'
   belongs_to :submitter, :class_name => 'User', :foreign_key => 'submitted_by', :inverse_of => 'mod_lists'
 
   # INSTALL ORDER
-  has_many :mod_list_mods, :inverse_of => 'mod_list'
+  has_many :mod_list_mods, :inverse_of => 'mod_list', :dependent => :destroy
   has_many :mods, :through => 'mod_list_mods', :inverse_of => 'mod_lists'
-  has_many :custom_mods, :class_name => 'ModListCustomMod', :inverse_of => 'mod_list'
+  has_many :custom_mods, :class_name => 'ModListCustomMod', :inverse_of => 'mod_list', :dependent => :destroy
 
   # LOAD ORDER
   has_many :plugins, :through => 'mods'
-  has_many :mod_list_plugins, :inverse_of => 'mod_list'
-  has_many :custom_plugins, :class_name => 'ModListCustomPlugin', :inverse_of => 'mod_list'
+  has_many :mod_list_plugins, :inverse_of => 'mod_list', :dependent => :destroy
+  has_many :custom_plugins, :class_name => 'ModListCustomPlugin', :inverse_of => 'mod_list', :dependent => :destroy
 
   # IGNORED NOTES
-  has_many :ignored_notes, :class_name => 'ModListIgnoredNote', :inverse_of => 'mod_list'
+  has_many :ignored_notes, :class_name => 'ModListIgnoredNote', :inverse_of => 'mod_list', :dependent => :destroy
 
   # GROUPS
   # NOTE: This association has to be after the mods_list_mods, mod_list_plugins,
   # and custom_plugins associations in order to yield correct behavior with
   # nested attributes in certain circumstances (specifically when mods have been
   # moved out of a group and the group has been deleted)
-  has_many :mod_list_groups, :inverse_of => 'mod_list'
+  has_many :mod_list_groups, :inverse_of => 'mod_list', :dependent => :destroy
 
   # CONFIG FILES
   has_many :config_files, :through => 'mods'
-  has_many :mod_list_config_files, :inverse_of => 'mod_list'
-  has_many :custom_config_files, :class_name => 'ModListCustomConfigFile', :inverse_of => 'mod_list'
+  has_many :mod_list_config_files, :inverse_of => 'mod_list', :dependent => :destroy
+  has_many :custom_config_files, :class_name => 'ModListCustomConfigFile', :inverse_of => 'mod_list', :dependent => :destroy
 
   # TAGS
-  has_many :mod_list_tags, :inverse_of => 'mod_list'
+  has_many :mod_list_tags, :inverse_of => 'mod_list', :dependent => :destroy
   has_many :tags, :through => 'mod_list_tags', :inverse_of => 'mod_lists'
 
   # ASSOCIATIONS FROM OTHER USERS
-  has_many :mod_list_stars, :inverse_of => 'mod_list'
-  has_many :comments, -> { where(parent_id: nil) }, :as => 'commentable'
+  has_many :mod_list_stars, :inverse_of => 'mod_list', :dependent => :destroy
+  has_many :comments, -> { where(parent_id: nil) }, :as => 'commentable', :dependent => :destroy
 
   # NESTED ATTRIBUTES
   accepts_nested_attributes_for :mod_list_mods, allow_destroy: true
@@ -57,6 +112,9 @@ class ModList < ActiveRecord::Base
   accepts_nested_attributes_for :mod_list_config_files, allow_destroy: true
   accepts_nested_attributes_for :custom_config_files, allow_destroy: true
   accepts_nested_attributes_for :ignored_notes, allow_destroy: true
+
+  # numbers of mod lists per page on the mod lists index
+  self.per_page = 100
 
   # Validations
   validates :game_id, :submitted_by, :name, presence: true
@@ -71,7 +129,7 @@ class ModList < ActiveRecord::Base
   validates :name, length: { maximum: 255 }
 
   # Callbacks
-  after_create :increment_counters, :set_active
+  after_create :increment_counters
   before_update :hide_comments
   before_save :set_dates
   before_destroy :decrement_counters, :unset_active
@@ -118,6 +176,31 @@ class ModList < ActiveRecord::Base
     elsif self.attribute_changed?(:disable_comments) && self.disable_comments
       self.comments.update_all(:hidden => true)
     end
+  end
+
+  def add_official_content
+    # official mods
+    official_content = Mod.game(self.game_id).where(is_official: true)
+    official_content.each_with_index do |m, index|
+      self.mod_list_mods.create({
+          mod_id: m.id,
+          index: index
+      })
+    end
+
+    # official plugins
+    official_plugins = Plugin.mods(official_content)
+    official_plugins.each_with_index do |p, index|
+      self.mod_list_plugins.create({
+          plugin_id: p.id,
+          index: index
+      })
+    end
+  end
+
+  def set_active
+    self.submitter.active_mod_list_id = self.id
+    self.submitter.save
   end
 
   def mod_list_plugin_ids
@@ -182,7 +265,7 @@ class ModList < ActiveRecord::Base
     return [] if mod_ids.empty?
 
     # get incompatible mod ids
-    incompatible_ids = CompatibilityNote.status([1, 2]).mod(mod_ids).pluck(:first_mod_id, :second_mod_id)
+    incompatible_ids = CompatibilityNote.status([0, 1]).mod(mod_ids).pluck(:first_mod_id, :second_mod_id)
     # return array of unique mod ids from the notes, excluding mod list mod ids
     incompatible_ids.flatten(1).uniq - mod_ids
   end
@@ -241,6 +324,13 @@ class ModList < ActiveRecord::Base
     })
   end
 
+  def tracking_json
+    self.as_json({
+        :only => [:id, :name, :mods_count, :plugins_count, :active_plugins_count, :custom_plugins_count],
+        :methods => [:incompatible_mods, :mod_list_mod_ids]
+    })
+  end
+
   def self.home_json(collection)
     # TODO: Revise this as needed
     collection.as_json({
@@ -260,15 +350,11 @@ class ModList < ActiveRecord::Base
   def as_json(options={})
     if JsonHelpers.json_options_empty(options)
       default_options = {
-          :except => [:submitted_by],
+          :except => [:game_id, :submitted_by],
           :include => {
               :submitter => {
-                  :only => [:id, :username, :role, :title],
-                  :include => {
-                      :reputation => {:only => [:overall]}
-                  },
-                  :methods => :avatar
-              },
+                  :only => [:id, :username]
+              }
           }
       }
       super(options.merge(default_options))
@@ -295,11 +381,6 @@ class ModList < ActiveRecord::Base
 
     def decrement_counters
       self.submitter.update_counter(:mod_lists_count, -1)
-    end
-
-    def set_active
-      self.submitter.active_mod_list_id = self.id
-      self.submitter.save
     end
 
     def unset_active

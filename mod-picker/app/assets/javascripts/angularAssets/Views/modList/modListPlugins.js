@@ -1,4 +1,4 @@
-app.controller('modListPluginsController', function($scope, $q, $timeout, modListService, columnsFactory, actionsFactory, listUtils) {
+app.controller('modListPluginsController', function($scope, $q, $timeout, categories, categoryService, modListService, columnsFactory, actionsFactory, listUtils) {
     // initialize variables
     $scope.showDetailsModal = false;
     $scope.detailsItem = {};
@@ -55,6 +55,7 @@ app.controller('modListPluginsController', function($scope, $q, $timeout, modLis
 
     $scope.retrievePlugins = function() {
         modListService.retrieveModListPlugins($scope.mod_list.id).then(function(data) {
+            categoryService.associateCategories(categories, data.plugins);
             $scope.required.plugins = data.required_plugins;
             $scope.notes.plugin_compatibility = data.compatibility_notes;
             $scope.notes.load_order = data.load_order_notes;

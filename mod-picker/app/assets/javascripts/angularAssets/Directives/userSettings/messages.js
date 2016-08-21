@@ -11,7 +11,6 @@ app.directive('messages', function () {
     }
 });
 
-//TODO: empty controller is probably unnecessary :P
 app.controller('messagesController', function ($scope, $timeout) {
     // default values
     $scope.event = $scope.event || 'message';
@@ -22,12 +21,20 @@ app.controller('messagesController', function ($scope, $timeout) {
     $scope.messages = [];
 
     $scope.$on($scope.event, function(event, message) {
-        var decay = message.type === 'success' ? $scope.successDecay : $scope.errorDecay;
+        var isSuccessMessage = message.type === 'success';
+        var decay = isSuccessMessage ? $scope.successDecay : $scope.errorDecay;
+        if (isSuccessMessage) $scope.messages = [];
+
+        // shift messages off the array until we have 3
+        while ($scope.messages.length >= 3) $scope.messages.shift();
+
+        // push the new message onto the view
         $scope.messages.push(message);
+
+        // timeout before removing the message automatically
         $timeout(function() {
             var index = $scope.messages.indexOf(message);
-            // TODO: We should set display hidden before splicing the message so the transition works
-            $scope.messages.splice(index, 1);
+            if (index > -1) $scope.messages.splice(index, 1);
         }, message.decay || decay);
     });
 });

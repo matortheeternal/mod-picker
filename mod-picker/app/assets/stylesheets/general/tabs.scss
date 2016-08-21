@@ -3,7 +3,7 @@
   a {
     display: inline-block;
     cursor: pointer;
-    color: $inverse_text_color;
+    color: $action_text_color;
     padding: 9px 16px 9px 16px;//half of font size high
     border: 1px solid $border_color;
     border-bottom: 0;
@@ -78,6 +78,10 @@
     background-color: $primary_background;
     color: $h4_color;
     text-align: center;
+
+    &:hover {
+      background-color: $primary_background;
+    }
   }
 
   .primary-item {

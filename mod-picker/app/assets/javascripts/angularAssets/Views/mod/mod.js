@@ -4,9 +4,10 @@ app.config(['$stateProvider', function($stateProvider) {
         controller: 'modController',
         url: '/mod/:modId',
         resolve: {
-            modObject: function(modService, $stateParams, $q) {
+            modObject: function($stateParams, $q, categories, modService, categoryService) {
                 var mod = $q.defer();
                 modService.retrieveMod($stateParams.modId).then(function(data) {
+                    categoryService.resolveModCategories(categories, data.mod);
                     mod.resolve(data);
                 }, function(response) {
                     var errorObj = {
@@ -27,7 +28,7 @@ app.config(['$stateProvider', function($stateProvider) {
         views: {
             'Reviews': {
                 templateUrl: '/resources/partials/mod/modReviews.html',
-                controller: 'modReviewsController',
+                controller: 'modReviewsController'
             }
         },
         url: '/reviews/{reviewId:int}?{page:int}&scol&sdir',
@@ -44,7 +45,7 @@ app.config(['$stateProvider', function($stateProvider) {
         views: {
             'Compatibility': {
                 templateUrl: '/resources/partials/mod/modCompatibility.html',
-                controller: 'modCompatibilityController',
+                controller: 'modCompatibilityController'
             }
         },
         url: '/compatibility/{compatibilityNoteId:int}?{page:int}&scol&sdir&{filter:bool}',
@@ -62,7 +63,7 @@ app.config(['$stateProvider', function($stateProvider) {
         views: {
             'Install Order': {
                 templateUrl: '/resources/partials/mod/modInstallOrder.html',
-                controller: 'modInstallOrderController',
+                controller: 'modInstallOrderController'
             }
         },
         url: '/install-order/{installOrderNoteId:int}?{page:int}&scol&sdir&{filter:bool}',
@@ -80,7 +81,7 @@ app.config(['$stateProvider', function($stateProvider) {
         views: {
             'Load Order': {
                 templateUrl: '/resources/partials/mod/modLoadOrder.html',
-                controller: 'modLoadOrderController',
+                controller: 'modLoadOrderController'
             }
         },
         url: '/load-order/{loadOrderNoteId:int}?{page:int}&scol&sdir&{filter:bool}',
@@ -98,20 +99,24 @@ app.config(['$stateProvider', function($stateProvider) {
         views: {
             'Analysis': {
                 templateUrl: '/resources/partials/mod/modAnalysis.html',
-                controller: 'modAnalysisController',
+                controller: 'modAnalysisController'
             }
         },
         url: '/analysis?{plugin:int}'
     });
 }]);
 
-app.controller('modController', function($scope, $q, $stateParams, $state, $timeout, currentUser, modObject, modService, contributionService, categoryService, tagService, smoothScroll, errorService, tabsFactory, sortFactory) {
+app.controller('modController', function($scope, $rootScope, $q, $stateParams, $state, $timeout, modObject, modService, modListService, contributionService, categoryService, tagService, smoothScroll, errorService, tabsFactory, sortFactory) {
     // get parent variables
     $scope.mod = modObject.mod;
     $scope.mod.star = modObject.star;
-    $scope.currentUser = currentUser;
-    // resolve mod categories
-    categoryService.resolveModCategories($scope.mod);
+    $scope.currentUser = $rootScope.currentUser;
+    $scope.activeModList = $rootScope.activeModList;
+    if ($scope.activeModList) {
+        $scope.mod.in_mod_list = $scope.activeModList.mod_list_mod_ids.find(function(modId) {
+            return modId == $scope.mod.id;
+        });
+    }
 
     // initialize local variables
     $scope.tabs = tabsFactory.buildModTabs($scope.mod);
@@ -153,7 +158,7 @@ app.controller('modController', function($scope, $q, $stateParams, $state, $time
     $scope.errors = {};
 
     //a copy is created so the original permissions are never changed
-    $scope.permissions = angular.copy(currentUser.permissions);
+    $scope.permissions = angular.copy($rootScope.permissions);
     //setting up the canManage permission
     var author = $scope.mod.author_users.find(function(author) {
         return author.id == $scope.currentUser.id;
@@ -254,6 +259,31 @@ app.controller('modController', function($scope, $q, $stateParams, $state, $time
             var params = { label: 'Error starring mod', response: response };
             $scope.$emit('errorMessage', params);
         });
+    };
+
+    $scope.toggleInModList = function() {
+        if ($scope.mod.in_mod_list) {
+            // remove from mod list
+            modListService.removeModListMod($scope.activeModList, $scope.mod).then(function() {
+                $scope.$emit('successMessage', 'Mod removed from your mod list successfully.');
+            }, function(response) {
+                var params = {
+                    label: 'Error removing mod from your mod list',
+                    response: response
+                };
+                $scope.$emit('errorMessage', params);
+            });
+        } else {
+            modListService.addModListMod($scope.activeModList, $scope.mod).then(function() {
+                $scope.$emit('successMessage', 'Mod added to your mod list successfully.');
+            }, function(response) {
+                var params = {
+                    label: 'Error adding mod to your mod list',
+                    response: response
+                };
+                $scope.$emit('errorMessage', params);
+            });
+        }
     };
 
     $scope.toggleStatusModal = function(visible) {

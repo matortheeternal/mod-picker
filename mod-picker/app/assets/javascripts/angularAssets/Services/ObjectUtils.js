@@ -188,8 +188,8 @@ app.service('objectUtils', function () {
                 if (typeof obj[prop] === 'object') {
                     if (typeof base[prop] === 'object') {
                         service.cleanAttributes(obj[prop], base[prop]);
-                    } else {
-                        // delete obj property if it is an object and the base property is not
+                    } else if (obj[prop] !== null) {
+                        // delete property if it's a non-null object and the base property isn't
                         delete obj[prop];
                     }
                 }

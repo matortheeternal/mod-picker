@@ -43,7 +43,7 @@ module Imageable
   def image
     table_name = self.class.table_name
     png_path = File.join(Rails.public_path, "#{table_name}/#{id}.png")
-    jpg_path = File.join(Rails.public_path, "#{table_name}{/#{id}.jpg")
+    jpg_path = File.join(Rails.public_path, "#{table_name}/#{id}.jpg")
     if File.exists?(png_path)
       "/#{table_name}/#{id}.png"
     elsif File.exists?(jpg_path)

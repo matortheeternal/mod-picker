@@ -13,7 +13,7 @@ app.directive('slider', function () {
 });
 
 app.controller('sliderController', function ($scope, sliderOptionsFactory, $timeout) {
-    if (typeof sliderOptionsFactory[$scope.type]=== "function") {
+    if (typeof sliderOptionsFactory[$scope.type] === "function") {
         $scope.slider = sliderOptionsFactory[$scope.type]($scope.attr);
     }
 

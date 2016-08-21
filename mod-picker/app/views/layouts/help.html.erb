@@ -32,10 +32,10 @@
                 </div>
             </div>
             <div class="secondary-nav">
-                <form class="search-form">
-                    <input type="text" autocomplete="off" placeholder="Search Help Center...">
-                    <input type="submit" class="btn" value="Search"/>
-                </form>
+                <%= form_tag({controller: "help_pages", action: "search"}, method: "get", class: "search-form" ) do %>
+                    <%= text_field_tag :search, params[:search], placeholder: "Search Help Center...",  autocomplete: "off"  %>
+                    <%= submit_tag "Search", :name => nil, class: "btn" %>
+                <% end %>
                 <div class="user-nav">
                     <% if current_user %>
                         <a href="/skyrim#/user/<%= current_user.id %>">Profile</a>
@@ -71,7 +71,6 @@
     <%= javascript_include_tag 'marked.min' %>
     <%= javascript_include_tag 'angular-marked.min' %>
     <%= javascript_include_tag 'angular-relative-date.min' %>
-    <%= javascript_include_tag 'sticky.min' %>
     <%= javascript_include_tag 'angular-animate.min' %>
     <%= javascript_include_tag 'simplemde.min' %>
     <%= javascript_include_tag 'spin.min' %>

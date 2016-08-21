@@ -1,7 +1,5 @@
-<div class="action-container inline-flex" ng-repeat="action in actions">
-    <span ng-if="!action.items" class="action-box" ng-click="resolve(action.execute, item)" title="{{action.title}}" ng-class="{ 'disabled' : resolve(action.disabled, item), 'icon-box' : !!action.icon }" ng-hide="resolve(action.hidden, item)">
-        <i ng-show="action.icon" class="fa {{action.icon}}"></i>{{action.caption}}</span>
-    <span ng-if="action.items" class="action-box" title="{{action.title}}" ng-class="{ 'disabled' : resolve(action.disabled, item), 'icon-box' : !!action.icon }" tabindex="0" ng-click="toggleDropdown(item, action)" ng-blur="blurDropdown(item, action)" ng-hide="resolve(action.hidden, item)">
+<div class="action-container inline-flex" ng-repeat="action in actions" ng-hide="resolve(action.hidden, item)">
+    <span title="{{action.title}}" tabindex="0" class="action-box {{action.class}}" ng-class="{ 'disabled' : resolve(action.disabled, item), 'icon-box' : !!action.icon }" ng-click="actionClick(action, item)" ng-blur="actionBlur(action, item)">
         <i ng-show="action.icon" class="fa {{action.icon}}"></i>{{action.caption}}</span>
     <div class="dropdown" ng-if="action.items" ng-show="item[action.key]">
         <div class="dropdown-item" ng-repeat="actionItem in action.items" ng-click="resolve(actionItem.execute, item)" ng-hide="resolve(actionItem.disabled, item)">

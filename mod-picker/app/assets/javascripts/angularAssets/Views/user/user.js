@@ -52,10 +52,10 @@ app.config(['$stateProvider', function($stateProvider) {
     });
 }]);
 
-app.controller('userController', function($scope, $stateParams, currentUser, userObject, userService, errorService) {
+app.controller('userController', function($scope, $rootScope, $stateParams, userObject, userService, errorService) {
     // get parent variables
-    $scope.currentUser = currentUser;
-    $scope.permissions = currentUser.permissions;
+    $scope.currentUser = $rootScope.currentUser;
+    $scope.permissions = angular.copy($rootScope.permissions);
 
     // set up local variables
     $scope.user = userObject.user;

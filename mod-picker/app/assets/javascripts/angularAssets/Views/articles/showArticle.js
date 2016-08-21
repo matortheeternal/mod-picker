@@ -23,19 +23,19 @@ app.config(['$stateProvider', function($stateProvider) {
     });
 }]);
 
-app.controller('showArticleController', function($scope, $stateParams, article, currentUser, articleService) {
-    $scope.article = article;
-    $scope.currentUser = angular.copy(currentUser);
-    $scope.permissions = $scope.currentUser.permissions;
+app.controller('showArticleController', function($scope, $rootScope, $stateParams, article, articleService) {
+    // inherited variables
+    $scope.currentUser = $rootScope.currentUser;
+    $scope.permissions = angular.copy($rootScope.permissions);
 
+    // initialize variables
+    $scope.article = article;
     $scope.pages = {
         comments: {}
     };
-
     $scope.displayErrors = {
         comments: {}
     };
-
     $scope.retrieving = {
         comments: {}
     };

@@ -71,9 +71,11 @@ app.service('tableUtils', function (objectUtils) {
     // whether or not a column should be visible to the user
     this.columnAvailable = function(availableColumnData, column) {
         var data = column.data;
-        // if the data property of the column is a raw string, thus column is
-        // by definition always present, and should always be available.
-        if (typeof data === 'string' || data instanceof String) {
+        var dataType = typeof data;
+        // if the data property of the column is a string or a function the
+        // column should always be present.  also, if availableColumnData is
+        // undefined assume all columns are available
+        if (dataType === 'string' || dataType === 'function' || !availableColumnData) {
             return true;
         }
         // else we need to check if one of the data property keys is contained

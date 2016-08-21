@@ -70,4 +70,24 @@ app.service('sitesFactory', function () {
         var site = this.getSite(label);
         return site.modUrlBase.replace("{id}", id);
     };
+
+    this.getLinkSteps = function(label) {
+        switch(label) {
+            case 'Steam Workshop':
+                return [
+                    'Navigate to your steam profile page.',
+                    'Post a comment on your profile with the verification key provided below.',
+                    'Temporarily set your profile to public if it is private.',
+                    'Copy the web address of your profile page into the Profile URL input below.',
+                    'Click the Verify button.'
+                ];
+            default:
+                return [
+                    'Navigate to your public forum profile page.',
+                    'Post a status update with the verification key provided below.',
+                    'Copy the web address of your profile page into the Profile URL input below.',
+                    'Click the Verify button.'
+                ];
+        }
+    }
 });

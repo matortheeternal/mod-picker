@@ -1,11 +1,14 @@
 <div class="content-block">
     <div class="content-title">Install Order Issues
-            <span class="note-item">
-                ({{showUnresolvedInstallOrder ? 'Unresolved' : 'All'}})
-            </span>
-            <span class="right-item toggle-item" ng-click="showUnresolvedInstallOrder = !showUnresolvedInstallOrder">
-                {{showUnresolvedInstallOrder ? 'Show All' : 'Show Unresolved Issues'}}
-            </span>
+        <span class="note-item">
+            ({{showUnresolvedInstallOrder ? 'Unresolved' : 'All'}})
+        </span>
+        <span class="right-item action-box" ng-if="notes.unresolved_install_order.length" ng-click="resolveAllInstallOrder()">
+            <i class="fa fa-check"></i> Resolve All
+        </span>
+        <span class="right-item toggle-item" ng-click="showUnresolvedInstallOrder = !showUnresolvedInstallOrder">
+            {{showUnresolvedInstallOrder ? 'Show All' : 'Show Unresolved Issues'}}
+        </span>
     </div>
     <div class="content-container">
         <div ng-if="showUnresolvedInstallOrder" ng-repeat="note in notes.unresolved_install_order" class="content-block">

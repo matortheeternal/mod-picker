@@ -127,7 +127,7 @@ body {
   .content-container {
     margin: 20px;
 
-    section {
+    > section {
       display: block;
       margin-top: 15px;
       margin-left: 30px;

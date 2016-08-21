@@ -1,27 +1,19 @@
-app.service('errorService', function ($rootScope) {
+app.service('errorService', function () {
     var service = this;
 
-    this.handleError = function (label, errorResponse) {
-        $rootScope.error = {
-            code: errorResponse.status,
-            url: errorResponse.request_url,
-            label: label
-        };
-    };
-
-    this.createErrorLink = function(errors, errorResponse, modId, id) {
+    this.createErrorLink = function(errors, errorResponse, id, baseId) {
         var url, label;
         switch(errorResponse.config.url) {
             case "/compatibility_notes.json":
-                url = "#/mod/" + modId + "/compatibility/" + id;
+                url = "#/mod/" + baseId + "/compatibility/" + id;
                 label = "Compatibility Note";
                 break;
             case "/install_order_notes.json":
-                url = "#/mod/" + modId + "/install-order/" + id;
+                url = "#/mod/" + baseId + "/install-order/" + id;
                 label = "Install Order Note";
                 break;
             case "/load_order_notes.json":
-                url = "#/mod/" + modId + "/load-order/" + id;
+                url = "#/mod/" + baseId + "/load-order/" + id;
                 label = "Load Order Note";
                 break;
         }
@@ -32,7 +24,7 @@ app.service('errorService', function ($rootScope) {
         });
     };
 
-    this.errorMessages = function (label, errorResponse, modId) {
+    this.errorMessages = function (label, errorResponse, resourceId) {
         var errors = [];
 
         // parse json errors into error messages if the response is json
@@ -43,7 +35,7 @@ app.service('errorService', function ($rootScope) {
                 if (data.hasOwnProperty(property)) {
                     // handle link_id errors
                     if (property === 'link_id') {
-                        service.createErrorLink(errors, errorResponse, data[property], modId);
+                        service.createErrorLink(errors, errorResponse, data[property], resourceId);
                         continue;
                     }
                     // loop through errors array

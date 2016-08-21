@@ -113,13 +113,16 @@ app.config(['$stateProvider', function ($stateProvider) {
     })
 }]);
 
-app.controller('modListController', function($scope, $q, $stateParams, $timeout, currentUser, modListObject, modListService, errorService, objectUtils, tabsFactory, baseFactory, listUtils) {
-    // get parent variables
+app.controller('modListController', function($scope, $rootScope, $q, $stateParams, $timeout, modListObject, modListService, errorService, objectUtils, tabsFactory, baseFactory, listUtils) {
+    // inherited variables
+    $scope.currentUser = $rootScope.currentUser;
+    $scope.activeModList = $rootScope.activeModList;
+
+    // main view model variables
     $scope.mod_list = modListObject.mod_list;
     $scope.mod_list.star = modListObject.star;
     $scope.mod_list.groups = [];
     $scope.originalModList = angular.copy($scope.mod_list);
-    $scope.currentUser = currentUser;
 
 	// initialize local variables
     $scope.tabs = tabsFactory.buildModListTabs($scope.mod_list);
@@ -167,10 +170,11 @@ app.controller('modListController', function($scope, $q, $stateParams, $timeout,
         visibility_unlisted: "This mod list won't appear in search results, \nbut anyone can access it.",
         visibility_public: "This mod list is publicly available and will \nappear in search results."
     };
+    $scope.isActive = $scope.activeModList && $scope.activeModList.id == $scope.mod_list.id;
     $scope.isEmpty = objectUtils.isEmptyArray;
 
     // a copy is created so the original permissions object is never changed
-    $scope.permissions = angular.copy(currentUser.permissions);
+    $scope.permissions = angular.copy($rootScope.permissions);
     // setting up the canManage permission
     var isAuthor = $scope.mod_list.submitter.id == $scope.currentUser.id;
     $scope.permissions.canManage = $scope.permissions.canModerate || isAuthor;
@@ -213,11 +217,28 @@ app.controller('modListController', function($scope, $q, $stateParams, $timeout,
     $scope.toggleEditing = function() {
         $scope.editing = !$scope.editing;
         if (!$scope.editing) {
+            // tell the user if there are unsaved changes
             $scope.flattenModels();
             var modListDiff = objectUtils.getDifferentObjectValues($scope.originalModList, $scope.mod_list);
             if (!objectUtils.isEmptyObject(modListDiff)) {
                 var message = {type: 'warning', text: 'Your mod list has unsaved changes.'};
                 $scope.$broadcast('message', message);
+            }
+        } else {
+            // make the mod list the user's active mod list if it isn't their active
+            // mod list and they authored it
+            if  (!$scope.isActive && isAuthor) {
+                modListService.setActiveModList($scope.mod_list.id).then(function(data) {
+                    $rootScope.activeModList = data.mod_list;
+                    $scope.$emit('successMessage', 'This is now your active mod list.');
+                    $scope.isActive = true;
+                }, function(response) {
+                    var params = {
+                        label: 'Error setting active mod list',
+                        response: response
+                    };
+                    $scope.$emit('errorMessage', params);
+                });
             }
         }
     };
@@ -367,23 +388,32 @@ app.controller('modListController', function($scope, $q, $stateParams, $timeout,
 
     $scope.ignoreNote = function(type, note) {
         if (note.ignored) {
-            var foundIgnoredNote = $scope.findIgnoredNote(type, note.id);
-            if (note.ignored) {
-                if (!foundIgnoredNote) {
-                    $scope.mod_list.ignored_notes.push({
-                        note_type: type,
-                        note_id: note.id
-                    });
-                } else if (foundIgnoredNote._destroy) {
-                    delete foundIgnoredNote._destroy;
-                }
-            } else if (foundIgnoredNote) {
-                if (foundIgnoredNote.id) {
-                    foundIgnoredNote._destroy = true;
-                } else {
-                    var index = $scope.mod_list.ignored_notes.indexOf(foundIgnoredNote);
-                    $scope.mod_list.ignored_notes.splice(index, 1);
-                }
+            $scope.createIgnoreNote(type, note);
+        } else {
+            $scope.destroyIgnoreNote(type, note);
+        }
+    };
+
+    $scope.createIgnoreNote = function(type, note) {
+        var foundIgnoredNote = $scope.findIgnoredNote(type, note.id);
+        if (!foundIgnoredNote) {
+            $scope.mod_list.ignored_notes.push({
+                note_type: type,
+                note_id: note.id
+            });
+        } else if (foundIgnoredNote._destroy) {
+            delete foundIgnoredNote._destroy;
+        }
+    };
+
+    $scope.destroyIgnoreNote = function(type, note) {
+        var foundIgnoredNote = $scope.findIgnoredNote(type, note.id);
+        if (foundIgnoredNote) {
+            if (foundIgnoredNote.id) {
+                foundIgnoredNote._destroy = true;
+            } else {
+                var index = $scope.mod_list.ignored_notes.indexOf(foundIgnoredNote);
+                $scope.mod_list.ignored_notes.splice(index, 1);
             }
         }
     };
@@ -392,13 +422,14 @@ app.controller('modListController', function($scope, $q, $stateParams, $timeout,
         // get changed mod fields
         $scope.flattenModels();
         var modListDiff = objectUtils.getDifferentObjectValues($scope.originalModList, $scope.mod_list);
-        // if no fields were changed, inform the user
+        // if no fields were changed, inform the user and return
         if (objectUtils.isEmptyObject(modListDiff)) {
             var message = {type: 'warning', text: 'There are no changes to save.'};
             $scope.$broadcast('message', message);
             return;
         }
 
+        // else submit changes to the backend
         modListService.updateModList(modListDiff).then(function() {
             // update modules
             $scope.$broadcast('saveChanges');

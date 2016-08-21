@@ -1,5 +1,5 @@
 class User < ActiveRecord::Base
-  include Filterable, Sortable, RecordEnhancements, Reportable
+  include Filterable, Sortable, RecordEnhancements, Imageable, Reportable
 
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
@@ -77,8 +77,7 @@ class User < ActiveRecord::Base
   has_many :profile_comments, -> { where(parent_id: nil) }, :class_name => 'Comment', :as => 'commentable'
   has_many :reports, :foreign_key => 'submitted_by', :inverse_of => 'submitter'
 
-  accepts_nested_attributes_for :settings
-  accepts_nested_attributes_for :bio
+  accepts_nested_attributes_for :settings, reject_if: :new_record?
 
   # number of users per page on the users index
   self.per_page = 50
@@ -97,23 +96,24 @@ class User < ActiveRecord::Base
   after_create :create_associations
   after_initialize :init
 
+  # alias for image method
   def avatar
-    png_path = File.join(Rails.public_path, "avatars/#{id}.png")
-    jpg_path = File.join(Rails.public_path, "avatars/#{id}.jpg")
+    png_path = File.join(Rails.public_path, "users/#{id}.png")
+    jpg_path = File.join(Rails.public_path, "users/#{id}.jpg")
     if File.exists?(png_path)
-      "/avatars/#{id}.png"
+      "/users/#{id}.png"
     elsif File.exists?(jpg_path)
-      "/avatars/#{id}.jpg"
+      "/users/#{id}.jpg"
     elsif self.title.nil?
       nil
     else
-      '/avatars/Default.png'
+      "/users/Default.png"
     end
   end
 
   def self.find_first_by_auth_conditions(warden_conditions)
     conditions = warden_conditions.dup
-    if login = conditions.delete(:login)
+    if (login = conditions.delete(:login))
       where(conditions).where(["lower(username) = :value OR lower(email) = :value", { :value => login.downcase }]).first
     else
       if conditions[:username].nil?
@@ -167,17 +167,31 @@ class User < ActiveRecord::Base
 
   def current_json
     self.as_json({
-        :only => [:id, :username, :role, :title, :active_mod_list_id],
+        :only => [:id, :username, :role, :title],
         :include => {
             :reputation => {
                 :only => [:overall, :rep_to_count]
             },
             :settings => {
+                :only => [:theme, :show_notifications, :allow_adult_content]
+            }
+        },
+        :methods => :avatar
+    })
+  end
+
+  def settings_json
+    self.as_json({
+        :except => [:active_mod_list_id, :invitation_token, :invitation_created_at, :invitation_sent_at, :invitation_accepted_at, :invitation_limit, :invited_by_id, :invited_by_type, :invitations_count],
+        :include => {
+            :bio => {
                 :except => [:user_id]
             },
-            :active_mod_list => {
-                :only => [:id, :name, :mods_count, :plugins_count, :active_plugins_count, :custom_plugins_count],
-                :methods => [:incompatible_mods]
+            :reputation => {
+                :except => [:user_id, :dont_compute]
+            },
+            :settings => {
+                :except => [:user_id]
             }
         },
         :methods => :avatar
@@ -186,26 +200,16 @@ class User < ActiveRecord::Base
 
   def show_json(current_user)
     # email handling
-    methods = [:avatar, :last_sign_in_at, :current_sign_in_at, :email_public?]
-    bio_except = [:nexus_verification_token, :lover_verification_token, :workshop_verification_token]
-    if self.email_public? || current_user.id == self.id
+    methods = [:avatar, :last_sign_in_at, :current_sign_in_at]
+    if self.email_public?
       methods.push(:email)
-    end
-    if current_user.id == self.id
-      bio_except = [:user_id]
     end
 
     self.as_json({
         :except => [:active_mod_list_id, :invitation_token, :invitation_created_at, :invitation_sent_at, :invitation_accepted_at, :invitation_limit, :invited_by_id, :invited_by_type, :invitations_count],
         :include => {
-            :mods => {
-                :only => [:id, :name, :game_id, :stars_count, :reviews_count, :reputation]
-            },
-            :mod_lists => {
-                :only => [:id, :name, :is_collection, :is_public, :status, :mods_count, :created, :stars_count, :comments_count]
-            },
             :bio => {
-                :except => bio_except
+                :except => [:user_id, :nexus_verification_token, :lover_verification_token, :workshop_verification_token]
             },
             :reputation => {
                 :only => [:overall]
