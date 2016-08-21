@@ -5,17 +5,22 @@ module Correctable
     enum standing: [ :good, :unknown, :bad ]
 
     scope :editor, -> (username) { joins(:editors).where(:users => {:username => username}) }
-    scope :standing, -> (standing_hash) {
-      # build commentables array
-      standings = []
-      standing_hash.each_with_index do |(key,value),index|
-        if standing_hash[key]
-          standings.push(index)
+    scope :standing, -> (standings) {
+      if standings.is_a?(Hash)
+        # handle hash search by building a standings array
+        standings_array = []
+        standings.each_with_index do |(key,value),index|
+          if standings[key]
+            standings_array.push(index)
+          end
         end
+      else
+        # else treat as an array of standings
+        standings_array = standings
       end
 
       # return query
-      where(standing: standings)
+      where(standing: standings_array)
     }
     scope :corrections_count, -> (range) { where(corrections_count: range[:min]..range[:max]) }
     scope :history_entries_count, -> (range) { where(history_entries_count: range[:min]..range[:max]) }
