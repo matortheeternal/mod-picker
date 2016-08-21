@@ -1,6 +1,8 @@
 class UserReputation < ActiveRecord::Base
   include Filterable, RecordEnhancements
 
+  attr_accessor :calc_rep
+
   scope :user, -> (id) { where(user_id: id) }
 
   belongs_to :user
@@ -74,8 +76,6 @@ class UserReputation < ActiveRecord::Base
     self.site_rep = [self.site_rep, MAX_SITE_REP].max
   end
 
-  # Alternatively, this could potentially be built into the the callback when a
-  # helpful mark is created or destroyed
   def calculate_contribution_rep
     def get_contribution_rep(h, base, ratio)
       base + [-base, (h[0] - h[1]) * ratio, base].sort[1]
@@ -138,5 +138,19 @@ class UserReputation < ActiveRecord::Base
 
   def prepare_for_traversal
     self.calc_rep = self.offset + self.site_rep + self.contribution_rep + self.author_rep
+  end
+
+  def update_site_rep
+    starting_site_rep = self.site_rep
+    self.calculate_site_rep
+    site_rep_diff = starting_site_rep - self.site_rep
+    self.overall += site_rep_diff
+  end
+
+  def update_author_rep
+    starting_author_rep = self.author_rep
+    self.calculate_author_rep
+    author_rep_diff = starting_author_rep - self.author_rep
+    self.overall += author_rep_diff
   end
 end
