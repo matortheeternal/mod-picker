@@ -42,7 +42,7 @@ fake_config = {
     help_pages: true
 }
 
-seed_fake_users if fake_config[:users]
+seed_fake_users(90) if fake_config[:users]
 seed_fake_mods if fake_config[:mods]
 seed_fake_comments if fake_config[:comments]
 seed_fake_reviews if fake_config[:reviews]
