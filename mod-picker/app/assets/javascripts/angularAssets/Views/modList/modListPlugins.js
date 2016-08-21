@@ -323,7 +323,7 @@ app.controller('modListPluginsController', function($scope, $q, $timeout, catego
     $scope.$on('modRecovered', function(event, modId) {
         var recoverIfModMatches = function(item) {
             if (item.mod && item.mod.id == modId) {
-                recoverPlugin(item);
+                $scope.recoverPlugin(item);
             }
         };
         $scope.model.plugins.forEach(function(item) {
