@@ -28,6 +28,8 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 gem 'nokogiri'
 # use rest-client for rest actions
 gem 'rest-client'
+# use sidekiq for background tasks
+gem 'sidekiq'
 
 gem 'redcarpet'
 # Use ActiveModel has_secure_password
