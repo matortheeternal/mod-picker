@@ -61,6 +61,15 @@ def get_unique_username
   username
 end
 
+def randomize_user_reputation_offsets
+  rep_levels = [5, 20, 40, 80, 160, 320, 640, 1280]
+  UserReputation.all.each do |rep|
+    rep.offset = rep_levels.sample * rand(1.0..2.0)
+    rep.calculate_overall_rep
+    rep.save
+  end
+end
+
 def seed_fake_users(num_users)
   require 'securerandom'
 
