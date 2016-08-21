@@ -91,8 +91,8 @@ app.controller('modListPluginsController', function($scope, $q, $timeout, catego
             $scope.associateIgnore($scope.notes.load_order, 'LoadOrderNote');
             $scope.buildPluginsModel();
             $timeout(function() {
-                $scope.destroyModRemovedPlugins();
                 $scope.$broadcast('initializeModules');
+                $timeout($scope.destroyModRemovedPlugins);
             }, 100);
             $scope.pluginsReady = true;
         }, function(response) {
