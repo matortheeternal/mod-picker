@@ -133,6 +133,7 @@ Rails.application.routes.draw do
     match '/help/game/:game', to: 'help_pages#game', via: [:get]
     match '/help/:id/comments', to: 'help_pages#comments', via: [:get, :post]
     match '/help/:id/destroy', to: 'help_pages#destroy', via: [:get]
+    match '/help/search', to:  'help_pages#search', via: [:get]
     resources :help_pages, path: 'help', except: [:destroy]
 
 

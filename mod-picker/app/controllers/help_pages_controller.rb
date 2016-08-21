@@ -24,6 +24,16 @@ class HelpPagesController < ApplicationController
     render "help_pages/edit"
   end
 
+  # GET /help/search?query=...
+  def search
+    @page_title = params[:search].humanize.titleize
+
+    # search by title and text_body via help_page scope
+    @help_pages = HelpPage.search(params[:search])
+
+    render "help_pages/search"
+  end
+
   # GET /help/new
   def new
     @help_page = HelpPage.new
