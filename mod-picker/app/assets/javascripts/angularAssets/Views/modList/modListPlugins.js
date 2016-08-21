@@ -1,4 +1,4 @@
-app.controller('modListPluginsController', function($scope, $q, $timeout, categoryService, modListService, columnsFactory, actionsFactory, colorsFactory, listUtils, sortUtils) {
+app.controller('modListPluginsController', function($scope, $q, $timeout, categoryService, modListService, columnsFactory, actionsFactory, colorsFactory, listUtils, sortUtils, requirementUtils) {
     // initialize variables
     $scope.showDetailsModal = false;
     $scope.detailsItem = {};
@@ -53,6 +53,27 @@ app.controller('modListPluginsController', function($scope, $q, $timeout, catego
         });
     };
 
+    $scope.destroyModRemovedPlugins = function() {
+        if (!$scope.removedModIds.length) return;
+        var removeIfModRemoved = function(item) {
+            if (!item._destroy && $scope.removedModIds.indexOf(item.mod.id) > -1) {
+                $scope.removePlugin(item);
+            }
+        };
+        $scope.model.plugins.forEach(function(item) {
+            if (item.children) {
+                item.children.forEach(removeIfModRemoved)
+            } else {
+                removeIfModRemoved(item);
+            }
+        });
+        $scope.plugins_store.forEach(function(plugin) {
+            if ($scope.removedModIds.indexOf(plugin.mod_id) > -1) {
+                plugin._destroy = true;
+            }
+        });
+    };
+
     $scope.retrievePlugins = function() {
         modListService.retrieveModListPlugins($scope.mod_list.id).then(function(data) {
             categoryService.associateCategories($scope.categories, data.plugins);
@@ -70,6 +91,7 @@ app.controller('modListPluginsController', function($scope, $q, $timeout, catego
             $scope.associateIgnore($scope.notes.load_order, 'LoadOrderNote');
             $scope.buildPluginsModel();
             $timeout(function() {
+                $scope.destroyModRemovedPlugins();
                 $scope.$broadcast('initializeModules');
             }, 100);
             $scope.pluginsReady = true;
