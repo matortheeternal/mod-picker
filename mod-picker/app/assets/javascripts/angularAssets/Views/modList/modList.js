@@ -123,6 +123,7 @@ app.controller('modListController', function($scope, $rootScope, $q, $stateParam
     $scope.mod_list.star = modListObject.star;
     $scope.mod_list.groups = [];
     $scope.originalModList = angular.copy($scope.mod_list);
+    $scope.removedModIds = [];
 
 	// initialize local variables
     $scope.tabs = tabsFactory.buildModListTabs($scope.mod_list);

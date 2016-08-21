@@ -233,6 +233,7 @@ app.controller('modListModsController', function($scope, $rootScope, $timeout, $
         var foundMod = $scope.findMod(modId);
         if (foundMod) {
             $scope.removeMod(foundMod);
+            $scope.removedModIds.push(modId);
         }
     });
     $scope.$on('removeItem', function(event, modListMod) {
@@ -244,6 +245,7 @@ app.controller('modListModsController', function($scope, $rootScope, $timeout, $
     });
     $scope.$on('saveChanges', function() {
         listUtils.removeDestroyed($scope.mod_list.mods);
+        $scope.removedModIds = [];
     });
     $scope.$on('itemMoved', function() {
         $scope.$broadcast('modMoved');
