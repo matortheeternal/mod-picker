@@ -6,7 +6,7 @@
 
         <h2>Manage Plugins</h2>
 
-        <label class="manage-item" ng-repeat="plugin in plugins_store">
+        <label class="manage-item" ng-repeat="plugin in plugins_store" ng-hide="plugin._destroy">
             <input type="checkbox" ng-click="togglePlugin(plugin)" ng-model="plugin.active"/> {{plugin.filename}}
         </label>
 
