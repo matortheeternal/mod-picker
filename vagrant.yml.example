@@ -1,0 +1,14 @@
+project:
+  name: &project_name mod-picker
+mariadb:
+  username: mod_picker
+  password: password
+forwarded_ports:
+  3000: 3000
+  25: 2225
+  1080: 1080
+  3306: 3306
+  27017: 27017
+vm:
+  cpu_count: 2
+  memory_size: 4096

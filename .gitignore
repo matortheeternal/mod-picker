@@ -86,3 +86,7 @@ mod-picker/.byebug_history
 mod-picker/app/assets/plugins/
 mod-picker/public/avatars/3.png
 mod-picker/public/mods/*.png
+.vagrant
+vagrant.yml
+ubuntu-xenial-16.04-cloudimg-console.log
+database.yml
