@@ -477,6 +477,9 @@ class Mod < ActiveRecord::Base
                         :only => [:id, :name]
                     }
                 }
+            },
+            :config_files => {
+                :except => [:game_id, :mod_id, :mod_lists_count]
             }
         },
         :methods => :image
