@@ -115,7 +115,8 @@ class LoverHelper
     mod_data["updated"] = DateTime.strptime(mod_data["updated"].to_s, '%s')
     
     # remap the json
-    mappings = { 
+    # noinspection RubyStringKeysInHashInspection
+    mappings = {
       "name" => "mod_name",
       "author" => "uploaded_by",
       "submitted" => "released",
