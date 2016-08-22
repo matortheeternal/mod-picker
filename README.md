@@ -1,18 +1,74 @@
 # mod-picker
 A web application which helps users to pick mods to use in Bethesda Games such as Skyrim and Fallout 4.
 
-## Quick-start guide
+## How to install
+### Windows Machines
+If you are running on Windows, you will need GitBash. You can download it from here: [git](https://git-scm.com/download/win)
 
-Below is a list of instructions and resources for setting up a development environment to work on the mod-picker project.  This is a great way to get started.
+### Virtualbox
+Install VirtualBox if you don't have it:
+https://www.virtualbox.org/wiki/Downloads
 
-If you have any problems following these directions feel free to ask for help on the team's Slack.
+### Vagrant
+Install vagrant if you don't have it:
+http://docs.vagrantup.com/v2/installation/
 
-1. Clone the repository.  There are multiple ways you can do this, including [Sourcetree](https://www.sourcetreeapp.com/), [GitHub for Windows](https://desktop.github.com/), and the command line (via [git](https://git-scm.com/downloads)).  See the section "Cloning the repository with Sourcetree" for more information.
-2. Open the directory where you cloned the repository to.  You should find a copy of this `README.md` file and various folders.
-3. Open the `setup` folder and view the `Backend Setup Directions.md` file.  This file instructs you on how to set up the server so you can run the website for the purposes of development on your computer.  You can also [view the file on GitHub](https://github.com/matortheeternal/mod-picker/blob/master/setup/Backend%20Setup%20Directions.md).  There are [a variety of options](https://stackoverflow.com/questions/9843609/view-markdown-files-offline) for viewing .md files offline.
-4. Refer to the Trello board for items tagged as "Frontend" (the blue bar) for pages to work on developing.  You can also choose your own page to work on (see "Choosing a page to work on").
-5. Once you've edited a page you can view it by navigating to its route.  You may have to restart the server if you added images in developing the page. (Use `CTRL + C` to stop the server and `rails s` to start it again).
-6. Each time you finish an idea's worth of work you should commit your changes to version control.  Commit early, commit often.  Also see [when to commit code](https://programmers.stackexchange.com/questions/83837/when-to-commit-code) and [how often to make commits](https://programmers.stackexchange.com/questions/74764/how-often-should-i-do-you-make-commits).  You want to push your commits to a branch.
+### Clone the repo
+```bash
+git clone https://github.com/matortheeternal/mod-picker.git
+cd mod-picker
+```
+
+### Create config files
+```bash
+cp vagrant.yml.example vagrant.yml
+cp config/database.yml.example config/database.yml
+```
+
+Edit the two config files you just created and add the database password you want to use to line 5 in ```vagrant.yml``` and lines 14 and 22 in ```database.yml```
+
+### Generate Vagrant
+**This step may take a half hour or more depending on how long it takes you to download all the necessary installers and build Ruby.**
+
+You may need to install some vagrant plugins if you don't have them yet. The ```vagrant up``` step below should tell you the EXACT commands you need to install them if you don't have them already installed.
+
+```bash
+vagrant up
+```
+
+### Log into the Vagrant Client
+```bash
+vagrant ssh
+```
+
+### Start the services
+```bash
+rails s
+```
+
+### Development
+You should be able to develop from either within the VM or from your Mac, Windows, or Linux machine as the folder is shared between the VM and your host computer. You can reach the rails server by going to http://localhost:3000 in your browser
+
+### Making changes to the codebase
+- No changes should be directly pushed to any of the following branches: master
+- All changes should be made on a branch and a pull-request should be created on github (see https://help.github.com/articles/using-pull-requests/)
+- Use the following workflow to make changes:
+  - Create a new branch based off of master (git checkout -b new_branch_name origin/master)
+  - Make your code changes
+  - Push your new branch up to github (git push origin new_branch_name)
+  - Open a Pull Request to master with your changes (see https://help.github.com/articles/using-pull-requests/)
+  - Other developers can then approve your pull request and merge the code in!
+
+### Tooling
+Here is a list of tools you may find useful as you develop:
+[GitHub for Windows](https://desktop.github.com/) (for Windows machines)
+[Sourcetree](https://www.sourcetreeapp.com/) (highly recommended if you are new to Git) (See below for some help)
+
+### Workflow Guidelines
+- Refer to the Trello board for items tagged as "Frontend" (the blue bar) for pages to work on developing.  You can also choose your own page to work on (see "Choosing a page to work on").
+- Once you've edited a page you can view it by navigating to its route.  You may have to restart the server if you added images in developing the page. (Use `CTRL + C` to stop the server and `rails s` to start it again).
+
+Feel free to ask questions in the Development Team's Discord channels
 
 ### Cloning the repository with Sourcetree
 
@@ -20,9 +76,9 @@ If you have any problems following these directions feel free to ask for help on
 2. Run the Sourcetree installer.
 3. Open Sourcetree and set up your GitHub account.
 4. Click on the Clone / New button in SourceTree (in the upper left corner).
-5. Paste the clone url for this repository into the Source Path / URL field (you can find it on the [main repository page](https://github.com/matortheeternal/mod-picker)).  Here is the url for convenience:   `https://github.com/matortheeternal/mod-picker.git`.  
-![Screenshot](http://puu.sh/mtxD3.png)  
-*How to get the clone URL for the repository.*  
+5. Paste the clone url for this repository into the Source Path / URL field (you can find it on the [main repository page](https://github.com/matortheeternal/mod-picker)).  Here is the url for convenience:   `https://github.com/matortheeternal/mod-picker.git`.
+![Screenshot](http://puu.sh/mtxD3.png)
+*How to get the clone URL for the repository.*
 6. Specify the path you want to clone to (I use `E:\dev\git\<repository-name>`).
 7. Click Clone.
 
