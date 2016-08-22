@@ -152,8 +152,8 @@ Vagrant.configure(2) do |config|
   SCRIPT
 
   change_ssh_directory_script = <<-SCRIPT
-    if [ $(pwd) != "~/#{project_name}" ]; then
-      echo "cd ~/#{project_name}" >> ~/.profile
+    if [ $(pwd) != "~/#{project_name}/#{project_name}" ]; then
+      echo "cd ~/#{project_name}/#{project_name}" >> ~/.profile
     fi
   SCRIPT
 
