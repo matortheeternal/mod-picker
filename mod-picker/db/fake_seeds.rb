@@ -967,6 +967,7 @@ end
 def seed_fake_help_pages
   puts "\nSeeding help pages"
 
+  # TODO: Move this to a text file or something
   markdown_text = %Q{
     Markdown Cheatsheet
 ===================
