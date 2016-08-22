@@ -99,6 +99,7 @@ class LoverHelper
 
     # construct mod url
     mod_url = "http://api.loverslab.com/file/#{id}"
+    puts "LoverHelper: Scraping "+mod_url
 
     # prepare headers
     headers = {
@@ -108,8 +109,10 @@ class LoverHelper
 
     # get the mod page
     response = RestClient.get(mod_url, headers)
+    puts "  Recieved response #{response.size}"
 
     # parse the json
+    puts "  Parsing response"
     mod_data = JSON.parse(response.body)
     mod_data["submitted"] = DateTime.strptime(mod_data["submitted"].to_s, '%s')
     mod_data["updated"] = DateTime.strptime(mod_data["updated"].to_s, '%s')
@@ -142,6 +145,7 @@ class LoverHelper
     mod_data["game_id"] = Game.find_by(nexus_name: mod_data.delete("game")).id
 
     # return mod data
+    puts "  Done."
     mod_data
   end
 end
