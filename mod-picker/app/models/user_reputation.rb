@@ -51,6 +51,8 @@ class UserReputation < ActiveRecord::Base
   # given reputation
   USER_ENDORSE_RATIO = 0.05
 
+  # We could store some computed reputations in the user_bio record itself, allowing
+  # this to become a simple sum query
   def calculate_site_rep!
     self.site_rep = 0
 
@@ -82,6 +84,8 @@ class UserReputation < ActiveRecord::Base
     self.site_rep = [self.site_rep, MAX_SITE_REP].min
   end
 
+  # We could compute contribution reputation on the contribution itself in callbacks
+  # allowing us to just do some sum queries here.
   def calculate_contribution_rep!
     self.contribution_rep = 0
 
