@@ -30,6 +30,8 @@ gem 'nokogiri'
 gem 'rest-client'
 # use sidekiq for background tasks
 gem 'sidekiq'
+# use sidekiq scheduler for scheduling background tasks
+gem 'sidekiq-scheduler', '~> 2.0'
 
 gem 'redcarpet'
 # Use ActiveModel has_secure_password
