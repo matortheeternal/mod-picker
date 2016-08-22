@@ -30,8 +30,6 @@ module ModPicker
     config.scrape_nexus_statistics = false
     # DO NOT SCRAPE WORKSHOP STATISTICS UNTIL WE HAVE PERMISSION
     config.scrape_workshop_statistics = false
-    # DO NOT SCRAPE LAB STATISTICS UNTIL WE HAVE PERMISSION
-    config.scrape_lab_statistics = false
 
     config.middleware.use Rack::Attack
 
