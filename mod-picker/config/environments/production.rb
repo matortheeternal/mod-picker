@@ -40,12 +40,19 @@ Rails.application.configure do
   # Specifies the header that your server uses for sending files.
   # config.action_dispatch.x_sendfile_header = 'X-Sendfile' # for Apache
   # config.action_dispatch.x_sendfile_header = 'X-Accel-Redirect' # for NGINX
-  
+
   # Mailer url options
-  # TODO: This should be an SMTP server
-  config.action_mailer.default_url_options = { :host => 'localhost:3000' }
+  config.action_mailer.default_url_options = { :host => 'https://modpicker.com' }
   config.action_mailer.delivery_method = :smtp
-  config.action_mailer.smtp_settings = {:address => "localhost", :port => 1025}
+  config.action_mailer.smtp_settings = {
+      :address => "smtp.gmail.com",
+      :domain => 'mail.google.com',
+      :port => 587,
+      :user_name => ENV['gmail_username'],
+      :password => ENV['gmail_password'],
+      :authentication => :plain,
+      :enable_starttls_auto => true
+  }
 
   # Enable scheduled tasks in production
   config.enable_scheduler = true
