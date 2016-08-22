@@ -125,8 +125,6 @@ GEM
     multi_json (1.12.1)
     mysql2 (0.3.20)
     mysql2 (0.3.20-x64-mingw32)
-    native_enum (1.0.0)
-      activerecord (>= 3.0)
     nokogiri (1.6.7.2)
       mini_portile2 (~> 2.0.0.rc2)
     nokogiri (1.6.7.2-x64-mingw32)
@@ -282,7 +280,6 @@ DEPENDENCIES
   mail_form
   mailcatcher
   mysql2 (~> 0.3.20)
-  native_enum
   nokogiri
   rack-attack
   rails (= 4.2.5)

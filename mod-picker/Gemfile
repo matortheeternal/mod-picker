@@ -18,6 +18,7 @@ gem 'coffee-script-source', '1.8.0'
 gem 'rack-attack'
 
 # Use jquery as the JavaScript library
+# TODO: Drop this dependency
 gem 'jquery-rails'
 # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
 gem 'turbolinks'
@@ -33,6 +34,7 @@ gem 'sidekiq'
 # use sidekiq scheduler for scheduling background tasks
 gem 'sidekiq-scheduler', '~> 2.0'
 
+# Use redcarpet for rendering markdown in the help center
 gem 'redcarpet'
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
@@ -47,8 +49,8 @@ gem 'simple_form'
 # use cancancan for authorization
 gem 'cancancan', '~> 1.10'
 
-# Use Unicorn as the app server
-# gem 'unicorn'
+# TODO: Use Passenger as the app server
+# gem 'passenger'
 
 # using devise for authentication
 gem 'devise'
@@ -58,9 +60,6 @@ gem 'devise_invitable'
 
 # use mailcatcher for development
 gem 'mailcatcher'
-
-# allows for native mysql enums in rails
-gem 'native_enum'
 
 # allow for composite primary keys in rails
 gem 'composite_primary_keys', '~> 8.1'
