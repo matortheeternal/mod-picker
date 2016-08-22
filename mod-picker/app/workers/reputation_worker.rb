@@ -1,48 +1,21 @@
 class ReputationWorker
   include Sidekiq::Worker
 
+  # CONSTANTS
   NUM_ITERATIONS = 4
 
-  # AREL METHODS
-  def user_reputation_table
-    @user_reputation_table ||= UserReputation.arel_table
+  def update_reputation_network
+    UserReputation.where(dont_compute: false).
+      joins("JOIN (#{sum_subquery.to_sql}) g ON user_reputations.id = g.id").
+      update_all("overall = offset + site_rep + contribution_rep + author_rep + g.sum, given_rep = g.sum")
   end
 
-  def linked_reputations_table
-    @linked_reputations_table ||= UserReputation.arel_table.alias('linked_reputations')
-  end
-
-  def reputation_links_table
-    @reputation_links_table ||= ReputationLink.arel_table
-  end
-
-  def update_reputations_query
-    manager.table(joined_table).
-        where(subquery[:r_id].eq(user_reputation_table[:id])).
-        where(user_reputation_table[:dont_compute].eq(false)).
-        set([[user_reputation_table[:given_rep], subquery[:sum]]])
-  end
-
-  def joined_table
-    Arel::Nodes::JoinSource.new(
-        user_reputation_table,
-        [user_reputation_table.create_join(subquery)]
-    )
-  end
-
-  def manager
-    Arel::UpdateManager.new(UserReputation)
-  end
-
-  def subquery
-    user_reputation_table.project(
-        user_reputation_table[:id].as('r_id'),
-        Arel.sql("SUM(linked_reputations.overall * 0.05) AS sum")
-    ).
-        join(reputation_links_table).on(user_reputation_table[:id].eq(reputation_links_table[:to_rep_id])).
-        join(linked_reputations_table).on(linked_reputations_table[:id].eq(reputation_links_table[:from_rep_id])).
-        where(linked_reputations_table[:dont_compute].eq(false)).
-        group(user_reputation_table[:id]).as('g')
+  def sum_subquery
+    UserReputation.select("user_reputations.id,SUM(LR.overall * 0.05) AS sum").
+      joins("JOIN reputation_links ON user_reputations.id = reputation_links.to_rep_id").
+      joins("JOIN user_reputations LR ON reputation_links.from_rep_id = LR.id").
+      where("LR.dont_compute = 0").
+      group("user_reputations.id")
   end
 
   def perform
@@ -60,7 +33,7 @@ class ReputationWorker
       puts "\nCalculating network reputation"
       NUM_ITERATIONS.times do |iteration|
         benchmark.report("I#{iteration + 1}") {
-          ActiveRecord::Base.connection.execute(update_reputations_query.to_sql)
+          update_reputation_network
         }
       end
     end
