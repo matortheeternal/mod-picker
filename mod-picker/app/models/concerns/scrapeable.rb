@@ -3,8 +3,12 @@ module Scrapeable
 
   included do
     # Scopes
-    scope :can_recrape, -> { joins(:mod).where(:mods => {hidden: false}).
-      where("last_scraped < ? OR released > ?", 7.days.ago, 7.days.ago) }
+    scope :can_recrape, -> {
+      table = self.arel_table
+      joins(:mod).where(:mods => {hidden: false}).
+        where(table[:last_scraped].lt(7.days.ago).
+              or(table[:released].gt(7.days.ago)))
+    }
 
     # Callbacks
     after_save :update_mod_dates
