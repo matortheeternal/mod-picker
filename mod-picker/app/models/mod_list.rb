@@ -70,15 +70,15 @@ class ModList < ActiveRecord::Base
   belongs_to :game, :inverse_of => 'mod_lists'
   belongs_to :submitter, :class_name => 'User', :foreign_key => 'submitted_by', :inverse_of => 'mod_lists'
 
-  # INSTALL ORDER
-  has_many :mod_list_mods, :inverse_of => 'mod_list', :dependent => :destroy
-  has_many :mods, :through => 'mod_list_mods', :inverse_of => 'mod_lists'
-  has_many :custom_mods, :class_name => 'ModListCustomMod', :inverse_of => 'mod_list', :dependent => :destroy
-
   # LOAD ORDER
   has_many :plugins, :through => 'mods'
   has_many :mod_list_plugins, :inverse_of => 'mod_list', :dependent => :destroy
   has_many :custom_plugins, :class_name => 'ModListCustomPlugin', :inverse_of => 'mod_list', :dependent => :destroy
+
+  # INSTALL ORDER
+  has_many :mod_list_mods, :inverse_of => 'mod_list', :dependent => :destroy
+  has_many :mods, :through => 'mod_list_mods', :inverse_of => 'mod_lists'
+  has_many :custom_mods, :class_name => 'ModListCustomMod', :inverse_of => 'mod_list', :dependent => :destroy
 
   # IGNORED NOTES
   has_many :ignored_notes, :class_name => 'ModListIgnoredNote', :inverse_of => 'mod_list', :dependent => :destroy

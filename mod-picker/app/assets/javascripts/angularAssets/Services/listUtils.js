@@ -114,7 +114,7 @@ app.service('listUtils', function () {
 
         var moveModel = model;
         // if both items are in the same group, move within the group
-        if (moveItem.group_id == destItem.group_id) {
+        if (!!moveItem.group_id && moveItem.group_id == destItem.group_id) {
             moveModel = service.findGroup(model, moveItem.group_id).children;
         }
         // send a cursor down the model until the index of the item we're on exceeds the destItem's index

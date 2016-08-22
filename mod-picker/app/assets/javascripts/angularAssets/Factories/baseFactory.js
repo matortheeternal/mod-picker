@@ -83,6 +83,7 @@ app.service('baseFactory', function() {
             group_id: 0,
             mod: {
                 id: 0,
+                is_official: false,
                 image: "",
                 name: "",
                 aliases: "",
@@ -91,6 +92,7 @@ app.service('baseFactory', function() {
                 primary_category_id: 0,
                 secondary_category_id: 0,
                 stars_count: 0,
+                asset_files_count: 0,
                 average_rating: 0,
                 reputation: 0,
                 released: "",

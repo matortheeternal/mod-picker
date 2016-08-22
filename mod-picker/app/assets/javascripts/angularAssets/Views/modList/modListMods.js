@@ -1,4 +1,4 @@
-app.controller('modListModsController', function($scope, $rootScope, $timeout, categories, categoryService, modListService, modService, listUtils, columnsFactory, actionsFactory) {
+app.controller('modListModsController', function($scope, $rootScope, $timeout, $q, categories, categoryService, modListService, modService, columnsFactory, actionsFactory, listUtils, sortUtils) {
     // initialize variables
     $scope.showDetailsModal = false;
     $scope.detailsItem = {};
@@ -73,7 +73,7 @@ app.controller('modListModsController', function($scope, $rootScope, $timeout, c
             $scope.mod_list.mods_count += 1;
             $scope.updateTabs();
 
-            // upudate modules
+            // update modules
             $rootScope.$broadcast('modRecovered', !!modListMod.mod && modListMod.mod.id);
             $scope.$broadcast('updateItems');
 
@@ -172,12 +172,75 @@ app.controller('modListModsController', function($scope, $rootScope, $timeout, c
         $scope.$broadcast('updateItems');
     };
 
+    // INSTALL ORDER SORTING
+    $scope.startSortInstallOrder = function() {
+        // Display activity modal
+        $scope.startActivity('Sorting Install Order');
+        $scope.setActivityMessage('Preparing mod list for sorting');
+
+        // Dissassociate mods, destroy original groups
+        sortUtils.prepareToSort($scope.mod_list, 'mods');
+
+        // Save changes and call sortInstallOrder if successful
+        $scope.saveChanges(true).then(function() {
+            $scope.sortInstallOrder();
+        }, function() {
+            $scope.$emit('customMessage', { type: 'error', text: "Failed to sort install order.  Couldn't save mod list."});
+            $scope.setActivityMessage('Failed to prepare mod list for sorting');
+            $scope.completeActivity();
+        });
+    };
+
+    $scope.sortInstallOrder = function() {
+        // STEP 1: Build groups for categories
+        $scope.setActivityMessage('Building category groups');
+        var groups = sortUtils.buildGroups($scope.mod_list, 'mods');
+
+        // STEP 2: Merge category groups with less than 5 members into super category groups
+        sortUtils.combineGroups($scope.mod_list, 'mods', groups, $scope.categories);
+
+        // STEP 3: Sort groups and sort mods in groups by asset file count
+        $scope.setActivityMessage('Sorting groups and mods');
+        sortUtils.sortGroupsByPriority(groups);
+        sortUtils.sortItems(groups, 'mod', 'asset_files_count');
+        listUtils.updateItems(groups, 1);
+
+        // STEP 4: Save the new groups and associate mods with groups
+        $scope.setActivityMessage('Saving groups');
+        var groupPromises = sortUtils.saveGroups(groups, $scope.model, 'mods', $scope.mod_list, $scope.originalModList);
+
+        $q.all(groupPromises).then(function() {
+            // STEP 5: Sort mods per install order notes
+            $scope.setActivityMessage('Handling install order notes');
+            $scope.$broadcast('resolveAllInstallOrder');
+
+            // STEP 6: Save changes
+            $timeout(function() {
+                $scope.setActivityMessage('Finalizing changes');
+                $scope.saveChanges().then(function() {
+                    $scope.setActivityMessage('All done!');
+                    $scope.completeActivity();
+                }, function() {
+                    $scope.setActivityMessage('Failed to save changes, please save manually.');
+                    $scope.completeActivity();
+                });
+            });
+        });
+    };
+
     // event triggers
     $scope.$on('removeMod', function(event, modId) {
         var foundMod = $scope.findMod(modId);
         if (foundMod) {
             $scope.removeMod(foundMod);
         }
+    });
+    $scope.$on('modRemoved', function(event, modId) {
+        $scope.removedModIds.push(modId);
+    });
+    $scope.$on('modRecovered', function(event, modId) {
+        var index = $scope.removedModIds.indexOf(modId);
+        if (index > -1) $scope.removedModIds.splice(index, 1);
     });
     $scope.$on('removeItem', function(event, modListMod) {
         $scope.removeMod(modListMod);
@@ -188,6 +251,7 @@ app.controller('modListModsController', function($scope, $rootScope, $timeout, c
     });
     $scope.$on('saveChanges', function() {
         listUtils.removeDestroyed($scope.mod_list.mods);
+        $scope.removedModIds = [];
     });
     $scope.$on('itemMoved', function() {
         $scope.$broadcast('modMoved');

@@ -17,7 +17,7 @@ class ModListMod < ActiveRecord::Base
 
   # Callbacks
   after_create :increment_counter_caches
-  before_destroy :decrement_counter_caches
+  before_destroy :decrement_counter_caches, :destroy_mod_list_plugins
 
   def self.install_order_json(collection)
     collection.as_json({
@@ -32,12 +32,11 @@ class ModListMod < ActiveRecord::Base
 
   def as_json(options={})
     if JsonHelpers.json_options_empty(options)
-      # TODO: Revise this as necessary
       default_options = {
           :only => [:id, :group_id, :index, :active],
           :include => {
               :mod => {
-                  :only => [:id, :name, :aliases, :authors, :status, :primary_category_id, :secondary_category_id, :average_rating, :reputation, :stars_count, :released, :updated],
+                  :only => [:id, :is_official, :name, :aliases, :authors, :status, :primary_category_id, :secondary_category_id, :average_rating, :reputation, :asset_files_count, :stars_count, :released, :updated],
                   :methods => :image
               }
           }
@@ -102,5 +101,12 @@ class ModListMod < ActiveRecord::Base
         self.mod_list.update_counter(:mods_count, -1)
       end
       self.mod.update_counter(:mod_lists_count, -1)
+    end
+
+    def destroy_mod_list_plugins
+      if self.mod.plugins_count
+        plugin_ids = self.mod.plugins.ids
+        ModListPlugin.destroy_all(mod_list_id: self.mod_list_id, plugin_id: plugin_ids)
+      end
     end
 end

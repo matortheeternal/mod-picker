@@ -54,12 +54,12 @@ app.controller('modInstallOrderIssuesController', function($scope, $timeout, lis
         }
     });
 
-    $scope.resolveAllInstallOrder = function() {
+    $scope.resolveAllInstallOrder = function(moveDown) {
         $scope.notes.unresolved_install_order.forEach(function(note) {
             var moveOptions = {
-                moveId: note.mods[0].id,
-                destId: note.mods[1].id,
-                after: false
+                moveId: note.mods[+moveDown].id,
+                destId: note.mods[+!moveDown].id,
+                after: moveDown
             };
             $scope.$broadcast('moveItem', moveOptions);
         });
@@ -74,6 +74,10 @@ app.controller('modInstallOrderIssuesController', function($scope, $timeout, lis
     $scope.$on('saveChanges', function() {
         listUtils.removeDestroyed($scope.notes.install_order);
         $scope.buildUnresolvedInstallOrder();
+    });
+    $scope.$on('resolveAllInstallOrder', function() {
+        $scope.buildUnresolvedInstallOrder();
+        $scope.resolveAllInstallOrder(true);
     });
     $scope.$on('modRemoved', function(event, modId) {
         if (modId) {

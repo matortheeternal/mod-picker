@@ -1,4 +1,4 @@
-app.service('modService', function(backend, $q, categoryService, errorsFactory, pageUtils, objectUtils, contributionService, userTitleService, reviewSectionService, recordGroupService, pluginService, assetUtils) {
+app.service('modService', function(backend, $q, pageUtils, objectUtils, contributionService, userTitleService, reviewSectionService, recordGroupService, pluginService, assetUtils) {
     var service = this;
 
     this.retrieveMods = function(options, pageInformation) {

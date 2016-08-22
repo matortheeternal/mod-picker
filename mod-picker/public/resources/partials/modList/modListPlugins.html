@@ -28,6 +28,9 @@
             <span class="right-item action-box" ng-if="editing" ng-click="addGroup('plugins')">
                 <i class="fa fa-plus"></i> Add Group
             </span>
+            <span class="right-item action-box" ng-if="editing" ng-click="startSortLoadOrder()">
+                <i class="fa fa-sort-amount-desc"></i> Sort Load Order
+            </span>
             <span class="right-item toggle-item" ng-click="toggleLoadOrder()">
                 Show {{showLoadOrder ? 'Decimal Indexes' : 'Hex Load Order'}}
             </span>
