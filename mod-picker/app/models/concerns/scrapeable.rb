@@ -3,7 +3,7 @@ module Scrapeable
 
   included do
     # Scopes
-    scope :can_recrape, -> { joins(:mod).where(:mod => {hidden: false}).
+    scope :can_recrape, -> { joins(:mod).where(:mods => {hidden: false}).
       where("last_scraped < ? OR released > ?", 7.days.ago, 7.days.ago) }
 
     # Callbacks
