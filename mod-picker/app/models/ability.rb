@@ -162,11 +162,7 @@ class Ability
         # can :update, LoadOrderNote, { :incorrect? => true }
       end
       if user.reputation.overall >= 640
-        can :rescrape, Mod # can request mods be re-scraped
-        # can update mods that don't have a verified author
-        can :update, Mod, { :no_author? => true }
-        can :destroy, ModRequirement, {:mod_version => {:mod => {:no_author? => true } } }
-        can :destroy, ModTag, { :mod => { :no_author? => true } }
+        # TODO: Add some stuff here?
       end
       if user.reputation.overall >= 1280
         can :set_custom_title, User, :id => user.id # can set a custom user title
