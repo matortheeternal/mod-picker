@@ -80,7 +80,9 @@ def create_random_rep_links
     num_links = rand(rep.get_max_links)
     invalid_ids = [rep.id]
     num_links.times do
-      target_rep = random_rep while invalid_ids.includes(target_rep.id)
+      begin
+        target_rep = random_rep
+      end while invalid_ids.include?(target_rep.id)
       ReputationLink.create(from_rep_id: rep.id, to_rep_id: target_rep.id)
       invalid_ids.push(target_rep.id)
     end
