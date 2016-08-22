@@ -52,19 +52,19 @@ class UserReputation < ActiveRecord::Base
     self.site_rep = 0
 
     # MOD PICKER
-    mp_account_age = (Date.now - self.user.joined)
+    mp_account_age = Date.today - self.user.joined.to_date
     self.site_rep += mp_account_age * MP_ACCOUNT_AGE_RATIO
 
     # NEXUS MODS
     if self.user.bio.nexus_user_path.present?
-      nexus_account_age = (Date.now - self.user.bio.nexus_date_joined)
+      nexus_account_age = Date.today - self.user.bio.nexus_date_joined.to_date
       self.site_rep += nexus_account_age * SITE_ACCOUNT_AGE_RATIO
       self.site_rep += self.user.bio.nexus_posts_count * SITE_POST_RATIO
     end
 
     # LOVER'S LAB
     if self.user.bio.lover_user_path.present?
-      lover_account_age = (Date.now - self.user.bio.lover_date_joined)
+      lover_account_age = Date.today - self.user.bio.lover_date_joined.to_date
       self.site_rep += lover_account_age * SITE_ACCOUNT_AGE_RATIO
       self.site_rep += self.user.bio.lover_posts_count * SITE_POST_RATIO
     end
