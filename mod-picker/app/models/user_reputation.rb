@@ -48,6 +48,9 @@ class UserReputation < ActiveRecord::Base
   CURATOR_BASE_REP = 5
   MAX_CURATOR_REP = 100
 
+  # given reputation
+  USER_ENDORSE_RATIO = 0.05
+
   def calculate_site_rep!
     self.site_rep = 0
 
@@ -76,7 +79,7 @@ class UserReputation < ActiveRecord::Base
     end
 
     # Cap at MAX_SITE_REP
-    self.site_rep = [self.site_rep, MAX_SITE_REP].max
+    self.site_rep = [self.site_rep, MAX_SITE_REP].min
   end
 
   def calculate_contribution_rep!
@@ -140,7 +143,11 @@ class UserReputation < ActiveRecord::Base
       end
     end
 
-    self.author_rep += [curator_rep, MAX_CURATOR_REP].max
+    self.author_rep += [curator_rep, MAX_CURATOR_REP].min
+  end
+
+  def calculate_received_reputation!
+    self.given_rep = source_reputations.computable.sum(:overall) * USER_ENDORSE_RATIO
   end
 
   def calculate_overall_rep!
