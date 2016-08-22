@@ -5,8 +5,10 @@ class UserReputation < ActiveRecord::Base
 
   belongs_to :user
 
-  has_many :received_reputation, :class_name => 'ReputationLink', :inverse_of => 'target_reputation', :dependent => :destroy
-  has_many :given_reputation, :class_name => 'ReputationLink', :inverse_of => 'source_reputation', :dependent => :destroy
+  has_many :incoming_reputation_links, :class_name => 'ReputationLink', :inverse_of => 'target_reputation', :foreign_key => 'to_rep_id', :dependent => :destroy
+  has_many :outgoing_reputation_links, :class_name => 'ReputationLink', :inverse_of => 'source_reputation', :foreign_key => 'from_rep_id', :dependent => :destroy
+  has_many :target_reputations, :class_name => 'UserReputation', :through => 'outgoing_reputation_links', :source => 'target_reputation'
+  has_many :source_reputations, :class_name => 'UserReputation', :through => 'incoming_reputation_links', :source => 'source_reputation'
 
   # Validations
   validates :user_id, presence: true
