@@ -2,6 +2,7 @@ class UserReputation < ActiveRecord::Base
   include Filterable, RecordEnhancements
 
   scope :user, -> (id) { where(user_id: id) }
+  scope :computable, -> { where(dont_compute: false) }
 
   belongs_to :user
 
@@ -47,7 +48,9 @@ class UserReputation < ActiveRecord::Base
   CURATOR_BASE_REP = 5
   MAX_CURATOR_REP = 100
 
-  def calculate_site_rep
+  def calculate_site_rep!
+    self.site_rep = 0
+
     # MOD PICKER
     mp_account_age = (Date.now - self.user.joined)
     self.site_rep += mp_account_age * MP_ACCOUNT_AGE_RATIO
@@ -76,7 +79,9 @@ class UserReputation < ActiveRecord::Base
     self.site_rep = [self.site_rep, MAX_SITE_REP].max
   end
 
-  def calculate_contribution_rep
+  def calculate_contribution_rep!
+    self.contribution_rep = 0
+
     def get_contribution_rep(h, base, ratio)
       base + [-base, (h[0] - h[1]) * ratio, base].sort[1]
     end
@@ -117,7 +122,9 @@ class UserReputation < ActiveRecord::Base
     self.contribution_rep += self.user.mod_list_tags_count * MOD_LIST_TAG_REP
   end
 
-  def calculate_author_rep
+  def calculate_author_rep!
+    self.author_rep = 0
+
     curator_rep = 0
     self.user.mod_authors.each do |ma|
       if ma.role == :author
@@ -136,7 +143,7 @@ class UserReputation < ActiveRecord::Base
     self.author_rep += [curator_rep, MAX_CURATOR_REP].max
   end
 
-  def calculate_overall_rep
+  def calculate_overall_rep!
     self.overall = offset + site_rep + contribution_rep + author_rep + given_rep
   end
 
