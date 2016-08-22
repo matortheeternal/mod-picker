@@ -50,7 +50,7 @@ gem 'cancancan', '~> 1.10'
 # gem 'passenger'
 
 # using devise for authentication
-gem 'devise'
+gem 'devise', '~> 3.5.10'
 # using devise_invitable for inviting users to the platform for the beta
 # may also be used later for users to invite their friends
 gem 'devise_invitable'
