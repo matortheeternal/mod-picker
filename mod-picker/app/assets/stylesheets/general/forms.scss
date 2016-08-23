@@ -180,7 +180,7 @@ form {
 
     input[type="text"], input[type="password"], input[type="email"] {
       vertical-align: top;
-      width: 350px;
+      min-width: 350px;
       font-size: 20px;
       height: 32px;
       padding: 4px;
@@ -211,6 +211,13 @@ form {
 
     input.short-input {
       width: 150px;
+    }
+
+    input.elastic-input {
+      min-width: 150px;
+      max-width: 600px;
+      font-size: 16px;
+      padding: 4px;
     }
   }
 
