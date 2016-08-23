@@ -1,8 +1,6 @@
 class UserSetting < ActiveRecord::Base
   include Filterable
 
-  scope :user, -> (id) { where(user_id: id) }
-
   belongs_to :user
 
   # Validations
