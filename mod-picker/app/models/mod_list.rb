@@ -1,35 +1,22 @@
 class ModList < ActiveRecord::Base
-  include Filterable, Sortable, RecordEnhancements, Reportable
+  include Filterable, Sortable, RecordEnhancements, Reportable, ScopeHelpers
 
   enum status: [ :under_construction, :testing, :complete ]
   enum visibility: [ :visibility_private, :visibility_unlisted, :visibility_public ]
 
-  # BOOLEAN SCOPES
-  scope :include_adult, -> (bool) { where(has_adult_content: false) if !bool }
-  # GENERAL SCOPES
-  scope :visible, -> { where(hidden: false, visibility: 2) }
-  scope :game, -> (game_id) { where(game_id: game_id) }
-  # SEARCH SCOPES
-  scope :search, -> (search) { where("name like ?", "#{search}%") }
-  scope :description, -> (search) { where("description like ?", "#{search}%") }
-  scope :submitter, -> (username) { joins(:submitter).where(:users => {:username => username}) }
-  scope :tags, -> (array) { joins(:tags).where(:tags => {text: array}).having("COUNT(DISTINCT tags.text) = ?", array.length) }
-  # HASH SCOPES
-  scope :status, -> (statuses) {
-    if statuses.is_a?(Hash)
-      # handle hash search by building a statuses array
-      statuses_array = []
-      statuses.each_key do |key|
-        statuses_array.push(ModList.statuses[key]) if statuses[key]
-      end
-    else
-      # else treat as an array of statuses
-      statuses_array = statuses
-    end
+  # SCOPES
+  include_scope :has_adult_content, :alias => 'include_adult'
+  game_scope
+  search_scope :name, :alias => 'search'
+  search_scope :description
+  user_scope :submitter
+  enum_scope :status
+  counter_scope :tools_count, :mods_count, :custom_tools, :custom_mods, :plugins_count, :master_plugins_count, :available_plugins_count, :custom_plugins_count, :config_files_count, :custom_config_files_count, :compatibility_notes_count, :install_order_notes_count, :load_order_notes_count, :ignored_notes_count, :bsa_files_count, :asset_files_count, :records_count, :override_records_count, :plugin_errors_count, :tags_count, :stars_count, :comments_count
+  date_scope :submitted, :completed, :updated
 
-    # return query
-    where(status: statuses_array)
-  }
+  # UNIQUE SCOPES
+  scope :visible, -> { where(hidden: false, visibility: 2) }
+  scope :tags, -> (array) { joins(:tags).where(:tags => {text: array}).having("COUNT(DISTINCT tags.text) = ?", array.length) }
   scope :kind, -> (kinds) {
     # build is_collection values array
     is_collection = []
@@ -39,32 +26,6 @@ class ModList < ActiveRecord::Base
     # return query if length is 1
     where(is_collection: is_collection) if is_collection.length == 1
   }
-  # DATE SCOPES
-  scope :submitted, -> (range) { where(submitted: parseDate(range[:min])..parseDate(range[:max])) }
-  scope :updated, -> (range) { where(updated: parseDate(range[:min])..parseDate(range[:max])) }
-  scope :completed, -> (range) { where(completed: parseDate(range[:min])..parseDate(range[:max])) }
-  # STATISTIC SCOPES
-  scope :tools, -> (range) { where(tools_count: (range[:min]..range[:max])) }
-  scope :mods, -> (range) { where(mods_count: (range[:min]..range[:max])) }
-  scope :plugins, -> (range) { where(plugins_count: (range[:min]..range[:max])) }
-  scope :config_files, -> (range) { where(config_files_count: (range[:min]..range[:max])) }
-  scope :ignored_notes, -> (range) { where(ignored_notes_count: (range[:min]..range[:max])) }
-  scope :stars, -> (range) { where(stars_count: (range[:min]..range[:max])) }
-  scope :custom_tools, -> (range) { where(custom_tools_count: (range[:min]..range[:max])) }
-  scope :custom_mods, -> (range) { where(custom_mods_count: (range[:min]..range[:max])) }
-  scope :master_plugins, -> (range) { where(master_plugins_count: (range[:min]..range[:max])) }
-  scope :available_plugins, -> (range) { where(available_plugins_count: (range[:min]..range[:max])) }
-  scope :custom_plugins, -> (range) { where(custom_plugins_count: (range[:min]..range[:max])) }
-  scope :custom_config_files, -> (range) { where(custom_config_files_count: (range[:min]..range[:max])) }
-  scope :compatibility_notes, -> (range) { where(compatibility_notes_count: (range[:min]..range[:max])) }
-  scope :install_order_notes, -> (range) { where(install_order_notes_count: (range[:min]..range[:max])) }
-  scope :load_order_notes, -> (range) { where(load_order_notes_count: (range[:min]..range[:max])) }
-  scope :bsa_files, -> (range) { where(bsa_files_count: (range[:min]..range[:max])) }
-  scope :asset_files, -> (range) { where(asset_files_count: (range[:min]..range[:max])) }
-  scope :records, -> (range) { where(records_count: (range[:min]..range[:max])) }
-  scope :override_records, -> (range) { where(override_records_count: (range[:min]..range[:max])) }
-  scope :plugin_errors, -> (range) { where(plugin_errors_count: (range[:min]..range[:max])) }
-  scope :comments, -> (range) { where(comments_count: (range[:min]..range[:max])) }
 
   # ASSOCIATIONS
   belongs_to :game, :inverse_of => 'mod_lists'
