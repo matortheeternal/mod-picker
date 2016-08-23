@@ -117,7 +117,7 @@ module ScopeHelpers
         attributes.each do |attribute|
           scope_name = options[:alias] || attribute
           class_eval <<-buildscope
-            scope :#{scope_name}, -> (search) { where("#{attribute} like ?", "#\{search\}") }
+            scope :#{scope_name}, -> (search) { where("#{attribute} like ?", "%#\{search\}%") }
           buildscope
         end
       end
