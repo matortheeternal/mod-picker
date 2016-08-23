@@ -61,12 +61,8 @@ class ModsController < ApplicationController
     authorize! :update_options, @mod if options_params.any?
     authorize! :assign_custom_sources, @mod if params[:mod].has_key?(:custom_sources_attributes)
 
-    # update mod list tools/mods count if is_utility changed
-    swap_counts = params[:mod].has_key?(:is_utility) && params[:mod][:is_utility] != @mod.is_utility
-
     if @mod.update(mod_update_params)
       @mod.update_metrics
-      @mod.swap_mod_list_mods_tools_counts if swap_counts
       render json: {status: :ok}
     else
       render json: @mod.errors, status: :unprocessable_entity
