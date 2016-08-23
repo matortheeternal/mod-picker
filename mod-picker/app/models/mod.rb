@@ -1,18 +1,36 @@
 class Mod < ActiveRecord::Base
-  include Filterable, Sortable, Imageable, RecordEnhancements
+  include Filterable, Sortable, Imageable, RecordEnhancements, SourceHelpers, ScopeHelpers
 
   attr_writer :tag_names, :asset_paths, :plugin_dumps, :nexus_info_id, :lover_info_id, :workshop_info_id
   enum status: [ :good, :outdated, :unstable ]
 
-  # BOOLEAN SCOPES (excludes content when false)
-  scope :include_hidden, -> (bool) { where(hidden: false) if !bool  }
-  scope :include_adult, -> (bool) { where(has_adult_content: false) if !bool }
-  scope :include_official, -> (bool) { where(is_official: false) if !bool }
-  scope :include_utilities, -> (bool) { where(is_utility: false) if !bool }
+  # SCOPES
+  include_scope :hidden
+  include_scope :adult, :alias => 'include_adult'
+  include_scope :is_official, :alias => 'include_official'
+  include_scope :is_utility, :alias => 'include_utilities'
+  value_scope :is_utility
+  search_scope :name, :aliases, :combine => true
+  user_scope :author_users, :alias => 'mp_author'
+  enum_scope :status
+  counter_scope :plugins_count, :asset_files_count, :required_mods_count, :required_by_count, :tags_count, :stars_count, :mod_lists_count, :reviews_count, :compatibility_notes_count, :install_order_notes_count, :load_order_notes_count, :corrections_count
+  source_scope :views, :sites =>  [:nexus, :lab, :workshop]
+  source_scope :downloads, :sites => [:nexus, :lab]
+  source_scope :file_size, :sites => [:nexus, :lab]
+  source_scope :posts, :sites => [:nexus, :workshop], :alias => [:posts_count, :comments_count]
+  source_scope :videos, :sites => [:nexus, :workshop], :alias => [:videos_count, :videos_count]
+  source_scope :images, :sites => [:nexus, :workshop], :alias => [:images_count, :images_count]
+  source_scope :favorites, :sites => [:lab, :workshop], :alias => [:followers_count, :favorites]
+  source_scope :discussions, :sites => [:nexus, :workshop]
+  source_scope :endorsements, :sites => [:nexus]
+  source_scope :unique_downloads, :sites => [:nexus]
+  source_scope :files, :sites => [:nexus], :alias => [:files_count]
+  source_scope :bugs, :sites => [:nexus], :alias => [:bugs_count]
+  source_scope :articles, :sites => [:nexus], :alias => [:articles_count]
+  source_scope :subscribers, :sites => [:workshop]
+
+  # UNIQUE SCOPES
   scope :include_games, -> (bool) { where.not(primary_category_id: nil) if !bool }
-  # GENERAL SCOPES
-  scope :utility, -> (bool) { where(is_utility: bool) }
-  scope :search, -> (search) { where("name like ? OR aliases like ?", "%#{search}%", "%#{search}%") }
   scope :game, -> (game_id) {
     game = Game.find(game_id)
     if game.parent_game_id.present?
@@ -23,6 +41,7 @@ class Mod < ActiveRecord::Base
   }
   scope :exclude, -> (excluded_mod_ids) { where.not(id: excluded_mod_ids) }
   scope :sources, -> (sources) {
+    # TODO: Use AREL for this
     results = self.where(nil)
     whereClause = []
 
@@ -51,104 +70,19 @@ class Mod < ActiveRecord::Base
     results = results.where(whereClause.join(" OR "))
     results
   }
-  scope :released, -> (range) { where(released: parseDate(range[:min])..parseDate(range[:max])) }
-  scope :updated, -> (range) { where(updated: parseDate(range[:min])..parseDate(range[:max])) }
   scope :categories, -> (categories) { where("primary_category_id IN (?) OR secondary_category_id IN (?)", categories, categories) }
   scope :tags, -> (array) { joins(:tags).where(:tags => {text: array}).having("COUNT(DISTINCT tags.text) = ?", array.length) }
-  # MOD PICKER SCOPES
-  scope :stars, -> (range) { range_scope(range, :stars_count) }
-  scope :reviews, -> (range) { range_scope(range, :reviews_count) }
-  scope :rating, -> (range) { range_scope(range, :average_rating) }
-  scope :reputation, -> (range) { range_scope(range, :reputation) }
-  scope :compatibility_notes, -> (range) { range_scope(range, :compatibility_notes_count) }
-  scope :install_order_notes, -> (range) { range_scope(range, :install_order_notes_count) }
-  scope :load_order_notes, -> (range) { range_scope(range, :load_order_notes_count) }
-  # SHARED SCOPES (ALL)
   scope :author, -> (hash) {
     author = hash[:value]
     sources = hash[:sources]
 
     results = self.where(nil)
-    results = results.where("nexus_infos.authors like ? OR nexus_infos.uploaded_by like ?", author, author) if sources[:nexus]
+    results = results.where("nexus_infos.authors like :author OR nexus_infos.uploaded_by like :author", author: author) if sources[:nexus]
     results = results.where("lover_infos.uploaded_by like ?", author) if sources[:lab]
     results = results.where("workshop_infos.uploaded_by like ?", author) if sources[:workshop]
     results = results.where("mods.authors like ?", author) if sources[:other]
     results
   }
-  scope :mp_author, -> (username) { joins(:author_users).where(:users => {username: username}) }
-  scope :views, -> (range) {
-    sources = range[:sources]
-
-    results = self.where(nil)
-    results = results.where(:nexus_infos => {:views => range[:min]..range[:max]}) if sources[:nexus]
-    results = results.where(:lover_infos => {:views => range[:min]..range[:max]}) if sources[:lab]
-    results = results.where(:workshop_infos => {:views => range[:min]..range[:max]}) if sources[:workshop]
-    results
-  }
-  # SHARED SCOPES (SOME)
-  scope :downloads, -> (range) {
-    sources = range[:sources]
-
-    results = self.where(nil)
-    results = results.where(:nexus_infos => {:downloads => range[:min]..range[:max]}) if sources[:nexus]
-    results = results.where(:lover_infos => {:downloads => range[:min]..range[:max]}) if sources[:lab]
-    results
-  }
-  scope :file_size, -> (range) {
-    sources = range[:sources]
-
-    results = self.where(nil)
-    results = results.where(:lover_infos => {:file_size => range[:min]..range[:max]}) if sources[:lab]
-    results = results.where(:workshop_infos => {:file_size => range[:min]..range[:max]}) if sources[:workshop]
-    results
-  }
-  scope :posts, -> (range) {
-    sources = range[:sources]
-
-    results = self.where(nil)
-    results = results.where(:nexus_infos => {:posts_count => range[:min]..range[:max]}) if sources[:nexus]
-    results = results.where(:workshop_infos => {:comments_count => range[:min]..range[:max]}) if sources[:workshop]
-    results
-  }
-  scope :videos, -> (range) {
-    sources = range[:sources]
-
-    results = self.where(nil)
-    results = results.where(:nexus_infos => {:videos_count => range[:min]..range[:max]}) if sources[:nexus]
-    results = results.where(:workshop_infos => {:videos_count => range[:min]..range[:max]}) if sources[:workshop]
-    results
-  }
-  scope :images, -> (range) {
-    sources = range[:sources]
-
-    results = self.where(nil)
-    results = results.where(:nexus_infos => {:images_count => range[:min]..range[:max]}) if sources[:nexus]
-    results = results.where(:workshop_infos => {:images_count => range[:min]..range[:max]}) if sources[:workshop]
-    results
-  }
-  scope :favorites, -> (range)  {
-    sources = range[:sources]
-
-    results = self.where(nil)
-    results = results.where(:lover_infos => {:followers_count => range[:min]..range[:max]}) if sources[:lab]
-    results = results.where(:workshop_infos => {:favorites => range[:min]..range[:max]}) if sources[:workshop]
-    results
-  }
-  scope :discussions, -> (range) {
-    sources = range[:sources]
-
-    results = self.where(nil)
-    results = results.where(:nexus_infos => {:discussions_count => range[:min]..range[:max]}) if sources[:nexus]
-    results = results.where(:workshop_infos => {:discussions_count => range[:min]..range[:max]}) if sources[:workshop]
-    results
-  }
-  # UNIQUE SCOPES
-  scope :endorsements, -> (range) { range_scope(range, :endorsements, :nexus_infos) }
-  scope :unique_downloads, -> (range) { range_scope(range, :unique_downloads, :nexus_infos) }
-  scope :files, -> (range) { range_scope(range, :files_count, :nexus_infos) }
-  scope :bugs, -> (range) { range_scope(range, :bugs_count, :nexus_infos) }
-  scope :articles, -> (range) { range_scope(range, :articles_count, :nexus_infos) }
-  scope :subscribers, -> (range) { range_scope(range, :subscribers, :workshop_infos) }
 
   belongs_to :game, :inverse_of => 'mods'
   belongs_to :submitter, :class_name => 'User', :foreign_key => 'submitted_by', :inverse_of => 'submitted_mods'
@@ -227,127 +161,15 @@ class Mod < ActiveRecord::Base
 
   # callbacks
   after_create :increment_counters
-  before_update :destroy_associations, :hide_contributions
-  after_save :create_associations
   before_destroy :decrement_counters
-
-  def update_lazy_counters
-    self.asset_files_count = ModAssetFile.where(mod_id: self.id).count
-    self.plugins_count = Plugin.where(mod_id: self.id).count
-  end
-
-  def destroy_associations
-    # destroy associations as needed
-    if @plugin_dumps || @asset_paths
-      self.mod_asset_files.destroy_all
-      self.plugins.destroy_all
-    end
-  end
-
-  def hide_contributions
-    if self.attribute_changed?(:hidden) && self.hidden
-      # prepare some helper variables
-      plugin_ids = self.plugins.ids
-      cnote_ids = CompatibilityNote.where("first_mod_id = ? OR second_mod_id = ?", id, id).ids
-      inote_ids = InstallOrderNote.where("first_mod_id = ? OR second_mod_id = ?", id, id).ids
-      lnote_ids = LoadOrderNote.where("first_plugin_id in (?) OR second_plugin_id in (?)", plugin_ids, plugin_ids).ids
-
-      # hide content
-      Review.where(mod_id: self.id).update_all(:hidden => true)
-      Correction.where(correctable_type: "Mod", correctable_id: self.id).update_all(:hidden => true)
-      CompatibilityNote.where(id: cnote_ids).update_all(:hidden => true)
-      InstallOrderNote.where(id: inote_ids).update_all(:hidden => true)
-      LoadOrderNote.where(id: lnote_ids).update_all(:hidden => true)
-      Correction.where(correctable_type: "CompatibilityNote", correctable_id: cnote_ids).update_all(:hidden => true)
-      Correction.where(correctable_type: "InstallOrderNote", correctable_id: inote_ids).update_all(:hidden => true)
-      Correction.where(correctable_type: "LoadOrderNote", correctable_id: lnote_ids).update_all(:hidden => true)
-    elsif self.attribute_changed?(:disable_reviews) && self.disable_reviews
-      Review.where(mod_id: self.id).update_all(:hidden => true)
-    end
-  end
-
-  def swap_mod_list_mods_tools_counts
-    tools_operator = self.is_utility ? "+" : "-"
-    mods_operator = self.is_utility ? "-" : "+"
-    mod_list_ids = self.mod_lists.ids
-    ModList.where(id: mod_list_ids).update_all("tools_count = tools_count #{tools_operator} 1, mods_count = mods_count #{mods_operator} 1")
-  end
-
-  def create_tags
-    if @tag_names
-      @tag_names.each do |text|
-        tag = Tag.find_by(text: text, game_id: self.game_id)
-
-        # create tag if we couldn't find it
-        if tag.nil?
-          tag = Tag.create(text: text, game_id: self.game_id, submitted_by: self.submitted_by)
-        end
-
-        # associate tag with mod
-        self.mod_tags.create(tag_id: tag.id, submitted_by: self.submitted_by)
-      end
-    end
-  end
-
-  def create_asset_files
-    if @asset_paths
-      basepaths = []
-      @asset_paths.each do |path|
-        # prioritize files over data folder matching
-        split_paths = path.split(/(?<=\.bsa\\|\.esp|\.esm|Data\\)/)
-        basepaths |= [split_paths[0]] if split_paths.length > 1
-      end
-      # sort by longest path first so nested paths are prioritized
-      basepaths.sort { |a,b| b.length - a.length }
-
-      @asset_paths.each do |path|
-        basepath = basepaths.find { |basepath| path.start_with?(basepath) }
-        if basepath.present?
-          asset_file = AssetFile.find_or_create_by(game_id: self.game_id, path: path.sub(basepath, ''))
-          self.mod_asset_files.create(asset_file_id: asset_file.id, subpath: basepath)
-        else
-          self.mod_asset_files.create(subpath: path)
-        end
-      end
-    end
-  end
-
-  def create_plugins
-    if @plugin_dumps
-      @plugin_dumps.each do |dump|
-        # create plugin from dump
-        dump[:game_id] = self.game_id
-        plugin = Plugin.find_by(filename: dump[:filename], crc_hash: dump[:crc_hash])
-        if plugin.nil?
-          plugin = self.plugins.create(dump)
-        else
-          plugin.mod_id = self.id
-          plugin.save
-        end
-      end
-    end
-  end
 
   def asset_file_paths
     self.mod_asset_files.joins(:asset_file).pluck(:subpath, :path).map { |item| item.join('') }
   end
 
-  def link_sources
-    if @nexus_info_id
-      @nexus_info = NexusInfo.find(@nexus_info_id)
-      @nexus_info.mod_id = self.id
-      @nexus_info.save!
-    end
-    if @lover_info_id
-      @lover_info = LoverInfo.find(@lover_info_id)
-      @lover_info.mod_id = self.id
-      @lover_info.save!
-    end
-    if @workshop_info_id
-      @workshop_info = WorkshopInfo.find(@workshop_info_id)
-      @workshop_info.mod_id = self.id
-      @workshop_info.save!
-    end
+  def update_lazy_counters
+    self.asset_files_count = ModAssetFile.where(mod_id: self.id).count
+    self.plugins_count = Plugin.where(mod_id: self.id).count
   end
 
   def compute_extra_metrics
@@ -396,13 +218,6 @@ class Mod < ActiveRecord::Base
     elsif self.status == :outdated
       self.reputation = self.reputation / 2
     end
-  end
-
-  def create_associations
-    self.create_tags
-    self.create_asset_files
-    self.create_plugins
-    self.link_sources
   end
 
   def update_metrics
