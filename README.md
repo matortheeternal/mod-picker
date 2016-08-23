@@ -2,8 +2,14 @@
 A web application which helps users to pick mods to use in Bethesda Games such as Skyrim and Fallout 4.
 
 ## How to install
+You will be installing a Vagrant Box that will make sure you have all the things necessary to contribute! Once it is installed, you should always have an up-to-date environment that won't depend on you downloading, installing, and configuring everything yourself. This makes it easier for us to troubleshoot problems too, especially for Windows machines.
+
+You can read more about Vagrant here: [vagrant](https://www.vagrantup.com/). Suffice it to say that it will create a VM for you that runs the development environment locally for you.
+
 ### Windows Machines
 If you are running on Windows, you will need GitBash. You can download it from here: [git](https://git-scm.com/download/win)
+
+Once you've installed GitBash, VirtualBox and Vagrant, run all of the commands below through GitBash.
 
 ### Virtualbox
 Install VirtualBox if you don't have it:
@@ -37,11 +43,15 @@ vagrant up
 ```
 
 ### Log into the Vagrant Client
+Logging into the vagrant client allows you to run all the Rails, Rake, and other services you need to run the app
+
 ```bash
 vagrant ssh
 ```
 
 ### Start the services
+Once logged in, you can start any services necessary. Right now we only have one:
+
 ```bash
 rails s
 ```
@@ -53,20 +63,20 @@ You should be able to develop from either within the VM or from your Mac, Window
 - No changes should be directly pushed to any of the following branches: master
 - All changes should be made on a branch and a pull-request should be created on github (see https://help.github.com/articles/using-pull-requests/)
 - Use the following workflow to make changes:
-  - Create a new branch based off of master (git checkout -b new_branch_name origin/master)
+  - Create a new branch based off of dev (`git checkout -b feature/new_branch_name origin/dev`).
   - Make your code changes
-  - Push your new branch up to github (git push origin new_branch_name)
-  - Open a Pull Request to master with your changes (see https://help.github.com/articles/using-pull-requests/)
-  - Other developers can then approve your pull request and merge the code in!
+  - Push your new branch up to github (`git push origin feature/new_branch_name`)
+  - Open a Pull Request to dev with your changes (see https://help.github.com/articles/using-pull-requests/)
+  - Other developers can then review your changes and make comments. Respond to any feedback and push new commits onto the same branch. Once everyone is satisfied, the code will be approved and  your pull request will be merged!
 
 ### Tooling
 Here is a list of tools you may find useful as you develop:
-[GitHub for Windows](https://desktop.github.com/) (for Windows machines)
 [Sourcetree](https://www.sourcetreeapp.com/) (highly recommended if you are new to Git) (See below for some help)
+There are many text editors you can use to edit the code. Some good ones include Sublime Text, Atom, Notepad++ (Windows only), and Textmate (Mac). There are also IDEs out there. RubyMine is probably the most accessible, but feel free to use whatever is most comfortable for you.
 
 ### Workflow Guidelines
-- Refer to the Trello board for items tagged as "Frontend" (the blue bar) for pages to work on developing.  You can also choose your own page to work on (see "Choosing a page to work on").
-- Once you've edited a page you can view it by navigating to its route.  You may have to restart the server if you added images in developing the page. (Use `CTRL + C` to stop the server and `rails s` to start it again).
+- Refer to the Trello board for items tagged as "Frontend" (the blue bar) or "Backend" (the red bar) for pages to work on developing. You can also choose your own page to work on (see "Choosing a page to work on").
+- Once you've edited a page you can view it by navigating to its route. You may have to restart the server if you added images in developing the page. (Use `CTRL + C` to stop the server and `rails s` to start it again).
 
 Feel free to ask questions in the Development Team's Discord channels
 
