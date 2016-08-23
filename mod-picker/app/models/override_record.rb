@@ -1,8 +1,10 @@
 class OverrideRecord < ActiveRecord::Base
+  include ScopeHelpers
+
   self.primary_keys = :plugin_id, :fid
 
   # Scopes
-  scope :plugins, -> (plugin_ids) { where(plugin_id: plugin_ids) }
+  ids_scope :plugin_id
 
   # Associations
   belongs_to :plugin, :inverse_of => 'overrides'
