@@ -29,15 +29,15 @@ module SourceHelpers
         options[:sites].each_with_index do |site,index|
           source_table = get_source_table(site)
           column_name = options[:alias] ? options[:alias][index] : attribute
-          scope_wheres.push("results = results.where(:#{source_table} => { #{column_name}: (range[:min]..range[:max]) }) if sources[:#{site}]")
+          scope_wheres.push("query = query.where(:#{source_table} => { #{column_name}: (range[:min]..range[:max]) }) if sources[:#{site}]")
         end
         class_eval <<-buildscope
           scope :#{attribute}, -> (range) {
             sources = range[:sources]
 
-            results = self.where(nil)
+            query = where(nil)
             #{scope_wheres.join("\n")}
-            results
+            query
           }
         buildscope
       end
