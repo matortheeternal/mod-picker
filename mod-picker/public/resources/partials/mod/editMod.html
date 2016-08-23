@@ -247,6 +247,29 @@
                     <input type="button" class="btn" value="Add Requirement" ng-click="addRequirement()">
                 </section>
 
+                <h3 class="section-title">Config Files
+                    <span class="help-tooltip" title="Plaintext files that can be edited by users to customize how this mod/tool functions.">?</span>
+                </h3>
+                <section>
+                    <div class="dynamic-item dynamic-block" ng-repeat="config_file in mod.config_files" ng-hide="config_file._destroy">
+                        <span class="remove-item" ng-click="removeConfigFile(config_file)" title="Remove config file">
+                            <i class="fa fa-times"></i>
+                        </span>
+                        <label class="subsection">
+                            <strong>Filename</strong>
+                            <input type="text" class="elastic-input" ng-model="config_file.filename" spellcheck="false" pu-elastic-input>
+                        </label>
+                        <label class="subsection">
+                            <strong>Install Path</strong>
+                            <input type="text" class="elastic-input" ng-model="config_file.install_path" spellcheck="false" pu-elastic-input>
+                        </label>
+                        <label class="subsection">
+                            <textarea class="config-editor" ng-model="config_file.text_body" spellcheck="false" placeholder="Enter default text body here"></textarea>
+                        </label>
+                    </div>
+                    <input type="button" class="btn" value="Add Config File" ng-click="addConfigFile()">
+                </section>
+
                 <section>
                     <category-tree categories="categories" selection="mod.categories" toggle-all="false"></category-tree>
                     <div id="category-messages">
