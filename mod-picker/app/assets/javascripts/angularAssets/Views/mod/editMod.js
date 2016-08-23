@@ -431,21 +431,38 @@ app.controller('editModController', function($scope, $rootScope, $state, modObje
             sourcesValid = sourcesValid && ($scope.nexus || $scope.workshop || $scope.lab || oldSources);
         }
 
-        // return true if sources and categories are valid
-        var categoriesValid = $scope.mod.categories && $scope.mod.categories.length &&
-            $scope.mod.categories.length <= 2;
+        // Validate authors
+        var authorsValid = true;
+        $scope.mod.mod_authors.forEach(function(modAuthor) {
+            authorsValid = authorsValid && modAuthor.user.id;
+        });
+
+        // Validate requirements
+        var requirementsValid = true;
+        $scope.mod.requirements.forEach(function(requirement) {
+            requirementsValid = requirementsValid && requirement.required_id;
+        });
+
+        // Validate config files
+        var configsValid = true;
+        $scope.mod.config_files.forEach(function(configFile) {
+            configsValid = configsValid && configFile.filename.length && configFile.install_path.length && configFile.text_body.length;
+        });
+
+        // validate categories
+        var categoriesValid = $scope.mod.categories.length <= 2 && $scope.mod.is_official || $scope.mod.categories.length;
+
+        // return result of all validations
         return (sourcesValid && categoriesValid)
     };
 
     // save changes
     $scope.updateMod = function() {
+        // return if mod is invalid
+        if (!$scope.modValid()) return;
+
         // get changed mod fields
         var modDiff = objectUtils.getDifferentObjectValues($scope.originalMod, $scope.mod);
-
-        // return if mod is invalid
-        if (!$scope.modValid()) {
-            return;
-        }
 
         // build sources object
         var sources = {
