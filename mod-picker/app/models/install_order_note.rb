@@ -20,8 +20,8 @@ class InstallOrderNote < ActiveRecord::Base
   belongs_to :editor, :class_name => 'User', :foreign_key => 'edited_by'
 
   # mods associatied with this install order note
-  belongs_to :first_mod, :foreign_key => 'first_mod_id', :class_name => 'Mod', :inverse_of => 'first_install_order_notes'
-  belongs_to :second_mod, :foreign_key => 'second_mod_id', :class_name => 'Mod', :inverse_of => 'second_install_order_notes'
+  belongs_to :first_mod, :foreign_key => 'first_mod_id', :class_name => 'Mod'
+  belongs_to :second_mod, :foreign_key => 'second_mod_id', :class_name => 'Mod'
 
   # mod lists this install order note appears on
   has_many :mod_list_install_order_notes, :inverse_of => 'install_order_note'

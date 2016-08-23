@@ -21,8 +21,8 @@ class LoadOrderNote < ActiveRecord::Base
   belongs_to :editor, :class_name => 'User', :foreign_key => 'edited_by'
 
   # plugins associatied with this load order note
-  belongs_to :first_plugin, :foreign_key => 'first_plugin_id', :class_name => 'Plugin', :inverse_of => 'first_load_order_notes'
-  belongs_to :second_plugin, :foreign_key => 'second_plugin_id', :class_name => 'Plugin', :inverse_of => 'second_load_order_notes'
+  belongs_to :first_plugin, :foreign_key => 'first_plugin_id', :class_name => 'Plugin'
+  belongs_to :second_plugin, :foreign_key => 'second_plugin_id', :class_name => 'Plugin'
 
   # mods associated with this load order note
   has_one :first_mod, :through => :first_plugin, :class_name => 'Mod', :source => 'mod', :foreign_key => 'mod_id'
