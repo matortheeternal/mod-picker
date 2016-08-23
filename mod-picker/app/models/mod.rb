@@ -41,34 +41,19 @@ class Mod < ActiveRecord::Base
   }
   scope :exclude, -> (excluded_mod_ids) { where.not(id: excluded_mod_ids) }
   scope :sources, -> (sources) {
-    # TODO: Use AREL for this
-    results = self.where(nil)
-    whereClause = []
+    # TODO: Use AREL for this?
+    query = where(nil)
+    where_clause = []
 
-    # nexus mods
-    if sources[:nexus]
-      results = results.includes(:nexus_infos).references(:nexus_infos)
-      whereClause.push("nexus_infos.id IS NOT NULL")
-    end
-    # lover's lab
-    if sources[:lab]
-      results = results.includes(:lover_infos).references(:lover_infos)
-      whereClause.push("lover_infos.id IS NOT NULL")
-    end
-    # steam workshop
-    if sources[:workshop]
-      results = results.includes(:workshop_infos).references(:workshop_infos)
-      whereClause.push("workshop_infos.id IS NOT NULL")
-    end
-    # other sources
-    if sources[:other]
-      results = results.includes(:custom_sources).references(:custom_sources)
-      whereClause.push("custom_sources.id IS NOT NULL")
+    sources.each_key do |key|
+      if sources[key]
+        table = get_source_table(key)
+        query = query.includes(table).references(table)
+        where_clause.push("#{table}.id IS NOT NULL")
+      end
     end
 
-    # require one selected source to be present
-    results = results.where(whereClause.join(" OR "))
-    results
+    query.where(where_clause.join(" OR "))
   }
   scope :categories, -> (categories) { where("primary_category_id IN (?) OR secondary_category_id IN (?)", categories, categories) }
   scope :tags, -> (array) { joins(:tags).where(:tags => {text: array}).having("COUNT(DISTINCT tags.text) = ?", array.length) }
