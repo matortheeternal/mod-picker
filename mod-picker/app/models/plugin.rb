@@ -1,25 +1,19 @@
 class Plugin < ActiveRecord::Base
-  include Filterable, Sortable, RecordEnhancements
+  include Filterable, Sortable, RecordEnhancements, ScopeHelpers
 
   attr_writer :master_plugins
 
   # GENERAL SCOPES
-  scope :game, -> (game) { where(game_id: game) }
-  scope :mods, -> (mod_ids) { where(mod_id: mod_ids) }
+  game_scope
+  ids_scope :mod_id
+  search_scope :filename, :alias => :search
+  search_scope :author, :description
+  counter_scope :record_count, :override_count, :errors_count, :mod_lists_count, :load_order_notes_count
+  bytes_scope :file_size
+
+  # UNIQUE SCOPES
   scope :esm, -> { where("filename like '%.esm'") }
-  # SEARCH SCOPES
-  scope :search, -> (search) { where("filename like ?", "%#{search}%") }
-  scope :author, -> (search) { where("author like ?", "%#{search}%") }
-  scope :description, -> (search) { where("description like ?", "%#{search}%") }
-  # HASH SCOPES
-  scope :categories, -> (categories) { joins(:mod).where("mods.primary_category_id IN (?) OR mods.secondary_category_id IN (?)", categories, categories) }
-  # STATISTIC SCOPES
-  scope :file_size, -> (range) { where(file_size: (parseBytes(range[:min])..parseBytes(range[:max]))) }
-  scope :records, -> (range) { where(record_count: (range[:min]..range[:max])) }
-  scope :overrides, -> (range) { where(override_count: (range[:min]..range[:max])) }
-  scope :errors, -> (range) { where(errors_count: (range[:min]..range[:max])) }
-  scope :mod_lists, -> (range) { where(mod_lists_count: (range[:min]..range[:max])) }
-  scope :load_order_notes, -> (range) { where(load_order_notes_count: (range[:min]..range[:max])) }
+  scope :categories, -> (categories) { joins(:mod).where("mods.primary_category_id IN (:ids) OR mods.secondary_category_id IN (:ids)", ids: categories) }
 
   # Associations
   belongs_to :game, :inverse_of => 'plugins'
@@ -41,10 +35,6 @@ class Plugin < ActiveRecord::Base
 
   # is a compatibility plugin for
   has_many :compatibility_notes, :foreign_key => 'compatibility_plugin_id', :inverse_of => 'compatibility_plugin'
-
-  # load order notes
-  has_many :first_load_order_notes, :foreign_key => 'first_plugin_id', :class_name => 'LoadOrderNote', :inverse_of => 'second_plugin'
-  has_many :second_load_order_notes, :foreign_key => 'second_plugin_id', :class_name => 'LoadOrderNote', :inverse_of => 'first_plugin'
 
   accepts_nested_attributes_for :plugin_record_groups, :overrides, :plugin_errors
 
