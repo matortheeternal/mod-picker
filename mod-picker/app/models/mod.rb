@@ -208,6 +208,7 @@ class Mod < ActiveRecord::Base
   has_many :mod_lists, :through => 'mod_list_mods', :inverse_of => 'mods'
 
   accepts_nested_attributes_for :custom_sources, allow_destroy: true
+  accepts_nested_attributes_for :config_files, allow_destroy: true
   # cannot update required mods
   accepts_nested_attributes_for :required_mods, reject_if: proc {
       |attributes| attributes[:id] && !attributes[:_destroy]
