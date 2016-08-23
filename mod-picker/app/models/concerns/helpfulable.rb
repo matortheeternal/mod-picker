@@ -2,9 +2,7 @@ module Helpfulable
   extend ActiveSupport::Concern
 
   included do
-    scope :reputation, -> (range) { where(reputation: range[:min]..range[:max]) }
-    scope :helpful_count, -> (range) { where(helpful_count: range[:min]..range[:max]) }
-    scope :not_helpful_count, -> (range) { where(not_helpful_count: range[:min]..range[:max]) }
+    range_scope :reputation, :helpful_count, :not_helpful_count
 
     has_many :helpful_marks, :as => 'helpfulable'
   end
