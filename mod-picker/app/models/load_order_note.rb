@@ -1,21 +1,20 @@
 class LoadOrderNote < ActiveRecord::Base
-  include Filterable, Sortable, RecordEnhancements, Correctable, Helpfulable, Reportable
+  include Filterable, Sortable, RecordEnhancements, Correctable, Helpfulable, Reportable, ScopeHelpers
 
-  # BOOLEAN SCOPES (excludes content when false)
-  scope :include_hidden, -> (bool) { where(hidden: false) if !bool  }
-  scope :include_adult, -> (bool) { where(has_adult_content: false) if !bool }
-  # GENERAL SCOPES
-  scope :visible, -> { where(hidden: false, approved: true) }
-  scope :game, -> (game_id) { where(game_id: game_id) }
-  scope :plugin, -> (plugin_ids) { where("first_plugin_id IN (?) OR second_plugin_id IN (?)", plugin_ids, plugin_ids) }
-  scope :plugins, -> (plugin_ids) { where(first_plugin_id: plugin_ids, second_plugin_id: plugin_ids) }
-  scope :search, -> (text) { where("load_order_notes.text_body like ?", "%#{text}%") }
+  # SCOPES
+  include_scope :hidden
+  include_scope :has_adult_content, :alias => 'include_adult'
+  visible_scope :approvable => true
+  game_scope
+  search_scope :text_body, :alias => 'search'
+  user_scope :submitter
+  ids_scope :plugin_id, :columns => [:first_plugin_id, :second_plugin_id]
+  date_scope :submitted, :edited
+
+  # UNIQUE SCOPES
   scope :plugin_filename, -> (filename) { joins(:first_plugin, :second_plugin).where("plugins.filename like ?", "%#{filename}%") }
-  scope :submitter, -> (username) { joins(:submitter).where(:users => {:username => username}) }
-  # RANGE SCOPES
-  scope :submitted, -> (range) { where(submitted: parseDate(range[:min])..parseDate(range[:max])) }
-  scope :edited, -> (range) { where(edited: parseDate(range[:min])..parseDate(range[:max])) }
 
+  # ASSOCIATIONS
   belongs_to :game, :inverse_of => 'load_order_notes'
   belongs_to :submitter, :class_name => 'User', :foreign_key => 'submitted_by', :inverse_of => 'load_order_notes'
   belongs_to :editor, :class_name => 'User', :foreign_key => 'edited_by'
