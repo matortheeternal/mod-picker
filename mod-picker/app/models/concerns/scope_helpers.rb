@@ -111,13 +111,13 @@ module ScopeHelpers
         search_terms = []
         attributes.each { |attribute| search_terms.push("#{attribute} like :search")}
         class_eval <<-buildscope
-            scope :search, -> (search) { where(#{search_terms.join(' OR ')}, search: search) }
+            scope :search, -> (search) { where("#{search_terms.join(' OR ')}", search: "%#\{search\}%") }
         buildscope
       else
         attributes.each do |attribute|
           scope_name = options[:alias] || attribute
           class_eval <<-buildscope
-            scope :#{scope_name}, -> (search) { where("#{attribute} like ?", search) }
+            scope :#{scope_name}, -> (search) { where("#{attribute} like ?", "#\{search\}") }
           buildscope
         end
       end
