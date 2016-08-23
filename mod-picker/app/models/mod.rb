@@ -192,17 +192,16 @@ class Mod < ActiveRecord::Base
   has_many :mod_tags, :inverse_of => 'mod', :dependent => :destroy
   has_many :tags, :through => 'mod_tags', :inverse_of => 'mods'
 
-  # compatibility notes
-  has_many :first_compatibility_notes, :foreign_key => 'first_mod_id', :class_name => 'CompatibilityNote', :inverse_of => 'first_mod'
-  has_many :second_compatibility_notes, :foreign_key => 'second_mod_id', :class_name => 'CompatibilityNote', :inverse_of => 'second_mod'
-
-  # install order notes
-  has_many :first_install_order_notes, :foreign_key => 'first_mod_id', :class_name => 'InstallOrderNote', :inverse_of => 'first_mod'
-  has_many :second_install_order_notes, :foreign_key => 'second_mod_id', :class_name => 'InstallOrderNote', :inverse_of => 'second_mod'
-
-  # load order notes
-  has_many :first_load_order_notes, :through => 'plugins', :class_name => 'LoadOrderNote', :inverse_of => 'first_mod'
-  has_many :second_load_order_notes, :through => 'plugins', :class_name => 'LoadOrderNote', :inverse_of => 'second_mod'
+  # notes
+  has_many :compatibility_notes, -> (mod) {
+    where('first_mod_id = :mod_id OR second_mod_id = :mod_id', mod_id: mod.id)
+  }
+  has_many :install_order_notes, -> (mod) {
+    where('first_mod_id = :mod_id OR second_mod_id = :mod_id', mod_id: mod.id)
+  }
+  has_many :load_order_notes, -> (mod) {
+    where('first_plugin_id in (:plugin_ids) OR second_plugin_id in (:plugin_ids)', plugin_ids: mod.plugins.ids)
+  }
 
   # mod list usage
   has_many :mod_list_mods, :inverse_of => 'mod', :dependent => :destroy
@@ -411,18 +410,6 @@ class Mod < ActiveRecord::Base
     self.compute_reputation
     self.update_lazy_counters
     self.save!
-  end
-
-  def compatibility_notes
-    CompatibilityNote.where('first_mod_id = ? OR second_mod_id = ?', self.id, self.id)
-  end
-
-  def install_order_notes
-    InstallOrderNote.where('first_mod_id = ? OR second_mod_id = ?', self.id, self.id)
-  end
-
-  def load_order_notes
-    LoadOrderNote.where('first_plugin_id in (?) OR second_plugin_id in (?)', self.plugins.ids, self.plugins.ids)
   end
 
   def self.index_json(collection, sources)
