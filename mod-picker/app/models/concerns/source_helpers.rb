@@ -18,7 +18,7 @@ module SourceHelpers
     def source_scope(attribute, options={})
       # single site scope
       if options[:sites].length == 1
-        column = attribute || options[:aliases][0]
+        column = attribute || options[:alias][0]
         source_table = get_source_table(options[:sites][0])
         class_eval <<-buildscope
           scope :#{attribute}, -> (range) {
@@ -28,8 +28,8 @@ module SourceHelpers
         scope_wheres = []
         options[:sites].each_with_index do |site,index|
           source_table = get_source_table(site)
-          column_name = options[:aliases] ? options[aliases][index] : attribute
-          scope_wheres.push("results = results.where(:#{source_table} => { :#{column_name}: (range[:min]..range[:max]) }) if sources[:#{site}]")
+          column_name = options[:alias] ? options[:alias][index] : attribute
+          scope_wheres.push("results = results.where(:#{source_table} => { #{column_name}: (range[:min]..range[:max]) }) if sources[:#{site}]")
         end
         class_eval <<-buildscope
           scope :#{attribute}, -> (range) {
