@@ -58,15 +58,17 @@ class Mod < ActiveRecord::Base
   scope :categories, -> (categories) { where("primary_category_id IN (?) OR secondary_category_id IN (?)", categories, categories) }
   scope :tags, -> (array) { joins(:tags).where(:tags => {text: array}).having("COUNT(DISTINCT tags.text) = ?", array.length) }
   scope :author, -> (hash) {
+    # TODO: Use AREL for this?
     author = hash[:value]
     sources = hash[:sources]
+    where_clause = []
 
-    results = self.where(nil)
-    results = results.where("nexus_infos.authors like :author OR nexus_infos.uploaded_by like :author", author: author) if sources[:nexus]
-    results = results.where("lover_infos.uploaded_by like ?", author) if sources[:lab]
-    results = results.where("workshop_infos.uploaded_by like ?", author) if sources[:workshop]
-    results = results.where("mods.authors like ?", author) if sources[:other]
-    results
+    results = where_clause.push("nexus_infos.authors like :author OR nexus_infos.uploaded_by like :author") if sources[:nexus]
+    results = where_clause.push("lover_infos.uploaded_by like :author") if sources[:lab]
+    results = where_clause.push("workshop_infos.uploaded_by like :author") if sources[:workshop]
+    results = where_clause.push("mods.authors like :author") if sources[:other]
+
+    where(where_clause.join(" OR "))
   }
 
   belongs_to :game, :inverse_of => 'mods'
