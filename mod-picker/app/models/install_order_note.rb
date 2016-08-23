@@ -1,19 +1,15 @@
 class InstallOrderNote < ActiveRecord::Base
-  include Filterable, Sortable, RecordEnhancements, Correctable, Helpfulable, Reportable
+  include Filterable, Sortable, RecordEnhancements, Correctable, Helpfulable, Reportable, ScopeHelpers
 
-  # BOOLEAN SCOPES (excludes content when false)
-  scope :include_hidden, -> (bool) { where(hidden: false) if !bool  }
-  scope :include_adult, -> (bool) { where(has_adult_content: false) if !bool }
-  # GENERAL SCOPES
-  scope :visible, -> { where(hidden: false, approved: true) }
-  scope :game, -> (game_id) { where(game_id: game_id) }
-  scope :mod, -> (mod_ids) { where("first_mod_id IN (?) OR second_mod_id IN (?)", mod_ids, mod_ids) }
-  scope :mods, -> (mod_ids) { where(first_mod_id: mod_ids, second_mod_id: mod_ids) }
-  scope :search, -> (text) { where("install_order_notes.text_body like ?", "%#{text}%") }
-  scope :submitter, -> (username) { joins(:submitter).where(:users => {:username => username}) }
-  # RANGE SCOPES
-  scope :submitted, -> (range) { where(submitted: parseDate(range[:min])..parseDate(range[:max])) }
-  scope :edited, -> (range) { where(edited: parseDate(range[:min])..parseDate(range[:max])) }
+  # SCOPES
+  include_scope :hidden
+  include_scope :has_adult_content, :alias => 'include_adult'
+  visible_scope :approvable => true
+  game_scope
+  search_scope :text_body, :alias => 'search'
+  user_scope :submitter
+  ids_scope :mod_id, :columns => [:first_mod_id, :second_mod_id]
+  date_scope :submitted, :edited
 
   belongs_to :game, :inverse_of => 'install_order_notes'
   belongs_to :submitter, :class_name => 'User', :foreign_key => 'submitted_by', :inverse_of => 'install_order_notes'
