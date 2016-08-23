@@ -1,18 +1,23 @@
 class ModBuilder
   attr_accessor :mod, :current_user, :params, :asset_paths, :plugin_dumps, :tag_names, :nexus_info_id, :lover_info_id, :workshop_info_id
 
-  def initialize(current_user, asset_paths, **params)
+  def builder_attributes
+    [:asset_paths, :plugin_dumps, :tag_names, :nexus_info_id, :lover_info_id, :workshop_info_id]
+  end
+
+  def initialize(current_user, **params)
     @current_user = current_user
-    @asset_paths = asset_paths
-    @params = params
+    @params = params.except(attributes)
+    builder_attributes.each_key do |attribute|
+      send(:"#{attribute}=", params.delete(attribute)) if params.has_key?(attribute)
+    end
   end
 
   def mod
-    @mod ||= Mod.new(@params)
+    @mod ||= Mod.find_or_initialize_by(id: @params[:id])
   end
 
-  def update(mod)
-    @mod = mod
+  def update
     update!
   rescue
     errors = @mod.errors
@@ -23,7 +28,7 @@ class ModBuilder
     ActiveRecord::Base.transaction do
       self.before_save
       self.before_update
-      mod.save!
+      mod.update!(@params)
       self.after_save
     end
   end
@@ -33,6 +38,7 @@ class ModBuilder
   end
 
   def save
+    mod.assign_attributes(@params)
     save!
   rescue
     errors = @mod.errors
@@ -59,8 +65,8 @@ class ModBuilder
   end
 
   def set_config_file_game_ids
-    if config_files_attributes
-      config_files_attributes.each do |config_file|
+    if @config_files_attributes
+      @config_files_attributes.each do |config_file|
         config_file[:game_id] = game_id
       end
     end

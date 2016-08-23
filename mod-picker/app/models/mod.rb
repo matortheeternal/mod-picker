@@ -1,7 +1,6 @@
 class Mod < ActiveRecord::Base
   include Filterable, Sortable, Imageable, RecordEnhancements, SourceHelpers, ScopeHelpers
 
-  attr_writer :tag_names, :asset_paths, :plugin_dumps, :nexus_info_id, :lover_info_id, :workshop_info_id
   enum status: [ :good, :outdated, :unstable ]
 
   # SCOPES
