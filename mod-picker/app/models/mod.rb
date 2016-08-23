@@ -56,13 +56,13 @@ class Mod < ActiveRecord::Base
   scope :categories, -> (categories) { where("primary_category_id IN (?) OR secondary_category_id IN (?)", categories, categories) }
   scope :tags, -> (array) { joins(:tags).where(:tags => {text: array}).having("COUNT(DISTINCT tags.text) = ?", array.length) }
   # MOD PICKER SCOPES
-  scope :stars, -> (range) { where(stars_count: (range[:min]..range[:max])) }
-  scope :reviews, -> (range) { where(reviews_count: (range[:min]..range[:max])) }
-  scope :rating, -> (range) { where(average_rating: (range[:min]..range[:max])) }
-  scope :reputation, -> (range) { where(reputation: (range[:min]..range[:max])) }
-  scope :compatibility_notes, -> (range) { where(compatibility_notes_count: (range[:min]..range[:max])) }
-  scope :install_order_notes, -> (range) { where(install_order_notes_count: (range[:min]..range[:max])) }
-  scope :load_order_notes, -> (range) { where(load_order_notes_count: (range[:min]..range[:max])) }
+  scope :stars, -> (range) { range_scope(range, :stars_count) }
+  scope :reviews, -> (range) { range_scope(range, :reviews_count) }
+  scope :rating, -> (range) { range_scope(range, :average_rating) }
+  scope :reputation, -> (range) { range_scope(range, :reputation) }
+  scope :compatibility_notes, -> (range) { range_scope(range, :compatibility_notes_count) }
+  scope :install_order_notes, -> (range) { range_scope(range, :install_order_notes_count) }
+  scope :load_order_notes, -> (range) { range_scope(range, :load_order_notes_count) }
   # SHARED SCOPES (ALL)
   scope :author, -> (hash) {
     author = hash[:value]
@@ -143,12 +143,12 @@ class Mod < ActiveRecord::Base
     results
   }
   # UNIQUE SCOPES
-  scope :endorsements, -> (range) { where(:nexus_infos => { endorsements: range[:min]..range[:max] }) }
-  scope :unique_downloads, -> (range) { where(:nexus_infos => { unique_downloads: range[:min]..range[:max] }) }
-  scope :files, -> (range) { where(:nexus_infos => { files_count: range[:min]..range[:max] }) }
-  scope :bugs, -> (range) { where(:nexus_infos => { bugs_count: range[:min]..range[:max] }) }
-  scope :articles, -> (range) { where(:nexus_infos => { articles_count: range[:min]..range[:max] }) }
-  scope :subscribers, -> (range) { where(:workshop_infos => { subscribers: range[:min]..range[:max] }) }
+  scope :endorsements, -> (range) { range_scope(range, :endorsements, :nexus_infos) }
+  scope :unique_downloads, -> (range) { range_scope(range, :unique_downloads, :nexus_infos) }
+  scope :files, -> (range) { range_scope(range, :files_count, :nexus_infos) }
+  scope :bugs, -> (range) { range_scope(range, :bugs_count, :nexus_infos) }
+  scope :articles, -> (range) { range_scope(range, :articles_count, :nexus_infos) }
+  scope :subscribers, -> (range) { range_scope(range, :subscribers, :workshop_infos) }
 
   belongs_to :game, :inverse_of => 'mods'
   belongs_to :submitter, :class_name => 'User', :foreign_key => 'submitted_by', :inverse_of => 'submitted_mods'
