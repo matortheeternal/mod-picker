@@ -260,6 +260,7 @@ app.service('modService', function(backend, $q, pageUtils, objectUtils, contribu
                 mod_authors_attributes: mod_authors,
                 custom_sources_attributes: custom_sources,
                 required_mods_attributes: required_mods,
+                config_files_attributes: mod.config_files,
                 disallow_contributors: mod.disallow_contributors,
                 disable_reviews: mod.disable_reviews,
                 lock_tags: mod.lock_tags,
