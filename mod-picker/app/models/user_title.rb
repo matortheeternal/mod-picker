@@ -1,7 +1,7 @@
 class UserTitle < ActiveRecord::Base
-  include Filterable
+  include Filterable, ScopeHelpers
 
-  scope :game, -> (game) { where(game_id: game) }
+  game_scope
 
   belongs_to :game
 
