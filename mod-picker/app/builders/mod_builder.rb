@@ -39,6 +39,7 @@ class ModBuilder
 
   def save
     mod.assign_attributes(@params)
+    mod.submitted_by = @current_user.id
     save!
   rescue
     errors = @mod.errors

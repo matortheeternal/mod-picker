@@ -40,12 +40,11 @@ class ModsController < ApplicationController
 
   # POST /mods/submit
   def create
-    @mod = Mod.new(mod_params)
-    @mod.submitted_by = current_user.id
-    authorize! :create, @mod
-    authorize! :assign_custom_sources, @mod if params[:mod].has_key?(:custom_sources_attributes)
+    authorize! :create, Mod
+    authorize! :assign_custom_sources, Mod if params[:mod].has_key?(:custom_sources_attributes)
 
-    if @mod.save
+    builder = ModBuilder.initialize(current_user)
+    if builder.save
       @mod.update_metrics
       render json: {status: :ok}
     else
@@ -61,11 +60,12 @@ class ModsController < ApplicationController
     authorize! :update_options, @mod if options_params.any?
     authorize! :assign_custom_sources, @mod if params[:mod].has_key?(:custom_sources_attributes)
 
-    if @mod.update(mod_update_params)
+    builder = ModBuilder.initialize(current_user, mod_update_params)
+    if builder.update
       @mod.update_metrics
       render json: {status: :ok}
     else
-      render json: @mod.errors, status: :unprocessable_entity
+      render json: ModBuilder.errors, status: :unprocessable_entity
     end
   end
 
