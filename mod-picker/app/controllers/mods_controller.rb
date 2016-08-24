@@ -45,10 +45,10 @@ class ModsController < ApplicationController
 
     builder = ModBuilder.initialize(current_user)
     if builder.save
-      @mod.update_metrics
+      builder.mod.update_metrics
       render json: {status: :ok}
     else
-      render json: @mod.errors, status: :unprocessable_entity
+      render json: builder.errors, status: :unprocessable_entity
     end
   end
 
@@ -62,10 +62,10 @@ class ModsController < ApplicationController
 
     builder = ModBuilder.initialize(current_user, mod_update_params)
     if builder.update
-      @mod.update_metrics
+      builder.mod.update_metrics
       render json: {status: :ok}
     else
-      render json: ModBuilder.errors, status: :unprocessable_entity
+      render json: builder.errors, status: :unprocessable_entity
     end
   end
 
