@@ -39,7 +39,7 @@ app.service('reviewSectionService', function (backend, $q) {
         return output.promise;
     };
 
-    this.getSectionById = function(reviewSections, id) {
+    this.getSectionById = function(id) {
         var output = $q.defer();
         allReviewSections.then(function(sections) {
             output.resolve(sections.find(function(section) {
