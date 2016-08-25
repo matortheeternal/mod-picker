@@ -23,7 +23,9 @@ app.service('reviewSectionService', function (backend, $q) {
                         return modSection.name === section.name;
                     });
                     if (foundSection) {
-                        foundSection.prompt += "\n\n" + section.prompt;
+                        if (foundSection.prompt !== section.prompt) {
+                            foundSection.prompt += "  " + section.prompt;
+                        }
                     } else {
                         section.default = false;
                         modSections.push(section);
@@ -61,6 +63,6 @@ app.service('reviewSectionService', function (backend, $q) {
     };
 
     this.preparePrompt = function(section) {
-        return '*' + section.prompt.replace(' ', '\uFEFF ') + '*';
+        return '*' + section.prompt.replace(/\ /g, '\uFEFF ') + '*\n\n';
     };
 });
