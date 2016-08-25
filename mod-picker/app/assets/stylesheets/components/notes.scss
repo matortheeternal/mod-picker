@@ -92,12 +92,12 @@
     padding-bottom: 35px;
 
     .ratings-container {
-      padding: 6px;
+      padding: 6px 20px;
       font-size: 20px;
+
       .rating-item {
         padding-top: 3px;
         padding-bottom: 3px;
-
         .rating-value {
           color: $bar_text_color;
         }
