@@ -10,7 +10,7 @@
                     <div class="header-info">
                         <span class="header-name">{{mod.name}}</span>
                         <span class="header-authors-container">by
-                            <span class="header-authors">{{mod.authors}}</span>
+                            <a ng-click="toggleAuthorsModal(true)">{{mod.authors}}</a>
                         </span>
                         <!--<span ng-repeat="author in mod.authors">
                             <a ng-href="#/user/{{author.id}}">{{author.username}}</a>
@@ -62,6 +62,8 @@
                 </section>
             </div>
         </div>
+
+        <authors-modal></authors-modal>
 
         <appeals-modal></appeals-modal>
 

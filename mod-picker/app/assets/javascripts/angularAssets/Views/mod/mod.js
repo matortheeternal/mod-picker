@@ -249,6 +249,11 @@ app.controller('modController', function($scope, $rootScope, $q, $stateParams, $
     };
 
     // HEADER RELATED LOGIC
+    $scope.toggleAuthorsModal = function(visible) {
+        $scope.$emit('toggleModal', visible);
+        $scope.showAuthorsModal = visible;
+    };
+
     $scope.starMod = function() {
         modService.starMod($scope.mod.id, $scope.mod.star).then(function() {
             $scope.mod.star = !$scope.mod.star;
