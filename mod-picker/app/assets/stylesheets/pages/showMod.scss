@@ -59,11 +59,15 @@
 
 .requirements-list {
   margin-left: 0;
-  color: $h4_color;
-  li {
-    a {
-      font-weight: 500;
-    }
+
+  li a {
+    font-weight: 500;
+  }
+
+  .show-more {
+    list-style-type: none;
+    font-size: 14px;
+    margin-top: 4px;
   }
 }
 
