@@ -41,10 +41,11 @@
 </div>
 
 <div class="modal-container" ng-if="showModal">
+    <messages event="modalMessage"></messages>
+    
     <div class="modal big-modal">
         <form>
             <h3 class="section-title">Link {{siteLabel}} Account</h3>
-            <messages event="modalMessage"></messages>
 
             <section>
                 <p>Linking your {{siteLabel}} account will give you reputation for
