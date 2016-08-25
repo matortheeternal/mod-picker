@@ -84,16 +84,25 @@ app.controller('modReviewsController', function($scope, $stateParams, $state, mo
         $scope.availableSections = $scope.reviewSections.slice(0);
 
         // set up default review sections
-        // and default text body with prompts
         $scope.reviewSections.forEach(function(section) {
-            if (section.default) {
-                $scope.addNewRating(section);
-                $scope.activeReview.text_body += "## " + section.name + "\n";
-                $scope.activeReview.text_body += reviewSectionService.preparePrompt(section);
-            }
+            if (section.default) $scope.addNewRating(section);
         });
 
+        // generate template and update overall rating
         $scope.updateOverallRating();
+        $scope.generateEditorText();
+    };
+
+    $scope.generateEditorText = function () {
+        // reset text body
+        $scope.activeReview.text_body = "";
+
+        // set up text body with prompts
+        $scope.activeReview.ratings.forEach(function(rating) {
+            var section = rating.section;
+            $scope.activeReview.text_body += "## " + section.name + "\n";
+            $scope.activeReview.text_body += reviewSectionService.preparePrompt(section);
+        });
 
         // update the markdown editor
         $scope.updateEditor();
