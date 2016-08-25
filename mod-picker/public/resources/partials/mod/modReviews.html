@@ -83,7 +83,7 @@
         <review review="review" show-user-column="true" index="100 + $index" current-user="currentUser" edit="editReview"></review>
     </div>
 
-    <div class="content-message" ng-hide="mod.reviews.length || currentReview">
+    <div class="content-message" ng-hide="mod.reviews.length || mod.user_review || currentReview">
         There are no reviews for this mod yet.
     </div>
 
