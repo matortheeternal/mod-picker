@@ -60,8 +60,8 @@ app.controller('modReviewsController', function($scope, $stateParams, $state, mo
     }, true);
 
     //retrieve review sections
-    reviewSectionService.getSectionsForCategory($scope.mod.primary_category).then(function(data) {
-        $scope.reviewSections = data;
+    reviewSectionService.getSectionsForMod($scope.mod).then(function(modSections) {
+        $scope.reviewSections = modSections;
     }, function(response) {
         $scope.errors.reviewSections = response;
     });
