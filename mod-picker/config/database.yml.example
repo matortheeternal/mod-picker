@@ -1,0 +1,31 @@
+default: &default
+  adapter: mysql2
+  encoding: utf8
+  pool: 5
+  port: 3306
+  reconnect: false
+
+development:
+  <<: *default
+  host: localhost
+  database: mod_picker_dev
+  pool: 5
+  username: mod_picker
+  password: password
+
+test:
+  <<: *default
+  host: localhost
+  database: mod_picker_test
+  pool: 5
+  username: mod_picker
+  password: password
+
+production:
+  <<: *default
+  host: localhost
+  database: mod_picker
+  pool: 5
+  username: root
+  password: <%= ENV["DB_PW"] %>
+  socket: /tmp/mysql.sock
