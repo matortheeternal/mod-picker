@@ -89,7 +89,7 @@ app.controller('modReviewsController', function($scope, $stateParams, $state, mo
             if (section.default) {
                 $scope.addNewRating(section);
                 $scope.activeReview.text_body += "## " + section.name + "\n";
-                $scope.activeReview.text_body += "*\uFEFF" + section.prompt + "\uFEFF*\n\n";
+                $scope.activeReview.text_body += reviewSectionService.preparePrompt(section);
             }
         });
 

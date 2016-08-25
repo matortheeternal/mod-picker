@@ -59,4 +59,8 @@ app.service('reviewSectionService', function (backend, $q) {
         });
       });
     };
+
+    this.preparePrompt = function(section) {
+        return '*' + section.prompt.replace(' ', '\uFEFF ') + '*';
+    };
 });
