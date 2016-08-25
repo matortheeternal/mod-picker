@@ -605,7 +605,7 @@ def seed_categories
       prompt: "Do you enjoy using the mod?  What do you enjoy about it?",
       default: true
   )
-### Character Appearance ###
+  ### Character Appearance ###
   ReviewSection.create(
       category_id: catCharacter.id,
       name: "Aesthetics",
@@ -629,7 +629,7 @@ def seed_categories
       prompt: "Do you enjoy using the mod?  What do you enjoy about it?",
       default: true
   )
-### Fixes ###
+  ### Fixes ###
   ReviewSection.create(
       category_id: catFixes.id,
       name: "Consistency",
@@ -642,7 +642,7 @@ def seed_categories
       prompt: "Does the fix resolve all of the issues with the content it targets, and does it work?",
       default: true
   )
-### Gameplay ###
+  ### Gameplay ###
   ReviewSection.create(
       category_id: catGameplay.id,
       name: "Aesthetics",
