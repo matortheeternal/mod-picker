@@ -9,18 +9,13 @@
 
                     <div class="header-info">
                         <span class="header-name">{{mod.name}}</span>
-                        <span class="header-authors-container">by
+                        <br>
+                        <span>by
                             <a ng-click="toggleAuthorsModal(true)">{{mod.authors}}</a>
                         </span>
-                        <!--<span ng-repeat="author in mod.authors">
-                            <a ng-href="#/user/{{author.id}}">{{author.username}}</a>
-                        </span>-->
-                        <br>
-                        <span ng-if="mod.primary_category_id">
-                            {{mod.reviews_count | number}} reviews
-                        </span>
+
                         <!-- TODO: add this with css :after content -->
-                        <span class="divider" ng-if="mod.primary_category_id && (mod.aliases || permissions.canManage)">
+                        <span class="divider" ng-if="mod.primary_category_id && mod.aliases">
                             |
                         </span>
 
@@ -31,19 +26,16 @@
 
                         <span ng-if="mod.aliases">
                             <strong>Aliases: </strong>{{mod.aliases}}
-                            <span class="divider" ng-if="permissions.canManage">
-                                |
-                            </span>
                         </span>
-
-                        <a ng-href="#/mod/{{mod.id}}/edit" ng-if="permissions.canManage">Edit</a>
                     </div>
                 </section>
 
                 <section>
                     <div class="header-box">
-                        <!-- TODO: I feel like using some spans here would be wiser -->
                         ACTIONS
+                        <span class="action-box" ng-if="permissions.canManage" ng-click="editMod()">
+                            <i class="fa fa-edit" aria-hidden="true"></i> Edit
+                        </span>
                         <span class="action-box" ng-click="starMod()">
                             <i class="fa {{mod.star ? 'fa-star' : 'fa-star-o'}}" aria-hidden="true"></i> {{mod.star ? 'Unfavorite' : 'Favorite'}}
                         </span>

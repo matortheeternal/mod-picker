@@ -106,7 +106,7 @@ app.config(['$stateProvider', function($stateProvider) {
     });
 }]);
 
-app.controller('modController', function($scope, $rootScope, $q, $stateParams, $state, $timeout, modObject, modService, modListService, contributionService, categoryService, tagService, smoothScroll, errorService, tabsFactory, sortFactory) {
+app.controller('modController', function($scope, $rootScope, $q, $stateParams, $state, $timeout, $window, modObject, modService, modListService, contributionService, categoryService, tagService, smoothScroll, errorService, tabsFactory, sortFactory) {
     // get parent variables
     $scope.mod = modObject.mod;
     $scope.mod.star = modObject.star;
@@ -275,6 +275,10 @@ app.controller('modController', function($scope, $rootScope, $q, $stateParams, $
         if (visible && !$scope.mod.corrections && !$scope.retrieving.appeals) {
             $scope.retrieveAppeals();
         }
+    };
+
+    $scope.editMod = function() {
+        $window.location.hash = '#/mod/' + $scope.mod.id + '/edit';
     };
 
     $scope.starMod = function() {
