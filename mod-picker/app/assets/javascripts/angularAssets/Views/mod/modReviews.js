@@ -189,7 +189,8 @@ app.controller('modReviewsController', function($scope, $stateParams, $state, mo
     };
 
     $scope.validateReview = function() {
-        $scope.activeReview.valid = $scope.activeReview.text_body.length > 512;
+        var sanitized_text = reviewSectionService.removePrompts($scope.activeReview.text_body);
+        $scope.activeReview.valid = sanitized_text.length > 512;
     };
 
     // discard a new review object
@@ -221,6 +222,7 @@ app.controller('modReviewsController', function($scope, $stateParams, $state, mo
         }
 
         // submit the review
+        var sanitized_text = reviewSectionService.removePrompts($scope.activeReview.text_body);
         var review_ratings = [];
         $scope.activeReview.ratings.forEach(function(item) {
             review_ratings.push({
@@ -232,7 +234,7 @@ app.controller('modReviewsController', function($scope, $stateParams, $state, mo
             review: {
                 game_id: $scope.mod.game_id,
                 mod_id: $scope.mod.id,
-                text_body: $scope.activeReview.text_body,
+                text_body: sanitized_text,
                 edit_summary: $scope.activeReview.edit_summary,
                 moderator_message: $scope.activeReview.moderator_message,
                 review_ratings_attributes: review_ratings
