@@ -122,7 +122,6 @@ app.controller('modController', function($scope, $rootScope, $q, $stateParams, $
     $scope.tabs = tabsFactory.buildModTabs($scope.mod);
     $scope.tags = [];
     $scope.newTags = [];
-    $scope.statusModal = {};
     $scope.statusClasses = {
         unstable: 'red-box',
         outdated: 'yellow-box',
@@ -286,7 +285,7 @@ app.controller('modController', function($scope, $rootScope, $q, $stateParams, $
 
     $scope.toggleStatusModal = function(visible) {
         $scope.$emit('toggleModal', visible);
-        $scope.statusModal.visible = visible;
+        $scope.showStatusModal = visible;
         if (visible && !$scope.mod.corrections && !$scope.retrieving.appeals) {
             $scope.retrieveAppeals();
         }
