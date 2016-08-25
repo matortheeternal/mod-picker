@@ -263,10 +263,18 @@ app.controller('modController', function($scope, $rootScope, $q, $stateParams, $
         });
     };
 
-    // HEADER RELATED LOGIC
+    // HEADER
     $scope.toggleAuthorsModal = function(visible) {
         $scope.$emit('toggleModal', visible);
         $scope.showAuthorsModal = visible;
+    };
+
+    $scope.toggleStatusModal = function(visible) {
+        $scope.$emit('toggleModal', visible);
+        $scope.showStatusModal = visible;
+        if (visible && !$scope.mod.corrections && !$scope.retrieving.appeals) {
+            $scope.retrieveAppeals();
+        }
     };
 
     $scope.starMod = function() {
@@ -303,19 +311,17 @@ app.controller('modController', function($scope, $rootScope, $q, $stateParams, $
         }
     };
 
-    $scope.toggleStatusModal = function(visible) {
-        $scope.$emit('toggleModal', visible);
-        $scope.showStatusModal = visible;
-        if (visible && !$scope.mod.corrections && !$scope.retrieving.appeals) {
-            $scope.retrieveAppeals();
-        }
-    };
-
     $scope.getAppealStatus = function() {
         var openAppeals = $scope.mod.corrections.filter(function(correction) {
             return !correction.hidden && (correction.status == "open");
         });
         $scope.appealStatus = $scope.permissions.canAppeal && openAppeals.length < 2;
+    };
+
+    // LEFT COLUMN
+    $scope.toggleRequirementsModal = function(visible) {
+        $scope.$emit('toggleModal', visible);
+        $scope.showRequirementsModal = visible;
     };
 
     $scope.saveTags = function(updatedTags) {
