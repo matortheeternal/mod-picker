@@ -55,7 +55,7 @@
 
                     <div class="header-box" ng-if="mod.primary_category_id">
                         STATUS
-                        <span class="action-box {{statusClass}} capitalize" ng-click="toggleStatusModal(true)">
+                        <span class="action-box {{statusClasses[mod.status]}} capitalize" ng-click="toggleStatusModal(true)">
                             {{mod.status}}
                         </span>
                     </div>

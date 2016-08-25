@@ -123,6 +123,11 @@ app.controller('modController', function($scope, $rootScope, $q, $stateParams, $
     $scope.tags = [];
     $scope.newTags = [];
     $scope.statusModal = {};
+    $scope.statusClasses = {
+        unstable: 'red-box',
+        outdated: 'yellow-box',
+        good: 'green-box'
+    };
     $scope.pages = {
         appeal_comments: {},
         reviews: {},
@@ -195,19 +200,6 @@ app.controller('modController', function($scope, $rootScope, $q, $stateParams, $
             }
         }
     });
-
-    //set the class of the status box
-    switch ($scope.mod.status) {
-        case "good":
-            $scope.statusClass = "green-box";
-            break;
-        case "outdated":
-            $scope.statusClass = "yellow-box";
-            break;
-        case "unstable":
-            $scope.statusClass = "red-box";
-            break;
-    }
 
     // display error messages
     $scope.$on('errorMessage', function(event, params) {
