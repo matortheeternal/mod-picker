@@ -260,7 +260,7 @@
   position: relative;
   text-align: center;
   font-size: 24px;
-  padding-right: 60px; // This makes certain the ratings don't go over the section-tools
+  padding: 0 50px;; // This makes certain the ratings don't go over the section-tools
   background-color: $bar_highlight_color;
   color: $bright_action_color;
 
@@ -341,8 +341,6 @@
 
   .section-tools {
     position: absolute;
-    right: 0;
-    top: 0;
     padding: 10px;
     display: flex;
     flex-direction: column;
@@ -372,6 +370,23 @@
         color: $error_secondary;
       }
     }
+
+    .fa-refresh {
+      color: $bright_action_color;
+      &:hover {
+        color: $action_color;
+      }
+    }
+  }
+
+  .right-tools {
+    right: 0;
+    top: 0;
+  }
+
+  .left-tools {
+    left: 0;
+    top: 8px;
   }
 }
 

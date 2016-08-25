@@ -75,7 +75,7 @@ app.service('modService', function(backend, $q, pageUtils, objectUtils, contribu
             // prepare user review if present
             if (data.user_review && data.user_review.id) {
                 var user_review = [data.user_review];
-                service.associateHelpfulMarks(user_review, data.helpful_marks);
+                contributionService.associateHelpfulMarks(user_review, data.helpful_marks);
                 userTitleService.associateTitles(user_review);
                 reviewSectionService.associateReviewSections(user_review);
             }

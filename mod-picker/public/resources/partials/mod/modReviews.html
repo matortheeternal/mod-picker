@@ -21,6 +21,9 @@
         ({{activeReview.overall_rating | number:0}}/100)
     </div>
     <div class="ratings-container">
+        <div class="section-tools left-tools">
+            <i class="fa fa-refresh" aria-hidden="true" ng-click="generateEditorText()" title="Click here to regenerate the Review Template.  NOTE: This will &#13;delete any review content you've already entered!"></i>
+        </div>
         <div class="rating-item" ng-repeat="rating in activeReview.ratings">
             <div>
                 <select class="select" ng-options="section as section.name for section in availableSections.concat([rating.section]) track by section.id" ng-model="rating.section" ng-change="changeSection(rating.section, '{{rating.section.id}}')" pu-elastic-input>
@@ -29,7 +32,7 @@
             </div>
             <input ng-keyup="keyUp(rating)" ng-keypress="keyPress($event)" ng-model="rating.rating" ng-click="focusText($event)" pu-elastic-input>
         </div>
-        <div class="section-tools">
+        <div class="section-tools right-tools">
             <i class="fa fa-plus" aria-hidden="true" ng-class="{ 'disabled' : activeReview.ratings.length >= 5 || availableSections.length == 0 }" ng-click="addNewRating()" title="{{ activeReview.ratings.length >= 5 || availableSections.length == 0 ? 'Maximum review sections reached.  You can\'t add any more!' : 'Add review section' }}"></i>
             <i class="fa fa-minus" aria-hidden="true" ng-class="{ 'disabled' : activeReview.ratings.length <= 1}" ng-click="removeRating()" title="{{activeReview.ratings.length <= 1 ? 'Minimum review sections reached.  You can\'t remove any more!' : 'Remove review section'}}"></i>
         </div>

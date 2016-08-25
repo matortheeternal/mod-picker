@@ -7,14 +7,34 @@ app.service('reviewSectionService', function (backend, $q) {
 
     var allReviewSections = this.retrieveReviewSections();
 
-    this.getSectionsForCategory = function(category) {
+    this.getSectionsForMod = function(mod) {
         var output = $q.defer();
-        allReviewSections.then(function(sections) {
-          output.resolve(sections.filter(function(section) {
-              return (section.category_id === category.id) || (section.category_id === category.parent_id);
-          }));
+        allReviewSections.then(function(reviewSections) {
+            var sections = angular.copy(reviewSections);
+            var modSections = sections.filter(function(section) {
+                return (section.category_id === mod.primary_category.id) ||
+                    (section.category_id === mod.primary_category.parent_id);
+            });
+            sections.forEach(function(section) {
+                if ((section.category_id === mod.secondary_category.id)
+                    || (section.category_id === mod.secondary_category.parent_id)) {
+                    // if section is already present, push prompt onto it
+                    var foundSection = modSections.find(function(modSection) {
+                        return modSection.name === section.name;
+                    });
+                    if (foundSection) {
+                        if (foundSection.prompt !== section.prompt) {
+                            foundSection.prompt += "  " + section.prompt;
+                        }
+                    } else {
+                        section.default = false;
+                        modSections.push(section);
+                    }
+                }
+            });
+            output.resolve(modSections);
         }, function(response) {
-            output.reject(response);
+           output.reject(response);
         });
         return output.promise;
     };
@@ -40,5 +60,13 @@ app.service('reviewSectionService', function (backend, $q) {
             });
         });
       });
+    };
+
+    this.preparePrompt = function(section) {
+        return '*' + section.prompt.replace(/\ /g, '\uFEFF ') + '*\n\n';
+    };
+
+    this.removePrompts = function(review_text_body) {
+        return review_text_body.replace(/([^\n]+)\uFEFF([^\n]+)([\n]+)/g, '');
     };
 });
