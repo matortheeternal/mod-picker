@@ -15,7 +15,7 @@ app.service('reviewSectionService', function (backend, $q) {
                 return (section.category_id === mod.primary_category.id) ||
                     (section.category_id === mod.primary_category.parent_id);
             });
-            sections.forEach(function(section) {
+            mod.secondary_category && sections.forEach(function(section) {
                 if ((section.category_id === mod.secondary_category.id)
                     || (section.category_id === mod.secondary_category.parent_id)) {
                     // if section is already present, push prompt onto it
