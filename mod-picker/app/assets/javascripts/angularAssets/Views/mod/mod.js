@@ -191,7 +191,7 @@ app.controller('modController', function($scope, $rootScope, $q, $stateParams, $
     //redirect to the first tab if changing to a non-present tab
     $scope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
         //if changing to the mod state
-        toStateNameArray = toState.name.split(".");
+        var toStateNameArray = toState.name.split(".");
         if (toStateNameArray[1] === "mod") {
             //if changing to a tab that isn't in tabs[]
             if (!tabIsPresent(currentTab())) {
