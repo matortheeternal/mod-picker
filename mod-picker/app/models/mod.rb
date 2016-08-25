@@ -503,7 +503,14 @@ class Mod < ActiveRecord::Base
             :lover_infos => {:except => [:mod_id]},
             :plugins => {:only => [:id, :filename]},
             :custom_sources => {:except => [:mod_id]},
-            :author_users => {:only => [:id, :username]},
+            :mod_authors => {
+                :only => [:id, :role, :user_id],
+                :include => {
+                    :user => {
+                        :only => [:username]
+                    }
+                }
+            },
             :required_mods => {
                 :only => [],
                 :include => {
