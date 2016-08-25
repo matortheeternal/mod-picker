@@ -231,10 +231,16 @@ app.controller('modController', function($scope, $rootScope, $q, $stateParams, $
     $scope.updateEditor = function(noScroll) {
         if (!noScroll) {
             $timeout(function() {
-                var editorBox = document.getElementsByClassName("add-note-box")[0];
-                smoothScroll(editorBox, {
-                    offset: 20
-                });
+                var elements = document.getElementsByClassName("add-note-box");
+                for (var i = 0; i < elements.length; i++) {
+                    var editorBox = elements[i];
+                    if (!editorBox.classList.contains('ng-hide')) {
+                        smoothScroll(editorBox, {
+                            offset: 20
+                        });
+                        break;
+                    }
+                }
             });
         }
         $scope.updateMDE = ($scope.updateMDE || 0) + 1;
