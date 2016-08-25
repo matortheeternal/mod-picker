@@ -1,0 +1,27 @@
+<div class="modal-container" ng-if="showRequirementsModal">
+    <div class="modal huge-modal">
+        <div class="close-modal">
+            <span class="fa fa-times" ng-click="toggleRequirementsModal(false)"></span>
+        </div>
+
+        <h2>{{mod.name}} Requirements</h2>
+
+        <h3 ng-if="mod.required_mods.length">Requires</h3>
+        <ol ng-if="mod.required_mods.length" class="requirements-list">
+            <li ng-repeat="req in mod.required_mods">
+                <a ng-href="#/mod/{{req.required_mod.id}}">
+                    {{req.required_mod.name}}
+                </a>
+            </li>
+        </ol>
+
+        <h3 ng-if="mod.required_by.length">Required By</h3>
+        <ol ng-if="mod.required_by.length" class="requirements-list">
+            <li ng-repeat="req in mod.required_by">
+                <a ng-href="#/mod/{{req.mod.id}}">
+                    {{req.mod.name}}
+                </a>
+            </li>
+        </ol>
+    </div>
+</div>
