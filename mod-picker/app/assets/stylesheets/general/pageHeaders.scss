@@ -35,10 +35,6 @@
       font-weight: 100;
     }
 
-    .header-authors-container {
-      margin-left: 6px;
-    }
-
     section {
       display: flex;
       align-self: center;
@@ -50,6 +46,15 @@
       padding: 10px;
       font-size: 12px;
       font-weight: 500;
+
+      .action-box {
+        padding-right: 4px;
+      }
+
+      .action-box:last-of-type {
+        padding-right: 8px;
+        margin-right: -4px;
+      }
     }
   }
 }
