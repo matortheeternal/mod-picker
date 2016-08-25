@@ -37,7 +37,6 @@ namespace :reset do
   task categories: :environment do
     puts "\nResetting categories"
     connection = ActiveRecord::Base.connection
-    byebug
 
     mods = []
     Mod.all.each do |mod|
@@ -53,6 +52,7 @@ namespace :reset do
     Mod.update_all(primary_category_id: nil, secondary_category_id: nil)
     connection.execute("SET FOREIGN_KEY_CHECKS=0;")
     connection.execute("TRUNCATE TABLE categories;")
+    connection.execute("TRUNCATE TABLE review_sections;")
     connection.execute("SET FOREIGN_KEY_CHECKS=1;")
     seed_categories
 
