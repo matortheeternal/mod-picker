@@ -98,12 +98,23 @@
                     </section>
 
                     <!--Requirements-->
-                    <h3 ng-if="mod.required_mods.length > 0" class="section-title">Requirements</h3>
-                    <section ng-if="mod.required_mods.length > 0">
+                    <h3 ng-if="mod.required_mods.length" class="section-title">Requires</h3>
+                    <section ng-if="mod.required_mods.length">
                         <ol class="requirements-list">
                             <li ng-repeat="req in mod.required_mods">
                                 <a ng-href="#/mod/{{req.required_mod.id}}">
                                     {{req.required_mod.name}}
+                                </a>
+                            </li>
+                        </ol>
+                    </section>
+
+                    <h3 ng-if="mod.required_by.length" class="section-title">Required By</h3>
+                    <section ng-if="mod.required_by.length">
+                        <ol class="requirements-list">
+                            <li ng-repeat="req in mod.required_by">
+                                <a ng-href="#/mod/{{req.mod.id}}">
+                                    {{req.mod.name}}
                                 </a>
                             </li>
                         </ol>
