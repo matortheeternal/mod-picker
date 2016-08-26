@@ -9,6 +9,8 @@ class ModListMod < ActiveRecord::Base
   belongs_to :mod_list, :inverse_of => 'mod_list_mods'
   belongs_to :mod, :inverse_of => 'mod_list_mods'
 
+  has_many :mod_list_mod_options, :inverse_of => 'mod_list_mod'
+
   # Validations
   validates :mod_list_id, :mod_id, :index, presence: true
   # can only have a mod on a given mod list once
