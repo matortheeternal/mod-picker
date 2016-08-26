@@ -14,4 +14,15 @@ class ModOption < ActiveRecord::Base
         asset_files_count: asset_files_count
     })
   end
+
+  def as_json(options={})
+    if JsonHelpers.json_options_empty(options)
+      default_options = {
+          :only => [:id, :name, :default]
+      }
+      super(options.merge(default_options))
+    else
+      super(options)
+    end
+  end
 end
