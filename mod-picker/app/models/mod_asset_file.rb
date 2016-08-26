@@ -7,7 +7,7 @@ class ModAssetFile < ActiveRecord::Base
   scope :conflicting, -> { joins("JOIN mod_asset_files mod_asset_files_right ON mod_asset_files.asset_file_id = mod_asset_files_right.asset_file_id").where("mod_asset_files.mod_id <> mod_asset_files_right.mod_id").order(:asset_file_id) }
 
   # Associations
-  belongs_to :mod, :inverse_of => 'mod_asset_files'
+  belongs_to :mod_option, :inverse_of => 'mod_asset_files'
   belongs_to :asset_file, :inverse_of => 'mod_asset_files'
 
   # Validations

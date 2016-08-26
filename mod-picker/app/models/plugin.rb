@@ -23,7 +23,7 @@ class Plugin < ActiveRecord::Base
 
   # Associations
   belongs_to :game, :inverse_of => 'plugins'
-  belongs_to :mod, :inverse_of => 'plugins'
+  belongs_to :mod_option, :inverse_of => 'plugins'
 
   # master associations
   has_many :dummy_masters, :inverse_of => 'plugin'

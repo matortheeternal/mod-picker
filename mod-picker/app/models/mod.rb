@@ -165,10 +165,12 @@ class Mod < ActiveRecord::Base
   # custom sources
   has_many :custom_sources, :inverse_of => 'mod', :dependent => :destroy
 
+  # mod options
+  has_many :mod_options, :inverse_of => 'mod', :dependent => :destroy
   # plugins associated with the mod
-  has_many :plugins, :inverse_of => 'mod', :dependent => :destroy
+  has_many :plugins, :inverse_of => 'mod', :through => 'mod_options'
   # assets associated with the mod
-  has_many :mod_asset_files, :inverse_of => 'mod', :dependent => :destroy
+  has_many :mod_asset_files, :inverse_of => 'mod', :through => 'mod_options'
   has_many :asset_files, :through => :mod_asset_files, :inverse_of => 'mods'
 
   # requirements associated with the mod
