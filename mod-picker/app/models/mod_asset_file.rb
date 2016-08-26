@@ -8,6 +8,7 @@ class ModAssetFile < ActiveRecord::Base
 
   # Associations
   belongs_to :mod_option, :inverse_of => 'mod_asset_files'
+  has_one :mod, :through => 'mod_option', :inverse_of => 'mod_asset_files'
   belongs_to :asset_file, :inverse_of => 'mod_asset_files'
 
   # Validations
