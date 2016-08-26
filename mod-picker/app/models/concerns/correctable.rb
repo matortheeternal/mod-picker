@@ -25,6 +25,7 @@ module Correctable
     scope :corrections_count, -> (range) { where(corrections_count: range[:min]..range[:max]) }
     scope :history_entries_count, -> (range) { where(history_entries_count: range[:min]..range[:max]) }
 
+    belongs_to :corrector, :class_name => 'User'
     has_many :corrections, :as => 'correctable'
   end
 
