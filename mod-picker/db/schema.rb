@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160826052719) do
+ActiveRecord::Schema.define(version: 20160826181420) do
 
   create_table "agreement_marks", id: false, force: :cascade do |t|
     t.integer "correction_id", limit: 4,                null: false
@@ -345,14 +345,14 @@ ActiveRecord::Schema.define(version: 20160826052719) do
   add_index "masters", ["plugin_id"], name: "pl_id", using: :btree
 
   create_table "mod_asset_files", id: false, force: :cascade do |t|
-    t.integer "mod_id",        limit: 4,   null: false
+    t.integer "mod_option_id", limit: 4,   null: false
     t.integer "asset_file_id", limit: 4
     t.string  "subpath",       limit: 255
   end
 
   add_index "mod_asset_files", ["asset_file_id"], name: "maf_id", using: :btree
-  add_index "mod_asset_files", ["mod_id", "asset_file_id"], name: "mod_id", unique: true, using: :btree
-  add_index "mod_asset_files", ["mod_id"], name: "mv_id", using: :btree
+  add_index "mod_asset_files", ["mod_option_id", "asset_file_id"], name: "mod_id", unique: true, using: :btree
+  add_index "mod_asset_files", ["mod_option_id"], name: "mv_id", using: :btree
 
   create_table "mod_authors", force: :cascade do |t|
     t.integer "mod_id",  limit: 4,             null: false
@@ -510,6 +510,16 @@ ActiveRecord::Schema.define(version: 20160826052719) do
   add_index "mod_lists", ["game_id"], name: "fk_rails_f25cbc0432", using: :btree
   add_index "mod_lists", ["submitted_by"], name: "created_by", using: :btree
 
+  create_table "mod_options", force: :cascade do |t|
+    t.integer "mod_id",            limit: 4,                   null: false
+    t.string  "name",              limit: 255,                 null: false
+    t.boolean "default",                       default: false, null: false
+    t.integer "asset_files_count", limit: 4,   default: 0,     null: false
+    t.integer "plugins_count",     limit: 4,   default: 0,     null: false
+  end
+
+  add_index "mod_options", ["mod_id"], name: "fk_rails_e37829130d", using: :btree
+
   create_table "mod_requirements", force: :cascade do |t|
     t.integer "mod_id",      limit: 4, null: false
     t.integer "required_id", limit: 4, null: false
@@ -640,7 +650,7 @@ ActiveRecord::Schema.define(version: 20160826052719) do
 
   create_table "plugins", force: :cascade do |t|
     t.integer "game_id",                limit: 4,               null: false
-    t.integer "mod_id",                 limit: 4,               null: false
+    t.integer "mod_option_id",          limit: 4,               null: false
     t.string  "filename",               limit: 64,              null: false
     t.string  "crc_hash",               limit: 8,               null: false
     t.integer "file_size",              limit: 4,               null: false
@@ -654,7 +664,7 @@ ActiveRecord::Schema.define(version: 20160826052719) do
   end
 
   add_index "plugins", ["game_id"], name: "fk_rails_5a7ba47709", using: :btree
-  add_index "plugins", ["mod_id"], name: "mv_id", using: :btree
+  add_index "plugins", ["mod_option_id"], name: "mv_id", using: :btree
 
   create_table "quotes", force: :cascade do |t|
     t.integer "game_id", limit: 4,   null: false
@@ -936,7 +946,7 @@ ActiveRecord::Schema.define(version: 20160826052719) do
   add_foreign_key "lover_infos", "mods"
   add_foreign_key "masters", "plugins", name: "masters_ibfk_1"
   add_foreign_key "mod_asset_files", "asset_files"
-  add_foreign_key "mod_asset_files", "mods"
+  add_foreign_key "mod_asset_files", "mod_options"
   add_foreign_key "mod_authors", "mods", name: "mod_authors_ibfk_1"
   add_foreign_key "mod_authors", "users", name: "mod_authors_ibfk_2"
   add_foreign_key "mod_list_config_files", "config_files"
@@ -961,6 +971,7 @@ ActiveRecord::Schema.define(version: 20160826052719) do
   add_foreign_key "mod_list_tags", "users", column: "submitted_by"
   add_foreign_key "mod_lists", "games"
   add_foreign_key "mod_lists", "users", column: "submitted_by"
+  add_foreign_key "mod_options", "mods"
   add_foreign_key "mod_requirements", "mods"
   add_foreign_key "mod_requirements", "mods", column: "required_id"
   add_foreign_key "mod_stars", "mods", name: "mod_stars_ibfk_1"
@@ -977,7 +988,7 @@ ActiveRecord::Schema.define(version: 20160826052719) do
   add_foreign_key "plugin_errors", "plugins"
   add_foreign_key "plugin_record_groups", "plugins", name: "plugin_record_groups_ibfk_1"
   add_foreign_key "plugins", "games"
-  add_foreign_key "plugins", "mods"
+  add_foreign_key "plugins", "mod_options"
   add_foreign_key "quotes", "games"
   add_foreign_key "record_groups", "games"
   add_foreign_key "reports", "base_reports"
