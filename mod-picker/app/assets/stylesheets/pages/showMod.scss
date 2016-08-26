@@ -468,6 +468,18 @@
   font-family: Consolas, monospace, sans-serif;
   margin: 0 0 20px;
   @include column-count(3);
+
+  .show-more, .show-less {
+    font-size: 16px;
+    margin-top: 4px;
+    cursor: pointer;
+    color: $link_hover_color_primary;
+    @include transition(color 0.2s ease);
+
+    &:hover {
+      color: $text_color;
+    }
+  }
 }
 
 .errors-list {
