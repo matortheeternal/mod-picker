@@ -123,6 +123,7 @@ app.service('pluginService', function (backend, $q, $timeout, recordGroupService
         plugins.forEach(function(plugin) {
             plugin.masters.forEach(function(master) {
                 master.overrides = [];
+                master.max_overrides = 1000;
                 for (var group in plugin.formatted_overrides) {
                     if (!plugin.formatted_overrides.hasOwnProperty(group)) continue;
                     var formIDs = plugin.formatted_overrides[group];
