@@ -234,8 +234,12 @@ class Mod < ActiveRecord::Base
   before_destroy :decrement_counters
 
   def update_lazy_counters
-    self.asset_files_count = ModAssetFile.where(mod_id: self.id).count
-    self.plugins_count = Plugin.where(mod_id: self.id).count
+    self.asset_files_count = ModAssetFile.where(mod_option_id: mod_options.default.ids).count
+    self.plugins_count = Plugin.where(mod_option_id: mod_options.default.ids).count
+    update_columns({
+        asset_files_count: asset_files_count,
+        plugins_count: plugins_count
+    })
   end
 
   def destroy_associations
