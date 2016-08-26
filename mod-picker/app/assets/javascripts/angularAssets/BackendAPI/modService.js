@@ -100,6 +100,11 @@ app.service('modService', function(backend, $q, pageUtils, objectUtils, contribu
             pluginService.associateOverrides(analysis.plugins);
             pluginService.sortErrors(analysis.plugins);
 
+            // set default options to active
+            analysis.mod_options.forEach(function(option) {
+                option.active = option.default;
+            });
+
             output.resolve(analysis);
         }, function(response) {
             output.reject(response);
