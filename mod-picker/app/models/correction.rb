@@ -102,8 +102,7 @@ class Correction < ActiveRecord::Base
           contribution = correction.correctable
           contribution.update_columns({
               standing: contribution.class.standing[:bad],
-              edited_by: correction.submitted_by,
-              edited: nil
+              corrector_id: correction.submitted_by
           })
         end
       else
