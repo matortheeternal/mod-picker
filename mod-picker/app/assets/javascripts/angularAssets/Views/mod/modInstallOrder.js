@@ -73,15 +73,16 @@ app.controller('modInstallOrderController', function($scope, $stateParams, $stat
     // edit an existing install order note
     $scope.editInstallOrderNote = function(install_order_note) {
         install_order_note.editing = true;
-        var mod_id, order;
+        var mod, order;
         for (var i = 0; i < 2; i++) {
             if (install_order_note.mods[i].id != $scope.mod.id) {
-                mod_id = install_order_note.mods[i].id.toString();
+                mod = install_order_note.mods[i];
                 order = i == 0 ? 'after' : 'before';
             }
         }
         $scope.activeInstallOrderNote = {
-            mod_id: mod_id,
+            mod_id: mod.id.toString(),
+            mod_name: mod.name,
             order: order,
             text_body: install_order_note.text_body.slice(0),
             moderator_message: install_order_note.moderator_message && install_order_note.moderator_message.slice(0),
