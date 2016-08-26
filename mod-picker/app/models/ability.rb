@@ -91,20 +91,12 @@ class Ability
       can :create, Mod
 
       # can update their contributions
-      can :update, Comment, :submitted_by => user.id
-      can :update, CompatibilityNote, :submitted_by => user.id
-      can :update, Correction, :submitted_by => user.id
-      can :update, LoadOrderNote, :submitted_by => user.id
-      can :update, InstallOrderNote, :submitted_by => user.id
-      can :update, Review, :submitted_by => user.id
-
-      # cannot update hidden contributions
-      cannot :update, Comment, :hidden => true
-      cannot :update, CompatibilityNote, :hidden => true
-      cannot :update, Correction, :hidden => true
-      cannot :update, LoadOrderNote, :hidden => true
-      cannot :update, InstallOrderNote, :hidden => true
-      cannot :update, Review, :hidden => true
+      can :update, Comment, :submitted_by => user.id, :hidden => false
+      can :update, CompatibilityNote, :submitted_by => user.id, :hidden => false
+      can :update, Correction, :submitted_by => user.id, :hidden => false
+      can :update, LoadOrderNote, :submitted_by => user.id, :hidden => false
+      can :update, InstallOrderNote, :submitted_by => user.id, :hidden => false
+      can :update, Review, :submitted_by => user.id, :hidden => false
 
       # can update or remove their helpful/agreement marks
       can [:update, :destroy], AgreementMark, :submitted_by => user.id
