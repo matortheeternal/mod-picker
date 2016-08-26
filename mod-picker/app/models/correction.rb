@@ -83,10 +83,35 @@ class Correction < ActiveRecord::Base
   validates :text_body, length: { in: 64..16384 }
 
   # Callbacks
-  after_create :increment_counters
+  after_create :increment_counters, :schedule_close
   before_save :set_dates
   after_save :recompute_correctable_standing
   after_destroy :decrement_counters, :recompute_correctable_standing
+
+  def self.close(id)
+    correction = Correction.find(id)
+    if correction.status == :open
+      if correction.agree_count > @correction.disagree_count
+        correction.status = :passed
+        # if we're dealing with a mod, update the mod's status
+        if correction.correctable_type == 'Mod'
+          mod = correction.correctable
+          mod.update_columns(status: Mod.statuses[correction.mod_status])
+        else
+          # if we're dealing with a contribution, update its standing and open for editing
+          contribution = correction.correctable
+          contribution.update_columns({
+              standing: contribution.class.standing[:bad],
+              edited_by: correction.submitted_by,
+              edited: nil
+          })
+        end
+      else
+        correction.status = :failed
+      end
+      correction.save
+    end
+  end
 
   def self.index_json(collection)
     collection.as_json({
@@ -154,5 +179,9 @@ class Correction < ActiveRecord::Base
     def decrement_counters
       self.correctable.update_counter(:corrections_count, -1)
       self.submitter.update_counter(:corrections_count, -1)
-    end 
+    end
+
+    def schedule_close
+      Correction.delay_for(1.week).close(id)
+    end
 end
