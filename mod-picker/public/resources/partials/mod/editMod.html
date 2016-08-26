@@ -277,8 +277,8 @@
                     <tag-selector active-tags="mod.tags" new-tags="mod.newTags" show-mods-count="true" show-add="true" show-remove="true" max-tags="10" can-create="true"></tag-selector>
                 </section>
 
-                <h3 class="section-title">Other Options</h3>
-                <section>
+                <h3 ng-if="permissions.canManageOptions" class="section-title">Other Options</h3>
+                <section ng-if="permissions.canManageOptions">
                     <label class="checkbox-option">
                         <input type="checkbox" ng-model="mod.is_utility">
                         External Utility

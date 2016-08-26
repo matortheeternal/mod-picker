@@ -102,10 +102,21 @@ app.controller('editModController', function($scope, $rootScope, $state, modObje
     // initialize local variables
     $scope.loadModObject();
     $scope.sites = sitesFactory.sites();
-    $scope.permissions = angular.copy($rootScope.permissions);
     $scope.image = {
         src: $scope.mod.image
     };
+
+    // permission handling
+    //a copy is created so the original permissions are never changed
+    $scope.permissions = angular.copy($rootScope.permissions);
+    //setting up the canManageOptions permission
+    var author = $scope.mod.mod_authors.find(function(author) {
+        return author.user_id == $scope.currentUser.id;
+    });
+    var isAuthor = author && author.role == 'author';
+    var isContributor = author && author.role == 'contributor';
+    $scope.permissions.canManageOptions = $scope.permissions.canModerate || isAuthor ||
+        !$scope.mod.disallow_contributors && isContributor;
 
     // display error messages
     $scope.$on('errorMessage', function(event, params) {
