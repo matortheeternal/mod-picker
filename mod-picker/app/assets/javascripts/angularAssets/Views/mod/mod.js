@@ -102,7 +102,7 @@ app.config(['$stateProvider', function($stateProvider) {
                 controller: 'modAnalysisController'
             }
         },
-        url: '/analysis?{plugin:int}'
+        url: '/analysis?options&{plugin:int}'
     });
 }]);
 
