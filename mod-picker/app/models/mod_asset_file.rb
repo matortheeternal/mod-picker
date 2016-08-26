@@ -4,7 +4,7 @@ class ModAssetFile < ActiveRecord::Base
   # Scopes
   scope :mods, -> (mod_ids) { where(mod_id: mod_ids) }
   scope :bsa, -> { joins(:asset_file).where("asset_files.path like '%.bsa'") }
-  scope :conflicting, -> { joins("JOIN mod_asset_files mod_asset_files_right ON mod_asset_files.asset_file_id = mod_asset_files_right.asset_file_id").where("mod_asset_files.mod_id <> mod_asset_files_right.mod_id").order(:asset_file_id) }
+  scope :conflicting, -> { joins("JOIN mod_asset_files mod_asset_files_right ON mod_asset_files.asset_file_id = mod_asset_files_right.asset_file_id").where("mod_asset_files.mod_option_id <> mod_asset_files_right.mod_option_id").order(:asset_file_id) }
 
   # Associations
   belongs_to :mod_option, :inverse_of => 'mod_asset_files'
