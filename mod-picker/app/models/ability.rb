@@ -98,6 +98,11 @@ class Ability
       can :update, InstallOrderNote, :submitted_by => user.id, :hidden => false
       can :update, Review, :submitted_by => user.id, :hidden => false
 
+      # can update contributions they have a passed correction for
+      can :update, CompatibilityNote, :corrector_id => user.id, :hidden => false
+      can :update, LoadOrderNote, :corrector_id => user.id, :hidden => false
+      can :update, InstallOrderNote, :corrector_id => user.id, :hidden => false
+
       # can update or remove their helpful/agreement marks
       can [:update, :destroy], AgreementMark, :submitted_by => user.id
       can [:update, :destroy], HelpfulMark, :submitted_by => user.id
