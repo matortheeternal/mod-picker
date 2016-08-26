@@ -1,4 +1,6 @@
 class ModOption < ActiveRecord::Base
+  scope :default, -> { where(default: true) }
+
   belongs_to :mod, :inverse_of => 'mod_options'
 
   has_many :plugins, :inverse_of => 'mod_option'
