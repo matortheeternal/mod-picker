@@ -222,14 +222,17 @@ app.controller('contributionActionsController', function($scope, $timeout, contr
         var rep = user.reputation.overall;
         var isAdmin = user && user.role === 'admin';
         var isModerator = user && user.role === 'moderator';
-        var isSubmitter = user && user.id === $scope.target.submitted_by;
+        var canModerate = isAdmin || isModerator;
+        var isSubmitter = user && user.id == $scope.target.submitted_by;
+        var isCorrector = user && user.id == $scope.target.corrector_id;
+        var isLocked = $scope.target.corrector_id;
         // set up permissions
         $scope.canReport = user || false;
-        $scope.canAgree = $scope.agreeable && $scope.isOpen && ((rep > 40) || isAdmin || isModerator);
-        $scope.canCorrect = (rep > 40) || isAdmin || isModerator;
-        $scope.canEdit = $scope.edit && (isAdmin || isModerator || isSubmitter);
-        $scope.canApprove = $scope.approveable && (isAdmin || isModerator);
-        $scope.canHide = isAdmin || isModerator;
+        $scope.canAgree = $scope.agreeable && $scope.isOpen && ((rep > 40) || canModerate);
+        $scope.canCorrect = (rep > 40) || canModerate;
+        $scope.canEdit = $scope.edit && (canModerate || isCorrector || isSubmitter && !isLocked);
+        $scope.canApprove = $scope.approveable && canModerate;
+        $scope.canHide = canModerate;
     };
 
     // watch user so if we get the user object after rendering actions
