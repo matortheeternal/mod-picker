@@ -33,4 +33,12 @@ app.controller('modAnalysisController', function($scope, $stateParams, $state, m
 
     //retrieve the data when the state is first loaded
     $scope.retrieveAnalysis($stateParams.plugin);
+
+    $scope.showMore = function(master) {
+        master.max_overrides += 1000;
+    };
+
+    $scope.showLess = function(master) {
+        master.max_overrides -= 1000;
+    };
 });
