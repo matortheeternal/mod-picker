@@ -820,6 +820,7 @@ app.factory("filtersFactory", function() {
 
     this.articleDateFilters = function() {
         return [{
+            label: "Created",
             data: "submitted",
             type: "Range",
             subtype: "Date",
