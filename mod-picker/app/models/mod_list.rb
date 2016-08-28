@@ -71,9 +71,6 @@ class ModList < ActiveRecord::Base
   belongs_to :submitter, :class_name => 'User', :foreign_key => 'submitted_by', :inverse_of => 'mod_lists'
 
   # LOAD ORDER
-  has_many :plugins, -> {
-    Plugin.where(mod_option_id: mod_list_mod_option_ids)
-  }
   has_many :mod_list_plugins, :inverse_of => 'mod_list', :dependent => :destroy
   has_many :custom_plugins, :class_name => 'ModListCustomPlugin', :inverse_of => 'mod_list', :dependent => :destroy
 
@@ -160,8 +157,8 @@ class ModList < ActiveRecord::Base
     mod_ids = mod_list_mod_ids
     mod_option_ids = mod_list_mod_option_ids
     plugin_ids = mod_list_plugin_ids
-    self.available_plugins_count = Plugin.mod_options(mod_option_ids).count
-    self.master_plugins_count = Plugin.mod_options(mod_option_ids).esm.count
+    self.available_plugins_count = plugins_store.count
+    self.master_plugins_count = Plugin.where(id: plugin_ids).esm.count
     self.compatibility_notes_count = CompatibilityNote.visible.mods(mod_ids).count
     self.install_order_notes_count = InstallOrderNote.visible.mods(mod_ids).count
     self.load_order_notes_count = LoadOrderNote.visible.plugins(plugin_ids).count
@@ -219,6 +216,13 @@ class ModList < ActiveRecord::Base
 
   def mod_list_mod_option_ids
     mod_list_mod_options.all.pluck(:mod_option_id)
+  end
+
+  def plugins_store
+    mod_option_ids = mod_list_mod_option_ids
+    return Plugin.none if mod_option_ids.empty?
+
+    Plugin.mod_options(mod_option_ids)
   end
 
   def mod_compatibility_notes

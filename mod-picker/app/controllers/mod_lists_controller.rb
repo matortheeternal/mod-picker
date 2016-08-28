@@ -88,7 +88,7 @@ class ModListsController < ApplicationController
 
     # prepare primary data
     plugins = @mod_list.mod_list_plugins.includes(:plugin)
-    plugins_store = @mod_list.plugins.order(:mod_id)
+    plugins_store = @mod_list.plugins_store.order(:mod_option_id)
     custom_plugins = @mod_list.custom_plugins
     groups = @mod_list.mod_list_groups.where(tab: 2).order(:index)
 
