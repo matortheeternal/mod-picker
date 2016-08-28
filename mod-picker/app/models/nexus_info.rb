@@ -1,11 +1,11 @@
 class NexusInfo < ActiveRecord::Base
   include Scrapeable
 
-  # Associations
+  # ASSOCIATIONS
   belongs_to :mod
   belongs_to :game, :inverse_of => 'nexus_infos'
 
-  # Validations
+  # VALIDATIONS
   validates :game_id, :mod_name, :uploaded_by, :authors, :released, presence: true
 
   def scrape

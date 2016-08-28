@@ -39,13 +39,13 @@ class LoadOrderNote < ActiveRecord::Base
 
   self.per_page = 25
 
-  # Validations
+  # VALIDATIONS
   validates :game_id, :submitted_by, :first_plugin_id, :second_plugin_id, :text_body, presence: true
 
   validates :text_body, length: {in: 256..16384}
   validate :unique_plugins
 
-  # Callbacks
+  # CALLBACKS
   after_create :increment_counters
   before_save :set_dates
   before_destroy :decrement_counters

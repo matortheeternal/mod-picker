@@ -4,7 +4,7 @@ class ModListGroup < ActiveRecord::Base
 
   belongs_to :mod_list, :inverse_of => 'mod_list_groups'
 
-  # Validations
+  # VALIDATIONS
   validates :mod_list_id, :name, presence: true
 
   def as_json(options={})

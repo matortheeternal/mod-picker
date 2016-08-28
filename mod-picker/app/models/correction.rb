@@ -78,11 +78,11 @@ class Correction < ActiveRecord::Base
   # number of corrections per page on the corrections index
   self.per_page = 25
 
-  # Validations
+  # VALIDATIONS
   validates :game_id, :submitted_by, :correctable_id, :correctable_type, :text_body, presence: true
   validates :text_body, length: { in: 64..16384 }
 
-  # Callbacks
+  # CALLBACKS
   after_create :increment_counters, :schedule_close
   before_save :set_dates
   after_save :recompute_correctable_standing

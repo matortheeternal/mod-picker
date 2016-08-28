@@ -10,7 +10,7 @@ module Scrapeable
               or(table[:released].gt(7.days.ago)))
     }
 
-    # Callbacks
+    # CALLBACKS
     after_save :update_mod_dates
   end
 

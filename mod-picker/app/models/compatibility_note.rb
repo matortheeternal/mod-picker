@@ -58,12 +58,12 @@ class CompatibilityNote < ActiveRecord::Base
 
   self.per_page = 25
 
-  # Validations
+  # VALIDATIONS
   validates :game_id, :submitted_by, :status, :first_mod_id, :second_mod_id, :text_body, presence: true
   validates :text_body, length: { in: 256..16384 }
   validate :unique_mods
 
-  # Callbacks
+  # CALLBACKS
   after_create :increment_counters
   before_save :set_dates
   before_destroy :decrement_counters

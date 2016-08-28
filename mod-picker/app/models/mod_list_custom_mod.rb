@@ -4,15 +4,15 @@ class ModListCustomMod < ActiveRecord::Base
   # Scopes
   scope :utility, -> (bool) { where(is_utility: bool) }
 
-  # Associations
+  # ASSOCIATIONS
   belongs_to :mod_list, :inverse_of => 'custom_mods'
 
-  # Validations
+  # VALIDATIONS
   validates :mod_list_id, :index, :name, presence: true
   validates :is_utility, inclusion: [true, false]
   validates :description, length: {maximum: 4096}
 
-  # Callbacks
+  # CALLBACKS
   after_create :increment_counters
   before_destroy :decrement_counters
 

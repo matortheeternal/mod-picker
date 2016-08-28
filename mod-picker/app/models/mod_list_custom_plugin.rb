@@ -1,12 +1,12 @@
 class ModListCustomPlugin < ActiveRecord::Base
   belongs_to :mod_list, :inverse_of => 'custom_plugins'
 
-  # Validations
+  # VALIDATIONS
   validates :mod_list_id, :index, :filename, presence: true
   validates :merged, :cleaned, inclusion: [true, false]
   validates :description, length: {maximum: 4096}
 
-  # Callbacks
+  # CALLBACKS
   after_create :increment_counters
   before_destroy :decrement_counters
 

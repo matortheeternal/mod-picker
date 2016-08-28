@@ -4,10 +4,10 @@ class PluginRecordGroup < ActiveRecord::Base
   # Scopes
   scope :plugins, -> (plugin_ids) { where(plugin_id: plugin_ids) }
 
-  # Associations
+  # ASSOCIATIONS
   belongs_to :plugin, :inverse_of => 'plugin_record_groups'
 
-  # Validations
+  # VALIDATIONS
   validates :sig, :record_count, :override_count, presence: true
   validates :sig, length: {is: 4}
 end

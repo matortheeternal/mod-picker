@@ -11,7 +11,7 @@ class UserReputation < ActiveRecord::Base
   has_many :target_reputations, :class_name => 'UserReputation', :through => 'outgoing_reputation_links', :source => 'target_reputation'
   has_many :source_reputations, :class_name => 'UserReputation', :through => 'incoming_reputation_links', :source => 'source_reputation'
 
-  # Validations
+  # VALIDATIONS
   validates :user_id, presence: true
 
   # CONSTANTS

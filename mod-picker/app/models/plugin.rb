@@ -21,7 +21,7 @@ class Plugin < ActiveRecord::Base
   scope :mod_lists, -> (range) { where(mod_lists_count: (range[:min]..range[:max])) }
   scope :load_order_notes, -> (range) { where(load_order_notes_count: (range[:min]..range[:max])) }
 
-  # Associations
+  # ASSOCIATIONS
   belongs_to :game, :inverse_of => 'plugins'
   belongs_to :mod_option, :inverse_of => 'plugins'
   has_one :mod, :through => 'mod_option', :inverse_of => 'plugins'
@@ -52,7 +52,7 @@ class Plugin < ActiveRecord::Base
   # numbers of plugins per page on the plugins index
   self.per_page = 100
 
-  # validations
+  # VALIDATIONS
   validates :game_id, :mod_id, :filename, :crc_hash, :file_size, presence: true
 
   validates :filename, length: {maximum: 64}

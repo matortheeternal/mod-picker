@@ -4,10 +4,10 @@ class ModAuthor < ActiveRecord::Base
   belongs_to :mod, :inverse_of => 'mod_authors'
   belongs_to :user, :foreign_key => 'user_id', :inverse_of => 'mod_authors'
 
-  # Validations
+  # VALIDATIONS
   validates :mod_id, :user_id, presence: true
 
-  # Callbacks
+  # CALLBACKS
   after_create :increment_counters
   before_destroy :decrement_counters
 

@@ -5,7 +5,7 @@ class ConfigFile < ActiveRecord::Base
   belongs_to :mod, :inverse_of => 'config_files'
   has_many :mod_list_config_files, :inverse_of => 'config_file'
 
-  # Validations
+  # VALIDATIONS
   validates :game_id, :mod_id, :filename, :install_path, presence: true
 
   def as_json(options={})

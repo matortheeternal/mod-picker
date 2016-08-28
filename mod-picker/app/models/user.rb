@@ -82,7 +82,7 @@ class User < ActiveRecord::Base
   # number of users per page on the users index
   self.per_page = 50
 
-  # Validations
+  # VALIDATIONS
   validates :username, :email, :role, presence: true
   validates :username, uniqueness: { case_sensitive: false }, length: {in: 4..32 }
 
@@ -92,7 +92,7 @@ class User < ActiveRecord::Base
 
   validates :about_me, length: {maximum: 16384}
 
-  # Callbacks
+  # CALLBACKS
   after_create :create_associations
   after_initialize :init
 

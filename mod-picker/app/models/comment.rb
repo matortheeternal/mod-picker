@@ -35,14 +35,14 @@ class Comment < ActiveRecord::Base
   # number of comments per page on the comments index
   self.per_page = 50
 
-  # Validations
+  # VALIDATIONS
   validates :submitted_by, :commentable_type, :commentable_id, :text_body, presence: true
   validates :hidden, inclusion: [true, false]
   validates :commentable_type, inclusion: ["User", "ModList", "Correction", "Article", "HelpPage"]
   validates :text_body, length: {in: 2..8192}
   # TODO: Validation of nesting
 
-  # Callbacks
+  # CALLBACKS
   before_save :set_dates
   after_create :increment_counter_caches
   before_destroy :decrement_counter_caches
