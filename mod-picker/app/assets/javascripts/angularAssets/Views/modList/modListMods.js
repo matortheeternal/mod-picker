@@ -75,6 +75,9 @@ app.controller('modListModsController', function($scope, $rootScope, $timeout, $
 
             // update modules
             $rootScope.$broadcast('modRecovered', !!modListMod.mod && modListMod.mod.id);
+            modListMod.mod && modListMod.mod.mod_options.forEach(function(option) {
+                if (option.active) $rootScope.$broadcast('modOptionAdded', option.id);
+            });
             $scope.$broadcast('updateItems');
 
             // success message
@@ -169,6 +172,9 @@ app.controller('modListModsController', function($scope, $rootScope, $timeout, $
 
         // update modules
         $rootScope.$broadcast('modRemoved', !!modListMod.mod && modListMod.mod.id);
+        modListMod.mod && modListMod.mod.mod_options.forEach(function(option) {
+            if (option.active) $rootScope.$broadcast('modOptionRemoved', option.id);
+        });
         $scope.$broadcast('updateItems');
     };
 
