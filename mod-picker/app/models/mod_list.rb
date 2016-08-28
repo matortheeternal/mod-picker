@@ -71,13 +71,16 @@ class ModList < ActiveRecord::Base
   belongs_to :submitter, :class_name => 'User', :foreign_key => 'submitted_by', :inverse_of => 'mod_lists'
 
   # LOAD ORDER
-  has_many :plugins, :through => 'mods'
+  has_many :plugins, -> {
+    Plugin.where(mod_option_id: mod_list_mod_option_ids)
+  }
   has_many :mod_list_plugins, :inverse_of => 'mod_list', :dependent => :destroy
   has_many :custom_plugins, :class_name => 'ModListCustomPlugin', :inverse_of => 'mod_list', :dependent => :destroy
 
   # INSTALL ORDER
   has_many :mod_list_mods, :inverse_of => 'mod_list', :dependent => :destroy
   has_many :mods, :through => 'mod_list_mods', :inverse_of => 'mod_lists'
+  has_many :mod_list_mod_options, :through => 'mod_list_mods', :dependent => :destroy
   has_many :custom_mods, :class_name => 'ModListCustomMod', :inverse_of => 'mod_list', :dependent => :destroy
 
   # IGNORED NOTES
@@ -211,57 +214,61 @@ class ModList < ActiveRecord::Base
     mod_list_mods.all.pluck(:mod_id)
   end
 
+  def mod_list_mod_option_ids
+    mod_list_mod_options.all.pluck(:mod_option_id)
+  end
+
   def mod_compatibility_notes
-    mod_ids = self.mod_list_mod_ids
+    mod_ids = mod_list_mod_ids
     return [] if mod_ids.empty?
 
     CompatibilityNote.visible.mods(mod_ids).status([0, 1, 2]).includes(:first_mod, :second_mod, :submitter => :reputation)
   end
 
   def plugin_compatibility_notes
-    mod_ids = self.mod_list_mod_ids
+    mod_ids = mod_list_mod_ids
     return [] if mod_ids.empty?
 
     CompatibilityNote.visible.mods(mod_ids).status([3, 4]).includes(:first_mod, :second_mod, :history_entries, :submitter => :reputation)
   end
 
   def install_order_notes
-    mod_ids = self.mod_list_mod_ids
+    mod_ids = mod_list_mod_ids
     return [] if mod_ids.empty?
 
     InstallOrderNote.visible.mods(mod_ids).includes(:first_mod, :second_mod, :history_entries, :submitter => :reputation)
   end
 
-  def load_order_notes
-    plugin_ids = Plugin.mods(self.mod_list_mod_ids).ids
+    def load_order_notes
+    plugin_ids = Plugin.mod_options(mod_list_mod_option_ids).ids
     return [] if plugin_ids.empty?
 
     LoadOrderNote.visible.plugins(plugin_ids).includes(:first_plugin, :second_plugin, :history_entries, :submitter => :reputation)
   end
 
   def required_tools
-    mod_ids = self.mod_list_mod_ids
+    mod_ids = mod_list_mod_ids
     return [] if mod_ids.empty?
 
     ModRequirement.mods(mod_ids).includes(:required_mod, :mod).utility(true)
   end
 
   def required_mods
-    mod_ids = self.mod_list_mod_ids
+    mod_ids = mod_list_mod_ids
     return [] if mod_ids.empty?
 
     ModRequirement.mods(mod_ids).utility(false).includes(:required_mod, :mod).order(:required_id)
   end
 
   def required_plugins
-    plugin_ids = self.mod_list_plugin_ids
+    plugin_ids = mod_list_plugin_ids
     return [] if plugin_ids.empty?
 
     Master.plugins(plugin_ids).includes(:plugin, :master_plugin).order(:master_plugin_id)
   end
 
   def incompatible_mods
-    mod_ids = self.mod_list_mod_ids
+    mod_ids = mod_list_mod_ids
     return [] if mod_ids.empty?
 
     # get incompatible mod ids
@@ -271,28 +278,28 @@ class ModList < ActiveRecord::Base
   end
 
   def asset_files
-    mod_ids = self.mod_list_mod_ids
-    return [] if mod_ids.empty?
+    mod_option_ids = mod_list_mod_option_ids
+    return [] if mod_option_ids.empty?
 
-    ModAssetFile.mods(mod_ids).includes(:asset_file)
+    ModAssetFile.mod_options(mod_option_ids).includes(:asset_file)
   end
 
   def override_records
-    plugin_ids = self.mod_list_plugin_ids
+    plugin_ids = mod_list_plugin_ids
     return [] if plugin_ids.empty?
 
     OverrideRecord.plugins(plugin_ids)
   end
 
   def record_groups
-    plugin_ids = self.mod_list_plugin_ids
+    plugin_ids = mod_list_plugin_ids
     return [] if plugin_ids.empty?
 
     PluginRecordGroup.plugins(plugin_ids)
   end
 
   def plugin_errors
-    plugin_ids = self.mod_list_plugin_ids
+    plugin_ids = mod_list_plugin_ids
     return [] if plugin_ids.empty?
 
     PluginError.plugins(plugin_ids)
