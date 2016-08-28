@@ -7,7 +7,7 @@ app.directive('modDetailsModal', function () {
     };
 });
 
-app.controller('modDetailsModalController', function ($scope, modService, errorService) {
+app.controller('modDetailsModalController', function ($scope, $rootScope, modService, errorService) {
     // display error messages
     $scope.$on('modalErrorMessage', function(event, params) {
         var errors = errorService.errorMessages(params.label, params.response);
@@ -25,4 +25,9 @@ app.controller('modDetailsModalController', function ($scope, modService, errorS
         // stop event propagation - we handled it
         event.stopPropagation();
     });
+
+    $scope.toggleOption = function(option) {
+        option.active = !option.active;
+        $rootScope.$broadcast(option.active ? 'modOptionAdded' : 'modOptionRemoved', option.id);
+    };
 });
