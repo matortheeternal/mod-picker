@@ -223,49 +223,49 @@ class ModList < ActiveRecord::Base
 
   def mod_compatibility_notes
     mod_ids = mod_list_mod_ids
-    return [] if mod_ids.empty?
+    return CompatibilityNote.none if mod_ids.empty?
 
     CompatibilityNote.visible.mods(mod_ids).status([0, 1, 2]).includes(:first_mod, :second_mod, :submitter => :reputation)
   end
 
   def plugin_compatibility_notes
     mod_ids = mod_list_mod_ids
-    return [] if mod_ids.empty?
+    return CompatibilityNote.none if mod_ids.empty?
 
     CompatibilityNote.visible.mods(mod_ids).status([3, 4]).includes(:first_mod, :second_mod, :history_entries, :submitter => :reputation)
   end
 
   def install_order_notes
     mod_ids = mod_list_mod_ids
-    return [] if mod_ids.empty?
+    return InstallOrderNote.none if mod_ids.empty?
 
     InstallOrderNote.visible.mods(mod_ids).includes(:first_mod, :second_mod, :history_entries, :submitter => :reputation)
   end
 
     def load_order_notes
     plugin_ids = Plugin.mod_options(mod_list_mod_option_ids).ids
-    return [] if plugin_ids.empty?
+    return LoadOrderNote.none if plugin_ids.empty?
 
     LoadOrderNote.visible.plugins(plugin_ids).includes(:first_plugin, :second_plugin, :history_entries, :submitter => :reputation)
   end
 
   def required_tools
     mod_ids = mod_list_mod_ids
-    return [] if mod_ids.empty?
+    return ModRequirement.none if mod_ids.empty?
 
     ModRequirement.mods(mod_ids).includes(:required_mod, :mod).utility(true)
   end
 
   def required_mods
     mod_ids = mod_list_mod_ids
-    return [] if mod_ids.empty?
+    return ModRequirement.none if mod_ids.empty?
 
     ModRequirement.mods(mod_ids).utility(false).includes(:required_mod, :mod).order(:required_id)
   end
 
   def required_plugins
     plugin_ids = mod_list_plugin_ids
-    return [] if plugin_ids.empty?
+    return Master.none if plugin_ids.empty?
 
     Master.plugins(plugin_ids).includes(:plugin, :master_plugin).order(:master_plugin_id)
   end
@@ -282,28 +282,28 @@ class ModList < ActiveRecord::Base
 
   def asset_files
     mod_option_ids = mod_list_mod_option_ids
-    return [] if mod_option_ids.empty?
+    return ModAssetFile.none if mod_option_ids.empty?
 
     ModAssetFile.mod_options(mod_option_ids).includes(:asset_file)
   end
 
   def override_records
     plugin_ids = mod_list_plugin_ids
-    return [] if plugin_ids.empty?
+    return OverrideRecord.none if plugin_ids.empty?
 
     OverrideRecord.plugins(plugin_ids)
   end
 
   def record_groups
     plugin_ids = mod_list_plugin_ids
-    return [] if plugin_ids.empty?
+    return PluginRecordGroup.none if plugin_ids.empty?
 
     PluginRecordGroup.plugins(plugin_ids)
   end
 
   def plugin_errors
     plugin_ids = mod_list_plugin_ids
-    return [] if plugin_ids.empty?
+    return PluginError.none if plugin_ids.empty?
 
     PluginError.plugins(plugin_ids)
   end
