@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160826201813) do
+ActiveRecord::Schema.define(version: 20160828180012) do
 
   create_table "agreement_marks", id: false, force: :cascade do |t|
     t.integer "correction_id", limit: 4,                null: false
@@ -427,9 +427,8 @@ ActiveRecord::Schema.define(version: 20160826201813) do
   add_index "mod_list_ignored_notes", ["mod_list_id"], name: "fk_rails_89a67a287a", using: :btree
 
   create_table "mod_list_mod_options", force: :cascade do |t|
-    t.integer "mod_list_mod_id", limit: 4,                null: false
-    t.integer "mod_option_id",   limit: 4,                null: false
-    t.boolean "enabled",                   default: true, null: false
+    t.integer "mod_list_mod_id", limit: 4, null: false
+    t.integer "mod_option_id",   limit: 4, null: false
   end
 
   add_index "mod_list_mod_options", ["mod_list_mod_id"], name: "fk_rails_bf4ca194fc", using: :btree
@@ -522,7 +521,9 @@ ActiveRecord::Schema.define(version: 20160826201813) do
   create_table "mod_options", force: :cascade do |t|
     t.integer "mod_id",            limit: 4,                   null: false
     t.string  "name",              limit: 255,                 null: false
+    t.integer "size",              limit: 8,   default: 0,     null: false
     t.boolean "default",                       default: false, null: false
+    t.boolean "is_fomod_option",               default: false, null: false
     t.integer "asset_files_count", limit: 4,   default: 0,     null: false
     t.integer "plugins_count",     limit: 4,   default: 0,     null: false
   end
