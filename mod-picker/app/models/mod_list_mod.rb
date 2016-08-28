@@ -11,13 +11,16 @@ class ModListMod < ActiveRecord::Base
 
   has_many :mod_list_mod_options, :inverse_of => 'mod_list_mod'
 
-  # Validations
+  # NESTED ATTRIBUTES
+  accepts_nested_attributes_for :mod_list_mod_options, allow_destroy: true
+
+  # VALIDATIONS
   validates :mod_list_id, :mod_id, :index, presence: true
   # can only have a mod on a given mod list once
   # TODO: If we don't allow the user to change the mod_id with nested attributes we could refactor this validation to be an after_create callback
   validates :mod_id, uniqueness: { scope: :mod_list_id, :message => "The mod is already present on the mod list." }
 
-  # Callbacks
+  # CALLBACKS
   after_create :increment_counter_caches
   before_destroy :decrement_counter_caches, :destroy_mod_list_plugins
 
