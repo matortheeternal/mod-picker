@@ -142,7 +142,9 @@ app.service('actionsFactory', function() {
         }, {
             icon: "fa-gear",
             title: "View Details",
-            hidden: function($scope, item) { return !!item.mod },
+            hidden: function($scope, item) {
+                return item.mod && item.mod.mod_options.length < 2
+            },
             execute: function($scope, item) {
                 $scope.$emit('toggleDetailsModal', {visible: true, item: item});
             }
@@ -161,7 +163,9 @@ app.service('actionsFactory', function() {
         }, {
             icon: "fa-gear",
             title: "View Details",
-            hidden: function($scope, item) { return !!item.mod },
+            hidden: function($scope, item) {
+                return item.mod && item.mod.mod_options.length < 2
+            },
             execute: function($scope, item) {
                 $scope.$emit('toggleDetailsModal', {visible: true, item: item});
             }
