@@ -5,7 +5,7 @@ class Plugin < ActiveRecord::Base
 
   # GENERAL SCOPES
   scope :game, -> (game) { where(game_id: game) }
-  scope :mods, -> (mod_ids) { where(mod_id: mod_ids) }
+  scope :mod_options, -> (mod_option_ids) { where(mod_option_id: mod_option_ids) }
   scope :esm, -> { where("filename like '%.esm'") }
   # SEARCH SCOPES
   scope :search, -> (search) { where("filename like ?", "%#{search}%") }

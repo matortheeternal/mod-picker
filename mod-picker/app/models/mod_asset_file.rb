@@ -2,7 +2,7 @@ class ModAssetFile < ActiveRecord::Base
   self.primary_keys = :mod_id, :asset_file_id
 
   # Scopes
-  scope :mods, -> (mod_ids) { where(mod_id: mod_ids) }
+  scope :mod_options, -> (mod_option_ids) { where(mod_option_id: mod_option_ids) }
   scope :bsa, -> { joins(:asset_file).where("asset_files.path like '%.bsa'") }
   scope :conflicting, -> { joins("JOIN mod_asset_files mod_asset_files_right ON mod_asset_files.asset_file_id = mod_asset_files_right.asset_file_id").where("mod_asset_files.mod_option_id <> mod_asset_files_right.mod_option_id").order(:asset_file_id) }
 
