@@ -119,7 +119,7 @@ class ModList < ActiveRecord::Base
   # numbers of mod lists per page on the mod lists index
   self.per_page = 100
 
-  # Validations
+  # VALIDATIONS
   validates :game_id, :submitted_by, :name, presence: true
 
   validates_inclusion_of :is_collection, :hidden, :has_adult_content, {
@@ -131,27 +131,29 @@ class ModList < ActiveRecord::Base
   validates :description, length: { maximum: 65535 }
   validates :name, length: { maximum: 255 }
 
-  # Callbacks
+  # CALLBACKS
   after_create :increment_counters
   before_update :hide_comments
   before_save :set_dates
   before_destroy :decrement_counters, :unset_active
 
   def update_all_counters
-    self.tools_count = self.mod_list_mods.utility(true).count
-    self.mods_count = self.mod_list_mods.utility(false).count
-    self.custom_tools_count = self.custom_mods.utility(true).count
-    self.custom_mods_count = self.custom_mods.utility(false).count
-    self.plugins_count = self.mod_list_plugins.count
-    self.custom_plugins_count = self.custom_plugins.count
-    self.config_files_count = self.config_files.count
-    self.custom_config_files_count = self.custom_config_files.count
-    self.ignored_notes_count = self.ignored_notes.count
-    self.tags_count = self.tags.count
-    self.stars_count = self.mod_list_stars.count
-    self.comments_count = self.comments.count
-    self.save_counters([:tools_count, :mods_count, :custom_tools_count, :custom_mods_count, :plugins_count, :custom_plugins_count, :config_files_count, :custom_config_files_count, :ignored_notes_count, :tags_count, :stars_count, :comments_count])
-    self.update_lazy_counters
+    self.tools_count = mod_list_mods.utility(true).count
+    self.mods_count = mod_list_mods.utility(false).count
+    self.custom_tools_count = custom_mods.utility(true).count
+    self.custom_mods_count = custom_mods.utility(false).count
+    self.plugins_count = mod_list_plugins.count
+    self.custom_plugins_count = custom_plugins.count
+    self.config_files_count = config_files.count
+    self.custom_config_files_count = custom_config_files.count
+    self.ignored_notes_count = ignored_notes.count
+    self.tags_count = tags.count
+    self.stars_count = mod_list_stars.count
+    self.comments_count = comments.count
+
+    save_counters([:tools_count, :mods_count, :custom_tools_count, :custom_mods_count, :plugins_count, :custom_plugins_count, :config_files_count, :custom_config_files_count, :ignored_notes_count, :tags_count, :stars_count, :comments_count])
+
+    update_lazy_counters
   end
 
   def update_lazy_counters
@@ -174,18 +176,18 @@ class ModList < ActiveRecord::Base
   end
 
   def hide_comments
-    if self.attribute_changed?(:hidden) && self.hidden
-      self.comments.update_all(:hidden => true)
-    elsif self.attribute_changed?(:disable_comments) && self.disable_comments
-      self.comments.update_all(:hidden => true)
+    if attribute_changed?(:hidden) && hidden
+      comments.update_all(:hidden => true)
+    elsif self.attribute_changed?(:disable_comments) && disable_comments
+      comments.update_all(:hidden => true)
     end
   end
 
   def add_official_content
     # official mods
-    official_content = Mod.game(self.game_id).where(is_official: true)
+    official_content = Mod.game(game_id).where(is_official: true)
     official_content.each_with_index do |m, index|
-      self.mod_list_mods.create({
+      mod_list_mods.create({
           mod_id: m.id,
           index: index
       })
@@ -194,7 +196,7 @@ class ModList < ActiveRecord::Base
     # official plugins
     official_plugins = Plugin.mods(official_content)
     official_plugins.each_with_index do |p, index|
-      self.mod_list_plugins.create({
+      mod_list_plugins.create({
           plugin_id: p.id,
           index: index
       })
@@ -202,8 +204,8 @@ class ModList < ActiveRecord::Base
   end
 
   def set_active
-    self.submitter.active_mod_list_id = self.id
-    self.submitter.save
+    submitter.active_mod_list_id = id
+    submitter.save
   end
 
   def mod_list_plugin_ids
@@ -372,28 +374,28 @@ class ModList < ActiveRecord::Base
 
   private
     def set_dates
-      if self.submitted.nil?
+      if submitted.nil?
         self.submitted = DateTime.now
       else
         self.updated = DateTime.now
       end
-      if self.status == "complete" && self.completed.nil?
+      if status == "complete" && completed.nil?
         self.completed = DateTime.now
       end
     end
 
     def increment_counters
-      self.submitter.update_counter(:mod_lists_count, 1)
+      submitter.update_counter(:mod_lists_count, 1)
     end
 
     def decrement_counters
-      self.submitter.update_counter(:mod_lists_count, -1)
+      submitter.update_counter(:mod_lists_count, -1)
     end
 
     def unset_active
-      if self.submitter.active_mod_list_id == self.id
-        self.submitter.active_mod_list_id = nil
-        self.submitter.save
+      if submitter.active_mod_list_id == self.id
+        submitter.active_mod_list_id = nil
+        submitter.save
       end
     end
 end

@@ -223,7 +223,7 @@ class Mod < ActiveRecord::Base
   # numbers of mods per page on the mods index
   self.per_page = 100
 
-  # Validations
+  # VALIDATIONS
   validates :game_id, :submitted_by, :name, :authors, :released, presence: true
   validates :name, :aliases, length: {maximum: 128}
 
