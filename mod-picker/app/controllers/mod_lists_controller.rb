@@ -39,7 +39,7 @@ class ModListsController < ApplicationController
     authorize! :read, @mod_list
 
     # prepare primary data
-    tools = @mod_list.mod_list_mods.utility(true).includes(:mod => :required_mods).order(:index)
+    tools = @mod_list.mod_list_mods.utility(true).includes(:mod_list_mod_options, :mod => :mod_options).order(:index)
     custom_tools = @mod_list.custom_mods.utility(true)
     groups = @mod_list.mod_list_groups.where(tab: 0).order(:index)
 
@@ -57,7 +57,7 @@ class ModListsController < ApplicationController
     authorize! :read, @mod_list
 
     # prepare primary data
-    mods = @mod_list.mod_list_mods.utility(false).includes(:mod).order(:index)
+    mods = @mod_list.mod_list_mods.utility(false).includes(:mod_list_mod_options, :mod => :mod_options).order(:index)
     custom_mods = @mod_list.custom_mods.utility(false)
     groups = @mod_list.mod_list_groups.where(tab: 1).order(:index)
 
