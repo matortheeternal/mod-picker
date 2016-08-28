@@ -115,6 +115,10 @@ app.service('modListService', function (backend, $q, userTitleService, contribut
             if (item.mod) {
                 delete item.mod;
             }
+            if (item.mod_list_mod_options && item.mod_list_mod_options.length) {
+                item.mod_list_mod_options_attributes = angular.copy(item.mod_list_mod_options);
+                delete item.mod_list_mod_options;
+            }
         });
         var custom_mods = angular.copy(Array.prototype.concat(modList.custom_tools || [], modList.custom_mods || []));
 
