@@ -39,7 +39,7 @@ app.controller('modAnalysisController', function($scope, $stateParams, $state, m
 
     $scope.setCurrentSelection = function() {
         // set active options
-        var optionIds = $stateParams.options.split(',');
+        var optionIds = $stateParams.options ? $stateParams.options.split(',') : [];
         $scope.mod.options.forEach(function(option) {
             option.active = option.default || optionIds.indexOf(option.id) > -1;
         });
