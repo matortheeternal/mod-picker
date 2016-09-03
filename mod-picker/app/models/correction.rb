@@ -7,6 +7,7 @@ class Correction < ActiveRecord::Base
   # SCOPES
   include_scope :hidden
   include_scope :has_adult_content, :alias => 'include_adult'
+  game_scope
   visible_scope
   search_scope :title, :text_body, :combine => true
   user_scope :submitter
