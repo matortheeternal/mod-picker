@@ -1,18 +1,12 @@
 class HelpPage < ActiveRecord::Base
-  include RecordEnhancements
+  include RecordEnhancements, ScopeHelpers
 
   # enum for help page category
   enum category: [:mod_picker, :modding, :guides]
 
   # SCOPES
-  scope :game_long_name, -> (game_name) { joins(:game).where("games.long_name LIKE ?", "%#{game_name}%") }
-  scope :title, -> (title) { where("title LIKE ?", "%#{title}%") }
-  scope :text_body, -> (text_body) {  where("text_body LIKE ?", "%#{text_body}%") }
-  scope :game, -> (game_id) { where(game_id: game_id) }
-
-  # searches by title, text body, and category
-  scope :search, -> (text) { where("title LIKE ? OR text_body LIKE ?",
-             "%#{text}%", "%#{text}%")}
+  game_scope
+  search_scope :title, :text_body, :combine => true
 
   # ASSOCIATIONS
   belongs_to :submitter, :class_name => 'User', :foreign_key => 'submitted_by', :inverse_of => 'help_pages'
@@ -42,6 +36,7 @@ class HelpPage < ActiveRecord::Base
   end
 
   def url
+    # TODO: This isn't properly reversible, need to just make string url_safe maybe?
     self.title.parameterize.underscore
   end
 

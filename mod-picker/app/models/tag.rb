@@ -1,8 +1,10 @@
 class Tag < ActiveRecord::Base
-  include Filterable, RecordEnhancements, Reportable
+  include Filterable, RecordEnhancements, Reportable, ScopeHelpers
 
-  scope :game, -> (game) { where(game_id: game) }
+  # SCOPES
+  game_scope
 
+  # ASSOCIATIONS
   belongs_to :submitter, :class_name => 'User', :foreign_key => :submitted_by, :inverse_of => 'tags'
 
   has_many :mod_tags, :inverse_of => 'tag'

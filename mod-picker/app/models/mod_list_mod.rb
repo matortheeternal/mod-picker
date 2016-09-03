@@ -1,9 +1,8 @@
 class ModListMod < ActiveRecord::Base
-  include RecordEnhancements
+  include RecordEnhancements, ScopeHelpers
 
   # SCOPES
-  scope :utility, -> (bool) { joins(:mod).where(:mods => {is_utility: bool}) }
-  scope :official, -> (bool) { joins(:mod).where(:mods => {is_official: bool}) }
+  value_scope :is_utility, :is_official, :association => 'mod'
 
   # ASSOCIATIONS
   belongs_to :mod_list, :inverse_of => 'mod_list_mods'

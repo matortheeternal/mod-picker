@@ -1,6 +1,8 @@
 class PluginError < ActiveRecord::Base
+  include ScopeHelpers
+
   # Scopes
-  scope :plugins, -> (plugin_ids) { where(plugin_id: plugin_ids) }
+  ids_scope :plugin_id
 
   # ASSOCIATIONS
   belongs_to :plugin, :inverse_of => 'errors'

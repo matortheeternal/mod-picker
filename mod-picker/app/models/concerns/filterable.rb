@@ -12,7 +12,7 @@ module Filterable
       results
     end
 
-    def parseDate(datestr)
+    def parse_date(datestr)
       if datestr == "Now"
         DateTime.now.utc
       elsif (match = /([0-9]+) hours ago/.match(datestr))
@@ -22,7 +22,7 @@ module Filterable
       end
     end
 
-    def parseBytes(bytestr)
+    def parse_bytes(bytestr)
       sp = bytestr.split(' ')
       return 0 if !sp || sp.length < 2
       units = ['bytes', 'kB', 'MB', 'GB', 'TB', 'PB']

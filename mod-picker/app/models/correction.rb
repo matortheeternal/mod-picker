@@ -1,71 +1,21 @@
 class Correction < ActiveRecord::Base
-  include Filterable, Sortable, RecordEnhancements, Reportable
+  include Filterable, Sortable, RecordEnhancements, Reportable, ScopeHelpers
 
   enum status: [:open, :passed, :failed, :closed]
   enum mod_status: [:good, :outdated, :unstable]
 
-  # BOOLEAN SCOPES (excludes content when false)
-  scope :include_hidden, -> (bool) { where(hidden: false) if !bool  }
-  scope :include_adult, -> (bool) { where(has_adult_content: false) if !bool }
-  # GENERAL SCOPES
-  scope :visible, -> { where(hidden: false) }
-  scope :game, -> (game_id) { where(game_id: game_id) }
-  scope :search, -> (text) { where("corrections.title like ? OR corrections.text_body like ?", "%#{text}%", "%#{text}%") }
-  scope :submitter, -> (username) { joins(:submitter).where(:users => {:username => username}) }
-  scope :editor, -> (username) { joins(:editor).where(:users => {:username => username}) }
-  scope :status, -> (statuses) {
-    if statuses.is_a?(Hash)
-      # handle hash search by building a statuses array
-      statuses_array = []
-      statuses.each_with_index do |(key,value),index|
-        if statuses[key]
-          statuses_array.push(index)
-        end
-      end
-    else
-      # else treat as an array of statuses
-      statuses_array = statuses
-    end
+  # SCOPES
+  include_scope :hidden
+  include_scope :has_adult_content, :alias => 'include_adult'
+  visible_scope
+  search_scope :title, :text_body, :combine => true
+  user_scope :submitter
+  enum_scope :status
+  enum_scope :mod_status
+  user_scope :submitter
+  polymorphic_scope :correctable
 
-    # return query
-    where(status: statuses_array)
-  }
-  scope :mod_status, -> (mod_statuses) {
-    if mod_statuses.is_a?(Hash)
-      # handle hash search by building a statuses array
-      mod_statuses_array = []
-      mod_statuses.each_with_index do |(key,value),index|
-        if mod_statuses[key]
-          mod_statuses_array.push(index)
-        end
-      end
-    else
-      # else treat as an array of statuses
-      mod_statuses_array = mod_statuses
-    end
-
-    # return query
-    where(mod_status: mod_statuses_array)
-  }
-  scope :correctable, -> (correctable_hash) {
-    # build correctables array
-    correctables = []
-    correctable_hash.each_key do |key|
-      if correctable_hash[key]
-        correctables.push(key)
-      end
-    end
-
-    # return query
-    where(correctable_type: correctables)
-  }
-  # RANGE SCOPES
-  scope :agree_count, -> (range) { where(agree_count: range[:min]..range[:max]) }
-  scope :disagree_count, -> (range) { where(disagree_count: range[:min]..range[:max]) }
-  scope :comments_count, -> (range) { where(comments_count: range[:min]..range[:max]) }
-  scope :submitted, -> (range) { where(submitted: parseDate(range[:min])..parseDate(range[:max])) }
-  scope :edited, -> (range) { where(edited: parseDate(range[:min])..parseDate(range[:max])) }
-
+  # ASSOCIATIONS
   belongs_to :game, :inverse_of => 'corrections'
   belongs_to :submitter, :class_name => 'User', :foreign_key => 'submitted_by', :inverse_of => 'corrections'
   belongs_to :editor, :class_name => 'User', :foreign_key => 'edited_by'
