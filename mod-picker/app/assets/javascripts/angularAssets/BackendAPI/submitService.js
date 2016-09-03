@@ -60,8 +60,7 @@ app.service('submitService', function (backend, objectUtils) {
                 workshop_info_id: sources.workshop && sources.workshop.id,
                 lover_info_id: sources.lab && sources.lab.id,
                 tag_names: mod.newTags,
-                asset_paths: mod.analysis.assets,
-                plugin_dumps: mod.analysis.plugins,
+                mod_option_attributes: mod.analysis.mod_options,
                 custom_sources_attributes: custom_sources,
                 required_mods_attributes: required_mods
             }
@@ -141,8 +140,7 @@ app.service('submitService', function (backend, objectUtils) {
                 workshop_info_id: sources.workshop && sources.workshop.id,
                 lover_info_id: sources.lab && sources.lab.id,
                 tag_names: mod.newTags,
-                asset_paths: mod.analysis && mod.analysis.assets,
-                plugin_dumps: mod.analysis && mod.analysis.plugins,
+                mod_option_attributes: mod.analysis && mod.analysis.mod_options,
                 mod_authors_attributes: mod_authors,
                 custom_sources_attributes: custom_sources,
                 required_mods_attributes: required_mods
