@@ -1,4 +1,25 @@
-app.service('reportService', function($q, backend) {
+app.service('reportService', function($q, backend, pageUtils) {
+    this.retrieveReport = function(reportId) {
+        var output = $q.defer();
+        backend.retrieve('/reports/' + reportId).then(function(reportData) {
+            output.resolve(reportData);
+        }, function(response) {
+            output.reject(response);
+        });
+        return output.promise;
+    };
+
+    this.retrieveReports = function(options, pageInformation) {
+        var action = $q.defer();
+        backend.post('/reports/index', options).then(function (data) {
+            // resolve page information and data
+            pageUtils.getPageInformation(data, pageInformation, options.page);
+            action.resolve(data);
+        }, function(response) {
+            action.reject(response);
+        });
+        return action.promise;
+    };
 
     this.submitReport = function(report) {
         // prepare report record
