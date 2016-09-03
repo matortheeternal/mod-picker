@@ -261,7 +261,11 @@ app.controller('submitModController', function ($scope, $rootScope, backend, mod
     $scope.getRequirementsFromAnalysis = function() {
         // build list of masters
         var masters = [];
-        $scope.mod.analysis.plugins.forEach(function(plugin) {
+        var defaultPlugins = [];
+        $scope.mod.analysis.mod_options.forEach(function(option) {
+            if (option.default) defaultPlugins = defaultPlugins.concat(option.plugins);
+        });
+        defaultPlugins.forEach(function(plugin) {
             plugin.master_plugins.forEach(function(master) {
                 if (masters.indexOf(master.filename) == -1) {
                     masters.push(master.filename);
