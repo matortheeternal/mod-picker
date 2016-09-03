@@ -169,8 +169,8 @@ app.controller('submitModController', function ($scope, $rootScope, backend, mod
     };
 
     $scope.createPriorityMessage = function(recessiveId, dominantId) {
-        var recessiveCategory = categoryService.getCategoryById(categories, recessiveId);
-        var dominantCategory = categoryService.getCategoryById(categories, dominantId);
+        var recessiveCategory = categoryService.getCategoryById($scope.categories, recessiveId);
+        var dominantCategory = categoryService.getCategoryById($scope.categories, dominantId);
         var categoryPriority = $scope.getCategoryPriority(recessiveId, dominantId);
         var messageText = dominantCategory.name + " > " + recessiveCategory.name + "\n" + categoryPriority.description;
         $scope.categoryMessages.push({
@@ -182,7 +182,7 @@ app.controller('submitModController', function ($scope, $rootScope, backend, mod
     $scope.getSuperCategories = function() {
         var superCategories = [];
         $scope.mod.categories.forEach(function (id) {
-            var superCategory = categoryService.getCategoryById(categories, id).parent_id;
+            var superCategory = categoryService.getCategoryById($scope.categories, id).parent_id;
             if (superCategory && superCategories.indexOf(superCategory) == -1) {
                 superCategories.push(superCategory);
             }
@@ -217,13 +217,13 @@ app.controller('submitModController', function ($scope, $rootScope, backend, mod
                 text: "Categories look good!",
                 klass: "cat-success-message"
             });
-            var primaryCategory = categoryService.getCategoryById(categories, $scope.mod.categories[0]);
+            var primaryCategory = categoryService.getCategoryById($scope.categories, $scope.mod.categories[0]);
             $scope.categoryMessages.push({
                 text: "Primary Category: " + primaryCategory.name,
                 klass: "cat-success-message"
             });
             if ($scope.mod.categories.length > 1) {
-                var secondaryCategory = categoryService.getCategoryById(categories, $scope.mod.categories[1]);
+                var secondaryCategory = categoryService.getCategoryById($scope.categories, $scope.mod.categories[1]);
                 $scope.categoryMessages.push({
                     text: "Secondary Category: " + secondaryCategory.name,
                     klass: "cat-success-message"
