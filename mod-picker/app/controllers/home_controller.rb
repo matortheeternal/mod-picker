@@ -43,10 +43,10 @@ class HomeController < ApplicationController
     load_order_notes = LoadOrderNote.visible.game(params[:game]).includes(:first_plugin, :second_plugin, :submitter => :reputation).order(:submitted => :DESC).limit(4)
 
     # get helpful/agreement marks
-    r_helpful_marks = HelpfulMark.submitter(current_user.id).helpfulable("Review", reviews.ids)
-    c_helpful_marks = HelpfulMark.submitter(current_user.id).helpfulable("CompatibilityNote", compatibility_notes.ids)
-    i_helpful_marks = HelpfulMark.submitter(current_user.id).helpfulable("InstallOrderNote", install_order_notes.ids)
-    l_helpful_marks = HelpfulMark.submitter(current_user.id).helpfulable("LoadOrderNote", load_order_notes.ids)
+    r_helpful_marks = HelpfulMark.submitter(current_user.id).helpfulables("Review", reviews.ids)
+    c_helpful_marks = HelpfulMark.submitter(current_user.id).helpfulables("CompatibilityNote", compatibility_notes.ids)
+    i_helpful_marks = HelpfulMark.submitter(current_user.id).helpfulables("InstallOrderNote", install_order_notes.ids)
+    l_helpful_marks = HelpfulMark.submitter(current_user.id).helpfulables("LoadOrderNote", load_order_notes.ids)
     agreement_marks = AgreementMark.submitter(current_user.id).corrections(corrections.ids)
 
     render :json => {
