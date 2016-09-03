@@ -276,10 +276,24 @@ app.controller('submitModController', function ($scope, $rootScope, backend, mod
 
     $scope.loadAnalysisFile = function(file) {
         var fileReader = new FileReader();
+        var jsonMap = {
+            plugin_record_groups: 'plugin_record_groups_attributes',
+            plugin_errors: 'plugin_errors_attributes',
+            overrides: 'overrides_attributes'
+        };
         fileReader.onload = function (event) {
-            var fixedJson = event.target.result.replace('"plugin_record_groups"', '"plugin_record_groups_attributes"').replace('"plugin_errors"', '"plugin_errors_attributes"').replace('"overrides"', '"overrides_attributes"');
+            var fixedJson = event.target.result;
+            for (var property in jsonMap) {
+                if (jsonMap.hasOwnProperty(property)) {
+                    var oldVal = property.surround('"');
+                    var newVal = jsonMap[property].surround('"');
+                    fixedJson = fixedJson.replace(new RegExp(oldVal, 'g'), newVal);
+                }
+            }
             var analysis = JSON.parse(fixedJson);
-            analysis.nestedAssets = assetUtils.convertDataStringToNestedObject(analysis.assets);
+            analysis.mod_options.forEach(function(option) {
+                option.nestedAssets = assetUtils.getNestedAssets(option.assets);
+            });
             $scope.mod.analysis = analysis;
             $scope.getRequirementsFromAnalysis();
             $scope.$apply();
