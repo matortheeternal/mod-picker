@@ -1,0 +1,16 @@
+<div class="news-box" ng-class="{ 'full-report' : showFull }">
+    <div class="content-container">
+        <a ng-href="#/report/{{report.id}}" ng-if="!showFull">
+            <h3>{{report.report_type}}</h3>
+        </a>
+        <h3 ng-if="showFull">{{report.report_type}}</h3>
+        <span class="report-details">
+            by <a ng-href="#/user/{{report.submitted_by.id}}">{{report.submitted_by.username}}</a>
+            on {{report.submitted | date}}
+        </span>
+        <div marked="report.note"></div>
+        <a ng-href="#/report/{{article.id}}" ng-if="truncated">
+            Read More
+        </a>
+    </div>
+</div>
