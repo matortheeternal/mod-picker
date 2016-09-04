@@ -358,12 +358,15 @@ class ModsController < ApplicationController
          :custom_sources_attributes => [:label, :url],
          :required_mods_attributes => [:required_id],
          :tag_names => [],
-         :asset_paths => [],
-         :plugin_dumps => [:filename, :author, :description, :crc_hash, :record_count, :override_count, :file_size,
-           :master_plugins => [:filename, :crc_hash],
-           :plugin_record_groups_attributes => [:sig, :record_count, :override_count],
-           :plugin_errors_attributes => [:signature, :form_id, :group, :path, :name, :data],
-           :overrides_attributes => [:fid, :sig]])
+         :mod_options_attributes => [:name, :size, :default, :is_fomod_option,
+            :asset_paths => [],
+            :plugin_dumps => [:filename, :author, :description, :crc_hash, :record_count, :override_count, :file_size,
+               :master_plugins => [:filename, :crc_hash],
+               :plugin_record_groups_attributes => [:sig, :record_count, :override_count],
+               :plugin_errors_attributes => [:signature, :form_id, :group, :path, :name, :data],
+               :overrides_attributes => [:fid, :sig]
+             ]
+         ])
     end
 
     def mod_update_params
