@@ -32,8 +32,10 @@ class Mod < ActiveRecord::Base
 
   # UNIQUE SCOPES
   scope :include_games, -> (bool) { where.not(primary_category_id: nil) if !bool }
+  scope :compatibility, -> (mod_list_id) {
+    mod_list = ModList.find(mod_list_id)
+    where.not(id: mod_list.incompatible_mod_ids)
   }
-  scope :exclude, -> (excluded_mod_ids) { where.not(id: excluded_mod_ids) }
   scope :sources, -> (sources) {
     query = where(nil)
     where_clause = []
