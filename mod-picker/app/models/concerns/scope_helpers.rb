@@ -2,9 +2,22 @@ module ScopeHelpers
   extend ActiveSupport::Concern
 
   module ClassMethods
-    def game_scope
-      class_eval do
-        scope :game, -> (game_id) { where(game_id: game_id) }
+    def game_scope(options={})
+      if options[:parent]
+        class_eval do
+          scope :game, -> (game_id) {
+            game = Game.find(game_id)
+            if game.parent_game_id.present?
+              where(game_id: [game.id, game.parent_game_id])
+            else
+              where(game_id: game.id)
+            end
+          }
+        end
+      else
+        class_eval do
+          scope :game, -> (game_id) { where(game_id: game_id) }
+        end
       end
     end
 
