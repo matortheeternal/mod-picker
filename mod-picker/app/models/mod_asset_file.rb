@@ -1,7 +1,7 @@
 class ModAssetFile < ActiveRecord::Base
   include ScopeHelpers
 
-  self.primary_keys = :mod_id, :asset_file_id
+  self.primary_keys = :mod_option_id, :asset_file_id
 
   # SCOPES
   ids_scope :mod_option_id
@@ -14,9 +14,6 @@ class ModAssetFile < ActiveRecord::Base
   belongs_to :mod_option, :inverse_of => 'mod_asset_files'
   has_one :mod, :through => 'mod_option', :inverse_of => 'mod_asset_files'
   belongs_to :asset_file, :inverse_of => 'mod_asset_files'
-
-  # VALIDATIONS
-  validates :mod_id, presence: true
 
   # CALLBACKS
   after_create :increment_counters
