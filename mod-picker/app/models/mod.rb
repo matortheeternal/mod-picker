@@ -35,7 +35,6 @@ class Mod < ActiveRecord::Base
   }
   scope :exclude, -> (excluded_mod_ids) { where.not(id: excluded_mod_ids) }
   scope :sources, -> (sources) {
-    # TODO: Use AREL for this?
     query = where(nil)
     where_clause = []
 
@@ -51,7 +50,6 @@ class Mod < ActiveRecord::Base
   }
   scope :tags, -> (array) { joins(:tags).where(:tags => {text: array}).having("COUNT(DISTINCT tags.text) = ?", array.length) }
   scope :author, -> (hash) {
-    # TODO: Use AREL for this?
     author = hash[:value]
     sources = hash[:sources]
     where_clause = []
@@ -61,7 +59,7 @@ class Mod < ActiveRecord::Base
     results = where_clause.push("workshop_infos.uploaded_by like :author") if sources[:workshop]
     results = where_clause.push("mods.authors like :author") if sources[:other]
 
-    where(where_clause.join(" OR "))
+    where(where_clause.join(" OR "), author: author)
   }
 
   belongs_to :game, :inverse_of => 'mods'
