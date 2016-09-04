@@ -189,7 +189,7 @@ class ModsController < ApplicationController
     end
 
     # prepare helpful marks
-    helpful_marks = HelpfulMark.submitter(current_user.id).helpfulable("Review", review_ids)
+    helpful_marks = HelpfulMark.submitter(current_user.id).helpfulables("Review", review_ids)
 
     # render response
     render :json => {
@@ -210,7 +210,7 @@ class ModsController < ApplicationController
     count =  @mod.compatibility_notes.accessible_by(current_ability).count
 
     # prepare helpful marks
-    helpful_marks = HelpfulMark.submitter(current_user.id).helpfulable("CompatibilityNote", compatibility_notes.ids)
+    helpful_marks = HelpfulMark.submitter(current_user.id).helpfulables("CompatibilityNote", compatibility_notes.ids)
 
     # render response
     render :json => {
@@ -230,7 +230,7 @@ class ModsController < ApplicationController
     count =  @mod.install_order_notes.accessible_by(current_ability).count
 
     # prepare helpful marks
-    helpful_marks = HelpfulMark.submitter(current_user.id).helpfulable("InstallOrderNote", install_order_notes.ids)
+    helpful_marks = HelpfulMark.submitter(current_user.id).helpfulables("InstallOrderNote", install_order_notes.ids)
 
     # render response
     render :json => {
@@ -256,7 +256,7 @@ class ModsController < ApplicationController
     count =  @mod.load_order_notes.accessible_by(current_ability).count
 
     # prepare helpful marks
-    helpful_marks = HelpfulMark.submitter(current_user.id).helpfulable("LoadOrderNote", load_order_notes.ids)
+    helpful_marks = HelpfulMark.submitter(current_user.id).helpfulables("LoadOrderNote", load_order_notes.ids)
 
     # render response
     render :json => {

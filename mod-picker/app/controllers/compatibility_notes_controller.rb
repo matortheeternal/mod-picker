@@ -8,7 +8,7 @@ class CompatibilityNotesController < ContributionsController
     count = CompatibilityNote.accessible_by(current_ability).filter(filtering_params).count
 
     # prepare helpful marks
-    helpful_marks = HelpfulMark.submitter(current_user.id).helpfulable("CompatibilityNote", @compatibility_notes.ids)
+    helpful_marks = HelpfulMark.submitter(current_user.id).helpfulables("CompatibilityNote", @compatibility_notes.ids)
 
     # render response
     render :json => {

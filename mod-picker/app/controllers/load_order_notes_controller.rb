@@ -8,7 +8,7 @@ class LoadOrderNotesController < ContributionsController
     count = LoadOrderNote.accessible_by(current_ability).filter(filtering_params).count
 
     # prepare helpful marks
-    helpful_marks = HelpfulMark.submitter(current_user.id).helpfulable("LoadOrderNote", @load_order_notes.ids)
+    helpful_marks = HelpfulMark.submitter(current_user.id).helpfulables("LoadOrderNote", @load_order_notes.ids)
 
     # render response
     render :json => {
