@@ -24,10 +24,26 @@ class ModsController < ApplicationController
   def show
     @mod = Mod.includes(:nexus_infos, :workshop_infos, :lover_infos).find(params[:id])
     authorize! :read, @mod, :message => "You are not allowed to view this mod."
-    star = ModStar.exists?(:mod_id => @mod.id, :user_id => current_user.id)
+
+    # set up boolean variables
+    star = false
+    in_mod_list = false
+    incompatible = false
+    if current_user.present?
+      star = ModStar.exists?(:mod_id => @mod.id, :user_id => current_user.id)
+      if current_user.active_mod_list_id.present?
+        mod_list = current_user.active_mod_list
+        in_mod_list = mod_list.mod_list_mod_ids.include?(@mod.id)
+        incompatible = mod_list.incompatible_mod_ids.include?(@mod.id)
+      end
+    end
+
+    # render response
     render :json => {
         mod: @mod.show_json,
-        star: star
+        star: star,
+        in_mod_list: in_mod_list,
+        incompatible: incompatible
     }
   end
 
