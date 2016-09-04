@@ -235,7 +235,7 @@ class ModList < ActiveRecord::Base
     Master.plugins(plugin_ids).includes(:plugin, :master_plugin).order(:master_plugin_id)
   end
 
-  def incompatible_mods
+  def incompatible_mod_ids
     mod_ids = mod_list_mod_ids
     return [] if mod_ids.empty?
 
@@ -302,7 +302,7 @@ class ModList < ActiveRecord::Base
   def tracking_json
     self.as_json({
         :only => [:id, :name, :mods_count, :plugins_count, :active_plugins_count, :custom_plugins_count],
-        :methods => [:incompatible_mods, :mod_list_mod_ids]
+        :methods => [:incompatible_mod_ids, :mod_list_mod_ids]
     })
   end
 
