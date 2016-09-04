@@ -7,7 +7,7 @@ app.config(['$stateProvider', function ($stateProvider) {
     );
 }]);
 
-app.controller('submitModController', function ($scope, $rootScope, backend, modService, scrapeService, pluginService, categoryService, sitesFactory, assetUtils) {
+app.controller('submitModController', function ($scope, $rootScope, backend, modService, scrapeService, pluginService, categoryService, sitesFactory, assetUtils, objectUtils) {
     // access parent variables
     $scope.currentUser = $rootScope.currentUser;
     $scope.categories = $rootScope.categories;
@@ -286,14 +286,7 @@ app.controller('submitModController', function ($scope, $rootScope, backend, mod
             overrides: 'overrides_attributes'
         };
         fileReader.onload = function (event) {
-            var fixedJson = event.target.result;
-            for (var property in jsonMap) {
-                if (jsonMap.hasOwnProperty(property)) {
-                    var oldVal = property.surround('"');
-                    var newVal = jsonMap[property].surround('"');
-                    fixedJson = fixedJson.replace(new RegExp(oldVal, 'g'), newVal);
-                }
-            }
+            var fixedJson = objectUtils.remapProperties(event.target.result, jsonMap);
             var analysis = JSON.parse(fixedJson);
             analysis.mod_options.forEach(function(option) {
                 option.nestedAssets = assetUtils.getNestedAssets(option.assets);
