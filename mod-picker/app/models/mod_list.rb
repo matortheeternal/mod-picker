@@ -301,8 +301,8 @@ class ModList < ActiveRecord::Base
 
   def tracking_json
     self.as_json({
-        :only => [:id, :name, :mods_count, :plugins_count, :active_plugins_count, :custom_plugins_count],
-        :methods => [:incompatible_mod_ids, :mod_list_mod_ids]
+        :only => [:id, :name, :tools_count, :mods_count, :plugins_count],
+        :methods => :mod_list_mod_ids
     })
   end
 
