@@ -59,7 +59,7 @@ class ModsController < ApplicationController
     authorize! :create, Mod
     authorize! :assign_custom_sources, Mod if params[:mod].has_key?(:custom_sources_attributes)
 
-    builder = ModBuilder.initialize(current_user)
+    builder = ModBuilder.new(current_user, mod_params)
     if builder.save
       builder.mod.update_metrics
       render json: {status: :ok}
@@ -76,7 +76,7 @@ class ModsController < ApplicationController
     authorize! :update_options, @mod if options_params.any?
     authorize! :assign_custom_sources, @mod if params[:mod].has_key?(:custom_sources_attributes)
 
-    builder = ModBuilder.initialize(current_user, mod_update_params)
+    builder = ModBuilder.new(current_user, mod_update_params)
     if builder.update
       builder.mod.update_metrics
       render json: {status: :ok}
