@@ -110,27 +110,20 @@ app.controller('modController', function($scope, $rootScope, $q, $stateParams, $
     // get parent variables
     $scope.mod = modObject.mod;
     $scope.mod.star = modObject.star;
+    $scope.mod.in_mod_list = modObject.in_mod_list;
+    $scope.mod.incompatible = modObject.incompatible;
     $scope.currentUser = $rootScope.currentUser;
     $scope.activeModList = $rootScope.activeModList;
 
     // set active mod list stuff
-    if ($scope.activeModList) {
-        var inModList = $scope.activeModList.mod_list_mod_ids.indexOf($scope.mod.id) > -1;
-        var incompatible = $scope.activeModList.incompatible_mods.indexOf($scope.mod.id) > -1;
-
-        // set mod.in_mod_list boolean
-        $scope.mod.in_mod_list = inModList;
-
-        // display a message if the mod is incompatible with the active mod list
-        if (!inModList && incompatible) {
-            $timeout(function() {
-                $scope.$broadcast('message', {
-                    type: 'error',
-                    text: 'This mod is incompatible with your active mod list.',
-                    decay: 600000 // 10 minutes
-                });
-            }, 200);
-        }
+    if ($scope.mod.incompatible) {
+        $timeout(function() {
+            $scope.$broadcast('message', {
+                type: 'error',
+                text: 'This mod is incompatible with your active mod list.',
+                decay: 600000 // 10 minutes
+            });
+        }, 200);
     }
 
     // initialize local variables
