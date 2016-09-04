@@ -108,17 +108,6 @@ class Mod < ActiveRecord::Base
   has_many :mod_tags, :inverse_of => 'mod', :dependent => :destroy
   has_many :tags, :through => 'mod_tags', :inverse_of => 'mods'
 
-  # notes
-  has_many :compatibility_notes, -> (mod) {
-    where('first_mod_id = :mod_id OR second_mod_id = :mod_id', mod_id: mod.id)
-  }
-  has_many :install_order_notes, -> (mod) {
-    where('first_mod_id = :mod_id OR second_mod_id = :mod_id', mod_id: mod.id)
-  }
-  has_many :load_order_notes, -> (mod) {
-    where('first_plugin_id in (:plugin_ids) OR second_plugin_id in (:plugin_ids)', plugin_ids: mod.plugins.ids)
-  }
-
   # mod list usage
   has_many :mod_list_mods, :inverse_of => 'mod', :dependent => :destroy
   has_many :mod_lists, :through => 'mod_list_mods', :inverse_of => 'mods'
@@ -208,6 +197,19 @@ class Mod < ActiveRecord::Base
     self.compute_reputation
     self.update_lazy_counters
     self.save!
+  end
+
+  # note associations
+  def compatibility_notes
+    CompatibilityNote.where('first_mod_id = :mod_id OR second_mod_id = :mod_id', mod_id: id)
+  end
+
+  def install_order_notes
+    InstallOrderNote.where('first_mod_id = :mod_id OR second_mod_id = :mod_id', mod_id: id)
+  end
+
+  def load_order_notes
+    LoadOrderNote.where('first_plugin_id in (:plugin_ids) OR second_plugin_id in (:plugin_ids)', plugin_ids: plugins.ids)
   end
 
   def self.index_json(collection, sources)
