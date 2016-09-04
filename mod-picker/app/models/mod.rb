@@ -140,8 +140,9 @@ class Mod < ActiveRecord::Base
   end
 
   def update_lazy_counters
-    self.asset_files_count = ModAssetFile.where(mod_id: self.id).count
-    self.plugins_count = Plugin.where(mod_id: self.id).count
+    mod_option_ids = mod_options.ids
+    self.asset_files_count = ModAssetFile.mod_options(mod_option_ids).count
+    self.plugins_count = Plugin.mod_options(mod_option_ids).count
   end
 
   def compute_extra_metrics
