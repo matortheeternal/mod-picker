@@ -9,7 +9,9 @@ class Mod < ActiveRecord::Base
   include_scope :is_official, :alias => 'include_official'
   include_scope :is_utility, :alias => 'include_utilities'
   value_scope :is_utility
+  game_scope :parent => true
   search_scope :name, :aliases, :combine => true
+  ids_scope :categories, :columns => [:primary_category_id, :secondary_category_id]
   user_scope :author_users, :alias => 'mp_author'
   enum_scope :status
   counter_scope :plugins_count, :asset_files_count, :required_mods_count, :required_by_count, :tags_count, :stars_count, :mod_lists_count, :reviews_count, :compatibility_notes_count, :install_order_notes_count, :load_order_notes_count, :corrections_count
@@ -30,13 +32,6 @@ class Mod < ActiveRecord::Base
 
   # UNIQUE SCOPES
   scope :include_games, -> (bool) { where.not(primary_category_id: nil) if !bool }
-  scope :game, -> (game_id) {
-    game = Game.find(game_id)
-    if game.parent_game_id.present?
-      where(game_id: [game.id, game.parent_game_id])
-    else
-      where(game_id: game.id)
-    end
   }
   scope :exclude, -> (excluded_mod_ids) { where.not(id: excluded_mod_ids) }
   scope :sources, -> (sources) {
@@ -54,7 +49,6 @@ class Mod < ActiveRecord::Base
 
     query.where(where_clause.join(" OR "))
   }
-  scope :categories, -> (categories) { where("primary_category_id IN (?) OR secondary_category_id IN (?)", categories, categories) }
   scope :tags, -> (array) { joins(:tags).where(:tags => {text: array}).having("COUNT(DISTINCT tags.text) = ?", array.length) }
   scope :author, -> (hash) {
     # TODO: Use AREL for this?
