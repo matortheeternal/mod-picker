@@ -3,13 +3,15 @@ module SourceHelpers
 
   module ClassMethods
     def get_source_table(source_key)
-      case source_key
+      case source_key.to_sym
         when :nexus
           return :nexus_infos
         when :lab
           return :lover_infos
         when :workshop
           return :workshop_infos
+        when :other
+          return :custom_sources
         else
           raise("Invalid source key!")
       end
