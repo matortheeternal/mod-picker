@@ -1,19 +1,21 @@
 class ModAssetFile < ActiveRecord::Base
-  self.primary_keys = :mod_id, :asset_file_id
+  include ScopeHelpers
 
-  # Scopes
-  scope :mods, -> (mod_ids) { where(mod_id: mod_ids) }
+  self.primary_keys = :mod_option_id, :asset_file_id
+
+  # SCOPES
+  ids_scope :mod_option_id
+
+  # UNIQUE SCOPES
   scope :bsa, -> { joins(:asset_file).where("asset_files.path like '%.bsa'") }
-  scope :conflicting, -> { joins("JOIN mod_asset_files mod_asset_files_right ON mod_asset_files.asset_file_id = mod_asset_files_right.asset_file_id").where("mod_asset_files.mod_id <> mod_asset_files_right.mod_id").order(:asset_file_id) }
+  scope :conflicting, -> { joins("JOIN mod_asset_files mod_asset_files_right ON mod_asset_files.asset_file_id = mod_asset_files_right.asset_file_id").where("mod_asset_files.mod_option_id <> mod_asset_files_right.mod_option_id").order(:asset_file_id) }
 
-  # Associations
-  belongs_to :mod, :inverse_of => 'mod_asset_files'
+  # ASSOCIATIONS
+  belongs_to :mod_option, :inverse_of => 'mod_asset_files'
+  has_one :mod, :through => 'mod_option', :inverse_of => 'mod_asset_files'
   belongs_to :asset_file, :inverse_of => 'mod_asset_files'
 
-  # Validations
-  validates :mod_id, presence: true
-
-  # Callbacks
+  # CALLBACKS
   after_create :increment_counters
   before_destroy :decrement_counters
 

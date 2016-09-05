@@ -16,6 +16,6 @@ class ModListPluginsController < ApplicationController
 
   private
     def mod_list_plugin_params
-      params.require(:mod_list_plugin).permit(:mod_list_id, :plugin_id, :active, :load_order)
+      params.require(:mod_list_plugin).permit(:mod_list_id, :plugin_id, :index)
     end
 end

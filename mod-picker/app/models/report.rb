@@ -2,11 +2,11 @@ class Report < ActiveRecord::Base
   belongs_to :base_report, :inverse_of => 'reports'
   belongs_to :submitter, :class_name => 'User', :foreign_key => 'submitted_by', :inverse_of => 'reports'
 
-  # Validations
+  # VALIDATIONS
   validates :base_report_id, :submitted_by, :type, presence: true
   validates :note, length: {maximum: 128}
 
-  # Callbacks
+  # CALLBACKS
   after_create :increment_counters
   before_destroy :decrement_counters
 

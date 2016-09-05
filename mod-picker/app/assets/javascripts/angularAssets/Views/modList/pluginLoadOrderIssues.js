@@ -62,7 +62,7 @@ app.controller('pluginLoadOrderIssuesController', function($scope, $timeout, lis
 
     $scope.buildLoadOrderIssues = function() {
         $scope.buildUnresolvedLoadOrder();
-        $scope.buildOutOfOrderPlugins();
+        $timeout($scope.buildOutOfOrderPlugins, 10);
     };
 
     /* RESOLUTIONS ACTIONS */

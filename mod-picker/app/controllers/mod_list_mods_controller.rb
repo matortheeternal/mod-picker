@@ -17,9 +17,9 @@ class ModListModsController < ApplicationController
         load_order_notes = @mod_list_mod.load_order_notes
 
         # prepare helpful marks
-        c_helpful_marks = HelpfulMark.submitter(current_user.id).helpfulable("CompatibilityNote", mod_compatibility_notes.ids + plugin_compatibility_notes.ids)
-        i_helpful_marks = HelpfulMark.submitter(current_user.id).helpfulable("InstallOrderNote", install_order_notes.ids)
-        l_helpful_marks = HelpfulMark.submitter(current_user.id).helpfulable("LoadOrderNote", load_order_notes.ids)
+        c_helpful_marks = HelpfulMark.submitter(current_user.id).helpfulables("CompatibilityNote", mod_compatibility_notes.ids + plugin_compatibility_notes.ids)
+        i_helpful_marks = HelpfulMark.submitter(current_user.id).helpfulables("InstallOrderNote", install_order_notes.ids)
+        l_helpful_marks = HelpfulMark.submitter(current_user.id).helpfulables("LoadOrderNote", load_order_notes.ids)
 
         # render response
         render json: {

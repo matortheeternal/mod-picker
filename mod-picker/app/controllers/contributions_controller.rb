@@ -67,7 +67,7 @@ class ContributionsController < ApplicationController
   # POST /contribution/1/helpful
   def helpful
     # get old helpful marks
-    old_helpful_marks = HelpfulMark.submitter(current_user.id).helpfulable(params[:id], controller_name.classify)
+    old_helpful_marks = HelpfulMark.submitter(current_user.id).helpfulables(controller_name.classify, params[:id])
 
     if params.has_key?(:helpful)
       # create new helpful mark

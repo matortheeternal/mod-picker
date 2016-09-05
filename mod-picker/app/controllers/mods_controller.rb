@@ -24,10 +24,26 @@ class ModsController < ApplicationController
   def show
     @mod = Mod.includes(:nexus_infos, :workshop_infos, :lover_infos).find(params[:id])
     authorize! :read, @mod, :message => "You are not allowed to view this mod."
-    star = ModStar.exists?(:mod_id => @mod.id, :user_id => current_user.id)
+
+    # set up boolean variables
+    star = false
+    in_mod_list = false
+    incompatible = false
+    if current_user.present?
+      star = ModStar.exists?(:mod_id => @mod.id, :user_id => current_user.id)
+      if current_user.active_mod_list_id.present?
+        mod_list = current_user.active_mod_list
+        in_mod_list = mod_list.mod_list_mod_ids.include?(@mod.id)
+        incompatible = mod_list.incompatible_mod_ids.include?(@mod.id)
+      end
+    end
+
+    # render response
     render :json => {
         mod: @mod.show_json,
-        star: star
+        star: star,
+        in_mod_list: in_mod_list,
+        incompatible: incompatible
     }
   end
 
@@ -40,16 +56,15 @@ class ModsController < ApplicationController
 
   # POST /mods/submit
   def create
-    @mod = Mod.new(mod_params)
-    @mod.submitted_by = current_user.id
-    authorize! :create, @mod
-    authorize! :assign_custom_sources, @mod if params[:mod].has_key?(:custom_sources_attributes)
+    authorize! :create, Mod
+    authorize! :assign_custom_sources, Mod if params[:mod].has_key?(:custom_sources_attributes)
 
-    if @mod.save
-      @mod.update_metrics
+    builder = ModBuilder.new(current_user, mod_params)
+    if builder.save
+      builder.mod.update_metrics
       render json: {status: :ok}
     else
-      render json: @mod.errors, status: :unprocessable_entity
+      render json: builder.errors, status: :unprocessable_entity
     end
   end
 
@@ -61,15 +76,12 @@ class ModsController < ApplicationController
     authorize! :update_options, @mod if options_params.any?
     authorize! :assign_custom_sources, @mod if params[:mod].has_key?(:custom_sources_attributes)
 
-    # update mod list tools/mods count if is_utility changed
-    swap_counts = params[:mod].has_key?(:is_utility) && params[:mod][:is_utility] != @mod.is_utility
-
-    if @mod.update(mod_update_params)
-      @mod.update_metrics
-      @mod.swap_mod_list_mods_tools_counts if swap_counts
+    builder = ModBuilder.new(current_user, mod_update_params)
+    if builder.update
+      builder.mod.update_metrics
       render json: {status: :ok}
     else
-      render json: @mod.errors, status: :unprocessable_entity
+      render json: builder.errors, status: :unprocessable_entity
     end
   end
 
@@ -193,7 +205,7 @@ class ModsController < ApplicationController
     end
 
     # prepare helpful marks
-    helpful_marks = HelpfulMark.submitter(current_user.id).helpfulable("Review", review_ids)
+    helpful_marks = HelpfulMark.submitter(current_user.id).helpfulables("Review", review_ids)
 
     # render response
     render :json => {
@@ -214,7 +226,7 @@ class ModsController < ApplicationController
     count =  @mod.compatibility_notes.accessible_by(current_ability).count
 
     # prepare helpful marks
-    helpful_marks = HelpfulMark.submitter(current_user.id).helpfulable("CompatibilityNote", compatibility_notes.ids)
+    helpful_marks = HelpfulMark.submitter(current_user.id).helpfulables("CompatibilityNote", compatibility_notes.ids)
 
     # render response
     render :json => {
@@ -234,7 +246,7 @@ class ModsController < ApplicationController
     count =  @mod.install_order_notes.accessible_by(current_ability).count
 
     # prepare helpful marks
-    helpful_marks = HelpfulMark.submitter(current_user.id).helpfulable("InstallOrderNote", install_order_notes.ids)
+    helpful_marks = HelpfulMark.submitter(current_user.id).helpfulables("InstallOrderNote", install_order_notes.ids)
 
     # render response
     render :json => {
@@ -260,7 +272,7 @@ class ModsController < ApplicationController
     count =  @mod.load_order_notes.accessible_by(current_ability).count
 
     # prepare helpful marks
-    helpful_marks = HelpfulMark.submitter(current_user.id).helpfulable("LoadOrderNote", load_order_notes.ids)
+    helpful_marks = HelpfulMark.submitter(current_user.id).helpfulables("LoadOrderNote", load_order_notes.ids)
 
     # render response
     render :json => {
@@ -275,6 +287,7 @@ class ModsController < ApplicationController
   def analysis
     authorize! :read, @mod
     render json: {
+        mod_options: @mod.mod_options,
         plugins: Plugin.show_json(@mod.plugins),
         assets: @mod.asset_file_paths
     }
@@ -307,7 +320,7 @@ class ModsController < ApplicationController
     # Params we allow filtering on
     def filtering_params
       # construct valid filters array
-      valid_filters = [:include_adult, :include_utilities, :exclude, :sources, :search, :game, :released, :updated, :utility, :categories, :tags, :stars, :reviews, :rating, :reputation, :compatibility_notes, :install_order_notes, :load_order_notes, :views, :author, :mp_author]
+      valid_filters = [:include_adult, :include_utilities, :compatibility, :sources, :search, :game, :released, :updated, :utility, :categories, :tags, :stars, :reviews, :rating, :reputation, :compatibility_notes, :install_order_notes, :load_order_notes, :views, :author, :mp_author]
       source_filters = [:views, :author, :posts, :videos, :images, :discussions, :downloads, :favorites, :subscribers, :endorsements, :unique_downloads, :files, :bugs, :articles]
       sources = params[:filters][:sources]
 
@@ -345,12 +358,15 @@ class ModsController < ApplicationController
          :custom_sources_attributes => [:label, :url],
          :required_mods_attributes => [:required_id],
          :tag_names => [],
-         :asset_paths => [],
-         :plugin_dumps => [:filename, :author, :description, :crc_hash, :record_count, :override_count, :file_size,
-           :master_plugins => [:filename, :crc_hash],
-           :plugin_record_groups_attributes => [:sig, :record_count, :override_count],
-           :plugin_errors_attributes => [:signature, :form_id, :group, :path, :name, :data],
-           :overrides_attributes => [:fid, :sig]])
+         :mod_options_attributes => [:name, :size, :default, :is_fomod_option,
+            :asset_paths => [],
+            :plugin_dumps => [:filename, :author, :description, :crc_hash, :record_count, :override_count, :file_size,
+               :master_plugins => [:filename, :crc_hash],
+               :plugin_record_groups_attributes => [:sig, :record_count, :override_count],
+               :plugin_errors_attributes => [:signature, :form_id, :group, :path, :name, :data],
+               :overrides_attributes => [:fid, :sig]
+             ]
+         ])
     end
 
     def mod_update_params

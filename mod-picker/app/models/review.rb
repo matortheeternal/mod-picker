@@ -1,20 +1,15 @@
 class Review < ActiveRecord::Base
-  include Filterable, Sortable, RecordEnhancements, Helpfulable, Reportable
+  include Filterable, Sortable, RecordEnhancements, Helpfulable, Reportable, ScopeHelpers
 
-  # BOOLEAN SCOPES (excludes content when false)
-  scope :include_hidden, -> (bool) { where(hidden: false) if !bool  }
-  scope :include_adult, -> (bool) { where(has_adult_content: false) if !bool }
-  # GENERAL SCOPES
-  scope :visible, -> { where(hidden: false, approved: true) }
-  scope :game, -> (game_id) { where(game_id: game_id) }
-  scope :search, -> (text) { where("text_body like ?", "%#{text}%") }
-  scope :submitter, -> (username) { joins(:submitter).where(:users => {:username => username}) }
-  scope :editor, -> (username) { joins(:editor).where(:users => {:username => username}) }
-  # RANGE SCOPES
-  scope :overall_rating, -> (range) { where(overall_rating: range[:min]..range[:max]) }
-  scope :ratings_count, -> (range) { where(ratings_count: range[:min]..range[:max]) }
-  scope :submitted, -> (range) { where(submitted: parseDate(range[:min])..parseDate(range[:max])) }
-  scope :edited, -> (range) { where(edited: parseDate(range[:min])..parseDate(range[:max])) }
+  # SCOPES
+  include_scope :hidden
+  include_scope :has_adult_content, :alias => 'include_adult'
+  visible_scope :approvable => true
+  game_scope
+  search_scope :text_body, :alias => 'search'
+  user_scope :submitter, :editor
+  range_scope :overall_rating, :ratings_count
+  date_scope :submitted, :edited
 
   # ASSOCIATIONS
   belongs_to :game, :inverse_of => 'reviews'
@@ -28,13 +23,13 @@ class Review < ActiveRecord::Base
 
   self.per_page = 25
 
-  # Validations
+  # VALIDATIONS
   validates :game_id, :submitted_by, :mod_id, :text_body, presence: true
   validates :text_body, length: {in: 512..32768}
   # only one review per mod per user
   validates :mod_id, uniqueness: { scope: :submitted_by, :message => "You've already submitted a review for this mod." }
 
-  # Callbacks
+  # CALLBACKS
   after_create :increment_counters
   before_save :set_dates
   after_save :update_mod_metrics, :update_metrics

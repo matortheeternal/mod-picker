@@ -2,7 +2,7 @@
     <messages event="modalMessage"></messages>
 
     <!-- Custom Mod Details -->
-    <div class="modal huge-modal">
+    <div class="modal huge-modal" ng-if="!detailsItem.mod">
         <form>
             <div class="close-modal">
                 <span class="fa fa-times" ng-click="toggleDetailsModal()"></span>
@@ -24,6 +24,22 @@
             <div class="action-button-container">
                 <input type="submit" class="btn action-btn" value="Close" ng-click="toggleDetailsModal()">
             </div>
+        </form>
+    </div>
+
+    <!-- Mod Options -->
+    <div class="modal huge-modal" ng-if="detailsItem.mod">
+        <form>
+            <div class="close-modal">
+                <span class="fa fa-times" ng-click="toggleDetailsModal()"></span>
+            </div>
+
+            <h2 ng-show="editing">{{ detailsItem.is_utility ? 'Edit Tool Options' : 'Edit Mod Options' }}</h2>
+            <h2 ng-hide="editing">{{ detailsItem.is_utility ? 'View Tool Options' : 'View Mod Options' }}</h2>
+
+            <label class="manage-item" ng-repeat="option in detailsItem.mod.mod_options">
+                <input type="checkbox" ng-click="toggleOption(option)" ng-model="option.active" ng-disabled="!editing"/> {{option.name}}
+            </label>
         </form>
     </div>
 </div>

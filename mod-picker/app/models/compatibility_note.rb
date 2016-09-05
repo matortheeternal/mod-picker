@@ -1,38 +1,18 @@
 class CompatibilityNote < ActiveRecord::Base
-  include Filterable, Sortable, RecordEnhancements, Correctable, Helpfulable, Reportable
+  include Filterable, Sortable, RecordEnhancements, Correctable, Helpfulable, Reportable, ScopeHelpers
 
   enum status: [ :incompatible, :"partially incompatible", :"compatibility mod", :"compatibility option", :"make custom patch" ]
 
-  # BOOLEAN SCOPES (excludes content when false)
-  scope :include_hidden, -> (bool) { where(hidden: false) if !bool  }
-  scope :include_adult, -> (bool) { where(has_adult_content: false) if !bool }
-  # GENERAL SCOPES
-  scope :visible, -> { where(hidden: false, approved: true) }
-  scope :game, -> (game_id) { where(game_id: game_id) }
-  scope :mod, -> (mod_ids) { where("first_mod_id IN (?) OR second_mod_id IN (?)", mod_ids, mod_ids) }
-  scope :mods, -> (mod_ids) { where(first_mod_id: mod_ids, second_mod_id: mod_ids) }
-  scope :search, -> (text) { where("compatibility_notes.text_body like ?", "%#{text}%") }
-  scope :submitter, -> (username) { joins(:submitter).where(:users => {:username => username}) }
-  scope :status, -> (statuses) {
-    if statuses.is_a?(Hash)
-      # handle hash search by building a commentables array
-      statuses_array = []
-      statuses.each_with_index do |(key,value),index|
-        if statuses[key]
-          statuses_array.push(index)
-        end
-      end
-    else
-      # else treat as an array of statuses
-      statuses_array = statuses
-    end
-
-    # return query
-    where(status: statuses_array)
-  }
-  # RANGE SCOPES
-  scope :submitted, -> (range) { where(submitted: parseDate(range[:min])..parseDate(range[:max])) }
-  scope :edited, -> (range) { where(edited: parseDate(range[:min])..parseDate(range[:max])) }
+  # SCOPES
+  include_scope :hidden
+  include_scope :has_adult_content, :alias => 'include_adult'
+  visible_scope :approvable => true
+  game_scope
+  search_scope :text_body, :alias => 'search'
+  user_scope :submitter
+  enum_scope :status
+  ids_scope :mod_id, :columns => [:first_mod_id, :second_mod_id]
+  date_scope :submitted, :edited
 
   # ASSOCIATIONS
   belongs_to :game, :inverse_of => 'compatibility_notes'
@@ -58,12 +38,12 @@ class CompatibilityNote < ActiveRecord::Base
 
   self.per_page = 25
 
-  # Validations
+  # VALIDATIONS
   validates :game_id, :submitted_by, :status, :first_mod_id, :second_mod_id, :text_body, presence: true
   validates :text_body, length: { in: 256..16384 }
   validate :unique_mods
 
-  # Callbacks
+  # CALLBACKS
   after_create :increment_counters
   before_save :set_dates
   before_destroy :decrement_counters

@@ -176,15 +176,21 @@
                 </a>
             </h3>
             <section>
-                <div class="analysis-results" ng-show="mod.analysis">
-                    <h4 class="subtitle" ng-show="mod.analysis.nestedAssets">Asset File Tree</h4>
-                    <div class="subsection analysis-container" ng-show="mod.analysis.nestedAssets">
-                        <asset-tree data="mod.analysis.nestedAssets"></asset-tree>
+                <div class="analysis-results" ng-repeat="option in mod.analysis.mod_options">
+                    <h4 class="subtitle">{{option.name}} ({{option.size | bytes}})
+                        <span class="default-option">
+                            <input type="checkbox" ng-model="option.default"> Default
+                        </span>
+                    </h4>
+
+                    <strong ng-show="option.nestedAssets">Asset File Tree</strong>
+                    <div class="subsection analysis-container" ng-show="option.nestedAssets">
+                        <asset-tree assets="option.nestedAssets"></asset-tree>
                     </div>
 
-                    <h4 class="subtitle" ng-show="mod.analysis.plugins.length > 0">Plugin Analysis</h4>
-                    <div class="subsection analysis-container" ng-show="mod.analysis.plugins.length > 0">
-                        <div class="plugin-analysis-item" ng-repeat="plugin in mod.analysis.plugins">
+                    <strong ng-show="option.plugins.length">Plugins</strong>
+                    <div class="subsection analysis-container" ng-show="option.plugins.length">
+                        <div class="plugin-analysis-item" ng-repeat="plugin in option.plugins">
                             <plugin-metadata plugin="plugin" show-record-groups="true"></plugin-metadata>
                         </div>
                     </div>

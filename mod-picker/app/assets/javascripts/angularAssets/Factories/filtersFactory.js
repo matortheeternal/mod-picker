@@ -516,7 +516,7 @@ app.factory("filtersFactory", function() {
             factory.searchFilter,
             factory.submitterFilter,
             {
-                data: "is_child",
+                data: "include_replies",
                 param: "c",
                 type: "Boolean",
                 default: true
@@ -772,7 +772,7 @@ app.factory("filtersFactory", function() {
             {
                 label: "Agree Count",
                 common: true,
-                data: "agree_count",
+                data: "agree",
                 type: "Range",
                 max: 100,
                 param: "ac"
@@ -780,7 +780,7 @@ app.factory("filtersFactory", function() {
             {
                 label: "Disagree Count",
                 common: true,
-                data: "disagree_count",
+                data: "disagree",
                 type: "Range",
                 max: 100,
                 param: "dc"
@@ -788,7 +788,7 @@ app.factory("filtersFactory", function() {
             {
                 label: "Comments Count",
                 common: true,
-                data: "comments_count",
+                data: "comments",
                 type: "Range",
                 max: 100,
                 param: "cmc"

@@ -30,13 +30,13 @@ app.controller('modsController', function($scope, $rootScope, $q, $stateParams, 
     };
 
     $scope.toggleModListFilter = function() {
-        if ($scope.filters.exclude) {
+        if ($scope.filters.compatibility) {
             // it's being disabled
-            delete $scope.filters.exclude;
+            delete $scope.filters.compatibility;
         } else {
             // it's being enabled
             if ($scope.activeModList) {
-                $scope.filters.exclude = $scope.activeModList.incompatible_mods;
+                $scope.filters.compatibility = $scope.activeModList.id;
             }
         }
     };

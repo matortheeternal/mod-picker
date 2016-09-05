@@ -1,9 +1,10 @@
 class UserReputation < ActiveRecord::Base
   include Filterable, RecordEnhancements
 
-  scope :user, -> (id) { where(user_id: id) }
+  # SCOPES
   scope :computable, -> { where(dont_compute: false) }
 
+  # ASSOCIATIONS
   belongs_to :user
 
   has_many :incoming_reputation_links, :class_name => 'ReputationLink', :inverse_of => 'target_reputation', :foreign_key => 'to_rep_id', :dependent => :destroy
@@ -11,7 +12,7 @@ class UserReputation < ActiveRecord::Base
   has_many :target_reputations, :class_name => 'UserReputation', :through => 'outgoing_reputation_links', :source => 'target_reputation'
   has_many :source_reputations, :class_name => 'UserReputation', :through => 'incoming_reputation_links', :source => 'source_reputation'
 
-  # Validations
+  # VALIDATIONS
   validates :user_id, presence: true
 
   # CONSTANTS

@@ -20,6 +20,10 @@ String.prototype.wordCount = function() {
     return this.length ? this.match(/(\S+)/g).length : 0;
 };
 
+String.prototype.surround = function(str) {
+    return str + this + str;
+};
+
 String.prototype.reduceText = function(numWords) {
     var lines = this.split('\n');
     var result = '';

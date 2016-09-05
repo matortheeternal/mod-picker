@@ -60,7 +60,7 @@ app.service('articleService', function($q, backend, userTitleService, pageUtils,
 
         // submit article
         return backend.post('/articles', articleData);
-    }
+    };
 
     this.deleteArticle = function(articleId) {
         return backend.delete('/articles/' + articleId);

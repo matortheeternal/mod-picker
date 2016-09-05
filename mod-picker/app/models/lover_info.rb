@@ -1,11 +1,11 @@
 class LoverInfo < ActiveRecord::Base
   include Scrapeable
 
-  # Associations
+  # ASSOCIATIONS
   belongs_to :mod
   belongs_to :game, :inverse_of => 'lover_infos'
 
-  # validations
+  # VALIDATIONS
   validates :game_id, :mod_name, :uploaded_by, :released, presence: true
 
   def scrape

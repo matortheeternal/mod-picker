@@ -1,21 +1,25 @@
 class ModListMod < ActiveRecord::Base
-  include RecordEnhancements
+  include RecordEnhancements, ScopeHelpers
 
   # SCOPES
-  scope :utility, -> (bool) { joins(:mod).where(:mods => {is_utility: bool}) }
-  scope :official, -> (bool) { joins(:mod).where(:mods => {is_official: bool}) }
+  value_scope :is_utility, :is_official, :association => 'mod'
 
   # ASSOCIATIONS
   belongs_to :mod_list, :inverse_of => 'mod_list_mods'
   belongs_to :mod, :inverse_of => 'mod_list_mods'
 
-  # Validations
+  has_many :mod_list_mod_options, :inverse_of => 'mod_list_mod'
+
+  # NESTED ATTRIBUTES
+  accepts_nested_attributes_for :mod_list_mod_options, allow_destroy: true
+
+  # VALIDATIONS
   validates :mod_list_id, :mod_id, :index, presence: true
   # can only have a mod on a given mod list once
   # TODO: If we don't allow the user to change the mod_id with nested attributes we could refactor this validation to be an after_create callback
   validates :mod_id, uniqueness: { scope: :mod_list_id, :message => "The mod is already present on the mod list." }
 
-  # Callbacks
+  # CALLBACKS
   after_create :increment_counter_caches
   before_destroy :decrement_counter_caches, :destroy_mod_list_plugins
 
@@ -37,7 +41,15 @@ class ModListMod < ActiveRecord::Base
           :include => {
               :mod => {
                   :only => [:id, :is_official, :name, :aliases, :authors, :status, :primary_category_id, :secondary_category_id, :average_rating, :reputation, :asset_files_count, :stars_count, :released, :updated],
+                  :include => {
+                      :mod_options => {
+                          :only => [:id, :name, :default]
+                      }
+                  },
                   :methods => :image
+              },
+              :mod_list_mod_options => {
+                  :only => [:id, :mod_option_id, :enabled]
               }
           }
       }

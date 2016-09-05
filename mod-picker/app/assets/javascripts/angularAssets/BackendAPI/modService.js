@@ -100,6 +100,11 @@ app.service('modService', function(backend, $q, pageUtils, objectUtils, contribu
             pluginService.associateOverrides(analysis.plugins);
             pluginService.sortErrors(analysis.plugins);
 
+            // set default options to active
+            analysis.mod_options.forEach(function(option) {
+                option.active = option.default;
+            });
+
             output.resolve(analysis);
         }, function(response) {
             output.reject(response);
@@ -125,71 +130,9 @@ app.service('modService', function(backend, $q, pageUtils, objectUtils, contribu
         }
     };
 
-    this.submitMod = function (mod, sources, customSources) {
-        // load earliest date released and latest date updated from sources
-        var released = mod.released;
-        var updated = mod.updated;
-        for (var property in sources) {
-            if (sources.hasOwnProperty(property) && sources[property]) {
-                var source = sources[property];
-                if (!released || source.released < released) {
-                    released = source.released;
-                }
-                if (!updated || source.updated > updated) {
-                    updated = source.updated;
-                }
-            }
-        }
-
-        // prepare required mods
-        var required_mods = [];
-        mod.requirements.forEach(function(requirement) {
-            required_mods.push({
-                required_id: requirement.required_id
-            })
-        });
-
-        // prepare custom sources
-        var custom_sources = [];
-        customSources.forEach(function(source) {
-            custom_sources.push({
-                label: source.label,
-                url: source.url
-            })
-        });
-
-        // prepare mod record
-        var modData = {
-            mod: {
-                name: mod.name,
-                aliases: mod.aliases,
-                authors: mod.authors,
-                is_utility: mod.is_utility,
-                has_adult_content: mod.has_adult_content,
-                game_id: mod.game_id,
-                released: released || DateTime.now(),
-                updated: updated,
-                primary_category_id: mod.categories[0],
-                secondary_category_id: mod.categories[1],
-                nexus_info_id: sources.nexus && sources.nexus.id,
-                workshop_info_id: sources.workshop && sources.workshop.id,
-                lover_info_id: sources.lab && sources.lab.id,
-                tag_names: mod.newTags,
-                asset_paths: mod.analysis.assets,
-                plugin_dumps: mod.analysis.plugins,
-                custom_sources_attributes: custom_sources,
-                required_mods_attributes: required_mods
-            }
-        };
-
-        // submit mod
-        return backend.post('/mods', modData);
-    };
-
-    this.updateMod = function(mod, sources, customSources) {
-        // prepare mod authors
+    this.prepareModAuthors = function(mod) {
+        var mod_authors = [];
         if (mod.mod_authors) {
-            var mod_authors = [];
             mod.mod_authors.forEach(function(author) {
                 if (author._destroy) {
                     mod_authors.push({
@@ -210,9 +153,12 @@ app.service('modService', function(backend, $q, pageUtils, objectUtils, contribu
             });
         }
 
-        // prepare required mods
+        return mod_authors;
+    };
+
+    this.prepareRequiredMods = function(mod) {
+        var required_mods = [];
         if (mod.requirements) {
-            var required_mods = [];
             mod.requirements.forEach(function(requirement) {
                 if (requirement._destroy) {
                     required_mods.push({
@@ -227,7 +173,10 @@ app.service('modService', function(backend, $q, pageUtils, objectUtils, contribu
             });
         }
 
-        // prepare custom sources
+        return required_mods;
+    };
+
+    this.prepareCustomSources = function(customSources) {
         var custom_sources = [];
         customSources.forEach(function(source) {
             custom_sources.push({
@@ -237,6 +186,89 @@ app.service('modService', function(backend, $q, pageUtils, objectUtils, contribu
                 _destroy: source._destroy
             })
         });
+
+        return custom_sources;
+    };
+
+    this.prepareModOptions = function(mod) {
+        var mod_options = [];
+        mod.analysis.mod_options.forEach(function(option) {
+            mod_options.push({
+                name: option.name,
+                size: option.size,
+                default: option.default,
+                is_fomod_option: option.is_fomod_option,
+                plugin_dumps: option.plugins,
+                asset_paths: option.assets
+            })
+        });
+        objectUtils.deleteEmptyProperties(mod_options, 1);
+
+        return mod_options;
+    };
+    
+    this.getDate = function(mod, sources, dateKey, dateTest) {
+        var date = mod[dateKey];
+        for (var property in sources) {
+            if (sources.hasOwnProperty(property) && sources[property]) {
+                var source = sources[property];
+                if (!date || dateTest(source[dateKey], date)) {
+                    date = source[dateKey];
+                }
+            }
+        }
+
+        return date;
+    };
+
+    this.submitMod = function(mod, sources, customSources) {
+        // load earliest date released and latest date updated from sources
+        var released = getDate(mod, sources, 'released', function(newDate, oldDate) {
+            return newDate < oldDate;
+        });
+        var updated = getDate(mod, sources, 'updated', function(newDate, oldDate) {
+            return newDate > oldDate;
+        });
+
+        // prepare associations
+        var required_mods = prepareRequiredMods(mod);
+        var custom_sources = prepareCustomSources(customSources);
+        var mod_options = prepareModOptions(mod);
+
+        // prepare mod record
+        var modData = {
+            mod: {
+                name: mod.name,
+                aliases: mod.aliases,
+                authors: mod.authors,
+                is_utility: mod.is_utility,
+                has_adult_content: mod.has_adult_content,
+                game_id: mod.game_id,
+                released: released || DateTime.now(),
+                updated: updated,
+                primary_category_id: mod.categories[0],
+                secondary_category_id: mod.categories[1],
+                nexus_info_id: sources.nexus && sources.nexus.id,
+                workshop_info_id: sources.workshop && sources.workshop.id,
+                lover_info_id: sources.lab && sources.lab.id,
+                tag_names: mod.newTags,
+                mod_options_attributes: mod_options,
+                custom_sources_attributes: custom_sources,
+                required_mods_attributes: required_mods
+            }
+        };
+        objectUtils.deleteEmptyProperties(modData, 1);
+
+        // submit mod
+        return backend.post('/mods', modData);
+    };
+
+    this.updateMod = function(mod, sources, customSources) {
+        // prepare associations
+        var mod_authors = prepareModAuthors(mod);
+        var required_mods = prepareRequiredMods(mod);
+        var custom_sources = prepareCustomSources(customSources);
+        var mod_options = prepareModOptions(mod);
 
         // prepare mod record
         var modData = {
@@ -255,8 +287,7 @@ app.service('modService', function(backend, $q, pageUtils, objectUtils, contribu
                 workshop_info_id: sources.workshop && sources.workshop.id,
                 lover_info_id: sources.lab && sources.lab.id,
                 tag_names: mod.newTags,
-                asset_paths: mod.analysis && mod.analysis.assets,
-                plugin_dumps: mod.analysis && mod.analysis.plugins,
+                mod_options_attributes: mod_options,
                 mod_authors_attributes: mod_authors,
                 custom_sources_attributes: custom_sources,
                 required_mods_attributes: required_mods,

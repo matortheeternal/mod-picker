@@ -75,6 +75,9 @@ app.controller('modListModsController', function($scope, $rootScope, $timeout, $
 
             // update modules
             $rootScope.$broadcast('modRecovered', !!modListMod.mod && modListMod.mod.id);
+            modListMod.mod && modListMod.mod_list_mod_options.forEach(function(option) {
+                $rootScope.$broadcast('modOptionAdded', option.mod_option_id);
+            });
             $scope.$broadcast('updateItems');
 
             // success message
@@ -105,6 +108,17 @@ app.controller('modListModsController', function($scope, $rootScope, $timeout, $
             // update modules
             $rootScope.$broadcast('modAdded', data);
             $scope.$broadcast('updateItems');
+
+            // set default mod options
+            modListMod.mod.mod_options.forEach(function(option) {
+                if (option.default) {
+                    option.active = true;
+                    modListMod.mod_list_mod_options.push({
+                        mod_option_id: option.id
+                    });
+                    $rootScope.$broadcast('modOptionAdded', option.id);
+                }
+            });
 
             // success message
             $scope.$emit('successMessage', 'Added mod ' + modListMod.mod.name + ' successfully.');
@@ -169,6 +183,9 @@ app.controller('modListModsController', function($scope, $rootScope, $timeout, $
 
         // update modules
         $rootScope.$broadcast('modRemoved', !!modListMod.mod && modListMod.mod.id);
+        modListMod.mod && modListMod.mod.mod_options.forEach(function(option) {
+            if (option.active) $rootScope.$broadcast('modOptionRemoved', option.id);
+        });
         $scope.$broadcast('updateItems');
     };
 

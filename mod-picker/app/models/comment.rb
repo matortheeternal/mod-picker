@@ -1,28 +1,14 @@
 class Comment < ActiveRecord::Base
-  include Filterable, Sortable, RecordEnhancements, Reportable
+  include Filterable, Sortable, RecordEnhancements, Reportable, ScopeHelpers
 
-  # BOOLEAN SCOPES (excludes content when false)
-  scope :hidden, -> (bool) { where(hidden: false) if !bool  }
-  scope :is_child, -> (bool) { where(parent_id: nil) if !bool }
-  # GENERAL SCOPES
-  scope :search, -> (text) { where("text_body like ?", "%#{text}%") }
-  scope :submitter, -> (username) { joins(:submitter).where(:users => {:username => username}) }
-  scope :commentable, -> (commentable_hash) {
-    # build commentables array
-    commentables = []
-    commentable_hash.each_key do |key|
-      if commentable_hash[key]
-        commentables.push(key)
-      end
-    end
-
-    # return query
-    where(commentable_type: commentables)
-  }
-  # RANGE SCOPES
-  scope :replies, -> (range) { where(children_count: range[:min]..range[:max]) }
-  scope :submitted, -> (range) { where(submitted: parseDate(range[:min])..parseDate(range[:max])) }
-  scope :edited, -> (range) { where(edited: parseDate(range[:min])..parseDate(range[:max])) }
+  # SCOPES
+  include_scope :hidden
+  include_scope :parent_id, :alias => 'include_replies', :value => 'nil'
+  search_scope :text_body, :alias => 'search'
+  user_scope :submitter
+  polymorphic_scope :commentable
+  range_scope :children_count, :alias => 'replies'
+  date_scope :submitted, :edited
 
   # ASSOCIATIONS
   belongs_to :submitter, :class_name => 'User', :foreign_key => 'submitted_by', :inverse_of => 'comments'
@@ -35,14 +21,14 @@ class Comment < ActiveRecord::Base
   # number of comments per page on the comments index
   self.per_page = 50
 
-  # Validations
+  # VALIDATIONS
   validates :submitted_by, :commentable_type, :commentable_id, :text_body, presence: true
   validates :hidden, inclusion: [true, false]
   validates :commentable_type, inclusion: ["User", "ModList", "Correction", "Article", "HelpPage"]
   validates :text_body, length: {in: 2..8192}
   # TODO: Validation of nesting
 
-  # Callbacks
+  # CALLBACKS
   before_save :set_dates
   after_create :increment_counter_caches
   before_destroy :decrement_counter_caches

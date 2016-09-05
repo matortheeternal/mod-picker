@@ -7,7 +7,7 @@ app.config(['$stateProvider', function ($stateProvider) {
     );
 }]);
 
-app.controller('submitModController', function ($scope, $rootScope, backend, modService, scrapeService, pluginService, categoryService, sitesFactory, assetUtils) {
+app.controller('submitModController', function ($scope, $rootScope, backend, modService, scrapeService, pluginService, categoryService, sitesFactory, assetUtils, objectUtils) {
     // access parent variables
     $scope.currentUser = $rootScope.currentUser;
     $scope.categories = $rootScope.categories;
@@ -169,8 +169,8 @@ app.controller('submitModController', function ($scope, $rootScope, backend, mod
     };
 
     $scope.createPriorityMessage = function(recessiveId, dominantId) {
-        var recessiveCategory = categoryService.getCategoryById(categories, recessiveId);
-        var dominantCategory = categoryService.getCategoryById(categories, dominantId);
+        var recessiveCategory = categoryService.getCategoryById($scope.categories, recessiveId);
+        var dominantCategory = categoryService.getCategoryById($scope.categories, dominantId);
         var categoryPriority = $scope.getCategoryPriority(recessiveId, dominantId);
         var messageText = dominantCategory.name + " > " + recessiveCategory.name + "\n" + categoryPriority.description;
         $scope.categoryMessages.push({
@@ -182,7 +182,7 @@ app.controller('submitModController', function ($scope, $rootScope, backend, mod
     $scope.getSuperCategories = function() {
         var superCategories = [];
         $scope.mod.categories.forEach(function (id) {
-            var superCategory = categoryService.getCategoryById(categories, id).parent_id;
+            var superCategory = categoryService.getCategoryById($scope.categories, id).parent_id;
             if (superCategory && superCategories.indexOf(superCategory) == -1) {
                 superCategories.push(superCategory);
             }
@@ -217,13 +217,13 @@ app.controller('submitModController', function ($scope, $rootScope, backend, mod
                 text: "Categories look good!",
                 klass: "cat-success-message"
             });
-            var primaryCategory = categoryService.getCategoryById(categories, $scope.mod.categories[0]);
+            var primaryCategory = categoryService.getCategoryById($scope.categories, $scope.mod.categories[0]);
             $scope.categoryMessages.push({
                 text: "Primary Category: " + primaryCategory.name,
                 klass: "cat-success-message"
             });
             if ($scope.mod.categories.length > 1) {
-                var secondaryCategory = categoryService.getCategoryById(categories, $scope.mod.categories[1]);
+                var secondaryCategory = categoryService.getCategoryById($scope.categories, $scope.mod.categories[1]);
                 $scope.categoryMessages.push({
                     text: "Secondary Category: " + secondaryCategory.name,
                     klass: "cat-success-message"
@@ -261,7 +261,11 @@ app.controller('submitModController', function ($scope, $rootScope, backend, mod
     $scope.getRequirementsFromAnalysis = function() {
         // build list of masters
         var masters = [];
-        $scope.mod.analysis.plugins.forEach(function(plugin) {
+        var defaultPlugins = [];
+        $scope.mod.analysis.mod_options.forEach(function(option) {
+            if (option.default) defaultPlugins = defaultPlugins.concat(option.plugins);
+        });
+        defaultPlugins.forEach(function(plugin) {
             plugin.master_plugins.forEach(function(master) {
                 if (masters.indexOf(master.filename) == -1) {
                     masters.push(master.filename);
@@ -276,10 +280,17 @@ app.controller('submitModController', function ($scope, $rootScope, backend, mod
 
     $scope.loadAnalysisFile = function(file) {
         var fileReader = new FileReader();
+        var jsonMap = {
+            plugin_record_groups: 'plugin_record_groups_attributes',
+            plugin_errors: 'plugin_errors_attributes',
+            overrides: 'overrides_attributes'
+        };
         fileReader.onload = function (event) {
-            var fixedJson = event.target.result.replace('"plugin_record_groups"', '"plugin_record_groups_attributes"').replace('"plugin_errors"', '"plugin_errors_attributes"').replace('"overrides"', '"overrides_attributes"');
+            var fixedJson = objectUtils.remapProperties(event.target.result, jsonMap);
             var analysis = JSON.parse(fixedJson);
-            analysis.nestedAssets = assetUtils.convertDataStringToNestedObject(analysis.assets);
+            analysis.mod_options.forEach(function(option) {
+                option.nestedAssets = assetUtils.getNestedAssets(option.assets);
+            });
             $scope.mod.analysis = analysis;
             $scope.getRequirementsFromAnalysis();
             $scope.$apply();

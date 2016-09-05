@@ -1,8 +1,10 @@
 class Tag < ActiveRecord::Base
-  include Filterable, RecordEnhancements, Reportable
+  include Filterable, RecordEnhancements, Reportable, ScopeHelpers
 
-  scope :game, -> (game) { where(game_id: game) }
+  # SCOPES
+  game_scope
 
+  # ASSOCIATIONS
   belongs_to :submitter, :class_name => 'User', :foreign_key => :submitted_by, :inverse_of => 'tags'
 
   has_many :mod_tags, :inverse_of => 'tag'
@@ -11,12 +13,12 @@ class Tag < ActiveRecord::Base
   has_many :mod_list_tags, :inverse_of => 'tag'
   has_many :mod_lists, :through => 'mod_list_tags', :inverse_of => 'tags'
 
-  # Validations
+  # VALIDATIONS
   validates :game_id, :submitted_by, :text, presence: true
   validates :text, length: {in: 2..32}
   validates :hidden, inclusion: [true, false]
 
-  # Callbacks
+  # CALLBACKS
   after_create :increment_counter_caches
   before_destroy :decrement_counter_caches
 
