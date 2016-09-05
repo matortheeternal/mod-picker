@@ -163,6 +163,20 @@ app.service('modService', function(backend, $q, pageUtils, objectUtils, contribu
             })
         });
 
+        // prepare mod options
+        var mod_options = [];
+        mod.analysis.mod_options.forEach(function(option) {
+            mod_options.push({
+                name: option.name,
+                size: option.size,
+                default: option.default,
+                is_fomod_option: option.is_fomod_option,
+                plugin_dumps: option.plugins,
+                asset_paths: option.assets
+            })
+        });
+        objectUtils.deleteEmptyProperties(mod_options, 1);
+
         // prepare mod record
         var modData = {
             mod: {
@@ -180,12 +194,12 @@ app.service('modService', function(backend, $q, pageUtils, objectUtils, contribu
                 workshop_info_id: sources.workshop && sources.workshop.id,
                 lover_info_id: sources.lab && sources.lab.id,
                 tag_names: mod.newTags,
-                asset_paths: mod.analysis.assets,
-                plugin_dumps: mod.analysis.plugins,
+                mod_options_attributes: mod_options,
                 custom_sources_attributes: custom_sources,
                 required_mods_attributes: required_mods
             }
         };
+        objectUtils.deleteEmptyProperties(modData, 1);
 
         // submit mod
         return backend.post('/mods', modData);
@@ -260,8 +274,7 @@ app.service('modService', function(backend, $q, pageUtils, objectUtils, contribu
                 workshop_info_id: sources.workshop && sources.workshop.id,
                 lover_info_id: sources.lab && sources.lab.id,
                 tag_names: mod.newTags,
-                asset_paths: mod.analysis && mod.analysis.assets,
-                plugin_dumps: mod.analysis && mod.analysis.plugins,
+                mod_options_attributes: mod.analysis && mod.analysis.mod_options,
                 mod_authors_attributes: mod_authors,
                 custom_sources_attributes: custom_sources,
                 required_mods_attributes: required_mods,
