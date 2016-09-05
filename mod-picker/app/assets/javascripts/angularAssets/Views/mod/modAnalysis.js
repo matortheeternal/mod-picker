@@ -1,9 +1,13 @@
 app.controller('modAnalysisController', function($scope, $stateParams, $state, modService) {
     $scope.updateParams = function() {
-        $state.go($state.current.name, {
-            plugin: $scope.currentPlugin.id,
-            options: $scope.optionIds.join(',')
-        });
+        var newState = {};
+        if ($scope.optionIds) {
+            newState.options = $scope.optionIds.join(',')
+        }
+        if ($scope.currentPlugin) {
+            newState.plugin = $scope.currentPlugin.id;
+        }
+        $state.go($state.current.name, newState);
     };
 
     $scope.updateOptionPlugins = function() {
