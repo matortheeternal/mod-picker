@@ -6,9 +6,9 @@
 //= require ./angularAssets/BackendAPI/userService.js
 //= require ./angularAssets/BackendAPI/userSettingsService.js
 //= require ./angularAssets/BackendAPI/userTitleService.js
-//= require ./angularAssets/Directives/loader.js
-//= require ./angularAssets/Directives/textArea.js
-//= require ./angularAssets/Directives/sticky.js
+//= require angularAssets/Directives/layout/loader.js
+//= require angularAssets/Directives/shared/textArea.js
+//= require angularAssets/Directives/shared/sticky.js
 //= require ./angularAssets/Directives/contributions/comment.js
 //= require ./angularAssets/Directives/contributions/comments.js
 //= require ./angularAssets/Factories/spinnerFactory.js
