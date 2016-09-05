@@ -1,0 +1,12 @@
+<h3 class="section-title">Requirements
+    <span class="help-tooltip" title="Mods that are required for this mod to function.">?</span>
+</h3>
+<section>
+    <div class="dynamic-item" ng-repeat="requirement in mod.requirements">
+        <search-input search-function="searchMods" result-id="requirement.required_id" search-text="requirement.name" label="mod" key="name" class="long-input"></search-input>
+                    <span class="remove-item" ng-click="removeRequirement(requirement)" title="Remove requirement">
+                        <i class="fa fa-times"></i>
+                    </span>
+    </div>
+    <input type="button" class="btn" value="Add Requirement" ng-click="addRequirement()">
+</section>
