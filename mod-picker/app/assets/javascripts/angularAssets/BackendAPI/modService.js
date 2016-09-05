@@ -206,9 +206,7 @@ app.service('modService', function(backend, $q, pageUtils, objectUtils, contribu
 
         return mod_options;
     };
-
-    // when mode is true: get earliest date
-    // when mode is false: get latest date
+    
     this.getDate = function(mod, sources, dateKey, dateTest) {
         var date = mod[dateKey];
         for (var property in sources) {
