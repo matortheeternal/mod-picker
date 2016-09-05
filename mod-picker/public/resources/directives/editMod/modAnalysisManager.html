@@ -8,9 +8,9 @@
 <section>
     <div class="analysis-results" ng-repeat="option in mod.analysis.mod_options">
         <h4 class="subtitle">{{option.name}} ({{option.size | bytes}})
-                        <span class="default-option">
-                            <input type="checkbox" ng-model="option.default"> Default
-                        </span>
+            <span class="default-option">
+                <input type="checkbox" ng-model="option.default"> Default
+            </span>
         </h4>
 
         <strong ng-show="option.nestedAssets">Asset File Tree</strong>

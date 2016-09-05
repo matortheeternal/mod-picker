@@ -1,13 +1,13 @@
-app.directive('modAnalysis', function () {
+app.directive('modAnalysisManager', function () {
     return {
         restrict: 'E',
-        templateUrl: '/resources/directives/editMod/modAnalysis.html',
+        templateUrl: '/resources/directives/editMod/modAnalysisManager.html',
         scope: false,
-        controller: 'modAnalysisController'
+        controller: 'modAnalysisManagerController'
     }
 });
 
-app.controller('modAnalysisController', function ($scope, pluginService, objectUtils, assetUtils) {
+app.controller('modAnalysisManagerController', function ($scope, pluginService, objectUtils, assetUtils) {
     $scope.changeAnalysisFile = function (event) {
         var input = event.target;
         if (input.files && input.files[0]) {
