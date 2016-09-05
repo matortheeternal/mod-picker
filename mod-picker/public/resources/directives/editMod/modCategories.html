@@ -1,0 +1,11 @@
+<section>
+    <category-tree categories="categories" selection="mod.categories" toggle-all="false"></category-tree>
+    <div id="category-messages">
+        <div ng-repeat="message in categoryMessages" class="category-message"
+             ng-class="message.klass">{{message.text}}</div>
+    </div>
+    <div class="category-buttons">
+        <input type="button" class="btn" ng-click="checkCategories()" value="Check Categories">
+        <input type="button" class="btn" ng-click="swapCategories()" value="Swap" title="Swap the primary and secondary categories" ng-disabled="mod.categories.length != 2">
+    </div>
+</section>
