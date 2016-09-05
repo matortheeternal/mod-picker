@@ -1,0 +1,33 @@
+<h3 class="section-title">
+    Mod Analysis
+    <!-- temporary github link, should link to a help page -->
+    <a href="http://github.com/matortheeternal/mod-asset-mapper">
+        <span class="help-tooltip" title="Submitting a mod requires uploading an analysis file which &#13;includes an asset file tree and one or more plugin dumps. &#13;You can generate a mod analysis file using Mod Analyzer.  &#13;Click here for more information and download links.">?</span>
+    </a>
+</h3>
+<section>
+    <div class="analysis-results" ng-repeat="option in mod.analysis.mod_options">
+        <h4 class="subtitle">{{option.name}} ({{option.size | bytes}})
+                        <span class="default-option">
+                            <input type="checkbox" ng-model="option.default"> Default
+                        </span>
+        </h4>
+
+        <strong ng-show="option.nestedAssets">Asset File Tree</strong>
+        <div class="subsection analysis-container" ng-show="option.nestedAssets">
+            <asset-tree assets="option.nestedAssets"></asset-tree>
+        </div>
+
+        <strong ng-show="option.plugins.length">Plugins</strong>
+        <div class="subsection analysis-container" ng-show="option.plugins.length">
+            <div class="plugin-analysis-item" ng-repeat="plugin in option.plugins">
+                <plugin-metadata plugin="plugin" show-record-groups="true"></plugin-metadata>
+            </div>
+        </div>
+    </div>
+
+    <label>
+        <input id="analysis-input" type="file" file-change="changeAnalysisFile" accept=".json">
+        <input type="button" class="btn" ng-click="browseAnalysisFile()" value="Browse">
+    </label>
+</section>
