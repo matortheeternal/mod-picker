@@ -130,40 +130,67 @@ app.service('modService', function(backend, $q, pageUtils, objectUtils, contribu
         }
     };
 
-    this.submitMod = function (mod, sources, customSources) {
-        // load earliest date released and latest date updated from sources
-        var released = mod.released;
-        var updated = mod.updated;
-        for (var property in sources) {
-            if (sources.hasOwnProperty(property) && sources[property]) {
-                var source = sources[property];
-                if (!released || source.released < released) {
-                    released = source.released;
+    this.prepareModAuthors = function(mod) {
+        var mod_authors = [];
+        if (mod.mod_authors) {
+            mod.mod_authors.forEach(function(author) {
+                if (author._destroy) {
+                    mod_authors.push({
+                        id: author.id,
+                        _destroy: true
+                    })
+                } else if (author.id) {
+                    mod_authors.push({
+                        id: author.id,
+                        role: author.role
+                    })
+                } else {
+                    mod_authors.push({
+                        role: author.role,
+                        user_id: author.user_id
+                    })
                 }
-                if (!updated || source.updated > updated) {
-                    updated = source.updated;
-                }
-            }
+            });
         }
 
-        // prepare required mods
-        var required_mods = [];
-        mod.requirements.forEach(function(requirement) {
-            required_mods.push({
-                required_id: requirement.required_id
-            })
-        });
+        return mod_authors;
+    };
 
-        // prepare custom sources
+    this.prepareRequiredMods = function(mod) {
+        var required_mods = [];
+        if (mod.requirements) {
+            mod.requirements.forEach(function(requirement) {
+                if (requirement._destroy) {
+                    required_mods.push({
+                        id: requirement.id,
+                        _destroy: true
+                    })
+                } else {
+                    required_mods.push({
+                        required_id: requirement.required_id
+                    })
+                }
+            });
+        }
+
+        return required_mods;
+    };
+
+    this.prepareCustomSources = function(customSources) {
         var custom_sources = [];
         customSources.forEach(function(source) {
             custom_sources.push({
+                id: source.id,
                 label: source.label,
-                url: source.url
+                url: source.url,
+                _destroy: source._destroy
             })
         });
 
-        // prepare mod options
+        return custom_sources;
+    };
+
+    this.prepareModOptions = function(mod) {
         var mod_options = [];
         mod.analysis.mod_options.forEach(function(option) {
             mod_options.push({
@@ -176,6 +203,39 @@ app.service('modService', function(backend, $q, pageUtils, objectUtils, contribu
             })
         });
         objectUtils.deleteEmptyProperties(mod_options, 1);
+
+        return mod_options;
+    };
+
+    // when mode is true: get earliest date
+    // when mode is false: get latest date
+    this.getDate = function(mod, sources, dateKey, dateTest) {
+        var date = mod[dateKey];
+        for (var property in sources) {
+            if (sources.hasOwnProperty(property) && sources[property]) {
+                var source = sources[property];
+                if (!date || dateTest(source[dateKey], date)) {
+                    date = source[dateKey];
+                }
+            }
+        }
+
+        return date;
+    };
+
+    this.submitMod = function(mod, sources, customSources) {
+        // load earliest date released and latest date updated from sources
+        var released = getDate(mod, sources, 'released', function(newDate, oldDate) {
+            return newDate < oldDate;
+        });
+        var updated = getDate(mod, sources, 'updated', function(newDate, oldDate) {
+            return newDate > oldDate;
+        });
+
+        // prepare associations
+        var required_mods = prepareRequiredMods(mod);
+        var custom_sources = prepareCustomSources(customSources);
+        var mod_options = prepareModOptions(mod);
 
         // prepare mod record
         var modData = {
@@ -206,56 +266,11 @@ app.service('modService', function(backend, $q, pageUtils, objectUtils, contribu
     };
 
     this.updateMod = function(mod, sources, customSources) {
-        // prepare mod authors
-        if (mod.mod_authors) {
-            var mod_authors = [];
-            mod.mod_authors.forEach(function(author) {
-                if (author._destroy) {
-                    mod_authors.push({
-                        id: author.id,
-                        _destroy: true
-                    })
-                } else if (author.id) {
-                    mod_authors.push({
-                        id: author.id,
-                        role: author.role
-                    })
-                } else {
-                    mod_authors.push({
-                        role: author.role,
-                        user_id: author.user_id
-                    })
-                }
-            });
-        }
-
-        // prepare required mods
-        if (mod.requirements) {
-            var required_mods = [];
-            mod.requirements.forEach(function(requirement) {
-                if (requirement._destroy) {
-                    required_mods.push({
-                        id: requirement.id,
-                        _destroy: true
-                    })
-                } else {
-                    required_mods.push({
-                        required_id: requirement.required_id
-                    })
-                }
-            });
-        }
-
-        // prepare custom sources
-        var custom_sources = [];
-        customSources.forEach(function(source) {
-            custom_sources.push({
-                id: source.id,
-                label: source.label,
-                url: source.url,
-                _destroy: source._destroy
-            })
-        });
+        // prepare associations
+        var mod_authors = prepareModAuthors(mod);
+        var required_mods = prepareRequiredMods(mod);
+        var custom_sources = prepareCustomSources(customSources);
+        var mod_options = prepareModOptions(mod);
 
         // prepare mod record
         var modData = {
@@ -274,7 +289,7 @@ app.service('modService', function(backend, $q, pageUtils, objectUtils, contribu
                 workshop_info_id: sources.workshop && sources.workshop.id,
                 lover_info_id: sources.lab && sources.lab.id,
                 tag_names: mod.newTags,
-                mod_options_attributes: mod.analysis && mod.analysis.mod_options,
+                mod_options_attributes: mod_options,
                 mod_authors_attributes: mod_authors,
                 custom_sources_attributes: custom_sources,
                 required_mods_attributes: required_mods,
