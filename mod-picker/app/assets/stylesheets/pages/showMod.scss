@@ -416,7 +416,9 @@
   }
 
   label {
-    display: block;
+    display: inline-block;
+    margin-right: 16px;
+    min-width: 235px;
   }
 }
 
