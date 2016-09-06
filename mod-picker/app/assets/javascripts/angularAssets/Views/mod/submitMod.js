@@ -84,20 +84,12 @@ app.controller('submitModController', function ($scope, $rootScope, backend, mod
             workshop: $scope.workshop,
             lab: $scope.lab
         };
-        $scope.submitting = true;
-        $scope.submittingStatus = "Submitting Mod...";
-        modService.submitMod($scope.mod, sources, $scope.customSources).then(function() {
-            $scope.submittingStatus = "Mod Submitted Successfully!";
-            $scope.success = true;
-        }, function(response) {
-            $scope.submittingStatus = "There were errors submitting your mod.";
-            $scope.errors = response.data;
-        });
-    };
+        $scope.startSubmission("Submitting Mod...");
 
-    $scope.closeModal = function() {
-        delete $scope.success;
-        delete $scope.submitting;
-        delete $scope.errors;
+        modService.submitMod($scope.mod, sources, $scope.customSources).then(function() {
+            $scope.submissionSuccess("Mod submitted successfully!", "#/mods", "return to the mods index.");
+        }, function(response) {
+            $scope.submissionError("There were errors submitting your mod.", response);
+        });
     };
 });
