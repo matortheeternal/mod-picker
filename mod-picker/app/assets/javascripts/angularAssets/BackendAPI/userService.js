@@ -98,4 +98,12 @@ app.service('userService', function (backend, $q, userSettingsService, userTitle
             return backend.post('/users/' + userId + '/rep', {});
         }
     };
+
+    this.retrieveUserModLists = function(userId) {
+        return backend.retrieve('/users/' + userId + '/mod_lists');
+    };
+
+    this.retrieveUserMods = function(userId) {
+        return backend.retrieve('/users/' + userId + '/mods');
+    };
 });
