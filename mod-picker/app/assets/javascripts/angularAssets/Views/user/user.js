@@ -60,6 +60,7 @@ app.controller('userController', function($scope, $rootScope, $stateParams, user
     // set up local variables
     $scope.user = userObject.user;
     $scope.user.endorsed = userObject.endorsed;
+    $scope.isCurrentUser = $scope.currentUser.id == $scope.user.id;
     $scope.roleClass = "user-role-" + $scope.user.role;
     $scope.pages = {
         profile_comments: {}

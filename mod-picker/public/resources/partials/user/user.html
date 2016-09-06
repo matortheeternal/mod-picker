@@ -15,10 +15,10 @@
                 <h3 class="section-title">Reputation</h3>
                 <section>
                     <div class="stat-item reputation">
-                        {{user.reputation.overall | number}}
-                        <div class="action-box" ng-click="endorse()" ng-if="permissions.canEndorse || user.endorsed">
+                        {{user.reputation.overall | number:0}}
+                        <div class="action-box" ng-click="endorse()" ng-if="!isCurrentUser && permissions.canEndorse || user.endorsed">
                             <i class="fa {{user.endorsed ? 'fa-heart' : 'fa-heart-o'}}" aria-hidden="true"></i>
-                            {{user.endorsed ? 'Take Back Reputation' : 'Give Reputation' }}
+                            {{user.endorsed ? 'Unendorse' : 'Endorse' }}
                         </div>
 
                         <div class="action-box no-action" ng-if="!(permissions.canEndorse || user.endorsed)">
