@@ -8,7 +8,7 @@ class ModListMod < ActiveRecord::Base
   belongs_to :mod_list, :inverse_of => 'mod_list_mods'
   belongs_to :mod, :inverse_of => 'mod_list_mods'
 
-  has_many :mod_list_mod_options, :inverse_of => 'mod_list_mod'
+  has_many :mod_list_mod_options, :inverse_of => 'mod_list_mod', :dependent => :destroy
 
   # NESTED ATTRIBUTES
   accepts_nested_attributes_for :mod_list_mod_options, allow_destroy: true
