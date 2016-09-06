@@ -12,6 +12,8 @@ Rails.application.routes.draw do
 
     # user associations
     match '/users/:id/comments', to: 'users#comments', via: [:get, :post]
+    match '/users/:id/mods', to: 'users#mods', via: [:get]
+    match '/users/:id/mod_lists', to: 'users#mod_lists', via: [:get]
 
     # user reputation_links
     match '/users/:id/rep', to: 'users#endorse', via: [:post]
