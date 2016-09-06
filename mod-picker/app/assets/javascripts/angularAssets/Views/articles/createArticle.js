@@ -6,54 +6,46 @@ app.config(['$stateProvider', function($stateProvider) {
     });
 }]);
 
-app.controller('createArticleController', function($scope, $stateParams, objectUtils, articleService) {
+app.controller('createArticleController', function($scope, $stateParams, articleService, eventHandlerFactory) {
+    // set up local variables
     $scope.article = {};
-
     $scope.image = {
         src: $scope.article.image
     };
 
+    // shared function setup
+    eventHandlerFactory.buildMessageHandlers($scope);
+
+    // returns true if the article is valid
     $scope.articleValid = function() {
         var article = $scope.article;
-
         return article.title && article.text_body;
     };
 
-    $scope.submit = function () {
-        // return if mod is invalid
+    $scope.submit = function() {
+        // return if article is invalid
         if (!$scope.articleValid()) {
             return;
         }
-        $scope.submitting = true;
 
-        $scope.submittingStatus = "Submitting article..";
-        articleService.submitArticle($scope.article).then(function(response) {
-            var articleId = response.id;
+        // set up success handler to reduce repetition
+        $scope.startSubmission("Submitting article...");
+        articleService.submitArticle($scope.article).then(function(data) {
             if ($scope.image.file) {
-                articleService.submitImage(articleId, $scope.image.file).then(function () {
-                    $scope.success = true;
-                    $scope.submittingStatus = "Article submitted Successfully!";
-                }, function(response) {
-                    $scope.success = false;
-                    $scope.submittingStatus = "There were errors submitting the article.";
-                    // TODO: Emit errors properly
-                    $scope.errors = response;
-                });
+                $scope.submitImage(data.id);
             } else {
-                $scope.submittingStatus = "Article submitted Successfully!";
-                $scope.success = true;
+                $scope.submissionSuccess("Article submitted successfully.", "#/article/"+articleId, "view the new article.");
             }
         }, function(response) {
-            $scope.success = false;
-            $scope.submittingStatus = "There were errors submitting the article.";
-            // TODO: Emit errors properly
-            $scope.errors = response;
+            $scope.submissionError("There were errors submitting the article.", response);
         });
     };
 
-    $scope.closeModal = function() {
-        delete $scope.success;
-        delete $scope.submitting;
-        delete $scope.errors;
+    $scope.submitImage = function(articleId) {
+        articleService.submitImage(articleId, $scope.image.file).then(function() {
+            $scope.submissionSuccess("Article submitted successfully.", "#/article/"+articleId, "view the new article.");
+        }, function() {
+            $scope.submissionSuccess("Article submitted successfully, image submission failed.", "#/article/"+articleId, "view the new article.");
+        });
     };
 });
