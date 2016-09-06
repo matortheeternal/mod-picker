@@ -64,8 +64,4 @@
     <page-results pages="pages.install_order_notes" data="mod.install_order_notes" callback="retrieveInstallOrderNotes"></page-results>
 </loader>
 
-<div class="content-message content-error" ng-if="errors.install_order_notes">
-    There was an error retrieving install order notes for this mod.<br>
-    <!--TODO: Render JSON errors here, if available?-->
-    Error {{errors.install_order_notes.status}}: {{errors.install_order_notes.statusText}}
-</div>
+<error-display content-class="content-message content-error" errors="errors.install_order_notes" label="install order notes for this mod"></error-display>

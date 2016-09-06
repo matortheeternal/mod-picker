@@ -18,8 +18,4 @@
     </div>
 </loader>
 
-<div class="content-message content-error" ng-if="errors.mods">
-    There was an error retrieving this user's mods.<br>
-    <!--TODO: Render JSON errors here, if available?-->
-    Error {{error.status}}: {{error.statusText}}
-</div>
+<error-display content-class="content-message content-error" errors="errors.mods" label="this user's mods"></error-display>

@@ -69,20 +69,11 @@
                     <sort-control></sort-control>
                 </span></h2>
                 <loader data="comments" content-class="grid-results" spinner-class="big-spinner" ng-if="!error">
-                    <comments comments="comments" current-user="currentUser" show-context="true" ng-show="comments.length"></comments>
-
-                    <div class="content-message" ng-hide="comments.length">
-                        No Comments were found matching your search criteria.
-                    </div>
+                    <comments comments="comments" current-user="currentUser" show-context="true"></comments>
 
                     <page-results pages="pages" data="comments" callback="getData"></page-results>
                 </loader>
-
-                <div class="content-message content-error" ng-if="error">
-                    There was an error retrieving Comments.<br>
-                    <!--TODO: Render JSON errors here, if available?-->
-                    Error {{error.status}}: {{error.statusText}}
-                </div>
+                <error-display content-class="content-container" errors="error" label="comments"></error-display>
             </div>
         </div>
     </div>

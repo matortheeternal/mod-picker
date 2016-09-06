@@ -72,11 +72,7 @@
             </span>
         </loader>
 
-        <div class="content-message content-error" ng-if="errors.appeals">
-            There was an error retrieving appeals for this mod.<br>
-            <!--TODO: Render JSON errors here, if available?-->
-            Error {{errors.appeals.status}}: {{errors.appeals.statusText}}
-        </div>
+        <error-display content-class="content-message content-error" errors="errors.appeals" label="appeals for this mod"></error-display>
 
         <div class="action-button-container" ng-if="appealStatus && !errors.appeals">
             <input class="btn action-btn" type="submit" ng-click="startNewAppeal()" value="New Appeal">

@@ -106,8 +106,4 @@
     </div>
 </loader>
 
-<div class="content-message" ng-if="errors.analysis">
-    There was an error retrieving the analysis for this mod.<br>
-    <!--TODO: Render JSON errors here, if available?-->
-    Error {{errors.analysis.status}}: {{errors.analysis.statusText}}
-</div>
+<error-display content-class="content-message" errors="errors.analysis" label="the analysis for this mod"></error-display>
