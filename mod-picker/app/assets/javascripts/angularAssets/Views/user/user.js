@@ -54,7 +54,7 @@ app.config(['$stateProvider', function($stateProvider) {
     });
 }]);
 
-app.controller('userController', function($scope, $rootScope, $stateParams, userObject, userService, errorService) {
+app.controller('userController', function($scope, $rootScope, $stateParams, userObject, userService, tabsFactory) {
     // get parent variables
     $scope.currentUser = $rootScope.currentUser;
     $scope.permissions = angular.copy($rootScope.permissions);
@@ -67,20 +67,14 @@ app.controller('userController', function($scope, $rootScope, $stateParams, user
     $scope.pages = {
         profile_comments: {}
     };
-
     $scope.roleTexts = {
         admin: "Administrator",
         moderator: "Moderator",
         author: "Mod Author",
         "": ""
     };
+    $scope.tabs = tabsFactory.buildUserTabs();
 
-    //of the tab data
-    $scope.tabs = [
-        { name: 'Social'},
-        { name: 'Mod Lists'},
-        { name: 'Mods'}
-    ];
 
     $scope.endorse = function() {
         userService.endorse($scope.user.id, $scope.user.endorsed).then(function() {
