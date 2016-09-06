@@ -36,7 +36,7 @@ app.config(['$stateProvider', function($stateProvider) {
         deepStateRedirect: true,
         views: {
             'Mod Lists': {
-                templateUrl: '/resources/partials/user/lists.html',
+                templateUrl: '/resources/partials/user/modLists.html',
             }
         },
         url: '/mod-lists'
