@@ -10,8 +10,7 @@ app.controller('userSocialController', function($scope, $stateParams, userServic
         userService.retrieveProfileComments($stateParams.userId, options, $scope.pages.profile_comments).then(function(data) {
             $scope.user.profile_comments = data;
         }, function(response) {
-            var params = {label: 'Error retrieving Comments', response: response};
-            $scope.$emit('errorMessage', params);
+            $scope.errors.comments = response;
         });
     };
 

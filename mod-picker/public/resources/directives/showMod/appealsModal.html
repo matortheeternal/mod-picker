@@ -95,11 +95,12 @@
                 <i class="fa fa-plus"></i> New Comment
             </span>
         </h3>
-        <loader data="appeal.comments" spinner-class="big-spinner" content-class="content-container">
+        <loader data="appeal.comments" spinner-class="big-spinner" content-class="content-container" ng-if="!errors.comments">
             <comments comments="appeal.comments" current-user="currentUser" model-name="'Correction'" target="appeal" event-prefix="'modal'"></comments>
 
             <page-results pages="pages" data="appeal.comments" callback="retrieveAppealComments"></page-results>
         </loader>
+        <error-display content-class="content-container" errors="errors.appeal_comments" label="appeal comments"></error-display>
 
         <!-- TODO: May need to move this before comments or make it a sticky footer? -->
         <div class="action-button-container">
