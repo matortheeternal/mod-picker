@@ -20,7 +20,7 @@ app.controller('correctionsModalController', function ($scope, contributionServi
     $scope.startNewCorrection = function() {
         $scope.activeCorrection = {
             title: "",
-            text_body: "" // TODO: Get template from the contributionFactory
+            text_body: contributionFactory.getDefaultTextBody("Correction")
         };
 
         // update editor
@@ -43,7 +43,6 @@ app.controller('correctionsModalController', function ($scope, contributionServi
     };
 
     $scope.retrieveCorrectionComments = function(page) {
-        // TODO: Make options dynamic
         var options = {
             sort: {
                 column: 'submitted',

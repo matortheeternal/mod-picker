@@ -22,7 +22,7 @@ app.controller('appealsModalController', function ($scope, contributionService, 
         statuses.splice(statuses.indexOf($scope.mod.status) || 0, 1);
         // TODO: Remove statuses that already have open appeals as well
         $scope.activeAppeal = {
-            text_body: "", // TODO: Get template from the contributionFactory
+            text_body: contributionFactory.getDefaultTextBody("Appeal"),
             mod_status: statuses[0]
         };
 
@@ -46,7 +46,6 @@ app.controller('appealsModalController', function ($scope, contributionService, 
     };
 
     $scope.retrieveAppealComments = function(page) {
-        // TODO: Make options dynamic
         var options = {
             sort: {
                 column: 'submitted',
