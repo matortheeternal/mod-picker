@@ -5,7 +5,7 @@
 app.directive('textArea', function ($timeout) {
     return {
         restrict: 'E',
-        templateUrl: '/resources/directives/shared/shared/textArea.html',
+        templateUrl: '/resources/directives/shared/textArea.html',
         scope: {
             data: '=',
             onChange: '=?',
