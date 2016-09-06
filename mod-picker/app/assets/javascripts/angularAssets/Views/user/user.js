@@ -37,6 +37,7 @@ app.config(['$stateProvider', function($stateProvider) {
         views: {
             'Mod Lists': {
                 templateUrl: '/resources/partials/user/modLists.html',
+                controller: 'userModListsController'
             }
         },
         url: '/mod-lists'
