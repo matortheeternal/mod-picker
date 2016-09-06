@@ -1,6 +1,14 @@
 app.factory("tabsFactory", function() {
     var factory = this;
 
+    this.buildUserTabs = function() {
+        return [
+            { name: 'Social'},
+            { name: 'Mod Lists'},
+            { name: 'Mods'}
+        ]
+    };
+
     this.buildUserSettingsTabs = function() {
         return [
             { name: 'Profile' },
