@@ -15,16 +15,20 @@ app.controller('modListModsController', function($scope, $rootScope, $timeout, $
 
     $scope.buildModsModel = function() {
         $scope.model.mods = [];
+        var mods = $scope.mod_list.mods.concat($scope.mod_list.custom_mods);
+
+        // push groups onto view model and children mods into groups
         $scope.mod_list.groups.forEach(function(group) {
             if (group.tab !== 'mods') {
                 return;
             }
             $scope.model.mods.push(group);
-            group.children = $scope.mod_list.mods.filter(function(mod) {
+            group.children = mods.filter(function(mod) {
                 return mod.group_id == group.id;
             });
         });
-        var mods = $scope.mod_list.mods.concat($scope.mod_list.custom_mods);
+
+        // push mods that aren't in any group onto view model
         mods.forEach(function(mod) {
             if (!mod.group_id) {
                 var insertIndex = $scope.model.mods.findIndex(function(item) {
