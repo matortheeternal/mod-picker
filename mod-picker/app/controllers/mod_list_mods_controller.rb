@@ -46,7 +46,7 @@ class ModListModsController < ApplicationController
     authorize! :update, @mod_list_mod.mod_list
 
     if @mod_list_mod.destroy
-      render json: {status: :ok}
+      render json: @mod_list_mod.mod_list.tracking_json
     else
       render json: @mod_list_mod.errors, status: :unprocessable_entity
     end
