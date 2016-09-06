@@ -56,37 +56,37 @@ app.controller('editArticleController', function($scope, $stateParams, article, 
         }
 
         // get changed article fields
+        var articleId = $scope.article.id;
         var articleDiff = objectUtils.getDifferentObjectValues($scope.originalArticle, $scope.article);
-        articleDiff.id = $scope.article.id;
+        articleDiff.id = articleId;
 
         // send the updated article fields to the backend
+        $scope.startSubmission("Updating article...");
         articleService.updateArticle(articleDiff).then(function() {
             if (!$scope.image.file) {
-                $scope.$emit('successMessage', 'Article updated successfully.');
+                $scope.submissionSuccess("Article updated successfully", "#/article/" + articleId, "view the updated article.");
             }
         }, function(response) {
-            var params = { label: 'Error updating article', response: response };
-            $scope.$emit('errorMessage', params);
+            $scope.submissionError("There were errors updating the article.", response);
         });
 
         // if we have a new article image, send it as well
         if ($scope.image.file) {
-            articleService.submitImage($scope.article.id, $scope.image.file).then(function() {
-                $scope.$emit('successMessage', 'Article updated successfully.');
+            articleService.submitImage(articleId, $scope.image.file).then(function() {
+                $scope.submissionSuccess("Article updated successfully", "#/article/" + articleId, "view the updated article.");
             }, function(response) {
-                var params = { label: 'Error updating article image', response: response };
-                $scope.$emit('errorMessage', params);
+                $scope.submissionError("There were errors updating the article image.", response);
             });
         }
     };
 
     // deletes an article
     $scope.deleteArticle = function() {
+        $scope.startSubmission("Deleting article...");
         articleService.deleteArticle($scope.article.id).then(function() {
-            $scope.$emit('successMessage', 'Article deleted successfully.');
+            $scope.submissionSuccess("Article deleted successfully", "#/articles", "return to the articles index.");
         }, function(response) {
-            var params = { label: 'Error deleting article', response: response };
-            $scope.$emit('errorMessage', params);
+            $scope.submissionError("There were errors deleting the article.", response);
         });
     };
 });
