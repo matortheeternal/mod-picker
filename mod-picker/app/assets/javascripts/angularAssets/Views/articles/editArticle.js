@@ -23,21 +23,32 @@ app.config(['$stateProvider', function($stateProvider) {
     });
 }]);
 
-app.controller('editArticleController', function($scope, $stateParams, article, objectUtils, articleService) {
+app.controller('editArticleController', function($scope, $stateParams, article,  articleService, eventHandlerFactory, objectUtils) {
+    // get parent variables
     $scope.article = angular.copy(article);
     $scope.originalArticle = article;
 
+    // initialize local variables
     $scope.image = {
         src: $scope.article.image
     };
 
+    // shared function setup
+    eventHandlerFactory.buildMessageHandlers($scope);
+
+    // returns true if the article is valid
     $scope.articleValid = function() {
         var article = $scope.article;
-
-        return article.submitted_by && article.title && article.text_body || $scope.delete;
+        return $scope.delete || (article.submitted_by && article.title && article.text_body);
     };
 
+    // submits the updated article
     $scope.updateArticle = function() {
+        // return if article is invalid
+        if (!$scope.articleValid()) {
+            return;
+        }
+
         //delete the article if the box is checked
         if ($scope.delete) {
             $scope.deleteArticle();
@@ -46,85 +57,36 @@ app.controller('editArticleController', function($scope, $stateParams, article, 
 
         // get changed article fields
         var articleDiff = objectUtils.getDifferentObjectValues($scope.originalArticle, $scope.article);
-
-        // return if article is invalid
-        if (!$scope.articleValid()) {
-            return;
-        }
-
-        $scope.submitting = true;
-        $scope.submittingStatus = "Updating Article...";
         articleDiff.id = $scope.article.id;
+
+        // send the updated article fields to the backend
         articleService.updateArticle(articleDiff).then(function() {
-            if (!angular.isDefined($scope.success)) {
-                $scope.success = true;
-                if (!$scope.image.file) {
-                    $scope.submittingStatus = "Article Updated Successfully!";
-                }
-            } else if ($scope.success) {
-                $scope.submittingStatus = "Article Updated Successfully!";
+            if (!$scope.image.file) {
+                $scope.$emit('successMessage', 'Article updated successfully.');
             }
         }, function(response) {
-            $scope.success = false;
-            $scope.submittingStatus = "There were errors updating the article.";
-            // TODO: Emit errors properly
-            $scope.errors = response.data;
+            var params = { label: 'Error updating article', response: response };
+            $scope.$emit('errorMessage', params);
         });
+
+        // if we have a new article image, send it as well
         if ($scope.image.file) {
-            articleService.submitImage($scope.article.id, $scope.image.file).then(function () {
-                if (!angular.isDefined($scope.success)) {
-                    $scope.success = true;
-                } else if ($scope.success) {
-                    $scope.submittingStatus = "Article Updated Successfully!";
-                }
+            articleService.submitImage($scope.article.id, $scope.image.file).then(function() {
+                $scope.$emit('successMessage', 'Article updated successfully.');
             }, function(response) {
-                $scope.success = false;
-                $scope.submittingStatus = "There were errors updating the article.";
-                // TODO: Emit errors properly
-                $scope.errors = response.data;
+                var params = { label: 'Error updating article image', response: response };
+                $scope.$emit('errorMessage', params);
             });
         }
     };
 
+    // deletes an article
     $scope.deleteArticle = function() {
-        $scope.submitting = true;
-        $scope.submittingStatus = "Deleting Article...";
         articleService.deleteArticle($scope.article.id).then(function() {
-            $scope.success = true;
-            $scope.submittingStatus = "Article Deleted Successfully!";
+            $scope.$emit('successMessage', 'Article deleted successfully.');
         }, function(response) {
-            $scope.success = false;
-            $scope.submittingStatus = "There were errors deleting the article.";
-            // TODO: Emit errors properly
-            $scope.errors = response.data;
+            var params = { label: 'Error deleting article', response: response };
+            $scope.$emit('errorMessage', params);
         });
     };
-
-    $scope.closeModal = function() {
-        delete $scope.success;
-        delete $scope.submitting;
-        delete $scope.errors;
-    };
-
-    // display error messages
-    $scope.$on('errorMessage', function(event, params) {
-        if (params.label && params.response) {
-            var errors = errorService.errorMessages(params.label, params.response);
-            errors.forEach(function(error) {
-                $scope.$broadcast('message', error);
-            });
-        } else {
-            $scope.$broadcast('message', params);
-        }
-        // stop event propagation - we handled it
-        event.stopPropagation();
-    });
-
-    // display success message
-    $scope.$on('successMessage', function(event, text) {
-        var successMessage = {type: "success", text: text};
-        $scope.$broadcast('message', successMessage);
-        // stop event propagation - we handled it
-        event.stopPropagation();
-    });
 });
