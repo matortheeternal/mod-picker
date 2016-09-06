@@ -1,6 +1,5 @@
 app.controller('userSocialController', function($scope, $stateParams, userService) {
     $scope.retrieveProfileComments = function(page) {
-        // TODO: Make options dynamic
         var options = {
             sort: {
                 column: 'submitted',
@@ -21,8 +20,5 @@ app.controller('userSocialController', function($scope, $stateParams, userServic
     };
 
     // retrieve the profile comments
-    if (!$scope.retrieving.profile_comments) {
-        $scope.retrieving.profile_comments = true;
-        $scope.retrieveProfileComments();
-    }
+    $scope.retrieveProfileComments();
 });

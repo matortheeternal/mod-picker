@@ -67,7 +67,6 @@ app.controller('userController', function($scope, $rootScope, $stateParams, user
     $scope.pages = {
         profile_comments: {}
     };
-    $scope.retrieving = {};
 
     $scope.roleTexts = {
         admin: "Administrator",
