@@ -21,9 +21,10 @@
                             {{user.endorsed ? 'Unendorse' : 'Endorse' }}
                         </div>
 
-                        <div class="action-box no-action" ng-if="!(permissions.canEndorse || user.endorsed)">
+                        <!-- TODO: Add a helpful title here saying why the current user cannot endorse this user -->
+                        <div class="action-box no-action" ng-if="!permissions.canEndorse">
                             <!-- TODO: have this link to a page with all of the current user's endorsements -->
-                            You can't endorse any more people
+                            Cannot Endorse
                         </div>
                     </div>
                 </section>
