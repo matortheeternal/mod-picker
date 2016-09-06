@@ -21,18 +21,6 @@ app.service('articleService', function($q, backend, userTitleService, pageUtils,
         return action.promise;
     };
 
-    this.retrieveComments = function(articleId, options, pageInformation) {
-        var output = $q.defer();
-        backend.post('/articles/' + articleId+ '/comments', options).then(function(response) {
-            userTitleService.associateTitles(response.comments);
-            pageUtils.getPageInformation(response, pageInformation, options.page);
-            output.resolve(response.comments);
-        }, function(response) {
-            output.reject(response);
-        });
-        return output.promise;
-    };
-
     this.updateArticle = function(article) {
         // prepare article record
         var articleData = {

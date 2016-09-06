@@ -23,7 +23,7 @@ app.config(['$stateProvider', function($stateProvider) {
     });
 }]);
 
-app.controller('showArticleController', function($scope, $rootScope, $stateParams, article, articleService) {
+app.controller('showArticleController', function($scope, $rootScope, $stateParams, article, contributionService, eventHandlerFactory) {
     // inherited variables
     $scope.currentUser = $rootScope.currentUser;
     $scope.permissions = angular.copy($rootScope.permissions);
@@ -35,6 +35,10 @@ app.controller('showArticleController', function($scope, $rootScope, $stateParam
     };
     $scope.errors = {};
 
+    // shared function setup
+    eventHandlerFactory.buildMessageHandlers($scope);
+
+    // retrieves comments on the article
     $scope.retrieveComments = function(page) {
         var options = {
             sort: {
@@ -43,7 +47,7 @@ app.controller('showArticleController', function($scope, $rootScope, $stateParam
             },
             page: page || 1
         };
-        articleService.retrieveComments($stateParams.articleId, options, $scope.pages.comments).then(function(data) {
+        contributionService.retrieveComments('articles', $scope.article.id, options, $scope.pages.comments).then(function(data) {
             $scope.article.comments = data;
         }, function(response) {
             $scope.errors.comments = response;

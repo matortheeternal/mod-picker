@@ -1,4 +1,4 @@
-app.controller('userSocialController', function($scope, $stateParams, userService) {
+app.controller('userSocialController', function($scope, $stateParams, contributionService) {
     $scope.retrieveProfileComments = function(page) {
         var options = {
             sort: {
@@ -7,7 +7,7 @@ app.controller('userSocialController', function($scope, $stateParams, userServic
             },
             page: page || 1
         };
-        userService.retrieveProfileComments($stateParams.userId, options, $scope.pages.profile_comments).then(function(data) {
+        contributionService.retrieveComments('users', $scope.user.id, options, $scope.pages.profile_comments).then(function(data) {
             $scope.user.profile_comments = data;
         }, function(response) {
             $scope.errors.comments = response;
