@@ -15,7 +15,7 @@ app.controller('submissionModalController', function($scope) {
 
     $scope.submissionSuccess = function(label, link, linkLabel) {
         $scope.submittingStatus = label;
-        $scope.succesLink = link;
+        $scope.successLink = link;
         $scope.successLabel = linkLabel;
         $scope.success = true;
     };
