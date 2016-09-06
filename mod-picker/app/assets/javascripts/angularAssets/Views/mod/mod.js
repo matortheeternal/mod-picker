@@ -286,7 +286,8 @@ app.controller('modController', function($scope, $rootScope, $q, $stateParams, $
     $scope.toggleInModList = function() {
         if ($scope.mod.in_mod_list) {
             // remove from mod list
-            modListService.removeModListMod($scope.activeModList, $scope.mod).then(function() {
+            modListService.removeModListMod($scope.activeModList, $scope.mod).then(function(data) {
+                $rootScope.activeModList = data;
                 $scope.$emit('successMessage', 'Mod removed from your mod list successfully.');
             }, function(response) {
                 var params = {

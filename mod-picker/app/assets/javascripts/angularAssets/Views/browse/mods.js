@@ -102,7 +102,8 @@ app.controller('modsController', function($scope, $rootScope, $q, $stateParams, 
 
     // removes a mod from the user's mod list
     $scope.$on('removeMod', function(event, mod) {
-        modListService.removeModListMod($scope.activeModList, mod).then(function() {
+        modListService.removeModListMod($scope.activeModList, mod).then(function(data) {
+            $rootScope.activeModList = data;
             $scope.$emit('successMessage', 'Removed mod "'+mod.name+'" from your mod list successfully.');
         }, function(response) {
             var params = {
