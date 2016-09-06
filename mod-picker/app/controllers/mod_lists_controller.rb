@@ -225,7 +225,11 @@ class ModListsController < ApplicationController
     authorize! :hide, @mod_list if params[:mod_list].has_key?(:hidden)
 
     if @mod_list.update(mod_list_params) && @mod_list.update_lazy_counters
-      render json: {status: :ok}
+      if current_user.active_mod_list_id == @mod_list.id
+        render json: @mod_list.tracking_json
+      else
+        render json: {status: :ok}
+      end
     else
       render json: @mod_list.errors, status: :unprocessable_entity
     end
