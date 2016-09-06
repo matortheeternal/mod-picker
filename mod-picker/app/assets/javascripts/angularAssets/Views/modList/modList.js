@@ -454,7 +454,12 @@ app.controller('modListController', function($scope, $rootScope, $q, $stateParam
         }
 
         // else submit changes to the backend
-        modListService.updateModList(modListDiff).then(function() {
+        modListService.updateModList(modListDiff).then(function(data) {
+            // if active, update active mod list
+            if (data.id) {
+                $scope.mod_list.isActive = true;
+                $rootScope.activeModList = data;
+            }
             // update modules
             $scope.$broadcast('saveChanges');
             // success message
