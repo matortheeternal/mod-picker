@@ -72,6 +72,19 @@ class UsersController < ApplicationController
     end
   end
 
+  # GET /users/1/mod_lists
+  def mod_lists
+    authorize! :read, @user
+
+    favorite_mod_lists = @user.starred_mod_lists.accessible_by(current_ability)
+    authored_mod_lists = @user.mod_lists.accessible_by(current_ability)
+
+    render :json => {
+      favorites: favorite_mod_lists,
+      authored: authored_mod_lists
+    }
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_user
