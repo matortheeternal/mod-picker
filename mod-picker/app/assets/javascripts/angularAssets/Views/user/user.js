@@ -60,29 +60,18 @@ app.controller('userController', function($scope, $rootScope, $stateParams, user
     // set up local variables
     $scope.user = userObject.user;
     $scope.user.endorsed = userObject.endorsed;
+    $scope.roleClass = "user-role-" + $scope.user.role;
     $scope.pages = {
         profile_comments: {}
     };
     $scope.retrieving = {};
 
-    $scope.roleClass = "user-role-" + $scope.user.role;
-
-    //formatting the role displayed on the site
-    switch ($scope.user.role) {
-        case "admin":
-            $scope.user.role = "Administrator";
-            break;
-        case "moderator":
-            $scope.user.role = "Moderator";
-            break;
-        case "author":
-            $scope.user.role = "Mod Author";
-            break;
-        default:
-            //shows nothing if they have no notable role
-            $scope.user.role = "";
-            break;
-    }
+    $scope.roleTexts = {
+        admin: "Administrator",
+        moderator: "Moderator",
+        author: "Mod Author",
+        "": ""
+    };
 
     //of the tab data
     $scope.tabs = [
