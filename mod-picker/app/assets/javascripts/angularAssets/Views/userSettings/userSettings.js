@@ -62,7 +62,7 @@ app.config(['$stateProvider', function($stateProvider) {
     });
 }]);
 
-app.controller('userSettingsController', function($scope, $rootScope, $q, userObject, userSettingsService, themesService, errorService, tabsFactory, objectUtils) {
+app.controller('userSettingsController', function($scope, $rootScope, $q, userObject, userSettingsService, themesService, eventHandlerFactory, tabsFactory, objectUtils) {
     // inherited variables
     $scope.currentUser = $rootScope.currentUser;
     $scope.activeModList = $rootScope.activeModList;
@@ -75,31 +75,10 @@ app.controller('userSettingsController', function($scope, $rootScope, $q, userOb
     $scope.errors = {};
     $scope.tabs = tabsFactory.buildUserSettingsTabs();
 
-    // display error messages
-    $scope.$on('errorMessage', function(event, params) {
-        var errors = errorService.errorMessages(params.label, params.response);
-        errors.forEach(function(error) {
-            $scope.$broadcast('message', error);
-        });
-        // stop event propagation - we handled it
-        event.stopPropagation();
-    });
+    // shared function setup
+    eventHandlerFactory.buildMessageHandlers($scope, true);
 
-    // display success message
-    $scope.$on('successMessage', function(event, text) {
-        var successMessage = { type: "success", text: text };
-        $scope.$broadcast('message', successMessage);
-        // stop event propagation - we handled it
-        event.stopPropagation();
-    });
-
-    // display custom message
-    $scope.$on('customMessage', function(event, message) {
-        $scope.$broadcast('message', message);
-        // stop event propagation - we handled it
-        event.stopPropagation();
-    });
-
+    // saves changed user settings
     $scope.saveChanges = function() {
         // get changed user fields
         var userDiff = objectUtils.getDifferentObjectValues($scope.originalUser, $scope.user);

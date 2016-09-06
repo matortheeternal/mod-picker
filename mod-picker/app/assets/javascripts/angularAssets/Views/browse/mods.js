@@ -5,7 +5,7 @@ app.run(function($futureState, indexFactory, filtersFactory) {
     $futureState.futureState(state);
 });
 
-app.controller('modsController', function($scope, $rootScope, $q, $stateParams, $state, modService, categoryService, modListService, sliderFactory, columnsFactory, filtersFactory, actionsFactory, indexService, indexFactory) {
+app.controller('modsController', function($scope, $rootScope, $q, $stateParams, $state, modService, categoryService, modListService, indexService, sliderFactory, columnsFactory, filtersFactory, actionsFactory, indexFactory, eventHandlerFactory) {
     // inherited variables
     $scope.currentUser = $rootScope.currentUser;
     $scope.currentGame = $rootScope.currentGame;
@@ -69,24 +69,6 @@ app.controller('modsController', function($scope, $rootScope, $q, $stateParams, 
         });
     };
 
-    // display error messages
-    $scope.$on('errorMessage', function(event, params) {
-        var errors = errorService.errorMessages(params.label, params.response, $scope.mod.id);
-        errors.forEach(function(error) {
-            $scope.$broadcast('message', error);
-        });
-        // stop event propagation - we handled it
-        event.stopPropagation();
-    });
-
-    // display success message
-    $scope.$on('successMessage', function(event, text) {
-        var successMessage = { type: "success", text: text };
-        $scope.$broadcast('message', successMessage);
-        // stop event propagation - we handled it
-        event.stopPropagation();
-    });
-
     // adds a mod to the user's mod list
     $scope.$on('addMod', function(event, mod) {
         modListService.addModListMod($scope.activeModList, mod).then(function() {
@@ -127,6 +109,7 @@ app.controller('modsController', function($scope, $rootScope, $q, $stateParams, 
     $scope.route = 'mods';
     $scope.retrieve = modService.retrieveMods;
     indexFactory.buildIndex($scope, $stateParams, $state, indexService);
+    eventHandlerFactory.buildMessageHandlers($scope);
 
     // override some data from the generic controller
     $scope.buildAvailableColumnData();

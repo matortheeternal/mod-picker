@@ -106,25 +106,17 @@ app.config(['$stateProvider', function($stateProvider) {
     });
 }]);
 
-app.controller('modController', function($scope, $rootScope, $q, $stateParams, $state, $timeout, $window, modObject, modService, modListService, contributionService, categoryService, tagService, smoothScroll, errorService, tabsFactory, sortFactory) {
+app.controller('modController', function($scope, $rootScope, $q, $stateParams, $state, $timeout, $window, modObject, modService, modListService, contributionService, categoryService, tagService, smoothScroll, tabsFactory, sortFactory, eventHandlerFactory) {
     // get parent variables
     $scope.mod = modObject.mod;
     $scope.mod.star = modObject.star;
     $scope.mod.in_mod_list = modObject.in_mod_list;
     $scope.mod.incompatible = modObject.incompatible;
+
+    // inherited variables
     $scope.currentUser = $rootScope.currentUser;
     $scope.activeModList = $rootScope.activeModList;
-
-    // set active mod list stuff
-    if ($scope.mod.incompatible) {
-        $timeout(function() {
-            $scope.$broadcast('message', {
-                type: 'error',
-                text: 'This mod is incompatible with your active mod list.',
-                decay: 600000 // 10 minutes
-            });
-        }, 200);
-    }
+    $scope.permissions = angular.copy($rootScope.permissions);
 
     // initialize local variables
     $scope.tabs = tabsFactory.buildModTabs($scope.mod);
@@ -166,11 +158,22 @@ app.controller('modController', function($scope, $rootScope, $q, $stateParams, $
         }
     };
     $scope.retrieving = {};
-    // error handling
     $scope.errors = {};
 
-    //a copy is created so the original permissions are never changed
-    $scope.permissions = angular.copy($rootScope.permissions);
+    // shared function setup
+    eventHandlerFactory.buildMessageHandlers($scope);
+
+    // display a message if the mod is incompatible with the user's active mod list
+    if ($scope.mod.incompatible) {
+        $timeout(function() {
+            $scope.$broadcast('message', {
+                type: 'error',
+                text: 'This mod is incompatible with your active mod list.',
+                decay: 600000 // 10 minutes
+            });
+        }, 200);
+    }
+
     //setting up the canManage permission
     var author = $scope.mod.mod_authors.find(function(author) {
         return author.user_id == $scope.currentUser.id;
@@ -206,24 +209,6 @@ app.controller('modController', function($scope, $rootScope, $q, $stateParams, $
                 redirectToFirstTab();
             }
         }
-    });
-
-    // display error messages
-    $scope.$on('errorMessage', function(event, params) {
-        var errors = errorService.errorMessages(params.label, params.response, $scope.mod.id);
-        errors.forEach(function(error) {
-            $scope.$broadcast('message', error);
-        });
-        // stop event propagation - we handled it
-        event.stopPropagation();
-    });
-
-    // display success message
-    $scope.$on('successMessage', function(event, text) {
-        var successMessage = { type: "success", text: text };
-        $scope.$broadcast('message', successMessage);
-        // stop event propagation - we handled it
-        event.stopPropagation();
     });
 
     // update the markdown editor

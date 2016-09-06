@@ -113,10 +113,11 @@ app.config(['$stateProvider', function ($stateProvider) {
     })
 }]);
 
-app.controller('modListController', function($scope, $rootScope, $q, $stateParams, $timeout, modListObject, modListService, errorService, objectUtils, tabsFactory, baseFactory, listUtils) {
+app.controller('modListController', function($scope, $rootScope, $q, $stateParams, $timeout, modListObject, modListService, objectUtils, tabsFactory, baseFactory, eventHandlerFactory, listUtils) {
     // inherited variables
     $scope.currentUser = $rootScope.currentUser;
     $scope.activeModList = $rootScope.activeModList;
+    $scope.permissions = angular.copy($rootScope.permissions);
 
     // main view model variables
     $scope.mod_list = modListObject.mod_list;
@@ -172,38 +173,14 @@ app.controller('modListController', function($scope, $rootScope, $q, $stateParam
         visibility_public: "This mod list is publicly available and will \nappear in search results."
     };
     $scope.isActive = $scope.activeModList && $scope.activeModList.id == $scope.mod_list.id;
-    $scope.isEmpty = objectUtils.isEmptyArray;
 
-    // a copy is created so the original permissions object is never changed
-    $scope.permissions = angular.copy($rootScope.permissions);
-    // setting up the canManage permission
+    // shared function setup
+    $scope.isEmpty = objectUtils.isEmptyArray;
+    eventHandlerFactory.buildMessageHandlers($scope, true);
+
+    // set up the canManage permission
     var isAuthor = $scope.mod_list.submitter.id == $scope.currentUser.id;
     $scope.permissions.canManage = $scope.permissions.canModerate || isAuthor;
-
-    // display error messages
-    $scope.$on('errorMessage', function(event, params) {
-        var errors = errorService.errorMessages(params.label, params.response, $scope.mod_list.id);
-        errors.forEach(function(error) {
-            $scope.$broadcast('message', error);
-        });
-        // stop event propagation - we handled it
-        event.stopPropagation();
-    });
-
-    // display success message
-    $scope.$on('successMessage', function(event, text) {
-        var successMessage = {type: 'success', text: text};
-        $scope.$broadcast('message', successMessage);
-        // stop event propagation - we handled it
-        event.stopPropagation();
-    });
-
-    // display custom message
-    $scope.$on('customMessage', function(event, message) {
-        $scope.$broadcast('message', message);
-        // stop event propagation - we handled it
-        event.stopPropagation();
-    });
 
     // HEADER RELATED LOGIC
     $scope.starModList = function() {

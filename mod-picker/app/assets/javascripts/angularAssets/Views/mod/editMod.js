@@ -23,11 +23,12 @@ app.config(['$stateProvider', function($stateProvider) {
     });
 }]);
 
-app.controller('editModController', function($scope, $rootScope, $state, modObject, modService, userService,tagService, categoryService, errorService, sitesFactory, objectUtils) {
+app.controller('editModController', function($scope, $rootScope, $state, modObject, modService, userService, tagService, categoryService, sitesFactory, eventHandlerFactory, objectUtils) {
     // get parent variables
     $scope.currentUser = $rootScope.currentUser;
     $scope.categories = $rootScope.categories;
     $scope.categoryPriorities = $rootScope.categoryPriorities;
+    $scope.permissions = angular.copy($rootScope.permissions);
 
     // inherited functions
     $scope.searchMods = modService.searchMods;
@@ -106,10 +107,10 @@ app.controller('editModController', function($scope, $rootScope, $state, modObje
         src: $scope.mod.image
     };
 
-    // permission handling
-    //a copy is created so the original permissions are never changed
-    $scope.permissions = angular.copy($rootScope.permissions);
-    //setting up the canManageOptions permission
+    // shared function setup
+    eventHandlerFactory.buildMessageHandlers($scope);
+
+    // set up the canManageOptions permission
     var author = $scope.mod.mod_authors.find(function(author) {
         return author.user_id == $scope.currentUser.id;
     });
@@ -117,28 +118,6 @@ app.controller('editModController', function($scope, $rootScope, $state, modObje
     var isContributor = author && author.role == 'contributor';
     $scope.permissions.canManageOptions = $scope.permissions.canModerate || isAuthor ||
         !$scope.mod.disallow_contributors && isContributor;
-
-    // display error messages
-    $scope.$on('errorMessage', function(event, params) {
-        if (params.label && params.response) {
-            var errors = errorService.errorMessages(params.label, params.response);
-            errors.forEach(function(error) {
-                $scope.$broadcast('message', error);
-            });
-        } else {
-            $scope.$broadcast('message', params);
-        }
-        // stop event propagation - we handled it
-        event.stopPropagation();
-    });
-
-    // display success message
-    $scope.$on('successMessage', function(event, text) {
-        var successMessage = {type: "success", text: text};
-        $scope.$broadcast('message', successMessage);
-        // stop event propagation - we handled it
-        event.stopPropagation();
-    });
 
     $scope.$watch('mod.categories', function() {
         // clear messages when user changes the category
@@ -153,7 +132,6 @@ app.controller('editModController', function($scope, $rootScope, $state, modObje
         $scope.mod.secondary_category_id = $scope.mod.categories[1];
     }, true);
 
-    /* submission */
     // validate the mod
     $scope.modValid = function() {
         // main source validation

@@ -54,7 +54,7 @@ app.config(['$stateProvider', function($stateProvider) {
     });
 }]);
 
-app.controller('userController', function($scope, $rootScope, $stateParams, userObject, userService, tabsFactory) {
+app.controller('userController', function($scope, $rootScope, $stateParams, userObject, userService, eventHandlerFactory, tabsFactory) {
     // get parent variables
     $scope.currentUser = $rootScope.currentUser;
     $scope.permissions = angular.copy($rootScope.permissions);
@@ -75,34 +75,17 @@ app.controller('userController', function($scope, $rootScope, $stateParams, user
     };
     $scope.tabs = tabsFactory.buildUserTabs();
 
+    // shared function setup
+    eventHandlerFactory.buildMessageHandlers($scope);
 
+    // creates or removes the current user's endorsement of a user
     $scope.endorse = function() {
         userService.endorse($scope.user.id, $scope.user.endorsed).then(function() {
             $scope.user.endorsed = !$scope.user.endorsed;
-
-            //update the currentUser's permissions without having to re-retrieve
             $scope.$emit('updateRepPermissions', $scope.user.endorsed);
         }, function(response) {
             var params = {label: 'Error giving reputation', response: response};
             $scope.$emit('errorMessage', params);
         });
     };
-
-    // display error messages
-    $scope.$on('errorMessage', function(event, params) {
-        var errors = errorService.errorMessages(params.label, params.response, $scope.mod.id);
-        errors.forEach(function(error) {
-            $scope.$broadcast('message', error);
-        });
-        // stop event propagation - we handled it
-        event.stopPropagation();
-    });
-
-    // display success message
-    $scope.$on('successMessage', function(event, text) {
-        var successMessage = { type: "success", text: text };
-        $scope.$broadcast('message', successMessage);
-        // stop event propagation - we handled it
-        event.stopPropagation();
-    });
 });
