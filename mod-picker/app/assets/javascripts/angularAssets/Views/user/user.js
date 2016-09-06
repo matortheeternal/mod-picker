@@ -97,10 +97,18 @@ app.controller('userController', function($scope, $rootScope, $stateParams, user
 
     // display error messages
     $scope.$on('errorMessage', function(event, params) {
-        var errors = errorService.errorMessages(params.label, params.response);
+        var errors = errorService.errorMessages(params.label, params.response, $scope.mod.id);
         errors.forEach(function(error) {
             $scope.$broadcast('message', error);
         });
+        // stop event propagation - we handled it
+        event.stopPropagation();
+    });
+
+    // display success message
+    $scope.$on('successMessage', function(event, text) {
+        var successMessage = { type: "success", text: text };
+        $scope.$broadcast('message', successMessage);
         // stop event propagation - we handled it
         event.stopPropagation();
     });
