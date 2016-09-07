@@ -40,11 +40,7 @@
                     <page-results pages="pages" data="plugins" callback="getData"></page-results>
                 </loader>
 
-                <div class="content-message content-error" ng-if="error">
-                    There was an error retrieving Plugins.<br>
-                    <!--TODO: Render JSON errors here, if available?-->
-                    Error {{error.status}}: {{error.statusText}}
-                </div>
+                <error-display content-class="content-message content-error" errors="error" label="Plugins"></error-display>
             </div>
         </div>
     </div>

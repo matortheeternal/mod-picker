@@ -81,11 +81,7 @@
                     <page-results pages="pages" data="install_order_notes" callback="getData"></page-results>
                 </loader>
 
-                <div class="content-message content-error" ng-if="error">
-                    There was an error retrieving Install Order Notes.<br>
-                    <!--TODO: Render JSON errors here, if available?-->
-                    Error {{error.status}}: {{error.statusText}}
-                </div>
+                <error-display content-class="content-message content-error" errors="error" label="Install Order Notes"></error-display>
             </div>
         </div>
     </div>

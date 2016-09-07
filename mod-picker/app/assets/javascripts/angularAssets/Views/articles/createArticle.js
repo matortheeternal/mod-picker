@@ -2,58 +2,65 @@ app.config(['$stateProvider', function($stateProvider) {
     $stateProvider.state('base.create-article', {
         templateUrl: '/resources/partials/articles/createArticle.html',
         controller: 'createArticleController',
-        url: '/articles/submit'
+        url: '/articles/submit',
+        resolve: {
+            article: function($q, articleService) {
+                var article = $q.defer();
+                articleService.newArticle().then(function(data) {
+                    article.resolve(data);
+                }, function(response) {
+                    var errorObj = {
+                        text: 'Error starting new article.',
+                        response: response,
+                        stateName: "base.create-article",
+                        stateUrl: window.location.hash
+                    };
+                    article.reject(errorObj);
+                });
+                return article.promise;
+            }
+        }
     });
 }]);
 
-app.controller('createArticleController', function($scope, $stateParams, objectUtils, articleService) {
-    $scope.article = {};
+app.controller('createArticleController', function($scope, $rootScope, $state, $stateParams, article, articleService, eventHandlerFactory) {
+    // set up local variables
+    $scope.article = article;
+    $scope.image = {};
 
-    $scope.image = {
-        src: $scope.article.image
-    };
+    // shared function setup
+    eventHandlerFactory.buildMessageHandlers($scope);
 
+    // returns true if the article is valid
     $scope.articleValid = function() {
         var article = $scope.article;
-
         return article.title && article.text_body;
     };
 
-    $scope.submit = function () {
-        // return if mod is invalid
+    $scope.submit = function() {
+        // return if article is invalid
         if (!$scope.articleValid()) {
             return;
         }
-        $scope.submitting = true;
 
-        $scope.submittingStatus = "Submitting article..";
-        articleService.submitArticle($scope.article).then(function(response) {
-            var articleId = response.id;
+        // set up success handler to reduce repetition
+        $scope.startSubmission("Submitting article...");
+        articleService.submitArticle($scope.article).then(function(data) {
             if ($scope.image.file) {
-                articleService.submitImage(articleId, $scope.image.file).then(function () {
-                    $scope.success = true;
-                    $scope.submittingStatus = "Article submitted Successfully!";
-                }, function(response) {
-                    $scope.success = false;
-                    $scope.submittingStatus = "There were errors submitting the article.";
-                    // TODO: Emit errors properly
-                    $scope.errors = response;
-                });
+                $scope.submitImage(data.id);
             } else {
-                $scope.submittingStatus = "Article submitted Successfully!";
-                $scope.success = true;
+                $scope.submissionSuccess("Article submitted successfully.", "#/article/"+articleId, "view the new article.");
             }
         }, function(response) {
-            $scope.success = false;
-            $scope.submittingStatus = "There were errors submitting the article.";
-            // TODO: Emit errors properly
-            $scope.errors = response;
+            $scope.submissionError("There were errors submitting the article.", response);
         });
     };
 
-    $scope.closeModal = function() {
-        delete $scope.success;
-        delete $scope.submitting;
-        delete $scope.errors;
+    $scope.submitImage = function(articleId) {
+        articleService.submitImage(articleId, $scope.image.file).then(function() {
+            $scope.submissionSuccess("Article submitted successfully.", "#/article/"+articleId, "view the new article.");
+        }, function() {
+            $scope.submissionSuccess("Article submitted successfully, image submission failed.", "#/article/"+articleId, "view the new article.");
+        });
     };
 });

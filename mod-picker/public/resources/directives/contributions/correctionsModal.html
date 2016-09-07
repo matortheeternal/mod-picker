@@ -72,11 +72,7 @@
             </div>
         </loader>
 
-        <div class="content-message content-error" ng-if="errors.corrections">
-            There was an error retrieving corrections for this contribution.<br>
-            <!--TODO: Render JSON errors here, if available?-->
-            Error {{errors.corrections.status}}: {{errors.corrections.statusText}}
-        </div>
+        <error-display content-class="content-message content-error" errors="errors.corrections" label="corrections for this contribution"></error-display>
 
         <div class="action-button-container" ng-if="canCorrect && !errors.corrections">
             <input class="btn action-btn" type="submit" ng-click="startNewCorrection()" value="New Correction">
@@ -104,6 +100,7 @@
 
             <page-results pages="pages.correction_comments" data="correction.comments" callback="retrieveCorrectionComments"></page-results>
         </loader>
+        <error-display content-class="content-container" errors="errors.correction_comments" label="correction comments"></error-display>
 
         <!-- TODO: May need to move this before comments or make it a sticky footer? -->
         <div class="action-button-container">

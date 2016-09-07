@@ -39,8 +39,4 @@
     </div>
 </loader>
 
-<div class="content-message content-error" ng-if="errors.mod_lists">
-    There was an error retrieving your Mod Lists.<br>
-    <!--TODO: Render JSON errors here, if available?-->
-    Error {{error.status}}: {{error.statusText}}
-</div>
+<error-display content-class="content-message content-error" errors="errors.mod_lists" label="your Mod Lists"></error-display>

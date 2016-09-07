@@ -1,5 +1,5 @@
 class ArticlesController < ApplicationController
-  before_action :set_article, only: [:show, :comments, :image, :update, :destroy]
+  before_action :set_article, only: [:show, :comments, :image, :edit, :update, :destroy]
 
   # GET /articles/1
   def show
@@ -22,8 +22,8 @@ class ArticlesController < ApplicationController
 
   # GET /articles/new
   def new
-    authorize! :create, @article
-    @article = Article.new
+    authorize! :create, Article
+    render json: { status: :ok }
   end
 
   # POST /articles
@@ -37,6 +37,12 @@ class ArticlesController < ApplicationController
     else
       render json: @article.errors, status: :unprocessable_entity
     end
+  end
+
+  # GET /articles/1/edit
+  def edit
+    authorize! :update, @article, :message => "You are not allowed to edit this article."
+    render :json => @article
   end
 
   # PATCH/PUT /articles/1

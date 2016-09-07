@@ -20,16 +20,27 @@
                     <div class="sidebar-box box-shadow">
                         <ul class="checkbox-list">
                             <li>
+                                <a class="list-title" ng-href="#/mod-list/{{activeModList.id}}">
+                                    {{activeModList.name}}
+                                </a>
+                            </li>
+                            <li>
                                 <label><input type="checkbox" ng-model="modListFilter" ng-change="toggleModListFilter()">
                                     Enable compatibility filter</label>
                             </li>
-                            <li class="half-box">
+                            <li class="third-box">
+                                <h4>Tools</h4>
+                                <a ng-href="#/mod-list/{{activeModList.id}}/tools">
+                                    {{activeModList.tools_count}}
+                                </a>
+                            </li>
+                            <li class="third-box">
                                 <h4>Mods</h4>
                                 <a ng-href="#/mod-list/{{activeModList.id}}/mods">
                                     {{activeModList.mods_count}}
                                 </a>
                             </li>
-                            <li class="half-box">
+                            <li class="third-box">
                                 <h4>Plugins</h4>
                                 <a ng-href="#/mod-list/{{activeModList.id}}/plugins">
                                     {{activeModList.plugins_count}}
@@ -120,11 +131,7 @@
                     <page-results pages="pages" data="mods" callback="getMods"></page-results>
                 </loader>
 
-                <div class="content-message content-error" ng-if="error">
-                    There was an error retrieving Mods.<br>
-                    <!--TODO: Render JSON errors here, if available?-->
-                    Error {{error.status}}: {{error.statusText}}
-                </div>
+                <error-display content-class="content-message content-error" errors="error" label="Mods"></error-display>
             </div>
         </div>
     </div>

@@ -23,11 +23,12 @@ app.config(['$stateProvider', function($stateProvider) {
     });
 }]);
 
-app.controller('editModController', function($scope, $rootScope, $state, modObject, modService, userService,tagService, categoryService, errorService, sitesFactory, objectUtils) {
+app.controller('editModController', function($scope, $rootScope, $state, modObject, modService, userService, tagService, categoryService, sitesFactory, eventHandlerFactory, objectUtils) {
     // get parent variables
     $scope.currentUser = $rootScope.currentUser;
     $scope.categories = $rootScope.categories;
     $scope.categoryPriorities = $rootScope.categoryPriorities;
+    $scope.permissions = angular.copy($rootScope.permissions);
 
     // inherited functions
     $scope.searchMods = modService.searchMods;
@@ -106,10 +107,10 @@ app.controller('editModController', function($scope, $rootScope, $state, modObje
         src: $scope.mod.image
     };
 
-    // permission handling
-    //a copy is created so the original permissions are never changed
-    $scope.permissions = angular.copy($rootScope.permissions);
-    //setting up the canManageOptions permission
+    // shared function setup
+    eventHandlerFactory.buildMessageHandlers($scope);
+
+    // set up the canManageOptions permission
     var author = $scope.mod.mod_authors.find(function(author) {
         return author.user_id == $scope.currentUser.id;
     });
@@ -117,288 +118,6 @@ app.controller('editModController', function($scope, $rootScope, $state, modObje
     var isContributor = author && author.role == 'contributor';
     $scope.permissions.canManageOptions = $scope.permissions.canModerate || isAuthor ||
         !$scope.mod.disallow_contributors && isContributor;
-
-    // display error messages
-    $scope.$on('errorMessage', function(event, params) {
-        if (params.label && params.response) {
-            var errors = errorService.errorMessages(params.label, params.response);
-            errors.forEach(function(error) {
-                $scope.$broadcast('message', error);
-            });
-        } else {
-            $scope.$broadcast('message', params);
-        }
-        // stop event propagation - we handled it
-        event.stopPropagation();
-    });
-
-    // display success message
-    $scope.$on('successMessage', function(event, text) {
-        var successMessage = {type: "success", text: text};
-        $scope.$broadcast('message', successMessage);
-        // stop event propagation - we handled it
-        event.stopPropagation();
-    });
-
-    /* sources */
-    $scope.addSource = function() {
-        if ($scope.sources.length == $scope.sites.length)
-            return;
-        $scope.sources.push({
-            label: "Nexus Mods",
-            url: ""
-        });
-    };
-
-    $scope.removeSource = function(source) {
-        var index = $scope.sources.indexOf(source);
-        $scope.sources.splice(index, 1);
-    };
-
-    $scope.validateSource = function(source) {
-        var site = sitesFactory.getSite(source.label);
-        var sourceIndex = $scope.sources.indexOf(source);
-        var sourceUsed = $scope.sources.find(function(item, index) {
-            return index != sourceIndex && item.label === source.label
-        });
-        var match = source.url.match(site.modUrlFormat);
-        source.valid = !sourceUsed && match != null;
-    };
-
-    $scope.scrapeSource = function(source) {
-        // exit if the source is invalid
-        var site = sitesFactory.getSite(source.label);
-        var match = source.url.match(site.modUrlFormat);
-        if (!match) {
-            return;
-        }
-
-        var gameId = window._current_game_id;
-        var modId = match[2];
-        source.scraped = true;
-        switch(source.label) {
-            case "Nexus Mods":
-                $scope.nexus = {};
-                $scope.nexus.scraping = true;
-                scrapeService.scrapeNexus(gameId, modId).then(function (data) {
-                    $scope.nexus = data;
-                });
-                break;
-            case "Lover's Lab":
-                $scope.lab = {};
-                $scope.lab.scraping = true;
-                scrapeService.scrapeLab(modId).then(function (data) {
-                    $scope.lab = data;
-                });
-                break;
-            case "Steam Workshop":
-                $scope.workshop = {};
-                $scope.workshop.scraping = true;
-                scrapeService.scrapeWorkshop(modId).then(function (data) {
-                    $scope.workshop = data;
-                });
-                break;
-        }
-    };
-
-    /* custom sources */
-    $scope.addCustomSource = function() {
-        $scope.customSources.push({
-            label: "Custom",
-            url: ""
-        });
-    };
-
-    $scope.removeCustomSource = function(source) {
-        if (source.id) {
-            source._destroy = true;
-        } else {
-            var index = $scope.customSources.indexOf(source);
-            $scope.customSources.splice(index, 1);
-        }
-    };
-
-    $scope.validateCustomSource = function(source) {
-        source.valid = (source.label.length > 4) && (source.url.length > 12);
-    };
-
-    /* analysis */
-    $scope.changeAnalysisFile = function(event) {
-        var input = event.target;
-        if (input.files && input.files[0]) {
-            $scope.loadAnalysisFile(input.files[0]);
-        }
-    };
-
-    $scope.browseAnalysisFile = function() {
-        document.getElementById('analysis-input').click();
-    };
-
-    $scope.getRequirementsFromAnalysis = function() {
-        // build list of masters
-        var masters = [];
-        $scope.mod.analysis.plugins.forEach(function(plugin) {
-            plugin.master_plugins.forEach(function(master) {
-                if (masters.indexOf(master.filename) == -1) {
-                    masters.push(master.filename);
-                }
-            });
-        });
-        // load requirements from masters
-        masters.forEach(function(filename) {
-            $scope.addRequirementFromPlugin(filename);
-        });
-    };
-
-    $scope.loadAnalysisFile = function(file) {
-        var fileReader = new FileReader();
-        fileReader.onload = function (event) {
-            var fixedJson = event.target.result.replace('"plugin_record_groups"', '"plugin_record_groups_attributes"').replace('"plugin_errors"', '"plugin_errors_attributes"').replace('"overrides"', '"overrides_attributes"');
-            var analysis = JSON.parse(fixedJson);
-            analysis.nestedAssets = assetUtils.convertDataStringToNestedObject(analysis.assets);
-            $scope.mod.analysis = analysis;
-            $scope.getRequirementsFromAnalysis();
-            $scope.$apply();
-        };
-        fileReader.readAsText(file);
-    };
-
-    /* mod authors */
-    $scope.addAuthor = function() {
-        $scope.mod.mod_authors.push({
-            role: "author",
-            user: {}
-        });
-    };
-
-    $scope.removeAuthor = function(author) {
-        if (author.id) {
-            author._destroy = true;
-        } else {
-            var index = $scope.mod.mod_authors.indexOf(author);
-            $scope.mod.mod_authors.splice(index, 1);
-        }
-    };
-
-    /* requirements */
-    $scope.addRequirement = function() {
-        $scope.mod.requirements.push({});
-    };
-
-    $scope.removeRequirement = function(requirement) {
-        if (requirement.id) {
-            requirement._destroy = true;
-        } else {
-            var index = $scope.mod.requirements.indexOf(requirement);
-            $scope.mod.requirements.splice(index, 1);
-        }
-    };
-
-    /* config files */
-    $scope.addConfigFile = function() {
-        $scope.mod.config_files.push({
-            filename: "Config.ini",
-            install_path: "{{GamePath}}"
-        });
-    };
-
-    $scope.removeConfigFile = function(config_file) {
-        if (config_file.id) {
-            config_file._destroy = true;
-        } else {
-            var index = $scope.mod.config_files.indexOf(config_file);
-            $scope.mod.config_files.splice(index, 1);
-        }
-    };
-
-    /* categories */
-    $scope.getDominantIds = function(recessiveId) {
-        var dominantIds = [];
-        for (var i = 0; i < $scope.categoryPriorities.length; i++) {
-            var priority = $scope.categoryPriorities[i];
-            if (priority.recessive_id == recessiveId) {
-                dominantIds.push(priority.dominant_id);
-            }
-        }
-        return dominantIds;
-    };
-
-    $scope.getCategoryPriority = function(recessiveId, dominantId) {
-        for (var i = 0; i < $scope.categoryPriorities.length; i++) {
-            var priority = $scope.categoryPriorities[i];
-            if (priority.recessive_id == recessiveId &&
-                priority.dominant_id == dominantId)
-                return priority;
-        }
-    };
-
-    $scope.createPriorityMessage = function(recessiveId, dominantId) {
-        var recessiveCategory = categoryService.getCategoryById(categories, recessiveId);
-        var dominantCategory = categoryService.getCategoryById(categories, dominantId);
-        var categoryPriority = $scope.getCategoryPriority(recessiveId, dominantId);
-        var messageText = dominantCategory.name + " > " + recessiveCategory.name + "\n" + categoryPriority.description;
-        $scope.categoryMessages.push({
-            text: messageText,
-            klass: "priority-message"
-        });
-    };
-
-    $scope.getSuperCategories = function() {
-        var superCategories = [];
-        $scope.mod.categories.forEach(function (id) {
-            var superCategory = categoryService.getCategoryById(categories, id).parent_id;
-            if (superCategory && superCategories.indexOf(superCategory) == -1) {
-                superCategories.push(superCategory);
-            }
-        });
-        return superCategories;
-    };
-
-    $scope.checkCategories = function() {
-        $scope.categoryMessages = [];
-        var selectedCategories = Array.prototype.concat($scope.getSuperCategories(), $scope.mod.categories);
-        selectedCategories.forEach(function(recessiveId) {
-            dominantIds = $scope.getDominantIds(recessiveId);
-            dominantIds.forEach(function(dominantId) {
-                var index = selectedCategories.indexOf(dominantId);
-                if (index > -1) {
-                    $scope.createPriorityMessage(recessiveId, dominantId);
-                }
-            });
-        });
-        if ($scope.mod.categories.length > 2) {
-            $scope.categoryMessages.push({
-                text: "You have too many categories selected. \nThe maximum number of categories allowed is 2.",
-                klass: "cat-error-message"
-            });
-        } else if ($scope.mod.categories.length == 0) {
-            $scope.categoryMessages.push({
-                text: "You must select at least one category.",
-                klass: "cat-error-message"
-            });
-        } else if ($scope.categoryMessages.length == 0) {
-            $scope.categoryMessages.push({
-                text: "Categories look good!",
-                klass: "cat-success-message"
-            });
-            var primaryCategory = categoryService.getCategoryById(categories, $scope.mod.categories[0]);
-            $scope.categoryMessages.push({
-                text: "Primary Category: " + primaryCategory.name,
-                klass: "cat-success-message"
-            });
-            if ($scope.mod.categories.length > 1) {
-                var secondaryCategory = categoryService.getCategoryById(categories, $scope.mod.categories[1]);
-                $scope.categoryMessages.push({
-                    text: "Secondary Category: " + secondaryCategory.name,
-                    klass: "cat-success-message"
-                });
-            }
-        }
-    };
-
-    $scope.swapCategories = function() {
-        $scope.mod.categories.reverse();
-    };
 
     $scope.$watch('mod.categories', function() {
         // clear messages when user changes the category
@@ -413,7 +132,6 @@ app.controller('editModController', function($scope, $rootScope, $state, modObje
         $scope.mod.secondary_category_id = $scope.mod.categories[1];
     }, true);
 
-    /* submission */
     // validate the mod
     $scope.modValid = function() {
         // main source validation

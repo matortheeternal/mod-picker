@@ -9,21 +9,22 @@
                 <h3 class="big-username">{{user.username}}</h3>
                 <section>
                     <div class="user-title">{{user.title}}</div>
-                    <div class="user-role {{roleClass}}">{{user.role}}</div>
+                    <div class="user-role {{roleClass}}">{{roleTexts[user.role]}}</div>
                 </section>
 
                 <h3 class="section-title">Reputation</h3>
                 <section>
                     <div class="stat-item reputation">
-                        {{user.reputation.overall | number}}
-                        <div class="action-box" ng-click="endorse()" ng-if="permissions.canEndorse || user.endorsed">
+                        {{user.reputation.overall | number:0}}
+                        <div class="action-box" ng-click="endorse()" ng-if="!isCurrentUser && permissions.canEndorse || user.endorsed">
                             <i class="fa {{user.endorsed ? 'fa-heart' : 'fa-heart-o'}}" aria-hidden="true"></i>
-                            {{user.endorsed ? 'Take Back Reputation' : 'Give Reputation' }}
+                            {{user.endorsed ? 'Unendorse' : 'Endorse' }}
                         </div>
 
-                        <div class="action-box no-action" ng-if="!(permissions.canEndorse || user.endorsed)">
+                        <!-- TODO: Add a helpful title here saying why the current user cannot endorse this user -->
+                        <div class="action-box no-action" ng-if="!permissions.canEndorse">
                             <!-- TODO: have this link to a page with all of the current user's endorsements -->
-                            You can't endorse any more people
+                            Cannot Endorse
                         </div>
                     </div>
                 </section>
@@ -87,11 +88,9 @@
             </div>
             <div class="right-column tabs-column right-user-column">
                 <tabs tabs="tabs"></tabs>
-                <state-loader spinner-class="big-spinner">
-                    <div class="tab">
-                        <tab-views></tab-views>
-                    </div>
-                </state-loader>
+                <div class="tab">
+                    <tab-views></tab-views>
+                </div>
             </div>
         </div>
     </loader>

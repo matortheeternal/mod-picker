@@ -4,9 +4,10 @@
             <i class="fa fa-plus"></i> New Comment
         </span>
     </div>
-    <loader data="mod_list.comments && commentsReady" spinner-class="big-spinner" content-class="content-container">
+    <loader data="mod_list.comments && commentsReady" spinner-class="big-spinner" content-class="content-container" ng-if="!errors.comments">
         <comments comments="mod_list.comments" current-user="currentUser" model-name="'ModList'" target="mod_list"></comments>
 
         <page-results pages="pages.comments" data="mod_list.comments" callback="retrieveComments"></page-results>
     </loader>
+    <error-display content-class="content-container" label="mod list comments" errors="errors.comments"></error-display>
 </div>

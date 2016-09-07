@@ -1,9 +1,11 @@
 class AgreementMark < ActiveRecord::Base
+  include ScopeHelpers
+
   self.primary_keys = :correction_id, :submitted_by
 
   # SCOPES
-  scope :submitter, -> (id) { where(submitted_by: id) }
-  scope :corrections, -> (ids) { where(correction_id: ids) }
+  ids_scope :correction_id
+  value_scope :submitted_by, :alias => 'submitter'
 
   # ASSOCIATIONS
   belongs_to :submitter, :class_name => 'User', :foreign_key => 'submitted_by', :inverse_of => 'agreement_marks'

@@ -7,29 +7,14 @@ app.directive('appealsModal', function () {
     };
 });
 
-app.controller('appealsModalController', function ($scope, contributionService, errorService) {
+app.controller('appealsModalController', function ($scope, contributionService, contributionFactory, eventHandlerFactory) {
+    // shared function setup
+    eventHandlerFactory.buildModalMessageHandlers($scope);
+
     // compute agree percentage helper
     $scope.computeAgreePercentage = function(appeal) {
         return (appeal.agree_count / ((appeal.agree_count + appeal.disagree_count) || 1)) * 100;
     };
-
-    // display error messages
-    $scope.$on('modalErrorMessage', function(event, params) {
-        var errors = errorService.errorMessages(params.label, params.response);
-        errors.forEach(function(error) {
-            $scope.$broadcast('modalMessage', error);
-        });
-        // stop event propagation - we handled it
-        event.stopPropagation();
-    });
-
-    // display success message
-    $scope.$on('modalSuccessMessage', function(event, text) {
-        var successMessage = {type: "success", text: text};
-        $scope.$broadcast('modalMessage', successMessage);
-        // stop event propagation - we handled it
-        event.stopPropagation();
-    });
 
     // start a new appeal
     $scope.startNewAppeal = function() {
@@ -37,7 +22,7 @@ app.controller('appealsModalController', function ($scope, contributionService, 
         statuses.splice(statuses.indexOf($scope.mod.status) || 0, 1);
         // TODO: Remove statuses that already have open appeals as well
         $scope.activeAppeal = {
-            text_body: "", // TODO: Get template from the contributionFactory
+            text_body: contributionFactory.getDefaultTextBody("Appeal"),
             mod_status: statuses[0]
         };
 
@@ -61,7 +46,6 @@ app.controller('appealsModalController', function ($scope, contributionService, 
     };
 
     $scope.retrieveAppealComments = function(page) {
-        // TODO: Make options dynamic
         var options = {
             sort: {
                 column: 'submitted',

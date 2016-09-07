@@ -1,11 +1,12 @@
 class HelpfulMark < ActiveRecord::Base
-  include Filterable
+  include Filterable, ScopeHelpers
   
   self.primary_keys = :submitted_by, :helpfulable_id, :helpfulable_type
 
   # SCOPES
-  scope :submitter, -> (id) { where(submitted_by: id) }
-  scope :helpfulable, -> (model, ids) { where(helpfulable_type: model, helpfulable_id: ids) }
+  value_scope :submitted_by, :alias => 'submitter'
+  value_scope :helpful
+  polymorphic_scope :helpfulable
 
   # ASSOCIATIONS
   belongs_to :helpfulable, :polymorphic => true

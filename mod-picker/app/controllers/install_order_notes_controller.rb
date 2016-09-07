@@ -8,7 +8,7 @@ class InstallOrderNotesController < ContributionsController
     count = InstallOrderNote.accessible_by(current_ability).filter(filtering_params).count
 
     # prepare helpful marks
-    helpful_marks = HelpfulMark.submitter(current_user.id).helpfulable("InstallOrderNote", @install_order_notes.ids)
+    helpful_marks = HelpfulMark.submitter(current_user.id).helpfulables("InstallOrderNote", @install_order_notes.ids)
 
     # render response
     render :json => {

@@ -1,12 +1,18 @@
 app.service('contributionFactory', function() {
     var models = [{
+        name: "Appeal",
+        label: "Appeals",
+        route: "corrections",
+        template: "## Description\r\n*Why should the mod have this new status?  What has changed from the past, if anything?  If suggesting the mod be marked as unstable, explain what aspects of the mod are unstable and the severity of the issues.  If suggesting the mod be marked as outdated note the issues with this mod and the available alternatives.*\r\n\r\n"
+    }, {
         name: "Review",
         label: "Review",
         route: "reviews"
     }, {
         name: "Correction",
         label: "Correction",
-        route: "corrections"
+        route: "corrections",
+        template: "## Description\r\n*What is is incorrect, inaccurate, or in need of improvement?*\r\n\r\n"
     }, {
         name: "CompatibilityNote",
         label: "Compatibility Note",

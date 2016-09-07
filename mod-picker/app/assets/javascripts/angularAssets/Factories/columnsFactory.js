@@ -274,6 +274,10 @@ app.service('columnsFactory', function() {
                 required: true,
                 label: "Username",
                 data: "username",
+                image: function(user) {
+                    return user.avatar || ('/users/' + user.title + '.png');
+                },
+                imageClass: "avatar-small",
                 link: function(user) {
                     return "#/user/" + user.id
                 }
@@ -310,6 +314,7 @@ app.service('columnsFactory', function() {
                 visibility: true,
                 label: "Reputation",
                 data: "reputation.overall",
+                sortData: "user_reputations.overall",
                 filter: "number:0"
             },
             {

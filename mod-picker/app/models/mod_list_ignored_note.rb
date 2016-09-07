@@ -2,10 +2,10 @@ class ModListIgnoredNote < ActiveRecord::Base
   belongs_to :mod_list, :inverse_of => 'ignored_notes'
   belongs_to :note, :polymorphic => true
 
-  # Validations
+  # VALIDATIONS
   validates :mod_list_id, :note_id, :note_type, presence: true
 
-  # Callbacks
+  # CALLBACKS
   after_create :increment_counters
   before_destroy :decrement_counters
 

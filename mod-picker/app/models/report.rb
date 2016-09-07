@@ -8,7 +8,7 @@ class Report < ActiveRecord::Base
   validates :base_report_id, :submitted_by, :report_type, presence: true
   validates :note, length: {maximum: 128}
 
-  # Callbacks
+  # CALLBACKS
   after_create :increment_counters
   before_destroy :decrement_counters
   before_save :set_dates

@@ -402,6 +402,26 @@
 }
 
 // analysis tab
+.mod-options-selection {
+  width: 100%;
+  border: 1px solid $border_color;
+  background-color: $primary_background;
+  padding: 12px 16px;
+  margin-bottom: 20px;
+
+  strong {
+    color: $h4_color;
+    display: block;
+    margin-bottom: 8px;
+  }
+
+  label {
+    display: inline-block;
+    margin-right: 16px;
+    min-width: 235px;
+  }
+}
+
 .content-block {
   .analysis-container {
     max-height: 500px;

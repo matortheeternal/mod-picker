@@ -146,6 +146,17 @@ app.service('objectUtils', function () {
         return true;
     };
 
+    this.remapProperties = function(json, map) {
+        for (var property in map) {
+            if (map.hasOwnProperty(property)) {
+                var oldVal = property.surround('"');
+                var newVal = map[property].surround('"');
+                json = json.replace(new RegExp(oldVal, 'g'), newVal);
+            }
+        }
+        return json;
+    };
+
     this.deleteEmptyProperties = function(obj, recurse) {
         for (var property in obj) {
             if (obj.hasOwnProperty(property)) {

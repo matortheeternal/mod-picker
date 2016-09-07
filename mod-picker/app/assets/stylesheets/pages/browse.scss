@@ -7,8 +7,15 @@
   margin: 0;
 }
 
-.half-box {
-  width: 45%;
+.list-title {
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 12px;
+  display: block;
+}
+
+.third-box {
+  width: 32%;
   display: inline-block;
 }
 
@@ -139,6 +146,15 @@ table.browse-table {
 
       &:hover {
         color: $link_hover_color_primary;
+      }
+
+      img, span {
+        display: inline-block;
+        vertical-align: middle;
+      }
+
+      img {
+        margin-right: 8px;
       }
     }
   }

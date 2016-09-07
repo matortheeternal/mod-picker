@@ -11,9 +11,10 @@
             <i class="fa fa-plus"></i> New Comment
         </span>
     </div>
-    <loader data="user.profile_comments" spinner-class="big-spinner" content-class="content-container">
+    <loader data="user.profile_comments" spinner-class="big-spinner" content-class="content-container" ng-if="!errors.comments">
         <comments comments="user.profile_comments" current-user="currentUser" model-name="'User'" target="user"></comments>
 
         <page-results pages="pages.profile_comments" data="user.profile_comments" callback="retrieveProfileComments"></page-results>
     </loader>
+    <error-display content-class="content-container" errors="errors.comments" label="profile comments"></error-display>
 </div>

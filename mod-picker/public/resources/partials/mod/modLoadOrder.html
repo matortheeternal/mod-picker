@@ -72,8 +72,4 @@
     <page-results pages="pages.load_order_notes" data="mod.load_order_notes" callback="retrieveLoadOrderNotes"></page-results>
 </loader>
 
-<div class="content-message content-error" ng-if="errors.load_order_notes">
-    There was an error retrieving load order notes for this mod.<br>
-    <!--TODO: Render JSON errors here, if available?-->
-    Error {{errors.load_order_notes.status}}: {{errors.load_order_notes.statusText}}
-</div>
+<error-display content-class="content-message content-error" errors="errors.load_order_notes" label="load order notes for this mod"></error-display>

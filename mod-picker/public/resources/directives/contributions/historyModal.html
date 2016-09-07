@@ -60,10 +60,6 @@
             </table>
         </loader>
 
-        <div class="content-message content-error" ng-if="errors.history">
-            There was an error retrieving history for this contribution.<br>
-            <!--TODO: Render JSON errors here, if available?-->
-            Error {{errors.history.status}}: {{errors.history.statusText}}
-        </div>
+        <error-display content-class="content-message content-error" errors="errors.history" label="history for this contribution"></error-display>
     </div>
 </div>

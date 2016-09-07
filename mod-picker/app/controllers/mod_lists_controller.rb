@@ -39,7 +39,7 @@ class ModListsController < ApplicationController
     authorize! :read, @mod_list
 
     # prepare primary data
-    tools = @mod_list.mod_list_mods.utility(true).includes(:mod => :required_mods).order(:index)
+    tools = @mod_list.mod_list_mods.utility(true).includes(:mod_list_mod_options, :mod => :mod_options).order(:index)
     custom_tools = @mod_list.custom_mods.utility(true)
     groups = @mod_list.mod_list_groups.where(tab: 0).order(:index)
 
@@ -57,7 +57,7 @@ class ModListsController < ApplicationController
     authorize! :read, @mod_list
 
     # prepare primary data
-    mods = @mod_list.mod_list_mods.utility(false).includes(:mod).order(:index)
+    mods = @mod_list.mod_list_mods.utility(false).includes(:mod_list_mod_options, :mod => :mod_options).order(:index)
     custom_mods = @mod_list.custom_mods.utility(false)
     groups = @mod_list.mod_list_groups.where(tab: 1).order(:index)
 
@@ -66,8 +66,8 @@ class ModListsController < ApplicationController
     install_order_notes = @mod_list.install_order_notes
 
     # prepare helpful marks
-    c_helpful_marks = HelpfulMark.submitter(current_user.id).helpfulable("CompatibilityNote", compatibility_notes.ids)
-    i_helpful_marks = HelpfulMark.submitter(current_user.id).helpfulable("InstallOrderNote", install_order_notes.ids)
+    c_helpful_marks = HelpfulMark.submitter(current_user.id).helpfulables("CompatibilityNote", compatibility_notes.ids)
+    i_helpful_marks = HelpfulMark.submitter(current_user.id).helpfulables("InstallOrderNote", install_order_notes.ids)
 
     # render response
     render :json => {
@@ -88,7 +88,7 @@ class ModListsController < ApplicationController
 
     # prepare primary data
     plugins = @mod_list.mod_list_plugins.includes(:plugin)
-    plugins_store = @mod_list.plugins.order(:mod_id)
+    plugins_store = @mod_list.plugins_store.order(:mod_option_id)
     custom_plugins = @mod_list.custom_plugins
     groups = @mod_list.mod_list_groups.where(tab: 2).order(:index)
 
@@ -97,8 +97,8 @@ class ModListsController < ApplicationController
     load_order_notes = @mod_list.load_order_notes
 
     # prepare helpful marks
-    c_helpful_marks = HelpfulMark.submitter(current_user.id).helpfulable("CompatibilityNote", compatibility_notes.ids)
-    l_helpful_marks = HelpfulMark.submitter(current_user.id).helpfulable("LoadOrderNote", load_order_notes.ids)
+    c_helpful_marks = HelpfulMark.submitter(current_user.id).helpfulables("CompatibilityNote", compatibility_notes.ids)
+    l_helpful_marks = HelpfulMark.submitter(current_user.id).helpfulables("LoadOrderNote", load_order_notes.ids)
 
     # render response
     render :json => {
@@ -315,7 +315,7 @@ class ModListsController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def mod_list_params
       params.require(:mod_list).permit(:game_id, :name, :description, :status, :visibility, :is_collection, :disable_comments, :lock_tags, :hidden,
-          :mod_list_mods_attributes => [:id, :group_id, :mod_id, :index, :_destroy],
+          :mod_list_mods_attributes => [:id, :group_id, :mod_id, :index, :_destroy, :mod_list_mod_options_attributes => [:id, :mod_option_id, :_destroy]],
           :custom_mods_attributes => [:id, :group_id, :is_utility, :index, :name, :description, :_destroy],
           :mod_list_plugins_attributes => [:id, :group_id, :plugin_id, :index, :cleaned, :merged, :_destroy],
           :custom_plugins_attributes => [:id, :group_id, :index, :cleaned, :merged, :compatibility_note_id, :filename, :description, :_destroy],

@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  before_action :set_user, only: [:show, :comments, :endorse, :unendorse]
+  before_action :set_user, only: [:show, :comments, :endorse, :unendorse, :mod_lists, :mods]
 
   # GET /users
   def index
@@ -70,6 +70,33 @@ class UsersController < ApplicationController
         render json: @reputation_link.errors, status: :unprocessable_entity
       end
     end
+  end
+
+  # GET /users/1/mod_lists
+  def mod_lists
+    authorize! :read, @user
+
+    favorite_mod_lists = @user.starred_mod_lists.accessible_by(current_ability)
+    authored_mod_lists = @user.mod_lists.accessible_by(current_ability)
+
+    render :json => {
+      favorites: favorite_mod_lists,
+      authored: authored_mod_lists
+    }
+  end
+
+  # GET /users/1/mods
+  def mods
+    authorize! :read, @user
+
+    favorite_mods = @user.starred_mods.includes(:author_users).accessible_by(current_ability)
+    authored_mods = @user.mods.includes(:author_users).accessible_by(current_ability)
+    sources = { :nexus => true, :lab => true, :workshop => true }
+
+    render :json => {
+        favorites: Mod.index_json(favorite_mods, sources),
+        authored: Mod.index_json(authored_mods, sources)
+    }
   end
 
   private

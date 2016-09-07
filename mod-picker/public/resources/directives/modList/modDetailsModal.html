@@ -1,0 +1,45 @@
+<div class="modal-container">
+    <messages event="modalMessage"></messages>
+
+    <!-- Custom Mod Details -->
+    <div class="modal huge-modal" ng-if="!detailsItem.mod">
+        <form>
+            <div class="close-modal">
+                <span class="fa fa-times" ng-click="toggleDetailsModal()"></span>
+            </div>
+
+            <h2 ng-show="editing">{{ detailsItem.is_utility ? 'Edit Custom Tool' : 'Edit Custom Mod' }}</h2>
+            <h2 ng-hide="editing">{{ detailsItem.is_utility ? 'Custom Tool Details' : 'Custom Mod Details' }}</h2>
+
+            <h3 class="section-title">Name</h3>
+            <section>
+                <input type="text" ng-model="detailsItem.name" ng-click="focusText($event)" spellcheck="false" ng-disabled="!editing">
+            </section>
+
+            <h3 class="section-title">Description</h3>
+            <section>
+                <textarea class="medium-text-area" ng-model="detailsItem.description" ng-disabled="!editing"></textarea>
+            </section>
+
+            <div class="action-button-container">
+                <input type="submit" class="btn action-btn" value="Close" ng-click="toggleDetailsModal()">
+            </div>
+        </form>
+    </div>
+
+    <!-- Mod Options -->
+    <div class="modal huge-modal" ng-if="detailsItem.mod">
+        <form>
+            <div class="close-modal">
+                <span class="fa fa-times" ng-click="toggleDetailsModal()"></span>
+            </div>
+
+            <h2 ng-show="editing">{{ detailsItem.is_utility ? 'Edit Tool Options' : 'Edit Mod Options' }}</h2>
+            <h2 ng-hide="editing">{{ detailsItem.is_utility ? 'View Tool Options' : 'View Mod Options' }}</h2>
+
+            <label class="manage-item" ng-repeat="option in detailsItem.mod.mod_options">
+                <input type="checkbox" ng-click="toggleOption(option)" ng-model="option.active" ng-disabled="!editing"/> {{option.name}}
+            </label>
+        </form>
+    </div>
+</div>

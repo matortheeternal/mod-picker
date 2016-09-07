@@ -78,12 +78,8 @@ app.controller('userSettingsModListsController', function($scope, $rootScope, $t
     });
 
     $scope.$on('deleteModList', function(event, modList) {
-        modListService.hide(modList.id, true).then(function() {
-            var model = modList.is_collection ? $scope.collections : $scope.mod_lists;
-            var index = model.findIndex(function(item) {
-                return item.id == modList.id;
-            });
-            model.splice(index, 1);
+        modListService.hideModList(modList.id, true).then(function() {
+            modList.hidden = true;
             if ($scope.activeModList && $scope.activeModList.id == modList.id) {
                 $rootScope.activeModList = null;
             }
@@ -98,7 +94,7 @@ app.controller('userSettingsModListsController', function($scope, $rootScope, $t
     });
 
     $scope.$on('recoverModList', function(event, modList) {
-        modListService.hide(modList.id, false).then(function() {
+        modListService.hideModList(modList.id, false).then(function() {
             modList.hidden = false;
             $scope.$emit('successMessage', 'Mod list recovered successfully.');
         }, function(response) {

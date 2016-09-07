@@ -131,8 +131,8 @@ class Ability
       can :update, UserBio, { :user_id => user.id }
 
       # abilities for mod authors
-      can :update, Mod, { :mod_authors => { :user_id => user.id } }
-      cannot :update, Mod, { :disallow_contributors => true, :mod_authors => { :user_id => user.id, :role => 1 } }
+      can [:update, :hide], Mod, { :mod_authors => { :user_id => user.id } }
+      cannot [:update, :hide], Mod, { :disallow_contributors => true, :mod_authors => { :user_id => user.id, :role => 1 } }
       can :destroy, ModRequirement, {:mod_version => {:mod => {:mod_authors => {:user_id => user.id } } } }
       can :destroy, ModTag, { :mod => { :mod_authors => { :user_id => user.id } } }
       can :update_authors, Mod, { :mod_authors => { :user_id => user.id, :role => 0 } }
@@ -168,6 +168,13 @@ class Ability
       if user.reputation.overall >= 1280
         can :set_custom_title, User, :id => user.id # can set a custom user title
       end
+    end
+
+    # Adult content filtering
+    if user.settings.present? && !user.settings.allow_adult_content
+      cannot :read, Mod, { :has_adult_content => true }
+      cannot :read, ModList, { :has_adult_content => true }
+      # TODO: filtering of contributions on mods with adult content
     end
   end
 end

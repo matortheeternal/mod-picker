@@ -1,5 +1,5 @@
 class User < ActiveRecord::Base
-  include Filterable, Sortable, RecordEnhancements, Imageable, Reportable
+  include Filterable, Sortable, RecordEnhancements, Imageable, Reportable, ScopeHelpers
 
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
@@ -8,33 +8,16 @@ class User < ActiveRecord::Base
 
   attr_accessor :login
 
-  # GENERAL SCOPES
-  scope :search, -> (search) { where("username like ?", "#{search}%") }
-  scope :linked, -> (search) { joins(:bio).where("nexus_username like ? OR lover_username like ? OR workshop_username like ?", "#{search}%", "#{search}%", "#{search}%") }
-  scope :roles, -> (roles_hash) {
-    # build roles array
-    roles = []
-    roles_hash.each_key do |key|
-      if roles_hash[key]
-        roles.push(key)
-      end
-    end
+  # SCOPES
+  search_scope :username, :alias => 'search'
+  hash_scope :role
+  counter_scope :authored_mods_count, :mod_lists_count, :comments_count, :reviews_count, :compatibility_notes_count, :install_order_notes_count, :load_order_notes_count, :corrections_count
+  range_scope :overall, :association => 'reputation', :table => 'user_reputations'
+  date_scope :joined
+  date_scope :last_sign_in_at, :alias => 'last_seen'
 
-    # return query
-    where(role: roles)
-  }
-  scope :reputation, -> (range) { joins(:reputation).where(:user_reputations => {:overall => range[:min]..range[:max]}) }
-  scope :joined, -> (range) { where(joined: parseDate(range[:min])..parseDate(range[:max])) }
-  scope :last_seen, -> (range) { where(last_sign_in_at: parseDate(range[:min])..parseDate(range[:max])) }
-  # STATISTIC SCOPES
-  scope :authored_mods, -> (range) { where(authored_mods_count: range[:min]..range[:max]) }
-  scope :mod_lists, -> (range) { where(mod_lists_count: range[:min]..range[:max]) }
-  scope :comments, -> (range) { where(comments_count: range[:min]..range[:max]) }
-  scope :reviews, -> (range) { where(reviews_count: range[:min]..range[:max]) }
-  scope :compatibility_notes, -> (range) { where(compatibility_notes_count: range[:min]..range[:max]) }
-  scope :install_order_notes, -> (range) { where(install_order_notes_count: range[:min]..range[:max]) }
-  scope :load_order_notes, -> (range) { where(load_order_notes_count: range[:min]..range[:max]) }
-  scope :corrections, -> (range) { where(corrections_count: range[:min]..range[:max]) }
+  # UNIQUE SCOPES
+  scope :linked, -> (search) { joins(:bio).where("nexus_username like :search OR lover_username like :search OR workshop_username like :search", search: "#{search}%") }
 
   # ASSOCIATIONS
   has_one :settings, :class_name => 'UserSetting', :dependent => :destroy
@@ -69,10 +52,10 @@ class User < ActiveRecord::Base
   belongs_to :active_mod_list, :class_name => 'ModList', :foreign_key => 'active_mod_list_id'
 
   has_many :mod_stars, :inverse_of => 'user'
-  has_many :starred_mods, :through => 'mod_stars'
+  has_many :starred_mods, :through => 'mod_stars', :source => 'mod'
 
   has_many :mod_list_stars, :inverse_of => 'user'
-  has_many :starred_mod_lists, :through => 'mod_list_stars'
+  has_many :starred_mod_lists, :through => 'mod_list_stars', :source => 'mod_list'
 
   has_many :profile_comments, -> { where(parent_id: nil) }, :class_name => 'Comment', :as => 'commentable'
   has_many :reports, :foreign_key => 'submitted_by', :inverse_of => 'submitter'
@@ -82,7 +65,7 @@ class User < ActiveRecord::Base
   # number of users per page on the users index
   self.per_page = 50
 
-  # Validations
+  # VALIDATIONS
   validates :username, :email, :role, presence: true
   validates :username, uniqueness: { case_sensitive: false }, length: {in: 4..32 }
 
@@ -92,7 +75,7 @@ class User < ActiveRecord::Base
 
   validates :about_me, length: {maximum: 16384}
 
-  # Callbacks
+  # CALLBACKS
   after_create :create_associations
   after_initialize :init
 

@@ -55,20 +55,37 @@ form {
     display: none;
   }
 
-  .analysis-container {
-    max-height: 400px;
-    max-width: 750px;
-    overflow-y: auto;
+  .analysis-results {
+    .subtitle {
+      margin-bottom: 15px;
 
-    .plugin-analysis-item {
-      margin-bottom: 8px;
-
-      .stat-item {
-        padding-left: 30px;
-        margin-bottom: 4px;
-        max-width: 730px;
+      .default-option {
+        margin-left: 10px;
+        text-transform: none;
+        font-weight: normal;
       }
     }
+
+    strong {
+      margin-left: 10px;
+    }
+
+    .analysis-container {
+      max-height: 400px;
+      max-width: 750px;
+      overflow-y: auto;
+
+      .plugin-analysis-item {
+        margin-bottom: 8px;
+
+        .stat-item {
+          padding-left: 30px;
+          margin-bottom: 4px;
+          max-width: 730px;
+        }
+      }
+    }
+
   }
 
   .subsection {

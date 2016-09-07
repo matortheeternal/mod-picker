@@ -55,18 +55,6 @@ app.service('userService', function (backend, $q, userSettingsService, userTitle
         return output.promise;
     };
 
-    this.retrieveProfileComments = function(userId, options, pageInformation) {
-        var output = $q.defer();
-        backend.post('/users/' + userId + '/comments', options).then(function(response) {
-            userTitleService.associateTitles(response.comments);
-            pageUtils.getPageInformation(response, pageInformation, options.page);
-            output.resolve(response.comments);
-        }, function(response) {
-            output.reject(response);
-        });
-        return output.promise;
-    };
-
     this.getPermissions = function(user) {
         var permissions = {};
         var rep = user.reputation.overall;
@@ -97,5 +85,13 @@ app.service('userService', function (backend, $q, userSettingsService, userTitle
         } else {
             return backend.post('/users/' + userId + '/rep', {});
         }
+    };
+
+    this.retrieveUserModLists = function(userId) {
+        return backend.retrieve('/users/' + userId + '/mod_lists');
+    };
+
+    this.retrieveUserMods = function(userId) {
+        return backend.retrieve('/users/' + userId + '/mods');
     };
 });

@@ -1,11 +1,11 @@
 class NexusInfo < ActiveRecord::Base
   include Scrapeable
 
-  # Associations
+  # ASSOCIATIONS
   belongs_to :mod
   belongs_to :game, :inverse_of => 'nexus_infos'
 
-  # Validations
+  # VALIDATIONS
   validates :game_id, :mod_name, :uploaded_by, :authors, :released, presence: true
 
   def scrape
@@ -23,10 +23,12 @@ class NexusInfo < ActiveRecord::Base
 
   def after_scrape
     # update mod extra metrics
-    mod.compute_extra_metrics
-    if Rails.application.config.scrape_nexus_statistics && mod.reviews_count < 5
-      mod.compute_reputation
-      mod.save!
+    if mod_id.present?
+      mod.compute_extra_metrics
+      if Rails.application.config.scrape_nexus_statistics && mod.reviews_count < 5
+        mod.compute_reputation
+        mod.save!
+      end
     end
   end
 end

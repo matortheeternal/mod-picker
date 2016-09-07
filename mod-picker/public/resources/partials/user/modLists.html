@@ -1,0 +1,39 @@
+<loader data="authored_mod_lists" spinner-class="big-spinner" ng-if="!errors.mod_lists">
+    <div class="content-block">
+        <div class="content-title">
+            Authored Mod Lists
+        </div>
+        <div class="content-container table-container">
+            <table-results data="authored_mod_lists" message="No authored mod lists found."></table-results>
+        </div>
+    </div>
+
+    <div class="content-block">
+        <div class="content-title">
+            Authored Mod Collections
+        </div>
+        <div class="content-container table-container">
+            <table-results data="authored_collections" message="No authored mod collections found."></table-results>
+        </div>
+    </div>
+
+    <div class="content-block">
+        <div class="content-title">
+            Favorite Mod Lists
+        </div>
+        <div class="content-container table-container">
+            <table-results data="favorite_mod_lists" message="No favorite mod lists found."></table-results>
+        </div>
+    </div>
+
+    <div class="content-block">
+        <div class="content-title">
+            Favorite Mod Collections
+        </div>
+        <div class="content-container table-container">
+            <table-results data="favorite_collections" message="No favorite mod collections found."></table-results>
+        </div>
+    </div>
+</loader>
+
+<error-display content-class="content-message content-error" errors="errors.mod_lists" label="this user's mod lists"></error-display>

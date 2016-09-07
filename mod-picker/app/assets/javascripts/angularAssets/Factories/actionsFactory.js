@@ -59,7 +59,7 @@ app.service('actionsFactory', function() {
             caption: "Edit",
             title: "Edit this mod.",
             hidden: function($scope, item) {
-                var isAuthor = item.mod_authors.find(function(author) {
+                var isAuthor = item.author_users.find(function(author) {
                     return author.id == $scope.currentUser.id;
                 });
                 return !$scope.permissions.canModerate && !isAuthor;
@@ -72,13 +72,26 @@ app.service('actionsFactory', function() {
             title: "Hide this mod from public viewing.",
             class: 'red-box',
             hidden: function($scope, item) {
-                var isAuthor = item.mod_authors.find(function(author) {
+                var isAuthor = item.author_users.find(function(author) {
                     return author.id == $scope.currentUser.id;
                 });
-                return !$scope.permissions.canModerate && !isAuthor;
+                return item.hidden || !$scope.permissions.canModerate && !isAuthor;
             },
             execute: function($scope, item) {
                 $scope.$emit('hideMod', item);
+            }
+        }, {
+            caption: "Recover",
+            title: "Click here to recover this mod.",
+            class: 'green-box',
+            hidden: function($scope, item) {
+                var isAuthor = item.author_users.find(function(author) {
+                    return author.id == $scope.currentUser.id;
+                });
+                return !item.hidden || !$scope.permissions.canModerate && !isAuthor;
+            },
+            execute: function($scope, item) {
+                $scope.$emit('recoverMod', item);
             }
         }];
     };
@@ -142,7 +155,9 @@ app.service('actionsFactory', function() {
         }, {
             icon: "fa-gear",
             title: "View Details",
-            hidden: function($scope, item) { return !!item.mod },
+            hidden: function($scope, item) {
+                return item.mod && item.mod.mod_options.length < 2
+            },
             execute: function($scope, item) {
                 $scope.$emit('toggleDetailsModal', {visible: true, item: item});
             }
@@ -161,7 +176,9 @@ app.service('actionsFactory', function() {
         }, {
             icon: "fa-gear",
             title: "View Details",
-            hidden: function($scope, item) { return !!item.mod },
+            hidden: function($scope, item) {
+                return item.mod && item.mod.mod_options.length < 2
+            },
             execute: function($scope, item) {
                 $scope.$emit('toggleDetailsModal', {visible: true, item: item});
             }

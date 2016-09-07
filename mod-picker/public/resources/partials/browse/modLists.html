@@ -93,11 +93,7 @@
                     <page-results pages="pages" data="mod_lists" callback="getData"></page-results>
                 </loader>
 
-                <div class="content-message content-error" ng-if="error">
-                    There was an error retrieving Mod Lists.<br>
-                    <!--TODO: Render JSON errors here, if available?-->
-                    Error {{error.status}}: {{error.statusText}}
-                </div>
+                <error-display content-class="content-message content-error" errors="error" label="Mod Lists"></error-display>
             </div>
         </div>
     </div>
