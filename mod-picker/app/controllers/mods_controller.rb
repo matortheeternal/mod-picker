@@ -1,5 +1,5 @@
 class ModsController < ApplicationController
-  before_action :set_mod, only: [:update, :update_tags, :image, :corrections, :reviews, :compatibility_notes, :install_order_notes, :load_order_notes, :analysis, :destroy]
+  before_action :set_mod, only: [:edit, :update, :update_tags, :image, :corrections, :reviews, :compatibility_notes, :install_order_notes, :load_order_notes, :analysis, :destroy]
 
   # POST /mods
   # TODO: Adult content filtering
@@ -47,11 +47,10 @@ class ModsController < ApplicationController
     }
   end
 
-  # GET /mods/1/edit
-  def edit
-    @mod = Mod.find(params[:id])
-    authorize! :update, @mod, :message => "You are not allowed to edit this mod."
-    render :json => @mod.edit_json
+  # GET /mods/new
+  def new
+    authorize! :create, Mod
+    render json: {status: :ok}
   end
 
   # POST /mods/submit
@@ -66,6 +65,12 @@ class ModsController < ApplicationController
     else
       render json: builder.errors, status: :unprocessable_entity
     end
+  end
+
+  # GET /mods/1/edit
+  def edit
+    authorize! :update, @mod, :message => "You are not allowed to edit this mod."
+    render :json => @mod.edit_json
   end
 
   # PATCH/PUT /mods/1
