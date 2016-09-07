@@ -1,8 +1,20 @@
-def create_plugin(mod, dump_filename)
+def create_plugin(mod_option, dump_filename)
   file = File.read(Rails.root.join("db", "dumps", dump_filename))
   hash = JSON.parse(file).with_indifferent_access
-  hash[:game_id] = mod.game_id
-  mod.plugins.create(hash).save!
+  hash[:game_id] = mod_option.mod.game_id
+  mod_option.plugins.create(hash).save!
+end
+
+def create_option(mod)
+  mod.mod_options.create({
+      name: mod.name,
+      default: true
+  })
+end
+
+def create_tags(user, mod, tags)
+  builder = ModBuilder.new(user, {id: mod.id, tag_names: tags})
+  builder.update
 end
 
 def create_config_file(mod, config_filename, config_install_path)
@@ -1904,8 +1916,9 @@ def seed_official_content
   create_config_file(modSkyrim, "Skyrim.ini", "{{MyGamesFolder}}")
   create_config_file(modSkyrim, "SkyrimPrefs.ini", "{{MyGamesFolder}}")
   # Create plugins
-  create_plugin(modSkyrim, "Skyrim.esm.json")
-  create_plugin(modSkyrim, "Update.esm.json")
+  skyrimOption = create_option(modSkyrim)
+  create_plugin(skyrimOption, "Skyrim.esm.json")
+  create_plugin(skyrimOption, "Update.esm.json")
   modSkyrim.update_lazy_counters
 
   modDawnguard = Mod.create!(
@@ -1920,11 +1933,12 @@ def seed_official_content
       custom_sources_attributes: [{
           label: "Steam Store",
           url: "http://store.steampowered.com/app/211720/"
-      }],
-      tag_names: ["Vampires", "Dawnguard", "Werewolves", "Soul Cairn", "Dragonbone"]
+      }]
   )
+  create_tags(mator, modDawnguard, ["Vampires", "Dawnguard", "Werewolves", "Soul Cairn", "Dragonbone"])
   # Create plugins
-  create_plugin(modDawnguard, "Dawnguard.esm.json")
+  dawnguardOption = create_option(modDawnguard)
+  create_plugin(dawnguardOption, "Dawnguard.esm.json")
   modDawnguard.update_lazy_counters
 
   modHearthfire = Mod.create!(
@@ -1939,11 +1953,12 @@ def seed_official_content
       custom_sources_attributes: [{
           label: "Steam Store",
           url: "http://store.steampowered.com/app/220760/"
-      }],
-      tag_names: ["Building", "Family", "Marriage", "Adoption"]
+      }]
   )
+  create_tags(mator, modHearthfire, ["Building", "Family", "Marriage", "Adoption"])
   # Create plugins
-  create_plugin(modHearthfire, "HearthFires.esm.json")
+  hearthfireOption = create_option(modHearthfire)
+  create_plugin(hearthfireOption, "HearthFires.esm.json")
   modHearthfire.update_lazy_counters
 
   modDragonborn = Mod.create!(
@@ -1957,11 +1972,12 @@ def seed_official_content
       custom_sources_attributes: [{
           label: "Steam Store",
           url: "http://store.steampowered.com/app/211720/"
-      }],
-      tag_names: ["Solstheim", "Apocrypha", "Hermaeus Mora", "Shouts", "Stahlrim", "Nordic", "Bonemold", "Chitin"]
+      }]
   )
+  create_tags(mator, modDragonborn, ["Solstheim", "Apocrypha", "Hermaeus Mora", "Shouts", "Stahlrim", "Nordic", "Bonemold", "Chitin"])
   # Create plugins
-  create_plugin(modDragonborn, "Dragonborn.esm.json")
+  dragonbornOption = create_option(modDragonborn)
+  create_plugin(dragonbornOption, "Dragonborn.esm.json")
   modDragonborn.update_lazy_counters
 
   modHighRes = Mod.create!(
@@ -1975,13 +1991,14 @@ def seed_official_content
       custom_sources_attributes: [{
           label: "Steam Store",
           url: "http://store.steampowered.com/app/202485/"
-      }],
-      tag_names: ["1K", "Armor", "Weapons", "Architecture", "Actors", "Dungeons", "Terrain", "Clutter"]
+      }]
   )
+  create_tags(mator, modHighRes, ["1K", "Armor", "Weapons", "Architecture", "Actors", "Dungeons", "Terrain", "Clutter"])
   # Create plugins
-  create_plugin(modHighRes, "HighResTexturePack01.esp.json")
-  create_plugin(modHighRes, "HighResTexturePack02.esp.json")
-  create_plugin(modHighRes, "HighResTexturePack03.esp.json")
+  highResOption = create_option(modHighRes)
+  create_plugin(highResOption, "HighResTexturePack01.esp.json")
+  create_plugin(highResOption, "HighResTexturePack02.esp.json")
+  create_plugin(highResOption, "HighResTexturePack03.esp.json")
   modHighRes.update_lazy_counters
 
   puts "    #{Mod.count} official mods seeded"
