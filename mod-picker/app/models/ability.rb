@@ -127,8 +127,8 @@ class Ability
       can :update, UserBio, { :user_id => user.id }
 
       # abilities for mod authors
-      can :update, Mod, { :mod_authors => { :user_id => user.id } }
-      cannot :update, Mod, { :disallow_contributors => true, :mod_authors => { :user_id => user.id, :role => 1 } }
+      can [:update, :hide], Mod, { :mod_authors => { :user_id => user.id } }
+      cannot [:update, :hide], Mod, { :disallow_contributors => true, :mod_authors => { :user_id => user.id, :role => 1 } }
       can :destroy, ModRequirement, {:mod_version => {:mod => {:mod_authors => {:user_id => user.id } } } }
       can :destroy, ModTag, { :mod => { :mod_authors => { :user_id => user.id } } }
       can :update_authors, Mod, { :mod_authors => { :user_id => user.id, :role => 0 } }
