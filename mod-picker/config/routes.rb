@@ -39,6 +39,7 @@ Rails.application.routes.draw do
     # mods
     match '/mods/index', to: 'mods#index', via: [:get, :post]
     match '/mods/search', to: 'mods#search', via: [:post]
+    match '/mods/:id/hide', to: 'mods#hide', via: [:post]
     resources :mods, only: [:show, :new, :create, :edit, :update]
 
     # plugins

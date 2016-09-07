@@ -1,8 +1,7 @@
 class ModsController < ApplicationController
-  before_action :set_mod, only: [:edit, :update, :update_tags, :image, :corrections, :reviews, :compatibility_notes, :install_order_notes, :load_order_notes, :analysis, :destroy]
+  before_action :set_mod, only: [:edit, :update, :hide, :update_tags, :image, :corrections, :reviews, :compatibility_notes, :install_order_notes, :load_order_notes, :analysis, :destroy]
 
   # POST /mods
-  # TODO: Adult content filtering
   def index
     @mods = Mod.includes(:author_users).accessible_by(current_ability).filter(filtering_params).sort(params[:sort]).paginate(:page => params[:page])
     count =  Mod.accessible_by(current_ability).filter(filtering_params).count
@@ -87,6 +86,17 @@ class ModsController < ApplicationController
       render json: {status: :ok}
     else
       render json: builder.errors, status: :unprocessable_entity
+    end
+  end
+
+  # POST /mods/1/hide
+  def hide
+    authorize! :hide, @mod
+    @mod.hidden = params[:hidden]
+    if @mod.save
+      render json: {status: :ok}
+    else
+      render json: @mod.errors, status: :unprocessable_entity
     end
   end
 
