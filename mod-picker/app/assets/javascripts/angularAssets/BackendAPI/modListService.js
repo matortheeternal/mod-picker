@@ -257,7 +257,7 @@ app.service('modListService', function (backend, $q, userTitleService, contribut
         return backend.post('/mod_lists/clone/' + modlist.id, {});
     };
 
-    this.hide = function(modListId, hidden) {
+    this.hideModList = function(modListId, hidden) {
         return backend.post('/mod_lists/' + modListId + '/hide', {hidden: hidden});
     };
 
