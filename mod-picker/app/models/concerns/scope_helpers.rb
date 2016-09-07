@@ -155,9 +155,10 @@ module ScopeHelpers
 
     def hash_scope(*attributes, **options)
       attributes.each do |attribute|
+        plural_attribute = attribute.to_s.pluralize
         column_name = options[:column] || attribute
         class_eval <<-buildscope
-          scope :#{attribute}, -> (hash) {
+          scope :#{plural_attribute}, -> (hash) {
             array = []
             hash.each_key{ |key| array.push(key) if hash[key] }
             where(#{column_name}: array)
