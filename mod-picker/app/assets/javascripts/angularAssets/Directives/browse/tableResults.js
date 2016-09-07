@@ -85,7 +85,7 @@ app.controller('tableResultsController', function($scope, tableUtils, objectUtil
             } else {
                 $scope.sort.column = objectUtils.csv(column.data);
             }
-            $scope.sort.direction = column.up ? "asc" : "desc";
+            $scope.sort.direction = column.up ? "ASC" : "DESC";
         } else {
             delete $scope.sort.column;
             delete $scope.sort.direction;
