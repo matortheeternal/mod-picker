@@ -131,11 +131,7 @@
                     <page-results pages="pages" data="mods" callback="getMods"></page-results>
                 </loader>
 
-                <div class="content-message content-error" ng-if="error">
-                    There was an error retrieving Mods.<br>
-                    <!--TODO: Render JSON errors here, if available?-->
-                    Error {{error.status}}: {{error.statusText}}
-                </div>
+                <error-display content-class="content-message content-error" errors="error" label="Mods"></error-display>
             </div>
         </div>
     </div>

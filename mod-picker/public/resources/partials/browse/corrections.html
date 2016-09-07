@@ -127,11 +127,7 @@
                     <page-results pages="pages" data="corrections" callback="getData"></page-results>
                 </loader>
 
-                <div class="content-message content-error" ng-if="error">
-                    There was an error retrieving Corrections.<br>
-                    <!--TODO: Render JSON errors here, if available?-->
-                    Error {{error.status}}: {{error.statusText}}
-                </div>
+                <error-display content-class="content-message content-error" errors="error" label="Corrections"></error-display>
             </div>
         </div>
     </div>
