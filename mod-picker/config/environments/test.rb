@@ -16,7 +16,8 @@ Rails.application.configure do
   config.serve_static_files   = true
   config.static_cache_control = 'public, max-age=3600'
 
-
+  # Disable scheduled tasks in test environment
+  config.enable_scheduler = false
 
   # Mailer options
   # We really do care if the mailer can't send.
