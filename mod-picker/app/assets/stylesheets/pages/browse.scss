@@ -147,6 +147,15 @@ table.browse-table {
       &:hover {
         color: $link_hover_color_primary;
       }
+
+      img, span {
+        display: inline-block;
+        vertical-align: middle;
+      }
+
+      img {
+        margin-right: 8px;
+      }
     }
   }
 
