@@ -37,9 +37,9 @@ module ScopeHelpers
       attributes.each do |attribute|
         scope_name = options[:alias] || 'include_' + attribute.to_s
         value = options[:value] || 'false'
-        class_eval <<-buildscope
-          scope :#{scope_name}, -> (bool) { where(#{attribute}: #{value}) if !bool }
-        buildscope
+        class_eval do
+          scope scope_name.to_sym, -> (bool) { where(attribute => value) if !bool }
+        end
       end
     end
 
@@ -48,14 +48,14 @@ module ScopeHelpers
         scope_name = options[:alias] ||attribute.to_s.remove('is_')
         if options[:association]
           table_name = options[:table] || options[:association].to_s.pluralize
-          class_eval <<-buildscope
-            scope :#{scope_name}, -> (value) { joins(:#{options[:association]}).
-              where(#{table_name}: {#{attribute}: value}) }
-          buildscope
+          class_eval do
+            scope scope_name.to_sym, -> (value) { joins(options[:association]).
+              where(table_name => {attribute => value}) }
+          end
         else
-          class_eval <<-buildscope
-            scope :#{scope_name}, -> (value) { where(#{attribute}: value) }
-          buildscope
+          class_eval do
+            scope scope_name.to_sym, -> (value) { where(attribute => value) }
+          end
         end
       end
     end
@@ -68,19 +68,19 @@ module ScopeHelpers
           options[:columns].each do |column|
             scope_wheres.push("#{column} IN (:ids)")
           end
-          class_eval <<-buildscope
-            scope :#{scope_name}, -> (ids) {
+          class_eval do
+            scope scope_name.to_sym, -> (ids) {
               where("#{scope_wheres.join(' OR ')}", ids: ids)
             }
-            scope :#{scope_name.pluralize}, -> (ids) {
+            scope scope_name.pluralize.to_sym, -> (ids) {
               where("#{scope_wheres.join(' AND ')}", ids: ids)
             }
-          buildscope
+          end
         else
           scope_name = attribute.to_s.remove('_id').pluralize
-          class_eval <<-buildscope
-            scope :#{scope_name}, -> (ids) { where(#{attribute}: ids) }
-          buildscope
+          class_eval do
+            scope scope_name.to_sym, -> (ids) { where(attribute => ids) }
+          end
         end
       end
     end
@@ -88,9 +88,9 @@ module ScopeHelpers
     def user_scope(*attributes, **options)
       attributes.each do |attribute|
         scope_name = options[:alias] || attribute
-        class_eval <<-buildscope
-          scope :#{scope_name}, -> (username) { joins(#{attribute}).where(:users => {:username => username}) }
-        buildscope
+        class_eval do
+          scope scope_name.to_sym, -> (username) { joins(attribute).where(:users => {:username => username}) }
+        end
       end
     end
 
@@ -100,14 +100,14 @@ module ScopeHelpers
         # TODO: Rename these scopes maybe?
         if options[:association]
           table_name = options[:table] || options[:association].to_s.pluralize
-          class_eval <<-buildscope
-          scope :#{scope_name}, -> (range) { joins(#{options[:associations]}).
-            where(#{table_name}: {#{attribute} => (range[:min]..range[:max])}) }
-          buildscope
+          class_eval do
+          scope scope_name.to_sym, -> (range) { joins(options[:associations]).
+            where(table_name => {attribute => (range[:min]..range[:max])}) }
+          end
         else
-          class_eval <<-buildscope
-          scope :#{scope_name}, -> (range) { where(#{attribute}: (range[:min]..range[:max])) }
-          buildscope
+          class_eval do
+          scope scope_name.to_sym, -> (range) { where(attribute => (range[:min]..range[:max])) }
+          end
         end
       end
     end
@@ -123,15 +123,15 @@ module ScopeHelpers
       if options[:combine]
         search_terms = []
         attributes.each { |attribute| search_terms.push("#{attribute} like :search")}
-        class_eval <<-buildscope
-            scope :search, -> (search) { where("#{search_terms.join(' OR ')}", search: "%#\{search\}%") }
-        buildscope
+        class_eval do
+            scope :search, -> (search) { where("#{search_terms.join(' OR ')}", search: "%#{search}%") }
+        end
       else
         attributes.each do |attribute|
           scope_name = options[:alias] || attribute
-          class_eval <<-buildscope
-            scope :#{scope_name}, -> (search) { where("#{attribute} like ?", "%#\{search\}%") }
-          buildscope
+          class_eval do
+            scope scope_name.to_sym, -> (search) { where("#{attribute} like ?", "%#{search}%") }
+          end
         end
       end
     end
@@ -157,13 +157,13 @@ module ScopeHelpers
       attributes.each do |attribute|
         plural_attribute = attribute.to_s.pluralize
         column_name = options[:column] || attribute
-        class_eval <<-buildscope
-          scope :#{plural_attribute}, -> (hash) {
+        class_eval do
+          scope plural_attribute.to_sym, -> (hash) {
             array = []
             hash.each_key{ |key| array.push(key) if hash[key] }
-            where(#{column_name}: array)
+            where(column_name => array)
           }
-        buildscope
+        end
       end
     end
 
@@ -172,27 +172,27 @@ module ScopeHelpers
       type_attribute = attribute.to_s + '_type'
       id_attribute = attribute.to_s + '_id'
       hash_scope attribute, :column => type_attribute
-      class_eval <<-buildscope
-        scope :#{plural_attribute}, -> (polymorphic_type, ids) {
-          where(#{type_attribute}: polymorphic_type, #{id_attribute}: ids)
+      class_eval do
+        scope plural_attribute.to_sym, -> (polymorphic_type, ids) {
+          where(type_attribute => polymorphic_type, id_attribute => ids)
         }
-      buildscope
+      end
     end
 
     def bytes_scope(*attributes, **options)
       attributes.each do |attribute|
-        class_eval <<-buildscope
-          scope :#{attribute}, -> (range) { where(#{attribute}: parse_bytes(range[:min])..parse_bytes(range[:max])) }
-        buildscope
+        class_eval do
+          scope attribute.to_sym, -> (range) { where(attribute => parse_bytes(range[:min])..parse_bytes(range[:max])) }
+        end
       end
     end
 
     def date_scope(*attributes, **options)
       attributes.each do |attribute|
         scope_name = options[:alias] || attribute
-        class_eval <<-buildscope
-          scope :#{scope_name}, -> (range) { where(#{attribute}: parse_date(range[:min])..parse_date(range[:max])) }
-        buildscope
+        class_eval do
+          scope scope_name.to_sym, -> (range) { where(attribute => parse_date(range[:min])..parse_date(range[:max])) }
+        end
       end
     end
   end
