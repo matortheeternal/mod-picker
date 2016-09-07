@@ -39,7 +39,7 @@ Rails.application.routes.draw do
     # mods
     match '/mods/index', to: 'mods#index', via: [:get, :post]
     match '/mods/search', to: 'mods#search', via: [:post]
-    resources :mods, only: [:show, :edit, :create, :update]
+    resources :mods, only: [:show, :new, :create, :edit, :update]
 
     # plugins
     match '/plugins', to: 'plugins#index', via: [:get, :post]
@@ -163,7 +163,7 @@ Rails.application.routes.draw do
     match '/articles/:id/comments', to: 'articles#comments', via: [:get, :post]
     match '/articles/:id/image', to: 'articles#image', via: [:post]
     match '/articles/index', to: 'articles#index', via: [:get, :post]
-    resources :articles, only: [:show, :create, :update, :destroy]
+    resources :articles, only: [:show, :new, :create, :edit, :update, :destroy]
   end
 
   # welcome page
