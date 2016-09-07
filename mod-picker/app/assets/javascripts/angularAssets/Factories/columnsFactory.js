@@ -314,6 +314,7 @@ app.service('columnsFactory', function() {
                 visibility: true,
                 label: "Reputation",
                 data: "reputation.overall",
+                sortData: "user_reputations.overall",
                 filter: "number:0"
             },
             {

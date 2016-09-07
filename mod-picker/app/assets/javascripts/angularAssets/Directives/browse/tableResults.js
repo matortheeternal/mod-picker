@@ -78,7 +78,7 @@ app.controller('tableResultsController', function($scope, tableUtils) {
 
         // send data to backend
         if (column.up || column.down) {
-            $scope.sort.column = column.data;
+            $scope.sort.column = column.sortData || column.data;
             $scope.sort.direction = column.up ? "asc" : "desc";
         } else {
             delete $scope.sort.column;
