@@ -88,7 +88,7 @@ app.service('actionsFactory', function() {
                 var isAuthor = item.author_users.find(function(author) {
                     return author.id == $scope.currentUser.id;
                 });
-                return !item.hidden || !$scope.permissions.canModerate && !isAuthor;;
+                return !item.hidden || !$scope.permissions.canModerate && !isAuthor;
             },
             execute: function($scope, item) {
                 $scope.$emit('recoverMod', item);
