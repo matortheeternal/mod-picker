@@ -1,6 +1,8 @@
 class Report < ActiveRecord::Base
   include RecordEnhancements
 
+  enum report_type: [:be_respectful, :be_trustworthy, :be_constructive, :no_spam, :no_piracy, :other]
+
   belongs_to :base_report, :inverse_of => 'reports'
   belongs_to :submitter, :class_name => 'User', :foreign_key => 'submitted_by', :inverse_of => 'reports'
 
