@@ -165,5 +165,12 @@ class Ability
         can :set_custom_title, User, :id => user.id # can set a custom user title
       end
     end
+
+    # Adult content filtering
+    if user.settings.present? && !user.settings.allow_adult_content
+      cannot :read, Mod, { :has_adult_content => true }
+      cannot :read, ModList, { :has_adult_content => true }
+      # TODO: filtering of contributions on mods with adult content
+    end
   end
 end
