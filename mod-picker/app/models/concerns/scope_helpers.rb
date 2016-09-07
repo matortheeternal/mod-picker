@@ -89,7 +89,9 @@ module ScopeHelpers
       attributes.each do |attribute|
         scope_name = options[:alias] || attribute
         class_eval do
-          scope scope_name.to_sym, -> (username) { joins(attribute).where(:users => {:username => username}) }
+          scope scope_name.to_sym, -> (username) {
+            joins(attribute).where(:users => {:username => username})
+          }
         end
       end
     end
@@ -106,7 +108,9 @@ module ScopeHelpers
           end
         else
           class_eval do
-          scope scope_name.to_sym, -> (range) { where(attribute => (range[:min]..range[:max])) }
+          scope scope_name.to_sym, -> (range) {
+            where(attribute => (range[:min]..range[:max]))
+          }
           end
         end
       end
@@ -124,13 +128,17 @@ module ScopeHelpers
         search_terms = []
         attributes.each { |attribute| search_terms.push("#{attribute} like :search")}
         class_eval do
-            scope :search, -> (search) { where("#{search_terms.join(' OR ')}", search: "%#{search}%") }
+            scope :search, -> (search) {
+              where("#{search_terms.join(' OR ')}", search: "%#{search}%")
+            }
         end
       else
         attributes.each do |attribute|
           scope_name = options[:alias] || attribute
           class_eval do
-            scope scope_name.to_sym, -> (search) { where("#{attribute} like ?", "%#{search}%") }
+            scope scope_name.to_sym, -> (search) {
+              where("#{attribute} like ?", "%#{search}%")
+            }
           end
         end
       end
@@ -182,7 +190,9 @@ module ScopeHelpers
     def bytes_scope(*attributes, **options)
       attributes.each do |attribute|
         class_eval do
-          scope attribute.to_sym, -> (range) { where(attribute => parse_bytes(range[:min])..parse_bytes(range[:max])) }
+          scope attribute.to_sym, -> (range) {
+            where(attribute => parse_bytes(range[:min])..parse_bytes(range[:max]))
+          }
         end
       end
     end
@@ -191,7 +201,9 @@ module ScopeHelpers
       attributes.each do |attribute|
         scope_name = options[:alias] || attribute
         class_eval do
-          scope scope_name.to_sym, -> (range) { where(attribute => parse_date(range[:min])..parse_date(range[:max])) }
+          scope scope_name.to_sym, -> (range) {
+            where(attribute => parse_date(range[:min])..parse_date(range[:max]))
+          }
         end
       end
     end
