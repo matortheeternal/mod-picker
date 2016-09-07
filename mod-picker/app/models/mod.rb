@@ -332,6 +332,30 @@ class Mod < ActiveRecord::Base
     end
   end
 
+  def self.sortable_columns
+    {
+        :except => [:game_id, :submitted_by, :primary_category_id, :secondary_category_id],
+        :include => {
+            :primary_category => {
+                :only => [:name]
+            },
+            :secondary_category => {
+                :only => [:name]
+            },
+            :nexus_infos => {
+                :except => [:game_id, :last_scraped, :mod_id, :mod_name]
+            },
+            :lover_infos => {
+                :except => [:game_id, :last_scraped, :mod_id, :mod_name]
+            },
+            :workshop_infos => {
+                :except => [:game_id, :last_scraped, :mod_id, :mod_name]
+            }
+
+        }
+    }
+  end
+
   private
     def decrement_counters
       self.submitter.update_counter(:submitted_mods_count, -1) if self.submitted_by.present?
