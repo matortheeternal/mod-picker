@@ -28,4 +28,31 @@ app.controller('userSettingsModsController', function($scope, columnsFactory, ac
 
     //retrieve the mod lists when the state is first loaded
     $scope.retrieveMods();
+
+    // action handlers
+    $scope.$on('hideMod', function(event, mod) {
+        modService.hideMod(mod.id, true).then(function() {
+            mod.hidden = true;
+            $scope.$emit('successMessage', 'Mod hidden successfully.');
+        }, function(response) {
+            var params = {
+                label: 'Error hiding mod',
+                response: response
+            };
+            $scope.$emit('errorMessage', params);
+        });
+    });
+
+    $scope.$on('recoverMod', function(event, mod) {
+        modService.hideMod(mod.id, false).then(function() {
+            mod.hidden = false;
+            $scope.$emit('successMessage', 'Mod recovered successfully.');
+        }, function(response) {
+            var params = {
+                label: 'Error recovering mod',
+                response: response
+            };
+            $scope.$emit('errorMessage', params);
+        });
+    });
 });
