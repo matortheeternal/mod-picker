@@ -42,7 +42,7 @@ class Plugin < ActiveRecord::Base
   self.per_page = 100
 
   # VALIDATIONS
-  validates :game_id, :mod_id, :filename, :crc_hash, :file_size, presence: true
+  validates :game_id, :mod_option_id, :filename, :crc_hash, :file_size, presence: true
 
   validates :filename, length: {maximum: 64}
   validates :author, length: {maximum: 128}
