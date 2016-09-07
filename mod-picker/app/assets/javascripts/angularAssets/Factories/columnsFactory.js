@@ -274,6 +274,10 @@ app.service('columnsFactory', function() {
                 required: true,
                 label: "Username",
                 data: "username",
+                image: function(user) {
+                    return user.avatar || ('/users/' + user.title + '.png');
+                },
+                imageClass: "avatar-small",
                 link: function(user) {
                     return "#/user/" + user.id
                 }
