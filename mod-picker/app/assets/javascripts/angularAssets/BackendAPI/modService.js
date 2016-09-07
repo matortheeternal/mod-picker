@@ -128,6 +128,10 @@ app.service('modService', function(backend, $q, pageUtils, objectUtils, contribu
         }
     };
 
+    this.hideMod = function(modId, hidden) {
+        return backend.post('/mods/' + modId + '/hide', {hidden: hidden});
+    };
+
     this.prepareModAuthors = function(mod) {
         var mod_authors = [];
         if (mod.mod_authors) {
