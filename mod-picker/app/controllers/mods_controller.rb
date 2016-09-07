@@ -332,6 +332,11 @@ class ModsController < ApplicationController
       params[:filters].slice(:search, :game, :utility, :include_games)
     end
 
+    # Params we allow sorting on
+    def sorting_params
+      params.fetch(:sort, {}).permit(:column, :direction)
+    end
+
     # Params we allow filtering on
     def filtering_params
       # construct valid filters array
