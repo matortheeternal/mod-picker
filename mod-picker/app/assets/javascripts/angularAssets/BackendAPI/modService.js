@@ -112,14 +112,12 @@ app.service('modService', function(backend, $q, pageUtils, objectUtils, contribu
         return output.promise;
     };
 
+    this.newMod = function() {
+        return backend.retrieve('/mods/new');
+    };
+
     this.editMod = function(modId) {
-        var output = $q.defer();
-        backend.retrieve('/mods/' + modId + '/edit').then(function(data) {
-            output.resolve(data);
-        }, function(response) {
-            output.reject(response);
-        });
-        return output.promise;
+        return backend.retrieve('/mods/' + modId + '/edit');
     };
 
     this.starMod = function(modId, starred) {

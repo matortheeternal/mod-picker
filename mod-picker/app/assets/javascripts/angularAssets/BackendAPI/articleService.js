@@ -21,6 +21,14 @@ app.service('articleService', function($q, backend, userTitleService, pageUtils,
         return action.promise;
     };
 
+    this.newArticle = function() {
+        return backend.retrieve('/articles/new');
+    };
+
+    this.editArticle = function(articleId) {
+        return backend.retrieve('/articles/' + articleId + '/edit');
+    };
+
     this.updateArticle = function(article) {
         // prepare article record
         var articleData = {
@@ -37,7 +45,7 @@ app.service('articleService', function($q, backend, userTitleService, pageUtils,
         return backend.update('/articles/' + article.id, articleData);
     };
 
-    this.submitArticle = function(article, image) {
+    this.submitArticle = function(article) {
         // prepare article record
         var articleData = {
             article: {
