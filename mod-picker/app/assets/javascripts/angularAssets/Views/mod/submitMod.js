@@ -1,8 +1,25 @@
 app.config(['$stateProvider', function ($stateProvider) {
-    $stateProvider.state('base.submit', {
+    $stateProvider.state('base.submit-mod', {
             templateUrl: '/resources/partials/mod/submitMod.html',
             controller: 'submitModController',
-            url: '/mods/submit'
+            url: '/mods/submit',
+            resolve: {
+                mod: function($q, modService) {
+                    var mod = $q.defer();
+                    modService.newMod().then(function(data) {
+                        mod.resolve(data);
+                    }, function(response) {
+                        var errorObj = {
+                            text: 'Error submitting new mod.',
+                            response: response,
+                            stateName: "base.submit-mod",
+                            stateUrl: window.location.hash
+                        };
+                        mod.reject(errorObj);
+                    });
+                    return mod.promise;
+                }
+            }
         }
     );
 }]);

@@ -2,16 +2,31 @@ app.config(['$stateProvider', function($stateProvider) {
     $stateProvider.state('base.create-article', {
         templateUrl: '/resources/partials/articles/createArticle.html',
         controller: 'createArticleController',
-        url: '/articles/submit'
+        url: '/articles/submit',
+        resolve: {
+            article: function($q, articleService) {
+                var article = $q.defer();
+                articleService.newArticle().then(function(data) {
+                    article.resolve(data);
+                }, function(response) {
+                    var errorObj = {
+                        text: 'Error starting new article.',
+                        response: response,
+                        stateName: "base.create-article",
+                        stateUrl: window.location.hash
+                    };
+                    article.reject(errorObj);
+                });
+                return article.promise;
+            }
+        }
     });
 }]);
 
-app.controller('createArticleController', function($scope, $stateParams, articleService, eventHandlerFactory) {
+app.controller('createArticleController', function($scope, $rootScope, $state, $stateParams, article, articleService, eventHandlerFactory) {
     // set up local variables
-    $scope.article = {};
-    $scope.image = {
-        src: $scope.article.image
-    };
+    $scope.article = article;
+    $scope.image = {};
 
     // shared function setup
     eventHandlerFactory.buildMessageHandlers($scope);

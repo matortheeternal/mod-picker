@@ -6,11 +6,11 @@ app.config(['$stateProvider', function($stateProvider) {
         resolve: {
             article: function(articleService, $stateParams, $q) {
                 var article = $q.defer();
-                articleService.retrieveArticle($stateParams.articleId).then(function(articleData) {
-                    article.resolve(articleData);
+                articleService.editArticle($stateParams.articleId).then(function(data) {
+                    article.resolve(data);
                 }, function(response) {
                     this.self.errorObj = {
-                        text: 'Error retrieving article.',
+                        text: 'Error editing article.',
                         response: response,
                         stateName: "base.edit-article",
                         stateUrl: window.location.hash
