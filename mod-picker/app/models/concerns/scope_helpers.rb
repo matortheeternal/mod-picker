@@ -49,7 +49,7 @@ module ScopeHelpers
         if options[:association]
           table_name = options[:table] || options[:association].to_s.pluralize
           class_eval do
-            scope scope_name.to_sym, -> (value) { joins(options[:association]).
+            scope scope_name.to_sym, -> (value) { includes(options[:association]).
               where(table_name => {attribute => value}) }
           end
         else
