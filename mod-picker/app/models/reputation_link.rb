@@ -3,6 +3,8 @@ class ReputationLink < ActiveRecord::Base
 
   belongs_to :target_reputation, :class_name => 'UserReputation', :foreign_key => 'to_rep_id', :inverse_of => 'incoming_reputation_links'
   belongs_to :source_reputation, :class_name => 'UserReputation', :foreign_key => 'from_rep_id', :inverse_of => 'outgoing_reputation_links'
+  belongs_to :target_user, :class_name => 'User', :through => :target_reputation, :source => 'user'
+  belongs_to :source_user, :class_name => 'User', :through => :source_reputation, :source => 'user'
 
   # VALIDATIONS
   validates :from_rep_id, :to_rep_id, presence: true
