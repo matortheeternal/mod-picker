@@ -26,6 +26,10 @@ def random_game
   Game.offset(rand(Game.count)).first
 end
 
+def random_comment
+  Comment.offset(rand(Comment.count)).first
+end
+
 def get_unique_mod_pair(model)
   mod_ids = [0, 0]
   while 1
@@ -1143,3 +1147,40 @@ def seed_fake_articles
   puts "    #{Article.count} articles seeded"
 end
 
+# seeds base_reports using random comments as the reportable type/id
+def seed_fake_base_reports
+  puts "\nSeeding base reports"
+
+  rand(50).times do
+    randComment = random_comment
+    BaseReport.new(
+        reportable_id: randComment.id,
+        reportable_type: randComment.class.name,
+    ).save!
+  end
+
+  puts "    #{BaseReport.count} base_reports seeded"
+end
+
+# create_table "reports", force: :cascade do |t|
+#     t.integer  "base_report_id", limit: 4,   null: false
+#     t.integer  "submitted_by",   limit: 4,   null: false
+#     t.integer  "report_type",    limit: 1,   null: false
+#     t.string   "note",           limit: 128
+#     t.datetime "submitted",                  null: false
+#     t.datetime "edited"
+#   end
+
+def seed_fake_reports
+  puts "\nSeeding reports"
+
+  rand(50).times do
+    randBaseReport = BaseReport.offset(rand(BaseReport.count)).first
+    randBaseReport.reports.new(
+      submitted_by: random_user.id,
+      report_type: Report.report_types.keys.sample
+    ).save!
+  end
+
+  puts "    #{BaseReport.count} reports seeded"
+end
