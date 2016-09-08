@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160828180012) do
+ActiveRecord::Schema.define(version: 20160908185914) do
 
   create_table "agreement_marks", id: false, force: :cascade do |t|
     t.integer "correction_id", limit: 4,                null: false
@@ -185,6 +185,13 @@ ActiveRecord::Schema.define(version: 20160828180012) do
 
   add_index "dummy_masters", ["plugin_id"], name: "fk_rails_2552b596d8", using: :btree
 
+  create_table "events", force: :cascade do |t|
+    t.integer  "content_id",   limit: 4
+    t.string   "content_type", limit: 255
+    t.integer  "event_type",   limit: 1,   null: false
+    t.datetime "created",                  null: false
+  end
+
   create_table "games", force: :cascade do |t|
     t.integer "parent_game_id",            limit: 4
     t.string  "display_name",              limit: 32,              null: false
@@ -344,6 +351,15 @@ ActiveRecord::Schema.define(version: 20160828180012) do
 
   add_index "masters", ["plugin_id"], name: "pl_id", using: :btree
 
+  create_table "messages", force: :cascade do |t|
+    t.integer  "submitted_by", limit: 4,     null: false
+    t.text     "text",         limit: 65535, null: false
+    t.datetime "created",                    null: false
+    t.datetime "updated"
+  end
+
+  add_index "messages", ["submitted_by"], name: "fk_rails_1364e4d956", using: :btree
+
   create_table "mod_asset_files", id: false, force: :cascade do |t|
     t.integer "mod_option_id", limit: 4,   null: false
     t.integer "asset_file_id", limit: 4
@@ -351,6 +367,7 @@ ActiveRecord::Schema.define(version: 20160828180012) do
   end
 
   add_index "mod_asset_files", ["asset_file_id"], name: "maf_id", using: :btree
+  add_index "mod_asset_files", ["mod_option_id", "asset_file_id"], name: "mod_id", unique: true, using: :btree
   add_index "mod_asset_files", ["mod_option_id"], name: "mv_id", using: :btree
 
   create_table "mod_authors", force: :cascade do |t|
@@ -683,6 +700,14 @@ ActiveRecord::Schema.define(version: 20160828180012) do
 
   add_index "quotes", ["game_id"], name: "fk_rails_273247f4b3", using: :btree
 
+  create_table "read_notifications", id: false, force: :cascade do |t|
+    t.integer "event_id", limit: 4, null: false
+    t.integer "user_id",  limit: 4, null: false
+  end
+
+  add_index "read_notifications", ["event_id"], name: "fk_rails_edea501a4e", using: :btree
+  add_index "read_notifications", ["user_id"], name: "fk_rails_494a5579c9", using: :btree
+
   create_table "record_groups", force: :cascade do |t|
     t.integer "game_id",     limit: 4,                  null: false
     t.string  "signature",   limit: 4,                  null: false
@@ -954,6 +979,7 @@ ActiveRecord::Schema.define(version: 20160828180012) do
   add_foreign_key "lover_infos", "games"
   add_foreign_key "lover_infos", "mods"
   add_foreign_key "masters", "plugins", name: "masters_ibfk_1"
+  add_foreign_key "messages", "users", column: "submitted_by"
   add_foreign_key "mod_asset_files", "asset_files"
   add_foreign_key "mod_asset_files", "mod_options"
   add_foreign_key "mod_authors", "mods", name: "mod_authors_ibfk_1"
@@ -1001,6 +1027,8 @@ ActiveRecord::Schema.define(version: 20160828180012) do
   add_foreign_key "plugins", "games"
   add_foreign_key "plugins", "mod_options"
   add_foreign_key "quotes", "games"
+  add_foreign_key "read_notifications", "events"
+  add_foreign_key "read_notifications", "users"
   add_foreign_key "record_groups", "games"
   add_foreign_key "reports", "base_reports"
   add_foreign_key "reports", "users", column: "submitted_by"
