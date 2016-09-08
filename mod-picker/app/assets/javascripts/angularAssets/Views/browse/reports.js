@@ -20,6 +20,6 @@ app.controller('reportsIndexController', function ($scope, $rootScope, $statePar
 
     // build generic controller stuff
     $scope.route = 'reports';
-    $scope.retrieve = articleService.retrieveReports;
+    $scope.retrieve = reportService.retrieveReports;
     indexFactory.buildIndex($scope, $stateParams, $state, indexService);
 });
