@@ -46,7 +46,7 @@ app.controller('correctionsModalController', function ($scope, contributionServi
         var options = {
             sort: {
                 column: 'submitted',
-                direction: 'desc'
+                direction: 'DESC'
             },
             page: page || 1
         };
