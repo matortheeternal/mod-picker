@@ -351,7 +351,6 @@ class Mod < ActiveRecord::Base
             :workshop_infos => {
                 :except => [:game_id, :last_scraped, :mod_id, :mod_name]
             }
-
         }
     }
   end
