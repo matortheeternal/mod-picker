@@ -163,10 +163,10 @@ module ScopeHelpers
 
     def hash_scope(*attributes, **options)
       attributes.each do |attribute|
-        plural_attribute = attribute.to_s.pluralize
+        scope_name = options[:alias] || attribute.to_s.pluralize
         column_name = options[:column] || attribute
         class_eval do
-          scope plural_attribute.to_sym, -> (hash) {
+          scope scope_name.to_sym, -> (hash) {
             array = []
             hash.each_key{ |key| array.push(key) if hash[key] }
             where(column_name => array)
@@ -179,7 +179,7 @@ module ScopeHelpers
       plural_attribute = attribute.to_s.pluralize
       type_attribute = attribute.to_s + '_type'
       id_attribute = attribute.to_s + '_id'
-      hash_scope attribute, :column => type_attribute
+      hash_scope attribute, :column => type_attribute, :alias => attribute
       class_eval do
         scope plural_attribute.to_sym, -> (polymorphic_type, ids) {
           where(type_attribute => polymorphic_type, id_attribute => ids)
