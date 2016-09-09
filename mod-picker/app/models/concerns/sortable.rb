@@ -57,7 +57,7 @@ module Sortable
           results = results.
               order("GREATEST(#{columns.join(',')}) #{options[:direction]}")
         elsif options[:column].include?(".")
-          results = results.order("'#{options[:column]}' #{options[:direction]}")
+          results = results.order("#{options[:column]} #{options[:direction]}")
         else
           results = results.order(options[:column] => options[:direction])
         end
