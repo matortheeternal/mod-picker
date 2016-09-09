@@ -22,7 +22,11 @@ module Sortable
           reflection_model = model.reflections[key.to_s].klass
           included_columns = allowed_columns(reflection_model, value)
           included_columns.each do |column|
-            columns.push("#{reflection_model.table_name}.#{column}")
+            if !column.include?('.')
+              columns.push("#{reflection_model.table_name}.#{column}")
+            else
+              columns.push(column)
+            end
           end
         end
       end
