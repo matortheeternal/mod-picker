@@ -49,10 +49,9 @@ module Sortable
         check_options(options)
 
         if options[:column].include?(",")
-          columns = options[:column].split(',').map{ |column| "'#{column}'" }
+          columns = options[:column].split(',')
           results = results.
-              select("MAX(#{columns.join(',')}) as scol").
-              order("scol #{options[:direction]}")
+              order("GREATEST(#{columns.join(',')}) #{options[:direction]}")
         elsif options[:column].include?(".")
           results = results.order("'#{options[:column]}' #{options[:direction]}")
         else
