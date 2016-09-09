@@ -110,6 +110,22 @@ class CompatibilityNote < ActiveRecord::Base
     end
   end
 
+  def self.sortable_columns
+    {
+        :except => [:game_id, :submitted_by, :edited_by, :corrector_id, :first_mod_id, :second_mod_id, :compatibility_mod_id, :compatibility_plugin_id, :text_body, :edit_summary, :moderator_message],
+        :include => {
+            :submitter => {
+                :only => [:username],
+                :include => {
+                    :reputation => {
+                        :only => [:overall]
+                    }
+                }
+            }
+        }
+    }
+  end
+
   private
     def set_dates
       if self.submitted.nil?

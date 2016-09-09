@@ -16,7 +16,7 @@ app.directive('tableResults', function () {
     }
 });
 
-app.controller('tableResultsController', function($scope, tableUtils) {
+app.controller('tableResultsController', function($scope, tableUtils, objectUtils) {
     // inherit scope attributes
     angular.inherit($scope, 'columns');
     angular.inherit($scope, 'columnGroups');
@@ -78,8 +78,14 @@ app.controller('tableResultsController', function($scope, tableUtils) {
 
         // send data to backend
         if (column.up || column.down) {
-            $scope.sort.column = column.sortData || column.data;
-            $scope.sort.direction = column.up ? "asc" : "desc";
+            if (column.sortData) {
+                $scope.sort.column = column.sortData;
+            } else if (typeof column.data == 'string') {
+                $scope.sort.column = column.data;
+            } else {
+                $scope.sort.column = objectUtils.csv(column.data);
+            }
+            $scope.sort.direction = column.up ? "ASC" : "DESC";
         } else {
             delete $scope.sort.column;
             delete $scope.sort.direction;
