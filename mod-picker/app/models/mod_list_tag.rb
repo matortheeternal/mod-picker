@@ -14,6 +14,16 @@ class ModListTag < ActiveRecord::Base
   after_create :increment_counters
   before_destroy :decrement_counters
 
+  def notification_json_options(event_type)
+    {
+        :only => [],
+        :include => {
+            :tag => { :only => [:text] },
+            :mod_list => { :only => [:id, :name] }
+        }
+    }
+  end
+
   private
     def increment_counters
       self.mod_list.update_counter(:tags_count, 1)

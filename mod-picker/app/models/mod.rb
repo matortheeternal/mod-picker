@@ -332,6 +332,10 @@ class Mod < ActiveRecord::Base
     end
   end
 
+  def notification_json_options(event_type)
+    { :only => [:name] }
+  end
+
   def self.sortable_columns
     {
         :except => [:game_id, :submitted_by, :primary_category_id, :secondary_category_id],

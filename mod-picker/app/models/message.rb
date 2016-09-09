@@ -6,6 +6,10 @@ class Message < ActiveRecord::Base
   validates :submitted_by, :text, presence: true
   validates :text, length: { in: 8..32768 }
 
+  def notification_json_options(event_type)
+    { :only => [:text] }
+  end
+
   # Private methods
   private
     def set_dates

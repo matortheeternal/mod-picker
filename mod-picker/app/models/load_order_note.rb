@@ -112,6 +112,13 @@ class LoadOrderNote < ActiveRecord::Base
     end
   end
 
+  def notification_json_options(event_type)
+    {
+        :only => [(:moderator_message if event_type == :message)].compact,
+        :methods => [:mods, :plugins]
+    }
+  end
+
   def self.sortable_columns
     {
         :except => [:game_id, :submitted_by, :edited_by, :corrector_id, :first_plugin_id, :second_plugin_id, :text_body, :edit_summary, :moderator_message],

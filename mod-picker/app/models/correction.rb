@@ -105,6 +105,19 @@ class Correction < ActiveRecord::Base
     end
   end
 
+  def notification_json_options(event_type)
+    is_appeal = correctable_type == "Mod"
+    {
+        :only => [:correctable_type, (:status if event_type == :status_changed), (:mod_status if is_appeal)].compact,
+        :include => {
+            :correctable => {
+                :only => [:id, (:name if is_appeal)].compact,
+                :methods => [(:mods if !is_appeal), (:plugins if correctable_type == "LoadOrderNote")].compact
+            }
+        }
+    }
+  end
+
   def self.sortable_columns
     {
         :except => [:game_id, :submitted_by, :edited_by, :correctable_id, :text_body],

@@ -13,6 +13,16 @@ class ReputationLink < ActiveRecord::Base
   after_create :increment_counters
   before_destroy :decrement_counters
 
+  def notification_json_options(event_type)
+    {
+        :only => [],
+        :include => {
+            :target_user => { :only => [:id, :username] },
+            :source_user => { :only => [:id, :username] }
+        }
+    }
+  end
+
   private
     def decrement_counters
       self.source_reputation.update_counter(:rep_to_count, -1)

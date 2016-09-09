@@ -48,6 +48,10 @@ class Article < ActiveRecord::Base
     end
   end
 
+  def notification_json_options(event_type)
+    { :only => [:title] }
+  end
+
   def self.sortable_columns
     {
         :except => [:game_id, :submitted_by, :text_body]

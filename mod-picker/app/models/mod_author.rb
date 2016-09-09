@@ -19,6 +19,16 @@ class ModAuthor < ActiveRecord::Base
     end
   end
 
+  def notification_json_options(event_type)
+    {
+        :only => [:role],
+        :include => {
+            :user => { :only => [:id, :username] },
+            :mod => { :only => [:id, :name] }
+        }
+    }
+  end
+
   private
     def decrement_counters
       self.user.update_counter(:authored_mods_count, -1)

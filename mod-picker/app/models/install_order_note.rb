@@ -100,6 +100,13 @@ class InstallOrderNote < ActiveRecord::Base
     end
   end
 
+  def notification_json_options(event_type)
+    {
+        :only => [(:moderator_message if event_type == :message)].compact,
+        :methods => :mods
+    }
+  end
+
   def self.sortable_columns
     {
         :except => [:game_id, :submitted_by, :edited_by, :corrector_id, :first_mod_id, :second_mod_id, :text_body, :edit_summary, :moderator_message],

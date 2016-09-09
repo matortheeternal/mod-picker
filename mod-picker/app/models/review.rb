@@ -113,6 +113,15 @@ class Review < ActiveRecord::Base
     end
   end
 
+  def notification_json_options(event_type)
+    {
+        :only => [],
+        :include => {
+            :mod => { :only => [:id, :name] }
+        }
+    }
+  end
+
   def self.sortable_columns
     {
         :except => [:game_id, :submitted_by, :edited_by, :mod_id, :text_body, :edit_summary, :moderator_message],

@@ -114,6 +114,25 @@ class Comment < ActiveRecord::Base
     end
   end
 
+  def notification_json_options(event_type)
+    options = {
+        :only => [:commentable_type, :commentable_id],
+        :include => {}
+    }
+    if commentable_type == "Correction"
+      if commentable.correctable_type == "Mod"
+        options[:include][:commentable] = {
+            :only => [:mod_status],
+            :include => {
+                :mod => { :only => [:id, :name] }
+            }
+        }
+      else
+        options[:include][:commentable] = { :only => [:title] }
+      end
+    end
+  end
+
   def self.sortable_columns
     {
         :except => [:parent_id, :submitted_by, :commentable_id, :text_body],
