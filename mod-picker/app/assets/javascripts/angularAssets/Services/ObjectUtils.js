@@ -210,5 +210,15 @@ app.service('objectUtils', function () {
             }
         }
         return obj;
+    };
+
+    this.csv = function(obj, separator) {
+        var a = [];
+        for (var prop in obj) {
+            if (obj.hasOwnProperty(prop)) {
+                a.push(obj[prop]);
+            }
+        }
+        return a.join(separator || ',');
     }
 });
