@@ -205,7 +205,7 @@ class ModsController < ApplicationController
     authorize! :read, @mod
 
     # prepare reviews
-    reviews = @mod.reviews.includes(:review_ratings, :submitter => :reputation).accessible_by(current_ability).sort(params[:sort]).paginate(:page => params[:page], :per_page => 10).where("submitted_by != ? OR hidden = true", current_user.id)
+    reviews = @mod.reviews.preload(:review_ratings).includes(:submitter => :reputation).accessible_by(current_ability).sort(params[:sort]).paginate(:page => params[:page], :per_page => 10).where("submitted_by != ? OR hidden = true", current_user.id)
     count = @mod.reviews.accessible_by(current_ability).count
     review_ids = reviews.ids
 
