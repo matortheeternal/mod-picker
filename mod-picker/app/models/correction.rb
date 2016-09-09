@@ -105,6 +105,22 @@ class Correction < ActiveRecord::Base
     end
   end
 
+  def self.sortable_columns
+    {
+        :except => [:game_id, :submitted_by, :edited_by, :correctable_id, :text_body],
+        :include => {
+            :submitter => {
+                :only => [:username],
+                :include => {
+                    :reputation => {
+                        :only => [:overall]
+                    }
+                }
+            }
+        }
+    }
+  end
+
   def recompute_correctable_standing
     if self.correctable.respond_to?(:standing)
       self.correctable.compute_standing

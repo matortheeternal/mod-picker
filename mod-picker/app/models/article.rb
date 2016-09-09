@@ -48,6 +48,12 @@ class Article < ActiveRecord::Base
     end
   end
 
+  def self.sortable_columns
+    {
+        :except => [:game_id, :submitted_by, :text_body]
+    }
+  end
+
   private
     def set_dates
       if self.submitted.nil?

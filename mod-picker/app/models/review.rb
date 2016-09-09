@@ -113,6 +113,22 @@ class Review < ActiveRecord::Base
     end
   end
 
+  def self.sortable_columns
+    {
+        :except => [:game_id, :submitted_by, :edited_by, :mod_id, :text_body, :edit_summary, :moderator_message],
+        :include => {
+            :submitter => {
+                :only => [:username],
+                :include => {
+                    :reputation => {
+                        :only => [:overall]
+                    }
+                }
+            }
+        }
+    }
+  end
+
   private
     def set_dates
       if self.submitted.nil?
