@@ -69,9 +69,9 @@ class User < ActiveRecord::Base
   validates :username, :email, :role, presence: true
   validates :username, uniqueness: { case_sensitive: false }, length: {in: 4..32 }
 
-  # TODO: add email regex
-  # basic one, minimize false negatives and confirm users via email confirmation regardless
+  # email validation
   validates :email, uniqueness: { case_sensitive: false }, length: {in: 7..255}
+  validates_format_of :email, :with => /\A\S+@.+\.\S+\z/
 
   validates :about_me, length: {maximum: 16384}
 
