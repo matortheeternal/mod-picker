@@ -60,6 +60,8 @@ class User < ActiveRecord::Base
   has_many :profile_comments, -> { where(parent_id: nil) }, :class_name => 'Comment', :as => 'commentable'
   has_many :reports, :foreign_key => 'submitted_by', :inverse_of => 'submitter'
 
+  has_many :notifications, :inverse_of => 'user'
+
   accepts_nested_attributes_for :settings, reject_if: :new_record?
 
   # number of users per page on the users index

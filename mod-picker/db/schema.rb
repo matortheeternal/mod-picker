@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160908185914) do
+ActiveRecord::Schema.define(version: 20160910200055) do
 
   create_table "agreement_marks", id: false, force: :cascade do |t|
     t.integer "correction_id", limit: 4,                null: false
@@ -645,6 +645,14 @@ ActiveRecord::Schema.define(version: 20160908185914) do
 
   add_index "nexus_infos", ["game_id"], name: "fk_rails_46e3032463", using: :btree
 
+  create_table "notifications", id: false, force: :cascade do |t|
+    t.integer "event_id", limit: 4, null: false
+    t.integer "user_id",  limit: 4, null: false
+  end
+
+  add_index "notifications", ["event_id"], name: "fk_rails_edea501a4e", using: :btree
+  add_index "notifications", ["user_id"], name: "fk_rails_494a5579c9", using: :btree
+
   create_table "override_records", id: false, force: :cascade do |t|
     t.integer "plugin_id", limit: 4, null: false
     t.integer "fid",       limit: 4, null: false
@@ -700,14 +708,6 @@ ActiveRecord::Schema.define(version: 20160908185914) do
 
   add_index "quotes", ["game_id"], name: "fk_rails_273247f4b3", using: :btree
 
-  create_table "read_notifications", id: false, force: :cascade do |t|
-    t.integer "event_id", limit: 4, null: false
-    t.integer "user_id",  limit: 4, null: false
-  end
-
-  add_index "read_notifications", ["event_id"], name: "fk_rails_edea501a4e", using: :btree
-  add_index "read_notifications", ["user_id"], name: "fk_rails_494a5579c9", using: :btree
-
   create_table "record_groups", force: :cascade do |t|
     t.integer "game_id",     limit: 4,                  null: false
     t.string  "signature",   limit: 4,                  null: false
@@ -720,7 +720,7 @@ ActiveRecord::Schema.define(version: 20160908185914) do
   create_table "reports", force: :cascade do |t|
     t.integer  "base_report_id", limit: 4,   null: false
     t.integer  "submitted_by",   limit: 4,   null: false
-    t.integer  "type",           limit: 1,   null: false
+    t.integer  "report_type",    limit: 1,   null: false
     t.string   "note",           limit: 128
     t.datetime "submitted",                  null: false
     t.datetime "edited"
@@ -1021,14 +1021,14 @@ ActiveRecord::Schema.define(version: 20160908185914) do
   add_foreign_key "mods", "games"
   add_foreign_key "mods", "users", column: "submitted_by"
   add_foreign_key "nexus_infos", "games"
+  add_foreign_key "notifications", "events"
+  add_foreign_key "notifications", "users"
   add_foreign_key "override_records", "plugins", name: "override_records_ibfk_1"
   add_foreign_key "plugin_errors", "plugins"
   add_foreign_key "plugin_record_groups", "plugins", name: "plugin_record_groups_ibfk_1"
   add_foreign_key "plugins", "games"
   add_foreign_key "plugins", "mod_options"
   add_foreign_key "quotes", "games"
-  add_foreign_key "read_notifications", "events"
-  add_foreign_key "read_notifications", "users"
   add_foreign_key "record_groups", "games"
   add_foreign_key "reports", "base_reports"
   add_foreign_key "reports", "users", column: "submitted_by"

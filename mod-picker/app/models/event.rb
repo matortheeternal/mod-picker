@@ -10,7 +10,7 @@ class Event < ActiveRecord::Base
 
   # ASSOCIATIONS
   belongs_to :content, :polymorphic => true
-  has_many :read_notifications, :inverse_of => 'event'
+  has_many :notifications, :inverse_of => 'event'
 
   # number of events per page on the notifications index
   self.per_page = 50
