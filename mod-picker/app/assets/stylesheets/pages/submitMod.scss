@@ -102,8 +102,8 @@ form {
       font-size: 13px;
       border: 1px solid rgb(230, 230, 230);
       padding: 0.5em;
-      width: 148px;
-      margin-right: 1px;
+      min-width: 200px;
+      margin-right: 4px;
     }
 
     .remove-item {
