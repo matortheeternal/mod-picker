@@ -1,7 +1,7 @@
 app.directive('report', function() {
     return {
         restrict: 'E',
-        templateUrl: '/resources/directives/report.html',
+        templateUrl: '/resources/directives/contributions/report.html',
         controller: 'reportController',
         scope: {
             report: '=data',
@@ -10,7 +10,7 @@ app.directive('report', function() {
     };
 });
 
-app.controller('articleController', function($scope) {
+app.controller('reportController', function($scope) {
     // if (!$scope.showFull) {
     //     var reducedText = $scope.article.text_body.reduceText(50);
     //     if (reducedText.length < $scope.article.text_body.length) {

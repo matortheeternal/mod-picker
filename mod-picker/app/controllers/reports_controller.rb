@@ -1,9 +1,15 @@
 class ReportsController < ApplicationController
   # GET /reports.json
   def index
-    @reports = BaseReport.filter(filtering_params)
+    # byebug
+    @reports = BaseReport.accessible_by(current_ability).filter(filtering_params).sort(params[:sort]).paginate(:page => params[:page])
+    count =  BaseReport.accessible_by(current_ability).filter(filtering_params).count
 
-    render :json => @reports
+    render :json => {
+        reports: @reports,
+        max_entries: count,
+        entries_per_page: BaseReport.per_page
+    }
   end
 
   # POST /reviews

@@ -1178,7 +1178,8 @@ def seed_fake_reports
     randBaseReport = BaseReport.offset(rand(BaseReport.count)).first
     randBaseReport.reports.new(
       submitted_by: random_user.id,
-      report_type: Report.report_types.keys.sample
+      report_type: Report.report_types.keys.sample,
+      note: Faker::Lorem.words(4).join(' ')
     ).save!
   end
 

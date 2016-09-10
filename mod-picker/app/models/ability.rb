@@ -43,6 +43,10 @@ class Ability
       # can delete tags
       can :destroy, ModTag
       can :destroy, ModListTag
+
+      # can read reports
+      can :read, Report
+      can :read, BaseReport
     else
       # users that are not admins or moderators
       # cannot read private mod lists unless they submitted them
@@ -71,6 +75,10 @@ class Ability
       cannot :read, ModListTag, :hidden => true
       cannot :read, Mod, :hidden => true
       cannot :read, ModList, :hidden => true
+
+      # cannot read reports
+      cannot :read, Report
+      cannot :read, BaseReport
     end
 
     # signed in users who aren't banned

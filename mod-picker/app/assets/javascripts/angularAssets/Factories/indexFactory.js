@@ -6,6 +6,7 @@ app.service('indexFactory', function(indexService) {
         $scope.expanded = {};
         $scope.pages = {};
 
+
         // load sort values from url parameters
         $scope.sort = {};
         localIndexService.setSortFromParams($scope.sort, $stateParams);

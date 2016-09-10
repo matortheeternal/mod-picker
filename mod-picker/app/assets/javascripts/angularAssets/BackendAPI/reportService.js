@@ -18,6 +18,7 @@ app.service('reportService', function($q, backend, pageUtils) {
         }, function(response) {
             action.reject(response);
         });
+
         return action.promise;
     };
 
