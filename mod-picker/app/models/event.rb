@@ -21,17 +21,8 @@ class Event < ActiveRecord::Base
   before_create :set_dates
   after_create :create_notifications
 
-  def as_json(options={})
-    if JsonHelpers.json_options_empty(options)
-      default_options = {
-          :include => {
-              :content => content.notification_json_options(event_type)
-          }
-      }
-      super(options.merge(default_options))
-    else
-      super(options)
-    end
+  def content_json
+    content.as_json(content.notification_json_options(event_type))
   end
 
   def self.milestones

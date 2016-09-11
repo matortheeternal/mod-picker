@@ -7,4 +7,20 @@ class Notification < ActiveRecord::Base
 
   # VALIDATIONS
   validates :event_id, :user_id, presence: true
+
+  def as_json(options={})
+    if JsonHelpers.json_options_empty(options)
+      default_options = {
+          :include => {
+              :event => {
+                  :except => [:id],
+                  :methods => :content_json
+              }
+          }
+      }
+      super(options.merge(default_options))
+    else
+      super(options)
+    end
+  end
 end
