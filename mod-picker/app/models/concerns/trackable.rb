@@ -46,13 +46,9 @@ module Trackable
   end
 
   def get_owner_id(event_type)
-    attributes = event_owner_attributes(event_type)
-    if attributes.present?
-      attributes.each do |attr|
-        return public_send(attr) if respond_to?(attr)
-      end
-    end
-
+    event_owner_attributes(event_type).each { |attr|
+      return public_send(attr) if respond_to?(attr)
+    }
     nil
   end
 
