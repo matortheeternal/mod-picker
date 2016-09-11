@@ -23,7 +23,7 @@ module Trackable
       end
     end
 
-    user_ids.uniq
+    user_ids.uniq - [event.user_id]
   end
 
   def notify_subscribers(event)
