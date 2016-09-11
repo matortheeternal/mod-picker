@@ -109,27 +109,27 @@ class User < ActiveRecord::Base
   end
 
   def admin?
-    self.role.to_sym == :admin
+    role.to_sym == :admin
   end
 
   def moderator?
-    self.role.to_sym == :moderator
+    role.to_sym == :moderator
   end
 
   def can_moderate?
-    self.admin? || self.moderator?
+    admin? || moderator?
   end
 
   def banned?
-    self.role.to_sym == :banned
+    role.to_sym == :banned
   end
 
   def inactive?
-    self.last_sign_in_at.nil? || self.last_sign_in_at < 28.days.ago
+    last_sign_in_at.nil? || last_sign_in_at < 28.days.ago
   end
 
   def email_public?
-    self.settings.email_public
+    settings.email_public
   end
 
   def init
@@ -138,9 +138,9 @@ class User < ActiveRecord::Base
   end
 
   def create_associations
-    self.create_reputation({ user_id: self.id })
-    self.create_settings({ user_id: self.id })
-    self.create_bio({ user_id: self.id })
+    create_reputation({ user_id: id })
+    create_settings({ user_id: id })
+    create_bio({ user_id: id })
   end
 
   def self.search_json(collection)
