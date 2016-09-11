@@ -19,12 +19,13 @@ class Event < ActiveRecord::Base
 
   # CALLBACKS
   before_create :set_dates
+  after_create :create_notifications
 
   def as_json(options={})
     if JsonHelpers.json_options_empty(options)
       default_options = {
           :include => {
-              :content => content.notification_json_options
+              :content => content.notification_json_options(event_type)
           }
       }
       super(options.merge(default_options))
@@ -33,9 +34,17 @@ class Event < ActiveRecord::Base
     end
   end
 
+  def self.milestones
+    [:milestone1, :milestone2, :milestone3, :milestone4, :milestone5, :milestone6, :milestone7, :milestone8, :milestone9, :milestone10]
+  end
+
   # Private methods
   private
     def set_dates
       self.created = DateTime.now
+    end
+
+    def create_notifications
+      content.notify_subscribers(self)
     end
 end
