@@ -1,7 +1,9 @@
 class Mod < ActiveRecord::Base
   include Filterable, Sortable, Imageable, RecordEnhancements, SourceHelpers, ScopeHelpers
 
+  # ATTRIBUTES
   enum status: [ :good, :outdated, :unstable ]
+  self.per_page = 100
 
   # SCOPES
   include_scope :hidden
@@ -123,9 +125,6 @@ class Mod < ActiveRecord::Base
   accepts_nested_attributes_for :mod_authors, reject_if: proc {
       |attributes| attributes[:id] && attributes[:user_id] && !attributes[:_destroy]
   }, allow_destroy: true
-
-  # numbers of mods per page on the mods index
-  self.per_page = 100
 
   # VALIDATIONS
   validates :game_id, :submitted_by, :name, :authors, :released, presence: true

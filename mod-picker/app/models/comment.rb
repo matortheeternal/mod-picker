@@ -1,6 +1,9 @@
 class Comment < ActiveRecord::Base
   include Filterable, Sortable, RecordEnhancements, Reportable, ScopeHelpers
 
+  # ATTRIBUTES
+  self.per_page = 50
+
   # SCOPES
   include_scope :hidden
   include_scope :parent_id, :alias => 'include_replies', :value => 'nil'
@@ -17,9 +20,6 @@ class Comment < ActiveRecord::Base
   # parent/child comment association
   belongs_to :parent, :class_name => 'Comment', :foreign_key => 'parent_id', :inverse_of => 'children'
   has_many :children, :class_name => 'Comment', :foreign_key => 'parent_id', :inverse_of => 'parent'
-
-  # number of comments per page on the comments index
-  self.per_page = 50
 
   # VALIDATIONS
   validates :submitted_by, :commentable_type, :commentable_id, :text_body, presence: true

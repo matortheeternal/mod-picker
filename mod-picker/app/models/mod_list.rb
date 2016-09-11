@@ -1,8 +1,10 @@
 class ModList < ActiveRecord::Base
   include Filterable, Sortable, RecordEnhancements, Reportable, ScopeHelpers
 
+  # ATTRIBUTES
   enum status: [ :under_construction, :testing, :complete ]
   enum visibility: [ :visibility_private, :visibility_unlisted, :visibility_public ]
+  self.per_page = 100
 
   # SCOPES
   include_scope :has_adult_content, :alias => 'include_adult'
@@ -73,9 +75,6 @@ class ModList < ActiveRecord::Base
   accepts_nested_attributes_for :mod_list_config_files, allow_destroy: true
   accepts_nested_attributes_for :custom_config_files, allow_destroy: true
   accepts_nested_attributes_for :ignored_notes, allow_destroy: true
-
-  # numbers of mod lists per page on the mod lists index
-  self.per_page = 100
 
   # VALIDATIONS
   validates :game_id, :submitted_by, :name, presence: true

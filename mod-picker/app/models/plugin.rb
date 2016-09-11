@@ -1,8 +1,11 @@
 class Plugin < ActiveRecord::Base
   include Filterable, Sortable, RecordEnhancements, ScopeHelpers
 
+  # ATTRIBUTES
   attr_writer :master_plugins
+  self.per_page = 100
 
+  # SCOPES
   game_scope
   ids_scope :mod_option_id
   search_scope :filename, :alias => :search
@@ -37,9 +40,6 @@ class Plugin < ActiveRecord::Base
   has_many :compatibility_notes, :foreign_key => 'compatibility_plugin_id', :inverse_of => 'compatibility_plugin'
 
   accepts_nested_attributes_for :plugin_record_groups, :overrides, :plugin_errors
-
-  # numbers of plugins per page on the plugins index
-  self.per_page = 100
 
   # VALIDATIONS
   validates :game_id, :mod_option_id, :filename, :crc_hash, :file_size, presence: true

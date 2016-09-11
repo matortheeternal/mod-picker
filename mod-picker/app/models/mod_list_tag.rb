@@ -1,6 +1,8 @@
 class ModListTag < ActiveRecord::Base
+  # ATTRIBUTES
   self.primary_keys = :mod_list_id, :tag_id
 
+  # ASSOCIATIONS
   belongs_to :mod_list, :inverse_of => 'mod_list_tags'
   belongs_to :tag, :inverse_of => 'mod_list_tags'
   belongs_to :submitter, :class_name => 'User', :inverse_of => 'mod_list_tags', :foreign_key => 'submitted_by'

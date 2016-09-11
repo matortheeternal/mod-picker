@@ -1,6 +1,9 @@
 class LoadOrderNote < ActiveRecord::Base
   include Filterable, Sortable, RecordEnhancements, Correctable, Helpfulable, Reportable, ScopeHelpers
 
+  # ATTRIBUTES
+  self.per_page = 25
+
   # SCOPES
   include_scope :hidden
   include_scope :has_adult_content, :alias => 'include_adult'
@@ -35,8 +38,6 @@ class LoadOrderNote < ActiveRecord::Base
   # old versions of this load order note
   has_many :history_entries, :class_name => 'LoadOrderNoteHistoryEntry', :inverse_of => 'load_order_note', :foreign_key => 'load_order_note_id'
   has_many :editors, -> { uniq }, :class_name => 'User', :through => 'history_entries'
-
-  self.per_page = 25
 
   # VALIDATIONS
   validates :game_id, :submitted_by, :first_plugin_id, :second_plugin_id, :text_body, presence: true

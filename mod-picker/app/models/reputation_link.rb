@@ -1,6 +1,8 @@
 class ReputationLink < ActiveRecord::Base
+  # ATTRIBUTES
   self.primary_keys = :from_rep_id, :to_rep_id
 
+  # ASSOCIATIONS
   belongs_to :target_reputation, :class_name => 'UserReputation', :foreign_key => 'to_rep_id', :inverse_of => 'incoming_reputation_links'
   belongs_to :source_reputation, :class_name => 'UserReputation', :foreign_key => 'from_rep_id', :inverse_of => 'outgoing_reputation_links'
   has_one :target_user, :class_name => 'User', :through => :target_reputation, :source => 'user'

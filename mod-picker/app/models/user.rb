@@ -6,7 +6,9 @@ class User < ActiveRecord::Base
   devise :invitable, :database_authenticatable, :registerable, :confirmable,
          :recoverable, :rememberable, :trackable, :validatable
 
+  # ATTRIBUTES
   attr_accessor :login
+  self.per_page = 50
 
   # SCOPES
   search_scope :username, :alias => 'search'
@@ -63,9 +65,6 @@ class User < ActiveRecord::Base
   has_many :notifications, :inverse_of => 'user'
 
   accepts_nested_attributes_for :settings, reject_if: :new_record?
-
-  # number of users per page on the users index
-  self.per_page = 50
 
   # VALIDATIONS
   validates :username, :email, :role, presence: true

@@ -1,6 +1,9 @@
 class Review < ActiveRecord::Base
   include Filterable, Sortable, RecordEnhancements, Helpfulable, Reportable, ScopeHelpers
 
+  # ATTRIBUTES
+  self.per_page = 25
+
   # SCOPES
   include_scope :hidden
   include_scope :has_adult_content, :alias => 'include_adult'
@@ -20,8 +23,6 @@ class Review < ActiveRecord::Base
   has_many :review_ratings, :inverse_of => 'review'
 
   accepts_nested_attributes_for :review_ratings
-
-  self.per_page = 25
 
   # VALIDATIONS
   validates :game_id, :submitted_by, :mod_id, :text_body, presence: true
