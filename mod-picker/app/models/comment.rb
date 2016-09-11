@@ -1,8 +1,15 @@
 class Comment < ActiveRecord::Base
-  include Filterable, Sortable, RecordEnhancements, Reportable, ScopeHelpers
+  include Filterable, Sortable, RecordEnhancements, Reportable, ScopeHelpers, Trackable
 
   # ATTRIBUTES
   self.per_page = 50
+
+  # EVENT TRACKING
+  track :added, :hidden
+
+  # NOTIFICATION SUBSCRIPTIONS
+  subscribe :commentable_user, to: [:added]
+  subscribe :submitter, to: [:hidden, :unhidden]
 
   # SCOPES
   include_scope :hidden
@@ -52,6 +59,17 @@ class Comment < ActiveRecord::Base
       "#/mod-list/" + commentable_id.to_s
     elsif commentable_type == "User"
       "#/user/" + commentable_id.to_s
+    end
+  end
+
+  def commentable_user
+    case commentable_type
+      when "Correction", "ModList", "Article"
+        commentable.submitter
+      when "User"
+        commentable
+      else
+        nil
     end
   end
 
