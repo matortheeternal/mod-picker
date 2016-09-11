@@ -1,7 +1,9 @@
 class CompatibilityNote < ActiveRecord::Base
   include Filterable, Sortable, RecordEnhancements, Correctable, Helpfulable, Reportable, ScopeHelpers
 
+  # ATTRIBUTES
   enum status: [ :incompatible, :"partially incompatible", :"compatibility mod", :"compatibility option", :"make custom patch" ]
+  self.per_page = 25
 
   # SCOPES
   include_scope :hidden
@@ -35,8 +37,6 @@ class CompatibilityNote < ActiveRecord::Base
   # old versions of this compatibility note
   has_many :history_entries, :class_name => 'CompatibilityNoteHistoryEntry', :inverse_of => 'compatibility_note', :foreign_key => 'compatibility_note_id'
   has_many :editors, -> { uniq }, :class_name => 'User', :through => 'history_entries'
-
-  self.per_page = 25
 
   # VALIDATIONS
   validates :game_id, :submitted_by, :status, :first_mod_id, :second_mod_id, :text_body, presence: true
