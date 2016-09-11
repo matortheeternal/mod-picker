@@ -14,7 +14,9 @@ class Notification < ActiveRecord::Base
           :include => {
               :event => {
                   :except => [:id],
-                  :methods => :content_json
+                  :include => {
+                      :content => event.content_json
+                  }
               }
           }
       }
