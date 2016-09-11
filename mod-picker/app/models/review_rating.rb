@@ -6,5 +6,14 @@ class ReviewRating < ActiveRecord::Base
   validates :review_section_id, :rating, presence: true
   validates :rating, numericality: { only_integer: true }
   validates :rating, inclusion: { in: 0..100, message: "Ratings must be between 0 and 100." }
-  validates :review_section_id, :uniqueness => { scope: :review_id, message: "You can only use a review section once per review."}
+  validate :section_uniqueness
+
+  def section_uniqueness
+    matching_sections = review.review_ratings.select do |rating|
+      rating.review_section_id == review_section_id
+    end
+    if matching_sections.size > 1
+      errors.add("You can only use a review section once per review.")
+    end
+  end
 end
