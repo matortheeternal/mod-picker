@@ -25,6 +25,10 @@ class User < ActiveRecord::Base
   date_scope :last_sign_in_at, :alias => 'last_seen'
 
   # UNIQUE SCOPES
+  scope :contributors, -> (mod) {
+    # TODO: Handle appeals too
+    includes(:reviews => :mod, :compatibility_notes => [:first_mod, :second_mod], :install_order_notes => [:first_mod, :second_mod], :load_order_notes => [:first_mod, :second_mod]).where(:mods => {id: mod.id})
+  }
   scope :linked, -> (search) { joins(:bio).where("nexus_username like :search OR lover_username like :search OR workshop_username like :search", search: "#{search}%") }
 
   # ASSOCIATIONS
