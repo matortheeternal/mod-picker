@@ -3,6 +3,7 @@ class ModTag < ActiveRecord::Base
 
   # ATTRIBUTES
   self.primary_keys = :mod_id, :tag_id
+  attr_accessor :removed_by
 
   # EVENT TRACKING
   track :added, :removed
