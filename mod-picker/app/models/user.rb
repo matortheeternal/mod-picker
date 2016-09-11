@@ -144,6 +144,15 @@ class User < ActiveRecord::Base
     settings.email_public
   end
 
+  def subscribed_to?(event)
+    if respond_to?(:notification_settings)
+      key = "#{event.content_type.underscore}_#{event.event_type}"
+      notification_settings.public_send(key.to_sym)
+    else
+      true
+    end
+  end
+
   def init
     self.joined ||= DateTime.current
     self.role   ||= :user
@@ -234,7 +243,7 @@ class User < ActiveRecord::Base
 
   def notification_json_options(event_type)
     options = {
-        :only => [:username, (:role if event_type == :status_changed)].compact
+        :only => [:username, (:role if event_type == :status)].compact
     }
   end
 
