@@ -11,9 +11,9 @@ class Notification < ActiveRecord::Base
   def as_json(options={})
     if JsonHelpers.json_options_empty(options)
       default_options = {
+          :only => [],
           :include => {
               :event => {
-                  :except => [:id],
                   :include => {
                       :content => event.content_json
                   }

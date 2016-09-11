@@ -22,7 +22,7 @@ class Event < ActiveRecord::Base
   after_create :create_notifications
 
   def content_json
-    content.as_json(content.notification_json_options(event_type))
+    content.notification_json_options(event_type)
   end
 
   def self.milestones
