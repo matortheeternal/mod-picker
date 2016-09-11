@@ -1,6 +1,16 @@
 class ModAuthor < ActiveRecord::Base
+  include Trackable
+
+  # ATTRIBUTES
   enum role: [:author, :contributor, :curator]
 
+  # EVENT TRACKING
+  track :added, :removed
+
+  # NOTIFICATION SUBSCRIPTIONS
+  subscribe :mod_author_users, to: [:added, :removed]
+
+  # ASSOCIATIONS
   belongs_to :mod, :inverse_of => 'mod_authors'
   belongs_to :user, :foreign_key => 'user_id', :inverse_of => 'mod_authors'
 
@@ -17,6 +27,10 @@ class ModAuthor < ActiveRecord::Base
     infos.each do |info|
       ModAuthor.find_or_create_by(mod_id: info.mod_id, user_id: user_id) if info.mod_id.present?
     end
+  end
+
+  def mod_author_users
+    User.joins(:mod_authors).where(:mod_authors => {role: 0, mod_id: mod_id})
   end
 
   def notification_json_options(event_type)
