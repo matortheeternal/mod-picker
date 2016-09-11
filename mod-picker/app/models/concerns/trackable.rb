@@ -34,6 +34,7 @@ module Trackable
   end
 
   def event_owner_attributes(event_type)
+    config = Rails.application.config
     case event_type
       when "added"
         return config.added_owner_attributes || [:added_by]
@@ -61,7 +62,7 @@ module Trackable
 
   def track_column_change(event, column)
     return unless attribute_changed?(column)
-    if self.class.columns_hash[column].type == :boolean
+    if self.class.columns_hash[column.to_s].type == :boolean
       create_event(self.public_send(column) ? event : :"un#{event}")
     else
       create_event(event)
