@@ -72,7 +72,7 @@ class User < ActiveRecord::Base
   has_many :profile_comments, -> { where(parent_id: nil) }, :class_name => 'Comment', :as => 'commentable'
   has_many :reports, :foreign_key => 'submitted_by', :inverse_of => 'submitter'
 
-  has_many :notifications, :inverse_of => 'user'
+  has_many :notifications, -> { order(:created) }, :inverse_of => 'user'
   has_many :messages, :inverse_of => 'recipient', :foreign_key => 'sent_to'
   has_many :sent_messages, :class_name => 'Message', :inverse_of => 'submitter', :foreign_key => 'submitter_by'
 
@@ -105,6 +105,10 @@ class User < ActiveRecord::Base
     else
       "/users/Default.png"
     end
+  end
+
+  def recent_notifications
+    notifications.limit(10)
   end
 
   def self.find_first_by_auth_conditions(warden_conditions)
@@ -181,7 +185,7 @@ class User < ActiveRecord::Base
                 :only => [:theme, :show_notifications, :allow_adult_content]
             }
         },
-        :methods => :avatar
+        :methods => [:avatar, :recent_notifications]
     })
   end
 
