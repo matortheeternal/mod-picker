@@ -1,5 +1,5 @@
 class User < ActiveRecord::Base
-  include Filterable, Sortable, RecordEnhancements, Imageable, Reportable, ScopeHelpers
+  include Filterable, Sortable, RecordEnhancements, Imageable, Reportable, ScopeHelpers, Trackable
 
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
@@ -9,6 +9,12 @@ class User < ActiveRecord::Base
   # ATTRIBUTES
   attr_accessor :login
   self.per_page = 50
+
+  # EVENT TRACKING
+  track :status, :column => 'role'
+
+  # NOTIFICATION SUBSCRIPTIONS
+  subscribe :self, to: [:message, :status, *Event.milestones]
 
   # SCOPES
   search_scope :username, :alias => 'search'
