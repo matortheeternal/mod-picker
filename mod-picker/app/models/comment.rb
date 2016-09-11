@@ -26,12 +26,16 @@ class Comment < ActiveRecord::Base
   validates :hidden, inclusion: [true, false]
   validates :commentable_type, inclusion: ["User", "ModList", "Correction", "Article", "HelpPage"]
   validates :text_body, length: {in: 2..8192}
-  # TODO: Validation of nesting
+  validate :nesting
 
   # CALLBACKS
   before_save :set_dates
   after_create :increment_counter_caches
   before_destroy :decrement_counter_caches
+
+  def nesting
+    parent_id.nil? || parent.parent_id.nil?
+  end
 
   def commentable_link
     if commentable_type == "Correction"
