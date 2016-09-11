@@ -28,8 +28,7 @@ class Review < ActiveRecord::Base
   belongs_to :editor, :class_name => 'User', :foreign_key => 'edited_by'
   belongs_to :mod, :inverse_of => 'reviews'
 
-  has_many :mod_authors, :through => :mod
-  has_many :mod_author_users, :through => :mod_authors
+  has_many :mod_author_users, :through => :mod, :source => :author_users
 
   has_many :review_ratings, :inverse_of => 'review'
 
