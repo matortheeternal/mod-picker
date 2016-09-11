@@ -1,9 +1,18 @@
 class Mod < ActiveRecord::Base
-  include Filterable, Sortable, Imageable, RecordEnhancements, SourceHelpers, ScopeHelpers
+  include Filterable, Sortable, Imageable, RecordEnhancements, SourceHelpers, ScopeHelpers, Trackable
 
   # ATTRIBUTES
   enum status: [ :good, :outdated, :unstable ]
   self.per_page = 100
+
+  # EVENT TRACKING
+  track :added, :hidden, :updated
+  track_milestones :column => 'stars_count', :milestones => [10, 50, 100, 500, 1000, 5000, 10000, 50000, 100000, 500000]
+
+  # NOTIFICATION SUBSCRIPTIONS
+  subscribe :author_users, to: [:hidden, :unhidden, *Event.milestones]
+  subscribe :contribution_authors, to: [:updated]
+  subscribe :user_stars, to: [:updated]
 
   # SCOPES
   include_scope :hidden
@@ -211,6 +220,10 @@ class Mod < ActiveRecord::Base
 
   def load_order_notes
     LoadOrderNote.where('first_plugin_id in (:plugin_ids) OR second_plugin_id in (:plugin_ids)', plugin_ids: plugins.ids)
+  end
+
+  def contribution_authors
+    User.contributors(self)
   end
 
   def self.index_json(collection, sources)
