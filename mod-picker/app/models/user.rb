@@ -69,6 +69,8 @@ class User < ActiveRecord::Base
   has_many :reports, :foreign_key => 'submitted_by', :inverse_of => 'submitter'
 
   has_many :notifications, :inverse_of => 'user'
+  has_many :messages, :inverse_of => 'recipient', :foreign_key => 'sent_to'
+  has_many :sent_messages, :class_name => 'Message', :inverse_of => 'submitter', :foreign_key => 'submitter_by'
 
   accepts_nested_attributes_for :settings, reject_if: :new_record?
 
