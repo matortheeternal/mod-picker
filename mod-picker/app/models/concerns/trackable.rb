@@ -3,9 +3,9 @@ module Trackable
 
   included do
     class_attribute :_subscriptions
-    class_attribute :_tracked_columns
+    class_attribute :_tracked_attributes
     self._subscriptions = []
-    self._tracked_columns = []
+    self._tracked_attributes = []
 
     has_many :events, :as => 'content', :dependent => :nullify
   end
@@ -86,8 +86,8 @@ module Trackable
     @__subscriptions ||= self._subscriptions
   end
 
-  def tracked_columns
-    @__tracked_columns ||= self._tracked_columns
+  def tracked_attributes
+    @__tracked_attributes ||= self._tracked_attributes
   end
 
   module ClassMethods
@@ -127,11 +127,11 @@ module Trackable
       class_eval do
         after_update :changed_event
         def changed_event
-          tracked_columns.each do |tracked|
-            if tracked.has_key?(:milestones)
-              track_milestone_change(tracked[:column], tracked[:milestones])
+          tracked_attributes.each do |tracking|
+            if tracking.has_key?(:milestones)
+              track_milestone_change(tracking[:column], tracking[:milestones])
             else
-              track_column_change(tracked[:event], tracked[:column])
+              track_column_change(tracking[:event], tracking[:column])
             end
           end
         end
@@ -139,7 +139,7 @@ module Trackable
     end
 
     def track_change(event, options={})
-      self._tracked_columns.push({
+      self._tracked_attributes.push({
           event: event,
           column: options.has_key?(:column) ? options[:column].to_sym : event
       })
@@ -147,7 +147,7 @@ module Trackable
     end
 
     def track_milestones(options={})
-      self._tracked_columns.push({
+      self._tracked_attributes.push({
           column: options[:column].to_sym,
           milestones: options[:milestones]
       })
