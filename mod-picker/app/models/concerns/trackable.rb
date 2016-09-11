@@ -71,11 +71,11 @@ module Trackable
 
   def track_milestone_change(column, milestones)
     return unless attribute_changed?(column)
-    def get_milestone(value)
+    get_milestone = proc {|value|
       milestones.each_with_index do |milestone, index|
         return index - 1 if value < milestone
       end
-    end
+    }
 
     old_milestone = get_milestone(attribute_was(column))
     new_milestone = get_milestone(public_send(column))
