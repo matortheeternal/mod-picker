@@ -48,28 +48,32 @@ class Review < ActiveRecord::Base
   before_destroy :clear_ratings, :decrement_counters
 
   def clear_ratings
-    ReviewRating.where(review_id: self.id).delete_all
+    ReviewRating.where(review_id: id).delete_all
   end
 
   def update_metrics
     compute_overall_rating
-    self.update_columns({
-      ratings_count: self.review_ratings.count,
-      overall_rating: self.overall_rating
+    update_columns({
+      ratings_count: review_ratings.count,
+      overall_rating: overall_rating
     })
   end
 
   def update_mod_metrics
-    self.mod.compute_average_rating
-    self.mod.compute_reputation
-    self.mod.save
+    mod.compute_average_rating
+    mod.compute_reputation
+    mod.update_columns({
+        :reviews_count => mod.reviews_count,
+        :reputation => mod.reputation,
+        :average_rating => mod.average_rating
+    })
   end
 
   def compute_overall_rating
     total = 0
     count = 0
 
-    self.review_ratings.each do |r|
+    review_ratings.each do |r|
       total += r.rating
       count += 1
     end
@@ -160,22 +164,12 @@ class Review < ActiveRecord::Base
     end
 
     def increment_counters
-      self.mod.reviews_count += 1
-      self.mod.compute_average_rating
-      # we also take this chance to recompute the mod's reputation
-      # if there are enough reviews to do so
-      if self.mod.reviews_count >= 5
-        self.mod.compute_reputation
-      end
-      self.mod.save
-      self.submitter.update_counter(:reviews_count, 1)
+      mod.update_counter(:reviews_count, 1)
+      submitter.update_counter(:reviews_count, 1)
     end
 
     def decrement_counters
-      self.mod.reviews_count -= 1
-      self.mod.compute_average_rating
-      self.mod.compute_reputation
-      self.mod.save
-      self.submitter.update_counter(:reviews_count, -1)
+      mod.update_counter(:reviews_count, -1)
+      submitter.update_counter(:reviews_count, -1)
     end
 end
