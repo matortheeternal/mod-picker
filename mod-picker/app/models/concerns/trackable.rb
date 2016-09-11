@@ -33,8 +33,30 @@ module Trackable
     Notification.create(notification_records)
   end
 
+  def event_owner_attributes(event_type)
+    case event_type
+      when "added"
+        return config.added_owner_attributes
+      when "removed"
+        return config.removed_owner_attributes
+      else
+        return config.updated_owner_attributes
+    end
+  end
+
+  def get_owner_id(event_type)
+    attributes = event_owner_attributes(event_type)
+    if attributes.present?
+      attributes.each do |attr|
+        return public_send(attr) if respond_to?(attr)
+      end
+    end
+
+    nil
+  end
+
   def create_event(event_type)
-    events.create(event_type: event_type)
+    events.create(user_id: get_owner_id(event_type), event_type: event_type)
   end
 
   def track_column_change(event, column)
