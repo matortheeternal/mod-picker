@@ -1,5 +1,11 @@
 class UserReputation < ActiveRecord::Base
-  include Filterable, RecordEnhancements
+  include Filterable, RecordEnhancements, Trackable
+
+  # EVENT TRACKING
+  track_milestones :column => 'overall', :values => [10, 20, 40, 80, 160, 320, 640, 1280]
+
+  # NOTIFICATION SUBSCRIPTIONS
+  subscribe :user, to: [*Event.milestones]
 
   # SCOPES
   scope :computable, -> { where(dont_compute: false) }
