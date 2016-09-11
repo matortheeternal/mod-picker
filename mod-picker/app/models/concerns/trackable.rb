@@ -77,8 +77,8 @@ module Trackable
       end
     }
 
-    old_milestone = get_milestone(attribute_was(column))
-    new_milestone = get_milestone(public_send(column))
+    old_milestone = get_milestone.call(attribute_was(column))
+    new_milestone = get_milestone.call(public_send(column))
     create_event(:"milestone#{new_milestone}") if old_milestone < new_milestone
   end
 
