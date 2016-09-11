@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160910200055) do
+ActiveRecord::Schema.define(version: 20160911043717) do
 
   create_table "agreement_marks", id: false, force: :cascade do |t|
     t.integer "correction_id", limit: 4,                null: false
@@ -187,9 +187,9 @@ ActiveRecord::Schema.define(version: 20160910200055) do
 
   create_table "events", force: :cascade do |t|
     t.integer  "content_id",   limit: 4
-    t.string   "content_type", limit: 255
-    t.integer  "event_type",   limit: 1,   null: false
-    t.datetime "created",                  null: false
+    t.string   "content_type", limit: 32
+    t.integer  "event_type",   limit: 1,  null: false
+    t.datetime "created",                 null: false
   end
 
   create_table "games", force: :cascade do |t|
@@ -353,11 +353,13 @@ ActiveRecord::Schema.define(version: 20160910200055) do
 
   create_table "messages", force: :cascade do |t|
     t.integer  "submitted_by", limit: 4,     null: false
+    t.integer  "sent_to",      limit: 4
     t.text     "text",         limit: 65535, null: false
-    t.datetime "created",                    null: false
-    t.datetime "updated"
+    t.datetime "submitted",                  null: false
+    t.datetime "edited"
   end
 
+  add_index "messages", ["sent_to"], name: "fk_rails_c6b55ed9a4", using: :btree
   add_index "messages", ["submitted_by"], name: "fk_rails_1364e4d956", using: :btree
 
   create_table "mod_asset_files", id: false, force: :cascade do |t|
@@ -979,6 +981,7 @@ ActiveRecord::Schema.define(version: 20160910200055) do
   add_foreign_key "lover_infos", "games"
   add_foreign_key "lover_infos", "mods"
   add_foreign_key "masters", "plugins", name: "masters_ibfk_1"
+  add_foreign_key "messages", "users", column: "sent_to"
   add_foreign_key "messages", "users", column: "submitted_by"
   add_foreign_key "mod_asset_files", "asset_files"
   add_foreign_key "mod_asset_files", "mod_options"
