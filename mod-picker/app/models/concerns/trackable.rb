@@ -36,11 +36,11 @@ module Trackable
   def event_owner_attributes(event_type)
     case event_type
       when "added"
-        return config.added_owner_attributes
+        return config.added_owner_attributes || [:added_by]
       when "removed"
-        return config.removed_owner_attributes
+        return config.removed_owner_attributes || [:removed_by]
       else
-        return config.updated_owner_attributes
+        return config.updated_owner_attributes || [:updated_by]
     end
   end
 
