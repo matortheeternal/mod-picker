@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160911043717) do
+ActiveRecord::Schema.define(version: 20160911185003) do
 
   create_table "agreement_marks", id: false, force: :cascade do |t|
     t.integer "correction_id", limit: 4,                null: false
@@ -186,11 +186,14 @@ ActiveRecord::Schema.define(version: 20160911043717) do
   add_index "dummy_masters", ["plugin_id"], name: "fk_rails_2552b596d8", using: :btree
 
   create_table "events", force: :cascade do |t|
+    t.integer  "user_id",      limit: 4
     t.integer  "content_id",   limit: 4
     t.string   "content_type", limit: 32
     t.integer  "event_type",   limit: 1,  null: false
     t.datetime "created",                 null: false
   end
+
+  add_index "events", ["user_id"], name: "fk_rails_0cb5590091", using: :btree
 
   create_table "games", force: :cascade do |t|
     t.integer "parent_game_id",            limit: 4
@@ -497,6 +500,7 @@ ActiveRecord::Schema.define(version: 20160911043717) do
   create_table "mod_lists", force: :cascade do |t|
     t.integer  "game_id",                   limit: 4,                     null: false
     t.integer  "submitted_by",              limit: 4,                     null: false
+    t.integer  "edited_by",                 limit: 4
     t.integer  "status",                    limit: 1,     default: 0,     null: false
     t.integer  "visibility",                limit: 1,     default: 0,     null: false
     t.boolean  "is_collection",                           default: false, null: false
@@ -533,6 +537,7 @@ ActiveRecord::Schema.define(version: 20160911043717) do
     t.datetime "updated"
   end
 
+  add_index "mod_lists", ["edited_by"], name: "fk_rails_71c1af8d0c", using: :btree
   add_index "mod_lists", ["game_id"], name: "fk_rails_f25cbc0432", using: :btree
   add_index "mod_lists", ["submitted_by"], name: "created_by", using: :btree
 
@@ -577,6 +582,7 @@ ActiveRecord::Schema.define(version: 20160911043717) do
   create_table "mods", force: :cascade do |t|
     t.integer  "game_id",                   limit: 4,                   null: false
     t.integer  "submitted_by",              limit: 4,                   null: false
+    t.integer  "edited_by",                 limit: 4
     t.boolean  "is_official",                           default: false, null: false
     t.boolean  "is_utility",                            default: false, null: false
     t.string   "name",                      limit: 128,                 null: false
@@ -608,6 +614,7 @@ ActiveRecord::Schema.define(version: 20160911043717) do
     t.datetime "updated"
   end
 
+  add_index "mods", ["edited_by"], name: "fk_rails_9ec1af790b", using: :btree
   add_index "mods", ["game_id"], name: "fk_rails_3ec448a848", using: :btree
   add_index "mods", ["primary_category_id"], name: "fk_rails_42759f5da5", using: :btree
   add_index "mods", ["secondary_category_id"], name: "fk_rails_26f394ea9d", using: :btree
@@ -958,6 +965,7 @@ ActiveRecord::Schema.define(version: 20160911043717) do
   add_foreign_key "corrections", "users", column: "submitted_by", name: "corrections_ibfk_4"
   add_foreign_key "custom_sources", "mods"
   add_foreign_key "dummy_masters", "plugins"
+  add_foreign_key "events", "users"
   add_foreign_key "games", "games", column: "parent_game_id"
   add_foreign_key "help_pages", "games"
   add_foreign_key "help_pages", "users", column: "submitted_by"
@@ -1010,6 +1018,7 @@ ActiveRecord::Schema.define(version: 20160911043717) do
   add_foreign_key "mod_list_tags", "tags"
   add_foreign_key "mod_list_tags", "users", column: "submitted_by"
   add_foreign_key "mod_lists", "games"
+  add_foreign_key "mod_lists", "users", column: "edited_by"
   add_foreign_key "mod_lists", "users", column: "submitted_by"
   add_foreign_key "mod_options", "mods"
   add_foreign_key "mod_requirements", "mods"
@@ -1022,6 +1031,7 @@ ActiveRecord::Schema.define(version: 20160911043717) do
   add_foreign_key "mods", "categories", column: "primary_category_id"
   add_foreign_key "mods", "categories", column: "secondary_category_id"
   add_foreign_key "mods", "games"
+  add_foreign_key "mods", "users", column: "edited_by"
   add_foreign_key "mods", "users", column: "submitted_by"
   add_foreign_key "nexus_infos", "games"
   add_foreign_key "notifications", "events"
