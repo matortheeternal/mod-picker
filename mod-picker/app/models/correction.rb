@@ -1,8 +1,18 @@
 class Correction < ActiveRecord::Base
-  include Filterable, Sortable, RecordEnhancements, Reportable, ScopeHelpers
+  include Filterable, Sortable, RecordEnhancements, Reportable, ScopeHelpers, Trackable
 
+  # ATTRIBUTES
   enum status: [:open, :passed, :failed, :closed]
   enum mod_status: [:good, :outdated, :unstable]
+  self.per_page = 25
+
+  # EVENT TRACKING
+  track :added, :hidden, :status
+
+  # NOTIFICATION SUBSCRIPTIONS
+  subscribe :submitter, to: [:status, :action_soon, :hidden, :unhidden]
+  subscribe :commenters, to: [:status]
+  subscribe :mod_author_users, to: [:added, :status]
 
   # SCOPES
   include_scope :hidden
@@ -23,11 +33,9 @@ class Correction < ActiveRecord::Base
 
   has_many :agreement_marks, :inverse_of => 'correction'
   has_many :comments, -> { where(parent_id: nil) }, :as => 'commentable'
-  
-  belongs_to :correctable, :polymorphic => true
+  has_many :commenters, :class_name => 'User', :through => :comments, :source => 'submitter'
 
-  # number of corrections per page on the corrections index
-  self.per_page = 25
+  belongs_to :correctable, :polymorphic => true
 
   # VALIDATIONS
   validates :game_id, :submitted_by, :correctable_id, :correctable_type, :text_body, presence: true
@@ -60,6 +68,14 @@ class Correction < ActiveRecord::Base
         correction.status = :failed
       end
       correction.save
+    end
+  end
+
+  def mod_author_users
+    if correctable_type == "Mod"
+      correctable.author_users
+    else
+      []
     end
   end
 
@@ -108,7 +124,7 @@ class Correction < ActiveRecord::Base
   def notification_json_options(event_type)
     is_appeal = correctable_type == "Mod"
     {
-        :only => [:correctable_type, (:status if event_type == :status_changed), (:mod_status if is_appeal)].compact,
+        :only => [:correctable_type, (:status if event_type == :status), (:mod_status if is_appeal)].compact,
         :include => {
             :correctable => {
                 :only => [:id, (:name if is_appeal)].compact,
