@@ -1,6 +1,7 @@
 class Message < ActiveRecord::Base
   # ASSOCIATIONS
-  belongs_to :user, :foreign_key => 'submitted_by', :inverse_of => 'messages'
+  belongs_to :submitter, :class_name => 'User', :foreign_key => 'submitted_by', :inverse_of => 'sent_messages'
+  belongs_to :recipient, :class_name => 'User', :foreign_key => 'sent_to', :inverse_of => 'messages'
 
   # VALIDATIONS
   validates :submitted_by, :text, presence: true
@@ -13,11 +14,10 @@ class Message < ActiveRecord::Base
   # Private methods
   private
     def set_dates
-      # TODO: Refactor to submitted and edited
-      if self.created.nil?
-        self.created = DateTime.now
+      if self.submitted.nil?
+        self.submitted = DateTime.now
       else
-        self.updated = DateTime.now
+        self.edited = DateTime.now
       end
     end
 end
