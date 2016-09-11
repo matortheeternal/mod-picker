@@ -23,6 +23,10 @@ class ReputationLink < ActiveRecord::Base
   after_create :increment_counters
   before_destroy :decrement_counters
 
+  def removed_by
+    source_user.id
+  end
+
   def notification_json_options(event_type)
     {
         :only => [],

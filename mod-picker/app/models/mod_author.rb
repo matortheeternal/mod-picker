@@ -29,6 +29,10 @@ class ModAuthor < ActiveRecord::Base
     end
   end
 
+  def removed_by
+    mod.edited_by
+  end
+
   def mod_author_users
     User.joins(:mod_authors).where(:mod_authors => {role: 0, mod_id: mod_id})
   end
