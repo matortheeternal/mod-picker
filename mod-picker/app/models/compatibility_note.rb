@@ -71,15 +71,15 @@ class CompatibilityNote < ActiveRecord::Base
   end
 
   def create_history_entry
-    edit_summary = self.edited_by.nil? ? "Compatibility Note Created" : self.edit_summary
-    self.history_entries.create(
-      edited_by: self.edited_by || self.submitted_by,
-      status: self.status,
-      compatibility_mod_id: self.compatibility_mod_id,
-      compatibility_plugin_id: self.compatibility_plugin_id,
-      text_body: self.text_body,
-      edit_summary: edit_summary || "",
-      edited: self.edited || self.submitted
+    history_summary = edited_by.nil? ? "Compatibility Note Created" : edit_summary
+    history_entries.create(
+      edited_by: edited_by || submitted_by,
+      status: status,
+      compatibility_mod_id: compatibility_mod_id,
+      compatibility_plugin_id: compatibility_plugin_id,
+      text_body: text_body,
+      edit_summary: history_summary || "",
+      edited: edited || submitted
     )
   end
 
