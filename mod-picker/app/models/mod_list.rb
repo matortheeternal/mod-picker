@@ -62,8 +62,11 @@ class ModList < ActiveRecord::Base
   has_many :mod_list_tags, :inverse_of => 'mod_list', :dependent => :destroy
   has_many :tags, :through => 'mod_list_tags', :inverse_of => 'mod_lists'
 
-  # ASSOCIATIONS FROM OTHER USERS
+  # STARS
   has_many :mod_list_stars, :inverse_of => 'mod_list', :dependent => :destroy
+  has_many :user_stars, :through => 'mod_list_stars', :class_name => 'User', :inverse_of => 'starred_mod_lists'
+
+  # COMMENTS
   has_many :comments, -> { where(parent_id: nil) }, :as => 'commentable', :dependent => :destroy
 
   # NESTED ATTRIBUTES
