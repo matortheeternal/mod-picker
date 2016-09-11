@@ -1,8 +1,16 @@
 class Review < ActiveRecord::Base
-  include Filterable, Sortable, RecordEnhancements, Helpfulable, Reportable, ScopeHelpers
+  include Filterable, Sortable, RecordEnhancements, Helpfulable, Reportable, ScopeHelpers, Trackable
 
   # ATTRIBUTES
   self.per_page = 25
+
+  # EVENT TRACKING
+  track :added, :approved, :hidden
+  track :message, :column => 'moderator_message'
+
+  # NOTIFICATION SUBSCRIPTION
+  subscribe :mod_author_users, to: [:added, :approved, :unhidden]
+  subscribe :submitter, to: [:message, :approved, :unapproved, :hidden, :unhidden]
 
   # SCOPES
   include_scope :hidden
@@ -19,6 +27,9 @@ class Review < ActiveRecord::Base
   belongs_to :submitter, :class_name => 'User', :foreign_key => 'submitted_by', :inverse_of => 'reviews'
   belongs_to :editor, :class_name => 'User', :foreign_key => 'edited_by'
   belongs_to :mod, :inverse_of => 'reviews'
+
+  has_many :mod_authors, :through => :mod
+  has_many :mod_author_users, :through => :mod_authors
 
   has_many :review_ratings, :inverse_of => 'review'
 
