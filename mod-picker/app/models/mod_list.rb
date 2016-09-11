@@ -1,10 +1,18 @@
 class ModList < ActiveRecord::Base
-  include Filterable, Sortable, RecordEnhancements, Reportable, ScopeHelpers
+  include Filterable, Sortable, RecordEnhancements, Reportable, ScopeHelpers, Trackable
 
   # ATTRIBUTES
   enum status: [ :under_construction, :testing, :complete ]
   enum visibility: [ :visibility_private, :visibility_unlisted, :visibility_public ]
   self.per_page = 100
+
+  # EVENT TRACKING
+  track :added, :updated, :hidden
+  track_milestones :column => 'stars_count', :milestones => [10, 50, 100, 500, 1000, 5000, 10000, 50000, 100000, 500000]
+
+  # NOTIFICATION SUBSCRIPTIONS
+  subscribe :submitter, to: [:hidden, :unhidden, *Event.milestones]
+  subscribe :user_stars, to: [:updated]
 
   # SCOPES
   include_scope :has_adult_content, :alias => 'include_adult'
