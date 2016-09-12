@@ -25,6 +25,9 @@ seed_official_content if static_config[:official_content]
 #==================================================
 # CREATE FAKE RECORDS
 #==================================================
+# Note: To manually seed indivudally seeds use `rails console` then `require Rails.root.to_s + '/db/fake_seeds.rb'`
+# to require the fake_seeds file, then manually run the seed method you want inside of the rails console.
+
 require_relative 'fake_seeds'
 
 fake_config = {

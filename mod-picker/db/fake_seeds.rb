@@ -1185,49 +1185,51 @@ def seed_fake_corrections
         end
         puts "    #{AgreementMark.count} agreement marks seeded for correction #{correction.id}"
     end
-    puts "    #{Correction.count} corrections seeded}"
+    puts "    #{Correction.count} corrections seeded"
 end
 
 # seeds base_reports using random comments as the reportable type/id
 # comments, reviews, tags, compatibility notes, install order notes, load order notes, mods, mod lists, corrections, and users
 
-# should seed base_reports to random models that have include Reportable 
+# should seed base_reports to all models that include Reportable 
 # then seed a random number of reports for each base_report
 def seed_fake_base_reports
   puts "\nSeeding base reports"
 
   reportable_list = [User, Comment, Review, Tag, CompatibilityNote, InstallOrderNote, LoadOrderNote, Mod, ModList, Correction]
-  rand(50).times do
-    randComment = random_comment
-    BaseReport.new(
-        reportable_id: randComment.id,
-        reportable_type: randComment.class.name,
-    ).save!
+  reportable_list.each do |reportable_model|
+
+    if(reportable_model.count > 1)
+        nReportables = rand(1..reportable_model.count)
+        reportable_model.first(nReportables).each do |reportable|
+            base_report = BaseReport.new(
+                reportable_id: reportable.id,
+                reportable_type: reportable.class.name,
+                submitted: Faker::Date.backward(14)
+            )
+            base_report.save!
+
+            seed_fake_reports(base_report)
+        end
+    end
   end
 
   puts "    #{BaseReport.count} base_reports seeded"
+  puts "    #{Report.count} reports total seeded"
 end
 
-# create_table "reports", force: :cascade do |t|
-#     t.integer  "base_report_id", limit: 4,   null: false
-#     t.integer  "submitted_by",   limit: 4,   null: false
-#     t.integer  "report_type",    limit: 1,   null: false
-#     t.string   "note",           limit: 128
-#     t.datetime "submitted",                  null: false
-#     t.datetime "edited"
-#   end
-
-def seed_fake_reports
+# Helper method to be used with seed_fake_base_reports
+# can be used by itself if passed a base_report record
+def seed_fake_reports(base_report)
   puts "\nSeeding reports"
 
-  rand(50).times do
-    randBaseReport = BaseReport.offset(rand(BaseReport.count)).first
-    randBaseReport.reports.new(
+  rand(1..10).times do
+    base_report.reports.new(
       submitted_by: random_user.id,
       report_type: Report.report_types.keys.sample,
       note: Faker::Lorem.words(4).join(' ')
     ).save!
   end
 
-  puts "    #{BaseReport.count} reports seeded"
+  puts "    #{base_report.reports.count} reports seeded"
 end
