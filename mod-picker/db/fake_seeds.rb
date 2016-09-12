@@ -1147,10 +1147,56 @@ def seed_fake_articles
   puts "    #{Article.count} articles seeded"
 end
 
+
+# seeds fake corrections + agreement marks
+# requires redis to be running to automatically expire corrections after 7 days
+def seed_fake_corrections
+    puts "\nSeeding fake corrections"
+
+    # helper variables
+    gameSkyrim = Game.where({display_name: "Skyrim"}).first
+    nMods = Mod.count
+    nMods.times do
+        submitter = random_user
+        mod = random_mod
+        correction = Correction.new(
+            game_id: gameSkyrim.id,
+            submitted_by: submitter.id,
+            correctable_id: mod.id,
+            correctable_type: mod.class.name,
+            title: Faker::Lorem.words(3).join(' '),
+            text_body: Faker::Lorem.paragraph(10),
+            status: Correction.statuses.keys.sample,
+            mod_status: mod.status,
+            submitted: Faker::Date.backward(14),
+        )
+        correction.save!
+
+        # seed agreement marks on corrections
+        # rand > 0.3 is weighted to 70% chance of being true
+        nAgreementMarks = randpow(10, 3)
+        nAgreementMarks.times do
+            submitter = random_user
+            correction.agreement_marks.new(
+                correction_id: correction.id,
+                submitted_by: submitter.id,
+                agree: rand > 0.4,
+        ).save!
+        end
+        puts "    #{AgreementMark.count} agreement marks seeded for correction #{correction.id}"
+    end
+    puts "    #{Correction.count} corrections seeded}"
+end
+
 # seeds base_reports using random comments as the reportable type/id
+# comments, reviews, tags, compatibility notes, install order notes, load order notes, mods, mod lists, corrections, and users
+
+# should seed base_reports to random models that have include Reportable 
+# then seed a random number of reports for each base_report
 def seed_fake_base_reports
   puts "\nSeeding base reports"
 
+  reportable_list = [User, Comment, Review, Tag, CompatibilityNote, InstallOrderNote, LoadOrderNote, Mod, ModList, Correction]
   rand(50).times do
     randComment = random_comment
     BaseReport.new(
