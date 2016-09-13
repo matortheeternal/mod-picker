@@ -26,8 +26,9 @@ Rails.application.routes.draw do
     match '/settings/link_account', to: 'user_settings#link_account', via: [:post]
 
     # notifications
+    match '/notifications/recent', to: 'notifications#recent', via: [:get]
+    match '/notifications/read', to: 'notifications#read', via: [:post]
     match '/notifications/:page', to: 'notifications#index', via: [:get]
-    match '/notifications/:id', to: 'notifications#destroy', via: [:delete]
 
     # scraping
     match '/nexus_infos/:id', to: 'nexus_infos#show', via: [:get]
