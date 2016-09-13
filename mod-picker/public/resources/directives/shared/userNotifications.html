@@ -1,0 +1,22 @@
+<a class="inverse-link no-select" ng-click="toggleNotifications()" tabindex="0">
+    <i class="fa {{notifications.length ? 'fa-bell' : 'fa-bell-o'}}"></i>
+    {{notifications.length}}
+</a>
+<div class="dropdown" ng-show="showNotifications" ng-click="stopPropagation($event)">
+    <a class="action notification-settings" href="#/settings/notifications" title="Notification Settings">
+        <i class="fa fa-gear"></i>
+    </a>
+    <a class="action mark-all-read" ng-click="markAllRead()" title="Mark all read" ng-show="notifications.length">
+        <i class="fa fa-check-circle"></i>
+    </a>
+    <a class="action refresh-notifications" ng-click="refreshNotifications()" title="Refresh notifications">
+        <i class="fa fa-refresh"></i>
+    </a>
+
+    <div class="content-message" ng-hide="notifications.length">Nothing new</div>
+    <notification notification="notification" ng-repeat="notification in notifications"></notification>
+
+    <a class="more-notifications" href="#/notifications">
+        Older Notifications
+    </a>
+</div>
