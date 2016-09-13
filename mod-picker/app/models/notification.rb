@@ -1,5 +1,7 @@
 class Notification < ActiveRecord::Base
+  # ATTRIBUTES
   self.primary_keys = :event_id, :user_id
+  self.per_page = 50
 
   # SCOPES
   scope :unread, -> { where(read: false) }
