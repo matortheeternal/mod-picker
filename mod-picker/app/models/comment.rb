@@ -141,18 +141,32 @@ class Comment < ActiveRecord::Base
         :only => [:commentable_type, :commentable_id],
         :include => {}
     }
-    if commentable_type == "Correction"
+    if commentable_type == "ModList"
+      options[:include][:commentable] = { :only => [:name] }
+    elsif commentable_type == "Correction"
       if commentable.correctable_type == "Mod"
         options[:include][:commentable] = {
             :only => [:mod_status],
             :include => {
-                :mod => { :only => [:id, :name] }
+                :correctable => { :only => [:id, :name] }
             }
         }
       else
-        options[:include][:commentable] = { :only => [:title] }
+        options[:include][:commentable] = {
+            :only => [:correctable_id, :correctable_type, :title],
+            :include => {
+                :correctable => {
+                    :only => [],
+                    :include => {
+                        :first_mod => { :only => [:id, :name] }
+                    }
+                }
+            }
+        }
       end
     end
+
+    options
   end
 
   def self.sortable_columns
