@@ -28,7 +28,7 @@ Rails.application.routes.draw do
     # notifications
     match '/notifications/recent', to: 'notifications#recent', via: [:get]
     match '/notifications/read', to: 'notifications#read', via: [:post]
-    match '/notifications/:page', to: 'notifications#index', via: [:get]
+    match '/notifications', to: 'notifications#index', via: [:post, :get]
 
     # scraping
     match '/nexus_infos/:id', to: 'nexus_infos#show', via: [:get]
