@@ -8,6 +8,10 @@
   display: none;
 }
 
+.no-select {
+  @include user-select(none);
+}
+
 .inline-flex {
   display: inline-flex;
 }
