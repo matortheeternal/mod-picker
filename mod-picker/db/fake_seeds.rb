@@ -1200,6 +1200,7 @@ def seed_fake_base_reports
   reportable_list.each do |reportable_model|
 
     if(reportable_model.count > 1)
+        
         nReportables = rand(1..reportable_model.count)
         reportable_model.first(nReportables).each do |reportable|
             base_report = BaseReport.new(
