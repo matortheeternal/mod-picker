@@ -1,9 +1,10 @@
 app.directive('notification', function() {
     return {
         restrict: 'E',
-        template: '<span ng-bind-html="message"></span>',
+        templateUrl: '/resources/directives/shared/notification.html',
         scope: {
-            notification: '=?'
+            notification: '=?',
+            showCreated: '=?'
         },
         controller: 'notificationController'
     }
