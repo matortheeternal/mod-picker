@@ -108,7 +108,7 @@ class User < ActiveRecord::Base
   end
 
   def recent_notifications
-    notifications.limit(10)
+    notifications.unread.limit(10)
   end
 
   def self.find_first_by_auth_conditions(warden_conditions)
