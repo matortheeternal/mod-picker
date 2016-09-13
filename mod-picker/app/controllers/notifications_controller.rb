@@ -11,13 +11,15 @@ class NotificationsController < ApplicationController
     }
   end
 
-  # DELETE /notifications/:id
-  def destroy
-    @notification = current_user.notifications.find_by(event_id: params[:id])
-    if @notification.destroy
-      render json: {status: :ok}
-    else
-      render json: @notification.errors, status: :unprocessable_entity
-    end
+  # GET /notifications/recent
+  def recent
+    @notifications = current_user.recent_notifications
+    render :json => @notifications
+  end
+
+  # POST /notifications/read
+  def read
+    current_user.notifications.where(id: params[:ids]).update_all(read: true)
+    render :json => current_user.recent_notifications
   end
 end
