@@ -124,7 +124,7 @@ class Correction < ActiveRecord::Base
   def notification_json_options(event_type)
     is_appeal = correctable_type == "Mod"
     {
-        :only => [:correctable_type, (:status if event_type == :status), (:mod_status if is_appeal)].compact,
+        :only => [:submitted_by, :correctable_type, (:status if event_type == :status), (:mod_status if is_appeal)].compact,
         :include => {
             :correctable => {
                 :only => [:id, (:name if is_appeal)].compact,

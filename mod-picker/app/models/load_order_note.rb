@@ -127,7 +127,7 @@ class LoadOrderNote < ActiveRecord::Base
 
   def notification_json_options(event_type)
     {
-        :only => [(:moderator_message if event_type == :message)].compact,
+        :only => [:submitted_by, (:moderator_message if event_type == :message)].compact,
         :methods => [:mods, :plugins]
     }
   end

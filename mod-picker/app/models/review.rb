@@ -131,7 +131,7 @@ class Review < ActiveRecord::Base
 
   def notification_json_options(event_type)
     {
-        :only => [],
+        :only => [:submitted_by],
         :include => {
             :mod => { :only => [:id, :name] }
         }

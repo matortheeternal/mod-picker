@@ -138,7 +138,7 @@ class Comment < ActiveRecord::Base
 
   def notification_json_options(event_type)
     options = {
-        :only => [:commentable_type, :commentable_id],
+        :only => [:submitted_by, :commentable_type, :commentable_id],
         :include => {}
     }
     if commentable_type == "ModList"
