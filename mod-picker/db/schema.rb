@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160911185003) do
+ActiveRecord::Schema.define(version: 20160913022046) do
 
   create_table "agreement_marks", id: false, force: :cascade do |t|
     t.integer "correction_id", limit: 4,                null: false
@@ -655,8 +655,9 @@ ActiveRecord::Schema.define(version: 20160911185003) do
   add_index "nexus_infos", ["game_id"], name: "fk_rails_46e3032463", using: :btree
 
   create_table "notifications", id: false, force: :cascade do |t|
-    t.integer "event_id", limit: 4, null: false
-    t.integer "user_id",  limit: 4, null: false
+    t.integer "event_id", limit: 4,                 null: false
+    t.integer "user_id",  limit: 4,                 null: false
+    t.boolean "read",               default: false, null: false
   end
 
   add_index "notifications", ["event_id"], name: "fk_rails_edea501a4e", using: :btree
