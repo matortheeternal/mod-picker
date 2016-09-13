@@ -12,6 +12,9 @@
                         Welcome <a class="inverse-link" ng-href="#/user/{{currentUser.id}}">{{currentUser.username}}</a>
                     </li>
                     <li>
+                        <user-notifications notifications="currentUser.recent_notifications"></user-notifications>
+                    </li>
+                    <li>
                         <a class="inverse-link">
                             <form id="contribution-select-form">
                                 <select class="contribution-selector" ng-model="newLocation" ng-change="navigateTo(newLocation); newLocation = ''">
