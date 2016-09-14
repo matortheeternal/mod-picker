@@ -22,7 +22,7 @@ app.service('indexFactory', function(indexService, objectUtils) {
                 sort: $scope.sort,
                 page: page || 1
             };
-            objectUtils.deleteEmptyProperties(options.filters);
+            objectUtils.deleteEmptyProperties(options.filters, 0, true);
             var dataCallback = function(data) {
                 $scope[$scope.route] = data[$scope.route];
                 delete $scope.error;
