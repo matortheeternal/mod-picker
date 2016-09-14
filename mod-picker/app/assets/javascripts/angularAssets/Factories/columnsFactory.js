@@ -176,7 +176,7 @@ app.service('columnsFactory', function() {
                 visibility: false,
                 label: "Downloads",
                 data: {
-                    nexus: "nexus_infos.total_downloads",
+                    nexus: "nexus_infos.downloads",
                     lab: "lover_infos.downloads"
                 },
                 filter: "number"
