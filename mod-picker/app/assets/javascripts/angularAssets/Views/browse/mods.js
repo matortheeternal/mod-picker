@@ -102,7 +102,8 @@ app.controller('modsController', function($scope, $rootScope, $q, $stateParams, 
     $scope.statFilters = filtersFactory.modStatisticFilters();
     $scope.filters = {
         game: $scope.currentGame.id,
-        include_adult: $scope.currentUser && $scope.currentUser.settings.allow_adult_content
+        include_adult: $scope.currentUser && $scope.currentUser.settings.allow_adult_content,
+        categories: []
     };
 
     // build generic controller stuff
