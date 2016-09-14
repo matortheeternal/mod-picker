@@ -476,7 +476,8 @@ app.service('columnsFactory', function() {
                         return "#/mod/" + item.mod.id;
                     }
                 },
-                class: "primary-column"
+                class: "primary-column",
+                sortData: "mods.name"
             },
             {
                 group: "General",
@@ -614,7 +615,8 @@ app.service('columnsFactory', function() {
                     if (item.mod) {
                         return "#/mod/" + item.mod.id;
                     }
-                }
+                },
+                sortData: "mods.name"
             },
             {
                 group: "General",
@@ -902,7 +904,8 @@ app.service('columnsFactory', function() {
                 data: "mod.name",
                 link: function (item) {
                     return "#/mod/" + item.mod.id;
-                }
+                },
+                sortData: "mods.name"
             },
             {
                 group: "General",
