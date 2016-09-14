@@ -4,7 +4,7 @@ class ReviewsController < ContributionsController
   # GET /reviews
   def index
     # prepare reviews
-    @reviews = Review.preload(:review_ratings).includes(:mod, :editor, :submitter => :reputation).accessible_by(current_ability).filter(filtering_params).sort(params[:sort]).paginate(:page => params[:page])
+    @reviews = Review.preload(:review_ratings).includes(:mod, :editor, :submitter => :reputation).references(:submitter => :reputation).accessible_by(current_ability).filter(filtering_params).sort(params[:sort]).paginate(:page => params[:page])
     count = Review.accessible_by(current_ability).filter(filtering_params).count
 
     # prepare helpful marks
