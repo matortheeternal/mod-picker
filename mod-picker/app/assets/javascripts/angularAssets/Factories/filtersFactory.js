@@ -165,7 +165,7 @@ app.factory("filtersFactory", function() {
                 data: "posts",
                 type: "Range",
                 max: 500000,
-                param: "pc"
+                param: "poc"
             },
             {
                 label: "Images Count",
@@ -267,6 +267,14 @@ app.factory("filtersFactory", function() {
                 param: "str"
             },
             {
+                label: "Mod Lists Count",
+                common: false,
+                data: "mod_lists",
+                type: "Range",
+                max: 1000,
+                param: "mlc"
+            },
+            {
                 label: "Compatibility Notes Count",
                 common: false,
                 data: "compatibility_notes",
@@ -289,6 +297,46 @@ app.factory("filtersFactory", function() {
                 type: "Range",
                 max: 100,
                 param: "loc"
+            },
+            {
+                label: "Asset Files Count",
+                common: false,
+                data: "asset_files",
+                type: "Range",
+                max: 50000,
+                param: "afc"
+            },
+            {
+                label: "Plugins Count",
+                common: false,
+                data: "plugins",
+                type: "Range",
+                max: 50,
+                param: "pc"
+            },
+            {
+                label: "Required Mods Count",
+                common: false,
+                data: "required_mods",
+                type: "Range",
+                max: 50,
+                param: "rmc"
+            },
+            {
+                label: "Required By Count",
+                common: false,
+                data: "required_by",
+                type: "Range",
+                max: 1000,
+                param: "rbc"
+            },
+            {
+                label: "Tags Count",
+                common: false,
+                data: "tags_count",
+                type: "Range",
+                max: 1000,
+                param: "tc"
             }
         ];
     };
