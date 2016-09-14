@@ -435,7 +435,7 @@ app.factory("filtersFactory", function() {
                 common: false,
                 data: "comments",
                 type: "Range",
-                max: 500,
+                max: 200,
                 param: "pcc"
             },
             {
@@ -483,7 +483,7 @@ app.factory("filtersFactory", function() {
                 common: false,
                 data: "submitted_comments",
                 type: "Range",
-                max: 1000,
+                max: 200,
                 param: "cmc"
             }
         ];
