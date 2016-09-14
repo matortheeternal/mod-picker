@@ -19,7 +19,7 @@ class NotificationsController < ApplicationController
 
   # POST /notifications/read
   def read
-    current_user.notifications.where(id: params[:ids]).update_all(read: true)
+    Notification.events(params[:ids]).user(current_user.id).mark_read
     render :json => current_user.recent_notifications
   end
 end
