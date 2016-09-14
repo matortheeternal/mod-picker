@@ -90,7 +90,7 @@ module ScopeHelpers
         scope_name = options[:alias] || attribute
         class_eval do
           scope scope_name.to_sym, -> (username) {
-            joins(attribute).where(:users => {:username => username})
+            includes(attribute).where(:users => {:username => username})
           }
         end
       end
@@ -102,7 +102,7 @@ module ScopeHelpers
         if options[:association]
           table_name = options[:table] || options[:association].to_s.pluralize
           class_eval do
-          scope scope_name.to_sym, -> (range) { joins(options[:associations]).
+          scope scope_name.to_sym, -> (range) { includes(options[:association]).
             where(table_name => {attribute => (range[:min]..range[:max])}) }
           end
         else

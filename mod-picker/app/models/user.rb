@@ -20,7 +20,7 @@ class User < ActiveRecord::Base
   search_scope :username, :alias => 'search'
   hash_scope :role
   counter_scope :authored_mods_count, :mod_lists_count, :comments_count, :reviews_count, :compatibility_notes_count, :install_order_notes_count, :load_order_notes_count, :corrections_count
-  range_scope :overall, :association => 'reputation', :table => 'user_reputations'
+  range_scope :overall, :association => 'reputation', :table => 'user_reputations', :alias => 'reputation'
   date_scope :joined
   date_scope :last_sign_in_at, :alias => 'last_seen'
 
