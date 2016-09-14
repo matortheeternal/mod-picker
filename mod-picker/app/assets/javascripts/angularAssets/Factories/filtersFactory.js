@@ -72,7 +72,8 @@ app.factory("filtersFactory", function() {
             {
                 data: "categories",
                 param: "c",
-                type: "List"
+                type: "List",
+                subtype: "Integer"
             },
             {
                 data: "sources.nexus",
