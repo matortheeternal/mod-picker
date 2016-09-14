@@ -14,14 +14,14 @@ app.factory("filtersFactory", function() {
         data: "editor",
         param: "e"
     };
-    this.contributionReputationFilter = {
-        label: "Reputatation",
+    this.contributionHelpfulnessFilter = {
+        label: "Helpfulness",
         common: true,
-        data: "reputation",
+        data: "helpfulness",
         type: "Range",
         min: -40,
         max: 40,
-        param: "rep"
+        param: "h"
     };
     this.helpfulFilter = {
         label: "Helpful Count",
@@ -623,7 +623,7 @@ app.factory("filtersFactory", function() {
     /* reviews index filters */
     this.reviewStatisticFilters = function() {
         return [
-            factory.contributionReputationFilter,
+            factory.contributionHelpfulnessFilter,
             factory.helpfulFilter,
             factory.notHelpfulFilter,
             {
@@ -656,7 +656,7 @@ app.factory("filtersFactory", function() {
     /* note index filters */
     this.noteStatisticFilters = function() {
         return [
-            factory.contributionReputationFilter,
+            factory.contributionHelpfulnessFilter,
             factory.helpfulFilter,
             factory.notHelpfulFilter,
             factory.correctionsFilter,

@@ -2,7 +2,8 @@ module Helpfulable
   extend ActiveSupport::Concern
 
   included do
-    range_scope :reputation, :helpful_count, :not_helpful_count
+    range_scope :helpful_count, :not_helpful_count
+    range_scope :reputation, :alias => 'helpfulness'
 
     has_many :helpful_marks, :as => 'helpfulable'
   end
