@@ -22,7 +22,6 @@ class Mod < ActiveRecord::Base
   value_scope :is_utility
   game_scope :parent => true
   search_scope :name, :aliases, :combine => true
-  ids_scope :categories, :columns => [:primary_category_id, :secondary_category_id]
   user_scope :author_users, :alias => 'mp_author'
   enum_scope :status
   date_scope :released, :updated
@@ -65,6 +64,7 @@ class Mod < ActiveRecord::Base
     query.where(where_clause.join(" OR "))
   }
   scope :tags, -> (array) { joins(:tags).where(:tags => {text: array}).having("COUNT(DISTINCT tags.text) = ?", array.length) }
+  scope :categories, -> (ids) { where("primary_category_id in (:ids) OR secondary_category_id in (:ids)", ids: ids) }
   scope :author, -> (hash) {
     author = hash[:value]
     sources = hash[:sources]
