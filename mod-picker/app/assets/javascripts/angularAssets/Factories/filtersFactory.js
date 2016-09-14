@@ -1172,7 +1172,7 @@ app.factory("filtersFactory", function() {
                 param: "fsz"
             },
             {
-                label: "Record Count",
+                label: "Records Count",
                 common: true,
                 data: "records",
                 type: "Range",
@@ -1180,7 +1180,7 @@ app.factory("filtersFactory", function() {
                 param: "rc"
             },
             {
-                label: "Override Record Count",
+                label: "Override Records Count",
                 common: true,
                 data: "overrides",
                 type: "Range",
