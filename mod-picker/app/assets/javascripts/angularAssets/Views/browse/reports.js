@@ -1,7 +1,7 @@
 app.run(function($futureState, indexFactory, filtersFactory) {
     // dynamically construct and apply state
     var filterPrototypes = filtersFactory.reportFilters();
-    var state = indexFactory.buildState('submitted', 'desc', 'reports', filterPrototypes);
+    var state = indexFactory.buildState('submitted', 'DESC', 'reports', filterPrototypes);
     state.controller = 'reportsIndexController';
     $futureState.futureState(state);
 });

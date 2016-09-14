@@ -352,6 +352,10 @@ class ModList < ActiveRecord::Base
     { :only => [:name] }
   end
 
+  def reportable_json_options
+    { :only => [:name] }
+  end
+
   def self.sortable_columns
     {
         :except => [:game_id, :submitted_by, :description],

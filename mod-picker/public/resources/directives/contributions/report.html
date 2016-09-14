@@ -1,9 +1,9 @@
 <div class="news-box" ng-class="{ 'full-report' : showFull }">
     <div class="content-container">
         <a ng-href="#/report/{{report.id}}">
-            <h3>{{report.reportable_type}}</h3>
-            <p> Reportable class name: {{report.reportable.class.name}}</p>
+        <h3>{{report.reportable_type}}</h3>
         </a>
+        <p>Test: {{testData}}</p>
         <span class="report-details">
             on {{report.submitted | date}}
         </span>
@@ -11,6 +11,7 @@
 
         <ul>
             <li ng-repeat="childReport in report.reports">
+                <p> Reportable class name: {{report.reportable.name}}</p>
                 <p>Reason: {{childReport.report_type}}</p>
                 <p>{{childReport.note}}</p>
                 by <a ng-href="#/user/{{childReport.submitter.id}}">{{childReport.submitter.username}}</a>

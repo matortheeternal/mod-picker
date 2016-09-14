@@ -22,7 +22,8 @@ class BaseReport < ActiveRecord::Base
                           :only => [:id, :username]
                       }
                   }
-              }
+              },
+              :reportable => reportable.reportable_json_options
           }
       }
       super(options.merge(default_options))
