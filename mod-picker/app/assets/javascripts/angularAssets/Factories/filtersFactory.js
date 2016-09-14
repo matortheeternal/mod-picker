@@ -423,12 +423,20 @@ app.factory("filtersFactory", function() {
                 param: "mods"
             },
             {
-                label: "Comments Count",
+                label: "Mod Lists Count",
                 common: true,
+                data: "mod_lists",
+                type: "Range",
+                max: 50,
+                param: "mlc"
+            },
+            {
+                label: "Profile Comments Count",
+                common: false,
                 data: "comments",
                 type: "Range",
-                max: 1000,
-                param: "cmc"
+                max: 500,
+                param: "pcc"
             },
             {
                 label: "Reviews Count",
@@ -471,12 +479,12 @@ app.factory("filtersFactory", function() {
                 param: "crc"
             },
             {
-                label: "Mod Lists Count",
+                label: "Comments Count",
                 common: false,
-                data: "mod_lists",
+                data: "submitted_comments",
                 type: "Range",
-                max: 50,
-                param: "mlc"
+                max: 1000,
+                param: "cmc"
             }
         ];
     };
