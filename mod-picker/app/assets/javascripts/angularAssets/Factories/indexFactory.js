@@ -24,6 +24,7 @@ app.service('indexFactory', function(indexService) {
             };
             var dataCallback = function(data) {
                 $scope[$scope.route] = data[$scope.route];
+                delete $scope.error;
                 $scope.firstGet = true;
                 if ($scope.dataCallback) $scope.dataCallback();
             };
