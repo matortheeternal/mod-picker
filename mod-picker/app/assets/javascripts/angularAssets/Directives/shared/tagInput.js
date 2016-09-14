@@ -61,13 +61,15 @@ app.controller('tagInputController', function($scope, $timeout, formUtils) {
         // we have to use a timeout because otherwise we would test
         // the tag before the click event on a result went through
         $timeout(function() {
-            var isValidTag = $scope.tags.findIndex(function(tag) {
+            var index = $scope.tags.findIndex(function(tag) {
                 return tag.text === $scope.tag.text;
-            }) > -1;
-            if (!(isValidTag || $scope.canCreate) || $scope.tag.text == "") {
-                $scope.removeTag($scope.index)
+            });
+            if (index > -1) {
+                $scope.selectResult($scope.tags[index]);
+            } else if (!$scope.canCreate || $scope.tag.text == "") {
+                $scope.removeTag($scope.index);
+                $scope.showDropdown = false;
             }
-            $scope.showDropdown = false;
         }, 100);
     };
 
