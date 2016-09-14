@@ -11,7 +11,7 @@ app.service('indexFactory', function(indexService, objectUtils) {
         indexService.setSortFromParams($scope.sort, $stateParams);
 
         //  load filter values from url parameters
-        $scope.filters = {};
+        if (!$scope.filters) $scope.filters = {};
         indexService.setFiltersFromParams($scope.filters, $scope.filterPrototypes, $stateParams);
 
         /* data fetching functions */
