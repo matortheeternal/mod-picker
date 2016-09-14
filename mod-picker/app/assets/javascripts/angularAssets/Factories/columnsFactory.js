@@ -77,7 +77,7 @@ app.service('columnsFactory', function() {
                 group: "Mod Picker",
                 visibility: false,
                 label: "Assets",
-                data: "assets_count",
+                data: "asset_files_count",
                 filter: "number"
             },
             {
