@@ -21,13 +21,15 @@ app.service('columnsFactory', function() {
                 group: "General",
                 visibility: false,
                 label: "Primary Category",
-                data: "primary_category.name"
+                data: "primary_category.name",
+                unsortable: true
             },
             {
                 group: "General",
                 visibility: false,
                 label: "Secondary Category",
-                data: "secondary_category.name"
+                data: "secondary_category.name",
+                unsortable: true
             },
             {
                 group: "General",
@@ -495,14 +497,16 @@ app.service('columnsFactory', function() {
                 visibility: true,
                 label: "Primary Category",
                 data: "mod.primary_category.name",
-                class: 'category-column'
+                class: "category-column",
+                unsortable: true
             },
             {
                 group: "General",
                 visibility: false,
                 label: "Secondary Category",
                 data: "mod.secondary_category.name",
-                class: 'category-column'
+                class: "category-column",
+                unsortable: true
             },
             {
                 group: "General",
