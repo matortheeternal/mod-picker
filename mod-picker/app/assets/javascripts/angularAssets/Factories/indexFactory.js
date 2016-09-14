@@ -26,7 +26,6 @@ app.service('indexFactory', function(indexService, objectUtils) {
             var dataCallback = function(data) {
                 $scope[$scope.route] = data[$scope.route];
                 delete $scope.error;
-                $scope.firstGet = true;
                 if ($scope.dataCallback) $scope.dataCallback();
             };
             var errorCallback = function(response) {
@@ -39,23 +38,16 @@ app.service('indexFactory', function(indexService, objectUtils) {
             }
         };
 
-        // fetch contributions when we load the page
-        $scope.getData();
-
-        // fetch contributions again when filters or sort changes
         $scope.$watch('[filters, sort]', function() {
-            // get users
-            if ($scope.filters && $scope.firstGet) {
-                clearTimeout($scope.getDataTimeout);
-                $scope.pages.current = 1;
-                $scope.getDataTimeout = setTimeout($scope.getData, 1000);
-            }
+            // fetch data again when filters or sort changes
+            var dataWait = $scope[$scope.route] ? 1000 : 0;
+            clearTimeout($scope.getDataTimeout);
+            $scope.pages.current = 1;
+            $scope.getDataTimeout = setTimeout($scope.getData, dataWait);
 
             // set url parameters
-            if ($scope.filters && $scope.firstGet) {
-                var params = indexService.getParams($scope.filters, $scope.sort, $scope.filterPrototypes);
-                $state.transitionTo($state.current.name, params, { notify: false });
-            }
+            var params = indexService.getParams($scope.filters, $scope.sort, $scope.filterPrototypes);
+            $state.transitionTo($state.current.name, params, { notify: false });
         }, true);
     };
 
