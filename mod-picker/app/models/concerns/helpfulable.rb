@@ -15,10 +15,10 @@ module Helpfulable
   def compute_reputation
     if respond_to?(:standing)
       if standing == :bad
-        self.helpfulness = -100
+        self.reputation = -100
         return
       elsif standing == :unknown
-        self.helpfulness = 0
+        self.reputation = 0
         return
       end
     end
