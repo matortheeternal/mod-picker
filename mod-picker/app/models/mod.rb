@@ -25,6 +25,8 @@ class Mod < ActiveRecord::Base
   ids_scope :categories, :columns => [:primary_category_id, :secondary_category_id]
   user_scope :author_users, :alias => 'mp_author'
   enum_scope :status
+  date_scope :released, :updated
+  range_scope :average_rating, :alias => 'rating'
   counter_scope :plugins_count, :asset_files_count, :required_mods_count, :required_by_count, :tags_count, :stars_count, :mod_lists_count, :reviews_count, :compatibility_notes_count, :install_order_notes_count, :load_order_notes_count, :corrections_count
   source_scope :views, :sites =>  [:nexus, :lab, :workshop]
   source_scope :downloads, :sites => [:nexus, :lab]
