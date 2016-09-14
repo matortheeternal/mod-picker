@@ -21,5 +21,5 @@ app.controller('articlesIndexController', function ($scope, $rootScope, $statePa
     // build generic controller stuff
     $scope.route = 'articles';
     $scope.retrieve = articleService.retrieveArticles;
-    indexFactory.buildIndex($scope, $stateParams, $state, indexService);
+    indexFactory.buildIndex($scope, $stateParams, $state);
 });

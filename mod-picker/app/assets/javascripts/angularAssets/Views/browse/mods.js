@@ -108,7 +108,7 @@ app.controller('modsController', function($scope, $rootScope, $q, $stateParams, 
     // build generic controller stuff
     $scope.route = 'mods';
     $scope.retrieve = modService.retrieveMods;
-    indexFactory.buildIndex($scope, $stateParams, $state, indexService);
+    indexFactory.buildIndex($scope, $stateParams, $state);
     eventHandlerFactory.buildMessageHandlers($scope);
 
     // override some data from the generic controller

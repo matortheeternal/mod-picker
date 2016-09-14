@@ -1,5 +1,5 @@
 app.service('indexFactory', function(indexService, objectUtils) {
-    this.buildIndex = function($scope, $stateParams, $state, localIndexService) {
+    this.buildIndex = function($scope, $stateParams, $state) {
         // initialize local variables
         $scope.availableColumnData = [];
         $scope.actions = [];
@@ -8,11 +8,11 @@ app.service('indexFactory', function(indexService, objectUtils) {
 
         // load sort values from url parameters
         $scope.sort = {};
-        localIndexService.setSortFromParams($scope.sort, $stateParams);
+        indexService.setSortFromParams($scope.sort, $stateParams);
 
         //  load filter values from url parameters
         $scope.filters = {};
-        localIndexService.setFiltersFromParams($scope.filters, $scope.filterPrototypes, $stateParams);
+        indexService.setFiltersFromParams($scope.filters, $scope.filterPrototypes, $stateParams);
 
         /* data fetching functions */
         $scope.getData = function(page) {
@@ -53,7 +53,7 @@ app.service('indexFactory', function(indexService, objectUtils) {
 
             // set url parameters
             if ($scope.filters && $scope.firstGet) {
-                var params = localIndexService.getParams($scope.filters, $scope.sort, $scope.filterPrototypes);
+                var params = indexService.getParams($scope.filters, $scope.sort, $scope.filterPrototypes);
                 $state.transitionTo($state.current.name, params, { notify: false });
             }
         }, true);
