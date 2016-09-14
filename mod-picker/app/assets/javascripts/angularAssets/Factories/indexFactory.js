@@ -1,4 +1,4 @@
-app.service('indexFactory', function(indexService) {
+app.service('indexFactory', function(indexService, objectUtils) {
     this.buildIndex = function($scope, $stateParams, $state, localIndexService) {
         // initialize local variables
         $scope.availableColumnData = [];
@@ -18,10 +18,11 @@ app.service('indexFactory', function(indexService) {
         $scope.getData = function(page) {
             delete $scope[$scope.route];
             var options = {
-                filters: $scope.filters,
+                filters: angular.copy($scope.filters),
                 sort: $scope.sort,
                 page: page || 1
             };
+            objectUtils.deleteEmptyProperties(options.filters);
             var dataCallback = function(data) {
                 $scope[$scope.route] = data[$scope.route];
                 delete $scope.error;
