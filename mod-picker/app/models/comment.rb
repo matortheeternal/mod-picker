@@ -1,5 +1,15 @@
 class Comment < ActiveRecord::Base
-  include Filterable, Sortable, RecordEnhancements, Reportable, ScopeHelpers
+  include Filterable, Sortable, RecordEnhancements, Reportable, ScopeHelpers, Trackable
+
+  # ATTRIBUTES
+  self.per_page = 50
+
+  # EVENT TRACKING
+  track :added, :hidden
+
+  # NOTIFICATION SUBSCRIPTIONS
+  subscribe :commentable_user, to: [:added]
+  subscribe :submitter, to: [:hidden, :unhidden]
 
   # SCOPES
   include_scope :hidden
@@ -18,20 +28,21 @@ class Comment < ActiveRecord::Base
   belongs_to :parent, :class_name => 'Comment', :foreign_key => 'parent_id', :inverse_of => 'children'
   has_many :children, :class_name => 'Comment', :foreign_key => 'parent_id', :inverse_of => 'parent'
 
-  # number of comments per page on the comments index
-  self.per_page = 50
-
   # VALIDATIONS
   validates :submitted_by, :commentable_type, :commentable_id, :text_body, presence: true
   validates :hidden, inclusion: [true, false]
   validates :commentable_type, inclusion: ["User", "ModList", "Correction", "Article", "HelpPage"]
   validates :text_body, length: {in: 2..8192}
-  # TODO: Validation of nesting
+  validate :nesting
 
   # CALLBACKS
   before_save :set_dates
   after_create :increment_counter_caches
   before_destroy :decrement_counter_caches
+
+  def nesting
+    parent_id.nil? || parent.parent_id.nil?
+  end
 
   def commentable_link
     if commentable_type == "Correction"
@@ -48,6 +59,17 @@ class Comment < ActiveRecord::Base
       "#/mod-list/" + commentable_id.to_s
     elsif commentable_type == "User"
       "#/user/" + commentable_id.to_s
+    end
+  end
+
+  def commentable_user
+    case commentable_type
+      when "Correction", "ModList", "Article"
+        commentable.submitter
+      when "User"
+        commentable
+      else
+        nil
     end
   end
 
@@ -112,6 +134,55 @@ class Comment < ActiveRecord::Base
     else
       super(options)
     end
+  end
+
+  def notification_json_options(event_type)
+    options = {
+        :only => [:submitted_by, :commentable_type, :commentable_id],
+        :include => {}
+    }
+    if commentable_type == "ModList"
+      options[:include][:commentable] = { :only => [:name] }
+    elsif commentable_type == "Correction"
+      if commentable.correctable_type == "Mod"
+        options[:include][:commentable] = {
+            :only => [:mod_status],
+            :include => {
+                :correctable => { :only => [:id, :name] }
+            }
+        }
+      else
+        options[:include][:commentable] = {
+            :only => [:correctable_id, :correctable_type, :title],
+            :include => {
+                :correctable => {
+                    :only => [],
+                    :include => {
+                        :first_mod => { :only => [:id, :name] }
+                    }
+                }
+            }
+        }
+      end
+    end
+
+    options
+  end
+
+  def self.sortable_columns
+    {
+        :except => [:parent_id, :submitted_by, :commentable_id, :text_body],
+        :include => {
+            :submitter => {
+                :only => [:username],
+                :include => {
+                    :reputation => {
+                        :only => [:overall]
+                    }
+                }
+            }
+        }
+    }
   end
 
   # Private methods

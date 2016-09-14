@@ -60,7 +60,7 @@ app.service('indexFactory', function(indexService) {
 
     this.buildState = function(scol, sdir, label, filterPrototypes) {
         // convert label to dash format
-        var dashLabel = label.toDashFormat();
+        var dashLabel = label.underscore('-');
 
         // base params
         var params = {

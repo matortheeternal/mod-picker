@@ -1,8 +1,18 @@
 class ModList < ActiveRecord::Base
-  include Filterable, Sortable, RecordEnhancements, Reportable, ScopeHelpers
+  include Filterable, Sortable, RecordEnhancements, Reportable, ScopeHelpers, Trackable
 
+  # ATTRIBUTES
   enum status: [ :under_construction, :testing, :complete ]
   enum visibility: [ :visibility_private, :visibility_unlisted, :visibility_public ]
+  self.per_page = 100
+
+  # EVENT TRACKING
+  track :added, :updated, :hidden
+  track_milestones :column => 'stars_count', :milestones => [10, 50, 100, 500, 1000, 5000, 10000, 50000, 100000, 500000]
+
+  # NOTIFICATION SUBSCRIPTIONS
+  subscribe :submitter, to: [:hidden, :unhidden, *Event.milestones]
+  subscribe :user_stars, to: [:updated]
 
   # SCOPES
   include_scope :has_adult_content, :alias => 'include_adult'
@@ -60,8 +70,11 @@ class ModList < ActiveRecord::Base
   has_many :mod_list_tags, :inverse_of => 'mod_list', :dependent => :destroy
   has_many :tags, :through => 'mod_list_tags', :inverse_of => 'mod_lists'
 
-  # ASSOCIATIONS FROM OTHER USERS
+  # STARS
   has_many :mod_list_stars, :inverse_of => 'mod_list', :dependent => :destroy
+  has_many :user_stars, :through => 'mod_list_stars', :class_name => 'User', :inverse_of => 'starred_mod_lists'
+
+  # COMMENTS
   has_many :comments, -> { where(parent_id: nil) }, :as => 'commentable', :dependent => :destroy
 
   # NESTED ATTRIBUTES
@@ -73,9 +86,6 @@ class ModList < ActiveRecord::Base
   accepts_nested_attributes_for :mod_list_config_files, allow_destroy: true
   accepts_nested_attributes_for :custom_config_files, allow_destroy: true
   accepts_nested_attributes_for :ignored_notes, allow_destroy: true
-
-  # numbers of mod lists per page on the mod lists index
-  self.per_page = 100
 
   # VALIDATIONS
   validates :game_id, :submitted_by, :name, presence: true
@@ -336,6 +346,21 @@ class ModList < ActiveRecord::Base
     else
       super(options)
     end
+  end
+
+  def notification_json_options(event_type)
+    { :only => [:name] }
+  end
+
+  def self.sortable_columns
+    {
+        :except => [:game_id, :submitted_by, :description],
+        :include => {
+            :submitter => {
+                :only => [:username]
+            }
+        }
+    }
   end
 
   private

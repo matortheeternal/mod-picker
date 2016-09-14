@@ -25,6 +25,11 @@ Rails.application.routes.draw do
     match '/settings/avatar', to: 'user_settings#avatar', via: [:post]
     match '/settings/link_account', to: 'user_settings#link_account', via: [:post]
 
+    # notifications
+    match '/notifications/recent', to: 'notifications#recent', via: [:get]
+    match '/notifications/read', to: 'notifications#read', via: [:post]
+    match '/notifications', to: 'notifications#index', via: [:post, :get]
+
     # scraping
     match '/nexus_infos/:id', to: 'nexus_infos#show', via: [:get]
     match '/lover_infos/:id', to: 'lover_infos#show', via: [:get]

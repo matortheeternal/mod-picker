@@ -1,9 +1,23 @@
 class ModTag < ActiveRecord::Base
-  self.primary_keys = :mod_id, :tag_id
+  include Trackable
 
+  # ATTRIBUTES
+  self.primary_keys = :mod_id, :tag_id
+  attr_accessor :removed_by
+
+  # EVENT TRACKING
+  track :added, :removed
+
+  # NOTIFICATION SUBSCRIPTIONS
+  subscribe :mod_author_users, to: [:added, :removed]
+  subscribe :submitter, to: [:removed]
+
+  # ASSOCIATIONS
   belongs_to :mod, :inverse_of => 'mod_tags'
   belongs_to :tag, :inverse_of => 'mod_tags'
   belongs_to :submitter, :class_name => 'User', :inverse_of => 'mod_tags', :foreign_key => 'submitted_by'
+
+  has_many :mod_author_users, :through => :mod, :source => 'author_users'
 
   # VALIDATIONS
   validates :mod_id, :tag_id, presence: true
@@ -13,6 +27,16 @@ class ModTag < ActiveRecord::Base
   # CALLBACKS
   after_create :increment_counters
   before_destroy :decrement_counters
+
+  def notification_json_options(event_type)
+    {
+        :only => [],
+        :include => {
+            :tag => { :only => [:text] },
+            :mod => { :only => [:id, :name] }
+        }
+    }
+  end
 
   private
     def increment_counters

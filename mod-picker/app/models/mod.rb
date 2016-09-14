@@ -1,7 +1,18 @@
 class Mod < ActiveRecord::Base
-  include Filterable, Sortable, Imageable, RecordEnhancements, SourceHelpers, ScopeHelpers
+  include Filterable, Sortable, Imageable, RecordEnhancements, SourceHelpers, ScopeHelpers, Trackable
 
+  # ATTRIBUTES
   enum status: [ :good, :outdated, :unstable ]
+  self.per_page = 100
+
+  # EVENT TRACKING
+  track :added, :hidden, :updated
+  track_milestones :column => 'stars_count', :milestones => [10, 50, 100, 500, 1000, 5000, 10000, 50000, 100000, 500000]
+
+  # NOTIFICATION SUBSCRIPTIONS
+  subscribe :author_users, to: [:hidden, :unhidden, *Event.milestones]
+  subscribe :contribution_authors, to: [:updated]
+  subscribe :user_stars, to: [:updated]
 
   # SCOPES
   include_scope :hidden
@@ -124,9 +135,6 @@ class Mod < ActiveRecord::Base
       |attributes| attributes[:id] && attributes[:user_id] && !attributes[:_destroy]
   }, allow_destroy: true
 
-  # numbers of mods per page on the mods index
-  self.per_page = 100
-
   # VALIDATIONS
   validates :game_id, :submitted_by, :name, :authors, :released, presence: true
   validates :name, :aliases, length: {maximum: 128}
@@ -149,7 +157,7 @@ class Mod < ActiveRecord::Base
     days_since_release = DateTime.now - self.released.to_date
 
     # compute extra nexus metrics
-    nex = self.nexus_infos
+    nex = nexus_infos
     if nex.present? && Rails.application.config.scrape_nexus_statistics
       nex.endorsement_rate = (nex.endorsements / days_since_release) if days_since_release > 0
       nex.dl_rate = (nex.unique_downloads / days_since_release) if days_since_release > 0
@@ -164,7 +172,7 @@ class Mod < ActiveRecord::Base
   def compute_average_rating
     total = 0.0
     count = 0
-    self.reviews.where(hidden: false, approved: true).each do |r|
+    reviews.where(hidden: false, approved: true).each do |r|
       total += r.overall_rating
       count += 1
     end
@@ -176,29 +184,29 @@ class Mod < ActiveRecord::Base
   end
 
   def compute_reputation
-    if self.reviews_count < 5 && Rails.application.config.scrape_nexus_statistics
-      if self.nexus_infos.present?
+    if reviews_count < 5 && Rails.application.config.scrape_nexus_statistics
+      if nexus_infos.present?
         endorsement_reputation = 100.0 / (1.0 + Math::exp(-0.15 * (self.endorsement_rate - 25)))
         self.reputation = endorsement_reputation
       end
     else
-      review_reputation = (self.average_rating / 100)**3 * (510.0 / (1 + Math::exp(-0.2 * (self.reviews_count - 10))) - 60)
+      review_reputation = (average_rating / 100)**3 * (510.0 / (1 + Math::exp(-0.2 * (reviews_count - 10))) - 60)
       self.reputation = review_reputation
     end
 
-    if self.status == :unstable
+    if status == :unstable
       self.reputation = self.reputation / 4
-    elsif self.status == :outdated
+    elsif status == :outdated
       self.reputation = self.reputation / 2
     end
   end
 
   def update_metrics
-    self.compute_extra_metrics
-    self.compute_average_rating
-    self.compute_reputation
-    self.update_lazy_counters
-    self.save!
+    compute_extra_metrics
+    compute_average_rating
+    compute_reputation
+    update_lazy_counters
+    save!
   end
 
   # note associations
@@ -212,6 +220,10 @@ class Mod < ActiveRecord::Base
 
   def load_order_notes
     LoadOrderNote.where('first_plugin_id in (:plugin_ids) OR second_plugin_id in (:plugin_ids)', plugin_ids: plugins.ids)
+  end
+
+  def contribution_authors
+    User.contributors(self)
   end
 
   def self.index_json(collection, sources)
@@ -330,6 +342,33 @@ class Mod < ActiveRecord::Base
     else
       super(options)
     end
+  end
+
+  def notification_json_options(event_type)
+    { :only => [:name] }
+  end
+
+  def self.sortable_columns
+    {
+        :except => [:game_id, :submitted_by, :primary_category_id, :secondary_category_id],
+        :include => {
+            :primary_category => {
+                :only => [:name]
+            },
+            :secondary_category => {
+                :only => [:name]
+            },
+            :nexus_infos => {
+                :except => [:game_id, :last_scraped, :mod_id, :mod_name]
+            },
+            :lover_infos => {
+                :except => [:game_id, :last_scraped, :mod_id, :mod_name]
+            },
+            :workshop_infos => {
+                :except => [:game_id, :last_scraped, :mod_id, :mod_name]
+            }
+        }
+    }
   end
 
   private

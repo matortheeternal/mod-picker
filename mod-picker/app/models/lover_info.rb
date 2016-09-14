@@ -18,4 +18,13 @@ class LoverInfo < ActiveRecord::Base
     # save retrieved mod data
     self.save!
   end
+
+  def notification_json_options(event_type)
+    {
+        :only => [],
+        :include => {
+            :mod => { :only => [:id, :name] }
+        }
+    }
+  end
 end

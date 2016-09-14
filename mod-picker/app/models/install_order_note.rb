@@ -1,5 +1,16 @@
 class InstallOrderNote < ActiveRecord::Base
-  include Filterable, Sortable, RecordEnhancements, Correctable, Helpfulable, Reportable, ScopeHelpers
+  include Filterable, Sortable, RecordEnhancements, Correctable, Helpfulable, Reportable, ScopeHelpers, Trackable
+
+  # ATTRIBUTES
+  self.per_page = 25
+
+  # EVENT TRACKING
+  track :added, :approved, :hidden
+  track :message, :column => 'moderator_message'
+
+  # NOTIFICATION SUBSCRIPTION
+  subscribe :mod_author_users, to: [:added, :approved, :unhidden]
+  subscribe :submitter, to: [:message, :approved, :unapproved, :hidden, :unhidden]
 
   # SCOPES
   include_scope :hidden
@@ -27,8 +38,6 @@ class InstallOrderNote < ActiveRecord::Base
   # old versions of this install order note
   has_many :history_entries, :class_name => 'InstallOrderNoteHistoryEntry', :inverse_of => 'install_order_note', :foreign_key => 'install_order_note_id'
   has_many :editors, -> { uniq }, :class_name => 'User', :through => 'history_entries'
-
-  self.per_page = 25
 
   # VALIDATIONS
   validates :game_id, :submitted_by, :first_mod_id, :second_mod_id, :text_body, presence: true
@@ -63,13 +72,17 @@ class InstallOrderNote < ActiveRecord::Base
     [first_mod, second_mod]
   end
 
+  def mod_author_users
+    User.includes(:mod_authors).where(:mod_authors => {mod_id: [first_mod_id, second_mod_id]})
+  end
+
   def create_history_entry
-    edit_summary = self.edited_by.nil? ? "Install Order Note Created" : self.edit_summary
-    self.history_entries.create(
-        edited_by: self.edited_by || self.submitted_by,
-        text_body: self.text_body,
-        edit_summary: edit_summary || "",
-        edited: self.edited || self.submitted
+    history_summary = edited_by.nil? ? "Install Order Note Created" : edit_summary
+    history_entries.create(
+        edited_by: edited_by || submitted_by,
+        text_body: text_body,
+        edit_summary: history_summary || "",
+        edited: edited || submitted
     )
   end
 
@@ -98,6 +111,29 @@ class InstallOrderNote < ActiveRecord::Base
     else
       super(options)
     end
+  end
+
+  def notification_json_options(event_type)
+    {
+        :only => [:submitted_by, (:moderator_message if event_type == :message)].compact,
+        :methods => :mods
+    }
+  end
+
+  def self.sortable_columns
+    {
+        :except => [:game_id, :submitted_by, :edited_by, :corrector_id, :first_mod_id, :second_mod_id, :text_body, :edit_summary, :moderator_message],
+        :include => {
+            :submitter => {
+                :only => [:username],
+                :include => {
+                    :reputation => {
+                        :only => [:overall]
+                    }
+                }
+            }
+        }
+    }
   end
 
   private

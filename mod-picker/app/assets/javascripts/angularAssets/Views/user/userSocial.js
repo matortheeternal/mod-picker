@@ -3,7 +3,7 @@ app.controller('userSocialController', function($scope, $stateParams, contributi
         var options = {
             sort: {
                 column: 'submitted',
-                direction: 'desc'
+                direction: 'DESC'
             },
             page: page || 1
         };

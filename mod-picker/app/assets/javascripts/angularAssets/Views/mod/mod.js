@@ -35,7 +35,7 @@ app.config(['$stateProvider', function($stateProvider) {
         params: {
             page: 1,
             scol: 'reputation',
-            sdir: 'desc',
+            sdir: 'DESC',
             reviewId: null
         }
     }).state('base.mod.Compatibility', {
@@ -52,7 +52,7 @@ app.config(['$stateProvider', function($stateProvider) {
         params: {
             page: 1,
             scol: 'reputation',
-            sdir: 'desc',
+            sdir: 'DESC',
             filter: true,
             compatibilityNoteId: null
         }
@@ -70,7 +70,7 @@ app.config(['$stateProvider', function($stateProvider) {
         params: {
             page: 1,
             scol: 'reputation',
-            sdir: 'desc',
+            sdir: 'DESC',
             filter: true,
             installOrderNoteId: null
         }
@@ -88,7 +88,7 @@ app.config(['$stateProvider', function($stateProvider) {
         params: {
             page: 1,
             scol: 'reputation',
-            sdir: 'desc',
+            sdir: 'DESC',
             filter: true,
             loadOrderNoteId: null
         }

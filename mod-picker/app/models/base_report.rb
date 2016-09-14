@@ -31,6 +31,10 @@ class BaseReport < ActiveRecord::Base
     end
   end
 
+  def self.sortable_columns
+    { :except => [] }
+  end
+
   private
     def set_dates
       if self.submitted.nil?

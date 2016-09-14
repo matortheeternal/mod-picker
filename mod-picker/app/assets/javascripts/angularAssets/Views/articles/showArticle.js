@@ -43,7 +43,7 @@ app.controller('showArticleController', function($scope, $rootScope, $stateParam
         var options = {
             sort: {
                 column: 'submitted',
-                direction: 'desc'
+                direction: 'DESC'
             },
             page: page || 1
         };

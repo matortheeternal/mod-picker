@@ -1,5 +1,16 @@
 class Review < ActiveRecord::Base
-  include Filterable, Sortable, RecordEnhancements, Helpfulable, Reportable, ScopeHelpers
+  include Filterable, Sortable, RecordEnhancements, Helpfulable, Reportable, ScopeHelpers, Trackable
+
+  # ATTRIBUTES
+  self.per_page = 25
+
+  # EVENT TRACKING
+  track :added, :approved, :hidden
+  track :message, :column => 'moderator_message'
+
+  # NOTIFICATION SUBSCRIPTION
+  subscribe :mod_author_users, to: [:added, :approved, :unhidden]
+  subscribe :submitter, to: [:message, :approved, :unapproved, :hidden, :unhidden]
 
   # SCOPES
   include_scope :hidden
@@ -17,17 +28,18 @@ class Review < ActiveRecord::Base
   belongs_to :editor, :class_name => 'User', :foreign_key => 'edited_by'
   belongs_to :mod, :inverse_of => 'reviews'
 
+  has_many :mod_author_users, :through => :mod, :source => :author_users
+
   has_many :review_ratings, :inverse_of => 'review'
 
   accepts_nested_attributes_for :review_ratings
-
-  self.per_page = 25
 
   # VALIDATIONS
   validates :game_id, :submitted_by, :mod_id, :text_body, presence: true
   validates :text_body, length: {in: 512..32768}
   # only one review per mod per user
   validates :mod_id, uniqueness: { scope: :submitted_by, :message => "You've already submitted a review for this mod." }
+  validates_associated :review_ratings
 
   # CALLBACKS
   after_create :increment_counters
@@ -36,28 +48,32 @@ class Review < ActiveRecord::Base
   before_destroy :clear_ratings, :decrement_counters
 
   def clear_ratings
-    ReviewRating.where(review_id: self.id).delete_all
+    ReviewRating.where(review_id: id).delete_all
   end
 
   def update_metrics
     compute_overall_rating
-    self.update_columns({
-      ratings_count: self.review_ratings.count,
-      overall_rating: self.overall_rating
+    update_columns({
+      ratings_count: review_ratings.count,
+      overall_rating: overall_rating
     })
   end
 
   def update_mod_metrics
-    self.mod.compute_average_rating
-    self.mod.compute_reputation
-    self.mod.save
+    mod.compute_average_rating
+    mod.compute_reputation
+    mod.update_columns({
+        :reviews_count => mod.reviews_count,
+        :reputation => mod.reputation,
+        :average_rating => mod.average_rating
+    })
   end
 
   def compute_overall_rating
     total = 0
     count = 0
 
-    self.review_ratings.each do |r|
+    review_ratings.each do |r|
       total += r.rating
       count += 1
     end
@@ -113,6 +129,31 @@ class Review < ActiveRecord::Base
     end
   end
 
+  def notification_json_options(event_type)
+    {
+        :only => [:submitted_by],
+        :include => {
+            :mod => { :only => [:id, :name] }
+        }
+    }
+  end
+
+  def self.sortable_columns
+    {
+        :except => [:game_id, :submitted_by, :edited_by, :mod_id, :text_body, :edit_summary, :moderator_message],
+        :include => {
+            :submitter => {
+                :only => [:username],
+                :include => {
+                    :reputation => {
+                        :only => [:overall]
+                    }
+                }
+            }
+        }
+    }
+  end
+
   private
     def set_dates
       if self.submitted.nil?
@@ -123,22 +164,12 @@ class Review < ActiveRecord::Base
     end
 
     def increment_counters
-      self.mod.reviews_count += 1
-      self.mod.compute_average_rating
-      # we also take this chance to recompute the mod's reputation
-      # if there are enough reviews to do so
-      if self.mod.reviews_count >= 5
-        self.mod.compute_reputation
-      end
-      self.mod.save
-      self.submitter.update_counter(:reviews_count, 1)
+      mod.update_counter(:reviews_count, 1)
+      submitter.update_counter(:reviews_count, 1)
     end
 
     def decrement_counters
-      self.mod.reviews_count -= 1
-      self.mod.compute_average_rating
-      self.mod.compute_reputation
-      self.mod.save
-      self.submitter.update_counter(:reviews_count, -1)
+      mod.update_counter(:reviews_count, -1)
+      submitter.update_counter(:reviews_count, -1)
     end
 end

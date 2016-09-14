@@ -2,6 +2,10 @@ String.prototype.capitalize = function() {
     return this.charAt(0).toUpperCase() + this.slice(1);
 };
 
+String.prototype.uncapitalize = function() {
+    return this.charAt(0).toLowerCase() + this.slice(1);
+};
+
 String.prototype.titleCase = function() {
     return this.replace(/[^-'\s]+/g, function(word) {
         return word.replace(/^./, function(first) {
@@ -10,9 +14,24 @@ String.prototype.titleCase = function() {
     });
 };
 
-String.prototype.toDashFormat = function() {
-    return this.replace(/[A-Z]/g, function(uppercaseLetter) {
-        return "-" + uppercaseLetter.toLowerCase();
+String.prototype.toCamelCase = function() {
+    return this.uncapitalize().replace(/(\s|\-|\_|\.)+(.)/g, function(match) {
+        return match.slice(-1).toUpperCase();
+    });
+};
+
+String.prototype.startsWith = function(needle) {
+    return (this.indexOf(needle) == 0);
+};
+
+String.prototype.toPascalCase = function() {
+    return this.toCamelCase().capitalize();
+};
+
+String.prototype.underscore = function(separator) {
+    if (!separator) separator = "_";
+    return this.toCamelCase().replace(/[A-Z]/g, function(match) {
+        return separator + match.toLowerCase();
     })
 };
 
@@ -65,8 +84,12 @@ Array.prototype.unite = function(array1, array2) {
 };
 
 // gets a random item from the array
-Array.prototype.random = function () {
+Array.prototype.random = function() {
     return this[Math.floor((Math.random() * this.length))];
+};
+
+Array.prototype.contains = function(needle) {
+    return (this.indexOf(needle) > -1);
 };
 
 // angular polyfills

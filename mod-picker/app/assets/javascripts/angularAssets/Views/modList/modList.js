@@ -45,7 +45,7 @@ app.config(['$stateProvider', function ($stateProvider) {
         url: '/tools?scol&sdir',
         params: {
             scol: 'index',
-            sdir: 'asc'
+            sdir: 'ASC'
         }
     }).state('base.mod-list.Mods', {
         sticky: true,
@@ -60,7 +60,7 @@ app.config(['$stateProvider', function ($stateProvider) {
         url: '/mods?scol&sdir',
         params: {
             scol: 'index',
-            sdir: 'asc'
+            sdir: 'ASC'
         }
     }).state('base.mod-list.Plugins', {
         sticky: true,
@@ -75,7 +75,7 @@ app.config(['$stateProvider', function ($stateProvider) {
         url: '/plugins?scol&sdir',
         params: {
             scol: 'index',
-            sdir: 'asc'
+            sdir: 'ASC'
         }
     }).state('base.mod-list.Config', {
         sticky: true,

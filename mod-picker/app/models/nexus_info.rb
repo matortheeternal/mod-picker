@@ -21,6 +21,15 @@ class NexusInfo < ActiveRecord::Base
     after_scrape
   end
 
+  def notification_json_options(event_type)
+    {
+        :only => [],
+        :include => {
+            :mod => { :only => [:id, :name] }
+        }
+    }
+  end
+
   def after_scrape
     # update mod extra metrics
     if mod_id.present?

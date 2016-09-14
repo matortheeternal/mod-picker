@@ -1,6 +1,9 @@
 class Article < ActiveRecord::Base
   include Filterable, Sortable, Imageable, RecordEnhancements, ScopeHelpers
 
+  # ATTRIBUTES
+  self.per_page = 15
+
   # SCOPES
   search_scope :title, :alias => 'search'
   search_scope :text_body, :alias => 'text'
@@ -21,9 +24,6 @@ class Article < ActiveRecord::Base
   # ASSOCIATIONS
   belongs_to :submitter, :class_name => 'User', :foreign_key => 'submitted_by', :inverse_of => 'articles'
   has_many :comments, -> { where(parent_id: nil) }, :class_name => 'Comment', :as => 'commentable'
-
-  # number of users per page on the users index
-  self.per_page = 15
 
   # VALIDATIONS
   validates :submitted_by, :title, :text_body, presence: true
@@ -46,6 +46,16 @@ class Article < ActiveRecord::Base
     else
       super(options)
     end
+  end
+
+  def notification_json_options(event_type)
+    { :only => [:title] }
+  end
+
+  def self.sortable_columns
+    {
+        :except => [:game_id, :submitted_by, :text_body]
+    }
   end
 
   private

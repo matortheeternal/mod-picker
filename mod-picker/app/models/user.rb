@@ -1,12 +1,20 @@
 class User < ActiveRecord::Base
-  include Filterable, Sortable, RecordEnhancements, Imageable, Reportable, ScopeHelpers
+  include Filterable, Sortable, RecordEnhancements, Imageable, Reportable, ScopeHelpers, Trackable
 
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :invitable, :database_authenticatable, :registerable, :confirmable,
          :recoverable, :rememberable, :trackable, :validatable
 
+  # ATTRIBUTES
   attr_accessor :login
+  self.per_page = 50
+
+  # EVENT TRACKING
+  track :status, :column => 'role'
+
+  # NOTIFICATION SUBSCRIPTIONS
+  subscribe :self, to: [:message, :status, *Event.milestones]
 
   # SCOPES
   search_scope :username, :alias => 'search'
@@ -17,6 +25,10 @@ class User < ActiveRecord::Base
   date_scope :last_sign_in_at, :alias => 'last_seen'
 
   # UNIQUE SCOPES
+  scope :contributors, -> (mod) {
+    # TODO: Handle appeals too
+    includes(:reviews => :mod, :compatibility_notes => [:first_mod, :second_mod], :install_order_notes => [:first_mod, :second_mod], :load_order_notes => [:first_mod, :second_mod]).where(:mods => {id: mod.id})
+  }
   scope :linked, -> (search) { joins(:bio).where("nexus_username like :search OR lover_username like :search OR workshop_username like :search", search: "#{search}%") }
 
   # ASSOCIATIONS
@@ -60,18 +72,19 @@ class User < ActiveRecord::Base
   has_many :profile_comments, -> { where(parent_id: nil) }, :class_name => 'Comment', :as => 'commentable'
   has_many :reports, :foreign_key => 'submitted_by', :inverse_of => 'submitter'
 
-  accepts_nested_attributes_for :settings, reject_if: :new_record?
+  has_many :notifications, -> { includes(:event).order("events.created DESC") }, :inverse_of => 'user'
+  has_many :messages, :inverse_of => 'recipient', :foreign_key => 'sent_to'
+  has_many :sent_messages, :class_name => 'Message', :inverse_of => 'submitter', :foreign_key => 'submitter_by'
 
-  # number of users per page on the users index
-  self.per_page = 50
+  accepts_nested_attributes_for :settings, reject_if: :new_record?
 
   # VALIDATIONS
   validates :username, :email, :role, presence: true
   validates :username, uniqueness: { case_sensitive: false }, length: {in: 4..32 }
 
-  # TODO: add email regex
-  # basic one, minimize false negatives and confirm users via email confirmation regardless
+  # email validation
   validates :email, uniqueness: { case_sensitive: false }, length: {in: 7..255}
+  validates_format_of :email, :with => /\A\S+@.+\.\S+\z/
 
   validates :about_me, length: {maximum: 16384}
 
@@ -94,6 +107,10 @@ class User < ActiveRecord::Base
     end
   end
 
+  def recent_notifications
+    notifications.unread.limit(10)
+  end
+
   def self.find_first_by_auth_conditions(warden_conditions)
     conditions = warden_conditions.dup
     if (login = conditions.delete(:login))
@@ -108,27 +125,36 @@ class User < ActiveRecord::Base
   end
 
   def admin?
-    self.role.to_sym == :admin
+    role.to_sym == :admin
   end
 
   def moderator?
-    self.role.to_sym == :moderator
+    role.to_sym == :moderator
   end
 
   def can_moderate?
-    self.admin? || self.moderator?
+    admin? || moderator?
   end
 
   def banned?
-    self.role.to_sym == :banned
+    role.to_sym == :banned
   end
 
   def inactive?
-    self.last_sign_in_at.nil? || self.last_sign_in_at < 28.days.ago
+    last_sign_in_at.nil? || last_sign_in_at < 28.days.ago
   end
 
   def email_public?
-    self.settings.email_public
+    settings.email_public
+  end
+
+  def subscribed_to?(event)
+    if respond_to?(:notification_settings)
+      key = "#{event.content_type.underscore}_#{event.event_type}"
+      notification_settings.public_send(key.to_sym)
+    else
+      true
+    end
   end
 
   def init
@@ -137,9 +163,9 @@ class User < ActiveRecord::Base
   end
 
   def create_associations
-    self.create_reputation({ user_id: self.id })
-    self.create_settings({ user_id: self.id })
-    self.create_bio({ user_id: self.id })
+    create_reputation({ user_id: id })
+    create_settings({ user_id: id })
+    create_bio({ user_id: id })
   end
 
   def self.search_json(collection)
@@ -159,7 +185,7 @@ class User < ActiveRecord::Base
                 :only => [:theme, :show_notifications, :allow_adult_content]
             }
         },
-        :methods => :avatar
+        :methods => [:avatar, :recent_notifications]
     })
   end
 
@@ -217,5 +243,22 @@ class User < ActiveRecord::Base
     else
       super(options)
     end
+  end
+
+  def notification_json_options(event_type)
+    options = {
+        :only => [:username, (:role if event_type == :status)].compact
+    }
+  end
+
+  def self.sortable_columns
+    {
+        :only => [:username, :role, :title, :comments_count, :authored_mods_count, :submitted_mods_count, :reviews_count, :compatibility_notes_count, :install_order_notes_count, :load_order_notes_count, :corrections_count, :submitted_comments_count, :mod_lists_count, :mod_collections_count, :tags_count, :mod_tags_count, :mod_list_tags_count, :helpful_marks_count, :agreement_marks_count, :starred_mods_count, :starred_mod_lists_count, :mod_stars_count, :joined, :last_sign_in_at, :current_sign_in_at],
+        :include => {
+            :user_reputations => {
+                :only => [:overall]
+            }
+        }
+    }
   end
 end

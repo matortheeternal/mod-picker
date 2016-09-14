@@ -31,6 +31,11 @@ module ModPicker
     # DO NOT SCRAPE WORKSHOP STATISTICS UNTIL WE HAVE PERMISSION
     config.scrape_workshop_statistics = false
 
+    # tracking config
+    config.added_owner_attributes = [:submitted_by]
+    config.updated_owner_attributes = [:edited_by]
+    config.removed_owner_attributes = [:removed_by]
+
     config.middleware.use Rack::Attack
 
     config.generators do |g|
