@@ -17,19 +17,20 @@ app.controller('sliderController', function ($scope, sliderOptionsFactory, $time
         $scope.slider = sliderOptionsFactory[$scope.type]($scope.attr);
     }
 
-    var filterData = $scope.filters[$scope.data];
-    if (filterData) {
-        $scope.rawData = {
-            min: filterData.min,
-            max: filterData.max
+    $scope.loadData = function(filterData) {
+        var stepsArray = $scope.slider.options.stepsArray;
+        if (stepsArray) {
+            $scope.rawData = {
+                min: stepsArray.indexOf(filterData.min),
+                max: stepsArray.indexOf(filterData.max)
+            }
+        } else {
+            $scope.rawData = {
+                min: filterData.min,
+                max: filterData.max
+            }
         }
-    } else {
-        $scope.rawData = {
-            min: $scope.slider.min || 0,
-            max: $scope.slider.max
-        };
-    }
-
+    };
 
     $scope.deleteData = function() {
         if ($scope.filters) {
@@ -77,4 +78,15 @@ app.controller('sliderController', function ($scope, sliderOptionsFactory, $time
             $scope.$broadcast('rzSliderForceRender');
         });
     });
+
+    // load data from $scope.filters if present
+    var filterData = $scope.filters[$scope.data];
+    if (filterData) {
+        $scope.loadData(filterData);
+    } else {
+        $scope.rawData = {
+            min: $scope.slider.min || 0,
+            max: $scope.slider.max
+        };
+    }
 });
