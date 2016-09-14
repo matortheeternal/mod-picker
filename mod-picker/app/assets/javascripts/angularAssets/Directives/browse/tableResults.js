@@ -69,8 +69,8 @@ app.controller('tableResultsController', function($scope, tableUtils, objectUtil
     };
 
     $scope.sortColumn = function(column) {
-        // return if we don't have a sort object
-        if (!$scope.sort) return;
+        // return if we don't have a sort object or the column isn't sortable
+        if (!$scope.sort || column.unsortable) return;
 
         if (sortedColumn && sortedColumn !== column) {
             sortedColumn.up = false;
