@@ -1,6 +1,6 @@
 <a class="inverse-link no-select" ng-click="toggleNotifications()" tabindex="0">
     <i class="fa {{notifications.length ? 'fa-bell' : 'fa-bell-o'}}"></i>
-    {{notifications.length}}
+    {{notifications.length || 0}}
 </a>
 <div class="dropdown" ng-show="showNotifications" ng-click="stopPropagation($event)">
     <!-- TODO: enable this when we have notification settings -->
@@ -14,8 +14,10 @@
         <i class="fa fa-refresh"></i>
     </a>
 
-    <div class="content-message" ng-hide="notifications.length">Nothing new</div>
-    <notification ng-repeat="notification in notifications"></notification>
+    <loader data="notifications" spinner-class="small-spinner">
+        <div class="content-message" ng-hide="notifications.length">Nothing new</div>
+        <notification ng-repeat="notification in notifications"></notification>
+    </loader>
 
     <a class="more-notifications" href="#/notifications">
         Older Notifications

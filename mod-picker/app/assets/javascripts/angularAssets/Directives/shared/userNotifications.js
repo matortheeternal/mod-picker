@@ -26,6 +26,7 @@ app.controller('userNotificationsController', function($scope, $rootScope, notif
     };
 
     $scope.refreshNotifications = function() {
+        delete $scope.notifications;
         notificationService.retrieveRecent().then(function(data) {
             $scope.notifications = data;
         }, function(response) {
