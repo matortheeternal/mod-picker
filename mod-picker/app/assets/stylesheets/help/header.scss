@@ -7,6 +7,7 @@ nav {
   height: 64px;
   width: $max-width-container;
   margin: 0 auto;
+  position: relative;
 
   a {
     text-decoration: none;
@@ -69,9 +70,9 @@ nav {
 
   .secondary-nav {
     display: inline-block;
-    float: right;
-    position: relative;
+    position: absolute;
     top: 17px;
+    right: 0;
 
     .search-form {
       display: inline-block;
@@ -101,7 +102,7 @@ nav {
     display: inline-block;
     margin: 0 auto;
     vertical-align: top;
-    padding-top: 10px;
+    padding-top: 8px;
 
     a {
       margin: 8px;
