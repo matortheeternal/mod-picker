@@ -61,6 +61,7 @@ vbguest_iso_path = settings.fetch('vbguest', {}).fetch('iso_path', nil)
 chef_json = JSON.parse(File.read('vagrant.json'))
 
 Vagrant.configure(2) do |config|
+
   # Prevent problematic caching of synced folders
   def remove_synced_folders_file(*_args)
     `rm .vagrant/machines/default/virtualbox/synced_folders`
@@ -80,6 +81,7 @@ Vagrant.configure(2) do |config|
   config.vbguest.iso_path = vbguest_iso_path if vbguest_iso_path
 
   config.vm.provider :virtualbox do |vb|
+    vb.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
     vb.name = project_name
     vb.memory = vagrant_memory_size
     vb.cpus = vagrant_cpu_count
