@@ -1,0 +1,27 @@
+{
+  "build-essential": {
+    "compile_time": true
+  },
+  "mariadb": {
+    "use_default_repository": true,
+    "server_root_password": "this_is_a_really_terrible_password",
+    "install": {
+      "version": "10.1"
+    }
+  },
+  "rbenv": {
+    "user_installs": [{
+      "user": "ubuntu",
+      "rubies": [{ "name": "2.3.1", "environment": { "HOME": "/home/ubuntu/" } }],
+      "global": "2.3.1",
+      "local": "2.3.1",
+      "gems": {
+        "2.3.1": [
+          {
+            "name": "bundler"
+          }
+        ]
+      }
+    }]
+  }
+}

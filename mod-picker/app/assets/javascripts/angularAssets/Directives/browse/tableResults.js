@@ -55,40 +55,59 @@ app.controller('tableResultsController', function($scope, tableUtils, objectUtil
         }
     };
 
+    // load sort into view
+    $scope.loadSort = function() {
+        $scope.columns.forEach(function(column) {
+            if ($scope.getSortData(column) === $scope.sort.column) {
+                var sortKey = $scope.sort.direction === "ASC" ? "up" : "down";
+                column[sortKey] = true;
+                sortedColumn = column;
+            }
+        });
+    };
+
+    // get the sort data key for a column
+    $scope.getSortData = function(column) {
+        return column.sortData || (typeof column.data === "string" ? column.data : objectUtils.csv(column.data));
+    };
+
     // this function will toggle sorting for an input column between
     // up, down, and no sorting
-    $scope.sortColumn = function(column) {
-        // return if we don't have a sort object
-        if (!$scope.sort) return;
+    $scope.toggleSort = function(column) {
+        if (column.down) {
+            column.up = true;
+            column.down = false;
+        } else if (column.up) {
+            column.up = false;
+        } else {
+            column.down = true;
+        }
+    };
 
-        if(sortedColumn && sortedColumn !== column) {
+    // sorts by a column
+    $scope.sortColumn = function(column) {
+        // return if we don't have a sort object or the column isn't sortable
+        if (!$scope.sort || column.unsortable) return;
+
+        if (sortedColumn && sortedColumn !== column) {
             sortedColumn.up = false;
             sortedColumn.down = false;
         }
         sortedColumn = column;
-
-        if (column.up) {
-            column.up = false;
-            column.down = true;
-        } else if (column.down) {
-            column.down = false;
-        } else {
-            column.up = true;
-        }
+        $scope.toggleSort(column);
 
         // send data to backend
         if (column.up || column.down) {
-            if (column.sortData) {
-                $scope.sort.column = column.sortData;
-            } else if (typeof column.data == 'string') {
-                $scope.sort.column = column.data;
-            } else {
-                $scope.sort.column = objectUtils.csv(column.data);
-            }
+            $scope.sort.column = $scope.getSortData(column);
             $scope.sort.direction = column.up ? "ASC" : "DESC";
         } else {
             delete $scope.sort.column;
             delete $scope.sort.direction;
         }
     };
+
+    // load sort into view
+    if ($scope.columns && $scope.sort.column) {
+        $scope.loadSort();
+    }
 });

@@ -22,10 +22,12 @@ class Mod < ActiveRecord::Base
   value_scope :is_utility
   game_scope :parent => true
   search_scope :name, :aliases, :combine => true
-  ids_scope :categories, :columns => [:primary_category_id, :secondary_category_id]
   user_scope :author_users, :alias => 'mp_author'
   enum_scope :status
-  counter_scope :plugins_count, :asset_files_count, :required_mods_count, :required_by_count, :tags_count, :stars_count, :mod_lists_count, :reviews_count, :compatibility_notes_count, :install_order_notes_count, :load_order_notes_count, :corrections_count
+  date_scope :released, :updated
+  range_scope :reputation, :tags_count
+  range_scope :average_rating, :alias => 'rating'
+  counter_scope :plugins_count, :asset_files_count, :required_mods_count, :required_by_count, :stars_count, :mod_lists_count, :reviews_count, :compatibility_notes_count, :install_order_notes_count, :load_order_notes_count, :corrections_count
   source_scope :views, :sites =>  [:nexus, :lab, :workshop]
   source_scope :downloads, :sites => [:nexus, :lab]
   source_scope :file_size, :sites => [:nexus, :lab]
@@ -62,6 +64,7 @@ class Mod < ActiveRecord::Base
     query.where(where_clause.join(" OR "))
   }
   scope :tags, -> (array) { joins(:tags).where(:tags => {text: array}).having("COUNT(DISTINCT tags.text) = ?", array.length) }
+  scope :categories, -> (ids) { where("primary_category_id in (:ids) OR secondary_category_id in (:ids)", ids: ids) }
   scope :author, -> (hash) {
     author = hash[:value]
     sources = hash[:sources]

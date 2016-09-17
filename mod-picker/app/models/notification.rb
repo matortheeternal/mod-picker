@@ -5,6 +5,9 @@ class Notification < ActiveRecord::Base
 
   # SCOPES
   scope :unread, -> { where(read: false) }
+  scope :events, -> (ids) { where(event_id: ids) }
+  scope :user, -> (id) { where(user_id: id) }
+  scope :mark_read, -> { update_all(read: true) }
 
   # ASSOCIATIONS
   belongs_to :event, :inverse_of => 'notifications'

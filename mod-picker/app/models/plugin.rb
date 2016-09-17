@@ -10,7 +10,9 @@ class Plugin < ActiveRecord::Base
   ids_scope :mod_option_id
   search_scope :filename, :alias => :search
   search_scope :author, :description
-  counter_scope :record_count, :override_count, :errors_count, :mod_lists_count, :load_order_notes_count
+  range_scope :record_count, :alias => 'records'
+  range_scope :override_count, :alias => 'overrides'
+  counter_scope :errors_count, :mod_lists_count, :load_order_notes_count
   bytes_scope :file_size
 
   # UNIQUE SCOPES

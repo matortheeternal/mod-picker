@@ -22,5 +22,5 @@ app.controller('usersController', function ($scope, $rootScope, $stateParams, $s
     // build generic controller stuff
     $scope.route = 'users';
     $scope.retrieve = userService.retrieveUsers;
-    indexFactory.buildIndex($scope, $stateParams, $state, indexService);
+    indexFactory.buildIndex($scope, $stateParams, $state);
 });

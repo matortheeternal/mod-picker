@@ -31,19 +31,19 @@
                             <li class="third-box">
                                 <h4>Tools</h4>
                                 <a ng-href="#/mod-list/{{activeModList.id}}/tools">
-                                    {{activeModList.tools_count}}
+                                    {{activeModList.tools_count + activeModList.custom_tools_count}}
                                 </a>
                             </li>
                             <li class="third-box">
                                 <h4>Mods</h4>
                                 <a ng-href="#/mod-list/{{activeModList.id}}/mods">
-                                    {{activeModList.mods_count}}
+                                    {{activeModList.mods_count + activeModList.custom_mods_count}}
                                 </a>
                             </li>
                             <li class="third-box">
                                 <h4>Plugins</h4>
                                 <a ng-href="#/mod-list/{{activeModList.id}}/plugins">
-                                    {{activeModList.plugins_count}}
+                                    {{activeModList.plugins_count + activeModList.custom_plugins_count}}
                                 </a>
                             </li>
                         </ul>

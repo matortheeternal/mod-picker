@@ -2,7 +2,8 @@ module Helpfulable
   extend ActiveSupport::Concern
 
   included do
-    range_scope :reputation, :helpful_count, :not_helpful_count
+    range_scope :helpful_count, :not_helpful_count
+    range_scope :reputation, :alias => 'helpfulness'
 
     has_many :helpful_marks, :as => 'helpfulable'
   end
@@ -15,10 +16,10 @@ module Helpfulable
   def compute_reputation
     if respond_to?(:standing)
       if standing == :bad
-        self.helpfulness = -100
+        self.reputation = -100
         return
       elsif standing == :unknown
-        self.helpfulness = 0
+        self.reputation = 0
         return
       end
     end

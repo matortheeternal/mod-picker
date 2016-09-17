@@ -1,5 +1,5 @@
-app.service('indexFactory', function(indexService) {
-    this.buildIndex = function($scope, $stateParams, $state, localIndexService) {
+app.service('indexFactory', function(indexService, objectUtils) {
+    this.buildIndex = function($scope, $stateParams, $state) {
         // initialize local variables
         $scope.availableColumnData = [];
         $scope.actions = [];
@@ -9,23 +9,24 @@ app.service('indexFactory', function(indexService) {
 
         // load sort values from url parameters
         $scope.sort = {};
-        localIndexService.setSortFromParams($scope.sort, $stateParams);
+        indexService.setSortFromParams($scope.sort, $stateParams);
 
         //  load filter values from url parameters
-        $scope.filters = {};
-        localIndexService.setFiltersFromParams($scope.filters, $scope.filterPrototypes, $stateParams);
+        if (!$scope.filters) $scope.filters = {};
+        indexService.setFiltersFromParams($scope.filters, $scope.filterPrototypes, $stateParams);
 
         /* data fetching functions */
         $scope.getData = function(page) {
             delete $scope[$scope.route];
             var options = {
-                filters: $scope.filters,
+                filters: angular.copy($scope.filters),
                 sort: $scope.sort,
                 page: page || 1
             };
+            objectUtils.deleteEmptyProperties(options.filters, 0, true);
             var dataCallback = function(data) {
                 $scope[$scope.route] = data[$scope.route];
-                $scope.firstGet = true;
+                delete $scope.error;
                 if ($scope.dataCallback) $scope.dataCallback();
             };
             var errorCallback = function(response) {
@@ -38,23 +39,16 @@ app.service('indexFactory', function(indexService) {
             }
         };
 
-        // fetch contributions when we load the page
-        $scope.getData();
-
-        // fetch contributions again when filters or sort changes
         $scope.$watch('[filters, sort]', function() {
-            // get users
-            if ($scope.filters && $scope.firstGet) {
-                clearTimeout($scope.getDataTimeout);
-                $scope.pages.current = 1;
-                $scope.getDataTimeout = setTimeout($scope.getData, 1000);
-            }
+            // fetch data again when filters or sort changes
+            var dataWait = $scope[$scope.route] ? 1000 : 0;
+            clearTimeout($scope.getDataTimeout);
+            $scope.pages.current = 1;
+            $scope.getDataTimeout = setTimeout($scope.getData, dataWait);
 
             // set url parameters
-            if ($scope.filters && $scope.firstGet) {
-                var params = localIndexService.getParams($scope.filters, $scope.sort, $scope.filterPrototypes);
-                $state.transitionTo($state.current.name, params, { notify: false });
-            }
+            var params = indexService.getParams($scope.filters, $scope.sort, $scope.filterPrototypes);
+            $state.transitionTo($state.current.name, params, { notify: false });
         }, true);
     };
 

@@ -25,8 +25,8 @@ Rails.application.configure do
   config.serve_static_files = true
 
   # Compress JavaScripts and CSS.
-  # config.assets.js_compressor = :uglifier
-  # config.assets.css_compressor = :sass
+  config.assets.js_compressor = :uglifier
+  config.assets.css_compressor = :sass
 
   # Do not fallback to assets pipeline if a precompiled asset is missed.
   config.assets.compile = false
@@ -58,7 +58,7 @@ Rails.application.configure do
   config.enable_scheduler = true
 
   # Force all access to the app over SSL, use Strict-Transport-Security, and use secure cookies.
-  config.force_ssl = true
+  config.force_ssl = ENV['DISABLE_SSL'].nil?
 
   # Use the lowest log level to ensure availability of diagnostic information
   # when problems arise.

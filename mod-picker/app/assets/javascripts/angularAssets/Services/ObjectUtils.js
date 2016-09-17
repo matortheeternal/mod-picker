@@ -157,15 +157,15 @@ app.service('objectUtils', function () {
         return json;
     };
 
-    this.deleteEmptyProperties = function(obj, recurse) {
+    this.deleteEmptyProperties = function(obj, recurse, deleteEmptyStrings) {
         for (var property in obj) {
             if (obj.hasOwnProperty(property)) {
                 var v = obj[property];
                 var vt = typeof v;
-                if (vt === 'undefined' || (v.constructor === Array && !v.length)) {
+                if (vt === 'undefined' || (v.constructor === Array && !v.length) || (deleteEmptyStrings && v === "")) {
                     delete obj[property];
                 } else if (recurse && vt === 'object') {
-                    service.deleteEmptyProperties(v, recurse - 1);
+                    service.deleteEmptyProperties(v, recurse - 1, deleteEmptyStrings);
                 }
             }
         }

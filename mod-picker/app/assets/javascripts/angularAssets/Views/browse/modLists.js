@@ -27,5 +27,5 @@ app.controller('modListsController', function ($scope, $rootScope, $stateParams,
     // build generic controller stuff
     $scope.route = 'mod_lists';
     $scope.retrieve = modListService.retrieveModLists;
-    indexFactory.buildIndex($scope, $stateParams, $state, indexService);
+    indexFactory.buildIndex($scope, $stateParams, $state);
 });

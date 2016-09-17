@@ -19,8 +19,8 @@ class User < ActiveRecord::Base
   # SCOPES
   search_scope :username, :alias => 'search'
   hash_scope :role
-  counter_scope :authored_mods_count, :mod_lists_count, :comments_count, :reviews_count, :compatibility_notes_count, :install_order_notes_count, :load_order_notes_count, :corrections_count
-  range_scope :overall, :association => 'reputation', :table => 'user_reputations'
+  counter_scope :authored_mods_count, :mod_lists_count, :submitted_comments_count, :comments_count, :reviews_count, :compatibility_notes_count, :install_order_notes_count, :load_order_notes_count, :corrections_count
+  range_scope :overall, :association => 'reputation', :table => 'user_reputations', :alias => 'reputation'
   date_scope :joined
   date_scope :last_sign_in_at, :alias => 'last_seen'
 
@@ -261,7 +261,7 @@ class User < ActiveRecord::Base
     {
         :only => [:username, :role, :title, :comments_count, :authored_mods_count, :submitted_mods_count, :reviews_count, :compatibility_notes_count, :install_order_notes_count, :load_order_notes_count, :corrections_count, :submitted_comments_count, :mod_lists_count, :mod_collections_count, :tags_count, :mod_tags_count, :mod_list_tags_count, :helpful_marks_count, :agreement_marks_count, :starred_mods_count, :starred_mod_lists_count, :mod_stars_count, :joined, :last_sign_in_at, :current_sign_in_at],
         :include => {
-            :user_reputations => {
+            :reputation => {
                 :only => [:overall]
             }
         }

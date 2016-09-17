@@ -26,5 +26,5 @@ app.controller('pluginsController', function ($scope, $rootScope, $stateParams, 
     // build generic controller stuff
     $scope.route = 'plugins';
     $scope.retrieve = pluginService.retrievePlugins;
-    indexFactory.buildIndex($scope, $stateParams, $state, indexService);
+    indexFactory.buildIndex($scope, $stateParams, $state);
 });

@@ -23,5 +23,5 @@ app.controller('commentsIndexController', function ($scope, $rootScope, $statePa
     $scope.route = 'comments';
     $scope.contributions = true;
     $scope.retrieve = contributionService.retrieveContributions;
-    indexFactory.buildIndex($scope, $stateParams, $state, indexService);
+    indexFactory.buildIndex($scope, $stateParams, $state);
 });

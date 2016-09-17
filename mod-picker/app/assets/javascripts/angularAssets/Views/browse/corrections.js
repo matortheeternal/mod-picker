@@ -22,5 +22,5 @@ app.controller('correctionsController', function ($scope, $rootScope, $statePara
     $scope.route = 'corrections';
     $scope.contributions = true;
     $scope.retrieve = contributionService.retrieveContributions;
-    indexFactory.buildIndex($scope, $stateParams, $state, indexService);
+    indexFactory.buildIndex($scope, $stateParams, $state);
 });

@@ -22,5 +22,5 @@ app.controller('reviewsController', function ($scope, $rootScope, $stateParams, 
     $scope.route = 'reviews';
     $scope.contributions = true;
     $scope.retrieve = contributionService.retrieveContributions;
-    indexFactory.buildIndex($scope, $stateParams, $state, indexService);
+    indexFactory.buildIndex($scope, $stateParams, $state);
 });

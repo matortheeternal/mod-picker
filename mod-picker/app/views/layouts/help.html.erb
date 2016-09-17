@@ -39,7 +39,7 @@
                 <div class="user-nav">
                     <% if current_user %>
                         <a href="/skyrim#/user/<%= current_user.id %>">Profile</a>
-                        <a href="users/sign_out">Log Out</a>
+                        <a href="/users/sign_out">Log Out</a>
                     <% else %>
                         <a href="/users/sign_in">Log In</a>
                         <a href="/users/sign_up">Sign Up</a>

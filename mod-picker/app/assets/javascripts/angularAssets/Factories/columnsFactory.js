@@ -21,13 +21,15 @@ app.service('columnsFactory', function() {
                 group: "General",
                 visibility: false,
                 label: "Primary Category",
-                data: "primary_category.name"
+                data: "primary_category.name",
+                unsortable: true
             },
             {
                 group: "General",
                 visibility: false,
                 label: "Secondary Category",
-                data: "secondary_category.name"
+                data: "secondary_category.name",
+                unsortable: true
             },
             {
                 group: "General",
@@ -75,7 +77,7 @@ app.service('columnsFactory', function() {
                 group: "Mod Picker",
                 visibility: false,
                 label: "Assets",
-                data: "assets_count",
+                data: "asset_files_count",
                 filter: "number"
             },
             {
@@ -176,7 +178,7 @@ app.service('columnsFactory', function() {
                 visibility: false,
                 label: "Downloads",
                 data: {
-                    nexus: "nexus_infos.total_downloads",
+                    nexus: "nexus_infos.downloads",
                     lab: "lover_infos.downloads"
                 },
                 filter: "number"
@@ -474,7 +476,8 @@ app.service('columnsFactory', function() {
                         return "#/mod/" + item.mod.id;
                     }
                 },
-                class: "primary-column"
+                class: "primary-column",
+                sortData: "mods.name"
             },
             {
                 group: "General",
@@ -495,14 +498,16 @@ app.service('columnsFactory', function() {
                 visibility: true,
                 label: "Primary Category",
                 data: "mod.primary_category.name",
-                class: 'category-column'
+                class: "category-column",
+                unsortable: true
             },
             {
                 group: "General",
                 visibility: false,
                 label: "Secondary Category",
                 data: "mod.secondary_category.name",
-                class: 'category-column'
+                class: "category-column",
+                unsortable: true
             },
             {
                 group: "General",
@@ -610,7 +615,8 @@ app.service('columnsFactory', function() {
                     if (item.mod) {
                         return "#/mod/" + item.mod.id;
                     }
-                }
+                },
+                sortData: "mods.name"
             },
             {
                 group: "General",
@@ -898,7 +904,8 @@ app.service('columnsFactory', function() {
                 data: "mod.name",
                 link: function (item) {
                     return "#/mod/" + item.mod.id;
-                }
+                },
+                sortData: "mods.name"
             },
             {
                 group: "General",

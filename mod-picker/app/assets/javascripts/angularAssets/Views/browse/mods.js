@@ -102,13 +102,14 @@ app.controller('modsController', function($scope, $rootScope, $q, $stateParams, 
     $scope.statFilters = filtersFactory.modStatisticFilters();
     $scope.filters = {
         game: $scope.currentGame.id,
-        include_adult: $scope.currentUser && $scope.currentUser.settings.allow_adult_content
+        include_adult: $scope.currentUser && $scope.currentUser.settings.allow_adult_content,
+        categories: []
     };
 
     // build generic controller stuff
     $scope.route = 'mods';
     $scope.retrieve = modService.retrieveMods;
-    indexFactory.buildIndex($scope, $stateParams, $state, indexService);
+    indexFactory.buildIndex($scope, $stateParams, $state);
     eventHandlerFactory.buildMessageHandlers($scope);
 
     // override some data from the generic controller

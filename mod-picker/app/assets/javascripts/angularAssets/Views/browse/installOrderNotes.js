@@ -22,5 +22,5 @@ app.controller('installOrderNotesController', function ($scope, $rootScope, $sta
     $scope.route = 'install_order_notes';
     $scope.contributions = true;
     $scope.retrieve = contributionService.retrieveContributions;
-    indexFactory.buildIndex($scope, $stateParams, $state, indexService);
+    indexFactory.buildIndex($scope, $stateParams, $state);
 });

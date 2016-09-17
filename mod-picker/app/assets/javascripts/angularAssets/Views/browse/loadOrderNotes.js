@@ -22,5 +22,5 @@ app.controller('loadOrderNotesController', function ($scope, $rootScope, $stateP
     $scope.route = 'load_order_notes';
     $scope.contributions = true;
     $scope.retrieve = contributionService.retrieveContributions;
-    indexFactory.buildIndex($scope, $stateParams, $state, indexService);
+    indexFactory.buildIndex($scope, $stateParams, $state);
 });

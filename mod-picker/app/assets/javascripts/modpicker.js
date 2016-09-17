@@ -29,6 +29,7 @@ app.config(function($futureStateProvider) {
     var lazyStateFactory = function($q, futureState) {
         return $q.when(futureState);
     };
+    lazyStateFactory.$inject = ["$q", "futureState"];
     $futureStateProvider.stateFactory('lazy', lazyStateFactory);
 });
 

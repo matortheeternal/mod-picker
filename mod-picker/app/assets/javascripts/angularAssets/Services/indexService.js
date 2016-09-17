@@ -36,9 +36,16 @@ app.service('indexService', function(objectUtils) {
         }
     };
 
-    this.setListFilterFromParam = function(filters, key, paramValue) {
+    this.setListFilterFromParam = function(filters, filter, paramValue) {
         if (paramValue) {
-            filters[key] = paramValue.split(',');
+            var key = filter.data;
+            if (filter.subtype === "Integer") {
+                filters[key] = paramValue.split(',').map(function(val) {
+                    return parseInt(val);
+                });
+            } else {
+                filters[key] = paramValue.split(',');
+            }
         }
     };
 
@@ -46,7 +53,7 @@ app.service('indexService', function(objectUtils) {
         var filterVals = paramValue.split('-');
 
         // special date filter handling
-        if (filter.subtype === 'Date') {
+        if (filter.subtype === "Date") {
             filters[filter.data] = {
                 min: filterVals[0].replace(/\./g, "/"),
                 max: filterVals[1].replace(/\./g, "/")
@@ -82,7 +89,7 @@ app.service('indexService', function(objectUtils) {
             }
             // handle list filters
             else if (filter.type === 'List') {
-                service.setListFilterFromParam(filters, filter.data, stateParams[filter.param]);
+                service.setListFilterFromParam(filters, filter, stateParams[filter.param]);
             }
             // handle normal filters
             else {

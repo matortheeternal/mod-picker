@@ -14,14 +14,14 @@ app.factory("filtersFactory", function() {
         data: "editor",
         param: "e"
     };
-    this.contributionReputationFilter = {
-        label: "Reputatation",
+    this.contributionHelpfulnessFilter = {
+        label: "Helpfulness",
         common: true,
-        data: "reputation",
+        data: "helpfulness",
         type: "Range",
         min: -40,
         max: 40,
-        param: "rep"
+        param: "h"
     };
     this.helpfulFilter = {
         label: "Helpful Count",
@@ -72,7 +72,8 @@ app.factory("filtersFactory", function() {
             {
                 data: "categories",
                 param: "c",
-                type: "List"
+                type: "List",
+                subtype: "Integer"
             },
             {
                 data: "sources.nexus",
@@ -164,7 +165,7 @@ app.factory("filtersFactory", function() {
                 data: "posts",
                 type: "Range",
                 max: 500000,
-                param: "pc"
+                param: "poc"
             },
             {
                 label: "Images Count",
@@ -266,6 +267,14 @@ app.factory("filtersFactory", function() {
                 param: "str"
             },
             {
+                label: "Mod Lists Count",
+                common: false,
+                data: "mod_lists",
+                type: "Range",
+                max: 1000,
+                param: "mlc"
+            },
+            {
                 label: "Compatibility Notes Count",
                 common: false,
                 data: "compatibility_notes",
@@ -288,6 +297,46 @@ app.factory("filtersFactory", function() {
                 type: "Range",
                 max: 100,
                 param: "loc"
+            },
+            {
+                label: "Asset Files Count",
+                common: false,
+                data: "asset_files",
+                type: "Range",
+                max: 50000,
+                param: "afc"
+            },
+            {
+                label: "Plugins Count",
+                common: false,
+                data: "plugins",
+                type: "Range",
+                max: 50,
+                param: "pc"
+            },
+            {
+                label: "Required Mods Count",
+                common: false,
+                data: "required_mods",
+                type: "Range",
+                max: 50,
+                param: "rmc"
+            },
+            {
+                label: "Required By Count",
+                common: false,
+                data: "required_by",
+                type: "Range",
+                max: 1000,
+                param: "rbc"
+            },
+            {
+                label: "Tags Count",
+                common: false,
+                data: "tags_count",
+                type: "Range",
+                max: 1000,
+                param: "tc"
             }
         ];
     };
@@ -374,12 +423,20 @@ app.factory("filtersFactory", function() {
                 param: "mods"
             },
             {
-                label: "Comments Count",
+                label: "Mod Lists Count",
                 common: true,
+                data: "mod_lists",
+                type: "Range",
+                max: 50,
+                param: "mlc"
+            },
+            {
+                label: "Profile Comments Count",
+                common: false,
                 data: "comments",
                 type: "Range",
-                max: 1000,
-                param: "cmc"
+                max: 200,
+                param: "pcc"
             },
             {
                 label: "Reviews Count",
@@ -422,12 +479,12 @@ app.factory("filtersFactory", function() {
                 param: "crc"
             },
             {
-                label: "Mod Lists Count",
+                label: "Comments Count",
                 common: false,
-                data: "mod_lists",
+                data: "submitted_comments",
                 type: "Range",
-                max: 50,
-                param: "mlc"
+                max: 200,
+                param: "cmc"
             }
         ];
     };
@@ -566,7 +623,7 @@ app.factory("filtersFactory", function() {
     /* reviews index filters */
     this.reviewStatisticFilters = function() {
         return [
-            factory.contributionReputationFilter,
+            factory.contributionHelpfulnessFilter,
             factory.helpfulFilter,
             factory.notHelpfulFilter,
             {
@@ -599,7 +656,7 @@ app.factory("filtersFactory", function() {
     /* note index filters */
     this.noteStatisticFilters = function() {
         return [
-            factory.contributionReputationFilter,
+            factory.contributionHelpfulnessFilter,
             factory.helpfulFilter,
             factory.notHelpfulFilter,
             factory.correctionsFilter,
@@ -1115,7 +1172,7 @@ app.factory("filtersFactory", function() {
                 param: "fsz"
             },
             {
-                label: "Record Count",
+                label: "Records Count",
                 common: true,
                 data: "records",
                 type: "Range",
@@ -1123,7 +1180,7 @@ app.factory("filtersFactory", function() {
                 param: "rc"
             },
             {
-                label: "Override Record Count",
+                label: "Override Records Count",
                 common: true,
                 data: "overrides",
                 type: "Range",
