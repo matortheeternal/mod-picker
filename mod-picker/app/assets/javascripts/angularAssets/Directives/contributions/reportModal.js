@@ -2,12 +2,12 @@ app.directive('reportModal', function () {
     return {
         restrict: 'E',
         templateUrl: '/resources/directives/contributions/reportModal.html',
-        controller: 'reportController',
+        controller: 'reportModalController',
         scope: false
     };
 });
 
-app.controller('reportController', function($scope, reportService) {
+app.controller('reportModalController', function($scope, reportService) {
     $scope.submitReport = function() {
         reportService.submitReport($scope.report);
         $scope.toggleReportModal(false);

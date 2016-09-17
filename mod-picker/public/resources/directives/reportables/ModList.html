@@ -1,0 +1,21 @@
+<div class="news-box" ng-class="{ 'full-report' : showFull }">
+    <div class="content-container">
+        <a ng-href="#/mod-list/{{report.reportable.id}}">
+          <h3>{{report.reportable_type}} - {{report.reportable.name}}</h3>
+        </a>
+        <span class="report-details">
+            on {{report.submitted | date}}
+        </span>
+        <div>
+          <p>{{report.reportable.description}}</p>
+        </div>
+
+        <ul>
+            <li ng-repeat="childReport in report.reports">
+                <p>Reason: {{childReport.report_type}}</p>
+                <p>{{childReport.note}}</p>
+                by <a ng-href="#/user/{{childReport.submitter.id}}">{{childReport.submitter.username}}</a>
+            </li>
+        </ul>
+    </div>
+</div>

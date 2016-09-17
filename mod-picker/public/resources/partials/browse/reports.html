@@ -48,7 +48,7 @@
                     <sort-control></sort-control>
                 </span></h2>
                 <loader data="reports" content-class="grid-results" spinner-class="big-spinner" ng-if="!error">
-                    <report reportable="report.reportable" data="report" ng-repeat="report in reports"></report>
+                    <report data="report" ng-repeat="report in reports"></report>
 
                     <div class="content-message" ng-hide="reports.length">
                         No reports were found matching your search criteria.

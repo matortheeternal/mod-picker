@@ -353,7 +353,17 @@ class ModList < ActiveRecord::Base
   end
 
   def reportable_json_options
-    { :only => [:name] }
+      { :only => [:name, :id, :description],
+          :include => {
+              :submitter => {
+                  :only => [:id, :username, :role, :title],
+                  :include => {
+                      :reputation => {:only => [:overall]}
+                  },
+                  :methods => :avatar
+              }
+          }
+      }
   end
 
   def self.sortable_columns
