@@ -38,9 +38,7 @@ class LoadOrderNote < ActiveRecord::Base
   has_one :first_mod, :through => :first_plugin, :class_name => 'Mod', :source => 'mod', :foreign_key => 'mod_id'
   has_one :second_mod, :through => :second_plugin, :class_name => 'Mod', :source => 'mod', :foreign_key => 'mod_id'
 
-  # mod lists this load order note appears on
-  has_many :mod_list_installation_notes, :inverse_of => 'load_order_note'
-  has_many :mod_lists, :through => 'mod_list_load_order_notes', :inverse_of => 'load_order_notes'
+  # mod lists this load order note is ignored on
   has_many :mod_list_ignored_notes, :as => 'note'
 
   # old versions of this load order note

@@ -22,6 +22,7 @@ class InstallOrderNote < ActiveRecord::Base
   ids_scope :mod_id, :columns => [:first_mod_id, :second_mod_id]
   date_scope :submitted, :edited
 
+  # ASSOCIATIONS
   belongs_to :game, :inverse_of => 'install_order_notes'
   belongs_to :submitter, :class_name => 'User', :foreign_key => 'submitted_by', :inverse_of => 'install_order_notes'
   belongs_to :editor, :class_name => 'User', :foreign_key => 'edited_by'
@@ -31,8 +32,6 @@ class InstallOrderNote < ActiveRecord::Base
   belongs_to :second_mod, :foreign_key => 'second_mod_id', :class_name => 'Mod'
 
   # mod lists this install order note appears on
-  has_many :mod_list_install_order_notes, :inverse_of => 'install_order_note'
-  has_many :mod_lists, :through => 'mod_list_install_order_notes', :inverse_of => 'install_order_notes'
   has_many :mod_list_ignored_notes, :as => 'note'
 
   # old versions of this install order note
