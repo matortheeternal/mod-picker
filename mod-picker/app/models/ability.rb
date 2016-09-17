@@ -128,11 +128,14 @@ class Ability
 
       # abilities for mod authors
       can [:update, :hide], Mod, { :mod_authors => { :user_id => user.id } }
-      cannot [:update, :hide], Mod, { :disallow_contributors => true, :mod_authors => { :user_id => user.id, :role => 1 } }
       can :destroy, ModRequirement, {:mod_version => {:mod => {:mod_authors => {:user_id => user.id } } } }
       can :destroy, ModTag, { :mod => { :mod_authors => { :user_id => user.id } } }
+      # authors
       can :update_authors, Mod, { :mod_authors => { :user_id => user.id, :role => 0 } }
-      can :update_options, Mod, { :mod_authors => { :user_id => user.id, :role => 1 } }
+      can :update_options, Mod, { :mod_authors => { :user_id => user.id, :role => 0 } }
+      # contributors
+      cannot [:update, :hide], Mod, { :disallow_contributors => true, :mod_authors => { :user_id => user.id, :role => 1 } }
+      can :update_options, Mod, { :disallow_contributors => false, :mod_authors => { :user_id => user.id, :role => 1 } }
 
       # abilities tied to reputation
       if user.reputation.overall >= 20
@@ -141,22 +144,18 @@ class Ability
       end
       if user.reputation.overall >= 40
         can :create, Correction  # can report something as incorrect
-        can :create, AgreementMark  # can agree/disagree with other users
+        can :create, AgreementMark  # can agree/disagree with corrections
         can :create, ReputationLink # can give reputation other users
       end
       if user.reputation.overall >= 160
         # TODO: mod submission here after the beta
       end
       if user.reputation.overall >= 320
-        # can update compatibility notes, install order notes, and load order notes  when the user
-        # who created them is inactive
+        # can update compatibility notes, install order notes, and
+        # load order notes  when the user who created them is inactive
         can :update, CompatibilityNote, { :submitter => { :inactive? => true } }
         can :update, InstallOrderNote, { :submitter => { :inactive? => true } }
         can :update, LoadOrderNote, { :submitter => { :inactive? => true } }
-        # or when the community has agreed they are incorrect
-        # can :update, CompatibilityNote, { :incorrect? => true }
-        # can :update, InstallOrderNote, { :incorrect? => true }
-        # can :update, LoadOrderNote, { :incorrect? => true }
       end
       if user.reputation.overall >= 640
         # TODO: Add some stuff here?
