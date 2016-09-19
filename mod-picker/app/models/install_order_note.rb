@@ -120,6 +120,29 @@ class InstallOrderNote < ActiveRecord::Base
     }
   end
 
+  # TODO: trim down reportable json options
+  def reportable_json_options
+    {
+          :except => [:submitted_by],
+          :include => {
+              :submitter => {
+                  :only => [:id, :username, :role, :title],
+                  :include => {
+                      :reputation => {:only => [:overall]}
+                  },
+                  :methods => :avatar
+              },
+              :editor => {
+                  :only => [:id, :username, :role]
+              },
+              :editors => {
+                  :only => [:id, :username, :role]
+              }
+          },
+          :methods => :mods
+      }
+  end
+
   def self.sortable_columns
     {
         :except => [:game_id, :submitted_by, :edited_by, :corrector_id, :first_mod_id, :second_mod_id, :text_body, :edit_summary, :moderator_message],

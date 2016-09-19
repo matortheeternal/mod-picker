@@ -351,6 +351,53 @@ class Mod < ActiveRecord::Base
     { :only => [:name] }
   end
 
+  # TODO: trim down json for reports
+  def reportable_json_options
+    {
+        :except => [:disallow_contributors, :hidden],
+        :include => {
+            :tags => {
+                :except => [:game_id, :hidden, :mod_lists_count],
+                :include => {
+                    :submitter => {
+                        :only => [:id, :username]
+                    }
+                }
+            },
+            :nexus_infos => {:except => [:mod_id]},
+            :workshop_infos => {:except => [:mod_id]},
+            :lover_infos => {:except => [:mod_id]},
+            :plugins => {:only => [:id, :filename]},
+            :custom_sources => {:except => [:mod_id]},
+            :mod_authors => {
+                :only => [:id, :role, :user_id],
+                :include => {
+                    :user => {
+                        :only => [:username]
+                    }
+                }
+            },
+            :required_mods => {
+                :only => [],
+                :include => {
+                    :required_mod => {
+                        :only => [:id, :name]
+                    }
+                }
+            },
+            :required_by => {
+                :only => [],
+                :include => {
+                    :mod => {
+                        :only => [:id, :name]
+                    }
+                }
+            }
+        },
+        :methods => :image
+    }
+  end
+
   def self.sortable_columns
     {
         :except => [:game_id, :submitted_by, :primary_category_id, :secondary_category_id],

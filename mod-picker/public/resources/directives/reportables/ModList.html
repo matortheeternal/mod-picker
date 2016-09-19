@@ -10,12 +10,21 @@
           <p>{{report.reportable.description}}</p>
         </div>
 
-        <ul>
-            <li ng-repeat="childReport in report.reports">
-                <p>Reason: {{childReport.report_type}}</p>
-                <p>{{childReport.note}}</p>
-                by <a ng-href="#/user/{{childReport.submitter.id}}">{{childReport.submitter.username}}</a>
-            </li>
-        </ul>
+        <table>
+          <thead>
+            <tr>
+              <th>Reason</th>
+              <th>Note</th>
+              <th>Submitter</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="childReport in report.reports">
+              <td>{{childReport.report_type}}</td>
+              <td>{{childReport.note}}</td>
+              <td><a ng-href="#/user/{{childReport.submitter.id}}">{{childReport.submitter.username}}</a></td>
+            </tr>
+          </tbody>
+        </table>
     </div>
 </div>

@@ -138,6 +138,26 @@ class Review < ActiveRecord::Base
     }
   end
 
+  def reportable_json_options
+    {
+        :include => {
+            :review_ratings => {
+                :except => [:review_id]
+            },
+            :submitter => {
+                :only => [:id, :username, :role, :title],
+                :include => {
+                    :reputation => {:only => [:overall]}
+                },
+                :methods => :avatar
+            },
+            :editor => {
+                :only => [:id, :username, :role]
+            }
+        }
+    }
+  end
+
   def self.sortable_columns
     {
         :except => [:game_id, :submitted_by, :edited_by, :mod_id, :text_body, :edit_summary, :moderator_message],

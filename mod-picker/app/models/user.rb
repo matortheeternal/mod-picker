@@ -253,7 +253,13 @@ class User < ActiveRecord::Base
 
   def reportable_json_options
     options = {
-        :only => [:username].compact
+        :only => [:id, :username, :role, :title],
+        :include => {
+            :reputation => {
+                :only => [:overall, :rep_to_count]
+            }
+        },
+        :methods => [:avatar]
     }
   end
 
