@@ -90,6 +90,7 @@ class ModBuilder
       lnote_ids = mod.load_order_notes.ids
 
       # hide content
+      mod.mod_list_mods.destroy_all
       mod.reviews.update_all(:hidden => true)
       mod.corrections.update_all(:hidden => true)
       mod.compatibility_notes.update_all(:hidden => true)
