@@ -7,10 +7,10 @@ app.directive('report', function() {
         },
         link: function(scope, element, attrs) {
             scope.getTemplateUrl = function() {
-                return '/resources/directives/reportables/' + scope.report.reportable_type + '.html';
+                return '/resources/directives/reportables/' + scope.report.reportable_type.toLowerCase() + '.html';
             }
         },
-        template: '<div ng-include="getTemplateUrl()"></div>',
+        templateUrl: '/resources/directives/contributions/report.html',
         controller: 'reportController',
     };
 });

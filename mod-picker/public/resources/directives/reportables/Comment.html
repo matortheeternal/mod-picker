@@ -1,25 +1,3 @@
-<div class="news-box" ng-class="{ 'full-report' : showFull }">
-    <div class="content-container">
-        <a ng-href="#/report/{{report.id}}">
-          <h3>{{report.reportable_type}}</h3>
-        </a>
-        <comment comment="report.reportable"> </comment>
-
-        <table>
-          <thead>
-            <tr>
-              <th>Reason</th>
-              <th>Note</th>
-              <th>Submitter</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr ng-repeat="childReport in report.reports">
-              <td>{{childReport.report_type}}</td>
-              <td>{{childReport.note}}</td>
-              <td><a ng-href="#/user/{{childReport.submitter.id}}">{{childReport.submitter.username}}</a></td>
-            </tr>
-          </tbody>
-        </table>
-    </div>
+<div class="comment-container">
+  <comment comment="report.reportable"> </comment>
 </div>

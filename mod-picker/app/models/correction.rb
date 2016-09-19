@@ -137,11 +137,18 @@ class Correction < ActiveRecord::Base
   def reportable_json_options
     is_appeal = correctable_type == "Mod"
     {
-        :only => [:submitted_by, :correctable_type, (:mod_status if is_appeal)].compact,
+        :only => [:submitted_by, :correctable_type, (:mod_status if is_appeal), :text_body, :submitted].compact,
         :include => {
             :correctable => {
                 :only => [:id, (:name if is_appeal)].compact,
                 :methods => [(:mods if !is_appeal), (:plugins if correctable_type == "LoadOrderNote")].compact
+            },
+            :submitter => {
+                :only => [:id, :username, :role, :title],
+                :include => {
+                    :reputation => {:only => [:overall]}
+                },
+                :methods => :avatar
             }
         }
     }
