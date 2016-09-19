@@ -17,5 +17,4 @@ app.directive('report', function() {
 
 app.controller('reportController', function($scope) {
     angular.inherit($scope, 'report');
-    console.log($scope.report);
 });

@@ -1,4 +1,4 @@
-app.service('reportService', function($q, backend, pageUtils) {
+app.service('reportService', function($q, backend, pageUtils, userTitleService) {
     this.retrieveReport = function(reportId) {
         var output = $q.defer();
         backend.retrieve('/reports/' + reportId).then(function(reportData) {
@@ -14,7 +14,20 @@ app.service('reportService', function($q, backend, pageUtils) {
         backend.post('/reports/index', options).then(function (data) {
             // resolve page information and data
             pageUtils.getPageInformation(data, pageInformation, options.page);
+            // TODO: associate user titles, agreement marks, helpful marks
+
+            // array of reportables
+            var reportableArray = data.reports.map(function(obj){
+                return obj.reportable;
+            });
+
+            // associate titles to reportable submitter if relevant
+            userTitleService.associateTitles(reportableArray);
+
+            
+
             action.resolve(data);
+
         }, function(response) {
             action.reject(response);
         });

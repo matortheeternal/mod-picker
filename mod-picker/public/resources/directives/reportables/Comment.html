@@ -3,13 +3,7 @@
         <a ng-href="#/report/{{report.id}}">
           <h3>{{report.reportable_type}}</h3>
         </a>
-         submitted by <a ng-href="#/user/{{report.reportable.submitter.id}}">{{report.reportable.submitter.username}}</a>
-        <span class="report-details">
-            on {{report.submitted | date}}
-        </span>
-        <p>{{report.reportable.text_body}}</p>
-
-        <div marked="report.note"></div>
+        <comment comment="report.reportable"> </comment>
 
         <ul>
             <li ng-repeat="childReport in report.reports">
