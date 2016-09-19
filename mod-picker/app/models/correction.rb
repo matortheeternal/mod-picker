@@ -43,7 +43,7 @@ class Correction < ActiveRecord::Base
 
   # CALLBACKS
   after_create :increment_counters, :schedule_close
-  before_save :set_dates
+  before_save :set_adult, :set_dates
   after_save :recompute_correctable_standing
   after_destroy :decrement_counters, :recompute_correctable_standing
 
@@ -164,6 +164,10 @@ class Correction < ActiveRecord::Base
       else
         self.edited = DateTime.now
       end
+    end
+
+    def set_adult
+      self.has_adult_content = correctable.has_adult_content
     end
 
     def increment_counters
