@@ -79,6 +79,11 @@ class Correction < ActiveRecord::Base
     end
   end
 
+  def self.update_adult(model, ids)
+    Correction.where(correctable_type: model.model_name.to_s, id: ids).joins("INNER JOIN #{model.table_name} ON #{model.table_name}.id = corrections.correctable_id").update_all("corrections.has_adult_content = #{model.table_name}.has_adult_content")
+    Comment.commentables("Correction", ids).joins("INNER JOIN corrections ON corrections.id = comments.commentable_id").update_all("comments.has_adult_content = corrections.has_adult_content")
+  end
+
   def self.index_json(collection)
     collection.as_json({
         :include => {
