@@ -36,6 +36,7 @@ class ModBuilder
 
   def update!
     ActiveRecord::Base.transaction do
+      mod.attributes = @params
       self.before_save
       self.before_update
       mod.update!(@params)
