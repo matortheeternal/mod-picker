@@ -52,6 +52,16 @@ String.prototype.reduceText = function(numWords) {
     return result.trim();
 };
 
+String.prototype.wordwrap = function(width, brk, cut) {
+    brk = brk || '\n';
+    width = width || 60;
+    var regex = '.{1,' +width+ '}(\\s|$)' + (cut ? '|.{' +width+ '}|.+$' : '|\\S+?(\\s|$)');
+
+    return this.match(new RegExp(regex, 'g')).map(function(str) {
+        return str.trim()
+    }).join(brk);
+};
+
 // convert integer to a bytes string
 Number.prototype.toBytes = function(precision) {
     if (typeof precision === 'undefined') precision = 1;
