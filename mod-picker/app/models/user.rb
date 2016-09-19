@@ -64,10 +64,10 @@ class User < ActiveRecord::Base
   belongs_to :active_mod_list, :class_name => 'ModList', :foreign_key => 'active_mod_list_id'
 
   has_many :mod_stars, :inverse_of => 'user'
-  has_many :starred_mods, :through => 'mod_stars', :source => 'mod'
+  has_many :starred_mods, :class_name => 'Mod', :through => 'mod_stars', :source => 'mod', :inverse_of => 'user_stars'
 
   has_many :mod_list_stars, :inverse_of => 'user'
-  has_many :starred_mod_lists, :through => 'mod_list_stars', :source => 'mod_list'
+  has_many :starred_mod_lists, :class_name => 'ModList', :through => 'mod_list_stars', :source => 'mod_list', :inverse_of => 'user_stars'
 
   has_many :profile_comments, -> { where(parent_id: nil) }, :class_name => 'Comment', :as => 'commentable'
   has_many :reports, :foreign_key => 'submitted_by', :inverse_of => 'submitter'

@@ -116,7 +116,7 @@ class Mod < ActiveRecord::Base
   has_many :corrections, :as => 'correctable'
   has_many :reviews, :inverse_of => 'mod', :dependent => :destroy
   has_many :mod_stars, :inverse_of => 'mod', :dependent => :destroy
-  has_many :user_stars, :through => 'mod_stars', :class_name => 'User', :inverse_of => 'starred_mods'
+  has_many :user_stars, :class_name => 'User', :through => 'mod_stars', :source => 'user', :inverse_of => 'starred_mods'
 
   # tags
   has_many :mod_tags, :inverse_of => 'mod', :dependent => :destroy

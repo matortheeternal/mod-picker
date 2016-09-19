@@ -72,7 +72,7 @@ class ModList < ActiveRecord::Base
 
   # STARS
   has_many :mod_list_stars, :inverse_of => 'mod_list', :dependent => :destroy
-  has_many :user_stars, :through => 'mod_list_stars', :class_name => 'User', :inverse_of => 'starred_mod_lists'
+  has_many :user_stars, :through => 'mod_list_stars', :source => 'user', :class_name => 'User', :inverse_of => 'starred_mod_lists'
 
   # COMMENTS
   has_many :comments, -> { where(parent_id: nil) }, :as => 'commentable', :dependent => :destroy
