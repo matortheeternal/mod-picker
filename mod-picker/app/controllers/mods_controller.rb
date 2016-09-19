@@ -391,7 +391,7 @@ class ModsController < ApplicationController
     end
 
     def mod_update_params
-      params.require(:mod).permit(:name, :authors, :aliases, :is_utility, :has_adult_content, :primary_category_id, :secondary_category_id, :released, :updated, :nexus_info_id, :lovers_info_id, :workshop_info_id, :disallow_contributors, :disable_reviews, :lock_tags, :hidden,
+      p = params.require(:mod).permit(:name, :authors, :aliases, :is_utility, :has_adult_content, :primary_category_id, :secondary_category_id, :released, :updated, :nexus_info_id, :lovers_info_id, :workshop_info_id, :disallow_contributors, :disable_reviews, :lock_tags, :hidden,
          :required_mods_attributes => [:id, :required_id, :_destroy],
          :mod_authors_attributes => [:id, :role, :user_id, :_destroy],
           :custom_sources_attributes => [:id, :label, :url, :_destroy],
@@ -403,6 +403,8 @@ class ModsController < ApplicationController
            :plugin_record_groups_attributes => [:sig, :record_count, :override_count],
            :plugin_errors_attributes => [:signature, :form_id, :group, :path, :name, :data],
            :overrides_attributes => [:fid, :sig]])
+      p[:id] = params[:id]
+      p
     end
 
     def options_params
