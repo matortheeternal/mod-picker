@@ -40,13 +40,17 @@ class ModBuilder
       self.before_save
       self.before_update
       mod.update!(@params)
+      self.after_update
       self.after_save
     end
   end
 
   def before_update
     hide_contributions
-    set_adult
+  end
+
+  def after_update
+    update_adult
   end
 
   def save
@@ -106,8 +110,8 @@ class ModBuilder
     end
   end
 
-  def set_adult
-    if mod.attribute_changed?(:has_adult_content)
+  def update_adult
+    if mod.previous_changes.has_key?(:has_adult_content)
       # prepare some helper variables
       review_ids = mod.reviews.ids
       cnote_ids = mod.compatibility_notes.ids

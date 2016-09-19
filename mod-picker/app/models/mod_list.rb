@@ -173,7 +173,7 @@ class ModList < ActiveRecord::Base
   end
 
   def self.update_adult(ids)
-    ModList.where(id: ids).joins(:mods).update_all("mod_lists.has_adult_content = false")
+    ModList.where(id: ids).update_all("mod_lists.has_adult_content = false")
     ModList.where(id: ids).joins(:mods).where(:mods => {has_adult_content: true}).update_all("mod_lists.has_adult_content = true")
     Comment.commentables("ModList", ids).joins("INNER JOIN mod_lists ON mod_lists.id = comments.commentable_id").update_all("comments.has_adult_content = mod_lists.has_adult_content")
   end
