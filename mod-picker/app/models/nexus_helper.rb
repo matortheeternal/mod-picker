@@ -62,7 +62,7 @@ class NexusHelper
     login_if_necessary
 
     # construct user url
-    user_url = 'https://forums.nexusmods.com/index.php?/user/' + id
+    user_url = 'https://forums.nexusmods.com/index.php?showuser=' + id
 
     # prepare headers
     headers = {
