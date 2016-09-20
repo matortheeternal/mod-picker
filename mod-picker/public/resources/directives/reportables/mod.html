@@ -1,0 +1,47 @@
+<div class="content-block">
+  <div class="contribution-container box-shadow">
+    <div class="content-title"> 
+          <span>
+              <a ng-href="#/{{report.reportable_type.underscore()}}/{{report.reportable.id}}" target="_blank">{{report.reportable.name}}</a>
+          </span>
+          <span class="right-item">
+              <span class="header-box">
+                Average Rating: <span class="action-box yellow-box capitalize"> {{report.reportable.average_rating}}</span>
+              </span>
+              <span class="header-box">
+                Reputation: <span class="action-box yellow-box capitalize"> {{report.reportable.reputation}}</span>
+              </span>
+              <span class="header-box">
+                Status: <span class="action-box {{statusClasses[report.reportable.status]}} capitalize"> {{report.reportable.status}}</span>
+              </span>
+          </span>
+    </div>
+    <!--<user-column user="report.reportable.submitter" class="user-column"></user-column>-->
+    <div class="user-column">
+      <ul>
+        <li class="user-avatar">
+            <img class="avatar avatar-medium" ng-src="{{report.reportable.image}}"/>
+        </li>
+         <li class="user-name">
+            By <a class="inverse-link" ng-href="#/user/{{report.reportable.id}}" target="_blank" tabindex="{{index}}">{{report.reportable.authors}}</a>
+        </li>
+        <li class="user-title">
+            {{report.reportable.aliases}}
+        </li>
+        <li class="editors" ng-if="report.reportable.mod_authors.length">
+            <b>Authors:</b>
+            <span ng-repeat="author in report.reportable.authors">
+                <a href="#/user/{{author.id}}">{{author.username}}</a><span ng-if="!$last">, </span>
+            </span>
+        </li>
+    </ul>
+  </div>
+
+      <div class="content-column" ng-class="{ 'no-actions' : !showActions }">
+          <div class="submitted-line"><em>Last Updated {{report.reportable.updated | date: 'longDate'}}</em>, Submitted {{report.reportable.released | date : 'longDate'}}</div>
+          <div class="text-container" ng-class="{ 'half-opacity' : target.hidden }">
+              <read-more text="report.reportable.description" words="75"></read-more>
+          </div>
+      </div>
+  </div>
+</div>

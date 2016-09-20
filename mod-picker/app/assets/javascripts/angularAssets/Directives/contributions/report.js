@@ -17,4 +17,11 @@ app.directive('report', function() {
 
 app.controller('reportController', function($scope) {
     angular.inherit($scope, 'report');
+
+    // status classes for mod css class name
+    $scope.statusClasses = {
+        unstable: 'red-box',
+        outdated: 'yellow-box',
+        good: 'green-box'
+    };
 });

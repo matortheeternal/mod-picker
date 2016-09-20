@@ -2,7 +2,7 @@
   <div class="contribution-container box-shadow">
     <div class="content-title"> 
           <span>
-              <a ng-href="#/mod_list/{{report.reportable.id}}" target="_blank">{{report.reportable.name}}</a>
+              <a ng-href="#/{{report.reportable_type.underscore()}}/{{report.reportable.id}}" target="_blank">{{report.reportable.name}}</a>
           </span>
           <span class="right-item">
               <span class="capitalize">Status: {{report.reportable.status.replace("_", " ")}}</span>
