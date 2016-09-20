@@ -42,7 +42,7 @@
 
 <div class="modal-container" ng-if="showModal">
     <messages event="modalMessage"></messages>
-    
+
     <div class="modal big-modal">
         <form>
             <h3 class="section-title">Link {{siteLabel}} Account</h3>
@@ -54,34 +54,40 @@
                     have submitted to {{siteLabel}} which are listed on Mod Picker.</p>
             </section>
 
-            <section>
-                <h4>Directions to link your account</h4>
+            <loader data="!bio.verifying" spinner-class="big-spinner">
+                <section>
+                    <h4>Directions to link your account</h4>
 
-                <!-- TODO: Add screenshots -->
-                <ol>
-                    <li>Login to <a ng-href="{{site.loginUrl}}">{{siteLabel}}</a>.</li>
-                    <li ng-repeat="step in linkSteps">{{step}}</li>
-                </ol>
-            </section>
+                    <!-- TODO: Add screenshots -->
+                    <ol>
+                        <li>Login to <a ng-href="{{site.loginUrl}}">{{siteLabel}}</a>.</li>
+                        <li ng-repeat="step in linkSteps">{{step}}</li>
+                    </ol>
+                </section>
 
-            <section>
-                <label>
-                    <span class="input-label">Your Verification Key</span>
-                    <input type="text" class="verification-key-input" ng-model="verification_token" ng-click="focusText($event)" spellcheck="false" readonly>
-                </label>
-            </section>
+                <section>
+                    <label>
+                        <span class="input-label">Your Verification Key</span>
+                        <input type="text" class="verification-key-input" ng-model="verification_token" ng-click="focusText($event)" spellcheck="false" readonly>
+                    </label>
+                </section>
 
-            <section>
-                <label>
-                    <div>Profile URL</div>
-                    <input type="text" class="long-input" ng-model="bio[userUrlKey]" ng-change="validateUrl()" ng-disabled="verified">
-                </label>
+                <section>
+                    <label>
+                        <div>Profile URL</div>
+                        <input type="text" class="long-input" ng-model="bio[userUrlKey]" ng-change="validateUrl()" ng-disabled="bio[verifiedKey]">
+                    </label>
 
-                <input type="button" class="btn verify-button" value="Verify" ng-click="verifyUser()" ng-disabled="!urlValid || waiting || verified">
-            </section>
+                    <input type="button" class="btn verify-button" value="Verify" ng-click="verifyUser()" ng-disabled="!urlValid || bio.waiting || bio[verifiedKey]">
+                </section>
 
-            <div class="action-button-container">
-                <input type="submit" class="btn action-btn" value="Close" ng-click="toggleModal()">
+                <div class="action-button-container">
+                    <input type="submit" class="btn action-btn" value="Close" ng-click="toggleModal()">
+                </div>
+            </loader>
+
+            <div class="content-message" ng-if="bio.verifying">
+                Verifying your account...
             </div>
         </form>
     </div>
