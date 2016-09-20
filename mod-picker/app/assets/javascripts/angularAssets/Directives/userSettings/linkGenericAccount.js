@@ -16,6 +16,7 @@ app.controller('linkGenericAccountController', function ($scope, $timeout, userS
     $scope.showModal = false;
     $scope.waiting = false;
     $scope.verified = false;
+    $scope.userUrlKey = $scope.siteKey + '_user_url';
     $scope.site = sitesFactory.getSite($scope.siteLabel);
     $scope.linkSteps = sitesFactory.getLinkSteps($scope.siteLabel);
 
@@ -32,6 +33,7 @@ app.controller('linkGenericAccountController', function ($scope, $timeout, userS
     $scope.initSiteVar('date_joined');
     $scope.initSiteVar('posts_count');
     $scope.initSiteVar('verification_token');
+    if (!$scope.bio[$scope.userUrlKey]) $scope.bio[$scope.userUrlKey] = "";
 
     // inherited functions
     $scope.focusText = formUtils.focusText;
@@ -43,7 +45,8 @@ app.controller('linkGenericAccountController', function ($scope, $timeout, userS
     };
 
     $scope.validateUrl = function() {
-        var match  = $scope.userUrl.match($scope.site.userUrlFormat);
+        var userUrl = $scope.bio[$scope.userUrlKey];
+        var match  = userUrl.match($scope.site.userUrlFormat);
         $scope.urlValid = match !== null;
     };
 
@@ -54,7 +57,8 @@ app.controller('linkGenericAccountController', function ($scope, $timeout, userS
         }
 
         // exit if the url is invalid
-        var match  = $scope.userUrl.match($scope.site.userUrlFormat);
+        var userUrl = $scope.bio[$scope.userUrlKey];
+        var match  = userUrl.match($scope.site.userUrlFormat);
         if (!match) {
             return;
         }

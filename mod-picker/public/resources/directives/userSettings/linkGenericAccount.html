@@ -74,7 +74,7 @@
             <section>
                 <label>
                     <div>Profile URL</div>
-                    <input type="text" class="long-input" ng-model="userUrl" ng-change="validateUrl()" ng-disabled="verified">
+                    <input type="text" class="long-input" ng-model="bio[userUrlKey]" ng-change="validateUrl()" ng-disabled="verified">
                 </label>
 
                 <input type="button" class="btn verify-button" value="Verify" ng-click="verifyUser()" ng-disabled="!urlValid || waiting || verified">
