@@ -11,7 +11,7 @@ app.directive('linkGenericAccount', function () {
     }
 });
 
-app.controller('linkGenericAccountController', function ($scope, $timeout, userSettingsService, sitesFactory, formUtils) {
+app.controller('linkGenericAccountController', function ($scope, $timeout, userSettingsService, sitesFactory, eventHandlerFactory, formUtils) {
     // initialize variables
     $scope.showModal = false;
     $scope.waiting = false;
@@ -37,6 +37,7 @@ app.controller('linkGenericAccountController', function ($scope, $timeout, userS
 
     // inherited functions
     $scope.focusText = formUtils.focusText;
+    eventHandlerFactory.buildModalMessageHandlers($scope, true);
 
     // normal functions
     $scope.toggleModal = function(visible) {
@@ -68,13 +69,13 @@ app.controller('linkGenericAccountController', function ($scope, $timeout, userS
         userSettingsService.verifyAccount($scope.siteLabel, user_path).then(function(data) {
             $scope.verified = data.verified;
             if (!data.verified) {
-                $scope.$emit('modalMessage', { type: 'error', message: 'Failed to verify account. You can try again in 30 seconds.' });
+                $scope.$emit('modalCustomMessage', { type: 'error', message: 'Failed to verify account. You can try again in 30 seconds.' });
             } else {
-                $scope.$emit('modalMessage', { type: 'success', message: 'Account verified!' });
+                $scope.$emit('modalSuccessMessage', 'Account verified!');
                 $scope.bio = data.bio;
             }
         }, function() {
-            $scope.$emit('modalMessage', { type: 'error', message: 'Error verifying account.' });
+            $scope.$emit('modalCustomMessage', { type: 'error', message: 'Error verifying account.' });
         });
         $timeout(function() {
             $scope.waiting = false;
