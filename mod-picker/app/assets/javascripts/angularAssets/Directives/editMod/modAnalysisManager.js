@@ -66,13 +66,18 @@ app.controller('modAnalysisManagerController', function ($scope, pluginService, 
             overrides: 'overrides_attributes'
         };
         fileReader.onload = function (event) {
-            var fixedJson = objectUtils.remapProperties(event.target.result, jsonMap);
-            var analysis = JSON.parse(fixedJson);
-            analysis.mod_options.forEach(function (option) {
-                option.nestedAssets = assetUtils.getNestedAssets(option.assets);
-            });
-            $scope.mod.analysis = analysis;
-            $scope.getRequirementsFromAnalysis();
+            try {
+                var fixedJson = objectUtils.remapProperties(event.target.result, jsonMap);
+                var analysis = JSON.parse(fixedJson);
+                analysis.mod_options.forEach(function (option) {
+                    option.nestedAssets = assetUtils.getNestedAssets(option.assets);
+                });
+                $scope.mod.analysis = analysis;
+                $scope.getRequirementsFromAnalysis();
+            } catch (e) {
+                console.log(e);
+                $scope.emit('errorMessage', 'There was an error parsing the mod analysis.  Make sure the analysis was produced with the latest version of Mod Analyzer.')
+            }
         };
         fileReader.readAsText(file);
     };
