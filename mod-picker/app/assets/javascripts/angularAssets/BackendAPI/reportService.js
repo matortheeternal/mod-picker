@@ -1,4 +1,4 @@
-app.service('reportService', function($q, backend, pageUtils, userTitleService) {
+app.service('reportService', function($q, backend, pageUtils, userTitleService, reviewSectionService) {
     this.retrieveReport = function(reportId) {
         var output = $q.defer();
         backend.retrieve('/reports/' + reportId).then(function(reportData) {
@@ -29,6 +29,10 @@ app.service('reportService', function($q, backend, pageUtils, userTitleService) 
                     userTitleService.getUserTitle(obj.reportable.reputation.overall).then(function(title) {
                         obj.reportable.title = title;
                     });
+                }
+
+                if(obj.reportable_type === 'Review') {
+                    reviewSectionService.associateReviewSections([obj.reportable]);
                 }
             });
 
