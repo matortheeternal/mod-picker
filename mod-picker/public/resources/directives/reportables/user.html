@@ -1,0 +1,22 @@
+<div class="content-block">
+  <div class="contribution-container box-shadow">
+    <div class="content-title"> 
+          <span>
+              <a ng-href="#/{{report.reportable_type.underscore()}}/{{report.reportable.id}}" target="_blank">{{report.reportable.username}}</a>
+          </span>
+          <!--<span class="right-item">
+              <span class="capitalize">Status: {{report.reportable.status.replace("_", " ")}}</span>
+              <span class="capitalize">Visibility: {{report.reportable.visibility.replace("visibility_", "")}}</span>
+          </span>-->
+    </div>
+    <user-column user="report.reportable" class="user-column"></user-column>
+      <div class="content-column" ng-class="{ 'no-actions' : !showActions }">
+          <div class="submitted-line">Joined {{report.reportable.joined | date : 'longDate'}}</div>
+            <!--<em ng-if="report.reportable.last_sign_in_at">Last Online {{report.reportable.last_sign_in_at | date: 'longDate'}}, </em>-->
+            
+          <div class="text-container" ng-class="{ 'half-opacity' : target.hidden }">
+              <read-more text="report.reportable.about_me" words="75"></read-more>
+          </div>
+      </div>
+  </div>
+</div>

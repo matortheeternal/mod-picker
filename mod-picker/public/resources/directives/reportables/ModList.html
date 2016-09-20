@@ -1,1 +1,20 @@
-
+<div class="content-block">
+  <div class="contribution-container box-shadow">
+    <div class="content-title"> 
+          <span>
+              <a ng-href="#/mod_list/{{report.reportable.id}}" target="_blank">{{report.reportable.name}}</a>
+          </span>
+          <span class="right-item">
+              <span class="capitalize">Status: {{report.reportable.status.replace("_", " ")}}</span>
+              <span class="capitalize">Visibility: {{report.reportable.visibility.replace("visibility_", "")}}</span>
+          </span>
+    </div>
+    <user-column user="report.reportable.submitter" class="user-column"></user-column>
+      <div class="content-column" ng-class="{ 'no-actions' : !showActions }">
+          <div class="submitted-line">Submitted {{report.reportable.submitted | date : 'longDate'}} - {{report.reportable.submitted | date : 'shortTime'}}</div>
+          <div class="text-container" ng-class="{ 'half-opacity' : target.hidden }">
+              <read-more text="report.reportable.description" words="75"></read-more>
+          </div>
+      </div>
+  </div>
+</div>

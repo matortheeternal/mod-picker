@@ -353,7 +353,7 @@ class ModList < ActiveRecord::Base
   end
 
   def reportable_json_options
-      { :only => [:name, :id, :description],
+      { :only => [:name, :id, :description, :status, :submitted, :visibility],
           :include => {
               :submitter => {
                   :only => [:id, :username, :role, :title],

@@ -153,6 +153,9 @@ class Review < ActiveRecord::Base
             },
             :editor => {
                 :only => [:id, :username, :role]
+            },
+            :mod => { 
+                :only => [:id, :name] 
             }
         }
     }
