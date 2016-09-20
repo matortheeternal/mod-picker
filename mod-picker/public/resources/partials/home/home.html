@@ -1,65 +1,67 @@
-<two-columns>
-    <div class="page-container">
-        <div class="left-column wide-column home-left-column">
-            <div class="recent-box box-shadow">
-                <h3 class="section-title">Recent Mod Lists</h3>
-                <section ng-repeat="modlist in recent.mod_lists">
-                    <a ng-href="#/mod-list/{{modlist.id}}">
-                        <div class="recent-thing" ng-init="user = modlist.submitter">
-                            <img class="smaller-image" ng-src="{{user.avatar == null ? '/avatars/' + user.title + '.png' : user.avatar}}">
-                            <div>
-                                <div class="recent-title">{{modlist.name}}</div>
-                                <div> by {{modlist.submitter.username}}</div>
-                                <div> {{modlist.mods_count | number}} mods, {{modlist.plugins_count | number}} plugins</div>
-                                <div> Completed {{modlist.completed | relativeDate }}</div>
-                                <!--TODO: needs data for last update date -->
+<loader data="recent" spinner-class="huge-spinner">
+    <two-columns>
+        <div class="page-container">
+            <div class="left-column wide-column home-left-column">
+                <div class="recent-box box-shadow">
+                    <h3 class="section-title">Recent Mod Lists</h3>
+                    <section ng-repeat="modlist in recent.mod_lists">
+                        <a ng-href="#/mod-list/{{modlist.id}}">
+                            <div class="recent-thing" ng-init="user = modlist.submitter">
+                                <img class="smaller-image" ng-src="{{user.avatar == null ? '/users/' + user.title + '.png' : user.avatar}}">
+                                <div>
+                                    <div class="recent-title">{{modlist.name}}</div>
+                                    <div> by {{modlist.submitter.username}}</div>
+                                    <div> {{modlist.mods_count | number}} mods, {{modlist.plugins_count | number}} plugins</div>
+                                    <div> Completed {{modlist.completed | relativeDate }}</div>
+                                </div>
                             </div>
-                        </div>
-                    </a>
-                </section>
-                <a href="#/modlists" class="explanation">Browse All</a>
-                <!--TODO: link to search sorting by recent using params -->
-            </div>
+                        </a>
+                    </section>
+                    <a href="#/modlists" class="explanation">Browse All</a>
+                    <!--TODO: link to search sorting by recent using params -->
+                </div>
 
-            <div class="recent-box box-shadow">
-                <h3 class="section-title">Recent Mods</h3>
-                <!-- TODO: make this into a directive -->
-                <section ng-repeat="mod in recent.mods">
-                    <a ng-href="#/mod/{{mod.id}}">
-                        <div class="recent-thing">
-                            <img ng-src="{{mod.image}}">
-                            <div>
-                                <div class="recent-title">{{mod.name}}</div>
-                                <div>by <span class="author">{{mod.authors}}</span></div>
-                                <div>Released {{mod.released | date}}</div>
-                                <div>{{mod.primary_category.name}}</div>
+                <div class="recent-box box-shadow">
+                    <h3 class="section-title">Recent Mods</h3>
+                    <!-- TODO: make this into a directive -->
+                    <section ng-repeat="mod in recent.mods">
+                        <a ng-href="#/mod/{{mod.id}}">
+                            <div class="recent-thing">
+                                <img ng-src="{{mod.image}}">
+                                <div>
+                                    <div class="recent-title">{{mod.name}}</div>
+                                    <div>by <span class="author">{{mod.authors}}</span></div>
+                                    <div>Released {{mod.released | date}}</div>
+                                    <div>{{mod.primary_category.name}}</div>
+                                </div>
                             </div>
-                        </div>
-                    </a>
-                </section>
-                <a href="#/mods" class="explanation">Browse All</a>
-                <!--TODO: link to search sorting by recent using params -->
-            </div>
-        </div>
-
-        <div class="right-column home-right-column">
-            <div class="articles box-shadow">
-                <article data="article" condensed="true" ng-repeat="article in articles"></article>
-                <div class="load-older-posts">
-                    <a href="#/articles/">Browse All Articles</a>
-                    <span class="divider" ng-if="permissions.canSubmitArticles">|</span>
-                    <a href="#/articles/submit" ng-if="permissions.canSubmitArticles">
-                        Submit Article
-                    </a>
+                        </a>
+                    </section>
+                    <a href="#/mods" class="explanation">Browse All</a>
+                    <!--TODO: link to search sorting by recent using params -->
                 </div>
             </div>
-            <div class="recent-notes-tabs">
-                <h3 class="section-title">Recent Contributions</h3>
-                <tabs tabs="tabs"></tabs>
-                <div class="recent-contributions-tab box-shadow">
-                    <tab-views></tab-views>
+
+            <div class="right-column home-right-column">
+                <div class="articles box-shadow">
+                    <article data="article" ng-repeat="article in articles"></article>
+                    <div class="load-older-posts">
+                        <a href="#/articles/">Browse All Articles</a>
+                        <span class="divider" ng-if="permissions.canSubmitArticles">|</span>
+                        <a href="#/articles/submit" ng-if="permissions.canSubmitArticles">
+                            Submit Article
+                        </a>
+                    </div>
+                </div>
+
+                <div class="recent-notes-tabs">
+                    <h3 class="section-title">Recent Contributions</h3>
+                    <tabs tabs="tabs"></tabs>
+                    <div class="recent-contributions-tab box-shadow">
+                        <tab-views></tab-views>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-</two-columns>
+    </two-columns>
+</loader>

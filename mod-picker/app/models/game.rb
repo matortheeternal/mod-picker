@@ -21,7 +21,7 @@ class Game < ActiveRecord::Base
   has_many :plugins, :inverse_of => 'game'
   has_many :help_pages, :inverse_of => 'game'
 
-  # Validations
+  # VALIDATIONS
   validates :display_name, :long_name, :abbr_name, presence: true
 
   # gets the display image path via the game's display_name if one is present

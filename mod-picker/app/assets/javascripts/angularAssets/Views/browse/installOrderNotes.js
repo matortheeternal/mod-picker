@@ -1,14 +1,14 @@
 app.run(function($futureState, indexFactory, filtersFactory) {
     // dynamically construct and apply state
     var filterPrototypes = filtersFactory.installOrderNoteFilters();
-    var state = indexFactory.buildState('reputation', 'desc', 'installOrderNotes', filterPrototypes);
+    var state = indexFactory.buildState('reputation', 'DESC', 'installOrderNotes', filterPrototypes);
     $futureState.futureState(state);
 });
 
-app.controller('installOrderNotesController', function ($scope, $stateParams, $state, currentUser, contributionService, indexService,  filtersFactory, indexFactory, sortFactory) {
+app.controller('installOrderNotesController', function ($scope, $rootScope, $stateParams, $state, contributionService, indexService,  filtersFactory, indexFactory, sortFactory) {
     // get parent variables
-    $scope.currentUser = currentUser;
-    $scope.globalPermissions = angular.copy(currentUser.permissions);
+    $scope.currentUser = $rootScope.currentUser;
+    $scope.globalPermissions = angular.copy($rootScope.permissions);
 
     // sort options for view
     $scope.sortOptions = sortFactory.installOrderNoteSortOptions();
@@ -22,5 +22,5 @@ app.controller('installOrderNotesController', function ($scope, $stateParams, $s
     $scope.route = 'install_order_notes';
     $scope.contributions = true;
     $scope.retrieve = contributionService.retrieveContributions;
-    indexFactory.buildIndex($scope, $stateParams, $state, indexService);
+    indexFactory.buildIndex($scope, $stateParams, $state);
 });

@@ -4,7 +4,7 @@
 //= stub_tree ./angularAssets/Directives/help
 
 var app = angular.module('modPicker', [
-    'ui.router', 'rzModule', 'ngAnimate', 'sticky', 'puElasticInput', 'hc.marked', 'smoothScroll', 'relativeDate', 'ct.ui.router.extras', 'dndLists'
+    'ui.router', 'rzModule', 'ngAnimate', 'puElasticInput', 'hc.marked', 'smoothScroll', 'relativeDate', 'ct.ui.router.extras', 'dndLists'
 ]);
 
 app.config(['$httpProvider', '$compileProvider', function($httpProvider, $compileProvider) {
@@ -29,6 +29,7 @@ app.config(function($futureStateProvider) {
     var lazyStateFactory = function($q, futureState) {
         return $q.when(futureState);
     };
+    lazyStateFactory.$inject = ["$q", "futureState"];
     $futureStateProvider.stateFactory('lazy', lazyStateFactory);
 });
 

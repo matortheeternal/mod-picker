@@ -1,0 +1,47 @@
+<two-columns>
+    <div class="page-container">
+        <div class="column-wrapper">
+            <div class="left-column left-browse-column" style="width:250px; padding: 40px 48px 40px 0;">
+                <h2>Filters</h2>
+
+                <div class="filter-section">
+                    <h3>Search</h3>
+                    <h4>Filename</h4>
+                    <input type="text" ng-model="filters.search">
+
+                    <h4>Author</h4>
+                    <input type="text" ng-model="filters.author">
+
+                    <h4>Description</h4>
+                    <input type="text" ng-model="filters.description">
+                </div>
+
+                <category-tree class="filter-section" categories="categories" selection="filters.categories" toggle-all="true"></category-tree>
+
+                <div class="filter-sections" ng-if="statFilters.length">
+                    <h3>Statistic Filters</h3>
+                    <div class="filter-section">
+                        <div ng-repeat="filter in statFilters">
+                            <h4>{{filter.label}}
+                                <!--<span class="filter-controls" ng-if="filter.max > 500">
+                                    <span class="fa fa-wrench" ng-click="" title="Custom Value"></span>
+                                </span>-->
+                            </h4>
+                            <slider filters="filters" data="filter.data" type="{{filter.subtype ? filter.subtype + 'Slider' : filter.max > 500 ? 'StepSlider' : 'CeilSlider' }}" attr="{{filter.max}}"></slider>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="right-column right-browse-column">
+                <h2>Plugins</h2>
+                <loader data="plugins" content-class="table-container" spinner-class="big-spinner" ng-if="!error">
+                    <table-results label="plugins" data="plugins"></table-results>
+                    <page-results pages="pages" data="plugins" callback="getData"></page-results>
+                </loader>
+
+                <error-display content-class="content-message content-error" errors="error" label="Plugins"></error-display>
+            </div>
+        </div>
+    </div>
+</two-columns>

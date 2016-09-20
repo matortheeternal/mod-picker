@@ -1,28 +1,24 @@
 class Comment < ActiveRecord::Base
-  include Filterable, Sortable, RecordEnhancements, Reportable
+  include Filterable, Sortable, RecordEnhancements, Reportable, ScopeHelpers, Trackable
 
-  # BOOLEAN SCOPES (excludes content when false)
-  scope :hidden, -> (bool) { where(hidden: false) if !bool  }
-  scope :is_child, -> (bool) { where(parent_id: nil) if !bool }
-  # GENERAL SCOPES
-  scope :search, -> (text) { where("text_body like ?", "%#{text}%") }
-  scope :submitter, -> (username) { joins(:submitter).where(:users => {:username => username}) }
-  scope :commentable, -> (commentable_hash) {
-    # build commentables array
-    commentables = []
-    commentable_hash.each_key do |key|
-      if commentable_hash[key]
-        commentables.push(key)
-      end
-    end
+  # ATTRIBUTES
+  self.per_page = 50
 
-    # return query
-    where(commentable_type: commentables)
-  }
-  # RANGE SCOPES
-  scope :replies, -> (range) { where(children_count: range[:min]..range[:max]) }
-  scope :submitted, -> (range) { where(submitted: parseDate(range[:min])..parseDate(range[:max])) }
-  scope :edited, -> (range) { where(edited: parseDate(range[:min])..parseDate(range[:max])) }
+  # EVENT TRACKING
+  track :added, :hidden
+
+  # NOTIFICATION SUBSCRIPTIONS
+  subscribe :commentable_user, to: [:added]
+  subscribe :submitter, to: [:hidden, :unhidden]
+
+  # SCOPES
+  include_scope :hidden
+  include_scope :parent_id, :alias => 'include_replies', :value => 'nil'
+  search_scope :text_body, :alias => 'search'
+  user_scope :submitter
+  polymorphic_scope :commentable
+  range_scope :children_count, :alias => 'replies'
+  date_scope :submitted, :edited
 
   # ASSOCIATIONS
   belongs_to :submitter, :class_name => 'User', :foreign_key => 'submitted_by', :inverse_of => 'comments'
@@ -32,20 +28,21 @@ class Comment < ActiveRecord::Base
   belongs_to :parent, :class_name => 'Comment', :foreign_key => 'parent_id', :inverse_of => 'children'
   has_many :children, :class_name => 'Comment', :foreign_key => 'parent_id', :inverse_of => 'parent'
 
-  # number of comments per page on the comments index
-  self.per_page = 50
-
-  # Validations
+  # VALIDATIONS
   validates :submitted_by, :commentable_type, :commentable_id, :text_body, presence: true
   validates :hidden, inclusion: [true, false]
   validates :commentable_type, inclusion: ["User", "ModList", "Correction", "Article", "HelpPage"]
   validates :text_body, length: {in: 2..8192}
-  # TODO: Validation of nesting
+  validate :nesting
 
-  # Callbacks
-  before_save :set_dates
+  # CALLBACKS
+  before_save :set_adult, :set_dates
   after_create :increment_counter_caches
   before_destroy :decrement_counter_caches
+
+  def nesting
+    parent_id.nil? || parent.parent_id.nil?
+  end
 
   def commentable_link
     if commentable_type == "Correction"
@@ -62,6 +59,17 @@ class Comment < ActiveRecord::Base
       "#/mod-list/" + commentable_id.to_s
     elsif commentable_type == "User"
       "#/user/" + commentable_id.to_s
+    end
+  end
+
+  def commentable_user
+    case commentable_type
+      when "Correction", "ModList", "Article"
+        commentable.submitter
+      when "User"
+        commentable
+      else
+        nil
     end
   end
 
@@ -128,6 +136,55 @@ class Comment < ActiveRecord::Base
     end
   end
 
+  def notification_json_options(event_type)
+    options = {
+        :only => [:submitted_by, :commentable_type, :commentable_id],
+        :include => {}
+    }
+    if commentable_type == "ModList"
+      options[:include][:commentable] = { :only => [:name] }
+    elsif commentable_type == "Correction"
+      if commentable.correctable_type == "Mod"
+        options[:include][:commentable] = {
+            :only => [:mod_status],
+            :include => {
+                :correctable => { :only => [:id, :name] }
+            }
+        }
+      else
+        options[:include][:commentable] = {
+            :only => [:correctable_id, :correctable_type, :title],
+            :include => {
+                :correctable => {
+                    :only => [],
+                    :include => {
+                        :first_mod => { :only => [:id, :name] }
+                    }
+                }
+            }
+        }
+      end
+    end
+
+    options
+  end
+
+  def self.sortable_columns
+    {
+        :except => [:parent_id, :submitted_by, :commentable_id, :text_body],
+        :include => {
+            :submitter => {
+                :only => [:username],
+                :include => {
+                    :reputation => {
+                        :only => [:overall]
+                    }
+                }
+            }
+        }
+    }
+  end
+
   # Private methods
   private
     def set_dates
@@ -135,6 +192,12 @@ class Comment < ActiveRecord::Base
         self.submitted = DateTime.now
       else
         self.edited = DateTime.now
+      end
+    end
+
+    def set_adult
+      if commentable.respond_to?(:has_adult_content)
+        self.has_adult_content = commentable.has_adult_content
       end
     end
 

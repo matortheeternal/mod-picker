@@ -1,17 +1,28 @@
 class Plugin < ActiveRecord::Base
-  include Filterable, Sortable, RecordEnhancements
+  include Filterable, Sortable, RecordEnhancements, ScopeHelpers
 
+  # ATTRIBUTES
   attr_writer :master_plugins
+  self.per_page = 100
 
-  # Scopes
-  scope :search, -> (search) { where("filename like ?", "%#{search}%") }
-  scope :game, -> (game) { where(game_id: game) }
-  scope :mods, -> (mod_ids) { where(mod_id: mod_ids) }
+  # SCOPES
+  game_scope
+  ids_scope :mod_option_id
+  search_scope :filename, :alias => :search
+  search_scope :author, :description
+  range_scope :record_count, :alias => 'records'
+  range_scope :override_count, :alias => 'overrides'
+  counter_scope :errors_count, :mod_lists_count, :load_order_notes_count
+  bytes_scope :file_size
+
+  # UNIQUE SCOPES
   scope :esm, -> { where("filename like '%.esm'") }
+  scope :categories, -> (categories) { joins(:mod).where("mods.primary_category_id IN (:ids) OR mods.secondary_category_id IN (:ids)", ids: categories) }
 
-  # Associations
+  # ASSOCIATIONS
   belongs_to :game, :inverse_of => 'plugins'
-  belongs_to :mod, :inverse_of => 'plugins'
+  belongs_to :mod_option, :inverse_of => 'plugins'
+  has_one :mod, :through => 'mod_option', :inverse_of => 'plugins'
 
   # master associations
   has_many :dummy_masters, :inverse_of => 'plugin'
@@ -30,14 +41,10 @@ class Plugin < ActiveRecord::Base
   # is a compatibility plugin for
   has_many :compatibility_notes, :foreign_key => 'compatibility_plugin_id', :inverse_of => 'compatibility_plugin'
 
-  # load order notes
-  has_many :first_load_order_notes, :foreign_key => 'first_plugin_id', :class_name => 'LoadOrderNote', :inverse_of => 'second_plugin'
-  has_many :second_load_order_notes, :foreign_key => 'second_plugin_id', :class_name => 'LoadOrderNote', :inverse_of => 'first_plugin'
-
   accepts_nested_attributes_for :plugin_record_groups, :overrides, :plugin_errors
 
-  # validations
-  validates :game_id, :mod_id, :filename, :crc_hash, :file_size, presence: true
+  # VALIDATIONS
+  validates :game_id, :mod_option_id, :filename, :crc_hash, :file_size, presence: true
 
   validates :filename, length: {maximum: 64}
   validates :author, length: {maximum: 128}
@@ -168,5 +175,16 @@ class Plugin < ActiveRecord::Base
     else
       super(options)
     end
+  end
+
+  def self.sortable_columns
+    {
+        :except => [:game_id, :mod_option_id, :description],
+        :include => {
+            :mod => {
+                :only => [:name]
+            }
+        }
+    }
   end
 end

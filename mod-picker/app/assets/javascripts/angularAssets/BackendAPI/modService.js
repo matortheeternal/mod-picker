@@ -1,9 +1,9 @@
-app.service('modService', function(backend, $q, categoryService, errorsFactory, pageUtils, objectUtils, contributionService, userTitleService, reviewSectionService, recordGroupService, pluginService, assetUtils) {
+app.service('modService', function(backend, $q, pageUtils, objectUtils, contributionService, userTitleService, reviewSectionService, recordGroupService, pluginService, assetUtils) {
     var service = this;
 
     this.retrieveMods = function(options, pageInformation) {
         var action = $q.defer();
-        backend.post('/mods/index', options).then(function (data) {
+        backend.post('/mods/index', options).then(function(data) {
             pageUtils.getPageInformation(data, pageInformation, options.page);
             action.resolve(data);
         }, function(response) {
@@ -45,14 +45,7 @@ app.service('modService', function(backend, $q, categoryService, errorsFactory, 
     };
     
     this.retrieveMod = function(modId) {
-        var output = $q.defer();
-        backend.retrieve('/mods/' + modId).then(function(data) {
-            categoryService.resolveModCategories(data);
-            output.resolve(data);
-        }, function(response) {
-            output.reject(response);
-        });
-        return output.promise;
+        return backend.retrieve('/mods/' + modId);
     };
 
     this.retrieveModContributions = function(modId, route, options, pageInformation) {
@@ -82,7 +75,7 @@ app.service('modService', function(backend, $q, categoryService, errorsFactory, 
             // prepare user review if present
             if (data.user_review && data.user_review.id) {
                 var user_review = [data.user_review];
-                service.associateHelpfulMarks(user_review, data.helpful_marks);
+                contributionService.associateHelpfulMarks(user_review, data.helpful_marks);
                 userTitleService.associateTitles(user_review);
                 reviewSectionService.associateReviewSections(user_review);
             }
@@ -107,6 +100,11 @@ app.service('modService', function(backend, $q, categoryService, errorsFactory, 
             pluginService.associateOverrides(analysis.plugins);
             pluginService.sortErrors(analysis.plugins);
 
+            // set default options to active
+            analysis.mod_options.forEach(function(option) {
+                option.active = option.default;
+            });
+
             output.resolve(analysis);
         }, function(response) {
             output.reject(response);
@@ -114,14 +112,12 @@ app.service('modService', function(backend, $q, categoryService, errorsFactory, 
         return output.promise;
     };
 
+    this.newMod = function() {
+        return backend.retrieve('/mods/new');
+    };
+
     this.editMod = function(modId) {
-        var output = $q.defer();
-        backend.retrieve('/mods/' + modId + '/edit').then(function(data) {
-            output.resolve(data);
-        }, function(response) {
-            output.reject(response);
-        });
-        return output.promise;
+        return backend.retrieve('/mods/' + modId + '/edit');
     };
 
     this.starMod = function(modId, starred) {
@@ -132,38 +128,111 @@ app.service('modService', function(backend, $q, categoryService, errorsFactory, 
         }
     };
 
-    this.submitMod = function (mod, sources, customSources) {
-        // load earliest date released and latest date updated from sources
-        var released = mod.released;
-        var updated = mod.updated;
+    this.hideMod = function(modId, hidden) {
+        return backend.post('/mods/' + modId + '/hide', {hidden: hidden});
+    };
+
+    this.prepareModAuthors = function(mod) {
+        var mod_authors = [];
+        mod.mod_authors && mod.mod_authors.forEach(function(author) {
+            if (author._destroy) {
+                mod_authors.push({
+                    id: author.id,
+                    _destroy: true
+                })
+            } else if (author.id) {
+                mod_authors.push({
+                    id: author.id,
+                    role: author.role
+                })
+            } else {
+                mod_authors.push({
+                    role: author.role,
+                    user_id: author.user_id
+                })
+            }
+        });
+
+        return mod_authors;
+    };
+
+    this.prepareRequiredMods = function(mod) {
+        var required_mods = [];
+        mod.requirements && mod.requirements.forEach(function(requirement) {
+            if (requirement._destroy) {
+                required_mods.push({
+                    id: requirement.id,
+                    _destroy: true
+                })
+            } else {
+                required_mods.push({
+                    required_id: requirement.required_id
+                })
+            }
+        });
+
+        return required_mods;
+    };
+
+    this.prepareCustomSources = function(customSources) {
+        if (!customSources) return null;
+        var custom_sources = [];
+        customSources && customSources.forEach(function(source) {
+            custom_sources.push({
+                id: source.id,
+                label: source.label,
+                url: source.url,
+                _destroy: source._destroy
+            })
+        });
+
+        return custom_sources;
+    };
+
+    this.prepareModOptions = function(mod) {
+        var mod_options = [];
+        mod.analysis && mod.analysis.mod_options.forEach(function(option) {
+            mod_options.push({
+                name: option.name,
+                size: option.size,
+                default: option.default,
+                is_fomod_option: option.is_fomod_option,
+                plugin_dumps: option.plugins,
+                asset_paths: option.assets
+            })
+        });
+        objectUtils.deleteEmptyProperties(mod_options, 1);
+
+        return mod_options;
+    };
+    
+    this.getDate = function(mod, sources, dateKey, dateTest) {
+        var date = mod[dateKey];
         for (var property in sources) {
             if (sources.hasOwnProperty(property) && sources[property]) {
                 var source = sources[property];
-                if (!released || source.released < released) {
-                    released = source.released;
-                }
-                if (!updated || source.updated > updated) {
-                    updated = source.updated;
+                if (!date || dateTest(source[dateKey], date)) {
+                    date = source[dateKey];
                 }
             }
         }
 
-        // prepare required mods
-        var required_mods = [];
-        mod.requirements.forEach(function(requirement) {
-            required_mods.push({
-                required_id: requirement.required_id
-            })
+        return date;
+    };
+
+    this.submitMod = function(mod, sources, customSources) {
+        // load earliest date released and latest date updated from sources
+        var released = service.getDate(mod, sources, 'released', function(newDate, oldDate) {
+            return newDate < oldDate;
+        });
+        var updated = service.getDate(mod, sources, 'updated', function(newDate, oldDate) {
+            return newDate > oldDate;
         });
 
-        // prepare custom sources
-        var custom_sources = [];
-        customSources.forEach(function(source) {
-            custom_sources.push({
-                label: source.label,
-                url: source.url
-            })
-        });
+        // prepare associations
+        var required_mods = service.prepareRequiredMods(mod);
+        var custom_sources = service.prepareCustomSources(customSources);
+        var mod_options = service.prepareModOptions(mod);
 
         // prepare mod record
         var modData = {
@@ -182,68 +251,23 @@ app.service('modService', function(backend, $q, categoryService, errorsFactory, 
                 workshop_info_id: sources.workshop && sources.workshop.id,
                 lover_info_id: sources.lab && sources.lab.id,
                 tag_names: mod.newTags,
-                asset_paths: mod.analysis.assets,
-                plugin_dumps: mod.analysis.plugins,
+                mod_options_attributes: mod_options,
                 custom_sources_attributes: custom_sources,
                 required_mods_attributes: required_mods
             }
         };
+        objectUtils.deleteEmptyProperties(modData, 1);
 
         // submit mod
         return backend.post('/mods', modData);
     };
 
     this.updateMod = function(mod, sources, customSources) {
-        // prepare mod authors
-        if (mod.mod_authors) {
-            var mod_authors = [];
-            mod.mod_authors.forEach(function(author) {
-                if (author._destroy) {
-                    mod_authors.push({
-                        id: author.id,
-                        _destroy: true
-                    })
-                } else if (author.id) {
-                    mod_authors.push({
-                        id: author.id,
-                        role: author.role
-                    })
-                } else {
-                    mod_authors.push({
-                        role: author.role,
-                        user_id: author.user_id
-                    })
-                }
-            });
-        }
-
-        // prepare required mods
-        if (mod.requirements) {
-            var required_mods = [];
-            mod.requirements.forEach(function(requirement) {
-                if (requirement._destroy) {
-                    required_mods.push({
-                        id: requirement.id,
-                        _destroy: true
-                    })
-                } else {
-                    required_mods.push({
-                        required_id: requirement.required_id
-                    })
-                }
-            });
-        }
-
-        // prepare custom sources
-        var custom_sources = [];
-        customSources.forEach(function(source) {
-            custom_sources.push({
-                id: source.id,
-                label: source.label,
-                url: source.url,
-                _destroy: source._destroy
-            })
-        });
+        // prepare associations
+        var mod_authors = service.prepareModAuthors(mod);
+        var required_mods = service.prepareRequiredMods(mod);
+        var custom_sources = service.prepareCustomSources(customSources);
+        var mod_options = service.prepareModOptions(mod);
 
         // prepare mod record
         var modData = {
@@ -262,11 +286,11 @@ app.service('modService', function(backend, $q, categoryService, errorsFactory, 
                 workshop_info_id: sources.workshop && sources.workshop.id,
                 lover_info_id: sources.lab && sources.lab.id,
                 tag_names: mod.newTags,
-                asset_paths: mod.analysis && mod.analysis.assets,
-                plugin_dumps: mod.analysis && mod.analysis.plugins,
+                mod_options_attributes: mod_options,
                 mod_authors_attributes: mod_authors,
                 custom_sources_attributes: custom_sources,
                 required_mods_attributes: required_mods,
+                config_files_attributes: mod.config_files,
                 disallow_contributors: mod.disallow_contributors,
                 disable_reviews: mod.disable_reviews,
                 lock_tags: mod.lock_tags,

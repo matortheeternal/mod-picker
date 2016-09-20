@@ -8,12 +8,24 @@
   display: none;
 }
 
+.no-select {
+  @include user-select(none);
+}
+
 .inline-flex {
   display: inline-flex;
 }
 
+.center {
+  text-align: center !important;
+}
+
 .capitalize {
   text-transform: capitalize !important;
+}
+
+.nowrap {
+  white-space: nowrap;
 }
 
 .no-border {

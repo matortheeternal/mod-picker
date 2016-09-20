@@ -1,7 +1,19 @@
-app.service('pluginService', function (backend, $q, $timeout, recordGroupService, errorsFactory, objectUtils) {
+app.service('pluginService', function (backend, $q, $timeout, recordGroupService, errorsFactory, objectUtils, pageUtils) {
     var service = this;
 
-    this.retrievePlugin = function (pluginId) {
+    this.retrievePlugins = function(options, pageInformation) {
+        var action = $q.defer();
+        backend.post('/plugins', options).then(function(data) {
+            // resolve page information and data
+            pageUtils.getPageInformation(data, pageInformation, options.page);
+            action.resolve(data);
+        }, function(response) {
+            action.reject(response);
+        });
+        return action.promise;
+    };
+
+    this.retrievePlugin = function(pluginId) {
         var output = $q.defer();
         backend.retrieve('/plugins/' + pluginId).then(function(plugin) {
             // prepare plugin data for display
@@ -17,7 +29,7 @@ app.service('pluginService', function (backend, $q, $timeout, recordGroupService
         return output.promise;
     };
 
-    this.searchPlugins = function (filename) {
+    this.searchPlugins = function(filename) {
         var plugins = $q.defer();
         var postData =  {
             filters: {
@@ -111,6 +123,7 @@ app.service('pluginService', function (backend, $q, $timeout, recordGroupService
         plugins.forEach(function(plugin) {
             plugin.masters.forEach(function(master) {
                 master.overrides = [];
+                master.max_overrides = 1000;
                 for (var group in plugin.formatted_overrides) {
                     if (!plugin.formatted_overrides.hasOwnProperty(group)) continue;
                     var formIDs = plugin.formatted_overrides[group];

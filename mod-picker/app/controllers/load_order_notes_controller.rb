@@ -8,7 +8,7 @@ class LoadOrderNotesController < ContributionsController
     count = LoadOrderNote.accessible_by(current_ability).filter(filtering_params).count
 
     # prepare helpful marks
-    helpful_marks = HelpfulMark.submitter(current_user.id).helpfulable("LoadOrderNote", @load_order_notes.ids)
+    helpful_marks = HelpfulMark.submitter(current_user.id).helpfulables("LoadOrderNote", @load_order_notes.ids)
 
     # render response
     render :json => {
@@ -40,7 +40,7 @@ class LoadOrderNotesController < ContributionsController
 
     # Params we allow filtering on
     def filtering_params
-      params[:filters].slice(:adult, :game, :search, :submitter, :editor, :plugin_filename, :reputation, :helpful_count, :not_helpful_count, :standing, :corrections_count, :history_entries_count, :submitted, :edited);
+      params[:filters].slice(:adult, :game, :search, :submitter, :editor, :plugin_filename, :helpfulness, :helpful_count, :not_helpful_count, :standing, :corrections_count, :history_entries_count, :submitted, :edited);
     end
 
     # Params allowed during creation

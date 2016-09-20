@@ -1,53 +1,59 @@
 class LoadOrderNote < ActiveRecord::Base
-  include Filterable, Sortable, RecordEnhancements, Correctable, Helpfulable, Reportable
+  include Filterable, Sortable, RecordEnhancements, Correctable, Helpfulable, Reportable, ScopeHelpers, Trackable
 
-  # BOOLEAN SCOPES (excludes content when false)
-  scope :include_hidden, -> (bool) { where(hidden: false) if !bool  }
-  scope :include_adult, -> (bool) { where(has_adult_content: false) if !bool }
-  # GENERAL SCOPES
-  scope :visible, -> { where(hidden: false, approved: true) }
-  scope :game, -> (game_id) { where(game_id: game_id) }
-  scope :plugin, -> (plugin_ids) { where("first_plugin_id IN (?) OR second_plugin_id IN (?)", plugin_ids, plugin_ids) }
-  scope :plugins, -> (plugin_ids) { where(first_plugin_id: plugin_ids, second_plugin_id: plugin_ids) }
-  scope :search, -> (text) { where("load_order_notes.text_body like ?", "%#{text}%") }
+  # ATTRIBUTES
+  self.per_page = 25
+
+  # EVENT TRACKING
+  track :added, :approved, :hidden
+  track :message, :column => 'moderator_message'
+
+  # NOTIFICATION SUBSCRIPTION
+  subscribe :mod_author_users, to: [:added, :approved, :unhidden]
+  subscribe :submitter, to: [:message, :approved, :unapproved, :hidden, :unhidden]
+
+  # SCOPES
+  include_scope :hidden
+  include_scope :has_adult_content, :alias => 'include_adult'
+  visible_scope :approvable => true
+  game_scope
+  search_scope :text_body, :alias => 'search'
+  user_scope :submitter
+  ids_scope :plugin_id, :columns => [:first_plugin_id, :second_plugin_id]
+  date_scope :submitted, :edited
+
+  # UNIQUE SCOPES
   scope :plugin_filename, -> (filename) { joins(:first_plugin, :second_plugin).where("plugins.filename like ?", "%#{filename}%") }
-  scope :submitter, -> (username) { joins(:submitter).where(:users => {:username => username}) }
-  # RANGE SCOPES
-  scope :submitted, -> (range) { where(submitted: parseDate(range[:min])..parseDate(range[:max])) }
-  scope :edited, -> (range) { where(edited: parseDate(range[:min])..parseDate(range[:max])) }
 
+  # ASSOCIATIONS
   belongs_to :game, :inverse_of => 'load_order_notes'
   belongs_to :submitter, :class_name => 'User', :foreign_key => 'submitted_by', :inverse_of => 'load_order_notes'
   belongs_to :editor, :class_name => 'User', :foreign_key => 'edited_by'
 
   # plugins associatied with this load order note
-  belongs_to :first_plugin, :foreign_key => 'first_plugin_id', :class_name => 'Plugin', :inverse_of => 'first_load_order_notes'
-  belongs_to :second_plugin, :foreign_key => 'second_plugin_id', :class_name => 'Plugin', :inverse_of => 'second_load_order_notes'
+  belongs_to :first_plugin, :foreign_key => 'first_plugin_id', :class_name => 'Plugin'
+  belongs_to :second_plugin, :foreign_key => 'second_plugin_id', :class_name => 'Plugin'
 
   # mods associated with this load order note
   has_one :first_mod, :through => :first_plugin, :class_name => 'Mod', :source => 'mod', :foreign_key => 'mod_id'
   has_one :second_mod, :through => :second_plugin, :class_name => 'Mod', :source => 'mod', :foreign_key => 'mod_id'
 
-  # mod lists this load order note appears on
-  has_many :mod_list_installation_notes, :inverse_of => 'load_order_note'
-  has_many :mod_lists, :through => 'mod_list_load_order_notes', :inverse_of => 'load_order_notes'
+  # mod lists this load order note is ignored on
   has_many :mod_list_ignored_notes, :as => 'note'
 
   # old versions of this load order note
   has_many :history_entries, :class_name => 'LoadOrderNoteHistoryEntry', :inverse_of => 'load_order_note', :foreign_key => 'load_order_note_id'
   has_many :editors, -> { uniq }, :class_name => 'User', :through => 'history_entries'
 
-  self.per_page = 25
-
-  # Validations
+  # VALIDATIONS
   validates :game_id, :submitted_by, :first_plugin_id, :second_plugin_id, :text_body, presence: true
 
   validates :text_body, length: {in: 256..16384}
   validate :unique_plugins
 
-  # Callbacks
+  # CALLBACKS
   after_create :increment_counters
-  before_save :set_dates
+  before_save :set_adult, :set_dates
   before_destroy :decrement_counters
 
   def unique_plugins
@@ -72,18 +78,26 @@ class LoadOrderNote < ActiveRecord::Base
     [first_mod, second_mod]
   end
 
+  def mod_author_users
+    User.includes(:mod_authors).where(:mod_authors => {mod_id: [first_mod.id, second_mod.id]})
+  end
+
   def plugins
     [first_plugin, second_plugin]
   end
 
   def create_history_entry
-    edit_summary = self.edited_by.nil? ? "Load Order Note Created" : self.edit_summary
-    self.history_entries.create(
-        edited_by: self.edited_by || self.submitted_by,
-        text_body: self.text_body,
-        edit_summary: edit_summary || "",
-        edited: self.edited || self.submitted
+    history_summary = edited_by.nil? ? "Load Order Note Created" : edit_summary
+    history_entries.create(
+        edited_by: edited_by || submitted_by,
+        text_body: text_body,
+        edit_summary: history_summary || "",
+        edited: edited || submitted
     )
+  end
+
+  def self.update_adult(ids)
+    LoadOrderNote.where(id: ids).joins(:first_mod, :second_mod).update_all("load_order_notes.has_adult_content = mods.has_adult_content OR second_mods_load_order_notes.has_adult_content")
   end
 
   def as_json(options={})
@@ -113,6 +127,29 @@ class LoadOrderNote < ActiveRecord::Base
     end
   end
 
+  def notification_json_options(event_type)
+    {
+        :only => [:submitted_by, (:moderator_message if event_type == :message)].compact,
+        :methods => [:mods, :plugins]
+    }
+  end
+
+  def self.sortable_columns
+    {
+        :except => [:game_id, :submitted_by, :edited_by, :corrector_id, :first_plugin_id, :second_plugin_id, :text_body, :edit_summary, :moderator_message],
+        :include => {
+            :submitter => {
+                :only => [:username],
+                :include => {
+                    :reputation => {
+                        :only => [:overall]
+                    }
+                }
+            }
+        }
+    }
+  end
+
   private
     def set_dates
       if self.submitted.nil?
@@ -120,6 +157,10 @@ class LoadOrderNote < ActiveRecord::Base
       else
         self.edited = DateTime.now
       end
+    end
+
+    def set_adult
+      self.has_adult_content = first_mod.has_adult_content || second_mod.has_adult_content
     end
 
     def increment_counters

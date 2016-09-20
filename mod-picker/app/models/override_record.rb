@@ -1,14 +1,16 @@
 class OverrideRecord < ActiveRecord::Base
+  include ScopeHelpers
+
   self.primary_keys = :plugin_id, :fid
 
   # Scopes
-  scope :plugins, -> (plugin_ids) { where(plugin_id: plugin_ids) }
+  ids_scope :plugin_id
 
-  # Associations
+  # ASSOCIATIONS
   belongs_to :plugin, :inverse_of => 'overrides'
   belongs_to :master, :inverse_of => 'overrides'
 
-  # Validations
+  # VALIDATIONS
   validates :fid, :sig, presence: true
   validates :sig, length: {is: 4}
 end

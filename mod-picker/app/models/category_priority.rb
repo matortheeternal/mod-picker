@@ -4,6 +4,6 @@ class CategoryPriority < ActiveRecord::Base
   belongs_to :dominant_category, :class_name => 'Category', :foreign_key => 'category_id'
   belongs_to :recessive_category, :class_name => 'Category', :foreign_key => 'category_id'
 
-  # Validations
+  # VALIDATIONS
   validates :dominant_id, :recessive_id, :description, presence: true
 end

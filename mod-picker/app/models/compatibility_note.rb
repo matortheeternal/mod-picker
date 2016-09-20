@@ -1,38 +1,28 @@
 class CompatibilityNote < ActiveRecord::Base
-  include Filterable, Sortable, RecordEnhancements, Correctable, Helpfulable, Reportable
+  include Filterable, Sortable, RecordEnhancements, Correctable, Helpfulable, Reportable, ScopeHelpers, Trackable
 
+  # ATTRIBUTES
   enum status: [ :incompatible, :"partially incompatible", :"compatibility mod", :"compatibility option", :"make custom patch" ]
+  self.per_page = 25
 
-  # BOOLEAN SCOPES (excludes content when false)
-  scope :include_hidden, -> (bool) { where(hidden: false) if !bool  }
-  scope :include_adult, -> (bool) { where(has_adult_content: false) if !bool }
-  # GENERAL SCOPES
-  scope :visible, -> { where(hidden: false, approved: true) }
-  scope :game, -> (game_id) { where(game_id: game_id) }
-  scope :mod, -> (mod_ids) { where("first_mod_id IN (?) OR second_mod_id IN (?)", mod_ids, mod_ids) }
-  scope :mods, -> (mod_ids) { where(first_mod_id: mod_ids, second_mod_id: mod_ids) }
-  scope :search, -> (text) { where("compatibility_notes.text_body like ?", "%#{text}%") }
-  scope :submitter, -> (username) { joins(:submitter).where(:users => {:username => username}) }
-  scope :status, -> (statuses) {
-    if statuses.is_a?(Hash)
-      # handle hash search by building a commentables array
-      statuses_array = []
-      statuses.each_with_index do |(key,value),index|
-        if statuses[key]
-          statuses_array.push(index)
-        end
-      end
-    else
-      # else treat as an array of statuses
-      statuses_array = statuses
-    end
+  # EVENT TRACKING
+  track :added, :approved, :hidden
+  track :message, :column => 'moderator_message'
 
-    # return query
-    where(status: statuses_array)
-  }
-  # RANGE SCOPES
-  scope :submitted, -> (range) { where(submitted: parseDate(range[:min])..parseDate(range[:max])) }
-  scope :edited, -> (range) { where(edited: parseDate(range[:min])..parseDate(range[:max])) }
+  # NOTIFICATION SUBSCRIPTION
+  subscribe :mod_author_users, to: [:added, :approved, :unhidden]
+  subscribe :submitter, to: [:message, :approved, :unapproved, :hidden, :unhidden]
+
+  # SCOPES
+  include_scope :hidden
+  include_scope :has_adult_content, :alias => 'include_adult'
+  visible_scope :approvable => true
+  game_scope
+  search_scope :text_body, :alias => 'search'
+  user_scope :submitter
+  enum_scope :status
+  ids_scope :mod_id, :columns => [:first_mod_id, :second_mod_id]
+  date_scope :submitted, :edited
 
   # ASSOCIATIONS
   belongs_to :game, :inverse_of => 'compatibility_notes'
@@ -47,25 +37,21 @@ class CompatibilityNote < ActiveRecord::Base
   belongs_to :compatibility_plugin, :class_name => 'Plugin', :foreign_key => 'compatibility_plugin_id', :inverse_of => 'compatibility_notes'
   belongs_to :compatibility_mod, :class_name => 'Mod', :foreign_key => 'compatibility_mod_id', :inverse_of => 'compatibility_note_mods'
 
-  # mod lists this compatibility note appears on
-  has_many :mod_list_compatibility_notes, :inverse_of => 'compatibility_note'
-  has_many :mod_lists, :through => 'mod_list_compatibility_notes', :inverse_of => 'compatibility_notes'
+  # mod lists this compatibility note is ignored on
   has_many :mod_list_ignored_notes, :as => 'note'
 
   # old versions of this compatibility note
   has_many :history_entries, :class_name => 'CompatibilityNoteHistoryEntry', :inverse_of => 'compatibility_note', :foreign_key => 'compatibility_note_id'
   has_many :editors, -> { uniq }, :class_name => 'User', :through => 'history_entries'
 
-  self.per_page = 25
-
-  # Validations
+  # VALIDATIONS
   validates :game_id, :submitted_by, :status, :first_mod_id, :second_mod_id, :text_body, presence: true
   validates :text_body, length: { in: 256..16384 }
   validate :unique_mods
 
-  # Callbacks
+  # CALLBACKS
   after_create :increment_counters
-  before_save :set_dates
+  before_save :set_adult, :set_dates
   before_destroy :decrement_counters
 
   def unique_mods
@@ -90,17 +76,25 @@ class CompatibilityNote < ActiveRecord::Base
     [first_mod, second_mod]
   end
 
+  def mod_author_users
+    User.includes(:mod_authors).where(:mod_authors => {mod_id: [first_mod_id, second_mod_id]})
+  end
+
   def create_history_entry
-    edit_summary = self.edited_by.nil? ? "Compatibility Note Created" : self.edit_summary
-    self.history_entries.create(
-      edited_by: self.edited_by || self.submitted_by,
-      status: self.status,
-      compatibility_mod_id: self.compatibility_mod_id,
-      compatibility_plugin_id: self.compatibility_plugin_id,
-      text_body: self.text_body,
-      edit_summary: edit_summary || "",
-      edited: self.edited || self.submitted
+    history_summary = edited_by.nil? ? "Compatibility Note Created" : edit_summary
+    history_entries.create(
+      edited_by: edited_by || submitted_by,
+      status: status,
+      compatibility_mod_id: compatibility_mod_id,
+      compatibility_plugin_id: compatibility_plugin_id,
+      text_body: text_body,
+      edit_summary: history_summary || "",
+      edited: edited || submitted
     )
+  end
+
+  def self.update_adult(ids)
+    CompatibilityNote.where(id: ids).joins(:first_mod, :second_mod).update_all("compatibility_notes.has_adult_content = mods.has_adult_content OR second_mods_compatibility_notes.has_adult_content")
   end
 
   def as_json(options={})
@@ -130,13 +124,40 @@ class CompatibilityNote < ActiveRecord::Base
     end
   end
 
+  def notification_json_options(event_type)
+    {
+        :only => [:submitted_by, (:moderator_message if event_type == :message)].compact,
+        :methods => :mods
+    }
+  end
+
+  def self.sortable_columns
+    {
+        :except => [:game_id, :submitted_by, :edited_by, :corrector_id, :first_mod_id, :second_mod_id, :compatibility_mod_id, :compatibility_plugin_id, :text_body, :edit_summary, :moderator_message],
+        :include => {
+            :submitter => {
+                :only => [:username],
+                :include => {
+                    :reputation => {
+                        :only => [:overall]
+                    }
+                }
+            }
+        }
+    }
+  end
+
   private
     def set_dates
-      if self.submitted.nil?
+      if submitted.nil?
         self.submitted = DateTime.now
       else
         self.edited = DateTime.now
       end
+    end
+
+    def set_adult
+      self.has_adult_content = first_mod.has_adult_content || second_mod.has_adult_content
     end
 
     def increment_counters

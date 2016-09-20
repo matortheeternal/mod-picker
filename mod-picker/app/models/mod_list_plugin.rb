@@ -4,18 +4,18 @@ class ModListPlugin < ActiveRecord::Base
   # Scopes
   scope :official, -> (bool) { joins(:plugin => :mod).where(:mods => { is_official: bool }) }
 
-  # Associations
+  # ASSOCIATIONS
   belongs_to :mod_list, :inverse_of => 'mod_list_plugins'
   belongs_to :plugin, :inverse_of => 'mod_list_plugins'
   has_one :mod, :through => 'plugin'
 
-  # Validations
+  # VALIDATIONS
   validates :mod_list_id, :plugin_id, :index, presence: true
   validates :cleaned, :merged, inclusion: [true, false]
   # can only have a mod on a given mod list once
   validates :plugin_id, uniqueness: { scope: :mod_list_id, :message => "The plugin is already present on the mod list." }
 
-  # Callbacks
+  # CALLBACKS
   after_create :increment_counters
   before_destroy :decrement_counters
 
@@ -44,7 +44,7 @@ class ModListPlugin < ActiveRecord::Base
                   :except => [:game_id, :mod_id, :description, :mod_lists_count, :load_order_notes_count]
               },
               :mod => {
-                  :only => [:id, :name, :primary_category_id, :secondary_category_id]
+                  :only => [:id, :name, :is_official, :primary_category_id, :secondary_category_id]
               }
           }
       }

@@ -1,5 +1,4 @@
 class HelpPagesController < ApplicationController
-  before_action :authorize, only: [:create, :edit, :update, :destroy]
   before_action :set_help_page, only: [:show, :edit]
   before_action :set_help_page_from_id, only: [:comments, :update, :destroy]
   rescue_from ::ActiveRecord::RecordNotFound, with: :record_not_found
@@ -25,6 +24,16 @@ class HelpPagesController < ApplicationController
     render "help_pages/edit"
   end
 
+  # GET /help/search?query=...
+  def search
+    @page_title = params[:search].humanize.titleize
+
+    # search by title and text_body via help_page scope
+    @help_pages = HelpPage.search(params[:search])
+
+    render "help_pages/search"
+  end
+
   # GET /help/new
   def new
     @help_page = HelpPage.new
@@ -34,7 +43,8 @@ class HelpPagesController < ApplicationController
 
   # POST /help/new
   def create
-    @help_page = current_user.help_pages.build(help_page_params)
+    @help_page = HelpPage.new(help_page_params)
+    @help_page.submitted_by = current_user.id
     authorize! :create, @help_page
 
     if @help_page.save
@@ -114,15 +124,6 @@ class HelpPagesController < ApplicationController
 
     def set_help_page_from_id
       @help_page = HelpPage.find(params[:id])
-    end
-
-    def authorize
-      unless current_user.present?
-        redirect_to "/users/sign_in"
-      end
-      unless current_user.admin?
-        redirect_to root_url
-      end
     end
 
     def help_page_params

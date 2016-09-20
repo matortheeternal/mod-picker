@@ -269,6 +269,11 @@ table-items {
         width: 100px;
       }
 
+      .actions-header {
+        min-width: 100px !important;
+        width: 100px !important;
+      }
+
       .crc-column {
         min-width: 80px !important;
         width: 80px !important;
@@ -277,6 +282,11 @@ table-items {
       .author-column {
         min-width: 180px !important;
         width: 180px !important;
+      }
+
+      .category-column {
+        min-width: 240px !important;
+        width: 240px !important;
       }
 
       .aliases-column {
@@ -303,6 +313,15 @@ table-items {
       .primary-column {
         min-width: 300px !important;
         width: auto !important;
+
+        a {
+          color: $link_color;
+          font-weight: 600;
+
+          &:hover {
+            color: $link_hover_color_secondary;
+          }
+        }
       }
     }
 

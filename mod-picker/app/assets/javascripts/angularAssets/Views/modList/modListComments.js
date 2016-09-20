@@ -9,7 +9,7 @@ app.controller('modListCommentsController', function($scope, $state, contributio
         var options = {
             sort: {
                 column: 'submitted',
-                direction: 'desc'
+                direction: 'DESC'
             },
             page: page || 1
         };

@@ -6,8 +6,9 @@
 //= require ./angularAssets/BackendAPI/userService.js
 //= require ./angularAssets/BackendAPI/userSettingsService.js
 //= require ./angularAssets/BackendAPI/userTitleService.js
-//= require ./angularAssets/Directives/loader.js
-//= require ./angularAssets/Directives/textArea.js
+//= require angularAssets/Directives/layout/loader.js
+//= require angularAssets/Directives/shared/textArea.js
+//= require angularAssets/Directives/shared/sticky.js
 //= require ./angularAssets/Directives/contributions/comment.js
 //= require ./angularAssets/Directives/contributions/comments.js
 //= require ./angularAssets/Factories/spinnerFactory.js
@@ -16,7 +17,7 @@
 //= require_tree ./angularAssets/Directives/help
 
 var app = angular.module('helpCenter', [
-    'ngAnimate', 'sticky', 'hc.marked', 'relativeDate'
+    'ngAnimate', 'hc.marked', 'relativeDate'
 ]);
 
 app.config(['$compileProvider', function($compileProvider) {

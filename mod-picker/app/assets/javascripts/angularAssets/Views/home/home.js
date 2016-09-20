@@ -52,9 +52,9 @@ app.config(['$stateProvider', function($stateProvider) {
     });
 }]);
 
-app.controller('homeController', function($scope, $q, homeService, currentUser) {
-    $scope.currentUser = currentUser;
-    $scope.permissions = currentUser.permissions;
+app.controller('homeController', function($scope, $rootScope, $q, homeService) {
+    $scope.currentUser = $rootScope.currentUser;
+    $scope.permissions = angular.copy($rootScope.permissions);
 
     $scope.tabs = [
         { name: 'Reviews' },

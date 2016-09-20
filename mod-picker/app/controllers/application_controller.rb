@@ -20,13 +20,18 @@ class ApplicationController < ActionController::Base
     '/skyrim'
   end
 
-  protected
-
-  def configure_permitted_parameters
-    devise_parameter_sanitizer.for(:sign_up) { |u| u.permit(:invitation_token, :username, :email, :password, :password_confirmation, :remember_me) }
-    devise_parameter_sanitizer.for(:sign_in) { |u| u.permit(:login, :username, :email, :password, :remember_me) }
-    devise_parameter_sanitizer.for(:accept_invitation) { |u| u.permit(:username, :email, :password, :remember_me) }
-    devise_parameter_sanitizer.for(:invite) { |u| u.permit(:invitation_token, :username, :email, :password, :remember_me) }
-    devise_parameter_sanitizer.for(:account_update) { |u| u.permit(:username, :email, :password, :password_confirmation, :current_password) }
+  def check_sign_in
+    unless current_user.present?
+      render json: { error: "You must be logged in to perform this action." }, status: 401
+    end
   end
+
+  protected
+    def configure_permitted_parameters
+      devise_parameter_sanitizer.for(:sign_up) { |u| u.permit(:invitation_token, :username, :email, :password, :password_confirmation, :remember_me) }
+      devise_parameter_sanitizer.for(:sign_in) { |u| u.permit(:login, :username, :email, :password, :remember_me) }
+      devise_parameter_sanitizer.for(:accept_invitation) { |u| u.permit(:username, :email, :password, :remember_me) }
+      devise_parameter_sanitizer.for(:invite) { |u| u.permit(:invitation_token, :username, :email, :password, :remember_me) }
+      devise_parameter_sanitizer.for(:account_update) { |u| u.permit(:username, :email, :password, :password_confirmation, :current_password) }
+    end
 end

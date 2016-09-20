@@ -3,9 +3,14 @@ class PluginsController < ApplicationController
 
   # GET /plugins
   def index
-    @plugins = Plugin.accessible_by(current_ability).filter(filtering_params).sort(params[:sort]).paginate(:page => params[:page])
+    @plugins = Plugin.includes(:mod).references(:mod).accessible_by(current_ability).filter(filtering_params).sort(params[:sort]).paginate(:page => params[:page])
+    count =  Plugin.accessible_by(current_ability).filter(filtering_params).count
 
-    render :json => Plugin.index_json(@plugins)
+    render :json => {
+        plugins: Plugin.index_json(@plugins),
+        max_entries: count,
+        entries_per_page: Plugin.per_page
+    }
   end
 
   # POST /plugins/search
@@ -39,7 +44,7 @@ class PluginsController < ApplicationController
 
     # Params we allow filtering on
     def filtering_params
-      params[:filters].permit(:search, :game)
+      params[:filters].slice(:game, :search, :author, :description, :categories, :file_size, :records, :overrides, :errors, :mod_lists, :load_order_notes)
     end
 
     # Params we allow searching on

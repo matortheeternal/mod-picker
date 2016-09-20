@@ -7,35 +7,20 @@ app.directive('correctionsModal', function () {
     };
 });
 
-app.controller('correctionsModalController', function ($scope, contributionService, errorService) {
+app.controller('correctionsModalController', function ($scope, contributionService, contributionFactory, eventHandlerFactory) {
+    // shared function setup
+    eventHandlerFactory.buildModalMessageHandlers($scope);
+
     // compute agree percentage helper
     $scope.computeAgreePercentage = function(correction) {
         return (correction.agree_count / ((correction.agree_count + correction.disagree_count) || 1)) * 100;
     };
 
-    // display error messages
-    $scope.$on('modalErrorMessage', function(event, params) {
-        var errors = errorService.errorMessages(params.label, params.response);
-        errors.forEach(function(error) {
-            $scope.$broadcast('modalMessage', error);
-        });
-        // stop event propagation - we handled it
-        event.stopPropagation();
-    });
-
-    // display success message
-    $scope.$on('modalSuccessMessage', function(event, text) {
-        var successMessage = {type: "success", text: text};
-        $scope.$broadcast('modalMessage', successMessage);
-        // stop event propagation - we handled it
-        event.stopPropagation();
-    });
-
     // start a new correction
     $scope.startNewCorrection = function() {
         $scope.activeCorrection = {
             title: "",
-            text_body: "" // TODO: Get template from the contributionFactory
+            text_body: contributionFactory.getDefaultTextBody("Correction")
         };
 
         // update editor
@@ -58,11 +43,10 @@ app.controller('correctionsModalController', function ($scope, contributionServi
     };
 
     $scope.retrieveCorrectionComments = function(page) {
-        // TODO: Make options dynamic
         var options = {
             sort: {
                 column: 'submitted',
-                direction: 'desc'
+                direction: 'DESC'
             },
             page: page || 1
         };

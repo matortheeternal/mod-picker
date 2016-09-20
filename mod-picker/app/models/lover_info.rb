@@ -1,26 +1,12 @@
 class LoverInfo < ActiveRecord::Base
+  include Scrapeable
+
+  # ASSOCIATIONS
   belongs_to :mod
-  belongs_to :game
+  belongs_to :game, :inverse_of => 'lover_infos'
 
-  # validations
+  # VALIDATIONS
   validates :game_id, :mod_name, :uploaded_by, :released, presence: true
-
-  # Callbacks
-  after_save :update_mod_dates
-
-  def update_mod_dates
-    if self.mod_id.blank?
-      return
-    end
-
-    hash = Hash.new
-    hash[:updated] = self.updated if self.mod.updated.nil? || self.mod.updated < self.updated
-    hash[:released] = self.released if self.mod.released.nil? || self.mod.released > self.released
-
-    if hash.any?
-      self.mod.update_columns(hash)
-    end
-  end
 
   def scrape
     # retrieve using the Lover Helper
@@ -33,9 +19,12 @@ class LoverInfo < ActiveRecord::Base
     self.save!
   end
 
-  def rescrape
-    if self.last_scraped.nil? || self.last_scraped < 1.week.ago
-      self.scrape
-    end
+  def notification_json_options(event_type)
+    {
+        :only => [],
+        :include => {
+            :mod => { :only => [:id, :name] }
+        }
+    }
   end
 end

@@ -1,4 +1,4 @@
-app.controller('modReviewsController', function($scope, $stateParams, $state, modService, reviewSectionService, contributionService, sortFactory, formUtils) {
+app.controller('modReviewsController', function($scope, $stateParams, $state, modService, reviewSectionService, contributionService, sortFactory, formUtils, objectUtils) {
     $scope.sort.reviews = {
         column: $stateParams.scol,
         direction: $stateParams.sdir
@@ -17,7 +17,12 @@ app.controller('modReviewsController', function($scope, $stateParams, $state, mo
         };
         modService.retrieveModReviews($stateParams.modId, options, $scope.pages.reviews).then(function(data) {
             $scope.mod.reviews = data.reviews;
-            $scope.mod.user_review = data.user_review;
+            if (data.user_review && objectUtils.isEmptyObject(data.user_review)) {
+                $scope.userReviewHidden = true;
+            } else {
+                $scope.mod.user_review = data.user_review;
+
+            }
 
             //seperating the review in the url if any
             if ($stateParams.reviewId) {
@@ -55,8 +60,8 @@ app.controller('modReviewsController', function($scope, $stateParams, $state, mo
     }, true);
 
     //retrieve review sections
-    reviewSectionService.getSectionsForCategory($scope.mod.primary_category).then(function(data) {
-        $scope.reviewSections = data;
+    reviewSectionService.getSectionsForMod($scope.mod).then(function(modSections) {
+        $scope.reviewSections = modSections;
     }, function(response) {
         $scope.errors.reviewSections = response;
     });
@@ -79,16 +84,25 @@ app.controller('modReviewsController', function($scope, $stateParams, $state, mo
         $scope.availableSections = $scope.reviewSections.slice(0);
 
         // set up default review sections
-        // and default text body with prompts
         $scope.reviewSections.forEach(function(section) {
-            if (section.default) {
-                $scope.addNewRating(section);
-                $scope.activeReview.text_body += "## " + section.name + "\n";
-                $scope.activeReview.text_body += "*\uFEFF" + section.prompt + "\uFEFF*\n\n";
-            }
+            if (section.default) $scope.addNewRating(section);
         });
 
+        // generate template and update overall rating
         $scope.updateOverallRating();
+        $scope.generateEditorText();
+    };
+
+    $scope.generateEditorText = function () {
+        // reset text body
+        $scope.activeReview.text_body = "";
+
+        // set up text body with prompts
+        $scope.activeReview.ratings.forEach(function(rating) {
+            var section = rating.section;
+            $scope.activeReview.text_body += "## " + section.name + "\n";
+            $scope.activeReview.text_body += reviewSectionService.preparePrompt(section);
+        });
 
         // update the markdown editor
         $scope.updateEditor();
@@ -175,7 +189,8 @@ app.controller('modReviewsController', function($scope, $stateParams, $state, mo
     };
 
     $scope.validateReview = function() {
-        $scope.activeReview.valid = $scope.activeReview.text_body.length > 512;
+        var sanitized_text = reviewSectionService.removePrompts($scope.activeReview.text_body);
+        $scope.activeReview.valid = sanitized_text.length > 512;
     };
 
     // discard a new review object
@@ -207,6 +222,7 @@ app.controller('modReviewsController', function($scope, $stateParams, $state, mo
         }
 
         // submit the review
+        var sanitized_text = reviewSectionService.removePrompts($scope.activeReview.text_body);
         var review_ratings = [];
         $scope.activeReview.ratings.forEach(function(item) {
             review_ratings.push({
@@ -218,7 +234,7 @@ app.controller('modReviewsController', function($scope, $stateParams, $state, mo
             review: {
                 game_id: $scope.mod.game_id,
                 mod_id: $scope.mod.id,
-                text_body: $scope.activeReview.text_body,
+                text_body: sanitized_text,
                 edit_summary: $scope.activeReview.edit_summary,
                 moderator_message: $scope.activeReview.moderator_message,
                 review_ratings_attributes: review_ratings

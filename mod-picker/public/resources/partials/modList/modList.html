@@ -3,32 +3,33 @@
         <section>
             <div class="header-info">
                 <span class="header-name">{{mod_list.name}}</span>
+                <adult-marker target="mod_list"></adult-marker>
+                <br>
                 <span class="header-authors-container">
                     by
                     <a ng-href="#/user/{{mod_list.submitter.id}}">{{mod_list.submitter.username}}</a>
                 </span>
-                <br>
+                <span class="divider" ng-if="mod_list.submitted">|</span>
                 <span>Created {{mod_list.submitted | date}}</span>
                 <span class="divider" ng-if="mod_list.updated">|</span>
                 <span ng-if="mod_list.updated">Updated {{mod_list.updated | date}}</span>
-                <span class="divider" ng-if="permissions.canManage">|</span>
-                <a ng-if="permissions.canManage" ng-click="toggleEditing()">
-                    <span ng-hide="editing">Edit</span>
-                    <span ng-show="editing">View</span>
-                </a>
             </div>
         </section>
 
         <section>
             <div class="header-box">
                 ACTIONS
+                <span ng-if="permissions.canManage" class="action-box" ng-click="toggleEditing()">
+                    <i class="fa {{editing ? 'fa-eye' : 'fa-edit' }}" aria-hidden="true"></i>
+                    {{editing ? 'View' : 'Edit' }}
+                </span>
                 <span class="action-box" ng-click="starModList()" title="{{mod_list.stars_count}} stars">
                     <i class="fa {{mod_list.star ? 'fa-star' : 'fa-star-o'}}" aria-hidden="true"></i>
                     {{mod_list.star ? 'Unfavorite' : 'Favorite'}}
                 </span>
-                <span class="action-box">
-                    <i class="fa fa-plus" aria-hidden="true"></i>
-                    Duplicate Modlist
+                <span class="action-box" title="Make a copy of this mod list.">
+                    <i class="fa fa-copy" aria-hidden="true"></i>
+                    Clone
                 </span>
             </div>
             <div class="header-box">
@@ -40,6 +41,10 @@
                 <span class="action-box no-action {{visibilityClasses[mod_list.visibility]}} capitalize" title="{{visibilityHints[mod_list.visibility]}}">
                     <i class="fa {{visibilityIcons[mod_list.visibility]}}" aria-hidden="true"></i>
                     {{mod_list.visibility.replace("visibility_", "")}}
+                </span>
+                <span ng-if="isActive" class="action-box green-box no-action" title="This is your active mod list - added mods will end up here.">
+                    <i class="fa fa-chevron-circle-down"></i>
+                    Active
                 </span>
             </div>
         </section>
@@ -54,3 +59,5 @@
         <tab-views></tab-views>
     </div>
 </div>
+
+<activity-modal></activity-modal>

@@ -20,7 +20,129 @@ app.service('actionsFactory', function() {
         return !$scope.editing;
     };
 
+    /* mod actions */
+    this.modIndexActions = function() {
+        return [{
+            caption: "Add",
+            title: "Add this mod to your mod list",
+            hidden: function($scope, item) {
+                var activeModList = $scope.$parent.activeModList;
+                if (!activeModList) return true;
+                var foundMod = activeModList.mod_list_mod_ids.find(function(modId) {
+                    return modId == item.id;
+                });
+                return !!foundMod;
+            },
+            execute: function($scope, item) {
+                $scope.$emit('addMod', item);
+            }
+        }, {
+            caption: "Remove",
+            title: "Remove this mod from your mod list",
+            class: 'red-box',
+            hidden: function($scope, item) {
+                var activeModList = $scope.$parent.activeModList;
+                if (!activeModList) return true;
+                var foundMod = activeModList.mod_list_mod_ids.find(function(modId) {
+                    return modId == item.id;
+                });
+                return !foundMod;
+            },
+            execute: function($scope, item) {
+                $scope.$emit('removeMod', item);
+            }
+        }]
+    };
+
+    this.userModActions = function() {
+        return [{
+            caption: "Edit",
+            title: "Edit this mod.",
+            hidden: function($scope, item) {
+                var isAuthor = item.author_users.find(function(author) {
+                    return author.id == $scope.currentUser.id;
+                });
+                return !$scope.permissions.canModerate && !isAuthor;
+            },
+            execute: function($scope, item) {
+                $scope.$emit('editMod', item);
+            }
+        }, {
+            caption: "Hide",
+            title: "Hide this mod from public viewing.",
+            class: 'red-box',
+            hidden: function($scope, item) {
+                var isAuthor = item.author_users.find(function(author) {
+                    return author.id == $scope.currentUser.id;
+                });
+                return item.hidden || !$scope.permissions.canModerate && !isAuthor;
+            },
+            execute: function($scope, item) {
+                $scope.$emit('hideMod', item);
+            }
+        }, {
+            caption: "Recover",
+            title: "Click here to recover this mod.",
+            class: 'green-box',
+            hidden: function($scope, item) {
+                var isAuthor = item.author_users.find(function(author) {
+                    return author.id == $scope.currentUser.id;
+                });
+                return !item.hidden || !$scope.permissions.canModerate && !isAuthor;
+            },
+            execute: function($scope, item) {
+                $scope.$emit('recoverMod', item);
+            }
+        }];
+    };
+
     /* mod list actions */
+    this.modListIndexActions = function() {
+        return [{
+            caption: "Add",
+            title: "Add this collection to your mod list",
+            hidden: function($scope, item) {
+                return !item.is_collection;
+            },
+            execute: function($scope, item) {
+                $scope.$emit('addCollection', item);
+            }
+        }]
+    };
+
+    this.userModListActions = function() {
+        return [{
+            caption: "Clone",
+            title: "Make a copy of this mod list",
+            hidden: function($scope, item) {
+                return item.hidden || !$scope.permissions.canModerate && $scope.currentUser.id != item.submitter.id;
+            },
+            execute: function($scope, item) {
+                $scope.$emit('cloneModList', item);
+            }
+        }, {
+            caption: "Delete",
+            title: "Delete this mod list",
+            class: 'red-box',
+            hidden: function($scope, item) {
+                return item.hidden || !$scope.permissions.canModerate && $scope.currentUser.id != item.submitter.id;
+            },
+            execute: function($scope, item) {
+                $scope.$emit('deleteModList', item);
+            }
+        }, {
+            caption: "Recover",
+            title: "Click here to recover this mod list.",
+            class: 'green-box',
+            hidden: function($scope, item) {
+                return !item.hidden;
+            },
+            execute: function($scope, item) {
+                $scope.$emit('recoverModList', item);
+            }
+        }]
+    };
+
     this.modListToolActions = function() {
         return [{
             caption: "Remove",
@@ -33,7 +155,9 @@ app.service('actionsFactory', function() {
         }, {
             icon: "fa-gear",
             title: "View Details",
-            hidden: function($scope, item) { return !!item.mod },
+            hidden: function($scope, item) {
+                return item.mod && item.mod.mod_options.length < 2
+            },
             execute: function($scope, item) {
                 $scope.$emit('toggleDetailsModal', {visible: true, item: item});
             }
@@ -52,7 +176,9 @@ app.service('actionsFactory', function() {
         }, {
             icon: "fa-gear",
             title: "View Details",
-            hidden: function($scope, item) { return !!item.mod },
+            hidden: function($scope, item) {
+                return item.mod && item.mod.mod_options.length < 2
+            },
             execute: function($scope, item) {
                 $scope.$emit('toggleDetailsModal', {visible: true, item: item});
             }

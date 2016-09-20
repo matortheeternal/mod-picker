@@ -9,18 +9,14 @@
 
                     <div class="header-info">
                         <span class="header-name">{{mod.name}}</span>
-                        <span class="header-authors-container">by
-                            <span class="header-authors">{{mod.authors}}</span>
-                        </span>
-                        <!--<span ng-repeat="author in mod.authors">
-                            <a ng-href="#/user/{{author.id}}">{{author.username}}</a>
-                        </span>-->
+                        <adult-marker target="mod"></adult-marker>
                         <br>
-                        <span ng-if="mod.primary_category_id">
-                            {{mod.reviews_count | number}} reviews
+                        <span>by
+                            <a ng-click="toggleAuthorsModal(true)">{{mod.authors}}</a>
                         </span>
+
                         <!-- TODO: add this with css :after content -->
-                        <span class="divider" ng-if="mod.primary_category_id && (mod.aliases || permissions.canManage)">
+                        <span class="divider" ng-if="mod.primary_category_id && mod.aliases">
                             |
                         </span>
 
@@ -30,31 +26,29 @@
                         </span>-->
 
                         <span ng-if="mod.aliases">
-                            <strong>Aliases: </strong>{{mod.aliases}}
-                            <span class="divider" ng-if="permissions.canManage">
-                                |
-                            </span>
+                            <strong>AKA: </strong>{{mod.aliases}}
                         </span>
-
-                        <a ng-href="#/mod/{{mod.id}}/edit" ng-if="permissions.canManage">Edit</a>
                     </div>
                 </section>
 
                 <section>
                     <div class="header-box">
-                        <!-- TODO: I feel like using some spans here would be wiser -->
                         ACTIONS
+                        <span class="action-box" ng-if="permissions.canManage" ng-click="editMod()">
+                            <i class="fa fa-edit" aria-hidden="true"></i> Edit
+                        </span>
                         <span class="action-box" ng-click="starMod()">
                             <i class="fa {{mod.star ? 'fa-star' : 'fa-star-o'}}" aria-hidden="true"></i> {{mod.star ? 'Unfavorite' : 'Favorite'}}
                         </span>
-                        <span class="action-box">
-                            <i class="fa fa-plus" aria-hidden="true"></i> Add to mod list
+                        <span class="action-box" ng-if="activeModList" ng-click="toggleInModList()">
+                            <i class="fa {{ mod.in_mod_list ? 'fa-remove' : 'fa-plus' }}" aria-hidden="true"></i>
+                            {{ mod.in_mod_list ? 'Remove from' : 'Add to' }} mod list
                         </span>
                     </div>
 
                     <div class="header-box" ng-if="mod.primary_category_id">
                         STATUS
-                        <span class="action-box {{statusClass}} capitalize" ng-click="toggleStatusModal(true)">
+                        <span class="action-box {{statusClasses[mod.status]}} capitalize" ng-click="toggleStatusModal(true)">
                             {{mod.status}}
                         </span>
                     </div>
@@ -62,7 +56,11 @@
             </div>
         </div>
 
+        <authors-modal></authors-modal>
+
         <appeals-modal></appeals-modal>
+
+        <requirements-modal></requirements-modal>
 
         <messages></messages>
 
@@ -95,12 +93,33 @@
                     </section>
 
                     <!--Requirements-->
-                    <h3 ng-if="mod.required_mods.length > 0" class="section-title">Requirements</h3>
-                    <section ng-if="mod.required_mods.length > 0">
+                    <h3 ng-if="mod.required_mods.length" class="section-title">Requires</h3>
+                    <section ng-if="mod.required_mods.length">
                         <ol class="requirements-list">
-                            <li ng-repeat="req in mod.required_mods">
+                            <li ng-repeat="req in mod.required_mods | limitTo: 3">
                                 <a ng-href="#/mod/{{req.required_mod.id}}">
                                     {{req.required_mod.name}}
+                                </a>
+                            </li>
+                            <li class="show-more" ng-show="mod.required_mods.length > 3">
+                                <a class="inverse-link" ng-click="toggleRequirementsModal(true)">
+                                    Show {{mod.required_mods.length - 3}} more
+                                </a>
+                            </li>
+                        </ol>
+                    </section>
+
+                    <h3 ng-if="mod.required_by.length" class="section-title">Required By</h3>
+                    <section ng-if="mod.required_by.length">
+                        <ol class="requirements-list">
+                            <li ng-repeat="req in mod.required_by | limitTo: 3">
+                                <a ng-href="#/mod/{{req.mod.id}}">
+                                    {{req.mod.name}}
+                                </a>
+                            </li>
+                            <li class="show-more" ng-show="mod.required_by.length > 3">
+                                <a class="inverse-link" ng-click="toggleRequirementsModal(true)">
+                                    Show {{mod.required_by.length - 3}} more
                                 </a>
                             </li>
                         </ol>
@@ -122,7 +141,7 @@
                         <!--Tags-->
                         <h3 class="section-title">Tags</h3>
                         <section>
-                            <tag-selector active-tags="mod.tags" new-tags="newTags" max-tags="10" show-mods-count="true" show-add="permissions.canManage || !mod.lock_tags" can-create="permissions.canCreateTags" show-remove="permissions.canManage" save-callback="saveTags"></tag-selector>
+                            <tag-selector active-tags="mod.tags" new-tags="newTags" max-tags="10" show-mods-count="true" show-add="!mod.lock_tags" can-create="permissions.canCreateTags" show-remove="!mod.lock_tags && permissions.canManage" save-callback="saveTags"></tag-selector>
                         </section>
                     </div>
 

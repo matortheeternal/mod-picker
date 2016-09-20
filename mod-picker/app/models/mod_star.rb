@@ -4,10 +4,10 @@ class ModStar < ActiveRecord::Base
   belongs_to :user, :inverse_of => 'mod_stars'
   belongs_to :mod, :inverse_of => 'mod_stars'
 
-  # Validations
+  # VALIDATIONS
   validates :mod_id, :user_id, presence: true
 
-  # Callbacks
+  # CALLBACKS
   after_create :increment_counters
   before_destroy :decrement_counters
 

@@ -23,39 +23,34 @@ app.config(['$stateProvider', function($stateProvider) {
     });
 }]);
 
-app.controller('showArticleController', function($scope, $stateParams, article, currentUser, articleService) {
-    $scope.article = article;
-    $scope.currentUser = angular.copy(currentUser);
-    $scope.permissions = $scope.currentUser.permissions;
+app.controller('showArticleController', function($scope, $rootScope, $stateParams, article, contributionService, eventHandlerFactory) {
+    // inherited variables
+    $scope.currentUser = $rootScope.currentUser;
+    $scope.permissions = angular.copy($rootScope.permissions);
 
+    // initialize variables
+    $scope.article = article;
     $scope.pages = {
         comments: {}
     };
+    $scope.errors = {};
 
-    $scope.displayErrors = {
-        comments: {}
-    };
+    // shared function setup
+    eventHandlerFactory.buildMessageHandlers($scope);
 
-    $scope.retrieving = {
-        comments: {}
-    };
-
+    // retrieves comments on the article
     $scope.retrieveComments = function(page) {
-        $scope.retrieving.comments = true;
-        // TODO: Make options dynamic
         var options = {
             sort: {
                 column: 'submitted',
-                direction: 'desc'
+                direction: 'DESC'
             },
             page: page || 1
         };
-        articleService.retrieveComments($stateParams.articleId, options, $scope.pages.comments).then(function(data) {
-            $scope.retrieving.comments = false;
+        contributionService.retrieveComments('articles', $scope.article.id, options, $scope.pages.comments).then(function(data) {
             $scope.article.comments = data;
         }, function(response) {
-            $scope.retrieving.comments = false;
-            $scope.displayErrors.comments = response;
+            $scope.errors.comments = response;
         });
     };
 

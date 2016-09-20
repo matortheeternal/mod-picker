@@ -4,9 +4,10 @@ app.config(['$stateProvider', function($stateProvider) {
         controller: 'modController',
         url: '/mod/:modId',
         resolve: {
-            modObject: function(modService, $stateParams, $q) {
+            modObject: function($stateParams, $q, categories, modService, categoryService) {
                 var mod = $q.defer();
                 modService.retrieveMod($stateParams.modId).then(function(data) {
+                    categoryService.resolveModCategories(categories, data.mod);
                     mod.resolve(data);
                 }, function(response) {
                     var errorObj = {
@@ -27,14 +28,14 @@ app.config(['$stateProvider', function($stateProvider) {
         views: {
             'Reviews': {
                 templateUrl: '/resources/partials/mod/modReviews.html',
-                controller: 'modReviewsController',
+                controller: 'modReviewsController'
             }
         },
         url: '/reviews/{reviewId:int}?{page:int}&scol&sdir',
         params: {
             page: 1,
             scol: 'reputation',
-            sdir: 'desc',
+            sdir: 'DESC',
             reviewId: null
         }
     }).state('base.mod.Compatibility', {
@@ -44,14 +45,14 @@ app.config(['$stateProvider', function($stateProvider) {
         views: {
             'Compatibility': {
                 templateUrl: '/resources/partials/mod/modCompatibility.html',
-                controller: 'modCompatibilityController',
+                controller: 'modCompatibilityController'
             }
         },
         url: '/compatibility/{compatibilityNoteId:int}?{page:int}&scol&sdir&{filter:bool}',
         params: {
             page: 1,
             scol: 'reputation',
-            sdir: 'desc',
+            sdir: 'DESC',
             filter: true,
             compatibilityNoteId: null
         }
@@ -62,14 +63,14 @@ app.config(['$stateProvider', function($stateProvider) {
         views: {
             'Install Order': {
                 templateUrl: '/resources/partials/mod/modInstallOrder.html',
-                controller: 'modInstallOrderController',
+                controller: 'modInstallOrderController'
             }
         },
         url: '/install-order/{installOrderNoteId:int}?{page:int}&scol&sdir&{filter:bool}',
         params: {
             page: 1,
             scol: 'reputation',
-            sdir: 'desc',
+            sdir: 'DESC',
             filter: true,
             installOrderNoteId: null
         }
@@ -80,14 +81,14 @@ app.config(['$stateProvider', function($stateProvider) {
         views: {
             'Load Order': {
                 templateUrl: '/resources/partials/mod/modLoadOrder.html',
-                controller: 'modLoadOrderController',
+                controller: 'modLoadOrderController'
             }
         },
         url: '/load-order/{loadOrderNoteId:int}?{page:int}&scol&sdir&{filter:bool}',
         params: {
             page: 1,
             scol: 'reputation',
-            sdir: 'desc',
+            sdir: 'DESC',
             filter: true,
             loadOrderNoteId: null
         }
@@ -98,26 +99,34 @@ app.config(['$stateProvider', function($stateProvider) {
         views: {
             'Analysis': {
                 templateUrl: '/resources/partials/mod/modAnalysis.html',
-                controller: 'modAnalysisController',
+                controller: 'modAnalysisController'
             }
         },
-        url: '/analysis?{plugin:int}'
+        url: '/analysis?options&{plugin:int}'
     });
 }]);
 
-app.controller('modController', function($scope, $q, $stateParams, $state, $timeout, currentUser, modObject, modService, contributionService, categoryService, tagService, smoothScroll, errorService, tabsFactory, sortFactory) {
+app.controller('modController', function($scope, $rootScope, $q, $stateParams, $state, $timeout, $window, modObject, modService, modListService, contributionService, categoryService, tagService, smoothScroll, tabsFactory, sortFactory, eventHandlerFactory) {
     // get parent variables
     $scope.mod = modObject.mod;
     $scope.mod.star = modObject.star;
-    $scope.currentUser = currentUser;
-    // resolve mod categories
-    categoryService.resolveModCategories($scope.mod);
+    $scope.mod.in_mod_list = modObject.in_mod_list;
+    $scope.mod.incompatible = modObject.incompatible;
+
+    // inherited variables
+    $scope.currentUser = $rootScope.currentUser;
+    $scope.activeModList = $rootScope.activeModList;
+    $scope.permissions = angular.copy($rootScope.permissions);
 
     // initialize local variables
     $scope.tabs = tabsFactory.buildModTabs($scope.mod);
     $scope.tags = [];
     $scope.newTags = [];
-    $scope.statusModal = {};
+    $scope.statusClasses = {
+        unstable: 'red-box',
+        outdated: 'yellow-box',
+        good: 'green-box'
+    };
     $scope.pages = {
         appeal_comments: {},
         reviews: {},
@@ -149,14 +158,25 @@ app.controller('modController', function($scope, $q, $stateParams, $state, $time
         }
     };
     $scope.retrieving = {};
-    // error handling
     $scope.errors = {};
 
-    //a copy is created so the original permissions are never changed
-    $scope.permissions = angular.copy(currentUser.permissions);
+    // shared function setup
+    eventHandlerFactory.buildMessageHandlers($scope);
+
+    // display a message if the mod is incompatible with the user's active mod list
+    if ($scope.mod.incompatible) {
+        $timeout(function() {
+            $scope.$broadcast('message', {
+                type: 'error',
+                text: 'This mod is incompatible with your active mod list.',
+                decay: 600000 // 10 minutes
+            });
+        }, 200);
+    }
+
     //setting up the canManage permission
-    var author = $scope.mod.author_users.find(function(author) {
-        return author.id == $scope.currentUser.id;
+    var author = $scope.mod.mod_authors.find(function(author) {
+        return author.user_id == $scope.currentUser.id;
     });
     var isAuthor = angular.isDefined(author);
     $scope.permissions.canManage = $scope.permissions.canModerate || isAuthor;
@@ -182,7 +202,7 @@ app.controller('modController', function($scope, $q, $stateParams, $state, $time
     //redirect to the first tab if changing to a non-present tab
     $scope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
         //if changing to the mod state
-        toStateNameArray = toState.name.split(".");
+        var toStateNameArray = toState.name.split(".");
         if (toStateNameArray[1] === "mod") {
             //if changing to a tab that isn't in tabs[]
             if (!tabIsPresent(currentTab())) {
@@ -191,45 +211,20 @@ app.controller('modController', function($scope, $q, $stateParams, $state, $time
         }
     });
 
-    //set the class of the status box
-    switch ($scope.mod.status) {
-        case "good":
-            $scope.statusClass = "green-box";
-            break;
-        case "outdated":
-            $scope.statusClass = "yellow-box";
-            break;
-        case "unstable":
-            $scope.statusClass = "red-box";
-            break;
-    }
-
-    // display error messages
-    $scope.$on('errorMessage', function(event, params) {
-        var errors = errorService.errorMessages(params.label, params.response, $scope.mod.id);
-        errors.forEach(function(error) {
-            $scope.$broadcast('message', error);
-        });
-        // stop event propagation - we handled it
-        event.stopPropagation();
-    });
-
-    // display success message
-    $scope.$on('successMessage', function(event, text) {
-        var successMessage = { type: "success", text: text };
-        $scope.$broadcast('message', successMessage);
-        // stop event propagation - we handled it
-        event.stopPropagation();
-    });
-
     // update the markdown editor
     $scope.updateEditor = function(noScroll) {
         if (!noScroll) {
             $timeout(function() {
-                var editorBox = document.getElementsByClassName("add-note-box")[0];
-                smoothScroll(editorBox, {
-                    offset: 20
-                });
+                var elements = document.getElementsByClassName("add-note-box");
+                for (var i = 0; i < elements.length; i++) {
+                    var editorBox = elements[i];
+                    if (!editorBox.classList.contains('ng-hide')) {
+                        smoothScroll(editorBox, {
+                            offset: 20
+                        });
+                        break;
+                    }
+                }
             });
         }
         $scope.updateMDE = ($scope.updateMDE || 0) + 1;
@@ -246,7 +241,24 @@ app.controller('modController', function($scope, $q, $stateParams, $state, $time
         });
     };
 
-    // HEADER RELATED LOGIC
+    // HEADER
+    $scope.toggleAuthorsModal = function(visible) {
+        $scope.$emit('toggleModal', visible);
+        $scope.showAuthorsModal = visible;
+    };
+
+    $scope.toggleStatusModal = function(visible) {
+        $scope.$emit('toggleModal', visible);
+        $scope.showStatusModal = visible;
+        if (visible && !$scope.mod.corrections && !$scope.retrieving.appeals) {
+            $scope.retrieveAppeals();
+        }
+    };
+
+    $scope.editMod = function() {
+        $window.location.hash = '#/mod/' + $scope.mod.id + '/edit';
+    };
+
     $scope.starMod = function() {
         modService.starMod($scope.mod.id, $scope.mod.star).then(function() {
             $scope.mod.star = !$scope.mod.star;
@@ -256,11 +268,28 @@ app.controller('modController', function($scope, $q, $stateParams, $state, $time
         });
     };
 
-    $scope.toggleStatusModal = function(visible) {
-        $scope.$emit('toggleModal', visible);
-        $scope.statusModal.visible = visible;
-        if (visible && !$scope.mod.corrections && !$scope.retrieving.appeals) {
-            $scope.retrieveAppeals();
+    $scope.toggleInModList = function() {
+        if ($scope.mod.in_mod_list) {
+            // remove from mod list
+            modListService.removeModListMod($scope.activeModList, $scope.mod).then(function() {
+                $scope.$emit('successMessage', 'Mod removed from your mod list successfully.');
+            }, function(response) {
+                var params = {
+                    label: 'Error removing mod from your mod list',
+                    response: response
+                };
+                $scope.$emit('errorMessage', params);
+            });
+        } else {
+            modListService.addModListMod($scope.activeModList, $scope.mod).then(function() {
+                $scope.$emit('successMessage', 'Mod added to your mod list successfully.');
+            }, function(response) {
+                var params = {
+                    label: 'Error adding mod to your mod list',
+                    response: response
+                };
+                $scope.$emit('errorMessage', params);
+            });
         }
     };
 
@@ -269,6 +298,12 @@ app.controller('modController', function($scope, $q, $stateParams, $state, $time
             return !correction.hidden && (correction.status == "open");
         });
         $scope.appealStatus = $scope.permissions.canAppeal && openAppeals.length < 2;
+    };
+
+    // LEFT COLUMN
+    $scope.toggleRequirementsModal = function(visible) {
+        $scope.$emit('toggleModal', visible);
+        $scope.showRequirementsModal = visible;
     };
 
     $scope.saveTags = function(updatedTags) {

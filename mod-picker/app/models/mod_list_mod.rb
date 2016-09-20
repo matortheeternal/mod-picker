@@ -1,23 +1,27 @@
 class ModListMod < ActiveRecord::Base
-  include RecordEnhancements
+  include RecordEnhancements, ScopeHelpers
 
   # SCOPES
-  scope :utility, -> (bool) { joins(:mod).where(:mods => {is_utility: bool}) }
-  scope :official, -> (bool) { joins(:mod).where(:mods => {is_official: bool}) }
+  value_scope :is_utility, :is_official, :association => 'mod'
 
   # ASSOCIATIONS
   belongs_to :mod_list, :inverse_of => 'mod_list_mods'
   belongs_to :mod, :inverse_of => 'mod_list_mods'
 
-  # Validations
+  has_many :mod_list_mod_options, :inverse_of => 'mod_list_mod', :dependent => :destroy
+
+  # NESTED ATTRIBUTES
+  accepts_nested_attributes_for :mod_list_mod_options, allow_destroy: true
+
+  # VALIDATIONS
   validates :mod_list_id, :mod_id, :index, presence: true
   # can only have a mod on a given mod list once
   # TODO: If we don't allow the user to change the mod_id with nested attributes we could refactor this validation to be an after_create callback
   validates :mod_id, uniqueness: { scope: :mod_list_id, :message => "The mod is already present on the mod list." }
 
-  # Callbacks
+  # CALLBACKS
   after_create :increment_counter_caches
-  before_destroy :decrement_counter_caches
+  before_destroy :decrement_counter_caches, :destroy_mod_list_plugins
 
   def self.install_order_json(collection)
     collection.as_json({
@@ -32,13 +36,20 @@ class ModListMod < ActiveRecord::Base
 
   def as_json(options={})
     if JsonHelpers.json_options_empty(options)
-      # TODO: Revise this as necessary
       default_options = {
           :only => [:id, :group_id, :index, :active],
           :include => {
               :mod => {
-                  :only => [:id, :name, :aliases, :authors, :status, :primary_category_id, :secondary_category_id, :average_rating, :reputation, :stars_count, :released, :updated],
+                  :only => [:id, :is_official, :name, :aliases, :authors, :status, :primary_category_id, :secondary_category_id, :average_rating, :reputation, :asset_files_count, :stars_count, :released, :updated],
+                  :include => {
+                      :mod_options => {
+                          :only => [:id, :name, :default]
+                      }
+                  },
                   :methods => :image
+              },
+              :mod_list_mod_options => {
+                  :only => [:id, :mod_option_id, :enabled]
               }
           }
       }
@@ -102,5 +113,12 @@ class ModListMod < ActiveRecord::Base
         self.mod_list.update_counter(:mods_count, -1)
       end
       self.mod.update_counter(:mod_lists_count, -1)
+    end
+
+    def destroy_mod_list_plugins
+      if self.mod.plugins_count
+        plugin_ids = self.mod.plugins.ids
+        ModListPlugin.destroy_all(mod_list_id: self.mod_list_id, plugin_id: plugin_ids)
+      end
     end
 end

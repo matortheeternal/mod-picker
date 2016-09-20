@@ -7,8 +7,15 @@
   margin: 0;
 }
 
-.half-box {
-  width: 45%;
+.list-title {
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 12px;
+  display: block;
+}
+
+.third-box {
+  width: 32%;
   display: inline-block;
 }
 
@@ -135,6 +142,20 @@ table.browse-table {
     a {
       display: block;
       padding: 7px 0;
+      color: $text_color;
+
+      &:hover {
+        color: $link_hover_color_primary;
+      }
+
+      img, span {
+        display: inline-block;
+        vertical-align: middle;
+      }
+
+      img {
+        margin-right: 8px;
+      }
     }
   }
 
@@ -147,6 +168,15 @@ table.browse-table {
     min-width: 200px;
     max-width: 250px;
     white-space: normal;
+
+    a {
+      color: $link_color;
+      font-weight: 600;
+
+      &:hover {
+        color: $link_hover_color_secondary;
+      }
+    }
   }
 
   .actions-cell {
@@ -197,7 +227,7 @@ select.stealthy.ng-pristine {
   background-color: $primary_background;
 }
 
-.table-results {
+.table-container {
   overflow-x: auto;
 }
 

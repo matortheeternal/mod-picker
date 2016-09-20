@@ -68,16 +68,12 @@
 
             <div class="right-column right-browse-column">
                 <h2>Users</h2>
-                <loader data="users" content-class="table-results" spinner-class="big-spinner" ng-if="!error">
-                    <table-results label="users" data="users" columns="columns" actions="actions" column-groups="columnGroups" available-column-data="availableColumnData" sort="sort"></table-results>
+                <loader data="users" content-class="table-container" spinner-class="big-spinner" ng-if="!error">
+                    <table-results label="users" data="users"></table-results>
                     <page-results pages="pages" data="users" callback="getData"></page-results>
                 </loader>
 
-                <div class="content-message content-error" ng-if="error">
-                    There was an error retrieving Users.<br>
-                    <!--TODO: Render JSON errors here, if available?-->
-                    Error {{error.status}}: {{error.statusText}}
-                </div>
+                <error-display content-class="content-message content-error" errors="error" label="Users"></error-display>
             </div>
         </div>
     </div>

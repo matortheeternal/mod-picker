@@ -30,7 +30,7 @@ app.controller('helpPageCommentsController', function($scope, contributionServic
         var options = {
             sort: {
                 column: 'submitted',
-                direction: 'desc'
+                direction: 'DESC'
             },
             page: page || 1
         };

@@ -48,23 +48,6 @@ app.controller('modCompatibilityIssuesController', function($scope, listUtils) {
         });
     };
 
-    /* UPDATE VIEW MODEL */
-    $scope.recoverCompatibilityNotes = function(modId) {
-        $scope.notes.compatibility.forEach(function(note) {
-            if (note._destroy && note.mods[0].id == modId || note.mods[1].id == modId) {
-                delete note._destroy;
-            }
-        });
-    };
-
-    $scope.removeCompatibilityNotes = function(modId) {
-        $scope.notes.compatibility.forEach(function(note) {
-            if (note.mods[0].id == modId || note.mods[1].id == modId) {
-                note._destroy = true;
-            }
-        });
-    };
-
     /* RESOLUTION ACTIONS */
     $scope.$on('resolveCompatibilityNote', function(event, options) {
         switch(options.action) {
@@ -83,6 +66,14 @@ app.controller('modCompatibilityIssuesController', function($scope, listUtils) {
         }
     });
 
+    $scope.resolveAllCompatibility = function() {
+        $scope.notes.unresolved_compatibility.forEach(function(note) {
+            if (note.compatibility_mod) {
+                $scope.addMod(note.compatibility_mod.id);
+            }
+        });
+    };
+
     // event triggers
     $scope.$on('initializeModules', $scope.buildUnresolvedCompatibility);
     $scope.$on('reloadModules', function() {
@@ -94,11 +85,15 @@ app.controller('modCompatibilityIssuesController', function($scope, listUtils) {
         $scope.buildUnresolvedCompatibility();
     });
     $scope.$on('modRemoved', function(event, modId) {
-        if (modId) $scope.removeCompatibilityNotes(modId);
+        if (modId) {
+            listUtils.removeModNotes($scope.notes.compatibility, modId, function(note) {
+                $scope.destroyIgnoreNote('CompatibilityNote', note);
+            });
+        }
         $scope.buildUnresolvedCompatibility();
     });
     $scope.$on('modRecovered', function(event, modId) {
-        if (modId) $scope.recoverCompatibilityNotes(modId);
+        if (modId) listUtils.recoverModNotes($scope.notes.compatibility, modId);
         $scope.buildUnresolvedCompatibility();
     });
     $scope.$on('modAdded', function(event, modData) {

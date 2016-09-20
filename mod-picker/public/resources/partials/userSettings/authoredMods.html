@@ -1,6 +1,12 @@
-<div class="list-table-container">
+<loader data="mods" spinner-class="big-spinner" ng-if="!errors.mods">
     <div class="content-block">
-        <div class="content-title">Authored Mods</div>
-        <mods-table mods="user.mods" title="Authored Mods"></mods-table>
+        <div class="content-title">
+            Authored Mods
+        </div>
+        <div class="content-container table-container">
+            <table-results data="mods" message="No mods found."></table-results>
+        </div>
     </div>
-</div>
+</loader>
+
+<error-display content-class="content-message content-error" errors="errors.mods" label="your authored mods"></error-display>

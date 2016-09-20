@@ -4,22 +4,11 @@ module Correctable
   included do
     enum standing: [ :good, :unknown, :bad ]
 
-    scope :editor, -> (username) { joins(:editors).where(:users => {:username => username}) }
-    scope :standing, -> (standing_hash) {
-      # build commentables array
-      standings = []
-      standing_hash.each_with_index do |(key,value),index|
-        if standing_hash[key]
-          standings.push(index)
-        end
-      end
+    user_scope :editors, :alias => 'editor'
+    enum_scope :standing
+    range_scope :corrections_count, :history_entries_count
 
-      # return query
-      where(standing: standings)
-    }
-    scope :corrections_count, -> (range) { where(corrections_count: range[:min]..range[:max]) }
-    scope :history_entries_count, -> (range) { where(history_entries_count: range[:min]..range[:max]) }
-
+    belongs_to :corrector, :class_name => 'User'
     has_many :corrections, :as => 'correctable'
   end
 

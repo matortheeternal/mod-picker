@@ -1,7 +1,8 @@
 class ModListPluginsController < ApplicationController
   def create
     @mod_list_plugin = ModListPlugin.new(mod_list_plugin_params)
-    authorize! :create, @mod_list_plugin
+    authorize! :read, @mod_list_plugin.plugin
+    authorize! :update, @mod_list_plugin.mod_list
 
     if @mod_list_plugin.save
       render json: {
@@ -15,6 +16,6 @@ class ModListPluginsController < ApplicationController
 
   private
     def mod_list_plugin_params
-      params.require(:mod_list_plugin).permit(:mod_list_id, :plugin_id, :active, :load_order)
+      params.require(:mod_list_plugin).permit(:mod_list_id, :plugin_id, :index)
     end
 end

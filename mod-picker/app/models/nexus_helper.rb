@@ -113,6 +113,7 @@ class NexusHelper
 
     # construct mod url
     mod_url = "http://www.nexusmods.com/#{game_name}/mods/#{id}"
+    puts "NexusHelper: Scraping "+mod_url
 
     # prepare headers
     headers = {
@@ -122,9 +123,11 @@ class NexusHelper
 
     # get the mod page
     response = RestClient.get(mod_url, headers)
+    puts "  Recieved response #{response.size}"
     @last_request = DateTime.now
 
     # parse needed data from the mod page
+    puts "  Parsing response"
     doc = Nokogiri::HTML(response.body)
     mod_data = {}
 
@@ -145,6 +148,7 @@ class NexusHelper
     # scrape statistics
     mod_data[:has_stats] = Rails.application.config.scrape_nexus_statistics
     if Rails.application.config.scrape_nexus_statistics
+      puts "  Parsing statistics"
       mod_data[:endorsements] = doc.at_css("#span_endors_number").text.gsub(',', '')
       mod_data[:unique_downloads] = doc.at_css(".file-unique-dls strong").text.gsub(',', '')
       mod_data[:downloads] = doc.at_css(".file-total-dls strong").text.gsub(',', '')
@@ -165,6 +169,7 @@ class NexusHelper
     end
 
     # return the mod data
+    puts "  Done."
     mod_data
   end
 end

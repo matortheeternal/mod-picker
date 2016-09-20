@@ -141,6 +141,7 @@ class WorkshopHelper
   def self.scrape_mod(id)
     # construct mod url
     mod_url = "http://steamcommunity.com/sharedfiles/filedetails/#{id}"
+    puts "WorkshopHelper: Scraping "+mod_url
 
     # prepare headers
     headers = {
@@ -149,8 +150,10 @@ class WorkshopHelper
 
     # get the mod page
     response = RestClient.get(mod_url, headers)
+    puts "  Recieved response #{response.size}"
 
     # parse needed data from the mod page
+    puts "  Parsing response..."
     doc = Nokogiri::HTML(response.body)
     mod_data = {}
 
@@ -172,6 +175,7 @@ class WorkshopHelper
     # scrape statistics
     mod_data[:has_stats] = Rails.application.config.scrape_workshop_statistics
     if Rails.application.config.scrape_workshop_statistics
+      puts "  Parsing statistics"
       mod_data[:file_size] = stats[0].text.gsub(' MB', '').to_f * 1024 * 1024
       # <.sectionTabs>
       sectionTabs = doc.at_css(".sectionTabs").css(".sectionTab")
@@ -189,6 +193,7 @@ class WorkshopHelper
     end
 
     # return the mod data
+    puts "  Done."
     mod_data
   end
 end

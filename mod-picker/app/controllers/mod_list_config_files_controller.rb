@@ -1,7 +1,7 @@
 class ModListConfigFilesController < ApplicationController
   def create
     @mod_list_config_file = ModListConfigFile.new(mod_list_config_file_params)
-    authorize! :create, @mod_list_config_file
+    authorize! :update, @mod_list_config_file.mod_list
 
     if @mod_list_config_file.save
       render json: {

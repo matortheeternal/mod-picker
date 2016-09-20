@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  before_action :set_user, only: [:show, :comments, :endorse, :unendorse, :update, :destroy]
+  before_action :set_user, only: [:show, :comments, :endorse, :unendorse, :mod_lists, :mods]
 
   # GET /users
   def index
@@ -34,27 +34,6 @@ class UsersController < ApplicationController
     }
   end
 
-  # GET /link_account
-  def link_account
-    bio = current_user.bio
-    case params[:site]
-      when "Nexus Mods"
-        verified = bio.verify_nexus_account(params[:user_path])
-      when "Lover's Lab"
-        verified = bio.verify_lover_account(params[:user_path])
-      when "Steam Workshop"
-        verified = bio.verify_workshop_account(params[:user_path])
-      else
-        verified = false
-    end
-
-    if verified
-      render json: {status: :ok, verified: true, bio: bio}
-    else
-      render json: {status: :ok, verified: false}
-    end
-  end
-
   # GET /users/1/comments
   def comments
     authorize! :read, @user
@@ -65,26 +44,6 @@ class UsersController < ApplicationController
         max_entries: count,
         entries_per_page: 10
     }
-  end
-
-  # PATCH/PUT /users/1
-  def update
-    authorize! :update, @user
-    if @user.update(user_params)
-      render json: {status: :ok}
-    else
-      render json: @user.errors, status: :unprocessable_entity
-    end
-  end
-
-  # DELETE /users/1
-  def destroy
-    authorize! :destroy, @user
-    if @user.destroy
-      render json: {status: :ok}
-    else
-      render json: @user.errors, status: :unprocessable_entity
-    end
   end
 
   # POST /users/1/rep
@@ -113,10 +72,37 @@ class UsersController < ApplicationController
     end
   end
 
+  # GET /users/1/mod_lists
+  def mod_lists
+    authorize! :read, @user
+
+    favorite_mod_lists = @user.starred_mod_lists.accessible_by(current_ability)
+    authored_mod_lists = @user.mod_lists.accessible_by(current_ability)
+
+    render :json => {
+      favorites: favorite_mod_lists,
+      authored: authored_mod_lists
+    }
+  end
+
+  # GET /users/1/mods
+  def mods
+    authorize! :read, @user
+
+    favorite_mods = @user.starred_mods.includes(:author_users).accessible_by(current_ability)
+    authored_mods = @user.mods.includes(:author_users).accessible_by(current_ability)
+    sources = { :nexus => true, :lab => true, :workshop => true }
+
+    render :json => {
+        favorites: Mod.index_json(favorite_mods, sources),
+        authored: Mod.index_json(authored_mods, sources)
+    }
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_user
-      @user = User.joins(:bio, :reputation).find(params[:id])
+      @user = User.find(params[:id])
     end
 
     def search_params
@@ -125,11 +111,6 @@ class UsersController < ApplicationController
 
     # Params we allow filtering on
     def filtering_params
-      params[:filters].slice(:search, :linked, :roles, :reputation, :joined, :last_seen, :authored_mods, :mod_lists, :comments, :reviews, :compatibility_notes, :install_order_notes, :load_order_notes, :corrections)
-    end
-
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def user_params
-      params.require(:user).permit(:username, :role, :title, :joined, :active_mod_list_id, :email, :about_me)
+      params[:filters].slice(:search, :linked, :roles, :reputation, :joined, :last_seen, :authored_mods, :mod_lists, :submitted_comments, :comments, :reviews, :compatibility_notes, :install_order_notes, :load_order_notes, :corrections)
     end
 end

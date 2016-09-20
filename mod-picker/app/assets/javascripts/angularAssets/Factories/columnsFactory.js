@@ -19,6 +19,20 @@ app.service('columnsFactory', function() {
             },
             {
                 group: "General",
+                visibility: false,
+                label: "Primary Category",
+                data: "primary_category.name",
+                unsortable: true
+            },
+            {
+                group: "General",
+                visibility: false,
+                label: "Secondary Category",
+                data: "secondary_category.name",
+                unsortable: true
+            },
+            {
+                group: "General",
                 visibility: true,
                 label: "Released",
                 data: "released",
@@ -26,7 +40,7 @@ app.service('columnsFactory', function() {
             },
             {
                 group: "General",
-                visibility: true,
+                visibility: false,
                 label: "Updated",
                 data: "updated",
                 filter: "date"
@@ -63,7 +77,7 @@ app.service('columnsFactory', function() {
                 group: "Mod Picker",
                 visibility: false,
                 label: "Assets",
-                data: "assets_count",
+                data: "asset_files_count",
                 filter: "number"
             },
             {
@@ -164,7 +178,7 @@ app.service('columnsFactory', function() {
                 visibility: false,
                 label: "Downloads",
                 data: {
-                    nexus: "nexus_infos.total_downloads",
+                    nexus: "nexus_infos.downloads",
                     lab: "lover_infos.downloads"
                 },
                 filter: "number"
@@ -262,6 +276,10 @@ app.service('columnsFactory', function() {
                 required: true,
                 label: "Username",
                 data: "username",
+                image: function(user) {
+                    return user.avatar || ('/users/' + user.title + '.png');
+                },
+                imageClass: "avatar-small",
                 link: function(user) {
                     return "#/user/" + user.id
                 }
@@ -298,6 +316,7 @@ app.service('columnsFactory', function() {
                 visibility: true,
                 label: "Reputation",
                 data: "reputation.overall",
+                sortData: "user_reputations.overall",
                 filter: "number:0"
             },
             {
@@ -457,7 +476,8 @@ app.service('columnsFactory', function() {
                         return "#/mod/" + item.mod.id;
                     }
                 },
-                class: "primary-column"
+                class: "primary-column",
+                sortData: "mods.name"
             },
             {
                 group: "General",
@@ -477,13 +497,17 @@ app.service('columnsFactory', function() {
                 group: "General",
                 visibility: true,
                 label: "Primary Category",
-                data: "mod.primary_category.name"
+                data: "mod.primary_category.name",
+                class: "category-column",
+                unsortable: true
             },
             {
                 group: "General",
                 visibility: false,
                 label: "Secondary Category",
-                data: "mod.secondary_category.name"
+                data: "mod.secondary_category.name",
+                class: "category-column",
+                unsortable: true
             },
             {
                 group: "General",
@@ -591,19 +615,22 @@ app.service('columnsFactory', function() {
                     if (item.mod) {
                         return "#/mod/" + item.mod.id;
                     }
-                }
+                },
+                sortData: "mods.name"
             },
             {
                 group: "General",
                 visibility: true,
                 label: "Primary Category",
-                data: "mod.primary_category.name"
+                data: "mod.primary_category.name",
+                class: 'category-column'
             },
             {
                 group: "General",
                 visibility: false,
                 label: "Secondary Category",
-                data: "mod.secondary_category.name"
+                data: "mod.secondary_category.name",
+                class: 'category-column'
             },
             {
                 group: "General",
@@ -651,6 +678,293 @@ app.service('columnsFactory', function() {
     };
 
     this.modListPluginColumnGroups = function() {
+        return ["General"];
+    };
+
+    this.modListColumns = function(onIndex) {
+        return [
+            {
+                group: "General",
+                visibility: true,
+                required: true,
+                label: "Name",
+                data: "name",
+                class: "primary-column",
+                link: function (item) {
+                    return "#/mod-list/" + item.id;
+                }
+            },
+            {
+                group: "General",
+                visibility: false,
+                label: "Submitter",
+                data: "submitter.username",
+                link: function (item) {
+                    return "#/user/" + item.submitter.id;
+                }
+            },
+            {
+                group: "General",
+                visibility: true,
+                label: "Status",
+                data: "status",
+                filter: "humanize:1"
+            },
+            {
+                group: "General",
+                visibility: !onIndex,
+                label: "Visibility",
+                data: function(item) {
+                    switch(item.visibility) {
+                        case 'visibility_private': return 'Private';
+                        case 'visibility_unlisted': return 'Unlisted';
+                        case 'visibility_public': return 'Public';
+                    }
+                },
+                filter: "humanize:1"
+            },
+            {
+                group: "General",
+                visibility: !!onIndex,
+                label: "Tools",
+                data: "tools_count",
+                filter: "number"
+            },
+            {
+                group: "General",
+                visibility: true,
+                label: "Mods",
+                data: "mods_count",
+                filter: "number"
+            },
+            {
+                group: "General",
+                visibility: true,
+                label: "Plugins",
+                data: "plugins_count",
+                filter: "number"
+            },
+            {
+                group: "General",
+                visibility: !!onIndex,
+                label: "Config Files",
+                data: "config_files_count",
+                filter: "number"
+            },
+            {
+                group: "Extended",
+                visibility: false,
+                label: "Custom Mods",
+                data: "custom_mods_count",
+                filter: "number"
+            },
+            {
+                group: "Extended",
+                visibility: false,
+                label: "Custom Tools",
+                data: "custom_tools_count",
+                filter: "number"
+            },
+            {
+                group: "Extended",
+                visibility: false,
+                label: "Custom Config Files",
+                data: "custom_config_files_count",
+                filter: "number"
+            },
+            {
+                group: "Extended",
+                visibility: false,
+                label: "Compatibility Notes",
+                data: "compatibility_notes_count",
+                filter: "number"
+            },
+            {
+                group: "Extended",
+                visibility: false,
+                label: "Install Order Notes",
+                data: "install_order_notes_count",
+                filter: "number"
+            },
+            {
+                group: "Extended",
+                visibility: false,
+                label: "Load Order Notes",
+                data: "load_order_notes_count",
+                filter: "number"
+            },
+            {
+                group: "Extended",
+                visibility: false,
+                label: "Ignored Notes",
+                data: "ignored_notes_count",
+                filter: "number"
+            },
+            {
+                group: "Extended",
+                visibility: false,
+                label: "BSA Files",
+                data: "bsa_files_count",
+                filter: "number"
+            },
+            {
+                group: "Extended",
+                visibility: false,
+                label: "Asset Files",
+                data: "asset_files_count",
+                filter: "number"
+            },
+            {
+                group: "Extended",
+                visibility: false,
+                label: "Records",
+                data: "records_count",
+                filter: "number"
+            },
+            {
+                group: "Extended",
+                visibility: false,
+                label: "Override Records",
+                data: "override_records_count",
+                filter: "number"
+            },
+            {
+                group: "Extended",
+                visibility: false,
+                label: "Plugin Errors",
+                data: "plugin_errors_count",
+                filter: "number"
+            },
+            {
+                group: "General",
+                visibility: false,
+                label: "Tags",
+                data: "tags_count",
+                filter: "number"
+            },
+            {
+                group: "General",
+                visibility: !onIndex,
+                label: "Stars",
+                data: "stars_count",
+                filter: "number"
+            },
+            {
+                group: "General",
+                visibility: false,
+                label: "Comments",
+                data: "comments_count",
+                filter: "number"
+            },
+            {
+                group: "General",
+                visibility: false,
+                label: "Started",
+                data: "submitted",
+                filter: "date"
+            },
+            {
+                group: "General",
+                visibility: false,
+                label: "Completed",
+                data: "completed",
+                filter: "date"
+            },
+            {
+                group: "General",
+                visibility: false,
+                label: "Updated",
+                data: "updated",
+                filter: "date"
+            }
+        ]
+    };
+
+    this.modListColumnGroups = function() {
+        return ["General", "Extended"];
+    };
+
+    this.pluginColumns = function() {
+        return [
+            {
+                group: "General",
+                visibility: true,
+                required: true,
+                label: "Filename",
+                data: "filename",
+                class: "primary-column",
+                link: function (item) {
+                    return "#/mod/" + item.mod.id + "/analysis?plugin=" + item.id;
+                }
+            },
+            {
+                group: "General",
+                visibility: true,
+                label: "Mod",
+                data: "mod.name",
+                link: function (item) {
+                    return "#/mod/" + item.mod.id;
+                },
+                sortData: "mods.name"
+            },
+            {
+                group: "General",
+                visibility: false,
+                label: "CRC",
+                data: "crc_hash"
+            },
+            {
+                group: "General",
+                visibility: false,
+                label: "Author",
+                data: "author"
+            },
+            {
+                group: "General",
+                visibility: true,
+                label: "File Size",
+                data: "file_size",
+                filter: "bytes"
+            },
+            {
+                group: "General",
+                visibility: true,
+                label: "Records",
+                data: "record_count",
+                filter: "number"
+            },
+            {
+                group: "General",
+                visibility: true,
+                label: "Overrides",
+                data: "override_count",
+                filter: "number"
+            },
+            {
+                group: "General",
+                visibility: false,
+                label: "Errors",
+                data: "errors_count",
+                filter: "number"
+            },
+            {
+                group: "General",
+                visibility: false,
+                label: "Mod Lists",
+                data: "mod_lists_count",
+                filter: "number"
+            },
+            {
+                group: "General",
+                visibility: false,
+                label: "Load Order Notes",
+                data: "load_order_notes_count",
+                filter: "number"
+            }
+        ]
+    };
+
+    this.pluginColumnGroups = function() {
         return ["General"];
     };
 });

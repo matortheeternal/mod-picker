@@ -1,11 +1,14 @@
 <div class="content-block">
     <div class="content-title">Required Tools
-    <span class="note-item">
-        ({{showMissingTools ? 'Missing' : 'All'}})
-    </span>
-    <span class="right-item toggle-item" ng-click="showMissingTools = !showMissingTools">
-        {{showMissingTools ? 'Show All' : 'Show Missing Requirements'}}
-    </span>
+        <span class="note-item">
+            ({{showMissingTools ? 'Missing' : 'All'}})
+        </span>
+        <span class="right-item action-box" ng-if="required.missing_tools.length" ng-click="resolveAllRequirements()">
+            <i class="fa fa-check"></i> Resolve All
+        </span>
+        <span class="right-item toggle-item" ng-click="showMissingTools = !showMissingTools">
+            {{showMissingTools ? 'Show All' : 'Show Missing Requirements'}}
+        </span>
     </div>
 
     <div class="content-container">

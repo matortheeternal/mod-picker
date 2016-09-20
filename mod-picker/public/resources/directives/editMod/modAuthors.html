@@ -1,0 +1,17 @@
+<h3 class="section-title">Mod Authors
+    <span class="help-tooltip" title="The users who can edit this mod.  Click for &#13;more information.">?</span>
+</h3>
+<section>
+    <div class="dynamic-item" ng-repeat="author in mod.mod_authors" ng-hide="author._destroy">
+        <select ng-model="author.role">
+            <option value="author">Author</option>
+            <option value="contributor">Contributor</option>
+            <option value="curator">Curator</option>
+        </select>
+        <search-input search-function="searchUsers" result-id="author.user_id" search-text="author.user.username" disabled="author.id" label="user" model="username" placeholder="Enter username"></search-input>
+                        <span class="remove-item" ng-click="removeAuthor(author)" title="Remove author">
+                            <i class="fa fa-times"></i>
+                        </span>
+    </div>
+    <input type="button" class="btn" value="Add Author" ng-click="addAuthor()">
+</section>

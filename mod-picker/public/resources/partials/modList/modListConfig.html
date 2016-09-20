@@ -38,13 +38,13 @@
             <div class="content-options" ng-if="!group.activeConfig.config_file">
                 <label>
                     <strong>Filename</strong>
-                    <input type="text" class="text-input" ng-model="group.activeConfig.filename" ng-disabled="!editing" spellcheck="false" pu-elastic-input>
+                    <input type="text" class="elastic-input" ng-model="group.activeConfig.filename" ng-disabled="!editing" spellcheck="false" pu-elastic-input>
                 </label>
             </div>
             <div class="content-options" ng-if="!group.activeConfig.config_file">
                 <label>
                     <strong>Install Path</strong>
-                    <input type="text" class="text-input" ng-model="group.activeConfig.install_path" ng-disabled="!editing" spellcheck="false" pu-elastic-input>
+                    <input type="text" class="elastic-input" ng-model="group.activeConfig.install_path" ng-disabled="!editing" spellcheck="false" pu-elastic-input>
                 </label>
             </div>
             <textarea class="config-editor" ng-model="group.activeConfig.text_body" ng-disabled="!editing" spellcheck="false"></textarea>

@@ -1,18 +1,23 @@
 class ModListsController < ApplicationController
-  before_action :set_mod_list, only: [:show, :update, :update_tags, :destroy, :tools, :plugins, :config_files, :analysis, :comments]
-  before_action :set_active_mod_list, only: [:active, :mods]
+  before_action :check_sign_in, only: [:create, :set_active, :update, :update_tags, :create_star, :destroy_star]
+  before_action :set_mod_list, only: [:show, :hide, :update, :update_tags, :tools, :mods, :plugins, :config_files, :analysis, :comments]
 
   # GET /mod_lists
   def index
-    @mod_lists = ModList.all
+    @mod_lists = ModList.accessible_by(current_ability).filter(filtering_params).sort(params[:sort]).paginate(:page => params[:page])
+    count =  ModList.accessible_by(current_ability).filter(filtering_params).count
 
-    render :json => @mod_lists
+    render :json => {
+        mod_lists: @mod_lists,
+        max_entries: count,
+        entries_per_page: ModList.per_page
+    }
   end
 
   # GET /mod_lists/1
   def show
     authorize! :read, @mod_list, :message => "You are not allowed to view this mod list."
-    star = ModListStar.exists?(:mod_list_id => @mod_list.id, :user_id => current_user.id)
+    star = current_user.present? && ModListStar.exists?(:mod_list_id => @mod_list.id, :user_id => current_user.id)
     render :json => {
         mod_list: @mod_list.show_json,
         star: star
@@ -21,10 +26,11 @@ class ModListsController < ApplicationController
 
   # GET /mod_lists/active
   def active
+    @mod_list = current_user.present? && current_user.active_mod_list
     if @mod_list
-      render :json => @mod_list
+      render :json => @mod_list.tracking_json
     else
-      render status: 404
+      render :json => { error: "No active mod list found." }
     end
   end
 
@@ -33,7 +39,7 @@ class ModListsController < ApplicationController
     authorize! :read, @mod_list
 
     # prepare primary data
-    tools = @mod_list.mod_list_mods.utility(true).includes(:mod => :required_mods).order(:index)
+    tools = @mod_list.mod_list_mods.utility(true).includes(:mod_list_mod_options, :mod => :mod_options).order(:index)
     custom_tools = @mod_list.custom_mods.utility(true)
     groups = @mod_list.mod_list_groups.where(tab: 0).order(:index)
 
@@ -51,7 +57,7 @@ class ModListsController < ApplicationController
     authorize! :read, @mod_list
 
     # prepare primary data
-    mods = @mod_list.mod_list_mods.utility(false).includes(:mod).order(:index)
+    mods = @mod_list.mod_list_mods.utility(false).includes(:mod_list_mod_options, :mod => :mod_options).order(:index)
     custom_mods = @mod_list.custom_mods.utility(false)
     groups = @mod_list.mod_list_groups.where(tab: 1).order(:index)
 
@@ -60,8 +66,8 @@ class ModListsController < ApplicationController
     install_order_notes = @mod_list.install_order_notes
 
     # prepare helpful marks
-    c_helpful_marks = HelpfulMark.submitter(current_user.id).helpfulable("CompatibilityNote", compatibility_notes.ids)
-    i_helpful_marks = HelpfulMark.submitter(current_user.id).helpfulable("InstallOrderNote", install_order_notes.ids)
+    c_helpful_marks = HelpfulMark.submitter(current_user.id).helpfulables("CompatibilityNote", compatibility_notes.ids)
+    i_helpful_marks = HelpfulMark.submitter(current_user.id).helpfulables("InstallOrderNote", install_order_notes.ids)
 
     # render response
     render :json => {
@@ -82,7 +88,7 @@ class ModListsController < ApplicationController
 
     # prepare primary data
     plugins = @mod_list.mod_list_plugins.includes(:plugin)
-    plugins_store = @mod_list.plugins.order(:mod_id)
+    plugins_store = @mod_list.plugins_store.order(:mod_option_id)
     custom_plugins = @mod_list.custom_plugins
     groups = @mod_list.mod_list_groups.where(tab: 2).order(:index)
 
@@ -91,8 +97,8 @@ class ModListsController < ApplicationController
     load_order_notes = @mod_list.load_order_notes
 
     # prepare helpful marks
-    c_helpful_marks = HelpfulMark.submitter(current_user.id).helpfulable("CompatibilityNote", compatibility_notes.ids)
-    l_helpful_marks = HelpfulMark.submitter(current_user.id).helpfulable("LoadOrderNote", load_order_notes.ids)
+    c_helpful_marks = HelpfulMark.submitter(current_user.id).helpfulables("CompatibilityNote", compatibility_notes.ids)
+    l_helpful_marks = HelpfulMark.submitter(current_user.id).helpfulables("LoadOrderNote", load_order_notes.ids)
 
     # render response
     render :json => {
@@ -169,6 +175,44 @@ class ModListsController < ApplicationController
     authorize! :create, @mod_list
 
     if @mod_list.save
+      @mod_list.add_official_content
+      if params.has_key?(:active) && params[:active]
+        @mod_list.set_active
+        render json: {
+            mod_list: @mod_list.tracking_json
+        }
+      else
+        render json: {
+            mod_list: @mod_list
+        }
+      end
+    else
+      render json: @mod_list.errors, status: :unprocessable_entity
+    end
+  end
+
+  # POST /mod_lists/active
+  def set_active
+    @mod_list = nil
+    if params.has_key?(:id) && params[:id]
+      @mod_list = ModList.find(params[:id])
+      authorize! :read, @mod_list
+    end
+
+    if current_user.update(active_mod_list_id: params[:id])
+      render json: {
+          mod_list: @mod_list && @mod_list.tracking_json
+      }
+    else
+      render json: current_user.errors, status: :unproccessable_entity
+    end
+  end
+
+  # POST /mod_lists/1/hide
+  def hide
+    authorize! :hide, @mod_list
+    @mod_list.hidden = params[:hidden]
+    if @mod_list.save
       render json: {status: :ok}
     else
       render json: @mod_list.errors, status: :unprocessable_entity
@@ -199,6 +243,7 @@ class ModListsController < ApplicationController
     @mod_list.mod_list_tags.each_with_index do |mod_list_tag, index|
       if params[:tags].exclude?(existing_tags_text[index])
         authorize! :destroy, mod_list_tag
+        mod_list_tag.removed_by = current_user_id
         mod_list_tag.destroy
       end
     end
@@ -264,25 +309,14 @@ class ModListsController < ApplicationController
       @mod_list = ModList.find(params[:id])
     end
 
-    def set_active_mod_list
-      # TODO: handle user not logged in
-      if current_user
-        if current_user.active_mod_list_id
-          @mod_list = current_user.active_mod_list
-        else
-          @mod_list = current_user.mod_lists.create(
-              submitted_by: current_user.id,
-              game_id: params[:game_id] || Game.first.id,
-              name: current_user.username + "'s Mod List'"
-          )
-        end
-      end
+    def filtering_params
+      params[:filters].slice(:search, :description, :submitter, :status, :kind, :created, :updated, :completed, :tools, :mods, :plugins, :config_files, :ignored_notes, :stars, :custom_tools, :custom_mods, :master_plugins, :available_plugins, :custom_plugins, :custom_config_files, :compatibility_notes, :install_order_notes, :load_order_notes, :bsa_files, :asset_files, :records, :override_records, :plugin_errors, :tags, :comments)
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def mod_list_params
       params.require(:mod_list).permit(:game_id, :name, :description, :status, :visibility, :is_collection, :disable_comments, :lock_tags, :hidden,
-          :mod_list_mods_attributes => [:id, :group_id, :mod_id, :index, :_destroy],
+          :mod_list_mods_attributes => [:id, :group_id, :mod_id, :index, :_destroy, :mod_list_mod_options_attributes => [:id, :mod_option_id, :_destroy]],
           :custom_mods_attributes => [:id, :group_id, :is_utility, :index, :name, :description, :_destroy],
           :mod_list_plugins_attributes => [:id, :group_id, :plugin_id, :index, :cleaned, :merged, :_destroy],
           :custom_plugins_attributes => [:id, :group_id, :index, :cleaned, :merged, :compatibility_note_id, :filename, :description, :_destroy],

@@ -88,8 +88,4 @@
     <page-results pages="pages.compatibility_notes" data="mod.compatibility_notes" callback="retrieveCompatibilityNotes"></page-results>
 </loader>
 
-<div class="content-message content-error" ng-if="errors.compatibility_notes">
-    There was an error retrieving compatibility notes for this mod.<br>
-    <!--TODO: Render JSON errors here, if available?-->
-    Error {{errors.compatibility_notes.status}}: {{errors.compatibility_notes.statusText}}
-</div>
+<error-display content-class="content-message content-error" errors="errors.compatibility_notes" label="compatibility notes for this mod"></error-display>

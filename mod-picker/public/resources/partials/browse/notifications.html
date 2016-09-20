@@ -1,0 +1,9 @@
+<div class="page-container">
+    <div class="single-column">
+        <h2>Notifications</h2>
+        <loader data="notifications" spinner-class="huge-spinner" ng-if="!errors.notifications">
+            <notification show-created="true" ng-repeat="notification in notifications"></notification>
+            <page-results pages="pages" data="notifications" callback="retrieveNotifications"></page-results>
+        </loader>
+    </div>
+</div>

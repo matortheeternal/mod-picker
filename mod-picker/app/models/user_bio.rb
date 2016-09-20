@@ -1,12 +1,12 @@
 class UserBio < ActiveRecord::Base
   belongs_to :user
 
-  # Validations
+  # VALIDATIONS
   validates :user_id, presence: true
   validates :nexus_user_path, :lover_user_path, :workshop_user_path, length: { maximum: 64 }
   validates :nexus_username, :lover_username, :workshop_username, length: { maximum: 32 }
 
-  # Callbacks
+  # CALLBACKS
   after_create :generate_verification_tokens
 
   def generate_verification_tokens

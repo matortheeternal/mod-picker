@@ -1,4 +1,4 @@
-app.service('sliderFactory', function () {
+app.service('sliderFactory', function ($filter) {
 
     function isPowerOfTen(val) {
         return (Math.log10(val) % 1) == 0;
@@ -22,6 +22,14 @@ app.service('sliderFactory', function () {
 
         // set last value to max value
         array[array.length - 1] = maxValue;
+        return array;
+    };
+
+    this.generateByteSteps = function(maxBytes) {
+        var array = ["0"];
+        for (i = 64; (i <= maxBytes); i *= 2) {
+            array.push($filter('bytes')(i))
+        }
         return array;
     };
 

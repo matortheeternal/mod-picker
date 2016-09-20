@@ -114,7 +114,7 @@ app.service('listUtils', function () {
 
         var moveModel = model;
         // if both items are in the same group, move within the group
-        if (moveItem.group_id == destItem.group_id) {
+        if (!!moveItem.group_id && moveItem.group_id == destItem.group_id) {
             moveModel = service.findGroup(model, moveItem.group_id).children;
         }
         // send a cursor down the model until the index of the item we're on exceeds the destItem's index
@@ -138,6 +138,41 @@ app.service('listUtils', function () {
         model.forEach(function(item, index, array) {
             if (item._destroy) {
                 array.splice(index, 1);
+            }
+        });
+    };
+
+    this.removeModNotes = function(notes, modId, ignoredCallback) {
+        notes.forEach(function(note) {
+            if (note.mods[0].id == modId || note.mods[1].id == modId) {
+                note._destroy = true;
+                if (note.ignored) ignoredCallback(note);
+            }
+        });
+    };
+
+    this.recoverModNotes = function(notes, modId) {
+        notes.forEach(function(note) {
+            if (note._destroy && note.mods[0].id == modId || note.mods[1].id == modId) {
+                delete note._destroy;
+                if (note.ignored) note.ignored = false;
+            }
+        });
+    };
+
+    this.removePluginNotes = function(notes, pluginId, ignoredCallback) {
+        notes.forEach(function(note) {
+            if (note.plugins[0].id == pluginId || note.plugins[1].id == pluginId) {
+                note._destroy = true;
+                if (note.ignored) ignoredCallback(note);
+            }
+        });
+    };
+
+    this.recoverPluginNotes = function(notes, pluginId) {
+        notes.forEach(function(note) {
+            if (note._destroy && note.plugins[0].id == pluginId || note.plugins[1].id == pluginId) {
+                delete note._destroy;
             }
         });
     };

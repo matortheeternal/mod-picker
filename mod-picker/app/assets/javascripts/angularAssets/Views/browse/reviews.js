@@ -1,14 +1,14 @@
 app.run(function($futureState, indexFactory, filtersFactory) {
     // dynamically construct and apply state
     var filterPrototypes = filtersFactory.reviewFilters();
-    var state = indexFactory.buildState('reputation', 'desc', 'reviews', filterPrototypes);
+    var state = indexFactory.buildState('reputation', 'DESC', 'reviews', filterPrototypes);
     $futureState.futureState(state);
 });
 
-app.controller('reviewsController', function ($scope, $stateParams, $state, currentUser, contributionService, indexService,  filtersFactory, indexFactory, sortFactory) {
+app.controller('reviewsController', function ($scope, $rootScope, $stateParams, $state, contributionService, indexService,  filtersFactory, indexFactory, sortFactory) {
     // get parent variables
-    $scope.currentUser = currentUser;
-    $scope.globalPermissions = angular.copy(currentUser.permissions);
+    $scope.currentUser = $rootScope.currentUser;
+    $scope.globalPermissions = angular.copy($rootScope.permissions);
 
     // sort options for view
     $scope.sortOptions = sortFactory.reviewSortOptions();
@@ -22,5 +22,5 @@ app.controller('reviewsController', function ($scope, $stateParams, $state, curr
     $scope.route = 'reviews';
     $scope.contributions = true;
     $scope.retrieve = contributionService.retrieveContributions;
-    indexFactory.buildIndex($scope, $stateParams, $state, indexService);
+    indexFactory.buildIndex($scope, $stateParams, $state);
 });

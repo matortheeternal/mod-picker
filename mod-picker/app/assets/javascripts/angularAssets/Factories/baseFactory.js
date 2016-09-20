@@ -1,4 +1,16 @@
 app.service('baseFactory', function() {
+    this.getModListGroupBase = function() {
+        return {
+            id: 0,
+            _destroy: false,
+            index: 0,
+            tab: "",
+            color: 0,
+            name: "",
+            description: ""
+        }
+    };
+
     this.getModListConfigFileBase = function() {
         return {
             id: 0,
@@ -71,6 +83,7 @@ app.service('baseFactory', function() {
             group_id: 0,
             mod: {
                 id: 0,
+                is_official: false,
                 image: "",
                 name: "",
                 aliases: "",
@@ -79,10 +92,23 @@ app.service('baseFactory', function() {
                 primary_category_id: 0,
                 secondary_category_id: 0,
                 stars_count: 0,
+                asset_files_count: 0,
                 average_rating: 0,
                 reputation: 0,
                 released: "",
-                updated: ""
+                updated: "",
+                mod_options: {
+                    id: 0,
+                    name: "",
+                    size: 0,
+                    default: false,
+                    is_fomod_option: false
+                }
+            },
+            mod_list_mod_options: {
+                id: 0,
+                _destroy: false,
+                mod_option_id: 0
             }
         }
     };

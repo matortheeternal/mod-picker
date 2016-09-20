@@ -1,4 +1,4 @@
-<div class="modal-container" ng-show="statusModal.visible">
+<div class="modal-container" ng-if="showStatusModal">
     <messages event="modalMessage"></messages>
 
     <div class="modal huge-modal" ng-hide="appeal || activeAppeal">
@@ -72,11 +72,7 @@
             </span>
         </loader>
 
-        <div class="content-message content-error" ng-if="errors.appeals">
-            There was an error retrieving appeals for this mod.<br>
-            <!--TODO: Render JSON errors here, if available?-->
-            Error {{errors.appeals.status}}: {{errors.appeals.statusText}}
-        </div>
+        <error-display content-class="content-message content-error" errors="errors.appeals" label="appeals for this mod"></error-display>
 
         <div class="action-button-container" ng-if="appealStatus && !errors.appeals">
             <input class="btn action-btn" type="submit" ng-click="startNewAppeal()" value="New Appeal">
@@ -99,11 +95,12 @@
                 <i class="fa fa-plus"></i> New Comment
             </span>
         </h3>
-        <loader data="appeal.comments" spinner-class="big-spinner" content-class="content-container">
+        <loader data="appeal.comments" spinner-class="big-spinner" content-class="content-container" ng-if="!errors.comments">
             <comments comments="appeal.comments" current-user="currentUser" model-name="'Correction'" target="appeal" event-prefix="'modal'"></comments>
 
             <page-results pages="pages" data="appeal.comments" callback="retrieveAppealComments"></page-results>
         </loader>
+        <error-display content-class="content-container" errors="errors.appeal_comments" label="appeal comments"></error-display>
 
         <!-- TODO: May need to move this before comments or make it a sticky footer? -->
         <div class="action-button-container">

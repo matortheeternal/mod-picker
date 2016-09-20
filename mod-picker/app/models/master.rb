@@ -1,12 +1,16 @@
 class Master < ActiveRecord::Base
+  include ScopeHelpers
+
   self.primary_keys = :plugin_id, :master_plugin_id
 
-  scope :plugins, -> (plugin_ids) { where(plugin_id: plugin_ids) }
+  # SCOPES
+  ids_scope :plugin_id
 
+  # ASSOCIATIONS
   belongs_to :plugin, :inverse_of => 'masters'
   belongs_to :master_plugin, :class_name => 'Plugin', :foreign_key => 'master_plugin_id', :inverse_of => 'children'
 
-  # Validations
+  # VALIDATIONS
   validates :plugin_id, :master_plugin_id, :index, presence: true
 
   def as_json(options={})

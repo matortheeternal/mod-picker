@@ -146,15 +146,26 @@ app.service('objectUtils', function () {
         return true;
     };
 
-    this.deleteEmptyProperties = function(obj, recurse) {
+    this.remapProperties = function(json, map) {
+        for (var property in map) {
+            if (map.hasOwnProperty(property)) {
+                var oldVal = property.surround('"');
+                var newVal = map[property].surround('"');
+                json = json.replace(new RegExp(oldVal, 'g'), newVal);
+            }
+        }
+        return json;
+    };
+
+    this.deleteEmptyProperties = function(obj, recurse, deleteEmptyStrings) {
         for (var property in obj) {
             if (obj.hasOwnProperty(property)) {
                 var v = obj[property];
                 var vt = typeof v;
-                if (vt === 'undefined' || (v.constructor === Array && !v.length)) {
+                if (vt === 'undefined' || (v.constructor === Array && !v.length) || (deleteEmptyStrings && v === "")) {
                     delete obj[property];
                 } else if (recurse && vt === 'object') {
-                    service.deleteEmptyProperties(v, recurse - 1);
+                    service.deleteEmptyProperties(v, recurse - 1, deleteEmptyStrings);
                 }
             }
         }
@@ -188,8 +199,8 @@ app.service('objectUtils', function () {
                 if (typeof obj[prop] === 'object') {
                     if (typeof base[prop] === 'object') {
                         service.cleanAttributes(obj[prop], base[prop]);
-                    } else {
-                        // delete obj property if it is an object and the base property is not
+                    } else if (obj[prop] !== null) {
+                        // delete property if it's a non-null object and the base property isn't
                         delete obj[prop];
                     }
                 }
@@ -199,5 +210,15 @@ app.service('objectUtils', function () {
             }
         }
         return obj;
+    };
+
+    this.csv = function(obj, separator) {
+        var a = [];
+        for (var prop in obj) {
+            if (obj.hasOwnProperty(prop)) {
+                a.push(obj[prop]);
+            }
+        }
+        return a.join(separator || ',');
     }
 });

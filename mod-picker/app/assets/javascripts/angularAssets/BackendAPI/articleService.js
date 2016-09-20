@@ -21,16 +21,12 @@ app.service('articleService', function($q, backend, userTitleService, pageUtils,
         return action.promise;
     };
 
-    this.retrieveComments = function(articleId, options, pageInformation) {
-        var output = $q.defer();
-        backend.post('/articles/' + articleId+ '/comments', options).then(function(response) {
-            userTitleService.associateTitles(response.comments);
-            pageUtils.getPageInformation(response, pageInformation, options.page);
-            output.resolve(response.comments);
-        }, function(response) {
-            output.reject(response);
-        });
-        return output.promise;
+    this.newArticle = function() {
+        return backend.retrieve('/articles/new');
+    };
+
+    this.editArticle = function(articleId) {
+        return backend.retrieve('/articles/' + articleId + '/edit');
     };
 
     this.updateArticle = function(article) {
@@ -49,7 +45,7 @@ app.service('articleService', function($q, backend, userTitleService, pageUtils,
         return backend.update('/articles/' + article.id, articleData);
     };
 
-    this.submitArticle = function(article, image) {
+    this.submitArticle = function(article) {
         // prepare article record
         var articleData = {
             article: {
@@ -60,7 +56,7 @@ app.service('articleService', function($q, backend, userTitleService, pageUtils,
 
         // submit article
         return backend.post('/articles', articleData);
-    }
+    };
 
     this.deleteArticle = function(articleId) {
         return backend.delete('/articles/' + articleId);

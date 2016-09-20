@@ -1,15 +1,15 @@
 app.run(function($futureState, indexFactory, filtersFactory) {
     // dynamically construct and apply state
     var filterPrototypes = filtersFactory.articleFilters();
-    var state = indexFactory.buildState('submitted', 'desc', 'articles', filterPrototypes);
+    var state = indexFactory.buildState('submitted', 'DESC', 'articles', filterPrototypes);
     state.controller = 'articlesIndexController';
     $futureState.futureState(state);
 });
 
-app.controller('articlesIndexController', function ($scope, $stateParams, $state, currentUser, articleService, columnsFactory, filtersFactory, indexService, indexFactory, sortFactory) {
+app.controller('articlesIndexController', function ($scope, $rootScope, $stateParams, $state, articleService, columnsFactory, filtersFactory, indexService, indexFactory, sortFactory) {
     // get parent variables
-    $scope.currentUser = currentUser;
-    $scope.globalPermissions = angular.copy(currentUser.permissions);
+    $scope.currentUser = $rootScope.currentUser;
+    $scope.globalPermissions = angular.copy($rootScope.permissions);
 
     // sort options for view
     $scope.sortOptions = sortFactory.articleSortOptions();
@@ -21,5 +21,5 @@ app.controller('articlesIndexController', function ($scope, $stateParams, $state
     // build generic controller stuff
     $scope.route = 'articles';
     $scope.retrieve = articleService.retrieveArticles;
-    indexFactory.buildIndex($scope, $stateParams, $state, indexService);
+    indexFactory.buildIndex($scope, $stateParams, $state);
 });

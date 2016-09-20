@@ -27,7 +27,7 @@ app.config(['$stateProvider', function($stateProvider) {
         views: {
             'Social': {
                 templateUrl: '/resources/partials/user/social.html',
-                controller: 'userSocialTabController'
+                controller: 'userSocialController'
             }
         },
         url: '/social'
@@ -36,7 +36,8 @@ app.config(['$stateProvider', function($stateProvider) {
         deepStateRedirect: true,
         views: {
             'Mod Lists': {
-                templateUrl: '/resources/partials/user/lists.html',
+                templateUrl: '/resources/partials/user/modLists.html',
+                controller: 'userModListsController'
             }
         },
         url: '/mod-lists'
@@ -45,100 +46,46 @@ app.config(['$stateProvider', function($stateProvider) {
         deepStateRedirect: true,
         views: {
             'Mods': {
-                templateUrl: '/resources/partials/user/mods.html'
+                templateUrl: '/resources/partials/user/mods.html',
+                controller: 'userModsController'
             }
         },
         url: '/mods'
     });
 }]);
 
-app.controller('userController', function($scope, $stateParams, currentUser, userObject, userService, errorService) {
+app.controller('userController', function($scope, $rootScope, $stateParams, userObject, userService, eventHandlerFactory, tabsFactory) {
     // get parent variables
-    $scope.currentUser = currentUser;
-    $scope.permissions = currentUser.permissions;
+    $scope.currentUser = $rootScope.currentUser;
+    $scope.permissions = angular.copy($rootScope.permissions);
 
     // set up local variables
     $scope.user = userObject.user;
     $scope.user.endorsed = userObject.endorsed;
+    $scope.isCurrentUser = $scope.currentUser.id == $scope.user.id;
+    $scope.roleClass = "user-role-" + $scope.user.role;
     $scope.pages = {
         profile_comments: {}
     };
-    $scope.retrieving = {};
+    $scope.roleTexts = {
+        admin: "Administrator",
+        moderator: "Moderator",
+        author: "Mod Author",
+        "": ""
+    };
+    $scope.tabs = tabsFactory.buildUserTabs();
 
-    $scope.roleClass = "user-role-" + $scope.user.role;
+    // shared function setup
+    eventHandlerFactory.buildMessageHandlers($scope);
 
-    //formatting the role displayed on the site
-    switch ($scope.user.role) {
-        case "admin":
-            $scope.user.role = "Administrator";
-            break;
-        case "moderator":
-            $scope.user.role = "Moderator";
-            break;
-        case "author":
-            $scope.user.role = "Mod Author";
-            break;
-        default:
-            //shows nothing if they have no notable role
-            $scope.user.role = "";
-            break;
-    }
-
-    //of the tab data
-    $scope.tabs = [
-        { name: 'Social'},
-        { name: 'Mod Lists'},
-        { name: 'Mods'}
-    ];
-
+    // creates or removes the current user's endorsement of a user
     $scope.endorse = function() {
         userService.endorse($scope.user.id, $scope.user.endorsed).then(function() {
             $scope.user.endorsed = !$scope.user.endorsed;
-
-            //update the currentUser's permissions without having to re-retrieve
             $scope.$emit('updateRepPermissions', $scope.user.endorsed);
         }, function(response) {
             var params = {label: 'Error giving reputation', response: response};
             $scope.$emit('errorMessage', params);
         });
     };
-
-    // display error messages
-    $scope.$on('errorMessage', function(event, params) {
-        var errors = errorService.errorMessages(params.label, params.response);
-        errors.forEach(function(error) {
-            $scope.$broadcast('message', error);
-        });
-        // stop event propagation - we handled it
-        event.stopPropagation();
-    });
-});
-
-app.controller('userSocialTabController', function($scope, $stateParams, userService, contributionService) {
-    $scope.retrieveProfileComments = function(page) {
-        // TODO: Make options dynamic
-        var options = {
-            sort: {
-                column: 'submitted',
-                direction: 'desc'
-            },
-            page: page || 1
-        };
-        userService.retrieveProfileComments($stateParams.userId, options, $scope.pages.profile_comments).then(function(data) {
-            $scope.user.profile_comments = data;
-        }, function(response) {
-            var params = {label: 'Error retrieving Comments', response: response};
-            $scope.$emit('errorMessage', params);
-        });
-    };
-
-    $scope.startNewComment = function() {
-        $scope.$broadcast('startNewComment');
-    };
-
-    // retrieve the profile comments
-    if (!$scope.retrieving.profile_comments) {
-        $scope.retrieving.profile_comments = true;
-        $scope.retrieveProfileComments();
-    }
 });

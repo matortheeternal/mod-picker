@@ -1,0 +1,28 @@
+<table class="browse-table" ng-hide="isEmpty(model)">
+    <thead>
+        <tr>
+            <th ng-repeat="column in columns" class="no-action" ng-class="{ 'hidden' : !column.visibility, '{{filterClass(column.filter)}}-cell' : !!column.filter, '{{column.class}}' : !!column.class }">
+                {{column.label}}
+            </th>
+            <th class="actions-header">
+                <a ng-click="toggleModal(true)">
+                    <i class="fa fa-columns" title="Edit Columns"></i>
+                </a>
+            </th>
+        </tr>
+    </thead>
+    <tbody dnd-list="model" ng-class="{ 'dragging-group' : draggingGroup }">
+        <tr ng-repeat="item in model" class="{{item.children ? 'group bg-'+item.color : ''}}" ng-if="!item._destroy" dnd-draggable="item" dnd-moved="itemMoved(model, $index)" dnd-effect-allowed="move" dnd-disable-if="!editing" dnd-type="{{item.children ? '\'group\'' : '\'item\''}}" dnd-dragstart="dragStart(item)" dnd-dragend="dragEnd()" ng-class="{ 'merged' : item.merged }" table-item>
+        </tr>
+        <!-- drag and drop placeholder -->
+        <tr class="dndPlaceholder">
+            <td colspan="{{getNumCols(columns)}}"></td>
+        </tr>
+    </tbody>
+</table>
+
+<div class="content-message" ng-show="isEmpty(model)">
+    There are no {{type}} in this list.
+</div>
+
+<edit-columns-modal></edit-columns-modal>

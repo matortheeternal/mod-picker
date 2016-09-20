@@ -1,0 +1,20 @@
+<div class="modal-container" ng-if="showAuthorsModal">
+    <div class="modal huge-modal">
+        <div class="close-modal">
+            <span class="fa fa-times" ng-click="toggleAuthorsModal(false)"></span>
+        </div>
+
+        <h2>{{mod.name}} Authors</h2>
+        <ul>
+            <li ng-repeat="author in mod.mod_authors">
+                <a ng-href="#/user/{{author.user_id}}">{{author.user.username}}</a> -
+                <span class="capitalize">{{author.role}}</span>
+            </li>
+        </ul>
+
+        <div class="content-message" ng-if="!mod.mod_authors.length">
+            No one is assigned as an author of this mod.<br>
+            If you'd like to become a curator please contact site staff.
+        </div>
+    </div>
+</div>

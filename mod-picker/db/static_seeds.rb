@@ -1,8 +1,20 @@
-def create_plugin(mod, dump_filename)
+def create_plugin(mod_option, dump_filename)
   file = File.read(Rails.root.join("db", "dumps", dump_filename))
   hash = JSON.parse(file).with_indifferent_access
-  hash[:game_id] = mod.game_id
-  mod.plugins.create(hash).save!
+  hash[:game_id] = mod_option.mod.game_id
+  mod_option.plugins.create(hash).save!
+end
+
+def create_option(mod)
+  mod.mod_options.create({
+      name: mod.name,
+      default: true
+  })
+end
+
+def create_tags(user, mod, tags)
+  builder = ModBuilder.new(user, {id: mod.id, tag_names: tags})
+  builder.update
 end
 
 def create_config_file(mod, config_filename, config_install_path)
@@ -174,41 +186,50 @@ def seed_categories
 
   puts "\nSeeding categories"
 
-  catUtilities = Category.create(
-      name: "Utilities",
-      description: "These also aren't necessarily mods, but they can be.  These are tools to aid in the creation and management of mods and mod-related assets."
-  )
-  catResources = Category.create(
-      name: "Resources",
-      description: "These aren't necessarily mods, but they can be.  These are files which are resources to be used by other modders or mod-users."
-  )
-  catLocations = Category.create(
-      name: "Locations",
-      description: "Mods which add or modify locations ingame."
-  )
-  catGameplay = Category.create(
-      name: "Gameplay",
-      description: "Mods classify as Gameplay mods if they alter any game mechanics, pardigms, balance, or events."
+  catAudiovisual = Category.create(
+      name: "Audiovisual",
+      description: "Audiovisual mods are mods which strictly alter the visuals/audio in the game.  This category is often superseded by other categories.",
+      priority: 190
   )
   catCharacter = Category.create(
       name: "Character Appearance",
-      description: "Mods that modify the appearance of non-player characters in the game or give you additional options for customizing the player character's appearance."
-  )
-  catNewChars = Category.create(
-      name: "New Characters",
-      description: "Mods that add new non-playable characters to the game."
-  )
-  catItems = Category.create(
-      name: "Items",
-      description: "Mods are categorized as Item mods when they add new items to the game.  E.g. new armor, clothing, weapons, food, potions, poisons, ingredients, etc."
+      description: "Mods that modify the appearance of non-player characters in the game or give you additional options for customizing the player character's appearance.",
+      priority: 200
   )
   catFixes = Category.create(
       name: "Fixes",
-      description: "Fixes are mods that fix issues (bugs) in mods or the vanilla game without adding new content."
+      description: "Fixes are mods that fix issues (bugs) in mods or the vanilla game without adding new content.",
+      priority: 20
   )
-  catAudiovisual = Category.create(
-      name: "Audiovisual",
-      description: "Audiovisual mods are mods which strictly alter the visuals/audio in the game.  This category is often superseded by other categories."
+  catGameplay = Category.create(
+      name: "Gameplay",
+      description: "Mods classify as Gameplay mods if they alter any game mechanics, pardigms, balance, or events.",
+      priority: 110
+  )
+  catItems = Category.create(
+      name: "Items",
+      description: "Mods are categorized as Item mods when they add new items to the game.  E.g. new armor, clothing, weapons, food, potions, poisons, ingredients, etc.",
+      priority: 140
+  )
+  catLocations = Category.create(
+      name: "Locations",
+      description: "Mods which add or modify locations ingame.",
+      priority: 100
+  )
+  catNewChars = Category.create(
+      name: "New Characters",
+      description: "Mods that add new non-playable characters to the game.",
+      priority: 130
+  )
+  catResources = Category.create(
+      name: "Resources",
+      description: "These aren't necessarily mods, but they can be.  These are files which are resources to be used by other modders or mod-users.",
+      priority: 30
+  )
+  catUtilities = Category.create(
+      name: "Utilities",
+      description: "These also aren't necessarily mods, but they can be.  These are tools to aid in the creation and management of mods and mod-related assets.",
+      priority: 240
   )
 
   puts "    #{Category.count} super-categories seeded"
@@ -218,217 +239,256 @@ def seed_categories
   # CREATE SUB-CATEGORIES
   #==================================================
 
-  # Utilities sub-categories
+  # Audiovisual sub-categories
   Category.create(
-      name: "Utilities - Ingame",
-      parent_id: catUtilities.id,
-      description: "Any utility that exists ingame/has an ingame interface."
-  )
-  Category.create(
-      name: "Utilities - Patchers",
-      parent_id: catUtilities.id,
-      description: "A utility for generating some kind of patch or mod.  E.g. SkyProc patchers, TES5Edit patchers, etc."
+      name: "Audiovisual - Animations",
+      parent_id: catAudiovisual.id,
+      description: "Any mod which adds or alters animations.",
+      priority: 193
   )
   Category.create(
-      name: "Utilities - Tools",
-      parent_id: catUtilities.id,
-      description: "A utility which allows you to create, edit, or manage mod-related files."
+      name: "Audiovisual - Lighting & Weather",
+      parent_id: catAudiovisual.id,
+      description: "Any mod which alters lighting or weather.",
+      priority: 194
   )
-
-  # Resources sub-categories
-  Category.create(
-      name: "Resources - Audiovisual",
-      parent_id: catResources.id,
-      description: "Models, textures, animations, sounds, and music made available for other modders to freely use as resources for their mods."
-  )
-  Category.create(
-      name: "Resources - Frameworks",
-      parent_id: catResources.id,
-      description: "Frameworks offer functionality for other mods or tools to build off of.  Frameworks often don't change much in the game on their own, but enable other mods to do so.  Some frameworks do change aspects of the game."
+  catModelsAndTextures = Category.create(
+      name: "Audiovisual - Models & Textures",
+      parent_id: catAudiovisual.id,
+      description: "Any mod which provides modified models/textures without introducing new items, excluding character mods.",
+      priority: 191
   )
   Category.create(
-      name: "Resources - Guides & Tutorials",
-      parent_id: catResources.id,
-      description: "Any resource that is a guide or tutorial."
-  )
-
-  # Locations sub-categories
-  catOverhauls = Category.create(
-      name: "Locations - Overhauls",
-      parent_id: catLocations.id,
-      description: "Mods which overhaul or build off of one or more vanilla locations.  E.g. City Overhauls, Player Home Overhauls, etc."
-  )
-  catNewLands = Category.create(
-      name: "Locations - New Lands",
-      parent_id: catLocations.id,
-      description: "Mods which add completely new lands to explore."
-  )
-  catNewPlayerHomes = Category.create(
-      name: "Locations - New Player Homes",
-      parent_id: catLocations.id,
-      description: "Mods which add new player homes to the game.  This include all sorts of residences ranging from tree houses to castles."
-  )
-  catNewDungeons = Category.create(
-      name: "Locations - New Dungeons",
-      parent_id: catLocations.id,
-      description: "Mods which add new areas where you encounter and fight enemies."
-  )
-  catNewStructuresAndLandmarks = Category.create(
-      name: "Locations - New Structures & Landmarks",
-      parent_id: catLocations.id,
-      description: "Mods which add new structures or landmarks, e.g. Cities, Towns, Inns, Statues, etc."
-  )
-
-  # Gameplay sub-categories
-  catClassesAndRaces = Category.create(
-      name: "Gameplay - Classes and Races",
-      parent_id: catGameplay.id,
-      description: "Mods that add or alter character classes or races."
+      name: "Audiovisual - Post-processing",
+      parent_id: catAudiovisual.id,
+      description: "Any mod which provides a post-processing preset, e.g. ENB or SweetFX.",
+      priority: 192
   )
   Category.create(
-      name: "Gameplay - Crafting",
-      parent_id: catGameplay.id,
-      description: "Any mod which modifies the alchemy, enchanting, or smithing systems in the game.  Also includes mods which modify other crafting systems or add new crafting systems."
-  )
-  Category.create(
-      name: "Gameplay - Combat",
-      parent_id: catGameplay.id,
-      description: "Mods which alter combat, or enemy strength in general."
-  )
-  Category.create(
-      name: "Gameplay - Economy & Balance",
-      parent_id: catGameplay.id,
-      description: "Mods which alter the economy of the game - viz., the acquisition of items and currency.  E.g. modifications to merchants or leveled loot.  Also includes mods which rebalance items, e.g. their weight, gold value, and armor rating/damage."
-  )
-  catFactions = Category.create(
-      name: "Gameplay - Factions",
-      parent_id: catGameplay.id,
-      description: "Mods which alter existing factions and faction quest lines or add new ones."
-  )
-  catImmersionAndRolePlaying = Category.create(
-      name: "Gameplay - Immersion & Role-playing",
-      parent_id: catGameplay.id,
-      description: "Mods which exist specifically to increase the player's immersion in the game world, or to aid in role-playing."
-  )
-  catMagic = Category.create(
-      name: "Gameplay - Magic",
-      parent_id: catGameplay.id,
-      description: "Mods which add new spells, or magic-based mechanics to the game.  Note: Mods that only alter magic-related perk trees should go into Gameplay - Skills & Perks."
-  )
-  catQuests = Category.create(
-      name: "Gameplay - Quests",
-      parent_id: catGameplay.id,
-      description: "Mods which add or alter quests in the game."
-  )
-  catSkillsAndPerks = Category.create(
-      name: "Gameplay - Skills & Perks",
-      parent_id: catGameplay.id,
-      description: "Mods which modify skills or perks in the game, or add new ones."
-  )
-  Category.create(
-      name: "Gameplay - Stealth",
-      parent_id: catGameplay.id,
-      description: "Mods which modify the mechanics of detection, pickpocketing, or lockpicking.  Also includes mods which add new stealth-based mechanics."
-  )
-  Category.create(
-      name: "Gameplay - User Interface",
-      parent_id: catGameplay.id,
-      description: "Mods which alter or add to the main user interface ingame."
+      name: "Audiovisual - Sounds & Music",
+      parent_id: catAudiovisual.id,
+      description: "Any mod which alters or adds sounds or music to the game.",
+      priority: 195
   )
 
   # Character Appearance sub-categories
   Category.create(
       name: "Character Appearance - Face Parts",
       parent_id: catCharacter.id,
-      description: "Mods that add new face parts.  E.g. Hairs, beards, brows, eyes, and noses."
-  )
-  Category.create(
-      name: "Character Appearance - Overlays",
-      parent_id: catCharacter.id,
-      description: "Mods that add new overlays for characters.  That is, warpaints, tattoos, freckles, tanlines, pimples, chest hair, etc."
+      description: "Mods that add new face parts.  E.g. Hairs, beards, brows, eyes, and noses.",
+      priority: 201
   )
   Category.create(
       name: "Character Appearance - NPC Overhauls",
       parent_id: catCharacter.id,
-      description: "Mods that overhaul NPCs with different faces/outfits."
+      description: "Mods that overhaul NPCs with different faces/outfits.",
+      priority: 203
+  )
+  Category.create(
+      name: "Character Appearance - Overlays",
+      parent_id: catCharacter.id,
+      description: "Mods that add new overlays for characters.  That is, warpaints, tattoos, freckles, tanlines, pimples, chest hair, etc.",
+      priority: 202
   )
 
-  # New Characters sub-categories
+  # Fixes sub-categories
   Category.create(
-      name: "New Characters - Allies",
-      parent_id: catNewChars.id,
-      description: "If one or more NPCs added by the mod can be allies of the player character, the mod belongs here."
+      name: "Fixes - Patches",
+      parent_id: catFixes.id,
+      description: "A fix to make mods compatible with each other, or to carry the changes from one mod into another.",
+      priority: 22
   )
   Category.create(
-      name: "New Characters - Neutral",
-      parent_id: catNewChars.id,
-      description: "If most of the NPCs added by the mod don't have a disposition to help or hurt the player, put it here."
+      name: "Fixes - Stability & Performance",
+      parent_id: catFixes.id,
+      description: "A fix that specifically increases game stability or performance.",
+      priority: 21
+  )
+
+  # Gameplay sub-categories
+  catClassesAndRaces = Category.create(
+      name: "Gameplay - Classes and Races",
+      parent_id: catGameplay.id,
+      description: "Mods that add or alter character classes or races.",
+      priority: 115
   )
   Category.create(
-      name: "New Characters - Enemies",
-      parent_id: catNewChars.id,
-      description: "Mods that add NPCs that try to bash your head in.  Whether they be dragons or flesh-eating bunnies!"
+      name: "Gameplay - Combat",
+      parent_id: catGameplay.id,
+      description: "Mods which alter combat, or enemy strength in general.",
+      priority: 114
+  )
+  Category.create(
+      name: "Gameplay - Crafting",
+      parent_id: catGameplay.id,
+      description: "Any mod which modifies the alchemy, enchanting, or smithing systems in the game.  Also includes mods which modify other crafting systems or add new crafting systems.",
+      priority: 116
+  )
+  Category.create(
+      name: "Gameplay - Economy & Balance",
+      parent_id: catGameplay.id,
+      description: "Mods which alter the economy of the game - viz., the acquisition of items and currency.  E.g. modifications to merchants or leveled loot.  Also includes mods which rebalance items, e.g. their weight, gold value, and armor rating/damage.",
+      priority: 120
+  )
+  catFactions = Category.create(
+      name: "Gameplay - Factions",
+      parent_id: catGameplay.id,
+      description: "Mods which alter existing factions and faction quest lines or add new ones.",
+      priority: 117
+  )
+  catImmersionAndRolePlaying = Category.create(
+      name: "Gameplay - Immersion & Role-playing",
+      parent_id: catGameplay.id,
+      description: "Mods which exist specifically to increase the player's immersion in the game world, or to aid in role-playing.",
+      priority: 119
+  )
+  catMagic = Category.create(
+      name: "Gameplay - Magic",
+      parent_id: catGameplay.id,
+      description: "Mods which add new spells, or magic-based mechanics to the game.  Note: Mods that only alter magic-related perk trees should go into Gameplay - Skills & Perks.",
+      priority: 112
+  )
+  catQuests = Category.create(
+      name: "Gameplay - Quests",
+      parent_id: catGameplay.id,
+      description: "Mods which add or alter quests in the game.",
+      priority: 118
+  )
+  catSkillsAndPerks = Category.create(
+      name: "Gameplay - Skills & Perks",
+      parent_id: catGameplay.id,
+      description: "Mods which modify skills or perks in the game, or add new ones.",
+      priority: 111
+  )
+  Category.create(
+      name: "Gameplay - Stealth",
+      parent_id: catGameplay.id,
+      description: "Mods which modify the mechanics of detection, pickpocketing, or lockpicking.  Also includes mods which add new stealth-based mechanics.",
+      priority: 113
+  )
+  Category.create(
+      name: "Gameplay - User Interface",
+      parent_id: catGameplay.id,
+      description: "Mods which alter or add to the main user interface ingame.",
+      priority: 40
   )
 
   # Items sub-categories
   Category.create(
       name: "Items - Armor, Clothing, & Accessories",
       parent_id: catItems.id,
-      description: "Mods that add items that can be worn in the major biped slots.  This includes armor, clothing, jewelry, cloaks, bags, etc."
+      description: "Mods that add items that can be worn in the major biped slots.  This includes armor, clothing, jewelry, cloaks, bags, etc.",
+      priority: 141
   )
   Category.create(
       name: "Items - Ingestibles",
       parent_id: catItems.id,
-      description: "Mods that add items you can eat or drink.  This includes alchemical ingredients."
+      description: "Mods that add items you can eat or drink.  This includes alchemical ingredients.",
+      priority: 143
   )
   Category.create(
       name: "Items - Tools & Clutter",
       parent_id: catItems.id,
-      description: "Mods that add items that cannot be worn, ingested, or used as a weapon."
+      description: "Mods that add items that cannot be worn, ingested, or used as a weapon.",
+      priority: 144
   )
   Category.create(
       name: "Items - Weapons",
       parent_id: catItems.id,
-      description: "Mods that that add sticks you can stab, squish, or shoot people with."
+      description: "Mods that that add sticks you can stab, squish, or shoot people with.",
+      priority: 142
   )
 
-  # Fixes sub-categories
-  Category.create(
-      name: "Fixes - Stability & Performance",
-      parent_id: catFixes.id,
-      description: "A fix that specifically increases game stability or performance."
+  # Locations sub-categories
+  catNewDungeons = Category.create(
+      name: "Locations - New Dungeons",
+      parent_id: catLocations.id,
+      description: "Mods which add new areas where you encounter and fight enemies.",
+      priority: 104
   )
-  Category.create(
-      name: "Fixes - Patches",
-      parent_id: catFixes.id,
-      description: "A fix to make mods compatible with each other, or to carry the changes from one mod into another."
+  catNewLands = Category.create(
+      name: "Locations - New Lands",
+      parent_id: catLocations.id,
+      description: "Mods which add completely new lands to explore.",
+      priority: 101
+  )
+  catNewPlayerHomes = Category.create(
+      name: "Locations - New Player Homes",
+      parent_id: catLocations.id,
+      description: "Mods which add new player homes to the game.  This include all sorts of residences ranging from tree houses to castles.",
+      priority: 103
+  )
+  catNewStructuresAndLandmarks = Category.create(
+      name: "Locations - New Structures & Landmarks",
+      parent_id: catLocations.id,
+      description: "Mods which add new structures or landmarks, e.g. Cities, Towns, Inns, Statues, etc.",
+      priority: 102
+  )
+  catOverhauls = Category.create(
+      name: "Locations - Overhauls",
+      parent_id: catLocations.id,
+      description: "Mods which overhaul or build off of one or more vanilla locations.  E.g. City Overhauls, Player Home Overhauls, etc.",
+      priority: 105
   )
 
-  # Audiovisual sub-categories
+  # New Characters sub-categories
   Category.create(
-      name: "Audiovisual - Animations",
-      parent_id: catAudiovisual.id,
-      description: "Any mod which adds or alters animations."
+      name: "New Characters - Allies",
+      parent_id: catNewChars.id,
+      description: "If one or more NPCs added by the mod can be allies of the player character, the mod belongs here.",
+      priority: 131
   )
   Category.create(
-      name: "Audiovisual - Lighting & Weather",
-      parent_id: catAudiovisual.id,
-      description: "Any mod which alters lighting or weather."
-  )
-  catModelsAndTextures = Category.create(
-      name: "Audiovisual - Models & Textures",
-      parent_id: catAudiovisual.id,
-      description: "Any mod which provides modified models/textures without introducing new items, excluding character mods."
+      name: "New Characters - Enemies",
+      parent_id: catNewChars.id,
+      description: "Mods that add NPCs that try to bash your head in.  Whether they be dragons or flesh-eating bunnies!",
+      priority: 133
   )
   Category.create(
-      name: "Audiovisual - Post-processing",
-      parent_id: catAudiovisual.id,
-      description: "Any mod which provides a post-processing preset, e.g. ENB or SweetFX."
+      name: "New Characters - Neutral",
+      parent_id: catNewChars.id,
+      description: "If most of the NPCs added by the mod don't have a disposition to help or hurt the player, put it here.",
+      priority: 132
+  )
+
+  # Resources sub-categories
+  Category.create(
+      name: "Resources - Audiovisual",
+      parent_id: catResources.id,
+      description: "Models, textures, animations, sounds, and music made available for other modders to freely use as resources for their mods.",
+      priority: 190
   )
   Category.create(
-      name: "Audiovisual - Sounds & Music",
-      parent_id: catAudiovisual.id,
-      description: "Any mod which alters or adds sounds or music to the game."
+      name: "Resources - Frameworks",
+      parent_id: catResources.id,
+      description: "Frameworks offer functionality for other mods or tools to build off of.  Frameworks often don't change much in the game on their own, but enable other mods to do so.  Some frameworks do change aspects of the game.",
+      priority: 30
+  )
+  Category.create(
+      name: "Resources - Guides & Tutorials",
+      parent_id: catResources.id,
+      description: "Any resource that is a guide or tutorial.",
+      priority: 0
+  )
+
+  # Utilities sub-categories
+  Category.create(
+      name: "Utilities - Ingame",
+      parent_id: catUtilities.id,
+      description: "Any utility that exists ingame/has an ingame interface.",
+      priority: 40
+  )
+  Category.create(
+      name: "Utilities - Patchers",
+      parent_id: catUtilities.id,
+      description: "A utility for generating some kind of patch or mod.  E.g. SkyProc patchers, TES5Edit patchers, etc.",
+      priority: 242
+  )
+  Category.create(
+      name: "Utilities - Tools",
+      parent_id: catUtilities.id,
+      description: "A utility which allows you to create, edit, or manage mod-related files.",
+      priority: 241
   )
 
   puts "    #{Category.where.not(parent_id: nil).count} sub-categories seeded"
@@ -557,7 +617,7 @@ def seed_categories
       prompt: "Do you enjoy using the mod?  What do you enjoy about it?",
       default: true
   )
-### Character Appearance ###
+  ### Character Appearance ###
   ReviewSection.create(
       category_id: catCharacter.id,
       name: "Aesthetics",
@@ -581,7 +641,7 @@ def seed_categories
       prompt: "Do you enjoy using the mod?  What do you enjoy about it?",
       default: true
   )
-### Fixes ###
+  ### Fixes ###
   ReviewSection.create(
       category_id: catFixes.id,
       name: "Consistency",
@@ -594,7 +654,7 @@ def seed_categories
       prompt: "Does the fix resolve all of the issues with the content it targets, and does it work?",
       default: true
   )
-### Gameplay ###
+  ### Gameplay ###
   ReviewSection.create(
       category_id: catGameplay.id,
       name: "Aesthetics",
@@ -1856,8 +1916,9 @@ def seed_official_content
   create_config_file(modSkyrim, "Skyrim.ini", "{{MyGamesFolder}}")
   create_config_file(modSkyrim, "SkyrimPrefs.ini", "{{MyGamesFolder}}")
   # Create plugins
-  create_plugin(modSkyrim, "Skyrim.esm.json")
-  create_plugin(modSkyrim, "Update.esm.json")
+  skyrimOption = create_option(modSkyrim)
+  create_plugin(skyrimOption, "Skyrim.esm.json")
+  create_plugin(skyrimOption, "Update.esm.json")
   modSkyrim.update_lazy_counters
 
   modDawnguard = Mod.create!(
@@ -1872,11 +1933,12 @@ def seed_official_content
       custom_sources_attributes: [{
           label: "Steam Store",
           url: "http://store.steampowered.com/app/211720/"
-      }],
-      tag_names: ["Vampires", "Dawnguard", "Werewolves", "Soul Cairn", "Dragonbone"]
+      }]
   )
+  create_tags(mator, modDawnguard, ["Vampires", "Dawnguard", "Werewolves", "Soul Cairn", "Dragonbone"])
   # Create plugins
-  create_plugin(modDawnguard, "Dawnguard.esm.json")
+  dawnguardOption = create_option(modDawnguard)
+  create_plugin(dawnguardOption, "Dawnguard.esm.json")
   modDawnguard.update_lazy_counters
 
   modHearthfire = Mod.create!(
@@ -1891,11 +1953,12 @@ def seed_official_content
       custom_sources_attributes: [{
           label: "Steam Store",
           url: "http://store.steampowered.com/app/220760/"
-      }],
-      tag_names: ["Building", "Family", "Marriage", "Adoption"]
+      }]
   )
+  create_tags(mator, modHearthfire, ["Building", "Family", "Marriage", "Adoption"])
   # Create plugins
-  create_plugin(modHearthfire, "HearthFires.esm.json")
+  hearthfireOption = create_option(modHearthfire)
+  create_plugin(hearthfireOption, "HearthFires.esm.json")
   modHearthfire.update_lazy_counters
 
   modDragonborn = Mod.create!(
@@ -1909,11 +1972,12 @@ def seed_official_content
       custom_sources_attributes: [{
           label: "Steam Store",
           url: "http://store.steampowered.com/app/211720/"
-      }],
-      tag_names: ["Solstheim", "Apocrypha", "Hermaeus Mora", "Shouts", "Stahlrim", "Nordic", "Bonemold", "Chitin"]
+      }]
   )
+  create_tags(mator, modDragonborn, ["Solstheim", "Apocrypha", "Hermaeus Mora", "Shouts", "Stahlrim", "Nordic", "Bonemold", "Chitin"])
   # Create plugins
-  create_plugin(modDragonborn, "Dragonborn.esm.json")
+  dragonbornOption = create_option(modDragonborn)
+  create_plugin(dragonbornOption, "Dragonborn.esm.json")
   modDragonborn.update_lazy_counters
 
   modHighRes = Mod.create!(
@@ -1927,13 +1991,14 @@ def seed_official_content
       custom_sources_attributes: [{
           label: "Steam Store",
           url: "http://store.steampowered.com/app/202485/"
-      }],
-      tag_names: ["1K", "Armor", "Weapons", "Architecture", "Actors", "Dungeons", "Terrain", "Clutter"]
+      }]
   )
+  create_tags(mator, modHighRes, ["1K", "Armor", "Weapons", "Architecture", "Actors", "Dungeons", "Terrain", "Clutter"])
   # Create plugins
-  create_plugin(modHighRes, "HighResTexturePack01.esp.json")
-  create_plugin(modHighRes, "HighResTexturePack02.esp.json")
-  create_plugin(modHighRes, "HighResTexturePack03.esp.json")
+  highResOption = create_option(modHighRes)
+  create_plugin(highResOption, "HighResTexturePack01.esp.json")
+  create_plugin(highResOption, "HighResTexturePack02.esp.json")
+  create_plugin(highResOption, "HighResTexturePack03.esp.json")
   modHighRes.update_lazy_counters
 
   puts "    #{Mod.count} official mods seeded"

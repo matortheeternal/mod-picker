@@ -20,8 +20,8 @@ module ModPicker
     # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
     # config.i18n.default_locale = :de
 
-    # AUTOLOAD LIB
-    config.autoload_paths += %W(#{config.root}/lib)
+    # AUTOLOAD PATCHER
+    config.autoload_paths += %W(#{config.root}/lib #{config.root}/app/builders)
 
     # SET THE USER AGENT FOR SCRAPING
     config.user_agent = "Mod Picker Scraper"
@@ -30,8 +30,11 @@ module ModPicker
     config.scrape_nexus_statistics = false
     # DO NOT SCRAPE WORKSHOP STATISTICS UNTIL WE HAVE PERMISSION
     config.scrape_workshop_statistics = false
-    # DO NOT SCRAPE LAB STATISTICS UNTIL WE HAVE PERMISSION
-    config.scrape_lab_statistics = false
+
+    # tracking config
+    config.added_owner_attributes = [:submitted_by]
+    config.updated_owner_attributes = [:edited_by]
+    config.removed_owner_attributes = [:removed_by]
 
     config.middleware.use Rack::Attack
 

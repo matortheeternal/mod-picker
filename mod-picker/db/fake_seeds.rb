@@ -28,7 +28,7 @@ end
 
 def get_unique_mod_pair(model)
   mod_ids = [0, 0]
-  while
+  while 1
     mod_ids[0] = random_mod.id
     mod_ids[1] = random_mod.id
     if mod_ids[0] != mod_ids[1] && model.where(first_mod_id: mod_ids, second_mod_id: mod_ids).empty?
@@ -40,7 +40,7 @@ end
 
 def get_unique_plugin_pair(model)
   plugin_ids = [0, 0]
-  while
+  while 1
     plugin_ids[0] = random_plugin.id
     plugin_ids[1] = random_plugin.id
     if plugin_ids[0] != plugin_ids[1] && model.where(first_plugin_id: plugin_ids, second_plugin_id: plugin_ids).empty?
@@ -61,7 +61,35 @@ def get_unique_username
   username
 end
 
-def seed_fake_users
+def randomize_user_reputation_offsets
+  rep_levels = [5, 20, 40, 80, 160, 320, 640, 1280]
+  UserReputation.all.each do |rep|
+    rep.offset = rep_levels.sample * rand(1.0..2.0)
+    rep.calculate_overall_rep
+    rep.save
+  end
+end
+
+def random_rep
+  UserReputation.offset(rand(UserReputation.count)).first
+end
+
+def create_random_rep_links
+  UserReputation.all.each do |rep|
+    next if rep.overall < 40
+    num_links = rand(rep.get_max_links)
+    invalid_ids = [rep.id]
+    num_links.times do
+      begin
+        target_rep = random_rep
+      end while invalid_ids.include?(target_rep.id)
+      ReputationLink.create(from_rep_id: rep.id, to_rep_id: target_rep.id)
+      invalid_ids.push(target_rep.id)
+    end
+  end
+end
+
+def seed_fake_users(num_users)
   require 'securerandom'
 
   puts "\nSeeding users"
@@ -71,8 +99,8 @@ def seed_fake_users
     Time.at(from + rand * (to.to_f - from.to_f)).to_date
   end
 
-  # create 99 random users
-  99.times do |n|
+  # create random users
+  num_users.times do |n|
     username = get_unique_username
     pw = SecureRandom.urlsafe_base64
     User.create!(
@@ -939,6 +967,7 @@ end
 def seed_fake_help_pages
   puts "\nSeeding help pages"
 
+  # TODO: Move this to a text file or something
   markdown_text = %Q{
     Markdown Cheatsheet
 ===================
@@ -1072,7 +1101,7 @@ _Image with alt :_
     category: HelpPage.categories.keys.sample,
     game: random_game,
     submitted_by: author.id,
-    name: Faker::Lorem.words(4).join(' '),
+    title: Faker::Lorem.words(4).join(' '),
     text_body: markdown_text,
     submitted: Faker::Date.backward(10),
     edited: Faker::Date.backward(9)
@@ -1084,7 +1113,7 @@ _Image with alt :_
       category: HelpPage.categories.keys.sample,
       game: random_game,
       submitted_by: author.id,
-      name: Faker::Lorem.words(4).join(' '),
+      title: Faker::Lorem.words(4).join(' '),
       text_body: Faker::Lorem.words(rand(300) + 30).join(' '),
       submitted: Faker::Date.backward(10),
       edited: Faker::Date.backward(9)

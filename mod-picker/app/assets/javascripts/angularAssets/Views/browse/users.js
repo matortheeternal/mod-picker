@@ -1,14 +1,14 @@
 app.run(function($futureState, indexFactory, filtersFactory) {
     // dynamically construct and apply state
     var filterPrototypes = filtersFactory.userFilters();
-    var state = indexFactory.buildState('username', 'asc', 'users', filterPrototypes);
+    var state = indexFactory.buildState('username', 'ASC', 'users', filterPrototypes);
     $futureState.futureState(state);
 });
 
-app.controller('usersController', function ($scope, $stateParams, $state, currentUser, userService, columnsFactory, filtersFactory, indexService, indexFactory) {
+app.controller('usersController', function ($scope, $rootScope, $stateParams, $state, userService, columnsFactory, filtersFactory, indexService, indexFactory) {
     // get parent variables
-    $scope.currentUser = currentUser;
-    $scope.globalPermissions = angular.copy(currentUser.permissions);
+    $scope.currentUser = $rootScope.currentUser;
+    $scope.globalPermissions = angular.copy($rootScope.permissions);
 
     // columns for view
     $scope.columns = columnsFactory.userColumns();
@@ -22,5 +22,5 @@ app.controller('usersController', function ($scope, $stateParams, $state, curren
     // build generic controller stuff
     $scope.route = 'users';
     $scope.retrieve = userService.retrieveUsers;
-    indexFactory.buildIndex($scope, $stateParams, $state, indexService);
+    indexFactory.buildIndex($scope, $stateParams, $state);
 });

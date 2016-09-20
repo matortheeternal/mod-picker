@@ -1,15 +1,17 @@
 app.run(function($futureState, indexFactory, filtersFactory) {
     // dynamically construct and apply state
     var filterPrototypes = filtersFactory.modFilters();
-    var state = indexFactory.buildState('name', 'asc', 'mods', filterPrototypes);
+    var state = indexFactory.buildState('name', 'ASC', 'mods', filterPrototypes);
     $futureState.futureState(state);
 });
 
-app.controller('modsController', function($scope, $q, $stateParams, $state, modService, sliderFactory, columnsFactory, filtersFactory, currentUser, currentGame, indexService, indexFactory) {
-    // get parent variables
-    $scope.currentUser = currentUser;
-    $scope.currentGame = currentGame;
-    $scope.globalPermissions = angular.copy(currentUser.permissions);
+app.controller('modsController', function($scope, $rootScope, $q, $stateParams, $state, modService, categoryService, modListService, indexService, sliderFactory, columnsFactory, filtersFactory, actionsFactory, indexFactory, eventHandlerFactory) {
+    // inherited variables
+    $scope.currentUser = $rootScope.currentUser;
+    $scope.currentGame = $rootScope.currentGame;
+    $scope.categories = $rootScope.categories;
+    $scope.activeModList = $rootScope.activeModList;
+    $scope.permissions = angular.copy($rootScope.permissions);
 
     // columns for view
     $scope.columns = columnsFactory.modColumns();
@@ -25,6 +27,18 @@ app.controller('modsController', function($scope, $q, $stateParams, $state, modS
             }
         });
         return result;
+    };
+
+    $scope.toggleModListFilter = function() {
+        if ($scope.filters.compatibility) {
+            // it's being disabled
+            delete $scope.filters.compatibility;
+        } else {
+            // it's being enabled
+            if ($scope.activeModList) {
+                $scope.filters.compatibility = $scope.activeModList.id;
+            }
+        }
     };
 
     // returns a new subset of the input filters with the unavailable filters removed
@@ -55,6 +69,32 @@ app.controller('modsController', function($scope, $q, $stateParams, $state, modS
         });
     };
 
+    // adds a mod to the user's mod list
+    $scope.$on('addMod', function(event, mod) {
+        modListService.addModListMod($scope.activeModList, mod).then(function() {
+            $scope.$emit('successMessage', 'Added mod "'+mod.name+'" to your mod list successfully.');
+        }, function(response) {
+            var params = {
+                label: 'Error adding mod "'+mod.name+'" to your mod list',
+                response: response
+            };
+            $scope.$emit('errorMessage', params);
+        });
+    });
+
+    // removes a mod from the user's mod list
+    $scope.$on('removeMod', function(event, mod) {
+        modListService.removeModListMod($scope.activeModList, mod).then(function() {
+            $scope.$emit('successMessage', 'Removed mod "'+mod.name+'" from your mod list successfully.');
+        }, function(response) {
+            var params = {
+                label: 'Error removing mod "'+mod.name+'" from your mod list',
+                response: response
+            };
+            $scope.$emit('errorMessage', params);
+        });
+    });
+
     // filters for view
     $scope.filterPrototypes = filtersFactory.modFilters();
     $scope.dateFilters = filtersFactory.modDateFilters();
@@ -62,26 +102,29 @@ app.controller('modsController', function($scope, $q, $stateParams, $state, modS
     $scope.statFilters = filtersFactory.modStatisticFilters();
     $scope.filters = {
         game: $scope.currentGame.id,
-        include_adult: $scope.currentUser && $scope.currentUser.settings.allow_adult_content
+        include_adult: $scope.currentUser && $scope.currentUser.settings.allow_adult_content,
+        categories: []
     };
 
     // build generic controller stuff
     $scope.route = 'mods';
     $scope.retrieve = modService.retrieveMods;
-    indexFactory.buildIndex($scope, $stateParams, $state, indexService);
+    indexFactory.buildIndex($scope, $stateParams, $state);
+    eventHandlerFactory.buildMessageHandlers($scope);
 
     // override some data from the generic controller
     $scope.buildAvailableColumnData();
-    $scope.actions = [{
-        caption: "Add",
-        title: "Add this mod to your mod list",
-        execute: function() {
-            alert("Not functional yet.");
-        }
-    }];
+    $scope.actions = actionsFactory.modIndexActions();
 
     // build available stat filters for view
     $scope.availableStatFilters = $scope.availableFilters($scope.statFilters);
+
+    // manipulate data before displaying it on the view
+    $scope.dataCallback = function() {
+        $scope.mods.forEach(function(mod) {
+            categoryService.resolveModCategories($scope.categories, mod);
+        });
+    };
 
     // handle special column/filter logic when filters change
     $scope.$watch('filters', function() {

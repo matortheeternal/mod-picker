@@ -1,6 +1,6 @@
 {
   "name": "mod-picker",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "",
   "private": true,
   "main": "app/src/js/entry.js",
@@ -38,29 +38,22 @@
     "npm": ">=3.4.0"
   },
   "contributors": [
-    {
-      "name": "Peanut"
-    },
-    {
-      "name": "Mator"
-    },
-    {
-      "name": "Thallassa"
-    },
-    {
-      "name": "Nazenn"
-    },
-    {
-      "name": "TerrorFox1234"
-    },
-    {
-      "name": "Nariya"
-    },
-    {
-      "name": "Threeten"
-    },
-    {
-      "name": "TheVortex137"
-    }
-  ]
+    "Mator",
+    "Sirius",
+    "Nariya",
+    "R79",
+    "Thallassa",
+    "TerrorFox1234",
+    "Threeten"
+  ],
+  "bugs": {
+    "url": "https://github.com/matortheeternal/mod-picker-issues/issues"
+  },
+  "homepage": "https://modpicker.com",
+  "keywords": [
+    "skyrim",
+    "modding"
+  ],
+  "author": "matortheeternal",
+  "license": "SEE LICENSE IN <license.md>"
 }

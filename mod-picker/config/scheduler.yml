@@ -1,0 +1,7 @@
+ReputationWorker:
+  cron: "00 00 * * *"
+  description: "This job recomputes the base reputation and network reputation of all users"
+
+ScrapeWorker:
+  cron: "00 01 * * *"
+  description: "This job rescrapes old site statistics associated with mods on the platform"

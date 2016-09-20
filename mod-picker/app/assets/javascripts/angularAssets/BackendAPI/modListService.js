@@ -1,8 +1,37 @@
-app.service('modListService', function (backend, $q, objectUtils, userTitleService, contributionService, categoryService, recordGroupService, pluginService, assetUtils, modService) {
+app.service('modListService', function (backend, $q, userTitleService, contributionService, modService, categoryService, recordGroupService, pluginService, objectUtils, assetUtils, pageUtils) {
     var service = this;
+
+    this.retrieveModLists = function(options, pageInformation) {
+        var action = $q.defer();
+        backend.post('/mod_lists/index', options).then(function(data) {
+            // resolve page information and data
+            pageUtils.getPageInformation(data, pageInformation, options.page);
+            action.resolve(data);
+        }, function(response) {
+            action.reject(response);
+        });
+        return action.promise;
+    };
 
     this.retrieveModList = function(modListId) {
         return backend.retrieve('/mod_lists/' + modListId);
+    };
+
+    this.retrieveActiveModList = function() {
+        var action = $q.defer();
+        backend.retrieve('/mod_lists/active').then(function(data) {
+            if (data.error) {
+                action.resolve(null);
+            }
+            action.resolve(data);
+        }, function(response) {
+            action.reject(response);
+        });
+        return action.promise;
+    };
+
+    this.setActiveModList = function(modListId) {
+        return backend.post('/mod_lists/active', {id: modListId});
     };
 
     this.starModList = function(modListId, starred) {
@@ -14,20 +43,12 @@ app.service('modListService', function (backend, $q, objectUtils, userTitleServi
     };
 
     this.retrieveModListTools = function(modListId) {
-        var action = $q.defer();
-        backend.retrieve('/mod_lists/' + modListId + '/tools').then(function(data) {
-            categoryService.associateCategories(data.tools);
-            action.resolve(data);
-        }, function(response) {
-            action.reject(response);
-        });
-        return action.promise;
+        return backend.retrieve('/mod_lists/' + modListId + '/tools');
     };
 
     this.retrieveModListMods = function(modListId) {
         var action = $q.defer();
         backend.retrieve('/mod_lists/' + modListId + '/mods').then(function(data) {
-            categoryService.associateCategories(data.mods);
             userTitleService.associateTitles(data.compatibility_notes);
             userTitleService.associateTitles(data.install_order_notes);
             contributionService.associateHelpfulMarks(data.compatibility_notes, data.c_helpful_marks);
@@ -42,7 +63,6 @@ app.service('modListService', function (backend, $q, objectUtils, userTitleServi
     this.retrieveModListPlugins = function(modListId) {
         var action = $q.defer();
         backend.retrieve('/mod_lists/' + modListId + '/plugins').then(function(data) {
-            categoryService.associateCategories(data.plugins);
             userTitleService.associateTitles(data.compatibility_notes);
             userTitleService.associateTitles(data.load_order_notes);
             contributionService.associateHelpfulMarks(data.compatibility_notes, data.c_helpful_marks);
@@ -95,6 +115,10 @@ app.service('modListService', function (backend, $q, objectUtils, userTitleServi
             if (item.mod) {
                 delete item.mod;
             }
+            if (item.mod_list_mod_options && item.mod_list_mod_options.length) {
+                item.mod_list_mod_options_attributes = angular.copy(item.mod_list_mod_options);
+                delete item.mod_list_mod_options;
+            }
         });
         var custom_mods = angular.copy(Array.prototype.concat(modList.custom_tools || [], modList.custom_mods || []));
 
@@ -141,6 +165,10 @@ app.service('modListService', function (backend, $q, objectUtils, userTitleServi
         return backend.update('/mod_lists/' + modList.id, modListData);
     };
 
+    this.newModList = function(mod_list, active) {
+        return backend.post('/mod_lists', {mod_list: mod_list, active: active})
+    };
+
     this.newModListMod = function(mod_list_mod) {
         var action = $q.defer();
         backend.post('/mod_list_mods', {mod_list_mod: mod_list_mod}).then(function(data) {
@@ -153,6 +181,48 @@ app.service('modListService', function (backend, $q, objectUtils, userTitleServi
             contributionService.associateHelpfulMarks(data.install_order_notes, data.i_helpful_marks);
             contributionService.associateHelpfulMarks(data.load_order_notes, data.l_helpful_marks);
             action.resolve(data);
+        }, function(response) {
+            action.reject(response);
+        });
+        return action.promise;
+    };
+
+    // this function is used to add a mod list mod when not on the mod list page
+    this.addModListMod = function(mod_list, mod) {
+        var action = $q.defer();
+        var options = {
+            mod_list_mod: {
+                mod_list_id: mod_list.id,
+                mod_id: mod.id
+            },
+            no_response: true
+        };
+        backend.post('/mod_list_mods', options).then(function(data) {
+            mod.in_mod_list = true;
+            mod.is_utility ? mod_list.tools_count++ : mod_list.mods_count++;
+            mod_list.mod_list_mod_ids.push(mod.id);
+            action.resolve(data);
+        }, function(response) {
+            action.reject(response);
+        });
+        return action.promise;
+    };
+
+    // this function is used to remove a mod list mod when not on the mod list page
+    this.removeModListMod = function(mod_list, mod) {
+        var action = $q.defer();
+        var options = {
+            mod_list_id: mod_list.id,
+            mod_id: mod.id
+        };
+        backend.delete('/mod_list_mods', options).then(function(response) {
+            mod.in_mod_list = false;
+            mod.is_utility ? mod_list.tools_count-- : mod_list.mods_count--;
+            var index = mod_list.mod_list_mod_ids.indexOf(mod.id);
+            if (index > -1) {
+                mod_list.mod_list_mod_ids.splice(index, 1);
+            }
+            action.resolve(response);
         }, function(response) {
             action.reject(response);
         });
@@ -187,8 +257,8 @@ app.service('modListService', function (backend, $q, objectUtils, userTitleServi
         return backend.post('/mod_lists/clone/' + modlist.id, {});
     };
 
-    this.deleteModList = function(modlist) {
-        return backend.delete('/mod_lists/' + modlist.id);
+    this.hideModList = function(modListId, hidden) {
+        return backend.post('/mod_lists/' + modListId + '/hide', {hidden: hidden});
     };
 
     this.associateCompatibilityNote = function(customPlugin, compatibilityNotes) {

@@ -59,17 +59,23 @@
 
 .requirements-list {
   margin-left: 0;
-  color: $h4_color;
-  li {
-    a {
-      font-weight: 500;
-    }
+  font-size: 14px;
+
+  li a {
+    font-weight: 500;
+  }
+
+  .show-more {
+    list-style-type: none;
+    font-size: 14px;
+    margin-top: 4px;
   }
 }
 
 .source-box {
   font-size: 16px;
-  display: inline-flex;
+  display: inline-flex !important;
+
   .source-label {
     padding: 5px 2px;
   }
@@ -159,6 +165,12 @@
   margin: 40px 0 20px;
   text-align: center;
   font-size: 20px;
+}
+
+.content-block {
+  .content-message {
+    margin: 40px 0;
+  }
 }
 
 .content-error {
@@ -253,7 +265,7 @@
   position: relative;
   text-align: center;
   font-size: 24px;
-  padding-right: 60px; // This makes certain the ratings don't go over the section-tools
+  padding: 0 50px;; // This makes certain the ratings don't go over the section-tools
   background-color: $bar_highlight_color;
   color: $bright_action_color;
 
@@ -334,8 +346,6 @@
 
   .section-tools {
     position: absolute;
-    right: 0;
-    top: 0;
     padding: 10px;
     display: flex;
     flex-direction: column;
@@ -365,6 +375,23 @@
         color: $error_secondary;
       }
     }
+
+    .fa-refresh {
+      color: $bright_action_color;
+      &:hover {
+        color: $action_color;
+      }
+    }
+  }
+
+  .right-tools {
+    right: 0;
+    top: 0;
+  }
+
+  .left-tools {
+    left: 0;
+    top: 8px;
   }
 }
 
@@ -375,6 +402,26 @@
 }
 
 // analysis tab
+.mod-options-selection {
+  width: 100%;
+  border: 1px solid $border_color;
+  background-color: $primary_background;
+  padding: 12px 16px;
+  margin-bottom: 20px;
+
+  strong {
+    color: $h4_color;
+    display: block;
+    margin-bottom: 8px;
+  }
+
+  label {
+    display: inline-block;
+    margin-right: 16px;
+    min-width: 235px;
+  }
+}
+
 .content-block {
   .analysis-container {
     max-height: 500px;
@@ -441,6 +488,18 @@
   font-family: Consolas, monospace, sans-serif;
   margin: 0 0 20px;
   @include column-count(3);
+
+  .show-more, .show-less {
+    font-size: 16px;
+    margin-top: 4px;
+    cursor: pointer;
+    color: $link_hover_color_primary;
+    @include transition(color 0.2s ease);
+
+    &:hover {
+      color: $text_color;
+    }
+  }
 }
 
 .errors-list {

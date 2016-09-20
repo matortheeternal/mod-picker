@@ -1,4 +1,4 @@
-app.controller('modListPluginsController', function($scope, $q, $timeout, modListService, columnsFactory, actionsFactory, listUtils) {
+app.controller('modListPluginsController', function($scope, $q, $timeout, categoryService, modListService, columnsFactory, actionsFactory, colorsFactory, listUtils, sortUtils, requirementUtils) {
     // initialize variables
     $scope.showDetailsModal = false;
     $scope.detailsItem = {};
@@ -27,17 +27,17 @@ app.controller('modListPluginsController', function($scope, $q, $timeout, modLis
     };
 
     $scope.buildPluginsModel = function() {
+        var plugins = $scope.mod_list.plugins.concat($scope.mod_list.custom_plugins);
         $scope.model.plugins = [];
         $scope.mod_list.groups.forEach(function(group) {
             if (group.tab !== 'plugins') {
                 return;
             }
             $scope.model.plugins.push(group);
-            group.children = $scope.mod_list.plugins.filter(function(plugin) {
+            group.children = plugins.filter(function(plugin) {
                 return plugin.group_id == group.id;
             });
         });
-        var plugins = $scope.mod_list.plugins.concat($scope.mod_list.custom_plugins);
         plugins.forEach(function(plugin) {
             if (!plugin.group_id) {
                 var insertIndex = $scope.model.plugins.findIndex(function(item) {
@@ -53,8 +53,30 @@ app.controller('modListPluginsController', function($scope, $q, $timeout, modLis
         });
     };
 
+    $scope.destroyModRemovedPlugins = function() {
+        if (!$scope.removedModIds.length) return;
+        var removeIfModRemoved = function(item) {
+            if (item.mod && $scope.removedModIds.indexOf(item.mod.id) > -1) {
+                $scope.removePlugin(item);
+            }
+        };
+        $scope.model.plugins.forEach(function(item) {
+            if (item.children) {
+                item.children.forEach(removeIfModRemoved)
+            } else {
+                removeIfModRemoved(item);
+            }
+        });
+        $scope.plugins_store.forEach(function(plugin) {
+            if ($scope.removedModIds.indexOf(plugin.mod_id) > -1) {
+                plugin._destroy = true;
+            }
+        });
+    };
+
     $scope.retrievePlugins = function() {
         modListService.retrieveModListPlugins($scope.mod_list.id).then(function(data) {
+            categoryService.associateCategories($scope.categories, data.plugins);
             $scope.required.plugins = data.required_plugins;
             $scope.notes.plugin_compatibility = data.compatibility_notes;
             $scope.notes.load_order = data.load_order_notes;
@@ -70,6 +92,7 @@ app.controller('modListPluginsController', function($scope, $q, $timeout, modLis
             $scope.buildPluginsModel();
             $timeout(function() {
                 $scope.$broadcast('initializeModules');
+                $timeout($scope.destroyModRemovedPlugins);
             }, 100);
             $scope.pluginsReady = true;
         }, function(response) {
@@ -193,6 +216,7 @@ app.controller('modListPluginsController', function($scope, $q, $timeout, modLis
     };
 
     $scope.removePlugin = function(modListPlugin) {
+        if (modListPlugin._destroy) return;
         modListPlugin._destroy = true;
         $scope.mod_list.plugins_count -= 1;
         $scope.updateTabs();
@@ -217,9 +241,103 @@ app.controller('modListPluginsController', function($scope, $q, $timeout, modLis
         }
     };
 
+    // LOAD ORDER SORTING
+    $scope.startSortLoadOrder = function() {
+        // Display activity modal
+        $scope.startActivity('Sorting Load Order');
+        $scope.setActivityMessage('Preparing mod list for sorting');
+
+        // Dissassociate plugins, destroy original groups, and unmark as merged
+        sortUtils.prepareToSort($scope.mod_list, 'plugins');
+
+        // Save changes and call sortLoadOrder if successful
+        $scope.saveChanges(true).then(function() {
+            $scope.sortLoadOrder();
+        }, function() {
+            $scope.$emit('customMessage', { type: 'error', text: "Failed to sort load order.  Couldn't save mod list."});
+            $scope.setActivityMessage('Failed to prepare mod list for sorting');
+            $scope.completeActivity();
+        });
+    };
+
+    $scope.sortLoadOrder = function() {
+        // STEP 1: Build groups for categories
+        $scope.setActivityMessage('Building category groups');
+        var groups = sortUtils.buildGroups($scope.mod_list, 'plugins');
+
+        // STEP 2: Merge category groups with less than 5 members into super category groups
+        sortUtils.combineGroups($scope.mod_list, 'plugins', groups, $scope.categories);
+
+        // STEP 3: Sort groups and sort plugins in groups by override count
+        $scope.setActivityMessage('Sorting groups and plugins');
+        sortUtils.sortGroupsByPriority(groups);
+        sortUtils.sortItems(groups, 'plugin', 'overrides_count');
+        listUtils.updateItems(groups, 0);
+
+        // STEP 4: Save the new groups and associate plugins with groups
+        $scope.setActivityMessage('Saving groups');
+        var groupPromises = sortUtils.saveGroups(groups, $scope.model, 'plugins', $scope.mod_list, $scope.originalModList);
+
+        $q.all(groupPromises).then(function() {
+            // STEP 5: Sort plugins per load order notes and master dependencies
+            $scope.setActivityMessage('Handling load order notes and master dependencies');
+            $scope.$broadcast('resolveAllLoadOrder');
+
+            // STEP 6: Update indexes and save changes
+            $timeout(function() {
+                $scope.saveChanges().then(function() {
+                    $scope.setActivityMessage('Finalizing changes');
+                    $scope.setActivityMessage('All done!');
+                    $scope.completeActivity();
+                }, function() {
+                    $scope.setActivityMessage('Failed to save changes, please save manually.');
+                    $scope.completeActivity();
+                });
+            });
+        });
+    };
+
     // event triggers
     $scope.$on('removeItem', function(event, modListPlugin) {
         $scope.removePlugin(modListPlugin);
+    });
+    $scope.$on('modOptionRemoved', function(event, modOptionId) {
+        var removeIfModMatches = function(item) {
+            if (item.mod_option_id && item.mod_option_id == modOptionId) {
+                $scope.removePlugin(item);
+            }
+        };
+        $scope.model.plugins.forEach(function(item) {
+            if (item.children) {
+                item.children.forEach(removeIfModMatches)
+            } else {
+                removeIfModMatches(item);
+            }
+        });
+        $scope.plugins_store.forEach(function(plugin) {
+            if (plugin.mod_option_id == modOptionId) {
+                plugin._destroy = true;
+            }
+        });
+    });
+    $scope.$on('modOptionAdded', function(event, modOptionId) {
+        var recoverIfModMatches = function(item) {
+            if (item.mod_option_id && item.mod_option_id == modOptionId) {
+                $scope.recoverPlugin(item);
+            }
+        };
+        $scope.model.plugins.forEach(function(item) {
+            if (item.children) {
+                item.children.forEach(recoverIfModMatches)
+            } else {
+                recoverIfModMatches(item);
+            }
+        });
+        $scope.plugins_store.forEach(function(plugin) {
+            if (plugin.mod_option_id == modOptionId && plugin._destroy) {
+                delete plugin._destroy;
+            }
+        });
     });
     $scope.$on('rebuildModels', $scope.buildPluginsModel);
     $scope.$on('reloadModules', function() {
@@ -227,6 +345,7 @@ app.controller('modListPluginsController', function($scope, $q, $timeout, modLis
     });
     $scope.$on('saveChanges', function() {
         listUtils.removeDestroyed($scope.mod_list.plugins);
+        listUtils.removeDestroyed($scope.plugins_store);
     });
     $scope.$on('itemMoved', function() {
         $scope.$broadcast('pluginMoved');
