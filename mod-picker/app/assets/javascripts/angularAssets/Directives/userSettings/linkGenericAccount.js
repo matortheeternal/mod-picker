@@ -73,6 +73,8 @@ app.controller('linkGenericAccountController', function ($scope, $timeout, userS
                 $scope.$emit('modalMessage', { type: 'success', message: 'Account verified!' });
                 $scope.bio = data.bio;
             }
+        }, function() {
+            $scope.$emit('modalMessage', { type: 'error', message: 'Error verifying account.' });
         });
         $timeout(function() {
             $scope.waiting = false;
