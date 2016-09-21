@@ -18,7 +18,7 @@ app.directive('userNotifications', function($document) {
     }
 });
 
-app.controller('userNotificationsController', function($scope, $rootScope, notificationService, notificationsFactory) {
+app.controller('userNotificationsController', function($scope, $rootScope, $timeout, notificationService, notificationsFactory) {
     notificationsFactory.setCurrentUserID($rootScope.currentUser.id);
 
     $scope.toggleNotifications = function() {
@@ -26,6 +26,8 @@ app.controller('userNotificationsController', function($scope, $rootScope, notif
     };
 
     $scope.refreshNotifications = function() {
+        if ($scope.waiting) return;
+        $scope.waiting = true;
         delete $scope.notifications;
         notificationService.retrieveRecent().then(function(data) {
             $scope.notifications = data;
@@ -33,6 +35,9 @@ app.controller('userNotificationsController', function($scope, $rootScope, notif
             var params = { label: 'Error refreshing notifications', response: response };
             $scope.$emit('errorMessage', params);
         });
+        $timeout(function() {
+            $scope.waiting = false;
+        }, 30000);
     };
 
     $scope.markAllRead = function() {
