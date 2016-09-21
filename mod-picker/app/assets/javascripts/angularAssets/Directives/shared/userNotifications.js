@@ -56,4 +56,15 @@ app.controller('userNotificationsController', function($scope, $rootScope, $time
     $scope.$on('$stateChangeStart', function() {
         $scope.showNotifications = false;
     });
+
+    $scope.autoRefresh = function() {
+        if (!$scope.waiting) {
+            $scope.refreshNotifications();
+            // autorefresh notifications every 2 minutes
+            $timeout($scope.autoRefresh, 120000);
+        }
+    };
+
+    // start autorefresh in 2 minutes
+    $timeout($scope.autoRefresh, 120000);
 });
