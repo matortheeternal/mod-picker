@@ -17,7 +17,7 @@ class Ability
 
     if user.moderator? || user.admin?
       # special moderator permissions
-      can :ban, User
+      can :invite, :ban, User
       can :set_avatar, User, :id => user.id
       can :set_custom_title, User, :id => user.id
 
