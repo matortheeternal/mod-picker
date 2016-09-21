@@ -66,8 +66,10 @@ app.controller('tagInputController', function($scope, $timeout, formUtils) {
             });
             if (index > -1) {
                 $scope.selectResult($scope.tags[index]);
-            } else if (!$scope.canCreate || $scope.tag.text == "") {
-                $scope.removeTag($scope.index);
+            } else {
+                if (!$scope.canCreate || $scope.tag.text == "") {
+                    $scope.removeTag($scope.index);
+                }
                 $scope.showDropdown = false;
             }
         }, 100);

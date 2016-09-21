@@ -8,7 +8,7 @@ app.directive('userNotifications', function($document) {
         link: function(scope, element) {
             $document.on('click', function(e) {
                 if (element !== e.target && !element[0].contains(e.target)) {
-                    scope.$apply(function() {
+                    scope.$applyAsync(function() {
                         scope.showNotifications = false;
                     })
                 }
