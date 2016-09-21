@@ -12,6 +12,7 @@ app.controller('modAnalysisManagerController', function ($scope, pluginService, 
         var input = event.target;
         if (input.files && input.files[0]) {
             $scope.loadAnalysisFile(input.files[0]);
+            input.value = "";
         }
     };
 
@@ -75,8 +76,12 @@ app.controller('modAnalysisManagerController', function ($scope, pluginService, 
                 $scope.mod.analysis = analysis;
                 $scope.getRequirementsFromAnalysis();
             } catch (e) {
-                console.log(e);
-                $scope.emit('errorMessage', 'There was an error parsing the mod analysis.  Make sure the analysis was produced with the latest version of Mod Analyzer.')
+                console.log("Error parsing mod analysis: " + e);
+                var params = {
+                    type: "error",
+                    text: "There was an error parsing the mod analysis.  Make sure the analysis was produced with the latest version of Mod Analyzer."
+                };
+                $scope.$emit('customMessage', params)
             }
         };
         fileReader.readAsText(file);
