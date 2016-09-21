@@ -15,6 +15,9 @@ en:
       edit:
         header: "Create your account"
         submit_button: "Create account"
+      new_batch:
+        header: "Send invitations"
+        submit_button: "Send invitations"
     mailer:
       invitation_instructions:
         subject: "Mod Picker - Beta Invitation"
