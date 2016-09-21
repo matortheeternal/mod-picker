@@ -23,6 +23,15 @@ app.factory("filtersFactory", function() {
         max: 40,
         param: "h"
     };
+    this.submitterReputationFilter = {
+        label: "Submitter Reputation",
+        common: true,
+        data: "reputation",
+        type: "Range",
+        min: -40,
+        max: 1280,
+        param: "rep"
+    };
     this.helpfulFilter = {
         label: "Helpful Count",
         common: true,
@@ -624,6 +633,7 @@ app.factory("filtersFactory", function() {
     this.reviewStatisticFilters = function() {
         return [
             factory.contributionHelpfulnessFilter,
+            factory.submitterReputationFilter,
             factory.helpfulFilter,
             factory.notHelpfulFilter,
             {
@@ -657,6 +667,7 @@ app.factory("filtersFactory", function() {
     this.noteStatisticFilters = function() {
         return [
             factory.contributionHelpfulnessFilter,
+            factory.submitterReputationFilter,
             factory.helpfulFilter,
             factory.notHelpfulFilter,
             factory.correctionsFilter,
@@ -826,6 +837,7 @@ app.factory("filtersFactory", function() {
 
     this.correctionStatisticFilters = function() {
         return [
+            factory.submitterReputationFilter,
             {
                 label: "Agree Count",
                 common: true,
