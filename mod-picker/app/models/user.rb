@@ -162,6 +162,22 @@ class User < ActiveRecord::Base
     self.role   ||= :user
   end
 
+  def self.batch_invite!(emails, current_inviter)
+    emails.each do |email|
+      if /\A\S+@.+\.\S+\z/.match(email)
+        User.invite!({:email => email}, current_inviter)
+      else
+        failed_emails.push(email)
+      end
+    end
+
+    failed_emails.empty?
+  end
+
+  def self.failed_emails
+    @failed_emails ||= []
+  end
+
   def create_associations
     create_reputation({ user_id: id })
     create_settings({ user_id: id })
