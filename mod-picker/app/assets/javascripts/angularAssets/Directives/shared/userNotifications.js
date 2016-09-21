@@ -39,6 +39,7 @@ app.controller('userNotificationsController', function($scope, $rootScope, notif
         var ids = $scope.notifications.map(function(notification) {
             return notification.event.id;
         });
+        delete $scope.notifications;
         notificationService.markRead(ids).then(function(data) {
             $scope.notifications = data;
         }, function(response) {
