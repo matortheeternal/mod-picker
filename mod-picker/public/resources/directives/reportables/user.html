@@ -4,19 +4,20 @@
           <span>
               <a ng-href="#/{{report.reportable_type.underscore()}}/{{report.reportable.id}}" target="_blank">{{report.reportable.username}}</a>
           </span>
-          <!--<span class="right-item">
-              <span class="capitalize">Status: {{report.reportable.status.replace("_", " ")}}</span>
-              <span class="capitalize">Visibility: {{report.reportable.visibility.replace("visibility_", "")}}</span>
-          </span>-->
     </div>
     <user-column user="report.reportable" class="user-column"></user-column>
-      <div class="content-column" ng-class="{ 'no-actions' : !showActions }">
-          <div class="submitted-line">Joined {{report.reportable.joined | date : 'longDate'}}</div>
-            <!--<em ng-if="report.reportable.last_sign_in_at">Last Online {{report.reportable.last_sign_in_at | date: 'longDate'}}, </em>-->
+      <div class="content-column reportable-content-column">
             
-          <div class="text-container" ng-class="{ 'half-opacity' : target.hidden }">
-              <read-more text="report.reportable.about_me" words="75"></read-more>
-          </div>
+        <h3 class="section-title">Activity</h3>
+        <section class="reportable-content-block">
+            <div class="stat-item">Joined: {{report.reportable.joined | date}}</div>
+            <div ng-if="report.reportable.last_sign_in_at" class="stat-item">Last Seen: {{report.reportable.last_sign_in_at | date}}</div>
+        </section>
+
+        <h3 ng-if="report.reportable.about_me" class="section-title">About Me</div>
+        <section class="reportable-content-block">
+            <div marked="report.reportable.about_me"></div>
+        </section>
       </div>
   </div>
 </div>
