@@ -14,7 +14,7 @@ app.service('notificationsFactory', function() {
         Comment: "A new comment has been posted on ((contentLink))",
         ModTag: contributionAddedTemplate("tag"),
         ModListTag: contributionAddedTemplate("tag"),
-        ModAuthor: "((authorUserLink)) has been added as ((authorRole)) for ((contentLink))",
+        ModAuthor: "((authorUserClause)) been added as ((authorRole)) for ((contentLink))",
         ReputationLink: "((endorser)) has endorsed you"
     };
 
@@ -26,7 +26,7 @@ app.service('notificationsFactory', function() {
     this.removed = {
         ModTag: "Your tag ((tagText)) was removed from ((contentLink))",
         ModListTag: "Your tag ((tagText)) was removed from ((contentLink))",
-        ModAuthor: "((authorUserLink)) is no longer ((authorRole)) for ((contentLink))",
+        ModAuthor: "((authorUserClause)) been removed as ((authorRole)) for ((contentLink))",
         ReputationLink: "((endorser)) has unendorsed you"
     };
 
@@ -203,8 +203,12 @@ app.service('notificationsFactory', function() {
         return (event.content.correctable_type === "Mod" ? "appeal" : "correction");
     };
 
-    this.authorUserLink = function(event) {
-        return '<a href="#/user/{{content.user.id}}">{{content.user.name}}</a>';
+    this.authorUserClause = function(event) {
+        if (factory.currentUserID !== event.content.user.id) {
+            return '<a href="#/user/{{content.user.id}}">{{content.user.username}}</a> has';
+        } else {
+            return 'You have';
+        }
     };
 
     this.authorRole = function(event) {
