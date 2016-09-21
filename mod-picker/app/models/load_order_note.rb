@@ -19,6 +19,7 @@ class LoadOrderNote < ActiveRecord::Base
   game_scope
   search_scope :text_body, :alias => 'search'
   user_scope :submitter
+  range_scope :overall, :association => 'submitter_reputation', :table => 'user_reputations', :alias => 'reputation'
   ids_scope :plugin_id, :columns => [:first_plugin_id, :second_plugin_id]
   date_scope :submitted, :edited
 
@@ -29,6 +30,8 @@ class LoadOrderNote < ActiveRecord::Base
   belongs_to :game, :inverse_of => 'load_order_notes'
   belongs_to :submitter, :class_name => 'User', :foreign_key => 'submitted_by', :inverse_of => 'load_order_notes'
   belongs_to :editor, :class_name => 'User', :foreign_key => 'edited_by'
+
+  has_one :submitter_reputation, :class_name => 'UserReputation', :through => 'submitter', :source => 'reputation'
 
   # plugins associatied with this load order note
   belongs_to :first_plugin, :foreign_key => 'first_plugin_id', :class_name => 'Plugin'

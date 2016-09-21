@@ -21,6 +21,7 @@ class CompatibilityNote < ActiveRecord::Base
   search_scope :text_body, :alias => 'search'
   user_scope :submitter
   enum_scope :status
+  range_scope :overall, :association => 'submitter_reputation', :table => 'user_reputations', :alias => 'reputation'
   ids_scope :mod_id, :columns => [:first_mod_id, :second_mod_id]
   date_scope :submitted, :edited
 
@@ -28,6 +29,8 @@ class CompatibilityNote < ActiveRecord::Base
   belongs_to :game, :inverse_of => 'compatibility_notes'
   belongs_to :submitter, :class_name => 'User', :foreign_key => 'submitted_by', :inverse_of => 'compatibility_notes'
   belongs_to :editor, :class_name => 'User', :foreign_key => 'edited_by'
+
+  has_one :submitter_reputation, :class_name => 'UserReputation', :through => 'submitter', :source => 'reputation'
 
   # associated mods
   belongs_to :first_mod, :class_name => 'Mod', :foreign_key => 'first_mod_id'
