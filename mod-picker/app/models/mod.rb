@@ -367,6 +367,12 @@ class Mod < ActiveRecord::Base
                         :only => [:username]
                     }
                 }
+            },
+            :primary_category => {
+                :only => [:name]
+            },
+            :secondary_category => {
+                :only => [:name]
             }
         },
         :methods => :image

@@ -37,6 +37,8 @@ app.service('reportService', function($q, backend, pageUtils, userTitleService, 
                 }
             });
 
+            
+
             action.resolve(data);
 
         }, function(response) {
