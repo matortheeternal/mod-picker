@@ -22,6 +22,23 @@ class Tag < ActiveRecord::Base
   after_create :increment_counter_caches
   before_destroy :decrement_counter_caches
 
+  
+  # json data for reported tags
+  def reportable_json_options
+    {
+        :only => [:game_id, :text, :hidden, :mods_count, :mod_lists_count],
+        :include => {
+            :submitter => {
+                :only => [:id, :username, :role, :title],
+                :include => {
+                    :reputation => {:only => [:overall]}
+                },
+                :methods => :avatar
+            }
+        }
+    }
+  end
+
   # Private methods
   private
     def increment_counter_caches

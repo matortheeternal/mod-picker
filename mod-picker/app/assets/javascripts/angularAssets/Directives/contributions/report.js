@@ -18,10 +18,14 @@ app.directive('report', function() {
 app.controller('reportController', function($scope) {
     angular.inherit($scope, 'report');
 
-    // status classes for mod css class name
-    $scope.statusClasses = {
-        unstable: 'red-box',
-        outdated: 'yellow-box',
-        good: 'green-box'
-    };
+    // list of reportables where the template will override the outer container 
+    // in order to add extra misc information into the outer base report container
+    var overrideTemplates = ['Tag'];
+
+    $scope.overrideTemplate = false;
+
+    // checks if reportable_type is within overrideTemplates and toggles overrideTemplate option
+    if(overrideTemplates.indexOf($scope.report.reportable_type) > -1) {
+        $scope.overrideTemplate = true;
+    }
 });

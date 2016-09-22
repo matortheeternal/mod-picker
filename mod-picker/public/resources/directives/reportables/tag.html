@@ -1,0 +1,41 @@
+<!--outer report container-->
+<div class="content-title">
+  <span class="capitalize">
+          <a ng-href="#/{{report.reportable_type.underscore()}}/{{report.reportable_id}}" target="_blank">{{report.reportable_type}}</a>
+      </span>
+  <span class="right-item">
+        Mod Lists <span class="reportable-count yellow-box">{{report.reportable.mod_lists_count}}</span> Mods <span class="reportable-count yellow-box">{{report.reportable.mods_count}}</span>
+  </span>
+</div>
+
+<!-- report content container-->
+<div class="content-container">
+
+  <!-- main content reportable content-->
+  <div class="content-column">
+    <span>
+      <em>{{report.reportable.text}}</em>
+      by <a class="link" ng-href="#/user/{{report.reportable.submitter.id}}" target="_blank" tabindex="{{index}}">{{report.reportable.submitter.username}}</a>
+    </span>
+  </div>
+
+  <!--child reports-->
+  <table class="browse-table">
+    <thead>
+      <tr>
+        <th>Date</th>
+        <th>Submitter</th>
+        <th>Reason</th>
+        <th>Note</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr ng-repeat="childReport in report.reports">
+        <td>{{childReport.submitted | date : 'short'}}</td>
+        <td><a ng-href="#/user/{{childReport.submitter.id}}">{{childReport.submitter.username}}</a></td>
+        <td>{{childReport.report_type}}</td>
+        <td>{{childReport.note}}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
