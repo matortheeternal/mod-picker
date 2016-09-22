@@ -1,3 +1,11 @@
-<div class="comment-container">
-  <comment comment="report.reportable"> </comment>
+<div class="content-title">
+    <span class="capitalize">
+        <a ng-href="#/{{report.reportable_type.underscore()}}/{{report.reportable_id}}" target="_blank">{{report.reportable_type}}</a>
+    </span>
+</div>
+
+<div class="content-container">
+  <div class="comment-container">
+    <comment comment="report.reportable"> </comment>
+  </div>
 </div>
