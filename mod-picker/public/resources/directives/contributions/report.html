@@ -19,7 +19,7 @@
                 <tr ng-repeat="childReport in report.reports">
                     <td>{{childReport.submitted | date : 'short'}}</td>
                     <td><a ng-href="#/user/{{childReport.submitter.id}}">{{childReport.submitter.username}}</a></td>
-                    <td>{{childReport.report_type}}</td>
+                    <td>{{childReport.report_type.capitalize() | humanize}}</td>
                     <td>{{childReport.note}}</td>
                 </tr>
             </tbody>
