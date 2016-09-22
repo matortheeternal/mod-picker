@@ -10,12 +10,16 @@ app.directive('correction', function () {
             edit: '=?',
             showUserColumn: '=',
             eventPrefix: '=?',
-            showCorrectable: '=?'
+            showCorrectable: '=?',
+            showActions: '=?'
         }
     }
 });
 
 app.controller('correctionController', function($scope) {
+    // set defaults for toggling visibility of component(s)
+    $scope.showActions = angular.isDefined($scope.showActions) ? $scope.showActions : true;
+
     switch($scope.correction.correctable_type) {
         case "CompatibilityNote":
             $scope.label = "Compatibility Note";
