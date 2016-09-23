@@ -30,8 +30,8 @@ app.controller('sliderController', function ($scope, sliderOptionsFactory, $time
     };
 
     $scope.deleteData = function() {
-        if ($scope.filters) {
-            delete $scope.filters[$scope.filter.data];
+        if ($scope.filterData) {
+            delete $scope.filterData[$scope.filter.data];
         } else {
             delete $scope.filter.data;
         }
@@ -54,7 +54,7 @@ app.controller('sliderController', function ($scope, sliderOptionsFactory, $time
     $scope.$watch('rawData', function(rawData) {
         var stepsArray = $scope.slider.options.stepsArray;
         var atMin = rawData.min == 0;
-        var atMax = rawData.max == parseInt($scope.attr) ||
+        var atMax = rawData.max == $scope.filter.max ||
             stepsArray && rawData.max == stepsArray.length - 1;
         // delete data and return if we're at default values
         if (atMin && atMax) {
