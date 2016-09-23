@@ -136,6 +136,10 @@ class User < ActiveRecord::Base
     admin? || moderator?
   end
 
+  def restricted?
+    role.to_sym == :restricted
+  end
+
   def banned?
     role.to_sym == :banned
   end
