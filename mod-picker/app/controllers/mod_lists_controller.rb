@@ -117,12 +117,14 @@ class ModListsController < ApplicationController
   # GET /mod_lists/:id/modlist.txt
   def export_modlist
     authorize! :read, @mod_list
+    force_download("modlist.txt")
     render :text => @mod_list.modlist_text
   end
 
   # GET /mod_lists/:id/plugins.txt
   def export_plugins
     authorize! :read, @mod_list
+    force_download("plugins.txt")
     render :text => @mod_list.plugins_text
   end
 
@@ -319,6 +321,10 @@ class ModListsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_mod_list
       @mod_list = ModList.find(params[:id])
+    end
+
+    def force_download(filename)
+      response.headers["Content-Disposition"] = "attachment; filename=#{filename}"
     end
 
     def filtering_params
