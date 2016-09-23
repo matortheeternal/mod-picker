@@ -124,11 +124,9 @@ module ScopeHelpers
 
     def search_scope(*attributes, **options)
       if options[:combine]
-        search_terms = []
-        attributes.each { |attribute| search_terms.push("#{attribute} like :search")}
         class_eval do
             scope :search, -> (search) {
-              where("#{search_terms.join(' OR ')}", search: "%#{search}%")
+              where(attributes.map{|attribute| arel_table[attribute.to_sym].matches("%#{search}%") }.inject(:or))
             }
         end
       else
