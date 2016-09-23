@@ -109,7 +109,7 @@ class LoadOrderNote < ActiveRecord::Base
           :except => [:submitted_by],
           :include => {
               :submitter => {
-                  :only => [:id, :username, :role, :title],
+                  :only => [:id, :username, :role, :title, :joined, :last_sign_in_at, :reviews_count, :compatibility_notes_count, :install_order_notes_count, :load_order_notes_count, :corrections_count, :comments_count],
                   :include => {
                       :reputation => {:only => [:overall]}
                   },
