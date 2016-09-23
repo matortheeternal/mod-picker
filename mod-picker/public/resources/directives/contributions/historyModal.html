@@ -9,13 +9,13 @@
         </h2>
 
         <div class="content-block" ng-if="model.name === 'CompatibilityNote'">
-            <compatibility-note note="activeHistoryEntry" index="index" current-user="currentUser" show-actions="false"></compatibility-note>
+            <compatibility-note note="activeHistoryEntry" index="index" show-actions="false"></compatibility-note>
         </div>
         <div class="content-block" ng-if="model.name === 'InstallOrderNote'">
-            <install-order-note note="activeHistoryEntry" index="index" current-user="currentUser" show-actions="false"></install-order-note>
+            <install-order-note note="activeHistoryEntry" index="index" show-actions="false"></install-order-note>
         </div>
         <div class="content-block" ng-if="model.name === 'LoadOrderNote'">
-            <load-order-note note="activeHistoryEntry" index="index" current-user="currentUser" show-actions="false"></load-order-note>
+            <load-order-note note="activeHistoryEntry" index="index" show-actions="false"></load-order-note>
         </div>
 
         <h3 class="section-title">History</h3>

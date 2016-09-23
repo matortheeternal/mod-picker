@@ -51,7 +51,7 @@
                 </span></h2>
                 <loader data="reviews" content-class="grid-results" spinner-class="big-spinner" ng-if="!error">
                     <div class="content-block" ng-repeat="review in reviews">
-                        <review current-user="currentUser" review="review" show-user-column="true" show-mod="true" index="100"></review>
+                        <review review="review" show-user-column="true" show-mod="true" index="100"></review>
                     </div>
 
                     <div class="content-message" ng-hide="reviews.length">

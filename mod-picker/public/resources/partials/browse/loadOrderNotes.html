@@ -71,7 +71,7 @@
                 </span></h2>
                 <loader data="load_order_notes" content-class="grid-results" spinner-class="big-spinner" ng-if="!error">
                     <div class="content-block" ng-repeat="note in load_order_notes">
-                        <load-order-note current-user="currentUser" note="note" show-user-column="true" index="100"></load-order-note>
+                        <load-order-note note="note" show-user-column="true" index="100"></load-order-note>
                     </div>
 
                     <div class="content-message" ng-hide="load_order_notes.length">

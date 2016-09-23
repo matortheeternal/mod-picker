@@ -71,7 +71,7 @@
                 </span></h2>
                 <loader data="install_order_notes" content-class="grid-results" spinner-class="big-spinner" ng-if="!error">
                     <div class="content-block" ng-repeat="note in install_order_notes">
-                        <install-order-note current-user="currentUser" note="note" show-user-column="true" index="100"></install-order-note>
+                        <install-order-note note="note" show-user-column="true" index="100"></install-order-note>
                     </div>
 
                     <div class="content-message" ng-hide="install_order_notes.length">
