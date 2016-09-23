@@ -136,7 +136,7 @@ module ScopeHelpers
           scope_name = options[:alias] || attribute
           class_eval do
             scope scope_name.to_sym, -> (search) {
-              where("#{attribute} like ?", "%#{search}%")
+              where(arel_table[attribute.to_sym].matches("%#{search}%"))
             }
           end
         end
