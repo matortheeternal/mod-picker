@@ -137,41 +137,41 @@ class Ability
       end
     end
 
+    # Users that are not restricted
+    if user_signed_in && !user.banned?
+      # can comment on things and update their comments
+      can :create, Comment
+      can :update, Comment, :submitted_by => user.id, :hidden => false
+
+      # can star and unstar mods and mod lists
+      can :create, ModStar
+      can :create, ModListStar
+      can :destroy, ModStar, :user_id => user.id
+      can :destroy, ModListStar, :user_id => user.id
+
+      # can create and update their mod lists
+      can :create, ModList
+      can [:update, :hide], ModList, :submitted_by => user.id, :hidden => false
+
+      # can update their settings or their account
+      can :update, User, { :id => user.id }
+      can :update, UserSetting, { :user_id => user.id }
+      can :update, UserBio, { :user_id => user.id }
+
+      # abilities tied to reputation
+      if user.reputation.overall >= 20
+        can :set_avatar, User, :id => user.id  # custom avatar
+      end
+      if user.reputation.overall >= 1280
+        can :set_custom_title, User, :id => user.id # can set a custom user title
+      end
+    end
+
     # Adult content filtering
     if user.settings.present? && !user.settings.allow_adult_content
       cannot :read, Mod, { :has_adult_content => true }
       cannot :read, ModList, { :has_adult_content => true }
       # TODO: filtering of contributions on mods with adult content
-    end
-  end
-
-  # Users that are not restricted
-  if user_signed_in && !user.banned?
-    # can comment on things and update their comments
-    can :create, Comment
-    can :update, Comment, :submitted_by => user.id, :hidden => false
-
-    # can star and unstar mods and mod lists
-    can :create, ModStar
-    can :create, ModListStar
-    can :destroy, ModStar, :user_id => user.id
-    can :destroy, ModListStar, :user_id => user.id
-
-    # can create and update their mod lists
-    can :create, ModList
-    can [:update, :hide], ModList, :submitted_by => user.id, :hidden => false
-
-    # can update their settings or their account
-    can :update, User, { :id => user.id }
-    can :update, UserSetting, { :user_id => user.id }
-    can :update, UserBio, { :user_id => user.id }
-
-    # abilities tied to reputation
-    if user.reputation.overall >= 20
-      can :set_avatar, User, :id => user.id  # custom avatar
-    end
-    if user.reputation.overall >= 1280
-      can :set_custom_title, User, :id => user.id # can set a custom user title
     end
   end
 end
