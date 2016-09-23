@@ -179,6 +179,18 @@ class UserReputation < ActiveRecord::Base
     self.overall += author_rep_diff
   end
 
+  def add_offset
+    self.offset += 5
+    self.overall += 5
+    save!
+  end
+
+  def subtract_offset
+    self.offset -= 5
+    self.overall -= 5
+    save!
+  end
+
   def get_max_links
     if self.overall >= 640
       15
