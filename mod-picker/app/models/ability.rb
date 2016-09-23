@@ -70,10 +70,10 @@ class Ability
       cannot :read, ModList, :hidden => true
     end
 
-    # signed in users who aren't banned
-    if  User.exists?(user.id) && !user.banned?
+    # signed in users who aren't restricted or banned
+    user_signed_in = User.exists?(user.id)
+    if user_signed_in && !user.banned? && !user.restricted?
       # can create new contributions
-      can :create, Comment
       can :create, HelpfulMark
       can :create, CompatibilityNote
       can :create, InstallOrderNote
@@ -84,11 +84,9 @@ class Ability
 
       # can submit mods
       can :submit, :mod
-      can :create, NexusInfo
       can :create, Mod
 
       # can update their contributions
-      can :update, Comment, :submitted_by => user.id, :hidden => false
       can :update, CompatibilityNote, :submitted_by => user.id, :hidden => false
       can :update, Correction, :submitted_by => user.id, :hidden => false
       can :update, LoadOrderNote, :submitted_by => user.id, :hidden => false
@@ -108,21 +106,6 @@ class Ability
       can :destroy, ModTag, :submitted_by => user.id
       can :destroy, ModListTag, :submitted_by => user.id
 
-      # can star and unstar mods and mod lists
-      can :create, ModStar
-      can :create, ModListStar
-      can :destroy, ModStar, :user_id => user.id
-      can :destroy, ModListStar, :user_id => user.id
-
-      # can create and update their mod lists
-      can :create, ModList
-      can [:update, :hide], ModList, :submitted_by => user.id, :hidden => false
-
-      # can update their settings or their account
-      can :update, User, { :id => user.id }
-      can :update, UserSetting, { :user_id => user.id }
-      can :update, UserBio, { :user_id => user.id }
-
       # abilities for mod authors
       can [:update, :hide], Mod, { :mod_authors => { :user_id => user.id } }
       can :destroy, ModRequirement, {:mod_version => {:mod => {:mod_authors => {:user_id => user.id } } } }
@@ -136,7 +119,6 @@ class Ability
 
       # abilities tied to reputation
       if user.reputation.overall >= 20
-        can :set_avatar, User, :id => user.id  # custom avatar
         can :create, Tag # can create new tags
       end
       if user.reputation.overall >= 40
@@ -154,12 +136,6 @@ class Ability
         can :update, InstallOrderNote, { :submitter => { :inactive? => true } }
         can :update, LoadOrderNote, { :submitter => { :inactive? => true } }
       end
-      if user.reputation.overall >= 640
-        # TODO: Add some stuff here?
-      end
-      if user.reputation.overall >= 1280
-        can :set_custom_title, User, :id => user.id # can set a custom user title
-      end
     end
 
     # Adult content filtering
@@ -167,6 +143,36 @@ class Ability
       cannot :read, Mod, { :has_adult_content => true }
       cannot :read, ModList, { :has_adult_content => true }
       # TODO: filtering of contributions on mods with adult content
+    end
+  end
+
+  # Users that are not restricted
+  if user_signed_in && !user.banned?
+    # can comment on things and update their comments
+    can :create, Comment
+    can :update, Comment, :submitted_by => user.id, :hidden => false
+
+    # can star and unstar mods and mod lists
+    can :create, ModStar
+    can :create, ModListStar
+    can :destroy, ModStar, :user_id => user.id
+    can :destroy, ModListStar, :user_id => user.id
+
+    # can create and update their mod lists
+    can :create, ModList
+    can [:update, :hide], ModList, :submitted_by => user.id, :hidden => false
+
+    # can update their settings or their account
+    can :update, User, { :id => user.id }
+    can :update, UserSetting, { :user_id => user.id }
+    can :update, UserBio, { :user_id => user.id }
+
+    # abilities tied to reputation
+    if user.reputation.overall >= 20
+      can :set_avatar, User, :id => user.id  # custom avatar
+    end
+    if user.reputation.overall >= 1280
+      can :set_custom_title, User, :id => user.id # can set a custom user title
     end
   end
 end
