@@ -58,19 +58,27 @@ app.controller('userCardController', function($scope, $rootScope, userService) {
         });
     };
 
-    $scope.restrictUser = function() {
-        $scope.changeRole("restricted");
+    $scope.userRestricted = function() {
+        return $scope.user.role === "restricted";
     };
 
-    $scope.unrestrictUser = function() {
-        $scope.changeRole("unrestricted", "user");
+    $scope.userBanned = function() {
+        return $scope.user.role === "banned";
     };
 
-    $scope.banUser = function() {
-        $scope.changeRole("banned");
+    $scope.toggleRestrictUser = function() {
+        if ($scope.userRestricted()) {
+            $scope.changeRole("unrestricted", "user");
+        } else {
+            $scope.changeRole("restricted");
+        }
     };
 
-    $scope.unbanUser = function() {
-        $scope.changeRole("unbanned", "user");
+    $scope.toggleBanUser = function() {
+        if ($scope.userBanned()) {
+            $scope.changeRole("unbanned", "user");
+        } else {
+            $scope.changeRole("banned");
+        }
     };
 });

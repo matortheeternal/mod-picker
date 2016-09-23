@@ -15,19 +15,15 @@
             </span>
         </li>
         <li ng-if="permissions.canModerate">
-            <span ng-click="restrictUser()" ng-if="user.role !== 'restricted'">
-                <i class="fa fa-lock"></i> Restrict
-            </span>
-            <span ng-click="unrestrictUser()" ng-if="user.role === 'restricted'">
-                <i class="fa fa-unlock"></i> Unrestrict
+            <span ng-click="toggleRestrictUser()">
+                <i class="fa {{ userRestricted() ? 'fa-unlock' : 'fa-lock' }}"></i>
+                {{ userRestricted() ? 'Unrestrict' : 'Restrict' }}
             </span>
         </li>
         <li ng-if="permissions.canModerate">
-            <span ng-click="banUser()" ng-if="user.role !== 'banned'">
-                <i class="fa fa-gavel"></i> Ban
-            </span>
-            <span ng-click="unbanUser()" ng-if="user.role === 'banned'">
-                <i class="fa fa-life-ring"></i> Unban
+            <span ng-click="toggleBanUser()">
+                <i class="fa {{ userBanned() ? 'fa-life-ring' : 'fa-gavel' }}"></i>
+                {{ userBanned() ? 'Unban' : 'Ban' }}
             </span>
         </li>
     </ul>
