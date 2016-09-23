@@ -83,7 +83,6 @@ class Ability
       can :create, ModListTag
 
       # can submit mods
-      can :submit, :mod
       can :create, Mod
 
       # can update their contributions
