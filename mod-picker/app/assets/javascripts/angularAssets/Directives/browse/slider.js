@@ -4,18 +4,15 @@ app.directive('slider', function () {
         templateUrl: '/resources/directives/browse/slider.html',
         controller: 'sliderController',
         scope: {
-            filters: '=?',
-            data: '=',
-            type: '@',
-            attr: '@'
+            filterData: '=?',
+            filter: '='
         }
     }
 });
 
+// TODO: Sometime this needs to be refactored - the logic is pretty messy
 app.controller('sliderController', function ($scope, sliderOptionsFactory, $timeout) {
-    if (typeof sliderOptionsFactory[$scope.type] === "function") {
-        $scope.slider = sliderOptionsFactory[$scope.type]($scope.attr);
-    }
+    $scope.slider = sliderOptionsFactory.buildSlider($scope.filter);
 
     $scope.loadData = function(filterData) {
         var stepsArray = $scope.slider.options.stepsArray;
@@ -28,26 +25,26 @@ app.controller('sliderController', function ($scope, sliderOptionsFactory, $time
             $scope.rawData = {
                 min: filterData.min,
                 max: filterData.max
-            }
+            };
         }
     };
 
     $scope.deleteData = function() {
         if ($scope.filters) {
-            delete $scope.filters[$scope.data];
+            delete $scope.filters[$scope.filter.data];
         } else {
-            delete $scope.data;
+            delete $scope.filter.data;
         }
     };
 
     $scope.setData = function(min, max) {
-        if ($scope.filters) {
-            $scope.filters[$scope.data] = {
+        if ($scope.filterData) {
+            $scope.filterData[$scope.filter.data] = {
                 min: min,
                 max: max
             };
         } else {
-            $scope.data = {
+            $scope.filter.data = {
                 min: min,
                 max: max
             };
@@ -79,8 +76,8 @@ app.controller('sliderController', function ($scope, sliderOptionsFactory, $time
         });
     });
 
-    // load data from $scope.filters if present
-    var filterData = $scope.filters[$scope.data];
+    // load data from $scope.filterData if present
+    var filterData = $scope.filterData[$scope.filter.data];
     if (filterData) {
         $scope.loadData(filterData);
     } else {
