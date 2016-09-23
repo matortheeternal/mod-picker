@@ -139,6 +139,10 @@ Rails.application.routes.draw do
     match '/mod_list_custom_config_files', to: 'mod_list_custom_config_files#create', via: [:post]
     resources :mod_lists, only: [:show, :create, :update]
 
+    # mod list exporting
+    match 'mod_lists/:id/export_modlist', to: 'mod_lists#export_modlist', via: [:get]
+    match 'mod_lists/:id/export_plugins', to: 'mod_lists#export_plugins', via: [:get]
+
     # mod and mod list stars
     match '/mod_lists/:id/star', to: 'mod_lists#create_star', via: [:post]
     match '/mod_lists/:id/star', to: 'mod_lists#destroy_star', via: [:delete]
