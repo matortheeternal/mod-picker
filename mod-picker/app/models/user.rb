@@ -25,6 +25,7 @@ class User < ActiveRecord::Base
   date_scope :last_sign_in_at, :alias => 'last_seen'
 
   # UNIQUE SCOPES
+  scope :include_blank, -> (bool) { where.not(username: nil) if !bool }
   scope :contributors, -> (mod) {
     # TODO: Handle appeals too
     includes(:reviews => :mod, :compatibility_notes => [:first_mod, :second_mod], :install_order_notes => [:first_mod, :second_mod], :load_order_notes => [:first_mod, :second_mod]).where(:mods => {id: mod.id})
