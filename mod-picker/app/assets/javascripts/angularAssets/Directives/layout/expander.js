@@ -11,10 +11,8 @@ app.directive('expander', function () {
 });
 
 app.controller('expanderController', function($scope) {
-    // define expanded object on scope if it isn't defined yet
-    if (!angular.isDefined($scope.expanded)) {
-        $scope.expanded = {};
-    }
+    // default scope attributes
+    angular.default($scope, 'expanded', {});
 
     // set expanded.key to 0
     $scope.expanded[$scope.key] = 0;
