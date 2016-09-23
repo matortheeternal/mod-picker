@@ -409,6 +409,18 @@ app.factory("filtersFactory", function() {
                 param: "usr",
                 type: "Boolean",
                 default: true
+            },
+            {
+                data: "roles.restricted",
+                param: "rsr",
+                type: "Boolean",
+                default: false
+            },
+            {
+                data: "roles.banned",
+                param: "bnd",
+                type: "Boolean",
+                default: false
             }
         ]
     };

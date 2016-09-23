@@ -33,6 +33,14 @@
                                 <label><input type="checkbox" ng-model="filters.roles.user">
                                     User</label>
                             </li>
+                            <li ng-if="permissions.canModerate">
+                                <label><input type="checkbox" ng-model="filters.roles.restricted">
+                                    Restricted</label>
+                            </li>
+                            <li ng-if="permissions.canModerate">
+                                <label><input type="checkbox" ng-model="filters.roles.banned">
+                                    Banned</label>
+                            </li>
                         </ul>
                     </div>
                 </div>
