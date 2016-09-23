@@ -1,4 +1,17 @@
-app.controller('modListDetailsController', function($scope, tagService) {
+app.controller('modListDetailsController', function($scope, $q, $timeout, tagService) {
+    $scope.toggleExportDropdown = function($event) {
+        $scope.showExportDropdown = !$scope.showExportDropdown;
+        if (!$scope.showExportDropdown) {
+            $event.currentTarget.blur();
+        }
+    };
+
+    $scope.blurExportDropdown = function() {
+        $timeout(function() {
+            $scope.showExportDropdown = false;
+        }, 100);
+    };
+
     $scope.saveTags = function(updatedTags) {
         var action = $q.defer();
         tagService.updateModListTags($scope.mod_list, updatedTags).then(function(data) {
