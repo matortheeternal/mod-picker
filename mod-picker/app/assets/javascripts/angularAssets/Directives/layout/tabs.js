@@ -8,7 +8,8 @@ app.directive('tabs', function() {
         }
     };
 });
-app.controller('tabsController', function($scope, $state, $stickyState, $timeout) {
+
+app.controller('tabsController', function($scope) {
     $scope.findTab = function(tabName) {
         var index = $scope.tabs.findIndex(function(tab) {
             return tab.name === tabName;
