@@ -14,12 +14,12 @@
 
     <h3 class="section-title">Category</h3>
     <section>
-        <%= f.select :category, options_for_select(HelpPage.categories.map { |k, v| [k.humanize.titleize, k] }) %>
+        <%= f.select :category, options_for_select(HelpPage.categories.map { |k, v| [k.humanize.titleize, k] }, f.object.category) %>
     </section>
 
     <h3 class="section-title">Game</h3>
     <section>
-        <%= f.select :game_id, options_for_select(Game.all.map { |k, v| [k.display_name, k.id] }), include_blank: "None" %>
+        <%= f.select :game_id, options_for_select(Game.all.map { |k, v| [k.display_name, k.id] }, f.object.game_id), include_blank: "None" %>
     </section>
 
     <h3 class="section-title">Text Body</h3>
