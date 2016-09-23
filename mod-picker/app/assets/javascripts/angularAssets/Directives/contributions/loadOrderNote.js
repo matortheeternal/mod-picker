@@ -6,7 +6,6 @@ app.directive('loadOrderNote', function () {
         scope: {
             note: '=',
             index: '=',
-            currentUser: '=',
             edit: '=?',
             showActions: '=?',
             showUserColumn: '=?',
@@ -15,7 +14,10 @@ app.directive('loadOrderNote', function () {
     };
 });
 
-app.controller('loadOrderNoteController', function ($scope) {
+app.controller('loadOrderNoteController', function ($scope, $rootScope) {
+    // inherited variables
+    $scope.currentUser = $rootScope.currentUser;
+
     // set default values
     angular.default($scope, 'showUserColumn', true);
     angular.default($scope, 'showActions', true);

@@ -6,7 +6,6 @@ app.directive('contributionActions', function() {
         scope: {
             target: '=',
             index: '=',
-            currentUser: '=',
             modelName: '@',
             correctable: '=?', // default true
             approveable: '=?', // default true
@@ -18,7 +17,9 @@ app.directive('contributionActions', function() {
     };
 });
 
-app.controller('contributionActionsController', function($scope, $timeout, contributionService, contributionFactory) {
+app.controller('contributionActionsController', function($scope, $rootScope, $timeout, contributionService, contributionFactory) {
+    // inherited variables
+    $scope.currentUser = $rootScope.currentUser;
 
     // default scope attributes
     angular.default($scope, 'correctable', true);

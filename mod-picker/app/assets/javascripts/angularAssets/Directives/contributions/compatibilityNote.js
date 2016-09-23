@@ -6,7 +6,6 @@ app.directive('compatibilityNote', function () {
         scope: {
             note: '=',
             index: '=',
-            currentUser: '=',
             edit: '=?',
             showActions: '=?',
             showUserColumn: '=?',
@@ -17,7 +16,10 @@ app.directive('compatibilityNote', function () {
     }
 });
 
-app.controller('compatibilityNoteController', function ($scope) {
+app.controller('compatibilityNoteController', function ($scope, $rootScope) {
+    // inherited variables
+    $scope.currentUser = $rootScope.currentUser;
+
     // default scope attributes
     angular.default($scope, 'showUserColumn', true);
     angular.default($scope, 'showActions', true);

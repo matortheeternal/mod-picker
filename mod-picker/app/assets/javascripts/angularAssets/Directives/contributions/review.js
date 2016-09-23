@@ -5,10 +5,15 @@ app.directive('review', function() {
         scope: {
             review: '=',
             index: '=',
-            currentUser: '=',
             edit: '=?',
             showUserColumn: '=?',
             showMod: '=?'
-        }
+        },
+        controller: 'reviewController'
     };
+});
+
+app.controller('reviewController', function($scope, $rootScope) {
+    // inherited variables
+    $scope.currentUser = $rootScope.currentUser;
 });

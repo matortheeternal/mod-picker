@@ -5,7 +5,6 @@ app.directive('comments', function () {
         controller: 'commentsController',
         scope: {
             comments: '=',
-            currentUser: '=',
             modelName: '=?',
             target: '=?',
             eventPrefix: '=?',
@@ -14,8 +13,11 @@ app.directive('comments', function () {
     };
 });
 
-app.controller('commentsController', function ($scope, contributionService) {
-    // event strings
+app.controller('commentsController', function ($scope, $rootScope, contributionService) {
+    // inherited variables
+    $scope.currentUser = $rootScope.currentUser;
+
+    // initialize local variables
     $scope.errorEvent = $scope.eventPrefix ? $scope.eventPrefix + 'ErrorMessage' : 'errorMessage';
     $scope.successEvent = $scope.eventPrefix ? $scope.eventPrefix + 'SuccessMessage' : 'successMessage';
 

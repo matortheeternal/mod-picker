@@ -6,7 +6,6 @@ app.directive('installOrderNote', function () {
         scope: {
             note: '=',
             index: '=',
-            currentUser: '=',
             edit: '=?',
             showActions: '=?',
             showUserColumn: '=?',
@@ -16,7 +15,10 @@ app.directive('installOrderNote', function () {
     };
 });
 
-app.controller('installOrderNoteController', function ($scope) {
+app.controller('installOrderNoteController', function ($scope, $rootScope) {
+    // inherited variables
+    $scope.currentUser = $rootScope.currentUser;
+
     // default scope attributes
     angular.default($scope, 'showUserColumn', true);
     angular.default($scope, 'showActions', true);
