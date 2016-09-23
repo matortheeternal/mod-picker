@@ -19,6 +19,9 @@ app.directive('userNotifications', function($document) {
 });
 
 app.controller('userNotificationsController', function($scope, $rootScope, $timeout, notificationService, notificationsFactory) {
+    // initialize variables
+    var thirtySeconds = 30 * 1000;
+    var fiveMinutes = 5 * 60 * 1000;
     notificationsFactory.setCurrentUserID($rootScope.currentUser.id);
 
     $scope.toggleNotifications = function() {
@@ -37,7 +40,7 @@ app.controller('userNotificationsController', function($scope, $rootScope, $time
         });
         $timeout(function() {
             $scope.waiting = false;
-        }, 30000);
+        }, thirtySeconds);
     };
 
     $scope.markAllRead = function() {
@@ -60,11 +63,11 @@ app.controller('userNotificationsController', function($scope, $rootScope, $time
     $scope.autoRefresh = function() {
         if (!$scope.waiting) {
             $scope.refreshNotifications();
-            // autorefresh notifications every 2 minutes
-            $timeout($scope.autoRefresh, 120000);
+            // autorefresh notifications every 5 minutes
+            $timeout($scope.autoRefresh, fiveMinutes);
         }
     };
 
-    // start autorefresh in 2 minutes
-    $timeout($scope.autoRefresh, 120000);
+    // start autorefresh in 5 minutes
+    $timeout($scope.autoRefresh, fiveMinutes);
 });
