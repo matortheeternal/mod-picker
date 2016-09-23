@@ -4,13 +4,12 @@ app.directive('slider', function () {
         templateUrl: '/resources/directives/browse/slider.html',
         controller: 'sliderController',
         scope: {
-            filterData: '=?',
+            filterData: '=',
             filter: '='
         }
     }
 });
 
-// TODO: Sometime this needs to be refactored - the logic is pretty messy
 app.controller('sliderController', function ($scope, sliderOptionsFactory, $timeout) {
     $scope.slider = sliderOptionsFactory.buildSlider($scope.filter);
 
@@ -30,25 +29,14 @@ app.controller('sliderController', function ($scope, sliderOptionsFactory, $time
     };
 
     $scope.deleteData = function() {
-        if ($scope.filterData) {
-            delete $scope.filterData[$scope.filter.data];
-        } else {
-            delete $scope.filter.data;
-        }
+        delete $scope.filterData[$scope.filter.data];
     };
 
     $scope.setData = function(min, max) {
-        if ($scope.filterData) {
-            $scope.filterData[$scope.filter.data] = {
-                min: min,
-                max: max
-            };
-        } else {
-            $scope.filter.data = {
-                min: min,
-                max: max
-            };
-        }
+        $scope.filterData[$scope.filter.data] = {
+            min: min,
+            max: max
+        };
     };
 
     $scope.$watch('rawData', function(rawData) {
