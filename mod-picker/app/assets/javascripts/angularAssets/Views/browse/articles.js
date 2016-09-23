@@ -9,7 +9,7 @@ app.run(function($futureState, indexFactory, filtersFactory) {
 app.controller('articlesIndexController', function ($scope, $rootScope, $stateParams, $state, articleService, columnsFactory, filtersFactory, indexService, indexFactory, sortFactory) {
     // get parent variables
     $scope.currentUser = $rootScope.currentUser;
-    $scope.globalPermissions = angular.copy($rootScope.permissions);
+    $scope.permissions = $rootScope.permissions;
 
     // sort options for view
     $scope.sortOptions = sortFactory.articleSortOptions();
