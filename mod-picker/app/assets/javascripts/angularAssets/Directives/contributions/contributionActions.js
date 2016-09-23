@@ -19,19 +19,10 @@ app.directive('contributionActions', function() {
 });
 
 app.controller('contributionActionsController', function($scope, $timeout, contributionService, contributionFactory) {
-    // correctable should have a default value of true
-    $scope.correctable = angular.isDefined($scope.correctable) ? $scope.correctable : true;
-    // approveable should have a default value of true
-    $scope.approveable = angular.isDefined($scope.approveable) ? $scope.approveable : true;
 
-    // errorEvent string
-    $scope.errorEvent = $scope.eventPrefix ? $scope.eventPrefix + 'ErrorMessage' : 'errorMessage';
-
-    // we get the model for the route and label
-    $scope.model = contributionFactory.getModel($scope.modelName);
-
-    // this is a direct link to the contribution to be displayed in the get link modal
-    $scope.shareLink = window.location.href + '/' + $scope.target.id;
+    // default scope attributes
+    angular.default($scope, 'correctable', true);
+    angular.default($scope, 'approveable', true);
 
     // initialize local variables
     $scope.report = {};
@@ -40,6 +31,9 @@ app.controller('contributionActionsController', function($scope, $timeout, contr
         correction_comments: {}
     };
     $scope.errors = {};
+    $scope.errorEvent = $scope.eventPrefix ? $scope.eventPrefix + 'ErrorMessage' : 'errorMessage';
+    $scope.shareLink = window.location.href + '/' + $scope.target.id;
+    $scope.model = contributionFactory.getModel($scope.modelName);
 
     // compute whether or not the target is open if it is agreeable
     if ($scope.agreeable) {

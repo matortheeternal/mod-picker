@@ -25,10 +25,9 @@ app.controller('tableResultsController', function($scope, tableUtils, objectUtil
     angular.inherit($scope, 'actions');
     angular.inherit($scope, 'permissions');
 
-    // default attribute values
-    if (angular.isUndefined($scope.message)) {
-        $scope.message = 'No ' + $scope.label + ' were found matching your search criteria.';
-    }
+    // default scope attributes
+    var defaultMessage = 'No ' + $scope.label + ' were found matching your search criteria.';
+    angular.default($scope, 'message', defaultMessage);
 
     // initialize variables
     $scope.showModal = false;

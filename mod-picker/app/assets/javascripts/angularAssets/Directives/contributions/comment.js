@@ -16,10 +16,9 @@ app.directive('comment', function () {
 });
 
 app.controller('commentController', function ($scope, $filter, $timeout, contributionService) {
-    // errorEvent string
-    $scope.errorEvent = $scope.eventPrefix ? $scope.eventPrefix + 'ErrorMessage' : 'errorMessage';
 
-    // this is the report object
+    // initialize local variables
+    $scope.errorEvent = $scope.eventPrefix ? $scope.eventPrefix + 'ErrorMessage' : 'errorMessage';
     $scope.report = {};
 
     $scope.getDateString = function() {
