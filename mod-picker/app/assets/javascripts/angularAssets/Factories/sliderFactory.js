@@ -1,4 +1,4 @@
-app.service('sliderOptionsFactory', function (sliderFactory) {
+app.service('sliderFactory', function (sliderUtils) {
     var factory = this;
 
     this.extendSlider = function(extend, config) {
@@ -28,6 +28,7 @@ app.service('sliderOptionsFactory', function (sliderFactory) {
 
     this.CeilSlider = function (min, max, extend) {
         return this.BaseRangeSlider(max, function(config) {
+            config.min = min || 0;
             config.options.floor = min || 0;
             config.options.ceil = max;
             factory.extendSlider(extend, config);
@@ -41,17 +42,17 @@ app.service('sliderOptionsFactory', function (sliderFactory) {
     };
 
     this.StepSlider = function(max) {
-        return this.BaseStepsSlider(sliderFactory.generateSteps(1, max));
+        return this.BaseStepsSlider(sliderUtils.generateSteps(1, max));
     };
 
     // Dynamically called by buildSlider
     this.DateSlider = function(start) {
-        return this.BaseStepsSlider(sliderFactory.generateDateSteps(start));
+        return this.BaseStepsSlider(sliderUtils.generateDateSteps(start));
     };
 
     // Dynamically called by buildSlider
     this.BytesSlider = function(max) {
-        return this.BaseStepsSlider(sliderFactory.generateByteSteps(max));
+        return this.BaseStepsSlider(sliderUtils.generateByteSteps(max));
     };
 
     this.buildSlider = function(filter) {

@@ -10,8 +10,8 @@ app.directive('slider', function () {
     }
 });
 
-app.controller('sliderController', function ($scope, sliderOptionsFactory, $timeout) {
-    $scope.slider = sliderOptionsFactory.buildSlider($scope.filter);
+app.controller('sliderController', function ($scope, sliderFactory, $timeout) {
+    $scope.slider = sliderFactory.buildSlider($scope.filter);
 
     $scope.loadData = function(filterData) {
         var stepsArray = $scope.slider.options.stepsArray;
