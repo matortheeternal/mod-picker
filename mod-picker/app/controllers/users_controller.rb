@@ -98,6 +98,9 @@ class UsersController < ApplicationController
     if params[:role] == "admin" && !current_user.admin?
       raise "Only admins can make other users admins."
     end
+    if @user.admin?
+      raise "You cannot change the role of admin users."
+    end
 
     if @user.update(role: params[:role])
       render json: {status: :ok}
