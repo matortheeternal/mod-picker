@@ -14,7 +14,7 @@ class User < ActiveRecord::Base
   track :status, :column => 'role'
 
   # NOTIFICATION SUBSCRIPTIONS
-  subscribe :self, to: [:message, :status]
+  subscribe :user, to: [:message, :status]
 
   # SCOPES
   search_scope :username, :alias => 'search'
@@ -91,6 +91,10 @@ class User < ActiveRecord::Base
   # CALLBACKS
   after_create :create_associations
   after_initialize :init
+
+  def user
+    User.find(self.id)
+  end
 
   # alias for image method
   def avatar
