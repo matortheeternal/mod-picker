@@ -87,6 +87,18 @@ app.service('userService', function (backend, $q, userSettingsService, userTitle
         }
     };
 
+    this.addRep = function(userId) {
+        return backend.post('/users/' + userId + '/add_rep', {});
+    };
+
+    this.subtractRep = function(userId) {
+        return backend.post('/users/' + userId + '/subtract_rep', {});
+    };
+
+    this.changeRole = function(userId, role) {
+        return backend.post('/users/' + userId + '/change_role', {role: role});
+    };
+
     this.retrieveUserModLists = function(userId) {
         return backend.retrieve('/users/' + userId + '/mod_lists');
     };
