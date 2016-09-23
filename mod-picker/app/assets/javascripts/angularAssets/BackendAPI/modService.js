@@ -134,53 +134,50 @@ app.service('modService', function(backend, $q, pageUtils, objectUtils, contribu
 
     this.prepareModAuthors = function(mod) {
         var mod_authors = [];
-        if (mod.mod_authors) {
-            mod.mod_authors.forEach(function(author) {
-                if (author._destroy) {
-                    mod_authors.push({
-                        id: author.id,
-                        _destroy: true
-                    })
-                } else if (author.id) {
-                    mod_authors.push({
-                        id: author.id,
-                        role: author.role
-                    })
-                } else {
-                    mod_authors.push({
-                        role: author.role,
-                        user_id: author.user_id
-                    })
-                }
-            });
-        }
+        mod.mod_authors && mod.mod_authors.forEach(function(author) {
+            if (author._destroy) {
+                mod_authors.push({
+                    id: author.id,
+                    _destroy: true
+                })
+            } else if (author.id) {
+                mod_authors.push({
+                    id: author.id,
+                    role: author.role
+                })
+            } else {
+                mod_authors.push({
+                    role: author.role,
+                    user_id: author.user_id
+                })
+            }
+        });
 
         return mod_authors;
     };
 
     this.prepareRequiredMods = function(mod) {
         var required_mods = [];
-        if (mod.requirements) {
-            mod.requirements.forEach(function(requirement) {
-                if (requirement._destroy) {
-                    required_mods.push({
-                        id: requirement.id,
-                        _destroy: true
-                    })
-                } else {
-                    required_mods.push({
-                        required_id: requirement.required_id
-                    })
-                }
-            });
-        }
+        mod.requirements && mod.requirements.forEach(function(requirement) {
+            if (requirement._destroy) {
+                required_mods.push({
+                    id: requirement.id,
+                    _destroy: true
+                })
+            } else {
+                required_mods.push({
+                    required_id: requirement.required_id
+                })
+            }
+        });
 
         return required_mods;
     };
 
     this.prepareCustomSources = function(customSources) {
+        if (!customSources) return null;
         var custom_sources = [];
-        customSources.forEach(function(source) {
+        customSources && customSources.forEach(function(source) {
             custom_sources.push({
                 id: source.id,
                 label: source.label,
@@ -194,7 +191,7 @@ app.service('modService', function(backend, $q, pageUtils, objectUtils, contribu
 
     this.prepareModOptions = function(mod) {
         var mod_options = [];
-        mod.analysis.mod_options.forEach(function(option) {
+        mod.analysis && mod.analysis.mod_options.forEach(function(option) {
             mod_options.push({
                 name: option.name,
                 size: option.size,
@@ -225,17 +222,17 @@ app.service('modService', function(backend, $q, pageUtils, objectUtils, contribu
 
     this.submitMod = function(mod, sources, customSources) {
         // load earliest date released and latest date updated from sources
-        var released = getDate(mod, sources, 'released', function(newDate, oldDate) {
+        var released = service.getDate(mod, sources, 'released', function(newDate, oldDate) {
             return newDate < oldDate;
         });
-        var updated = getDate(mod, sources, 'updated', function(newDate, oldDate) {
+        var updated = service.getDate(mod, sources, 'updated', function(newDate, oldDate) {
             return newDate > oldDate;
         });
 
         // prepare associations
-        var required_mods = prepareRequiredMods(mod);
-        var custom_sources = prepareCustomSources(customSources);
-        var mod_options = prepareModOptions(mod);
+        var required_mods = service.prepareRequiredMods(mod);
+        var custom_sources = service.prepareCustomSources(customSources);
+        var mod_options = service.prepareModOptions(mod);
 
         // prepare mod record
         var modData = {
@@ -267,10 +264,10 @@ app.service('modService', function(backend, $q, pageUtils, objectUtils, contribu
 
     this.updateMod = function(mod, sources, customSources) {
         // prepare associations
-        var mod_authors = prepareModAuthors(mod);
-        var required_mods = prepareRequiredMods(mod);
-        var custom_sources = prepareCustomSources(customSources);
-        var mod_options = prepareModOptions(mod);
+        var mod_authors = service.prepareModAuthors(mod);
+        var required_mods = service.prepareRequiredMods(mod);
+        var custom_sources = service.prepareCustomSources(customSources);
+        var mod_options = service.prepareModOptions(mod);
 
         // prepare mod record
         var modData = {

@@ -19,20 +19,22 @@ class InstallOrderNote < ActiveRecord::Base
   game_scope
   search_scope :text_body, :alias => 'search'
   user_scope :submitter
+  range_scope :overall, :association => 'submitter_reputation', :table => 'user_reputations', :alias => 'reputation'
   ids_scope :mod_id, :columns => [:first_mod_id, :second_mod_id]
   date_scope :submitted, :edited
 
+  # ASSOCIATIONS
   belongs_to :game, :inverse_of => 'install_order_notes'
   belongs_to :submitter, :class_name => 'User', :foreign_key => 'submitted_by', :inverse_of => 'install_order_notes'
   belongs_to :editor, :class_name => 'User', :foreign_key => 'edited_by'
+
+  has_one :submitter_reputation, :class_name => 'UserReputation', :through => 'submitter', :source => 'reputation'
 
   # mods associatied with this install order note
   belongs_to :first_mod, :foreign_key => 'first_mod_id', :class_name => 'Mod'
   belongs_to :second_mod, :foreign_key => 'second_mod_id', :class_name => 'Mod'
 
   # mod lists this install order note appears on
-  has_many :mod_list_install_order_notes, :inverse_of => 'install_order_note'
-  has_many :mod_lists, :through => 'mod_list_install_order_notes', :inverse_of => 'install_order_notes'
   has_many :mod_list_ignored_notes, :as => 'note'
 
   # old versions of this install order note
@@ -47,7 +49,7 @@ class InstallOrderNote < ActiveRecord::Base
 
   # CALLBACKS
   after_create :increment_counters
-  before_save :set_dates
+  before_save :set_adult, :set_dates
   before_destroy :decrement_counters
 
   def unique_mods
@@ -84,6 +86,10 @@ class InstallOrderNote < ActiveRecord::Base
         edit_summary: history_summary || "",
         edited: edited || submitted
     )
+  end
+
+  def self.update_adult(ids)
+    InstallOrderNote.where(id: ids).joins(:first_mod, :second_mod).update_all("install_order_notes.has_adult_content = mods.has_adult_content OR second_mods_install_order_notes.has_adult_content")
   end
 
   def as_json(options={})
@@ -166,6 +172,10 @@ class InstallOrderNote < ActiveRecord::Base
       else
         self.edited = DateTime.now
       end
+    end
+
+    def set_adult
+      self.has_adult_content = first_mod.has_adult_content || second_mod.has_adult_content
     end
 
     def increment_counters

@@ -29,6 +29,11 @@ user-notifications {
       right: 30px;
     }
 
+    .disabled {
+      color: $hard_border_color;
+      cursor: default;
+    }
+
     .more-notifications {
       position: absolute;
       bottom: 0;

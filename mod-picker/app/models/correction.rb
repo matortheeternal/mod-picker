@@ -23,13 +23,15 @@ class Correction < ActiveRecord::Base
   user_scope :submitter
   enum_scope :status
   enum_scope :mod_status
-  user_scope :submitter
   polymorphic_scope :correctable
+  range_scope :overall, :association => 'submitter_reputation', :table => 'user_reputations', :alias => 'reputation'
 
   # ASSOCIATIONS
   belongs_to :game, :inverse_of => 'corrections'
   belongs_to :submitter, :class_name => 'User', :foreign_key => 'submitted_by', :inverse_of => 'corrections'
   belongs_to :editor, :class_name => 'User', :foreign_key => 'edited_by'
+
+  has_one :submitter_reputation, :class_name => 'UserReputation', :through => 'submitter', :source => 'reputation'
 
   has_many :agreement_marks, :inverse_of => 'correction'
   has_many :comments, -> { where(parent_id: nil) }, :as => 'commentable'
@@ -43,7 +45,7 @@ class Correction < ActiveRecord::Base
 
   # CALLBACKS
   after_create :increment_counters, :schedule_close
-  before_save :set_dates
+  before_save :set_adult, :set_dates
   after_save :recompute_correctable_standing
   after_destroy :decrement_counters, :recompute_correctable_standing
 
@@ -77,6 +79,11 @@ class Correction < ActiveRecord::Base
     else
       []
     end
+  end
+
+  def self.update_adult(model, ids)
+    Correction.where(correctable_type: model.model_name.to_s, id: ids).joins("INNER JOIN #{model.table_name} ON #{model.table_name}.id = corrections.correctable_id").update_all("corrections.has_adult_content = #{model.table_name}.has_adult_content")
+    Comment.commentables("Correction", ids).joins("INNER JOIN corrections ON corrections.id = comments.commentable_id").update_all("comments.has_adult_content = corrections.has_adult_content")
   end
 
   def self.index_json(collection)
@@ -184,6 +191,10 @@ class Correction < ActiveRecord::Base
       else
         self.edited = DateTime.now
       end
+    end
+
+    def set_adult
+      self.has_adult_content = correctable.has_adult_content
     end
 
     def increment_counters

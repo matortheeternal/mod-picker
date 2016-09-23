@@ -24,10 +24,13 @@ app.factory("tabsFactory", function() {
         // mods without a primary category (games) don't have reviews,
         // compatibility notes, install order notes, or load order notes
         if (mod.primary_category_id) {
-            tabs.push({
-                name: 'Reviews',
-                count: mod.reviews_count
-            });
+            // mod authors can disable reviews on their mods
+            if (!mod.disable_reviews) {
+                tabs.push({
+                    name: 'Reviews',
+                    count: mod.reviews_count
+                });
+            }
             tabs.push({
                 name: 'Compatibility',
                 count: mod.compatibility_notes_count

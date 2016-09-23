@@ -9,10 +9,14 @@ class UserBio < ActiveRecord::Base
   # CALLBACKS
   after_create :generate_verification_tokens
 
+  def get_token
+    "ModPicker:#{SecureRandom.hex(4).to_s.upcase}"
+  end
+
   def generate_verification_tokens
-    self.nexus_verification_token = "ModPicker:#{SecureRandom.hex(4).to_s.upcase}"
-    self.lover_verification_token = "ModPicker:#{SecureRandom.hex(4).to_s.upcase}"
-    self.workshop_verification_token = "ModPicker:#{SecureRandom.hex(4).to_s.upcase}"
+    self.nexus_verification_token = get_token
+    self.lover_verification_token = get_token
+    self.workshop_verification_token = get_token
     self.save
   end
 
@@ -41,6 +45,15 @@ class UserBio < ActiveRecord::Base
     end
   end
 
+  def reset_nexus_account
+    self.nexus_verification_token = get_token
+    self.nexus_user_path = nil
+    self.nexus_username = nil
+    self.nexus_date_joined = nil
+    self.nexus_posts_count = 0
+    save
+  end
+
   def verify_lover_account(user_path)
     # exit if we don't have an account_path
     if user_path.nil?
@@ -59,11 +72,20 @@ class UserBio < ActiveRecord::Base
       self.lover_posts_count = user_data[:posts_count]
 
       # populate mod author records
-      ModAuthor.link_author(LoverInfo, self.user_id, self.lover_username)
+      ModAuthor.link_author(LoverInfo, user_id, lover_username)
 
       # save bio
-      self.save
+      save
     end
+  end
+
+  def reset_lover_account
+    self.lover_verification_token = get_token
+    self.lover_user_path = nil
+    self.lover_username = nil
+    self.lover_date_joined = nil
+    self.lover_posts_count = 0
+    save
   end
 
   def verify_workshop_account(user_path)
@@ -90,7 +112,16 @@ class UserBio < ActiveRecord::Base
       ModAuthor.link_author(WorkshopInfo, self.user_id, self.workshop_username)
 
       # save bio
-      self.save
+      save
     end
+  end
+
+  def reset_workshop_account
+    self.workshop_verification_token = get_token
+    self.workshop_user_path = nil
+    self.workshop_username = nil
+    self.workshop_submissions_count = 0
+    self.workshop_followers_count = 0
+    save
   end
 end

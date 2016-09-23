@@ -72,7 +72,7 @@ class ModList < ActiveRecord::Base
 
   # STARS
   has_many :mod_list_stars, :inverse_of => 'mod_list', :dependent => :destroy
-  has_many :user_stars, :through => 'mod_list_stars', :class_name => 'User', :inverse_of => 'starred_mod_lists'
+  has_many :user_stars, :through => 'mod_list_stars', :source => 'user', :class_name => 'User', :inverse_of => 'starred_mod_lists'
 
   # COMMENTS
   has_many :comments, -> { where(parent_id: nil) }, :as => 'commentable', :dependent => :destroy
@@ -170,6 +170,12 @@ class ModList < ActiveRecord::Base
           index: index
       })
     end
+  end
+
+  def self.update_adult(ids)
+    ModList.where(id: ids).update_all("mod_lists.has_adult_content = false")
+    ModList.where(id: ids).joins(:mods).where(:mods => {has_adult_content: true}).update_all("mod_lists.has_adult_content = true")
+    Comment.commentables("ModList", ids).joins("INNER JOIN mod_lists ON mod_lists.id = comments.commentable_id").update_all("comments.has_adult_content = mod_lists.has_adult_content")
   end
 
   def set_active

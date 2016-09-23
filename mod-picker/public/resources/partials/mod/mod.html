@@ -9,6 +9,7 @@
 
                     <div class="header-info">
                         <span class="header-name">{{mod.name}}</span>
+                        <adult-marker target="mod"></adult-marker>
                         <br>
                         <span>by
                             <a ng-click="toggleAuthorsModal(true)">{{mod.authors}}</a>
@@ -140,7 +141,7 @@
                         <!--Tags-->
                         <h3 class="section-title">Tags</h3>
                         <section>
-                            <tag-selector active-tags="mod.tags" new-tags="newTags" max-tags="10" show-mods-count="true" show-add="permissions.canManage || !mod.lock_tags" can-create="permissions.canCreateTags" show-remove="permissions.canManage" save-callback="saveTags"></tag-selector>
+                            <tag-selector active-tags="mod.tags" new-tags="newTags" max-tags="10" show-mods-count="true" show-add="!mod.lock_tags" can-create="permissions.canCreateTags" show-remove="!mod.lock_tags && permissions.canManage" save-callback="saveTags"></tag-selector>
                         </section>
                     </div>
 

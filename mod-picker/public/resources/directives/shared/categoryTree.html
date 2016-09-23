@@ -18,12 +18,12 @@
 
                 <label class="supercategory">
                     <input type="checkbox" ng-model="superCategory.value" ng-indeterminate="superCategory.indeterminate" ng-change="updateSelection($index)"/>
-                    <span>{{superCategory.name}}</span>
+                    <span title="{{superCategory.description.wordwrap()}}">{{superCategory.name}}</span>
                 </label>
                 <div class="sub-category" ng-repeat="secondaryCategory in superCategory.childs" ng-show="superCategory.expanded">
                     <label>
                         <input type="checkbox" ng-model="superCategory.childs[$index].value" ng-change="updateSelection($parent.$index, $index)"/>
-                        <span>{{secondaryCategory.name}}</span>
+                        <span title="{{secondaryCategory.description.wordwrap()}}">{{secondaryCategory.name}}</span>
                     </label>
                 </div>
             </div>

@@ -2,6 +2,13 @@
   Sign in to Mod Picker
 </div>
 
+<% if notice %>
+    <div class="notice"><%= notice %></div>
+<% end %>
+<% if alert %>
+    <div class="alert"><%= alert %></div>
+<% end %>
+
 <div class="box-content">
   <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
     <div class="padded-field">
@@ -13,9 +20,6 @@
       <%= f.label :password %> <span class="right-span" tabindex=3><%= link_to "Don't remember?", new_password_path(resource_name) %></span>
       <%= f.password_field :password, autocomplete: "off", tabindex: 2  %>
     </div>
-
-    <p class="notice"><%= notice %></p>
-    <p class="alert"><%= alert %></p>
 
     <% if devise_mapping.rememberable? -%>
       <div class="padded-field text-center">

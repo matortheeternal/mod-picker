@@ -36,15 +36,21 @@ class ModBuilder
 
   def update!
     ActiveRecord::Base.transaction do
+      mod.attributes = @params
       self.before_save
       self.before_update
       mod.update!(@params)
+      self.after_update
       self.after_save
     end
   end
 
   def before_update
     hide_contributions
+  end
+
+  def after_update
+    update_adult
   end
 
   def save
@@ -90,6 +96,7 @@ class ModBuilder
       lnote_ids = mod.load_order_notes.ids
 
       # hide content
+      mod.mod_list_mods.destroy_all
       mod.reviews.update_all(:hidden => true)
       mod.corrections.update_all(:hidden => true)
       mod.compatibility_notes.update_all(:hidden => true)
@@ -100,6 +107,28 @@ class ModBuilder
       Correction.correctables("LoadOrderNote", lnote_ids).update_all(:hidden => true)
     elsif mod.attribute_changed?(:disable_reviews) && mod.disable_reviews
       mod.reviews.update_all(:hidden => true)
+    end
+  end
+
+  def update_adult
+    if mod.previous_changes.has_key?(:has_adult_content)
+      # prepare some helper variables
+      review_ids = mod.reviews.ids
+      cnote_ids = mod.compatibility_notes.ids
+      inote_ids = mod.install_order_notes.ids
+      lnote_ids = mod.load_order_notes.ids
+      mod_list_ids = mod.mod_lists.ids
+
+      # propagate has_adult_content to associations
+      mod.reviews.update_all(:has_adult_content => mod.has_adult_content)
+      mod.corrections.update_all(:has_adult_content => mod.has_adult_content)
+      ModList.update_adult(mod_list_ids)
+      CompatibilityNote.update_adult(cnote_ids)
+      InstallOrderNote.update_adult(inote_ids)
+      LoadOrderNote.update_adult(lnote_ids)
+      Correction.update_adult(CompatibilityNote, cnote_ids)
+      Correction.update_adult(InstallOrderNote, inote_ids)
+      Correction.update_adult(LoadOrderNote, lnote_ids)
     end
   end
 

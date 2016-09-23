@@ -41,6 +41,6 @@ app.service('userSettingsService', function (backend, $q, objectUtils, userTitle
 
     this.verifyAccount = function (site, user_path) {
         var params = { site: site, user_path: user_path };
-        return backend.retrieve('/settings/link_account', params);
+        return backend.post('/settings/link_account', params);
     };
 });

@@ -21,6 +21,7 @@ class CompatibilityNote < ActiveRecord::Base
   search_scope :text_body, :alias => 'search'
   user_scope :submitter
   enum_scope :status
+  range_scope :overall, :association => 'submitter_reputation', :table => 'user_reputations', :alias => 'reputation'
   ids_scope :mod_id, :columns => [:first_mod_id, :second_mod_id]
   date_scope :submitted, :edited
 
@@ -28,6 +29,8 @@ class CompatibilityNote < ActiveRecord::Base
   belongs_to :game, :inverse_of => 'compatibility_notes'
   belongs_to :submitter, :class_name => 'User', :foreign_key => 'submitted_by', :inverse_of => 'compatibility_notes'
   belongs_to :editor, :class_name => 'User', :foreign_key => 'edited_by'
+
+  has_one :submitter_reputation, :class_name => 'UserReputation', :through => 'submitter', :source => 'reputation'
 
   # associated mods
   belongs_to :first_mod, :class_name => 'Mod', :foreign_key => 'first_mod_id'
@@ -37,9 +40,7 @@ class CompatibilityNote < ActiveRecord::Base
   belongs_to :compatibility_plugin, :class_name => 'Plugin', :foreign_key => 'compatibility_plugin_id', :inverse_of => 'compatibility_notes'
   belongs_to :compatibility_mod, :class_name => 'Mod', :foreign_key => 'compatibility_mod_id', :inverse_of => 'compatibility_note_mods'
 
-  # mod lists this compatibility note appears on
-  has_many :mod_list_compatibility_notes, :inverse_of => 'compatibility_note'
-  has_many :mod_lists, :through => 'mod_list_compatibility_notes', :inverse_of => 'compatibility_notes'
+  # mod lists this compatibility note is ignored on
   has_many :mod_list_ignored_notes, :as => 'note'
 
   # old versions of this compatibility note
@@ -53,7 +54,7 @@ class CompatibilityNote < ActiveRecord::Base
 
   # CALLBACKS
   after_create :increment_counters
-  before_save :set_dates
+  before_save :set_adult, :set_dates
   before_destroy :decrement_counters
 
   def unique_mods
@@ -93,6 +94,10 @@ class CompatibilityNote < ActiveRecord::Base
       edit_summary: history_summary || "",
       edited: edited || submitted
     )
+  end
+
+  def self.update_adult(ids)
+    CompatibilityNote.where(id: ids).joins(:first_mod, :second_mod).update_all("compatibility_notes.has_adult_content = mods.has_adult_content OR second_mods_compatibility_notes.has_adult_content")
   end
 
   def as_json(options={})
@@ -169,11 +174,15 @@ class CompatibilityNote < ActiveRecord::Base
 
   private
     def set_dates
-      if self.submitted.nil?
+      if submitted.nil?
         self.submitted = DateTime.now
       else
         self.edited = DateTime.now
       end
+    end
+
+    def set_adult
+      self.has_adult_content = first_mod.has_adult_content || second_mod.has_adult_content
     end
 
     def increment_counters

@@ -19,6 +19,7 @@ class Review < ActiveRecord::Base
   game_scope
   search_scope :text_body, :alias => 'search'
   user_scope :submitter, :editor
+  range_scope :overall, :association => 'submitter_reputation', :table => 'user_reputations', :alias => 'reputation'
   range_scope :overall_rating, :ratings_count
   date_scope :submitted, :edited
 
@@ -28,6 +29,7 @@ class Review < ActiveRecord::Base
   belongs_to :editor, :class_name => 'User', :foreign_key => 'edited_by'
   belongs_to :mod, :inverse_of => 'reviews'
 
+  has_one :submitter_reputation, :class_name => 'UserReputation', :through => 'submitter', :source => 'reputation'
   has_many :mod_author_users, :through => :mod, :source => :author_users
 
   has_many :review_ratings, :inverse_of => 'review'
@@ -43,7 +45,7 @@ class Review < ActiveRecord::Base
 
   # CALLBACKS
   after_create :increment_counters
-  before_save :set_dates
+  before_save :set_adult, :set_dates
   after_save :update_mod_metrics, :update_metrics
   before_destroy :clear_ratings, :decrement_counters
 
@@ -184,6 +186,10 @@ class Review < ActiveRecord::Base
       else
         self.edited = DateTime.now
       end
+    end
+
+    def set_adult
+      self.has_adult_content = mod.has_adult_content
     end
 
     def increment_counters

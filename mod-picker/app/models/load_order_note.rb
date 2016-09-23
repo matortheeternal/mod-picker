@@ -19,6 +19,7 @@ class LoadOrderNote < ActiveRecord::Base
   game_scope
   search_scope :text_body, :alias => 'search'
   user_scope :submitter
+  range_scope :overall, :association => 'submitter_reputation', :table => 'user_reputations', :alias => 'reputation'
   ids_scope :plugin_id, :columns => [:first_plugin_id, :second_plugin_id]
   date_scope :submitted, :edited
 
@@ -30,6 +31,8 @@ class LoadOrderNote < ActiveRecord::Base
   belongs_to :submitter, :class_name => 'User', :foreign_key => 'submitted_by', :inverse_of => 'load_order_notes'
   belongs_to :editor, :class_name => 'User', :foreign_key => 'edited_by'
 
+  has_one :submitter_reputation, :class_name => 'UserReputation', :through => 'submitter', :source => 'reputation'
+
   # plugins associatied with this load order note
   belongs_to :first_plugin, :foreign_key => 'first_plugin_id', :class_name => 'Plugin'
   belongs_to :second_plugin, :foreign_key => 'second_plugin_id', :class_name => 'Plugin'
@@ -38,9 +41,7 @@ class LoadOrderNote < ActiveRecord::Base
   has_one :first_mod, :through => :first_plugin, :class_name => 'Mod', :source => 'mod', :foreign_key => 'mod_id'
   has_one :second_mod, :through => :second_plugin, :class_name => 'Mod', :source => 'mod', :foreign_key => 'mod_id'
 
-  # mod lists this load order note appears on
-  has_many :mod_list_installation_notes, :inverse_of => 'load_order_note'
-  has_many :mod_lists, :through => 'mod_list_load_order_notes', :inverse_of => 'load_order_notes'
+  # mod lists this load order note is ignored on
   has_many :mod_list_ignored_notes, :as => 'note'
 
   # old versions of this load order note
@@ -55,7 +56,7 @@ class LoadOrderNote < ActiveRecord::Base
 
   # CALLBACKS
   after_create :increment_counters
-  before_save :set_dates
+  before_save :set_adult, :set_dates
   before_destroy :decrement_counters
 
   def unique_plugins
@@ -96,6 +97,10 @@ class LoadOrderNote < ActiveRecord::Base
         edit_summary: history_summary || "",
         edited: edited || submitted
     )
+  end
+
+  def self.update_adult(ids)
+    LoadOrderNote.where(id: ids).joins(:first_mod, :second_mod).update_all("load_order_notes.has_adult_content = mods.has_adult_content OR second_mods_load_order_notes.has_adult_content")
   end
 
   def as_json(options={})
@@ -155,6 +160,10 @@ class LoadOrderNote < ActiveRecord::Base
       else
         self.edited = DateTime.now
       end
+    end
+
+    def set_adult
+      self.has_adult_content = first_mod.has_adult_content || second_mod.has_adult_content
     end
 
     def increment_counters

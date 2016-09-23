@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160913022046) do
+ActiveRecord::Schema.define(version: 20160921193300) do
 
   create_table "agreement_marks", id: false, force: :cascade do |t|
     t.integer "correction_id", limit: 4,                null: false
@@ -70,14 +70,15 @@ ActiveRecord::Schema.define(version: 20160913022046) do
   add_index "category_priorities", ["recessive_id"], name: "fk_rails_d624be02b9", using: :btree
 
   create_table "comments", force: :cascade do |t|
-    t.integer  "parent_id",        limit: 4
-    t.integer  "submitted_by",     limit: 4,                     null: false
-    t.integer  "commentable_id",   limit: 4,                     null: false
-    t.string   "commentable_type", limit: 255,                   null: false
-    t.text     "text_body",        limit: 65535,                 null: false
-    t.integer  "children_count",   limit: 4,     default: 0,     null: false
-    t.boolean  "hidden",                         default: false, null: false
-    t.datetime "submitted",                                      null: false
+    t.integer  "parent_id",         limit: 4
+    t.integer  "submitted_by",      limit: 4,                     null: false
+    t.integer  "commentable_id",    limit: 4,                     null: false
+    t.string   "commentable_type",  limit: 255,                   null: false
+    t.text     "text_body",         limit: 65535,                 null: false
+    t.integer  "children_count",    limit: 4,     default: 0,     null: false
+    t.boolean  "hidden",                          default: false, null: false
+    t.boolean  "has_adult_content",               default: false, null: false
+    t.datetime "submitted",                                       null: false
     t.datetime "edited"
   end
 
@@ -123,6 +124,7 @@ ActiveRecord::Schema.define(version: 20160913022046) do
     t.boolean  "approved",                              default: false, null: false
     t.datetime "edited"
     t.boolean  "hidden",                                default: false, null: false
+    t.boolean  "has_adult_content",                     default: false, null: false
     t.datetime "submitted",                                             null: false
   end
 
@@ -147,20 +149,21 @@ ActiveRecord::Schema.define(version: 20160913022046) do
   add_index "config_files", ["mod_id"], name: "fk_rails_241d26b9f7", using: :btree
 
   create_table "corrections", force: :cascade do |t|
-    t.integer  "game_id",          limit: 4,                     null: false
-    t.integer  "submitted_by",     limit: 4,                     null: false
-    t.integer  "edited_by",        limit: 4
-    t.integer  "correctable_id",   limit: 4,                     null: false
-    t.string   "correctable_type", limit: 255,                   null: false
-    t.string   "title",            limit: 64
-    t.text     "text_body",        limit: 65535,                 null: false
-    t.integer  "status",           limit: 1,     default: 0,     null: false
-    t.integer  "mod_status",       limit: 1
-    t.integer  "agree_count",      limit: 4,     default: 0,     null: false
-    t.integer  "disagree_count",   limit: 4,     default: 0,     null: false
-    t.integer  "comments_count",   limit: 4,     default: 0,     null: false
-    t.boolean  "hidden",                         default: false, null: false
-    t.datetime "submitted",                                      null: false
+    t.integer  "game_id",           limit: 4,                     null: false
+    t.integer  "submitted_by",      limit: 4,                     null: false
+    t.integer  "edited_by",         limit: 4
+    t.integer  "correctable_id",    limit: 4,                     null: false
+    t.string   "correctable_type",  limit: 255,                   null: false
+    t.string   "title",             limit: 64
+    t.text     "text_body",         limit: 65535,                 null: false
+    t.integer  "status",            limit: 1,     default: 0,     null: false
+    t.integer  "mod_status",        limit: 1
+    t.integer  "agree_count",       limit: 4,     default: 0,     null: false
+    t.integer  "disagree_count",    limit: 4,     default: 0,     null: false
+    t.integer  "comments_count",    limit: 4,     default: 0,     null: false
+    t.boolean  "hidden",                          default: false, null: false
+    t.boolean  "has_adult_content",               default: false, null: false
+    t.datetime "submitted",                                       null: false
     t.datetime "edited"
   end
 
@@ -275,6 +278,7 @@ ActiveRecord::Schema.define(version: 20160913022046) do
     t.integer  "history_entries_count", limit: 4,     default: 0,     null: false
     t.boolean  "approved",                            default: false, null: false
     t.boolean  "hidden",                              default: false, null: false
+    t.boolean  "has_adult_content",                   default: false, null: false
     t.datetime "submitted",                                           null: false
     t.datetime "edited"
   end
@@ -315,6 +319,7 @@ ActiveRecord::Schema.define(version: 20160913022046) do
     t.integer  "history_entries_count", limit: 4,     default: 0,     null: false
     t.boolean  "approved",                            default: false, null: false
     t.boolean  "hidden",                              default: false, null: false
+    t.boolean  "has_adult_content",                   default: false, null: false
     t.datetime "submitted",                                           null: false
     t.datetime "edited"
   end
@@ -780,6 +785,7 @@ ActiveRecord::Schema.define(version: 20160913022046) do
     t.integer  "ratings_count",     limit: 4,     default: 0,     null: false
     t.boolean  "approved",                        default: false, null: false
     t.boolean  "hidden",                          default: false, null: false
+    t.boolean  "has_adult_content",               default: false, null: false
     t.datetime "submitted",                                       null: false
     t.datetime "edited"
   end
@@ -862,7 +868,7 @@ ActiveRecord::Schema.define(version: 20160913022046) do
   add_index "user_titles", ["game_id"], name: "fk_rails_4a6dc16a81", using: :btree
 
   create_table "users", force: :cascade do |t|
-    t.string   "username",                  limit: 32,                 null: false
+    t.string   "username",                  limit: 32
     t.string   "email",                     limit: 255,   default: "", null: false
     t.string   "role",                      limit: 16,                 null: false
     t.string   "title",                     limit: 32

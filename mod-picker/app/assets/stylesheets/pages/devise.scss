@@ -80,4 +80,19 @@
   input[type=submit]:hover {
     background-color: $bright_action_color;
   }
+
+  .alert, .notice {
+    padding: 5px 0 5px 0;
+    margin: 0;
+    font-size: 16px;
+    color: $inverse_text_color;
+  }
+
+  .notice {
+    background-color: $success_secondary;
+  }
+
+  .alert {
+    background-color: $error_secondary;
+  }
 }

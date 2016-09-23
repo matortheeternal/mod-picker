@@ -44,7 +44,7 @@ app.controller('submitModController', function ($scope, $rootScope, backend, mod
     $scope.customSources = [];
 
     // shared function setup
-    eventHandlerFactory.buildMessageHandlers($scope);
+    eventHandlerFactory.buildMessageHandlers($scope, true);
     $scope.searchMods = modService.searchMods;
 
     // clear messages when user changes the category

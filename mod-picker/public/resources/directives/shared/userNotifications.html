@@ -10,7 +10,7 @@
     <a class="action mark-all-read" ng-click="markAllRead()" title="Mark all read" ng-show="notifications.length">
         <i class="fa fa-check-circle"></i>
     </a>
-    <a class="action refresh-notifications" ng-click="refreshNotifications()" title="Refresh notifications">
+    <a class="action refresh-notifications" ng-click="refreshNotifications()" title="Refresh notifications" ng-class="{ 'disabled' : waiting }">
         <i class="fa fa-refresh"></i>
     </a>
 

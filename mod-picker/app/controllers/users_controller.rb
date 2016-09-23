@@ -1,7 +1,7 @@
 class UsersController < ApplicationController
   before_action :set_user, only: [:show, :comments, :endorse, :unendorse, :mod_lists, :mods]
 
-  # GET /users
+  # GET/POST /users/index
   def index
     @users = User.includes(:reputation).accessible_by(current_ability).filter(filtering_params).sort(params[:sort]).paginate(:page => params[:page])
     count =  User.accessible_by(current_ability).filter(filtering_params).count

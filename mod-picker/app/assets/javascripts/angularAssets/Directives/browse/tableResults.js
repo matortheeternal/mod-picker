@@ -107,7 +107,7 @@ app.controller('tableResultsController', function($scope, tableUtils, objectUtil
     };
 
     // load sort into view
-    if ($scope.columns && $scope.sort.column) {
+    if ($scope.columns && $scope.sort && $scope.sort.column) {
         $scope.loadSort();
     }
 });

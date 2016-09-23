@@ -29,7 +29,9 @@ app.controller('messagesController', function ($scope, $timeout) {
         while ($scope.messages.length >= 3) $scope.messages.shift();
 
         // push the new message onto the view
-        $scope.messages.push(message);
+        $scope.$applyAsync(function() {
+            $scope.messages.push(message);
+        });
 
         // timeout before removing the message automatically
         $timeout(function() {
