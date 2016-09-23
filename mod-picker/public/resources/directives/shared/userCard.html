@@ -1,7 +1,7 @@
 <div class="column first-column">
     <ul>
         <li class="user-name">
-            <a class="inverse-link" ng-href="#/user/{{user.id}}">{{user.username}}</a>
+            <a class="inverse-link user-role-{{user.role}}" ng-href="#/user/{{user.id}}">{{user.username}}</a>
         </li>
         <li class="user-avatar">
             <img class="avatar avatar-medium" ng-src="{{user.avatar == null ? '/users/' + user.title + '.png' : user.avatar}}"/>
