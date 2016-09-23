@@ -21,7 +21,7 @@ a.inverse-link {
   color: $text_color;
 
   &:hover {
-    color: $link_hover_color_primary;
+    color: $link_hover_color_primary !important;
   }
 }
 

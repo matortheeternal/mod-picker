@@ -1,12 +1,12 @@
 /* user roles */
 .user-role-admin {
-  color: $admin_color;
+  color: $admin_color !important;
 }
 
 .user-role-moderator {
-  color: $moderator_color;
+  color: $moderator_color !important;
 }
 
 .user-role-mod-author {
-  color: $mod_author_color;
+  color: $mod_author_color !important;
 }
