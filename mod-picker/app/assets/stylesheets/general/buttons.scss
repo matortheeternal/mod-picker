@@ -86,7 +86,7 @@ input[type="button"], input[type="submit"] {
   padding: 4px 8px;
   font-size: 12px;
   font-weight: 500;
-  border-radius: 4%;
+  border-radius: 2px;
   margin: 2px;
   cursor: pointer;
   @include user-select(none);
@@ -94,11 +94,6 @@ input[type="button"], input[type="submit"] {
 
   i.fa {
     font-size: 13px;
-  }
-
-  // this hack makes it look better
-  i.fa.fa-edit {
-    vertical-align: middle;
   }
 
   &:focus, &:hover {

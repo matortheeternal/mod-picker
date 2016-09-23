@@ -19,33 +19,33 @@
         <section>
             <div class="header-box">
                 ACTIONS
-                <span ng-if="permissions.canManage" class="action-box" ng-click="toggleEditing()">
+                <div ng-if="permissions.canManage" class="action-box" ng-click="toggleEditing()">
                     <i class="fa {{editing ? 'fa-eye' : 'fa-edit' }}" aria-hidden="true"></i>
                     {{editing ? 'View' : 'Edit' }}
-                </span>
-                <span class="action-box" ng-click="starModList()" title="{{mod_list.stars_count}} stars">
+                </div>
+                <div class="action-box" ng-click="starModList()" title="{{mod_list.stars_count}} stars">
                     <i class="fa {{mod_list.star ? 'fa-star' : 'fa-star-o'}}" aria-hidden="true"></i>
                     {{mod_list.star ? 'Unfavorite' : 'Favorite'}}
-                </span>
-                <span class="action-box" title="Make a copy of this mod list.">
+                </div>
+                <div class="action-box" title="Make a copy of this mod list.">
                     <i class="fa fa-copy" aria-hidden="true"></i>
                     Clone
-                </span>
+                </div>
             </div>
             <div class="header-box">
                 STATUS
-                <span class="action-box no-action {{statusClasses[mod_list.status]}} capitalize" title="{{statusHints[mod_list.status]}}">
+                <div class="action-box no-action {{statusClasses[mod_list.status]}} capitalize" title="{{statusHints[mod_list.status]}}">
                      <i class="fa {{statusIcons[mod_list.status]}}" aria-hidden="true"></i>
                     {{mod_list.status.replace("_", " ")}}
-                </span>
-                <span class="action-box no-action {{visibilityClasses[mod_list.visibility]}} capitalize" title="{{visibilityHints[mod_list.visibility]}}">
+                </div>
+                <div class="action-box no-action {{visibilityClasses[mod_list.visibility]}} capitalize" title="{{visibilityHints[mod_list.visibility]}}">
                     <i class="fa {{visibilityIcons[mod_list.visibility]}}" aria-hidden="true"></i>
                     {{mod_list.visibility.replace("visibility_", "")}}
-                </span>
-                <span ng-if="isActive" class="action-box green-box no-action" title="This is your active mod list - added mods will end up here.">
+                </div>
+                <div ng-if="isActive" class="action-box green-box no-action" title="This is your active mod list - added mods will end up here.">
                     <i class="fa fa-chevron-circle-down"></i>
                     Active
-                </span>
+                </div>
             </div>
         </section>
     </div>

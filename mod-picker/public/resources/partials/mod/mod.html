@@ -34,23 +34,23 @@
                 <section>
                     <div class="header-box">
                         ACTIONS
-                        <span class="action-box" ng-if="permissions.canManage" ng-click="editMod()">
+                        <div class="action-box" ng-if="permissions.canManage" ng-click="editMod()">
                             <i class="fa fa-edit" aria-hidden="true"></i> Edit
-                        </span>
-                        <span class="action-box" ng-click="starMod()">
+                        </div>
+                        <div class="action-box" ng-click="starMod()">
                             <i class="fa {{mod.star ? 'fa-star' : 'fa-star-o'}}" aria-hidden="true"></i> {{mod.star ? 'Unfavorite' : 'Favorite'}}
-                        </span>
-                        <span class="action-box" ng-if="activeModList" ng-click="toggleInModList()">
+                        </div>
+                        <div class="action-box" ng-if="activeModList" ng-click="toggleInModList()">
                             <i class="fa {{ mod.in_mod_list ? 'fa-remove' : 'fa-plus' }}" aria-hidden="true"></i>
                             {{ mod.in_mod_list ? 'Remove from' : 'Add to' }} mod list
-                        </span>
+                        </div>
                     </div>
 
                     <div class="header-box" ng-if="mod.primary_category_id">
                         STATUS
-                        <span class="action-box {{statusClasses[mod.status]}} capitalize" ng-click="toggleStatusModal(true)">
+                        <div class="action-box {{statusClasses[mod.status]}} capitalize" ng-click="toggleStatusModal(true)">
                             {{mod.status}}
-                        </span>
+                        </div>
                     </div>
                 </section>
             </div>
