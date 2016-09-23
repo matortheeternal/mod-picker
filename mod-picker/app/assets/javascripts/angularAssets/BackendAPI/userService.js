@@ -60,17 +60,22 @@ app.service('userService', function (backend, $q, userSettingsService, userTitle
         var rep = user.reputation.overall;
         permissions.isAdmin = user.role === 'admin';
         permissions.isModerator = user.role === 'moderator';
-        permissions.canSubmitArticles = permissions.isModerator || permissions.isAdmin;
-        // TODO: Remove this when beta is over
+        permissions.isRestricted = user.role === 'restricted';
+        permissions.isBanned = user.role === 'banned';
+        permissions.canModerate = permissions.isAdmin || permissions.isModerator;
+        permissions.canSubmitArticles = permissions.canModerate;
+        // TODO: Switch this when beta is over
         permissions.canSubmitMods = true;
-        //permissions.canSubmitMods = permissions.isAdmin || permissions.isModerator || user.reputation.overall > 160;
-        permissions.canUseCustomSources = permissions.isAdmin || permissions.isModerator;
-        permissions.canSetGeneralModInfo = permissions.isAdmin || permissions.isModerator;
-        permissions.canChangeAvatar = (rep >= 10) || permissions.isAdmin || permissions.isModerator;
-        permissions.canChangeTitle = (rep >= 1280) || permissions.isAdmin || permissions.isModerator;
-        permissions.canCreateTags = (rep >= 20) || permissions.isAdmin || permissions.isModerator;
-        permissions.canAppeal = (rep >= 40) || permissions.isModerator || permissions.isAdmin;
-        permissions.canModerate = permissions.isModerator || permissions.isAdmin;
+        //permissions.canSubmitMods = (rep > 160) || permissions.canModerate;
+        permissions.canContribute = !permissions.isRestricted;
+        permissions.canUseCustomSources = permissions.canModerate;
+        permissions.canSetGeneralModInfo = permissions.canModerate;
+        permissions.canChangeAvatar = (rep >= 10) || permissions.canModerate;
+        permissions.canChangeTitle = (rep >= 1280) || permissions.canModerate;
+        permissions.canCreateTags = (rep >= 20) || permissions.canModerate;
+        permissions.canAppeal = (rep >= 40) || permissions.canModerate;
+        permissions.canCorrect = (rep >= 40) || permissions.canModerate;
+        permissions.canAgree = (rep >= 40) || permissions.canModerate;
 
         var numEndorsed = user.reputation.rep_to_count;
         permissions.canEndorse = (rep >= 40 && numEndorsed < 5) || (rep >= 160 && numEndorsed < 10) || (rep >= 640 && numEndorsed < 15);
