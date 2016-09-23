@@ -14,7 +14,7 @@ class User < ActiveRecord::Base
   track :status, :column => 'role'
 
   # NOTIFICATION SUBSCRIPTIONS
-  subscribe :self, to: [:message, :status, *Event.milestones]
+  subscribe :self, to: [:message, :status]
 
   # SCOPES
   search_scope :username, :alias => 'search'
