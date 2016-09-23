@@ -1,7 +1,3 @@
-/**
- * Created by Sirius on 3/25/2016.
- */
-
 app.directive('textArea', function ($timeout) {
     return {
         restrict: 'E',

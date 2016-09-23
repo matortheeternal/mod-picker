@@ -1,7 +1,3 @@
-/**
- * Created by ThreeTen on 4/29/2016.
- */
-
 app.directive('compatibilityNote', function () {
     return {
         restrict: 'E',
