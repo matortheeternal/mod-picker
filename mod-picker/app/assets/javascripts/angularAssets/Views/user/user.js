@@ -71,6 +71,8 @@ app.controller('userController', function($scope, $rootScope, $stateParams, user
         admin: "Administrator",
         moderator: "Moderator",
         author: "Mod Author",
+        restricted: "Restricted",
+        banned: "Banned",
         "": ""
     };
     $scope.tabs = tabsFactory.buildUserTabs();
