@@ -65,6 +65,20 @@ app.factory("filtersFactory", function() {
         param: "hec"
     };
 
+    this.userDateSlider = function(options) {
+        options.type = "Range";
+        options.subtype = "Date";
+        options.start = new Date(2016,0,1);
+        return options;
+    };
+
+    this.modDateSlider = function(options) {
+        options.type = "Range";
+        options.subtype = "Date";
+        options.start = new Date(2011,10,11);
+        return options;
+    };
+
     /* mods index filters */
     this.modGeneralFilters = function() {
         return [
@@ -352,20 +366,16 @@ app.factory("filtersFactory", function() {
 
     this.modDateFilters = function() {
         return [
-            {
+            factory.modDateSlider({
                 label: "Date Updated",
                 data: "updated",
-                type: "Range",
-                subtype: "Date",
                 param: "du"
-            },
-            {
+            }),
+            factory.modDateSlider({
                 label: "Date Released",
                 data: "released",
-                type: "Range",
-                subtype: "Date",
                 param: "dr"
-            }
+            })
         ];
     };
 
@@ -512,20 +522,16 @@ app.factory("filtersFactory", function() {
 
     this.userDateFilters = function() {
         return [
-            {
+            factory.userDateSlider({
                 label: "Date Joined",
                 data: "joined",
-                type: "Range",
-                subtype: "Date",
                 param: "dj"
-            },
-            {
+            }),
+            factory.userDateSlider({
                 label: "Date Last Seen",
                 data: "last_seen",
-                type: "Range",
-                subtype: "Date",
                 param: "ls"
-            }
+            })
         ];
     };
 
@@ -548,20 +554,16 @@ app.factory("filtersFactory", function() {
     
     this.contributionDateFilters = function() {
         return [
-            {
+            factory.userDateSlider({
                 label: "Date Submitted",
                 data: "submitted",
-                type: "Range",
-                subtype: "Date",
                 param: "ds"
-            },
-            {
+            }),
+            factory.userDateSlider({
                 label: "Date Edited",
                 data: "edited",
-                type: "Range",
-                subtype: "Date",
                 param: "de"
-            }
+            })
         ];
     };
 
@@ -900,13 +902,13 @@ app.factory("filtersFactory", function() {
     };
 
     this.articleDateFilters = function() {
-        return [{
-            label: "Created",
-            data: "submitted",
-            type: "Range",
-            subtype: "Date",
-            param: "dc"
-        }];
+        return [
+            factory.userDateSlider({
+                label: "Created",
+                data: "submitted",
+                param: "dc"
+            })
+        ];
     };
 
     // TODO: Article Game Filters
@@ -965,27 +967,21 @@ app.factory("filtersFactory", function() {
 
     this.modListDateFilters = function() {
         return [
-            {
+            factory.userDateSlider({
                 label: "Date Started",
                 data: "submitted",
-                type: "Range",
-                subtype: "Date",
-                param: "dc"
-            },
-            {
+                param: "ds"
+            }),
+            factory.userDateSlider({
                 label: "Date Updated",
                 data: "updated",
-                type: "Range",
-                subtype: "Date",
                 param: "du"
-            },
-            {
+            }),
+            factory.userDateSlider({
                 label: "Date Completed",
                 data: "completed",
-                type: "Range",
-                subtype: "Date",
                 param: "dcom"
-            }
+            })
         ];
     };
 
