@@ -229,6 +229,15 @@ class Mod < ActiveRecord::Base
     User.contributors(self)
   end
 
+  def links_text
+    a = ["#{name}:"]
+    a.push("\tNexus Mods: #{nexus_infos.url}") if nexus_infos
+    a.push("\tLover's Lab: #{lover_infos.url}") if lover_infos
+    a.push("\tSteam Workshop: #{workshop_infos.url}") if workshop_infos
+    custom_sources.each { |source| a.push("\t#{source.label}: #{source.url}") }
+    a.join("\r\n") + "\r\n"
+  end
+
   def self.index_json(collection, sources)
     # Includes hash for mods index query
     include_hash = { :author_users => { :only => [:id, :username] } }
