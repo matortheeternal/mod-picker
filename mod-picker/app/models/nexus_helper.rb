@@ -107,13 +107,17 @@ class NexusHelper
     end
   end
 
+  def self.mod_url(game_name, id)
+    "http://www.nexusmods.com/#{game_name}/mods/#{id}"
+  end
+
   # TODO: Scraping logic for has_adult_content
   def self.scrape_mod(game_name, id)
     login_if_necessary
 
     # construct mod url
-    mod_url = "http://www.nexusmods.com/#{game_name}/mods/#{id}"
-    puts "NexusHelper: Scraping "+mod_url
+    url = mod_url(game_name, id)
+    puts "NexusHelper: Scraping "+url
 
     # prepare headers
     headers = {
@@ -122,7 +126,7 @@ class NexusHelper
     }
 
     # get the mod page
-    response = RestClient.get(mod_url, headers)
+    response = RestClient.get(url, headers)
     puts "  Recieved response #{response.size}"
     @last_request = DateTime.now
 

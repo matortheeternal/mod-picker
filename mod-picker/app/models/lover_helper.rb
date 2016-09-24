@@ -94,12 +94,16 @@ class LoverHelper
     user_data
   end
 
+  def self.mod_url(id)
+    "http://api.loverslab.com/file/#{id}"
+  end
+
   def self.retrieve_mod(id)
     login_if_necessary
 
     # construct mod url
-    mod_url = "http://api.loverslab.com/file/#{id}"
-    puts "LoverHelper: Scraping "+mod_url
+    url = mod_url(id)
+    puts "LoverHelper: Scraping "+url
 
     # prepare headers
     headers = {
@@ -108,7 +112,7 @@ class LoverHelper
     }
 
     # get the mod page
-    response = RestClient.get(mod_url, headers)
+    response = RestClient.get(url, headers)
     puts "  Recieved response #{response.size}"
 
     # parse the json
