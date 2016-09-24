@@ -2,7 +2,7 @@ class UserReputation < ActiveRecord::Base
   include Filterable, RecordEnhancements, Trackable
 
   # EVENT TRACKING
-  track_milestones :column => 'overall', :values => [10, 20, 40, 80, 160, 320, 640, 1280]
+  track_milestones :column => 'overall', :milestones => [10, 20, 40, 80, 160, 320, 640, 1280]
 
   # NOTIFICATION SUBSCRIPTIONS
   subscribe :user, to: [*Event.milestones]
@@ -177,6 +177,18 @@ class UserReputation < ActiveRecord::Base
     self.calculate_author_rep
     author_rep_diff = starting_author_rep - self.author_rep
     self.overall += author_rep_diff
+  end
+
+  def add_offset
+    self.offset += 5
+    self.overall += 5
+    save!
+  end
+
+  def subtract_offset
+    self.offset -= 5
+    self.overall -= 5
+    save!
   end
 
   def get_max_links

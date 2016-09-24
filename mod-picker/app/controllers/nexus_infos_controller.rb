@@ -21,7 +21,7 @@ class NexusInfosController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_nexus_info
-      authorize! :submit, :mod
+      authorize! :submit, Mod
       begin
         @nexus_info = NexusInfo.find(params[:id])
         @nexus_info.rescrape

@@ -5,7 +5,7 @@
         </span>
     </div>
     <loader data="mod_list.comments && commentsReady" spinner-class="big-spinner" content-class="content-container" ng-if="!errors.comments">
-        <comments comments="mod_list.comments" current-user="currentUser" model-name="'ModList'" target="mod_list"></comments>
+        <comments comments="mod_list.comments" model-name="'ModList'" target="mod_list"></comments>
 
         <page-results pages="pages.comments" data="mod_list.comments" callback="retrieveComments"></page-results>
     </loader>

@@ -12,10 +12,8 @@ app.directive('categoryTree', function() {
 });
 
 app.controller('categoryTreeController', function($scope, categoryService) {
-    // initialize $scope.selection if undefined
-    if (!angular.isDefined($scope.selection)) {
-        $scope.selection = [];
-    }
+    // default scope attributes
+    angular.default($scope, 'selection', []);
 
     $scope.findCategoryIndexes = function(category_id) {
         for (var i = 0; i < $scope.nestedCategories.length; i++) {

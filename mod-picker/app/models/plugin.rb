@@ -15,7 +15,9 @@ class Plugin < ActiveRecord::Base
   counter_scope :errors_count, :mod_lists_count, :load_order_notes_count
   bytes_scope :file_size
 
+
   # UNIQUE SCOPES
+  scope :mods, -> (mod_ids) { includes(:mod_option).references(:mod_option).where(:mod_options => { :mod_id => mod_ids }) }
   scope :esm, -> { where("filename like '%.esm'") }
   scope :categories, -> (categories) { joins(:mod).where("mods.primary_category_id IN (:ids) OR mods.secondary_category_id IN (:ids)", ids: categories) }
 

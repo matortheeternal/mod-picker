@@ -1,4 +1,4 @@
-app.factory("sortFactory", function() {
+app.service("sortFactory", function() {
     var factory = this;
 
     // helper function to build a sort option prototype from a label
@@ -149,6 +149,4 @@ app.factory("sortFactory", function() {
             factory.editedSort
         ];
     };
-
-    return factory;
 });

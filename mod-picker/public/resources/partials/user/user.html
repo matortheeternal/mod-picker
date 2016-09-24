@@ -4,12 +4,36 @@
     <loader data="user" spinner-class="big-spinner">
         <div class="page-container">
             <div class="left-column left-user-column medium-column">
-                <img class="avatar avatar-full" ng-src="{{user.avatar == null ? '/avatars/' + user.title + '.png' : user.avatar}}"/>
+                <img class="avatar avatar-full" ng-src="{{user.avatar == null ? '/users/' + user.title + '.png' : user.avatar}}"/>
 
                 <h3 class="big-username">{{user.username}}</h3>
                 <section>
                     <div class="user-title">{{user.title}}</div>
-                    <div class="user-role {{roleClass}}">{{roleTexts[user.role]}}</div>
+                    <div class="user-role {{roleClass}} no-text-dec">
+                        {{roleTexts[user.role]}}
+                    </div>
+                </section>
+
+                <h3 class="section-title" ng-if="permissions.canModerate"></h3>
+                <section ng-if="permissions.canModerate">
+                    <div class="action-item">
+                        <span ng-click="addRep()">
+                            <i class="fa fa-plus"></i> Rep
+                        </span>
+                        <span ng-click="subtractRep()">
+                            <i class="fa fa-minus"></i> Rep
+                        </span>
+                    </div>
+                    <div class="action-item">
+                        <span ng-click="toggleRestrictUser()">
+                            <i class="fa {{ userRestricted() ? 'fa-unlock' : 'fa-lock' }}"></i>
+                            {{ userRestricted() ? 'Unrestrict' : 'Restrict' }}
+                        </span>
+                        <span ng-click="toggleBanUser()">
+                            <i class="fa {{ userBanned() ? 'fa-life-ring' : 'fa-gavel' }}"></i>
+                            {{ userBanned() ? 'Unban' : 'Ban' }}
+                        </span>
+                    </div>
                 </section>
 
                 <h3 class="section-title">Reputation</h3>

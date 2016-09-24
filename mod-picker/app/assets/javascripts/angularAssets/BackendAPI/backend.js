@@ -1,7 +1,3 @@
-/**
- * Created by r79 on 2/11/2016.
- */
-//TODO: this whole service feels like there is some redundancy to kill ;)
 app.service('backend', function ($q, $http, objectUtils) {
     //Constant to be flexible in the future. Us as prefix for ALL requests
     var BASE_LOCATION = '';

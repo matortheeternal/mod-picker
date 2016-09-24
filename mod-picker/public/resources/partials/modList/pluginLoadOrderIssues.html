@@ -38,14 +38,14 @@
         </div>
 
         <div ng-if="showUnresolvedLoadOrder" ng-repeat="note in notes.unresolved_load_order" class="content-block">
-            <load-order-note note="note" index="100 + $index" current-user="currentUser" show-resolution-options="editing"></load-order-note>
+            <load-order-note note="note" index="100 + $index" show-resolution-options="editing"></load-order-note>
         </div>
         <div ng-show="!required.out_of_order_plugins.length && showUnresolvedLoadOrder && !notes.unresolved_load_order.length" class="content-message">
             No unresolved load order issues to display.
         </div>
 
         <div ng-if="!showUnresolvedLoadOrder" ng-repeat="note in notes.load_order" class="content-block" ng-hide="note._destroy">
-            <load-order-note note="note" index="500 + $index" current-user="currentUser" show-resolution-options="editing"></load-order-note>
+            <load-order-note note="note" index="500 + $index" show-resolution-options="editing"></load-order-note>
         </div>
         <div ng-show="!required.out_of_order_plugins.length && !showUnresolvedLoadOrder && isEmpty(notes.load_order)" class="content-message">
             No load order issues to display.

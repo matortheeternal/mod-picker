@@ -14,7 +14,7 @@ class User < ActiveRecord::Base
   track :status, :column => 'role'
 
   # NOTIFICATION SUBSCRIPTIONS
-  subscribe :self, to: [:message, :status, *Event.milestones]
+  subscribe :user, to: [:message, :status]
 
   # SCOPES
   search_scope :username, :alias => 'search'
@@ -25,6 +25,7 @@ class User < ActiveRecord::Base
   date_scope :last_sign_in_at, :alias => 'last_seen'
 
   # UNIQUE SCOPES
+  scope :include_blank, -> (bool) { where.not(username: nil) if !bool }
   scope :contributors, -> (mod) {
     # TODO: Handle appeals too
     includes(:reviews => :mod, :compatibility_notes => [:first_mod, :second_mod], :install_order_notes => [:first_mod, :second_mod], :load_order_notes => [:first_mod, :second_mod]).where(:mods => {id: mod.id})
@@ -92,6 +93,10 @@ class User < ActiveRecord::Base
   after_create :create_associations
   after_initialize :init
 
+  def user
+    User.find(self.id)
+  end
+
   # alias for image method
   def avatar
     png_path = File.join(Rails.public_path, "users/#{id}.png")
@@ -136,6 +141,10 @@ class User < ActiveRecord::Base
     admin? || moderator?
   end
 
+  def restricted?
+    role.to_sym == :restricted
+  end
+
   def banned?
     role.to_sym == :banned
   end
@@ -160,6 +169,22 @@ class User < ActiveRecord::Base
   def init
     self.joined ||= DateTime.current
     self.role   ||= :user
+  end
+
+  def self.batch_invite!(emails, current_inviter)
+    emails.each do |email|
+      if /\A\S+@.+\.\S+\z/.match(email)
+        User.invite!({:email => email}, current_inviter)
+      else
+        failed_emails.push(email)
+      end
+    end
+
+    failed_emails.empty?
+  end
+
+  def self.failed_emails
+    @failed_emails ||= []
   end
 
   def create_associations

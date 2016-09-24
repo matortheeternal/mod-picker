@@ -295,7 +295,8 @@ app.service('columnsFactory', function() {
                 group: "General",
                 visibility: true,
                 label: "Title",
-                data: "title"
+                data: "title",
+                unsortable: true
             },
             {
                 group: "General",

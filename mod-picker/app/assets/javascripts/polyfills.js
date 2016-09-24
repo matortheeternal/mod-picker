@@ -108,3 +108,9 @@ angular.inherit = function(scope, attribute) {
         scope[attribute] = scope.$parent[attribute];
     }
 };
+
+angular.default = function(scope, attribute, value) {
+    if (angular.isUndefined(scope[attribute])) {
+        scope[attribute] = value;
+    }
+};

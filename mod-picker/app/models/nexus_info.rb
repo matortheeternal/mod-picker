@@ -30,6 +30,10 @@ class NexusInfo < ActiveRecord::Base
     }
   end
 
+  def url
+    NexusHelper.mod_url(game.nexus_name, id)
+  end
+
   def after_scrape
     # update mod extra metrics
     if mod_id.present?

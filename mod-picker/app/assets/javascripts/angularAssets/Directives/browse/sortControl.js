@@ -11,10 +11,7 @@ app.directive('sortControl', function () {
 });
 
 app.controller('sortController', function($scope) {
-    if (!angular.isDefined($scope.sort)) {
-        $scope.sort = $scope.$parent.sort;
-    }
-    if (!angular.isDefined($scope.sortOptions)) {
-        $scope.sortOptions = $scope.$parent.sortOptions;
-    }
+    // inherited scope attributes
+    angular.inherit($scope, 'sort');
+    angular.inherit($scope, 'sortOptions');
 });

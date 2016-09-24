@@ -87,7 +87,7 @@
         <h2>{{mod.name}} - Viewing Appeal</h2>
 
         <div class="content-block">
-            <correction correction="appeal" index="100" current-user="currentUser" edit="editAppeal" show-user-column="true" event-prefix="'modal'"></correction>
+            <correction correction="appeal" index="100" edit="editAppeal" show-user-column="true" event-prefix="'modal'"></correction>
         </div>
 
         <h3 class="section-title">Comments
@@ -96,7 +96,7 @@
             </span>
         </h3>
         <loader data="appeal.comments" spinner-class="big-spinner" content-class="content-container" ng-if="!errors.comments">
-            <comments comments="appeal.comments" current-user="currentUser" model-name="'Correction'" target="appeal" event-prefix="'modal'"></comments>
+            <comments comments="appeal.comments" model-name="'Correction'" target="appeal" event-prefix="'modal'"></comments>
 
             <page-results pages="pages" data="appeal.comments" callback="retrieveAppealComments"></page-results>
         </loader>

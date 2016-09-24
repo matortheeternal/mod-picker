@@ -8,7 +8,7 @@ app.run(function($futureState, indexFactory, filtersFactory) {
 app.controller('loadOrderNotesController', function ($scope, $rootScope, $stateParams, $state, contributionService, indexService,  filtersFactory, indexFactory, sortFactory) {
     // get parent variables
     $scope.currentUser = $rootScope.currentUser;
-    $scope.globalPermissions = angular.copy($rootScope.permissions);
+    $scope.permissions = $rootScope.permissions;
 
     // sort options for view
     $scope.sortOptions = sortFactory.loadOrderNoteSortOptions();

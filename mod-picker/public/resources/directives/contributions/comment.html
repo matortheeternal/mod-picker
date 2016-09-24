@@ -55,7 +55,7 @@
     <!-- TODO: Create link to show all children -->
     <div class="child-comments" ng-if="comment.children.length">
         <div class="comment-container" ng-repeat="child in comment.children">
-            <comment comment="child" current-user="currentUser" index="index" save-callback="saveCallback"  is-child="true"></comment>
+            <comment comment="child" index="index" save-callback="saveCallback"  is-child="true"></comment>
         </div>
     </div>
 </div>

@@ -20,10 +20,10 @@ app.directive('searchInput', function () {
 });
 
 app.controller('searchInputController', function($scope, $timeout) {
-    // default values
-    if (angular.isUndefined($scope.pause)) $scope.pause = 700;
-    if (angular.isUndefined($scope.minLength)) $scope.minLength = 2;
-    if (angular.isUndefined($scope.placeholder)) $scope.placeholder = 'Enter ' + $scope.label + ' ' + $scope.key;
+    // default scope attributes
+    angular.default($scope, 'pause', 700);
+    angular.default($scope, 'minLength', 2);
+    angular.default($scope, 'placeholder', 'Enter ' + $scope.label + ' ' + $scope.key);
 
     // functions
     $scope.hoverRow = function(index) {

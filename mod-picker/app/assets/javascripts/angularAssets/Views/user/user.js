@@ -54,7 +54,7 @@ app.config(['$stateProvider', function($stateProvider) {
     });
 }]);
 
-app.controller('userController', function($scope, $rootScope, $stateParams, userObject, userService, eventHandlerFactory, tabsFactory) {
+app.controller('userController', function($scope, $rootScope, $stateParams, userObject, userService, eventHandlerFactory, moderationActionsFactory, tabsFactory) {
     // get parent variables
     $scope.currentUser = $rootScope.currentUser;
     $scope.permissions = angular.copy($rootScope.permissions);
@@ -71,12 +71,15 @@ app.controller('userController', function($scope, $rootScope, $stateParams, user
         admin: "Administrator",
         moderator: "Moderator",
         author: "Mod Author",
+        restricted: "Restricted",
+        banned: "Banned",
         "": ""
     };
     $scope.tabs = tabsFactory.buildUserTabs();
 
     // shared function setup
     eventHandlerFactory.buildMessageHandlers($scope);
+    moderationActionsFactory.buildActions($scope);
 
     // creates or removes the current user's endorsement of a user
     $scope.endorse = function() {

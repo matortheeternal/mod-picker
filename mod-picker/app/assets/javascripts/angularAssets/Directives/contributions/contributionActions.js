@@ -6,7 +6,6 @@ app.directive('contributionActions', function() {
         scope: {
             target: '=',
             index: '=',
-            currentUser: '=',
             modelName: '@',
             correctable: '=?', // default true
             approveable: '=?', // default true
@@ -18,20 +17,14 @@ app.directive('contributionActions', function() {
     };
 });
 
-app.controller('contributionActionsController', function($scope, $timeout, contributionService, contributionFactory) {
-    // correctable should have a default value of true
-    $scope.correctable = angular.isDefined($scope.correctable) ? $scope.correctable : true;
-    // approveable should have a default value of true
-    $scope.approveable = angular.isDefined($scope.approveable) ? $scope.approveable : true;
+app.controller('contributionActionsController', function($scope, $rootScope, $timeout, contributionService, contributionFactory) {
+    // inherited variables
+    $scope.currentUser = $rootScope.currentUser;
+    $scope.permissions = $rootScope.permissions;
 
-    // errorEvent string
-    $scope.errorEvent = $scope.eventPrefix ? $scope.eventPrefix + 'ErrorMessage' : 'errorMessage';
-
-    // we get the model for the route and label
-    $scope.model = contributionFactory.getModel($scope.modelName);
-
-    // this is a direct link to the contribution to be displayed in the get link modal
-    $scope.shareLink = window.location.href + '/' + $scope.target.id;
+    // default scope attributes
+    angular.default($scope, 'correctable', true);
+    angular.default($scope, 'approveable', true);
 
     // initialize local variables
     $scope.report = {};
@@ -40,6 +33,9 @@ app.controller('contributionActionsController', function($scope, $timeout, contr
         correction_comments: {}
     };
     $scope.errors = {};
+    $scope.errorEvent = $scope.eventPrefix ? $scope.eventPrefix + 'ErrorMessage' : 'errorMessage';
+    $scope.shareLink = window.location.href + '/' + $scope.target.id;
+    $scope.model = contributionFactory.getModel($scope.modelName);
 
     // compute whether or not the target is open if it is agreeable
     if ($scope.agreeable) {
@@ -219,17 +215,14 @@ app.controller('contributionActionsController', function($scope, $timeout, contr
     $scope.setPermissions = function() {
         // permissions helper variables
         var user = $scope.currentUser;
-        var rep = user.reputation.overall;
-        var isAdmin = user && user.role === 'admin';
-        var isModerator = user && user.role === 'moderator';
-        var canModerate = isAdmin || isModerator;
+        var canModerate = $scope.permissions.canModerate;
         var isSubmitter = user && user.id == $scope.target.submitted_by;
         var isCorrector = user && user.id == $scope.target.corrector_id;
         var isLocked = $scope.target.corrector_id;
         // set up permissions
         $scope.canReport = user || false;
-        $scope.canAgree = $scope.agreeable && $scope.isOpen && ((rep > 40) || canModerate);
-        $scope.canCorrect = (rep > 40) || canModerate;
+        $scope.canAgree = $scope.agreeable && $scope.isOpen && $scope.permissions.canAgree;
+        $scope.canCorrect = $scope.permissions.canCorrect;
         $scope.canEdit = $scope.edit && (canModerate || isCorrector || isSubmitter && !isLocked);
         $scope.canApprove = $scope.approveable && canModerate;
         $scope.canHide = canModerate;

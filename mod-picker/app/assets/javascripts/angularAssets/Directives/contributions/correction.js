@@ -6,7 +6,6 @@ app.directive('correction', function () {
         scope: {
             correction: '=',
             index: '=',
-            currentUser: '=',
             edit: '=?',
             showUserColumn: '=',
             eventPrefix: '=?',
@@ -15,7 +14,11 @@ app.directive('correction', function () {
     }
 });
 
-app.controller('correctionController', function($scope) {
+app.controller('correctionController', function($scope, $rootScope) {
+    // inherited variables
+    $scope.currentUser = $rootScope.currentUser;
+
+    // initialize local variables
     switch($scope.correction.correctable_type) {
         case "CompatibilityNote":
             $scope.label = "Compatibility Note";

@@ -1,4 +1,4 @@
-app.factory("filtersFactory", function() {
+app.service("filtersFactory", function() {
     var factory = this;
 
     /* shared filter prototypes */
@@ -22,6 +22,15 @@ app.factory("filtersFactory", function() {
         min: -40,
         max: 40,
         param: "h"
+    };
+    this.submitterReputationFilter = {
+        label: "Submitter Reputation",
+        common: true,
+        data: "reputation",
+        type: "Range",
+        min: -40,
+        max: 1280,
+        param: "rep"
     };
     this.helpfulFilter = {
         label: "Helpful Count",
@@ -54,6 +63,20 @@ app.factory("filtersFactory", function() {
         type: "Range",
         max: 100,
         param: "hec"
+    };
+
+    this.userDateSlider = function(options) {
+        options.type = "Range";
+        options.subtype = "Date";
+        options.start = new Date(2016,0,1);
+        return options;
+    };
+
+    this.modDateSlider = function(options) {
+        options.type = "Range";
+        options.subtype = "Date";
+        options.start = new Date(2011,10,11);
+        return options;
     };
 
     /* mods index filters */
@@ -343,20 +366,16 @@ app.factory("filtersFactory", function() {
 
     this.modDateFilters = function() {
         return [
-            {
+            factory.modDateSlider({
                 label: "Date Updated",
                 data: "updated",
-                type: "Range",
-                subtype: "Date",
                 param: "du"
-            },
-            {
+            }),
+            factory.modDateSlider({
                 label: "Date Released",
                 data: "released",
-                type: "Range",
-                subtype: "Date",
                 param: "dr"
-            }
+            })
         ];
     };
 
@@ -400,6 +419,18 @@ app.factory("filtersFactory", function() {
                 param: "usr",
                 type: "Boolean",
                 default: true
+            },
+            {
+                data: "roles.restricted",
+                param: "rsr",
+                type: "Boolean",
+                default: false
+            },
+            {
+                data: "roles.banned",
+                param: "bnd",
+                type: "Boolean",
+                default: false
             }
         ]
     };
@@ -491,20 +522,16 @@ app.factory("filtersFactory", function() {
 
     this.userDateFilters = function() {
         return [
-            {
+            factory.userDateSlider({
                 label: "Date Joined",
                 data: "joined",
-                type: "Range",
-                subtype: "Date",
                 param: "dj"
-            },
-            {
+            }),
+            factory.userDateSlider({
                 label: "Date Last Seen",
                 data: "last_seen",
-                type: "Range",
-                subtype: "Date",
                 param: "ls"
-            }
+            })
         ];
     };
 
@@ -527,20 +554,16 @@ app.factory("filtersFactory", function() {
     
     this.contributionDateFilters = function() {
         return [
-            {
+            factory.userDateSlider({
                 label: "Date Submitted",
                 data: "submitted",
-                type: "Range",
-                subtype: "Date",
                 param: "ds"
-            },
-            {
+            }),
+            factory.userDateSlider({
                 label: "Date Edited",
                 data: "edited",
-                type: "Range",
-                subtype: "Date",
                 param: "de"
-            }
+            })
         ];
     };
 
@@ -624,6 +647,7 @@ app.factory("filtersFactory", function() {
     this.reviewStatisticFilters = function() {
         return [
             factory.contributionHelpfulnessFilter,
+            factory.submitterReputationFilter,
             factory.helpfulFilter,
             factory.notHelpfulFilter,
             {
@@ -657,6 +681,7 @@ app.factory("filtersFactory", function() {
     this.noteStatisticFilters = function() {
         return [
             factory.contributionHelpfulnessFilter,
+            factory.submitterReputationFilter,
             factory.helpfulFilter,
             factory.notHelpfulFilter,
             factory.correctionsFilter,
@@ -826,6 +851,7 @@ app.factory("filtersFactory", function() {
 
     this.correctionStatisticFilters = function() {
         return [
+            factory.submitterReputationFilter,
             {
                 label: "Agree Count",
                 common: true,
@@ -876,13 +902,13 @@ app.factory("filtersFactory", function() {
     };
 
     this.articleDateFilters = function() {
-        return [{
-            label: "Created",
-            data: "submitted",
-            type: "Range",
-            subtype: "Date",
-            param: "dc"
-        }];
+        return [
+            factory.userDateSlider({
+                label: "Created",
+                data: "submitted",
+                param: "dc"
+            })
+        ];
     };
 
     // TODO: Article Game Filters
@@ -941,27 +967,21 @@ app.factory("filtersFactory", function() {
 
     this.modListDateFilters = function() {
         return [
-            {
+            factory.userDateSlider({
                 label: "Date Started",
                 data: "submitted",
-                type: "Range",
-                subtype: "Date",
-                param: "dc"
-            },
-            {
+                param: "ds"
+            }),
+            factory.userDateSlider({
                 label: "Date Updated",
                 data: "updated",
-                type: "Range",
-                subtype: "Date",
                 param: "du"
-            },
-            {
+            }),
+            factory.userDateSlider({
                 label: "Date Completed",
                 data: "completed",
-                type: "Range",
-                subtype: "Date",
                 param: "dcom"
-            }
+            })
         ];
     };
 
@@ -1220,6 +1240,4 @@ app.factory("filtersFactory", function() {
             factory.pluginStatisticFilters()
         )
     };
-
-    return factory;
 });

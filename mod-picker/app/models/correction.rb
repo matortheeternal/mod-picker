@@ -23,13 +23,15 @@ class Correction < ActiveRecord::Base
   user_scope :submitter
   enum_scope :status
   enum_scope :mod_status
-  user_scope :submitter
   polymorphic_scope :correctable
+  range_scope :overall, :association => 'submitter_reputation', :table => 'user_reputations', :alias => 'reputation'
 
   # ASSOCIATIONS
   belongs_to :game, :inverse_of => 'corrections'
   belongs_to :submitter, :class_name => 'User', :foreign_key => 'submitted_by', :inverse_of => 'corrections'
   belongs_to :editor, :class_name => 'User', :foreign_key => 'edited_by'
+
+  has_one :submitter_reputation, :class_name => 'UserReputation', :through => 'submitter', :source => 'reputation'
 
   has_many :agreement_marks, :inverse_of => 'correction'
   has_many :comments, -> { where(parent_id: nil) }, :as => 'commentable'
@@ -88,7 +90,7 @@ class Correction < ActiveRecord::Base
     collection.as_json({
         :include => {
             :submitter => {
-                :only => [:id, :username, :role, :title],
+                :only => [:id, :username, :role, :title, :joined, :last_sign_in_at, :reviews_count, :compatibility_notes_count, :install_order_notes_count, :load_order_notes_count, :corrections_count, :comments_count],
                 :include => {
                     :reputation => {:only => [:overall]}
                 },
@@ -112,7 +114,7 @@ class Correction < ActiveRecord::Base
       default_options = {
           :include => {
               :submitter => {
-                  :only => [:id, :username, :role, :title],
+                  :only => [:id, :username, :role, :title, :joined, :last_sign_in_at, :reviews_count, :compatibility_notes_count, :install_order_notes_count, :load_order_notes_count, :corrections_count, :comments_count],
                   :include => {
                       :reputation => {:only => [:overall]}
                   },

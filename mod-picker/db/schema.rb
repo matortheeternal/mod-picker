@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160919031004) do
+ActiveRecord::Schema.define(version: 20160921193300) do
 
   create_table "agreement_marks", id: false, force: :cascade do |t|
     t.integer "correction_id", limit: 4,                null: false
@@ -868,7 +868,7 @@ ActiveRecord::Schema.define(version: 20160919031004) do
   add_index "user_titles", ["game_id"], name: "fk_rails_4a6dc16a81", using: :btree
 
   create_table "users", force: :cascade do |t|
-    t.string   "username",                  limit: 32,                 null: false
+    t.string   "username",                  limit: 32
     t.string   "email",                     limit: 255,   default: "", null: false
     t.string   "role",                      limit: 16,                 null: false
     t.string   "title",                     limit: 32

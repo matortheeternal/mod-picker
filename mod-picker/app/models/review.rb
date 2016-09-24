@@ -19,6 +19,7 @@ class Review < ActiveRecord::Base
   game_scope
   search_scope :text_body, :alias => 'search'
   user_scope :submitter, :editor
+  range_scope :overall, :association => 'submitter_reputation', :table => 'user_reputations', :alias => 'reputation'
   range_scope :overall_rating, :ratings_count
   date_scope :submitted, :edited
 
@@ -28,6 +29,7 @@ class Review < ActiveRecord::Base
   belongs_to :editor, :class_name => 'User', :foreign_key => 'edited_by'
   belongs_to :mod, :inverse_of => 'reviews'
 
+  has_one :submitter_reputation, :class_name => 'UserReputation', :through => 'submitter', :source => 'reputation'
   has_many :mod_author_users, :through => :mod, :source => :author_users
 
   has_many :review_ratings, :inverse_of => 'review'
@@ -88,7 +90,7 @@ class Review < ActiveRecord::Base
                 :except => [:review_id]
             },
             :submitter=> {
-                :only => [:id, :username, :role, :title],
+                :only => [:id, :username, :role, :title, :joined, :last_sign_in_at, :reviews_count, :compatibility_notes_count, :install_order_notes_count, :load_order_notes_count, :corrections_count, :comments_count],
                 :include => {
                     :reputation => {:only => [:overall]}
                 },
@@ -112,7 +114,7 @@ class Review < ActiveRecord::Base
                   :except => [:review_id]
               },
               :submitter => {
-                  :only => [:id, :username, :role, :title],
+                  :only => [:id, :username, :role, :title, :joined, :last_sign_in_at, :reviews_count, :compatibility_notes_count, :install_order_notes_count, :load_order_notes_count, :corrections_count, :comments_count],
                   :include => {
                       :reputation => {:only => [:overall]}
                   },

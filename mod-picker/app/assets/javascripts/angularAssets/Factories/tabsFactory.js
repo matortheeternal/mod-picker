@@ -1,4 +1,4 @@
-app.factory("tabsFactory", function() {
+app.service("tabsFactory", function() {
     var factory = this;
 
     this.buildUserTabs = function() {
@@ -116,6 +116,4 @@ app.factory("tabsFactory", function() {
             }
         });
     };
-
-    return factory;
 });

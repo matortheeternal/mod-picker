@@ -44,7 +44,7 @@
                                 <span class="fa fa-calendar" ng-click="" title="Custom Date"></span>
                             </span>-->
                         </h4>
-                        <slider filters="filters" data="filter.data" type="UserDateSlider"></slider>
+                        <slider filter-data="filters" filter="filter"></slider>
                     </div>
                 </div>
 
@@ -57,7 +57,7 @@
                                     <span class="fa fa-wrench" ng-click="" title="Custom Value"></span>
                                 </span>-->
                             </h4>
-                            <slider filters="filters" data="filter.data" type="{{filter.max > 500 ? 'StepSlider' : 'CeilSlider'}}" attr="{{filter.max}}"></slider>
+                            <slider filter-data="filters" filter="filter"></slider>
                         </div>
                     </div>
 
@@ -71,7 +71,7 @@
                 </span></h2>
                 <loader data="load_order_notes" content-class="grid-results" spinner-class="big-spinner" ng-if="!error">
                     <div class="content-block" ng-repeat="note in load_order_notes">
-                        <load-order-note current-user="currentUser" note="note" show-user-column="true" index="100"></load-order-note>
+                        <load-order-note note="note" show-user-column="true" index="100"></load-order-note>
                     </div>
 
                     <div class="content-message" ng-hide="load_order_notes.length">

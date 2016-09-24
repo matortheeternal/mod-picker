@@ -30,7 +30,7 @@
     <user-column ng-if="showUserColumn" user="note.submitter" editors="note.editors" class="user-column" index="index"></user-column>
     <div class="content-column" ng-class="{ 'no-actions' : !showActions }">
         <contribution-text target="note"></contribution-text>
-        <contribution-actions target="note" ng-if="showActions" index="index" current-user="currentUser" model-name="CompatibilityNote" edit="edit" has-history="true"></contribution-actions>
+        <contribution-actions target="note" ng-if="showActions" index="index" model-name="CompatibilityNote" edit="edit" has-history="true"></contribution-actions>
     </div>
     <div ng-if="showResolutionOptions" class="resolution-column">
         <div class="resolution-status">

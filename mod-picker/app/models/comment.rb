@@ -26,7 +26,7 @@ class Comment < ActiveRecord::Base
 
   # parent/child comment association
   belongs_to :parent, :class_name => 'Comment', :foreign_key => 'parent_id', :inverse_of => 'children'
-  has_many :children, :class_name => 'Comment', :foreign_key => 'parent_id', :inverse_of => 'parent'
+  has_many :children, :class_name => 'Comment', :foreign_key => 'parent_id', :inverse_of => 'parent', :dependent => :destroy
 
   # VALIDATIONS
   validates :submitted_by, :commentable_type, :commentable_id, :text_body, presence: true
@@ -78,7 +78,7 @@ class Comment < ActiveRecord::Base
         :except => :submitted_by,
         :include => {
             :submitter => {
-                :only => [:id, :username, :role, :title],
+                :only => [:id, :username, :role, :title, :joined, :last_sign_in_at, :reviews_count, :compatibility_notes_count, :install_order_notes_count, :load_order_notes_count, :corrections_count, :comments_count],
                 :include => {
                     :reputation => {:only => [:overall]}
                 },
@@ -94,7 +94,7 @@ class Comment < ActiveRecord::Base
         :except => :submitted_by,
         :include => {
             :submitter => {
-                :only => [:id, :username, :role, :title],
+                :only => [:id, :username, :role, :title, :joined, :last_sign_in_at, :reviews_count, :compatibility_notes_count, :install_order_notes_count, :load_order_notes_count, :corrections_count, :comments_count],
                 :include => {
                     :reputation => {:only => [:overall]}
                 },

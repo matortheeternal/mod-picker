@@ -5,7 +5,6 @@ app.directive('comment', function () {
         controller: 'commentController',
         scope: {
             comment: '=',
-            currentUser: '=',
             index: '=',
             saveCallback: '=',
             isChild: '=?',
@@ -15,11 +14,12 @@ app.directive('comment', function () {
     };
 });
 
-app.controller('commentController', function ($scope, $filter, $timeout, contributionService) {
-    // errorEvent string
-    $scope.errorEvent = $scope.eventPrefix ? $scope.eventPrefix + 'ErrorMessage' : 'errorMessage';
+app.controller('commentController', function ($scope, $rootScope, $filter, $timeout, contributionService) {
+    // inherited variables
+    $scope.currentUser = $rootScope.currentUser;
 
-    // this is the report object
+    // initialize local variables
+    $scope.errorEvent = $scope.eventPrefix ? $scope.eventPrefix + 'ErrorMessage' : 'errorMessage';
     $scope.report = {};
 
     $scope.getDateString = function() {

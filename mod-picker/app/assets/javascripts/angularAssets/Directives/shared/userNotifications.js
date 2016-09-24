@@ -18,7 +18,10 @@ app.directive('userNotifications', function($document) {
     }
 });
 
-app.controller('userNotificationsController', function($scope, $rootScope, notificationService, notificationsFactory) {
+app.controller('userNotificationsController', function($scope, $rootScope, $timeout, notificationService, notificationsFactory) {
+    // initialize variables
+    var thirtySeconds = 30 * 1000;
+    var fiveMinutes = 5 * 60 * 1000;
     notificationsFactory.setCurrentUserID($rootScope.currentUser.id);
 
     $scope.toggleNotifications = function() {
@@ -26,6 +29,8 @@ app.controller('userNotificationsController', function($scope, $rootScope, notif
     };
 
     $scope.refreshNotifications = function() {
+        if ($scope.waiting) return;
+        $scope.waiting = true;
         delete $scope.notifications;
         notificationService.retrieveRecent().then(function(data) {
             $scope.notifications = data;
@@ -33,6 +38,9 @@ app.controller('userNotificationsController', function($scope, $rootScope, notif
             var params = { label: 'Error refreshing notifications', response: response };
             $scope.$emit('errorMessage', params);
         });
+        $timeout(function() {
+            $scope.waiting = false;
+        }, thirtySeconds);
     };
 
     $scope.markAllRead = function() {
@@ -51,4 +59,15 @@ app.controller('userNotificationsController', function($scope, $rootScope, notif
     $scope.$on('$stateChangeStart', function() {
         $scope.showNotifications = false;
     });
+
+    $scope.autoRefresh = function() {
+        if (!$scope.waiting) {
+            $scope.refreshNotifications();
+            // autorefresh notifications every 5 minutes
+            $timeout($scope.autoRefresh, fiveMinutes);
+        }
+    };
+
+    // start autorefresh in 5 minutes
+    $timeout($scope.autoRefresh, fiveMinutes);
 });
