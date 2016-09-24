@@ -1,4 +1,4 @@
-app.factory('moderationActionsFactory', function(userService) {
+app.service('moderationActionsFactory', function(userService) {
     this.buildActions = function($scope) {
         // functions
         $scope.addRep = function() {
@@ -68,5 +68,5 @@ app.factory('moderationActionsFactory', function(userService) {
                 $scope.changeRole("banned");
             }
         };
-    }
+    };
 });

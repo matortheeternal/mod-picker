@@ -1,4 +1,4 @@
-app.factory("filtersFactory", function() {
+app.service("filtersFactory", function() {
     var factory = this;
 
     /* shared filter prototypes */
@@ -1240,6 +1240,4 @@ app.factory("filtersFactory", function() {
             factory.pluginStatisticFilters()
         )
     };
-
-    return factory;
 });
