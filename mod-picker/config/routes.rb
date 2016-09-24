@@ -142,6 +142,7 @@ Rails.application.routes.draw do
     # mod list exporting
     match 'mod_lists/:id/export_modlist', to: 'mod_lists#export_modlist', via: [:get]
     match 'mod_lists/:id/export_plugins', to: 'mod_lists#export_plugins', via: [:get]
+    match 'mod_lists/:id/export_links', to: 'mod_lists#export_links', via: [:get]
 
     # mod and mod list stars
     match '/mod_lists/:id/star', to: 'mod_lists#create_star', via: [:post]

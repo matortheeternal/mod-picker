@@ -1,6 +1,6 @@
 class ModListsController < ApplicationController
   before_action :check_sign_in, only: [:create, :set_active, :update, :update_tags, :create_star, :destroy_star]
-  before_action :set_mod_list, only: [:show, :hide, :update, :update_tags, :tools, :mods, :plugins, :export_modlist, :export_plugins, :config_files, :analysis, :comments]
+  before_action :set_mod_list, only: [:show, :hide, :update, :update_tags, :tools, :mods, :plugins, :export_modlist, :export_plugins, :export_links, :config_files, :analysis, :comments]
 
   # GET /mod_lists
   def index
@@ -114,18 +114,25 @@ class ModListsController < ApplicationController
     }
   end
 
-  # GET /mod_lists/:id/modlist.txt
+  # GET /mod_lists/:id/export_modlist
   def export_modlist
     authorize! :read, @mod_list
     force_download("modlist.txt")
     render :text => @mod_list.modlist_text
   end
 
-  # GET /mod_lists/:id/plugins.txt
+  # GET /mod_lists/:id/export_plugins
   def export_plugins
     authorize! :read, @mod_list
     force_download("plugins.txt")
     render :text => @mod_list.plugins_text
+  end
+
+  # GET /mod_lists/:id/export_links
+  def export_links
+    authorize! :read, @mod_list
+    force_download("links.txt")
+    render :text => @mod_list.links_text
   end
 
   # GET /mod_lists/:id/config
