@@ -230,11 +230,12 @@ class Mod < ActiveRecord::Base
   end
 
   def links_text
-    a = ["#{name}:"]
-    a.push("\tNexus Mods: #{nexus_infos.url}") if nexus_infos
-    a.push("\tLover's Lab: #{lover_infos.url}") if lover_infos
-    a.push("\tSteam Workshop: #{workshop_infos.url}") if workshop_infos
-    custom_sources.each { |source| a.push("\t#{source.label}: #{source.url}") }
+    a = ["  - #{name}:"]
+    space = " " * 6
+    a.push("#{space}Nexus Mods: #{nexus_infos.url}") if nexus_infos
+    a.push("#{space}Lover's Lab: #{lover_infos.url}") if lover_infos
+    a.push("#{space}Steam Workshop: #{workshop_infos.url}") if workshop_infos
+    custom_sources.each { |source| a.push("#{space}}#{source.label}: #{source.url}") }
     a.join("\r\n") + "\r\n"
   end
 
