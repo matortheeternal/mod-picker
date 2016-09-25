@@ -109,8 +109,8 @@ app.controller('pluginLoadOrderIssuesController', function($scope, $timeout, lis
     $scope.resolveAllLoadOrder = function(moveDown) {
         $scope.notes.unresolved_load_order.forEach(function(note) {
             var moveOptions = {
-                moveId: note.plugins[+moveDown].id,
-                destId: note.plugins[+!moveDown].id,
+                moveId: moveDown ? note.second_plugin.id : note.first_plugin.id,
+                destId: moveDown ? note.first_plugin.id : note.second_plugin.id,
                 after: moveDown
             };
             $scope.$broadcast('moveItem', moveOptions);

@@ -57,8 +57,8 @@ app.controller('modInstallOrderIssuesController', function($scope, $timeout, lis
     $scope.resolveAllInstallOrder = function(moveDown) {
         $scope.notes.unresolved_install_order.forEach(function(note) {
             var moveOptions = {
-                moveId: note.mods[+moveDown].id,
-                destId: note.mods[+!moveDown].id,
+                moveId: moveDown ? note.second_mod.id : note.first_mod.id,
+                destId: moveDown ? note.first_mod.id : note.second_mod.id,
                 after: moveDown
             };
             $scope.$broadcast('moveItem', moveOptions);
