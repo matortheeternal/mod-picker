@@ -2,7 +2,8 @@ app.service('eventHandlerFactory', function (errorService) {
     this.buildMessageHandlers = function($scope, allowCustomMessages) {
         // display error messages
         $scope.$on('errorMessage', function(event, params) {
-            var errors = errorService.errorMessages(params.label, params.response, $scope.mod.id);
+            var resourceId = $scope.mod && $scope.mod.id;
+            var errors = errorService.errorMessages(params.label, params.response, resourceId);
             errors.forEach(function(error) {
                 $scope.$broadcast('message', error);
             });
