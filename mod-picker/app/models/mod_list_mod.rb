@@ -29,6 +29,9 @@ class ModListMod < ActiveRecord::Base
         :include => {
             :mod => {
                 :only => [:name]
+            },
+            :mod_list_mod_options => {
+                :only => [:mod_option_id]
             }
         }
     })

@@ -308,15 +308,17 @@ app.service('modService', function(backend, $q, pageUtils, objectUtils, contribu
         return backend.postFile('/mods/' + modId + '/image', 'image', image);
     };
 
-    this.getInstallOrderMod = function(installOrder, modId) {
+    this.getInstallOrderMod = function(installOrder, modOptionId) {
         return installOrder.find(function(item) {
-            return item.mod_id == modId;
+            return item.mod_list_mod_options.find(function(option) {
+                return option.mod_option_id == modOptionId;
+            });
         });
     };
 
     this.associateInstallOrderMods = function(items, installOrder) {
         items.forEach(function(item) {
-            item.mod = angular.copy(service.getInstallOrderMod(installOrder, item.mod_id));
+            item.mod = angular.copy(service.getInstallOrderMod(installOrder, item.mod_option_id));
         });
     };
 });

@@ -92,8 +92,8 @@ app.service('assetUtils', function (fileUtils) {
                 prevAsset.mods.push(mod);
                 conflictingAssets.splice(i, 1);
             } else {
-                mod = asset.mod;
-                mod.subpath = asset.subpath;
+                mod = angular.copy(asset.mod);
+                mod.subpath = angular.copy(asset.subpath);
                 asset.mods = [mod];
                 delete asset.mod;
                 delete asset.subpath;
