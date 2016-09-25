@@ -60,31 +60,31 @@ class ModListMod < ActiveRecord::Base
   end
 
   def mod_compatibility_notes
-    mod_ids = self.mod_list.mod_list_mod_ids
+    mod_ids = mod_list.mod_list_mod_ids
     return [] if mod_ids.empty?
 
-    CompatibilityNote.visible.mod(mod_ids).mod([self.mod_id]).status([0, 1, 2])
+    CompatibilityNote.visible.mod(mod_ids).mod([mod_id]).status([0, 1, 2])
   end
 
   def plugin_compatibility_notes
-    mod_ids = self.mod_list.mod_list_mod_ids
+    mod_ids = mod_list.mod_list_mod_ids
     return [] if mod_ids.empty?
 
-    CompatibilityNote.visible.mods(mod_ids).mod([self.mod_id]).status([3, 4])
+    CompatibilityNote.visible.mods(mod_ids).mod([mod_id]).status([3, 4])
   end
 
   def install_order_notes
-    mod_ids = self.mod_list.mod_list_mod_ids
+    mod_ids = mod_list.mod_list_mod_ids
     return [] if mod_ids.empty?
 
-    InstallOrderNote.visible.mod(mod_ids).mod([self.mod_id])
+    InstallOrderNote.visible.mod(mod_ids).mod([mod_id])
   end
 
   def load_order_notes
-    plugin_ids = self.mod_list.mod_list_plugin_ids
+    plugin_ids = mod_list.mod_list_plugin_ids
     return [] if plugin_ids.empty?
 
-    LoadOrderNote.visible.plugin(plugin_ids).plugin(self.mod.plugins.ids)
+    LoadOrderNote.visible.plugin(plugin_ids).plugin(mod.plugins.ids)
   end
 
   def required_tools
@@ -98,27 +98,27 @@ class ModListMod < ActiveRecord::Base
   private
     # counter caches
     def increment_counter_caches
-      if self.mod.is_utility
-        self.mod_list.update_counter(:tools_count, 1)
+      if mod.is_utility
+        mod_list.update_counter(:tools_count, 1)
       else
-        self.mod_list.update_counter(:mods_count, 1)
+        mod_list.update_counter(:mods_count, 1)
       end
-      self.mod.update_counter(:mod_lists_count, 1)
+      mod.update_counter(:mod_lists_count, 1)
     end
 
     def decrement_counter_caches
-      if self.mod.is_utility
-        self.mod_list.update_counter(:tools_count, -1)
+      if mod.is_utility
+        mod_list.update_counter(:tools_count, -1)
       else
-        self.mod_list.update_counter(:mods_count, -1)
+        mod_list.update_counter(:mods_count, -1)
       end
-      self.mod.update_counter(:mod_lists_count, -1)
+      mod.update_counter(:mod_lists_count, -1)
     end
 
     def destroy_mod_list_plugins
-      if self.mod.plugins_count
+      if mod.plugins_count
         plugin_ids = self.mod.plugins.ids
-        ModListPlugin.destroy_all(mod_list_id: self.mod_list_id, plugin_id: plugin_ids)
+        ModListPlugin.destroy_all(mod_list_id: mod_list_id, plugin_id: plugin_ids)
       end
     end
 end
