@@ -199,7 +199,7 @@ class ModList < ActiveRecord::Base
     mod_option_ids = mod_list_mod_option_ids
     return Plugin.none if mod_option_ids.empty?
 
-    Plugin.mod_options(mod_option_ids)
+    Plugin.mod_options(mod_option_ids).includes(:mod)
   end
 
   def mod_compatibility_notes
@@ -227,7 +227,7 @@ class ModList < ActiveRecord::Base
     plugin_ids = Plugin.mod_options(mod_list_mod_option_ids).ids
     return LoadOrderNote.none if plugin_ids.empty?
 
-    LoadOrderNote.visible.plugins(plugin_ids).includes(:first_plugin, :second_plugin, :history_entries, :submitter => :reputation)
+    LoadOrderNote.visible.plugins(plugin_ids).includes(:first_plugin, :second_plugin, :first_mod, :second_mod, :history_entries, :submitter => :reputation)
   end
 
   def required_tools
