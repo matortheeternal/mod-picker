@@ -20,7 +20,7 @@ class ModListMod < ActiveRecord::Base
   validates :mod_id, uniqueness: { scope: :mod_list_id, :message => "The mod is already present on the mod list." }
 
   # CALLBACKS
-  after_create :increment_counter_caches
+  after_create :increment_counter_caches, :add_default_mod_options
   before_destroy :decrement_counter_caches, :destroy_mod_list_plugins
 
   def self.install_order_json(collection)
@@ -113,6 +113,12 @@ class ModListMod < ActiveRecord::Base
         mod_list.update_counter(:mods_count, -1)
       end
       mod.update_counter(:mod_lists_count, -1)
+    end
+
+    def add_default_mod_options
+      mod.mod_options.default.each do |mod_option|
+        ModListModOption.create!(mod_list_mod_id: id, mod_option_id: mod_option.id)
+      end
     end
 
     def destroy_mod_list_plugins
