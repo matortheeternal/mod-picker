@@ -23,21 +23,13 @@ class ModList < ActiveRecord::Base
   enum_scope :status
   counter_scope :tools_count, :mods_count, :custom_tools, :custom_mods, :plugins_count, :master_plugins_count, :available_plugins_count, :custom_plugins_count, :config_files_count, :custom_config_files_count, :compatibility_notes_count, :install_order_notes_count, :load_order_notes_count, :ignored_notes_count, :bsa_files_count, :asset_files_count, :records_count, :override_records_count, :plugin_errors_count, :tags_count, :stars_count, :comments_count
   date_scope :submitted, :completed, :updated
+  relational_division_scope :tags, :text, [
+      { class_name: 'ModListTag', join_on: :mod_list_id, joinable_on: :tag_id },
+      { class_name: 'Tag', join_on: :id }
+  ]
 
   # UNIQUE SCOPES
   scope :visible, -> { where(hidden: false, visibility: 2) }
-  scope :tags, -> (tags_array) {
-    query = where(nil)
-    tags_array.each do |tag|
-      mod_list_tags_table = ModListTag.arel_table.alias
-      tags_table = Tag.arel_table.alias
-      join_query = arel_table.join(mod_list_tags_table).on(arel_table[:id].eq(mod_list_tags_table[:mod_list_id])).
-          join(tags_table).on(mod_list_tags_table[:tag_id].eq(tags_table[:id]))
-      query = query.joins(join_query.join_sources).where(tags_table[:text].eq(tag))
-    end
-
-    query
-  }
   scope :kind, -> (kinds) {
     # build is_collection values array
     is_collection = []
