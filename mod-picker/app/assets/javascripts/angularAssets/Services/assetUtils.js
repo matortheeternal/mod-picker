@@ -111,7 +111,7 @@ app.service('assetUtils', function (fileUtils) {
             var looseAssetMod;
             for (var i = 0; i < asset.mods.length; i++) {
                 var mod = asset.mods[i];
-                if (!mod.subpath.endsWith('.bsa\\')) looseAssetMod = mod;
+                if (!mod.subpath || !mod.subpath.endsWith('.bsa\\')) looseAssetMod = mod;
             }
             if (looseAssetMod) {
                 looseAssetMod.wins = true;
