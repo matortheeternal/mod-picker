@@ -1,9 +1,15 @@
 <loader data="pluginsReady" spinner-class="big-spinner">
     <div class="tab-bar-items">
         <div class="tab-bar-item primary-item">
-            <span><strong>{{notes.unresolved_plugin_compatibility.length + notes.unresolved_load_order.length}}</strong> Unresolved Issues</span>
-            <span><strong>{{notes.ignored_plugin_compatibility.length + notes.ignored_load_order.length}}</strong> Ignored Issues</span>
-            <span><strong>{{required.missing_plugins.length}}</strong> Missing Requirements</span>
+            <span class="issue-item">
+                <strong>{{notes.unresolved_plugin_compatibility.length + notes.unresolved_load_order.length}}</strong> Unresolved Issues
+            </span>
+            <span class="issue-item">
+                <strong>{{notes.ignored_plugin_compatibility.length + notes.ignored_load_order.length}}</strong> Ignored Issues
+            </span>
+            <span class="issue-item">
+                <strong>{{required.missing_plugins.length}}</strong> Missing Requirements
+            </span>
         </div>
 
         <div class="tab-bar-item" ng-if="editing">
