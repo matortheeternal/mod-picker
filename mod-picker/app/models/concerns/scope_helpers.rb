@@ -205,7 +205,7 @@ module ScopeHelpers
       end
     end
 
-    def relational_division_query(search_key, joins_array, search_array)
+    def relational_division_query(joins_array, search_key, search_array)
       query = where(nil)
       search_array.each_with_index do |search, i|
         joins_array.each { |j|
@@ -230,7 +230,7 @@ module ScopeHelpers
     def relational_division_scope(attribute, key, joins_array)
       class_eval do
         scope attribute.to_sym, -> (values) {
-          relational_division_query(key, joins_array, values)
+          relational_division_query(joins_array, key, values)
         }
       end
     end
