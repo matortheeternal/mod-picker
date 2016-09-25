@@ -26,7 +26,18 @@ class ModList < ActiveRecord::Base
 
   # UNIQUE SCOPES
   scope :visible, -> { where(hidden: false, visibility: 2) }
-  scope :tags, -> (array) { joins(:tags).where(:tags => {text: array}).having("COUNT(DISTINCT tags.text) = ?", array.length) }
+  scope :tags, -> (tags_array) {
+    query = where(nil)
+    tags_array.each do |tag|
+      mod_list_tags_table = ModListTag.arel_table.alias
+      tags_table = Tag.arel_table.alias
+      join_query = arel_table.join(mod_list_tags_table).on(arel_table[:id].eq(mod_list_tags_table[:mod_list_id])).
+          join(tags_table).on(mod_list_tags_table[:tag_id].eq(tags_table[:id]))
+      query = query.joins(join_query.join_sources).where(tags_table[:text].eq(tag))
+    end
+
+    query
+  }
   scope :kind, -> (kinds) {
     # build is_collection values array
     is_collection = []

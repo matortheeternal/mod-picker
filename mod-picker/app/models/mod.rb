@@ -63,7 +63,18 @@ class Mod < ActiveRecord::Base
 
     query.where(where_clause.join(" OR "))
   }
-  scope :tags, -> (array) { joins(:tags).where(:tags => {text: array}).having("COUNT(DISTINCT tags.text) = ?", array.length) }
+  scope :tags, -> (tags_array) {
+    query = where(nil)
+    tags_array.each do |tag|
+      mod_tags_table = ModTag.arel_table.alias
+      tags_table = Tag.arel_table.alias
+      join_query = arel_table.join(mod_tags_table).on(arel_table[:id].eq(mod_tags_table[:mod_id])).
+          join(tags_table).on(mod_tags_table[:tag_id].eq(tags_table[:id]))
+      query = query.joins(join_query.join_sources).where(tags_table[:text].eq(tag))
+    end
+
+    query
+  }
   scope :categories, -> (ids) { where("primary_category_id in (:ids) OR secondary_category_id in (:ids)", ids: ids) }
   scope :author, -> (hash) {
     author = hash[:value]
