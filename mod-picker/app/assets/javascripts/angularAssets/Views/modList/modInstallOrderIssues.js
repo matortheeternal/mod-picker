@@ -23,8 +23,8 @@ app.controller('modInstallOrderIssuesController', function($scope, $timeout, lis
                 $scope.notes.ignored_install_order.push(note);
                 return;
             }
-            var first_mod = $scope.findMod(note.mods[0].id, true);
-            var second_mod = $scope.findMod(note.mods[1].id, true);
+            var first_mod = $scope.findMod(note.first_mod.id, true);
+            var second_mod = $scope.findMod(note.second_mod.id, true);
             // unresolved if the both mods are present and the first mod comes after the second mod
             if (first_mod && second_mod && first_mod.index > second_mod.index) {
                 note.resolved = false;

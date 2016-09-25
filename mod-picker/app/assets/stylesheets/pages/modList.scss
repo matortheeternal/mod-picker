@@ -15,6 +15,12 @@
   }
 }
 
+.tab-bar-item {
+  .issue-item {
+    margin: 0 12px;
+  }
+}
+
 .winning-asset {
   color: $success_secondary;
   font-weight: bold;

@@ -131,8 +131,8 @@ app.controller('modLoadOrderController', function($scope, $state, $stateParams, 
             (originalNote.second_plugin_id == updatedNote.first_plugin_id)) {
             originalNote.mods.reverse();
             originalNote.plugins.reverse();
-            originalNote.first_plugin_id = originalNote.plugins[0].id;
-            originalNote.second_plugin_id = originalNote.plugins[1].id;
+            originalNote.first_plugin_id = originalNote.first_plugin.id;
+            originalNote.second_plugin_id = originalNote.second_plugin.id;
         }
         originalNote.text_body = updatedNote.text_body.slice(0);
         originalNote.moderator_message = updatedNote.moderator_message && updatedNote.moderator_message.slice(0);

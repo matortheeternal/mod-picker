@@ -87,7 +87,7 @@ class ModListsController < ApplicationController
     authorize! :read, @mod_list
 
     # prepare primary data
-    plugins = @mod_list.mod_list_plugins.includes(:plugin)
+    plugins = @mod_list.mod_list_plugins.includes(:plugin, :mod)
     plugins_store = @mod_list.plugins_store.order(:mod_option_id)
     custom_plugins = @mod_list.custom_plugins
     groups = @mod_list.mod_list_groups.where(tab: 2).order(:index)

@@ -122,8 +122,8 @@ app.controller('modInstallOrderController', function($scope, $stateParams, $stat
         if ((updatedNote.first_mod_id == originalNote.second_mod_id) &&
             (updatedNote.second_mod_id == originalNote.first_mod_id)) {
             originalNote.mods.reverse();
-            originalNote.first_mod_id = originalNote.mods[0].id;
-            originalNote.second_mod_id = originalNote.mods[1].id;
+            originalNote.first_mod_id = originalNote.first_mod.id;
+            originalNote.second_mod_id = originalNote.second_mod.id;
         }
         originalNote.text_body = updatedNote.text_body.slice(0);
         originalNote.moderator_message = updatedNote.moderator_message && updatedNote.moderator_message.slice(0);

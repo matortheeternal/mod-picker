@@ -3,9 +3,9 @@
 		<span>
             Load
             <span>
-                <a ng-href="#/mod/{{note.plugins[0].mod_id}}/analysis" target="_blank">{{note.plugins[0].filename}}</a>
+                <a ng-href="#/mod/{{note.first_mod.id}}/analysis" target="_blank">{{note.first_plugin.filename}}</a>
                 Before
-                <a ng-href="#/mod/{{note.plugins[1].mod_id}}/analysis" target="_blank">{{note.plugins[1].filename}}</a>
+                <a ng-href="#/mod/{{note.second_mod.id}}/analysis" target="_blank">{{note.second_plugin.filename}}</a>
             </span>
         </span>
         <span class="right-item">
@@ -22,8 +22,8 @@
             {{note.ignored ? "Ignored" : note.resolved ? "Resolved" : "Unresolved"}}
         </div>
         <div class="resolution-options order-options">
-            <div class="action-box green-box" ng-click="resolve('move', 0)" ng-class="{ 'disabled' : note.resolved || note.ignored }">Move {{note.plugins[0].filename}}</div>
-            <div class="action-box green-box" ng-click="resolve('move', 1)" ng-class="{ 'disabled' : note.resolved || note.ignored }">Move {{note.plugins[1].filename}}</div>
+            <div class="action-box green-box" ng-click="resolve('move', 0)" ng-class="{ 'disabled' : note.resolved || note.ignored }">Move {{note.first_plugin.filename}}</div>
+            <div class="action-box green-box" ng-click="resolve('move', 1)" ng-class="{ 'disabled' : note.resolved || note.ignored }">Move {{note.second_plugin.filename}}</div>
             <div class="action-box yellow-box single" ng-click="resolve('ignore')" ng-class="{ 'disabled' : note.resolved }">{{note.ignored ? 'Unignore' : 'Ignore'}} Issue</div>
         </div>
     </div>
