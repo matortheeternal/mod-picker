@@ -204,5 +204,35 @@ module ScopeHelpers
         end
       end
     end
+
+    def relational_division_query(search_key, joins_array, search_array)
+      query = where(nil)
+      search_array.each_with_index do |search, i|
+        joins_array.each { |j|
+          j[:table] = j[:class_name].safe_constantize.arel_table.alias("#{j[:class_name]}_#{i}")
+        }
+        prev_hash = { table: arel_table, joinable_on: :id }
+
+        join_query = joins_array.inject(arel_table) do |join_relation, table_join_hash|
+          join_relation = join_relation.join(table_join_hash[:table]).
+              on(prev_hash[:table][prev_hash[:joinable_on]].
+                  eq(table_join_hash[:table][table_join_hash[:join_on]]))
+          prev_hash = table_join_hash
+          join_relation
+        end
+
+        query = query.joins(join_query.join_sources).where(prev_hash[:table][search_key].eq(search))
+      end
+
+      query
+    end
+
+    def relational_division_scope(attribute, key, joins_array)
+      class_eval do
+        scope attribute.to_sym, -> (values) {
+          relational_division_query(key, joins_array, values)
+        }
+      end
+    end
   end
 end
