@@ -79,8 +79,8 @@ app.service('notificationsFactory', function() {
     ];
 
     var noteContentLink =
-        '<a href="#/mod/{{content.mods[0].id}}">{{content.mods[0].name}}</a> and ' +
-        '<a href="#/mod/{{content.mods[1].id}}">{{content.mods[1].name}}</a>';
+        '<a href="#/mod/{{content.first_mod.id}}">{{content.first_mod.name}}</a> and ' +
+        '<a href="#/mod/{{content.second_mod.id}}">{{content.second_mod.name}}</a>';
     var associatedModLink =
         '<a href="#/mod/{{content.mod.id}}">{{content.mod.name}}</a>';
     var associatedModListLink =

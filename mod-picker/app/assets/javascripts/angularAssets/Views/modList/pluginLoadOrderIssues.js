@@ -24,8 +24,8 @@ app.controller('pluginLoadOrderIssuesController', function($scope, $timeout, lis
                 $scope.notes.ignored_load_order.push(note);
                 return;
             }
-            var first_plugin = $scope.findPlugin(note.plugins[0].id, true);
-            var second_plugin = $scope.findPlugin(note.plugins[1].id, true);
+            var first_plugin = $scope.findPlugin(note.first_plugin.id, true);
+            var second_plugin = $scope.findPlugin(note.second_plugin.id, true);
             // unresolved if the both mods are present and the first mod comes after the second mod
             if (first_plugin && second_plugin && first_plugin.index > second_plugin.index) {
                 note.resolved = false;

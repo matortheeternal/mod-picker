@@ -109,9 +109,14 @@ class InstallOrderNote < ActiveRecord::Base
               },
               :editors => {
                   :only => [:id, :username, :role]
+              },
+              :first_mod => {
+                  :only => [:id, :name]
+              },
+              :second_mod => {
+                  :only => [:id, :name]
               }
-          },
-          :methods => :mods
+          }
       }
       super(options.merge(default_options))
     else

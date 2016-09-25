@@ -144,7 +144,7 @@ app.service('listUtils', function () {
 
     this.removeModNotes = function(notes, modId, ignoredCallback) {
         notes.forEach(function(note) {
-            if (note.mods[0].id == modId || note.mods[1].id == modId) {
+            if (note.first_mod.id == modId || note.second_mod.id == modId) {
                 note._destroy = true;
                 if (note.ignored) ignoredCallback(note);
             }
@@ -153,7 +153,7 @@ app.service('listUtils', function () {
 
     this.recoverModNotes = function(notes, modId) {
         notes.forEach(function(note) {
-            if (note._destroy && note.mods[0].id == modId || note.mods[1].id == modId) {
+            if (note._destroy && note.first_mod.id == modId || note.second_mod.id == modId) {
                 delete note._destroy;
                 if (note.ignored) note.ignored = false;
             }
@@ -162,7 +162,7 @@ app.service('listUtils', function () {
 
     this.removePluginNotes = function(notes, pluginId, ignoredCallback) {
         notes.forEach(function(note) {
-            if (note.plugins[0].id == pluginId || note.plugins[1].id == pluginId) {
+            if (note.first_plugin.id == pluginId || note.second_plugin.id == pluginId) {
                 note._destroy = true;
                 if (note.ignored) ignoredCallback(note);
             }
@@ -171,7 +171,7 @@ app.service('listUtils', function () {
 
     this.recoverPluginNotes = function(notes, pluginId) {
         notes.forEach(function(note) {
-            if (note._destroy && note.plugins[0].id == pluginId || note.plugins[1].id == pluginId) {
+            if (note._destroy && note.first_plugin.id == pluginId || note.second_plugin.id == pluginId) {
                 delete note._destroy;
             }
         });

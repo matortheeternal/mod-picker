@@ -120,9 +120,20 @@ class LoadOrderNote < ActiveRecord::Base
               },
               :editors => {
                   :only => [:id, :username, :role]
+              },
+              :first_plugin => {
+                  :only => [:id, :filename]
+              },
+              :second_plugin => {
+                  :only => [:id, :filename]
+              },
+              :first_mod => {
+                  :only => [:id, :name]
+              },
+              :second_mod => {
+                  :only => [:id, :name]
               }
-          },
-          :methods => [:mods, :plugins]
+          }
       }
       super(options.merge(default_options))
     else
