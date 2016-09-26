@@ -1052,22 +1052,6 @@ app.service("filtersFactory", function() {
                 param: "cmc"
             },
             {
-                label: "Master Plugins Count",
-                common: false,
-                data: "master_plugins",
-                type: "Range",
-                max: 100,
-                param: "mpc"
-            },
-            {
-                label: "Available Plugins Count",
-                common: false,
-                data: "available_plugins",
-                type: "Range",
-                max: 2000,
-                param: "apc"
-            },
-            {
                 label: "Custom Plugins Count",
                 common: false,
                 data: "custom_plugins",
