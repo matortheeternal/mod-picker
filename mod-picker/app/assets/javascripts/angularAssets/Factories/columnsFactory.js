@@ -755,6 +755,13 @@ app.service('columnsFactory', function() {
             {
                 group: "Extended",
                 visibility: false,
+                label: "Custom Tools",
+                data: "custom_tools_count",
+                filter: "number"
+            },
+            {
+                group: "Extended",
+                visibility: false,
                 label: "Custom Mods",
                 data: "custom_mods_count",
                 filter: "number"
@@ -762,8 +769,8 @@ app.service('columnsFactory', function() {
             {
                 group: "Extended",
                 visibility: false,
-                label: "Custom Tools",
-                data: "custom_tools_count",
+                label: "Custom Plugins",
+                data: "custom_plugins_count",
                 filter: "number"
             },
             {
