@@ -16,16 +16,20 @@ We probably want to make a custom responder to call as_json with the proper form
 
 A possible extension is to have the controller action default to the base format if a view for the action isn't found, and/or to allow the user to override an action to use a specific template without calling render directly.
 
-## BetterJson Concern
-```ruby
+```
 # Better name pending
 module BetterJson
   extend ActiveSupport::Concern
   
+  included do
+    class_attribute :_json_template_cache
+    self._json_template_cache = {}
+  end
+  
   # noinspection RubySuperCallWithoutSuperclassInspection
   def as_json(options={})
     if json_options_empty(options)
-      super(load_json_template(options[:format] || :base)
+      super(get_json_template(options[:format] || :base)
     else
       super(options)
     end
@@ -36,10 +40,13 @@ module BetterJson
     !(options.keys & keys).any?
   end
   
-  # TODO: Template caching
+  def get_json_template(format)
+    self.class._json_template_cache[format] || load_json_template(format)
+  end
+  
   def load_json_template(format)
     file = File.read(json_template_path(format))
-    JSON.parse(file)
+    self.class._json_template_cache[format] = JSON.parse(file)
   end
   
   def json_template_path(format)
