@@ -4,9 +4,9 @@ We will have json view files in `views/<table_name>/<format>.json`.  These files
 ## Extension
 as_json is extended on all models to either:
 
-a) Load a view file if the :format option was provided at the aforementioned path.
-b) Load the base view file if no :format, :only, :except, :include, or :methods options were provided.
-c) Else calls super(options)
+1. Load a view file if the :format option was provided at the aforementioned path.
+2. Load the base view file if no :format, :only, :except, :include, or :methods options were provided.
+3. Else calls super(options)
 
 ## Caching
 Having the view templates compiled and cached would be best for performance.  See [rabl-rails#library.rb](https://github.com/ccocchi/rabl-rails/blob/master/lib/rabl-rails/library.rb).  A potential configuration option could allow the cache to be watched and templates recompiled if edited while the application is running.
