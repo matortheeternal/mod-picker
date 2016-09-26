@@ -16,7 +16,7 @@ We probably want to make a custom responder to call as_json with the proper form
 
 A possible extension is to have the controller action default to the base format if a view for the action isn't found, and/or to allow the user to override an action to use a specific template without calling render directly.
 
-```
+```ruby
 # Better name pending
 module BetterJson
   extend ActiveSupport::Concern
