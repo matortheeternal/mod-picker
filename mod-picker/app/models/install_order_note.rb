@@ -1,5 +1,5 @@
 class InstallOrderNote < ActiveRecord::Base
-  include Filterable, Sortable, RecordEnhancements, Correctable, Helpfulable, Reportable, ScopeHelpers, Trackable
+  include Filterable, Sortable, RecordEnhancements, Correctable, Helpfulable, Reportable, ScopeHelpers, Trackable, BetterJson
 
   # ATTRIBUTES
   self.per_page = 25
@@ -92,42 +92,26 @@ class InstallOrderNote < ActiveRecord::Base
     InstallOrderNote.where(id: ids).joins(:first_mod, :second_mod).update_all("install_order_notes.has_adult_content = mods.has_adult_content OR second_mods_install_order_notes.has_adult_content")
   end
 
-  def as_json(options={})
-    if JsonHelpers.json_options_empty(options)
-      default_options = {
-          :except => [:submitted_by],
-          :include => {
-              :submitter => {
-                  :only => [:id, :username, :role, :title, :joined, :last_sign_in_at, :reviews_count, :compatibility_notes_count, :install_order_notes_count, :load_order_notes_count, :corrections_count, :comments_count],
-                  :include => {
-                      :reputation => {:only => [:overall]}
-                  },
-                  :methods => :avatar
-              },
-              :editor => {
-                  :only => [:id, :username, :role]
-              },
-              :editors => {
-                  :only => [:id, :username, :role]
-              },
-              :first_mod => {
-                  :only => [:id, :name]
-              },
-              :second_mod => {
-                  :only => [:id, :name]
-              }
-          }
-      }
-      super(options.merge(default_options))
-    else
-      super(options)
-    end
+  def self.base_json_format
+    {
+        :except => [:submitted_by],
+        :include => {
+            :submitter => User.card_json_format,
+            :editor => User.base_json_format,
+            :editors => User.base_json_format,
+            :first_mod => Mod.base_json_format,
+            :second_mod => Mod.base_json_format
+        }
+    }
   end
 
   def notification_json_options(event_type)
     {
         :only => [:submitted_by, (:moderator_message if event_type == :message)].compact,
-        :methods => :mods
+        :include => {
+            :first_mod => Mod.base_json_format,
+            :second_mod => Mod.base_json_format
+        }
     }
   end
 
