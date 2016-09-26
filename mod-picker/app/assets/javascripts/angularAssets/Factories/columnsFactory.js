@@ -723,7 +723,8 @@ app.service('columnsFactory', function() {
                         case 'visibility_public': return 'Public';
                     }
                 },
-                filter: "humanize:1"
+                filter: "humanize:1",
+                unsortable: true
             },
             {
                 group: "General",
