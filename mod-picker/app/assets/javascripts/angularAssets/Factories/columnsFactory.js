@@ -702,7 +702,8 @@ app.service('columnsFactory', function() {
                 data: "submitter.username",
                 link: function (item) {
                     return "#/user/" + item.submitter.id;
-                }
+                },
+                sortData: "users.username"
             },
             {
                 group: "General",
