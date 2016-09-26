@@ -1,6 +1,6 @@
 <div class="content-title">
     <span class="capitalize">
-        <a ng-href="#/{{report.reportable_type.underscore()}}/{{report.reportable_id}}" target="_blank">{{report.reportable_type}}</a>
+        <span ng-bind-html="getReportableUrl"></span>
     </span>
 </div>
 
@@ -10,11 +10,7 @@
         <div class="contribution-container box-shadow">
             <div class="content-title">
                 <span>
-              <a ng-href="#/{{report.reportable_type.underscore()}}/{{report.reportable.id}}" target="_blank">{{report.reportable.name}}</a>
-          </span>
-                <span class="right-item">
-              <span class="capitalize">Status: {{report.reportable.status.replace("_", " ")}}</span>
-                <span class="capitalize">Visibility: {{report.reportable.visibility.replace("visibility_", "")}}</span>
+                    <span ng-bind-html="getReportableUrl"></span>
                 </span>
             </div>
             <user-column user="report.reportable.submitter" class="user-column"></user-column>

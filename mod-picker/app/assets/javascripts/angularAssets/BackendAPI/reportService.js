@@ -26,10 +26,6 @@ app.service('reportService', function($q, backend, pageUtils, userTitleService, 
 
             // associate reportable user titles and review section ratings
             data.reports.forEach(function(obj) {
-                if(obj.reportable_type === 'Tag') {
-                    console.log(obj);
-                }
-
                 if(obj.reportable_type === 'User' && !obj.reportable.title) {
                     userTitleService.getUserTitle(obj.reportable.reputation.overall).then(function(title) {
                         obj.reportable.title = title;
@@ -40,8 +36,6 @@ app.service('reportService', function($q, backend, pageUtils, userTitleService, 
                     reviewSectionService.associateReviewSections([obj.reportable]);
                 }
             });
-
-            
 
             action.resolve(data);
 

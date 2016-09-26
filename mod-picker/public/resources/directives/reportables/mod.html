@@ -1,6 +1,6 @@
 <div class="content-title">
     <span class="capitalize">
-        <a ng-href="#/{{report.reportable_type.underscore()}}/{{report.reportable_id}}" target="_blank">{{report.reportable_type}}</a>
+        <span ng-bind-html="getReportableUrl"></span>
     </span>
 </div>
 

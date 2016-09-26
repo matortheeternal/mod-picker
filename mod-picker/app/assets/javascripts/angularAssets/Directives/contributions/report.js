@@ -15,7 +15,8 @@ app.directive('report', function() {
     };
 });
 
-app.controller('reportController', function($scope) {
+app.controller('reportController', function($scope, $sce, $interpolate, reportsFactory) {
     angular.inherit($scope, 'report');
 
+    $scope.getReportableUrl = $sce.trustAsHtml($interpolate(reportsFactory.contentLink($scope.report))($scope));
 });
