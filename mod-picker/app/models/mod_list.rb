@@ -21,7 +21,7 @@ class ModList < ActiveRecord::Base
   search_scope :description
   user_scope :submitter
   enum_scope :status
-  counter_scope :tools_count, :mods_count, :custom_tools, :custom_mods, :plugins_count, :master_plugins_count, :available_plugins_count, :custom_plugins_count, :config_files_count, :custom_config_files_count, :compatibility_notes_count, :install_order_notes_count, :load_order_notes_count, :ignored_notes_count, :bsa_files_count, :asset_files_count, :records_count, :override_records_count, :plugin_errors_count, :tags_count, :stars_count, :comments_count
+  counter_scope :tools_count, :mods_count, :custom_tools_count, :custom_mods_count, :plugins_count, :master_plugins_count, :available_plugins_count, :custom_plugins_count, :config_files_count, :custom_config_files_count, :compatibility_notes_count, :install_order_notes_count, :load_order_notes_count, :ignored_notes_count, :bsa_files_count, :asset_files_count, :records_count, :override_records_count, :plugin_errors_count, :tags_count, :stars_count, :comments_count
   date_scope :submitted, :completed, :updated
   relational_division_scope :tags, :text, [
       { class_name: 'ModListTag', join_on: :mod_list_id, joinable_on: :tag_id },
