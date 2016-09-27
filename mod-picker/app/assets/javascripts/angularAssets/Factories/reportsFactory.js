@@ -13,6 +13,7 @@ app.service('reportsFactory', function() {
       var noteTypeDashed = noteType.replace(' ', '-');
       return '<a href="#/mod/{{report.reportable.commentable.correctable.first_mod.id}}/' + noteTypeDashed + '/{{report.reportable.commentable.correctable.id}}">Comment, ' + noteType + ' Note</a>';
   };
+
   var noteCorrectionLink = function(noteType) {
       var noteTypeDashed = noteType.replace(' ', '-');
       return '<a href="#/mod/{{report.reportable.correctable.first_mod.id}}/' + noteTypeDashed + '/{{report.reportable.correctable.id}}">Correction, ' + noteType + ' Note</a>';
