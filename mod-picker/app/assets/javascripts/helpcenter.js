@@ -14,7 +14,7 @@
 //= require Factories/spinnerFactory.js
 //= require Services/pageUtils.js
 //= require Services/ObjectUtils.js
-//= require_tree Directives/help
+//= require_tree ./Directives/help
 
 var app = angular.module('helpCenter', [
     'ngAnimate', 'hc.marked', 'relativeDate'
