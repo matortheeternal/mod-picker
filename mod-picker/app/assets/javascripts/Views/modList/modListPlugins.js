@@ -248,7 +248,8 @@ app.controller('modListPluginsController', function($scope, $q, $timeout, catego
         $scope.setActivityMessage('Preparing mod list for sorting');
 
         // Dissassociate plugins, destroy original groups, and unmark as merged
-        sortUtils.prepareToSort($scope.mod_list, 'plugins');
+        sortUtils.setSortTarget($scope.mod_list, 'plugins');
+        sortUtils.prepareToSort();
 
         // Save changes and call sortLoadOrder if successful
         $scope.saveChanges(true).then(function() {
@@ -263,10 +264,10 @@ app.controller('modListPluginsController', function($scope, $q, $timeout, catego
     $scope.sortLoadOrder = function() {
         // STEP 1: Build groups for categories
         $scope.setActivityMessage('Building category groups');
-        var groups = sortUtils.buildGroups($scope.mod_list, 'plugins');
+        var groups = sortUtils.buildGroups();
 
         // STEP 2: Merge category groups with less than 5 members into super category groups
-        sortUtils.combineGroups($scope.mod_list, 'plugins', groups, $scope.categories);
+        sortUtils.combineGroups(groups, $scope.categories);
 
         // STEP 3: Sort groups and sort plugins in groups by override count
         $scope.setActivityMessage('Sorting groups and plugins');
@@ -276,10 +277,12 @@ app.controller('modListPluginsController', function($scope, $q, $timeout, catego
 
         // STEP 4: Save the new groups and associate plugins with groups
         $scope.setActivityMessage('Saving groups');
-        var groupPromises = sortUtils.saveGroups(groups, $scope.model, 'plugins', $scope.mod_list, $scope.originalModList);
+        sortUtils.setSaveTarget($scope.model, $scope.originalModList);
+        var groupPromises = sortUtils.saveGroups(groups);
 
         $q.all(groupPromises).then(function() {
             // STEP 5: Sort plugins per load order notes and master dependencies
+            sortUtils.sortModel();
             $scope.setActivityMessage('Handling load order notes and master dependencies');
             $scope.$broadcast('resolveAllLoadOrder');
 
