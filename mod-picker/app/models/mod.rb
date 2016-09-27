@@ -42,6 +42,10 @@ class Mod < ActiveRecord::Base
   source_scope :bugs, :sites => [:nexus], :alias => [:bugs_count]
   source_scope :articles, :sites => [:nexus], :alias => [:articles_count]
   source_scope :subscribers, :sites => [:workshop]
+  relational_division_scope :tags, :text, [
+      { class_name: 'ModTag', join_on: :mod_id, joinable_on: :tag_id },
+      { class_name: 'Tag', join_on: :id }
+  ]
 
   # UNIQUE SCOPES
   scope :include_games, -> (bool) { where.not(primary_category_id: nil) if !bool }
@@ -63,7 +67,6 @@ class Mod < ActiveRecord::Base
 
     query.where(where_clause.join(" OR "))
   }
-  scope :tags, -> (array) { joins(:tags).where(:tags => {text: array}).having("COUNT(DISTINCT tags.text) = ?", array.length) }
   scope :categories, -> (ids) { where("primary_category_id in (:ids) OR secondary_category_id in (:ids)", ids: ids) }
   scope :author, -> (hash) {
     author = hash[:value]
@@ -227,6 +230,16 @@ class Mod < ActiveRecord::Base
 
   def contribution_authors
     User.contributors(self)
+  end
+
+  def links_text
+    a = ["    - #{name}:"]
+    space = " " * 8
+    a.push("#{space}Nexus Mods: #{nexus_infos.url}") if nexus_infos
+    a.push("#{space}Lover's Lab: #{lover_infos.url}") if lover_infos
+    a.push("#{space}Steam Workshop: #{workshop_infos.url}") if workshop_infos
+    custom_sources.each { |source| a.push("#{space}#{source.label}: #{source.url}") }
+    a.join("\r\n") + "\r\n"
   end
 
   def self.index_json(collection, sources)

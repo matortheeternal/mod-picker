@@ -87,7 +87,7 @@
         <h2>{{target.submitter.username}}'s {{model.label}} - Viewing Correction</h2>
 
         <div class="content-block">
-            <correction correction="correction" index="100" current-user="currentUser" edit="editCorrection" show-user-column="true" event-prefix="'modal'"></correction>
+            <correction correction="correction" index="100" edit="editCorrection" show-user-column="true" event-prefix="'modal'"></correction>
         </div>
 
         <h3 class="section-title">Comments
@@ -96,7 +96,7 @@
             </span>
         </h3>
         <loader data="correction.comments" spinner-class="big-spinner" content-class="content-container">
-            <comments comments="correction.comments" current-user="currentUser" model-name="'Correction'" target="correction" event-prefix="'modal'"></comments>
+            <comments comments="correction.comments" model-name="'Correction'" target="correction" event-prefix="'modal'"></comments>
 
             <page-results pages="pages.correction_comments" data="correction.comments" callback="retrieveCorrectionComments"></page-results>
         </loader>

@@ -19,6 +19,10 @@ class LoverInfo < ActiveRecord::Base
     self.save!
   end
 
+  def url
+    LoverHelper.mod_url(id)
+  end
+
   def notification_json_options(event_type)
     {
         :only => [],

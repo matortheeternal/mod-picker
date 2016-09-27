@@ -23,6 +23,11 @@ Rails.application.routes.draw do
     match '/users/:id/rep', to: 'users#endorse', via: [:post]
     match '/users/:id/rep', to: 'users#unendorse', via: [:delete]
 
+    # user moderation actions
+    match 'users/:id/add_rep', to: 'users#add_rep', via: [:post]
+    match 'users/:id/subtract_rep', to: 'users#subtract_rep', via: [:post]
+    match 'users/:id/change_role', to: 'users#change_role', via: [:post]
+
     # user settings
     match '/settings/:id', to: 'user_settings#show', via: [:get]
     match '/settings/:id', to: 'user_settings#update', via: [:patch, :put]
@@ -133,6 +138,11 @@ Rails.application.routes.draw do
     match '/mod_list_custom_plugins', to: 'mod_list_custom_plugins#create', via: [:post]
     match '/mod_list_custom_config_files', to: 'mod_list_custom_config_files#create', via: [:post]
     resources :mod_lists, only: [:show, :create, :update]
+
+    # mod list exporting
+    match 'mod_lists/:id/export_modlist', to: 'mod_lists#export_modlist', via: [:get]
+    match 'mod_lists/:id/export_plugins', to: 'mod_lists#export_plugins', via: [:get]
+    match 'mod_lists/:id/export_links', to: 'mod_lists#export_links', via: [:get]
 
     # mod and mod list stars
     match '/mod_lists/:id/star', to: 'mod_lists#create_star', via: [:post]

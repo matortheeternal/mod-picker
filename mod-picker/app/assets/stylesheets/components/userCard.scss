@@ -1,0 +1,54 @@
+user-card {
+  position: absolute;
+  display: block;
+  width: 450px;
+  height: 200px;
+  padding: 0;
+  background-color: $primary_background;
+  top: -34px;
+  left: -4px;
+  z-index: 1;
+  border: 1px solid $border_color;
+  box-shadow: -1px -1px 16px -1px $shadow_color;
+
+  .column {
+    display: inline-block;
+    vertical-align: top;
+    text-align: left;
+    height: 160px;
+    padding: 28px 10px 4px;
+
+    ul li {
+      margin: 8px 0;
+    }
+  }
+
+  .first-column {
+    text-align: center;
+    padding-top: 10px;
+    width: 125px;
+
+    ul li {
+      margin: 4px 0;
+
+      span {
+        display: inline-block;
+        margin: 0 5px;
+        cursor: pointer;
+        @include transition(all 0.2s ease-in-out);
+
+        &:hover {
+          color: $link_hover_color_primary;
+        }
+      }
+    }
+  }
+
+  .second-column {
+    width: 150px;
+  }
+
+  .third-column {
+    width: 165px;
+  }
+}

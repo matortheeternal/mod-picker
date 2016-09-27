@@ -138,10 +138,14 @@ class WorkshopHelper
     end
   end
 
+  def self.mod_url(id)
+    "http://steamcommunity.com/sharedfiles/filedetails/#{id}"
+  end
+
   def self.scrape_mod(id)
     # construct mod url
-    mod_url = "http://steamcommunity.com/sharedfiles/filedetails/#{id}"
-    puts "WorkshopHelper: Scraping "+mod_url
+    url = mod_url(id)
+    puts "WorkshopHelper: Scraping "+url
 
     # prepare headers
     headers = {
@@ -149,7 +153,7 @@ class WorkshopHelper
     }
 
     # get the mod page
-    response = RestClient.get(mod_url, headers)
+    response = RestClient.get(url, headers)
     puts "  Recieved response #{response.size}"
 
     # parse needed data from the mod page

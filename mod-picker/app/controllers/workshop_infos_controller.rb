@@ -21,7 +21,7 @@ class WorkshopInfosController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_workshop_info
-      authorize! :submit, :mod
+      authorize! :create, Mod
       begin
         @workshop_info = WorkshopInfo.find(params[:id])
         @workshop_info.rescrape

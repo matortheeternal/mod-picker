@@ -1,12 +1,21 @@
 /* user roles */
 .user-role-admin {
-  color: $admin_color;
+  color: $admin_color !important;
 }
 
 .user-role-moderator {
-  color: $moderator_color;
+  color: $moderator_color !important;
 }
 
 .user-role-mod-author {
-  color: $mod_author_color;
+  color: $mod_author_color !important;
+}
+
+.user-role-restricted {
+  color: $medium_text_color !important;
+}
+
+.user-role-banned {
+  color: $soft_text_color !important;
+  text-decoration: line-through;
 }

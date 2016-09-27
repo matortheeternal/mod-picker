@@ -83,12 +83,12 @@ Number.prototype.parseBytes = function(bytesString) {
     }
 };
 
-// concatenates array1 with array2 and assigns the result to a1
-// does nothing if either array1 or array2 are undefined
-Array.prototype.unite = function(array1, array2) {
-    if (array1 && array2) {
-        for (var i = 0; i < array2.length; i++) {
-            array1.push(array2[i]);
+// concatenates this with array and assigns the result to this
+// does nothing if either this or array are undefined
+Array.prototype.unite = function(array) {
+    if (this && array) {
+        for (var i = 0; i < array.length; i++) {
+            this.push(array[i]);
         }
     }
 };
@@ -106,5 +106,11 @@ Array.prototype.contains = function(needle) {
 angular.inherit = function(scope, attribute) {
     if (angular.isUndefined(scope[attribute])) {
         scope[attribute] = scope.$parent[attribute];
+    }
+};
+
+angular.default = function(scope, attribute, value) {
+    if (angular.isUndefined(scope[attribute])) {
+        scope[attribute] = value;
     }
 };

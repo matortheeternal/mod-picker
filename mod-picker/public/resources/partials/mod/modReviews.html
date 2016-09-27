@@ -70,17 +70,17 @@
             <i class="fa fa-caret-up" aria-hidden="true" ng-show="myReviewExpanded"></i>
         </div>
         <div ng-if="myReviewExpanded">
-            <review review="mod.user_review" show-user-column="true" index="98" current-user="currentUser" edit="editReview"></review>
+            <review review="mod.user_review" show-user-column="true" index="98" edit="editReview"></review>
         </div>
     </div>
 
     <!-- review specified in the url -->
     <div class="content-block current-contribution" ng-if="currentReview && !currentReview.editing">
-        <review review="currentReview" show-user-column="true" index="99" current-user="currentUser" edit="editReview"></review>
+        <review review="currentReview" show-user-column="true" index="99" edit="editReview"></review>
     </div>
 
     <div ng-repeat="review in mod.reviews" class="content-block" ng-if="!review.editing">
-        <review review="review" show-user-column="true" index="100 + $index" current-user="currentUser" edit="editReview"></review>
+        <review review="review" show-user-column="true" index="100 + $index" edit="editReview"></review>
     </div>
 
     <div class="content-message" ng-hide="mod.reviews.length || mod.user_review || currentReview">

@@ -1,9 +1,9 @@
 class UsersController < ApplicationController
-  before_action :set_user, only: [:show, :comments, :endorse, :unendorse, :mod_lists, :mods]
+  before_action :set_user, only: [:show, :comments, :endorse, :unendorse, :add_rep, :subtract_rep, :change_role, :mod_lists, :mods]
 
   # GET/POST /users/index
   def index
-    @users = User.includes(:reputation).accessible_by(current_ability).filter(filtering_params).sort(params[:sort]).paginate(:page => params[:page])
+    @users = User.include_blank(false).includes(:reputation).references(:reputation).accessible_by(current_ability).filter(filtering_params).sort(params[:sort]).paginate(:page => params[:page])
     count =  User.accessible_by(current_ability).filter(filtering_params).count
 
     render :json => {
@@ -69,6 +69,43 @@ class UsersController < ApplicationController
       else
         render json: @reputation_link.errors, status: :unprocessable_entity
       end
+    end
+  end
+
+  # POST /users/1/add_rep
+  def add_rep
+    authorize! :adjust_rep, @user
+    if @user.reputation.add_offset
+      render json: {status: :ok}
+    else
+      render json: @user.reputation.errors, status: :unprocessable_entity
+    end
+  end
+
+  # POST /users/1/subtract_rep
+  def subtract_rep
+    authorize! :adjust_rep, @user
+    if @user.reputation.subtract_offset
+      render json: {status: :ok}
+    else
+      render json: @user.reputation.errors, status: :unprocessable_entity
+    end
+  end
+
+  # POST /users/1/change_role
+  def change_role
+    authorize! :assign_roles, @user
+    if params[:role] == "admin" && !current_user.admin?
+      raise "Only admins can make other users admins."
+    end
+    if @user.admin?
+      raise "You cannot change the role of admin users."
+    end
+
+    if @user.update(role: params[:role])
+      render json: {status: :ok}
+    else
+      render json: @user.errors, status: :unprocessable_entity
     end
   end
 

@@ -40,11 +40,12 @@ body {
   border: 1px solid $border_color;
 
   .content-title {
+    position: relative;
+    padding: 10px;
+    background-color: $bar_color;
     font-size: 16px;
     font-weight: 500;
     color: $bar_text_color;
-    background-color: $bar_color;
-    padding: 10px;
 
     .right-item {
       margin-top: 3px;

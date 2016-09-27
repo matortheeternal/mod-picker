@@ -27,7 +27,7 @@
                                     <span class="fa fa-wrench" ng-click="" title="Custom Value"></span>
                                 </span>-->
                             </h4>
-                            <slider filters="filters" data="filter.data" type="{{filter.subtype ? filter.subtype + 'Slider' : filter.max > 500 ? 'StepSlider' : 'CeilSlider' }}" attr="{{filter.max}}"></slider>
+                            <slider filter-data="filters" filter="filter"></slider>
                         </div>
                     </div>
                 </div>

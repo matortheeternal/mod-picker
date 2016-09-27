@@ -21,7 +21,7 @@ class LoverInfosController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_lover_info
-      authorize! :submit, :mod
+      authorize! :submit, Mod
       begin
         @lover_info = LoverInfo.find(params[:id])
         @lover_info.rescrape

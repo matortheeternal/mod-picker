@@ -124,11 +124,9 @@ module ScopeHelpers
 
     def search_scope(*attributes, **options)
       if options[:combine]
-        search_terms = []
-        attributes.each { |attribute| search_terms.push("#{attribute} like :search")}
         class_eval do
             scope :search, -> (search) {
-              where("#{search_terms.join(' OR ')}", search: "%#{search}%")
+              where(attributes.map{|attribute| arel_table[attribute.to_sym].matches("%#{search}%") }.inject(:or))
             }
         end
       else
@@ -136,7 +134,7 @@ module ScopeHelpers
           scope_name = options[:alias] || attribute
           class_eval do
             scope scope_name.to_sym, -> (search) {
-              where("#{attribute} like ?", "%#{search}%")
+              where(arel_table[attribute.to_sym].matches("%#{search}%"))
             }
           end
         end
@@ -204,6 +202,36 @@ module ScopeHelpers
             where(attribute => parse_date(range[:min])..parse_date(range[:max]))
           }
         end
+      end
+    end
+
+    def relational_division_query(joins_array, search_key, search_array)
+      query = where(nil)
+      search_array.each_with_index do |search, i|
+        joins_array.each { |j|
+          j[:table] = j[:class_name].safe_constantize.arel_table.alias("#{j[:class_name]}_#{i}")
+        }
+        prev_hash = { table: arel_table, joinable_on: :id }
+
+        join_query = joins_array.inject(arel_table) do |join_relation, table_join_hash|
+          join_relation = join_relation.join(table_join_hash[:table]).
+              on(prev_hash[:table][prev_hash[:joinable_on]].
+                  eq(table_join_hash[:table][table_join_hash[:join_on]]))
+          prev_hash = table_join_hash
+          join_relation
+        end
+
+        query = query.joins(join_query.join_sources).where(prev_hash[:table][search_key].eq(search))
+      end
+
+      query
+    end
+
+    def relational_division_scope(attribute, key, joins_array)
+      class_eval do
+        scope attribute.to_sym, -> (values) {
+          relational_division_query(joins_array, key, values)
+        }
       end
     end
   end

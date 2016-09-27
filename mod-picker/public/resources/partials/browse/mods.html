@@ -89,7 +89,7 @@
                                 <span class="fa fa-calendar" ng-click="" title="Custom Date"></span>
                             </span>-->
                         </h4>
-                        <slider filters="filters" data="filter.data" type="ModDateSlider"></slider>
+                        <slider filter-data="filters" filter="filter"></slider>
                     </div>
                 </div>
 
@@ -101,7 +101,7 @@
                                 <span class="fa fa-wrench" ng-click="" title="Custom Value"></span>
                             </span>
                         </h4>
-                        <slider filters="filters" data="filter.data" type="{{filter.max > 500 ? 'StepSlider' : 'CeilSlider'}}" attr="{{filter.max}}"></slider>
+                        <slider filter-data="filters" filter="filter"></slider>
                     </div>
 
                     <expander expanded="expanded" key="modPicker"></expander>
@@ -116,7 +116,7 @@
                                     <span class="fa fa-wrench" ng-click="" title="Custom Value"></span>
                                 </span>-->
                             </h4>
-                            <slider filters="filters" data="filter.data" type="{{filter.max > 500 ? 'StepSlider' : 'CeilSlider'}}" attr="{{filter.max}}"></slider>
+                            <slider filter-data="filters" filter="filter"></slider>
                         </div>
                     </div>
 

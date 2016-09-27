@@ -1,10 +1,10 @@
 class ModListsController < ApplicationController
   before_action :check_sign_in, only: [:create, :set_active, :update, :update_tags, :create_star, :destroy_star]
-  before_action :set_mod_list, only: [:show, :hide, :update, :update_tags, :tools, :mods, :plugins, :config_files, :analysis, :comments]
+  before_action :set_mod_list, only: [:show, :hide, :update, :update_tags, :tools, :mods, :plugins, :export_modlist, :export_plugins, :export_links, :config_files, :analysis, :comments]
 
   # GET /mod_lists
   def index
-    @mod_lists = ModList.accessible_by(current_ability).filter(filtering_params).sort(params[:sort]).paginate(:page => params[:page])
+    @mod_lists = ModList.includes(:submitter).references(:submitter).accessible_by(current_ability).filter(filtering_params).sort(params[:sort]).paginate(:page => params[:page])
     count =  ModList.accessible_by(current_ability).filter(filtering_params).count
 
     render :json => {
@@ -87,7 +87,7 @@ class ModListsController < ApplicationController
     authorize! :read, @mod_list
 
     # prepare primary data
-    plugins = @mod_list.mod_list_plugins.includes(:plugin)
+    plugins = @mod_list.mod_list_plugins.includes(:plugin, :mod)
     plugins_store = @mod_list.plugins_store.order(:mod_option_id)
     custom_plugins = @mod_list.custom_plugins
     groups = @mod_list.mod_list_groups.where(tab: 2).order(:index)
@@ -114,6 +114,27 @@ class ModListsController < ApplicationController
     }
   end
 
+  # GET /mod_lists/:id/export_modlist
+  def export_modlist
+    authorize! :read, @mod_list
+    force_download("modlist.txt")
+    render :text => @mod_list.modlist_text
+  end
+
+  # GET /mod_lists/:id/export_plugins
+  def export_plugins
+    authorize! :read, @mod_list
+    force_download("plugins.txt")
+    render :text => @mod_list.plugins_text
+  end
+
+  # GET /mod_lists/:id/export_links
+  def export_links
+    authorize! :read, @mod_list
+    force_download("links.txt")
+    render :text => @mod_list.links_text
+  end
+
   # GET /mod_lists/:id/config
   def config_files
     authorize! :read, @mod_list
@@ -136,19 +157,17 @@ class ModListsController < ApplicationController
     authorize! :read, @mod_list
 
     # prepare primary data
-    mod_ids = @mod_list.mod_list_mods.utility(false).official(false).pluck(:mod_id)
     plugin_ids = @mod_list.mod_list_plugins.official(false).pluck(:plugin_id)
     install_order = @mod_list.mod_list_mods.utility(false).includes(:mod)
     load_order = @mod_list.mod_list_plugins.includes(:plugin)
     plugins = Plugin.where(id: plugin_ids).includes(:dummy_masters, :overrides, :masters => :master_plugin)
-    conflicting_assets = ModAssetFile.mods(mod_ids).includes(:asset_file).conflicting
 
     # render response
     render :json => {
         load_order: ModListPlugin.load_order_json(load_order),
         install_order: ModListMod.install_order_json(install_order),
         plugins: Plugin.analysis_json(plugins),
-        conflicting_assets: conflicting_assets
+        conflicting_assets: @mod_list.conflicting_assets
     }
   end
 
@@ -309,8 +328,12 @@ class ModListsController < ApplicationController
       @mod_list = ModList.find(params[:id])
     end
 
+    def force_download(filename)
+      response.headers["Content-Disposition"] = "attachment; filename=#{filename}"
+    end
+
     def filtering_params
-      params[:filters].slice(:search, :description, :submitter, :status, :kind, :created, :updated, :completed, :tools, :mods, :plugins, :config_files, :ignored_notes, :stars, :custom_tools, :custom_mods, :master_plugins, :available_plugins, :custom_plugins, :custom_config_files, :compatibility_notes, :install_order_notes, :load_order_notes, :bsa_files, :asset_files, :records, :override_records, :plugin_errors, :tags, :comments)
+      params[:filters].slice(:search, :description, :submitter, :status, :kind, :submitted, :updated, :completed, :tools, :mods, :plugins, :config_files, :ignored_notes, :stars, :custom_tools, :custom_mods, :master_plugins, :available_plugins, :custom_plugins, :custom_config_files, :compatibility_notes, :install_order_notes, :load_order_notes, :bsa_files, :asset_files, :records, :override_records, :plugin_errors, :tags, :comments)
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

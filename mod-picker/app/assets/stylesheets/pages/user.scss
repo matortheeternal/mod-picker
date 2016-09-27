@@ -37,6 +37,22 @@
       font-weight: 500;
     }
   }
+
+  .action-item {
+    margin-bottom: 4px;
+
+    span {
+      display: inline-block;
+      margin: 0 5px;
+      cursor: pointer;
+      min-width: 70px;
+      @include transition(all 0.2s ease-in-out);
+
+      &:hover {
+        color: $link_hover_color_primary;
+      }
+    }
+  }
 }
 
 .right-user-column {
