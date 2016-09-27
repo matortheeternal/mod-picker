@@ -187,9 +187,7 @@ Rails.application.routes.draw do
 
     # reports
     match '/reports/index', to: 'reports#index', via: [:get, :post]
-    match '/reports/:id', to: 'reports#show', via: [:get]
-    match '/reports/:id', to: 'reports#update', via: [:patch, :put]
-    resources :reports, only: [:create, :show, :update, :edit]
+    match '/reports', to: 'reports#create', via: [:post]
     
     
   end

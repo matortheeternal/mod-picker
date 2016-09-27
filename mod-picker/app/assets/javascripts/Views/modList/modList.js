@@ -172,7 +172,12 @@ app.controller('modListController', function($scope, $rootScope, $q, $stateParam
         visibility_unlisted: "This mod list won't appear in search results, \nbut anyone can access it.",
         visibility_public: "This mod list is publicly available and will \nappear in search results."
     };
+    $scope.report = {
+        reportable_id: $scope.mod_list.id,
+        reportable_type: 'ModList'
+    };
     $scope.isActive = $scope.activeModList && $scope.activeModList.id == $scope.mod_list.id;
+    
 
     // shared function setup
     $scope.isEmpty = objectUtils.isEmptyArray;
@@ -219,6 +224,11 @@ app.controller('modListController', function($scope, $rootScope, $q, $stateParam
                 });
             }
         }
+    };
+
+    $scope.toggleReportModal = function(visible) {
+        $scope.$emit('toggleModal', visible);
+        $scope.showReportModal = visible;
     };
 
     // ACTIVITY MODAL
