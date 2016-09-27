@@ -274,8 +274,8 @@ app.controller('modListController', function($scope, $rootScope, $q, $stateParam
 
     $scope.flattenModels = function() {
         // prepare base objects for cleaning
-        var customModBase = baseFactory.getModListModBase();
-        var modListModBase = baseFactory.getCustomModBase();
+        var customModBase = baseFactory.getCustomModBase();
+        var modListModBase = baseFactory.getModListModBase();
         var modListPluginBase = baseFactory.getModListPluginBase();
         var customPluginBase = baseFactory.getCustomPluginBase();
         var modListConfigBase = baseFactory.getModListConfigFileBase();
