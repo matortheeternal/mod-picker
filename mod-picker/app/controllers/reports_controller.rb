@@ -12,8 +12,8 @@ class ReportsController < ApplicationController
     }
   end
 
-  # POST /reviews
-  # POST /reviews.json
+  # POST /reports
+  # POST /reports.json
   def create
     @base_report = BaseReport.where(base_report_params).first_or_initialize
     authorize! :create, @base_report
@@ -23,7 +23,8 @@ class ReportsController < ApplicationController
       base_report_id: @base_report.id,
       submitted_by: current_user.id,
     ).first_or_initialize
-    @report.report_type = report_params[:report_type]
+    # convert string param to int
+    @report.report_type = report_params[:report_type].to_i
     @report.note = report_params[:note]
     authorize! :create, @report
     @report.save!
@@ -44,8 +45,8 @@ class ReportsController < ApplicationController
     end
   end
 
-  # DELETE /reviews/1
-  # DELETE /reviews/1.json
+  # DELETE /reports/1
+  # DELETE /reports/1.json
   def destroy
     if @report.destroy
       render json: {status: :ok}

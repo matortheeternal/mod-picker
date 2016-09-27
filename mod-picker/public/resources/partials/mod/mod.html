@@ -34,6 +34,10 @@
                 <section>
                     <div class="header-box">
                         ACTIONS
+                        <!--TODO: switch ng-if to use proper permissions with canReport-->
+                        <div class="action-box" ng-if="true" ng-click="toggleReportModal(true)">
+                            <i class="fa fa-flag-o" aria-hidden="true"></i> Report
+                        </div>
                         <div class="action-box" ng-if="permissions.canManage" ng-click="editMod()">
                             <i class="fa fa-edit" aria-hidden="true"></i> Edit
                         </div>
@@ -63,6 +67,8 @@
         <requirements-modal></requirements-modal>
 
         <messages></messages>
+
+        <report-modal ng-if="showReportModal"></report-modal>
 
         <div class="page-container">
             <loader data="mod" spinner-class="big-spinner">

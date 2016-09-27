@@ -157,6 +157,10 @@ app.controller('modController', function($scope, $rootScope, $q, $stateParams, $
             mod_list: true
         }
     };
+    $scope.report = {
+        reportable_id: $scope.mod.id,
+        reportable_type: 'Mod'
+    };
     $scope.retrieving = {};
     $scope.errors = {};
 
@@ -253,6 +257,11 @@ app.controller('modController', function($scope, $rootScope, $q, $stateParams, $
         if (visible && !$scope.mod.corrections && !$scope.retrieving.appeals) {
             $scope.retrieveAppeals();
         }
+    };
+
+    $scope.toggleReportModal = function(visible) {
+        $scope.$emit('toggleModal', visible);
+        $scope.showReportModal = visible;
     };
 
     $scope.editMod = function() {
