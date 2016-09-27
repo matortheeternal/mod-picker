@@ -200,7 +200,8 @@ app.controller('modListModsController', function($scope, $rootScope, $timeout, $
         $scope.setActivityMessage('Preparing mod list for sorting');
 
         // Dissassociate mods, destroy original groups
-        sortUtils.prepareToSort($scope.mod_list, 'mods');
+        sortUtils.setSortTarget($scope.mod_list, 'mods');
+        sortUtils.prepareToSort();
 
         // Save changes and call sortInstallOrder if successful
         $scope.saveChanges(true).then(function() {
@@ -215,10 +216,10 @@ app.controller('modListModsController', function($scope, $rootScope, $timeout, $
     $scope.sortInstallOrder = function() {
         // STEP 1: Build groups for categories
         $scope.setActivityMessage('Building category groups');
-        var groups = sortUtils.buildGroups($scope.mod_list, 'mods');
+        var groups = sortUtils.buildGroups();
 
         // STEP 2: Merge category groups with less than 5 members into super category groups
-        sortUtils.combineGroups($scope.mod_list, 'mods', groups, $scope.categories);
+        sortUtils.combineGroups(groups, $scope.categories);
 
         // STEP 3: Sort groups and sort mods in groups by asset file count
         $scope.setActivityMessage('Sorting groups and mods');
@@ -228,10 +229,12 @@ app.controller('modListModsController', function($scope, $rootScope, $timeout, $
 
         // STEP 4: Save the new groups and associate mods with groups
         $scope.setActivityMessage('Saving groups');
-        var groupPromises = sortUtils.saveGroups(groups, $scope.model, 'mods', $scope.mod_list, $scope.originalModList);
+        sortUtils.setSaveTarget($scope.model, $scope.originalModList);
+        var groupPromises = sortUtils.saveGroups(groups);
 
         $q.all(groupPromises).then(function() {
             // STEP 5: Sort mods per install order notes
+            sortUtils.sortModel();
             $scope.setActivityMessage('Handling install order notes');
             $scope.$broadcast('resolveAllInstallOrder');
 
