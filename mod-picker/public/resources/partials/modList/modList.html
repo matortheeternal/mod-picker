@@ -19,8 +19,7 @@
         <section>
             <div class="header-box">
                 ACTIONS
-                <!--TODO: switch ng-if to use proper permissions with canReport-->
-                <div class="action-box" ng-if="true" ng-click="toggleReportModal(true)">
+                <div class="action-box" ng-if="permissions.canReport" ng-click="toggleReportModal(true)">
                     <i class="fa fa-flag-o" aria-hidden="true"></i> Report
                 </div>
                 <div ng-if="permissions.canManage" class="action-box" ng-click="toggleEditing()">
