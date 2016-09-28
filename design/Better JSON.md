@@ -1,5 +1,5 @@
 ## Views
-We will have json view files in `views/<table_name>/<format>.json`.  These files will store hashes in the same format as the options hashes for as_json.
+We will have json view files in `views/<table_name>/<action>.json`.  These files will store hashes in the same format as the options hashes for as_json.
 
 ## JSON Extension
 `as_json` is extended on all models to either:
