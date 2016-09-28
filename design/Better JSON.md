@@ -29,7 +29,7 @@ module BetterJson
   # noinspection RubySuperCallWithoutSuperclassInspection
   def as_json(options={})
     if json_options_empty(options)
-      super(get_json_template(options[:template] || :base)
+      super(get_json_template(options[:template] || :base))
     else
       super(options)
     end
