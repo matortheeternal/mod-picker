@@ -106,7 +106,7 @@ app.config(['$stateProvider', function($stateProvider) {
     });
 }]);
 
-app.controller('modController', function($scope, $rootScope, $q, $stateParams, $state, $timeout, $window, modObject, modService, modListService, contributionService, categoryService, tagService, smoothScroll, tabsFactory, sortFactory, eventHandlerFactory) {
+app.controller('modController', function($scope, $rootScope, $q, $stateParams, $state, $timeout, $window, modObject, modService, modListService, contributionService, categoryService, tagService, reportService, smoothScroll, tabsFactory, sortFactory, eventHandlerFactory) {
     // get parent variables
     $scope.mod = modObject.mod;
     $scope.mod.star = modObject.star;
@@ -177,6 +177,23 @@ app.controller('modController', function($scope, $rootScope, $q, $stateParams, $
             });
         }, 200);
     }
+
+    // setting up permissions for reports
+    reportService.canReport(
+        {
+            submitter: {
+                id: $scope.currentUser.id
+            },
+            base_report: {
+                reportable_id:  $scope.mod.id,
+                reportable_type: 'Mod'
+            }
+        }
+    ).then(function(data) {
+        $scope.permissions.canReport = data.canReport;
+    }, function(response) {
+        $scope.errors.permissions = response;
+    });
 
     //setting up the canManage permission
     var author = $scope.mod.mod_authors.find(function(author) {

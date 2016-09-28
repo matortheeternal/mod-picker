@@ -55,6 +55,23 @@ class ReportsController < ApplicationController
     end
   end
 
+  def can_report
+    @base_report = BaseReport.where(base_report_params)
+    
+    # look for reports belonging to the submitter trying to submit a new report
+    # and do not allow new reports to be made if one already exists by the submitter
+    @can_report = @base_report.first.reports.where(submitter: submitter_params[:id]).count == 0
+
+    # TODO: better error handling in case above calls fail
+    errors = nil
+
+    if errors.nil?
+      render json: {canReport: @can_report}
+    else
+      render json: @can_report.errors, status: :unprocessable_entity
+    end
+ end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_base_report
@@ -74,5 +91,9 @@ class ReportsController < ApplicationController
 
     def base_report_params
       params.require(:base_report).permit(:reportable_id, :reportable_type)
+    end
+
+    def submitter_params
+      params.require(:submitter).permit(:id)
     end
 end

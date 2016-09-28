@@ -62,4 +62,16 @@ app.service('reportService', function($q, backend, pageUtils, userTitleService, 
         // submit report
         return backend.post('/reports', reportData);
     };
+
+    // checks to see if content should be reportable by current user
+    this.canReport = function(params) {
+        var action = $q.defer();
+        backend.post('/reports/canReport', params).then(function(data) {
+            action.resolve(data);
+        }, function(response) {
+            action.reject(response);
+        });
+
+        return action.promise;
+    }
 });

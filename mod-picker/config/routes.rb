@@ -188,7 +188,7 @@ Rails.application.routes.draw do
     # reports
     match '/reports/index', to: 'reports#index', via: [:get, :post]
     match '/reports', to: 'reports#create', via: [:post]
-    
+    match '/reports/canReport', to: 'reports#can_report', via: [:post]    
     
   end
 
