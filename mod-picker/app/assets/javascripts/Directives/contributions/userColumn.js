@@ -43,7 +43,7 @@ app.controller('userColumnController', function($scope, $rootScope, $timeout, re
         }
     };
 
-    // reports
+    // reports permission
     reportService.canReport(
         {
             submitter: {
@@ -60,6 +60,7 @@ app.controller('userColumnController', function($scope, $rootScope, $timeout, re
         $scope.errors.permissions = response;
     });
 
+    // report modal state
     $scope.toggleReportModal = function(visible) {
         $scope.$emit('toggleModal', visible);
         $scope.showReportModal = visible;

@@ -54,7 +54,7 @@ app.config(['$stateProvider', function($stateProvider) {
     });
 }]);
 
-app.controller('userController', function($scope, $rootScope, $stateParams, userObject, userService, eventHandlerFactory, moderationActionsFactory, tabsFactory) {
+app.controller('userController', function($scope, $rootScope, $stateParams, userObject, userService, reportService, eventHandlerFactory, moderationActionsFactory, tabsFactory) {
     // get parent variables
     $scope.currentUser = $rootScope.currentUser;
     $scope.permissions = angular.copy($rootScope.permissions);
@@ -77,6 +77,12 @@ app.controller('userController', function($scope, $rootScope, $stateParams, user
     };
     $scope.tabs = tabsFactory.buildUserTabs();
 
+    // initialize local variables
+    $scope.report = {
+        reportable_id: $scope.user.id,
+        reportable_type: 'User'
+    };
+
     // shared function setup
     eventHandlerFactory.buildMessageHandlers($scope);
     moderationActionsFactory.buildActions($scope);
@@ -90,5 +96,28 @@ app.controller('userController', function($scope, $rootScope, $stateParams, user
             var params = {label: 'Error giving reputation', response: response};
             $scope.$emit('errorMessage', params);
         });
+    };
+
+    // get report submission permission
+    reportService.canReport(
+        {
+            submitter: {
+                id: $scope.currentUser.id
+            },
+            base_report: {
+                reportable_id:  $scope.user.id,
+                reportable_type: 'User'
+            }
+        }
+    ).then(function(data) {
+        $scope.permissions.canReport = data.canReport;
+    }, function(response) {
+        $scope.errors.permissions = response;
+    });
+
+    // report modal state
+    $scope.toggleReportModal = function(visible) {
+        $scope.$emit('toggleModal', visible);
+        $scope.showReportModal = visible;
     };
 });
