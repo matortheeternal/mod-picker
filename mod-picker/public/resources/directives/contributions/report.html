@@ -1,0 +1,28 @@
+    <div class="content-block">
+        
+        <!-- report content container-->
+        
+        <!--exposing url to header for testing-->
+        <div ng-include="getTemplateUrl()"></div>
+
+        <!--child reports-->
+        <table class="browse-table">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Submitter</th>
+                    <th>Reason</th>
+                    <th>Note</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="childReport in report.reports">
+                    <td>{{childReport.submitted | date : 'short'}}</td>
+                    <td><a ng-href="#/user/{{childReport.submitter.id}}">{{childReport.submitter.username}}</a></td>
+                    <td>{{childReport.report_type.capitalize() | humanize}}</td>
+                    <td>{{childReport.note}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+<br>

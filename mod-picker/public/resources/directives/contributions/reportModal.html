@@ -2,33 +2,34 @@
     <div class="modal big-modal">
         <form>
             <h3 class="section-title">
+                <!--TODO: refactor to be able to easily report users-->
                 Report {{target.submitter.username}}'s {{model.label}}
             </h3>
             <section>
                 <div class="line-label">What rule or community guideline does this submission violate?</div>
-                <div class="report-reason-list" ng-init="report.type = 'respect'">
+                <div class="report-reason-list" ng-init="report.report_type = '0'">
                     <label>
-                        <input type="radio" name="reason" ng-model="report.type" value="respect">
+                        <input type="radio" name="reason" ng-model="report.report_type" value="0">
                         <span class="report-reason">Be Respectful</span>
                     </label>
                     <label>
-                        <input type="radio" name="reason" ng-model="report.type" value="trust">
+                        <input type="radio" name="reason" ng-model="report.report_type" value="1">
                         <span class="report-reason">Be Trustworthy</span>
                     </label>
                     <label>
-                        <input type="radio" name="reason" ng-model="report.type" value="collaboration">
+                        <input type="radio" name="reason" ng-model="report.report_type" value="2">
                         <span class="report-reason">Be Constructive</span>
                     </label>
                     <label>
-                        <input type="radio" name="reason" ng-model="report.type" value="spam">
+                        <input type="radio" name="reason" ng-model="report.report_type" value="3">
                         <span class="report-reason">No Spam, Advertising, or Solicitation</span>
                     </label>
                     <label>
-                        <input type="radio" name="reason" ng-model="report.type" value="piracy">
+                        <input type="radio" name="reason" ng-model="report.report_type" value="4">
                         <span class="report-reason">No Piracy</span>
                     </label>
                     <label>
-                        <input type="radio" name="reason" ng-model="report.type" value="other">
+                        <input type="radio" name="reason" ng-model="report.report_type" value="5">
                         <span class="report-reason">Other</span>
                     </label>
                 </div>

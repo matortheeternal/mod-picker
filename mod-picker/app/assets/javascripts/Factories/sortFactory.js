@@ -149,4 +149,14 @@ app.service("sortFactory", function() {
             factory.editedSort
         ];
     };
+
+    /* articles sort options */
+    this.reportSortOptions = function() {
+        return [
+            factory.submittedSort,
+            factory.editedSort
+        ];
+    };
+
+    return factory;
 });

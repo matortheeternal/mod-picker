@@ -1224,4 +1224,34 @@ app.service("filtersFactory", function() {
             factory.pluginStatisticFilters()
         )
     };
+
+    this.reportSearchFilters = function() {
+        return [
+            factory.searchFilter,
+            {
+                data: "note",
+                param: "t"
+            },
+            factory.submitterFilter
+        ];
+    };
+
+    this.reportDateFilters = function() {
+        return [{
+            label: "Created",
+            data: "submitted",
+            type: "Range",
+            subtype: "Date",
+            param: "dc"
+        }];
+    };
+
+    this.reportFilters = function() {
+        return Array.prototype.concat(
+            factory.reportSearchFilters(),
+            factory.reportDateFilters()
+        );
+    }
+
+    return factory;
 });

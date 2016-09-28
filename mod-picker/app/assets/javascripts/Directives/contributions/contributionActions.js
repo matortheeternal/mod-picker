@@ -27,7 +27,10 @@ app.controller('contributionActionsController', function($scope, $rootScope, $ti
     angular.default($scope, 'approveable', true);
 
     // initialize local variables
-    $scope.report = {};
+    $scope.report = {
+        reportable_id: $scope.target.id,
+        reportable_type: $scope.modelName
+    };
     $scope.retrieving = {};
     $scope.pages = {
         correction_comments: {}

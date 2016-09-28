@@ -18,9 +18,13 @@ app.controller('commentController', function ($scope, $rootScope, $filter, $time
     // inherited variables
     $scope.currentUser = $rootScope.currentUser;
 
+    // this is the report object
+    $scope.report = {
+        reportable_id: $scope.comment.id,
+        reportable_type: 'Comment'
+    };
     // initialize local variables
     $scope.errorEvent = $scope.eventPrefix ? $scope.eventPrefix + 'ErrorMessage' : 'errorMessage';
-    $scope.report = {};
 
     $scope.getDateString = function() {
         var comment = $scope.comment;
