@@ -50,7 +50,7 @@ module BetterJson
   end
   
   def json_template_path(template)
-    Rails.root.join('app', 'views', self.class.table_name, "#{template}.json")
+    Rails.root.join('app', 'views', self.class.name.underscore.pluralize, "#{template}.json")
   end
 end
 ```
