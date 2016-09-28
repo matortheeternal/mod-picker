@@ -12,6 +12,11 @@
     <li class="user-reputation">
         {{user.reputation.overall | number:0}}<span>reputation</span>
     </li>
+    <li>
+        <div class="action-box" ng-if="permissions.canReport" ng-click="toggleReportModal(true)">
+            <i class="fa fa-flag-o" aria-hidden="true"></i> Report
+        </div>
+    </li>
     <li class="editors" ng-if="editors.length">
         <b>Editors:</b>
         <span ng-repeat="editor in editors">
@@ -19,3 +24,5 @@
         </span>
     </li>
 </ul>
+
+<report-modal ng-if="showReportModal"></report-modal>

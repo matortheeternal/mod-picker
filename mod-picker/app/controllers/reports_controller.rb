@@ -56,20 +56,19 @@ class ReportsController < ApplicationController
   end
 
   def can_report
-    @base_report = BaseReport.where(base_report_params)
-    
-    # look for reports belonging to the submitter trying to submit a new report
-    # and do not allow new reports to be made if one already exists by the submitter
-    @can_report = @base_report.first.reports.where(submitter: submitter_params[:id]).count == 0
+    @base_report = BaseReport.where(base_report_params).first
 
-    # TODO: better error handling in case above calls fail
-    errors = nil
-
-    if errors.nil?
-      render json: {canReport: @can_report}
+    if @base_report.nil?
+      render json: {canReport: false}
     else
-      render json: @can_report.errors, status: :unprocessable_entity
+      # look for reports belonging to the submitter trying to submit a new report
+      # and do not allow new reports to be made if one already exists by the submitter
+      @can_report = @base_report.reports.where(submitter: submitter_params[:id]).count == 0
+
+      render json: {canReport: @can_report}
     end
+    
+    # TODO: better error handling in case above calls fail
  end
 
   private
