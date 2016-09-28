@@ -18,7 +18,7 @@ app.controller('errorController', function($scope, $state, errorObj, quoteServic
         $scope.response = errorObj.response;
         $scope.stateUrl = errorObj.stateUrl;
         $scope.stateName = errorObj.stateName;
-        $scope.status = errorObj.response.status;
+        $scope.status = errorObj.response && errorObj.response.status;
         switch($scope.status) {
             case 401: case 403: case 550:
                 $scope.statusType = "unauthorized";
@@ -40,7 +40,7 @@ app.controller('errorController', function($scope, $state, errorObj, quoteServic
     }
 
     // get a quote for the error
-    $scope.quote = quoteService.getErrorQuote($scope.response.status);
+    $scope.quote = quoteService.getErrorQuote($scope.status);
     $scope.defaultExplanations = {
         unauthorized: "You aren't authorized to access this resource.",
         not_found: "Unfortunately, we weren't able to display the page you were looking for.",
