@@ -25,6 +25,7 @@ class Correction < ActiveRecord::Base
   enum_scope :mod_status
   polymorphic_scope :correctable
   range_scope :overall, :association => 'submitter_reputation', :table => 'user_reputations', :alias => 'reputation'
+  date_scope :submitted, :edited
 
   # ASSOCIATIONS
   belongs_to :game, :inverse_of => 'corrections'
