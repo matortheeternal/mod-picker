@@ -3,7 +3,7 @@ app.service('reportsFactory', function () {
 
     var noteContentLink = function (noteType) {
         var noteTypeDashed = noteType.replace(' ', '-');
-        return '<a href="#/mod/{{report.reportable.first_mod_id}}/' + noteTypeDashed + '/{{report.reportable.id}}">{{report.reportable_type}}</a>';
+        return '<a href="#/mod/{{report.reportable.first_mod_id}}/' + noteTypeDashed + '/{{report.reportable.id}}">'+noteType.titleCase()+' Note</a>';
     };
 
     var associatedModReviewLink =
