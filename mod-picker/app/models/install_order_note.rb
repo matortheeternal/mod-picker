@@ -127,7 +127,14 @@ class InstallOrderNote < ActiveRecord::Base
   def notification_json_options(event_type)
     {
         :only => [:submitted_by, (:moderator_message if event_type == :message)].compact,
-        :methods => :mods
+        :include => {
+            :first_mod => {
+                :only => [:id, :name]
+            },
+            :second_mod => {
+                :only => [:id, :name]
+            }
+        }
     }
   end
 
@@ -148,9 +155,14 @@ class InstallOrderNote < ActiveRecord::Base
               },
               :editors => {
                   :only => [:id, :username, :role]
+              },
+              :first_mod => {
+                  :only => [:id, :name]
+              },
+              :second_mod => {
+                  :only => [:id, :name]
               }
-          },
-          :methods => :mods
+          }
       }
   end
 
