@@ -28,7 +28,7 @@ app.service("filtersFactory", function() {
         common: true,
         data: "reputation",
         type: "Range",
-        min: -40,
+        min: 0,
         max: 1280,
         param: "rep"
     };
