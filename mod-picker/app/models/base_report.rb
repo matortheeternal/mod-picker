@@ -1,5 +1,5 @@
 class BaseReport < ActiveRecord::Base
-  include RecordEnhancements, Filterable, Sortable
+  include RecordEnhancements, Filterable, Sortable, ScopeHelpers
 
   # SCOPES
   polymorphic_scope :reportable
@@ -7,7 +7,18 @@ class BaseReport < ActiveRecord::Base
   counter_scope :reports_count
 
   # UNIQUE SCOPES
-  scope :submitter, -> (text) { joins(:reports => :submitter).where("users.username LIKE ?", "#{text}") }
+  # TODO: Expand User scope so we can specify a join like this
+  scope :submitter, -> (text) { where("users.username LIKE ?", "#{text}") }
+  # TODO: Expand Enum scope so we can specify a join like this
+  scope :reason, -> (values) {
+    if values.is_a?(Hash)
+      array = []
+      values.each_key{ |key| array.push(Report.reasons[key]) if values[key] }
+    else
+      array = values
+    end
+    where("reports.reason in (?)", array)
+  }
 
   # ASSOCIATIONS
   belongs_to :reportable, :polymorphic => true
