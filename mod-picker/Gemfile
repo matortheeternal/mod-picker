@@ -48,9 +48,6 @@ gem 'simple_form'
 # use cancancan for authorization
 gem 'cancancan', '~> 1.10'
 
-# TODO: Use Passenger as the app server
-# gem 'passenger'
-
 # using devise for authentication
 gem 'devise', '~> 3.5.10'
 # using devise_invitable for inviting users to the platform for the beta
@@ -62,6 +59,10 @@ gem 'mailcatcher'
 
 # allow for composite primary keys in rails
 gem 'composite_primary_keys', '~> 8.1'
+
+# lax includes so we can conditionally include nested associations under
+# polymorphic associations
+gem 'activerecord_lax_includes', :git => 'https://github.com/unixcharles/active-record-lax-includes'
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
