@@ -855,7 +855,7 @@ app.service("filtersFactory", function() {
             {
                 label: "Agree Count",
                 common: true,
-                data: "agree",
+                data: "agree_count",
                 type: "Range",
                 max: 100,
                 param: "ac"
@@ -863,7 +863,7 @@ app.service("filtersFactory", function() {
             {
                 label: "Disagree Count",
                 common: true,
-                data: "disagree",
+                data: "disagree_count",
                 type: "Range",
                 max: 100,
                 param: "dc"
