@@ -60,10 +60,6 @@ gem 'mailcatcher'
 # allow for composite primary keys in rails
 gem 'composite_primary_keys', '~> 8.1'
 
-# lax includes so we can conditionally include nested associations under
-# polymorphic associations
-gem 'activerecord_lax_includes', :git => 'https://github.com/unixcharles/active-record-lax-includes'
-
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
