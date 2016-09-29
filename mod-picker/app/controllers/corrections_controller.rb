@@ -70,7 +70,7 @@ class CorrectionsController < ApplicationController
 
   # POST /corrections/1/agreement
   def agreement
-    @agreement_mark = AgreementMark.find_or_create_by(
+    @agreement_mark = AgreementMark.find_or_initialize_by(
         submitted_by: current_user.id,
         correction_id: params[:id])
     if params.has_key?(:agree)
