@@ -14,17 +14,7 @@
             </div>
             <user-column user="report.reportable" class="user-column"></user-column>
             <div class="content-column reportable-content-column">
-
-                <h3 class="section-title">Activity</h3>
-                <section class="reportable-content-block">
-                    <div class="stat-item">Joined: {{report.reportable.joined | date}}</div>
-                    <div ng-if="report.reportable.last_sign_in_at" class="stat-item">Last Seen: {{report.reportable.last_sign_in_at | date}}</div>
-                </section>
-
-                <h3 ng-if="report.reportable.about_me" class="section-title">About Me</h3>
-                <section>
-                    <div class="reportable-content-block" marked="report.reportable.about_me"></div>
-                </section>
+                <div class="reportable-content-block" marked="report.reportable.about_me || '*No About Me*'"></div>
             </div>
         </div>
     </div>
