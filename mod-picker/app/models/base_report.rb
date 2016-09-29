@@ -1,6 +1,16 @@
 class BaseReport < ActiveRecord::Base
   include RecordEnhancements, Filterable, Sortable
 
+  # SCOPES
+  polymorphic_scope :reportable
+  date_scope :submitted
+  counter_scope :reports_count
+
+  # UNIQUE SCOPES
+  scope :search, -> (text) { joins(:reports).where("reports.text LIKE ?", "%#{text}%") }
+  scope :submitter, -> (text) { joins(:reports => :submitter).where("users.username LIKE ?", "#{text}") }
+
+  # ASSOCIATIONS
   belongs_to :reportable, :polymorphic => true
   has_many :reports, :inverse_of => 'base_report'
 
