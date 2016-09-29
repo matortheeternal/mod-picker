@@ -29,6 +29,14 @@
             <%= f.password_field :password_confirmation, autocomplete: "off" %>
         </div>
 
+        <div class="padded-field">
+            <%= f.label :agree do %>
+                <%= f.check_box :agree %>
+                I agree to the <a href="/legal/tos" target="_blank">Terms of Service</a> and
+                <a href="/legal/privacy" target="_blank">Privacy Policy</a>
+            <% end %>
+        </div>
+
         <div class="padded-field text-center big-margin">
             <%= f.submit "Register" %>
         </div>
