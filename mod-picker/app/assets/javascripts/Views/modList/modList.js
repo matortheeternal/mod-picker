@@ -113,7 +113,7 @@ app.config(['$stateProvider', function ($stateProvider) {
     })
 }]);
 
-app.controller('modListController', function($scope, $rootScope, $q, $stateParams, $timeout, modListObject, modListService, reportService, objectUtils, tabsFactory, baseFactory, eventHandlerFactory, listUtils) {
+app.controller('modListController', function($scope, $rootScope, $q, $stateParams, $timeout, modListObject, modListService, objectUtils, tabsFactory, baseFactory, eventHandlerFactory, listUtils) {
     // inherited variables
     $scope.currentUser = $rootScope.currentUser;
     $scope.activeModList = $rootScope.activeModList;
@@ -197,22 +197,8 @@ app.controller('modListController', function($scope, $rootScope, $q, $stateParam
         });
     };
 
-    // setting up permissions for reports
-    reportService.canReport(
-        {
-            submitter: {
-                id: $scope.currentUser.id
-            },
-            base_report: {
-                reportable_id:  $scope.mod_list.id,
-                reportable_type: 'ModList'
-            }
-        }
-    ).then(function(data) {
-        $scope.permissions.canReport = data.canReport;
-    }, function(response) {
-        $scope.errors.permissions = response;
-    });
+    // reports permission
+    $scope.permissions.canReport = $scope.currentUser || false;
 
     $scope.toggleEditing = function() {
         $scope.editing = !$scope.editing;
