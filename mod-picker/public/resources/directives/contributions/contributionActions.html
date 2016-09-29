@@ -18,7 +18,7 @@
     </span>
     <span class="right-item" ng-if="!target.hidden">
         <!-- Helpful marks -->
-        <span ng-if="!agreeable && target.approved">
+        <span ng-if="!agreeable && target.approved && showMarks">
             <div class="action-box" ng-class="{ 'green-box' : target.helpful }" ng-click="helpfulMark(true)" tabindex="{{index}}">
                 Helpful
                 <span ng-show="target.helpful_count > 0">({{target.helpful_count}})</span>
@@ -29,7 +29,7 @@
             </div>
         </span>
         <!-- Agreement marks -->
-        <span ng-if="canAgree">
+        <span ng-if="canAgree && showMarks">
             <div class="action-box" ng-class="{ 'green-box' : target.agree }" ng-click="agreementMark(true)" tabindex="{{index}}">
                 Agree
                 <span ng-show="target.agree_count > 0">({{target.agree_count}})</span>

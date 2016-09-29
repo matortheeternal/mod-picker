@@ -23,6 +23,7 @@ app.controller('contributionActionsController', function($scope, $rootScope, $ti
     $scope.permissions = $rootScope.permissions;
 
     // default scope attributes
+    angular.inherit($scope, 'showMarks');
     angular.default($scope, 'correctable', true);
     angular.default($scope, 'approveable', true);
 

@@ -7,7 +7,7 @@ app.directive('compatibilityNote', function () {
             note: '=',
             index: '=',
             edit: '=?',
-            showActions: '=?',
+            showMarks: '=?',
             showUserColumn: '=?',
             showResolutionOptions: '=?',
             modDataLoaded: '=?',
@@ -22,7 +22,7 @@ app.controller('compatibilityNoteController', function ($scope, $rootScope) {
 
     // default scope attributes
     angular.default($scope, 'showUserColumn', true);
-    angular.default($scope, 'showActions', true);
+    angular.default($scope, 'showMarks', true);
 
     $scope.getVerb = function () {
         switch ($scope.note.status) {

@@ -7,7 +7,7 @@ app.directive('loadOrderNote', function () {
             note: '=',
             index: '=',
             edit: '=?',
-            showActions: '=?',
+            showMarks: '=?',
             showUserColumn: '=?',
             showResolutionOptions: '=?'
         }
@@ -20,7 +20,7 @@ app.controller('loadOrderNoteController', function ($scope, $rootScope) {
 
     // set default values
     angular.default($scope, 'showUserColumn', true);
-    angular.default($scope, 'showActions', true);
+    angular.default($scope, 'showMarks', true);
 
     $scope.resolve = function(action, index) {
         if ($scope.note.resolved) {

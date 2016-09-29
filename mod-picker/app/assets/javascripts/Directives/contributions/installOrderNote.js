@@ -7,7 +7,7 @@ app.directive('installOrderNote', function () {
             note: '=',
             index: '=',
             edit: '=?',
-            showActions: '=?',
+            showMarks: '=?',
             showUserColumn: '=?',
             showResolutionOptions: '=?',
             modId: '=?'
@@ -21,7 +21,7 @@ app.controller('installOrderNoteController', function ($scope, $rootScope) {
 
     // default scope attributes
     angular.default($scope, 'showUserColumn', true);
-    angular.default($scope, 'showActions', true);
+    angular.default($scope, 'showMarks', true);
 
     $scope.resolve = function(action, index) {
         if ($scope.note.resolved) {

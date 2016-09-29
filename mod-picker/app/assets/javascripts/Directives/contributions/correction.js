@@ -10,14 +10,13 @@ app.directive('correction', function () {
             showUserColumn: '=',
             eventPrefix: '=?',
             showCorrectable: '=?',
-            showActions: '=?'
+            showMarks: '=?'
         }
     }
 });
 
 app.controller('correctionController', function($scope, $rootScope) {
-    // set defaults for toggling visibility of component(s)
-    $scope.showActions = angular.isDefined($scope.showActions) ? $scope.showActions : true;
+    angular.default($scope, 'showMarks', true);
 
     // inherited variables
     $scope.currentUser = $rootScope.currentUser;
