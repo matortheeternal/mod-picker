@@ -28,11 +28,10 @@
         </div>
 
         <div class="padded-field">
-            <%= f.label :agree do %>
-                <%= f.check_box :agree %>
-                I agree to the <a href="/legal/tos" target="_blank">Terms of Service</a> and
-                <a href="/legal/privacy" target="_blank">Privacy Policy</a>
-            <% end %>
+            <label class="terms">
+                <input type="checkbox" onclick="toggleAgree(this)"/>
+                I agree to the <a href="/legal/tos" target="_blank">Terms of Service</a>
+            </label>
         </div>
 
         <div class="padded-field text-center big-margin">
@@ -40,3 +39,12 @@
         </div>
     <% end %>
 </div>
+
+<script>
+    var submitButton = document.getElementsByName("commit")[0];
+    submitButton.disabled = true;
+
+    function toggleAgree(checkbox) {
+        submitButton.disabled = !checkbox.checked;
+    }
+</script>
