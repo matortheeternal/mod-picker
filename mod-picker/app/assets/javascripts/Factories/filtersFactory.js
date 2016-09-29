@@ -547,8 +547,8 @@ app.service("filtersFactory", function() {
     this.contributionGeneralFilters = function() {
         return [
             factory.searchFilter,
-            factory.submitterFilter,
-            factory.editorFilter
+            factory.submitterFilter
+            //factory.editorFilter
         ]
     };
     
