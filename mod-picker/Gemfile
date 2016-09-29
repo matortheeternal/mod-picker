@@ -48,9 +48,6 @@ gem 'simple_form'
 # use cancancan for authorization
 gem 'cancancan', '~> 1.10'
 
-# TODO: Use Passenger as the app server
-# gem 'passenger'
-
 # using devise for authentication
 gem 'devise', '~> 3.5.10'
 # using devise_invitable for inviting users to the platform for the beta

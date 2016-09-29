@@ -1,18 +1,18 @@
 <div class="box-heading">
-  Resend Confirmation Email
+    Resend Confirmation Email
 </div>
 
 <div class="box-content">
-  <%= form_for(resource, as: resource_name, url: confirmation_path(resource_name), html: { method: :post }) do |f| %>
-    <%= devise_error_messages! %>
+    <%= form_for(resource, as: resource_name, url: confirmation_path(resource_name), html: { method: :post }) do |f| %>
+        <%= devise_error_messages! %>
 
-    <div class="padded-field">
-      <%= f.label :username %><br />
-      <%= f.text_field :username %>
-    </div>
+        <div class="padded-field">
+            <%= f.label :username %><br/>
+            <%= f.text_field :username %>
+        </div>
 
-    <div class="padded-field text-center big-margin">
-      <%= f.submit "Resend" %>
-    </div>
-  <% end %>
+        <div class="padded-field text-center big-margin">
+            <%= f.submit "Resend" %>
+        </div>
+    <% end %>
 </div>

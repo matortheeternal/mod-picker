@@ -32,20 +32,20 @@ class AgreementMark < ActiveRecord::Base
 
   private
     def decrement_counters
-      self.submitter.update_counter(:agreement_marks_count, -1)
-      if self.agree
-        self.correction.update_counter(:agree_count, -1)
+      submitter.update_counter(:agreement_marks_count, -1)
+      if agree
+        correction.update_counter(:agree_count, -1)
       else
-        self.correction.update_counter(:disagree_count, -1)
+        correction.update_counter(:disagree_count, -1)
       end
     end
 
     def increment_counters
-      self.submitter.update_counter(:agreement_marks_count, 1)
-      if self.agree
-        self.correction.update_counter(:agree_count, 1)
+      submitter.update_counter(:agreement_marks_count, 1)
+      if agree
+        correction.update_counter(:agree_count, 1)
       else
-        self.correction.update_counter(:disagree_count, 1)
+        correction.update_counter(:disagree_count, 1)
       end
     end
 end

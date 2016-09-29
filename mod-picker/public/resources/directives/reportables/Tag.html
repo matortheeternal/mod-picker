@@ -1,0 +1,21 @@
+<!--outer report container-->
+<div class="content-title">
+  <span class="capitalize">
+    <span ng-bind-html="reportableUrl"></span>
+  </span>
+  <span class="right-item">
+        <a href="#/mod-lists?t={{report.reportable.text}}">Mod Lists</a>
+        <span class="reportable-count yellow-box">{{report.reportable.mod_lists_count}}</span>
+        <a href="#/mods?t={{report.reportable.text}}">Mods</a> <span class="reportable-count yellow-box">{{report.reportable.mods_count}}</span>
+  </span>
+</div>
+
+<!-- report content container-->
+<div class="content-container">
+
+  <!-- main content reportable content-->
+  <span>
+      <em>{{report.reportable.text}}</em>
+      by <a class="link" ng-href="#/user/{{report.reportable.submitter.id}}" target="_blank" tabindex="{{index}}">{{report.reportable.submitter.username}}</a>
+    </span>
+</div>

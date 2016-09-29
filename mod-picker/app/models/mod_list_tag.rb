@@ -2,7 +2,6 @@ class ModListTag < ActiveRecord::Base
   include Trackable
 
   # ATTRIBUTES
-  self.primary_keys = :mod_list_id, :tag_id
   attr_accessor :removed_by
 
   # EVENT TRACKING

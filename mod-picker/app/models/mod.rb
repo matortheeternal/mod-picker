@@ -42,6 +42,10 @@ class Mod < ActiveRecord::Base
   source_scope :bugs, :sites => [:nexus], :alias => [:bugs_count]
   source_scope :articles, :sites => [:nexus], :alias => [:articles_count]
   source_scope :subscribers, :sites => [:workshop]
+  relational_division_scope :tags, :text, [
+      { class_name: 'ModTag', join_on: :mod_id, joinable_on: :tag_id },
+      { class_name: 'Tag', join_on: :id }
+  ]
 
   # UNIQUE SCOPES
   scope :include_games, -> (bool) { where.not(primary_category_id: nil) if !bool }
@@ -63,7 +67,6 @@ class Mod < ActiveRecord::Base
 
     query.where(where_clause.join(" OR "))
   }
-  scope :tags, -> (array) { joins(:tags).where(:tags => {text: array}).having("COUNT(DISTINCT tags.text) = ?", array.length) }
   scope :categories, -> (ids) { where("primary_category_id in (:ids) OR secondary_category_id in (:ids)", ids: ids) }
   scope :author, -> (hash) {
     author = hash[:value]
@@ -359,6 +362,34 @@ class Mod < ActiveRecord::Base
 
   def notification_json_options(event_type)
     { :only => [:name] }
+  end
+
+  # TODO: trim down json for reports
+  def reportable_json_options
+    {
+        :except => [:disallow_contributors, :hidden],
+        :include => {
+            :nexus_infos => {:except => [:mod_id]},
+            :workshop_infos => {:except => [:mod_id]},
+            :lover_infos => {:except => [:mod_id]},
+            :custom_sources => {:except => [:mod_id]},
+            :mod_authors => {
+                :only => [:id, :role, :user_id],
+                :include => {
+                    :user => {
+                        :only => [:username]
+                    }
+                }
+            },
+            :primary_category => {
+                :only => [:name]
+            },
+            :secondary_category => {
+                :only => [:name]
+            }
+        },
+        :methods => :image
+    }
   end
 
   def self.sortable_columns

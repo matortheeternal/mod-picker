@@ -24,7 +24,10 @@ class Correction < ActiveRecord::Base
   enum_scope :status
   enum_scope :mod_status
   polymorphic_scope :correctable
+  range_scope :agree_count, :disagree_count
+  counter_scope :comments_count
   range_scope :overall, :association => 'submitter_reputation', :table => 'user_reputations', :alias => 'reputation'
+  date_scope :submitted, :edited
 
   # ASSOCIATIONS
   belongs_to :game, :inverse_of => 'corrections'
@@ -131,11 +134,31 @@ class Correction < ActiveRecord::Base
   def notification_json_options(event_type)
     is_appeal = correctable_type == "Mod"
     {
-        :only => [:submitted_by, :correctable_type, (:status if event_type == :status), (:mod_status if is_appeal)].compact,
+        :only => [:submitted_by, :correctable_type, :status, (:mod_status if is_appeal)].compact,
         :include => {
             :correctable => {
                 :only => [:id, (:name if is_appeal)].compact,
                 :methods => [(:mods if !is_appeal), (:plugins if correctable_type == "LoadOrderNote")].compact
+            }
+        }
+    }
+  end
+
+  def reportable_json_options
+    is_appeal = correctable_type == "Mod"
+    {
+        :only => [:submitted_by, :correctable_type, (:mod_status if is_appeal), :text_body, :submitted].compact,
+        :include => {
+            :correctable => {
+                :only => [:id, (:name if is_appeal)].compact,
+                :methods => [(:mods if !is_appeal), (:plugins if correctable_type == "LoadOrderNote")].compact
+            },
+            :submitter => {
+                :only => [:id, :username, :role, :title],
+                :include => {
+                    :reputation => {:only => [:overall]}
+                },
+                :methods => :avatar
             }
         }
     }

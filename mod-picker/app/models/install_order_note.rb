@@ -127,8 +127,43 @@ class InstallOrderNote < ActiveRecord::Base
   def notification_json_options(event_type)
     {
         :only => [:submitted_by, (:moderator_message if event_type == :message)].compact,
-        :methods => :mods
+        :include => {
+            :first_mod => {
+                :only => [:id, :name]
+            },
+            :second_mod => {
+                :only => [:id, :name]
+            }
+        }
     }
+  end
+
+  # TODO: trim down reportable json options
+  def reportable_json_options
+    {
+          :except => [:submitted_by],
+          :include => {
+              :submitter => {
+                  :only => [:id, :username, :role, :title],
+                  :include => {
+                      :reputation => {:only => [:overall]}
+                  },
+                  :methods => :avatar
+              },
+              :editor => {
+                  :only => [:id, :username, :role]
+              },
+              :editors => {
+                  :only => [:id, :username, :role]
+              },
+              :first_mod => {
+                  :only => [:id, :name]
+              },
+              :second_mod => {
+                  :only => [:id, :name]
+              }
+          }
+      }
   end
 
   def self.sortable_columns

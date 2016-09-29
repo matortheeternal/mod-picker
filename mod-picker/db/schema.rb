@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160921193300) do
+ActiveRecord::Schema.define(version: 20160929171433) do
 
   create_table "agreement_marks", id: false, force: :cascade do |t|
     t.integer "correction_id", limit: 4,                null: false
@@ -574,7 +574,7 @@ ActiveRecord::Schema.define(version: 20160921193300) do
   add_index "mod_stars", ["mod_id"], name: "mod_id", using: :btree
   add_index "mod_stars", ["user_id"], name: "user_id", using: :btree
 
-  create_table "mod_tags", id: false, force: :cascade do |t|
+  create_table "mod_tags", force: :cascade do |t|
     t.integer "mod_id",       limit: 4, null: false
     t.integer "tag_id",       limit: 4, null: false
     t.integer "submitted_by", limit: 4, null: false
@@ -735,7 +735,7 @@ ActiveRecord::Schema.define(version: 20160921193300) do
   create_table "reports", force: :cascade do |t|
     t.integer  "base_report_id", limit: 4,   null: false
     t.integer  "submitted_by",   limit: 4,   null: false
-    t.integer  "report_type",    limit: 1,   null: false
+    t.integer  "reason",         limit: 1,   null: false
     t.string   "note",           limit: 128
     t.datetime "submitted",                  null: false
     t.datetime "edited"

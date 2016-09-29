@@ -21,12 +21,15 @@ class ModList < ActiveRecord::Base
   search_scope :description
   user_scope :submitter
   enum_scope :status
-  counter_scope :tools_count, :mods_count, :custom_tools, :custom_mods, :plugins_count, :master_plugins_count, :available_plugins_count, :custom_plugins_count, :config_files_count, :custom_config_files_count, :compatibility_notes_count, :install_order_notes_count, :load_order_notes_count, :ignored_notes_count, :bsa_files_count, :asset_files_count, :records_count, :override_records_count, :plugin_errors_count, :tags_count, :stars_count, :comments_count
+  counter_scope :tools_count, :mods_count, :custom_tools_count, :custom_mods_count, :plugins_count, :master_plugins_count, :available_plugins_count, :custom_plugins_count, :config_files_count, :custom_config_files_count, :compatibility_notes_count, :install_order_notes_count, :load_order_notes_count, :ignored_notes_count, :bsa_files_count, :asset_files_count, :records_count, :override_records_count, :plugin_errors_count, :tags_count, :stars_count, :comments_count
   date_scope :submitted, :completed, :updated
+  relational_division_scope :tags, :text, [
+      { class_name: 'ModListTag', join_on: :mod_list_id, joinable_on: :tag_id },
+      { class_name: 'Tag', join_on: :id }
+  ]
 
   # UNIQUE SCOPES
   scope :visible, -> { where(hidden: false, visibility: 2) }
-  scope :tags, -> (array) { joins(:tags).where(:tags => {text: array}).having("COUNT(DISTINCT tags.text) = ?", array.length) }
   scope :kind, -> (kinds) {
     # build is_collection values array
     is_collection = []
@@ -170,6 +173,11 @@ class ModList < ActiveRecord::Base
           index: index
       })
     end
+  end
+
+  def conflicting_assets
+    mod_option_ids = mod_list_mod_options.utility(false).official(false).pluck(:mod_option_id)
+    ModAssetFile.conflicting.mod_options(mod_option_ids).includes(:asset_file)
   end
 
   def self.update_adult(ids)
@@ -380,6 +388,20 @@ class ModList < ActiveRecord::Base
 
   def notification_json_options(event_type)
     { :only => [:name] }
+  end
+
+  def reportable_json_options
+      { :only => [:name, :id, :description, :status, :submitted, :visibility],
+          :include => {
+              :submitter => {
+                  :only => [:id, :username, :role, :title],
+                  :include => {
+                      :reputation => {:only => [:overall]}
+                  },
+                  :methods => :avatar
+              }
+          }
+      }
   end
 
   def self.sortable_columns

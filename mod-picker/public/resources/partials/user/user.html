@@ -14,6 +14,13 @@
                     </div>
                 </section>
 
+                <h3 class="section-title">Actions</h3>
+                <section>
+                    <div class="action-box" ng-if="permissions.canReport" ng-click="toggleReportModal(true)">
+                        <i class="fa fa-flag-o" aria-hidden="true"></i> Report
+                    </div>
+                </section>
+
                 <h3 class="section-title" ng-if="permissions.canModerate"></h3>
                 <section ng-if="permissions.canModerate">
                     <div class="action-item">
@@ -119,3 +126,5 @@
         </div>
     </loader>
 </two-columns>
+
+<report-modal ng-if="showReportModal"></report-modal>

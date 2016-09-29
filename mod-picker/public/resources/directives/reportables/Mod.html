@@ -1,0 +1,69 @@
+<div class="content-title">
+    <span class="capitalize">
+        <span ng-bind-html="reportableUrl"></span>
+    </span>
+</div>
+
+<div class="content-container">
+    <div class="content-block">
+        <div class="contribution-container box-shadow">
+            <div class="content-title">
+                <span>
+                <a ng-href="#/{{report.reportable_type.underscore()}}/{{report.reportable.id}}" target="_blank">{{report.reportable.name}}</a>
+            </span>
+            </div>
+
+            <div class="user-column">
+                <ul>
+                    <li class="user-avatar">
+                        <img class="avatar avatar-medium" ng-src="{{report.reportable.image}}" />
+                    </li>
+                    <li class="user-name">
+                        By <a class="inverse-link" ng-href="#/user/{{report.reportable.submitted_by}}" target="_blank" tabindex="{{index}}">{{report.reportable.authors}}</a>
+                    </li>
+                    <li class="user-title">
+                        {{report.reportable.aliases}}
+                    </li>
+                    <li class="editors" ng-if="report.reportable.mod_authors.length">
+                        <b>Authors:</b>
+                        <span ng-repeat="author in report.reportable.authors">
+                    <a href="#/user/{{author.id}}">{{author.username}}</a><span ng-if="!$last">, </span>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="content-column reportable-content-column">
+                <!-- General -->
+                <h3 class="section-title">General</h3>
+                <div class="stat-block">
+                    <section class="reportable-content-block">
+                        <div clas="stat-item">
+                            <dt class="stat-title">Date Released</dt>
+                            <dd class="stat-data">{{report.reportable.released | date}}</dd>
+                        </div>
+
+                        <div class="stat-item">
+                            <dt class="stat-title" ng-if="report.reportable.updated">Date Updated</dt>
+                            <dd class="stat-data" ng-if="report.reportable.updated">{{report.reportable.updated | date}}</dd>
+                        </div>
+                    </section>
+                </div>
+
+                <div ng-if="report.reportable.primary_category_id">
+                    <!--Categories-->
+                    <h3 class="section-title">Categories</h3>
+                    <section class="reportable-content-block">
+                        <a ng-href="#/mods?c={{report.reportable.primary_category_id}}">
+                            <div class="action-box">{{report.reportable.primary_category.name}}</div>
+                        </a>
+                        <a ng-href="#/mods?c={{report.reportable.secondary_category_id}}" ng-show="report.reportable.secondary_category_id">
+                            <div class="action-box">{{report.reportable.secondary_category.name}}</div>
+                        </a>
+                    </section>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

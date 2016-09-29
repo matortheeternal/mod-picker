@@ -4,7 +4,7 @@ class ModListsController < ApplicationController
 
   # GET /mod_lists
   def index
-    @mod_lists = ModList.accessible_by(current_ability).filter(filtering_params).sort(params[:sort]).paginate(:page => params[:page])
+    @mod_lists = ModList.includes(:submitter).references(:submitter).accessible_by(current_ability).filter(filtering_params).sort(params[:sort]).paginate(:page => params[:page])
     count =  ModList.accessible_by(current_ability).filter(filtering_params).count
 
     render :json => {
@@ -157,19 +157,17 @@ class ModListsController < ApplicationController
     authorize! :read, @mod_list
 
     # prepare primary data
-    mod_ids = @mod_list.mod_list_mods.utility(false).official(false).pluck(:mod_id)
     plugin_ids = @mod_list.mod_list_plugins.official(false).pluck(:plugin_id)
     install_order = @mod_list.mod_list_mods.utility(false).includes(:mod)
     load_order = @mod_list.mod_list_plugins.includes(:plugin)
     plugins = Plugin.where(id: plugin_ids).includes(:dummy_masters, :overrides, :masters => :master_plugin)
-    conflicting_assets = ModAssetFile.mods(mod_ids).includes(:asset_file).conflicting
 
     # render response
     render :json => {
         load_order: ModListPlugin.load_order_json(load_order),
         install_order: ModListMod.install_order_json(install_order),
         plugins: Plugin.analysis_json(plugins),
-        conflicting_assets: conflicting_assets
+        conflicting_assets: @mod_list.conflicting_assets
     }
   end
 
@@ -335,7 +333,7 @@ class ModListsController < ApplicationController
     end
 
     def filtering_params
-      params[:filters].slice(:search, :description, :submitter, :status, :kind, :created, :updated, :completed, :tools, :mods, :plugins, :config_files, :ignored_notes, :stars, :custom_tools, :custom_mods, :master_plugins, :available_plugins, :custom_plugins, :custom_config_files, :compatibility_notes, :install_order_notes, :load_order_notes, :bsa_files, :asset_files, :records, :override_records, :plugin_errors, :tags, :comments)
+      params[:filters].slice(:search, :description, :submitter, :status, :kind, :submitted, :updated, :completed, :tools, :mods, :plugins, :config_files, :ignored_notes, :stars, :custom_tools, :custom_mods, :master_plugins, :available_plugins, :custom_plugins, :custom_config_files, :compatibility_notes, :install_order_notes, :load_order_notes, :bsa_files, :asset_files, :records, :override_records, :plugin_errors, :tags, :comments)
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

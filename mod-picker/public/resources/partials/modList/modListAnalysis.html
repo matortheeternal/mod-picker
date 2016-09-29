@@ -146,7 +146,9 @@
                     <td>
                         <div ng-repeat="mod in asset.mods" title="{{mod.subpath}}{{asset.asset_file.path}}" ng-class="{ 'winning-asset' : mod.wins }">
                             [{{mod.index}}] {{mod.mod.name}}
-                            <span ng-show="mod.subpath.endsWith('.bsa\\')">(BSA)</span>
+                            <span ng-show="mod.subpath && mod.subpath.endsWith('.bsa\\')">
+                                (BSA)
+                            </span>
                         </div>
                     </td>
                 </tr>
