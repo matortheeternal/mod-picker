@@ -99,21 +99,7 @@ app.controller('userController', function($scope, $rootScope, $stateParams, user
     };
 
     // get report submission permission
-    reportService.canReport(
-        {
-            submitter: {
-                id: $scope.currentUser.id
-            },
-            base_report: {
-                reportable_id:  $scope.user.id,
-                reportable_type: 'User'
-            }
-        }
-    ).then(function(data) {
-        $scope.permissions.canReport = data.canReport;
-    }, function(response) {
-        $scope.errors.permissions = response;
-    });
+    $scope.permissions.canReport = $scope.currentUser || false;
 
     // report modal state
     $scope.toggleReportModal = function(visible) {
