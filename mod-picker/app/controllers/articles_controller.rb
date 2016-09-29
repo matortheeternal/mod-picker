@@ -16,7 +16,7 @@ class ArticlesController < ApplicationController
     render :json => {
         articles: @articles,
         max_entries: count,
-        entries_per_page: User.per_page
+        entries_per_page: Article.per_page
     }
   end
 
