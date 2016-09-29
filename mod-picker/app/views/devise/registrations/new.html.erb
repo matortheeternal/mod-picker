@@ -18,9 +18,7 @@
 
         <div class="padded-field">
             <%= f.label :password %>
-            <% if @minimum_password_length %>
-                <em>(<%= @minimum_password_length %> characters minimum)</em>
-            <% end %><br/>
+            <em>(8 characters minimum)</em><br/>
             <%= f.password_field :password, autocomplete: "off" %>
         </div>
 
