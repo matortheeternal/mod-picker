@@ -1,22 +1,22 @@
 <div class="box-heading">
-  Password Reset
+    Password Reset
 </div>
 
 <div class="box-content">
-  <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post }) do |f| %>
-    <div class="padded-field note-text">
-      Enter the email address associated with your account and we'll send you password reset instructions.
-    </div>
+    <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post }) do |f| %>
+        <div class="padded-field note-text">
+            Enter the email address associated with your account and we'll send you password reset instructions.
+        </div>
 
-    <%= devise_error_messages! %>
+        <%= devise_error_messages! %>
 
-    <div class="padded-field">
-      <%= f.label :email %><br />
-      <%= f.text_field :login %>
-    </div>
+        <div class="padded-field">
+            <%= f.label :email %><br/>
+            <%= f.text_field :login %>
+        </div>
 
-    <div class="padded-field text-center big-margin">
-      <%= f.submit "Reset Password" %>
-    </div>
-  <% end %>
+        <div class="padded-field text-center big-margin">
+            <%= f.submit "Reset Password" %>
+        </div>
+    <% end %>
 </div>

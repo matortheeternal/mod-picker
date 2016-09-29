@@ -1,20 +1,20 @@
 <div class="box-heading">
-  <%= t "devise.invitations.new.header" %>
+    <%= t "devise.invitations.new.header" %>
 </div>
 
 <div class="box-content">
-  <%= form_for resource, as: resource_name, url: invitation_path(resource_name), html: { method: :post} do |f| %>
-    <%= devise_error_messages! %>
+    <%= form_for resource, as: resource_name, url: invitation_path(resource_name), html: { method: :post } do |f| %>
+        <%= devise_error_messages! %>
 
-  <% resource.class.invite_key_fields.each do |field| -%>
-  <div class="padded-field">
-    <%= f.label field %><br />
-    <%= f.text_field field %>
-  </div>
-  <% end -%>
+        <% resource.class.invite_key_fields.each do |field| -%>
+            <div class="padded-field">
+                <%= f.label field %><br/>
+                <%= f.text_field field %>
+            </div>
+        <% end -%>
 
-  <div class="padded-field text-center big-margin">
-    <%= f.submit t("devise.invitations.new.submit_button") %>
-  </div>
-  <% end %>
+        <div class="padded-field text-center big-margin">
+            <%= f.submit t("devise.invitations.new.submit_button") %>
+        </div>
+    <% end %>
 </div>

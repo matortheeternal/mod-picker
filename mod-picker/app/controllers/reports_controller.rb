@@ -1,9 +1,8 @@
 class ReportsController < ApplicationController
-  # GET /reports.json
+  # POST /reports/index
   def index
-    # byebug
-    @reports = BaseReport.accessible_by(current_ability).filter(filtering_params).sort(params[:sort]).paginate(:page => params[:page])
-    count =  BaseReport.accessible_by(current_ability).filter(filtering_params).count
+    @reports = BaseReport.includes(:reports => :submitter).references(:reports => :submitter).preload(:reportable => [:submitter => :reputation]).accessible_by(current_ability).filter(filtering_params).sort(params[:sort]).paginate(:page => params[:page])
+    count =  BaseReport.joins(:reports => :submitter).accessible_by(current_ability).filter(filtering_params).count
 
     render :json => {
         reports: @reports,
@@ -13,7 +12,6 @@ class ReportsController < ApplicationController
   end
 
   # POST /reports
-  # POST /reports.json
   def create
     @base_report = BaseReport.where(base_report_params).first_or_initialize
     authorize! :create, @base_report
@@ -63,8 +61,7 @@ class ReportsController < ApplicationController
 
     # Params we allow filtering on
     def filtering_params
-      # TODO
-      params.slice;
+      params[:filters].slice(:submitter, :reportable, :reason, :submitted, :reports);
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

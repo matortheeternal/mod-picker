@@ -1,29 +1,46 @@
 <div class="box-heading">
-  <%= t 'devise.invitations.edit.header' %>
+    <%= t 'devise.invitations.edit.header' %>
 </div>
 
 <div class="box-content">
-  <%= form_for resource, as: resource_name, url: invitation_path(resource_name), html: { method: :put } do |f| %>
-    <%= devise_error_messages! %>
-    <%= f.hidden_field :invitation_token %>
+    <%= form_for resource, as: resource_name, url: invitation_path(resource_name), html: { method: :put } do |f| %>
+        <%= devise_error_messages! %>
+        <%= f.hidden_field :invitation_token %>
 
-    <div class="padded-field">
-      <%= f.label :username %><br />
-      <%= f.text_field :username %>
-    </div>
+        <div class="padded-field">
+            <%= f.label :username %><br/>
+            <%= f.text_field :username %>
+        </div>
 
-    <div class="padded-field">
-      <%= f.label :password %><br />
-      <%= f.password_field :password %>
-    </div>
+        <div class="padded-field">
+            <%= f.label :password %>
+            <em>(8 characters minimum)</em><br/>
+            <%= f.password_field :password %>
+        </div>
 
-    <div class="padded-field">
-      <%= f.label :password_confirmation %><br />
-      <%= f.password_field :password_confirmation %>
-    </div>
+        <div class="padded-field">
+            <%= f.label :password_confirmation %><br/>
+            <%= f.password_field :password_confirmation %>
+        </div>
 
-    <div class="padded-field text-center big-margin">
-      <%= f.submit t("devise.invitations.edit.submit_button") %>
-    </div>
-  <% end %>
+        <div class="padded-field">
+            <label class="terms">
+                <input type="checkbox" onclick="toggleAgree(this)"/>
+                I agree to the <a href="/legal/tos" target="_blank">Terms of Service</a>
+            </label>
+        </div>
+
+        <div class="padded-field text-center big-margin">
+            <%= f.submit t("devise.invitations.edit.submit_button") %>
+        </div>
+    <% end %>
 </div>
+
+<script>
+    var submitButton = document.getElementsByName("commit")[0];
+    submitButton.disabled = true;
+
+    function toggleAgree(checkbox) {
+        submitButton.disabled = !checkbox.checked;
+    }
+</script>

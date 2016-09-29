@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160925201510) do
+ActiveRecord::Schema.define(version: 20160929171433) do
 
   create_table "agreement_marks", id: false, force: :cascade do |t|
     t.integer "correction_id", limit: 4,                null: false
@@ -735,7 +735,7 @@ ActiveRecord::Schema.define(version: 20160925201510) do
   create_table "reports", force: :cascade do |t|
     t.integer  "base_report_id", limit: 4,   null: false
     t.integer  "submitted_by",   limit: 4,   null: false
-    t.integer  "report_type",    limit: 1,   null: false
+    t.integer  "reason",         limit: 1,   null: false
     t.string   "note",           limit: 128
     t.datetime "submitted",                  null: false
     t.datetime "edited"

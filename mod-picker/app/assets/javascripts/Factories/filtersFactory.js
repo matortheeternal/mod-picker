@@ -28,7 +28,7 @@ app.service("filtersFactory", function() {
         common: true,
         data: "reputation",
         type: "Range",
-        min: -40,
+        min: 0,
         max: 1280,
         param: "rep"
     };
@@ -547,8 +547,8 @@ app.service("filtersFactory", function() {
     this.contributionGeneralFilters = function() {
         return [
             factory.searchFilter,
-            factory.submitterFilter,
-            factory.editorFilter
+            factory.submitterFilter
+            //factory.editorFilter
         ]
     };
     
@@ -750,7 +750,7 @@ app.service("filtersFactory", function() {
         return [
                 factory.searchFilter,
                 factory.submitterFilter,
-                factory.editorFilter,
+                //factory.editorFilter,
                 {
                     data: "plugin_filename",
                     param: "p"
@@ -855,7 +855,7 @@ app.service("filtersFactory", function() {
             {
                 label: "Agree Count",
                 common: true,
-                data: "agree",
+                data: "agree_count",
                 type: "Range",
                 max: 100,
                 param: "ac"
@@ -863,7 +863,7 @@ app.service("filtersFactory", function() {
             {
                 label: "Disagree Count",
                 common: true,
-                data: "disagree",
+                data: "disagree_count",
                 type: "Range",
                 max: 100,
                 param: "dc"
@@ -1227,31 +1227,148 @@ app.service("filtersFactory", function() {
 
     this.reportSearchFilters = function() {
         return [
-            factory.searchFilter,
-            {
-                data: "note",
-                param: "t"
-            },
             factory.submitterFilter
         ];
     };
 
+    this.reportGeneralFilters = function() {
+        return [
+            {
+                data: "reportable.Review",
+                param: "rr",
+                type: "Boolean",
+                default: true
+            },
+            {
+                data: "reportable.CompatibilityNote",
+                param: "rcn",
+                type: "Boolean",
+                default: true
+            },
+            {
+                data: "reportable.InstallOrderNote",
+                param: "rin",
+                type: "Boolean",
+                default: true
+            },
+            {
+                data: "reportable.LoadOrderNote",
+                param: "rln",
+                type: "Boolean",
+                default: true
+            },
+            {
+                data: "reportable.Comment",
+                param: "rco",
+                type: "Boolean",
+                default: true
+            },
+            {
+                data: "reportable.Correction",
+                param: "rcr",
+                type: "Boolean",
+                default: true
+            },
+            {
+                data: "reportable.Mod",
+                param: "rm",
+                type: "Boolean",
+                default: true
+            },
+            {
+                data: "reportable.ModList",
+                param: "rml",
+                type: "Boolean",
+                default: true
+            },
+            {
+                data: "reportable.Tag",
+                param: "rt",
+                type: "Boolean",
+                default: true
+            },
+            {
+                data: "reportable.User",
+                param: "ru",
+                type: "Boolean",
+                default: true
+            },
+            {
+                data: "reason.be_respectful",
+                param: "sbr",
+                type: "Boolean",
+                default: true
+            },
+            {
+                data: "reason.be_trustworthy",
+                param: "sbt",
+                type: "Boolean",
+                default: true
+            },
+            {
+                data: "reason.be_constructive",
+                param: "sbc",
+                type: "Boolean",
+                default: true
+            },
+            {
+                data: "reason.spam",
+                param: "sns",
+                type: "Boolean",
+                default: true
+            },
+            {
+                data: "reason.piracy",
+                param: "snp",
+                type: "Boolean",
+                default: true
+            },
+            {
+                data: "reason.adult_content",
+                param: "sac",
+                type: "Boolean",
+                default: true
+            },
+            {
+                data: "reason.other",
+                param: "sot",
+                type: "Boolean",
+                default: true
+            }
+        ]
+    };
+
     this.reportDateFilters = function() {
-        return [{
-            label: "Created",
-            data: "submitted",
-            type: "Range",
-            subtype: "Date",
-            param: "dc"
-        }];
+        return [
+            factory.userDateSlider({
+                label: "Created",
+                data: "submitted",
+                param: "dc"
+            })
+        ];
+    };
+
+    this.reportStatisticFilters = function() {
+        return [
+            {
+                label: "Reports Count",
+                common: true,
+                data: "reports_count",
+                type: "Range",
+                max: 50,
+                param: "rc"
+            }
+        ]
     };
 
     this.reportFilters = function() {
         return Array.prototype.concat(
             factory.reportSearchFilters(),
-            factory.reportDateFilters()
+            factory.reportGeneralFilters(),
+            factory.reportDateFilters(),
+            factory.reportStatisticFilters()
         );
-    }
+    };
 
     return factory;
 });

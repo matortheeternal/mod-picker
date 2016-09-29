@@ -3,7 +3,7 @@ class CorrectionsController < ApplicationController
 
   # GET /corrections
   def index
-    @corrections = Correction.includes(:editor, :submitter => :reputation).accessible_by(current_ability).filter(filtering_params).sort(params[:sort]).paginate(:page => params[:page])
+    @corrections = Correction.preload(:editor).includes(:submitter => :reputation).references(:submitter => :reputation).accessible_by(current_ability).filter(filtering_params).sort(params[:sort]).paginate(:page => params[:page])
     count = Correction.accessible_by(current_ability).filter(filtering_params).count
 
     # get helpful marks
@@ -70,7 +70,7 @@ class CorrectionsController < ApplicationController
 
   # POST /corrections/1/agreement
   def agreement
-    @agreement_mark = AgreementMark.find_or_create_by(
+    @agreement_mark = AgreementMark.find_or_initialize_by(
         submitted_by: current_user.id,
         correction_id: params[:id])
     if params.has_key?(:agree)
@@ -107,7 +107,7 @@ class CorrectionsController < ApplicationController
 
     # Params we allow filtering on
     def filtering_params
-      params[:filters].slice(:adult, :game, :search, :submitter, :editor, :status, :mod_status, :correctable, :reputation, :agree, :disagree, :comments, :submitted, :edited);
+      params[:filters].slice(:adult, :game, :search, :submitter, :editor, :status, :mod_status, :correctable, :reputation, :agree_count, :disagree_count, :comments, :submitted, :edited);
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

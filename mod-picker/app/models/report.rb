@@ -1,13 +1,13 @@
 class Report < ActiveRecord::Base
   include RecordEnhancements
 
-  enum report_type: [:be_respectful, :be_trustworthy, :be_constructive, :no_spam, :no_piracy, :other]
+  enum reason: [:be_respectful, :be_trustworthy, :be_constructive, :spam, :piracy, :adult_content, :other]
 
   belongs_to :base_report, :inverse_of => 'reports'
   belongs_to :submitter, :class_name => 'User', :foreign_key => 'submitted_by', :inverse_of => 'reports'
 
   # Validations
-  validates :base_report_id, :submitted_by, :report_type, presence: true
+  validates :base_report_id, :submitted_by, :reason, presence: true
   validates :note, length: {maximum: 128}
 
   # CALLBACKS
@@ -17,15 +17,15 @@ class Report < ActiveRecord::Base
 
   private
     def increment_counters
-      self.base_report.update_counter(:reports_count, 1)
+      base_report.update_counter(:reports_count, 1)
     end
 
     def decrement_counters
-      self.base_report.update_counter(:reports_count, -1)
+      base_report.update_counter(:reports_count, -1)
     end
 
     def set_dates
-      if self.submitted.nil?
+      if submitted.nil?
         self.submitted = DateTime.now
       else
         self.edited = DateTime.now

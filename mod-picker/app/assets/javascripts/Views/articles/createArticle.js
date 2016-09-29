@@ -49,7 +49,7 @@ app.controller('createArticleController', function($scope, $rootScope, $state, $
             if ($scope.image.file) {
                 $scope.submitImage(data.id);
             } else {
-                $scope.submissionSuccess("Article submitted successfully.", "#/article/"+articleId, "view the new article.");
+                $scope.submissionSuccess("Article submitted successfully.", "#/article/"+data.id, "view the new article.");
             }
         }, function(response) {
             $scope.submissionError("There were errors submitting the article.", response);
