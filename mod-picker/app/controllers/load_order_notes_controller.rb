@@ -4,7 +4,7 @@ class LoadOrderNotesController < ContributionsController
   # GET /load_order_notes
   def index
     # prepare load order notes
-    @load_order_notes = LoadOrderNote.includes(:editor, :editors, :submitter => :reputation).accessible_by(current_ability).filter(filtering_params).sort(params[:sort]).paginate(:page => params[:page])
+    @load_order_notes = LoadOrderNote.preload(:editor, :editors).includes(:submitter => :reputation).accessible_by(current_ability).filter(filtering_params).sort(params[:sort]).paginate(:page => params[:page])
     count = LoadOrderNote.accessible_by(current_ability).filter(filtering_params).count
 
     # prepare helpful marks
