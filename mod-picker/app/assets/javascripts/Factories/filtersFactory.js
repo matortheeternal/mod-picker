@@ -1292,6 +1292,48 @@ app.service("filtersFactory", function() {
                 param: "ru",
                 type: "Boolean",
                 default: true
+            },
+            {
+                data: "reason.be_respectful",
+                param: "sbr",
+                type: "Boolean",
+                default: true
+            },
+            {
+                data: "reason.be_trustworthy",
+                param: "sbt",
+                type: "Boolean",
+                default: true
+            },
+            {
+                data: "reason.be_constructive",
+                param: "sbc",
+                type: "Boolean",
+                default: true
+            },
+            {
+                data: "reason.no_spam",
+                param: "sns",
+                type: "Boolean",
+                default: true
+            },
+            {
+                data: "reason.no_piracy",
+                param: "snp",
+                type: "Boolean",
+                default: true
+            },
+            {
+                data: "reason.adult_content",
+                param: "sac",
+                type: "Boolean",
+                default: true
+            },
+            {
+                data: "reason.other",
+                param: "sot",
+                type: "Boolean",
+                default: true
             }
         ]
     };
