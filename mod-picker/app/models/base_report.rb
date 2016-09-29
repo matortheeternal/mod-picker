@@ -53,7 +53,9 @@ class BaseReport < ActiveRecord::Base
   end
 
   def self.sortable_columns
-    { :except => [] }
+    {
+        :only => [:submitted, :edited, :reports_count]
+    }
   end
 
   private

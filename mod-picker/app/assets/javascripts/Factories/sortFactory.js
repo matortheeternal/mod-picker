@@ -154,7 +154,11 @@ app.service("sortFactory", function() {
     this.reportSortOptions = function() {
         return [
             factory.submittedSort,
-            factory.editedSort
+            factory.editedSort,
+            {
+                label: "Reports Count",
+                value: "reports_count"
+            }
         ];
     };
 
