@@ -11,7 +11,7 @@ app.directive('userColumn', function() {
     };
 });
 
-app.controller('userColumnController', function($scope, $rootScope, $timeout, reportService) {
+app.controller('userColumnController', function($scope, $rootScope, $timeout) {
     // inherited variables
     $scope.currentUser = $rootScope.currentUser;
 
@@ -44,21 +44,7 @@ app.controller('userColumnController', function($scope, $rootScope, $timeout, re
     };
 
     // reports permission
-    reportService.canReport(
-        {
-            submitter: {
-                id: $scope.currentUser.id
-            },
-            base_report: {
-                reportable_id:  $scope.user.id,
-                reportable_type: 'User'
-            }
-        }
-    ).then(function(data) {
-        $scope.permissions.canReport = data.canReport;
-    }, function(response) {
-        $scope.errors.permissions = response;
-    });
+    $scope.permissions.canReport = $scope.currentUser || false;
 
     // report modal state
     $scope.toggleReportModal = function(visible) {
