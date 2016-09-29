@@ -18,5 +18,6 @@ app.directive('report', function() {
 app.controller('reportController', function($scope, $sce, $interpolate, reportsFactory) {
     angular.inherit($scope, 'report');
 
-    $scope.getReportableUrl = $sce.trustAsHtml($interpolate(reportsFactory.contentLink($scope.report))($scope));
+    var linkTemplate = reportsFactory.contentLink($scope.report);
+    $scope.reportableUrl = $sce.trustAsHtml($interpolate(linkTemplate)($scope));
 });
