@@ -24,6 +24,7 @@ class Correction < ActiveRecord::Base
   enum_scope :status
   enum_scope :mod_status
   polymorphic_scope :correctable
+  counter_scope :comments_count
   range_scope :overall, :association => 'submitter_reputation', :table => 'user_reputations', :alias => 'reputation'
   date_scope :submitted, :edited
 
