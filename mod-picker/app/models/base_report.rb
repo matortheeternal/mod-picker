@@ -7,7 +7,6 @@ class BaseReport < ActiveRecord::Base
   counter_scope :reports_count
 
   # UNIQUE SCOPES
-  scope :search, -> (text) { joins(:reports).where("reports.text LIKE ?", "%#{text}%") }
   scope :submitter, -> (text) { joins(:reports => :submitter).where("users.username LIKE ?", "#{text}") }
 
   # ASSOCIATIONS
