@@ -1,7 +1,7 @@
 app.controller('userSettingsProfileController', function($scope, titleQuote) {
     $scope.titleQuote = titleQuote;
     $scope.avatar = {
-        src: $scope.user.avatar
+        src: $scope.user.avatar || '/users/' + $scope.user.title + '.png'
     };
 
     $scope.browseAvatar = function() {
@@ -10,7 +10,7 @@ app.controller('userSettingsProfileController', function($scope, titleQuote) {
 
     $scope.resetAvatar = function() {
         $scope.avatar.file = null;
-        $scope.avatar.src = $scope.user.avatar;
+        $scope.avatar.src = $scope.user.avatar || '/users/' + $scope.user.title + '.png';
         $scope.$apply();
     };
 
