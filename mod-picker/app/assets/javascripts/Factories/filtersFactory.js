@@ -750,7 +750,7 @@ app.service("filtersFactory", function() {
         return [
                 factory.searchFilter,
                 factory.submitterFilter,
-                factory.editorFilter,
+                //factory.editorFilter,
                 {
                     data: "plugin_filename",
                     param: "p"
