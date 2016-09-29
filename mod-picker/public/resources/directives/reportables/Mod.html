@@ -38,11 +38,15 @@
                 <h3 class="section-title">General</h3>
                 <div class="stat-block">
                     <section class="reportable-content-block">
-                        <dt class="stat-title">Date Released</dt>
-                        <dd class="stat-data">{{report.reportable.released | date}}</dd>
+                        <div clas="stat-item">
+                            <dt class="stat-title">Date Released</dt>
+                            <dd class="stat-data">{{report.reportable.released | date}}</dd>
+                        </div>
 
-                        <dt class="stat-title" ng-if="report.reportable.updated">Date Updated</dt>
-                        <dd class="stat-data" ng-if="report.reportable.updated">{{report.reportable.updated | date}}</dd>
+                        <div class="stat-item">
+                            <dt class="stat-title" ng-if="report.reportable.updated">Date Updated</dt>
+                            <dd class="stat-data" ng-if="report.reportable.updated">{{report.reportable.updated | date}}</dd>
+                        </div>
                     </section>
                 </div>
 
