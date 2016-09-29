@@ -1312,13 +1312,13 @@ app.service("filtersFactory", function() {
                 default: true
             },
             {
-                data: "reason.no_spam",
+                data: "reason.spam",
                 param: "sns",
                 type: "Boolean",
                 default: true
             },
             {
-                data: "reason.no_piracy",
+                data: "reason.piracy",
                 param: "snp",
                 type: "Boolean",
                 default: true
