@@ -158,7 +158,6 @@ Rails.application.routes.draw do
     match '/help/search', to:  'help_pages#search', via: [:get]
     resources :help_pages, path: 'help', except: [:destroy]
 
-
     # static data
     resources :categories, only: [:index]
     resources :category_priorities, only: [:index]
@@ -167,12 +166,6 @@ Rails.application.routes.draw do
     resources :record_groups, only: [:index]
     resources :review_sections, only: [:index]
     resources :user_titles, only: [:index]
-
-    # legal pages
-    match '/legal', to: 'legal_pages#index', via: [:get]
-    match '/legal/tos', to: 'legal_pages#tos', via: [:get]
-    match '/legal/privacy', to: 'legal_pages#privacy', via: [:get]
-    match '/legal/copyright', to: 'legal_pages#copyright', via: [:get]
 
     # home page
     match '/skyrim', to: 'home#skyrim', via: [:get]
@@ -188,12 +181,17 @@ Rails.application.routes.draw do
     # reports
     match '/reports/index', to: 'reports#index', via: [:get, :post]
     match '/reports', to: 'reports#create', via: [:post]
-    match '/reports/canReport', to: 'reports#can_report', via: [:post]    
-    
+    match '/reports/canReport', to: 'reports#can_report', via: [:post]
   end
 
   # welcome page
   resources :welcome, only: [:index]
+
+  # legal pages
+  match '/legal', to: 'legal_pages#index', via: [:get]
+  match '/legal/tos', to: 'legal_pages#tos', via: [:get]
+  match '/legal/privacy', to: 'legal_pages#privacy', via: [:get]
+  match '/legal/copyright', to: 'legal_pages#copyright', via: [:get]
 
   # contact us and subscribe
   match '/contacts', to: 'contacts#new', via: [:get]
