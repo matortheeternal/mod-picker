@@ -59,6 +59,42 @@
                 </div>
 
                 <div class="filter-section">
+                    <h3>Reasons</h3>
+                    <div class="sidebar-box box-shadow">
+                        <ul class="checkbox-list">
+                            <li>
+                                <label><input type="checkbox" ng-model="filters.reason.be_respectful">
+                                    Be Respectful</label>
+                            </li>
+                            <li>
+                                <label><input type="checkbox" ng-model="filters.reason.be_trustworthy">
+                                    Be Trustworthy</label>
+                            </li>
+                            <li>
+                                <label><input type="checkbox" ng-model="filters.reason.be_constructive">
+                                    Be Constructive</label>
+                            </li>
+                            <li>
+                                <label><input type="checkbox" ng-model="filters.reason.spam">
+                                    Spam</label>
+                            </li>
+                            <li>
+                                <label><input type="checkbox" ng-model="filters.reason.piracy">
+                                    Piracy</label>
+                            </li>
+                            <li>
+                                <label><input type="checkbox" ng-model="filters.reason.adult_content">
+                                    Unmarked Adult Content</label>
+                            </li>
+                            <li>
+                                <label><input type="checkbox" ng-model="filters.reason.other">
+                                    Other</label>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="filter-section">
                     <h3>Date Filters</h3>
                     <div ng-repeat="filter in dateFilters">
                         <h4>{{filter.label}}
