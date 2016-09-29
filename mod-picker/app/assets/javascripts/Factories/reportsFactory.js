@@ -29,6 +29,7 @@ app.service('reportsFactory', function () {
         ModList: '<a href="#/mod-list/{{report.reportable.id}}">Mod List</a>',
         Comment: {
             key: "commentable",
+            Article: '<a href="#/article/{{report.reportable_id}}">Comment, Article</a>',
             User: '<a href="#/user/{{report.reportable.commentable_id}}">Comment, User Profile</a>',
             Correction: {
                 key: "correctable",
