@@ -77,7 +77,7 @@ class ReportsController < ApplicationController
 
     # Params we allow filtering on
     def filtering_params
-      params[:filters].slice(:submitter, :reportable, :reason, :submitted, :reports);
+      params[:filters].slice(:submitter, :reportable, :reason, :submitted, :reports_count);
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

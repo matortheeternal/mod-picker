@@ -4,7 +4,7 @@ class BaseReport < ActiveRecord::Base
   # SCOPES
   polymorphic_scope :reportable
   date_scope :submitted
-  counter_scope :reports_count
+  range_scope :reports_count
 
   # UNIQUE SCOPES
   # TODO: Expand User scope so we can specify a join like this
