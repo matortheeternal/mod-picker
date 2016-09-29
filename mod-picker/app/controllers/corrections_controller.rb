@@ -3,7 +3,7 @@ class CorrectionsController < ApplicationController
 
   # GET /corrections
   def index
-    @corrections = Correction.preload(:editor).includes(:submitter => :reputation).accessible_by(current_ability).filter(filtering_params).sort(params[:sort]).paginate(:page => params[:page])
+    @corrections = Correction.preload(:editor).includes(:submitter => :reputation).references(:submitter => :reputation).accessible_by(current_ability).filter(filtering_params).sort(params[:sort]).paginate(:page => params[:page])
     count = Correction.accessible_by(current_ability).filter(filtering_params).count
 
     # get helpful marks
