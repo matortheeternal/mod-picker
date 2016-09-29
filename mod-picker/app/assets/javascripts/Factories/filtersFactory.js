@@ -1227,13 +1227,73 @@ app.service("filtersFactory", function() {
 
     this.reportSearchFilters = function() {
         return [
-            factory.searchFilter,
-            {
-                data: "note",
-                param: "t"
-            },
             factory.submitterFilter
         ];
+    };
+
+    this.reportGeneralFilters = function() {
+        return [
+            {
+                data: "reportable.Review",
+                param: "rr",
+                type: "Boolean",
+                default: true
+            },
+            {
+                data: "reportable.CompatibilityNote",
+                param: "rcn",
+                type: "Boolean",
+                default: true
+            },
+            {
+                data: "reportable.InstallOrderNote",
+                param: "rin",
+                type: "Boolean",
+                default: true
+            },
+            {
+                data: "reportable.LoadOrderNote",
+                param: "rln",
+                type: "Boolean",
+                default: true
+            },
+            {
+                data: "reportable.Comment",
+                param: "rco",
+                type: "Boolean",
+                default: true
+            },
+            {
+                data: "reportable.Correction",
+                param: "rcr",
+                type: "Boolean",
+                default: true
+            },
+            {
+                data: "reportable.Mod",
+                param: "rm",
+                type: "Boolean",
+                default: true
+            },
+            {
+                data: "reportable.ModList",
+                param: "rml",
+                type: "Boolean",
+                default: true
+            },
+            {
+                data: "reportable.Tag",
+                param: "rt",
+                type: "Boolean",
+                default: true
+            },
+            {
+                data: "reportable.User",
+                param: "ru",
+                type: "Boolean",
+                default: true
+            }
+        ]
     };
 
     this.reportDateFilters = function() {
@@ -1246,10 +1306,25 @@ app.service("filtersFactory", function() {
         ];
     };
 
+    this.reportStatisticFilters = function() {
+        return [
+            {
+                label: "Reports Count",
+                common: true,
+                data: "reports_count",
+                type: "Range",
+                max: 50,
+                param: "rc"
+            }
+        ]
+    };
+
     this.reportFilters = function() {
         return Array.prototype.concat(
             factory.reportSearchFilters(),
-            factory.reportDateFilters()
+            factory.reportGeneralFilters(),
+            factory.reportDateFilters(),
+            factory.reportStatisticFilters()
         );
     };
 
