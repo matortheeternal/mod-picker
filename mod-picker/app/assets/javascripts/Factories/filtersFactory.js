@@ -1237,13 +1237,13 @@ app.service("filtersFactory", function() {
     };
 
     this.reportDateFilters = function() {
-        return [{
-            label: "Created",
-            data: "submitted",
-            type: "Range",
-            subtype: "Date",
-            param: "dc"
-        }];
+        return [
+            factory.userDateSlider({
+                label: "Created",
+                data: "submitted",
+                param: "dc"
+            })
+        ];
     };
 
     this.reportFilters = function() {
@@ -1251,7 +1251,7 @@ app.service("filtersFactory", function() {
             factory.reportSearchFilters(),
             factory.reportDateFilters()
         );
-    }
+    };
 
     return factory;
 });
