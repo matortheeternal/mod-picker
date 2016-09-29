@@ -173,7 +173,7 @@ class Comment < ActiveRecord::Base
 
   def reportable_json_options
     options = {
-        :only => [:commentable_type, :commentable_id, :text_body],
+        :except => [:parent_id, :submitted_by],
         :include => {
             :submitter => {
                 :only => [:id, :username, :role, :title],
