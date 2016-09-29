@@ -54,7 +54,7 @@ app.config(['$stateProvider', function($stateProvider) {
     });
 }]);
 
-app.controller('userController', function($scope, $rootScope, $stateParams, userObject, userService, reportService, eventHandlerFactory, moderationActionsFactory, tabsFactory) {
+app.controller('userController', function($scope, $rootScope, $stateParams, userObject, userService, eventHandlerFactory, moderationActionsFactory, tabsFactory) {
     // get parent variables
     $scope.currentUser = $rootScope.currentUser;
     $scope.permissions = angular.copy($rootScope.permissions);
