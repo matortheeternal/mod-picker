@@ -11,7 +11,7 @@ app.directive('report', function() {
             }
         },
         templateUrl: '/resources/directives/contributions/report.html',
-        controller: 'reportController',
+        controller: 'reportController'
     };
 });
 
