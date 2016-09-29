@@ -1198,10 +1198,8 @@ def seed_fake_base_reports
 
   reportable_list = [User, Comment, Review, Tag, CompatibilityNote, InstallOrderNote, LoadOrderNote, Mod, ModList, Correction]
   reportable_list.each do |reportable_model|
-
-    if(reportable_model.count > 1)
-        
-        nReportables = rand(1..reportable_model.count)
+    if reportable_model.count > 1
+        nReportables = [rand(1..reportable_model.count), 5].min
         reportable_model.first(nReportables).each do |reportable|
             base_report = BaseReport.new(
                 reportable_id: reportable.id,
@@ -1216,7 +1214,7 @@ def seed_fake_base_reports
   end
 
   puts "    #{BaseReport.count} base_reports seeded"
-  puts "    #{Report.count} reports total seeded"
+  puts "    #{Report.count} total reports seeded"
 end
 
 # Helper method to be used with seed_fake_base_reports
