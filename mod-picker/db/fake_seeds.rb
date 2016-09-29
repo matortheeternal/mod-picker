@@ -1223,11 +1223,13 @@ def seed_fake_reports(base_report)
   puts "\nSeeding reports"
 
   rand(1..10).times do
-    base_report.reports.new(
-      submitted_by: random_user.id,
-      report_type: Report.report_types.keys.sample,
-      note: Faker::Lorem.words(4).join(' ')
-    ).save!
+    report = Report.new(
+        base_report_id: base_report.id,
+        submitted_by: random_user.id,
+        reason: Report.reasons.keys.sample
+    )
+    report.note = Faker::Lorem.words(4).join(' ') if report.reason == :other
+    report.save!
   end
 
   puts "    #{base_report.reports.count} reports seeded"
