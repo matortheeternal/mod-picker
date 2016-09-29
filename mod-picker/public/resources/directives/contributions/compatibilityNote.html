@@ -28,7 +28,7 @@
         </span>
     </div>
     <user-column ng-if="showUserColumn" user="note.submitter" editors="note.editors" class="user-column" index="index"></user-column>
-    <div class="content-column" ng-class="{ 'no-actions' : !showActions }">
+    <div class="content-column">
         <contribution-text target="note"></contribution-text>
         <contribution-actions target="note" index="index" model-name="CompatibilityNote" edit="edit" has-history="true"></contribution-actions>
     </div>

@@ -14,7 +14,7 @@
                 </span>
             </div>
             <user-column user="report.reportable.submitter" class="user-column"></user-column>
-            <div class="content-column" ng-class="{ 'no-actions' : !showActions }">
+            <div class="content-column">
                 <div class="submitted-line">Submitted {{report.reportable.submitted | date : 'longDate'}} - {{report.reportable.submitted | date : 'shortTime'}}</div>
                 <div class="text-container" ng-class="{ 'half-opacity' : target.hidden }">
                     <read-more text="report.reportable.description" words="75"></read-more>
