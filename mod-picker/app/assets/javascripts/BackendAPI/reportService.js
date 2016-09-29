@@ -14,31 +14,15 @@ app.service('reportService', function($q, backend, pageUtils, userTitleService, 
         backend.post('/reports/index', options).then(function(data) {
             // resolve page information and data
             pageUtils.getPageInformation(data, pageInformation, options.page);
-            // TODO: associate user titles, agreement marks, helpful marks
 
-            // array of reportables
+            // associate titles to reportable submitter or User
+            userTitleService.associateReportableTitles(data.reports);
             var reportableArray = data.reports.map(function(obj) {
                 return obj.reportable;
             });
-
-            // associate titles to reportable submitter if relevant
-            userTitleService.associateTitles(reportableArray);
-
-            // associate reportable user titles and review section ratings
-            data.reports.forEach(function(obj) {
-                if(obj.reportable_type === 'User' && !obj.reportable.title) {
-                    userTitleService.getUserTitle(obj.reportable.reputation.overall).then(function(title) {
-                        obj.reportable.title = title;
-                    });
-                }
-
-                if(obj.reportable_type === 'Review') {
-                    reviewSectionService.associateReviewSections([obj.reportable]);
-                }
-            });
+            reviewSectionService.associateReviewSections(reportableArray);
 
             action.resolve(data);
-
         }, function(response) {
             action.reject(response);
         });

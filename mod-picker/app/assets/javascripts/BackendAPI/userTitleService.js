@@ -45,15 +45,29 @@ app.service('userTitleService', function (backend, $q) {
         return output.promise;
     };
 
+    this.associateUserTitle = function(user) {
+        if (user && !user.title) {
+            // get their default title
+            service.getUserTitle(user.reputation.overall).then(function(title) {
+                user.title = title;
+            });
+        }
+    };
+
     this.associateTitles = function(data) {
         data.forEach(function(item) {
             // if user is defined and they don't have a custom title
-            if (item.submitter && !item.submitter.title) {
-                // get their default title
-                service.getUserTitle(item.submitter.reputation.overall).then(function(title) {
-                    item.submitter.title = title;
-                });
-            }
+            service.associateUserTitle(item.submitter);
         });
     };
+
+    this.associateReportableTitles = function(data) {
+        data.forEach(function(report) {
+            if(report.reportable_type === 'User') {
+                service.associateUserTitle(report.reportable);
+            } else {
+                service.associateUserTitle(report.reportable.submitter);
+            }
+        });
+    }
 });
