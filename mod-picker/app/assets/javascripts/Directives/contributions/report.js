@@ -5,9 +5,9 @@ app.directive('report', function() {
             showFull: '=?',
             reportable: '=reportable'
         },
-        link: function(scope, element, attrs) {
+        link: function(scope) {
             scope.getTemplateUrl = function() {
-                return '/resources/directives/reportables/' + scope.report.reportable_type.toLowerCase() + '.html';
+                return '/resources/directives/reportables/' + scope.report.reportable_type + '.html';
             }
         },
         templateUrl: '/resources/directives/contributions/report.html',
