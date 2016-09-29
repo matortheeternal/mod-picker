@@ -17,6 +17,7 @@ app.controller('reportsIndexController', function ($scope, $rootScope, $statePar
     // filters for view
     $scope.filterPrototypes = filtersFactory.reportFilters();
     $scope.dateFilters = filtersFactory.reportDateFilters();
+    $scope.statFilters = filtersFactory.reportStatisticFilters();
 
     // build generic controller stuff
     $scope.route = 'reports';
