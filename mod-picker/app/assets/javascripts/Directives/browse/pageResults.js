@@ -28,6 +28,6 @@ app.controller('pageResultsController', function($scope, smoothScroll) {
         smoothScroll({duration: 300});
     };
 
-    $scope.$watch('pages.max', $scope.pageRange);
-    $scope.$watch('pages.current', $scope.pageRange);
+    $scope.$watch('pages.max', $scope.pageRange, true);
+    $scope.$watch('pages.current', $scope.pageRange, true);
 });
