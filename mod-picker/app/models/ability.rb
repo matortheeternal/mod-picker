@@ -148,7 +148,7 @@ class Ability
       end
     end
 
-    # Users that are not restricted
+    # Users that are not banned
     if user_signed_in && !user.banned?
       # can comment on things and update their comments
       can :create, Comment
