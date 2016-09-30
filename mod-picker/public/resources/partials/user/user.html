@@ -15,8 +15,8 @@
                 </section>
 
                 <h3 class="section-title">Actions</h3>
-                <section>
-                    <div class="action-box" ng-if="permissions.canReport" ng-click="toggleReportModal(true)">
+                <section ng-if="!isCurrentUser && permissions.canReport">
+                    <div class="action-box" ng-click="toggleReportModal(true)">
                         <i class="fa fa-flag-o" aria-hidden="true"></i> Report
                     </div>
                 </section>
@@ -50,12 +50,6 @@
                         <div class="action-box" ng-click="endorse()" ng-if="!isCurrentUser && permissions.canEndorse || user.endorsed">
                             <i class="fa {{user.endorsed ? 'fa-heart' : 'fa-heart-o'}}" aria-hidden="true"></i>
                             {{user.endorsed ? 'Unendorse' : 'Endorse' }}
-                        </div>
-
-                        <!-- TODO: Add a helpful title here saying why the current user cannot endorse this user -->
-                        <div class="action-box no-action" ng-if="!permissions.canEndorse">
-                            <!-- TODO: have this link to a page with all of the current user's endorsements -->
-                            Cannot Endorse
                         </div>
                     </div>
                 </section>
