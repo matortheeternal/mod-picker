@@ -39,7 +39,7 @@ class ModBuilder
       mod.attributes = @params
       self.before_save
       self.before_update
-      mod.update!(@params)
+      mod.save!
       self.after_update
       self.after_save
     end
