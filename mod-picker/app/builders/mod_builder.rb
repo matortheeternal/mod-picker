@@ -147,6 +147,7 @@ class ModBuilder
     if info_id
       info = NexusInfo.find(info_id)
       info.mod_id = mod.id
+      info.link_uploader
       info.save!
     end
   end
