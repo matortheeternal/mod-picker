@@ -48,7 +48,7 @@ app.service('userService', function (backend, $q, userSettingsService, userTitle
 
     this.retrieveCurrentUser = function() {
         var output = $q.defer();
-        backend.retrieve('/current_user').then(function (userData) {
+        backend.retrieve('/current_user').then(function(userData) {
             userData.permissions = service.getPermissions(userData);
             output.resolve(userData);
         });
@@ -76,6 +76,7 @@ app.service('userService', function (backend, $q, userSettingsService, userTitle
         permissions.canAppeal = (rep >= 40) || permissions.canModerate;
         permissions.canCorrect = (rep >= 40) || permissions.canModerate;
         permissions.canAgree = (rep >= 40) || permissions.canModerate;
+        permissions.canReport = true;
 
         var numEndorsed = user.reputation.rep_to_count;
         permissions.canEndorse = (rep >= 40 && numEndorsed < 5) || (rep >= 160 && numEndorsed < 10) || (rep >= 640 && numEndorsed < 15);

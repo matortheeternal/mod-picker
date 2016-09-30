@@ -98,9 +98,6 @@ app.controller('userController', function($scope, $rootScope, $stateParams, user
         });
     };
 
-    // get report submission permission
-    $scope.permissions.canReport = $scope.currentUser || false;
-
     // report modal state
     $scope.toggleReportModal = function(visible) {
         $scope.$emit('toggleModal', visible);
