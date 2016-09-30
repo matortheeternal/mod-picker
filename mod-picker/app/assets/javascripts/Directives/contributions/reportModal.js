@@ -61,8 +61,6 @@ app.controller('reportModalController', function($scope, reportService) {
             $scope.report.reason = '6';
             $scope.report.reportable_id = $scope.selectedTag;
             $scope.report.reportable_type = 'Tag';
-
-            console.log($scope.report);
         }
 
         reportService.submitReport($scope.report);
