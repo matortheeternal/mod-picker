@@ -28,6 +28,7 @@ class ModBuilder
   end
 
   def update
+    destroy_analysis
     update!
     true
   rescue
@@ -47,7 +48,6 @@ class ModBuilder
 
   def before_update
     hide_contributions
-    destroy_analysis
   end
 
   def after_update
