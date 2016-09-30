@@ -9,13 +9,11 @@ app.directive('reportModal', function() {
 
 app.controller('reportModalController', function($scope, reportService) {
     $scope.tagOptions = {};
-    $scope.selectedTag = {};
-    $scope.showTags = false;
 
-    // helper function to convert id of tags(which by default is stored as a string) to int
-    $scope.convertToInt = function(id) {
-        return parseInt(id, 10);
-    };
+    // selectedTag's value is set to an object property because the select/option elements are within a child scope if ng-if
+    // so updating just `selectedTag` within that child scope will NOT update its parent scope(this controller).
+    $scope.selectedTag = { id: null };
+    $scope.showTags = false;
 
     $scope.getModalTitle = function() {
         var submitter = $scope.target.submitter ? $scope.target.submitter.username + '\'s ' : '';
@@ -43,15 +41,13 @@ app.controller('reportModalController', function($scope, reportService) {
         return title;
     };
 
-    // section for reporting tags, if tags are available.
+    // show section for reporting tags, if tags are available.
     if($scope.target.tags && $scope.target.tags.length > 0) {
         $scope.showTags = true;
         var tags = $scope.target.tags;
 
         $scope.tagOptions = tags;
-        $scope.selectedTag = $scope.convertToInt(tags[0].id);
-        console.log($scope.target.tags);
-
+        $scope.selectedTag.id = tags[0].id;
     }
     
 
@@ -59,7 +55,7 @@ app.controller('reportModalController', function($scope, reportService) {
         if($scope.report.reason === '7') {
             // set reason to "Other" for Tag
             $scope.report.reason = '6';
-            $scope.report.reportable_id = $scope.selectedTag;
+            $scope.report.reportable_id = $scope.selectedTag.id;
             $scope.report.reportable_type = 'Tag';
         }
 
