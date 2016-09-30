@@ -192,13 +192,14 @@ app.service('modService', function(backend, $q, pageUtils, objectUtils, contribu
     this.prepareModOptions = function(mod) {
         var mod_options = [];
         mod.analysis && mod.analysis.mod_options.forEach(function(option) {
-            var sanitized_plugins = objectUtils.deleteEmptyProperties(option.plugins, 1);
+            var sanitizedPlugins = angular.copy(option.plugins);
+            objectUtils.deleteEmptyProperties(sanitizedPlugins, 1);
             mod_options.push({
                 name: option.name,
                 size: option.size,
                 default: option.default,
                 is_fomod_option: option.is_fomod_option,
-                plugin_dumps: sanitized_plugins,
+                plugin_dumps: sanitizedPlugins,
                 asset_paths: option.assets
             })
         });
