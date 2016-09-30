@@ -16,7 +16,7 @@ class Mod < ActiveRecord::Base
 
   # SCOPES
   include_scope :hidden
-  include_scope :adult, :alias => 'include_adult'
+  include_scope :has_adult_content, :alias => 'include_adult'
   include_scope :is_official, :alias => 'include_official'
   include_scope :is_utility, :alias => 'include_utilities'
   value_scope :is_utility
