@@ -176,6 +176,12 @@ app.controller('modListController', function($scope, $rootScope, $q, $stateParam
         reportable_id: $scope.mod_list.id,
         reportable_type: 'ModList'
     };
+    $scope.modelObj = {
+        name: "ModList",
+        label: "ModList",
+        route: "mod-list"
+    }
+    $scope.target = $scope.mod_list;
     $scope.isActive = $scope.activeModList && $scope.activeModList.id == $scope.mod_list.id;
 
     // shared function setup

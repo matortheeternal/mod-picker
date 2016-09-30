@@ -83,6 +83,14 @@ app.controller('userController', function($scope, $rootScope, $stateParams, user
         reportable_type: 'User'
     };
 
+    $scope.modelObj = {
+        name: "User",
+        label: "User",
+        route: "users"
+    }
+
+    $scope.target = $scope.user;
+
     // shared function setup
     eventHandlerFactory.buildMessageHandlers($scope);
     moderationActionsFactory.buildActions($scope);

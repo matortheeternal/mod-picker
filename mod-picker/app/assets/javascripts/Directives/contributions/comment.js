@@ -23,6 +23,14 @@ app.controller('commentController', function ($scope, $rootScope, $filter, $time
         reportable_id: $scope.comment.id,
         reportable_type: 'Comment'
     };
+
+    $scope.modelObj = {
+        name: "Comment",
+        label: "Comment",
+        route: "comments"
+    }
+
+    $scope.target = $scope.comment;
     // initialize local variables
     $scope.errorEvent = $scope.eventPrefix ? $scope.eventPrefix + 'ErrorMessage' : 'errorMessage';
 

@@ -2,8 +2,7 @@
     <div class="modal big-modal">
         <form>
             <h3 class="section-title">
-                <!--TODO: refactor to be able to easily report users-->
-                Report {{target.submitter.username}}'s {{model.label}}
+                {{getModalTitle()}}
             </h3>
             <section>
                 <div class="line-label">What rule or community guideline does this submission violate?</div>
@@ -34,6 +33,12 @@
                         <a href="/help/community_guidelines#adult-content">
                             <span class="help-tooltip" title="Note: Adult Content is allowed if marked.  Click here for more information.">?</span>
                         </a>
+                    </label>
+                    <label ng-if="showTags">
+                        <input type="radio" name="reason" ng-model="report.reason" value="7">
+                        <span class="report-reason">Report a Tag</span>
+                        <select ng-model="selectedTag.id" ng-options="tag.id as tag.text for tag in target.tags">
+                        </select>
                     </label>
                     <label>
                         <input type="radio" name="reason" ng-model="report.reason" value="6">
