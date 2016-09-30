@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160930044530) do
+ActiveRecord::Schema.define(version: 20160930224601) do
 
   create_table "agreement_marks", id: false, force: :cascade do |t|
     t.integer "correction_id", limit: 4,                null: false
@@ -846,16 +846,16 @@ ActiveRecord::Schema.define(version: 20160930044530) do
   add_index "user_reputations", ["user_id"], name: "user_id", using: :btree
 
   create_table "user_settings", force: :cascade do |t|
-    t.integer "user_id",              limit: 4,                 null: false
+    t.integer "user_id",              limit: 4,                  null: false
     t.string  "theme",                limit: 64
-    t.boolean "allow_comments",                  default: true, null: false
-    t.boolean "show_notifications",              default: true, null: false
-    t.boolean "email_notifications",             default: true, null: false
-    t.boolean "email_public",                    default: true, null: false
-    t.boolean "allow_adult_content",             default: true, null: false
-    t.boolean "allow_nexus_mods",                default: true, null: false
-    t.boolean "allow_lovers_lab",                default: true, null: false
-    t.boolean "allow_steam_workshop",            default: true, null: false
+    t.boolean "allow_comments",                  default: true,  null: false
+    t.boolean "show_notifications",              default: true,  null: false
+    t.boolean "email_notifications",             default: false, null: false
+    t.boolean "email_public",                    default: false, null: false
+    t.boolean "allow_adult_content",             default: false, null: false
+    t.boolean "allow_nexus_mods",                default: true,  null: false
+    t.boolean "allow_lovers_lab",                default: true,  null: false
+    t.boolean "allow_steam_workshop",            default: true,  null: false
   end
 
   add_index "user_settings", ["user_id"], name: "user_id", using: :btree
