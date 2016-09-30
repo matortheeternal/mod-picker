@@ -47,6 +47,7 @@ class ModBuilder
 
   def before_update
     hide_contributions
+    destroy_analysis
   end
 
   def after_update
@@ -107,6 +108,12 @@ class ModBuilder
       Correction.correctables("LoadOrderNote", lnote_ids).update_all(:hidden => true)
     elsif mod.attribute_changed?(:disable_reviews) && mod.disable_reviews
       mod.reviews.update_all(:hidden => true)
+    end
+  end
+
+  def destroy_analysis
+    if mod.attribute_changed?(:mod_options_attributes)
+      mod.mod_options.destroy_all
     end
   end
 
