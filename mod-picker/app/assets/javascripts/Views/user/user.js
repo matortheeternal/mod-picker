@@ -84,10 +84,12 @@ app.controller('userController', function($scope, $rootScope, $stateParams, user
     };
 
     $scope.modelObj = {
-        name: $scope.user.username,
+        name: "User",
         label: "User",
         route: "users"
     }
+
+    $scope.target = $scope.user;
 
     // shared function setup
     eventHandlerFactory.buildMessageHandlers($scope);

@@ -1,4 +1,4 @@
-app.directive('reportModal', function () {
+app.directive('reportModal', function() {
     return {
         restrict: 'E',
         templateUrl: '/resources/directives/contributions/reportModal.html',
@@ -8,13 +8,29 @@ app.directive('reportModal', function () {
 });
 
 app.controller('reportModalController', function($scope, reportService) {
-    // setup model name and submitter(if content has submitter) for reportable
-    var submitter = $scope.target ? $scope.target.submitter.username + '\'s ' : '';
+    $scope.getModalTitle = function() {
+        console.log('awefwaef');
+        var submitter = $scope.target ? $scope.target.submitter.username + '\'s ' : '';
 
-    // // each reportable content must include modelObj in its scope which is inherited by the reportModal
-    var modelName = $scope.modelObj ? $scope.modelObj.name : '';
+        var modelName = '';
 
-    $scope.reportTitle = 'Report ' + submitter + modelName;
+        switch ($scope.modelObj.name) {
+            case 'User':
+                modelName = $scope.target.username;
+                break;
+            case 'ModList':
+                modelName = $scope.target.name;
+                break;
+            case 'Mod':
+                modelName = $scope.target.name;
+                break;
+            default:
+                modelName = $scope.modelObj.name;
+        }
+        
+        var title = 'Report ' + submitter + modelName;
+        return title;
+    };
 
     $scope.submitReport = function() {
         reportService.submitReport($scope.report);
