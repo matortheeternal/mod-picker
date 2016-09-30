@@ -43,7 +43,8 @@ app.controller('modAnalysisManagerController', function($scope, $rootScope, plug
     };
 
     $scope.isGameMaster = function(master) {
-        return master.filename === $scope.currentGame.esm_name;
+        return master.filename === $scope.currentGame.esm_name ||
+            master.filename === "Update.esm";
     };
 
     $scope.getRequirementsFromAnalysis = function() {
