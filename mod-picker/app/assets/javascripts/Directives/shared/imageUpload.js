@@ -41,7 +41,7 @@ app.controller('imageUploadController', function ($scope, $element, fileUtils) {
                     type: "error",
                     text: "Unsupported file type.  "+capLabel+" must be a PNG or JPG file."
                 };
-                $scope.$emit("errorMessage", errorObj);
+                $scope.$emit("customMessage", errorObj);
                 $scope.resetImage();
                 return;
             }
@@ -52,7 +52,7 @@ app.controller('imageUploadController', function ($scope, $element, fileUtils) {
                     type: "error",
                     text: capLabel+" file is too big.  Maximum file size 1.0MB."
                 };
-                $scope.$emit("errorMessage", errorObj);
+                $scope.$emit("customMessage", errorObj);
                 $scope.resetImage();
                 return;
             }
@@ -66,7 +66,7 @@ app.controller('imageUploadController', function ($scope, $element, fileUtils) {
                         type: "error",
                         text: capLabel+" is too large.  Maximum dimensions "+$scope.maxWidth+"x"+$scope.maxHeight+"."
                     };
-                    $scope.$emit("errorMessage", errorObj);
+                    $scope.$emit("customMessage", errorObj);
                     $scope.resetImage();
                 } else {
                     $scope.image.file = imageFile;
