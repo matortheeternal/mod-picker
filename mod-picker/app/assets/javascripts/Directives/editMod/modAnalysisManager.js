@@ -27,11 +27,11 @@ app.controller('modAnalysisManagerController', function ($scope, pluginService, 
             });
             if (plugin) {
                 var match = $scope.mod.requirements.find(function(requirement) {
-                    return requirement.required_id == plugin.mod_id;
+                    return requirement.required_id == plugin.mod.id;
                 });
                 if (!match) {
                     $scope.mod.requirements.push({
-                        required_id: plugin.mod_id,
+                        required_id: plugin.mod.id,
                         name: plugin.mod.name
                     });
                 }
