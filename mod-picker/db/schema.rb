@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160930224601) do
+ActiveRecord::Schema.define(version: 20160930225519) do
 
   create_table "agreement_marks", id: false, force: :cascade do |t|
     t.integer "correction_id", limit: 4,                null: false
@@ -190,8 +190,8 @@ ActiveRecord::Schema.define(version: 20160930224601) do
 
   create_table "events", force: :cascade do |t|
     t.integer  "user_id",      limit: 4
-    t.integer  "content_id",   limit: 4
-    t.string   "content_type", limit: 32
+    t.integer  "content_id",   limit: 4,  null: false
+    t.string   "content_type", limit: 32, null: false
     t.integer  "event_type",   limit: 1,  null: false
     t.datetime "created",                 null: false
   end
