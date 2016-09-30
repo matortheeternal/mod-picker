@@ -28,6 +28,7 @@ class ModBuilder
   end
 
   def update
+    destroy_analysis
     update!
     true
   rescue
@@ -39,7 +40,7 @@ class ModBuilder
       mod.attributes = @params
       self.before_save
       self.before_update
-      mod.update!(@params)
+      mod.save!
       self.after_update
       self.after_save
     end
@@ -108,6 +109,10 @@ class ModBuilder
     elsif mod.attribute_changed?(:disable_reviews) && mod.disable_reviews
       mod.reviews.update_all(:hidden => true)
     end
+  end
+
+  def destroy_analysis
+    mod.mod_options.destroy_all if @params.has_key?(:mod_options_attributes)
   end
 
   def update_adult

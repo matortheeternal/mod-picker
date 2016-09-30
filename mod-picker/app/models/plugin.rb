@@ -166,10 +166,10 @@ class Plugin < ActiveRecord::Base
   def as_json(options={})
     if JsonHelpers.json_options_empty(options)
       default_options = {
-          :only => [:mod_id, :id, :filename],
+          :only => [:id, :filename],
           :include => {
               :mod => {
-                  :only => [:name]
+                  :only => [:id, :name]
               }
           }
       }

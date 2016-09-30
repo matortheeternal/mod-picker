@@ -37,11 +37,10 @@ class ModAssetFile < ActiveRecord::Base
 
   private
     def increment_counters
-      self.asset_file.update_counter(:mod_asset_files_count, 1)
+      asset_file.update_counter(:mod_asset_files_count, 1) if asset_file_id
     end
 
     def decrement_counters
-      self.asset_file.update_counter(:mod_asset_files_count, -1)
+      asset_file.update_counter(:mod_asset_files_count, -1) if asset_file_id
     end
-
 end

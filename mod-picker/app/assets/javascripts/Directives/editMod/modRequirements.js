@@ -13,7 +13,11 @@ app.controller('modRequirementsController', function ($scope) {
     };
 
     $scope.removeRequirement = function(requirement) {
-        var index = $scope.mod.requirements.indexOf(requirement);
-        $scope.mod.requirements.splice(index, 1);
+        if (requirement.id) {
+            requirement._destroy = true;
+        } else {
+            var index = $scope.mod.requirements.indexOf(requirement);
+            $scope.mod.requirements.splice(index, 1);
+        }
     };
 });
