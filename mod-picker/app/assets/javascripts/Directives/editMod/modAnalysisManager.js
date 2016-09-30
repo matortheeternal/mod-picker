@@ -7,7 +7,10 @@ app.directive('modAnalysisManager', function() {
     }
 });
 
-app.controller('modAnalysisManagerController', function($scope, pluginService, objectUtils, assetUtils) {
+app.controller('modAnalysisManagerController', function($scope, $rootScope, pluginService, objectUtils, assetUtils) {
+    // inherited variables
+    $scope.currentGame = $rootScope.currentGame;
+
     $scope.changeAnalysisFile = function (event) {
         var input = event.target;
         if (input.files && input.files[0]) {
@@ -39,6 +42,10 @@ app.controller('modAnalysisManagerController', function($scope, pluginService, o
         });
     };
 
+    $scope.isGameMaster = function(master) {
+        return master.filename === $scope.currentGame.esm_name;
+    };
+
     $scope.getRequirementsFromAnalysis = function() {
         // build list of masters
         var masters = [];
@@ -49,8 +56,9 @@ app.controller('modAnalysisManagerController', function($scope, pluginService, o
             }
         });
         defaultPlugins.forEach(function(plugin) {
-            plugin.master_plugins.forEach(function (master) {
-                if (masters.indexOf(master.filename) == -1) {
+            plugin.master_plugins.forEach(function(master) {
+                var index = masters.indexOf(master.filename);
+                if (index == -1 && !$scope.isGameMaster(master)) {
                     masters.push(master.filename);
                 }
             });
