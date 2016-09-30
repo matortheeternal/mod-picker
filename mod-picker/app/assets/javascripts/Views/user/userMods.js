@@ -8,7 +8,7 @@ app.controller('userModsController', function($scope, errorService, modService, 
     $scope.retrieveMods = function() {
         userService.retrieveUserMods($scope.user.id).then(function(data) {
             $scope.authored_mods = data.authored;
-            $scope.favorite_mods = data.favorite;
+            $scope.favorite_mods = data.favorites;
         }, function(response) {
             $scope.errors.mods = response;
         });
