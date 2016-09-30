@@ -62,7 +62,7 @@ app.controller('userController', function($scope, $rootScope, $stateParams, user
     // set up local variables
     $scope.user = userObject.user;
     $scope.user.endorsed = userObject.endorsed;
-    $scope.isCurrentUser = $scope.currentUser.id == $scope.user.id;
+    $scope.isCurrentUser = $scope.currentUser && $scope.currentUser.id == $scope.user.id;
     $scope.roleClass = "user-role-" + $scope.user.role;
     $scope.pages = {
         profile_comments: {}
@@ -105,9 +105,6 @@ app.controller('userController', function($scope, $rootScope, $stateParams, user
             $scope.$emit('errorMessage', params);
         });
     };
-
-    // get report submission permission
-    $scope.permissions.canReport = $scope.currentUser || false;
 
     // report modal state
     $scope.toggleReportModal = function(visible) {

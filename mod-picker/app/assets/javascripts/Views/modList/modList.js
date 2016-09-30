@@ -183,7 +183,6 @@ app.controller('modListController', function($scope, $rootScope, $q, $stateParam
     }
     $scope.target = $scope.mod_list;
     $scope.isActive = $scope.activeModList && $scope.activeModList.id == $scope.mod_list.id;
-    
 
     // shared function setup
     $scope.isEmpty = objectUtils.isEmptyArray;
@@ -191,6 +190,7 @@ app.controller('modListController', function($scope, $rootScope, $q, $stateParam
 
     // set up the canManage permission
     var isAuthor = $scope.mod_list.submitter.id == $scope.currentUser.id;
+    $scope.permissions.isAuthor = isAuthor;
     $scope.permissions.canManage = $scope.permissions.canModerate || isAuthor;
 
     // HEADER RELATED LOGIC
@@ -202,9 +202,6 @@ app.controller('modListController', function($scope, $rootScope, $q, $stateParam
             $scope.$emit('errorMessage', params);
         });
     };
-
-    // reports permission
-    $scope.permissions.canReport = $scope.currentUser || false;
 
     $scope.toggleEditing = function() {
         $scope.editing = !$scope.editing;

@@ -98,8 +98,8 @@ class Rack::Attack
   #   end
   # end
 
-  # Throttle all requests by IP (60rpm) excluding assets
-  throttle('req/ip', :limit => 300, :period => 5.minutes) do |req|
+  # Throttle all requests by IP (180rpm) excluding assets
+  throttle('req/ip', :limit => 900, :period => 5.minutes) do |req|
     req.ip unless req.path.start_with?('/assets')
   end
 

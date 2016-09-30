@@ -24,7 +24,7 @@ en:
         hello: "Hello %{email}"
         someone_invited_you: "You have been invited to participate in the Mod Picker beta!  You can accept the invitation and create an account by clicking the link below:"
         accept: "Accept invitation"
-        accept_until: "The beta will last from October 1, <a class='time-helper' href='google.com/search?q=12:01AM+UTC'>12:01AM UTC</a> to October 16, <a class='time-helper' href='google.com/search?q=12:01PM+UTC'>12:01PM UTC</a>.  You can accept this invitation any time before %{due_date}."
+        accept_until: 'The beta will last from October 1, <a class="time-helper" href="http://www.google.com/search?q=12:01+AM+UTC">12:01 AM UTC</a> to October 16, <a class="time-helper" href="http://www.google.com/search?q=12:01+PM+UTC">12:01 PM UTC</a>.  You can accept this invitation any time before %{due_date}.'
         ignore: "If you do not want to participate in the beta, disregard this email.  You will be able to freely register on the site when we officially launch November 1, 2016."
   time:
     formats:

@@ -28,6 +28,7 @@ class ModBuilder
   end
 
   def update
+    destroy_analysis
     update!
     true
   rescue
@@ -39,7 +40,7 @@ class ModBuilder
       mod.attributes = @params
       self.before_save
       self.before_update
-      mod.update!(@params)
+      mod.save!
       self.after_update
       self.after_save
     end
@@ -110,6 +111,10 @@ class ModBuilder
     end
   end
 
+  def destroy_analysis
+    mod.mod_options.destroy_all if @params.has_key?(:mod_options_attributes)
+  end
+
   def update_adult
     if mod.previous_changes.has_key?(:has_adult_content)
       # prepare some helper variables
@@ -142,6 +147,7 @@ class ModBuilder
     if info_id
       info = NexusInfo.find(info_id)
       info.mod_id = mod.id
+      info.link_uploader
       info.save!
     end
   end

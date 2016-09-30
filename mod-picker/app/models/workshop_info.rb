@@ -31,4 +31,11 @@ class WorkshopInfo < ActiveRecord::Base
         }
     }
   end
+
+  def link_uploader
+    bio = UserBio.find_by(workshop_username: uploaded_by)
+    if bio.present? && mod_id.present?
+      ModAuthor.find_or_create_by(mod_id: mod_id, user_id: bio.user_id)
+    end
+  end
 end

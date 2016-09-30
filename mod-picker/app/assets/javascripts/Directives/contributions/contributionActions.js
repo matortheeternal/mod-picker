@@ -20,7 +20,7 @@ app.directive('contributionActions', function() {
 app.controller('contributionActionsController', function($scope, $rootScope, $timeout, contributionService, contributionFactory) {
     // inherited variables
     $scope.currentUser = $rootScope.currentUser;
-    $scope.permissions = $rootScope.permissions;
+    $scope.permissions = angular.copy($rootScope.permissions);
 
     // default scope attributes
     angular.inherit($scope, 'showMarks');
@@ -219,12 +219,14 @@ app.controller('contributionActionsController', function($scope, $rootScope, $ti
     $scope.setPermissions = function() {
         // permissions helper variables
         var user = $scope.currentUser;
+        if (!user) return;
         var canModerate = $scope.permissions.canModerate;
         var isSubmitter = user && user.id == $scope.target.submitted_by;
         var isCorrector = user && user.id == $scope.target.corrector_id;
         var isLocked = $scope.target.corrector_id;
         // set up permissions
-        $scope.canReport = user || false;
+        $scope.isSubmitter = isSubmitter;
+        $scope.canReport = $scope.permissions.canReport;
         $scope.canAgree = $scope.agreeable && $scope.isOpen && $scope.permissions.canAgree;
         $scope.canCorrect = $scope.permissions.canCorrect;
         $scope.canEdit = $scope.edit && (canModerate || isCorrector || isSubmitter && !isLocked);
