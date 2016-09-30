@@ -112,9 +112,7 @@ class ModBuilder
   end
 
   def destroy_analysis
-    if mod.attribute_changed?(:mod_options_attributes)
-      mod.mod_options.destroy_all
-    end
+    mod.mod_options.destroy_all if @params.has_key?(:mod_options_attributes)
   end
 
   def update_adult
