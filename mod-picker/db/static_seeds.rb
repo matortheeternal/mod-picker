@@ -136,6 +136,7 @@ def seed_games
       long_name: "The Elder Scrolls V: Skyrim",
       abbr_name: "sk",
       exe_name: "TESV.exe",
+      esm_name: "Skyrim.esm",
       nexus_name: "skyrim",
       steam_app_ids: "72850"
   )
@@ -145,6 +146,7 @@ def seed_games
       long_name: "The Elder Scrolls IV: Oblivion",
       abbr_name: "ob",
       exe_name: "Oblivion.exe",
+      esm_name: "Oblivion.esm",
       nexus_name: "oblivion",
       steam_app_ids: "22330,900883"
   )
@@ -154,6 +156,7 @@ def seed_games
       long_name: "Fallout 4",
       abbr_name: "fo4",
       exe_name: "Fallout4.exe",
+      esm_name: "Fallout4.esm",
       nexus_name: "fallout4",
       steam_app_ids: "377160"
   )
@@ -163,6 +166,7 @@ def seed_games
       long_name: "Fallout: New Vegas",
       abbr_name: "fnv",
       exe_name: "FalloutNV.exe",
+      esm_name: "FalloutNV.esm",
       nexus_name: "newvegas",
       steam_app_ids: "22380,2028016"
   )
@@ -172,6 +176,7 @@ def seed_games
       long_name: "Fallout 3",
       abbr_name: "fo3",
       exe_name: "Fallout3.exe",
+      esm_name: "Fallout3.esm",
       nexus_name: "fallout3",
       steam_app_ids: "22300,22370"
   )
