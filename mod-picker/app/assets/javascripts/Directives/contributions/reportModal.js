@@ -9,7 +9,7 @@ app.directive('reportModal', function() {
 
 app.controller('reportModalController', function($scope, reportService) {
     $scope.getModalTitle = function() {
-        var submitter = $scope.target ? $scope.target.submitter.username + '\'s ' : '';
+        var submitter = $scope.target.submitter ? $scope.target.submitter.username + '\'s ' : '';
 
         var modelName = '';
 
@@ -19,6 +19,9 @@ app.controller('reportModalController', function($scope, reportService) {
                 break;
             case 'ModList':
                 modelName = $scope.target.name;
+
+                // manually disabling the display of modlist submitter
+                submitter = '';
                 break;
             case 'Mod':
                 modelName = $scope.target.name;

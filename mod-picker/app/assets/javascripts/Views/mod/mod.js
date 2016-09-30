@@ -162,7 +162,7 @@ app.controller('modController', function($scope, $rootScope, $q, $stateParams, $
         reportable_type: 'Mod'
     };
     $scope.modelObj = {
-        name: "User",
+        name: "Mod",
         label: "Mod",
         route: "mods"
     }

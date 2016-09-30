@@ -177,8 +177,8 @@ app.controller('modListController', function($scope, $rootScope, $q, $stateParam
         reportable_type: 'ModList'
     };
     $scope.modelObj = {
-        name: "User",
-        label: "Mod",
+        name: "ModList",
+        label: "ModList",
         route: "mod-list"
     }
     $scope.target = $scope.mod_list;
