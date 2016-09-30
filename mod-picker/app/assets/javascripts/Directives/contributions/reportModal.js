@@ -9,7 +9,6 @@ app.directive('reportModal', function() {
 
 app.controller('reportModalController', function($scope, reportService) {
     $scope.getModalTitle = function() {
-        console.log('awefwaef');
         var submitter = $scope.target ? $scope.target.submitter.username + '\'s ' : '';
 
         var modelName = '';
