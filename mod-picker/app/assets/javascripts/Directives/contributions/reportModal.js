@@ -8,6 +8,15 @@ app.directive('reportModal', function() {
 });
 
 app.controller('reportModalController', function($scope, reportService) {
+    $scope.tagOptions = {};
+    $scope.selectedTag = {};
+    $scope.showTags = false;
+
+    // helper function to convert id of tags(which by default is stored as a string) to int
+    $scope.convertToInt = function(id) {
+        return parseInt(id, 10);
+    };
+
     $scope.getModalTitle = function() {
         var submitter = $scope.target.submitter ? $scope.target.submitter.username + '\'s ' : '';
 
@@ -34,7 +43,28 @@ app.controller('reportModalController', function($scope, reportService) {
         return title;
     };
 
+    // section for reporting tags, if tags are available.
+    if($scope.target.tags && $scope.target.tags.length > 0) {
+        $scope.showTags = true;
+        var tags = $scope.target.tags;
+
+        $scope.tagOptions = tags;
+        $scope.selectedTag = $scope.convertToInt(tags[0].id);
+        console.log($scope.target.tags);
+
+    }
+    
+
     $scope.submitReport = function() {
+        if($scope.report.reason === '7') {
+            // set reason to "Other" for Tag
+            $scope.report.reason = '6';
+            $scope.report.reportable_id = $scope.selectedTag;
+            $scope.report.reportable_type = 'Tag';
+
+            console.log($scope.report);
+        }
+
         reportService.submitReport($scope.report);
         $scope.toggleReportModal(false);
     };

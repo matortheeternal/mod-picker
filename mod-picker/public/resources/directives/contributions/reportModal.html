@@ -34,6 +34,12 @@
                             <span class="help-tooltip" title="Note: Adult Content is allowed if marked.  Click here for more information.">?</span>
                         </a>
                     </label>
+                    <label ng-if="showTags">
+                        <input type="radio" name="reason" ng-model="report.reason" value="7">
+                        <span class="report-reason">Report a Tag</span>
+                        <select ng-model="selectedTag" ng-options="tag.id as tag.text for tag in target.tags">
+                        </select>
+                    </label>
                     <label>
                         <input type="radio" name="reason" ng-model="report.reason" value="6">
                         <span class="report-reason">Other</span>
