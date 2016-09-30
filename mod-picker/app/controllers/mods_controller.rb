@@ -113,7 +113,6 @@ class ModsController < ApplicationController
     @mod.mod_tags.each_with_index do |mod_tag, index|
       if params[:tags].exclude?(existing_tags_text[index])
         authorize! :destroy, mod_tag
-        mod_tag.removed_by = current_user_id
         mod_tag.destroy
       end
     end
