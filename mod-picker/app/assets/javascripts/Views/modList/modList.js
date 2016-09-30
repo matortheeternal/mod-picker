@@ -176,6 +176,11 @@ app.controller('modListController', function($scope, $rootScope, $q, $stateParam
         reportable_id: $scope.mod_list.id,
         reportable_type: 'ModList'
     };
+    $scope.modelObj = {
+        name: $scope.mod_list.name,
+        label: "Mod",
+        route: "mod-list"
+    }
     $scope.isActive = $scope.activeModList && $scope.activeModList.id == $scope.mod_list.id;
     
 

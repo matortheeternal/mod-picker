@@ -161,6 +161,11 @@ app.controller('modController', function($scope, $rootScope, $q, $stateParams, $
         reportable_id: $scope.mod.id,
         reportable_type: 'Mod'
     };
+    $scope.modelObj = {
+        name: $scope.mod.name,
+        label: "Mod",
+        route: "mods"
+    }
     $scope.retrieving = {};
     $scope.errors = {};
 

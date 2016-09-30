@@ -39,7 +39,7 @@ app.controller('contributionActionsController', function($scope, $rootScope, $ti
     $scope.errors = {};
     $scope.errorEvent = $scope.eventPrefix ? $scope.eventPrefix + 'ErrorMessage' : 'errorMessage';
     $scope.shareLink = window.location.href + '/' + $scope.target.id;
-    $scope.model = contributionFactory.getModel($scope.modelName);
+    $scope.modelObj = contributionFactory.getModel($scope.modelName);
 
     // compute whether or not the target is open if it is agreeable
     if ($scope.agreeable) {
@@ -79,7 +79,7 @@ app.controller('contributionActionsController', function($scope, $rootScope, $ti
 
     $scope.retrieveCorrections = function() {
         $scope.retrieving.corrections = true;
-        contributionService.retrieveCorrections($scope.model.route, $scope.target.id).then(function(data) {
+        contributionService.retrieveCorrections($scope.modelObj.route, $scope.target.id).then(function(data) {
             $scope.retrieving.corrections = false;
             $scope.target.corrections = data;
         }, function(response) {
@@ -92,7 +92,7 @@ app.controller('contributionActionsController', function($scope, $rootScope, $ti
 
     $scope.retrieveHistory = function() {
         $scope.retrieving.history = true;
-        contributionService.retrieveHistory($scope.model.route, $scope.target.id).then(function(data) {
+        contributionService.retrieveHistory($scope.modelObj.route, $scope.target.id).then(function(data) {
             $scope.retrieving.history = false;
             $scope.target.history = data;
         }, function(response) {
@@ -115,7 +115,7 @@ app.controller('contributionActionsController', function($scope, $rootScope, $ti
     $scope.helpfulMark = function(helpful) {
         var helpfulStr = helpful ? 'helpful' : 'not helpful';
         if ($scope.target.helpful == helpful) {
-            contributionService.helpfulMark($scope.model.route, $scope.target.id).then(function() {
+            contributionService.helpfulMark($scope.modelObj.route, $scope.target.id).then(function() {
                 delete $scope.target.helpful;
                 $scope.updateHelpfulCounter(helpful, false);
             }, function(response) {
@@ -126,7 +126,7 @@ app.controller('contributionActionsController', function($scope, $rootScope, $ti
                 $scope.$emit($scope.errorEvent, params);
             });
         } else {
-            contributionService.helpfulMark($scope.model.route, $scope.target.id, helpful).then(function() {
+            contributionService.helpfulMark($scope.modelObj.route, $scope.target.id, helpful).then(function() {
                 if ($scope.target.helpful == !helpful) {
                     $scope.updateHelpfulCounter(!helpful, false);
                 }
@@ -154,7 +154,7 @@ app.controller('contributionActionsController', function($scope, $rootScope, $ti
     $scope.agreementMark = function(agree) {
         var agreeStr = agree ? 'agreement' : 'disagreement';
         if ($scope.target.agree == agree) {
-            contributionService.agreementMark($scope.model.route, $scope.target.id).then(function() {
+            contributionService.agreementMark($scope.modelObj.route, $scope.target.id).then(function() {
                 delete $scope.target.agree;
                 $scope.updateAgreeCounter(agree, false);
             }, function(response) {
@@ -165,7 +165,7 @@ app.controller('contributionActionsController', function($scope, $rootScope, $ti
                 $scope.$emit($scope.errorEvent, params);
             });
         } else {
-            contributionService.agreementMark($scope.model.route, $scope.target.id, agree).then(function() {
+            contributionService.agreementMark($scope.modelObj.route, $scope.target.id, agree).then(function() {
                 if ($scope.target.agree == !agree) {
                     $scope.updateAgreeCounter(!agree, false);
                 }
@@ -182,7 +182,7 @@ app.controller('contributionActionsController', function($scope, $rootScope, $ti
     };
 
     $scope.approve = function(approved) {
-        contributionService.approve($scope.model.route, $scope.target.id, approved).then(function() {
+        contributionService.approve($scope.modelObj.route, $scope.target.id, approved).then(function() {
             $scope.target.approved = approved;
         }, function(response) {
             var approveStr = approved ? 'approving' : 'unapproving';
@@ -195,7 +195,7 @@ app.controller('contributionActionsController', function($scope, $rootScope, $ti
     };
 
     $scope.hide = function(hidden) {
-        contributionService.hide($scope.model.route, $scope.target.id, hidden).then(function() {
+        contributionService.hide($scope.modelObj.route, $scope.target.id, hidden).then(function() {
             $scope.target.hidden = hidden;
         }, function(response) {
             var approveStr = hidden ? 'hiding' : 'unhiding';
