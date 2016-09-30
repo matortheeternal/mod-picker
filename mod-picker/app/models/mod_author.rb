@@ -5,10 +5,10 @@ class ModAuthor < ActiveRecord::Base
   enum role: [:author, :contributor, :curator]
 
   # EVENT TRACKING
-  track :added, :removed
+  track :added
 
   # NOTIFICATION SUBSCRIPTIONS
-  subscribe :mod_author_users, to: [:added, :removed]
+  subscribe :mod_author_users, to: [:added]
 
   # ASSOCIATIONS
   belongs_to :mod, :inverse_of => 'mod_authors'
