@@ -183,6 +183,7 @@ app.controller('modController', function($scope, $rootScope, $q, $stateParams, $
         return author.user_id == $scope.currentUser.id;
     });
     var isAuthor = angular.isDefined(author);
+    $scope.permissions.isAuthor = isAuthor;
     $scope.permissions.canManage = $scope.permissions.canModerate || isAuthor;
 
     var redirectToFirstTab = function() {
