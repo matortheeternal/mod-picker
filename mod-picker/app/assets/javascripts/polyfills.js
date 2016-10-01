@@ -36,7 +36,12 @@ String.prototype.underscore = function(separator) {
 };
 
 String.prototype.wordCount = function() {
-    return this.length ? this.match(/(\S+)/g).length : 0;
+    if (this.length) {
+        var match = this.match(/(\S+)/g);
+        return (match && match.length) || 0;
+    } else {
+        return 0;
+    }
 };
 
 String.prototype.surround = function(str) {
