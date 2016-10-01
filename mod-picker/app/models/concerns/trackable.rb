@@ -7,7 +7,7 @@ module Trackable
     self._subscriptions = []
     self._tracked_attributes = []
 
-    has_many :events, :as => 'content', :dependent => :nullify
+    has_many :events, :as => 'content', :dependent => :destroy
   end
 
   def subscriber_ids_for(event)
