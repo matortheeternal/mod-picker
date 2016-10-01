@@ -74,11 +74,12 @@ app.controller('modInstallOrderController', function($scope, $stateParams, $stat
     $scope.editInstallOrderNote = function(install_order_note) {
         install_order_note.editing = true;
         var mod, order;
-        for (var i = 0; i < 2; i++) {
-            if (install_order_note.mods[i].id != $scope.mod.id) {
-                mod = install_order_note.mods[i];
-                order = i == 0 ? 'after' : 'before';
-            }
+        if (install_order_note.first_mod.id != $scope.mod.id) {
+            mod = install_order_note.first_mod;
+            order = 'after';
+        } else {
+            mod = install_order_note.second_mod;
+            order = 'before';
         }
         $scope.activeInstallOrderNote = {
             mod_id: mod.id.toString(),
@@ -121,7 +122,9 @@ app.controller('modInstallOrderController', function($scope, $stateParams, $stat
         // update the values on the original note
         if ((updatedNote.first_mod_id == originalNote.second_mod_id) &&
             (updatedNote.second_mod_id == originalNote.first_mod_id)) {
-            originalNote.mods.reverse();
+            var tempMod = originalNote.second_mod;
+            originalNote.second_mod = originalNote.first_mod;
+            originalNote.first_mod = tempMod;
             originalNote.first_mod_id = originalNote.first_mod.id;
             originalNote.second_mod_id = originalNote.second_mod.id;
         }
