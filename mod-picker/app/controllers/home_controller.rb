@@ -31,16 +31,16 @@ class HomeController < ApplicationController
 
   def index
     # we first get news articles
-    articles = Article.game(params[:game]).order(:submitted => :DESC).limit(4)
+    articles = Article.accessible_by(current_ability).game(params[:game]).order(:submitted => :DESC).limit(4)
 
     # get recent contributions
-    mod_lists = ModList.visible.game(params[:game]).where(:status => 2).includes(:submitter => :reputation).order(:completed => :DESC).limit(5)
-    mods = Mod.include_hidden(false).game(params[:game]).order(:id => :DESC).limit(5)
-    reviews = Review.visible.game(params[:game]).includes(:review_ratings, :mod, :submitter => :reputation).order(:submitted => :DESC).limit(4)
-    corrections = Correction.visible.game(params[:game]).includes(:submitter => :reputation).order(:submitted => :DESC).limit(4)
-    compatibility_notes = CompatibilityNote.visible.game(params[:game]).includes(:first_mod, :second_mod, :submitter => :reputation).order(:submitted => :DESC).limit(4)
-    install_order_notes = InstallOrderNote.visible.game(params[:game]).includes(:first_mod, :second_mod, :submitter => :reputation).order(:submitted => :DESC).limit(4)
-    load_order_notes = LoadOrderNote.visible.game(params[:game]).includes(:first_plugin, :second_plugin, :submitter => :reputation).order(:submitted => :DESC).limit(4)
+    mod_lists = ModList.accessible_by(current_ability).visible.game(params[:game]).where(:status => 2).includes(:submitter => :reputation).order(:completed => :DESC).limit(5)
+    mods = Mod.accessible_by(current_ability).include_hidden(false).game(params[:game]).order(:id => :DESC).limit(5)
+    reviews = Review.accessible_by(current_ability).visible.game(params[:game]).includes(:review_ratings, :mod, :submitter => :reputation).order(:submitted => :DESC).limit(4)
+    corrections = Correction.accessible_by(current_ability).visible.game(params[:game]).includes(:submitter => :reputation).order(:submitted => :DESC).limit(4)
+    compatibility_notes = CompatibilityNote.accessible_by(current_ability).visible.game(params[:game]).includes(:first_mod, :second_mod, :submitter => :reputation).order(:submitted => :DESC).limit(4)
+    install_order_notes = InstallOrderNote.accessible_by(current_ability).accessible_by(current_ability).visible.game(params[:game]).includes(:first_mod, :second_mod, :submitter => :reputation).order(:submitted => :DESC).limit(4)
+    load_order_notes = LoadOrderNote.accessible_by(current_ability).visible.game(params[:game]).includes(:first_plugin, :second_plugin, :submitter => :reputation).order(:submitted => :DESC).limit(4)
 
     # get helpful/agreement marks
     r_helpful_marks = HelpfulMark.submitter(current_user.id).helpfulables("Review", reviews.ids)
