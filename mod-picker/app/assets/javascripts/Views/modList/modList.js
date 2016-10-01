@@ -180,7 +180,7 @@ app.controller('modListController', function($scope, $rootScope, $q, $stateParam
         name: "ModList",
         label: "ModList",
         route: "mod-list"
-    }
+    };
     $scope.target = $scope.mod_list;
     $scope.isActive = $scope.activeModList && $scope.activeModList.id == $scope.mod_list.id;
 

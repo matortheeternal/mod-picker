@@ -98,6 +98,7 @@ app.controller('userSettingsController', function($scope, $rootScope, $q, userOb
     };
 
     $scope.updateUserRegistration = function(userDiff) {
+        if (!userDiff.email || !userDiff.password) return;
         userSettingsService.updateUserRegistration(userDiff).then(function () {
             $scope.resetPasswordInputs();
             $scope.$emit('successMessage', 'User registration saved successfully.')

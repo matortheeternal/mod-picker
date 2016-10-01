@@ -3,4 +3,11 @@ app.controller('bodyController', function($scope, $rootScope) {
     $rootScope.$on('toggleModal', function(event, visible) {
         $scope.modalVisible = visible;
     });
+
+    //when the state is changed away from a modal toggle modals off
+    $rootScope.$on('$stateChangeSuccess', function(event) {
+        if($scope.modalVisible) {
+          $scope.modalVisible = false;
+        }
+    });
 });

@@ -24,7 +24,7 @@ app.service('requirementUtils', function () {
                 prev[pluralKey].unshift(req[key]);
                 requirements.splice(i, 1);
             } else {
-                req[pluralKey] = [req[key]];
+                req[pluralKey] = [angular.copy(req[key])];
                 req[destroyedKey] = [];
                 delete req[key];
                 prev = req;
@@ -54,9 +54,9 @@ app.service('requirementUtils', function () {
                 return requirement[reqKey].id == newRequirement[reqKey].id;
             });
             if (foundRequirement) {
-                foundRequirement[pluralKey].push(newRequirement.mod);
+                foundRequirement[pluralKey].push(newRequirement[key]);
             } else {
-                newRequirement[pluralKey] = [newRequirement[key]];
+                newRequirement[pluralKey] = [angular.copy(newRequirement[key])];
                 newRequirement[destroyedKey] = [];
                 delete newRequirement[key];
                 requirements.push(newRequirement);
