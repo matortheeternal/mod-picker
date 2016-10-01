@@ -60,7 +60,7 @@ class Mod < ActiveRecord::Base
     sources.each_key do |key|
       if sources[key]
         table = get_source_table(key)
-        query = query.preload(table).joins("LEFT OUTER JOIN #{table} ON #{table}.mod_id = mods.id")
+        query = query.includes(table).references(table)
         where_clause.push("#{table}.id IS NOT NULL")
       end
     end
