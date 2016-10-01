@@ -41,6 +41,9 @@ class Ability
       can :destroy, ModTag
       can :destroy, ModListTag
 
+      # can hide tags
+      can :hide, Tag
+
       # can read reports
       can :read, Report
       can :read, BaseReport

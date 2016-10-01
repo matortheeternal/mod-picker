@@ -21,12 +21,13 @@ class Tag < ActiveRecord::Base
   # CALLBACKS
   after_create :increment_counter_caches
   before_destroy :decrement_counter_caches
+  before_save :delete_usage_if_hidden
 
   
   # json data for reported tags
   def reportable_json_options
     {
-        :only => [:game_id, :text, :hidden, :mods_count, :mod_lists_count],
+        :only => [:id, :game_id, :text, :hidden, :mods_count, :mod_lists_count],
         :include => {
             :submitter => {
                 :only => [:id, :username, :role, :title],
@@ -47,5 +48,12 @@ class Tag < ActiveRecord::Base
 
     def decrement_counter_caches
       self.submitter.update_counter(:tags_count, -1)
+    end
+
+    def delete_usage_if_hidden
+        if hidden
+            mod_list_tags.destroy_all
+            mod_tags.destroy_all
+        end
     end
 end

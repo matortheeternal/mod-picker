@@ -17,5 +17,7 @@
   <span>
       <em>{{report.reportable.text}}</em>
       by <a class="link" ng-href="#/user/{{report.reportable.submitter.id}}" target="_blank" tabindex="{{index}}">{{report.reportable.submitter.username}}</a>
+      <a class="action-box" ng-if="globalPermissions.canModerate && !report.reportable.hidden" tabindex="{{index}}" ng-click="hideTag(true)">hide</a>
+      <a class="action-box" ng-if="globalPermissions.canModerate && report.reportable.hidden" tabindex="{{index}}" ng-click="hideTag(false)">unhide</a>
     </span>
 </div>

@@ -1,5 +1,5 @@
 class TagsController < ApplicationController
-  before_action :set_tag, only: [:destroy]
+  before_action :set_tag, only: [:destroy, :hide]
 
   # GET /tags
   def index
@@ -12,6 +12,17 @@ class TagsController < ApplicationController
   def destroy
     authorize! :destroy, @tag
     if @tag.destroy
+      render json: {status: :ok}
+    else
+      render json: @tag.errors, status: :unprocessable_entity
+    end
+  end
+
+  def hide
+    authorize! :hide, @tag
+    
+    @tag.hidden = params[:hidden]
+    if @tag.save
       render json: {status: :ok}
     else
       render json: @tag.errors, status: :unprocessable_entity
