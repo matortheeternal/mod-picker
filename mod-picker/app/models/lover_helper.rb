@@ -145,6 +145,11 @@ class LoverHelper
       end
     end
 
+    # raise exception if uploader is blacklisted
+    if BlacklistedAuthor.exists_for("LoverInfo", mod_data["uploaded_by"])
+      raise "#{mod_data['uploaded_by']} has opted out of having their mods listed on Mod Picker"
+    end
+
     # make a game_id field from the game field
     mod_data["game_id"] = Game.find_by(nexus_name: mod_data.delete("game")).id
 

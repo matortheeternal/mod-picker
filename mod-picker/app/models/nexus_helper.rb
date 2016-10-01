@@ -142,7 +142,12 @@ class NexusHelper
     mod_data[:uploaded_by] = doc.at_css(".uploader a").text
     mod_data[:authors] = doc.at_css(".header-author strong").text
 
-    # scrape dates
+    # raise exception if uploader is blacklisted
+    if BlacklistedAuthor.exists_for("NexusInfo", mod_data[:uploaded_by])
+      raise "#{mod_data[:uploaded_by]} has opted out of having their mods on Mod Picker"
+    end
+
+      # scrape dates
     dates = doc.at_css(".header-dates").css('div')
     date_added_str = dates[0].children[1].text.strip
     mod_data[:released] = DateTime.parse(date_added_str, date_format)
