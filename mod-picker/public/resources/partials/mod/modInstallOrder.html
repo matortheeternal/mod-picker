@@ -3,7 +3,7 @@
         <sort-control sort="sort.install_order_notes" sort-options="sortOptions.install_order_notes"></sort-control>
     </div>
     <div class="tab-bar-item">
-        <input class="btn" type="submit" value="Add Install Order Note" ng-click="startNewInstallOrderNote()" ng-disabled="activeInstallOrderNote || permissions.canContribute"/>
+        <input class="btn" type="submit" value="Add Install Order Note" ng-click="startNewInstallOrderNote()" ng-disabled="activeInstallOrderNote || !permissions.canContribute"/>
     </div>
 </div>
 

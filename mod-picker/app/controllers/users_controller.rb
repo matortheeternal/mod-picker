@@ -4,7 +4,7 @@ class UsersController < ApplicationController
   # GET/POST /users/index
   def index
     @users = User.include_blank(false).includes(:reputation).references(:reputation).accessible_by(current_ability).filter(filtering_params).sort(params[:sort]).paginate(:page => params[:page])
-    count =  User.accessible_by(current_ability).filter(filtering_params).count
+    count =  User.include_blank(false).includes(:reputation).references(:reputation).accessible_by(current_ability).filter(filtering_params).count
 
     render :json => {
         users: @users,

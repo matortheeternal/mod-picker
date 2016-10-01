@@ -74,9 +74,12 @@ app.controller('modCompatibilityController', function($scope, $stateParams, $sta
     // edit an existing compatibility note
     $scope.editCompatibilityNote = function(compatibility_note) {
         compatibility_note.editing = true;
-        var secondMod = compatibility_note.mods.find(function(mod) {
-            return mod.id !== $scope.mod.id;
-        });
+        var secondMod;
+        if (compatibility_note.first_mod.id != $scope.mod.id) {
+            secondMod = compatibility_note.first_mod;
+        } else {
+            secondMod = compatibility_note.second_mod;
+        }
         $scope.activeCompatibilityNote = {
             status: compatibility_note.status,
             mod_id: secondMod.id,

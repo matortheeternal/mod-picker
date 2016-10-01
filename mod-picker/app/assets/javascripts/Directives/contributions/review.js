@@ -18,7 +18,7 @@ app.controller('reviewController', function($scope, $rootScope) {
     // set defaults
     angular.default($scope, 'showUserColumn', true);
     angular.default($scope, 'showMarks', true);
-    angular.default($scope, 'showMod', true);
+    angular.default($scope, 'showMod', false);
 
     // inherited variables
     $scope.currentUser = $rootScope.currentUser;

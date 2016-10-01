@@ -155,15 +155,15 @@ class ModBuilder
   def create_tags
     if @tag_names
       @tag_names.each do |text|
-        tag = Tag.find_by(text: text, game_id: game_id)
+        tag = Tag.find_by(text: text, game_id: mod.game_id)
 
         # create tag if we couldn't find it
         if tag.nil?
-          tag = Tag.create(text: text, game_id: game_id, submitted_by: submitted_by)
+          tag = Tag.create(text: text, game_id: mod.game_id, submitted_by: @current_user.id)
         end
 
         # associate tag with mod
-        mod.mod_tags.create(tag_id: tag.id, submitted_by: submitted_by)
+        mod.mod_tags.create(tag_id: tag.id, submitted_by: @current_user.id)
       end
     end
   end
