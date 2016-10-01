@@ -89,6 +89,10 @@ app.controller('userSettingsController', function($scope, $rootScope, $q, userOb
         $scope.user.current_password = "";
     };
 
+    $scope.togglePasswordNotice = function() {
+        $scope.showPasswordNotice = $scope.user.email != $scope.originalUser.email;
+    };
+
     $scope.updateAvatar = function() {
         userSettingsService.submitAvatar($scope.avatar.file).then(function() {
             $scope.$emit('successMessage', 'Avatar updated successfully.')
@@ -103,6 +107,14 @@ app.controller('userSettingsController', function($scope, $rootScope, $q, userOb
 
     $scope.updateUserRegistration = function(userDiff) {
         if (!userDiff.email && !userDiff.password) return;
+        if (userDiff.email && !userDiff.current_password) {
+            var message = {
+                type: 'error',
+                text: 'You must enter your current password to change your email.'
+            };
+            $scope.$emit('customMessage', message);
+            return;
+        }
         userSettingsService.updateUserRegistration(userDiff).then(function () {
             $scope.resetPasswordInputs();
             $scope.$emit('successMessage', 'User registration saved successfully.')
