@@ -5,7 +5,7 @@
     </div>
 </div>
 
-<div class="content-block">
+<div class="content-block" ng-if="!user['comments_disabled?']">
     <div class="content-title">Comments
         <span class="right-item action-box" ng-click="startNewComment()">
             <i class="fa fa-plus"></i> New Comment

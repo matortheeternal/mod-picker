@@ -19,5 +19,7 @@ app.controller('userSocialController', function($scope, $stateParams, contributi
     };
 
     // retrieve the profile comments
-    $scope.retrieveProfileComments();
+    if (!$scope.user['comments_disabled?']) {
+        $scope.retrieveProfileComments();
+    }
 });

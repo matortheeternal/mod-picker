@@ -157,6 +157,10 @@ class User < ActiveRecord::Base
     settings.email_public
   end
 
+  def comments_disabled?
+    !settings.allow_comments
+  end
+
   def subscribed_to?(event)
     if respond_to?(:notification_settings)
       key = "#{event.content_type.underscore}_#{event.event_type}"
@@ -234,7 +238,7 @@ class User < ActiveRecord::Base
 
   def show_json(current_user)
     # email handling
-    methods = [:avatar, :last_sign_in_at, :current_sign_in_at]
+    methods = [:avatar, :last_sign_in_at, :current_sign_in_at, :comments_disabled?]
     methods.push(:email) if email_public?
 
     as_json({
