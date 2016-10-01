@@ -82,12 +82,14 @@ app.controller('userController', function($scope, $rootScope, $stateParams, user
         reportable_id: $scope.user.id,
         reportable_type: 'User'
     };
+    var bio = $scope.user.bio;
+    $scope.contactInfoPresent = $scope.user.email || bio.nexus_username || bio.lover_username || bio.workshop_username;
 
     $scope.modelObj = {
         name: "User",
         label: "User",
         route: "users"
-    }
+    };
 
     $scope.target = $scope.user;
 
