@@ -46,6 +46,7 @@ app.controller('userSettingsModListsController', function($scope, $rootScope, $t
         var model = is_collection ? $scope.collections : $scope.mod_lists;
         var label = is_collection ? 'mod collection' : 'mod list';
         modListService.newModList(mod_list, false).then(function(data) {
+            $scope.all_mod_lists.push(data.mod_list);
             model.push(data.mod_list);
             $scope.$emit('successMessage', 'Created new ' + label + ' successfully.');
         }, function(response) {
@@ -72,6 +73,35 @@ app.controller('userSettingsModListsController', function($scope, $rootScope, $t
         });
     };
 
+    $scope.removeActiveModList = function(modList) {
+        var index = $scope.all_mod_lists.findIndex(function(item) {
+            return modList.id == item.id;
+        });
+        if (index > -1) $scope.all_mod_lists.splice(index, 1);
+    };
+
+    $scope.unsetActiveModList = function(modList) {
+        if ($scope.activeModList && $scope.activeModList.id == modList.id) {
+            $rootScope.activeModList = null;
+            $scope.model.activeModListId = null;
+        }
+    };
+
+    $scope.hideModList = function(modList) {
+        modList.hidden = true;
+        $scope.unsetActiveModList(modList);
+    };
+
+    $scope.deleteModList = function(modList) {
+        var model = modList.is_collection ? $scope.collections : $scope.mod_lists;
+        var index = model.findIndex(function(item) {
+            return item.id == modList.id;
+        });
+        if (index > -1) model.splice(index, 1);
+        $scope.unsetActiveModList(modList);
+        $scope.removeActiveModList(modList);
+    };
+
     // ACTION HANDLERS
     $scope.$on('cloneModList', function(event, modList) {
         // TODO
@@ -79,9 +109,10 @@ app.controller('userSettingsModListsController', function($scope, $rootScope, $t
 
     $scope.$on('deleteModList', function(event, modList) {
         modListService.hideModList(modList.id, true).then(function() {
-            modList.hidden = true;
-            if ($scope.activeModList && $scope.activeModList.id == modList.id) {
-                $rootScope.activeModList = null;
+            if ($scope.permissions.canModerate) {
+                $scope.hideModList(modList);
+            } else {
+                $scope.deleteModList(modList);
             }
             $scope.$emit('successMessage', 'Mod list deleted successfully.');
         }, function(response) {

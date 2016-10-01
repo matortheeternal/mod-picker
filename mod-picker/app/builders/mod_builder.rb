@@ -19,7 +19,7 @@ class ModBuilder
     elsif @params && @params[:id]
       @mod = Mod.find_or_initialize_by(id: @params[:id])
     else
-      @mod = Mod.new(@params)
+      @mod = Mod.new
     end
   end
 

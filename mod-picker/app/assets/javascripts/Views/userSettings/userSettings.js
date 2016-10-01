@@ -74,6 +74,10 @@ app.controller('userSettingsController', function($scope, $rootScope, $q, userOb
     $scope.settings = $scope.user.settings;
     $scope.errors = {};
     $scope.tabs = tabsFactory.buildUserSettingsTabs();
+    $scope.defaultSrc = $scope.user.avatar || '/users/' + $scope.user.title + '.png';
+    $scope.avatar = {
+        src: $scope.defaultSrc
+    };
 
     // shared function setup
     eventHandlerFactory.buildMessageHandlers($scope, true);
@@ -83,6 +87,10 @@ app.controller('userSettingsController', function($scope, $rootScope, $q, userOb
         $scope.user.password = "";
         $scope.user.password_confirmation = "";
         $scope.user.current_password = "";
+    };
+
+    $scope.togglePasswordNotice = function() {
+        $scope.showPasswordNotice = $scope.user.email != $scope.originalUser.email;
     };
 
     $scope.updateAvatar = function() {
@@ -98,6 +106,15 @@ app.controller('userSettingsController', function($scope, $rootScope, $q, userOb
     };
 
     $scope.updateUserRegistration = function(userDiff) {
+        if (!userDiff.email && !userDiff.password) return;
+        if (userDiff.email && !userDiff.current_password) {
+            var message = {
+                type: 'error',
+                text: 'You must enter your current password to change your email.'
+            };
+            $scope.$emit('customMessage', message);
+            return;
+        }
         userSettingsService.updateUserRegistration(userDiff).then(function () {
             $scope.resetPasswordInputs();
             $scope.$emit('successMessage', 'User registration saved successfully.')
@@ -111,6 +128,7 @@ app.controller('userSettingsController', function($scope, $rootScope, $q, userOb
     };
 
     $scope.updateUserSettings = function(userDiff) {
+        if (!userDiff.title && !userDiff.about_me && !userDiff.settings) return;
         userSettingsService.updateUserSettings(userDiff).then(function () {
             themesService.changeTheme($scope.settings.theme);
             $scope.$emit('successMessage', 'User settings saved successfully.')

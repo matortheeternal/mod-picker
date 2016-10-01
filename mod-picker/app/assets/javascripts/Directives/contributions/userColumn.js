@@ -15,8 +15,7 @@ app.controller('userColumnController', function($scope, $rootScope, $timeout) {
     // inherited variables
     $scope.currentUser = $rootScope.currentUser;
 
-    // setting permissions to NOT inherit from currentUser as its currently unnecessary
-    $scope.permissions = {};
+    $scope.permissions = angular.copy($rootScope.permissions);
 
     // initialize local variables
     $scope.errors = {};
@@ -49,9 +48,6 @@ app.controller('userColumnController', function($scope, $rootScope, $timeout) {
             $timeout($scope.toggleUserCard, 500);
         }
     };
-
-    // reports permission
-    $scope.permissions.canReport = $scope.currentUser || false;
 
     // report modal state
     $scope.toggleReportModal = function(visible) {

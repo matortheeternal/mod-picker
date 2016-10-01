@@ -19,8 +19,6 @@ app.service('userSettingsService', function (backend, $q, objectUtils, userTitle
     this.updateUserSettings = function (user) {
         var userData = {
             user: {
-                id: user.id,
-                role: user.role,
                 title: user.title,
                 about_me: user.about_me,
                 settings_attributes: user.settings

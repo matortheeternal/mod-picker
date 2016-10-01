@@ -16,7 +16,11 @@ app.directive('tableResults', function () {
     }
 });
 
-app.controller('tableResultsController', function($scope, tableUtils, objectUtils) {
+app.controller('tableResultsController', function($scope, $rootScope, tableUtils, objectUtils) {
+    // inherit rootScope variables
+    $scope.currentUser = $rootScope.currentUser;
+    $scope.permissions = angular.copy($rootScope.permissions);
+
     // inherit scope attributes
     angular.inherit($scope, 'columns');
     angular.inherit($scope, 'columnGroups');

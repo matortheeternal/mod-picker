@@ -14,7 +14,10 @@
 <h3 class="section-title">Email</h3>
 <section>
     <div class="subsection">
-        <input type="email" name="email" ng-model="user.email" />
+        <input type="email" name="email" ng-model="user.email" ng-change="togglePasswordNotice()"/>
+        <span class="quote" ng-if="showPasswordNotice">
+            Please enter your current password below to change your email.
+        </span>
     </div>
     <label class="subsection">
         <input type="checkbox" ng-model="settings.email_public">
@@ -47,7 +50,7 @@
         <input type="checkbox" ng-model="settings.allow_adult_content">
         Allow adult content
     </label>
-    <label class="subsection">
+    <!--<label class="subsection">
         <input type="checkbox" ng-model="settings.allow_nexus_mods">
         Allow mods from Nexus Mods
     </label>
@@ -58,7 +61,7 @@
     <label class="subsection">
         <input type="checkbox" ng-model="settings.allow_lovers_lab">
         Allow mods from Lover's Lab
-    </label>
+    </label>-->
 </section>
 
 <h3 class="section-title">Themes</h3>
