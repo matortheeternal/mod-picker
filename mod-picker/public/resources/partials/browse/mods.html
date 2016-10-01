@@ -128,7 +128,7 @@
                 <h2>Mods</h2>
                 <loader data="mods" content-class="table-container" spinner-class="big-spinner" ng-if="!error">
                     <table-results label="mods" data="mods"></table-results>
-                    <page-results pages="pages" data="mods" callback="getMods"></page-results>
+                    <page-results pages="pages" data="mods" callback="getData"></page-results>
                 </loader>
 
                 <error-display content-class="content-message content-error" errors="error" label="Mods"></error-display>
