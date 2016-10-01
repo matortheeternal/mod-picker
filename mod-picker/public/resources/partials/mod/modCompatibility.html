@@ -14,7 +14,7 @@
         <sort-control sort="sort.compatibility_notes" sort-options="sortOptions.compatibility_notes"></sort-control>
     </div>
     <div class="tab-bar-item">
-        <input class="btn" type="button" value="Add Compatibility Note" ng-click="startNewCompatibilityNote()" ng-disabled="activeCompatibilityNote || permissions.canContribute"/>
+        <input class="btn" type="button" value="Add Compatibility Note" ng-click="startNewCompatibilityNote()" ng-disabled="activeCompatibilityNote || !permissions.canContribute"/>
     </div>
 </div>
 

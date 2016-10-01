@@ -9,7 +9,7 @@
     </div>
 
     <div class="tab-bar-item">
-        <input class="btn" type="button" value="Add Review" ng-click="startNewReview()" ng-disabled="activeReview || mod.user_review || userReviewHidden || permissions.canContribute" title="{{ mod.user_review || userReviewHidden ? 'You have already submitted a review for this mod.' : 'Add a new review' }}"/>
+        <input class="btn" type="button" value="Add Review" ng-click="startNewReview()" ng-disabled="activeReview || mod.user_review || userReviewHidden || !permissions.canContribute" title="{{ mod.user_review || userReviewHidden ? 'You have already submitted a review for this mod.' : 'Add a new review' }}"/>
     </div>
 </div>
 
