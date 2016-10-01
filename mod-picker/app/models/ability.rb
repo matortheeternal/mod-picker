@@ -128,7 +128,7 @@ class Ability
       can :update_options, Mod, { :disallow_contributors => false, :mod_authors => { :user_id => user.id, :role => 1 } }
 
       # abilities tied to reputation
-      if user.reputation.overall >= 20
+      if user.reputation.overall >= 5
         can :create, Tag # can create new tags
       end
       if user.reputation.overall >= 40
