@@ -31,6 +31,8 @@ app.service('reportService', function($q, backend, pageUtils, userTitleService, 
     };
 
     this.submitReport = function(report) {
+        var action = $q.defer();
+        
         // prepare report record
         var reportData = {
             report: {
@@ -44,6 +46,12 @@ app.service('reportService', function($q, backend, pageUtils, userTitleService, 
         };
 
         // submit report
-        return backend.post('/reports', reportData);
+        backend.post('/reports', reportData).then(function(data) {
+            action.resolve(data);
+        }, function(response) {
+            action.reject(response);
+        });
+
+        return action.promise;
     };
 });
