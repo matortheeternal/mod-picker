@@ -618,6 +618,12 @@ app.service("filtersFactory", function() {
                 param: "usr",
                 type: "Boolean",
                 default: true
+            },
+            {
+                data: "commentable.Article",
+                param: "art",
+                type: "Boolean",
+                default: true
             }
         ]
     };
