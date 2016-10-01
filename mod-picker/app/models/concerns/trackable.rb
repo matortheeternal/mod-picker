@@ -30,7 +30,7 @@ module Trackable
     notification_records = subscriber_ids_for(event).map do |user_id|
       { event_id: event.id, user_id: user_id }
     end
-    Notification.create(notification_records)
+    Notification.create(notification_records) if notification_records.any?
   end
 
   def event_owner_attributes(event_type)
