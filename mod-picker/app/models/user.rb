@@ -271,13 +271,13 @@ class User < ActiveRecord::Base
   end
 
   def notification_json_options(event_type)
-    options = {
-        :only => [:username, (:role if event_type == :status)].compact
+    {
+        :only => [:username, :role]
     }
   end
 
   def reportable_json_options
-    options = {
+    {
         :only => [:id, :username, :role, :title, :about_me, :last_sign_in_at, :joined, :current_sign_in_at, :last_sign_in_at],
         :include => {
             :reputation => {
