@@ -116,12 +116,6 @@ app.controller('baseController', function($scope, $rootScope, $state, $window, $
         var rep = user.reputation.overall;
         user.permissions.canEndorse = (rep >= 40 && numEndorsed < 5) || (rep >= 160 && numEndorsed < 10) || (rep >= 640 && numEndorsed < 15);
     });
-
-    // handle state change errors
-    $scope.$on("$stateChangeError", function(event, toState, toParams, fromState, fromParams, error) {
-        $state.get('base.error').error = error;
-        $state.go('base.error');
-    });
 });
 
 app.controller('searchController', function($scope, $state) {
