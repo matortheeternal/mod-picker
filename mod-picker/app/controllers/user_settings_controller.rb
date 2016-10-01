@@ -70,6 +70,6 @@ class UserSettingsController < ApplicationController
     end
 
     def avatar_params
-      {:image_file => params[:image]}
+      {:image_file => params[:avatar]}
     end
 end
