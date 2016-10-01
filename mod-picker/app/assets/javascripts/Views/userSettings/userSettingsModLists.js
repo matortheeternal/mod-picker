@@ -46,6 +46,7 @@ app.controller('userSettingsModListsController', function($scope, $rootScope, $t
         var model = is_collection ? $scope.collections : $scope.mod_lists;
         var label = is_collection ? 'mod collection' : 'mod list';
         modListService.newModList(mod_list, false).then(function(data) {
+            $scope.all_mod_lists.push(data.mod_list);
             model.push(data.mod_list);
             $scope.$emit('successMessage', 'Created new ' + label + ' successfully.');
         }, function(response) {
