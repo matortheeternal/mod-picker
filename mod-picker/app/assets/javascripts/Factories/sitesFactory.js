@@ -30,7 +30,7 @@ app.service('sitesFactory', function () {
                 label: "Lover's Lab",
                 shortLabel: "Lab",
                 modUrlFormat: /(http[s]:\/\/?)?www\.loverslab\.com\/files\/file\/([0-9]+)\-([0-9a-z\-]+)(\/)?/i,
-                userUrlFormat: /(http[s]:\/\/?)?www\.loverslab\.com\/index\.php\?\/user\/([A-Za-z0-9\-]+)(\/)?/i,
+                userUrlFormat: /(http[s]:\/\/?)?www\.loverslab\.com\/user\/([0-9]+)\-([a-zA-Z0-9]+)(\/)?/i,
                 modUrlBase: "https://www.loverslab.com/files/file/{id}",
                 userIndex: 2,
                 loginUrl: "https://www.loverslab.com/",
