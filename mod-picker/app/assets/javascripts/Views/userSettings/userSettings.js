@@ -102,7 +102,7 @@ app.controller('userSettingsController', function($scope, $rootScope, $q, userOb
     };
 
     $scope.updateUserRegistration = function(userDiff) {
-        if (!userDiff.email || !userDiff.password) return;
+        if (!userDiff.email && !userDiff.password) return;
         userSettingsService.updateUserRegistration(userDiff).then(function () {
             $scope.resetPasswordInputs();
             $scope.$emit('successMessage', 'User registration saved successfully.')
@@ -116,6 +116,7 @@ app.controller('userSettingsController', function($scope, $rootScope, $q, userOb
     };
 
     $scope.updateUserSettings = function(userDiff) {
+        if (!userDiff.title && !userDiff.about_me && !userDiff.settings) return;
         userSettingsService.updateUserSettings(userDiff).then(function () {
             themesService.changeTheme($scope.settings.theme);
             $scope.$emit('successMessage', 'User settings saved successfully.')
