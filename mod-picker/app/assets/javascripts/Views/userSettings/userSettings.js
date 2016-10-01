@@ -74,6 +74,10 @@ app.controller('userSettingsController', function($scope, $rootScope, $q, userOb
     $scope.settings = $scope.user.settings;
     $scope.errors = {};
     $scope.tabs = tabsFactory.buildUserSettingsTabs();
+    $scope.defaultSrc = $scope.user.avatar || '/users/' + $scope.user.title + '.png';
+    $scope.avatar = {
+        src: $scope.defaultSrc
+    };
 
     // shared function setup
     eventHandlerFactory.buildMessageHandlers($scope, true);
