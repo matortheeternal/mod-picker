@@ -11,6 +11,7 @@ app.controller('submissionModalController', function($scope) {
     $scope.startSubmission = function(label) {
         $scope.submitting = true;
         $scope.submittingStatus = label;
+        $scope.$emit('toggleModal', true);
     };
 
     $scope.submissionSuccess = function(label, link, linkLabel) {
@@ -30,5 +31,6 @@ app.controller('submissionModalController', function($scope) {
         delete $scope.success;
         delete $scope.submitting;
         delete $scope.errors;
+        $scope.$emit('toggleModal', false);
     };
 });

@@ -15,7 +15,7 @@ class UserSettingsController < ApplicationController
     authorize! :set_custom_title, @user if params[:user].has_key?(:title)
     authorize! :assign_roles, @user if params[:user].has_key?(:role)
 
-    if @user.update(user_setting_params)
+    if @user.update(user_params)
       render json: {status: :ok}
     else
       render json: @user.errors, status: :unprocessable_entity
@@ -65,8 +65,8 @@ class UserSettingsController < ApplicationController
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
-    def user_setting_params
-      params.require(:user).permit(:username, :role, :title, :joined, :email, :about_me, :settings_attributes => [:id, :theme, :allow_comments, :show_notifications, :email_notifications, :email_public, :allow_adult_content, :allow_nexus_mods, :allow_lovers_lab, :allow_steam_workshop])
+    def user_params
+      params.require(:user).permit(:username, :role, :title, :joined, :about_me, :settings_attributes => [:id, :theme, :allow_comments, :show_notifications, :email_notifications, :email_public, :allow_adult_content, :allow_nexus_mods, :allow_lovers_lab, :allow_steam_workshop])
     end
 
     def avatar_params

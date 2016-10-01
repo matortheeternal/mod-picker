@@ -34,7 +34,7 @@ app.controller('baseController', function($scope, $rootScope, $state, $window, $
     // shared variables - used on multiple states.  These have to stored on the
     // $rootScope else we can't modify them for all states
     $rootScope.currentUser = currentUser;
-    $rootScope.permissions = currentUser.permissions;
+    $rootScope.permissions = (currentUser && currentUser.permissions) || {};
     $rootScope.activeModList = activeModList;
     $rootScope.currentGame = currentGame;
     $rootScope.games = games;
@@ -58,7 +58,7 @@ app.controller('baseController', function($scope, $rootScope, $state, $window, $
         var showKey = 'show' + key + 'Dropdown';
         $timeout(function() {
             $scope[showKey] = false;
-        }, 100);
+        }, 200);
     };
 
     // user selected to start a new mod list

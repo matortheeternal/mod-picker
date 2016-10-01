@@ -2,7 +2,7 @@ class ReportsController < ApplicationController
   # POST /reports/index
   def index
     @reports = BaseReport.includes(:reports => :submitter).references(:reports => :submitter).preload(:reportable).accessible_by(current_ability).filter(filtering_params).sort(params[:sort]).paginate(:page => params[:page])
-    count =  BaseReport.joins(:reports => :submitter).accessible_by(current_ability).filter(filtering_params).count
+    count =  BaseReport.includes(:reports => :submitter).references(:reports => :submitter).accessible_by(current_ability).filter(filtering_params).count
 
     render :json => {
         reports: @reports,
@@ -22,7 +22,7 @@ class ReportsController < ApplicationController
       submitted_by: current_user.id,
     ).first_or_initialize
     # convert string param to int
-    @report.report_type = report_params[:report_type].to_i
+    @report.reason = report_params[:reason].to_i
     @report.note = report_params[:note]
     authorize! :create, @report
     @report.save!
@@ -66,7 +66,7 @@ class ReportsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def report_params
-      params.require(:report).permit(:note, :report_type)
+      params.require(:report).permit(:note, :reason)
     end
 
     def base_report_params

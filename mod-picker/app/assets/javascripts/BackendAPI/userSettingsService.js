@@ -20,19 +20,29 @@ app.service('userSettingsService', function (backend, $q, objectUtils, userTitle
         var userData = {
             user: {
                 id: user.id,
-                email: user.email,
                 role: user.role,
                 title: user.title,
                 about_me: user.about_me,
-                newPassword: user.newPassword,
-                newPassword_confirmation: user.newPassword_confirmation,
-                password: user.password,
                 settings_attributes: user.settings
             }
         };
         objectUtils.deleteEmptyProperties(userData, 1);
 
         return backend.update('/settings/' + user.id, userData);
+    };
+
+    this.updateUserRegistration = function(user) {
+        var userData = {
+            user: {
+                email: user.email,
+                password: user.password,
+                password_confirmation: user.password_confirmation,
+                current_password: user.current_password
+            }
+        };
+        objectUtils.deleteEmptyProperties(userData, 1);
+
+        return backend.update('/users', userData);
     };
 
     this.submitAvatar = function (avatar) {

@@ -108,7 +108,7 @@ app.controller('editModController', function($scope, $rootScope, $state, modObje
     };
 
     // shared function setup
-    eventHandlerFactory.buildMessageHandlers($scope);
+    eventHandlerFactory.buildMessageHandlers($scope, true);
 
     // set up the canManageOptions permission
     var author = $scope.mod.mod_authors.find(function(author) {

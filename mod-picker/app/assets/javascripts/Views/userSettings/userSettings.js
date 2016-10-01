@@ -78,6 +78,51 @@ app.controller('userSettingsController', function($scope, $rootScope, $q, userOb
     // shared function setup
     eventHandlerFactory.buildMessageHandlers($scope, true);
 
+    // resets password inputs
+    $scope.resetPasswordInputs = function() {
+        $scope.user.password = "";
+        $scope.user.password_confirmation = "";
+        $scope.user.current_password = "";
+    };
+
+    $scope.updateAvatar = function() {
+        userSettingsService.submitAvatar($scope.avatar.file).then(function() {
+            $scope.$emit('successMessage', 'Avatar updated successfully.')
+        }, function(response) {
+            var params = {
+                label: 'Error updating avatar',
+                response: response
+            };
+            $scope.$emit('errorMessage', params);
+        });
+    };
+
+    $scope.updateUserRegistration = function(userDiff) {
+        userSettingsService.updateUserRegistration(userDiff).then(function () {
+            $scope.resetPasswordInputs();
+            $scope.$emit('successMessage', 'User registration saved successfully.')
+        }, function (response) {
+            var params = {
+                label: 'Error saving user registration',
+                response: response
+            };
+            $scope.$emit('errorMessage', params);
+        });
+    };
+
+    $scope.updateUserSettings = function(userDiff) {
+        userSettingsService.updateUserSettings(userDiff).then(function () {
+            themesService.changeTheme($scope.settings.theme);
+            $scope.$emit('successMessage', 'User settings saved successfully.')
+        }, function (response) {
+            var params = {
+                label: 'Error saving user settings',
+                response: response
+            };
+            $scope.$emit('errorMessage', params);
+        });
+    };
+
     // saves changed user settings
     $scope.saveChanges = function() {
         // get changed user fields
@@ -90,32 +135,15 @@ app.controller('userSettingsController', function($scope, $rootScope, $q, userOb
                 $scope.$broadcast('message', message);
                 return;
             }
-        }
-        // else submit changes to the backend
-        else {
-            userSettingsService.updateUserSettings(userDiff).then(function () {
-                themesService.changeTheme($scope.settings.theme);
-                $scope.$emit('successMessage', 'User settings saved successfully.')
-            }, function (response) {
-                var params = {
-                    label: 'Error saving user settings',
-                    response: response
-                };
-                $scope.$emit('errorMessage', params);
-            });
+        } else {
+            // else submit changes to the backend
+            $scope.updateUserSettings(userDiff);
+            $scope.updateUserRegistration(userDiff);
         }
 
         // submit avatar if changed
         if ($scope.avatar && $scope.avatar.file) {
-            userSettingsService.submitAvatar($scope.avatar.file).then(function() {
-                $scope.$emit('successMessage', 'Avatar updated successfully.')
-            }, function(response) {
-                var params = {
-                    label: 'Error updating avatar',
-                    response: response
-                };
-                $scope.$emit('errorMessage', params);
-            });
+            $scope.updateAvatar();
         }
     };
 });

@@ -34,7 +34,7 @@ app.service('reportService', function($q, backend, pageUtils, userTitleService, 
         // prepare report record
         var reportData = {
             report: {
-                report_type: report.report_type,
+                reason: report.reason,
                 note: report.note
             },
             base_report: {

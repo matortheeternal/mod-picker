@@ -193,17 +193,18 @@ class InstallOrderNote < ActiveRecord::Base
 
     def set_adult
       self.has_adult_content = first_mod.has_adult_content || second_mod.has_adult_content
+      true
     end
 
     def increment_counters
-      self.first_mod.update_counter(:install_order_notes_count, 1)
-      self.second_mod.update_counter(:install_order_notes_count, 1)
-      self.submitter.update_counter(:install_order_notes_count, 1)
+      first_mod.update_counter(:install_order_notes_count, 1)
+      second_mod.update_counter(:install_order_notes_count, 1)
+      submitter.update_counter(:install_order_notes_count, 1)
     end
 
     def decrement_counters
-      self.first_mod.update_counter(:install_order_notes_count, -1)
-      self.second_mod.update_counter(:install_order_notes_count, -1)
-      self.submitter.update_counter(:install_order_notes_count, -1)
+      first_mod.update_counter(:install_order_notes_count, -1)
+      second_mod.update_counter(:install_order_notes_count, -1)
+      submitter.update_counter(:install_order_notes_count, -1)
     end
 end

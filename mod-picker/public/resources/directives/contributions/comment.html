@@ -31,7 +31,7 @@
 
     <div class="comment-actions-container" ng-if="!comment.editing">
         <a class="action-item" ng-if="canReply" tabindex="{{index}}" ng-click="reply()">reply</a>
-        <a class="action-item" ng-if="canReport" tabindex="{{index}}" ng-click="toggleReportModal(true)">report</a>
+        <a class="action-item" ng-if="canReport && !isSubmitter" tabindex="{{index}}" ng-click="toggleReportModal(true)">report</a>
         <a class="action-item" ng-if="showContext" tabindex="{{index}}" ng-href="{{comment.commentable_link}}/comments">context</a>
         <a class="action-item" ng-if="canEdit" tabindex="{{index}}" ng-click="edit()">edit</a>
         <a class="action-item" ng-if="canHide && !comment.hidden" tabindex="{{index}}" ng-click="hide(true)">hide</a>

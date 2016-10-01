@@ -161,6 +161,12 @@ app.controller('modController', function($scope, $rootScope, $q, $stateParams, $
         reportable_id: $scope.mod.id,
         reportable_type: 'Mod'
     };
+    $scope.modelObj = {
+        name: "Mod",
+        label: "Mod",
+        route: "mods"
+    }
+    $scope.target = $scope.mod;
     $scope.retrieving = {};
     $scope.errors = {};
 
@@ -178,14 +184,12 @@ app.controller('modController', function($scope, $rootScope, $q, $stateParams, $
         }, 200);
     }
 
-    // reports permission
-    $scope.permissions.canReport = $scope.currentUser || false;
-
     //setting up the canManage permission
     var author = $scope.mod.mod_authors.find(function(author) {
         return author.user_id == $scope.currentUser.id;
     });
     var isAuthor = angular.isDefined(author);
+    $scope.permissions.isAuthor = isAuthor;
     $scope.permissions.canManage = $scope.permissions.canModerate || isAuthor;
 
     var redirectToFirstTab = function() {

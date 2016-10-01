@@ -24,6 +24,13 @@ app.controller('userColumnController', function($scope, $rootScope, $timeout) {
         reportable_id: $scope.user.id,
         reportable_type: 'User'
     };
+    $scope.modelObj = {
+        name: "User",
+        label: "User",
+        route: "users"
+    }
+
+    $scope.target = $scope.user;
 
     $scope.toggleUserCard = function() {
         $scope.showUserCard = $scope.avatarHover;

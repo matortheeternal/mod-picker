@@ -11,7 +11,7 @@ class Event < ActiveRecord::Base
 
   # ASSOCIATIONS
   belongs_to :content, :polymorphic => true
-  has_many :notifications, :inverse_of => 'event'
+  has_many :notifications, :inverse_of => 'event', :dependent => :destroy
 
   # VALIDATIONS
   validates :content_id, :content_type, :event_type, presence: true

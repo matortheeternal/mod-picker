@@ -212,7 +212,11 @@ app.service('notificationsFactory', function() {
     };
 
     this.authorRole = function(event) {
-        return event.content.role;
+        if (event.content.role === "author") {
+            return "an " + event.content.role;
+        } else {
+            return "a " + event.content.role;
+        }
     };
 
     this.endorser = function(event) {

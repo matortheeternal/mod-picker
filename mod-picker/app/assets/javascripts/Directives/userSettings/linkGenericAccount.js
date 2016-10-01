@@ -78,7 +78,7 @@ app.controller('linkGenericAccountController', function ($scope, $timeout, userS
                 $scope.bio = data.bio;
                 $scope.bio[$scope.verifiedKey] = true;
                 $scope.initSiteVars();
-                $scope.showModal = false;
+                $scope.toggleModal();
             }
         }, function() {
             $scope.bio.verifying = false;

@@ -198,16 +198,17 @@ class Correction < ActiveRecord::Base
 
     def set_adult
       self.has_adult_content = correctable.has_adult_content
+      true
     end
 
     def increment_counters
-      self.correctable.update_counter(:corrections_count, 1)
-      self.submitter.update_counter(:corrections_count, 1)
+      correctable.update_counter(:corrections_count, 1)
+      submitter.update_counter(:corrections_count, 1)
     end
 
     def decrement_counters
-      self.correctable.update_counter(:corrections_count, -1)
-      self.submitter.update_counter(:corrections_count, -1)
+      correctable.update_counter(:corrections_count, -1)
+      submitter.update_counter(:corrections_count, -1)
     end
 
     def schedule_close

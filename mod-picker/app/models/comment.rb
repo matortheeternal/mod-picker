@@ -216,21 +216,22 @@ class Comment < ActiveRecord::Base
       if commentable.respond_to?(:has_adult_content)
         self.has_adult_content = commentable.has_adult_content
       end
+      true
     end
 
     def increment_counter_caches
-      self.submitter.update_counter(:submitted_comments_count, 1)
-      self.commentable.update_counter(:comments_count, 1)
-      if self.parent_id.present?
-        self.parent.update_counter(:children_count, 1)
+      submitter.update_counter(:submitted_comments_count, 1)
+      commentable.update_counter(:comments_count, 1)
+      if parent_id.present?
+        parent.update_counter(:children_count, 1)
       end
     end
 
     def decrement_counter_caches
-      self.submitter.update_counter(:submitted_comments_count, -1)
-      self.commentable.update_counter(:comments_count, -1)
-      if self.parent_id.present?
-        self.parent.update_counter(:children_count, -1)
+      submitter.update_counter(:submitted_comments_count, -1)
+      commentable.update_counter(:comments_count, -1)
+      if parent_id.present?
+        parent.update_counter(:children_count, -1)
       end
     end
 

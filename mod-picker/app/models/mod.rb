@@ -16,7 +16,7 @@ class Mod < ActiveRecord::Base
 
   # SCOPES
   include_scope :hidden
-  include_scope :adult, :alias => 'include_adult'
+  include_scope :has_adult_content, :alias => 'include_adult'
   include_scope :is_official, :alias => 'include_official'
   include_scope :is_utility, :alias => 'include_utilities'
   value_scope :is_utility
@@ -60,7 +60,7 @@ class Mod < ActiveRecord::Base
     sources.each_key do |key|
       if sources[key]
         table = get_source_table(key)
-        query = query.preload(table).joins("LEFT OUTER JOIN #{table} ON #{table}.mod_id = mods.id")
+        query = query.includes(table).references(table)
         where_clause.push("#{table}.id IS NOT NULL")
       end
     end

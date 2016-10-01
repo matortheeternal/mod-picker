@@ -68,8 +68,7 @@ class Ability
       cannot :read, InstallOrderNote, :hidden => true
       cannot :read, LoadOrderNote, :hidden => true
       cannot :read, Review, :hidden => true
-      cannot :read, ModTag, :hidden => true
-      cannot :read, ModListTag, :hidden => true
+      cannot :read, Tag, :hidden => true
       cannot :read, Mod, :hidden => true
       cannot :read, ModList, :hidden => true
 
@@ -149,7 +148,7 @@ class Ability
       end
     end
 
-    # Users that are not restricted
+    # Users that are not banned
     if user_signed_in && !user.banned?
       # can comment on things and update their comments
       can :create, Comment

@@ -190,6 +190,7 @@ class Review < ActiveRecord::Base
 
     def set_adult
       self.has_adult_content = mod.has_adult_content
+      true
     end
 
     def increment_counters
